@@ -1,0 +1,8 @@
+2008-03-13  Andres G. Aragoneses  <aaragoneses@novell.com>
+
+	* hello.c: 
+	* hello.h:
+	* Makefile:
+	Import of Atk hello world from Mike Gorse <mgorse@novell.com>
+
+
