@@ -5,10 +5,10 @@
 G_BEGIN_DECLS
 
 #define TEST_TYPE_HELLO      (test_hello_get_type ())
-#define TEST_HELLO(obj)   (GTK_CHECK_CAST((obj), TEST_TYPE_HELLO, test_hello))
-#define IS_TEST_HELLO(obj)     (GTK_CHECK_TYPE((obj), TEST_TYPE_HELLO))
-#define IS_TEST_HELLO_CLASS(k) (GTK_CHECK_CLASS_TYPE ((k), TEST_TYPE_HELLO))
-#define TEST_HELLO_CLASS(k) (GTK_CHECK_CLASS_CAST ((k), TEST_TYPE_HELLO, AtkObjectClass))
+#define TEST_HELLO(obj)   (G_TYPE_CHECK_INSTANCE_CAST((obj), TEST_TYPE_HELLO, test_hello))
+#define IS_TEST_HELLO(obj)     (G_TYPE_CHECK_INSTANCE_TYPE((obj), TEST_TYPE_HELLO))
+#define IS_TEST_HELLO_CLASS(k) (G_TYPE_CHECK_CLASS_TYPE ((k), TEST_TYPE_HELLO))
+#define TEST_HELLO_CLASS(k) (G_TYPE_CHECK_CLASS_CAST ((k), TEST_TYPE_HELLO, AtkObjectClass))
 
   /* forward declarations */
 typedef struct _test_helloClass test_helloClass;

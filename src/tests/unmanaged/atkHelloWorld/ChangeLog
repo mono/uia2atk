@@ -1,5 +1,10 @@
 2008-03-13  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* hello.h: No longer use GTK deprecated macros. (Steps to drop gtk+
+	  dependency.)
+
+2008-03-13  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* atkHelloWorld.mdp: Added MD project.
 
 2008-03-13  Andres G. Aragoneses  <aaragoneses@novell.com>
