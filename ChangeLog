@@ -1,0 +1,8 @@
+2008-03-12  Andres G. Aragoneses  <aaragoneses@novell.com>
+
+	* Remote folder creation for the UIA-Atk(#) bridge.
+	It will be a managed module that depends on Atk# but
+	we will have here managed and unmanaged tests as a
+	starting point.
+
+
