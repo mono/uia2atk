@@ -1,0 +1,16 @@
+<Combine name="UnmanagedTests" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="atkHelloWorld" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="atkHelloWorld" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="atkHelloWorld" single="True">
+    <Execute type="None" entry="atkHelloWorld" />
+  </StartMode>
+  <Entries>
+    <Entry filename="atkHelloWorld/atkHelloWorld.mdp" />
+  </Entries>
+</Combine>

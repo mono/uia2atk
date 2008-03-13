@@ -1,3 +1,7 @@
+2008-03-13  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* UnmanagedTests.mds: Added MD solution.
+
 2008-03-13  Andres G. Aragoneses  <aaragoneses@novell.com>
 
 	* atkHelloWorld/:
