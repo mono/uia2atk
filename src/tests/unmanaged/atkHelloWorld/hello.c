@@ -153,9 +153,10 @@ main(int argc, char *argv[])
   root = g_object_new(TEST_TYPE_HELLO, NULL);
   atk_object_set_name(root, "root object");
 
-  child = g_object_new(TEST_TYPE_HELLO, NULL);
-  atk_object_set_name(child, "child object");
-  g_signal_emit_by_name(root, "children-changed::add", child);
+  //NOTE: I comment this in order to have the smallest testcase that works
+  //child = g_object_new(TEST_TYPE_HELLO, NULL);
+  //atk_object_set_name(child, "child object");
+  //g_signal_emit_by_name(root, "children-changed::add", child);
   mainloop = g_main_loop_new (NULL, FALSE);
 
   /* Make stdin "raw" so that we will see a key immediately */

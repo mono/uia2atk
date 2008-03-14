@@ -1,6 +1,12 @@
+2008-03-14  Andres G. Aragoneses <aaragoneses@novell.com>
+
+	* hello.c: I comment the child block in order to have the smallest
+	  testcase that works.
+	* atkHelloWorld.mdp: added ChangeLog.
+
 2008-03-14  Andres G. Aragoneses <aaragoneses@novell.com> 
 
-	
+	* hello.c: Remove a dupe call.
 
 2008-03-13  Andres G. Aragoneses <aaragoneses@novell.com> 
 
