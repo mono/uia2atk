@@ -145,13 +145,14 @@ main(int argc, char *argv[])
 
   /* The following is normally done by Gnome if accessibility is enabled */
   putenv("GTK_MODULES=gail:atk-bridge");
+  
   gtk_init(&argc, &argv);
   klass = g_type_class_ref(ATK_TYPE_UTIL);
   klass->get_root = get_root;
   g_type_class_unref(klass);
   root = g_object_new(TEST_TYPE_HELLO, NULL);
   atk_object_set_name(root, "root object");
-  atk_object_set_name(root, "root object");
+
   child = g_object_new(TEST_TYPE_HELLO, NULL);
   atk_object_set_name(child, "child object");
   g_signal_emit_by_name(root, "children-changed::add", child);

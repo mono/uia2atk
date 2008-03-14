@@ -1,3 +1,7 @@
+2008-03-14  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	
+
 2008-03-13  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* hello.h: No longer use GTK deprecated macros. (Steps to drop gtk+
