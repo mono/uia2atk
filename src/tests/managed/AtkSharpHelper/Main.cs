@@ -46,9 +46,13 @@ namespace AtkSharpHelper
 			
 			//testing factories stuff...
 			Atk.ObjectFactory factory = Atk.Global.DefaultRegistry.GetFactory(
-			    UiaBridgeToAtk.MwfWindow.GType);
-			Atk.Object aobj = factory.CreateAccessible(new UiaBridgeToAtk.MwfWindow());
+			    UiaBridgeToAtk.AtkForMwfWindow.GType);
+			Atk.Object aobj = factory.CreateAccessible(new UiaBridgeToAtk.AtkForMwfWindow());
 			//aobj.
+			
+			//according to http://developer.gnome.org/projects/gap/guide/gad/gad-api-examples.html, 
+			// we have to set the factory first
+			Atk.Global.DefaultRegistry.SetFactoryType(UiaBridgeToAtk.GTypeTest.GType, UiaBridgeToAtk.MwfWindowFactory.GType);
 			
 			//test1, seems to do nothing
 			//Atk.Global.Root.AddRelationship(Atk.RelationType.NodeChildOf, new UiaBridgeToAtk.MwfWindow());
@@ -62,6 +66,12 @@ namespace AtkSharpHelper
 			//test4, seems to do nothing
 			//new UiaBridgeToAtk.MwfWindow().AddRelationship(Atk.RelationType.ParentWindowOf, Atk.Global.Root);
 			
+			//test5: relation to be created twice (both sides), seems to do nothing
+			//UiaBridgeToAtk.AtkForMwfWindow bridgeWindow = new UiaBridgeToAtk.AtkForMwfWindow();
+			//Atk.Global.Root.AddRelationship(Atk.RelationType.ParentWindowOf, bridgeWindow);
+			//bridgeWindow.AddRelationship(Atk.RelationType.NodeChildOf, Atk.Global.Root);
+			
+			//don't drop this call or otherwise accerciser won't see our app!:
 			Gtk.Application.Run();
 			//unreachable code from here
 		}
@@ -92,16 +102,31 @@ namespace UiaBridgeToAtk
 				IWindowProvider winProvider = (IWindowProvider)provider;
 			}
 			Atk.Component component;
+			AtkForMwfWindow f;
+			//f.Role
 		}
 	}
 	
+	class MwfWindowFactory : Atk.ObjectFactory
+	{
+		public AtkForMwfWindow CreateAccessible(GTypeTest widget)
+		{
+			return widget.atkObject;
+		}
+	}
+
 	class GTypeTest : GLib.Object
 	{
-		
+		internal AtkForMwfWindow atkObject;
 	}
 	
-	class MwfWindow : Atk.Object, Atk.Component
+	class AtkForMwfWindow : Atk.Object, Atk.Component
 	{
+		public Atk.Role Role
+		{
+			get { return Atk.Role.Window; }
+		}
+		
 		public IntPtr Handle {
 			get {
 				throw new NotImplementedException();

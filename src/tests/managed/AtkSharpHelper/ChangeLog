@@ -1,5 +1,9 @@
 2008-03-17  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Main.cs: Worked on factories.
+
+2008-03-17  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Main.cs: Record some unsuccessful tests to add a child...
 
 2008-03-16  Andres G. Aragoneses <aaragoneses@novell.com> 
