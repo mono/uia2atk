@@ -1,0 +1,4 @@
+2008-03-16  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* .: Added this managed test that is a simple Gtk# program
+	seen by accerciser through the AT infrastructure.

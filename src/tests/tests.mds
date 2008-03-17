@@ -1,0 +1,13 @@
+<Combine name="tests" fileversion="2.0">
+  <Configurations active="Debug">
+  </Configurations>
+  <StartMode startupentry="UIAutomationProvider" single="True">
+    <Execute type="None" entry="UnmanagedTests" />
+    <Execute type="None" entry="ManagedTests" />
+  </StartMode>
+  <MonoDevelop.ChangeLogAddIn.ChangeLogInfo policy="UpdateNearestChangeLog" />
+  <Entries>
+    <Entry filename="managed/ManagedTests.mds" />
+    <Entry filename="unmanaged/UnmanagedTests.mds" />
+  </Entries>
+</Combine>

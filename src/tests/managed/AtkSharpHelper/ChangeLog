@@ -1,0 +1,4 @@
+2008-03-16  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* .: Added this managed test that interacts with ATK&AT-SPI
+	through ATK#, without real UI.
