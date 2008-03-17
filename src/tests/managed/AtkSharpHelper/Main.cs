@@ -44,14 +44,32 @@ namespace AtkSharpHelper
 				Console.WriteLine("fo is not null");
 			}
 			
-			//Atk.Role.
-			Gtk.Application.Run();
+			//testing factories stuff...
+			Atk.ObjectFactory factory = Atk.Global.DefaultRegistry.GetFactory(
+			    UiaBridgeToAtk.MwfWindow.GType);
+			Atk.Object aobj = factory.CreateAccessible(new UiaBridgeToAtk.MwfWindow());
+			//aobj.
 			
+			//test1, seems to do nothing
+			//Atk.Global.Root.AddRelationship(Atk.RelationType.NodeChildOf, new UiaBridgeToAtk.MwfWindow());
+			
+			//test2, seems to do nothing
+			//new UiaBridgeToAtk.MwfWindow().AddRelationship(Atk.RelationType.NodeChildOf, Atk.Global.Root);
+			
+			//test3, seems to do nothing
+			//Atk.Global.Root.AddRelationship(Atk.RelationType.ParentWindowOf, new UiaBridgeToAtk.MwfWindow());
+			
+			//test4, seems to do nothing
+			//new UiaBridgeToAtk.MwfWindow().AddRelationship(Atk.RelationType.ParentWindowOf, Atk.Global.Root);
+			
+			Gtk.Application.Run();
+			//unreachable code from here
 		}
 		
 		public static void Main(string[] args)
 		{
 			Initialize();
+			Console.WriteLine("after initialize");
 			
 			System.Threading.Thread.Sleep(60000);
 		}
@@ -74,10 +92,12 @@ namespace UiaBridgeToAtk
 				IWindowProvider winProvider = (IWindowProvider)provider;
 			}
 			Atk.Component component;
-			Atk.ObjectFactory factory = Atk.Global.DefaultRegistry.GetFactory(new GLib.GType());
-			//factory.CreateAccessible(
-			//factory.
 		}
+	}
+	
+	class GTypeTest : GLib.Object
+	{
+		
 	}
 	
 	class MwfWindow : Atk.Object, Atk.Component
