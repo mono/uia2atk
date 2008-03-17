@@ -1,5 +1,10 @@
 2008-03-17  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkSharpHelper.mdp: Add reference to GLib in order to get MD code
+	  completion... (it was compiling because Gtk# depends on Glib#).
+
+2008-03-17  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Main.cs: Worked on factories.
 
 2008-03-17  Andres G. Aragoneses <aaragoneses@novell.com> 

@@ -24,5 +24,6 @@
     <ProjectReference type="Gac" localcopy="True" refto="gtk-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../../olive/class/UIAutomationProvider/UIAutomationProvider.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../../olive/class/UIAutomationProvider/UIAutomationTypes.dll" />
+    <ProjectReference type="Gac" localcopy="True" refto="glib-sharp, Version=2.10.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
   </References>
 </Project>
