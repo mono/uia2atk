@@ -1,5 +1,10 @@
 2008-03-18  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* hello.c: Fix a bug introduced in last commit (was causing infinite
+	  children levels).
+
+2008-03-18  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* hello.c: Better use pre-processor conditionals in order not to use
 	  children variables in the no children case.
 

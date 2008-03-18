@@ -6,7 +6,7 @@
 #include <termios.h>
 #include <unistd.h>
 
-#define INCLUDE_CHILD 0
+#define INCLUDE_CHILD 1
 
 static AtkObject *root;
 #if INCLUDE_CHILD
@@ -85,7 +85,12 @@ static AtkObject *test_hello_ref_child(AtkObject * obj, gint i)
 {
   printf("ref child: %p, index %d\n", obj, i);
   #if INCLUDE_CHILD
-  if (i == 0)
+  if (
+    //are requesting the children of the root?
+    (obj == root) &&
+    
+    //child-index
+    (i == 0))
   {
     g_object_ref(child);
     return child;
