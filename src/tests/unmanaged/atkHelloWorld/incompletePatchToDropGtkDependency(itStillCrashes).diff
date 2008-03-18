@@ -1,8 +1,42 @@
 Index: hello.c
 ===================================================================
---- hello.c	(revision 98257)
+--- hello.c	(revision 98482)
 +++ hello.c	(working copy)
-@@ -142,15 +142,32 @@
+@@ -11,7 +11,7 @@
+ gboolean quit(GIOChannel *source, GIOCondition condition, gpointer data)
+ {
+   g_signal_emit_by_name(root, "children-changed::remove", child);
+-  g_object_unref(child);
++  if (child) g_object_unref(child);
+   child = NULL;
+   g_object_unref(root);
+   tcsetattr(0, TCSAFLUSH, data);
+@@ -59,7 +59,7 @@
+   printf("ref child: %p, index %d\n", obj, i);
+   if (obj == root && i == 0)
+   {
+-    g_object_ref(child);
++    if (child) g_object_ref(child);
+     return child;
+   }
+   else return NULL;
+@@ -136,21 +136,51 @@
+   return root;
+ }
+ 
++static G_CONST_RETURN gchar *get_toolkit_name()
++{
++  return "hello";
++}
++
++static G_CONST_RETURN gchar *get_toolkit_version()
++{
++  return "1.0";
++}
++
+ main(int argc, char *argv[])
+ {
+   AtkUtilClass *klass;
    GMainLoop *mainloop;
    GIOChannel *stdin_channel;
    struct termios termios, rt;
@@ -17,7 +51,10 @@ Index: hello.c
 +
    klass = g_type_class_ref(ATK_TYPE_UTIL);
    klass->get_root = get_root;
++  klass->get_toolkit_name = get_toolkit_name;
++  klass->get_toolkit_version = get_toolkit_version;
    g_type_class_unref(klass);
++
    root = g_object_new(TEST_TYPE_HELLO, NULL);
 +
 +  /* The below line isn't really right -- normally gtk will build the path */
