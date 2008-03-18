@@ -1,3 +1,8 @@
+2008-03-18  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* hello.c: Better use pre-processor conditionals in order not to use
+	  children variables in the no children case.
+
 2008-03-18  Andres G. Aragoneses <aaragoneses@novell.com>
 
 	* Makefile: sync makefile with latest changes in the .mdp project file.

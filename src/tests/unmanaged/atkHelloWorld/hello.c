@@ -6,14 +6,28 @@
 #include <termios.h>
 #include <unistd.h>
 
-static AtkObject *root, *child;
+#define INCLUDE_CHILD 0
+
+static AtkObject *root;
+#if INCLUDE_CHILD
+static AtkObject *child;
+#endif
 
 gboolean quit(GIOChannel *source, GIOCondition condition, gpointer data)
 {
+#if INCLUDE_CHILD
   g_signal_emit_by_name(root, "children-changed::remove", child);
-  if (child) g_object_unref(child);
+  
+  if (child)
+  {
+    g_object_unref(child);
+  }
   child = NULL;
+#endif
+  
   g_object_unref(root);
+  root = NULL;
+  
   tcsetattr(0, TCSAFLUSH, data);
   exit(0);
 }
@@ -29,8 +43,21 @@ static AtkObjectClass *parent_class = NULL;
 
 static gint test_hello_get_n_children(AtkObject * obj)
 {
-printf("get n children: %p\n", obj);
-  return (obj == root && child? 1: 0);
+  if (obj == root)
+  {
+    printf("get_n_children(root)\n");
+  }
+  else
+  {
+    printf("get_n_children(?)\n");
+  }
+  
+  int numchilds = 0;
+  
+  #if INCLUDE_CHILD
+  numchilds++;
+  #endif
+  return numchilds;
 }
 
 static AtkStateSet *test_hello_ref_state_set(AtkObject * accessible)
@@ -57,12 +84,14 @@ static void test_hello_finalize(AtkObject * obj)
 static AtkObject *test_hello_ref_child(AtkObject * obj, gint i)
 {
   printf("ref child: %p, index %d\n", obj, i);
-  if (obj == root && i == 0)
+  #if INCLUDE_CHILD
+  if (i == 0)
   {
-    if (child) g_object_ref(child);
+    g_object_ref(child);
     return child;
   }
-  else return NULL;
+  #endif
+  return NULL;
 }
 
 static void test_hello_class_init(test_helloClass * klass)
@@ -183,10 +212,13 @@ main(int argc, char *argv[])
   (*gnome_accessibility_module_init)();
   atk_object_set_name(root, "atkHelloWorld root object");
 
-  //NOTE: I comment this in order to have the smallest testcase that works
-  //child = g_object_new(TEST_TYPE_HELLO, NULL);
-  //atk_object_set_name(child, "child object");
+#if INCLUDE_CHILD
+  child = g_object_new(TEST_TYPE_HELLO, NULL);
+  atk_object_set_name(child, "child object");
+  //this seems not to be needed, as it works with children without it:
   //g_signal_emit_by_name(root, "children-changed::add", child);
+#endif
+
   mainloop = g_main_loop_new (NULL, FALSE);
 
   /* Make stdin "raw" so that we will see a key immediately */
