@@ -1,5 +1,5 @@
 #ifndef TEST_HELLO_H
-#include "gtk/gtk.h"
+#include "gmodule.h"
 #include <atk/atk.h>
 
 G_BEGIN_DECLS

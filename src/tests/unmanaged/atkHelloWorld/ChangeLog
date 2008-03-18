@@ -1,3 +1,9 @@
+2008-03-18  Mike Gorse <mgorse@novell.com>
+
+	* hello.c: launch atk-bridge without gtk_init() and using g_type_init().
+	* hello.h: drop call to gtk header file and add gmodule.
+	* atkHelloWorld.mdp: drop gtk+ dependency and add gmodule and gobject.
+
 2008-03-14  Andres G. Aragoneses <aaragoneses@novell.com>
 
 	* hello.c: I comment the child block in order to have the smallest

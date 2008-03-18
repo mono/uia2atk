@@ -11,7 +11,7 @@ static AtkObject *root, *child;
 gboolean quit(GIOChannel *source, GIOCondition condition, gpointer data)
 {
   g_signal_emit_by_name(root, "children-changed::remove", child);
-  g_object_unref(child);
+  if (child) g_object_unref(child);
   child = NULL;
   g_object_unref(root);
   tcsetattr(0, TCSAFLUSH, data);
@@ -59,7 +59,7 @@ static AtkObject *test_hello_ref_child(AtkObject * obj, gint i)
   printf("ref child: %p, index %d\n", obj, i);
   if (obj == root && i == 0)
   {
-    g_object_ref(child);
+    if (child) g_object_ref(child);
     return child;
   }
   else return NULL;
@@ -136,22 +136,52 @@ static AtkObject *get_root()
   return root;
 }
 
+static G_CONST_RETURN gchar *get_toolkit_name()
+{
+  return "hello";
+}
+
+static G_CONST_RETURN gchar *get_toolkit_version()
+{
+  return "1.0";
+}
+
 main(int argc, char *argv[])
 {
   AtkUtilClass *klass;
   GMainLoop *mainloop;
   GIOChannel *stdin_channel;
   struct termios termios, rt;
+  GModule *bridge;
+  void (*gnome_accessibility_module_init)();
 
-  /* The following is normally done by Gnome if accessibility is enabled */
-  putenv("GTK_MODULES=gail:atk-bridge");
-  
-  gtk_init(&argc, &argv);
+  g_type_init();
+
   klass = g_type_class_ref(ATK_TYPE_UTIL);
   klass->get_root = get_root;
+  klass->get_toolkit_name = get_toolkit_name;
+  klass->get_toolkit_version = get_toolkit_version;
   g_type_class_unref(klass);
+
   root = g_object_new(TEST_TYPE_HELLO, NULL);
-  atk_object_set_name(root, "root object");
+
+  /* The below line isn't really right -- normally gtk will build the path */
+  bridge = g_module_open("/usr/lib/gtk-2.0/modules/libatk-bridge.so", G_MODULE_BIND_LOCAL|G_MODULE_BIND_LAZY);
+
+  if (!bridge)
+  {
+    fprintf(stderr, "Couldn't load atk-bridge.so\n");
+    exit(1);
+  }
+
+  if (!g_module_symbol(bridge, "gnome_accessibility_module_init", (gpointer *)&gnome_accessibility_module_init))
+  {
+    fprintf(stderr, "Couldn't find gnome_accessibility_module_init\n");    
+    exit(1);
+  }
+
+  (*gnome_accessibility_module_init)();
+  atk_object_set_name(root, "atkHelloWorld root object");
 
   //NOTE: I comment this in order to have the smallest testcase that works
   //child = g_object_new(TEST_TYPE_HELLO, NULL);
