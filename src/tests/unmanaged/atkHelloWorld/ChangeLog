@@ -1,3 +1,7 @@
+2008-03-18  Andres G. Aragoneses <aaragoneses@novell.com>
+
+	* Makefile: sync makefile with latest changes in the .mdp project file.
+
 2008-03-18  Mike Gorse <mgorse@novell.com>
 
 	* hello.c: launch atk-bridge without gtk_init() and using g_type_init().
