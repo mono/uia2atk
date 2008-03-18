@@ -6,7 +6,7 @@
 #include <termios.h>
 #include <unistd.h>
 
-#define INCLUDE_CHILD 1
+#define INCLUDE_CHILD 0
 
 static AtkObject *root;
 #if INCLUDE_CHILD
@@ -84,20 +84,21 @@ static void test_hello_finalize(AtkObject * obj)
 
 static AtkObject *test_hello_ref_child(AtkObject * obj, gint i)
 {
-  printf("ref child: %p, index %d\n", obj, i);
-  #if INCLUDE_CHILD
-  if (
-    //are requesting the children of the root?
-    (obj == root) &&
-    
-    //child-index
-    (i == 0))
-  {
-    g_object_ref(child);
-    return child;
-  }
-  #endif
-  return NULL;
+#if INCLUDE_CHILD
+  // this should only be called for the object, because we don't have children in the first child
+  g_assert(root == obj);
+  
+  // this function is only called when we report >0 in get_n_children,
+  // so I assert this because
+  g_assert(i == 0);
+
+  printf("ref_child(root,index:0)");
+  g_object_ref(child);
+  return child;
+#endif
+  
+  // this should not be called if we don't have children
+  g_assert_not_reached();
 }
 
 static void test_hello_class_init(test_helloClass * klass)

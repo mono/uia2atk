@@ -23,5 +23,6 @@
     <ProjectPackage file="atk" name="atk" IsProject="False" />
     <ProjectPackage file="gmodule-2.0" name="gmodule-2.0" IsProject="False" />
     <ProjectPackage file="gobject-2.0" name="gobject-2.0" IsProject="False" />
+    <ProjectPackage file="glib" name="glib" IsProject="False" />
   </Packages>
 </Project>

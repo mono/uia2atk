@@ -1,5 +1,11 @@
 2008-03-18  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* hello.c: Convert some conditions into assertions to make it more
+	  readable.
+	* atkHelloWorld.mdp: Ref to glib for asserts.
+
+2008-03-18  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* hello.c: Fix another bug I introduced in r98534. It was causing
 	  accerciser to report a <dead> children. Thanks Mike Gorse
 	  <mgorse@novell.com> for the insights!
@@ -49,5 +55,3 @@
 	* hello.h:
 	* Makefile:
 	Import of Atk hello world from Mike Gorse <mgorse@novell.com>
-
-
