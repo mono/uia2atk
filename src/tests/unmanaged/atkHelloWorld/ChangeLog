@@ -1,5 +1,11 @@
 2008-03-18  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* hello.c: Fix another bug I introduced in r98534. It was causing
+	  accerciser to report a <dead> children. Thanks Mike Gorse
+	  <mgorse@novell.com> for the insights!
+
+2008-03-18  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* hello.c: Fix a bug introduced in last commit (was causing infinite
 	  children levels).
 

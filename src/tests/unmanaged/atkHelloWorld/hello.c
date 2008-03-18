@@ -43,20 +43,21 @@ static AtkObjectClass *parent_class = NULL;
 
 static gint test_hello_get_n_children(AtkObject * obj)
 {
+  int numchilds = 0;
+  
   if (obj == root)
   {
     printf("get_n_children(root)\n");
+
+#if INCLUDE_CHILD
+    numchilds++;
+#endif
   }
   else
   {
     printf("get_n_children(?)\n");
   }
-  
-  int numchilds = 0;
-  
-  #if INCLUDE_CHILD
-  numchilds++;
-  #endif
+
   return numchilds;
 }
 
