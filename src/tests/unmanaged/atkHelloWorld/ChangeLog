@@ -1,3 +1,13 @@
+2008-03-19  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* hellotoplevel.c, hellotoplevel.h, mytkwidget.c, atkHelloWorld.mdp,
+	  mytkwidget.h: This testcase was too simple to figure out how to
+	  change the Atk# binding in order to let AtkObject subclasses define
+	  their children. I'm bringing all what I need in the unmanaged world
+	  and later I will modify the binding to adapt to this. More to come
+	  tomorrow... (hellotoplevel structure comes from gail, mytkwidget
+	  structure comes from gtk).
+
 2008-03-18  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* hello.c: Convert some conditions into assertions to make it more
