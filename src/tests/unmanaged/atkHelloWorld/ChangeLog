@@ -1,5 +1,9 @@
 2008-03-20  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* hello.c: Moved path into a define.
+
+2008-03-20  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* helloutil.c, helloutil.h, atkHelloWorld.mdp: We need to mimic this
 	  structure from gail: a subclass of ATK_TYPE_UTIL. Not used in
 	  hello.c for now.

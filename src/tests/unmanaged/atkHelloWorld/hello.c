@@ -7,6 +7,8 @@
 #include <unistd.h>
 
 #define INCLUDE_CHILD 1
+/* The below line isn't really right -- normally gtk will build the path */
+#define ATK_BRIDGE_PATH "/usr/lib/gtk-2.0/modules/libatk-bridge.so"
 
 static AtkObject *root;
 #if INCLUDE_CHILD
@@ -218,8 +220,7 @@ main(int argc, char *argv[])
 
   root = g_object_new(TEST_TYPE_HELLO, NULL);
 
-  /* The below line isn't really right -- normally gtk will build the path */
-  bridge = g_module_open("/usr/lib/gtk-2.0/modules/libatk-bridge.so", G_MODULE_BIND_LOCAL|G_MODULE_BIND_LAZY);
+  bridge = g_module_open(ATK_BRIDGE_PATH, G_MODULE_BIND_LOCAL|G_MODULE_BIND_LAZY);
 
   if (!bridge)
   {
