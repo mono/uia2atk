@@ -201,25 +201,12 @@ misc_key_handling(void)
   g_io_add_watch(stdin_channel, G_IO_IN, quit, &termios);
 }
 
-main(int argc, char *argv[])
+static void
+load_atk_bridge_gmodule(void)
 {
-  AtkUtilClass *klass;
-  GMainLoop *mainloop;
-  GIOChannel *stdin_channel;
-  struct termios termios, rt;
   GModule *bridge;
   void (*gnome_accessibility_module_init)();
-
-  g_type_init();
-
-  klass = g_type_class_ref(ATK_TYPE_UTIL);
-  klass->get_root = get_root;
-  klass->get_toolkit_name = get_toolkit_name;
-  klass->get_toolkit_version = get_toolkit_version;
-  g_type_class_unref(klass);
-
-  root = g_object_new(TEST_TYPE_HELLO, NULL);
-
+  
   bridge = g_module_open(ATK_BRIDGE_PATH, G_MODULE_BIND_LOCAL|G_MODULE_BIND_LAZY);
 
   if (!bridge)
@@ -235,6 +222,25 @@ main(int argc, char *argv[])
   }
 
   (*gnome_accessibility_module_init)();
+}
+
+main(int argc, char *argv[])
+{
+  AtkUtilClass *klass;
+  GMainLoop *mainloop;
+
+  g_type_init();
+
+  klass = g_type_class_ref(ATK_TYPE_UTIL);
+  klass->get_root = get_root;
+  klass->get_toolkit_name = get_toolkit_name;
+  klass->get_toolkit_version = get_toolkit_version;
+  g_type_class_unref(klass);
+
+  root = g_object_new(TEST_TYPE_HELLO, NULL);
+
+  load_atk_bridge_gmodule();
+
   atk_object_set_name(root, "atkHelloWorld root object");
 
 #if INCLUDE_CHILD

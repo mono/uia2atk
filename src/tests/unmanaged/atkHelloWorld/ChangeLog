@@ -1,5 +1,9 @@
 2008-03-20  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* hello.c: Move module load into a function.
+
+2008-03-20  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* hello.c: Moved path into a define.
 
 2008-03-20  Andres G. Aragoneses <aaragoneses@novell.com> 
