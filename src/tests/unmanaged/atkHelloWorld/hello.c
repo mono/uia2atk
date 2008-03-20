@@ -182,6 +182,23 @@ static G_CONST_RETURN gchar *get_toolkit_version()
   return "1.0";
 }
 
+
+static void
+misc_key_handling(void)
+{
+  GIOChannel *stdin_channel;
+  struct termios termios, rt;
+
+  /* Make stdin "raw" so that we will see a key immediately */
+  tcgetattr(0, &termios);
+  rt = termios;
+  cfmakeraw(&rt);
+  tcsetattr(0, TCSAFLUSH, &rt);
+  /* Set a watch on stdin so that we'll know when a key is pressed */
+  stdin_channel = g_io_channel_unix_new(0);
+  g_io_add_watch(stdin_channel, G_IO_IN, quit, &termios);
+}
+
 main(int argc, char *argv[])
 {
   AtkUtilClass *klass;
@@ -228,14 +245,7 @@ main(int argc, char *argv[])
 
   mainloop = g_main_loop_new (NULL, FALSE);
 
-  /* Make stdin "raw" so that we will see a key immediately */
-  tcgetattr(0, &termios);
-  rt = termios;
-  cfmakeraw(&rt);
-  tcsetattr(0, TCSAFLUSH, &rt);
-  /* Set a watch on stdin so that we'll know when a key is pressed */
-  stdin_channel = g_io_channel_unix_new(0);
-  g_io_add_watch(stdin_channel, G_IO_IN, quit, &termios);
+  misc_key_handling();
 
   g_main_loop_run (mainloop);
   return 0;

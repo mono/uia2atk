@@ -1,3 +1,10 @@
+2008-03-20  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* helloutil.c, helloutil.h, atkHelloWorld.mdp: We need to mimic this
+	  structure from gail: a subclass of ATK_TYPE_UTIL. Not used in
+	  hello.c for now.
+	* hello.c: Extracted key handling into a function.
+
 2008-03-19  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* hellotoplevel.c, hellotoplevel.h, mytkwidget.c, atkHelloWorld.mdp,

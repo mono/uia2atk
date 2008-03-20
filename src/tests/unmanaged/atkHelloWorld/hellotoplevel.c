@@ -182,7 +182,7 @@ hello_toplevel_get_n_children (AtkObject *obj)
 
 static AtkObject*
 hello_toplevel_ref_child (AtkObject *obj,
-                         gint      i)
+                          gint      i)
 {
   HelloToplevel *toplevel;
   gpointer ptr;
