@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "helloutil.h"
-#include "hellotoplevel.h"
+
 
 static void		hello_util_class_init			(HelloUtilClass		*klass);
 
@@ -75,7 +76,9 @@ static AtkObject*
 hello_util_get_root (void)
 {
   if (!root)
+  {
     root = hello_toplevel_new();
+  }
 
   return root;
 }

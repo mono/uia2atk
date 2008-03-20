@@ -16,13 +16,16 @@
   <Contents>
     <File name="hello.c" subtype="Code" buildaction="Compile" />
     <File name="hello.h" subtype="Code" buildaction="Nothing" />
-    <File name="ChangeLog" subtype="Code" buildaction="Nothing" />
     <File name="hellotoplevel.c" subtype="Code" buildaction="Compile" />
     <File name="hellotoplevel.h" subtype="Code" buildaction="Nothing" />
     <File name="mytkwidget.h" subtype="Code" buildaction="Nothing" />
     <File name="mytkwidget.c" subtype="Code" buildaction="Compile" />
     <File name="helloutil.h" subtype="Code" buildaction="Nothing" />
     <File name="helloutil.c" subtype="Code" buildaction="Compile" />
+    <File name="mytk.h" subtype="Code" buildaction="Nothing" />
+    <File name="mytk.c" subtype="Code" buildaction="Compile" />
+    <File name="hellochild.h" subtype="Code" buildaction="Nothing" />
+    <File name="hellochild.c" subtype="Code" buildaction="Compile" />
   </Contents>
   <compiler ctype="GccCompiler" />
   <Packages>

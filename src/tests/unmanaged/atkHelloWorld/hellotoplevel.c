@@ -1,4 +1,4 @@
-
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "hellotoplevel.h"
@@ -22,7 +22,7 @@ static AtkObject*       hello_toplevel_get_parent        (AtkObject             
 
 
 static void             hello_toplevel_window_destroyed  (GtkWindow              *window,
-                                                        GailToplevel            *text);
+                                                        Gailtoplevel            *text);
 static gboolean         hello_toplevel_hide_event_watcher (GSignalInvocationHint *ihint,
                                                         guint                   n_param_values,
                                                         const GValue            *param_values,
@@ -35,7 +35,7 @@ static gboolean         hello_toplevel_show_event_watcher (GSignalInvocationHint
  
 /* Misc: IDEM
 
-static void      _hello_toplevel_remove_child            (HelloToplevel           *toplevel,
+static void      _hello_toplevel_remove_child            (Hellotoplevel           *toplevel,
                                                         GtkWindow               *window);
 static gboolean  is_attached_menu_window                (GtkWidget              *widget);
 static gboolean  is_combo_window                        (GtkWidget              *widget);
@@ -66,7 +66,7 @@ hello_toplevel_get_type (void)
         };
 
       type = g_type_register_static (ATK_TYPE_OBJECT,
-                                   "GailToplevel", &tinfo, 0);
+                                   "Hellotoplevel", &tinfo, 0);
     }
 
   return type;
@@ -107,24 +107,26 @@ hello_toplevel_class_init (HelloToplevelClass *klass)
 static void
 hello_toplevel_object_init (HelloToplevel *toplevel)
 {
-  //commented lines are because they depend on GTK
-  //FIXME: use my own test-toolkit
-  /*GtkWindow *window;
-  //GtkWidget *widget;
   GList *l;
   guint signal_id;
   
-  l = toplevel->window_list = gtk_window_list_toplevels ();
+  l = toplevel->window_list = mytk_window_list_toplevels ();
 
+  //assign destroy callbacks and delete invalid windows
   while (l)
     {
-      window = GTK_WINDOW (l->data);
-      widget = GTK_WIDGET (window);
-      if (!window || 
-          !GTK_WIDGET_VISIBLE (widget) ||
-          is_attached_menu_window (widget) ||
-          GTK_WIDGET (window)->parent ||
-          GTK_IS_PLUG (window))
+      //originally, in gail, the data is a window (which is also a widget):
+      //MytkWindow *window;
+      //MytkWidget *widget;
+      //window = MYTK_WINDOW (l->data);
+      //widget = MYTK_WIDGET (window);
+      MytkWidget *window;
+      
+      if (!window 
+          //reasonable facts for discarding, but disabled for now:
+          //|| !GTK_WIDGET_VISIBLE (widget) ||
+          //window->parent ||
+         )
         {
           GList *temp_l  = l->next;
 
@@ -133,25 +135,14 @@ hello_toplevel_object_init (HelloToplevel *toplevel)
         }
       else
         {
-          g_signal_connect (G_OBJECT (window), 
-                            "destroy",
-                            G_CALLBACK (hello_toplevel_window_destroyed),
-                            toplevel);
+//          g_signal_connect (G_OBJECT (window), 
+//                            "destroy",
+//                            G_CALLBACK (hello_toplevel_window_destroyed),
+//                            toplevel);
           l = l->next;
         }
     }
 
-  gtk_type_class (GTK_TYPE_WINDOW);
-
-  signal_id  = g_signal_lookup ("show", GTK_TYPE_WINDOW);
-  g_signal_add_emission_hook (signal_id, 0,
-    hello_toplevel_show_event_watcher, toplevel, (GDestroyNotify) NULL);
-
-  signal_id  = g_signal_lookup ("hide", GTK_TYPE_WINDOW);
-  g_signal_add_emission_hook (signal_id, 0,
-    hello_toplevel_hide_event_watcher, toplevel, (GDestroyNotify) NULL);
-    
-  */
 }
 
 static void
@@ -184,10 +175,11 @@ static AtkObject*
 hello_toplevel_ref_child (AtkObject *obj,
                           gint      i)
 {
+  printf("toy en refchild");
   HelloToplevel *toplevel;
   gpointer ptr;
   MytkWidget *widget;
-  AtkObject *atk_obj;
+  AtkObject* atk_obj;
 
   toplevel = HELLO_TOPLEVEL (obj);
   ptr = g_list_nth_data (toplevel->window_list, i);

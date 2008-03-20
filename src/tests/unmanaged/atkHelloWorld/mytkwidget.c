@@ -9,7 +9,6 @@ mytk_widget_get_type (void);
 
 /* --- variables --- */
 static gpointer         mytk_widget_parent_class = NULL;
-static GQuark		quark_accessible_object = 0;
 
 static void
 mytk_widget_finalize (GObject *object)
@@ -38,10 +37,8 @@ mytk_widget_dispose (GObject *object);
 static AtkObject* 
 mytk_widget_real_get_accessible (MytkWidget *widget)
 {
-  AtkObject* accessible;
-
-  accessible = g_object_get_qdata (G_OBJECT (widget), 
-                                   quark_accessible_object);
+  AtkObject* accessible = widget->accessible;
+  
   if (!accessible)
   {
     AtkObjectFactory *factory;
@@ -53,9 +50,7 @@ mytk_widget_real_get_accessible (MytkWidget *widget)
     accessible =
       atk_object_factory_create_accessible (factory,
 					    G_OBJECT (widget));
-    g_object_set_qdata (G_OBJECT (widget), 
-                        quark_accessible_object,
-                        accessible);
+    widget->accessible = accessible;
   }
   return accessible;
 }
@@ -163,7 +158,7 @@ mytk_widget_get_type (void)
       };
 
       widget_type = g_type_register_static (G_TYPE_OBJECT, "MytkWidget",
-                                           &widget_info, G_TYPE_FLAG_ABSTRACT);
+                                           &widget_info, 0);
 
       g_type_add_interface_static (widget_type, ATK_TYPE_IMPLEMENTOR,
                                    &accessibility_info) ;
@@ -173,3 +168,29 @@ mytk_widget_get_type (void)
   return widget_type;
 }
 
+
+MytkWidget*
+mytk_widget_new (
+                //this seems to be used in Gtk because there Widget is an abstract class:
+                //GType        type,
+                const gchar *name,
+                //interesting bit: similar to args keyword in C#:
+                ...
+                )
+{
+  MytkWidget *widget;
+  
+  //this seems to be used in Gtk because there Widget is an abstract class:
+  //g_return_val_if_fail (g_type_is_a (type, MYTK_TYPE_WIDGET), NULL);
+  
+  //for handling the additional args --disabled
+  //va_list var_args;
+  //va_start (var_args, first_property_name);
+  //widget = (GtkWidget *)g_object_new_valist (type, first_property_name, var_args);
+  //va_end (var_args);
+
+  widget = (MytkWidget *)g_object_new(MYTK_TYPE_WIDGET, NULL);
+  widget->name = name;
+
+  return widget;
+}

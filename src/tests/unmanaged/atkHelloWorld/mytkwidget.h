@@ -15,7 +15,9 @@ struct _MytkWidget
   gint some_property;
   
   //MytkWindow *window;
-  MytkWidget *parent;
+  MytkWidget* parent;
+  
+  AtkObject* accessible;
 };
 
 struct _MytkWidgetClass
@@ -39,5 +41,3 @@ struct _MytkWidgetClass
   void (* somefunc)		       (MytkWidget        *widget);
   
 };
-
-//GType mytk_widget_get_type (void);
