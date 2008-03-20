@@ -1,5 +1,9 @@
 2008-03-21  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* newhello.c: deleted, it was just a test.
+
+2008-03-21  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* helloutil.c, hello.c, hellochild.c, atkHelloWorld.mdp, hellochild.h,
 	  newhello.c, hellotoplevel.c, mytk.c, mytkwidget.c, mytk.h,
 	  mytkwidget.h: Major rewrite: now hello.c/.h is using all the fancy
