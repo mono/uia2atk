@@ -11,5 +11,5 @@ mytk_add_one_top_level_window(gchar* name)
 
 GList* mytk_window_list_toplevels ()
 {
-	return top_level_windows;
+  return top_level_windows;
 }

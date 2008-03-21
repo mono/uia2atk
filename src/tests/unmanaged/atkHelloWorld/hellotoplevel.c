@@ -120,7 +120,7 @@ hello_toplevel_object_init (HelloToplevel *toplevel)
       //MytkWidget *widget;
       //window = MYTK_WINDOW (l->data);
       //widget = MYTK_WIDGET (window);
-      MytkWidget *window;
+      MytkWidget *window = MYTK_WIDGET (l->data);
       
       if (!window 
           //reasonable facts for discarding, but disabled for now:
