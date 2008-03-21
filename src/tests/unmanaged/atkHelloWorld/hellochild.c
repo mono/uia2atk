@@ -5,7 +5,7 @@
 #include "mytkwidget.h"
 
 static void             hello_child_class_init        (HelloChildClass      *klass);
-static void             hello_child_object_init       (HelloChild           *toplevel);
+static void             hello_child_object_init       (HelloChild           *child);
 static void             hello_child_object_finalize   (GObject              *obj);
 
 /* atkobject.h */
@@ -99,44 +99,9 @@ hello_child_class_init (HelloChildClass *klass)
 }
 
 static void
-hello_toplevel_object_init (HelloChild *toplevel)
+hello_child_object_init (HelloChild *child)
 {
-  GList *l;
-  guint signal_id;
-  
-  l = toplevel->window_list = mytk_window_list_toplevels ();
-
-  //assign destroy callbacks and delete invalid windows
-  while (l)
-    {
-      //originally, in gail, the data is a window (which is also a widget):
-      //MytkWindow *window;
-      //MytkWidget *widget;
-      //window = MYTK_WINDOW (l->data);
-      //widget = MYTK_WIDGET (window);
-      MytkWidget *window;
-      
-      if (!window 
-          //reasonable facts for discarding, but disabled for now:
-          //|| !GTK_WIDGET_VISIBLE (widget) ||
-          //window->parent ||
-         )
-        {
-          GList *temp_l  = l->next;
-
-          toplevel->window_list = g_list_delete_link (toplevel->window_list, l);
-          l = temp_l;
-        }
-      else
-        {
-//          g_signal_connect (G_OBJECT (window), 
-//                            "destroy",
-//                            G_CALLBACK (hello_toplevel_window_destroyed),
-//                            toplevel);
-          l = l->next;
-        }
-    }
-
+  child = (HelloChild*)g_object_new(HELLO_TYPE_CHILD, NULL);
 }
 
 static void

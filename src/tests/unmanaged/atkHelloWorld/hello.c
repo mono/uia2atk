@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include "helloutil.h"
 
-#define NUM_CHILDREN 0
+#define NUM_CHILDREN 2
 /* The below line isn't really right -- normally gtk will build the path */
 #define ATK_BRIDGE_PATH "/usr/lib/gtk-2.0/modules/libatk-bridge.so"
 

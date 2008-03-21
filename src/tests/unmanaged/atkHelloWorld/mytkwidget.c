@@ -49,7 +49,7 @@ mytk_widget_real_get_accessible (MytkWidget *widget)
                                         G_TYPE_FROM_INSTANCE (widget));
     accessible =
       atk_object_factory_create_accessible (factory,
-					    G_OBJECT (widget));
+                                            G_OBJECT (widget));
     widget->accessible = accessible;
   }
   return accessible;
