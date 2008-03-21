@@ -11,11 +11,13 @@ typedef struct _MytkWidgetClass        MytkWidgetClass;
 
 struct _MytkWidget
 {
+  GObject parent;
+  
   gchar *name;
   gint some_property;
   
   //MytkWindow *window;
-  MytkWidget* parent;
+  MytkWidget* parent_widget;
   
   AtkObject* accessible;
 };

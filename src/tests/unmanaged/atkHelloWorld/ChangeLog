@@ -1,3 +1,9 @@
+2008-03-21  Mike Gorse <mgorse@novell.com>
+
+	* mytkwidget.h: This struct was lacking a parent object.
+	* mytkwidget.c: Track new struct member naming.
+	* Makefile: sync makefile with latest changes in the .mdp project file.
+
 2008-03-21  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* hellotoplevel.c: Fix NRE. Thanks for reporting Mike

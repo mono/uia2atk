@@ -80,7 +80,7 @@ mytk_widget_init (MytkWidget *widget)
   widget->some_property = 2;
   widget->name = NULL;
   //widget->window = NULL;
-  widget->parent = NULL;
+  widget->parent_widget = NULL;
 }
 
 
