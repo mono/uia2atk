@@ -66,7 +66,7 @@ hello_toplevel_get_type (void)
         };
 
       type = g_type_register_static (ATK_TYPE_OBJECT,
-                                   "Hellotoplevel", &tinfo, 0);
+                                   "HelloToplevel", &tinfo, 0);
     }
 
   return type;

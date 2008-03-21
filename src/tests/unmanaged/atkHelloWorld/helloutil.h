@@ -10,7 +10,7 @@
 
 typedef struct _HelloUtil                  HelloUtil;
 typedef struct _HelloUtilClass             HelloUtilClass;
-  
+
 struct _HelloUtil
 {
   AtkUtil parent;
