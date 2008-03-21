@@ -64,7 +64,7 @@ start_program_gui(void)
   int i = 0;
   for (i = 0; i < NUM_CHILDREN; i++)
   {
-    mytk_add_one_top_level_window(g_strdup_printf("TopLevel %d", i));
+    mytk_add_one_top_level_window(g_strdup_printf("TopLevel %d", i + 1));
   }
 }
 

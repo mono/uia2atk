@@ -1,5 +1,11 @@
 2008-03-21  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* hello.c: Cosmetic.
+	* mytk.c: Use the constructor.
+	* mytkwidget.c: Create a constructor.
+
+2008-03-21  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* hellochild.c, hellochild.h: More typos caused by mistaken
 	  search&replace.
 
