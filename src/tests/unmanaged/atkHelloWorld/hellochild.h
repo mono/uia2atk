@@ -25,4 +25,4 @@ struct _HelloChildClass
   AtkObjectClass parent_class;
 };
 
-AtkObject *hello_child_new(void);
+AtkObject *hello_child_new(gchar* name);

@@ -1,5 +1,12 @@
 2008-03-21  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* hellochild.c, hellochild.h, mytkwidget.c, mytk.h: Fixed hello_child
+	  creation.
+	* hellotoplevel.c: Removed debug message.
+	* mytk.c: Improved cast.
+
+2008-03-21  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* hello.c: Default to have children.
 	* hellochild.c: Fix typos caused by copy-paste problems.
 	* mytkwidget.c: Cosmetic.

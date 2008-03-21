@@ -67,7 +67,7 @@ GType test_hello_get_type(void)
 }
 
 AtkObject*
-hello_child_new (void)
+hello_child_new (gchar* name)
 {
   GObject *object;
   AtkObject *accessible;
@@ -77,7 +77,7 @@ hello_child_new (void)
 
   accessible = ATK_OBJECT (object);
   accessible->role = ATK_ROLE_WINDOW;
-  accessible->name = "child";
+  accessible->name = g_strdup(name);
   accessible->accessible_parent = NULL;
 
   return accessible;
@@ -101,7 +101,7 @@ hello_child_class_init (HelloChildClass *klass)
 static void
 hello_child_object_init (HelloChild *child)
 {
-  child = (HelloChild*)g_object_new(HELLO_TYPE_CHILD, NULL);
+
 }
 
 static void

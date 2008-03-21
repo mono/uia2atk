@@ -175,7 +175,6 @@ static AtkObject*
 hello_toplevel_ref_child (AtkObject *obj,
                           gint      i)
 {
-  printf("toy en refchild");
   HelloToplevel *toplevel;
   gpointer ptr;
   MytkWidget *widget;

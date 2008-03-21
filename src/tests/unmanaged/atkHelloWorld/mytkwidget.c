@@ -38,19 +38,21 @@ static AtkObject*
 mytk_widget_real_get_accessible (MytkWidget *widget)
 {
   AtkObject* accessible = widget->accessible;
-  
+
   if (!accessible)
   {
-    AtkObjectFactory *factory;
-    AtkRegistry *default_registry;
-
-    default_registry = atk_get_default_registry ();
-    factory = atk_registry_get_factory (default_registry, 
-                                        G_TYPE_FROM_INSTANCE (widget));
-    accessible =
-      atk_object_factory_create_accessible (factory,
-                                            G_OBJECT (widget));
-    widget->accessible = accessible;
+    widget->accessible = accessible = hello_child_new(widget->name);
+    
+//    AtkObjectFactory *factory;
+//    AtkRegistry *default_registry;
+//
+//    default_registry = atk_get_default_registry ();
+//    factory = atk_registry_get_factory (default_registry, 
+//                                        G_TYPE_FROM_INSTANCE (widget));
+//    accessible =
+//      atk_object_factory_create_accessible (factory,
+//                                            G_OBJECT (widget));
+//    widget->accessible = accessible;
   }
   return accessible;
 }
@@ -75,7 +77,7 @@ mytk_widget_class_init (MytkWidgetClass *klass)
 }
 
 static void
-mytk_widget_init (MytkWidget *widget)
+mytk_widget_object_init (MytkWidget *widget)
 {
   widget->some_property = 2;
   widget->name = NULL;
@@ -139,14 +141,14 @@ mytk_widget_get_type (void)
       const GTypeInfo widget_info =
       {
 	sizeof (MytkWidgetClass),
-	NULL,		// base_init
+	mytk_widget_object_init,		// base_init
 	(GBaseFinalizeFunc) mytk_widget_base_class_finalize,
 	(GClassInitFunc) mytk_widget_class_init,
 	NULL,		// class_finalize
 	NULL,		// class_init
 	sizeof (MytkWidget),
 	0,		// n_preallocs
-	(GInstanceInitFunc) mytk_widget_init,
+	(GInstanceInitFunc) mytk_widget_object_init,
 	NULL,		// value_table
       };
 
@@ -190,7 +192,7 @@ mytk_widget_new (
   //va_end (var_args);
 
   widget = (MytkWidget *)g_object_new(MYTK_TYPE_WIDGET, NULL);
-  widget->name = name;
+  widget->name = g_strdup(name);
 
   return widget;
 }
