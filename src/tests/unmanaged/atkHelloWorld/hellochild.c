@@ -33,7 +33,7 @@ static void atk_text_interface_init (AtkTextIface * iface)
 }
 
 
-GType test_hello_get_type(void)
+GType hello_child_get_type(void)
 {
   static GType type = 0;
 

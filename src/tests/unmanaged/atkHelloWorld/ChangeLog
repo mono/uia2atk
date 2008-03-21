@@ -1,5 +1,10 @@
 2008-03-21  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* hellochild.c, hellochild.h: More typos caused by mistaken
+	  search&replace.
+
+2008-03-21  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* hellochild.c, hellochild.h, mytkwidget.c, mytk.h: Fixed hello_child
 	  creation.
 	* hellotoplevel.c: Removed debug message.

@@ -1,6 +1,6 @@
 #include <atk/atk.h>
 
-#define HELLO_TYPE_CHILD                  (hello_toplevel_get_type ())
+#define HELLO_TYPE_CHILD                  (hello_child_get_type ())
 #define HELLO_CHILD(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), HELLO_TYPE_CHILD, HelloChild))
 #define HELLO_CHILD_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), HELLO_TYPE_CHILD, HelloChildClass))
 #define HELLO_IS_CHILD(obj)            (G_TYPE_CHECK_INSTANCE_TYPE ((obj), HELLO_TYPE_CHILD))
@@ -15,7 +15,6 @@ typedef struct _HelloChildClass             HelloChildClass;
 struct _HelloChild
 {
   AtkObject parent;
-  GList *window_list;
 };
 
 GType hello_child_get_type (void);
