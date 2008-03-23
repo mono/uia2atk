@@ -1,3 +1,9 @@
+2008-03-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* atkSharpHelloWorld: Added new managed HelloWorld. Beware: it does not
+	  compile; it will compile when we properly modify Atk# to meet the new
+	  reqs.
+
 2008-03-16  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkSharpHelper/:

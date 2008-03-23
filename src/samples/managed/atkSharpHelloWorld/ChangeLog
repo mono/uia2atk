@@ -1,0 +1,7 @@
+2008-03-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* AssemblyInfo.cs, HelloTopLevel.cs, HelloUtil.cs, atkSharpHelloWorld.mdp,
+	  Main.cs, Mytk.cs, HelloChild.cs, MytkWidget.cs: Added new managed
+	  HelloWorld. Beware: it does not compile; it will compile when we
+	  properly modify Atk# to meet the new reqs.
+
