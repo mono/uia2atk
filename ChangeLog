@@ -1,5 +1,11 @@
 2008-03-25  Sandy Armstrong <sanfordarmstrong@gmail.com>
 
+	* src/patches/winforms-uia.patch: Patch to add UIA initialization
+	(via reflection) and an internal FormAdded event to
+	System.Windows.Forms.Application.  Currently only suitable for testing.
+
+2008-03-25  Sandy Armstrong <sanfordarmstrong@gmail.com>
+
 	* src/mono-uia.snk: Keyfile for signing non-MS UIA assemblies.
 
 2008-03-13  Andres G. Aragoneses  <aaragoneses@novell.com>
