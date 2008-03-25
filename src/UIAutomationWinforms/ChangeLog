@@ -1,0 +1,14 @@
+2008-03-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationWinforms.mds, Mono.UIAutomation.Winforms/AssemblyInfo.cs,
+	  Mono.UIAutomation.Winforms/Mono.UIAutomation.Winforms.mdp: New
+	  assembly, UIAutomationWinforms.dll, which is the implementation of
+	  the UIA provider interfaces for winforms.  Intended to be installed
+	  in GAC.
+	* Mono.UIAutomation.Winforms/WindowProvider.cs,
+	  Mono.UIAutomation.Winforms/ButtonProvider.cs: Beginnings of
+	  IWindowProvider and IInvokeProvider implementations.
+	* Mono.UIAutomation.Winforms/FormListener.cs: Class that is initialized
+	  by winforms to listen for new form creation, create providers, and
+	  push information to the UIA core/bridge.
+
