@@ -1,3 +1,7 @@
+2008-03-25  Sandy Armstrong <sanfordarmstrong@gmail.com>
+
+	* src/mono-uia.snk: Keyfile for signing non-MS UIA assemblies.
+
 2008-03-13  Andres G. Aragoneses  <aaragoneses@novell.com>
 
 	* Remote folder creation for the UIA-Atk(#) bridge.
