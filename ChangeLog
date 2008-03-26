@@ -1,3 +1,8 @@
+2008-03-26  Sandy Armstrong <sanfordarmstrong@gmail.com>
+
+	* src/UIAutomationCore: Added skeleton MonoDevelop solution for the
+	UIA Core assembly.
+
 2008-03-25  Sandy Armstrong <sanfordarmstrong@gmail.com>
 
 	* src/patches/winforms-uia.patch: Patch to add UIA initialization
