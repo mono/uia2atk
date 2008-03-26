@@ -13,7 +13,7 @@ namespace atkSharpHelloWorld
 		
 		public static void Main(string[] args)
 		{
-			GLib.ProgramName = args[0];
+			GLib.Program.Name = args[0];
 			
 			GLib.GType.Init();
 			

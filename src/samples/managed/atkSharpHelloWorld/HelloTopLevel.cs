@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 
 namespace atkSharpHelloWorld
@@ -32,19 +33,29 @@ namespace atkSharpHelloWorld
 		
 		protected HelloTopLevel()
 		{
-			this.Name = GLib.ProgramName;
+			this.Name = GLib.Program.Name;
 		}
 		
-		public Atk.Object[] Children
+		private Atk.Object[] Children
 		{
 			get {
-				List<AtkObject> accessibles = new List<Atk.Object>();
-				foreach(Widget window in Mytk.MytkGlobal.TopLevelWindows)
+				List<Atk.Object> accessibles = new List<Atk.Object>();
+				foreach(Mytk.Widget window in Mytk.MytkGlobal.TopLevelWindows)
 				{
 					accessibles.Add(window.GetAccessible());
 				}
 				return accessibles.ToArray();
 			}
+		}
+		
+		public int GetNChildren()
+		{
+			return this.Children.Length;
+		}
+		
+		public Atk.Object RefChild(int i)
+		{
+			return this.Children[i];
 		}
 		
 		public new Atk.Role Role

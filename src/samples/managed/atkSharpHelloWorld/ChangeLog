@@ -1,3 +1,10 @@
+2008-03-26  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* HelloTopLevel.cs: Fix compilation issues and track API changes that
+	  mkestner and me are planning for Atk# and Glib# additions.
+	* Main.cs: Track API changes that mkestner and me are planning for Glib#
+	  additions.
+
 2008-03-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* AssemblyInfo.cs, HelloTopLevel.cs, HelloUtil.cs, atkSharpHelloWorld.mdp,
