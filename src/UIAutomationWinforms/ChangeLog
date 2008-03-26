@@ -1,5 +1,13 @@
 2008-03-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Mono.UIAutomation.Winforms/AssemblyInfo.cs: Updated
+	  company/product/copyright attributes.
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs,
+	  Mono.UIAutomation.Winforms/WindowProvider.cs: Filled out some
+	  implementation bits from playing with UISpy.
+
+2008-03-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* UIAutomationWinforms.mds, Mono.UIAutomation.Winforms/AssemblyInfo.cs,
 	  Mono.UIAutomation.Winforms/Mono.UIAutomation.Winforms.mdp: New
 	  assembly, UIAutomationWinforms.dll, which is the implementation of

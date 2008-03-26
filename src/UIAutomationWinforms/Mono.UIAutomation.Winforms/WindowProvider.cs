@@ -161,14 +161,18 @@ namespace Mono.UIAutomation.Winforms
 
 		public object GetPatternProvider (int patternId)
 		{
+			if (patternId == WindowPatternIdentifiers.Pattern.Id)
+				return this;
 			return null;
 		}
 		
 		public object GetPropertyValue (int propertyId)
 		{
-			// TODO: Complete...figure out by testing Windows implementation
-			if (propertyId == System.Windows.Automation.AutomationElementIdentifiers.NameProperty.Id)
-				return "Form"; // TODO: Verify
+			// TODO: Complete...figure out by testing Windows implementation (UISpy is helpful)
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Window.Id;
+			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return form.Text;
 			else
 				return null;
 			

@@ -44,6 +44,7 @@ namespace Mono.UIAutomation.Winforms
 		public ButtonProvider (Button button)
 		{
 			this.button = button;
+			button.Click += OnClick;
 		}
 		
 #endregion
@@ -66,8 +67,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (patternId == InvokePatternIdentifiers.Pattern.Id)
 				return this;
-			else
-				return null;
+			
+			return null;
 		}
 		
 		public object GetPropertyValue (int propertyId)
@@ -75,9 +76,11 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 				return button.Enabled;
 			else if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
-				return "ButtonControlClass";
+				return "WindowsForms10.BUTTON.app.0.bf7d44"; // TODO: Verify
 			else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Button.Id;
+			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return button.Text;
 			else
 				return null;
 		}
@@ -95,6 +98,18 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
+#endregion
+		
+#region Event Handlers
+		
+		private void OnClick (object sender, EventArgs e)
+		{
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationEventArgs args = new AutomationEventArgs (InvokePatternIdentifiers.InvokedEvent);
+				AutomationInteropProvider.RaiseAutomationEvent (InvokePatternIdentifiers.InvokedEvent, this, args);
+			}
+		}
+		
 #endregion
 	}
 }

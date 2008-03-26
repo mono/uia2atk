@@ -31,9 +31,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("UIAutomationWinforms")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCompany("Novell, Inc.")]
+[assembly: AssemblyProduct("UIAutomationWinforms")]
+[assembly: AssemblyCopyright("Copyright © 2008 Novell, Inc")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
