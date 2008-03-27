@@ -12,11 +12,9 @@ namespace atkSharpHelloWorld
 	
 	public class HelloChild : Atk.Object, Atk.Text
 	{
-		private string name;
-		
 		public HelloChild(string name)
 		{
-			this.name = name;
+			this.Name = name;
 		}
 		
 		public Atk.Object[] Children
