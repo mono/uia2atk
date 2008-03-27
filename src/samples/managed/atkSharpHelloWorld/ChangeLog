@@ -1,3 +1,8 @@
+2008-03-27  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* MytkWidget.cs: This was already implemented in AtkImplementor
+	  interface, so I'm using it now.
+
 2008-03-26  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* HelloTopLevel.cs: Fix compilation issues and track API changes that

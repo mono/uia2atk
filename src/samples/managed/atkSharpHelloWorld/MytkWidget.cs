@@ -11,7 +11,7 @@ using atkSharpHelloWorld;
 namespace atkSharpHelloWorld.Mytk
 {
 	
-	public class Widget : Atk.IAccessible
+	public class Widget : Atk.Implementor
 	{
 		private string name;
 		private HelloChild accessible;
@@ -22,9 +22,9 @@ namespace atkSharpHelloWorld.Mytk
 			this.accessible = new HelloChild(name);
 		}
 		
-		HelloChild Atk.IAccessible.Accessible
+		Atk.Object Atk.Implementor.RefAccessible()
 		{
-			get { return accessible; }
+			return accessible;
 		}
 	}
 }
