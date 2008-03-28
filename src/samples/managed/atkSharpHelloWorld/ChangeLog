@@ -1,5 +1,11 @@
 2008-03-28  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Main.cs: Fix IndexOutOfRangeException.
+	* MytkWidget.cs: If it implements Atk.Implementor, it must expose a
+	  Handle, so let's derive from GObject.
+
+2008-03-28  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* HelloTopLevel.cs: Track API.
 	* HelloUtil.cs: This is not needed, the GetRoot handler is overriden
 	  with just a delegate.

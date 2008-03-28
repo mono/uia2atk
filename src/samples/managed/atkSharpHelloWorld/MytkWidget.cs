@@ -11,7 +11,7 @@ using atkSharpHelloWorld;
 namespace atkSharpHelloWorld.Mytk
 {
 	
-	public class Widget : Atk.Implementor
+	public class Widget : GLib.Object, Atk.Implementor
 	{
 		private string name;
 		private HelloChild accessible;
@@ -19,7 +19,7 @@ namespace atkSharpHelloWorld.Mytk
 		public Widget(string name)
 		{
 			this.name = name;
-			this.accessible = new HelloChild(name);
+			this.accessible = new HelloChild(this.name);
 		}
 		
 		//defined by Atk.Implementor
