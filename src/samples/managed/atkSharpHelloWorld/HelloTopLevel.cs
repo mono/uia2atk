@@ -48,12 +48,12 @@ namespace atkSharpHelloWorld
 			}
 		}
 		
-		public int GetNChildren()
+		public int OnGetNChildren()
 		{
 			return this.Children.Length;
 		}
 		
-		public Atk.Object RefChild(int i)
+		public Atk.Object OnRefChild(int i)
 		{
 			return this.Children[i];
 		}

@@ -1,5 +1,10 @@
 2008-03-28  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* HelloTopLevel.cs, HelloChild.cs: Track API. This is a convention in
+	  the binding.
+
+2008-03-28  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* HelloChild.cs: We don't need a new name.
 
 2008-03-27  Andres G. Aragoneses <aaragoneses@novell.com> 
