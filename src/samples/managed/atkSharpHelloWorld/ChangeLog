@@ -1,5 +1,14 @@
 2008-03-28  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* HelloTopLevel.cs: Track API.
+	* HelloUtil.cs: This is not needed, the GetRoot handler is overriden
+	  with just a delegate.
+	* Main.cs: Use the current way (in the binding) for setting the root.
+	* atkSharpHelloWorld.mdp: Remove HelloUtil.cs.
+	* MytkWidget.cs: Make this public.
+
+2008-03-28  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* HelloTopLevel.cs, HelloChild.cs: Track API. This is a convention in
 	  the binding.
 

@@ -42,7 +42,7 @@ namespace atkSharpHelloWorld
 				List<Atk.Object> accessibles = new List<Atk.Object>();
 				foreach(Mytk.Widget window in Mytk.MytkGlobal.TopLevelWindows)
 				{
-					accessibles.Add(window.GetAccessible());
+					accessibles.Add(window.RefAccessible());
 				}
 				return accessibles.ToArray();
 			}

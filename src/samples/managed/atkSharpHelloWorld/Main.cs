@@ -19,9 +19,14 @@ namespace atkSharpHelloWorld
 			
 			StartProgramGui();
 			
-			Atk.Global.Initialize(HelloTopLevel.Instance, true); //true == bool InitBridge
+			Atk.Util.GetRootHandler = GetRoot;
 			
 			new GLib.MainLoop().Run();
+		}
+		
+		static Atk.Object GetRoot()
+		{
+			return HelloTopLevel.Instance;
 		}
 		
 		static void StartProgramGui()

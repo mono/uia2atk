@@ -22,7 +22,8 @@ namespace atkSharpHelloWorld.Mytk
 			this.accessible = new HelloChild(name);
 		}
 		
-		Atk.Object Atk.Implementor.RefAccessible()
+		//defined by Atk.Implementor
+		public Atk.Object RefAccessible()
 		{
 			return accessible;
 		}
