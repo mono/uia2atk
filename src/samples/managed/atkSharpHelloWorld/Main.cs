@@ -19,9 +19,12 @@ namespace atkSharpHelloWorld
 			
 			StartProgramGui();
 			
+			Gtk.Application.Init();
+			
 			Atk.Util.GetRootHandler = GetRoot;
 			
-			new GLib.MainLoop().Run();
+			Gtk.Application.Run();
+			//new GLib.MainLoop().Run();
 		}
 		
 		static Atk.Object GetRoot()

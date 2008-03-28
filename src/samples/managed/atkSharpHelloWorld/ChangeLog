@@ -1,5 +1,10 @@
 2008-03-28  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* atkSharpHelloWorld.mdp: We depend on Gtk# for now (for loading the
+	  atk-bridge unmanaged module).
+
+2008-03-28  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* HelloChild.cs: Remove Atk.Text interface for now.
 
 2008-03-28  Andres G. Aragoneses <aaragoneses@novell.com> 

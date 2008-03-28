@@ -25,5 +25,7 @@
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../../gtk-sharp/atk/atk-sharp.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../../gtk-sharp/glib/glib-sharp.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="../../../../../gtk-sharp/gtk/gtk-sharp.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="../../../../../gtk-sharp/gdk/gdk-sharp.dll" />
   </References>
 </Project>
