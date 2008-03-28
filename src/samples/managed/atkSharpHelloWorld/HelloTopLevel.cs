@@ -48,12 +48,12 @@ namespace atkSharpHelloWorld
 			}
 		}
 		
-		public int OnGetNChildren()
+		protected override int OnGetNChildren()
 		{
 			return this.Children.Length;
 		}
 		
-		public Atk.Object OnRefChild(int i)
+		protected override Atk.Object OnRefChild(int i)
 		{
 			return this.Children[i];
 		}

@@ -28,12 +28,12 @@ namespace atkSharpHelloWorld
 		}
 		
 		//although this returns 0 already on the base, it may become an abstract method
-		public int OnGetNChildren()
+		protected override int OnGetNChildren()
 		{
 			return 0;
 		}
 		
-		public Atk.Object OnRefChild(int i)
+		protected override Atk.Object OnRefChild(int i)
 		{
 			//FIXME: we should assert here about 'should not be reached'
 			return null;
