@@ -10,7 +10,7 @@ namespace atkSharpHelloWorld
 {
 	
 	
-	public class HelloChild : Atk.Object, Atk.Text
+	public class HelloChild : Atk.Object//, Atk.Text
 	{
 		public HelloChild(string name)
 		{

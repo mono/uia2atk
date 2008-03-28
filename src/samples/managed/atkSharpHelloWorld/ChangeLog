@@ -1,5 +1,9 @@
 2008-03-28  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* HelloChild.cs: Remove Atk.Text interface for now.
+
+2008-03-28  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Main.cs: Fix IndexOutOfRangeException.
 	* MytkWidget.cs: If it implements Atk.Implementor, it must expose a
 	  Handle, so let's derive from GObject.
