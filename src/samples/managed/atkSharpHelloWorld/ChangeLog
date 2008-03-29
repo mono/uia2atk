@@ -1,3 +1,11 @@
+2008-03-29  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* Main.cs, atkSharpHelloWorld.mdp: Drop dependency on Gtk# to launch
+	  the atk-bridge module. NOTE: you need to apply the following patch
+	  to Atk# to be able to compile this:
+	  http://anonsvn.mono-project.com/source/trunk/uia2atk/src/patches/patch2atksharp4atkbridgeload.diff
+	  .
+
 2008-03-28  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* atkSharpHelloWorld.mdp: We depend on Gtk# for now (for loading the
