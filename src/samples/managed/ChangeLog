@@ -1,3 +1,9 @@
+2008-03-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ManagedTests.mds, FormTest: Adding simple FormTest solution to
+	  samples, which just brings up a form with a button, and clicking
+	  the button creates additional forms.
+
 2008-03-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* atkSharpHelloWorld: Added new managed HelloWorld. Beware: it does not

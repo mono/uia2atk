@@ -3,18 +3,22 @@
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="AtkSharpHelper" configuration="Debug" />
       <Entry build="True" name="TestGtkSharp" configuration="Debug" />
+      <Entry build="True" name="FormTest" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
       <Entry build="True" name="AtkSharpHelper" configuration="Release" />
       <Entry build="True" name="TestGtkSharp" configuration="Release" />
+      <Entry build="True" name="FormTest" configuration="Release" />
     </Configuration>
   </Configurations>
   <StartMode startupentry="AtkSharpHelper" single="True">
     <Execute type="None" entry="AtkSharpHelper" />
     <Execute type="None" entry="TestGtkSharp" />
+    <Execute type="None" entry="FormTest" />
   </StartMode>
   <Entries>
     <Entry filename="AtkSharpHelper/AtkSharpHelper.mdp" />
     <Entry filename="TestGtkSharp/TestGtkSharp.mdp" />
+    <Entry filename="FormTest/FormTest.mds" />
   </Entries>
 </Combine>
