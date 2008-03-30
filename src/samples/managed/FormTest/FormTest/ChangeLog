@@ -1,11 +1,5 @@
 2008-03-30  Andres G. Aragoneses <aaragoneses@novell.com> 
 
-	* FormTest.cs: Little change, just add an additional form that is
-	  launched at the same time as the first one. It's a simpler testcase
-	  for the Atk# children because it doesn't involve events.
-
-2008-03-30  Andres G. Aragoneses <aaragoneses@novell.com> 
-
 	* FormTest.mdp: Little change, just add an additional form that is launched
 	  at the same time as the first one. It's a simpler testcase for the Atk#
 	  children because it doesn't involve events.
