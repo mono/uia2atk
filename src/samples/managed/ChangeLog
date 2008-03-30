@@ -1,3 +1,7 @@
+2008-03-30  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* ManagedTests.mds: Add atkSharpHelloWorld project.
+
 2008-03-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* ManagedTests.mds, FormTest: Adding simple FormTest solution to

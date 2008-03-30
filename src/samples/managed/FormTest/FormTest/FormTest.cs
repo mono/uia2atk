@@ -41,6 +41,10 @@ namespace FormTest
 			b.Width = f1.Width;
 			b.Click += OnButtonClick;
 			f1.Controls.Add (b);
+
+			Form bgf = new Form ();
+			bgf.Text = "Background Form";
+			bgf.Show ();
 			
 			Application.Run (f1);
 		}
