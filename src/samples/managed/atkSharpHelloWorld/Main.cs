@@ -19,6 +19,8 @@ namespace atkSharpHelloWorld
 			
 			StartProgramGui();
 			
+			Atk.Util.GetToolkitNameHandler = GetToolkitName;
+			Atk.Util.GetToolkitVersionHandler = GetToolkitVersion;
 			Atk.Util.GetRootHandler = GetRoot;
 			
 			Atk.Global.LaunchAtkBridge();
@@ -29,6 +31,16 @@ namespace atkSharpHelloWorld
 		static Atk.Object GetRoot()
 		{
 			return HelloTopLevel.Instance;
+		}
+		
+		static string GetToolkitName()
+		{
+			return "MANAGED-HELLO";
+		}
+		
+		static string GetToolkitVersion()
+		{
+			return "1.1";
 		}
 		
 		static void StartProgramGui()

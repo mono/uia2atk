@@ -1,3 +1,8 @@
+2008-03-30  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* Main.cs: Make accerciser not crash when clicking in the app (add
+	  ToolkitName and ToolkitVersion).
+
 2008-03-29  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* Main.cs, atkSharpHelloWorld.mdp: Drop dependency on Gtk# to launch
