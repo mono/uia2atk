@@ -41,5 +41,10 @@ namespace UiaAtkBridge
 		{
 			return this.children.Count;
 		}
+		
+		protected override Atk.Object OnRefChild(int i) 
+		{
+			return this.children[i];
+		}
 	}
 }
