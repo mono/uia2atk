@@ -4,6 +4,7 @@
 // To change standard headers go to Edit->Preferences->Coding->Standard Headers
 //
 using System;
+using System.Runtime.InteropServices;
 
 namespace UiaAtkBridge
 {
@@ -18,7 +19,7 @@ namespace UiaAtkBridge
 			Atk.Util.GetToolkitNameHandler = GetAssemblyName;
 			Atk.Util.GetToolkitVersionHandler = GetAssemblyVersionNumber;
 			
-			Atk.Global.LaunchAtkBridge();
+			this.LaunchAtkBridge();
 		}
 		
 		public void FormIsAdded(string name)
@@ -49,6 +50,14 @@ namespace UiaAtkBridge
 		private static string GetAssemblyVersionNumber()
 		{
 			return typeof(Monitor).Assembly.GetName().Version.ToString();
+		}
+		
+		[DllImport("libatk-bridge")]
+		static extern void gnome_accessibility_module_init ();
+		
+		private void LaunchAtkBridge()
+		{
+			gnome_accessibility_module_init();
 		}
 	}
 }

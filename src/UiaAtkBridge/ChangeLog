@@ -1,3 +1,9 @@
+2008-03-31  Andres G. Aragoneses <aaragoneses@novell.com>
+
+	* Monitor.cs: Launch the unmanaged atk-bridge from here
+	instead of from the Atk# glue code. We no longer need the
+	patch.
+
 2008-03-31  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* Monitor.cs: Launch unmanaged AtkBridge.
