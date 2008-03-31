@@ -1,3 +1,10 @@
+2008-03-31  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* HelloUtil.cs: Although I'm not subclassing, I prefer this cleaner
+	  structure.
+	* Main.cs: Track API changes.
+	* atkSharpHelloWorld.mdp: Add HelloUtil.cs again.
+
 2008-03-30  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* Main.cs: Make accerciser not crash when clicking in the app (add
