@@ -1,3 +1,10 @@
+2008-03-31  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* ManagedTests.mds: Remove AtkSharpHelper, not needed for now.
+	* TestUiaAtkBridge, TestUiaAtkBridge/AssemblyInfo.cs,
+	  TestUiaAtkBridge/Main.cs, TestUiaAtkBridge/TestUiaAtkBridge.mdp:
+	  Added test for the bridge.
+
 2008-03-30  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* ManagedTests.mds: Add atkSharpHelloWorld project.
