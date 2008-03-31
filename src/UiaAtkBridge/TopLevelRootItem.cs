@@ -10,13 +10,12 @@ using System.Collections.Generic;
 namespace UiaAtkBridge
 {
 	
-	
 	public class TopLevelRootItem : Atk.Object 
 	{
 		private TopLevelRootItem()
 		{
 			this.Name = Monitor.GetProgramName();
-			this.Children = new List<Atk.Object>();
+			this.children = new List<Atk.Object>();
 		}
 		
 		private static TopLevelRootItem instance = null;
@@ -30,17 +29,17 @@ namespace UiaAtkBridge
 			}
 		}
 		
-		private List<Atk.Object> Children;
+		private List<Atk.Object> children;
 		
 		internal void AddOneChild(string name)
 		{
 			Window newWindow = new Window(name);
-			this.Children.Add(newWindow);
+			this.children.Add(newWindow);
 		}
 		
 		protected override int OnGetNChildren() 
 		{
-			return this.Children.Count;
+			return this.children.Count;
 		}
 	}
 }
