@@ -1,0 +1,5 @@
+2008-03-31  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* UiaAtkBridge: Add first version of the bridge.
+	* UiaAtkBridge.mds: Add a global solution.
+

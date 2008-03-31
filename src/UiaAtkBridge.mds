@@ -1,0 +1,28 @@
+<Combine name="Uia2Atk" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="UiaAtkBridge" configuration="Debug" />
+      <Entry build="True" name="tests" configuration="Debug" />
+      <Entry build="True" name="UIAutomationCore" configuration="Debug" />
+      <Entry build="True" name="UIAutomationWinforms" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="UiaAtkBridge" configuration="Release" />
+      <Entry build="True" name="tests" configuration="Debug" />
+      <Entry build="True" name="UIAutomationCore" configuration="Release" />
+      <Entry build="True" name="UIAutomationWinforms" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="UiaAtkBridge" single="True">
+    <Execute type="None" entry="UiaAtkBridge" />
+    <Execute type="None" entry="tests" />
+    <Execute type="None" entry="UIAutomationCore" />
+    <Execute type="None" entry="UIAutomationWinforms" />
+  </StartMode>
+  <Entries>
+    <Entry filename="UiaAtkBridge/UiaAtkBridge.mdp" />
+    <Entry filename="samples/tests.mds" />
+    <Entry filename="UIAutomationCore/UIAutomationCore.mds" />
+    <Entry filename="UIAutomationWinforms/UIAutomationWinforms.mds" />
+  </Entries>
+</Combine>

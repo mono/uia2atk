@@ -1,0 +1,25 @@
+﻿<UserCombinePreferences version="1.0" filename="/home/knocte/Documents/iDocuments/Proyectos/mono/a11y/SVNtree/uia2atk/src/UiaAtkBridge/UiaAtkBridge.mds">
+  <Files>
+    <File name="Welcome" />
+    <File name="Main.cs" line="12" column="3" />
+  </Files>
+  <Views>
+    <ViewMemento id="ProjectPad">
+      <Node expanded="True">
+        <Node name="UiaAtkBridge" expanded="True">
+          <Node name="Main.cs" selected="True" />
+        </Node>
+      </Node>
+    </ViewMemento>
+    <ViewMemento id="ClassPad">
+      <Node expanded="True" />
+    </ViewMemento>
+    <ViewMemento id="MonoDevelop.NUnit.TestPad">
+      <Node />
+    </ViewMemento>
+  </Views>
+  <Properties>
+    <Property key="ActiveWindow" value="/home/knocte/Documents/iDocuments/Proyectos/mono/a11y/SVNtree/uia2atk/src/UiaAtkBridge/Main.cs" />
+    <Property key="ActiveConfiguration" value="Debug" />
+  </Properties>
+</UserCombinePreferences>

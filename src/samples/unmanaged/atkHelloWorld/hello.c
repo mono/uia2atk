@@ -74,7 +74,6 @@ main(int argc, char *argv[])
   g_set_prgname(argv[0]);
 
   GMainLoop *mainloop;
-  struct termios current_termios;
   g_type_init();
 
   start_program_gui();
