@@ -1,5 +1,9 @@
 2008-03-31  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Monitor.cs: Launch unmanaged AtkBridge.
+
+2008-03-31  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TopLevelRootItem.cs: Finish overriding.
 
 2008-03-31  Andres G. Aragoneses <aaragoneses@novell.com> 

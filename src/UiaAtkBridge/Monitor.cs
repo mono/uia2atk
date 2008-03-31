@@ -17,6 +17,8 @@ namespace UiaAtkBridge
 			
 			Atk.Util.GetToolkitNameHandler = GetAssemblyName;
 			Atk.Util.GetToolkitVersionHandler = GetAssemblyVersionNumber;
+			
+			Atk.Global.LaunchAtkBridge();
 		}
 		
 		public void FormIsAdded(string name)
