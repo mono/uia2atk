@@ -1,5 +1,10 @@
 2008-03-31  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* HelloTopLevel.cs: Role API is not getting inherited, but it doesn't
+	  work as a setter yet.
+
+2008-03-31  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* HelloUtil.cs: Although I'm not subclassing, I prefer this cleaner
 	  structure.
 	* Main.cs: Track API changes.

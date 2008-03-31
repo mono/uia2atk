@@ -34,6 +34,9 @@ namespace atkSharpHelloWorld
 		protected HelloTopLevel()
 		{
 			this.Name = GLib.Program.Name;
+			
+			//disabled for now because it causes the children to be <dead> according to accerciser:
+			//this.Role = Atk.Role.Application;
 		}
 		
 		private Atk.Object[] Children
@@ -58,9 +61,5 @@ namespace atkSharpHelloWorld
 			return this.Children[i];
 		}
 		
-		public new Atk.Role Role
-		{
-			get { return Atk.Role.Application; }
-		}
 	}
 }
