@@ -1,3 +1,8 @@
+2008-04-01  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* Main.cs, atkSharpHelloWorld.mdp: Make this compile with Atk# SVN, not
+	  depending on the old patch.
+
 2008-03-31  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* HelloTopLevel.cs: Role API is not getting inherited, but it doesn't

@@ -4,6 +4,7 @@
 // To change standard headers go to Edit->Preferences->Coding->Standard Headers
 //
 using System;
+using System.Runtime.InteropServices;
 
 namespace atkSharpHelloWorld
 {
@@ -23,7 +24,7 @@ namespace atkSharpHelloWorld
 			Atk.Util.GetToolkitVersionHandler = HelloUtil.GetToolkitVersion;
 			Atk.Util.GetRootHandler = HelloUtil.GetRoot;
 			
-			Atk.Global.LaunchAtkBridge();
+			LaunchAtkBridge();
 			
 			new GLib.MainLoop().Run();
 		}
@@ -39,6 +40,17 @@ namespace atkSharpHelloWorld
 			{
 				Mytk.MytkGlobal.AddOneTopLevelWindow("TopLevel " + (i + 1));
 			}
+		}
+		
+		
+		// FIXME: this comes from the UiaAtkBridge, maybe in the future we 
+		// move it to AtkSharp
+		[DllImport("libatk-bridge")]
+		static extern void gnome_accessibility_module_init ();
+		
+		private static void LaunchAtkBridge()
+		{
+			gnome_accessibility_module_init();
 		}
 	}
 }
