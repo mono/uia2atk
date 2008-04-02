@@ -1,3 +1,10 @@
+2008-04-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* samples/tests.mds, Uia2Atk.mds: Clean up project/solution files.  F5
+	  in MD should launch whatever project in ManagedTests is set as the
+	  startup project/solution, defaulting to FormTest for purely selfish
+	  reasons.
+
 2008-04-01  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* patches/winforms-uia.patch: Commented out GTK+ init code.  Temporary

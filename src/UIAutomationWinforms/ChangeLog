@@ -1,3 +1,9 @@
+2008-04-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/Mono.UIAutomation.Winforms.mdp: Fix
+	  winforms provider reference to UiaAtkBridge project, and sign
+	  UiaAtkBridge assembly.
+
 2008-03-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/AssemblyInfo.cs: Updated

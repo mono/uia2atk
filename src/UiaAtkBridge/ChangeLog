@@ -1,3 +1,8 @@
+2008-04-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UiaAtkBridge.mdp: Fix winforms provider reference to UiaAtkBridge
+	  project, and sign UiaAtkBridge assembly.
+
 2008-03-31  Andres G. Aragoneses <aaragoneses@novell.com>
 
 	* Monitor.cs: Launch the unmanaged atk-bridge from here

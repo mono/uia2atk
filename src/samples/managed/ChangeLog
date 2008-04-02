@@ -1,3 +1,10 @@
+2008-04-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ManagedTests.mds: Clean up project/solution files.  F5 in MD should
+	  launch whatever project in ManagedTests is set as the startup
+	  project/solution, defaulting to FormTest for purely selfish
+	  reasons.
+
 2008-03-31  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* ManagedTests.mds: Remove AtkSharpHelper, not needed for now.

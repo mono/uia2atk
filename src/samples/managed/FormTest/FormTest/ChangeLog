@@ -1,3 +1,10 @@
+2008-04-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* FormTest.mdp: Clean up project/solution files.  F5 in MD should
+	  launch whatever project in ManagedTests is set as the startup
+	  project/solution, defaulting to FormTest for purely selfish
+	  reasons.
+
 2008-03-30  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* FormTest.mdp: Little change, just add an additional form that is launched

@@ -13,7 +13,7 @@
       <Entry build="True" name="UIAutomationWinforms" configuration="Release" />
     </Configuration>
   </Configurations>
-  <StartMode startupentry="UiaAtkBridge" single="True">
+  <StartMode startupentry="tests" single="True">
     <Execute type="None" entry="UiaAtkBridge" />
     <Execute type="None" entry="tests" />
     <Execute type="None" entry="UIAutomationCore" />

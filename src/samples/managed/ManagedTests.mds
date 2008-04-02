@@ -13,8 +13,7 @@
       <Entry build="True" name="TestUiaAtkBridge" configuration="Release" />
     </Configuration>
   </Configurations>
-  <StartMode startupentry="TestGtkSharp" single="True">
-    <Execute type="None" entry="AtkSharpHelper" />
+  <StartMode startupentry="FormTest" single="True">
     <Execute type="None" entry="TestGtkSharp" />
     <Execute type="None" entry="FormTest" />
     <Execute type="None" entry="atkSharpHelloWorld" />

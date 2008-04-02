@@ -5,7 +5,7 @@
       <Entry build="True" name="UnmanagedTests" configuration="Debug" />
     </Configuration>
   </Configurations>
-  <StartMode startupentry="UIAutomationProvider" single="True">
+  <StartMode startupentry="ManagedTests" single="True">
     <Execute type="None" entry="UnmanagedTests" />
     <Execute type="None" entry="ManagedTests" />
   </StartMode>

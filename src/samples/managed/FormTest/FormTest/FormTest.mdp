@@ -18,5 +18,7 @@
   </Contents>
   <References>
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../../../mcs/class/lib/net_2_0/System.Windows.Forms.dll" />
+    <ProjectReference type="Project" localcopy="True" refto="UiaAtkBridge" />
+    <ProjectReference type="Project" localcopy="True" refto="Mono.UIAutomation.Winforms" />
   </References>
 </Project>
