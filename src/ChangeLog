@@ -1,3 +1,8 @@
+2008-04-01  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* patches/winforms-uia.patch: Commented out GTK+ init code.  Temporary
+	fix to prevent conflicts with our ATK bridge.
+
 2008-03-31  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* UiaAtkBridge: Add first version of the bridge.
