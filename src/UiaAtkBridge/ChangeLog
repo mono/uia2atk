@@ -1,3 +1,8 @@
+2008-04-03  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* TopLevelRootItem.cs: Remove a duplicated if statement, and include
+	  the return statement in the lock.
+
 2008-04-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* TopLevelRootItem.cs: Fixed headers, thread safety.
