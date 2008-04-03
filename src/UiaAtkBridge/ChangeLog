@@ -1,5 +1,10 @@
 2008-04-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* TopLevelRootItem.cs: Adding "volatile" keyword to singleton instance
+	  variable.
+
+2008-04-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* TopLevelRootItem.cs: Bringing back double-check locking singleton for
 	  better efficiency.
 

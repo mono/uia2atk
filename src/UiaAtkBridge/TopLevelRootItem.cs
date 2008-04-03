@@ -37,7 +37,7 @@ namespace UiaAtkBridge
 			this.children = new List<Atk.Object>();
 		}
 		
-		private static TopLevelRootItem instance = null;
+		private static volatile TopLevelRootItem instance = null;
 		private static object syncRoot = new object ();
 		
 		public static TopLevelRootItem Instance {
