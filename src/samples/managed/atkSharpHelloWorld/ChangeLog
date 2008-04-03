@@ -1,3 +1,7 @@
+2008-04-03  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* Main.cs: YAGNI for now.
+
 2008-04-01  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* Main.cs, atkSharpHelloWorld.mdp: Make this compile with Atk# SVN, not

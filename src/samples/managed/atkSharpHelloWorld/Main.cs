@@ -42,9 +42,6 @@ namespace atkSharpHelloWorld
 			}
 		}
 		
-		
-		// FIXME: this comes from the UiaAtkBridge, maybe in the future we 
-		// move it to AtkSharp
 		[DllImport("libatk-bridge")]
 		static extern void gnome_accessibility_module_init ();
 		
