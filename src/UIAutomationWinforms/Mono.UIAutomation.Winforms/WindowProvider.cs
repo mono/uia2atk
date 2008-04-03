@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -36,6 +37,8 @@ namespace Mono.UIAutomation.Winforms
 #region Private Data
 		
 		private Form form;
+		private IDictionary<Control, IRawElementProviderSimple>
+			controlProviders;
 		
 #endregion
 		
@@ -44,10 +47,42 @@ namespace Mono.UIAutomation.Winforms
 		public WindowProvider (Form form)
 		{
 			this.form = form;
+			
+			controlProviders =
+				new Dictionary<Control, IRawElementProviderSimple> ();
+			
 			form.ControlAdded += OnControlAdded;
 			form.ControlRemoved += OnControlRemoved;
 			
 			Console.WriteLine ("WindowProvider created");
+			
+			foreach (Control control in form.Controls) {
+				IRawElementProviderSimple provider =
+					CreateProvider (control);
+				// TODO: Null check, compound, etc?
+				controlProviders [control] = provider;
+			}
+		}
+		
+#endregion
+		
+#region Private Methods
+	
+		private IRawElementProviderSimple CreateProvider (Control control)
+		{
+			Button b = control as Button;
+			if (b != null)
+				return new ButtonProvider (b);
+			
+			return null;
+		}
+		
+		private IRawElementProviderSimple GetProvider (Control control)
+		{
+			if (controlProviders.ContainsKey (control))
+				return controlProviders [control];
+			else
+				return null;
 		}
 		
 #endregion
@@ -56,12 +91,12 @@ namespace Mono.UIAutomation.Winforms
 	
 		private void OnControlAdded (object sender, EventArgs args)
 		{
-			
+			Console.WriteLine ("ControlAdded: " + sender.GetType ().ToString ());
 		}
 	
 		private void OnControlRemoved (object sender, EventArgs args)
 		{
-			
+			Console.WriteLine ("ControlRemoved: " + sender.GetType ().ToString ());
 		}
 		
 #endregion
@@ -191,7 +226,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public IRawElementProviderFragmentRoot FragmentRoot {
 			get {
-				return null; // TODO: What?
+				return this;
 			}
 		}
 
@@ -205,31 +240,75 @@ namespace Mono.UIAutomation.Winforms
 		
 		public int [] GetRuntimeId ()
 		{
-			return null;// TODO: Verify
+			return null;
 		}
 		
 		public IRawElementProviderSimple Navigate (NavigateDirection direction)
 		{
-			throw new NotImplementedException ();
+			// TODO: Consider what exactly "first" and "last" are
+			//       supposed to mean.  Consider maintaining separate
+			//       list just containing all of the providers and
+			//       indexing off of that.
+			
+			switch (direction) {
+			case NavigateDirection.FirstChild:
+				if (form.Controls.Count > 0)
+					return GetProvider (form.Controls [0]);
+				break;
+			case NavigateDirection.LastChild:
+				for (int i = form.Controls.Count - 1; i >= 0; i--) {
+					IRawElementProviderSimple provider =
+						GetProvider (form.Controls [i]);
+					if (provider != null)
+						return provider;
+				}
+				break;
+			default:
+				break;
+			}
+			
+			return null;
+			
+//			"Fragment roots do not enable navigation to a parent or siblings;
+//			navigation among fragment roots is handled by the default
+//			window providers. Elements in fragments must navigate only 
+//			to other elements within that fragment."
 		}
 		
 		public void SetFocus ()
 		{
+//			"The UI Automation framework will ensure that the part of
+//			the interface that hosts this fragment is already focused
+//			before calling this method. Your implementation should
+//			update only its internal focus state; for example, by 
+//			repainting a list item to show that it has the focus.
+//			If you prefer that UI Automation not focus the parent window,
+//			set the ProviderOwnsSetFocus option in ProviderOptions for the fragment root."
 			form.Focus ();
 		}
 		
 		public IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
+			if (x > form.Width || y > form.Height)
+				return null;
+			
 			Control child = form.GetChildAtPoint (new Point ((int)x, (int)y));
 			
-			if (child == null) {
-				Console.WriteLine ("Child is null");
-				return null;
-			} else {
+			if (child != null) {
 				Console.WriteLine (child);
-				// TODO: Logic to get provider for child
-				return null;
-			}
+				
+				if (controlProviders.ContainsKey (child)) {
+					IRawElementProviderSimple provider =
+						controlProviders [child];
+					IRawElementProviderFragment providerFragment =
+						provider as IRawElementProviderFragment;
+					if (providerFragment != null)
+						return providerFragment;
+				}
+			} else
+				Console.WriteLine ("ElementProviderFromPoint: Child is null");
+			
+			return this;
 		}
 		
 		public IRawElementProviderFragment GetFocus ()
@@ -238,7 +317,15 @@ namespace Mono.UIAutomation.Winforms
 				if (control.Focused) {
 					// TODO: Necessary to delve into child control
 					// for focused element?
-					// TODO: Logic to get provider for child
+					
+					if (controlProviders.ContainsKey (control)) {
+						IRawElementProviderSimple provider =
+							controlProviders [control];
+						IRawElementProviderFragment providerFragment =
+							provider as IRawElementProviderFragment;
+						if (providerFragment != null)
+							return providerFragment;
+					}
 				}
 			}
 			

@@ -56,6 +56,7 @@ namespace Mono.UIAutomation.Winforms
 			if (!button.Enabled)
 				throw new ElementNotEnabledException ();
 			
+			// TODO: Make sure this runs on the right thread
 			button.PerformClick ();
 		}
 		

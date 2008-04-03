@@ -1,5 +1,12 @@
 2008-04-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Mono.UIAutomation.Winforms/WindowProvider.cs: Much more complete
+	  implementation of WindowProvider.  Creates providers for buttons
+	  that are on the form before it is shown, but does not handle
+	  dynamically adding/removing controls yet.
+
+2008-04-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Mono.UIAutomation.Winforms/FormListener.cs: Basic integration with
 	  UiaAtkBridge.
 
