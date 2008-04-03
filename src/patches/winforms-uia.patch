@@ -1,7 +1,7 @@
-Index: System.Windows.Forms/X11DesktopColors.cs
+Index: class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs
 ===================================================================
---- System.Windows.Forms/X11DesktopColors.cs	(revision 99791)
-+++ System.Windows.Forms/X11DesktopColors.cs	(working copy)
+--- class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs	(revision 96906)
++++ class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs	(working copy)
 @@ -86,6 +86,7 @@
  
  		#region Constructors
@@ -24,7 +24,7 @@ Index: System.Windows.Forms/X11DesktopColors.cs
  			}
  		}
 +
-+		static GtkInit ()
++		static void GtkInit ()
 +		{
 +			// Prevent ATK bridge initalization, as it causes
 +			// conflicts with the UIA<->ATK bridge.
@@ -42,10 +42,10 @@ Index: System.Windows.Forms/X11DesktopColors.cs
  		#endregion	// Constructors
  
  		#region Properties
-Index: System.Windows.Forms/Application.cs
+Index: class/Managed.Windows.Forms/System.Windows.Forms/Application.cs
 ===================================================================
---- System.Windows.Forms/Application.cs	(revision 99791)
-+++ System.Windows.Forms/Application.cs	(working copy)
+--- class/Managed.Windows.Forms/System.Windows.Forms/Application.cs	(revision 96906)
++++ class/Managed.Windows.Forms/System.Windows.Forms/Application.cs	(working copy)
 @@ -153,10 +153,42 @@
  		private static ToolStrip keyboard_capture;
  		private static VisualStyleState visual_style_state = VisualStyleState.ClientAndNonClientAreasEnabled;
