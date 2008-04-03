@@ -1,5 +1,11 @@
 2008-04-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* patches/winforms-uia.patch: Instead of commenting out GTK+ code,
+	  simply set GTK_MODULES env var to be empty first.  This also
+	  prevents the GTK<->ATK bridge from loading and messing us up.
+
+2008-04-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* patches/winforms-uia.patch: Added internal PreRun event so that UIA
 	  knows when to start the glib mainloop.
 

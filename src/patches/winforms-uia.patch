@@ -2,101 +2,20 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs
 ===================================================================
 --- class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs	(revision 96906)
 +++ class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs	(working copy)
-@@ -89,50 +89,50 @@
+@@ -86,6 +86,13 @@
+ 
+ 		#region Constructors
+ 		static X11DesktopColors() {
++			// Prevent ATK bridge initalization, as it causes
++			// conflicts with the UIA<->ATK bridge.
++			// A better solution would probably be to get these
++			// values out-of-process.  See details/discussion here:
++			// https://bugzilla.novell.com/show_bug.cgi?id=375987
++			Environment.SetEnvironmentVariable ("GTK_MODULES", string.Empty);
++			
  			FindDesktopEnvironment();
  			
  			switch(desktop) {
--				case Desktop.Gtk: {
--					//IntPtr		dispmgr;
--					//IntPtr		gdkdisplay;
--					IntPtr		widget;
--					IntPtr		style_ptr;
--					GtkStyleStruct	style;
--
--					try {
--						gtk_init_check (IntPtr.Zero, IntPtr.Zero);
--						//dispmgr =  gdk_display_manager_get ();
--						//gdkdisplay =  gdk_display_manager_get_default_display (dispmgr);
--
--						widget = gtk_invisible_new ();
--						gtk_widget_ensure_style (widget);
--						style_ptr = gtk_widget_get_style (widget);
--
--						style = (GtkStyleStruct) Marshal.PtrToStructure (style_ptr, typeof (GtkStyleStruct));
--						
--						ThemeEngine.Current.ColorControl = ColorFromGdkColor (style.bg[0]);
--						ThemeEngine.Current.ColorControlText = ColorFromGdkColor (style.fg[0]);
--						ThemeEngine.Current.ColorControlDark = ColorFromGdkColor (style.dark[0]);
--						ThemeEngine.Current.ColorControlLight = ColorFromGdkColor (style.light[0]);
--						ThemeEngine.Current.ColorControlLightLight = ControlPaint.Light(ColorFromGdkColor (style.light[0]));
--						ThemeEngine.Current.ColorControlDarkDark = ControlPaint.Dark(ColorFromGdkColor (style.dark[0]));
--
--						widget = gtk_menu_new ();
--						gtk_widget_ensure_style (widget);
--						style_ptr = gtk_widget_get_style (widget);
--
--						style = (GtkStyleStruct) Marshal.PtrToStructure (style_ptr, typeof (GtkStyleStruct));
--
--						ThemeEngine.Current.ColorMenu = ColorFromGdkColor (style.bg [0]);
--						ThemeEngine.Current.ColorMenuText = ColorFromGdkColor (style.text [0]);
--					}
--
--					catch (DllNotFoundException) {
--						Console.Error.WriteLine("Gtk not found (missing LD_LIBRARY_PATH to libgtk-x11-2.0.so.0?), using built-in colorscheme");
--					}
--
--					catch {
--						Console.Error.WriteLine("Gtk colorscheme read failure, using built-in colorscheme");
--					}
--					break;
--				}
-+//				case Desktop.Gtk: {
-+//					//IntPtr		dispmgr;
-+//					//IntPtr		gdkdisplay;
-+//					IntPtr		widget;
-+//					IntPtr		style_ptr;
-+//					GtkStyleStruct	style;
-+//
-+//					try {
-+//						gtk_init_check (IntPtr.Zero, IntPtr.Zero);
-+//						//dispmgr =  gdk_display_manager_get ();
-+//						//gdkdisplay =  gdk_display_manager_get_default_display (dispmgr);
-+//
-+//						widget = gtk_invisible_new ();
-+//						gtk_widget_ensure_style (widget);
-+//						style_ptr = gtk_widget_get_style (widget);
-+//
-+//						style = (GtkStyleStruct) Marshal.PtrToStructure (style_ptr, typeof (GtkStyleStruct));
-+//						
-+//						ThemeEngine.Current.ColorControl = ColorFromGdkColor (style.bg[0]);
-+//						ThemeEngine.Current.ColorControlText = ColorFromGdkColor (style.fg[0]);
-+//						ThemeEngine.Current.ColorControlDark = ColorFromGdkColor (style.dark[0]);
-+//						ThemeEngine.Current.ColorControlLight = ColorFromGdkColor (style.light[0]);
-+//						ThemeEngine.Current.ColorControlLightLight = ControlPaint.Light(ColorFromGdkColor (style.light[0]));
-+//						ThemeEngine.Current.ColorControlDarkDark = ControlPaint.Dark(ColorFromGdkColor (style.dark[0]));
-+//
-+//						widget = gtk_menu_new ();
-+//						gtk_widget_ensure_style (widget);
-+//						style_ptr = gtk_widget_get_style (widget);
-+//
-+//						style = (GtkStyleStruct) Marshal.PtrToStructure (style_ptr, typeof (GtkStyleStruct));
-+//
-+//						ThemeEngine.Current.ColorMenu = ColorFromGdkColor (style.bg [0]);
-+//						ThemeEngine.Current.ColorMenuText = ColorFromGdkColor (style.text [0]);
-+//					}
-+//
-+//					catch (DllNotFoundException) {
-+//						Console.Error.WriteLine("Gtk not found (missing LD_LIBRARY_PATH to libgtk-x11-2.0.so.0?), using built-in colorscheme");
-+//					}
-+//
-+//					catch {
-+//						Console.Error.WriteLine("Gtk colorscheme read failure, using built-in colorscheme");
-+//					}
-+//					break;
-+//				}
- 					
- 				case Desktop.KDE: {
- 						if (! ReadKDEColorsheme() )
 Index: class/Managed.Windows.Forms/System.Windows.Forms/Application.cs
 ===================================================================
 --- class/Managed.Windows.Forms/System.Windows.Forms/Application.cs	(revision 96906)
