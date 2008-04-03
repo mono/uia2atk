@@ -1,3 +1,12 @@
+2008-04-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* TopLevelRootItem.cs: Fixed headers, thread safety.
+	* Monitor.cs: Run glib mainloop in its own thread.  New GLibHacks class
+	  copies some convenience code from gtk# to invoke a delegate on the
+	  glib mainloop.  LaunchAtkBridge is now called in this way.  Fixed
+	  headers.
+	* Window.cs: Fixed headers.
+
 2008-04-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* UiaAtkBridge.mdp: Fix winforms provider reference to UiaAtkBridge

@@ -144,7 +144,21 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/Application.cs
  
  		#region Private Methods
  
-@@ -964,6 +996,8 @@
+@@ -671,9 +703,13 @@
+ 		{
+ 			Run (new ApplicationContext (mainForm));
+ 		}
++		
++		internal static event EventHandler PreRun;
+ 
+ 		public static void Run (ApplicationContext context)
+ 		{
++			if (PreRun != null)
++				PreRun (null, new EventArgs ());
+ #if NET_2_0
+ 			// If a sync context hasn't been created by now, create
+ 			// a default one
+@@ -964,6 +1000,8 @@
  
  		public static event EventHandler ThreadExit;
  		public static event ThreadExceptionEventHandler ThreadException;
@@ -153,7 +167,7 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/Application.cs
  
  #if NET_2_0
  		[EditorBrowsable (EditorBrowsableState.Advanced)]
-@@ -999,6 +1033,8 @@
+@@ -999,6 +1037,8 @@
  		{
  			lock (forms)
  				forms.Add (f);
@@ -162,4 +176,4 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/Application.cs
  		}
  		
  		internal static void RemoveForm (Form f)
-
+ 

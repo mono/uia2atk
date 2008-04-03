@@ -1,3 +1,8 @@
+2008-04-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/FormListener.cs: Basic integration with
+	  UiaAtkBridge.
+
 2008-04-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/Mono.UIAutomation.Winforms.mdp: Fix

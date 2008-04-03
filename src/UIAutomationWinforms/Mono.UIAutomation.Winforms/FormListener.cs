@@ -29,6 +29,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
 
+using UiaAtkBridge;
+
 namespace Mono.UIAutomation.Winforms
 {
 	public class FormListener
@@ -38,6 +40,7 @@ namespace Mono.UIAutomation.Winforms
 		static bool initialized = false;
 		static Dictionary<Form, WindowProvider> formProviders =
 			new Dictionary<Form, WindowProvider> ();
+		static Monitor appMonitor = null;
 		
 #endregion
 		
@@ -69,11 +72,33 @@ namespace Mono.UIAutomation.Winforms
 				formAddedEvent.GetAddMethod(true);
 			formAddedEventAddMethod.Invoke(null,
 			                               new object[]{new EventHandler(OnFormAdded)});
+			
+			// OnRun
+			EventInfo preRunEvent =
+				appType.GetEvent("PreRun",
+				                 BindingFlags.Static | BindingFlags.NonPublic);
+			MethodInfo preRunEventAddMethod =
+				preRunEvent.GetAddMethod(true);
+			preRunEventAddMethod.Invoke(null,
+			                               new object[]{new EventHandler(OnPreRun)});
 		}
 		
 #endregion
 		
 #region Static Event Handlers
+		
+		static bool applicationStarted = false;
+		
+		/// <summary>
+		/// Start GLib mainloop in its own thread just before
+		/// winforms mainloop starts
+		/// </summary>
+		static void OnPreRun (object sender, EventArgs args)
+		{
+			Console.WriteLine ("PreRun fired");
+			if (!applicationStarted && appMonitor != null)
+				appMonitor.ApplicationStarts ();
+		}
 		
 		static void OnFormAdded (object sender, EventArgs args)
 		{
@@ -82,6 +107,21 @@ namespace Mono.UIAutomation.Winforms
 			if (formProviders.ContainsKey (f))
 				return;
 			formProviders [f] = new WindowProvider (f);
+			
+			bool newMonitor = false;
+			if (appMonitor == null) {
+				Console.WriteLine ("about to create monitor");
+				appMonitor = new Monitor();
+				Console.WriteLine ("just made monitor");
+				newMonitor = true;
+			}
+			
+			// Events aren't handled in the bridge yet, so don't
+			// notify the appMonitor once the bridge has been launched.
+			// Obviously this will change soon.
+			if (!applicationStarted) {
+				appMonitor.FormIsAdded (f.Text);
+			}
 		}
 		
 #endregion
