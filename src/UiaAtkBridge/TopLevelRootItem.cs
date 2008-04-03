@@ -42,12 +42,11 @@ namespace UiaAtkBridge
 		
 		public static TopLevelRootItem Instance {
 			get {
-				lock (syncRoot)
-				{
-					if (instance == null)
-						instance = new TopLevelRootItem();
-					return instance;
-				}
+				if (instance == null)
+					lock (syncRoot)
+						if (instance == null)
+							instance = new TopLevelRootItem();
+				return instance;
 			}
 		}
 		
