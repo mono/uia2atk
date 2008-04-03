@@ -1,25 +1,51 @@
-Index: class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs
+Index: System.Windows.Forms/X11DesktopColors.cs
 ===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs	(revision 96906)
-+++ class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs	(working copy)
-@@ -86,6 +86,13 @@
+--- System.Windows.Forms/X11DesktopColors.cs	(revision 99791)
++++ System.Windows.Forms/X11DesktopColors.cs	(working copy)
+@@ -86,6 +86,7 @@
  
  		#region Constructors
  		static X11DesktopColors() {
++			
+ 			FindDesktopEnvironment();
+ 			
+ 			switch(desktop) {
+@@ -97,7 +98,7 @@
+ 					GtkStyleStruct	style;
+ 
+ 					try {
+-						gtk_init_check (IntPtr.Zero, IntPtr.Zero);
++						GtkInit();
+ 						//dispmgr =  gdk_display_manager_get ();
+ 						//gdkdisplay =  gdk_display_manager_get_default_display (dispmgr);
+ 
+@@ -145,6 +146,22 @@
+ 				}
+ 			}
+ 		}
++
++		static GtkInit ()
++		{
 +			// Prevent ATK bridge initalization, as it causes
 +			// conflicts with the UIA<->ATK bridge.
 +			// A better solution would probably be to get these
 +			// values out-of-process.  See details/discussion here:
 +			// https://bugzilla.novell.com/show_bug.cgi?id=375987
-+			Environment.SetEnvironmentVariable ("GTK_MODULES", string.Empty);
-+			
- 			FindDesktopEnvironment();
- 			
- 			switch(desktop) {
-Index: class/Managed.Windows.Forms/System.Windows.Forms/Application.cs
++			string dangerousEnvVar = "GTK_MODULES";
++			string gtkModulesEnvVarContent = Environment.GetEnvironmentVariable (dangerousEnvVar);
++			Environment.SetEnvironmentVariable (dangerousEnvVar, string.Empty);
++
++			gtk_init_check (IntPtr.Zero, IntPtr.Zero);
++
++			Environment.SetEnvironmentVariable (dangerousEnvVar, gtkModulesEnvVarContent);
++		}
+ 		#endregion	// Constructors
+ 
+ 		#region Properties
+Index: System.Windows.Forms/Application.cs
 ===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/Application.cs	(revision 96906)
-+++ class/Managed.Windows.Forms/System.Windows.Forms/Application.cs	(working copy)
+--- System.Windows.Forms/Application.cs	(revision 99791)
++++ System.Windows.Forms/Application.cs	(working copy)
 @@ -153,10 +153,42 @@
  		private static ToolStrip keyboard_capture;
  		private static VisualStyleState visual_style_state = VisualStyleState.ClientAndNonClientAreasEnabled;
@@ -95,4 +121,3 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/Application.cs
  		}
  		
  		internal static void RemoveForm (Form f)
- 
