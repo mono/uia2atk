@@ -1,5 +1,9 @@
 2008-04-04  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Window.cs: A form maps to a frame, not a window.
+
+2008-04-04  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TopLevelRootItem.cs, Window.cs: Setting the Role now works (since
 	  r99826).
 
