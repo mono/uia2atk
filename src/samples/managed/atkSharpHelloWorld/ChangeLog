@@ -1,5 +1,10 @@
 2008-04-04  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* HelloChild.cs: Accerciser now sees the component interface (though
+	  with a bit of rubbish...).
+
+2008-04-04  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* HelloTopLevel.cs: Setting the Role now works (since r99826).
 
 2008-04-04  Andres G. Aragoneses <aaragoneses@novell.com> 
