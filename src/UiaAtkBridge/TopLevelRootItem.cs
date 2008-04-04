@@ -34,6 +34,7 @@ namespace UiaAtkBridge
 		private TopLevelRootItem()
 		{
 			this.Name = Monitor.GetProgramName();
+			this.Role = Atk.Role.Application;
 			this.children = new List<Atk.Object>();
 		}
 		

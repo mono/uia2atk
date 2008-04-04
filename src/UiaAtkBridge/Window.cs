@@ -32,6 +32,7 @@ namespace UiaAtkBridge
 		public Window(string name)
 		{
 			this.Name = name.Clone () as string;
+			this.Role = Atk.Role.Window;
 		}
 	}
 }

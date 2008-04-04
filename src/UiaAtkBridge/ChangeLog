@@ -1,3 +1,8 @@
+2008-04-04  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* TopLevelRootItem.cs, Window.cs: Setting the Role now works (since
+	  r99826).
+
 2008-04-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* TopLevelRootItem.cs: Adding "volatile" keyword to singleton instance
