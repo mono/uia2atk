@@ -1,6 +1,6 @@
 2008-04-04  Andres G. Aragoneses <aaragoneses@novell.com> 
 
-	* Main.cs: Use correct API.
+	* HelloChild.cs: Use correct API.
 
 2008-04-03  Andres G. Aragoneses <aaragoneses@novell.com> 
 
