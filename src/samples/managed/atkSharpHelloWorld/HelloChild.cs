@@ -15,16 +15,12 @@ namespace atkSharpHelloWorld
 		public HelloChild(string name)
 		{
 			this.Name = name;
+			this.Role = Atk.Role.Window;
 		}
 		
 		public Atk.Object[] Children
 		{
 			get { return new Atk.Object[0]; } // no grandchildren
-		}
-		
-		public new Atk.Role Role
-		{
-			get { return Atk.Role.Window; }
 		}
 		
 		//although this returns 0 already on the base, it may become an abstract method
