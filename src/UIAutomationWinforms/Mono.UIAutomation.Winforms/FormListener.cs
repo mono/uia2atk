@@ -28,8 +28,8 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Forms;
-
-using UiaAtkBridge;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -40,7 +40,6 @@ namespace Mono.UIAutomation.Winforms
 		static bool initialized = false;
 		static Dictionary<Form, WindowProvider> formProviders =
 			new Dictionary<Form, WindowProvider> ();
-		static Monitor appMonitor = null;
 		
 #endregion
 		
@@ -87,8 +86,6 @@ namespace Mono.UIAutomation.Winforms
 		
 #region Static Event Handlers
 		
-		static bool applicationStarted = false;
-		
 		/// <summary>
 		/// Start GLib mainloop in its own thread just before
 		/// winforms mainloop starts
@@ -96,8 +93,9 @@ namespace Mono.UIAutomation.Winforms
 		static void OnPreRun (object sender, EventArgs args)
 		{
 			Console.WriteLine ("PreRun fired");
-			if (!applicationStarted && appMonitor != null)
-				appMonitor.ApplicationStarts ();
+			
+			// TODO: Change this temporary hack to pass on the PreRun event
+			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
 		}
 		
 		static void OnFormAdded (object sender, EventArgs args)
@@ -106,22 +104,14 @@ namespace Mono.UIAutomation.Winforms
 			Form f = (Form) sender;
 			if (formProviders.ContainsKey (f))
 				return;
-			formProviders [f] = new WindowProvider (f);
+			WindowProvider provider = new WindowProvider (f);
+			formProviders [f] = provider;
 			
-			bool newMonitor = false;
-			if (appMonitor == null) {
-				Console.WriteLine ("about to create monitor");
-				appMonitor = new Monitor();
-				Console.WriteLine ("just made monitor");
-				newMonitor = true;
-			}
-			
-			// Events aren't handled in the bridge yet, so don't
-			// notify the appMonitor once the bridge has been launched.
-			// Obviously this will change soon.
-			if (!applicationStarted) {
-				appMonitor.FormIsAdded (f.Text);
-			}
+			// TODO: Fill in rest of eventargs
+			AutomationInteropProvider.RaiseStructureChangedEvent (
+			  provider,
+			  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkAdded,
+			                                 new int [] {0}));
 		}
 		
 #endregion

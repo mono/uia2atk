@@ -21,11 +21,10 @@
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-    <ProjectReference type="Assembly" localcopy="True" refto="../../../../../../../usr/lib/mono/gac/UIAutomationProvider/0.0.0.0__31bf3856ad364e35/UIAutomationProvider.dll" />
-    <ProjectReference type="Assembly" localcopy="True" refto="../../../../../../../usr/lib/mono/gac/UIAutomationTypes/0.0.0.0__31bf3856ad364e35/UIAutomationTypes.dll" />
     <ProjectReference type="Gac" localcopy="True" refto="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <ProjectReference type="Gac" localcopy="True" refto="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../mcs/class/lib/net_2_0/System.Windows.Forms.dll" />
-    <ProjectReference type="Project" localcopy="True" refto="UiaAtkBridge" />
+    <ProjectReference type="Assembly" localcopy="True" refto="../../../../olive/class/lib/net_3_0/UIAutomationProvider.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="../../../../olive/class/lib/net_3_0/UIAutomationTypes.dll" />
   </References>
 </Project>

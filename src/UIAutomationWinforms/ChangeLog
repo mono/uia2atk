@@ -1,3 +1,12 @@
+2008-04-06  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/Mono.UIAutomation.Winforms.mdp: Reference
+	  UIA assemblies from local build instead of GAC to facilitate rapid
+	  development.
+	* Mono.UIAutomation.Winforms/FormListener.cs: Call
+	  AutomationInteropProvider to send provider events.  No more direct
+	  dependency on bridge.
+
 2008-04-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/WindowProvider.cs: Much more complete
