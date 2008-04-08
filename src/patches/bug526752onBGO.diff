@@ -1,53 +1,18 @@
-Index: atk/atkobject.c
-===================================================================
---- atk/atkobject.c	(revision 1242)
-+++ atk/atkobject.c	(working copy)
-@@ -326,8 +326,10 @@
-   klass->get_index_in_parent = NULL;
-   klass->ref_relation_set = atk_object_real_ref_relation_set;
-   klass->get_role = atk_object_real_get_role;
-+#ifndef ATK_DISABLE_DEPRECATED
-   klass->get_layer = atk_object_real_get_layer;
-   klass->get_mdi_zorder = NULL;
-+#endif /* ATK_DISABLE_DEPRECATED */
-   klass->initialize = atk_object_real_initialize;
-   klass->ref_state_set = atk_object_real_ref_state_set;
-   klass->set_name = atk_object_real_set_name;
-@@ -732,6 +734,7 @@
-     return ATK_ROLE_UNKNOWN;
- }
- 
-+#ifndef ATK_DISABLE_DEPRECATED
- /**
-  * atk_object_get_layer:
-  * @accessible: an #AtkObject
-@@ -783,6 +786,7 @@
-   else
-     return G_MININT;
- }
-+#endif /* ATK_DISABLE_DEPRECATED */
- 
- /**
-  * atk_object_ref_state_set:
 Index: atk/atkobject.h
 ===================================================================
 --- atk/atkobject.h	(revision 1242)
 +++ atk/atkobject.h	(working copy)
-@@ -413,9 +413,13 @@
-    * Gets the role of the object
-    */
-   AtkRole                 (* get_role)            (AtkObject                 *accessible);
-+  
+@@ -541,8 +541,10 @@
+                                                                    gint        i);
+ AtkRelationSet*         atk_object_ref_relation_set               (AtkObject *accessible);
+ AtkRole                 atk_object_get_role                       (AtkObject *accessible);
 +#ifndef ATK_DISABLE_DEPRECATED
-   AtkLayer                (* get_layer)           (AtkObject                 *accessible);
-   gint                    (* get_mdi_zorder)      (AtkObject                 *accessible);
--  /*
+ AtkLayer                atk_object_get_layer                      (AtkObject *accessible);
+ gint                    atk_object_get_mdi_zorder                 (AtkObject *accessible);
 +#endif /* ATK_DISABLE_DEPRECATED */
-+
-+    /*
-    * Gets the state set of the object
-    */
-   AtkStateSet*            (* ref_state_set)       (AtkObject                 *accessible);
+ AtkAttributeSet*        atk_object_get_attributes                 (AtkObject *accessible);
+ AtkStateSet*            atk_object_ref_state_set                  (AtkObject *accessible);
+ gint                    atk_object_get_index_in_parent            (AtkObject *accessible);
 Index: atk/atk.symbols
 ===================================================================
 --- atk/atk.symbols	(revision 1242)
@@ -75,15 +40,7 @@ Index: atk/Makefile.am
 ===================================================================
 --- atk/Makefile.am	(revision 1242)
 +++ atk/Makefile.am	(working copy)
-@@ -11,6 +11,7 @@
- INCLUDES = \
- 	-I$(top_srcdir)		\
- 	-DG_DISABLE_DEPRECATED	\
-+	-DATK_DISABLE_DEPRECATED	\
- 	-DATK_LOCALEDIR="\"$(datadir)/locale\""	\
- 	$(DEP_CFLAGS)
- 
-@@ -135,9 +136,13 @@
+@@ -135,9 +135,13 @@
  # ---------- Win32 stuff ----------
  
  if OS_WIN32
