@@ -1,3 +1,7 @@
+2008-04-08  Andres G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/bug526752onBGO.diff: Add this first version.
+
 2008-04-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* patches/winforms-uia.patch: Fixing typo that caused compile error. 
