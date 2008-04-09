@@ -33,7 +33,7 @@ namespace atkSharpHelloWorld
 		
 		protected HelloTopLevel()
 		{
-			this.Name = GLib.Program.Name;
+			this.Name = GLib.Global.ProgramName;
 			this.Role = Atk.Role.Application;
 		}
 		

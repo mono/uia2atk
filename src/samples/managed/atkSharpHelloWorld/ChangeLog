@@ -1,3 +1,7 @@
+2008-04-09  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* HelloTopLevel.cs, Main.cs: Track API changes in GLib#
+
 2008-04-04  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* HelloChild.cs: Accerciser now sees the component interface (though
