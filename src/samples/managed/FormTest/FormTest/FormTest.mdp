@@ -1,6 +1,10 @@
 <Project name="FormTest" fileversion="2.0" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp ../../../../../../../../gtk-sharp/atk/glue/.libs/libatksharpglue-2.so ." workingdir="${TargetDir}" />
+        <Command type="AfterBuild" command="cp /usr/lib/gtk-2.0/modules/libatk-bridge.so ." workingdir="${TargetDir}" />
+      </CustomCommands>
       <Output directory="bin/Debug" assemblyKeyFile="." assembly="FormTest" />
       <Build debugmode="True" target="Exe" />
       <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />

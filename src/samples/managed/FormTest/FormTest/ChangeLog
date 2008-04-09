@@ -1,3 +1,8 @@
+2008-04-09  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* FormTest.mdp: Automate copying of libatksharpglue-2.so from SVN and
+	  the installed version of libatk-bridge.so.
+
 2008-04-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* FormTest.mdp: Clean up project/solution files.  F5 in MD should
