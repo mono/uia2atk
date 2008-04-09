@@ -1,3 +1,7 @@
+2008-04-09  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* hellotoplevel.c: Copy here from gail to later uncomment and refactor.
+
 2008-03-31  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* hello.c: Remove unused var.

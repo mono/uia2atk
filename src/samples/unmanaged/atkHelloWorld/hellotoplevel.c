@@ -190,3 +190,56 @@ hello_toplevel_ref_child (AtkObject *obj,
   g_object_ref (atk_obj);
   return atk_obj;
 }
+
+/*
+ * Window destroy events on GtkWindow cause a child to be removed
+ * from the toplevel
+ *
+static void
+gail_toplevel_window_destroyed (GtkWindow    *window,
+                                GailToplevel *toplevel)
+{
+  _gail_toplevel_remove_child (toplevel, window);
+}
+
+
+ *
+ * Common code used by destroy and hide events on GtkWindow
+ *
+static void
+_gail_toplevel_remove_child (GailToplevel *toplevel, 
+                             GtkWindow    *window)
+{
+  AtkObject *atk_obj = ATK_OBJECT (toplevel);
+  GList *l;
+  guint window_count = 0;
+  AtkObject *child;
+
+  if (toplevel->window_list)
+    {
+        GtkWindow *tmp_window;
+
+        // Must loop through them all
+        for (l = toplevel->window_list; l; l = l->next)
+        {
+          tmp_window = GTK_WINDOW (l->data);
+
+          if (window == tmp_window)
+            {
+              // Remove the window from the window_list & emit the signal
+              toplevel->window_list = g_list_remove (toplevel->window_list,
+                                                     l->data);
+              child = gtk_widget_get_accessible (GTK_WIDGET (window));
+              g_signal_emit_by_name (atk_obj, "children-changed::remove",
+                                     window_count, 
+                                     child, NULL);
+              atk_object_set_parent (child, NULL);
+              break;
+            }
+
+          window_count++;
+        }
+    }
+}
+
+*/
