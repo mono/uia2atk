@@ -27,5 +27,12 @@ namespace atkSharpHelloWorld.Mytk
 			topLevelWindows.Add(newWindow);
 			return newWindow;
 		}
+		
+		public static void RemoveOneTopLevelWindow()
+		{
+			Atk.Object child = topLevelWindows[0].RefAccessible();
+			topLevelWindows.Remove(topLevelWindows[0]);
+			HelloTopLevel.Instance.FireChildrenChanged(0, child);
+		}
 	}
 }

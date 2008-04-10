@@ -59,5 +59,10 @@ namespace atkSharpHelloWorld
 			return this.Children[i];
 		}
 		
+		public void FireChildrenChanged(uint changeIndex, Atk.Object child)
+		{
+			this.OnChildrenChanged(0, child.Handle);
+		}
+		
 	}
 }

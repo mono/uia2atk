@@ -12,6 +12,8 @@ namespace atkSharpHelloWorld
 	{
 		private static int defaultNumberOfTopLevels = 2;
 		
+		private static System.Timers.Timer timer = new System.Timers.Timer();
+		
 		public static void Main(string[] args)
 		{
 			GLib.Global.ProgramName = System.IO.Path.GetFileNameWithoutExtension (Environment.GetCommandLineArgs () [0]);
@@ -23,10 +25,21 @@ namespace atkSharpHelloWorld
 			Atk.Util.GetToolkitNameHandler = HelloUtil.GetToolkitName;
 			Atk.Util.GetToolkitVersionHandler = HelloUtil.GetToolkitVersion;
 			Atk.Util.GetRootHandler = HelloUtil.GetRoot;
-			
+
 			LaunchAtkBridge();
 			
+			timer.Interval = 10000;
+			timer.Elapsed += ElapsedTimer;
+			timer.Enabled = true;
+			
 			new GLib.MainLoop().Run();
+		}
+		
+		static void ElapsedTimer(object source, System.Timers.ElapsedEventArgs args)
+		{
+			Console.WriteLine("toy en elapsed");
+			Mytk.MytkGlobal.RemoveOneTopLevelWindow();
+			Console.WriteLine("fin de elapsed");
 		}
 		
 		static void StartProgramGui()

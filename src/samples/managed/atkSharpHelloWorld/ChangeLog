@@ -1,3 +1,10 @@
+2008-04-10  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* HelloTopLevel.cs, Main.cs, Mytk.cs: First try to get events (signals)
+	  working. For now it shows this debug spew: (h��a��Hell:26168):
+	  GLib-GObject-WARNING **: gsignal.c:1505: no signal is currently
+	  being emitted for instance `0x832ad40'. :-?
+
 2008-04-09  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* HelloTopLevel.cs, Main.cs: Track API changes in GLib#
