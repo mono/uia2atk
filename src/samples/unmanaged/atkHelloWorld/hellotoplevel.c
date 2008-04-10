@@ -191,24 +191,13 @@ hello_toplevel_ref_child (AtkObject *obj,
   return atk_obj;
 }
 
+
 /*
- * Window destroy events on GtkWindow cause a child to be removed
- * from the toplevel
- *
-static void
-gail_toplevel_window_destroyed (GtkWindow    *window,
-                                GailToplevel *toplevel)
-{
-  _gail_toplevel_remove_child (toplevel, window);
-}
-
-
- *
  * Common code used by destroy and hide events on GtkWindow
- *
+ */
 static void
-_gail_toplevel_remove_child (GailToplevel *toplevel, 
-                             GtkWindow    *window)
+_hello_toplevel_remove_child (HelloToplevel *toplevel, 
+                              MytkWidget    *window)
 {
   AtkObject *atk_obj = ATK_OBJECT (toplevel);
   GList *l;
@@ -217,19 +206,19 @@ _gail_toplevel_remove_child (GailToplevel *toplevel,
 
   if (toplevel->window_list)
     {
-        GtkWindow *tmp_window;
+        MytkWidget *tmp_window;
 
         // Must loop through them all
         for (l = toplevel->window_list; l; l = l->next)
         {
-          tmp_window = GTK_WINDOW (l->data);
+          tmp_window = MYTK_WIDGET (l->data);
 
           if (window == tmp_window)
             {
               // Remove the window from the window_list & emit the signal
               toplevel->window_list = g_list_remove (toplevel->window_list,
                                                      l->data);
-              child = gtk_widget_get_accessible (GTK_WIDGET (window));
+              child = mytk_widget_get_accessible (MYTK_WIDGET (window));
               g_signal_emit_by_name (atk_obj, "children-changed::remove",
                                      window_count, 
                                      child, NULL);
@@ -242,4 +231,16 @@ _gail_toplevel_remove_child (GailToplevel *toplevel,
     }
 }
 
-*/
+
+/*
+ * Window destroy events on MytkWindow cause a child to be removed
+ * from the toplevel (for now, in this testcase this event is not
+ * generated in the MytkWindow class itself)
+ */
+static void
+hello_toplevel_window_destroyed (MytkWidget    *window,
+                                 HelloToplevel *toplevel)
+{
+  _hello_toplevel_remove_child (toplevel, window);
+}
+
