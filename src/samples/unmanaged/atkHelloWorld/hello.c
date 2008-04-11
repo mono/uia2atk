@@ -6,6 +6,9 @@
 #include <termios.h>
 #include <unistd.h>
 #include "helloutil.h"
+#include <glib/gthread.h>
+#include "hellotoplevel.h"
+#include "mytkwidget.h"
 
 #define NUM_CHILDREN 2
 /* The below line isn't really right -- normally gtk will build the path */
@@ -13,6 +16,10 @@
 
 
 static int hello_initialized = FALSE;
+
+//vars to be assigned
+//static HelloTopLevel *toplevel_singleton = NULL;
+//static MyWidget *widget_to_remove = NULL;
 
 
 static void
@@ -76,13 +83,38 @@ main(int argc, char *argv[])
   GMainLoop *mainloop;
   g_type_init();
 
+  create_and_launch_updater_thread ();
+
   start_program_gui();
 
   hello_accessibility_module_init();
   load_atk_bridge_gmodule();
+
 
   mainloop = g_main_loop_new (NULL, FALSE);
 
   g_main_loop_run (mainloop);
   return 0;
 }
+
+void update_children ()
+{
+  g_warning("started updator");
+  sleep(30);
+  g_warning("updator awaken");
+  
+  //uncomment when we assign values to these static vars
+  //hello_toplevel_window_destroyed (widget_to_remove, toplevel_singleton);
+}
+
+
+void create_and_launch_updater_thread ()
+{
+  g_thread_init (NULL);
+
+  GThread* updator = g_thread_create (update_children,
+                                      NULL,
+                                      FALSE,
+                                      NULL);
+}
+
