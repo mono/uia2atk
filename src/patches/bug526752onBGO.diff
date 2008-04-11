@@ -25,7 +25,17 @@ Index: atk/atk.symbols
  	atk_action_do_action
  	atk_action_get_description
  	atk_action_get_keybinding
-@@ -94,8 +96,10 @@
+@@ -59,7 +61,9 @@
+ 	atk_hyperlink_get_type
+ 	atk_hyperlink_get_uri
+ 	atk_hyperlink_is_inline
++#ifndef ATK_DISABLE_DEPRECATED
+ 	atk_hyperlink_is_selected_link
++#endif /* ATK_DISABLE_DEPRECATED */
+ 	atk_hyperlink_is_valid
+ 	atk_hypertext_get_link
+ 	atk_hypertext_get_link_index
+@@ -94,8 +98,10 @@
  	atk_object_get_attributes
  	atk_object_get_description
  	atk_object_get_index_in_parent
@@ -36,6 +46,22 @@ Index: atk/atk.symbols
  	atk_object_get_n_accessible_children
  	atk_object_get_name
  	atk_object_get_parent
+Index: atk/atkhyperlink.h
+===================================================================
+--- atk/atkhyperlink.h	(revision 1242)
++++ atk/atkhyperlink.h	(working copy)
+@@ -95,9 +95,10 @@
+ gboolean         atk_hyperlink_is_inline             (AtkHyperlink     *link_);
+ 
+ gint		 atk_hyperlink_get_n_anchors        (AtkHyperlink     *link_);
++#ifndef ATK_DISABLE_DEPRECATED
+ gboolean         atk_hyperlink_is_selected_link     (AtkHyperlink     *link_);
++#endif /* ATK_DISABLE_DEPRECATED */
+ 
+-
+ #ifdef __cplusplus
+ }
+ #endif /* __cplusplus */
 Index: atk/Makefile.am
 ===================================================================
 --- atk/Makefile.am	(revision 1242)
@@ -296,6 +322,17 @@ Index: atk/atk.def
 -	atk_value_get_minimum_value
 -	atk_value_get_type
 -	atk_value_set_current_value
+Index: docs/tmpl/atkhyperlink.sgml
+===================================================================
+--- docs/tmpl/atkhyperlink.sgml	(revision 1242)
++++ docs/tmpl/atkhyperlink.sgml	(working copy)
+@@ -134,5 +134,6 @@
+ 
+ @link_: 
+ @Returns: 
++@Deprecated: Please use ATK_STATE_SELECTED to indicate when a hyperlink within a Hypertext container is selected.
+ 
+ 
 Index: docs/tmpl/atkobject.sgml
 ===================================================================
 --- docs/tmpl/atkobject.sgml	(revision 1242)

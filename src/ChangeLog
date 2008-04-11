@@ -1,3 +1,14 @@
+2008-04-11  Andres G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/bug526752onBGO.diff: Add the third (and last)
+	symbol deprecated.
+
+2008-04-08  Mike Gorse <mgorse@novell.com>
+
+	* patches/bug526752onBGO.diff: Removed atkobject.c changes,
+	removed ATK_DISABLE_DEPRECATED diff from atk/Makefile.am,
+	moved atkobject.h conditionals to the exposed functions
+
 2008-04-08  Andres G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/bug526752onBGO.diff: Add this first version.
