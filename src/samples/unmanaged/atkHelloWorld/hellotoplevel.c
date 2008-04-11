@@ -245,7 +245,7 @@ _hello_toplevel_remove_child (HelloToplevel *toplevel,
  * from the toplevel (for now, in this testcase this event is not
  * generated in the MytkWindow class itself)
  */
-static void
+void
 hello_toplevel_window_destroyed (MytkWidget    *window,
                                  HelloToplevel *toplevel)
 {

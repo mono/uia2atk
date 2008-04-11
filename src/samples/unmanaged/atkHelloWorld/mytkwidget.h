@@ -1,3 +1,6 @@
+#ifndef MYTKWIDGET_H
+#define MYTKWIDGET_H
+
 #include "glib.h"
 #include <glib-object.h>
 #include "atk/atk.h"
@@ -43,3 +46,5 @@ struct _MytkWidgetClass
   void (* somefunc)		       (MytkWidget        *widget);
   
 };
+
+#endif /* MYTKWIDGET_H */
