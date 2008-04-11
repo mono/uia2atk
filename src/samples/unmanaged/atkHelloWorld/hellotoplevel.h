@@ -1,6 +1,7 @@
 
 #include <atk/atk.h>
 
+
 #define HELLO_TYPE_TOPLEVEL               (hello_toplevel_get_type ())
 #define HELLO_TOPLEVEL(obj)               (G_TYPE_CHECK_INSTANCE_CAST ((obj), HELLO_TYPE_TOPLEVEL, HelloToplevel))
 #define HELLO_TOPLEVEL_CLASS(klass)       (G_TYPE_CHECK_CLASS_CAST ((klass), HELLO_TYPE_TOPLEVEL, HelloToplevelClass))
@@ -27,3 +28,9 @@ struct _HelloToplevelClass
 };
 
 AtkObject *hello_toplevel_new(void);
+
+HelloToplevel *get_hello_toplevel_singleton(void);
+
+void hello_toplevel_window_destroyed(
+       MytkWidget *window, 
+       HelloToplevel *toplevel);

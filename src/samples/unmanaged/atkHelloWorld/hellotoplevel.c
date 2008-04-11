@@ -15,6 +15,7 @@ static AtkObject*       hello_toplevel_ref_child         (AtkObject             
                                                         gint                    i);
 static AtkObject*       hello_toplevel_get_parent        (AtkObject              *obj);
 
+static HelloToplevel *toplevel_singleton = NULL;
 
 /* Callbacks:
    We comment this section because it has reference to GtkWindow class
@@ -43,6 +44,11 @@ static gboolean  is_combo_window                        (GtkWidget              
 */
 
 static gpointer parent_class = NULL;
+
+HelloToplevel *get_hello_toplevel_singleton(void)
+{
+  return toplevel_singleton;
+}
 
 GType
 hello_toplevel_get_type (void)
@@ -85,6 +91,8 @@ hello_toplevel_new (void)
   accessible->role = ATK_ROLE_APPLICATION;
   accessible->name = g_get_prgname();
   accessible->accessible_parent = NULL;
+
+  toplevel_singleton = accessible;
 
   return accessible;
 }

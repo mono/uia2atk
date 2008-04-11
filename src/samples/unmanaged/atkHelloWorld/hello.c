@@ -18,11 +18,11 @@
 static int hello_initialized = FALSE;
 
 //vars to be assigned
-//static HelloTopLevel *toplevel_singleton = NULL;
-//static MyWidget *widget_to_remove = NULL;
+static HelloToplevel *toplevel_singleton = NULL;
+static MytkWidget *widget_to_remove = NULL;
 
 
-static void
+static HelloToplevel*
 hello_accessibility_module_init (void)
 {
   if (hello_initialized)
@@ -34,6 +34,8 @@ hello_accessibility_module_init (void)
   /* Initialize the HelloUtility classes */
   g_type_class_unref (g_type_class_ref (HELLO_TYPE_UTIL));
   g_type_class_unref (g_type_class_ref (HELLO_TYPE_MISC));
+  
+  toplevel_singleton = get_hello_toplevel_singleton;
 }
 
 static void
@@ -60,7 +62,7 @@ load_atk_bridge_gmodule(void)
 }
 
 //simulate the creation of toplevel windows
-void
+MytkWidget*
 start_program_gui(void)
 {
   GList *l = mytk_window_list_toplevels ();
@@ -69,10 +71,14 @@ start_program_gui(void)
     return;
   }
   int i = 0;
+  MytkWidget *first_widget = NULL;
   for (i = 0; i < NUM_CHILDREN; i++)
   {
-    mytk_add_one_top_level_window(g_strdup_printf("TopLevel %d", i + 1));
+    MytkWidget *widget = mytk_add_one_top_level_window(g_strdup_printf("TopLevel %d", i + 1));
+    if (i == 0)
+      first_widget = widget;
   }
+  return first_widget;
 }
 
 main(int argc, char *argv[])
@@ -85,9 +91,9 @@ main(int argc, char *argv[])
 
   create_and_launch_updater_thread ();
 
-  start_program_gui();
+  widget_to_remove = start_program_gui();
 
-  hello_accessibility_module_init();
+  toplevel_singleton = hello_accessibility_module_init();
   load_atk_bridge_gmodule();
 
 
@@ -102,9 +108,8 @@ void update_children ()
   g_warning("started updator");
   sleep(30);
   g_warning("updator awaken");
-  
-  //uncomment when we assign values to these static vars
-  //hello_toplevel_window_destroyed (widget_to_remove, toplevel_singleton);
+
+  hello_toplevel_window_destroyed (widget_to_remove, toplevel_singleton);
 }
 
 
