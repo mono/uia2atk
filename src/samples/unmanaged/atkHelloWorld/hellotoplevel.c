@@ -92,7 +92,7 @@ hello_toplevel_new (void)
   accessible->name = g_get_prgname();
   accessible->accessible_parent = NULL;
 
-  toplevel_singleton = accessible;
+  toplevel_singleton = object;
 
   return accessible;
 }
@@ -204,27 +204,26 @@ hello_toplevel_ref_child (AtkObject *obj,
  * Common code used by destroy and hide events on GtkWindow
  */
 static void
-_hello_toplevel_remove_child (HelloToplevel *toplevel, 
-                              MytkWidget    *window)
+_hello_toplevel_remove_child (MytkWidget    *window)
 {
-  AtkObject *atk_obj = ATK_OBJECT (toplevel);
+  AtkObject *atk_obj = ATK_OBJECT (toplevel_singleton);
   GList *l;
   guint window_count = 0;
   AtkObject *child;
 
-  if (toplevel->window_list)
+  if (toplevel_singleton->window_list)
     {
         MytkWidget *tmp_window;
 
         // Must loop through them all
-        for (l = toplevel->window_list; l; l = l->next)
+        for (l = toplevel_singleton->window_list; l; l = l->next)
         {
           tmp_window = MYTK_WIDGET (l->data);
 
           if (window == tmp_window)
             {
               // Remove the window from the window_list & emit the signal
-              toplevel->window_list = g_list_remove (toplevel->window_list,
+              toplevel_singleton->window_list = g_list_remove (toplevel_singleton->window_list,
                                                      l->data);
               child = mytk_widget_get_accessible (MYTK_WIDGET (window));
               g_signal_emit_by_name (atk_obj, "children-changed::remove",
@@ -246,9 +245,8 @@ _hello_toplevel_remove_child (HelloToplevel *toplevel,
  * generated in the MytkWindow class itself)
  */
 void
-hello_toplevel_window_destroyed (MytkWidget    *window,
-                                 HelloToplevel *toplevel)
+hello_toplevel_window_destroyed (MytkWidget *window)
 {
-  _hello_toplevel_remove_child (toplevel, window);
+  _hello_toplevel_remove_child (window);
 }
 

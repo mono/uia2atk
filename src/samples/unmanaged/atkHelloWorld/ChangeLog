@@ -1,5 +1,9 @@
 2008-04-12  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* hello.c, hellotoplevel.c, hellotoplevel.h: Prevent from crashing.
+
+2008-04-12  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* hellotoplevel.c, hellotoplevel.h, mytkwidget.h: Fix build.
 
 2008-04-11  Andres G. Aragoneses <aaragoneses@novell.com> 

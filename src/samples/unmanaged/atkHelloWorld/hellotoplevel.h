@@ -31,6 +31,4 @@ AtkObject *hello_toplevel_new(void);
 
 HelloToplevel *get_hello_toplevel_singleton(void);
 
-void hello_toplevel_window_destroyed(
-       MytkWidget *window, 
-       HelloToplevel *toplevel);
+void hello_toplevel_window_destroyed (MytkWidget *window);

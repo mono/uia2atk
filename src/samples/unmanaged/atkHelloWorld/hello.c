@@ -109,7 +109,7 @@ void update_children ()
   sleep(30);
   g_warning("updator awaken");
 
-  hello_toplevel_window_destroyed (widget_to_remove, toplevel_singleton);
+  hello_toplevel_window_destroyed (widget_to_remove);
 }
 
 
