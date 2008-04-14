@@ -1,3 +1,8 @@
+2008-04-14  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* atkHelloWorld.mdp: Flush (MonoDevelop SVN CBinding new project
+	  model).
+
 2008-04-12  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* hello.c, hellotoplevel.c, hellotoplevel.h: Prevent from crashing.

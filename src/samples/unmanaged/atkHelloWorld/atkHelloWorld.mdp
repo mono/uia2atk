@@ -29,10 +29,10 @@
   </Contents>
   <compiler ctype="GccCompiler" />
   <Packages>
-    <ProjectPackage file="atk" name="atk" IsProject="False" />
-    <ProjectPackage file="gmodule-2.0" name="gmodule-2.0" IsProject="False" />
-    <ProjectPackage file="gobject-2.0" name="gobject-2.0" IsProject="False" />
-    <ProjectPackage file="gthread-2.0" name="gthread-2.0" IsProject="False" />
-    <ProjectPackage file="glib-2.0" name="glib-2.0" IsProject="False" />
+    <Package file="atk" name="atk" IsProject="False" />
+    <Package file="gmodule-2.0" name="gmodule-2.0" IsProject="False" />
+    <Package file="gobject-2.0" name="gobject-2.0" IsProject="False" />
+    <Package file="gthread-2.0" name="gthread-2.0" IsProject="False" />
+    <Package file="glib-2.0" name="glib-2.0" IsProject="False" />
   </Packages>
 </Project>
