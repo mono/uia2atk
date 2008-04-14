@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdio.h>
 #include "helloutil.h"
+#include "hellochild.h"
+#include "mytkwidget.h"
 
 
 static void		hello_util_class_init			(HelloUtilClass		*klass);
@@ -17,7 +19,19 @@ static void		hello_misc_class_init			(HelloMiscClass		*klass);
 /* Misc */
 
 static AtkObject* root = NULL;
-static guint key_snooper_id = 0;
+//static guint key_snooper_id = 0;
+static gint listener_idx = 1;
+
+typedef struct _HelloUtilListenerInfo HelloUtilListenerInfo;
+
+struct _HelloUtilListenerInfo
+{
+   gint key;
+   guint signal_id;
+   gulong hook_id;
+};
+
+static GHashTable *listener_list = NULL;
 
 GType
 hello_util_get_type (void)
@@ -46,6 +60,187 @@ hello_util_get_type (void)
   return type;
 }
 
+
+static void
+window_added (AtkObject *atk_obj,
+              guint     index,
+              AtkObject *child)
+{
+//  MytkWidget *widget;
+//
+//  if (!HELLO_IS_CHILD (child)) return;
+//
+//  widget = MYTK_ACCESSIBLE (child)->widget;
+//  hello_return_if_fail (widget);
+
+  g_signal_emit (child, g_signal_lookup ("create", HELLO_TYPE_CHILD), 0); 
+}
+
+
+static void
+window_removed (AtkObject *atk_obj,
+                 guint     index,
+                 AtkObject *child)
+{
+  //MytkWidget *window;
+  //
+  //if (!HELLO_IS_CHILD (child)) return;
+  //
+  //window = MYTK_ACCESSIBLE (child)->widget;
+  //if (!(window)) return;
+  
+  g_signal_emit (child, g_signal_lookup ("destroy", HELLO_TYPE_CHILD), 0); 
+}
+
+static void
+do_window_event_initialization (void)
+{
+  AtkObject *root;
+
+  /*
+   * We don't need this yet because we launch destroy events by hand.
+   *
+  g_type_class_ref (HELLO_TYPE_CHILD);
+  g_signal_add_emission_hook (g_signal_lookup ("window-state-event", GTK_TYPE_WIDGET),
+                              0, state_event_watcher, NULL, (GDestroyNotify) NULL);
+  g_signal_add_emission_hook (g_signal_lookup ("configure-event", GTK_TYPE_WIDGET),
+                              0, configure_event_watcher, NULL, (GDestroyNotify) NULL);
+  */
+  root = atk_get_root ();
+  g_signal_connect (root, "children-changed::add",
+                    (GCallback) window_added, NULL);
+  g_signal_connect (root, "children-changed::remove",
+                    (GCallback) window_removed, NULL);
+}
+
+
+
+static guint
+add_listener (GSignalEmissionHook listener,
+              const gchar         *object_type,
+              const gchar         *signal,
+              const gchar         *hook_data)
+{
+  GType type;
+  guint signal_id;
+  gint  rc = 0;
+
+  type = g_type_from_name (object_type);
+  if (type)
+    {
+      signal_id  = g_signal_lookup (signal, type);
+      if (signal_id > 0)
+        {
+          HelloUtilListenerInfo *listener_info;
+
+          rc = listener_idx;
+
+          listener_info = g_malloc(sizeof(HelloUtilListenerInfo));
+          listener_info->key = listener_idx;
+          listener_info->hook_id =
+                          g_signal_add_emission_hook (signal_id, 0, listener,
+			        		      g_strdup (hook_data),
+			        		      (GDestroyNotify) g_free);
+          listener_info->signal_id = signal_id;
+
+	  g_hash_table_insert(listener_list, &(listener_info->key), listener_info);
+          listener_idx++;
+        }
+      else
+        {
+          g_warning("Invalid signal type %s\n", signal);
+        }
+    }
+  else
+    {
+      g_warning("Invalid object type %s\n", object_type);
+    }
+  return rc;
+}
+
+static guint
+hello_util_add_global_event_listener (GSignalEmissionHook listener,
+				     const gchar *event_type)
+{
+  guint rc = 0;
+  gchar **split_string;
+
+  split_string = g_strsplit (event_type, ":", 3);
+
+  if (split_string)
+    {
+      if (!strcmp ("window", split_string[0]))
+        {
+          static gboolean initialized = FALSE;
+
+          if (!initialized)
+            {
+              do_window_event_initialization ();
+              initialized = TRUE;
+            }
+          g_message("add_listener begin");
+          rc = add_listener (listener, "HelloChild", split_string[1], event_type);
+          g_message("add_listener end");
+        }
+      else
+        {
+          rc = add_listener (listener, split_string[1], split_string[2], event_type);
+        }
+
+      g_strfreev (split_string);
+    }
+
+  return rc;
+}
+
+static void
+hello_util_remove_global_event_listener (guint remove_listener)
+{
+  if (remove_listener > 0)
+  {
+    HelloUtilListenerInfo *listener_info;
+    gint tmp_idx = remove_listener;
+
+    listener_info = (HelloUtilListenerInfo *)
+      g_hash_table_lookup(listener_list, &tmp_idx);
+
+    if (listener_info != NULL)
+      {
+        /* Hook id of 0 and signal id of 0 are invalid */
+        if (listener_info->hook_id != 0 && listener_info->signal_id != 0)
+          {
+            /* Remove the emission hook */
+            g_signal_remove_emission_hook(listener_info->signal_id,
+              listener_info->hook_id);
+
+            /* Remove the element from the hash */
+            g_hash_table_remove(listener_list, &tmp_idx);
+          }
+        else
+          {
+            g_warning("Invalid listener hook_id %ld or signal_id %d\n",
+              listener_info->hook_id, listener_info->signal_id);
+          }
+      }
+    else
+      {
+        g_warning("No listener with the specified listener id %d", 
+          remove_listener);
+      }
+  }
+  else
+  {
+    g_warning("Invalid listener_id %d", remove_listener);
+  }
+}
+
+
+static void
+_listener_info_destroy (gpointer data)
+{
+   g_free(data);
+}
+
 static void	 
 hello_util_class_init (HelloUtilClass *klass)
 {
@@ -55,10 +250,10 @@ hello_util_class_init (HelloUtilClass *klass)
   data = g_type_class_peek (ATK_TYPE_UTIL);
   atk_class = ATK_UTIL_CLASS (data);
 
-//  atk_class->add_global_event_listener =
-//    hello_util_add_global_event_listener;
-//  atk_class->remove_global_event_listener =
-//    hello_util_remove_global_event_listener;
+  atk_class->add_global_event_listener =
+    hello_util_add_global_event_listener;
+  atk_class->remove_global_event_listener =
+    hello_util_remove_global_event_listener;
 //  atk_class->add_key_event_listener =
 //    hello_util_add_key_event_listener;
 //  atk_class->remove_key_event_listener =
@@ -67,8 +262,8 @@ hello_util_class_init (HelloUtilClass *klass)
   atk_class->get_toolkit_name = hello_util_get_toolkit_name;
   atk_class->get_toolkit_version = hello_util_get_toolkit_version;
 
-//  listener_list = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, 
-//     _listener_info_destroy);
+  listener_list = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, 
+     _listener_info_destroy);
 }
 
 
@@ -93,12 +288,6 @@ static G_CONST_RETURN gchar *
 hello_util_get_toolkit_version (void)
 {
   return "1.1";
-}
-
-static void
-_listener_info_destroy (gpointer data)
-{
-   g_free(data);
 }
 
 GType

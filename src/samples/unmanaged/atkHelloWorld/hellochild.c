@@ -60,7 +60,13 @@ GType hello_child_get_type(void)
 
       type = g_type_register_static(atk_object_get_type(),
                                     "HelloChild", &tinfo, (GTypeFlags) 0);
+      g_warning("well built!!!!!!!!!!!!!!!!!!!!!");
+
       g_type_add_interface_static (type, ATK_TYPE_TEXT, &atk_text_info);
+    }
+    else
+    {
+	    g_warning("built already!");
     }
   
   return type;

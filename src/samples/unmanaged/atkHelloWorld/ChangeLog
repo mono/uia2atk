@@ -1,5 +1,10 @@
 2008-04-14  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* hello.c: Work on events (not yet finished, lots of debug spew is
+	  included).
+
+2008-04-14  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* atkHelloWorld.mdp: Flush (MonoDevelop SVN CBinding new project
 	  model).
 

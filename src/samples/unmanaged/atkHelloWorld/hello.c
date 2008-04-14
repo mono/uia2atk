@@ -109,7 +109,20 @@ void update_children ()
   sleep(30);
   g_warning("updator awaken");
 
+  
+  GType type = g_type_from_name ("HelloChild");
+  if (type)
+    g_warning("YES");
+  else
+    g_warning("NO");
+
   hello_toplevel_window_destroyed (widget_to_remove);
+  
+  type = g_type_from_name ("HelloChild");
+  if (type)
+    g_warning("YES");
+  else
+    g_warning("NO");
 }
 
 
