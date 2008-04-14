@@ -61,60 +61,6 @@ hello_util_get_type (void)
 }
 
 
-static void
-window_added (AtkObject *atk_obj,
-              guint     index,
-              AtkObject *child)
-{
-//  MytkWidget *widget;
-//
-//  if (!HELLO_IS_CHILD (child)) return;
-//
-//  widget = MYTK_ACCESSIBLE (child)->widget;
-//  hello_return_if_fail (widget);
-
-  g_signal_emit (child, g_signal_lookup ("create", HELLO_TYPE_CHILD), 0); 
-}
-
-
-static void
-window_removed (AtkObject *atk_obj,
-                 guint     index,
-                 AtkObject *child)
-{
-  //MytkWidget *window;
-  //
-  //if (!HELLO_IS_CHILD (child)) return;
-  //
-  //window = MYTK_ACCESSIBLE (child)->widget;
-  //if (!(window)) return;
-  
-  g_signal_emit (child, g_signal_lookup ("destroy", HELLO_TYPE_CHILD), 0); 
-}
-
-static void
-do_window_event_initialization (void)
-{
-  AtkObject *root;
-
-  /*
-   * We don't need this yet because we launch destroy events by hand.
-   *
-  g_type_class_ref (HELLO_TYPE_CHILD);
-  g_signal_add_emission_hook (g_signal_lookup ("window-state-event", GTK_TYPE_WIDGET),
-                              0, state_event_watcher, NULL, (GDestroyNotify) NULL);
-  g_signal_add_emission_hook (g_signal_lookup ("configure-event", GTK_TYPE_WIDGET),
-                              0, configure_event_watcher, NULL, (GDestroyNotify) NULL);
-  */
-  root = atk_get_root ();
-  g_signal_connect (root, "children-changed::add",
-                    (GCallback) window_added, NULL);
-  g_signal_connect (root, "children-changed::remove",
-                    (GCallback) window_removed, NULL);
-}
-
-
-
 static guint
 add_listener (GSignalEmissionHook listener,
               const gchar         *object_type,
@@ -171,16 +117,7 @@ hello_util_add_global_event_listener (GSignalEmissionHook listener,
     {
       if (!strcmp ("window", split_string[0]))
         {
-          static gboolean initialized = FALSE;
-
-          if (!initialized)
-            {
-              do_window_event_initialization ();
-              initialized = TRUE;
-            }
-          g_message("add_listener begin");
-          rc = add_listener (listener, "HelloChild", split_string[1], event_type);
-          g_message("add_listener end");
+          //special gail case that we don't need yet
         }
       else
         {

@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "hellochild.h"
-#include "mytkwidget.h"
 
 static void             hello_child_class_init        (HelloChildClass      *klass);
 static void             hello_child_object_init       (HelloChild           *child);
@@ -60,13 +59,7 @@ GType hello_child_get_type(void)
 
       type = g_type_register_static(atk_object_get_type(),
                                     "HelloChild", &tinfo, (GTypeFlags) 0);
-      g_warning("well built!!!!!!!!!!!!!!!!!!!!!");
-
       g_type_add_interface_static (type, ATK_TYPE_TEXT, &atk_text_info);
-    }
-    else
-    {
-	    g_warning("built already!");
     }
   
   return type;
