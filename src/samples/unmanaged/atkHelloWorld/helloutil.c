@@ -111,18 +111,17 @@ hello_util_add_global_event_listener (GSignalEmissionHook listener,
   guint rc = 0;
   gchar **split_string;
 
+  //split_string[0]: toolkit
+  //            [1]: class/interface
+  //            [2]: event type
+  // example: Gtk:AtkObject:children-changed
   split_string = g_strsplit (event_type, ":", 3);
+
+  g_warning(g_strdup_printf("add global event listener, event_type: %s", event_type));
 
   if (split_string)
     {
-      if (!strcmp ("window", split_string[0]))
-        {
-          //special gail case that we don't need yet
-        }
-      else
-        {
-          rc = add_listener (listener, split_string[1], split_string[2], event_type);
-        }
+      rc = add_listener (listener, split_string[1], split_string[2], event_type);
 
       g_strfreev (split_string);
     }

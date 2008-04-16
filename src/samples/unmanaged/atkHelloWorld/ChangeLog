@@ -1,3 +1,9 @@
+2008-04-16  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* helloutil.c: Events that come with the specified special toolkit
+	  called 'window' are not needed for our current target. Adding some
+	  debug messages as well.
+
 2008-04-14  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* helloutil.c, hello.c, hellochild.c: Removing unneeded stuff (window
