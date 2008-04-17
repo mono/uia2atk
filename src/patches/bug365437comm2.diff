@@ -1,6 +1,6 @@
 Index: atk/Util.custom
 ===================================================================
---- atk/Util.custom	(revision 101044)
+--- atk/Util.custom	(revision 101061)
 +++ atk/Util.custom	(working copy)
 @@ -21,10 +21,42 @@
  // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
@@ -105,35 +105,65 @@ Index: atk/Util.custom
 -               
 Index: atk/glue/util.c
 ===================================================================
---- atk/glue/util.c	(revision 101044)
+--- atk/glue/util.c	(revision 101061)
 +++ atk/glue/util.c	(working copy)
-@@ -29,13 +29,19 @@
+@@ -29,14 +29,15 @@
  void atksharp_util_override_get_toolkit_name (gpointer cb);
  void atksharp_util_override_get_toolkit_version (gpointer cb);
  
-+guint atksharp_util_add_global_event_listener(
-+	GSignalEmissionHook listener,
-+	const gchar *event_type);
-+
- void
- atksharp_util_override_add_global_event_listener (gpointer cb)
- {
- 	AtkUtilClass *klass = g_type_class_peek (ATK_TYPE_UTIL);
- 	if (!klass)
- 		klass = g_type_class_ref (ATK_TYPE_UTIL);
+-void
+-atksharp_util_override_add_global_event_listener (gpointer cb)
+-{
+-	AtkUtilClass *klass = g_type_class_peek (ATK_TYPE_UTIL);
+-	if (!klass)
+-		klass = g_type_class_ref (ATK_TYPE_UTIL);
 -	((AtkUtilClass *) klass)->add_global_event_listener = cb;
-+	//disabled until we can get rid of the workaround:
-+	//((AtkUtilClass *) klass)->add_global_event_listener = cb;
-+	((AtkUtilClass *) klass)->add_global_event_listener = atksharp_util_add_global_event_listener;
- }
+-}
++//	disabled until we can get rid of the workaround:
++//void
++//atksharp_util_override_add_global_event_listener (gpointer cb)
++//{
++//	AtkUtilClass *klass = g_type_class_peek (ATK_TYPE_UTIL);
++//	if (!klass)
++//		klass = g_type_class_ref (ATK_TYPE_UTIL);
++//	((AtkUtilClass *) klass)->add_global_event_listener = cb;
++//}
  
  void
-@@ -92,3 +98,86 @@
+ atksharp_util_override_remove_global_event_listener (gpointer cb)
+@@ -92,3 +93,111 @@
  	((AtkUtilClass *) klass)->get_toolkit_version = cb;
  }
  
 +
 +//workaround:
++
++static GHashTable *listener_list = NULL;
++
++guint atksharp_util_add_global_event_listener(
++	GSignalEmissionHook listener,
++	const gchar *event_type);
++
++static void
++_listener_info_destroy (gpointer data)
++{
++	g_free(data);
++}
++
++void
++atksharp_util_override_add_global_event_listener (gpointer cb)
++{
++	AtkUtilClass *klass = g_type_class_peek (ATK_TYPE_UTIL);
++	if (!klass)
++		klass = g_type_class_ref (ATK_TYPE_UTIL);
++	//disabled until we can get rid of the workaround:
++	//((AtkUtilClass *) klass)->add_global_event_listener = cb;
++	((AtkUtilClass *) klass)->add_global_event_listener = atksharp_util_add_global_event_listener;
++	
++	listener_list = g_hash_table_new_full(g_int_hash, g_int_equal, NULL, _listener_info_destroy);
++}
++
++
 +static gint listener_idx = 1;
 +
 +typedef struct _AtkUtilListenerInfo AtkUtilListenerInfo;
@@ -145,7 +175,6 @@ Index: atk/glue/util.c
 +   gulong hook_id;
 +};
 +
-+static GHashTable *listener_list = NULL;
 +
 +guint
 +_atksharp_add_listener (GSignalEmissionHook listener,
@@ -214,4 +243,3 @@ Index: atk/glue/util.c
 +
 +	return rc;
 +}
-+
