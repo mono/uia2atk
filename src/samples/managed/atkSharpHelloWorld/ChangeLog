@@ -1,3 +1,9 @@
+2008-04-17  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* Main.cs, HelloUtil.cs: First try at using the workaround for
+	  GSignalEmissionHook not binded yet. (This compiles only patching
+	  atk#.)
+
 2008-04-10  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* HelloTopLevel.cs, Main.cs, Mytk.cs: First try to get events (signals)

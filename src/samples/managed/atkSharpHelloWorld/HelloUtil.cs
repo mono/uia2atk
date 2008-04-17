@@ -32,6 +32,11 @@ namespace atkSharpHelloWorld
 		{
 			return "1.1";
 		}
-
+		
+		internal static int AddGlobalEventListener(IntPtr listener, string event_type)
+		{
+			//dummy function for now
+			return 0;
+		}
 	}
 }

@@ -25,6 +25,7 @@ namespace atkSharpHelloWorld
 			Atk.Util.GetToolkitNameHandler = HelloUtil.GetToolkitName;
 			Atk.Util.GetToolkitVersionHandler = HelloUtil.GetToolkitVersion;
 			Atk.Util.GetRootHandler = HelloUtil.GetRoot;
+			Atk.Util.AddGlobalEventListenerHandler = HelloUtil.AddGlobalEventListener;
 
 			LaunchAtkBridge();
 			
