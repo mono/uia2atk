@@ -3,13 +3,11 @@
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="UiaAtkBridge" configuration="Debug" />
       <Entry build="True" name="tests" configuration="Debug" />
-      <Entry build="True" name="UIAutomationCore" configuration="Debug" />
       <Entry build="True" name="UIAutomationWinforms" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
       <Entry build="True" name="UiaAtkBridge" configuration="Release" />
       <Entry build="True" name="tests" configuration="Debug" />
-      <Entry build="True" name="UIAutomationCore" configuration="Release" />
       <Entry build="True" name="UIAutomationWinforms" configuration="Release" />
     </Configuration>
   </Configurations>
@@ -22,7 +20,6 @@
   <Entries>
     <Entry filename="UiaAtkBridge/UiaAtkBridge.mdp" />
     <Entry filename="samples/tests.mds" />
-    <Entry filename="UIAutomationCore/UIAutomationCore.mds" />
     <Entry filename="UIAutomationWinforms/UIAutomationWinforms.mds" />
   </Entries>
 </Combine>
