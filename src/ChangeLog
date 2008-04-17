@@ -1,3 +1,9 @@
+2008-04-17  Andres G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/bug365437comm2.diff: add this temporary diff.
+	It will evolve until being the correct GSignalEmissionHook
+	binding and then be included in Atk#.
+
 2008-04-11  Andres G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/bug526752onBGO.diff: Add the third (and last)
