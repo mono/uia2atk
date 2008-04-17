@@ -1,3 +1,10 @@
+2008-04-17  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* FormTest.mdp: Change AfterBuild command to copy libatk-bridge.so into
+	  what will be our LD_LIBRARY_PATH, and Execute command to call new
+	  formtest launcher script.
+	* formtest: Execute script for FormTest that sets LD_LIBRARY_PATH.
+
 2008-04-09  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* FormTest.mdp: Automate copying of libatksharpglue-2.so from SVN and
