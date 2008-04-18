@@ -1,3 +1,8 @@
+2008-04-18  Andres G. Aragoneses <aaragoneses@novell.com>
+
+        * patches/bug365437comm2.diff: added emission of children-changed event 
+        (later I'll move this to GLibSharp).
+
 2008-04-17  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Uia2Atk.mds: Delete unused UIAutomationCore.

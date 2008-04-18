@@ -1,6 +1,32 @@
+Index: atk/Object.custom
+===================================================================
+--- atk/Object.custom	(revision 101119)
++++ atk/Object.custom	(working copy)
+@@ -92,3 +92,20 @@
+ 			return null;
+ 		}
+ 
++		protected void EmitChildrenChanged (ChildrenChangedDetail detail, 
++											int childNumber, Atk.Object child)
++		{
++			string detailed_signal = "children-changed::" + detail.ToString().ToLower();
++			
++			g_signal_emit_by_name(Handle, detailed_signal, childNumber, child.Handle);
++		}
++		
++		[DllImport("libgobject-2.0-0.dll")]
++		private static extern void g_signal_emit_by_name (IntPtr instance, string detailed_signal, int param1, IntPtr param2);
++		
++		protected enum ChildrenChangedDetail
++		{
++			Add,
++			Remove
++		}
++		
+\ No newline at end of file
 Index: atk/Util.custom
 ===================================================================
---- atk/Util.custom	(revision 101061)
+--- atk/Util.custom	(revision 101119)
 +++ atk/Util.custom	(working copy)
 @@ -21,10 +21,42 @@
  // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
@@ -105,7 +131,7 @@ Index: atk/Util.custom
 -               
 Index: atk/glue/util.c
 ===================================================================
---- atk/glue/util.c	(revision 101061)
+--- atk/glue/util.c	(revision 101119)
 +++ atk/glue/util.c	(working copy)
 @@ -29,14 +29,15 @@
  void atksharp_util_override_get_toolkit_name (gpointer cb);
