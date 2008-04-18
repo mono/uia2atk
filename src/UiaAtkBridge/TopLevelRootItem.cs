@@ -68,8 +68,12 @@ namespace UiaAtkBridge
 		
 		protected override Atk.Object OnRefChild (int i)
 		{
-			lock (syncRoot)
-				return this.children[i];
+			lock (syncRoot) {
+				if (i >= children.Count)
+					return null;
+				
+				return this.children [i];
+			}
 		}
 		
 		public void RemoveChild(Atk.Object childToRemove)
