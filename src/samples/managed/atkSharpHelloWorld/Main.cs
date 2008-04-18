@@ -29,7 +29,7 @@ namespace atkSharpHelloWorld
 
 			LaunchAtkBridge();
 			
-			timer.Interval = 10000;
+			timer.Interval = 20000;
 			timer.Elapsed += ElapsedTimer;
 			timer.Enabled = true;
 			
