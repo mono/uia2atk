@@ -197,10 +197,9 @@ mytk_widget_new (
   return widget;
 }
 
-
 MytkWidget*
 mytk_wiget_new (gchar* name)
 {
   MytkWidget* widget = g_object_new(MYTK_TYPE_WIDGET, NULL);
-  widget->name = strdup(name);
+  widget->name = g_strdup(name);
 }

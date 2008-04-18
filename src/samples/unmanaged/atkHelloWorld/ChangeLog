@@ -1,3 +1,7 @@
+2008-04-18  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* hello.c, hellotoplevel.c, mytkwidget.c: Fixed some warnings.
+
 2008-04-16  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* helloutil.c: Events that come with the specified special toolkit

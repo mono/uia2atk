@@ -35,7 +35,7 @@ hello_accessibility_module_init (void)
   g_type_class_unref (g_type_class_ref (HELLO_TYPE_UTIL));
   g_type_class_unref (g_type_class_ref (HELLO_TYPE_MISC));
   
-  toplevel_singleton = get_hello_toplevel_singleton;
+  toplevel_singleton = get_hello_toplevel_singleton();
 }
 
 static void
@@ -81,6 +81,27 @@ start_program_gui(void)
   return first_widget;
 }
 
+gpointer update_children (gpointer data)
+{
+  g_warning("started updator");
+  sleep(30);
+  g_warning("updator awaken");
+
+  hello_toplevel_window_destroyed (widget_to_remove);
+  
+  return NULL;
+}
+
+void create_and_launch_updater_thread ()
+{
+  g_thread_init (NULL);
+
+  GThread* updator = g_thread_create (update_children,
+                                      NULL,
+                                      FALSE,
+                                      NULL);
+}
+
 main(int argc, char *argv[])
 {
   //this is originally in gtk_init ( http://library.gnome.org/devel/glib/stable/glib-Miscellaneous-Utility-Functions.html#g-get-prgname )
@@ -102,24 +123,3 @@ main(int argc, char *argv[])
   g_main_loop_run (mainloop);
   return 0;
 }
-
-void update_children ()
-{
-  g_warning("started updator");
-  sleep(30);
-  g_warning("updator awaken");
-
-  hello_toplevel_window_destroyed (widget_to_remove);
-}
-
-
-void create_and_launch_updater_thread ()
-{
-  g_thread_init (NULL);
-
-  GThread* updator = g_thread_create (update_children,
-                                      NULL,
-                                      FALSE,
-                                      NULL);
-}
-

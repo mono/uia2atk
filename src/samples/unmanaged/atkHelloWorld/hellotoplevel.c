@@ -92,7 +92,7 @@ hello_toplevel_new (void)
   accessible->name = g_get_prgname();
   accessible->accessible_parent = NULL;
 
-  toplevel_singleton = object;
+  toplevel_singleton = HELLO_TOPLEVEL(object);
 
   return accessible;
 }
@@ -228,7 +228,7 @@ _hello_toplevel_remove_child (MytkWidget    *window)
               child = mytk_widget_get_accessible (MYTK_WIDGET (window));
               g_signal_emit_by_name (atk_obj, "children-changed::remove",
                                      window_count, 
-                                     child, NULL);
+                                     child);
               atk_object_set_parent (child, NULL);
               break;
             }
