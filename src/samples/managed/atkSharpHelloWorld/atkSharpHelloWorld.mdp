@@ -1,7 +1,11 @@
 <Project name="atkSharpHelloWorld" fileversion="2.0" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
-      <Output directory="bin/Debug" assembly="atkSharpHelloWorld" />
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp /usr/lib/gtk-2.0/modules/libatk-bridge.so ../../../../../../../gtk-sharp/atk/glue/.libs/" workingdir="${TargetDir}" />
+        <Command type="Execute" command="sh ../../atkSharpHelloWorld" workingdir="${TargetDir}" />
+      </CustomCommands>
+      <Output directory="bin/Debug" assemblyKeyFile="." assembly="atkSharpHelloWorld" />
       <Build debugmode="True" target="Exe" />
       <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
       <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
