@@ -53,6 +53,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			form.ControlAdded += OnControlAdded;
 			form.ControlRemoved += OnControlRemoved;
+			form.Closed += OnClosed;
 			
 			Console.WriteLine ("WindowProvider created");
 			
@@ -97,6 +98,15 @@ namespace Mono.UIAutomation.Winforms
 		private void OnControlRemoved (object sender, EventArgs args)
 		{
 			Console.WriteLine ("ControlRemoved: " + sender.GetType ().ToString ());
+		}
+		
+		private void OnClosed (object sender, EventArgs args)
+		{
+			// TODO: Fill in rest of eventargs
+			AutomationInteropProvider.RaiseStructureChangedEvent (
+			  this,
+			  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkRemoved,
+			                                 new int [] {0}));
 		}
 		
 #endregion

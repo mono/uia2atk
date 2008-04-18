@@ -50,7 +50,8 @@ namespace UiaAtkBridge
 		{
 			if (isApplicationStarted)
 			{
-				TopLevelRootItem.Instance.RemoveChild(associations[form]);
+				Console.WriteLine ("FormIsRemoved");
+				TopLevelRootItem.Instance.RemoveChild (associations[form]);
 			}
 			else
 			{
@@ -64,9 +65,6 @@ namespace UiaAtkBridge
 		
 		public void FormIsAdded(IWindowProvider form)
 		{
-			if (isApplicationStarted)
-				throw new NotImplementedException();
-			
 			IRawElementProviderSimple simpleProvider = (IRawElementProviderSimple) form;
 			string windowName = (string) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			
