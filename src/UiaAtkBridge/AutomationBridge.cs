@@ -21,6 +21,7 @@
 // 
 // Authors: 
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//      Andres G. Aragoneses <aaragoneses@novell.com>
 // 
 
 using System;
@@ -80,14 +81,21 @@ namespace UiaAtkBridge
 		
 		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
-			if (e.StructureChangeType == StructureChangeType.ChildrenBulkAdded) {
+			IWindowProvider windowProvider = provider as IWindowProvider;
+
+			if (e.StructureChangeType == StructureChangeType.ChildrenBulkAdded)
+			{
 				// TODO: Probably more efficient to check some properties
 				//       on IRawElementProviderSimple (two casts total)
-				IWindowProvider windowProvider = provider as IWindowProvider;
 				if (windowProvider != null)
 					HandleNewWindowProvider (windowProvider);
 				
 				// TODO: Other providers
+			}
+			else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) 
+			{
+				if (windowProvider != null)
+					HandleWindowProviderRemoval (windowProvider);
 			}
 			
 			// TODO: Other structure changes
@@ -99,14 +107,12 @@ namespace UiaAtkBridge
 		
 		private void HandleNewWindowProvider (IWindowProvider provider)
 		{
-			// Events aren't handled in the bridge yet, so don't
-			// notify the appMonitor once the bridge has been launched.
-			// Obviously this will change soon.
-			if (!applicationStarted) {
-				IRawElementProviderSimple simpleProvider = (IRawElementProviderSimple) provider;
-				string windowName = (string) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-				appMonitor.FormIsAdded (windowName);
-			}
+			appMonitor.FormIsAdded (provider);
+		}
+		
+		private void HandleWindowProviderRemoval (IWindowProvider provider)
+		{
+			appMonitor.FormIsRemoved (provider);
 		}
 		
 #endregion

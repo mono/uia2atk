@@ -24,30 +24,62 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Threading;
 
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+
 namespace UiaAtkBridge
 {
-	public class Monitor
+	internal class Monitor
 	{
 		public Monitor()
 		{
-			GLib.GType.Init();
+			//GLib.GType.Init();
 			
 			Atk.Util.GetRootHandler = ReturnTopLevel;
 			
 			Atk.Util.GetToolkitNameHandler = GetAssemblyName;
 			Atk.Util.GetToolkitVersionHandler = GetAssemblyVersionNumber;
+			Atk.Util.AddGlobalEventListenerHandler = AddGlobalEventListener;
 		}
 		
-		public void FormIsAdded(string name)
+		public void FormIsRemoved(IWindowProvider form)
 		{
-			TopLevelRootItem.Instance.AddOneChild(name);
+			if (isApplicationStarted)
+			{
+				TopLevelRootItem.Instance.RemoveChild(associations[form]);
+			}
+			else
+			{
+				// TODO: an app can remove a form if it has not been started??
+				throw new NotImplementedException();
+			}
 		}
+		
+		private Dictionary<IWindowProvider, Atk.Object> associations =
+			new Dictionary<IWindowProvider,Atk.Object>();
+		
+		public void FormIsAdded(IWindowProvider form)
+		{
+			if (isApplicationStarted)
+				throw new NotImplementedException();
+			
+			IRawElementProviderSimple simpleProvider = (IRawElementProviderSimple) form;
+			string windowName = (string) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			
+			Window newWindow = new Window(windowName);
+			associations.Add(form, newWindow);
+			TopLevelRootItem.Instance.AddOneChild(newWindow);
+		}
+		
+		private bool isApplicationStarted = false;
 		
 		public void ApplicationStarts()
 		{
+			isApplicationStarted = true;
 			Thread glibThread = new Thread (new ThreadStart (GLibMainLoopThread));
 			glibThread.Start ();
 			GLibHacks.Invoke (delegate (object sender, EventArgs args) {
@@ -77,6 +109,12 @@ namespace UiaAtkBridge
 		private static string GetAssemblyVersionNumber()
 		{
 			return typeof(Monitor).Assembly.GetName().Version.ToString();
+		}
+		
+		private int AddGlobalEventListener(IntPtr listener, string event_type)
+		{
+			//dummy method for now
+			return 0;
 		}
 		
 		[DllImport("libatk-bridge")]

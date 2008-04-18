@@ -53,24 +53,36 @@ namespace UiaAtkBridge
 		
 		private List<Atk.Object> children;
 		
-		internal void AddOneChild(string name)
+		internal void AddOneChild (Window window)
 		{
 			lock (syncRoot) {
-				Window newWindow = new Window(name);
-				this.children.Add(newWindow);
+				this.children.Add (window);
 			}
 		}
 		
-		protected override int OnGetNChildren() 
+		protected override int OnGetNChildren ()
 		{
 			lock (syncRoot)
 				return this.children.Count;
 		}
 		
-		protected override Atk.Object OnRefChild(int i) 
+		protected override Atk.Object OnRefChild (int i)
 		{
 			lock (syncRoot)
 				return this.children[i];
+		}
+		
+		public void RemoveChild(Atk.Object childToRemove)
+		{
+			int childIndex = 0;
+			foreach(Atk.Object child in this.children)
+			{
+				if (childToRemove == child)
+					break;
+				else
+					childIndex++;
+			}
+			this.EmitChildrenChanged(Atk.Object.ChildrenChangedDetail.Remove, childIndex, childToRemove);
 		}
 	}
 }

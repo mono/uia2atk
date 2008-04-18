@@ -1,3 +1,8 @@
+2008-04-18  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* TopLevelRootItem.cs, AutomationBridge.cs, Monitor.cs: Implement
+	  support for forms removal events (this depends on a patch to Atk#).
+
 2008-04-06  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* AssemblyInfo.cs: Specified that version is 1.0.0.0.
