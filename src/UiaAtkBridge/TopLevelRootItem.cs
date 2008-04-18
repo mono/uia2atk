@@ -82,7 +82,8 @@ namespace UiaAtkBridge
 				else
 					childIndex++;
 			}
-			this.EmitChildrenChanged(Atk.Object.ChildrenChangedDetail.Remove, childIndex, childToRemove);
+			children.Remove(childToRemove);
+			EmitChildrenChanged(Atk.Object.ChildrenChangedDetail.Remove, childIndex, childToRemove);
 		}
 	}
 }

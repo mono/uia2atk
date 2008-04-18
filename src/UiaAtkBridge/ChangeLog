@@ -1,3 +1,8 @@
+2008-04-18  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* TopLevelRootItem.cs: *Actually* remove the child (we need this
+	  crucial step before firing the signal).
+
 2008-04-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Monitor.cs: Allow adding a form at any time.
