@@ -1,5 +1,10 @@
 2008-04-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* AutomationBridge.cs: Style fixes, comments, debug output on
+	  InvokedEvent.
+
+2008-04-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* TopLevelRootItem.cs: Return null if the index passed into OnRefChild
 	  is invalid.
 

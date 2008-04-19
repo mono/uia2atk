@@ -4,7 +4,7 @@
       <Entry build="True" name="TestGtkSharp" configuration="Debug" />
       <Entry build="True" name="FormTest" configuration="Debug" />
       <Entry build="True" name="atkSharpHelloWorld" configuration="Debug" />
-      <Entry build="True" name="TestUiaAtkBridge" configuration="Debug" />
+      <Entry build="False" name="TestUiaAtkBridge" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
       <Entry build="True" name="TestGtkSharp" configuration="Release" />

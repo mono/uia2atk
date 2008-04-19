@@ -58,6 +58,7 @@ namespace UiaAtkBridge
 		
 		public bool ClientsAreListening {
 			get {
+				// TODO: How with ATK?
 				return true;
 			}
 		}
@@ -66,9 +67,12 @@ namespace UiaAtkBridge
 		{
 			// TODO: Find better way to pass PreRun event on to bridge
 			//        (nullx3 is a magic value)
+			//        (once bridge events are working, should be able to happen upon construction, right?)
 			if (eventId == null && provider == null && e == null) {
 				if (!applicationStarted && appMonitor != null)
 					appMonitor.ApplicationStarts ();
+			} else if (eventId == InvokePatternIdentifiers.InvokedEvent) {
+				Console.WriteLine ("Bridge Event: Invoke!");
 			}
 			
 			// TODO: Handle other events
@@ -83,17 +87,14 @@ namespace UiaAtkBridge
 		{
 			IWindowProvider windowProvider = provider as IWindowProvider;
 
-			if (e.StructureChangeType == StructureChangeType.ChildrenBulkAdded)
-			{
+			if (e.StructureChangeType == StructureChangeType.ChildrenBulkAdded) {
 				// TODO: Probably more efficient to check some properties
 				//       on IRawElementProviderSimple (two casts total)
 				if (windowProvider != null)
 					HandleNewWindowProvider (windowProvider);
 				
 				// TODO: Other providers
-			}
-			else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) 
-			{
+			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
 				if (windowProvider != null)
 					HandleWindowProviderRemoval (windowProvider);
 			}
