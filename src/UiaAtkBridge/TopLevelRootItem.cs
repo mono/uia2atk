@@ -57,6 +57,7 @@ namespace UiaAtkBridge
 		{
 			lock (syncRoot) {
 				this.children.Add (window);
+				EmitChildrenChanged(Atk.Object.ChildrenChangedDetail.Add, this.children.Count - 1, window);
 			}
 		}
 		
@@ -78,16 +79,16 @@ namespace UiaAtkBridge
 		
 		public void RemoveChild(Atk.Object childToRemove)
 		{
-			int childIndex = 0;
-			foreach(Atk.Object child in this.children)
-			{
-				if (childToRemove == child)
-					break;
-				else
-					childIndex++;
+			lock (syncRoot) {
+				int childIndex = children.FindIndex(
+				delegate(Atk.Object child)
+				{
+					return (child == childToRemove);
+				});
+				
+				children.Remove(childToRemove);
+				EmitChildrenChanged(Atk.Object.ChildrenChangedDetail.Remove, childIndex, childToRemove);
 			}
-			children.Remove(childToRemove);
-			EmitChildrenChanged(Atk.Object.ChildrenChangedDetail.Remove, childIndex, childToRemove);
 		}
 	}
 }

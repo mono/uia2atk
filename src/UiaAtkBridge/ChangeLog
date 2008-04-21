@@ -1,3 +1,8 @@
+2008-04-21  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* TopLevelRootItem.cs: Replace a hack with a predicate call. Add
+	  locking in remove. Add support for the event of adding a child.
+
 2008-04-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* AutomationBridge.cs: Style fixes, comments, debug output on
