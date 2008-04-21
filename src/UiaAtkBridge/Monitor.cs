@@ -37,7 +37,7 @@ namespace UiaAtkBridge
 	{
 		public Monitor()
 		{
-			//GLib.GType.Init();
+			GLib.GType.Init();
 			
 			Atk.Util.GetRootHandler = ReturnTopLevel;
 			
