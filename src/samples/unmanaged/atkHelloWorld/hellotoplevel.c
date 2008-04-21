@@ -183,6 +183,9 @@ static AtkObject*
 hello_toplevel_ref_child (AtkObject *obj,
                           gint      i)
 {
+  if (i > hello_toplevel_get_n_children(obj) - 1)
+    g_warning("IndexOutOfRange, going to return null");
+  
   HelloToplevel *toplevel;
   gpointer ptr;
   MytkWidget *widget;

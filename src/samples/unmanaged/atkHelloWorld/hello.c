@@ -71,14 +71,13 @@ start_program_gui(void)
     return;
   }
   int i = 0;
-  MytkWidget *first_widget = NULL;
+  MytkWidget *last_widget = NULL;
   for (i = 0; i < NUM_CHILDREN; i++)
   {
     MytkWidget *widget = mytk_add_one_top_level_window(g_strdup_printf("TopLevel %d", i + 1));
-    if (i == 0)
-      first_widget = widget;
+    last_widget = widget;
   }
-  return first_widget;
+  return last_widget;
 }
 
 gpointer update_children (gpointer data)
