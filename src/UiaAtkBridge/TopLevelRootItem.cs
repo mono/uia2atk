@@ -57,8 +57,8 @@ namespace UiaAtkBridge
 		{
 			lock (syncRoot) {
 				this.children.Add (window);
-				EmitChildrenChanged(Atk.Object.ChildrenChangedDetail.Add, this.children.Count - 1, window);
 			}
+			EmitChildrenChanged(Atk.Object.ChildrenChangedDetail.Add, this.children.Count - 1, window);
 		}
 		
 		protected override int OnGetNChildren ()
@@ -79,16 +79,12 @@ namespace UiaAtkBridge
 		
 		public void RemoveChild(Atk.Object childToRemove)
 		{
+			int childIndex;
 			lock (syncRoot) {
-				int childIndex = children.FindIndex(
-				delegate(Atk.Object child)
-				{
-					return (child == childToRemove);
-				});
-				
+				childIndex = children.IndexOf(childToRemove);
 				children.Remove(childToRemove);
-				EmitChildrenChanged(Atk.Object.ChildrenChangedDetail.Remove, childIndex, childToRemove);
 			}
+			EmitChildrenChanged(Atk.Object.ChildrenChangedDetail.Remove, childIndex, childToRemove);
 		}
 	}
 }
