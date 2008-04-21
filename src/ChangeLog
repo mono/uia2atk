@@ -1,5 +1,9 @@
 2008-04-18  Andres G. Aragoneses <aaragoneses@novell.com>
 
+	* patches/winforms-uia.patch: use #if NET_2_0, as Sys.Env.SetEnvVar is 2.0.
+
+2008-04-18  Andres G. Aragoneses <aaragoneses@novell.com>
+
         * patches/bug365437comm2.diff: added emission of children-changed event 
         (later I'll move this to GLibSharp).
 

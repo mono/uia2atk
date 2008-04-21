@@ -1,8 +1,16 @@
 Index: class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs
 ===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs	(revision 96906)
+--- class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs	(revision 101287)
 +++ class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs	(working copy)
-@@ -86,6 +86,7 @@
+@@ -28,6 +28,7 @@
+ using System.Drawing;
+ using System.Runtime.InteropServices;
+ using System.IO;
++using System;
+ 
+ namespace System.Windows.Forms {
+ 	internal class X11DesktopColors {
+@@ -86,6 +87,7 @@
  
  		#region Constructors
  		static X11DesktopColors() {
@@ -10,7 +18,7 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs
  			FindDesktopEnvironment();
  			
  			switch(desktop) {
-@@ -97,7 +98,7 @@
+@@ -97,7 +99,7 @@
  					GtkStyleStruct	style;
  
  					try {
@@ -19,13 +27,15 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs
  						//dispmgr =  gdk_display_manager_get ();
  						//gdkdisplay =  gdk_display_manager_get_default_display (dispmgr);
  
-@@ -145,6 +146,22 @@
+@@ -145,6 +147,27 @@
  				}
  			}
  		}
 +
 +		static void GtkInit ()
 +		{
++//no SetEnv in 1.x
++#if NET_2_0
 +			// Prevent ATK bridge initalization, as it causes
 +			// conflicts with the UIA<->ATK bridge.
 +			// A better solution would probably be to get these
@@ -34,17 +44,20 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs
 +			string dangerousEnvVar = "GTK_MODULES";
 +			string gtkModulesEnvVarContent = Environment.GetEnvironmentVariable (dangerousEnvVar);
 +			Environment.SetEnvironmentVariable (dangerousEnvVar, string.Empty);
++#endif
 +
 +			gtk_init_check (IntPtr.Zero, IntPtr.Zero);
 +
++#if NET_2_0
 +			Environment.SetEnvironmentVariable (dangerousEnvVar, gtkModulesEnvVarContent);
++#endif
 +		}
  		#endregion	// Constructors
  
  		#region Properties
 Index: class/Managed.Windows.Forms/System.Windows.Forms/Application.cs
 ===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/Application.cs	(revision 96906)
+--- class/Managed.Windows.Forms/System.Windows.Forms/Application.cs	(revision 101287)
 +++ class/Managed.Windows.Forms/System.Windows.Forms/Application.cs	(working copy)
 @@ -153,10 +153,42 @@
  		private static ToolStrip keyboard_capture;
