@@ -1,6 +1,6 @@
 Index: atk/Object.custom
 ===================================================================
---- atk/Object.custom	(revision 101455)
+--- atk/Object.custom	(revision 101473)
 +++ atk/Object.custom	(working copy)
 @@ -92,3 +92,27 @@
  			return null;
@@ -33,7 +33,7 @@ Index: atk/Object.custom
 \ No newline at end of file
 Index: atk/Util.custom
 ===================================================================
---- atk/Util.custom	(revision 101455)
+--- atk/Util.custom	(revision 101473)
 +++ atk/Util.custom	(working copy)
 @@ -21,10 +21,42 @@
  // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
@@ -138,7 +138,7 @@ Index: atk/Util.custom
 -               
 Index: atk/glue/util.c
 ===================================================================
---- atk/glue/util.c	(revision 101455)
+--- atk/glue/util.c	(revision 101473)
 +++ atk/glue/util.c	(working copy)
 @@ -29,14 +29,15 @@
  void atksharp_util_override_get_toolkit_name (gpointer cb);
@@ -280,7 +280,7 @@ Index: glib/GQuark.cs
 ===================================================================
 --- glib/GQuark.cs	(revision 0)
 +++ glib/GQuark.cs	(revision 0)
-@@ -0,0 +1,39 @@
+@@ -0,0 +1,43 @@
 +// GLib.GQuark.cs : Class for managed GQuark
 +//
 +// Author: Andres G. Aragoneses  <aaragoneses@novell.com>
@@ -313,16 +313,20 @@ Index: glib/GQuark.cs
 +		
 +		//better not to expose FromStaticString () due to memory allocation issues
 +		public static uint FromString (string str) {
-+			return g_quark_from_string (str);
++			IntPtr nativeString = GLib.Marshaller.StringToPtrGStrdup (str);
++			uint ret = g_quark_from_string (nativeString);
++			GLib.Marshaller.Free (nativeString);
++			return ret;
 +		}
 +		
++		//better not to expose from_static_string () due to memory allocation issues
 +		[DllImport("libglib-2.0-0.dll")]
-+		static extern uint g_quark_from_string (string str);
++		static extern uint g_quark_from_string (IntPtr str);
 +	}
 +}
 Index: glib/Signal.cs
 ===================================================================
---- glib/Signal.cs	(revision 101455)
+--- glib/Signal.cs	(revision 101473)
 +++ glib/Signal.cs	(working copy)
 @@ -1,6 +1,7 @@
  // GLib.Signal.cs - signal marshaling class
@@ -340,18 +344,22 @@ Index: glib/Signal.cs
  
  		~Signal ()
  		{
-@@ -70,6 +72,10 @@
+@@ -70,6 +72,14 @@
  			this.marshaler = marshaler;
  			gc_handle = GCHandle.Alloc (this, GCHandleType.Weak);
  			tref.Signals [name] = this;
 +			
++			IntPtr signalNativeName = GLib.Marshaller.StringToPtrGStrdup (signal_name);
++			
 +			//TODO: don't know how to call this, none of these work:
-+			signal_id = g_signal_lookup (signal_name, obj.GType.Handle);
-+			signal_id = g_signal_lookup (signal_name, GLib.Object.LookupGType(obj.GetType()).val);
++			signal_id = g_signal_lookup (signalNativeName, obj.GType.Handle);
++			signal_id = g_signal_lookup (signalNativeName, GLib.Object.LookupGType(obj.GetType()).val);
++			
++			GLib.Marshaller.Free (signalNativeName);
  		}
  
  		internal void Free ()
-@@ -91,7 +97,7 @@
+@@ -91,7 +101,7 @@
  			Signal result = obj.ToggleRef.Signals [name] as Signal;
  			if (result == null)
  				result = new Signal (obj, name, marshaler);
@@ -360,7 +368,7 @@ Index: glib/Signal.cs
  		}
  
  		Delegate before_handler;
-@@ -190,7 +196,33 @@
+@@ -190,7 +200,33 @@
  				return event_handler_delegate;
  			}
  		}
@@ -394,7 +402,7 @@ Index: glib/Signal.cs
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);
  
-@@ -202,6 +234,12 @@
+@@ -202,6 +238,12 @@
  
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern bool g_signal_handler_is_connected (IntPtr instance, uint handler);
@@ -403,13 +411,13 @@ Index: glib/Signal.cs
 +		static extern void g_signal_emitv (IntPtr instance_and_params, uint signal_id, uint gquark_detail, ref GLib.Value return_value);
 +
 +		[DllImport("libgobject-2.0-0.dll")]
-+		static extern uint g_signal_lookup (string name, IntPtr itype);
++		static extern uint g_signal_lookup (IntPtr name, IntPtr itype);
  	}
  }
  
 Index: glib/Makefile.am
 ===================================================================
---- glib/Makefile.am	(revision 101455)
+--- glib/Makefile.am	(revision 101473)
 +++ glib/Makefile.am	(working copy)
 @@ -33,6 +33,7 @@
  	GInterfaceAdapter.cs			\
