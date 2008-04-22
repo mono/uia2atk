@@ -11,7 +11,7 @@ Index: atk/Object.custom
 +		{
 +			string detailed_signal = detail.ToString().ToLower();
 +			
-+			GLib.Signal childrenChangedSignal = GLib.Signal.Lookup (child, "children-changed");
++			GLib.Signal childrenChangedSignal = GLib.Signal.Lookup (this, "children-changed");
 +			
 +			GLib.Value[] args = new GLib.Value[2];
 +			GLib.Value atkobjValue = new GLib.Value(this);
@@ -351,6 +351,15 @@ Index: glib/Signal.cs
  		}
  
  		internal void Free ()
+@@ -91,7 +97,7 @@
+ 			Signal result = obj.ToggleRef.Signals [name] as Signal;
+ 			if (result == null)
+ 				result = new Signal (obj, name, marshaler);
+-			return result as Signal;
++			return result;
+ 		}
+ 
+ 		Delegate before_handler;
 @@ -190,7 +196,33 @@
  				return event_handler_delegate;
  			}

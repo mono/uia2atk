@@ -1,5 +1,11 @@
 2008-04-22  Andres G. Aragoneses <aaragoneses@novell.com>
 
+	* patches/bug365437comm2.diff: Same typo as previous
+	one, but in other place (I need a new brain). Delete
+	unneeded cast.
+
+2008-04-22  Andres G. Aragoneses <aaragoneses@novell.com>
+
 	* patches/bug365437comm2.diff: Glub, super typo!
 	(the instance is the obj itself, not the child).
 
