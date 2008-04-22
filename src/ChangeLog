@@ -1,4 +1,8 @@
-2008-04-18  Andres G. Aragoneses <aaragoneses@novell.com>
+2008-04-22  Andres G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/bug365437comm2.diff: move signal P/Invoke to Signal.cs.
+
+2008-04-21  Andres G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/winforms-uia.patch: use #if NET_2_0, as Sys.Env.SetEnvVar is 2.0.
 

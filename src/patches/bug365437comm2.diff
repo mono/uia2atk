@@ -1,8 +1,8 @@
 Index: atk/Object.custom
 ===================================================================
---- atk/Object.custom	(revision 101119)
+--- atk/Object.custom	(revision 101403)
 +++ atk/Object.custom	(working copy)
-@@ -92,3 +92,20 @@
+@@ -92,3 +92,17 @@
  			return null;
  		}
  
@@ -11,11 +11,8 @@ Index: atk/Object.custom
 +		{
 +			string detailed_signal = "children-changed::" + detail.ToString().ToLower();
 +			
-+			g_signal_emit_by_name(Handle, detailed_signal, childNumber, child.Handle);
++			GLib.Signal.EmitByName (Handle, detailed_signal, childNumber, child.Handle);
 +		}
-+		
-+		[DllImport("libgobject-2.0-0.dll")]
-+		private static extern void g_signal_emit_by_name (IntPtr instance, string detailed_signal, int param1, IntPtr param2);
 +		
 +		protected enum ChildrenChangedDetail
 +		{
@@ -26,7 +23,7 @@ Index: atk/Object.custom
 \ No newline at end of file
 Index: atk/Util.custom
 ===================================================================
---- atk/Util.custom	(revision 101119)
+--- atk/Util.custom	(revision 101403)
 +++ atk/Util.custom	(working copy)
 @@ -21,10 +21,42 @@
  // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
@@ -131,7 +128,7 @@ Index: atk/Util.custom
 -               
 Index: atk/glue/util.c
 ===================================================================
---- atk/glue/util.c	(revision 101119)
+--- atk/glue/util.c	(revision 101403)
 +++ atk/glue/util.c	(working copy)
 @@ -29,14 +29,15 @@
  void atksharp_util_override_get_toolkit_name (gpointer cb);
@@ -269,3 +266,28 @@ Index: atk/glue/util.c
 +
 +	return rc;
 +}
+Index: glib/Signal.cs
+===================================================================
+--- glib/Signal.cs	(revision 101403)
++++ glib/Signal.cs	(working copy)
+@@ -190,6 +190,10 @@
+ 				return event_handler_delegate;
+ 			}
+ 		}
++		
++		public static void EmitByName(IntPtr instance, string detailed_signal, int param1, IntPtr param2) {
++			g_signal_emit_by_name (instance, detailed_signal, param1, param2);
++		}
+ 
+ 		[DllImport("libgobject-2.0-0.dll")]
+ 		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);
+@@ -202,6 +206,9 @@
+ 
+ 		[DllImport("libgobject-2.0-0.dll")]
+ 		static extern bool g_signal_handler_is_connected (IntPtr instance, uint handler);
++		
++		[DllImport("libgobject-2.0-0.dll")]
++		static extern void g_signal_emit_by_name (IntPtr instance, string detailed_signal, int param1, IntPtr param2);
+ 	}
+ }
+ 
