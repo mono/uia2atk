@@ -1,17 +1,27 @@
 Index: atk/Object.custom
 ===================================================================
---- atk/Object.custom	(revision 101403)
+--- atk/Object.custom	(revision 101441)
 +++ atk/Object.custom	(working copy)
-@@ -92,3 +92,17 @@
+@@ -92,3 +92,27 @@
  			return null;
  		}
  
 +		protected void EmitChildrenChanged (ChildrenChangedDetail detail, 
 +											int childNumber, Atk.Object child)
 +		{
-+			string detailed_signal = "children-changed::" + detail.ToString().ToLower();
++			string detailed_signal = detail.ToString().ToLower();
 +			
-+			GLib.Signal.EmitByName (Handle, detailed_signal, childNumber, child.Handle);
++			GLib.Signal childrenChangedSignal = GLib.Signal.Lookup (child, "children-changed");
++			
++			GLib.Value[] args = new GLib.Value[2];
++			GLib.Value atkobjValue = new GLib.Value(child);
++			args [0] = new GLib.Value (childNumber);
++			args [1] = new GLib.Value (child);
++			
++			childrenChangedSignal.EmitVSharp (atkobjValue, detailed_signal, args);
++			atkobjValue.Dispose ();
++			args [0].Dispose ();
++			args [1].Dispose ();
 +		}
 +		
 +		protected enum ChildrenChangedDetail
@@ -23,7 +33,7 @@ Index: atk/Object.custom
 \ No newline at end of file
 Index: atk/Util.custom
 ===================================================================
---- atk/Util.custom	(revision 101403)
+--- atk/Util.custom	(revision 101441)
 +++ atk/Util.custom	(working copy)
 @@ -21,10 +21,42 @@
  // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
@@ -128,7 +138,7 @@ Index: atk/Util.custom
 -               
 Index: atk/glue/util.c
 ===================================================================
---- atk/glue/util.c	(revision 101403)
+--- atk/glue/util.c	(revision 101441)
 +++ atk/glue/util.c	(working copy)
 @@ -29,14 +29,15 @@
  void atksharp_util_override_get_toolkit_name (gpointer cb);
@@ -266,28 +276,133 @@ Index: atk/glue/util.c
 +
 +	return rc;
 +}
+Index: glib/GQuark.cs
+===================================================================
+--- glib/GQuark.cs	(revision 0)
++++ glib/GQuark.cs	(revision 0)
+@@ -0,0 +1,39 @@
++// GLib.GQuark.cs : Class for managed GQuark
++//
++// Author: Andres G. Aragoneses  <aaragoneses@novell.com>
++//
++// Copyright (c) 2008 Novell, Inc.
++//
++// This program is free software; you can redistribute it and/or
++// modify it under the terms of version 2 of the Lesser GNU General 
++// Public License as published by the Free Software Foundation.
++//
++// This program is distributed in the hope that it will be useful,
++// but WITHOUT ANY WARRANTY; without even the implied warranty of
++// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++// Lesser General Public License for more details.
++//
++// You should have received a copy of the GNU Lesser General Public
++// License along with this program; if not, write to the
++// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++// Boston, MA 02111-1307, USA.
++
++
++namespace GLib {
++	using System;
++	using System.Runtime.InteropServices;
++	
++	public class GQuark {
++		
++		//static class
++		private GQuark () { }
++		
++		//better not to expose FromStaticString () due to memory allocation issues
++		public static uint FromString (string str) {
++			return g_quark_from_string (str);
++		}
++		
++		[DllImport("libglib-2.0-0.dll")]
++		static extern uint g_quark_from_string (string str);
++	}
++}
 Index: glib/Signal.cs
 ===================================================================
---- glib/Signal.cs	(revision 101403)
+--- glib/Signal.cs	(revision 101441)
 +++ glib/Signal.cs	(working copy)
-@@ -190,6 +190,10 @@
+@@ -57,6 +57,7 @@
+ 		uint before_id = UInt32.MaxValue;
+ 		uint after_id = UInt32.MaxValue;
+ 		Delegate marshaler;
++		uint signal_id;
+ 
+ 		~Signal ()
+ 		{
+@@ -70,6 +71,10 @@
+ 			this.marshaler = marshaler;
+ 			gc_handle = GCHandle.Alloc (this, GCHandleType.Weak);
+ 			tref.Signals [name] = this;
++			
++			//TODO: don't know how to call this, none of these work:
++			//signal_id = g_signal_lookup (signal_name, obj.GType.Handle);
++			//signal_id = g_signal_lookup (signal_name, GLib.Object.LookupGType(obj.GetType()).val);
+ 		}
+ 
+ 		internal void Free ()
+@@ -190,7 +195,37 @@
  				return event_handler_delegate;
  			}
  		}
 +		
-+		public static void EmitByName(IntPtr instance, string detailed_signal, int param1, IntPtr param2) {
-+			g_signal_emit_by_name (instance, detailed_signal, param1, param2);
-+		}
++		public GLib.Value EmitVSharp (GLib.Value instance, string gquark_detail, params GLib.Value[] args)
++		{
++			uint gquark = GLib.GQuark.FromString (gquark_detail);
++			
++			GLib.Value ret;
++			uint numberOfParams = (uint)(args.Length + 1);
++			
++			GLib.ValueArray inst_and_params = new GLib.ValueArray (numberOfParams);
++			GLib.Value[] vals = new GLib.Value [args.Length];
++			inst_and_params.Append (instance);
++			
++			for (int i = 0; i < args.Length; i++)
++			{
++				inst_and_params.Append (args [i]);
++			}
  
++			EmitV (inst_and_params, signal_id, gquark, out ret);
++			
++			foreach (GLib.Value v in vals)
++				v.Dispose ();
++			
++			return ret;
++		}
++
++		private static void EmitV (GLib.ValueArray instance_and_params, uint signal_id, uint gquark_detail, out GLib.Value return_value)
++		{
++			return_value = GLib.Value.Empty;
++			g_signal_emitv (instance_and_params.ArrayPtr, signal_id, gquark_detail, ref return_value);
++		}
++		
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);
-@@ -202,6 +206,9 @@
+ 
+@@ -202,6 +237,12 @@
  
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern bool g_signal_handler_is_connected (IntPtr instance, uint handler);
 +		
 +		[DllImport("libgobject-2.0-0.dll")]
-+		static extern void g_signal_emit_by_name (IntPtr instance, string detailed_signal, int param1, IntPtr param2);
++		static extern void g_signal_emitv (IntPtr instance_and_params, uint signal_id, uint gquark_detail, ref GLib.Value return_value);
++
++		[DllImport("libgobject-2.0-0.dll")]
++		static extern uint g_signal_lookup (string name, IntPtr itype);
  	}
  }
  
+Index: glib/Makefile.am
+===================================================================
+--- glib/Makefile.am	(revision 101441)
++++ glib/Makefile.am	(working copy)
+@@ -33,6 +33,7 @@
+ 	GInterfaceAdapter.cs			\
+ 	GInterfaceAttribute.cs			\
+ 	Global.cs				\
++	GQuark.cs				\
+ 	GString.cs				\
+ 	GType.cs				\
+ 	GTypeAttribute.cs			\
