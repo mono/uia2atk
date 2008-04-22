@@ -231,7 +231,7 @@ _hello_toplevel_remove_child (MytkWidget    *window)
               child = mytk_widget_get_accessible (MYTK_WIDGET (window));
 
 //              g_signal_emit_by_name (atk_obj, "children-changed::remove",
-//                                     window_count, 
+//                                     window_count, child);
 
               GValue args[3] = { {0}, {0}, {0} };
               
