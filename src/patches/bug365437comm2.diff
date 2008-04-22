@@ -1,6 +1,6 @@
 Index: atk/Object.custom
 ===================================================================
---- atk/Object.custom	(revision 101441)
+--- atk/Object.custom	(revision 101455)
 +++ atk/Object.custom	(working copy)
 @@ -92,3 +92,27 @@
  			return null;
@@ -14,7 +14,7 @@ Index: atk/Object.custom
 +			GLib.Signal childrenChangedSignal = GLib.Signal.Lookup (child, "children-changed");
 +			
 +			GLib.Value[] args = new GLib.Value[2];
-+			GLib.Value atkobjValue = new GLib.Value(child);
++			GLib.Value atkobjValue = new GLib.Value(this);
 +			args [0] = new GLib.Value (childNumber);
 +			args [1] = new GLib.Value (child);
 +			
@@ -33,7 +33,7 @@ Index: atk/Object.custom
 \ No newline at end of file
 Index: atk/Util.custom
 ===================================================================
---- atk/Util.custom	(revision 101441)
+--- atk/Util.custom	(revision 101455)
 +++ atk/Util.custom	(working copy)
 @@ -21,10 +21,42 @@
  // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
@@ -138,7 +138,7 @@ Index: atk/Util.custom
 -               
 Index: atk/glue/util.c
 ===================================================================
---- atk/glue/util.c	(revision 101441)
+--- atk/glue/util.c	(revision 101455)
 +++ atk/glue/util.c	(working copy)
 @@ -29,14 +29,15 @@
  void atksharp_util_override_get_toolkit_name (gpointer cb);
@@ -322,7 +322,7 @@ Index: glib/GQuark.cs
 +}
 Index: glib/Signal.cs
 ===================================================================
---- glib/Signal.cs	(revision 101441)
+--- glib/Signal.cs	(revision 101455)
 +++ glib/Signal.cs	(working copy)
 @@ -1,6 +1,7 @@
  // GLib.Signal.cs - signal marshaling class
@@ -400,7 +400,7 @@ Index: glib/Signal.cs
  
 Index: glib/Makefile.am
 ===================================================================
---- glib/Makefile.am	(revision 101441)
+--- glib/Makefile.am	(revision 101455)
 +++ glib/Makefile.am	(working copy)
 @@ -33,6 +33,7 @@
  	GInterfaceAdapter.cs			\

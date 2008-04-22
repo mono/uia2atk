@@ -1,5 +1,10 @@
 2008-04-22  Andres G. Aragoneses <aaragoneses@novell.com>
 
+	* patches/bug365437comm2.diff: Glub, super typo!
+	(the instance is the obj itself, not the child).
+
+2008-04-22  Andres G. Aragoneses <aaragoneses@novell.com>
+
 	* patches/bug365437comm2.diff: remove vals var, as I didn't use
 	it in the end. Add call to g_signal_lookup although it does not
 	compile yet (I don't want anybody to test this until it's stable
