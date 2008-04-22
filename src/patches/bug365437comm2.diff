@@ -324,7 +324,15 @@ Index: glib/Signal.cs
 ===================================================================
 --- glib/Signal.cs	(revision 101441)
 +++ glib/Signal.cs	(working copy)
-@@ -57,6 +57,7 @@
+@@ -1,6 +1,7 @@
+ // GLib.Signal.cs - signal marshaling class
+ //
+ // Authors: Mike Kestner <mkestner@novell.com>
++//          Andres G. Aragoneses <aaragoneses@novell.com>
+ //
+ // Copyright (c) 2005 Novell, Inc.
+ //
+@@ -57,6 +58,7 @@
  		uint before_id = UInt32.MaxValue;
  		uint after_id = UInt32.MaxValue;
  		Delegate marshaler;
@@ -332,18 +340,18 @@ Index: glib/Signal.cs
  
  		~Signal ()
  		{
-@@ -70,6 +71,10 @@
+@@ -70,6 +72,10 @@
  			this.marshaler = marshaler;
  			gc_handle = GCHandle.Alloc (this, GCHandleType.Weak);
  			tref.Signals [name] = this;
 +			
 +			//TODO: don't know how to call this, none of these work:
-+			//signal_id = g_signal_lookup (signal_name, obj.GType.Handle);
-+			//signal_id = g_signal_lookup (signal_name, GLib.Object.LookupGType(obj.GetType()).val);
++			signal_id = g_signal_lookup (signal_name, obj.GType.Handle);
++			signal_id = g_signal_lookup (signal_name, GLib.Object.LookupGType(obj.GetType()).val);
  		}
  
  		internal void Free ()
-@@ -190,7 +195,37 @@
+@@ -190,7 +196,33 @@
  				return event_handler_delegate;
  			}
  		}
@@ -356,7 +364,6 @@ Index: glib/Signal.cs
 +			uint numberOfParams = (uint)(args.Length + 1);
 +			
 +			GLib.ValueArray inst_and_params = new GLib.ValueArray (numberOfParams);
-+			GLib.Value[] vals = new GLib.Value [args.Length];
 +			inst_and_params.Append (instance);
 +			
 +			for (int i = 0; i < args.Length; i++)
@@ -365,9 +372,6 @@ Index: glib/Signal.cs
 +			}
  
 +			EmitV (inst_and_params, signal_id, gquark, out ret);
-+			
-+			foreach (GLib.Value v in vals)
-+				v.Dispose ();
 +			
 +			return ret;
 +		}
@@ -381,7 +385,7 @@ Index: glib/Signal.cs
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);
  
-@@ -202,6 +237,12 @@
+@@ -202,6 +234,12 @@
  
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern bool g_signal_handler_is_connected (IntPtr instance, uint handler);
