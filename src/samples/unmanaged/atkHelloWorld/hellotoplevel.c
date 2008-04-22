@@ -229,9 +229,23 @@ _hello_toplevel_remove_child (MytkWidget    *window)
               toplevel_singleton->window_list = g_list_remove (toplevel_singleton->window_list,
                                                      l->data);
               child = mytk_widget_get_accessible (MYTK_WIDGET (window));
-              g_signal_emit_by_name (atk_obj, "children-changed::remove",
-                                     window_count, 
-                                     child);
+
+//              g_signal_emit_by_name (atk_obj, "children-changed::remove",
+//                                     window_count, 
+
+              GValue args[3] = { {0}, {0}, {0} };
+              
+              /* init */
+              g_value_init (&args[0], ATK_TYPE_OBJECT);
+              g_value_set_object (&args[0], atk_obj);
+              g_value_init (&args[1], G_TYPE_UINT);
+              g_value_set_uint (&args[1], window_count);
+              g_value_init (&args[2], ATK_TYPE_OBJECT);
+              g_value_set_object (&args[2], child);
+              
+              guint signal_id = g_signal_lookup ("children-changed", ATK_TYPE_OBJECT);
+              g_signal_emitv (args, signal_id, g_quark_from_static_string ("remove"), NULL);
+
               atk_object_set_parent (child, NULL);
               break;
             }
