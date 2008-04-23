@@ -1,27 +1,19 @@
 Index: atk/Object.custom
 ===================================================================
---- atk/Object.custom	(revision 101473)
+--- atk/Object.custom	(revision 101557)
 +++ atk/Object.custom	(working copy)
-@@ -92,3 +92,27 @@
+@@ -92,3 +92,19 @@
  			return null;
  		}
  
 +		protected void EmitChildrenChanged (ChildrenChangedDetail detail, 
 +											int childNumber, Atk.Object child)
 +		{
-+			string detailed_signal = detail.ToString().ToLower();
++			object[] args = new object[2];
++			args [0] = childNumber;
++			args [1] = child;
 +			
-+			GLib.Signal childrenChangedSignal = GLib.Signal.Lookup (this, "children-changed");
-+			
-+			GLib.Value[] args = new GLib.Value[2];
-+			GLib.Value atkobjValue = new GLib.Value(this);
-+			args [0] = new GLib.Value (childNumber);
-+			args [1] = new GLib.Value (child);
-+			
-+			childrenChangedSignal.EmitVSharp (atkobjValue, detailed_signal, args);
-+			atkobjValue.Dispose ();
-+			args [0].Dispose ();
-+			args [1].Dispose ();
++			GLib.Signal.Emit (this, "children-changed", detail.ToString().ToLower(), args);
 +		}
 +		
 +		protected enum ChildrenChangedDetail
@@ -33,7 +25,7 @@ Index: atk/Object.custom
 \ No newline at end of file
 Index: atk/Util.custom
 ===================================================================
---- atk/Util.custom	(revision 101473)
+--- atk/Util.custom	(revision 101557)
 +++ atk/Util.custom	(working copy)
 @@ -21,10 +21,42 @@
  // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
@@ -138,7 +130,7 @@ Index: atk/Util.custom
 -               
 Index: atk/glue/util.c
 ===================================================================
---- atk/glue/util.c	(revision 101473)
+--- atk/glue/util.c	(revision 101557)
 +++ atk/glue/util.c	(working copy)
 @@ -29,14 +29,15 @@
  void atksharp_util_override_get_toolkit_name (gpointer cb);
@@ -276,57 +268,24 @@ Index: atk/glue/util.c
 +
 +	return rc;
 +}
-Index: glib/GQuark.cs
+Index: glib/Object.cs
 ===================================================================
---- glib/GQuark.cs	(revision 0)
-+++ glib/GQuark.cs	(revision 0)
-@@ -0,0 +1,43 @@
-+// GLib.GQuark.cs : Class for managed GQuark
-+//
-+// Author: Andres G. Aragoneses  <aaragoneses@novell.com>
-+//
-+// Copyright (c) 2008 Novell, Inc.
-+//
-+// This program is free software; you can redistribute it and/or
-+// modify it under the terms of version 2 of the Lesser GNU General 
-+// Public License as published by the Free Software Foundation.
-+//
-+// This program is distributed in the hope that it will be useful,
-+// but WITHOUT ANY WARRANTY; without even the implied warranty of
-+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-+// Lesser General Public License for more details.
-+//
-+// You should have received a copy of the GNU Lesser General Public
-+// License along with this program; if not, write to the
-+// Free Software Foundation, Inc., 59 Temple Place - Suite 330,
-+// Boston, MA 02111-1307, USA.
-+
-+
-+namespace GLib {
-+	using System;
-+	using System.Runtime.InteropServices;
-+	
-+	public class GQuark {
+--- glib/Object.cs	(revision 101557)
++++ glib/Object.cs	(working copy)
+@@ -314,6 +314,10 @@
+ 				return GType.Object;
+ 			}
+ 		}
 +		
-+		//static class
-+		private GQuark () { }
-+		
-+		//better not to expose FromStaticString () due to memory allocation issues
-+		public static uint FromString (string str) {
-+			IntPtr nativeString = GLib.Marshaller.StringToPtrGStrdup (str);
-+			uint ret = g_quark_from_string (nativeString);
-+			GLib.Marshaller.Free (nativeString);
-+			return ret;
++		public GLib.GType GetGType () {
++			return LookupGType (this.GetType ());
 +		}
-+		
-+		//better not to expose from_static_string () due to memory allocation issues
-+		[DllImport("libglib-2.0-0.dll")]
-+		static extern uint g_quark_from_string (IntPtr str);
-+	}
-+}
+ 
+ 		[DllImport("glibsharpglue-2")]
+ 		static extern IntPtr gtksharp_get_type_name (IntPtr raw);
 Index: glib/Signal.cs
 ===================================================================
---- glib/Signal.cs	(revision 101473)
+--- glib/Signal.cs	(revision 101557)
 +++ glib/Signal.cs	(working copy)
 @@ -1,6 +1,7 @@
  // GLib.Signal.cs - signal marshaling class
@@ -344,22 +303,26 @@ Index: glib/Signal.cs
  
  		~Signal ()
  		{
-@@ -70,6 +72,14 @@
- 			this.marshaler = marshaler;
- 			gc_handle = GCHandle.Alloc (this, GCHandleType.Weak);
- 			tref.Signals [name] = this;
-+			
-+			IntPtr signalNativeName = GLib.Marshaller.StringToPtrGStrdup (signal_name);
-+			
-+			//TODO: don't know how to call this, none of these work:
-+			signal_id = g_signal_lookup (signalNativeName, obj.GType.Handle);
-+			signal_id = g_signal_lookup (signalNativeName, GLib.Object.LookupGType(obj.GetType()).val);
-+			
-+			GLib.Marshaller.Free (signalNativeName);
+@@ -81,6 +83,18 @@
+ 			GC.SuppressFinalize (this);
  		}
  
- 		internal void Free ()
-@@ -91,7 +101,7 @@
++		public static uint Lookup (string signalName, GLib.GType type)
++		{
++			IntPtr signalNativeName = GLib.Marshaller.StringToPtrGStrdup (signalName);
++			
++			//TODO: don't know how to call this, none of these work:
++			uint signalId = g_signal_lookup (signalNativeName, type.val);
++			
++			GLib.Marshaller.Free (signalNativeName);
++			
++			return signalId;
++		}
++		
+ 		public static Signal Lookup (GLib.Object obj, string name)
+ 		{
+ 			return Lookup (obj, name, EventHandlerDelegate);
+@@ -91,7 +105,7 @@
  			Signal result = obj.ToggleRef.Signals [name] as Signal;
  			if (result == null)
  				result = new Signal (obj, name, marshaler);
@@ -368,62 +331,79 @@ Index: glib/Signal.cs
  		}
  
  		Delegate before_handler;
-@@ -190,7 +200,33 @@
+@@ -190,7 +204,45 @@
  				return event_handler_delegate;
  			}
  		}
 +		
-+		public GLib.Value EmitVSharp (GLib.Value instance, string gquark_detail, params GLib.Value[] args)
++		public static object Emit (GLib.Object instance, string signalName, string gquarkDetail, params object[] args)
 +		{
-+			uint gquark = GLib.GQuark.FromString (gquark_detail);
++			uint signalId = GLib.Signal.Lookup (signalName, instance.GetGType ());
 +			
-+			GLib.Value ret;
-+			uint numberOfParams = (uint)(args.Length + 1);
++			uint gquark = GetGQuarkFromString (gquarkDetail);
 +			
-+			GLib.ValueArray inst_and_params = new GLib.ValueArray (numberOfParams);
-+			inst_and_params.Append (instance);
++			GLib.Value[] vals = new GLib.Value[args.Length + 1];
++			GLib.ValueArray inst_and_params = new GLib.ValueArray ((uint) args.Length + 1);
 +			
-+			for (int i = 0; i < args.Length; i++)
++			for (int i = 0; i < vals.Length; i++)
 +			{
-+				inst_and_params.Append (args [i]);
++				if (i == 0)
++				{
++					vals [i] = new GLib.Value (instance);
++				}
++				else 
++				{
++					vals [i] = new GLib.Value (args [i - 1]);
++				}
++				inst_and_params.Append (vals [i]);
 +			}
- 
-+			EmitV (inst_and_params, signal_id, gquark, out ret);
 +			
-+			return ret;
++			GLib.Value ret = GLib.Value.Empty;
++			g_signal_emitv (inst_and_params.ArrayPtr, signalId, gquark, ref ret);
+ 
++			foreach (GLib.Value val in vals)
++				val.Dispose ();
++			
++			return ret.Val;
 +		}
-+
-+		private static void EmitV (GLib.ValueArray instance_and_params, uint signal_id, uint gquark_detail, out GLib.Value return_value)
-+		{
-+			return_value = GLib.Value.Empty;
-+			g_signal_emitv (instance_and_params.ArrayPtr, signal_id, gquark_detail, ref return_value);
++		
++		public static uint GetGQuarkFromString (string str) {
++			IntPtr nativeString = GLib.Marshaller.StringToPtrGStrdup (str);
++			uint ret = g_quark_from_string (nativeString);
++			GLib.Marshaller.Free (nativeString);
++			return ret;
 +		}
 +		
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);
  
-@@ -202,6 +238,12 @@
+@@ -202,6 +254,16 @@
  
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern bool g_signal_handler_is_connected (IntPtr instance, uint handler);
 +		
 +		[DllImport("libgobject-2.0-0.dll")]
 +		static extern void g_signal_emitv (IntPtr instance_and_params, uint signal_id, uint gquark_detail, ref GLib.Value return_value);
-+
++		
 +		[DllImport("libgobject-2.0-0.dll")]
 +		static extern uint g_signal_lookup (IntPtr name, IntPtr itype);
++		
++		//better not to expose from_static_string () due to memory allocation issues
++		[DllImport("libglib-2.0-0.dll")]
++		static extern uint g_quark_from_string (IntPtr str);
  	}
  }
  
-Index: glib/Makefile.am
+Index: glib/GType.cs
 ===================================================================
---- glib/Makefile.am	(revision 101473)
-+++ glib/Makefile.am	(working copy)
-@@ -33,6 +33,7 @@
- 	GInterfaceAdapter.cs			\
- 	GInterfaceAttribute.cs			\
- 	Global.cs				\
-+	GQuark.cs				\
- 	GString.cs				\
- 	GType.cs				\
- 	GTypeAttribute.cs			\
+--- glib/GType.cs	(revision 101557)
++++ glib/GType.cs	(working copy)
+@@ -30,7 +30,7 @@
+ 	[StructLayout(LayoutKind.Sequential)]
+ 	public struct GType {
+ 
+-		IntPtr val;
++		internal IntPtr val;
+ 
+ 		public GType (IntPtr val)
+ 		{
