@@ -1,7 +1,12 @@
 2008-04-23  Andres G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/bug365437comm2.diff: More polishing changes,
-	in order to to follow a dont-make-me-think(TM) API.
+	in order to follow a dont-make-me-think(TM) API.
+
+2008-04-22  Andres G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/bug365437comm2.diff: Take care of IntPtr<>string
+	conversions.
 
 2008-04-22  Andres G. Aragoneses <aaragoneses@novell.com>
 
