@@ -1,3 +1,7 @@
+2008-04-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* HelloUtil.cs: Preparation for bound GSignalEmissionHook.
+
 2008-04-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* atkSharpHelloWorld.mdp: Added post-build and execute events just like
