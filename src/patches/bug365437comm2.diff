@@ -1,6 +1,6 @@
 Index: atk/Object.custom
 ===================================================================
---- atk/Object.custom	(revision 101690)
+--- atk/Object.custom	(revision 101692)
 +++ atk/Object.custom	(working copy)
 @@ -92,3 +92,14 @@
  			return null;
@@ -20,7 +20,7 @@ Index: atk/Object.custom
 \ No newline at end of file
 Index: atk/Util.custom
 ===================================================================
---- atk/Util.custom	(revision 101690)
+--- atk/Util.custom	(revision 101692)
 +++ atk/Util.custom	(working copy)
 @@ -21,10 +21,42 @@
  // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
@@ -125,7 +125,7 @@ Index: atk/Util.custom
 -               
 Index: atk/glue/util.c
 ===================================================================
---- atk/glue/util.c	(revision 101690)
+--- atk/glue/util.c	(revision 101692)
 +++ atk/glue/util.c	(working copy)
 @@ -92,3 +92,111 @@
  	((AtkUtilClass *) klass)->get_toolkit_version = cb;
@@ -241,7 +241,7 @@ Index: atk/glue/util.c
 +//}
 Index: glib/Signal.cs
 ===================================================================
---- glib/Signal.cs	(revision 101690)
+--- glib/Signal.cs	(revision 101692)
 +++ glib/Signal.cs	(working copy)
 @@ -1,6 +1,7 @@
  // GLib.Signal.cs - signal marshaling class
@@ -260,7 +260,7 @@ Index: glib/Signal.cs
  		}
  
  		Delegate before_handler;
-@@ -190,7 +191,71 @@
+@@ -190,7 +191,70 @@
  				return event_handler_delegate;
  			}
  		}
@@ -269,30 +269,29 @@ Index: glib/Signal.cs
 +		{
 +			uint signal_id = GetSignalId (signal_name, instance);
 +			uint gquark = GetGQuarkFromString (detail);
-+			GLib.Value[] vals = new GLib.Value [args.Length + 2];
++			GLib.Value[] vals = new GLib.Value [args.Length + 1];
 +			GLib.ValueArray inst_and_params = new GLib.ValueArray ((uint) args.Length + 1);
 +			
-+			for (int i = 0; i < vals.Length - 1; i++) {
-+				if (i != 0)
-+					vals [i] = new GLib.Value (args [i - 1]);
-+				else
-+					vals [i] = new GLib.Value (instance);
-+				
++			vals [0] = new GLib.Value (instance);
++			inst_and_params.Append (vals [0]);
++			for (int i = 1; i < vals.Length; i++) {
++				vals [i] = new GLib.Value (args [i - 1]);
 +				inst_and_params.Append (vals [i]);
 +			}
  
 +			GLib.Value ret = GLib.Value.Empty;
-+			vals [vals.Length - 1] = ret;
 +
 +			g_signal_emitv (inst_and_params.ArrayPtr, signal_id, gquark, ref ret);
 +			object ret_obj = ret.Val;
++			
 +			foreach (GLib.Value val in vals)
 +				val.Dispose ();
++			ret.Dispose ();
 +			
 +			return ret_obj;
 +		}
 +		
-+		public static uint GetGQuarkFromString (string str) {
++		private static uint GetGQuarkFromString (string str) {
 +			IntPtr native_string = GLib.Marshaller.StringToPtrGStrdup (str);
 +			uint ret = g_quark_from_string (native_string);
 +			GLib.Marshaller.Free (native_string);
@@ -332,7 +331,7 @@ Index: glib/Signal.cs
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);
  
-@@ -202,6 +267,25 @@
+@@ -202,6 +266,25 @@
  
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern bool g_signal_handler_is_connected (IntPtr instance, uint handler);
@@ -360,7 +359,7 @@ Index: glib/Signal.cs
  
 Index: glib/GType.cs
 ===================================================================
---- glib/GType.cs	(revision 101690)
+--- glib/GType.cs	(revision 101692)
 +++ glib/GType.cs	(working copy)
 @@ -36,6 +36,10 @@
  		{
@@ -384,7 +383,7 @@ Index: glib/GType.cs
  }
 Index: glib/ObjectManager.cs
 ===================================================================
---- glib/ObjectManager.cs	(revision 101690)
+--- glib/ObjectManager.cs	(revision 101692)
 +++ glib/ObjectManager.cs	(working copy)
 @@ -58,7 +58,7 @@
  		[Obsolete ("Replaced by GType.Register (GType, Type)")]

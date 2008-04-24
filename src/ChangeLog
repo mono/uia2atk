@@ -1,7 +1,7 @@
 2008-04-24  Andres G. Aragoneses <aaragoneses@novell.com>
 
-	* patches/bug365437comm2.diff: First version of 
-	GSignalEmissionHook binding working, wooohooo!
+	* patches/bug365437comm2.diff: Unhack things, by
+	recommendation of mkestner.
 
 2008-04-24  Andres G. Aragoneses <aaragoneses@novell.com>
 
