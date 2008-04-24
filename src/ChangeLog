@@ -1,5 +1,10 @@
 2008-04-24  Andres G. Aragoneses <aaragoneses@novell.com>
 
+	* patches/bug365437comm2.diff: First version of 
+	GSignalEmissionHook binding working, wooohooo!
+
+2008-04-24  Andres G. Aragoneses <aaragoneses@novell.com>
+
 	* patches/bug365437comm2.diff: Fix int->uint, coding style,
 	added a pinvoke instead of refactoring yet, dispose a return
 	GValue, correct params usage, ...
