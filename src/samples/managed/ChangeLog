@@ -1,3 +1,12 @@
+2008-04-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ManagedTests.mds,
+	  UIAutomationWinformsTests/UIAutomationWinformsTests.mdp: Add unit
+	  test project for Mono.UIAutomation.Winforms.
+	* UIAutomationWinformsTests/WindowProviderTest.cs: Beginning of unit
+	  test class for WindowProvider.  Injects mock IAutomationBridge
+	  implementation so there is no interaction with UiaAtkBridge.
+
 2008-04-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* ManagedTests.mds: Disable TestUiaAtkBridge project for now.  Doesn't
