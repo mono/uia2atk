@@ -1,3 +1,10 @@
+2008-04-24  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* HelloTopLevel.cs: Track API in the patch to Atk#.
+	* HelloUtil.cs: Track API in the patch to Atk#, fix typos and add new
+	  calls.
+	* Main.cs: Remove rubbish.
+
 2008-04-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* HelloUtil.cs: Preparation for bound GSignalEmissionHook.

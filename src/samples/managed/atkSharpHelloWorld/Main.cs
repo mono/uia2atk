@@ -38,9 +38,8 @@ namespace atkSharpHelloWorld
 		
 		static void ElapsedTimer(object source, System.Timers.ElapsedEventArgs args)
 		{
-			Console.WriteLine("toy en elapsed");
+			Console.WriteLine("fired!");
 			Mytk.MytkGlobal.RemoveOneTopLevelWindow();
-			Console.WriteLine("fin de elapsed");
 		}
 		
 		static void StartProgramGui()

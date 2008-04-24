@@ -59,7 +59,7 @@ namespace atkSharpHelloWorld
 			return this.Children[i];
 		}
 		
-		public void FireChildrenChanged(int changeIndex, Atk.Object child)
+		public void FireChildrenChanged(uint changeIndex, Atk.Object child)
 		{
 			this.EmitChildrenChanged(Atk.Object.ChildrenChangedDetail.Remove, changeIndex, child);
 		}

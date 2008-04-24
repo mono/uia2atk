@@ -34,53 +34,53 @@ namespace atkSharpHelloWorld
 			return "1.1";
 		}
 		
-		internal static int AddGlobalEventListener(IntPtr listener, string eventType)
+		internal static uint AddGlobalEventListener(IntPtr listener, string eventType)
 		{
 			uint rc = 0;
+			
+			Console.WriteLine ("add global event listener, event_type: " + eventType);
 			
 			//split_string[0]: toolkit
 			//            [1]: class/interface
 			//            [2]: event type
 			// example: Gtk:AtkObject:children-changed
 			string[] splitString = eventType.Split (':');
-			
 			if ( (splitString != null) &&
 			     (splitString.Length > 2) &&
-			     (String.IsNullOrEmpty (splitString [1])) &&
-			     (String.IsNullOrEmpty (splitString [2])))
+			     (!String.IsNullOrEmpty (splitString [1])) &&
+			     (!String.IsNullOrEmpty (splitString [2])))
 			{
 				rc = KeepListener (listener, splitString [1], splitString [2], eventType);
 			}
 			
-			return (int)rc;
+			return rc;
 		}
 		
 		private static uint KeepListener (IntPtr listener, string objType, string signalName, string hookData)
 		{
-			//GLib.GType type = GType.GetFromName (objType);
-			//if (type != null)
-			{
-				GLib.Signal signal; //= GLib.Signal.Lookup (signalName, type);
+			GLib.GType type = new GLib.GType (objType);
+			if (type != GLib.GType.Invalid) {
+				uint signalId = GLib.Signal.GetSignalId (signalName, type);
 				
-				//if (signal != null)
+				if (signalId != 0)
 				{
 					lock (listenerListMutex)
 					{
 						ListenerInfo info = new ListenerInfo();
 						info.Id = (uint) ListenerList.Count + 1;
-						//info.SignalId = signal.Id;
-						//info.HookId = signal.AddEmissionHook (0, listener, hookData);
+						info.SignalId = signalId;
+						//use this '(IntPtr) GCHandle.Alloc (hookData)' if this doesn't work:
+						info.HookId = GLib.Signal.AddEmissionHandler (signalId, listener, GLib.Marshaller.StringToPtrGStrdup(hookData));
 						ListenerList.Add (info.Id, info);
 						return info.Id;
 					}
-					
 				}
-				//else
+				else
 				{
 					throw new NotSupportedException ("Invalid signal type " + signalName);
 				}
 			}
-			//else
+			else
 			{
 				throw new NotSupportedException ("Invalid object type " + objType);
 			}
