@@ -1,6 +1,6 @@
 Index: atk/Object.custom
 ===================================================================
---- atk/Object.custom	(revision 101692)
+--- atk/Object.custom	(revision 101696)
 +++ atk/Object.custom	(working copy)
 @@ -92,3 +92,14 @@
  			return null;
@@ -20,7 +20,7 @@ Index: atk/Object.custom
 \ No newline at end of file
 Index: atk/Util.custom
 ===================================================================
---- atk/Util.custom	(revision 101692)
+--- atk/Util.custom	(revision 101696)
 +++ atk/Util.custom	(working copy)
 @@ -21,10 +21,42 @@
  // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
@@ -125,7 +125,7 @@ Index: atk/Util.custom
 -               
 Index: atk/glue/util.c
 ===================================================================
---- atk/glue/util.c	(revision 101692)
+--- atk/glue/util.c	(revision 101696)
 +++ atk/glue/util.c	(working copy)
 @@ -92,3 +92,111 @@
  	((AtkUtilClass *) klass)->get_toolkit_version = cb;
@@ -241,7 +241,7 @@ Index: atk/glue/util.c
 +//}
 Index: glib/Signal.cs
 ===================================================================
---- glib/Signal.cs	(revision 101692)
+--- glib/Signal.cs	(revision 101696)
 +++ glib/Signal.cs	(working copy)
 @@ -1,6 +1,7 @@
  // GLib.Signal.cs - signal marshaling class
@@ -260,7 +260,7 @@ Index: glib/Signal.cs
  		}
  
  		Delegate before_handler;
-@@ -190,7 +191,70 @@
+@@ -190,7 +191,69 @@
  				return event_handler_delegate;
  			}
  		}
@@ -324,14 +324,13 @@ Index: glib/Signal.cs
 +		
 +		public static ulong AddEmissionHandler (uint signal_id, uint signal_detail, IntPtr handler_func, IntPtr data)
 +		{
-+			Console.WriteLine ("calling to addemission handler for " + signal_id);
 +			return g_signal_add_emission_hook (signal_id, signal_detail, handler_func, data, IntPtr.Zero);
 +		}
 +		
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);
  
-@@ -202,6 +266,25 @@
+@@ -202,6 +265,25 @@
  
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern bool g_signal_handler_is_connected (IntPtr instance, uint handler);
@@ -359,7 +358,7 @@ Index: glib/Signal.cs
  
 Index: glib/GType.cs
 ===================================================================
---- glib/GType.cs	(revision 101692)
+--- glib/GType.cs	(revision 101696)
 +++ glib/GType.cs	(working copy)
 @@ -36,6 +36,10 @@
  		{
@@ -383,7 +382,7 @@ Index: glib/GType.cs
  }
 Index: glib/ObjectManager.cs
 ===================================================================
---- glib/ObjectManager.cs	(revision 101692)
+--- glib/ObjectManager.cs	(revision 101696)
 +++ glib/ObjectManager.cs	(working copy)
 @@ -58,7 +58,7 @@
  		[Obsolete ("Replaced by GType.Register (GType, Type)")]
