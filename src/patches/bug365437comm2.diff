@@ -1,19 +1,14 @@
 Index: atk/Object.custom
 ===================================================================
---- atk/Object.custom	(revision 101557)
+--- atk/Object.custom	(revision 101658)
 +++ atk/Object.custom	(working copy)
-@@ -92,3 +92,19 @@
+@@ -92,3 +92,14 @@
  			return null;
  		}
  
-+		protected void EmitChildrenChanged (ChildrenChangedDetail detail, 
-+											int childNumber, Atk.Object child)
++		protected void EmitChildrenChanged (ChildrenChangedDetail detail, uint child_index, Atk.Object child)
 +		{
-+			object[] args = new object[2];
-+			args [0] = childNumber;
-+			args [1] = child;
-+			
-+			GLib.Signal.Emit (this, "children-changed", detail.ToString().ToLower(), args);
++			GLib.Signal.Emit (this, "children-changed", detail.ToString().ToLower(), child_index, child);
 +		}
 +		
 +		protected enum ChildrenChangedDetail
@@ -25,19 +20,19 @@ Index: atk/Object.custom
 \ No newline at end of file
 Index: atk/Util.custom
 ===================================================================
---- atk/Util.custom	(revision 101557)
+--- atk/Util.custom	(revision 101658)
 +++ atk/Util.custom	(working copy)
 @@ -21,10 +21,42 @@
  // Free Software Foundation, Inc., 59 Temple Place - Suite 330,
  // Boston, MA 02111-1307, USA.
  
 +		[GLib.CDeclCallback]
-+		delegate int AddGlobalListenerNativeDelegate (IntPtr listener, string event_type);
++		delegate uint AddGlobalListenerNativeDelegate (IntPtr listener, string event_type);
  
 +		static AddGlobalListenerDelegate add_global_event_listener_handler;
 +		static AddGlobalListenerNativeDelegate add_global_event_listener_callback;
 +
-+		static int AddGlobalEventListenerCallback (IntPtr listener, string event_type)
++		static uint AddGlobalEventListenerCallback (IntPtr listener, string event_type)
 +		{
 +			try {
 +				return add_global_event_listener_handler (listener, event_type);
@@ -51,7 +46,7 @@ Index: atk/Util.custom
 +		[DllImport("atksharpglue-2")]
 +		static extern void atksharp_util_override_add_global_event_listener (AddGlobalListenerNativeDelegate cb);
 +		
-+		public delegate int AddGlobalListenerDelegate (IntPtr listener, string event_type);
++		public delegate uint AddGlobalListenerDelegate (IntPtr listener, string event_type);
 +
 +		public static AddGlobalListenerDelegate AddGlobalEventListenerHandler {
 +			set {
@@ -130,7 +125,7 @@ Index: atk/Util.custom
 -               
 Index: atk/glue/util.c
 ===================================================================
---- atk/glue/util.c	(revision 101557)
+--- atk/glue/util.c	(revision 101658)
 +++ atk/glue/util.c	(working copy)
 @@ -29,14 +29,15 @@
  void atksharp_util_override_get_toolkit_name (gpointer cb);
@@ -268,24 +263,9 @@ Index: atk/glue/util.c
 +
 +	return rc;
 +}
-Index: glib/Object.cs
-===================================================================
---- glib/Object.cs	(revision 101557)
-+++ glib/Object.cs	(working copy)
-@@ -314,6 +314,10 @@
- 				return GType.Object;
- 			}
- 		}
-+		
-+		public GLib.GType GetGType () {
-+			return LookupGType (this.GetType ());
-+		}
- 
- 		[DllImport("glibsharpglue-2")]
- 		static extern IntPtr gtksharp_get_type_name (IntPtr raw);
 Index: glib/Signal.cs
 ===================================================================
---- glib/Signal.cs	(revision 101557)
+--- glib/Signal.cs	(revision 101658)
 +++ glib/Signal.cs	(working copy)
 @@ -1,6 +1,7 @@
  // GLib.Signal.cs - signal marshaling class
@@ -295,34 +275,7 @@ Index: glib/Signal.cs
  //
  // Copyright (c) 2005 Novell, Inc.
  //
-@@ -57,6 +58,7 @@
- 		uint before_id = UInt32.MaxValue;
- 		uint after_id = UInt32.MaxValue;
- 		Delegate marshaler;
-+		uint signal_id;
- 
- 		~Signal ()
- 		{
-@@ -81,6 +83,18 @@
- 			GC.SuppressFinalize (this);
- 		}
- 
-+		public static uint Lookup (string signalName, GLib.GType type)
-+		{
-+			IntPtr signalNativeName = GLib.Marshaller.StringToPtrGStrdup (signalName);
-+			
-+			//TODO: don't know how to call this, none of these work:
-+			uint signalId = g_signal_lookup (signalNativeName, type.val);
-+			
-+			GLib.Marshaller.Free (signalNativeName);
-+			
-+			return signalId;
-+		}
-+		
- 		public static Signal Lookup (GLib.Object obj, string name)
- 		{
- 			return Lookup (obj, name, EventHandlerDelegate);
-@@ -91,7 +105,7 @@
+@@ -91,7 +92,7 @@
  			Signal result = obj.ToggleRef.Signals [name] as Signal;
  			if (result == null)
  				result = new Signal (obj, name, marshaler);
@@ -331,53 +284,58 @@ Index: glib/Signal.cs
  		}
  
  		Delegate before_handler;
-@@ -190,7 +204,45 @@
+@@ -190,7 +191,50 @@
  				return event_handler_delegate;
  			}
  		}
 +		
-+		public static object Emit (GLib.Object instance, string signalName, string gquarkDetail, params object[] args)
++		public static object Emit (GLib.Object instance, string signal_name, string detail, params object[] args)
 +		{
-+			uint signalId = GLib.Signal.Lookup (signalName, instance.GetGType ());
-+			
-+			uint gquark = GetGQuarkFromString (gquarkDetail);
-+			
-+			GLib.Value[] vals = new GLib.Value[args.Length + 1];
++			uint signal_id = GetSignalId (signal_name, instance);
++			uint gquark = GetGQuarkFromString (detail);
++			GLib.Value[] vals = new GLib.Value [args.Length + 2];
 +			GLib.ValueArray inst_and_params = new GLib.ValueArray ((uint) args.Length + 1);
 +			
-+			for (int i = 0; i < vals.Length; i++)
-+			{
-+				if (i == 0)
-+				{
-+					vals [i] = new GLib.Value (instance);
-+				}
-+				else 
-+				{
++			for (int i = 0; i < vals.Length - 1; i++) {
++				if (i != 0)
 +					vals [i] = new GLib.Value (args [i - 1]);
-+				}
++				else
++					vals [i] = new GLib.Value (instance);
++				
 +				inst_and_params.Append (vals [i]);
 +			}
-+			
-+			GLib.Value ret = GLib.Value.Empty;
-+			g_signal_emitv (inst_and_params.ArrayPtr, signalId, gquark, ref ret);
  
++			GLib.Value ret = GLib.Value.Empty;
++			vals [vals.Length - 1] = ret;
++
++			g_signal_emitv (inst_and_params.ArrayPtr, signal_id, gquark, ref ret);
++			object ret_obj = ret.Val;
 +			foreach (GLib.Value val in vals)
 +				val.Dispose ();
 +			
-+			return ret.Val;
++			return ret_obj;
 +		}
 +		
 +		public static uint GetGQuarkFromString (string str) {
-+			IntPtr nativeString = GLib.Marshaller.StringToPtrGStrdup (str);
-+			uint ret = g_quark_from_string (nativeString);
-+			GLib.Marshaller.Free (nativeString);
++			IntPtr native_string = GLib.Marshaller.StringToPtrGStrdup (str);
++			uint ret = g_quark_from_string (native_string);
++			GLib.Marshaller.Free (native_string);
 +			return ret;
++		}
++		
++		public static uint GetSignalId (string signal_name, GLib.Object obj)
++		{
++			IntPtr typeid = gtksharp_get_type_id (obj.Handle);
++			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (signal_name);
++			uint signal_id = g_signal_lookup (native_name, typeid);
++			GLib.Marshaller.Free (native_name);
++			return signal_id;
 +		}
 +		
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);
  
-@@ -202,6 +254,16 @@
+@@ -202,6 +246,22 @@
  
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern bool g_signal_handler_is_connected (IntPtr instance, uint handler);
@@ -388,22 +346,15 @@ Index: glib/Signal.cs
 +		[DllImport("libgobject-2.0-0.dll")]
 +		static extern uint g_signal_lookup (IntPtr name, IntPtr itype);
 +		
-+		//better not to expose from_static_string () due to memory allocation issues
++		[DllImport("glibsharpglue-2")]
++		static extern IntPtr gtksharp_get_type_name (IntPtr raw);
++		
++		//better not to expose g_quark_from_static_string () due to memory allocation issues
 +		[DllImport("libglib-2.0-0.dll")]
 +		static extern uint g_quark_from_string (IntPtr str);
++		
++		[DllImport("glibsharpglue-2")]
++		static extern IntPtr gtksharp_get_type_id (IntPtr raw);
  	}
  }
  
-Index: glib/GType.cs
-===================================================================
---- glib/GType.cs	(revision 101557)
-+++ glib/GType.cs	(working copy)
-@@ -30,7 +30,7 @@
- 	[StructLayout(LayoutKind.Sequential)]
- 	public struct GType {
- 
--		IntPtr val;
-+		internal IntPtr val;
- 
- 		public GType (IntPtr val)
- 		{
