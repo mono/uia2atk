@@ -1,6 +1,6 @@
 Index: atk/Util.custom
 ===================================================================
---- atk/Util.custom	(revision 101880)
+--- atk/Util.custom	(revision 101881)
 +++ atk/Util.custom	(working copy)
 @@ -23,6 +23,35 @@
  
@@ -40,7 +40,7 @@ Index: atk/Util.custom
  		static RemoveListenerDelegate remove_global_event_listener_handler;
 Index: atk/Makefile.am
 ===================================================================
---- atk/Makefile.am	(revision 101880)
+--- atk/Makefile.am	(revision 101881)
 +++ atk/Makefile.am	(working copy)
 @@ -8,6 +8,7 @@
  sources = 
@@ -52,7 +52,7 @@ Index: atk/Makefile.am
  	Util.custom
 Index: atk/Atk.metadata
 ===================================================================
---- atk/Atk.metadata	(revision 101880)
+--- atk/Atk.metadata	(revision 101881)
 +++ atk/Atk.metadata	(working copy)
 @@ -1,5 +1,6 @@
  <?xml version="1.0"?>
@@ -63,7 +63,7 @@ Index: atk/Atk.metadata
    <attr path="/api/namespace/interface[@cname='AtkDocument']/method[@name='GetAttributes']/return-type" name="element_type">AtkAttribute*</attr>
 Index: glib/Signal.cs
 ===================================================================
---- glib/Signal.cs	(revision 101880)
+--- glib/Signal.cs	(revision 101881)
 +++ glib/Signal.cs	(working copy)
 @@ -31,26 +31,96 @@
  		Swapped = 1 << 1,
@@ -188,25 +188,48 @@ Index: glib/Signal.cs
  					return before_handler;
  				else
  					return after_handler;
-@@ -232,7 +302,17 @@
- 			GLib.Marshaller.Free (native_name);
- 			return signal_id;
+@@ -224,15 +294,35 @@
+ 			return ret;
  		}
-+
-+		public static ulong AddEmissionHandler (uint signal_id, EmissionHook handler_func, IntPtr data)
-+		{
-+			return AddEmissionHandler (signal_id, 0, handler_func, data);
+ 
++		private static uint GetSignalId (string signal_name, GLib.GType type)
++ 		{
++			return GetSignalId (signal_name, type.Val);
 +		}
++		
+ 		private static uint GetSignalId (string signal_name, GLib.Object obj)
+ 		{
+-			IntPtr typeid = gtksharp_get_type_id (obj.Handle);
+-			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (signal_name);
+-			uint signal_id = g_signal_lookup (native_name, typeid);
+-			GLib.Marshaller.Free (native_name);
+-			return signal_id;
++ 			IntPtr typeid = gtksharp_get_type_id (obj.Handle);
++			return GetSignalId (signal_name, typeid);
+ 		}
  		
-+		public static ulong AddEmissionHandler (uint signal_id, uint signal_detail, EmissionHook handler_func, IntPtr data)
++		private static uint GetSignalId (string signal_name, IntPtr typeid)
 +		{
++ 			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (signal_name);
++ 			uint signal_id = g_signal_lookup (native_name, typeid);
++ 			GLib.Marshaller.Free (native_name);
++ 			return signal_id;
++ 		}
++		public static ulong AddEmissionHandler (string signal_name, GLib.GType type, EmissionHook handler_func, IntPtr data)
++		{
++			return AddEmissionHandler (signal_name, 0, type, handler_func, data);
++		}
++		
++		public static ulong AddEmissionHandler (string signal_name, uint signal_detail, GLib.GType type, EmissionHook handler_func, IntPtr data)
++		{
++			uint signal_id = GetSignalId (signal_name, type);
 +			return g_signal_add_emission_hook (signal_id, signal_detail, new EmissionHookMarshaler (handler_func).Callback, data, IntPtr.Zero);
 +		}
 +
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);
  
-@@ -257,6 +337,10 @@
+@@ -257,6 +347,10 @@
  		
  		[DllImport("glibsharpglue-2")]
  		static extern IntPtr gtksharp_get_type_id (IntPtr raw);
@@ -219,7 +242,7 @@ Index: glib/Signal.cs
  
 Index: glib/GType.cs
 ===================================================================
---- glib/GType.cs	(revision 101880)
+--- glib/GType.cs	(revision 101881)
 +++ glib/GType.cs	(working copy)
 @@ -36,6 +36,10 @@
  		{
@@ -243,7 +266,7 @@ Index: glib/GType.cs
  }
 Index: glib/ObjectManager.cs
 ===================================================================
---- glib/ObjectManager.cs	(revision 101880)
+--- glib/ObjectManager.cs	(revision 101881)
 +++ glib/ObjectManager.cs	(working copy)
 @@ -58,7 +58,7 @@
  		[Obsolete ("Replaced by GType.Register (GType, Type)")]

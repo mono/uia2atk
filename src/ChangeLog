@@ -1,5 +1,11 @@
 2008-04-25  Andres G. Aragoneses <aaragoneses@novell.com>
 
+	* patches/bug365437comm2v3.diff: Don't expose GetSignalId
+	overloads (the consumers can call directly to AddEmissionHook
+	with the signal name).
+
+2008-04-25  Andres G. Aragoneses <aaragoneses@novell.com>
+
 	* patches/bug365437comm2v3.diff: First test to try
 	to merge my patch and mkestner's.
 
