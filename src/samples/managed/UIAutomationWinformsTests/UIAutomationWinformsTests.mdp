@@ -1,6 +1,9 @@
 <Project name="UIAutomationWinformsTests" fileversion="2.0" DefaultNamespace="MonoTests.Mono.UIAutomation.Winforms" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <CustomCommands>
+        <Command type="AfterBuild" command="rm System.Windows.Forms.dll" workingdir="${TargetDir}" />
+      </CustomCommands>
       <Output directory="bin/Debug" assembly="UIAutomationWinformsTests" />
       <Build debugmode="True" target="Library" />
       <Execution runwithwarnings="True" consolepause="False" runtime="MsNet" clr-version="Net_2_0" />

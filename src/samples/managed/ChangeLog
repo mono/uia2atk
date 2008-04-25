@@ -1,3 +1,13 @@
+2008-04-24  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationWinformsTests/UIAutomationWinformsTests.mdp: Hack to
+	  remove patched System.Windows.Form.dll after build (it is brought
+	  in by dependency on UIAutomationWinforms project).  This prevents
+	  the FormListener from being initialized...at this point I want to
+	  avoid that.
+	* UIAutomationWinformsTests/WindowProviderTest.cs: More progress on
+	  WindowProvider tests.  Many have yet to be implemented.
+
 2008-04-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* ManagedTests.mds,

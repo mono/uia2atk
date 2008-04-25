@@ -102,6 +102,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void OnClosed (object sender, EventArgs args)
 		{
+			if (!AutomationInteropProvider.ClientsAreListening)
+				return;
 			// TODO: Fill in rest of eventargs
 			AutomationInteropProvider.RaiseStructureChangedEvent (
 			  this,
@@ -148,13 +150,13 @@ namespace Mono.UIAutomation.Winforms
 		
 		public bool Minimizable {
 			get {
-				throw new NotImplementedException ();
+				return form.MinimizeBox;// TODO: Correct?
 			}
 		}
 		
 		public bool Maximizable {
 			get {
-				throw new NotImplementedException ();
+				return form.MaximizeBox;// TODO: Correct?
 			}
 		}
 		

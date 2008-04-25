@@ -1,3 +1,9 @@
+2008-04-24  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/WindowProvider.cs: Don't raise events if
+	  clients aren't listening.  Test implementation of
+	  Minimizable/Maximizable.
+
 2008-04-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* UIAutomationWinforms.mds: Add unit test project for
