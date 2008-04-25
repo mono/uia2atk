@@ -1,3 +1,8 @@
+2008-04-25  Andres G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/bug365437comm2v3.diff: First test to try
+	to merge my patch and mkestner's.
+
 2008-04-24  Andres G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/bug365437comm2.diff: Remove the parts already
