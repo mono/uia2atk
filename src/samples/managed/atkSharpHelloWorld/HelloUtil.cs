@@ -34,7 +34,7 @@ namespace atkSharpHelloWorld
 			return "1.1";
 		}
 		
-		internal static uint AddGlobalEventListener(IntPtr listener, string eventType)
+		internal static uint AddGlobalEventListener(GLib.Signal.EmissionHook listener, string eventType)
 		{
 			uint rc = 0;
 			
@@ -56,28 +56,19 @@ namespace atkSharpHelloWorld
 			return rc;
 		}
 		
-		private static uint KeepListener (IntPtr listener, string objType, string signalName, string hookData)
+		private static uint KeepListener (GLib.Signal.EmissionHook listener, string objType, string signalName, string hookData)
 		{
 			GLib.GType type = new GLib.GType (objType);
 			if (type != GLib.GType.Invalid) {
-				uint signalId = GLib.Signal.GetSignalId (signalName, type);
-				
-				if (signalId != 0)
+				lock (listenerListMutex)
 				{
-					lock (listenerListMutex)
-					{
-						ListenerInfo info = new ListenerInfo();
-						info.Id = (uint) ListenerList.Count + 1;
-						info.SignalId = signalId;
-						//use this '(IntPtr) GCHandle.Alloc (hookData)' if this doesn't work:
-						info.HookId = GLib.Signal.AddEmissionHandler (signalId, listener, GLib.Marshaller.StringToPtrGStrdup(hookData));
-						ListenerList.Add (info.Id, info);
-						return info.Id;
-					}
-				}
-				else
-				{
-					throw new NotSupportedException ("Invalid signal type " + signalName);
+					ListenerInfo info = new ListenerInfo();
+					info.Id = (uint) ListenerList.Count + 1;
+					info.SignalName = signalName;
+					//use this '(IntPtr) GCHandle.Alloc (hookData)' if this doesn't work:
+					info.HookId = GLib.Signal.AddEmissionHandler (signalName, listener, GLib.Marshaller.StringToPtrGStrdup(hookData));
+					ListenerList.Add (info.Id, info);
+					return info.Id;
 				}
 			}
 			else
@@ -94,7 +85,7 @@ namespace atkSharpHelloWorld
 		struct ListenerInfo
 		{
 			internal uint Id;
-			internal uint SignalId;
+			internal string SignalName;
 			internal ulong HookId;
 		}
 	}
