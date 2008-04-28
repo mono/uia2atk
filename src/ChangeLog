@@ -1,3 +1,8 @@
+2008-04-28  Andres G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/bug365437comm2v3.diff: Use the EmissionHookNative
+	type instead of the IntPtr in order to fix the build.
+
 2008-04-25  Andres G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/bug365437comm2v3.diff: Don't expose GetSignalId

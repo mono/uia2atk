@@ -1,6 +1,6 @@
 Index: atk/Util.custom
 ===================================================================
---- atk/Util.custom	(revision 101881)
+--- atk/Util.custom	(revision 102022)
 +++ atk/Util.custom	(working copy)
 @@ -23,6 +23,35 @@
  
@@ -40,7 +40,7 @@ Index: atk/Util.custom
  		static RemoveListenerDelegate remove_global_event_listener_handler;
 Index: atk/Makefile.am
 ===================================================================
---- atk/Makefile.am	(revision 101881)
+--- atk/Makefile.am	(revision 102022)
 +++ atk/Makefile.am	(working copy)
 @@ -8,6 +8,7 @@
  sources = 
@@ -52,7 +52,7 @@ Index: atk/Makefile.am
  	Util.custom
 Index: atk/Atk.metadata
 ===================================================================
---- atk/Atk.metadata	(revision 101881)
+--- atk/Atk.metadata	(revision 102022)
 +++ atk/Atk.metadata	(working copy)
 @@ -1,5 +1,6 @@
  <?xml version="1.0"?>
@@ -63,7 +63,7 @@ Index: atk/Atk.metadata
    <attr path="/api/namespace/interface[@cname='AtkDocument']/method[@name='GetAttributes']/return-type" name="element_type">AtkAttribute*</attr>
 Index: glib/Signal.cs
 ===================================================================
---- glib/Signal.cs	(revision 101881)
+--- glib/Signal.cs	(revision 102022)
 +++ glib/Signal.cs	(working copy)
 @@ -31,26 +31,96 @@
  		Swapped = 1 << 1,
@@ -235,14 +235,14 @@ Index: glib/Signal.cs
  		static extern IntPtr gtksharp_get_type_id (IntPtr raw);
 +
 +		[DllImport("libgobject-2.0-0.dll")]
-+		static extern ulong g_signal_add_emission_hook (uint signal_id, uint gquark_detail, IntPtr hook_func, IntPtr hook_data, IntPtr data_destroy);
++		static extern ulong g_signal_add_emission_hook (uint signal_id, uint gquark_detail, EmissionHookNative hook_func, IntPtr hook_data, IntPtr data_destroy);
 +
  	}
  }
  
 Index: glib/GType.cs
 ===================================================================
---- glib/GType.cs	(revision 101881)
+--- glib/GType.cs	(revision 102022)
 +++ glib/GType.cs	(working copy)
 @@ -36,6 +36,10 @@
  		{
@@ -266,7 +266,7 @@ Index: glib/GType.cs
  }
 Index: glib/ObjectManager.cs
 ===================================================================
---- glib/ObjectManager.cs	(revision 101881)
+--- glib/ObjectManager.cs	(revision 102022)
 +++ glib/ObjectManager.cs	(working copy)
 @@ -58,7 +58,7 @@
  		[Obsolete ("Replaced by GType.Register (GType, Type)")]
