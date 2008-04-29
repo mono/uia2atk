@@ -112,6 +112,14 @@ namespace Mono.UIAutomation.Winforms
 			  provider,
 			  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkAdded,
 			                                 new int [] {0}));
+			
+			foreach (IRawElementProviderSimple control in provider.controlProviders.Values) {
+				// TODO: Fill in rest of eventargs
+				AutomationInteropProvider.RaiseStructureChangedEvent (
+				  control,
+				  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkAdded,
+				                                 new int [] {0}));
+			}
 		}
 		
 #endregion

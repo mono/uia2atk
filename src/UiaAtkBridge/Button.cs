@@ -20,20 +20,19 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Andres G. Aragoneses <aaragoneses@novell.com>
+//      Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
-using System.Collections.Generic;
 
 namespace UiaAtkBridge
 {
-	public class Window : ParentAtkObject
+	public class Button : Atk.Object
 	{
-		public Window (string name)
+		public Button (string label)
 		{
-			Name = name;
-			Role = Atk.Role.Frame;
+			Name = label;
+			Role = Atk.Role.PushButton;
 		}
 	}
 }

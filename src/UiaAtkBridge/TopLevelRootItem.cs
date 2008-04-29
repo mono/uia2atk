@@ -29,17 +29,15 @@ using System.Collections.Generic;
 namespace UiaAtkBridge
 {
 	
-	public class TopLevelRootItem : Atk.Object 
+	public class TopLevelRootItem : ParentAtkObject
 	{
 		private TopLevelRootItem()
 		{
 			this.Name = Monitor.GetProgramName();
 			this.Role = Atk.Role.Application;
-			this.children = new List<Atk.Object>();
 		}
 		
 		private static volatile TopLevelRootItem instance = null;
-		private static object syncRoot = new object ();
 		
 		public static TopLevelRootItem Instance {
 			get {
@@ -50,21 +48,26 @@ namespace UiaAtkBridge
 				return instance;
 			}
 		}
+	}
+	
+	
+	public abstract class ParentAtkObject : Atk.Object
+	{
+#region Protected Fields
 		
-		private List<Atk.Object> children;
+		protected static object syncRoot = new object ();
 		
-		internal void AddOneChild (Window window)
-		{
-			lock (syncRoot) {
-				this.children.Add (window);
-			}
-			EmitChildrenChanged(Atk.Object.ChildrenChangedDetail.Add, this.children.Count - 1, window);
-		}
+		protected List<Atk.Object> children =
+			new List<Atk.Object> ();
+		
+#endregion
+		
+#region Atk.Object Overrides
 		
 		protected override int OnGetNChildren ()
 		{
 			lock (syncRoot)
-				return this.children.Count;
+				return children.Count;
 		}
 		
 		protected override Atk.Object OnRefChild (int i)
@@ -73,18 +76,33 @@ namespace UiaAtkBridge
 				if (i >= children.Count)
 					return null;
 				
-				return this.children [i];
+				return children [i];
 			}
 		}
 		
-		public void RemoveChild(Atk.Object childToRemove)
+#endregion
+		
+		
+#region Public Methods
+		
+		public void AddOneChild (Atk.Object child)
+		{
+			lock (syncRoot) {
+				children.Add (child);
+			}
+			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Add, children.Count - 1, child);
+		}
+		
+		public void RemoveChild (Atk.Object childToRemove)
 		{
 			int childIndex;
 			lock (syncRoot) {
-				childIndex = children.IndexOf(childToRemove);
-				children.Remove(childToRemove);
+				childIndex = children.IndexOf (childToRemove);
+				children.Remove (childToRemove);
 			}
-			EmitChildrenChanged(Atk.Object.ChildrenChangedDetail.Remove, childIndex, childToRemove);
+			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Remove, childIndex, childToRemove);
 		}
+		
+#endregion
 	}
 }

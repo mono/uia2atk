@@ -1,3 +1,8 @@
+2008-04-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* FormTest.mdp: Add System.Drawing reference.
+	* FormTest.cs: Add second button, disabled.
+
 2008-04-17  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* FormTest.mdp: Change AfterBuild command to copy libatk-bridge.so into

@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
@@ -81,9 +82,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			using (Form f = new Form ()) {
 				IWindowProvider provider = new WindowProvider (f);
 				
-				Assert.IsFalse (provider.IsTopmost, "IsTopmost");
+				Assert.IsFalse (provider.IsTopmost, "Initialize to false");
 				f.TopMost = true;
-				Assert.IsTrue (provider.IsTopmost, "IsTopmost");
+				Assert.IsTrue (provider.IsTopmost, "Set to true");
+				f.TopMost = false;
+				Assert.IsFalse (provider.IsTopmost, "Set to false");
 			}
 		}
 		
@@ -93,9 +96,28 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			using (Form f = new Form ()) {
 				IWindowProvider provider = new WindowProvider (f);
 				
-				Assert.IsFalse (provider.IsModal);
-				//f.Modal = true;
-				//Assert.IsTrue (provider.IsModal);
+				Assert.IsFalse (provider.IsModal, "Form should initialize to not modal");
+				
+				// Run modal dialog in separate thread
+				Thread t = new Thread (new ParameterizedThreadStart (delegate {
+					f.ShowDialog ();
+				}));
+				t.Start ();
+				
+				// Wait for dialog to appear
+				Thread.Sleep (500); // TODO: Fragile
+				
+				Assert.IsTrue (provider.IsModal, "ShowDialog should be modal");
+				
+				f.Close ();
+				t.Join ();
+				
+				f.Show ();
+				// Wait for form to appear
+				Thread.Sleep (500); // TODO: Fragile
+				
+				Assert.IsFalse (provider.IsModal, "Show should not be modal");
+				f.Close ();
 			}
 		}
 		
@@ -219,6 +241,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				Assert.AreEqual (provider,
 				                 provider.GetPatternProvider (WindowPatternIdentifiers.Pattern.Id));
 				// TODO: Test null return on other IDs?
+				//       Testing every other int takes too long.
 			}
 		}
 		
@@ -358,6 +381,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	
 #region IAutomationBridge Members
 		public bool ClientsAreListening { get; set; }
+		
+		public object HostProviderFromHandle (IntPtr hwnd)
+		{
+			throw new NotImplementedException ();
+		}
+
 		
 		public void RaiseAutomationEvent (AutomationEvent eventId, object provider, AutomationEventArgs e)
 		{			

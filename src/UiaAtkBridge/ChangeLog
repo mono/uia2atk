@@ -1,3 +1,14 @@
+2008-04-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Button.cs, UiaAtkBridge.mdp: Add ATK Button class.
+	* TopLevelRootItem.cs, Window.cs: Extract ParentAtkObject abstract
+	  class from TopLevelRootItem.  Have ATK Window class subclass it, to
+	  child management is handled.
+	* AutomationBridge.cs: Handle addition of buttons.  Maintain mapping
+	  between HWNDs and providers for use in implementing
+	  HostProviderFromHandle.
+	* Monitor.cs: Handle buttons being added to forms.
+
 2008-04-21  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* TopLevelRootItem.cs: Use better API and fix deadlock.  Thanks for noticing

@@ -89,7 +89,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public IRawElementProviderSimple HostRawElementProvider {
 			get {
-				return AutomationInteropProvider.HostProviderFromHandle (button.Handle);
+				return AutomationInteropProvider.HostProviderFromHandle (button.TopLevelControl.Handle);
 			}
 		}
 		

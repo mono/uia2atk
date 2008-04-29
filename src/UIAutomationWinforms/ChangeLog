@@ -1,3 +1,16 @@
+2008-04-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/WindowProvider.cs,
+	  Mono.UIAutomation.Winforms/FormListener.cs: HACK: Make
+	  WindowProvider.controlProviders dictionary internal so that
+	  FormListener can raise StructureChangedEvents for form controls
+	  *after* the form has already been registered in ATK.  Also, support
+	  NativeWindowHandleProperty in the WindowProvider (return the form's
+	  Handle IntPtr).
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs: HostRawElementProvider
+	  should the containing window, so use button.TopLevelControl.Handle,
+	  not button.Handle, to get it.
+
 2008-04-24  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/WindowProvider.cs: Don't raise events if

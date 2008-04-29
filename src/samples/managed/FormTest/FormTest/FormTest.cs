@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -41,6 +42,14 @@ namespace FormTest
 			b.Width = f1.Width;
 			b.Click += OnButtonClick;
 			f1.Controls.Add (b);
+			
+			Button b2 = new Button ();
+			b2.Text = "I'm inactive";
+			b2.Width = f1.Width;
+			b2.Enabled = false;
+			//b2.Location.Y = f1.Height / 2;
+			b2.Top = b.Height;
+			f1.Controls.Add (b2);
 
 			Form bgf = new Form ();
 			bgf.Text = "Background Form";

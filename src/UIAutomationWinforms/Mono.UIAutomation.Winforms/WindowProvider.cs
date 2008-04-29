@@ -37,8 +37,8 @@ namespace Mono.UIAutomation.Winforms
 #region Private Data
 		
 		private Form form;
-		private IDictionary<Control, IRawElementProviderSimple>
-			controlProviders;
+		internal IDictionary<Control, IRawElementProviderSimple>
+			controlProviders;  // TODO: Fix this...
 		
 #endregion
 		
@@ -196,7 +196,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public IRawElementProviderSimple HostRawElementProvider {
 			get {
-				return AutomationInteropProvider.HostProviderFromHandle (form.Handle);
+				return this;//AutomationInteropProvider.HostProviderFromHandle (form.Handle);
 			}
 		}
 		
@@ -220,6 +220,8 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.Window.Id;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return form.Text;
+			else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
+				return form.Handle; // TODO: Should be int, maybe?
 			else
 				return null;
 			

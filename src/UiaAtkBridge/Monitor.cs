@@ -51,7 +51,8 @@ namespace UiaAtkBridge
 			if (isApplicationStarted)
 			{
 				Console.WriteLine ("FormIsRemoved");
-				TopLevelRootItem.Instance.RemoveChild (associations[form]);
+				TopLevelRootItem.Instance.RemoveChild (providerAtkMapping [(IRawElementProviderSimple) form]);
+				providerAtkMapping.Remove ((IRawElementProviderSimple) form);
 			}
 			else
 			{
@@ -60,17 +61,39 @@ namespace UiaAtkBridge
 			}
 		}
 		
-		private Dictionary<IWindowProvider, Atk.Object> associations =
-			new Dictionary<IWindowProvider,Atk.Object>();
+		private Dictionary<IRawElementProviderSimple, Atk.Object> providerAtkMapping =
+			new Dictionary<IRawElementProviderSimple,Atk.Object>();
 		
 		public void FormIsAdded(IWindowProvider form)
 		{
-			IRawElementProviderSimple simpleProvider = (IRawElementProviderSimple) form;
-			string windowName = (string) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			IRawElementProviderFragmentRoot rootProvider = (IRawElementProviderFragmentRoot) form;
+			string windowName = (string) rootProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			
-			Window newWindow = new Window(windowName);
-			associations.Add(form, newWindow);
-			TopLevelRootItem.Instance.AddOneChild(newWindow);
+			//IRawElementProviderSimple firstChild = rootProvider.Navigate (NavigateDirection.FirstChild);
+			//int firstChildControlId = (int) firstChild.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			//ControlType firstChildControlType = ControlType.LookupById (firstChildControlId);
+			
+			Window newWindow = new Window (windowName);
+			providerAtkMapping.Add ((IRawElementProviderSimple) form, newWindow);
+			TopLevelRootItem.Instance.AddOneChild (newWindow);
+		}
+		
+		public void ButtonIsAdded (IInvokeProvider button)
+		{
+			IRawElementProviderSimple simpleProvider =
+				(IRawElementProviderSimple) button;
+			IRawElementProviderSimple parentProvider =
+				simpleProvider.HostRawElementProvider;
+			
+			string buttonText = (string) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			ParentAtkObject parentObject =
+				(ParentAtkObject) providerAtkMapping [parentProvider];
+			
+			Button atkButton = new Button (buttonText);
+			providerAtkMapping [simpleProvider] = atkButton;
+			parentObject.AddOneChild (atkButton);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkButton);
 		}
 		
 		private bool isApplicationStarted = false;

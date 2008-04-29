@@ -25,6 +25,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
@@ -36,12 +37,14 @@ namespace UiaAtkBridge
 		
 		private bool applicationStarted = false;
 		private Monitor appMonitor = null;
+		private Dictionary<IntPtr, IRawElementProviderSimple>
+			pointerProviderMapping;
 		
 #endregion
 
 #region Public Constructor
 		
-		public AutomationBridge()
+		public AutomationBridge ()
 		{
 			bool newMonitor = false;
 			if (appMonitor == null) {
@@ -49,7 +52,8 @@ namespace UiaAtkBridge
 				appMonitor = new Monitor();
 				Console.WriteLine ("just made monitor");
 			}
-			
+			pointerProviderMapping =
+				new Dictionary<IntPtr,IRawElementProviderSimple> ();
 		}
 		
 #endregion
@@ -62,6 +66,14 @@ namespace UiaAtkBridge
 				return true;
 			}
 		}
+		
+		public object HostProviderFromHandle (IntPtr hwnd)
+		{
+			if (!pointerProviderMapping.ContainsKey (hwnd))
+				return null;
+			return pointerProviderMapping [hwnd];
+		}
+
 		
 		public void RaiseAutomationEvent (AutomationEvent eventId, object provider, AutomationEventArgs e)
 		{
@@ -85,18 +97,21 @@ namespace UiaAtkBridge
 		
 		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
-			IWindowProvider windowProvider = provider as IWindowProvider;
+			IRawElementProviderSimple simpleProvider =
+				(IRawElementProviderSimple) provider;
+			int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 
 			if (e.StructureChangeType == StructureChangeType.ChildrenBulkAdded) {
-				// TODO: Probably more efficient to check some properties
-				//       on IRawElementProviderSimple (two casts total)
-				if (windowProvider != null)
-					HandleNewWindowProvider (windowProvider);
+				if (controlTypeId == ControlType.Window.Id)
+					HandleNewWindowProvider ((IWindowProvider)provider);
+				else if (controlTypeId == ControlType.Button.Id)
+					// TODO: Consider generalizing...
+					HandleNewInvokeProvider ((IInvokeProvider)provider);
 				
 				// TODO: Other providers
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
-				if (windowProvider != null)
-					HandleWindowProviderRemoval (windowProvider);
+				if (controlTypeId == ControlType.Window.Id)
+					HandleWindowProviderRemoval ((IWindowProvider)provider);
 			}
 			
 			// TODO: Other structure changes
@@ -109,11 +124,26 @@ namespace UiaAtkBridge
 		private void HandleNewWindowProvider (IWindowProvider provider)
 		{
 			appMonitor.FormIsAdded (provider);
+			
+			IRawElementProviderSimple simpleProvider =
+				(IRawElementProviderSimple) provider;
+			IntPtr providerHandle = (IntPtr) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
+			pointerProviderMapping [providerHandle] = simpleProvider;
 		}
 		
 		private void HandleWindowProviderRemoval (IWindowProvider provider)
 		{
 			appMonitor.FormIsRemoved (provider);
+			
+			IRawElementProviderSimple simpleProvider =
+				(IRawElementProviderSimple) provider;
+			IntPtr providerHandle = (IntPtr) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
+			pointerProviderMapping.Remove (providerHandle);
+		}
+		
+		private void HandleNewInvokeProvider (IInvokeProvider provider)
+		{
+			appMonitor.ButtonIsAdded (provider);
 		}
 		
 #endregion

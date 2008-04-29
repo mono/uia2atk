@@ -1,3 +1,9 @@
+2008-04-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationWinformsTests/WindowProviderTest.cs: More tests
+	  implemented.  Update MockAutomationBridge with new interface
+	  method.
+
 2008-04-24  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* UIAutomationWinformsTests/UIAutomationWinformsTests.mdp: Hack to
