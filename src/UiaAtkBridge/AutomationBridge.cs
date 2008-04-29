@@ -40,6 +40,8 @@ namespace UiaAtkBridge
 		private Monitor appMonitor = null;
 		private Dictionary<IntPtr, IRawElementProviderSimple>
 			pointerProviderMapping;
+		private Dictionary<IRawElementProviderSimple, Adapter>
+			providerAdapterMapping;
 		
 #endregion
 
@@ -55,6 +57,8 @@ namespace UiaAtkBridge
 			}
 			pointerProviderMapping =
 				new Dictionary<IntPtr,IRawElementProviderSimple> ();
+			providerAdapterMapping =
+				new Dictionary<IRawElementProviderSimple, Adapter>();
 		}
 		
 #endregion
@@ -84,16 +88,25 @@ namespace UiaAtkBridge
 			if (eventId == null && provider == null && e == null) {
 				if (!applicationStarted && appMonitor != null)
 					appMonitor.ApplicationStarts ();
-			} else if (eventId == InvokePatternIdentifiers.InvokedEvent) {
-				Console.WriteLine ("Bridge Event: Invoke!");
+				return;
 			}
 			
-			// TODO: Handle other events
+			IRawElementProviderSimple simpleProvider =
+				(IRawElementProviderSimple) provider;
+			if (!providerAdapterMapping.ContainsKey (simpleProvider))
+				return;
+			
+			providerAdapterMapping [simpleProvider].RaiseAutomationEvent (eventId, e);
 		}
 		
 		public void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e)
 		{
-			throw new NotImplementedException ();
+			IRawElementProviderSimple simpleProvider =
+				(IRawElementProviderSimple) element;
+			if (!providerAdapterMapping.ContainsKey (simpleProvider))
+				return;
+			
+			providerAdapterMapping [simpleProvider].RaiseAutomationPropertyChangedEvent (e);
 		}
 		
 		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
@@ -123,17 +136,23 @@ namespace UiaAtkBridge
 		
 		private void HandleNewWindowProvider (IWindowProvider provider)
 		{
-			appMonitor.FormIsAdded (provider);
-			
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) provider;
+			
+			Window newWindow = new Window (provider);			
+			providerAdapterMapping [simpleProvider] = newWindow;
+			
+			TopLevelRootItem.Instance.AddOneChild (newWindow);
+			
 			IntPtr providerHandle = (IntPtr) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
 			pointerProviderMapping [providerHandle] = simpleProvider;
 		}
 		
 		private void HandleWindowProviderRemoval (IWindowProvider provider)
 		{
-			appMonitor.FormIsRemoved (provider);
+			Console.WriteLine ("FormIsRemoved");
+			TopLevelRootItem.Instance.RemoveChild (providerAdapterMapping [(IRawElementProviderSimple) provider]);
+			providerAdapterMapping.Remove ((IRawElementProviderSimple) provider);
 			
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) provider;
@@ -143,7 +162,20 @@ namespace UiaAtkBridge
 		
 		private void HandleNewInvokeProvider (IInvokeProvider provider)
 		{
-			appMonitor.ButtonIsAdded (provider);
+			IRawElementProviderSimple simpleProvider =
+				(IRawElementProviderSimple) provider;
+			IRawElementProviderSimple parentProvider =
+				simpleProvider.HostRawElementProvider;
+			
+			ParentAdapter parentObject =
+				(ParentAdapter) providerAdapterMapping [parentProvider];
+			
+			Button atkButton = new Button (provider);
+			providerAdapterMapping [simpleProvider] = atkButton;
+			
+			parentObject.AddOneChild (atkButton);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkButton);
 		}
 		
 #endregion

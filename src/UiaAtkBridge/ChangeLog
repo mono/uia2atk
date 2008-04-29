@@ -1,3 +1,15 @@
+2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Button.cs: Handle InvokedEvent.
+	* TopLevelRootItem.cs: "Adaptor"->"Adapter".  Removed unneeded
+	  paramters from RaiseAutomation*Event methods (those that indicate
+	  the provider, which we already know).
+	* AutomationBridge.cs, Monitor.cs: Move Atk.Object handling from
+	  Monitor to AutomationBridge.  Use new Adapter methods to forward
+	  signals from the AutomationInteropProvider.
+	* Window.cs: Comment out RaiseStructureChangedEvent implementation,
+	  since it's not yet being used.  Minor refactoring.
+
 2008-04-29  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* Button.cs, TopLevelRootItem.cs, AutomationBridge.cs, Window.cs,

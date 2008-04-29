@@ -32,7 +32,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	
-	public class TopLevelRootItem : ParentAdaptor
+	public class TopLevelRootItem : ParentAdapter
 	{
 		private TopLevelRootItem()
 		{
@@ -57,29 +57,41 @@ namespace UiaAtkBridge
 		
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
-			
+			// TODO
 		}
+		
+		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
+		{
+			// TODO
+		}
+		
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			// TODO
+		}
+
+
 	}
 	
 	// TODO: Separate file
-	public abstract class Adaptor : Atk.Object
+	public abstract class Adapter : Atk.Object
 	{
 		public abstract IRawElementProviderSimple Provider { get; }
 		
-		public abstract void RaiseAutomationEvent (AutomationEvent eventId, object provider, AutomationEventArgs e);
+		public abstract void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e);
 		
-		public abstract void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e);
+		public abstract void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e);
 	}
 	
 	// TODO: Separate file
-	public abstract class ParentAdaptor : Adaptor
+	public abstract class ParentAdapter : Adapter
 	{
 #region Protected Fields
 		
 		protected static object syncRoot = new object ();
 		
-		protected List<Adaptor> children =
-			new List<Adaptor> ();
+		protected List<Atk.Object> children =
+			new List<Atk.Object> ();
 		
 		public abstract void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e);
 		
@@ -108,23 +120,25 @@ namespace UiaAtkBridge
 		
 #region Public Methods
 		
-		public void AddOneChild (Adaptor child)
+		public void AddOneChild (Adapter child)
 		{
+			Console.WriteLine ("AddOneChild");
 			this.Parent = null;
 			lock (syncRoot) {
 				children.Add (child);
 			}
-			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Add, (uint)children.Count - 1, child);
+			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Add, (uint)(children.Count - 1), child);
 		}
 		
-		public void RemoveChild (Adaptor childToRemove)
+		public void RemoveChild (Adapter childToRemove)
 		{
-			uint childIndex;
+			Console.WriteLine ("RemoveChild");
+			int childIndex;
 			lock (syncRoot) {
-				childIndex = (uint)children.IndexOf (childToRemove);
+				childIndex = children.IndexOf (childToRemove);
 				children.Remove (childToRemove);
 			}
-			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Remove, childIndex, childToRemove);
+			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Remove, (uint)childIndex, childToRemove);
 		}
 		
 #endregion

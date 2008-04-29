@@ -30,44 +30,60 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class Button : Adaptor
+	public class Button : Adapter
 	{
 		private IInvokeProvider provider;
+		private IRawElementProviderSimple simpleProvider;
 		
 		public Button (IInvokeProvider provider)
 		{
 			this.provider = provider;
 			Role = Atk.Role.PushButton;
 			
-			IRawElementProviderSimple simpleProvider =
+			simpleProvider =
 				(IRawElementProviderSimple) provider;
 			string buttonText = (string) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = buttonText;
 			
 			bool canFocus = (bool) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
-			Console.WriteLine ("CanFocus for " + buttonText + " == " + canFocus.ToString ());
 			if (canFocus)
 				RefStateSet ().AddState (Atk.StateType.Selectable);
 			else
 				RefStateSet ().RemoveState (Atk.StateType.Selectable);
 		}
 		
-		internal void OnPressed ()
+		public override IRawElementProviderSimple Provider {
+			get { return simpleProvider; }
+		}
+		
+		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
+		{
+			if (eventId == InvokePatternIdentifiers.InvokedEvent) {
+				OnPressed ();
+			}
+		}
+
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			// TODO
+		}
+		
+		private void OnPressed ()
 		{
 			NotifyStateChange ((ulong) Atk.StateType.Armed, true);
 		}
 		
-		internal void OnReleased ()
+		private void OnReleased ()
 		{
 			NotifyStateChange ((ulong) Atk.StateType.Armed, false);
 		}
 		
-		internal void OnDisabled ()
+		private void OnDisabled ()
 		{
 			NotifyStateChange ((ulong) Atk.StateType.Sensitive, false);
 		}
 		
-		internal void OnEnabled ()
+		private void OnEnabled ()
 		{
 			NotifyStateChange ((ulong) Atk.StateType.Sensitive, true);
 		}

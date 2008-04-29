@@ -29,36 +29,50 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class Window : ParentAdaptor
+	public class Window : ParentAdapter
 	{
 		private IWindowProvider provider;
+		private IRawElementProviderFragmentRoot rootProvider;
 		
 		public Window (IWindowProvider provider)
 		{
 			this.provider = provider;
+			rootProvider = (IRawElementProviderFragmentRoot) provider;
 			Role = Atk.Role.Frame;
-			Name = (string) Provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			Name = (string) rootProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 		}
 		
 		public override IRawElementProviderSimple Provider {
-			get { return (IRawElementProviderSimple)provider; }
+			get { return rootProvider; }
 		}
 		
-		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
+		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
 		{
-			IRawElementProviderSimple simpleProvider =
-				(IRawElementProviderSimple) provider;
+			/*IRawElementProviderSimple simpleChildProvider =
+				(IRawElementProviderSimple) childProvider;
 			//TODO: remove elements
 			if (e.StructureChangeType == StructureChangeType.ChildrenBulkAdded) {
-				int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+				int controlTypeId = (int) simpleChildProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 				if (controlTypeId == ControlType.Button.Id) {
 					// TODO: Consider generalizing...
-					Button button = new Button ((IInvokeProvider) provider);
+					Button button = new Button ((IInvokeProvider) childProvider);
 					AddOneChild (button);
 					AddRelationship (Atk.RelationType.Embeds, button);
 					//TODO: add to mappings
 				}
-			}
+			}*/
 		}
+		
+		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
+		{
+			// TODO
+		}
+		
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			// TODO
+		}
+
+
 	}
 }

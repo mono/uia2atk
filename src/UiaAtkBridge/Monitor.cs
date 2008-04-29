@@ -46,46 +46,6 @@ namespace UiaAtkBridge
 			Atk.Util.AddGlobalEventListenerHandler = AddGlobalEventListener;
 		}
 		
-		public void FormIsRemoved(IWindowProvider form)
-		{
-			if (isApplicationStarted)
-			{
-				Console.WriteLine ("FormIsRemoved");
-				TopLevelRootItem.Instance.RemoveChild (providerAtkMapping [(IRawElementProviderSimple) form]);
-				providerAtkMapping.Remove ((IRawElementProviderSimple) form);
-			}
-			else
-			{
-				// TODO: can an app remove a form if it has not been started??
-				throw new NotImplementedException();
-			}
-		}
-		
-		internal Dictionary<IRawElementProviderSimple, Adaptor> providerAtkMapping =
-			new Dictionary<IRawElementProviderSimple, Adaptor>();
-		
-		public void FormIsAdded(IWindowProvider form)
-		{
-			Window newWindow = new Window (form);
-			TopLevelRootItem.Instance.AddOneChild (newWindow);
-		}
-		
-		public void ButtonIsAdded (IInvokeProvider button)
-		{
-			IRawElementProviderSimple simpleProvider =
-				(IRawElementProviderSimple) button;
-			IRawElementProviderSimple parentProvider =
-				simpleProvider.HostRawElementProvider;
-			
-//			ParentAtkObject parentObject =
-//				(ParentAtkObject) providerAtkMapping [parentProvider];
-			
-			Button atkButton = new Button (button);
-//			parentObject.AddOneChild (atkButton);
-//			parentObject.AddRelationship (Atk.RelationType.Embeds,
-//			                              atkButton);
-		}
-		
 		private bool isApplicationStarted = false;
 		
 		public void ApplicationStarts()
