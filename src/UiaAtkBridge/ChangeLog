@@ -1,5 +1,11 @@
 2008-04-29  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Button.cs: Add a canFocus param to the constructor. This will break
+	  the build but this way I show sandy that I need this property from
+	  UIA in case I cannot tell him directly ;)
+
+2008-04-29  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Button.cs: Better not to repeat the classname in the method name.
 
 2008-04-29  Andres G. Aragoneses <aaragoneses@novell.com> 

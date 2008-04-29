@@ -107,7 +107,6 @@ namespace UiaAtkBridge
 				else if (controlTypeId == ControlType.Button.Id)
 					// TODO: Consider generalizing...
 					HandleNewInvokeProvider ((IInvokeProvider)provider);
-				
 				// TODO: Other providers
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
 				if (controlTypeId == ControlType.Window.Id)
