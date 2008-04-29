@@ -1,3 +1,8 @@
+2008-04-29  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* Button.cs: Adding methods for notifying AT-SPI about the button being
+	  used.
+
 2008-04-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Button.cs, Monitor.cs, Window.cs: Store provider reference in ATK

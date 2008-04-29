@@ -21,6 +21,7 @@
 // 
 // Authors: 
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//      Andrés G. Aragoneses <aaragoneses@novell.com>
 // 
 
 using System;
@@ -42,6 +43,16 @@ namespace UiaAtkBridge
 				(IRawElementProviderSimple) provider;
 			string buttonText = (string) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = buttonText;
+		}
+		
+		internal void ButtonIsPressed ()
+		{
+			NotifyStateChange ((ulong) Atk.StateType.Armed, true);
+		}
+		
+		internal void ButtonIsReleased ()
+		{
+			NotifyStateChange ((ulong) Atk.StateType.Armed, false);
 		}
 	}
 }
