@@ -1,5 +1,9 @@
 2008-04-29  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Button.cs: More events for a button.
+
+2008-04-29  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Button.cs: Adding methods for notifying AT-SPI about the button being
 	  used.
 

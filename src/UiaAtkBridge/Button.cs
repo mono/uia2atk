@@ -54,5 +54,15 @@ namespace UiaAtkBridge
 		{
 			NotifyStateChange ((ulong) Atk.StateType.Armed, false);
 		}
+		
+		internal void ButtonIsDisabled ()
+		{
+			NotifyStateChange ((ulong) Atk.StateType.Sensitive, false);
+		}
+		
+		internal void ButtonIsEnabled ()
+		{
+			NotifyStateChange ((ulong) Atk.StateType.Sensitive, true);
+		}
 	}
 }
