@@ -56,18 +56,17 @@ namespace UiaAtkBridge
 			}
 			else
 			{
-				// TODO: an app can remove a form if it has not been started??
+				// TODO: can an app remove a form if it has not been started??
 				throw new NotImplementedException();
 			}
 		}
 		
-		private Dictionary<IRawElementProviderSimple, Atk.Object> providerAtkMapping =
-			new Dictionary<IRawElementProviderSimple,Atk.Object>();
+		internal Dictionary<IRawElementProviderSimple, Adaptor> providerAtkMapping =
+			new Dictionary<IRawElementProviderSimple, Adaptor>();
 		
 		public void FormIsAdded(IWindowProvider form)
 		{
 			Window newWindow = new Window (form);
-			providerAtkMapping.Add ((IRawElementProviderSimple) form, newWindow);
 			TopLevelRootItem.Instance.AddOneChild (newWindow);
 		}
 		
@@ -78,14 +77,13 @@ namespace UiaAtkBridge
 			IRawElementProviderSimple parentProvider =
 				simpleProvider.HostRawElementProvider;
 			
-			ParentAtkObject parentObject =
-				(ParentAtkObject) providerAtkMapping [parentProvider];
+//			ParentAtkObject parentObject =
+//				(ParentAtkObject) providerAtkMapping [parentProvider];
 			
 			Button atkButton = new Button (button);
-			providerAtkMapping [simpleProvider] = atkButton;
-			parentObject.AddOneChild (atkButton);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkButton);
+//			parentObject.AddOneChild (atkButton);
+//			parentObject.AddRelationship (Atk.RelationType.Embeds,
+//			                              atkButton);
 		}
 		
 		private bool isApplicationStarted = false;
@@ -124,7 +122,7 @@ namespace UiaAtkBridge
 			return typeof(Monitor).Assembly.GetName().Version.ToString();
 		}
 		
-		private int AddGlobalEventListener(IntPtr listener, string event_type)
+		private uint AddGlobalEventListener(GLib.Signal.EmissionHook listener, string event_type)
 		{
 			//dummy method for now
 			return 0;

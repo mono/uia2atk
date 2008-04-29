@@ -30,7 +30,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class Button : Atk.Object
+	public class Button : Adaptor
 	{
 		private IInvokeProvider provider;
 		
@@ -43,7 +43,6 @@ namespace UiaAtkBridge
 				(IRawElementProviderSimple) provider;
 			string buttonText = (string) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = buttonText;
-			
 			
 			bool canFocus = (bool) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
 			Console.WriteLine ("CanFocus for " + buttonText + " == " + canFocus.ToString ());

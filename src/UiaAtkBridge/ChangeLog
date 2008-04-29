@@ -1,3 +1,10 @@
+2008-04-29  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* Button.cs, TopLevelRootItem.cs, AutomationBridge.cs, Window.cs,
+	  Monitor.cs: Refactoring suggested by Sandy (ongoing work in
+	  progress): does not compile yet, and you need the new version of
+	  the Atk# patch (v3).
+
 2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Button.cs: Implement IsKeyboardFocusableProperty for buttons.

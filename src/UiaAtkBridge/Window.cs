@@ -29,18 +29,36 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class Window : ParentAtkObject
+	public class Window : ParentAdaptor
 	{
 		private IWindowProvider provider;
 		
 		public Window (IWindowProvider provider)
 		{
 			this.provider = provider;
-			Role = Atk.Role.Frame;			
-			
+			Role = Atk.Role.Frame;
+			Name = (string) Provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+		}
+		
+		public override IRawElementProviderSimple Provider {
+			get { return (IRawElementProviderSimple)provider; }
+		}
+		
+		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
+		{
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) provider;
-			Name = (string) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			//TODO: remove elements
+			if (e.StructureChangeType == StructureChangeType.ChildrenBulkAdded) {
+				int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+				if (controlTypeId == ControlType.Button.Id) {
+					// TODO: Consider generalizing...
+					Button button = new Button ((IInvokeProvider) provider);
+					AddOneChild (button);
+					AddRelationship (Atk.RelationType.Embeds, button);
+					//TODO: add to mappings
+				}
+			}
 		}
 	}
 }
