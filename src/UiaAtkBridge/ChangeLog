@@ -1,5 +1,10 @@
 2008-04-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Button.cs, Monitor.cs, Window.cs: Store provider reference in ATK
+	  Button and Window classes, use to get Name (to start).
+
+2008-04-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Button.cs, UiaAtkBridge.mdp: Add ATK Button class.
 	* TopLevelRootItem.cs, Window.cs: Extract ParentAtkObject abstract
 	  class from TopLevelRootItem.  Have ATK Window class subclass it, to

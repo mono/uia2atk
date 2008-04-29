@@ -51,6 +51,7 @@ namespace UiaAtkBridge
 	}
 	
 	
+	// TODO: Separate file
 	public abstract class ParentAtkObject : Atk.Object
 	{
 #region Protected Fields

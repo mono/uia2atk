@@ -24,15 +24,24 @@
 // 
 
 using System;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
 	public class Button : Atk.Object
 	{
-		public Button (string label)
+		private IInvokeProvider provider;
+		
+		public Button (IInvokeProvider provider)
 		{
-			Name = label;
+			this.provider = provider;
 			Role = Atk.Role.PushButton;
+			
+			IRawElementProviderSimple simpleProvider =
+				(IRawElementProviderSimple) provider;
+			string buttonText = (string) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			Name = buttonText;
 		}
 	}
 }

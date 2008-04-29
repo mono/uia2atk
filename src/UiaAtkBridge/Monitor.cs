@@ -66,14 +66,7 @@ namespace UiaAtkBridge
 		
 		public void FormIsAdded(IWindowProvider form)
 		{
-			IRawElementProviderFragmentRoot rootProvider = (IRawElementProviderFragmentRoot) form;
-			string windowName = (string) rootProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			
-			//IRawElementProviderSimple firstChild = rootProvider.Navigate (NavigateDirection.FirstChild);
-			//int firstChildControlId = (int) firstChild.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			//ControlType firstChildControlType = ControlType.LookupById (firstChildControlId);
-			
-			Window newWindow = new Window (windowName);
+			Window newWindow = new Window (form);
 			providerAtkMapping.Add ((IRawElementProviderSimple) form, newWindow);
 			TopLevelRootItem.Instance.AddOneChild (newWindow);
 		}
@@ -85,11 +78,10 @@ namespace UiaAtkBridge
 			IRawElementProviderSimple parentProvider =
 				simpleProvider.HostRawElementProvider;
 			
-			string buttonText = (string) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			ParentAtkObject parentObject =
 				(ParentAtkObject) providerAtkMapping [parentProvider];
 			
-			Button atkButton = new Button (buttonText);
+			Button atkButton = new Button (button);
 			providerAtkMapping [simpleProvider] = atkButton;
 			parentObject.AddOneChild (atkButton);
 			parentObject.AddRelationship (Atk.RelationType.Embeds,

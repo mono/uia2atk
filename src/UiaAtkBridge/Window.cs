@@ -24,16 +24,23 @@
 // 
 
 using System;
-using System.Collections.Generic;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
 	public class Window : ParentAtkObject
 	{
-		public Window (string name)
+		private IWindowProvider provider;
+		
+		public Window (IWindowProvider provider)
 		{
-			Name = name;
-			Role = Atk.Role.Frame;
+			this.provider = provider;
+			Role = Atk.Role.Frame;			
+			
+			IRawElementProviderSimple simpleProvider =
+				(IRawElementProviderSimple) provider;
+			Name = (string) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 		}
 	}
 }
