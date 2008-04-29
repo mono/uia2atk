@@ -34,7 +34,7 @@ namespace UiaAtkBridge
 	{
 		private IInvokeProvider provider;
 		
-		public Button (IInvokeProvider provider, bool canFocus)
+		public Button (IInvokeProvider provider)
 		{
 			this.provider = provider;
 			Role = Atk.Role.PushButton;
@@ -44,6 +44,9 @@ namespace UiaAtkBridge
 			string buttonText = (string) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = buttonText;
 			
+			
+			bool canFocus = (bool) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
+			Console.WriteLine ("CanFocus for " + buttonText + " == " + canFocus.ToString ());
 			if (canFocus)
 				RefStateSet ().AddState (Atk.StateType.Selectable);
 			else

@@ -82,6 +82,8 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.Button.Id;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return button.Text;
+			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				return button.CanFocus;
 			else
 				return null;
 		}

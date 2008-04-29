@@ -1,3 +1,7 @@
+2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Button.cs: Implement IsKeyboardFocusableProperty for buttons.
+
 2008-04-29  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* Button.cs: Add a canFocus param to the constructor. This will break
