@@ -1,6 +1,6 @@
 Index: atk/Util.custom
 ===================================================================
---- atk/Util.custom	(revision 102022)
+--- atk/Util.custom	(revision 102162)
 +++ atk/Util.custom	(working copy)
 @@ -23,6 +23,35 @@
  
@@ -40,7 +40,7 @@ Index: atk/Util.custom
  		static RemoveListenerDelegate remove_global_event_listener_handler;
 Index: atk/Makefile.am
 ===================================================================
---- atk/Makefile.am	(revision 102022)
+--- atk/Makefile.am	(revision 102162)
 +++ atk/Makefile.am	(working copy)
 @@ -8,6 +8,7 @@
  sources = 
@@ -52,7 +52,7 @@ Index: atk/Makefile.am
  	Util.custom
 Index: atk/Atk.metadata
 ===================================================================
---- atk/Atk.metadata	(revision 102022)
+--- atk/Atk.metadata	(revision 102162)
 +++ atk/Atk.metadata	(working copy)
 @@ -1,5 +1,6 @@
  <?xml version="1.0"?>
@@ -63,7 +63,7 @@ Index: atk/Atk.metadata
    <attr path="/api/namespace/interface[@cname='AtkDocument']/method[@name='GetAttributes']/return-type" name="element_type">AtkAttribute*</attr>
 Index: glib/Signal.cs
 ===================================================================
---- glib/Signal.cs	(revision 102022)
+--- glib/Signal.cs	(revision 102162)
 +++ glib/Signal.cs	(working copy)
 @@ -31,26 +31,96 @@
  		Swapped = 1 << 1,
@@ -188,13 +188,40 @@ Index: glib/Signal.cs
  					return before_handler;
  				else
  					return after_handler;
-@@ -224,15 +294,36 @@
+@@ -206,13 +276,24 @@
+ 			}
+ 
+ 			GLib.Value ret = GLib.Value.Empty;
+-
+ 			g_signal_emitv (inst_and_params.ArrayPtr, signal_id, gquark, ref ret);
+-			object ret_obj = ret.Val;
+ 			
++			object ret_obj = null;
++			try {
++				// may throw:
++				// Unhandled Exception: System.Exception: Unknown type
++				//  at GLib.Value.get_Val () [0x00000]
++				ret_obj = ret.Val;
++				
++				// if we dispose being an invalid value:
++				// GLib-GObject-CRITICAL **: g_value_unset: assertion `G_IS_VALUE (value)' failed
++				ret.Dispose ();
++			}
++			catch
++			{
++			}
+ 			foreach (GLib.Value val in vals)
+ 				val.Dispose ();
+-			ret.Dispose ();
+ 			
+ 			return ret_obj;
+ 		}
+@@ -224,15 +305,35 @@
  			return ret;
  		}
  
 +		private static uint GetSignalId (string signal_name, GLib.GType type)
 + 		{
-+			Console.WriteLine ("type to search: " + type.ToString ());
 +			return GetSignalId (signal_name, type.Val);
 +		}
 +		
@@ -230,7 +257,7 @@ Index: glib/Signal.cs
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);
  
-@@ -257,6 +348,10 @@
+@@ -257,6 +358,10 @@
  		
  		[DllImport("glibsharpglue-2")]
  		static extern IntPtr gtksharp_get_type_id (IntPtr raw);
@@ -243,7 +270,7 @@ Index: glib/Signal.cs
  
 Index: glib/GType.cs
 ===================================================================
---- glib/GType.cs	(revision 102022)
+--- glib/GType.cs	(revision 102162)
 +++ glib/GType.cs	(working copy)
 @@ -36,6 +36,10 @@
  		{
@@ -256,7 +283,7 @@ Index: glib/GType.cs
  
  		public static readonly GType Invalid = new GType ((IntPtr) TypeFundamentals.TypeInvalid);
  		public static readonly GType None = new GType ((IntPtr) TypeFundamentals.TypeNone);
-@@ -197,5 +201,8 @@
+@@ -200,5 +204,8 @@
  		{
  			return Marshaller.Utf8PtrToString (g_type_name (val));
  		}
@@ -267,7 +294,7 @@ Index: glib/GType.cs
  }
 Index: glib/ObjectManager.cs
 ===================================================================
---- glib/ObjectManager.cs	(revision 102022)
+--- glib/ObjectManager.cs	(revision 102162)
 +++ glib/ObjectManager.cs	(working copy)
 @@ -58,7 +58,7 @@
  		[Obsolete ("Replaced by GType.Register (GType, Type)")]
