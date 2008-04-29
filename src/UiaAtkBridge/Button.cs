@@ -45,22 +45,22 @@ namespace UiaAtkBridge
 			Name = buttonText;
 		}
 		
-		internal void ButtonIsPressed ()
+		internal void OnPressed ()
 		{
 			NotifyStateChange ((ulong) Atk.StateType.Armed, true);
 		}
 		
-		internal void ButtonIsReleased ()
+		internal void OnReleased ()
 		{
 			NotifyStateChange ((ulong) Atk.StateType.Armed, false);
 		}
 		
-		internal void ButtonIsDisabled ()
+		internal void OnDisabled ()
 		{
 			NotifyStateChange ((ulong) Atk.StateType.Sensitive, false);
 		}
 		
-		internal void ButtonIsEnabled ()
+		internal void OnEnabled ()
 		{
 			NotifyStateChange ((ulong) Atk.StateType.Sensitive, true);
 		}
