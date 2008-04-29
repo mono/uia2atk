@@ -188,12 +188,13 @@ Index: glib/Signal.cs
  					return before_handler;
  				else
  					return after_handler;
-@@ -224,15 +294,35 @@
+@@ -224,15 +294,36 @@
  			return ret;
  		}
  
 +		private static uint GetSignalId (string signal_name, GLib.GType type)
 + 		{
++			Console.WriteLine ("type to search: " + type.ToString ());
 +			return GetSignalId (signal_name, type.Val);
 +		}
 +		
@@ -229,7 +230,7 @@ Index: glib/Signal.cs
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern uint g_signal_connect_data(IntPtr obj, IntPtr name, Delegate cb, IntPtr gc_handle, IntPtr dummy, int flags);
  
-@@ -257,6 +347,10 @@
+@@ -257,6 +348,10 @@
  		
  		[DllImport("glibsharpglue-2")]
  		static extern IntPtr gtksharp_get_type_id (IntPtr raw);
