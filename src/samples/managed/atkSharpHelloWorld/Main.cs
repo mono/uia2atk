@@ -29,7 +29,7 @@ namespace atkSharpHelloWorld
 
 			LaunchAtkBridge();
 			
-			timer.Interval = 20000;
+			timer.Interval = 40000;
 			timer.Elapsed += ElapsedTimer;
 			timer.Enabled = true;
 			
@@ -40,6 +40,7 @@ namespace atkSharpHelloWorld
 		{
 			Console.WriteLine("fired!");
 			Mytk.MytkGlobal.RemoveOneTopLevelWindow();
+			//((HelloChild)HelloTopLevel.Instance.Children[0]).PushButton();
 		}
 		
 		static void StartProgramGui()

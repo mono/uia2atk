@@ -60,7 +60,6 @@ namespace atkSharpHelloWorld
 		
 		private static uint KeepListener (
 		    GLib.Signal.EmissionHook listener, 
-		    //IntPtr listener,
 		    string objType, string signalName, string hookData)
 		{
 			GLib.GType type = new GLib.GType (objType);

@@ -41,17 +41,26 @@ namespace atkSharpHelloWorld
 		//although this returns 0 already on the base, it may become an abstract method
 		protected override int OnGetNChildren()
 		{
-			return 0;
+			return 1;
 		}
+		
+		HelloButton button = new HelloButton ("pressMe!");
 		
 		protected override Atk.Object OnRefChild(int i)
 		{
+			Console.WriteLine("OnRefChild");
 			//FIXME: we should assert here about 'should not be reached'
-			return null;
+			return button;
+		}
+		
+		public void PushButton()
+		{
+			this.button.FirePushButton ();
 		}
 
 		public Atk.Object RefAccessibleAtPoint (int x, int y, Atk.CoordType coord_type)
 		{
+			Console.WriteLine("RefAccessibleAtPoint({0},{1})", x, y);
 			//this is still not implemented, but better to return null to prevent crash
 			//throw new System.NotImplementedException();
 			return null;
@@ -64,13 +73,15 @@ namespace atkSharpHelloWorld
 
 		public void GetPosition (out int x, out int y, Atk.CoordType coord_type)
 		{
+			Console.WriteLine("GetPosition");
 			x = 50;
 			y = 60;
 		}
 
 		public void GetExtents (out int x, out int y, out int width, out int height, Atk.CoordType coord_type)
 		{
-			//coord_type specifies to which concept the coords are relative too
+			//coord_type specifies to which concept the coords are relative to
+			Console.WriteLine("GetExtents");
 			x = 30;
 			y = 40;
 			width = 300;
@@ -84,6 +95,7 @@ namespace atkSharpHelloWorld
 
 		public bool SetSize (int width, int height)
 		{
+			Console.WriteLine("SetSize({0},{1})");
 			//this is still not implemented, but better to return true to prevent crash
 			//throw new System.NotImplementedException();
 			return true;

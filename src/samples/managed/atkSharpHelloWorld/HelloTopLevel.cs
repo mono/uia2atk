@@ -37,7 +37,7 @@ namespace atkSharpHelloWorld
 			this.Role = Atk.Role.Application;
 		}
 		
-		private Atk.Object[] Children
+		internal Atk.Object[] Children
 		{
 			get {
 				List<Atk.Object> accessibles = new List<Atk.Object>();
