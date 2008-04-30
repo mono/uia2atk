@@ -1,3 +1,14 @@
+2008-04-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Support
+	  HasKeyboardFocusProperty and focus change events.
+	* Mono.UIAutomation.Winforms/FormListener.cs: Added explanatory comment
+	  of current hack to recognize control providers inside a form
+	* Mono.UIAutomation.Winforms/LabelProvider.cs: First cut at
+	  implementing LabelProvider.
+	* Mono.UIAutomation.Winforms/NumericUpDownProvider.cs: Beginning
+	  implementation of NumericUpDownProvider.
+
 2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs,

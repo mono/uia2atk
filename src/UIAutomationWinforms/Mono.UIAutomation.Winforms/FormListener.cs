@@ -113,6 +113,10 @@ namespace Mono.UIAutomation.Winforms
 			  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkAdded,
 			                                 new int [] {0}));
 			
+			// HACK: This is just to make sure control providers
+			//       aren't sent to bridge until the parent's already
+			//       there.  There are about 100 ways to do this
+			//       better.
 			foreach (IRawElementProviderSimple control in provider.controlProviders.Values) {
 				// TODO: Fill in rest of eventargs
 				AutomationInteropProvider.RaiseStructureChangedEvent (

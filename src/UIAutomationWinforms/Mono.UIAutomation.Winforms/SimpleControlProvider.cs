@@ -44,6 +44,9 @@ namespace Mono.UIAutomation.Winforms
 		public SimpleControlProvider (Control control)
 		{
 			this.control = control;
+			
+			control.GotFocus += OnFocusChanged;
+			//control.LocationChanged += OnLocationChanged;
 		}
 		
 #endregion
@@ -62,10 +65,8 @@ namespace Mono.UIAutomation.Winforms
 				return control.CanFocus;
 			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
 				throw new NotImplementedException ();
-			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
-				throw new NotImplementedException ();
-			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
-				throw new NotImplementedException ();
+			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+				return control.Focused;
 			else
 				return null;
 		}
@@ -83,6 +84,20 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
+#endregion
+		
+#region Event Handlers
+	
+		private void OnFocusChanged (object sender, EventArgs e)
+		{
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationPropertyChangedEventArgs args =
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.HasKeyboardFocusProperty,
+					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
+					                                        GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id));
+				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, args);
+			}
+		}
 #endregion
 	}
 }
