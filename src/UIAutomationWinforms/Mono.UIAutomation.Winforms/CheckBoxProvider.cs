@@ -24,40 +24,27 @@
 // 
 
 using System;
-using System.Drawing;
+using System.Windows.Forms;
+
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class ButtonProvider : SimpleControlProvider, IInvokeProvider
+	public class CheckBoxProvider : SimpleControlProvider, IToggleProvider
 	{
-#region Private Members
+#region Private Fields
 		
-		private Button button;
+		private CheckBox checkbox;
 		
 #endregion
 		
 #region Constructors
 		
-		public ButtonProvider (Button button) : base (button)
+		public CheckBoxProvider(CheckBox checkbox) : base (checkbox)
 		{
-			this.button = button;
-			button.Click += OnClick;
-		}
-		
-#endregion
-		
-#region IInvokeProvider Members
-		
-		public void Invoke ()
-		{
-			if (!button.Enabled)
-				throw new ElementNotEnabledException ();
-			
-			// TODO: Make sure this runs on the right thread
-			button.PerformClick ();
+			this.checkbox = checkbox;
+			checkbox.CheckedChanged += OnCheckChanged;
 		}
 		
 #endregion
@@ -66,7 +53,7 @@ namespace Mono.UIAutomation.Winforms
 	
 		public override object GetPatternProvider (int patternId)
 		{
-			if (patternId == InvokePatternIdentifiers.Pattern.Id)
+			if (patternId == TogglePatternIdentifiers.Pattern.Id)
 				return this;
 			
 			return null;
@@ -75,9 +62,9 @@ namespace Mono.UIAutomation.Winforms
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
-				return "WindowsForms10.BUTTON.app.0.bf7d44"; // TODO: Verify
+				return "WindowsForms10.BUTTON.app.0.bf7d44";
 			else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Button.Id;
+				return ControlType.CheckBox.Id;
 			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
 				return false; // TODO: ???
 			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
@@ -90,13 +77,39 @@ namespace Mono.UIAutomation.Winforms
 
 #endregion
 		
-#region Event Handlers
+#region IToggleProvider Members
+	
+		public void Toggle ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public ToggleState ToggleState {
+			get {
+				switch (checkbox.CheckState) {
+				case CheckState.Checked:
+					return ToggleState.On;
+				case CheckState.Unchecked:
+					return ToggleState.Off;
+				case CheckState.Indeterminate:
+				default:
+					return ToggleState.Indeterminate;
+				}
+			}
+		}
+
+#endregion
 		
-		private void OnClick (object sender, EventArgs e)
+#region Event Handlers
+	
+		private void OnCheckChanged (object sender, EventArgs e)
 		{
 			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationEventArgs args = new AutomationEventArgs (InvokePatternIdentifiers.InvokedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (InvokePatternIdentifiers.InvokedEvent, this, args);
+				AutomationPropertyChangedEventArgs args =
+					new AutomationPropertyChangedEventArgs (TogglePatternIdentifiers.ToggleStateProperty,
+					                                        null, // Mimics MS behavior
+					                                        ToggleState);
+				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, args);
 			}
 		}
 		

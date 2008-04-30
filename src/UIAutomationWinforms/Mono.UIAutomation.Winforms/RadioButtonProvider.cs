@@ -24,60 +24,49 @@
 // 
 
 using System;
-using System.Drawing;
+using System.Windows.Forms;
+
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class ButtonProvider : SimpleControlProvider, IInvokeProvider
+	public class RadioButtonProvider : SimpleControlProvider, ISelectionItemProvider
 	{
-#region Private Members
+#region Private Fields
 		
-		private Button button;
+		private RadioButton radioButton;
 		
 #endregion
 		
 #region Constructors
 		
-		public ButtonProvider (Button button) : base (button)
+		public RadioButtonProvider (RadioButton radioButton) :
+			base (radioButton)
 		{
-			this.button = button;
-			button.Click += OnClick;
-		}
-		
-#endregion
-		
-#region IInvokeProvider Members
-		
-		public void Invoke ()
-		{
-			if (!button.Enabled)
-				throw new ElementNotEnabledException ();
+			this.radioButton = radioButton;
 			
-			// TODO: Make sure this runs on the right thread
-			button.PerformClick ();
+			radioButton.CheckedChanged += OnCheckedChanged;
 		}
 		
 #endregion
 		
 #region IRawElementProviderSimple Members
-	
+		
 		public override object GetPatternProvider (int patternId)
 		{
-			if (patternId == InvokePatternIdentifiers.Pattern.Id)
+			if (patternId == SelectionItemPatternIdentifiers.Pattern.Id)
 				return this;
 			
 			return null;
 		}
-		
+
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
-				return "WindowsForms10.BUTTON.app.0.bf7d44"; // TODO: Verify
+				return "WindowsForms10.BUTTON.app.0.bf7d44";
 			else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Button.Id;
+				return ControlType.RadioButton.Id;
 			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
 				return false; // TODO: ???
 			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
@@ -87,16 +76,48 @@ namespace Mono.UIAutomation.Winforms
 			else
 				return base.GetPropertyValue (propertyId);
 		}
+#endregion
+		
+#region ISelectionItem Members
+	
+		public void AddToSelection ()
+		{
+			Select ();
+		}
+
+		public bool IsSelected {
+			get { return radioButton.Checked; }
+		}
+
+		public void RemoveFromSelection ()
+		{
+			return;
+		}
+
+		public void Select ()
+		{
+			radioButton.Checked = true;
+		}
+
+		public IRawElementProviderSimple SelectionContainer {
+			get { return null; }
+		}
 
 #endregion
 		
 #region Event Handlers
 		
-		private void OnClick (object sender, EventArgs e)
+		private void OnCheckedChanged (object sender, EventArgs e)
 		{
 			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationEventArgs args = new AutomationEventArgs (InvokePatternIdentifiers.InvokedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (InvokePatternIdentifiers.InvokedEvent, this, args);
+				AutomationEventArgs args =
+					new AutomationEventArgs (SelectionItemPatternIdentifiers.ElementSelectedEvent);
+				AutomationInteropProvider.RaiseAutomationEvent (SelectionItemPatternIdentifiers.ElementSelectedEvent,
+				                                                this,
+				                                                args);
+				// TODO: Many other events to fire, including
+				//       property change events!  This is also
+				//       true for other providers, methinks.
 			}
 		}
 		

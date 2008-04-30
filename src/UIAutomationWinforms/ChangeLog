@@ -1,5 +1,18 @@
 2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs,
+	  Mono.UIAutomation.Winforms/Mono.UIAutomation.Winforms.mdp,
+	  Mono.UIAutomation.Winforms/RadioButtonProvider.cs: Added
+	  preliminary versions of CheckBox and RadioButton providers.
+	* Mono.UIAutomation.Winforms/WindowProvider.cs,
+	  Mono.UIAutomation.Winforms/SimpleControlProvider.cs,
+	  Mono.UIAutomation.Winforms/ButtonProvider.cs: Extracted
+	  SimpleControlProvider abstract base class to handle some basic
+	  IRawElementProviderSimple tasks common to all Control providers. 
+	  Behavior improvements to match UISpy output on MS.NET.
+
+2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Mono.UIAutomation.Winforms/ButtonProvider.cs: Implement
 	  IsKeyboardFocusableProperty for buttons.
 

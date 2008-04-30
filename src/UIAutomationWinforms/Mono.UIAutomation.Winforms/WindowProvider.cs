@@ -32,7 +32,7 @@ using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class WindowProvider : IWindowProvider, IRawElementProviderFragmentRoot
+	public class WindowProvider : SimpleControlProvider, IWindowProvider, ITransformProvider, IRawElementProviderFragmentRoot
 	{
 #region Private Data
 		
@@ -44,7 +44,7 @@ namespace Mono.UIAutomation.Winforms
 		
 #region Constructors
 
-		public WindowProvider (Form form)
+		public WindowProvider (Form form) : base (form)
 		{
 			this.form = form;
 			
@@ -74,6 +74,14 @@ namespace Mono.UIAutomation.Winforms
 			Button b = control as Button;
 			if (b != null)
 				return new ButtonProvider (b);
+			
+			RadioButton r = control as RadioButton;
+			if (r != null)
+				return new RadioButtonProvider (r);
+			
+			CheckBox c = control as CheckBox;
+			if (c != null)
+				return new CheckBoxProvider (c);
 			
 			return null;
 		}
@@ -150,13 +158,13 @@ namespace Mono.UIAutomation.Winforms
 		
 		public bool Minimizable {
 			get {
-				return form.MinimizeBox;// TODO: Correct?
+				return form.MinimizeBox;
 			}
 		}
 		
 		public bool Maximizable {
 			get {
-				return form.MaximizeBox;// TODO: Correct?
+				return form.MaximizeBox;
 			}
 		}
 		
@@ -192,39 +200,71 @@ namespace Mono.UIAutomation.Winforms
 		
 #endregion
 		
+#region ITransformProvider Members
+	
+		public bool CanMove {
+			get {
+				return form.WindowState == FormWindowState.Normal;
+			}
+		}
+
+		public bool CanResize {
+			get { throw new NotImplementedException (); }
+		}
+
+		public bool CanRotate {
+			get { return false; }
+		}
+
+		public void Move (double x, double y)
+		{
+			form.Location = new Point ((int) x, (int) y);
+		}
+
+		public void Resize (double width, double height)
+		{
+			form.Size = new Size ((int) width, (int) height);
+		}
+
+		public void Rotate (double degrees)
+		{
+			return;
+		}
+
+#endregion
+		
 #region IRawElementProviderFragmentRoot Members
 
-		public IRawElementProviderSimple HostRawElementProvider {
+		public override IRawElementProviderSimple HostRawElementProvider {
 			get {
-				return this;//AutomationInteropProvider.HostProviderFromHandle (form.Handle);
-			}
-		}
-		
-		public ProviderOptions ProviderOptions {
-			get {
-				return ProviderOptions.ServerSideProvider;
+				return this;
 			}
 		}
 
-		public object GetPatternProvider (int patternId)
+		public override object GetPatternProvider (int patternId)
 		{
-			if (patternId == WindowPatternIdentifiers.Pattern.Id)
+			if (patternId == WindowPatternIdentifiers.Pattern.Id ||
+			    patternId == TransformPatternIdentifiers.Pattern.Id)
 				return this;
+			
 			return null;
 		}
 		
-		public object GetPropertyValue (int propertyId)
+		public override object GetPropertyValue (int propertyId)
 		{
 			// TODO: Complete...figure out by testing Windows implementation (UISpy is helpful)
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Window.Id;
-			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return form.Text;
 			else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
 				return form.Handle; // TODO: Should be int, maybe?
+			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
+				return false; // TODO: ???
+			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
+				return true;
+			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
+				return true;
 			else
-				return null;
-			
+				return base.GetPropertyValue (propertyId);
 		}
 		
 		public System.Windows.Rect BoundingRectangle {
