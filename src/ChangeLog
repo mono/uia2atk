@@ -1,5 +1,10 @@
 2008-05-05  Andres G. Aragoneses <aaragoneses@novell.com>
 
+	* patches/bugAddEmissionHook&GTypeFromName.diff: beware of
+	invalid signals.
+
+2008-05-05  Andres G. Aragoneses <aaragoneses@novell.com>
+
 	* patches/bugAddEmissionHook&GTypeFromName.diff: modify
 	according to review given in bnc#365437.
 

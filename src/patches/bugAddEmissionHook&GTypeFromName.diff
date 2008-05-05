@@ -2,7 +2,7 @@ Index: glib/Signal.cs
 ===================================================================
 --- glib/Signal.cs	(revision 102566)
 +++ glib/Signal.cs	(working copy)
-@@ -314,12 +314,23 @@
+@@ -314,12 +314,25 @@
  		private static uint GetSignalId (string signal_name, GLib.Object obj)
  		{
  			IntPtr typeid = gtksharp_get_type_id (obj.Handle);
@@ -20,13 +20,15 @@ Index: glib/Signal.cs
 +		public static ulong AddEmissionHook (string signal_name, uint signal_detail, GLib.GType type, EmissionHook handler_func, IntPtr data)
 +		{
 +			uint signal_id = GetSignalId (signal_name, type.Val);
++			if (signal_id == 0)
++				throw new Exception ("Invalid signal");
 +			return g_signal_add_emission_hook (signal_id, signal_detail, new EmissionHookMarshaler (handler_func).Callback, data, IntPtr.Zero);
 +		}
 +		
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern IntPtr g_signal_get_invocation_hint (IntPtr instance);
  
-@@ -335,6 +346,10 @@
+@@ -335,6 +348,10 @@
  		
  		[DllImport("glibsharpglue-2")]
  		static extern IntPtr gtksharp_get_type_id (IntPtr raw);
