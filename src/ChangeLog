@@ -1,5 +1,10 @@
 2008-05-05  Andres G. Aragoneses <aaragoneses@novell.com>
 
+	* patches/bugAddEmissionHook&GTypeFromName.diff: modify
+	according to review given in bnc#365437.
+
+2008-05-05  Andres G. Aragoneses <aaragoneses@novell.com>
+
 	* patches/bug365437comm2v3.diff: removed, obsolete.
 	* patches/bugAddEmissionHook&GTypeFromName.diff: added 
 	AddEmissionHook	and GType.FromName wrappers.

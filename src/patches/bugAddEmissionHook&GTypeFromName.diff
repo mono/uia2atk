@@ -1,16 +1,8 @@
 Index: glib/Signal.cs
 ===================================================================
---- glib/Signal.cs	(revision 102534)
+--- glib/Signal.cs	(revision 102566)
 +++ glib/Signal.cs	(working copy)
-@@ -311,15 +311,36 @@
- 			return ret;
- 		}
- 
-+		private static uint GetSignalId (string signal_name, GLib.GType type)
-+		{
-+			return GetSignalId (signal_name, type.Val);
-+		}
-+		
+@@ -314,12 +314,23 @@
  		private static uint GetSignalId (string signal_name, GLib.Object obj)
  		{
  			IntPtr typeid = gtksharp_get_type_id (obj.Handle);
@@ -24,22 +16,17 @@ Index: glib/Signal.cs
  			GLib.Marshaller.Free (native_name);
  			return signal_id;
  		}
-+
-+		public static ulong AddEmissionHandler (string signal_name, GLib.GType type, EmissionHook handler_func, IntPtr data)
-+		{
-+			return AddEmissionHandler (signal_name, 0, type, handler_func, data);
-+		}
  		
-+		public static ulong AddEmissionHandler (string signal_name, uint signal_detail, GLib.GType type, EmissionHook handler_func, IntPtr data)
++		public static ulong AddEmissionHook (string signal_name, uint signal_detail, GLib.GType type, EmissionHook handler_func, IntPtr data)
 +		{
-+			uint signal_id = GetSignalId (signal_name, type);
++			uint signal_id = GetSignalId (signal_name, type.Val);
 +			return g_signal_add_emission_hook (signal_id, signal_detail, new EmissionHookMarshaler (handler_func).Callback, data, IntPtr.Zero);
 +		}
 +		
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern IntPtr g_signal_get_invocation_hint (IntPtr instance);
  
-@@ -335,6 +356,10 @@
+@@ -335,6 +346,10 @@
  		
  		[DllImport("glibsharpglue-2")]
  		static extern IntPtr gtksharp_get_type_id (IntPtr raw);
@@ -52,20 +39,21 @@ Index: glib/Signal.cs
  
 Index: glib/GType.cs
 ===================================================================
---- glib/GType.cs	(revision 102534)
+--- glib/GType.cs	(revision 102566)
 +++ glib/GType.cs	(working copy)
-@@ -37,6 +37,10 @@
+@@ -37,6 +37,11 @@
  			this.val = val;
  		}
  
-+		public GType (string native_name) : this (g_type_from_name (native_name))
++		public static GType FromName (string native_name)
 +		{
++			return new GType (g_type_from_name (native_name));
 +		}
 +		
  		public static readonly GType Invalid = new GType ((IntPtr) TypeFundamentals.TypeInvalid);
  		public static readonly GType None = new GType ((IntPtr) TypeFundamentals.TypeNone);
  		public static readonly GType Interface = new GType ((IntPtr) TypeFundamentals.TypeInterface);
-@@ -195,6 +199,9 @@
+@@ -195,6 +200,9 @@
  
  		[DllImport("libgobject-2.0-0.dll")]
  		static extern IntPtr g_type_name (IntPtr raw);
@@ -77,14 +65,14 @@ Index: glib/GType.cs
  		{
 Index: glib/ObjectManager.cs
 ===================================================================
---- glib/ObjectManager.cs	(revision 102534)
+--- glib/ObjectManager.cs	(revision 102566)
 +++ glib/ObjectManager.cs	(working copy)
 @@ -58,7 +58,7 @@
  		[Obsolete ("Replaced by GType.Register (GType, Type)")]
  		public static void RegisterType (string native_name, string mangled)
  		{
 -			RegisterType (new GType (g_type_from_name (native_name)), Type.GetType (mangled));
-+			RegisterType (new GType (native_name), Type.GetType (mangled));
++			RegisterType (GType.FromName (native_name), Type.GetType (mangled));
  		}
  
  		[Obsolete ("Replaced by GType.Register (GType, Type)")]
