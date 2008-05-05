@@ -1,3 +1,9 @@
+2008-05-05  Andres G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/bug365437comm2.diff: removed, obsolete.
+	* patches/bugInvalidGLibValueAsRet.diff: added (hacky) fix
+	for bug not filed yet.
+
 2008-04-30  Andres G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/bug365437comm2v3.diff: Fixed the case when the
