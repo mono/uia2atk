@@ -1,5 +1,11 @@
 2008-05-05  Andres G. Aragoneses <aaragoneses@novell.com>
 
+	* patches/bug365437comm2v3.diff: removed, obsolete.
+	* patches/bugAddEmissionHook&GTypeFromName.diff: added 
+	AddEmissionHook	and GType.FromName wrappers.
+
+2008-05-05  Andres G. Aragoneses <aaragoneses@novell.com>
+
 	* patches/bug365437comm2.diff: removed, obsolete.
 	* patches/bugInvalidGLibValueAsRet.diff: added (hacky) fix
 	for bug not filed yet.
