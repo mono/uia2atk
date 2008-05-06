@@ -62,7 +62,7 @@ namespace atkSharpHelloWorld
 		    GLib.Signal.EmissionHook listener, 
 		    string objType, string signalName, string hookData)
 		{
-			GLib.GType type = new GLib.GType (objType);
+			GLib.GType type = GLib.GType.FromName (objType);
 			if (type != GLib.GType.Invalid) {
 				lock (listenerListMutex)
 				{
@@ -70,7 +70,7 @@ namespace atkSharpHelloWorld
 					info.Id = (uint) ListenerList.Count + 1;
 					info.SignalName = signalName;
 					info.Type = type;
-					info.HookId = GLib.Signal.AddEmissionHandler (signalName, type, listener, GLib.Marshaller.StringToPtrGStrdup(hookData));
+					info.HookId = GLib.Signal.AddEmissionHook (signalName, 0, type, listener, GLib.Marshaller.StringToPtrGStrdup(hookData));
 					ListenerList.Add (info.Id, info);
 					return info.Id;
 				}

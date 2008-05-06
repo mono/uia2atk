@@ -1,3 +1,9 @@
+2008-05-06  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* HelloUtil.cs: Track API in
+	  http://anonsvn.mono-project.com/source/trunk/uia2atk/src/patches/bugAddEmissionHook&GTypeFromName.diff
+	  .
+
 2008-04-30  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* HelloTopLevel.cs, HelloButton.cs, HelloUtil.cs, Main.cs,
