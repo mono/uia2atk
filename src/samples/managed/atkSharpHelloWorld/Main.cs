@@ -38,10 +38,15 @@ namespace atkSharpHelloWorld
 		
 		static void ElapsedTimer(object source, System.Timers.ElapsedEventArgs args)
 		{
-			Console.WriteLine("fired!");
-			timer.Enabled = false;
-			Mytk.MytkGlobal.RemoveOneTopLevelWindow();
-			//((HelloChild)HelloTopLevel.Instance.Children[0]).PushButton();
+			try {
+				Console.WriteLine("fired!");
+				timer.Enabled = false;
+				Mytk.MytkGlobal.RemoveOneTopLevelWindow();
+				//((HelloChild)HelloTopLevel.Instance.Children[0]).PushButton();
+			}
+			catch (Exception ex) {
+				Console.WriteLine (ex.ToString ());
+			}
 		}
 		
 		static void StartProgramGui()
