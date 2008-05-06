@@ -39,6 +39,7 @@ namespace atkSharpHelloWorld
 		static void ElapsedTimer(object source, System.Timers.ElapsedEventArgs args)
 		{
 			Console.WriteLine("fired!");
+			timer.Enabled = false;
 			Mytk.MytkGlobal.RemoveOneTopLevelWindow();
 			//((HelloChild)HelloTopLevel.Instance.Children[0]).PushButton();
 		}

@@ -56,12 +56,17 @@ namespace atkSharpHelloWorld
 		
 		protected override Atk.Object OnRefChild(int i)
 		{
-			return this.Children[i];
+			if (i >= Children.Length)
+				return null;
+			
+			return Children[i];
 		}
 		
 		public void FireChildrenChanged(uint changeIndex, Atk.Object child)
 		{
+			Console.WriteLine ("emitting");
 			this.EmitChildrenChanged(Atk.Object.ChildrenChangedDetail.Remove, changeIndex, child);
+			Console.WriteLine ("emitted");
 		}
 		
 	}

@@ -1,5 +1,10 @@
 2008-05-06  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Main.cs: Just launch the timer once.
+	* HelloTopLevel.cs: Sync with the bridge for OnRefChild.
+
+2008-05-06  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* HelloUtil.cs: Track API in
 	  http://anonsvn.mono-project.com/source/trunk/uia2atk/src/patches/bugAddEmissionHook&GTypeFromName.diff
 	  .
