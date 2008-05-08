@@ -1,5 +1,10 @@
 2008-05-08  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* hello.c: Yep, it works. Wonder why the managed version is not getting
+	  the call...
+
+2008-05-08  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* hellochild.c: Let's see if I can get AtkText ginterface to work in
 	  the unmanaged...
 

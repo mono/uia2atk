@@ -86,8 +86,11 @@ gpointer update_children (gpointer data)
   sleep(30);
   g_warning("updator awaken");
 
-  hello_toplevel_window_destroyed (widget_to_remove);
-  
+  gint s,e;
+  //hello_toplevel_window_destroyed (widget_to_remove);
+  atk_text_get_text_at_offset (mytk_widget_get_accessible(widget_to_remove),
+    0, ATK_TEXT_BOUNDARY_CHAR, &s, &e);
+    
   return NULL;
 }
 
