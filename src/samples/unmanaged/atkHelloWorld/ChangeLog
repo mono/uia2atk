@@ -1,3 +1,8 @@
+2008-05-08  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* hellochild.c: Let's see if I can get AtkText ginterface to work in
+	  the unmanaged...
+
 2008-04-22  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* hellotoplevel.c: Refactor: g_signal_emitv is better than

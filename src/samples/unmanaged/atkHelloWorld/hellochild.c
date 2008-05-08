@@ -21,16 +21,136 @@ static gpointer parent_class = NULL;
 
 static gint hello_child_get_caret_offset(AtkText * text)
 {
-  HelloChild *obj = HELLO_CHILD(text);
-  return 0;
+  //HelloChild *obj = HELLO_CHILD(text);
+  return 3;
 }
 
-static void atk_text_interface_init (AtkTextIface * iface)
+static gchar* hello_child_get_text_at_offset 
+                   (AtkText         *text,
+                    gint            offset,
+                    AtkTextBoundary boundary_type,
+                    gint            *start_offset,
+                    gint            *end_offset)
 {
-    g_return_if_fail (iface != NULL);
-    iface->get_caret_offset = hello_child_get_caret_offset;
+  g_warning ("hello_child_get_text_at_offset function called!");
+  //HelloChild *obj = HELLO_CHILD(text);
+  *start_offset = offset;
+  *end_offset = 2;
+  return g_strdup("lol");
 }
 
+static gchar*
+hello_child_get_text (AtkText *text,
+                      gint    start_pos,
+                      gint    end_pos)
+{
+  g_warning ("hello_child_get_text function called!");
+  return g_strdup("hey");
+}
+
+static gchar*
+hello_child_get_text_before_offset (AtkText         *text,
+				    gint            offset,
+				    AtkTextBoundary boundary_type,
+				    gint            *start_offset,
+				    gint            *end_offset)
+{
+  g_warning ("hello_child_get_text_before_offset function called!");
+  //HelloChild *obj = HELLO_CHILD(text);
+  *start_offset = offset;
+  *end_offset = 2;
+  return g_strdup("lol");
+}
+
+static gchar*
+hello_child_get_text_after_offset (AtkText         *text,
+				   gint            offset,
+				   AtkTextBoundary boundary_type,
+				   gint            *start_offset,
+				   gint            *end_offset)
+{
+  g_warning ("hello_child_get_text_before_offset function called!");
+  //HelloChild *obj = HELLO_CHILD(text);
+  *start_offset = offset;
+  *end_offset = 2;
+  return "lol";
+}
+
+static gint
+hello_child_get_character_count (AtkText *text)
+{
+  g_warning ("hello_child_get_character_count function called!");
+  return 3;
+}
+
+static void
+hello_child_get_character_extents (AtkText      *text,
+				   gint         offset,
+		                   gint         *x,
+                    		   gint 	*y,
+                                   gint 	*width,
+                                   gint 	*height,
+			           AtkCoordType coords)
+{
+  g_warning ("hello_child_get_character_extents function called!");
+  *x = 5;
+  *y = 7;
+  *width = 10;
+  *height = 20;
+  return;
+} 
+
+static gint 
+hello_child_get_offset_at_point (AtkText      *text,
+                                 gint         x,
+                                 gint         y,
+			         AtkCoordType coords)
+{
+  g_warning ("hello_child_get_offset_at_point function called!");
+  return 3; 
+}
+
+static AtkAttributeSet*
+hello_child_get_run_attributes (AtkText        *text,
+                                gint 	      offset,
+                                gint 	      *start_offset,
+	                        gint	      *end_offset)
+{
+  g_warning ("hello_child_get_run_attributes function called!");
+  return NULL;
+}
+
+static AtkAttributeSet*
+hello_child_get_default_attributes (AtkText        *text)
+{
+  g_warning ("hello_child_get_default_attributes function called!");
+  return NULL;
+}
+
+static gunichar 
+hello_child_get_character_at_offset (AtkText	         *text,
+                                     gint	         offset)
+{
+  g_warning ("hello_child_get_character_at_offset function called!");
+  return 'c';
+}
+
+
+static void
+hello_child_atk_text_interface_init (AtkTextIface *iface)
+{
+  g_warning ("setting up ginterface AtkText");
+  iface->get_text = hello_child_get_text;
+  iface->get_character_at_offset = hello_child_get_character_at_offset;
+  iface->get_text_before_offset = hello_child_get_text_before_offset;
+  iface->get_text_at_offset = hello_child_get_text_at_offset;
+  iface->get_text_after_offset = hello_child_get_text_after_offset;
+  iface->get_character_count = hello_child_get_character_count;
+  iface->get_character_extents = hello_child_get_character_extents;
+  iface->get_offset_at_point = hello_child_get_offset_at_point;
+  iface->get_run_attributes = hello_child_get_run_attributes;
+  iface->get_default_attributes = hello_child_get_default_attributes;
+}
 
 GType hello_child_get_type(void)
 {
@@ -52,7 +172,7 @@ GType hello_child_get_type(void)
       };
 
       static const GInterfaceInfo atk_text_info = {
-        (GInterfaceInitFunc) atk_text_interface_init,
+        (GInterfaceInitFunc) hello_child_atk_text_interface_init,
         (GInterfaceFinalizeFunc) NULL,
         NULL
       };
