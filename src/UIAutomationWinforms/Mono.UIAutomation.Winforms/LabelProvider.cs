@@ -44,6 +44,8 @@ namespace Mono.UIAutomation.Winforms
 		public LabelProvider (Label label) : base (label)
 		{
 			this.label = label;
+			
+			label.TextChanged += OnTextChanged;
 		}
 		
 #endregion
@@ -57,21 +59,35 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
-				return "WindowsForms10.STATIC.app.0.bf7d44";
+			if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+				return label.Bounds.ToRect ();
 			else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Text.Id;
-			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
-				return false; // TODO: ???
 			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return false;
+			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+				return null;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "text";
 			else
 				return base.GetPropertyValue (propertyId);
 		}
 
-
+#endregion
+		
+#region Event Handlers
+	
+		private void OnTextChanged (object sender, EventArgs e)
+		{
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationEventArgs eventArgs =
+					new AutomationEventArgs (TextPatternIdentifiers.TextChangedEvent);
+				AutomationInteropProvider.RaiseAutomationEvent (TextPatternIdentifiers.TextChangedEvent, this, eventArgs);
+			}
+		}
+		
 #endregion
 	}
 }

@@ -31,5 +31,6 @@
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../mcs/class/lib/net_2_0/System.Windows.Forms.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../olive/class/lib/net_3_0/UIAutomationProvider.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../olive/class/lib/net_3_0/UIAutomationTypes.dll" />
+    <ProjectReference type="Gac" localcopy="True" refto="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   </References>
 </Project>

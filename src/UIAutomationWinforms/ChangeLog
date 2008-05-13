@@ -1,3 +1,19 @@
+2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/WindowProvider.cs: Use
+	  System.Drawing.Rectangle.ToRect extension method to convert to
+	  System.Windows.Rect.
+	* Mono.UIAutomation.Winforms/Mono.UIAutomation.Winforms.mdp: Add
+	  reference to System.Core for extension methods.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Handle Resize,
+	  EnableChanged, LocationChanged, and TextChanged events.  Handle
+	  AutomationIdProperty.
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs: Update according to
+	  MSDN.  Added interlan UiaExtensions class for some convenient
+	  extension methods.  Not much there yet, still needs to be moved.
+	* Mono.UIAutomation.Winforms/LabelProvider.cs: Update according to
+	  MSDN.
+
 2008-04-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Support

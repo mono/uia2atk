@@ -46,7 +46,11 @@ namespace Mono.UIAutomation.Winforms
 			this.control = control;
 			
 			control.GotFocus += OnFocusChanged;
-			//control.LocationChanged += OnLocationChanged;
+			control.Resize += OnResize;
+			//control.Move += OnMove;
+			control.EnabledChanged += OnEnableChanged;
+			control.LocationChanged += OnLocationChanged;
+			control.TextChanged += OnTextChanged;
 		}
 		
 #endregion
@@ -57,7 +61,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		public virtual object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
+			if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
+				return control.GetHashCode (); // TODO: Ensure uniqueness
+			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 				return control.Enabled;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return control.Text;
@@ -95,6 +101,56 @@ namespace Mono.UIAutomation.Winforms
 					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.HasKeyboardFocusProperty,
 					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
 					                                        GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id));
+				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, args);
+				
+				AutomationEventArgs eventArgs =
+					new AutomationEventArgs (AutomationElementIdentifiers.AutomationFocusChangedEvent);
+				AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.AutomationFocusChangedEvent, this, eventArgs);
+			}
+		}
+		
+		private void OnResize (object sender, EventArgs e)
+		{
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationPropertyChangedEventArgs args =
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.BoundingRectangleProperty,
+					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
+					                                        GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id));
+				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, args);
+			}
+		}
+		
+		private void OnEnableChanged (object sender, EventArgs e)
+		{
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationPropertyChangedEventArgs args =
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsEnabledProperty,
+					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
+					                                        GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id));
+				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, args);
+			}
+		}
+		
+		private void OnLocationChanged (object sender, EventArgs e)
+		{
+			// TODO: Check if IsOffscreenProperty has changed...
+			
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationPropertyChangedEventArgs args =
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsOffscreenProperty,
+					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
+					                                        GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id));
+				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, args);
+			}
+		}
+		
+		private void OnTextChanged (object sender, EventArgs e)
+		{
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationPropertyChangedEventArgs args =
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.NameProperty,
+					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
+					                                        GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
 				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, args);
 			}
 		}

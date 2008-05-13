@@ -269,12 +269,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public System.Windows.Rect BoundingRectangle {
 			get {
-				System.Windows.Rect boundingRect =
-					new System.Windows.Rect (form.Location.X,
-					                         form.Location.Y,
-					                         form.Width,
-					                         form.Height);
-				return boundingRect;
+				return form.Bounds.ToRect ();
 			}
 		}
 		

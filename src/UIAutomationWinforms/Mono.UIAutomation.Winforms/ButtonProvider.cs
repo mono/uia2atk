@@ -25,6 +25,7 @@
 
 using System;
 using System.Drawing;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
@@ -74,16 +75,22 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
-				return "WindowsForms10.BUTTON.app.0.bf7d44"; // TODO: Verify
+			if (propertyId == AutomationElementIdentifiers.AcceleratorKeyProperty.Id)
+				throw new NotImplementedException ("AcceleratorKeyProperty");
+			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+				return button.Bounds.ToRect ();
 			else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Button.Id;
-			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
-				return false; // TODO: ???
-			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
-				return true;
+			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)
+				throw new NotImplementedException ("HelpTextProperty");
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return true;
+			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
+				return true;
+			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+				return null;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "button";
 			else
 				return base.GetPropertyValue (propertyId);
 		}
@@ -101,5 +108,17 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 #endregion
+	}
+	
+	// TODO: Move
+	internal static class UiaExtensions
+	{
+		internal static Rect ToRect (this Rectangle rectangle)
+		{
+			return new Rect (rectangle.X,
+			                 rectangle.Y,
+			                 rectangle.Width,
+			                 rectangle.Height);
+		}
 	}
 }
