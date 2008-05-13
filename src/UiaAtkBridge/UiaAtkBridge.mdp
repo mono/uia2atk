@@ -27,5 +27,6 @@
     <ProjectReference type="Assembly" localcopy="True" refto="../../../olive/class/lib/net_3_0/UIAutomationTypes.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../gtk-sharp/glib/glib-sharp.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../gtk-sharp/atk/atk-sharp.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="../../../olive/class/lib/net_3_0/UIAutomationBridge.dll" />
   </References>
 </Project>

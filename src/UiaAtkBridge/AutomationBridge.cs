@@ -30,6 +30,8 @@ using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
+using Mono.UIAutomation.Bridge;
+
 namespace UiaAtkBridge
 {
 	public class AutomationBridge : IAutomationBridge

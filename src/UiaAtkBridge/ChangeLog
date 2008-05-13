@@ -1,3 +1,8 @@
+2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* AutomationBridge.cs, UiaAtkBridge.mdp: Add reference to
+	  UIAutomationBridge project for use of IAutomationBridge interface.
+
 2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Button.cs: Handle InvokedEvent.
