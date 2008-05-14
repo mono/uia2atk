@@ -1,5 +1,9 @@
 2008-05-14  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TopLevelRootItem.cs: Workaround again (BNC#387220).
+
+2008-05-14  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TopLevelRootItem.cs: Workaround for BNC#387220.
 
 2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 

@@ -146,7 +146,15 @@ namespace UiaAtkBridge
 				childIndex = children.IndexOf (childToRemove);
 				children.Remove (childToRemove);
 			}
-			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Remove, (uint)childIndex, childToRemove);
+			try {
+				EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Remove, (uint)childIndex, childToRemove);
+			}
+			//FIXME: drop this try-catch block when BNC#387220 is fixed
+			catch (Exception ex)
+			{
+				if (!ex.Message.Contains ("Unknown type"))
+					throw;
+			}
 		}
 		
 #endregion
