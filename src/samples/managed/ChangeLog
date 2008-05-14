@@ -1,3 +1,9 @@
+2008-05-14  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationWinformsTests/UIAutomationWinformsTests.mdp,
+	  UIAutomationWinformsTests/WindowProviderTest.cs: Added reference
+	  UIAutomationBridge assembly.
+
 2008-04-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* UIAutomationWinformsTests/WindowProviderTest.cs: More tests

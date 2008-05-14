@@ -32,6 +32,7 @@ using System.Windows.Forms;
 using System.Reflection;
 
 using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Bridge;
 
 using NUnit.Framework;
 
