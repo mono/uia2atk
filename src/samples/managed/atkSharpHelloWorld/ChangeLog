@@ -1,3 +1,8 @@
+2008-05-14  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* HelloTopLevel.cs: Workaround for bug#387220.
+	* HelloUtil.cs: Track API changes in Glib#.
+
 2008-05-06  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* Main.cs: Timer threads don't crash the program if they encounter an

@@ -15,7 +15,7 @@ namespace atkSharpHelloWorld
 		//: Atk.Util
 	{
 		
-		private HelloUtil()
+		private HelloUtil ()
 		{
 		}
 		
@@ -70,7 +70,7 @@ namespace atkSharpHelloWorld
 					info.Id = (uint) ListenerList.Count + 1;
 					info.SignalName = signalName;
 					info.Type = type;
-					info.HookId = GLib.Signal.AddEmissionHook (signalName, 0, type, listener, GLib.Marshaller.StringToPtrGStrdup(hookData));
+					info.HookId = GLib.Signal.AddEmissionHook (signalName, type, listener);
 					ListenerList.Add (info.Id, info);
 					return info.Id;
 				}
