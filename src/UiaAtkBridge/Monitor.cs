@@ -112,6 +112,10 @@ namespace UiaAtkBridge
 		{
 			GLib.GType type = GLib.GType.FromName (objType);
 			if (type != GLib.GType.Invalid) {
+				
+				//FIXME: drop this workaround for bug#386950
+				if (signalName.Contains ("property")) return 0;
+				
 				lock (listenerListMutex)
 				{
 					ListenerInfo info = new ListenerInfo();

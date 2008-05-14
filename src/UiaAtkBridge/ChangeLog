@@ -1,5 +1,9 @@
 2008-05-14  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Monitor.cs: Another workaround... but for another bug.
+
+2008-05-14  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Monitor.cs: Add event signaling using managed code.
 	* TopLevelRootItem.cs: Workaround again (BNC#387220).
 
