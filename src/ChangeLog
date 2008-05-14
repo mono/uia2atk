@@ -1,3 +1,13 @@
+2008-05-14  Andres G. Aragoneses <aaragoneses@novell.com>
+
+	* patches/bugAddEmissionHook&GTypeFromName.diff,
+	bugAddEmissionHook\&GTypeFromName_v2.diff: Removed, not
+	needed since r103198.
+	* bugInvalidGLibValueAsRet.diff: this is a workaround
+	(the bug is finally #387220) but we're using it in the
+	bridge instead of gtk-sharp, in order to avoid patching
+	(introduced in r103201).
+
 2008-05-06  Andres G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/bugAddEmissionHook&GTypeFromName_v2.diff:
