@@ -49,7 +49,7 @@ namespace Mono.UIAutomation.Winforms
 			control.Resize += OnResize;
 			//control.Move += OnMove;
 			control.EnabledChanged += OnEnableChanged;
-			control.LocationChanged += OnLocationChanged;
+			control.VisibleChanged += OnVisibleChanged;
 			control.TextChanged += OnTextChanged;
 		}
 		
@@ -70,7 +70,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return control.CanFocus;
 			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
-				return false;// TODO //throw new NotImplementedException ();
+				return control.Visible;
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return control.Focused;
 			else
@@ -131,7 +131,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		private void OnLocationChanged (object sender, EventArgs e)
+		private void OnVisibleChanged (object sender, EventArgs e)
 		{
 			// TODO: Check if IsOffscreenProperty has changed...
 			

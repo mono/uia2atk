@@ -1,3 +1,10 @@
+2008-05-15  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Using control.Visible
+	property and control.VisibleChanged event to get IsOffscreenProperty
+	property-changed event. Private method OnLocationChanged renamed to 
+	OnVisibleChanged.
+
 2008-05-14  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Dummpy
