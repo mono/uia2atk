@@ -37,16 +37,25 @@ namespace Mono.UIAutomation.Winforms
 		
 		private CheckBox checkbox;
 		
-#endregion
-		
+#endregion		
+	
 #region Constructors
 		
 		public CheckBoxProvider(CheckBox checkbox) : base (checkbox)
 		{
 			this.checkbox = checkbox;
-			checkbox.CheckedChanged += OnCheckChanged;
+			
+			SetEventStrategy (EventStrategyType.ToggleStateProperty,
+			                  new ToggleStatePropertyEventStrategy (this, this, checkbox));
 		}
 		
+#endregion
+		
+#region Protected Methods
+		protected override int GetControlTypeProperty () 
+		{
+			return ControlType.CheckBox.Id;
+		}
 #endregion
 		
 #region IRawElementProviderSimple Members
@@ -63,14 +72,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
 				return "WindowsForms10.BUTTON.app.0.bf7d44";
-			else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.CheckBox.Id;
 			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
 				return false; // TODO: ???
-			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
-				return true;
-			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
-				return true;
 			else
 				return base.GetPropertyValue (propertyId);
 		}
@@ -98,21 +101,6 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-#endregion
-		
-#region Event Handlers
-	
-		private void OnCheckChanged (object sender, EventArgs e)
-		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (TogglePatternIdentifiers.ToggleStateProperty,
-					                                        null, // Mimics MS behavior
-					                                        ToggleState);
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, args);
-			}
-		}
-		
 #endregion
 	}
 }

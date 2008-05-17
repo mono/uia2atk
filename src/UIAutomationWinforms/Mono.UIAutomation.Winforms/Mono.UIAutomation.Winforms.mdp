@@ -23,14 +23,26 @@
     <File name="RadioButtonProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="LabelProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="NumericUpDownProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="TextBoxProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="IEventStrategy.cs" subtype="Code" buildaction="Compile" />
+    <File name="EventStrategy.cs" subtype="Code" buildaction="Compile" />
+    <File name="IsOffscreenPropertyEventStrategy.cs" subtype="Code" buildaction="Compile" />
+    <File name="EventStrategyType.cs" subtype="Code" buildaction="Compile" />
+    <File name="IsEnabledPropertyEventStrategy.cs" subtype="Code" buildaction="Compile" />
+    <File name="NamePropertyEventStrategy.cs" subtype="Code" buildaction="Compile" />
+    <File name="HasKeyboardFocusPropertyEventStrategy.cs" subtype="Code" buildaction="Compile" />
+    <File name="BoundingRectanglePropertyEventStrategy.cs" subtype="Code" buildaction="Compile" />
+    <File name="ToggleStatePropertyEventStrategy.cs" subtype="Code" buildaction="Compile" />
+    <File name="TextChangedEventStrategy.cs" subtype="Code" buildaction="Compile" />
+    <File name="InvokedEventStrategy.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
     <ProjectReference type="Gac" localcopy="True" refto="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-    <ProjectReference type="Gac" localcopy="True" refto="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../mcs/class/lib/net_2_0/System.Windows.Forms.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../olive/class/lib/net_3_0/UIAutomationProvider.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../olive/class/lib/net_3_0/UIAutomationTypes.dll" />
     <ProjectReference type="Gac" localcopy="True" refto="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Assembly" localcopy="True" refto="../../../../olive/class/lib/net_3_0/WindowsBase.dll" />
   </References>
 </Project>

@@ -67,6 +67,13 @@ namespace Mono.UIAutomation.Winforms
 		
 #endregion
 		
+#region Protected Methods
+		protected override int GetControlTypeProperty () 
+		{
+			return ControlType.Window.Id;
+		}
+#endregion
+		
 #region Private Methods
 	
 		private IRawElementProviderSimple CreateProvider (Control control)
@@ -253,9 +260,7 @@ namespace Mono.UIAutomation.Winforms
 		public override object GetPropertyValue (int propertyId)
 		{
 			// TODO: Complete...figure out by testing Windows implementation (UISpy is helpful)
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Window.Id;
-			else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
+			if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
 				return form.Handle; // TODO: Should be int, maybe?
 			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
 				return false; // TODO: ???

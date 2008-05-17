@@ -21,9 +21,11 @@
 // 
 // Authors: 
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//      Mario Carrion <mcarrion@novell.com>
 // 
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 using System.Windows.Automation;
@@ -39,20 +41,69 @@ namespace Mono.UIAutomation.Winforms
 		
 #endregion
 		
+#region Private Fields
+		private Dictionary<EventStrategyType, IEventStrategy> events;
+#endregion
+		
 #region Constructors
 		
 		public SimpleControlProvider (Control control)
 		{
 			this.control = control;
 			
-			control.GotFocus += OnFocusChanged;
-			control.Resize += OnResize;
-			//control.Move += OnMove;
-			control.EnabledChanged += OnEnableChanged;
-			control.VisibleChanged += OnVisibleChanged;
-			control.TextChanged += OnTextChanged;
+			events = new Dictionary<EventStrategyType,IEventStrategy> ();
+
+			SetEventStrategy (EventStrategyType.IsOffscreenProperty, 
+			                  new IsOffscreenPropertyEventStrategy (this, control));
+			SetEventStrategy (EventStrategyType.IsEnabledProperty, 
+			                  new IsEnabledPropertyEventStrategy (this, control));
+			SetEventStrategy (EventStrategyType.NameProperty,
+			                  new NamePropertyEventStrategy (this, control));
+			SetEventStrategy (EventStrategyType.HasKeyboardFocusProperty,
+			                  new HasKeyboardFocusPropertyEventStrategy (this, control));
+			SetEventStrategy (EventStrategyType.BoundingRectangleProperty,
+			                  new BoundingRectanglePropertyEventStrategy (this, control));
 		}
 		
+#endregion
+		
+#region Protected
+		protected virtual bool GetIsContentElementProperty () 
+		{
+			return true;
+		}
+		
+		protected virtual bool GetIsControlElementProperty () 
+		{
+			return true;
+		}
+		
+		protected virtual object GetLabeledByProperty ()
+		{
+			return null;
+		}
+		
+		protected virtual object GetNameProperty ()
+		{
+			return control.Text;
+		}
+		
+		protected abstract int GetControlTypeProperty ();
+		
+		protected void SetEventStrategy (EventStrategyType type, IEventStrategy strategy)
+		{
+			IEventStrategy value;
+			
+			if (events.TryGetValue (type, out value) == true) {			
+				value.Disconnect ();
+				events.Remove (type);
+			}
+
+			if (strategy != null) {
+			    events [type] = strategy;
+				strategy.Connect ();
+			}
+		}
 #endregion
 		
 #region IRawElementProviderSimple Members
@@ -66,17 +117,20 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 				return control.Enabled;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return control.Text;
+				return GetNameProperty ();
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return control.CanFocus;
 			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
 				return control.Visible;
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return control.Focused;
+			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
+				return GetIsControlElementProperty ();
+			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
+				return GetIsContentElementProperty ();
 			else
 				return null;
 		}
-
 
 		public virtual IRawElementProviderSimple HostRawElementProvider {
 			get {
@@ -90,70 +144,6 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-#endregion
-		
-#region Event Handlers
-	
-		private void OnFocusChanged (object sender, EventArgs e)
-		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.HasKeyboardFocusProperty,
-					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, args);
-				
-				AutomationEventArgs eventArgs =
-					new AutomationEventArgs (AutomationElementIdentifiers.AutomationFocusChangedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.AutomationFocusChangedEvent, this, eventArgs);
-			}
-		}
-		
-		private void OnResize (object sender, EventArgs e)
-		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.BoundingRectangleProperty,
-					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, args);
-			}
-		}
-		
-		private void OnEnableChanged (object sender, EventArgs e)
-		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsEnabledProperty,
-					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, args);
-			}
-		}
-		
-		private void OnVisibleChanged (object sender, EventArgs e)
-		{
-			// TODO: Check if IsOffscreenProperty has changed...
-			
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsOffscreenProperty,
-					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, args);
-			}
-		}
-		
-		private void OnTextChanged (object sender, EventArgs e)
-		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.NameProperty,
-					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, args);
-			}
-		}
 #endregion
 	}
 }

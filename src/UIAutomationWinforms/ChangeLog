@@ -1,3 +1,48 @@
+2008-05-16  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/ToggleStatePropertyEventStrategy.cs: File added. 
+	Strategy class to emit Toggle event.
+	* Mono.UIAutomation.Winforms/IEventStrategy.cs:  File added. Interface used to
+	define new strategies.
+	* Mono.UIAutomation.Winforms/IsEnabledPropertyEventStrategy.cs: File added. Strategy
+	class to emit Enabled event.
+	* Mono.UIAutomation.Winforms/WindowProvider.cs: New overrided method added: 
+	GetControlTypeProperty.
+	* Mono.UIAutomation.Winforms/TextChangedEventStrategy.cs: File added. Strategy
+	class to emit TextChanged event.
+	* Mono.UIAutomation.Winforms/InvokedEventStrategy.cs: File added. Strategy 
+	class to emit Click event.
+	* Mono.UIAutomation.Winforms/BoundingRectanglePropertyEventStrategy.cs: File added.
+	Strategy class to emit Resizing event.
+	* Mono.UIAutomation.Winforms/HasKeyboardFocusPropertyEventStrategy.cs: File added.
+	Strategy class to emit GotFocus event.
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs: Using SetEventStrategy instead of
+	private delegate. New overrided method added: GetControlTypeProperty.
+	* Mono.UIAutomation.Winforms/LabelProvider.cs: Using SetEventStrategy instead of
+	private delegate. New override method added: GetControlTypeProperty.
+	* Mono.UIAutomation.Winforms/IsOffscreenPropertyEventStrategy.cs: File added.
+	Strategy class to emit VisibleChanged event.
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs: Using SetEventStrategy instead of
+	private delegate. New override method added: GetControlTypeProperty.
+	* Mono.UIAutomation.Winforms/Mono.UIAutomation.Winforms.mdp: Updated due to added 
+	files. Updated WindowsBase reference.
+	* Mono.UIAutomation.Winforms/EventStrategy.cs: File added. Abstract strategy class 
+	used to emit events.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Using SetEventStrategy instead
+	of private delegates. New virtual methods added: GetIsContentElementProperty,
+	GetIsControlElementProperty, GetLabeledByProperty, GetNameProperty. New abstract
+	method added: GetControlTypeProperty. New method added: SetEventStrategy, used to 
+	connect and disconnect Strategy-like classes.
+	* Mono.UIAutomation.Winforms/RadioButtonProvider.cs: New overrided method added:
+	GetControlTypeProperty.
+	* Mono.UIAutomation.Winforms/EventStrategyType.cs: File added. Enumeration that
+	represents the Strategy type.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: File added. TextBox provider.
+	* Mono.UIAutomation.Winforms/NumericUpDownProvider.cs: New overrided method added:
+	GetControlTypeProperty.
+	* Mono.UIAutomation.Winforms/NamePropertyEventStrategy.cs: File added. Strategy
+	class to emit TextChanged event.
+
 2008-05-15  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Using control.Visible

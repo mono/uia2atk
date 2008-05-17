@@ -45,10 +45,18 @@ namespace Mono.UIAutomation.Winforms
 			base (radioButton)
 		{
 			this.radioButton = radioButton;
-			
+		
+			//TODO: Use SetEventStrategy
 			radioButton.CheckedChanged += OnCheckedChanged;
 		}
 		
+#endregion
+		
+#region Protected Methods
+		protected override int GetControlTypeProperty () 
+		{
+			return ControlType.RadioButton.Id;
+		}
 #endregion
 		
 #region IRawElementProviderSimple Members
@@ -65,14 +73,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
 				return "WindowsForms10.BUTTON.app.0.bf7d44";
-			else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.RadioButton.Id;
 			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
 				return false; // TODO: ???
-			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
-				return true;
-			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
-				return true;
 			else
 				return base.GetPropertyValue (propertyId);
 		}

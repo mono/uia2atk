@@ -49,9 +49,17 @@ namespace Mono.UIAutomation.Winforms
 			upDown.ValueChanged += OnValueChanged;
 			//upDown.max
 			
+			// TODO: Use SetEventStrategy
 			// TODO: Child InvokeProviders for up/down!
 		}
 		
+#endregion
+		
+#region Protected Methods
+		protected override int GetControlTypeProperty () 
+		{
+			return ControlType.Spinner.Id;
+		}
 #endregion
 		
 #region IRawElementProviderSimple Members
@@ -68,14 +76,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
 				return "WindowsForms10.BUTTON.app.0.bf7d44";
-			else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Spinner.Id;
 			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
 				return false; // TODO: ???
-			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
-				return true;
-			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
-				return true;
 			else if (propertyId == RangeValuePatternIdentifiers.IsReadOnlyProperty.Id)
 				return IsReadOnly;
 			else if (propertyId == RangeValuePatternIdentifiers.LargeChangeProperty.Id)

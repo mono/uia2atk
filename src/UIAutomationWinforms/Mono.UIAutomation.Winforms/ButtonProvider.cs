@@ -45,9 +45,18 @@ namespace Mono.UIAutomation.Winforms
 		public ButtonProvider (Button button) : base (button)
 		{
 			this.button = button;
-			button.Click += OnClick;
+
+			SetEventStrategy (EventStrategyType.InvokedEvent, 
+			                  new InvokedEventStrategy (this, control));
 		}
 		
+#endregion
+		
+#region Protected Methods
+		protected override int GetControlTypeProperty () 
+		{
+			return ControlType.Button.Id;
+		}
 #endregion
 		
 #region IInvokeProvider Members
@@ -79,34 +88,14 @@ namespace Mono.UIAutomation.Winforms
 				throw new NotImplementedException ("AcceleratorKeyProperty");
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
 				return button.Bounds.ToRect ();
-			else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Button.Id;
 			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)
 				throw new NotImplementedException ("HelpTextProperty");
-			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
-				return true;
-			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
-				return true;
-			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
-				return null;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "button";
 			else
 				return base.GetPropertyValue (propertyId);
 		}
 
-#endregion
-		
-#region Event Handlers
-		
-		private void OnClick (object sender, EventArgs e)
-		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationEventArgs args = new AutomationEventArgs (InvokePatternIdentifiers.InvokedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (InvokePatternIdentifiers.InvokedEvent, this, args);
-			}
-		}
-		
 #endregion
 	}
 	

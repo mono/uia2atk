@@ -20,66 +20,45 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
-using System.Windows.Forms;
-
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class LabelProvider : SimpleControlProvider
+
+	public class IsOffscreenPropertyEventStrategy : EventStrategy
 	{
-#region Private Fields
 		
-		private Label label;
-		
-#endregion
-		
-#region Constructors
-		
-		public LabelProvider (Label label) : base (label)
+		public IsOffscreenPropertyEventStrategy (IRawElementProviderSimple provider, 
+		                                         Control control) :
+			base (provider, control)
 		{
-			this.label = label;
-			
-			SetEventStrategy (EventStrategyType.TextChangedEvent, 
-			                  new TextChangedEventStrategy (this, control));
 		}
 		
-#endregion
-		
-#region Protected Methods
-		protected override int GetControlTypeProperty () 
+		public override void Connect ()
 		{
-			return ControlType.Text.Id;
-		}
-		
-		protected override bool GetIsContentElementProperty () 
-		{
-			return false;
-		}
-#endregion
-		
-#region IRawElementProviderSimple Members
-	
-		public override object GetPatternProvider (int patternId)
-		{
-			return null;
-		}
-		
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-				return label.Bounds.ToRect ();
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "text";
-			else
-				return base.GetPropertyValue (propertyId);
+			Control.VisibleChanged += new EventHandler (OnVisibleChanged);
 		}
 
-#endregion
+		public override void Disconnect ()
+		{
+			Control.VisibleChanged -= new EventHandler (OnVisibleChanged);
+		}
+		
+		private void OnVisibleChanged (object sender, EventArgs e)
+		{
+			// TODO: Check if IsOffscreenProperty has changed...
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationPropertyChangedEventArgs args =
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsOffscreenProperty,
+					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
+					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id));
+				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
+			}
+		}
 	}
 }
