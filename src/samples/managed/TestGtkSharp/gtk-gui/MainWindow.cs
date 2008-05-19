@@ -12,15 +12,53 @@
 
 public partial class MainWindow {
     
+    private Gtk.Action FileAction;
+    
+    private Gtk.Action HelpAction;
+    
+    private Gtk.Action OpenAction;
+    
+    private Gtk.Action CloseAction;
+    
+    private Gtk.Action AboutAction;
+    
+    private Gtk.Action CreateWindowAction;
+    
     private Gtk.HBox hbox1;
     
-    private Gtk.Label label1;
+    private Gtk.VBox vbox1;
     
-    private Gtk.Button button188;
+    private Gtk.MenuBar menubar1;
+    
+    private Gtk.ComboBox combobox1;
+    
+    private Gtk.Button button1;
     
     protected virtual void Build() {
         Stetic.Gui.Initialize(this);
         // Widget MainWindow
+        Gtk.UIManager w1 = new Gtk.UIManager();
+        Gtk.ActionGroup w2 = new Gtk.ActionGroup("Default");
+        this.FileAction = new Gtk.Action("FileAction", Mono.Unix.Catalog.GetString("File"), null, null);
+        this.FileAction.ShortLabel = Mono.Unix.Catalog.GetString("File");
+        w2.Add(this.FileAction, null);
+        this.HelpAction = new Gtk.Action("HelpAction", Mono.Unix.Catalog.GetString("Help"), null, null);
+        this.HelpAction.ShortLabel = Mono.Unix.Catalog.GetString("Help");
+        w2.Add(this.HelpAction, null);
+        this.OpenAction = new Gtk.Action("OpenAction", Mono.Unix.Catalog.GetString("Open..."), null, null);
+        this.OpenAction.ShortLabel = Mono.Unix.Catalog.GetString("Open...");
+        w2.Add(this.OpenAction, null);
+        this.CloseAction = new Gtk.Action("CloseAction", Mono.Unix.Catalog.GetString("Close"), null, null);
+        this.CloseAction.ShortLabel = Mono.Unix.Catalog.GetString("Close");
+        w2.Add(this.CloseAction, null);
+        this.AboutAction = new Gtk.Action("AboutAction", Mono.Unix.Catalog.GetString("About..."), null, null);
+        this.AboutAction.ShortLabel = Mono.Unix.Catalog.GetString("About...");
+        w2.Add(this.AboutAction, null);
+        this.CreateWindowAction = new Gtk.Action("CreateWindowAction", Mono.Unix.Catalog.GetString("CreateWindow"), null, null);
+        this.CreateWindowAction.ShortLabel = Mono.Unix.Catalog.GetString("CreateWindow");
+        w2.Add(this.CreateWindowAction, null);
+        w1.InsertActionGroup(w2, 0);
+        this.AddAccelGroup(w1.AccelGroup);
         this.Name = "MainWindow";
         this.Title = Mono.Unix.Catalog.GetString("MainWindow");
         this.WindowPosition = ((Gtk.WindowPosition)(4));
@@ -29,32 +67,51 @@ public partial class MainWindow {
         this.hbox1.Name = "hbox1";
         this.hbox1.Spacing = 6;
         // Container child hbox1.Gtk.Box+BoxChild
-        this.label1 = new Gtk.Label();
-        this.label1.Name = "label1";
-        this.label1.LabelProp = Mono.Unix.Catalog.GetString("label1");
-        this.hbox1.Add(this.label1);
-        Gtk.Box.BoxChild w1 = ((Gtk.Box.BoxChild)(this.hbox1[this.label1]));
-        w1.Position = 0;
-        w1.Expand = false;
-        w1.Fill = false;
-        // Container child hbox1.Gtk.Box+BoxChild
-        this.button188 = new Gtk.Button();
-        this.button188.CanFocus = true;
-        this.button188.Name = "button188";
-        this.button188.UseUnderline = true;
-        this.button188.Label = Mono.Unix.Catalog.GetString("button188");
-        this.hbox1.Add(this.button188);
-        Gtk.Box.BoxChild w2 = ((Gtk.Box.BoxChild)(this.hbox1[this.button188]));
-        w2.Position = 1;
-        w2.Expand = false;
-        w2.Fill = false;
+        this.vbox1 = new Gtk.VBox();
+        this.vbox1.Name = "vbox1";
+        this.vbox1.Spacing = 6;
+        // Container child vbox1.Gtk.Box+BoxChild
+        w1.AddUiFromString("<ui><menubar name='menubar1'><menu action='FileAction'><menuitem action='OpenAction'/><menuitem action='CloseAction'/></menu><menu action='HelpAction'><menuitem action='AboutAction'/></menu></menubar></ui>");
+        this.menubar1 = ((Gtk.MenuBar)(w1.GetWidget("/menubar1")));
+        this.menubar1.Name = "menubar1";
+        this.vbox1.Add(this.menubar1);
+        Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.vbox1[this.menubar1]));
+        w3.Position = 0;
+        w3.Expand = false;
+        w3.Fill = false;
+        // Container child vbox1.Gtk.Box+BoxChild
+        this.combobox1 = Gtk.ComboBox.NewText();
+        this.combobox1.Name = "combobox1";
+        this.vbox1.Add(this.combobox1);
+        Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.vbox1[this.combobox1]));
+        w4.Position = 1;
+        w4.Expand = false;
+        w4.Fill = false;
+        // Container child vbox1.Gtk.Box+BoxChild
+        this.button1 = new Gtk.Button();
+        this.button1.CanFocus = true;
+        this.button1.Name = "button1";
+        this.button1.UseUnderline = true;
+        this.button1.Label = Mono.Unix.Catalog.GetString("button1");
+        this.vbox1.Add(this.button1);
+        Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox1[this.button1]));
+        w5.Position = 2;
+        w5.Expand = false;
+        w5.Fill = false;
+        this.hbox1.Add(this.vbox1);
+        Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox1[this.vbox1]));
+        w6.Position = 0;
+        w6.Expand = false;
+        w6.Fill = false;
         this.Add(this.hbox1);
         if ((this.Child != null)) {
             this.Child.ShowAll();
         }
-        this.DefaultWidth = 400;
+        this.DefaultWidth = 429;
         this.DefaultHeight = 300;
         this.Show();
         this.DeleteEvent += new Gtk.DeleteEventHandler(this.OnDeleteEvent);
+        this.OpenAction.Activated += new System.EventHandler(this.OnOpenActionActivated);
+        this.CreateWindowAction.Activated += new System.EventHandler(this.ButtonActivated);
     }
 }

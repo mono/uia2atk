@@ -10,12 +10,17 @@ namespace TestGtkSharp
 {
 	class MainClass
 	{
+		private static System.Timers.Timer timer = new System.Timers.Timer();
+		
+		static MainWindow theWin;
+		
 		public static void Main (string[] args)
 		{
 			Application.Init ();
-			MainWindow win = new MainWindow ();
-			win.Show ();
+			theWin = new MainWindow ();
+			theWin.Show ();
 			Application.Run ();
 		}
+
 	}
 }

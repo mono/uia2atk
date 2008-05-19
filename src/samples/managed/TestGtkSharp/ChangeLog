@@ -1,3 +1,9 @@
+2008-05-19  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* MainWindow.cs, TestGtkSharp.mdp, Test.cs, gtk-gui/MainWindow.cs,
+	  gtk-gui/TestGtkSharp.Test.cs, gtk-gui/gui.stetic, Main.cs: Just add
+	  some junk code that plays with toplevel windows, testbed for Atk.
+
 2008-03-16  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* .: Added this managed test that is a simple Gtk# program

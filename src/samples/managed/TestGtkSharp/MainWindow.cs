@@ -13,9 +13,27 @@ public partial class MainWindow: Gtk.Window
 		Build ();
 	}
 	
+	public void OnTest()
+	{
+		//this.button188.Sensitive = false;
+	}
+	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
 	{
 		Application.Quit ();
 		a.RetVal = true;
+		
+	}
+
+	protected virtual void ButtonActivated (object sender, System.EventArgs e)
+	{
+		Console.WriteLine ("hola");
+		new TestGtkSharp.Test().Show();
+	}
+
+	protected virtual void OnOpenActionActivated (object sender, System.EventArgs e)
+	{
+		Console.WriteLine("hey");
+		ButtonActivated (null, null);
 	}
 }
