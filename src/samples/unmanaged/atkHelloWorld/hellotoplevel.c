@@ -184,7 +184,7 @@ hello_toplevel_ref_child (AtkObject *obj,
                           gint      i)
 {
   if (i > hello_toplevel_get_n_children(obj) - 1)
-    g_warning("IndexOutOfRange, going to return null");
+    g_warning(g_strdup_printf("IndexOutOfRange (%d>%d), going to return null", i, hello_toplevel_get_n_children(obj) - 1));
   
   HelloToplevel *toplevel;
   gpointer ptr;
@@ -232,13 +232,14 @@ send_childrenchanged_signal (AtkObject * parent,
 
 
 static void
-_hello_toplevel_add_child (MytkWidget    *window)
+_hello_toplevel_add_child (MytkWidget *window)
 {
+
   AtkObject* child = mytk_widget_get_accessible (MYTK_WIDGET (window));
-  guint count = g_list_length (toplevel_singleton->window_list);
   AtkObject *parent = ATK_OBJECT (toplevel_singleton);
-  send_childrenchanged_signal (parent, count, child, FALSE);
+  guint count = g_list_length (toplevel_singleton->window_list);
   atk_object_set_parent (child, parent);
+  send_childrenchanged_signal (parent, count - 1, child, TRUE);
 }
 
 /*
@@ -263,14 +264,15 @@ _hello_toplevel_remove_child (MytkWidget    *window)
           tmp_window = MYTK_WIDGET (l->data);
 
           if (window == tmp_window)
-            {
+          {
+              
               // Remove the window from the window_list & emit the signal
-              toplevel_singleton->window_list = g_list_remove (toplevel_singleton->window_list,
-                                                     l->data);
+              toplevel_singleton->window_list = 
+                  g_list_remove (toplevel_singleton->window_list, l->data);
               child = mytk_widget_get_accessible (MYTK_WIDGET (window));
 
-//              g_signal_emit_by_name (atk_obj, "children-changed::remove",
-//                                     window_count, child);
+              g_signal_emit_by_name (atk_obj, "children-changed::remove",
+                                     window_count, child);
 
               send_childrenchanged_signal (atk_obj, window_count, child, FALSE);
 

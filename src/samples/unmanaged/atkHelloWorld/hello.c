@@ -83,13 +83,15 @@ start_program_gui(void)
 gpointer update_children (gpointer data)
 {
   g_warning("started updator");
+  
   sleep(30);
+  
   g_warning("updator awaken");
-
-  gint s,e;
   
   hello_toplevel_window_destroyed (widget_to_remove);
+  
   sleep(10);
+  
   mytk_add_one_top_level_window(g_strdup_printf("TopLevel n"));
 
 
