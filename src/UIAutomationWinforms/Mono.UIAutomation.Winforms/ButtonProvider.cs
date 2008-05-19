@@ -45,18 +45,20 @@ namespace Mono.UIAutomation.Winforms
 		public ButtonProvider (Button button) : base (button)
 		{
 			this.button = button;
-
-			SetEventStrategy (EventStrategyType.InvokedEvent, 
-			                  new InvokedEventStrategy (this, control));
 		}
 		
 #endregion
 		
 #region Protected Methods
-		protected override int GetControlTypeProperty () 
+
+		protected override void InitializeEvents ()
 		{
-			return ControlType.Button.Id;
+			base.InitializeEvents ();
+
+			SetEvent (EventStrategyType.InvokedEvent, 
+			          new InvokedEventStrategy (this, control));
 		}
+
 #endregion
 		
 #region IInvokeProvider Members
@@ -84,10 +86,12 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.AcceleratorKeyProperty.Id)
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Button.Id;
+			else if (propertyId == AutomationElementIdentifiers.AcceleratorKeyProperty.Id)
 				throw new NotImplementedException ("AcceleratorKeyProperty");
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-				return button.Bounds.ToRect ();
+				return Helper.RectangleToRect (button.Bounds);
 			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)
 				throw new NotImplementedException ("HelpTextProperty");
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
@@ -98,16 +102,5 @@ namespace Mono.UIAutomation.Winforms
 
 #endregion
 	}
-	
-	// TODO: Move
-	internal static class UiaExtensions
-	{
-		internal static Rect ToRect (this Rectangle rectangle)
-		{
-			return new Rect (rectangle.X,
-			                 rectangle.Y,
-			                 rectangle.Width,
-			                 rectangle.Height);
-		}
-	}
+
 }

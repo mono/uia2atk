@@ -56,10 +56,15 @@ namespace Mono.UIAutomation.Winforms
 #endregion
 		
 #region Protected Methods
-		protected override int GetControlTypeProperty () 
+		
+		protected override void InitializeEvents ()
 		{
-			return ControlType.Spinner.Id;
+			base.InitializeEvents ();
+
+			SetEvent (EventStrategyType.InvokedEvent, 
+			          new InvokedEventStrategy (this, control));
 		}
+		
 #endregion
 		
 #region IRawElementProviderSimple Members
@@ -76,6 +81,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
 				return "WindowsForms10.BUTTON.app.0.bf7d44";
+			else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Spinner.Id;
 			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
 				return false; // TODO: ???
 			else if (propertyId == RangeValuePatternIdentifiers.IsReadOnlyProperty.Id)

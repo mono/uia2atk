@@ -44,23 +44,20 @@ namespace Mono.UIAutomation.Winforms
 		public LabelProvider (Label label) : base (label)
 		{
 			this.label = label;
-			
-			SetEventStrategy (EventStrategyType.TextChangedEvent, 
-			                  new TextChangedEventStrategy (this, control));
 		}
 		
 #endregion
 		
 #region Protected Methods
-		protected override int GetControlTypeProperty () 
-		{
-			return ControlType.Text.Id;
-		}
 		
-		protected override bool GetIsContentElementProperty () 
+		protected override void InitializeEvents ()
 		{
-			return false;
+			base.InitializeEvents ();
+			
+			SetEvent (EventStrategyType.TextChangedEvent, 
+			          new TextChangedEventStrategy (this, control));
 		}
+
 #endregion
 		
 #region IRawElementProviderSimple Members
@@ -72,8 +69,14 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-				return label.Bounds.ToRect ();
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Text.Id;
+			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+				return Helper.RectangleToRect (label.Bounds);
+			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
+				return false;
+			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) 	 
+				return null;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "text";
 			else

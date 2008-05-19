@@ -44,18 +44,20 @@ namespace Mono.UIAutomation.Winforms
 		public CheckBoxProvider(CheckBox checkbox) : base (checkbox)
 		{
 			this.checkbox = checkbox;
-			
-			SetEventStrategy (EventStrategyType.ToggleStateProperty,
-			                  new ToggleStatePropertyEventStrategy (this, this, checkbox));
 		}
 		
 #endregion
 		
 #region Protected Methods
-		protected override int GetControlTypeProperty () 
+
+		protected override void InitializeEvents ()
 		{
-			return ControlType.CheckBox.Id;
+			base.InitializeEvents ();
+
+			SetEvent (EventStrategyType.ToggleStateProperty,
+			          new ToggleStatePropertyEventStrategy (this, this, checkbox));
 		}
+		
 #endregion
 		
 #region IRawElementProviderSimple Members
@@ -70,7 +72,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.CheckBox.Id;
+			else if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
 				return "WindowsForms10.BUTTON.app.0.bf7d44";
 			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
 				return false; // TODO: ???

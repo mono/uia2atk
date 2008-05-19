@@ -42,7 +42,9 @@ namespace Mono.UIAutomation.Winforms
 #endregion
 		
 #region Private Fields
+
 		private Dictionary<EventStrategyType, IEventStrategy> events;
+
 #endregion
 		
 #region Constructors
@@ -52,45 +54,28 @@ namespace Mono.UIAutomation.Winforms
 			this.control = control;
 			
 			events = new Dictionary<EventStrategyType,IEventStrategy> ();
-
-			SetEventStrategy (EventStrategyType.IsOffscreenProperty, 
-			                  new IsOffscreenPropertyEventStrategy (this, control));
-			SetEventStrategy (EventStrategyType.IsEnabledProperty, 
-			                  new IsEnabledPropertyEventStrategy (this, control));
-			SetEventStrategy (EventStrategyType.NameProperty,
-			                  new NamePropertyEventStrategy (this, control));
-			SetEventStrategy (EventStrategyType.HasKeyboardFocusProperty,
-			                  new HasKeyboardFocusPropertyEventStrategy (this, control));
-			SetEventStrategy (EventStrategyType.BoundingRectangleProperty,
-			                  new BoundingRectanglePropertyEventStrategy (this, control));
+			InitializeEvents ();
 		}
 		
 #endregion
 		
 #region Protected
-		protected virtual bool GetIsContentElementProperty () 
+		
+		protected virtual void InitializeEvents ()
 		{
-			return true;
+			SetEvent (EventStrategyType.IsOffscreenProperty, 
+			          new IsOffscreenPropertyEventStrategy (this, control));
+			SetEvent (EventStrategyType.IsEnabledProperty, 
+			          new IsEnabledPropertyEventStrategy (this, control));
+			SetEvent (EventStrategyType.NameProperty,
+			          new NamePropertyEventStrategy (this, control));
+			SetEvent (EventStrategyType.HasKeyboardFocusProperty,
+			          new HasKeyboardFocusPropertyEventStrategy (this, control));
+			SetEvent (EventStrategyType.BoundingRectangleProperty,
+			          new BoundingRectanglePropertyEventStrategy (this, control));
 		}
 		
-		protected virtual bool GetIsControlElementProperty () 
-		{
-			return true;
-		}
-		
-		protected virtual object GetLabeledByProperty ()
-		{
-			return null;
-		}
-		
-		protected virtual object GetNameProperty ()
-		{
-			return control.Text;
-		}
-		
-		protected abstract int GetControlTypeProperty ();
-		
-		protected void SetEventStrategy (EventStrategyType type, IEventStrategy strategy)
+		protected void SetEvent (EventStrategyType type, IEventStrategy strategy)
 		{
 			IEventStrategy value;
 			
@@ -104,6 +89,7 @@ namespace Mono.UIAutomation.Winforms
 				strategy.Connect ();
 			}
 		}
+		
 #endregion
 		
 #region IRawElementProviderSimple Members
@@ -117,7 +103,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 				return control.Enabled;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return GetNameProperty ();
+				return control.Text;
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return control.CanFocus;
 			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
@@ -125,9 +111,9 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return control.Focused;
 			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
-				return GetIsControlElementProperty ();
+				return true;
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
-				return GetIsContentElementProperty ();
+				return true;
 			else
 				return null;
 		}

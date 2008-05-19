@@ -44,17 +44,19 @@ namespace Mono.UIAutomation.Winforms
 		public TextBoxProvider (TextBox textbox) : base (textbox)
 		{
 			this.textbox = textbox;
-			
-			SetEventStrategy (EventStrategyType.TextChangedEvent, 
-			                  new TextChangedEventStrategy (this, control));
 		}
 #endregion
 		
 #region Protected Methods
-		protected override int GetControlTypeProperty () 
+
+		protected override void InitializeEvents ()
 		{
-			return ControlType.Edit.Id;
+			base.InitializeEvents ();
+			
+			SetEvent (EventStrategyType.TextChangedEvent, 
+			          new TextChangedEventStrategy (this, control));
 		}
+
 #endregion
 	
 #region IRawElementProviderSimple Members
@@ -67,8 +69,10 @@ namespace Mono.UIAutomation.Winforms
 		public override object GetPropertyValue (int propertyId)
 		{
 			// Edit Control Type properties
-			if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-				return textbox.Bounds.ToRect ();
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Edit.Id;
+			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+				return Helper.RectangleToRect (textbox.Bounds);
 			// TODO: ClickablePointProperty
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return control.Name;

@@ -53,10 +53,14 @@ namespace Mono.UIAutomation.Winforms
 #endregion
 		
 #region Protected Methods
-		protected override int GetControlTypeProperty () 
+
+		protected override void InitializeEvents ()
 		{
-			return ControlType.RadioButton.Id;
+			base.InitializeEvents ();
+			
+			// TODO: Add events...
 		}
+		
 #endregion
 		
 #region IRawElementProviderSimple Members
@@ -71,7 +75,9 @@ namespace Mono.UIAutomation.Winforms
 
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.RadioButton.Id;
+			else if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
 				return "WindowsForms10.BUTTON.app.0.bf7d44";
 			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
 				return false; // TODO: ???
