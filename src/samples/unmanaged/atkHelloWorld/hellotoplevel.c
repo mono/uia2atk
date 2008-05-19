@@ -203,9 +203,49 @@ hello_toplevel_ref_child (AtkObject *obj,
 }
 
 
+static void
+send_childrenchanged_signal (AtkObject * parent, 
+                             guint count, 
+                             AtkObject * child, 
+                             gboolean is_addition)
+{
+  GValue args[3] = { {0}, {0}, {0} };
+              
+  /* init */
+  g_value_init (&args[0], ATK_TYPE_OBJECT);
+  g_value_set_object (&args[0], parent);
+  g_value_init (&args[1], G_TYPE_UINT);
+  g_value_set_uint (&args[1], count);
+  g_value_init (&args[2], ATK_TYPE_OBJECT);
+  g_value_set_object (&args[2], child);
+  
+  guint gquark;
+  if (!is_addition)
+    gquark = g_quark_from_static_string ("remove");
+  else
+    gquark = g_quark_from_static_string ("add");
+  
+  guint signal_id = g_signal_lookup ("children-changed", ATK_TYPE_OBJECT);
+  g_warning(g_strdup_printf("signal es %d", signal_id));
+  g_signal_emitv (args, signal_id, gquark, NULL);
+  g_warning ("signal emitted");
+}
+
+
+static void
+_hello_toplevel_add_child (MytkWidget    *window)
+{
+  AtkObject* child = mytk_widget_get_accessible (MYTK_WIDGET (window));
+  guint count = g_list_length (toplevel_singleton->window_list);
+  AtkObject *parent = ATK_OBJECT (toplevel_singleton);
+  send_childrenchanged_signal (parent, count, child, FALSE);
+  atk_object_set_parent (child, parent);
+}
+
 /*
  * Common code used by destroy and hide events on GtkWindow
  */
+
 static void
 _hello_toplevel_remove_child (MytkWidget    *window)
 {
@@ -233,18 +273,7 @@ _hello_toplevel_remove_child (MytkWidget    *window)
 //              g_signal_emit_by_name (atk_obj, "children-changed::remove",
 //                                     window_count, child);
 
-              GValue args[3] = { {0}, {0}, {0} };
-              
-              /* init */
-              g_value_init (&args[0], ATK_TYPE_OBJECT);
-              g_value_set_object (&args[0], atk_obj);
-              g_value_init (&args[1], G_TYPE_UINT);
-              g_value_set_uint (&args[1], window_count);
-              g_value_init (&args[2], ATK_TYPE_OBJECT);
-              g_value_set_object (&args[2], child);
-              
-              guint signal_id = g_signal_lookup ("children-changed", ATK_TYPE_OBJECT);
-              g_signal_emitv (args, signal_id, g_quark_from_static_string ("remove"), NULL);
+              send_childrenchanged_signal (atk_obj, window_count, child, FALSE);
 
               atk_object_set_parent (child, NULL);
               break;
@@ -254,6 +283,7 @@ _hello_toplevel_remove_child (MytkWidget    *window)
         }
     }
 }
+
 
 
 /*
@@ -267,3 +297,8 @@ hello_toplevel_window_destroyed (MytkWidget *window)
   _hello_toplevel_remove_child (window);
 }
 
+void
+hello_toplevel_window_added (MytkWidget *window)
+{
+  _hello_toplevel_add_child (window);
+}
