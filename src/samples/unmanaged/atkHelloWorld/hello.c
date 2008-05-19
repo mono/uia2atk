@@ -88,8 +88,10 @@ gpointer update_children (gpointer data)
 
   gint s,e;
   
-  //mytk_add_one_top_level_window(g_strdup_printf("TopLevel n"));
   hello_toplevel_window_destroyed (widget_to_remove);
+  sleep(10);
+  mytk_add_one_top_level_window(g_strdup_printf("TopLevel n"));
+
 
   return NULL;
 }

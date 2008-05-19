@@ -1,5 +1,10 @@
 2008-05-19  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* hello.c, hellotoplevel.c, mytk.c: Add logic for window addition,
+	  although not yet working on accerciser, don't know why.
+
+2008-05-19  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* hello.c, hellotoplevel.c, mytk.c: Refactor to support window
 	  addition, in order to observe events carefully.
 

@@ -210,7 +210,7 @@ send_childrenchanged_signal (AtkObject * parent,
                              gboolean is_addition)
 {
   GValue args[3] = { {0}, {0}, {0} };
-              
+
   /* init */
   g_value_init (&args[0], ATK_TYPE_OBJECT);
   g_value_set_object (&args[0], parent);
@@ -226,9 +226,8 @@ send_childrenchanged_signal (AtkObject * parent,
     gquark = g_quark_from_static_string ("add");
   
   guint signal_id = g_signal_lookup ("children-changed", ATK_TYPE_OBJECT);
-  g_warning(g_strdup_printf("signal es %d", signal_id));
+  
   g_signal_emitv (args, signal_id, gquark, NULL);
-  g_warning ("signal emitted");
 }
 
 
@@ -300,5 +299,6 @@ hello_toplevel_window_destroyed (MytkWidget *window)
 void
 hello_toplevel_window_added (MytkWidget *window)
 {
-  _hello_toplevel_add_child (window);
+  if (toplevel_singleton != NULL)
+    _hello_toplevel_add_child (window);
 }
