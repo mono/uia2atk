@@ -31,8 +31,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	
-	// TODO: Separate file
+
 	public abstract class ParentAdapter : Adapter
 	{
 #region Protected Fields

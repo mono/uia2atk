@@ -30,7 +30,6 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	// TODO: Separate file
 	public abstract class Adapter : Atk.Object
 	{
 		public abstract IRawElementProviderSimple Provider { get; }
@@ -38,5 +37,5 @@ namespace UiaAtkBridge
 		public abstract void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e);
 		
 		public abstract void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e);
-	}	
+	}
 }
