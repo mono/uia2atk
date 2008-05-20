@@ -30,7 +30,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class TextLabel : Adapter //TODO: , Atk.TextImplementor 
+	public class TextLabel : Adapter , Atk.TextImplementor 
 	{
 		private IRawElementProviderSimple provider;
 		
@@ -45,6 +45,36 @@ namespace UiaAtkBridge
 		public override IRawElementProviderSimple Provider {
 			get { return provider; }
 		}
+
+		public IntPtr Handle {
+			get {
+				throw new NotImplementedException();
+			}
+		}
+
+		public int CaretOffset {
+			get {
+				throw new NotImplementedException();
+			}
+		}
+
+		public GLib.SList DefaultAttributes {
+			get {
+				throw new NotImplementedException();
+			}
+		}
+
+		public int CharacterCount {
+			get {
+				return Name.Length;
+			}
+		}
+
+		public int NSelections {
+			get {
+				throw new NotImplementedException();
+			}
+		}
 		
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
@@ -54,6 +84,82 @@ namespace UiaAtkBridge
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			// TODO
+		}
+
+		public string GetText (int start_offset, int end_offset)
+		{
+			//TODO: take in account offset
+			return Name;
+		}
+
+		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset)
+		{
+			throw new NotImplementedException();
+		}
+
+		public string GetTextAtOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset)
+		{
+			throw new NotImplementedException();
+		}
+
+		public char GetCharacterAtOffset (int offset)
+		{
+			throw new NotImplementedException();
+		}
+
+		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset)
+		{
+			throw new NotImplementedException();
+		}
+
+		public GLib.SList GetRunAttributes (int offset, out int start_offset, out int end_offset)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
+		{
+			throw new NotImplementedException();
+		}
+
+		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
+		{
+			throw new NotImplementedException();
+		}
+
+		public string GetSelection (int selection_num, out int start_offset, out int end_offset)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool AddSelection (int start_offset, int end_offset)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool RemoveSelection (int selection_num)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool SetSelection (int selection_num, int start_offset, int end_offset)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool SetCaretOffset (int offset)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void GetRangeExtents (int start_offset, int end_offset, Atk.CoordType coord_type, Atk.TextRectangle rect)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coord_type, Atk.TextClipType x_clip_type, Atk.TextClipType y_clip_type)
+		{
+			throw new NotImplementedException();
 		}
 		
 	}

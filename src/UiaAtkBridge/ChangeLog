@@ -1,5 +1,9 @@
 2008-05-20  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Stub Text interface and implement the easy ones.
+
+2008-05-20  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Adapter.cs, TextLabel.cs, UiaAtkBridge.mdp: Add some stubs
 	  (TextLabel, some interfaces we need to implement, ...).
 
