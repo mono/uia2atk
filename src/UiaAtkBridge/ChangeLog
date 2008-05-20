@@ -1,5 +1,9 @@
 2008-05-20  Calvin Gaisford <calvinrg@gmail.com> 
 
+	* UiaAtkBridge.mdp: Added the Adapter and ParentAdapter classes
+
+2008-05-20  Calvin Gaisford <calvinrg@gmail.com> 
+
 	* TopLevelRootItem.cs, Adapter.cs, ParentAdapter.cs: Moved the Adapter and
 	  ParentAdapter classes out into their own files
 
