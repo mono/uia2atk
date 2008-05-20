@@ -1,3 +1,8 @@
+2008-05-20  Calvin Gaisford <calvinrg@gmail.com> 
+
+	* TopLevelRootItem.cs, Adapter.cs, ParentAdapter.cs: Moved the Adapter and
+	  ParentAdapter classes out into their own files
+
 2008-05-14  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* Monitor.cs: Another workaround... but for another bug.

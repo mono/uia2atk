@@ -25,51 +25,18 @@
 
 using System;
 using System.Collections.Generic;
-
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	
-	public class TopLevelRootItem : ParentAdapter
+	// TODO: Separate file
+	public abstract class Adapter : Atk.Object
 	{
-		private TopLevelRootItem()
-		{
-			this.Name = Monitor.GetProgramName();
-			this.Role = Atk.Role.Application;
-		}
+		public abstract IRawElementProviderSimple Provider { get; }
 		
-		//exception: TopLevelRootItem doesn't have an UIA counterpart
-		public override IRawElementProviderSimple Provider { get { return null; } }
+		public abstract void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e);
 		
-		private static volatile TopLevelRootItem instance = null;
-		
-		public static TopLevelRootItem Instance {
-			get {
-				if (instance == null)
-					lock (syncRoot)
-						if (instance == null)
-							instance = new TopLevelRootItem();
-				return instance;
-			}
-		}
-		
-		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
-		{
-			// TODO
-		}
-		
-		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
-		{
-			// TODO
-		}
-		
-		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
-		{
-			// TODO
-		}
-
-
-	}
+		public abstract void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e);
+	}	
 }
