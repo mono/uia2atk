@@ -31,10 +31,10 @@ namespace UiaAtkBridge
 {
 	public class Window : ParentAdapter
 	{
-		private IWindowProvider provider;
+		private object provider;
 		private IRawElementProviderFragmentRoot rootProvider;
 		
-		public Window (IWindowProvider provider)
+		public Window (object provider)
 		{
 			this.provider = provider;
 			rootProvider = (IRawElementProviderFragmentRoot) provider;
@@ -43,7 +43,7 @@ namespace UiaAtkBridge
 		}
 		
 		public override IRawElementProviderSimple Provider {
-			get { return rootProvider; }
+			get { return (IRawElementProviderSimple)provider; }
 		}
 		
 		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)

@@ -119,10 +119,10 @@ namespace UiaAtkBridge
 
 			if (e.StructureChangeType == StructureChangeType.ChildrenBulkAdded) {
 				if (controlTypeId == ControlType.Window.Id)
-					HandleNewWindowProvider ((IWindowProvider)provider);
+					HandleNewWindowControlType (provider);
 				else if (controlTypeId == ControlType.Button.Id)
 					// TODO: Consider generalizing...
-					HandleNewInvokeProvider ((IInvokeProvider)provider);
+					HandleNewButtonControlType (provider);
 				// TODO: Other providers
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
 				if (controlTypeId == ControlType.Window.Id)
@@ -136,7 +136,7 @@ namespace UiaAtkBridge
 		
 #region Private Methods
 		
-		private void HandleNewWindowProvider (IWindowProvider provider)
+		private void HandleNewWindowControlType (object provider)
 		{
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) provider;
@@ -162,7 +162,7 @@ namespace UiaAtkBridge
 			pointerProviderMapping.Remove (providerHandle);
 		}
 		
-		private void HandleNewInvokeProvider (IInvokeProvider provider)
+		private void HandleNewButtonControlType (object provider)
 		{
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) provider;
