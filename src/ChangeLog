@@ -1,3 +1,8 @@
+2008-05-20  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* patches/winforms-uia.patch: Updating patch to apply cleanly in mcs
+	  r103580.
+
 2008-05-14  Andres G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/bugAddEmissionHook&GTypeFromName.diff,
