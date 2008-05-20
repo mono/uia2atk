@@ -1,3 +1,9 @@
+2008-05-20  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* FormTest.mdp, formtest, formtest.sh: Better to use deploy options
+	  instead of calling it via ../.. (simpler and maybe solves
+	  working-dir issues).
+
 2008-04-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* FormTest.mdp: Add System.Drawing reference.

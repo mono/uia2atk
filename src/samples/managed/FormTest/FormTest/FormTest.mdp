@@ -3,7 +3,7 @@
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <CustomCommands>
         <Command type="AfterBuild" command="cp /usr/lib/gtk-2.0/modules/libatk-bridge.so ../../../../../../../../gtk-sharp/atk/glue/.libs/" workingdir="${TargetDir}" />
-        <Command type="Execute" command="sh ../../formtest" workingdir="${TargetDir}" />
+        <Command type="Execute" command="./formtest.sh" workingdir="${TargetDir}" />
       </CustomCommands>
       <Output directory="bin/Debug" assemblyKeyFile="." assembly="FormTest" />
       <Build debugmode="True" target="Exe" />
@@ -19,6 +19,7 @@
   </Configurations>
   <Contents>
     <File name="FormTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="formtest.sh" subtype="Code" buildaction="FileCopy" />
   </Contents>
   <References>
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../../../mcs/class/lib/net_2_0/System.Windows.Forms.dll" />
