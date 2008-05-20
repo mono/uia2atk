@@ -114,7 +114,20 @@ namespace UiaAtkBridge
 
 		public GLib.SList GetRunAttributes (int offset, out int start_offset, out int end_offset)
 		{
-			throw new NotImplementedException();
+			// don't ask me why, this is what gail does 
+			// (instead of throwing or returning null):
+			if (offset > Name.Length)
+				offset = Name.Length;
+			else if (offset < 0)
+				offset = 0;
+			
+			//just test values for now:
+			end_offset = Name.Length;
+			start_offset = offset;
+				
+			//TODO:
+			GLib.SList attribs = new GLib.SList(typeof(Atk.Attribute));
+			return attribs;
 		}
 
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
