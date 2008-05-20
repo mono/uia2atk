@@ -164,16 +164,14 @@ namespace UiaAtkBridge
 		
 		private void HandleNewButtonControlType (IRawElementProviderSimple provider)
 		{
-			IRawElementProviderSimple simpleProvider =
-				(IRawElementProviderSimple) provider;
 			IRawElementProviderSimple parentProvider =
-				simpleProvider.HostRawElementProvider;
+					provider.HostRawElementProvider;
 			
 			ParentAdapter parentObject =
 				(ParentAdapter) providerAdapterMapping [parentProvider];
 			
 			Button atkButton = new Button (provider);
-			providerAdapterMapping [simpleProvider] = atkButton;
+			providerAdapterMapping [provider] = atkButton;
 			
 			parentObject.AddOneChild (atkButton);
 			parentObject.AddRelationship (Atk.RelationType.Embeds,

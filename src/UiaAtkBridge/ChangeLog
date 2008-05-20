@@ -1,5 +1,10 @@
 2008-05-20  Calvin Gaisford <calvinrg@gmail.com> 
 
+	* Button.cs, AutomationBridge.cs: removed extra reference to simpleProvider
+	  due to the base object now is already a simpleProvider
+
+2008-05-20  Calvin Gaisford <calvinrg@gmail.com> 
+
 	* Button.cs, AutomationBridge.cs, Window.cs: Changed the object passed in
 	  construction to simpleProvider
 

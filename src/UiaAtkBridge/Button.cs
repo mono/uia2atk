@@ -33,19 +33,16 @@ namespace UiaAtkBridge
 	public class Button : Adapter
 	{
 		private IRawElementProviderSimple provider;
-		private IRawElementProviderSimple simpleProvider;
 		
 		public Button (IRawElementProviderSimple provider)
 		{
 			this.provider = provider;
 			Role = Atk.Role.PushButton;
 			
-			simpleProvider =
-				(IRawElementProviderSimple) provider;
-			string buttonText = (string) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			string buttonText = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = buttonText;
 			
-			bool canFocus = (bool) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
+			bool canFocus = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
 			if (canFocus)
 				RefStateSet ().AddState (Atk.StateType.Selectable);
 			else
