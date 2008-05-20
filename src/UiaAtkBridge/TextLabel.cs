@@ -24,18 +24,37 @@
 // 
 
 using System;
-using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public abstract class Adapter : Atk.Object // TODO: , Atk.ComponentImplementor
+
+	public class TextLabel : Adapter //TODO: , Atk.TextImplementor 
 	{
-		public abstract IRawElementProviderSimple Provider { get; }
+		private IRawElementProviderSimple provider;
 		
-		public abstract void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e);
+		public TextLabel ()
+		{
+			Role = Atk.Role.Label;
+			
+			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			Name = text;
+		}
 		
-		public abstract void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e);
+		public override IRawElementProviderSimple Provider {
+			get { return provider; }
+		}
+		
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			// TODO
+		}
+		
+		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
+		{
+			// TODO
+		}
+		
 	}
 }
