@@ -32,10 +32,10 @@ namespace UiaAtkBridge
 {
 	public class Button : Adapter
 	{
-		private object provider;
+		private IRawElementProviderSimple provider;
 		private IRawElementProviderSimple simpleProvider;
 		
-		public Button (object provider)
+		public Button (IRawElementProviderSimple provider)
 		{
 			this.provider = provider;
 			Role = Atk.Role.PushButton;
@@ -53,7 +53,7 @@ namespace UiaAtkBridge
 		}
 		
 		public override IRawElementProviderSimple Provider {
-			get { return (IRawElementProviderSimple)provider; }
+			get { return provider; }
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)

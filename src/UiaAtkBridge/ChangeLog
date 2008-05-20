@@ -1,5 +1,10 @@
 2008-05-20  Calvin Gaisford <calvinrg@gmail.com> 
 
+	* Button.cs, AutomationBridge.cs, Window.cs: Changed the object passed in
+	  construction to simpleProvider
+
+2008-05-20  Calvin Gaisford <calvinrg@gmail.com> 
+
 	
 
 2008-05-20  Andres G. Aragoneses <aaragoneses@novell.com> 
