@@ -57,12 +57,29 @@ namespace UiaAtkBridge
 		{
 			if (eventId == InvokePatternIdentifiers.InvokedEvent) {
 				OnPressed ();
+			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
+				// TODO: Handle AutomationFocusChangedEvent
+			} else if (eventId == AutomationElementIdentifiers.StructureChangedEvent) {
+				// TODO: Handle StructureChangedEvent
 			}
 		}
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			// TODO
+		    if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
+		        ToggleState state = (ToggleState)e.NewValue;
+		        // ToggleState.On
+		        // ToggleState.Off
+		        // ToggleState.Intermediate
+		    } else if(e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
+		    	// TODO: Handle BoundingRectangleProperty change
+		    } else if(e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
+		        // TODO: Handle IsOffscreenProperty change
+		    } else if(e.Property == AutomationElementIdentifiers.IsEnabledProperty) {
+		        // TODO: Handle IsEnabledProperty change		    
+		    } else if(e.Property == AutomationElementIdentifiers.NameProperty) {
+		        // TODO: Handle NameProperty change			    
+		    }
 		}
 		
 		private void OnPressed ()

@@ -1,3 +1,7 @@
+2008-05-20  Calvin Gaisford <calvinrg@gmail.com> 
+
+	* Button.cs: Stubbed out all events and propertychange events to be handled
+
 2008-05-20  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* TextLabel.cs: Stub Text interface and implement the easy ones.
