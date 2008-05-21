@@ -1,0 +1,6 @@
+2008-05-21  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* BridgeTester.cs: Fix BridgeTester.
+	* ChangeLog: New ChangeLog
+	* UiaAtkBridgeTest.mdp: Fix references, but why it doesn't compile yet?
+

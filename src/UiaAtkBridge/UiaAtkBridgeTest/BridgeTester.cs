@@ -43,8 +43,7 @@ namespace UiaAtkBridgeTest
 				Label lab = new Label ();
 				lab.Text = "text_test";
 				LabelProvider prov = new LabelProvider(lab);
-				return new Gtk.Label().Accessible;
-				//return UiaAtkBridge.TextLabel (prov);
+				return UiaAtkBridge.TextLabel (prov);
 			}
 			
 			return null;
