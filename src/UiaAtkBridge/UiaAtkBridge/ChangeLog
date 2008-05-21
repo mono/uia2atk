@@ -1,3 +1,7 @@
+2008-05-21  Calvin Gaisford <calvinrg@gmail.com> 
+
+	* Button.cs: Filled out needed methods for ActionImplementor
+
 2008-05-21  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* TextLabel.cs: Definitely I need unit tests that check against both
