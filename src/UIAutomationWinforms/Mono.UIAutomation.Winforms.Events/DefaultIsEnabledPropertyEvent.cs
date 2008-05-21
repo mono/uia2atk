@@ -28,42 +28,37 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events
 {
 
-	public class ToggleStatePropertyEventStrategy : EventStrategy
+	internal class DefaultIsEnabledPropertyEvent : EventStrategy
 	{
-		public ToggleStatePropertyEventStrategy (IRawElementProviderSimple provider, 
-		                                         IToggleProvider toggleProvider,
-		                                         CheckBox control) :
+		
+		public DefaultIsEnabledPropertyEvent (IRawElementProviderSimple provider, 
+		                                      Control control) :
 			base (provider, control)
 		{
-			this.toggleProvider = toggleProvider;
-			checkbox = control;
 		}
-	
+		
 		public override void Connect ()
 		{
-			checkbox.CheckedChanged += new EventHandler (OnCheckChanged);
+			Control.EnabledChanged += new EventHandler (OnEnableChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			checkbox.CheckedChanged -= new EventHandler (OnCheckChanged);
+			Control.EnabledChanged -= new EventHandler (OnEnableChanged);
 		}
 		
-		private void OnCheckChanged (object sender, EventArgs e)
+		private void OnEnableChanged (object sender, EventArgs e)
 		{
 			if (AutomationInteropProvider.ClientsAreListening) {
 				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (TogglePatternIdentifiers.ToggleStateProperty,
-					                                        null, // Mimics MS behavior
-					                                        toggleProvider.ToggleState);
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsEnabledProperty,
+					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
+					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id));
 				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
 			}
 		}
-		
-		private IToggleProvider toggleProvider;
-		private CheckBox checkbox;
 	}
 }

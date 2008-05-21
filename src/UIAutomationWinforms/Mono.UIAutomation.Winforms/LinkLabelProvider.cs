@@ -22,43 +22,65 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
+
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms
 {
 
-	public class IsOffscreenPropertyEventStrategy : EventStrategy
+	public class LinkLabelProvider : SimpleControlProvider
 	{
+#region Private Members
 		
-		public IsOffscreenPropertyEventStrategy (IRawElementProviderSimple provider, 
-		                                         Control control) :
-			base (provider, control)
-		{
-		}
+		private LinkLabel linkLabel;
+
+#endregion
 		
-		public override void Connect ()
+#region Constructor
+
+		public LinkLabelProvider (LinkLabel linkLabel) : base (linkLabel)
 		{
-			Control.VisibleChanged += new EventHandler (OnVisibleChanged);
+			this.linkLabel = linkLabel;
 		}
 
-		public override void Disconnect ()
+#endregion
+		
+#region Protected Methods
+
+		protected override void InitializeEvents ()
 		{
-			Control.VisibleChanged -= new EventHandler (OnVisibleChanged);
+			base.InitializeEvents ();
+
+			SetEvent (EventStrategyType.InvokedEvent, 
+			          new DefaultInvokedEvent (this, control));
+			
+			//control.LostFocus 
+		}
+
+#endregion
+	
+#region IRawElementProviderSimple Members
+	
+		public override object GetPatternProvider (int patternId)
+		{
+			return null;
 		}
 		
-		private void OnVisibleChanged (object sender, EventArgs e)
+		public override object GetPropertyValue (int propertyId)
 		{
-			// TODO: Check if IsOffscreenProperty has changed...
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsOffscreenProperty,
-					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
-			}
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Hyperlink.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "hyperlink";
+			else
+				return base.GetPropertyValue (propertyId);
 		}
+
+#endregion
+
 	}
 }

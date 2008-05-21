@@ -27,6 +27,7 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -56,16 +57,19 @@ namespace Mono.UIAutomation.Winforms
 		protected override void InitializeEvents ()
 		{
 			base.InitializeEvents ();
-			
+
+			// NameProperty. uses control.Name to emit changes.
+			SetEvent (EventStrategyType.NameProperty, null);
 			SetEvent (EventStrategyType.TextChangedEvent, 
-			          new TextChangedEventStrategy (this, control));
+			          new DefaultTextChangedEvent (this, control));
+			SetEvent (EventStrategyType.HasKeyboardFocusProperty, 
+			          new TextBoxHasKeyBoardFocusPropertyEvent (this, textbox));
 			
 			// TODO: InvalidatedEvent
 			// TODO: TextSelectionChangedEvent: using textbox.SelectionLength != 0?	
 			// TODO: NameProperty property-changed event.
 			// TODO: ValuePatternIdentifiers.ValueProperty property-changed event.
 			// TODO: RangeValuePatternIdentifiers.ValueProperty property-changed event.
-			// TODO: StructureChangedEvent
 		}
 
 #endregion

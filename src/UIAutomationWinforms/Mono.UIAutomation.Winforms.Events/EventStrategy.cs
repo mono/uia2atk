@@ -22,41 +22,36 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
-using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events
 {
-
-	public class InvokedEventStrategy : EventStrategy
+	
+	public abstract class EventStrategy : IEventStrategy
 	{
-		
-		public InvokedEventStrategy (IRawElementProviderSimple provider, 
-		                             Control control) :
-			base (provider, control)
+		protected EventStrategy (IRawElementProviderSimple provider, Control control)
 		{
-		}
-		
-		public override void Connect ()
-		{
-			Control.Click += new EventHandler (OnClick);
+			this.provider = provider;
+			this.control = control;
 		}
 
-		public override void Disconnect ()
+		public abstract void Connect ();
+
+		public abstract void Disconnect ();
+
+		protected Control Control 
 		{
-			Control.Click -= new EventHandler (OnClick);
+			get { return control; }
 		}
 		
-		private void OnClick (object sender, EventArgs e)
+		protected IRawElementProviderSimple Provider
 		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationEventArgs args = new AutomationEventArgs (InvokePatternIdentifiers.InvokedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (InvokePatternIdentifiers.InvokedEvent, 
-				                                                Provider, args);
-			}
+			get { return provider; }
 		}
+
+		private IRawElementProviderSimple provider;
+		private Control control;
 	}
 }

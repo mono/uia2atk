@@ -23,14 +23,35 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events
 {
 
-	public interface IEventStrategy
+	internal class TextBoxHasKeyBoardFocusPropertyEvent : DefaultHasKeyboardFocusPropertyEvent
 	{
-		void Connect ();
-		void Disconnect ();
+		
+		public TextBoxHasKeyBoardFocusPropertyEvent (IRawElementProviderSimple provider, 
+		                                             TextBox textbox) :
+			base (provider, textbox)
+		{
+			this.textbox = textbox;
+		}
+		
+		public override void Connect ()
+		{
+			textbox.Enter += new EventHandler (OnFocusChanged);
+			textbox.Leave += new EventHandler (OnFocusChanged);
+		}
+
+		public override void Disconnect ()
+		{
+			textbox.Enter -= new EventHandler (OnFocusChanged);
+			textbox.Leave -= new EventHandler (OnFocusChanged);
+		}
+
+		private TextBox textbox;
 	}
 }

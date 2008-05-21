@@ -30,6 +30,7 @@ using System.Windows.Forms;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -63,16 +64,18 @@ namespace Mono.UIAutomation.Winforms
 		
 		protected virtual void InitializeEvents ()
 		{
-			SetEvent (EventStrategyType.IsOffscreenProperty, 
-			          new IsOffscreenPropertyEventStrategy (this, control));
+
+			// TODO: Add: EventStrategyType.IsOffscreenProperty, DefaultIsOffscreenPropertyEvent
 			SetEvent (EventStrategyType.IsEnabledProperty, 
-			          new IsEnabledPropertyEventStrategy (this, control));
+			          new DefaultIsEnabledPropertyEvent (this, control));
 			SetEvent (EventStrategyType.NameProperty,
-			          new NamePropertyEventStrategy (this, control));
+			          new DefaultNamePropertyEvent (this, control));
 			SetEvent (EventStrategyType.HasKeyboardFocusProperty,
-			          new HasKeyboardFocusPropertyEventStrategy (this, control));
+			          new DefaultHasKeyboardFocusPropertyEvent (this, control));
 			SetEvent (EventStrategyType.BoundingRectangleProperty,
-			          new BoundingRectanglePropertyEventStrategy (this, control));
+			          new DefaultBoundingRectanglePropertyEvent (this, control));
+			SetEvent (EventStrategyType.StructureChangedEvent,
+			          new DefaultStructureChangedEvent (this, control));
 		}
 		
 		protected void SetEvent (EventStrategyType type, IEventStrategy strategy)

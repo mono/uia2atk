@@ -28,14 +28,14 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events
 {
-	
-	public class NamePropertyEventStrategy : EventStrategy
+
+	internal class DefaultTextChangedEvent : EventStrategy
 	{
 		
-		public NamePropertyEventStrategy (IRawElementProviderSimple provider, 
-		                                         Control control) :
+		public DefaultTextChangedEvent (IRawElementProviderSimple provider, 
+		                                Control control) :
 			base (provider, control)
 		{
 		}
@@ -53,11 +53,10 @@ namespace Mono.UIAutomation.Winforms
 		private void OnTextChanged (object sender, EventArgs e)
 		{
 			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.NameProperty,
-					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
+				AutomationEventArgs eventArgs =
+					new AutomationEventArgs (TextPatternIdentifiers.TextChangedEvent);
+				AutomationInteropProvider.RaiseAutomationEvent (TextPatternIdentifiers.TextChangedEvent, 
+				                                                Provider, eventArgs);
 			}
 		}
 	}

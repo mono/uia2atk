@@ -11,6 +11,6 @@
     <Execute type="None" entry="Mono.UIAutomation.Winforms" />
   </StartMode>
   <Entries>
-    <Entry filename="Mono.UIAutomation.Winforms/Mono.UIAutomation.Winforms.mdp" />
+    <Entry filename="Mono.UIAutomation.Winforms.mdp" />
   </Entries>
 </Combine>

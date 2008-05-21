@@ -1,0 +1,53 @@
+<Project name="Mono.UIAutomation.Winforms" fileversion="2.0" DefaultNamespace="Mono.UIAutomation.Winforms" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <Output directory="bin/Debug" signAssembly="True" assemblyKeyFile="../../mono-uia.snk" assembly="UIAutomationWinforms" />
+      <Build debugmode="True" target="Library" />
+      <Execution runwithwarnings="True" consolepause="False" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <Output directory="bin/Release" signAssembly="True" assemblyKeyFile="../../mono-uia.snk" assembly="UIAutomationWinforms" />
+      <Build debugmode="False" target="Library" />
+      <Execution runwithwarnings="True" consolepause="False" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <Contents>
+    <File name="Mono.UIAutomation.Winforms/AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/WindowProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/ButtonProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/FormListener.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/SimpleControlProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/CheckBoxProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/RadioButtonProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/LabelProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/NumericUpDownProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/TextBoxProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/Helper.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/LinkLabelProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events" subtype="Directory" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DefaultHasKeyboardFocusPropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DefaultBoundingRectanglePropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DefaultIsEnabledPropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DefaultIsOffscreenPropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DefaultNamePropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DefaultTextChangedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DefaultToggleStatePropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/EventStrategyType.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/IEventStrategy.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DefaultInvokedEventStrategy.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/EventStrategy.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/TextBoxHasKeyBoardFocusPropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DefaultStructureChangedEvent.cs" subtype="Code" buildaction="Compile" />
+  </Contents>
+  <References>
+    <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Gac" localcopy="True" refto="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <ProjectReference type="Assembly" localcopy="True" refto="../../../mcs/class/lib/net_2_0/System.Windows.Forms.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="../../../olive/class/lib/net_3_0/UIAutomationProvider.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="../../../olive/class/lib/net_3_0/UIAutomationTypes.dll" />
+    <ProjectReference type="Gac" localcopy="True" refto="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Assembly" localcopy="True" refto="../../../olive/class/lib/net_3_0/WindowsBase.dll" />
+  </References>
+</Project>

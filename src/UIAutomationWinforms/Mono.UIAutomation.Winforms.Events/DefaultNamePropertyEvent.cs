@@ -20,66 +20,45 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//	Mario Carrion <mcarrion@novell.com>
 // 
 
 using System;
-using System.Windows.Forms;
-
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Winforms.Events;
+using System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events
 {
-	public class LabelProvider : SimpleControlProvider
-	{
-#region Private Fields
-		
-		private Label label;
-		
-#endregion
-		
-#region Constructors
-		
-		public LabelProvider (Label label) : base (label)
-		{
-			this.label = label;
-		}
-		
-#endregion
-		
-#region Protected Methods
-		
-		protected override void InitializeEvents ()
-		{
-			base.InitializeEvents ();
-			
-			SetEvent (EventStrategyType.TextChangedEvent, 
-			          new DefaultTextChangedEvent (this, control));
-		}
-
-#endregion
-		
-#region IRawElementProviderSimple Members
 	
-		public override object GetPatternProvider (int patternId)
+	public class DefaultNamePropertyEvent : EventStrategy
+	{
+		
+		public DefaultNamePropertyEvent (IRawElementProviderSimple provider,
+		                                 Control control) :
+			base (provider, control)
 		{
-			return null;
 		}
 		
-		public override object GetPropertyValue (int propertyId)
+		public override void Connect ()
 		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Text.Id;
-			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
-				return false;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "text";
-			else
-				return base.GetPropertyValue (propertyId);
+			Control.TextChanged += new EventHandler (OnTextChanged);
 		}
 
-#endregion
+		public override void Disconnect ()
+		{
+			Control.TextChanged -= new EventHandler (OnTextChanged);
+		}
+		
+		private void OnTextChanged (object sender, EventArgs e)
+		{
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationPropertyChangedEventArgs args =
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.NameProperty,
+					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
+					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
+				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
+			}
+		}
 	}
 }

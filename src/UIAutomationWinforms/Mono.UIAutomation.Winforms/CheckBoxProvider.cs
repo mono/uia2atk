@@ -28,6 +28,7 @@ using System.Windows.Forms;
 
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -55,7 +56,7 @@ namespace Mono.UIAutomation.Winforms
 			base.InitializeEvents ();
 
 			SetEvent (EventStrategyType.ToggleStateProperty,
-			          new ToggleStatePropertyEventStrategy (this, this, checkbox));
+			          new DefaultToggleStatePropertyEvent (this, this, checkbox));
 		}
 		
 #endregion

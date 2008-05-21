@@ -28,41 +28,42 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events
 {
-	
-	public class HasKeyboardFocusPropertyEventStrategy : EventStrategy
+
+	internal class DefaultToggleStatePropertyEvent : EventStrategy
 	{
-		public HasKeyboardFocusPropertyEventStrategy (IRawElementProviderSimple provider, 
-		                                         Control control) :
+		public DefaultToggleStatePropertyEvent (IRawElementProviderSimple provider, 
+		                                         IToggleProvider toggleProvider,
+		                                         CheckBox control) :
 			base (provider, control)
 		{
+			this.toggleProvider = toggleProvider;
+			checkbox = control;
 		}
-		
+	
 		public override void Connect ()
 		{
-			Control.GotFocus += new EventHandler (OnFocusChanged);
+			checkbox.CheckedChanged += new EventHandler (OnCheckChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			Control.GotFocus -= new EventHandler (OnFocusChanged);
+			checkbox.CheckedChanged -= new EventHandler (OnCheckChanged);
 		}
 		
-		private void OnFocusChanged (object sender, EventArgs e)
+		private void OnCheckChanged (object sender, EventArgs e)
 		{
 			if (AutomationInteropProvider.ClientsAreListening) {
 				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.HasKeyboardFocusProperty,
-					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id));
+					new AutomationPropertyChangedEventArgs (TogglePatternIdentifiers.ToggleStateProperty,
+					                                        null, // Mimics MS behavior
+					                                        toggleProvider.ToggleState);
 				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
-				
-				AutomationEventArgs eventArgs =
-					new AutomationEventArgs (AutomationElementIdentifiers.AutomationFocusChangedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.AutomationFocusChangedEvent, 
-				                                                Provider, eventArgs);
 			}
 		}
+		
+		private IToggleProvider toggleProvider;
+		private CheckBox checkbox;
 	}
 }

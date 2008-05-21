@@ -1,4 +1,77 @@
-2008-05-21  Mario Carrion <mcarrion@novell.com> 
+2008-05-21  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/LinkLabelProvider.cs: File added.
+	LinkLabel provider.
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs: Event class name updated
+	* Mono.UIAutomation.Winforms/LabelProvider.cs: Event class name updated.
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs: Event class name
+	updated.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Event class names
+	updated.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Added 
+	HasKeyBoardFocusProperty event. Event class names updated.
+	* Mono.UIAutomation.Winforms/NumericUpDownProvider.cs: Event class name
+	updated.
+	* UIAutomationWinforms.mds: Updated due to added files.
+	* Mono.UIAutomation.Winforms.mdp: File added. Moved from 
+	Mono.UIAutomation.Winforms/ folder.
+	* Mono.UIAutomation.Winforms/ToggleStatePropertyEventStrategy.cs: File
+	moved. Renamed:
+	Mono.UIAutomation.Winforms.Events/DefaultToggleStatePropertyEvent.
+	* Mono.UIAutomation.Winforms/IEventStrategy.cs: File moved to 
+	Mono.UIAutomation.Winforms.Events/.
+	* Mono.UIAutomation.Winforms/IsEnabledPropertyEventStrategy.cs: File
+	moved. Renamed:
+	Mono.UIAutomation.Winforms.Events/DefaultIsEnabledPropertyEvent.
+	* Mono.UIAutomation.Winforms/TextChangedEventStrategy.cs: File moved.
+	Renamed:
+	Mono.UIAutomation.Winforms.Events/DefaultTextChangedEvent.
+	* Mono.UIAutomation.Winforms/BoundingRectanglePropertyEventStrategy.cs:
+	Filed moved. Renamed: 
+	Mono.UIAutomation.Winforms.Events/DefaultBoundingRectanglePropertyEvent.
+	* Mono.UIAutomation.Winforms/InvokedEventStrategy.cs: File moved. 
+	Renamed: Mono.UIAutomation.Winforms.Events/DefaultInvokedEvent.
+	* Mono.UIAutomation.Winforms/HasKeyboardFocusPropertyEventStrategy.cs:
+	File moved. Renamed Mono.UIAutomation.Winforms.Events/
+	DefaultHasKeyboardFocusPropertyEvent.
+	* Mono.UIAutomation.Winforms/IsOffscreenPropertyEventStrategy.cs: File
+	moved. Renamed 
+	Mono.UIAutomation.Winforms.Events/DefaultIsOffscreenPropertyEvent.
+	* Mono.UIAutomation.Winforms/Mono.UIAutomation.Winforms.mdp: File moved
+	to ../
+	* Mono.UIAutomation.Winforms/EventStrategy.cs: File moved to 
+	Mono.UIAutomation.Winforms.Events/.
+	* Mono.UIAutomation.Winforms/NamePropertyEventStrategy.cs: File moved.
+	Renamed: Mono.UIAutomation.Winforms.Events/DefaultNamePropertyEvent.
+	* Mono.UIAutomation.Winforms/EventStrategyType.cs: File moved to
+	Mono.UIAutomation.Winforms.Events/.
+	* Mono.UIAutomation.Winforms.Events: Folder created. Meant to store all
+	Events use.
+	* Mono.UIAutomation.Winforms.Events/DefaultNamePropertyEvent.cs: File
+	added.
+	* Mono.UIAutomation.Winforms.Events/IEventStrategy.cs: File added.
+	* Mono.UIAutomation.Winforms.Events/DefaultToggleStatePropertyEvent.cs: 
+	File added.
+	* Mono.UIAutomation.Winforms.Events/TextBoxHasKeyBoardFocusPropertyEvent.cs:
+	File added.
+	* Mono.UIAutomation.Winforms.Events/DefaultStructureChangedEvent.cs: File
+	added.
+	* Mono.UIAutomation.Winforms.Events/DefaultIsEnabledPropertyEvent.cs:
+	File added.
+	* Mono.UIAutomation.Winforms.Events/DefaultIsOffscreenPropertyEvent.cs:
+	File added.
+	* Mono.UIAutomation.Winforms.Events/EventStrategy.cs: File added.
+	* Mono.UIAutomation.Winforms.Events/DefaultTextChangedEvent.cs: File
+	added.
+	* Mono.UIAutomation.Winforms.Events/DefaultBoundingRectanglePropertyEvent.cs:
+	File added.
+	* Mono.UIAutomation.Winforms.Events/EventStrategyType.cs: File added.
+	* Mono.UIAutomation.Winforms.Events/DefaultHasKeyboardFocusPropertyEvent.cs:
+	File added.
+	* Mono.UIAutomation.Winforms.Events/DefaultInvokedEventStrategy.cs: File
+	added.
+
+2008-05-21  Mario Carrion <mcarrion@novell.com>  
 
 	* Mono.UIAutomation.Winforms/LabelProvider.cs: BoundingRectangleProperty
 	and LabeledByProperty are handled in SimpleControlProvider class.

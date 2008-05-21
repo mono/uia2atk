@@ -22,41 +22,43 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events
 {
 
-	public class TextChangedEventStrategy : EventStrategy
+	// TODO: VisibleChanged isn't the valid MS behaviour.
+	internal class DefaultIsOffscreenPropertyEvent : EventStrategy
 	{
 		
-		public TextChangedEventStrategy (IRawElementProviderSimple provider, 
-		                                 Control control) :
+		public DefaultIsOffscreenPropertyEvent (IRawElementProviderSimple provider, 
+		                                        Control control) :
 			base (provider, control)
 		{
 		}
 		
 		public override void Connect ()
 		{
-			Control.TextChanged += new EventHandler (OnTextChanged);
+			Control.VisibleChanged += new EventHandler (OnVisibleChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			Control.TextChanged -= new EventHandler (OnTextChanged);
+			Control.VisibleChanged -= new EventHandler (OnVisibleChanged);
 		}
 		
-		private void OnTextChanged (object sender, EventArgs e)
+		protected void OnVisibleChanged (object sender, EventArgs e)
 		{
+			// TODO: Check if IsOffscreenProperty has changed...
 			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationEventArgs eventArgs =
-					new AutomationEventArgs (TextPatternIdentifiers.TextChangedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (TextPatternIdentifiers.TextChangedEvent, 
-				                                                Provider, eventArgs);
+				AutomationPropertyChangedEventArgs args =
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsOffscreenProperty,
+					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
+					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id));
+				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
 			}
 		}
 	}

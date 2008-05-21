@@ -22,43 +22,15 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events
 {
 
-	public class IsEnabledPropertyEventStrategy : EventStrategy
+	public interface IEventStrategy
 	{
-		
-		public IsEnabledPropertyEventStrategy (IRawElementProviderSimple provider, 
-		                                         Control control) :
-			base (provider, control)
-		{
-		}
-		
-		public override void Connect ()
-		{
-			Control.EnabledChanged += new EventHandler (OnEnableChanged);
-		}
-
-		public override void Disconnect ()
-		{
-			Control.EnabledChanged -= new EventHandler (OnEnableChanged);
-		}
-		
-		private void OnEnableChanged (object sender, EventArgs e)
-		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsEnabledProperty,
-					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
-			}
-		}
+		void Connect ();
+		void Disconnect ();
 	}
 }

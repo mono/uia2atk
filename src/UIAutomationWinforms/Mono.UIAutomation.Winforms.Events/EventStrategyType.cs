@@ -25,7 +25,7 @@
 
 using System;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events
 {
 
 	public enum EventStrategyType
@@ -37,6 +37,7 @@ namespace Mono.UIAutomation.Winforms
 		BoundingRectangleProperty,
 		ToggleStateProperty,
 		TextChangedEvent,
-		InvokedEvent
+		InvokedEvent,
+		StructureChangedEvent
 	}
 }

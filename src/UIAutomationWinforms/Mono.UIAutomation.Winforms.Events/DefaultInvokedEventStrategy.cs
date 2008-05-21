@@ -20,66 +20,43 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//	Mario Carrion <mcarrion@novell.com>
 // 
 
 using System;
-using System.Windows.Forms;
-
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Winforms.Events;
+using System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events
 {
-	public class LabelProvider : SimpleControlProvider
+
+	internal class DefaultInvokedEvent : EventStrategy
 	{
-#region Private Fields
 		
-		private Label label;
-		
-#endregion
-		
-#region Constructors
-		
-		public LabelProvider (Label label) : base (label)
+		public DefaultInvokedEvent (IRawElementProviderSimple provider, 
+		                             Control control) :
+			base (provider, control)
 		{
-			this.label = label;
 		}
 		
-#endregion
-		
-#region Protected Methods
-		
-		protected override void InitializeEvents ()
+		public override void Connect ()
 		{
-			base.InitializeEvents ();
-			
-			SetEvent (EventStrategyType.TextChangedEvent, 
-			          new DefaultTextChangedEvent (this, control));
+			Control.Click += new EventHandler (OnClick);
 		}
 
-#endregion
-		
-#region IRawElementProviderSimple Members
-	
-		public override object GetPatternProvider (int patternId)
+		public override void Disconnect ()
 		{
-			return null;
+			Control.Click -= new EventHandler (OnClick);
 		}
 		
-		public override object GetPropertyValue (int propertyId)
+		private void OnClick (object sender, EventArgs e)
 		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Text.Id;
-			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
-				return false;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "text";
-			else
-				return base.GetPropertyValue (propertyId);
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationEventArgs args = new AutomationEventArgs (InvokePatternIdentifiers.InvokedEvent);
+				AutomationInteropProvider.RaiseAutomationEvent (InvokePatternIdentifiers.InvokedEvent, 
+				                                                Provider, args);
+			}
 		}
-
-#endregion
 	}
 }

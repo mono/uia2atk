@@ -27,37 +27,42 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events
 {
 	
-	public class BoundingRectanglePropertyEventStrategy : EventStrategy
+	internal class DefaultHasKeyboardFocusPropertyEvent : EventStrategy
 	{
-		
-		public BoundingRectanglePropertyEventStrategy (IRawElementProviderSimple provider, 
-		                                         Control control) :
+		public DefaultHasKeyboardFocusPropertyEvent (IRawElementProviderSimple provider, 
+		                                             Control control) :
 			base (provider, control)
 		{
 		}
 		
 		public override void Connect ()
 		{
-			Control.Resize += new EventHandler (OnResize);
+			Control.GotFocus += new EventHandler (OnFocusChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			Control.Resize -= new EventHandler (OnResize);
+			Control.GotFocus -= new EventHandler (OnFocusChanged);
 		}
 		
-		private void OnResize (object sender, EventArgs e)
+		protected void OnFocusChanged (object sender, EventArgs e)
 		{
 			if (AutomationInteropProvider.ClientsAreListening) {
 				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.BoundingRectangleProperty,
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.HasKeyboardFocusProperty,
 					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id));
+					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id));
 				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
+				
+				AutomationEventArgs eventArgs =
+					new AutomationEventArgs (AutomationElementIdentifiers.AutomationFocusChangedEvent);
+				AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.AutomationFocusChangedEvent, 
+				                                                Provider, eventArgs);
 			}
 		}
 	}

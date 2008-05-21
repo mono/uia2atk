@@ -23,35 +23,49 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events
 {
-	
-	public abstract class EventStrategy : IEventStrategy
+	// TODO: Include: 
+	// - ChildrenInvalidated
+	// - ChildrenBulkAdded, 
+	// - ChildrenBulkRemoved
+	// - ChildrenReordered
+	internal class DefaultStructureChangedEvent : EventStrategy
 	{
-		protected EventStrategy (IRawElementProviderSimple provider, Control control)
+		public DefaultStructureChangedEvent (IRawElementProviderSimple provider, 
+		                                     Control control) :
+			base (provider, control)
 		{
-			this.provider = provider;
-			this.control = control;
 		}
 
-		public abstract void Connect ();
-
-		public abstract void Disconnect ();
-
-		protected Control Control 
+		public override void Connect ()
 		{
-			get { return control; }
+			Control.VisibleChanged += new EventHandler (OnStructureChangedEvent);
+		}
+
+		public override void Disconnect ()
+		{
+			Control.VisibleChanged -= new EventHandler (OnStructureChangedEvent);
 		}
 		
-		protected IRawElementProviderSimple Provider
+		protected void OnStructureChangedEvent (object sender, EventArgs e)
 		{
-			get { return provider; }
-		}
+			if (AutomationInteropProvider.ClientsAreListening) {
+				int []fakeRuntimeId = new int[] { 0 }; // TODO: Ok?
+				StructureChangedEventArgs args;
 
-		private IRawElementProviderSimple provider;
-		private Control control;
+				if (Control.Visible)
+					args = new StructureChangedEventArgs (StructureChangeType.ChildAdded, 
+					                                      fakeRuntimeId);
+				else
+					args = new StructureChangedEventArgs (StructureChangeType.ChildRemoved, 
+					                                      fakeRuntimeId);
+				AutomationInteropProvider.RaiseStructureChangedEvent (Provider, args);
+			}
+		}
 	}
 }
