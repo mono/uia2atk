@@ -1,5 +1,9 @@
 2008-05-21  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Worked on TextImplementor API, still very vague.
+
+2008-05-21  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: Implement CaretOffset and use coding style guidelines
 	in all methods.
 

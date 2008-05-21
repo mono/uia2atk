@@ -89,9 +89,43 @@ namespace UiaAtkBridge
 			return Name.Substring (startOffset, endOffset);
 		}
 
-		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset)
+		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			throw new NotImplementedException ();
+			switch (boundaryType){
+			case Atk.TextBoundary.Char:
+				startOffset = offset;
+				endOffset = offset + 1;
+				return new String (new char[] { GetCharacterAtOffset (offset) });
+			case Atk.TextBoundary.LineEnd:
+				// same as LineStart, but with the LineEnd character in the beggining
+				// TODO: 
+				//  - globalize this behaviour in a function (reusability)
+				//  - do unit tests for this, that pass for gail, and test this (correctness)
+				// For reference, look:
+				// at line 573 of this file (function gail_text_util_get_text):
+				// http://svn.gnome.org/viewvc/gtk%2B/trunk/modules/other/gail/libgail-util/gailtextutil.c?view=markup
+				// or at line 260 of this file (function atk_text_get_text_after_offset):
+				// http://svn.gnome.org/viewvc/atk/trunk/atk/atktext.c?view=markup
+				string afterOffset1 = Name.Substring (offset);
+				startOffset = afterOffset1.IndexOf (Environment.NewLine);
+				string afterStart1 = afterOffset1.Substring (startOffset);
+				endOffset = afterStart1.IndexOf (Environment.NewLine);
+				return afterStart1.Substring (0, endOffset - Environment.NewLine.Length);
+			case Atk.TextBoundary.LineStart:
+				//TODO: optimize this (when we have unit tests):
+				string afterOffset2 = Name.Substring (offset);
+				startOffset = afterOffset2.IndexOf (Environment.NewLine) + Environment.NewLine.Length;
+				string afterStart2 = afterOffset2.Substring (startOffset);
+				endOffset = afterStart2.IndexOf (Environment.NewLine);
+				return afterStart2.Substring (0, endOffset - Environment.NewLine.Length);
+			case Atk.TextBoundary.SentenceEnd:
+			case Atk.TextBoundary.SentenceStart:
+				throw new NotImplementedException ();
+			default:
+				throw new NotSupportedException (
+					String.Format ("The value {0} is not supported for Atk.TextBoundary type.",
+						(long)boundaryType));
+			}
 		}
 
 		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int end_offset)
