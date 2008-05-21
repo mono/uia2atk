@@ -60,7 +60,9 @@ namespace UiaAtkBridge
 
 		public GLib.SList DefaultAttributes {
 			get {
-				throw new NotImplementedException();
+				//TODO:
+				GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
+				return attribs;
 			}
 		}
 
@@ -127,7 +129,7 @@ namespace UiaAtkBridge
 			start_offset = offset;
 				
 			//TODO:
-			GLib.SList attribs = new GLib.SList(typeof(Atk.Attribute));
+			GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
 			return attribs;
 		}
 
