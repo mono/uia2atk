@@ -32,7 +32,16 @@ namespace UiaAtkBridge
 {
 	public class Button : Adapter, Atk.ActionImplementor
 	{
+		private static string default_invoke_description = "Sends a request to activate a control and initiate its single, unambiguous action.";
+		private static string default_toggle_description = "Cycles through the toggle states of a control.";
+		private static string default_invoke_name = "click";
+		private static string default_toggle_name = "toggle";
+		
 		private IRawElementProviderSimple provider;
+		private IInvokeProvider			invokeProvider;
+		private IToggleProvider			toggleProvider;
+		private string					actionDescription;
+		private string					actionName;
 		
 		// UI Automation Properties supported
 		// AutomationElementIdentifiers.AcceleratorKeyProperty.Id
@@ -50,9 +59,18 @@ namespace UiaAtkBridge
 		public Button (IRawElementProviderSimple provider)
 		{
 			this.provider = provider;
-			Role = Atk.Role.PushButton;
 			
-			
+			if(provider is IInvokeProvider) {
+				invokeProvider = (IInvokeProvider)provider;
+				actionDescription = default_invoke_description;
+				actionName = default_invoke_name;
+				Role = Atk.Role.PushButton;
+			} else {
+				toggleProvider = (IToggleProvider)provider;
+				actionDescription = default_toggle_description;
+				actionName = default_toggle_name;
+				Role = Atk.Role.ToggleButton;
+			}
 			
 			string buttonText = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = buttonText;
@@ -62,49 +80,100 @@ namespace UiaAtkBridge
 				RefStateSet ().AddState (Atk.StateType.Selectable);
 			else
 				RefStateSet ().RemoveState (Atk.StateType.Selectable);
+
+			bool enabled = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			if (enabled)
+			{
+				RefStateSet ().AddState (Atk.StateType.Enabled);
+				RefStateSet ().AddState (Atk.StateType.Sensitive);
+				RefStateSet ().AddState (Atk.StateType.Armed);
+			}
+			else
+			{
+				RefStateSet ().RemoveState (Atk.StateType.Enabled);
+				RefStateSet ().RemoveState (Atk.StateType.Sensitive);
+				RefStateSet ().RemoveState (Atk.StateType.Armed);
+			}
 		}
 		
 		// Return the number of actions (Read-Only)
+		// Both IInvokeProvider and IToggleProvider have only one action
 		public int NActions
 		{
 			get {
-				return 0;
+				return 1;
 			}
 		}
 		
 		// Get a localized name for the specified action
-		public string GetLocalizedName (int i)
+		public string GetLocalizedName (int action)
 		{
-			return "";
+			if(action != 0)
+				return null;
+
+			// TODO: Localize the name?
+			return actionName;
 		}
 		
 		// Sets a description of the specified action
 		public bool SetDescription(int action, string description)
 		{
-			return false;
+			if(action != 0)
+				return false;
+			
+			actionDescription = description;
+			return true;
 		}
 		
 		// Get the key bindings for the specified action
 		public string GetKeybinding(int action)
 		{
+			if(action != 0)
+				return null;
+
 			return null;
 		}
 
 		// Get the name of the specified action		
 		public string GetName(int action)
 		{
-			return "";
+			if(action != 0)
+				return null;
+
+			return actionName;
 		}
 		
 		// Get the description of the specified action
 		public string GetDescription(int action)
 		{
-			return "";
+			if(action != 0)
+				return null;
+
+			return actionDescription;
 		}
 
 		// Perform the action specified
 		public bool DoAction(int action)
 		{
+			try {
+				if(invokeProvider != null) {
+					try {
+						invokeProvider.Invoke();
+						return true;
+					} catch (ElementNotEnabledException e) {
+						// TODO: handle this exception? maybe returning false is good enough
+					}
+				} else if(toggleProvider != null) {
+					try {
+						toggleProvider.Toggle();
+						return true;
+					} catch (ElementNotEnabledException e) {
+						// TODO: handle this exception? maybe returning false is good enough
+					}
+				}
+			} catch (Exception e) {
+				// TODO: handle a greater exception?
+			}
 			return false;
 		}
 
