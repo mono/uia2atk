@@ -1,0 +1,20 @@
+<Combine name="UiaAtkBridge" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="UiaAtkBridge" configuration="Debug" />
+      <Entry build="True" name="UiaAtkBridgeTest" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="UiaAtkBridge" configuration="Release" />
+      <Entry build="True" name="UiaAtkBridgeTest" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="UiaAtkBridge" single="True">
+    <Execute type="None" entry="UiaAtkBridge" />
+    <Execute type="None" entry="UiaAtkBridgeTest" />
+  </StartMode>
+  <Entries>
+    <Entry filename="UiaAtkBridge/UiaAtkBridge.mdp" />
+    <Entry filename="UiaAtkBridgeTest/UiaAtkBridgeTest.mdp" />
+  </Entries>
+</Combine>
