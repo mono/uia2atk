@@ -1,6 +1,7 @@
 2008-05-21  Andres G. Aragoneses <aaragoneses@novell.com> 
 
-	* TextLabel.cs: Coding style guidelines.
+	* TextLabel.cs: Implement CaretOffset and use coding style guidelines
+	in all methods.
 
 2008-05-21  Andres G. Aragoneses <aaragoneses@novell.com> 
 
@@ -8,7 +9,7 @@
 
 2008-05-21  Andres G. Aragoneses <aaragoneses@novell.com> 
 
-	* TextLabel.cs: TextAttribute, not Attribute
+	* TextLabel.cs: TextAttribute, not Attribute.
 
 2008-05-21  Andres G. Aragoneses <aaragoneses@novell.com> 
 
@@ -44,7 +45,7 @@
 
 2008-05-20  Calvin Gaisford <calvinrg@gmail.com> 
 
-	
+	* AutomationBridge.cs, Button.cs, Window.cs: Refactoring.
 
 2008-05-20  Andres G. Aragoneses <aaragoneses@novell.com> 
 
