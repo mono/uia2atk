@@ -30,14 +30,29 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class Button : Adapter
+	public class Button : Adapter, Atk.ActionImplementor
 	{
 		private IRawElementProviderSimple provider;
 		
+		// UI Automation Properties supported
+		// AutomationElementIdentifiers.AcceleratorKeyProperty.Id
+		// AutomationIdProperty() ?
+		// AutomationElementIdentifiers.BoundingRectangleProperty.Id
+		// AutomationElementIdentifiers.ClickablePointProperty.Id
+		// AutomationElementIdentifiers.ControlTypeProperty.Id
+		// AutomationElementIdentifiers.HelpTextProperty.Id
+		// AutomationElementIdentifiers.IsContentElementProperty.Id
+		// AutomationElementIdentifiers.IsControlElementProperty.Id
+		// AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id
+		// AutomationElementIdentifiers.LabeledByProperty.Id
+		// AutomationElementIdentifiers.LocalizedControlTypeProperty.Id
+		// AutomationElementIdentifiers.NameProperty.Id
 		public Button (IRawElementProviderSimple provider)
 		{
 			this.provider = provider;
 			Role = Atk.Role.PushButton;
+			
+			
 			
 			string buttonText = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = buttonText;
@@ -48,6 +63,51 @@ namespace UiaAtkBridge
 			else
 				RefStateSet ().RemoveState (Atk.StateType.Selectable);
 		}
+		
+		// Return the number of actions (Read-Only)
+		public int NActions
+		{
+			get {
+				return 0;
+			}
+		}
+		
+		// Get a localized name for the specified action
+		public string GetLocalizedName (int i)
+		{
+			return "";
+		}
+		
+		// Sets a description of the specified action
+		public bool SetDescription(int action, string description)
+		{
+			return false;
+		}
+		
+		// Get the key bindings for the specified action
+		public string GetKeybinding(int action)
+		{
+			return null;
+		}
+
+		// Get the name of the specified action		
+		public string GetName(int action)
+		{
+			return "";
+		}
+		
+		// Get the description of the specified action
+		public string GetDescription(int action)
+		{
+			return "";
+		}
+
+		// Perform the action specified
+		public bool DoAction(int action)
+		{
+			return false;
+		}
+
 		
 		public override IRawElementProviderSimple Provider {
 			get { return provider; }
