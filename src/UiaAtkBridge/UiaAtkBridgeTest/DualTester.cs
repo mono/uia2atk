@@ -51,7 +51,6 @@ namespace UiaAtkBridgeTest
 		{
 			foreach (IAtkTester tester in typesToTest)
 			{
-				//this should be accepted but the compiler:
 				Atk.TextImplementor atkText = (Atk.TextImplementor)
 					tester.GetAtkObjectThatImplementsInterface (typeof(Atk.TextImplementor));
 				Assert.AreEqual (atkText.CaretOffset, 0);
