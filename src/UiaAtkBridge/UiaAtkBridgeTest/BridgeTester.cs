@@ -43,7 +43,7 @@ namespace UiaAtkBridgeTest
 				Label lab = new Label ();
 				lab.Text = "text_test";
 				LabelProvider prov = new LabelProvider(lab);
-				return UiaAtkBridge.TextLabel (prov);
+				return new UiaAtkBridge.TextLabel (prov);
 			}
 			
 			return null;

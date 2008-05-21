@@ -36,7 +36,7 @@ namespace UiaAtkBridge
 		
 		private int cursorPosition = 0;
 		
-		public TextLabel ()
+		public TextLabel (IRawElementProviderSimple provider)
 		{
 			Role = Atk.Role.Label;
 			
