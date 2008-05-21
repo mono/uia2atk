@@ -41,7 +41,7 @@ namespace UiaAtkBridgeTest
 		{
 			if (atkInterface == typeof(Atk.TextImplementor)) {
 				Label lab = new Label ();
-				lab.Text = "text_test";
+				lab.Text = DualTester.Text;
 				LabelProvider prov = new LabelProvider(lab);
 				return new UiaAtkBridge.TextLabel (prov);
 			}
