@@ -1,5 +1,9 @@
 2008-05-21  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Coding style guidelines.
+
+2008-05-21  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: No need to override the handle.
 
 2008-05-21  Andres G. Aragoneses <aaragoneses@novell.com> 

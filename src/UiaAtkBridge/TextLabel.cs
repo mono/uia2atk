@@ -34,6 +34,8 @@ namespace UiaAtkBridge
 	{
 		private IRawElementProviderSimple provider;
 		
+		private int cursorPosition = 0;
+		
 		public TextLabel ()
 		{
 			Role = Atk.Role.Label;
@@ -48,7 +50,7 @@ namespace UiaAtkBridge
 
 		public int CaretOffset {
 			get {
-				throw new NotImplementedException();
+				return cursorPosition;
 			}
 		}
 
@@ -82,17 +84,17 @@ namespace UiaAtkBridge
 			// TODO
 		}
 
-		public string GetText (int start_offset, int end_offset)
+		public string GetText (int startOffset, int endOffset)
 		{
-			return Name.Substring (start_offset, end_offset);
+			return Name.Substring (startOffset, endOffset);
 		}
 
 		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
-		public string GetTextAtOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset)
+		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int end_offset)
 		{
 			throw new NotImplementedException();
 		}
@@ -104,12 +106,12 @@ namespace UiaAtkBridge
 			return Name.ToCharArray () [offset];
 		}
 
-		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset)
+		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
 			throw new NotImplementedException();
 		}
 
-		public GLib.SList GetRunAttributes (int offset, out int start_offset, out int end_offset)
+		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
 			// don't ask me why, this is what gail does 
 			// (instead of throwing or returning null):
@@ -119,8 +121,8 @@ namespace UiaAtkBridge
 				offset = 0;
 			
 			//just test values for now:
-			end_offset = Name.Length;
-			start_offset = offset;
+			endOffset = Name.Length;
+			startOffset = offset;
 				
 			//TODO:
 			GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
@@ -137,22 +139,22 @@ namespace UiaAtkBridge
 			throw new NotImplementedException();
 		}
 
-		public string GetSelection (int selection_num, out int start_offset, out int end_offset)
+		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
 			throw new NotImplementedException();
 		}
 
-		public bool AddSelection (int start_offset, int end_offset)
+		public bool AddSelection (int startOffset, int endOffset)
 		{
 			throw new NotImplementedException();
 		}
 
-		public bool RemoveSelection (int selection_num)
+		public bool RemoveSelection (int selectionNum)
 		{
 			throw new NotImplementedException();
 		}
 
-		public bool SetSelection (int selection_num, int start_offset, int end_offset)
+		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
 		{
 			throw new NotImplementedException();
 		}
@@ -162,12 +164,12 @@ namespace UiaAtkBridge
 			throw new NotImplementedException();
 		}
 
-		public void GetRangeExtents (int start_offset, int end_offset, Atk.CoordType coord_type, Atk.TextRectangle rect)
+		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, Atk.TextRectangle rect)
 		{
 			throw new NotImplementedException();
 		}
 
-		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coord_type, Atk.TextClipType x_clip_type, Atk.TextClipType y_clip_type)
+		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
 		{
 			throw new NotImplementedException();
 		}
