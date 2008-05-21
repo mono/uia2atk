@@ -88,8 +88,7 @@ namespace UiaAtkBridge
 
 		public string GetText (int start_offset, int end_offset)
 		{
-			//TODO: take in account offset
-			return Name;
+			return Name.Substring (start_offset, end_offset);
 		}
 
 		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset)
@@ -104,7 +103,9 @@ namespace UiaAtkBridge
 
 		public char GetCharacterAtOffset (int offset)
 		{
-			throw new NotImplementedException();
+			if (offset >= Name.Length)
+				return '\0';
+			return Name.ToCharArray () [offset];
 		}
 
 		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundary_type, out int start_offset, out int end_offset)

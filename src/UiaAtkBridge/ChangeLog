@@ -1,3 +1,7 @@
+2008-05-21  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* TextLabel.cs: Implement two easy (edge cases to mimic gail).
+
 2008-05-20  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* TextLabel.cs: Wit this implemented, accerciser should work with
