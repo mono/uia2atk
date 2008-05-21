@@ -1,3 +1,16 @@
+2008-05-21  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/LabelProvider.cs: BoundingRectangleProperty
+	and LabeledByProperty are handled in SimpleControlProvider class.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Fixed property
+	IsOffscreenProperty. Property BoundingRectangleProperty matches MS 
+	behaviour. Added LabeledByProperty returns null by default. Added
+	ClickablePointProperty, needs testing.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Removed pattern 
+	interfaces, for now. Removed properties (already defined in super 
+	class): BoundingRectangleProperty. Fixed property
+	LocalizedControlTypeProperty. Added LabeledByProperty.
+
 2008-05-19  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/Helper.cs: File added. Includes 

@@ -71,12 +71,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Text.Id;
-			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-				return Helper.RectangleToRect (label.Bounds);
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return false;
-			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) 	 
-				return null;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "text";
 			else

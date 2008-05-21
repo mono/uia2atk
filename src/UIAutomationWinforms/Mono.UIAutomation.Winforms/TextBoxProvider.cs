@@ -34,17 +34,21 @@ namespace Mono.UIAutomation.Winforms
 	// TODO: Supposly this control should support Edit and Document control 
 	// types (according to http://www.mono-project.com/Accessibility:_Control_Status)
 	// however right now only Edit control type is being implemented.
-	public class TextBoxProvider : SimpleControlProvider, ITextProvider, IValueProvider, IRangeValueProvider
+	public class TextBoxProvider : SimpleControlProvider
 	{
 #region Private section
+		
 		private TextBox textbox;
+	
 #endregion
 	
 #region Constructors
+
 		public TextBoxProvider (TextBox textbox) : base (textbox)
 		{
 			this.textbox = textbox;
 		}
+
 #endregion
 		
 #region Protected Methods
@@ -55,6 +59,13 @@ namespace Mono.UIAutomation.Winforms
 			
 			SetEvent (EventStrategyType.TextChangedEvent, 
 			          new TextChangedEventStrategy (this, control));
+			
+			// TODO: InvalidatedEvent
+			// TODO: TextSelectionChangedEvent: using textbox.SelectionLength != 0?	
+			// TODO: NameProperty property-changed event.
+			// TODO: ValuePatternIdentifiers.ValueProperty property-changed event.
+			// TODO: RangeValuePatternIdentifiers.ValueProperty property-changed event.
+			// TODO: StructureChangedEvent
 		}
 
 #endregion
@@ -71,123 +82,28 @@ namespace Mono.UIAutomation.Winforms
 			// Edit Control Type properties
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Edit.Id;
-			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-				return Helper.RectangleToRect (textbox.Bounds);
-			// TODO: ClickablePointProperty
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return control.Name;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "text";
-			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
+				return "edit";
+			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) {
+				// TODO: We are using TabIndex to evaluate whether the previous control
+				// is Label (that way we know if this label is associated to the TextBox.
+				// Right?)
+				if (textbox.Parent != null) {
+					Label associatedLabel = textbox.Parent.GetNextControl (textbox, true) as Label;
+					if (associatedLabel != null)
+						return associatedLabel;
+				}
+				return null;
+			} else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
 				return (textbox.UseSystemPasswordChar || (int) textbox.PasswordChar != 0);
 			else
 				return base.GetPropertyValue (propertyId);
 		}
 
 #endregion
-		
-#region ITextProvider members
-		public ITextRangeProvider DocumentRange {
-			get {
-				throw new NotImplementedException();
-			}
-		}
 
-		public SupportedTextSelection SupportedTextSelection {
-			get {
-				throw new NotImplementedException();
-			}
-		}
-
-		public ITextRangeProvider[] GetSelection ()
-		{
-			throw new NotImplementedException();
-		}
-
-		public ITextRangeProvider[] GetVisibleRanges ()
-		{
-			throw new NotImplementedException();
-		}
-
-		public ITextRangeProvider RangeFromChild (IRawElementProviderSimple childElement)
-		{
-			throw new NotImplementedException();
-		}
-
-		public ITextRangeProvider RangeFromPoint (System.Windows.Point screenLocation)
-		{
-			throw new NotImplementedException();
-		}
-#endregion
-		
-#region IValueProvider members
-		public bool IsReadOnly { 
-			get { return textbox.ReadOnly; }
-		}
-
-		public string Value {
-			get { 
-				if ((bool) GetPropertyValue (AutomationElementIdentifiers.IsPasswordProperty.Id))
-					throw new InvalidOperationException ();
-
-				return textbox.Text; 
-			}
-		}
-
-		public void SetValue (string value) 
-		{
-			//TODO: Exceptions?
-			textbox.Text = value;
-		}
-#endregion
-		
-#region IRangeValueProvider members
-		public double LargeChange {
-			get { return 0; }
-		}
-		
-		// TODO: ???
-		public double Maximum  {
-			get { return double.MaxValue; }
-		}
-		
-		// TODO: ???
-		public double Minimum  {
-			get { return double.MinValue; }
-		}
-		
-		// TODO: ???
-		public double SmallChange  {
-			get { return 0; }
-		}
-		
-		double IRangeValueProvider.Value  {
-			get { 
-				double value;
-				// TODO: What should I do in case of failure?
-				double.TryParse (Value, out value);
-				return value; 
-			}
-		}
-
-		public void SetValue (double value) 
-		{
-			if (value < Minimum || value > Maximum)
-				throw new ArgumentOutOfRangeException ();
-
-			textbox.Text = value.ToString ();
-		}
-#endregion
-		
-#region Event handlers
-
-		// TODO: InvalidatedEvent
-		// TODO: TextSelectionChangedEvent: using textbox.SelectionLength != 0?	
-		// TODO: NameProperty property-changed event.
-		// TODO: ValuePatternIdentifiers.ValueProperty property-changed event.
-		// TODO: RangeValuePatternIdentifiers.ValueProperty property-changed event.
-		// TODO: StructureChangedEvent
-#endregion
 	}
 
 }

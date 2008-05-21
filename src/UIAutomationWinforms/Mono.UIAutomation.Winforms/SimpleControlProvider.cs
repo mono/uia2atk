@@ -27,7 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
@@ -107,14 +107,26 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return control.CanFocus;
 			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
-				return control.Visible;
+				return !control.Visible;
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return control.Focused;
 			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return true;
-			else
+			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+				return Helper.RectangleToRect (control.Parent.RectangleToScreen (control.Bounds));
+			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) 	 
+				return null;
+			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id) {
+				if (control.Visible == false)
+					return null;
+				else {
+					// TODO: Test. MS behavior is different.
+					Rect rectangle = (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					return new Point (rectangle.X, rectangle.Y);
+				}
+			} else
 				return null;
 		}
 
