@@ -32,9 +32,10 @@ namespace UiaAtkBridgeTest
 	{
 		public Atk.Object GetAtkObjectThatImplementsInterface (Type atkInterface)
 		{
+			/*
 			if (atkInterface == typeof(Atk.TextImplementor))
 				return (Atk.Object)Atk.TextAdapter.GetObject (new Gtk.Label(DualTester.Text).Handle, false);
-			
+			*/
 			return null;
 		}
 	}
