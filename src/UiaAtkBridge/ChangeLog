@@ -1,5 +1,10 @@
 2008-05-21  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Definitely I need unit tests that check against both
+	  this and Gtk#.
+
+2008-05-21  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: Worked on TextImplementor API, still very vague.
 
 2008-05-21  Andres G. Aragoneses <aaragoneses@novell.com> 

@@ -110,14 +110,16 @@ namespace UiaAtkBridge
 				startOffset = afterOffset1.IndexOf (Environment.NewLine);
 				string afterStart1 = afterOffset1.Substring (startOffset);
 				endOffset = afterStart1.IndexOf (Environment.NewLine);
-				return afterStart1.Substring (0, endOffset - Environment.NewLine.Length);
+				return afterStart1.Substring (0, endOffset);
 			case Atk.TextBoundary.LineStart:
 				//TODO: optimize this (when we have unit tests):
 				string afterOffset2 = Name.Substring (offset);
 				startOffset = afterOffset2.IndexOf (Environment.NewLine) + Environment.NewLine.Length;
 				string afterStart2 = afterOffset2.Substring (startOffset);
 				endOffset = afterStart2.IndexOf (Environment.NewLine);
-				return afterStart2.Substring (0, endOffset - Environment.NewLine.Length);
+				return afterStart2.Substring (0, endOffset);
+			case Atk.TextBoundary.WordEnd:
+			case Atk.TextBoundary.WordStart:
 			case Atk.TextBoundary.SentenceEnd:
 			case Atk.TextBoundary.SentenceStart:
 				throw new NotImplementedException ();
