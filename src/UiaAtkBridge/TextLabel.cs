@@ -46,12 +46,6 @@ namespace UiaAtkBridge
 			get { return provider; }
 		}
 
-		public IntPtr Handle {
-			get {
-				throw new NotImplementedException();
-			}
-		}
-
 		public int CaretOffset {
 			get {
 				throw new NotImplementedException();
