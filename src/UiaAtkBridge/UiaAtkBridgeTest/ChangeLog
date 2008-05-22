@@ -1,5 +1,9 @@
 2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* DualTester.cs: A bit more with selections...
+
+2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* DualTester.cs: GetTextBeforeOffset. I think I'm done getting texts...
 
 2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 

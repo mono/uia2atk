@@ -68,6 +68,8 @@ namespace UiaAtkBridgeTest
 				// don't do this until bug#393565 is fixed:
 				//Assert.AreEqual (typeof(Atk.TextAttribute), atkText.DefaultAttributes[0].GetType());
 
+				Assert.AreEqual (0, atkText.NSelections);
+				
 				// you cannot select a label AFAIK so, all zeroes returned!
 				int startOffset, endOffset;
 				atkText.GetSelection (0, out startOffset, out endOffset);
@@ -92,6 +94,15 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (0, startOffset);
 				Assert.AreEqual (0, endOffset);
 				
+				//did NSelections changed?
+				Assert.AreEqual (false, atkText.SetSelection (1, 2, 3));
+				Assert.AreEqual (0, atkText.NSelections);
+				Assert.AreEqual (false, atkText.RemoveSelection (0));
+				Assert.AreEqual (0, atkText.NSelections);
+				Assert.AreEqual (false, atkText.RemoveSelection (1));
+				Assert.AreEqual (0, atkText.NSelections);
+				Assert.AreEqual (false, atkText.RemoveSelection (-1));
+				Assert.AreEqual (0, atkText.NSelections);
 				
 				//GetTextAfterOffset: trickyness in itself
 				string expected = " sentence";
@@ -294,7 +305,6 @@ namespace UiaAtkBridgeTest
 					atkText.GetTextBeforeOffset (-1, Atk.TextBoundary.Char, out startOffset, out endOffset));
 				Assert.AreEqual (Text.Length - 1, startOffset, "GetTextBeforeOffset,Char");
 				Assert.AreEqual (Text.Length, endOffset, "GetTextBeforeOffset,Char");
-
 			}
 		}
 	}
