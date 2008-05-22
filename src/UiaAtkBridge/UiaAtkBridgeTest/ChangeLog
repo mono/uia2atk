@@ -1,3 +1,8 @@
+2008-05-22  Calvin Gaisford <calvinrg@gmail.com> 
+
+	* UiaAtkBridgeTest.mdp: changed gtk-sharp reference to be relative and added
+	  gdk-sharp to satisfy build
+
 2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* DualTester.cs: First tests succeeding...
