@@ -57,7 +57,17 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (0, atkText.CaretOffset, "CaretOffset");
 				Assert.AreEqual (Text.Length, atkText.CharacterCount, "CharacterCount");
 				Assert.AreEqual (Text[0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset");
-				Assert.AreEqual (Text, atkText.GetText (0, Text.Length - 1), "GetText");
+				Assert.AreEqual (Text, atkText.GetText (0, Text.Length), "GetText");
+				
+				//any value
+				Assert.AreEqual (false, atkText.SetCaretOffset (-1));
+				Assert.AreEqual (false, atkText.SetCaretOffset (0));
+				Assert.AreEqual (false, atkText.SetCaretOffset (1));
+				Assert.AreEqual (false, atkText.SetCaretOffset (15));
+				
+				// don't do this until bug#393565 is fixed:
+				//Assert.AreEqual (typeof(Atk.TextAttribute), atkText.DefaultAttributes[0].GetType());
+				
 			}
 		}
 	}

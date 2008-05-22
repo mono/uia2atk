@@ -1,5 +1,10 @@
 2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* DualTester.cs: First tests succeeding...
+	* GailTester.cs: Fix creation of Label, lame!
+
+2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* DualTester.cs, BridgeTester.cs, GailTester.cs: Revamp to fix test
 	  system. Now going to figure out why the Gtk.Label returns -1 for
 	  CharacterCount.
