@@ -39,11 +39,11 @@ namespace UiaAtkBridgeTest
 		
 		public object GetAtkObjectThatImplementsInterface <I> ()
 		{
-			if (typeof(I) == typeof(Atk.TextImplementor)) {
+			if (typeof(I) == typeof(Atk.Text)) {
 				Label lab = new Label ();
 				lab.Text = DualTester.Text;
 				LabelProvider prov = new LabelProvider(lab);
-				return new UiaAtkBridge.TextLabel (prov);
+				return new Atk.TextAdapter(new UiaAtkBridge.TextLabel (prov));
 			}
 			return null;
 		}

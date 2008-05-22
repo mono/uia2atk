@@ -44,7 +44,7 @@ namespace UiaAtkBridgeTest
 								new GailTester () };
 		
 		public static string Text {
-			get { return "text_test"; }
+			get { return "This is a test sentence.\r\nSecond line. Other sentence.\nThird line?"; }
 		}
 		
 		[Test]
@@ -56,7 +56,7 @@ namespace UiaAtkBridgeTest
 					tester.GetAtkObjectThatImplementsInterface <Atk.Text> ();
 				Assert.AreEqual (0, atkText.CaretOffset, "CaretOffset");
 				Assert.AreEqual (Text.Length, atkText.CharacterCount, "CharacterCount");
-				Assert.AreEqual (Text[0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset");
+				Assert.AreEqual (Text [0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset");
 				Assert.AreEqual (Text, atkText.GetText (0, Text.Length), "GetText");
 				
 				//any value
@@ -67,7 +67,56 @@ namespace UiaAtkBridgeTest
 				
 				// don't do this until bug#393565 is fixed:
 				//Assert.AreEqual (typeof(Atk.TextAttribute), atkText.DefaultAttributes[0].GetType());
+
+				// you cannot select a label AFAIK so, all zeroes returned!
+				int startOffset, endOffset;
+				atkText.GetSelection (0, out startOffset, out endOffset);
+				Assert.AreEqual (0, startOffset);
+				Assert.AreEqual (0, endOffset);
+				atkText.GetSelection (1, out startOffset, out endOffset);
+				Assert.AreEqual (0, startOffset);
+				Assert.AreEqual (0, endOffset);
+				atkText.GetSelection (-1, out startOffset, out endOffset);
+				Assert.AreEqual (0, startOffset);
+				Assert.AreEqual (0, endOffset);
 				
+				// you cannot select a label AFAIK so, false always returned!
+				Assert.AreEqual (false, atkText.SetSelection (0, 1, 2));
+				// test GetSelection *after* SetSelection
+				atkText.GetSelection (0, out startOffset, out endOffset);
+				Assert.AreEqual (0, startOffset);
+				Assert.AreEqual (0, endOffset);
+				//test crazy numbers for SetSelection
+				Assert.AreEqual (false, atkText.SetSelection (-3, 10, -2));
+				atkText.GetSelection (0, out startOffset, out endOffset);
+				Assert.AreEqual (0, startOffset);
+				Assert.AreEqual (0, endOffset);
+				
+				//GetTextAfterOffset: trickyness in itself
+				Assert.AreEqual (" sentence", 
+					atkText.GetTextAfterOffset (12, Atk.TextBoundary.WordEnd, out startOffset, out endOffset));
+				Assert.AreEqual ("sentence.\r\n", 
+					atkText.GetTextAfterOffset (12, Atk.TextBoundary.WordStart, out startOffset, out endOffset));
+				Assert.AreEqual ("\r\nSecond line. Other sentence.",
+					atkText.GetTextAfterOffset (12, Atk.TextBoundary.LineEnd, out startOffset, out endOffset));
+				Assert.AreEqual ("Second line. Other sentence.\n",
+					atkText.GetTextAfterOffset (12, Atk.TextBoundary.LineStart, out startOffset, out endOffset));
+				Assert.AreEqual ("\r\nSecond line.",
+					atkText.GetTextAfterOffset (18, Atk.TextBoundary.SentenceEnd, out startOffset, out endOffset));
+				Assert.AreEqual ("Second line. ",
+					atkText.GetTextAfterOffset (18, Atk.TextBoundary.SentenceStart, out startOffset, out endOffset));
+				Assert.AreEqual ("e",
+					atkText.GetTextAfterOffset (18, Atk.TextBoundary.Char, out startOffset, out endOffset));
+				Assert.AreEqual ("\r",
+					atkText.GetTextAfterOffset (23, Atk.TextBoundary.Char, out startOffset, out endOffset));
+				Assert.AreEqual ("?",
+					atkText.GetTextAfterOffset (Text.Length - 2, Atk.TextBoundary.Char, out startOffset, out endOffset));
+				Assert.AreEqual (String.Empty,
+					atkText.GetTextAfterOffset (Text.Length - 1, Atk.TextBoundary.Char, out startOffset, out endOffset));
+				Assert.AreEqual (String.Empty,
+					atkText.GetTextAfterOffset (Text.Length, Atk.TextBoundary.Char, out startOffset, out endOffset));
+
+
 			}
 		}
 	}
