@@ -30,12 +30,12 @@ namespace UiaAtkBridgeTest
 	
 	public class GailTester : IAtkTester
 	{
-		public Atk.Object GetAtkObjectThatImplementsInterface (Type atkInterface)
+		public object GetAtkObjectThatImplementsInterface <I> ()
 		{
-			/*
-			if (atkInterface == typeof(Atk.TextImplementor))
-				return (Atk.Object)Atk.TextAdapter.GetObject (new Gtk.Label(DualTester.Text).Handle, false);
-			*/
+			Gtk.Application.Init ();
+			if (typeof(I) == typeof(Atk.Text))
+				return Atk.TextAdapter.GetObject (new Gtk.Label(DualTester.Text).Handle, false);
+			
 			return null;
 		}
 	}

@@ -33,30 +33,31 @@ namespace UiaAtkBridgeTest
 	public interface IAtkTester
 	{
 		// how to do this interace method? invalid example:
-		Atk.Object GetAtkObjectThatImplementsInterface (Type atkInterface);
+		object GetAtkObjectThatImplementsInterface <I> ();
 	}
 	
 	[TestFixture]
 	public class DualTester {
 		
 		IAtkTester[] typesToTest =
-			new IAtkTester[] { new BridgeTester (), new GailTester () };
+			new IAtkTester[] { //new BridgeTester (), 
+								new GailTester () };
 		
 		public static string Text {
 			get { return "text_test"; }
 		}
 		
 		[Test]
-		void AtkTextImplementor ()
+		public void AtkTextImplementor ()
 		{
 			foreach (IAtkTester tester in typesToTest)
 			{
-				Atk.TextImplementor atkText = (Atk.TextImplementor)
-					tester.GetAtkObjectThatImplementsInterface (typeof(Atk.TextImplementor));
-				Assert.AreEqual (atkText.CaretOffset, 0);
-				Assert.AreEqual (atkText.CharacterCount, Text.Length);
-				Assert.AreEqual (atkText.GetCharacterAtOffset (0), Text[0]);
-				Assert.AreEqual (atkText.GetText (0, Text.Length - 1), Text);
+				Atk.Text atkText = (Atk.Text)
+					tester.GetAtkObjectThatImplementsInterface <Atk.Text> ();
+				Assert.AreEqual (0, atkText.CaretOffset, "CaretOffset");
+				Assert.AreEqual (Text.Length, atkText.CharacterCount, "CharacterCount");
+				Assert.AreEqual (Text[0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset");
+				Assert.AreEqual (Text, atkText.GetText (0, Text.Length - 1), "GetText");
 			}
 		}
 	}

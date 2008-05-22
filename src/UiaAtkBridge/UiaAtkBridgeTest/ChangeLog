@@ -1,3 +1,9 @@
+2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* DualTester.cs, BridgeTester.cs, GailTester.cs: Revamp to fix test
+	  system. Now going to figure out why the Gtk.Label returns -1 for
+	  CharacterCount.
+
 2008-05-21  Calvin Gaisford <calvinrg@gmail.com> 
 
 	* BridgeTester.cs, GailTester.cs: commented out code that was preventing a
