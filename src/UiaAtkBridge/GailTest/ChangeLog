@@ -3,5 +3,5 @@
 	* AssemblyInfo.cs, GailTester.cs, ChangeLog, GailTest.mdp: Fix the
 	  testing infrastructure separating Gail testing into a new assembly
 	  (and inheriting from an abstract class in UiaAtkBridgeTest) in
-	  order to preven the same problem/effect in bug#375987.
+	  order to prevent the same problem/effect in bug#375987.
 
