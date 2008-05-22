@@ -1,5 +1,9 @@
 2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* DualTester.cs: Some magic to test offsets.
+
+2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* DualTester.cs: More tests (they pass in gail).
 	* BridgeTester.cs: Fix Atk.Text return value.
 
