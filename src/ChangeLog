@@ -1,3 +1,20 @@
+2008-05-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationWinforms/UIAutomationWinformsTests/UIAutomationWinformsTests.mdp:
+	  Fix WindowBase reference to be relative instead of GAC.  Added new
+	  files.
+	* UIAutomationWinforms/UIAutomationWinformsTests/CheckBoxProviderTest.cs,
+	  UIAutomationWinforms/UIAutomationWinformsTests/LabelProviderTest.cs:
+	  New unimplemented test fixtures.
+	* UIAutomationWinforms/UIAutomationWinformsTests/WindowProviderTest.cs:
+	  Extract MockBridge and BaseProviderTest into their own files.
+	* UIAutomationWinforms/UIAutomationWinformsTests/BaseProviderTest.cs:
+	  Abstract base class for provider tests, providing SetUp and
+	  TearDown methods that take care of MockBridge injection.
+	* UIAutomationWinforms/UIAutomationWinformsTests/MockBridge.cs: A mock
+	  implementation of IAutomationBridge.  Test classes inject this into
+	  the AutomationInteropProvider to test events.
+
 2008-05-20  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* patches/winforms-uia.patch: Updating patch to apply cleanly in mcs

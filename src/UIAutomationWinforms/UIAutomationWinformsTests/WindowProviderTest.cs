@@ -29,7 +29,6 @@ using System.Threading;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-using System.Reflection;
 
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Bridge;
@@ -39,41 +38,8 @@ using NUnit.Framework;
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
 	[TestFixture]
-	public class WindowProviderTest
+	public class WindowProviderTest : BaseProviderTest
 	{
-#region Private Fields
-		
-		private MockBridge bridge;
-		
-#endregion
-		
-#region Setup/Teardown
-		
-		[SetUp]
-		public void SetUp ()
-		{
-			// Inject a mock automation bridge into the
-			// AutomationInteropProvider, so that we don't try
-			// to load the UiaAtkBridge.
-			bridge = new MockBridge ();
-			Type interopProviderType = typeof (AutomationInteropProvider);
-			FieldInfo bridgeField =
-				interopProviderType.GetField ("bridge", BindingFlags.NonPublic | BindingFlags.Static);
-			bridgeField.SetValue (null, bridge);
-			
-			bridge.ClientsAreListening = true;
-		}
-		
-		[TearDown]
-		public void TearDown ()
-		{
-			Type interopProviderType = typeof (AutomationInteropProvider);
-			FieldInfo bridgeField =
-				interopProviderType.GetField ("bridge", BindingFlags.NonPublic | BindingFlags.Static);
-			bridgeField.SetValue (null, null);
-		}
-		
-#endregion
 		
 #region IWindowProvider Tests
 		
@@ -339,73 +305,5 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 #endregion
 		
-	}
-
-	public class MockBridge : IAutomationBridge
-	{
-#region Tuple Classes
-		public class AutomationEventTuple
-		{
-			public AutomationEvent eventId;
-			public object provider;
-			public AutomationEventArgs e;
-		}
-		
-		public class AutomationPropertyChangedEventTuple
-		{
-			public object element;
-			public AutomationPropertyChangedEventArgs e;
-		}
-		
-		public class StructureChangedEventTuple
-		{
-			public object provider;
-			public StructureChangedEventArgs e;
-		}
-#endregion
-		
-#region Public Members
-		public List<AutomationEventTuple> AutomationEvents =
-			new List<AutomationEventTuple> ();
-		public List<AutomationPropertyChangedEventTuple> AutomationPropertyChangedEvents =
-			new List<AutomationPropertyChangedEventTuple> ();
-		public List<StructureChangedEventTuple> StructureChangedEvents =
-			new List<StructureChangedEventTuple> ();
-		
-		public void ResetEventLists ()
-		{
-			AutomationEvents.Clear ();
-			AutomationPropertyChangedEvents.Clear ();
-			StructureChangedEvents.Clear ();
-		}
-#endregion
-	
-#region IAutomationBridge Members
-		public bool ClientsAreListening { get; set; }
-		
-		public object HostProviderFromHandle (IntPtr hwnd)
-		{
-			throw new NotImplementedException ();
-		}
-
-		
-		public void RaiseAutomationEvent (AutomationEvent eventId, object provider, AutomationEventArgs e)
-		{			
-			AutomationEvents.Add (new AutomationEventTuple {
-				eventId = eventId, provider = provider, e = e});
-		}
-
-		public void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e)
-		{
-			AutomationPropertyChangedEvents.Add (new AutomationPropertyChangedEventTuple {
-				element = element, e = e});
-		}
-
-		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
-		{
-			StructureChangedEvents.Add (new StructureChangedEventTuple {
-				provider = provider, e = e});
-		}
-#endregion
 	}
 }
