@@ -70,7 +70,7 @@ namespace UiaAtkBridge
 
 		public int NSelections {
 			get {
-				throw new NotImplementedException();
+				return 0;
 			}
 		}
 		
@@ -177,27 +177,29 @@ namespace UiaAtkBridge
 
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
-			throw new NotImplementedException();
+			startOffset = 0;
+			endOffset = 0;
+			return String.Empty;
 		}
 
 		public bool AddSelection (int startOffset, int endOffset)
 		{
-			throw new NotImplementedException();
+			return false;
 		}
 
 		public bool RemoveSelection (int selectionNum)
 		{
-			throw new NotImplementedException();
+			return false;
 		}
 
 		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
 		{
-			throw new NotImplementedException();
+			return false;
 		}
 
 		public bool SetCaretOffset (int offset)
 		{
-			throw new NotImplementedException();
+			return false;
 		}
 
 		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, Atk.TextRectangle rect)

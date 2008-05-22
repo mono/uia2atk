@@ -1,3 +1,7 @@
+2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* TextLabel.cs: Implement some API thanks to the tests.
+
 2008-05-22  Calvin Gaisford <calvinrg@gmail.com> 
 
 	* Button.cs: removed invalid debug states
