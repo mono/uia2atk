@@ -1,3 +1,7 @@
+2008-05-22  Calvin Gaisford <calvinrg@gmail.com> 
+
+	* Button.cs: removed invalid debug states
+
 2008-05-21  Calvin Gaisford <calvinrg@gmail.com> 
 
 	* Button.cs: Filled out more functionality including initial Toggle support

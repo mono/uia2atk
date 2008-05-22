@@ -83,17 +83,9 @@ namespace UiaAtkBridge
 
 			bool enabled = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
 			if (enabled)
-			{
-				RefStateSet ().AddState (Atk.StateType.Enabled);
 				RefStateSet ().AddState (Atk.StateType.Sensitive);
-				RefStateSet ().AddState (Atk.StateType.Armed);
-			}
 			else
-			{
-				RefStateSet ().RemoveState (Atk.StateType.Enabled);
 				RefStateSet ().RemoveState (Atk.StateType.Sensitive);
-				RefStateSet ().RemoveState (Atk.StateType.Armed);
-			}
 		}
 		
 		// Return the number of actions (Read-Only)

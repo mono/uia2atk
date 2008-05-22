@@ -1,3 +1,7 @@
+2008-05-22  Calvin Gaisford <calvinrg@gmail.com> 
+
+	* UiaAtkBridgeTest.mdp: added pango to complete build
+
 2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* DualTester.cs: Some magic to test offsets.
