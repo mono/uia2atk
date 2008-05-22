@@ -50,13 +50,18 @@ namespace Mono.UIAutomation.Winforms.Events
 			Control.Click -= new EventHandler (OnClick);
 		}
 		
-		private void OnClick (object sender, EventArgs e)
+		protected void InvokeEvent ()
 		{
 			if (AutomationInteropProvider.ClientsAreListening) {
 				AutomationEventArgs args = new AutomationEventArgs (InvokePatternIdentifiers.InvokedEvent);
 				AutomationInteropProvider.RaiseAutomationEvent (InvokePatternIdentifiers.InvokedEvent, 
 				                                                Provider, args);
 			}
+		}
+
+		private void OnClick (object sender, EventArgs e)
+		{
+			InvokeEvent ();
 		}
 	}
 }

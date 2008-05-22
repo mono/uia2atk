@@ -42,14 +42,19 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		public override void Connect ()
 		{
-			textbox.Enter += new EventHandler (OnFocusChanged);
-			textbox.Leave += new EventHandler (OnFocusChanged);
+			textbox.Enter += new EventHandler (OnEnterLeave);
+			textbox.Leave += new EventHandler (OnEnterLeave);
 		}
 
 		public override void Disconnect ()
 		{
-			textbox.Enter -= new EventHandler (OnFocusChanged);
-			textbox.Leave -= new EventHandler (OnFocusChanged);
+			textbox.Enter -= new EventHandler (OnEnterLeave);
+			textbox.Leave -= new EventHandler (OnEnterLeave);
+		}
+		
+		private void OnEnterLeave (object sender, EventArgs e)
+		{
+			HasKeyboardFocusPropertyEvent ();
 		}
 
 		private TextBox textbox;

@@ -1,3 +1,21 @@
+2008-05-22  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.mdp: Updated due to added files.
+	* Mono.UIAutomation.Winforms/LinkLabelProvider.cs: Implements 
+	IInvokeProvider. Uses LinkLabelInvokedEvent instead of 
+	DefaultInvokedEvent. GetPatternProvider implementation.
+	* Mono.UIAutomation.Winforms.Events/LinkLabelInvokedEvent.cs: File 
+	added. Uses LinkClicked instead of Clicked.
+	* Mono.UIAutomation.Winforms.Events/TextBoxHasKeyBoardFocusPropertyEvent.cs:
+	New private method added OnEnterLeave.
+	* Mono.UIAutomation.Winforms.Events/DefaultInvokedEventStrategy.cs: File
+	deleted. Renamed: DefaultInvokedEvent.cs.
+	* Mono.UIAutomation.Winforms.Events/DefaultInvokedEvent.cs: Protected
+	method added: InvokeEvent. Private method added: OnClick.
+	* Mono.UIAutomation.Winforms.Events/DefaultHasKeyboardFocusPropertyEvent.cs:
+	Protected method added: HasKeyboardFocusPropertyEvent. Private method
+	added OnGotFocus.
+
 2008-05-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs: Implement

@@ -32,7 +32,7 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms
 {
 
-	public class LinkLabelProvider : SimpleControlProvider
+	public class LinkLabelProvider : SimpleControlProvider, IInvokeProvider
 	{
 #region Private Members
 		
@@ -56,17 +56,31 @@ namespace Mono.UIAutomation.Winforms
 			base.InitializeEvents ();
 
 			SetEvent (EventStrategyType.InvokedEvent, 
-			          new DefaultInvokedEvent (this, control));
-			
-			//control.LostFocus 
+			          new LinkLabelInvokedEvent (this, linkLabel));
+			//TODO: Missing event: AutomationFocusChangedEvent
 		}
 
+#endregion
+		
+#region IInvokeProvider Members
+		
+		public void Invoke ()
+		{
+			if (!linkLabel.Enabled)
+				throw new ElementNotEnabledException ();
+			
+			// TODO: Click!?
+		}
+		
 #endregion
 	
 #region IRawElementProviderSimple Members
 	
 		public override object GetPatternProvider (int patternId)
 		{
+			if (patternId == InvokePatternIdentifiers.Pattern.Id)
+				return this;
+			
 			return null;
 		}
 		
