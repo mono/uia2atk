@@ -24,26 +24,23 @@
 // 
 
 using System;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using System.Windows.Forms;
-
-using Mono.UIAutomation.Winforms;
 
 using NUnit.Framework;
 
 namespace UiaAtkBridgeTest
 {
+	
 	[TestFixture]
-	public class BridgeTester : AtkTester {
-		
+	public class GailTester : AtkTester {
+
 		public override object GetAtkObjectThatImplementsInterface <I> ()
 		{
-			if (typeof(I) == typeof (Atk.Text)) {
-				Label lab = new Label ();
+			Gtk.Application.Init ();
+			if (typeof(I) == typeof(Atk.Text)) 
+			{
+				Gtk.Label lab = new Gtk.Label ();
 				lab.Text = AtkTester.Instance.Text;
-				LabelProvider prov = new LabelProvider(lab);
-				return new Atk.TextAdapter(new UiaAtkBridge.TextLabel (prov));
+				return Atk.TextAdapter.GetObject (lab.Accessible.Handle, false);
 			}
 			return null;
 		}

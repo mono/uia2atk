@@ -22,24 +22,28 @@
 // Authors: 
 //      Andres G. Aragoneses <aaragoneses@novell.com>
 // 
+using System.Reflection;
+using System.Runtime.CompilerServices;
 
-using System;
+// Information about this assembly is defined by the following attributes. 
+// Change them to the values specific to your project.
 
-namespace UiaAtkBridgeTest
-{
-	
-	public class GailTester : IAtkTester
-	{
-		public object GetAtkObjectThatImplementsInterface <I> ()
-		{
-			Gtk.Application.Init ();
-			if (typeof(I) == typeof(Atk.Text)) 
-			{
-				Gtk.Label lab = new Gtk.Label ();
-				lab.Text = DualTester.Text;
-				return Atk.TextAdapter.GetObject (lab.Accessible.Handle, false);
-			}
-			return null;
-		}
-	}
-}
+[assembly: AssemblyTitle("GailTest")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("")]
+[assembly: AssemblyCopyright("")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+
+// The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
+// If the build and revision are set to '*' they will be updated automatically.
+
+[assembly: AssemblyVersion("1.0.*.*")]
+
+// The following attributes are used to specify the signing key for the assembly, 
+// if desired. See the Mono documentation for more information about signing.
+
+[assembly: AssemblyDelaySign(false)]
+[assembly: AssemblyKeyFile("")]

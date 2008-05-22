@@ -1,5 +1,13 @@
 2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* DualTester.cs, BridgeTester.cs, GailTester.cs, UiaAtkBridgeTest.mdp:
+	  Fix the testing infrastructure separating Gail testing into a new
+	  assembly (and inheriting from an abstract class in
+	  UiaAtkBridgeTest) in order to preven the same problem/effect in
+	  bug#375987.
+
+2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* DualTester.cs: A bit more with selections...
 
 2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
