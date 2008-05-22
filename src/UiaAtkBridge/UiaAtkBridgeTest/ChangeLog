@@ -1,5 +1,10 @@
 2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* DualTester.cs, UiaAtkBridgeTest.mdp, AtkTester.cs: Rename, in order
+	  to comply with class==filename.
+
+2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* DualTester.cs, BridgeTester.cs, GailTester.cs, UiaAtkBridgeTest.mdp:
 	  Fix the testing infrastructure separating Gail testing into a new
 	  assembly (and inheriting from an abstract class in
