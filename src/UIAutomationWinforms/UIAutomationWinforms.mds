@@ -2,15 +2,18 @@
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="Mono.UIAutomation.Winforms" configuration="Debug" />
+      <Entry build="True" name="UIAutomationWinformsTests" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
       <Entry build="True" name="Mono.UIAutomation.Winforms" configuration="Release" />
+      <Entry build="True" name="UIAutomationWinformsTests" configuration="Release" />
     </Configuration>
   </Configurations>
   <StartMode startupentry="Mono.UIAutomation.Winforms" single="True">
     <Execute type="None" entry="Mono.UIAutomation.Winforms" />
   </StartMode>
   <Entries>
-    <Entry filename="Mono.UIAutomation.Winforms.mdp" />
+    <Entry filename="UIAutomationWinforms/Mono.UIAutomation.Winforms.mdp" />
+    <Entry filename="UIAutomationWinformsTests/UIAutomationWinformsTests.mdp" />
   </Entries>
 </Combine>

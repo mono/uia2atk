@@ -5,14 +5,12 @@
       <Entry build="True" name="FormTest" configuration="Debug" />
       <Entry build="True" name="atkSharpHelloWorld" configuration="Debug" />
       <Entry build="False" name="TestUiaAtkBridge" configuration="Debug" />
-      <Entry build="True" name="UIAutomationWinformsTests" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
       <Entry build="True" name="TestGtkSharp" configuration="Release" />
       <Entry build="True" name="FormTest" configuration="Release" />
       <Entry build="True" name="atkSharpHelloWorld" configuration="Release" />
       <Entry build="True" name="TestUiaAtkBridge" configuration="Release" />
-      <Entry build="True" name="UIAutomationWinformsTests" configuration="Release" />
     </Configuration>
   </Configurations>
   <StartMode startupentry="FormTest" single="True">
@@ -27,6 +25,5 @@
     <Entry filename="FormTest/FormTest.mds" />
     <Entry filename="atkSharpHelloWorld/atkSharpHelloWorld.mdp" />
     <Entry filename="TestUiaAtkBridge/TestUiaAtkBridge.mdp" />
-    <Entry filename="UIAutomationWinformsTests/UIAutomationWinformsTests.mdp" />
   </Entries>
 </Combine>
