@@ -1,3 +1,7 @@
+2008-05-22  Calvin Gaisford <calvinrg@gmail.com> 
+
+	* bridgetest.sh, UiaAtkBridgeTest.mdp: created a script to launch the tests
+
 2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* DualTester.cs, UiaAtkBridgeTest.mdp, AtkTester.cs: Rename, in order
