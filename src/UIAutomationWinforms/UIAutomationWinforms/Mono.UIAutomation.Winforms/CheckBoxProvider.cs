@@ -56,7 +56,7 @@ namespace Mono.UIAutomation.Winforms
 			base.InitializeEvents ();
 
 			SetEvent (EventStrategyType.ToggleStateProperty,
-			          new DefaultToggleStatePropertyEvent (this, this, checkbox));
+			          new DefaultToggleStatePropertyEvent (this, checkbox));
 		}
 		
 #endregion
@@ -75,10 +75,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.CheckBox.Id;
-			else if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
-				return "WindowsForms10.BUTTON.app.0.bf7d44";
-			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
-				return false; // TODO: ???
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "check box";
 			else
 				return base.GetPropertyValue (propertyId);
 		}
@@ -89,7 +87,25 @@ namespace Mono.UIAutomation.Winforms
 	
 		public void Toggle ()
 		{
-			throw new NotImplementedException ();
+			switch (checkbox.CheckState) {
+			case CheckState.Checked:
+				checkbox.CheckState = CheckState.Unchecked;
+				break;
+			case CheckState.Unchecked:
+				if (checkbox.ThreeState)
+					checkbox.CheckState = 
+						CheckState.Indeterminate;
+				else
+					checkbox.CheckState = 
+						CheckState.Checked;
+				break;
+			// Control could still have been set to intermediate
+			// programatically, regardless of ThreeState value.
+			case CheckState.Indeterminate:
+			default:
+				checkbox.CheckState = CheckState.Checked;
+				break;
+			}
 		}
 
 		public ToggleState ToggleState {

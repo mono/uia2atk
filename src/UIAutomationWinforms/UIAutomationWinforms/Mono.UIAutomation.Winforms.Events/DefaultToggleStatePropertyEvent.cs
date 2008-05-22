@@ -33,10 +33,9 @@ namespace Mono.UIAutomation.Winforms.Events
 
 	internal class DefaultToggleStatePropertyEvent : EventStrategy
 	{
-		public DefaultToggleStatePropertyEvent (IRawElementProviderSimple provider, 
-		                                         IToggleProvider toggleProvider,
+		public DefaultToggleStatePropertyEvent (IToggleProvider toggleProvider,
 		                                         CheckBox control) :
-			base (provider, control)
+			base ((IRawElementProviderSimple) toggleProvider, control)
 		{
 			this.toggleProvider = toggleProvider;
 			checkbox = control;

@@ -1,3 +1,10 @@
+2008-05-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs: Implement
+	  LocalizedControlTypeProperty and Toggle method.
+	* Mono.UIAutomation.Winforms.Events/DefaultToggleStatePropertyEvent.cs:
+	  Remove duplication in constructor.
+
 2008-05-21  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/LinkLabelProvider.cs: File added.
