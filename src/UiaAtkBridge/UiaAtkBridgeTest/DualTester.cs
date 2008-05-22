@@ -94,47 +94,47 @@ namespace UiaAtkBridgeTest
 				
 				
 				//GetTextAfterOffset: trickyness in itself
-				string strResult = " sentence";
-				Assert.AreEqual (strResult, 
+				string expected = " sentence";
+				Assert.AreEqual (expected, 
 					atkText.GetTextAfterOffset (12, Atk.TextBoundary.WordEnd, out startOffset, out endOffset),
 					"GetTextAfterOffset,WordEnd");
-				Assert.AreEqual (Text.IndexOf (strResult), startOffset, "GetTextAfterOffset,WordEnd");
-				Assert.AreEqual (Text.IndexOf (strResult) + strResult.Length, endOffset, "GetTextAfterOffset,WordEnd");
+				Assert.AreEqual (Text.IndexOf (expected), startOffset, "GetTextAfterOffset,WordEnd");
+				Assert.AreEqual (Text.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,WordEnd");
 				
-				strResult = "sentence.\r\n";
-				Assert.AreEqual (strResult, 
+				expected = "sentence.\r\n";
+				Assert.AreEqual (expected, 
 					atkText.GetTextAfterOffset (12, Atk.TextBoundary.WordStart, out startOffset, out endOffset),
 					"GetTextAfterOffset,WordStart");
-				Assert.AreEqual (Text.IndexOf (strResult), startOffset, "GetTextAfterOffset,WordStart");
-				Assert.AreEqual (Text.IndexOf (strResult) + strResult.Length, endOffset, "GetTextAfterOffset,WordStart");
+				Assert.AreEqual (Text.IndexOf (expected), startOffset, "GetTextAfterOffset,WordStart");
+				Assert.AreEqual (Text.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,WordStart");
 				
-				strResult = "\r\nSecond line. Other phrase.";
-				Assert.AreEqual (strResult,
+				expected = "\r\nSecond line. Other phrase.";
+				Assert.AreEqual (expected,
 					atkText.GetTextAfterOffset (12, Atk.TextBoundary.LineEnd, out startOffset, out endOffset),
 					"GetTextAfterOffset,LineEnd");
-				Assert.AreEqual (Text.IndexOf (strResult), startOffset, "GetTextAfterOffset,LineEnd");
-				Assert.AreEqual (Text.IndexOf (strResult) + strResult.Length, endOffset, "GetTextAfterOffset,LineEnd");
+				Assert.AreEqual (Text.IndexOf (expected), startOffset, "GetTextAfterOffset,LineEnd");
+				Assert.AreEqual (Text.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,LineEnd");
 
-				strResult = "Second line. Other phrase.\n";
-				Assert.AreEqual (strResult,
+				expected = "Second line. Other phrase.\n";
+				Assert.AreEqual (expected,
 					atkText.GetTextAfterOffset (12, Atk.TextBoundary.LineStart, out startOffset, out endOffset),
 					"GetTextAfterOffset,LineStart");
-				Assert.AreEqual (Text.IndexOf (strResult), startOffset, "GetTextAfterOffset,LineStart");
-				Assert.AreEqual (Text.IndexOf (strResult) + strResult.Length, endOffset, "GetTextAfterOffset,LineStart");
+				Assert.AreEqual (Text.IndexOf (expected), startOffset, "GetTextAfterOffset,LineStart");
+				Assert.AreEqual (Text.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,LineStart");
 				
-				strResult = "\r\nSecond line.";
-				Assert.AreEqual (strResult,
+				expected = "\r\nSecond line.";
+				Assert.AreEqual (expected,
 					atkText.GetTextAfterOffset (18, Atk.TextBoundary.SentenceEnd, out startOffset, out endOffset),
 					"GetTextAfterOffset,SentenceEnd");
-				Assert.AreEqual (Text.IndexOf (strResult), startOffset, "GetTextAfterOffset,SentenceEnd");
-				Assert.AreEqual (Text.IndexOf (strResult) + strResult.Length, endOffset, "GetTextAfterOffset,SentenceEnd");
+				Assert.AreEqual (Text.IndexOf (expected), startOffset, "GetTextAfterOffset,SentenceEnd");
+				Assert.AreEqual (Text.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,SentenceEnd");
 				
-				strResult = "Second line. ";
-				Assert.AreEqual (strResult,
+				expected = "Second line. ";
+				Assert.AreEqual (expected,
 					atkText.GetTextAfterOffset (18, Atk.TextBoundary.SentenceStart, out startOffset, out endOffset),
 					"GetTextAfterOffset,SentenceStart");
-				Assert.AreEqual (Text.IndexOf (strResult), startOffset, "GetTextAfterOffset,SentenceStart");
-				Assert.AreEqual (Text.IndexOf (strResult) + strResult.Length, endOffset, "GetTextAfterOffset,SentenceStart");
+				Assert.AreEqual (Text.IndexOf (expected), startOffset, "GetTextAfterOffset,SentenceStart");
+				Assert.AreEqual (Text.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,SentenceStart");
 				
 				Assert.AreEqual ("e",
 					atkText.GetTextAfterOffset (18, Atk.TextBoundary.Char, out startOffset, out endOffset));
@@ -160,6 +160,75 @@ namespace UiaAtkBridgeTest
 					atkText.GetTextAfterOffset (-1, Atk.TextBoundary.Char, out startOffset, out endOffset));
 				Assert.AreEqual (Text.Length, startOffset, "GetTextAfterOffset,Char");
 				Assert.AreEqual (Text.Length, endOffset, "GetTextAfterOffset,Char");
+				
+				
+				//GetTextAtOffset
+				expected = " test";
+				Assert.AreEqual (expected, 
+					atkText.GetTextAtOffset (12, Atk.TextBoundary.WordEnd, out startOffset, out endOffset),
+					"GetTextAtOffset,WordEnd");
+				Assert.AreEqual (Text.IndexOf (expected), startOffset, "GetTextAtOffset,WordEnd");
+				Assert.AreEqual (Text.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,WordEnd");
+				
+				expected = "test ";
+				Assert.AreEqual (expected, 
+					atkText.GetTextAtOffset (12, Atk.TextBoundary.WordStart, out startOffset, out endOffset),
+					"GetTextAtOffset,WordStart");
+				Assert.AreEqual (Text.IndexOf (expected), startOffset, "GetTextAtOffset,WordStart");
+				Assert.AreEqual (Text.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,WordStart");
+				
+				expected = "This is a test sentence.";
+				Assert.AreEqual (expected,
+					atkText.GetTextAtOffset (12, Atk.TextBoundary.LineEnd, out startOffset, out endOffset),
+					"GetTextAtOffset,LineEnd");
+				Assert.AreEqual (Text.IndexOf (expected), startOffset, "GetTextAtOffset,LineEnd");
+				Assert.AreEqual (Text.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,LineEnd");
+
+				expected = "This is a test sentence.\r\n";
+				Assert.AreEqual (expected,
+					atkText.GetTextAtOffset (12, Atk.TextBoundary.LineStart, out startOffset, out endOffset),
+					"GetTextAtOffset,LineStart");
+				Assert.AreEqual (Text.IndexOf (expected), startOffset, "GetTextAtOffset,LineStart");
+				Assert.AreEqual (Text.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,LineStart");
+				
+				expected = "This is a test sentence.";
+				Assert.AreEqual (expected,
+					atkText.GetTextAtOffset (18, Atk.TextBoundary.SentenceEnd, out startOffset, out endOffset),
+					"GetTextAtOffset,SentenceEnd");
+				Assert.AreEqual (Text.IndexOf (expected), startOffset, "GetTextAtOffset,SentenceEnd");
+				Assert.AreEqual (Text.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,SentenceEnd");
+				
+				expected = "This is a test sentence.\r\n";
+				Assert.AreEqual (expected,
+					atkText.GetTextAtOffset (18, Atk.TextBoundary.SentenceStart, out startOffset, out endOffset),
+					"GetTextAtOffset,SentenceStart");
+				Assert.AreEqual (Text.IndexOf (expected), startOffset, "GetTextAtOffset,SentenceStart");
+				Assert.AreEqual (Text.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,SentenceStart");
+				
+				Assert.AreEqual ("t",
+					atkText.GetTextAtOffset (18, Atk.TextBoundary.Char, out startOffset, out endOffset));
+				Assert.AreEqual (18, startOffset, "GetTextAtOffset,Char");
+				Assert.AreEqual (19, endOffset, "GetTextAtOffset,Char");
+				Assert.AreEqual (".",
+					atkText.GetTextAtOffset (23, Atk.TextBoundary.Char, out startOffset, out endOffset));
+				Assert.AreEqual (23, startOffset, "GetTextAtOffset,Char");
+				Assert.AreEqual (24, endOffset, "GetTextAtOffset,Char");
+				Assert.AreEqual ("e",
+					atkText.GetTextAtOffset (Text.Length - 2, Atk.TextBoundary.Char, out startOffset, out endOffset));
+				Assert.AreEqual (Text.Length - 2, startOffset, "GetTextAtOffset,Char");
+				Assert.AreEqual (Text.Length - 1, endOffset, "GetTextAtOffset,Char");
+				Assert.AreEqual ("?",
+					atkText.GetTextAtOffset (Text.Length - 1, Atk.TextBoundary.Char, out startOffset, out endOffset));
+				Assert.AreEqual (Text.Length - 1, startOffset, "GetTextAtOffset,Char");
+				Assert.AreEqual (Text.Length, endOffset, "GetTextAtOffset,Char");
+				Assert.AreEqual (String.Empty,
+					atkText.GetTextAtOffset (Text.Length, Atk.TextBoundary.Char, out startOffset, out endOffset));
+				Assert.AreEqual (Text.Length, startOffset, "GetTextAtOffset,Char");
+				Assert.AreEqual (Text.Length, endOffset, "GetTextAtOffset,Char");
+				Assert.AreEqual (null,
+					atkText.GetTextAtOffset (-1, Atk.TextBoundary.Char, out startOffset, out endOffset));
+				Assert.AreEqual (Text.Length, startOffset, "GetTextAtOffset,Char");
+				Assert.AreEqual (Text.Length, endOffset, "GetTextAtOffset,Char");
 				
 			}
 		}

@@ -1,3 +1,7 @@
+2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* DualTester.cs: Playing with GetTextAtOffset.
+
 2008-05-22  Calvin Gaisford <calvinrg@gmail.com> 
 
 	* UiaAtkBridgeTest.mdp: added pango to complete build
