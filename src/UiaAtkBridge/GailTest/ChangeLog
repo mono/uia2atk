@@ -1,3 +1,8 @@
+2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* gailtest.sh, GailTest.mdp: Apply same NUnit running scheme as the
+	  UiaAtkBridgeTest (r103836 by cgaisford).
+
 2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* AssemblyInfo.cs, GailTester.cs, ChangeLog, GailTest.mdp: Fix the
