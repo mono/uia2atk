@@ -1,5 +1,10 @@
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Fix and optimize After LineStart. Added some cosmetic
+	  carriage returns in the switches as well.
+
+2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: Fix and optimize After LineEnd.
 
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
