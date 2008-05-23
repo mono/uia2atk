@@ -60,14 +60,15 @@ namespace UiaAtkBridgeTest
 			Atk.Action atkAction =
 				new Atk.ActionAdapter(new UiaAtkBridge.Button(pushButton));
 
-			Assert.AreEqual (atkAction.NActions, 1);				
-			Assert.AreEqual (atkAction.GetName(0), "click");
+			Assert.AreEqual (1, atkAction.NActions);				
+			Assert.AreEqual ("click", atkAction.GetName(0));
 
 			pushButton.SetPropertyValue(AutomationElementIdentifiers.AcceleratorKeyProperty.Id, "Magic Key");
-			Assert.AreEqual (atkAction.GetKeybinding(0), "Magic Key");
+			Assert.AreEqual ("Magic Key", atkAction.GetKeybinding(0));
 			
 			atkAction.SetDescription(0, "Some big ugly description");
-			Assert.AreEqual (atkAction.GetDescription(0), "Some big ugly description");
+			Assert.AreEqual ("Some big ugly description", atkAction.GetDescription(0));
+			
 			
 			// lot's more tests
 		}

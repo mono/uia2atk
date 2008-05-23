@@ -1,5 +1,9 @@
 2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
 
+	* AtkTester.cs: Fixed up some bugs in the way Button was returning values
+
+2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
+
 	* TestButtonControlType.cs, TestProviderSimple.cs, AtkTester.cs: Added more
 	  tests for Atk.Action and fixed the bugs found due to the additional
 	  tests in the Bridge

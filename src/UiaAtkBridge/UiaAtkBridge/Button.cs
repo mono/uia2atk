@@ -128,7 +128,9 @@ namespace UiaAtkBridge
 				return keyBinding;
 
 			keyBinding = (string) provider.GetPropertyValue (AutomationElementIdentifiers.AcceleratorKeyProperty.Id);
-
+			if(keyBinding == null)
+				keyBinding = "";
+				
 			return keyBinding;
 		}
 
