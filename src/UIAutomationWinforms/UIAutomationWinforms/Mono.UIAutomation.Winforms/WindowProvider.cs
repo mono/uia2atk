@@ -296,13 +296,13 @@ namespace Mono.UIAutomation.Winforms
 			return null;
 		}
 		
-		public IRawElementProviderSimple Navigate (NavigateDirection direction)
+		public IRawElementProviderFragment Navigate (NavigateDirection direction)
 		{
 			// TODO: Consider what exactly "first" and "last" are
 			//       supposed to mean.  Consider maintaining separate
 			//       list just containing all of the providers and
 			//       indexing off of that.
-			
+			/*
 			switch (direction) {
 			case NavigateDirection.FirstChild:
 				if (form.Controls.Count > 0)
@@ -319,7 +319,7 @@ namespace Mono.UIAutomation.Winforms
 			default:
 				break;
 			}
-			
+			*/
 			return null;
 			
 //			"Fragment roots do not enable navigation to a parent or siblings;

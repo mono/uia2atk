@@ -1,3 +1,9 @@
+2008-05-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/WindowProvider.cs: Adhere to correct
+	  signature for Navigate method.  Comment-out obviously incorrect
+	  implementation.
+
 2008-05-23  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Fixed 
