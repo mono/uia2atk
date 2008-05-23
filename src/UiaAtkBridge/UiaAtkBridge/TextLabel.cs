@@ -124,8 +124,6 @@ namespace UiaAtkBridge
 			}
 		}
 
-		char[] anyNewLine = new char[] { '\n', '\r' };
-
 		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
 			switch (boundaryType){
@@ -184,6 +182,13 @@ namespace UiaAtkBridge
 				if (startOffset == -1)
 					startOffset = 0;
 				return Name.Substring (startOffset, endOffset - startOffset);
+			case Atk.TextBoundary.Char:
+				startOffset = offset;
+				if (offset >= Name.Length)
+					endOffset = offset;
+				else
+					endOffset = offset + 1;
+				return new String (new char[] { GetCharacterAtOffset (offset) });
 			default:
 				return GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
 			}

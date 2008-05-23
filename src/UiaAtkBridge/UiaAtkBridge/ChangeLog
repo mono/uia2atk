@@ -1,5 +1,9 @@
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Implement AtOffset->Char.
+
+2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: Implement GetTextAtOffset->SentenceStart.
 
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
