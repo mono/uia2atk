@@ -122,7 +122,10 @@ namespace UiaAtkBridge
 			case Atk.TextBoundary.WordStart:
 			case Atk.TextBoundary.SentenceEnd:
 			case Atk.TextBoundary.SentenceStart:
-				throw new NotImplementedException ();
+				//TODO: take in account other blanks, such as \r,\n,\t
+				string afterOffset3 = Name.Substring (offset);
+				endOffset = startOffset = offset;
+				return afterOffset3;
 			default:
 				throw new NotSupportedException (
 					String.Format ("The value {0} is not supported for Atk.TextBoundary type.",
@@ -130,9 +133,17 @@ namespace UiaAtkBridge
 			}
 		}
 
-		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int end_offset)
+		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			throw new NotImplementedException();
+			switch (boundaryType){
+			case Atk.TextBoundary.WordEnd:
+				//TODO: take in account other blanks, such as \r,\n,\t
+				endOffset = offset + Name.Substring (offset).IndexOf(" ");
+				startOffset = Name.Substring (0, endOffset).LastIndexOf(" ");
+				return Name.Substring (startOffset, endOffset);
+			default:
+				return GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
+			}
 		}
 
 		public char GetCharacterAtOffset (int offset)
@@ -144,7 +155,7 @@ namespace UiaAtkBridge
 
 		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			throw new NotImplementedException();
+			return GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
 		}
 
 		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)

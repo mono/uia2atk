@@ -1,3 +1,8 @@
+2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* TextLabel.cs: Get rid of NIE's, if now one is not implemented, unit
+	  tests will complain. Implement one WordEnd case.
+
 2008-05-22  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* TextLabel.cs: Implement some API thanks to the tests.
