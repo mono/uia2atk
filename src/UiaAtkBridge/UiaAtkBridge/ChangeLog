@@ -1,5 +1,9 @@
 2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
 
+	* Adapter.cs: Added the ComponentImplementor to Adapter
+
+2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
+
 	* Button.cs: Fixed up some bugs in the way Button was returning values
 
 2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
