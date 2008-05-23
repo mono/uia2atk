@@ -111,6 +111,38 @@ namespace UiaAtkBridge
 				retOffset++;
 			return retOffset;
 		}
+
+		private void BackwardToNextSeparator (char[] seps, string explored, int startOffset, out int stopEarlyOffset, out int stopLateOffset)
+		{
+			if (startOffset <= 1){
+				stopEarlyOffset = 0;
+				stopLateOffset = 0;
+				return;
+			}
+			
+			int retOffset = startOffset - 1;
+			
+			while (!CharEqualsAny (explored [retOffset], seps)) {
+				retOffset--;
+				if (retOffset < 0)
+					break;
+			}
+
+			stopEarlyOffset = retOffset + 1;
+			if (retOffset < 0) {
+				stopLateOffset = 0;
+				return;
+			}
+			
+			while (CharEqualsAny (explored [retOffset], seps)) {
+				retOffset--;
+				if (retOffset < 0)
+					break;
+			}
+			
+			stopLateOffset = retOffset + 1;
+			return;
+		}
 		
 		private int BackwardToNextSeparator (char[] seps, string explored, int startOffset, bool stopEarly)
 		{
@@ -270,12 +302,11 @@ namespace UiaAtkBridge
 			case Atk.TextBoundary.WordEnd:
 				endOffset = BackwardToNextSeparator (wordSeparators, Name, offset, false);
 				startOffset = BackwardToNextSeparator (wordSeparators, Name, endOffset, false);
-				Console.WriteLine ("voy a devolver {0} y {1}", startOffset, endOffset);
 				return Name.Substring (startOffset, endOffset - startOffset);
 				
 			case Atk.TextBoundary.WordStart:
-				startOffset = BackwardToNextSeparator (wordSeparators, Name, offset, true);
-				endOffset = ForwardToNextSeparator (wordSeparators, Name, offset, false);
+				BackwardToNextSeparator (wordSeparators, Name, offset, out endOffset, out startOffset);
+				startOffset = BackwardToNextSeparator (wordSeparators, Name, startOffset, true);
 				return Name.Substring (startOffset, endOffset - startOffset);
 				
 			case Atk.TextBoundary.LineEnd:
