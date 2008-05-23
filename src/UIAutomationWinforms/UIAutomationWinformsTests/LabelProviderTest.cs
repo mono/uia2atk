@@ -29,6 +29,8 @@ using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
+using Mono.UIAutomation.Winforms;
+
 using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
@@ -36,5 +38,67 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	[TestFixture]
 	public class LabelProviderTest : BaseProviderTest
 	{
+#region Tests
+		[Test]
+		public void BasicPropertiesTest ()
+		{
+			Label label = new Label ();
+			LabelProvider provider = new LabelProvider (label);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.Text.Id);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsContentElementProperty,
+			              false);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
+			              "text");
+			
+			// TODO: Test properties implemented by SimpleControlProvider
+			//       (should those be in BaseProviderTest perhaps?)
+		}
+		
+		[Test]
+		public void TextChangedEventTest ()
+		{
+			Label label = new Label ();
+			LabelProvider provider = new LabelProvider (label);
+			
+			bridge.ResetEventLists ();
+			
+			label.Text = "first";
+			
+			Assert.AreEqual (1,
+			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 "event count");
+			
+			Assert.AreEqual (provider,
+			                 bridge.AutomationEvents [0].provider,
+			                 "provider");
+			
+			Assert.AreEqual (TextPatternIdentifiers.TextChangedEvent,
+			                 bridge.AutomationEvents [0].eventId,
+			                 "event type");
+			
+			// TODO: args
+		}
+		
+#endregion
+		
+#region Private Methods
+		
+		private void TestProperty (IRawElementProviderSimple provider,
+		                           AutomationProperty property,
+		                           object expectedValue)
+		{
+			Assert.AreEqual (expectedValue,
+			                 provider.GetPropertyValue (property.Id),
+			                 property.ProgrammaticName);
+		}
+		
+#endregion
 	}
 }

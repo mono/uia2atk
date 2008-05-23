@@ -1,5 +1,10 @@
 2008-05-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* UIAutomationWinforms/UIAutomationWinformsTests/LabelProviderTest.cs:
+	  First few tests.
+
+2008-05-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* UIAutomationWinforms/UIAutomationWinformsTests/UIAutomationWinformsTests.mdp:
 	  Fix WindowBase reference to be relative instead of GAC.  Added new
 	  files.
