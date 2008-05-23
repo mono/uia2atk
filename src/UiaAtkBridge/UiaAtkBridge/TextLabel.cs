@@ -310,13 +310,13 @@ namespace UiaAtkBridge
 				return Name.Substring (startOffset, endOffset - startOffset);
 				
 			case Atk.TextBoundary.LineEnd:
-				startOffset = BackwardToNextSeparator (newLineSeparators, Name, offset, false);
-				endOffset = ForwardToNextSeparator (newLineSeparators, Name, offset, true);
+				endOffset = BackwardToNextSeparator (newLineSeparators, Name, offset, false);
+				startOffset = BackwardToNextSeparator (newLineSeparators, Name, endOffset, false);
 				return Name.Substring (startOffset, endOffset - startOffset);
 				
 			case Atk.TextBoundary.LineStart:
-				startOffset = BackwardToNextSeparator (newLineSeparators, Name, offset, true);
-				endOffset = ForwardToNextSeparator (newLineSeparators, Name, offset, false);
+				BackwardToNextSeparator (newLineSeparators, Name, offset, out endOffset, out startOffset);
+				startOffset = BackwardToNextSeparator (newLineSeparators, Name, startOffset, true);
 				return Name.Substring (startOffset, endOffset - startOffset);
 				
 			case Atk.TextBoundary.Char:
