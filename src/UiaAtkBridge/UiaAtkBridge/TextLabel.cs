@@ -121,7 +121,7 @@ namespace UiaAtkBridge
 				return retOffset;
 			while (CharEqualsAny (explored [retOffset], seps))
 				retOffset--;
-			return retOffset;
+			return retOffset + 1;
 		}
 		
 		private bool CharEqualsAny (char boilerPlate, char[] candidates)
