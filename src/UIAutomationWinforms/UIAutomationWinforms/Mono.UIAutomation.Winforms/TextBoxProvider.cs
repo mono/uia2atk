@@ -64,7 +64,7 @@ namespace Mono.UIAutomation.Winforms
 			SetEvent (EventStrategyType.TextChangedEvent, 
 			          new DefaultTextChangedEvent (this, control));
 			SetEvent (EventStrategyType.HasKeyboardFocusProperty, 
-			          new TextBoxHasKeyBoardFocusPropertyEvent (this, textbox));
+			          new TextBoxHasKeyBoardFocusPropertyEvent (this, control as TextBox));
 			
 			// TODO: InvalidatedEvent
 			// TODO: TextSelectionChangedEvent: using textbox.SelectionLength != 0?	
