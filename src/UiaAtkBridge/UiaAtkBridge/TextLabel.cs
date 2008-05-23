@@ -114,7 +114,10 @@ namespace UiaAtkBridge
 		
 		private int BackwardToNextSeparator (char[] seps, string explored, int startOffset, bool stopEarly)
 		{
-			int retOffset = startOffset;
+			if (startOffset <= 1)
+				return 0;
+			
+			int retOffset = startOffset - 1;
 			
 			while (!CharEqualsAny (explored [retOffset], seps)) {
 				retOffset--;
@@ -262,7 +265,56 @@ namespace UiaAtkBridge
 
 		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			return GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
+			switch (boundaryType){
+
+			case Atk.TextBoundary.WordEnd:
+				endOffset = BackwardToNextSeparator (wordSeparators, Name, offset, false);
+				startOffset = BackwardToNextSeparator (wordSeparators, Name, endOffset, false);
+				Console.WriteLine ("voy a devolver {0} y {1}", startOffset, endOffset);
+				return Name.Substring (startOffset, endOffset - startOffset);
+				
+			case Atk.TextBoundary.WordStart:
+				startOffset = BackwardToNextSeparator (wordSeparators, Name, offset, true);
+				endOffset = ForwardToNextSeparator (wordSeparators, Name, offset, false);
+				return Name.Substring (startOffset, endOffset - startOffset);
+				
+			case Atk.TextBoundary.LineEnd:
+				startOffset = BackwardToNextSeparator (newLineSeparators, Name, offset, false);
+				endOffset = ForwardToNextSeparator (newLineSeparators, Name, offset, true);
+				return Name.Substring (startOffset, endOffset - startOffset);
+				
+			case Atk.TextBoundary.LineStart:
+				startOffset = BackwardToNextSeparator (newLineSeparators, Name, offset, true);
+				endOffset = ForwardToNextSeparator (newLineSeparators, Name, offset, false);
+				return Name.Substring (startOffset, endOffset - startOffset);
+				
+			case Atk.TextBoundary.Char:
+				startOffset = offset;
+				if (offset >= Name.Length)
+					endOffset = offset;
+				else
+					endOffset = offset + 1;
+				return new String (new char[] { GetCharacterAtOffset (offset) });
+
+//			case Atk.TextBoundary.SentenceEnd:
+//				endOffset = offset + Name.Substring (offset).IndexOf (".") + 1;
+//				startOffset = Name.Substring (0, offset).LastIndexOf (".");
+//				if (startOffset == -1)
+//					startOffset = 0;
+//				return Name.Substring (startOffset, endOffset - startOffset);
+//				
+//			case Atk.TextBoundary.SentenceStart:
+//				endOffset = offset + Name.Substring (offset).IndexOf (".") + 1;
+//				while ((Name [endOffset] == '\r') || (Name [endOffset] == '\n'))
+//					endOffset++;
+//				startOffset = Name.Substring (0, offset).LastIndexOf (".");
+//				if (startOffset == -1)
+//					startOffset = 0;
+//				return Name.Substring (startOffset, endOffset - startOffset);
+				
+			default:
+				return GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
+			}
 		}
 
 		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)

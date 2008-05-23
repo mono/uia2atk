@@ -1,5 +1,10 @@
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Implement Before WordEnd, and add templates for the
+	  next Before cases.
+
+2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: Fix After Char. Comment Sentence* ones because they are
 	  broken.
 
