@@ -1,5 +1,11 @@
 2008-05-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs: Return null instead of
+	  throwing NotImplementedException...gets in Calvin's way while
+	  testing.
+
+2008-05-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Mono.UIAutomation.Winforms/WindowProvider.cs: Adhere to correct
 	  signature for Navigate method.  Comment-out obviously incorrect
 	  implementation.

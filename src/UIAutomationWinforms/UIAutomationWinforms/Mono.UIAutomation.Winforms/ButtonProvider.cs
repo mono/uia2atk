@@ -90,11 +90,11 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Button.Id;
 			else if (propertyId == AutomationElementIdentifiers.AcceleratorKeyProperty.Id)
-				throw new NotImplementedException ("AcceleratorKeyProperty");
+				return null; // TODO
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
 				return Helper.RectangleToRect (button.Bounds);
 			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)
-				throw new NotImplementedException ("HelpTextProperty");
+				return null; // TODO
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "button";
 			else
