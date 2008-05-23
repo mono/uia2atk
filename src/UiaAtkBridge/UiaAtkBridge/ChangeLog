@@ -1,5 +1,9 @@
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Implement WordStart.
+
+2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: Correct GetTextAtOffset->WordEnd.
 
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 

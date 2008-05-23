@@ -141,6 +141,11 @@ namespace UiaAtkBridge
 				endOffset = offset + Name.Substring (offset).IndexOf(" ");
 				startOffset = Name.Substring (0, endOffset - 1).LastIndexOf(" ");
 				return Name.Substring (startOffset, endOffset - startOffset);
+			case Atk.TextBoundary.WordStart:
+				//TODO: take in account other blanks, such as \r,\n,\t
+				endOffset = offset + Name.Substring (offset).IndexOf(" ") + 1;
+				startOffset = Name.Substring (0, endOffset - 1).LastIndexOf(" ") + 1;
+				return Name.Substring (startOffset, endOffset - startOffset);
 			default:
 				return GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
 			}
