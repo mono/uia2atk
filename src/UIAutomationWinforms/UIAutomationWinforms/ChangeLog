@@ -1,3 +1,11 @@
+2008-05-23  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.mdp: Updated due to added files.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Using NullEvent to 
+	"remove" previous one.
+	* Mono.UIAutomation.Winforms.Events/NullEvent.cs: Represents a null 
+	event.
+
 2008-05-22  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.mdp: Updated due to added files.

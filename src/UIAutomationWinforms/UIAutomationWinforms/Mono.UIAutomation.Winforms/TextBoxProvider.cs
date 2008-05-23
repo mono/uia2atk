@@ -58,8 +58,9 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeEvents ();
 
-			// NameProperty. uses control.Name to emit changes.
-			SetEvent (EventStrategyType.NameProperty, null);
+			// NameProperty. uses control.Name to emit changes, so right now
+			// we're "cleaning" the previous value.
+			SetEvent (EventStrategyType.NameProperty, new NullEvent ());
 			SetEvent (EventStrategyType.TextChangedEvent, 
 			          new DefaultTextChangedEvent (this, control));
 			SetEvent (EventStrategyType.HasKeyboardFocusProperty, 
@@ -78,6 +79,7 @@ namespace Mono.UIAutomation.Winforms
 	
 		public override object GetPatternProvider (int patternId)
 		{
+			// ITextProvider, IValueProvider, IRangeValueProvider
 			return null;
 		}
 		
