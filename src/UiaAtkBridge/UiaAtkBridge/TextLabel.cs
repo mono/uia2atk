@@ -115,12 +115,24 @@ namespace UiaAtkBridge
 		private int BackwardToNextSeparator (char[] seps, string explored, int startOffset, bool stopEarly)
 		{
 			int retOffset = startOffset;
-			while (!CharEqualsAny (explored [retOffset], seps))
+			
+			while (!CharEqualsAny (explored [retOffset], seps)) {
 				retOffset--;
+				if (retOffset < 0){Console.WriteLine("voy a salir d bucle1");
+					break;}
+			}
+
 			if (stopEarly)
 				return retOffset + 1;
-			while (CharEqualsAny (explored [retOffset], seps))
+			else if (retOffset < 0)
+				return 0;
+			
+			while (CharEqualsAny (explored [retOffset], seps)) {
 				retOffset--;
+				if (retOffset < 0)
+					break;
+			}
+			
 			return retOffset + 1;
 		}
 		
@@ -196,16 +208,9 @@ namespace UiaAtkBridge
 				endOffset = ForwardToNextSeparator (wordSeparators, Name, offset, false);
 				return Name.Substring (startOffset, endOffset - startOffset);
 				
-//				endOffset = offset + Name.Substring (offset).IndexOf(" ") + 1;
-//				startOffset = Name.Substring (0, endOffset - 1).LastIndexOf(" ") + 1;
-//				return Name.Substring (startOffset -1, endOffset - startOffset);
-				
 			case Atk.TextBoundary.LineEnd:
-				//TODO: check if a different NewLine nexus than the Environment one also applies
-				endOffset = offset + Name.Substring (offset).IndexOf (Environment.NewLine) - 1;
-				startOffset = Name.Substring (0, offset).LastIndexOf (Environment.NewLine);
-				if (startOffset == -1)
-					startOffset = 0;
+				startOffset = BackwardToNextSeparator (newLineSeparators, Name, offset, false);
+				endOffset = ForwardToNextSeparator (newLineSeparators, Name, offset, true);
 				return Name.Substring (startOffset, endOffset - startOffset);
 				
 			case Atk.TextBoundary.LineStart:

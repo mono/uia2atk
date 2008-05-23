@@ -1,5 +1,9 @@
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Optimize At LineEnd.
+
+2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: Optimize At WordStart.
 
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
