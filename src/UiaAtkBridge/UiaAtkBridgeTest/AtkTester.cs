@@ -51,7 +51,7 @@ namespace UiaAtkBridgeTest
 			get { return "This is a test sentence.\r\nSecond line. Other phrase.\nThird line?"; }
 		}
 
-		//[Test]
+		[Test]
 		public void UIAButtonControlType ()
 		{
 			TestButtonControlType pushButton = 
@@ -72,7 +72,7 @@ namespace UiaAtkBridgeTest
 			// lot's more tests
 		}
 		
-		[Test]
+		//[Test]
 		public void AtkTextImplementor ()
 		{
 			Atk.Text atkText = (Atk.Text)
