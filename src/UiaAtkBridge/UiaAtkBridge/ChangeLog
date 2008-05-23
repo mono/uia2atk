@@ -1,5 +1,9 @@
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Reuse NSE.
+
+2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: Implement Before LineEnd and LineStart.
 
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 

@@ -229,12 +229,10 @@ namespace UiaAtkBridge
 //				return Name.Substring (startOffset, endOffset - startOffset);
 				
 			default:
-				throw new NotSupportedException (
-					String.Format ("The value {0} is not supported for Atk.TextBoundary type.",
-						(long)boundaryType));
+				throw GetNotSupportedBoundary (boundaryType);
 			}
 		}
-
+		
 		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
 			switch (boundaryType){
@@ -284,7 +282,7 @@ namespace UiaAtkBridge
 				return new String (new char[] { GetCharacterAtOffset (offset) });
 				
 			default:
-				return GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
+				throw GetNotSupportedBoundary (boundaryType);
 			}
 		}
 
@@ -344,10 +342,17 @@ namespace UiaAtkBridge
 //				return Name.Substring (startOffset, endOffset - startOffset);
 				
 			default:
-				return GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
+				throw GetNotSupportedBoundary (boundaryType);
 			}
 		}
 
+		private NotSupportedException GetNotSupportedBoundary (Atk.TextBoundary bType)
+		{
+			return new NotSupportedException (
+				String.Format ("The value {0} is not supported for Atk.TextBoundary type.",
+					bType));
+		}
+		
 		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
 			// don't ask me why, this is what gail does 
