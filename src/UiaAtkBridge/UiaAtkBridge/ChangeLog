@@ -1,3 +1,8 @@
+2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
+
+	* Button.cs: Flushed out bugs in the test and fixed a problem in the actual
+	  Button implementation
+
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* TextLabel.cs: Reuse NSE.

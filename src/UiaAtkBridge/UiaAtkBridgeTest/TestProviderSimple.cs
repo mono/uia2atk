@@ -46,8 +46,11 @@ namespace UiaAtkBridgeTest
 		
 #region Constructors
 		
-		public TestProviderSimple ()
+		public TestProviderSimple () : base()
 		{
+			// make sure types are initialized
+			GLib.GType.Init ();
+
 			properties = new Dictionary<int,object> ();
 
 			properties[AutomationElementIdentifiers.AutomationIdProperty.Id] =

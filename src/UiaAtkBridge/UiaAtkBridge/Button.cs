@@ -120,10 +120,14 @@ namespace UiaAtkBridge
 		// Get the key bindings for the specified action
 		public string GetKeybinding(int action)
 		{
+			string keyBinding = "";
+			
 			if(action != 0)
-				return null;
+				return keyBinding;
 
-			return null;
+			keyBinding = (string) provider.GetPropertyValue (AutomationElementIdentifiers.AcceleratorKeyProperty.Id);
+
+			return keyBinding;
 		}
 
 		// Get the name of the specified action		
