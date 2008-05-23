@@ -86,6 +86,8 @@ namespace UiaAtkBridge
 				RefStateSet ().AddState (Atk.StateType.Sensitive);
 			else
 				RefStateSet ().RemoveState (Atk.StateType.Sensitive);
+				
+			
 		}
 		
 		// Return the number of actions (Read-Only)
@@ -101,7 +103,7 @@ namespace UiaAtkBridge
 		public string GetLocalizedName (int action)
 		{
 			if(action != 0)
-				return null;
+				return "";
 
 			// TODO: Localize the name?
 			return actionName;
@@ -134,7 +136,7 @@ namespace UiaAtkBridge
 		public string GetName(int action)
 		{
 			if(action != 0)
-				return null;
+				return "";
 
 			return actionName;
 		}
@@ -143,7 +145,7 @@ namespace UiaAtkBridge
 		public string GetDescription(int action)
 		{
 			if(action != 0)
-				return null;
+				return "";
 
 			return actionDescription;
 		}
@@ -154,6 +156,9 @@ namespace UiaAtkBridge
 			try {
 				if(invokeProvider != null) {
 					try {
+						if(action != 0)
+							return false;
+							
 						invokeProvider.Invoke();
 						return true;
 					} catch (ElementNotEnabledException e) {
@@ -161,6 +166,8 @@ namespace UiaAtkBridge
 					}
 				} else if(toggleProvider != null) {
 					try {
+						if(action != 0)
+							return false;
 						toggleProvider.Toggle();
 						return true;
 					} catch (ElementNotEnabledException e) {

@@ -46,7 +46,7 @@ namespace UiaAtkBridgeTest
 		
 #region Constructors
 		
-		public TestProviderSimple () : base()
+		public TestProviderSimple ()
 		{
 			// make sure types are initialized
 			GLib.GType.Init ();

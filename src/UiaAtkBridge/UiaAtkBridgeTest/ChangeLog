@@ -1,5 +1,11 @@
 2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
 
+	* TestButtonControlType.cs, TestProviderSimple.cs, AtkTester.cs: Added more
+	  tests for Atk.Action and fixed the bugs found due to the additional
+	  tests in the Bridge
+
+2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
+
 	* TestButtonControlType.cs, TestProviderSimple.cs: Flushed out bugs in the
 	  test and fixed a problem in the actual Button implementation
 

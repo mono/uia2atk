@@ -36,16 +36,14 @@ namespace UiaAtkBridgeTest
 		private		ToggleState		toggleState;
 		private		bool			isToggle;
 		
-		public TestButtonControlType(string name, bool isToggle) : base()
+		public TestButtonControlType(string name, bool isToggle)
 		{
-			if(properties == null)
-				throw new Exception("Dude!");
 			// set values for all of the required properties
-			properties[AutomationElementIdentifiers.AcceleratorKeyProperty.Id] = "Ctrl+T";
+			properties[AutomationElementIdentifiers.AcceleratorKeyProperty.Id] = "";
 			//properties[AutomationElementIdentifiers.BoundingRectangleProperty.Id] = true;
 			//properties[AutomationElementIdentifiers.ClickablePointProperty.Id] = true;
 			properties[AutomationElementIdentifiers.ControlTypeProperty.Id] = ControlType.Button.Id;
-			properties[AutomationElementIdentifiers.HelpTextProperty.Id] = "Need a little help from my friends";
+			properties[AutomationElementIdentifiers.HelpTextProperty.Id] = "";
 			properties[AutomationElementIdentifiers.IsContentElementProperty.Id] = true;
 			properties[AutomationElementIdentifiers.IsControlElementProperty.Id] = true;
 			properties[AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id] = true;
