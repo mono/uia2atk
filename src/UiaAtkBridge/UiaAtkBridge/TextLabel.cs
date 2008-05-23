@@ -97,15 +97,6 @@ namespace UiaAtkBridge
 				endOffset = offset + 1;
 				return new String (new char[] { GetCharacterAtOffset (offset) });
 			case Atk.TextBoundary.LineEnd:
-				// same as LineStart, but with the LineEnd character in the beggining
-				// TODO: 
-				//  - globalize this behaviour in a function (reusability)
-				//  - do unit tests for this, that pass for gail, and test this (correctness)
-				// For reference, look:
-				// at line 573 of this file (function gail_text_util_get_text):
-				// http://svn.gnome.org/viewvc/gtk%2B/trunk/modules/other/gail/libgail-util/gailtextutil.c?view=markup
-				// or at line 260 of this file (function atk_text_get_text_after_offset):
-				// http://svn.gnome.org/viewvc/atk/trunk/atk/atktext.c?view=markup
 				string afterOffset1 = Name.Substring (offset);
 				startOffset = afterOffset1.IndexOf (Environment.NewLine);
 				string afterStart1 = afterOffset1.Substring (startOffset);
@@ -145,6 +136,13 @@ namespace UiaAtkBridge
 				//TODO: take in account other blanks, such as \r,\n,\t
 				endOffset = offset + Name.Substring (offset).IndexOf(" ") + 1;
 				startOffset = Name.Substring (0, endOffset - 1).LastIndexOf(" ") + 1;
+				return Name.Substring (startOffset, endOffset - startOffset);
+			case Atk.TextBoundary.LineEnd:
+				//TODO: check if a different NewLine nexus than the Environment one also applies
+				endOffset = offset + Name.Substring (offset).IndexOf (Environment.NewLine) - 1;
+				startOffset = Name.Substring (0, offset).LastIndexOf (Environment.NewLine);
+				if (startOffset == -1)
+					startOffset = 0;
 				return Name.Substring (startOffset, endOffset - startOffset);
 			default:
 				return GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
