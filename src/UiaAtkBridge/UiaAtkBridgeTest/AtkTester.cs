@@ -24,6 +24,9 @@
 // 
 
 using System;
+using System.Windows;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 
 using NUnit.Framework;
 
@@ -64,7 +67,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (atkAction.GetKeybinding(0), "Magic Key");
 			
 			atkAction.SetDescription(0, "Some big ugly description");
-			Assert.AreEqual (atkAction.GetDescription, "Some big ugly description");
+			Assert.AreEqual (atkAction.GetDescription(0), "Some big ugly description");
 			
 			// lot's more tests
 		}

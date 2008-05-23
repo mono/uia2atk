@@ -1,5 +1,9 @@
 2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
 
+	* AtkTester.cs: updated errors
+
+2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
+
 	* BridgeTester.cs, TestProviderSimple.cs, AtkTester.cs: Added a new test for
 	  the ButtonControl and Atk.Action
 
