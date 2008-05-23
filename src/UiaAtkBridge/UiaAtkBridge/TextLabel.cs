@@ -89,6 +89,37 @@ namespace UiaAtkBridge
 			return Name.Substring (startOffset, endOffset);
 		}
 
+		private void ForwardToNextSeparator (char[] seps, string explored, int startOffset, out int stopEarlyOffset, out int stopLateOffset)
+		{
+			int retOffset = startOffset;
+			while (!CharEqualsAny (explored [retOffset], seps))
+				retOffset++;
+			stopEarlyOffset = retOffset;
+			while (CharEqualsAny (explored [retOffset], seps))
+				retOffset++;
+			stopLateOffset = retOffset;
+		}
+		
+		private int ForwardToNextSeparator (char[] seps, string explored, int startOffset, bool stopEarly)
+		{
+			int retOffset = startOffset;
+			while (!CharEqualsAny (explored [retOffset], seps))
+				retOffset++;
+			if (stopEarly)
+				return retOffset;
+			while (CharEqualsAny (explored [retOffset], seps))
+				retOffset++;
+			return retOffset;
+		}
+		
+		private bool CharEqualsAny (char toCompare, char[] candidates)
+		{
+			foreach(char candidate in candidates)
+				if (toCompare == candidate)
+					return true;
+			return false;
+		}
+		
 		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
 			switch (boundaryType){
@@ -110,6 +141,11 @@ namespace UiaAtkBridge
 				endOffset = afterStart2.IndexOf (Environment.NewLine);
 				return afterStart2.Substring (0, endOffset);
 			case Atk.TextBoundary.WordEnd:
+				//TODO: use regexp?
+				char [] separators = new char[] { ' ', '\n', '\r', '.', '\t' };
+				ForwardToNextSeparator (separators, Name, offset, out startOffset, out endOffset);
+				endOffset = ForwardToNextSeparator (separators, Name, endOffset, true);
+				return Name.Substring (startOffset, endOffset - startOffset);
 			case Atk.TextBoundary.WordStart:
 			case Atk.TextBoundary.SentenceEnd:
 			case Atk.TextBoundary.SentenceStart:
