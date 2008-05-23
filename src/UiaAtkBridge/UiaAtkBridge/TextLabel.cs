@@ -112,10 +112,22 @@ namespace UiaAtkBridge
 			return retOffset;
 		}
 		
-		private bool CharEqualsAny (char toCompare, char[] candidates)
+		private int BackwardToNextSeparator (char[] seps, string explored, int startOffset, bool stopEarly)
+		{
+			int retOffset = startOffset;
+			while (!CharEqualsAny (explored [retOffset], seps))
+				retOffset--;
+			if (stopEarly)
+				return retOffset;
+			while (CharEqualsAny (explored [retOffset], seps))
+				retOffset--;
+			return retOffset;
+		}
+		
+		private bool CharEqualsAny (char boilerPlate, char[] candidates)
 		{
 			foreach(char candidate in candidates)
-				if (toCompare == candidate)
+				if (boilerPlate == candidate)
 					return true;
 			return false;
 		}
@@ -164,9 +176,9 @@ namespace UiaAtkBridge
 		{
 			switch (boundaryType){
 			case Atk.TextBoundary.WordEnd:
-				//TODO: take in account other blanks, such as \r,\n,\t
-				endOffset = offset + Name.Substring (offset).IndexOf(" ");
-				startOffset = Name.Substring (0, endOffset - 1).LastIndexOf(" ");
+				char [] separators = new char[] { ' ', '\n', '\r', '.', '\t' };
+				startOffset = BackwardToNextSeparator (separators, Name, offset, false);
+				endOffset = ForwardToNextSeparator (separators, Name, offset, true);
 				return Name.Substring (startOffset, endOffset - startOffset);
 			case Atk.TextBoundary.WordStart:
 				//TODO: take in account other blanks, such as \r,\n,\t

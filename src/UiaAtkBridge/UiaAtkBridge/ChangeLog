@@ -1,5 +1,10 @@
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Reimplemented AtOffset->WordEnd with optimized and
+	  reusabled code (unit tests pass).
+
+2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: Implement AfterOffset->WordEnd. Almost found the
 	  pattern to begin reusing code in all this switch cases...
 
