@@ -118,8 +118,8 @@ namespace UiaAtkBridge
 			
 			while (!CharEqualsAny (explored [retOffset], seps)) {
 				retOffset--;
-				if (retOffset < 0){Console.WriteLine("voy a salir d bucle1");
-					break;}
+				if (retOffset < 0)
+					break;
 			}
 
 			if (stopEarly)
