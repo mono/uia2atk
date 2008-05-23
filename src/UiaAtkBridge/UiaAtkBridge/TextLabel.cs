@@ -134,6 +134,7 @@ namespace UiaAtkBridge
 		
 		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
+			char [] separators = new char[] { ' ', '\n', '\r', '.', '\t' };
 			switch (boundaryType){
 			case Atk.TextBoundary.Char:
 				startOffset = offset;
@@ -154,11 +155,14 @@ namespace UiaAtkBridge
 				return afterStart2.Substring (0, endOffset);
 			case Atk.TextBoundary.WordEnd:
 				//TODO: use regexp?
-				char [] separators = new char[] { ' ', '\n', '\r', '.', '\t' };
 				ForwardToNextSeparator (separators, Name, offset, out startOffset, out endOffset);
 				endOffset = ForwardToNextSeparator (separators, Name, endOffset, true);
 				return Name.Substring (startOffset, endOffset - startOffset);
 			case Atk.TextBoundary.WordStart:
+				//TODO: use regexp?
+				startOffset = ForwardToNextSeparator (separators, Name, offset, false);
+				endOffset = ForwardToNextSeparator (separators, Name, startOffset, false);
+				return Name.Substring (startOffset, endOffset - startOffset);
 			case Atk.TextBoundary.SentenceEnd:
 			case Atk.TextBoundary.SentenceStart:
 				//TODO: take in account other blanks, such as \r,\n,\t
