@@ -134,18 +134,18 @@ namespace UiaAtkBridge
 		
 		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			char [] separators = new char[] { ' ', '\n', '\r', '.', '\t' };
+			char [] wordSeparators = new char[] { ' ', '\n', '\r', '.', '\t' };
+			char [] newLineSeparators = new char[] { '\n', '\r' };
 			switch (boundaryType){
 			case Atk.TextBoundary.Char:
 				startOffset = offset;
 				endOffset = offset + 1;
 				return new String (new char[] { GetCharacterAtOffset (offset) });
 			case Atk.TextBoundary.LineEnd:
-				string afterOffset1 = Name.Substring (offset);
-				startOffset = afterOffset1.IndexOf (Environment.NewLine);
-				string afterStart1 = afterOffset1.Substring (startOffset);
-				endOffset = afterStart1.IndexOf (Environment.NewLine);
-				return afterStart1.Substring (0, endOffset);
+				//TODO: use regexp?
+				ForwardToNextSeparator (newLineSeparators, Name, offset, out startOffset, out endOffset);
+				endOffset = ForwardToNextSeparator (newLineSeparators, Name, endOffset, true);
+				return Name.Substring (startOffset, endOffset - startOffset);
 			case Atk.TextBoundary.LineStart:
 				//TODO: optimize this (when we have unit tests):
 				string afterOffset2 = Name.Substring (offset);
@@ -155,13 +155,13 @@ namespace UiaAtkBridge
 				return afterStart2.Substring (0, endOffset);
 			case Atk.TextBoundary.WordEnd:
 				//TODO: use regexp?
-				ForwardToNextSeparator (separators, Name, offset, out startOffset, out endOffset);
-				endOffset = ForwardToNextSeparator (separators, Name, endOffset, true);
+				ForwardToNextSeparator (wordSeparators, Name, offset, out startOffset, out endOffset);
+				endOffset = ForwardToNextSeparator (wordSeparators, Name, endOffset, true);
 				return Name.Substring (startOffset, endOffset - startOffset);
 			case Atk.TextBoundary.WordStart:
 				//TODO: use regexp?
-				startOffset = ForwardToNextSeparator (separators, Name, offset, false);
-				endOffset = ForwardToNextSeparator (separators, Name, startOffset, false);
+				startOffset = ForwardToNextSeparator (wordSeparators, Name, offset, false);
+				endOffset = ForwardToNextSeparator (wordSeparators, Name, startOffset, false);
 				return Name.Substring (startOffset, endOffset - startOffset);
 			case Atk.TextBoundary.SentenceEnd:
 			case Atk.TextBoundary.SentenceStart:

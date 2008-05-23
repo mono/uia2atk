@@ -1,5 +1,9 @@
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Fix and optimize After LineEnd.
+
+2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: Implemented AfterOffset->WordStart
 
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
