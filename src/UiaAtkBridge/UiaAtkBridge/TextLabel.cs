@@ -132,12 +132,13 @@ namespace UiaAtkBridge
 			return false;
 		}
 		
+		//TODO: use regexp?
+		private static char [] wordSeparators = new char[] { ' ', '\n', '\r', '.', '\t' };
+		private static char [] newLineSeparators = new char[] { '\n', '\r' };
+		private static char [] sentenceSeparators = new char[] { '.', '\n', '\r' };
+		
 		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			//TODO: use regexp?
-			char [] wordSeparators = new char[] { ' ', '\n', '\r', '.', '\t' };
-			char [] newLineSeparators = new char[] { '\n', '\r' };
-			
 			switch (boundaryType){
 			case Atk.TextBoundary.Char:
 				startOffset = offset;
@@ -165,6 +166,10 @@ namespace UiaAtkBridge
 				return Name.Substring (startOffset, endOffset - startOffset);
 				
 			case Atk.TextBoundary.SentenceEnd:
+				ForwardToNextSeparator (sentenceSeparators, Name, offset, out startOffset, out endOffset);
+				endOffset = ForwardToNextSeparator (sentenceSeparators, Name, endOffset, true);
+				return Name.Substring (startOffset, endOffset - startOffset);
+				
 			case Atk.TextBoundary.SentenceStart:
 				//TODO: take in account other blanks, such as \r,\n,\t
 				string afterOffset3 = Name.Substring (offset);
@@ -182,9 +187,8 @@ namespace UiaAtkBridge
 		{
 			switch (boundaryType){
 			case Atk.TextBoundary.WordEnd:
-				char [] separators = new char[] { ' ', '\n', '\r', '.', '\t' };
-				startOffset = BackwardToNextSeparator (separators, Name, offset, false);
-				endOffset = ForwardToNextSeparator (separators, Name, offset, true);
+				startOffset = BackwardToNextSeparator (wordSeparators, Name, offset, false);
+				endOffset = ForwardToNextSeparator (wordSeparators, Name, offset, true);
 				return Name.Substring (startOffset, endOffset - startOffset);
 				
 			case Atk.TextBoundary.WordStart:
