@@ -118,7 +118,7 @@ namespace UiaAtkBridge
 			while (!CharEqualsAny (explored [retOffset], seps))
 				retOffset--;
 			if (stopEarly)
-				return retOffset;
+				return retOffset + 1;
 			while (CharEqualsAny (explored [retOffset], seps))
 				retOffset--;
 			return retOffset + 1;
@@ -192,10 +192,13 @@ namespace UiaAtkBridge
 				return Name.Substring (startOffset, endOffset - startOffset);
 				
 			case Atk.TextBoundary.WordStart:
-				//TODO: take in account other blanks, such as \r,\n,\t
-				endOffset = offset + Name.Substring (offset).IndexOf(" ") + 1;
-				startOffset = Name.Substring (0, endOffset - 1).LastIndexOf(" ") + 1;
+				startOffset = BackwardToNextSeparator (wordSeparators, Name, offset, true);
+				endOffset = ForwardToNextSeparator (wordSeparators, Name, offset, false);
 				return Name.Substring (startOffset, endOffset - startOffset);
+				
+//				endOffset = offset + Name.Substring (offset).IndexOf(" ") + 1;
+//				startOffset = Name.Substring (0, endOffset - 1).LastIndexOf(" ") + 1;
+//				return Name.Substring (startOffset -1, endOffset - startOffset);
 				
 			case Atk.TextBoundary.LineEnd:
 				//TODO: check if a different NewLine nexus than the Environment one also applies
