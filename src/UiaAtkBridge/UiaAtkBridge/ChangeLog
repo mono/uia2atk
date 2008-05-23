@@ -1,5 +1,9 @@
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Implement AtOffset->SentenceEnd (optimize pending).
+
+2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: Implement AtOffset->LineStart (this one is optimized).
 
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 

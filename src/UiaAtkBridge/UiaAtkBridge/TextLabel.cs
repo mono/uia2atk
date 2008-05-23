@@ -170,6 +170,13 @@ namespace UiaAtkBridge
 					i++;
 				}
 				return Name.Substring (startOffset, endOffset - startOffset);
+			case Atk.TextBoundary.SentenceEnd:
+				//TODO: check if a different NewLine nexus than the Environment one also applies
+				endOffset = offset + Name.Substring (offset).IndexOf (".") + 1;
+				startOffset = Name.Substring (0, offset).LastIndexOf (".");
+				if (startOffset == -1)
+					startOffset = 0;
+				return Name.Substring (startOffset, endOffset - startOffset);
 			default:
 				return GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
 			}
