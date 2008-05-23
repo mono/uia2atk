@@ -56,9 +56,15 @@ namespace UiaAtkBridgeTest
 		
 #endregion
 		
-#region Protected
-		
-		
+
+
+#region Public
+
+		public virtual void SetPropertyValue(int propertyId, object propertyValue)
+		{
+			properties[propertyId] = propertyValue;
+		}
+
 #endregion
 		
 #region IRawElementProviderSimple Members

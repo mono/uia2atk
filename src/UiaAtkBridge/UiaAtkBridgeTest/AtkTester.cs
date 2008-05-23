@@ -47,6 +47,27 @@ namespace UiaAtkBridgeTest
 		public string Text {
 			get { return "This is a test sentence.\r\nSecond line. Other phrase.\nThird line?"; }
 		}
+
+		//[Test]
+		public void UIAButtonControlType ()
+		{
+			TestButtonControlType pushButton = 
+				new TestButtonControlType("Push Button", false);
+
+			Atk.Action atkAction =
+				new Atk.ActionAdapter(new UiaAtkBridge.Button(pushButton));
+
+			Assert.AreEqual (atkAction.NActions, 1);				
+			Assert.AreEqual (atkAction.GetName(0), "click");
+
+			pushButton.SetPropertyValue(AutomationElementIdentifiers.AcceleratorKeyProperty.Id, "Magic Key");
+			Assert.AreEqual (atkAction.GetKeybinding(0), "Magic Key");
+			
+			atkAction.SetDescription(0, "Some big ugly description");
+			Assert.AreEqual (atkAction.GetDescription, "Some big ugly description");
+			
+			// lot's more tests
+		}
 		
 		[Test]
 		public void AtkTextImplementor ()

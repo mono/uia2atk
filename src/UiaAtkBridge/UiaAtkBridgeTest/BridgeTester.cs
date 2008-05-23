@@ -45,6 +45,11 @@ namespace UiaAtkBridgeTest
 				LabelProvider prov = new LabelProvider(lab);
 				return new Atk.TextAdapter(new UiaAtkBridge.TextLabel (prov));
 			}
+			else if (typeof(I) == typeof (Atk.Action)) {
+				TestButtonControlType button = new TestButtonControlType("Push Button", false);
+				return new Atk.ActionAdapter(new UiaAtkBridge.Button(button));
+			}
+
 			return null;
 		}
 	}

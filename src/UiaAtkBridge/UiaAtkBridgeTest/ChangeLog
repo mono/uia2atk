@@ -1,5 +1,10 @@
 2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
 
+	* BridgeTester.cs, TestProviderSimple.cs, AtkTester.cs: Added a new test for
+	  the ButtonControl and Atk.Action
+
+2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
+
 	* TestButtonControlType.cs, TestProviderSimple.cs, UiaAtkBridgeTest.mdp:
 	  Added test objects for UIA Control Types
 
