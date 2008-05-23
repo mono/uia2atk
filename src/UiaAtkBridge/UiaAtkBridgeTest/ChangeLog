@@ -1,3 +1,8 @@
+2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
+
+	* TestButtonControlType.cs, TestProviderSimple.cs, UiaAtkBridgeTest.mdp:
+	  Added test objects for UIA Control Types
+
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTester.cs: More specific refs.
