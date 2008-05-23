@@ -139,8 +139,8 @@ namespace UiaAtkBridge
 			case Atk.TextBoundary.WordEnd:
 				//TODO: take in account other blanks, such as \r,\n,\t
 				endOffset = offset + Name.Substring (offset).IndexOf(" ");
-				startOffset = Name.Substring (0, endOffset).LastIndexOf(" ");
-				return Name.Substring (startOffset, endOffset);
+				startOffset = Name.Substring (0, endOffset - 1).LastIndexOf(" ");
+				return Name.Substring (startOffset, endOffset - startOffset);
 			default:
 				return GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
 			}
