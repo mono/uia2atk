@@ -1,5 +1,9 @@
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Remove hackery in At LineStart.
+
+2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: Remove debug spew.
 
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 

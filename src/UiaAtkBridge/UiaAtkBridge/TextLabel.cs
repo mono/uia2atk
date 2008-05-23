@@ -214,28 +214,8 @@ namespace UiaAtkBridge
 				return Name.Substring (startOffset, endOffset - startOffset);
 				
 			case Atk.TextBoundary.LineStart:
-				startOffset = 0;
-				int i = offset;
-				while ((i - 1) > 0)
-				{
-					if ((Name [i - 1] == '\r') || (Name [i - 1] == '\n')) {
-						startOffset = i - 1;
-						break;
-					}
-					i--;
-				}
-				endOffset = Name.Length;
-				i = offset;
-				while ((i + 1) < Name.Length)
-				{
-					if ((Name [i + 1] == '\r') || (Name [i + 1] == '\n'))
-						endOffset = i + 1;
-					else if (endOffset != Name.Length) {
-						endOffset++;
-						break;
-					}
-					i++;
-				}
+				startOffset = BackwardToNextSeparator (newLineSeparators, Name, offset, true);
+				endOffset = ForwardToNextSeparator (newLineSeparators, Name, offset, false);
 				return Name.Substring (startOffset, endOffset - startOffset);
 				
 			case Atk.TextBoundary.SentenceEnd:
