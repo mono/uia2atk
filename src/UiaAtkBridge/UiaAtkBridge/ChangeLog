@@ -1,5 +1,10 @@
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Fix After Char. Comment Sentence* ones because they are
+	  broken.
+
+2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: Remove hackery in At LineStart.
 
 2008-05-23  Andres G. Aragoneses <aaragoneses@novell.com> 
