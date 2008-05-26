@@ -1,5 +1,10 @@
 2008-05-26  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Add a new set of tests against a new atk object, add
+	  note about a WTF.
+
+2008-05-26  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: Redisable test, and reenable some few tests inside it.
 
 2008-05-26  Andres G. Aragoneses <aaragoneses@novell.com> 

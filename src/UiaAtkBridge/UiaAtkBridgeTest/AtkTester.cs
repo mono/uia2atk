@@ -125,7 +125,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual ("", atkAction.GetName(2));
 		}
 		
-		//[Test]
+		[Test]
 		public void AtkTextImplementor ()
 		{
 			int startOffset, endOffset;
@@ -185,6 +185,10 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, atkText.NSelections, "NSelections#5");
 
 
+			//IMPORTANT NOTE about GetText*Offset methods [GetTextAtOffset(),GetTextAfterOffset(),GetTextBeforeOffset()]:
+			//in Gail, they all return null if GetText() has not been called yet, however we may
+			//prefer not to follow this wierd behaviour in the bridge
+			
 			//GetTextAtOffset
 			expected = " test";
 			Assert.AreEqual (expected, 
@@ -400,6 +404,37 @@ namespace UiaAtkBridgeTest
 				atkText.GetTextBeforeOffset (-1, Atk.TextBoundary.Char, out startOffset, out endOffset));
 			Assert.AreEqual (name.Length - 1, startOffset, "GetTextBeforeOffset,Char,so");
 			Assert.AreEqual (name.Length, endOffset, "GetTextBeforeOffset,Char,eo");
+			
+			
+			
+			
+			name = "Tell me; here a sentence\r\nwith EOL but without dot, and other phrase... Heh!";
+
+			atkText = (Atk.Text)
+				GetAtkObjectThatImplementsInterface <Atk.Text> (name);
+			Assert.AreEqual (name, atkText.GetText(0, name.Length), "GetText#2");
+			
+			expected = "\r\nwith EOL but without dot, and other phrase...";
+			Assert.AreEqual (expected,
+				atkText.GetTextAfterOffset (3, Atk.TextBoundary.SentenceEnd, out startOffset, out endOffset),
+				"GetTextAfterOffset,SentenceEnd");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,SentenceEnd,so");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,SentenceEnd,eo");
+			
+			expected = "Tell me; here a sentence\r\n";
+			Assert.AreEqual (expected,
+				atkText.GetTextAtOffset (4, Atk.TextBoundary.SentenceStart, out startOffset, out endOffset),
+				"GetTextAtOffset,SentenceStart");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,SentenceStart,so");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,SentenceStart,eo");
+			
+			expected = "Tell me; here a sentence";
+			Assert.AreEqual (expected,
+				atkText.GetTextAtOffset (4, Atk.TextBoundary.SentenceEnd, out startOffset, out endOffset),
+				"GetTextAtOffset,SentenceEnd");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,SentenceEnd,so");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,SentenceEnd,eo");
+			
 		}
 	}
 }
