@@ -1,3 +1,8 @@
+2008-05-26  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* BridgeTester.cs, AtkTester.cs: Refactor this, as we don't know yet
+	  the needs for the next Atk interfaces.
+
 2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
 
 	* AtkTester.cs: Fixed up some bugs in the way Button was returning values
