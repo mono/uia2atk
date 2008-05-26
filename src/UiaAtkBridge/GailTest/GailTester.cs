@@ -33,15 +33,20 @@ namespace UiaAtkBridgeTest
 	[TestFixture]
 	public class GailTester : AtkTester {
 
-		public override object GetAtkObjectThatImplementsInterface <I> (string name)
+		static GailTester ()
 		{
 			Gtk.Application.Init ();
+		}
+		
+		public override object GetAtkObjectThatImplementsInterface <I> (string name)
+		{
 			if (typeof(I) == typeof(Atk.Text)) 
 			{
 				Gtk.Label lab = new Gtk.Label ();
 				lab.Text = name;
 				return Atk.TextAdapter.GetObject (lab.Accessible.Handle, false);
 			}
+			Console.WriteLine ("going to return null");
 			return null;
 		}
 	}

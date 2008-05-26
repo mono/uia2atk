@@ -1,5 +1,10 @@
 2008-05-26  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: It turns out the selection is changed after querying
+	  text with GetText+.
+
+2008-05-26  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* BridgeTester.cs, AtkTester.cs: Refactor this, as we don't know yet
 	  the needs for the next Atk interfaces.
 

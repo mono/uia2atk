@@ -125,12 +125,15 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual ("", atkAction.GetName(2));
 		}
 		
-		//[Test]
+		[Test]
 		public void AtkTextImplementor ()
 		{
+			int startOffset, endOffset;
+			string expected;
+			Atk.Text atkText;
 			string name = "This is a test sentence.\r\nSecond line. Other phrase.\nThird line?";
-			
-			Atk.Text atkText = (Atk.Text)
+
+			atkText = (Atk.Text)
 				GetAtkObjectThatImplementsInterface <Atk.Text> (name);
 			Assert.AreEqual (0, atkText.CaretOffset, "CaretOffset");
 			Assert.AreEqual (name.Length, atkText.CharacterCount, "CharacterCount");
@@ -138,58 +141,64 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name, atkText.GetText (0, name.Length), "GetText");
 			
 			//any value
-			Assert.AreEqual (false, atkText.SetCaretOffset (-1));
-			Assert.AreEqual (false, atkText.SetCaretOffset (0));
-			Assert.AreEqual (false, atkText.SetCaretOffset (1));
-			Assert.AreEqual (false, atkText.SetCaretOffset (15));
+//			Assert.AreEqual (false, atkText.SetCaretOffset (-1), "SetCaretOffset#1");
+//			Assert.AreEqual (false, atkText.SetCaretOffset (0), "SetCaretOffset#2");
+//			Assert.AreEqual (false, atkText.SetCaretOffset (1), "SetCaretOffset#3");
+//			Assert.AreEqual (false, atkText.SetCaretOffset (15), "SetCaretOffset#4");
 			
 			// don't do this until bug#393565 is fixed:
 			//Assert.AreEqual (typeof(Atk.TextAttribute), atkText.DefaultAttributes[0].GetType());
 
-			Assert.AreEqual (0, atkText.NSelections);
+			Assert.AreEqual (0, atkText.NSelections, "NSelections#1");
 			
 			// you cannot select a label AFAIK so, all zeroes returned!
-			int startOffset, endOffset;
 			atkText.GetSelection (0, out startOffset, out endOffset);
-			Assert.AreEqual (0, startOffset);
-			Assert.AreEqual (0, endOffset);
+			Assert.AreEqual (0, startOffset, "GetSelection#1");
+			Assert.AreEqual (0, endOffset, "GetSelection#2");
 			atkText.GetSelection (1, out startOffset, out endOffset);
-			Assert.AreEqual (0, startOffset);
-			Assert.AreEqual (0, endOffset);
+			Assert.AreEqual (0, startOffset, "GetSelection#3");
+			Assert.AreEqual (0, endOffset, "GetSelection#4");
 			atkText.GetSelection (-1, out startOffset, out endOffset);
-			Assert.AreEqual (0, startOffset);
-			Assert.AreEqual (0, endOffset);
+			Assert.AreEqual (0, startOffset, "GetSelection#5");
+			Assert.AreEqual (0, endOffset, "GetSelection#6");
 			
 			// you cannot select a label AFAIK so, false always returned!
-			Assert.AreEqual (false, atkText.SetSelection (0, 1, 2));
+			Assert.AreEqual (false, atkText.SetSelection (0, 1, 2), "SetSelection#1");
 			// test GetSelection *after* SetSelection
 			atkText.GetSelection (0, out startOffset, out endOffset);
-			Assert.AreEqual (0, startOffset);
-			Assert.AreEqual (0, endOffset);
+			Assert.AreEqual (0, startOffset, "GetSelection#7");
+			Assert.AreEqual (0, endOffset, "GetSelection#8");
 			//test crazy numbers for SetSelection
-			Assert.AreEqual (false, atkText.SetSelection (-3, 10, -2));
+			Assert.AreEqual (false, atkText.SetSelection (-3, 10, -2), "SetSelection#2");
 			atkText.GetSelection (0, out startOffset, out endOffset);
-			Assert.AreEqual (0, startOffset);
-			Assert.AreEqual (0, endOffset);
+			Assert.AreEqual (0, startOffset, "GetSelection#9");
+			Assert.AreEqual (0, endOffset, "GetSelection#10");
 			
 			//did NSelections changed?
-			Assert.AreEqual (false, atkText.SetSelection (1, 2, 3));
-			Assert.AreEqual (0, atkText.NSelections);
-			Assert.AreEqual (false, atkText.RemoveSelection (0));
-			Assert.AreEqual (0, atkText.NSelections);
-			Assert.AreEqual (false, atkText.RemoveSelection (1));
-			Assert.AreEqual (0, atkText.NSelections);
-			Assert.AreEqual (false, atkText.RemoveSelection (-1));
-			Assert.AreEqual (0, atkText.NSelections);
+			Assert.AreEqual (false, atkText.SetSelection (1, 2, 3), "SetSelection#3");
+			Assert.AreEqual (0, atkText.NSelections, "NSelections#2");
+			Assert.AreEqual (false, atkText.RemoveSelection (0), "RemoveSelection#1");
+			Assert.AreEqual (0, atkText.NSelections, "NSelections#3");
+			Assert.AreEqual (false, atkText.RemoveSelection (1), "RemoveSelection#2");
+			Assert.AreEqual (0, atkText.NSelections, "NSelections#4");
+			Assert.AreEqual (false, atkText.RemoveSelection (-1), "RemoveSelection#3");
+			Assert.AreEqual (0, atkText.NSelections, "NSelections#5");
 
 
 			//GetTextAtOffset
-			string expected = " test";
+			expected = " test";
 			Assert.AreEqual (expected, 
 				atkText.GetTextAtOffset (12, Atk.TextBoundary.WordEnd, out startOffset, out endOffset),
 				"GetTextAtOffset,WordEnd");
 			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,WordEnd,so");
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,WordEnd,eo");
+			
+			//test selections after obtaining text with a different API than GetText
+			Assert.AreEqual (0, atkText.NSelections, "NSelections#6");
+			//NSelections == 0, however we have one selection, WTF?:
+			atkText.GetSelection (0, out startOffset, out endOffset);
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#11");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#12");
 			
 			expected = "test ";
 			Assert.AreEqual (expected, 
