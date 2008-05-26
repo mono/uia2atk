@@ -1,5 +1,9 @@
 2008-05-26  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Add more GetSelection tests.
+
+2008-05-26  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: Add a new set of tests against a new atk object, add
 	  note about a WTF.
 

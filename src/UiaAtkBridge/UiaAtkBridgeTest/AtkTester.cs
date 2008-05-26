@@ -152,27 +152,27 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, atkText.NSelections, "NSelections#1");
 			
 			// you cannot select a label AFAIK so, all zeroes returned!
-			atkText.GetSelection (0, out startOffset, out endOffset);
-			Assert.AreEqual (0, startOffset, "GetSelection#1");
-			Assert.AreEqual (0, endOffset, "GetSelection#2");
-			atkText.GetSelection (1, out startOffset, out endOffset);
-			Assert.AreEqual (0, startOffset, "GetSelection#3");
-			Assert.AreEqual (0, endOffset, "GetSelection#4");
-			atkText.GetSelection (-1, out startOffset, out endOffset);
+			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#1");
+			Assert.AreEqual (0, startOffset, "GetSelection#2");
+			Assert.AreEqual (0, endOffset, "GetSelection#3");
+			Assert.AreEqual (null, atkText.GetSelection (1, out startOffset, out endOffset), "GetSelection#4");
 			Assert.AreEqual (0, startOffset, "GetSelection#5");
 			Assert.AreEqual (0, endOffset, "GetSelection#6");
+			Assert.AreEqual (null, atkText.GetSelection (-1, out startOffset, out endOffset), "GetSelection#7");
+			Assert.AreEqual (0, startOffset, "GetSelection#8");
+			Assert.AreEqual (0, endOffset, "GetSelection#9");
 			
 			// you cannot select a label AFAIK so, false always returned!
 			Assert.AreEqual (false, atkText.SetSelection (0, 1, 2), "SetSelection#1");
 			// test GetSelection *after* SetSelection
-			atkText.GetSelection (0, out startOffset, out endOffset);
-			Assert.AreEqual (0, startOffset, "GetSelection#7");
-			Assert.AreEqual (0, endOffset, "GetSelection#8");
+			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#10");
+			Assert.AreEqual (0, startOffset, "GetSelection#11");
+			Assert.AreEqual (0, endOffset, "GetSelection#12");
 			//test crazy numbers for SetSelection
 			Assert.AreEqual (false, atkText.SetSelection (-3, 10, -2), "SetSelection#2");
-			atkText.GetSelection (0, out startOffset, out endOffset);
-			Assert.AreEqual (0, startOffset, "GetSelection#9");
-			Assert.AreEqual (0, endOffset, "GetSelection#10");
+			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#13");
+			Assert.AreEqual (0, startOffset, "GetSelection#14");
+			Assert.AreEqual (0, endOffset, "GetSelection#15");
 			
 			//did NSelections changed?
 			Assert.AreEqual (false, atkText.SetSelection (1, 2, 3), "SetSelection#3");
@@ -200,9 +200,18 @@ namespace UiaAtkBridgeTest
 			//test selections after obtaining text with a different API than GetText
 			Assert.AreEqual (0, atkText.NSelections, "NSelections#6");
 			//NSelections == 0, however we have one selection, WTF?:
-			atkText.GetSelection (0, out startOffset, out endOffset);
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#11");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#12");
+			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#16");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#17");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#18");
+			Assert.AreEqual (null, atkText.GetSelection (1, out startOffset, out endOffset), "GetSelection#19");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#20");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#21");
+			Assert.AreEqual (null, atkText.GetSelection (30, out startOffset, out endOffset), "GetSelection#22");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#23");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#24");
+			Assert.AreEqual (null, atkText.GetSelection (-1, out startOffset, out endOffset), "GetSelection#25");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#26");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#27");
 			
 			expected = "test ";
 			Assert.AreEqual (expected, 
