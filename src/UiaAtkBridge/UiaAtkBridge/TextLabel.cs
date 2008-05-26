@@ -89,6 +89,17 @@ namespace UiaAtkBridge
 			return Name.Substring (startOffset, endOffset);
 		}
 
+//		private void ForwardToNextSeparator (char[] hardSeps, char[] lightSeps, string explored, int startOffset, out int stopEarlyOffset, out int stopLateOffset)
+//		{
+//			int retOffset = startOffset;
+//			while (!CharEqualsAny (explored [retOffset], seps))
+//				retOffset++;
+//			stopEarlyOffset = retOffset;
+//			while (CharEqualsAny (explored [retOffset], seps))
+//				retOffset++;
+//			stopLateOffset = retOffset;
+//		}
+		
 		private void ForwardToNextSeparator (char[] seps, string explored, int startOffset, out int stopEarlyOffset, out int stopLateOffset)
 		{
 			int retOffset = startOffset;
@@ -182,7 +193,30 @@ namespace UiaAtkBridge
 		//TODO: use regexp?
 		private static char [] wordSeparators = new char[] { ' ', '\n', '\r', '.', '\t' };
 		private static char [] newLineSeparators = new char[] { '\n', '\r' };
-		private static char [] sentenceSeparators = new char[] { '.', '\n', '\r' };
+		
+		private static char [] lightSentenceSeparators = new char[] { '.', '\n', '\r' };
+		private static char [] hardSentenceSeparators = new char[] { '\n', '\r' };
+
+		private int selectionStartOffset = 0, selectionEndOffset = 0;
+		
+		private string ReturnTextWrtOffset (int startOffset, int endOffset)
+		{
+			selectionStartOffset = startOffset;
+			selectionEndOffset = endOffset;
+				
+			//TODO: optimize?
+			return Name.Substring (startOffset, endOffset - startOffset);
+		}
+		
+		// endOffset == startOffset + 1
+		private string ReturnTextWrtOffset (int startOffset)
+		{
+			selectionStartOffset = startOffset;
+			selectionEndOffset = startOffset + 1;
+				
+			//TODO: optimize?
+			return new String (new char[] { GetCharacterAtOffset (startOffset) });
+		}
 		
 		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
@@ -195,37 +229,37 @@ namespace UiaAtkBridge
 				else if (endOffset + 1 <= Name.Length)
 					endOffset++;
 
-				return new String (new char[] { GetCharacterAtOffset (startOffset) });
+				return ReturnTextWrtOffset (startOffset);
 				
 			case Atk.TextBoundary.LineEnd:
 				ForwardToNextSeparator (newLineSeparators, Name, offset, out startOffset, out endOffset);
 				endOffset = ForwardToNextSeparator (newLineSeparators, Name, endOffset, true);
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.LineStart:
 				startOffset = ForwardToNextSeparator (newLineSeparators, Name, offset, false);
 				endOffset = ForwardToNextSeparator (newLineSeparators, Name, startOffset, false);
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.WordEnd:
 				ForwardToNextSeparator (wordSeparators, Name, offset, out startOffset, out endOffset);
 				endOffset = ForwardToNextSeparator (wordSeparators, Name, endOffset, true);
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.WordStart:
 				startOffset = ForwardToNextSeparator (wordSeparators, Name, offset, false);
 				endOffset = ForwardToNextSeparator (wordSeparators, Name, startOffset, false);
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.SentenceEnd:
-				ForwardToNextSeparator (sentenceSeparators, Name, offset, out startOffset, out endOffset);
-				endOffset = ForwardToNextSeparator (sentenceSeparators, Name, endOffset, true);
-				return Name.Substring (startOffset, endOffset - startOffset);
+				ForwardToNextSeparator (lightSentenceSeparators, Name, offset, out startOffset, out endOffset);
+				endOffset = ForwardToNextSeparator (lightSentenceSeparators, Name, endOffset, true);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.SentenceStart:
-				startOffset = ForwardToNextSeparator (sentenceSeparators, Name, offset, false);
-				endOffset = ForwardToNextSeparator (sentenceSeparators, Name, startOffset, false) + 1;
-				return Name.Substring (startOffset, endOffset - startOffset);
+				startOffset = ForwardToNextSeparator (lightSentenceSeparators, Name, offset, false);
+				endOffset = ForwardToNextSeparator (lightSentenceSeparators, Name, startOffset, false) + 1;
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			default:
 				throw GetNotSupportedBoundary (boundaryType);
@@ -239,29 +273,29 @@ namespace UiaAtkBridge
 			case Atk.TextBoundary.WordEnd:
 				startOffset = BackwardToNextSeparator (wordSeparators, Name, offset, false);
 				endOffset = ForwardToNextSeparator (wordSeparators, Name, offset, true);
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.WordStart:
 				startOffset = BackwardToNextSeparator (wordSeparators, Name, offset, true);
 				endOffset = ForwardToNextSeparator (wordSeparators, Name, offset, false);
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.LineEnd:
 				startOffset = BackwardToNextSeparator (newLineSeparators, Name, offset, false);
 				endOffset = ForwardToNextSeparator (newLineSeparators, Name, offset, true);
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.LineStart:
 				startOffset = BackwardToNextSeparator (newLineSeparators, Name, offset, true);
 				endOffset = ForwardToNextSeparator (newLineSeparators, Name, offset, false);
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.SentenceEnd:
 				endOffset = offset + Name.Substring (offset).IndexOf (".") + 1;
 				startOffset = Name.Substring (0, offset).LastIndexOf (".");
 				if (startOffset == -1)
 					startOffset = 0;
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.SentenceStart:
 				endOffset = offset + Name.Substring (offset).IndexOf (".") + 1;
@@ -270,7 +304,7 @@ namespace UiaAtkBridge
 				startOffset = Name.Substring (0, offset).LastIndexOf (".");
 				if (startOffset == -1)
 					startOffset = 0;
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.Char:
 				startOffset = offset;
@@ -278,20 +312,13 @@ namespace UiaAtkBridge
 					endOffset = offset;
 				else
 					endOffset = offset + 1;
-				return new String (new char[] { GetCharacterAtOffset (offset) });
+				return ReturnTextWrtOffset (startOffset);
 				
 			default:
 				throw GetNotSupportedBoundary (boundaryType);
 			}
 		}
-
-		public char GetCharacterAtOffset (int offset)
-		{
-			if (offset >= Name.Length)
-				return '\0';
-			return Name.ToCharArray () [offset];
-		}
-
+		
 		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
 			switch (boundaryType){
@@ -299,22 +326,22 @@ namespace UiaAtkBridge
 			case Atk.TextBoundary.WordEnd:
 				endOffset = BackwardToNextSeparator (wordSeparators, Name, offset, false);
 				startOffset = BackwardToNextSeparator (wordSeparators, Name, endOffset, false);
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.WordStart:
 				BackwardToNextSeparator (wordSeparators, Name, offset, out endOffset, out startOffset);
 				startOffset = BackwardToNextSeparator (wordSeparators, Name, startOffset, true);
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.LineEnd:
 				endOffset = BackwardToNextSeparator (newLineSeparators, Name, offset, false);
 				startOffset = BackwardToNextSeparator (newLineSeparators, Name, endOffset, false);
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.LineStart:
 				BackwardToNextSeparator (newLineSeparators, Name, offset, out endOffset, out startOffset);
 				startOffset = BackwardToNextSeparator (newLineSeparators, Name, startOffset, true);
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.Char:
 				startOffset = offset;
@@ -322,14 +349,14 @@ namespace UiaAtkBridge
 					endOffset = offset;
 				else
 					endOffset = offset + 1;
-				return new String (new char[] { GetCharacterAtOffset (offset) });
+				return ReturnTextWrtOffset (startOffset);
 
 			case Atk.TextBoundary.SentenceEnd:
 				endOffset = offset + Name.Substring (offset).IndexOf (".") + 1;
 				startOffset = Name.Substring (0, offset).LastIndexOf (".");
 				if (startOffset == -1)
 					startOffset = 0;
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.SentenceStart:
 				endOffset = offset + Name.Substring (offset).IndexOf (".") + 1;
@@ -338,7 +365,7 @@ namespace UiaAtkBridge
 				startOffset = Name.Substring (0, offset).LastIndexOf (".");
 				if (startOffset == -1)
 					startOffset = 0;
-				return Name.Substring (startOffset, endOffset - startOffset);
+				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			default:
 				throw GetNotSupportedBoundary (boundaryType);
@@ -382,9 +409,9 @@ namespace UiaAtkBridge
 
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
-			startOffset = 0;
-			endOffset = 0;
-			return String.Empty;
+			startOffset = selectionStartOffset;
+			endOffset = selectionEndOffset;
+			return null;
 		}
 
 		public bool AddSelection (int startOffset, int endOffset)
@@ -400,6 +427,13 @@ namespace UiaAtkBridge
 		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
 		{
 			return false;
+		}
+		
+		public char GetCharacterAtOffset (int offset)
+		{
+			if (offset >= Name.Length)
+				return '\0';
+			return Name.ToCharArray () [offset];
 		}
 
 		public bool SetCaretOffset (int offset)

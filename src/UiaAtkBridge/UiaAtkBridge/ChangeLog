@@ -1,6 +1,7 @@
 2008-05-26  Andres G. Aragoneses <aaragoneses@novell.com> 
 
-	
+	* ChangeLog: Fix GetSelection behaviour. Add draft algorithm for
+	  Sentence* parsing.
 
 2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
 
