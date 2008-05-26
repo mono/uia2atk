@@ -1,5 +1,9 @@
 2008-05-26  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* GailTester.cs: Remove debug spew.
+
+2008-05-26  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* GailTester.cs: Rather call Gtk.Application.Init() in a static ctor.
 
 2008-05-26  Andres G. Aragoneses <aaragoneses@novell.com> 

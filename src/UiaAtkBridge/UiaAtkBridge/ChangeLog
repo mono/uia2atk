@@ -1,3 +1,7 @@
+2008-05-26  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	
+
 2008-05-23  Calvin Gaisford <calvinrg@gmail.com> 
 
 	* Adapter.cs: Added the ComponentImplementor to Adapter

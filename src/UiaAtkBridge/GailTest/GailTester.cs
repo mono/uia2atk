@@ -46,7 +46,6 @@ namespace UiaAtkBridgeTest
 				lab.Text = name;
 				return Atk.TextAdapter.GetObject (lab.Accessible.Handle, false);
 			}
-			Console.WriteLine ("going to return null");
 			return null;
 		}
 	}

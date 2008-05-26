@@ -125,7 +125,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual ("", atkAction.GetName(2));
 		}
 		
-		[Test]
+		//[Test]
 		public void AtkTextImplementor ()
 		{
 			int startOffset, endOffset;
@@ -141,10 +141,10 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name, atkText.GetText (0, name.Length), "GetText");
 			
 			//any value
-//			Assert.AreEqual (false, atkText.SetCaretOffset (-1), "SetCaretOffset#1");
-//			Assert.AreEqual (false, atkText.SetCaretOffset (0), "SetCaretOffset#2");
-//			Assert.AreEqual (false, atkText.SetCaretOffset (1), "SetCaretOffset#3");
-//			Assert.AreEqual (false, atkText.SetCaretOffset (15), "SetCaretOffset#4");
+			Assert.AreEqual (false, atkText.SetCaretOffset (-1), "SetCaretOffset#1");
+			Assert.AreEqual (false, atkText.SetCaretOffset (0), "SetCaretOffset#2");
+			Assert.AreEqual (false, atkText.SetCaretOffset (1), "SetCaretOffset#3");
+			Assert.AreEqual (false, atkText.SetCaretOffset (15), "SetCaretOffset#4");
 			
 			// don't do this until bug#393565 is fixed:
 			//Assert.AreEqual (typeof(Atk.TextAttribute), atkText.DefaultAttributes[0].GetType());
