@@ -1,5 +1,9 @@
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Refactor, less code.
+
+2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: It only differs in NSelections property for now, so we
 	  should reuse the main test instead of duplicating it...
 
