@@ -450,7 +450,7 @@ namespace UiaAtkBridge
 		{
 			if (offset >= Name.Length)
 				return '\0';
-			return Name.ToCharArray () [offset];
+			return Name [offset];
 		}
 
 		public bool SetCaretOffset (int offset)

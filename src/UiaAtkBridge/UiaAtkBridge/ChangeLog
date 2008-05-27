@@ -1,5 +1,9 @@
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: No need to call ToCharArray.
+
+2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: I was mixing the explored param with the Name property
 	  so just get rid of it, we don't need it as all search functions
 	  refer to the same target. This way we also improve performance.
