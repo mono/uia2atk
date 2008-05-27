@@ -43,12 +43,12 @@ namespace UiaAtkBridgeTest
 			if (typeof(I) == typeof (Atk.Text)) {
 				Label lab = new Label ();
 				lab.Text = name;
-				LabelProvider prov = new LabelProvider(lab);
-				return new Atk.TextAdapter(new UiaAtkBridge.TextLabel (prov));
+				LabelProvider prov = new LabelProvider (lab);
+				return new Atk.TextAdapter (new UiaAtkBridge.TextLabel (prov));
 			}
 			else if (typeof(I) == typeof (Atk.Action)) {
-				TestButtonControlType button = new TestButtonControlType("Push Button", false);
-				return new Atk.ActionAdapter(new UiaAtkBridge.Button(button));
+				TestButtonControlType button = new TestButtonControlType ("Push Button", false);
+				return new Atk.ActionAdapter (new UiaAtkBridge.Button(button));
 			}
 
 			return null;
@@ -59,19 +59,19 @@ namespace UiaAtkBridgeTest
 		public void UIAButtonControlType ()
 		{
 			TestButtonControlType pushButton = 
-				new TestButtonControlType("Push Button", false);
+				new TestButtonControlType ("Push Button", false);
 
 			Atk.Action atkAction =
-				new Atk.ActionAdapter(new UiaAtkBridge.Button(pushButton));
+				new Atk.ActionAdapter (new UiaAtkBridge.Button(pushButton));
 
 			Assert.AreEqual (1, atkAction.NActions);				
-			Assert.AreEqual ("click", atkAction.GetName(0));
+			Assert.AreEqual ("click", atkAction.GetName (0));
 
-			pushButton.SetPropertyValue(AutomationElementIdentifiers.AcceleratorKeyProperty.Id, "Magic Key");
-			Assert.AreEqual ("Magic Key", atkAction.GetKeybinding(0));
+			pushButton.SetPropertyValue (AutomationElementIdentifiers.AcceleratorKeyProperty.Id, "Magic Key");
+			Assert.AreEqual ("Magic Key", atkAction.GetKeybinding (0));
 			
 			atkAction.SetDescription(0, "Some big ugly description");
-			Assert.AreEqual ("Some big ugly description", atkAction.GetDescription(0));
+			Assert.AreEqual ("Some big ugly description", atkAction.GetDescription (0));
 			
 			
 			// lot's more tests
@@ -86,51 +86,51 @@ namespace UiaAtkBridgeTest
 			Atk.Action atkAction =
 				new Atk.ActionAdapter(new UiaAtkBridge.Button(pushButton));
 
-			Assert.AreEqual (atkAction.NActions, 1);				
+			Assert.AreEqual (atkAction.NActions, 1);
 
 			// only action 0 should work
-			Assert.AreEqual (true, atkAction.DoAction(0));
-			Assert.AreEqual (false, atkAction.DoAction(-1));
-			Assert.AreEqual (false, atkAction.DoAction(1));
-			Assert.AreEqual (false, atkAction.DoAction(2));
+			Assert.AreEqual (true, atkAction.DoAction (0));
+			Assert.AreEqual (false, atkAction.DoAction (-1));
+			Assert.AreEqual (false, atkAction.DoAction (1));
+			Assert.AreEqual (false, atkAction.DoAction (2));
 
 			// Should only work on SetDecription for 0
-			Assert.AreEqual (true, atkAction.SetDescription(0, "Some great description"));
-			Assert.AreEqual (false, atkAction.SetDescription(-1, "Some false great description"));
-			Assert.AreEqual (false, atkAction.SetDescription(1, "Some false great description"));
-			Assert.AreEqual (false, atkAction.SetDescription(2, "Some false great description"));
+			Assert.AreEqual (true, atkAction.SetDescription (0, "Some great description"));
+			Assert.AreEqual (false, atkAction.SetDescription (-1, "Some false great description"));
+			Assert.AreEqual (false, atkAction.SetDescription (1, "Some false great description"));
+			Assert.AreEqual (false, atkAction.SetDescription (2, "Some false great description"));
 
 			// Should only work on GetDecription for 0, the rest should be empty string, not null
-			Assert.AreEqual ("Some great description", atkAction.GetDescription(0));
-			Assert.AreEqual ("", atkAction.GetDescription(-1));
-			Assert.AreEqual ("", atkAction.GetDescription(1));
-			Assert.AreEqual ("", atkAction.GetDescription(2));
+			Assert.AreEqual ("Some great description", atkAction.GetDescription (0));
+			Assert.AreEqual (String.Empty, atkAction.GetDescription (-1));
+			Assert.AreEqual (String.Empty, atkAction.GetDescription (1));
+			Assert.AreEqual (String.Empty, atkAction.GetDescription (2));
 
 			// With no keybinding set, everything should return ""
-			Assert.AreEqual ("", atkAction.GetKeybinding(0));
-			Assert.AreEqual ("", atkAction.GetKeybinding(-1));
-			Assert.AreEqual ("", atkAction.GetKeybinding(1));
-			Assert.AreEqual ("", atkAction.GetKeybinding(2));
+			Assert.AreEqual (String.Empty, atkAction.GetKeybinding (0));
+			Assert.AreEqual (String.Empty, atkAction.GetKeybinding (-1));
+			Assert.AreEqual (String.Empty, atkAction.GetKeybinding (1));
+			Assert.AreEqual (String.Empty, atkAction.GetKeybinding (2));
 
 			pushButton.SetPropertyValue(AutomationElementIdentifiers.AcceleratorKeyProperty.Id, "Magic Key");
 
 			// Should only work on GetKeybinding for 0, the rest should be empty string, not null
-			Assert.AreEqual ("Magic Key", atkAction.GetKeybinding(0));
-			Assert.AreEqual ("", atkAction.GetKeybinding(-1));
-			Assert.AreEqual ("", atkAction.GetKeybinding(1));
-			Assert.AreEqual ("", atkAction.GetKeybinding(2));
+			Assert.AreEqual ("Magic Key", atkAction.GetKeybinding (0));
+			Assert.AreEqual (String.Empty, atkAction.GetKeybinding (-1));
+			Assert.AreEqual (String.Empty, atkAction.GetKeybinding (1));
+			Assert.AreEqual (String.Empty, atkAction.GetKeybinding (2));
 
 			// Should only work on GetKeybinding for 0, the rest should be empty string, not null
 			Assert.AreEqual ("click", atkAction.GetLocalizedName(0));
-			Assert.AreEqual ("", atkAction.GetLocalizedName(-1));
-			Assert.AreEqual ("", atkAction.GetLocalizedName(1));
-			Assert.AreEqual ("", atkAction.GetLocalizedName(2));
+			Assert.AreEqual (String.Empty, atkAction.GetLocalizedName (-1));
+			Assert.AreEqual (String.Empty, atkAction.GetLocalizedName (1));
+			Assert.AreEqual (String.Empty, atkAction.GetLocalizedName (2));
 
 			// Should only work on GetKeybinding for 0, the rest should be empty string, not null
 			Assert.AreEqual ("click", atkAction.GetName(0));
-			Assert.AreEqual ("", atkAction.GetName(-1));
-			Assert.AreEqual ("", atkAction.GetName(1));
-			Assert.AreEqual ("", atkAction.GetName(2));
+			Assert.AreEqual (String.Empty, atkAction.GetName (-1));
+			Assert.AreEqual (String.Empty, atkAction.GetName (1));
+			Assert.AreEqual (String.Empty, atkAction.GetName (2));
 		}
 
 	}

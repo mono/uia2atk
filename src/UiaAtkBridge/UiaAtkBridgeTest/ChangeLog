@@ -1,5 +1,9 @@
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* BridgeTester.cs: Cosmetic.
+
+2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: Forgot deleting this method in my last commit, that is
 	  now already in BridgeTester.
 
