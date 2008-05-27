@@ -46,30 +46,6 @@ namespace UiaAtkBridgeTest
 		public AtkTester () {
 			instance = this;
 		}
-
-		[Test]
-		public void UIAButtonControlType ()
-		{
-			TestButtonControlType pushButton = 
-				new TestButtonControlType("Push Button", false);
-
-			Atk.Action atkAction =
-				new Atk.ActionAdapter(new UiaAtkBridge.Button(pushButton));
-
-			Assert.AreEqual (1, atkAction.NActions);				
-			Assert.AreEqual ("click", atkAction.GetName(0));
-
-			pushButton.SetPropertyValue(AutomationElementIdentifiers.AcceleratorKeyProperty.Id, "Magic Key");
-			Assert.AreEqual ("Magic Key", atkAction.GetKeybinding(0));
-			
-			atkAction.SetDescription(0, "Some big ugly description");
-			Assert.AreEqual ("Some big ugly description", atkAction.GetDescription(0));
-			
-			
-			// lot's more tests
-		}
-		
-		//[Test]
 		
 		[Test]
 		public void AtkTextImplementor ()

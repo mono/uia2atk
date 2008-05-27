@@ -1,5 +1,10 @@
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Forgot deleting this method in my last commit, that is
+	  now already in BridgeTester.
+
+2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* BridgeTester.cs, AtkTester.cs: AtkTester is an abstract class
 	  intended to be inherited by the GailTester too, so I've rather
 	  moved Calvin's test to BridgeTester, as they fit more there.
