@@ -126,21 +126,14 @@ namespace UiaAtkBridge
 			stopLateOffset = retOffset;
 		}
 		
-		private int ForwardToNextSeparator (char[] seps, string explored, int startOffset, bool stopEarly) {
-			return ForwardToNextSeparator (seps, explored, startOffset, stopEarly, false);
-		}
-		
-		private int ForwardToNextSeparator (char[] seps, string explored, int startOffset, bool stopEarly, bool findNonSeparators)
+		private int ForwardToNextSeparator (char[] seps, string explored, int startOffset, bool stopEarly)
 		{
 			int retOffset = startOffset;
-			bool anyNonSeparator = false;
-			
 			if (retOffset >= Name.Length)
 				return -1;
 			
-			while (!CharEqualsAny (explored [retOffset], seps) || (findNonSeparators && !anyNonSeparator))
+			while (!CharEqualsAny (explored [retOffset], seps))
 			{
-				anyNonSeparator = true;
 				if (retOffset == Name.Length - 1)
 					return -1;
 				retOffset++;

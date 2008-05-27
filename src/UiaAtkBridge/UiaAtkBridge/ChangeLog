@@ -1,5 +1,9 @@
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: More cleanup.
+
+2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: Cleanup.
 
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
