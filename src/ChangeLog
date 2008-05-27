@@ -1,3 +1,7 @@
+2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* samples/tests.mds: Change name to reflect new dir name.
+
 2008-05-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* UIAutomationWinforms/UIAutomationWinformsTests/LabelProviderTest.cs:

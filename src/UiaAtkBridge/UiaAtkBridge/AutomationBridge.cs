@@ -116,13 +116,14 @@ namespace UiaAtkBridge
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) provider;
 			int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-
 			if (e.StructureChangeType == StructureChangeType.ChildrenBulkAdded) {
 				if (controlTypeId == ControlType.Window.Id)
 					HandleNewWindowControlType (simpleProvider);
 				else if (controlTypeId == ControlType.Button.Id)
 					// TODO: Consider generalizing...
 					HandleNewButtonControlType (simpleProvider);
+				else if (controlTypeId == ControlType.Text.Id)
+					HandleNewLabelControlType (simpleProvider);
 				// TODO: Other providers
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
 				if (controlTypeId == ControlType.Window.Id)
@@ -176,6 +177,22 @@ namespace UiaAtkBridge
 			parentObject.AddOneChild (atkButton);
 			parentObject.AddRelationship (Atk.RelationType.Embeds,
 			                              atkButton);
+		}
+		
+		private void HandleNewLabelControlType (IRawElementProviderSimple provider)
+		{
+			IRawElementProviderSimple parentProvider =
+					provider.HostRawElementProvider;
+			
+			ParentAdapter parentObject =
+				(ParentAdapter) providerAdapterMapping [parentProvider];
+			
+			TextLabel atkLabel = new TextLabel (provider);
+			providerAdapterMapping [provider] = atkLabel;
+			
+			parentObject.AddOneChild (atkLabel);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkLabel);
 		}
 		
 #endregion

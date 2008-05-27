@@ -51,6 +51,14 @@ namespace FormTest
 			b2.Top = b.Height;
 			f1.Controls.Add (b2);
 
+			Label lab = new Label ();
+			lab.Text = "This is a test label";
+			lab.Width = f1.Width;
+			lab.Height = b.Height;
+			lab.Enabled = true;
+			lab.Top = b.Height + 30;
+			f1.Controls.Add (lab);
+			
 			Form bgf = new Form ();
 			bgf.Text = "Background Form";
 			bgf.Show ();

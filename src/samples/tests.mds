@@ -1,4 +1,4 @@
-<Combine name="tests" fileversion="2.0">
+<Combine name="Samples" fileversion="2.0">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="ManagedTests" configuration="Debug" />
