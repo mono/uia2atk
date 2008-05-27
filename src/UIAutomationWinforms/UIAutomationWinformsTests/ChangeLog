@@ -1,3 +1,9 @@
+2008-05-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ButtonProviderTest.cs: Empty test fixture.
+	* UIAutomationWinformsTests.mdp: Add ButtonProviderTest.cs and
+	  reference to System.Drawing.
+
 2008-05-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* ChangeLog: Add ChangeLog.
