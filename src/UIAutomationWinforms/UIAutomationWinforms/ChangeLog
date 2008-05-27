@@ -1,5 +1,10 @@
 2008-05-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Mono.UIAutomation.Winforms/FormListener.cs: Don't raise structure
+	  changed events for null providers.
+
+2008-05-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Mono.UIAutomation.Winforms/WindowProvider.cs: Handle label controls.
 
 2008-05-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 

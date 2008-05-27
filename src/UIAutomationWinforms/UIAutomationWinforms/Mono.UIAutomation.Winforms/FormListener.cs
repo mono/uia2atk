@@ -119,6 +119,8 @@ namespace Mono.UIAutomation.Winforms
 			//       better.
 			foreach (IRawElementProviderSimple control in provider.controlProviders.Values) {
 				// TODO: Fill in rest of eventargs
+				if (control == null)
+					break;
 				AutomationInteropProvider.RaiseStructureChangedEvent (
 				  control,
 				  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkAdded,
