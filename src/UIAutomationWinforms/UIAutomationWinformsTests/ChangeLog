@@ -1,5 +1,13 @@
 2008-05-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* CheckBoxProviderTest.cs: Add a lot of tests, almost complete.
+	* WindowProviderTest.cs, ButtonProviderTest.cs, LabelProviderTest.cs:
+	  Implement new abstract members in BaseProviderTest class.
+	* BaseProviderTest.cs: Add infrastructure for basic property tests,
+	  starting with IsEnabledPropertyTest.
+
+2008-05-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* ButtonProviderTest.cs: Empty test fixture.
 	* UIAutomationWinformsTests.mdp: Add ButtonProviderTest.cs and
 	  reference to System.Drawing.

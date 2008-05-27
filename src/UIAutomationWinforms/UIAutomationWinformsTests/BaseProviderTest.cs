@@ -26,6 +26,7 @@
 
 using System;
 using System.Reflection;
+using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
@@ -66,6 +67,50 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			FieldInfo bridgeField =
 				interopProviderType.GetField ("bridge", BindingFlags.NonPublic | BindingFlags.Static);
 			bridgeField.SetValue (null, null);
+		}
+		
+#endregion
+		
+#region Basic Tests
+		
+		[Test]
+		public virtual void IsEnabledPropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			IRawElementProviderSimple provider =
+				GetSimpleProvider (control);
+			
+			object initialVal = provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			Assert.IsNotNull (initialVal, "Property returns null");
+			Assert.IsTrue ((bool)initialVal, "Should initialize to true");
+			
+			control.Enabled = false;
+			Assert.IsFalse ((bool)provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id),
+			                "Toggle to false");
+			
+			control.Enabled = true;
+			Assert.IsTrue ((bool)provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id),
+			               "Toggle to true");
+		}
+		
+#endregion
+		
+#region Abstract Members
+	
+		protected abstract Control GetControlInstance ();
+		
+		protected abstract IRawElementProviderSimple GetSimpleProvider (Control control);
+#endregion
+	
+#region Protected Helper Methods
+		
+		protected void TestProperty (IRawElementProviderSimple provider,
+		                           AutomationProperty property,
+		                           object expectedValue)
+		{
+			Assert.AreEqual (expectedValue,
+			                 provider.GetPropertyValue (property.Id),
+			                 property.ProgrammaticName);
 		}
 		
 #endregion

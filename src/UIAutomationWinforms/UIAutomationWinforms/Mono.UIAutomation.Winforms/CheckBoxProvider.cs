@@ -42,7 +42,7 @@ namespace Mono.UIAutomation.Winforms
 	
 #region Constructors
 		
-		public CheckBoxProvider(CheckBox checkbox) : base (checkbox)
+		public CheckBoxProvider (CheckBox checkbox) : base (checkbox)
 		{
 			this.checkbox = checkbox;
 		}
@@ -56,7 +56,7 @@ namespace Mono.UIAutomation.Winforms
 			base.InitializeEvents ();
 
 			SetEvent (EventStrategyType.ToggleStateProperty,
-			          new DefaultToggleStatePropertyEvent (this, checkbox));
+			          new DefaultToggleStatePropertyEvent (this, (CheckBox) control));
 		}
 		
 #endregion

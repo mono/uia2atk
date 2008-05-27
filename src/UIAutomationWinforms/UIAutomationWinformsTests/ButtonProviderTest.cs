@@ -25,11 +25,30 @@
 //
 
 using System;
+using System.Windows.Forms;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+
+using Mono.UIAutomation.Winforms;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
 	public class ButtonProviderTest : BaseProviderTest
 	{
 		
+		
+#region BaseProviderTest Overrides
+		
+		protected override IRawElementProviderSimple GetSimpleProvider (Control control)
+		{
+			return new ButtonProvider ((Button)control);
+		}
+		
+		protected override Control GetControlInstance ()
+		{
+			return new Button ();
+		}
+		
+#endregion
 	}
 }

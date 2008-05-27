@@ -25,6 +25,7 @@
 //
 
 using System;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -42,8 +43,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void BasicPropertiesTest ()
 		{
+			// TODO: Add to form or something, need a parent
+			//       for certain things to work :-(
+			Form parentForm = new Form ();
 			Label label = new Label ();
+			parentForm.Controls.Add (label);
+			
 			LabelProvider provider = new LabelProvider (label);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.AutomationIdProperty,
+			              label.GetHashCode ());
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
@@ -59,6 +69,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			// TODO: Test properties implemented by SimpleControlProvider
 			//       (should those be in BaseProviderTest perhaps?)
+			
+			/*label.SetBounds (5, 6, 7, 8);
+			Rect rect = new Rect (parentForm.Location.X + 5,
+			                      parentForm.Location.Y + 6,
+			                      7,
+			                      8);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.BoundingRectangleProperty,
+			              rect);*/
 		}
 		
 		[Test]
@@ -72,7 +92,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			label.Text = "first";
 			
 			Assert.AreEqual (1,
-			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 bridge.AutomationEvents.Count,
 			                 "event count");
 			
 			Assert.AreEqual (provider,
@@ -88,15 +108,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 #endregion
 		
-#region Private Methods
+#region BaseProviderTest Overrides
 		
-		private void TestProperty (IRawElementProviderSimple provider,
-		                           AutomationProperty property,
-		                           object expectedValue)
+		protected override IRawElementProviderSimple GetSimpleProvider (Control control)
 		{
-			Assert.AreEqual (expectedValue,
-			                 provider.GetPropertyValue (property.Id),
-			                 property.ProgrammaticName);
+			return new LabelProvider ((Label)control);
+		}
+		
+		protected override Control GetControlInstance ()
+		{
+			return new Label ();
 		}
 		
 #endregion

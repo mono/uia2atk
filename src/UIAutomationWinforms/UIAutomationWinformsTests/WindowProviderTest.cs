@@ -305,5 +305,19 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 #endregion
 		
+#region BaseProviderTest Overrides
+		
+		protected override IRawElementProviderSimple GetSimpleProvider (Control control)
+		{
+			return new WindowProvider ((Form)control);
+		}
+		
+		protected override Control GetControlInstance ()
+		{
+			return new Form ();
+		}
+		
+#endregion
+		
 	}
 }
