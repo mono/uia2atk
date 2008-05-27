@@ -104,15 +104,12 @@ namespace UiaAtkBridge
 				bool isSep = CharEqualsAny (explored [retOffset], seps);
 				if (!isSep) {
 					anyNonSeparator = true;
+				}
+				
+				if (!isSep || (findNonSeparators && !anyNonSeparator))
 					retOffset++;
-				}
 				else
-				{
-					if (findNonSeparators && !anyNonSeparator)
-						retOffset++;
-					else
-						break;
-				}
+					break;
 			}
 
 			stopEarlyOffset = retOffset;
