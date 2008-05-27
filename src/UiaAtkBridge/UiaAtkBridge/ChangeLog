@@ -1,5 +1,12 @@
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Button.cs, TextImplementorHelper.cs, TextLabel.cs, UiaAtkBridge.mdp:
+	  Implement Atk.TextImplementor in UiaAtkButton, taking care of
+	  reusability with code that was previously in TextLabel (thanks to a
+	  new class called TextImplementorHelper). All tests pass.
+
+2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: No need to call ToCharArray.
 
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 

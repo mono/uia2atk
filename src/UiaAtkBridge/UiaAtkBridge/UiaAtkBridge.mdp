@@ -23,6 +23,7 @@
     <File name="Adapter.cs" subtype="Code" buildaction="Compile" />
     <File name="ParentAdapter.cs" subtype="Code" buildaction="Compile" />
     <File name="TextLabel.cs" subtype="Code" buildaction="Compile" />
+    <File name="TextImplementorHelper.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

@@ -22,6 +22,7 @@
 // Authors: 
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
 //      Andrés G. Aragoneses <aaragoneses@novell.com>
+//      Calvin Gaisford <cgaisford@novell.com>
 // 
 
 using System;
@@ -30,7 +31,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class Button : Adapter, Atk.ActionImplementor
+	public class Button : Adapter, Atk.ActionImplementor, Atk.TextImplementor
 	{
 		private static string default_invoke_description = "Sends a request to activate a control and initiate its single, unambiguous action.";
 		private static string default_toggle_description = "Cycles through the toggle states of a control.";
@@ -42,6 +43,9 @@ namespace UiaAtkBridge
 		private IToggleProvider			toggleProvider;
 		private string					actionDescription;
 		private string					actionName;
+		
+		private TextImplementorHelper textExpert = null;
+		private int selectionStartOffset = 0, selectionEndOffset = 0;
 		
 		// UI Automation Properties supported
 		// AutomationElementIdentifiers.AcceleratorKeyProperty.Id
@@ -74,6 +78,7 @@ namespace UiaAtkBridge
 			
 			string buttonText = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = buttonText;
+			textExpert = new TextImplementorHelper (buttonText);
 			
 			bool canFocus = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
 			if (canFocus)
@@ -186,6 +191,30 @@ namespace UiaAtkBridge
 		public override IRawElementProviderSimple Provider {
 			get { return provider; }
 		}
+
+		public int CaretOffset {
+			get {
+				return 0;
+			}
+		}
+
+		public GLib.SList DefaultAttributes {
+			get {
+				throw new NotImplementedException();
+			}
+		}
+
+		public int CharacterCount {
+			get {
+				return Name.Length;
+			}
+		}
+
+		public int NSelections {
+			get {
+				return -1;
+			}
+		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
@@ -234,6 +263,92 @@ namespace UiaAtkBridge
 		private void OnEnabled ()
 		{
 			NotifyStateChange ((ulong) Atk.StateType.Sensitive, true);
+		}
+
+		public string GetText (int startOffset, int endOffset)
+		{
+			return textExpert.GetText (startOffset, endOffset);
+		}
+
+		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
+		{
+			string ret = textExpert.GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
+			selectionStartOffset = startOffset;
+			selectionEndOffset = endOffset;
+			return ret;
+		}
+
+		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
+		{
+			string ret = textExpert.GetTextAtOffset (offset, boundaryType, out startOffset, out endOffset);
+			selectionStartOffset = startOffset;
+			selectionEndOffset = endOffset;
+			return ret;
+		}
+
+		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
+		{
+			string ret = textExpert.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
+			selectionStartOffset = startOffset;
+			selectionEndOffset = endOffset;
+			return ret;
+		}
+		
+		public char GetCharacterAtOffset (int offset)
+		{
+			return textExpert.GetCharacterAtOffset (offset);
+		}
+
+		public GLib.SList GetRunAttributes (int offset, out int start_offset, out int end_offset)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
+		{
+			throw new NotImplementedException();
+		}
+
+		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
+		{
+			throw new NotImplementedException();
+		}
+
+		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
+		{
+			startOffset = selectionStartOffset;
+			endOffset = selectionEndOffset;
+			return null;
+		}
+
+		public bool AddSelection (int startOffset, int endOffset)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool RemoveSelection (int selectionNum)
+		{
+			return false;
+		}
+
+		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
+		{
+			return false;
+		}
+
+		public bool SetCaretOffset (int offset)
+		{
+			return false;
+		}
+
+		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, Atk.TextRectangle rect)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

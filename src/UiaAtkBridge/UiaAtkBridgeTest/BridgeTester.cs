@@ -27,7 +27,7 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using MWF = System.Windows.Forms;
 
 using Mono.UIAutomation.Winforms;
 
@@ -41,10 +41,23 @@ namespace UiaAtkBridgeTest
 		public override object GetAtkObjectThatImplementsInterface <I> (BasicWidgetType type, string name)
 		{
 			if (typeof(I) == typeof (Atk.Text)) {
-				Label lab = new Label ();
-				lab.Text = name;
-				LabelProvider prov = new LabelProvider (lab);
-				return new Atk.TextAdapter (new UiaAtkBridge.TextLabel (prov));
+				
+				Atk.TextImplementor widget = null;
+				
+				switch (type) {
+				case BasicWidgetType.Label:
+					MWF.Label lab = new MWF.Label ();
+					lab.Text = name;
+					widget = new UiaAtkBridge.TextLabel (new LabelProvider (lab));
+					break;
+				case BasicWidgetType.Button:
+					MWF.Button but = new MWF.Button ();
+					but.Text = name;
+					widget = new UiaAtkBridge.Button (new ButtonProvider (but));
+					break;
+				}
+				
+				return new Atk.TextAdapter (widget);
 			}
 			else if (typeof(I) == typeof (Atk.Action)) {
 				TestButtonControlType button = new TestButtonControlType ("Push Button", false);
@@ -55,7 +68,7 @@ namespace UiaAtkBridgeTest
 		}
 		
 		
-		[Test]
+		//[Test]
 		public void UIAButtonControlType ()
 		{
 			TestButtonControlType pushButton = 
