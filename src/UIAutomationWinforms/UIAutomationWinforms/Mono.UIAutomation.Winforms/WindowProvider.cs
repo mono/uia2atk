@@ -71,6 +71,10 @@ namespace Mono.UIAutomation.Winforms
 	
 		private IRawElementProviderSimple CreateProvider (Control control)
 		{
+			Label l = control as Label;
+			if (l != null)
+				return new LabelProvider (l);
+			
 			Button b = control as Button;
 			if (b != null)
 				return new ButtonProvider (b);

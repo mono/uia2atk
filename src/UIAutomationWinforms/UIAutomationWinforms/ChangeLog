@@ -1,5 +1,9 @@
 2008-05-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Mono.UIAutomation.Winforms/WindowProvider.cs: Handle label controls.
+
+2008-05-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs: Fix NRE due to order
 	  of method calls in InitializeEvents.
 
