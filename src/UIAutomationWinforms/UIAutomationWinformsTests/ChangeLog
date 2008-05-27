@@ -1,3 +1,9 @@
+2008-05-27  Mario Carrion <mcarrion@novell..com> 
+
+	* UIAutomationWinformsTests.mdp: Updated due to added files.
+	* LinkLabelProviderTest.cs: Test added.
+	* TextBoxProviderTest.cs: Test added.
+
 2008-05-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* CheckBoxProviderTest.cs: Add a lot of tests, almost complete.
