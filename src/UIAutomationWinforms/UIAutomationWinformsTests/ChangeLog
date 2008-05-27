@@ -1,3 +1,10 @@
+2008-05-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* MockBridge.cs: Move tuple classes directly under
+	  MonoTests.Mono.UIAutomation.Winforms namespace.
+	* ButtonProviderTest.cs: Implement tests for basic properties, Invoke
+	  method, and InvokedEvent.
+
 2008-05-27  Mario Carrion <mcarrion@novell..com> 
 
 	* UIAutomationWinformsTests.mdp: Updated due to added files.

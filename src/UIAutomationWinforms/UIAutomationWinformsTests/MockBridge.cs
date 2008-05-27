@@ -33,8 +33,6 @@ using Mono.UIAutomation.Bridge;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
-	public class MockBridge : IAutomationBridge
-	{
 #region Tuple Classes
 		public class AutomationEventTuple
 		{
@@ -55,6 +53,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			public StructureChangedEventArgs e;
 		}
 #endregion
+	
+	public class MockBridge : IAutomationBridge
+	{
 		
 #region Public Members
 		public List<AutomationEventTuple> AutomationEvents =

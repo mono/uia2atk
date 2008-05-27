@@ -31,11 +31,119 @@ using System.Windows.Automation.Provider;
 
 using Mono.UIAutomation.Winforms;
 
+using NUnit.Framework;
+
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
+	[TestFixture]
 	public class ButtonProviderTest : BaseProviderTest
 	{
+#region Test Methods
 		
+		[Test]
+		public void BasicPropertiesTest ()
+		{
+			Button button = new Button ();
+			ButtonProvider provider = new ButtonProvider (button);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.Button.Id);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
+			              "button");
+			
+			// TODO: Test properties implemented by SimpleControlProvider
+			//       (should those be in BaseProviderTest perhaps?)
+		}
+		
+		[Test]
+		public void ProviderPatternTest ()
+		{
+			Button button = new Button ();
+			ButtonProvider provider =
+				new ButtonProvider (button);
+			
+			object invokeProvider = provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (invokeProvider);
+			Assert.IsTrue (invokeProvider is IInvokeProvider, "IInvokeProvider");
+		}
+		
+		[Test]
+		public void InvokeTest ()
+		{
+			Button button = new Button ();
+			ButtonProvider provider =
+				new ButtonProvider (button);
+			IInvokeProvider invokeProvider = (IInvokeProvider)
+				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			
+			button.Click += HandleButtonClick;
+			
+			buttonClicked = false;
+			invokeProvider.Invoke ();			
+			Assert.IsTrue (buttonClicked,
+			               "Click should fire when button is enabled");
+			
+			buttonClicked = false;
+			button.Enabled = false;
+			try {
+				invokeProvider.Invoke ();
+				Assert.Fail ("Expected ElementNotEnabledException");
+			} catch (ElementNotEnabledException) {
+				// Awesome, this is expected
+			} catch (Exception e) {
+				Assert.Fail ("Expected ElementNotEnabledException, " +
+				             "but got exception with message: " +
+				             e.Message);
+			}
+			Assert.IsFalse (buttonClicked,
+			                "Click should not fire when button is disabled");
+		}
+		
+		[Test]
+		public void InvokedEventTest ()
+		{
+			Button button = new Button ();
+			ButtonProvider provider =
+				new ButtonProvider (button);
+			IInvokeProvider invokeProvider = (IInvokeProvider)
+				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			
+			bridge.ResetEventLists ();
+			
+			button.PerformClick ();
+			
+			Assert.AreEqual (1,
+			                 bridge.AutomationEvents.Count,
+			                 "event count");
+			
+			AutomationEventTuple eventInfo =
+				bridge.AutomationEvents [0];
+			Assert.AreEqual (InvokePatternIdentifiers.InvokedEvent,
+			                 eventInfo.eventId,
+			                 "event type");
+			Assert.AreEqual (invokeProvider,
+			                 eventInfo.provider,
+			                 "event element");
+			Assert.AreEqual (InvokePatternIdentifiers.InvokedEvent,
+			                 eventInfo.e.EventId,
+			                 "event args event type");
+		}
+		
+#endregion
+		
+#region Private Methods
+		
+		private bool buttonClicked = false;
+		
+		private void HandleButtonClick (object sender, EventArgs e)
+		{
+			buttonClicked = true;
+		}
+		
+#endregion
 		
 #region BaseProviderTest Overrides
 		
