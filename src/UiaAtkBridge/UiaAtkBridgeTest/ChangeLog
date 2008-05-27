@@ -1,5 +1,11 @@
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* BridgeTester.cs, AtkTester.cs: AtkTester is an abstract class
+	  intended to be inherited by the GailTester too, so I've rather
+	  moved Calvin's test to BridgeTester, as they fit more there.
+
+2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: Hooorraaayyyy, all tests finally pass!! Now I'll start
 	  the cleanup... damned atk interface.
 
