@@ -1,3 +1,8 @@
+2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* AtkTester.cs: Hooorraaayyyy, all tests finally pass!! Now I'll start
+	  the cleanup... damned atk interface.
+
 2008-05-26  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTester.cs: Add more GetSelection tests.

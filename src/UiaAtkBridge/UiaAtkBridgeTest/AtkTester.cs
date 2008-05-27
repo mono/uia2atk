@@ -213,6 +213,12 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#26");
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#27");
 			
+			Assert.AreEqual (false, atkText.SetSelection (0, 0, 0), "SetSelection#3");
+			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#28");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#29");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#30");
+			
+			
 			expected = "test ";
 			Assert.AreEqual (expected, 
 				atkText.GetTextAtOffset (12, Atk.TextBoundary.WordStart, out startOffset, out endOffset),
@@ -274,7 +280,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char,eo");
 
 
-			//GetTextAfterOffset: trickyness in itself
+			//GetTextAfterOffset
 			expected = " sentence";
 			Assert.AreEqual (expected, 
 				atkText.GetTextAfterOffset (12, Atk.TextBoundary.WordEnd, out startOffset, out endOffset),
@@ -302,10 +308,17 @@ namespace UiaAtkBridgeTest
 				"GetTextAfterOffset,LineStart");
 			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,LineStart,so");
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,LineStart,eo");
-			
+
 			expected = "\r\nSecond line.";
 			Assert.AreEqual (expected,
 				atkText.GetTextAfterOffset (18, Atk.TextBoundary.SentenceEnd, out startOffset, out endOffset),
+				"GetTextAfterOffset,SentenceEnd");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,SentenceEnd,so");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,SentenceEnd,eo");
+
+			expected = " Other phrase.";
+			Assert.AreEqual (expected,
+				atkText.GetTextAfterOffset (24, Atk.TextBoundary.SentenceEnd, out startOffset, out endOffset),
 				"GetTextAfterOffset,SentenceEnd");
 			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,SentenceEnd,so");
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,SentenceEnd,eo");
@@ -390,7 +403,8 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextBeforeOffset,SentenceStart,eo");
 			
 			Assert.AreEqual ("n",
-				atkText.GetTextBeforeOffset (18, Atk.TextBoundary.Char, out startOffset, out endOffset));
+				atkText.GetTextBeforeOffset (18, Atk.TextBoundary.Char, out startOffset, out endOffset),
+				"GetTextBeforeOffset,Char");
 			Assert.AreEqual (17, startOffset, "GetTextBeforeOffset,Char,so");
 			Assert.AreEqual (18, endOffset, "GetTextBeforeOffset,Char,eo");
 			Assert.AreEqual ("e",

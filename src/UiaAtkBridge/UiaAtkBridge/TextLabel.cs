@@ -89,36 +89,135 @@ namespace UiaAtkBridge
 			return Name.Substring (startOffset, endOffset);
 		}
 
-//		private void ForwardToNextSeparator (char[] hardSeps, char[] lightSeps, string explored, int startOffset, out int stopEarlyOffset, out int stopLateOffset)
-//		{
-//			int retOffset = startOffset;
-//			while (!CharEqualsAny (explored [retOffset], seps))
-//				retOffset++;
-//			stopEarlyOffset = retOffset;
-//			while (CharEqualsAny (explored [retOffset], seps))
-//				retOffset++;
-//			stopLateOffset = retOffset;
-//		}
+		private int StringAtOffsetEqualsAny (string explored, int offset, string[] candidates)
+		{
+			return StringAtOffsetEqualsAny (explored, offset, candidates, 0);
+		}
+		
+		private int StringAtOffsetEqualsAny (string explored, int offset, string[] candidates, int mandatoryLen)
+		{
+			Console.ReadLine();
+			foreach(string candidate in candidates) {
+				if ((mandatoryLen != 0) && (candidate.Length != mandatoryLen))
+					continue;
+								Console.WriteLine ("pedeando "+offset);
+				bool match = true;
+				for (int i = candidate.Length - 1; i >= 0; i--) {
+					int offsetInExplored = offset - candidate.Length + i + 1;
+					Console.WriteLine ("offset in cand({0}), offset in exp({1})", i, offsetInExplored);
+					if ((offsetInExplored < 0) ||
+					    (candidate [i] != explored [offsetInExplored])) {
+						match = false;
+						break;
+					}
+				}
+				if (match){Console.WriteLine ("salgot candidate({0}){1}", candidate, candidate.Length);
+					return candidate.Length;}
+
+			}
+			Console.WriteLine ("salgof");
+			return 0;
+		}
+		
+		private void ForwardToNextSeparator (string[] hardSeps, string[] lightSeps, string explored, int startOffset, out int stopEarlyOffset, out int stopLateOffset)
+		{try{
+			Console.WriteLine ("FTNS");
+			int retOffset = startOffset;
+			bool goOn = true, lightSepAppeared = false;
+			while (goOn) {
+				Console.WriteLine ("I'm checking [{0}]({1})", explored[retOffset], retOffset);
+				if ((StringAtOffsetEqualsAny (explored, retOffset, hardSeps) == 1) ||
+				    (lightSepAppeared && (StringAtOffsetEqualsAny (explored, retOffset, lightSeps) == 0)
+					&& StringAtOffsetEqualsAny (explored, retOffset + 1, hardSeps, 2) == 2) ) {
+					goOn = false;
+					Console.WriteLine ("goon==false");
+				}
+				else if (StringAtOffsetEqualsAny (explored, retOffset, hardSeps) == 2)
+				{
+					Console.WriteLine ("goon==false pq s--2");
+					goOn = false;
+					retOffset--;
+				}
+				else if (!lightSepAppeared && (StringAtOffsetEqualsAny (explored, retOffset, lightSeps)>0)) {
+					lightSepAppeared = true;
+					Console.WriteLine ("lightSepAppeared==true");
+				}
+				retOffset++;
+			}
+			Console.WriteLine ("stopEO [{0}]", retOffset);
+			stopEarlyOffset = retOffset;
+			if (!lightSepAppeared)
+				while (StringAtOffsetEqualsAny (explored, retOffset, hardSeps)>0 && retOffset < explored.Length)
+					retOffset++;
+			Console.WriteLine ("stopLO [{0}]", retOffset);
+			stopLateOffset = retOffset;
+			}catch{stopEarlyOffset = 0;stopLateOffset = 0;Console.WriteLine ("DIO CANE");return;}
+		}
 		
 		private void ForwardToNextSeparator (char[] seps, string explored, int startOffset, out int stopEarlyOffset, out int stopLateOffset)
 		{
+			ForwardToNextSeparator (seps, explored, startOffset, out stopEarlyOffset, out stopLateOffset, false);
+		}
+		
+		private void ForwardToNextSeparator (char[] seps, string explored, int startOffset, 
+		                                      out int stopEarlyOffset, out int stopLateOffset, bool findNonSeparators)
+		{
+			//Console.WriteLine ("me traen "+startOffset);
 			int retOffset = startOffset;
-			while (!CharEqualsAny (explored [retOffset], seps))
-				retOffset++;
+			bool anyNonSeparator = false;
+			//Console.WriteLine ("voy a explorar ({0})", explored[retOffset]);
+			while (true) {
+				bool isSep = CharEqualsAny (explored [retOffset], seps);
+				if (!isSep) {
+					anyNonSeparator = true;
+					retOffset++;
+				}
+				else
+				{
+					//Console.WriteLine ("soy sep");
+					if (findNonSeparators) {
+						//Console.WriteLine ("soy sep");
+						if (anyNonSeparator)
+							break;
+						else
+							retOffset++;
+					}
+					else {
+						break;
+					}
+				}
+			}
+
 			stopEarlyOffset = retOffset;
+			//Console.WriteLine ("dewelgo "+stopEarlyOffset);
 			while (CharEqualsAny (explored [retOffset], seps))
 				retOffset++;
 			stopLateOffset = retOffset;
 		}
 		
-		private int ForwardToNextSeparator (char[] seps, string explored, int startOffset, bool stopEarly)
+		private int ForwardToNextSeparator (char[] seps, string explored, int startOffset, bool stopEarly) {
+			return ForwardToNextSeparator (seps, explored, startOffset, stopEarly, false);
+		}
+		
+		private int ForwardToNextSeparator (char[] seps, string explored, int startOffset, bool stopEarly, bool findNonSeparators)
 		{
 			int retOffset = startOffset;
-			while (!CharEqualsAny (explored [retOffset], seps))
+			bool anyNonSeparator = false;
+			
+			if (retOffset >= Name.Length)
+				return -1;
+			
+			while (!CharEqualsAny (explored [retOffset], seps) || (findNonSeparators && !anyNonSeparator))
+			{
+				anyNonSeparator = true;
+				if (retOffset == Name.Length - 1)
+					return -1;
 				retOffset++;
-			if (stopEarly)
+			}
+			if (stopEarly || (retOffset == Name.Length - 1))
 				return retOffset;
-			while (CharEqualsAny (explored [retOffset], seps))
+			
+			while (CharEqualsAny (explored [retOffset], seps) && (retOffset != Name.Length - 1))
 				retOffset++;
 			return retOffset;
 		}
@@ -193,9 +292,12 @@ namespace UiaAtkBridge
 		//TODO: use regexp?
 		private static char [] wordSeparators = new char[] { ' ', '\n', '\r', '.', '\t' };
 		private static char [] newLineSeparators = new char[] { '\n', '\r' };
+		private static char [] sentenceSeparators = new char[] { '\n', '\r', '.' };
+		private static char [] softSentenceSeparators = new char[] { '.', ':'};
 		
-		private static char [] lightSentenceSeparators = new char[] { '.', '\n', '\r' };
-		private static char [] hardSentenceSeparators = new char[] { '\n', '\r' };
+		private static string [] lightSentenceSeparators = new string[] { "." };
+		private static string [] hardSentenceSeparators = new string[] { "\n", "\r\n" };
+		
 
 		private int selectionStartOffset = 0, selectionEndOffset = 0;
 		
@@ -203,9 +305,11 @@ namespace UiaAtkBridge
 		{
 			selectionStartOffset = startOffset;
 			selectionEndOffset = endOffset;
-				
+			
+			try{
 			//TODO: optimize?
 			return Name.Substring (startOffset, endOffset - startOffset);
+			} catch { return Name; }
 		}
 		
 		// endOffset == startOffset + 1
@@ -220,6 +324,8 @@ namespace UiaAtkBridge
 		
 		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
+			Console.WriteLine ("AfterOffset");
+			
 			switch (boundaryType){
 			case Atk.TextBoundary.Char:
 				
@@ -252,13 +358,43 @@ namespace UiaAtkBridge
 				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.SentenceEnd:
-				ForwardToNextSeparator (lightSentenceSeparators, Name, offset, out startOffset, out endOffset);
-				endOffset = ForwardToNextSeparator (lightSentenceSeparators, Name, endOffset, true);
+				ForwardToNextSeparator (sentenceSeparators, Name, offset, out startOffset, out endOffset, true);
+				endOffset = ForwardToNextSeparator (sentenceSeparators, Name, endOffset, true);
+				
+				Console.WriteLine ("after 2({0},{1}:{2})", Name.Substring (startOffset, endOffset - startOffset), startOffset, endOffset);
+				int testStartOffset, nextStartOffset, testEndOffset, nextEndOffset;
+				ForwardToNextSeparator(softSentenceSeparators, Name, startOffset, out testStartOffset, out nextStartOffset);
+				Console.WriteLine ("so:{0},tso{1},nos{2}", startOffset, testStartOffset, nextStartOffset);
+				if (testStartOffset == startOffset)
+					startOffset = nextStartOffset;
+
+				//if (testStartOffset == startOffset + 1)
+				//	startOffset = nextStartOffset;
+//				Console.WriteLine ("after 2({0},{1}:{2})", Name.Substring (startOffset, endOffset - startOffset), startOffset, endOffset);
+				//startOffset = ForwardToNextSeparator (softSentenceSeparators, Name, startOffset, false);
+				
+				//toeslo q vale
+				//endOffset = ForwardToNextSeparator (softSentenceSeparators, Name, startOffset, false);
+				ForwardToNextSeparator(softSentenceSeparators, Name, startOffset, out testEndOffset, out nextEndOffset);
+				if (testEndOffset == endOffset)
+					endOffset = nextEndOffset;
+Console.WriteLine ("eo:{0},teo{1},neo{2}", endOffset, testEndOffset, nextEndOffset);
+				//endOffset = nextEndOffset;
+				
+				//nextEndOffset = ForwardToNextSeparator (softSentenceSeparators, Name, startOffset, false);
+				
+				//if (nextEndOffset != -1)
+				//	endOffset = nextEndOffset;
+//				Console.WriteLine ("after 3({0}:{1})", startOffset, endOffset);
+				
 				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.SentenceStart:
-				startOffset = ForwardToNextSeparator (lightSentenceSeparators, Name, offset, false);
-				endOffset = ForwardToNextSeparator (lightSentenceSeparators, Name, startOffset, false) + 1;
+				startOffset = ForwardToNextSeparator (sentenceSeparators, Name, offset, false);
+				endOffset = ForwardToNextSeparator (sentenceSeparators, Name, startOffset, false);
+				
+				endOffset = ForwardToNextSeparator (wordSeparators, Name, endOffset, false);
+				
 				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			default:
@@ -268,6 +404,7 @@ namespace UiaAtkBridge
 		
 		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
+			Console.WriteLine ("AtOffset");
 			switch (boundaryType){
 
 			case Atk.TextBoundary.WordEnd:
@@ -291,19 +428,20 @@ namespace UiaAtkBridge
 				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.SentenceEnd:
-				endOffset = offset + Name.Substring (offset).IndexOf (".") + 1;
-				startOffset = Name.Substring (0, offset).LastIndexOf (".");
-				if (startOffset == -1)
-					startOffset = 0;
+				startOffset = BackwardToNextSeparator (sentenceSeparators, Name, offset, false);
+				endOffset = ForwardToNextSeparator (sentenceSeparators, Name, offset, true);
+
+				int testEndOffset, nextEndOffset;
+				ForwardToNextSeparator(softSentenceSeparators, Name, startOffset, out testEndOffset, out nextEndOffset);
+				if (testEndOffset == endOffset)
+					endOffset = nextEndOffset;
+				//endOffset = ForwardToNextSeparator (softSentenceSeparators, Name, startOffset, false);
+				
 				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.SentenceStart:
-				endOffset = offset + Name.Substring (offset).IndexOf (".") + 1;
-				while ((Name [endOffset] == '\r') || (Name [endOffset] == '\n'))
-					endOffset++;
-				startOffset = Name.Substring (0, offset).LastIndexOf (".");
-				if (startOffset == -1)
-					startOffset = 0;
+				startOffset = BackwardToNextSeparator (sentenceSeparators, Name, offset, true);
+				endOffset = ForwardToNextSeparator (sentenceSeparators, Name, offset, false);
 				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.Char:
@@ -321,6 +459,7 @@ namespace UiaAtkBridge
 		
 		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
+			Console.WriteLine ("BefforeOffset");
 			switch (boundaryType){
 
 			case Atk.TextBoundary.WordEnd:
@@ -344,27 +483,19 @@ namespace UiaAtkBridge
 				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.Char:
-				startOffset = offset;
-				if (offset >= Name.Length)
-					endOffset = offset;
-				else
-					endOffset = offset + 1;
+				Console.WriteLine ("offset is " + offset);
+				startOffset = offset - 1;
+				endOffset = offset;
 				return ReturnTextWrtOffset (startOffset);
 
 			case Atk.TextBoundary.SentenceEnd:
-				endOffset = offset + Name.Substring (offset).IndexOf (".") + 1;
-				startOffset = Name.Substring (0, offset).LastIndexOf (".");
-				if (startOffset == -1)
-					startOffset = 0;
+				endOffset = BackwardToNextSeparator (sentenceSeparators, Name, offset, false);
+				startOffset = BackwardToNextSeparator (sentenceSeparators, Name, endOffset, false);
 				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			case Atk.TextBoundary.SentenceStart:
-				endOffset = offset + Name.Substring (offset).IndexOf (".") + 1;
-				while ((Name [endOffset] == '\r') || (Name [endOffset] == '\n'))
-					endOffset++;
-				startOffset = Name.Substring (0, offset).LastIndexOf (".");
-				if (startOffset == -1)
-					startOffset = 0;
+				BackwardToNextSeparator (sentenceSeparators, Name, offset, out endOffset, out startOffset);
+				startOffset = BackwardToNextSeparator (sentenceSeparators, Name, startOffset, true);
 				return ReturnTextWrtOffset (startOffset, endOffset);
 				
 			default:
