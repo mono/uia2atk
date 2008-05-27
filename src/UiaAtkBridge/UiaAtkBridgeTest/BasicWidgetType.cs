@@ -25,38 +25,11 @@
 
 using System;
 
-using NUnit.Framework;
-
 namespace UiaAtkBridgeTest
 {
-	
-	[TestFixture]
-	public class GailTester : AtkTester {
-
-		static GailTester ()
-		{
-			Gtk.Application.Init ();
-		}
-		
-		public override object GetAtkObjectThatImplementsInterface <I> (BasicWidgetType type, string text)
-		{
-			if (typeof(I) == typeof(Atk.Text)) 
-			{
-				Gtk.Widget widget = null;
-				switch (type) {
-				case BasicWidgetType.Label:
-					widget = new Gtk.Label ();
-					((Gtk.Label)widget).Text = text;
-					break;
-				case BasicWidgetType.Button:
-					widget = new Gtk.Button ();
-					((Gtk.Button)widget).Label = text;
-					break;
-				}
-				return Atk.TextAdapter.GetObject (widget.Accessible.Handle, false);
-			}
-			return null;
-		}
-		
+	public enum BasicWidgetType
+	{
+		Label,
+		Button
 	}
 }

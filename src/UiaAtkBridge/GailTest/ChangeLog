@@ -1,5 +1,11 @@
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* GailTester.cs: Rearchitecture to prepare testing the Atk.Text
+	  interface of a button, as it seems implemented with slight
+	  differences.
+
+2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* GailTester.cs: Hooorraaayyyy, all tests finally pass!! Now I'll start
 	  the cleanup... damned atk interface.
 

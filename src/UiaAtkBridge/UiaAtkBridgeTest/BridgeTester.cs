@@ -38,7 +38,7 @@ namespace UiaAtkBridgeTest
 	[TestFixture]
 	public class BridgeTester : AtkTester {
 		
-		public override object GetAtkObjectThatImplementsInterface <I> (string name)
+		public override object GetAtkObjectThatImplementsInterface <I> (BasicWidgetType type, string name)
 		{
 			if (typeof(I) == typeof (Atk.Text)) {
 				Label lab = new Label ();
