@@ -1,5 +1,9 @@
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Reduce if-else block (more cleanup).
+
+2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: More cleanup.
 
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 

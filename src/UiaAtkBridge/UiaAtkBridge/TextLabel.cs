@@ -108,15 +108,10 @@ namespace UiaAtkBridge
 				}
 				else
 				{
-					if (findNonSeparators) {
-						if (anyNonSeparator)
-							break;
-						else
-							retOffset++;
-					}
-					else {
+					if (findNonSeparators && !anyNonSeparator)
+						retOffset++;
+					else
 						break;
-					}
 				}
 			}
 
