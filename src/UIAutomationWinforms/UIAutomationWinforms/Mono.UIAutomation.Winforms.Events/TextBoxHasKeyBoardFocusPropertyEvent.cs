@@ -34,22 +34,22 @@ namespace Mono.UIAutomation.Winforms.Events
 	{
 		
 		public TextBoxHasKeyBoardFocusPropertyEvent (IRawElementProviderSimple provider, 
-		                                             TextBox textbox) :
-			base (provider, textbox)
+		                                             TextBoxBase textBoxBase) :
+			base (provider, textBoxBase)
 		{
-			this.textbox = textbox;
+			this.textBoxBase = textBoxBase;
 		}
 		
 		public override void Connect ()
 		{
-			textbox.Enter += new EventHandler (OnEnterLeave);
-			textbox.Leave += new EventHandler (OnEnterLeave);
+			textBoxBase.Enter += new EventHandler (OnEnterLeave);
+			textBoxBase.Leave += new EventHandler (OnEnterLeave);
 		}
 
 		public override void Disconnect ()
 		{
-			textbox.Enter -= new EventHandler (OnEnterLeave);
-			textbox.Leave -= new EventHandler (OnEnterLeave);
+			textBoxBase.Enter -= new EventHandler (OnEnterLeave);
+			textBoxBase.Leave -= new EventHandler (OnEnterLeave);
 		}
 		
 		private void OnEnterLeave (object sender, EventArgs e)
@@ -57,6 +57,6 @@ namespace Mono.UIAutomation.Winforms.Events
 			HasKeyboardFocusPropertyEvent ();
 		}
 
-		private TextBox textbox;
+		private TextBoxBase textBoxBase;
 	}
 }

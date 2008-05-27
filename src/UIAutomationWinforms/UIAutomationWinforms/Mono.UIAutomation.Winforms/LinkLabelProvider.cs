@@ -56,7 +56,7 @@ namespace Mono.UIAutomation.Winforms
 			base.InitializeEvents ();
 
 			SetEvent (EventStrategyType.InvokedEvent, 
-			          new LinkLabelInvokedEvent (this, linkLabel));
+			          new LinkLabelInvokedEvent (this, control as LinkLabel));
 			//TODO: Missing event: AutomationFocusChangedEvent
 		}
 

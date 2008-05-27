@@ -1,3 +1,15 @@
+2008-05-27  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Fixed 
+	NullReferenceException when control.Parent is null.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Added missing 
+	interfaces. Using TextBoxBase instead of TextBox. Added logic to support
+	Document and Edit control types.
+	* Mono.UIAutomation.Winforms/LinkLabelProvider.cs: Fixed 
+	NullReferenceException because of InitializeEvents.
+	* Mono.UIAutomation.Winforms.Events/TextBoxHasKeyBoardFocusPropertyEvent.cs:
+	Using TextBoxBase instead of TextBox.
+
 2008-05-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/FormListener.cs: Don't raise structure

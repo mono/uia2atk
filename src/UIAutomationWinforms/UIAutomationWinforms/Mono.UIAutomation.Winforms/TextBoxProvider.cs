@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
@@ -32,31 +33,31 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms
 {
 
-	// TODO: Supposly this control should support Edit and Document control 
-	// types (according to http://www.mono-project.com/Accessibility:_Control_Status)
-	// however right now only Edit control type is being implemented.
-	public class TextBoxProvider : SimpleControlProvider
+	// TODO: Implement ITextProvider, IScrollProvider
+	public class TextBoxProvider : SimpleControlProvider, IValueProvider, ITextProvider, IScrollProvider
 	{
-#region Private section
+#region Protected section
 		
-		private TextBox textbox;
-	
+		protected TextBoxBase textBoxBase;
+
 #endregion
 	
 #region Constructors
 
-		public TextBoxProvider (TextBox textbox) : base (textbox)
+		public TextBoxProvider (TextBoxBase textBoxBase) : base (textBoxBase)
 		{
-			this.textbox = textbox;
+			this.textBoxBase = textBoxBase;
 		}
 
 #endregion
-		
+
 #region Protected Methods
 
 		protected override void InitializeEvents ()
 		{
 			base.InitializeEvents ();
+			
+			// Edit
 
 			// NameProperty. uses control.Name to emit changes, so right now
 			// we're "cleaning" the previous value.
@@ -70,7 +71,19 @@ namespace Mono.UIAutomation.Winforms
 			// TODO: TextSelectionChangedEvent: using textbox.SelectionLength != 0?	
 			// TODO: NameProperty property-changed event.
 			// TODO: ValuePatternIdentifiers.ValueProperty property-changed event.
-			// TODO: RangeValuePatternIdentifiers.ValueProperty property-changed event.
+			
+			// Document
+			
+			// TODO: AutomationFocusChangedEvent
+			// TODO: HorizontallyScrollableProperty property-changed event.
+			// TODO: HorizontalScrollPercentProperty property-changed event.
+			// TODO: HorizontalViewSizeProperty property-changed event.
+			// TODO: VerticalScrollPercentProperty property-changed event.
+			// TODO: VerticallyScrollableProperty property-changed event.
+			// TODO: VerticalViewSizeProperty property-changed event.
+			// TODO: InvalidatedEvent (DEPENDS)
+			// TODO: TextSelectionChangedEvent
+			// TODO: ValueProperty property-changed event. (NEVER)
 		}
 
 #endregion
@@ -79,36 +92,140 @@ namespace Mono.UIAutomation.Winforms
 	
 		public override object GetPatternProvider (int patternId)
 		{
-			// ITextProvider, IValueProvider, IRangeValueProvider
+			if (textBoxBase.Multiline) {
+				if (patternId == ScrollPatternIdentifiers.Pattern.Id
+				    || patternId == TextPatternIdentifiers.Pattern.Id)
+					return this;
+			} else {
+				if (patternId == ValuePatternIdentifiers.Pattern.Id
+					|| patternId == TextPatternIdentifiers.Pattern.Id)
+					return this;
+			}
 			return null;
 		}
-		
+
 		public override object GetPropertyValue (int propertyId)
 		{
-			// Edit Control Type properties
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Edit.Id;
-			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return control.Name;
+				return textBoxBase.Multiline ? ControlType.Document.Id : ControlType.Edit.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "edit";
+				return textBoxBase.Multiline ? "document" : "edit";
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) {
 				// TODO: We are using TabIndex to evaluate whether the previous control
 				// is Label (that way we know if this label is associated to the TextBox.
 				// Right?)
-				if (textbox.Parent != null) {
-					Label associatedLabel = textbox.Parent.GetNextControl (textbox, true) as Label;
+				if (textBoxBase.Parent != null) {
+					Label associatedLabel = textBoxBase.Parent.GetNextControl (textBoxBase, true) as Label;
 					if (associatedLabel != null)
 						return associatedLabel;
 				}
 				return null;
-			} else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
-				return (textbox.UseSystemPasswordChar || (int) textbox.PasswordChar != 0);
-			else
+			} else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id) {
+				TextBox textBox = textBoxBase as TextBox;
+				if (textBox != null)
+					return (textBox.UseSystemPasswordChar || (int) textBox.PasswordChar != 0);
+				else
+					return null;
+			} else
 				return base.GetPropertyValue (propertyId);
 		}
-
+		
 #endregion
+		
+#region IValueProvider Members
+		
+		public bool IsReadOnly {
+			get {
+				return textBoxBase.ReadOnly;
+			}
+		}
+
+		public string Value {
+			get {
+				return textBoxBase.Text;
+			}
+		}
+
+		public void SetValue (string value)
+		{
+			if (IsReadOnly)
+				throw new ElementNotEnabledException ();
+
+			textBoxBase.Text = value;
+		}
+		
+#endregion
+		
+#region ITextProvider Members
+		
+		public ITextRangeProvider DocumentRange { 
+			get { throw new NotImplementedException (); }
+		}
+		
+		public SupportedTextSelection SupportedTextSelection {
+			get { throw new NotImplementedException (); }
+		}
+
+		public ITextRangeProvider[] GetSelection ()
+		{
+			throw new NotImplementedException ();
+		}
+		
+		public ITextRangeProvider[] GetVisibleRanges ()
+		{
+			throw new NotImplementedException ();
+		}
+		
+		public ITextRangeProvider RangeFromChild (IRawElementProviderSimple childElement) 
+		{
+			throw new NotImplementedException ();
+		}
+		
+		public ITextRangeProvider RangeFromPoint (Point screenLocation)
+		{
+			throw new NotImplementedException ();
+		}
+		
+#endregion		
+		
+#region IScrollProvider Members
+		
+		public bool HorizontallyScrollable { 
+			get { throw new NotImplementedException (); }
+		}
+		
+		public double HorizontalScrollPercent { 
+			get { throw new NotImplementedException (); }
+		}
+		
+		public double HorizontalViewSize { 
+			get { throw new NotImplementedException (); }
+		}
+		
+		public bool VerticallyScrollable { 
+			get { throw new NotImplementedException (); }
+		}
+		
+		public double VerticalScrollPercent { 
+			get { throw new NotImplementedException (); }
+		}
+		
+		public double VerticalViewSize {
+			get { throw new NotImplementedException (); }
+		}
+
+		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount)
+		{
+			throw new NotImplementedException ();
+		}
+		
+		public void SetScrollPercent (double horizontalPercent, double verticalPercent) 
+		{
+			throw new NotImplementedException ();
+		}
+		
+#endregion
+
 
 	}
 

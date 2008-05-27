@@ -50,7 +50,7 @@ namespace Mono.UIAutomation.Winforms
 		
 #region Constructors
 		
-		public SimpleControlProvider (Control control)
+		protected SimpleControlProvider (Control control)
 		{
 			this.control = control;
 			
@@ -117,9 +117,12 @@ namespace Mono.UIAutomation.Winforms
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return true;
-			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-				return Helper.RectangleToRect (control.Parent.RectangleToScreen (control.Bounds));
-			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) 	 
+			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+				if (control.Parent == null)
+					return null;
+				else
+					return Helper.RectangleToRect (control.Parent.RectangleToScreen (control.Bounds));
+			} else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) 	 
 				return null;
 			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id) {
 				if (control.Visible == false)
