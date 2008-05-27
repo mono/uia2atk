@@ -406,7 +406,7 @@ namespace UiaAtkBridgeTest
 			// don't do this until bug#393565 is fixed:
 			//Assert.AreEqual (typeof(Atk.TextAttribute), atkText.DefaultAttributes[0].GetType());
 
-			Assert.AreEqual (0, atkText.NSelections, "NSelections#1");
+			Assert.AreEqual (-1, atkText.NSelections, "NSelections#1");
 			
 			// you cannot select a label AFAIK so, all zeroes returned!
 			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#1");
@@ -433,13 +433,13 @@ namespace UiaAtkBridgeTest
 			
 			//did NSelections changed?
 			Assert.AreEqual (false, atkText.SetSelection (1, 2, 3), "SetSelection#3");
-			Assert.AreEqual (0, atkText.NSelections, "NSelections#2");
+			Assert.AreEqual (-1, atkText.NSelections, "NSelections#2");
 			Assert.AreEqual (false, atkText.RemoveSelection (0), "RemoveSelection#1");
-			Assert.AreEqual (0, atkText.NSelections, "NSelections#3");
+			Assert.AreEqual (-1, atkText.NSelections, "NSelections#3");
 			Assert.AreEqual (false, atkText.RemoveSelection (1), "RemoveSelection#2");
-			Assert.AreEqual (0, atkText.NSelections, "NSelections#4");
+			Assert.AreEqual (-1, atkText.NSelections, "NSelections#4");
 			Assert.AreEqual (false, atkText.RemoveSelection (-1), "RemoveSelection#3");
-			Assert.AreEqual (0, atkText.NSelections, "NSelections#5");
+			Assert.AreEqual (-1, atkText.NSelections, "NSelections#5");
 
 
 			//IMPORTANT NOTE about GetText*Offset methods [GetTextAtOffset(),GetTextAfterOffset(),GetTextBeforeOffset()]:
@@ -455,7 +455,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,WordEnd,eo");
 			
 			//test selections after obtaining text with a different API than GetText
-			Assert.AreEqual (0, atkText.NSelections, "NSelections#6");
+			Assert.AreEqual (-1, atkText.NSelections, "NSelections#6");
 			//NSelections == 0, however we have one selection, WTF?:
 			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#16");
 			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#17");

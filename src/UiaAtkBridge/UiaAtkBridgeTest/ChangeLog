@@ -1,5 +1,10 @@
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: It only differs in NSelections property for now, so we
+	  should reuse the main test instead of duplicating it...
+
+2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* BridgeTester.cs, UiaAtkBridgeTest.mdp, AtkTester.cs,
 	  BasicWidgetType.cs: Rearchitecture to prepare testing the Atk.Text
 	  interface of a button, as it seems implemented with slight
