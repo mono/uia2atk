@@ -1,3 +1,8 @@
+2008-05-28  Mario Carrion <mcarrion@novell.com> 
+
+	* LinkLabelProviderTest.cs: Fixed Test.
+	* TextBoxProviderTest.cs: New test added TextChangedEventTest.
+
 2008-05-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* GroupBoxProviderTest.cs, UIAutomationWinformsTests.mdp: Add

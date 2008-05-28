@@ -202,6 +202,24 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 #endregion
 		
+#region Events tests
+		
+		[Test]
+		public void TextChangedEventTest ()
+		{
+			TextBox textBox = new TextBox ();
+			TextBoxProvider provider = new TextBoxProvider (textBox);
+
+			bridge.ResetEventLists ();			
+			textBox.Text = "Changed!";
+
+			Assert.AreEqual (1,
+			                 bridge.AutomationEvents.Count,
+			                 "Event count");
+		}
+		
+#endregion
+		
 #region BaseProviderTest Overrides
 		
 		protected override IRawElementProviderSimple GetSimpleProvider (Control control)

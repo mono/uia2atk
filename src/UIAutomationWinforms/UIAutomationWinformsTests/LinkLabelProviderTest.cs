@@ -77,13 +77,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			LinkLabel linkLabel = new LinkLabel ();
 			LinkLabelProvider provider = new LinkLabelProvider (linkLabel);
 			
+			bridge.ResetEventLists ();
+			
 			IInvokeProvider invokeProvider = (IInvokeProvider) 
 				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			
 			invokeProvider.Invoke ();
 			
-			bridge.ResetEventLists ();
 			Assert.AreEqual (1,
-			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 bridge.AutomationEvents.Count,
 			                 "Event count");
 		}
 		
