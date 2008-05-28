@@ -1,5 +1,20 @@
 2008-05-28  Mario Carrion <mcarrion@novell.com> 
 
+	* CheckBoxProviderTest.cs: Updated due to ProviderFactory.GetProvider
+	signature changed.
+	* BaseProviderTest.cs: Updated due to ProviderFactory.GetProvider
+	signature changed.
+	* ButtonProviderTest.cs: Updated due to ProviderFactory.GetProvider
+	signature changed.
+	* LinkLabelProviderTest.cs: Updated due to ProviderFactory.GetProvider
+	signature changed.
+	* TextBoxProviderTest.cs: Updated due to ProviderFactory.GetProvider
+	signature changed.
+	* LabelProviderTest.cs: Updated due to ProviderFactory.GetProvider
+	signature changed.
+
+2008-05-28  Mario Carrion <mcarrion@novell.com> 
+
 	* GroupBoxProviderTest.cs: Removed method not needed anymore:
 	GetSimpleProvider. 
 	* CheckBoxProviderTest.cs: Using ProviderFactory.GetProvider to get 

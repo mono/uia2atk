@@ -44,8 +44,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void EditPropertiesTest ()
 		{
 			TextBox textbox = new TextBox ();
-			TextBoxProvider provider = new TextBoxProvider (textbox);
-			provider.InitializeEvents ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
@@ -71,8 +70,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void DocumentPropertiesTest ()
 		{
 			TextBox textbox = new TextBox ();
-			TextBoxProvider provider = new TextBoxProvider (textbox);
-			provider.InitializeEvents ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			textbox.Multiline = true;
 			
 			TestProperty (provider,
@@ -96,8 +94,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void ValuePatternTest ()
 		{
 			TextBox textbox = new TextBox ();
-			TextBoxProvider provider = new TextBoxProvider (textbox);
-			provider.InitializeEvents ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			object valueProvider = provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (valueProvider, "Not returning ValuePatternIdentifiers.");
@@ -108,8 +105,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void TextPatternTest () 
 		{
 			TextBox textbox = new TextBox ();
-			TextBoxProvider provider = new TextBoxProvider (textbox);
-			provider.InitializeEvents ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			object textProvider = provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (textProvider, "Not returning TextPatternIdentifiers.");
@@ -120,8 +116,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void RangeValuePatternTest () 
 		{
 			TextBox textbox = new TextBox ();
-			TextBoxProvider provider = new TextBoxProvider (textbox);
-			provider.InitializeEvents ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			object rangeProvider = provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
 			Assert.IsNull (rangeProvider, "Returned RangeValuePatternIdentifiers.");
@@ -135,8 +130,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void IsNotIValueProviderTest ()
 		{
 			TextBox textbox = new TextBox ();
-			TextBoxProvider provider = new TextBoxProvider (textbox);
-			provider.InitializeEvents ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			textbox.Multiline = true;
 			
 			object valueProvider = 
@@ -152,8 +146,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void IValueProviderIsReadOnlyTest ()
 		{
 			TextBox textbox = new TextBox ();
-			TextBoxProvider provider = new TextBoxProvider (textbox);
-			provider.InitializeEvents ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			IValueProvider valueProvider = (IValueProvider)
 				provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
@@ -170,8 +163,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void IValueProviderValueTest ()
 		{
 			TextBox textbox = new TextBox ();
-			TextBoxProvider provider = new TextBoxProvider (textbox);
-			provider.InitializeEvents ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			IValueProvider valueProvider = (IValueProvider)
 				provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
@@ -189,8 +181,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void IValueProviderSetValueTest ()
 		{
 			TextBox textbox = new TextBox ();
-			TextBoxProvider provider = new TextBoxProvider (textbox);
-			provider.InitializeEvents ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			IValueProvider valueProvider = (IValueProvider)
 				provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
@@ -216,12 +207,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void TextChangedEventTest ()
 		{
-			TextBox textBox = new TextBox ();
-			TextBoxProvider provider = new TextBoxProvider (textBox);
-			provider.InitializeEvents ();
+			TextBox textbox = new TextBox ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 
 			bridge.ResetEventLists ();			
-			textBox.Text = "Changed!";
+			textbox.Text = "Changed!";
 
 			Assert.AreEqual (1,
 			                 bridge.AutomationEvents.Count,
