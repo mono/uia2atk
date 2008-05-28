@@ -52,9 +52,12 @@ namespace Mono.UIAutomation.Winforms
 			LinkLabel ll;
 			SimpleControlProvider provider = null;
 			Form f;
+			GroupBox gb;
 
 			if ((f = control as Form) != null)
 				provider = new WindowProvider (f);
+			else if ((gb = control as GroupBox) != null)
+				provider = new GroupBoxProvider (gb);
 			else if ((b = control as Button) != null)
 				provider = new ButtonProvider (b);
 			else if ((r = control as RadioButton) != null)
