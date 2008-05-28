@@ -1,3 +1,7 @@
+2008-05-28  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* test: Added test directory
+
 2008-03-26  Sandy Armstrong <sanfordarmstrong@gmail.com>
 
 	* src/UIAutomationCore: Added skeleton MonoDevelop solution for the
