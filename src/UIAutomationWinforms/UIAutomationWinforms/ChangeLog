@@ -1,3 +1,9 @@
+2008-05-28  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/TextBoxRangeProvider.cs: Deleted. Shouldn't
+	be here.
+	* Mono.UIAutomation.Winforms.mdp: Updated due to deleted file.
+
 2008-05-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Support
