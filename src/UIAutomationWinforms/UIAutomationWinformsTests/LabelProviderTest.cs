@@ -66,19 +66,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "text");
-			
-			// TODO: Test properties implemented by SimpleControlProvider
-			//       (should those be in BaseProviderTest perhaps?)
-			
-			/*label.SetBounds (5, 6, 7, 8);
-			Rect rect = new Rect (parentForm.Location.X + 5,
-			                      parentForm.Location.Y + 6,
-			                      7,
-			                      8);
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.BoundingRectangleProperty,
-			              rect);*/
 		}
 		
 		[Test]

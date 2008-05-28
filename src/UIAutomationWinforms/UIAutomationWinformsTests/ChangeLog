@@ -1,5 +1,15 @@
 2008-05-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* GroupBoxProviderTest.cs, UIAutomationWinformsTests.mdp: Add
+	  GroupBoxProvider and associated test, completely unimplemented.
+	* BaseProviderTest.cs: A little more progress on basic property/event
+	  tests.
+	* ButtonProviderTest.cs: Use anonymous delegate to tidy up event
+	  testing.
+	* LabelProviderTest.cs: Remove obsolete test code.
+
+2008-05-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* MockBridge.cs: Move tuple classes directly under
 	  MonoTests.Mono.UIAutomation.Winforms namespace.
 	* ButtonProviderTest.cs: Implement tests for basic properties, Invoke

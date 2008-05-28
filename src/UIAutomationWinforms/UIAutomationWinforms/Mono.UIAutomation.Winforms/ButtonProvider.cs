@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows;
 using System.Windows.Automation;
@@ -81,7 +82,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (patternId == InvokePatternIdentifiers.Pattern.Id)
 				return this;
-			
 			return null;
 		}
 		
@@ -94,7 +94,10 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
 				return Helper.RectangleToRect (button.Bounds);
 			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)
-				return null; // TODO
+				// TODO: Can't find any way to get tooltip text
+				//       Need to cheat and find them by looking
+				//       at event subscribers?
+				return null;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "button";
 			else

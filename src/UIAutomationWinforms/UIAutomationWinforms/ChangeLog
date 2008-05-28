@@ -1,3 +1,13 @@
+2008-05-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms.mdp,
+	  Mono.UIAutomation.Winforms/GroupBoxProvider.cs: Add
+	  GroupBoxProvider and associated test, completely unimplemented.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Note that
+	  BoundingRectangleProperty needs to work for Forms.
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs: Note difficulties with
+	  implementing HelpTextProperty.
+
 2008-05-27  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Fixed 

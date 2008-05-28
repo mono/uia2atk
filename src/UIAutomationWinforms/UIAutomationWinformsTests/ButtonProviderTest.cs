@@ -79,9 +79,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IInvokeProvider invokeProvider = (IInvokeProvider)
 				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 			
-			button.Click += HandleButtonClick;
+			bool buttonClicked = false;
+			button.Click += delegate (object sender, EventArgs e) {
+				buttonClicked = true;
+			};
 			
-			buttonClicked = false;
 			invokeProvider.Invoke ();			
 			Assert.IsTrue (buttonClicked,
 			               "Click should fire when button is enabled");
@@ -130,17 +132,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (InvokePatternIdentifiers.InvokedEvent,
 			                 eventInfo.e.EventId,
 			                 "event args event type");
-		}
-		
-#endregion
-		
-#region Private Methods
-		
-		private bool buttonClicked = false;
-		
-		private void HandleButtonClick (object sender, EventArgs e)
-		{
-			buttonClicked = true;
 		}
 		
 #endregion

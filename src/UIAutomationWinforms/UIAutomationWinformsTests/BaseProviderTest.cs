@@ -26,6 +26,7 @@
 
 using System;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -80,7 +81,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderSimple provider =
 				GetSimpleProvider (control);
 			
-			object initialVal = provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			bridge.ResetEventLists ();
+			
+			object initialVal =
+				provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
 			Assert.IsNotNull (initialVal, "Property returns null");
 			Assert.IsTrue ((bool)initialVal, "Should initialize to true");
 			
@@ -88,9 +92,118 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsFalse ((bool)provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id),
 			                "Toggle to false");
 			
+			Assert.AreEqual (1,
+			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 "event count");
+			AutomationPropertyChangedEventTuple eventTuple =
+				bridge.AutomationPropertyChangedEvents [0];
+			Assert.AreEqual (provider,
+			                 eventTuple.element,
+			                 "event element");
+			Assert.AreEqual (AutomationElementIdentifiers.IsEnabledProperty,
+			                 eventTuple.e.Property,
+			                 "event property");
+			Assert.AreEqual (null, // TODO: Should it not be true?  Are we mimicking UIA Client-side inappropriately here?
+			                 eventTuple.e.OldValue,
+			                 "Old value when disabled");
+			Assert.AreEqual (false,
+			                 eventTuple.e.NewValue,
+			                 "New value when disabled");
+			
 			control.Enabled = true;
 			Assert.IsTrue ((bool)provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id),
 			               "Toggle to true");
+		}
+		
+		[Test]
+		public virtual void AutomationIdPropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			IRawElementProviderSimple provider =
+				GetSimpleProvider (control);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.AutomationIdProperty,
+			              control.GetHashCode ());
+		}
+		
+		[Test]
+		[Ignore ("Not working yet")]
+		public virtual void BoundingRectanglePropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			IRawElementProviderSimple provider =
+				GetSimpleProvider (control);
+			
+			Form f = control as Form;
+			int xOffset = 0, yOffset = 0;
+			if (f == null) {
+				f = new Form ();
+				f.Controls.Add (control);
+			}
+			
+			try {
+				f.Show ();
+				f.Location = new System.Drawing.Point (0, 0);
+				xOffset = f.Location.X;
+				yOffset = f.Location.Y;
+				
+				control.SetBounds (5, 6, 7, 8);
+				System.Drawing.Rectangle screenRect =
+					f.RectangleToScreen (control.Bounds);
+				Rect rect = new Rect (screenRect.X,
+				                      screenRect.Y,
+				                      7,
+				                      8);
+				
+				TestProperty (provider,
+				              AutomationElementIdentifiers.BoundingRectangleProperty,
+				              rect);
+			} finally {
+				if (f != null)
+					f.Dispose ();
+			}
+		}
+		
+		[Test]
+		[Ignore ("Not implemented yet")]
+		public virtual void ClickablePointPropertyTest ()
+		{
+			
+		}
+		
+		[Test]
+		[Ignore ("Need to test false case")]
+		public virtual void IsKeyboardFocusablePropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			IRawElementProviderSimple provider =
+				GetSimpleProvider (control);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+			              control.CanFocus);
+		}
+		
+		[Test]
+		public virtual void NamePropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			IRawElementProviderSimple provider =
+				GetSimpleProvider (control);
+			
+			string name1 = "test1";
+			string name2 = "test2";
+			
+			control.Text = name1;
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              name1);
+			
+			control.Text = name2;
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              name2);
 		}
 		
 #endregion

@@ -119,7 +119,7 @@ namespace Mono.UIAutomation.Winforms
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
 				if (control.Parent == null)
-					return null;
+					return null; // TODO: Fix for Form/Window
 				else
 					return Helper.RectangleToRect (control.Parent.RectangleToScreen (control.Bounds));
 			} else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) 	 
