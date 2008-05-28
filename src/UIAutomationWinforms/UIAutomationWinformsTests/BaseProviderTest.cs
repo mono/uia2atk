@@ -32,6 +32,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
 using NUnit.Framework;
+using Mono.UIAutomation.Winforms;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
@@ -78,8 +79,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public virtual void IsEnabledPropertyTest ()
 		{
 			Control control = GetControlInstance ();
-			IRawElementProviderSimple provider =
-				GetSimpleProvider (control);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (control);
 			
 			bridge.ResetEventLists ();
 			
@@ -119,8 +119,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public virtual void AutomationIdPropertyTest ()
 		{
 			Control control = GetControlInstance ();
-			IRawElementProviderSimple provider =
-				GetSimpleProvider (control);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (control);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.AutomationIdProperty,
@@ -132,8 +131,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public virtual void BoundingRectanglePropertyTest ()
 		{
 			Control control = GetControlInstance ();
-			IRawElementProviderSimple provider =
-				GetSimpleProvider (control);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (control);
 			
 			Form f = control as Form;
 			int xOffset = 0, yOffset = 0;
@@ -177,8 +175,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public virtual void IsKeyboardFocusablePropertyTest ()
 		{
 			Control control = GetControlInstance ();
-			IRawElementProviderSimple provider =
-				GetSimpleProvider (control);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (control);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
@@ -189,8 +186,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public virtual void NamePropertyTest ()
 		{
 			Control control = GetControlInstance ();
-			IRawElementProviderSimple provider =
-				GetSimpleProvider (control);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (control);
 			
 			string name1 = "test1";
 			string name2 = "test2";
@@ -211,8 +207,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 #region Abstract Members
 	
 		protected abstract Control GetControlInstance ();
-		
-		protected abstract IRawElementProviderSimple GetSimpleProvider (Control control);
+
 #endregion
 	
 #region Protected Helper Methods

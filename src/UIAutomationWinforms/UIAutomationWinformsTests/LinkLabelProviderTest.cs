@@ -44,7 +44,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void BasicPropertiesTest ()
 		{
 			LinkLabel linkLabel = new LinkLabel ();
-			LinkLabelProvider provider  = new LinkLabelProvider (linkLabel);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (linkLabel);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LabeledByProperty,
@@ -76,6 +76,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			LinkLabel linkLabel = new LinkLabel ();
 			LinkLabelProvider provider = new LinkLabelProvider (linkLabel);
+			provider.InitializeEvents ();
 			
 			bridge.ResetEventLists ();
 			
@@ -94,6 +95,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			LinkLabel linkLabel = new LinkLabel ();
 			LinkLabelProvider provider = new LinkLabelProvider (linkLabel);
+			provider.InitializeEvents ();
 			
 			linkLabel.Enabled = false;
 			
@@ -108,12 +110,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 #endregion
 		
 #region BaseProviderTest Overrides
-		
-		protected override IRawElementProviderSimple GetSimpleProvider (Control control)
-		{
-			return new LinkLabelProvider ((LinkLabel) control);
-		}
-		
+
 		protected override Control GetControlInstance ()
 		{
 			return new LinkLabel ();

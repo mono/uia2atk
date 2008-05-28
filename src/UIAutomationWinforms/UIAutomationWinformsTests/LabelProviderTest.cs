@@ -49,7 +49,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Label label = new Label ();
 			parentForm.Controls.Add (label);
 			
-			LabelProvider provider = new LabelProvider (label);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (label);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.AutomationIdProperty,
@@ -72,7 +72,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void TextChangedEventTest ()
 		{
 			Label label = new Label ();
-			LabelProvider provider = new LabelProvider (label);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (label);
 			
 			bridge.ResetEventLists ();
 			
@@ -96,11 +96,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 #endregion
 		
 #region BaseProviderTest Overrides
-		
-		protected override IRawElementProviderSimple GetSimpleProvider (Control control)
-		{
-			return new LabelProvider ((Label)control);
-		}
 		
 		protected override Control GetControlInstance ()
 		{

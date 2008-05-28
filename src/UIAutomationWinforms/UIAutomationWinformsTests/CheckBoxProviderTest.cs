@@ -45,7 +45,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void BasicPropertiesTest ()
 		{
 			CheckBox checkbox = new CheckBox ();
-			CheckBoxProvider provider = new CheckBoxProvider (checkbox);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (checkbox);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
@@ -63,8 +63,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void ProviderPatternTest ()
 		{
 			CheckBox checkbox = new CheckBox ();
-			CheckBoxProvider provider =
-				new CheckBoxProvider (checkbox);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (checkbox);
 			
 			object toggleProvider = provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (toggleProvider);
@@ -75,8 +74,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void ToggleStatePropertyChangedEventTest ()
 		{
 			CheckBox checkbox = new CheckBox ();
-			CheckBoxProvider provider =
-				new CheckBoxProvider (checkbox);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (checkbox);
 			IToggleProvider toggleProvider = (IToggleProvider)
 				provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
 			checkbox.Checked = false;
@@ -99,8 +97,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void ToggleTest ()
 		{
 			CheckBox checkbox = new CheckBox ();
-			CheckBoxProvider provider =
-				new CheckBoxProvider (checkbox);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (checkbox);
 			IToggleProvider toggleProvider = (IToggleProvider)
 				provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
 			
@@ -167,11 +164,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 #endregion
 		
 #region BaseProviderTest Overrides
-		
-		protected override IRawElementProviderSimple GetSimpleProvider (Control control)
-		{
-			return new CheckBoxProvider ((CheckBox)control);
-		}
 		
 		protected override Control GetControlInstance ()
 		{

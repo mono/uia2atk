@@ -45,11 +45,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return new GroupBox ();
 		}
 
-		protected override IRawElementProviderSimple GetSimpleProvider (Control control)
-		{
-			return new GroupBoxProvider ((GroupBox) control);
-		}
-		
 #endregion
 	}
 }

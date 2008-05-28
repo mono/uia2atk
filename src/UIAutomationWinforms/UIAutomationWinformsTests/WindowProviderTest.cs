@@ -47,7 +47,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void IsTopmostTest ()
 		{
 			using (Form f = new Form ()) {
-				IWindowProvider provider = new WindowProvider (f);
+				WindowProvider provider = (WindowProvider) ProviderFactory.GetProvider (f);
 				
 				Assert.IsFalse (provider.IsTopmost, "Initialize to false");
 				f.TopMost = true;
@@ -61,7 +61,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void IsModalTest ()
 		{
 			using (Form f = new Form ()) {
-				IWindowProvider provider = new WindowProvider (f);
+				WindowProvider provider = (WindowProvider) ProviderFactory.GetProvider (f);
 				
 				Assert.IsFalse (provider.IsModal, "Form should initialize to not modal");
 				
@@ -92,7 +92,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void CloseTest ()
 		{
 			using (Form f = new Form ()) {
-				IWindowProvider provider = new WindowProvider (f);
+				WindowProvider provider = (WindowProvider) ProviderFactory.GetProvider (f);
 				
 				f.Show ();
 				
@@ -101,8 +101,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					formClosed = true;
 				};
 				
+				Console.WriteLine ("provider close 0: "+bridge.StructureChangedEvents.Count);
 				bridge.ResetEventLists ();
+				Console.WriteLine ("provider close 1: "+bridge.StructureChangedEvents.Count);
 				provider.Close ();
+				Console.WriteLine ("provider close 2: "+bridge.StructureChangedEvents.Count);
 				
 				Assert.IsTrue (formClosed, "Form closed event didn't fire.");
 				
@@ -118,7 +121,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void SetVisualStateTest ()
 		{
 			using (Form f = new Form ()) {
-				IWindowProvider provider = new WindowProvider (f);
+				WindowProvider provider = (WindowProvider) ProviderFactory.GetProvider (f);
 				
 				//f.Show ();
 				//Application.DoEvents ();
@@ -149,7 +152,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void VisualStateTest ()
 		{
 			using (Form f = new Form ()) {
-				IWindowProvider provider = new WindowProvider (f);
+				WindowProvider provider = (WindowProvider) ProviderFactory.GetProvider (f);
 				
 				//f.Show ();
 				//Application.DoEvents ();
@@ -306,11 +309,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 #endregion
 		
 #region BaseProviderTest Overrides
-		
-		protected override IRawElementProviderSimple GetSimpleProvider (Control control)
-		{
-			return new WindowProvider ((Form)control);
-		}
 		
 		protected override Control GetControlInstance ()
 		{

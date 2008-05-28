@@ -44,7 +44,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void BasicPropertiesTest ()
 		{
 			Button button = new Button ();
-			ButtonProvider provider = new ButtonProvider (button);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (button);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
@@ -62,8 +62,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void ProviderPatternTest ()
 		{
 			Button button = new Button ();
-			ButtonProvider provider =
-				new ButtonProvider (button);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (button);
 			
 			object invokeProvider = provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (invokeProvider);
@@ -74,8 +73,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void InvokeTest ()
 		{
 			Button button = new Button ();
-			ButtonProvider provider =
-				new ButtonProvider (button);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (button);
 			IInvokeProvider invokeProvider = (IInvokeProvider)
 				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 			
@@ -108,8 +106,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void InvokedEventTest ()
 		{
 			Button button = new Button ();
-			ButtonProvider provider =
-				new ButtonProvider (button);
+			SimpleControlProvider provider = ProviderFactory.GetProvider (button);
 			IInvokeProvider invokeProvider = (IInvokeProvider)
 				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 			
@@ -137,12 +134,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 #endregion
 		
 #region BaseProviderTest Overrides
-		
-		protected override IRawElementProviderSimple GetSimpleProvider (Control control)
-		{
-			return new ButtonProvider ((Button)control);
-		}
-		
+
 		protected override Control GetControlInstance ()
 		{
 			return new Button ();

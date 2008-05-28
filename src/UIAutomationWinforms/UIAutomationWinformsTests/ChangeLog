@@ -1,5 +1,24 @@
 2008-05-28  Mario Carrion <mcarrion@novell.com> 
 
+	* GroupBoxProviderTest.cs: Removed method not needed anymore:
+	GetSimpleProvider. 
+	* CheckBoxProviderTest.cs: Using ProviderFactory.GetProvider to get 
+	provider instance. Removed method not needed anymore: GetSimpleProvider.
+	* WindowProviderTest.cs: Using ProviderFactory.GetProvider to get 
+	provider instance. Removed method not needed anymore: GetSimpleProvider.
+	* BaseProviderTest.cs: Using ProviderFactory.GetProvider to get 
+	provider instance. Removed method not needed anymore: GetSimpleProvider.
+	* ButtonProviderTest.cs: Using ProviderFactory.GetProvider to get 
+	provider instance. Removed method not needed anymore: GetSimpleProvider.
+	* LinkLabelProviderTest.cs: Using ProviderFactory.GetProvider to get 
+	provider instance. Removed method not needed anymore: GetSimpleProvider.
+	* TextBoxProviderTest.cs: Using ProviderFactory.GetProvider to get 
+	provider instance. Removed method not needed anymore: GetSimpleProvider.
+	* LabelProviderTest.cs: Using ProviderFactory.GetProvider to get 
+	provider instance. Removed method not needed anymore: GetSimpleProvider.
+
+2008-05-28  Mario Carrion <mcarrion@novell.com> 
+
 	* LinkLabelProviderTest.cs: Fixed Test.
 	* TextBoxProviderTest.cs: New test added TextChangedEventTest.
 
