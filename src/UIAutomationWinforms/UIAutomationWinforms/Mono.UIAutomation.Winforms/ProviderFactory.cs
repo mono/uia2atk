@@ -20,66 +20,59 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//	Mario Carrion <mcarrion@novell.com>
 // 
 
 using System;
 using System.Windows.Forms;
 
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Winforms.Events;
-
 namespace Mono.UIAutomation.Winforms
 {
-	public class LabelProvider : SimpleControlProvider
+
+	public sealed class ProviderFactory
 	{
-#region Private Fields
-		
-		private Label label;
-		
-#endregion
-		
-#region Constructors
-		
-		public LabelProvider (Label label) : base (label)
+		private ProviderFactory ()
 		{
-			this.label = label;
 		}
 		
-#endregion
-		
-#region Public Methods
-		
-		public override void InitializeEvents ()
+		public static SimpleControlProvider GetProvider (Control control)
 		{
-			base.InitializeEvents ();
+			return GetProvider (control, true);
+		}
+		
+		public static SimpleControlProvider GetProvider (Control control, 
+		                                                 bool initializeEvents)
+		{
+			Label l;
+			Button b;
+			RadioButton r;
+			CheckBox c;
+			TextBox t;
+			LinkLabel ll;
+			SimpleControlProvider provider = null;
+			Form f;
 			
-			SetEvent (EventStrategyType.TextChangedEvent, 
-			          new DefaultTextChangedEvent (this, control));
+			if ((f = control as Form) != null)
+				provider = new WindowProvider (f);
+			else if ((l = control as Label) != null)
+				provider = new LabelProvider (l);
+			else if ((b = control as Button) != null)
+				provider = new ButtonProvider (b);
+			else if ((r = control as RadioButton) != null)
+				provider = new RadioButtonProvider (r);
+			else if ((c = control as CheckBox) != null)
+				provider = new CheckBoxProvider (c);
+			else if ((t = control as TextBox) != null)
+				provider = new TextBoxProvider (t);
+			else if ((ll = control as LinkLabel) != null)
+				provider = new LinkLabelProvider (ll);
+			
+			if (provider != null) {
+				if (initializeEvents)
+					provider.InitializeEvents ();
+				return provider;
+			} else
+				return null;
 		}
-
-#endregion
-		
-#region IRawElementProviderSimple Members
-	
-		public override object GetPatternProvider (int patternId)
-		{
-			return null;
-		}
-		
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Text.Id;
-			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
-				return false;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "text";
-			else
-				return base.GetPropertyValue (propertyId);
-		}
-
-#endregion
 	}
 }

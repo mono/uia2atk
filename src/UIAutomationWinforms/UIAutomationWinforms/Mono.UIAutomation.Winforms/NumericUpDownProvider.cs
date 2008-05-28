@@ -56,9 +56,9 @@ namespace Mono.UIAutomation.Winforms
 		
 #endregion
 		
-#region Protected Methods
+#region Public Methods
 		
-		protected override void InitializeEvents ()
+		public override void InitializeEvents ()
 		{
 			base.InitializeEvents ();
 

@@ -55,16 +55,14 @@ namespace Mono.UIAutomation.Winforms
 			this.control = control;
 			
 			events = new Dictionary<EventStrategyType,IEventStrategy> ();
-			InitializeEvents ();
 		}
 		
 #endregion
 		
-#region Protected
-		
-		protected virtual void InitializeEvents ()
-		{
+#region Public
 
+		public virtual void InitializeEvents ()
+		{
 			// TODO: Add: EventStrategyType.IsOffscreenProperty, DefaultIsOffscreenPropertyEvent
 			SetEvent (EventStrategyType.IsEnabledProperty, 
 			          new DefaultIsEnabledPropertyEvent (this, control));
@@ -78,6 +76,10 @@ namespace Mono.UIAutomation.Winforms
 			          new DefaultStructureChangedEvent (this, control));
 		}
 		
+#endregion
+		
+#region Protected
+				
 		protected void SetEvent (EventStrategyType type, IEventStrategy strategy)
 		{
 			IEventStrategy value;

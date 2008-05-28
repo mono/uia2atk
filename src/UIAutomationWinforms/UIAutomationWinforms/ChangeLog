@@ -1,5 +1,30 @@
 2008-05-28  Mario Carrion <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.mdp: Updated due to added files.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: File added. Creates
+	Provider based on Winforms control.
+	* Mono.UIAutomation.Winforms/TextBoxRangeProvider.cs: File added.
+	* Mono.UIAutomation.Winforms/WindowProvider.cs: Method CreateProvider
+	uses
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs: InitializeEvents 
+	method visibility updated.
+	* Mono.UIAutomation.Winforms/LabelProvider.cs: InitializeEvents 
+	method visibility updated.
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs: InitializeEvents 
+	method visibility updated.
+	* Mono.UIAutomation.Winforms/RadioButtonProvider.cs: InitializeEvents 
+	method visibility updated.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: InitializeEvents 
+	method visibility updated.
+	* Mono.UIAutomation.Winforms/LinkLabelProvider.cs: Removed "as" cast and
+	using member variable.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: InitializeEvents 
+	method visibility updated. Removed "as" cast and using member variable.
+	* Mono.UIAutomation.Winforms/NumericUpDownProvider.cs: InitializeEvents
+	method visibility updated.
+
+2008-05-28  Mario Carrion <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/LinkLabelProvider.cs: Calling OnLinkClicked
 	when IInvokeProvider.Invoke.
 

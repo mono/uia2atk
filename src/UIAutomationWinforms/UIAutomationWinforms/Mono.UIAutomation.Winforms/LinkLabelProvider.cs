@@ -50,14 +50,14 @@ namespace Mono.UIAutomation.Winforms
 
 #endregion
 		
-#region Protected Methods
+#region Public Methods
 
-		protected override void InitializeEvents ()
+		public override void InitializeEvents ()
 		{
 			base.InitializeEvents ();
 
 			SetEvent (EventStrategyType.InvokedEvent, 
-			          new LinkLabelInvokedEvent (this, control as LinkLabel));
+			          new LinkLabelInvokedEvent (this, linkLabel));
 			//TODO: Missing event: AutomationFocusChangedEvent
 		}
 

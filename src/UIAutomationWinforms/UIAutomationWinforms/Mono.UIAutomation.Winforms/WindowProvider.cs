@@ -71,27 +71,7 @@ namespace Mono.UIAutomation.Winforms
 	
 		private IRawElementProviderSimple CreateProvider (Control control)
 		{
-			Label l = control as Label;
-			if (l != null)
-				return new LabelProvider (l);
-			
-			Button b = control as Button;
-			if (b != null)
-				return new ButtonProvider (b);
-			
-			RadioButton r = control as RadioButton;
-			if (r != null)
-				return new RadioButtonProvider (r);
-			
-			CheckBox c = control as CheckBox;
-			if (c != null)
-				return new CheckBoxProvider (c);
-			
-			TextBox t = control as TextBox;
-			if (t != null)
-				return new TextBoxProvider (t);
-			
-			return null;
+			return ProviderFactory.GetProvider (control);
 		}
 		
 		private IRawElementProviderSimple GetProvider (Control control)

@@ -49,14 +49,14 @@ namespace Mono.UIAutomation.Winforms
 		
 #endregion
 		
-#region Protected Methods
+#region Public Methods
 
-		protected override void InitializeEvents ()
+		public override void InitializeEvents ()
 		{
 			base.InitializeEvents ();
 
 			SetEvent (EventStrategyType.ToggleStateProperty,
-			          new DefaultToggleStatePropertyEvent (this, (CheckBox) control));
+			          new DefaultToggleStatePropertyEvent (this, checkbox));
 		}
 		
 #endregion

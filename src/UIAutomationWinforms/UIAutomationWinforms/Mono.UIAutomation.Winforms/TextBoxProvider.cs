@@ -51,9 +51,9 @@ namespace Mono.UIAutomation.Winforms
 
 #endregion
 
-#region Protected Methods
+#region Public Methods
 
-		protected override void InitializeEvents ()
+		public override void InitializeEvents ()
 		{
 			base.InitializeEvents ();
 			
@@ -65,7 +65,7 @@ namespace Mono.UIAutomation.Winforms
 			SetEvent (EventStrategyType.TextChangedEvent, 
 			          new DefaultTextChangedEvent (this, control));
 			SetEvent (EventStrategyType.HasKeyboardFocusProperty, 
-			          new TextBoxHasKeyBoardFocusPropertyEvent (this, control as TextBox));
+			          new TextBoxHasKeyBoardFocusPropertyEvent (this, textBoxBase));
 			
 			// TODO: InvalidatedEvent
 			// TODO: TextSelectionChangedEvent: using textbox.SelectionLength != 0?	
