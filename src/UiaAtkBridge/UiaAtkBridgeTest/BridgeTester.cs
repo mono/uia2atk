@@ -38,31 +38,32 @@ namespace UiaAtkBridgeTest
 	[TestFixture]
 	public class BridgeTester : AtkTester {
 		
-		public override object GetAtkObjectThatImplementsInterface <I> (BasicWidgetType type, string name)
+		public override object GetAtkObjectThatImplementsInterface <I> (BasicWidgetType type, string name, out Atk.Object accessible)
 		{
+			accessible = null;
+			
 			if (typeof(I) == typeof (Atk.Text)) {
-				
-				Atk.TextImplementor widget = null;
 				
 				switch (type) {
 				case BasicWidgetType.Label:
 					MWF.Label lab = new MWF.Label ();
 					lab.Text = name;
-					widget = new UiaAtkBridge.TextLabel (new LabelProvider (lab));
+					accessible = new UiaAtkBridge.TextLabel (new LabelProvider (lab));
 					break;
 				case BasicWidgetType.Button:
 					MWF.Button but = new MWF.Button ();
 					but.Text = name;
-					widget = new UiaAtkBridge.Button (new ButtonProvider (but));
+					accessible = new UiaAtkBridge.Button (new ButtonProvider (but));
 					break;
 				}
 				
-				return new Atk.TextAdapter (widget);
+				return new Atk.TextAdapter ((Atk.TextImplementor)accessible);
 			}
-			else if (typeof(I) == typeof (Atk.Action)) {
-				TestButtonControlType button = new TestButtonControlType ("Push Button", false);
-				return new Atk.ActionAdapter (new UiaAtkBridge.Button(button));
-			}
+			// we are not using this yet
+//			else if (typeof(I) == typeof (Atk.Action)) {
+//				TestButtonControlType button = new TestButtonControlType ("Push Button", false);
+//				return new Atk.ActionAdapter (new UiaAtkBridge.Button(button));
+//			}
 
 			return null;
 		}

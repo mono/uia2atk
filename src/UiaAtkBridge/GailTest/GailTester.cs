@@ -38,8 +38,10 @@ namespace UiaAtkBridgeTest
 			Gtk.Application.Init ();
 		}
 		
-		public override object GetAtkObjectThatImplementsInterface <I> (BasicWidgetType type, string text)
+		public override object GetAtkObjectThatImplementsInterface <I> (
+				BasicWidgetType type, string text, out Atk.Object accessible)
 		{
+			accessible = null;
 			if (typeof(I) == typeof(Atk.Text)) 
 			{
 				Gtk.Widget widget = null;
@@ -53,6 +55,7 @@ namespace UiaAtkBridgeTest
 					((Gtk.Button)widget).Label = text;
 					break;
 				}
+				accessible = widget.Accessible;
 				return Atk.TextAdapter.GetObject (widget.Accessible.Handle, false);
 			}
 			return null;

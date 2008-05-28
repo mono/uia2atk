@@ -1,3 +1,8 @@
+2008-05-28  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* GailTester.cs: Added role testing (incomplete yet because we have to
+	  test against Role.AccelLabel too).
+
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* GailTester.cs: Rearchitecture to prepare testing the Atk.Text

@@ -35,7 +35,7 @@ namespace UiaAtkBridgeTest
 	
 	public abstract class AtkTester {
 		
-		public abstract object GetAtkObjectThatImplementsInterface <I> (BasicWidgetType type, string name);
+		public abstract object GetAtkObjectThatImplementsInterface <I> (BasicWidgetType type, string name, out Atk.Object accessible);
 		
 	
 		private static AtkTester instance;
@@ -48,30 +48,37 @@ namespace UiaAtkBridgeTest
 		}
 		
 		[Test]
-		public void AtkTextInterfaceInLabel ()
+		public void AtkTestForLabel ()
 		{
-			AtkTextImplementorForWidget (BasicWidgetType.Label);
+			AtkTestForWidget (BasicWidgetType.Label);
 		}
 		
 		[Test]
-		public void AtkTextInterfaceInButton ()
+		public void AtkTestForButton ()
 		{
-			AtkTextImplementorForWidget (BasicWidgetType.Button);
+			AtkTestForWidget (BasicWidgetType.Button);
 		}
 		
-		private void AtkTextImplementorForWidget (BasicWidgetType type)
+		private void AtkTestForWidget (BasicWidgetType type)
 		{
 			int startOffset, endOffset;
 			string expected;
 			Atk.Text atkText;
 			string name = "This is a test sentence.\r\nSecond line. Other phrase.\nThird line?";
 
+			
+			Atk.Object accessible;
 			atkText = (Atk.Text)
-				GetAtkObjectThatImplementsInterface <Atk.Text> (type, name);
+				GetAtkObjectThatImplementsInterface <Atk.Text> (type, name, out accessible);
 			
 			int nSelections = -1;
-			if (type == BasicWidgetType.Label)
+			Atk.Role role = Atk.Role.PushButton;
+			if (type == BasicWidgetType.Label) {
 				nSelections = 0;
+				role = Atk.Role.Label;
+			}
+
+			Assert.AreEqual (role, accessible.Role);
 			
 			Assert.AreEqual (0, atkText.CaretOffset, "CaretOffset");
 			Assert.AreEqual (name.Length, atkText.CharacterCount, "CharacterCount");
@@ -372,7 +379,7 @@ namespace UiaAtkBridgeTest
 			name = "Tell me; here a sentence\r\nwith EOL but without dot, and other phrase... Heh!";
 
 			atkText = (Atk.Text)
-				GetAtkObjectThatImplementsInterface <Atk.Text> (type, name);
+				GetAtkObjectThatImplementsInterface <Atk.Text> (type, name, out accessible);
 			Assert.AreEqual (name, atkText.GetText(0, name.Length), "GetText#2");
 			
 			expected = "\r\nwith EOL but without dot, and other phrase...";
