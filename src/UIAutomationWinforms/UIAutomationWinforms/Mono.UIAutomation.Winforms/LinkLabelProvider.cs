@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Reflection;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
@@ -69,7 +70,15 @@ namespace Mono.UIAutomation.Winforms
 			if (!linkLabel.Enabled)
 				throw new ElementNotEnabledException ();
 			
-			// TODO: Click!?
+			Type type = linkLabel.GetType ();
+			MethodInfo methodInfo = type.GetMethod ("OnLinkClicked",
+			                                        BindingFlags.InvokeMethod
+			                                        | BindingFlags.NonPublic
+			                                        | BindingFlags.Instance);
+			//TODO: Are the arguments OK?
+			LinkLabelLinkClickedEventArgs args = new LinkLabelLinkClickedEventArgs (
+				linkLabel.Links [0], MouseButtons.Left);
+			methodInfo.Invoke (linkLabel, new object[] { args });
 		}
 		
 #endregion
