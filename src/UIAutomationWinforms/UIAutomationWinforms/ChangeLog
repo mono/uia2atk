@@ -1,5 +1,10 @@
 2008-05-28  Mario Carrion <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: GetProvider now returns
+	IRawElementProviderSimple. LinkLabel cast moved before Label cast.
+
+2008-05-28  Mario Carrion <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms.mdp: Updated due to added files.
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: File added. Creates
 	Provider based on Winforms control.

@@ -25,6 +25,7 @@
 
 using System;
 using System.Windows.Forms;
+using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -35,13 +36,13 @@ namespace Mono.UIAutomation.Winforms
 		{
 		}
 		
-		public static SimpleControlProvider GetProvider (Control control)
+		public static IRawElementProviderSimple GetProvider (Control control)
 		{
 			return GetProvider (control, true);
 		}
 		
-		public static SimpleControlProvider GetProvider (Control control, 
-		                                                 bool initializeEvents)
+		public static IRawElementProviderSimple GetProvider (Control control, 
+		                                                     bool initializeEvents)
 		{
 			Label l;
 			Button b;
@@ -51,11 +52,9 @@ namespace Mono.UIAutomation.Winforms
 			LinkLabel ll;
 			SimpleControlProvider provider = null;
 			Form f;
-			
+
 			if ((f = control as Form) != null)
 				provider = new WindowProvider (f);
-			else if ((l = control as Label) != null)
-				provider = new LabelProvider (l);
 			else if ((b = control as Button) != null)
 				provider = new ButtonProvider (b);
 			else if ((r = control as RadioButton) != null)
@@ -66,6 +65,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new TextBoxProvider (t);
 			else if ((ll = control as LinkLabel) != null)
 				provider = new LinkLabelProvider (ll);
+			else if ((l = control as Label) != null)
+				provider = new LabelProvider (l);
 			
 			if (provider != null) {
 				if (initializeEvents)
