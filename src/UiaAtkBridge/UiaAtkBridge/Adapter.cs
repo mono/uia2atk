@@ -43,9 +43,8 @@ namespace UiaAtkBridge
 
 		public virtual double Alpha
 		{
-			// TODO: Implement Alpha
 			get {
-				return 0;
+				return 1;
 			}
 		}
 		
@@ -106,6 +105,12 @@ namespace UiaAtkBridge
 			y = 0;
 		}
 
+		// we should use "override" when this bug is fixed and it gets propragated
+		// to GTK#: http://bugzilla.gnome.org/show_bug.cgi?id=526752
+		public new Atk.Layer Layer {
+			get { return Atk.Layer.Widget; }
+		}
+		
 		public virtual void GetSize (out int width, out int height)
 		{
 			//TODO: Implement GetSize

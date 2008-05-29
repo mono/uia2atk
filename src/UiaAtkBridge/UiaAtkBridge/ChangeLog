@@ -1,3 +1,7 @@
+2008-05-29  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* Adapter.cs, TextLabel.cs, Window.cs: Some fixes and some ghosts...
+
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* AutomationBridge.cs: Add handling of labels.
