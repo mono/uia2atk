@@ -1,3 +1,10 @@
+2008-05-29  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* FormTest.mdp, FormTest, FormTest/FormTest.mdp, FormTest/FormTest.cs,
+	  FormTest/ChangeLog, FormTest/formtest.sh, FormTest.mds, ChangeLog,
+	  FormTest.cs, formtest.sh: Moved FormTest one level up (no need to
+	  have a solution just for it).
+
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* FormTest.cs: Add a label for testing.

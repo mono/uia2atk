@@ -22,19 +22,19 @@
 // Authors: 
 //      Andres G. Aragoneses <aaragoneses@novell.com>
 // 
-
 using System;
+using Gtk;
 
-namespace TestGtkSharp
+namespace GailTestApp
 {
-	
-	
-	public partial class Test : Gtk.Dialog
+	class MainClass
 	{
-		
-		public Test()
+		public static void Main (string[] args)
 		{
-			this.Build();
+			Application.Init ();
+			MainWindow win = new MainWindow ();
+			win.Show ();
+			Application.Run ();
 		}
 	}
 }

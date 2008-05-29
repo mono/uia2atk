@@ -1,3 +1,23 @@
+2008-05-29  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* ManagedTests.mds, TestGtkSharp, TestGtkSharp/AssemblyInfo.cs,
+	  TestGtkSharp/MainWindow.cs, TestGtkSharp/TestGtkSharp.mdp,
+	  TestGtkSharp/Test.cs, TestGtkSharp/gtk-gui,
+	  TestGtkSharp/gtk-gui/MainWindow.cs,
+	  TestGtkSharp/gtk-gui/generated.cs,
+	  TestGtkSharp/gtk-gui/TestGtkSharp.Test.cs,
+	  TestGtkSharp/gtk-gui/gui.stetic, TestGtkSharp/ChangeLog,
+	  TestGtkSharp/Main.cs, GailTestApp, GailTestApp/AssemblyInfo.cs,
+	  GailTestApp/MainWindow.cs, GailTestApp/gtk-gui,
+	  GailTestApp/gtk-gui/MainWindow.cs,
+	  GailTestApp/gtk-gui/generated.cs, GailTestApp/gtk-gui/gui.stetic,
+	  GailTestApp/Main.cs, GailTestApp/GailTestApp.pidb,
+	  GailTestApp/GailTestApp.mdp: Replaced TestGtkSharp with
+	  GailTestApp.
+	* TestUiaAtkBridge, TestUiaAtkBridge/AssemblyInfo.cs,
+	  TestUiaAtkBridge/Main.cs, TestUiaAtkBridge/TestUiaAtkBridge.mdp: No
+	  longer needed.
+
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* ManagedTests.mds: Don't include old project.
