@@ -108,7 +108,7 @@ namespace UiaAtkBridgeTest
 				//a label always contains this state, not because it's multi_line, but because it can be multi_line
 				Assert.IsTrue (accessible.RefStateSet ().ContainsState(Atk.StateType.MultiLine) );
 				
-				//this is true, regardless of the last bit, because of bug#
+				//this is true, regardless of the previous bit, because of bug#395485
 				Assert.AreEqual (0, accessible.RefStateSet ().Data.Count );
 			}
 			

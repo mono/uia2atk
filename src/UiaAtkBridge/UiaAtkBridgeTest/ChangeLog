@@ -1,5 +1,9 @@
 2008-05-29  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Fix comment.
+
+2008-05-29  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* BridgeTester.cs, AtkTester.cs, BasicWidgetType.cs: Ongoing work on
 	  tests...
 
