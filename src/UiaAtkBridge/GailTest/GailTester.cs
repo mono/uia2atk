@@ -39,24 +39,32 @@ namespace UiaAtkBridgeTest
 		}
 		
 		public override object GetAtkObjectThatImplementsInterface <I> (
-				BasicWidgetType type, string text, out Atk.Object accessible)
+				BasicWidgetType type, string text, out Atk.Object accessible, bool real)
 		{
 			accessible = null;
-			if (typeof(I) == typeof(Atk.Text)) 
-			{
-				Gtk.Widget widget = null;
-				switch (type) {
-				case BasicWidgetType.Label:
-					widget = new Gtk.Label ();
-					((Gtk.Label)widget).Text = text;
-					break;
-				case BasicWidgetType.Button:
-					widget = new Gtk.Button ();
-					((Gtk.Button)widget).Label = text;
-					break;
-				}
-				accessible = widget.Accessible;
+			Gtk.Widget widget = null;
+			switch (type) {
+			case BasicWidgetType.Label:
+				widget = new Gtk.Label ();
+				((Gtk.Label)widget).Text = text;
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealLabel ();
+				break;
+			case BasicWidgetType.Button:
+				widget = new Gtk.Button ();
+				((Gtk.Button)widget).Label = text;
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealButton ();
+				break;
+			}
+			
+			accessible = widget.Accessible;
+			
+			if (typeof (I) == typeof (Atk.Text)) {
 				return Atk.TextAdapter.GetObject (widget.Accessible.Handle, false);
+			}
+			else if (typeof (I) == typeof (Atk.Component)) {
+				return Atk.ComponentAdapter.GetObject (widget.Accessible.Handle, false);
 			}
 			return null;
 		}

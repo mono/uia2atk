@@ -37,4 +37,12 @@ public partial class MainWindow: Gtk.Window
 		Application.Quit ();
 		a.RetVal = true;
 	}
+	
+	internal Gtk.Label GiveMeARealLabel () {
+		return this.lblTest1;
+	}
+	
+	internal Gtk.Button GiveMeARealButton () {
+		return this.btnTest1;
+	}
 }

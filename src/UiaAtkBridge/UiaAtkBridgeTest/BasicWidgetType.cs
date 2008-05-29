@@ -30,6 +30,7 @@ namespace UiaAtkBridgeTest
 	public enum BasicWidgetType
 	{
 		Label,
-		Button
+		Button,
+		Window
 	}
 }

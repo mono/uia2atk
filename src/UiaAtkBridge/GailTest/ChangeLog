@@ -1,3 +1,7 @@
+2008-05-29  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* GailTester.cs, GailTest.mdp: Ongoing work on tests...
+
 2008-05-28  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* GailTester.cs: Added role testing (incomplete yet because we have to

@@ -30,5 +30,6 @@
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../gtk-sharp/pango/pango-sharp.dll" />
     <ProjectReference type="Project" localcopy="True" refto="UiaAtkBridgeTest" />
     <ProjectReference type="Gac" localcopy="True" refto="nunit.framework, Version=2.2.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+    <ProjectReference type="Project" localcopy="True" refto="GailTestApp" />
   </References>
 </Project>

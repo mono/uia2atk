@@ -25,16 +25,49 @@
 using System;
 using Gtk;
 
+using System.Threading;
+
 namespace GailTestApp
 {
-	class MainClass
+	public class MainClass
 	{
-		public static void Main (string[] args)
+		static MainWindow win = null;
+		
+		private static void Main (string[] args)
+		{
+			Start (false);
+			Application.Run ();
+		}
+		
+		private static void Start (bool runMainLoopInNewThread)
 		{
 			Application.Init ();
-			MainWindow win = new MainWindow ();
+			win = new MainWindow ();
 			win.Show ();
-			Application.Run ();
+			
+			if (runMainLoopInNewThread) {
+				new Thread (new ThreadStart (Application.Run)).Start ();
+				
+				//little hack (it doesn't matter, it's just for the nunit tests) in
+				//order to wait for Gtk initialization
+				Thread.Sleep (6000);
+			}
+		}
+		
+		public static Gtk.Label GiveMeARealLabel ()
+		{
+			if (win == null)
+				Start (true);
+			
+			return win.GiveMeARealLabel ();
+		}
+		
+		public static Gtk.Button GiveMeARealButton ()
+		{
+			if (win == null)
+				Start (true);
+			
+			return win.GiveMeARealButton ();
 		}
 	}
 }

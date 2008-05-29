@@ -1,5 +1,10 @@
 2008-05-29  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* GailTestApp/MainWindow.cs, GailTestApp/Main.cs: Ongoing work on
+	  tests...
+
+2008-05-29  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* ManagedTests.mds, TestGtkSharp, TestGtkSharp/AssemblyInfo.cs,
 	  TestGtkSharp/MainWindow.cs, TestGtkSharp/TestGtkSharp.mdp,
 	  TestGtkSharp/Test.cs, TestGtkSharp/gtk-gui,

@@ -38,7 +38,7 @@ namespace UiaAtkBridgeTest
 	[TestFixture]
 	public class BridgeTester : AtkTester {
 		
-		public override object GetAtkObjectThatImplementsInterface <I> (BasicWidgetType type, string name, out Atk.Object accessible)
+		public override object GetAtkObjectThatImplementsInterface <I> (BasicWidgetType type, string name, out Atk.Object accessible, bool real)
 		{
 			accessible = null;
 			
