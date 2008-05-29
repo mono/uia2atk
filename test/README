@@ -1,1 +1,80 @@
-DESCRIBE HOW TO TEST
+---------------
+OVERVIEW
+---------------
+
+Directories:
+
+  samples: This directory contains sample applications that will be tested
+          against
+
+  testers: This directory contains test scripts that are executed against the
+          sample applications 
+
+  drivers:  This directory contains scripts that do one or both of the 
+            following:
+
+              1.  Copy test scripts to remote machines
+              2.  Copy sample applications to remote machines
+              3.  Excute the tests onremote machine
+              4.  Copy the remote logs to a centralized location
+
+             Drivers are only needed when executing remote tests.
+
+  resources:  This directory contains custom stylesheets and images for
+              beautifying log files.
+
+Remember:
+  
+  Always update the uia2atk/test/ChangeLog file when adding, modifying, or
+  removing any files in uia2atk/test.
+  
+---------------
+EXECUTING TESTS
+---------------
+
+  SET ENVIRONMENT VARIABLE (RECOMMENDED)
+
+  Set your UIAQA_HOME environment variable to this test directory, for example:
+
+  export UIAQA_HOME=/home/a11y/<test directory>
+
+  To set the environment variable permanently, you might add it to your .bashrc
+  script, or a local boot script (like boot.local in SUSE or rc.local in
+  RedHat).
+
+  NOTE:  If you do not set the environment variable, you must explicitly 
+  specify the full path of the sample application when executing the test
+  script.
+
+EXECUTE THE TEST SCRIPT
+
+  Test scripts can be found in the 'testers' directory.  If you have set your 
+  UIAQA_HOME environment variable, you may simply run the test script
+  without any arguments (i.e., testers/checkbutton-basic-ops.py).
+
+  If you did not set your UIAQA_HOME environment variable, you must specify the
+  full path of the sample application when executing the test script.  For
+  example:
+
+  ./checkbutton-basic-ops.py /home/a11y/<test directory>/samples/checkButton.py
+
+  When the test is executed, you should see the sample application appear on
+  your desktop, Strongwind will execute some tests, and the application should
+  close. 
+
+BEAUTIFY THE LOG
+
+  Strongwind generates very useful log files.  By default, the log is saved in
+  /tmp/strongwind.  Custom stylesheets and images can (and should) be copied
+  to the log directory to make the logs pretty.  The stylesheets and images are
+  stored in the <test directory>/resources directory.  Simply copy everything
+  in that directory to your log directory.  For example:
+
+  cp /home/a11y/<test directory>/resources/* /tmp/strongwind
+
+  Then browse to <log_direcory>/procedures.xml (/tmp/strongwind/procedures.xml)
+  by default in your web browser.
+
+  In practice, the stylesheets should be edited to point to the appropriate
+  resources instead of copying the resources to the directory of every log.
+  This is simply to save storage pace.

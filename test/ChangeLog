@@ -1,3 +1,13 @@
+2008-05-29  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* sample/README:  Explain sample directory
+	* demo:  Add demo directory
+	* demo/gtk_sample_test.tar.gz:  A GTK demo test
+	* demo/README:  Explain demo directory
+	* tester/README:  Explain tester directory
+	* driver/README:  Explain driver directory
+	* README:  Testing instructions and layout of test directory
+
 2008-05-28  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* Initial import of skeleton for testing
