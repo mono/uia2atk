@@ -1,5 +1,10 @@
 2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Adapter.cs, Window.cs: Fix overriding of Layer for accerciser to
+	  notice.
+
+2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Button.cs: Truly fix the build.
 
 2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 

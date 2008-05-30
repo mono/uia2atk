@@ -105,9 +105,9 @@ namespace UiaAtkBridge
 			y = 0;
 		}
 
-		// we should use "override" when this bug is fixed and it gets propragated
-		// to GTK#: http://bugzilla.gnome.org/show_bug.cgi?id=526752
-		public new Atk.Layer Layer {
+		// we should use "override" instead of "new" when this bug is fixed and it gets
+		// propragated to GTK#: http://bugzilla.gnome.org/show_bug.cgi?id=526752
+		public virtual new Atk.Layer Layer {
 			get { return Atk.Layer.Widget; }
 		}
 		

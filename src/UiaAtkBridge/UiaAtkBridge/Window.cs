@@ -73,9 +73,7 @@ namespace UiaAtkBridge
 			// TODO
 		}
 
-		// we should use "override" when this bug is fixed and it gets propragated
-		// to GTK#: http://bugzilla.gnome.org/show_bug.cgi?id=526752
-		public new Atk.Layer Layer {
+		public override Atk.Layer Layer {
 			get { return Atk.Layer.Window; }
 		}
 	}
