@@ -301,6 +301,17 @@ namespace UiaAtkBridge
 
 		public GLib.SList GetRunAttributes (int offset, out int start_offset, out int end_offset)
 		{
+			// don't ask me why, this is what gail does 
+			// (instead of throwing or returning null):
+			if (offset > Name.Length)
+				offset = Name.Length;
+			else if (offset < 0)
+				offset = 0;
+			
+			//just test values for now:
+			endOffset = Name.Length;
+			startOffset = offset;
+				
 			//TODO:
 			GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
 			return attribs;
