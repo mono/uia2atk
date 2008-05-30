@@ -2,7 +2,7 @@
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <CustomCommands>
-        <Command type="AfterBuild" command="cp /usr/lib/gtk-2.0/modules/libatk-bridge.so ../../../../../../../../gtk-sharp/atk/glue/.libs/" workingdir="${TargetDir}" />
+        <Command type="AfterBuild" command="cp /usr/lib/gtk-2.0/modules/libatk-bridge.so ../../../../../../../gtk-sharp/atk/glue/.libs/" workingdir="${TargetDir}" />
         <Command type="Execute" command="./formtest.sh" workingdir="${TargetDir}" />
       </CustomCommands>
       <Output directory="bin/Debug" assemblyKeyFile="." assembly="FormTest" />
@@ -22,10 +22,10 @@
     <File name="formtest.sh" subtype="Code" buildaction="FileCopy" />
   </Contents>
   <References>
-    <ProjectReference type="Assembly" localcopy="True" refto="../../../../../../mcs/class/lib/net_2_0/System.Windows.Forms.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="../../../../../mcs/class/lib/net_2_0/System.Windows.Forms.dll" />
     <ProjectReference type="Project" localcopy="True" refto="UiaAtkBridge" />
     <ProjectReference type="Project" localcopy="True" refto="Mono.UIAutomation.Winforms" />
-    <ProjectReference type="Assembly" localcopy="True" refto="../../../../../../mcs/class/lib/net_2_0/System.Drawing.dll" />
+    <ProjectReference type="Assembly" localcopy="True" refto="../../../../../mcs/class/lib/net_2_0/System.Drawing.dll" />
   </References>
   <Deployment.LinuxDeployData generateScript="False" />
 </Project>
