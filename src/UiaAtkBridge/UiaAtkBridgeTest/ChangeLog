@@ -1,5 +1,13 @@
 2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* BridgeTester.cs: Added the window case.
+	* AtkTester.cs: Busted some ghosts, fully reorganized, and add some
+	  tests for window (I know, Window is not in the iteration yet, but
+	  we had the class already implemented and it's easy to test with
+	  accerciser).
+
+2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: No longer needed FIXME.
 
 2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 

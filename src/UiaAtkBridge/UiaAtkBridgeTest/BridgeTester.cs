@@ -61,6 +61,13 @@ namespace UiaAtkBridgeTest
 				text = uiaBut;
 				component = uiaBut;
 				break;
+			case BasicWidgetType.Window:
+				MWF.Form frm = new MWF.Form ();
+				frm.Name = name;
+				UiaAtkBridge.Window uiaWin = new UiaAtkBridge.Window (new WindowProvider (frm));
+				accessible = uiaWin;
+				component = uiaWin;
+				break;
 			}
 
 			if (typeof (I) == typeof (Atk.Text)) {

@@ -76,5 +76,9 @@ namespace UiaAtkBridge
 		public override Atk.Layer Layer {
 			get { return Atk.Layer.Window; }
 		}
+		
+		public override int MdiZorder {
+			get { return -1; }
+		}
 	}
 }

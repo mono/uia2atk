@@ -51,7 +51,17 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void AtkTestForLabel ()
 		{
-			AtkTestForWidget (BasicWidgetType.Label);
+			BasicWidgetType type = BasicWidgetType.Label;
+			Atk.Object accessible = AtkTextImplementorTest (BasicWidgetType.Label);
+			
+			AtkRoleTest (type, accessible);
+			
+			//a label always contains this state, not because it's multi_line, but because it can be multi_line
+			//FIXME: we have ghosts in RefState addition? this is failing in the bridge
+			//Assert.IsTrue (accessible.RefStateSet ().ContainsState (Atk.StateType.MultiLine), "RefStateSet().Contains(MultiLine)");
+			
+			//FIXME: uncomment this when bug#395485 is fixed
+			//Assert.AreEqual (1, accessible.RefStateSet ().Data.Count, "RefStateSet().Data.Count");
 		}
 		
 		[Test]
@@ -60,12 +70,28 @@ namespace UiaAtkBridgeTest
 			BasicWidgetType type = BasicWidgetType.Button;
 			Atk.Object accessible;
 			
-			AtkTestForWidget (type);
+			AtkTextImplementorTest (type);
 			
 			string name = "test";
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
 			AtkComponentImplementorTest (BasicWidgetType.Button, atkComponent);
+			
+			AtkRoleTest (type, accessible);
+		}
+		
+		[Test]
+		public void AtkTestForWindow ()
+		{
+			BasicWidgetType type = BasicWidgetType.Window;
+			Atk.Object accessible;
+			
+			string name = "test";
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			AtkComponentImplementorTest (type, atkComponent);
+			
+			AtkRoleTest (type, accessible);
 		}
 		
 		private void AtkComponentImplementorTest (BasicWidgetType type, Atk.Component implementor)
@@ -78,41 +104,43 @@ namespace UiaAtkBridgeTest
 			}
 			else {
 				Assert.AreEqual (Atk.Layer.Widget, implementor.Layer, "Component.Layer(notWindow)");
-				//FIXME: still don't know why this is failing, accerciser is lying me?
-				//Assert.AreEqual (0, implementor.MdiZorder, "Component.MdiZorder(notWindow)");
+				Assert.AreEqual (0, implementor.MdiZorder, "Component.MdiZorder(notWindow)");
 			}
-
 		}
 		
-		private void AtkTestForWidget (BasicWidgetType type)
+		private void AtkRoleTest (BasicWidgetType type, Atk.Object accessible)
+		{
+			Atk.Role role = Atk.Role.Unknown;
+			switch (type) {
+			case BasicWidgetType.Label:
+				role = Atk.Role.Label;
+				break;
+			case BasicWidgetType.Button:
+				role = Atk.Role.PushButton;
+				break;
+			case BasicWidgetType.Window:
+				role = Atk.Role.Frame;
+				break;
+			default:
+				throw new NotImplementedException ();
+			}
+			Assert.AreEqual (role, accessible.Role, "Atk.Role");
+		}
+		
+		private Atk.Object AtkTextImplementorTest (BasicWidgetType type)
 		{
 			int startOffset, endOffset;
 			string expected;
 			Atk.Text atkText;
 			string name = "This is a test sentence.\r\nSecond line. Other phrase.\nThird line?";
 
-			
 			Atk.Object accessible;
 			atkText = (Atk.Text)
 				GetAtkObjectThatImplementsInterface <Atk.Text> (type, name, out accessible, false);
 			
 			int nSelections = -1;
-			Atk.Role role = Atk.Role.PushButton;
-			if (type == BasicWidgetType.Label) {
+			if (type == BasicWidgetType.Label)
 				nSelections = 0;
-				role = Atk.Role.Label;
-			}
-
-			if (type == BasicWidgetType.Label) {
-				//a label always contains this state, not because it's multi_line, but because it can be multi_line
-				//FIXME: we have ghosts in RefState addition? this is failing in the bridge
-				//Assert.IsTrue (accessible.RefStateSet ().ContainsState (Atk.StateType.MultiLine), "RefStateSet().Contains(MultiLine)");
-				
-				//FIXME: uncomment this when bug#395485 is fixed
-				//Assert.AreEqual (1, accessible.RefStateSet ().Data.Count, "RefStateSet().Data.Count");
-			}
-			
-			Assert.AreEqual (role, accessible.Role, "Atk.Role");
 			
 			Assert.AreEqual (0, atkText.CaretOffset, "CaretOffset");
 			Assert.AreEqual (name.Length, atkText.CharacterCount, "CharacterCount");
@@ -437,6 +465,8 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,SentenceEnd,so");
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,SentenceEnd,eo");
 			
+			
+			return accessible;
 		}
 	}
 }

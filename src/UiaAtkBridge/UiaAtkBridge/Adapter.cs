@@ -111,6 +111,10 @@ namespace UiaAtkBridge
 			get { return Atk.Layer.Widget; }
 		}
 		
+		public virtual new int MdiZorder {
+			get { return 0; }
+		}
+		
 		public virtual void GetSize (out int width, out int height)
 		{
 			//TODO: Implement GetSize

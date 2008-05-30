@@ -56,6 +56,11 @@ namespace UiaAtkBridgeTest
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealButton ();
 				break;
+			case BasicWidgetType.Window:
+				widget = new Gtk.Window (text);
+//				if (real)
+//					widget = GailTestApp.MainClass.GiveMeARealWindow ();
+				break;
 			}
 			
 			accessible = widget.Accessible;

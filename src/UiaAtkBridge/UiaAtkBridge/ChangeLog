@@ -1,5 +1,12 @@
 2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Adapter.cs, Window.cs: Busted some ghosts, fully reorganized, and add
+	  some tests for window (I know, Window is not in the iteration yet,
+	  but we had the class already implemented and it's easy to test with
+	  accerciser).
+
+2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* UiaAtkBridge.mdp: Oops, reenable debug info.
 
 2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
