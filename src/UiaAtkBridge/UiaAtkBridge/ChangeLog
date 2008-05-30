@@ -1,5 +1,10 @@
 2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Cosmetic.
+	* UiaAtkBridge.mdp: Uncomment a test which we now pass.
+
+2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Adapter.cs, Window.cs: Fix overriding of Layer for accerciser to
 	  notice.
 

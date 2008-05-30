@@ -1,3 +1,7 @@
+2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* GailTest.mdp: Flush.
+
 2008-05-29  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* GailTester.cs, GailTest.mdp: Ongoing work on tests...

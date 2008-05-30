@@ -40,26 +40,34 @@ namespace UiaAtkBridgeTest
 		
 		public override object GetAtkObjectThatImplementsInterface <I> (BasicWidgetType type, string name, out Atk.Object accessible, bool real)
 		{
+			Atk.ComponentImplementor component = null;
+			Atk.TextImplementor text = null;
 			accessible = null;
 
 			switch (type) {
 			case BasicWidgetType.Label:
 				MWF.Label lab = new MWF.Label ();
 				lab.Text = name;
-				accessible = new UiaAtkBridge.TextLabel (new LabelProvider (lab));
+				UiaAtkBridge.TextLabel uiaLab = new UiaAtkBridge.TextLabel (new LabelProvider (lab));
+				accessible = uiaLab;
+				text = uiaLab;
+				component = uiaLab;
 				break;
 			case BasicWidgetType.Button:
 				MWF.Button but = new MWF.Button ();
 				but.Text = name;
-				accessible = new UiaAtkBridge.Button (new ButtonProvider (but));
+				UiaAtkBridge.Button uiaBut = new UiaAtkBridge.Button (new ButtonProvider (but));
+				accessible = uiaBut;
+				text = uiaBut;
+				component = uiaBut;
 				break;
 			}
 
 			if (typeof (I) == typeof (Atk.Text)) {
-				return new Atk.TextAdapter ((Atk.TextImplementor) accessible);
+				return new Atk.TextAdapter (text);
 			}
 			else if (typeof (I) == typeof (Atk.Component)) {
-				return new Atk.ComponentAdapter ((Atk.ComponentImplementor) accessible);
+				return new Atk.ComponentAdapter (component);
 			}
 			// we are not using this yet
 //			else if (typeof(I) == typeof (Atk.Action)) {

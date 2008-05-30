@@ -132,7 +132,7 @@ namespace UiaAtkBridge
 			//just test values for now:
 			endOffset = Name.Length;
 			startOffset = offset;
-				
+			
 			//TODO:
 			GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
 			return attribs;
