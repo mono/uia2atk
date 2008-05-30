@@ -1,5 +1,9 @@
 2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Button.cs: Truly fix the build.
+
+2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Button.cs: Fix build.
 
 2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 

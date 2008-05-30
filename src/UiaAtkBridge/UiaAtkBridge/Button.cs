@@ -299,7 +299,7 @@ namespace UiaAtkBridge
 			return textExpert.GetCharacterAtOffset (offset);
 		}
 
-		public GLib.SList GetRunAttributes (int offset, out int start_offset, out int end_offset)
+		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
 			// don't ask me why, this is what gail does 
 			// (instead of throwing or returning null):
