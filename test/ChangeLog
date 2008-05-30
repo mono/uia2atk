@@ -1,3 +1,12 @@
+2008-05-30  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* drivers/local_run.py : Add script that runs the tests on a local 
+	machine
+	* drivers/tests.py : A list of tests to be run
+	* drivers/machines.py : A list of remote machines on which tests should
+	be run
+
+
 2008-05-30  Calen Chen <cachen@novell.com>
 
 	* samples/RichTextBox.py:  Application for RichTextBox Control
