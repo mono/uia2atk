@@ -1,5 +1,9 @@
 2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Still a ghost in Gail...
+
+2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* BridgeTester.cs: Added the window case.
 	* AtkTester.cs: Busted some ghosts, fully reorganized, and add some
 	  tests for window (I know, Window is not in the iteration yet, but
