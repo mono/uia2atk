@@ -77,7 +77,6 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (-1, implementor.MdiZorder, "Component.MdiZorder(Window)");
 			}
 			else {
-				//FIXME: this is not working although we are using the "new" keyword in the Adapter class
 				Assert.AreEqual (Atk.Layer.Widget, implementor.Layer, "Component.Layer(notWindow)");
 				//FIXME: still don't know why this is failing, accerciser is lying me?
 				//Assert.AreEqual (0, implementor.MdiZorder, "Component.MdiZorder(notWindow)");

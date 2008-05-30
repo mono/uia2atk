@@ -1,5 +1,9 @@
 2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* UiaAtkBridge.mdp: Oops, reenable debug info.
+
+2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextLabel.cs: Cosmetic.
 	* UiaAtkBridge.mdp: Uncomment a test which we now pass.
 

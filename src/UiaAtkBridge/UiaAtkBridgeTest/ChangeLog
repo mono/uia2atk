@@ -1,5 +1,9 @@
 2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: No longer needed FIXME.
+
+2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* BridgeTester.cs, AtkTester.cs: Uncomment a test which we now pass.
 
 2008-05-29  Andres G. Aragoneses <aaragoneses@novell.com> 
