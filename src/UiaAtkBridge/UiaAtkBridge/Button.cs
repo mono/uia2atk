@@ -301,7 +301,9 @@ namespace UiaAtkBridge
 
 		public GLib.SList GetRunAttributes (int offset, out int start_offset, out int end_offset)
 		{
-			throw new NotImplementedException();
+			//TODO:
+			GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
+			return attribs;
 		}
 
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)

@@ -1,3 +1,7 @@
+2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* Button.cs: Prevent accerciser crash.
+
 2008-05-29  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* Adapter.cs, TextLabel.cs, Window.cs: Some fixes and some ghosts...
