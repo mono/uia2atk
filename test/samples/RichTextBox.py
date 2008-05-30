@@ -51,9 +51,9 @@ class TestRichTextBox(Form):
 		findtext =self.richtextbox1.Find("Text", RichTextBoxFinds.MatchCase)
 		if(findtext >= 0):
 			self.richtextbox1.SaveFile("text1.txt",RichTextBoxStreamType.RichText)
-			self.label1.Text = "announce: found \"Text\" word, and saved to text1.txt"
+			self.label1.Text = "Announce: found \"Text\" word, and saved to text1.txt"
 		else:
-			self.label1.Text = "announce: didn't found \"Text\" word"
+			self.label1.Text = "Announce: didn't found \"Text\" word"
 
 		if(self.richtextbox1.SelectionFont != 0):
 			currentFont = self.richtextbox1.SelectionFont

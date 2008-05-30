@@ -1,0 +1,2 @@
+##Examples for RichTextBox Control: RichTextBox Control have property with load and safe file. this is a text.txt file for RichTextBox control to load and search for "Text" word and save as text1.txt.
+
