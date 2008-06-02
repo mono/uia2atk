@@ -1,3 +1,14 @@
+2008-06-02  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.mdp: Updated due to added files.
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: File added.
+	* Mono.UIAutomation.Winforms/TextNormalizerPoints.cs: File added. 
+	Represents normalized values.
+	* Mono.UIAutomation.Winforms/TextNormalizer.cs: File added. Class to
+	normalize TextUnit.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Implementing 
+	ITextRangeProvider: using TextRangeProvider class.
+
 2008-05-28  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/TextBoxRangeProvider.cs: Deleted. Shouldn't

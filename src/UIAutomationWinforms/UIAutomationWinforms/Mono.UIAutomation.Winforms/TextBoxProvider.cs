@@ -38,15 +38,21 @@ namespace Mono.UIAutomation.Winforms
 	{
 #region Protected section
 		
-		protected TextBoxBase textBoxBase;
+		protected TextBoxBase textboxbase;
 
+#endregion
+		
+#region Private section
+		
+		private ITextRangeProvider text_range_provider;
+		
 #endregion
 	
 #region Constructors
 
 		public TextBoxProvider (TextBoxBase textBoxBase) : base (textBoxBase)
 		{
-			this.textBoxBase = textBoxBase;
+			this.textboxbase = textBoxBase;
 		}
 
 #endregion
@@ -65,7 +71,7 @@ namespace Mono.UIAutomation.Winforms
 			SetEvent (EventStrategyType.TextChangedEvent, 
 			          new DefaultTextChangedEvent (this, control));
 			SetEvent (EventStrategyType.HasKeyboardFocusProperty, 
-			          new TextBoxHasKeyBoardFocusPropertyEvent (this, textBoxBase));
+			          new TextBoxHasKeyBoardFocusPropertyEvent (this, textboxbase));
 			
 			// TODO: InvalidatedEvent
 			// TODO: TextSelectionChangedEvent: using textbox.SelectionLength != 0?	
@@ -92,7 +98,7 @@ namespace Mono.UIAutomation.Winforms
 	
 		public override object GetPatternProvider (int patternId)
 		{
-			if (textBoxBase.Multiline) {
+			if (textboxbase.Multiline) {
 				if (patternId == ScrollPatternIdentifiers.Pattern.Id
 				    || patternId == TextPatternIdentifiers.Pattern.Id)
 					return this;
@@ -107,21 +113,21 @@ namespace Mono.UIAutomation.Winforms
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return textBoxBase.Multiline ? ControlType.Document.Id : ControlType.Edit.Id;
+				return textboxbase.Multiline ? ControlType.Document.Id : ControlType.Edit.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return textBoxBase.Multiline ? "document" : "edit";
+				return textboxbase.Multiline ? "document" : "edit";
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) {
 				// TODO: We are using TabIndex to evaluate whether the previous control
 				// is Label (that way we know if this label is associated to the TextBox.
 				// Right?)
-				if (textBoxBase.Parent != null) {
-					Label associatedLabel = textBoxBase.Parent.GetNextControl (textBoxBase, true) as Label;
+				if (textboxbase.Parent != null) {
+					Label associatedLabel = textboxbase.Parent.GetNextControl (textboxbase, true) as Label;
 					if (associatedLabel != null)
 						return associatedLabel;
 				}
 				return null;
 			} else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id) {
-				TextBox textBox = textBoxBase as TextBox;
+				TextBox textBox = textboxbase as TextBox;
 				if (textBox != null)
 					return (textBox.UseSystemPasswordChar || (int) textBox.PasswordChar != 0);
 				else
@@ -135,15 +141,11 @@ namespace Mono.UIAutomation.Winforms
 #region IValueProvider Members
 		
 		public bool IsReadOnly {
-			get {
-				return textBoxBase.ReadOnly;
-			}
+			get { return textboxbase.ReadOnly; }
 		}
 
 		public string Value {
-			get {
-				return textBoxBase.Text;
-			}
+			get { return textboxbase.Text; }
 		}
 
 		public void SetValue (string value)
@@ -151,24 +153,35 @@ namespace Mono.UIAutomation.Winforms
 			if (IsReadOnly)
 				throw new ElementNotEnabledException ();
 
-			textBoxBase.Text = value;
+			textboxbase.Text = value;
 		}
 		
 #endregion
 		
 #region ITextProvider Members
 		
-		public ITextRangeProvider DocumentRange { 
-			get { throw new NotImplementedException (); }
+		//TODO: We should connect the events to update this.text_range_provider
+		public ITextRangeProvider DocumentRange {
+			get { 
+				if (text_range_provider == null)
+					text_range_provider = new TextRangeProvider (this, textboxbase); 
+				return text_range_provider;
+			}
 		}
 		
 		public SupportedTextSelection SupportedTextSelection {
-			get { throw new NotImplementedException (); }
+			get { return SupportedTextSelection.Single; }
 		}
 
 		public ITextRangeProvider[] GetSelection ()
 		{
-			throw new NotImplementedException ();
+			if (SupportedTextSelection == SupportedTextSelection.None)
+				throw new InvalidOperationException ();
+				
+			//TODO: Return null when system cursor is not present, how to?
+
+			return new ITextRangeProvider [] { 
+				new TextRangeProvider (this, textboxbase) };
 		}
 		
 		public ITextRangeProvider[] GetVisibleRanges ()
