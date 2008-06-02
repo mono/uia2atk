@@ -75,7 +75,12 @@ namespace UiaAtkBridgeTest
 			string name = "test";
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
-			AtkComponentImplementorTest (BasicWidgetType.Button, atkComponent);
+			AtkComponentImplementorTest (type, atkComponent);
+			
+			name = "test";
+			Atk.Action atkAction = (Atk.Action)
+				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
+			AtkActionImplementorTest (type, atkAction);
 			
 			AtkRoleTest (type, accessible);
 		}
@@ -90,6 +95,25 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
 			AtkComponentImplementorTest (type, atkComponent);
+			
+			AtkRoleTest (type, accessible);
+		}
+		
+		//[Test]
+		public void AtkTestForCheckBox ()
+		{
+			BasicWidgetType type = BasicWidgetType.CheckBox;
+			Atk.Object accessible;
+			
+			string name = "test";
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			AtkComponentImplementorTest (type, atkComponent);
+			
+			name = "test";
+			Atk.Action atkAction = (Atk.Action)
+				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
+			AtkActionImplementorTest (type, atkAction);
 			
 			AtkRoleTest (type, accessible);
 		}
@@ -109,6 +133,33 @@ namespace UiaAtkBridgeTest
 			}
 		}
 		
+		private void AtkActionImplementorTest (BasicWidgetType type, Atk.Action implementor)
+		{
+			if (type == BasicWidgetType.Button) {
+				int numActions = 3;
+				Assert.AreEqual (numActions, implementor.NActions);
+				
+				Assert.IsFalse (implementor.DoAction (numActions));
+				Assert.IsFalse (implementor.DoAction (-1));
+				
+				Assert.AreEqual ("click", implementor.GetName (0));
+				Assert.AreEqual ("press", implementor.GetName (1));
+				Assert.AreEqual ("release", implementor.GetName (2));
+				
+				Assert.AreEqual (null, implementor.GetDescription (0));
+				Assert.AreEqual (null, implementor.GetDescription (1));
+				Assert.AreEqual (null, implementor.GetDescription (2));
+				
+				Assert.AreEqual (null, implementor.GetName (-1));
+				Assert.AreEqual (null, implementor.GetName (numActions));
+				Assert.AreEqual (null, implementor.GetDescription (-1));
+				Assert.AreEqual (null, implementor.GetDescription (numActions));
+			}
+			else {
+				throw new NotImplementedException ();
+			}
+		}
+		
 		private void AtkRoleTest (BasicWidgetType type, Atk.Object accessible)
 		{
 			Atk.Role role = Atk.Role.Unknown;
@@ -121,6 +172,9 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.Window:
 				role = Atk.Role.Frame;
+				break;
+			case BasicWidgetType.CheckBox:
+				role = Atk.Role.CheckBox;
 				break;
 			default:
 				throw new NotImplementedException ();

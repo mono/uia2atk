@@ -27,10 +27,13 @@ using System;
 
 namespace UiaAtkBridgeTest
 {
+	// this enum only contains very basic widgets that are almost completely the same
+	// in the Gtk# and in the MWF world (complex ones will need a different test concept type)
 	public enum BasicWidgetType
 	{
 		Label,
 		Button,
-		Window
+		Window,
+		CheckBox
 	}
 }

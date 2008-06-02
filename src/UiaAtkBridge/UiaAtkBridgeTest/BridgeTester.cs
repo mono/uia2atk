@@ -68,6 +68,9 @@ namespace UiaAtkBridgeTest
 				accessible = uiaWin;
 				component = uiaWin;
 				break;
+			default:
+				throw new NotImplementedException ("The widget finder backend still hasn't got support for " +
+					type.ToString ());
 			}
 
 			if (typeof (I) == typeof (Atk.Text)) {
@@ -81,8 +84,8 @@ namespace UiaAtkBridgeTest
 //				TestButtonControlType button = new TestButtonControlType ("Push Button", false);
 //				return new Atk.ActionAdapter (new UiaAtkBridge.Button(button));
 //			}
-
-			return null;
+			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
+				typeof(I).Name);
 		}
 		
 		

@@ -1,3 +1,8 @@
+2008-06-02  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* BridgeTester.cs: Better to throw  than to find NRE's while I work on
+	  new things.
+
 2008-05-30  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTester.cs: Still a ghost in Gail...
