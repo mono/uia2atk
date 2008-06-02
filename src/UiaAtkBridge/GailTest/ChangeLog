@@ -1,5 +1,9 @@
 2008-06-02  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* GailTester.cs: Use the correct name for widget.
+
+2008-06-02  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* GailTester.cs: Add support for Atk.Action interface. Better to throw
 	  than to find NRE's while I work on new things.
 

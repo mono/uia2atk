@@ -63,7 +63,7 @@ namespace UiaAtkBridgeTest
 				break;
 			default:
 				throw new NotImplementedException ("The widget finder backend still hasn't got support for " +
-					typeof(I).Name);
+					type.ToString ());
 			}
 			
 			accessible = widget.Accessible;
