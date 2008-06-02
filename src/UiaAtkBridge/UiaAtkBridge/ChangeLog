@@ -1,5 +1,9 @@
 2008-06-02  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Button.cs, CheckBox.cs: Basic event handling.
+
+2008-06-02  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Button.cs: Spaces to tabs, cosmetic things... (no behaviour change).
 	* CheckBox.cs: Added role.
 

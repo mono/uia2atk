@@ -113,7 +113,7 @@ namespace UiaAtkBridge
 		}
 		
 		// Sets a description of the specified action
-		public bool SetDescription(int action, string description)
+		public bool SetDescription (int action, string description)
 		{
 			if (action != 0)
 				return false;
@@ -123,11 +123,11 @@ namespace UiaAtkBridge
 		}
 		
 		// Get the key bindings for the specified action
-		public string GetKeybinding(int action)
+		public string GetKeybinding (int action)
 		{
 			string keyBinding = String.Empty;
 			
-			if(action != 0)
+			if (action != 0)
 				return keyBinding;
 
 			keyBinding = (string) provider.GetPropertyValue (AutomationElementIdentifiers.AcceleratorKeyProperty.Id);
@@ -156,7 +156,7 @@ namespace UiaAtkBridge
 		}
 
 		// Perform the action specified
-		public bool DoAction(int action)
+		public bool DoAction (int action)
 		{
 			try {
 				if (invokeProvider != null) {
@@ -228,10 +228,8 @@ namespace UiaAtkBridge
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
-				ToggleState state = (ToggleState)e.NewValue;
-				// ToggleState.On
-				// ToggleState.Off
-				// ToggleState.Intermediate
+				//if it's a toggle, it should not be a basic Button class, but CheckBox or other
+				throw new NotSupportedException ("Toggle events should not land here (should not be reached)");
 			} else if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
 				// TODO: Handle BoundingRectangleProperty change
 			} else if (e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 

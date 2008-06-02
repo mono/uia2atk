@@ -32,6 +32,7 @@ namespace UiaAtkBridge
 	
 	public class CheckBox : Button
 	{
+		ToggleState currentState;
 		
 		public CheckBox (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -43,10 +44,47 @@ namespace UiaAtkBridge
 			else
 				RefStateSet ().RemoveState (Atk.StateType.Enabled);
 			
-			if (((IToggleProvider)provider).ToggleState == ToggleState.On)
+			ToggleState state = (ToggleState)((IToggleProvider)provider).ToggleState;
+			
+			switch (state) {
+			case ToggleState.On:
+				currentState = ToggleState.On;
 				RefStateSet ().AddState (Atk.StateType.Checked);
-			else if (((IToggleProvider)provider).ToggleState == ToggleState.Off)
+				break;
+			case ToggleState.Off:
+				currentState = ToggleState.Off;
 				RefStateSet ().RemoveState (Atk.StateType.Checked);
+				break;
+			case ToggleState.Indeterminate:
+				currentState = ToggleState.Indeterminate;
+				break;
+			default:
+				throw new NotSupportedException ("Unknown toggleState " + state.ToString ());
+			}
+		}
+		
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
+				ToggleState state = (ToggleState)e.NewValue;
+				
+				switch (state) {
+				case ToggleState.On:
+					RefStateSet ().AddState (Atk.StateType.Checked);
+					break;
+				case ToggleState.Off:
+					RefStateSet ().RemoveState (Atk.StateType.Checked);
+					break;
+				case ToggleState.Indeterminate:
+					if (currentState == ToggleState.On)
+						RefStateSet ().RemoveState (Atk.StateType.Checked);
+					break;
+				default:
+					throw new NotSupportedException ("Unknown toggleState " + state.ToString ());
+				}
+			} else {
+				base.RaiseAutomationPropertyChangedEvent (e);
+			}
 		}
 	}
 }
