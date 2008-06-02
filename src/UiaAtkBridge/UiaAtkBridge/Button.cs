@@ -38,11 +38,11 @@ namespace UiaAtkBridge
 		private static string default_invoke_name = "click";
 		private static string default_toggle_name = "toggle";
 		
-		private IRawElementProviderSimple provider;
-		private IInvokeProvider			invokeProvider;
-		private IToggleProvider			toggleProvider;
-		private string					actionDescription;
-		private string					actionName;
+		private IRawElementProviderSimple	provider;
+		private IInvokeProvider				invokeProvider;
+		private IToggleProvider				toggleProvider;
+		private string						actionDescription;
+		private string						actionName;
 		
 		private TextImplementorHelper textExpert = null;
 		private int selectionStartOffset = 0, selectionEndOffset = 0;
@@ -64,7 +64,7 @@ namespace UiaAtkBridge
 		{
 			this.provider = provider;
 			
-			if(provider is IInvokeProvider) {
+			if (provider is IInvokeProvider) {
 				invokeProvider = (IInvokeProvider)provider;
 				actionDescription = default_invoke_description;
 				actionName = default_invoke_name;
@@ -91,8 +91,6 @@ namespace UiaAtkBridge
 				RefStateSet ().AddState (Atk.StateType.Sensitive);
 			else
 				RefStateSet ().RemoveState (Atk.StateType.Sensitive);
-				
-			
 		}
 		
 		// Return the number of actions (Read-Only)
@@ -107,8 +105,8 @@ namespace UiaAtkBridge
 		// Get a localized name for the specified action
 		public string GetLocalizedName (int action)
 		{
-			if(action != 0)
-				return "";
+			if (action != 0)
+				return String.Empty;
 
 			// TODO: Localize the name?
 			return actionName;
@@ -117,7 +115,7 @@ namespace UiaAtkBridge
 		// Sets a description of the specified action
 		public bool SetDescription(int action, string description)
 		{
-			if(action != 0)
+			if (action != 0)
 				return false;
 			
 			actionDescription = description;
@@ -127,32 +125,32 @@ namespace UiaAtkBridge
 		// Get the key bindings for the specified action
 		public string GetKeybinding(int action)
 		{
-			string keyBinding = "";
+			string keyBinding = String.Empty;
 			
 			if(action != 0)
 				return keyBinding;
 
 			keyBinding = (string) provider.GetPropertyValue (AutomationElementIdentifiers.AcceleratorKeyProperty.Id);
-			if(keyBinding == null)
-				keyBinding = "";
+			if (keyBinding == null)
+				keyBinding = String.Empty;
 				
 			return keyBinding;
 		}
 
-		// Get the name of the specified action		
-		public string GetName(int action)
+		// Get the name of the specified action
+		public string GetName (int action)
 		{
-			if(action != 0)
-				return "";
+			if (action != 0)
+				return String.Empty;
 
 			return actionName;
 		}
 		
 		// Get the description of the specified action
-		public string GetDescription(int action)
+		public string GetDescription (int action)
 		{
-			if(action != 0)
-				return "";
+			if (action != 0)
+				return String.Empty;
 
 			return actionDescription;
 		}
@@ -161,9 +159,9 @@ namespace UiaAtkBridge
 		public bool DoAction(int action)
 		{
 			try {
-				if(invokeProvider != null) {
+				if (invokeProvider != null) {
 					try {
-						if(action != 0)
+						if (action != 0)
 							return false;
 							
 						invokeProvider.Invoke();
@@ -171,9 +169,9 @@ namespace UiaAtkBridge
 					} catch (ElementNotEnabledException e) {
 						// TODO: handle this exception? maybe returning false is good enough
 					}
-				} else if(toggleProvider != null) {
+				} else if (toggleProvider != null) {
 					try {
-						if(action != 0)
+						if (action != 0)
 							return false;
 						toggleProvider.Toggle();
 						return true;
@@ -229,20 +227,20 @@ namespace UiaAtkBridge
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-		    if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
-		        ToggleState state = (ToggleState)e.NewValue;
-		        // ToggleState.On
-		        // ToggleState.Off
-		        // ToggleState.Intermediate
-		    } else if(e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
-		    	// TODO: Handle BoundingRectangleProperty change
-		    } else if(e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
-		        // TODO: Handle IsOffscreenProperty change
-		    } else if(e.Property == AutomationElementIdentifiers.IsEnabledProperty) {
-		        // TODO: Handle IsEnabledProperty change		    
-		    } else if(e.Property == AutomationElementIdentifiers.NameProperty) {
-		        // TODO: Handle NameProperty change			    
-		    }
+			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
+				ToggleState state = (ToggleState)e.NewValue;
+				// ToggleState.On
+				// ToggleState.Off
+				// ToggleState.Intermediate
+			} else if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
+				// TODO: Handle BoundingRectangleProperty change
+			} else if (e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
+				// TODO: Handle IsOffscreenProperty change
+			} else if (e.Property == AutomationElementIdentifiers.IsEnabledProperty) {
+				// TODO: Handle IsEnabledProperty change		    
+			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
+				// TODO: Handle NameProperty change			    
+			}
 		}
 		
 		private void OnPressed ()
@@ -311,7 +309,7 @@ namespace UiaAtkBridge
 			//just test values for now:
 			endOffset = Name.Length;
 			startOffset = offset;
-				
+			
 			//TODO:
 			GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
 			return attribs;

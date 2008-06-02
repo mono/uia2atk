@@ -1,5 +1,10 @@
 2008-06-02  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Button.cs: Spaces to tabs, cosmetic things... (no behaviour change).
+	* CheckBox.cs: Added role.
+
+2008-06-02  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* CheckBox.cs, UiaAtkBridge.mdp: Add first version of CheckBox class
 	  (it promises to be pretty simple since it inherits from existing
 	  Button class).

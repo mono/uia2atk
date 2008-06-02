@@ -35,6 +35,8 @@ namespace UiaAtkBridge
 		
 		public CheckBox (IRawElementProviderSimple provider) : base (provider)
 		{
+			Role = Atk.Role.CheckBox;
+			
 			bool enabled = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
 			if (enabled)
 				RefStateSet ().AddState (Atk.StateType.Enabled);
