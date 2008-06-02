@@ -61,6 +61,9 @@ namespace UiaAtkBridgeTest
 //				if (real)
 //					widget = GailTestApp.MainClass.GiveMeARealWindow ();
 				break;
+			default:
+				throw new NotImplementedException ("The widget finder backend still hasn't got support for " +
+					typeof(I).Name);
 			}
 			
 			accessible = widget.Accessible;
@@ -71,7 +74,11 @@ namespace UiaAtkBridgeTest
 			else if (typeof (I) == typeof (Atk.Component)) {
 				return Atk.ComponentAdapter.GetObject (widget.Accessible.Handle, false);
 			}
-			return null;
+			else if (typeof (I) == typeof (Atk.Action)) {
+				return Atk.ActionAdapter.GetObject (widget.Accessible.Handle, false);
+			}
+			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
+				typeof(I).Name);
 		}
 		
 	}
