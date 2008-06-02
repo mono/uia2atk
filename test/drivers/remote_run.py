@@ -3,7 +3,7 @@
 ##############################################################################
 # Written by:  Brian G. Merrell <bgmerrell@novell.com>
 # Date:        May 23 2008
-# Description: Run the enabled tests on the local machines
+# Description: Run the enabled tests on the remote machines
 ##############################################################################
 
 # import the enabled tests
