@@ -1,3 +1,9 @@
+2008-06-02  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* CheckBox.cs, UiaAtkBridge.mdp: Add first version of CheckBox class
+	  (it promises to be pretty simple since it inherits from existing
+	  Button class).
+
 2008-05-30  Calvin Gaisford <calvinrg@gmail.com> 
 
 	
