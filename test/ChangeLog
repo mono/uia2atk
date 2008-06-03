@@ -1,4 +1,7 @@
 2008-06-03  Brian G. Merrell <bgmerrell@gmail.com>
+	* drivers/remote_run.py : abort correctly on user abort
+
+2008-06-03  Brian G. Merrell <bgmerrell@gmail.com>
 	
 	* samples/checkButton.py : add temporary gtk sample app
 

@@ -36,7 +36,7 @@ class Settings(object):
   is_quiet = None
   remote_log_path = machines.LOG_DIR
   local_log_path = "/tmp/uiaqa"
-  COUNTDOWN = 3
+  COUNTDOWN = 10
 
   def __init__(self):
       self.argument_parser()
@@ -86,11 +86,9 @@ class Kickoff(threading.Thread):
   def run(self):
     lock = threading.Lock()
     lock.acquire()
-    os.system("rm -rf %s" % Settings.local_log_path)
-    os.mkdir(Settings.local_log_path)
     lock.release()
     self.status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 \
-                             %s/drivers/local_run.py --log=%s > %s/%s" %\
+                             %s/drivers/local_run.py --log=%s > %s/%s 2>&1" %\
                              (machines.USERNAME, self.ip, machines.TEST_DIR,\
                               Settings.remote_log_path,\
                               Settings.local_log_path, self.name))
@@ -140,6 +138,11 @@ class Test(object):
     if len(down_machines) > 0:
       output("WARNING:  %i/%i machines did not respond"\
               % (len(down_machines), len(self.machines)))
+      try:
+        self.countdown(Settings.COUNTDOWN)
+      except KeyboardInterrupt:
+        return 0
+      output("")
 
   def execute_tests(self):
     output("Kicking off remote tests:")
@@ -167,13 +170,22 @@ class Test(object):
     if len(failed_machines) > 0:
       output("WARNING:  %i/%i failed to kick off"\
               % (len(failed_machines), len(self.up_machines)))
-      try:
-        self.countdown(Settings.COUNTDOWN)
-      except KeyboardInterrupt:
-        return 0
+
+  def setup_logging(self):
+    # delete old local log directory if it exists
+    os.system("rm -rf %s" % Settings.local_log_path)
+    try:
+      os.mkdir(Settings.local_log_path)
+    except OSError, msg:
+        output(msg)
+        output("WARNINGS:  Could not create %s directory!" % \
+                Settings.local_log_path)
+        output("WARNINGS:  Local logs will not be stored")
 
   def run(self):
-    self.check_machines()
+    if not self.check_machines():
+      return 1
+    self.setup_logging()
     self.execute_tests() 
     
 
