@@ -1,3 +1,8 @@
+2008-06-03  Calvin Gaisford <calvinrg@gmail.com> 
+
+	* BridgeTester.cs, UiaAtkBridgeTest.mdp: Filled out more of Button, added
+	  Event tests in the BridgeTester
+
 2008-06-03  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* BridgeTester.cs: Add support for Atk.Action interface in

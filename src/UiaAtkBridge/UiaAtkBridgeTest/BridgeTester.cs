@@ -94,14 +94,17 @@ namespace UiaAtkBridgeTest
 		}
 		
 		
-		//[Test]
+		[Test]
 		public void UIAButtonControlType ()
 		{
 			TestButtonControlType pushButton = 
 				new TestButtonControlType ("Push Button", false);
 
+			UiaAtkBridge.Adapter bridgeAdapter = new UiaAtkBridge.Button(pushButton);
+
 			Atk.Action atkAction =
-				new Atk.ActionAdapter (new UiaAtkBridge.Button (pushButton));
+				new Atk.ActionAdapter (bridgeAdapter as Atk.ActionImplementor);
+//				new Atk.ActionAdapter (new UiaAtkBridge.Button (pushButton));
 
 			pushButton.SetPropertyValue(AutomationElementIdentifiers.AcceleratorKeyProperty.Id, "Magic Key");
 			// Should only work on GetKeybinding for 0, the rest should be null
@@ -109,8 +112,40 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (atkAction.GetKeybinding (1));
 			Assert.IsNull (atkAction.GetKeybinding (-1));
 			
+			atkAction.SetDescription(0, "Some big ugly description");
+			Assert.AreEqual ("Some big ugly description", atkAction.GetDescription (0));
+	
 			//disabling this test because in other LANG it may not work
 			//Assert.AreEqual ("click", atkAction.GetLocalizedName(0));
+
+
+			// TogglePatternIdentifiers.ToggleStateProperty
+			AutomationPropertyChangedEventArgs args =
+					new AutomationPropertyChangedEventArgs (TogglePatternIdentifiers.ToggleStateProperty,
+					                                        null,
+					                                        ToggleState.On);
+
+			bridgeAdapter.RaiseAutomationPropertyChangedEvent(args);
+
+			// AutomationElementIdentifiers.BoundingRectangleProperty
+			System.Windows.Rect rect = new System.Windows.Rect(47, 47, 47, 47);
+			args =
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.BoundingRectangleProperty,
+					                                        null,
+					                                        rect);
+
+			bridgeAdapter.RaiseAutomationPropertyChangedEvent(args);
+
+
+/*
+			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
+			} else if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
+			} else if (e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
+			} else if (e.Property == AutomationElementIdentifiers.IsEnabledProperty) {
+			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
+*/
+
+			// lot's more tests
 		}
 
 	}

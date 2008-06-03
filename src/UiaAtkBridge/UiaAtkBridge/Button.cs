@@ -217,7 +217,10 @@ namespace UiaAtkBridge
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			if (eventId == InvokePatternIdentifiers.InvokedEvent) {
-				OnPressed ();
+				// not sure this is useful, but UIA Buttons don't have press and release
+				// so just call these right after each other
+				RefStateSet ().AddState (Atk.StateType.Armed);
+				RefStateSet ().RemoveState (Atk.StateType.Armed);
 			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
 				// TODO: Handle AutomationFocusChangedEvent
 			} else if (eventId == AutomationElementIdentifiers.StructureChangedEvent) {
@@ -233,34 +236,26 @@ namespace UiaAtkBridge
 			} else if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
 				// TODO: Handle BoundingRectangleProperty change
 			} else if (e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
-				// TODO: Handle IsOffscreenProperty change
+				if((bool)e.NewValue)
+					RefStateSet ().AddState (Atk.StateType.Visible);
+				else
+					RefStateSet ().RemoveState (Atk.StateType.Visible);
 			} else if (e.Property == AutomationElementIdentifiers.IsEnabledProperty) {
-				// TODO: Handle IsEnabledProperty change		    
+				if((bool)e.NewValue)
+				{
+					RefStateSet ().AddState (Atk.StateType.Sensitive);
+					//NotifyStateChange ((ulong) Atk.StateType.Sensitive, true);
+				}
+				else
+				{
+					RefStateSet ().RemoveState (Atk.StateType.Sensitive);
+					//NotifyStateChange ((ulong) Atk.StateType.Sensitive, false);
+				}
 			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
 				// TODO: Handle NameProperty change			    
 			}
 		}
 		
-		private void OnPressed ()
-		{
-			NotifyStateChange ((ulong) Atk.StateType.Armed, true);
-		}
-		
-		private void OnReleased ()
-		{
-			NotifyStateChange ((ulong) Atk.StateType.Armed, false);
-		}
-		
-		private void OnDisabled ()
-		{
-			NotifyStateChange ((ulong) Atk.StateType.Sensitive, false);
-		}
-		
-		private void OnEnabled ()
-		{
-			NotifyStateChange ((ulong) Atk.StateType.Sensitive, true);
-		}
-
 		public string GetText (int startOffset, int endOffset)
 		{
 			return textExpert.GetText (startOffset, endOffset);
