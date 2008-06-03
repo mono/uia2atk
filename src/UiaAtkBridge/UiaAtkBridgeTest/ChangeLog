@@ -1,5 +1,11 @@
 2008-06-03  Calvin Gaisford <calvinrg@gmail.com> 
 
+	* BridgeTester.cs: Added more tests
+	* AtkTester.cs: Fixed up tests that were checking for null when they should
+	  be checking for empty strings
+
+2008-06-03  Calvin Gaisford <calvinrg@gmail.com> 
+
 	* BridgeTester.cs, UiaAtkBridgeTest.mdp: Filled out more of Button, added
 	  Event tests in the BridgeTester
 

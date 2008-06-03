@@ -102,30 +102,59 @@ namespace UiaAtkBridgeTest
 
 			UiaAtkBridge.Adapter bridgeAdapter = new UiaAtkBridge.Button(pushButton);
 
+			Console.WriteLine("About to create the Atk.Action");
 			Atk.Action atkAction =
 				new Atk.ActionAdapter (bridgeAdapter as Atk.ActionImplementor);
-//				new Atk.ActionAdapter (new UiaAtkBridge.Button (pushButton));
-
+				
 			pushButton.SetPropertyValue(AutomationElementIdentifiers.AcceleratorKeyProperty.Id, "Magic Key");
 			// Should only work on GetKeybinding for 0, the rest should be null
 			Assert.AreEqual ("Magic Key", atkAction.GetKeybinding (0));
-			Assert.IsNull (atkAction.GetKeybinding (1));
-			Assert.IsNull (atkAction.GetKeybinding (-1));
+			Assert.AreEqual (String.Empty, atkAction.GetKeybinding (1));
+			Assert.AreEqual (String.Empty, atkAction.GetKeybinding (-1));
+
+			Console.WriteLine("Setting a description");
 			
 			atkAction.SetDescription(0, "Some big ugly description");
 			Assert.AreEqual ("Some big ugly description", atkAction.GetDescription (0));
 	
-			//disabling this test because in other LANG it may not work
-			//Assert.AreEqual ("click", atkAction.GetLocalizedName(0));
-
+			Assert.IsNotNull (atkAction.GetLocalizedName(0));
 
 			// TogglePatternIdentifiers.ToggleStateProperty
 			AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (TogglePatternIdentifiers.ToggleStateProperty,
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsEnabledProperty,
 					                                        null,
-					                                        ToggleState.On);
-
+					                                        true);
 			bridgeAdapter.RaiseAutomationPropertyChangedEvent(args);
+			Assert.AreEqual(true, (bridgeAdapter as Atk.Object).RefStateSet().ContainsState(Atk.StateType.Sensitive));
+
+			args = new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsEnabledProperty,
+					                                        null,
+					                                        false);
+			bridgeAdapter.RaiseAutomationPropertyChangedEvent(args);
+			Assert.AreEqual(false, (bridgeAdapter as Atk.Object).RefStateSet().ContainsState(Atk.StateType.Sensitive));
+
+
+			// AutomationElementIdentifiers.IsOffscreenProperty
+			args =	new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsOffscreenProperty,
+					                                        null,
+					                                        true);
+			bridgeAdapter.RaiseAutomationPropertyChangedEvent(args);
+			Assert.AreEqual(false, (bridgeAdapter as Atk.Object).RefStateSet().ContainsState(Atk.StateType.Visible));
+
+			args =	new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsOffscreenProperty,
+					                                        null,
+					                                        false);
+			bridgeAdapter.RaiseAutomationPropertyChangedEvent(args);
+			Assert.AreEqual(true, (bridgeAdapter as Atk.Object).RefStateSet().ContainsState(Atk.StateType.Visible));
+
+
+			// AutomationElementIdentifiers.NameProperty
+			args =	new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.NameProperty,
+					                                        null,
+					                                        "Actionizer");
+			bridgeAdapter.RaiseAutomationPropertyChangedEvent(args);
+			Assert.AreEqual("Actionizer", (bridgeAdapter as Atk.Object).Name);
+
 
 			// AutomationElementIdentifiers.BoundingRectangleProperty
 			System.Windows.Rect rect = new System.Windows.Rect(47, 47, 47, 47);
@@ -133,19 +162,9 @@ namespace UiaAtkBridgeTest
 					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.BoundingRectangleProperty,
 					                                        null,
 					                                        rect);
-
 			bridgeAdapter.RaiseAutomationPropertyChangedEvent(args);
 
-
-/*
-			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
-			} else if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
-			} else if (e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
-			} else if (e.Property == AutomationElementIdentifiers.IsEnabledProperty) {
-			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
-*/
-
-			// lot's more tests
+			// TODO: test the bounds that were set
 		}
 
 	}

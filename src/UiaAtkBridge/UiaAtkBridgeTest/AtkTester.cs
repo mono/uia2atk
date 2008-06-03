@@ -136,57 +136,57 @@ namespace UiaAtkBridgeTest
 		private void AtkActionImplementorTest (BasicWidgetType type, Atk.Action implementor)
 		{
 			if (type == BasicWidgetType.Button) {
-				Assert.AreEqual (3, implementor.NActions);
+				Assert.AreEqual (1, implementor.NActions);
 				
-				// only valid actions should work
+				// only valid actions should work, UIA Invoke providers
+				// only have one action which is mapped to click
 				Assert.IsTrue (implementor.DoAction (0));
-				Assert.IsTrue (implementor.DoAction (1));
-				Assert.IsTrue (implementor.DoAction (2));
+				Assert.IsFalse (implementor.DoAction (1));
+				Assert.IsFalse (implementor.DoAction (2));
 				Assert.IsFalse (implementor.DoAction (-1));
 				Assert.IsFalse (implementor.DoAction (3));
 				
+				// UIA mapped providers only have one action which is click
 				Assert.AreEqual ("click", implementor.GetName (0));
-				Assert.AreEqual ("press", implementor.GetName (1));
-				Assert.AreEqual ("release", implementor.GetName (2));
 				
-				Assert.IsNull (implementor.GetLocalizedName (0));
-				Assert.IsNull (implementor.GetLocalizedName (1));
-				Assert.IsNull (implementor.GetLocalizedName (2));
+				Assert.IsNotNull (implementor.GetLocalizedName (0));
+				Assert.AreEqual (String.Empty, implementor.GetLocalizedName (1));
+				Assert.AreEqual (String.Empty, implementor.GetLocalizedName (2));
 				
-				Assert.IsNull (implementor.GetDescription (0));
-				Assert.IsNull (implementor.GetDescription (1));
-				Assert.IsNull (implementor.GetDescription (2));
+				Assert.IsNotNull (implementor.GetDescription (0));
+				Assert.AreEqual (String.Empty, implementor.GetDescription (1));
+				Assert.AreEqual (String.Empty, implementor.GetDescription (2));
 				
 				//out of range
-				Assert.IsNull (implementor.GetName (-1));
-				Assert.IsNull (implementor.GetName (3));
-				Assert.IsNull (implementor.GetDescription (-1));
-				Assert.IsNull (implementor.GetDescription (3));
-				Assert.IsNull (implementor.GetLocalizedName (-1));
-				Assert.IsNull (implementor.GetLocalizedName (3));
+				Assert.AreEqual (String.Empty, implementor.GetName (-1));
+				Assert.AreEqual (String.Empty, implementor.GetName (3));
+				Assert.AreEqual (String.Empty, implementor.GetDescription (-1));
+				Assert.AreEqual (String.Empty, implementor.GetDescription (3));
+				Assert.AreEqual (String.Empty, implementor.GetLocalizedName (-1));
+				Assert.AreEqual (String.Empty, implementor.GetLocalizedName (3));
 				
 				string descrip = "Some big ugly description";
 				Assert.IsTrue (implementor.SetDescription(0, descrip));
 				Assert.AreEqual (descrip, implementor.GetDescription (0));
 				descrip += " and some more text";
-				Assert.IsTrue (implementor.SetDescription(1, descrip));
-				Assert.AreEqual (descrip, implementor.GetDescription (1));
+				Assert.IsFalse (implementor.SetDescription(1, descrip));
+				Assert.AreEqual (String.Empty, implementor.GetDescription (1));
 				descrip += ".";
-				Assert.IsTrue (implementor.SetDescription(2, descrip));
-				Assert.AreEqual (descrip, implementor.GetDescription (2));
+				Assert.IsFalse (implementor.SetDescription(2, descrip));
+				Assert.AreEqual (String.Empty, implementor.GetDescription (2));
 				//out of range items don't get the description, obviously:
 				descrip += "..";
 				Assert.IsFalse (implementor.SetDescription(3, descrip));
-				Assert.IsNull (implementor.GetDescription (3));
+				Assert.AreEqual (String.Empty, implementor.GetDescription (3));
 				
 				// With no keybinding set, everything should return null
-				Assert.IsNull (implementor.GetKeybinding (0));
-				Assert.IsNull (implementor.GetKeybinding (1));
-				Assert.IsNull (implementor.GetKeybinding (2));
+				Assert.AreEqual (String.Empty, implementor.GetKeybinding (0));
+				Assert.AreEqual (String.Empty, implementor.GetKeybinding (1));
+				Assert.AreEqual (String.Empty, implementor.GetKeybinding (2));
 				
 				//out of range items too
-				Assert.IsNull (implementor.GetKeybinding (-1));
-				Assert.IsNull (implementor.GetKeybinding (3));
+				Assert.AreEqual (String.Empty, implementor.GetKeybinding (-1));
+				Assert.AreEqual (String.Empty, implementor.GetKeybinding (3));
 			}
 			else {
 				throw new NotImplementedException ();
