@@ -1,4 +1,9 @@
-2008-05-28  Mario Carrion <mcarrion@novell.com> 
+2008-06-02  Mario Carrion <mcarrion@novell.com>
+
+	* UIAutomationWinformsTests.mdp: Updated due to added file.
+	* TextNormalizerTest.cs: File added, tests TextNormalizer class.
+
+2008-05-28  Mario Carrion <mcarrion@novell.com>  
 
 	* CheckBoxProviderTest.cs: Updated due to ProviderFactory.GetProvider
 	signature changed.
