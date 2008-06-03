@@ -1,3 +1,14 @@
+2008-06-03  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* BridgeTester.cs: Add support for Atk.Action interface in
+	  GetAtkObjectThatImplementsInterface. Move some Atk-centric things
+	  from here to AtkTester.cs.
+	* AtkTester.cs: Move some Atk-centric tests from BridgeTester.cs to
+	  here, and modify them slightly in order to make them pass in
+	  GailTester (it will cause to fail in the bridge tests but we'll fix
+	  them).
+	* BasicWidgetType.cs: Add CheckBox.
+
 2008-06-02  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* BridgeTester.cs: Better to throw  than to find NRE's while I work on

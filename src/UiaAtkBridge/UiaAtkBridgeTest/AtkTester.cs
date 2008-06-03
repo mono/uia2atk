@@ -75,7 +75,12 @@ namespace UiaAtkBridgeTest
 			string name = "test";
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
-			AtkComponentImplementorTest (BasicWidgetType.Button, atkComponent);
+			AtkComponentImplementorTest (type, atkComponent);
+			
+			name = "test";
+			Atk.Action atkAction = (Atk.Action)
+				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
+			AtkActionImplementorTest (type, atkAction);
 			
 			AtkRoleTest (type, accessible);
 		}
@@ -90,6 +95,25 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
 			AtkComponentImplementorTest (type, atkComponent);
+			
+			AtkRoleTest (type, accessible);
+		}
+		
+		//[Test]
+		public void AtkTestForCheckBox ()
+		{
+			BasicWidgetType type = BasicWidgetType.CheckBox;
+			Atk.Object accessible;
+			
+			string name = "test";
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			AtkComponentImplementorTest (type, atkComponent);
+			
+			name = "test";
+			Atk.Action atkAction = (Atk.Action)
+				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
+			AtkActionImplementorTest (type, atkAction);
 			
 			AtkRoleTest (type, accessible);
 		}
@@ -109,6 +133,66 @@ namespace UiaAtkBridgeTest
 			}
 		}
 		
+		private void AtkActionImplementorTest (BasicWidgetType type, Atk.Action implementor)
+		{
+			if (type == BasicWidgetType.Button) {
+				Assert.AreEqual (3, implementor.NActions);
+				
+				// only valid actions should work
+				Assert.IsTrue (implementor.DoAction (0));
+				Assert.IsTrue (implementor.DoAction (1));
+				Assert.IsTrue (implementor.DoAction (2));
+				Assert.IsFalse (implementor.DoAction (-1));
+				Assert.IsFalse (implementor.DoAction (3));
+				
+				Assert.AreEqual ("click", implementor.GetName (0));
+				Assert.AreEqual ("press", implementor.GetName (1));
+				Assert.AreEqual ("release", implementor.GetName (2));
+				
+				Assert.IsNull (implementor.GetLocalizedName (0));
+				Assert.IsNull (implementor.GetLocalizedName (1));
+				Assert.IsNull (implementor.GetLocalizedName (2));
+				
+				Assert.IsNull (implementor.GetDescription (0));
+				Assert.IsNull (implementor.GetDescription (1));
+				Assert.IsNull (implementor.GetDescription (2));
+				
+				//out of range
+				Assert.IsNull (implementor.GetName (-1));
+				Assert.IsNull (implementor.GetName (3));
+				Assert.IsNull (implementor.GetDescription (-1));
+				Assert.IsNull (implementor.GetDescription (3));
+				Assert.IsNull (implementor.GetLocalizedName (-1));
+				Assert.IsNull (implementor.GetLocalizedName (3));
+				
+				string descrip = "Some big ugly description";
+				Assert.IsTrue (implementor.SetDescription(0, descrip));
+				Assert.AreEqual (descrip, implementor.GetDescription (0));
+				descrip += " and some more text";
+				Assert.IsTrue (implementor.SetDescription(1, descrip));
+				Assert.AreEqual (descrip, implementor.GetDescription (1));
+				descrip += ".";
+				Assert.IsTrue (implementor.SetDescription(2, descrip));
+				Assert.AreEqual (descrip, implementor.GetDescription (2));
+				//out of range items don't get the description, obviously:
+				descrip += "..";
+				Assert.IsFalse (implementor.SetDescription(3, descrip));
+				Assert.IsNull (implementor.GetDescription (3));
+				
+				// With no keybinding set, everything should return null
+				Assert.IsNull (implementor.GetKeybinding (0));
+				Assert.IsNull (implementor.GetKeybinding (1));
+				Assert.IsNull (implementor.GetKeybinding (2));
+				
+				//out of range items too
+				Assert.IsNull (implementor.GetKeybinding (-1));
+				Assert.IsNull (implementor.GetKeybinding (3));
+			}
+			else {
+				throw new NotImplementedException ();
+			}
+		}
+		
 		private void AtkRoleTest (BasicWidgetType type, Atk.Object accessible)
 		{
 			Atk.Role role = Atk.Role.Unknown;
@@ -121,6 +205,9 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.Window:
 				role = Atk.Role.Frame;
+				break;
+			case BasicWidgetType.CheckBox:
+				role = Atk.Role.CheckBox;
 				break;
 			default:
 				throw new NotImplementedException ();
