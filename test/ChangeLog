@@ -1,4 +1,9 @@
 2008-06-03  Brian G. Merrell <bgmerrell@gmail.com>
+	
+	* samples/checkButton.py : add temporary gtk sample app
+
+2008-06-03  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* drivers/remote_run.py : add initial functionality
 	* drivers/machines.py : add some variables for remote testing
 
