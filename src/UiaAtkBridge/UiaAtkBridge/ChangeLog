@@ -1,3 +1,7 @@
+2008-06-03  Calvin Gaisford <calvinrg@gmail.com> 
+
+	* Pane.cs, UiaAtkBridge.mdp: Added the Pane class
+
 2008-06-02  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* Button.cs, CheckBox.cs: Basic event handling.
