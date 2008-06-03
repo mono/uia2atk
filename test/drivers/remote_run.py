@@ -7,13 +7,14 @@
 ##############################################################################
 
 # import the enabled tests
-import tests
+import machines
 
 # other imports
 import sys
 import getopt
 import os
 import time
+import threading
 
 
 # simply takes a string s as input and prints it if running verbosely
@@ -29,26 +30,16 @@ def abort(status):
   exit(status)
 
 
-class Singleton(object):
-  _instance = None
-
-  def __new__(cls, *args, **kwargs):
-    if not cls._instance:
-      cls._instance = super(Singleton, cls).__new__(
-                            cls, *args, **kwargs)
-      return cls._instance
-
-
 class Settings(object):
 
   # static variable, set by ctor
   is_quiet = None
-  uiaqa_home = None
-  log_path = None
+  remote_log_path = machines.LOG_DIR
+  local_log_path = "/tmp/uiaqa"
+  COUNTDOWN = 3
 
   def __init__(self):
       self.argument_parser()
-      self.set_uiaqa_home()
 
   def argument_parser(self):
     try:
@@ -64,20 +55,51 @@ class Settings(object):
         self.help()
         abort(0)
       if o in ("-l","--log"):
-        Settings.log_path = a
-        if not os.path.exists(Settings.log_path):
+        Settings.local_log_path = a
+        if not os.path.exists(Settings.local_log_path):
           output("ERROR:  Log path does not exist.")
           abort(1)
 
-  def set_uiaqa_home(self):
-    drivers_dir = sys.path[0]
-    i = drivers_dir.rfind("/")
-    Settings.UIAQA_HOME = drivers_dir[:i]
+  def help(self):
+    output("Common Options:")
+    output("  -h | --help        Print help information (this message).")
+    output("  -q | --quiet       Don't print anything.")
+    output("  -l | --log=        Where the log(s) should be stored.")
+
+class Ping(threading.Thread):
+
+   def __init__ (self,name,ip):
+      threading.Thread.__init__(self)
+      self.ip = ip
+      self.status = -1
+      self.name = name
+   def run(self):
+      self.status = os.system("ping -q -c2 %s > /dev/null" % self.ip)
+
+class Kickoff(threading.Thread):
+    
+  def __init__ (self,name,ip):
+    threading.Thread.__init__(self)
+    self.ip = ip
+    self.status = -1
+    self.name = name
+  def run(self):
+    lock = threading.Lock()
+    lock.acquire()
+    os.system("rm -rf %s" % Settings.local_log_path)
+    os.mkdir(Settings.local_log_path)
+    lock.release()
+    self.status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 \
+                             %s/drivers/local_run.py --log=%s > %s/%s" %\
+                             (machines.USERNAME, self.ip, machines.TEST_DIR,\
+                              Settings.remote_log_path,\
+                              Settings.local_log_path, self.name))
 
 class Test(object):
 
   def __init__(self):
-    self.tests = tests.tests_list
+    self.machines = machines.machines_dict
+
 
   def countdown(self, n):
     ''' Counts down for n seconds and allows the user to abort the program cleanly '''
@@ -91,97 +113,69 @@ class Test(object):
       sys.stdout.flush()
       time.sleep(1)
 
-  def run(self):
-    unfound_tests = []
-    found_tests = [] # store the full path of the test here
-
-    for test in self.tests:
-      test_path = os.path.join(Settings.UIAQA_HOME, "testers/%s" % test)
-      if not os.path.exists(test_path):
-        unfound_tests.append(test)
+  def check_machines(self):
+    output("Checking machine status:")
+    machine_names = self.machines.keys()
+    ping_list = []
+    self.up_machines = []
+    down_machines = []
+    lock = threading.Lock()
+    for machine_name in machine_names:
+      t = Ping(machine_name, self.machines[machine_name][0])
+      ping_list.append(t)
+      t.start()
+    for t in ping_list:
+      t.join()
+      lock.acquire()
+      #output("  %s (%s):...." % (t.name, t.ip), False) 
+      output("  %-12s (%10s) ==>" % (t.name, t.ip), False) 
+      if t.status == 0:
+        output("UP")
+        self.up_machines.append(t.name)
       else:
-        found_tests.append(os.path.join(Settings.UIAQA_HOME,
-                                        "testers/%s" % test))
+        down_machines.append(t.name)
+        output("DOWN")
+      lock.release()
+    output("")
+    if len(down_machines) > 0:
+      output("WARNING:  %i/%i machines did not respond"\
+              % (len(down_machines), len(self.machines)))
 
-    num_unfound_tests = len(unfound_tests)
-    if num_unfound_tests > 0:
-      output("WARNING:  The following tests were not found:")
-      for unfound_test in unfound_tests:
-        output("  %s" % unfound_test)
-      output("WARNING:  %i/%i unfound tests!"\
-               % (num_unfound_tests, len(self.tests)))
+  def execute_tests(self):
+    output("Kicking off remote tests:")
+    test_list = []
+    failed_machines = []
+    good_machines = []
+    lock = threading.Lock()
+    for up_machine in self.up_machines:
+      t = Kickoff(up_machine, self.machines[up_machine][0])
+      test_list.append(t)
+      t.start()
+    for t in test_list:
+      t.join()
+      lock.acquire()
+      #output("  %s (%s):...." % (t.name, t.ip), False) 
+      output("  %-12s (%10s) ==>" % (t.name, t.ip), False) 
+      if t.status == 0:
+        good_machines.append(t.name)
+        output("DONE")
+      else:
+        failed_machines.append(t.name)
+        output("FAIL")
+      lock.release()
+    output("")
+    if len(failed_machines) > 0:
+      output("WARNING:  %i/%i failed to kick off"\
+              % (len(failed_machines), len(self.up_machines)))
       try:
-        self.countdown(10)
+        self.countdown(Settings.COUNTDOWN)
       except KeyboardInterrupt:
         return 0
 
-    print "Here we go!"
-
-    # execute the tests
-    for test in found_tests:
-      os.system(test)
-      try:
-        self.log(test)
-      except InconceivableError, msg:
-        print msg
-        return 1
-
-  def log(self, test):
-    filename = os.path.basename(test)
-
-    # take off the file exension
-    dot_index = filename.rfind(".")
-    if dot_index > 0:
-      filename = filename[:dot_index] # chop off the extension
-
-    control_dir =  os.path.join(Settings.log_path, filename)
-    log_dir = os.path.join(control_dir,\
-                           time.strftime("%d%b%Y_%H%M%S", time.localtime()))
-
-    if not os.path.exists(control_dir):
-      try:
-        #os.system("mkdir %s" % control_dir)
-        os.mkdir(control_dir)
-      except OSError:
-        print "WARNINGS:  Could not create log directory!"
-        print "WARNINGS:  Permanent logs will not be stored"
-        return 0
-  
-    if os.path.exists(log_dir):
-        raise InconceivableError,\
-                "ERROR:  Inconceivable!  %s already exists!" % log_dir
-    else:
-        # check to make sure the control directory is created and we can
-        # write to it.  cifs was being slow.
-        while True:
-          try:
-            os.mknod("%s/%s" % (control_dir, "delete_me"))
-            break
-          except OSError:
-            pass
-        os.mkdir(log_dir)
-
-        # check to make sure the control directory is created and we can
-        # write to it.  cifs was being slow.
-        while True:
-          try:
-            os.mknod("%s/%s" % (log_dir, "delete_me"))
-            break
-          except OSError:
-            pass
-        # copy over the resource files
-        # XXX: change the log files to reference the resources from 
-        # a static location so we don't have to copy these every time and
-        # waste time/space
-        os.system("cp -r /tmp/strongwind/* %s" % log_dir)
-        os.system("cp -r %s/resources/* %s" % (Settings.UIAQA_HOME, log_dir))
-      
-        # clean up the delete_me files
-        os.remove("%s/%s" % (control_dir, "delete_me"))
-        os.remove("%s/%s" % (log_dir, "delete_me"))
+  def run(self):
+    self.check_machines()
+    self.execute_tests() 
     
-
-class InconceivableError(Exception): pass
 
 class Main(object):
 
@@ -189,11 +183,6 @@ class Main(object):
     t = Test()
     return t.run()
 
-  def help(self):
-    output("Common Options:")
-    output("  -h | --help        Print help information (this message).")
-    output("  -q | --quiet       Don't print anything.")
-    output("  -l | --log=        Where the log(s) should be stored.")
 
 settings = Settings()
 
