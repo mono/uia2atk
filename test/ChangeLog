@@ -1,5 +1,9 @@
 2008-06-02  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* drivers/local_run.py : --help and -h now work
+
+2008-06-02  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* drivers/local_run.py : script to run tests on local machines is
 	now functional
 	* testers/checkbutton : Temporary gtk test script

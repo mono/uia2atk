@@ -69,6 +69,12 @@ class Settings(object):
           output("ERROR:  Log path does not exist.")
           abort(1)
 
+  def help(self):
+    output("Common Options:")
+    output("  -h | --help        Print help information (this message).")
+    output("  -q | --quiet       Don't print anything.")
+    output("  -l | --log=        Where the log(s) should be stored.")
+
   def set_uiaqa_home(self):
     drivers_dir = sys.path[0]
     i = drivers_dir.rfind("/")
@@ -189,11 +195,6 @@ class Main(object):
     t = Test()
     return t.run()
 
-  def help(self):
-    output("Common Options:")
-    output("  -h | --help        Print help information (this message).")
-    output("  -q | --quiet       Don't print anything.")
-    output("  -l | --log=        Where the log(s) should be stored.")
 
 settings = Settings()
 
