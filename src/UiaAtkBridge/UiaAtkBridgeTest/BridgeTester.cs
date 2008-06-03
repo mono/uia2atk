@@ -93,6 +93,7 @@ namespace UiaAtkBridgeTest
 				typeof(I).Name);
 		}
 		
+		protected override int ValidNumberOfActionsForAButton { get { return 1; } }
 		
 		[Test]
 		public void UIAButtonControlType ()

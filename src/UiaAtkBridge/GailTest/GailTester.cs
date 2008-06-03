@@ -61,6 +61,10 @@ namespace UiaAtkBridgeTest
 //				if (real)
 //					widget = GailTestApp.MainClass.GiveMeARealWindow ();
 				break;
+			case BasicWidgetType.CheckBox:
+				widget = new Gtk.CheckButton ();
+				((Gtk.CheckButton)widget).Label = text;
+				break;
 			default:
 				throw new NotImplementedException ("The widget finder backend still hasn't got support for " +
 					type.ToString ());
@@ -80,6 +84,8 @@ namespace UiaAtkBridgeTest
 			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
 				typeof(I).Name);
 		}
+		
+		protected override int ValidNumberOfActionsForAButton { get { return 3; } }
 		
 	}
 }
