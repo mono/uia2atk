@@ -99,8 +99,8 @@ namespace UiaAtkBridge
 		public virtual void GetExtents (out int x, out int y, out int width, out int height, Atk.CoordType coordType)
 		{
 			//TODO: handle coordType
-			x = (int)BoundingRectangle.Left;
-			y = (int)BoundingRectangle.Right;
+			x = (int)BoundingRectangle.X;
+			y = (int)BoundingRectangle.Y;
 			width = (int)BoundingRectangle.Width;
 			height = (int)BoundingRectangle.Height;
 		}

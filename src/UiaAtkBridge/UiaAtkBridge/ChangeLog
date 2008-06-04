@@ -1,3 +1,8 @@
+2008-06-04  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Adapter.cs: Use X and Y, not Left and Right, to get x/y coordinates
+	  of widget.
+
 2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* TopLevelRootItem.cs: Add FIXME.
