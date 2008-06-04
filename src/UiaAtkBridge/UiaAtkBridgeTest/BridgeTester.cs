@@ -95,7 +95,7 @@ namespace UiaAtkBridgeTest
 		
 		protected override int ValidNumberOfActionsForAButton { get { return 1; } }
 		
-		[Test]
+		//[Test]
 		public void UIAButtonControlType ()
 		{
 			TestButtonControlType pushButton = 
