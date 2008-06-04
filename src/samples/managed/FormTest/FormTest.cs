@@ -40,7 +40,7 @@ namespace FormTest
 			Button b = new Button ();
 			b.Text = "Click me to open second form!";
 			b.Width = f1.Width;
-			b.Click += OnButtonClick;
+			b.Click += OnButton1Click;
 			f1.Controls.Add (b);
 			
 			Button b2 = new Button ();
@@ -50,13 +50,20 @@ namespace FormTest
 			//b2.Location.Y = f1.Height / 2;
 			b2.Top = b.Height;
 			f1.Controls.Add (b2);
+			
+			Button b3 = new Button ();
+			b3.Text = "Add a label";
+			b3.Width = f1.Width;
+			b3.Top = b.Height + b2.Height;
+			b3.Click += OnButton3Click;
+			f1.Controls.Add (b3);
 
 			Label lab = new Label ();
 			lab.Text = "This is a test label";
 			lab.Width = f1.Width;
 			lab.Height = b.Height;
-			lab.Enabled = true;
-			lab.Top = b.Height + 30;
+			//lab.Enabled = true;
+			lab.Top = b.Height + b2.Height + b3.Height;
 			f1.Controls.Add (lab);
 			
 			Form bgf = new Form ();
@@ -66,12 +73,31 @@ namespace FormTest
 			Application.Run (f1);
 		}
 		
-		static void OnButtonClick (object sender, EventArgs args)
+		static void OnButton1Click (object sender, EventArgs args)
 		{
 			Form f2 = new Form ();
 			f2.Text = "Secondary Form";
 			
 			f2.Show ();
+		}
+		
+		static void OnButton3Click (object sender, EventArgs args)
+		{
+			Button b = (Button) sender;
+			Form f = b.Parent as Form;
+			if (b.Text == "Add a label") {
+				Label l = new Label ();
+				l.Text = "Dynamically added label!";
+				l.Width = b.Width;
+				l.Height = b.Height;
+				l.Top = b.Top + b.Height * 2;
+				f.Controls.Add (l);
+				l.Show ();
+				
+				b.Text = "Remove label";
+			} else {
+				Console.WriteLine ("notin");
+			}
 		}
 	}
 }
