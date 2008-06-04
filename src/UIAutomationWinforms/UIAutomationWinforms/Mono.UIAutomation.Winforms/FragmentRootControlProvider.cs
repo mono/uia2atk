@@ -63,11 +63,51 @@ namespace Mono.UIAutomation.Winforms
 		
 #endregion
 		
+#region Public Methods
+	
+		public void InitializeChildControlStructure ()
+		{
+			// HACK: This is just to make sure control providers
+			//       aren't sent to bridge until the parent's already
+			//       there.  There are about 100 ways to do this
+			//       better.
+			foreach (IRawElementProviderSimple childProvider in controlProviders.Values) {
+				// TODO: Fill in rest of eventargs
+				if (childProvider == null)
+					break;
+				AutomationInteropProvider.RaiseStructureChangedEvent (
+				  childProvider,
+				  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkAdded,
+				                                 new int [] {0}));
+				
+				FragmentRootControlProvider rootProvider =
+					childProvider as FragmentRootControlProvider;
+				if (rootProvider != null)
+					rootProvider.InitializeChildControlStructure ();
+			}
+		}
+		
+#endregion
+		
 #region Private Event Handlers
 	
 		private void OnControlAdded (object sender, ControlEventArgs args)
 		{
 			Console.WriteLine ("ControlAdded: " + args.Control.GetType ().ToString ());
+			
+			Control childControl = args.Control;
+			IRawElementProviderSimple childProvider =
+				CreateProvider (childControl);
+			
+			AutomationInteropProvider.RaiseStructureChangedEvent (
+			  childProvider,
+			  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkAdded,
+			                                 new int [] {0}));
+			
+			FragmentRootControlProvider rootProvider =
+				childProvider as FragmentRootControlProvider;
+			if (rootProvider != null)
+				InitializeChildControlStructure ();
 		}
 	
 		private void OnControlRemoved (object sender, ControlEventArgs args)
