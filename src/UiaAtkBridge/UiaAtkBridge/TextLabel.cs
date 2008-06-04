@@ -38,6 +38,7 @@ namespace UiaAtkBridge
 		
 		public TextLabel (IRawElementProviderSimple provider)
 		{
+			this.provider = provider;
 			Role = Atk.Role.Label;
 			
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
