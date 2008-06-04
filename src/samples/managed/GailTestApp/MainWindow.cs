@@ -45,4 +45,8 @@ public partial class MainWindow: Gtk.Window
 	internal Gtk.Button GiveMeARealButton () {
 		return this.btnTest1;
 	}
+	
+	internal Gtk.CheckButton GiveMeARealCheckBox () {
+		return this.chkTest;
+	}
 }

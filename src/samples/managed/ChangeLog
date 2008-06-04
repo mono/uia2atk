@@ -1,3 +1,9 @@
+2008-06-04  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* GailTestApp/MainWindow.cs, GailTestApp/gtk-gui/MainWindow.cs,
+	  GailTestApp/gtk-gui/gui.stetic, GailTestApp/Main.cs: Add a channel
+	  for obtaining the real checkbox.
+
 2008-05-29  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* GailTestApp/MainWindow.cs, GailTestApp/Main.cs: Ongoing work on

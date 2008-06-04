@@ -64,6 +64,8 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.CheckBox:
 				widget = new Gtk.CheckButton ();
 				((Gtk.CheckButton)widget).Label = text;
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealCheckBox ();
 				break;
 			default:
 				throw new NotImplementedException ("The widget finder backend still hasn't got support for " +

@@ -20,6 +20,8 @@ public partial class MainWindow {
     
     private Gtk.Button btnTest1;
     
+    private Gtk.CheckButton chkTest;
+    
     private Gtk.Label lblTest1;
     
     protected virtual void Build() {
@@ -54,19 +56,32 @@ public partial class MainWindow {
         w1.XOptions = ((Gtk.AttachOptions)(4));
         w1.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
+        this.chkTest = new Gtk.CheckButton();
+        this.chkTest.CanFocus = true;
+        this.chkTest.Name = "chkTest";
+        this.chkTest.Label = Mono.Unix.Catalog.GetString("checkbutton1");
+        this.chkTest.DrawIndicator = true;
+        this.chkTest.UseUnderline = true;
+        this.table1.Add(this.chkTest);
+        Gtk.Table.TableChild w2 = ((Gtk.Table.TableChild)(this.table1[this.chkTest]));
+        w2.TopAttach = ((uint)(1));
+        w2.BottomAttach = ((uint)(2));
+        w2.XOptions = ((Gtk.AttachOptions)(4));
+        w2.YOptions = ((Gtk.AttachOptions)(4));
+        // Container child table1.Gtk.Table+TableChild
         this.lblTest1 = new Gtk.Label();
         this.lblTest1.Name = "lblTest1";
         this.lblTest1.LabelProp = Mono.Unix.Catalog.GetString("This is a test message\nin a label");
         this.table1.Add(this.lblTest1);
-        Gtk.Table.TableChild w2 = ((Gtk.Table.TableChild)(this.table1[this.lblTest1]));
-        w2.XOptions = ((Gtk.AttachOptions)(4));
-        w2.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w3 = ((Gtk.Table.TableChild)(this.table1[this.lblTest1]));
+        w3.XOptions = ((Gtk.AttachOptions)(4));
+        w3.YOptions = ((Gtk.AttachOptions)(4));
         this.hbox1.Add(this.table1);
-        Gtk.Box.BoxChild w3 = ((Gtk.Box.BoxChild)(this.hbox1[this.table1]));
-        w3.Position = 1;
-        this.vbox1.Add(this.hbox1);
-        Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
+        Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox1[this.table1]));
         w4.Position = 1;
+        this.vbox1.Add(this.hbox1);
+        Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
+        w5.Position = 1;
         this.Add(this.vbox1);
         if ((this.Child != null)) {
             this.Child.ShowAll();

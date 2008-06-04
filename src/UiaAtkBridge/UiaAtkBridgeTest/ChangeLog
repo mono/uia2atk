@@ -1,5 +1,9 @@
 2008-06-04  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Disable the DoAction difference.
+
+2008-06-04  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: It seems a CheckBox only difference with AtkAction is
 	  DoAction behaviour. Now I'll check with a real widget.
 

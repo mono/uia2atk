@@ -69,5 +69,13 @@ namespace GailTestApp
 			
 			return win.GiveMeARealButton ();
 		}
+		
+		public static Gtk.Button GiveMeARealCheckBox ()
+		{
+			if (win == null)
+				Start (true);
+			
+			return win.GiveMeARealCheckBox ();
+		}
 	}
 }

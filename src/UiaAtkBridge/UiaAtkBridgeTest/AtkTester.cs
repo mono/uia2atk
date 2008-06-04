@@ -146,8 +146,9 @@ namespace UiaAtkBridgeTest
 			}
 		
 			bool actionPerformed = true;
-			if (type == BasicWidgetType.CheckBox)
-				actionPerformed = false;
+			//this only applies if the CheckBox is not real (in Gail) :-?
+//			if (type == BasicWidgetType.CheckBox)
+//				actionPerformed = false;
 				
 			// only valid actions should work
 			for (int i = 0; i < ValidNumberOfActionsForAButton; i++) 
