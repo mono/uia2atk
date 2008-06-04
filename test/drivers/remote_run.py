@@ -36,6 +36,7 @@ class Settings(object):
   is_quiet = None
   remote_log_path = machines.LOG_DIR
   local_log_path = "/tmp/uiaqa"
+  is_log_ok = True
   COUNTDOWN = 10
 
   def __init__(self):
@@ -138,11 +139,12 @@ class Test(object):
     if len(down_machines) > 0:
       output("WARNING:  %i/%i machines did not respond"\
               % (len(down_machines), len(self.machines)))
-      try:
-        self.countdown(Settings.COUNTDOWN)
-      except KeyboardInterrupt:
-        return 0
-      output("")
+      #try:
+        #self.countdown(Settings.COUNTDOWN)
+      #except KeyboardInterrupt:
+      #  return 0
+      #output("")
+    return len(self.up_machines)
 
   def execute_tests(self):
     output("Kicking off remote tests:")
@@ -170,6 +172,8 @@ class Test(object):
     if len(failed_machines) > 0:
       output("WARNING:  %i/%i failed to kick off"\
               % (len(failed_machines), len(self.up_machines)))
+    if settings.is_log_ok:
+      output("INFO:  Local logs saved to %s" % Settings.local_log_path)
 
   def setup_logging(self):
     # delete old local log directory if it exists
@@ -177,6 +181,7 @@ class Test(object):
     try:
       os.mkdir(Settings.local_log_path)
     except OSError, msg:
+        Settings.is_log_ok = False
         output(msg)
         output("WARNINGS:  Could not create %s directory!" % \
                 Settings.local_log_path)
@@ -187,7 +192,6 @@ class Test(object):
       return 1
     self.setup_logging()
     self.execute_tests() 
-    
 
 class Main(object):
 

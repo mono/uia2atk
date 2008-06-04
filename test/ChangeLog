@@ -1,3 +1,11 @@
+2008-06-03  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* drivers/remote_run.py : report where local logs are stored
+
+2008-06-03  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* drivers/remote_run.py : abort correctly on user abort
+
 2008-06-04  Calen Chen <cachen@novell.com>
 
 	* samples/*.py: add "#!/usr/bin/env ipy" to the top of all *.py files, and change authority to 755.
