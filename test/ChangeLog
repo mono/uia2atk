@@ -1,3 +1,11 @@
+2008-06-04  Calen Chen <cachen@novell.com>
+
+	* samples/ToolTip.py:  add app for ToolTip Control
+	* samples/StatusBar-StatusBarPanel.py: add app for StatusBar and StatusBarPanel Controls
+	* samples/StatusStrip.py: add app for StatusStrip Control
+	* samples/MaskedTextBox.py: add app for MaskedTextBox Control
+	* samples/ToolStrip-series.py: add app for ToolStrip,ToolStrip, ToolStripComboBox, ToolStripDropDownButton, ToolStripLabel, ToolStripSeparator, ToolStripSplitButton, ToolStripTextBox, ToolStripDropDown, ToolStripButton, MenuStrip, ToolStripMenuItem, StatusStrip, ToolStripStatusLabel, ToolStripProgressBar Controls.
+
 2008-06-03  Brian G. Merrell <bgmerrell@gmail.com>
 	* drivers/remote_run.py : abort correctly on user abort
 
