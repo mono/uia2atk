@@ -1,3 +1,19 @@
+2008-06-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms.mdp,
+	  Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Add
+	  FragmentRootControlProvider abstract class, which handles much of
+	  the IRawElementProviderFragmentRoot implementation for container
+	  controls.
+	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs: Use
+	  ControlType.Group, not ControlType.Pane.  Extend
+	  FragmentRootProvider class.
+	* Mono.UIAutomation.Winforms/WindowProvider.cs: Lift a lot of
+	  functionality to FragmentRootControlProvider.  Handle Show/Close
+	  events properly.
+	* Mono.UIAutomation.Winforms/FormListener.cs: Descend into
+	  FragmentRootControlProviders when processing child controls.
+
 2008-06-04  Neville Gao <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: File added.

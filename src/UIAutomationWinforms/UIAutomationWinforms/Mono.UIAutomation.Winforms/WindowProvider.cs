@@ -32,13 +32,12 @@ using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class WindowProvider : SimpleControlProvider, IWindowProvider, ITransformProvider, IRawElementProviderFragmentRoot
+	public class WindowProvider : FragmentRootControlProvider, IWindowProvider, ITransformProvider
 	{
 #region Private Data
 		
 		private Form form;
-		internal IDictionary<Control, IRawElementProviderSimple>
-			controlProviders;  // TODO: Fix this...
+		private bool closing;
 		
 #endregion
 		
@@ -47,64 +46,55 @@ namespace Mono.UIAutomation.Winforms
 		public WindowProvider (Form form) : base (form)
 		{
 			this.form = form;
+			closing = false;
 			
 			controlProviders =
 				new Dictionary<Control, IRawElementProviderSimple> ();
-			
-			form.ControlAdded += OnControlAdded;
-			form.ControlRemoved += OnControlRemoved;
 			form.Closed += OnClosed;
+			form.Shown += OnShown;
+			form.Closing += OnClosing;
 			
 			Console.WriteLine ("WindowProvider created");
-			
-			foreach (Control control in form.Controls) {
-				IRawElementProviderSimple provider =
-					CreateProvider (control);
-				// TODO: Null check, compound, etc?
-				controlProviders [control] = provider;
-			}
-		}
-		
-#endregion
-
-#region Private Methods
-	
-		private IRawElementProviderSimple CreateProvider (Control control)
-		{
-			return ProviderFactory.GetProvider (control);
-		}
-		
-		private IRawElementProviderSimple GetProvider (Control control)
-		{
-			if (controlProviders.ContainsKey (control))
-				return controlProviders [control];
-			else
-				return null;
 		}
 		
 #endregion
 		
 #region Private Event Handlers
-	
-		private void OnControlAdded (object sender, EventArgs args)
-		{
-			Console.WriteLine ("ControlAdded: " + sender.GetType ().ToString ());
-		}
-	
-		private void OnControlRemoved (object sender, EventArgs args)
-		{
-			Console.WriteLine ("ControlRemoved: " + sender.GetType ().ToString ());
-		}
 		
 		private void OnClosed (object sender, EventArgs args)
 		{
+			closing = false;
+			
 			if (!AutomationInteropProvider.ClientsAreListening)
 				return;
+			
+			AutomationEventArgs eventArgs =
+				new AutomationEventArgs (WindowPatternIdentifiers.WindowClosedEvent);
+			AutomationInteropProvider.RaiseAutomationEvent (WindowPatternIdentifiers.WindowClosedEvent,
+			                                                this,
+			                                                eventArgs);
 			// TODO: Fill in rest of eventargs
 			AutomationInteropProvider.RaiseStructureChangedEvent (
 			  this,
 			  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkRemoved,
 			                                 new int [] {0}));
+		}
+		
+		private void OnShown (object sender, EventArgs args)
+		{
+			if (!AutomationInteropProvider.ClientsAreListening)
+				return;
+			
+			AutomationEventArgs eventArgs =
+				new AutomationEventArgs (WindowPatternIdentifiers.WindowOpenedEvent);
+			AutomationInteropProvider.RaiseAutomationEvent (WindowPatternIdentifiers.WindowOpenedEvent,
+			                                                this,
+			                                                eventArgs);
+		}
+		
+		private void OnClosing (object sender, EventArgs args)
+		{
+			closing = true;
 		}
 		
 #endregion
@@ -168,7 +158,11 @@ namespace Mono.UIAutomation.Winforms
 		
 		public WindowInteractionState InteractionState {
 			get {
-				throw new NotImplementedException ();
+				if (closing)
+					return WindowInteractionState.Closing;
+				return WindowInteractionState.Running;
+				// TODO: How to check for things like
+				//       NotResponding and BlockedByModalWindow?
 			}
 		}
 		
@@ -197,7 +191,17 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		public bool CanResize {
-			get { throw new NotImplementedException (); }
+			get {
+				switch (form.FormBorderStyle) {
+				case FormBorderStyle.Fixed3D:
+				case FormBorderStyle.FixedDialog:
+				case FormBorderStyle.FixedSingle:
+				case FormBorderStyle.FixedToolWindow:
+					return false;
+				default:
+					return true;
+				}
+			}
 		}
 
 		public bool CanRotate {
@@ -255,32 +259,12 @@ namespace Mono.UIAutomation.Winforms
 				return base.GetPropertyValue (propertyId);
 		}
 		
-		public System.Windows.Rect BoundingRectangle {
-			get {
-				return Helper.RectangleToRect (form.Bounds);
-			}
-		}
-		
-		public IRawElementProviderFragmentRoot FragmentRoot {
-			get {
-				return this;
-			}
-		}
-
-		public IRawElementProviderSimple[] GetEmbeddedFragmentRoots ()
-		{
-			/* "This method returns an array of fragments only if the current
-			 * element is hosting another UI Automation framework. Most
-			 * providers return null reference" */
-			return null;
-		}
-		
-		public int [] GetRuntimeId ()
+		public override int [] GetRuntimeId ()
 		{
 			return null;
 		}
 		
-		public IRawElementProviderFragment Navigate (NavigateDirection direction)
+		public override IRawElementProviderFragment Navigate (NavigateDirection direction)
 		{
 			// TODO: Consider what exactly "first" and "last" are
 			//       supposed to mean.  Consider maintaining separate
@@ -312,7 +296,7 @@ namespace Mono.UIAutomation.Winforms
 //			to other elements within that fragment."
 		}
 		
-		public void SetFocus ()
+		public override void SetFocus ()
 		{
 //			"The UI Automation framework will ensure that the part of
 //			the interface that hosts this fragment is already focused
@@ -324,7 +308,7 @@ namespace Mono.UIAutomation.Winforms
 			form.Focus ();
 		}
 		
-		public IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
+		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
 			if (x > form.Width || y > form.Height)
 				return null;
@@ -348,7 +332,7 @@ namespace Mono.UIAutomation.Winforms
 			return this;
 		}
 		
-		public IRawElementProviderFragment GetFocus ()
+		public override IRawElementProviderFragment GetFocus ()
 		{
 			foreach (Control control in form.Controls) {
 				if (control.Focused) {

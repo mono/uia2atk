@@ -25,13 +25,14 @@
 //
 
 using System;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class GroupBoxProvider : SimpleControlProvider
+	public class GroupBoxProvider : FragmentRootControlProvider, IRawElementProviderFragmentRoot
 	{
 #region Private Members
 		
@@ -59,11 +60,19 @@ namespace Mono.UIAutomation.Winforms
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Pane;
+				return ControlType.Group.Id;
 			else
 				return base.GetPropertyValue (propertyId);
 		}
 
+#endregion
+		
+#region IRawElementProviderFragmentRoot Overrides
+		
+		public override int [] GetRuntimeId ()
+		{
+			throw new NotImplementedException ();
+		}
 #endregion
 	}
 }

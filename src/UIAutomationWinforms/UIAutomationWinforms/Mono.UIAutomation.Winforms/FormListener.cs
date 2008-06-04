@@ -113,6 +113,15 @@ namespace Mono.UIAutomation.Winforms
 			  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkAdded,
 			                                 new int [] {0}));
 			
+			ProcessChildControls (provider);
+		}
+		
+#endregion
+		
+#region Private Static Methods
+	
+		static void ProcessChildControls (FragmentRootControlProvider provider)
+		{
 			// HACK: This is just to make sure control providers
 			//       aren't sent to bridge until the parent's already
 			//       there.  There are about 100 ways to do this
@@ -125,6 +134,11 @@ namespace Mono.UIAutomation.Winforms
 				  control,
 				  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkAdded,
 				                                 new int [] {0}));
+				
+				FragmentRootControlProvider rootProvider =
+					control as FragmentRootControlProvider;
+				if (rootProvider != null)
+					ProcessChildControls (rootProvider);
 			}
 		}
 		
