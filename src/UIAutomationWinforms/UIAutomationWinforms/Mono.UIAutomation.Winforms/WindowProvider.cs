@@ -48,8 +48,6 @@ namespace Mono.UIAutomation.Winforms
 			this.form = form;
 			closing = false;
 			
-			controlProviders =
-				new Dictionary<Control, IRawElementProviderSimple> ();
 			form.Closed += OnClosed;
 			form.Shown += OnShown;
 			form.Closing += OnClosing;
