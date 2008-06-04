@@ -1,3 +1,5 @@
+#!/usr/bin/env ipy
+
 ###MaskedTextBox
 ##note: need create a file name "text.txt" with "Text" word first on the current directory .
 

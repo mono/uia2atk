@@ -1,3 +1,5 @@
+#!/usr/bin/env ipy
+
 ###ToolTip
 
 import clr

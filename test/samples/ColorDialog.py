@@ -1,3 +1,5 @@
+#!/usr/bin/env ipy
+
 ###ColorDialog
 
 import clr

@@ -1,3 +1,4 @@
+#!/usr/bin/env ipy
 ###Button
 ###Label
 import clr

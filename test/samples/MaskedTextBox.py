@@ -1,3 +1,5 @@
+#!/usr/bin/env ipy
+
 ###MaskedTextBox
 
 import clr

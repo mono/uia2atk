@@ -1,3 +1,5 @@
+#!/usr/bin/env ipy
+
 ####NumericUpDown
 import clr
 clr.AddReference('System.Windows.Forms')

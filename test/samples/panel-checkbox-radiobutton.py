@@ -1,3 +1,4 @@
+#!/usr/bin/env ipy
 ####Panel
 ####Label
 ####CheckBox

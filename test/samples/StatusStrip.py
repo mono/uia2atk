@@ -1,3 +1,5 @@
+#!/usr/bin/env ipy
+
 ###StatusStrip
 
 import clr
