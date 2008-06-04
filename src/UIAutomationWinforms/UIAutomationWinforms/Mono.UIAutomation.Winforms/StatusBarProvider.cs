@@ -63,7 +63,7 @@ namespace Mono.UIAutomation.Winforms
 
         public override object GetPatternProvider (int patternId)
         {
-            if (patternid == GridValuePatternIdentifiers.Pattern.Id)
+            if (patternId == GridValuePatternIdentifiers.Pattern.Id)
                 return this;
 
             return null;
