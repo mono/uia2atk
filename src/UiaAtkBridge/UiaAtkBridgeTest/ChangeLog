@@ -1,5 +1,10 @@
 2008-06-04  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: It seems a CheckBox only difference with AtkAction is
+	  DoAction behaviour. Now I'll check with a real widget.
+
+2008-06-04  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* BridgeTester.cs: Comment out a test that is failing for now.
 	* AtkTester.cs: Put refs on tests.
 

@@ -99,7 +99,7 @@ namespace UiaAtkBridgeTest
 			AtkRoleTest (type, accessible);
 		}
 		
-		//[Test]
+		[Test]
 		public void AtkTestForCheckBox ()
 		{
 			BasicWidgetType type = BasicWidgetType.CheckBox;
@@ -137,58 +137,57 @@ namespace UiaAtkBridgeTest
 		
 		private void AtkActionImplementorTest (BasicWidgetType type, Atk.Action implementor)
 		{
-			if (type == BasicWidgetType.Button) {
-				Assert.AreEqual (ValidNumberOfActionsForAButton, implementor.NActions, "NActions");
+			Assert.AreEqual (ValidNumberOfActionsForAButton, implementor.NActions, "NActions");
+			
+			Assert.AreEqual ("click", implementor.GetName (0), "GetName click");
+			if (ValidNumberOfActionsForAButton > 1) {
+				Assert.AreEqual ("press", implementor.GetName (1), "GetName press");
+				Assert.AreEqual ("release", implementor.GetName (2), "GetName release");
+			}
+		
+			bool actionPerformed = true;
+			if (type == BasicWidgetType.CheckBox)
+				actionPerformed = false;
 				
-				// only valid actions should work
-				for (int i = 0; i < ValidNumberOfActionsForAButton; i++) 
-					Assert.IsTrue (implementor.DoAction (i), "DoAction");
+			// only valid actions should work
+			for (int i = 0; i < ValidNumberOfActionsForAButton; i++) 
+				Assert.AreEqual (actionPerformed, implementor.DoAction (i), "DoAction");
 				
-				Assert.AreEqual ("click", implementor.GetName (0), "GetName click");
-				if (ValidNumberOfActionsForAButton > 1) {
-					Assert.AreEqual ("press", implementor.GetName (1), "GetName press");
-					Assert.AreEqual ("release", implementor.GetName (2), "GetName release");
-				}
-				
-				//still need to figure out why this is null in gail
+			//still need to figure out why this is null in gail
 //				Assert.IsNull (implementor.GetLocalizedName (0));
 //				Assert.IsNull (implementor.GetLocalizedName (1));
 //				Assert.IsNull (implementor.GetLocalizedName (2));
-				
-				for (int i = 0; i < ValidNumberOfActionsForAButton; i++) 
-					Assert.IsNull (implementor.GetDescription (i), "GetDescription null");
-				
-				//out of range
-				Assert.IsFalse (implementor.DoAction (-1), "DoAction OOR#1");
-				Assert.IsFalse (implementor.DoAction (ValidNumberOfActionsForAButton), "DoAction OOR#2");
-				Assert.IsNull (implementor.GetName (-1), "GetName OOR#1");
-				Assert.IsNull (implementor.GetName (ValidNumberOfActionsForAButton), "GetName OOR#2");
-				Assert.IsNull (implementor.GetDescription (-1), "GetDescription OOR#1");
-				Assert.IsNull (implementor.GetDescription (ValidNumberOfActionsForAButton), "GetDescription OOR#2");
-				Assert.IsNull (implementor.GetLocalizedName (-1), "GetLocalizedName OOR#1");
-				Assert.IsNull (implementor.GetLocalizedName (ValidNumberOfActionsForAButton), "GetLocalizedName OOR#2");
-				
-				string descrip = "Some big ugly description";
-				for (int i = 0; i < ValidNumberOfActionsForAButton; i++) {
-					Assert.IsTrue (implementor.SetDescription(i, descrip), "SetDescription");
-					Assert.AreEqual (descrip, implementor.GetDescription (i), "GetDescription");
-					descrip += ".";
-				}
-				Assert.IsFalse (implementor.SetDescription(ValidNumberOfActionsForAButton, descrip), "SetDescription OOR");
-				Assert.IsNull (implementor.GetDescription (ValidNumberOfActionsForAButton), "GetDescription OOR#3");
-				
-				// With no keybinding set, everything should return null
-				Assert.IsNull (implementor.GetKeybinding (0), "GetKeyBinding#1");
-				Assert.IsNull (implementor.GetKeybinding (1), "GetKeyBinding#2");
-				Assert.IsNull (implementor.GetKeybinding (2), "GetKeyBinding#3");
-				
-				//out of range items too
-				Assert.IsNull (implementor.GetKeybinding (-1), "GetKeyBinding OOR#1");
-				Assert.IsNull (implementor.GetKeybinding (3), "GetKeyBinding OOR#2");
+			
+			for (int i = 0; i < ValidNumberOfActionsForAButton; i++) 
+				Assert.IsNull (implementor.GetDescription (i), "GetDescription null");
+			
+			//out of range
+			Assert.IsFalse (implementor.DoAction (-1), "DoAction OOR#1");
+			Assert.IsFalse (implementor.DoAction (ValidNumberOfActionsForAButton), "DoAction OOR#2");
+			Assert.IsNull (implementor.GetName (-1), "GetName OOR#1");
+			Assert.IsNull (implementor.GetName (ValidNumberOfActionsForAButton), "GetName OOR#2");
+			Assert.IsNull (implementor.GetDescription (-1), "GetDescription OOR#1");
+			Assert.IsNull (implementor.GetDescription (ValidNumberOfActionsForAButton), "GetDescription OOR#2");
+			Assert.IsNull (implementor.GetLocalizedName (-1), "GetLocalizedName OOR#1");
+			Assert.IsNull (implementor.GetLocalizedName (ValidNumberOfActionsForAButton), "GetLocalizedName OOR#2");
+			
+			string descrip = "Some big ugly description";
+			for (int i = 0; i < ValidNumberOfActionsForAButton; i++) {
+				Assert.IsTrue (implementor.SetDescription(i, descrip), "SetDescription");
+				Assert.AreEqual (descrip, implementor.GetDescription (i), "GetDescription");
+				descrip += ".";
 			}
-			else {
-				throw new NotImplementedException ();
-			}
+			Assert.IsFalse (implementor.SetDescription(ValidNumberOfActionsForAButton, descrip), "SetDescription OOR");
+			Assert.IsNull (implementor.GetDescription (ValidNumberOfActionsForAButton), "GetDescription OOR#3");
+			
+			// With no keybinding set, everything should return null
+			Assert.IsNull (implementor.GetKeybinding (0), "GetKeyBinding#1");
+			Assert.IsNull (implementor.GetKeybinding (1), "GetKeyBinding#2");
+			Assert.IsNull (implementor.GetKeybinding (2), "GetKeyBinding#3");
+			
+			//out of range items too
+			Assert.IsNull (implementor.GetKeybinding (-1), "GetKeyBinding OOR#1");
+			Assert.IsNull (implementor.GetKeybinding (3), "GetKeyBinding OOR#2");
 		}
 		
 		private void AtkRoleTest (BasicWidgetType type, Atk.Object accessible)
