@@ -1,5 +1,10 @@
 2008-06-04  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AutomationBridge.cs: Handle checkboxes (now accerciser can see the
+	  new one FormTest, thanks to this).
+
+2008-06-04  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Button.cs: Make tests pass.
 
 2008-06-03  Calvin Gaisford <calvinrg@gmail.com> 

@@ -59,6 +59,14 @@ namespace FormTest
 			lab.Top = b.Height + 30;
 			f1.Controls.Add (lab);
 			
+			CheckBox chk = new CheckBox ();
+			chk.Text = "This is a test checkbox";
+			chk.Width = f1.Width;
+			chk.Height = b.Height;
+			chk.Enabled = true;
+			chk.Top = lab.Top + 30;
+			f1.Controls.Add (chk);
+			
 			Form bgf = new Form ();
 			bgf.Text = "Background Form";
 			bgf.Show ();

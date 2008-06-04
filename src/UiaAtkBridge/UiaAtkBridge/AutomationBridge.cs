@@ -124,6 +124,8 @@ namespace UiaAtkBridge
 					HandleNewButtonControlType (simpleProvider);
 				else if (controlTypeId == ControlType.Text.Id)
 					HandleNewLabelControlType (simpleProvider);
+				else if (controlTypeId == ControlType.CheckBox.Id)
+					HandleNewCheckBoxControlType (simpleProvider);
 				// TODO: Other providers
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
 				if (controlTypeId == ControlType.Window.Id)
@@ -193,6 +195,22 @@ namespace UiaAtkBridge
 			parentObject.AddOneChild (atkLabel);
 			parentObject.AddRelationship (Atk.RelationType.Embeds,
 			                              atkLabel);
+		}
+		
+		private void HandleNewCheckBoxControlType (IRawElementProviderSimple provider)
+		{
+			IRawElementProviderSimple parentProvider =
+					provider.HostRawElementProvider;
+			
+			ParentAdapter parentObject =
+				(ParentAdapter) providerAdapterMapping [parentProvider];
+			
+			CheckBox atkCheck = new CheckBox (provider);
+			providerAdapterMapping [provider] = atkCheck;
+			
+			parentObject.AddOneChild (atkCheck);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkCheck);
 		}
 		
 #endregion
