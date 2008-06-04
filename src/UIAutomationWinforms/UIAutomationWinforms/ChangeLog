@@ -1,5 +1,10 @@
 2008-06-04  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs: Don't override base
+	  class handling of BoundingRectangleProperty.
+
+2008-06-04  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Mono.UIAutomation.Winforms.mdp: Remove StatusBarProvider from
 	  project, as it does not currently build.
 

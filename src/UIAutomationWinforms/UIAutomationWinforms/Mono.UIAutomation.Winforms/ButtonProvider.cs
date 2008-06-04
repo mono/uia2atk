@@ -91,8 +91,6 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.Button.Id;
 			else if (propertyId == AutomationElementIdentifiers.AcceleratorKeyProperty.Id)
 				return null; // TODO
-			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-				return Helper.RectangleToRect (button.Bounds);
 			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)
 				// TODO: Can't find any way to get tooltip text
 				//       Need to cheat and find them by looking
