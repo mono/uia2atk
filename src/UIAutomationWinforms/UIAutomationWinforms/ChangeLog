@@ -1,5 +1,10 @@
 2008-06-04  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Mono.UIAutomation.Winforms.mdp: Remove StatusBarProvider from
+	  project, as it does not currently build.
+
+2008-06-04  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Mono.UIAutomation.Winforms/WindowProvider.cs: Don't re-initialize
 	  controlProviders...that makes mappings made in base class go
 	  bye-bye.
