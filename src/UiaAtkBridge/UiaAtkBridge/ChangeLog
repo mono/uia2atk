@@ -1,3 +1,7 @@
+2008-06-04  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* Button.cs: Make tests pass.
+
 2008-06-03  Calvin Gaisford <calvinrg@gmail.com> 
 
 	* Button.cs: Filled out more of Button, added Event tests in the

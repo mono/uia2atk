@@ -41,8 +41,8 @@ namespace UiaAtkBridge
 		private IRawElementProviderSimple	provider;
 		private IInvokeProvider				invokeProvider;
 		private IToggleProvider				toggleProvider;
-		private string						actionDescription;
-		private string						actionName;
+		private string						actionDescription = null;
+		private string						actionName = null;
 		
 		private TextImplementorHelper textExpert = null;
 		private int selectionStartOffset = 0, selectionEndOffset = 0;
@@ -66,12 +66,14 @@ namespace UiaAtkBridge
 			
 			if (provider is IInvokeProvider) {
 				invokeProvider = (IInvokeProvider)provider;
-				actionDescription = default_invoke_description;
+				//it seems the default description should be null:
+				//actionDescription = default_invoke_description;
 				actionName = default_invoke_name;
 				Role = Atk.Role.PushButton;
 			} else {
 				toggleProvider = (IToggleProvider)provider;
-				actionDescription = default_toggle_description;
+				//it seems the default description should be null:
+				//actionDescription = default_toggle_description;
 				actionName = default_toggle_name;
 				Role = Atk.Role.ToggleButton;
 			}
@@ -106,7 +108,7 @@ namespace UiaAtkBridge
 		public string GetLocalizedName (int action)
 		{
 			if (action != 0)
-				return String.Empty;
+				return null;
 
 			// TODO: Localize the name?
 			return actionName;
@@ -125,15 +127,13 @@ namespace UiaAtkBridge
 		// Get the key bindings for the specified action
 		public string GetKeybinding (int action)
 		{
-			string keyBinding = String.Empty;
+			string keyBinding = null;
 			
 			if (action != 0)
 				return keyBinding;
 
-			keyBinding = (string) provider.GetPropertyValue (AutomationElementIdentifiers.AcceleratorKeyProperty.Id);
-			if (keyBinding == null)
-				keyBinding = String.Empty;
-				
+			keyBinding = (string) 
+				provider.GetPropertyValue (AutomationElementIdentifiers.AcceleratorKeyProperty.Id);
 			return keyBinding;
 		}
 
@@ -141,7 +141,7 @@ namespace UiaAtkBridge
 		public string GetName (int action)
 		{
 			if (action != 0)
-				return String.Empty;
+				return null;
 
 			return actionName;
 		}
@@ -150,7 +150,7 @@ namespace UiaAtkBridge
 		public string GetDescription (int action)
 		{
 			if (action != 0)
-				return String.Empty;
+				return null;
 
 			return actionDescription;
 		}
