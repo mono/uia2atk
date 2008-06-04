@@ -89,13 +89,20 @@ namespace UiaAtkBridge
 			return false;
 		}
 
-		public virtual void GetExtents (out int x, out int y, out int width, out int height, Atk.CoordType coord_type)
+		internal System.Windows.Rect BoundingRectangle
 		{
-			//TODO: Implement GetExtents
-			x = 0;
-			y = 0;
-			width = 0;
-			height = 0;
+			get {
+				return (System.Windows.Rect) Provider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+			}
+		}
+		
+		public virtual void GetExtents (out int x, out int y, out int width, out int height, Atk.CoordType coordType)
+		{
+			//TODO: handle coordType
+			x = (int)BoundingRectangle.Left;
+			y = (int)BoundingRectangle.Right;
+			width = (int)BoundingRectangle.Width;
+			height = (int)BoundingRectangle.Height;
 		}
 		
 		public virtual void GetPosition (out int x, out int y, Atk.CoordType coord_type)
