@@ -29,6 +29,7 @@
 2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* Adapter.cs: Extract coordinates for the Component interface.
+	* glue/glue.c: Added glue library (not working yet with it).
 
 2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
 
