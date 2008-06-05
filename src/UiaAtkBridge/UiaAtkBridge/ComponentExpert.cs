@@ -21,10 +21,13 @@
 // 
 // Authors: 
 //      Andres G. Aragoneses <aaragoneses@novell.com>
+//      Calvin Gaisford <cgaisford@novell.com>
 // 
 
 using System;
 using System.Collections.Generic;
+
+using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
@@ -34,6 +37,9 @@ namespace UiaAtkBridge
 		{
 			this.resource = resource;
 			
+			if (resource.Provider is ITransformProvider)
+				transformProvider = (ITransformProvider)resource.Provider;
+			
 			lastFocusHandlerId = 0;
 			focusHandlers = new Dictionary<uint, Atk.FocusHandler> ();
 		}
@@ -41,6 +47,7 @@ namespace UiaAtkBridge
 		private Adapter								resource;
 		private Dictionary<uint, Atk.FocusHandler>	focusHandlers;
 		private uint								lastFocusHandlerId;
+		private ITransformProvider					transformProvider = null;
 		
 		public virtual uint AddFocusHandler (Atk.FocusHandler handler)
 		{
@@ -54,14 +61,14 @@ namespace UiaAtkBridge
 
 		public bool Contains (int x, int y, Atk.CoordType coordType)
 		{
-			//TODO: Implement Contains
-			return false;
+			// TODO: handle the coordType?  Screen or Window
+			return resource.BoundingRectangle.Contains (new System.Windows.Point (x, y));
 		}
 
 		public virtual Atk.Object RefAccessibleAtPoint (int x, int y, Atk.CoordType coordType)
 		{
-			//TODO: Implement RefAccessibleAtPoint
-			return null;
+			//TODO: check for children at this point?
+			return this.resource;
 		}
 
 		public void GetExtents (out int x, out int y, out int width, out int height, Atk.CoordType coordType)
@@ -75,16 +82,15 @@ namespace UiaAtkBridge
 
 		public void GetPosition (out int x, out int y, Atk.CoordType coordType)
 		{
-			//TODO: Implement GetPosition
-			x = 0;
-			y = 0;
+			// TODO: handle the coordType?  Screen or Window
+			x = (int)resource.BoundingRectangle.X;
+			y = (int)resource.BoundingRectangle.Y;
 		}
 
 		public virtual void GetSize (out int width, out int height)
 		{
-			//TODO: Implement GetSize
-			width = 0;
-			height = 0;
+			width = (int)resource.BoundingRectangle.Width;
+			height = (int)resource.BoundingRectangle.Height;
 		}
 
 		public virtual bool GrabFocus ()
@@ -101,26 +107,36 @@ namespace UiaAtkBridge
 
 		public bool SetExtents (int x, int y, int width, int height, Atk.CoordType coordType)
 		{
-			//TODO: implement SetExtents
+			if ((transformProvider != null) && 
+			    (transformProvider.CanResize) && 
+			    (transformProvider.CanMove)) {
+				transformProvider.Move (x, y);
+				transformProvider.Resize (width, height);
+				return true;
+			}
 			return false;
 		}
 
 		public bool SetPosition (int x, int y, Atk.CoordType coordType)
 		{
-			//TODO: implement SetExtents
+			if ((transformProvider != null) && (transformProvider.CanMove)) {
+				transformProvider.Move (x, y);
+				return true;
+			}
 			return false;
 		}
 
 		public bool SetSize (int width, int height)
 		{
-			//TODO: implement SetExtents
+			if ((transformProvider != null) && (transformProvider.CanResize)) {
+				transformProvider.Resize (width, height);
+				return true;
+			}
 			return false;
 		}
 		
 		public IntPtr Handle {
-			get {
-				return resource.Handle;
-			}
+			get { return resource.Handle; }
 		}
 
 		public int MdiZorder {
@@ -131,11 +147,8 @@ namespace UiaAtkBridge
 			get { return Atk.Layer.Widget; }
 		}
 
-		public virtual double Alpha
-		{
-			get {
-				return 1;
-			}
+		public virtual double Alpha {
+			get { return 1; }
 		}
 	}
 }

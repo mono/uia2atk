@@ -1,5 +1,10 @@
 2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Pane.cs, ComponentExpert.cs: Moved some implementations up to the
+	  more generic class.
+
+2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Pane.cs: Remove a property already inherited.
 
 2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 

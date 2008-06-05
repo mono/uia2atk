@@ -32,7 +32,7 @@ namespace UiaAtkBridge
 	public class Pane : ComponentParentAdapter
 	{
 		private IRawElementProviderSimple 	provider;
-		private ITransformProvider			transformProvider;
+
 		private IDockProvider				dockProvider;
 		
 
@@ -131,9 +131,7 @@ namespace UiaAtkBridge
 			Role = Atk.Role.Panel;
 			
 			// The Pane doesn't have to have either of these
-			if(provider is ITransformProvider) {
-				transformProvider = (ITransformProvider)provider;
-			} else if(provider is IDockProvider)  {
+			if(provider is IDockProvider)  {
 				dockProvider = (IDockProvider)provider;
 			}
 			
@@ -217,80 +215,5 @@ namespace UiaAtkBridge
 			}*/
 		}
 		
-
-#region ComponentImplementor Methods
-
-		public override bool Contains (int x, int y, Atk.CoordType coord_type)
-		{
-			// TODO: handle the coord_type?  Screen or Window
-			return BoundingRectangle.Contains(new System.Windows.Point(x, y));
-		}
-
-		public override void GetExtents (out int x, out int y, out int width, out int height, Atk.CoordType coord_type)
-		{
-			// TODO: handle the coord_type?  Screen or Window
-			x = (int)BoundingRectangle.Left;
-			y = (int)BoundingRectangle.Right;
-			width = (int)BoundingRectangle.Width;
-			height = (int)BoundingRectangle.Height;
-		}
-		
-		public override void GetPosition (out int x, out int y, Atk.CoordType coord_type)
-		{
-			// TODO: handle the coord_type?  Screen or Window
-			x = (int)BoundingRectangle.Left;
-			y = (int)BoundingRectangle.Right;
-		}
-
-		public override void GetSize (out int width, out int height)
-		{
-			width = (int)BoundingRectangle.Width;
-			height = (int)BoundingRectangle.Height;
-		}
-		
-		public override bool GrabFocus ()
-		{
-			//TODO: Implement GrabFocus
-			return false;
-		}
-		
-		public override Atk.Object RefAccessibleAtPoint (int x, int y, Atk.CoordType coord_type)
-		{
-			//TODO: check for children at this point?
-			return this;
-		}
-		
-		public override bool SetExtents (int x, int y, int width, int height, Atk.CoordType coord_type)
-		{
-			if( (transformProvider != null) && (transformProvider.CanResize) && (transformProvider.CanMove) ) {
-				transformProvider.Move(x, y);
-				transformProvider.Resize(width, height);
-				return true;
-			}
-			return false;
-		}
-		
-		public override bool SetPosition (int x, int y, Atk.CoordType coord_type)
-		{
-			if( (transformProvider != null) && (transformProvider.CanMove) ) {
-				transformProvider.Move(x, y);
-				return true;
-			}
-			return false;
-		}
-		
-		public override bool SetSize (int width, int height)
-		{
-			if( (transformProvider != null) && (transformProvider.CanResize) ) {
-				transformProvider.Resize(width, height);
-				return true;
-			}
-			return false;
-		}
-		
-#endregion
-		
-		
-		
-	}	
+	}
 }
