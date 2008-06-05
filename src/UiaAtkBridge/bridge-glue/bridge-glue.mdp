@@ -1,0 +1,26 @@
+<Project name="bridge-glue" fileversion="2.0" language="C" Target="Bin" ctype="CProject">
+  <Configurations active="Debug">
+    <Configuration name="Debug" SourceDirectory="." ctype="CProjectConfiguration">
+      <Output directory="bin/Debug" output="bridge-glue" />
+      <Build debugmode="True" target="SharedLibrary" />
+      <Execution runwithwarnings="True" consolepause="True" />
+      <CodeGeneration WarningLevel="Normal" WarningsAsErrors="False" OptimizationLevel="0" ExtraCompilerArguments="" ExtraLinkerArguments="" DefineSymbols="DEBUG MONODEVELOP" />
+    </Configuration>
+    <Configuration name="Release" SourceDirectory="." ctype="CProjectConfiguration">
+      <Output directory="bin/Release" output="bridge-glue" />
+      <Build debugmode="False" target="SharedLibrary" />
+      <Execution runwithwarnings="True" consolepause="True" />
+      <CodeGeneration WarningLevel="Normal" WarningsAsErrors="False" OptimizationLevel="3" ExtraCompilerArguments="" ExtraLinkerArguments="" DefineSymbols="MONODEVELOP" />
+    </Configuration>
+  </Configurations>
+  <Contents>
+    <File name="main.h" subtype="Code" buildaction="Nothing" />
+    <File name="main.c" subtype="Code" buildaction="Compile" />
+  </Contents>
+  <compiler ctype="GccCompiler" />
+  <Packages>
+    <Package file="/usr/lib/pkgconfig/glib-2.0.pc" name="GLib" IsProject="False" />
+    <Package file="/usr/lib/pkgconfig/gobject-2.0.pc" name="GObject" IsProject="False" />
+    <Package file="/usr/lib/pkgconfig/atk.pc" name="Atk" IsProject="False" />
+  </Packages>
+</Project>

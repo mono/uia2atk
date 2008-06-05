@@ -35,6 +35,8 @@ namespace UiaAtkBridge
 {
 	internal class Monitor
 	{
+		private bool useNativeInitialization = false;
+		
 		public Monitor()
 		{
 			GLib.GType.Init();
@@ -43,7 +45,11 @@ namespace UiaAtkBridge
 			
 			Atk.Util.GetToolkitNameHandler = GetAssemblyName;
 			Atk.Util.GetToolkitVersionHandler = GetAssemblyVersionNumber;
-			Atk.Util.AddGlobalEventListenerHandler = AddGlobalEventListener;
+			
+			if (!useNativeInitialization)
+				Atk.Util.AddGlobalEventListenerHandler = AddGlobalEventListener;
+			else
+				override_global_event_listener ();
 		}
 		
 		private bool isApplicationStarted = false;
@@ -149,10 +155,13 @@ namespace UiaAtkBridge
 		[DllImport("libatk-bridge")]
 		static extern void gnome_accessibility_module_init ();
 		
-		private void LaunchAtkBridge()
+		private void LaunchAtkBridge ()
 		{
 			gnome_accessibility_module_init();
 		}
+		
+		[DllImport("bridge-glue")]
+		static extern void override_global_event_listener ();
 	}
 	
 	/// <summary>

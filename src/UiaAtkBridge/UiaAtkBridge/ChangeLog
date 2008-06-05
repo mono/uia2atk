@@ -1,5 +1,10 @@
 2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Monitor.cs, glue/glue.c, UiaAtkBridge.mdp: Move the glue-library into
+	  its own CBinding project.
+
+2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* glue/glue.c: Actually ref the bug.
 
 2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
