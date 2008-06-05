@@ -23,7 +23,7 @@
 //      Andres G. Aragoneses <aaragoneses@novell.com>
 // 
 
-//this glue library is born from the need of a workaround to bug , bringing optimization, and is based on r101690
+//this glue library is born from the need of a workaround to bug#386950, bringing optimization, and is based on r101690
 
 
 static GHashTable *listener_list = NULL;

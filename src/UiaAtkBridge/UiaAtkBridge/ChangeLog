@@ -1,5 +1,9 @@
 2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* glue/glue.c: Actually ref the bug.
+
+2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Pane.cs, ComponentExpert.cs: Moved some implementations up to the
 	  more generic class.
 
