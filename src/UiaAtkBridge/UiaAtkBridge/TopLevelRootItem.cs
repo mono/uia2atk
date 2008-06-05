@@ -31,8 +31,6 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	// FIXME: TopLevelRootItem should not implement Atk.Component, so we need to either drop
-	//        it from ParentAdapter, or make TopLevelRootItem not depend on it
 	public class TopLevelRootItem : ParentAdapter
 	{
 		private TopLevelRootItem()

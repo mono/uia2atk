@@ -29,7 +29,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class Window : ParentAdapter
+	public class Window : ComponentParentAdapter
 	{
 		private IRawElementProviderSimple provider;
 		private IRawElementProviderFragmentRoot rootProvider;

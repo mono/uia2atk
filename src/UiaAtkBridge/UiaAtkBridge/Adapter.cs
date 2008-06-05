@@ -30,32 +30,13 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public abstract class Adapter : Atk.Object, Atk.ComponentImplementor
+	public abstract class Adapter : Atk.Object
 	{
-
-#region Private Members
-		private Dictionary<uint, Atk.FocusHandler>	focusHandlers;
-		private uint								lastFocusHandlerId;
-	
-#endregion
-
-#region ComponentImplementor Properties
-
-		public virtual double Alpha
-		{
-			get {
-				return 1;
-			}
-		}
-		
-#endregion
 
 #region Constructors
 		
 		public Adapter ()
 		{
-			lastFocusHandlerId = 0;
-			focusHandlers = new Dictionary<uint, Atk.FocusHandler> ();
 		}
 		
 #endregion
@@ -70,102 +51,14 @@ namespace UiaAtkBridge
 		
 #endregion
 
-
-#region ComponentImplementor Methods
-
-		public virtual uint AddFocusHandler (Atk.FocusHandler handler)
-		{
-			if(focusHandlers.ContainsValue(handler))
-				return 0;
-			
-			lastFocusHandlerId++;
-			focusHandlers[lastFocusHandlerId] = handler;
-			return lastFocusHandlerId;
-		}
-
-		public virtual bool Contains (int x, int y, Atk.CoordType coord_type)
-		{
-			//TODO: Implement Contains
-			return false;
-		}
-
 		internal System.Windows.Rect BoundingRectangle
 		{
 			get {
-				return (System.Windows.Rect) Provider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+				return (System.Windows.Rect) 
+					Provider.GetPropertyValue (
+					  AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 			}
 		}
-		
-		public virtual void GetExtents (out int x, out int y, out int width, out int height, Atk.CoordType coordType)
-		{
-			//TODO: handle coordType
-			x = (int)BoundingRectangle.X;
-			y = (int)BoundingRectangle.Y;
-			width = (int)BoundingRectangle.Width;
-			height = (int)BoundingRectangle.Height;
-		}
-		
-		public virtual void GetPosition (out int x, out int y, Atk.CoordType coord_type)
-		{
-			//TODO: Implement GetPosition
-			x = 0;
-			y = 0;
-		}
-
-		// we should use "override" instead of "new" when this bug is fixed and it gets
-		// propragated to GTK#: http://bugzilla.gnome.org/show_bug.cgi?id=526752
-		public virtual new Atk.Layer Layer {
-			get { return Atk.Layer.Widget; }
-		}
-		
-		public virtual new int MdiZorder {
-			get { return 0; }
-		}
-		
-		public virtual void GetSize (out int width, out int height)
-		{
-			//TODO: Implement GetSize
-			width = 0;
-			height = 0;
-		}
-		
-		public virtual bool GrabFocus ()
-		{
-			//TODO: Implement GrabFocus
-			return false;
-		}
-		
-		public virtual Atk.Object RefAccessibleAtPoint (int x, int y, Atk.CoordType coord_type)
-		{
-			//TODO: Implement RefAccessibleAtPoint
-			return null;
-		}
-		
-		public virtual void RemoveFocusHandler (uint handler_id)
-		{
-			if(focusHandlers.ContainsKey(handler_id))
-				focusHandlers.Remove(handler_id);
-		}
-		
-		public virtual bool SetExtents (int x, int y, int width, int height, Atk.CoordType coord_type)
-		{
-			//TODO: Implement SetExtents
-			return false;
-		}
-		
-		public virtual bool SetPosition (int x, int y, Atk.CoordType coord_type)
-		{
-			//TODO: Implement SetPosition
-			return false;
-		}
-		
-		public virtual bool SetSize (int width, int height)
-		{
-			//TODO: Implement SetSize
-			return false;
-		}
-		
-#endregion
 
 	}
 }

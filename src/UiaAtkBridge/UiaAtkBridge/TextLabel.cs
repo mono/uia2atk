@@ -30,7 +30,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class TextLabel : Adapter , Atk.TextImplementor 
+	public class TextLabel : ComponentAdapter , Atk.TextImplementor 
 	{
 		private IRawElementProviderSimple provider;
 		

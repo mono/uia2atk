@@ -31,7 +31,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class Button : Adapter, Atk.ActionImplementor, Atk.TextImplementor
+	public class Button : ComponentAdapter, Atk.ActionImplementor, Atk.TextImplementor
 	{
 		private static string default_invoke_description = "Sends a request to activate a control and initiate its single, unambiguous action.";
 		private static string default_toggle_description = "Cycles through the toggle states of a control.";

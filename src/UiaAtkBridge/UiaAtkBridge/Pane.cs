@@ -29,7 +29,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class Pane : ParentAdapter
+	public class Pane : ComponentParentAdapter
 	{
 		private IRawElementProviderSimple 	provider;
 		private ITransformProvider			transformProvider;
