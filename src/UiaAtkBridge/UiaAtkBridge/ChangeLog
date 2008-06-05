@@ -1,12 +1,16 @@
 2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Pane.cs: Remove a property already inherited.
+
+2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Button.cs, ComponentParentAdapter.cs, TopLevelRootItem.cs,
 	  Adapter.cs, Pane.cs, TextLabel.cs, ComponentExpert.cs,
 	  ComponentAdapter.cs, UiaAtkBridge.mdp, Window.cs: Fix a FIXME and
 	  an NRE thrown in accerciser: TopLevelRootItem should not implement
-	  Atk.Component. We have need a lot of class hierarchy refactoring to
-	  make this possible. (If we had multiple inheritance support in C#
-	  it would have been easier!)
+	  Atk.Component. We have needed a lot of class hierarchy refactoring
+	  to make this possible. (If we had multiple inheritance support in
+	  C# it would have been easier!)
 
 2008-06-04  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 

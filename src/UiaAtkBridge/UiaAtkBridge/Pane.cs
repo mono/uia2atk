@@ -46,14 +46,6 @@ namespace UiaAtkBridge
 			}
 		}
 		
-		// AutomationElementIdentifiers.BoundingRectangleProperty.Id
-		public System.Windows.Rect BoundingRectangle
-		{
-			get {	
-				return (System.Windows.Rect) provider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-			}
-		}
-		
 		// AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id
 		public bool IsKeyboardFocusable
 		{ 
