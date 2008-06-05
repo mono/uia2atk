@@ -1,3 +1,7 @@
+2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* FormTest.mdp, formtest.sh: Better to copy in the script.
+
 2008-06-04  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* FormTest.cs: Added a test checkbox.

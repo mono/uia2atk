@@ -2,7 +2,6 @@
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <CustomCommands>
-        <Command type="AfterBuild" command="cp /usr/lib/gtk-2.0/modules/libatk-bridge.so ../../../../../../../gtk-sharp/atk/glue/.libs/" workingdir="${TargetDir}" />
         <Command type="Execute" command="./formtest.sh" workingdir="${TargetDir}" />
       </CustomCommands>
       <Output directory="bin/Debug" assemblyKeyFile="." assembly="FormTest" />
