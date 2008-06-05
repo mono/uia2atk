@@ -35,7 +35,7 @@ namespace UiaAtkBridge
 {
 	internal class Monitor
 	{
-		private bool useNativeInitialization = false;
+		private bool useNativeInitialization = true;
 		
 		public Monitor()
 		{
@@ -160,7 +160,7 @@ namespace UiaAtkBridge
 			gnome_accessibility_module_init();
 		}
 		
-		[DllImport("bridge-glue")]
+		[DllImport("libbridge-glue.so")]
 		static extern void override_global_event_listener ();
 	}
 	

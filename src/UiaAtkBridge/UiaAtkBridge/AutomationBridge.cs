@@ -144,7 +144,7 @@ namespace UiaAtkBridge
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) provider;
 			
-			Window newWindow = new Window (provider);			
+			Window newWindow = new Window (provider);
 			providerAdapterMapping [simpleProvider] = newWindow;
 			
 			TopLevelRootItem.Instance.AddOneChild (newWindow);

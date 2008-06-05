@@ -1,5 +1,9 @@
 2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* bridge-glue/main.h: Add the prototype for the extern.
+
+2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* bridge-glue, bridge-glue/bridge-glue.mdp, bridge-glue/main.c,
 	  bridge-glue/main.h, UiaAtkBridge.mds: Move the glue-library into
 	  its own CBinding project.

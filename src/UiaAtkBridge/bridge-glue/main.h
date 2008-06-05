@@ -7,5 +7,7 @@
 #include <glib-object.h>
 #include <atk/atkutil.h>
 
+void
+override_global_event_listener ();
 
 #endif

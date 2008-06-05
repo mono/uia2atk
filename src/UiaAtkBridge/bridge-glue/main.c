@@ -98,7 +98,7 @@ guint _add_global_event_listener (
 	// example: Gtk:AtkObject:children-changed
 	split_string = g_strsplit (event_type, ":", 3);
 
-	g_warning(g_strdup_printf("add global event listener, event_type: %s", event_type));
+	g_warning (g_strdup_printf ("add global event listener, event_type: %s", event_type));
 
 	if (split_string)
 	{

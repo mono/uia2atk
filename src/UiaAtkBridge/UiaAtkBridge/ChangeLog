@@ -1,5 +1,9 @@
 2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Monitor.cs: Use the native glue lib by default.
+
+2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* glue, glue/glue.c: Delete old glue file and dir.
 
 2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
