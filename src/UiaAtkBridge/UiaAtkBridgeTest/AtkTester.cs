@@ -154,6 +154,7 @@ namespace UiaAtkBridgeTest
 			
 			Atk.StateSet state = accessible.RefStateSet();
 			Assert.IsFalse (state.IsEmpty, "RefStateSet.IsEmpty");
+			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled");
 			Assert.IsFalse (state.ContainsState (Atk.StateType.Checked), "RefStateSet.!Checked");
 			
 			// only valid actions should work
@@ -164,6 +165,7 @@ namespace UiaAtkBridgeTest
 			System.Threading.Thread.Sleep (1000);
 			
 			state = accessible.RefStateSet();
+			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled2");
 			if (type == BasicWidgetType.CheckBox)
 				Assert.IsTrue (state.ContainsState (Atk.StateType.Checked), "RefStateSet.Checked");
 			else

@@ -1,5 +1,10 @@
 2008-06-06  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Assure the state is Enabled. This is more clear for
+	  fixing the bridge.
+
+2008-06-06  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: First test for States. This is a bit silly but at least
 	  it works (the state takes a bit to get propagated... damn, how much
 	  time I've lost finding this!).
