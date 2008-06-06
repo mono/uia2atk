@@ -80,7 +80,7 @@ namespace UiaAtkBridgeTest
 			name = "test";
 			Atk.Action atkAction = (Atk.Action)
 				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
-			AtkActionImplementorTest (type, atkAction);
+			AtkActionImplementorTest (type, atkAction, accessible);
 			
 			AtkRoleTest (type, accessible);
 		}
@@ -113,7 +113,9 @@ namespace UiaAtkBridgeTest
 			name = "test";
 			Atk.Action atkAction = (Atk.Action)
 				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
-			AtkActionImplementorTest (type, atkAction);
+			
+
+			AtkActionImplementorTest (type, atkAction, accessible);
 			
 			AtkRoleTest (type, accessible);
 		}
@@ -135,7 +137,7 @@ namespace UiaAtkBridgeTest
 		
 		protected abstract int ValidNumberOfActionsForAButton { get; }
 		
-		private void AtkActionImplementorTest (BasicWidgetType type, Atk.Action implementor)
+		private void AtkActionImplementorTest (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible)
 		{
 			Assert.AreEqual (ValidNumberOfActionsForAButton, implementor.NActions, "NActions");
 			
@@ -144,16 +146,30 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual ("press", implementor.GetName (1), "GetName press");
 				Assert.AreEqual ("release", implementor.GetName (2), "GetName release");
 			}
-		
+			
 			bool actionPerformed = true;
 			//this only applies if the CheckBox is not real (in Gail) :-?
 //			if (type == BasicWidgetType.CheckBox)
 //				actionPerformed = false;
-				
+			
+			Atk.StateSet state = accessible.RefStateSet();
+			Assert.IsFalse (state.IsEmpty, "RefStateSet.IsEmpty");
+			Assert.IsFalse (state.ContainsState (Atk.StateType.Checked), "RefStateSet.!Checked");
+			
 			// only valid actions should work
 			for (int i = 0; i < ValidNumberOfActionsForAButton; i++) 
 				Assert.AreEqual (actionPerformed, implementor.DoAction (i), "DoAction");
-				
+
+			// it takes a bit before the State is propagated!
+			System.Threading.Thread.Sleep (1000);
+			
+			state = accessible.RefStateSet();
+			if (type == BasicWidgetType.CheckBox)
+				Assert.IsTrue (state.ContainsState (Atk.StateType.Checked), "RefStateSet.Checked");
+			else
+				Assert.IsFalse (state.ContainsState (Atk.StateType.Checked), "RefStateSet.!CheckedButt");
+			
+			
 			//still need to figure out why this is null in gail
 //				Assert.IsNull (implementor.GetLocalizedName (0));
 //				Assert.IsNull (implementor.GetLocalizedName (1));

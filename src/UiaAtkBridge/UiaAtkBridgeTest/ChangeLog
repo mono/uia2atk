@@ -1,5 +1,11 @@
 2008-06-06  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: First test for States. This is a bit silly but at least
+	  it works (the state takes a bit to get propagated... damn, how much
+	  time I've lost finding this!).
+
+2008-06-06  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* BridgeTester.cs: Fix one test (GetName) that was passing in GailTest
 	  but not in the bridge.
 
