@@ -70,6 +70,14 @@ namespace UiaAtkBridgeTest
 				accessible = uiaWin;
 				component = uiaWin;
 				break;
+			case BasicWidgetType.CheckBox:
+				MWF.CheckBox chk = new MWF.CheckBox ();
+				chk.Name = name;
+				UiaAtkBridge.CheckBox uiaChk = new UiaAtkBridge.CheckBox (new CheckBoxProvider(chk));
+				accessible = uiaChk;
+				component = uiaChk;
+				action = uiaChk;
+				break;
 			default:
 				throw new NotImplementedException ("The widget finder backend still hasn't got support for " +
 					type.ToString ());
@@ -94,6 +102,11 @@ namespace UiaAtkBridgeTest
 		}
 		
 		protected override int ValidNumberOfActionsForAButton { get { return 1; } }
+		
+		[Test]
+		public void UIACheckBox ()
+		{
+		}
 		
 		//[Test]
 		public void UIAButtonControlType ()

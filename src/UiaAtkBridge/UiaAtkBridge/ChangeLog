@@ -1,3 +1,8 @@
+2008-06-06  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* Button.cs, CheckBox.cs: Fix one test (GetName) that was passing in
+	  GailTest but not in the bridge.
+
 2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* Monitor.cs: Use the native glue lib by default.

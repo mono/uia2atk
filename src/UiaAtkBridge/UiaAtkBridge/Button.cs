@@ -138,7 +138,7 @@ namespace UiaAtkBridge
 		}
 
 		// Get the name of the specified action
-		public string GetName (int action)
+		public virtual string GetName (int action)
 		{
 			if (action != 0)
 				return null;

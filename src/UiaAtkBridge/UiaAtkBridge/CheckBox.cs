@@ -63,6 +63,14 @@ namespace UiaAtkBridge
 			}
 		}
 		
+		public override string GetName (int action)
+		{
+			if (action != 0)
+				return null;
+
+			return "click";
+		}
+		
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {

@@ -1,3 +1,8 @@
+2008-06-06  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* BridgeTester.cs: Fix one test (GetName) that was passing in GailTest
+	  but not in the bridge.
+
 2008-06-04  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTester.cs: Disable the DoAction difference.
