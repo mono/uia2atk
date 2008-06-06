@@ -36,14 +36,23 @@ class CheckbuttonFrame(accessibles.Frame):
         'Raise exception if the checkbutton does not match the given result'   
         procedurelogger.expectedResult('%s is %s.' % (checkbutton, result))
 
-        # XXX: Check the result programatically, see the gcalctool example
-
+        # Check the result
+        def resultMatches():
+          if result == "checked":
+            return checkbutton.checked
+          elif result == "unchecked":
+            return not checkbutton.checked
+          else:
+            raise InvalidState, "%s has no such state:  %s" %\
+                                 (checkbutton, result)
+	
+        assert retryUntilTrue(resultMatches)
 
     def quit(self):
         'Quit checkbutton'
 
-	# click the quit button
-	self.app.findPushButton(self.BUTTON_QUIT).click()
+        # click the quit button
+        self.app.findPushButton(self.BUTTON_QUIT).click()
 
         self.assertClosed()
 
@@ -53,3 +62,9 @@ class CheckbuttonFrame(accessibles.Frame):
         # if the checkbutton window closes, the entire app should close.  
         # assert that this is true 
         self.app.assertClosed()
+
+class InvalidState(Exception):
+  pass
+
+class InvalidAccessible(Exception):
+  pass

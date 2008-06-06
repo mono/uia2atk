@@ -45,10 +45,18 @@ class Settings(object):
   is_quiet = None
   uiaqa_home = None
   log_path = None
+  COUNTDOWN = 5
 
   def __init__(self):
       self.argument_parser()
       self.set_uiaqa_home()
+      self.set_log_path()
+
+  def set_log_path(self):
+    Settings.log_path = "%s/logs" % Settings.uiaqa_home
+    if not os.path.exists(Settings.log_path):
+      output("ERROR:  Log path '%s' does not exist." % Settings.log_path)
+      abort(1)
 
   def argument_parser(self):
     try:
@@ -65,9 +73,6 @@ class Settings(object):
         abort(0)
       if o in ("-l","--log"):
         Settings.log_path = a
-        if not os.path.exists(Settings.log_path):
-          output("ERROR:  Log path does not exist.")
-          abort(1)
 
   def help(self):
     output("Common Options:")
@@ -78,7 +83,7 @@ class Settings(object):
   def set_uiaqa_home(self):
     drivers_dir = sys.path[0]
     i = drivers_dir.rfind("/")
-    Settings.UIAQA_HOME = drivers_dir[:i]
+    Settings.uiaqa_home = drivers_dir[:i]
 
 class Test(object):
 
@@ -102,11 +107,11 @@ class Test(object):
     found_tests = [] # store the full path of the test here
 
     for test in self.tests:
-      test_path = os.path.join(Settings.UIAQA_HOME, "testers/%s" % test)
+      test_path = os.path.join(Settings.uiaqa_home, "testers/%s" % test)
       if not os.path.exists(test_path):
         unfound_tests.append(test)
       else:
-        found_tests.append(os.path.join(Settings.UIAQA_HOME,
+        found_tests.append(os.path.join(Settings.uiaqa_home,
                                         "testers/%s" % test))
 
     num_unfound_tests = len(unfound_tests)
@@ -117,7 +122,7 @@ class Test(object):
       output("WARNING:  %i/%i unfound tests!"\
                % (num_unfound_tests, len(self.tests)))
       try:
-        self.countdown(10)
+        self.countdown(Settings.COUNTDOWN)
       except KeyboardInterrupt:
         return 0
 
@@ -180,7 +185,7 @@ class Test(object):
         # a static location so we don't have to copy these every time and
         # waste time/space
         os.system("cp -r /tmp/strongwind/* %s" % log_dir)
-        os.system("cp -r %s/resources/* %s" % (Settings.UIAQA_HOME, log_dir))
+        os.system("cp -r %s/resources/* %s" % (Settings.uiaqa_home, log_dir))
       
         # clean up the delete_me files
         os.remove("%s/%s" % (control_dir, "delete_me"))

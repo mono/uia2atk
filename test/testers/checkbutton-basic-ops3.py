@@ -40,26 +40,23 @@ if app is None:
 # just an alias to make things shorter
 cbFrame = app.checkbuttonFrame
 
-# find a shorter way instead of app.checkbuttonFrame.CHECK_BUTTON_ONE
-cbFrame.findCheckBox(cbFrame.CHECK_BUTTON_ONE).click()
-cbFrame.assertResult(cbFrame.CHECK_BUTTON_ONE,"checked");
-
+# find a shorter way instead of app.checkbuttonFrame.checkbox1
+cbFrame.checkbox1.click()
 # need a short delay when checking and unchecking the check boxes
 sleep(config.SHORT_DELAY)
+cbFrame.assertResult(cbFrame.checkbox1,"checked");
 
-cbFrame.findCheckBox(cbFrame.CHECK_BUTTON_TWO).click()
-cbFrame.assertResult(cbFrame.CHECK_BUTTON_TWO, "checked");
-
+cbFrame.checkbox2.click()
 sleep(config.SHORT_DELAY)
+cbFrame.assertResult(cbFrame.checkbox2, "checked");
 
-cbFrame.findCheckBox(cbFrame.CHECK_BUTTON_TWO).click()
-cbFrame.assertResult(cbFrame.CHECK_BUTTON_TWO, "unchecked");
-
+cbFrame.checkbox2.click()
 sleep(config.SHORT_DELAY)
+cbFrame.assertResult(cbFrame.checkbox2, "unchecked");
 
-cbFrame.findCheckBox(cbFrame.CHECK_BUTTON_ONE).click()
-cbFrame.assertResult(cbFrame.CHECK_BUTTON_ONE, "unchecked");
-
+cbFrame.checkbox1.click()
+sleep(config.SHORT_DELAY)
+cbFrame.assertResult(cbFrame.checkbox1, "unchecked");
 
 cbFrame.quit()
 
