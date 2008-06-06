@@ -20,7 +20,7 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Neville Gao <nevillegao@gmail.com>
+// 	Neville Gao <nevillegao@gmail.com>
 // 
 
 using System;
@@ -31,77 +31,77 @@ using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms
 {
-    public class StatusBarProvider : SimpleControlProvider, IGridProvider
-    {
+	public class StatusBarProvider : SimpleControlProvider, IGridProvider
+	{
 #region Private Members
 
-        private StatusBar statusBar;
+        	private StatusBar statusBar;
 
 #endregion
 
 #region Constructors
 
-        public StatusBarProvider (StatusBar statusBar) : base (statusBar)
-        {
-            this.statusBar = statusBar;
-        }
+        	public StatusBarProvider (StatusBar statusBar) : base (statusBar)
+        	{
+            		this.statusBar = statusBar;
+        	}
 
 #endregion
 
 #region Public Methods
 
-        public override void InitializeEvents ()
-        {
-            base.InitializeEvents ();
+        	public override void InitializeEvents ()
+        	{
+            		base.InitializeEvents ();
 
-            // TODO: SetEvent?
-        }
+            		// TODO: SetEvent?
+        	}
 
 #endregion
 
 #region IRawElementProviderSimple Members
 
-        public override object GetPatternProvider (int patternId)
-        {
-            if (patternId == GridValuePatternIdentifiers.Pattern.Id)
-                return this;
+        	public override object GetPatternProvider (int patternId)
+        	{
+            		if (patternId == GridPatternIdentifiers.Pattern.Id)
+                		return this;
 
-            return null;
-        }
+			return null;
+        	}
 
-        public override object GetPropertyValue (int propertyId)
-        {
-            if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-                return ControlType.StatusBar.Id;
-            else if (propertyId == AutomationElementIdentifiers.ColumnCountProperty.Id)
-                return ColumnCount;
-            else if (propertyId == AutomationElementIdentifiers.RowCountProperty.Id)
-                return RowCount;
-            else
-                return base.GetPropertyValue (propertyId);
-        }
+        	public override object GetPropertyValue (int propertyId)
+        	{
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.StatusBar.Id;
+			else if (propertyId == GridPatternIdentifiers.ColumnCountProperty.Id)
+				return ColumnCount;
+			else if (propertyId == GridPatternIdentifiers.RowCountProperty.Id)
+				return RowCount;
+			else
+				return base.GetPropertyValue (propertyId);
+        	}
 
 #endregion
 
 #region IGridProvider Members
 
-        public int ColumnCount {
-            get { return (int) statusBar.ColumnCount; }
-        }
+        	public int ColumnCount {
+			get { return 1; }
+        	}
 
-        public int RowCount {
-            get { return (int) statusBar.RowCount; }
-        }
+        	public int RowCount {
+            		get { return 1; }
+        	}
 
-        public IRawElementProviderSimple GetItem (int row, int column)
-        {
-            if (column > ColumnCount || row > RowCount)
-                throw new ArgumentOutOfRangeException ();
-            if (column < 0 || row < 0)
-                throw new ArgumentOutOfRangeException ();
-            return (IRawElementProviderSimple) statusBar [row, column];
-        }
+        	public IRawElementProviderSimple GetItem (int row, int column)
+        	{
+			if (column > ColumnCount || row > RowCount)
+				throw new ArgumentOutOfRangeException ();
+			if (column < 0 || row < 0)
+				throw new ArgumentOutOfRangeException ();
+			return null;
+        	}
 
 #endregion
-    }
+    	}
 }

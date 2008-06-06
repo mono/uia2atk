@@ -1,3 +1,12 @@
+2008-06-06  Neville Gao <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Formatted.
+
+2008-06-06  Neville Gao <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: File updated.
+	* Mono.UIAutomation.Winforms.mdp: Updated due to added file.
+
 2008-06-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Fix
@@ -19,7 +28,7 @@
 	  controlProviders...that makes mappings made in base class go
 	  bye-bye.
 
-2008-06-04	Neville Gao <nevillegao@gmail.com>
+2008-06-04  Neville Gao <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp: Updated due to added files.
 
