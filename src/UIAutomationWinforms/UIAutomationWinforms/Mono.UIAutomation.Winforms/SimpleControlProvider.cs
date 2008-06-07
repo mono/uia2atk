@@ -124,9 +124,7 @@ namespace Mono.UIAutomation.Winforms
 					return Helper.RectangleToRect (control.Bounds);
 				else
 					return Helper.RectangleToRect (control.Parent.RectangleToScreen (control.Bounds));
-			} else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) 	 
-				return null;
-			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id) {
+			} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id) {
 				if (control.Visible == false)
 					return null;
 				else {

@@ -1,3 +1,11 @@
+2008-06-06  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs: Support for
+	  LocalizedControlTypeProperty.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: No need to
+	  handle LabeledByProperty, especially because the default
+	  implementation returns null.
+
 2008-06-06  Neville Gao <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Formatted.

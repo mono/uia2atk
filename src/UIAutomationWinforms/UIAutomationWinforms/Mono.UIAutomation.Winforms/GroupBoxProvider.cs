@@ -61,6 +61,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Group.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "group";
 			else
 				return base.GetPropertyValue (propertyId);
 		}
