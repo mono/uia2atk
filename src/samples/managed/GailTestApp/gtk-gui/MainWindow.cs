@@ -20,6 +20,10 @@ public partial class MainWindow {
     
     private Gtk.Button btnTest1;
     
+    private Gtk.ComboBoxEntry cbeTest;
+    
+    private Gtk.ComboBox cbxTest;
+    
     private Gtk.CheckButton chkTest;
     
     private Gtk.Label lblTest1;
@@ -56,6 +60,31 @@ public partial class MainWindow {
         w1.XOptions = ((Gtk.AttachOptions)(4));
         w1.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
+        this.cbeTest = Gtk.ComboBoxEntry.NewText();
+        this.cbeTest.Name = "cbeTest";
+        this.table1.Add(this.cbeTest);
+        Gtk.Table.TableChild w2 = ((Gtk.Table.TableChild)(this.table1[this.cbeTest]));
+        w2.TopAttach = ((uint)(1));
+        w2.BottomAttach = ((uint)(2));
+        w2.LeftAttach = ((uint)(2));
+        w2.RightAttach = ((uint)(3));
+        w2.XOptions = ((Gtk.AttachOptions)(4));
+        w2.YOptions = ((Gtk.AttachOptions)(4));
+        // Container child table1.Gtk.Table+TableChild
+        this.cbxTest = Gtk.ComboBox.NewText();
+        this.cbxTest.AppendText(Mono.Unix.Catalog.GetString("FirstItem"));
+        this.cbxTest.AppendText(Mono.Unix.Catalog.GetString("SecondItem"));
+        this.cbxTest.AppendText(Mono.Unix.Catalog.GetString("LastItem"));
+        this.cbxTest.Name = "cbxTest";
+        this.table1.Add(this.cbxTest);
+        Gtk.Table.TableChild w3 = ((Gtk.Table.TableChild)(this.table1[this.cbxTest]));
+        w3.TopAttach = ((uint)(1));
+        w3.BottomAttach = ((uint)(2));
+        w3.LeftAttach = ((uint)(1));
+        w3.RightAttach = ((uint)(2));
+        w3.XOptions = ((Gtk.AttachOptions)(4));
+        w3.YOptions = ((Gtk.AttachOptions)(4));
+        // Container child table1.Gtk.Table+TableChild
         this.chkTest = new Gtk.CheckButton();
         this.chkTest.CanFocus = true;
         this.chkTest.Name = "chkTest";
@@ -63,30 +92,32 @@ public partial class MainWindow {
         this.chkTest.DrawIndicator = true;
         this.chkTest.UseUnderline = true;
         this.table1.Add(this.chkTest);
-        Gtk.Table.TableChild w2 = ((Gtk.Table.TableChild)(this.table1[this.chkTest]));
-        w2.TopAttach = ((uint)(1));
-        w2.BottomAttach = ((uint)(2));
-        w2.XOptions = ((Gtk.AttachOptions)(4));
-        w2.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w4 = ((Gtk.Table.TableChild)(this.table1[this.chkTest]));
+        w4.TopAttach = ((uint)(1));
+        w4.BottomAttach = ((uint)(2));
+        w4.XOptions = ((Gtk.AttachOptions)(4));
+        w4.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
         this.lblTest1 = new Gtk.Label();
         this.lblTest1.Name = "lblTest1";
         this.lblTest1.LabelProp = Mono.Unix.Catalog.GetString("This is a test message\nin a label");
         this.table1.Add(this.lblTest1);
-        Gtk.Table.TableChild w3 = ((Gtk.Table.TableChild)(this.table1[this.lblTest1]));
-        w3.XOptions = ((Gtk.AttachOptions)(4));
-        w3.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w5 = ((Gtk.Table.TableChild)(this.table1[this.lblTest1]));
+        w5.XOptions = ((Gtk.AttachOptions)(4));
+        w5.YOptions = ((Gtk.AttachOptions)(4));
         this.hbox1.Add(this.table1);
-        Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox1[this.table1]));
-        w4.Position = 1;
+        Gtk.Box.BoxChild w6 = ((Gtk.Box.BoxChild)(this.hbox1[this.table1]));
+        w6.Position = 1;
+        w6.Expand = false;
+        w6.Fill = false;
         this.vbox1.Add(this.hbox1);
-        Gtk.Box.BoxChild w5 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
-        w5.Position = 1;
+        Gtk.Box.BoxChild w7 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
+        w7.Position = 1;
         this.Add(this.vbox1);
         if ((this.Child != null)) {
             this.Child.ShowAll();
         }
-        this.DefaultWidth = 400;
+        this.DefaultWidth = 487;
         this.DefaultHeight = 300;
         this.Show();
         this.DeleteEvent += new Gtk.DeleteEventHandler(this.OnDeleteEvent);
