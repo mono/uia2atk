@@ -85,11 +85,7 @@ namespace UiaAtkBridge
 		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
-			Atk.StateSet states = null;
-			states = new Atk.StateSet ();
-			
-			//FIXME: uncomment this when Atk# is fixed to not recurse:
-			states = base.OnRefStateSet ();
+			Atk.StateSet states = base.OnRefStateSet ();
 			
 			bool canFocus = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
 			if (canFocus)

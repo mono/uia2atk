@@ -1,5 +1,9 @@
 2008-06-09  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* Button.cs: Delete old notice.
+
+2008-06-09  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Button.cs, CheckBox.cs: Fixes in order to pass recent Atk.StateSet
 	  tests. Hoorray!
 
