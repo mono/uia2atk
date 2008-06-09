@@ -1,3 +1,7 @@
+2008-06-09  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* bridgetest.sh: Add one more path to LD_LIBRARY_PATH.
+
 2008-06-06  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTester.cs: Assure the state is Enabled. This is more clear for

@@ -1,3 +1,7 @@
+2008-06-09  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* main.c: Add crazy comment.
+
 2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* main.c, main.h: Adding headers...

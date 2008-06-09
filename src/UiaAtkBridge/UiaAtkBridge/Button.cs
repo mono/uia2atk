@@ -81,19 +81,37 @@ namespace UiaAtkBridge
 			string buttonText = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = buttonText;
 			textExpert = new TextImplementorHelper (buttonText);
+		}
+		
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = null;
+			states = new Atk.StateSet ();
+			
+			//FIXME: uncomment this when Atk# is fixed to not recurse:
+			states = base.OnRefStateSet ();
 			
 			bool canFocus = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
 			if (canFocus)
-				RefStateSet ().AddState (Atk.StateType.Selectable);
+				states.AddState (Atk.StateType.Selectable);
 			else
-				RefStateSet ().RemoveState (Atk.StateType.Selectable);
-
+				states.RemoveState (Atk.StateType.Selectable);
+			
 			bool enabled = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
 			if (enabled)
-				RefStateSet ().AddState (Atk.StateType.Sensitive);
+			{
+				states.AddState (Atk.StateType.Sensitive);
+				states.AddState (Atk.StateType.Enabled);
+			}
 			else
-				RefStateSet ().RemoveState (Atk.StateType.Sensitive);
+			{
+				states.RemoveState (Atk.StateType.Sensitive);
+				states.RemoveState (Atk.StateType.Enabled);
+			}
+			
+			return states;
 		}
+
 		
 		// Return the number of actions (Read-Only)
 		// Both IInvokeProvider and IToggleProvider have only one action
@@ -217,10 +235,7 @@ namespace UiaAtkBridge
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			if (eventId == InvokePatternIdentifiers.InvokedEvent) {
-				// not sure this is useful, but UIA Buttons don't have press and release
-				// so just call these right after each other
-				RefStateSet ().AddState (Atk.StateType.Armed);
-				RefStateSet ().RemoveState (Atk.StateType.Armed);
+				// TODO: send signal to ATK
 			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
 				// TODO: Handle AutomationFocusChangedEvent
 			} else if (eventId == AutomationElementIdentifiers.StructureChangedEvent) {

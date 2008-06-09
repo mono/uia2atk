@@ -32,35 +32,10 @@ namespace UiaAtkBridge
 	
 	public class CheckBox : Button
 	{
-		ToggleState currentState;
 		
 		public CheckBox (IRawElementProviderSimple provider) : base (provider)
 		{
 			Role = Atk.Role.CheckBox;
-			
-			bool enabled = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
-			if (enabled)
-				RefStateSet ().AddState (Atk.StateType.Enabled);
-			else
-				RefStateSet ().RemoveState (Atk.StateType.Enabled);
-			
-			ToggleState state = (ToggleState)((IToggleProvider)provider).ToggleState;
-			
-			switch (state) {
-			case ToggleState.On:
-				currentState = ToggleState.On;
-				RefStateSet ().AddState (Atk.StateType.Checked);
-				break;
-			case ToggleState.Off:
-				currentState = ToggleState.Off;
-				RefStateSet ().RemoveState (Atk.StateType.Checked);
-				break;
-			case ToggleState.Indeterminate:
-				currentState = ToggleState.Indeterminate;
-				break;
-			default:
-				throw new NotSupportedException ("Unknown toggleState " + state.ToString ());
-			}
 		}
 		
 		public override string GetName (int action)
@@ -71,25 +46,32 @@ namespace UiaAtkBridge
 			return "click";
 		}
 		
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			
+			ToggleState state = (ToggleState)((IToggleProvider)Provider).ToggleState;
+			
+			switch (state) {
+			case ToggleState.On:
+				states.AddState (Atk.StateType.Checked);
+				break;
+			case ToggleState.Indeterminate:
+			case ToggleState.Off:
+				states.RemoveState (Atk.StateType.Checked);
+				break;
+			default:
+				throw new NotSupportedException ("Unknown toggleState " + state.ToString ());
+			}
+			
+			return states;
+		}
+
+		
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
-				ToggleState state = (ToggleState)e.NewValue;
-				
-				switch (state) {
-				case ToggleState.On:
-					RefStateSet ().AddState (Atk.StateType.Checked);
-					break;
-				case ToggleState.Off:
-					RefStateSet ().RemoveState (Atk.StateType.Checked);
-					break;
-				case ToggleState.Indeterminate:
-					if (currentState == ToggleState.On)
-						RefStateSet ().RemoveState (Atk.StateType.Checked);
-					break;
-				default:
-					throw new NotSupportedException ("Unknown toggleState " + state.ToString ());
-				}
+				//TODO: emit signal
 			} else {
 				base.RaiseAutomationPropertyChangedEvent (e);
 			}

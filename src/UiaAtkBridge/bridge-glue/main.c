@@ -29,7 +29,7 @@
 
 //this glue library is born from the need of a workaround to bug#386950, bringing optimization, and is
 // based on r101690 ( http://anonsvn.mono-project.com/source/trunk/uia2atk/src/patches/bug365437comm2.diff )
-
+// TODO: rewrite in Vala?? :)
 
 static GHashTable *listener_list = NULL;
 
