@@ -39,7 +39,7 @@ namespace UiaAtkBridgeTest
 		}
 		
 		public override object GetAtkObjectThatImplementsInterface <I> (
-				BasicWidgetType type, string text, out Atk.Object accessible, bool real)
+		  BasicWidgetType type, string text, out Atk.Object accessible, bool real)
 		{
 			accessible = null;
 			Gtk.Widget widget = null;
@@ -66,6 +66,14 @@ namespace UiaAtkBridgeTest
 				((Gtk.CheckButton)widget).Label = text;
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealCheckBox ();
+				break;
+			case BasicWidgetType.ComboBox:
+				widget = new Gtk.ComboBox ();
+				((Gtk.ComboBox)widget).AppendText ("FirstItem");
+				((Gtk.ComboBox)widget).AppendText ("SecondItem");
+				((Gtk.ComboBox)widget).AppendText ("LastItem");
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealComboBox ();
 				break;
 			default:
 				throw new NotImplementedException ("The widget finder backend still hasn't got support for " +

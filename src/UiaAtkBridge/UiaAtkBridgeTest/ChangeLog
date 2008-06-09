@@ -1,5 +1,10 @@
 2008-06-09  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Delete old FIXME. Re-enable one test.
+	* BasicWidgetType.cs: Added ComboBox.
+
+2008-06-09  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* bridgetest.sh: Add one more path to LD_LIBRARY_PATH.
 
 2008-06-06  Andres G. Aragoneses <aaragoneses@novell.com> 

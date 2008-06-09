@@ -57,11 +57,7 @@ namespace UiaAtkBridgeTest
 			AtkRoleTest (type, accessible);
 			
 			//a label always contains this state, not because it's multi_line, but because it can be multi_line
-			//FIXME: we have ghosts in RefState addition? this is failing in the bridge
-			//Assert.IsTrue (accessible.RefStateSet ().ContainsState (Atk.StateType.MultiLine), "RefStateSet().Contains(MultiLine)");
-			
-			//FIXME: uncomment this when bug#395485 is fixed
-			//Assert.AreEqual (1, accessible.RefStateSet ().Data.Count, "RefStateSet().Data.Count");
+			Assert.IsTrue (accessible.RefStateSet ().ContainsState (Atk.StateType.MultiLine), "RefStateSet().Contains(MultiLine)");
 		}
 		
 		[Test]

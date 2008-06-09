@@ -1,5 +1,9 @@
 2008-06-09  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* TextLabel.cs: Fix State addition.
+
+2008-06-09  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Button.cs: Delete old notice.
 
 2008-06-09  Andres G. Aragoneses <aaragoneses@novell.com> 

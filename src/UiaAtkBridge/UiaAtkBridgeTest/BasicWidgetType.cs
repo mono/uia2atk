@@ -34,6 +34,7 @@ namespace UiaAtkBridgeTest
 		Label,
 		Button,
 		Window,
-		CheckBox
+		CheckBox,
+		ComboBox
 	}
 }

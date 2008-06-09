@@ -44,8 +44,15 @@ namespace UiaAtkBridge
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = text;
 			textExpert = new TextImplementorHelper (text);
-			RefStateSet ().AddState (Atk.StateType.MultiLine);
 		}
+		
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			states.AddState (Atk.StateType.MultiLine);
+			return states;
+		}
+
 		
 		public override IRawElementProviderSimple Provider {
 			get { return provider; }
