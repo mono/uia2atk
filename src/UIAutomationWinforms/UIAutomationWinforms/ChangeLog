@@ -1,3 +1,8 @@
+2008-06-10  Neville Gao <nevillegao@gmail.com>
+
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.mdp: Updated due to
+	svn conflicts.
+
 2008-06-09  Mario Carrion <mcarrion@novell.com>
 
 	* UIAutomationWinforms/Mono.UIAutomation.Winforms.mdp: Updated. Files
