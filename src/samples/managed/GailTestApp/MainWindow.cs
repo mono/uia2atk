@@ -49,4 +49,8 @@ public partial class MainWindow: Gtk.Window
 	internal Gtk.CheckButton GiveMeARealCheckBox () {
 		return this.chkTest;
 	}
+	
+	internal Gtk.ComboBox GiveMeARealComboBox () {
+		return this.cbxTest;
+	}
 }

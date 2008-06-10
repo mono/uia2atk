@@ -77,5 +77,13 @@ namespace GailTestApp
 			
 			return win.GiveMeARealCheckBox ();
 		}
+		
+		public static Gtk.ComboBox GiveMeARealComboBox ()
+		{
+			if (win == null)
+				Start (true);
+			
+			return win.GiveMeARealComboBox ();
+		}
 	}
 }
