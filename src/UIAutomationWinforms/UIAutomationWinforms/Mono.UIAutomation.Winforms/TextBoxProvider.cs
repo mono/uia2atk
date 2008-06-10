@@ -160,7 +160,7 @@ namespace Mono.UIAutomation.Winforms
 		
 #region ITextProvider Members
 		
-		//TODO: We should connect the events to update this.text_range_provider
+		//TODO: We should connect the events to update this.text_range_provider?
 		public ITextRangeProvider DocumentRange {
 			get { 
 				if (text_range_provider == null)

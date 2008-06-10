@@ -1,3 +1,17 @@
+2008-06-10  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Methods fixed: Clone,
+	Compare, GetText and Select.
+	* Mono.UIAutomation.Winforms/TextNormalizer.cs: Removed constructor:
+	TextNormalizer (string, int, int). New method added: LineNormalize.
+	Removed commented code. Removed methods not longer needed: 
+	NormalizeWord, NormalizeLine, NormalizeWithSeparator, 
+	NormalizeParagraph. Removed private fields: length and text.
+	* Mono.UIAutomation.Winforms/WordTokenCollection.cs: Removed commented
+	code.
+	* Mono.UIAutomation.Winforms/WordTokenizer.cs: Code beautifying.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Change in comment.
+
 2008-06-10  Neville Gao <nevillegao@gmail.com>
 
 	* UIAutomationWinforms/Mono.UIAutomation.Winforms.mdp: Updated due to
@@ -5,20 +19,19 @@
 
 2008-06-09  Mario Carrion <mcarrion@novell.com>
 
-	* UIAutomationWinforms/Mono.UIAutomation.Winforms.mdp: Updated. Files
-	added.
-	* UIAutomationWinforms/Mono.UIAutomation.Winforms/WordToken.cs: File 
-	added. Identifies a word token.
-	* UIAutomationWinforms/Mono.UIAutomation.Winforms/TextRangeProvider.cs:
-	IRangeProvider implementation.
-	* UIAutomationWinforms/Mono.UIAutomation.Winforms/TextNormalizerPoints.cs:
-	Updated to use WordTokenizer
-	* UIAutomationWinforms/Mono.UIAutomation.Winforms/TextNormalizer.cs:
-	File added. Updated to use WordToken.
-	* UIAutomationWinforms/Mono.UIAutomation.Winforms/WordTokenCollection.cs:
-	File added. WordToken Collection.
-	* UIAutomationWinforms/Mono.UIAutomation.Winforms/WordTokenizer.cs:
-	File added. Tokenizes words backwards and forward.
+	* Mono.UIAutomation.Winforms.mdp: Updated. Files added.
+	* Mono.UIAutomation.Winforms/WordToken.cs: File added. Identifies a 
+	word token.
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: IRangeProvider
+	implementation.
+	* Mono.UIAutomation.Winforms/TextNormalizerPoints.cs:Updated to use
+	WordTokenizer.
+	* Mono.UIAutomation.Winforms/TextNormalizer.cs: File added. Updated to
+	use WordToken.
+	* Mono.UIAutomation.Winforms/WordTokenCollection.cs: File added. 
+	WordToken Collection.
+	* Mono.UIAutomation.Winforms/WordTokenizer.cs: File added. Tokenizes 
+	words backwards and forward.
 
 2008-06-06  Sandy Armstrong <sanfordarmstrong@gmail.com>  
 

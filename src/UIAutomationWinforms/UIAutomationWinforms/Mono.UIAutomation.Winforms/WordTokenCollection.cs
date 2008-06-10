@@ -29,15 +29,5 @@ namespace Mono.UIAutomation.Winforms
 {
 	public class WordTokenCollection : Collection<WordToken>
 	{
-//		protected override void InsertItem (int index, WordToken item)
-//		{
-//			if (Count > 0)
-//				item.Index = this [index - 1].Index + this [index - 1].Message.Length;
-//
-//			base.InsertItem (index, item);
-//		}
-		
-		//TODO: What about RemoveItem ??
-
 	}
 }

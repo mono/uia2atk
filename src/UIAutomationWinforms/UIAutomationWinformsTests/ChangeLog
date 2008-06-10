@@ -1,3 +1,11 @@
+2008-06-10  Mario Carrion <mcarrion@novell.com>
+
+	* TextRangeProviderTest.cs: Tests implemented: CompareTest, 
+	CompareEndpointsTest, MoveEndpointByUnitTest and SelectTest.
+	* TextNormalizerTest.cs: Added test: LineNormalizeTest. Removed
+	tests that used to call removed functions: TextUnitWordTestPositive,
+	TextUnitWordTestNegative and TextUnitWordTestBeyondNegative.
+	
 2008-06-10  Neville Gao <nevillegao@gmail.com>
 
 	* UIAutomationWinformsTests.mdp: Updated due to added file.
@@ -5,13 +13,10 @@
 
 2008-06-09  Mario Carrion <mcarrion@novell.com>
 
-	* UIAutomationWinformsTests/TextRangeProviderTest.cs: File added. Tests
-	TextRangeProvider class.
-	* UIAutomationWinformsTests/TextNormalizerTest.cs: More tests added.
-	* UIAutomationWinformsTests/UIAutomationWinformsTests.mdp: File
-	updated: added files.
-	* UIAutomationWinformsTests/WordTokenizerTest.cs: File added. Tests
-	WordTokenizer class.
+	* TextRangeProviderTest.cs: File added. Tests TextRangeProvider class.
+	* TextNormalizerTest.cs: More tests added.
+	* UIAutomationWinformsTests.mdp: File updated: added files.
+	* WordTokenizerTest.cs: File added. Tests WordTokenizer class.
 
 2008-06-02  Mario Carrion <mcarrion@novell.com>
 

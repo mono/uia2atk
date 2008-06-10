@@ -52,6 +52,47 @@ namespace MonoTests.Mono.UIAutomation.Winforms
             +"of her lower arm towards the viewer. Gregor then turned to look out the window at the dull weather. Drops ",
             Environment.NewLine);
 		
+#region Line-like-methods Tests
+		
+		[Test]
+		public void LineNormalizeTest ()
+		{
+			TextBox textbox = new TextBox ();
+			textbox.Text = string.Format ("abc{0}de{0}fghi{0}jk", Environment.NewLine);
+			TextNormalizer normalizer = new TextNormalizer (textbox, 5, 8);
+			
+			//Starts: "abc_d{e_f}ghi_jk"
+			normalizer.LineNormalize ();
+			
+			//Isn't multiline
+			Assert.AreEqual (0, normalizer.StartPoint, "NotMultiLine StartPoint");
+			Assert.AreEqual (textbox.Text.Length, normalizer.EndPoint, "NotMultiLine EndPoint");
+			
+			normalizer = new TextNormalizer (textbox, 5, 8);
+			textbox.Multiline = true;
+			//"abc_{de_fghi}_jk"
+			normalizer.LineNormalize ();
+
+			Assert.AreEqual (4, normalizer.StartPoint, "MultiLine StartPoint");
+			Assert.AreEqual (11, normalizer.EndPoint, "MultiLine EndPoint");
+			
+			//"{abc_de_f}ghi_jk"
+			normalizer = new TextNormalizer (textbox, 0, 8);
+			//"{abc_de_fghi}_jk"
+			normalizer.LineNormalize ();
+			Assert.AreEqual (0, normalizer.StartPoint, "MultiLine StartPoint");
+			Assert.AreEqual (11, normalizer.EndPoint, "MultiLine EndPoint");
+			
+			//"abc_d{e_fghi_jk}"
+			normalizer = new TextNormalizer (textbox, 5, 14);
+			//"abc_{de_fghi_jk}"
+			normalizer.LineNormalize ();
+			Assert.AreEqual (4, normalizer.StartPoint, "MultiLine StartPoint");
+			Assert.AreEqual (14, normalizer.EndPoint, "MultiLine EndPoint");			
+		}
+		
+#endregion
+		
 #region Mixing-like Tests
 		
 		[Test]
@@ -457,59 +498,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (0, points.Start, "Start");
 			Assert.AreEqual (0, points.End,   "End");
 			Assert.AreEqual (0, points.Moved, "Moved");
-		}
-
-#endregion
-
-#region TextUnit.Word Test
-
-		//[Test]
-		public void TextUnitWordTestPositive ()
-		{
-			//"hello   my   baby,   hello my   darling.";
-
-			//"hel{lo   m}y   baby,   hello my   darling."; //3 = 0
-			//"hello   {m}y   baby,   hello my   darling."; //8 = 8
-			//"hello   m{y}   baby,   hello my   darling."; //9 = 8
-			//"hello   my   ba{b}y,   hello my   darling."; //16 = 13
-			
-			//"hello   my   baby{,   hel}lo my   darling."
-			TextNormalizer normalizer = new TextNormalizer (word_message, 17, 7);
-			//"hello   my   baby,   hello {my}   darling."
-			TextNormalizerPoints result = normalizer.Normalize (TextUnit.Word, 2);
-			TextNormalizerPoints points = new TextNormalizerPoints (27, 2, 2);
-
-			Assert.AreEqual (points.Start,  result.Start,  "Start");
-			Assert.AreEqual (points.End, result.End, "Length");
-			Assert.AreEqual (points.Moved,  result.Moved,  "Moved");
-		}
-		
-		[Test]
-		public void TextUnitWordTestNegative ()
-		{
-			//"hello   my   baby{,   hel}lo my   darling."
-			TextNormalizer normalizer = new TextNormalizer (word_message, 17, 7);
-			//"{hello}   my   baby,   hello my   darling."
-			TextNormalizerPoints result = normalizer.Normalize (TextUnit.Word, -2);
-			TextNormalizerPoints points = new TextNormalizerPoints (0, 5, 2);
-
-			Assert.AreEqual (points.Start,  result.Start,  "Start");
-			Assert.AreEqual (points.End, result.End, "Length");
-			Assert.AreEqual (points.Moved,  result.Moved,  "Moved");
-		}
-		
-		[Test]
-		public void TextUnitWordTestBeyondNegative ()
-		{
-			//"hello   my   baby{,   hel}lo my   darling."
-			TextNormalizer normalizer = new TextNormalizer (word_message, 17, 7);
-			//"{hello}   my   baby,   hello my   darling."
-			TextNormalizerPoints result = normalizer.Normalize (TextUnit.Word, -10);
-			TextNormalizerPoints points = new TextNormalizerPoints (0, 0, 2);
-
-			Assert.AreEqual (points.Start,  result.Start,  "Start");
-			Assert.AreEqual (points.End, result.End, "Length");
-			Assert.AreEqual (points.Moved,  result.Moved,  "Moved");
 		}
 
 #endregion

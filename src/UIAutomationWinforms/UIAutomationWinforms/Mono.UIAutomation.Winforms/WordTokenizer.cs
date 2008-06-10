@@ -31,11 +31,17 @@ namespace Mono.UIAutomation.Winforms
 
 	public class WordTokenizer
 	{
+		
+#region Constructor
 
 		public WordTokenizer (string message)
 		{
 			this.message = message;
 		}
+
+#endregion
+		
+#region Backwards Methods
 		
 		public WordTokenCollection Backwards (int index) {
 			return Backwards (index, -1);
@@ -54,7 +60,8 @@ namespace Mono.UIAutomation.Winforms
 
 			do {
 				if (index == -1) { //We have reached last found space
-					if (AddSpaces (tokens, newIndex + spacesCounter, ref wasSpace, ref spacesCounter) == false) {
+					if (AddSpaces (tokens, newIndex + spacesCounter, 
+					               ref wasSpace, ref spacesCounter) == false) {
 						if (tokens.Count == maxLength)
 							break;
 
@@ -66,7 +73,8 @@ namespace Mono.UIAutomation.Winforms
 
 				newIndex = message.LastIndexOf (separator, index, index + 1);
 				if (newIndex == -1) {
-					AddSpaces (tokens, oldIndex + spacesCounter, ref wasSpace, ref spacesCounter);
+					AddSpaces (tokens, oldIndex + spacesCounter, ref wasSpace, 
+					           ref spacesCounter);
 					if (tokens.Count == maxLength)
 						break;
 
@@ -87,8 +95,8 @@ namespace Mono.UIAutomation.Winforms
 					continue;
 				}
 
-				AddSpaces (tokens, oldIndex + spacesCounter, ref wasSpace, ref spacesCounter);
-				//AddSpaces (tokens, oldIndex + spacesCounter, ref wasSpace, ref spacesCounter);
+				AddSpaces (tokens, oldIndex + spacesCounter, ref wasSpace, 
+				           ref spacesCounter);
 				if (tokens.Count == maxLength)
 					break;
 
@@ -104,6 +112,10 @@ namespace Mono.UIAutomation.Winforms
 
 			return tokens;
 		}
+		
+#endregion
+		
+#region Forward Methods
 		
 		public WordTokenCollection Forward (int index) {
 			return Forward (index, -1);
@@ -162,6 +174,8 @@ namespace Mono.UIAutomation.Winforms
 
 			return tokens;
 		}
+		
+#endregion
 		
 #region Private methods
 

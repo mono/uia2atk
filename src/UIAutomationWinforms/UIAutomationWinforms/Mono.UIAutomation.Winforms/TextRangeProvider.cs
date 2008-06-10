@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Reflection;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Automation.Text;
@@ -78,8 +79,14 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		public ITextRangeProvider Clone ()
-		{
-			return (ITextRangeProvider) MemberwiseClone ();
+		{		
+			TextRangeProvider range = new TextRangeProvider (provider, textboxbase);
+			FieldInfo field = range.GetType ().GetField ("normalizer", 
+			                                             BindingFlags.Instance | BindingFlags.NonPublic);
+			TextNormalizer normalizer = new TextNormalizer (textboxbase, StartPoint, EndPoint);
+			field.SetValue (range, normalizer);
+
+			return (ITextRangeProvider) range;
 		}
 
 		//TODO: Evaluate rangeProvider == null
@@ -89,8 +96,8 @@ namespace Mono.UIAutomation.Winforms
 			if (rangeProvider.TextProvider != provider)
 				throw new ArgumentException ();
 		
-			return (rangeProvider.StartPoint != StartPoint) 
-				&& (rangeProvider.EndPoint != EndPoint);
+			return (rangeProvider.StartPoint == StartPoint) 
+				&& (rangeProvider.EndPoint == EndPoint);
 		}
 
 		//TODO: Evaluate rangeProvider == null
@@ -112,13 +119,11 @@ namespace Mono.UIAutomation.Winforms
 		//Character, Format, Word, Line, Paragraph, Page, Document
 		public void ExpandToEnclosingUnit (TextUnit unit)
 		{
-			if (unit == TextUnit.Character) {
-				//Does nothing.
-			} else if (unit == TextUnit.Word) {
+			//TextUnit.Character does nothing.
+			if (unit == TextUnit.Word)
 				normalizer.WordNormalize ();
-			}
-			//TODO: ADD MISSING
-			throw new NotImplementedException();
+			else //TODO: Add missing units
+				throw new NotImplementedException();
 		}
 
 		public ITextRangeProvider FindAttribute (int attribute, object value, 
@@ -158,18 +163,15 @@ namespace Mono.UIAutomation.Winforms
 			if (maxLength < -1)
 				throw new ArgumentOutOfRangeException ();
 				
-			if (maxLength == -1)
-				maxLength = 0;
-			
-			int startPoint = 0;
-			int endPoint = 0;
+			int startPoint = StartPoint;
+			int endPoint = EndPoint;
 			if (StartPoint > EndPoint) {
 				startPoint = EndPoint;
 				endPoint = StartPoint;
 			}
 
 			int length = endPoint - startPoint;
-			if (length > maxLength)
+			if (length > maxLength && maxLength != -1)
 				length = maxLength;
 
 			return textboxbase.Text.Substring (startPoint, length);
@@ -177,7 +179,7 @@ namespace Mono.UIAutomation.Winforms
 
 		//Character, Format, Word, Line, Paragraph, Page, Document
 		public int Move (TextUnit unit, int count)
-		{
+		{	
 			TextNormalizerPoints points = normalizer.Move (unit, count);
 			
 			return points.Moved;
@@ -193,7 +195,7 @@ namespace Mono.UIAutomation.Winforms
 		public int MoveEndpointByUnit (TextPatternRangeEndpoint endpoint, 
 		                               TextUnit unit, int count)
 		{
-			//TODO: OK?
+			//Same MS behavior
 			if (this == TextProvider.DocumentRange)
 				return 0;
 			
@@ -209,7 +211,7 @@ namespace Mono.UIAutomation.Winforms
 					return normalizer.WordMoveEndPoint (count);
 			}
 			
-			//TODO: ADD MISSING
+			//TODO: Add missing text units.
 
 			throw new NotImplementedException();
 		}
@@ -230,7 +232,7 @@ namespace Mono.UIAutomation.Winforms
 		public void Select ()
 		{
 			textboxbase.SelectionStart = normalizer.StartPoint;
-			textboxbase.SelectionLength = normalizer.EndPoint - normalizer.StartPoint;
+			textboxbase.SelectionLength = System.Math.Abs (normalizer.EndPoint - normalizer.StartPoint);
 		}
 		
 #endregion
