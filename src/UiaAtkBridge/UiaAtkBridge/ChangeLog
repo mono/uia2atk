@@ -1,7 +1,3 @@
-2008-06-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
-
-	
-
 2008-06-10  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* UiaAtkBridge.mdp: Revert reference addition, it's only compatible

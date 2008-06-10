@@ -86,7 +86,6 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void CheckBox ()
 		{
-			Console.WriteLine("CheckBox");
 			BasicWidgetType type = BasicWidgetType.CheckBox;
 			Atk.Object accessible;
 			
@@ -99,7 +98,6 @@ namespace UiaAtkBridgeTest
 			Atk.Action atkAction = (Atk.Action)
 				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
 			
-
 			InterfaceAction (type, atkAction, accessible);
 			
 			PropertyRole (type, accessible);
@@ -110,7 +108,6 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void ComboBox ()
 		{
-			Console.WriteLine("ComboBox");
 			BasicWidgetType type = BasicWidgetType.ComboBox;
 			Atk.Object accessible;
 			
