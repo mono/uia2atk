@@ -153,6 +153,30 @@ class Test(object):
       t = Kickoff(up_machine, self.machines[up_machine][0])
       test_list.append(t)
       t.start()
+
+      '''
+      def check_status():
+        output("Checking status...")
+        active = False
+        for t in test_list:
+          if not t.isAlive():
+            lock.acquire()
+            output("  %-12s (%10s) ==>" % (t.name, t.ip), False) 
+            if t.status == 0:
+              good_machines.append(t.name)
+              output("DONE")
+            else:
+              failed_machines.append(t.name)
+              output("FAIL")
+              lock.release()
+          else:
+            active = True
+            time.sleep(1)
+        if active:
+          check_status()
+          
+      check_status()    
+      '''     
     for t in test_list:
       lock.acquire()
       t.join()

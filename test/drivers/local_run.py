@@ -14,6 +14,7 @@ import sys
 import getopt
 import os
 import time
+from socket import gethostname
 
 
 # simply takes a string s as input and prints it if running verbosely
@@ -128,8 +129,6 @@ class Test(object):
       except KeyboardInterrupt:
         return 0
 
-    print "Here we go!"
-
     # execute the tests
     for test in found_tests:
       os.system(test)
@@ -148,52 +147,40 @@ class Test(object):
       filename = filename[:dot_index] # chop off the extension
 
     control_dir =  os.path.join(Settings.log_path, filename)
-    log_dir = os.path.join(control_dir,\
-                           time.strftime("%d%b%Y_%H%M%S", time.localtime()))
+    # try to build a useful dir name that will be unique
+    log_dir = os.path.join(control_dir,"%s_%s" %\
+                            (gethostname(), time.strftime("%H%M%S",\
+                             time.localtime())))
+
+    if gethostname() == "suse64v0":
+      time.sleep(10)
 
     if not os.path.exists(control_dir):
       try:
-        #os.system("mkdir %s" % control_dir)
         os.mkdir(control_dir)
-      except OSError:
-        print "WARNINGS:  Could not create log directory!"
-        print "WARNINGS:  Permanent logs will not be stored"
-        return 0
+        time.sleep(5) # XXX: waiting for cifs, but use a better method
+      except OSError, err:
+        # Errno 17 is "File exists"
+        # If another thread created this directory, that's fine.
+        if not err.errno == 17:
+          print "WARNINGS:  Could not create log directory!"
+          print "WARNINGS:  Permanent logs will not be stored"
+          return 0
   
     if os.path.exists(log_dir):
         raise InconceivableError,\
                 "ERROR:  Inconceivable!  %s already exists!" % log_dir
-    else:
-        # check to make sure the control directory is created and we can
-        # write to it.  cifs was being slow.
-        while True:
-          try:
-            os.mknod("%s/%s" % (control_dir, "delete_me"))
-            break
-          except OSError:
-            pass
-        os.mkdir(log_dir)
-
-        # check to make sure the control directory is created and we can
-        # write to it.  cifs was being slow.
-        while True:
-          try:
-            os.mknod("%s/%s" % (log_dir, "delete_me"))
-            break
-          except OSError:
-            pass
-        # copy over the resource files
-        # XXX: change the log files to reference the resources from 
-        # a static location so we don't have to copy these every time and
-        # waste time/space
-        os.system("cp -r /tmp/strongwind/* %s" % log_dir)
-        os.system("cp -r %s/resources/* %s" % (Settings.uiaqa_home, log_dir))
-      
-        # clean up the delete_me files
-        os.remove("%s/%s" % (control_dir, "delete_me"))
-        os.remove("%s/%s" % (log_dir, "delete_me"))
     
+    os.mkdir(log_dir)
+    time.sleep(5) # XXX: waiting for cifs, but use a better method
 
+    # copy over the resource files
+    # XXX: change the log files to reference the resources from 
+    # a static location so we don't have to copy these every time and
+    # waste time/space
+    os.system("cp -r /tmp/strongwind/* %s" % log_dir)
+    os.system("cp -r %s/resources/* %s" % (Settings.uiaqa_home, log_dir))
+      
 class InconceivableError(Exception): pass
 
 class Main(object):

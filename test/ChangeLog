@@ -1,4 +1,10 @@
-2008-06-09  Brian G. Merrell <bgmerrell@gmail.com>
+2008-06-10  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* drivers/local_run.py : fix some threading issues
+	* drivers/remote_run.py : working on threading issues
+	* drivers/machines.py : change log location back to ~/logs 
+
+2008-06-10  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* drivers/local_run.py : print more information about logging
 	* drivers/remote_run.py : print more information about logging
