@@ -1,3 +1,7 @@
+2008-06-10  Andres G. Aragoneses <aaragoneses@novell.com> 
+
+	* Pane.cs: Spaces to tabs.
+
 2008-06-09  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* TextLabel.cs: Fix State addition.

@@ -41,7 +41,7 @@ namespace UiaAtkBridge
 		// AutomationElementIdentifiers.AutomationIdProperty.Id
 		public string AutomationId
 		{
-			get {	
+			get {
 				return (string) provider.GetPropertyValue (AutomationElementIdentifiers.AutomationIdProperty.Id);
 			}
 		}
@@ -160,42 +160,42 @@ namespace UiaAtkBridge
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-		    if(e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
-		    	// TODO: Handle BoundingRectangleProperty change
-		    } else if(e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
+			if(e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
+				// TODO: Handle BoundingRectangleProperty change
+			} else if(e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
 				if((bool)e.NewValue)
 					RefStateSet ().AddState (Atk.StateType.Visible);
 				else
 					RefStateSet ().RemoveState (Atk.StateType.Visible);
-		    } else if(e.Property == AutomationElementIdentifiers.IsEnabledProperty) {
+			} else if(e.Property == AutomationElementIdentifiers.IsEnabledProperty) {
 				if((bool)e.NewValue)
 					RefStateSet ().AddState (Atk.StateType.Sensitive);
 				else
 					RefStateSet ().RemoveState (Atk.StateType.Sensitive);
-		    } else if(e.Property == ScrollPatternIdentifiers.HorizontallyScrollableProperty) {
-		        // TODO: Handle HorizontallyScrollableProperty change		    
-		    } else if(e.Property == ScrollPatternIdentifiers.HorizontalScrollPercentProperty) {
-		        // TODO: Handle HorizontalScrollPercentProperty	 change		    
-		    } else if(e.Property == ScrollPatternIdentifiers.HorizontalViewSizeProperty) {
-		        // TODO: Handle HorizontalViewSizeProperty	 change		    
-		    } else if(e.Property == ScrollPatternIdentifiers.VerticalScrollPercentProperty) {
-		        // TODO: Handle VerticalScrollPercentProperty	 change		    
-		    } else if(e.Property == ScrollPatternIdentifiers.VerticallyScrollableProperty) {
-		        // TODO: Handle VerticallyScrollableProperty	 change		    
-		    } else if(e.Property == ScrollPatternIdentifiers.VerticalViewSizeProperty) {
-		        // TODO: Handle VerticalViewSizeProperty	 change		    
-		    } else if(e.Property == WindowPatternIdentifiers.WindowVisualStateProperty) {
-		    	switch((WindowVisualState)e.NewValue)
-		    	{
-		    		case WindowVisualState.Normal:
-		    			break;
-		    		case WindowVisualState.Maximized:
-		    			break;
-		    		case WindowVisualState.Minimized:
-		    			break;
-		    	}
-		        // TODO: Handle WindowVisualStateProperty	 change		    
-		    }
+			} else if(e.Property == ScrollPatternIdentifiers.HorizontallyScrollableProperty) {
+				// TODO: Handle HorizontallyScrollableProperty change		    
+			} else if(e.Property == ScrollPatternIdentifiers.HorizontalScrollPercentProperty) {
+				// TODO: Handle HorizontalScrollPercentProperty	 change		    
+			} else if(e.Property == ScrollPatternIdentifiers.HorizontalViewSizeProperty) {
+				// TODO: Handle HorizontalViewSizeProperty	 change		    
+			} else if(e.Property == ScrollPatternIdentifiers.VerticalScrollPercentProperty) {
+				// TODO: Handle VerticalScrollPercentProperty	 change		    
+			} else if(e.Property == ScrollPatternIdentifiers.VerticallyScrollableProperty) {
+				// TODO: Handle VerticallyScrollableProperty	 change		    
+			} else if(e.Property == ScrollPatternIdentifiers.VerticalViewSizeProperty) {
+				// TODO: Handle VerticalViewSizeProperty	 change		    
+			} else if(e.Property == WindowPatternIdentifiers.WindowVisualStateProperty) {
+				switch((WindowVisualState)e.NewValue)
+				{
+				case WindowVisualState.Normal:
+					break;
+				case WindowVisualState.Maximized:
+					break;
+				case WindowVisualState.Minimized:
+					break;
+				}
+				// TODO: Handle WindowVisualStateProperty	 change		    
+			}
 		}
 		
 		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
