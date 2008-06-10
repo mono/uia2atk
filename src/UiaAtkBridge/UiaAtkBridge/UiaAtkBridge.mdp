@@ -29,6 +29,7 @@
     <File name="ComponentExpert.cs" subtype="Code" buildaction="Compile" />
     <File name="ComponentAdapter.cs" subtype="Code" buildaction="Compile" />
     <File name="ComponentParentAdapter.cs" subtype="Code" buildaction="Compile" />
+    <File name="ComboBox.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
@@ -38,5 +39,6 @@
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../olive/class/lib/net_3_0/UIAutomationBridge.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../olive/class/lib/net_3_0/UIAutomationTypes.dll" />
     <ProjectReference type="Assembly" localcopy="True" refto="../../../../olive/class/lib/net_3_0/WindowsBase.dll" />
+    <ProjectReference type="Project" localcopy="True" refto="bridge-glue" />
   </References>
 </Project>

@@ -1,5 +1,9 @@
 2008-06-10  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* UiaAtkBridge.mdp, ComboBox.cs: New ComboBox class (stubs).
+
+2008-06-10  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* Pane.cs: Spaces to tabs.
 
 2008-06-09  Andres G. Aragoneses <aaragoneses@novell.com> 
