@@ -1,5 +1,10 @@
 2008-06-10  Andres G. Aragoneses <aaragoneses@novell.com> 
 
+	* UiaAtkBridge.mdp: Revert reference addition, it's only compatible
+	  with MD from trunk.
+
+2008-06-10  Andres G. Aragoneses <aaragoneses@novell.com> 
+
 	* UiaAtkBridge.mdp, ComboBox.cs: New ComboBox class (stubs).
 
 2008-06-10  Andres G. Aragoneses <aaragoneses@novell.com> 
