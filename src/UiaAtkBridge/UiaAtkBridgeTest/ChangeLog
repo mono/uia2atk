@@ -1,3 +1,9 @@
+2008-06-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* BridgeTester.cs: Make it compile, although still returns a null
+	  widget.
+	* AtkTester.cs: Start testing ComboBox.
+
 2008-06-09  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTester.cs: Delete old FIXME. Re-enable one test.

@@ -1,3 +1,7 @@
+2008-06-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* GailTester.cs: Support for Gtk.ComboBox.
+
 2008-06-09  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* GailTester.cs: Support for ComboBox.

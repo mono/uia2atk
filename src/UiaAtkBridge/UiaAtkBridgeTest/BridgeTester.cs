@@ -38,7 +38,21 @@ namespace UiaAtkBridgeTest
 	[TestFixture]
 	public class BridgeTester : AtkTester {
 		
-		public override object GetAtkObjectThatImplementsInterface <I> (BasicWidgetType type, string name, out Atk.Object accessible, bool real)
+		public override object GetAtkObjectThatImplementsInterface <I> (
+		  BasicWidgetType type, string[] name, out Atk.Object accessible, bool real)
+		{
+			accessible = null;
+			
+			if (type != BasicWidgetType.ComboBox) {
+				throw new NotImplementedException ("This AtkTester overload doesn't handle this type of widget: " +
+					type.ToString ());
+			}
+			
+			return null;
+		}
+		
+		public override object GetAtkObjectThatImplementsInterface <I> (
+		  BasicWidgetType type, string name, out Atk.Object accessible, bool real)
 		{
 			Atk.ComponentImplementor component = null;
 			Atk.TextImplementor text = null;

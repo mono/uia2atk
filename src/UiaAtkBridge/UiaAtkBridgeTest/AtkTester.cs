@@ -38,6 +38,8 @@ namespace UiaAtkBridgeTest
 		public abstract object GetAtkObjectThatImplementsInterface <I> (
 			BasicWidgetType type, string name, out Atk.Object accessible, bool real);
 		
+		public abstract object GetAtkObjectThatImplementsInterface <I> (
+			BasicWidgetType type, string[] name, out Atk.Object accessible, bool real);
 	
 		private static AtkTester instance;
 		public static AtkTester Instance {
@@ -79,6 +81,18 @@ namespace UiaAtkBridgeTest
 			AtkActionImplementorTest (type, atkAction, accessible);
 			
 			AtkRoleTest (type, accessible);
+		}
+		
+		[Test]
+		public void AtkTestForComboBox ()
+		{
+			BasicWidgetType type = BasicWidgetType.ComboBox;
+			Atk.Object accessible;
+			
+			string[] names = new string[] { "First item", "Second Item", "Last Item" };
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, true);
+			AtkComponentImplementorTest (type, atkComponent);
 		}
 		
 		[Test]

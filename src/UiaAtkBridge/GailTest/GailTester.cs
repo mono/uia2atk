@@ -39,6 +39,47 @@ namespace UiaAtkBridgeTest
 		}
 		
 		public override object GetAtkObjectThatImplementsInterface <I> (
+		  BasicWidgetType type, string[] name, out Atk.Object accessible, bool real)
+		{
+			accessible = null;
+			if (type != BasicWidgetType.ComboBox) {
+				throw new NotSupportedException ("This AtkTester overload doesn't handle this type of widget: " +
+					type.ToString ());
+			}
+			//this is because of this:
+//Gtk-CRITICAL **: gtk_combo_box_append_text: assertion `GTK_IS_LIST_STORE (combo_box->priv->model)' failed
+//Gtk-CRITICAL **: gtk_combo_box_append_text: assertion `GTK_IS_LIST_STORE (combo_box->priv->model)' failed
+//Gtk-CRITICAL **: gtk_combo_box_append_text: assertion `GTK_IS_LIST_STORE (combo_box->priv->model)' failed
+			if (!real)
+				throw new NotSupportedException ("We cannot add items to a non-real widget because of some GtkCritical");
+			
+			Gtk.Widget widget = new Gtk.ComboBox ();
+			if (real)
+				widget = GailTestApp.MainClass.GiveMeARealComboBox ();
+
+			//FIXME: update this line when this bug is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=324899
+			((Gtk.ListStore)((Gtk.ComboBox) widget).Model).Clear ();
+			
+			foreach (string text in name) {
+				((Gtk.ComboBox)widget).AppendText (text);
+			}
+			
+			accessible = widget.Accessible;
+			
+			if (typeof (I) == typeof (Atk.Component)) {
+				return Atk.ComponentAdapter.GetObject (widget.Accessible.Handle, false);
+			}
+			else if (typeof (I) == typeof (Atk.Action)) {
+				return Atk.ActionAdapter.GetObject (widget.Accessible.Handle, false);
+			}
+			else if (typeof (I) == typeof (Atk.Selection)) {
+				return Atk.SelectionAdapter.GetObject (widget.Accessible.Handle, false);
+			}
+			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
+				typeof(I).Name);
+		}
+		
+		public override object GetAtkObjectThatImplementsInterface <I> (
 		  BasicWidgetType type, string text, out Atk.Object accessible, bool real)
 		{
 			accessible = null;
@@ -68,12 +109,7 @@ namespace UiaAtkBridgeTest
 					widget = GailTestApp.MainClass.GiveMeARealCheckBox ();
 				break;
 			case BasicWidgetType.ComboBox:
-				widget = new Gtk.ComboBox ();
-				((Gtk.ComboBox)widget).AppendText ("FirstItem");
-				((Gtk.ComboBox)widget).AppendText ("SecondItem");
-				((Gtk.ComboBox)widget).AppendText ("LastItem");
-				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealComboBox ();
+				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
 				break;
 			default:
 				throw new NotImplementedException ("The widget finder backend still hasn't got support for " +
