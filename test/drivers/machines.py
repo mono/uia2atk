@@ -12,7 +12,7 @@
 # executed
 TEST_DIR = "/home/a11y/tests"
 
-LOG_DIR = "/home/a11y/logs"
+LOG_DIR = "/home/a11y/tests/logs"
 
 USERNAME = "a11y"
 

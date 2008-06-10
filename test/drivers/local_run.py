@@ -53,10 +53,12 @@ class Settings(object):
       self.set_log_path()
 
   def set_log_path(self):
-    Settings.log_path = "%s/logs" % Settings.uiaqa_home
+    if Settings.log_path is None:
+      Settings.log_path = "%s/logs" % Settings.uiaqa_home
     if not os.path.exists(Settings.log_path):
       output("ERROR:  Log path '%s' does not exist." % Settings.log_path)
       abort(1)
+    output("INFO:  Logging to:  %s" % Settings.log_path)
 
   def argument_parser(self):
     try:

@@ -1,13 +1,21 @@
+2008-06-09  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* drivers/local_run.py : print more information about logging
+	* drivers/remote_run.py : print more information about logging
+	* drivers/machines.py : change log location from ~/logs to ~/test/logs
+
 2008-06-04  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* logs : Add a default directory for logs (we override this for remote tests)
+	* logs : Add a default directory for logs (we override this for remote
+	tests)
 	* testers/checkbutton-basic-ops2.py : Clean up strongwind tests.  The
 	interaction between the checkbutton-basic-ops* and the checkbuttonframe
 	was a little sloppy.
 	* testers/checkbutton-basic-ops3.py : Clean up strongwind tests
-	* testers/checkbutton/checkbuttonframe.py :  Check for unexpected results
-	and create an error.  This still needs more work to work well with the
-	harness.  Cleaned up the interaction with the other strongwind test scripts.
+	* testers/checkbutton/checkbuttonframe.py :  Check for unexpected 
+	results and create an error.  This still needs more work to work well 
+	with the harness.  Cleaned up the interaction with the other strongwind 
+	test scripts.
 	* testers/checkbutton-basic-ops.py : Clean up strongwind tests
 	* drivers/local_run.py : use the $UIAQA_HOME/logs directory for default
 	logging

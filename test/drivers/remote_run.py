@@ -85,9 +85,6 @@ class Kickoff(threading.Thread):
     self.status = -1
     self.name = name
   def run(self):
-    lock = threading.Lock()
-    lock.acquire()
-    lock.release()
     self.status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 \
                              %s/drivers/local_run.py --log=%s > %s/%s 2>&1" %\
                              (machines.USERNAME, self.ip, machines.TEST_DIR,\
@@ -157,9 +154,8 @@ class Test(object):
       test_list.append(t)
       t.start()
     for t in test_list:
-      t.join()
       lock.acquire()
-      #output("  %s (%s):...." % (t.name, t.ip), False) 
+      t.join()
       output("  %-12s (%10s) ==>" % (t.name, t.ip), False) 
       if t.status == 0:
         good_machines.append(t.name)
@@ -186,6 +182,7 @@ class Test(object):
         output("WARNINGS:  Could not create %s directory!" % \
                 Settings.local_log_path)
         output("WARNINGS:  Local logs will not be stored")
+    output("INFO:  Log directory configured as:  %s" % Settings.local_log_path)
 
   def run(self):
     if not self.check_machines():
