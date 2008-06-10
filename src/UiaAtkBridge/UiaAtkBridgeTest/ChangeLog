@@ -1,5 +1,9 @@
 2008-06-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Refactor, and we pass now InterfaceAction on Gail.
+
+2008-06-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* BridgeTester.cs: Make it compile, although still returns a null
 	  widget.
 	* AtkTester.cs: Start testing ComboBox.

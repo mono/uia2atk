@@ -110,7 +110,6 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
-				break;
 			default:
 				throw new NotImplementedException ("The widget finder backend still hasn't got support for " +
 					type.ToString ());

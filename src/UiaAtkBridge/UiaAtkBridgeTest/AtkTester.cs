@@ -51,40 +51,40 @@ namespace UiaAtkBridgeTest
 		}
 		
 		[Test]
-		public void AtkTestForLabel ()
+		public void Label ()
 		{
 			BasicWidgetType type = BasicWidgetType.Label;
-			Atk.Object accessible = AtkTextImplementorTest (BasicWidgetType.Label);
+			Atk.Object accessible = InterfaceText (BasicWidgetType.Label);
 			
-			AtkRoleTest (type, accessible);
+			PropertyRole (type, accessible);
 			
 			//a label always contains this state, not because it's multi_line, but because it can be multi_line
 			Assert.IsTrue (accessible.RefStateSet ().ContainsState (Atk.StateType.MultiLine), "RefStateSet().Contains(MultiLine)");
 		}
 		
 		[Test]
-		public void AtkTestForButton ()
+		public void Button ()
 		{
 			BasicWidgetType type = BasicWidgetType.Button;
 			Atk.Object accessible;
 			
-			AtkTextImplementorTest (type);
+			InterfaceText (type);
 			
 			string name = "test";
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
-			AtkComponentImplementorTest (type, atkComponent);
+			InterfaceComponent (type, atkComponent);
 			
 			name = "test";
 			Atk.Action atkAction = (Atk.Action)
 				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
-			AtkActionImplementorTest (type, atkAction, accessible);
+			InterfaceAction (type, atkAction, accessible);
 			
-			AtkRoleTest (type, accessible);
+			PropertyRole (type, accessible);
 		}
 		
 		[Test]
-		public void AtkTestForComboBox ()
+		public void ComboBox ()
 		{
 			BasicWidgetType type = BasicWidgetType.ComboBox;
 			Atk.Object accessible;
@@ -92,11 +92,17 @@ namespace UiaAtkBridgeTest
 			string[] names = new string[] { "First item", "Second Item", "Last Item" };
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, true);
-			AtkComponentImplementorTest (type, atkComponent);
+			InterfaceComponent (type, atkComponent);
+			
+			PropertyRole (type, accessible);
+			
+			Atk.Action atkAction = (Atk.Action)
+				GetAtkObjectThatImplementsInterface <Atk.Action> (type, names, out accessible, true);
+			InterfaceAction (type, atkAction, accessible);
 		}
 		
 		[Test]
-		public void AtkTestForWindow ()
+		public void Window ()
 		{
 			BasicWidgetType type = BasicWidgetType.Window;
 			Atk.Object accessible;
@@ -104,13 +110,13 @@ namespace UiaAtkBridgeTest
 			string name = "test";
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
-			AtkComponentImplementorTest (type, atkComponent);
+			InterfaceComponent (type, atkComponent);
 			
-			AtkRoleTest (type, accessible);
+			PropertyRole (type, accessible);
 		}
 		
-		[Test]
-		public void AtkTestForCheckBox ()
+		//[Test]
+		public void CheckBox ()
 		{
 			BasicWidgetType type = BasicWidgetType.CheckBox;
 			Atk.Object accessible;
@@ -118,19 +124,19 @@ namespace UiaAtkBridgeTest
 			string name = "test";
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
-			AtkComponentImplementorTest (type, atkComponent);
+			InterfaceComponent (type, atkComponent);
 			
 			name = "test";
 			Atk.Action atkAction = (Atk.Action)
 				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
 			
 
-			AtkActionImplementorTest (type, atkAction, accessible);
+			InterfaceAction (type, atkAction, accessible);
 			
-			AtkRoleTest (type, accessible);
+			PropertyRole (type, accessible);
 		}
 		
-		private void AtkComponentImplementorTest (BasicWidgetType type, Atk.Component implementor)
+		private void InterfaceComponent (BasicWidgetType type, Atk.Component implementor)
 		{
 			Assert.AreEqual (1, implementor.Alpha, "Component.Alpha");
 
@@ -147,14 +153,21 @@ namespace UiaAtkBridgeTest
 		
 		protected abstract int ValidNumberOfActionsForAButton { get; }
 		
-		private void AtkActionImplementorTest (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible)
+		private void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible)
 		{
-			Assert.AreEqual (ValidNumberOfActionsForAButton, implementor.NActions, "NActions");
-			
-			Assert.AreEqual ("click", implementor.GetName (0), "GetName click");
-			if (ValidNumberOfActionsForAButton > 1) {
-				Assert.AreEqual ("press", implementor.GetName (1), "GetName press");
-				Assert.AreEqual ("release", implementor.GetName (2), "GetName release");
+			if (type == BasicWidgetType.ComboBox) {
+				Assert.AreEqual (1, implementor.NActions, "NActions");
+				
+				Assert.AreEqual ("press", implementor.GetName (0), "GetName click");
+			}
+			else { //Button and Checkbox
+				Assert.AreEqual (ValidNumberOfActionsForAButton, implementor.NActions, "NActions");
+				
+				Assert.AreEqual ("click", implementor.GetName (0), "GetName click");
+				if (ValidNumberOfActionsForAButton > 1) {
+					Assert.AreEqual ("press", implementor.GetName (1), "GetName press");
+					Assert.AreEqual ("release", implementor.GetName (2), "GetName release");
+				}
 			}
 			
 			bool actionPerformed = true;
@@ -167,12 +180,18 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled");
 			Assert.IsFalse (state.ContainsState (Atk.StateType.Checked), "RefStateSet.!Checked");
 			
-			// only valid actions should work
-			for (int i = 0; i < ValidNumberOfActionsForAButton; i++) 
-				Assert.AreEqual (actionPerformed, implementor.DoAction (i), "DoAction");
-
+			if (type != BasicWidgetType.ComboBox) {
+				// only valid actions should work
+				for (int i = 0; i < ValidNumberOfActionsForAButton; i++) 
+					Assert.AreEqual (actionPerformed, implementor.DoAction (i), "DoAction");
+			}
+			else
+			{
+				Assert.AreEqual (actionPerformed, implementor.DoAction (0), "DoAction Combo#1");
+				Assert.AreEqual (false, implementor.DoAction (0), "DoAction Combo#2");
+			}
 			// it takes a bit before the State is propagated!
-			System.Threading.Thread.Sleep (1000);
+			System.Threading.Thread.Sleep (2000);
 			
 			state = accessible.RefStateSet();
 			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled2");
@@ -201,7 +220,10 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.GetLocalizedName (ValidNumberOfActionsForAButton), "GetLocalizedName OOR#2");
 			
 			string descrip = "Some big ugly description";
-			for (int i = 0; i < ValidNumberOfActionsForAButton; i++) {
+			int nActions = ValidNumberOfActionsForAButton;
+			if (type == BasicWidgetType.ComboBox)
+				nActions = 1;
+			for (int i = 0; i < nActions; i++) {
 				Assert.IsTrue (implementor.SetDescription(i, descrip), "SetDescription");
 				Assert.AreEqual (descrip, implementor.GetDescription (i), "GetDescription");
 				descrip += ".";
@@ -219,7 +241,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.GetKeybinding (3), "GetKeyBinding OOR#2");
 		}
 		
-		private void AtkRoleTest (BasicWidgetType type, Atk.Object accessible)
+		private void PropertyRole (BasicWidgetType type, Atk.Object accessible)
 		{
 			Atk.Role role = Atk.Role.Unknown;
 			switch (type) {
@@ -235,13 +257,16 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.CheckBox:
 				role = Atk.Role.CheckBox;
 				break;
+			case BasicWidgetType.ComboBox:
+				role = Atk.Role.ComboBox;
+				break;
 			default:
 				throw new NotImplementedException ();
 			}
 			Assert.AreEqual (role, accessible.Role, "Atk.Role");
 		}
 		
-		private Atk.Object AtkTextImplementorTest (BasicWidgetType type)
+		private Atk.Object InterfaceText (BasicWidgetType type)
 		{
 			int startOffset, endOffset;
 			string expected;
