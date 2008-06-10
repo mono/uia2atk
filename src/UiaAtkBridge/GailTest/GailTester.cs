@@ -132,5 +132,11 @@ namespace UiaAtkBridgeTest
 		
 		protected override int ValidNumberOfActionsForAButton { get { return 3; } }
 		
+		[TestFixtureTearDown]
+		public void End () 
+		{
+			GailTestApp.MainClass.Kill ();
+		}
+		
 	}
 }

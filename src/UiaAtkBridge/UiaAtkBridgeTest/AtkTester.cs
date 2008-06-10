@@ -82,10 +82,35 @@ namespace UiaAtkBridgeTest
 			
 			PropertyRole (type, accessible);
 		}
+
+		[Test]
+		public void CheckBox ()
+		{
+			Console.WriteLine("CheckBox");
+			BasicWidgetType type = BasicWidgetType.CheckBox;
+			Atk.Object accessible;
+			
+			string name = "test";
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			InterfaceComponent (type, atkComponent);
+			
+			name = "test";
+			Atk.Action atkAction = (Atk.Action)
+				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
+			
+
+			InterfaceAction (type, atkAction, accessible);
+			
+			PropertyRole (type, accessible);
+		}
 		
+		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
+		//the widget, so we kill all with the method marked as [TestFixtureTearDown]
 		[Test]
 		public void ComboBox ()
 		{
+			Console.WriteLine("ComboBox");
 			BasicWidgetType type = BasicWidgetType.ComboBox;
 			Atk.Object accessible;
 			
@@ -111,27 +136,6 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
 			InterfaceComponent (type, atkComponent);
-			
-			PropertyRole (type, accessible);
-		}
-		
-		//[Test]
-		public void CheckBox ()
-		{
-			BasicWidgetType type = BasicWidgetType.CheckBox;
-			Atk.Object accessible;
-			
-			string name = "test";
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
-			InterfaceComponent (type, atkComponent);
-			
-			name = "test";
-			Atk.Action atkAction = (Atk.Action)
-				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
-			
-
-			InterfaceAction (type, atkAction, accessible);
 			
 			PropertyRole (type, accessible);
 		}

@@ -1,5 +1,10 @@
 2008-06-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Corrected some stability issues when running these
+	  tests.
+
+2008-06-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: Refactor, and we pass now InterfaceAction on Gail.
 
 2008-06-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
