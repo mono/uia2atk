@@ -27,34 +27,53 @@ using System;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public struct TextNormalizerPoints : IEquatable<TextNormalizerPoints>
+
+	public class WordToken
 	{
 
-		public TextNormalizerPoints (int start, int end, int moved)
+#region Constructor
+
+		public WordToken (string message, int index)
 		{
-			Start = start;
-			End = end;
-			Moved = moved;
+			Message = message;
+			Index = index;
+		}		
+		
+#endregion
+
+#region Public properties
+		
+		public string Message {
+			get { return message; }
+			set { message = value;}
+		}
+		
+		public int Index {
+			get { return index; }
+			set {
+				if (value < 0)
+					throw new ArgumentException ();
+				
+				index = value;
+			}
+		}
+		
+#endregion
+
+#region Public methods
+
+		public override string ToString ()
+		{
+			return string.Format ("{0}, '{1}'", Index, Message);
 		}
 
-		public bool Equals (TextNormalizerPoints x)
-		{
-			return (x.Start == Start) && (x.End == End) && (x.Moved == Moved);
-		}
-		
-		public override bool Equals (object obj)
-		{
-			if (obj is TextNormalizerPoints) {
-				TextNormalizerPoints points = (TextNormalizerPoints) obj;
-				return points.Equals (this);
-			}
-			return false;
-		}
+#endregion
+
+#region Private fields
+
+		private string message;
+		private int index;
 	
-		public int Start;
-		
-		public int End;
-		
-		public int Moved;
+#endregion 
 	}
 }

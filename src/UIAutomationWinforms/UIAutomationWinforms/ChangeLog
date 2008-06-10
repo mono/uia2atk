@@ -1,4 +1,21 @@
-2008-06-06  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+2008-06-09  Mario Carrion <mcarrion@novell.com>
+
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.mdp: Updated. Files
+	added.
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/WordToken.cs: File 
+	added. Identifies a word token.
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/TextRangeProvider.cs:
+	IRangeProvider implementation.
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/TextNormalizerPoints.cs:
+	Updated to use WordTokenizer
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/TextNormalizer.cs:
+	File added. Updated to use WordToken.
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/WordTokenCollection.cs:
+	File added. WordToken Collection.
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/WordTokenizer.cs:
+	File added. Tokenizes words backwards and forward.
+
+2008-06-06  Sandy Armstrong <sanfordarmstrong@gmail.com>  
 
 	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs: Support for
 	  LocalizedControlTypeProperty.

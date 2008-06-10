@@ -23,38 +23,21 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 
-using System;
+using System.Collections.ObjectModel;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public struct TextNormalizerPoints : IEquatable<TextNormalizerPoints>
+	public class WordTokenCollection : Collection<WordToken>
 	{
+//		protected override void InsertItem (int index, WordToken item)
+//		{
+//			if (Count > 0)
+//				item.Index = this [index - 1].Index + this [index - 1].Message.Length;
+//
+//			base.InsertItem (index, item);
+//		}
+		
+		//TODO: What about RemoveItem ??
 
-		public TextNormalizerPoints (int start, int end, int moved)
-		{
-			Start = start;
-			End = end;
-			Moved = moved;
-		}
-
-		public bool Equals (TextNormalizerPoints x)
-		{
-			return (x.Start == Start) && (x.End == End) && (x.Moved == Moved);
-		}
-		
-		public override bool Equals (object obj)
-		{
-			if (obj is TextNormalizerPoints) {
-				TextNormalizerPoints points = (TextNormalizerPoints) obj;
-				return points.Equals (this);
-			}
-			return false;
-		}
-	
-		public int Start;
-		
-		public int End;
-		
-		public int Moved;
 	}
 }

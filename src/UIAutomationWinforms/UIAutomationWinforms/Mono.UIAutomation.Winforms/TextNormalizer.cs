@@ -27,6 +27,7 @@
 
 using System;
 using System.Windows.Automation.Text;
+using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -42,15 +43,251 @@ namespace Mono.UIAutomation.Winforms
 			this.length = length;
 		}
 		
+		public TextNormalizer (TextBoxBase textboxbase) 
+			: this (textboxbase, 0, textboxbase.Text.Length)
+		{
+		}
+
+		public TextNormalizer (TextBoxBase textboxbase, int startPoint, int endPoint)
+		{
+			this.textboxbase = textboxbase;
+			
+			start_point = startPoint;
+			end_point = endPoint;
+		}
+		
+#region Public properties
+		
+		public int StartPoint 
+		{
+			get { return start_point; }
+		}
+		
+		public int EndPoint 
+		{
+			get { return end_point; }
+		}
+		
+#endregion
+		
+#region Character methods
+
+		public int CharacterMoveEndPoint (int count) 
+		{
+			return CharacterMoveStartEndPoint (count, ref end_point);
+		}
+		
+		public int CharacterMoveStartPoint (int count)
+		{
+			return CharacterMoveStartEndPoint (count, ref start_point);
+		}
+		
+		//FIXME: ?
+		//Be aware of this method because it returns: "the number of units actually moved."
+		//http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.itextrangeprovider.move.aspx
+		//and MS implementation doesn't
+		private int CharacterMoveStartEndPoint (int count, ref int startEndPoint)
+		{
+			int moved = 0;
+			
+			if (count == 0)
+				return 0;
+			
+			if (startEndPoint + count <= 0)
+				moved = startEndPoint;
+			else if (startEndPoint + count >= textboxbase.Text.Length)
+				moved = startEndPoint - textboxbase.Text.Length;
+			else 
+				moved = count;
+			
+			startEndPoint += count;
+			if (startEndPoint < 0)
+				startEndPoint = 0;
+			else if (startEndPoint > textboxbase.Text.Length)
+				startEndPoint = textboxbase.Text.Length;
+
+			return System.Math.Abs (moved);
+		}
+
+#endregion
+
+#region Format methods
+		
+		public int FormatMoveEndPoint (int count)
+		{
+			//TODO: Doesn't work with non-RichTextBox controls
+			throw new NotImplementedException ();
+		}
+		
+		public int FormatMoveStartPoint (int count)
+		{
+			//TODO: Doesn't work with non-RichTextBox controls
+			throw new NotImplementedException ();
+		}
+		
+#endregion
+		
+#region Word methods
+		
+		public void WordNormalize ()
+		{
+			char separator = ' ';
+			int index = 0;
+			
+			// NOTE: There is a particular condition when either the StartPoint
+			// or EndPoint are spaces, for example:
+			//      "Hello my baby, hello  {   my d}arling"
+			// After normalizing string the result is:
+			//      "Hello my baby, hello{     my darling}"
+			//
+			// However the string:
+			//      "Hello my baby, hello     {my d}arling"
+			// is:
+			//      "Hello my baby, hello     {my darling}"
+
+			if (textboxbase.Text [start_point] == separator) {
+				//TODO: Evaluate perfomance
+				for (index = start_point; index >= 0; index--) {
+					if (textboxbase.Text [index] != separator)
+						break;
+				}
+				start_point = index + 1;
+			} else {
+				index = textboxbase.Text.LastIndexOf (separator, start_point, start_point);
+				if (index == -1)
+					start_point = 0;
+				else if (index < start_point - 1)
+					start_point = index + 1;
+			}
+
+			if (end_point > 0 && textboxbase.Text [end_point - 1] == separator) {
+				//TODO: Evaluate perfomance
+				for (index = end_point - 1; index < textboxbase.Text.Length; index++) {
+					if (textboxbase.Text [index] != separator)
+						break;
+				}
+				end_point = index;
+			} else {
+				index = textboxbase.Text.IndexOf (separator, end_point);
+				if (index == -1)
+					end_point = textboxbase.Text.Length;
+				else
+					end_point += index - end_point;
+			}			
+		}
+
+		public int WordMoveEndPoint (int count)
+		{
+//			//Be aware that both Start and End points must be normalized
+//			//otherwise there won't be valid results 
+//			if (count == 0)
+//				return 0;
+//
+//			WordTokenizer tokenizer = new WordTokenizer (textboxbase.Text);
+//			WordTokenCollection collection;
+//			
+//			if (count > 0)
+//				collection = tokenizer.Forward (end_point, count);
+//			else
+//				collection = tokenizer.Backwards (end_point, count);
+//			
+//			if (collection.Count > 0)
+//				end_point = collection [collection.Count - 1].Index 
+//					+ collection [collection.Count - 1].Message.Length;
+//			
+//			return collection.Count;
+			return WordMoveStartEndPoint (count, ref end_point);
+		}
+		
+		public int WordMoveStartPoint (int count)
+		{
+//			//Be aware that both Start and End points must be normalized
+//			//otherwise there won't be valid results 
+//			if (count == 0)
+//				return 0;
+//
+//			WordTokenizer tokenizer = new WordTokenizer (textboxbase.Text);
+//			WordTokenCollection collection;
+//			
+//			if (count > 0)
+//				collection = tokenizer.Forward (StartPoint, count);
+//			else
+//				collection = tokenizer.Backwards (StartPoint, count);
+//			
+//			if (collection.Count > 0)
+//			    start_point = collection [collection.Count - 1].Index 
+//					+ collection [collection.Count - 1].Message.Length;
+//			
+//			return collection.Count;
+			return WordMoveStartEndPoint (count, ref start_point);
+		}
+		
+		private int WordMoveStartEndPoint (int count, ref int startEndPoint)
+		{
+			//Be aware that both Start and End points must be normalized
+			//otherwise there won't be valid results 
+			if (count == 0)
+				return 0;
+
+			WordTokenizer tokenizer = new WordTokenizer (textboxbase.Text);
+			WordTokenCollection collection;
+			
+			if (count > 0)
+				collection = tokenizer.Forward (startEndPoint, count);
+			else
+				collection = tokenizer.Backwards (startEndPoint - 1, System.Math.Abs (count));
+			
+			if (collection.Count > 0) {
+				if (count > 0)
+					startEndPoint = collection [collection.Count - 1].Index 
+						+ collection [collection.Count - 1].Message.Length;
+				else
+					startEndPoint = collection [collection.Count - 1].Index;
+			}
+			
+			return collection.Count;
+		}
+		
+#endregion
+		
+		public TextNormalizerPoints Move (TextUnit unit, int count) 
+		{
+			if (count == 0)
+				return new TextNormalizerPoints (start_point, end_point, 0);
+			
+			int moved = 0;
+			if (unit == TextUnit.Character) {
+				if (count > 0) {
+					moved = CharacterMoveEndPoint (count);
+					start_point = end_point;
+				} else {
+					moved = CharacterMoveStartPoint (count);
+					end_point = start_point;
+				}
+			} else if (unit == TextUnit.Word) {
+				WordNormalize ();
+				if (count > 0) {
+					moved = WordMoveEndPoint (count);
+					start_point = end_point;
+				} else {
+					moved = WordMoveEndPoint (count);
+					end_point = start_point;
+				}
+			}
+			
+			return new TextNormalizerPoints (start_point, end_point, moved);
+		}
+		
 		public TextNormalizerPoints Normalize (TextUnit unit, int count) 
 		{
 			if (count == 0)
 				return new TextNormalizerPoints (start_point, length, 0);
 
-			if (unit == TextUnit.Character)
-				return NormalizeCharacter (count);
+//			if (unit == TextUnit.Character)
+//				return NormalizeCharacter (count);
 			//Format
-			else if (unit == TextUnit.Word)
+			//else 
+			if (unit == TextUnit.Word)
 				return NormalizeWord (count);
 			else if (unit == TextUnit.Line)
 				return NormalizeLine (count);
@@ -60,33 +297,6 @@ namespace Mono.UIAutomation.Winforms
 			//Document
 				
 			return new TextNormalizerPoints (0, 0, 0);
-		}
-
-		// Based on the complete algorithm and using: 
-		//	text:	"hello {my b}aby, hello my darling." 
-		//		(start = 6, length = 3)
-		//	count:	+5
-		// The results are:
-		//	1. "hello {}my baby, hello my darling."
-		//	2. "hello {}my baby, hello my darling."
-		//	3. "hello }my b{aby, hello my darling."
-		// 	4. "hello my b{a}by, hello my darling."
-		//		(start = 10, length = 1)
-		// TODO: Test against Microsoft behaviour
-		private TextNormalizerPoints NormalizeCharacter (int count)
-		{
-			int new_start_point = start_point;
-			int moved = 0;
-
-			new_start_point += count; // Step 3
-			
-			if (new_start_point < 0) {
-				new_start_point = 0;
-				moved = start_point;
-			} else
-				moved = System.Math.Abs (count);
-			
-			return new TextNormalizerPoints (new_start_point, 1, moved);
 		}
 		
 		// Based on the complete algorithm and using: 
@@ -206,7 +416,11 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		private string text;
-		private int start_point;
 		private int length;
+
+		private TextBoxBase textboxbase;				
+		private int end_point;
+		private int start_point;
+
 	}
 }

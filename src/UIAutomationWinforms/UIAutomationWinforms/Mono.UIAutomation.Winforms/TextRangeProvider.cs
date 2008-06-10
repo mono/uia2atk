@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms
 	//- insertion point, 
 	//- a subset, or 
 	//- all of the text in a TextPattern container.
-	internal class TextRangeProvider : ITextRangeProvider
+	public class TextRangeProvider : ITextRangeProvider
 	{
 
 #region Constructors
@@ -45,9 +45,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			this.provider = provider;
 			this.textboxbase = textboxbase;
-
-			start_point = textboxbase.SelectionStart;				
-			end_point = start_point + textboxbase.SelectionLength;
+			
+			normalizer = new TextNormalizer (textboxbase);
 		}
 		
 #endregion
@@ -59,11 +58,11 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		public int StartPoint {
-			get { return start_point; }
+			get { return normalizer.StartPoint; }
 		}
 		
 		public int EndPoint {
-			get { return end_point; }
+			get { return normalizer.EndPoint; }
 		}
 
 #endregion
@@ -80,7 +79,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public ITextRangeProvider Clone ()
 		{
-			throw new NotImplementedException();
+			return (ITextRangeProvider) MemberwiseClone ();
 		}
 
 		//TODO: Evaluate rangeProvider == null
@@ -113,6 +112,12 @@ namespace Mono.UIAutomation.Winforms
 		//Character, Format, Word, Line, Paragraph, Page, Document
 		public void ExpandToEnclosingUnit (TextUnit unit)
 		{
+			if (unit == TextUnit.Character) {
+				//Does nothing.
+			} else if (unit == TextUnit.Word) {
+				normalizer.WordNormalize ();
+			}
+			//TODO: ADD MISSING
 			throw new NotImplementedException();
 		}
 
@@ -150,35 +155,32 @@ namespace Mono.UIAutomation.Winforms
 
 		public string GetText (int maxLength)
 		{
-			throw new NotImplementedException();
+			if (maxLength < -1)
+				throw new ArgumentOutOfRangeException ();
+				
+			if (maxLength == -1)
+				maxLength = 0;
+			
+			int startPoint = 0;
+			int endPoint = 0;
+			if (StartPoint > EndPoint) {
+				startPoint = EndPoint;
+				endPoint = StartPoint;
+			}
+
+			int length = endPoint - startPoint;
+			if (length > maxLength)
+				length = maxLength;
+
+			return textboxbase.Text.Substring (startPoint, length);
 		}
 
 		//Character, Format, Word, Line, Paragraph, Page, Document
 		public int Move (TextUnit unit, int count)
 		{
-			if (count == 0)
-				return 0;
-				
-			TextNormalizer normalizer = new TextNormalizer (textboxbase.Text, 
-			                                                textboxbase.SelectionStart, 
-			                                                textboxbase.SelectionLength);
-			TextNormalizerPoints points = normalizer.Normalize (unit, count);
+			TextNormalizerPoints points = normalizer.Move (unit, count);
 			
-			textboxbase.SelectionStart = points.Start;
-			textboxbase.SelectionLength = points.Length;
-			
-			//TODO: Update provider.DocumentRange Start and End.
-
 			return points.Moved;
-
-//			if (unit == TextUnit.Character) {
-//			} else if (unit == TextUnit.Format) {
-//			} else if (unit == TextUnit.Word) {
-//			} else if (unit == TextUnit.Line) {
-//			} else if (unit == TextUnit.Paragraph) {
-//			} else if (unit == TextUnit.Page) {
-//			} else if (unit == TextUnit.Document) {
-//			}
 		}
 
 		public void MoveEndpointByRange (TextPatternRangeEndpoint endpoint, 
@@ -188,14 +190,36 @@ namespace Mono.UIAutomation.Winforms
 			throw new NotImplementedException();
 		}
 
-		public int MoveEndpointByUnit (TextPatternRangeEndpoint endpoint, TextUnit unit, int count)
+		public int MoveEndpointByUnit (TextPatternRangeEndpoint endpoint, 
+		                               TextUnit unit, int count)
 		{
+			//TODO: OK?
+			if (this == TextProvider.DocumentRange)
+				return 0;
+			
+			if (unit == TextUnit.Character) {
+				if (endpoint == TextPatternRangeEndpoint.Start)
+					return normalizer.CharacterMoveStartPoint (count);
+				else
+					return normalizer.CharacterMoveEndPoint (count);
+			} else if (unit == TextUnit.Word) {
+				if (endpoint == TextPatternRangeEndpoint.Start)
+					return normalizer.WordMoveStartPoint (count);
+				else
+					return normalizer.WordMoveEndPoint (count);
+			}
+			
+			//TODO: ADD MISSING
+
 			throw new NotImplementedException();
 		}
 
 		public void RemoveFromSelection ()
 		{
-			throw new NotImplementedException();
+			if (provider.SupportedTextSelection != SupportedTextSelection.Multiple)
+				throw new InvalidOperationException ();
+			
+			//TODO: Verify if RichTextBox supports: SupportedTextSelection.Multiple
 		}
 
 		public void ScrollIntoView (bool alignToTop)
@@ -205,7 +229,8 @@ namespace Mono.UIAutomation.Winforms
 
 		public void Select ()
 		{
-			throw new NotImplementedException();
+			textboxbase.SelectionStart = normalizer.StartPoint;
+			textboxbase.SelectionLength = normalizer.EndPoint - normalizer.StartPoint;
 		}
 		
 #endregion
@@ -214,8 +239,7 @@ namespace Mono.UIAutomation.Winforms
 
 		private ITextProvider provider;
 		private TextBoxBase textboxbase;
-		private int start_point;
-		private int end_point;
+		private TextNormalizer normalizer;
 
 #endregion
 
