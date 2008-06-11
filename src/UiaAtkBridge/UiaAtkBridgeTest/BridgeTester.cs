@@ -163,13 +163,13 @@ namespace UiaAtkBridgeTest
 
 
 			// AutomationElementIdentifiers.IsOffscreenProperty
-			args =	new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsOffscreenProperty,
+			args = new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsOffscreenProperty,
 					                                        null,
 					                                        true);
 			bridgeAdapter.RaiseAutomationPropertyChangedEvent(args);
 			Assert.AreEqual(false, (bridgeAdapter as Atk.Object).RefStateSet().ContainsState(Atk.StateType.Visible));
 
-			args =	new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsOffscreenProperty,
+			args = new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsOffscreenProperty,
 					                                        null,
 					                                        false);
 			bridgeAdapter.RaiseAutomationPropertyChangedEvent(args);
@@ -177,7 +177,7 @@ namespace UiaAtkBridgeTest
 
 
 			// AutomationElementIdentifiers.NameProperty
-			args =	new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.NameProperty,
+			args = new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.NameProperty,
 					                                        null,
 					                                        "Actionizer");
 			bridgeAdapter.RaiseAutomationPropertyChangedEvent(args);

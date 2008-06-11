@@ -254,7 +254,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, implementor.SelectionCount, "SelectionCount == 0");
 			
 			for (int i = 0; i < names.Length; i++) {
-				Assert.IsTrue (implementor.AddSelection (i));
+				Assert.IsTrue (implementor.AddSelection (i), "AddSelection(" + i + ")");
 				Assert.AreEqual (names[i], accessible.Name, "AtkObj Name #" + i);
 				Assert.AreEqual (accessible.Name, implementor.RefSelection (0).Name, "AtkObj NameRefSel#" + i);
 				Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
@@ -265,6 +265,8 @@ namespace UiaAtkBridgeTest
 					refSel = -1;
 				Assert.IsNull (implementor.RefSelection (refSel), "RefSelection OOR#-" + i);
 			}
+			
+			Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null");
 			
 			string lastName = accessible.Name;
 			//strangely, OOR selections return true (valid)
@@ -279,7 +281,19 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (implementor.ClearSelection (), "ClearSelection");
 			Assert.IsNull (implementor.RefSelection (0), "RefSel after CS");
 			
-			//TODO: RemoveSelection and SelectAllSelection
+			//this is a normal combobox (not multiline) (TODO: research multiline comboboxes?)
+			Assert.IsFalse (implementor.SelectAllSelection ());
+			
+			Assert.IsNull (implementor.RefSelection (0), "RefSel after SAS");
+			
+			Assert.IsTrue (names.Length > 0, "Please use a names variable that is not empty");
+			Assert.IsTrue (implementor.AddSelection (0), "AddSelection->0");
+			Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null after AS0");
+			//again, it's surprising to return TRUE on OOR
+			Assert.IsTrue (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
+			Assert.IsTrue (implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
+			Assert.IsTrue (implementor.RemoveSelection (0), "RemoveSelection");
+			Assert.IsNull (implementor.RefSelection (0), "RefSel after RemoveSel");
 		}
 		
 		private void PropertyRole (BasicWidgetType type, Atk.Object accessible)

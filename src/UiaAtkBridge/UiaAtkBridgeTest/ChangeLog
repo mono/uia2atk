@@ -1,5 +1,10 @@
 2008-06-11  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* BridgeTester.cs: Cosmetic.
+	* AtkTester.cs: Finish Selection tests.
+
+2008-06-11  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: A lot of tests for ComboBox (Atk.Selection interface).
 
 2008-06-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
