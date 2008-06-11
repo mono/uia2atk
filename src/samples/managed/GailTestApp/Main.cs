@@ -85,5 +85,12 @@ namespace GailTestApp
 			
 			return win.GiveMeARealComboBox ();
 		}
+		
+		public static void Kill () 
+		{
+			win.Destroy ();
+			win.Dispose ();
+			Application.Quit ();
+		}
 	}
 }

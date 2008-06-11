@@ -1,3 +1,7 @@
+2008-06-11  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Main.cs: Fix build of tests.
+
 2008-06-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* MainWindow.cs, Main.cs: Real support.
