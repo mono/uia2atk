@@ -24,6 +24,8 @@
 // 
 
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 using System.Windows.Automation;
@@ -77,10 +79,10 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.RadioButton.Id;
-			else if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
-				return "WindowsForms10.BUTTON.app.0.bf7d44";
-			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
-				return false; // TODO: ???
+			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+				return null;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "radio button";
 			else
 				return base.GetPropertyValue (propertyId);
 		}
@@ -90,6 +92,15 @@ namespace Mono.UIAutomation.Winforms
 	
 		public void AddToSelection ()
 		{
+			IEnumerable<RadioButton> otherButtons =
+				from Control c in radioButton.Parent.Controls
+					where c is RadioButton && c != radioButton
+					select (RadioButton)c;
+			
+			foreach (RadioButton button in otherButtons)
+				if (button.Checked)
+					// Assuming CanSelectMultiple==false...
+					throw new InvalidOperationException ("RadioButton");
 			Select ();
 		}
 
@@ -99,7 +110,8 @@ namespace Mono.UIAutomation.Winforms
 
 		public void RemoveFromSelection ()
 		{
-			return;
+			// Assuming IsSelectionRequired==true and CanSelectMultiple==false...
+			throw new InvalidOperationException ("RadioButton");
 		}
 
 		public void Select ()
@@ -108,7 +120,13 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		public IRawElementProviderSimple SelectionContainer {
-			get { return null; }
+			get {
+				IRawElementProviderSimple parentProvider =
+					ProviderFactory.FindProvider (radioButton.Parent);
+				if (parentProvider != null && parentProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id) != null)
+					return parentProvider;
+				return null;
+			}
 		}
 
 #endregion

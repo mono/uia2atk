@@ -45,6 +45,7 @@ namespace Mono.UIAutomation.Winforms
 #region Private Fields
 
 		private Dictionary<EventStrategyType, IEventStrategy> events;
+		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
 
 #endregion
 		
@@ -55,6 +56,8 @@ namespace Mono.UIAutomation.Winforms
 			this.control = control;
 			
 			events = new Dictionary<EventStrategyType,IEventStrategy> ();
+			providerBehaviors =
+				new Dictionary<AutomationPattern,IProviderBehavior> ();
 		}
 		
 #endregion
@@ -90,16 +93,54 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			if (strategy != null) {
-			    events [type] = strategy;
+				events [type] = strategy;
 				strategy.Connect ();
 			}
 		}
 		
+		protected void SetBehavior (AutomationPattern pattern, IProviderBehavior behavior)
+		{
+			IProviderBehavior oldBehavior;
+			if (providerBehaviors.TryGetValue (pattern, out oldBehavior) == true) {
+				oldBehavior.Dispose ();
+				providerBehaviors.Remove (pattern);
+			}
+			
+			if (behavior != null) {
+				providerBehaviors [pattern] = behavior;
+				behavior.Initialize (control);
+			}
+		}
+		
+		protected IProviderBehavior GetBehavior (AutomationPattern pattern)
+		{
+			IProviderBehavior behavior;
+			if (providerBehaviors.TryGetValue (pattern, out behavior))
+				return behavior;
+			
+			return null;
+		}
+		
+		protected IEnumerable<IProviderBehavior> ProviderBehaviors
+		{
+			get {
+				return providerBehaviors.Values;
+			}
+		}
 #endregion
 		
 #region IRawElementProviderSimple Members
 	
-		public abstract object GetPatternProvider (int patternId);
+		// TODO: Get this used in all base classes. Consider refactoring
+		//       so that *all* pattern provider behaviors are dynamically
+		//       attached to make this more uniform.
+		public virtual object GetPatternProvider (int patternId)
+		{
+			foreach (IProviderBehavior behavior in ProviderBehaviors)
+				if (behavior.ProviderPattern.Id == patternId)
+					return behavior;
+			return null;
+		}
 		
 		public virtual object GetPropertyValue (int propertyId)
 		{
@@ -132,8 +173,15 @@ namespace Mono.UIAutomation.Winforms
 					Rect rectangle = (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 					return new Point (rectangle.X, rectangle.Y);
 				}
-			} else
-				return null;
+			}
+			
+			foreach (IProviderBehavior behavior in ProviderBehaviors) {
+				object val = behavior.GetPropertyValue (propertyId);
+				if (val != null)
+					return val;
+			}
+			
+			return null;
 		}
 
 		public virtual IRawElementProviderSimple HostRawElementProvider {

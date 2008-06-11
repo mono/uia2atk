@@ -1,5 +1,9 @@
 2008-06-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* RadioButtonProviderTest.cs: Testing of everything but events.
+
+2008-06-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* UIAutomationWinformsTests.mdp, RadioButtonProviderTest.cs: Add
 	  incomplete RadioButtonProviderTest.
 	* CheckBoxProviderTest.cs: Typo fix, remove unneccessary using

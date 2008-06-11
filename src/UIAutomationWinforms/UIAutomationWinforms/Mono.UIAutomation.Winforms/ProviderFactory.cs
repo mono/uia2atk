@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Automation.Provider;
 
@@ -32,12 +33,29 @@ namespace Mono.UIAutomation.Winforms
 
 	public sealed class ProviderFactory
 	{
-		private ProviderFactory ()
+		// NOTE: This may not be the best place to track this...however
+		//       I forsee this factory class evolving into a builder
+		//       class that takes raw providers and attaches provider
+		//       behaviors depending on the control type, and maybe
+		//       it makes sense for the builder to keep track of
+		//       this mapping?
+		private static Dictionary<Control, IRawElementProviderSimple>
+			controlProviders;
+		
+		static ProviderFactory ()
 		{
+			controlProviders =
+				new Dictionary<Control,IRawElementProviderSimple> ();
 		}
 		
 		public static IRawElementProviderSimple GetProvider (Control control)
 		{
+			// TODO: Consider using code like this to prevent having
+			//       multiple raw providers for the same control.
+			//IRawElementProviderSimple provider;
+			//if (controlProviderMap.TryGetValue (control, out provider))
+			//	return provider;
+			
 			return GetProvider (control, true);
 		}
 		
@@ -72,11 +90,26 @@ namespace Mono.UIAutomation.Winforms
 				provider = new LabelProvider (l);
 			
 			if (provider != null) {
+				// TODO: Make tracking in dictionary optional
+				controlProviders [control] = provider;
 				if (initializeEvents)
 					provider.InitializeEvents ();
 				return provider;
 			} else
 				return null;
+		}
+		
+		public static void ReleaseProvider (Control control)
+		{
+			controlProviders.Remove (control);
+		}
+		
+		public static IRawElementProviderSimple FindProvider (Control control)
+		{
+			IRawElementProviderSimple provider;
+			if (controlProviders.TryGetValue (control, out provider))
+				return provider;
+			return null;
 		}
 	}
 }

@@ -51,11 +51,6 @@ namespace Mono.UIAutomation.Winforms
 #endregion
 		
 #region IRawElementProviderSimple Overrides
-	
-		public override object GetPatternProvider (int patternId)
-		{
-			return null;
-		}
 		
 		public override object GetPropertyValue (int propertyId)
 		{

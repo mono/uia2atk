@@ -1,3 +1,38 @@
+2008-06-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms.mdp: Add IProviderBehavior and
+	  RadioButtonSelectionProviderBehavior.
+	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs: Remove
+	  GetPatternProvider override, now that the base class has a
+	  perfectly good one.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Keep track of created
+	  providers, enabling new FindProvider(Control) method.  Requires
+	  parent controls to use the new ReleaseProvider emthod.
+	* Mono.UIAutomation.Winforms/WindowProvider.cs: Make sure to call
+	  base.GetPatternProvider.  Remove extraneous cases in
+	  GetPropertyValue, and add support for LocalizedControlTypeProperty.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Support
+	  dynamically attaching the RadioButtonSelectionProviderBehavior to
+	  container controls, so that they have an ISelectionProvider
+	  implementation when containing radio buttons.
+	* Mono.UIAutomation.Winforms/IProviderBehavior.cs: New interface used
+	  to model behaviors that implement provider pattern interfaces.  A
+	  provider behavior can be dynamically added to and removed from a
+	  raw element provider based on the contents or state of the
+	  associated control.
+	* Mono.UIAutomation.Winforms/RadioButtonSelectionProviderBehavior.cs: A
+	  provider behavior that handles implementing ISelectionProvider for
+	  a control containing one or more radio buttons.  Designed to handle
+	  any ControlType.RadioButton, but only tested with SWF.RadioButton.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Add support for
+	  dynamically attaching provider behaviors to a raw element provider.
+	   Implement a base version of GetPatternProvider that searches
+	  through the attached behaviors.  Added behavior support to base
+	  implementation of GetPropertyValue.
+	* Mono.UIAutomation.Winforms/RadioButtonProvider.cs: More complete
+	  implementation of ControlType.RadioButton and
+	  ISelectionItemProvider.
+
 2008-06-10  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Methods fixed: Clone,

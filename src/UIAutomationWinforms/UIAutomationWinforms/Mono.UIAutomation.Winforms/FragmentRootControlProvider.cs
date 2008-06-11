@@ -104,6 +104,16 @@ namespace Mono.UIAutomation.Winforms
 			  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkAdded,
 			                                 new int [] {0}));
 			
+			// TODO: Figure out exactly when to do this (talk to bridge guys)
+			if (GetBehavior (SelectionPatternIdentifiers.Pattern) == null &&
+			    childProvider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id) != null &&
+			    (int) childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
+				RadioButtonSelectionProviderBehavior selectionProvider =
+					new RadioButtonSelectionProviderBehavior ();
+				SetBehavior (SelectionPatternIdentifiers.Pattern,
+				             selectionProvider);
+			}
+			
 			FragmentRootControlProvider rootProvider =
 				childProvider as FragmentRootControlProvider;
 			if (rootProvider != null)
@@ -113,6 +123,27 @@ namespace Mono.UIAutomation.Winforms
 		private void OnControlRemoved (object sender, ControlEventArgs args)
 		{
 			Console.WriteLine ("ControlRemoved: " + args.Control.GetType ().ToString ());
+			
+			bool radioButtonFound = false;
+			IRawElementProviderSimple removedProvider = controlProviders [args.Control];
+			foreach (IRawElementProviderSimple childProvider in controlProviders.Values) {
+				if (childProvider != removedProvider &&
+				    (int) childProvider.GetPatternProvider (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
+					radioButtonFound = true;
+					break;
+				}
+			}
+			if (!radioButtonFound)
+				SetBehavior (SelectionPatternIdentifiers.Pattern,
+				             null);
+			
+			// TODO: StructureChangedEvent
+			
+			// TODO: Some sort of disposal
+			
+			controlProviders.Remove (args.Control);
+			
+			ProviderFactory.ReleaseProvider (args.Control);
 		}
 
 #endregion

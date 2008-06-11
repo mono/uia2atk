@@ -237,7 +237,7 @@ namespace Mono.UIAutomation.Winforms
 			    patternId == TransformPatternIdentifiers.Pattern.Id)
 				return this;
 			
-			return null;
+			return base.GetPatternProvider (patternId);
 		}
 		
 		public override object GetPropertyValue (int propertyId)
@@ -245,14 +245,10 @@ namespace Mono.UIAutomation.Winforms
 			// TODO: Complete...figure out by testing Windows implementation (UISpy is helpful)
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Window.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "window";
 			else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
 				return form.Handle; // TODO: Should be int, maybe?
-			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
-				return false; // TODO: ???
-			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
-				return true;
-			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
-				return true;
 			else
 				return base.GetPropertyValue (propertyId);
 		}
