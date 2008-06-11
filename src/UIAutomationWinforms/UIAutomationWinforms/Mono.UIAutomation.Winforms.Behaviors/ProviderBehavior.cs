@@ -24,21 +24,59 @@
 // 
 
 using System;
+using System.Windows.Automation;
 
-namespace Mono.UIAutomation.Winforms.Events
-{
-
-	public enum EventStrategyType
+namespace Mono.UIAutomation.Winforms.Behaviors
+{	
+	
+	public abstract class ProviderBehavior : IProviderBehavior
 	{
-		IsOffscreenProperty,
-		IsEnabledProperty,
-		NameProperty,
-		HasKeyboardFocusProperty,
-		BoundingRectangleProperty,
-		ToggleStateProperty,
-		TextChangedEvent,
-		InvokedEvent,
-		StructureChangedEvent,
-		ExpandCollapseStateProperty
+
+#region Private fields
+		
+		private SimpleControlProvider provider;
+		
+#endregion
+		
+#region Constructors
+		
+		protected ProviderBehavior (SimpleControlProvider provider)
+		{
+			this.provider = provider;
+		}
+		
+#endregion
+		
+#region Properties 
+		
+		public SimpleControlProvider Provider {
+			get { return provider; }
+		}
+		
+#endregion
+		
+#region IDispose Interface
+		
+		public virtual void Dispose ()
+		{
+		}
+
+#endregion		
+		
+#region IProviderBehavior Interface
+		
+		public abstract AutomationPattern ProviderPattern {
+			get;
+		}
+
+		public abstract void Initialize (System.Windows.Forms.Control control);
+		
+		public virtual object GetPropertyValue (int propertyId)
+		{
+			return null;
+		}
+		
+#endregion
+
 	}
 }

@@ -1,4 +1,4 @@
-<Project name="Mono.UIAutomation.Winforms" fileversion="2.0" language="C#" DefaultNamespace="Mono.UIAutomation.Winforms" clr-version="Net_2_0" ctype="DotNetProject">
+<Project name="Mono.UIAutomation.Winforms" fileversion="2.0" DefaultNamespace="Mono.UIAutomation.Winforms" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="bin/Debug" signAssembly="True" assemblyKeyFile="../../mono-uia.snk" assembly="UIAutomationWinforms" />
@@ -55,6 +55,12 @@
     <File name="Mono.UIAutomation.Winforms.Behaviors" subtype="Directory" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/IProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/ComboBoxProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ComboBoxExpandCollapseProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ComboBoxProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ComboBoxSelectionProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ComboBoxExpandCollapseStateEvent.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

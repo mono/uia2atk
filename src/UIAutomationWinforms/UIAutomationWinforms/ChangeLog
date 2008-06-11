@@ -1,3 +1,25 @@
+2008-06-11  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.mdp: File updated: added files.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: File added. ComboBox
+	provider.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxProviderBehavior.cs:
+	File added. Abstract class used by every ComboBox behavior.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxExpandCollapseProviderBehavior.cs:
+	File added. Class used by ExpandCollapse behavior.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxSelectionProviderBehavior.cs:
+	File added. Class used by Selection behavior.
+	* Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs: File added.
+	Abstract class meant to be subclassed by every behavior.
+	* Mono.UIAutomation.Winforms.Events/ComboBoxExpandCollapseStateEvent.cs	
+	File added, new event to handle ExpandCollapseState property event.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Updated to get 
+	ComboBoxProvider.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: SetEvent 
+	visibility changed from protected to public.
+	* Mono.UIAutomation.Winforms.Events/EventStrategyType.cs: Added 
+	ExpandCollapseStateProperty.
+
 2008-06-12  Neville Gao <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Added StatusBar

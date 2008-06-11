@@ -72,6 +72,7 @@ namespace Mono.UIAutomation.Winforms
 			Form f;
 			GroupBox gb;
 			StatusBar sb;
+			ComboBox cb;
 
 			if ((f = control as Form) != null)
 				provider = new WindowProvider (f);
@@ -91,6 +92,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new LabelProvider (l);
 			else if ((sb = control as StatusBar) != null)
 				provider = new StatusBarProvider (sb);
+			else if ((cb = control as ComboBox) != null)
+				provider = new ComboBoxProvider (cb);
 			
 			if (provider != null) {
 				// TODO: Make tracking in dictionary optional

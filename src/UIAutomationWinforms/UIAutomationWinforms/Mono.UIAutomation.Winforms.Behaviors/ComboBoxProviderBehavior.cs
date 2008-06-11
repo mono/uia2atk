@@ -23,22 +23,52 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 
-using System;
+using System.Windows.Forms;
+using System.Windows.Automation;
 
-namespace Mono.UIAutomation.Winforms.Events
+namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
-	public enum EventStrategyType
+	public abstract class ComboBoxProviderBehavior : ProviderBehavior
 	{
-		IsOffscreenProperty,
-		IsEnabledProperty,
-		NameProperty,
-		HasKeyboardFocusProperty,
-		BoundingRectangleProperty,
-		ToggleStateProperty,
-		TextChangedEvent,
-		InvokedEvent,
-		StructureChangedEvent,
-		ExpandCollapseStateProperty
+		
+#region Constructors
+		
+		protected ComboBoxProviderBehavior (SimpleControlProvider provider)
+			: base (provider) 
+		{
+		}
+		
+#endregion
+
+#region Protected fields
+		
+		protected ComboBox combobox;
+		
+#endregion
+		
+#region IProviderBehavior Interface
+
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.ComboBox.Id;
+			//FIXME: According the documentation this is valid, however you can
+			//focus only when control.CanFocus, this doesn't make any sense.
+			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				return true;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "combo box";
+			else
+				return null;
+		}
+
+		public override void Initialize (Control control)
+		{
+			combobox = (ComboBox) control;
+		}
+		
+#endregion
+
 	}
 }

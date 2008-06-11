@@ -80,12 +80,8 @@ namespace Mono.UIAutomation.Winforms
 			SetEvent (EventStrategyType.StructureChangedEvent,
 			          new DefaultStructureChangedEvent (this, control));
 		}
-		
-#endregion
-		
-#region Protected
 				
-		protected void SetEvent (EventStrategyType type, IEventStrategy strategy)
+		public void SetEvent (EventStrategyType type, IEventStrategy strategy)
 		{
 			IEventStrategy value;
 			
@@ -99,6 +95,10 @@ namespace Mono.UIAutomation.Winforms
 				strategy.Connect ();
 			}
 		}
+		
+#endregion
+
+#region Protected
 		
 		protected void SetBehavior (AutomationPattern pattern, IProviderBehavior behavior)
 		{

@@ -24,21 +24,54 @@
 // 
 
 using System;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 
-namespace Mono.UIAutomation.Winforms.Events
+namespace Mono.UIAutomation.Winforms.Behaviors
 {
-
-	public enum EventStrategyType
+	
+	
+	public class ComboBoxSelectionProviderBehavior 
+		: ComboBoxProviderBehavior, ISelectionProvider
 	{
-		IsOffscreenProperty,
-		IsEnabledProperty,
-		NameProperty,
-		HasKeyboardFocusProperty,
-		BoundingRectangleProperty,
-		ToggleStateProperty,
-		TextChangedEvent,
-		InvokedEvent,
-		StructureChangedEvent,
-		ExpandCollapseStateProperty
+		
+#region Constructor
+		
+		public ComboBoxSelectionProviderBehavior (SimpleControlProvider provider)
+			: base (provider)
+		{
+		}
+		
+#endregion
+
+#region IProviderBehavior Members
+		
+		public override AutomationPattern ProviderPattern { 
+			get {
+				return SelectionPatternIdentifiers.Pattern;
+			}
+		}
+		
+#endregion
+		
+#region ISelectionProvider Members
+
+		public bool CanSelectMultiple {
+			get { return false; }
+		}
+
+		public bool IsSelectionRequired {
+			//TODO: Is this OK?
+			get { return true; }
+		}
+		
+		public IRawElementProviderSimple[] GetSelection ()
+		{
+			//TODO: Implement
+			throw new NotImplementedException();
+		}
+
+#endregion
+
 	}
 }
