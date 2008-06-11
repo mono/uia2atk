@@ -121,6 +121,10 @@ namespace UiaAtkBridgeTest
 			Atk.Action atkAction = (Atk.Action)
 				GetAtkObjectThatImplementsInterface <Atk.Action> (type, names, out accessible, true);
 			InterfaceAction (type, atkAction, accessible);
+			
+			Atk.Selection atkSelection = (Atk.Selection)
+				GetAtkObjectThatImplementsInterface <Atk.Selection> (type, names, out accessible, true);
+			InterfaceSelection (atkSelection, names, accessible);
 		}
 		
 		[Test]
@@ -158,10 +162,8 @@ namespace UiaAtkBridgeTest
 		{
 			if (type == BasicWidgetType.ComboBox) {
 				Assert.AreEqual (1, implementor.NActions, "NActions");
-				
 				Assert.AreEqual ("press", implementor.GetName (0), "GetName click");
-			}
-			else { //Button and Checkbox
+			} else { //Button and Checkbox
 				Assert.AreEqual (ValidNumberOfActionsForAButton, implementor.NActions, "NActions");
 				
 				Assert.AreEqual ("click", implementor.GetName (0), "GetName click");
@@ -240,6 +242,44 @@ namespace UiaAtkBridgeTest
 			//out of range items too
 			Assert.IsNull (implementor.GetKeybinding (-1), "GetKeyBinding OOR#1");
 			Assert.IsNull (implementor.GetKeybinding (3), "GetKeyBinding OOR#2");
+		}
+		
+		private void InterfaceSelection (Atk.Selection implementor, string[] names, Atk.Object accessible)
+		{
+			Assert.AreEqual (null, accessible.Name, "AtkObj Name");
+			for (int i = 0; i < names.Length; i++) {
+				Assert.IsFalse (implementor.IsChildSelected (i), "isChildSelected(" + i + ")");
+			}
+			
+			Assert.AreEqual (0, implementor.SelectionCount, "SelectionCount == 0");
+			
+			for (int i = 0; i < names.Length; i++) {
+				Assert.IsTrue (implementor.AddSelection (i));
+				Assert.AreEqual (names[i], accessible.Name, "AtkObj Name #" + i);
+				Assert.AreEqual (accessible.Name, implementor.RefSelection (0).Name, "AtkObj NameRefSel#" + i);
+				Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
+				Assert.IsTrue (implementor.IsChildSelected (i), "childSelected(" + i + ")");
+				
+				int refSel = i;
+				if (refSel == 0)
+					refSel = -1;
+				Assert.IsNull (implementor.RefSelection (refSel), "RefSelection OOR#-" + i);
+			}
+			
+			string lastName = accessible.Name;
+			//strangely, OOR selections return true (valid)
+			Assert.IsTrue (implementor.AddSelection (-1), "AddSelection OOR#1");
+			Assert.IsTrue (implementor.AddSelection (names.Length), "AddSelection OOR#2");
+			//OOR selections don't affect name:
+			Assert.AreEqual (lastName, accessible.Name);
+			
+			Assert.IsNull (implementor.RefSelection (-1), "RefSelection OOR#1");
+			Assert.IsNull (implementor.RefSelection (names.Length), "RefSelection OOR#2");
+			
+			Assert.IsTrue (implementor.ClearSelection (), "ClearSelection");
+			Assert.IsNull (implementor.RefSelection (0), "RefSel after CS");
+			
+			//TODO: RemoveSelection and SelectAllSelection
 		}
 		
 		private void PropertyRole (BasicWidgetType type, Atk.Object accessible)

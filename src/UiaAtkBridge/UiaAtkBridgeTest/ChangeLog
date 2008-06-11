@@ -1,3 +1,7 @@
+2008-06-11  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* AtkTester.cs: A lot of tests for ComboBox (Atk.Selection interface).
+
 2008-06-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTester.cs: Corrected some stability issues when running these
