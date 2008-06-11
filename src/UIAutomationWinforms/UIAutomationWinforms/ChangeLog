@@ -1,3 +1,13 @@
+2008-06-11  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms.mdp,
+	  Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs,
+	  Mono.UIAutomation.Winforms/SimpleControlProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors,
+	  Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/IProviderBehavior.cs: Moved
+	  provider behaviors to Mono.UIAutomation.Winforms.Behaviors.
+
 2008-06-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms.mdp: Add IProviderBehavior and

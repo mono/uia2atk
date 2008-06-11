@@ -52,8 +52,9 @@
     <File name="Mono.UIAutomation.Winforms/WordToken.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/WordTokenCollection.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/StatusBarProvider.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms/IProviderBehavior.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms/RadioButtonSelectionProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors" subtype="Directory" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/IProviderBehavior.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

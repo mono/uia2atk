@@ -29,7 +29,7 @@ using System.Windows.Forms;
 
 using System.Windows.Automation;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Behaviors
 {
 	public interface IProviderBehavior : IDisposable // TODO: Any need to implement IRaw*?
 	{

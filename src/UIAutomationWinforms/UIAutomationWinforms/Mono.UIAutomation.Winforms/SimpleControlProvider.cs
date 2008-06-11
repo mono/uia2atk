@@ -30,6 +30,8 @@ using System.Windows.Forms;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+
+using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms

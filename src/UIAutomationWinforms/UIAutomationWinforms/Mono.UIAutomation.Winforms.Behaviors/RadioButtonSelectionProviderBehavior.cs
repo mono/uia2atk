@@ -30,7 +30,7 @@ using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Behaviors
 {
 	public class RadioButtonSelectionProviderBehavior : IProviderBehavior, ISelectionProvider
 	{

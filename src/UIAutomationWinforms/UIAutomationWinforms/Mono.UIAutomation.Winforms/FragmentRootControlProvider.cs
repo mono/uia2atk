@@ -30,6 +30,8 @@ using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
+using Mono.UIAutomation.Winforms.Behaviors;
+
 namespace Mono.UIAutomation.Winforms
 {
 	public abstract class FragmentRootControlProvider :
