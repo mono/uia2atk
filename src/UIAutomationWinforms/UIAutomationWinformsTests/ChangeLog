@@ -1,3 +1,10 @@
+2008-06-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationWinformsTests.mdp, RadioButtonProviderTest.cs: Add
+	  incomplete RadioButtonProviderTest.
+	* CheckBoxProviderTest.cs: Typo fix, remove unneccessary using
+	  statement.
+
 2008-06-10  Mario Carrion <mcarrion@novell.com>
 
 	* TextRangeProviderTest.cs: Tests implemented: CompareTest, 

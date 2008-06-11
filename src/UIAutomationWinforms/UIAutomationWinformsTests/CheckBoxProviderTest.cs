@@ -25,7 +25,6 @@
 //
 
 using System;
-using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -67,7 +66,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			object toggleProvider = provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (toggleProvider);
-			Assert.IsTrue (toggleProvider is IToggleProvider, "IToggleProvier");
+			Assert.IsTrue (toggleProvider is IToggleProvider, "IToggleProvider");
 		}
 		
 		[Test]
