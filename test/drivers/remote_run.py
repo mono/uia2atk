@@ -154,45 +154,34 @@ class Test(object):
       test_list.append(t)
       t.start()
 
-      '''
-      def check_status():
-        output("Checking status...")
-        active = False
-        for t in test_list:
-          if not t.isAlive():
-            lock.acquire()
-            output("  %-12s (%10s) ==>" % (t.name, t.ip), False) 
-            if t.status == 0:
-              good_machines.append(t.name)
-              output("DONE")
-            else:
-              failed_machines.append(t.name)
-              output("FAIL")
-              lock.release()
+    while True:
+      one_alive_thread = False
+      dead_threads = []
+      for t in test_list:
+        if not t.isAlive():
+          dead_threads.append(t)
+          lock.acquire()
+          output("  %-12s (%10s) ==>" % (t.name, t.ip), False) 
+          if t.status == 0:
+            good_machines.append(t.name)
+            output("DONE")
           else:
-            active = True
-            time.sleep(1)
-        if active:
-          check_status()
-          
-      check_status()    
-      '''     
-    for t in test_list:
-      lock.acquire()
-      t.join()
-      output("  %-12s (%10s) ==>" % (t.name, t.ip), False) 
-      if t.status == 0:
-        good_machines.append(t.name)
-        output("DONE")
-      else:
-        failed_machines.append(t.name)
-        output("FAIL")
-      lock.release()
-    output("")
+            failed_machines.append(t.name)
+            output("FAIL")
+          lock.release()
+        else:
+          one_alive_thread = True
+      if not one_alive_thread:
+        break
+      for dead_thread in dead_threads:
+        test_list.remove(dead_thread)
+      time.sleep(1)
+       
     if len(failed_machines) > 0:
       output("WARNING:  %i/%i failed to kick off"\
               % (len(failed_machines), len(self.up_machines)))
     if settings.is_log_ok:
+      output("INFO:  Remote logs saved to %s" % Settings.remote_log_path)
       output("INFO:  Local logs saved to %s" % Settings.local_log_path)
 
   def setup_logging(self):
@@ -206,7 +195,6 @@ class Test(object):
         output("WARNINGS:  Could not create %s directory!" % \
                 Settings.local_log_path)
         output("WARNINGS:  Local logs will not be stored")
-    output("INFO:  Log directory configured as:  %s" % Settings.local_log_path)
 
   def run(self):
     if not self.check_machines():

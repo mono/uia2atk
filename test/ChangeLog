@@ -1,5 +1,12 @@
 2008-06-10  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* drivers/local_run.py : clean up applications that have failed a test
+	and remained open.
+	* drivers/remote_run.py : enhance logging/threading to print output
+	as each local_run finishes.
+
+2008-06-10  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* drivers/local_run.py : fix some threading issues
 	* drivers/remote_run.py : working on threading issues
 	* drivers/machines.py : change log location back to ~/logs 

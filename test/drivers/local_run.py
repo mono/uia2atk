@@ -15,6 +15,7 @@ import getopt
 import os
 import time
 from socket import gethostname
+import signal
 
 
 # simply takes a string s as input and prints it if running verbosely
@@ -90,6 +91,8 @@ class Settings(object):
 
 class Test(object):
 
+  pids = []
+
   def __init__(self):
     self.tests = tests.tests_list
 
@@ -130,13 +133,25 @@ class Test(object):
         return 0
 
     # execute the tests
+    output("INFO:  Executing tests...")
     for test in found_tests:
-      os.system(test)
+      #os.system(test)
+      self.pids.append(os.spawnl(os.P_WAIT, test))
       try:
         self.log(test)
       except InconceivableError, msg:
         print msg
         return 1
+
+    # cleanup
+    output("INFO:  Cleaning up...")
+    for pid in self.pids: 
+      try:
+        os.kill(pid, signal.SIGKILL)
+      except OSError, err:
+          # Errno 3  is "No such process"
+          if not err.errno == 3:
+            output("WARNING:  Could not kill process '%s'" % pid)
 
   def log(self, test):
     filename = os.path.basename(test)
@@ -151,9 +166,6 @@ class Test(object):
     log_dir = os.path.join(control_dir,"%s_%s" %\
                             (gethostname(), time.strftime("%H%M%S",\
                              time.localtime())))
-
-    if gethostname() == "suse64v0":
-      time.sleep(10)
 
     if not os.path.exists(control_dir):
       try:
