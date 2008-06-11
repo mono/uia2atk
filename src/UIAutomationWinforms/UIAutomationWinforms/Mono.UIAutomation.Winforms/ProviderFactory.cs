@@ -90,7 +90,7 @@ namespace Mono.UIAutomation.Winforms
 			else if ((l = control as Label) != null)
 				provider = new LabelProvider (l);
 			else if ((sb = control as StatusBar) != null)
-				provider = new StatusBar (sb);
+				provider = new StatusBarProvider (sb);
 			
 			if (provider != null) {
 				// TODO: Make tracking in dictionary optional
