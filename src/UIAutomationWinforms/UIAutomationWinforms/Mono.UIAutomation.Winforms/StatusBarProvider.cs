@@ -73,9 +73,9 @@ namespace Mono.UIAutomation.Winforms
         	{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.StatusBar.Id;
-			else if (propertyId == GridPatternIdentifiers.ColumnCountProperty.Id)
+			else if (propertyId == GridPatternIdentifiers.ColumnProperty.Id)
 				return ColumnCount;
-			else if (propertyId == GridPatternIdentifiers.RowCountProperty.Id)
+			else if (propertyId == GridPatternIdentifiers.RowProperty.Id)
 				return RowCount;
 			else
 				return base.GetPropertyValue (propertyId);
