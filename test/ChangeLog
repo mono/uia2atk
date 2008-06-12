@@ -1,8 +1,15 @@
+2008-06-12  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* drivers/local_run.py : there were problems with cleaning up the 
+	test apps who fail.  need to look at a different way of doing this.
+
 2008-06-13  Calen Chen <cachen@novell.com>
 
 	* samples/*.py: delete all old application samples.
-	* samples/*.py: add new application samples which the name of those files and the form of those script base on "test coding standard".
-	* samples/richtextbox_text.txt: change "text.txt" to "richtextbox_text.txt" for richtextbox.py to do openfile.
+	* samples/*.py: add new application samples which the name of those files
+	and the form of those script base on "test coding standard".
+	* samples/richtextbox_text.txt: change "text.txt" to 
+	"richtextbox_text.txt" for richtextbox.py to do openfile.
 
 2008-06-10  Brian G. Merrell <bgmerrell@gmail.com>
 

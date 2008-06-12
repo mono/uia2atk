@@ -15,7 +15,6 @@ import getopt
 import os
 import time
 from socket import gethostname
-import signal
 
 
 # simply takes a string s as input and prints it if running verbosely
@@ -142,16 +141,6 @@ class Test(object):
       except InconceivableError, msg:
         print msg
         return 1
-
-    # cleanup
-    output("INFO:  Cleaning up...")
-    for pid in self.pids: 
-      try:
-        os.kill(pid, signal.SIGKILL)
-      except OSError, err:
-          # Errno 3  is "No such process"
-          if not err.errno == 3:
-            output("WARNING:  Could not kill process '%s'" % pid)
 
   def log(self, test):
     filename = os.path.basename(test)
