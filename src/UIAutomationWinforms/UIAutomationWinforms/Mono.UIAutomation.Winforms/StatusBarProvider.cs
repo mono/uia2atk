@@ -53,8 +53,6 @@ namespace Mono.UIAutomation.Winforms
         	public override void InitializeEvents ()
         	{
             		base.InitializeEvents ();
-
-            		// TODO: SetEvent?
         	}
 
 #endregion
@@ -73,6 +71,8 @@ namespace Mono.UIAutomation.Winforms
         	{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.StatusBar.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "status bar";
 			else if (propertyId == GridPatternIdentifiers.ColumnProperty.Id)
 				return ColumnCount;
 			else if (propertyId == GridPatternIdentifiers.RowProperty.Id)

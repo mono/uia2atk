@@ -1,7 +1,7 @@
 2008-06-12  Neville Gao <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Synchronized names
-	with GridPatternIdentifiers.cs
+	with GridPatternIdentifiers.cs. Added LocalizedControlTypeProperty.
 
 2008-06-11  Mario Carrion <mcarrion@novell.com>
 
