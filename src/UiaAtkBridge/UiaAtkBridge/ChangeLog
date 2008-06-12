@@ -1,5 +1,10 @@
 2008-06-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* Button.cs, ComboBox.cs: Fix some things and start to dig in
+	  providers...
+
+2008-06-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* ComboBox.cs: Get rid of some more NIEs.
 
 2008-06-12  Andrés G. Aragoneses <aaragoneses@novell.com> 

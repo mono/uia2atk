@@ -37,12 +37,16 @@ namespace UiaAtkBridge
 		
 		private string actionDescription = null;
 		private string actionName = "press";
+		private ISelectionProvider selProvider = null;
 		
 		public ComboBox (IRawElementProviderSimple provider)
 		{
 			this.provider = provider;
 			this.Role = Atk.Role.ComboBox;
 			innerChild = new Menu (children);
+			selProvider = (ISelectionProvider)provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
+			if (selProvider == null)
+				throw new NotImplementedException ("ComboBoxProvider should always implement ISelectionProvider");
 		}
 
 		public override IRawElementProviderSimple Provider {
@@ -147,14 +151,17 @@ namespace UiaAtkBridge
 		
 		bool Atk.SelectionImplementor.AddSelection (int i)
 		{
-			if ((i >= 0) && (i < children.Length))
+			if ((i >= 0) && (i < children.Length)) {
 				childSelected = i;
+				Name = children[i];
+			}
 			return true;
 		}
 
 		bool Atk.SelectionImplementor.ClearSelection ()
 		{
 			childSelected = null;
+			Name = null;
 			return true;
 		}
 

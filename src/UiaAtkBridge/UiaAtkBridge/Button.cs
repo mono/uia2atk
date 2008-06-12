@@ -64,6 +64,7 @@ namespace UiaAtkBridge
 		{
 			this.provider = provider;
 			
+			//FIXME: use provider.GetPatternProvider ()
 			if (provider is IInvokeProvider) {
 				invokeProvider = (IInvokeProvider)provider;
 				//it seems the default description should be null:
