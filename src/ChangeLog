@@ -1,3 +1,8 @@
+2008-06-12  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* patches/winforms-uia.patch: Ready for submission to MWF devs for
+	  review...attaching also do BNC #375987.
+
 2008-05-27  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* samples/tests.mds: Change name to reflect new dir name.
