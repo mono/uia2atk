@@ -162,7 +162,7 @@ namespace UiaAtkBridgeTest
 		{
 			if (type == BasicWidgetType.ComboBox) {
 				Assert.AreEqual (1, implementor.NActions, "NActions");
-				Assert.AreEqual ("press", implementor.GetName (0), "GetName click");
+				Assert.AreEqual ("press", implementor.GetName (0), "GetName press");
 			} else { //Button and Checkbox
 				Assert.AreEqual (ValidNumberOfActionsForAButton, implementor.NActions, "NActions");
 				
@@ -191,6 +191,8 @@ namespace UiaAtkBridgeTest
 			else
 			{
 				Assert.AreEqual (actionPerformed, implementor.DoAction (0), "DoAction Combo#1");
+				Assert.AreEqual (1, implementor.NActions, "NActions doesn't change");
+				Assert.AreEqual ("press", implementor.GetName (0), "Action[0] doesn't change");
 				Assert.AreEqual (false, implementor.DoAction (0), "DoAction Combo#2");
 			}
 			// it takes a bit before the State is propagated!

@@ -1,5 +1,9 @@
 2008-06-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Assure actions don't change after DoAction().
+
+2008-06-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* BridgeTester.cs: Finish the test backend for the bridge.
 
 2008-06-11  Andrés G. Aragoneses <aaragoneses@novell.com> 
