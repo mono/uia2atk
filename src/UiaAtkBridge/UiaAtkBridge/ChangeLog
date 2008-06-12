@@ -1,3 +1,8 @@
+2008-06-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* MenuItem.cs, Menu.cs, UiaAtkBridge.mdp, ComboBox.cs: Implement the
+	  correct children structure for the ComboBox.
+
 2008-06-10  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* UiaAtkBridge.mdp: Revert reference addition, it's only compatible

@@ -30,105 +30,36 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class ComboBox : ComponentAdapter, Atk.ActionImplementor, Atk.SelectionImplementor
+	
+	
+	public class Menu : ComponentAdapter, Atk.SelectionImplementor
 	{
+		public Atk.Object[] subElements;
 		
-		private Menu innerChild = new Menu (new string[] { "First Element", "Second Element", "Third Element" });
-		
-		public ComboBox ()
+		public Menu (string[] names)
 		{
+			this.Role = Atk.Role.Menu;
+			this.Name = String.Empty;
 			
+			subElements = new MenuItem[names.Length];
+			for (int i = 0; i < names.Length; i++)
+				subElements [i] = new MenuItem (names [i]);
 		}
-
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
-		}
-		
-		private IRawElementProviderSimple provider;
 		
 		protected override Atk.Object OnRefChild (int i)
 		{
-			if (i != 0)
+			if ((i < 0) || (i >= subElements.Length))
 				return null;
-			return innerChild;
+			return subElements [i];
 		}
 
 		protected override int OnGetNChildren ()
 		{
-			return 1;
-		}
-		
-		int Atk.ActionImplementor.NActions {
-			get {
-				throw new NotImplementedException();
-			}
+			return subElements.Length;
 		}
 
-		int Atk.SelectionImplementor.SelectionCount {
-			get {
-				throw new NotImplementedException();
-			}
-		}
-		
-		bool Atk.ActionImplementor.DoAction (int i)
-		{
-			throw new NotImplementedException();
-		}
-
-		string Atk.ActionImplementor.GetDescription (int i)
-		{
-			throw new NotImplementedException();
-		}
-
-		string Atk.ActionImplementor.GetName (int i)
-		{
-			throw new NotImplementedException();
-		}
-
-		string Atk.ActionImplementor.GetKeybinding (int i)
-		{
-			throw new NotImplementedException();
-		}
-
-		bool Atk.ActionImplementor.SetDescription (int i, string desc)
-		{
-			throw new NotImplementedException();
-		}
-
-		string Atk.ActionImplementor.GetLocalizedName (int i)
-		{
-			throw new NotImplementedException();
-		}
-
-		
-		bool Atk.SelectionImplementor.AddSelection (int i)
-		{
-			throw new NotImplementedException();
-		}
-
-		bool Atk.SelectionImplementor.ClearSelection ()
-		{
-			throw new NotImplementedException();
-		}
-
-		Atk.Object Atk.SelectionImplementor.RefSelection (int i)
-		{
-			throw new NotImplementedException();
-		}
-
-		bool Atk.SelectionImplementor.IsChildSelected (int i)
-		{
-			throw new NotImplementedException();
-		}
-
-		bool Atk.SelectionImplementor.RemoveSelection (int i)
-		{
-			throw new NotImplementedException();
-		}
-
-		bool Atk.SelectionImplementor.SelectAllSelection ()
-		{
-			throw new NotImplementedException();
+		public override IRawElementProviderSimple Provider {
+			get { return null; }
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
@@ -140,5 +71,42 @@ namespace UiaAtkBridge
 		{
 			throw new NotImplementedException ();
 		}
+
+		public int SelectionCount {
+			get {
+				throw new NotImplementedException();
+			}
+		}
+		
+		public bool AddSelection (int i)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool ClearSelection ()
+		{
+			throw new NotImplementedException();
+		}
+
+		public Atk.Object RefSelection (int i)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool IsChildSelected (int i)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool RemoveSelection (int i)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool SelectAllSelection ()
+		{
+			throw new NotImplementedException();
+		}
+		
 	}
 }
