@@ -39,8 +39,11 @@ namespace UiaAtkBridgeTest
 	public class BridgeTester : AtkTester {
 		
 		public override object GetAtkObjectThatImplementsInterface <I> (
-		  BasicWidgetType type, string[] name, out Atk.Object accessible, bool real)
+		  BasicWidgetType type, string[] names, out Atk.Object accessible, bool real)
 		{
+			Atk.ComponentImplementor component = null;
+			Atk.ActionImplementor action = null;
+			Atk.SelectionImplementor selection = null;
 			accessible = null;
 			
 			if (type != BasicWidgetType.ComboBox) {
@@ -48,7 +51,27 @@ namespace UiaAtkBridgeTest
 					type.ToString ());
 			}
 			
-			return null;
+			MWF.ComboBox comboBox = new MWF.ComboBox ();
+			foreach (string item in names)
+				comboBox.Items.Add (item);
+			
+			UiaAtkBridge.ComboBox uiaComb = new UiaAtkBridge.ComboBox (new ComboBoxProvider (comboBox));
+			accessible = uiaComb;
+			component = uiaComb;
+			selection = uiaComb;
+			action = uiaComb;
+			
+			if (typeof (I) == typeof (Atk.Component)) {
+				return new Atk.ComponentAdapter (component);
+			}
+			else if (typeof (I) == typeof (Atk.Action)) {
+				return new Atk.ActionAdapter (action);
+			}
+			else if (typeof (I) == typeof (Atk.Selection)) {
+				return new Atk.SelectionAdapter (selection);
+			}
+			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
+				typeof(I).Name);
 		}
 		
 		public override object GetAtkObjectThatImplementsInterface <I> (
@@ -92,6 +115,8 @@ namespace UiaAtkBridgeTest
 				component = uiaChk;
 				action = uiaChk;
 				break;
+			case BasicWidgetType.ComboBox:
+				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
 			default:
 				throw new NotImplementedException ("The widget finder backend still hasn't got support for " +
 					type.ToString ());
@@ -106,11 +131,6 @@ namespace UiaAtkBridgeTest
 			else if (typeof (I) == typeof (Atk.Action)) {
 				return new Atk.ActionAdapter (action);
 			}
-			// we are not using this yet
-//			else if (typeof(I) == typeof (Atk.Action)) {
-//				TestButtonControlType button = new TestButtonControlType ("Push Button", false);
-//				return new Atk.ActionAdapter (new UiaAtkBridge.Button(button));
-//			}
 			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
 				typeof(I).Name);
 		}

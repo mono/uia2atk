@@ -35,9 +35,9 @@ namespace UiaAtkBridge
 		
 		private Menu innerChild = new Menu (new string[] { "First Element", "Second Element", "Third Element" });
 		
-		public ComboBox ()
+		public ComboBox (IRawElementProviderSimple provider)
 		{
-			
+			this.provider = provider;
 		}
 
 		public override IRawElementProviderSimple Provider {
