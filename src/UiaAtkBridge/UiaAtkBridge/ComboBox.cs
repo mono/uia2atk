@@ -32,13 +32,17 @@ namespace UiaAtkBridge
 {
 	public class ComboBox : ComponentAdapter, Atk.ActionImplementor, Atk.SelectionImplementor
 	{
+		private string[] children = new string[] { "First Element", "Second Element", "Third Element" };
+		private Menu innerChild = null;
 		
-		private Menu innerChild = new Menu (new string[] { "First Element", "Second Element", "Third Element" });
+		private string actionDescription = null;
+		private string actionName = "press";
 		
 		public ComboBox (IRawElementProviderSimple provider)
 		{
 			this.provider = provider;
 			this.Role = Atk.Role.ComboBox;
+			innerChild = new Menu (children);
 		}
 
 		public override IRawElementProviderSimple Provider {
@@ -88,12 +92,6 @@ namespace UiaAtkBridge
 				return 1;
 			}
 		}
-
-		int Atk.SelectionImplementor.SelectionCount {
-			get {
-				throw new NotImplementedException();
-			}
-		}
 		
 		bool pressed = false;
 		
@@ -107,60 +105,79 @@ namespace UiaAtkBridge
 
 		string Atk.ActionImplementor.GetDescription (int i)
 		{
-			throw new NotImplementedException();
+			if (i != 0)
+				return null;
+			return actionDescription;
 		}
 
 		string Atk.ActionImplementor.GetName (int i)
 		{
 			if (i != 0)
 				return null;
-			return "press";
+			return actionName;
 		}
 
 		string Atk.ActionImplementor.GetKeybinding (int i)
 		{
-			throw new NotImplementedException();
+			//TODO:
+			return null;
 		}
 
 		bool Atk.ActionImplementor.SetDescription (int i, string desc)
 		{
-			throw new NotImplementedException();
+			if (i != 0)
+				return false;
+			actionDescription = desc;
+			return true;
 		}
 
 		string Atk.ActionImplementor.GetLocalizedName (int i)
 		{
-			throw new NotImplementedException();
+			if (i != 0)
+				return null;
+			return actionName;
 		}
 
+		// not multi-selection for now
+		int Atk.SelectionImplementor.SelectionCount {
+			get {
+				return (childSelected != null)? 1 : 0;
+			}
+		}
 		
 		bool Atk.SelectionImplementor.AddSelection (int i)
 		{
-			throw new NotImplementedException();
+			if ((i >= 0) && (i < children.Length))
+				childSelected = i;
+			return true;
 		}
 
 		bool Atk.SelectionImplementor.ClearSelection ()
 		{
-			throw new NotImplementedException();
+			childSelected = null;
+			return true;
 		}
 
 		Atk.Object Atk.SelectionImplementor.RefSelection (int i)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
+		private int? childSelected = null;
+		
 		bool Atk.SelectionImplementor.IsChildSelected (int i)
 		{
-			throw new NotImplementedException();
+			return (!((childSelected == null) || (childSelected != i)));
 		}
 
 		bool Atk.SelectionImplementor.RemoveSelection (int i)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
 		bool Atk.SelectionImplementor.SelectAllSelection ()
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
