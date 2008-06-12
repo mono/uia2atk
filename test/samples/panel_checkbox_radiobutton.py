@@ -1,16 +1,25 @@
 #!/usr/bin/env ipy
-####Panel
-####Label
-####CheckBox
-####RadioButton
+
+##############################################################################
+# Written by:  Calen Chen <cachen@novell.com>
+# Date:        03/11/2008
+# Description: This is a test application sample for winforms control:
+#              Panel
+#              CheckBox
+#              RadioButton
+##############################################################################
+
 import clr
+
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
 
 from System.Drawing import *
 from System.Windows.Forms import *
 
-class ChecksAndRadiosForm(Form):
+
+class PanelCheckBoxRadioButtonApp(Form):
+
     def __init__(self):
         self.Text = "Panel&Label&CheckBox&RadioButton"
 
@@ -97,7 +106,6 @@ class ChecksAndRadiosForm(Form):
         self.radioPanel.Controls.Add(self.radio1)
         self.radioPanel.Controls.Add(self.radio2)
 
-
     def checkedChanged(self, sender, args):
         if not sender.Checked:
             return
@@ -106,5 +114,5 @@ class ChecksAndRadiosForm(Form):
         else:
             self.radioLabel2.Text = "You are %s" % self.radio1.Text
 
-form = ChecksAndRadiosForm()
+form = PanelCheckBoxRadioButtonApp()
 Application.Run(form)

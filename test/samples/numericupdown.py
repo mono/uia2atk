@@ -1,14 +1,23 @@
 #!/usr/bin/env ipy
 
-####NumericUpDown
+##############################################################################
+# Written by:  Calen Chen <cachen@novell.com>
+# Date:        03/11/2008
+# Description: This is a test application sample for winforms control:
+#              NumericUpDown
+##############################################################################
+
 import clr
+
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
 
 from System.Drawing import *
 from System.Windows.Forms import *
 
-class ChecksAndRadiosForm(Form):
+
+class NumericUpDownApp(Form):
+
     def __init__(self):
         self.Text = "NumericUpDown Example"
 
@@ -31,6 +40,5 @@ class ChecksAndRadiosForm(Form):
         self.Controls.Add(self.numercupdown1)
 
 
-
-form = ChecksAndRadiosForm()
+form = NumericUpDownApp()
 Application.Run(form)
