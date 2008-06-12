@@ -38,13 +38,14 @@ namespace UiaAtkBridge
 		public ComboBox (IRawElementProviderSimple provider)
 		{
 			this.provider = provider;
+			this.Role = Atk.Role.ComboBox;
 		}
 
 		public override IRawElementProviderSimple Provider {
 			get { return provider; }
 		}
 		
-		private IRawElementProviderSimple provider;
+		private IRawElementProviderSimple provider = null;
 		
 		protected override Atk.Object OnRefChild (int i)
 		{
@@ -58,9 +59,33 @@ namespace UiaAtkBridge
 			return 1;
 		}
 		
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			
+			bool canFocus = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
+			if (canFocus)
+				states.AddState (Atk.StateType.Selectable);
+			else
+				states.RemoveState (Atk.StateType.Selectable);
+			
+			bool enabled = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			if (enabled)
+			{
+				states.AddState (Atk.StateType.Enabled);
+			}
+			else
+			{
+				states.RemoveState (Atk.StateType.Enabled);
+			}
+			
+			return states;
+		}
+
+		
 		int Atk.ActionImplementor.NActions {
 			get {
-				throw new NotImplementedException();
+				return 1;
 			}
 		}
 
@@ -70,9 +95,14 @@ namespace UiaAtkBridge
 			}
 		}
 		
+		bool pressed = false;
+		
 		bool Atk.ActionImplementor.DoAction (int i)
 		{
-			throw new NotImplementedException();
+			if (i != 0)
+				return false;
+			pressed = !pressed;
+			return pressed;
 		}
 
 		string Atk.ActionImplementor.GetDescription (int i)
@@ -82,7 +112,9 @@ namespace UiaAtkBridge
 
 		string Atk.ActionImplementor.GetName (int i)
 		{
-			throw new NotImplementedException();
+			if (i != 0)
+				return null;
+			return "press";
 		}
 
 		string Atk.ActionImplementor.GetKeybinding (int i)

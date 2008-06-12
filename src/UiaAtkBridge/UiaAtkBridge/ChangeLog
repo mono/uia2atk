@@ -1,5 +1,9 @@
 2008-06-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* ComboBox.cs: Implement some features to pass some tests.
+
+2008-06-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* ComboBox.cs: Finish the test backend for the bridge.
 
 2008-06-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
