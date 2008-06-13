@@ -98,7 +98,8 @@ class Test(object):
 
 
   def countdown(self, n):
-    ''' Counts down for n seconds and allows the user to abort the program cleanly '''
+    ''' Counts down for n seconds and allows the user to abort the program
+    cleanly '''
 
     remaining = n
     output("Press CTRL+C to abort.")
@@ -136,11 +137,11 @@ class Test(object):
     if len(down_machines) > 0:
       output("WARNING:  %i/%i machines did not respond"\
               % (len(down_machines), len(self.machines)))
-      #try:
-        #self.countdown(Settings.COUNTDOWN)
-      #except KeyboardInterrupt:
-      #  return 0
-      #output("")
+      try:
+        self.countdown(Settings.COUNTDOWN)
+      except KeyboardInterrupt:
+        return 0
+      output("")
     return len(self.up_machines)
 
   def execute_tests(self):
@@ -167,7 +168,7 @@ class Test(object):
             output("DONE")
           else:
             failed_machines.append(t.name)
-            output("FAIL")
+            output("FAILED")
           lock.release()
         else:
           one_alive_thread = True

@@ -1,5 +1,11 @@
 2008-06-13  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* drivers/local_run.py : return the status of the test so remote_run.py
+	can report it.
+	* drivers/remote_run.py : fix some wording and reenable the countdown
+
+2008-06-13  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* drivers/local_run.py : implemented a much better solution for
 	cleaning up test apps that fail.
 

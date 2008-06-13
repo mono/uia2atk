@@ -133,14 +133,18 @@ class Test(object):
 
     # execute the tests
     output("INFO:  Executing tests...")
+    status = 0
     for test in found_tests:
-      os.system(test)
+      r = os.system(test)
+      if r != 0:
+        output("WARNING:  Failed test:  %s" % test)
+        status = 1
       try:
         self.log(test)
       except InconceivableError, msg:
         output(msg)
         return 1
-    return 0 
+    return status 
 
 
   def log(self, test):
@@ -185,7 +189,6 @@ class Test(object):
 
   def cleanup(self):
     output("INFO:  Cleaning up...")
-    r = 0
     search = "%s/%s" % (settings.uiaqa_home, "samples")
     p1 = s.Popen(["ps","a","x"], stdout=s.PIPE)
     p2 = s.Popen(["grep", search], stdin=p1.stdout, stdout=s.PIPE)
@@ -198,15 +201,12 @@ class Test(object):
           try:
             output("INFO:  killing process: %s" % pid)
             os.kill(int(pid), signal.SIGKILL)
-            r = 2
           except OSError, err:
             # Errno 3 is "No such process"
             if err.errno == 3:
               # If it doesn't exist anymore, cool.
               pass
             output("WARNING:  Could not kill process: %s" % pid)
-            r = 2
-    return r
       
 class InconceivableError(Exception): pass
 
@@ -214,11 +214,8 @@ class Main(object):
 
   def main(self, argv=None):
     t = Test()
-    r = 0
-    # run() returns 0 on success 1 on failure
-    r += t.run()
-    # cleanup() returns 0 when no processes are killed, 2 otherwise
-    r += t.cleanup()
+    r = t.run()
+    t.cleanup()
     return r
 
 settings = Settings()
