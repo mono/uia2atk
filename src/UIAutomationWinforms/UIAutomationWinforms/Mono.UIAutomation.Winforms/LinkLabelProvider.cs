@@ -24,86 +24,25 @@
 // 
 
 using System;
-using System.Reflection;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Behaviors;
 
 namespace Mono.UIAutomation.Winforms
 {
 
-	public class LinkLabelProvider : SimpleControlProvider, IInvokeProvider
+	public class LinkLabelProvider : SimpleControlProvider
 	{
-#region Private Members
-		
-		private LinkLabel linkLabel;
 
-#endregion
-		
 #region Constructor
 
 		public LinkLabelProvider (LinkLabel linkLabel) : base (linkLabel)
 		{
-			this.linkLabel = linkLabel;
+			SetBehavior (InvokePatternIdentifiers.Pattern, 
+			             new LinkLabelInvokeProviderBehavior (this));
 		}
 
 #endregion
-		
-#region Public Methods
-
-		public override void InitializeEvents ()
-		{
-			base.InitializeEvents ();
-
-			SetEvent (EventStrategyType.InvokedEvent, 
-			          new LinkLabelInvokedEvent (this, linkLabel));
-			//TODO: Missing event: AutomationFocusChangedEvent
-		}
-
-#endregion
-		
-#region IInvokeProvider Members
-		
-		public void Invoke ()
-		{
-			if (!linkLabel.Enabled)
-				throw new ElementNotEnabledException ();
-			
-			Type type = linkLabel.GetType ();
-			MethodInfo methodInfo = type.GetMethod ("OnLinkClicked",
-			                                        BindingFlags.InvokeMethod
-			                                        | BindingFlags.NonPublic
-			                                        | BindingFlags.Instance);
-			//TODO: Are the arguments OK?
-			LinkLabelLinkClickedEventArgs args = new LinkLabelLinkClickedEventArgs (
-				linkLabel.Links [0], MouseButtons.Left);
-			methodInfo.Invoke (linkLabel, new object[] { args });
-		}
-		
-#endregion
-	
-#region IRawElementProviderSimple Members
-	
-		public override object GetPatternProvider (int patternId)
-		{
-			if (patternId == InvokePatternIdentifiers.Pattern.Id)
-				return this;
-			
-			return null;
-		}
-		
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Hyperlink.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "hyperlink";
-			else
-				return base.GetPropertyValue (propertyId);
-		}
-
-#endregion
-
 	}
 }

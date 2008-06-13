@@ -62,8 +62,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeEvents ();
 
-			SetEvent (EventStrategyType.InvokedEvent, 
-			          new DefaultInvokedEvent (this, control));
+			SetEvent (ProviderEventType.InvokedEvent, 
+			          new DefaultInvokedEvent (this));
 		}
 		
 #endregion

@@ -31,23 +31,22 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 	
-	public class DefaultNamePropertyEvent : EventStrategy
+	public class DefaultNamePropertyEvent : ProviderEvent
 	{
 		
-		public DefaultNamePropertyEvent (IRawElementProviderSimple provider,
-		                                 Control control) :
-			base (provider, control)
+		public DefaultNamePropertyEvent (IRawElementProviderSimple provider) 
+			: base (provider)
 		{
 		}
 		
-		public override void Connect ()
+		public override void Connect (Control control)
 		{
-			Control.TextChanged += new EventHandler (OnTextChanged);
+			control.TextChanged += new EventHandler (OnTextChanged);
 		}
 
-		public override void Disconnect ()
+		public override void Disconnect (Control control)
 		{
-			Control.TextChanged -= new EventHandler (OnTextChanged);
+			control.TextChanged -= new EventHandler (OnTextChanged);
 		}
 		
 		private void OnTextChanged (object sender, EventArgs e)

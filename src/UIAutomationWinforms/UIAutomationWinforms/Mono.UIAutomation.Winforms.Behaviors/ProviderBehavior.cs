@@ -25,6 +25,7 @@
 
 using System;
 using System.Windows.Automation;
+using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {	
@@ -54,22 +55,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		}
 		
 #endregion
-		
-#region IDispose Interface
-		
-		public virtual void Dispose ()
-		{
-		}
 
-#endregion		
-		
 #region IProviderBehavior Interface
 		
 		public abstract AutomationPattern ProviderPattern {
 			get;
 		}
+		
+		public abstract void Disconnect (Control control);
 
-		public abstract void Initialize (System.Windows.Forms.Control control);
+		public abstract void Connect (Control control);
 		
 		public virtual object GetPropertyValue (int propertyId)
 		{

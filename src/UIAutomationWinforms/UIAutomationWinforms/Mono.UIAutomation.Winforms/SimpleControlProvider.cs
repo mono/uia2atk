@@ -46,7 +46,7 @@ namespace Mono.UIAutomation.Winforms
 		
 #region Private Fields
 
-		private Dictionary<EventStrategyType, IEventStrategy> events;
+		private Dictionary<ProviderEventType, IConnectable> events;
 		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
 
 #endregion
@@ -57,7 +57,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			this.control = control;
 			
-			events = new Dictionary<EventStrategyType,IEventStrategy> ();
+			events = new Dictionary<ProviderEventType,IConnectable> ();
 			providerBehaviors =
 				new Dictionary<AutomationPattern,IProviderBehavior> ();
 		}
@@ -69,30 +69,30 @@ namespace Mono.UIAutomation.Winforms
 		public virtual void InitializeEvents ()
 		{
 			// TODO: Add: EventStrategyType.IsOffscreenProperty, DefaultIsOffscreenPropertyEvent
-			SetEvent (EventStrategyType.IsEnabledProperty, 
-			          new DefaultIsEnabledPropertyEvent (this, control));
-			SetEvent (EventStrategyType.NameProperty,
-			          new DefaultNamePropertyEvent (this, control));
-			SetEvent (EventStrategyType.HasKeyboardFocusProperty,
-			          new DefaultHasKeyboardFocusPropertyEvent (this, control));
-			SetEvent (EventStrategyType.BoundingRectangleProperty,
-			          new DefaultBoundingRectanglePropertyEvent (this, control));
-			SetEvent (EventStrategyType.StructureChangedEvent,
-			          new DefaultStructureChangedEvent (this, control));
+			SetEvent (ProviderEventType.IsEnabledProperty, 
+			          new DefaultIsEnabledPropertyEvent (this));
+			SetEvent (ProviderEventType.NameProperty,
+			          new DefaultNamePropertyEvent (this));
+			SetEvent (ProviderEventType.HasKeyboardFocusProperty,
+			          new DefaultHasKeyboardFocusPropertyEvent (this));
+			SetEvent (ProviderEventType.BoundingRectangleProperty,
+			          new DefaultBoundingRectanglePropertyEvent (this));
+			SetEvent (ProviderEventType.StructureChangedEvent,
+			          new DefaultStructureChangedEvent (this));
 		}
 				
-		public void SetEvent (EventStrategyType type, IEventStrategy strategy)
+		public void SetEvent (ProviderEventType type, IConnectable strategy)
 		{
-			IEventStrategy value;
+			IConnectable value;
 			
 			if (events.TryGetValue (type, out value) == true) {			
-				value.Disconnect ();
+				value.Disconnect (control);
 				events.Remove (type);
 			}
 
 			if (strategy != null) {
 				events [type] = strategy;
-				strategy.Connect ();
+				strategy.Connect (control);
 			}
 		}
 		
@@ -104,13 +104,13 @@ namespace Mono.UIAutomation.Winforms
 		{
 			IProviderBehavior oldBehavior;
 			if (providerBehaviors.TryGetValue (pattern, out oldBehavior) == true) {
-				oldBehavior.Dispose ();
+				oldBehavior.Disconnect (control);
 				providerBehaviors.Remove (pattern);
 			}
 			
 			if (behavior != null) {
 				providerBehaviors [pattern] = behavior;
-				behavior.Initialize (control);
+				behavior.Connect (control);
 			}
 		}
 		
@@ -146,6 +146,12 @@ namespace Mono.UIAutomation.Winforms
 		
 		public virtual object GetPropertyValue (int propertyId)
 		{
+			foreach (IProviderBehavior behavior in ProviderBehaviors) {
+				object val = behavior.GetPropertyValue (propertyId);
+				if (val != null)
+					return val;
+			}
+			
 			if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
 				return control.GetHashCode (); // TODO: Ensure uniqueness
 			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
@@ -175,12 +181,6 @@ namespace Mono.UIAutomation.Winforms
 					Rect rectangle = (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 					return new Point (rectangle.X, rectangle.Y);
 				}
-			}
-			
-			foreach (IProviderBehavior behavior in ProviderBehaviors) {
-				object val = behavior.GetPropertyValue (propertyId);
-				if (val != null)
-					return val;
 			}
 			
 			return null;

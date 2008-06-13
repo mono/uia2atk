@@ -31,23 +31,22 @@ namespace Mono.UIAutomation.Winforms.Events
 {
 
 	// TODO: VisibleChanged isn't the valid MS behaviour.
-	internal class DefaultIsOffscreenPropertyEvent : EventStrategy
+	internal class DefaultIsOffscreenPropertyEvent : ProviderEvent
 	{
 		
-		public DefaultIsOffscreenPropertyEvent (IRawElementProviderSimple provider, 
-		                                        Control control) :
-			base (provider, control)
+		public DefaultIsOffscreenPropertyEvent (IRawElementProviderSimple provider)
+			: base (provider)
 		{
 		}
 		
-		public override void Connect ()
+		public override void Connect (Control control)
 		{
-			Control.VisibleChanged += new EventHandler (OnVisibleChanged);
+			control.VisibleChanged += new EventHandler (OnVisibleChanged);
 		}
 
-		public override void Disconnect ()
+		public override void Disconnect (Control control)
 		{
-			Control.VisibleChanged -= new EventHandler (OnVisibleChanged);
+			control.VisibleChanged -= new EventHandler (OnVisibleChanged);
 		}
 		
 		protected void OnVisibleChanged (object sender, EventArgs e)

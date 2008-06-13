@@ -1,3 +1,76 @@
+2008-06-13  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.mdp: Updated: Deleted and added files.
+	* Mono.UIAutomation.Winforms/IConnectable.cs: File added.
+	* Mono.UIAutomation.Winforms.Behaviors/LinkLabelInvokeProviderBehavior.cs:
+	File added. LinkLabel control behavior.
+	* Mono.UIAutomation.Winforms.Events/NullEvent.cs: Deleted. Not longer 
+	needed.
+	* Mono.UIAutomation.Winforms.Events/IEventStrategy.cs: Deleted. Replaced
+	with IConnectable.
+	* Mono.UIAutomation.Winforms.Events/EventStrategy.cs: Deleted. Replaced
+	with ProviderEvent class.
+	* Mono.UIAutomation.Winforms.Events/EventStrategyType.cs: Deleted. 
+	Replaced with ProviderEventType enumeration.
+	* Mono.UIAutomation.Winforms.Events/ProviderEvent.cs: Added. Replaces
+	EventStrategy class.
+	* Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: Added. 
+	Replaces EventStrategyType enumeration.
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs: Updated to changes 
+	in DefaultInvokedEvent class.
+	* Mono.UIAutomation.Winforms/LabelProvider.cs: Updated to changes
+	in DefaultTextChangedEvent class.
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs: Updated to changes
+	in DefaultToggleStatePropertyEvent class.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: SetEvent method
+	signature changed. Updated to all *Event classes. SetBehavior method
+	updated to new API changes. GetPropertyValue method calls
+	ProviderBehaviors first.
+	* Mono.UIAutomation.Winforms/LinkLabelProvider.cs: Behavior code moved
+	to LinkLabelInvokeProviderBehavior class.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Updated to changes
+	in *Event classes.
+	* Mono.UIAutomation.Winforms/NumericUpDownProvider.cs: Updated to 
+	changes in DefaultInvokedEvent class.
+	* Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs:
+	Dispose method renamed to Disconnect. Initialize method renamed to 
+	Connect.
+	* Mono.UIAutomation.Winforms.Behaviors/IProviderBehavior.cs: 
+	Generalizes IConnectable instead of IDispose. Initialize method removed.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxProviderBehavior.cs:
+	Initialize method renamed to Connect.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxExpandCollapseProviderBehavior.cs:
+	Dispose method renamed to Disconnect. Initialize method renamed to
+	Connect.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxSelectionProviderBehavior.cs:
+	Disconnect method added.
+	* Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs: Dispose 
+	method removed. Disconnect method added.
+	* Mono.UIAutomation.Winforms.Events/LinkLabelInvokedEvent.cs: Updated
+	to base class changes.
+	* Mono.UIAutomation.Winforms.Events/DefaultStructureChangedEvent.cs: 
+	Updated to base class changes.
+	* Mono.UIAutomation.Winforms.Events/TextBoxHasKeyBoardFocusPropertyEvent.cs:
+	Updated to base class changes.
+	* Mono.UIAutomation.Winforms.Events/DefaultIsOffscreenPropertyEvent.cs:
+	Updated to base class changes.
+	* Mono.UIAutomation.Winforms.Events/DefaultNamePropertyEvent.cs:
+	Updated to base class changes.
+	* Mono.UIAutomation.Winforms.Events/ComboBoxExpandCollapseStateEvent.cs:
+	Updated to base class changes.
+	* Mono.UIAutomation.Winforms.Events/DefaultToggleStatePropertyEvent.cs:
+	Updated to base class changes.
+	* Mono.UIAutomation.Winforms.Events/DefaultIsEnabledPropertyEvent.cs:
+	Updated to base class changes.
+	* Mono.UIAutomation.Winforms.Events/DefaultTextChangedEvent.cs:
+	Updated to base class changes.
+	* Mono.UIAutomation.Winforms.Events/DefaultBoundingRectanglePropertyEvent.cs:
+	Updated to base class changes.
+	* Mono.UIAutomation.Winforms.Events/DefaultInvokedEvent.cs:
+	Updated to base class changes.
+	* Mono.UIAutomation.Winforms.Events/DefaultHasKeyboardFocusPropertyEvent.cs:
+	Updated to base class changes.
+
 2008-06-12  Neville Gao <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Synchronized names

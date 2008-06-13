@@ -21,29 +21,20 @@
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
+//	Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
+
 using System;
 using System.Windows.Forms;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
 
-namespace Mono.UIAutomation.Winforms.Events
+namespace Mono.UIAutomation.Winforms
 {
 
-	internal class NullEvent : EventStrategy
+	public interface IConnectable
 	{
+		void Connect (Control control);
 		
-		public NullEvent () : base (null, null)
-		{
-		}
-		
-		public override void Connect ()
-		{
-		}
-
-		public override void Disconnect ()
-		{
-		}
-
+		void Disconnect (Control control);
 	}
+
 }

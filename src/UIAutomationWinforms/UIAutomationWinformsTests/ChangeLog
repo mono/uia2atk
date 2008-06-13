@@ -1,3 +1,7 @@
+2008-06-13  Mario Carrion <mcarrion@novell.com>
+
+	* LinkLabelProviderTest.cs: Updated to test not valid exception.
+
 2008-06-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* RadioButtonProviderTest.cs: Testing of everything but events.

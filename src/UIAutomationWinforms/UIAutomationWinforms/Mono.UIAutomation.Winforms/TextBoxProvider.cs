@@ -67,11 +67,11 @@ namespace Mono.UIAutomation.Winforms
 
 			// NameProperty. uses control.Name to emit changes, so right now
 			// we're "cleaning" the previous value.
-			SetEvent (EventStrategyType.NameProperty, new NullEvent ());
-			SetEvent (EventStrategyType.TextChangedEvent, 
-			          new DefaultTextChangedEvent (this, control));
-			SetEvent (EventStrategyType.HasKeyboardFocusProperty, 
-			          new TextBoxHasKeyBoardFocusPropertyEvent (this, textboxbase));
+			SetEvent (ProviderEventType.NameProperty, null);
+			SetEvent (ProviderEventType.TextChangedEvent, 
+			          new DefaultTextChangedEvent (this));
+			SetEvent (ProviderEventType.HasKeyboardFocusProperty, 
+			          new TextBoxHasKeyBoardFocusPropertyEvent (this));
 			
 			// TODO: InvalidatedEvent
 			// TODO: TextSelectionChangedEvent: using textbox.SelectionLength != 0?	

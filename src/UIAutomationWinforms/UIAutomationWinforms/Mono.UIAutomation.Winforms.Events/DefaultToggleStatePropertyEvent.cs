@@ -31,24 +31,22 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	internal class DefaultToggleStatePropertyEvent : EventStrategy
+	internal class DefaultToggleStatePropertyEvent : ProviderEvent
 	{
-		public DefaultToggleStatePropertyEvent (IToggleProvider toggleProvider,
-		                                         CheckBox control) :
-			base ((IRawElementProviderSimple) toggleProvider, control)
+		public DefaultToggleStatePropertyEvent (IToggleProvider toggleProvider)
+			: base ((IRawElementProviderSimple) toggleProvider)
 		{
 			this.toggleProvider = toggleProvider;
-			checkbox = control;
 		}
 	
-		public override void Connect ()
+		public override void Connect (Control control)
 		{
-			checkbox.CheckedChanged += new EventHandler (OnCheckChanged);
+			((CheckBox) control).CheckedChanged += new EventHandler (OnCheckChanged);
 		}
 
-		public override void Disconnect ()
+		public override void Disconnect (Control control)
 		{
-			checkbox.CheckedChanged -= new EventHandler (OnCheckChanged);
+			((CheckBox) control).CheckedChanged -= new EventHandler (OnCheckChanged);
 		}
 		
 		private void OnCheckChanged (object sender, EventArgs e)
@@ -63,6 +61,5 @@ namespace Mono.UIAutomation.Winforms.Events
 		}
 		
 		private IToggleProvider toggleProvider;
-		private CheckBox checkbox;
 	}
 }

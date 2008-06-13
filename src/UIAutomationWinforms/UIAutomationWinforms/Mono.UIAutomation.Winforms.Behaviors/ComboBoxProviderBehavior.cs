@@ -38,7 +38,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			: base (provider) 
 		{
 		}
-		
+
 #endregion
 
 #region Protected fields
@@ -63,7 +63,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 				return null;
 		}
 
-		public override void Initialize (Control control)
+		public override void Connect (Control control)
 		{
 			combobox = (ComboBox) control;
 		}

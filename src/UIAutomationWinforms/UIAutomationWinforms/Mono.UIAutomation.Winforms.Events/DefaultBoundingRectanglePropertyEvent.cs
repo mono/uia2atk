@@ -31,23 +31,22 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 	
-	internal class DefaultBoundingRectanglePropertyEvent : EventStrategy
+	internal class DefaultBoundingRectanglePropertyEvent : ProviderEvent
 	{
 		
-		public DefaultBoundingRectanglePropertyEvent (IRawElementProviderSimple provider, 
-		                                              Control control) :
-			base (provider, control)
+		public DefaultBoundingRectanglePropertyEvent (IRawElementProviderSimple provider) 
+			: base (provider)
 		{
 		}
 
-		public override void Connect ()
+		public override void Connect (Control control)
 		{
-			Control.Resize += new EventHandler (OnResize);
+			control.Resize += new EventHandler (OnResize);
 		}
 
-		public override void Disconnect ()
+		public override void Disconnect (Control control)
 		{
-			Control.Resize -= new EventHandler (OnResize);
+			control.Resize -= new EventHandler (OnResize);
 		}
 		
 		private void OnResize (object sender, EventArgs e)

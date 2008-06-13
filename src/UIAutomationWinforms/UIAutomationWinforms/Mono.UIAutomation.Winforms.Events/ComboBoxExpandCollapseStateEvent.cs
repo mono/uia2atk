@@ -32,30 +32,28 @@ using Mono.UIAutomation.Winforms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 	
-	public class ComboBoxExpandCollapseStateEvent : EventStrategy
+	public class ComboBoxExpandCollapseStateEvent : ProviderEvent
 	{
 		
 #region Constructor
 
-		public ComboBoxExpandCollapseStateEvent (IRawElementProviderSimple provider, 
-		                                         ComboBox combobox) 
-			: base (provider, combobox)
+		public ComboBoxExpandCollapseStateEvent (IRawElementProviderSimple provider) 
+			: base (provider)
 		{
-			this.combobox= combobox;
 		}
 		
 #endregion
 		
 #region EventStrategy Methods
 		
-		public override void Connect ()
+		public override void Connect (Control control)
 		{
-			combobox.DropDown += new EventHandler (OnDropDown);
+			((ComboBox) control).DropDown += new EventHandler (OnDropDown);
 		}
 
-		public override void Disconnect ()
+		public override void Disconnect (Control control)
 		{
-			combobox.DropDown -= new EventHandler (OnDropDown);
+			((ComboBox) control).DropDown -= new EventHandler (OnDropDown);
 		}
 		
 #endregion
@@ -75,11 +73,6 @@ namespace Mono.UIAutomation.Winforms.Events
 		}
 		
 #endregion
-		
-#region Private fields
-		
-		private ComboBox combobox;
-		
-#endregion
+
 	}
 }

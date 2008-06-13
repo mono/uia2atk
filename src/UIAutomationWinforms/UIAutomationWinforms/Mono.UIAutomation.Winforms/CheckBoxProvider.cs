@@ -55,8 +55,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeEvents ();
 
-			SetEvent (EventStrategyType.ToggleStateProperty,
-			          new DefaultToggleStatePropertyEvent (this, checkbox));
+			SetEvent (ProviderEventType.ToggleStateProperty,
+			          new DefaultToggleStatePropertyEvent (this));
 		}
 		
 #endregion

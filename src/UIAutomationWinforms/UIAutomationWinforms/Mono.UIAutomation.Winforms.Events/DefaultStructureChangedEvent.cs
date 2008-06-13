@@ -34,22 +34,21 @@ namespace Mono.UIAutomation.Winforms.Events
 	// - ChildrenBulkAdded, 
 	// - ChildrenBulkRemoved
 	// - ChildrenReordered
-	internal class DefaultStructureChangedEvent : EventStrategy
+	internal class DefaultStructureChangedEvent : ProviderEvent
 	{
-		public DefaultStructureChangedEvent (IRawElementProviderSimple provider, 
-		                                     Control control) :
-			base (provider, control)
+		public DefaultStructureChangedEvent (IRawElementProviderSimple provider)
+			: base (provider)
 		{
 		}
 
-		public override void Connect ()
+		public override void Connect (Control control)
 		{
-			Control.VisibleChanged += new EventHandler (OnStructureChangedEvent);
+			control.VisibleChanged += new EventHandler (OnStructureChangedEvent);
 		}
 
-		public override void Disconnect ()
+		public override void Disconnect (Control control)
 		{
-			Control.VisibleChanged -= new EventHandler (OnStructureChangedEvent);
+			control.VisibleChanged -= new EventHandler (OnStructureChangedEvent);
 		}
 		
 		protected void OnStructureChangedEvent (object sender, EventArgs e)
@@ -57,8 +56,9 @@ namespace Mono.UIAutomation.Winforms.Events
 			if (AutomationInteropProvider.ClientsAreListening) {
 				int []fakeRuntimeId = new int[] { 0 }; // TODO: Ok?
 				StructureChangedEventArgs args;
+				Control control = sender as Control;
 
-				if (Control.Visible)
+				if (control.Visible)
 					args = new StructureChangedEventArgs (StructureChangeType.ChildAdded, 
 					                                      fakeRuntimeId);
 				else

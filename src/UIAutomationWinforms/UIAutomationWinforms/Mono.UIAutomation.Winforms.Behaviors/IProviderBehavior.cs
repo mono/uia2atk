@@ -31,13 +31,8 @@ using System.Windows.Automation;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
-	public interface IProviderBehavior : IDisposable // TODO: Any need to implement IRaw*?
-	{
-		/// <summary>
-		/// Initialize this provider behavior with the given control.
-		/// </summary>
-		void Initialize (Control control);
-		
+	public interface IProviderBehavior : IConnectable // TODO: Any need to implement IRaw*?
+	{		
 		/// <summary>
 		/// Add support for more AutomationProperty types to the
 		/// raw provider's IRawElementProviderSimple.GetPropertyValue

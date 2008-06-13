@@ -33,30 +33,26 @@ namespace Mono.UIAutomation.Winforms.Events
 	internal class TextBoxHasKeyBoardFocusPropertyEvent : DefaultHasKeyboardFocusPropertyEvent
 	{
 		
-		public TextBoxHasKeyBoardFocusPropertyEvent (IRawElementProviderSimple provider, 
-		                                             TextBoxBase textBoxBase) :
-			base (provider, textBoxBase)
+		public TextBoxHasKeyBoardFocusPropertyEvent (IRawElementProviderSimple provider) 
+			: base (provider)
 		{
-			this.textBoxBase = textBoxBase;
 		}
 		
-		public override void Connect ()
+		public override void Connect (Control control)
 		{
-			textBoxBase.Enter += new EventHandler (OnEnterLeave);
-			textBoxBase.Leave += new EventHandler (OnEnterLeave);
+			((TextBoxBase) control).Enter += new EventHandler (OnEnterLeave);
+			((TextBoxBase) control).Leave += new EventHandler (OnEnterLeave);
 		}
 
-		public override void Disconnect ()
+		public override void Disconnect (Control control)
 		{
-			textBoxBase.Enter -= new EventHandler (OnEnterLeave);
-			textBoxBase.Leave -= new EventHandler (OnEnterLeave);
+			((TextBoxBase) control).Enter -= new EventHandler (OnEnterLeave);
+			((TextBoxBase) control).Leave -= new EventHandler (OnEnterLeave);
 		}
 		
 		private void OnEnterLeave (object sender, EventArgs e)
 		{
 			HasKeyboardFocusPropertyEvent ();
 		}
-
-		private TextBoxBase textBoxBase;
 	}
 }

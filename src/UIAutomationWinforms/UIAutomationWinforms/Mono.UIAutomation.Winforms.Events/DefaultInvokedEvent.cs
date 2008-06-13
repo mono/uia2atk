@@ -31,23 +31,22 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	internal class DefaultInvokedEvent : EventStrategy
+	internal class DefaultInvokedEvent : ProviderEvent
 	{
 		
-		public DefaultInvokedEvent (IRawElementProviderSimple provider, 
-		                             Control control) :
-			base (provider, control)
+		public DefaultInvokedEvent (IRawElementProviderSimple provider) 
+			: base (provider)
 		{
 		}
 		
-		public override void Connect ()
+		public override void Connect (Control control)
 		{
-			Control.Click += new EventHandler (OnClick);
+			control.Click += new EventHandler (OnClick);
 		}
 
-		public override void Disconnect ()
+		public override void Disconnect (Control control)
 		{
-			Control.Click -= new EventHandler (OnClick);
+			control.Click -= new EventHandler (OnClick);
 		}
 		
 		protected void InvokeEvent ()

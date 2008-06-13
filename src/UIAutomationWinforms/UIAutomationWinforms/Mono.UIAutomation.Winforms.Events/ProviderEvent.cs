@@ -22,15 +22,47 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
+
 using System;
+using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
-
-	public interface IEventStrategy
+	
+	public abstract class ProviderEvent : IConnectable
 	{
-		void Connect ();
-		void Disconnect ();
+			
+#region Constructor
+
+		protected ProviderEvent (IRawElementProviderSimple provider)
+		{
+			this.provider = provider;
+		}
+			
+#endregion
+			
+#region Public methods
+
+		public abstract void Connect (Control control);
+
+		public abstract void Disconnect (Control control);
+			
+#endregion
+
+#region Protected properties
+			
+		protected IRawElementProviderSimple Provider {
+			get { return provider; }
+		}
+
+#endregion
+			
+#region Private fields
+
+		private IRawElementProviderSimple provider;
+			
+#endregion
 	}
+
 }

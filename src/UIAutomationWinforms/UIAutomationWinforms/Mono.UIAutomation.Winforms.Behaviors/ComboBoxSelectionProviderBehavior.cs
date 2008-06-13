@@ -26,6 +26,7 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
@@ -43,13 +44,18 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		}
 		
 #endregion
-
+		
 #region IProviderBehavior Members
 		
 		public override AutomationPattern ProviderPattern { 
 			get {
 				return SelectionPatternIdentifiers.Pattern;
 			}
+		}
+
+		public override void Disconnect (Control control) 
+		{
+			//TODO: Remove event
 		}
 		
 #endregion

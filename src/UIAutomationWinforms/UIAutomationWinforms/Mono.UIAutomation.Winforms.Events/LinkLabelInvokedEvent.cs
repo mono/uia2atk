@@ -32,28 +32,26 @@ namespace Mono.UIAutomation.Winforms.Events
 	internal class LinkLabelInvokedEvent : DefaultInvokedEvent
 	{
 		
-		public LinkLabelInvokedEvent (IRawElementProviderSimple provider, 
-		                              LinkLabel linkLabel) :
-			base (provider, linkLabel)
+		public LinkLabelInvokedEvent (IRawElementProviderSimple provider) 
+			: base (provider)
 		{
-			this.linkLabel = linkLabel;
 		}
 		
-		public override void Connect ()
+		public override void Connect (Control control)
 		{
-			linkLabel.LinkClicked += new LinkLabelLinkClickedEventHandler (OnLinkClicked);
+			((LinkLabel) control).LinkClicked += 
+				new LinkLabelLinkClickedEventHandler (OnLinkClicked);
 		}
 
-		public override void Disconnect ()
+		public override void Disconnect (Control control)
 		{
-			linkLabel.LinkClicked -= new LinkLabelLinkClickedEventHandler (OnLinkClicked);
+			((LinkLabel) control).LinkClicked -= 
+				new LinkLabelLinkClickedEventHandler (OnLinkClicked);
 		}
 		
 		private void OnLinkClicked (object sender, LinkLabelLinkClickedEventArgs e)
 		{
 			InvokeEvent ();
 		}
-		
-		private LinkLabel linkLabel;
 	}
 }

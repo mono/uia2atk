@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -33,62 +34,73 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
-	public class ComboBoxExpandCollapseProviderBehavior 
-		: ComboBoxProviderBehavior, IExpandCollapseProvider
+	public class LinkLabelInvokeProviderBehavior : ProviderBehavior, IInvokeProvider
 	{
 		
 #region Constructor
 		
-		public ComboBoxExpandCollapseProviderBehavior (SimpleControlProvider provider)
+		public LinkLabelInvokeProviderBehavior (SimpleControlProvider provider)
 			: base (provider)
 		{
 		}
 		
 #endregion
-
+		
 #region IProviderBehavior Interface
 		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.ExpandCollapseStateProperty, 
-			                   null);
+			Provider.SetEvent (ProviderEventType.InvokedEvent, null);
 		}
-		
+
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Hyperlink.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "hyperlink";
+			else
+				return null;
+		}
+
 		public override void Connect (Control control)
 		{
-			base.Connect (control);
+			linklabel = (LinkLabel) control;
 			
-			Provider.SetEvent (ProviderEventType.ExpandCollapseStateProperty, 
-			                   new ComboBoxExpandCollapseStateEvent (Provider));
-		}	
+			Provider.SetEvent (ProviderEventType.InvokedEvent, 
+			          new LinkLabelInvokedEvent (Provider));
+		}
 		
 		public override AutomationPattern ProviderPattern { 
-			get {
-				return ExpandCollapsePatternIdentifiers.Pattern;
-			}
+			get { return InvokePatternIdentifiers.Pattern; }
 		}
 		
 #endregion
 		
-#region IExpandCollapseProvider Interface
+#region IInvokeProvider Members
 		
-		public ExpandCollapseState ExpandCollapseState {
-			get {
-				return combobox.DroppedDown ? ExpandCollapseState.Expanded 
-					: ExpandCollapseState.Collapsed;
-			}
-		}
-
-		public void Collapse ()
+		public void Invoke ()
 		{
-			combobox.DroppedDown = false;
+			if (!linklabel.Enabled)
+				throw new ElementNotEnabledException ();
+			
+			Type type = linklabel.GetType ();
+			MethodInfo methodInfo = type.GetMethod ("OnLinkClicked",
+			                                        BindingFlags.InvokeMethod
+			                                        | BindingFlags.NonPublic
+			                                        | BindingFlags.Instance);
+			//TODO: Verify arguments against MS implementation.
+			LinkLabelLinkClickedEventArgs args = new LinkLabelLinkClickedEventArgs (
+				linklabel.Links [0], MouseButtons.Left);
+			methodInfo.Invoke (linklabel, new object[] { args });
 		}
-
-		public void Expand ()
-		{
-			combobox.DroppedDown = true;
-		}
-
+		
+#endregion		
+		
+#region Private fields
+		
+		private LinkLabel linklabel;
+		
 #endregion
 		
 	}

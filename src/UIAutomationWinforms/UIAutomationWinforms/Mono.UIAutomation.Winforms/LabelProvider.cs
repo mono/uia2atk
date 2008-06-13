@@ -55,8 +55,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeEvents ();
 			
-			SetEvent (EventStrategyType.TextChangedEvent, 
-			          new DefaultTextChangedEvent (this, control));
+			SetEvent (ProviderEventType.TextChangedEvent, 
+			          new DefaultTextChangedEvent (this));
 		}
 
 #endregion

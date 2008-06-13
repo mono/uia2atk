@@ -72,12 +72,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 #region IProviderBehavior Overrides
 		
-		public void Dispose ()
+		public void Disconnect (Control control)
 		{
 			
 		}
 
-		public void Initialize (Control control)
+		public void Connect (Control control)
 		{
 			this.control = control;
 		}

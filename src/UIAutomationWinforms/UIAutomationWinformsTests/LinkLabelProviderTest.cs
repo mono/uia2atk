@@ -102,7 +102,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			try {
 				invokeProvider.Invoke ();
 				Assert.Fail ("Exception not thrown");
-			} catch (ElementNotEnabledException) { } 
+			} catch (ElementNotEnabledException) { 
+			} catch (Exception) { Assert.Fail ("Only ElementNotEnabledException must be thrown"); }
 		}
 		
 #endregion

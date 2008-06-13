@@ -32,22 +32,21 @@ using Mono.UIAutomation.Winforms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 	
-	internal class DefaultHasKeyboardFocusPropertyEvent : EventStrategy
+	internal class DefaultHasKeyboardFocusPropertyEvent : ProviderEvent
 	{
-		public DefaultHasKeyboardFocusPropertyEvent (IRawElementProviderSimple provider, 
-		                                             Control control) :
-			base (provider, control)
+		public DefaultHasKeyboardFocusPropertyEvent (IRawElementProviderSimple provider) 
+			: base (provider)
 		{
 		}
 		
-		public override void Connect ()
+		public override void Connect (Control control)
 		{
-			Control.GotFocus += new EventHandler (OnGotFocus);
+			control.GotFocus += new EventHandler (OnGotFocus);
 		}
 
-		public override void Disconnect ()
+		public override void Disconnect (Control control)
 		{
-			Control.GotFocus -= new EventHandler (OnGotFocus);
+			control.GotFocus -= new EventHandler (OnGotFocus);
 		}
 		
 		protected void HasKeyboardFocusPropertyEvent ()
