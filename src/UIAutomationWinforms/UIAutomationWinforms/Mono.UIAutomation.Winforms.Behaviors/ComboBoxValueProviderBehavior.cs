@@ -24,75 +24,79 @@
 // 
 
 using System;
-using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Winforms;
+using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
-	public class ComboBoxExpandCollapseProviderBehavior 
-		: ComboBoxProviderBehavior, IExpandCollapseProvider
+	public class ComboBoxValueProviderBehavior 
+		: ComboBoxProviderBehavior, IValueProvider
 	{
 		
-#region Constructor
+#region Constructors
 		
-		public ComboBoxExpandCollapseProviderBehavior (SimpleControlProvider provider)
-			: base (provider)
+		public ComboBoxValueProviderBehavior (SimpleControlProvider provider)
+			: base (provider) 
 		{
 		}
-		
-#endregion
+
+#endregion		
 
 #region IProviderBehavior Interface
+
+		public override AutomationPattern ProviderPattern {
+			get { return ValuePatternIdentifiers.Pattern; }
+		}		
 		
-		public override AutomationPattern ProviderPattern { 
-			get { return ExpandCollapsePatternIdentifiers.Pattern; }
-		}
-		
-		public override void Connect (Control control)
+		public override void Connect (Control control) 
 		{
 			base.Connect (control);
-			
-			Provider.SetEvent (ProviderEventType.ExpandCollapseStateProperty, 
-			                   new ComboBoxExpandCollapseStateEvent (Provider));
+
+			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
+			                   new ValuePatternValuePropertyEvent (Provider));
+			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
+			                   new ValuePatternValueIsReadOnlyEvent (Provider));
 		}
 		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.ExpandCollapseStateProperty, 
+			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
 			                   null);
 		}
 		
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id)
-				return ExpandCollapseState;
+			if (propertyId == ValuePatternIdentifiers.ValueProperty.Id)
+				return Value;
+			else if (propertyId == ValuePatternIdentifiers.IsReadOnlyProperty.Id)
+				return IsReadOnly;
 			else
 				return base.GetPropertyValue (propertyId);
 		}
-		
+
 #endregion
+			
+#region IValueProvider Interface
 		
-#region IExpandCollapseProvider Interface
-		
-		public ExpandCollapseState ExpandCollapseState {
-			get {
-				return combobox.DroppedDown ? ExpandCollapseState.Expanded 
-					: ExpandCollapseState.Collapsed;
-			}
+		public bool IsReadOnly {
+			get { return combobox.Enabled == false; }
 		}
 
-		public void Collapse ()
-		{
-			combobox.DroppedDown = false;
+		public string Value {
+			get { return combobox.Text; }
 		}
 
-		public void Expand ()
+		public void SetValue (string value)
 		{
-			combobox.DroppedDown = true;
+			if (IsReadOnly)
+				throw new ElementNotEnabledException ();
+
+			combobox.Text = value;
 		}
 
 #endregion

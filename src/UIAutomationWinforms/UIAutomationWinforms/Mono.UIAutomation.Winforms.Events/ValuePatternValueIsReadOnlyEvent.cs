@@ -27,51 +27,50 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-using Mono.UIAutomation.Winforms;
+
 
 namespace Mono.UIAutomation.Winforms.Events
 {
-	
-	public class ComboBoxExpandCollapseStateEvent : ProviderEvent
+
+	public class ValuePatternValueIsReadOnlyEvent : ProviderEvent
 	{
 		
 #region Constructor
 
-		public ComboBoxExpandCollapseStateEvent (IRawElementProviderSimple provider) 
+		public ValuePatternValueIsReadOnlyEvent (IRawElementProviderSimple provider) 
 			: base (provider)
 		{
 		}
 		
 #endregion
 		
-#region EventStrategy Methods
-		
+#region ProviderEvent Methods
+
 		public override void Connect (Control control)
 		{
-			((ComboBox) control).DropDown += new EventHandler (OnDropDown);
+			control.EnabledChanged += new EventHandler (OnIsReadOnlyChanged);
 		}
 
 		public override void Disconnect (Control control)
 		{
-			((ComboBox) control).DropDown -= new EventHandler (OnDropDown);
+			control.EnabledChanged -= new EventHandler (OnIsReadOnlyChanged);
 		}
 		
-#endregion
-
-#region Private method
+#endregion 
 		
-		private void OnDropDown (object sender, EventArgs e)
+#region Protected methods
+		
+		protected void OnIsReadOnlyChanged (object sender, EventArgs e)
 		{
 			if (AutomationInteropProvider.ClientsAreListening) {
 				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+					new AutomationPropertyChangedEventArgs (ValuePatternIdentifiers.IsReadOnlyProperty,
 					                                        null,
-					                                        Provider.GetPropertyValue (ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id));
+					                                        Provider.GetPropertyValue (ValuePatternIdentifiers.IsReadOnlyProperty.Id));
 				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
 			}
 		}
-		
-#endregion
 
+#endregion
 	}
 }

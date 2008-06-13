@@ -39,6 +39,10 @@ namespace Mono.UIAutomation.Winforms.Events
 		TextChangedEvent,
 		InvokedEvent,
 		StructureChangedEvent,
-		ExpandCollapseStateProperty
+		//ExpandCollapse Pattern
+		ExpandCollapseStateProperty,
+		//Value Pattern
+		ValuePatternValueProperty,
+		ValuePatternIsReadOnlyProperty
 	}
 }

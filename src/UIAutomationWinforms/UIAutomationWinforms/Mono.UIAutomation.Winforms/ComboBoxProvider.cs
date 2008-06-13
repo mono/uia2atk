@@ -40,21 +40,19 @@ namespace Mono.UIAutomation.Winforms
 		private ComboBox combobox;
 		
 #endregion
-		
+
 #region Constructor
 		
 		public ComboBoxProvider (ComboBox combobox) : base (combobox)
 		{
 			this.combobox = combobox;
 
-			combobox.DropDownStyleChanged += delegate (object obj, EventArgs args) {
+			combobox.DropDownStyleChanged += delegate (object obj, 
+			                                           EventArgs args) {
 				SetBehaviors ();
 			};
 			
 			SetBehaviors ();
-
-			//TODO:
-			//ValueProperty property-changed event.
 		}
 		
 #endregion
@@ -67,15 +65,15 @@ namespace Mono.UIAutomation.Winforms
 				             null);
 				SetBehavior (SelectionPatternIdentifiers.Pattern,
 				             new ComboBoxSelectionProviderBehavior (this));
-				/*SetBehavior (ValuePatternIdentifiers.Pattern,
-				             new ComboBoxValueProviderBehavior (this));*/
+				SetBehavior (ValuePatternIdentifiers.Pattern,
+				             new ComboBoxValueProviderBehavior (this));
 			} else if (combobox.DropDownStyle == ComboBoxStyle.DropDown) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
 				             new ComboBoxExpandCollapseProviderBehavior (this));
 				SetBehavior (SelectionPatternIdentifiers.Pattern,
 				             new ComboBoxSelectionProviderBehavior (this));
-				/*SetBehavior (ValuePatternIdentifiers.Pattern,
-				             new ComboBoxValueProviderBehavior (this));*/
+				SetBehavior (ValuePatternIdentifiers.Pattern,
+				             new ComboBoxValueProviderBehavior (this));
 			} else if (combobox.DropDownStyle == ComboBoxStyle.DropDownList) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
 				             new ComboBoxExpandCollapseProviderBehavior (this));

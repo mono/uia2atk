@@ -1,5 +1,26 @@
 2008-06-13  Mario Carrion <mcarrion@novell.com>
 
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.mdp: File updated:
+	Added files.
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	Added missing provider implementation to SetBehaviors method.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxValueProviderBehavior.cs:
+	File added. Handles ComboBox's Value provider.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxExpandCollapseProviderBehavior.cs:
+	Code beautyfing.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxSelectionProviderBehavior.cs:
+	GetPropertyValue returns SelectionProvider elements.
+	* Mono.UIAutomation.Winforms.Events/ValuePatternValuePropertyEvent.cs:
+	File added. Handles ValuePattern's ValueProperty event.
+	* Mono.UIAutomation.Winforms.Events/ComboBoxExpandCollapseStateEvent.cs:
+	Comment removed: matches MS behavior.
+	* Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: Added event
+	types.
+	* Mono.UIAutomation.Winforms.Events/ValuePatternValueIsReadOnlyEvent.cs:
+	File added. Handles ValuePattern's IsReadOnly event.
+
+2008-06-13  Mario Carrion <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms.mdp: Updated: Deleted and added files.
 	* Mono.UIAutomation.Winforms/IConnectable.cs: File added.
 	* Mono.UIAutomation.Winforms.Behaviors/LinkLabelInvokeProviderBehavior.cs:

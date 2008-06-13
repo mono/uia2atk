@@ -48,14 +48,25 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 #region IProviderBehavior Members
 		
 		public override AutomationPattern ProviderPattern { 
-			get {
-				return SelectionPatternIdentifiers.Pattern;
-			}
+			get { return SelectionPatternIdentifiers.Pattern; }
 		}
 
 		public override void Disconnect (Control control) 
 		{
+			//SelectionPatternIdentifiers.
 			//TODO: Remove event
+		}
+		
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == SelectionPatternIdentifiers.CanSelectMultipleProperty.Id)
+				return CanSelectMultiple;
+			else if (propertyId == SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id)
+				return IsSelectionRequired;
+			else if (propertyId == SelectionPatternIdentifiers.SelectionProperty.Id)
+				return GetSelection ();
+			else
+				return base.GetPropertyValue (propertyId);
 		}
 		
 #endregion
@@ -67,8 +78,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		}
 
 		public bool IsSelectionRequired {
-			//TODO: Is this OK?
-			get { return true; }
+			get { return combobox.SelectedIndex != -1 ? false : true; }
 		}
 		
 		public IRawElementProviderSimple[] GetSelection ()
