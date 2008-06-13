@@ -1,3 +1,9 @@
+2008-06-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* BridgeTester.cs, AtkTester.cs, BasicWidgetType.cs: Added first tests
+	  for RadioButton. Still missing a specific test with 2 radiobuttons
+	  that belong to the same logical group.
+
 2008-06-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTester.cs: Assure actions don't change after DoAction().

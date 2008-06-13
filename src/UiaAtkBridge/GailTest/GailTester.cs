@@ -91,7 +91,7 @@ namespace UiaAtkBridgeTest
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealLabel ();
 				break;
-			case BasicWidgetType.Button:
+			case BasicWidgetType.NormalButton:
 				widget = new Gtk.Button ();
 				((Gtk.Button)widget).Label = text;
 				if (real)
@@ -99,6 +99,7 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.Window:
 				widget = new Gtk.Window (text);
+				//not yet implemented:
 //				if (real)
 //					widget = GailTestApp.MainClass.GiveMeARealWindow ();
 				break;
@@ -107,6 +108,14 @@ namespace UiaAtkBridgeTest
 				((Gtk.CheckButton)widget).Label = text;
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealCheckBox ();
+				break;
+			case BasicWidgetType.RadioButton:
+				widget = new Gtk.RadioButton (text);
+				//((Gtk.RadioButton)widget).Label = text;
+				
+				//not yet implemented:
+//				if (real)
+//					widget = GailTestApp.MainClass.GiveMeARealRadioButton ();
 				break;
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");

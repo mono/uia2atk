@@ -30,7 +30,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	
-	public class CheckBox : Button
+	public class CheckBox : ToggleButton
 	{
 		
 		public CheckBox (IRawElementProviderSimple provider) : base (provider)
@@ -38,43 +38,5 @@ namespace UiaAtkBridge
 			Role = Atk.Role.CheckBox;
 		}
 		
-		public override string GetName (int action)
-		{
-			if (action != 0)
-				return null;
-
-			return "click";
-		}
-		
-		protected override Atk.StateSet OnRefStateSet ()
-		{
-			Atk.StateSet states = base.OnRefStateSet ();
-			
-			ToggleState state = (ToggleState)((IToggleProvider)Provider).ToggleState;
-			
-			switch (state) {
-			case ToggleState.On:
-				states.AddState (Atk.StateType.Checked);
-				break;
-			case ToggleState.Indeterminate:
-			case ToggleState.Off:
-				states.RemoveState (Atk.StateType.Checked);
-				break;
-			default:
-				throw new NotSupportedException ("Unknown toggleState " + state.ToString ());
-			}
-			
-			return states;
-		}
-
-		
-		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
-		{
-			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
-				//TODO: emit signal
-			} else {
-				base.RaiseAutomationPropertyChangedEvent (e);
-			}
-		}
 	}
 }

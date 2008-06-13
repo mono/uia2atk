@@ -1,3 +1,9 @@
+2008-06-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* ToggleButton.cs, CheckBox.cs, RadioButton.cs, UiaAtkBridge.mdp:
+	  Implement first version of RadioButton, refactoring CheckBox to
+	  inherit from a new ToggleButton abstract class.
+
 2008-06-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Button.cs, ComboBox.cs: Fix some things and start to dig in

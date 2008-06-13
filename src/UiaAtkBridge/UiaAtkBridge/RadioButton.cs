@@ -24,18 +24,20 @@
 // 
 
 using System;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 
-namespace UiaAtkBridgeTest
+namespace UiaAtkBridge
 {
-	// this enum only contains very basic widgets that are almost completely the same
-	// in the Gtk# and in the MWF world (complex ones will need a different test concept type)
-	public enum BasicWidgetType
+
+	public class RadioButton : ToggleButton
 	{
-		Label,
-		NormalButton,
-		Window,
-		CheckBox,
-		ComboBox,
-		RadioButton
+		
+		public RadioButton (IRawElementProviderSimple provider) : base (provider)
+		{
+			Role = Atk.Role.RadioButton;
+		}
+		
 	}
+	
 }

@@ -91,7 +91,7 @@ namespace UiaAtkBridgeTest
 				text = uiaLab;
 				component = uiaLab;
 				break;
-			case BasicWidgetType.Button:
+			case BasicWidgetType.NormalButton:
 				MWF.Button but = new MWF.Button ();
 				but.Text = name;
 				UiaAtkBridge.Button uiaBut = new UiaAtkBridge.Button (new ButtonProvider (but));

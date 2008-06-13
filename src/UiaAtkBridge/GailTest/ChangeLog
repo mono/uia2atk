@@ -1,3 +1,7 @@
+2008-06-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* GailTester.cs: Implement support for RadioButton.
+
 2008-06-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* GailTester.cs: Corrected some stability issues when running these

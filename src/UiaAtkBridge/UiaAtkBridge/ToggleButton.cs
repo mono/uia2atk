@@ -24,18 +24,57 @@
 // 
 
 using System;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 
-namespace UiaAtkBridgeTest
+namespace UiaAtkBridge
 {
-	// this enum only contains very basic widgets that are almost completely the same
-	// in the Gtk# and in the MWF world (complex ones will need a different test concept type)
-	public enum BasicWidgetType
+	
+	public abstract class ToggleButton : Button
 	{
-		Label,
-		NormalButton,
-		Window,
-		CheckBox,
-		ComboBox,
-		RadioButton
+		
+		public ToggleButton (IRawElementProviderSimple provider) : base (provider)
+		{
+			Role = Atk.Role.ToggleButton;
+		}
+		
+		public override string GetName (int action)
+		{
+			if (action != 0)
+				return null;
+
+			return "click";
+		}
+		
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			
+			ToggleState state = (ToggleState)((IToggleProvider)Provider).ToggleState;
+			
+			switch (state) {
+			case ToggleState.On:
+				states.AddState (Atk.StateType.Checked);
+				break;
+			case ToggleState.Indeterminate:
+			case ToggleState.Off:
+				states.RemoveState (Atk.StateType.Checked);
+				break;
+			default:
+				throw new NotSupportedException ("Unknown toggleState " + state.ToString ());
+			}
+			
+			return states;
+		}
+
+		
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
+				//TODO: emit signal
+			} else {
+				base.RaiseAutomationPropertyChangedEvent (e);
+			}
+		}
 	}
 }

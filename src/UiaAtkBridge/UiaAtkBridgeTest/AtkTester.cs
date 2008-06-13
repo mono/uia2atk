@@ -65,7 +65,7 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void Button ()
 		{
-			BasicWidgetType type = BasicWidgetType.Button;
+			BasicWidgetType type = BasicWidgetType.NormalButton;
 			Atk.Object accessible;
 			
 			InterfaceText (type);
@@ -103,9 +103,30 @@ namespace UiaAtkBridgeTest
 			PropertyRole (type, accessible);
 		}
 		
+		[Test]
+		public void RadioButtons ()
+		{
+			BasicWidgetType type = BasicWidgetType.RadioButton;
+			Atk.Object accessible;
+			
+			string name = "test";
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			InterfaceComponent (type, atkComponent);
+			
+			name = "test";
+			Atk.Action atkAction = (Atk.Action)
+				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
+			
+			InterfaceAction (type, atkAction, accessible);
+			
+			PropertyRole (type, accessible);
+		}
+		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
 		//the widget, so we kill all with the method marked as [TestFixtureTearDown]
 		[Test]
+		[Ignore ("ComboBox not finished in the bridge")]
 		public void ComboBox ()
 		{
 			BasicWidgetType type = BasicWidgetType.ComboBox;
@@ -163,7 +184,7 @@ namespace UiaAtkBridgeTest
 			if (type == BasicWidgetType.ComboBox) {
 				Assert.AreEqual (1, implementor.NActions, "NActions");
 				Assert.AreEqual ("press", implementor.GetName (0), "GetName press");
-			} else { //Button and Checkbox
+			} else { //Button and Checkbox and RadioButton
 				Assert.AreEqual (ValidNumberOfActionsForAButton, implementor.NActions, "NActions");
 				
 				Assert.AreEqual ("click", implementor.GetName (0), "GetName click");
@@ -180,8 +201,15 @@ namespace UiaAtkBridgeTest
 			
 			Atk.StateSet state = accessible.RefStateSet();
 			Assert.IsFalse (state.IsEmpty, "RefStateSet.IsEmpty");
-			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled");
-			Assert.IsFalse (state.ContainsState (Atk.StateType.Checked), "RefStateSet.!Checked");
+			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled #1");
+			//a radio button is checked by default
+			if (type != BasicWidgetType.RadioButton)
+				Assert.IsFalse (state.ContainsState (Atk.StateType.Checked), "RefStateSet.!Checked #1");
+			
+			if (type == BasicWidgetType.RadioButton) {
+				//RadioButton is already checked, so DoAction does nothing
+				actionPerformed = false;
+			}
 			
 			if (type != BasicWidgetType.ComboBox) {
 				// only valid actions should work
@@ -199,11 +227,11 @@ namespace UiaAtkBridgeTest
 			System.Threading.Thread.Sleep (2000);
 			
 			state = accessible.RefStateSet();
-			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled2");
-			if (type == BasicWidgetType.CheckBox)
+			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled #2");
+			if ((type == BasicWidgetType.CheckBox) || (type == BasicWidgetType.RadioButton))
 				Assert.IsTrue (state.ContainsState (Atk.StateType.Checked), "RefStateSet.Checked");
 			else
-				Assert.IsFalse (state.ContainsState (Atk.StateType.Checked), "RefStateSet.!CheckedButt");
+				Assert.IsFalse (state.ContainsState (Atk.StateType.Checked), "RefStateSet.!Checked #2");
 			
 			
 			//still need to figure out why this is null in gail
@@ -305,7 +333,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.Label:
 				role = Atk.Role.Label;
 				break;
-			case BasicWidgetType.Button:
+			case BasicWidgetType.NormalButton:
 				role = Atk.Role.PushButton;
 				break;
 			case BasicWidgetType.Window:
@@ -316,6 +344,9 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.ComboBox:
 				role = Atk.Role.ComboBox;
+				break;
+			case BasicWidgetType.RadioButton:
+				role = Atk.Role.RadioButton;
 				break;
 			default:
 				throw new NotImplementedException ();
