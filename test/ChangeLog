@@ -1,7 +1,12 @@
+2008-06-13  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* drivers/local_run.py : implemented a much better solution for
+	cleaning up test apps that fail.
+
 2008-06-12  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* drivers/local_run.py : there were problems with cleaning up the 
-	test apps who fail.  need to look at a different way of doing this.
+	test apps that fail.  need to look at a different way of doing this.
 
 2008-06-13  Calen Chen <cachen@novell.com>
 

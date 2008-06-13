@@ -15,6 +15,8 @@ import getopt
 import os
 import time
 from socket import gethostname
+import signal
+import subprocess as s
 
 
 # simply takes a string s as input and prints it if running verbosely
@@ -90,8 +92,6 @@ class Settings(object):
 
 class Test(object):
 
-  pids = []
-
   def __init__(self):
     self.tests = tests.tests_list
 
@@ -134,13 +134,14 @@ class Test(object):
     # execute the tests
     output("INFO:  Executing tests...")
     for test in found_tests:
-      #os.system(test)
-      self.pids.append(os.spawnl(os.P_WAIT, test))
+      os.system(test)
       try:
         self.log(test)
       except InconceivableError, msg:
-        print msg
+        output(msg)
         return 1
+    return 0 
+
 
   def log(self, test):
     filename = os.path.basename(test)
@@ -164,8 +165,8 @@ class Test(object):
         # Errno 17 is "File exists"
         # If another thread created this directory, that's fine.
         if not err.errno == 17:
-          print "WARNINGS:  Could not create log directory!"
-          print "WARNINGS:  Permanent logs will not be stored"
+          output("WARNING:  Could not create log directory!")
+          output("WARNING:  Permanent logs will not be stored")
           return 0
   
     if os.path.exists(log_dir):
@@ -181,6 +182,31 @@ class Test(object):
     # waste time/space
     os.system("cp -r /tmp/strongwind/* %s" % log_dir)
     os.system("cp -r %s/resources/* %s" % (Settings.uiaqa_home, log_dir))
+
+  def cleanup(self):
+    output("INFO:  Cleaning up...")
+    r = 0
+    search = "%s/%s" % (settings.uiaqa_home, "samples")
+    p1 = s.Popen(["ps","a","x"], stdout=s.PIPE)
+    p2 = s.Popen(["grep", search], stdin=p1.stdout, stdout=s.PIPE)
+    p3 = s.Popen(["awk", "{print $1,$6}"], stdin=p2.stdout, stdout=s.PIPE)
+    for pair in [p3.stdout.readline().split()]:
+      if len(pair) == 2:
+        pid = pair[0]
+        path = pair[1]
+        if search in path:
+          try:
+            output("INFO:  killing process: %s" % pid)
+            os.kill(int(pid), signal.SIGKILL)
+            r = 2
+          except OSError, err:
+            # Errno 3 is "No such process"
+            if err.errno == 3:
+              # If it doesn't exist anymore, cool.
+              pass
+            output("WARNING:  Could not kill process: %s" % pid)
+            r = 2
+    return r
       
 class InconceivableError(Exception): pass
 
@@ -188,8 +214,12 @@ class Main(object):
 
   def main(self, argv=None):
     t = Test()
-    return t.run()
-
+    r = 0
+    # run() returns 0 on success 1 on failure
+    r += t.run()
+    # cleanup() returns 0 when no processes are killed, 2 otherwise
+    r += t.cleanup()
+    return r
 
 settings = Settings()
 
