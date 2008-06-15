@@ -1,3 +1,8 @@
+2008-06-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Button.cs: Some updates, now that we understand better RefState and
+	  OnRefState.
+
 2008-06-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* ToggleButton.cs, CheckBox.cs, RadioButton.cs, UiaAtkBridge.mdp:

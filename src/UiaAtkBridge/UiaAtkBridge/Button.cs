@@ -248,24 +248,45 @@ namespace UiaAtkBridge
 			} else if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
 				// TODO: Handle BoundingRectangleProperty change
 			} else if (e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
-				if((bool)e.NewValue)
-					RefStateSet ().AddState (Atk.StateType.Visible);
-				else
-					RefStateSet ().RemoveState (Atk.StateType.Visible);
+				//if((bool)e.NewValue)
+					//TODO: call to NotifyStateChange instead of using RefStateSet (the former will cause the call to OnRefState)
+					//RefStateSet ().AddState (Atk.StateType.Visible);
+				//else
+					//TODO: call to NotifyStateChange instead of using RefStateSet (the former will cause the call to OnRefState)
+					//RefStateSet ().RemoveState (Atk.StateType.Visible);
 			} else if (e.Property == AutomationElementIdentifiers.IsEnabledProperty) {
 				if((bool)e.NewValue)
 				{
-					RefStateSet ().AddState (Atk.StateType.Sensitive);
-					//NotifyStateChange ((ulong) Atk.StateType.Sensitive, true);
+					OnEnabled ();
 				}
 				else
 				{
-					RefStateSet ().RemoveState (Atk.StateType.Sensitive);
-					//NotifyStateChange ((ulong) Atk.StateType.Sensitive, false);
+					OnDisabled ();
 				}
 			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
 				// TODO: Handle NameProperty change			    
 			}
+		}
+		
+		// TODO: although UIA doesn't cover press and release actions, figure out if maybe it's useful to
+		// notify the state change, regardless of its actual non-effect
+		private void OnPressed ()
+		{
+			NotifyStateChange ((ulong) Atk.StateType.Armed, true);
+		}
+		private void OnReleased ()
+		{
+			NotifyStateChange ((ulong) Atk.StateType.Armed, false);
+		}
+		
+		private void OnDisabled ()
+		{
+			NotifyStateChange ((ulong) Atk.StateType.Sensitive, false);
+		}
+		
+		private void OnEnabled ()
+		{
+			NotifyStateChange ((ulong) Atk.StateType.Sensitive, true);
 		}
 		
 		public string GetText (int startOffset, int endOffset)
