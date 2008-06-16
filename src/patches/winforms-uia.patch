@@ -1,6 +1,6 @@
 Index: class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs
 ===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs	(revision 105725)
+--- class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs	(revision 105916)
 +++ class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs	(working copy)
 @@ -28,6 +28,7 @@
  using System.Drawing;
@@ -10,15 +10,7 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs
  
  namespace System.Windows.Forms {
  	internal class X11DesktopColors {
-@@ -86,6 +87,7 @@
- 
- 		#region Constructors
- 		static X11DesktopColors() {
-+			
- 			FindDesktopEnvironment();
- 			
- 			switch(desktop) {
-@@ -97,7 +99,7 @@
+@@ -97,7 +98,7 @@
  					GtkStyleStruct	style;
  
  					try {
@@ -27,7 +19,7 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs
  						//dispmgr =  gdk_display_manager_get ();
  						//gdkdisplay =  gdk_display_manager_get_default_display (dispmgr);
  
-@@ -145,6 +147,27 @@
+@@ -145,6 +146,27 @@
  				}
  			}
  		}
@@ -41,15 +33,15 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs
 +			// A better solution would probably be to get these
 +			// values out-of-process.  See details/discussion here:
 +			// https://bugzilla.novell.com/show_bug.cgi?id=375987
-+			string dangerousEnvVar = "GTK_MODULES";
-+			string gtkModulesEnvVarContent = Environment.GetEnvironmentVariable (dangerousEnvVar);
-+			Environment.SetEnvironmentVariable (dangerousEnvVar, string.Empty);
++			string gtk_modules_env_var = "GTK_MODULES";
++			string gtk_modules_env_var_content = Environment.GetEnvironmentVariable (gtk_modules_env_var);
++			Environment.SetEnvironmentVariable (gtk_modules_env_var, string.Empty);
 +#endif
 +
 +			gtk_init_check (IntPtr.Zero, IntPtr.Zero);
 +
 +#if NET_2_0
-+			Environment.SetEnvironmentVariable (dangerousEnvVar, gtkModulesEnvVarContent);
++			Environment.SetEnvironmentVariable (gtk_modules_env_var, gtk_modules_env_var_content);
 +#endif
 +		}
  		#endregion	// Constructors
@@ -57,22 +49,9 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/X11DesktopColors.cs
  		#region Properties
 Index: class/Managed.Windows.Forms/System.Windows.Forms/Application.cs
 ===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/Application.cs	(revision 105725)
+--- class/Managed.Windows.Forms/System.Windows.Forms/Application.cs	(revision 105916)
 +++ class/Managed.Windows.Forms/System.Windows.Forms/Application.cs	(working copy)
-@@ -154,12 +154,58 @@
- #endif
- 		private static VisualStyleState visual_style_state = VisualStyleState.ClientAndNonClientAreasEnabled;
- 
-+#if NET_2_0
-+		private const string UIAutomationWinformsAssembly =
-+			"UIAutomationWinforms, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
-+		private const string UIAFormListenerType =
-+			"Mono.UIAutomation.Winforms.FormListener";
-+		private const string UIAFormListenerInitializeMethod =
-+			"Initialize";
-+#endif
-+  
- 		private Application ()
+@@ -158,8 +158,55 @@
  		{
  		}
  
@@ -80,38 +59,47 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/Application.cs
 +		static Application ()
 +		{
 +			// Attempt to load UIA support for winforms
++			// UIA support requires .NET 2.0
 +			InitializeUIAutomation ();
 +		}
 +#endif
 +
  		#region Private Methods
--
-+		
+ 
 +#if NET_2_0
 +		private static void InitializeUIAutomation ()
 +		{
-+			Assembly mwfProviders = null;
++			// Initialize the UIAutomationWinforms FormListener
++			// class, which signs up for the PreRun and FormAdded
++			// events so that it can provide a11y support for MWF.
++			string uia_winforms_assembly =
++				"UIAutomationWinforms, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
++			string listener_type_name =
++				"Mono.UIAutomation.Winforms.FormListener";
++			string init_method_name = "Initialize";
++			
++			Assembly mwf_providers = null;
 +			try {
-+				mwfProviders =
-+					Assembly.Load (UIAutomationWinformsAssembly);
++				mwf_providers =
++					Assembly.Load (uia_winforms_assembly);
 +			} catch { }
 +			
-+			if (mwfProviders == null)
++			if (mwf_providers == null)
 +				return;
 +			
 +			try {
-+				Type listenerType =
-+					mwfProviders.GetType (UIAFormListenerType,
-+					                      false);
-+				if (listenerType == null)
++				Type listener_type =
++					mwf_providers.GetType (listener_type_name,
++						false);
++				if (listener_type == null)
 +					return;
-+				MethodInfo initMethod =
-+					listenerType.GetMethod (UIAFormListenerInitializeMethod,
-+					                        BindingFlags.Static | BindingFlags.Public);
-+				if (initMethod == null)
++				MethodInfo init_method =
++					listener_type.GetMethod (init_method_name,
++						BindingFlags.Static | BindingFlags.Public);
++				if (init_method == null)
 +					return;
-+				initMethod.Invoke (null,
-+				                   new object [] {});
++				init_method.Invoke (null,
++					new object [] {});
 +			} catch { }
 +		}
 +#endif
@@ -119,21 +107,25 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/Application.cs
  		internal static void CloseForms (Thread thread)
  		{
  			#if DebugRunLoop
-@@ -685,6 +731,8 @@
+@@ -685,6 +732,11 @@
  		public static void Run (ApplicationContext context)
  		{
  #if NET_2_0
++			// Signal that the Application loop is about to run.
++			// This allows UIA to initialize a11y support for MWF
++			// before the main loop begins.
 +			if (PreRun != null)
 +				PreRun (null, EventArgs.Empty);
  			// If a sync context hasn't been created by now, create
  			// a default one
  			if (SynchronizationContext.Current == null)
-@@ -974,8 +1022,11 @@
+@@ -974,8 +1026,12 @@
  
  		public static event EventHandler ThreadExit;
  		public static event ThreadExceptionEventHandler ThreadException;
 +		
 +#if NET_2_0
++		// These are used externally by the UIA framework
 +		internal static event EventHandler FormAdded;
 +		internal static event EventHandler PreRun;
  
@@ -141,11 +133,16 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/Application.cs
  		[EditorBrowsable (EditorBrowsableState.Advanced)]
  		public static event EventHandler EnterThreadModal;
  
-@@ -1009,6 +1060,10 @@
+@@ -1009,6 +1065,15 @@
  		{
  			lock (forms)
  				forms.Add (f);
 +#if NET_2_0
++			// Signal that a Form has been added to this
++			// Application. Used by UIA to detect new Forms that
++			// need a11y support. This event may be fired even if
++			// the form has already been added, so clients should
++			// account for that when handling this signal.
 +			if (FormAdded != null)
 +				FormAdded (f, null);
 +#endif

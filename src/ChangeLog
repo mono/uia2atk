@@ -1,3 +1,8 @@
+2008-06-16  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* patches/winforms-uia.patch: Updated according to review comments from
+	  Geoff Norton in bug #375987.
+
 2008-06-12  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* patches/winforms-uia.patch: Ready for submission to MWF devs for
