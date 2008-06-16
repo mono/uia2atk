@@ -1,5 +1,10 @@
 2008-06-16  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* patches/winforms-uia.patch: Deleting this patch, as it was committed
+	  to mcs trunk in r105935 as part of bug #375987.
+
+2008-06-16  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* patches/winforms-uia.patch: A few more style fixes to fit in with MWF
 	  conventions.
 
