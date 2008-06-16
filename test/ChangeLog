@@ -1,5 +1,9 @@
 2008-06-16  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* testers/checkbutton/__init__.py : trivial letter case changes
+
+2008-06-16  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* samples/checkButton.py : Rename to checkbutton.py to adhere to
 	standard naming conventions.
 	* samples/checkbutton.py : Renamed from checkButton.py
