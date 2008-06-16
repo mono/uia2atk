@@ -27,67 +27,86 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-using Mono.UIAutomation.Winforms;
+using System.Windows;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 	
-	
-	public class ComboBoxSelectionProviderBehavior 
-		: ComboBoxProviderBehavior, ISelectionProvider
+	internal class ComboBoxItemProviderBehavior : ProviderBehavior, /*IRawElementProviderFragment, */ISelectionItemProvider
 	{
-		
+
 #region Constructor
 		
-		public ComboBoxSelectionProviderBehavior (SimpleControlProvider provider)
+		public ComboBoxItemProviderBehavior (ComboBoxItemProvider provider)
 			: base (provider)
 		{
+			combobox_provider = provider;
+			
+			//TODO: Should this behavoir support any GetPropertyValue?
 		}
 		
 #endregion
 		
-#region IProviderBehavior Members
+#region IProviderBehavior Interface
 		
-		public override AutomationPattern ProviderPattern { 
-			get { return SelectionPatternIdentifiers.Pattern; }
+		public override void Disconnect (Control control)
+		{
+			//TODO: SetEvent(null)??
 		}
 
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == SelectionPatternIdentifiers.CanSelectMultipleProperty.Id)
-				return CanSelectMultiple;
-			else if (propertyId == SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id)
-				return IsSelectionRequired;
-			else if (propertyId == SelectionPatternIdentifiers.SelectionProperty.Id)
-				return GetSelection ();
+			if (propertyId == SelectionItemPatternIdentifiers.IsSelectedProperty.Id)
+				return IsSelected;
+			else if (propertyId == SelectionItemPatternIdentifiers.SelectionContainerProperty.Id)
+				return SelectionContainer;
 			else
 				return base.GetPropertyValue (propertyId);
 		}
-		
-#endregion
-		
-#region ISelectionProvider Members
 
-		public bool CanSelectMultiple {
-			get { return false; }
-		}
-
-		public bool IsSelectionRequired {
-			get { return combobox.SelectedIndex != -1 ? false : true; }
-		}
-		
-		public IRawElementProviderSimple[] GetSelection ()
+		public override void Connect (Control control)
 		{
-			if (combobox.SelectedIndex == -1)
-				return null;
-			else
-				return new IRawElementProviderSimple[] {
-					new ComboBoxItemProvider (Provider as ComboBoxProvider, 
-					                          combobox)
-				};
+			//TODO: SetEvent??
 		}
-
+		
+		public override AutomationPattern ProviderPattern { 
+			get { return SelectionItemPatternIdentifiers.Pattern; }
+		}
+		
 #endregion
 
+#region ISelectionItemProvider Interface
+
+		public void AddToSelection ()
+		{
+			throw new NotSupportedException ();
+		}
+
+		public void RemoveFromSelection ()
+		{
+			throw new NotSupportedException ();
+		}
+
+		public void Select ()
+		{
+			combobox_provider.ComboBoxControl.SelectedIndex = combobox_provider.Index;
+		}
+
+		public bool IsSelected {
+			get { return combobox_provider.ComboBoxControl.SelectedIndex == combobox_provider.Index; }
+		}
+
+		public IRawElementProviderSimple SelectionContainer {
+			get { return combobox_provider.ComboBoxProvider; }
+		}
+
+#endregion 
+		
+		
+#region Private fields
+		
+		private ComboBoxItemProvider combobox_provider;
+		
+#endregion
 	}
 }

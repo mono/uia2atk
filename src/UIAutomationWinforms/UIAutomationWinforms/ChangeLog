@@ -1,3 +1,24 @@
+2008-06-16  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.mdp: Updated: Added files.
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Added: 
+	Subclasses SimpleControlProvider class and implements 
+	IRawElementProviderFragment interface.
+	* Mono.UIAutomation.Winforms/ComboBoxItemProvider.cs: Added. Reprents
+	the items in combobox.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxItemProviderBehavior.cs:
+	Added. Used by ComboBoxItemProvider class.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Subclasses 
+	FragmentRootControlProvider.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Updated.
+	Subclasses FragmentControlProvider.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxProviderBehavior.cs:
+	Added virtual Disconnect method.
+	* Mono.UIAutomation.Winforms.Behaviors/LinkLabelInvokeProviderBehavior.cs:	
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxSelectionProviderBehavior.cs:
+	Removed Disconnect method. GetSelection method returns
+	ComboBoxItemProvider array.
+
 2008-06-13  Mario Carrion <mcarrion@novell.com>
 
 	* UIAutomationWinforms/Mono.UIAutomation.Winforms.mdp: File updated:

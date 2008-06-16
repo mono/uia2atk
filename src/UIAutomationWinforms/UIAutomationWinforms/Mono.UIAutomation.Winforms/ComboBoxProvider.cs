@@ -27,12 +27,13 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using System.Windows;
 using Mono.UIAutomation.Winforms.Behaviors;
 
 namespace Mono.UIAutomation.Winforms
 {
 
-	public class ComboBoxProvider : SimpleControlProvider
+	public class ComboBoxProvider : FragmentRootControlProvider
 	{
 		
 #region Private Fields
@@ -82,6 +83,23 @@ namespace Mono.UIAutomation.Winforms
 				SetBehavior (ValuePatternIdentifiers.Pattern, 
 				             null);
 			} 
+		}
+		
+#endregion
+		
+#region FragmentRootControlProvider Overrides
+		
+		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
+		{
+			return base.ElementProviderFromPoint (x, y);
+		}
+		
+		public override IRawElementProviderFragment GetFocus ()
+		{
+			//TODO: Evaluate when combobox.DropDownStyle is List or there's
+			//no selected element
+			return combobox.SelectedIndex == -1 ? null :
+				new ComboBoxItemProvider (this, combobox);
 		}
 		
 #endregion

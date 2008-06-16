@@ -35,7 +35,7 @@ using Mono.UIAutomation.Winforms.Behaviors;
 namespace Mono.UIAutomation.Winforms
 {
 	public abstract class FragmentRootControlProvider :
-		SimpleControlProvider, IRawElementProviderFragmentRoot
+		FragmentControlProvider, IRawElementProviderFragmentRoot
 	{
 #region Internal Data
 		
@@ -167,8 +167,8 @@ namespace Mono.UIAutomation.Winforms
 		
 #endregion
 
-#region IRawElementProviderFragmentRoot Overrides
-	
+#region IRawElementProviderFragmentRoot Interface
+		
 		public virtual IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
 			if (!BoundingRectangle.Contains (x, y))
@@ -185,36 +185,30 @@ namespace Mono.UIAutomation.Winforms
 			return null;
 		}
 		
-		public virtual void SetFocus ()
+#endregion
+		
+#region FragmentControlProvider Overrides
+	
+		public override void SetFocus ()
 		{
 			control.Focus ();
 		}
 		
-		public virtual IRawElementProviderFragment Navigate (NavigateDirection direction)
+		public override IRawElementProviderFragment Navigate (NavigateDirection direction)
 		{
 			// TODO: Check for child fragments.  Can this logic be generalized?
 			return null;
 		}
 		
-		public abstract int [] GetRuntimeId ();
-		
-		public virtual IRawElementProviderSimple [] GetEmbeddedFragmentRoots ()
+		public override IRawElementProviderSimple [] GetEmbeddedFragmentRoots ()
 		{
 			return null;
 		}
 		
-		public virtual IRawElementProviderFragmentRoot FragmentRoot {
-			get {
-				return this; // Because we implement IRawElementProviderFragmentRoot
-			}
+		public override IRawElementProviderFragmentRoot FragmentRoot {
+			get { return this; }
 		}
-		
-		public virtual Rect BoundingRectangle {
-			get {
-				return (Rect)
-					GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-			}
-		}
+
 #endregion
 	}
 }

@@ -45,7 +45,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		}
 		
 #endregion
-		
+
 #region IProviderBehavior Interface
 		
 		public override void Disconnect (Control control)

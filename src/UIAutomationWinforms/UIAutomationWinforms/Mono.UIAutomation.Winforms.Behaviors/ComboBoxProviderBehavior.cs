@@ -68,6 +68,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			combobox = (ComboBox) control;
 		}
 		
+		public override void Disconnect (Control control)
+		{
+		}
+		
 #endregion
 
 	}

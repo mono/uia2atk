@@ -24,70 +24,52 @@
 // 
 
 using System;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-using Mono.UIAutomation.Winforms;
 
-namespace Mono.UIAutomation.Winforms.Behaviors
+namespace Mono.UIAutomation.Winforms
 {
-	
-	
-	public class ComboBoxSelectionProviderBehavior 
-		: ComboBoxProviderBehavior, ISelectionProvider
+
+	public abstract class FragmentControlProvider 
+		: SimpleControlProvider, IRawElementProviderFragment
 	{
-		
-#region Constructor
-		
-		public ComboBoxSelectionProviderBehavior (SimpleControlProvider provider)
-			: base (provider)
-		{
-		}
-		
-#endregion
-		
-#region IProviderBehavior Members
-		
-		public override AutomationPattern ProviderPattern { 
-			get { return SelectionPatternIdentifiers.Pattern; }
-		}
 
-		public override object GetPropertyValue (int propertyId)
+#region Constructor		
+		
+		protected FragmentControlProvider (Control control) : base (control)
 		{
-			if (propertyId == SelectionPatternIdentifiers.CanSelectMultipleProperty.Id)
-				return CanSelectMultiple;
-			else if (propertyId == SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id)
-				return IsSelectionRequired;
-			else if (propertyId == SelectionPatternIdentifiers.SelectionProperty.Id)
-				return GetSelection ();
-			else
-				return base.GetPropertyValue (propertyId);
-		}
-		
-#endregion
-		
-#region ISelectionProvider Members
-
-		public bool CanSelectMultiple {
-			get { return false; }
-		}
-
-		public bool IsSelectionRequired {
-			get { return combobox.SelectedIndex != -1 ? false : true; }
-		}
-		
-		public IRawElementProviderSimple[] GetSelection ()
-		{
-			if (combobox.SelectedIndex == -1)
-				return null;
-			else
-				return new IRawElementProviderSimple[] {
-					new ComboBoxItemProvider (Provider as ComboBoxProvider, 
-					                          combobox)
-				};
 		}
 
 #endregion
+		
+#region IRawElementProviderFragment Interface 
 
+		public virtual System.Windows.Rect BoundingRectangle {
+			get {
+				return (Rect)
+					GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+			}
+		}
+		
+		public abstract IRawElementProviderFragmentRoot FragmentRoot {
+			get;
+		}
+		
+		public abstract IRawElementProviderSimple[] GetEmbeddedFragmentRoots ();
+		
+		public virtual int[] GetRuntimeId ()
+		{
+			//TODO: Add a valid value at index 1
+            return new int [] { AutomationInteropProvider.AppendRuntimeId, 0 };
+		}
+		
+		public abstract IRawElementProviderFragment Navigate (NavigateDirection direction);
+		
+		public abstract void SetFocus ();
+
+#endregion
+		
 	}
 }
