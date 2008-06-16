@@ -165,7 +165,7 @@ namespace UiaAtkBridgeTest
 			atkAction.SetDescription(0, "Some big ugly description");
 			Assert.AreEqual ("Some big ugly description", atkAction.GetDescription (0));
 	
-			Assert.IsNotNull (atkAction.GetLocalizedName(0));
+			Assert.IsNotNull (atkAction.GetLocalizedName (0));
 
 			// TogglePatternIdentifiers.ToggleStateProperty
 			AutomationPropertyChangedEventArgs args =

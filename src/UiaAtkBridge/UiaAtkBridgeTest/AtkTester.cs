@@ -109,16 +109,16 @@ namespace UiaAtkBridgeTest
 			BasicWidgetType type = BasicWidgetType.RadioButton;
 			Atk.Object accessible;
 			
-			string name = "test";
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
-			InterfaceComponent (type, atkComponent);
-			
-			name = "test";
+			string name = "test 01";
 			Atk.Action atkAction = (Atk.Action)
 				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
 			
 			InterfaceAction (type, atkAction, accessible);
+			
+			name = "test 02";
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			InterfaceComponent (type, atkComponent);
 			
 			PropertyRole (type, accessible);
 		}
@@ -215,6 +215,9 @@ namespace UiaAtkBridgeTest
 				// only valid actions should work
 				for (int i = 0; i < ValidNumberOfActionsForAButton; i++) 
 					Assert.AreEqual (actionPerformed, implementor.DoAction (i), "DoAction");
+				if (type == BasicWidgetType.CheckBox)
+					//one more, to leave it checked
+					Assert.AreEqual (actionPerformed, implementor.DoAction (0), "DoAction_Corrective");
 			}
 			else
 			{
@@ -224,7 +227,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (false, implementor.DoAction (0), "DoAction Combo#2");
 			}
 			// it takes a bit before the State is propagated!
-			System.Threading.Thread.Sleep (2000);
+			System.Threading.Thread.Sleep (4000);
 			
 			state = accessible.RefStateSet();
 			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled #2");

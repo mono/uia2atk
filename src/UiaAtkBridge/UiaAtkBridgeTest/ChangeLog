@@ -1,3 +1,8 @@
+2008-06-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* AtkTester.cs: Fix tests wrt the Checked state and last GailTester
+	  changes.
+
 2008-06-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* BridgeTester.cs, AtkTester.cs, BasicWidgetType.cs: Added first tests
