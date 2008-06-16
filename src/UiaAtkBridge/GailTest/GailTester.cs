@@ -79,6 +79,8 @@ namespace UiaAtkBridgeTest
 				typeof(I).Name);
 		}
 		
+		private GLib.SList radioButtonsGroup = null;
+		
 		public override object GetAtkObjectThatImplementsInterface <I> (
 		  BasicWidgetType type, string text, out Atk.Object accessible, bool real)
 		{
@@ -111,6 +113,13 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.RadioButton:
 				widget = new Gtk.RadioButton (text);
+				if (radioButtonsGroup == null) {
+					radioButtonsGroup = new GLib.SList (System.IntPtr.Zero);
+					((Gtk.RadioButton)widget).Group = radioButtonsGroup;
+				} else {
+					((Gtk.RadioButton)widget).Group = radioButtonsGroup;
+					radioButtonsGroup = null;
+				}
 				//((Gtk.RadioButton)widget).Label = text;
 				
 				//not yet implemented:
