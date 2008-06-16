@@ -1,3 +1,11 @@
+2008-06-16  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/checkButton.py : Rename to checkbutton.py to adhere to
+	standard naming conventions.
+	* samples/checkbutton.py : Renamed from checkButton.py
+	* testers/checkbutton/__init__.py : open checkbutton.py instead of
+	checkButton.py
+
 2008-06-13  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* drivers/local_run.py : return the status of the test so remote_run.py

@@ -24,7 +24,7 @@ def launchCheckButton(exe=None):
                          "full path or set the\nUIAQA_HOME environment "\
                          "variable."
 
-        exe = '%s/samples/checkButton.py' % uiaqa_path
+        exe = '%s/samples/checkbutton.py' % uiaqa_path
    
     if not os.path.exists(exe):
       raise IOError, "%s does not exist" % exe
