@@ -1,3 +1,8 @@
+2008-06-17  Calvin Gaisford <calvinrg@gmail.com> 
+
+	* Button.cs: Added name change effect
+	* List.cs, UiaAtkBridge.mdp: Introduced List with limited implementation
+
 2008-06-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Button.cs: Add TODO.

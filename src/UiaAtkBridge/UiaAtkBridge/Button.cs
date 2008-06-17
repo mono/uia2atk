@@ -265,7 +265,7 @@ namespace UiaAtkBridge
 					OnDisabled ();
 				}
 			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
-				// TODO: Handle NameProperty change			    
+				Name = (string)e.NewValue;
 			}
 		}
 		
