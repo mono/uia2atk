@@ -1,0 +1,6 @@
+Name: Mono.UIAutomation.Winforms
+Description: Mono.UIAutomation.Winforms
+Version: 
+
+Requires: 
+Libs: -r:@expanded_libdir@/@PACKAGE@/UIAutomationWinforms.dll

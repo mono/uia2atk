@@ -1,0 +1,106 @@
+
+EXTRA_DIST =  
+
+# Warning: This is an automatically generated file, do not edit!
+
+if ENABLE_DEBUG
+ASSEMBLY_COMPILER_COMMAND = gmcs
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG"
+
+ASSEMBLY = bin/Debug/UIAutomationWinformsTests.dll
+ASSEMBLY_MDB = $(ASSEMBLY).mdb
+COMPILE_TARGET = library
+PROJECT_REFERENCES =  \
+	../UIAutomationWinforms/bin/Debug/UIAutomationWinforms.dll
+BUILD_DIR = bin/Debug
+
+UIAUTOMATIONWINFORMS_DLL_SOURCE=../UIAutomationWinforms/bin/Debug/UIAutomationWinforms.dll
+UIAUTOMATIONWINFORMSTESTS_DLL_MDB_SOURCE=bin/Debug/UIAutomationWinformsTests.dll.mdb
+UIAUTOMATIONWINFORMSTESTS_DLL_MDB=$(BUILD_DIR)/UIAutomationWinformsTests.dll.mdb
+UIAUTOMATIONWINFORMS_DLL_MDB_SOURCE=../UIAutomationWinforms/bin/Debug/UIAutomationWinforms.dll.mdb
+UIAUTOMATIONWINFORMS_DLL_MDB=$(BUILD_DIR)/UIAutomationWinforms.dll.mdb
+
+endif
+
+if ENABLE_RELEASE
+ASSEMBLY_COMPILER_COMMAND = gmcs
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+
+ASSEMBLY = bin/Release/UIAutomationWinformsTests.dll
+ASSEMBLY_MDB = 
+COMPILE_TARGET = library
+PROJECT_REFERENCES =  \
+	../UIAutomationWinforms/bin/Release/UIAutomationWinforms.dll
+BUILD_DIR = bin/Release
+
+UIAUTOMATIONWINFORMS_DLL_SOURCE=../UIAutomationWinforms/bin/Release/UIAutomationWinforms.dll
+UIAUTOMATIONWINFORMSTESTS_DLL_MDB=
+UIAUTOMATIONWINFORMS_DLL_MDB=
+
+endif
+
+AL=al2
+SATELLITE_ASSEMBLY_NAME=MonoTests.Mono.UIAutomation.Winforms.resources.dll
+
+PROGRAMFILES = \
+	$(UIAUTOMATIONWINFORMS_DLL) \
+	$(UIAUTOMATIONWINFORMSTESTS_DLL_MDB) \
+	$(UIAUTOMATIONWINFORMS_DLL_MDB)  
+
+LINUX_PKGCONFIG =   
+
+
+RESGEN=resgen2
+	
+all: $(ASSEMBLY) $(PROGRAMFILES) $(LINUX_PKGCONFIG) 
+
+FILES =  \
+	AssemblyInfo.cs \
+	BaseProviderTest.cs \
+	ButtonProviderTest.cs \
+	CheckBoxProviderTest.cs \
+	GroupBoxProviderTest.cs \
+	LabelProviderTest.cs \
+	LinkLabelProviderTest.cs \
+	MockBridge.cs \
+	RadioButtonProviderTest.cs \
+	StatusBarProviderTest.cs \
+	TextBoxProviderTest.cs \
+	TextNormalizerTest.cs \
+	TextRangeProviderTest.cs \
+	WindowProviderTest.cs \
+	WordTokenizerTest.cs 
+
+DATA_FILES = 
+
+RESOURCES = 
+
+EXTRAS = 
+
+REFERENCES =  \
+	../UIAutomationWinforms/bin/Debug/UIAutomationWinforms.dll \
+	-pkg:mono-nunit \
+	-pkg:mono-uia \
+	-pkg:olive \
+	System \
+	System.Drawing \
+	System.Windows.Forms
+
+DLL_REFERENCES = 
+
+CLEANFILES = $(PROGRAMFILES) $(LINUX_PKGCONFIG) 
+
+include $(top_srcdir)/Makefile.include
+
+UIAUTOMATIONWINFORMS_DLL = $(BUILD_DIR)/UIAutomationWinforms.dll
+
+$(eval $(call emit-deploy-target,UIAUTOMATIONWINFORMS_DLL))
+$(eval $(call emit-deploy-target,UIAUTOMATIONWINFORMS_DLL_MDB))
+
+
+$(eval $(call emit_resgen_targets))
+$(build_xamlg_list): %.xaml.g.cs: %.xaml
+	xamlg '$<'
+
+$(ASSEMBLY) $(ASSEMBLY_MDB): $(build_sources) $(build_resources) $(build_datafiles) $(DLL_REFERENCES) $(PROJECT_REFERENCES) $(build_xamlg_list) $(build_satellite_assembly_list)
+	mkdir -p $(shell dirname $(ASSEMBLY))
+	$(ASSEMBLY_COMPILER_COMMAND) $(ASSEMBLY_COMPILER_FLAGS) -out:$(ASSEMBLY) -target:$(COMPILE_TARGET) $(build_sources_embed) $(build_resources_embed) $(build_references_ref)
