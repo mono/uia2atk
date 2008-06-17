@@ -7,8 +7,5 @@
 # as part of the test suite when they are ready
 
 tests_list = [
-  "checkbutton-basic-ops.py",
-  "checkbutton-basic-ops2.py",
-  "checkbutton-basic-ops3.py",
-  "checkbutton-basic-ops4.py"
+  "treeview-basic-ops.py"
 ]

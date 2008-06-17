@@ -1,3 +1,10 @@
+2008-06-17  Calen Chen <cachen@novell.com>
+
+	* samples/gtktreeview.py: add a gtk sample app for treeview.
+	* testers/treeview-basic-ops.py: add a gtk test script for treeview. it will auto close the app window after running test.
+	* testers/treeview: add gtk test scripts for treeview with check RoleName. 
+	* drivers/tests.py: add treeview-basic-ops.py to test_list.
+
 2008-06-16  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* checkbutton-basic-ops2.py : Clean up the letter casing

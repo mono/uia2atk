@@ -107,7 +107,7 @@ class PanelCheckBoxRadioButtonApp(Form):
         self.radioPanel.Controls.Add(self.radio2)
 
     def checkedChanged(self, sender, args):
-        if not sender.Checked:
+        if not sender.CheckedChanged:
             return
         if sender.Text == "Female":
             self.radioLabel2.Text = "You are %s" % self.radio2.Text 
