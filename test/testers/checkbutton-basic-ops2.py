@@ -6,7 +6,7 @@
 # Date:        May 23 2008
 # Description: Test accessibility of checkbutton widget 
 #              Use the checkbuttonframe.py wrapper script
-#              Test the sample/checkButton.py script
+#              Test the sample/checkbutton.py script
 ##############################################################################
 
 # The docstring below  is used in the generated log file
@@ -38,7 +38,7 @@ if app is None:
   exit(4)
 
 # just an alias to make things shorter
-cbFrame = app.checkbuttonFrame
+cbFrame = app.checkButtonFrame
 
 cbFrame.checkbox1.click()
 # need a short delay when checking and unchecking the check boxes

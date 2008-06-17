@@ -12,7 +12,7 @@ from checkbutton import *
 
 
 # class to represent the main window.
-class CheckbuttonFrame(accessibles.Frame):
+class CheckButtonFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
@@ -28,7 +28,7 @@ class CheckbuttonFrame(accessibles.Frame):
     logName = 'CheckButton'
 
     def __init__(self, accessible):
-        super(CheckbuttonFrame, self).__init__(accessible)
+        super(CheckButtonFrame, self).__init__(accessible)
         self.checkbox1 = self.findCheckBox(self.CHECK_BUTTON_ONE)
         self.checkbox2 = self.findCheckBox(self.CHECK_BUTTON_TWO)
 
@@ -57,7 +57,7 @@ class CheckbuttonFrame(accessibles.Frame):
         self.assertClosed()
 
     def assertClosed(self):
-        super(CheckbuttonFrame, self).assertClosed()
+        super(CheckButtonFrame, self).assertClosed()
 
         # if the checkbutton window closes, the entire app should close.  
         # assert that this is true 

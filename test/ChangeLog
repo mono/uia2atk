@@ -1,5 +1,14 @@
 2008-06-16  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* checkbutton-basic-ops2.py : Clean up the letter casing
+	* checkbutton-basic-ops3.py :  Clean up the letter casing
+	* checkbutton/__init__.py : Change the log name, which affects letter casing.
+	Clean up the letter casing
+	* checkbutton/checkbuttonframe.py : Clean up the letter casing
+	* checkbutton-basic-ops.py : Clean up the letter casing 
+
+2008-06-16  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* testers/checkbutton/__init__.py : trivial letter case changes
 
 2008-06-16  Brian G. Merrell <bgmerrell@gmail.com>

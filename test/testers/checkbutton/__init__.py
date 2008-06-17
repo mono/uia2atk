@@ -36,7 +36,7 @@ def launchCheckButton(exe=None):
     checkbutton = CheckButton(app, subproc)
     cache.addApplication(checkbutton)
 
-    checkbutton.checkbuttonFrame.app = checkbutton
+    checkbutton.checkButtonFrame.app = checkbutton
 
     return checkbutton
 
@@ -45,4 +45,4 @@ class CheckButton(accessibles.Application):
     def __init__(self, accessible, subproc=None):
         'Get a reference to the Check Button window'
         super(CheckButton, self).__init__(accessible, subproc)
-        self.findFrame(re.compile('^Check Button'), logName='CheckButton')
+        self.findFrame(re.compile('^Check Button'), logName='Check Button')
