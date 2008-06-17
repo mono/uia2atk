@@ -1,0 +1,49 @@
+Index: data/mono-uia.pc.in
+===================================================================
+--- data/mono-uia.pc.in	(revision 0)
++++ data/mono-uia.pc.in	(revision 0)
+@@ -0,0 +1,5 @@
++
++Name: UIAutomation Libraries
++Description: UIAutomation implementation for Mono.
++Version: @VERSION@
++Libs: -r:@olivedir@/UIAutomationTypes.dll -r:@olivedir@/UIAutomationBridge.dll -r:@olivedir@/UIAutomationProvider.dll
+Index: data/Makefile
+===================================================================
+--- data/Makefile	(revision 105905)
++++ data/Makefile	(working copy)
+@@ -11,9 +11,10 @@
+ 	silverdir  = $(prefix)/lib/mono/2.1
+ endif
+ 
+-all-local: olive.pc 
++all-local: olive.pc mono-uia.pc
+ 
+-DISTFILES = olive.pc.in 
++DISTFILES = olive.pc.in \
++	mono-uia.pc.in
+ 
+ REWRITE=
+ olive.pc: olive.pc.in Makefile
+@@ -22,12 +23,19 @@
+ 	mv $@.tmp2 $@
+ 	rm $@.tmp
+ 
+-install-local: olive.pc 
++mono-uia.pc: mono-uia.pc.in Makefile
++	sed -e "s,@olivedir@,$(olivedir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < mono-uia.pc.in > $@.tmp
++	sed -e "s,@olive35dir@,$(olive35dir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < $@.tmp > $@.tmp2
++	mv $@.tmp2 $@
++	rm $@.tmp
++
++install-local: olive.pc mono-uia.pc
+ 	$(MKINSTALLDIRS) $(DESTDIR)$(prefix)/lib/pkgconfig
+ 	$(INSTALL_DATA) olive.pc $(DESTDIR)$(prefix)/lib/pkgconfig
++	$(INSTALL_DATA) mono-uia.pc $(DESTDIR)$(prefix)/lib/pkgconfig
+ 
+ clean-local:
+-	rm -rf olive.pc 
++	rm -rf olive.pc mono-uia.pc
+ 
+ test-local:
+ 
