@@ -26,7 +26,6 @@
     <File name="Mono.UIAutomation.Winforms/TextBoxProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/Helper.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/LinkLabelProvider.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Events" subtype="Directory" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/DefaultHasKeyboardFocusPropertyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/DefaultBoundingRectanglePropertyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/DefaultIsEnabledPropertyEvent.cs" subtype="Code" buildaction="Compile" />
@@ -49,7 +48,6 @@
     <File name="Mono.UIAutomation.Winforms/WordToken.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/WordTokenCollection.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/StatusBarProvider.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors" subtype="Directory" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/IProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ComboBoxProvider.cs" subtype="Code" buildaction="Compile" />
@@ -78,4 +76,13 @@
     <ProjectReference type="Gac" localcopy="True" refto="UIAutomationProvider, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <ProjectReference type="Gac" localcopy="True" refto="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   </References>
+  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" SyncReferences="True" IsAutotoolsProject="True" RelativeConfigureInPath="..">
+    <BuildFilesVar Sync="True" Name="FILES" />
+    <DeployFilesVar />
+    <ResourcesVar Sync="True" Name="RESOURCES" />
+    <OthersVar />
+    <GacRefVar Sync="True" Name="REFERENCES" />
+    <AsmRefVar Sync="True" Name="REFERENCES" />
+    <ProjectRefVar Sync="True" Name="REFERENCES" />
+  </MonoDevelop.Autotools.MakefileInfo>
 </Project>

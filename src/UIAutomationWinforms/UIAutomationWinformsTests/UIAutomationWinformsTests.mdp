@@ -41,4 +41,13 @@
     <ProjectReference type="Gac" localcopy="True" refto="UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <ProjectReference type="Gac" localcopy="True" refto="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
   </References>
+  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" SyncReferences="True" IsAutotoolsProject="True" RelativeConfigureInPath="..">
+    <BuildFilesVar Sync="True" Name="FILES" />
+    <DeployFilesVar />
+    <ResourcesVar Sync="True" Name="RESOURCES" />
+    <OthersVar />
+    <GacRefVar Sync="True" Name="REFERENCES" />
+    <AsmRefVar Sync="True" Name="REFERENCES" />
+    <ProjectRefVar Sync="True" Name="REFERENCES" />
+  </MonoDevelop.Autotools.MakefileInfo>
 </Project>
