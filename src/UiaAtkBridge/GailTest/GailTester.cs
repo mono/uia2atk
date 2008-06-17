@@ -79,7 +79,7 @@ namespace UiaAtkBridgeTest
 				typeof(I).Name);
 		}
 		
-		private GLib.SList radioButtonsGroup = null;
+		private Gtk.RadioButton lastRadioButton = null;
 		
 		public override object GetAtkObjectThatImplementsInterface <I> (
 		  BasicWidgetType type, string text, out Atk.Object accessible, bool real)
@@ -112,15 +112,14 @@ namespace UiaAtkBridgeTest
 					widget = GailTestApp.MainClass.GiveMeARealCheckBox ();
 				break;
 			case BasicWidgetType.RadioButton:
-				widget = new Gtk.RadioButton (text);
-				if (radioButtonsGroup == null) {
-					radioButtonsGroup = new GLib.SList (System.IntPtr.Zero);
-					((Gtk.RadioButton)widget).Group = radioButtonsGroup;
+				
+				if (lastRadioButton == null) {
+					lastRadioButton = new Gtk.RadioButton (text);
+					widget = lastRadioButton;
 				} else {
-					((Gtk.RadioButton)widget).Group = radioButtonsGroup;
-					radioButtonsGroup = null;
+					widget = new Gtk.RadioButton (lastRadioButton, text);
+					lastRadioButton = null;
 				}
-				//((Gtk.RadioButton)widget).Label = text;
 				
 				//not yet implemented:
 //				if (real)
