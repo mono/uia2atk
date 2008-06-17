@@ -1,3 +1,10 @@
+2008-06-17  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* FormTest.mdp: Use GAC refernces instead of relative references. 
+	  Requires gtk-sharp, System.Windows.Forms, and various Olive
+	  assemblies installed from SVN.  Recommend using a parallel Mono
+	  installation as described on the wiki.
+
 2008-06-05  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* FormTest.mdp, formtest.sh: Better to copy in the script.

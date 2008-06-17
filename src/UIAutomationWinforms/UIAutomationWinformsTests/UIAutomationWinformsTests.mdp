@@ -1,9 +1,6 @@
 <Project name="UIAutomationWinformsTests" fileversion="2.0" language="C#" DefaultNamespace="MonoTests.Mono.UIAutomation.Winforms" clr-version="Net_2_0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
-      <CustomCommands>
-        <Command type="AfterBuild" command="rm System.Windows.Forms.dll" workingdir="${TargetDir}" />
-      </CustomCommands>
       <Output directory="bin/Debug" assemblyKeyFile="." assembly="UIAutomationWinformsTests" />
       <Build debugmode="True" target="Library" />
       <Execution runwithwarnings="True" consolepause="False" runtime="MsNet" clr-version="Net_2_0" />
@@ -35,13 +32,13 @@
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-    <ProjectReference type="Assembly" localcopy="True" refto="../../../../olive/class/lib/net_3_0/UIAutomationProvider.dll" />
-    <ProjectReference type="Assembly" localcopy="True" refto="../../../../olive/class/lib/net_3_0/UIAutomationTypes.dll" />
     <ProjectReference type="Gac" localcopy="True" refto="nunit.framework, Version=2.2.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
     <ProjectReference type="Gac" localcopy="True" refto="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-    <ProjectReference type="Assembly" localcopy="True" refto="../../../../olive/class/lib/net_3_0/UIAutomationBridge.dll" />
-    <ProjectReference type="Assembly" localcopy="True" refto="../../../../olive/class/lib/net_3_0/WindowsBase.dll" />
     <ProjectReference type="Gac" localcopy="True" refto="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <ProjectReference type="Project" localcopy="True" refto="Mono.UIAutomation.Winforms" />
+    <ProjectReference type="Gac" localcopy="True" refto="UIAutomationBridge, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <ProjectReference type="Gac" localcopy="True" refto="UIAutomationProvider, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <ProjectReference type="Gac" localcopy="True" refto="UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <ProjectReference type="Gac" localcopy="True" refto="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
   </References>
 </Project>
