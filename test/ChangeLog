@@ -1,3 +1,18 @@
+2008-06-17  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* demos/gtk_sample_test.tar.gz : update with the new files
+	* testers/treeview-basic-ops.py : renamed to use _ in filename
+	* testers/checkbutton-basic-ops2.py : renamed to use _ in filename
+	* testers/checkbutton-basic-ops3.py : renamed to use _ in filename
+	* testers/checkbutton_basic_ops.py : renamed to use _ in filename
+	* testers/treeview_basic_ops.py : renamed to use _ in filename
+	* testers/checkbutton_basic_ops2.py : renamed to use _ in filename
+	* testers/checkbutton_basic_ops3.py : renamed to use _ in filename
+	* testers/checkbutton-basic-ops.py :  renamed to use _ in filename
+	* drivers/tests.py :  Revert to previous version with finished tests
+	* drivers/README :  Fix typo
+	* drivers/machines.py :  Add some comments
+
 2008-06-17  Calen Chen <cachen@novell.com>
 
 	* samples/gtktreeview.py: add a gtk sample app for treeview.
