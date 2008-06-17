@@ -27,6 +27,8 @@ using System;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
+using System.Windows.Automation;
+
 namespace Mono.UIAutomation.Winforms.Events
 {
 	

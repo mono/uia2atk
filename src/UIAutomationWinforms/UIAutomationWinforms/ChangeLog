@@ -1,3 +1,8 @@
+2008-06-17  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms.Events/ComboBoxItemElementSelectedEvent.cs:
+	  Added missing using statement.
+
 2008-06-17  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.mdp: Updated. Added class 
