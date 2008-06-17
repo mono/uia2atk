@@ -86,6 +86,14 @@ namespace GailTestApp
 			return win.GiveMeARealComboBox ();
 		}
 		
+		public static Gtk.RadioButton GiveMeARealRadioButton ()
+		{
+			if (win == null)
+				Start (true);
+			
+			return win.GiveMeARealRadioButton ();
+		}
+		
 		public static void Kill () 
 		{
 			win.Destroy ();

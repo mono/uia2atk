@@ -107,15 +107,26 @@ namespace UiaAtkBridgeTest
 		public void RadioButtons ()
 		{
 			BasicWidgetType type = BasicWidgetType.RadioButton;
-			Atk.Object accessible;
+			Atk.Object accessible, accessible2, accessible3;
 			
 			string name = "test 01";
 			Atk.Action atkAction = (Atk.Action)
 				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
-			
 			InterfaceAction (type, atkAction, accessible);
 			
 			name = "test 02";
+			Atk.Action atkAction2 = (Atk.Action)
+				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible2, true);
+			//the third radio button is disconnected from the previous ones
+			name = "test 03";
+			Atk.Action atkAction3 = (Atk.Action)
+				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible3, true);
+			
+			InterfaceActionFor3RadioButtons (atkAction, accessible,
+			                                 atkAction2, accessible2,
+			                                 atkAction3, accessible3);
+			
+			name = "test 04";
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
 			InterfaceComponent (type, atkComponent);
@@ -126,7 +137,6 @@ namespace UiaAtkBridgeTest
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
 		//the widget, so we kill all with the method marked as [TestFixtureTearDown]
 		[Test]
-		[Ignore ("ComboBox not finished in the bridge")]
 		public void ComboBox ()
 		{
 			BasicWidgetType type = BasicWidgetType.ComboBox;
@@ -179,6 +189,43 @@ namespace UiaAtkBridgeTest
 		
 		protected abstract int ValidNumberOfActionsForAButton { get; }
 		
+		private void InterfaceActionFor3RadioButtons (Atk.Action actionable1, Atk.Object accessible1,
+		                                               Atk.Action actionable2, Atk.Object accessible2,
+		                                               Atk.Action actionable3, Atk.Object accessible3)
+		{
+			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #1");
+			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #2");
+			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #3");
+			
+			Assert.IsTrue (actionable2.DoAction (0), "IAF3RB::DoAction#1");
+			System.Threading.Thread.Sleep (2000);
+			
+			Assert.IsFalse (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #4");
+			Assert.IsTrue (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #5");
+			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #6");
+
+			Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#2");
+			System.Threading.Thread.Sleep (2000);
+			
+			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #7");
+			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #8");
+			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #9");
+
+			Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#3");
+			System.Threading.Thread.Sleep (2000);
+			
+			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #10");
+			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #11");
+			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #12");
+			
+			Assert.IsTrue (actionable3.DoAction (0), "IAF3RB::DoAction#4");
+			System.Threading.Thread.Sleep (2000);
+			
+			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #13");
+			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #14");
+			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #15");
+		}
+		
 		private void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible)
 		{
 			if (type == BasicWidgetType.ComboBox) {
@@ -205,11 +252,6 @@ namespace UiaAtkBridgeTest
 			//a radio button is checked by default
 			if (type != BasicWidgetType.RadioButton)
 				Assert.IsFalse (state.ContainsState (Atk.StateType.Checked), "RefStateSet.!Checked #1");
-			
-			if (type == BasicWidgetType.RadioButton) {
-				//RadioButton is already checked, so DoAction does nothing
-				actionPerformed = false;
-			}
 			
 			if (type != BasicWidgetType.ComboBox) {
 				// only valid actions should work

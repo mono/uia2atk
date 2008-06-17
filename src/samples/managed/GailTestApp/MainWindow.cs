@@ -23,6 +23,8 @@
 //      Andres G. Aragoneses <aaragoneses@novell.com>
 // 
 using System;
+using System.Collections.Generic;
+
 using Gtk;
 
 public partial class MainWindow: Gtk.Window
@@ -30,6 +32,11 @@ public partial class MainWindow: Gtk.Window
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
+		
+		radioButtons.Add (this.radTest1);
+		radioButtons.Add (this.radTest2);
+		radioButtons.Add (this.radiobutton1);
+		radioButtons.Add (this.radiobutton2);
 	}
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
@@ -52,5 +59,18 @@ public partial class MainWindow: Gtk.Window
 	
 	internal Gtk.ComboBox GiveMeARealComboBox () {
 		return this.cbxTest;
+	}
+	
+	List <Gtk.RadioButton> radioButtons = new List <Gtk.RadioButton> ();
+	
+	int radioButtonToReturn = -1;
+	
+	internal Gtk.RadioButton GiveMeARealRadioButton () {
+
+		if (radioButtonToReturn == 3)
+			radioButtonToReturn = -1;
+		
+		radioButtonToReturn++;
+		return radioButtons [radioButtonToReturn];
 	}
 }

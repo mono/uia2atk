@@ -51,7 +51,7 @@ namespace UiaAtkBridgeTest
 //Gtk-CRITICAL **: gtk_combo_box_append_text: assertion `GTK_IS_LIST_STORE (combo_box->priv->model)' failed
 //Gtk-CRITICAL **: gtk_combo_box_append_text: assertion `GTK_IS_LIST_STORE (combo_box->priv->model)' failed
 			if (!real)
-				throw new NotSupportedException ("We cannot add items to a non-real widget because of some GtkCritical");
+				throw new NotSupportedException ("We cannot add items to a non-real ComboBox because of some GtkCritical");
 			
 			Gtk.Widget widget = new Gtk.ComboBox ();
 			if (real)
@@ -78,8 +78,6 @@ namespace UiaAtkBridgeTest
 			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
 				typeof(I).Name);
 		}
-		
-		private Gtk.RadioButton lastRadioButton = null;
 		
 		public override object GetAtkObjectThatImplementsInterface <I> (
 		  BasicWidgetType type, string text, out Atk.Object accessible, bool real)
@@ -112,18 +110,10 @@ namespace UiaAtkBridgeTest
 					widget = GailTestApp.MainClass.GiveMeARealCheckBox ();
 				break;
 			case BasicWidgetType.RadioButton:
+				if (!real)
+					throw new NotSupportedException ("We cannot use non-real radio buttons because of some wierd behaviour");
 				
-				if (lastRadioButton == null) {
-					lastRadioButton = new Gtk.RadioButton (text);
-					widget = lastRadioButton;
-				} else {
-					widget = new Gtk.RadioButton (lastRadioButton, text);
-					lastRadioButton = null;
-				}
-				
-				//not yet implemented:
-//				if (real)
-//					widget = GailTestApp.MainClass.GiveMeARealRadioButton ();
+				widget = GailTestApp.MainClass.GiveMeARealRadioButton ();
 				break;
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");

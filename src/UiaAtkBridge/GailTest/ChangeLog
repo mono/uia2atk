@@ -1,3 +1,7 @@
+2008-06-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* GailTester.cs: Add real support and only use this mode.
+
 2008-06-17  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* GailTest.mdp: Use GAC refernces instead of relative references. 

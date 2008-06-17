@@ -58,9 +58,9 @@ typedef struct _AtkUtilListenerInfo AtkUtilListenerInfo;
 
 struct _AtkUtilListenerInfo
 {
-	 gint key;
-	 guint signal_id;
-	 gulong hook_id;
+	gint key;
+	guint signal_id;
+	gulong hook_id;
 };
 
 
