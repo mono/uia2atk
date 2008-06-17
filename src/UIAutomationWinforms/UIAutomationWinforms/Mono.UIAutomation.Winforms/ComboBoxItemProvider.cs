@@ -44,7 +44,7 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		public ComboBoxItemProvider (ComboBoxProvider provider,
-		                             ComboBox control, int index) : base (null)
+		                             ComboBox control, int index) : base (control)
 		{
 			combobox_provider = provider;
 			combobox_control = control;
@@ -52,7 +52,6 @@ namespace Mono.UIAutomation.Winforms
 			
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern, 
 			             new ComboBoxItemProviderBehavior (this));
-			//TODO: ADD SelectionItem behavior
 		}
 
 #endregion
@@ -108,7 +107,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			combobox_control.Focus (); 
 		}
-		
+
 #endregion
 		
 #region Private fields

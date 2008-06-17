@@ -67,6 +67,7 @@
     <File name="Mono.UIAutomation.Winforms/ComboBoxItemProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ComboBoxItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/FragmentControlProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ComboBoxItemElementSelectedEvent.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

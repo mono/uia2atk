@@ -28,11 +28,14 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using System.Windows;
+using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 	
-	internal class ComboBoxItemProviderBehavior : ProviderBehavior, /*IRawElementProviderFragment, */ISelectionItemProvider
+	internal class ComboBoxItemProviderBehavior 
+		: ProviderBehavior, ISelectionItemProvider
 	{
 
 #region Constructor
@@ -40,9 +43,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		public ComboBoxItemProviderBehavior (ComboBoxItemProvider provider)
 			: base (provider)
 		{
-			combobox_provider = provider;
-			
-			//TODO: Should this behavoir support any GetPropertyValue?
 		}
 		
 #endregion
@@ -51,7 +51,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 		public override void Disconnect (Control control)
 		{
-			//TODO: SetEvent(null)??
+			Provider.SetEvent (ProviderEventType.SelectionItemElementSelectedEvent, 
+			                   null);
 		}
 
 		public override object GetPropertyValue (int propertyId)
@@ -66,7 +67,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public override void Connect (Control control)
 		{
-			//TODO: SetEvent??
+			Provider.SetEvent (ProviderEventType.SelectionItemElementSelectedEvent, 
+			                   new ComboBoxItemElementSelectedEvent (Provider));
 		}
 		
 		public override AutomationPattern ProviderPattern { 
@@ -79,34 +81,54 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public void AddToSelection ()
 		{
-			throw new NotSupportedException ();
+			if (IsSelected)
+				return;
+			
+			IRawElementProviderSimple comboboxProvider
+				= ((ComboBoxItemProvider) Provider).ComboBoxProvider;
+			IRawElementProviderSimple[] selection 
+				= (IRawElementProviderSimple[]) comboboxProvider.GetPropertyValue (SelectionPatternIdentifiers.SelectionProperty.Id);
+			
+			if (selection == null)
+				Select ();
+			else 
+				throw new InvalidOperationException ();
 		}
 
 		public void RemoveFromSelection ()
 		{
-			throw new NotSupportedException ();
+			IRawElementProviderSimple comboboxProvider
+				= ((ComboBoxItemProvider) Provider).ComboBoxProvider;
+			IRawElementProviderSimple[] selection 
+				= (IRawElementProviderSimple[]) comboboxProvider.GetPropertyValue (SelectionPatternIdentifiers.SelectionProperty.Id);
+			
+			if (selection == null)
+				return;
+			else
+				throw new InvalidOperationException ();			
 		}
 
 		public void Select ()
 		{
-			combobox_provider.ComboBoxControl.SelectedIndex = combobox_provider.Index;
+			if (IsSelected)
+				return;
+			
+			((ComboBoxItemProvider) Provider).ComboBoxControl.SelectedIndex 
+				= ((ComboBoxItemProvider) Provider).Index;
 		}
 
 		public bool IsSelected {
-			get { return combobox_provider.ComboBoxControl.SelectedIndex == combobox_provider.Index; }
+			get { 
+				return ((ComboBoxItemProvider) Provider).ComboBoxControl.SelectedIndex 
+					== ((ComboBoxItemProvider) Provider).Index; 
+			}
 		}
 
 		public IRawElementProviderSimple SelectionContainer {
-			get { return combobox_provider.ComboBoxProvider; }
+			get { return ((ComboBoxItemProvider) Provider).ComboBoxProvider; }
 		}
 
 #endregion 
-		
-		
-#region Private fields
-		
-		private ComboBoxItemProvider combobox_provider;
-		
-#endregion
+
 	}
 }

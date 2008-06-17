@@ -1,3 +1,21 @@
+2008-06-17  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.mdp: Updated. Added class 
+	ComboBoxItemElementSelectedEvent.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Added TODO comment.
+	* Mono.UIAutomation.Winforms/ComboBoxItemProvider.cs: Using ComboBox's
+	reference control as local Control for class.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxItemProviderBehavior.cs:
+	Removed local "combobox_provider" variable, using casts instead. 
+	SetEvent call set to set SelectionItemElementSelectedEvent and use 
+	ComboBoxItemElementSelectedEvent class. AddToSelection, Select and 
+	RemoveFromSelection implementation.
+	* Mono.UIAutomation.Winforms.Events/ComboBoxItemElementSelectedEvent.cs:
+	File added, emits changes when SelectedIndex changes.
+	* Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: Added new 
+	values: SelectionItemElementAddedEvent,SelectionItemElementRemovedEvent
+	and SelectionItemElementSelectedEvent.
+
 2008-06-16  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.mdp: Updated: Added files.

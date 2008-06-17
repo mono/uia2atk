@@ -91,6 +91,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
+			//TODO: Evaluate all cases.
 			return base.ElementProviderFromPoint (x, y);
 		}
 		

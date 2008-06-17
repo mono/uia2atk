@@ -24,32 +24,50 @@
 // 
 
 using System;
+using System.Windows.Automation.Provider;
+using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
-
-	//TODO: Add internal comments to identify Event pattern in valu
-	public enum ProviderEventType
+	
+	//ComboBoxItem - SelectionItem pattern - Selected event
+	public class ComboBoxItemElementSelectedEvent : ProviderEvent
 	{
-		//Property events
-		IsOffscreenProperty,
-		IsEnabledProperty,
-		NameProperty,
-		HasKeyboardFocusProperty,
-		BoundingRectangleProperty,
 		
-		ToggleStateProperty,
-		TextChangedEvent,
-		InvokedEvent,
-		StructureChangedEvent,
-		//ExpandCollapse Pattern
-		ExpandCollapseStateProperty,
-		//Value Pattern
-		ValuePatternValueProperty,
-		ValuePatternIsReadOnlyProperty,
-		//SelectionItem Pattern
-		SelectionItemElementAddedEvent,
-		SelectionItemElementRemovedEvent,
-		SelectionItemElementSelectedEvent
+#region Constructor
+
+		public ComboBoxItemElementSelectedEvent (IRawElementProviderSimple provider)
+			: base (provider)
+		{
+		}
+		
+#endregion
+		
+#region EventStrategy Methods
+		
+		public override void Connect (Control control)
+		{
+			((ComboBox) control).SelectedIndexChanged += new EventHandler (OnComboBoxItemSelected);
+		}
+
+		public override void Disconnect (Control control)
+		{
+			((ComboBox) control).SelectedIndexChanged -= new EventHandler (OnComboBoxItemSelected);
+		}
+		
+#endregion
+
+#region Private method
+		
+		private void OnComboBoxItemSelected (object sender, EventArgs e)
+		{
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationEventArgs args = new AutomationEventArgs (SelectionItemPatternIdentifiers.ElementSelectedEvent);
+				AutomationInteropProvider.RaiseAutomationEvent (SelectionItemPatternIdentifiers.ElementSelectedEvent, 
+				                                                Provider, args);
+			}
+		}
+		
+#endregion
 	}
 }
