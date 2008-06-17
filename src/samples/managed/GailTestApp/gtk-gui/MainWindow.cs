@@ -28,6 +28,10 @@ public partial class MainWindow {
     
     private Gtk.Label lblTest1;
     
+    private Gtk.RadioButton radiobutton1;
+    
+    private Gtk.RadioButton radiobutton2;
+    
     private Gtk.RadioButton radTest1;
     
     private Gtk.RadioButton radTest2;
@@ -47,7 +51,7 @@ public partial class MainWindow {
         this.hbox1.Name = "hbox1";
         this.hbox1.Spacing = 6;
         // Container child hbox1.Gtk.Box+BoxChild
-        this.table1 = new Gtk.Table(((uint)(3)), ((uint)(3)), false);
+        this.table1 = new Gtk.Table(((uint)(4)), ((uint)(3)), false);
         this.table1.Name = "table1";
         this.table1.RowSpacing = ((uint)(6));
         this.table1.ColumnSpacing = ((uint)(6));
@@ -110,6 +114,36 @@ public partial class MainWindow {
         w5.XOptions = ((Gtk.AttachOptions)(4));
         w5.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
+        this.radiobutton1 = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("radiobutton1"));
+        this.radiobutton1.CanFocus = true;
+        this.radiobutton1.Name = "radiobutton1";
+        this.radiobutton1.DrawIndicator = true;
+        this.radiobutton1.UseUnderline = true;
+        this.radiobutton1.Group = new GLib.SList(System.IntPtr.Zero);
+        this.table1.Add(this.radiobutton1);
+        Gtk.Table.TableChild w6 = ((Gtk.Table.TableChild)(this.table1[this.radiobutton1]));
+        w6.TopAttach = ((uint)(3));
+        w6.BottomAttach = ((uint)(4));
+        w6.LeftAttach = ((uint)(1));
+        w6.RightAttach = ((uint)(2));
+        w6.XOptions = ((Gtk.AttachOptions)(4));
+        w6.YOptions = ((Gtk.AttachOptions)(4));
+        // Container child table1.Gtk.Table+TableChild
+        this.radiobutton2 = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("radiobutton2"));
+        this.radiobutton2.CanFocus = true;
+        this.radiobutton2.Name = "radiobutton2";
+        this.radiobutton2.DrawIndicator = true;
+        this.radiobutton2.UseUnderline = true;
+        this.radiobutton2.Group = this.radiobutton1.Group;
+        this.table1.Add(this.radiobutton2);
+        Gtk.Table.TableChild w7 = ((Gtk.Table.TableChild)(this.table1[this.radiobutton2]));
+        w7.TopAttach = ((uint)(3));
+        w7.BottomAttach = ((uint)(4));
+        w7.LeftAttach = ((uint)(2));
+        w7.RightAttach = ((uint)(3));
+        w7.XOptions = ((Gtk.AttachOptions)(4));
+        w7.YOptions = ((Gtk.AttachOptions)(4));
+        // Container child table1.Gtk.Table+TableChild
         this.radTest1 = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("rad Opt 0"));
         this.radTest1.CanFocus = true;
         this.radTest1.Name = "radTest1";
@@ -117,13 +151,13 @@ public partial class MainWindow {
         this.radTest1.UseUnderline = true;
         this.radTest1.Group = new GLib.SList(System.IntPtr.Zero);
         this.table1.Add(this.radTest1);
-        Gtk.Table.TableChild w6 = ((Gtk.Table.TableChild)(this.table1[this.radTest1]));
-        w6.TopAttach = ((uint)(2));
-        w6.BottomAttach = ((uint)(3));
-        w6.LeftAttach = ((uint)(1));
-        w6.RightAttach = ((uint)(2));
-        w6.XOptions = ((Gtk.AttachOptions)(4));
-        w6.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w8 = ((Gtk.Table.TableChild)(this.table1[this.radTest1]));
+        w8.TopAttach = ((uint)(2));
+        w8.BottomAttach = ((uint)(3));
+        w8.LeftAttach = ((uint)(1));
+        w8.RightAttach = ((uint)(2));
+        w8.XOptions = ((Gtk.AttachOptions)(4));
+        w8.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
         this.radTest2 = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("rad Opt 1"));
         this.radTest2.CanFocus = true;
@@ -132,23 +166,23 @@ public partial class MainWindow {
         this.radTest2.UseUnderline = true;
         this.radTest2.Group = this.radTest1.Group;
         this.table1.Add(this.radTest2);
-        Gtk.Table.TableChild w7 = ((Gtk.Table.TableChild)(this.table1[this.radTest2]));
-        w7.TopAttach = ((uint)(2));
-        w7.BottomAttach = ((uint)(3));
-        w7.LeftAttach = ((uint)(2));
-        w7.RightAttach = ((uint)(3));
-        w7.XOptions = ((Gtk.AttachOptions)(4));
-        w7.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w9 = ((Gtk.Table.TableChild)(this.table1[this.radTest2]));
+        w9.TopAttach = ((uint)(2));
+        w9.BottomAttach = ((uint)(3));
+        w9.LeftAttach = ((uint)(2));
+        w9.RightAttach = ((uint)(3));
+        w9.XOptions = ((Gtk.AttachOptions)(4));
+        w9.YOptions = ((Gtk.AttachOptions)(4));
         this.hbox1.Add(this.table1);
-        Gtk.Box.BoxChild w8 = ((Gtk.Box.BoxChild)(this.hbox1[this.table1]));
-        w8.Position = 1;
-        w8.Expand = false;
-        w8.Fill = false;
+        Gtk.Box.BoxChild w10 = ((Gtk.Box.BoxChild)(this.hbox1[this.table1]));
+        w10.Position = 1;
+        w10.Expand = false;
+        w10.Fill = false;
         this.vbox1.Add(this.hbox1);
-        Gtk.Box.BoxChild w9 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
-        w9.Position = 1;
-        w9.Expand = false;
-        w9.Fill = false;
+        Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
+        w11.Position = 1;
+        w11.Expand = false;
+        w11.Fill = false;
         this.Add(this.vbox1);
         if ((this.Child != null)) {
             this.Child.ShowAll();

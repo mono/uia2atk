@@ -1,3 +1,9 @@
+2008-06-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* gtk-gui/MainWindow.cs, gtk-gui/gui.stetic: Let's add a new radiobuttons
+	  group here (we're having problems with non-real radiobuttons in the
+	  unittesting playground).
+
 2008-06-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* gtk-gui/MainWindow.cs, gtk-gui/gui.stetic: Add sample radio buttons.
