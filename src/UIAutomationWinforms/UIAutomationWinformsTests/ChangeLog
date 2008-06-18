@@ -1,5 +1,16 @@
 2008-06-17  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* UIAutomationWinformsTests.mdp: Turn of reference synchronization for
+	  now so that MonoDevelop doesn't try to add references to everything
+	  in the Olive package just because we use WindowsBase.  This will
+	  require us to manually update the Makefile.am files when modifying
+	  project references.
+	* Makefile.am: Use -lib to expand compiler's reference search scope so
+	  we can be more specific about assembly reference instead of using
+	  blanket package references.
+
+2008-06-17  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	
 
 2008-06-17  Sandy Armstrong <sanfordarmstrong@gmail.com> 

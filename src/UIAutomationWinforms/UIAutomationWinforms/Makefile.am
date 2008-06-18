@@ -5,7 +5,7 @@ EXTRA_DIST =
 
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG"
+ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/a11y -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG"
 
 ASSEMBLY = bin/Debug/UIAutomationWinforms.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
@@ -107,8 +107,9 @@ EXTRAS = \
 	mono.uiautomation.winforms.pc.in 
 
 REFERENCES =  \
-	-pkg:mono-uia \
-	-pkg:olive \
+	UIAutomationTypes \
+	UIAutomationProvider \
+	WindowsBase \
 	System \
 	System.Core \
 	System.Drawing \
