@@ -1,3 +1,8 @@
+2008-06-18  Ray Wang <rawang@novell.com>
+
+	* samples/form.py : implement Form control.
+	* samples/fontdialog.py : implement FontDialog control.
+
 2008-06-17  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* demos/gtk_sample_test.tar.gz : update with the new files
