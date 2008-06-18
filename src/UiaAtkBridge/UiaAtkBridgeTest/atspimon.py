@@ -11,7 +11,6 @@ import sys
 import os
 import pyatspi
 import atexit
-import time
 import getopt
 
 # simply takes a string s as input and prints it if running verbosely
