@@ -64,6 +64,8 @@ class Settings(object):
     output("INFO:  Logging to:  %s" % Settings.log_path)
 
   def argument_parser(self):
+    opts = []
+    args = []
     try:
       opts, args = getopt.getopt(sys.argv[1:],"hql:",["help","quiet","log="])
     except getopt.GetoptError:

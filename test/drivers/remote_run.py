@@ -43,6 +43,8 @@ class Settings(object):
       self.argument_parser()
 
   def argument_parser(self):
+    opts = []
+    args = []
     try:
       opts, args = getopt.getopt(sys.argv[1:],"hql:",["help","quiet","log="])
     except getopt.GetoptError:

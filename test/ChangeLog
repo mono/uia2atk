@@ -1,3 +1,8 @@
+2008-06-18  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* drivers/local_run.py : fix argument parsing
+	* drivers/remote_run.py : fix argument parsing
+
 2008-06-18  Ray Wang <rawang@novell.com>
 
 	* samples/form.py : implement Form control.
