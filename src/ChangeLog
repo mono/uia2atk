@@ -1,5 +1,9 @@
 2008-06-18  Brian G. Merrell <bgmerrell@gmail.com> 
 
+	* UiaAtkBridge/UiaAtkBridgeTest/atspimon.py : remove unused method
+
+2008-06-18  Brian G. Merrell <bgmerrell@gmail.com> 
+
 	* UiaAtkBridge/UiaAtkBridgeTest/atspimon.py : initial checkin of event
 	listener
 

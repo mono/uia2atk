@@ -4,6 +4,7 @@
 # Written by:  Brian G. Merrell <bgmerrell@novell.com>
 # Date:        June 17 2008
 # Description: Monitor at-spi events
+#              Inspired by Accerciser's Event Monitor plugin
 ##############################################################################
 
 import sys
@@ -126,25 +127,6 @@ class Monitor:
     output(str(event.host_application), False)
     output('\n', False)
  
-  
-  def _insertEventIntoBuffer(self, event):
-    ''' 
-    Inserts given event in to text buffer. Creates hyperlinks for
-    the events context accessibles.
-    
-    @param event: The at-spi event we are inserting.
-    @type event: Accessibility.Event
-    '''
-    self._writeText('%s(%s, %s, %s)\n\tsource: ' %
-                      (event.type, event.detail1, 
-                       event.detail2, event.any_data))
-    hyperlink = self._createHyperlink(event.source)
-    self._writeText(str(event.source), hyperlink)
-    self._writeText('\n\tapplication: ')
-    hyperlink = self._createHyperlink(event.host_application)
-    self._writeText(str(event.host_application), hyperlink)
-    self._writeText('\n') 
-
   def begin(self):
     output("Registering Event Listener...")
     pyatspi.Registry.registerEventListener(self._handleEvent,
