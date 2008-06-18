@@ -5,6 +5,10 @@
 
 2008-06-18  Ray Wang <rawang@novell.com>
 
+	* samples/progressbar.py : implement ProgressBar control.
+
+2008-06-18  Ray Wang <rawang@novell.com>
+
 	* samples/form.py : implement Form control.
 	* samples/fontdialog.py : implement FontDialog control.
 
