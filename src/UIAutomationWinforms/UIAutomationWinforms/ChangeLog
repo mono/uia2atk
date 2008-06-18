@@ -1,3 +1,9 @@
+2008-06-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile.am: Replace @expanded_libdir@/mono/a11y with
+	  @expanded_libdir@/mono/accessibility to reflect latest olive patch.
+	   May change again.
+
 2008-06-17  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms.mdp: Turn of reference synchronization for

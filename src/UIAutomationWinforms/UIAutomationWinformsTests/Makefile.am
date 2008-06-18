@@ -5,7 +5,7 @@ EXTRA_DIST =
 
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/a11y -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG"
+ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG"
 
 ASSEMBLY = bin/Debug/UIAutomationWinformsTests.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
