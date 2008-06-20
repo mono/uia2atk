@@ -1,9 +1,8 @@
 #!/usr/bin/env ipy
-# -*- coding: utf-8 -*-
 
 ##############################################################################
 # Written by:  Ray Wang <rawang@novell.com>
-# Date:        Jun 16, 2008
+# Date:        06/16/2008
 # Description: the sample for winforms control:
 #              FontDialog
 ##############################################################################
@@ -28,7 +27,7 @@ class FontDialogSample(Form):
         """FontDialogSample class init function."""
 
         # setup title
-        self.Text = "FontDialog control test sample"
+        self.Text = "FontDialog control"
 
         # setup label
         self.label = Label()
@@ -42,13 +41,13 @@ class FontDialogSample(Form):
         self.button = Button()
         self.button.Text = "Click me"
         self.button.Location = Point(25, 125)
-        self.button.Click += self.openDialog
+        self.button.Click += self.font_dialog
 
         # add controls
         self.Controls.Add(self.label)
         self.Controls.Add(self.button)
 
-    def openDialog(self, sender, args):
+    def font_dialog(self, sender, event):
         """open a FontDialog dialog"""
 
         # preserve the previous label font to FontDialog dialog.
@@ -64,4 +63,5 @@ class FontDialogSample(Form):
 
 # run application
 form = FontDialogSample()
+Application.EnableVisualStyles()
 Application.Run(form)

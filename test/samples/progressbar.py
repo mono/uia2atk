@@ -1,9 +1,8 @@
 #!/usr/bin/env ipy
-# -*- coding: utf-8 -*-
 
 ##############################################################################
 # Written by:  Ray Wang <rawang@novell.com>
-# Date:        Jun 16, 2008
+# Date:        06/18/2008
 # Description: the sample for winforms control:
 #              ProgressBar
 ##############################################################################
@@ -29,7 +28,7 @@ class ProgressBarSample(Form):
         """ProgressBarSample class init function."""
 
         # setup title
-        self.Text = "ProgressBar control test sample"
+        self.Text = "ProgressBar control"
         self.Width = 260
         self.Height = 100
 

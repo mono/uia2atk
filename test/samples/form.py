@@ -21,7 +21,7 @@ from System.Windows.Forms import Application, Form, FormBorderStyle
 class FormSample(Form):
     """Form control class"""
     def __init__(self):
-        self.Text = "Form control test sample"
+        self.Text = "Form control"
         # The FormBorderStyple choices are:
         # Fixed3D - A fixed, three-dimensional border.
         # FixedDialog - A thick, fixed dialog-style border.

@@ -1,3 +1,11 @@
+2008-06-19  Ray Wang <rawang@gmail.com>
+
+	* samples/progressbar.py : Clean up the letter casing
+	* samples/form.py : Clean up the letter casing
+	* samples/fontdialog.py : Clean up the letter casing
+	* samples/listbox.py : implement ListBox control
+	* samples/combobox.py : implement ComboBox control
+
 2008-06-18  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* drivers/local_run.py : fix argument parsing
@@ -5,12 +13,12 @@
 
 2008-06-18  Ray Wang <rawang@novell.com>
 
-	* samples/progressbar.py : implement ProgressBar control.
+	* samples/progressbar.py : implement ProgressBar control
 
 2008-06-18  Ray Wang <rawang@novell.com>
 
-	* samples/form.py : implement Form control.
-	* samples/fontdialog.py : implement FontDialog control.
+	* samples/form.py : implement Form control
+	* samples/fontdialog.py : implement FontDialog control
 
 2008-06-17  Brian G. Merrell <bgmerrell@gmail.com>
 
