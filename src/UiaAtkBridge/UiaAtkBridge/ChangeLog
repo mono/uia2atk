@@ -1,3 +1,9 @@
+2008-06-20  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* uiaatkbridge.pc.in, Makefile.am: Preliminary makefile support.  Not
+	  ready, doesn't include bridge-glue, and isn't integrated into the
+	  project files yet.
+
 2008-06-17  Calvin Gaisford <calvinrg@gmail.com> 
 
 	* Button.cs: Added name change effect

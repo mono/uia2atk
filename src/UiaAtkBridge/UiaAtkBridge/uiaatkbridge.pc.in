@@ -1,0 +1,6 @@
+Name: UiaAtkBridge
+Description: UiaAtkBridge
+Version: 
+
+Requires: 
+Libs: -r:@expanded_libdir@/@PACKAGE@/UiaAtkBridge.dll
