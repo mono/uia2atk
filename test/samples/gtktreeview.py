@@ -9,7 +9,7 @@ class MainWindow(object):
         gtk.main_quit()
         return False
 
-    def __init__(self,title="TreeView",width=200,height=200):
+    def __init__(self,title="TreeView",width=300,height=600):
         # Create a new window
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window.set_title(title)

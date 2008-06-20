@@ -1,3 +1,10 @@
+2008-06-17  Calen Chen <cachen@novell.com>
+	* samples/gtktreeview.py : enlarge the windows size.
+	* testers/treeview_basic_ops.py :renew the test script to test expand and contract treeview's TableCell.
+	* testers/treeview/__init__.py : renew the logName.
+	* testers/treeview/treeviewframe.py: add definition for expand, contract to act TableCell "expand or contract" and tchClick to act TableColumnHeader "click", because strongwind doesn't support them. and redifine actionResult and focusResult to check if the action has been done.
+
+
 2008-06-20  Ray Wang <rawang@gmail.com>
 
 	* samples/picturebox.py : implement PictureBox control

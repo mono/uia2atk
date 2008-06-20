@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
 
-##############################################################################$
-# Written by:  Brian G. Merrell <bgmerrell@novell.com>$
-# Date:        May 23 2008$
-# Description: Application wrapper for checkButton.py 
-#              Used by the checkbutton-*.py tests
+##############################################################################
+# Written by:  Cachen Chen <cachen@novell.com>
+# Date:        06/18/2008
+#              Used by the treeview-*.py tests
 ##############################################################################$
 
 'Application wrapper for checkbutton'

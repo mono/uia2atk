@@ -1,12 +1,11 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 ##############################################################################
-# Written by:  Brian G. Merrell <bgmerrell@novell.com>
-# Date:        May 23 2008
-# Description: Test accessibility of checkbutton widget 
-#              Use the checkbuttonframe.py wrapper script
-#              Test the sample/checkButton.py script
+# Written by:  Cachen Chen <cachen@novell.com>
+# Date:        06/18/2008
+# Description: Test accessibility of TreeView widget 
+#              Use the treeviewframe.py wrapper script
+#              Test the sample/gtktreeview.py script
 ##############################################################################
 
 # The docstring below  is used in the generated log file
@@ -16,6 +15,8 @@ Test accessibility of checkbutton widget
 
 # imports
 import sys
+import os
+
 from strongwind import *
 from treeview import *
 from sys import argv
@@ -41,33 +42,60 @@ if app is None:
 # just an alias to make things shorter
 cbFrame = app.treeViewFrame
 
-# find a shorter way instead of app.checkbuttonFrame.CHECK_BUTTON_ONE
-cbFrame.column0.click()
-# need a short delay when checking and unchecking the check boxes
-sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.column0,"click");
+
+#click column 0
+cbFrame.findTableColumnHeader("Column 0").click()
+sleep(config.MEDIUM_DELAY)
+cbFrame.tchClick("Column 0")
+cbFrame.assertResult(cbFrame.column0, "checked")
+
+#click column 0 again
+cbFrame.tchClick("Column 0")
+sleep(config.MEDIUM_DELAY)
 cbFrame.checkRoleName(cbFrame.column0,"table column header")
 
-cbFrame.column0.click()
-sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.column0, "unclick");
+#expand parent 0
+cbFrame.expand(cbFrame.parent0,'expand or contract')
+#sleep(config.MEDIUM_DELAY)
+cbFrame.actionResult(cbFrame.findTableCell('child 0 of parent 0'),'child 0 of parent 0')
 
-cbFrame.parent0.activate()
-sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.parent0, "activate");
-cbFrame.checkRoleName(cbFrame.parent0,"table cell")
-
-cbFrame.parent0.activate()
-sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.parent0, "unactivate");
-
-cbFrame.parent1.select()
-sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.parent1, "activate");
+#expand parent 1
+cbFrame.expand(cbFrame.parent1,'expand or contract')
+#sleep(config.MEDIUM_DELAY)
+cbFrame.actionResult(cbFrame.findTableCell('child 0 of parent 1'),'child 0 of parent 1')
 
 
+#expand parent 2
+cbFrame.expand(cbFrame.parent2,'expand or contract')
+#sleep(config.MEDIUM_DELAY)
+cbFrame.actionResult(cbFrame.findTableCell('child 0 of parent 2'),'child 0 of parent 2')
+
+
+#expand parent 3
+cbFrame.expand(cbFrame.parent3,'expand or contract')
+#sleep(config.MEDIUM_DELAY)
+cbFrame.actionResult(cbFrame.findTableCell('child 0 of parent 3'),'child 0 of parent 3')
+
+
+#contract parent 2
+cbFrame.contract(cbFrame.parent2,'expand or contract')
+#sleep(config.LONG_DELAY)
+cbFrame.actionResult(None, 'child 0 of parent 2',assertAction=False)
+
+
+#expand parent 2
+cbFrame.expand(cbFrame.parent2,'expand or contract')
+#sleep(config.MEDIUM_DELAY)
+cbFrame.focusResult('child 0 of parent 2')
+
+
+#contract parent 3
+cbFrame.contract(cbFrame.parent3,'expand or contract')
+#sleep(config.LONG_DELAY)
+cbFrame.focusResult('child 0 of parent 3', result=False)
+
+
+#sleep(config.MEDIUM_DELAY)
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
-
-
 cbFrame.keyCombo('<Alt>F4')
 
