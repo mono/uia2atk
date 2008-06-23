@@ -1,3 +1,8 @@
+2008-06-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* configure.ac, Makefile.am: Initial work on bridge-glue makefiles,
+	  from Stephen Shaw.
+
 2008-06-20  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Makefile.include, configure.ac, expansions.m4, Makefile.am,

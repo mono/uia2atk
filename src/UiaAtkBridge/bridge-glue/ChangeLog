@@ -1,3 +1,8 @@
+2008-06-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile.am: Initial work on bridge-glue makefiles, from Stephen
+	  Shaw.
+
 2008-06-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* bridge-glue.mdp: Fix project for MD 1.0.

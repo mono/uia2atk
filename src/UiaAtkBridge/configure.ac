@@ -1,10 +1,8 @@
-dnl Warning: This is an automatically generated file, do not edit!
-dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.54])
 AC_INIT([UiaAtkBridge], [0.1])
 AM_INIT_AUTOMAKE([foreign])
 
-dnl pkg-config
+# pkg-config
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 if test "x$PKG_CONFIG" = "xno"; then
         AC_MSG_ERROR([You need to install pkg-config])
@@ -14,11 +12,19 @@ SHAMROCK_EXPAND_LIBDIR
 SHAMROCK_EXPAND_BINDIR
 SHAMROCK_EXPAND_DATADIR
 
+AC_CHECK_TOOL(CC, gcc, gcc)
+AC_PROG_CC
 AC_PROG_INSTALL
+AM_PROG_LIBTOOL
 
 AC_PATH_PROG(GMCS, gmcs, no)
 if test "x$GMCS" = "xno"; then
         AC_MSG_ERROR([gmcs Not found])
+fi
+
+AC_PATH_PROG(CC, gcc, no)
+if test "x$CC" = "xno"; then
+        AC_MSG_ERROR([gcc Not found])
 fi
 
 
@@ -44,19 +50,22 @@ if test -z "$CONFIG_REQUESTED" ; then
 fi
 
 
-dnl package checks, common for all configs
+# package checks, common for all configs
 PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0])
 PKG_CHECK_MODULES([OLIVE], [olive])
 PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0])
 PKG_CHECK_MODULES([MONO_UIA], [mono-uia])
-
-dnl package checks, per config
+#Bridge-glue checks
+PKG_CHECK_MODULES([ATK], [atk])
+PKG_CHECK_MODULES([GOBJECT_20], [gobject-2.0])
+PKG_CHECK_MODULES([GMODULE_20], [gmodule-2.0])
+PKG_CHECK_MODULES([GLIB_20], [glib-2.0])
 
 
 AC_CONFIG_FILES([
-UiaAtkBridge/uiaatkbridge.pc
 Makefile
 UiaAtkBridge/Makefile
+bridge-glue/Makefile
 
 ])
 

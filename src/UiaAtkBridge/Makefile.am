@@ -1,10 +1,9 @@
 
 EXTRA_DIST =  expansions.m4
 
-#Warning: This is an automatically generated file, do not edit!
 if ENABLE_DEBUG
- SUBDIRS =  UiaAtkBridge
+ SUBDIRS =  UiaAtkBridge bridge-glue
 endif
 if ENABLE_RELEASE
- SUBDIRS =  UiaAtkBridge
+ SUBDIRS =  UiaAtkBridge bridge-glue
 endif

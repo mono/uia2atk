@@ -1,8 +1,6 @@
 
 EXTRA_DIST =  
 
-# Warning: This is an automatically generated file, do not edit!
-
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
 ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG"
@@ -37,13 +35,10 @@ SATELLITE_ASSEMBLY_NAME=.resources.dll
 PROGRAMFILES = \
 	$(UIAATKBRIDGE_DLL_MDB)  
 
-LINUX_PKGCONFIG = \
-	$(UIAATKBRIDGE_PC)  
-
 
 RESGEN=resgen2
 	
-all: $(ASSEMBLY) $(PROGRAMFILES) $(LINUX_PKGCONFIG) 
+all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES = \
 	Monitor.cs \
@@ -72,8 +67,7 @@ DATA_FILES =
 
 RESOURCES = 
 
-EXTRAS = \
-	uiaatkbridge.pc.in 
+EXTRAS = 
 
 REFERENCES =  \
 	System \
@@ -84,13 +78,9 @@ REFERENCES =  \
 
 DLL_REFERENCES = 
 
-CLEANFILES = $(PROGRAMFILES) $(LINUX_PKGCONFIG) 
+CLEANFILES = $(PROGRAMFILES)
 
 include $(top_srcdir)/Makefile.include
-
-UIAATKBRIDGE_PC = $(BUILD_DIR)/uiaatkbridge.pc
-
-$(eval $(call emit-deploy-wrapper,UIAATKBRIDGE_PC,uiaatkbridge.pc))
 
 
 $(eval $(call emit_resgen_targets))
