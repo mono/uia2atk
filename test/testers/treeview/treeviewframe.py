@@ -74,77 +74,21 @@ class TreeViewFrame(accessibles.Frame):
             procedurelogger.action('click %s.' % test)
         self.grabFocus()
 
-#set to check if tablecell is expend or contracted by contrast returning "getText" with "expend"
-    def actionResult(self,treeview,expect,assertAction=True):
-
-        if assertAction:
-            queryText = treeview._accessible.queryText()
-            getText = queryText.getText(0, queryText.characterCount)
-            procedurelogger.expectedResult('\"%s\" has been searched' % treeview)
-            def actionSend():
-                if expect == getText:
-                    return getText
-                else:
-                    return not getText
-            assert retryUntilTrue(actionSend)
-        elif assertAction == False:
-            try:
-                treeview = self.findTableCell(expect)
-            except SearchError:
-                procedurelogger.expectedResult('\"%s\" has been searched' % treeview)
-
-#another method to ensure if tablecell is expend or contracted by checking return grbFocus() "True" or "False"
-    def focusResult(self,treeview,log=True,result=True):
-
-        if result == True:
-            a = self.findTableCell('%s' % treeview)
-            focused = a._accessible.queryComponent().grabFocus()
-            procedurelogger.expectedResult('\"%s\" Focus is %s.' % (treeview, result))
-            def resultMatches():
-                if result == focused:
-                    return result
-                else:
-                    return not result
-	
-            assert retryUntilTrue(resultMatches)
-
-        elif result != True:
-            try:
-                a = self.findTableCell('%s' % treeview)
-                focused = a._accessible.queryComponent().grabFocus()
-            except SearchError:
-                procedurelogger.expectedResult('\"%s\" Focus is %s.' % (treeview, result))
-
-
-#getRoleName experiment
-    def checkRoleName(self, treeview, result):
-        'Raise exception if the treeview does not match the given result'  
-        procedurelogger.expectedResult('\"%s\" RoleName is \"%s\".' % (treeview,result))
-
-        def resultMatches():
-            if result == treeview._accessible.getRoleName():
-                return treeview._accessible.getRoleName()
-
-            if result !=treeview._accessible.getRoleName():  
-                return not treeview._accessible.getRoleName()
-        try:
-            assert retryUntilTrue(resultMatches)
-        except AssertionError:
-            print "error:", '\"%s\" RoleName is not \"%s\" but \"%s\".' % (treeview, result, treeview._accessible.getRoleName())
-
-#one kind of experiment
+#check if status list in "interface viewer" in accerciser have "expanded" status when doing expand or contract action.
     def assertResult(self, treeview, result):
         'Raise exception if the treeview does not match the given result'   
         procedurelogger.expectedResult('%s is %s.' % (treeview, result))
-        procedurelogger._flushBuffers()
+
         def resultMatches():
-            if result == "checked" or "activate":
-                return treeview.click
-            elif result == "unchecked" or "unactivate":
-                return not treeview.click
+
+            if result == "expanded":
+                return treeview.expanded
+            elif result == "contracted":
+                return not treeview.expanded
             else:
                 raise InvalidState, "%s has no such state:  %s" %\
-                                 (treeview, result)	
+                                 (treeview, result)
+	
         assert retryUntilTrue(resultMatches)
 
 

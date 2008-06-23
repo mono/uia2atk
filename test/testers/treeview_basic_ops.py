@@ -42,60 +42,46 @@ if app is None:
 # just an alias to make things shorter
 cbFrame = app.treeViewFrame
 
-
-#click column 0
-cbFrame.findTableColumnHeader("Column 0").click()
-sleep(config.MEDIUM_DELAY)
-cbFrame.tchClick("Column 0")
-cbFrame.assertResult(cbFrame.column0, "checked")
-
-#click column 0 again
-cbFrame.tchClick("Column 0")
-sleep(config.MEDIUM_DELAY)
-cbFrame.checkRoleName(cbFrame.column0,"table column header")
-
 #expand parent 0
 cbFrame.expand(cbFrame.parent0,'expand or contract')
-#sleep(config.MEDIUM_DELAY)
-cbFrame.actionResult(cbFrame.findTableCell('child 0 of parent 0'),'child 0 of parent 0')
+sleep(config.MEDIUM_DELAY)
+cbFrame.assertResult(cbFrame.parent0, "expanded")
+
+#contract parent0
+cbFrame.contract(cbFrame.parent0,'expand or contract')
+sleep(config.MEDIUM_DELAY)
+cbFrame.assertResult(cbFrame.parent0, "contracted")
 
 #expand parent 1
 cbFrame.expand(cbFrame.parent1,'expand or contract')
-#sleep(config.MEDIUM_DELAY)
-cbFrame.actionResult(cbFrame.findTableCell('child 0 of parent 1'),'child 0 of parent 1')
+sleep(config.MEDIUM_DELAY)
+cbFrame.assertResult(cbFrame.parent1, "expanded")
 
+#contract parent1
+cbFrame.contract(cbFrame.parent1,'expand or contract')
+sleep(config.MEDIUM_DELAY)
+cbFrame.assertResult(cbFrame.parent1, "contracted")
 
 #expand parent 2
 cbFrame.expand(cbFrame.parent2,'expand or contract')
-#sleep(config.MEDIUM_DELAY)
-cbFrame.actionResult(cbFrame.findTableCell('child 0 of parent 2'),'child 0 of parent 2')
+sleep(config.MEDIUM_DELAY)
+cbFrame.assertResult(cbFrame.parent2, "expanded")
 
+#contract parent2
+cbFrame.contract(cbFrame.parent2,'expand or contract')
+sleep(config.MEDIUM_DELAY)
+cbFrame.assertResult(cbFrame.parent2, "contracted")
 
 #expand parent 3
 cbFrame.expand(cbFrame.parent3,'expand or contract')
-#sleep(config.MEDIUM_DELAY)
-cbFrame.actionResult(cbFrame.findTableCell('child 0 of parent 3'),'child 0 of parent 3')
+sleep(config.MEDIUM_DELAY)
+cbFrame.assertResult(cbFrame.parent3, "expanded")
 
-
-#contract parent 2
-cbFrame.contract(cbFrame.parent2,'expand or contract')
-#sleep(config.LONG_DELAY)
-cbFrame.actionResult(None, 'child 0 of parent 2',assertAction=False)
-
-
-#expand parent 2
-cbFrame.expand(cbFrame.parent2,'expand or contract')
-#sleep(config.MEDIUM_DELAY)
-cbFrame.focusResult('child 0 of parent 2')
-
-
-#contract parent 3
+#contract parent3
 cbFrame.contract(cbFrame.parent3,'expand or contract')
-#sleep(config.LONG_DELAY)
-cbFrame.focusResult('child 0 of parent 3', result=False)
+sleep(config.MEDIUM_DELAY)
+cbFrame.assertResult(cbFrame.parent3, "contracted")
 
-
-#sleep(config.MEDIUM_DELAY)
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 cbFrame.keyCombo('<Alt>F4')
 
