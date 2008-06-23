@@ -1,5 +1,10 @@
 2008-06-23  Mario Carrion <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Fixed. Updated to 
+	match UIAutomationTypes API.
+
+2008-06-23  Mario Carrion <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms.mdp: Updated: Added and deleted files.
 	* Makefile.am: Updated: Added and deleted files.
 	* Mono.UIAutomation.Winforms/ListBoxItemProvider.cs: Added file. 
