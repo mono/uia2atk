@@ -51,15 +51,15 @@ class FontDialogSample(Form):
         """open a FontDialog dialog"""
 
         # preserve the previous label font to FontDialog dialog.
-        self.FontDialog = FontDialog()
-        self.FontDialog.ShowColor = True
-        self.FontDialog.Font = self.label.Font
-        self.FontDialog.Color = self.label.ForeColor
+        self.fontdialog = FontDialog()
+        self.fontdialog.ShowColor = True
+        self.fontdialog.Font = self.label.Font
+        self.fontdialog.Color = self.label.ForeColor
         
         # set up the label font which select in FontDialog dialog.
-        if (self.FontDialog.ShowDialog() == DialogResult.OK):
-            self.label.Font = self.FontDialog.Font
-            self.label.ForeColor = self.FontDialog.Color
+        if (self.fontdialog.ShowDialog() == DialogResult.OK):
+            self.label.Font = self.fontdialog.Font
+            self.label.ForeColor = self.fontdialog.Color
 
 # run application
 form = FontDialogSample()

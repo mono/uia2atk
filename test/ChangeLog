@@ -1,3 +1,13 @@
+2008-06-23  Ray Wang <rawang@gmail.com>
+
+	* samples/fontdialog.py : Clean up the letter casing
+	* samples/savefiledialog.py : implement FileDialog & SaveFileDialog control
+	* samples/hscrollbar.py : implement HScrollBar & ScrollBar control
+	* samples/vscrollbar.py : implement VScrollBar & ScrollBar control
+	* samples/tabpage.py : implement TabControl & TabPage control
+	* samples/splitter.py : implement Splitter control
+	* samples/splitContainer.py : implement SplitContainer control
+
 2008-06-23  Calen Chen <cachen@novell.com>
 	* testers/treeview_basic_ops.py :renew the test script to check the expanded status against accerciser.
 	* testers/treeview/treeviewframe.py: renew "assertResult" definition.
