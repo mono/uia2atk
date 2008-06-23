@@ -35,7 +35,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
 	public class ListBoxItemSelectionProviderBehavior 
-		: ProviderBehavior, ISelectionItemProvider
+		: ListBoxItemProviderBehavior, ISelectionItemProvider
 	{
 
 #region Constructor
@@ -43,24 +43,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		public ListBoxItemSelectionProviderBehavior (ListBoxItemProvider provider)
 			: base (provider)
 		{
-			item_provider = provider;
 		}
 		
 #endregion
 		
 #region IProviderBehavior Interface
-
-		public override void Connect (Control control)
-		{
-			//Events are emited in the ISelectionItemProvider methods
-			//There's no need to add any delegate
-		}
-		
-		public override void Disconnect (Control control)
-		{
-			//Events are emited in the ISelectionItemProvider methods
-			//There's no need to remove any delegate
-		}
 
 		public override object GetPropertyValue (int propertyId)
 		{
@@ -86,10 +73,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 				return;
 			
 			bool multipleSelection = 
-				(bool) item_provider.ListBoxProvider.GetPropertyValue (SelectionPatternIdentifiers.CanSelectMultipleProperty.Id);
+				(bool) ListBoxProvider.GetPropertyValue (SelectionPatternIdentifiers.CanSelectMultipleProperty.Id);
 			
 			if (multipleSelection == false) {
-				if (item_provider.ListBoxControl.SelectedItems.Count > -1)
+				if (ListBoxControl.SelectedItems.Count > -1)
 					throw new InvalidOperationException ();
 				else
 					Select ();
@@ -103,23 +90,23 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 				return;
 			
 			bool multipleSelection = 
-				(bool) item_provider.ListBoxProvider.GetPropertyValue (SelectionPatternIdentifiers.CanSelectMultipleProperty.Id);
+				(bool) ListBoxProvider.GetPropertyValue (SelectionPatternIdentifiers.CanSelectMultipleProperty.Id);
 			bool selectionRequired =
-				(bool) item_provider.ListBoxProvider.GetPropertyValue (SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id);
+				(bool) ListBoxProvider.GetPropertyValue (SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id);
 
 			if (multipleSelection == false && selectionRequired == true 
-			    && item_provider.ListBoxControl.SelectedItems.Count > 0) 
+			    && ListBoxControl.SelectedItems.Count > 0) 
 				throw new InvalidOperationException ();	
 			else if (multipleSelection == true && selectionRequired == true 
-			         && item_provider.ListBoxControl.SelectedItems.Count == 1)
+			         && ListBoxControl.SelectedItems.Count == 1)
 				throw new InvalidOperationException ();	
 			else {
-				item_provider.ListBoxControl.SetSelected (item_provider.Index, false);
+				ListBoxControl.SetSelected (ListBoxItemProvider.Index, false);
 
 				//TODO: Would be great if this code is refactored to use an Event
 				if (AutomationInteropProvider.ClientsAreListening) {
 					AutomationEvent automation_event;
-					if (item_provider.ListBoxControl.SelectedItems.Count == 1)
+					if (ListBoxControl.SelectedItems.Count == 1)
 						automation_event = SelectionItemPatternIdentifiers.ElementSelectedEvent;
 					else 
 						automation_event = SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent;
@@ -137,13 +124,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			if (IsSelected)
 				return;
 			
-			item_provider.ListBoxControl.SetSelected (item_provider.Index, true);
+			ListBoxControl.SetSelected (ListBoxItemProvider.Index, true);
 			
 			//TODO: Would be great if this code is refactored to use an Event
 			if (AutomationInteropProvider.ClientsAreListening) {
 				AutomationEvent automation_event;
 
-				if (item_provider.ListBoxControl.SelectedItems.Count == 1)
+				if (ListBoxControl.SelectedItems.Count == 1)
 					automation_event = SelectionItemPatternIdentifiers.ElementSelectedEvent;
 				else 
 					automation_event = SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent;
@@ -156,21 +143,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public bool IsSelected {
 			get {
-				return item_provider.ListBoxControl.SelectedIndices.Contains (item_provider.Index);
+				return ListBoxControl.SelectedIndices.Contains (ListBoxItemProvider.Index);
 			}
 		}
 
 		public IRawElementProviderSimple SelectionContainer {
-			get { return item_provider.ListBoxProvider; }
+			get { return ListBoxProvider; }
 		}
 
 #endregion 		
-			
-#region Private fields
-			
-			private ListBoxItemProvider item_provider;
-			
-#endregion
+
 
 	}
 }

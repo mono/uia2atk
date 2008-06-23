@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Reflection;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
@@ -101,6 +102,11 @@ namespace Mono.UIAutomation.Winforms
 			//no selected element
 			return combobox.SelectedIndex == -1 ? null :
 				new ComboBoxItemProvider (this, combobox);
+		}
+		
+		public override IRawElementProviderFragment Navigate (NavigateDirection direction)
+		{
+			throw new NotImplementedException ();
 		}
 		
 #endregion

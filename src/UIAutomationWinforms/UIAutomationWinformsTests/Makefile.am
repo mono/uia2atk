@@ -58,9 +58,11 @@ FILES =  \
 	BaseProviderTest.cs \
 	ButtonProviderTest.cs \
 	CheckBoxProviderTest.cs \
+	ComboBoxProviderTest.cs \
 	GroupBoxProviderTest.cs \
 	LabelProviderTest.cs \
 	LinkLabelProviderTest.cs \
+	ListBoxProviderTest.cs \
 	MockBridge.cs \
 	RadioButtonProviderTest.cs \
 	StatusBarProviderTest.cs \

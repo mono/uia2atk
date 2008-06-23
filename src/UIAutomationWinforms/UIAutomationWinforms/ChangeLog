@@ -1,5 +1,28 @@
 2008-06-23  Mario Carrion <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.mdp: Updated: Added files:
+	ListBoxItemProviderBehavior.cs, ListBoxScrollProviderBehavior.cs and
+	ListBoxItemScrollProviderBehavior.cs.
+	* Makefile.am: Updated: Added files.
+	* Mono.UIAutomation.Winforms/ListBoxItemProvider.cs: Removed method:
+	GetPropertyValue, was replaced by the logic defined in 
+	ListBoxItemProviderBehavior class.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Setting new 
+	behavior ListBoxScrollProviderBehavior to support Selection pattern.
+	Method GetFocus refactored.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxItemProviderBehavior.cs:
+	File added. Base class for ListBoxItem behaviors.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxItemScrollProviderBehavior.cs:
+	File added. Class that supports Scroll pattern in items.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxItemSelectionProviderBehavior.cs:
+	Inheritance changed to ListBoxItemProviderBehavior. Methods Connect and
+	Disconnect removed, already declared in base class. Refactored to use
+	base class properties.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxScrollProviderBehavior.cs:
+	File added. Class that supports Scroll pattern in containers.
+
+2008-06-23  Mario Carrion <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Fixed. Updated to 
 	match UIAutomationTypes API.
 

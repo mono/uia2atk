@@ -49,8 +49,10 @@ namespace Mono.UIAutomation.Winforms
 			listbox_control = control;
 			this.index = index;
 			
-			SetBehavior (SelectionItemPatternIdentifiers.Pattern, 
+			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
 			             new ListBoxItemSelectionProviderBehavior (this));
+			SetBehavior (ScrollItemPatternIdentifiers.Pattern,
+			             new ListBoxItemScrollProviderBehavior (this));
 		}
 
 #endregion
@@ -68,25 +70,6 @@ namespace Mono.UIAutomation.Winforms
 		public ListBoxProvider ListBoxProvider {
 			get { return listbox_provider; }
 		}
-		
-#endregion
-		
-#region Public Methods
-		
-		public virtual object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
-				return Control.GetHashCode () + Index; // TODO: Ensure uniqueness
-			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return ListBoxControl.Items [Index].ToString ();
-			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
-				return ListBoxControl.Focused && Index == ListBoxControl.SelectedIndex;
-			//TODO: AutomationElementIdentifiers.IsOffscreenProperty.Id			
-			//TODO: AutomationElementIdentifiers.BoundingRectangleProperty.Id
-			//TODO: AutomationElementIdentifiers.ClickablePointProperty.Id
-			else
-				return base.GetPropertyValue (propertyId);
-		}		
 		
 #endregion
 

@@ -1,3 +1,12 @@
+2008-06-23  Mario Carrion <mcarrion@novell.com> 
+
+	* ComboBoxProviderTest.cs: File added: ComboBox provider tests.
+	* ListBoxProviderTest.cs: File added: ListBox provider tests.
+	* Makefile.am: File updated. Added files: ListBoxProviderTest.cs and
+	ComboBoxProviderTest.cs.
+	* UIAutomationWinformsTests.mdp: File updated. Added files: 
+	ListBoxProviderTest.cs and ComboBoxProviderTest.cs.
+
 2008-06-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Makefile.am: Replace @expanded_libdir@/mono/a11y with

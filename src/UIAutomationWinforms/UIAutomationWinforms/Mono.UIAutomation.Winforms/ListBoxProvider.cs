@@ -36,9 +36,6 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms
 {
 
-	//TODO: This class needs to clean the internal items collection
-	//based on the elements deleted, when needed. Of course we need to Disconnect
-	//every removed item.
 	public class ListBoxProvider : FragmentRootControlProvider
 	{
 		
@@ -51,6 +48,8 @@ namespace Mono.UIAutomation.Winforms
 			
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
 			             new ListBoxSelectionProviderBehavior (this));
+			SetBehavior (ScrollPatternIdentifiers.Pattern,
+			             new ListBoxScrollProviderBehavior (this));
 		}
 
 #endregion
@@ -59,8 +58,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
-			//TODO: Evaluate all cases.
-			return base.ElementProviderFromPoint (x, y);
+			throw new NotImplementedException ();
 		}
 		
 		public override IRawElementProviderFragment GetFocus ()
@@ -100,18 +98,13 @@ namespace Mono.UIAutomation.Winforms
 		{
 			ListBoxItemProvider []items;
 			
-			if (listbox.Items.Count == 0)
+			if (listbox.SelectedIndices.Count == 0)
 				return null;
 			
-			ListBox.SelectedIndexCollection collection = listbox.SelectedIndices;
-
-			if (collection.Count == 0)
-				return null;
-			
-			items = new ListBoxItemProvider [collection.Count];
+			items = new ListBoxItemProvider [listbox.SelectedIndices.Count];
 			
 			for (int index = 0; index < items.Length; index++) 
-				items [index] = GetListBoxItem (collection [index]);
+				items [index] = GetListBoxItem (listbox.SelectedIndices [index]);
 			
 			return items;
 		}

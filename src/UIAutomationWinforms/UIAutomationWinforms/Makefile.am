@@ -53,8 +53,11 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBoxValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/IProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/LinkLabelInvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListBoxItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListBoxItemScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListBoxItemSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListBoxProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListBoxScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListBoxSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs \
