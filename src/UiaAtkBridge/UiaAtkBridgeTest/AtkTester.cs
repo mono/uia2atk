@@ -257,7 +257,9 @@ namespace UiaAtkBridgeTest
 				// only valid actions should work
 				for (int i = 0; i < ValidNumberOfActionsForAButton; i++) 
 					Assert.AreEqual (actionPerformed, implementor.DoAction (i), "DoAction");
-				if (type == BasicWidgetType.CheckBox)
+				if ((ValidNumberOfActionsForAButton > 1) // does not apply in UIA because 1 doaction==1click==checked
+				                                         // (in GAIL click+press+release==2clicks==unchecked)
+				     && (type == BasicWidgetType.CheckBox))
 					//one more, to leave it checked
 					Assert.AreEqual (actionPerformed, implementor.DoAction (0), "DoAction_Corrective");
 			}

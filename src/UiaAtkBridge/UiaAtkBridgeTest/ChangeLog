@@ -1,3 +1,8 @@
+2008-06-23  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* AtkTester.cs: Correct a test that was failing in the bridge but whose
+	  behaviour was correct.
+
 2008-06-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTester.cs: Add a bunch of more tests to radiobuttons.
