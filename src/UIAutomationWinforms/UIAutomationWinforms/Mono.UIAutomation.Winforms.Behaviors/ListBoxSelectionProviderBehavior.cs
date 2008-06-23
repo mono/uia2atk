@@ -32,14 +32,13 @@ using Mono.UIAutomation.Winforms;
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 	
-	
-	public class ComboBoxSelectionProviderBehavior 
-		: ComboBoxProviderBehavior, ISelectionProvider
+	public class ListBoxSelectionProviderBehavior
+		: ListBoxProviderBehavior, ISelectionProvider
 	{
 		
 #region Constructor
 		
-		public ComboBoxSelectionProviderBehavior (SimpleControlProvider provider)
+		public ListBoxSelectionProviderBehavior (SimpleControlProvider provider)
 			: base (provider)
 		{
 		}
@@ -69,22 +68,19 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 #region ISelectionProvider Members
 
 		public bool CanSelectMultiple {
-			get { return false; }
+			get { 
+				return listbox.SelectionMode == SelectionMode.MultiExtended 
+					|| listbox.SelectionMode == SelectionMode.MultiSimple;
+			}
 		}
 
 		public bool IsSelectionRequired {
-			get { return combobox.SelectedIndex != -1 ? false : true; }
+			get { return listbox.SelectedIndex == -1 ? false : true; }
 		}
 		
 		public IRawElementProviderSimple[] GetSelection ()
 		{
-			if (combobox.SelectedIndex == -1)
-				return null;
-			else
-				return new IRawElementProviderSimple[] {
-					new ComboBoxItemProvider ((ComboBoxProvider) Provider,
-					                          combobox)
-				};
+			return ((ListBoxProvider) Provider).GetSelectedListBoxItems ();
 		}
 
 #endregion

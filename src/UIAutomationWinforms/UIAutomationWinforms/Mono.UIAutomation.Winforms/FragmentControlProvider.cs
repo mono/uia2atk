@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms
 		: SimpleControlProvider, IRawElementProviderFragment
 	{
 
-#region Constructor		
+#region Constructor	
 		
 		protected FragmentControlProvider (Control control) : base (control)
 		{
@@ -53,11 +53,14 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public abstract IRawElementProviderFragmentRoot FragmentRoot {
-			get;
+		public virtual IRawElementProviderFragmentRoot FragmentRoot {
+			get { return null; }			
 		}
 		
-		public abstract IRawElementProviderSimple[] GetEmbeddedFragmentRoots ();
+		public virtual IRawElementProviderSimple[] GetEmbeddedFragmentRoots () 
+		{
+			return null;
+		}
 		
 		public virtual int[] GetRuntimeId ()
 		{
@@ -65,9 +68,51 @@ namespace Mono.UIAutomation.Winforms
             return new int [] { AutomationInteropProvider.AppendRuntimeId, 0 };
 		}
 		
-		public abstract IRawElementProviderFragment Navigate (NavigateDirection direction);
+		public virtual IRawElementProviderFragment Navigate (NavigateDirection direction) 
+		{
+			//TODO: This will be changed as soon as we start subclassing every
+			//provider from FragmentRoot instead of Simple
+			if (direction == NavigateDirection.Parent) {
+				if (Control.Parent == null)
+					return null;
+				else
+					return new WrapperFragmentControlProvider (ProviderFactory.FindProvider (Control.Parent));
+			} else if (direction == NavigateDirection.NextSibling) {
+				if (Control.Parent == null)
+					return null;
+				
+				int next = Control.Parent.Controls.IndexOf (Control) + 1;
+				if (next >= Control.Parent.Controls.Count)
+					return null;
+				else
+					return new WrapperFragmentControlProvider (ProviderFactory.FindProvider (Control.Parent.Controls [next]));
+			} else if (direction == NavigateDirection.PreviousSibling) {
+				if (Control.Parent == null)
+					return null;
+
+				int previous = Control.Parent.Controls.IndexOf (Control) - 1;
+				if (previous < 0)
+					return null;
+				else
+					return new WrapperFragmentControlProvider (ProviderFactory.FindProvider (Control.Parent.Controls [previous]));				
+			} else if (direction == NavigateDirection.FirstChild) {
+				if (Control.Controls.Count == 0)
+					return null;
+				else
+					return new WrapperFragmentControlProvider (ProviderFactory.FindProvider (Control.Controls [0]));
+			} else if (direction == NavigateDirection.LastChild) {
+				if (Control.Controls.Count == 0)
+					return null;
+				else
+					return new WrapperFragmentControlProvider (ProviderFactory.FindProvider (Control.Controls [Control.Controls.Count - 1]));
+			} else
+				return null;
+		}
 		
-		public abstract void SetFocus ();
+		public virtual void SetFocus ()
+		{
+			Control.Focus ();
+		}
 
 #endregion
 		

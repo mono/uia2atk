@@ -73,6 +73,7 @@ namespace Mono.UIAutomation.Winforms
 			GroupBox gb;
 			StatusBar sb;
 			ComboBox cb;
+			ListBox lb;
 
 			if ((f = control as Form) != null)
 				provider = new WindowProvider (f);
@@ -94,6 +95,10 @@ namespace Mono.UIAutomation.Winforms
 				provider = new StatusBarProvider (sb);
 			else if ((cb = control as ComboBox) != null)
 				provider = new ComboBoxProvider (cb);
+			else if ((lb = control as ListBox) != null)
+				provider = new ListBoxProvider (lb);
+			else //TODO: We have to solve the problem when there's a Custom control
+				throw new NotImplementedException ("Provider not implemented for control");
 			
 			if (provider != null) {
 				// TODO: Make tracking in dictionary optional

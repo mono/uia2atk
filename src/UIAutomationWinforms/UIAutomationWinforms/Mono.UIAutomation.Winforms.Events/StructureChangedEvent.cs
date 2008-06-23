@@ -22,6 +22,7 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
+
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -34,38 +35,83 @@ namespace Mono.UIAutomation.Winforms.Events
 	// - ChildrenBulkAdded, 
 	// - ChildrenBulkRemoved
 	// - ChildrenReordered
-	internal class DefaultStructureChangedEvent : ProviderEvent
+	internal class StructureChangedEvent : ProviderEvent
 	{
-		public DefaultStructureChangedEvent (IRawElementProviderSimple provider)
+		
+#region Constructor
+
+		public StructureChangedEvent (IRawElementProviderSimple provider)
 			: base (provider)
 		{
 		}
+		
+#endregion
+		
+#region Public Methods
 
 		public override void Connect (Control control)
 		{
 			control.VisibleChanged += new EventHandler (OnStructureChangedEvent);
+			control.ControlAdded += new ControlEventHandler (OnStructureChangedEventAdd);
+			control.ControlRemoved += new ControlEventHandler (OnStructureChangedEventRemoved);
 		}
 
 		public override void Disconnect (Control control)
 		{
 			control.VisibleChanged -= new EventHandler (OnStructureChangedEvent);
+			control.ControlAdded -= new ControlEventHandler (OnStructureChangedEventAdd);
+			control.ControlRemoved -= new ControlEventHandler (OnStructureChangedEventRemoved);			
 		}
+		
+#endregion
+		
+#region Protected Methods
 		
 		protected void OnStructureChangedEvent (object sender, EventArgs e)
 		{
 			if (AutomationInteropProvider.ClientsAreListening) {
-				int []fakeRuntimeId = new int[] { 0 }; // TODO: Ok?
 				StructureChangedEventArgs args;
-				Control control = sender as Control;
 
-				if (control.Visible)
-					args = new StructureChangedEventArgs (StructureChangeType.ChildAdded, 
-					                                      fakeRuntimeId);
+				if (((Control) sender).Visible)
+					args = GetStructureChangedEventArgs (StructureChangeType.ChildAdded);
 				else
-					args = new StructureChangedEventArgs (StructureChangeType.ChildRemoved, 
-					                                      fakeRuntimeId);
+					args = GetStructureChangedEventArgs (StructureChangeType.ChildRemoved);
+
 				AutomationInteropProvider.RaiseStructureChangedEvent (Provider, args);
 			}
 		}
+			
+		protected void OnStructureChangedEventAdd (object sender, ControlEventArgs e)
+		{
+			if (AutomationInteropProvider.ClientsAreListening) {
+				StructureChangedEventArgs args 
+					= GetStructureChangedEventArgs (StructureChangeType.ChildAdded);
+				AutomationInteropProvider.RaiseStructureChangedEvent (Provider, args);
+			}
+		}
+		
+		protected void OnStructureChangedEventRemoved (object sender, ControlEventArgs e)
+		{
+			if (AutomationInteropProvider.ClientsAreListening) {
+				StructureChangedEventArgs args 
+					= GetStructureChangedEventArgs (StructureChangeType.ChildRemoved);
+				AutomationInteropProvider.RaiseStructureChangedEvent (Provider, args);
+			}
+		}
+		
+#endregion
+		
+#region Private Methods
+		
+		private StructureChangedEventArgs GetStructureChangedEventArgs (StructureChangeType type)
+		{
+			//TODO: Should we use: FragmentControlProvider.GetRuntimeId ?
+			int []fakeRuntimeId = new int[] { 0 }; // TODO: Ok?
+
+			return new StructureChangedEventArgs (type, fakeRuntimeId);
+		}
+		
+#endregion
+		
 	}
 }

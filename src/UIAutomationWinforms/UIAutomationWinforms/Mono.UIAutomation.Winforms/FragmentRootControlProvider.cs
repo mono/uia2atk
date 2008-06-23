@@ -188,23 +188,7 @@ namespace Mono.UIAutomation.Winforms
 #endregion
 		
 #region FragmentControlProvider Overrides
-	
-		public override void SetFocus ()
-		{
-			control.Focus ();
-		}
-		
-		public override IRawElementProviderFragment Navigate (NavigateDirection direction)
-		{
-			// TODO: Check for child fragments.  Can this logic be generalized?
-			return null;
-		}
-		
-		public override IRawElementProviderSimple [] GetEmbeddedFragmentRoots ()
-		{
-			return null;
-		}
-		
+
 		public override IRawElementProviderFragmentRoot FragmentRoot {
 			get { return this; }
 		}

@@ -30,83 +30,93 @@ using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Behaviors;
 
 namespace Mono.UIAutomation.Winforms
-{	
-	
-	internal class ComboBoxItemProvider : FragmentControlProvider
+{
+
+	public class ListBoxItemProvider : FragmentControlProvider
 	{
+
+#region Constructor
 		
-#region Constructors
-		
-		public ComboBoxItemProvider (ComboBoxProvider provider, 
-		                             ComboBox control) 
+		public ListBoxItemProvider (ListBoxProvider provider, ListBox control) 
 			: this (provider, control, control.SelectedIndex)
 		{
 		}
 
-		public ComboBoxItemProvider (ComboBoxProvider provider,
-		                             ComboBox control, int index) : base (control)
+		public ListBoxItemProvider (ListBoxProvider provider, ListBox control, 
+		                            int index) : base (control)
 		{
-			combobox_provider = provider;
-			combobox_control = control;
+			listbox_provider = provider;
+			listbox_control = control;
 			this.index = index;
 			
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern, 
-			             new ComboBoxItemProviderBehavior (this));
+			             new ListBoxItemSelectionProviderBehavior (this));
 		}
 
 #endregion
 		
 #region Public properties
-		
-		public ComboBox ComboBoxControl {
-			get { return combobox_control; }
-		}
-		
+
 		public int Index {
 			get { return index; }
 		}
+		
+		public ListBox ListBoxControl {
+			get { return listbox_control; }
+		}
 
-		public ComboBoxProvider ComboBoxProvider {
-			get { return combobox_provider; }
+		public ListBoxProvider ListBoxProvider {
+			get { return listbox_provider; }
 		}
 		
 #endregion
 		
-#region FragmentControlProvider Overrides
+#region Public Methods
 		
+		public virtual object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
+				return Control.GetHashCode () + Index; // TODO: Ensure uniqueness
+			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return ListBoxControl.Items [Index].ToString ();
+			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+				return ListBoxControl.Focused && Index == ListBoxControl.SelectedIndex;
+			//TODO: AutomationElementIdentifiers.IsOffscreenProperty.Id			
+			//TODO: AutomationElementIdentifiers.BoundingRectangleProperty.Id
+			//TODO: AutomationElementIdentifiers.ClickablePointProperty.Id
+			else
+				return base.GetPropertyValue (propertyId);
+		}		
+		
+#endregion
+
+#region IRawElementProviderFragment Interface 
+
 		public override IRawElementProviderFragmentRoot FragmentRoot {
-			get { return ComboBoxProvider; }
+			get { return ListBoxProvider; }			
 		}
-		
-		public override IRawElementProviderFragment Navigate (NavigateDirection direction)
+
+		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 		{
 			if (direction == NavigateDirection.Parent)
-				return ComboBoxProvider;
-			else if (direction == NavigateDirection.NextSibling) {
-				if (index + 1 > ComboBoxControl.Items.Count)
-					return null;
-				else
-					return new ComboBoxItemProvider (ComboBoxProvider, 
-					                                 ComboBoxControl, index + 1);
-			} else if (direction == NavigateDirection.PreviousSibling) {
-				if (index - 1 < 0)
-					return null;
-				else
-					return new ComboBoxItemProvider (ComboBoxProvider, 
-					                                 ComboBoxControl, index - 1);
-			} else
+				return FragmentRoot;
+			else if (direction == NavigateDirection.NextSibling)
+				return ListBoxProvider.GetListBoxItem (index + 1);
+			else if (direction == NavigateDirection.PreviousSibling)
+				return ListBoxProvider.GetListBoxItem (index - 1);
+			else
 				return null;
 		}
 
 #endregion
-		
+
 #region Private fields
 		
-		private ComboBox combobox_control;
-		private ComboBoxProvider combobox_provider;
+		private ListBox listbox_control;
+		private ListBoxProvider listbox_provider;
 		private int index;		
 		
 #endregion
-		
+
 	}
 }

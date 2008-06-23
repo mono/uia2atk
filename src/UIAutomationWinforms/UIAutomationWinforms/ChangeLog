@@ -1,3 +1,48 @@
+2008-06-23  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.mdp: Updated: Added and deleted files.
+	* Makefile.am: Updated: Added and deleted files.
+	* Mono.UIAutomation.Winforms/ListBoxItemProvider.cs: Added file. 
+	ListBox control provider.
+	* Mono.UIAutomation.Winforms/WrapperFragmentControlProvider.cs: Class
+	that wrapps IRawElementProviderSimple subclasses into a 
+	IRawElementProviderFragment.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxProviderBehavior.cs:
+	File added. Base class.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxItemSelectionProviderBehavior.cs:
+	File added. Implements ISelectionItem for ListBox items.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxSelectionProviderBehavior.cs:
+	File added. Implements ISelection provider for ListBox controls.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: File added. Implements
+	List Control Type provider for ListBox control.
+	* Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs: File
+	added. Represents the StructureChangedEvent property event.
+	* Mono.UIAutomation.Winforms.Events/ElementSelectedEvent.cs: File added.
+	Represents the ElementSelectedEvent event.
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Property
+	FragmentRoot changed from abstract to virtual. Methods 
+	GetEmbeddedFragmentRoots and Navigate changed from abstract to virtual.
+	Method Navigate implements default navigation logic (this may change in
+	the future).
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Added ListBoxProvider
+	cast to support ListBox controls.
+	* Mono.UIAutomation.WinPforms/FragmentRootControlProvider.cs: Removed
+	methods: SetFocus, Navigate and GetEmbeddedFragmentRoots.
+	* Mono.UIAutomation.Winforms/ComboBoxItemProvider.cs: Removed overriden
+	methods: GetEmbeddedFragmentRoots and SetFocus, because those are 
+	already implemented in base class.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Visibility of
+	"control" member field changed from protected to private. New property
+	Control added. Internal logic updated to use Control property instead
+	of control member field.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxSelectionProviderBehavior.cs:
+	Using explicit cast.
+	* Mono.UIAutomation.Winforms.Events/ComboBoxItemElementSelectedEvent.cs:
+	Subclassing from ElementSelectedEvent. Removed private method: 
+	OnComboBoxItemSelected.
+	* Mono.UIAutomation.Winforms.Events/DefaultStructureChangedEvent.cs: 
+	Deleted file, replaced by StructureChangedEvent class.
+
 2008-06-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Makefile.am: Replace @expanded_libdir@/mono/a11y with

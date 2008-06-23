@@ -30,7 +30,6 @@ using System.Windows.Forms;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Events;
 
@@ -38,14 +37,10 @@ namespace Mono.UIAutomation.Winforms
 {
 	public abstract class SimpleControlProvider : IRawElementProviderSimple
 	{
-#region Protected Fields
-		
-		protected Control control;
-		
-#endregion
 		
 #region Private Fields
 
+		private Control control;
 		private Dictionary<ProviderEventType, IConnectable> events;
 		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
 
@@ -64,7 +59,15 @@ namespace Mono.UIAutomation.Winforms
 		
 #endregion
 		
-#region Public
+#region Public Properties
+		
+		public virtual Control Control {
+			get { return control; }
+		}
+		
+#endregion
+		
+#region Public Methods
 
 		public virtual void InitializeEvents ()
 		{
@@ -78,39 +81,47 @@ namespace Mono.UIAutomation.Winforms
 			SetEvent (ProviderEventType.BoundingRectangleProperty,
 			          new DefaultBoundingRectanglePropertyEvent (this));
 			SetEvent (ProviderEventType.StructureChangedEvent,
-			          new DefaultStructureChangedEvent (this));
+			          new StructureChangedEvent (this));
 		}
-				
+		
+//		public void UninitializeEvents () 
+//		{
+//			foreach (KeyValuePair<ProviderEventType,IConnectable> value in events) {
+//				strategy.Value.Disconnect (Control);
+//			}
+//			events.Clear ();
+//		}
+
 		public void SetEvent (ProviderEventType type, IConnectable strategy)
 		{
 			IConnectable value;
 			
 			if (events.TryGetValue (type, out value) == true) {			
-				value.Disconnect (control);
+				value.Disconnect (Control);
 				events.Remove (type);
 			}
 
 			if (strategy != null) {
 				events [type] = strategy;
-				strategy.Connect (control);
+				strategy.Connect (Control);
 			}
 		}
 		
 #endregion
 
-#region Protected
+#region Protected Methods
 		
 		protected void SetBehavior (AutomationPattern pattern, IProviderBehavior behavior)
 		{
 			IProviderBehavior oldBehavior;
 			if (providerBehaviors.TryGetValue (pattern, out oldBehavior) == true) {
-				oldBehavior.Disconnect (control);
+				oldBehavior.Disconnect (Control);
 				providerBehaviors.Remove (pattern);
 			}
 			
 			if (behavior != null) {
 				providerBehaviors [pattern] = behavior;
-				behavior.Connect (control);
+				behavior.Connect (Control);
 			}
 		}
 		
@@ -153,28 +164,28 @@ namespace Mono.UIAutomation.Winforms
 			}
 			
 			if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
-				return control.GetHashCode (); // TODO: Ensure uniqueness
+				return Control.GetHashCode (); // TODO: Ensure uniqueness
 			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
-				return control.Enabled;
+				return Control.Enabled;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return control.Text;
+				return Control.Text;
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-				return control.CanFocus;
+				return Control.CanFocus;
 			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
-				return !control.Visible;
+				return !Control.Visible;
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
-				return control.Focused;
+				return Control.Focused;
 			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-				if (control.Parent == null)
-					return Helper.RectangleToRect (control.Bounds);
+				if (Control.Parent == null)
+					return Helper.RectangleToRect (Control.Bounds);
 				else
-					return Helper.RectangleToRect (control.Parent.RectangleToScreen (control.Bounds));
+					return Helper.RectangleToRect (Control.Parent.RectangleToScreen (Control.Bounds));
 			} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id) {
-				if (control.Visible == false)
+				if (Control.Visible == false)
 					return null;
 				else {
 					// TODO: Test. MS behavior is different.
@@ -188,7 +199,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public virtual IRawElementProviderSimple HostRawElementProvider {
 			get {
-				return AutomationInteropProvider.HostProviderFromHandle (control.TopLevelControl.Handle);
+				return AutomationInteropProvider.HostProviderFromHandle (Control.TopLevelControl.Handle);
 			}
 		}
 		

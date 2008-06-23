@@ -53,6 +53,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBoxValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/IProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/LinkLabelInvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListBoxItemSelectionProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListBoxProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListBoxSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBoxExpandCollapseStateEvent.cs \
@@ -63,12 +66,13 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DefaultIsEnabledPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DefaultIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DefaultNamePropertyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DefaultStructureChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DefaultTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DefaultToggleStatePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/LinkLabelInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \
+	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBoxHasKeyBoardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ValuePatternValueIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ValuePatternValuePropertyEvent.cs \
@@ -85,6 +89,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms/IConnectable.cs \
 	Mono.UIAutomation.Winforms/LabelProvider.cs \
 	Mono.UIAutomation.Winforms/LinkLabelProvider.cs \
+	Mono.UIAutomation.Winforms/ListBoxItemProvider.cs \
+	Mono.UIAutomation.Winforms/ListBoxProvider.cs \
 	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/ProviderFactory.cs \
 	Mono.UIAutomation.Winforms/RadioButtonProvider.cs \
@@ -97,7 +103,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms/WindowProvider.cs \
 	Mono.UIAutomation.Winforms/WordToken.cs \
 	Mono.UIAutomation.Winforms/WordTokenCollection.cs \
-	Mono.UIAutomation.Winforms/WordTokenizer.cs 
+	Mono.UIAutomation.Winforms/WordTokenizer.cs \
+	Mono.UIAutomation.Winforms/WrapperFragmentControlProvider.cs 
 
 DATA_FILES = 
 

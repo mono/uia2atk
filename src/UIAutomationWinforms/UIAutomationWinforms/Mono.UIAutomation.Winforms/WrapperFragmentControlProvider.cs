@@ -24,37 +24,48 @@
 // 
 
 using System;
-using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms.Events
+namespace Mono.UIAutomation.Winforms
 {
-	
-	public class ComboBoxItemElementSelectedEvent : ElementSelectedEvent
+
+	public class WrapperFragmentControlProvider : FragmentControlProvider
 	{
-
-#region Constructor
-
-		public ComboBoxItemElementSelectedEvent (IRawElementProviderSimple provider)
-			: base (provider)
+		
+		public WrapperFragmentControlProvider (IRawElementProviderSimple provider)
+			: base (null)
 		{
+			this.provider = (SimpleControlProvider) provider;
+		}
+
+#region Public Properties
+		
+		public override Control Control {
+			get { return provider.Control; }
+		}
+
+#endregion
+
+#region IRawElementProviderSimple Members		
+		
+		public override object GetPropertyValue (int propertyId)
+		{
+			return provider.GetPropertyValue (propertyId);
 		}
 		
+		public override object GetPatternProvider (int patternId)
+		{
+			return provider.GetPatternProvider (patternId);
+		}
+
 #endregion
 		
-#region EventStrategy Methods
+#region Private fields
 		
-		public override void Connect (Control control)
-		{
-			((ComboBox) control).SelectedIndexChanged += new EventHandler (OnElementSelectedEvent);
-		}
-
-		public override void Disconnect (Control control)
-		{
-			((ComboBox) control).SelectedIndexChanged -= new EventHandler (OnElementSelectedEvent);
-		}
+		private SimpleControlProvider provider;
 		
 #endregion
+
 	}
 }

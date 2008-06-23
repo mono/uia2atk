@@ -23,71 +23,57 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 
-using System;
 using System.Windows.Automation;
-using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-using Mono.UIAutomation.Winforms;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 	
 	
-	public class ComboBoxSelectionProviderBehavior 
-		: ComboBoxProviderBehavior, ISelectionProvider
+	public abstract class ListBoxProviderBehavior : ProviderBehavior
 	{
+
+#region Constructors
 		
-#region Constructor
-		
-		public ComboBoxSelectionProviderBehavior (SimpleControlProvider provider)
-			: base (provider)
+		protected ListBoxProviderBehavior (SimpleControlProvider provider)
+			: base (provider) 
 		{
 		}
+
+#endregion
+
+#region Protected fields
+		
+		protected ListBox listbox;
 		
 #endregion
-		
-#region IProviderBehavior Members
-		
-		public override AutomationPattern ProviderPattern { 
-			get { return SelectionPatternIdentifiers.Pattern; }
-		}
+
+#region IProviderBehavior Interface
 
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == SelectionPatternIdentifiers.CanSelectMultipleProperty.Id)
-				return CanSelectMultiple;
-			else if (propertyId == SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id)
-				return IsSelectionRequired;
-			else if (propertyId == SelectionPatternIdentifiers.SelectionProperty.Id)
-				return GetSelection ();
+			//TODO: Include: HelpTextProperty, LabeledByProperty, NameProperty
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.List.Id;
+			//FIXME: According the documentation this is valid, however you can
+			//focus only when control.CanFocus, this doesn't make any sense.
+			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				return true;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "list";
 			else
-				return base.GetPropertyValue (propertyId);
-		}
-		
-#endregion
-		
-#region ISelectionProvider Members
-
-		public bool CanSelectMultiple {
-			get { return false; }
-		}
-
-		public bool IsSelectionRequired {
-			get { return combobox.SelectedIndex != -1 ? false : true; }
-		}
-		
-		public IRawElementProviderSimple[] GetSelection ()
-		{
-			if (combobox.SelectedIndex == -1)
 				return null;
-			else
-				return new IRawElementProviderSimple[] {
-					new ComboBoxItemProvider ((ComboBoxProvider) Provider,
-					                          combobox)
-				};
 		}
 
+		public override void Connect (Control control)
+		{
+			listbox = (ListBox) control;
+		}
+		
+		public override void Disconnect (Control control)
+		{
+		}
+		
 #endregion
-
 	}
 }
