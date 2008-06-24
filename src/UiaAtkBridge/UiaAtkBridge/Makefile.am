@@ -40,28 +40,28 @@ RESGEN=resgen2
 	
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
-FILES = \
-	Monitor.cs \
+FILES =  \
+	Adapter.cs \
 	AssemblyInfo.cs \
-	TopLevelRootItem.cs \
-	Window.cs \
 	AutomationBridge.cs \
 	Button.cs \
-	Adapter.cs \
-	ParentAdapter.cs \
-	TextLabel.cs \
-	TextImplementorHelper.cs \
 	CheckBox.cs \
-	Pane.cs \
-	ComponentExpert.cs \
-	ComponentAdapter.cs \
-	ComponentParentAdapter.cs \
 	ComboBox.cs \
+	ComponentAdapter.cs \
+	ComponentExpert.cs \
+	ComponentParentAdapter.cs \
+	List.cs \
 	Menu.cs \
 	MenuItem.cs \
-	ToggleButton.cs \
+	Monitor.cs \
+	Pane.cs \
+	ParentAdapter.cs \
 	RadioButton.cs \
-	List.cs 
+	TextImplementorHelper.cs \
+	TextLabel.cs \
+	ToggleButton.cs \
+	TopLevelRootItem.cs \
+	Window.cs 
 
 DATA_FILES = 
 

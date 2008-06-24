@@ -1,4 +1,4 @@
-<Project name="bridge-glue" fileversion="2.0" language="C" ctype="CProject">
+<Project name="bridge-glue" fileversion="2.0" language="C" Target="Bin" ctype="CProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CProjectConfiguration">
       <Output directory="bin/Debug" output="bridge-glue" />
@@ -19,8 +19,17 @@
   </Contents>
   <compiler ctype="GccCompiler" />
   <Packages>
-    <ProjectPackage file="glib-2.0" name="glib-2.0" IsProject="False" />
-    <ProjectPackage file="gobject-2.0" name="gobject-2.0" IsProject="False" />
-    <ProjectPackage file="atk" name="atk" IsProject="False" />
+    <Package file="glib-2.0" name="glib-2.0" IsProject="False" />
+    <Package file="gobject-2.0" name="gobject-2.0" IsProject="False" />
+    <Package file="atk" name="atk" IsProject="False" />
   </Packages>
+  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" IsAutotoolsProject="True" RelativeConfigureInPath="..">
+    <BuildFilesVar />
+    <DeployFilesVar />
+    <ResourcesVar />
+    <OthersVar />
+    <GacRefVar />
+    <AsmRefVar />
+    <ProjectRefVar />
+  </MonoDevelop.Autotools.MakefileInfo>
 </Project>

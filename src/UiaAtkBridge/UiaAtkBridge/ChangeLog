@@ -1,3 +1,8 @@
+2008-06-24  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile.am, UiaAtkBridge.mdp: Integrate makefiles into UiaAtkBridge
+	  MD projects (except test, for now).
+
 2008-06-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Makefile.am: Initial work on bridge-glue makefiles, from Stephen

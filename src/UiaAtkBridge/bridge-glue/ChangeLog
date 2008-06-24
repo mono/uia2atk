@@ -1,5 +1,10 @@
 2008-06-24  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* bridge-glue.mdp: Integrate makefiles into UiaAtkBridge MD projects
+	  (except test, for now).
+
+2008-06-24  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Makefile.am: The Mighty Stephen Shaw grants us the power to build
 	  bridge-glue.
 
