@@ -25,6 +25,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using MWF = System.Windows.Forms;
@@ -74,6 +75,37 @@ namespace UiaAtkBridgeTest
 				typeof(I).Name);
 		}
 		
+		private MWF.GroupBox gb1 = new MWF.GroupBox ();
+		private MWF.GroupBox gb2 = new MWF.GroupBox ();
+		MWF.RadioButton rad1 = new MWF.RadioButton ();
+		MWF.RadioButton rad2 = new MWF.RadioButton ();
+		MWF.RadioButton rad3 = new MWF.RadioButton ();
+		MWF.RadioButton rad4 = new MWF.RadioButton ();
+		List<MWF.RadioButton> radios = new List<MWF.RadioButton> ();
+		int currentRadio = -1;
+		
+		public BridgeTester () 
+		{
+			gb1.Controls.Add (rad1);
+			gb1.Controls.Add (rad2);
+			gb2.Controls.Add (rad3);
+			gb2.Controls.Add (rad4);
+			radios.Add (rad1);
+			radios.Add (rad2);
+			radios.Add (rad3);
+			radios.Add (rad4);
+		}
+		
+		private MWF.RadioButton GiveMeARadio (string name) {
+			if (currentRadio == 3) {
+				currentRadio = -1;
+			}
+			
+			currentRadio++;
+			radios [currentRadio].Name = name;
+			return radios [currentRadio];
+		}
+		
 		public override object GetAtkObjectThatImplementsInterface <I> (
 		  BasicWidgetType type, string name, out Atk.Object accessible, bool real)
 		{
@@ -114,6 +146,14 @@ namespace UiaAtkBridgeTest
 				accessible = uiaChk;
 				component = uiaChk;
 				action = uiaChk;
+				break;
+			case BasicWidgetType.RadioButton:
+				// the way to group radioButtons is dependent on their parent control
+				RadioButtonProvider prov = new RadioButtonProvider (GiveMeARadio (name));
+				UiaAtkBridge.RadioButton uiaRad = new UiaAtkBridge.RadioButton (prov);
+				accessible = uiaRad;
+				component = uiaRad;
+				action = uiaRad;
 				break;
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
