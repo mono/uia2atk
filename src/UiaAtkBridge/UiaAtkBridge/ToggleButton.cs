@@ -32,10 +32,18 @@ namespace UiaAtkBridge
 	
 	public abstract class ToggleButton : Button
 	{
+		private static string default_toggle_description = "Cycles through the toggle states of a control.";
+		private static string default_toggle_name = "toggle";
+		
+		private IToggleProvider toggleProvider;
 		
 		public ToggleButton (IRawElementProviderSimple provider) : base (provider)
 		{
-			Role = Atk.Role.ToggleButton;
+			if (provider is IToggleProvider) {
+				toggleProvider = (IToggleProvider)provider;
+				actionName = default_toggle_name;
+				Role = Atk.Role.ToggleButton;
+			}
 		}
 		
 		public override string GetName (int action)
@@ -50,23 +58,40 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			
-			ToggleState state = (ToggleState)((IToggleProvider)Provider).ToggleState;
-			
-			switch (state) {
-			case ToggleState.On:
-				states.AddState (Atk.StateType.Checked);
-				break;
-			case ToggleState.Indeterminate:
-			case ToggleState.Off:
-				states.RemoveState (Atk.StateType.Checked);
-				break;
-			default:
-				throw new NotSupportedException ("Unknown toggleState " + state.ToString ());
+			if (toggleProvider != null) {
+				ToggleState state = toggleProvider.ToggleState;
+				
+				switch (state) {
+				case ToggleState.On:
+					states.AddState (Atk.StateType.Checked);
+					break;
+				case ToggleState.Indeterminate:
+				case ToggleState.Off:
+					states.RemoveState (Atk.StateType.Checked);
+					break;
+				default:
+					throw new NotSupportedException ("Unknown toggleState " + state.ToString ());
+				}
 			}
 			
 			return states;
 		}
 
+		public override bool DoAction (int action)
+		{
+			if (toggleProvider != null) {
+				try {
+					if (action != 0)
+						return false;
+					toggleProvider.Toggle();
+					return true;
+				} catch (ElementNotEnabledException e) {
+					// TODO: handle this exception? maybe returning false is good enough
+				}
+			}
+			return false;
+		}
+		
 		
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{

@@ -35,15 +35,13 @@ namespace UiaAtkBridge
 		//TODO:  Atk.ImageImplementor
 	{
 		private static string default_invoke_description = "Sends a request to activate a control and initiate its single, unambiguous action.";
-		private static string default_toggle_description = "Cycles through the toggle states of a control.";
 		private static string default_invoke_name = "click";
-		private static string default_toggle_name = "toggle";
-		
+
 		private IRawElementProviderSimple	provider;
 		private IInvokeProvider				invokeProvider;
 		private IToggleProvider				toggleProvider;
 		private string						actionDescription = null;
-		private string						actionName = null;
+		protected string					actionName = null;
 		
 		private TextImplementorHelper textExpert = null;
 		private int selectionStartOffset = 0, selectionEndOffset = 0;
@@ -72,14 +70,7 @@ namespace UiaAtkBridge
 				//actionDescription = default_invoke_description;
 				actionName = default_invoke_name;
 				Role = Atk.Role.PushButton;
-			} else {
-				toggleProvider = (IToggleProvider)provider;
-				//it seems the default description should be null:
-				//actionDescription = default_toggle_description;
-				actionName = default_toggle_name;
-				Role = Atk.Role.ToggleButton;
 			}
-			
 			string buttonText = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = buttonText;
 			textExpert = new TextImplementorHelper (buttonText);
@@ -172,7 +163,7 @@ namespace UiaAtkBridge
 		}
 
 		// Perform the action specified
-		public bool DoAction (int action)
+		public virtual bool DoAction (int action)
 		{
 			try {
 				if (invokeProvider != null) {
@@ -181,15 +172,6 @@ namespace UiaAtkBridge
 							return false;
 							
 						invokeProvider.Invoke();
-						return true;
-					} catch (ElementNotEnabledException e) {
-						// TODO: handle this exception? maybe returning false is good enough
-					}
-				} else if (toggleProvider != null) {
-					try {
-						if (action != 0)
-							return false;
-						toggleProvider.Toggle();
 						return true;
 					} catch (ElementNotEnabledException e) {
 						// TODO: handle this exception? maybe returning false is good enough

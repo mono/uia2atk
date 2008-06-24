@@ -32,12 +32,40 @@ namespace UiaAtkBridge
 
 	public class RadioButton : ToggleButton
 	{
+		ISelectionItemProvider selProvider;
 		
 		public RadioButton (IRawElementProviderSimple provider) : base (provider)
 		{
 			Role = Atk.Role.RadioButton;
+			selProvider = (ISelectionItemProvider)provider;
 		}
 		
+		public override bool DoAction (int action)
+		{
+			if (selProvider != null) {
+				try {
+					if (action != 0)
+						return false;
+					selProvider.Select();
+					return true;
+				} catch (ElementNotEnabledException e) {
+					// TODO: handle this exception? maybe returning false is good enough
+				}
+			}
+			return false;
+		}
+		
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			
+			if (selProvider.IsSelected)
+					states.AddState (Atk.StateType.Checked);
+			else
+				states.RemoveState (Atk.StateType.Checked);
+			
+			return states;
+		}
 	}
 	
 }
