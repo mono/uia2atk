@@ -1,3 +1,8 @@
+2008-06-24  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* configure.ac: The Mighty Stephen Shaw grants us the power to build
+	  bridge-glue.
+
 2008-06-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* configure.ac, Makefile.am: Initial work on bridge-glue makefiles,

@@ -1,11 +1,12 @@
+libdir = $(prefix)/lib/uiaatkbridge
 lib_LTLIBRARIES = libbridge-glue.la
 
-libbridge_glue_la_LDFLAGS =  
+libbridge_glue_la_LDFLAGS = -module - avoid-version -no-undefined 
 
 libbridge_glue_la_SOURCES = \
 	main.c \
 	main.h
 
-INCLUDES = -I@expanded_libdir@
+INCLUDES = $(ATK_CFLAGS) $(GOBJECT_20_CFLAGS) $(GMODULE_20_CFLAGS) $(GLIB_CFLAGS)
 
 EXTRA = Changelog
