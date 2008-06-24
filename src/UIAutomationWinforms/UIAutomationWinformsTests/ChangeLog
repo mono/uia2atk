@@ -1,5 +1,9 @@
 2008-06-24  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* WindowProviderTest.cs: Actually fix the build, dummy.
+
+2008-06-24  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* WindowProviderTest.cs: Quick build fix.
 
 2008-06-23  Mario Carrion <mcarrion@novell.com> 

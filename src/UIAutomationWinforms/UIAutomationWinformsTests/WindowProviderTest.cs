@@ -77,7 +77,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				Assert.IsTrue (provider.IsModal, "ShowDialog should be modal");
 				
 				f.Close ();
-				t.Join ();
+				//t.Join ();
 				
 				f.Show ();
 				// Wait for form to appear
