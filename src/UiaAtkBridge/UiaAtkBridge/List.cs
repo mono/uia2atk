@@ -33,8 +33,8 @@ namespace UiaAtkBridge
 {
 	public class List : ComponentAdapter, Atk.SelectionImplementor
 	{
-		private IRawElementProviderSimple	provider;
-		private ISelectionProvider			selectionProvider;
+		private IRawElementProviderFragmentRoot		provider;
+		private ISelectionProvider					selectionProvider;
 		
 /*
 AtkObject,
@@ -48,23 +48,98 @@ AtkObject,
 
 #region UI Automation Properties supported
 
-		// AutomationElementIdentifiers.AutomationIdProperty.Id
-		// AutomationElementIdentifiers.BoundingRectangleProperty.Id
-		// AutomationElementIdentifiers.ClickablePointProperty.Id
-		// AutomationElementIdentifiers.NameProperty.Id
-		// AutomationElementIdentifiers.LabeledByProperty.Id
-		// AutomationElementIdentifiers.ControlTypeProperty.Id
-		// AutomationElementIdentifiers.LocalizedControlTypeProperty.Id
-		// AutomationElementIdentifiers.IsContentElementProperty.Id
-		// AutomationElementIdentifiers.IsControlElementProperty.Id
-		// AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id
-		// AutomationElementIdentifiers.HelpTextProperty.Id
 
+		// AutomationElementIdentifiers.BoundingRectangleProperty.Id
+
+		// AutomationElementIdentifiers.AutomationIdProperty.Id
+		public string AutomationId
+		{
+			get {
+				return (string) provider.GetPropertyValue (AutomationElementIdentifiers.AutomationIdProperty.Id);
+			}
+		}
+		
+		// AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id
+		public bool IsKeyboardFocusable
+		{ 
+			get {
+				return (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
+			}
+		}
+		
+		// AutomationElementIdentifiers.NameProperty.Id
+		// already handled by the Atk object
+
+		// AutomationElementIdentifiers.ClickablePointProperty.Id
+		public System.Windows.Point ClickablePoint
+		{ 
+			get {
+				return (System.Windows.Point) provider.GetPropertyValue (AutomationElementIdentifiers.ClickablePointProperty.Id);
+			}
+		}
+
+		// AutomationElementIdentifiers.ControlTypeProperty.Id
+		public int ControlType
+		{ 
+			get {
+				return (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			}
+		}
+
+		// AutomationElementIdentifiers.LocalizedControlTypeProperty.Id
+		public string LocalizedControlType
+		{ 
+			get {
+				return (string) provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id);
+			}
+		}
+		
+		// AutomationElementIdentifiers.IsContentElementProperty.Id
+		public bool IsContentElement
+		{ 
+			get {
+				return (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsContentElementProperty.Id);
+			}
+		}
+
+		// AutomationElementIdentifiers.IsControlElementProperty.Id
+		public bool IsControlElement
+		{ 
+			get {
+				return (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsControlElementProperty.Id);
+			}
+		}
+
+		// AutomationElementIdentifiers.HelpTextProperty.Id
+		public string HelpText
+		{ 
+			get {
+				return (string) provider.GetPropertyValue (AutomationElementIdentifiers.HelpTextProperty.Id);
+			}
+		}
+
+		// SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id
+		public bool IsSelectionRequired
+		{ 
+			get {
+				return (bool) provider.GetPropertyValue (SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id);
+			}
+		}
+
+		// SelectionPatternIdentifiers.CanSelectMultipleProperty.Id
+		public bool CanSelectMultiple
+		{ 
+			get {
+				return (bool) provider.GetPropertyValue (SelectionPatternIdentifiers.CanSelectMultipleProperty.Id);
+			}
+		}
+
+
+																
 #endregion
 
 
-
-		public List (IRawElementProviderSimple provider)
+		public List (IRawElementProviderFragmentRoot provider)
 		{
 			this.provider = provider;
 			
@@ -128,38 +203,82 @@ AtkObject,
 
 		public bool AddSelection (int i)
 		{
-			//TODO: Implement
+			ISelectionItemProvider childItem = ChildItemAtIndex(i);
+				
+			if(childItem != null) {
+				if(selectionProvider.CanSelectMultiple)
+					childItem.AddToSelection();
+				else
+					childItem.Select();
+				return true;
+			}
 			return false;
 		}
 
 		public bool ClearSelection ()
 		{
-			//TODO: Implement
-			return false;
+			IRawElementProviderSimple[] selectedElements = 
+				selectionProvider.GetSelection();
+				
+			for(int i=0; i < selectedElements.GetLength(0); i++) {
+				ISelectionItemProvider selectionItemProvider = 
+					(ISelectionItemProvider)selectedElements[i].GetPatternProvider
+						(SelectionItemPatternIdentifiers.Pattern.Id);
+				
+				if(selectionItemProvider != null) {
+					selectionItemProvider.RemoveFromSelection();
+				}
+			}	
+
+			return true;
 		}
 
 		public bool IsChildSelected (int i)
 		{
-			//TODO: Implement
+			ISelectionItemProvider childItem = ChildItemAtIndex(i);
+
+			if(childItem != null) {
+				return childItem.IsSelected;
+			}
 			return false;
 		}
 		
 		public Atk.Object RefSelection (int i)		
 		{
 			//TODO: Implement
-			return null;
+			throw new NotImplementedException ();
 		}
 		
 		public bool RemoveSelection (int i)
 		{
-			//TODO: Implement
+			ISelectionItemProvider childItem = ChildItemAtIndex(i);
+
+			if(childItem != null) {
+				childItem.RemoveFromSelection();
+				return true;
+			}
 			return false;
 		}
 
 		public bool SelectAllSelection ()
 		{
-			//TODO: Implement
-			return false;
+			if(!selectionProvider.CanSelectMultiple)
+				return false;
+
+			IRawElementProviderSimple[] selectedElements = 
+				selectionProvider.GetSelection();
+				
+			for(int i=0; i < selectedElements.GetLength(0); i++) {
+				ISelectionItemProvider selectionItemProvider = 
+					(ISelectionItemProvider)selectedElements[i].GetPatternProvider
+						(SelectionItemPatternIdentifiers.Pattern.Id);
+				
+				if(selectionItemProvider != null) {
+					selectionItemProvider.AddToSelection();
+				} else
+					return false;
+			}	
+			return true;
 		}
 
 #endregion
@@ -203,6 +322,29 @@ AtkObject,
 			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
 				Name = (string)e.NewValue;
 			}
+		}
+		
+		
+		private ISelectionItemProvider ChildItemAtIndex(int i)
+		{
+			IRawElementProviderFragment child = 
+				provider.Navigate(NavigateDirection.FirstChild);
+			int childCount = 0;
+			
+			while( (child != null) && (childCount != i) ) {
+				child = child.Navigate(NavigateDirection.NextSibling);
+			}
+			
+			if(child != null) {
+				ISelectionItemProvider selectionItemProvider = 
+					(ISelectionItemProvider)provider.GetPatternProvider
+						(SelectionItemPatternIdentifiers.Pattern.Id);
+				
+				if(selectionItemProvider != null) {
+					return selectionItemProvider;
+				}
+			}
+			return null;
 		}
 		
 	}

@@ -1,3 +1,7 @@
+2008-06-24  Calvin Gaisford <calvinrg@gmail.com> 
+
+	* List.cs: Filled out more implementation of list
+
 2008-06-24  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Button.cs, ToggleButton.cs, RadioButton.cs: Make InterfaceAction pass
