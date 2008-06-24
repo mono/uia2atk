@@ -1,3 +1,7 @@
+2008-06-24  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* WindowProviderTest.cs: Quick build fix.
+
 2008-06-23  Mario Carrion <mcarrion@novell.com> 
 
 	* ComboBoxProviderTest.cs: File added: ComboBox provider tests.

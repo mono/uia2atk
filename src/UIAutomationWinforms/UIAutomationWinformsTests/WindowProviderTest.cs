@@ -66,10 +66,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				Assert.IsFalse (provider.IsModal, "Form should initialize to not modal");
 				
 				// Run modal dialog in separate thread
-				Thread t = new Thread (new ParameterizedThreadStart (delegate {
+				//Thread t = new Thread (new ParameterizedThreadStart (delegate {
 					f.ShowDialog ();
-				}));
-				t.Start ();
+				//}));
+				//t.Start ();
 				
 				// Wait for dialog to appear
 				Thread.Sleep (500); // TODO: Fragile
