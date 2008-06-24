@@ -1,3 +1,9 @@
+2008-06-24  Ray Wang <rawang@gmail.com>
+
+	* samples/listview.py : implement ListView control
+	* samples/monthcalendar.py : implement Monthcalendar control
+	* samples/webbrowser.py : implement WebBrowser control
+
 2008-06-23  Ray Wang <rawang@gmail.com>
 
 	* samples/fontdialog.py : Clean up the letter casing
