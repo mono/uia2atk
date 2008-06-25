@@ -1,5 +1,10 @@
 2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* WindowProviderTest.cs: Uncomment protection against bug #403518,
+	  which has been fixed in mcs trunk.
+
+2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Makefile.am: Fix compiler flags for release mode.
 
 2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
