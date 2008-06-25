@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -32,7 +33,23 @@ namespace UiaAtkBridge
 {
 	public class ComboBox : ComponentAdapter, Atk.ActionImplementor, Atk.SelectionImplementor
 	{
-		private string[] children = new string[] { "First Element", "Second Element", "Third Element" };
+		
+		private string[] Children {
+			get {
+				List<string> children = new List<string> ();
+				
+				IRawElementProviderFragmentRoot rootProvider =
+					(IRawElementProviderFragmentRoot)provider;
+				IRawElementProviderFragment child = rootProvider.Navigate (NavigateDirection.FirstChild);
+	
+				do {
+					children.Add ((string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
+					child.Navigate (NavigateDirection.NextSibling);
+				} while (child != null);
+				
+				return children.ToArray ();
+			}
+		}
 		private Menu innerChild = null;
 		
 		private string actionDescription = null;
@@ -43,7 +60,7 @@ namespace UiaAtkBridge
 		{
 			this.provider = provider;
 			this.Role = Atk.Role.ComboBox;
-			innerChild = new Menu (children);
+			innerChild = new Menu (Children);
 			selProvider = (ISelectionProvider)provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
 			if (selProvider == null)
 				throw new NotImplementedException ("ComboBoxProvider should always implement ISelectionProvider");
@@ -79,13 +96,9 @@ namespace UiaAtkBridge
 			
 			bool enabled = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
 			if (enabled)
-			{
 				states.AddState (Atk.StateType.Enabled);
-			}
 			else
-			{
 				states.RemoveState (Atk.StateType.Enabled);
-			}
 			
 			return states;
 		}
@@ -151,9 +164,23 @@ namespace UiaAtkBridge
 		
 		bool Atk.SelectionImplementor.AddSelection (int i)
 		{
-			if ((i >= 0) && (i < children.Length)) {
+			if (i >= 0) {
+				IRawElementProviderFragmentRoot rootProvider =
+					(IRawElementProviderFragmentRoot)provider;
+				IRawElementProviderFragment child = rootProvider.Navigate (NavigateDirection.FirstChild);
+	
+				if (i > 0) {
+					int current = 0;
+					while (current < i) {
+						child = child.Navigate (NavigateDirection.NextSibling);
+						if (child == null)
+							//selection out of bounds, return true anyway (according to unit tests)
+							return true;
+						current++;
+					}
+				}
 				childSelected = i;
-				Name = children[i];
+				Name = (string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			}
 			return true;
 		}
