@@ -27,6 +27,11 @@ if test "x$CC" = "xno"; then
         AC_MSG_ERROR([gcc Not found])
 fi
 
+AC_PATH_PROG(GACUTIL, gacutil, no)
+if test "x$GACUTIL" = "xno" ; then
+	AC_MSG_ERROR([No gacutil tool found])
+fi
+
 
 AC_ARG_ENABLE(debug,
 	AC_HELP_STRING([--enable-debug],

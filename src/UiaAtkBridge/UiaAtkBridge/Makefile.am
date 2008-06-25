@@ -3,7 +3,7 @@ EXTRA_DIST =
 
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG"
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG" -keyfile:../mono-uia.snk
 
 ASSEMBLY = bin/Debug/UiaAtkBridge.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
@@ -18,7 +18,7 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:../mono-uia.snk
 ASSEMBLY = bin/Release/UiaAtkBridge.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library
@@ -80,6 +80,10 @@ REFERENCES =  \
 DLL_REFERENCES = 
 
 CLEANFILES = $(PROGRAMFILES)
+
+install-data-local: gac-install
+
+uninstall-local: gac-uninstall
 
 include $(top_srcdir)/Makefile.include
 

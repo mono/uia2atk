@@ -106,3 +106,10 @@ $(eval $(foreach res, $(culture_resources), $(eval $(call culture_resource_comma
 $(build_satellite_assembly_list): $(BUILD_DIR)/%/$(SATELLITE_ASSEMBLY_NAME):
 	mkdir -p '$(@D)'
 	$(AL) -out:'$@' -culture:$* -t:lib $(cmd_line_satellite_$*)
+
+
+gac-install: $(POLICY_ASSEMBLIES)
+	$(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS) || exit 1;
+
+gac-uninstall:
+	$(GACUTIL) /us $(ASSEMBLY) $(GACUTIL_FLAGS) || exit 1;

@@ -1,3 +1,7 @@
+2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile.am: Sign UiaAtkBridge.dll and install to GAC.
+
 2008-06-25  Calvin Gaisford <calvinrg@gmail.com> 
 
 	* List.cs, ComboBox.cs: Updated to use the
