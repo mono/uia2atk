@@ -57,6 +57,7 @@ FILES =  \
 	Pane.cs \
 	ParentAdapter.cs \
 	RadioButton.cs \
+	SelectionProviderImplementorHelper.cs \
 	TextImplementorHelper.cs \
 	TextLabel.cs \
 	ToggleButton.cs \

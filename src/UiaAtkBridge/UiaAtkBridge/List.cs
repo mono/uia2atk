@@ -35,6 +35,7 @@ namespace UiaAtkBridge
 	{
 		private IRawElementProviderFragmentRoot		provider;
 		private ISelectionProvider					selectionProvider;
+		private SelectionProviderImplementorHelper	selectionHelper;
 		
 /*
 AtkObject,
@@ -143,17 +144,16 @@ AtkObject,
 		{
 			this.provider = provider;
 			
-			//FIXME: use provider.GetPatternProvider ()
 			selectionProvider = (ISelectionProvider)provider.GetPatternProvider(SelectionPatternIdentifiers.Pattern.Id);
-			if(selectionProvider != null) {
-				//it seems the default description should be null:
-				//actionDescription = default_invoke_description;
-				// actionName = default_invoke_name;
-				Role = Atk.Role.List;
-			} 
+			if (selectionProvider == null)
+				throw new NotImplementedException ("List should always implement ISelectionProvider");
+
+			Role = Atk.Role.List;
 			
 			string componentName = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = componentName;
+			
+			selectionHelper = new SelectionProviderImplementorHelper(provider, selectionProvider);
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()
@@ -196,89 +196,31 @@ AtkObject,
 
 		public int SelectionCount
 		{
-			get {
-				return selectionProvider.GetSelection().GetLength(0);
-			}
+			get { return selectionHelper.SelectionCount; }
 		}
-
 		public bool AddSelection (int i)
 		{
-			ISelectionItemProvider childItem = ChildItemAtIndex(i);
-				
-			if(childItem != null) {
-				if(selectionProvider.CanSelectMultiple)
-					childItem.AddToSelection();
-				else
-					childItem.Select();
-				return true;
-			}
-			return false;
+			return selectionHelper.AddSelection(i);
 		}
-
 		public bool ClearSelection ()
 		{
-			IRawElementProviderSimple[] selectedElements = 
-				selectionProvider.GetSelection();
-				
-			for(int i=0; i < selectedElements.GetLength(0); i++) {
-				ISelectionItemProvider selectionItemProvider = 
-					(ISelectionItemProvider)selectedElements[i].GetPatternProvider
-						(SelectionItemPatternIdentifiers.Pattern.Id);
-				
-				if(selectionItemProvider != null) {
-					selectionItemProvider.RemoveFromSelection();
-				}
-			}	
-
-			return true;
+			return selectionHelper.ClearSelection();
 		}
-
 		public bool IsChildSelected (int i)
 		{
-			ISelectionItemProvider childItem = ChildItemAtIndex(i);
-
-			if(childItem != null) {
-				return childItem.IsSelected;
-			}
-			return false;
+			return selectionHelper.IsChildSelected(i);
 		}
-		
 		public Atk.Object RefSelection (int i)		
 		{
-			//TODO: Implement
-			throw new NotImplementedException ();
+			return selectionHelper.RefSelection(i);
 		}
-		
 		public bool RemoveSelection (int i)
 		{
-			ISelectionItemProvider childItem = ChildItemAtIndex(i);
-
-			if(childItem != null) {
-				childItem.RemoveFromSelection();
-				return true;
-			}
-			return false;
+			return selectionHelper.RemoveSelection(i);
 		}
-
 		public bool SelectAllSelection ()
 		{
-			if(!selectionProvider.CanSelectMultiple)
-				return false;
-
-			IRawElementProviderSimple[] selectedElements = 
-				selectionProvider.GetSelection();
-				
-			for(int i=0; i < selectedElements.GetLength(0); i++) {
-				ISelectionItemProvider selectionItemProvider = 
-					(ISelectionItemProvider)selectedElements[i].GetPatternProvider
-						(SelectionItemPatternIdentifiers.Pattern.Id);
-				
-				if(selectionItemProvider != null) {
-					selectionItemProvider.AddToSelection();
-				} else
-					return false;
-			}	
-			return true;
+			return selectionHelper.SelectAllSelection();
 		}
 
 #endregion
@@ -323,29 +265,5 @@ AtkObject,
 				Name = (string)e.NewValue;
 			}
 		}
-		
-		
-		private ISelectionItemProvider ChildItemAtIndex(int i)
-		{
-			IRawElementProviderFragment child = 
-				provider.Navigate(NavigateDirection.FirstChild);
-			int childCount = 0;
-			
-			while( (child != null) && (childCount != i) ) {
-				child = child.Navigate(NavigateDirection.NextSibling);
-			}
-			
-			if(child != null) {
-				ISelectionItemProvider selectionItemProvider = 
-					(ISelectionItemProvider)provider.GetPatternProvider
-						(SelectionItemPatternIdentifiers.Pattern.Id);
-				
-				if(selectionItemProvider != null) {
-					return selectionItemProvider;
-				}
-			}
-			return null;
-		}
-		
 	}
 }

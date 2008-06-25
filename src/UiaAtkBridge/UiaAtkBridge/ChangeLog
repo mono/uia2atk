@@ -1,3 +1,10 @@
+2008-06-25  Calvin Gaisford <calvinrg@gmail.com> 
+
+	* List.cs, ComboBox.cs: Updated to use the
+	  SelectionProviderImplementorHelper class for selection
+	* SelectionProviderImplementorHelper.cs, Makefile.am, UiaAtkBridge.mdp:
+	  Added the SelectionProviderImplementorHelper class
+
 2008-06-25  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* ComboBox.cs: Complete structure layout.

@@ -52,9 +52,12 @@ namespace UiaAtkBridge
 		
 		private string actionDescription = null;
 		private string actionName = "press";
-		private ISelectionProvider selProvider = null;
+		private ISelectionProvider 					selProvider;
+		private IRawElementProviderFragmentRoot 	provider;
+		private SelectionProviderImplementorHelper	selectionHelper;
 		
-		public ComboBox (IRawElementProviderSimple provider)
+		
+		public ComboBox (IRawElementProviderFragmentRoot provider)
 		{
 			this.provider = provider;
 			this.Role = Atk.Role.ComboBox;
@@ -62,13 +65,13 @@ namespace UiaAtkBridge
 			selProvider = (ISelectionProvider)provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
 			if (selProvider == null)
 				throw new NotImplementedException ("ComboBoxProvider should always implement ISelectionProvider");
+			
+			selectionHelper = new SelectionProviderImplementorHelper(provider, selProvider);
 		}
 
 		public override IRawElementProviderSimple Provider {
 			get { return provider; }
 		}
-		
-		private IRawElementProviderSimple provider = null;
 		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
@@ -141,65 +144,39 @@ namespace UiaAtkBridge
 			return actionName;
 		}
 
-		// not multi-selection for now
-		int Atk.SelectionImplementor.SelectionCount {
-			get {
-				return (childSelected != null)? 1 : 0;
-			}
+#region Atk.SelectionImplementor
+
+		int Atk.SelectionImplementor.SelectionCount
+		{
+			get { return selectionHelper.SelectionCount; }
 		}
-		
 		bool Atk.SelectionImplementor.AddSelection (int i)
 		{
-			if (i >= 0) {
-				IRawElementProviderFragmentRoot rootProvider =
-					(IRawElementProviderFragmentRoot)provider;
-				IRawElementProviderFragment child = rootProvider.Navigate (NavigateDirection.FirstChild);
-	
-				if (i > 0) {
-					int current = 0;
-					while (current < i) {
-						child = child.Navigate (NavigateDirection.NextSibling);
-						if (child == null)
-							//selection out of bounds, return true anyway (according to unit tests)
-							return true;
-						current++;
-					}
-				}
-				childSelected = i;
-				Name = (string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			}
-			return true;
+			return selectionHelper.AddSelection(i);
 		}
-
 		bool Atk.SelectionImplementor.ClearSelection ()
 		{
-			childSelected = null;
-			Name = null;
-			return true;
+			return selectionHelper.ClearSelection();
 		}
-
 		Atk.Object Atk.SelectionImplementor.RefSelection (int i)
 		{
-			throw new NotImplementedException ();
+			return selectionHelper.RefSelection(i);
 		}
-
-		private int? childSelected = null;
-		
 		bool Atk.SelectionImplementor.IsChildSelected (int i)
 		{
-			return (!((childSelected == null) || (childSelected != i)));
+			return selectionHelper.IsChildSelected(i);
 		}
-
 		bool Atk.SelectionImplementor.RemoveSelection (int i)
 		{
-			throw new NotImplementedException ();
+			return selectionHelper.RemoveSelection(i);
 		}
-
 		bool Atk.SelectionImplementor.SelectAllSelection ()
 		{
-			throw new NotImplementedException ();
+			return selectionHelper.SelectAllSelection();
 		}
-		
+
+#endregion
+
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			throw new NotImplementedException ();
