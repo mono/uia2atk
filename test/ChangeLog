@@ -1,3 +1,9 @@
+2008-06-25  Ray Wang <rawang@gmail.com>
+
+	* samples/contexmenu_menuitem.py : implement ContextMenu & MenuItem control
+	* samples/notifyicon.py : implement NotifyIcon control
+	* samples/trackbar.py : implement TrackBar control
+
 2008-06-24  Ray Wang <rawang@gmail.com>
 
 	* samples/listview.py : implement ListView control
