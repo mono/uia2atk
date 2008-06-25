@@ -31,10 +31,9 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class ComboBox : ComponentAdapter, Atk.ActionImplementor, Atk.SelectionImplementor
+	public class ComboBox : ComponentParentAdapter, Atk.ActionImplementor, Atk.SelectionImplementor
 	{
-		
-		private string[] Children {
+		private string[] ChildrenItems {
 			get {
 				List<string> children = new List<string> ();
 				
@@ -50,7 +49,6 @@ namespace UiaAtkBridge
 				return children.ToArray ();
 			}
 		}
-		private Menu innerChild = null;
 		
 		private string actionDescription = null;
 		private string actionName = "press";
@@ -60,7 +58,7 @@ namespace UiaAtkBridge
 		{
 			this.provider = provider;
 			this.Role = Atk.Role.ComboBox;
-			innerChild = new Menu (Children);
+			children.Add (new Menu (ChildrenItems));
 			selProvider = (ISelectionProvider)provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
 			if (selProvider == null)
 				throw new NotImplementedException ("ComboBoxProvider should always implement ISelectionProvider");
@@ -71,18 +69,6 @@ namespace UiaAtkBridge
 		}
 		
 		private IRawElementProviderSimple provider = null;
-		
-		protected override Atk.Object OnRefChild (int i)
-		{
-			if (i != 0)
-				return null;
-			return innerChild;
-		}
-
-		protected override int OnGetNChildren ()
-		{
-			return 1;
-		}
 		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
@@ -220,6 +206,11 @@ namespace UiaAtkBridge
 		}
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			throw new NotImplementedException ();
+		}
+		
+		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
 			throw new NotImplementedException ();
 		}

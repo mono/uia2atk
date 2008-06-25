@@ -1,5 +1,9 @@
 2008-06-25  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* ComboBox.cs: Complete structure layout.
+
+2008-06-25  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* ComboBox.cs: Basic real children implementation.
 
 2008-06-24  Calvin Gaisford <calvinrg@gmail.com> 
