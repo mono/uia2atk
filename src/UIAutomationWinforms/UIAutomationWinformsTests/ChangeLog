@@ -1,5 +1,9 @@
 2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Makefile.am: Fix compiler flags for release mode.
+
+2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Makefile.am: Drop .pc files.
 
 2008-06-24  Sandy Armstrong <sanfordarmstrong@gmail.com> 

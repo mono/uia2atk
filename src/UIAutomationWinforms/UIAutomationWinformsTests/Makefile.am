@@ -24,7 +24,7 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -warn:4 -optimize+
+ASSEMBLY_COMPILER_FLAGS =  -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+
 ASSEMBLY = bin/Release/UIAutomationWinformsTests.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library

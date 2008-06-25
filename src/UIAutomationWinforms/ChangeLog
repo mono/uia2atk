@@ -1,5 +1,9 @@
 2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* configure.ac: AM_INIT_AUTOMAKE tweak from Stephen Shaw.
+
+2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* configure.ac: Remove references to .pc files.
 
 2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
