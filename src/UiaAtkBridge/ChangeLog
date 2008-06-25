@@ -1,5 +1,9 @@
 2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Makefile.am: Add mono-uia.snk to EXTRA_DIST.
+
+2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Makefile.include: Add support for (un)installing to/from GAC.
 	* configure.ac: Check for gacutil.
 

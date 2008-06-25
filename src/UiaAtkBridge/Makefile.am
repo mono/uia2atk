@@ -1,5 +1,5 @@
 
-EXTRA_DIST =  expansions.m4
+EXTRA_DIST =  expansions.m4 mono-uia.snk
 
 if ENABLE_DEBUG
  SUBDIRS =  UiaAtkBridge bridge-glue
