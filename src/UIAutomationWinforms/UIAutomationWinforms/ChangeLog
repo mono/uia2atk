@@ -1,5 +1,9 @@
 2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Makefile.am: Remove references to .pc files.
+
+2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Makefile.am: Sign assembly when compiling, support GAC (un)install,
 	  and drop .pc file.
 	* mono.uiautomation.winforms.pc.in: Drop .pc files.

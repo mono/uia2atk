@@ -58,7 +58,6 @@ dnl package checks, per config
 
 
 AC_CONFIG_FILES([
-UIAutomationWinforms/mono.uiautomation.winforms.pc
 UIAutomationWinforms/Makefile
 Makefile
 UIAutomationWinformsTests/Makefile

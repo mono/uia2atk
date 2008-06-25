@@ -110,9 +110,6 @@ DATA_FILES =
 
 RESOURCES = 
 
-EXTRAS = \
-	mono.uiautomation.winforms.pc.in 
-
 REFERENCES =  \
 	UIAutomationTypes \
 	UIAutomationProvider \
