@@ -1,3 +1,9 @@
+2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile.am: Sign assembly when compiling, support GAC (un)install,
+	  and drop .pc file.
+	* mono.uiautomation.winforms.pc.in: Drop .pc files.
+
 2008-06-23  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.mdp: Updated: Added files:

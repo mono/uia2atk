@@ -1,0 +1,7 @@
+2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile.include: Add support for GAC (un)install.
+	* configure.ac: Check for gacutil.
+	* mono-uia.snk: Add key for signing assemblies.
+	* ChangeLog: Adding ChangeLog here (whoops).
+

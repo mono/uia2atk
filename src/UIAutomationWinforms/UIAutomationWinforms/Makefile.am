@@ -5,7 +5,7 @@ EXTRA_DIST =
 
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG"
+ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG" -keyfile:../mono-uia.snk
 
 ASSEMBLY = bin/Debug/UIAutomationWinforms.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
@@ -37,13 +37,10 @@ SATELLITE_ASSEMBLY_NAME=Mono.UIAutomation.Winforms.resources.dll
 PROGRAMFILES = \
 	$(UIAUTOMATIONWINFORMS_DLL_MDB)  
 
-LINUX_PKGCONFIG = \
-	$(MONO_UIAUTOMATION_WINFORMS_PC)  
-
 
 RESGEN=resgen2
 	
-all: $(ASSEMBLY) $(PROGRAMFILES) $(LINUX_PKGCONFIG) 
+all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBoxExpandCollapseProviderBehavior.cs \
@@ -127,13 +124,13 @@ REFERENCES =  \
 
 DLL_REFERENCES = 
 
-CLEANFILES = $(PROGRAMFILES) $(LINUX_PKGCONFIG) 
+CLEANFILES = $(PROGRAMFILES)
+
+install-data-local: gac-install
+
+uninstall-local: gac-uninstall
 
 include $(top_srcdir)/Makefile.include
-
-MONO_UIAUTOMATION_WINFORMS_PC = $(BUILD_DIR)/mono.uiautomation.winforms.pc
-
-$(eval $(call emit-deploy-wrapper,MONO_UIAUTOMATION_WINFORMS_PC,mono.uiautomation.winforms.pc))
 
 
 $(eval $(call emit_resgen_targets))

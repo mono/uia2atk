@@ -21,6 +21,11 @@ if test "x$GMCS" = "xno"; then
         AC_MSG_ERROR([gmcs Not found])
 fi
 
+AC_PATH_PROG(GACUTIL, gacutil, no)
+if test "x$GACUTIL" = "xno" ; then
+	AC_MSG_ERROR([No gacutil tool found])
+fi
+
 
 AC_ARG_ENABLE(debug,
 	AC_HELP_STRING([--enable-debug],
@@ -57,7 +62,6 @@ UIAutomationWinforms/mono.uiautomation.winforms.pc
 UIAutomationWinforms/Makefile
 Makefile
 UIAutomationWinformsTests/Makefile
-
 ])
 
 AC_OUTPUT
