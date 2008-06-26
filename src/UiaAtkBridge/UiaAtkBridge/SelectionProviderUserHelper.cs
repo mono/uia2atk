@@ -30,13 +30,13 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class SelectionProviderImplementorHelper
+	internal class SelectionProviderUserHelper
 	{
 		private ISelectionProvider					selectionProvider;
 		private IRawElementProviderFragmentRoot		provider;
 
 		
-		public SelectionProviderImplementorHelper(IRawElementProviderFragmentRoot provider,
+		public SelectionProviderUserHelper(IRawElementProviderFragmentRoot provider,
 		                                          ISelectionProvider selectionProvider)
 		{
 			this.selectionProvider = selectionProvider;

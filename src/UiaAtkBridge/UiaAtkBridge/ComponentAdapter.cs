@@ -31,10 +31,10 @@ namespace UiaAtkBridge
 	{
 		public ComponentAdapter()
 		{
-			componentExpert = new ComponentExpert (this);
+			componentExpert = new ComponentImplementorHelper (this);
 		}
 		
-		private ComponentExpert componentExpert;
+		private ComponentImplementorHelper componentExpert;
 		
 #region ComponentImplementor Methods
 

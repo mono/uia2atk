@@ -26,7 +26,7 @@
     <File name="TextImplementorHelper.cs" subtype="Code" buildaction="Compile" />
     <File name="CheckBox.cs" subtype="Code" buildaction="Compile" />
     <File name="Pane.cs" subtype="Code" buildaction="Compile" />
-    <File name="ComponentExpert.cs" subtype="Code" buildaction="Compile" />
+    <File name="ComponentImplementorHelper.cs" subtype="Code" buildaction="Compile" />
     <File name="ComponentAdapter.cs" subtype="Code" buildaction="Compile" />
     <File name="ComponentParentAdapter.cs" subtype="Code" buildaction="Compile" />
     <File name="ComboBox.cs" subtype="Code" buildaction="Compile" />
@@ -35,7 +35,7 @@
     <File name="ToggleButton.cs" subtype="Code" buildaction="Compile" />
     <File name="RadioButton.cs" subtype="Code" buildaction="Compile" />
     <File name="List.cs" subtype="Code" buildaction="Compile" />
-    <File name="SelectionProviderImplementorHelper.cs" subtype="Code" buildaction="Compile" />
+    <File name="SelectionProviderUserHelper.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

@@ -48,7 +48,7 @@ FILES =  \
 	CheckBox.cs \
 	ComboBox.cs \
 	ComponentAdapter.cs \
-	ComponentExpert.cs \
+	ComponentImplementorHelper.cs \
 	ComponentParentAdapter.cs \
 	List.cs \
 	Menu.cs \
@@ -57,7 +57,7 @@ FILES =  \
 	Pane.cs \
 	ParentAdapter.cs \
 	RadioButton.cs \
-	SelectionProviderImplementorHelper.cs \
+	SelectionProviderUserHelper.cs \
 	TextImplementorHelper.cs \
 	TextLabel.cs \
 	ToggleButton.cs \

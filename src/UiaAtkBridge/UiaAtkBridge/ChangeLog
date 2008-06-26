@@ -1,3 +1,13 @@
+2008-06-26  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* List.cs, SelectionProviderImplementorHelper.cs,
+	  ComponentParentAdapter.cs, ComponentImplementorHelper.cs,
+	  ComponentExpert.cs, SelectionProviderUserHelper.cs,
+	  ComponentAdapter.cs, Makefile.am, UiaAtkBridge.mdp, ComboBox.cs:
+	  Being consistent in names (an "expert" is an implementorHelper
+	  according to previously done classes, and SelectionProvider*Helper
+	  is not an implementor, but a user of the Provider).
+
 2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Makefile.am: Sign UiaAtkBridge.dll and install to GAC.

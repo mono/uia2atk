@@ -31,9 +31,9 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	internal class ComponentExpert : Atk.ComponentImplementor
+	internal class ComponentImplementorHelper : Atk.ComponentImplementor
 	{
-		public ComponentExpert (Adapter resource)
+		public ComponentImplementorHelper (Adapter resource)
 		{
 			this.resource = resource;
 			

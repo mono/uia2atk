@@ -35,7 +35,7 @@ namespace UiaAtkBridge
 	{
 		private IRawElementProviderFragmentRoot		provider;
 		private ISelectionProvider					selectionProvider;
-		private SelectionProviderImplementorHelper	selectionHelper;
+		private SelectionProviderUserHelper	selectionHelper;
 		
 /*
 AtkObject,
@@ -153,7 +153,7 @@ AtkObject,
 			string componentName = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = componentName;
 			
-			selectionHelper = new SelectionProviderImplementorHelper(provider, selectionProvider);
+			selectionHelper = new SelectionProviderUserHelper(provider, selectionProvider);
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()

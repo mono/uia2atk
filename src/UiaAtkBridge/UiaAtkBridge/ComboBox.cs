@@ -54,7 +54,7 @@ namespace UiaAtkBridge
 		private string actionName = "press";
 		private ISelectionProvider 					selProvider;
 		private IRawElementProviderFragmentRoot 	provider;
-		private SelectionProviderImplementorHelper	selectionHelper;
+		private SelectionProviderUserHelper	selectionHelper;
 		
 		
 		public ComboBox (IRawElementProviderFragmentRoot provider)
@@ -66,7 +66,7 @@ namespace UiaAtkBridge
 			if (selProvider == null)
 				throw new NotImplementedException ("ComboBoxProvider should always implement ISelectionProvider");
 			
-			selectionHelper = new SelectionProviderImplementorHelper(provider, selProvider);
+			selectionHelper = new SelectionProviderUserHelper(provider, selProvider);
 		}
 
 		public override IRawElementProviderSimple Provider {
