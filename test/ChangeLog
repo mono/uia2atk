@@ -1,3 +1,9 @@
+2008-06-27  Calen Chen <cachen@novell.com>
+	* samples/gtksample.py : add a gtk sample for button, text, messagedialog control
+	* testers/button_basic_ops.py : add strongwind test script to check button, text, messagedialog against gtksample.py
+	* testers/button/__init__.py : add strongwind test script to set where is the gtk sample
+	* testers/button/buttonframe.py : add strongwind test script to set definition for gtk sample.
+
 2008-06-25  Ray Wang <rawang@gmail.com>
 
 	* samples/contexmenu_menuitem.py : implement ContextMenu & MenuItem control
