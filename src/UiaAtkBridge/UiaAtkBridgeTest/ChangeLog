@@ -1,3 +1,7 @@
+2008-06-26  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* bridgetest.sh: Update to make it work in the parallel mono env.
+
 2008-06-24  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* BridgeTester.cs: Add support for RadioButtons in the BridgeTester
