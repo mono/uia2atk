@@ -1,3 +1,10 @@
+2008-06-26  Brian G. Merrell <bgmerrell@novell.com> 
+
+	* atspimon.py:  change 'source' to an arg instead of an option.  
+	Check to make sure the source app is actually open.  Check for 
+	open file before we try to close it.  Update argument parsing to
+	handle xml option.  Add Andrés's code for XML logging.
+
 2008-06-26  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* bridgetest.sh: Update to make it work in the parallel mono env.
