@@ -1,3 +1,8 @@
+2008-06-26  Stephen Shaw <sshaw@decriptor.com> 
+
+	* Makefile.include: Fixed gacutil stuff.  Now it builds in DISTDIR
+	  instead of /usr
+
 2008-06-26  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* configure.ac: Temporarily remove check for mono-uia.pc so our code
