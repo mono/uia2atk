@@ -52,7 +52,7 @@ fi
 dnl package checks, common for all configs
 PKG_CHECK_MODULES([OLIVE], [olive])
 PKG_CHECK_MODULES([MONO_NUNIT], [mono-nunit])
-PKG_CHECK_MODULES([MONO_UIA], [mono-uia])
+#PKG_CHECK_MODULES([MONO_UIA], [mono-uia])
 
 dnl package checks, per config
 
