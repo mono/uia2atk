@@ -111,7 +111,7 @@ GACDIR = $(mono_libdir)
 GACROOT = $(DESTDIR)$(mono_libdir)
 
 gac-install: $(POLICY_ASSEMBLIES)
-        $(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS) /root $(GACROOT) || exit 1;
+	$(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS) /root $(GACROOT) || exit 1;
 
 gac-uninstall:
 	$(GACUTIL) /us $(ASSEMBLY) $(GACUTIL_FLAGS) /root $(GACROOT) || exit 1;
