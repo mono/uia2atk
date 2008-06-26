@@ -1,5 +1,9 @@
 2008-06-26  Stephen Shaw <sshaw@decriptor.com> 
 
+	* Makefile.include: Fixed libdir issue
+
+2008-06-26  Stephen Shaw <sshaw@decriptor.com> 
+
 	* Makefile.include: Fixed gacutil stuff.  Now it builds in DISTDIR
 	  instead of /usr
 

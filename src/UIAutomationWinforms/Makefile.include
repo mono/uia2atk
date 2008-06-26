@@ -107,8 +107,7 @@ $(build_satellite_assembly_list): $(BUILD_DIR)/%/$(SATELLITE_ASSEMBLY_NAME):
 	mkdir -p '$(@D)'
 	$(AL) -out:'$@' -culture:$* -t:lib $(cmd_line_satellite_$*)
 
-GACDIR = $(mono_libdir)
-GACROOT = $(DESTDIR)$(mono_libdir)
+GACROOT = $(DESTDIR)@libdir@
 
 gac-install: $(POLICY_ASSEMBLIES)
 	$(GACUTIL) /i $(ASSEMBLY) /f $(GACUTIL_FLAGS) /root $(GACROOT) || exit 1;
