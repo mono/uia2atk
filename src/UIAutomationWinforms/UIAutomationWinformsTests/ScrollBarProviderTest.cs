@@ -24,7 +24,6 @@
 // 
 
 using System;
-using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -118,14 +117,78 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			ScrollBarButtonProvider secondButton
 				= (ScrollBarButtonProvider) firstButton.Navigate (NavigateDirection.NextSibling);
-			Assert.IsNotNull (secondButton, "FirstChild.NextSibling shouldn't be null");
+			Assert.IsNotNull (secondButton, "firstButton.NextSibling shouldn't be null");
 			
-			//TODO: Add more tests
+			ThumbProvider thumbProvider
+				= (ThumbProvider) secondButton.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNotNull (thumbProvider, "secondButton.NextSibling shouldn't be null");
 			
+			ScrollBarButtonProvider thirdButton
+				= (ScrollBarButtonProvider) thumbProvider.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNotNull (thirdButton, "thumbProvider.NextSibling shouldn't be null");
+			
+			ScrollBarButtonProvider fourthButton
+				= (ScrollBarButtonProvider) thirdButton.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNotNull (fourthButton, "thirdButton.NextSibling shouldn't be null");
+
+			Assert.IsNull (fourthButton.Navigate (NavigateDirection.NextSibling),
+			               "fourthButton.NextSibling should be null");
+			
+			//All parents should be the same reference:
+			Assert.AreEqual (provider,
+			                 firstButton.Navigate (NavigateDirection.Parent),
+			               "firstButton with different Parent");
+			Assert.AreEqual (provider,
+			                 secondButton.Navigate (NavigateDirection.Parent),
+			               "secondButton with different Parent");
+			Assert.AreEqual (provider,
+			                 thumbProvider.Navigate (NavigateDirection.Parent),
+			               "thumbProvider with different Parent");
+			Assert.AreEqual (provider,
+			                 thirdButton.Navigate (NavigateDirection.Parent),
+			               "thirdButton with different Parent");
+			Assert.AreEqual (provider,
+			                 fourthButton.Navigate (NavigateDirection.Parent),
+			               "fourthButton with different Parent");
+			
+			//All children MUST not have any children			
+			Assert.AreEqual (null,
+			                 firstButton.Navigate (NavigateDirection.FirstChild),
+			               "firstButton.FirstChild must be null");
+			Assert.AreEqual (null,
+			                 firstButton.Navigate (NavigateDirection.LastChild),
+			               "firstButton.LastChild must be null");
+			
+			Assert.AreEqual (null,
+			                 secondButton.Navigate (NavigateDirection.FirstChild),
+			               "secondButton.FirstChild must be null");
+			Assert.AreEqual (null,
+			                 secondButton.Navigate (NavigateDirection.LastChild),
+			               "secondButton.LastChild must be null");
+			
+			Assert.AreEqual (null,
+			                 thumbProvider.Navigate (NavigateDirection.FirstChild),
+			               "thumbProvider.FirstChild with different Parent");
+			Assert.AreEqual (null,
+			                 thumbProvider.Navigate (NavigateDirection.LastChild),
+			               "thumbProvider.LastChild with different Parent");
+			
+			Assert.AreEqual (null,
+			                 thirdButton.Navigate (NavigateDirection.FirstChild),
+			               "thirdButton.FirstChild with different Parent");
+			Assert.AreEqual (null,
+			                 thirdButton.Navigate (NavigateDirection.LastChild),
+			               "thirdButton.LastChild with different Parent");
+			
+			Assert.AreEqual (null,
+			                 fourthButton.Navigate (NavigateDirection.FirstChild),
+			               "fourthButton.FirstChild with different Parent");
+			Assert.AreEqual (null,
+			                 fourthButton.Navigate (NavigateDirection.LastChild),
+			               "fourthButton.LastChild with different Parent");			
 		}
 
 #endregion
-		
 		
 #region BaseProviderTest Overrides
 

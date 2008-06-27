@@ -1,3 +1,11 @@
+2008-06-27  Mario Carrion  <mcarrion@novell.com>
+
+	* ThumbProviderTest.cs: File added. Tests Thumb Provider.
+	* ScrollBarProviderTest.cs: Finished Navigate test.
+	* UIAutomationWinformsTests.mdp: File updated. Added file: 
+	ThumbProviderTest.cs.
+	* Makefile.am: File updated. Added file: ThumbProviderTest.cs
+
 2008-06-26  Mario Carrion  <mcarrion@novell.com>
 
 	* ComboBoxProviderTest.cs: Disabling test.
