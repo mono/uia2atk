@@ -1,3 +1,9 @@
+2008-06-27  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* AtkTester.cs: Disable tests that refer to first checked state (it
+	  seems not to be a standard between Gail and MWF, neither documented
+	  nor deterministic).
+
 2008-06-26  Brian G. Merrell <bgmerrell@novell.com> 
 
 	* atspimon.py:  change 'source' to an arg instead of an option.  
