@@ -1,3 +1,13 @@
+2008-06-27  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs: Removed
+	primitive debugging: Console.WriteLine. Fixed bug when Navigating 
+	parent.
+	* Mono.UIAutomation.Winforms/ThumbProvider.cs: Subclassing from
+	FragmentControlProvider instead of SimpleControlProvider.
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Removed comments,
+	MSDN says "NEVER SUPPORTS". Added LabeledByProperty.
+
 2008-06-26  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ButtonInvokeProviderBehavior.cs:

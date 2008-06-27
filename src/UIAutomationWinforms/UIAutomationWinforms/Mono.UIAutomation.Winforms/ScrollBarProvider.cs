@@ -56,13 +56,6 @@ namespace Mono.UIAutomation.Winforms
 
 			SetEvent (ProviderEventType.FocusChangedEvent,
 			          new AutomationFocusChangedEvent (this));
-			//TODO: Add the following events:
-			//HorizontallyScrollableProperty property-changed event.
-			//HorizontalScrollPercentProperty property-changed event.
-			//HorizontalViewSizeProperty property-changed event.
-			//VerticalScrollPercentProperty property-changed event.
-			//VerticallyScrollableProperty property-changed event.
-			//VerticalViewSizeProperty property-changed event.
 		}
 		
 		public override object GetPropertyValue (int propertyId)
@@ -73,6 +66,8 @@ namespace Mono.UIAutomation.Winforms
 				return "scroll bar";
 			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 				return Single.NaN;
+			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+				return null;			
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return false;
 			else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)

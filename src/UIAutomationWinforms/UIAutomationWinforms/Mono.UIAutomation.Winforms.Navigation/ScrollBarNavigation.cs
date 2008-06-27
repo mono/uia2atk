@@ -111,13 +111,11 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			{
 				if (direction == NavigateDirection.Parent)
 					return provider;
-				else if (direction == NavigateDirection.NextSibling) {
-					Console.WriteLine ("Asking next");
+				else if (direction == NavigateDirection.NextSibling)
 					return GetNextSiblingProvider ();
-				} else if (direction == NavigateDirection.PreviousSibling) {
-					Console.WriteLine ("Asking previous");
+				else if (direction == NavigateDirection.PreviousSibling)
 					return GetPreviousSiblingProvider ();
-				} else
+				else
 					return null; 
 			}
 			
@@ -135,6 +133,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			public ScrollBarThumbNavigation (ScrollBarProvider provider)
 				: base (provider)
 			{
+				this.provider = provider;
 			}
 
 			public override IRawElementProviderSimple Provider {
@@ -151,7 +150,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 			{
 				if (direction == NavigateDirection.Parent)
-					return (IRawElementProviderFragment) Provider;
+					return provider;
 				else if (direction == NavigateDirection.NextSibling)
 					return GetNextSiblingProvider ();
 				else if (direction == NavigateDirection.PreviousSibling)
@@ -160,6 +159,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 					return null; 
 			}
 			
+			private ScrollBarProvider provider;
 			private ThumbProvider thumb_provider;
 		}
 		
