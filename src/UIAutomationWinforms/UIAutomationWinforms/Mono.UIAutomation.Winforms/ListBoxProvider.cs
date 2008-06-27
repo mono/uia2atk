@@ -68,16 +68,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return GetListBoxItem (listbox.SelectedIndex);
 		}
-		
-		public override IRawElementProviderFragment Navigate (NavigateDirection direction)
-		{
-			if (direction == NavigateDirection.FirstChild)
-				return GetListBoxItem (0);
-			if (direction == NavigateDirection.LastChild)
-				return GetListBoxItem (listbox.Items.Count - 1);
-			else
-				return base.Navigate (direction);
-		}
 
 #endregion
 		

@@ -32,7 +32,7 @@ using Mono.UIAutomation.Winforms;
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 	
-	public class ComboBoxNavigation : SimpleNavigation
+	internal class ComboBoxNavigation : SimpleNavigation
 	{
 
 #region Constructor

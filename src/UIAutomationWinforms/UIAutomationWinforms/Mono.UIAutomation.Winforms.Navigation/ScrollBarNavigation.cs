@@ -38,7 +38,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 	// 3. Thumb	- ThumbProvider
 	// 4. ButtonSmallForward - ScrollBarButtonProvider
 	// 5. ButtonLargeForward - ScrollBarButtonProvider
-	public class ScrollBarNavigation : SimpleNavigation
+	internal class ScrollBarNavigation : SimpleNavigation
 	{
 		
 #region	 Constructor

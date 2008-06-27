@@ -1,5 +1,9 @@
 2008-06-27  Mario Carrion  <mcarrion@novell.com>
 
+	* ListBoxProviderTest.cs: ScrollBar tests preview.
+
+2008-06-27  Mario Carrion  <mcarrion@novell.com>
+
 	* ThumbProviderTest.cs: File added. Tests Thumb Provider.
 	* ScrollBarProviderTest.cs: Finished Navigate test.
 	* UIAutomationWinformsTests.mdp: File updated. Added file: 

@@ -30,7 +30,7 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 
-	public class SimpleNavigation : INavigation
+	internal class SimpleNavigation : INavigation
 	{
 
 #region Constructor

@@ -121,31 +121,44 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			ISelectionProvider selectionProvider;
 			IRawElementProviderFragment firstChild;
 			IRawElementProviderFragment child;
+			IRawElementProviderFragment childParent;
 
 			listbox.SelectionMode = SelectionMode.MultiSimple;
 			
 			int elements = 10;
 			int index = 0;
 			string name = string.Empty;
-			
+
 			for (index = 0; index < elements; index++)
 				listbox.Items.Add (string.Format ("Element: {0}", index));
 			index = 0;
 			
-			rootProvider = (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listbox);
-			selectionProvider = (ISelectionProvider) rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
+			rootProvider 
+				= (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listbox);
+			selectionProvider 
+				= (ISelectionProvider) rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
 
 			//Loop all elements
 			child = rootProvider.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNotNull (child, "We must have a child");
 			
 			do {
+				childParent = child.Navigate (NavigateDirection.Parent);
+				Assert.AreEqual (rootProvider, childParent, 
+				                 "Each child must have same parent");
 				name = (string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 				Assert.AreEqual (string.Format ("Element: {0}", index++), 
 				                 name, "Different names");
 				child = child.Navigate (NavigateDirection.NextSibling);
+				
 			} while (child != null);
 			Assert.AreEqual (elements, index, "Elements added = elements navigated");
+
+			//Clear all elements and try again.
+			listbox.Items.Clear ();
+
+			child = rootProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNull (child, "We shouldn't have a child");
 		}
 		
 		[Test]
@@ -248,6 +261,62 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 #endregion
+		
+		
+#region ScrollBar internal widgets Test
+
+		[Test]
+		public void ScrollBarTest ()
+		{
+			using (Form f = new Form ()) {
+				f.Size = new System.Drawing.Size (500, 500);
+				
+				ListBox listbox = new ListBox ();
+				listbox.Location = new System.Drawing.Point (3, 3);
+				listbox.Size = new System.Drawing.Size (100, 50);
+
+				f.Controls.Add (listbox);
+
+				//We should show the ScrollBar
+				for (int index = 20; index > 0; index--) {
+					listbox.Items.Add (string.Format ("Element {0}", index));
+				}
+				
+				f.Load += delegate (object sender, EventArgs args) {
+					System.Threading.Thread.Sleep (500);
+					IRawElementProviderFragmentRoot provider;
+					//ISelectionProvider selectionProvider;
+					IRawElementProviderFragment scrollbarChild;
+					IRawElementProviderFragment buttonChild;
+	
+					provider 
+						= (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listbox);
+					
+					//Should return a ScrollBar, because we have added many items
+					scrollbarChild = provider.Navigate (NavigateDirection.FirstChild);
+					Assert.IsNotNull (scrollbarChild, "FirstChild must not be null");
+					
+					Assert.AreEqual (ControlType.ScrollBar.Id,
+					                 scrollbarChild.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
+					                 "scrollbarChild Control Type must be Scroll.");
+
+					buttonChild = scrollbarChild.Navigate (NavigateDirection.FirstChild);
+					Assert.IsNotNull (buttonChild , "buttonChild must not be null");
+					
+					Assert.AreEqual (ControlType.Button.Id,
+					                 buttonChild.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
+					                 "buttonChild Control Type must be Buttoon.");
+					
+					//TODO: Add more tests
+					
+					f.Close ();
+				};
+
+				Application.Run (f);
+			}
+		}
+		
+#endregion
 
 #region BaseProviderTest Overrides
 
@@ -257,6 +326,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 #endregion
+		
+//#region Private Methods
+//		
+//		private Form GetForm
+//		
+//#endregion
 		
 	}
 }

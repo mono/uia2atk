@@ -31,7 +31,11 @@ using System.Windows.Automation.Provider;
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 
-	public class ListBoxNavigation : SimpleNavigation
+	//Navigation is supported in the following order:
+	// 1. HScrollBar - ScrollBarProvider (may not be visible)
+	// 2. VScrollBar - ScrollBarProvider (may not be visible)
+	// 3. ListBoxItem - ListBoxItemProvider (0 to n) 
+	internal class ListBoxNavigation : SimpleNavigation
 	{
 
 #region	 Constructor
@@ -39,75 +43,164 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		public ListBoxNavigation (ListBoxProvider provider)
 			: base (provider)
 		{
-			listbox_provider = provider;
-			
-			navigation = new NavigationChain ();
-			navigation.AddLink (new ListBoxScrollBar (listbox_provider, "hscrollbar"));
-			navigation.AddLink (new ListBoxScrollBar (listbox_provider, "vscrollbar"));
-			//navigation.AddLink (new ListBoxItemNavigation (listbox_provider));
+			navigation = new NavigationChain ();		
+			navigation.AddLink (new ListBoxScrollBarNavigation (provider, 
+			                                                    "hscrollbar"));
+			navigation.AddLink (new ListBoxScrollBarNavigation (provider, 
+			                                                    "vscrollbar"));
+			itemroot_navigation = new ListBoxItemRootNavigation (provider);
+			navigation.AddLink (itemroot_navigation);
 		}
 		
 #endregion
 		
-#region Private Fields
+#region INavigable Interface
 		
-		private ListBoxProvider listbox_provider;
+		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
+		{	
+			if (direction == NavigateDirection.FirstChild) {
+				INavigation first = navigation.GetFirstLink ();
+				return first != null ? (IRawElementProviderFragment) first.Provider : null;
+			} else if (direction == NavigateDirection.LastChild) {
+				INavigation last = navigation.GetLastLink ();				
+				if (last == itemroot_navigation) {
+					ListBoxProvider provider = (ListBoxProvider) Provider;
+					ListBox listbox = (ListBox) provider.Control;
+					
+					if (listbox.Items.Count > 1)
+						return ((ListBoxProvider) Provider).GetListBoxItem (listbox.Items.Count - 1);
+					else
+						return (IRawElementProviderFragment) last.Provider;
+				} else
+					return last != null ? (IRawElementProviderFragment) last.Provider : null;
+			} else
+				return base.Navigate (direction);
+		}
+
+#endregion
+
+#region Private Fields
+
+		private ListBoxItemRootNavigation itemroot_navigation;
 		private NavigationChain navigation;
 			
 #endregion
 		
 #region ScrollBar Navigation Class
 		
-		class ListBoxScrollBar : SimpleNavigation
+		class ListBoxScrollBarNavigation : SimpleNavigation
 		{
-			public ListBoxScrollBar (ListBoxProvider provider,
-			                                 string field_name)
+			public ListBoxScrollBarNavigation (ListBoxProvider provider, 
+			                                   string field_name)
 				: base (provider)
 			{
-				listbox_provider = provider;
-
-				InitializeScrollBar (listbox_provider, field_name);
+				this.provider = provider;
+				this.field_name = field_name;
 			}
 			
 			public override IRawElementProviderSimple Provider {
-				get { return listbox_provider; }
+				get { 
+					if (scrollbar_provider == null)
+						InitializeScrollBarProvider (provider, field_name);
+					
+					return scrollbar_provider; 
+				}
 			}
 			
 			public override bool SupportsNavigation  {
-				get { 
-					return true;
-//					ComboBox control = (ComboBox) combobox_provider.Control;
-//					return control.DropDownStyle == ComboBoxStyle.DropDown
-//						|| control.DropDownStyle == ComboBoxStyle.DropDownList;
+				get {
+					if (scrollbar_provider == null)
+						InitializeScrollBarProvider (provider, field_name);
+					
+					ListBox listbox = (ListBox) provider.Control;
+					if (listbox.ScrollAlwaysVisible 
+					    && field_name.Equals ("vscrollbar"))
+						return scrollbar.Enabled;
+					else
+						return scrollbar.Visible;
 				}
 			}
 			
 			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 			{
 				if (direction == NavigateDirection.Parent)
-					return (IRawElementProviderFragment) Provider;
+					return provider;
 				else if (direction == NavigateDirection.NextSibling)
 					return GetNextSiblingProvider ();
+				else if (direction == NavigateDirection.PreviousSibling)
+					return GetPreviousSiblingProvider ();
 				else
-					return null; 
+					return scrollbar_navigation.Navigate (direction); 
 			}
 			
-			private void InitializeScrollBar (ListBoxProvider provider, 
-			                                  string field_name)
+			private void InitializeScrollBarProvider (ListBoxProvider provider, 
+			                                          string field_name)
 			{
-//				FieldInfo fieldInfo = typeof (ComboBox).GetField ("field_name",
-//				                                                  BindingFlags.NonPublic
-//				                                                  | BindingFlags.Instance);
-//				ScrollBar scrollbar = (ScrollBar) fieldInfo.GetValue (Provider);
-//				textbox_provider = (ScrollBarProvider) ProviderFactory.GetProvider (textbox);
-//				textbox_provider.Navigation = this;
+				FieldInfo fieldInfo = typeof (ListBox).GetField (field_name,
+				                                                  BindingFlags.NonPublic
+				                                                  | BindingFlags.Instance);
+				scrollbar = (ScrollBar) fieldInfo.GetValue (provider.Control);
+				scrollbar_provider = (ScrollBarProvider) ProviderFactory.GetProvider (scrollbar);
+				//We need this navigation to use it later.
+				scrollbar_navigation = scrollbar_provider.Navigation;
+				scrollbar_provider.Navigation = this;
 			}
 
-			private ListBoxProvider listbox_provider;
+			private string field_name;
+			private ListBoxProvider provider;
+			private ScrollBar scrollbar;
 			private ScrollBarProvider scrollbar_provider;
+			private INavigation scrollbar_navigation;
 		}
 		
 #endregion
 
+#region ListBoxItem Navigation Class
+		
+		class ListBoxItemRootNavigation : SimpleNavigation
+		{
+			public ListBoxItemRootNavigation (ListBoxProvider provider)
+				: base (provider)
+			{
+				this.provider = provider;
+			}
+			
+			public override bool SupportsNavigation  {
+				get { return !(((ListBox) provider.Control).Items.Count == 0); }
+			}
+			
+			public override IRawElementProviderSimple Provider {
+				get { 
+					if (first_item_provider == null) {
+						first_item_provider = provider.GetListBoxItem (0);
+						navigation = first_item_provider.Navigation;
+						first_item_provider.Navigation = this;
+					}
+
+					return first_item_provider;
+				}
+			}
+			
+			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
+			{
+				if (direction == NavigateDirection.Parent) {
+					return provider;
+				} else if (direction == NavigateDirection.NextSibling) {
+					if (SupportsNavigation == false)
+						return null;
+					else
+						return navigation.Navigate (direction);
+				} else if (direction == NavigateDirection.PreviousSibling)
+					return GetPreviousSiblingProvider ();
+				else
+					return null;
+			}
+			
+			private ListBoxProvider provider;
+			private ListBoxItemProvider first_item_provider;
+			private INavigation navigation;
+		}	
+		
+#endregion
 	}
 }

@@ -1,5 +1,25 @@
 2008-06-27  Mario Carrion <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs: Class 
+	visibility changed to internal.
+	* Mono.UIAutomation.Winforms.Navigation/ListBoxItemNavigation.cs: Class
+	visibility changed to internal. Private field listboxitem_provider
+	renamed to provider.
+	* Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs: Class
+	visibility changed to internal.
+	* Mono.UIAutomation.Winforms.Navigation/ListBoxNavigation.cs: Navigate
+	method implemented. Private class ListBoxScrollBarNavigation supports
+	ScrollBar navigation in ListBox. New private class 
+	ListBoxItemRootNavigation to support ListBoxItem navigation.
+	* Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs: Class
+	visibility changed to internal.
+	* Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs: Class
+	visibility changed to internal.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Removed Navigate
+	method.
+
+2008-06-27  Mario Carrion <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs: Removed
 	primitive debugging: Console.WriteLine. Fixed bug when Navigating 
 	parent.

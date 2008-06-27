@@ -29,7 +29,7 @@ using System.Collections.Generic;
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 	
-	public class NavigationChain
+	internal class NavigationChain
 	{
 
 #region Constructors
