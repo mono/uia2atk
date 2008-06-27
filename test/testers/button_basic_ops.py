@@ -51,13 +51,17 @@ cbFrame.textResult("aaa")
 cbFrame.button1.click()
 sleep(config.SHORT_DELAY)
 cbFrame.clickResult()
-#cbFrame.keyCombo('<Alt>F4')
+
+#close the messagedialog
+cbFrame.close()
 
 #click button2 to get a messagedialog, then close messagedialog
 cbFrame.button2.click()
 sleep(config.SHORT_DELAY)
 cbFrame.clickResult()
-#cbFrame.keyCombo('<Alt>F4')
+
+#close the messagedialog
+cbFrame.close()
 
 #give button1 a press action, then to check if rise armed status
 cbFrame.press(cbFrame.button1)
@@ -69,7 +73,9 @@ cbFrame.release(cbFrame.button1)
 sleep(config.SHORT_DELAY)
 cbFrame.assertResult(cbFrame.button1, "unarmed");
 cbFrame.clickResult()
-#cbFrame.keyCombo('<Alt>F4')
+
+#close the messagedialog
+cbFrame.close()
 
 ##give button2 a press action, then to check if rise armed status
 cbFrame.press(cbFrame.button2)
@@ -81,9 +87,9 @@ cbFrame.release(cbFrame.button2)
 sleep(config.SHORT_DELAY)
 cbFrame.assertResult(cbFrame.button2, "unarmed");
 cbFrame.clickResult()
-#cbFrame.keyCombo('<Alt>F4')
-#cbFrame.close()
 
+#close the messagedialog
+cbFrame.close()
 
 cbFrame.altF4(cbFrame)
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR

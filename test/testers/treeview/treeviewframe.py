@@ -53,26 +53,23 @@ class TreeViewFrame(accessibles.Frame):
 
 #set expand to send "expand or contract" action. now i know why my returning couldn't be divided regularly, because strongwind haven't set this action, so we need define it with procedurelogger.action to return "Action:" info.
     def expand(self, treeview, action, log=True):
-        treeview._doAction(action)
         if log:
             procedurelogger.action('expand %s.' % treeview)
-        self.grabFocus()
+            treeview._doAction(action)
 
 #set contract to send "expand or contract" action. same as expend
     def contract(self, treeview, action, log=True):
-        treeview._doAction(action)
         if log:
             procedurelogger.action('contract %s.' % treeview)
-        self.grabFocus()
+            treeview._doAction(action)
 
 #set Click action for TableColumnHeader
     def tchClick (self,test,log=True):
         #treeview._doAction(action)
-        treeview = self.findTableColumnHeader("%s" % test)
-        treeview._doAction('click')
         if log:
             procedurelogger.action('click %s.' % test)
-        self.grabFocus()
+            treeview = self.findTableColumnHeader("%s" % test)
+            treeview._doAction('click')
 
 #check if status list in "interface viewer" in accerciser have "expanded" status when doing expand or contract action.
     def assertResult(self, treeview, result):

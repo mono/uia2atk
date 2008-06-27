@@ -1,4 +1,11 @@
 2008-06-27  Calen Chen <cachen@novell.com>
+	* testers/treeview_basic_ops.py : update with sleep time
+	* testers/treeview/treeviewframe.py : update the action's precedence relationship in expand&contract to solve screenshot synchronous problem.
+	* testers/button_basic_ops.py : update with adding cbFrame.close() to close messagedialog
+	* testers/button/buttonframe.py : update with adding close instance and adjust the action's precedence relationship in press&release to solve screenshot synchronous problem.
+
+
+2008-06-27  Calen Chen <cachen@novell.com>
 	* samples/gtksample.py : add a gtk sample for button, text, messagedialog control
 	* testers/button_basic_ops.py : add strongwind test script to check button, text, messagedialog against gtksample.py
 	* testers/button/__init__.py : add strongwind test script to set where is the gtk sample

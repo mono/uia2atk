@@ -37,15 +37,15 @@ class ButtonFrame(accessibles.Frame):
 
 #send "press" action
     def press(self,button,log=True):
-        button._doAction('press')
         if log:
             procedurelogger.action('Press the %s.' % button)
+            button._doAction('press')
 
 #send "release" action
     def release(self,button,log=True):
-        button._doAction('release')
         if log:
-            procedurelogger.action('Press the %s.' % button)
+            procedurelogger.action('release the %s.' % button)
+            button._doAction('release')
 
 #check if there is "armed" status when send "release" action.
     def assertResult(self, button, result):
@@ -62,10 +62,11 @@ class ButtonFrame(accessibles.Frame):
                 raise InvalidState, "%s has no such state:  %s" %\
                                  (button, result)
 #check if there is rise a messagedialog when send "click" action.
-    def clickResult(self,MessageDialog=True):
+    def clickResult(self,MessageDialog=True,closeDialog=False):
 
         if MessageDialog:
-	      self.app.findAlert(None,logText="MessageDialog").altF4()
+	      self.app.findAlert(None,logText="MessageDialog")
+
 
 #check if the text in TextBox is the same as entering text.
     def textResult(self,text):
@@ -76,6 +77,14 @@ class ButtonFrame(accessibles.Frame):
             return self.findText('').text == text
 
         assert retryUntilTrue(resultMatches)
+
+#close the dialog windows.
+    def close(self, assertClosed=True):
+        procedurelogger.action('In the Information alert, press <Alt>F4.')
+        sleep(config.SHORT_DELAY)
+
+        procedurelogger.expectedResult('the messagedialog has been closed')
+        self.keyCombo('<Alt>F4')
 
 
 class InvalidState(Exception):
