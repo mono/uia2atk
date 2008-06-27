@@ -1,3 +1,8 @@
+2008-06-27  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Menu.cs: Refactoring: use Component*Parent*Adapter instead of
+	  defining our own children (simplified code).
+
 2008-06-26  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Makefile.am: Fix olive/mono-uia references to be more explicit.

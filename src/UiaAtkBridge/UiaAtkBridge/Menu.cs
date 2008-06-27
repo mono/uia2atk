@@ -32,31 +32,18 @@ namespace UiaAtkBridge
 {
 	
 	
-	public class Menu : ComponentAdapter, Atk.SelectionImplementor
+	public class Menu : ComponentParentAdapter, Atk.SelectionImplementor
 	{
-		public Atk.Object[] subElements;
-		
 		public Menu (string[] names)
 		{
 			this.Role = Atk.Role.Menu;
 			this.Name = String.Empty;
 			
-			subElements = new MenuItem[names.Length];
-			for (int i = 0; i < names.Length; i++)
-				subElements [i] = new MenuItem (names [i]);
+			foreach (string name in names)
+				this.children.Add (new MenuItem (name));
 		}
 		
-		protected override Atk.Object OnRefChild (int i)
-		{
-			if ((i < 0) || (i >= subElements.Length))
-				return null;
-			return subElements [i];
-		}
 
-		protected override int OnGetNChildren ()
-		{
-			return subElements.Length;
-		}
 
 		public override IRawElementProviderSimple Provider {
 			get { return null; }
@@ -106,6 +93,11 @@ namespace UiaAtkBridge
 		public bool SelectAllSelection ()
 		{
 			throw new NotImplementedException();
+		}
+		
+		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
+		{
+			throw new NotImplementedException ();
 		}
 		
 	}
