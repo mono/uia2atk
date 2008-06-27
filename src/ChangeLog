@@ -1,3 +1,8 @@
+2008-06-26  Mario Carrion <mcarrion@novell.com> 
+
+	* patches/scrollbar-patch.cs: File added. Patch needed to support 
+	provider in ScrollBar winform control.
+
 2008-06-18  Brian G. Merrell <bgmerrell@gmail.com> 
 
 	* UiaAtkBridge/UiaAtkBridgeTest/atspimon.py : remove unused import
