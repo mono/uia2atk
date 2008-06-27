@@ -1,3 +1,11 @@
+2008-06-26  Mario Carrion  <mcarrion@novell.com>
+
+	* ComboBoxProviderTest.cs: Disabling test.
+	* ButtonProviderTest.cs: Code commented to allow building.
+	* ScrollBarProviderTest.cs: File added. Tests ScrollBar provider.
+	* UIAutomationWinformsTests.mdp: File updated. Added file.
+	* Makefile.am: File updated. Adde file.
+
 2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* WindowProviderTest.cs: Uncomment protection against bug #403518,

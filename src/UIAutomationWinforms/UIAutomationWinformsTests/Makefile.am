@@ -63,6 +63,7 @@ FILES =  \
 	ListBoxProviderTest.cs \
 	MockBridge.cs \
 	RadioButtonProviderTest.cs \
+	ScrollBarProviderTest.cs \
 	StatusBarProviderTest.cs \
 	TextBoxProviderTest.cs \
 	TextNormalizerTest.cs \
