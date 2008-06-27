@@ -193,30 +193,35 @@ namespace UiaAtkBridgeTest
 		                                               Atk.Action actionable2, Atk.Object accessible2,
 		                                               Atk.Action actionable3, Atk.Object accessible3)
 		{
-			//Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #1");
+			Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#1");
+			System.Threading.Thread.Sleep (2000);
+			Assert.IsTrue (actionable3.DoAction (0), "IAF3RB::DoAction#1");
+			System.Threading.Thread.Sleep (2000);
+			
+			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #1");
 			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #2");
-			//Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #3");
+			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #3");
 			
 			Assert.IsTrue (actionable2.DoAction (0), "IAF3RB::DoAction#1");
 			System.Threading.Thread.Sleep (2000);
 			
 			Assert.IsFalse (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #4");
 			Assert.IsTrue (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #5");
-			//Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #6");
+			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #6");
 
 			Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#2");
 			System.Threading.Thread.Sleep (2000);
 			
 			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #7");
 			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #8");
-			//Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #9");
+			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #9");
 
 			Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#3");
 			System.Threading.Thread.Sleep (2000);
 			
 			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #10");
 			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #11");
-			//Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #12");
+			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #12");
 			
 			Assert.IsTrue (actionable3.DoAction (0), "IAF3RB::DoAction#4");
 			System.Threading.Thread.Sleep (2000);

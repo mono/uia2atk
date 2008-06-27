@@ -1,5 +1,10 @@
 2008-06-27  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Better to define initial behaviour than to disable
+	  tests.
+
+2008-06-27  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: Disable tests that refer to first checked state (it
 	  seems not to be a standard between Gail and MWF, neither documented
 	  nor deterministic).
