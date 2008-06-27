@@ -32,74 +32,98 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
-	public class ComboBoxValueProviderBehavior 
-		: ComboBoxProviderBehavior, IValueProvider
+	public class ScrollBarRangeValueBehavior 
+		: ProviderBehavior, IRangeValueProvider
 	{
-		
+
 #region Constructors
 		
-		public ComboBoxValueProviderBehavior (FragmentControlProvider provider)
+		public ScrollBarRangeValueBehavior (ScrollBarProvider provider)
 			: base (provider) 
 		{
+			scrollbar = (ScrollBar) provider.Control;
 		}
-
-#endregion		
+		
+#endregion
 
 #region IProviderBehavior Interface
 
 		public override AutomationPattern ProviderPattern {
-			get { return ValuePatternIdentifiers.Pattern; }
+			get { return RangeValuePatternIdentifiers.Pattern; }
 		}		
 		
 		public override void Connect (Control control) 
 		{
-			base.Connect (control);
-
-			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
-			                   new ValuePatternValuePropertyEvent (Provider));
-			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
-			                   new ValuePatternValueIsReadOnlyEvent (Provider));
+			Provider.SetEvent (ProviderEventType.RangeValueValueProperty,
+			                   new RangeValuePatternValueEvent (Provider));
 		}
 		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
-			                   null);
-			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
+			Provider.SetEvent (ProviderEventType.RangeValueValueProperty, 
 			                   null);
 		}
 		
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == ValuePatternIdentifiers.ValueProperty.Id)
-				return Value;
-			else if (propertyId == ValuePatternIdentifiers.IsReadOnlyProperty.Id)
+			if (propertyId == RangeValuePatternIdentifiers.IsReadOnlyProperty.Id)
 				return IsReadOnly;
+			else if (propertyId == RangeValuePatternIdentifiers.LargeChangeProperty.Id)
+				return LargeChange;
+			else if (propertyId == RangeValuePatternIdentifiers.MaximumProperty.Id)
+				return Maximum;
+			else if (propertyId == RangeValuePatternIdentifiers.MinimumProperty.Id)
+				return Minimum;
+			else if (propertyId == RangeValuePatternIdentifiers.SmallChangeProperty.Id)
+				return SmallChange;
+			else if (propertyId == RangeValuePatternIdentifiers.ValueProperty.Id)
+				return Value;
 			else
 				return base.GetPropertyValue (propertyId);
 		}
 
-#endregion
+#endregion	
 			
-#region IValueProvider Interface
+#region IRangeValueProvider implementation 
+		
+		public void SetValue (double value)
+		{
+			if (value < Minimum || value > Maximum)
+				throw new ArgumentOutOfRangeException ();
+			
+			scrollbar.Value = (int) value;
+		}
 		
 		public bool IsReadOnly {
-			get { return combobox.Enabled == false; }
+			get { return scrollbar.Enabled; }
 		}
-
-		public string Value {
-			get { return combobox.Text; }
+		
+		public double LargeChange {
+			get { return scrollbar.LargeChange; }
 		}
-
-		public void SetValue (string value)
-		{
-			if (IsReadOnly)
-				throw new ElementNotEnabledException ();
-
-			combobox.Text = value;
+		
+		public double Maximum {
+			get { return scrollbar.Maximum; }
 		}
+		
+		public double Minimum {
+			get { return scrollbar.Minimum; }
+		}
+		
+		public double SmallChange {
+			get { return scrollbar.SmallChange; }
+		}
+		
+		public double Value {
+			get { return scrollbar.Value; }
+		}
+		
+#endregion 
+		
+#region Private Fields
+
+		private ScrollBar scrollbar;
 
 #endregion
-		
 	}
 }

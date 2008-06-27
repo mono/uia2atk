@@ -20,66 +20,80 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//	Sandy Armstrong <sanfordarmstrong@gmail.com>
+//	Mario Carrion <mcarrion@novell.com>
 // 
 
 using System;
 using System.Windows.Forms;
-
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Behaviors
 {
-	public class LabelProvider : FragmentControlProvider
+	
+	public class ButtonInvokeProviderBehavior 
+		: ProviderBehavior, IInvokeProvider
 	{
-#region Private Fields
 		
-		private Label label;
+#region Constructor
 		
-#endregion
-		
-#region Constructors
-		
-		public LabelProvider (Label label) : base (label)
+		public ButtonInvokeProviderBehavior (FragmentControlProvider provider)
+			: base (provider)
 		{
-			this.label = label;
 		}
 		
 #endregion
 		
-#region Public Methods
-		
-		public override void InitializeEvents ()
+#region IProviderBehavior Interface
+
+		public override void Connect (Control control)
 		{
-			base.InitializeEvents ();
-			
-			SetEvent (ProviderEventType.TextChangedEvent, 
-			          new TextPatternTextChangedEvent (this));
+			Provider.SetEvent (ProviderEventType.InvokeInvokedEvent, 
+			          new InvokePatternInvokedEvent (Provider));
+		}
+		
+		public override void Disconnect (Control control)
+		{
+			Provider.SetEvent (ProviderEventType.InvokeInvokedEvent, null);
 		}
 
-#endregion
-		
-#region IRawElementProviderSimple Members
-	
-		public override object GetPatternProvider (int patternId)
-		{
-			return null;
-		}
-		
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Text.Id;
-			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
-				return false;
+				return ControlType.Button.Id;
+			else if (propertyId == AutomationElementIdentifiers.AcceleratorKeyProperty.Id)
+				return null; // TODO
+			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)
+				// TODO: Can't find any way to get tooltip text
+				//       Need to cheat and find them by looking
+				//       at event subscribers?
+				return null;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "text";
+				return "button";
 			else
-				return base.GetPropertyValue (propertyId);
+				return null;
 		}
-
+		
+		public override AutomationPattern ProviderPattern { 
+			get { return InvokePatternIdentifiers.Pattern; }
+		}
+		
 #endregion
+		
+#region IInvokeProvider Members
+		
+		public virtual void Invoke ()
+		{
+			if (!Provider.Control.Enabled)
+				throw new ElementNotEnabledException ();
+			
+			// TODO: Make sure this runs on the right thread
+			((Button) Provider.Control).PerformClick ();
+		}
+		
+#endregion	
 	}
 }

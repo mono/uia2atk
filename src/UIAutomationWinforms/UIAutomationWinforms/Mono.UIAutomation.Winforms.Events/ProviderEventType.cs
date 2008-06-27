@@ -37,11 +37,12 @@ namespace Mono.UIAutomation.Winforms.Events
 		NameProperty,
 		HasKeyboardFocusProperty,
 		BoundingRectangleProperty,
-		
+		StructureChangedEvent,		
 		ToggleStateProperty,
 		TextChangedEvent,
-		InvokedEvent,
-		StructureChangedEvent,
+		FocusChangedEvent,
+		//Invoke Pattern
+		InvokeInvokedEvent,
 		//ExpandCollapse Pattern
 		ExpandCollapseStateProperty,
 		//Value Pattern
@@ -50,6 +51,8 @@ namespace Mono.UIAutomation.Winforms.Events
 		//SelectionItem Pattern
 		SelectionItemElementAddedEvent,
 		SelectionItemElementRemovedEvent,
-		SelectionItemElementSelectedEvent
+		SelectionItemElementSelectedEvent,
+		//RangeValue Pattern
+		RangeValueValueProperty
 	}
 }

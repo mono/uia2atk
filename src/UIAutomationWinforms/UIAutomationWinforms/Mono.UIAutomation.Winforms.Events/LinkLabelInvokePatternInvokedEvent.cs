@@ -22,41 +22,51 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
-using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	internal class DefaultTextChangedEvent : ProviderEvent
+	internal class LinkLabelInvokePatternInvokedEvent 
+		: InvokePatternInvokedEvent
 	{
 		
-		public DefaultTextChangedEvent (IRawElementProviderSimple provider) 
+#region Constructors
+		
+		public LinkLabelInvokePatternInvokedEvent (IRawElementProviderSimple provider) 
 			: base (provider)
 		{
 		}
-		
+				
+#endregion
+
+#region IConnectable Overriders
+
 		public override void Connect (Control control)
 		{
-			control.TextChanged += new EventHandler (OnTextChanged);
+			((LinkLabel) control).LinkClicked += 
+				new LinkLabelLinkClickedEventHandler (OnLinkClicked);
 		}
 
 		public override void Disconnect (Control control)
 		{
-			control.TextChanged -= new EventHandler (OnTextChanged);
+			((LinkLabel) control).LinkClicked -= 
+				new LinkLabelLinkClickedEventHandler (OnLinkClicked);
+		}
+
+#endregion
+
+#region Private Methods		
+
+		private void OnLinkClicked (object sender, 
+		                            LinkLabelLinkClickedEventArgs e)
+		{
+			InvokeEvent ();
 		}
 		
-		private void OnTextChanged (object sender, EventArgs e)
-		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationEventArgs eventArgs =
-					new AutomationEventArgs (TextPatternIdentifiers.TextChangedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (TextPatternIdentifiers.TextChangedEvent, 
-				                                                Provider, eventArgs);
-			}
-		}
+#endregion
+
 	}
 }

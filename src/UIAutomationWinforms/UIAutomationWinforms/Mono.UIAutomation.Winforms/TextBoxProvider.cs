@@ -34,7 +34,7 @@ namespace Mono.UIAutomation.Winforms
 {
 
 	// TODO: Implement ITextProvider, IScrollProvider
-	public class TextBoxProvider : SimpleControlProvider, IValueProvider, ITextProvider, IScrollProvider
+	public class TextBoxProvider : FragmentControlProvider, IValueProvider, ITextProvider, IScrollProvider
 	{
 #region Protected section
 		
@@ -69,7 +69,7 @@ namespace Mono.UIAutomation.Winforms
 			// we're "cleaning" the previous value.
 			SetEvent (ProviderEventType.NameProperty, null);
 			SetEvent (ProviderEventType.TextChangedEvent, 
-			          new DefaultTextChangedEvent (this));
+			          new TextPatternTextChangedEvent (this));
 			SetEvent (ProviderEventType.HasKeyboardFocusProperty, 
 			          new TextBoxHasKeyBoardFocusPropertyEvent (this));
 			

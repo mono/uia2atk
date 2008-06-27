@@ -31,7 +31,7 @@ using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class StatusBarProvider : SimpleControlProvider, IGridProvider
+	public class StatusBarProvider : FragmentControlProvider, IGridProvider
 	{
 #region Private Members
 

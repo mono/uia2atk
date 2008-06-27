@@ -30,11 +30,9 @@ using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
-	// TODO: Include: 
-	// - ChildrenInvalidated
-	// - ChildrenBulkAdded, 
-	// - ChildrenBulkRemoved
-	// - ChildrenReordered
+	// TODO: Should include? 
+	// ChildrenInvalidated, ChildrenBulkAdded, ChildrenBulkRemoved and 
+	// ChildrenReordered
 	internal class StructureChangedEvent : ProviderEvent
 	{
 		
@@ -47,7 +45,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 #endregion
 		
-#region Public Methods
+#region IConnectable Overrides
 
 		public override void Connect (Control control)
 		{
@@ -105,10 +103,9 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		private StructureChangedEventArgs GetStructureChangedEventArgs (StructureChangeType type)
 		{
-			//TODO: Should we use: FragmentControlProvider.GetRuntimeId ?
-			int []fakeRuntimeId = new int[] { 0 }; // TODO: Ok?
-
-			return new StructureChangedEventArgs (type, fakeRuntimeId);
+			//TODO: Assuming that ALL the Providers are Fragment makes sense?
+			return new StructureChangedEventArgs (type, 
+			                                      ((IRawElementProviderFragment)Provider).GetRuntimeId ());
 		}
 		
 #endregion

@@ -32,6 +32,7 @@ using System.Windows.Forms;
 using System.Windows;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -50,6 +51,8 @@ namespace Mono.UIAutomation.Winforms
 			             new ListBoxSelectionProviderBehavior (this));
 			SetBehavior (ScrollPatternIdentifiers.Pattern,
 			             new ListBoxScrollProviderBehavior (this));
+			
+			Navigation = new ListBoxNavigation (this);
 		}
 
 #endregion

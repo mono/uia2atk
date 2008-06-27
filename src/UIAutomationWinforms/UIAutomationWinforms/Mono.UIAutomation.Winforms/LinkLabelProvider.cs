@@ -32,7 +32,7 @@ using Mono.UIAutomation.Winforms.Behaviors;
 namespace Mono.UIAutomation.Winforms
 {
 
-	public class LinkLabelProvider : SimpleControlProvider
+	public class LinkLabelProvider : FragmentControlProvider
 	{
 
 #region Constructor

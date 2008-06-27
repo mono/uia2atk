@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -39,27 +40,21 @@ namespace Mono.UIAutomation.Winforms
 		//       behaviors depending on the control type, and maybe
 		//       it makes sense for the builder to keep track of
 		//       this mapping?
-		private static Dictionary<Control, IRawElementProviderSimple>
+		private static Dictionary<Control, IRawElementProviderFragment>
 			controlProviders;
 		
 		static ProviderFactory ()
 		{
 			controlProviders =
-				new Dictionary<Control,IRawElementProviderSimple> ();
+				new Dictionary<Control,IRawElementProviderFragment> ();
 		}
 		
-		public static IRawElementProviderSimple GetProvider (Control control)
+		public static IRawElementProviderFragment GetProvider (Control control)
 		{
-			// TODO: Consider using code like this to prevent having
-			//       multiple raw providers for the same control.
-			//IRawElementProviderSimple provider;
-			//if (controlProviderMap.TryGetValue (control, out provider))
-			//	return provider;
-			
 			return GetProvider (control, true);
 		}
 		
-		public static IRawElementProviderSimple GetProvider (Control control, 
+		public static IRawElementProviderFragment GetProvider (Control control, 
 		                                                     bool initializeEvents)
 		{
 			Label l;
@@ -68,12 +63,20 @@ namespace Mono.UIAutomation.Winforms
 			CheckBox c;
 			TextBox t;
 			LinkLabel ll;
-			SimpleControlProvider provider = null;
+			FragmentControlProvider provider = null;
 			Form f;
 			GroupBox gb;
 			StatusBar sb;
 			ComboBox cb;
 			ListBox lb;
+			ScrollBar scb;
+			
+			if (control == null)
+				return null;
+
+			provider = (FragmentControlProvider) FindProvider (control);
+			if (provider != null)
+				return provider;
 
 			if ((f = control as Form) != null)
 				provider = new WindowProvider (f);
@@ -97,6 +100,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ComboBoxProvider (cb);
 			else if ((lb = control as ListBox) != null)
 				provider = new ListBoxProvider (lb);
+			else if ((scb = control as ScrollBar) != null)
+				provider = new ScrollBarProvider (scb);
 			else //TODO: We have to solve the problem when there's a Custom control
 				throw new NotImplementedException ("Provider not implemented for control");
 			
@@ -115,11 +120,15 @@ namespace Mono.UIAutomation.Winforms
 			controlProviders.Remove (control);
 		}
 		
-		public static IRawElementProviderSimple FindProvider (Control control)
+		public static IRawElementProviderFragment FindProvider (Control control)
 		{
-			IRawElementProviderSimple provider;
-			if (controlProviders.TryGetValue (control, out provider))
+			IRawElementProviderFragment provider;
+			
+			if (control == null)
+				return null;
+			else if (controlProviders.TryGetValue (control, out provider))
 				return provider;
+
 			return null;
 		}
 	}

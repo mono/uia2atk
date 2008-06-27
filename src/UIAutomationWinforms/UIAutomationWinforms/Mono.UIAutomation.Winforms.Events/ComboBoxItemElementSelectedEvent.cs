@@ -31,7 +31,8 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 	
-	public class ComboBoxItemElementSelectedEvent : ElementSelectedEvent
+	internal class ComboBoxItemElementSelectedEvent 
+		: SelectionItemPatternElementSelectedEvent
 	{
 
 #region Constructor
@@ -43,16 +44,18 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 #endregion
 		
-#region EventStrategy Methods
+#region IConnectable Overrides
 		
 		public override void Connect (Control control)
 		{
-			((ComboBox) control).SelectedIndexChanged += new EventHandler (OnElementSelectedEvent);
+			((ComboBox) control).SelectedIndexChanged 
+				+= new EventHandler (OnElementSelectedEvent);
 		}
 
 		public override void Disconnect (Control control)
 		{
-			((ComboBox) control).SelectedIndexChanged -= new EventHandler (OnElementSelectedEvent);
+			((ComboBox) control).SelectedIndexChanged 
+				-= new EventHandler (OnElementSelectedEvent);
 		}
 		
 #endregion

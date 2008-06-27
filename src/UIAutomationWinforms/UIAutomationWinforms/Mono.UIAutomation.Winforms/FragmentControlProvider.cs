@@ -70,43 +70,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public virtual IRawElementProviderFragment Navigate (NavigateDirection direction) 
 		{
-			//TODO: This will be changed as soon as we start subclassing every
-			//provider from FragmentRoot instead of Simple
-			if (direction == NavigateDirection.Parent) {
-				if (Control.Parent == null)
-					return null;
-				else
-					return new WrapperFragmentControlProvider (ProviderFactory.FindProvider (Control.Parent));
-			} else if (direction == NavigateDirection.NextSibling) {
-				if (Control.Parent == null)
-					return null;
-				
-				int next = Control.Parent.Controls.IndexOf (Control) + 1;
-				if (next >= Control.Parent.Controls.Count)
-					return null;
-				else
-					return new WrapperFragmentControlProvider (ProviderFactory.FindProvider (Control.Parent.Controls [next]));
-			} else if (direction == NavigateDirection.PreviousSibling) {
-				if (Control.Parent == null)
-					return null;
-
-				int previous = Control.Parent.Controls.IndexOf (Control) - 1;
-				if (previous < 0)
-					return null;
-				else
-					return new WrapperFragmentControlProvider (ProviderFactory.FindProvider (Control.Parent.Controls [previous]));				
-			} else if (direction == NavigateDirection.FirstChild) {
-				if (Control.Controls.Count == 0)
-					return null;
-				else
-					return new WrapperFragmentControlProvider (ProviderFactory.FindProvider (Control.Controls [0]));
-			} else if (direction == NavigateDirection.LastChild) {
-				if (Control.Controls.Count == 0)
-					return null;
-				else
-					return new WrapperFragmentControlProvider (ProviderFactory.FindProvider (Control.Controls [Control.Controls.Count - 1]));
-			} else
-				return null;
+			return Navigation.Navigate (direction);
 		}
 		
 		public virtual void SetFocus ()

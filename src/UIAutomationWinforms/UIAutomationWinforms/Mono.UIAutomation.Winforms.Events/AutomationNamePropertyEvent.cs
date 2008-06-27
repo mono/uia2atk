@@ -27,48 +27,50 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-using Mono.UIAutomation.Winforms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
 	
-	internal class DefaultHasKeyboardFocusPropertyEvent : ProviderEvent
+	internal class AutomationNamePropertyEvent : ProviderEvent
 	{
-		public DefaultHasKeyboardFocusPropertyEvent (IRawElementProviderSimple provider) 
+		
+#region Constructors
+
+		public AutomationNamePropertyEvent (IRawElementProviderSimple provider) 
 			: base (provider)
 		{
 		}
-		
+
+#endregion
+
+#region	 IConnectable Overrides
+
 		public override void Connect (Control control)
 		{
-			control.GotFocus += new EventHandler (OnGotFocus);
+			control.TextChanged += new EventHandler (OnTextChanged);
 		}
 
 		public override void Disconnect (Control control)
 		{
-			control.GotFocus -= new EventHandler (OnGotFocus);
+			control.TextChanged -= new EventHandler (OnTextChanged);
 		}
 		
-		protected void HasKeyboardFocusPropertyEvent ()
+#endregion
+		
+#region Protected Methods
+
+		protected void OnTextChanged (object sender, EventArgs e)
 		{
 			if (AutomationInteropProvider.ClientsAreListening) {
 				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.HasKeyboardFocusProperty,
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.NameProperty,
 					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id));
+					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
 				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
-				
-				AutomationEventArgs eventArgs =
-					new AutomationEventArgs (AutomationElementIdentifiers.AutomationFocusChangedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.AutomationFocusChangedEvent, 
-				                                                Provider, eventArgs);
 			}
 		}
-		
-		private void OnGotFocus (object sender, EventArgs e)
-		{
-			HasKeyboardFocusPropertyEvent ();
-		}
+
+#endregion
 
 	}
 }

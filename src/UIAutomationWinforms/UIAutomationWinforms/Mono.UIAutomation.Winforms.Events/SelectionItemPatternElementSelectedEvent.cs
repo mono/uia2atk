@@ -24,45 +24,36 @@
 // 
 
 using System;
+using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
-	
-	internal abstract class ProviderEvent : IConnectable
+
+	internal abstract class SelectionItemPatternElementSelectedEvent 
+		: ProviderEvent
 	{
-			
+
 #region Constructor
 
-		protected ProviderEvent (IRawElementProviderSimple provider)
+		protected SelectionItemPatternElementSelectedEvent (IRawElementProviderSimple provider)
+			: base (provider)
 		{
-			this.provider = provider;
 		}
-			
+		
 #endregion
-			
-#region IConnectable Overriders
-
-		public abstract void Connect (Control control);
-
-		public abstract void Disconnect (Control control);
-			
-#endregion
-
-#region Protected properties
-			
-		protected IRawElementProviderSimple Provider {
-			get { return provider; }
+		
+#region Private method
+		
+		protected void OnElementSelectedEvent (object sender, EventArgs e)
+		{
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationEventArgs args = new AutomationEventArgs (SelectionItemPatternIdentifiers.ElementSelectedEvent);
+				AutomationInteropProvider.RaiseAutomationEvent (SelectionItemPatternIdentifiers.ElementSelectedEvent, 
+				                                                Provider, args);
+			}
 		}
-
-#endregion
-			
-#region Private fields
-
-		private IRawElementProviderSimple provider;
-			
+		
 #endregion
 	}
-
 }

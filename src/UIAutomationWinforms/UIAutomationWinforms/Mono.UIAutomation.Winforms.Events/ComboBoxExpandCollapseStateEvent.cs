@@ -32,7 +32,7 @@ using Mono.UIAutomation.Winforms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 	
-	public class ComboBoxExpandCollapseStateEvent : ProviderEvent
+	internal class ComboBoxExpandCollapseStateEvent : ProviderEvent
 	{
 		
 #region Constructor

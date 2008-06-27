@@ -25,44 +25,44 @@
 
 using System;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms.Events
+namespace Mono.UIAutomation.Winforms.Navigation
 {
-	
-	internal abstract class ProviderEvent : IConnectable
+
+	public class ListBoxItemNavigation : SimpleNavigation
 	{
-			
-#region Constructor
-
-		protected ProviderEvent (IRawElementProviderSimple provider)
+		
+#region	 Constructor
+		
+		public ListBoxItemNavigation (ListBoxItemProvider provider)
+			: base (provider)
+		
 		{
-			this.provider = provider;
-		}
-			
-#endregion
-			
-#region IConnectable Overriders
-
-		public abstract void Connect (Control control);
-
-		public abstract void Disconnect (Control control);
-			
-#endregion
-
-#region Protected properties
-			
-		protected IRawElementProviderSimple Provider {
-			get { return provider; }
+			listboxitem_provider = provider;
 		}
 
 #endregion
-			
-#region Private fields
+		
+#region INavigable Interface
+		
+		public override IRawElementProviderFragment Navigate (NavigateDirection direction)
+		{
+			if (direction == NavigateDirection.Parent)
+				return listboxitem_provider.FragmentRoot;
+			else if (direction == NavigateDirection.NextSibling)
+				return listboxitem_provider.ListBoxProvider.GetListBoxItem (listboxitem_provider.Index + 1);
+			else if (direction == NavigateDirection.PreviousSibling) {
+				if (listboxitem_provider.Index == 0)
+					return GetPreviousSiblingProvider ();
+				else
+					return listboxitem_provider.ListBoxProvider.GetListBoxItem (listboxitem_provider.Index - 1);
+			} else
+				return null;
+		}
 
-		private IRawElementProviderSimple provider;
-			
 #endregion
+		
+		private ListBoxItemProvider listboxitem_provider ;
+
 	}
-
 }

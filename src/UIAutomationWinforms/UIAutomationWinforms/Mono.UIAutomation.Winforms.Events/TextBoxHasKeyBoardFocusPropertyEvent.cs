@@ -30,13 +30,20 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	internal class TextBoxHasKeyBoardFocusPropertyEvent : DefaultHasKeyboardFocusPropertyEvent
+	internal class TextBoxHasKeyBoardFocusPropertyEvent 
+		: AutomationHasKeyboardFocusPropertyEvent
 	{
-		
+
+#region Constructors
+
 		public TextBoxHasKeyBoardFocusPropertyEvent (IRawElementProviderSimple provider) 
 			: base (provider)
 		{
 		}
+		
+#endregion
+		
+#region IConnectable Overrides
 		
 		public override void Connect (Control control)
 		{
@@ -50,9 +57,16 @@ namespace Mono.UIAutomation.Winforms.Events
 			((TextBoxBase) control).Leave -= new EventHandler (OnEnterLeave);
 		}
 		
+#endregion
+
+#region Private Methods		
+
 		private void OnEnterLeave (object sender, EventArgs e)
 		{
 			HasKeyboardFocusPropertyEvent ();
 		}
+		
+#endregion
+
 	}
 }

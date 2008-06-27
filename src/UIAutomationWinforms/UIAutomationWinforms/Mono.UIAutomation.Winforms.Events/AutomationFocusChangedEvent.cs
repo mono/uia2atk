@@ -31,36 +31,45 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	internal class DefaultInvokedEvent : ProviderEvent
+	internal class AutomationFocusChangedEvent : ProviderEvent
 	{
 		
-		public DefaultInvokedEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+#region Constructors
+		
+		public AutomationFocusChangedEvent (IRawElementProviderSimple provider) 
+				: base (provider)
 		{
 		}
 		
+#endregion
+		
+#region IConnectable Overrides
+
 		public override void Connect (Control control)
 		{
-			control.Click += new EventHandler (OnClick);
+			control.LostFocus += new EventHandler (OnFocusChanged);
 		}
 
 		public override void Disconnect (Control control)
 		{
-			control.Click -= new EventHandler (OnClick);
+			control.LostFocus -= new EventHandler (OnFocusChanged);
 		}
 		
-		protected void InvokeEvent ()
+#endregion
+		
+#region Protected Methods
+
+		protected void OnFocusChanged (object sender, EventArgs e)
 		{
 			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationEventArgs args = new AutomationEventArgs (InvokePatternIdentifiers.InvokedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (InvokePatternIdentifiers.InvokedEvent, 
-				                                                Provider, args);
+				AutomationEventArgs eventArgs =
+					new AutomationEventArgs (AutomationElementIdentifiers.AutomationFocusChangedEvent);
+				AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.AutomationFocusChangedEvent,
+				                                                Provider, eventArgs);
 			}
 		}
+		
+#endregion
 
-		private void OnClick (object sender, EventArgs e)
-		{
-			InvokeEvent ();
-		}
 	}
 }

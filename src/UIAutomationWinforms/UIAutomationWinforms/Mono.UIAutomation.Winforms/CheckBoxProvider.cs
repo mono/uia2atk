@@ -32,7 +32,7 @@ using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class CheckBoxProvider : SimpleControlProvider, IToggleProvider
+	public class CheckBoxProvider : FragmentControlProvider, IToggleProvider
 	{
 #region Private Fields
 		
@@ -56,7 +56,7 @@ namespace Mono.UIAutomation.Winforms
 			base.InitializeEvents ();
 
 			SetEvent (ProviderEventType.ToggleStateProperty,
-			          new DefaultToggleStatePropertyEvent (this));
+			          new TogglePatternToggleStatePropertyEvent (this));
 		}
 		
 #endregion

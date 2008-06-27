@@ -35,23 +35,23 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 #region Private fields
 		
-		private SimpleControlProvider provider;
+		private FragmentControlProvider fragment_provider ;
 		
 #endregion
 		
 #region Constructors
 		
-		protected ProviderBehavior (SimpleControlProvider provider)
+		protected ProviderBehavior (FragmentControlProvider provider)
 		{
-			this.provider = provider;
+			fragment_provider = provider;
 		}
 		
 #endregion
 		
 #region Properties 
 		
-		public SimpleControlProvider Provider {
-			get { return provider; }
+		public FragmentControlProvider Provider {
+			get { return fragment_provider; }
 		}
 		
 #endregion

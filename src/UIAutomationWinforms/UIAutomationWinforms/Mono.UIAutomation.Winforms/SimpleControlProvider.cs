@@ -32,6 +32,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -43,6 +44,7 @@ namespace Mono.UIAutomation.Winforms
 		private Control control;
 		private Dictionary<ProviderEventType, IConnectable> events;
 		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
+		private INavigation navigation;
 
 #endregion
 		
@@ -65,6 +67,16 @@ namespace Mono.UIAutomation.Winforms
 			get { return control; }
 		}
 		
+		public virtual INavigation Navigation {
+			get { 
+				if (navigation == null) 
+					navigation = new SimpleNavigation (this);
+
+				return navigation; 
+			}
+			set { navigation = value; }
+		}
+		
 #endregion
 		
 #region Public Methods
@@ -73,37 +85,31 @@ namespace Mono.UIAutomation.Winforms
 		{
 			// TODO: Add: EventStrategyType.IsOffscreenProperty, DefaultIsOffscreenPropertyEvent
 			SetEvent (ProviderEventType.IsEnabledProperty, 
-			          new DefaultIsEnabledPropertyEvent (this));
+			          new AutomationIsEnabledPropertyEvent (this));
 			SetEvent (ProviderEventType.NameProperty,
-			          new DefaultNamePropertyEvent (this));
+			          new AutomationNamePropertyEvent (this));
 			SetEvent (ProviderEventType.HasKeyboardFocusProperty,
-			          new DefaultHasKeyboardFocusPropertyEvent (this));
+			          new AutomationHasKeyboardFocusPropertyEvent (this));
 			SetEvent (ProviderEventType.BoundingRectangleProperty,
-			          new DefaultBoundingRectanglePropertyEvent (this));
+			          new AutomationBoundingRectanglePropertyEvent (this));
 			SetEvent (ProviderEventType.StructureChangedEvent,
 			          new StructureChangedEvent (this));
 		}
-		
-//		public void UninitializeEvents () 
-//		{
-//			foreach (KeyValuePair<ProviderEventType,IConnectable> value in events) {
-//				strategy.Value.Disconnect (Control);
-//			}
-//			events.Clear ();
-//		}
 
 		public void SetEvent (ProviderEventType type, IConnectable strategy)
 		{
 			IConnectable value;
 			
 			if (events.TryGetValue (type, out value) == true) {			
-				value.Disconnect (Control);
+				if (Control != null)
+					value.Disconnect (Control);
 				events.Remove (type);
 			}
 
 			if (strategy != null) {
 				events [type] = strategy;
-				strategy.Connect (Control);
+				if (Control != null)
+					strategy.Connect (Control);
 			}
 		}
 		
@@ -115,13 +121,15 @@ namespace Mono.UIAutomation.Winforms
 		{
 			IProviderBehavior oldBehavior;
 			if (providerBehaviors.TryGetValue (pattern, out oldBehavior) == true) {
-				oldBehavior.Disconnect (Control);
+				if (Control != null)
+					oldBehavior.Disconnect (Control);
 				providerBehaviors.Remove (pattern);
 			}
 			
 			if (behavior != null) {
 				providerBehaviors [pattern] = behavior;
-				behavior.Connect (Control);
+				if (Control != null)
+					behavior.Connect (Control);
 			}
 		}
 		
@@ -163,7 +171,9 @@ namespace Mono.UIAutomation.Winforms
 					return val;
 			}
 			
-			if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
+			if (Control == null)
+				return null;			
+			else if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
 				return Control.GetHashCode (); // TODO: Ensure uniqueness
 			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 				return Control.Enabled;
@@ -199,7 +209,10 @@ namespace Mono.UIAutomation.Winforms
 
 		public virtual IRawElementProviderSimple HostRawElementProvider {
 			get {
-				return AutomationInteropProvider.HostProviderFromHandle (Control.TopLevelControl.Handle);
+				if (Control == null)
+					return null;
+				else
+					return AutomationInteropProvider.HostProviderFromHandle (Control.TopLevelControl.Handle);
 			}
 		}
 		

@@ -23,46 +23,14 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 
-using System;
-using System.Windows.Automation.Provider;
-using System.Windows.Forms;
-
-namespace Mono.UIAutomation.Winforms.Events
+namespace Mono.UIAutomation.Winforms
 {
-	
-	internal abstract class ProviderEvent : IConnectable
+
+	public enum ScrollBarButtonOrientation
 	{
-			
-#region Constructor
-
-		protected ProviderEvent (IRawElementProviderSimple provider)
-		{
-			this.provider = provider;
-		}
-			
-#endregion
-			
-#region IConnectable Overriders
-
-		public abstract void Connect (Control control);
-
-		public abstract void Disconnect (Control control);
-			
-#endregion
-
-#region Protected properties
-			
-		protected IRawElementProviderSimple Provider {
-			get { return provider; }
-		}
-
-#endregion
-			
-#region Private fields
-
-		private IRawElementProviderSimple provider;
-			
-#endregion
+		SmallBack,
+		SmallForward,
+		LargeBack,
+		LargeForward
 	}
-
 }

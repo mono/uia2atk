@@ -39,7 +39,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 #region Constructor
 		
-		public LinkLabelInvokeProviderBehavior (SimpleControlProvider provider)
+		public LinkLabelInvokeProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
 		}
@@ -50,7 +50,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.InvokedEvent, null);
+			Provider.SetEvent (ProviderEventType.InvokeInvokedEvent, null);
 		}
 
 		public override object GetPropertyValue (int propertyId)
@@ -67,8 +67,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		{
 			linklabel = (LinkLabel) control;
 			
-			Provider.SetEvent (ProviderEventType.InvokedEvent, 
-			          new LinkLabelInvokedEvent (Provider));
+			Provider.SetEvent (ProviderEventType.InvokeInvokedEvent, 
+			          new LinkLabelInvokePatternInvokedEvent (Provider));
 		}
 		
 		public override AutomationPattern ProviderPattern { 

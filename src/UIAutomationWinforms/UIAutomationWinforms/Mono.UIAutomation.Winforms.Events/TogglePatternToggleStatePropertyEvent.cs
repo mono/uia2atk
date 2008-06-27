@@ -22,36 +22,58 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
+
 using System;
+using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	internal class LinkLabelInvokedEvent : DefaultInvokedEvent
+	internal class TogglePatternToggleStatePropertyEvent : ProviderEvent
 	{
-		
-		public LinkLabelInvokedEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+
+#region Constructors
+
+		//FIXME: This will crash when revamping to new behavior logic
+		public TogglePatternToggleStatePropertyEvent (IToggleProvider toggleProvider)
+			: base ((IRawElementProviderFragment) toggleProvider)
 		{
+			this.toggleProvider = toggleProvider;
 		}
 		
+#endregion
+		
+#region IConnectable Overrides
+	
 		public override void Connect (Control control)
 		{
-			((LinkLabel) control).LinkClicked += 
-				new LinkLabelLinkClickedEventHandler (OnLinkClicked);
+			((CheckBox) control).CheckedChanged += new EventHandler (OnCheckChanged);
 		}
 
 		public override void Disconnect (Control control)
 		{
-			((LinkLabel) control).LinkClicked -= 
-				new LinkLabelLinkClickedEventHandler (OnLinkClicked);
+			((CheckBox) control).CheckedChanged -= new EventHandler (OnCheckChanged);
 		}
 		
-		private void OnLinkClicked (object sender, LinkLabelLinkClickedEventArgs e)
+#endregion
+		
+#region Protected Methods
+		
+		protected void OnCheckChanged (object sender, EventArgs e)
 		{
-			InvokeEvent ();
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationPropertyChangedEventArgs args =
+					new AutomationPropertyChangedEventArgs (TogglePatternIdentifiers.ToggleStateProperty,
+					                                        null, // Mimics MS behavior
+					                                        toggleProvider.ToggleState);
+				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
+			}
 		}
+
+#endregion
+		
+		private IToggleProvider toggleProvider;
 	}
 }

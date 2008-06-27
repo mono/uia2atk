@@ -22,43 +22,62 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
+
 using System;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using System.Collections.Generic;
 
-namespace Mono.UIAutomation.Winforms.Events
+namespace Mono.UIAutomation.Winforms.Navigation
 {
-
-	// TODO: VisibleChanged isn't the valid MS behaviour.
-	internal class DefaultIsOffscreenPropertyEvent : ProviderEvent
+	
+	public class NavigationChain
 	{
-		
-		public DefaultIsOffscreenPropertyEvent (IRawElementProviderSimple provider)
-			: base (provider)
-		{
-		}
-		
-		public override void Connect (Control control)
-		{
-			control.VisibleChanged += new EventHandler (OnVisibleChanged);
-		}
 
-		public override void Disconnect (Control control)
+#region Constructors
+		
+		public NavigationChain ()
 		{
-			control.VisibleChanged -= new EventHandler (OnVisibleChanged);
+			list = new List<INavigation> ();
 		}
 		
-		protected void OnVisibleChanged (object sender, EventArgs e)
+#endregion 
+		
+#region Public Methods
+		
+		public void AddLink (INavigation link) 
 		{
-			// TODO: Check if IsOffscreenProperty has changed...
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsOffscreenProperty,
-					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
+			if (!list.Contains (link)) {
+				list.Add (link);
+				if (list.Count > 1) {
+					list [list.Count - 2].NextSibling = link;
+					link.PreviousSibling = list [list.Count - 2];
+				}
 			}
 		}
+		
+		public INavigation GetFirstLink () 
+		{
+			for (int index = 0; index < list.Count; index++) {
+				if (list [index].SupportsNavigation)
+					return list [index];
+			}
+			return null;
+		}
+		
+		public INavigation GetLastLink () 
+		{
+			for (int index = list.Count - 1; index >= 0; index--) {
+				if (list [index].SupportsNavigation)
+					return list [index];
+			}
+			return null;
+		}
+		
+#endregion 
+		
+#region Private Fields
+		
+		private List<INavigation> list;
+		
+#endregion
 	}
 }

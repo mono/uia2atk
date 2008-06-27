@@ -24,48 +24,56 @@
 // 
 
 using System;
+using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
 
-	public class WrapperFragmentControlProvider : FragmentControlProvider
+	public class ThumbProvider : SimpleControlProvider
 	{
-		
-		public WrapperFragmentControlProvider (IRawElementProviderSimple provider)
-			: base (null)
-		{
-			this.provider = (SimpleControlProvider) provider;
-		}
 
-#region Public Properties
-		
-		public override Control Control {
-			get { return provider.Control; }
+#region Constructor
+
+		public ThumbProvider () : base (null)
+		{
+			//TODO: How to implement this?
+			//BoundingRectangleProperty property-changed event.
+			//IsOffscreenProperty property-changed event.
+			//IsEnabledProperty property-changed event.
+			//AutomationFocusChangedEvent
+			//StructureChangedEvent
 		}
 
 #endregion
-
-#region IRawElementProviderSimple Members		
 		
+#region Public Overrides
+
 		public override object GetPropertyValue (int propertyId)
 		{
-			return provider.GetPropertyValue (propertyId);
+			if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
+				return 1; //FIXME: This doesn't make sense.
+			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+				return null; //TODO: We may need to use Reflection to get the "real" value
+			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+				return null; //TODO: We may need to use Reflection to get the "real" value
+			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				return true;
+			else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Thumb.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "thumb";
+			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
+				return false;
+			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
+				return true;
+			else
+				return null;
 		}
-		
-		public override object GetPatternProvider (int patternId)
-		{
-			return provider.GetPatternProvider (patternId);
-		}
-
-#endregion
-		
-#region Private fields
-		
-		private SimpleControlProvider provider;
 		
 #endregion
 
 	}
+
 }

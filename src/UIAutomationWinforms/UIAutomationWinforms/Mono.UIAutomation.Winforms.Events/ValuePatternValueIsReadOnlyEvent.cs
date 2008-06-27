@@ -32,7 +32,7 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	public class ValuePatternValueIsReadOnlyEvent : ProviderEvent
+	internal class ValuePatternValueIsReadOnlyEvent : ProviderEvent
 	{
 		
 #region Constructor

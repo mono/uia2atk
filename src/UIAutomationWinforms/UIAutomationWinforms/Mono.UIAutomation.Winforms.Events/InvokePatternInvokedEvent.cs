@@ -24,45 +24,59 @@
 // 
 
 using System;
+using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
-	
-	internal abstract class ProviderEvent : IConnectable
+
+	internal class InvokePatternInvokedEvent : ProviderEvent
 	{
-			
-#region Constructor
 
-		protected ProviderEvent (IRawElementProviderSimple provider)
+#region Constructors
+
+		public InvokePatternInvokedEvent (IRawElementProviderSimple provider) 
+			: base (provider)
 		{
-			this.provider = provider;
 		}
-			
+		
 #endregion
-			
-#region IConnectable Overriders
-
-		public abstract void Connect (Control control);
-
-		public abstract void Disconnect (Control control);
-			
-#endregion
-
-#region Protected properties
-			
-		protected IRawElementProviderSimple Provider {
-			get { return provider; }
+		
+#region IConnectable Overrides
+		
+		public override void Connect (Control control)
+		{
+			control.Click += new EventHandler (OnClick);
 		}
 
+		public override void Disconnect (Control control)
+		{
+			control.Click -= new EventHandler (OnClick);
+		}
+		
 #endregion
-			
-#region Private fields
+		
+#region Protected Methods
+		
+		protected void InvokeEvent ()
+		{
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationEventArgs args = new AutomationEventArgs (InvokePatternIdentifiers.InvokedEvent);
+				AutomationInteropProvider.RaiseAutomationEvent (InvokePatternIdentifiers.InvokedEvent, 
+				                                                Provider, args);
+			}
+		}
+		
+#endregion
 
-		private IRawElementProviderSimple provider;
-			
+#region Private Methods
+
+		private void OnClick (object sender, EventArgs e)
+		{
+			InvokeEvent ();
+		}
+
 #endregion
 	}
-
 }

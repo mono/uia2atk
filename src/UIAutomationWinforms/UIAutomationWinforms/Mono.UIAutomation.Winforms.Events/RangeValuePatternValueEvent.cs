@@ -31,33 +31,47 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 	
-	internal class DefaultBoundingRectanglePropertyEvent : ProviderEvent
+	internal class RangeValuePatternValueEvent : ProviderEvent
 	{
-		
-		public DefaultBoundingRectanglePropertyEvent (IRawElementProviderSimple provider) 
+
+#region Constructor
+
+		public RangeValuePatternValueEvent (IRawElementProviderSimple provider) 
 			: base (provider)
 		{
 		}
+		
+#endregion
+		
+#region IConnectable Overrides
 
 		public override void Connect (Control control)
 		{
-			control.Resize += new EventHandler (OnResize);
+			((ScrollBar) control).ValueChanged 
+				+= new EventHandler (OnValueChanged);
 		}
 
 		public override void Disconnect (Control control)
 		{
-			control.Resize -= new EventHandler (OnResize);
+			((ScrollBar) control).ValueChanged 
+				-= new EventHandler (OnValueChanged);
 		}
 		
-		private void OnResize (object sender, EventArgs e)
+#endregion 
+		
+#region Protected methods
+		
+		protected void OnValueChanged (object sender, EventArgs e)
 		{
 			if (AutomationInteropProvider.ClientsAreListening) {
 				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.BoundingRectangleProperty,
-					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id));
+					new AutomationPropertyChangedEventArgs (RangeValuePatternIdentifiers.ValueProperty,
+					                                        null,
+					                                        Provider.GetPropertyValue (RangeValuePatternIdentifiers.ValueProperty.Id));
 				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
 			}
 		}
+
+#endregion
 	}
 }

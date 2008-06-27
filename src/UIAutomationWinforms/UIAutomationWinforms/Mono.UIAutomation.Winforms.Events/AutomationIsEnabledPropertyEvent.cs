@@ -24,45 +24,53 @@
 // 
 
 using System;
+using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
-	
-	internal abstract class ProviderEvent : IConnectable
+
+	internal class AutomationIsEnabledPropertyEvent : ProviderEvent
 	{
-			
-#region Constructor
+		
+#region Constructors
 
-		protected ProviderEvent (IRawElementProviderSimple provider)
+		public AutomationIsEnabledPropertyEvent (IRawElementProviderSimple provider) 
+			: base (provider)
 		{
-			this.provider = provider;
 		}
-			
-#endregion
-			
-#region IConnectable Overriders
-
-		public abstract void Connect (Control control);
-
-		public abstract void Disconnect (Control control);
-			
+		
 #endregion
 
-#region Protected properties
-			
-		protected IRawElementProviderSimple Provider {
-			get { return provider; }
+#region IConnectable Overrides		
+
+		public override void Connect (Control control)
+		{
+			control.EnabledChanged += new EventHandler (OnEnableChanged);
+		}
+
+		public override void Disconnect (Control control)
+		{
+			control.EnabledChanged -= new EventHandler (OnEnableChanged);
 		}
 
 #endregion
-			
-#region Private fields
-
-		private IRawElementProviderSimple provider;
-			
+		
+#region Protected Methods
+		
+		protected void OnEnableChanged (object sender, EventArgs e)
+		{
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationPropertyChangedEventArgs args =
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsEnabledProperty,
+					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
+					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id));
+				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
+			}
+		}
+		
 #endregion
+
 	}
-
 }

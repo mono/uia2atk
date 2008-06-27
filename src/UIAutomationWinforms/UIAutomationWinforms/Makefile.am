@@ -43,6 +43,7 @@ RESGEN=resgen2
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
+	Mono.UIAutomation.Winforms.Behaviors/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBoxExpandCollapseProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBoxItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBoxProviderBehavior.cs \
@@ -58,24 +59,36 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListBoxSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueBehavior.cs \
+	Mono.UIAutomation.Winforms.Events/AutomationBoundingRectanglePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/AutomationFocusChangedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/AutomationHasKeyboardFocusPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/AutomationIsEnabledPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/AutomationIsOffscreenPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBoxExpandCollapseStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBoxItemElementSelectedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DefaultBoundingRectanglePropertyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DefaultHasKeyboardFocusPropertyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DefaultInvokedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DefaultIsEnabledPropertyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DefaultIsOffscreenPropertyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DefaultNamePropertyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DefaultTextChangedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DefaultToggleStatePropertyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ElementSelectedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/LinkLabelInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/LinkLabelInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \
+	Mono.UIAutomation.Winforms.Events/RangeValuePatternValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/SelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBoxHasKeyBoardFocusPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TextPatternTextChangedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TogglePatternToggleStatePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ValuePatternValueIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ValuePatternValuePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs \
+	Mono.UIAutomation.Winforms.Navigation/INavigation.cs \
+	Mono.UIAutomation.Winforms.Navigation/ListBoxItemNavigation.cs \
+	Mono.UIAutomation.Winforms.Navigation/ListBoxNavigation.cs \
+	Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs \
+	Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs \
+	Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs \
 	Mono.UIAutomation.Winforms/AssemblyInfo.cs \
 	Mono.UIAutomation.Winforms/ButtonProvider.cs \
 	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
@@ -94,17 +107,20 @@ FILES =  \
 	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/ProviderFactory.cs \
 	Mono.UIAutomation.Winforms/RadioButtonProvider.cs \
+	Mono.UIAutomation.Winforms/ScrollBarButtonOrientation.cs \
+	Mono.UIAutomation.Winforms/ScrollBarButtonProvider.cs \
+	Mono.UIAutomation.Winforms/ScrollBarProvider.cs \
 	Mono.UIAutomation.Winforms/SimpleControlProvider.cs \
 	Mono.UIAutomation.Winforms/StatusBarProvider.cs \
 	Mono.UIAutomation.Winforms/TextBoxProvider.cs \
 	Mono.UIAutomation.Winforms/TextNormalizer.cs \
 	Mono.UIAutomation.Winforms/TextNormalizerPoints.cs \
 	Mono.UIAutomation.Winforms/TextRangeProvider.cs \
+	Mono.UIAutomation.Winforms/ThumbProvider.cs \
 	Mono.UIAutomation.Winforms/WindowProvider.cs \
 	Mono.UIAutomation.Winforms/WordToken.cs \
 	Mono.UIAutomation.Winforms/WordTokenCollection.cs \
-	Mono.UIAutomation.Winforms/WordTokenizer.cs \
-	Mono.UIAutomation.Winforms/WrapperFragmentControlProvider.cs 
+	Mono.UIAutomation.Winforms/WordTokenizer.cs 
 
 DATA_FILES = 
 

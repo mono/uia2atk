@@ -27,39 +27,65 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
-
-	internal class DefaultToggleStatePropertyEvent : ProviderEvent
-	{
-		public DefaultToggleStatePropertyEvent (IToggleProvider toggleProvider)
-			: base ((IRawElementProviderSimple) toggleProvider)
-		{
-			this.toggleProvider = toggleProvider;
-		}
 	
+	internal class AutomationHasKeyboardFocusPropertyEvent : ProviderEvent
+	{
+		
+#region Constructors
+
+		public AutomationHasKeyboardFocusPropertyEvent (IRawElementProviderSimple provider) 
+			: base (provider)
+		{
+		}
+		
+#endregion
+		
+#region IConnectable Overrides		 
+		
 		public override void Connect (Control control)
 		{
-			((CheckBox) control).CheckedChanged += new EventHandler (OnCheckChanged);
+			control.GotFocus += new EventHandler (OnGotFocus);
 		}
 
 		public override void Disconnect (Control control)
 		{
-			((CheckBox) control).CheckedChanged -= new EventHandler (OnCheckChanged);
+			control.GotFocus -= new EventHandler (OnGotFocus);
 		}
 		
-		private void OnCheckChanged (object sender, EventArgs e)
+#endregion
+		
+#region Protected Methods
+		
+		protected void HasKeyboardFocusPropertyEvent ()
 		{
 			if (AutomationInteropProvider.ClientsAreListening) {
 				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (TogglePatternIdentifiers.ToggleStateProperty,
-					                                        null, // Mimics MS behavior
-					                                        toggleProvider.ToggleState);
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.HasKeyboardFocusProperty,
+					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
+					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id));
 				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
+				
+				AutomationEventArgs eventArgs =
+					new AutomationEventArgs (AutomationElementIdentifiers.AutomationFocusChangedEvent);
+				AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.AutomationFocusChangedEvent, 
+				                                                Provider, eventArgs);
 			}
 		}
 		
-		private IToggleProvider toggleProvider;
+#endregion 
+		
+#region Private Methods
+		
+		private void OnGotFocus (object sender, EventArgs e)
+		{
+			HasKeyboardFocusPropertyEvent ();
+		}
+		
+#endregion 
+
 	}
 }

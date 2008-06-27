@@ -39,7 +39,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 #region Constructor
 		
-		public ComboBoxSelectionProviderBehavior (SimpleControlProvider provider)
+		public ComboBoxSelectionProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
 		}

@@ -24,85 +24,27 @@
 // 
 
 using System;
-using System.ComponentModel;
-using System.Drawing;
-using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Behaviors;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class ButtonProvider : SimpleControlProvider, IInvokeProvider
+	public class ButtonProvider : FragmentControlProvider
 	{
-#region Private Members
-		
-		private Button button;
-		
-#endregion
 		
 #region Constructors
 		
 		public ButtonProvider (Button button) : base (button)
 		{
-			this.button = button;
+			SetBehavior (InvokePatternIdentifiers.Pattern, 
+			             new ButtonInvokeProviderBehavior (this));
 		}
 		
 #endregion
-		
-#region Public Methods
 
-		public override void InitializeEvents ()
-		{
-			base.InitializeEvents ();
-
-			SetEvent (ProviderEventType.InvokedEvent, 
-			          new DefaultInvokedEvent (this));
-		}
-
-#endregion
-		
-#region IInvokeProvider Members
-		
-		public void Invoke ()
-		{
-			if (!button.Enabled)
-				throw new ElementNotEnabledException ();
-			
-			// TODO: Make sure this runs on the right thread
-			button.PerformClick ();
-		}
-		
-#endregion
-		
-#region IRawElementProviderSimple Members
-	
-		public override object GetPatternProvider (int patternId)
-		{
-			if (patternId == InvokePatternIdentifiers.Pattern.Id)
-				return this;
-			return null;
-		}
-		
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Button.Id;
-			else if (propertyId == AutomationElementIdentifiers.AcceleratorKeyProperty.Id)
-				return null; // TODO
-			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)
-				// TODO: Can't find any way to get tooltip text
-				//       Need to cheat and find them by looking
-				//       at event subscribers?
-				return null;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "button";
-			else
-				return base.GetPropertyValue (propertyId);
-		}
-
-#endregion
 	}
 
 }

@@ -1,3 +1,155 @@
+2008-06-26  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ButtonInvokeProviderBehavior.cs:
+	File added. Represents Invoke behavior of Button provider.
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs:
+	File added. Represents Invoke behavior of ScrollBarButton provider.
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueBehavior.cs:
+	File added. Represents RangeValue behavior.
+	* Mono.UIAutomation.Winforms.Events/AutomationBoundingRectanglePropertyEvent.cs:
+	File added. Represents BoundingRectangleProperty event.	
+	* Mono.UIAutomation.Winforms.Events/AutomationFocusChangedEvent.cs: 
+	File added. Represents FocusChangedEvent event.	
+	* Mono.UIAutomation.Winforms.Events/AutomationHasKeyboardFocusPropertyEvent.cs:
+	File added. Represents HasKeyboardFocusProperty event.	
+	* Mono.UIAutomation.Winforms.Events/AutomationIsEnabledPropertyEvent.cs:
+	File added. Represents IsEnabledProperty event.
+	* Mono.UIAutomation.Winforms.Events/AutomationIsOffscreenPropertyEvent.cs:
+	File added. Represents IsOffScreenProperty event.
+	* Mono.UIAutomation.Winforms.Events/AutomationNamePropertyEvent.cs:
+	File added. Represents NameProperty event.
+	* Mono.UIAutomation.Winforms.Events/InvokePatternInvokedEvent.cs:
+	File added. Supports Invoked Event of Invoke pattern.
+	* Mono.UIAutomation.Winforms.Events/LinkLabelInvokePatternInvokedEvent.cs:
+	File added. Supports Invoked event of  Invoke pattern defined in
+	LinkLabel provider.
+	* Mono.UIAutomation.Winforms.Events/RangeValuePatternValueEvent.cs:
+	File added. Supports Value event of RangeValue pattern.
+	* Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs:
+	File added. Supports Invoked event of  Invoke Pattern defined in
+	ScrollBarButton provider.
+	* Mono.UIAutomation.Winforms.Events/SelectionItemPatternElementSelectedEvent.cs:
+	File added. Supports ElementSelected event of SelectionItem pattern.
+	* Mono.UIAutomation.Winforms.Events/TextPatternTextChangedEvent.cs::
+	File added. Supports TextChanged event of Text pattern.
+	* Mono.UIAutomation.Winforms.Events/TogglePatternToggleStatePropertyEvent.cs:
+	File added. Supports ToggleStateProperty event of Toggle pattern.
+	* Mono.UIAutomation.Winforms.Navigation: Folder added. Includes logic
+	to support navigation in providers.
+	* Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs: File 
+	added. ComboBox navigation.
+	* Mono.UIAutomation.Winforms.Navigation/INavigation.cs: File added.
+	Interface to be implemented by all Navigation specialization.
+	* Mono.UIAutomation.Winforms.Navigation/ListBoxItemNavigation.cs: File
+	added. ListBoxItem navigation.
+	* Mono.UIAutomation.Winforms.Navigation/ListBoxNavigation.cs: File 
+	added. ListBox navigation.
+	* Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs: File added.
+	Keeps a list of navigation specializations.
+	* Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs: File 
+	added. ScrollBar navigation.
+	* Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs: File aded.
+	Navigation that defines the most common way to navigate.
+	* Mono.UIAutomation.Winforms/ScrollBarButtonOrientation.cs: File added.
+	Identifies the ScrollBarButton orientation.
+	* Mono.UIAutomation.Winforms/ScrollBarButtonProvider.cs: File added.
+	ScrollBar button provider.
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: File added.
+	ScrollBar provider
+	* Mono.UIAutomation.Winforms/ThumbProvider.cs: File added. Thumb 
+	provider.
+	* Mono.UIAutomation.Winforms.Events/DefaultBoundingRectanglePropertyEvent.cs:
+	Replaced by AutomationBoundingRectanglePropertyEvent class.
+	* Mono.UIAutomation.Winforms.Events/DefaultHasKeyboardFocusPropertyEvent.cs:
+	Replaced by AutomationHasKeyboardFocusPropertyEvent class.
+	* Mono.UIAutomation.Winforms.Events/DefaultInvokedEvent.cs: Replaced
+	by ButtonInvokeProviderBehavior class.
+	* Mono.UIAutomation.Winforms.Events/DefaultIsEnabledPropertyEvent.cs:
+	Replaced by AutomationIsEnabledPropertyEvent class.
+	* Mono.UIAutomation.Winforms.Events/DefaultIsOffscreenPropertyEvent.cs:
+	Replaced by AutomationIsOffscreenPropertyEvent class.
+	* Mono.UIAutomation.Winforms.Events/DefaultNamePropertyEvent.cs:
+	Replaced by AutomationNamePropertyEvent class.
+	* Mono.UIAutomation.Winforms.Events/DefaultTextChangedEvent.cs: 
+	Replaced by TextPatternTextChangedEvent class.
+	* Mono.UIAutomation.Winforms.Events/DefaultToggleStatePropertyEvent.cs:
+	Replaced by TogglePatternToggleStatePropertyEvent class.
+	* Mono.UIAutomation.Winforms.Events/ElementSelectedEvent.cs: Replaced by
+	SelectionItemPatternElementSelectedEvent class
+	* Mono.UIAutomation.Winforms.Events/LinkLabelInvokedEvent.cs: Replaced 
+	by LinkLabelInvokePatternInvokedEvent class.
+	* Mono.UIAutomation.Winforms/WrapperFragmentControlProvider.cs: Not 
+	needed.
+	* Makefile.am: File updated: Added and deleted files.
+	* Mono.UIAutomation.Winforms.mdp: File updated. Added and deleted files.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxExpandCollapseProviderBehavior.cs:
+	Contructor uses a FragmentControlProvider argument.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxProviderBehavior.cs:
+	Contructor uses a FragmentControlProvider argument.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxSelectionProviderBehavior.cs:
+	Contructor uses a FragmentControlProvider argument.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxValueProviderBehavior.cs:
+	Contructor uses a FragmentControlProvider argument.
+	* Mono.UIAutomation.Winforms.Behaviors/LinkLabelInvokeProviderBehavior.cs:
+	Contructor uses a FragmentControlProvider argument. Updated to 
+	ProviderEventType changes.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxProviderBehavior.cs:
+	Contructor uses a FragmentControlProvider argument.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxSelectionProviderBehavior.cs:
+	Contructor uses a FragmentControlProvider argument.
+	* Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs:
+	Deleted private field provider. Added private field fragment_provider.
+	Property Provider returns FragmentControlProvider instead of 
+	SimpleControlProvider.
+	* Mono.UIAutomation.Winforms.Events/ComboBoxExpandCollapseStateEvent.cs:
+	Visibillity changed to internal.
+	* Mono.UIAutomation.Winforms.Events/ComboBoxItemElementSelectedEvent.cs:
+	Visibillity changed to internal. Subclassing
+	SelectionItemPatternElementSelectedEvent instead of 
+	ElementSelectedEvent. Code beautying.
+	* Mono.UIAutomation.Winforms.Events/ProviderEvent.cs: Visibillity 
+	changed to internal.
+	* Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: Fields 
+	changed to match supported pattern.
+	* Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs:
+	Uses GetRuntimeId method instead of creating own RuntimeId array.
+	* Mono.UIAutomation.Winforms.Events/TextBoxHasKeyBoardFocusPropertyEvent.cs:
+	Visibillity changed to internal. 
+	* Mono.UIAutomation.Winforms.Events/ValuePatternValueIsReadOnlyEvent.cs:
+	Visibillity changed to internal. Code beautying.
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs: Subclassing from
+	FragmentControlProvider. Using new behaviors logic. Methods removed:
+	InitializeEvents, Invoke, GetPatternProvider and GetPropertyValue.
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs:
+	ProviderEventType updated. Subclassing from FragmentControlProvider.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Using custom
+	Navigation.
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Method
+	removed Navigate.
+	* Mono.UIAutomation.Winforms/LabelProvider.cs: Subclassing from
+	FragmentControlProvider. ProviderEventType updated.
+	* Mono.UIAutomation.Winforms/LinkLabelProvider.cs: Subclassing from 
+	FragmentControlProvider.
+	* Mono.UIAutomation.Winforms/ListBoxItemProvider.cs: Removed Navigate
+	method.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Using custom 
+	Navigation.
+	* Mono.UIAutomation.Winforms/NumericUpDownProvider.cs: Subclassing
+	from FragmentControlProvider.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Using
+	IRawElementProviderFragment instead of IRawElementProviderSimple. 
+	ScrollBar cast added.
+	* Mono.UIAutomation.Winforms/RadioButtonProvider.cs: Subclassing from
+	FragmentControlProvider.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: New property:
+	Navigation. New private field: navigation. ProviderEventType updated.
+	Removed commented method: UninitializeEvents. Calling Connect and 
+	Disconnect only when Control is not null.
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Subclassing from
+	FragmentControlProvider.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Subclassing from
+	FragmentControlProvider.
+
 2008-06-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Makefile.am: Fix compiler flags for release mode.

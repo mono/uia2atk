@@ -30,6 +30,7 @@ using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using System.Windows;
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -55,6 +56,8 @@ namespace Mono.UIAutomation.Winforms
 			};
 			
 			SetBehaviors ();
+			
+			Navigation = new ComboBoxNavigation (this);
 		}
 		
 #endregion
@@ -100,13 +103,9 @@ namespace Mono.UIAutomation.Winforms
 		{
 			//TODO: Evaluate when combobox.DropDownStyle is List or there's
 			//no selected element
+			//TODO: Change this to keep a copy of the elemetns
 			return combobox.SelectedIndex == -1 ? null :
 				new ComboBoxItemProvider (this, combobox);
-		}
-		
-		public override IRawElementProviderFragment Navigate (NavigateDirection direction)
-		{
-			throw new NotImplementedException ();
 		}
 		
 #endregion

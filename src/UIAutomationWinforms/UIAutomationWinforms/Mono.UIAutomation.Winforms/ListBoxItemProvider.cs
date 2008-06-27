@@ -28,6 +28,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -53,6 +54,8 @@ namespace Mono.UIAutomation.Winforms
 			             new ListBoxItemSelectionProviderBehavior (this));
 			SetBehavior (ScrollItemPatternIdentifiers.Pattern,
 			             new ListBoxItemScrollProviderBehavior (this));
+			
+			Navigation = new ListBoxItemNavigation (this);
 		}
 
 #endregion
@@ -77,18 +80,6 @@ namespace Mono.UIAutomation.Winforms
 
 		public override IRawElementProviderFragmentRoot FragmentRoot {
 			get { return ListBoxProvider; }			
-		}
-
-		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
-		{
-			if (direction == NavigateDirection.Parent)
-				return FragmentRoot;
-			else if (direction == NavigateDirection.NextSibling)
-				return ListBoxProvider.GetListBoxItem (index + 1);
-			else if (direction == NavigateDirection.PreviousSibling)
-				return ListBoxProvider.GetListBoxItem (index - 1);
-			else
-				return null;
 		}
 
 #endregion

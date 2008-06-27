@@ -38,7 +38,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 #region Constructor
 		
-		public ListBoxSelectionProviderBehavior (SimpleControlProvider provider)
+		public ListBoxSelectionProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
 		}

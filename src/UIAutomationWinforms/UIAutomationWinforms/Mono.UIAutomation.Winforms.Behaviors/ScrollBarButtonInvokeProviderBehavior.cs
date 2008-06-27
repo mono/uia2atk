@@ -27,75 +27,76 @@ using System;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using System.Reflection;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
-	public class ComboBoxExpandCollapseProviderBehavior 
-		: ComboBoxProviderBehavior, IExpandCollapseProvider
+	public class ScrollBarButtonInvokeProviderBehavior 
+		: ButtonInvokeProviderBehavior
 	{
-		
+
 #region Constructor
 		
-		public ComboBoxExpandCollapseProviderBehavior (FragmentControlProvider provider)
+		public ScrollBarButtonInvokeProviderBehavior (ScrollBarButtonProvider provider)
 			: base (provider)
 		{
+			this.provider = provider;
 		}
 		
 #endregion
-
+		
 #region IProviderBehavior Interface
-		
-		public override AutomationPattern ProviderPattern { 
-			get { return ExpandCollapsePatternIdentifiers.Pattern; }
-		}
-		
+
 		public override void Connect (Control control)
 		{
-			base.Connect (control);
-			
-			Provider.SetEvent (ProviderEventType.ExpandCollapseStateProperty, 
-			                   new ComboBoxExpandCollapseStateEvent (Provider));
+			Provider.SetEvent (ProviderEventType.InvokeInvokedEvent, 
+			          new ScrollBarButtonInvokePatternInvokeEvent (provider));
 		}
 		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.ExpandCollapseStateProperty, 
-			                   null);
-		}
-		
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id)
-				return ExpandCollapseState;
-			else
-				return base.GetPropertyValue (propertyId);
-		}
-		
-#endregion
-		
-#region IExpandCollapseProvider Interface
-		
-		public ExpandCollapseState ExpandCollapseState {
-			get {
-				return combobox.DroppedDown ? ExpandCollapseState.Expanded 
-					: ExpandCollapseState.Collapsed;
-			}
-		}
-
-		public void Collapse ()
-		{
-			combobox.DroppedDown = false;
-		}
-
-		public void Expand ()
-		{
-			combobox.DroppedDown = true;
+			Provider.SetEvent (ProviderEventType.InvokeInvokedEvent, null);
 		}
 
 #endregion
 		
+#region IInvokeProvider Members
+		
+		public override void Invoke ()
+		{
+			if (!Provider.Control.Enabled)
+				throw new ElementNotEnabledException ();
+			
+			string methodName = string.Empty;
+			
+			//TODO: Should we use generalization?			
+			if (provider.Orientation == ScrollBarButtonOrientation.LargeBack)
+				methodName = "LargeDecrement";
+			else if (provider.Orientation == ScrollBarButtonOrientation.LargeForward)
+				methodName = "LargeIncrement";
+			else if (provider.Orientation == ScrollBarButtonOrientation.SmallBack)
+				methodName = "SmallDecrement";
+			else //Should be ScrollBarButtonOrientation.SmallForward
+				methodName = "SmallIncrement";
+
+			Type type = provider.ScrollBarContainer.GetType ();
+			MethodInfo methodInfo = type.GetMethod (methodName,
+			                                        BindingFlags.InvokeMethod
+			                                        | BindingFlags.NonPublic
+			                                        | BindingFlags.Instance);
+			methodInfo.Invoke (provider.ScrollBarContainer, null);
+		}
+		
+#endregion	
+		
+#region Private Fields
+		
+		private ScrollBarButtonProvider provider;
+
+#endregion
+
 	}
 }

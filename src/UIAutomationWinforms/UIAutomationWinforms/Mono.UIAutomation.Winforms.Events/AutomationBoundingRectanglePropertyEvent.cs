@@ -24,45 +24,53 @@
 // 
 
 using System;
+using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
 	
-	internal abstract class ProviderEvent : IConnectable
+	internal class AutomationBoundingRectanglePropertyEvent : ProviderEvent
 	{
-			
-#region Constructor
 
-		protected ProviderEvent (IRawElementProviderSimple provider)
+#region Constructors
+		
+		public AutomationBoundingRectanglePropertyEvent (IRawElementProviderSimple provider) 
+			: base (provider)
 		{
-			this.provider = provider;
 		}
-			
+		
 #endregion
-			
-#region IConnectable Overriders
+		
+#region IConnectable Overrides
 
-		public abstract void Connect (Control control);
-
-		public abstract void Disconnect (Control control);
-			
-#endregion
-
-#region Protected properties
-			
-		protected IRawElementProviderSimple Provider {
-			get { return provider; }
+		public override void Connect (Control control)
+		{
+			control.Resize += new EventHandler (OnResize);
 		}
 
+		public override void Disconnect (Control control)
+		{
+			control.Resize -= new EventHandler (OnResize);
+		}
+		
 #endregion
-			
-#region Private fields
+		
+#region Protected Methods
 
-		private IRawElementProviderSimple provider;
-			
+		protected void OnResize (object sender, EventArgs e)
+		{
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationPropertyChangedEventArgs args =
+					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.BoundingRectangleProperty,
+					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
+					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id));
+				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
+			}
+		}
+
 #endregion
+
 	}
-
 }
