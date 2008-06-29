@@ -1,3 +1,18 @@
+2008-06-29  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/gtkbutton.py : renamed from gtksample.  take out label and 
+	text related widgets.  we can do these in another test.  Edit
+	callbacks.
+	* samples/gtksample.py : rename to gtkbutton
+	* testers/treeview_basic_ops.py : Change "cb" to "tv" for "TreeView"
+	* testers/button_basic_ops.py : Change "cb" to "b" for "Button".  Take
+	out redundant tests.  Use close_dialog and quit methods instead of
+	strictly close().
+	* testers/button/__init__.py : Open gtkbutton instead of gtksample
+	* testers/button/buttonframe.py : Change close method to close_dialog
+	and add quit method.  Change indentation of comments.  Remove
+	unused code.
+
 2008-06-27  Ray Wang <rawang@gmail.com>
 
 	* samples/containercontrol.py : implement ScrollableControl &

@@ -8,10 +8,8 @@ import gtk
  
 class HelloWorld2:
  
-    # Our new improved callback.  The data passed to this method
-    # is printed to stdout.
-    def callback(self,widget,data):
-        #print "Hello again - %s was pressed" % data
+    # callback that opens a message dialog
+    def open_dialog(self, widget, data=None):
         self.dialog = gtk.MessageDialog()
         self.dialog.show()
         self.dialog.set_title("MessageDialog")
@@ -47,25 +45,15 @@ class HelloWorld2:
         # Put the box into the main window.
         self.window.add(self.box1)
          
-        self.label = gtk.Label("label text")
-        self.box1.pack_start(self.label, True, True, 0)
-        self.label.show()
-        
-        self.textbox = gtk.TextView()
-        self.box1.pack_start(self.textbox, True, True, 0)
-        self.textbox.show()
-        self.textbox.set_border_width(30)
-
         # Creates a new button with the label "Button 1".
         self.button1 = gtk.Button("Button 1")
  
-        # Now when the button is clicked, we call the "callback" method
+        # Now when the button is clicked, we call the open_dialog method
         # with a pointer to "button 1" as its argument
-        self.button1.connect("clicked", self.callback,"aa")
+        self.button1.connect("clicked", self.open_dialog)
  
         # Instead of add(), we pack this button into the invisible
         # box, which has been packed into the window.
-
         self.box1.pack_start(self.button1, True, True, 0)
  
         # Always remember this step, this tells GTK that our preparation for
@@ -77,7 +65,7 @@ class HelloWorld2:
  
         # Call the same callback method with a different argument,
         # passing a pointer to "button 2" instead.
-        self.button2.connect("clicked", self.callback, "button 2")
+        self.button2.connect("clicked", self.open_dialog)
  
         self.box1.pack_start(self.button2, True, True, 0)
  
@@ -90,7 +78,7 @@ class HelloWorld2:
 
     def main(self):
         gtk.main()
-print __name__
+
 if __name__ == "__main__":
     hello = HelloWorld2()
     hello.main()

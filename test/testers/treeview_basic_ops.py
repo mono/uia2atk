@@ -40,50 +40,50 @@ if app is None:
   exit(4)
 
 # just an alias to make things shorter
-cbFrame = app.treeViewFrame
+tvFrame = app.treeViewFrame
 
 
 #expand parent 0
-cbFrame.expand(cbFrame.parent0,'expand or contract')
+tvFrame.expand(tvFrame.parent0,'expand or contract')
 sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.parent0, "expanded")
+tvFrame.assertResult(tvFrame.parent0, "expanded")
 
 #contract parent0
-cbFrame.contract(cbFrame.parent0,'expand or contract')
+tvFrame.contract(tvFrame.parent0,'expand or contract')
 sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.parent0, "contracted")
+tvFrame.assertResult(tvFrame.parent0, "contracted")
 
 #expand parent 1
-cbFrame.expand(cbFrame.parent1,'expand or contract')
+tvFrame.expand(tvFrame.parent1,'expand or contract')
 sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.parent1, "expanded")
+tvFrame.assertResult(tvFrame.parent1, "expanded")
 
 #contract parent1
-cbFrame.contract(cbFrame.parent1,'expand or contract')
+tvFrame.contract(tvFrame.parent1,'expand or contract')
 sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.parent1, "contracted")
+tvFrame.assertResult(tvFrame.parent1, "contracted")
 
 #expand parent 2
-cbFrame.expand(cbFrame.parent2,'expand or contract')
+tvFrame.expand(tvFrame.parent2,'expand or contract')
 sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.parent2, "expanded")
+tvFrame.assertResult(tvFrame.parent2, "expanded")
 
 #contract parent2
-cbFrame.contract(cbFrame.parent2,'expand or contract')
+tvFrame.contract(tvFrame.parent2,'expand or contract')
 sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.parent2, "contracted")
+tvFrame.assertResult(tvFrame.parent2, "contracted")
 
 #expand parent 3
-cbFrame.expand(cbFrame.parent3,'expand or contract')
+tvFrame.expand(tvFrame.parent3,'expand or contract')
 sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.parent3, "expanded")
+tvFrame.assertResult(tvFrame.parent3, "expanded")
 
 #contract parent3
-cbFrame.contract(cbFrame.parent3,'expand or contract')
+tvFrame.contract(tvFrame.parent3,'expand or contract')
 sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.parent3, "contracted")
+tvFrame.assertResult(tvFrame.parent3, "contracted")
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
-cbFrame.altF4(cbFrame)
+tvFrame.altF4(tvFrame)
 

@@ -33,63 +33,36 @@ except IOError, msg:
   print "ERROR:  %s" % msg
   exit(2)
 
-print "\"app\":", app
-
 # make sure we got the app back
 if app is None:
   exit(4)
 
 # just an alias to make things shorter
-cbFrame = app.buttonFrame
+bFrame = app.buttonFrame
 
-#enter "aaa" to TextBox, then check it
-cbFrame.findText(None).enterText("aaa")
+#click button1 to get a messagedialog, then close messagedialog
+bFrame.button1.click()
 sleep(config.SHORT_DELAY)
-cbFrame.textResult("aaa")
-
-#click button1 to get a messagedialog, then colse messagedialog
-cbFrame.button1.click()
-sleep(config.SHORT_DELAY)
-cbFrame.clickResult()
+bFrame.clickResult()
 
 #close the messagedialog
-cbFrame.close()
-
-#click button2 to get a messagedialog, then close messagedialog
-cbFrame.button2.click()
-sleep(config.SHORT_DELAY)
-cbFrame.clickResult()
-
-#close the messagedialog
-cbFrame.close()
-
-#give button1 a press action, then to check if rise armed status
-cbFrame.press(cbFrame.button1)
-sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.button1,"armed");
-
-#give button1 a relese action, then to check if rase armed status
-cbFrame.release(cbFrame.button1)
-sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.button1, "unarmed");
-cbFrame.clickResult()
-
-#close the messagedialog
-cbFrame.close()
+bFrame.close_dialog()
 
 ##give button2 a press action, then to check if rise armed status
-cbFrame.press(cbFrame.button2)
+bFrame.press(bFrame.button2)
 sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.button2, "armed");
+bFrame.assertResult(bFrame.button2, "armed");
 
 #give button2 a relese action, then to check if rase armed status
-cbFrame.release(cbFrame.button2)
+bFrame.release(bFrame.button2)
 sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.button2, "unarmed");
-cbFrame.clickResult()
+bFrame.assertResult(bFrame.button2, "unarmed");
+bFrame.clickResult()
 
 #close the messagedialog
-cbFrame.close()
+bFrame.close_dialog()
 
-cbFrame.altF4(cbFrame)
+#close the sample app
+bFrame.quit()
+
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
