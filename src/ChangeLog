@@ -1,4 +1,11 @@
-2008-06-26  Mario Carrion <mcarrion@novell.com> 
+2008-06-30  Mario Carrion <mcarrion@novell.com>
+
+	* patches/scrollbar-patch.cs: Events renamed: LargeIncrementEvent to
+	LargeIncrementCalled, LargeDecrementEvent to LargeDecrementCalled,
+	SmallIncrementEvent to SmallIncrementCalled, SmallDecrementEvent to
+	SmallDecrementCalled. Comments more verbose.
+
+2008-06-26  Mario Carrion <mcarrion@novell.com>  
 
 	* patches/scrollbar-patch.cs: File added. Patch needed to support 
 	provider in ScrollBar winform control.
