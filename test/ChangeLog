@@ -1,3 +1,11 @@
+2008-06-30  Calen Chen <cachen@novell.com>
+
+	* samples/gtkbutton.py : rename class name to ButtonSample
+	* testers/button_basic_ops.py : delete bFrame.close_dialog()
+	* testers/button/buttonframe.py : update clickResult to assert that the
+	alert windows have been closed by moving close_dialog funtion in here.
+	delete self.assertClosed()
+
 2008-06-29  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/gtkbutton.py : renamed from gtksample.  take out label and 
@@ -20,16 +28,25 @@
 
 2008-06-27  Calen Chen <cachen@novell.com>
 	* testers/treeview_basic_ops.py : update with sleep time
-	* testers/treeview/treeviewframe.py : update the action's precedence relationship in expand&contract to solve screenshot synchronous problem.
-	* testers/button_basic_ops.py : update with adding cbFrame.close() to close messagedialog
-	* testers/button/buttonframe.py : update with adding close instance and adjust the action's precedence relationship in press&release to solve screenshot synchronous problem.
+	* testers/treeview/treeviewframe.py : update the action's precedence
+	relationship in expand&contract to solve screenshot synchronous problem
+	* testers/button_basic_ops.py : update with adding cbFrame.close() to
+	close messagedialog
+	* testers/button/buttonframe.py : update with adding close instance
+	and adjust the action's precedence relationship in press&release
+	to solve screenshot synchronous problem.
 
 
 2008-06-27  Calen Chen <cachen@novell.com>
-	* samples/gtksample.py : add a gtk sample for button, text, messagedialog control
-	* testers/button_basic_ops.py : add strongwind test script to check button, text, messagedialog against gtksample.py
-	* testers/button/__init__.py : add strongwind test script to set where is the gtk sample
-	* testers/button/buttonframe.py : add strongwind test script to set definition for gtk sample.
+	* samples/gtksample.py : add a gtk sample for button, text,
+	messagedialog control
+	* testers/button_basic_ops.py : add strongwind test script to
+	check button, text, messagedialog against gtksample.py
+	* testers/button/__init__.py : add strongwind test script
+	to set where
+	is the gtk sample
+	* testers/button/buttonframe.py : add strongwind test script to
+	set definition for gtk sample.
 
 2008-06-25  Ray Wang <rawang@gmail.com>
 
@@ -54,14 +71,20 @@
 	* samples/splitContainer.py : implement SplitContainer control
 
 2008-06-23  Calen Chen <cachen@novell.com>
-	* testers/treeview_basic_ops.py :renew the test script to check the expanded status against accerciser.
+	* testers/treeview_basic_ops.py :renew the test script to check the 
+	expanded status against accerciser.
 	* testers/treeview/treeviewframe.py: renew "assertResult" definition.
 
 2008-06-20  Calen Chen <cachen@novell.com>
 	* samples/gtktreeview.py : enlarge the windows size.
-	* testers/treeview_basic_ops.py :renew the test script to test expand and contract treeview's TableCell.
+	* testers/treeview_basic_ops.py :renew the test script to
+	test expand and contract treeview's TableCell.
 	* testers/treeview/__init__.py : renew the logName.
-	* testers/treeview/treeviewframe.py: add definition for expand, contract to act TableCell "expand or contract" and tchClick to act TableColumnHeader "click", because strongwind doesn't support them. and redifine actionResult and focusResult to check if the action has been done.
+	* testers/treeview/treeviewframe.py: add definition for expand,
+	contract to act TableCell "expand or contract" and tchClick to act 
+	TableColumnHeader "click", because strongwind doesn't support them.
+	and redifine actionResult and focusResult to check if the action
+	has been done.
 
 
 2008-06-20  Ray Wang <rawang@gmail.com>
@@ -108,8 +131,10 @@
 2008-06-17  Calen Chen <cachen@novell.com>
 
 	* samples/gtktreeview.py: add a gtk sample app for treeview.
-	* testers/treeview-basic-ops.py: add a gtk test script for treeview. it will auto close the app window after running test.
-	* testers/treeview: add gtk test scripts for treeview with check RoleName. 
+	* testers/treeview-basic-ops.py: add a gtk test script for treeview.
+	it will auto close the app window after running test.
+	* testers/treeview: add gtk test scripts for treeview with
+	check RoleName. 
 	* drivers/tests.py: add treeview-basic-ops.py to test_list.
 
 2008-06-16  Brian G. Merrell <bgmerrell@gmail.com>
@@ -152,7 +177,8 @@
 2008-06-13  Calen Chen <cachen@novell.com>
 
 	* samples/*.py: delete all old application samples.
-	* samples/*.py: add new application samples which the name of those files
+	* samples/*.py: add new application samples which the name of
+	those files
 	and the form of those script base on "test coding standard".
 	* samples/richtextbox_text.txt: change "text.txt" to 
 	"richtextbox_text.txt" for richtextbox.py to do openfile.
@@ -202,15 +228,21 @@
 
 2008-06-04  Calen Chen <cachen@novell.com>
 
-	* samples/*.py: add "#!/usr/bin/env ipy" to the top of all *.py files, and change authority to 755.
+	* samples/*.py: add "#!/usr/bin/env ipy" to the top of all *.py files,
+	and change authority to 755.
 
 2008-06-04  Calen Chen <cachen@novell.com>
 
 	* samples/ToolTip.py:  add app for ToolTip Control
-	* samples/StatusBar-StatusBarPanel.py: add app for StatusBar and StatusBarPanel Controls
+	* samples/StatusBar-StatusBarPanel.py: add app for StatusBar and
+	StatusBarPanel Controls
 	* samples/StatusStrip.py: add app for StatusStrip Control
 	* samples/MaskedTextBox.py: add app for MaskedTextBox Control
-	* samples/ToolStrip-series.py: add app for ToolStrip,ToolStrip, ToolStripComboBox, ToolStripDropDownButton, ToolStripLabel, ToolStripSeparator, ToolStripSplitButton, ToolStripTextBox, ToolStripDropDown, ToolStripButton, MenuStrip, ToolStripMenuItem, StatusStrip, ToolStripStatusLabel, ToolStripProgressBar Controls.
+	* samples/ToolStrip-series.py: add app for ToolStrip,ToolStrip,
+	ToolStripComboBox, ToolStripDropDownButton, ToolStripLabel,
+	ToolStripSeparator, ToolStripSplitButton, ToolStripTextBox,
+	ToolStripDropDown, ToolStripButton, MenuStrip, ToolStripMenuItem,
+	StatusStrip, ToolStripStatusLabel, ToolStripProgressBar Controls.
 
 2008-06-03  Brian G. Merrell <bgmerrell@gmail.com>
 	* drivers/remote_run.py : abort correctly on user abort

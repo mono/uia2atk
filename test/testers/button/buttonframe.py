@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 
 ##############################################################################$
-# Written by:  Brian G. Merrell <bgmerrell@novell.com>$
-# Date:        May 23 2008$
-# Description: checkButton.py wrapper script
-#              Used by the button-*.py tests
+# Written by:  Calen Chen <cachen@novell.com>
+# Date:        06/27/2008
+# Description: gtkbutton.py wrapper script
+#              Used by the button_*.py tests
 ##############################################################################$
 
 from strongwind import *
@@ -55,27 +54,26 @@ class ButtonFrame(accessibles.Frame):
                                  (button, result)
 
     #check if there is rise a messagedialog when send "click" action.
-    def clickResult(self,MessageDialog=True,closeDialog=False):
+    def clickResult(self,MessageDialog=True):
 
         if MessageDialog:
-	      self.app.findAlert(None,logText="MessageDialog")
+            self = self.app.findAlert(None,logText="MessageDialog")
 
+            #close the dialog if it is been raised.
+            procedurelogger.action('Press <Alt>F4.', self)
+            self.keyCombo('<Alt>F4')
+            procedurelogger.expectedResult('The %s disappears.' % self)
 
-    #close the dialog windows.
-    def close_dialog(self, assertClosed=True):
-        procedurelogger.action('In the Information alert, press <Alt>F4.')
-        sleep(config.SHORT_DELAY)
+            def closed():
+                return not self.showing
 
-        procedurelogger.expectedResult('the messagedialog has been closed')
-        self.keyCombo('<Alt>F4')
+            assert utils.retryUntilTrue(closed)
 
+    #close application window after running test
     def quit(self):
-        'Quit checkbutton'
+        'Quit application'
 
-        # click the quit button
         self.altF4()
-
-        self.assertClosed()
 
 
 class InvalidState(Exception):

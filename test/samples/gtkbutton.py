@@ -1,12 +1,11 @@
 #!/usr/bin/python
  
-# example helloworld2.py
+# example gtkbutton.py
  
 import pygtk
-#pygtk.require('2.0')
 import gtk
  
-class HelloWorld2:
+class ButtonSample:
  
     # callback that opens a message dialog
     def open_dialog(self, widget, data=None):
@@ -14,13 +13,11 @@ class HelloWorld2:
         self.dialog.show()
         self.dialog.set_title("MessageDialog")
         self.dialog.set_border_width(50)
-        
  
     # another callback
     def delete_event(self, widget, event, data=None):
         gtk.main_quit()
         return False
-
  
     def __init__(self):
         # Create a new window
@@ -80,5 +77,5 @@ class HelloWorld2:
         gtk.main()
 
 if __name__ == "__main__":
-    hello = HelloWorld2()
-    hello.main()
+    button = ButtonSample()
+    button.main()
