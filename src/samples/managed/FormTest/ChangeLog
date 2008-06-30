@@ -1,3 +1,7 @@
+2008-06-30  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* formtest.sh: Fix run script to make it work in the parallel mono env.
+
 2008-06-17  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* FormTest.mdp: Use GAC refernces instead of relative references. 
