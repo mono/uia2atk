@@ -1,3 +1,8 @@
+2008-06-30  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs:
+	Events updated to match scrollbar-uia.patch
+
 2008-06-27  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs: Class 
