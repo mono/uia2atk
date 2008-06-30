@@ -1,3 +1,7 @@
+2008-06-30  Ray Wang <rawang@gmail.com>
+
+	* samples/tablelayoutpanel.py : implement TableLayoutPanel control
+
 2008-06-30  Calen Chen <cachen@novell.com>
 
 	* samples/gtkbutton.py : rename class name to ButtonSample
