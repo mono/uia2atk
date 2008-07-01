@@ -67,6 +67,18 @@ namespace FormTest
 			chk.Top = lab.Top + 30;
 			f1.Controls.Add (chk);
 			
+			RadioButton rad1 = new RadioButton ();
+			RadioButton rad2 = new RadioButton ();
+			rad1.Text = "Test radiobutton 1";
+			rad2.Text = "Test radiobutton 2";
+			rad1.Width = f1.Width;
+			rad2.Width = f1.Width;
+			rad1.Height = b.Height;
+			rad1.Top = chk.Top + 30;
+			rad2.Top = rad1.Top + 30;
+			f1.Controls.Add (rad1);
+			f1.Controls.Add (rad2);
+			
 			Form bgf = new Form ();
 			bgf.Text = "Background Form";
 			bgf.Show ();

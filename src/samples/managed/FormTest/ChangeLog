@@ -1,3 +1,7 @@
+2008-07-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* FormTest.cs: Add test radio buttons.
+
 2008-06-30  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* formtest.sh: Fix run script to make it work in the parallel mono env.
