@@ -139,11 +139,15 @@ namespace UiaAtkBridge
 				
 			case Atk.TextBoundary.Char:
 				startOffset = offset;
-				if (offset >= text.Length)
+				if (startOffset < 0) {
+					startOffset = text.Length;
+					endOffset = text.Length;
+				}
+				else if (offset >= text.Length)
 					endOffset = offset;
 				else
 					endOffset = offset + 1;
-				return ReturnTextWrtOffset (startOffset);
+				return ReturnTextWrtOffset (offset);
 				
 			default:
 				throw GetNotSupportedBoundary (boundaryType);
@@ -201,7 +205,7 @@ namespace UiaAtkBridge
 
 		internal char GetCharacterAtOffset (int offset)
 		{
-			if (offset >= text.Length)
+			if ((offset >= text.Length) || (offset < 0) || (String.IsNullOrEmpty (text)))
 				return '\0';
 			return text [offset];
 		}
@@ -216,6 +220,8 @@ namespace UiaAtkBridge
 		private string ReturnTextWrtOffset (int startOffset)
 		{
 			//TODO: optimize?
+			if ((startOffset < 0) || (startOffset > this.text.Length))
+				return null;
 			return new String (new char[] { GetCharacterAtOffset (startOffset) });
 		}
 		

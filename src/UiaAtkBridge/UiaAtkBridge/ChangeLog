@@ -1,3 +1,9 @@
+2008-07-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* TextImplementorHelper.cs: Fixed some tests that started to fail when
+	  switching to a new mono env (running Mono SVN). RadioButtons tests
+	  pass as well, yay!
+
 2008-06-27  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Menu.cs: Refactoring: use Component*Parent*Adapter instead of
