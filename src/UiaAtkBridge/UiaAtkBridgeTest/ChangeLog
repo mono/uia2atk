@@ -1,3 +1,7 @@
+2008-07-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* AtkTester.cs: More tests identifiers.
+
 2008-06-27  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTester.cs: Better to define initial behaviour than to disable

@@ -541,29 +541,29 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,SentenceStart,eo");
 			
 			Assert.AreEqual ("t",
-				atkText.GetTextAtOffset (18, Atk.TextBoundary.Char, out startOffset, out endOffset));
-			Assert.AreEqual (18, startOffset, "GetTextAtOffset,Char,so");
-			Assert.AreEqual (19, endOffset, "GetTextAtOffset,Char,eo");
+				atkText.GetTextAtOffset (18, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char1");
+			Assert.AreEqual (18, startOffset, "GetTextAtOffset,Char1,so");
+			Assert.AreEqual (19, endOffset, "GetTextAtOffset,Char1,eo");
 			Assert.AreEqual (".",
-				atkText.GetTextAtOffset (23, Atk.TextBoundary.Char, out startOffset, out endOffset));
-			Assert.AreEqual (23, startOffset, "GetTextAtOffset,Char,so");
-			Assert.AreEqual (24, endOffset, "GetTextAtOffset,Char,eo");
+				atkText.GetTextAtOffset (23, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char2");
+			Assert.AreEqual (23, startOffset, "GetTextAtOffset,Char2,so");
+			Assert.AreEqual (24, endOffset, "GetTextAtOffset,Char2,eo");
 			Assert.AreEqual ("e",
-				atkText.GetTextAtOffset (name.Length - 2, Atk.TextBoundary.Char, out startOffset, out endOffset));
-			Assert.AreEqual (name.Length - 2, startOffset, "GetTextAtOffset,Char,so");
-			Assert.AreEqual (name.Length - 1, endOffset, "GetTextAtOffset,Char,eo");
+				atkText.GetTextAtOffset (name.Length - 2, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char3");
+			Assert.AreEqual (name.Length - 2, startOffset, "GetTextAtOffset,Char3,so");
+			Assert.AreEqual (name.Length - 1, endOffset, "GetTextAtOffset,Char3,eo");
 			Assert.AreEqual ("?",
-				atkText.GetTextAtOffset (name.Length - 1, Atk.TextBoundary.Char, out startOffset, out endOffset));
-			Assert.AreEqual (name.Length - 1, startOffset, "GetTextAtOffset,Char,so");
-			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char,eo");
+				atkText.GetTextAtOffset (name.Length - 1, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char4");
+			Assert.AreEqual (name.Length - 1, startOffset, "GetTextAtOffset,Char4,so");
+			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char4,eo");
 			Assert.AreEqual (String.Empty,
-				atkText.GetTextAtOffset (name.Length, Atk.TextBoundary.Char, out startOffset, out endOffset));
-			Assert.AreEqual (name.Length, startOffset, "GetTextAtOffset,Char,so");
-			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char,eo");
+				atkText.GetTextAtOffset (name.Length, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char5");
+			Assert.AreEqual (name.Length, startOffset, "GetTextAtOffset,Char5,so");
+			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char5,eo");
 			Assert.AreEqual (null,
-				atkText.GetTextAtOffset (-1, Atk.TextBoundary.Char, out startOffset, out endOffset));
-			Assert.AreEqual (name.Length, startOffset, "GetTextAtOffset,Char,so");
-			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char,eo");
+				atkText.GetTextAtOffset (-1, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char6");
+			Assert.AreEqual (name.Length, startOffset, "GetTextAtOffset,Char6,so");
+			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char6,eo");
 
 
 			//GetTextAfterOffset
