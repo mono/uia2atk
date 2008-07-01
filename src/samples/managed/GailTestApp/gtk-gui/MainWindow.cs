@@ -69,6 +69,9 @@ public partial class MainWindow {
         w1.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
         this.cbeTest = Gtk.ComboBoxEntry.NewText();
+        this.cbeTest.AppendText(Mono.Unix.Catalog.GetString("First element"));
+        this.cbeTest.AppendText(Mono.Unix.Catalog.GetString("Second element"));
+        this.cbeTest.AppendText(Mono.Unix.Catalog.GetString("Third element"));
         this.cbeTest.Name = "cbeTest";
         this.table1.Add(this.cbeTest);
         Gtk.Table.TableChild w2 = ((Gtk.Table.TableChild)(this.table1[this.cbeTest]));

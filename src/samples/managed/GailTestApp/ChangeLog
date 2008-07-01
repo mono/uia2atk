@@ -1,3 +1,8 @@
+2008-07-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* gtk-gui/MainWindow.cs, gtk-gui/gui.stetic: Added some elements to our
+	  first ComboBoxEntry test widget.
+
 2008-06-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* MainWindow.cs, Main.cs: Add real support and only use this mode.

@@ -65,7 +65,9 @@
                   <widget class="Gtk.ComboBoxEntry" id="cbeTest">
                     <property name="MemberName" />
                     <property name="IsTextCombo">True</property>
-                    <property name="Items" translatable="yes" />
+                    <property name="Items">First element
+Second element
+Third element</property>
                   </widget>
                   <packing>
                     <property name="TopAttach">1</property>
@@ -153,6 +155,7 @@ in a label</property>
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Label" translatable="yes">radiobutton1</property>
+                    <property name="Active">True</property>
                     <property name="DrawIndicator">True</property>
                     <property name="HasLabel">True</property>
                     <property name="UseUnderline">True</property>
@@ -205,6 +208,7 @@ in a label</property>
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Label" translatable="yes">rad Opt 0</property>
+                    <property name="Active">True</property>
                     <property name="DrawIndicator">True</property>
                     <property name="HasLabel">True</property>
                     <property name="UseUnderline">True</property>
