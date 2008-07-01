@@ -1,5 +1,9 @@
 2008-07-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* FormTest.cs: Spaces to tabs.
+
+2008-07-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* FormTest.cs: Added a test comboBox.
 
 2008-07-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
