@@ -53,6 +53,9 @@ namespace UiaAtkBridge
 		private string actionDescription = null;
 		private string actionName = "press";
 		private ISelectionProvider 					selProvider;
+		
+		//this one, when not null, indicates that the combobox is editable (like a gtkcomboboxentry vs normal gtkcombobox)
+		private IValueProvider						valProvider;
 		private IRawElementProviderFragmentRoot 	provider;
 		private SelectionProviderUserHelper	selectionHelper;
 		
@@ -63,8 +66,15 @@ namespace UiaAtkBridge
 			this.Role = Atk.Role.ComboBox;
 			children.Add (new Menu (ChildrenItems));
 			selProvider = (ISelectionProvider)provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
+			valProvider = (IValueProvider)provider.GetPatternProvider(ValuePatternIdentifiers.Pattern.Id);
+			
 			if (selProvider == null)
 				throw new NotImplementedException ("ComboBoxProvider should always implement ISelectionProvider");
+			
+			if (valProvider != null)
+				//not yet ready:
+				//children.Add (new TextEntry());
+				throw new NotImplementedException ("We need to implement the TextEntry bridge class for this kind of combobox");
 			
 			selectionHelper = new SelectionProviderUserHelper(provider, selProvider);
 		}

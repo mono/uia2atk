@@ -1,5 +1,9 @@
 2008-07-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* ComboBox.cs: Prepare for the next ComboBox type.
+
+2008-07-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextImplementorHelper.cs: Fixed some tests that started to fail when
 	  switching to a new mono env (running Mono SVN). RadioButtons tests
 	  pass as well, yay!
