@@ -25,65 +25,68 @@
 
 using System;
 using System.Windows.Automation;
-using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-using Mono.UIAutomation.Winforms;
 
-namespace Mono.UIAutomation.Winforms.Behaviors
+namespace Mono.UIAutomation.Winforms
 {
-	
-	public class ListBoxSelectionProviderBehavior
-		: ListBoxProviderBehavior, ISelectionProvider
+
+	public class ComboBoxButtonProvider : FragmentControlProvider
 	{
-		
-#region Constructor
-		
-		public ListBoxSelectionProviderBehavior (FragmentControlProvider provider)
-			: base (provider)
+#region Constructors
+
+		public ComboBoxButtonProvider ()
+			: base (null)
 		{
+//			combobox_container = provider;
+			
+			//TODO: Add "InvokePatternIdentifiers.Pattern" Behavior
 		}
 		
 #endregion
-		
-#region IProviderBehavior Members
-		
-		public override AutomationPattern ProviderPattern { 
-			get { return SelectionPatternIdentifiers.Pattern; }
-		}
 
+//#region Public Properties
+//
+//		public ComboBox ComboBoxContainer {
+//			get { return combobox_container; }
+//		}
+//
+//#endregion
+		
+#region Public Methods
+		
+		public override void InitializeEvents ()
+		{
+			//We don't to support any event associated to this.Control.
+			//However we need to defined the following events:
+			//
+			//AutomationFocusChangedEvent
+			//BoundingRectangleProperty property-changed event.
+			//IsOffscreenProperty property-changed event.
+			//IsEnabledProperty property-changed event.
+			//NameProperty property-changed event.
+			//StructureChangedEvent
+		}
+		
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == SelectionPatternIdentifiers.CanSelectMultipleProperty.Id)
-				return CanSelectMultiple;
-			else if (propertyId == SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id)
-				return IsSelectionRequired;
-			else if (propertyId == SelectionPatternIdentifiers.SelectionProperty.Id)
-				return GetSelection ();
+			//TODO: We may need to get VALID information using Reflection from 
+			//ScrollBarContainer and return those values, I'm thiking in the
+			//following propierties: BoundingRectangleProperty and ClickablePointProperty
+			if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
+				return 1; //FIXME: Get a valid value
+			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return "Drop Down Button"; //TODO: i18n?
 			else
 				return base.GetPropertyValue (propertyId);
 		}
 		
 #endregion
+
+//#region Private Fields
+//
+//		private ComboBox combobox_container;
+//		
+//#endregion
 		
-#region ISelectionProvider Members
-
-		public bool CanSelectMultiple {
-			get { 
-				return listbox.SelectionMode == SelectionMode.MultiExtended 
-					|| listbox.SelectionMode == SelectionMode.MultiSimple;
-			}
-		}
-
-		public bool IsSelectionRequired {
-			get { return listbox.SelectedIndex == -1 ? false : true; }
-		}
-		
-		public IRawElementProviderSimple[] GetSelection ()
-		{
-			return ((ListBoxProvider) Provider).GetSelectedListBoxItems ();
-		}
-
-#endregion
-
 	}
 }

@@ -31,25 +31,44 @@ using Mono.UIAutomation.Winforms;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
-	
-	
-	public class ComboBoxSelectionProviderBehavior 
-		: ComboBoxProviderBehavior, ISelectionProvider
+
+	internal class ListSelectionProviderBehavior 
+		: ProviderBehavior, ISelectionProvider
 	{
 		
-#region Constructor
-		
-		public ComboBoxSelectionProviderBehavior (FragmentControlProvider provider)
+#region Constructors
+
+		public ListSelectionProviderBehavior (ListProvider provider)
 			: base (provider)
 		{
+			list_provider = provider;
 		}
 		
 #endregion
-		
-#region IProviderBehavior Members
+
+#region IProviderBehavior Interface		
 		
 		public override AutomationPattern ProviderPattern { 
 			get { return SelectionPatternIdentifiers.Pattern; }
+		}
+
+		public override void Connect (Control control)
+		{
+			//TODO: Add related events:
+			//CanSelectMultiple
+			//IsSelectionRequired
+			//GetSelection 
+		}
+		
+		public override void Disconnect (Control control)
+		{
+			//TODO: Add related events:
+//			Provider.SetEvent (ProviderEventType.SelectionCanSelectMultiple,
+//			                   null);
+//			Provider.SetEvent (ProviderEventType.SelectionIsSelectionRequired,
+//			                   null);
+//			Provider.SetEvent (ProviderEventType.SelectionSelection,
+//			                   null);
 		}
 
 		public override object GetPropertyValue (int propertyId)
@@ -61,7 +80,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			else if (propertyId == SelectionPatternIdentifiers.SelectionProperty.Id)
 				return GetSelection ();
 			else
-				return base.GetPropertyValue (propertyId);
+				return null;
 		}
 		
 #endregion
@@ -69,25 +88,24 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 #region ISelectionProvider Members
 
 		public bool CanSelectMultiple {
-			get { return false; }
+			get { return list_provider.SupportsMulipleSelection; }
 		}
 
 		public bool IsSelectionRequired {
-			get { return combobox.SelectedIndex != -1 ? false : true; }
+			get { return list_provider.ListControl.SelectedIndex == -1 ? false : true; }
 		}
 		
 		public IRawElementProviderSimple[] GetSelection ()
 		{
-			if (combobox.SelectedIndex == -1)
-				return null;
-			else
-				return new IRawElementProviderSimple[] {
-					new ComboBoxItemProvider ((ComboBoxProvider) Provider,
-					                          combobox)
-				};
+			return list_provider.GetSelectedItemsProviders ();
 		}
 
 #endregion
+		
+#region Private Fields
 
+		private ListProvider list_provider;
+		
+#endregion
 	}
 }

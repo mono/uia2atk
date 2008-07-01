@@ -32,7 +32,7 @@ using Mono.UIAutomation.Winforms;
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 		
-	//Navigation is supported in the following order:
+	//Navigation tree has the following leafs:
 	// 1. ButtonSmallBackwards - ScrollBarButtonProvider
 	// 2. ButtonLargeBackwards - ScrollBarButtonProvider
 	// 3. Thumb	- ThumbProvider

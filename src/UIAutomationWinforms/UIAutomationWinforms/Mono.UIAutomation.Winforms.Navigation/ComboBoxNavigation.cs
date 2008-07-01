@@ -32,6 +32,10 @@ using Mono.UIAutomation.Winforms;
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 	
+	//Navigation tree has the following leafs:
+	// 1. TextBox - TextBox Provider (may not visible)
+	// 2. ComboBoxItem - ComboBoxItemProvider (0 to n) 
+	// 3. Button - ButtonProvider (may not be visible)
 	internal class ComboBoxNavigation : SimpleNavigation
 	{
 
@@ -41,9 +45,9 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			: base (provider)
 		{		
 			navigation = new NavigationChain ();
-			navigation.AddLink (new ComboBoxTextBoxNavigation (provider));
-			navigation.AddLink (new ComboBoxListBoxNavigation (provider));
-			navigation.AddLink (new ComboBoxButtonNavigation (provider));
+			//TODO: Add Edit provider and Button provider
+			itemroot_navigation = new ComboBoxListBoxNavigation (provider);
+			navigation.AddLink (itemroot_navigation);
 		}
 
 #endregion
@@ -57,7 +61,16 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				return first != null ? (IRawElementProviderFragment) first.Provider : null;
 			} else if (direction == NavigateDirection.LastChild) {
 				INavigation last = navigation.GetLastLink ();
-				return last != null ? (IRawElementProviderFragment) last.Provider : null;
+				if (last == itemroot_navigation) {
+					ComboBoxProvider provider = (ComboBoxProvider) Provider;
+					ComboBox combobox = (ComboBox) provider.Control;
+					
+					if (combobox.Items.Count > 1)
+						return provider.GetItemProvider (combobox.Items.Count - 1);
+					else
+						return (IRawElementProviderFragment) last.Provider;
+				} else
+					return last != null ? (IRawElementProviderFragment) last.Provider : null;
 			} else
 				return base.Navigate (direction);
 		}
@@ -67,57 +80,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 #region Private members
 
 		private NavigationChain navigation;
-		
-#endregion
-		
-#region TextBox Navigation Class
-		
-		class ComboBoxTextBoxNavigation : SimpleNavigation
-		{
-			public ComboBoxTextBoxNavigation (ComboBoxProvider provider)
-				: base (provider)
-			{
-				combobox_provider = provider;
-
-				InitializeTextBoxProvider ();
-			}
-			
-			public override IRawElementProviderSimple Provider {
-				get { return textbox_provider; }
-			}
-			
-			public override bool SupportsNavigation  {
-				get { 
-					ComboBox control = (ComboBox) combobox_provider.Control;
-					return control.DropDownStyle == ComboBoxStyle.DropDown
-						|| control.DropDownStyle == ComboBoxStyle.DropDownList;
-				}
-			}
-			
-			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
-			{
-				if (direction == NavigateDirection.Parent)
-					return (IRawElementProviderFragment) Provider;
-				else if (direction == NavigateDirection.NextSibling)
-					return GetNextSiblingProvider ();
-				else
-					return null; 
-			}
-			
-			private void InitializeTextBoxProvider ()
-			{
-				Type type = combobox_provider.Control.GetType ();
-				FieldInfo fieldInfo = type.GetField ("textbox_ctrl",
-				                                     BindingFlags.NonPublic
-				                                     | BindingFlags.Instance);
-				TextBox textbox = (TextBox) fieldInfo.GetValue (combobox_provider.Control);
-				textbox_provider = (TextBoxProvider) ProviderFactory.GetProvider (textbox);
-				textbox_provider.Navigation = this;
-			}
-
-			private ComboBoxProvider combobox_provider;			
-			private TextBoxProvider textbox_provider;
-		}
+		private ComboBoxListBoxNavigation itemroot_navigation;
 		
 #endregion
 
@@ -128,74 +91,42 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			public ComboBoxListBoxNavigation (ComboBoxProvider provider)
 				: base (provider)
 			{
-				InitializeListBoxProvider (provider);
+				this.provider = provider;
 			}
-
+			
+			public override bool SupportsNavigation  {
+				get { return !(((ComboBox) provider.Control).Items.Count == 0); }
+			}
+			
 			public override IRawElementProviderSimple Provider {
-				get { return listbox_provider; }
+				get { 
+					if (first_item_provider == null) {
+						first_item_provider = provider.GetItemProvider (0);
+						listbox_navigation = first_item_provider.Navigation;
+						first_item_provider.Navigation = this;
+					}
+
+					return first_item_provider;
+				}
 			}
-			
+
 			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 			{
+				//TODO: This MUST BE REFACTORED once the support to StructureEvent is enabled
 				if (direction == NavigateDirection.Parent)
-					return (IRawElementProviderFragment) Provider;
-				else if (direction == NavigateDirection.NextSibling)
-					return GetNextSiblingProvider ();
-				else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider ();
-				else
+					return provider;
+				//TODO: This must be changed to: GetNextSiblingProvider and 
+				//GetPreviousSiblingProvider
+				else if (direction == NavigateDirection.NextSibling
+				         || direction == NavigateDirection.PreviousSibling)
 					return listbox_navigation.Navigate (direction); 
-			}
-			
-			private void InitializeListBoxProvider (ComboBoxProvider provider)
-			{
-				Type type = provider.Control.GetType ();
-
-				FieldInfo fieldInfo = type.GetField ("listbox_ctrl",
-				                                     BindingFlags.NonPublic
-				                                     | BindingFlags.Instance);
-				ListBox listbox = (ListBox) fieldInfo.GetValue (provider.Control);
-				
-				Console.WriteLine ("Is null? "+(listbox == null));
-				
-				listbox_provider = (ListBoxProvider) ProviderFactory.GetProvider (listbox);
-				listbox_provider.Navigation = this;
-				listbox_navigation = new ListBoxNavigation (listbox_provider);
-			}
-			
-			private ListBoxProvider listbox_provider;
-			private INavigation listbox_navigation;
-		}
-		
-#endregion
-		
-
-#region Button Navigation Class
-		
-		class ComboBoxButtonNavigation : SimpleNavigation
-		{
-			public ComboBoxButtonNavigation (ComboBoxProvider provider)
-				: base (provider)
-			{
-				InitializeButtonProvider ();
-			}
-			
-			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
-			{
-				if (direction == NavigateDirection.Parent)
-					return (IRawElementProviderFragment) Provider;
-				else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider ();
 				else
-					return null;
+					return base.Navigate (direction);
 			}
-			
-			private void InitializeButtonProvider ()
-			{
-				//TODO: How to get a valid ButtonProvider?
-				ButtonProvider provider = new ButtonProvider (null);
-				provider.Navigation = this;
-			}
+
+			private ComboBoxProvider provider;
+			private ListItemProvider first_item_provider;
+			private INavigation listbox_navigation;
 		}
 		
 #endregion

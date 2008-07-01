@@ -37,24 +37,39 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 
-	public class ListBoxProvider : FragmentRootControlProvider
+	public class ListBoxProvider : ListProvider
 	{
 		
 #region Constructor 
 
 		public ListBoxProvider (ListBox listbox) : base (listbox)
 		{
-			this.listbox = listbox;
-			items = new  Dictionary<int,ListBoxItemProvider> ();
-			
-			SetBehavior (SelectionPatternIdentifiers.Pattern,
-			             new ListBoxSelectionProviderBehavior (this));
-			SetBehavior (ScrollPatternIdentifiers.Pattern,
-			             new ListBoxScrollProviderBehavior (this));
+			listbox_control = listbox;
+
+			SetScrollBehavior (listbox);
 			
 			Navigation = new ListBoxNavigation (this);
 		}
 
+#endregion
+		
+#region IProviderBehavior Interface
+
+		public override object GetPropertyValue (int propertyId)
+		{
+			//TODO: Include: HelpTextProperty, LabeledByProperty, NameProperty
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.List.Id;
+			//FIXME: According the documentation this is valid, however you can
+			//focus only when control.CanFocus, this doesn't make any sense.
+			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				return true;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "list";
+			else
+				return base.GetPropertyValue (propertyId);
+		}
+		
 #endregion
 		
 #region FragmentControlProvider Overrides
@@ -63,53 +78,134 @@ namespace Mono.UIAutomation.Winforms
 		{
 			throw new NotImplementedException ();
 		}
-		
-		public override IRawElementProviderFragment GetFocus ()
-		{
-			return GetListBoxItem (listbox.SelectedIndex);
-		}
 
 #endregion
 		
-#region Public Methods
+#region ListProvider Methods
 		
-		public ListBoxItemProvider GetListBoxItem (int index)
-		{
-			ListBoxItemProvider item;
-			
-			if (listbox.Items.Count == 0 || index < 0 || index >= listbox.Items.Count)
-				return null;
-			else if (items.TryGetValue (index, out item) == false) {
-				item = new ListBoxItemProvider (this, listbox, index);
-				items [index] = item;
-			}
-
-			return item;
+		public override bool SupportsMulipleSelection { 
+			get { 
+				return listbox_control.SelectionMode == SelectionMode.MultiExtended 
+					|| listbox_control.SelectionMode == SelectionMode.MultiSimple;
+			} 
 		}
 		
-		public ListBoxItemProvider[] GetSelectedListBoxItems ()
+		public override int SelectedItemsCount { 
+			get { return listbox_control.SelectedItems.Count; }
+		}
+		
+		public override int ItemsCount {
+			get { return listbox_control.Items.Count;  }
+		}
+		
+		public override ListItemProvider[] GetSelectedItemsProviders ()
 		{
-			ListBoxItemProvider []items;
-			
-			if (listbox.SelectedIndices.Count == 0)
+			ListItemProvider []items;
+
+			if (listbox_control.SelectedIndices.Count == 0)
 				return null;
 			
-			items = new ListBoxItemProvider [listbox.SelectedIndices.Count];
-			
+			items = new ListItemProvider [listbox_control.SelectedIndices.Count];			
 			for (int index = 0; index < items.Length; index++) 
-				items [index] = GetListBoxItem (listbox.SelectedIndices [index]);
+				items [index] = GetItemProvider (listbox_control.SelectedIndices [index]);
 			
 			return items;
 		}
 		
+		public override string GetItemName (ListItemProvider item)
+		{
+			Console.WriteLine ("item.Index: {0}",item.Index);
+			return listbox_control.Items [item.Index].ToString ();
+		}
+		
+		public override void SelectItem (ListItemProvider item)
+		{
+			((ListBox) ListControl).SetSelected (item.Index, true);
+		}
+
+		public override void UnselectItem (ListItemProvider item)
+		{
+			((ListBox) ListControl).SetSelected (item.Index, false);
+		}
+		
+		public override bool IsItemSelected (ListItemProvider item)
+		{
+			return ((ListBox) ListControl).SelectedIndices.Contains (item.Index);
+		}
+		
 #endregion
 
-#region Private fields
+#region Private Methods
 
-		private ListBox listbox;
-		private Dictionary<int, ListBoxItemProvider> items;
-
+		private void SetScrollBehavior (ListBox listbox) 
+		{
+			FieldInfo fieldInfo;
+			
+			fieldInfo = listbox.GetType ().GetField ("vscrollbar",
+			                                         BindingFlags.NonPublic 
+			                                         | BindingFlags.Instance);
+			vscrollbar = (VScrollBar) fieldInfo.GetValue (listbox);
+			vscrollbar.VisibleChanged += new EventHandler (UpdateScrollBehaviorVisible);
+			vscrollbar.EnabledChanged += new EventHandler (UpdateScrollBehaviorEnable);
+						
+			fieldInfo = listbox.GetType ().GetField ("hscrollbar",
+			                                         BindingFlags.NonPublic
+			                                         | BindingFlags.Instance);
+			hscrollbar = (HScrollBar) fieldInfo.GetValue (listbox);
+			hscrollbar.VisibleChanged += new EventHandler (UpdateScrollBehaviorVisible);
+		}
+		
+		private void UpdateScrollBehaviorVisible (object sender, EventArgs args)
+		{
+			
+			if (scrollpattern_set == false
+			    && (hscrollbar.Visible == true || vscrollbar.Visible == true)) {
+				
+				if (sender == hscrollbar && listbox_control.ScrollAlwaysVisible)
+					return;
+				
+				SetBehavior (ScrollPatternIdentifiers.Pattern,
+				             new ListBoxScrollProviderBehavior (this, hscrollbar,
+				                                                vscrollbar));
+				scrollpattern_set = true;
+			} else if (scrollpattern_set == true
+			           && (hscrollbar.Visible == false || vscrollbar.Visible == false)) { 
+				if (sender == vscrollbar && listbox_control.ScrollAlwaysVisible 
+				    && hscrollbar.Enabled == false) {
+					SetBehavior (ScrollPatternIdentifiers.Pattern, null);
+					scrollpattern_set = false;
+				}
+			}
+		}
+		
+		private void UpdateScrollBehaviorEnable (object sender, EventArgs args)
+		{
+			if (scrollpattern_set == false 
+			    && listbox_control.ScrollAlwaysVisible == true) {
+				if (hscrollbar.Enabled) {
+					SetBehavior (ScrollPatternIdentifiers.Pattern,
+					             new ListBoxScrollProviderBehavior (this, hscrollbar,
+					                                                vscrollbar));
+					scrollpattern_set = true;
+				}
+			} else if (scrollpattern_set == false 
+			           && listbox_control.ScrollAlwaysVisible == true) {
+				if (hscrollbar.Enabled == false && hscrollbar.Visible == true) {
+					SetBehavior (ScrollPatternIdentifiers.Pattern, null);
+					scrollpattern_set = false;
+				}
+			}
+		}
+		
 #endregion
-
+		
+#region Private Fields
+		
+		private HScrollBar hscrollbar;
+		private ListBox listbox_control;
+		private bool scrollpattern_set;		
+		private VScrollBar vscrollbar;
+		
+#endregion
 	}
 }

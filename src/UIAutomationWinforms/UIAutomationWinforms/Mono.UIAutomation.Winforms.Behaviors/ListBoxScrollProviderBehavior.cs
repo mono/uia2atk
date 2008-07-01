@@ -35,36 +35,49 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
-	public class ListBoxScrollProviderBehavior 
-		: ListBoxProviderBehavior, IScrollProvider
+	internal class ListBoxScrollProviderBehavior 
+		: ProviderBehavior, IScrollProvider
 	{
 		
 #region Constructors
 
-		public ListBoxScrollProviderBehavior (ListBoxProvider provider)
+		public ListBoxScrollProviderBehavior (ListBoxProvider provider,
+		                                      HScrollBar hscrollbar,
+		                                      VScrollBar vscrollbar)
 			: base (provider)
 		{
+			this.hscrollbar = hscrollbar;
+			this.vscrollbar = vscrollbar;
 		}
 
 #endregion
 		
 #region IProviderBehavior Interface
+
+		public override AutomationPattern ProviderPattern { 
+			get { return ScrollPatternIdentifiers.Pattern; }
+		}
 		
 		public override void Connect (Control control)
 		{
-			base.Connect (control);
-
-			FieldInfo fieldInfo;
-			
-			fieldInfo = listbox.GetType ().GetField ("vscrollbar",
-			                                         BindingFlags.NonPublic 
-			                                         | BindingFlags.Instance);
-			vscrollbar = (ScrollBar) fieldInfo.GetValue (listbox);
-			
-			fieldInfo = listbox.GetType ().GetField ("hscrollbar",
-			                                         BindingFlags.NonPublic
-			                                         | BindingFlags.Instance);
-			hscrollbar = (ScrollBar) fieldInfo.GetValue (listbox);
+			//TODO: Add events
+			//HorizontallyScrollable
+			//HorizontalScrollPercent
+			//HorizontalViewSize
+			//VerticallyScrollable
+			//VerticalScrollPercent
+			//VerticalViewSize			
+		}
+		
+		public override void Disconnect (Control control)
+		{
+			//TODO: Delete events
+			//HorizontallyScrollable
+			//HorizontalScrollPercent
+			//HorizontalViewSize
+			//VerticallyScrollable
+			//VerticalScrollPercent
+			//VerticalViewSize
 		}
 
 		public override object GetPropertyValue (int propertyId)
@@ -84,10 +97,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			else
 				return base.GetPropertyValue (propertyId);
 		}
-
-		public override AutomationPattern ProviderPattern { 
-			get { return ScrollPatternIdentifiers.Pattern; }
-		}
 		
 #endregion
 		
@@ -95,7 +104,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			
 		public bool HorizontallyScrollable {
 			get {
-				if (listbox.ScrollAlwaysVisible)
+				if (((ListBox) Provider.Control).ScrollAlwaysVisible)
 					return hscrollbar.Enabled;
 				else
 					return hscrollbar.Visible;
@@ -117,7 +126,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public bool VerticallyScrollable {
 			get {
-				if (listbox.ScrollAlwaysVisible)
+				if (((ListBox) Provider.Control).ScrollAlwaysVisible)
 					return vscrollbar.Enabled;
 				else
 					return vscrollbar.Visible;
@@ -136,8 +145,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		public void Scroll (ScrollAmount horizontalAmount, 
 		                    ScrollAmount verticalAmount)
 		{
-			ScrollByAmount (hscrollbar, GetAmountString (horizontalAmount));
-			ScrollByAmount (vscrollbar, GetAmountString (verticalAmount));
+			if (horizontalAmount != ScrollAmount.NoAmount)
+				ScrollByAmount (hscrollbar, GetAmountString (horizontalAmount));
+			if (verticalAmount != ScrollAmount.NoAmount)
+				ScrollByAmount (vscrollbar, GetAmountString (verticalAmount));
 		}
 
 		public void SetScrollPercent (double horizontalPercent, 

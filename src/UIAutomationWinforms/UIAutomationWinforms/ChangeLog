@@ -1,3 +1,84 @@
+2008-07-01  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.Navigation/ListBoxItemNavigation.cs: File 
+	deleted. Replaced by ListItemNavigation class.
+	* Mono.UIAutomation.Winforms/ListBoxItemProvider.cs: File deleted. 
+	Replaced by ListItemProvider class.
+	* Mono.UIAutomation.Winforms/ComboBoxItemProvider.cs: File deleted.
+	Replaced by ListItemProvider class.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxItemScrollProviderBehavior.cs:
+	File deleted. Replaced by ListItemScrollProviderBehavior class.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxProviderBehavior.cs:
+	File deleted. Replaced by ListProviderBehavior class.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxItemProviderBehavior.cs:
+	File deleted. Replaced by ListItemProviderBehavior class.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxSelectionProviderBehavior.cs:
+	File deleted. Replaced by ListSelectionProviderBehavior class.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxItemProviderBehavior.cs:
+	File deleted. Replaced by ListItemProviderBehavior class.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxProviderBehavior.cs:
+	File deleted. Replaced by the ListItemProviderBehavior class.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxItemSelectionProviderBehavior.cs:
+	File deleted. Replaced by the ListItemSelectionProviderBehavior class.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxSelectionProviderBehavior.cs:
+	File deleted. Replaced by the ListItemSelectionProviderBehavior class.
+	* Mono.UIAutomation.Winforms.Navigation/ListItemNavigation.cs: File 
+	added. Represents the ListItem navigation used by the ListItem class.
+	* Mono.UIAutomation.Winforms/ComboBoxButtonProvider.cs: File added.
+	Represents the internal Button defined in the ComboBox control.
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: File added. Represents
+	the ListItem used by the List class.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: File added. Used to
+	generalize ListBox and ComboBox providers.
+	* Mono.UIAutomation.Winforms/ComboBoxListBoxProvider.cs: File added.
+	Represents the internal ListBox used by the ComboBox control
+	* Mono.UIAutomation.Winforms.Behaviors/ListSelectionProviderBehavior.cs:
+	File added. Represents the behavior used by the List class.
+	* Mono.UIAutomation.Winforms.Behaviors/ListItemSelectionProviderBehavior.cs:
+	File added. Represents the Selection behavior used by the ListItem class.
+	* Mono.UIAutomation.Winforms.Behaviors/ListItemScrollProviderBehavior.cs: 
+	File added. Represents the Scroll behavior used by the ListItem.
+	* Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs: Comment
+	updated.
+	* Mono.UIAutomation.Winforms.Navigation/ListBoxNavigation.cs: Comment
+	updated. Removed not needed cast. Updated to match ListProvider changes.
+	* Mono.UIAutomation.Winforms.Navigation/INavigation.cs:
+	* Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs: Comments
+	added. Removed not working Navigation implementation.
+	* Mono.UIAutomation.Winforms.mdp: File updated: Deleted and added files.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Subclassing from 
+	ListProvider instead of FragmentRootControlProvider. Logic to keep 
+	indexed refernces of Items removed. Added GetPropertyValue with default
+	values. Implementation of abstract properties and methods from base 
+	class. Added preview of ScrollBar Behavior, testing needed.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Subclassing
+	from ListProvider instead of FragmentRootControlProvider. Added 
+	GetPropertyValue with default values. Implementation of abstract 
+	properties and methods from base class.
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ButtonInvokeProviderBehavior.cs: 
+	Visibility changed to internal.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxExpandCollapseProviderBehavior.cs:
+	Visibility changed to internal. Subclassing from ProviderBehavior 
+	instead of ComboBoxProviderBehavior. Updated to match ListControl 
+	changes.
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs:
+	Visibility changed to internal.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxScrollProviderBehavior.cs:
+	Visibility changed to internal. Updated to match ListControl changes.
+	Reflection to get internal ScrollBars removed, using constructor 
+	arguments instead.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxValueProviderBehavior.cs:
+	Visibility changed to internal. Updated to match ListControlc changes.
+	* Mono.UIAutomation.Winforms.Behaviors/LinkLabelInvokeProviderBehavior.cs:
+	Visibility changed to internal
+	* Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs: Visibility 
+	changed to internal.
+	* Makefile.am: File updated: Deleted and added files.
+	* Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: Added new
+	values used in Selection Pattern and Selection Item Pattern.
+
 2008-06-30  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs:

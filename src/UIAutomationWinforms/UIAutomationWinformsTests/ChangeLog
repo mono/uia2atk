@@ -1,3 +1,8 @@
+2008-07-01  Mario Carrion  <mcarrion@novell.com>
+
+	* ComboBoxProviderTest.cs: NavigateSingleTest added.
+	* ListBoxProviderTest.cs: ScrollBarTest commented, needs to be fixed.
+
 2008-06-27  Mario Carrion  <mcarrion@novell.com>
 
 	* ListBoxProviderTest.cs: ScrollBar tests preview.

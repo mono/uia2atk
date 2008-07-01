@@ -34,7 +34,7 @@ using NUnit.Framework;
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
 	
-//	[TestFixture]
+	[TestFixture]
 	public class ComboBoxProviderTest : BaseProviderTest
 	{
 	
@@ -70,6 +70,108 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              true);			              
 		}
 
+#endregion
+		
+#region Navigation Test
+		
+		[Test]
+		public void NavigateSingleTest ()
+		{
+			ComboBox combobox = (ComboBox) GetControlInstance ();
+			
+			IRawElementProviderFragmentRoot rootProvider;
+			IRawElementProviderFragment parent;
+			IRawElementProviderFragment firstChild;
+			IRawElementProviderFragment secondChild;
+			IRawElementProviderFragment thirdChild;
+			IRawElementProviderSimple []selection;
+			ISelectionProvider selectionProvider;
+
+			rootProvider = (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (combobox);
+//			
+//			//By default the ComboBox doesn't have any selected item, so
+//			//selection isn't required 
+			selectionProvider = (ISelectionProvider) rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
+			Assert.AreEqual (false, selectionProvider.IsSelectionRequired, 
+			                 "Is false by default");
+
+			selection = selectionProvider.GetSelection ();
+			Assert.IsNull (selection, "selection is null");
+
+			firstChild = rootProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNull (firstChild, "firstChild is null");
+
+			//Once we have a selected item, selection is required.
+			combobox.Items.Add (0);
+			combobox.SelectedIndex = 0;
+			Assert.AreEqual (true, selectionProvider.IsSelectionRequired, 
+			                 "Is true once an item is selected");			
+
+			selection = selectionProvider.GetSelection ();
+			Assert.IsNotNull (selection, "selection is not null");		
+
+			//All children have same parent
+			firstChild = rootProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (firstChild, "firstChild is not null");
+			
+			parent = firstChild.Navigate (NavigateDirection.Parent);
+			Assert.AreEqual (rootProvider, parent, "Parent - firstChild");
+
+			combobox.Items.Add (1);
+
+			secondChild = firstChild.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNotNull (secondChild, "secondChild is null");
+			
+			parent = secondChild .Navigate (NavigateDirection.Parent);
+			Assert.AreEqual (rootProvider, parent, "Parent - secondChild");
+			
+			//We only have 2 items, there's no third child.
+			thirdChild = secondChild.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNull (thirdChild, "thirdChild is null");
+			
+			//Lest navigate from second to first
+			Assert.AreEqual (firstChild,
+			                 secondChild.Navigate (NavigateDirection.PreviousSibling),
+			                 "secondChild.Navigate (PreviousSibling)");
+			
+			//secondChild is the last child
+			Assert.AreEqual (secondChild,
+			                 rootProvider.Navigate (NavigateDirection.LastChild),
+			                 "rootProvider.Navigate (LastChild)");
+			
+			//ComboBox doesn't support support multiselection
+			ISelectionItemProvider selectionItemProvider;
+			try {
+				selectionItemProvider
+					= (ISelectionItemProvider) secondChild.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+				selectionItemProvider.AddToSelection ();
+				Assert.Fail ("Should throw InvalidOperationException.");
+			} catch (InvalidOperationException) { 
+			}
+//			
+//			//However we can change selection
+//			selectionItemProvider
+//				= (ISelectionItemProvider) secondChild.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+//			selectionItemProvider.Select ();
+//			
+//			//Now should be selected.
+//			bool firstSelected 
+//				= (bool) firstChild.GetPropertyValue (SelectionItemPatternIdentifiers.IsSelectedProperty.Id);
+//			bool secondSelected 
+//				= (bool) secondChild.GetPropertyValue (SelectionItemPatternIdentifiers.IsSelectedProperty.Id);
+//			
+//			Assert.IsFalse (firstSelected, "First should be false");
+//			Assert.IsTrue (secondSelected, "Second should be true");
+//			
+//			//We can't remove from selection once an element is selected
+//			try {
+//				selectionItemProvider.RemoveFromSelection ();
+//				Assert.Fail ("Should throw InvalidOperationException.");
+//			} catch (InvalidOperationException) {
+//			}
+//			
+		}
+		
 #endregion
 		
 #region BaseProviderTest Overrides

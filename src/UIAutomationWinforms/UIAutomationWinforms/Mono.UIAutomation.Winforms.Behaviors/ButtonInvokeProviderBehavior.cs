@@ -34,7 +34,7 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 	
-	public class ButtonInvokeProviderBehavior 
+	internal class ButtonInvokeProviderBehavior 
 		: ProviderBehavior, IInvokeProvider
 	{
 		

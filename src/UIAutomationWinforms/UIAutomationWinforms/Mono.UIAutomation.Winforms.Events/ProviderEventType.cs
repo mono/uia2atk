@@ -48,10 +48,16 @@ namespace Mono.UIAutomation.Winforms.Events
 		//Value Pattern
 		ValuePatternValueProperty,
 		ValuePatternIsReadOnlyProperty,
+		//Selection Pattern
+		SelectionCanSelectMultiple,
+		SelectionIsSelectionRequired,
+		SelectionSelection,
 		//SelectionItem Pattern
 		SelectionItemElementAddedEvent,
 		SelectionItemElementRemovedEvent,
 		SelectionItemElementSelectedEvent,
+		SelectionItemSelectionContainer,
+		SelectionItemIsSelected,
 		//RangeValue Pattern
 		RangeValueValueProperty
 	}

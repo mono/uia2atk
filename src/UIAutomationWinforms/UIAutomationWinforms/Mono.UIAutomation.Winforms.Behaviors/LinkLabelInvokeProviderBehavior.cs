@@ -34,7 +34,7 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
-	public class LinkLabelInvokeProviderBehavior : ProviderBehavior, IInvokeProvider
+	internal class LinkLabelInvokeProviderBehavior : ProviderBehavior, IInvokeProvider
 	{
 		
 #region Constructor

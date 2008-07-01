@@ -30,7 +30,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 {
 
 	public interface INavigation
-	{		
+	{
 		IRawElementProviderSimple Provider { get; }
 		
 		INavigation NextSibling { get; set; }

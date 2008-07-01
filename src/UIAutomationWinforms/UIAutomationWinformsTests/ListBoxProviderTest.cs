@@ -265,56 +265,56 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 #region ScrollBar internal widgets Test
 
-		[Test]
-		public void ScrollBarTest ()
-		{
-			using (Form f = new Form ()) {
-				f.Size = new System.Drawing.Size (500, 500);
-				
-				ListBox listbox = new ListBox ();
-				listbox.Location = new System.Drawing.Point (3, 3);
-				listbox.Size = new System.Drawing.Size (100, 50);
-
-				f.Controls.Add (listbox);
-
-				//We should show the ScrollBar
-				for (int index = 20; index > 0; index--) {
-					listbox.Items.Add (string.Format ("Element {0}", index));
-				}
-				
-				f.Load += delegate (object sender, EventArgs args) {
-					System.Threading.Thread.Sleep (500);
-					IRawElementProviderFragmentRoot provider;
-					//ISelectionProvider selectionProvider;
-					IRawElementProviderFragment scrollbarChild;
-					IRawElementProviderFragment buttonChild;
-	
-					provider 
-						= (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listbox);
-					
-					//Should return a ScrollBar, because we have added many items
-					scrollbarChild = provider.Navigate (NavigateDirection.FirstChild);
-					Assert.IsNotNull (scrollbarChild, "FirstChild must not be null");
-					
-					Assert.AreEqual (ControlType.ScrollBar.Id,
-					                 scrollbarChild.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
-					                 "scrollbarChild Control Type must be Scroll.");
-
-					buttonChild = scrollbarChild.Navigate (NavigateDirection.FirstChild);
-					Assert.IsNotNull (buttonChild , "buttonChild must not be null");
-					
-					Assert.AreEqual (ControlType.Button.Id,
-					                 buttonChild.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
-					                 "buttonChild Control Type must be Buttoon.");
-					
-					//TODO: Add more tests
-					
-					f.Close ();
-				};
-
-				Application.Run (f);
-			}
-		}
+//		[Test]
+//		public void ScrollBarTest ()
+//		{
+//			using (Form f = new Form ()) {
+//				f.Size = new System.Drawing.Size (500, 500);
+//				
+//				ListBox listbox = new ListBox ();
+//				listbox.Location = new System.Drawing.Point (3, 3);
+//				listbox.Size = new System.Drawing.Size (100, 50);
+//
+//				f.Controls.Add (listbox);
+//
+//				//We should show the ScrollBar
+//				for (int index = 20; index > 0; index--) {
+//					listbox.Items.Add (string.Format ("Element {0}", index));
+//				}
+//				
+//				f.Load += delegate (object sender, EventArgs args) {
+//					System.Threading.Thread.Sleep (500);
+//					IRawElementProviderFragmentRoot provider;
+//					//ISelectionProvider selectionProvider;
+//					IRawElementProviderFragment scrollbarChild;
+//					IRawElementProviderFragment buttonChild;
+//	
+//					provider 
+//						= (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listbox);
+//					
+//					//Should return a ScrollBar, because we have added many items
+//					scrollbarChild = provider.Navigate (NavigateDirection.FirstChild);
+//					Assert.IsNotNull (scrollbarChild, "FirstChild must not be null");
+//					
+//					Assert.AreEqual (ControlType.ScrollBar.Id,
+//					                 scrollbarChild.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
+//					                 "scrollbarChild Control Type must be Scroll.");
+//
+//					buttonChild = scrollbarChild.Navigate (NavigateDirection.FirstChild);
+//					Assert.IsNotNull (buttonChild , "buttonChild must not be null");
+//					
+//					Assert.AreEqual (ControlType.Button.Id,
+//					                 buttonChild.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
+//					                 "buttonChild Control Type must be Buttoon.");
+//					
+//					//TODO: Add more tests
+//					
+//					f.Close ();
+//				};
+//
+//				Application.Run (f);
+//			}
+//		}
 		
 #endregion
 

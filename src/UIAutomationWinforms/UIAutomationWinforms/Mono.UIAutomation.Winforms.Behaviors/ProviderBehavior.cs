@@ -30,7 +30,7 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Behaviors
 {	
 	
-	public abstract class ProviderBehavior : IProviderBehavior
+	internal abstract class ProviderBehavior : IProviderBehavior
 	{
 
 #region Private fields

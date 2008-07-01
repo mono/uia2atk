@@ -67,6 +67,9 @@ namespace Mono.UIAutomation.Winforms
 		
 #region Public Methods
 	
+		//TODO: Are the generated events duplicated? Because we're already
+		//supporting StructureChangeType when Children are added to Controls.
+		//See: SimpleControlProvider.InitializeEvents
 		public void InitializeChildControlStructure ()
 		{
 			// HACK: This is just to make sure control providers

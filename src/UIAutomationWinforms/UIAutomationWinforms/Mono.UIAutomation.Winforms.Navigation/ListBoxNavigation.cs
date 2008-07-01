@@ -31,7 +31,7 @@ using System.Windows.Automation.Provider;
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 
-	//Navigation is supported in the following order:
+	//Navigation tree has the following leafs:
 	// 1. HScrollBar - ScrollBarProvider (may not be visible)
 	// 2. VScrollBar - ScrollBarProvider (may not be visible)
 	// 3. ListBoxItem - ListBoxItemProvider (0 to n) 
@@ -68,7 +68,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 					ListBox listbox = (ListBox) provider.Control;
 					
 					if (listbox.Items.Count > 1)
-						return ((ListBoxProvider) Provider).GetListBoxItem (listbox.Items.Count - 1);
+						return provider.GetItemProvider (listbox.Items.Count - 1);
 					else
 						return (IRawElementProviderFragment) last.Provider;
 				} else
@@ -172,7 +172,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			public override IRawElementProviderSimple Provider {
 				get { 
 					if (first_item_provider == null) {
-						first_item_provider = provider.GetListBoxItem (0);
+						first_item_provider = provider.GetItemProvider (0);
 						navigation = first_item_provider.Navigation;
 						first_item_provider.Navigation = this;
 					}
@@ -197,7 +197,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			}
 			
 			private ListBoxProvider provider;
-			private ListBoxItemProvider first_item_provider;
+			private ListItemProvider first_item_provider;
 			private INavigation navigation;
 		}	
 		

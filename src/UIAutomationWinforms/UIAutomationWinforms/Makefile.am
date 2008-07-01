@@ -45,18 +45,13 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBoxExpandCollapseProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ComboBoxItemProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ComboBoxProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ComboBoxSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBoxValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/IProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/LinkLabelInvokeProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListBoxItemProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListBoxItemScrollProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListBoxItemSelectionProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListBoxProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListBoxScrollProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListBoxSelectionProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListItemScrollProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListItemSelectionProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs \
@@ -84,15 +79,16 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ValuePatternValuePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/INavigation.cs \
-	Mono.UIAutomation.Winforms.Navigation/ListBoxItemNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/ListBoxNavigation.cs \
+	Mono.UIAutomation.Winforms.Navigation/ListItemNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs \
 	Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs \
 	Mono.UIAutomation.Winforms/AssemblyInfo.cs \
 	Mono.UIAutomation.Winforms/ButtonProvider.cs \
 	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
-	Mono.UIAutomation.Winforms/ComboBoxItemProvider.cs \
+	Mono.UIAutomation.Winforms/ComboBoxButtonProvider.cs \
+	Mono.UIAutomation.Winforms/ComboBoxListBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ComboBoxProvider.cs \
 	Mono.UIAutomation.Winforms/FormListener.cs \
 	Mono.UIAutomation.Winforms/FragmentControlProvider.cs \
@@ -102,8 +98,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms/IConnectable.cs \
 	Mono.UIAutomation.Winforms/LabelProvider.cs \
 	Mono.UIAutomation.Winforms/LinkLabelProvider.cs \
-	Mono.UIAutomation.Winforms/ListBoxItemProvider.cs \
 	Mono.UIAutomation.Winforms/ListBoxProvider.cs \
+	Mono.UIAutomation.Winforms/ListItemProvider.cs \
+	Mono.UIAutomation.Winforms/ListProvider.cs \
 	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/ProviderFactory.cs \
 	Mono.UIAutomation.Winforms/RadioButtonProvider.cs \

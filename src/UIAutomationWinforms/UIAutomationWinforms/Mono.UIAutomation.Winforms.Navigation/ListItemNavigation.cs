@@ -23,54 +23,45 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 
-using System.Windows.Forms;
-using System.Windows.Automation;
+using System;
+using System.Windows.Automation.Provider;
 
-namespace Mono.UIAutomation.Winforms.Behaviors
+namespace Mono.UIAutomation.Winforms.Navigation
 {
 
-	public abstract class ComboBoxProviderBehavior : ProviderBehavior
+	internal class ListItemNavigation : SimpleNavigation
 	{
 		
-#region Constructors
+#region	 Constructor
 		
-		protected ComboBoxProviderBehavior (FragmentControlProvider provider)
-			: base (provider) 
+		public ListItemNavigation (ListItemProvider provider)
+			: base (provider)
+		
 		{
+			this.provider = provider;
 		}
 
 #endregion
-
-#region Protected fields
 		
-		protected ComboBox combobox;
+#region INavigable Interface
 		
-#endregion
-		
-#region IProviderBehavior Interface
-
-		public override object GetPropertyValue (int propertyId)
+		public override IRawElementProviderFragment Navigate (NavigateDirection direction)
 		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.ComboBox.Id;
-			//FIXME: According the documentation this is valid, however you can
-			//focus only when control.CanFocus, this doesn't make any sense.
-			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-				return true;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "combo box";
+			if (direction == NavigateDirection.Parent)
+				return provider.FragmentRoot;
+			else if (direction == NavigateDirection.NextSibling)
+				return provider.ListProvider.GetItemProvider (provider.Index + 1);
+			else if (direction == NavigateDirection.PreviousSibling)
+				return provider.ListProvider.GetItemProvider (provider.Index - 1);
 			else
 				return null;
 		}
 
-		public override void Connect (Control control)
-		{
-			combobox = (ComboBox) control;
-		}
+#endregion
 		
-		public override void Disconnect (Control control)
-		{
-		}
+#region Private Fields
+		
+		private ListItemProvider provider;
 		
 #endregion
 

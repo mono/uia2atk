@@ -32,8 +32,8 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
-	public class ComboBoxValueProviderBehavior 
-		: ComboBoxProviderBehavior, IValueProvider
+	internal class ComboBoxValueProviderBehavior 
+		: ProviderBehavior, IValueProvider
 	{
 		
 #region Constructors
@@ -53,8 +53,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 		public override void Connect (Control control) 
 		{
-			base.Connect (control);
-
 			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
 			                   new ValuePatternValuePropertyEvent (Provider));
 			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
@@ -84,11 +82,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 #region IValueProvider Interface
 		
 		public bool IsReadOnly {
-			get { return combobox.Enabled == false; }
+			get { return Provider.Control.Enabled == false; }
 		}
 
 		public string Value {
-			get { return combobox.Text; }
+			get { return Provider.Control.Text; }
 		}
 
 		public void SetValue (string value)
@@ -96,7 +94,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			if (IsReadOnly)
 				throw new ElementNotEnabledException ();
 
-			combobox.Text = value;
+			Provider.Control.Text = value;
 		}
 
 #endregion

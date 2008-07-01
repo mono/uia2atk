@@ -33,64 +33,89 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 
-	public class ListBoxItemProvider : FragmentControlProvider
+	public class ListItemProvider : FragmentControlProvider
 	{
 
-#region Constructor
-		
-		public ListBoxItemProvider (ListBoxProvider provider, ListBox control) 
+#region Constructors
+		public ListItemProvider (ListProvider provider, ListControl control)
 			: this (provider, control, control.SelectedIndex)
 		{
 		}
 
-		public ListBoxItemProvider (ListBoxProvider provider, ListBox control, 
+		public ListItemProvider (ListProvider provider, ListControl control, 
 		                            int index) : base (control)
 		{
-			listbox_provider = provider;
-			listbox_control = control;
 			this.index = index;
+			list_provider = provider;
+			list_control = control;
 			
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
-			             new ListBoxItemSelectionProviderBehavior (this));
+			             new ListItemSelectionProviderBehavior (this));	
+
 			SetBehavior (ScrollItemPatternIdentifiers.Pattern,
-			             new ListBoxItemScrollProviderBehavior (this));
+			             new ListItemScrollProviderBehavior (this));
 			
-			Navigation = new ListBoxItemNavigation (this);
+			Navigation = new ListItemNavigation (this);	
 		}
 
 #endregion
 		
+#region IRawElementProviderSimple Members
+		
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.ListItem.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "list item";
+			else if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
+				return ListControl.GetHashCode () + Index; // TODO: Ensure uniqueness
+			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return ListProvider.GetItemName (this);
+			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+				return ListControl.Focused && Index == ListControl.SelectedIndex;
+			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				return ListProvider.GetPropertyValue (propertyId);
+			//TODO: AutomationElementIdentifiers.IsOffscreenProperty.Id			
+			//TODO: AutomationElementIdentifiers.BoundingRectangleProperty.Id
+			//TODO: AutomationElementIdentifiers.ClickablePointProperty.Id
+			else
+				return base.GetPropertyValue (propertyId);
+		}
+		
+#endregion
+
 #region Public properties
 
 		public int Index {
 			get { return index; }
 		}
 		
-		public ListBox ListBoxControl {
-			get { return listbox_control; }
+		public ListControl ListControl {
+			get { return list_control; }
 		}
 
-		public ListBoxProvider ListBoxProvider {
-			get { return listbox_provider; }
+		public ListProvider ListProvider {
+			get { return list_provider; }
 		}
 		
 #endregion
-
+		
 #region IRawElementProviderFragment Interface 
 
 		public override IRawElementProviderFragmentRoot FragmentRoot {
-			get { return ListBoxProvider; }			
+			get { return ListProvider; }			
 		}
 
-#endregion
-
-#region Private fields
+#endregion		
 		
-		private ListBox listbox_control;
-		private ListBoxProvider listbox_provider;
-		private int index;		
+#region Private Fields
+		
+		private int index;
+		private ListControl list_control;
+		private ListProvider list_provider;
 		
 #endregion
-
+		
 	}
 }

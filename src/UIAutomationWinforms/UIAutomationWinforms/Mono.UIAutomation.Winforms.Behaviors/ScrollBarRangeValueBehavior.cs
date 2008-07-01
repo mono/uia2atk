@@ -32,7 +32,7 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
-	public class ScrollBarRangeValueBehavior 
+	internal class ScrollBarRangeValueBehavior 
 		: ProviderBehavior, IRangeValueProvider
 	{
 

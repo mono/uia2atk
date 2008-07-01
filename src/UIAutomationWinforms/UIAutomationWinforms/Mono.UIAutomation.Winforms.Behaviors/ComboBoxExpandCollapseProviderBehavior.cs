@@ -33,8 +33,8 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
-	public class ComboBoxExpandCollapseProviderBehavior 
-		: ComboBoxProviderBehavior, IExpandCollapseProvider
+	internal class ComboBoxExpandCollapseProviderBehavior 
+		: ProviderBehavior, IExpandCollapseProvider
 	{
 		
 #region Constructor
@@ -53,9 +53,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		}
 		
 		public override void Connect (Control control)
-		{
-			base.Connect (control);
-			
+		{		
 			Provider.SetEvent (ProviderEventType.ExpandCollapseStateProperty, 
 			                   new ComboBoxExpandCollapseStateEvent (Provider));
 		}
@@ -80,19 +78,19 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 		public ExpandCollapseState ExpandCollapseState {
 			get {
-				return combobox.DroppedDown ? ExpandCollapseState.Expanded 
+				return ((ComboBox) Provider.Control).DroppedDown ? ExpandCollapseState.Expanded 
 					: ExpandCollapseState.Collapsed;
 			}
 		}
 
 		public void Collapse ()
 		{
-			combobox.DroppedDown = false;
+			((ComboBox) Provider.Control).DroppedDown = false;
 		}
 
 		public void Expand ()
 		{
-			combobox.DroppedDown = true;
+			((ComboBox) Provider.Control).DroppedDown = true;
 		}
 
 #endregion

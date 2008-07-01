@@ -23,57 +23,58 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 
+using System;
 using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using System.Windows;
+using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
-	
-	
-	public abstract class ListBoxProviderBehavior : ProviderBehavior
-	{
 
+	internal class ListItemScrollProviderBehavior
+		: ProviderBehavior, IScrollItemProvider
+	{
+			
 #region Constructors
-		
-		protected ListBoxProviderBehavior (FragmentControlProvider provider)
-			: base (provider) 
+
+		public ListItemScrollProviderBehavior (ListItemProvider provider)
+			: base (provider)
 		{
 		}
 
 #endregion
-
-#region Protected fields
 		
-		protected ListBox listbox;
-		
-#endregion
-
 #region IProviderBehavior Interface
 
-		public override object GetPropertyValue (int propertyId)
-		{
-			//TODO: Include: HelpTextProperty, LabeledByProperty, NameProperty
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.List.Id;
-			//FIXME: According the documentation this is valid, however you can
-			//focus only when control.CanFocus, this doesn't make any sense.
-			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-				return true;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "list";
-			else
-				return null;
+		public override AutomationPattern ProviderPattern { 
+			get { return ScrollItemPatternIdentifiers.Pattern; }
 		}
-
+		
 		public override void Connect (Control control)
 		{
-			listbox = (ListBox) control;
+			//Doesn't generated any UIA event
 		}
 		
 		public override void Disconnect (Control control)
 		{
+			//Doesn't generated any UIA event
 		}
 		
+#endregion
+
+#region IScrollItemProvider Interface
+		
+		public void ScrollIntoView ()
+		{
+			//Scrolls the content area of a container object in order to 
+			//display the control within the visible region (viewport) of the 
+			//container.
+			throw new NotImplementedException();
+		}
+
 #endregion
 	}
 }

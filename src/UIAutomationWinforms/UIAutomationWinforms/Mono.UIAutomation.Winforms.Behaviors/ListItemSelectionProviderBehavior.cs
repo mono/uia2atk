@@ -27,27 +27,50 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-using System.Windows;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
-
-	public class ListBoxItemSelectionProviderBehavior 
-		: ListBoxItemProviderBehavior, ISelectionItemProvider
+	
+	internal class ListItemSelectionProviderBehavior 
+		: ProviderBehavior, ISelectionItemProvider
 	{
+		
+#region Constructors
 
-#region Constructor
-
-		public ListBoxItemSelectionProviderBehavior (ListBoxItemProvider provider)
+		public ListItemSelectionProviderBehavior (ListItemProvider provider)
 			: base (provider)
 		{
+			this.item_provider = provider;
 		}
 		
 #endregion
 		
 #region IProviderBehavior Interface
+
+		public override AutomationPattern ProviderPattern { 
+			get { return SelectionItemPatternIdentifiers.Pattern; }
+		}		
+
+		public override void Connect (Control control)
+		{
+		}		
+		
+		public override void Disconnect (Control control)
+		{
+			//TODO: Should support all the following events:
+//			Provider.SetEvent (ProviderEventType.SelectionItemElementSelectedEvent, 
+//			                   null);
+//			Provider.SetEvent (ProviderEventType.SelectionItemElementAddedEvent, 
+//			                   null);
+//			Provider.SetEvent (ProviderEventType.SelectionItemElementRemovedEvent, 
+//			                   null);
+//			Provider.SetEvent (ProviderEventType.SelectionItemIsSelected, 
+//			                   null);
+//			Provider.SetEvent (ProviderEventType.SelectionItemSelectionContainer,
+//			                   null);
+		}
 
 		public override object GetPropertyValue (int propertyId)
 		{
@@ -56,27 +79,23 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			else if (propertyId == SelectionItemPatternIdentifiers.SelectionContainerProperty.Id)
 				return SelectionContainer;
 			else
-				return base.GetPropertyValue (propertyId);
-		}
-
-		public override AutomationPattern ProviderPattern { 
-			get { return SelectionItemPatternIdentifiers.Pattern; }
+				return null;
 		}
 		
 #endregion
-		
-#region ISelectionItemProvider Interface
 
+#region ISelectionItemProvider Interface
+		
 		public void AddToSelection ()
 		{
 			if (IsSelected)
 				return;
 			
 			bool multipleSelection = 
-				(bool) ListBoxProvider.GetPropertyValue (SelectionPatternIdentifiers.CanSelectMultipleProperty.Id);
+				(bool) item_provider.ListProvider.GetPropertyValue (SelectionPatternIdentifiers.CanSelectMultipleProperty.Id);
 			
 			if (multipleSelection == false) {
-				if (ListBoxControl.SelectedItems.Count > -1)
+				if (item_provider.ListProvider.SelectedItemsCount > 0)
 					throw new InvalidOperationException ();
 				else
 					Select ();
@@ -90,29 +109,30 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 				return;
 			
 			bool multipleSelection = 
-				(bool) ListBoxProvider.GetPropertyValue (SelectionPatternIdentifiers.CanSelectMultipleProperty.Id);
+				(bool) item_provider.ListProvider.GetPropertyValue (SelectionPatternIdentifiers.CanSelectMultipleProperty.Id);
 			bool selectionRequired =
-				(bool) ListBoxProvider.GetPropertyValue (SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id);
+				(bool) item_provider.ListProvider.GetPropertyValue (SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id);
 
 			if (multipleSelection == false && selectionRequired == true 
-			    && ListBoxControl.SelectedItems.Count > 0) 
+			    && item_provider.ListProvider.SelectedItemsCount > 0) 
 				throw new InvalidOperationException ();	
 			else if (multipleSelection == true && selectionRequired == true 
-			         && ListBoxControl.SelectedItems.Count == 1)
+			         && item_provider.ListProvider.SelectedItemsCount == 1)
 				throw new InvalidOperationException ();	
 			else {
-				ListBoxControl.SetSelected (ListBoxItemProvider.Index, false);
+				item_provider.ListProvider.UnselectItem (item_provider);
 
 				//TODO: Would be great if this code is refactored to use an Event
 				if (AutomationInteropProvider.ClientsAreListening) {
-					AutomationEvent automation_event;
-					if (ListBoxControl.SelectedItems.Count == 1)
-						automation_event = SelectionItemPatternIdentifiers.ElementSelectedEvent;
+					AutomationEvent automationEvent;
+
+					if (item_provider.ListProvider.SelectedItemsCount == 1)
+						automationEvent = SelectionItemPatternIdentifiers.ElementSelectedEvent;
 					else 
-						automation_event = SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent;
+						automationEvent = SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent;
 	
-					AutomationEventArgs args = new AutomationEventArgs (automation_event);
-					AutomationInteropProvider.RaiseAutomationEvent (automation_event, 
+					AutomationEventArgs args = new AutomationEventArgs (automationEvent);
+					AutomationInteropProvider.RaiseAutomationEvent (automationEvent, 
 					                                                Provider, args);
 				}
 
@@ -124,35 +144,38 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			if (IsSelected)
 				return;
 			
-			ListBoxControl.SetSelected (ListBoxItemProvider.Index, true);
+			item_provider.ListProvider.SelectItem (item_provider);
 			
 			//TODO: Would be great if this code is refactored to use an Event
 			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationEvent automation_event;
+				AutomationEvent automationEvent;
 
-				if (ListBoxControl.SelectedItems.Count == 1)
-					automation_event = SelectionItemPatternIdentifiers.ElementSelectedEvent;
+				if (item_provider.ListProvider.SelectedItemsCount == 1)
+					automationEvent = SelectionItemPatternIdentifiers.ElementSelectedEvent;
 				else 
-					automation_event = SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent;
+					automationEvent = SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent;
 
-				AutomationEventArgs args = new AutomationEventArgs (automation_event);
-				AutomationInteropProvider.RaiseAutomationEvent (automation_event, 
+				AutomationEventArgs args = new AutomationEventArgs (automationEvent);
+				AutomationInteropProvider.RaiseAutomationEvent (automationEvent, 
 				                                                Provider, args);
 			}
 		}
 
 		public bool IsSelected {
-			get {
-				return ListBoxControl.SelectedIndices.Contains (ListBoxItemProvider.Index);
-			}
+			get { return item_provider.ListProvider.IsItemSelected (item_provider); }
 		}
 
 		public IRawElementProviderSimple SelectionContainer {
-			get { return ListBoxProvider; }
+			get { return item_provider.ListProvider; }
 		}
 
-#endregion 		
-
-
+#endregion
+		
+#region Private Fields
+		
+		private ListItemProvider item_provider;
+		
+#endregion
+		
 	}
 }
