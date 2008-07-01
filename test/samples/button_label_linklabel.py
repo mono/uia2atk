@@ -73,7 +73,7 @@ class RunApp(Form):
     def buttonClick(self, sender, event):
         self.count += 1
         self.label.Text = "You have clicked me %s times" % self.count
-        MessageBox.Show("successful clicked me")
+        MessageBox.Show("successful clicked me","message")
 
     def linklabel1Clicked(self, sender, LinkClicked):
         self.linklabel1.Links[0].Visited = True

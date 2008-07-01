@@ -1,3 +1,9 @@
+2008-07-01  Calen Chen <cachen@novell.com>
+
+	* samples/gtkbutton.py: change MessageDialog to Dialog
+	* samples/button_label_linklabel.py : add text name to MessageBox
+	* testers/button/buttonframe.py : update clickResult to use alfF4()
+
 2008-06-30  Ray Wang <rawang@gmail.com>
 
 	* samples/tablelayoutpanel.py : implement TableLayoutPanel control

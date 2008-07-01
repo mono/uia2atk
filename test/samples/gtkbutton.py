@@ -9,7 +9,7 @@ class ButtonSample:
  
     # callback that opens a message dialog
     def open_dialog(self, widget, data=None):
-        self.dialog = gtk.MessageDialog()
+        self.dialog = gtk.Dialog()
         self.dialog.show()
         self.dialog.set_title("MessageDialog")
         self.dialog.set_border_width(50)

@@ -52,6 +52,7 @@ class ButtonFrame(accessibles.Frame):
             else:
                 raise InvalidState, "%s has no such state:  %s" %\
                                  (button, result)
+        assert retryUntilTrue(resultMatches)
 
     #check if there is rise a messagedialog when send "click" action.
     def clickResult(self,MessageDialog=True):
@@ -59,15 +60,7 @@ class ButtonFrame(accessibles.Frame):
         if MessageDialog:
             self = self.app.findAlert(None,logText="MessageDialog")
 
-            #close the dialog if it is been raised.
-            procedurelogger.action('Press <Alt>F4.', self)
-            self.keyCombo('<Alt>F4')
-            procedurelogger.expectedResult('The %s disappears.' % self)
-
-            def closed():
-                return not self.showing
-
-            assert utils.retryUntilTrue(closed)
+            self.altF4()
 
     #close application window after running test
     def quit(self):
