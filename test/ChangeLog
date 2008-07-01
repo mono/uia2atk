@@ -1,3 +1,10 @@
+2008-07-01  Ray Wang <rawang@gmail.com>
+
+	* samples/flowlayoutpanel.py : implement FlowLayoutPanel control
+	* samples/propertygrid.py : implement PropertyGrid control
+	* samples/columnheader.py : implement ColumnHeader control
+	* samples/tablelayoutpanel.py : remove wrong comments 
+
 2008-07-01  Calen Chen <cachen@novell.com>
 
 	* samples/gtkbutton.py: change MessageDialog to Dialog

@@ -7,10 +7,6 @@
 #              TableLayoutPanel
 ##############################################################################
 
-# Since we do not typically use the ScrollableControl class directly. 
-# The TableLayoutPanel and Panel classes inherit from this class.
-# So we implement TableLayoutPanel to indicate the features of ScrollableControl
-
 # The docstring below is used in the generated log file
 """
 Test accessibility of "TableLayoutPanel" control
