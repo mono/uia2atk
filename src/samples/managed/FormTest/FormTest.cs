@@ -79,6 +79,19 @@ namespace FormTest
 			f1.Controls.Add (rad1);
 			f1.Controls.Add (rad2);
 			
+			ComboBox cbx = new ComboBox ();
+            cbx.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cbx.FormattingEnabled = true;
+            cbx.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            cbx.Items.AddRange(new object[] {
+            "Foo",
+            "Bar"});
+			cbx.Width = f1.Width - 30;
+			cbx.Height = b.Height;
+			cbx.Top = rad2.Top + 30;
+			
+			f1.Controls.Add (cbx);
+			
 			Form bgf = new Form ();
 			bgf.Text = "Background Form";
 			bgf.Show ();
