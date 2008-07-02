@@ -1,3 +1,8 @@
+2008-07-02  Ray Wang <rawang@gmail.com>
+
+	* samples/mainmenu.py : implement MainMenu control
+	* samples/printpreviewdialog.py : implement PrintPreviewDialog control
+
 2008-07-01  Ray Wang <rawang@gmail.com>
 
 	* samples/flowlayoutpanel.py : implement FlowLayoutPanel control
