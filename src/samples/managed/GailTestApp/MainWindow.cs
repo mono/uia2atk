@@ -61,6 +61,10 @@ public partial class MainWindow: Gtk.Window
 		return this.cbxTest;
 	}
 	
+	internal Gtk.Entry GiveMeARealEntry () {
+		return this.txtEntry;
+	}
+	
 	List <Gtk.RadioButton> radioButtons = new List <Gtk.RadioButton> ();
 	
 	int radioButtonToReturn = -1;

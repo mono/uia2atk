@@ -1,3 +1,8 @@
+2008-07-02  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* MainWindow.cs, gtk-gui/MainWindow.cs, gtk-gui/gui.stetic, Main.cs:
+	  Add a sample entry widget.
+
 2008-07-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* gtk-gui/MainWindow.cs, gtk-gui/gui.stetic: Added some elements to our

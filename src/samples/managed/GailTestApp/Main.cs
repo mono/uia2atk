@@ -94,6 +94,14 @@ namespace GailTestApp
 			return win.GiveMeARealRadioButton ();
 		}
 		
+		public static Gtk.Entry GiveMeARealEntry ()
+		{
+			if (win == null)
+				Start (true);
+			
+			return win.GiveMeARealEntry ();
+		}
+		
 		public static void Kill () 
 		{
 			win.Destroy ();

@@ -36,6 +36,8 @@ public partial class MainWindow {
     
     private Gtk.RadioButton radTest2;
     
+    private Gtk.Entry txtEntry;
+    
     protected virtual void Build() {
         Stetic.Gui.Initialize(this);
         // Widget MainWindow
@@ -176,21 +178,33 @@ public partial class MainWindow {
         w9.RightAttach = ((uint)(3));
         w9.XOptions = ((Gtk.AttachOptions)(4));
         w9.YOptions = ((Gtk.AttachOptions)(4));
+        // Container child table1.Gtk.Table+TableChild
+        this.txtEntry = new Gtk.Entry();
+        this.txtEntry.CanFocus = true;
+        this.txtEntry.Name = "txtEntry";
+        this.txtEntry.IsEditable = true;
+        this.txtEntry.InvisibleChar = '●';
+        this.table1.Add(this.txtEntry);
+        Gtk.Table.TableChild w10 = ((Gtk.Table.TableChild)(this.table1[this.txtEntry]));
+        w10.LeftAttach = ((uint)(1));
+        w10.RightAttach = ((uint)(2));
+        w10.XOptions = ((Gtk.AttachOptions)(4));
+        w10.YOptions = ((Gtk.AttachOptions)(4));
         this.hbox1.Add(this.table1);
-        Gtk.Box.BoxChild w10 = ((Gtk.Box.BoxChild)(this.hbox1[this.table1]));
-        w10.Position = 1;
-        w10.Expand = false;
-        w10.Fill = false;
-        this.vbox1.Add(this.hbox1);
-        Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
+        Gtk.Box.BoxChild w11 = ((Gtk.Box.BoxChild)(this.hbox1[this.table1]));
         w11.Position = 1;
         w11.Expand = false;
         w11.Fill = false;
+        this.vbox1.Add(this.hbox1);
+        Gtk.Box.BoxChild w12 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
+        w12.Position = 1;
+        w12.Expand = false;
+        w12.Fill = false;
         this.Add(this.vbox1);
         if ((this.Child != null)) {
             this.Child.ShowAll();
         }
-        this.DefaultWidth = 487;
+        this.DefaultWidth = 532;
         this.DefaultHeight = 300;
         this.Show();
         this.DeleteEvent += new Gtk.DeleteEventHandler(this.OnDeleteEvent);
