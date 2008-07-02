@@ -1,3 +1,13 @@
+2008-07-02  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/gtkbutton.py : Title bars generally have spaces
+	* samples/checkbutton.py : rename to gtkcheckbutton.py
+	* samples/gtkcheckbutton.py : renamed from checkbutton.py
+	* testers/checkbutton/__init__.py : open gtkcheckbutton.py instead of
+	checkbutton.py
+	* testers/button/buttonframe.py : findAlert was crashing the test,
+	using findDialog instead
+
 2008-07-02  Ray Wang <rawang@gmail.com>
 
 	* samples/mainmenu.py : implement MainMenu control

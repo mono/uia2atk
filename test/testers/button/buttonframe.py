@@ -58,7 +58,7 @@ class ButtonFrame(accessibles.Frame):
     def clickResult(self,MessageDialog=True):
 
         if MessageDialog:
-            self = self.app.findAlert(None,logText="MessageDialog")
+            self = self.app.findDialog(None,"Message Dialog")
 
             self.altF4()
 

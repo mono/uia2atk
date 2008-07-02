@@ -11,7 +11,7 @@ class ButtonSample:
     def open_dialog(self, widget, data=None):
         self.dialog = gtk.Dialog()
         self.dialog.show()
-        self.dialog.set_title("MessageDialog")
+        self.dialog.set_title("Message Dialog")
         self.dialog.set_border_width(50)
  
     # another callback

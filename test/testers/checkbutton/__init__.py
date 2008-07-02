@@ -7,14 +7,14 @@
 #              Used by the checkbutton-*.py tests
 ##############################################################################$
 
-'Application wrapper for checkbutton'
+'Application wrapper for gtkcheckbutton'
 
 from strongwind import *
 
 import os
 
 def launchCheckButton(exe=None):
-    'Launch checkbutton with accessibility enabled and return a Checkbutton object.  Log an error and return None if something goes wrong'
+    'Launch gtkcheckbutton with accessibility enabled and return a Checkbutton object.  Log an error and return None if something goes wrong'
 
     if exe is None:
         # make sure we can find the sample application
@@ -24,7 +24,7 @@ def launchCheckButton(exe=None):
                          "full path or set the\nUIAQA_HOME environment "\
                          "variable."
 
-        exe = '%s/samples/checkbutton.py' % uiaqa_path
+        exe = '%s/samples/gtkcheckbutton.py' % uiaqa_path
    
     if not os.path.exists(exe):
       raise IOError, "%s does not exist" % exe
