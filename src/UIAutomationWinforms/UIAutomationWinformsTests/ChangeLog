@@ -1,3 +1,7 @@
+2008-07-02  Neville Gao <nevillegao@gmail.com>
+
+	* StatusBarProviderTest.cs: IGridPatternTest added.
+
 2008-07-01  Mario Carrion  <mcarrion@novell.com>
 
 	* ComboBoxProviderTest.cs: NavigateSingleTest added.

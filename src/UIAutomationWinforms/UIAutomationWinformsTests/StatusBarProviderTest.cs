@@ -35,7 +35,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
     	[TestFixture]
     	public class StatusBarProviderTest : BaseProviderTest
     	{
-#region Test Methods
+#region Test
 
         	[Test]
         	public void BasicPropertiesTest ()
@@ -44,12 +44,91 @@ namespace MonoTests.Mono.UIAutomation.Winforms
             		IRawElementProviderSimple provider = ProviderFactory.GetProvider (statusBar);
 
 			TestProperty (provider,
-				      AutomationElementIdentifiers.ControlTypeProperty,
-				      ControlType.StatusBar.Id);
+				AutomationElementIdentifiers.ControlTypeProperty,
+				ControlType.StatusBar.Id);
 
 			TestProperty (provider,
-				      AutomationElementIdentifiers.LocalizedControlTypeProperty,
-				      "status bar");
+				AutomationElementIdentifiers.LocalizedControlTypeProperty,
+				"status bar");
+		}
+
+		[Test]
+		public void ProviderPatternTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (statusBar);
+
+			object gridProvider = provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (gridProvider, "Not returning GridPatternIdentifiers.");
+			Assert.IsTrue (gridProvider is IGridProvider, "Not returning GridPatternIdentifiers.");
+		}
+
+#endregion
+
+#region IGridPattern Test
+
+		public void IGridProviderRowCountTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+			StatusBarPanel panel = new StatusBarPanel ();
+			statusBar.Panels.Add (panel);
+
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (statusBar);
+
+			IGridProvider gridProvider = (IGridProvider)
+				provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (gridProvider, "Not returning GridPatternIdentifiers.");
+
+			int value = 1;
+			Assert.AreEqual (gridProvider.RowCount, value, "RowCount value");
+		}
+
+		public void IGridProviderColumnCountTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+			StatusBarPanel panel = new StatusBarPanel ();
+			statusBar.Panels.Add (panel);
+
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (statusBar);
+
+			IGridProvider gridProvider = (IGridProvider)
+				provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (gridProvider, "Not returning GridPatternIdentifiers.");
+
+			int value = 1;
+			Assert.AreEqual (gridProvider.ColumnCount, value, "ColumnCount value");
+		}
+
+		public void IGridProviderGetItemTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+			StatusBarPanel panel = new StatusBarPanel ();
+			statusBar.Panels.Add (panel);
+
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (statusBar);
+
+			IGridProvider gridProvider = (IGridProvider)
+				provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (gridProvider, "Not returning GridPatternIdentifiers.");
+
+			int rowValue = 1;
+			int columnValue = 1;
+			gridProvider.GetItem (rowValue, columnValue);
+//			Assert.AreEqual (gridProvider., null, "Different value");
+
+			try {
+				rowValue = gridProvider.RowCount + 1;
+				columnValue = gridProvider.ColumnCount + 1;
+				gridProvider.GetItem (rowValue, columnValue);
+				Assert.Fail ("ArgumentOutOfRangeException not thrown.");
+			} catch (ArgumentOutOfRangeException) { }
+
+			try {
+				rowValue = -1;
+				columnValue = -1;
+				gridProvider.GetItem (rowValue, columnValue);
+				Assert.Fail ("ArgumentOutOfRangeException not thrown.");
+			} catch (ArgumentOutOfRangeException) { }
 		}
 
 #endregion
