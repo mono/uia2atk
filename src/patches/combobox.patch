@@ -1,0 +1,85 @@
+Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
+===================================================================
+--- class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs	(revision 107148)
++++ class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs	(working copy)
+@@ -1915,7 +1915,21 @@
+ 
+ 			private ComboBox owner;
+ 			internal ArrayList object_items = new ArrayList ();
++			
++			#region UIA Framework Events
+ 
++#if NET_2_0
++	    		//UIA Framework events for ComboBox Provider used the
++	    		//generated UIA StructureChanged event
++	    		//- ItemAdded. Generates StructureChanged.ChildAdded
++	    		//- ItemRemoved. Generates StructureChanged.ChildRemoved
++			internal event StructureChangeEventHandler ChildAdded;
++			internal event StructureChangeEventHandler ChildRemoved;
++			internal delegate void StructureChangeEventHandler (object sender, int index);
++#endif
++
++			#endregion
++
+ 			public ObjectCollection (ComboBox owner)
+ 			{
+ 				this.owner = owner;
+@@ -2059,8 +2073,15 @@
+ 				
+ 				if (owner.Sorted)
+ 					AddItem (item);
+-				else
++				else {
+ 					object_items.Insert (index, item);
++#if NET_2_0
++					//UIA Framework event used to indicate that Structure
++					//has Changed: child item added
++					if (ChildAdded != null)
++						ChildAdded (this, index);
++#endif					
++				}
+ 				
+ 				owner.EndUpdate ();	// Calls UpdatedItems
+ 			}
+@@ -2086,6 +2107,13 @@
+ 
+ 				object_items.RemoveAt (index);
+ 				owner.UpdatedItems ();
++				
++#if NET_2_0
++				//UIA Framework event used to indicate that Structure
++				//has Changed: child item removed
++				if (ChildRemoved != null)
++					ChildRemoved (this, index);
++#endif
+ 			}
+ 			#endregion Public Methods
+ 
+@@ -2107,12 +2135,27 @@
+ 							if (index <= owner.selected_index && owner.IsHandleCreated)
+ 								owner.selected_index++;
+ 								
++#if NET_2_0
++							//UIA Framework event used to indicate that Structure
++							//has Changed: child item added
++							if (ChildAdded != null)
++								ChildAdded (this, index);
++#endif
++
+ 							return index;
+ 						}
+ 						index++;
+ 					}
+ 				}
+ 				object_items.Add (item);
++				
++#if NET_2_0
++				//UIA Framework event used to indicate that Structure
++				//has Changed: child item added
++				if (ChildAdded != null)
++					ChildAdded (this, object_items.Count - 1);
++#endif
++				
+ 				return object_items.Count - 1;
+ 			}
+ 			

@@ -1,3 +1,10 @@
+2008-07-03  Mario Carrion <mcarrion@novell.com>
+
+	* patches/scrollbar.patch: File deleted.
+	* patches/scrollbar-patch.cs: File moved to scrolbar.patch.
+	* patches/combobox.patch: File added. Patch for ComboBox control to
+	enabled StructureChanged events.
+
 2008-06-30  Mario Carrion <mcarrion@novell.com>
 
 	* patches/scrollbar-patch.cs: Events renamed: LargeIncrementEvent to
