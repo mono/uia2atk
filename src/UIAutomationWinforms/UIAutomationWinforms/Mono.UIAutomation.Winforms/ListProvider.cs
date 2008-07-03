@@ -64,6 +64,8 @@ namespace Mono.UIAutomation.Winforms
 #endregion
 		
 #region Public Methods
+		
+		public abstract bool IsItemSelected (ListItemProvider item);
 
 		public ListItemProvider GetItemProvider (int index)
 		{
@@ -74,6 +76,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (items.TryGetValue (index, out item) == false) {
 				item = new ListItemProvider (this, list_control, index);
 				items [index] = item;
+				item.InitializeEvents (); //TODO: Should I call this?
 			}
 
 			return item;
@@ -87,7 +90,18 @@ namespace Mono.UIAutomation.Winforms
 
 		public abstract void UnselectItem (ListItemProvider item);
 		
-		public abstract bool IsItemSelected (ListItemProvider item);
+		public ListItemProvider RemoveItemAt (int index)
+		{
+			ListItemProvider item = null;
+
+			if (items.TryGetValue (index, out item) == true) {
+				items.Remove (index);
+				item.FinalizeEvents (); //TODO: Should I call this?
+				Console.WriteLine ("item removed...: "+index);
+			}
+			
+			return item;
+		}
 
 #endregion
 			
@@ -98,6 +112,15 @@ namespace Mono.UIAutomation.Winforms
 			return GetItemProvider (list_control.SelectedIndex);
 		}
 			
+#endregion
+
+#region Protected Methods
+		
+		protected bool ContainsItem (ListItemProvider item)
+		{
+			return item == null ? false : items.ContainsValue (item);
+		}
+		
 #endregion
 
 #region Private Fields

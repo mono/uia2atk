@@ -84,13 +84,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderFragment firstChild;
 			IRawElementProviderFragment secondChild;
 			IRawElementProviderFragment thirdChild;
+			IRawElementProviderFragment firstItem;
+			IRawElementProviderFragment secondItem;
+			IRawElementProviderFragment thirdItem;
+			IRawElementProviderFragment prevItem;
 			IRawElementProviderSimple []selection;
 			ISelectionProvider selectionProvider;
 
 			rootProvider = (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (combobox);
-//			
-//			//By default the ComboBox doesn't have any selected item, so
-//			//selection isn't required 
+			
+			//By default the ComboBox doesn't have any selected item, so
+			//selection isn't required
 			selectionProvider = (ISelectionProvider) rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
 			Assert.AreEqual (false, selectionProvider.IsSelectionRequired, 
 			                 "Is false by default");
@@ -98,78 +102,65 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			selection = selectionProvider.GetSelection ();
 			Assert.IsNull (selection, "selection is null");
 
+			//FirstChild is List
 			firstChild = rootProvider.Navigate (NavigateDirection.FirstChild);
-			Assert.IsNull (firstChild, "firstChild is null");
-
-			//Once we have a selected item, selection is required.
-			combobox.Items.Add (0);
-			combobox.SelectedIndex = 0;
-			Assert.AreEqual (true, selectionProvider.IsSelectionRequired, 
-			                 "Is true once an item is selected");			
-
-			selection = selectionProvider.GetSelection ();
-			Assert.IsNotNull (selection, "selection is not null");		
-
-			//All children have same parent
-			firstChild = rootProvider.Navigate (NavigateDirection.FirstChild);
-			Assert.IsNotNull (firstChild, "firstChild is not null");
+			Assert.AreEqual (ControlType.List.Id,
+			                 firstChild.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
+			                 "Should be List");
 			
-			parent = firstChild.Navigate (NavigateDirection.Parent);
-			Assert.AreEqual (rootProvider, parent, "Parent - firstChild");
-
-			combobox.Items.Add (1);
-
+			//SeconChild is Button
 			secondChild = firstChild.Navigate (NavigateDirection.NextSibling);
 			Assert.IsNotNull (secondChild, "secondChild is null");
+			Assert.AreEqual (ControlType.Button.Id,
+			                 secondChild.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
+			                 "Should be Button");
 			
-			parent = secondChild .Navigate (NavigateDirection.Parent);
-			Assert.AreEqual (rootProvider, parent, "Parent - secondChild");
+			//No items in internal collection
+			firstItem = firstChild.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNull (firstItem, "FirstChild must be null");
 			
-			//We only have 2 items, there's no third child.
-			thirdChild = secondChild.Navigate (NavigateDirection.NextSibling);
-			Assert.IsNull (thirdChild, "thirdChild is null");
+			//Once we have a selected item, selection is required.
+			combobox.Items.Add ("0");
+			combobox.SelectedIndex = 0;
+			Assert.AreEqual (true, selectionProvider.IsSelectionRequired, 
+			                 "Is true once an item is selected");
+
+			selection = selectionProvider.GetSelection ();
+			Assert.IsNotNull (selection, "selection is not null");
 			
+			firstItem = firstChild.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (firstItem, "FirstChild must not be null");
+			
+			secondItem = firstItem.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNull (secondItem, "There isn't a second child");
+			
+			combobox.Items.Add ("1");
+			secondItem = firstItem.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNotNull (secondItem, "There is a second child");
+			
+			parent = firstItem.Navigate (NavigateDirection.Parent);
+			Assert.AreEqual (firstChild, parent, "Parent - FirstItem");
+			
+			parent = secondItem.Navigate (NavigateDirection.Parent);
+			Assert.AreEqual (firstChild, parent, "Parent - SecondItem");
+			
+			thirdItem = secondItem.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNull (thirdItem, "There is no third item");
+
 			//Lest navigate from second to first
-			Assert.AreEqual (firstChild,
-			                 secondChild.Navigate (NavigateDirection.PreviousSibling),
+			Assert.AreEqual (firstItem,
+			                 secondItem.Navigate (NavigateDirection.PreviousSibling),
 			                 "secondChild.Navigate (PreviousSibling)");
 			
-			//secondChild is the last child
-			Assert.AreEqual (secondChild,
-			                 rootProvider.Navigate (NavigateDirection.LastChild),
-			                 "rootProvider.Navigate (LastChild)");
+			//Remove second
+			combobox.Items.RemoveAt (1);
+			secondItem = firstItem.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNull (secondItem, "There isn't a second child");			
 			
-			//ComboBox doesn't support support multiselection
-			ISelectionItemProvider selectionItemProvider;
-			try {
-				selectionItemProvider
-					= (ISelectionItemProvider) secondChild.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
-				selectionItemProvider.AddToSelection ();
-				Assert.Fail ("Should throw InvalidOperationException.");
-			} catch (InvalidOperationException) { 
-			}
-//			
-//			//However we can change selection
-//			selectionItemProvider
-//				= (ISelectionItemProvider) secondChild.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
-//			selectionItemProvider.Select ();
-//			
-//			//Now should be selected.
-//			bool firstSelected 
-//				= (bool) firstChild.GetPropertyValue (SelectionItemPatternIdentifiers.IsSelectedProperty.Id);
-//			bool secondSelected 
-//				= (bool) secondChild.GetPropertyValue (SelectionItemPatternIdentifiers.IsSelectedProperty.Id);
-//			
-//			Assert.IsFalse (firstSelected, "First should be false");
-//			Assert.IsTrue (secondSelected, "Second should be true");
-//			
-//			//We can't remove from selection once an element is selected
-//			try {
-//				selectionItemProvider.RemoveFromSelection ();
-//				Assert.Fail ("Should throw InvalidOperationException.");
-//			} catch (InvalidOperationException) {
-//			}
-//			
+			firstItem = firstChild.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (firstItem, "FirstChild must not be null");
+
+			//TODO: Add more tests
 		}
 		
 #endregion

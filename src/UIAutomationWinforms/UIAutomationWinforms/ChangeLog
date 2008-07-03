@@ -1,3 +1,29 @@
+2008-07-03  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ComboBoxButtonProvider.cs: Behavior 
+	implemented. 
+	* Mono.UIAutomation.Winforms/ComboBoxListBoxProvider.cs: Internal 
+	navigation class removed.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Validations added
+	to verify if item is contained in list.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: New method:
+	FinalizeEvents added: Disconnects all internal events.
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Private field added:
+	name_property.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Methods added: 
+	RemoveItemAt and ContainsItem.
+	* Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs: Logic
+	updated in methods: GetFirstLink and GetLastLink. Method added: Clear.
+	* Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs: New
+	navigation classes added to support internal Button and ListBox 
+	controls in ComboBox, still missing TextBox.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxButtonInvokeBehavior.cs: 
+	File added. Represents the Invoke Pattern.
+	* Mono.UIAutomation.Winforms.Events/ComboBoxButtonInvokePatternInvokeEvent.cs:
+	File added. Represents the Invoke Event.
+	* UIAutomationWinforms/Makefile.am: Updated: added files.
+	* Mono.UIAutomation.Winforms.mdp: Updated. added files.
+
 2008-07-01  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Navigation/ListBoxItemNavigation.cs: File 

@@ -34,7 +34,7 @@ using NUnit.Framework;
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
 	
-	[TestFixture]
+//	[TestFixture]
 	public class ListBoxProviderTest : BaseProviderTest
 	{
 		

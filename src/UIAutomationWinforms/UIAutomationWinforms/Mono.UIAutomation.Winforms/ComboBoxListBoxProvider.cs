@@ -24,17 +24,15 @@
 // 
 
 using System;
+using System.Reflection;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
-using Mono.UIAutomation.Winforms.Navigation;
-
 namespace Mono.UIAutomation.Winforms
 {
 
-	//TODO: This class should allow navigating 2 ScrollBars and n items.
-	public class ComboBoxListBoxProvider : ListProvider
+	internal class ComboBoxListBoxProvider : ListProvider
 	{
 
 #region Constructor
@@ -44,8 +42,6 @@ namespace Mono.UIAutomation.Winforms
 			: base (control)
 		{
 			combobox_provider = provider;
-			
-			Navigation = new ComboBoxListBoxItemRootNavigation (this);
 		}
  
 #endregion
@@ -122,58 +118,6 @@ namespace Mono.UIAutomation.Winforms
 #region Private Fields
 		
 		private ComboBoxProvider combobox_provider;
-		
-#endregion
-		
-#region Navigation Class
-
-#region ListBoxItem Navigation Class
-		
-		class ComboBoxListBoxItemRootNavigation : SimpleNavigation
-		{
-			public ComboBoxListBoxItemRootNavigation (ComboBoxListBoxProvider provider)
-				: base (provider)
-			{
-				this.provider = provider;
-			}
-			
-			public override bool SupportsNavigation {
-				get { return !(((ComboBox) provider.ListControl).Items.Count == 0); }
-			}
-			
-			public override IRawElementProviderSimple Provider {
-				get { 
-					if (first_item_provider == null) {
-						first_item_provider = provider.GetItemProvider (0);
-						navigation = first_item_provider.Navigation;
-						first_item_provider.Navigation = this;
-					}
-
-					return first_item_provider;
-				}
-			}
-			
-			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
-			{
-				if (direction == NavigateDirection.Parent) {
-					return provider;
-				} else if (direction == NavigateDirection.NextSibling) {
-					if (SupportsNavigation == false)
-						return null;
-					else
-						return navigation.Navigate (direction);
-				} else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider ();
-				else
-					return null;
-			}
-			
-			private ComboBoxListBoxProvider provider;
-			private ListItemProvider first_item_provider;
-			private INavigation navigation;
-		}	
-		
-#endregion
 		
 #endregion
 

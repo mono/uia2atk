@@ -24,69 +24,45 @@
 // 
 
 using System;
-using System.Collections.Generic;
+using System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
 
-namespace Mono.UIAutomation.Winforms.Navigation
+namespace Mono.UIAutomation.Winforms.Events
 {
-	
-	internal class NavigationChain
-	{
 
+	internal class ComboBoxButtonInvokePatternInvokeEvent 
+		: InvokePatternInvokedEvent
+	{
+		
 #region Constructors
 		
-		public NavigationChain ()
+		public ComboBoxButtonInvokePatternInvokeEvent (ComboBoxButtonProvider provider) 
+			: base (provider)
 		{
-			list = new List<INavigation> ();
 		}
-		
-#endregion 
-		
-#region Public Methods
-		
-		public void AddLink (INavigation link) 
-		{
-			if (!list.Contains (link)) {
-				list.Add (link);
-				if (list.Count > 1) {
-					list [list.Count - 2].NextSibling = link;
-					link.PreviousSibling = list [list.Count - 2];
-				}
-			}
-		}
-		
-		public void Clear ()
-		{
-			foreach (INavigation item in list)
-				item.NextSibling = item.PreviousSibling = null;
+				
+#endregion
 
-			list.Clear ();
-		}
-		
-		public INavigation GetFirstLink () 
+#region IConnectable Overriders
+
+		public override void Connect (Control control)
 		{
-			return list.Count == 0 ? null : list [0];
-//			for (int index = 0; index < list.Count; index++) {
-//				if (list [index].SupportsNavigation)
-//					return list [index];
-//			}
-//			return null;
+			((ComboBox) control).DropDown += new EventHandler (OnDropDown);
 		}
-		
-		public INavigation GetLastLink () 
+
+		public override void Disconnect (Control control)
 		{
-			return list.Count == 0 ? null : list [list.Count - 1];
-//			for (int index = list.Count - 1; index >= 0; index--) {
-//				if (list [index].SupportsNavigation)
-//					return list [index];
-//			}
-//			return null;
+			((ComboBox) control).DropDown -= new EventHandler (OnDropDown);
 		}
+
+#endregion
+
+#region Private Methods		
 		
-#endregion 
-		
-#region Private Fields
-		
-		private List<INavigation> list;
+		private void OnDropDown (object sender, EventArgs e)
+		{
+			InvokeEvent ();
+		}
 		
 #endregion
 	}

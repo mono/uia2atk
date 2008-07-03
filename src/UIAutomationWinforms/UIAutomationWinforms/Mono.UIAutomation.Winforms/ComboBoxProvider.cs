@@ -48,6 +48,8 @@ namespace Mono.UIAutomation.Winforms
 				UpdateBehaviors (combobox);
 			};
 			
+			UpdateBehaviors (combobox);
+			
 			Navigation = new ComboBoxNavigation (this);
 		}
 		
@@ -101,15 +103,19 @@ namespace Mono.UIAutomation.Winforms
 			else
 				return new ListItemProvider [] { (ListItemProvider) GetFocus () };
 		}
-		
+
 		public override string GetItemName (ListItemProvider item)
 		{
-			return ((ComboBox) ListControl).Items [item.Index].ToString ();
+			if (ContainsItem (item) == true)
+				return ((ComboBox) ListControl).Items [item.Index].ToString ();
+			else
+				return string.Empty;
 		}
 		
 		public override void SelectItem (ListItemProvider item)
 		{
-			ListControl.SelectedIndex = item.Index;
+			if (ContainsItem (item) == true)
+				ListControl.SelectedIndex = item.Index;
 		}
 
 		public override void UnselectItem (ListItemProvider item)
@@ -118,7 +124,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override bool IsItemSelected (ListItemProvider item)
 		{
-			return item.Index == ListControl.SelectedIndex;
+			return ContainsItem (item) == false ? false : item.Index == ListControl.SelectedIndex;
 		}
 		
 #endregion

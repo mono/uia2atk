@@ -95,6 +95,15 @@ namespace Mono.UIAutomation.Winforms
 			SetEvent (ProviderEventType.StructureChangedEvent,
 			          new StructureChangedEvent (this));
 		}
+		
+		public void FinalizeEvents ()
+		{
+			if (Control != null)
+				foreach (IConnectable strategy in events.Values)
+				    strategy.Disconnect (Control);
+
+			events.Clear ();
+		}
 
 		public void SetEvent (ProviderEventType type, IConnectable strategy)
 		{

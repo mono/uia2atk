@@ -44,6 +44,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ButtonInvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ComboBoxButtonInvokeBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBoxExpandCollapseProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBoxValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/IProviderBehavior.cs \
@@ -62,6 +63,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/AutomationIsEnabledPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationNamePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ComboBoxButtonInvokePatternInvokeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBoxExpandCollapseStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBoxItemElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/InvokePatternInvokedEvent.cs \

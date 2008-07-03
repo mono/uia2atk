@@ -23,71 +23,51 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 
-using System;
-using System.Collections.Generic;
+using System.Windows.Automation;
+using System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Navigation
+namespace Mono.UIAutomation.Winforms.Behaviors
 {
-	
-	internal class NavigationChain
+
+	internal class ComboBoxButtonInvokeBehavior : ButtonInvokeProviderBehavior
 	{
+		
+#region Constructor
+		
+		public ComboBoxButtonInvokeBehavior (ComboBoxButtonProvider provider)
+			: base (provider)
+		{
+		}
 
-#region Constructors
-		
-		public NavigationChain ()
-		{
-			list = new List<INavigation> ();
-		}
-		
-#endregion 
-		
-#region Public Methods
-		
-		public void AddLink (INavigation link) 
-		{
-			if (!list.Contains (link)) {
-				list.Add (link);
-				if (list.Count > 1) {
-					list [list.Count - 2].NextSibling = link;
-					link.PreviousSibling = list [list.Count - 2];
-				}
-			}
-		}
-		
-		public void Clear ()
-		{
-			foreach (INavigation item in list)
-				item.NextSibling = item.PreviousSibling = null;
-
-			list.Clear ();
-		}
-		
-		public INavigation GetFirstLink () 
-		{
-			return list.Count == 0 ? null : list [0];
-//			for (int index = 0; index < list.Count; index++) {
-//				if (list [index].SupportsNavigation)
-//					return list [index];
-//			}
-//			return null;
-		}
-		
-		public INavigation GetLastLink () 
-		{
-			return list.Count == 0 ? null : list [list.Count - 1];
-//			for (int index = list.Count - 1; index >= 0; index--) {
-//				if (list [index].SupportsNavigation)
-//					return list [index];
-//			}
-//			return null;
-		}
-		
-#endregion 
-		
-#region Private Fields
-		
-		private List<INavigation> list;
-		
 #endregion
+		
+#region IProviderBehavior Interface
+
+		public override void Connect (Control control)
+		{
+			Provider.SetEvent (ProviderEventType.InvokeInvokedEvent, 
+			                   new ComboBoxButtonInvokePatternInvokeEvent ((ComboBoxButtonProvider) Provider));
+		}
+		
+		public override void Disconnect (Control control)
+		{
+			Provider.SetEvent (ProviderEventType.InvokeInvokedEvent, null);
+		}
+
+#endregion
+		
+#region IInvokeProvider Members
+		
+		public override void Invoke ()
+		{
+			if (!Provider.Control.Enabled)
+				throw new ElementNotEnabledException ();
+			
+			((ComboBox) Provider.Control).DroppedDown = true;
+		}
+		
+#endregion	
+
 	}
 }

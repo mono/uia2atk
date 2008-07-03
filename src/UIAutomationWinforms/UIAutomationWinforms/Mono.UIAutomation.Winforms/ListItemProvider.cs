@@ -43,7 +43,7 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		public ListItemProvider (ListProvider provider, ListControl control, 
-		                            int index) : base (control)
+		                         int index) : base (control)
 		{
 			this.index = index;
 			list_provider = provider;
@@ -55,6 +55,7 @@ namespace Mono.UIAutomation.Winforms
 			SetBehavior (ScrollItemPatternIdentifiers.Pattern,
 			             new ListItemScrollProviderBehavior (this));
 			
+			name_property = ListProvider.GetItemName (this);
 			Navigation = new ListItemNavigation (this);	
 		}
 
@@ -71,7 +72,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
 				return ListControl.GetHashCode () + Index; // TODO: Ensure uniqueness
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return ListProvider.GetItemName (this);
+				return name_property;
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return ListControl.Focused && Index == ListControl.SelectedIndex;
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
@@ -114,6 +115,7 @@ namespace Mono.UIAutomation.Winforms
 		private int index;
 		private ListControl list_control;
 		private ListProvider list_provider;
+		private string name_property;
 		
 #endregion
 		
