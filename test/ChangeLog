@@ -1,5 +1,15 @@
 2008-07-03  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* testers/gtkcheckbutton/gtkcheckbuttonframe.py
+	* testers/gtkcheckbutton/checkbuttonframe.py
+	* testers/gtktreeview/gtktreeviewframe.py
+	* testers/gtktreeview/treeviewframe.py
+	* testers/gtkbutton/gtkbuttonframe.py
+	* testers/gtkbutton/buttonframe.py: taking off the gtk prefix for 
+	now on the *frame.py wrappers.  it breaks the tests.
+	
+2008-07-03  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* samples/gtktreeview.py: Title bars should have spaces
 	* samples/gtkcheckbutton.py: Comment change (about gtk)
 	* testers/gtkcheckbutton/gtkcheckbuttonframe.py: Description was
