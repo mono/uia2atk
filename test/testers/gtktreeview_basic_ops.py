@@ -3,9 +3,9 @@
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        06/18/2008
-# Description: Test accessibility of TreeView widget 
-#              Use the treeviewframe.py wrapper script
-#              Test the sample/gtktreeview.py script
+# Description: Test accessibility of gtk TreeView widget 
+#              Use the gtktreeviewframe.py wrapper script
+#              Test the samples/gtktreeview.py script
 ##############################################################################
 
 # The docstring below  is used in the generated log file

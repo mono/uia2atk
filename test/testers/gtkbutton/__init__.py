@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-
 ##############################################################################$
 # Written by:  Brian G. Merrell <bgmerrell@novell.com>$
 # Date:        May 23 2008$
-# Description: Application wrapper for checkButton.py 
-#              Used by the checkbutton-*.py tests
+# Description: Application wrapper for gtkbutton.py 
+#              Used by the gtkbutton-*.py tests
 ##############################################################################$
 
 'Application wrapper for button'

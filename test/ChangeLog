@@ -1,5 +1,26 @@
 2008-07-03  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* samples/gtktreeview.py: Title bars should have spaces
+	* samples/gtkcheckbutton.py: Comment change (about gtk)
+	* testers/gtkcheckbutton/gtkcheckbuttonframe.py: Description was
+	incorrect, update description
+	* testers/gtkcheckbutton/__init__.py: Update description 
+	* testers/gtktreeview/gtktreeviewframe.py: Indent comments, delete
+	unused code
+	* testers/gtktreeview/__init__.py: Fix crashing problem after
+	buttonframe.py was renamed to gtkbuttonframe.py.  Change letter casing
+	and added a space in the findFrame method so the frame would be found.
+	* testers/gtkbutton/gtkbuttonframe.py: Update description
+	* testers/gtkbutton/__init__.py: Description was incorrect, update
+	description
+	* testers/gtkcheckbutton_basic_ops.py: Update description
+	* testers/gtktreeview_basic_ops.py: Update description
+	* testers/gtkbutton_basic_ops.py:  Update description
+	* testers/gtkcheckbutton_basic_ops2.py: Update description
+	* testers/gtkcheckbutton_basic_ops3.py: Update description
+
+2008-07-03  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* testers : prefix all strongwind wrapper scripts with gtk so they 
 	aren't confused with our winforms tests.
 

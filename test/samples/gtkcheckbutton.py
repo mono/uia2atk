@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# example checkbutton.py
+# example gtkcheckbutton.py
 
 import pygtk
 pygtk.require('2.0')

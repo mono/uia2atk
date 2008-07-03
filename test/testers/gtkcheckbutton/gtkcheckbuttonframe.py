@@ -1,15 +1,12 @@
-# -*- coding: utf-8 -*-
-
 ##############################################################################$
 # Written by:  Brian G. Merrell <bgmerrell@novell.com>$
 # Date:        May 23 2008$
-# Description: checkButton.py wrapper script
-#              Used by the checkbutton-*.py tests
+# Description: gtkcheckbutton.py wrapper script
+#              Used by the gtkcheckbutton-*.py tests
 ##############################################################################$
 
 from strongwind import *
 from gtkcheckbutton import *
-
 
 # class to represent the main window.
 class CheckButtonFrame(accessibles.Frame):

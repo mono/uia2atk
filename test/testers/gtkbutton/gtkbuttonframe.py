@@ -3,15 +3,13 @@
 # Written by:  Calen Chen <cachen@novell.com>
 # Date:        06/27/2008
 # Description: gtkbutton.py wrapper script
-#              Used by the button_*.py tests
+#              Used by the gtkbutton_*.py tests
 ##############################################################################$
 
 from strongwind import *
 from gtkbutton import *
 
-
 # class to represent the main window.
-
 class ButtonFrame(accessibles.Frame):
 
     # constants

@@ -2,18 +2,18 @@
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        06/18/2008
+#              Application wrapper for gtktreeview.py
 #              Used by the treeview-*.py tests
 ##############################################################################$
 
-'Application wrapper for checkbutton'
-
-import os
+'Application wrapper for gtktreeview'
 
 from strongwind import *
 
+import os
 
 def launchTreeView(exe=None):
-    'Launch treeview with accessibility enabled and return a treeview object.  Log an error and return None if something goes wrong'
+    'Launch gtktreeview with accessibility enabled and return a treeview object.  Log an error and return None if something goes wrong'
 
     if exe is None:
         # make sure we can find the sample application
@@ -32,18 +32,17 @@ def launchTreeView(exe=None):
 
     (app, subproc) = cache.launchApplication(args=args)
 
-    treeView = TreeView(app, subproc)
-    cache.addApplication(treeView)
+    treeview = TreeView(app, subproc)
+    cache.addApplication(treeview)
 
-    treeView.treeViewFrame.app = treeView
+    treeview.treeViewFrame.app = treeview
 
-    return treeView
+    return treeview
 
 # class to represent the application
 class TreeView(accessibles.Application):
     def __init__(self, accessible, subproc=None):
-        'Get a reference to the treeview window'
+        'Get a reference to the Tree View window'
         super(TreeView, self).__init__(accessible, subproc)
-
-        self.findFrame(re.compile('^TreeView'), logName='Tree View')
+        self.findFrame(re.compile('^Tree View'), logName='Tree View')
 

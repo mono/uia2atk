@@ -4,9 +4,9 @@
 ##############################################################################
 # Written by:  Brian G. Merrell <bgmerrell@novell.com>
 # Date:        May 23 2008
-# Description: Test accessibility of checkbutton widget 
-#              Use the checkbuttonframe.py wrapper script
-#              Test the sample/checkbutton.py script
+# Description: Test accessibility of gtk checkbutton widget 
+#              Use the gtkcheckbuttonframe.py wrapper script
+#              Test the samples/gtkcheckbutton.py script
 ##############################################################################
 
 # The docstring below  is used in the generated log file

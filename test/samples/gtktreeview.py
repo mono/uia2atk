@@ -1,7 +1,5 @@
 #!/usr/bin/python
 import gtk
-#from mainw import MainWindow
-
 
 class MainWindow(object):
     # close the window and quit
@@ -9,7 +7,7 @@ class MainWindow(object):
         gtk.main_quit()
         return False
 
-    def __init__(self,title="TreeView",width=300,height=600):
+    def __init__(self,title="Tree View",width=300,height=600):
         # Create a new window
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window.set_title(title)

@@ -3,11 +3,11 @@
 ##############################################################################$
 # Written by:  Brian G. Merrell <bgmerrell@novell.com>$
 # Date:        May 23 2008$
-# Description: Application wrapper for checkButton.py 
-#              Used by the checkbutton-*.py tests
+# Description: Application wrapper for gtkcheckbutton.py 
+#              Used by the gtkcheckbutton-*.py tests
 ##############################################################################$
 
-'Application wrapper for gtkcheckbutton'
+'Application wrapper for checkbutton'
 
 from strongwind import *
 

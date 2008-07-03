@@ -3,9 +3,9 @@
 ##############################################################################
 # Written by:  Calen Chen <cachen@novell.com>
 # Date:        06/27/2008
-# Description: Test accessibility of button widget 
-#              Use the buttonframe.py wrapper script
-#              Test the sample/gtkbutton.py script
+# Description: Test accessibility of gtk button widget 
+#              Use the gtkbuttonframe.py wrapper script
+#              Test the samples/gtkbutton.py script
 ##############################################################################
 
 # The docstring below  is used in the generated log file
