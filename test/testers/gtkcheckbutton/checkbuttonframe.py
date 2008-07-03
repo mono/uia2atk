@@ -8,7 +8,7 @@
 ##############################################################################$
 
 from strongwind import *
-from checkbutton import *
+from gtkcheckbutton import *
 
 
 # class to represent the main window.

@@ -7,7 +7,7 @@
 ##############################################################################$
 
 from strongwind import *
-from button import *
+from gtkbutton import *
 
 
 # class to represent the main window.

@@ -18,7 +18,7 @@ import sys
 import os
 
 from strongwind import *
-from treeview import *
+from gtktreeview import *
 from sys import argv
 from os import path
 

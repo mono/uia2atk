@@ -16,7 +16,7 @@ Test accessibility of checkbutton widget
 
 # imports
 from strongwind import *
-from checkbutton import *
+from gtkcheckbutton import *
 from sys import argv
 from os import path
 
@@ -40,23 +40,15 @@ if app is None:
 # just an alias to make things shorter
 cbFrame = app.checkButtonFrame
 
-# find a shorter way instead of app.checkbuttonFrame.checkbox1
 cbFrame.checkbox1.click()
 # need a short delay when checking and unchecking the check boxes
 sleep(config.SHORT_DELAY)
 cbFrame.assertResult(cbFrame.checkbox1,"checked");
 
+
 cbFrame.checkbox2.click()
 sleep(config.SHORT_DELAY)
 cbFrame.assertResult(cbFrame.checkbox2, "checked");
-
-cbFrame.checkbox2.click()
-sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.checkbox2, "unchecked");
-
-cbFrame.checkbox1.click()
-sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.checkbox1, "unchecked");
 
 cbFrame.quit()
 

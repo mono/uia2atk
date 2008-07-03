@@ -1,3 +1,9 @@
+2008-07-03  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers : prefix all tester filenames with gtk so they aren't
+	confused with our winforms tests.
+	* drivers/tests.py : add gtkbutton to the test suite
+
 2008-07-02  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/gtkbutton.py : Title bars generally have spaces

@@ -15,7 +15,7 @@ Test accessibility of button widget
 
 # imports
 from strongwind import *
-from button import *
+from gtkbutton import *
 from sys import argv
 from os import path
 

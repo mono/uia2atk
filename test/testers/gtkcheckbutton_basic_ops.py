@@ -16,7 +16,7 @@ Test accessibility of checkbutton widget
 
 # imports
 from strongwind import *
-from checkbutton import *
+from gtkcheckbutton import *
 from sys import argv
 from os import path
 

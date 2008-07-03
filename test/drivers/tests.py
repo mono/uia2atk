@@ -7,8 +7,9 @@
 # only add finished tests that should execute successfully to this list
 
 tests_list = [
-  "checkbutton_basic_ops.py",
-  "checkbutton_basic_ops2.py",
-  "checkbutton_basic_ops3.py",
-  "checkbutton_basic_ops4.py"
+  "gtkcheckbutton_basic_ops.py",
+  "gtkcheckbutton_basic_ops2.py",
+  "gtkcheckbutton_basic_ops3.py",
+  "gtkcheckbutton_basic_ops4.py",
+  "gtkbutton_basic_ops.py"
 ]

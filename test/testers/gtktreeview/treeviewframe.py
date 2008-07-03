@@ -10,7 +10,7 @@ import sys
 import os
 
 from strongwind import *
-from treeview import *
+from gtktreeview import *
 
 class TableColumnHeader(Accessible):
     def click(self, log=True):
