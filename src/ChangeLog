@@ -1,3 +1,11 @@
+2008-07-07  Mario Carrion <mcarrion@novell.com>
+
+	* patches/scrollbar.patch: Events renamed.
+	* patches/listbox.patch: File added. Patch for ListBox contorl to
+	enable StructureChanged events.
+	* patches/combobox.patch: Generates ChildAdded and ChildRemoved when
+	using combobox.Items [index] = value.
+
 2008-07-03  Mario Carrion <mcarrion@novell.com>
 
 	* patches/scrollbar.patch: File deleted.

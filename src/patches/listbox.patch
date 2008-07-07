@@ -1,16 +1,16 @@
-Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
+Index: class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs
 ===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs	(revision 107148)
-+++ class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs	(working copy)
-@@ -1915,7 +1915,21 @@
+--- class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs	(revision 107148)
++++ class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs	(working copy)
+@@ -2355,7 +2355,21 @@
  
- 			private ComboBox owner;
+ 			private ListBox owner;
  			internal ArrayList object_items = new ArrayList ();
 +			
 +			#region UIA Framework Events
  
 +#if NET_2_0
-+	    		//UIA Framework events for ComboBox Provider used the
++	    		//UIA Framework events for ListBox Provider used the
 +	    		//generated UIA StructureChanged event
 +	    		//- ItemAdded. Generates StructureChanged.ChildAdded
 +	    		//- ItemRemoved. Generates StructureChanged.ChildRemoved
@@ -21,20 +21,20 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
 +
 +			#endregion
 +
- 			public ObjectCollection (ComboBox owner)
+ 			public ObjectCollection (ListBox owner)
  			{
  				this.owner = owner;
-@@ -1945,7 +1959,22 @@
+@@ -2396,8 +2410,22 @@
+ 						throw new ArgumentOutOfRangeException ("Index of out range");
  					if (value == null)
  						throw new ArgumentNullException ("value");
- 
 +#if NET_2_0
 +				//UIA Framework event used to indicate that Structure
 +				//has Changed: child item removed
 +				if (ChildRemoved != null)
 +					ChildRemoved (this, index);
-+#endif
-+
++#endif					
+ 
  					object_items[index] = value;
 +					
 +#if NET_2_0
@@ -42,67 +42,47 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
 +				//has Changed: child item added
 +				if (ChildAdded != null)
 +					ChildAdded (this, index);
-+#endif
-+
- 					if (owner.listbox_ctrl != null)
- 						owner.listbox_ctrl.InvalidateItem (index);
- 					if (index == owner.SelectedIndex) {
-@@ -2059,8 +2088,15 @@
- 				
- 				if (owner.Sorted)
- 					AddItem (item);
--				else
-+				else {
- 					object_items.Insert (index, item);
-+#if NET_2_0
-+					//UIA Framework event used to indicate that Structure
-+					//has Changed: child item added
-+					if (ChildAdded != null)
-+						ChildAdded (this, index);
 +#endif					
-+				}
- 				
- 				owner.EndUpdate ();	// Calls UpdatedItems
++
+ 					owner.CollectionChanged ();
+ 				}
  			}
-@@ -2086,6 +2122,13 @@
+@@ -2519,6 +2547,12 @@
+ 					
+ 				owner.BeginUpdate ();
+ 				object_items.Insert (index, item);
++#if NET_2_0
++				//UIA Framework event used to indicate that Structure
++				//has Changed: child item added
++				if (ChildAdded != null)
++					ChildAdded (this, index);
++#endif					
+ 				owner.CollectionChanged ();
+ 				owner.EndUpdate ();
+ 			}
+@@ -2538,6 +2572,12 @@
  
+ 				owner.selected_indices.Remove (index);
  				object_items.RemoveAt (index);
- 				owner.UpdatedItems ();
-+				
 +#if NET_2_0
 +				//UIA Framework event used to indicate that Structure
 +				//has Changed: child item removed
 +				if (ChildRemoved != null)
 +					ChildRemoved (this, index);
 +#endif
+ 				owner.CollectionChanged ();
  			}
  			#endregion Public Methods
+@@ -2550,6 +2590,12 @@
  
-@@ -2107,12 +2150,27 @@
- 							if (index <= owner.selected_index && owner.IsHandleCreated)
- 								owner.selected_index++;
- 								
-+#if NET_2_0
-+							//UIA Framework event used to indicate that Structure
-+							//has Changed: child item added
-+							if (ChildAdded != null)
-+								ChildAdded (this, index);
-+#endif
-+
- 							return index;
- 						}
- 						index++;
- 					}
- 				}
+ 				int cnt = object_items.Count;
  				object_items.Add (item);
-+				
 +#if NET_2_0
 +				//UIA Framework event used to indicate that Structure
 +				//has Changed: child item added
 +				if (ChildAdded != null)
-+					ChildAdded (this, object_items.Count - 1);
-+#endif
-+				
- 				return object_items.Count - 1;
++					ChildAdded (this, cnt);
++#endif					
+ 				return cnt;
  			}
- 			
+ 

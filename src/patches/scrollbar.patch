@@ -1,6 +1,6 @@
 Index: class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs
 ===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs	(revision 106905)
+--- class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs	(revision 107148)
 +++ class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs	(working copy)
 @@ -80,6 +80,21 @@
  		bool thumb_entered;
@@ -11,9 +11,9 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs
 +    		//UIA Framework events for Invoke Control Pattern used in
 +    		//the ScrollBar Provider children buttons.
 +    		// - LargeIncrementCalled. Used by the LargeIncrement UIA Button (Space between Thumb and bottom/right Button)
-+    		// - LargeIncrementCalled. Used by the LargeDecrement UIA Button (Space between Thumb and top/left Button)
-+    		// - SmallIncrementCalled. Used by the SmallIncrement UIA Button (bottom/right Button)
-+    		// - SmallDecrementCalled. Used by the SmallDecrement UIA Button (top/left Button)
++    		// - LargeIncrementCalled. Used by the LargeDecrement UIA Button (Space between Thumb and top/left bBtton)
++    		// - SmallIncrementCalled. Used by the SmallIncrement UIA Button (bottom/right bBtton)
++    		// - SmallDecrementCalled. Used by the SmallDecrement UIA Button (top/left bBtton)
 +    		internal event EventHandler LargeIncrementCalled;
 +    		internal event EventHandler LargeDecrementCalled;
 +    		internal event EventHandler SmallIncrementCalled;
