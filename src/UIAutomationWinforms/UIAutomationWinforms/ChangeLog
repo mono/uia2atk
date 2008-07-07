@@ -1,3 +1,8 @@
+2008-07-07  Neville Gao <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBarGridBehavior.cs: File
+	added.
+
 2008-07-03  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ComboBoxButtonProvider.cs: Behavior 
