@@ -65,21 +65,11 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		public INavigation GetFirstLink () 
 		{
 			return list.Count == 0 ? null : list [0];
-//			for (int index = 0; index < list.Count; index++) {
-//				if (list [index].SupportsNavigation)
-//					return list [index];
-//			}
-//			return null;
 		}
 		
 		public INavigation GetLastLink () 
 		{
 			return list.Count == 0 ? null : list [list.Count - 1];
-//			for (int index = list.Count - 1; index >= 0; index--) {
-//				if (list [index].SupportsNavigation)
-//					return list [index];
-//			}
-//			return null;
 		}
 		
 #endregion 

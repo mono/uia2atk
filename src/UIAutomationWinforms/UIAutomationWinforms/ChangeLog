@@ -1,3 +1,51 @@
+2008-07-07  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs: Removed
+	commeted code.
+	* Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs: Updated
+	to ThumbProvider API changes.
+	* Mono.UIAutomation.Winforms.Navigation/INavigation.cs: Added method:
+	FinalizeProvider.
+	* Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs: 
+	Implementented method: FinalizeProvider. Usign explicit delegate instead
+	of using anonymous delegate. Using Helper.RaiseStructureChangedEvent
+	to generate StructureChanged events.
+	* Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs: Implemented
+	method: FinalizeProvider.
+	* Mono.UIAutomation.Winforms/ThumbProvider.cs: Constructor uses 
+	ScrollBar reference. Method update GetPropertyValue to use 
+	Helper.GetUniqueRuntimeId method. BoundingRectangle property defined 
+	through GetThumbArea method.
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Lazy instantiation of
+	Navigation property. Using explicit delegate instead of anonymous 
+	delegate.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Removed primitive 
+	debugging.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Method added:
+	FinalizeBehaviors. AutomationId property uses Helper.GetUniqueRuntimeId
+	method.
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Removed 
+	AutomationIdProperty, handled by base class.
+	* Mono.UIAutomation.Winforms/FormListener.cs: Using 
+	Helper.RaiseStructureChangedEvent instead of instantiating own object.
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Using 
+	Helper.RaiseStructureChangedEvent instead of instantiating own object.
+	* Mono.UIAutomation.Winforms/Helper.cs: New methods: 
+	RaiseStructureChangedEvent and GetUniqueRuntimeId. Method visibility 
+	changed from public to internal: RectangleToRect. 
+	* Mono.UIAutomation.Winforms/WindowProvider.cs: Using 
+	Helper.RaiseStructureChangedEvent instead of instantiating own object.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Using 
+	Helper.RaiseStructureChangedEvent instead of instantiating own object.
+	* Mono.UIAutomation.Winforms/ScrollBarButtonProvider.cs: Removed
+	InitializeEvents overriden method, using base class'. Using AutomationId
+	property. Vibisility changed to internal.
+	* Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs: Using
+	Helper.RaiseStructureChangedEvent instead of instantiating own object.
+	Method removed: GetStructureChangedEventArgs.
+	* Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs:
+	Event names updated to match scrollbar.patch.
+
 2008-07-07  Neville Gao <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/StatusBarGridBehavior.cs: File

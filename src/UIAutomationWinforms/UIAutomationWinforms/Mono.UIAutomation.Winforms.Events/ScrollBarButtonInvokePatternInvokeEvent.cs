@@ -86,13 +86,13 @@ namespace Mono.UIAutomation.Winforms.Events
 
 			//TODO: Should we use generalization?
 			if (provider.Orientation == ScrollBarButtonOrientation.LargeBack)
-				return "LargeDecrementChanged";
+				return "LargeDecrementCalled";
 			else if (provider.Orientation == ScrollBarButtonOrientation.LargeForward)
-				return "LargeIncrementChanged";
+				return "LargeIncrementCalled";
 			else if (provider.Orientation == ScrollBarButtonOrientation.SmallBack)
-				return "SmallDecrementChanged";
+				return "SmallDecrementCalled";
 			else //Should be ScrollBarButtonOrientation.SmallForward
-				return "LargeIncrementChanged";
+				return "LargeIncrementCalled";
 		}
 		
 		private void OnButtonClicked (object sender, EventArgs e)

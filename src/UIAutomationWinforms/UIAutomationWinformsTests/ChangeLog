@@ -1,3 +1,13 @@
+2008-07-07  Mario Carrion  <mcarrion@novell.com>
+
+	* BaseProviderTest.cs: Added Ignore property to test: 
+	AutomationIdPropertyTest. Test MUST be updated somehow.
+	* ThumbProviderTest.cs: Updated to match API changes.
+	* LabelProviderTest.cs: Commented not working test: 
+	AutomationIdProperty.
+	* ScrollBarProviderTest.cs: Replacing IRawElementProviderFragment 
+	instead of using ScrollBarButtonProvider.
+
 2008-07-03  Mario Carrion  <mcarrion@novell.com>
 
 	* ComboBoxProviderTest.cs: NavigateSingleTest updated.

@@ -24,6 +24,9 @@
 // 
 
 using System;
+using System.Drawing;
+using System.Reflection;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
@@ -36,14 +39,9 @@ namespace Mono.UIAutomation.Winforms
 
 #region Constructor
 
-		public ThumbProvider () : base (null)
+		public ThumbProvider (ScrollBar scrollbar) : base (scrollbar)
 		{
-			//TODO: How to implement this?
-			//BoundingRectangleProperty property-changed event.
-			//IsOffscreenProperty property-changed event.
-			//IsEnabledProperty property-changed event.
-			//AutomationFocusChangedEvent
-			//StructureChangedEvent
+			runtime_id = -1;
 		}
 
 #endregion
@@ -52,10 +50,13 @@ namespace Mono.UIAutomation.Winforms
 
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
-				return 1; //FIXME: This doesn't make sense.
-			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-				return null; //TODO: We may need to use Reflection to get the "real" value
+			if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id) {
+				if (runtime_id == -1)
+					runtime_id = Helper.GetUniqueRuntimeId ();
+
+				return runtime_id;
+			} else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+				return GetThumbArea ();
 			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 				return null; //TODO: We may need to use Reflection to get the "real" value
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
@@ -71,6 +72,28 @@ namespace Mono.UIAutomation.Winforms
 			else
 				return null;
 		}
+		
+#endregion
+		
+#region Private Methods
+
+		private Rect GetThumbArea () 
+		{			
+			Type type = typeof (ScrollBar);
+			FieldInfo fieldInfo = type.GetField ("thumb_area",
+			                                     BindingFlags.NonPublic
+			                                     | BindingFlags.GetField
+			                                     | BindingFlags.Instance);
+			Rectangle thumbArea = (Rectangle) fieldInfo.GetValue (Control);
+			
+			return Helper.RectangleToRect (thumbArea);
+		}
+		
+#endregion
+		
+#region Private Fields
+		
+		private int runtime_id;
 		
 #endregion
 

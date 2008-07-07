@@ -64,8 +64,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public virtual int[] GetRuntimeId ()
 		{
-			//TODO: Add a valid value at index 1
-            return new int [] { AutomationInteropProvider.AppendRuntimeId, 0 };
+            return new int [] { AutomationInteropProvider.AppendRuntimeId, 
+				(int) GetPropertyValue (AutomationElementIdentifiers.AutomationIdProperty.Id) };
 		}
 		
 		public virtual IRawElementProviderFragment Navigate (NavigateDirection direction) 

@@ -67,48 +67,27 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		protected void OnStructureChangedEvent (object sender, EventArgs e)
 		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				StructureChangedEventArgs args;
-
-				if (((Control) sender).Visible)
-					args = GetStructureChangedEventArgs (StructureChangeType.ChildAdded);
-				else
-					args = GetStructureChangedEventArgs (StructureChangeType.ChildRemoved);
-
-				AutomationInteropProvider.RaiseStructureChangedEvent (Provider, args);
-			}
+			if (((Control) sender).Visible)
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+				                                   (IRawElementProviderFragment) Provider);
+			else
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
+				                                   (IRawElementProviderFragment) Provider);
 		}
 			
 		protected void OnStructureChangedEventAdd (object sender, ControlEventArgs e)
 		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				StructureChangedEventArgs args 
-					= GetStructureChangedEventArgs (StructureChangeType.ChildAdded);
-				AutomationInteropProvider.RaiseStructureChangedEvent (Provider, args);
-			}
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+			                                   (IRawElementProviderFragment) Provider);
 		}
 		
 		protected void OnStructureChangedEventRemoved (object sender, ControlEventArgs e)
 		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				StructureChangedEventArgs args 
-					= GetStructureChangedEventArgs (StructureChangeType.ChildRemoved);
-				AutomationInteropProvider.RaiseStructureChangedEvent (Provider, args);
-			}
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
+			                                   (IRawElementProviderFragment) Provider);
 		}
 		
 #endregion
-		
-#region Private Methods
-		
-		private StructureChangedEventArgs GetStructureChangedEventArgs (StructureChangeType type)
-		{
-			//TODO: Assuming that ALL the Providers are Fragment makes sense?
-			return new StructureChangedEventArgs (type, 
-			                                      ((IRawElementProviderFragment)Provider).GetRuntimeId ());
-		}
-		
-#endregion
-		
+
 	}
 }

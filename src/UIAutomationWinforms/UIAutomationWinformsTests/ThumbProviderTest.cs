@@ -42,7 +42,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void BasicPropertiesTest ()
 		{
-			IRawElementProviderFragment provider = new ThumbProvider ();
+			IRawElementProviderFragment provider = new ThumbProvider (null);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.NameProperty,

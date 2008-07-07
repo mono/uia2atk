@@ -26,6 +26,8 @@
 using System;
 using System.Drawing;
 using System.Windows;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -37,10 +39,42 @@ namespace Mono.UIAutomation.Winforms
 		{
 		}
 		
-		public static Rect RectangleToRect (Rectangle rectangle) 
+#region Internal Static Methods
+
+		internal static int GetUniqueRuntimeId ()
+		{
+			return ++id;
+		}
+
+		internal static void RaiseStructureChangedEvent (StructureChangeType type,
+		                                                 IRawElementProviderFragment provider)
+		{
+			if (AutomationInteropProvider.ClientsAreListening) {
+				int []runtimeId = null;
+				if (type == StructureChangeType.ChildRemoved)
+					runtimeId = provider.FragmentRoot.GetRuntimeId ();
+				else
+					runtimeId = provider.GetRuntimeId ();
+				
+				StructureChangedEventArgs invalidatedArgs 
+					= new StructureChangedEventArgs (type, runtimeId);
+				AutomationInteropProvider.RaiseStructureChangedEvent (provider, 
+				                                                      invalidatedArgs);
+			}
+		}
+		
+		internal static Rect RectangleToRect (Rectangle rectangle) 
 		{
 			return new Rect (rectangle.X, rectangle.Y, 
 			                 rectangle.Width, rectangle.Height);
 		}
+		
+#endregion
+
+#region Static Fields
+		
+		static int id = 0;
+		
+#endregion
 	}
 }

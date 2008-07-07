@@ -108,11 +108,8 @@ namespace Mono.UIAutomation.Winforms
 			formProviders [f] = provider;
 			
 			// TODO: Fill in rest of eventargs
-			AutomationInteropProvider.RaiseStructureChangedEvent (
-			  provider,
-			  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkAdded,
-			                                 new int [] {0}));
-			
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenBulkAdded,
+			                                   provider);
 			provider.InitializeChildControlStructure ();
 		}
 		

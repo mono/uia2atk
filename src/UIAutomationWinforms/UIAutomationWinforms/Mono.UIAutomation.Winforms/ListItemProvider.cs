@@ -69,8 +69,6 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.ListItem.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "list item";
-			else if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
-				return ListControl.GetHashCode () + Index; // TODO: Ensure uniqueness
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return name_property;
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)

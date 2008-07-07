@@ -41,11 +41,28 @@ namespace Mono.UIAutomation.Winforms
 
 		public ScrollBarProvider (ScrollBar scrollbar) : base (scrollbar)
 		{
-			scrollbar.ParentChanged += new EventHandler (OnParentChanged);
-			
-			Navigation = new ScrollBarNavigation (this);
+			scrollbar.ParentChanged += delegate (object sender, 
+			                                     EventArgs args) {
+				UpdateBehavior (scrollbar);
+			};
+
+			UpdateBehavior (scrollbar);
 		}
 
+#endregion
+		
+#region Public Properties
+		
+		public override INavigation Navigation {
+			get {
+				if (navigation == null) 
+					navigation = new ScrollBarNavigation (this);
+
+				return navigation; 
+			}
+			set { navigation = value; }
+		}
+		
 #endregion
 
 #region Public Methods
@@ -82,10 +99,10 @@ namespace Mono.UIAutomation.Winforms
 
 #region Private Methods
 		
-		private void OnParentChanged (object sender, EventArgs args)
+		private void UpdateBehavior (ScrollBar scrollbar)
 		{	
 			IRawElementProviderFragment container 
-				= ProviderFactory.FindProvider (((Control) sender).Parent);
+				= ProviderFactory.FindProvider (scrollbar.Parent);
 
 			if (container != null) {
 				IScrollProvider provider 
@@ -101,6 +118,12 @@ namespace Mono.UIAutomation.Winforms
 				             new ScrollBarRangeValueBehavior (this));
 		}
 
+#endregion
+		
+#region Private Fields
+		
+		private INavigation navigation;
+		
 #endregion
 		
 	}

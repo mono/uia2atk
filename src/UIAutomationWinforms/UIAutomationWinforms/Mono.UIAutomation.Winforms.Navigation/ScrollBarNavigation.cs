@@ -139,7 +139,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			public override IRawElementProviderSimple Provider {
 				get { 
 					if (thumb_provider == null) {
-						thumb_provider = new ThumbProvider ();
+						thumb_provider = new ThumbProvider ((ScrollBar) provider.Control);
 						thumb_provider.Navigation = this;
 					}
 

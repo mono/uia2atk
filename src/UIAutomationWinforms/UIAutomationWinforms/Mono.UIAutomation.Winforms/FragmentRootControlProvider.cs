@@ -80,11 +80,10 @@ namespace Mono.UIAutomation.Winforms
 				// TODO: Fill in rest of eventargs
 				if (childProvider == null)
 					break;
-				AutomationInteropProvider.RaiseStructureChangedEvent (
-				  childProvider,
-				  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkAdded,
-				                                 new int [] {0}));
 				
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenBulkAdded,
+				                                   (IRawElementProviderFragment) childProvider);
+
 				FragmentRootControlProvider rootProvider =
 					childProvider as FragmentRootControlProvider;
 				if (rootProvider != null)
@@ -103,11 +102,9 @@ namespace Mono.UIAutomation.Winforms
 			Control childControl = args.Control;
 			IRawElementProviderSimple childProvider =
 				CreateProvider (childControl);
-			
-			AutomationInteropProvider.RaiseStructureChangedEvent (
-			  childProvider,
-			  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkAdded,
-			                                 new int [] {0}));
+
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenBulkAdded,
+			                                   (IRawElementProviderFragment) childProvider);
 			
 			// TODO: Figure out exactly when to do this (talk to bridge guys)
 			if (GetBehavior (SelectionPatternIdentifiers.Pattern) == null &&

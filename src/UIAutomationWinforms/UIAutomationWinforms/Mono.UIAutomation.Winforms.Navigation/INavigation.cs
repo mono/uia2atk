@@ -42,6 +42,8 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		INavigation PreviousNavigableSibling { get; }
 		
 		bool SupportsNavigation { get; }
+		
+		void FinalizeProvider ();		
 
 		IRawElementProviderFragment Navigate (NavigateDirection direction);
 	}

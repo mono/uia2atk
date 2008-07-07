@@ -45,6 +45,7 @@ namespace Mono.UIAutomation.Winforms
 		private Dictionary<ProviderEventType, IConnectable> events;
 		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
 		private INavigation navigation;
+		private int runtime_id;
 
 #endregion
 		
@@ -57,6 +58,8 @@ namespace Mono.UIAutomation.Winforms
 			events = new Dictionary<ProviderEventType,IConnectable> ();
 			providerBehaviors =
 				new Dictionary<AutomationPattern,IProviderBehavior> ();
+			
+			runtime_id = -1;
 		}
 		
 #endregion
@@ -103,6 +106,15 @@ namespace Mono.UIAutomation.Winforms
 				    strategy.Disconnect (Control);
 
 			events.Clear ();
+		}
+		
+		public void FinalizeBehaviors ()
+		{
+			if (Control != null)
+				foreach (IProviderBehavior behavior in providerBehaviors.Values)
+					behavior.Disconnect (Control);
+
+			providerBehaviors.Clear ();
 		}
 
 		public void SetEvent (ProviderEventType type, IConnectable strategy)
@@ -182,9 +194,12 @@ namespace Mono.UIAutomation.Winforms
 			
 			if (Control == null)
 				return null;			
-			else if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
-				return Control.GetHashCode (); // TODO: Ensure uniqueness
-			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
+			else if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id) {
+				if (runtime_id == -1)
+					runtime_id = Helper.GetUniqueRuntimeId ();
+
+				return runtime_id;
+			} else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 				return Control.Enabled;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return Control.Text;

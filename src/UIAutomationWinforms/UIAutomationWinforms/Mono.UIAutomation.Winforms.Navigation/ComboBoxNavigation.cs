@@ -44,18 +44,29 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		public ComboBoxNavigation (ComboBoxProvider provider)
 			: base (provider)
-		{	
+		{
+			this.provider = provider;
+
 			navigation = new NavigationChain ();
 			listbox_navigation = new ComboBoxListBoxNavigation (provider);
 
-			ComboBox combobox = (ComboBox) provider.Control;
-			combobox.DropDownStyleChanged += delegate (object obj, 
-			                                           EventArgs args) {
-				UpdateNavigation (combobox, provider);
-			};
-			UpdateNavigation (combobox, provider);
+			((ComboBox) provider.Control).DropDownStyleChanged 
+				+= new EventHandler (OnDropDownStyleChanged);
+			UpdateNavigation ((ComboBox) provider.Control, provider);
 		}
 
+#endregion
+		
+#region Public Methods
+		
+		public override void FinalizeProvider ()
+		{
+			((ComboBox) provider.Control).DropDownStyleChanged 
+				-= new EventHandler (OnDropDownStyleChanged);
+			
+			base.FinalizeProvider (); 
+		}
+		
 #endregion
 		
 #region INavigable Interface
@@ -75,6 +86,11 @@ namespace Mono.UIAutomation.Winforms.Navigation
 #endregion
 		
 #region Private Methods
+
+		private void OnDropDownStyleChanged (object sender, EventArgs args)
+		{
+			UpdateNavigation ((ComboBox) sender, provider);
+		}		
 		
 		//TODO: Should this method generated StructureChanged events?
 		//UISpy reports events, however doesn't report ChildRemoved only
@@ -83,14 +99,23 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		{
 			if (combobox.DropDownStyle == ComboBoxStyle.Simple) {
 				if (button_navigation != null) {
-					//DISPOSE button_navigation
+					//TODO: UISpy doesn't report this structure, however, according
+					//to MSDN we should do so
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
+					                                   (IRawElementProviderFragment) button_navigation.Provider);
+					button_navigation.FinalizeProvider ();
 					button_navigation = null;
 				}
 				//if (textbox_navigation == null)
 				//	textbox_navigation = new ComboBoxTextBoxNavigation (provider);
 			} else if (combobox.DropDownStyle == ComboBoxStyle.DropDown) {
-				if (button_navigation == null)
+				if (button_navigation == null) {
 					button_navigation = new ComboBoxButtonNavigation (provider);
+					//TODO: UISpy doesn't report this structure, however, according
+					//to MSDN we should do so
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+					                                   (IRawElementProviderFragment) button_navigation.Provider);
+				}
 				//if (textbox_navigation != null) {
 				//	DISPOSE textbox
 				//	textbox_navigation = null;
@@ -110,6 +135,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 #region Private members
 
 		private NavigationChain navigation;
+		private ComboBoxProvider provider;
 		private ComboBoxButtonNavigation button_navigation;
 		private ComboBoxListBoxNavigation listbox_navigation;
 		//private ComboBoxTextBoxNavigation textbox_navigation;
@@ -134,6 +160,14 @@ namespace Mono.UIAutomation.Winforms.Navigation
 					}
 
 					return button_provider;
+				}
+			}
+			
+			public override void FinalizeProvider ()
+			{
+				if (button_provider != null) {
+					button_provider.FinalizeBehaviors ();
+					button_provider.FinalizeEvents ();
 				}
 			}
 
@@ -168,9 +202,14 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			}
 			
 			public override IRawElementProviderSimple Provider {
-				get { 
-					CreateListBoxProvider ();
-					return listbox_provider;
+				get {  return GetListBoxProvider (); }
+			}
+			
+			public override void FinalizeProvider ()
+			{
+				if (listbox_provider != null) {
+					listbox_provider.FinalizeBehaviors ();
+					listbox_provider.FinalizeEvents ();
 				}
 			}
 			
@@ -178,10 +217,9 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			{
 				if (direction == NavigateDirection.Parent)
 					return provider;
-				else if (direction == NavigateDirection.FirstChild) {
-					CreateListBoxProvider ();
-					return listbox_provider.GetItemProvider (0);
-				} else if (direction == NavigateDirection.NextSibling)
+				else if (direction == NavigateDirection.FirstChild)
+					return GetListBoxProvider ().GetItemProvider (0);
+				else if (direction == NavigateDirection.NextSibling)
 					return GetNextSiblingProvider ();
 				else if (direction == NavigateDirection.PreviousSibling)
 					return GetPreviousSiblingProvider ();
@@ -189,7 +227,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 					return null;
 			}
 			
-			private ComboBoxListBoxProvider CreateListBoxProvider ()
+			private ComboBoxListBoxProvider GetListBoxProvider ()
 			{
 				if (listbox_provider == null) {
 					listbox_provider = new ComboBoxListBoxProvider ((ComboBox) provider.Control,
@@ -227,7 +265,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				childAddedMethod.Invoke (combobox.Items,
 				                         new object[] { delegateRemoved });
 
-				//TODO: Is this OK?
+				//TODO: Is this OK? CPU-intensive?
 				for (int index = 0; index < combobox.Items.Count; index++)
 					OnChildAdded (combobox, index);
 			}
@@ -236,25 +274,23 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			{
 				ListItemProvider item = provider.GetItemProvider (index);
 				
-				if (AutomationInteropProvider.ClientsAreListening) {				
-					StructureChangedEventArgs args = new StructureChangedEventArgs (StructureChangeType.ChildAdded,
-					                                                                item.GetRuntimeId ());
-					AutomationInteropProvider.RaiseStructureChangedEvent (item, args);
-				}
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+				                                   item);
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+				                                   provider);
 			}
 			
 			private void OnChildRemoved (object sender, int index)
 			{
 				ListItemProvider item = provider.RemoveItemAt (index);
-				
-				if (AutomationInteropProvider.ClientsAreListening) {				
-					StructureChangedEventArgs args = new StructureChangedEventArgs (StructureChangeType.ChildRemoved,
-					                                                                item.GetRuntimeId ());
-					AutomationInteropProvider.RaiseStructureChangedEvent (item, args);
-				}
+					
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
+				                                   item);
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+				                                   provider);
 			}
 
-			private ComboBoxProvider provider;
+						private ComboBoxProvider provider;
 			private ComboBoxListBoxProvider listbox_provider;
 		}	
 		

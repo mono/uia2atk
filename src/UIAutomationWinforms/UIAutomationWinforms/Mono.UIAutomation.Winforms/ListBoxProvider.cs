@@ -114,7 +114,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override string GetItemName (ListItemProvider item)
 		{
-			Console.WriteLine ("item.Index: {0}",item.Index);
 			return listbox_control.Items [item.Index].ToString ();
 		}
 		

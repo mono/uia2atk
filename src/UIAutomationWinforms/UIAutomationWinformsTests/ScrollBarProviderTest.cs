@@ -107,28 +107,28 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 provider.Navigate (NavigateDirection.PreviousSibling),
 			                 "PreviousSibling should be null");
 			
-			ScrollBarButtonProvider firstButton 
-				= (ScrollBarButtonProvider) provider.Navigate (NavigateDirection.FirstChild);
+			IRawElementProviderFragment firstButton 
+				= provider.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNotNull (firstButton, "FirstChild shouldn't be null");
 			
 			IRawElementProviderFragment fragment 
 				= firstButton.Navigate (NavigateDirection.PreviousSibling);
 			Assert.IsNull (fragment, "FirstChild.PreviousSibling must be null");
 			
-			ScrollBarButtonProvider secondButton
-				= (ScrollBarButtonProvider) firstButton.Navigate (NavigateDirection.NextSibling);
+			IRawElementProviderFragment secondButton
+				= firstButton.Navigate (NavigateDirection.NextSibling);
 			Assert.IsNotNull (secondButton, "firstButton.NextSibling shouldn't be null");
 			
-			ThumbProvider thumbProvider
-				= (ThumbProvider) secondButton.Navigate (NavigateDirection.NextSibling);
+			IRawElementProviderFragment thumbProvider
+				= secondButton.Navigate (NavigateDirection.NextSibling);
 			Assert.IsNotNull (thumbProvider, "secondButton.NextSibling shouldn't be null");
 			
-			ScrollBarButtonProvider thirdButton
-				= (ScrollBarButtonProvider) thumbProvider.Navigate (NavigateDirection.NextSibling);
+			IRawElementProviderFragment thirdButton
+				= thumbProvider.Navigate (NavigateDirection.NextSibling);
 			Assert.IsNotNull (thirdButton, "thumbProvider.NextSibling shouldn't be null");
 			
-			ScrollBarButtonProvider fourthButton
-				= (ScrollBarButtonProvider) thirdButton.Navigate (NavigateDirection.NextSibling);
+			IRawElementProviderFragment fourthButton
+				= thirdButton.Navigate (NavigateDirection.NextSibling);
 			Assert.IsNotNull (fourthButton, "thirdButton.NextSibling shouldn't be null");
 
 			Assert.IsNull (fourthButton.Navigate (NavigateDirection.NextSibling),

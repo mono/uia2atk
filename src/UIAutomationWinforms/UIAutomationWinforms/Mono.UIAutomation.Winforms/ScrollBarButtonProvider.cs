@@ -33,7 +33,7 @@ using Mono.UIAutomation.Winforms.Behaviors;
 namespace Mono.UIAutomation.Winforms
 {
 
-	public class ScrollBarButtonProvider : FragmentControlProvider
+	internal class ScrollBarButtonProvider : FragmentControlProvider
 	{
 
 #region Constructors
@@ -65,27 +65,12 @@ namespace Mono.UIAutomation.Winforms
 		
 #region Public Methods
 		
-		public override void InitializeEvents ()
-		{
-			//We don't to support any event associated to this.Control.
-			//However we need to defined the following events:
-			//
-			//AutomationFocusChangedEvent
-			//BoundingRectangleProperty property-changed event.
-			//IsOffscreenProperty property-changed event.
-			//IsEnabledProperty property-changed event.
-			//NameProperty property-changed event.
-			//StructureChangedEvent
-		}
-		
 		public override object GetPropertyValue (int propertyId)
 		{
 			//TODO: We may need to get VALID information using Reflection from 
 			//ScrollBarContainer and return those values, I'm thiking in the
 			//following propierties: BoundingRectangleProperty and ClickablePointProperty
-			if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id)
-				return 1; //FIXME: Get a valid value
-			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return GetNameFromOrientation ();
 			else
 				return base.GetPropertyValue (propertyId);

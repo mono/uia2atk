@@ -72,10 +72,9 @@ namespace Mono.UIAutomation.Winforms
 			                                                this,
 			                                                eventArgs);
 			// TODO: Fill in rest of eventargs
-			AutomationInteropProvider.RaiseStructureChangedEvent (
-			  this,
-			  new StructureChangedEventArgs (StructureChangeType.ChildrenBulkRemoved,
-			                                 new int [] {0}));
+			
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenBulkRemoved,
+			                                   this);
 		}
 		
 		private void OnShown (object sender, EventArgs args)
