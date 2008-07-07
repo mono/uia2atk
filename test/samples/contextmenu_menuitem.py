@@ -17,8 +17,10 @@ Test accessibility of "ContextMenu" control
 import clr
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
-from System.Windows.Forms import Application, ContextMenu, Form, MenuItem, Timer, Label
-from System.Drawing import Icon
+from System.Windows.Forms import (
+    Application, ContextMenu, Form, MenuItem, Timer, Label, BorderStyle
+) 
+from System.Drawing import Icon, Color
 
 class ContextMenuSample(Form):
     """ContextMenu control class"""
@@ -34,7 +36,11 @@ class ContextMenuSample(Form):
         self.menuitem2 = MenuItem("Item 2")
         self.menuitem3 = MenuItem("Item 3")
         self.menuitem4 = MenuItem("Exit")
-        self.menuitem4.Click += self.on_exit
+
+        self.menuitem1.Click += self.on_click
+        self.menuitem2.Click += self.on_click
+        self.menuitem3.Click += self.on_click
+        self.menuitem4.Click += self.on_click
 
         # setup contextmenu
         self.contextmenu = ContextMenu()
@@ -47,14 +53,19 @@ class ContextMenuSample(Form):
         self.label = Label()
         self.label.Text = "Right Click on me to see ContextMenu and MenuItem"
         self.label.Width = 200
-        self.label.Height = 100
+        self.label.Height = 50
         self.label.ContextMenu = self.contextmenu
+        self.label.BackColor = Color.Cyan
+        self.label.BorderStyle = BorderStyle.FixedSingle
 
         # add control
         self.Controls.Add(self.label)
 
-    def on_exit(self, sender, event):
-        Application.Exit() 
+    def on_click(self, sender, event):
+        if sender == self.menuitem4:
+            Application.Exit() 
+        else:
+            self.label.Text = "you have clicked %s" % sender.Text
 
 # run application
 form = ContextMenuSample()

@@ -9,6 +9,13 @@
 #              LinkLabel
 ##############################################################################
 
+# The docstring below is used in the generated log file
+"""
+This sample will show "Button", "Label" and "LinkLabel" controls in the form.
+It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
+"""
+
+
 import clr
 
 clr.AddReference('System.Windows.Forms')
@@ -20,38 +27,33 @@ import System
 
 
 class RunApp(Form):
+    """Button, Label and LinkLabel controls class"""
 
     def __init__(self):
-        self.Text = "Button&Label&LinkLabel Example"
-        self.Height = 700
-        self.Width = 500
-        self.FormBorderStyle = FormBorderStyle.FixedDialog
-        self.FormBorderStyle = FormBorderStyle.Fixed3D
-
-##Add Label control:
-        self.label = Label()
-        self.label.Text = "there is nothing now."
-        self.label.Location = Point(30,30)
-        self.label.Height = 30
-        self.label.Width = 190
+        """RunApp class init function."""
 
         self.count = 0
+        self.Text = "Button&Label&LinkLabel controls"
 
-##Add Button control:
+        # set up Label control
+        self.label = Label()
+        self.label.Text = "there is nothing now."
+        self.label.Location = Point(10,10)
+        self.label.AutoSize = True
+
+        # set up Button control
         self.button1 = Button()
         self.button1.Name = "button1"
         self.button1.Text = "button1"
-        self.button1.Location = Point(30,70)
-        self.button1.Size = Size(300,30)
+        self.button1.Location = Point(10,40)
         self.button1.BackColor = Color.Green
         self.button1.ForeColor = Color.Red
-        self.button1.Click += self.buttonClick
+        self.button1.Click += self.button_click
         self.button1.Cursor = Cursors.Hand
 
-##Add LinkLabel control:
+        # set up LinkLabel control
         self.linklabel1 = LinkLabel()
-        self.linklabel1.Location = Point(30,190)
-        self.linklabel1.Size = Size(30,120)
+        self.linklabel1.Location = Point(10,80)
         self.linklabel1.AutoSize = True
         self.linklabel1.DisabledLinkColor = Color.Red
         self.linklabel1.VisitedLinkColor = Color.Blue
@@ -60,26 +62,28 @@ class RunApp(Form):
         self.linklabel1.TabIndex = 0
         self.linklabel1.TabStop = True
         self.linklabel1.Links[0].Visited = True
-        self.linklabel1.Text = "openSUSE:www.opensuse.org  webmail:gmail.novell.com"
-        self.linklabel1.Links.Add(9,16,"www.opensuse.org")
-        self.linklabel1.Links.Add(35,16,"gmail.novell.com")
-        self.linklabel1.LinkClicked += self.linklabel1Clicked
+        self.linklabel1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com"
+        self.linklabel1.Links.Add(9, 16, "www.opensuse.org")
+        self.linklabel1.Links.Add(35, 16, "gmail.novell.com")
+        self.linklabel1.LinkClicked += self.linklabel_clicked
         self.linklabel1.Links[1].Enabled = False
         
+        # add controls
         self.Controls.Add(self.label)
         self.Controls.Add(self.button1)
         self.Controls.Add(self.linklabel1)
     
-    def buttonClick(self, sender, event):
+    def button_click(self, sender, event):
         self.count += 1
         self.label.Text = "You have clicked me %s times" % self.count
-        MessageBox.Show("successful clicked me","message")
+        MessageBox.Show("successful clicked me", "message")
 
-    def linklabel1Clicked(self, sender, LinkClicked):
+    def linklabel_clicked(self, sender, LinkClicked):
         self.linklabel1.Links[0].Visited = True
         self.linklabel1.Links[1].Visited = True
         target = self.linklabel1.Links[0].LinkData
-        if(target.StartsWith("www")):
+
+        if (target.StartsWith("www")):
             System.Diagnostics.Process.Start(target)
         else:
             MessageBox.Show("Item clicked: " + target)

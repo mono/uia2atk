@@ -21,7 +21,7 @@ Test accessibility of "ContainerControl" control
 import clr
 clr.AddReference('System.Windows.Forms')
 from System.Windows.Forms import (
-    Application, Form, Label, ContainerControl, DockStyle
+    Application, Form, Label, ContainerControl, DockStyle, BorderStyle
 )
 
 class ContainerControlSample(Form):
@@ -30,17 +30,24 @@ class ContainerControlSample(Form):
     def __init__(self):
         """ContainerControlSample class init function."""
 
+        self.count = 1
+
         # setup title
         self.Text = "ContainerControl control"
         self.Height = 230
-        self.count = 1
 
         # setup labels
         self.label1 = Label()
         self.label1.Text = "Press Tab, please"
+        self.label1.AutoSize = True
+        self.label1.Dock = DockStyle.Fill
+        self.label1.BorderStyle = BorderStyle.Fixed3D
         
         self.label2 = Label()
         self.label2.Text = "Press Tab, again please"
+        self.label2.AutoSize = True
+        self.label2.Dock = DockStyle.Fill
+        self.label2.BorderStyle = BorderStyle.Fixed3D
 
         # setup containercontrols
         self.containercontrol1 = ContainerControl()

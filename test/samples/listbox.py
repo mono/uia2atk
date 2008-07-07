@@ -25,6 +25,7 @@ class ListBoxSample(Form):
 
         # setup title
         self.Text = "ListBox control"
+        self.Height = 150
 
         # setup label
         self.label = Label()
