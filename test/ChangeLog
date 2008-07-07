@@ -1,3 +1,16 @@
+2008-07-07  Ray Wang <rawang@gmail.com>
+
+	* samples/button_label_linklabel.py : cut of the size of Form control
+	* samples/colordialog.py : cut of the size of Form control; display the
+	value of the color which you selected in label
+	* samples/containercontrol.py : fix label size; add a border between two
+	ContainerControl controls
+	* samples/contexmenu_menuitem.py : add a border of label; response when
+	click on a menu item
+	* samples/groupbox.py : add Name and Text properties; reposponse when
+	click on each button
+	* samples/listbox.py : cut of the size of Form control
+
 2008-07-03  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/gtkcheckbutton/gtkcheckbuttonframe.py
