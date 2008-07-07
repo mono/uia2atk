@@ -1,5 +1,5 @@
 
-EXTRA_DIST =  
+EXTRA_DIST =  UiaAtkBridge.dll.config.in
 
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
@@ -38,7 +38,7 @@ PROGRAMFILES = \
 
 RESGEN=resgen2
 	
-all: $(ASSEMBLY) $(PROGRAMFILES)
+all: $(ASSEMBLY) $(PROGRAMFILES) $(ASSEMBLY).config
 
 FILES =  \
 	Adapter.cs \
@@ -88,6 +88,11 @@ install-data-local: gac-install
 uninstall-local: gac-uninstall
 
 include $(top_srcdir)/Makefile.include
+
+
+$(ASSEMBLY).config: $(srcdir)/UiaAtkBridge.dll.config.in Makefile
+	sed -e "s|\@expanded_lib_dir\@|@expanded_libdir@|" \
+	    < $< > $@
 
 
 $(eval $(call emit_resgen_targets))

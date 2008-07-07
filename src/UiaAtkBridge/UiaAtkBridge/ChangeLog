@@ -1,3 +1,8 @@
+2008-07-07  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile.am, UiaAtkBridge.dll.config.in: Add UiaAtkBridge.dll.config
+	  to assembly install to fix unmanaged library references.
+
 2008-07-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* ComboBox.cs: Prepare for the next ComboBox type.
