@@ -1,5 +1,10 @@
 2008-07-07  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* samples/gtktutorial.py: added a new, slightly more complex sample
+	app to write a tutorial test with.
+
+2008-07-07  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* testers/gtkcheckbutton/gtkcheckbuttonframe.py: prefix class with Gtk
 	* testers/gtkcheckbutton/__init__.py: prefix class with Gtk
 	* testers/gtkcheckbutton/checkbuttonframe.py: renamed to 
