@@ -10,17 +10,15 @@ from strongwind import *
 from gtkbutton import *
 
 # class to represent the main window.
-class ButtonFrame(accessibles.Frame):
+class GtkButtonFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
     BUTTON_ONE = "Button 1"
     BUTTON_TWO = "Button 2"
 
-    logName = 'Button'
-
     def __init__(self, accessible):
-        super(ButtonFrame, self).__init__(accessible)
+        super(GtkButtonFrame, self).__init__(accessible)
         self.button1 = self.findPushButton(self.BUTTON_ONE)
         self.button2 = self.findPushButton(self.BUTTON_TWO)
 

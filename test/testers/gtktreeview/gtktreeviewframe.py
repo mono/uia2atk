@@ -23,7 +23,7 @@ class TableColumnHeader(Accessible):
         
 
 # class to represent the main window.
-class TreeViewFrame(accessibles.Frame):
+class GtkTreeViewFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
@@ -33,10 +33,8 @@ class TreeViewFrame(accessibles.Frame):
     PARENT_TREE = "parent 2"
     PARENT_FOUR = "parent 3"
 
-    logName = 'TreeView'
-
     def __init__(self, accessible):
-        super(TreeViewFrame, self).__init__(accessible)
+        super(GtkTreeViewFrame, self).__init__(accessible)
         self.column0 = self.findTableColumnHeader(self.COLUMN_ZERO)
         self.parent0 = self.findTableCell(self.PARENT_ONE)
         self.parent1 = self.findTableCell(self.PARENT_TWO)
@@ -60,7 +58,6 @@ class TreeViewFrame(accessibles.Frame):
 
     #set Click action for TableColumnHeader
     def tchClick (self,test,log=True):
-        #treeview._doAction(action)
         if log:
             procedurelogger.action('click %s.' % test)
             treeview = self.findTableColumnHeader("%s" % test)

@@ -9,7 +9,7 @@ from strongwind import *
 from gtkcheckbutton import *
 
 # class to represent the main window.
-class CheckButtonFrame(accessibles.Frame):
+class GtkCheckButtonFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
@@ -22,10 +22,8 @@ class CheckButtonFrame(accessibles.Frame):
     RESULT_CHECKED = "checked"
     # end constants
 
-    logName = 'CheckButton'
-
     def __init__(self, accessible):
-        super(CheckButtonFrame, self).__init__(accessible)
+        super(GtkCheckButtonFrame, self).__init__(accessible)
         self.checkbox1 = self.findCheckBox(self.CHECK_BUTTON_ONE)
         self.checkbox2 = self.findCheckBox(self.CHECK_BUTTON_TWO)
 
@@ -54,7 +52,7 @@ class CheckButtonFrame(accessibles.Frame):
         self.assertClosed()
 
     def assertClosed(self):
-        super(CheckButtonFrame, self).assertClosed()
+        super(GtkCheckButtonFrame, self).assertClosed()
 
         # if the checkbutton window closes, the entire app should close.  
         # assert that this is true 

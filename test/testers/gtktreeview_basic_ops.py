@@ -40,8 +40,7 @@ if app is None:
   exit(4)
 
 # just an alias to make things shorter
-tvFrame = app.treeViewFrame
-
+tvFrame = app.gtkTreeViewFrame
 
 #expand parent 0
 tvFrame.expand(tvFrame.parent0,'expand or contract')

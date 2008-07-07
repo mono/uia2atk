@@ -8,8 +8,7 @@
 
 tests_list = [
   "gtkcheckbutton_basic_ops.py",
-  "gtkcheckbutton_basic_ops2.py",
-  "gtkcheckbutton_basic_ops3.py",
-  "gtkcheckbutton_basic_ops4.py",
-  "gtkbutton_basic_ops.py"
+  "gtkbutton_basic_ops.py",
+  "gtktreeview_basic_ops.py",
+  "some_fake_test.py"
 ]

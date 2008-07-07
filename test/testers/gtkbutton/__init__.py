@@ -31,17 +31,17 @@ def launchButton(exe=None):
 
     (app, subproc) = cache.launchApplication(args=args)
 
-    button = Button(app, subproc)
+    button = GtkButton(app, subproc)
     cache.addApplication(button)
 
-    button.buttonFrame.app = button
+    button.gtkButtonFrame.app = button
 
     return button
 
 # class to represent the application
-class Button(accessibles.Application):
+class GtkButton(accessibles.Application):
     def __init__(self, accessible, subproc=None):
         'Get a reference to the Button window'
-        super(Button, self).__init__(accessible, subproc)
+        super(GtkButton, self).__init__(accessible, subproc)
 
-        self.findFrame(re.compile('^Buttons'), logName='Button')
+        self.findFrame(re.compile('^Buttons'), logName='Gtk Button')

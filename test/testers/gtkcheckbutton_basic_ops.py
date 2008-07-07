@@ -38,9 +38,8 @@ if app is None:
   exit(4)
 
 # just an alias to make things shorter
-cbFrame = app.checkButtonFrame
+cbFrame = app.gtkCheckButtonFrame
 
-# find a shorter way instead of app.checkbuttonFrame.CHECK_BUTTON_ONE
 cbFrame.checkbox1.click()
 # need a short delay when checking and unchecking the check boxes
 sleep(config.SHORT_DELAY)

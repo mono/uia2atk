@@ -102,7 +102,7 @@ class Test(object):
 
     remaining = n
     output("Press CTRL+C to abort.")
-    output("Continuing in ", False)
+    output("Continuing in", False)
     for i in range(n):
       output(str(remaining), False)
       remaining-=1
@@ -132,6 +132,8 @@ class Test(object):
         self.countdown(Settings.COUNTDOWN)
       except KeyboardInterrupt:
         return 0
+      finally:
+        output("")
 
     # execute the tests
     output("INFO:  Executing tests...")

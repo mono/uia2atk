@@ -32,17 +32,17 @@ def launchTreeView(exe=None):
 
     (app, subproc) = cache.launchApplication(args=args)
 
-    treeview = TreeView(app, subproc)
+    treeview = GtkTreeView(app, subproc)
     cache.addApplication(treeview)
 
-    treeview.treeViewFrame.app = treeview
+    treeview.gtkTreeViewFrame.app = treeview
 
     return treeview
 
 # class to represent the application
-class TreeView(accessibles.Application):
+class GtkTreeView(accessibles.Application):
     def __init__(self, accessible, subproc=None):
         'Get a reference to the Tree View window'
-        super(TreeView, self).__init__(accessible, subproc)
-        self.findFrame(re.compile('^Tree View'), logName='Tree View')
+        super(GtkTreeView, self).__init__(accessible, subproc)
+        self.findFrame(re.compile('^Tree View'), logName='Gtk Tree View')
 

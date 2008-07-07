@@ -1,15 +1,40 @@
+2008-07-07  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/gtkcheckbutton/gtkcheckbuttonframe.py: prefix class with Gtk
+	* testers/gtkcheckbutton/__init__.py: prefix class with Gtk
+	* testers/gtkcheckbutton/checkbuttonframe.py: renamed to 
+	gtkbuttonframe.py
+	* testers/gtktreeview/gtktreeviewframe.py: prefix filename with gtk 
+	* testers/gtktreeview/__init__.py: prefix class with Gtk, prefix log
+	name with gtk
+	* testers/gtktreeview/treeviewframe.py: renamed to gtktreeviewframe.py
+	* testers/gtkbutton/gtkbuttonframe.py: prefix filename with gtk
+	* testers/gtkbutton/__init__.py: prefix class with Gtk, prefix log
+	name with gtk
+	* testers/gtkbutton/buttonframe.py: renamed to gtkbuttonframe.py
+	* testers/gtkcheckbutton_basic_ops.py: handle new log name
+	* testers/gtktreeview_basic_ops.py: handle new log name
+	* testers/gtkbutton_basic_ops.py: handle new log name
+	* testers/gtkbutton_basic_ops2.py: delete now that we have more tests
+	* testers/gtkbutton_basic_ops3.py: delete now that we have more tests
+	* ChangeLog: use "<filename>: <description>" instead of 
+	"<filename> : <description>"
+	* drivers/local_run.py: fix formatting of countdown
+	* drivers/tests.py: add Calen's strongwind tests, add a fake test (keep
+	a fake test in just to test the harness)
+
 2008-07-07  Ray Wang <rawang@gmail.com>
 
-	* samples/button_label_linklabel.py : cut of the size of Form control
-	* samples/colordialog.py : cut of the size of Form control; display the
+	* samples/button_label_linklabel.py: cut of the size of Form control
+	* samples/colordialog.py: cut of the size of Form control; display the
 	value of the color which you selected in label
-	* samples/containercontrol.py : fix label size; add a border between two
+	* samples/containercontrol.py: fix label size; add a border between two
 	ContainerControl controls
-	* samples/contexmenu_menuitem.py : add a border of label; response when
+	* samples/contexmenu_menuitem.py: add a border of label; response when
 	click on a menu item
-	* samples/groupbox.py : add Name and Text properties; reposponse when
+	* samples/groupbox.py: add Name and Text properties; reposponse when
 	click on each button
-	* samples/listbox.py : cut of the size of Form control
+	* samples/listbox.py: cut of the size of Form control
 
 2008-07-03  Brian G. Merrell <bgmerrell@gmail.com>
 
@@ -38,124 +63,124 @@
 	description
 	* testers/gtkcheckbutton_basic_ops.py: Update description
 	* testers/gtktreeview_basic_ops.py: Update description
-	* testers/gtkbutton_basic_ops.py:  Update description
+	* testers/gtkbutton_basic_ops.py: Update description
 	* testers/gtkcheckbutton_basic_ops2.py: Update description
 	* testers/gtkcheckbutton_basic_ops3.py: Update description
 
 2008-07-03  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* testers : prefix all strongwind wrapper scripts with gtk so they 
+	* testers: prefix all strongwind wrapper scripts with gtk so they 
 	aren't confused with our winforms tests.
 
 2008-07-03  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* testers : prefix all tester filenames with gtk so they aren't
+	* testers: prefix all tester filenames with gtk so they aren't
 	confused with our winforms tests.
-	* drivers/tests.py : add gtkbutton to the test suite
+	* drivers/tests.py: add gtkbutton to the test suite
 
 2008-07-02  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* samples/gtkbutton.py : Title bars generally have spaces
-	* samples/checkbutton.py : rename to gtkcheckbutton.py
-	* samples/gtkcheckbutton.py : renamed from checkbutton.py
-	* testers/checkbutton/__init__.py : open gtkcheckbutton.py instead of
+	* samples/gtkbutton.py: Title bars generally have spaces
+	* samples/checkbutton.py: rename to gtkcheckbutton.py
+	* samples/gtkcheckbutton.py: renamed from checkbutton.py
+	* testers/checkbutton/__init__.py: open gtkcheckbutton.py instead of
 	checkbutton.py
-	* testers/button/buttonframe.py : findAlert was crashing the test,
+	* testers/button/buttonframe.py: findAlert was crashing the test,
 	using findDialog instead
 
 2008-07-02  Ray Wang <rawang@gmail.com>
 
-	* samples/mainmenu.py : implement MainMenu control
-	* samples/printpreviewdialog.py : implement PrintPreviewDialog control
+	* samples/mainmenu.py: implement MainMenu control
+	* samples/printpreviewdialog.py: implement PrintPreviewDialog control
 
 2008-07-01  Ray Wang <rawang@gmail.com>
 
-	* samples/flowlayoutpanel.py : implement FlowLayoutPanel control
-	* samples/propertygrid.py : implement PropertyGrid control
-	* samples/columnheader.py : implement ColumnHeader control
-	* samples/tablelayoutpanel.py : remove wrong comments 
+	* samples/flowlayoutpanel.py: implement FlowLayoutPanel control
+	* samples/propertygrid.py: implement PropertyGrid control
+	* samples/columnheader.py: implement ColumnHeader control
+	* samples/tablelayoutpanel.py: remove wrong comments 
 
 2008-07-01  Calen Chen <cachen@novell.com>
 
 	* samples/gtkbutton.py: change MessageDialog to Dialog
-	* samples/button_label_linklabel.py : add text name to MessageBox
-	* testers/button/buttonframe.py : update clickResult to use alfF4()
+	* samples/button_label_linklabel.py: add text name to MessageBox
+	* testers/button/buttonframe.py: update clickResult to use alfF4()
 
 2008-06-30  Ray Wang <rawang@gmail.com>
 
-	* samples/tablelayoutpanel.py : implement TableLayoutPanel control
+	* samples/tablelayoutpanel.py: implement TableLayoutPanel control
 
 2008-06-30  Calen Chen <cachen@novell.com>
 
-	* samples/gtkbutton.py : rename class name to ButtonSample
-	* testers/button_basic_ops.py : delete bFrame.close_dialog()
-	* testers/button/buttonframe.py : update clickResult to assert that the
+	* samples/gtkbutton.py: rename class name to ButtonSample
+	* testers/button_basic_ops.py: delete bFrame.close_dialog()
+	* testers/button/buttonframe.py: update clickResult to assert that the
 	alert windows have been closed by moving close_dialog funtion in here.
 	delete self.assertClosed()
 
 2008-06-29  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* samples/gtkbutton.py : renamed from gtksample.  take out label and 
+	* samples/gtkbutton.py: renamed from gtksample.  take out label and 
 	text related widgets.  we can do these in another test.  Edit
 	callbacks.
-	* samples/gtksample.py : rename to gtkbutton
-	* testers/treeview_basic_ops.py : Change "cb" to "tv" for "TreeView"
-	* testers/button_basic_ops.py : Change "cb" to "b" for "Button".  Take
+	* samples/gtksample.py: rename to gtkbutton
+	* testers/treeview_basic_ops.py: Change "cb" to "tv" for "TreeView"
+	* testers/button_basic_ops.py: Change "cb" to "b" for "Button".  Take
 	out redundant tests.  Use close_dialog and quit methods instead of
 	strictly close().
-	* testers/button/__init__.py : Open gtkbutton instead of gtksample
-	* testers/button/buttonframe.py : Change close method to close_dialog
+	* testers/button/__init__.py: Open gtkbutton instead of gtksample
+	* testers/button/buttonframe.py: Change close method to close_dialog
 	and add quit method.  Change indentation of comments.  Remove
 	unused code.
 
 2008-06-27  Ray Wang <rawang@gmail.com>
 
-	* samples/containercontrol.py : implement ScrollableControl &
+	* samples/containercontrol.py: implement ScrollableControl &
 	ContainerControl control
 
 2008-06-27  Calen Chen <cachen@novell.com>
-	* testers/treeview_basic_ops.py : update with sleep time
-	* testers/treeview/treeviewframe.py : update the action's precedence
+	* testers/treeview_basic_ops.py: update with sleep time
+	* testers/treeview/treeviewframe.py: update the action's precedence
 	relationship in expand&contract to solve screenshot synchronous problem
-	* testers/button_basic_ops.py : update with adding cbFrame.close() to
+	* testers/button_basic_ops.py: update with adding cbFrame.close() to
 	close messagedialog
-	* testers/button/buttonframe.py : update with adding close instance
+	* testers/button/buttonframe.py: update with adding close instance
 	and adjust the action's precedence relationship in press&release
 	to solve screenshot synchronous problem.
 
 
 2008-06-27  Calen Chen <cachen@novell.com>
-	* samples/gtksample.py : add a gtk sample for button, text,
+	* samples/gtksample.py: add a gtk sample for button, text,
 	messagedialog control
-	* testers/button_basic_ops.py : add strongwind test script to
+	* testers/button_basic_ops.py: add strongwind test script to
 	check button, text, messagedialog against gtksample.py
-	* testers/button/__init__.py : add strongwind test script
+	* testers/button/__init__.py: add strongwind test script
 	to set where
 	is the gtk sample
-	* testers/button/buttonframe.py : add strongwind test script to
+	* testers/button/buttonframe.py: add strongwind test script to
 	set definition for gtk sample.
 
 2008-06-25  Ray Wang <rawang@gmail.com>
 
-	* samples/contexmenu_menuitem.py : implement ContextMenu & MenuItem control
-	* samples/notifyicon.py : implement NotifyIcon control
-	* samples/trackbar.py : implement TrackBar control
+	* samples/contexmenu_menuitem.py: implement ContextMenu & MenuItem control
+	* samples/notifyicon.py: implement NotifyIcon control
+	* samples/trackbar.py: implement TrackBar control
 
 2008-06-24  Ray Wang <rawang@gmail.com>
 
-	* samples/listview.py : implement ListView control
-	* samples/monthcalendar.py : implement Monthcalendar control
-	* samples/webbrowser.py : implement WebBrowser control
+	* samples/listview.py: implement ListView control
+	* samples/monthcalendar.py: implement Monthcalendar control
+	* samples/webbrowser.py: implement WebBrowser control
 
 2008-06-23  Ray Wang <rawang@gmail.com>
 
-	* samples/fontdialog.py : Clean up the letter casing
-	* samples/savefiledialog.py : implement FileDialog & SaveFileDialog control
-	* samples/hscrollbar.py : implement HScrollBar & ScrollBar control
-	* samples/vscrollbar.py : implement VScrollBar & ScrollBar control
-	* samples/tabpage.py : implement TabControl & TabPage control
-	* samples/splitter.py : implement Splitter control
-	* samples/splitContainer.py : implement SplitContainer control
+	* samples/fontdialog.py: Clean up the letter casing
+	* samples/savefiledialog.py: implement FileDialog & SaveFileDialog control
+	* samples/hscrollbar.py: implement HScrollBar & ScrollBar control
+	* samples/vscrollbar.py: implement VScrollBar & ScrollBar control
+	* samples/tabpage.py: implement TabControl & TabPage control
+	* samples/splitter.py: implement Splitter control
+	* samples/splitContainer.py: implement SplitContainer control
 
 2008-06-23  Calen Chen <cachen@novell.com>
 	* testers/treeview_basic_ops.py :renew the test script to check the 
@@ -163,10 +188,10 @@
 	* testers/treeview/treeviewframe.py: renew "assertResult" definition.
 
 2008-06-20  Calen Chen <cachen@novell.com>
-	* samples/gtktreeview.py : enlarge the windows size.
+	* samples/gtktreeview.py: enlarge the windows size.
 	* testers/treeview_basic_ops.py :renew the test script to
 	test expand and contract treeview's TableCell.
-	* testers/treeview/__init__.py : renew the logName.
+	* testers/treeview/__init__.py: renew the logName.
 	* testers/treeview/treeviewframe.py: add definition for expand,
 	contract to act TableCell "expand or contract" and tchClick to act 
 	TableColumnHeader "click", because strongwind doesn't support them.
@@ -176,44 +201,44 @@
 
 2008-06-20  Ray Wang <rawang@gmail.com>
 
-	* samples/picturebox.py : implement PictureBox control
+	* samples/picturebox.py: implement PictureBox control
 
 2008-06-19  Ray Wang <rawang@gmail.com>
 
-	* samples/progressbar.py : Clean up the letter casing
-	* samples/form.py : Clean up the letter casing
-	* samples/fontdialog.py : Clean up the letter casing
-	* samples/listbox.py : implement ListBox control
-	* samples/combobox.py : implement ComboBox control
+	* samples/progressbar.py: Clean up the letter casing
+	* samples/form.py: Clean up the letter casing
+	* samples/fontdialog.py: Clean up the letter casing
+	* samples/listbox.py: implement ListBox control
+	* samples/combobox.py: implement ComboBox control
 
 2008-06-18  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* drivers/local_run.py : fix argument parsing
-	* drivers/remote_run.py : fix argument parsing
+	* drivers/local_run.py: fix argument parsing
+	* drivers/remote_run.py: fix argument parsing
 
 2008-06-18  Ray Wang <rawang@novell.com>
 
-	* samples/progressbar.py : implement ProgressBar control
+	* samples/progressbar.py: implement ProgressBar control
 
 2008-06-18  Ray Wang <rawang@novell.com>
 
-	* samples/form.py : implement Form control
-	* samples/fontdialog.py : implement FontDialog control
+	* samples/form.py: implement Form control
+	* samples/fontdialog.py: implement FontDialog control
 
 2008-06-17  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* demos/gtk_sample_test.tar.gz : update with the new files
-	* testers/treeview-basic-ops.py : renamed to use _ in filename
-	* testers/checkbutton-basic-ops2.py : renamed to use _ in filename
-	* testers/checkbutton-basic-ops3.py : renamed to use _ in filename
-	* testers/checkbutton_basic_ops.py : renamed to use _ in filename
-	* testers/treeview_basic_ops.py : renamed to use _ in filename
-	* testers/checkbutton_basic_ops2.py : renamed to use _ in filename
-	* testers/checkbutton_basic_ops3.py : renamed to use _ in filename
-	* testers/checkbutton-basic-ops.py :  renamed to use _ in filename
-	* drivers/tests.py :  Revert to previous version with finished tests
-	* drivers/README :  Fix typo
-	* drivers/machines.py :  Add some comments
+	* demos/gtk_sample_test.tar.gz: update with the new files
+	* testers/treeview-basic-ops.py: renamed to use _ in filename
+	* testers/checkbutton-basic-ops2.py: renamed to use _ in filename
+	* testers/checkbutton-basic-ops3.py: renamed to use _ in filename
+	* testers/checkbutton_basic_ops.py: renamed to use _ in filename
+	* testers/treeview_basic_ops.py: renamed to use _ in filename
+	* testers/checkbutton_basic_ops2.py: renamed to use _ in filename
+	* testers/checkbutton_basic_ops3.py: renamed to use _ in filename
+	* testers/checkbutton-basic-ops.py: renamed to use _ in filename
+	* drivers/tests.py: Revert to previous version with finished tests
+	* drivers/README: Fix typo
+	* drivers/machines.py: Add some comments
 
 2008-06-17  Calen Chen <cachen@novell.com>
 
@@ -226,39 +251,39 @@
 
 2008-06-16  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* checkbutton-basic-ops2.py : Clean up the letter casing
-	* checkbutton-basic-ops3.py :  Clean up the letter casing
-	* checkbutton/__init__.py : Change the log name, which affects letter casing.
-	Clean up the letter casing
-	* checkbutton/checkbuttonframe.py : Clean up the letter casing
-	* checkbutton-basic-ops.py : Clean up the letter casing 
+	* checkbutton-basic-ops2.py: Clean up the letter casing
+	* checkbutton-basic-ops3.py: Clean up the letter casing
+	* checkbutton/__init__.py: Change the log name, which affects letter
+	casing.  Clean up the letter casing
+	* checkbutton/checkbuttonframe.py: Clean up the letter casing
+	* checkbutton-basic-ops.py: Clean up the letter casing 
 
 2008-06-16  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* testers/checkbutton/__init__.py : trivial letter case changes
+	* testers/checkbutton/__init__.py: trivial letter case changes
 
 2008-06-16  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* samples/checkButton.py : Rename to checkbutton.py to adhere to
+	* samples/checkButton.py: Rename to checkbutton.py to adhere to
 	standard naming conventions.
-	* samples/checkbutton.py : Renamed from checkButton.py
-	* testers/checkbutton/__init__.py : open checkbutton.py instead of
+	* samples/checkbutton.py: Renamed from checkButton.py
+	* testers/checkbutton/__init__.py: open checkbutton.py instead of
 	checkButton.py
 
 2008-06-13  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* drivers/local_run.py : return the status of the test so remote_run.py
+	* drivers/local_run.py: return the status of the test so remote_run.py
 	can report it.
-	* drivers/remote_run.py : fix some wording and reenable the countdown
+	* drivers/remote_run.py: fix some wording and reenable the countdown
 
 2008-06-13  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* drivers/local_run.py : implemented a much better solution for
+	* drivers/local_run.py: implemented a much better solution for
 	cleaning up test apps that fail.
 
 2008-06-12  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* drivers/local_run.py : there were problems with cleaning up the 
+	* drivers/local_run.py: there were problems with cleaning up the 
 	test apps that fail.  need to look at a different way of doing this.
 
 2008-06-13  Calen Chen <cachen@novell.com>
@@ -272,46 +297,46 @@
 
 2008-06-10  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* drivers/local_run.py : clean up applications that have failed a test
+	* drivers/local_run.py: clean up applications that have failed a test
 	and remained open.
-	* drivers/remote_run.py : enhance logging/threading to print output
+	* drivers/remote_run.py: enhance logging/threading to print output
 	as each local_run finishes.
 
 2008-06-10  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* drivers/local_run.py : fix some threading issues
-	* drivers/remote_run.py : working on threading issues
-	* drivers/machines.py : change log location back to ~/logs 
+	* drivers/local_run.py: fix some threading issues
+	* drivers/remote_run.py: working on threading issues
+	* drivers/machines.py: change log location back to ~/logs 
 
 2008-06-10  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* drivers/local_run.py : print more information about logging
-	* drivers/remote_run.py : print more information about logging
-	* drivers/machines.py : change log location from ~/logs to ~/test/logs
+	* drivers/local_run.py: print more information about logging
+	* drivers/remote_run.py: print more information about logging
+	* drivers/machines.py: change log location from ~/logs to ~/test/logs
 
 2008-06-04  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* logs : Add a default directory for logs (we override this for remote
+	* logs: Add a default directory for logs (we override this for remote
 	tests)
-	* testers/checkbutton-basic-ops2.py : Clean up strongwind tests.  The
+	* testers/checkbutton-basic-ops2.py: Clean up strongwind tests.  The
 	interaction between the checkbutton-basic-ops* and the checkbuttonframe
 	was a little sloppy.
-	* testers/checkbutton-basic-ops3.py : Clean up strongwind tests
-	* testers/checkbutton/checkbuttonframe.py :  Check for unexpected 
+	* testers/checkbutton-basic-ops3.py: Clean up strongwind tests
+	* testers/checkbutton/checkbuttonframe.py: Check for unexpected 
 	results and create an error.  This still needs more work to work well 
 	with the harness.  Cleaned up the interaction with the other strongwind 
 	test scripts.
-	* testers/checkbutton-basic-ops.py : Clean up strongwind tests
-	* drivers/local_run.py : use the $UIAQA_HOME/logs directory for default
+	* testers/checkbutton-basic-ops.py: Clean up strongwind tests
+	* drivers/local_run.py: use the $UIAQA_HOME/logs directory for default
 	logging
 
 2008-06-03  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* drivers/remote_run.py : report where local logs are stored
+	* drivers/remote_run.py: report where local logs are stored
 
 2008-06-03  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* drivers/remote_run.py : abort correctly on user abort
+	* drivers/remote_run.py: abort correctly on user abort
 
 2008-06-04  Calen Chen <cachen@novell.com>
 
@@ -320,7 +345,7 @@
 
 2008-06-04  Calen Chen <cachen@novell.com>
 
-	* samples/ToolTip.py:  add app for ToolTip Control
+	* samples/ToolTip.py: add app for ToolTip Control
 	* samples/StatusBar-StatusBarPanel.py: add app for StatusBar and
 	StatusBarPanel Controls
 	* samples/StatusStrip.py: add app for StatusStrip Control
@@ -332,60 +357,60 @@
 	StatusStrip, ToolStripStatusLabel, ToolStripProgressBar Controls.
 
 2008-06-03  Brian G. Merrell <bgmerrell@gmail.com>
-	* drivers/remote_run.py : abort correctly on user abort
+	* drivers/remote_run.py: abort correctly on user abort
 
 2008-06-03  Brian G. Merrell <bgmerrell@gmail.com>
 	
-	* samples/checkButton.py : add temporary gtk sample app
+	* samples/checkButton.py: add temporary gtk sample app
 
 2008-06-03  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* drivers/remote_run.py : add initial functionality
-	* drivers/machines.py : add some variables for remote testing
+	* drivers/remote_run.py: add initial functionality
+	* drivers/machines.py: add some variables for remote testing
 
 2008-06-02  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* drivers/local_run.py : --help and -h now work
+	* drivers/local_run.py: --help and -h now work
 
 2008-06-02  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* drivers/local_run.py : script to run tests on local machines is
+	* drivers/local_run.py: script to run tests on local machines is
 	now functional
-	* testers/checkbutton : Temporary gtk test script
-	* testers/checkbutton-basic-ops2.py : Temporary gtk test script
-	* testers/checkbutton-basic-ops3.py : Temporary gtk test script
-	* testers/checkbutton-basic-ops.py : Temporary gtk test script
-	* drivers/remote_run.py : Script that will run remote tests in the
+	* testers/checkbutton: Temporary gtk test script
+	* testers/checkbutton-basic-ops2.py: Temporary gtk test script
+	* testers/checkbutton-basic-ops3.py: Temporary gtk test script
+	* testers/checkbutton-basic-ops.py: Temporary gtk test script
+	* drivers/remote_run.py: Script that will run remote tests in the
 	future
-	* testers/checkbutton/__init__.py : Temporary gtk test script
-	* testers/checkbutton/checkbuttonframe.py : Temporary gtk test script
-	* testers/checkbutton-basic-ops.py : Temporary gtk test script
+	* testers/checkbutton/__init__.py: Temporary gtk test script
+	* testers/checkbutton/checkbuttonframe.py: Temporary gtk test script
+	* testers/checkbutton-basic-ops.py: Temporary gtk test script
 
 2008-05-30  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* drivers/local_run.py : Add script that runs the tests on a local 
+	* drivers/local_run.py: Add script that runs the tests on a local 
 	machine
-	* drivers/tests.py : A list of tests to be run
-	* drivers/machines.py : A list of remote machines on which tests should
+	* drivers/tests.py: A list of tests to be run
+	* drivers/machines.py: A list of remote machines on which tests should
 	be run
 
 2008-05-30  Calen Chen <cachen@novell.com>
 
-	* samples/RichTextBox.py:  Application for RichTextBox Control
+	* samples/RichTextBox.py: Application for RichTextBox Control
 
 2008-05-29  Calen Chen <cachen@novell.com>
 
-	* samples/ColorDialog.py:  Application for ColorDialog Control
+	* samples/ColorDialog.py: Application for ColorDialog Control
 
 2008-05-29  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* sample/README:  Explain sample directory
-	* demo:  Add demo directory
-	* demo/gtk_sample_test.tar.gz:  A GTK demo test
-	* demo/README:  Explain demo directory
-	* tester/README:  Explain tester directory
-	* driver/README:  Explain driver directory
-	* README:  Testing instructions and layout of test directory
+	* sample/README: Explain sample directory
+	* demo: Add demo directory
+	* demo/gtk_sample_test.tar.gz: A GTK demo test
+	* demo/README: Explain demo directory
+	* tester/README: Explain tester directory
+	* driver/README: Explain driver directory
+	* README: Testing instructions and layout of test directory
 
 2008-05-28  Brian G. Merrell <bgmerrell@gmail.com>
 

@@ -37,7 +37,7 @@ if app is None:
   exit(4)
 
 # just an alias to make things shorter
-bFrame = app.buttonFrame
+bFrame = app.gtkButtonFrame
 
 #click button1 to get a messagedialog, then close messagedialog
 bFrame.button1.click()

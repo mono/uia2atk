@@ -14,7 +14,7 @@ from strongwind import *
 import os
 
 def launchCheckButton(exe=None):
-    'Launch gtkcheckbutton with accessibility enabled and return a Checkbutton object.  Log an error and return None if something goes wrong'
+    'Launch gtkcheckbutton with accessibility enabled and return a CheckButton object.  Log an error and return None if something goes wrong'
 
     if exe is None:
         # make sure we can find the sample application
@@ -33,16 +33,16 @@ def launchCheckButton(exe=None):
 
     (app, subproc) = cache.launchApplication(args=args)
 
-    checkbutton = CheckButton(app, subproc)
+    checkbutton = GtkCheckButton(app, subproc)
     cache.addApplication(checkbutton)
 
-    checkbutton.checkButtonFrame.app = checkbutton
+    checkbutton.gtkCheckButtonFrame.app = checkbutton
 
     return checkbutton
 
 # class to represent the application
-class CheckButton(accessibles.Application):
+class GtkCheckButton(accessibles.Application):
     def __init__(self, accessible, subproc=None):
         'Get a reference to the Check Button window'
-        super(CheckButton, self).__init__(accessible, subproc)
-        self.findFrame(re.compile('^Check Button'), logName='Check Button')
+        super(GtkCheckButton, self).__init__(accessible, subproc)
+        self.findFrame(re.compile('^Check\ Button'), logName='Gtk Check Button')
