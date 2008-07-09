@@ -33,12 +33,6 @@ namespace Mono.UIAutomation.Winforms
 {
 	public class StatusBarProvider : FragmentControlProvider
 	{
-#region Private Members
-
-        	private StatusBar statusBar;
-
-#endregion
-
 #region Constructors
 
         	public StatusBarProvider (StatusBar statusBar) : base (statusBar)
@@ -48,3 +42,5 @@ namespace Mono.UIAutomation.Winforms
         	}
 
 #endregion
+	}
+}
