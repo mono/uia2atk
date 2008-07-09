@@ -3,6 +3,7 @@
 	* Mono.UIAutomation.Winforms.Behaviors/StatusBarGridProviderBehavior.cs:
 	Renamed file.
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Added SetBehavior.
+	* Mono.UIAutomation.Winforms.mdp: Updated. added files.
 
 2008-07-07  Mario Carrion <mcarrion@novell.com>
 
