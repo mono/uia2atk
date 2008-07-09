@@ -32,13 +32,13 @@ using Mono.UIAutomation.Winforms;
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
-	internal class StatusBarProviderBehavior 
-		: ProviderBehavior, IStatusBarProvider
+	internal class StatusBarGridProviderBehavior 
+		: ProviderBehavior, IGridProvider
 	{
 		
 #region Constructors
 
-		public StatusBarProviderBehavior (StatusBarProvider provider)
+		public StatusBarGridProviderBehavior (StatusBarProvider provider)
 			: base (provider)
 		{
 			status_bar_provider = provider;
