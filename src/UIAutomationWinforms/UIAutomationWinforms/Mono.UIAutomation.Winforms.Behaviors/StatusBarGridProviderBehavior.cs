@@ -28,6 +28,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
@@ -54,16 +55,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public override void Connect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.RowCount,
-					new GridPatternRowCountPropertyEvent (provider));
-			Provider.SetEvent (ProviderEventType.ColumnCount,
-					new GridPatternColumnCountPropertyEvent (provider));
+			//Provider.SetEvent (ProviderEventType.RowCount,
+			//		new GridPatternRowCountPropertyEvent (provider));
+			//Provider.SetEvent (ProviderEventType.ColumnCount,
+			//		new GridPatternColumnCountPropertyEvent (provider));
 		}
 		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.RowCount, null);
-			Provider.SetEvent (ProviderEventType.ColumnCount, null);
+			//Provider.SetEvent (ProviderEventType.RowCount, null);
+			//Provider.SetEvent (ProviderEventType.ColumnCount, null);
 		}
 
         	public override object GetPropertyValue (int propertyId)
