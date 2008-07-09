@@ -7,6 +7,13 @@
 #              StatusStrip
 ##############################################################################
 
+# The docstring below is used in the generated log file
+"""
+This sample will show "StatusStrip" control in the form.
+It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
+"""
+
+
 import clr
 import System
 
@@ -18,33 +25,34 @@ from System.Drawing import *
 
 
 class RunApp(Form):
+    """StatusStrip controls class"""
 
     def __init__(self):
-        self.Text = "Simple StatusStrip Example"
-        self.Width = 400
-        self.Height = 400
-        self.FormBorderStyle = FormBorderStyle.Fixed3D
-        self.Name = "Form1"
+        """RunApp class init function."""
 
+        self.Text = "Simple StatusStrip Example"
+        self.Width = 350
+        self.Height = 100
+
+        # set up label
         self.mainLabel1 = Label()
         self.mainLabel1.Text = "Examples for: StatusStrip."
-        self.mainLabel1.Location = Point(10,60)
         self.mainLabel1.AutoSize = True
         self.Controls.Add(self.mainLabel1)
 
-##set StatusStrip:
+        # set StatusStrip:
         self.statusstrip1 = StatusStrip()
         self.statusstrip1.GripStyle = ToolStripGripStyle.Visible
         self.statusstrip1.Name = "toolstrip1"
 
-##set ToolStripStatusLabel:
+        # set ToolStripStatusLabel:
         self.toolstripstatuslabel1 = ToolStripStatusLabel()
         self.toolstripstatuslabel1.Text = "ToolStripLabel Text..."
         self.toolstripstatuslabel1.BorderStyle = Border3DStyle.Raised
         self.toolstripstatuslabel1.BorderSides = ToolStripStatusLabelBorderSides.Bottom
         self.toolstripstatuslabel1.Spring = True
 
-##set ToolStripButton:
+        # set ToolStripButton:
         self.toolstripbutton1 = ToolStripButton("Click Me")
         self.toolstripbutton1.Click += self.toolstripbutton1Click
 
@@ -61,5 +69,3 @@ class RunApp(Form):
 
 form = RunApp()
 Application.Run(form)
-
-

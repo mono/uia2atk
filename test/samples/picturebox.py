@@ -17,36 +17,56 @@ import clr
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
 from System.Windows.Forms import (
-    Application, DockStyle, Form, PictureBox, PictureBoxSizeMode
+    Application, Button, DockStyle, Form, PictureBox, PictureBoxSizeMode
 )
 from System.Drawing import Image
 
-path_to_file = "./desktop-blue_soccer.jpg"
 
 class PictureBoxSample(Form):
     """PictureBox control class"""
+    toggle = True
+    path_to_file = "./desktop-blue_soccer.jpg"
+    image = None
 
     def __init__(self):
         """PictureBoxSample class init function."""
 
-        # load picture
-        image = Image.FromFile(path_to_file)
-
         # setup title
         self.Text = "PictureBox control"
-        self.Height = image.Height
-        self.Width = image.Width
+        self.Height = 600 
+        self.Width = 600
+
+        # setup button
+        self.button = Button()
+        self.button.Text = "Toggle"
+        self.button.Click += self.on_click
 
         # setup picturebox
         self.picturebox = PictureBox()
         self.picturebox.SizeMode = PictureBoxSizeMode.StretchImage
-        self.picturebox.Image = image
+        self.picturebox.Image = Image.FromFile(self.path_to_file)
         self.picturebox.Dock = DockStyle.Fill
 
         # add controls
+        self.Controls.Add(self.button)
         self.Controls.Add(self.picturebox)
 
+        self.change_picture()
+
+    def change_picture(self):
+        # load picture
+        self.picturebox.Image = Image.FromFile(self.path_to_file)
         self.Show()
+
+    def on_click(self, sender, event):
+        if self.toggle == True:
+            self.toggle = False
+            self.path_to_file = "./universe.jpg"
+            self.change_picture()
+        else:
+            self.toggle = True
+            self.path_to_file = "./desktop-blue_soccer.jpg"
+            self.change_picture()
 
 # run application
 form = PictureBoxSample()

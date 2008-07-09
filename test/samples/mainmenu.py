@@ -9,14 +9,15 @@
 
 # The docstring below is used in the generated log file
 """
-Test accessibility of "MainMenu" control
+This sample will show "MainMenu" and "MenuItem" controls in the form.
+It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
 """
 
 # imports
 import clr
 clr.AddReference('System.Windows.Forms')
 from System.Windows.Forms import (
-    Application, Form, Label, MainMenu, MenuItem, DockStyle
+    Application, Form, Label, MainMenu, MenuItem, DockStyle, MessageBox
 )
 
 class MainMenuSample(Form):
@@ -28,22 +29,71 @@ class MainMenuSample(Form):
         # setup title
         self.Text = "MainMenu control"
 
+        # setup label
+        self.label = Label()
+        self.label.Text = "Click a sub-menu of Main menu"
+        self.label.Dock = DockStyle.Bottom
+
         # setup mainmenu
         self.mainmenu = MainMenu()
 
-        # setup menuitems
-        self.menuitem1 = MenuItem()
-        self.menuitem1.Text = "&File"
+        # setup main menus
+        self.menu_file = MenuItem()
+        self.menu_file.Text = "File(&F)"
 
-        self.menuitem2 = MenuItem()
-        self.menuitem2.Text = "&Edit"
+        self.menu_edit = MenuItem()
+        self.menu_edit.Text = "Edit(&E)"
 
-        # add two MenuItem objects to the MainMenu
-        self.mainmenu.MenuItems.Add(self.menuitem1)
-        self.mainmenu.MenuItems.Add(self.menuitem2)
+        self.menu_help = MenuItem()
+        self.menu_help.Text = "&Help(&H)"
+
+        # setup submenus of "File"
+        self.menu_file_open = MenuItem()
+        self.menu_file_open.Text = "Open(&O)"
+        self.menu_file_open.Click += self.on_click
+
+        self.menu_file_exit = MenuItem()
+        self.menu_file_exit.Text = "Exit(&X)"
+        self.menu_file_exit.Click += self.on_click
+
+        # setup submenus of "Edit"
+        self.menu_edit_undo = MenuItem()
+        self.menu_edit_undo.Text = "Undo(&U)"
+        self.menu_edit_undo.Click += self.on_click
+
+        self.menu_edit_redo = MenuItem()
+        self.menu_edit_redo.Text = "Redo(&R)"
+        self.menu_edit_redo.Click += self.on_click
+
+        # setup psubmenus of "Help"
+        self.menu_help_about = MenuItem()
+        self.menu_help_about.Text = "About(&A)"
+        self.menu_help_about.Click += self.on_click
+
+        # add menu item to mainmenu
+        self.mainmenu.MenuItems.Add(self.menu_file)
+        self.mainmenu.MenuItems.Add(self.menu_edit)
+        self.mainmenu.MenuItems.Add(self.menu_help)
+
+        # add submenus
+        self.menu_file.MenuItems.Add(self.menu_file_open)
+        self.menu_file.MenuItems.Add(self.menu_file_exit)
+        self.menu_edit.MenuItems.Add(self.menu_edit_undo)
+        self.menu_edit.MenuItems.Add(self.menu_edit_redo)
+        self.menu_help.MenuItems.Add(self.menu_help_about)
 
         # bind the MainMenu to Form
         self.Menu = self.mainmenu
+        self.Controls.Add(self.label)
+
+    def on_click(self, sender, evernt):
+        if sender == self.menu_file_exit:
+            Application.Exit()
+        elif sender == self.menu_help_about:
+            MessageBox.Show("Mono:Accessibility winform controls test sample\n"                             "Developer: Novell a11y hackers",
+                            "About")
+        else:
+            self.label.Text = "You have clicked %s" % sender.Text
 
 # run application
 form = MainMenuSample()

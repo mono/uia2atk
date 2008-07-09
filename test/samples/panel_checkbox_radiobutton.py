@@ -98,7 +98,7 @@ class PanelCheckBoxRadioButtonApp(Form):
         self.radioLabel2.Text = "Go On:____"
         self.radioLabel2.Location = Point(25, 80)
         self.radioLabel2.AutoSize = True
-        self.radioLabel2.Font = Font("Arial", 15, FontStyle.Bold)
+        self.radioLabel2.Font = Font("Arial", 10, FontStyle.Bold)
         self.radioLabel2.ForeColor = Color.Red
 
         self.radioPanel.Controls.Add(self.radioLabel1)
