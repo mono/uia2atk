@@ -57,6 +57,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/StatusBarGridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationBoundingRectanglePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationFocusChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationHasKeyboardFocusPropertyEvent.cs \
