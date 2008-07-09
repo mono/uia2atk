@@ -28,7 +28,6 @@ using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
-using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -44,72 +43,8 @@ namespace Mono.UIAutomation.Winforms
 
         	public StatusBarProvider (StatusBar statusBar) : base (statusBar)
         	{
-            		this.statusBar = statusBar;
-
 			SetBehavior (GridPatternIdentifiers.Pattern,
 				new StatusBarGridProviderBehavior (this));
         	}
 
 #endregion
-
-#region Public Methods
-
-        	public override void InitializeEvents ()
-        	{
-            		base.InitializeEvents ();
-        	}
-
-#endregion
-
-#region IRawElementProviderSimple Members
-
-        	public override object GetPatternProvider (int patternId)
-        	{
-            		if (patternId == GridPatternIdentifiers.Pattern.Id)
-                		return this;
-
-			return null;
-        	}
-
-        	public override object GetPropertyValue (int propertyId)
-        	{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.StatusBar.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "status bar";
-			else if (propertyId == GridPatternIdentifiers.RowCountProperty.Id)
-				return RowCount;
-			else if (propertyId == GridPatternIdentifiers.ColumnCountProperty.Id)
-				return ColumnCount;
-			else
-				return base.GetPropertyValue (propertyId);
-        	}
-
-#endregion
-
-#region IGridProvider Members
-
-        	public int RowCount {
-            		get {
-				return 1;
-			}
-        	}
-
-        	public int ColumnCount {
-            		get {
-				return 1;
-			}
-        	}
-
-        	public IRawElementProviderSimple GetItem (int row, int column)
-        	{
-			if (column > ColumnCount || row > RowCount)
-				throw new ArgumentOutOfRangeException ();
-			if (column < 0 || row < 0)
-				throw new ArgumentOutOfRangeException ();
-			return null;
-        	}
-
-#endregion
-    	}
-}
