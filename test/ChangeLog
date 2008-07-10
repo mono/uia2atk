@@ -1,5 +1,9 @@
 2008-07-09  Ray Wang <rawang@gmail.com>
 
+	* samples/checkedlistbox.py : implement CheckedListBox control
+
+2008-07-09  Ray Wang <rawang@gmail.com>
+
 	* samples/mainmenu.py : add sub-menus and label
 	* samples/panel_checkbox_radiobutton.py : enlarge label size
 	* samples/statusstrip.py : cut of the size of Form control

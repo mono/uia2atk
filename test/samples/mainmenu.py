@@ -90,7 +90,8 @@ class MainMenuSample(Form):
         if sender == self.menu_file_exit:
             Application.Exit()
         elif sender == self.menu_help_about:
-            MessageBox.Show("Mono:Accessibility winform controls test sample\n"                             "Developer: Novell a11y hackers",
+            MessageBox.Show("Mono:Accessibility winform controls test sample\n"
+                            "Developer: Novell a11y hackers",
                             "About")
         else:
             self.label.Text = "You have clicked %s" % sender.Text
