@@ -1,3 +1,7 @@
+2008-07-11  Mario Carrion <mcarrion@novell.com>
+
+	* patches/listbox.patch: Updated to match SVN.
+
 2008-07-07  Mario Carrion <mcarrion@novell.com>
 
 	* patches/scrollbar.patch: Events renamed.

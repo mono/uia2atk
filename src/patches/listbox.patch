@@ -1,14 +1,13 @@
 Index: class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs
 ===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs	(revision 107148)
+--- class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs	(revision 107679)
 +++ class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs	(working copy)
-@@ -2355,7 +2355,21 @@
+@@ -2355,6 +2355,18 @@
  
  			private ListBox owner;
  			internal ArrayList object_items = new ArrayList ();
 +			
-+			#region UIA Framework Events
- 
++			#region UIA Framework Events 
 +#if NET_2_0
 +	    		//UIA Framework events for ListBox Provider used the
 +	    		//generated UIA StructureChanged event
@@ -18,22 +17,21 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs
 +			internal event StructureChangeEventHandler ChildRemoved;
 +			internal delegate void StructureChangeEventHandler (object sender, int index);
 +#endif
-+
 +			#endregion
-+
+ 
  			public ObjectCollection (ListBox owner)
  			{
- 				this.owner = owner;
-@@ -2396,8 +2410,22 @@
+@@ -2396,8 +2408,24 @@
  						throw new ArgumentOutOfRangeException ("Index of out range");
  					if (value == null)
  						throw new ArgumentNullException ("value");
++						
 +#if NET_2_0
 +				//UIA Framework event used to indicate that Structure
 +				//has Changed: child item removed
 +				if (ChildRemoved != null)
 +					ChildRemoved (this, index);
-+#endif					
++#endif
  
  					object_items[index] = value;
 +					
@@ -44,45 +42,50 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs
 +					ChildAdded (this, index);
 +#endif					
 +
++					
  					owner.CollectionChanged ();
  				}
  			}
-@@ -2519,6 +2547,12 @@
- 					
- 				owner.BeginUpdate ();
+@@ -2521,6 +2549,13 @@
  				object_items.Insert (index, item);
+ 				owner.CollectionChanged ();
+ 				owner.EndUpdate ();
++				
 +#if NET_2_0
 +				//UIA Framework event used to indicate that Structure
 +				//has Changed: child item added
 +				if (ChildAdded != null)
 +					ChildAdded (this, index);
-+#endif					
- 				owner.CollectionChanged ();
- 				owner.EndUpdate ();
++#endif
  			}
-@@ -2538,6 +2572,12 @@
  
+ 			public void Remove (object value)
+@@ -2539,6 +2574,13 @@
  				owner.selected_indices.Remove (index);
  				object_items.RemoveAt (index);
+ 				owner.CollectionChanged ();
++				
 +#if NET_2_0
 +				//UIA Framework event used to indicate that Structure
 +				//has Changed: child item removed
 +				if (ChildRemoved != null)
 +					ChildRemoved (this, index);
 +#endif
- 				owner.CollectionChanged ();
  			}
  			#endregion Public Methods
-@@ -2550,6 +2590,12 @@
+ 
+@@ -2550,6 +2592,14 @@
  
  				int cnt = object_items.Count;
  				object_items.Add (item);
++
 +#if NET_2_0
 +				//UIA Framework event used to indicate that Structure
 +				//has Changed: child item added
 +				if (ChildAdded != null)
 +					ChildAdded (this, cnt);
-+#endif					
++#endif
++
  				return cnt;
  			}
  
