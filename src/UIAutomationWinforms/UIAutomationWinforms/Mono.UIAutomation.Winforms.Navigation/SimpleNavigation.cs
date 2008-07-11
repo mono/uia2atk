@@ -88,10 +88,8 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 		public virtual void FinalizeProvider ()
 		{
-			if (simple_provider != null) {
-				simple_provider.FinalizeEvents ();
-				simple_provider.FinalizeBehaviors ();
-			}
+			if (simple_provider != null)
+				simple_provider.Terminate ();
 		}		
 
 		public virtual IRawElementProviderFragment Navigate (NavigateDirection direction) 

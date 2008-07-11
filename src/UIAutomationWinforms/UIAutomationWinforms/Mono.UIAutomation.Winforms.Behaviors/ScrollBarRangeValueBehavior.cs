@@ -54,13 +54,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 		public override void Connect (Control control) 
 		{
-			Provider.SetEvent (ProviderEventType.RangeValueValueProperty,
+			Provider.SetEvent (ProviderEventType.RangeValuePatternValueProperty,
 			                   new RangeValuePatternValueEvent (Provider));
 		}
 		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.RangeValueValueProperty, 
+			Provider.SetEvent (ProviderEventType.RangeValuePatternValueProperty, 
 			                   null);
 		}
 		

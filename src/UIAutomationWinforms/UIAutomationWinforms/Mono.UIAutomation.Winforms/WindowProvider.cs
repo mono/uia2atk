@@ -73,6 +73,8 @@ namespace Mono.UIAutomation.Winforms
 			                                                eventArgs);
 			// TODO: Fill in rest of eventargs
 			
+			FinalizeChildControlStructure ();
+			
 			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenBulkRemoved,
 			                                   this);
 		}

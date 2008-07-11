@@ -64,7 +64,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public virtual int[] GetRuntimeId ()
 		{
-            return new int [] { AutomationInteropProvider.AppendRuntimeId, 
+			return new int [] { AutomationInteropProvider.AppendRuntimeId, 
 				(int) GetPropertyValue (AutomationElementIdentifiers.AutomationIdProperty.Id) };
 		}
 		

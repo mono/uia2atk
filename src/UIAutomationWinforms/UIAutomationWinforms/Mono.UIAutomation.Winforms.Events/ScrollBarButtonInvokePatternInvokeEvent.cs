@@ -49,31 +49,20 @@ namespace Mono.UIAutomation.Winforms.Events
 
 		public override void Connect (Control control)
 		{
-			ScrollBar container = (ScrollBar) control;
-
-			Type type = typeof (ScrollBar);
-			EventInfo buttonEvent = type.GetEvent (GetEventNameFromOrientation (),
-			                                       BindingFlags.Instance 
-			                                       | BindingFlags.NonPublic);
-
-			MethodInfo buttonClickedMethod = buttonEvent.GetAddMethod (true);
-			buttonClickedMethod.Invoke (container, 
-			                            new object[] { new EventHandler (OnButtonClicked) });
-			
+			Helper.AddPrivateEvent (typeof (ScrollBar), 
+			                        (ScrollBar) control, 
+			                        GetEventNameFromOrientation (),
+			                        this, 
+			                        "OnButtonClicked");
 		}
 
 		public override void Disconnect (Control control)
 		{
-			ScrollBar container = (ScrollBar) control;
-
-			Type type = typeof (ScrollBar);
-			EventInfo buttonEvent = type.GetEvent (GetEventNameFromOrientation (),
-			                                       BindingFlags.Instance 
-			                                       | BindingFlags.NonPublic);
-
-			MethodInfo buttonClickedMethod = buttonEvent.GetRemoveMethod (true);
-			buttonClickedMethod.Invoke (container, 
-			                            new object[] { new EventHandler (OnButtonClicked) });
+			Helper.RemovePrivateEvent (typeof (ScrollBar), 
+			                           (ScrollBar) control, 
+			                           GetEventNameFromOrientation (),
+			                           this, 
+			                           "OnButtonClicked");			
 		}
 
 #endregion

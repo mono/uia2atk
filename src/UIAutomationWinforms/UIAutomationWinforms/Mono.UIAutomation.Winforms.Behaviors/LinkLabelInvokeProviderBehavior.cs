@@ -50,7 +50,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.InvokeInvokedEvent, null);
+			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, null);
 		}
 
 		public override object GetPropertyValue (int propertyId)
@@ -67,7 +67,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		{
 			linklabel = (LinkLabel) control;
 			
-			Provider.SetEvent (ProviderEventType.InvokeInvokedEvent, 
+			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
 			          new LinkLabelInvokePatternInvokedEvent (Provider));
 		}
 		

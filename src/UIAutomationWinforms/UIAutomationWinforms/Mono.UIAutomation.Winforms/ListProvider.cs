@@ -41,7 +41,7 @@ namespace Mono.UIAutomation.Winforms
 		protected ListProvider (ListControl control) : base (control)
 		{
 			list_control = control;
-			items = new Dictionary<int, ListItemProvider> ();
+			items = new List<ListItemProvider> ();
 			
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
 			             new ListSelectionProviderBehavior (this));
@@ -73,13 +73,20 @@ namespace Mono.UIAutomation.Winforms
 			
 			if (index < 0 || index >= ItemsCount)
 				return null;
-			else if (items.TryGetValue (index, out item) == false) {
-				item = new ListItemProvider (this, list_control, index);
-				items [index] = item;
-				item.InitializeEvents (); //TODO: Should I call this?
+			else if (index >= items.Count) {
+				for (int loop = items.Count - 1; loop < index; loop++) {
+					item = new ListItemProvider (this, list_control);
+					items.Add (item);
+					item.InitializeEvents ();
+				}
 			}
-
-			return item;
+			
+			return items [index];
+		}
+		
+		public int IndexOfItem (ListItemProvider item)
+		{
+			return items.IndexOf (item);
 		}
 		
 		public abstract string GetItemName (ListItemProvider item);
@@ -93,11 +100,11 @@ namespace Mono.UIAutomation.Winforms
 		public ListItemProvider RemoveItemAt (int index)
 		{
 			ListItemProvider item = null;
-
-			if (items.TryGetValue (index, out item) == true) {
-				items.Remove (index);
-				item.FinalizeEvents (); //TODO: Should I call this?
-				Console.WriteLine ("item removed...: "+index);
+			
+			if (index < items.Count) {
+				item = items [index];
+				items.RemoveAt (index);
+				item.Terminate ();
 			}
 			
 			return item;
@@ -118,7 +125,14 @@ namespace Mono.UIAutomation.Winforms
 		
 		protected bool ContainsItem (ListItemProvider item)
 		{
-			return item == null ? false : items.ContainsValue (item);
+			return item == null ? false : items.Contains (item);
+		}
+		
+		protected void ClearItemsList ()
+		{
+			while (items.Count > 0) {
+				RemoveItemAt (items.Count - 1);
+			}
 		}
 		
 #endregion
@@ -126,7 +140,7 @@ namespace Mono.UIAutomation.Winforms
 #region Private Fields
 		
 		private ListControl list_control;
-		private Dictionary<int, ListItemProvider> items;
+		private List<ListItemProvider> items;
 		
 #endregion
 

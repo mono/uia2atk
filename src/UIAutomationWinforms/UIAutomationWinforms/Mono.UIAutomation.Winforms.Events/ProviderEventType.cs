@@ -28,37 +28,60 @@ using System;
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	//TODO: Add internal comments to identify Event pattern in valu
 	public enum ProviderEventType
 	{
-		//Property events
-		IsOffscreenProperty,
-		IsEnabledProperty,
-		NameProperty,
-		HasKeyboardFocusProperty,
-		BoundingRectangleProperty,
-		StructureChangedEvent,		
-		ToggleStateProperty,
+		//Automation Element Properties
+		AutomationElementIsOffscreenProperty,
+		AutomationElementIsEnabledProperty,
+		AutomationElementNameProperty,
+		AutomationElementHasKeyboardFocusProperty,
+		AutomationElementBoundingRectangleProperty,
+		//TODO:
 		TextChangedEvent,
 		FocusChangedEvent,
+		StructureChangedEvent,
+		//Toggle Pattern
+		TogglePatternToggleStateProperty,
 		//Invoke Pattern
-		InvokeInvokedEvent,
+		InvokePatternInvokedEvent,
 		//ExpandCollapse Pattern
-		ExpandCollapseStateProperty,
+		ExpandCollapsePatternExpandCollapseStateProperty,
 		//Value Pattern
 		ValuePatternValueProperty,
 		ValuePatternIsReadOnlyProperty,
 		//Selection Pattern
-		SelectionCanSelectMultiple,
-		SelectionIsSelectionRequired,
-		SelectionSelection,
+		SelectionPatternInvalidatedEvent,
+		SelectionPatternCanSelectMultipleProperty,
+		SelectionPatternIsSelectionRequiredProperty,
+		SelectionPatternSelectionProperty,
 		//SelectionItem Pattern
-		SelectionItemElementAddedEvent,
-		SelectionItemElementRemovedEvent,
-		SelectionItemElementSelectedEvent,
-		SelectionItemSelectionContainer,
-		SelectionItemIsSelected,
+		SelectionItemPatternElementAddedEvent,
+		SelectionItemPatternElementRemovedEvent,
+		SelectionItemPatternElementSelectedEvent,
+		SelectionItemPatternSelectionContainerProperty,
+		SelectionItemPatternIsSelectedProperty,
 		//RangeValue Pattern
-		RangeValueValueProperty
+		RangeValuePatternValueProperty,
+		RangeValuePatternIsReadOnlyProperty,
+		RangeValuePatternMinimumProperty,
+		RangeValuePatternMaximumProperty,
+		RangeValuePatternLargeChangeProperty,
+		RangeValuePatternSmallChangeProperty,
+		//Grid Pattern
+		GridPatternRowCountProperty,
+		GridPatternColumnCountProperty,
+		//Grid Item Pattern
+		GridItemPatternRowProperty,
+		GridItemPatternColumnProperty,
+		GridItemPatternRowSpanProperty,
+		GridItemPatternColumnSpanProperty,
+		GridItemPatternContainingGridProperty,
+		//Scroll Pattern
+		ScrollPatternHorizontalViewSizeProperty,
+		ScrollPatternVerticalViewSizeProperty,
+		ScrollPatternHorizontalScrollPercentProperty,
+		ScrollPatternVerticalScrollPercentProperty,		
+		ScrollPatternVerticallyScrollableProperty,
+		ScrollPatternHorizontallyScrollableProperty
 	}
 }

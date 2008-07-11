@@ -1,3 +1,78 @@
+2008-07-11  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs: New method
+	added: RemoveLink. Visibility changed to public to allow test.
+	* Mono.UIAutomation.Winforms.Navigation/ListBoxNavigation.cs: New method
+	added: FinalizeProvider. Logic updated to improve updating Navigation.
+	+Refactoring is needed+. All logic related to connect/disconnect methods
+	using reflection has been removed, we are using ListBoxProvider to
+	update navigation.
+	* Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs: Method
+	FinalizeProvider updated to use Terminate method instead.
+	* Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs: Method
+	FinalizeProvider updated to use Terminate method instead.
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Removed 
+	Navigation.set override. Private field navigation removed.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Delegates added:
+	StructureChangeEventHandler and ScrollbarNavigableEventHandler. New
+	properties added: Navigation, HasHorizontalScrollbar and 
+	HasVerticalScrollbar. New methods added: ChildAdded, ChildRemoved,
+	HScrollbarNavigationUpdated and VScrollbarNavigationUpdated. Methods
+	overriden: Terminate, InitializeChildControlStructure,
+	FinalizeChildControlStructure. New private methods added to handle
+	enabling/disabling behavior and navigation: OnChildAdded, 
+	OnChildRemoved, InitializeScrollBehavior, UpdateHScrollBehaviorEnable,
+	UpdateHScrollBehaviorVisible, UpdateVScrollBehaviorEnable, 
+	UpdateVScrollBehaviorVisible, SetScrollPatternBehavior and
+	UnsetScrollPatternBehavior.
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs: ProviderEventType 
+	updated to match API changes.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: ProviderEventType
+	updated to match API changes. Methods: FinalizeEvents and
+	FinalizeBehaviors, replaced by virtual method Terminate.
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Two arguments 
+	constructor removed. New method added: InitializeEvents. Private
+	field index removed. Bug fixed when item is deleted from list and 
+	keeps an invalid index.
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Code 
+	beautyfying.
+	* Mono.UIAutomation.Winforms/Helper.cs: Internal static methods added:
+	AddPrivateEvent, RemovePrivateEvent, GetPrivateField and 
+	AddRemovePrivateEvent.
+	* Mono.UIAutomation.Winforms/WindowProvider.cs: Calling
+	FinalizeChildControlStructure when OnClosed.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Generating
+	StructureChangeType.ChildAdded instead of 
+	StructureChangeType.ChildrenBulkAdded.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Navigation property
+	overridden.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: New method: IndexOfItem.
+	GetItem method updated, to create items when needed. Using List<> 
+	instead of Dictionary<>. New protected method: ClearItemsList.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: ProviderEventType
+	updated to match API changes.
+	* Mono.UIAutomation.Winforms/NumericUpDownProvider.cs: ProviderEventType
+	updated to match API changes.
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueBehavior.cs:
+	ProviderEventType updated to match API changes.
+	* Mono.UIAutomation.Winforms.Behaviors/ButtonInvokeProviderBehavior.cs:
+	ProviderEventType updated to match API changes.
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs:
+	ProviderEventType updated to match API changes.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxExpandCollapseProviderBehavior.cs:
+	ProviderEventType updated to match API changes.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxScrollProviderBehavior.cs:
+	ProviderEventType updated to match API changes.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxButtonInvokeBehavior.cs:
+	ProviderEventType updated to match API changes.	
+	* Mono.UIAutomation.Winforms.Behaviors/LinkLabelInvokeProviderBehavior.cs:
+	ProviderEventType updated to match API changes.
+	* Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: Field names
+	updated to match the pattern: [Pattern-name][Property/Event-name](Property|Event)
+	* Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs:
+	Using Helper.AddPrivateEvent and Helper.RemovePrivateEvent instead of 
+	all reflection methods.
+
 2008-07-09  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms.Behaviors/StatusBarGridProviderBehavior.cs:

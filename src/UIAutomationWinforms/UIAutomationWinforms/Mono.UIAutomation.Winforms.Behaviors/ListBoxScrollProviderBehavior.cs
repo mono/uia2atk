@@ -202,11 +202,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			if (method == string.Empty)
 				return;
 			
-			Type type = scrollbar.GetType ();
-			MethodInfo methodInfo = type.GetMethod (method,
-			                                        BindingFlags.InvokeMethod
-			                                        | BindingFlags.NonPublic
-			                                        | BindingFlags.Instance);
+			MethodInfo methodInfo = typeof (ScrollBar).GetMethod (method,
+			                                                      BindingFlags.InvokeMethod
+			                                                      | BindingFlags.NonPublic
+			                                                      | BindingFlags.Instance);
 			methodInfo.Invoke (scrollbar, new object[] { null });
 		}
 		

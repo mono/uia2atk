@@ -49,8 +49,19 @@ namespace Mono.UIAutomation.Winforms
 			};
 			
 			UpdateBehaviors (combobox);
-			
-			Navigation = new ComboBoxNavigation (this);
+		}
+		
+#endregion
+		
+#region Public Properties
+
+		public override INavigation Navigation {
+			get { 
+				if (navigation == null)
+					navigation = new ComboBoxNavigation (this);
+
+				return navigation;
+			}
 		}
 		
 #endregion

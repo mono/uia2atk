@@ -29,7 +29,7 @@ using System.Collections.Generic;
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 	
-	internal class NavigationChain
+	public class NavigationChain
 	{
 
 #region Constructors
@@ -51,6 +51,31 @@ namespace Mono.UIAutomation.Winforms.Navigation
 					list [list.Count - 2].NextSibling = link;
 					link.PreviousSibling = list [list.Count - 2];
 				}
+			}
+		}
+		
+		public void RemoveLink (INavigation link)
+		{
+			if (list.Contains (link)) {
+				int indexOf = list.IndexOf (link);
+				if (indexOf > 0) {
+					if (indexOf + 1 < list.Count)
+						list [indexOf - 1].NextSibling = list [indexOf + 1];
+				}
+				if (indexOf + 1 < list.Count) {
+					if (indexOf - 1 >= 0) 
+						list [indexOf + 1].PreviousSibling = list [indexOf - 1];
+				}
+				
+				if (indexOf == 0) {
+					if (indexOf + 1 < list.Count)
+						list [indexOf + 1].PreviousSibling = null;
+				} else if (indexOf == list.Count - 1) {
+					if (indexOf - 1 >= 0)
+						list [indexOf - 1].NextSibling = null;
+				}
+				
+				link.PreviousSibling = link.NextSibling = null;
 			}
 		}
 		

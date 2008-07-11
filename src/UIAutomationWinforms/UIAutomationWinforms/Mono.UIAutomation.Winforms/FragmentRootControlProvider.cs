@@ -70,7 +70,7 @@ namespace Mono.UIAutomation.Winforms
 		//TODO: Are the generated events duplicated? Because we're already
 		//supporting StructureChangeType when Children are added to Controls.
 		//See: SimpleControlProvider.InitializeEvents
-		public void InitializeChildControlStructure ()
+		public virtual void InitializeChildControlStructure ()
 		{
 			// HACK: This is just to make sure control providers
 			//       aren't sent to bridge until the parent's already
@@ -81,7 +81,9 @@ namespace Mono.UIAutomation.Winforms
 				if (childProvider == null)
 					break;
 				
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenBulkAdded,
+				Console.WriteLine ("InitializeChildControlStructure. Type of: "+childProvider.GetType ());
+				
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
 				                                   (IRawElementProviderFragment) childProvider);
 
 				FragmentRootControlProvider rootProvider =
@@ -89,6 +91,19 @@ namespace Mono.UIAutomation.Winforms
 				if (rootProvider != null)
 					rootProvider.InitializeChildControlStructure ();
 			}
+		}
+		
+		public virtual void FinalizeChildControlStructure ()
+		{
+			// HACK: This is just to make sure control providers
+			//       aren't sent to bridge until the parent's already
+			//       there.  There are about 100 ways to do this
+			//       better.
+			Console.WriteLine ("finalizing");
+			foreach (SimpleControlProvider childProvider in controlProviders.Values)
+				childProvider.Terminate ();
+
+			controlProviders.Clear ();
 		}
 		
 #endregion

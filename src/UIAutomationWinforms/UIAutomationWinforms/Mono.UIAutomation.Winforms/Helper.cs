@@ -25,6 +25,7 @@
 
 using System;
 using System.Drawing;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -46,9 +47,37 @@ namespace Mono.UIAutomation.Winforms
 			return ++id;
 		}
 
+		internal static void AddPrivateEvent (Type referenceType, object reference, 
+		                                      string eventName, object referenceDelegate,
+		                                      string delegateName)
+		{
+			AddRemovePrivateEvent (referenceType, reference, eventName, 
+			                       referenceDelegate, delegateName, true);
+		}
+		
+		internal static void RemovePrivateEvent (Type referenceType, object reference, 
+		                                         string eventName, object referenceDelegate,
+		                                         string delegateName)
+		{
+			AddRemovePrivateEvent (referenceType, reference, eventName, 
+			                       referenceDelegate, delegateName, false);
+		}
+		
+		internal static object GetPrivateField (Type type, object reference, string fieldName)
+		{
+			FieldInfo fieldInfo = type.GetField (fieldName,
+			                                     BindingFlags.NonPublic
+			                                     | BindingFlags.Instance);
+			return fieldInfo.GetValue (reference);
+		}
+		
 		internal static void RaiseStructureChangedEvent (StructureChangeType type,
 		                                                 IRawElementProviderFragment provider)
 		{
+			
+			Console.WriteLine ("Helper.RaiseStructureChangedEvent: {0} - {1} - {2} ",
+			                   type, provider.GetType (), provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
+			
 			if (AutomationInteropProvider.ClientsAreListening) {
 				int []runtimeId = null;
 				if (type == StructureChangeType.ChildRemoved)
@@ -67,6 +96,27 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return new Rect (rectangle.X, rectangle.Y, 
 			                 rectangle.Width, rectangle.Height);
+		}
+		
+#endregion
+		
+#region Private Static Methods
+		
+		private static void AddRemovePrivateEvent (Type referenceType, object reference, 
+		                                           string eventName, object referenceDelegate,
+		                                           string delegateName, bool addEvent)
+		{
+			EventInfo eventInfo = referenceType.GetEvent (eventName,
+			                                              BindingFlags.Instance 
+			                                              | BindingFlags.NonPublic);
+			Type delegateType = eventInfo.EventHandlerType;
+			MethodInfo eventMethod = addEvent 
+				? eventInfo.GetAddMethod (true) :eventInfo.GetRemoveMethod (true);
+			Delegate delegateValue = Delegate.CreateDelegate (delegateType, 
+			                                                  referenceDelegate,
+			                                                  delegateName, 
+			                                                  false);
+			eventMethod.Invoke (reference, new object[] { delegateValue });
 		}
 		
 #endregion

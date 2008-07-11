@@ -52,13 +52,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public override void Connect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.InvokeInvokedEvent, 
+			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
 			          new ScrollBarButtonInvokePatternInvokeEvent (provider));
 		}
 		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.InvokeInvokedEvent, null);
+			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, null);
 		}
 
 #endregion

@@ -54,13 +54,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 		public override void Connect (Control control)
 		{		
-			Provider.SetEvent (ProviderEventType.ExpandCollapseStateProperty, 
+			Provider.SetEvent (ProviderEventType.ExpandCollapsePatternExpandCollapseStateProperty, 
 			                   new ComboBoxExpandCollapseStateEvent (Provider));
 		}
 		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.ExpandCollapseStateProperty, 
+			Provider.SetEvent (ProviderEventType.ExpandCollapsePatternExpandCollapseStateProperty, 
 			                   null);
 		}
 		

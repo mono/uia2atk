@@ -55,7 +55,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeEvents ();
 
-			SetEvent (ProviderEventType.ToggleStateProperty,
+			SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
 			          new TogglePatternToggleStatePropertyEvent (this));
 		}
 		

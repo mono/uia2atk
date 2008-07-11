@@ -37,15 +37,9 @@ namespace Mono.UIAutomation.Winforms
 	{
 
 #region Constructors
-		public ListItemProvider (ListProvider provider, ListControl control)
-			: this (provider, control, control.SelectedIndex)
+		public ListItemProvider (ListProvider provider, ListControl control) 
+			: base (control)
 		{
-		}
-
-		public ListItemProvider (ListProvider provider, ListControl control, 
-		                         int index) : base (control)
-		{
-			this.index = index;
 			list_provider = provider;
 			list_control = control;
 			
@@ -54,9 +48,6 @@ namespace Mono.UIAutomation.Winforms
 
 			SetBehavior (ScrollItemPatternIdentifiers.Pattern,
 			             new ListItemScrollProviderBehavior (this));
-			
-			name_property = ListProvider.GetItemName (this);
-			Navigation = new ListItemNavigation (this);	
 		}
 
 #endregion
@@ -83,12 +74,32 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 #endregion
+		
+#region Public Methods
+
+		public override void InitializeEvents ()
+		{
+			base.InitializeEvents (); 
+			
+			name_property = ListProvider.GetItemName (this);
+		}
+		
+#endregion
 
 #region Public properties
 
 		public int Index {
-			get { return index; }
+			get { return ListProvider.IndexOfItem (this); }
 		}
+
+		public override INavigation Navigation {
+			get { 
+				if (navigation == null)
+					navigation = new ListItemNavigation (this);
+
+				return navigation ;
+			}
+		}		
 		
 		public ListControl ListControl {
 			get { return list_control; }
@@ -97,9 +108,9 @@ namespace Mono.UIAutomation.Winforms
 		public ListProvider ListProvider {
 			get { return list_provider; }
 		}
-		
-#endregion
-		
+
+#endregion		
+
 #region IRawElementProviderFragment Interface 
 
 		public override IRawElementProviderFragmentRoot FragmentRoot {
@@ -109,8 +120,7 @@ namespace Mono.UIAutomation.Winforms
 #endregion		
 		
 #region Private Fields
-		
-		private int index;
+
 		private ListControl list_control;
 		private ListProvider list_provider;
 		private string name_property;

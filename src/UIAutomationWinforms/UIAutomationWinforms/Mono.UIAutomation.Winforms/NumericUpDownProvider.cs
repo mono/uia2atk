@@ -62,7 +62,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeEvents ();
 
-			SetEvent (ProviderEventType.InvokeInvokedEvent, 
+			SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
 			          new InvokePatternInvokedEvent (this));
 		}
 		

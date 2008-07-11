@@ -165,10 +165,8 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			
 			public override void FinalizeProvider ()
 			{
-				if (button_provider != null) {
-					button_provider.FinalizeBehaviors ();
-					button_provider.FinalizeEvents ();
-				}
+				if (button_provider != null)
+					button_provider.Terminate ();
 			}
 
 			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
@@ -207,10 +205,8 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			
 			public override void FinalizeProvider ()
 			{
-				if (listbox_provider != null) {
-					listbox_provider.FinalizeBehaviors ();
-					listbox_provider.FinalizeEvents ();
-				}
+				if (listbox_provider != null)
+					listbox_provider.Terminate ();
 			}
 			
 			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
@@ -219,6 +215,8 @@ namespace Mono.UIAutomation.Winforms.Navigation
 					return provider;
 				else if (direction == NavigateDirection.FirstChild)
 					return GetListBoxProvider ().GetItemProvider (0);
+				else if (direction == NavigateDirection.LastChild)
+					return GetListBoxProvider ().GetItemProvider (GetListBoxProvider ().ItemsCount - 1);
 				else if (direction == NavigateDirection.NextSibling)
 					return GetNextSiblingProvider ();
 				else if (direction == NavigateDirection.PreviousSibling)
@@ -290,7 +288,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				                                   provider);
 			}
 
-						private ComboBoxProvider provider;
+			private ComboBoxProvider provider;
 			private ComboBoxListBoxProvider listbox_provider;
 		}	
 		

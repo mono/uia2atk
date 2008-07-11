@@ -60,7 +60,6 @@ namespace Mono.UIAutomation.Winforms
 
 				return navigation; 
 			}
-			set { navigation = value; }
 		}
 		
 #endregion
@@ -118,12 +117,6 @@ namespace Mono.UIAutomation.Winforms
 				             new ScrollBarRangeValueBehavior (this));
 		}
 
-#endregion
-		
-#region Private Fields
-		
-		private INavigation navigation;
-		
 #endregion
 		
 	}

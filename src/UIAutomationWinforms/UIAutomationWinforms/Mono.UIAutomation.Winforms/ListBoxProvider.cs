@@ -37,6 +37,18 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 
+#region Delegates
+	
+	public delegate void StructureChangeEventHandler (object sender, 
+	                                                  ListItemProvider item, 
+	                                                  int index);
+	
+	public delegate void ScrollbarNavigableEventHandler (object container,
+	                                                     ScrollBar scrollbar,
+	                                                     bool navigable);
+
+#endregion
+
 	public class ListBoxProvider : ListProvider
 	{
 		
@@ -46,11 +58,59 @@ namespace Mono.UIAutomation.Winforms
 		{
 			listbox_control = listbox;
 
-			SetScrollBehavior (listbox);
-			
-			Navigation = new ListBoxNavigation (this);
+			InitializeScrollBehavior ();
 		}
 
+#endregion
+		
+#region Public Properties
+		
+		public override INavigation Navigation {
+			get { 
+				if (navigation == null)
+					navigation = new ListBoxNavigation (this);
+
+				return navigation;
+			}
+		}
+		
+		public bool HasHorizontalScrollbar
+		{
+			get { return hscrollbar.Visible == true && hscrollbar.Enabled == true; }
+		}
+		
+		public bool HasVerticalScrollbar
+		{
+			get { return vscrollbar.Visible == true && vscrollbar.Enabled == true; }
+		}		
+		
+#endregion
+		
+#region Public Events
+		
+		public event StructureChangeEventHandler ChildAdded;
+		
+		public event StructureChangeEventHandler ChildRemoved;
+		
+		public event ScrollbarNavigableEventHandler HScrollbarNavigationUpdated;
+		
+		public event ScrollbarNavigableEventHandler VScrollbarNavigationUpdated;
+		
+#endregion
+		
+#region Public Methods
+		
+		public override void Terminate ()
+		{
+			base.Terminate ();
+			
+			vscrollbar.VisibleChanged -= new EventHandler (UpdateVScrollBehaviorVisible);
+			vscrollbar.EnabledChanged -= new EventHandler (UpdateVScrollBehaviorEnable);
+
+			hscrollbar.VisibleChanged -= new EventHandler (UpdateHScrollBehaviorVisible);
+			hscrollbar.EnabledChanged -= new EventHandler (UpdateHScrollBehaviorEnable);
+		}
+		
 #endregion
 		
 #region IProviderBehavior Interface
@@ -77,6 +137,43 @@ namespace Mono.UIAutomation.Winforms
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
 			throw new NotImplementedException ();
+		}
+		
+#endregion
+		
+#region FragmentRootControlProvider Overrides
+		
+		public override void InitializeChildControlStructure ()
+		{
+			Helper.AddPrivateEvent (typeof (ListBox.ObjectCollection), 
+			                        listbox_control.Items, 
+			                        "ChildAdded",
+			                        this, 
+			                        "OnChildAdded");
+			Helper.AddPrivateEvent (typeof (ListBox.ObjectCollection), 
+			                        listbox_control.Items, 
+			                        "ChildRemoved", 
+			                        this, 
+			                        "OnChildRemoved");
+
+			for (int index = 0; index < listbox_control.Items.Count; index++)
+				OnChildAdded (listbox_control, index);
+		}
+		
+		public override void FinalizeChildControlStructure ()
+		{		
+			Helper.RemovePrivateEvent (typeof (ListBox.ObjectCollection), 
+			                           listbox_control.Items, 
+			                           "ChildAdded",
+			                           this, 
+			                           "OnChildAdded");
+			Helper.RemovePrivateEvent (typeof (ListBox.ObjectCollection), 
+			                           listbox_control.Items, 
+			                           "ChildRemoved", 
+			                           this, 
+			                           "OnChildRemoved");
+			
+			ClearItemsList ();
 		}
 
 #endregion
@@ -133,69 +230,189 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 #endregion
+		
+#region Private Methods - Items 
 
-#region Private Methods
-
-		private void SetScrollBehavior (ListBox listbox) 
+		private void OnChildAdded (object sender, int index)
 		{
-			FieldInfo fieldInfo;
+			ListItemProvider item = GetItemProvider (index);
+
+			Console.WriteLine ("ListBox: Child added.");
 			
-			fieldInfo = listbox.GetType ().GetField ("vscrollbar",
-			                                         BindingFlags.NonPublic 
-			                                         | BindingFlags.Instance);
-			vscrollbar = (VScrollBar) fieldInfo.GetValue (listbox);
-			vscrollbar.VisibleChanged += new EventHandler (UpdateScrollBehaviorVisible);
-			vscrollbar.EnabledChanged += new EventHandler (UpdateScrollBehaviorEnable);
-						
-			fieldInfo = listbox.GetType ().GetField ("hscrollbar",
-			                                         BindingFlags.NonPublic
-			                                         | BindingFlags.Instance);
-			hscrollbar = (HScrollBar) fieldInfo.GetValue (listbox);
-			hscrollbar.VisibleChanged += new EventHandler (UpdateScrollBehaviorVisible);
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+			                                   item);
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+			                                   this);
+			
+			if (ChildAdded != null)
+				ChildAdded (this, item, index);
 		}
 		
-		private void UpdateScrollBehaviorVisible (object sender, EventArgs args)
+		private void OnChildRemoved (object sender, int index)
 		{
+			ListItemProvider item = RemoveItemAt (index);
 			
-			if (scrollpattern_set == false
-			    && (hscrollbar.Visible == true || vscrollbar.Visible == true)) {
+			Console.WriteLine ("ListBox: Child removed: {0}",
+			                   item.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
 				
-				if (sender == hscrollbar && listbox_control.ScrollAlwaysVisible)
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
+			                                   item);
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+			                                   this);
+			
+			if (ChildRemoved != null)
+				ChildRemoved (this, item, index);
+		}
+		
+#endregion
+
+#region Private Methods - Scroll Pattern
+
+		private void InitializeScrollBehavior () 
+		{
+			vscrollbar = (VScrollBar) Helper.GetPrivateField (listbox_control.GetType (), 
+			                                                  listbox_control, 
+			                                                  "vscrollbar");
+			hscrollbar = (HScrollBar) Helper.GetPrivateField (listbox_control.GetType (), 
+			                                                  listbox_control, 
+			                                                  "hscrollbar");
+			
+			vscrollbar.VisibleChanged += new EventHandler (UpdateVScrollBehaviorVisible);
+			vscrollbar.EnabledChanged += new EventHandler (UpdateVScrollBehaviorEnable);
+
+			hscrollbar.VisibleChanged += new EventHandler (UpdateHScrollBehaviorVisible);
+			hscrollbar.EnabledChanged += new EventHandler (UpdateHScrollBehaviorEnable);
+			
+			if ((vscrollbar.Visible == true && vscrollbar.Enabled == true)
+			    || (hscrollbar.Visible == true && hscrollbar.Enabled == true))
+				SetScrollPatternBehavior ();
+		}
+		
+		private void UpdateHScrollBehaviorEnable (object sender, EventArgs args)
+		{
+			//Event used to update Navigation chain
+			if (HScrollbarNavigationUpdated != null) {
+				if (listbox_control.HorizontalScrollbar == true 
+				    && hscrollbar.Enabled == true)
+					HScrollbarNavigationUpdated  (this, hscrollbar, true);
+				else
+					HScrollbarNavigationUpdated  (this, hscrollbar, false);
+			}
+			
+			//Updating Behavior
+			if (hscrollbar.Enabled == true) {
+				if (scrollpattern_set == false) {
+					if (listbox_control.HorizontalScrollbar == true) {
+						SetScrollPatternBehavior ();
+					}
+				}
+			} else {
+				if (scrollpattern_set == true) {
+					if (vscrollbar.Visible == true && vscrollbar.Enabled == true)
+						return;
+
+					UnsetScrollPatternBehavior ();
+				}
+			}
+		}
+		
+		private void UpdateHScrollBehaviorVisible (object sender, EventArgs args)
+		{
+			//Event used to update Navigation chain
+			if (HScrollbarNavigationUpdated != null) {
+				if (listbox_control.HorizontalScrollbar == true 
+				    && hscrollbar.Visible == true && hscrollbar.Enabled == true)
+					HScrollbarNavigationUpdated  (this, hscrollbar, true);
+				else
+					HScrollbarNavigationUpdated  (this, hscrollbar, false);
+			}
+			
+			//Updating Behavior
+			if (scrollpattern_set == false) {
+				if (hscrollbar.Visible == true) {
+					if (hscrollbar.Enabled == false 
+					    || listbox_control.HorizontalScrollbar == false)
+						return;
+
+					SetScrollPatternBehavior ();
+				}
+			} else {
+				if (hscrollbar.Visible == false) {
+					if (vscrollbar.Visible == true && vscrollbar.Enabled)
+						return;
+
+					UnsetScrollPatternBehavior ();
+				}
+			}
+		}
+		
+		private void UpdateVScrollBehaviorEnable (object sender, EventArgs args)
+		{
+			//Event used to update Navigation chain
+			if (VScrollbarNavigationUpdated != null) {
+				if (listbox_control.ScrollAlwaysVisible == true 
+				    && vscrollbar.Enabled == true)
+					VScrollbarNavigationUpdated  (this, vscrollbar, true);
+				else
+					VScrollbarNavigationUpdated  (this, vscrollbar, false);
+			}
+			
+			//Updating Behavior
+			if (vscrollbar.Visible == true && scrollpattern_set == false) {
+				SetScrollPatternBehavior ();
+			} else if (vscrollbar.Visible == true && scrollpattern_set == true) {
+				if (hscrollbar.Visible == true && hscrollbar.Enabled == true)
 					return;
-				
-				SetBehavior (ScrollPatternIdentifiers.Pattern,
-				             new ListBoxScrollProviderBehavior (this, hscrollbar,
-				                                                vscrollbar));
-				scrollpattern_set = true;
-			} else if (scrollpattern_set == true
-			           && (hscrollbar.Visible == false || vscrollbar.Visible == false)) { 
-				if (sender == vscrollbar && listbox_control.ScrollAlwaysVisible 
-				    && hscrollbar.Enabled == false) {
-					SetBehavior (ScrollPatternIdentifiers.Pattern, null);
-					scrollpattern_set = false;
-				}
+				UnsetScrollPatternBehavior ();
 			}
-		}
+		}		
 		
-		private void UpdateScrollBehaviorEnable (object sender, EventArgs args)
+		private void UpdateVScrollBehaviorVisible (object sender, EventArgs args)
 		{
-			if (scrollpattern_set == false 
-			    && listbox_control.ScrollAlwaysVisible == true) {
-				if (hscrollbar.Enabled) {
-					SetBehavior (ScrollPatternIdentifiers.Pattern,
-					             new ListBoxScrollProviderBehavior (this, hscrollbar,
-					                                                vscrollbar));
-					scrollpattern_set = true;
+			//Event used to update Navigation chain
+			if (VScrollbarNavigationUpdated != null) {
+				if (listbox_control.ScrollAlwaysVisible == false 
+				    && vscrollbar.Visible == true)
+					VScrollbarNavigationUpdated  (this, vscrollbar, true);
+				else
+					VScrollbarNavigationUpdated  (this, vscrollbar, false);
+			}
+			
+			//Updating Behavior
+			if (scrollpattern_set == false) {
+				if (vscrollbar.Visible == true) {
+					if (vscrollbar.Enabled == false)
+						return;
+					SetScrollPatternBehavior ();
 				}
-			} else if (scrollpattern_set == false 
-			           && listbox_control.ScrollAlwaysVisible == true) {
-				if (hscrollbar.Enabled == false && hscrollbar.Visible == true) {
-					SetBehavior (ScrollPatternIdentifiers.Pattern, null);
-					scrollpattern_set = false;
+			} else {
+				if (vscrollbar.Visible == false) {
+					if (hscrollbar.Visible == true && hscrollbar.Enabled == true)
+						return;
+					UnsetScrollPatternBehavior ();					
 				}
 			}
 		}
 		
+		private void SetScrollPatternBehavior ()
+		{
+			if (scrollpattern_set == false) {
+				scrollpattern_set = true;
+				SetBehavior (ScrollPatternIdentifiers.Pattern,
+				             new ListBoxScrollProviderBehavior (this, 
+				                                                hscrollbar,
+				                                                vscrollbar));
+			}
+		}
+		
+		private void UnsetScrollPatternBehavior ()
+		{
+			if (scrollpattern_set == true) {
+				scrollpattern_set = false;
+				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
+			}
+		}
+
 #endregion
 		
 #region Private Fields

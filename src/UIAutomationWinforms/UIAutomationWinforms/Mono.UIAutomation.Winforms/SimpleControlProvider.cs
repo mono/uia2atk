@@ -44,9 +44,14 @@ namespace Mono.UIAutomation.Winforms
 		private Control control;
 		private Dictionary<ProviderEventType, IConnectable> events;
 		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
-		private INavigation navigation;
 		private int runtime_id;
 
+#endregion
+		
+#region Protected Fields
+		
+		protected INavigation navigation;
+		
 #endregion
 		
 #region Constructors
@@ -87,33 +92,29 @@ namespace Mono.UIAutomation.Winforms
 		public virtual void InitializeEvents ()
 		{
 			// TODO: Add: EventStrategyType.IsOffscreenProperty, DefaultIsOffscreenPropertyEvent
-			SetEvent (ProviderEventType.IsEnabledProperty, 
+			SetEvent (ProviderEventType.AutomationElementIsEnabledProperty, 
 			          new AutomationIsEnabledPropertyEvent (this));
-			SetEvent (ProviderEventType.NameProperty,
+			SetEvent (ProviderEventType.AutomationElementNameProperty,
 			          new AutomationNamePropertyEvent (this));
-			SetEvent (ProviderEventType.HasKeyboardFocusProperty,
+			SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
 			          new AutomationHasKeyboardFocusPropertyEvent (this));
-			SetEvent (ProviderEventType.BoundingRectangleProperty,
+			SetEvent (ProviderEventType.AutomationElementBoundingRectangleProperty,
 			          new AutomationBoundingRectanglePropertyEvent (this));
-			SetEvent (ProviderEventType.StructureChangedEvent,
-			          new StructureChangedEvent (this));
+//			SetEvent (ProviderEventType.StructureChangedEvent,
+//			          new StructureChangedEvent (this));
 		}
 		
-		public void FinalizeEvents ()
+		//TODO: I'm still wondering about the right name for this method
+		public virtual void Terminate ()
 		{
-			if (Control != null)
+			if (Control != null) {
 				foreach (IConnectable strategy in events.Values)
 				    strategy.Disconnect (Control);
-
-			events.Clear ();
-		}
-		
-		public void FinalizeBehaviors ()
-		{
-			if (Control != null)
 				foreach (IProviderBehavior behavior in providerBehaviors.Values)
 					behavior.Disconnect (Control);
+			}
 
+			events.Clear ();
 			providerBehaviors.Clear ();
 		}
 
