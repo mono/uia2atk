@@ -1,14 +1,18 @@
+2008-07-11  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/gtktooltip.py: add a tooltip sample for testing
+
 2008-07-09  Ray Wang <rawang@gmail.com>
 
-	* samples/checkedlistbox.py : implement CheckedListBox control
+	* samples/checkedlistbox.py: implement CheckedListBox control
 
 2008-07-09  Ray Wang <rawang@gmail.com>
 
-	* samples/mainmenu.py : add sub-menus and label
-	* samples/panel_checkbox_radiobutton.py : enlarge label size
-	* samples/statusstrip.py : cut of the size of Form control
-	* samples/universe.jpg : add another picture for toggling
-	* samples/picturebox.py : add toggle function to switch pictures
+	* samples/mainmenu.py: add sub-menus and label
+	* samples/panel_checkbox_radiobutton.py: enlarge label size
+	* samples/statusstrip.py: cut of the size of Form control
+	* samples/universe.jpg: add another picture for toggling
+	* samples/picturebox.py: add toggle function to switch pictures
 
 2008-07-07  Brian G. Merrell <bgmerrell@gmail.com>
 
