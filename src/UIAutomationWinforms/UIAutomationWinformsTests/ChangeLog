@@ -1,3 +1,9 @@
+2008-07-11  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am: Updated file added.
+	* UIAutomationWinformsTests.mdp: Updated file added.
+	* NavigationChainTest.cs: File added. Tests NavigationChain class.
+
 2008-07-07  Mario Carrion  <mcarrion@novell.com>
 
 	* BaseProviderTest.cs: Added Ignore property to test: 
