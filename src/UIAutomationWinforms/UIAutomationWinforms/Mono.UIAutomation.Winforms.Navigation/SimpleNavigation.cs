@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
@@ -42,51 +43,29 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 #endregion
 		
-#region INavigable Interface
+#region INavigation Interface
 		
 		public virtual IRawElementProviderSimple Provider {
 			get { return simple_provider; }
 		}
-		
-		public virtual bool SupportsNavigation  {
-			get { return true; }
+
+		public virtual IRawElementProviderFragment GetNextSiblingProvider (NavigationChain chain)
+		{
+			if (chain.Contains (this) == true)
+				return (IRawElementProviderFragment) chain.Find (this).Next.Value.Provider;
+			else
+				return null;
 		}
 		
-		public INavigation NextSibling { 
-			get { return next_sibling; }
-			set { next_sibling = value; }
-		}
-		
-		public INavigation NextNavigableSibling { 
-			get { 
-				INavigation next = NextSibling;
-				while (next != null) {
-					if (next.SupportsNavigation)
-						break;
-					next = next.NextNavigableSibling;
-				}
-				return next; 
-			}
+		public virtual IRawElementProviderFragment GetPreviousSiblingProvider (NavigationChain chain)
+		{
+			if (chain.Contains (this) == true)
+				return (IRawElementProviderFragment) chain.Find (this).Previous.Value.Provider;
+			else
+				return null;
 		}
 
-		public INavigation PreviousSibling { 
-			get { return previous_sibling; } 
-			set { previous_sibling = value; }
-		}
-
-		public INavigation PreviousNavigableSibling { 
-			get { 
-				INavigation previous = PreviousSibling;
-				while (previous != null) {
-					if (previous.SupportsNavigation)
-						break;
-					previous = previous.PreviousNavigableSibling;
-				}
-				return previous;
-			}
-		}
-
-		public virtual void FinalizeProvider ()
+		public virtual void Terminate ()
 		{
 			if (simple_provider != null)
 				simple_provider.Terminate ();
@@ -133,27 +112,9 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 #endregion
 		
-#region Protected Methods
-		
-		protected IRawElementProviderFragment GetNextSiblingProvider ()
-		{
-			INavigation next = NextNavigableSibling;
-			return next != null ? (IRawElementProviderFragment) next.Provider : null;
-		}
-		
-		protected IRawElementProviderFragment GetPreviousSiblingProvider ()
-		{
-			INavigation previous = PreviousNavigableSibling;
-			return previous != null ? (IRawElementProviderFragment) previous.Provider : null;
-		}
-		
-#endregion
-		
 #region Private Fields
 
 		private SimpleControlProvider simple_provider;
-		private INavigation next_sibling;
-		private INavigation previous_sibling;
 		
 #endregion
 	}

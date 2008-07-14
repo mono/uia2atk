@@ -116,6 +116,8 @@ namespace Mono.UIAutomation.Winforms
 
 			events.Clear ();
 			providerBehaviors.Clear ();
+			
+			//TODO: Terminate Navigation??
 		}
 
 		public void SetEvent (ProviderEventType type, IConnectable strategy)
@@ -169,6 +171,11 @@ namespace Mono.UIAutomation.Winforms
 			get {
 				return providerBehaviors.Values;
 			}
+		}
+		
+		protected bool IsBehaviorEnabled (AutomationPattern pattern) 
+		{
+			return providerBehaviors.ContainsKey (pattern);
 		}
 #endregion
 		
@@ -227,8 +234,23 @@ namespace Mono.UIAutomation.Winforms
 					Rect rectangle = (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 					return new Point (rectangle.X, rectangle.Y);
 				}
-			}
-			
+			} //Patterns properties
+			//AutomationElementIdentifiers.IsDockPatternAvailableProperty
+			//AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty
+			//AutomationElementIdentifiers.IsGridItemPatternAvailableProperty				
+			//AutomationElementIdentifiers.IsInvokePatternAvailableProperty
+			//AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty
+			//AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty
+			//AutomationElementIdentifiers.IsScrollItemPatternAvailableProperty
+			//AutomationElementIdentifiers.IsScrollPatternAvailableProperty
+			//AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty
+			//AutomationElementIdentifiers.IsSelectionPatternAvailableProperty
+			//AutomationElementIdentifiers.IsTablePatternAvailableProperty
+			//AutomationElementIdentifiers.IsTextPatternAvailableProperty
+			//AutomationElementIdentifiers.IsTogglePatternAvailableProperty
+			//AutomationElementIdentifiers.IsTransformPatternAvailableProperty
+			//AutomationElementIdentifiers.IsValuePatternAvailableProperty
+			//AutomationElementIdentifiers.IsWindowPatternAvailableProperty
 			return null;
 		}
 

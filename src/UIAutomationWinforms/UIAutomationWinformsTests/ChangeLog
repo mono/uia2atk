@@ -1,3 +1,9 @@
+2008-07-14  Mario Carrion  <mcarrion@novell.com>
+
+	* NavigationChainTest.cs: Test not longer needed.
+	* UIAutomationWinformsTests.mdp: Updated. File removed.
+	* Makefile.am: Updated. File removed.
+
 2008-07-11  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am: Updated file added.

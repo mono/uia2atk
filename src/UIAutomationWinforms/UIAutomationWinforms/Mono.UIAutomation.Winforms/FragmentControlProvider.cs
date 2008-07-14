@@ -54,7 +54,12 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		public virtual IRawElementProviderFragmentRoot FragmentRoot {
-			get { return null; }			
+			get { 
+				if (Control == null || Control.Parent == null)
+					return null;
+				else
+					return (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (Control.Parent);
+			}
 		}
 		
 		public virtual IRawElementProviderSimple[] GetEmbeddedFragmentRoots () 

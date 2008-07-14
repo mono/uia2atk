@@ -48,7 +48,8 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			this.provider = provider;
 
 			navigation = new NavigationChain ();
-			listbox_navigation = new ComboBoxListBoxNavigation (provider);
+			listbox_navigation = new ComboBoxListBoxNavigation (navigation,
+			                                                    provider);
 
 			((ComboBox) provider.Control).DropDownStyleChanged 
 				+= new EventHandler (OnDropDownStyleChanged);
@@ -59,12 +60,12 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 #region Public Methods
 		
-		public override void FinalizeProvider ()
+		public override void Terminate ()
 		{
 			((ComboBox) provider.Control).DropDownStyleChanged 
 				-= new EventHandler (OnDropDownStyleChanged);
 			
-			base.FinalizeProvider (); 
+			base.Terminate (); 
 		}
 		
 #endregion
@@ -73,12 +74,10 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 		{
-			if (direction == NavigateDirection.FirstChild) {
-				INavigation first = navigation.GetFirstLink ();
-				return first != null ? (IRawElementProviderFragment) first.Provider : null;
+			if (direction == NavigateDirection.FirstChild) {				
+				return navigation.Count == 0 ? null : (IRawElementProviderFragment) navigation.First.Value.Provider;
 			} else if (direction == NavigateDirection.LastChild) {
-				INavigation last = navigation.GetLastLink ();
-				return last != null ? (IRawElementProviderFragment) last.Provider : null;
+				return navigation.Count == 0 ? null : (IRawElementProviderFragment) navigation.Last.Value.Provider;
 			} else
 				return base.Navigate (direction);
 		}
@@ -103,14 +102,15 @@ namespace Mono.UIAutomation.Winforms.Navigation
 					//to MSDN we should do so
 					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
 					                                   (IRawElementProviderFragment) button_navigation.Provider);
-					button_navigation.FinalizeProvider ();
+					button_navigation.Terminate ();
 					button_navigation = null;
 				}
 				//if (textbox_navigation == null)
 				//	textbox_navigation = new ComboBoxTextBoxNavigation (provider);
 			} else if (combobox.DropDownStyle == ComboBoxStyle.DropDown) {
 				if (button_navigation == null) {
-					button_navigation = new ComboBoxButtonNavigation (provider);
+					button_navigation = new ComboBoxButtonNavigation (navigation,
+					                                                  provider);
 					//TODO: UISpy doesn't report this structure, however, according
 					//to MSDN we should do so
 					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
@@ -125,9 +125,9 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			navigation.Clear ();
 			//if (textbox_navigation != null)
 			//	navigation.AddLink (textbox_navigation);
-			navigation.AddLink (listbox_navigation);
+			navigation.AddLast (listbox_navigation);
 			if (button_navigation != null)
-				navigation.AddLink (button_navigation);
+				navigation.AddLast (button_navigation);
 		}
 		
 #endregion
@@ -146,9 +146,11 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		class ComboBoxButtonNavigation : SimpleNavigation
 		{
-			public ComboBoxButtonNavigation  (ComboBoxProvider provider)
+			public ComboBoxButtonNavigation  (NavigationChain chain,
+			                                  ComboBoxProvider provider)
 				: base (provider)
 			{
+				this.chain = chain;
 				this.provider = provider;
 			}
 			
@@ -163,7 +165,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				}
 			}
 			
-			public override void FinalizeProvider ()
+			public override void Terminate ()
 			{
 				if (button_provider != null)
 					button_provider.Terminate ();
@@ -174,11 +176,12 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				if (direction == NavigateDirection.Parent)
 					return provider;
 				else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider ();
+					return GetPreviousSiblingProvider (chain);
 				else
 					return null;
 			}
 			
+			private NavigationChain chain;
 			private ComboBoxProvider provider;
 			private ComboBoxButtonProvider button_provider;
 			
@@ -191,9 +194,11 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		//TODO: This class should allow navigating 2 ScrollBars and n items.		
 		class ComboBoxListBoxNavigation : SimpleNavigation
 		{
-			public ComboBoxListBoxNavigation (ComboBoxProvider provider)
+			public ComboBoxListBoxNavigation (NavigationChain chain,
+			                                  ComboBoxProvider provider)
 				: base (provider)
 			{
+				this.chain = chain;
 				this.provider = provider;
 				
 				InitializeItemChangeEvents ();
@@ -203,7 +208,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				get {  return GetListBoxProvider (); }
 			}
 			
-			public override void FinalizeProvider ()
+			public override void Terminate ()
 			{
 				if (listbox_provider != null)
 					listbox_provider.Terminate ();
@@ -218,9 +223,9 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				else if (direction == NavigateDirection.LastChild)
 					return GetListBoxProvider ().GetItemProvider (GetListBoxProvider ().ItemsCount - 1);
 				else if (direction == NavigateDirection.NextSibling)
-					return GetNextSiblingProvider ();
+					return GetNextSiblingProvider (chain);
 				else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider ();
+					return GetPreviousSiblingProvider (chain);
 				else
 					return null;
 			}
@@ -288,6 +293,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				                                   provider);
 			}
 
+			private NavigationChain chain;
 			private ComboBoxProvider provider;
 			private ComboBoxListBoxProvider listbox_provider;
 		}	

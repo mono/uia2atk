@@ -95,7 +95,7 @@ namespace Mono.UIAutomation.Winforms
 		
 #region ListProvider Overrides
 		
-		public override bool SupportsMulipleSelection { 
+		public override bool SupportsMultipleSelection { 
 			get { return false; } 
 		}
 		

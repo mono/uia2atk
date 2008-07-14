@@ -45,37 +45,34 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		public ListBoxNavigation (ListBoxProvider provider)
 			: base (provider)
 		{
-			navigation = new NavigationChain ();
-			itemroot_navigation = new ListBoxFirstItemNavigation (provider);
+			this.provider = provider;
+			chain = new NavigationChain ();
 			
+			itemroot_navigation = new ListBoxFirstItemNavigation (chain, provider);
 			ConnectNavigationEvents ((ListBox) provider.ListControl);
-			UpdateNavigation ();
+
+			//TODO: Should we use ChildAdded and ChildRemoved to update items navigation?
+			chain.AddLast (itemroot_navigation);
 		}
 		
 #endregion
 		
-#region Public Methods
+#region SimpleNavigation: Specializations
 	
-		public override void FinalizeProvider ()
+		public override void Terminate ()
 		{
-			base.FinalizeProvider ();
+			base.Terminate ();
 			
 			DisconnectNavigationEvents ();
 		}
 		
-#endregion
-		
-#region INavigable Interface
-		
 		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 		{	
-			if (direction == NavigateDirection.FirstChild) {
-				INavigation first = navigation.GetFirstLink ();
-				return first != null ? (IRawElementProviderFragment) first.Provider : null;
-			} else if (direction == NavigateDirection.LastChild) {
-				INavigation last = navigation.GetLastLink ();
-				return last != null ? (IRawElementProviderFragment) last.Provider : null;
-			} else
+			if (direction == NavigateDirection.FirstChild)
+				return chain.Count == 0 ? null : (IRawElementProviderFragment) chain.First.Value.Provider;
+			else if (direction == NavigateDirection.LastChild)
+				return chain.Count == 0 ? null : (IRawElementProviderFragment) chain.Last.Value.Provider;
+			else
 				return base.Navigate (direction);
 		}
 
@@ -89,13 +86,11 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			//later to remove/add the navigation class
 			hscrollbar = (ScrollBar) Helper.GetPrivateField (typeof (ListBox), 
 			                                                 listbox,
-			                                                 "hscrollbar");
+			                                                 hscrollbar_field_name);
 			vscrollbar = (ScrollBar) Helper.GetPrivateField (typeof (ListBox), 
 			                                                 listbox, 
-			                                                 "vscrollbar");
-			
-			ListBoxProvider provider = (ListBoxProvider) Provider;
-
+			                                                 vscrollbar_field_name);
+			//ScrollBars
 			provider.HScrollbarNavigationUpdated 
 				+= new ScrollbarNavigableEventHandler (OnHScrollbarNavigationUpdated);
 			
@@ -104,101 +99,102 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 			if (provider.HasHorizontalScrollbar == true)
 				UpdateScrollBarNavigation (ref hscrollbar_navigation,
-				                           "hscrollbar", 
+				                           hscrollbar_field_name, 
 				                           true);
 			if (provider.HasVerticalScrollbar == true)
 				UpdateScrollBarNavigation (ref vscrollbar_navigation,
-				                           "vscrollbar", 
+				                           vscrollbar_field_name, 
 				                           true);
 		}
 		
 		private void DisconnectNavigationEvents ()
 		{
-			((ListBoxProvider) Provider).HScrollbarNavigationUpdated 
+			//ScrollBars
+			provider.HScrollbarNavigationUpdated 
 				-= new ScrollbarNavigableEventHandler (OnHScrollbarNavigationUpdated);
-			
-			((ListBoxProvider) Provider).VScrollbarNavigationUpdated 
-				-= new ScrollbarNavigableEventHandler (OnVScrollbarNavigationUpdated);
+			provider.VScrollbarNavigationUpdated 
+				-= new ScrollbarNavigableEventHandler (OnVScrollbarNavigationUpdated);			
 		}
 		
 		private void OnHScrollbarNavigationUpdated (object container,
 		                                            ScrollBar scrollbar,
 		                                            bool navigable)
 		{		
-			if (scrollbar == hscrollbar) {
-				if (navigable == true && hscrollbar_navigation == null) {
-					UpdateScrollBarNavigation (ref hscrollbar_navigation,
-					                           "hscrollbar", 
-					                           true);
-				} else if (navigable == false && hscrollbar_navigation != null) {
-					UpdateScrollBarNavigation (ref hscrollbar_navigation,
-					                           "hscrollbar", 
-					                           false);
-				}
+			if (navigable == true && hscrollbar_navigation == null) {
+				UpdateScrollBarNavigation (ref hscrollbar_navigation,
+				                           hscrollbar_field_name, 
+				                           true);
+			} else if (navigable == false && hscrollbar_navigation != null) {
+				UpdateScrollBarNavigation (ref hscrollbar_navigation,
+				                           hscrollbar_field_name, 
+				                           false);
 			}
 		}
-		
+
 		private void OnVScrollbarNavigationUpdated (object container,
 		                                            ScrollBar scrollbar,
 		                                            bool navigable)
 		{
-			if (scrollbar == vscrollbar) {
-				if (navigable == true && vscrollbar_navigation == null)
-					UpdateScrollBarNavigation (ref vscrollbar_navigation,
-					                           "vscrollbar", 
-					                           true);
-				else if (navigable == false && vscrollbar_navigation != null)
-					UpdateScrollBarNavigation (ref vscrollbar_navigation,
-					                           "vscrollbar", 
-					                           false);
-			}
+			if (navigable == true && vscrollbar_navigation == null)
+				UpdateScrollBarNavigation (ref vscrollbar_navigation,
+				                           vscrollbar_field_name, 
+				                           true);
+			else if (navigable == false && vscrollbar_navigation != null)
+				UpdateScrollBarNavigation (ref vscrollbar_navigation,
+				                           vscrollbar_field_name, 
+				                           false);
 		}
 
-		private void UpdateNavigation ()
-		{
-			//FIXME: Improving missing
-			navigation.Clear ();
-			if (hscrollbar_navigation != null)
-				navigation.AddLink (hscrollbar_navigation);
-			if (vscrollbar_navigation != null)
-				navigation.AddLink (vscrollbar_navigation);
-			navigation.AddLink (itemroot_navigation);
-		}
-		
 		private void UpdateScrollBarNavigation (ref ListBoxScrollBarNavigation navigation,
-		                                        string fieldName, bool initialize)
+		                                        string fieldName, 
+		                                        bool initialize)
 		{
-			if (initialize == true)
-				navigation = new ListBoxScrollBarNavigation ((ListBoxProvider) Provider, 
+			if (initialize == true) {
+				navigation = new ListBoxScrollBarNavigation (chain,
+				                                             (ListBoxProvider) Provider, 
 				                                             fieldName);
-			else {
-				navigation.FinalizeProvider ();
+				//TODO: Makes sense keeping always same order: Hor, Vert, NItems?
+				if (fieldName == hscrollbar_field_name)
+					chain.AddFirst (navigation);
+				else {
+					if (hscrollbar_navigation != null)
+						chain.AddAfter (chain.Find (hscrollbar_navigation), navigation);
+					else
+						chain.AddFirst (navigation);
+				}
+			} else {
+				chain.Remove (navigation);
+				navigation.Terminate ();
 				navigation = null;
 			}
-			UpdateNavigation ();
 		}
 		
 #endregion
 
 #region Private Fields
 
+		private NavigationChain chain;
 		private ScrollBar hscrollbar;
 		private ScrollBar vscrollbar;
+		private ListBoxProvider provider;
 		private ListBoxFirstItemNavigation itemroot_navigation;
 		private ListBoxScrollBarNavigation hscrollbar_navigation;
 		private ListBoxScrollBarNavigation vscrollbar_navigation;
-		private NavigationChain navigation;
+		private const string vscrollbar_field_name = "vscrollbar";
+		private const string hscrollbar_field_name = "hscrollbar";
 			
 #endregion
 
-#region ScrollBar Navigation Class
+#region Internal Class: ScrollBar Navigation
 		
 		class ListBoxScrollBarNavigation : SimpleNavigation
 		{
-			public ListBoxScrollBarNavigation (ListBoxProvider provider, 
+			public ListBoxScrollBarNavigation (NavigationChain chain,
+			                                   ListBoxProvider provider, 
 			                                   string field_name)
 				: base (provider)
 			{
+				this.chain = chain;
 				this.provider = provider;
 				this.field_name = field_name;
 			}
@@ -206,75 +202,79 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			public override IRawElementProviderSimple Provider {
 				get { 
 					if (scrollbar_provider == null)
-						InitializeScrollBarProvider (provider, field_name);
+						InitializeScrollBarProvider ();
 					
 					return scrollbar_provider; 
 				}
 			}
 			
-			public override void FinalizeProvider ()
+			public override void Terminate ()
 			{
-				if (scrollbar_provider != null)
-					scrollbar_provider.Terminate ();
+				//We don't have anything to Terminate because we are using
+				//internal ListBox ScrollBar provider instances.
 			}
-			
+
 			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 			{
 				if (direction == NavigateDirection.Parent)
 					return provider;
 				else if (direction == NavigateDirection.NextSibling)
-					return GetNextSiblingProvider ();
+					return GetNextSiblingProvider (chain);
 				else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider ();
+					return GetPreviousSiblingProvider (chain);
 				else
 					return scrollbar_navigation.Navigate (direction); 
 			}
 			
-			private void InitializeScrollBarProvider (ListBoxProvider provider, 
-			                                          string field_name)
+			private void InitializeScrollBarProvider ()
 			{
-				//TODO: I'm sure we'll need a custom ListBoxScrollBarProvider 
-				//instead of using the ScrollBar
-				scrollbar = (ScrollBar) Helper.GetPrivateField (typeof (ListBox), 
-				                                                provider.Control, 
-				                                                field_name);
-				scrollbar_provider = (ScrollBarProvider) ProviderFactory.GetProvider (scrollbar);
+				scrollbar_provider = provider.GetChildScrollBarProvider (GetOrientationFromString ());
 				//We need this navigation to use it later.
 				scrollbar_navigation = scrollbar_provider.Navigation;
-				scrollbar_provider.Navigation = this;
+				if (scrollbar_provider != null)
+					scrollbar_provider.Navigation = this;
+			}
+			
+			private Orientation GetOrientationFromString ()
+			{
+				return field_name == "hscrollbar" ? Orientation.Horizontal : Orientation.Vertical;
 			}
 
+			private NavigationChain chain;
 			private string field_name;
 			private ListBoxProvider provider;
-			private ScrollBar scrollbar;
 			private ScrollBarProvider scrollbar_provider;
 			private INavigation scrollbar_navigation;
 		}
 		
 #endregion
 
-#region ListBoxItem Navigation Class
+#region Internal Class: ListBoxItem Navigation
 		
 		class ListBoxFirstItemNavigation : SimpleNavigation
 		{
-			public ListBoxFirstItemNavigation (ListBoxProvider provider)
+			public ListBoxFirstItemNavigation (NavigationChain chain,
+			                                   ListBoxProvider provider)
 				: base (provider)
 			{
+				this.chain = chain;
 				this.provider = provider;
 				
-				InitializeItemChangeEvents ();
+				provider.ChildRemoved += new StructureChangeEventHandler (OnChildRemoved);
 			}
 			
 			public override IRawElementProviderSimple Provider {
 				get { return GetListItemProvider (); }
 			}
 			
-			public override void FinalizeProvider ()
+			public override void Terminate ()
 			{
-				if (first_item_provider != null) 
+				if (first_item_provider != null) {
 					first_item_provider.Terminate ();
+					first_item_provider = null;
+				}
 				
-				FinalizeItemChangeEvents ();
+				provider.ChildRemoved -= new StructureChangeEventHandler (OnChildRemoved);
 			}			
 			
 			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
@@ -284,7 +284,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				else if (direction == NavigateDirection.NextSibling)
 					return first_item_provider == null ? null : navigation.Navigate (direction);
 				else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider ();
+					return GetPreviousSiblingProvider (chain);
 				else
 					return null;
 			}
@@ -302,16 +302,6 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				return first_item_provider;
 			}
 			
-			private void InitializeItemChangeEvents ()
-			{
-				provider.ChildRemoved += new StructureChangeEventHandler (OnChildRemoved);
-			}
-			
-			private void FinalizeItemChangeEvents ()
-			{
-				provider.ChildRemoved -= new StructureChangeEventHandler (OnChildRemoved);
-			}
-			
 			private void OnChildRemoved (object sender, ListItemProvider item, int index)
 			{			
 				if (index == 0) {
@@ -320,6 +310,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				}
 			}
 
+			private NavigationChain chain;
 			private INavigation navigation;			
 			private ListBoxProvider provider;
 			private ListItemProvider first_item_provider;

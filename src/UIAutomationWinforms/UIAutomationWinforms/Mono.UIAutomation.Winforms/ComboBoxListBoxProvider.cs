@@ -80,8 +80,8 @@ namespace Mono.UIAutomation.Winforms
 			get { return combobox_provider.SelectedItemsCount; }
 		}
 		
-		public override bool SupportsMulipleSelection { 
-			get { return combobox_provider.SupportsMulipleSelection; }
+		public override bool SupportsMultipleSelection { 
+			get { return combobox_provider.SupportsMultipleSelection; }
 		}
 		
 		public override int ItemsCount {

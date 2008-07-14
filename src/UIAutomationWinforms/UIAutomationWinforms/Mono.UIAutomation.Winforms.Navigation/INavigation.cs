@@ -33,18 +33,13 @@ namespace Mono.UIAutomation.Winforms.Navigation
 	{
 		IRawElementProviderSimple Provider { get; }
 		
-		INavigation NextSibling { get; set; }
+		IRawElementProviderFragment GetNextSiblingProvider (NavigationChain chain);
 		
-		INavigation NextNavigableSibling { get; }
-		
-		INavigation PreviousSibling { get; set; }
-		
-		INavigation PreviousNavigableSibling { get; }
-		
-		bool SupportsNavigation { get; }
-		
-		void FinalizeProvider ();		
+		IRawElementProviderFragment GetPreviousSiblingProvider (NavigationChain chain);
 
 		IRawElementProviderFragment Navigate (NavigateDirection direction);
+		
+		void Terminate ();
 	}
+	
 }

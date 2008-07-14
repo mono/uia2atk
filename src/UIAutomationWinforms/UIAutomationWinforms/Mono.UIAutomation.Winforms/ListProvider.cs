@@ -59,7 +59,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public abstract int SelectedItemsCount { get; }
 		
-		public abstract bool SupportsMulipleSelection { get; }
+		public abstract bool SupportsMultipleSelection { get; }
 		
 #endregion
 		
@@ -110,6 +110,18 @@ namespace Mono.UIAutomation.Winforms
 			return item;
 		}
 
+#endregion
+		
+#region IProviderBehavior Overrides
+		
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == AutomationElementIdentifiers.IsSelectionPatternAvailableProperty.Id)
+				return true;
+			else
+				return base.GetPropertyValue (propertyId);
+		}
+		
 #endregion
 			
 #region FragmentControlProvider Overrides

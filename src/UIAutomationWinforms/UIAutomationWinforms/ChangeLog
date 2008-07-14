@@ -1,3 +1,41 @@
+2008-07-14  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs: Subclassing
+	LinkedList<INavigation>: old code removed.
+	* Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs: Updated
+	to use API methods exposed by LinkedList.
+	* Mono.UIAutomation.Winforms.Navigation/ListBoxNavigation.cs: Updated
+	to use API methods exposed by LinkedList. Internal class 
+	ListBoxScrollBarNavigation doesn't instantiate any ScrollBar providers,
+	instead uses those instantiated by ListBoxProvider. 
+	* Mono.UIAutomation.Winforms.Navigation/INavigation.cs: Properties 
+	removed: NextSibling, NextNavigableSibling, PreviousSibling, 
+	PreviousNavigableSibling, SupportsNavigation. Method removed: 
+	FinalizeProvider. Methods added: GetPreviousSiblingProvider, Terminate
+	and GetNextSiblingProvider.
+	* Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs: Updated
+	to use API methods exposed by LinkedList.
+	* Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs: Removed
+	not longer needed code.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Added logic to get
+	ListBoxProvider.ListBoxScrollBarProvider instance get requesting 
+	ScrollBar control.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: New method added:
+	GetChildScrollBarProvider. New Automation properties added:
+	IsScrollPatternAvailableProperty and IsTablePatternAvailableProperty.
+	Logic added to generated StructureChange events: added/removed, this 
+	includes items and scrollbars.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: New method added:
+	IsBehaviorEnabled.
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Default
+	FragmentRoot implementation added. 
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Fixed typo.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Added Automation
+	property IsSelectionPatternAvailableProperty.
+	* Mono.UIAutomation.Winforms/ComboBoxListBoxProvider.cs: Fixed typo.
+	* Mono.UIAutomation.Winforms.Behaviors/ListSelectionProviderBehavior.cs:
+	Fixed typo.
+
 2008-07-11  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs: New method

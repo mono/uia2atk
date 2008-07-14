@@ -48,14 +48,19 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		{
 			chain = new NavigationChain ();
 			
-			chain.AddLink (new ScrollBarButtonNavigation (provider, 
+			chain.AddLast (new ScrollBarButtonNavigation (chain, 
+			                                              provider, 
 			                                              ScrollBarButtonOrientation.SmallBack));
-			chain.AddLink (new ScrollBarButtonNavigation (provider, 
+			chain.AddLast (new ScrollBarButtonNavigation (chain,
+			                                              provider, 
 			                                              ScrollBarButtonOrientation.LargeBack));
-			chain.AddLink (new ScrollBarThumbNavigation (provider));
-			chain.AddLink (new ScrollBarButtonNavigation (provider, 
+			chain.AddLast (new ScrollBarThumbNavigation (chain,
+			                                             provider));
+			chain.AddLast (new ScrollBarButtonNavigation (chain,
+			                                              provider, 
 			                                              ScrollBarButtonOrientation.LargeForward));
-			chain.AddLink (new ScrollBarButtonNavigation (provider, 
+			chain.AddLast (new ScrollBarButtonNavigation (chain,
+			                                              provider, 
 			                                              ScrollBarButtonOrientation.SmallForward));
 		}
 		
@@ -66,11 +71,9 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 		{
 			if (direction == NavigateDirection.FirstChild) {
-				INavigation first = chain.GetFirstLink ();
-				return first != null ? (IRawElementProviderFragment) first.Provider : null;
+				return chain.Count == 0 ? null : (IRawElementProviderFragment) chain.First.Value.Provider;
 			} else if (direction == NavigateDirection.LastChild) {
-				INavigation last = chain.GetLastLink ();
-				return last != null ? (IRawElementProviderFragment) last.Provider : null;
+				return chain.Count == 0 ? null : (IRawElementProviderFragment) chain.Last.Value.Provider;
 			} else
 				return base.Navigate (direction);
 		}
@@ -87,10 +90,12 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		class ScrollBarButtonNavigation : SimpleNavigation
 		{
-			public ScrollBarButtonNavigation (ScrollBarProvider provider,
+			public ScrollBarButtonNavigation (NavigationChain chain,
+			                                  ScrollBarProvider provider,
 			                                  ScrollBarButtonOrientation orientation)
 				: base (provider)
 			{
+				this.chain = chain;
 				this.provider = provider;
 				this.orientation = orientation;
 			}
@@ -112,13 +117,14 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				if (direction == NavigateDirection.Parent)
 					return provider;
 				else if (direction == NavigateDirection.NextSibling)
-					return GetNextSiblingProvider ();
+					return GetNextSiblingProvider (chain);
 				else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider ();
+					return GetPreviousSiblingProvider (chain);
 				else
 					return null; 
 			}
 			
+			private NavigationChain chain;
 			private ScrollBarButtonProvider button_provider; 
 			private ScrollBarButtonOrientation orientation;
 			private ScrollBarProvider provider;
@@ -130,9 +136,11 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 		class ScrollBarThumbNavigation : SimpleNavigation
 		{
-			public ScrollBarThumbNavigation (ScrollBarProvider provider)
+			public ScrollBarThumbNavigation (NavigationChain chain,
+			                                 ScrollBarProvider provider)
 				: base (provider)
 			{
+				this.chain = chain;
 				this.provider = provider;
 			}
 
@@ -152,13 +160,14 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				if (direction == NavigateDirection.Parent)
 					return provider;
 				else if (direction == NavigateDirection.NextSibling)
-					return GetNextSiblingProvider ();
+					return GetNextSiblingProvider (chain);
 				else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider ();
+					return GetPreviousSiblingProvider (chain);
 				else
 					return null; 
 			}
 			
+			private NavigationChain chain;
 			private ScrollBarProvider provider;
 			private ThumbProvider thumb_provider;
 		}

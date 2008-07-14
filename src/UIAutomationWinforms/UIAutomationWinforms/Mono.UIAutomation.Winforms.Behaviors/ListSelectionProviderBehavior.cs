@@ -88,7 +88,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 #region ISelectionProvider Members
 
 		public bool CanSelectMultiple {
-			get { return list_provider.SupportsMulipleSelection; }
+			get { return list_provider.SupportsMultipleSelection; }
 		}
 
 		public bool IsSelectionRequired {
