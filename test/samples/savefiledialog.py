@@ -10,7 +10,8 @@
 
 # The docstring below is used in the generated log file
 """
-Test accessibility of "SaveFileDialog" control
+This sample will show "FileDialog" and "SaveFileDialog" control in the form.
+It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
 """
 
 # imports
@@ -35,7 +36,7 @@ class SaveFileDialogSample(Form):
 
         # setup label
         self.label = Label()
-        self.label.Text = "Click the button below, type a file name, press OK, then you could save these words"
+        self.label.Text = "Click the button below, type a file name, press OK, then you could save these words\n"
         self.label.Width = 200 
         self.label.Height = 100 
         self.label.Dock = DockStyle.Top
@@ -66,6 +67,7 @@ class SaveFileDialogSample(Form):
                 s_buf.Write(self.label.Text)
                 s_buf.Flush()
                 s_buf.Close()
+                self.label.Text = "The path you selected is: " + filepath + '\n'
         except IOError, event:
             print 'An error occurred:', event
 

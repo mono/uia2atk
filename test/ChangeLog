@@ -1,3 +1,11 @@
+2008-07-14  Ray Wang <rawang@gmail.com>
+
+	* samples/propertygrid.py: show more room at the top
+	* samples/savefiledialog.py: return the path that the user selected
+	* samples/tabpage.py: reponse when focus leave
+	* samples/statusbar_statusbarpanel.py: cut off form size; when click
+	button, the statusbar show how much times you have clicked.
+
 2008-07-11  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/gtktooltip.py: add a tooltip sample for testing

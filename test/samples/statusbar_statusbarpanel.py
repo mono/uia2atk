@@ -8,6 +8,12 @@
 #              StatusBarPanel
 ##############################################################################
 
+# The docstring below is used in the generated log file
+"""
+This sample will show "StatusBar" and "StatusBarPanel" control in the form.
+It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
+"""
+
 import clr
 import System
 
@@ -21,58 +27,51 @@ from System import *
 
 
 class StatusBarStatusBarPanelApp(Form):
+    """StatusBar and StatusBarPanel controls class"""
 
     def __init__(self):
-        self.Text = "Simple StatusBar&StatusBarPanel Example"
-        self.Width = 400
-        self.Height = 400
-        self.FormBorderStyle = FormBorderStyle.Fixed3D
+        """StatusBarStatusBarPanelApp class init function."""
 
-        self.mainLabel1 = Label()
-        self.mainLabel1.Text = "Examples for: StatusBar and StatusBarPanel."
-        self.mainLabel1.Location = Point(10,10)
-        self.mainLabel1.AutoSize = True
-        self.Controls.Add(self.mainLabel1)
+        # a counter
+        self.count = 0
 
-        self.button1 = Button()
-        self.button1.Text = "ToolTip button"
-        self.button1.Location = Point(10,80)
-        self.button1.AutoSize = True
-        self.Controls.Add(self.button1)
+        # setup form
+        self.Text = "StatusBar & StatusBarPanel Example"
+        self.Height = 100
+
+        # setup button
+        self.button = Button()
+        self.button.Text = "Click me"
+        self.button.AutoSize = True
+        self.button.Click += self.on_click
         
-        self.checkbox1 = CheckBox()
-        self.checkbox1.Text = "Grape"
-        self.checkbox1.Location = Point(10,140)
-        self.checkbox1.AutoSize = True
-        self.Controls.Add(self.checkbox1)
+        # set StatusBar and StatusBarPanel. in statusbar add statusbarpanel1 
+        # displays status text for an application, statusbarpanel2 displays 
+        # the current date.
+        self.statusbar = StatusBar()
+        self.statusbar.ShowPanels = True
 
-##set ToolTip and link to button1 and checkbox1
-        self.tooltip1 = ToolTip()
-        self.tooltip1.AutoPopDelay = 5000
-        self.tooltip1.InitialDelay = 300
-        self.tooltip1.ReshowDelay = 100
-        self.tooltip1.ShowAlways = True
-        self.tooltip1.SetToolTip(self.button1, "show button's tooltip")
-        self.tooltip1.SetToolTip(self.checkbox1,"my favorite fruit")
-
-##set StatusBar and StatusBarPanel. in statusbar1 add statusbarpanel1 displays status text for an application, statusbarpanel2 displays the current date and uses the ToolTipText property to display the current time. and add the panels to the statusbar1.
-        self.statusbar1 = StatusBar()
         self.statusbarpanel1 = StatusBarPanel()
-        self.statusbarpanel2 = StatusBarPanel()
         self.statusbarpanel1.BorderStyle = StatusBarPanelBorderStyle.Sunken
-        #self.statusbarpanel1.Text = "Ready..."
-        self.statusbarpanel1.Text = "Started: " + System.DateTime.Now.ToShortTimeString()
         self.statusbarpanel1.AutoSize = StatusBarPanelAutoSize.Spring
+        self.statusbarpanel1.Text = "Started: " + \
+                                    System.DateTime.Now.ToShortTimeString()
+
+        self.statusbarpanel2 = StatusBarPanel()
         self.statusbarpanel2.BorderStyle = StatusBarPanelBorderStyle.Raised
-
-        self.statusbarpanel2.Text = System.DateTime.Today.ToLongDateString()
         self.statusbarpanel2.AutoSize = StatusBarPanelAutoSize.Contents
-        self.statusbar1.ShowPanels = True
-        self.statusbar1.Panels.Add(self.statusbarpanel1)
-        self.statusbar1.Panels.Add(self.statusbarpanel2)
-        self.Controls.Add(self.statusbar1)
+        self.statusbarpanel2.Text = System.DateTime.Today.ToLongDateString()
 
+        # add controls
+        self.statusbar.Panels.Add(self.statusbarpanel1)
+        self.statusbar.Panels.Add(self.statusbarpanel2)
+        self.Controls.Add(self.statusbar)
+        self.Controls.Add(self.button)
 
+    def on_click(self, sender, event):
+        self.count += 1
+        self.statusbarpanel1.Text = "You have click %d times" % self.count
+
+# run application
 form = StatusBarStatusBarPanelApp()
 Application.Run(form)
-

@@ -9,7 +9,8 @@
 
 # The docstring below is used in the generated log file
 """
-Test accessibility of "PropertyGrid" control
+This sample will show "PropertyGrid" control in the form.
+It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
 """
 
 # imports
@@ -27,10 +28,12 @@ class PropertyGridSample(Form):
 
         # setup title
         self.Text = "PropertyGrid control"
-        self.Height = 460
+        self.Height = 500
 
         # setup labels
         self.label = Label()
+        #self.label.AutoSize = True
+        self.label.Height = 50
         self.label.Dock = DockStyle.Top
         self.label.Text = "The Property Grid of Label control"
 
