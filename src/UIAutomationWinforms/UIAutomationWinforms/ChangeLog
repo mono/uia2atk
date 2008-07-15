@@ -1,3 +1,13 @@
+2008-07-15  Neville Gao <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBarGridProviderBehavior.cs:
+	Uncommenting-out some codes.
+	* Mono.UIAutomation.Winforms.Events/GridPatternColumnCountPropertyEvent.cs:
+	File added.
+	* Mono.UIAutomation.Winforms.Events/GridPatternRowCountPropertyEvent.cs:
+	File added.
+	* Mono.UIAutomation.Winforms.mdp: Updated. Added files.
+
 2008-07-14  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs: Subclassing

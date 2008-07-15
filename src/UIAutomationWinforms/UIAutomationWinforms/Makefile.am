@@ -67,6 +67,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ComboBoxButtonInvokePatternInvokeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBoxExpandCollapseStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBoxItemElementSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/GridPatternColumnCountPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/GridPatternRowCountPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/LinkLabelInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \

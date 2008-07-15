@@ -32,7 +32,6 @@ using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
-
 	internal class StatusBarGridProviderBehavior 
 		: ProviderBehavior, IGridProvider
 	{
@@ -42,7 +41,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		public StatusBarGridProviderBehavior (StatusBarProvider provider)
 			: base (provider)
 		{
-			status_bar_provider = provider;
+			statusBarProvider = provider;
 		}
 		
 #endregion
@@ -55,16 +54,18 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public override void Connect (Control control)
 		{
-			//Provider.SetEvent (ProviderEventType.RowCount,
-			//		new GridPatternRowCountPropertyEvent (provider));
-			//Provider.SetEvent (ProviderEventType.ColumnCount,
-			//		new GridPatternColumnCountPropertyEvent (provider));
+			Provider.SetEvent (ProviderEventType.GridPatternRowCountProperty,
+					new GridPatternRowCountPropertyEvent (Provider));
+			Provider.SetEvent (ProviderEventType.GridPatternColumnCountProperty,
+					new GridPatternColumnCountPropertyEvent (Provider));
 		}
 		
 		public override void Disconnect (Control control)
 		{
-			//Provider.SetEvent (ProviderEventType.RowCount, null);
-			//Provider.SetEvent (ProviderEventType.ColumnCount, null);
+			Provider.SetEvent (ProviderEventType.GridPatternRowCountProperty,
+			                null);
+			Provider.SetEvent (ProviderEventType.GridPatternColumnCountProperty,
+			                null);
 		}
 
         	public override object GetPropertyValue (int propertyId)
@@ -86,30 +87,30 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 #region IGridProvider Members
 
         	public int RowCount {
-			// TODO: Maybe shouldn't be always 1.
+			// TODO: Return value.
             		get { return 1; }
         	}
 
         	public int ColumnCount {
-			// TODO: Maybe shouldn't be always 1.
+			// TODO: Return value.
 			get { return 1; }
         	}
-
-        	public IRawElementProviderSimple GetItem (int row, int column)
-        	{
-			if (column > RowCount || row > ColumnCount)
-				throw new ArgumentOutOfRangeException ();
-			if (row < 0 || column < 0)
-				throw new ArgumentOutOfRangeException ();
-			// TODO: Maybe should return GridItem object.
-			return null;
-        	}
+		
+		public IRawElementProviderSimple GetItem (int row, int column)
+                {
+			// TODO: Return value.
+                        if (column > RowCount || row > ColumnCount)
+                                throw new ArgumentOutOfRangeException ();
+                        if (row < 0 || column < 0)
+                                throw new ArgumentOutOfRangeException ();
+                        return null;
+                }
 
 #endregion
 
 #region Private Fields
 
-		private StatusBarProvider status_bar_provider;
+		private StatusBarProvider statusBarProvider;
 		
 #endregion
 	}
