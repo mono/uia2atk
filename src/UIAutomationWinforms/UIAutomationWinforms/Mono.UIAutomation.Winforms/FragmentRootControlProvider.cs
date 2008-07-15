@@ -83,7 +83,7 @@ namespace Mono.UIAutomation.Winforms
 				
 				Console.WriteLine ("InitializeChildControlStructure. Type of: "+childProvider.GetType ());
 				
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenBulkAdded,
 				                                   (IRawElementProviderFragment) childProvider);
 
 				FragmentRootControlProvider rootProvider =

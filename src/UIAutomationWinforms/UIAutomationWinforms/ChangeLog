@@ -1,3 +1,10 @@
+2008-07-15  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Use
+	  ChildrenBulkAdded, as ChildAdded is not yet supported in the
+	  bridge.  This may have unintended consequences, but at least
+	  Accerciser should work again.
+
 2008-07-15  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs: Removed
