@@ -51,9 +51,13 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 		public virtual IRawElementProviderFragment GetNextSiblingProvider (NavigationChain chain)
 		{
-			if (chain.Contains (this) == true)
-				return (IRawElementProviderFragment) chain.Find (this).Next.Value.Provider;
-			else
+			if (chain.Contains (this) == true) {
+				LinkedListNode<INavigation> nextNode = chain.Find (this).Next;
+				if (nextNode == null)
+					return null;
+				else
+					return (IRawElementProviderFragment) nextNode.Value.Provider;
+			} else
 				return null;
 		}
 		

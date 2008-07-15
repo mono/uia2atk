@@ -32,6 +32,17 @@ using Mono.UIAutomation.Winforms.Behaviors;
 
 namespace Mono.UIAutomation.Winforms
 {
+#region Delegates
+	
+	public delegate void StructureChangeEventHandler (object sender, 
+	                                                  ListItemProvider item, 
+	                                                  int index);
+	
+	public delegate void ScrollbarNavigableEventHandler (object container,
+	                                                     ScrollBar scrollbar,
+	                                                     bool navigable);
+
+#endregion
 	
 	public abstract class ListProvider : FragmentRootControlProvider
 	{
@@ -60,6 +71,14 @@ namespace Mono.UIAutomation.Winforms
 		public abstract int SelectedItemsCount { get; }
 		
 		public abstract bool SupportsMultipleSelection { get; }
+		
+#endregion
+		
+#region Public Events
+
+		public event StructureChangeEventHandler ChildAdded;
+		
+		public event StructureChangeEventHandler ChildRemoved;
 		
 #endregion
 		
@@ -112,7 +131,7 @@ namespace Mono.UIAutomation.Winforms
 
 #endregion
 		
-#region IProviderBehavior Overrides
+#region SimpleControlProvider: Specializations
 		
 		public override object GetPropertyValue (int propertyId)
 		{
@@ -124,13 +143,48 @@ namespace Mono.UIAutomation.Winforms
 		
 #endregion
 			
-#region FragmentControlProvider Overrides
+#region FragmentControlProvider: Specializations
 
 		public override IRawElementProviderFragment GetFocus ()
 		{
 			return GetItemProvider (list_control.SelectedIndex);
 		}
 			
+#endregion
+		
+#region FragmentRootControlProvider: Specializations
+		
+		public override void InitializeChildControlStructure ()
+		{
+			//Items
+			Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
+			                        GetInstanceOfObjectCollection (), 
+			                        "ChildAdded",
+			                        this, 
+			                        "OnChildAdded");
+			Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
+			                        GetInstanceOfObjectCollection (), 
+			                        "ChildRemoved", 
+			                        this, 
+			                        "OnChildRemoved");
+		}
+		
+		public override void FinalizeChildControlStructure ()
+		{
+			Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
+			                           GetInstanceOfObjectCollection (), 
+			                           "ChildAdded",
+			                           this, 
+			                           "OnChildAdded");
+			Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
+			                           GetInstanceOfObjectCollection (), 
+			                           "ChildRemoved", 
+			                           this, 
+			                           "OnChildRemoved");
+			
+			ClearItemsList ();
+		}
+		
 #endregion
 
 #region Protected Methods
@@ -145,6 +199,50 @@ namespace Mono.UIAutomation.Winforms
 			while (items.Count > 0) {
 				RemoveItemAt (items.Count - 1);
 			}
+		}
+		
+		protected void GenerateChildAddedEvent (int index)
+		{
+			ListItemProvider item = GetItemProvider (index);
+			
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+			                                   item);
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+			                                   this);
+			
+			if (ChildAdded != null)
+				ChildAdded (this, item, index);
+		}
+		
+		protected void GenerateChildRemovedEvent (int index)
+		{
+			ListItemProvider item = RemoveItemAt (index);
+				
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
+			                                   item);
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+			                                   this);
+			
+			if (ChildRemoved != null)
+				ChildRemoved (this, item, index);
+		}
+
+		protected abstract Type GetTypeOfObjectCollection ();
+		
+		protected abstract object GetInstanceOfObjectCollection ();		
+
+#endregion
+		
+#region Private Methods: StructureChangedEvent
+		
+		private void OnChildAdded (object sender, int index)
+		{
+			GenerateChildAddedEvent (index);
+		}
+		
+		private void OnChildRemoved (object sender, int index)
+		{
+			GenerateChildRemovedEvent (index);
 		}
 		
 #endregion

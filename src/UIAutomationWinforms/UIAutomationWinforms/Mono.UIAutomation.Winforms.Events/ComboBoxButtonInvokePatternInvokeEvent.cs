@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 #region Constructors
 		
-		public ComboBoxButtonInvokePatternInvokeEvent (ComboBoxButtonProvider provider) 
+		public ComboBoxButtonInvokePatternInvokeEvent (ComboBoxProvider provider) 
 			: base (provider)
 		{
 		}

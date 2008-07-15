@@ -37,18 +37,6 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 
-#region Delegates
-	
-	public delegate void StructureChangeEventHandler (object sender, 
-	                                                  ListItemProvider item, 
-	                                                  int index);
-	
-	public delegate void ScrollbarNavigableEventHandler (object container,
-	                                                     ScrollBar scrollbar,
-	                                                     bool navigable);
-
-#endregion
-
 	//TODO: Should support: MultipleView Pattern and Grid Pattern?
 	public class ListBoxProvider : ListProvider
 	{
@@ -88,10 +76,6 @@ namespace Mono.UIAutomation.Winforms
 #endregion
 		
 #region Public Events
-		
-		public event StructureChangeEventHandler ChildAdded;
-		
-		public event StructureChangeEventHandler ChildRemoved;
 		
 		public event ScrollbarNavigableEventHandler HScrollbarNavigationUpdated;
 		
@@ -154,20 +138,10 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void InitializeChildControlStructure ()
 		{
-			//Items
-			Helper.AddPrivateEvent (typeof (ListBox.ObjectCollection), 
-			                        listbox_control.Items, 
-			                        "ChildAdded",
-			                        this, 
-			                        "OnChildAdded");
-			Helper.AddPrivateEvent (typeof (ListBox.ObjectCollection), 
-			                        listbox_control.Items, 
-			                        "ChildRemoved", 
-			                        this, 
-			                        "OnChildRemoved");
+			base.InitializeChildControlStructure ();
 
 			for (int index = 0; index < listbox_control.Items.Count; index++)
-				OnChildAdded (listbox_control, index);
+				GenerateChildAddedEvent (index);
 			
 			//Scrollbars
 			if (HasHorizontalScrollbar)
@@ -185,20 +159,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void FinalizeChildControlStructure ()
 		{
-			//Items
-			Helper.RemovePrivateEvent (typeof (ListBox.ObjectCollection), 
-			                           listbox_control.Items, 
-			                           "ChildAdded",
-			                           this, 
-			                           "OnChildAdded");
-			Helper.RemovePrivateEvent (typeof (ListBox.ObjectCollection), 
-			                           listbox_control.Items, 
-			                           "ChildRemoved", 
-			                           this, 
-			                           "OnChildRemoved");
+			base.FinalizeChildControlStructure ();
 
-			ClearItemsList ();
-			
 			//ScrollBars
 			HScrollbarNavigationUpdated -= new ScrollbarNavigableEventHandler (OnScrollbarNavigationUpdated);
 			VScrollbarNavigationUpdated -= new ScrollbarNavigableEventHandler (OnScrollbarNavigationUpdated);
@@ -249,49 +211,32 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void SelectItem (ListItemProvider item)
 		{
-			((ListBox) ListControl).SetSelected (item.Index, true);
+			listbox_control.SetSelected (item.Index, true);
 		}
 
 		public override void UnselectItem (ListItemProvider item)
 		{
-			((ListBox) ListControl).SetSelected (item.Index, false);
+			listbox_control.SetSelected (item.Index, false);
 		}
 		
 		public override bool IsItemSelected (ListItemProvider item)
 		{
-			return ((ListBox) ListControl).SelectedIndices.Contains (item.Index);
+			return listbox_control.SelectedIndices.Contains (item.Index);
+		}
+		
+		protected override Type GetTypeOfObjectCollection ()
+		{
+			return typeof (ListBox.ObjectCollection);
+		}
+		
+		protected override object GetInstanceOfObjectCollection ()
+		{
+			return listbox_control.Items;
 		}
 		
 #endregion
 		
 #region Private Methods: StructureChangedEvent
-
-		private void OnChildAdded (object sender, int index)
-		{
-			ListItemProvider item = GetItemProvider (index);
-			
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-			                                   item);
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-			                                   this);
-			
-			if (ChildAdded != null)
-				ChildAdded (this, item, index);
-		}
-		
-		private void OnChildRemoved (object sender, int index)
-		{
-			ListItemProvider item = RemoveItemAt (index);
-				
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-			                                   item);
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-			                                   this);
-			
-			if (ChildRemoved != null)
-				ChildRemoved (this, item, index);
-		}
-		
 		
 		private void OnScrollbarNavigationUpdated (object container,
 		                                           ScrollBar scrollbar,
@@ -508,10 +453,8 @@ namespace Mono.UIAutomation.Winforms
 				: base (scrollbar)
 			{
 				//TODO: i18n?
-				if (scrollbar as HScrollBar != null)
-					name = "Horizontal Scroll Bar";
-				else
-					name = "Vertical Scroll Bar";
+				name = scrollbar is HScrollBar ? "Horizontal Scroll Bar"
+					: "Vertical Scroll Bar";
 			}
 			
 			public override object GetPropertyValue (int propertyId)

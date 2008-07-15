@@ -46,6 +46,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			: base (provider)
 		{
 			this.provider = provider;
+
 			chain = new NavigationChain ();
 			
 			itemroot_navigation = new ListBoxFirstItemNavigation (chain, provider);
@@ -82,8 +83,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		private void ConnectNavigationEvents (ListBox listbox) 
 		{
-			//We are keeping a reference to internal ListBox fields to use them
-			//later to remove/add the navigation class
+			//Keeping ListBox's scrollbar references to later remove/add the navigation class
 			hscrollbar = (ScrollBar) Helper.GetPrivateField (typeof (ListBox), 
 			                                                 listbox,
 			                                                 hscrollbar_field_name);
@@ -200,18 +200,12 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			}
 			
 			public override IRawElementProviderSimple Provider {
-				get { 
-					if (scrollbar_provider == null)
-						InitializeScrollBarProvider ();
-					
-					return scrollbar_provider; 
-				}
+				get { return GetScrollBarProvider (); }
 			}
 			
 			public override void Terminate ()
 			{
-				//We don't have anything to Terminate because we are using
-				//internal ListBox ScrollBar provider instances.
+				//Nothing to Terminate (we are using ListBoxProvider children providers).
 			}
 
 			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
@@ -226,18 +220,23 @@ namespace Mono.UIAutomation.Winforms.Navigation
 					return scrollbar_navigation.Navigate (direction); 
 			}
 			
-			private void InitializeScrollBarProvider ()
+			private ScrollBarProvider GetScrollBarProvider ()
 			{
-				scrollbar_provider = provider.GetChildScrollBarProvider (GetOrientationFromString ());
-				//We need this navigation to use it later.
-				scrollbar_navigation = scrollbar_provider.Navigation;
-				if (scrollbar_provider != null)
-					scrollbar_provider.Navigation = this;
+				if (scrollbar_provider == null) {
+					scrollbar_provider = provider.GetChildScrollBarProvider (GetOrientationFromString ());
+					//We need this navigation to use it later.
+					scrollbar_navigation = scrollbar_provider.Navigation;
+					if (scrollbar_provider != null)
+						scrollbar_provider.Navigation = this;
+				}
+				
+				return scrollbar_provider; 
 			}
 			
 			private Orientation GetOrientationFromString ()
 			{
-				return field_name == "hscrollbar" ? Orientation.Horizontal : Orientation.Vertical;
+				return field_name == "hscrollbar" ? Orientation.Horizontal 
+					: Orientation.Vertical;
 			}
 
 			private NavigationChain chain;

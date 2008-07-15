@@ -142,25 +142,28 @@ namespace Mono.UIAutomation.Winforms
 			Console.WriteLine ("ControlRemoved: " + args.Control.GetType ().ToString ());
 			
 			bool radioButtonFound = false;
-			IRawElementProviderSimple removedProvider = controlProviders [args.Control];
-			foreach (IRawElementProviderSimple childProvider in controlProviders.Values) {
-				if (childProvider != removedProvider &&
-				    (int) childProvider.GetPatternProvider (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
-					radioButtonFound = true;
-					break;
+			IRawElementProviderSimple removedProvider;
+			
+			if (controlProviders.TryGetValue (args.Control, out removedProvider) == true) {
+				foreach (IRawElementProviderSimple childProvider in controlProviders.Values) {
+					if (childProvider != removedProvider &&
+					    (int) childProvider.GetPatternProvider (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
+						radioButtonFound = true;
+						break;
+					}
 				}
+				if (!radioButtonFound)
+					SetBehavior (SelectionPatternIdentifiers.Pattern,
+					             null);
+				
+				// TODO: StructureChangedEvent
+				
+				// TODO: Some sort of disposal
+				
+				controlProviders.Remove (args.Control);
+				
+				ProviderFactory.ReleaseProvider (args.Control);
 			}
-			if (!radioButtonFound)
-				SetBehavior (SelectionPatternIdentifiers.Pattern,
-				             null);
-			
-			// TODO: StructureChangedEvent
-			
-			// TODO: Some sort of disposal
-			
-			controlProviders.Remove (args.Control);
-			
-			ProviderFactory.ReleaseProvider (args.Control);
 		}
 
 #endregion

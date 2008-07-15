@@ -234,23 +234,7 @@ namespace Mono.UIAutomation.Winforms
 					Rect rectangle = (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 					return new Point (rectangle.X, rectangle.Y);
 				}
-			} //Patterns properties
-			//AutomationElementIdentifiers.IsDockPatternAvailableProperty
-			//AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty
-			//AutomationElementIdentifiers.IsGridItemPatternAvailableProperty				
-			//AutomationElementIdentifiers.IsInvokePatternAvailableProperty
-			//AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty
-			//AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty
-			//AutomationElementIdentifiers.IsScrollItemPatternAvailableProperty
-			//AutomationElementIdentifiers.IsScrollPatternAvailableProperty
-			//AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty
-			//AutomationElementIdentifiers.IsSelectionPatternAvailableProperty
-			//AutomationElementIdentifiers.IsTablePatternAvailableProperty
-			//AutomationElementIdentifiers.IsTextPatternAvailableProperty
-			//AutomationElementIdentifiers.IsTogglePatternAvailableProperty
-			//AutomationElementIdentifiers.IsTransformPatternAvailableProperty
-			//AutomationElementIdentifiers.IsValuePatternAvailableProperty
-			//AutomationElementIdentifiers.IsWindowPatternAvailableProperty
+			}
 			return null;
 		}
 

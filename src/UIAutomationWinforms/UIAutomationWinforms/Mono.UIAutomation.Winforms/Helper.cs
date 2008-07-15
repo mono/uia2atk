@@ -80,9 +80,12 @@ namespace Mono.UIAutomation.Winforms
 			
 			if (AutomationInteropProvider.ClientsAreListening) {
 				int []runtimeId = null;
-				if (type == StructureChangeType.ChildRemoved)
-					runtimeId = provider.FragmentRoot.GetRuntimeId ();
-				else
+				if (type == StructureChangeType.ChildRemoved) {
+					if (provider.FragmentRoot == null) //FIXME: How to fix it?
+						runtimeId = provider.GetRuntimeId (); 
+					else
+						runtimeId = provider.FragmentRoot.GetRuntimeId ();
+				} else
 					runtimeId = provider.GetRuntimeId ();
 				
 				StructureChangedEventArgs invalidatedArgs 

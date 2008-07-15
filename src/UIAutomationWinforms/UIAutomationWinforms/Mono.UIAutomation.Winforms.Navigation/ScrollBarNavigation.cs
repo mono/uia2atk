@@ -70,11 +70,11 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 		{
-			if (direction == NavigateDirection.FirstChild) {
-				return chain.Count == 0 ? null : (IRawElementProviderFragment) chain.First.Value.Provider;
-			} else if (direction == NavigateDirection.LastChild) {
-				return chain.Count == 0 ? null : (IRawElementProviderFragment) chain.Last.Value.Provider;
-			} else
+			if (direction == NavigateDirection.FirstChild)
+				return (IRawElementProviderFragment) chain.First.Value.Provider;
+			else if (direction == NavigateDirection.LastChild)
+				return (IRawElementProviderFragment) chain.Last.Value.Provider;
+			else
 				return base.Navigate (direction);
 		}
 

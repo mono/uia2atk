@@ -43,12 +43,13 @@ namespace Mono.UIAutomation.Winforms
 		
 		public ComboBoxProvider (ComboBox combobox) : base (combobox)
 		{
-			combobox.DropDownStyleChanged += delegate (object obj, 
-			                                           EventArgs args) {
-				UpdateBehaviors (combobox);
-			};
+			combobox_control = combobox;
 			
-			UpdateBehaviors (combobox);
+			combobox_control.DropDownStyleChanged += new EventHandler (OnDropDownStyleChanged);
+			
+			listbox_provider = new ComboBoxProvider.ComboBoxListBoxProvider (combobox_control,
+			                                                                 this);
+			listbox_provider.InitializeChildControlStructure ();
 		}
 		
 #endregion
@@ -66,25 +67,53 @@ namespace Mono.UIAutomation.Winforms
 		
 #endregion
 		
-#region IProviderBehavior Interface
+#region Public Methods
+		
+		public override void Terminate ()
+		{
+			base.Terminate ();
+			
+			combobox_control.DropDownStyleChanged -= new EventHandler (OnDropDownStyleChanged);
+		}
+		
+		public FragmentControlProvider GetChildTextBoxProvider ()
+		{
+			return textbox_provider;
+		}
+		
+		public FragmentRootControlProvider GetChildListBoxProvider ()
+		{
+			return listbox_provider;
+		}
+		
+		public FragmentControlProvider GetChildButtonProvider ()
+		{
+			return button_provider;
+		}
+		
+#endregion		
+		
+#region SimpleControlProvider: Specializations
 
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.ComboBox.Id;
-			//FIXME: According the documentation this is valid, however you can
-			//focus only when control.CanFocus, this doesn't make any sense.
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "combo box";
+			else if (propertyId == AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty.Id)
+				return IsBehaviorEnabled (ExpandCollapsePatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsValuePatternAvailableProperty.Id)
+				return IsBehaviorEnabled (ValuePatternIdentifiers.Pattern);
 			else
 				return base.GetPropertyValue (propertyId);
 		}
 		
 #endregion		
 
-#region FragmentRootControlProvider Overrides
+#region FragmentRootControlProvider: Specializations
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
@@ -93,7 +122,7 @@ namespace Mono.UIAutomation.Winforms
 
 #endregion
 		
-#region ListProvider Overrides
+#region ListProvider: Specializations
 		
 		public override bool SupportsMultipleSelection { 
 			get { return false; } 
@@ -104,12 +133,12 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		public override int ItemsCount {
-			get { return ((ComboBox) ListControl).Items.Count; }
+			get { return combobox_control.Items.Count; }
 		}
 		
 		public override ListItemProvider[] GetSelectedItemsProviders ()
 		{
-			if (((ComboBox) ListControl).SelectedIndex == -1)
+			if (combobox_control.SelectedIndex == -1)
 				return null;
 			else
 				return new ListItemProvider [] { (ListItemProvider) GetFocus () };
@@ -118,7 +147,7 @@ namespace Mono.UIAutomation.Winforms
 		public override string GetItemName (ListItemProvider item)
 		{
 			if (ContainsItem (item) == true)
-				return ((ComboBox) ListControl).Items [item.Index].ToString ();
+				return (combobox_control).Items [item.Index].ToString ();
 			else
 				return string.Empty;
 		}
@@ -135,33 +164,285 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override bool IsItemSelected (ListItemProvider item)
 		{
-			return ContainsItem (item) == false ? false : item.Index == ListControl.SelectedIndex;
+			return ContainsItem (item) == false 
+				? false : item.Index == ListControl.SelectedIndex;
 		}
 		
-#endregion
+		protected override Type GetTypeOfObjectCollection ()
+		{
+			//Doesn't have any list-like children: only Edit, List and Button.
+			return null;
+		}
 		
+		protected override object GetInstanceOfObjectCollection ()
+		{
+			//Doesn't have any list-like children: only Edit, List and Button.
+			return null;
+		}
+		
+		public override void FinalizeChildControlStructure ()
+		{
+			//base.FinalizeChildControlStructure ();
+			
+			if (button_provider != null) {
+				button_provider.Terminate ();
+				button_provider = null;
+			}
+			if (textbox_provider != null) {
+				textbox_provider.Terminate ();
+				textbox_provider = null;
+			}
+		}
+
+		public override void InitializeChildControlStructure ()
+		{
+			//base.InitializeChildControlStructure ();
+			
+			UpdateBehaviors ();
+		}
+
+#endregion
+
 #region Private Methods
 		
-		private void UpdateBehaviors (ComboBox combobox) {
-			if (combobox.DropDownStyle == ComboBoxStyle.Simple) {
+		private void OnDropDownStyleChanged (object sender, EventArgs args)
+		{
+			UpdateBehaviors ();
+		}
+		
+		private void UpdateBehaviors () 
+		{
+			Console.WriteLine ("combobox_control.DropDownStyle: {0}", combobox_control.DropDownStyle);
+			if (combobox_control.DropDownStyle == ComboBoxStyle.Simple) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern, 
 				             null);
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new ComboBoxValueProviderBehavior (this));
-			} else if (combobox.DropDownStyle == ComboBoxStyle.DropDown) {
+				
+				TerminateButtonProvider ();
+				InitializeEditProvider ();
+			} else if (combobox_control.DropDownStyle == ComboBoxStyle.DropDown) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
 				             new ComboBoxExpandCollapseProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new ComboBoxValueProviderBehavior (this));
-			} else if (combobox.DropDownStyle == ComboBoxStyle.DropDownList) {
+				
+				InitializeButtonProvider ();
+				InitializeEditProvider ();
+			} else if (combobox_control.DropDownStyle == ComboBoxStyle.DropDownList) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
 				             new ComboBoxExpandCollapseProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern, 
 				             null);
+				
+				InitializeButtonProvider ();
+				TerminateEditProvider ();
 			} 
+		}
+		
+		private void InitializeEditProvider ()
+		{
+			if (textbox_provider == null) {
+				TextBox textbox = (TextBox) Helper.GetPrivateField (combobox_control.GetType (), 
+				                                                    combobox_control, 
+				                                                    "textbox_ctrl");
+				textbox_provider = new TextBoxProvider (textbox);
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+				                                   textbox_provider);
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+				                                   this);
+			}
+		}
+		
+		private void TerminateEditProvider ()
+		{
+			if (textbox_provider != null) {
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
+				                                   textbox_provider);
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+				                                   this);
+				textbox_provider.Terminate ();
+				textbox_provider = null;
+			}
+		}
+		
+		private void InitializeButtonProvider ()
+		{
+			if (button_provider == null) {
+				button_provider = new ComboBoxProvider.ComboBoxButtonProvider (combobox_control,
+				                                                               this);
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+				                                   button_provider);
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+				                                   this);
+			}
+		}
+		
+		private void TerminateButtonProvider ()
+		{
+			//TODO: UISpy doesn't report this structure change, according to MSDN we should do so
+			if (button_provider != null) {
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
+				                                   button_provider);
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+				                                   this);
+				
+				button_provider.Terminate ();
+				button_provider = null;
+			}
+		}
+		
+#endregion
+		
+#region Private Fields
+		
+		private ComboBox combobox_control;
+		private ComboBoxProvider.ComboBoxButtonProvider button_provider;
+		private ComboBoxProvider.ComboBoxListBoxProvider listbox_provider;
+		private TextBoxProvider textbox_provider;
+		//private ComboBoxProvider.ComboBoxEditProvider edit_provider;
+		
+#endregion		
+
+#region Internal Class: Edit provider
+
+		//TODO: Add Edit Provider internal class
+		
+#endregion
+		
+#region Internal Class: ListBox provider
+		
+		internal class ComboBoxListBoxProvider : ListProvider
+		{
+	
+			public ComboBoxListBoxProvider (ComboBox control, 
+			                                ComboBoxProvider provider)
+				: base (control)
+			{
+				combobox_control = control;
+				combobox_provider = provider;
+			}
+	
+			public override object GetPropertyValue (int propertyId)
+			{
+				//TODO: Include: HelpTextProperty, LabeledByProperty, NameProperty
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.List.Id;
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return true;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return "list";
+				else if (propertyId == AutomationElementIdentifiers.IsScrollPatternAvailableProperty.Id)
+					return IsBehaviorEnabled (ScrollPatternIdentifiers.Pattern);
+				else if (propertyId == AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)
+					return false;
+				else
+					return base.GetPropertyValue (propertyId);
+			}
+			
+			public new ListItemProvider GetItemProvider (int index)
+			{
+				return combobox_provider.GetItemProvider (index);
+			}
+			
+			public new int IndexOfItem (ListItemProvider item)
+			{
+				return combobox_provider.IndexOfItem (item);
+			}
+			
+			public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
+			{
+				return combobox_provider.ElementProviderFromPoint (x, y);
+			}
+			
+			public override int SelectedItemsCount { 
+				get { return combobox_provider.SelectedItemsCount; }
+			}
+			
+			public override bool SupportsMultipleSelection { 
+				get { return false; }
+			}
+			
+			public override int ItemsCount {
+				get { return combobox_provider.ItemsCount; }
+			}
+			
+			public override ListItemProvider[] GetSelectedItemsProviders ()
+			{
+				return combobox_provider.GetSelectedItemsProviders ();
+			}
+			
+			public override string GetItemName (ListItemProvider item)
+			{
+				return combobox_provider.GetItemName (item);
+			}
+			
+			public override void SelectItem (ListItemProvider item)
+			{
+				combobox_provider.SelectItem (item);
+			}
+	
+			public override void UnselectItem (ListItemProvider item)
+			{
+				combobox_provider.UnselectItem (item);
+			}
+			
+			public override bool IsItemSelected (ListItemProvider item)
+			{
+				return combobox_provider.IsItemSelected (item);
+			}
+	
+			protected override Type GetTypeOfObjectCollection ()
+			{
+				return typeof (ComboBox.ObjectCollection);
+			}
+			
+			protected override object GetInstanceOfObjectCollection ()
+			{
+				return combobox_control.Items;
+			}
+	
+			public override void InitializeChildControlStructure ()
+			{
+				base.InitializeChildControlStructure ();
+	
+				for (int index = 0; index < combobox_control.Items.Count; index++)
+					GenerateChildAddedEvent (index);
+	
+				//TODO: Initiailze ScrollBars
+			}
+
+			private ComboBox combobox_control;
+			private ComboBoxProvider combobox_provider;
+
 		}
 		
 #endregion
 
+#region Internal Class: Button provider
+
+		internal class ComboBoxButtonProvider : FragmentControlProvider
+		{
+
+			public ComboBoxButtonProvider (Control control,
+			                               ComboBoxProvider provider)
+				: base (control)
+			{
+				SetBehavior (InvokePatternIdentifiers.Pattern, 
+				             new ComboBoxButtonInvokeBehavior (provider));
+			}
+	
+			public override object GetPropertyValue (int propertyId)
+			{
+				//TODO: i18n?
+				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return "Drop Down Button";
+				else
+					return base.GetPropertyValue (propertyId);
+			}
+		}
+		
+#endregion
+		
 	}
 }

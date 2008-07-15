@@ -92,8 +92,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms/AssemblyInfo.cs \
 	Mono.UIAutomation.Winforms/ButtonProvider.cs \
 	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
-	Mono.UIAutomation.Winforms/ComboBoxButtonProvider.cs \
-	Mono.UIAutomation.Winforms/ComboBoxListBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ComboBoxProvider.cs \
 	Mono.UIAutomation.Winforms/FormListener.cs \
 	Mono.UIAutomation.Winforms/FragmentControlProvider.cs \

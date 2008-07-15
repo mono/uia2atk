@@ -46,14 +46,14 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			: base (provider)
 		{
 			this.provider = provider;
+			combobox_control = (ComboBox) provider.Control;
 
-			navigation = new NavigationChain ();
-			listbox_navigation = new ComboBoxListBoxNavigation (navigation,
-			                                                    provider);
+			chain = new NavigationChain ();
+			listbox_navigation = new ComboBoxListBoxNavigation (chain, provider);
+			chain.AddFirst (listbox_navigation);
 
-			((ComboBox) provider.Control).DropDownStyleChanged 
-				+= new EventHandler (OnDropDownStyleChanged);
-			UpdateNavigation ((ComboBox) provider.Control, provider);
+			combobox_control.DropDownStyleChanged += new EventHandler (OnDropDownStyleChanged);
+			UpdateNavigation ();
 		}
 
 #endregion
@@ -62,10 +62,9 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		public override void Terminate ()
 		{
-			((ComboBox) provider.Control).DropDownStyleChanged 
-				-= new EventHandler (OnDropDownStyleChanged);
-			
 			base.Terminate (); 
+			
+			combobox_control.DropDownStyleChanged -= new EventHandler (OnDropDownStyleChanged);
 		}
 		
 #endregion
@@ -74,11 +73,11 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 		{
-			if (direction == NavigateDirection.FirstChild) {				
-				return navigation.Count == 0 ? null : (IRawElementProviderFragment) navigation.First.Value.Provider;
-			} else if (direction == NavigateDirection.LastChild) {
-				return navigation.Count == 0 ? null : (IRawElementProviderFragment) navigation.Last.Value.Provider;
-			} else
+			if (direction == NavigateDirection.FirstChild)
+				return (IRawElementProviderFragment) chain.First.Value.Provider;
+			else if (direction == NavigateDirection.LastChild)
+				return (IRawElementProviderFragment) chain.Last.Value.Provider;
+			else
 				return base.Navigate (direction);
 		}
 
@@ -88,57 +87,107 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 		private void OnDropDownStyleChanged (object sender, EventArgs args)
 		{
-			UpdateNavigation ((ComboBox) sender, provider);
+			UpdateNavigation ();
 		}		
 		
-		//TODO: Should this method generated StructureChanged events?
-		//UISpy reports events, however doesn't report ChildRemoved only
-		//ChildAdded. More tests needed.
-		private void UpdateNavigation (ComboBox combobox, ComboBoxProvider provider)
+		private void UpdateNavigation ()
 		{
-			if (combobox.DropDownStyle == ComboBoxStyle.Simple) {
+			if (combobox_control.DropDownStyle == ComboBoxStyle.Simple) {
 				if (button_navigation != null) {
-					//TODO: UISpy doesn't report this structure, however, according
-					//to MSDN we should do so
-					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-					                                   (IRawElementProviderFragment) button_navigation.Provider);
-					button_navigation.Terminate ();
+					chain.Remove (button_navigation);
 					button_navigation = null;
 				}
-				//if (textbox_navigation == null)
-				//	textbox_navigation = new ComboBoxTextBoxNavigation (provider);
-			} else if (combobox.DropDownStyle == ComboBoxStyle.DropDown) {
-				if (button_navigation == null) {
-					button_navigation = new ComboBoxButtonNavigation (navigation,
-					                                                  provider);
-					//TODO: UISpy doesn't report this structure, however, according
-					//to MSDN we should do so
-					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-					                                   (IRawElementProviderFragment) button_navigation.Provider);
+				if (textbox_navigation == null) {
+					textbox_navigation = new ComboBoxTextBoxNavigation (chain,
+					                                                    provider);
+					chain.AddFirst (textbox_navigation);
 				}
-				//if (textbox_navigation != null) {
-				//	DISPOSE textbox
-				//	textbox_navigation = null;
-				//}
+			} else if (combobox_control.DropDownStyle == ComboBoxStyle.DropDown) {
+				if (button_navigation == null) {
+					button_navigation = new ComboBoxButtonNavigation (chain,
+					                                                  provider);
+					chain.AddLast (button_navigation);
+				}
+				if (textbox_navigation == null) {
+					textbox_navigation = new ComboBoxTextBoxNavigation (chain,
+					                                                    provider);
+					chain.AddFirst (textbox_navigation);
+				}
+			} else if (combobox_control.DropDownStyle == ComboBoxStyle.DropDownList) {
+				if (button_navigation == null) {
+					button_navigation = new ComboBoxButtonNavigation (chain,
+					                                                  provider);
+					chain.AddLast (button_navigation);
+				}
+				if (textbox_navigation != null) {
+					chain.Remove (textbox_navigation);
+					textbox_navigation = null;
+				}
 			}
 
-			navigation.Clear ();
-			//if (textbox_navigation != null)
-			//	navigation.AddLink (textbox_navigation);
-			navigation.AddLast (listbox_navigation);
-			if (button_navigation != null)
-				navigation.AddLast (button_navigation);
 		}
 		
 #endregion
 
 #region Private members
 
-		private NavigationChain navigation;
+		private NavigationChain chain;
+		private ComboBox combobox_control;
 		private ComboBoxProvider provider;
 		private ComboBoxButtonNavigation button_navigation;
 		private ComboBoxListBoxNavigation listbox_navigation;
-		//private ComboBoxTextBoxNavigation textbox_navigation;
+		private ComboBoxTextBoxNavigation textbox_navigation;
+		
+#endregion
+		
+#region TextBox Navigation Class
+		
+		class ComboBoxTextBoxNavigation : SimpleNavigation 
+		{
+			public ComboBoxTextBoxNavigation (NavigationChain chain,
+			                                  ComboBoxProvider provider)
+				: base (provider)
+			{
+				this.chain = chain;
+				this.provider = provider;
+			}
+			
+			public override IRawElementProviderSimple Provider {
+				get { return GetTextBoxProvider (); }
+			}
+			
+			public override void Terminate ()
+			{
+				//Nothing to Terminate (we are using ListBoxProvider children providers).
+			}
+
+			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
+			{
+				if (direction == NavigateDirection.Parent)
+					return provider;
+				else if (direction == NavigateDirection.PreviousSibling)
+					return GetPreviousSiblingProvider (chain);
+				else if (direction == NavigateDirection.NextSibling)
+					return GetNextSiblingProvider (chain);
+				else
+					return null;
+			}
+			
+			private TextBoxProvider GetTextBoxProvider ()
+			{
+				if (textbox_provider == null) {
+					textbox_provider = (TextBoxProvider) provider.GetChildTextBoxProvider ();
+					if (textbox_provider != null)
+						textbox_provider.Navigation = this;
+				}
+
+				return textbox_provider;
+			}
+			
+			private NavigationChain chain;
+			private ComboBoxProvider provider;
+			private TextBoxProvider textbox_provider;
+		}
 		
 #endregion
 		
@@ -155,20 +204,12 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			}
 			
 			public override IRawElementProviderSimple Provider {
-				get { 
-					if (button_provider == null) {
-						button_provider = new ComboBoxButtonProvider ((ComboBox) provider.Control);
-						button_provider.Navigation = this;
-					}
-
-					return button_provider;
-				}
+				get { return GetButtonProvider (); }
 			}
 			
 			public override void Terminate ()
 			{
-				if (button_provider != null)
-					button_provider.Terminate ();
+				//Nothing to Terminate (we are using ListBoxProvider children providers).
 			}
 
 			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
@@ -177,14 +218,26 @@ namespace Mono.UIAutomation.Winforms.Navigation
 					return provider;
 				else if (direction == NavigateDirection.PreviousSibling)
 					return GetPreviousSiblingProvider (chain);
+				else if (direction == NavigateDirection.NextSibling)
+					return GetNextSiblingProvider (chain);
 				else
 					return null;
 			}
 			
+			private ComboBoxProvider.ComboBoxButtonProvider GetButtonProvider ()
+			{
+				if (button_provider == null) {
+					button_provider = (ComboBoxProvider.ComboBoxButtonProvider) provider.GetChildButtonProvider ();
+					if (button_provider != null)
+						button_provider.Navigation = this;
+				}
+
+				return button_provider;
+			}
+			
 			private NavigationChain chain;
 			private ComboBoxProvider provider;
-			private ComboBoxButtonProvider button_provider;
-			
+			private ComboBoxProvider.ComboBoxButtonProvider button_provider;
 		}
 
 #endregion
@@ -200,22 +253,20 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			{
 				this.chain = chain;
 				this.provider = provider;
-				
-				InitializeItemChangeEvents ();
 			}
 			
 			public override IRawElementProviderSimple Provider {
-				get {  return GetListBoxProvider (); }
+				get { return GetListBoxProvider (); }
 			}
 			
 			public override void Terminate ()
 			{
-				if (listbox_provider != null)
-					listbox_provider.Terminate ();
+				//Nothing to Terminate (we are using ListBoxProvider children providers).
 			}
 			
 			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 			{
+				//TODO: We aware we are only returning the items, we are missing the scrollbars!
 				if (direction == NavigateDirection.Parent)
 					return provider;
 				else if (direction == NavigateDirection.FirstChild)
@@ -230,72 +281,19 @@ namespace Mono.UIAutomation.Winforms.Navigation
 					return null;
 			}
 			
-			private ComboBoxListBoxProvider GetListBoxProvider ()
+			private ComboBoxProvider.ComboBoxListBoxProvider GetListBoxProvider ()
 			{
 				if (listbox_provider == null) {
-					listbox_provider = new ComboBoxListBoxProvider ((ComboBox) provider.Control,
-					                                                provider);
+					listbox_provider = (ComboBoxProvider.ComboBoxListBoxProvider) provider.GetChildListBoxProvider ();
 					listbox_provider.Navigation = this;
 				}
+
 				return listbox_provider; 
-			}
-			
-			private void InitializeItemChangeEvents ()
-			{
-				ComboBox combobox = (ComboBox) provider.Control;
-				Type type = typeof (ComboBox.ObjectCollection);
-
-				//ChildAdded hook up
-				EventInfo childAddedEvent = type.GetEvent ("ChildAdded",
-				                                           BindingFlags.Instance 
-				                                           | BindingFlags.NonPublic);
-				Type delegateType = childAddedEvent.EventHandlerType;
-				MethodInfo childAddedMethod = childAddedEvent.GetAddMethod (true);				
-				Delegate delegateAdded = Delegate.CreateDelegate (delegateType, 
-				                                                  this, "OnChildAdded", 
-				                                                  false);
-				childAddedMethod.Invoke (combobox.Items, 
-				                         new object[] { delegateAdded });
-
-				//ChildRemoved hook up
-				EventInfo childRemovedEvent = type.GetEvent ("ChildRemoved",
-				                                             BindingFlags.Instance 
-				                                             | BindingFlags.NonPublic);
-				MethodInfo childRemovedMethod = childRemovedEvent .GetAddMethod (true);				
-				Delegate delegateRemoved = Delegate.CreateDelegate (delegateType, 
-				                                                    this, "OnChildRemoved", 
-				                                                    false);
-				childAddedMethod.Invoke (combobox.Items,
-				                         new object[] { delegateRemoved });
-
-				//TODO: Is this OK? CPU-intensive?
-				for (int index = 0; index < combobox.Items.Count; index++)
-					OnChildAdded (combobox, index);
-			}
-			
-			private void OnChildAdded (object sender, int index)
-			{
-				ListItemProvider item = provider.GetItemProvider (index);
-				
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   item);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-				                                   provider);
-			}
-			
-			private void OnChildRemoved (object sender, int index)
-			{
-				ListItemProvider item = provider.RemoveItemAt (index);
-					
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-				                                   item);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-				                                   provider);
 			}
 
 			private NavigationChain chain;
 			private ComboBoxProvider provider;
-			private ComboBoxListBoxProvider listbox_provider;
+			private ComboBoxProvider.ComboBoxListBoxProvider listbox_provider;
 		}	
 		
 #endregion

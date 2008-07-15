@@ -35,7 +35,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 #region Constructor
 		
-		public ComboBoxButtonInvokeBehavior (ComboBoxButtonProvider provider)
+		public ComboBoxButtonInvokeBehavior (ComboBoxProvider provider)
 			: base (provider)
 		{
 		}
@@ -47,12 +47,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		public override void Connect (Control control)
 		{
 			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			                   new ComboBoxButtonInvokePatternInvokeEvent ((ComboBoxButtonProvider) Provider));
+			                   new ComboBoxButtonInvokePatternInvokeEvent ((ComboBoxProvider) Provider));
 		}
 		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, null);
+			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
+			                   null);
 		}
 
 #endregion

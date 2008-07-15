@@ -1,3 +1,51 @@
+2008-07-15  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs: Removed
+	not needed validation.
+	* Mono.UIAutomation.Winforms.Navigation/ListBoxNavigation.cs: Beautyfing
+	changes.
+	* Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs: Updated
+	to fresh navigation chain when DropDownStyle changes. New internal class
+	ComboBoxTextBoxNavigation added. Removed reflection logic, isn't needed
+	anymore.
+	* Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs: Fixed bug
+	in GetNextSiblingProvider method when there isn't a next value.
+	* Mono.UIAutomation.Winforms.mdp: Updated: Deleted files
+	* Mono.UIAutomation.Winforms/ComboBoxButtonProvider.cs: Deleted.
+	Class moved as internal class in ComboBoxProvider.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Refactored: Delegates
+	moved to ListProvider class. Events: ChildRemoved and ChildAdded moved
+	to ListProvider class. Reflection logic defined in methods: 
+	InitializeChildControlStructure and FinalizeChildControlStructure was
+	moved to ListProvider class. Implementation of new methods: 
+	GetTypeOfObjectCollection and GetInstanceOfObjectCollection. Code
+	beautyfying in method OnScrollbarNavigationUpdated.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Code beautyfying.
+	* Mono.UIAutomation.Winforms/Helper.cs: Temporal fix to bug when removed
+	control doesn't have Parent.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Fixed bug
+	when removed Control isn't contained in the internal dictionary.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: New methods added: 
+	Terminate, GetChildTextBoxProvider, GetChildListBoxProvider and 
+	GetChildButtonProvider. Logic added to generate StructureChanged event
+	and instantiate and terminate providers when DropDownStyle changes.
+	Internal classes added: ComboBoxListBoxProvider and 
+	ComboBoxButtonProvider.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Added delegates. New 
+	events added: ChildAdded and ChildRemoved. New methods added to 
+	initalize ChildAdded and ChildRemoved events: 
+	InitializeChildControlStructure and FinalizeChildControlStructure. 
+	Protected methods added: GenerateChildAddedEvent and 
+	GenerateChildRemovedEvent. Private methods added: OnChildAdded and
+	OnChildRemoved.
+	* Mono.UIAutomation.Winforms/ComboBoxListBoxProvider.cs: Deleted. Class
+	moved as internal class in ComboBoxProvider.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxButtonInvokeBehavior.cs:
+	Code beautyfying.
+	* Makefile.am: Updated: deleted files.
+	* Mono.UIAutomation.Winforms.Events/ComboBoxButtonInvokePatternInvokeEvent.cs:
+	Code beautyfying.
+
 2008-07-15  Neville Gao <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/StatusBarGridProviderBehavior.cs:
