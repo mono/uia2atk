@@ -162,13 +162,13 @@ REQUIRED = "required"
 # response to invalid or malformed user input.
 INVALID_ENTRY = "invalid entry"
 
-# Indicates that the object in question implements some form of ¨typeahead¨ or
+# Indicates that the object in question implements some form of "typeahead" or
 # pre-selection behavior whereby entering the first character of one or more
 # sub-elements causes those elements to scroll into view or become selected.
 # Subsequent character input may narrow the selection further as long as one or
 # more sub-elements match the string. This state is normally only useful and
 # encountered on objects that implement Selection. In some cases the typeahead
-# behavior may result in full or partial ¨completion¨ of the data in the input
+# behavior may result in full or partial "completion" of the data in the input
 # field, in which case these input events may trigger text-changed events from
 # the AtkText interface. This state supplants ATK_ROLE_AUTOCOMPLETE.
 SUPPORTS_AUTOCOMPLETION = "supports autocompletion"
