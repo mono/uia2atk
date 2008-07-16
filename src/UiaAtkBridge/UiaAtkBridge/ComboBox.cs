@@ -37,10 +37,16 @@ namespace UiaAtkBridge
 			get {
 				List<string> children = new List<string> ();
 				
-				IRawElementProviderFragmentRoot rootProvider =
-					(IRawElementProviderFragmentRoot)provider;
-				IRawElementProviderFragment child = rootProvider.Navigate (NavigateDirection.FirstChild);
-	
+				//Get List child
+				IRawElementProviderFragment child = provider.Navigate (NavigateDirection.FirstChild);
+				do {
+					if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
+					    == ControlType.List.Id) 
+						break;
+					child = child.Navigate (NavigateDirection.NextSibling);
+				} while (child != null);
+
+				child = child.Navigate (NavigateDirection.FirstChild);
 				do {
 					children.Add ((string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
 					child = child.Navigate (NavigateDirection.NextSibling);
