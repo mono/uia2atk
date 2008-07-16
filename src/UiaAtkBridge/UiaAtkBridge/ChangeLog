@@ -1,3 +1,9 @@
+2008-07-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Button.cs: Not using GetPatternProvider is no longer supported
+	  (although still failing... that's the reason of the
+	  Console.WriteLine's).
+
 2008-07-15  Mike Gorse <mgorse@novell.com>
 
 	* ComboBox.cs: Fix constructor to properly iterate through children

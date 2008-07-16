@@ -63,14 +63,17 @@ namespace UiaAtkBridge
 		{
 			this.provider = provider;
 			
-			//FIXME: use provider.GetPatternProvider ()
-			if (provider is IInvokeProvider) {
-				invokeProvider = (IInvokeProvider)provider;
+			invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
+			if (invokeProvider != null) {
+				//DELETEME:
+				Console.WriteLine ("YES iinvokeprovider");
 				//it seems the default description should be null:
 				//actionDescription = default_invoke_description;
 				actionName = default_invoke_name;
 				Role = Atk.Role.PushButton;
-			}
+			//DELETEME:
+			} else { Console.WriteLine ("NO iinvokeprovider"); }
+			
 			string buttonText = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = buttonText;
 			textExpert = new TextImplementorHelper (buttonText);
