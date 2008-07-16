@@ -6,6 +6,8 @@
 #              Used by the gtkbutton_*.py tests
 ##############################################################################$
 
+import actions as a
+
 from strongwind import *
 from gtkbutton import *
 
@@ -23,33 +25,35 @@ class GtkButtonFrame(accessibles.Frame):
         self.button2 = self.findPushButton(self.BUTTON_TWO)
 
     #send "press" action
-    def press(self,button):
+    def press(self, button):
         procedurelogger.action('Press the %s.' % button)
-        button._doAction('press')
+        button._doAction(a.Button.PRESS)
 
     #send "release" action
-    def release(self,button):
+    def release(self, button):
         procedurelogger.action('release the %s.' % button)
-        button._doAction('release')
+        button._doAction(a.Button.RELEASE)
 
-    #check if there is "armed" status when send "release" action.
-    def assertResult(self, button, result):
-        'Raise exception if the button does not match the given result'   
-        procedurelogger.expectedResult('%s is %s.' % (button, result))
+    #send "click" action, accerciser abstracts this for us
+    def click(self, button):
+        button.click()
 
-        # Check the result
+    def assertArmed(self, accessible):
+        'Raise exception if the accessible is not armed'
+        procedurelogger.expectedResult('%s is %s.' % (accessible, "armed"))
         def resultMatches():
-            if result == "armed":
-                return button.armed
-            elif result == "unarmed":
-                return not button.armed
-            else:
-                raise InvalidState, "%s has no such state:  %s" %\
-                                 (button, result)
+            return accessible.armed
+        assert retryUntilTrue(resultMatches)
+
+    def assertUnarmed(self, accessible):
+        'Raise exception if the accessible is armed'
+        procedurelogger.expectedResult('%s is %s.' % (accessible, "unarmed"))
+        def resultMatches():
+            return not accessible.armed
         assert retryUntilTrue(resultMatches)
 
     #check if there is rise a messagedialog when send "click" action.
-    def clickResult(self):
+    def assertClicked(self):
 
         self = self.app.findDialog(None,"Message Dialog")
 

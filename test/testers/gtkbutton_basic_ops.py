@@ -40,22 +40,22 @@ if app is None:
 bFrame = app.gtkButtonFrame
 
 #click button1 to get a messagedialog, then close messagedialog
-bFrame.button1.click()
+bFrame.click(bFrame.button1)
 sleep(config.SHORT_DELAY)
-bFrame.clickResult()
+bFrame.assertClicked()
 
 ##give button2 a press action, then to check if rise armed status
 bFrame.press(bFrame.button2)
 sleep(config.SHORT_DELAY)
-bFrame.assertResult(bFrame.button2, "armed");
+bFrame.assertArmed(bFrame.button2);
 
 #give button2 a relese action, then to check if rase armed status
 bFrame.release(bFrame.button2)
 sleep(config.SHORT_DELAY)
-bFrame.assertResult(bFrame.button2, "unarmed");
+bFrame.assertUnarmed(bFrame.button2);
 
 #check the rising messagedialog then close it
-bFrame.clickResult()
+bFrame.assertClicked()
 
 #close the sample app
 bFrame.quit()
