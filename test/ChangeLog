@@ -1,5 +1,9 @@
 2008-07-16  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* samples/gtkcheckbutton.py: make executable
+
+2008-07-16  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* testers/states.py: replace some weird characters that were copied
 	over from firefox.
 
