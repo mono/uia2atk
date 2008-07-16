@@ -8,6 +8,7 @@
 
 import sys
 import os
+import gtkactions as a
 
 from strongwind import *
 from gtktreeview import *
@@ -36,36 +37,36 @@ class GtkTreeViewFrame(accessibles.Frame):
     # returning couldn't be divided regularly, because strongwind haven't set
     # this action, so we need define it with procedurelogger.action to return
     # "Action:" info.
-    def expand(self, treeview, action):
+    def expand(self, treeview):
         procedurelogger.action('expand %s.' % treeview)
-        treeview._doAction(action)
+        treeview._doAction(a.TreeView.EXPAND_OR_CONTRACT)
 
     #set contract to send "expand or contract" action. same as expend
-    def contract(self, treeview, action):
+    def contract(self, treeview):
         procedurelogger.action('contract %s.' % treeview)
-        treeview._doAction(action)
+        treeview._doAction(a.TreeView.EXPAND_OR_CONTRACT)
 
     #set Click action for TableColumnHeader
     def tchClick (self,test):
         procedurelogger.action('click %s.' % test)
         treeview = self.findTableColumnHeader("%s" % test)
-        treeview._doAction('click')
+        treeview._doAction(a.TableColumnHeader.CLICK)
 
     #check if status list in "interface viewer" in accerciser have "expanded" 
     #status when doing expand or contract action.
-    def assertResult(self, treeview, result):
-        'Raise exception if the treeview does not match the given result'   
-        procedurelogger.expectedResult('%s is %s.' % (treeview, result))
-
+    def assertContracted(self, accessible):
+        'Raise exception if accessible does not match the given result'   
+	procedurelogger.expectedResult('%s is %s.' % (accessible, "contracted"))
         def resultMatches():
+            return not accessible.expanded
+	
+        assert retryUntilTrue(resultMatches)
 
-            if result == "expanded":
-                return treeview.expanded
-            elif result == "contracted":
-                return not treeview.expanded
-            else:
-                raise InvalidState, "%s has no such state:  %s" %\
-                                 (treeview, result)
+    def assertExpanded(self, accessible):
+        'Raise exception if accessible does not match the given result'   
+	procedurelogger.expectedResult('%s is %s.' % (accessible, "expanded"))
+        def resultMatches():
+            return accessible.expanded
 	
         assert retryUntilTrue(resultMatches)
 

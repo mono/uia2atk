@@ -4,9 +4,6 @@ class Button(object):
     PRESS = "press"
     RELEASE = "release"
 
-class TableColumnHeader(Button):
-    pass
-
 class RadioButton(Button):
     pass
 

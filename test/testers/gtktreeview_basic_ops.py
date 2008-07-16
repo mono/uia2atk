@@ -43,46 +43,45 @@ if app is None:
 tvFrame = app.gtkTreeViewFrame
 
 #expand parent 0
-tvFrame.expand(tvFrame.parent0,'expand or contract')
+tvFrame.expand(tvFrame.parent0)
 sleep(config.SHORT_DELAY)
-tvFrame.assertResult(tvFrame.parent0, "expanded")
+tvFrame.assertExpanded(tvFrame.parent0)
 
 #contract parent0
-tvFrame.contract(tvFrame.parent0,'expand or contract')
+tvFrame.contract(tvFrame.parent0)
 sleep(config.SHORT_DELAY)
-tvFrame.assertResult(tvFrame.parent0, "contracted")
+tvFrame.assertContracted(tvFrame.parent0)
 
 #expand parent 1
-tvFrame.expand(tvFrame.parent1,'expand or contract')
+tvFrame.expand(tvFrame.parent1)
 sleep(config.SHORT_DELAY)
-tvFrame.assertResult(tvFrame.parent1, "expanded")
+tvFrame.assertExpanded(tvFrame.parent1)
 
 #contract parent1
-tvFrame.contract(tvFrame.parent1,'expand or contract')
+tvFrame.contract(tvFrame.parent1)
 sleep(config.SHORT_DELAY)
-tvFrame.assertResult(tvFrame.parent1, "contracted")
+tvFrame.assertContracted(tvFrame.parent1)
 
 #expand parent 2
-tvFrame.expand(tvFrame.parent2,'expand or contract')
+tvFrame.expand(tvFrame.parent2)
 sleep(config.SHORT_DELAY)
-tvFrame.assertResult(tvFrame.parent2, "expanded")
+tvFrame.assertExpanded(tvFrame.parent2)
 
 #contract parent2
-tvFrame.contract(tvFrame.parent2,'expand or contract')
+tvFrame.contract(tvFrame.parent2)
 sleep(config.SHORT_DELAY)
-tvFrame.assertResult(tvFrame.parent2, "contracted")
+tvFrame.assertContracted(tvFrame.parent2)
 
 #expand parent 3
-tvFrame.expand(tvFrame.parent3,'expand or contract')
+tvFrame.expand(tvFrame.parent3)
 sleep(config.SHORT_DELAY)
-tvFrame.assertResult(tvFrame.parent3, "expanded")
+tvFrame.assertExpanded(tvFrame.parent3)
 
 #contract parent3
-tvFrame.contract(tvFrame.parent3,'expand or contract')
+tvFrame.contract(tvFrame.parent3)
 sleep(config.SHORT_DELAY)
-tvFrame.assertResult(tvFrame.parent3, "contracted")
+tvFrame.assertContracted(tvFrame.parent3)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
 tvFrame.altF4(tvFrame)
-
