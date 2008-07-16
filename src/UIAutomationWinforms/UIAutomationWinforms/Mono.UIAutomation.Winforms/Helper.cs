@@ -112,6 +112,9 @@ namespace Mono.UIAutomation.Winforms
 			EventInfo eventInfo = referenceType.GetEvent (eventName,
 			                                              BindingFlags.Instance 
 			                                              | BindingFlags.NonPublic);
+			if (eventInfo == null)
+				throw new NotSupportedException ("Event not found: " + eventName);
+			
 			Type delegateType = eventInfo.EventHandlerType;
 			MethodInfo eventMethod = addEvent 
 				? eventInfo.GetAddMethod (true) :eventInfo.GetRemoveMethod (true);

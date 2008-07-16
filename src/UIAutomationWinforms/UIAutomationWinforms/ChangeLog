@@ -1,5 +1,19 @@
 2008-07-15  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Mono.UIAutomation.Winforms/Helper.cs: Reflecting into Winforms
+	  shouldn't be assumed to work.  Throwing NotSupportedException in
+	  the case that private events are not found.  These must be handled
+	  by clients of Helper.cs.  May decide to simply return instead of
+	  throwing, but this needs to be discussed.
+	* Mono.UIAutomation.Winforms/ListProvider.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs:
+	  Handle NotSupportedException now potentially thrown by
+	  Helper.*PrivateEvent methods.
+	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs: Return null for
+	  GetRuntimeId for now.
+
+2008-07-15  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Use
 	  ChildrenBulkAdded, as ChildAdded is not yet supported in the
 	  bridge.  This may have unintended consequences, but at least

@@ -49,20 +49,24 @@ namespace Mono.UIAutomation.Winforms.Events
 
 		public override void Connect (Control control)
 		{
+			try {
 			Helper.AddPrivateEvent (typeof (ScrollBar), 
 			                        (ScrollBar) control, 
 			                        GetEventNameFromOrientation (),
 			                        this, 
 			                        "OnButtonClicked");
+			} catch (NotSupportedException) {}
 		}
 
 		public override void Disconnect (Control control)
 		{
+			try {
 			Helper.RemovePrivateEvent (typeof (ScrollBar), 
 			                           (ScrollBar) control, 
 			                           GetEventNameFromOrientation (),
 			                           this, 
-			                           "OnButtonClicked");			
+			                           "OnButtonClicked");	
+			} catch (NotSupportedException) {}		
 		}
 
 #endregion

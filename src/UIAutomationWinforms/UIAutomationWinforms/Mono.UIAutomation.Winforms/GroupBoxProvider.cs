@@ -68,7 +68,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override int [] GetRuntimeId ()
 		{
-			throw new NotImplementedException ();
+			return null;
 		}
 #endregion
 	}

@@ -157,30 +157,40 @@ namespace Mono.UIAutomation.Winforms
 		public override void InitializeChildControlStructure ()
 		{
 			//Items
+			try {
 			Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
 			                        GetInstanceOfObjectCollection (), 
 			                        "ChildAdded",
 			                        this, 
 			                        "OnChildAdded");
+			} catch (NotSupportedException) {}
+			
+			try {
 			Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
 			                        GetInstanceOfObjectCollection (), 
 			                        "ChildRemoved", 
 			                        this, 
 			                        "OnChildRemoved");
+			} catch (NotSupportedException) {}
 		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
+			try {
 			Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
 			                           GetInstanceOfObjectCollection (), 
 			                           "ChildAdded",
 			                           this, 
 			                           "OnChildAdded");
+			} catch (NotSupportedException) {}
+			
+			try {
 			Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
 			                           GetInstanceOfObjectCollection (), 
 			                           "ChildRemoved", 
 			                           this, 
 			                           "OnChildRemoved");
+			} catch (NotSupportedException) {}
 			
 			ClearItemsList ();
 		}
