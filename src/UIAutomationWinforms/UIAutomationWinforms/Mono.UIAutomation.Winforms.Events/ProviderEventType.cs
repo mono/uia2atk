@@ -28,7 +28,7 @@ using System;
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	public enum ProviderEventType
+	enum ProviderEventType
 	{
 		//Automation Element Properties
 		AutomationElementIsOffscreenProperty,

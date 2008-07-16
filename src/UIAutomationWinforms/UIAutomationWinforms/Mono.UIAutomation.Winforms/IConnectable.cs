@@ -30,7 +30,7 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms
 {
 
-	public interface IConnectable
+	internal interface IConnectable
 	{
 		void Connect (Control control);
 		

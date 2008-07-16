@@ -31,7 +31,7 @@ using Mono.UIAutomation.Winforms.Behaviors;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class StatusBarProvider : FragmentControlProvider
+	internal class StatusBarProvider : FragmentControlProvider
 	{
 #region Constructors
 

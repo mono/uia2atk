@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms
 	//- insertion point, 
 	//- a subset, or 
 	//- all of the text in a TextPattern container.
-	public class TextRangeProvider : ITextRangeProvider
+	internal class TextRangeProvider : ITextRangeProvider
 	{
 
 #region Constructors

@@ -33,7 +33,7 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 
-	public class ListItemProvider : FragmentControlProvider
+	internal class ListItemProvider : FragmentControlProvider
 	{
 
 #region Constructors

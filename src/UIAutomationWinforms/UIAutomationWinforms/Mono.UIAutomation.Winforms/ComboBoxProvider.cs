@@ -36,7 +36,7 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 
-	public class ComboBoxProvider : ListProvider
+	internal class ComboBoxProvider : ListProvider
 	{
 
 #region Constructor

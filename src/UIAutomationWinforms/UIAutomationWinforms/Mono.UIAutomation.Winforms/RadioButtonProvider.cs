@@ -33,7 +33,7 @@ using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class RadioButtonProvider : FragmentControlProvider, ISelectionItemProvider
+	internal class RadioButtonProvider : FragmentControlProvider, ISelectionItemProvider
 	{
 #region Private Fields
 		

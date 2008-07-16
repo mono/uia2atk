@@ -32,7 +32,7 @@ using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class GroupBoxProvider : FragmentRootControlProvider, IRawElementProviderFragmentRoot
+	internal class GroupBoxProvider : FragmentRootControlProvider, IRawElementProviderFragmentRoot
 	{
 #region Private Members
 		

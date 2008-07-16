@@ -31,7 +31,7 @@ using System.Windows.Automation;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
-	public interface IProviderBehavior : IConnectable // TODO: Any need to implement IRaw*?
+	internal interface IProviderBehavior : IConnectable // TODO: Any need to implement IRaw*?
 	{		
 		/// <summary>
 		/// Add support for more AutomationProperty types to the

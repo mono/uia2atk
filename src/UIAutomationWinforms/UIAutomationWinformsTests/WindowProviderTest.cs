@@ -47,13 +47,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void IsTopmostTest ()
 		{
 			using (Form f = new Form ()) {
-				WindowProvider provider = (WindowProvider) ProviderFactory.GetProvider (f);
+				IRawElementProviderFragment provider = (IRawElementProviderFragment) ProviderFactory.GetProvider (f);
+				IWindowProvider pattern = (IWindowProvider) provider.GetPatternProvider (WindowPatternIdentifiers.Pattern.Id);
 				
-				Assert.IsFalse (provider.IsTopmost, "Initialize to false");
+				Assert.IsFalse (pattern.IsTopmost, "Initialize to false");
 				f.TopMost = true;
-				Assert.IsTrue (provider.IsTopmost, "Set to true");
+				Assert.IsTrue (pattern.IsTopmost, "Set to true");
 				f.TopMost = false;
-				Assert.IsFalse (provider.IsTopmost, "Set to false");
+				Assert.IsFalse (pattern.IsTopmost, "Set to false");
 			}
 		}
 		
@@ -61,9 +62,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void IsModalTest ()
 		{
 			using (Form f = new Form ()) {
-				WindowProvider provider = (WindowProvider) ProviderFactory.GetProvider (f);
+				IRawElementProviderFragment provider = (IRawElementProviderFragment) ProviderFactory.GetProvider (f);
+				IWindowProvider pattern = (IWindowProvider) provider.GetPatternProvider (WindowPatternIdentifiers.Pattern.Id);
 				
-				Assert.IsFalse (provider.IsModal, "Form should initialize to not modal");
+				Assert.IsFalse (pattern.IsModal, "Form should initialize to not modal");
 				
 				// Run modal dialog in separate thread
 				Thread t = new Thread (new ParameterizedThreadStart (delegate {
@@ -74,7 +76,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				// Wait for dialog to appear
 				Thread.Sleep (500); // TODO: Fragile
 				
-				Assert.IsTrue (provider.IsModal, "ShowDialog should be modal");
+				Assert.IsTrue (pattern.IsModal, "ShowDialog should be modal");
 				
 				f.Close ();
 				t.Join ();
@@ -83,7 +85,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				// Wait for form to appear
 				Thread.Sleep (500); // TODO: Fragile
 				
-				Assert.IsFalse (provider.IsModal, "Show should not be modal");
+				Assert.IsFalse (pattern.IsModal, "Show should not be modal");
 				f.Close ();
 			}
 		}
@@ -92,7 +94,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void CloseTest ()
 		{
 			using (Form f = new Form ()) {
-				WindowProvider provider = (WindowProvider) ProviderFactory.GetProvider (f);
+				IRawElementProviderFragment provider = (IRawElementProviderFragment) ProviderFactory.GetProvider (f);
+				IWindowProvider pattern = (IWindowProvider) provider.GetPatternProvider (WindowPatternIdentifiers.Pattern.Id);
 				
 				f.Show ();
 				
@@ -104,7 +107,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				Console.WriteLine ("provider close 0: "+bridge.StructureChangedEvents.Count);
 				bridge.ResetEventLists ();
 				Console.WriteLine ("provider close 1: "+bridge.StructureChangedEvents.Count);
-				provider.Close ();
+				pattern.Close ();
 				Console.WriteLine ("provider close 2: "+bridge.StructureChangedEvents.Count);
 				
 				Assert.IsTrue (formClosed, "Form closed event didn't fire.");
@@ -121,26 +124,27 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void SetVisualStateTest ()
 		{
 			using (Form f = new Form ()) {
-				WindowProvider provider = (WindowProvider) ProviderFactory.GetProvider (f);
+				IRawElementProviderFragment provider = (IRawElementProviderFragment) ProviderFactory.GetProvider (f);
+				IWindowProvider pattern = (IWindowProvider) provider.GetPatternProvider (WindowPatternIdentifiers.Pattern.Id);
 				
 				//f.Show ();
 				//Application.DoEvents ();
 					
 				Assert.AreEqual (FormWindowState.Normal, f.WindowState, "Form should initially be 'normal'");
 				
-				provider.SetVisualState (WindowVisualState.Maximized);
+				pattern.SetVisualState (WindowVisualState.Maximized);
 				//System.Threading.Thread.Sleep (1000);
 				//Application.DoEvents ();
 				//System.Threading.Thread.Sleep (1000);
 				Assert.AreEqual (FormWindowState.Maximized, f.WindowState, "Form should maximize");
 				
-				provider.SetVisualState (WindowVisualState.Minimized);
+				pattern.SetVisualState (WindowVisualState.Minimized);
 				//System.Threading.Thread.Sleep (1000);
 				//Application.DoEvents ();
 				//System.Threading.Thread.Sleep (1000);
 				Assert.AreEqual (FormWindowState.Minimized, f.WindowState, "Form should minimize");
 				
-				provider.SetVisualState (WindowVisualState.Normal);
+				pattern.SetVisualState (WindowVisualState.Normal);
 				//System.Threading.Thread.Sleep (1000);
 				//Application.DoEvents ();
 				//System.Threading.Thread.Sleep (1000);
@@ -152,30 +156,31 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void VisualStateTest ()
 		{
 			using (Form f = new Form ()) {
-				WindowProvider provider = (WindowProvider) ProviderFactory.GetProvider (f);
+				IRawElementProviderFragment provider = (IRawElementProviderFragment) ProviderFactory.GetProvider (f);
+				IWindowProvider pattern = (IWindowProvider) provider.GetPatternProvider (WindowPatternIdentifiers.Pattern.Id);
 				
 				//f.Show ();
 				//Application.DoEvents ();
 				
-				Assert.AreEqual (WindowVisualState.Normal, provider.VisualState, "Provider should initially be 'normal'");
+				Assert.AreEqual (WindowVisualState.Normal, pattern.VisualState, "Provider should initially be 'normal'");
 				
 				f.WindowState = FormWindowState.Maximized;
 				//System.Threading.Thread.Sleep (1000);
 				//Application.DoEvents ();
 				//System.Threading.Thread.Sleep (1000);
-				Assert.AreEqual (WindowVisualState.Maximized, provider.VisualState, "Provider should maximize");
+				Assert.AreEqual (WindowVisualState.Maximized, pattern.VisualState, "Provider should maximize");
 				
 				f.WindowState = FormWindowState.Minimized;
 				//System.Threading.Thread.Sleep (1000);
 				//Application.DoEvents ();
 				//System.Threading.Thread.Sleep (1000);
-				Assert.AreEqual (WindowVisualState.Minimized, provider.VisualState, "Provider should minimize");
+				Assert.AreEqual (WindowVisualState.Minimized, pattern.VisualState, "Provider should minimize");
 				
 				f.WindowState = FormWindowState.Normal;
 				//System.Threading.Thread.Sleep (1000);
 				//Application.DoEvents ();
 				//System.Threading.Thread.Sleep (1000);
-				Assert.AreEqual (WindowVisualState.Normal, provider.VisualState, "Provider should return to 'normal'");
+				Assert.AreEqual (WindowVisualState.Normal, pattern.VisualState, "Provider should return to 'normal'");
 			}
 		}
 		
@@ -195,7 +200,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			using (Form f = new Form ()) {
 				IRawElementProviderFragmentRoot provider =
-					new WindowProvider (f);
+					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
 				Assert.AreEqual (ProviderOptions.ServerSideProvider,
 				                 provider.ProviderOptions,
 				                 "ProviderOptions");
@@ -207,7 +212,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			using (Form f = new Form ()) {
 				IRawElementProviderFragmentRoot provider =
-					new WindowProvider (f);
+					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
 				Assert.AreEqual (provider,
 				                 provider.GetPatternProvider (WindowPatternIdentifiers.Pattern.Id));
 				// TODO: Test null return on other IDs?
@@ -221,7 +226,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			using (Form f = new Form ()) {
 				IRawElementProviderFragmentRoot provider =
-					new WindowProvider (f);
+					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
 			}
 		}
 		
@@ -231,7 +236,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			using (Form f = new Form ()) {
 				IRawElementProviderFragmentRoot provider =
-					new WindowProvider (f);
+					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
 			}
 		}
 		
@@ -240,7 +245,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			using (Form f = new Form ()) {
 				IRawElementProviderFragmentRoot provider =
-					new WindowProvider (f);
+					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
 				Assert.AreEqual (provider,
 				                 provider.FragmentRoot);
 			}
@@ -251,7 +256,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			using (Form f = new Form ()) {
 				IRawElementProviderFragmentRoot provider =
-					new WindowProvider (f);
+					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
 				Assert.IsNull (provider.GetEmbeddedFragmentRoots ());
 			}
 		}
@@ -262,7 +267,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			using (Form f = new Form ()) {
 				IRawElementProviderFragmentRoot provider =
-					new WindowProvider (f);
+					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
 			}
 		}
 		
@@ -272,7 +277,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			using (Form f = new Form ()) {
 				IRawElementProviderFragmentRoot provider =
-					new WindowProvider (f);
+					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
 			}
 		}
 		
@@ -282,7 +287,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			using (Form f = new Form ()) {
 				IRawElementProviderFragmentRoot provider =
-					new WindowProvider (f);
+					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
 			}
 		}
 		
@@ -292,7 +297,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			using (Form f = new Form ()) {
 				IRawElementProviderFragmentRoot provider =
-					new WindowProvider (f);
+					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
 			}
 		}
 		
@@ -302,7 +307,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			using (Form f = new Form ()) {
 				IRawElementProviderFragmentRoot provider =
-					new WindowProvider (f);
+					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
 			}
 		}
 		

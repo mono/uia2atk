@@ -1,5 +1,33 @@
 2008-07-16  Mario Carrion <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs,
+	Mono.UIAutomation.Winforms/ButtonProvider.cs,
+	Mono.UIAutomation.Winforms/ThumbProvider.cs,
+	Mono.UIAutomation.Winforms/LabelProvider.cs,
+	Mono.UIAutomation.Winforms/ScrollBarProvider.cs,
+	Mono.UIAutomation.Winforms/ListBoxProvider.cs,
+	Mono.UIAutomation.Winforms/CheckBoxProvider.cs,
+	Mono.UIAutomation.Winforms/ListItemProvider.cs,
+	Mono.UIAutomation.Winforms/RadioButtonProvider.cs,
+	Mono.UIAutomation.Winforms/SimpleControlProvider.cs,
+	Mono.UIAutomation.Winforms/LinkLabelProvider.cs,
+	Mono.UIAutomation.Winforms/TextRangeProvider.cs,
+	Mono.UIAutomation.Winforms/FragmentControlProvider.cs,
+	Mono.UIAutomation.Winforms/WindowProvider.cs,
+	Mono.UIAutomation.Winforms/ComboBoxProvider.cs,
+	Mono.UIAutomation.Winforms/StatusBarProvider.cs,
+	Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs,
+	Mono.UIAutomation.Winforms/IConnectable.cs,
+	Mono.UIAutomation.Winforms/ListProvider.cs,
+	Mono.UIAutomation.Winforms/ScrollBarButtonOrientation.cs,
+	Mono.UIAutomation.Winforms/TextBoxProvider.cs,
+	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs,
+	Mono.UIAutomation.Winforms.Behaviors/IProviderBehavior.cs,
+	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: Visibility 
+	changed from public to internal.
+
+2008-07-16  Mario Carrion <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Terminating 
 	private field listbox_provider.
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: When provider is

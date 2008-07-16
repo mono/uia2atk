@@ -34,17 +34,17 @@ namespace Mono.UIAutomation.Winforms
 {
 #region Delegates
 	
-	public delegate void StructureChangeEventHandler (object sender, 
-	                                                  ListItemProvider item, 
-	                                                  int index);
+	internal delegate void StructureChangeEventHandler (object sender, 
+	                                                    ListItemProvider item, 
+	                                                    int index);
 	
-	public delegate void ScrollbarNavigableEventHandler (object container,
-	                                                     ScrollBar scrollbar,
-	                                                     bool navigable);
+	internal delegate void ScrollbarNavigableEventHandler (object container,
+	                                                       ScrollBar scrollbar,
+	                                                       bool navigable);
 
 #endregion
 	
-	public abstract class ListProvider : FragmentRootControlProvider
+	internal abstract class ListProvider : FragmentRootControlProvider
 	{
 
 #region Constructors

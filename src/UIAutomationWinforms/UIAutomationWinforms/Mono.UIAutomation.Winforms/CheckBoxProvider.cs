@@ -32,7 +32,8 @@ using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class CheckBoxProvider : FragmentControlProvider, IToggleProvider
+	
+	internal class CheckBoxProvider : FragmentControlProvider, IToggleProvider
 	{
 #region Private Fields
 		

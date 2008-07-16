@@ -22,7 +22,6 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -32,7 +31,7 @@ using Mono.UIAutomation.Winforms.Behaviors;
 namespace Mono.UIAutomation.Winforms
 {
 
-	public class LinkLabelProvider : FragmentControlProvider
+	internal class LinkLabelProvider : FragmentControlProvider
 	{
 
 #region Constructor

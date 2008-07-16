@@ -34,7 +34,7 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms
 {
 
-	public class ThumbProvider : FragmentControlProvider
+	internal class ThumbProvider : FragmentControlProvider
 	{
 
 #region Constructor

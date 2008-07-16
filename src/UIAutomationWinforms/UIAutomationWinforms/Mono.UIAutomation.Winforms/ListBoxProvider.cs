@@ -38,7 +38,7 @@ namespace Mono.UIAutomation.Winforms
 {
 
 	//TODO: Should support: MultipleView Pattern and Grid Pattern?
-	public class ListBoxProvider : ListProvider
+	internal class ListBoxProvider : ListProvider
 	{
 		
 #region Constructor 

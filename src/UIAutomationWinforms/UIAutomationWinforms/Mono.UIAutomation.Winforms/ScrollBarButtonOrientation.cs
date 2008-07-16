@@ -26,7 +26,7 @@
 namespace Mono.UIAutomation.Winforms
 {
 
-	public enum ScrollBarButtonOrientation
+	internal enum ScrollBarButtonOrientation
 	{
 		SmallBack,
 		SmallForward,

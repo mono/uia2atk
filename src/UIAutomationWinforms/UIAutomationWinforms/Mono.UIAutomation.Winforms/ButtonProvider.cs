@@ -32,7 +32,8 @@ using Mono.UIAutomation.Winforms.Behaviors;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class ButtonProvider : FragmentControlProvider
+	
+	internal class ButtonProvider : FragmentControlProvider
 	{
 		
 #region Constructors

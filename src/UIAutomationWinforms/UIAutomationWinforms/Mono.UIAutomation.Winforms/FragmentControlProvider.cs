@@ -32,7 +32,7 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms
 {
 
-	public abstract class FragmentControlProvider 
+	internal abstract class FragmentControlProvider 
 		: SimpleControlProvider, IRawElementProviderFragment
 	{
 

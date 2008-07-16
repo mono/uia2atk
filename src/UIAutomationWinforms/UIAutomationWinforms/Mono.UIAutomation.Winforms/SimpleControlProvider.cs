@@ -36,7 +36,7 @@ using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public abstract class SimpleControlProvider : IRawElementProviderSimple
+	internal abstract class SimpleControlProvider : IRawElementProviderSimple
 	{
 		
 #region Private Fields

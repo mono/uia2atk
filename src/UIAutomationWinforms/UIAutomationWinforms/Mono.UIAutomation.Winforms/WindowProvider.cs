@@ -32,7 +32,7 @@ using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class WindowProvider : FragmentRootControlProvider, IWindowProvider, ITransformProvider
+	internal class WindowProvider : FragmentRootControlProvider, IWindowProvider, ITransformProvider
 	{
 #region Private Data
 		

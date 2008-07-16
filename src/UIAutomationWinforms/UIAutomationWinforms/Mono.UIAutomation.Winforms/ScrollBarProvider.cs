@@ -34,7 +34,7 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 
-	public class ScrollBarProvider : FragmentControlProvider
+	internal class ScrollBarProvider : FragmentControlProvider
 	{
 		
 #region Constructor

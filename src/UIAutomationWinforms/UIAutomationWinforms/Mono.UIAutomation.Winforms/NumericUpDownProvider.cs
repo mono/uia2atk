@@ -32,7 +32,7 @@ using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class NumericUpDownProvider : FragmentControlProvider, IRangeValueProvider
+	internal class NumericUpDownProvider : FragmentControlProvider, IRangeValueProvider
 	{
 #region Private Fields
 		

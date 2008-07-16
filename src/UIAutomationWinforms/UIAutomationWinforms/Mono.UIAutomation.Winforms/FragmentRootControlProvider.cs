@@ -34,8 +34,8 @@ using Mono.UIAutomation.Winforms.Behaviors;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public abstract class FragmentRootControlProvider :
-		FragmentControlProvider, IRawElementProviderFragmentRoot
+	internal abstract class FragmentRootControlProvider 
+		: FragmentControlProvider, IRawElementProviderFragmentRoot
 	{
 #region Internal Data
 		

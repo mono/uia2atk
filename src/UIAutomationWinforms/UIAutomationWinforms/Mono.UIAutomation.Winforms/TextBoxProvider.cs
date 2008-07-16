@@ -34,7 +34,7 @@ namespace Mono.UIAutomation.Winforms
 {
 
 	// TODO: Implement ITextProvider, IScrollProvider
-	public class TextBoxProvider : FragmentControlProvider, IValueProvider, ITextProvider, IScrollProvider
+	internal class TextBoxProvider : FragmentControlProvider, IValueProvider, ITextProvider, IScrollProvider
 	{
 #region Protected section
 		

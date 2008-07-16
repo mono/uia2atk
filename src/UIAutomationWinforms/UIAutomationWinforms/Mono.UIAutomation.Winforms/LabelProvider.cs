@@ -32,7 +32,7 @@ using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms
 {
-	public class LabelProvider : FragmentControlProvider
+	internal class LabelProvider : FragmentControlProvider
 	{
 #region Private Fields
 		
