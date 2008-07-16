@@ -1,3 +1,11 @@
+2008-07-16  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Terminating 
+	private field listbox_provider.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: When provider is
+	Root and no Parent is defined in control we are calling 
+	InitializeChildControlStructure.
+
 2008-07-15  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/Helper.cs: Reflecting into Winforms

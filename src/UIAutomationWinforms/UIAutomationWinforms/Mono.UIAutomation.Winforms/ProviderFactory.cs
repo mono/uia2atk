@@ -114,6 +114,13 @@ namespace Mono.UIAutomation.Winforms
 				controlProviders [control] = provider;
 				if (initializeEvents)
 					provider.InitializeEvents ();
+				
+				//TODO: Be aware that this may lead to calling InitializeChildControlStructure several times
+				if (control.Parent == null && provider is FragmentRootControlProvider) {
+					FragmentRootControlProvider root = provider as FragmentRootControlProvider;
+					root.InitializeChildControlStructure ();
+				}
+				
 				return provider;
 			} else
 				return null;

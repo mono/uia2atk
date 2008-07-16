@@ -182,8 +182,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void FinalizeChildControlStructure ()
 		{
-			//base.FinalizeChildControlStructure ();
-			
 			if (button_provider != null) {
 				button_provider.Terminate ();
 				button_provider = null;
@@ -192,12 +190,14 @@ namespace Mono.UIAutomation.Winforms
 				textbox_provider.Terminate ();
 				textbox_provider = null;
 			}
+			if (listbox_provider != null) {
+				listbox_provider.Terminate ();
+				listbox_provider = null;
+			}
 		}
 
 		public override void InitializeChildControlStructure ()
 		{
-			//base.InitializeChildControlStructure ();
-			
 			UpdateBehaviors ();
 		}
 
@@ -212,7 +212,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void UpdateBehaviors () 
 		{
-			Console.WriteLine ("combobox_control.DropDownStyle: {0}", combobox_control.DropDownStyle);
 			if (combobox_control.DropDownStyle == ComboBoxStyle.Simple) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern, 
 				             null);
