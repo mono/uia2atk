@@ -56,7 +56,7 @@ namespace UiaAtkBridgeTest
 			foreach (string item in names)
 				comboBox.Items.Add (item);
 			
-			UiaAtkBridge.ComboBox uiaComb = new UiaAtkBridge.ComboBox (new ComboBoxProvider (comboBox));
+			UiaAtkBridge.ComboBox uiaComb = new UiaAtkBridge.ComboBox ((ComboBoxProvider) ProviderFactory.GetProvider (comboBox));
 			accessible = uiaComb;
 			component = uiaComb;
 			selection = uiaComb;
