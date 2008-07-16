@@ -1,3 +1,7 @@
+2008-07-15  Mike Gorse <mgorse@novell.com>
+
+	* ComboBox.cs: Fix constructor to properly iterate through children
+
 2008-07-07  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Makefile.am, UiaAtkBridge.dll.config.in: Add UiaAtkBridge.dll.config

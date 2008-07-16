@@ -43,7 +43,7 @@ namespace UiaAtkBridge
 	
 				do {
 					children.Add ((string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
-					child.Navigate (NavigateDirection.NextSibling);
+					child = child.Navigate (NavigateDirection.NextSibling);
 				} while (child != null);
 				
 				return children.ToArray ();
