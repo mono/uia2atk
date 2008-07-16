@@ -56,7 +56,7 @@ namespace UiaAtkBridgeTest
 			foreach (string item in names)
 				comboBox.Items.Add (item);
 			
-			UiaAtkBridge.ComboBox uiaComb = new UiaAtkBridge.ComboBox ((ComboBoxProvider) ProviderFactory.GetProvider (comboBox));
+			UiaAtkBridge.ComboBox uiaComb = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (comboBox));
 			accessible = uiaComb;
 			component = uiaComb;
 			selection = uiaComb;
@@ -118,7 +118,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.Label:
 				MWF.Label lab = new MWF.Label ();
 				lab.Text = name;
-				UiaAtkBridge.TextLabel uiaLab = new UiaAtkBridge.TextLabel (new LabelProvider (lab));
+				UiaAtkBridge.TextLabel uiaLab = new UiaAtkBridge.TextLabel (ProviderFactory.GetProvider (lab));
 				accessible = uiaLab;
 				text = uiaLab;
 				component = uiaLab;
@@ -126,7 +126,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.NormalButton:
 				MWF.Button but = new MWF.Button ();
 				but.Text = name;
-				UiaAtkBridge.Button uiaBut = new UiaAtkBridge.Button (new ButtonProvider (but));
+				UiaAtkBridge.Button uiaBut = new UiaAtkBridge.Button (ProviderFactory.GetProvider (but));
 				accessible = uiaBut;
 				text = uiaBut;
 				component = uiaBut;
@@ -135,21 +135,21 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.Window:
 				MWF.Form frm = new MWF.Form ();
 				frm.Name = name;
-				UiaAtkBridge.Window uiaWin = new UiaAtkBridge.Window (new WindowProvider (frm));
+				UiaAtkBridge.Window uiaWin = new UiaAtkBridge.Window (ProviderFactory.GetProvider (frm));
 				accessible = uiaWin;
 				component = uiaWin;
 				break;
 			case BasicWidgetType.CheckBox:
 				MWF.CheckBox chk = new MWF.CheckBox ();
 				chk.Name = name;
-				UiaAtkBridge.CheckBox uiaChk = new UiaAtkBridge.CheckBox (new CheckBoxProvider(chk));
+				UiaAtkBridge.CheckBox uiaChk = new UiaAtkBridge.CheckBox (ProviderFactory.GetProvider (chk));
 				accessible = uiaChk;
 				component = uiaChk;
 				action = uiaChk;
 				break;
 			case BasicWidgetType.RadioButton:
 				// the way to group radioButtons is dependent on their parent control
-				RadioButtonProvider prov = new RadioButtonProvider (GiveMeARadio (name));
+				IRawElementProviderFragment prov = ProviderFactory.GetProvider (GiveMeARadio (name));
 				UiaAtkBridge.RadioButton uiaRad = new UiaAtkBridge.RadioButton (prov);
 				accessible = uiaRad;
 				component = uiaRad;

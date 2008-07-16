@@ -1,4 +1,8 @@
-2008-07-16  Mario Carrion <mcarrion@novell.com> 
+2008-07-16  Mario Carrion <mcarrion@novell.com>
+
+	* BridgeTester.cs: Updated to use ProviderFactory.GetProvider.
+
+2008-07-16  Mario Carrion <mcarrion@novell.com>  
 
 	* BridgeTester.cs: Using ProviderFactory.GetProvider to get provider.
 
