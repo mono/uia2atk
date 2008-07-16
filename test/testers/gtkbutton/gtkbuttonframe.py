@@ -23,16 +23,14 @@ class GtkButtonFrame(accessibles.Frame):
         self.button2 = self.findPushButton(self.BUTTON_TWO)
 
     #send "press" action
-    def press(self,button,log=True):
-        if log:
-            procedurelogger.action('Press the %s.' % button)
-            button._doAction('press')
+    def press(self,button):
+        procedurelogger.action('Press the %s.' % button)
+        button._doAction('press')
 
     #send "release" action
-    def release(self,button,log=True):
-        if log:
-            procedurelogger.action('release the %s.' % button)
-            button._doAction('release')
+    def release(self,button):
+        procedurelogger.action('release the %s.' % button)
+        button._doAction('release')
 
     #check if there is "armed" status when send "release" action.
     def assertResult(self, button, result):
@@ -51,12 +49,11 @@ class GtkButtonFrame(accessibles.Frame):
         assert retryUntilTrue(resultMatches)
 
     #check if there is rise a messagedialog when send "click" action.
-    def clickResult(self,MessageDialog=True):
+    def clickResult(self):
 
-        if MessageDialog:
-            self = self.app.findDialog(None,"Message Dialog")
+        self = self.app.findDialog(None,"Message Dialog")
 
-            self.altF4()
+        self.altF4()
 
     #close application window after running test
     def quit(self):

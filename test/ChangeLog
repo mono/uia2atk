@@ -1,3 +1,10 @@
+2008-07-16  Calen Chen <cachen@novell.com>
+
+	* testers/gtktreeview/gtktreeviewframe.py: remove "if log:" lines and
+	"class TableColumnHeader" lines
+	* testers/gtkbutton/gtkbuttonframe.py: remove "if log:" lines and "if 
+	MessageDialog:" line.
+
 2008-07-14  Ray Wang <rawang@gmail.com>
 
 	* samples/propertygrid.py: show more room at the top

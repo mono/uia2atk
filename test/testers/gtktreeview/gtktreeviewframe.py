@@ -12,15 +12,6 @@ import os
 from strongwind import *
 from gtktreeview import *
 
-class TableColumnHeader(Accessible):
-    def click(self, log=True):
-        'click TableColumnHeader'
-        
-        if log:
-            procedurelogger.action('click %s.' % self, self)
-
-        self.grabFocus()
-        
 
 # class to represent the main window.
 class GtkTreeViewFrame(accessibles.Frame):
@@ -45,23 +36,20 @@ class GtkTreeViewFrame(accessibles.Frame):
     # returning couldn't be divided regularly, because strongwind haven't set
     # this action, so we need define it with procedurelogger.action to return
     # "Action:" info.
-    def expand(self, treeview, action, log=True):
-        if log:
-            procedurelogger.action('expand %s.' % treeview)
-            treeview._doAction(action)
+    def expand(self, treeview, action):
+        procedurelogger.action('expand %s.' % treeview)
+        treeview._doAction(action)
 
     #set contract to send "expand or contract" action. same as expend
-    def contract(self, treeview, action, log=True):
-        if log:
-            procedurelogger.action('contract %s.' % treeview)
-            treeview._doAction(action)
+    def contract(self, treeview, action):
+        procedurelogger.action('contract %s.' % treeview)
+        treeview._doAction(action)
 
     #set Click action for TableColumnHeader
-    def tchClick (self,test,log=True):
-        if log:
-            procedurelogger.action('click %s.' % test)
-            treeview = self.findTableColumnHeader("%s" % test)
-            treeview._doAction('click')
+    def tchClick (self,test):
+        procedurelogger.action('click %s.' % test)
+        treeview = self.findTableColumnHeader("%s" % test)
+        treeview._doAction('click')
 
     #check if status list in "interface viewer" in accerciser have "expanded" 
     #status when doing expand or contract action.
