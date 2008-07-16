@@ -1,3 +1,7 @@
+2008-07-16  Mario Carrion <mcarrion@novell.com>
+
+	* ComboBox.cs: Fixed NRE in ChildrenItems property.
+
 2008-07-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Button.cs: Not using GetPatternProvider is no longer supported
