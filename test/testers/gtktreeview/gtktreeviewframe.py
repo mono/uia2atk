@@ -69,11 +69,3 @@ class GtkTreeViewFrame(accessibles.Frame):
             return accessible.expanded
 	
         assert retryUntilTrue(resultMatches)
-
-
-class InvalidState(Exception):
-  pass
-
-class InvalidAccessible(Exception):
-  pass
-

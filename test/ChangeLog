@@ -1,5 +1,17 @@
 2008-07-16  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* testers/gtkcheckbutton/gtkcheckbuttonframe.py: put more information in
+	the wrapper script (i.e., this script) to simplify the test script.
+	Use the constants in actions.py
+	* testers/gtktreeview/gtktreeviewframe.py: remove custom exceptions
+	that were unused
+	* testers/gtkbutton/gtkbuttonframe.py: remove custom exceptions that
+	were unused
+	* testers/gtkcheckbutton_basic_ops.py: simplify the test script
+	* drivers/local_run.py:
+
+2008-07-16  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* testers/gtkbutton/gtkbuttonframe.py:  put more information in
 	the wrapper script (i.e., this script) to simplify the test script.
 	Use the constants in actions.py.

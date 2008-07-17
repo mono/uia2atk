@@ -43,19 +43,19 @@ cbFrame = app.gtkCheckButtonFrame
 cbFrame.checkbox1.click()
 # need a short delay when checking and unchecking the check boxes
 sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.checkbox1,"checked");
+cbFrame.assertChecked(cbFrame.checkbox1)
 
 cbFrame.checkbox1.click()
 sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.checkbox1, "unchecked");
+cbFrame.assertUnchecked(cbFrame.checkbox1)
 
 cbFrame.checkbox2.click()
 sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.checkbox2, "checked");
+cbFrame.assertChecked(cbFrame.checkbox2)
 
 cbFrame.checkbox2.click()
 sleep(config.SHORT_DELAY)
-cbFrame.assertResult(cbFrame.checkbox2, "unchecked");
+cbFrame.assertUnchecked(cbFrame.checkbox2)
 
 cbFrame.quit()
 

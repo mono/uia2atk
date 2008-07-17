@@ -27,19 +27,20 @@ class GtkCheckButtonFrame(accessibles.Frame):
         self.checkbox1 = self.findCheckBox(self.CHECK_BUTTON_ONE)
         self.checkbox2 = self.findCheckBox(self.CHECK_BUTTON_TWO)
 
-    def assertResult(self, checkbutton, result):
-        'Raise exception if the checkbutton does not match the given result'   
-        procedurelogger.expectedResult('%s is %s.' % (checkbutton, result))
-
-        # Check the result
+    def assertChecked(self, accessible):
+        'Raise exception if the accessible does not match the given result'   
+        procedurelogger.expectedResult('%s is %s.' % (accessible, "checked"))
         def resultMatches():
-          if result == "checked":
-            return checkbutton.checked
-          elif result == "unchecked":
-            return not checkbutton.checked
-          else:
-            raise InvalidState, "%s has no such state:  %s" %\
-                                 (checkbutton, result)
+            return accessible.checked
+	
+        assert retryUntilTrue(resultMatches)
+
+    def assertUnchecked(self, accessible):
+        'Raise exception if the accessible does not match the given result'   
+        procedurelogger.expectedResult('%s is %s.' % (accessible, "unchecked"))
+
+        def resultMatches():
+            return not accessible.checked
 	
         assert retryUntilTrue(resultMatches)
 
@@ -57,9 +58,3 @@ class GtkCheckButtonFrame(accessibles.Frame):
         # if the checkbutton window closes, the entire app should close.  
         # assert that this is true 
         self.app.assertClosed()
-
-class InvalidState(Exception):
-  pass
-
-class InvalidAccessible(Exception):
-  pass

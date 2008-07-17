@@ -64,10 +64,3 @@ class GtkButtonFrame(accessibles.Frame):
         'Quit application'
 
         self.altF4()
-
-
-class InvalidState(Exception):
-  pass
-
-class InvalidAccessible(Exception):
-  pass

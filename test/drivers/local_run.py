@@ -220,6 +220,8 @@ class Main(object):
     t = Test()
     r = t.run()
     t.cleanup()
+    if Settings.log_path:
+    	output("INFO:  Logging to:  %s" % Settings.log_path)
     return r
 
 settings = Settings()
