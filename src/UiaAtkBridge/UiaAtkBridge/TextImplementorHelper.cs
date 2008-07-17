@@ -221,7 +221,7 @@ namespace UiaAtkBridge
 		{
 			//TODO: optimize?
 			if ((startOffset < 0) || (startOffset > this.text.Length))
-				return null;
+				return String.Empty;
 			return new String (new char[] { GetCharacterAtOffset (startOffset) });
 		}
 		

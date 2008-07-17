@@ -1,3 +1,8 @@
+2008-07-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* TextImplementorHelper.cs: Match gail behaviour according to this
+	  silly thing.
+
 2008-07-16  Mario Carrion <mcarrion@novell.com>
 
 	* ComboBox.cs: Fixed NRE in ChildrenItems property.
