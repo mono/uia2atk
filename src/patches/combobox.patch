@@ -1,8 +1,8 @@
 Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
 ===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs	(revision 107148)
+--- class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs	(revision 108175)
 +++ class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs	(working copy)
-@@ -1915,7 +1915,21 @@
+@@ -1913,7 +1913,23 @@
  
  			private ComboBox owner;
  			internal ArrayList object_items = new ArrayList ();
@@ -12,10 +12,12 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
 +#if NET_2_0
 +	    		//UIA Framework events for ComboBox Provider used the
 +	    		//generated UIA StructureChanged event
-+	    		//- ItemAdded. Generates StructureChanged.ChildAdded
-+	    		//- ItemRemoved. Generates StructureChanged.ChildRemoved
++	    		//- ChildAdded. Generates StructureChanged.ChildAdded
++	    		//- ChildRemoved. Generates StructureChanged.ChildRemoved
++	    		//- ChildrenClear. Generates StructureChanged.ChildrenReordered	    		
 +			internal event StructureChangeEventHandler ChildAdded;
 +			internal event StructureChangeEventHandler ChildRemoved;
++			internal event EventHandler ChildrenClear;
 +			internal delegate void StructureChangeEventHandler (object sender, int index);
 +#endif
 +
@@ -24,30 +26,44 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
  			public ObjectCollection (ComboBox owner)
  			{
  				this.owner = owner;
-@@ -1945,7 +1959,22 @@
+@@ -1943,7 +1959,22 @@
  					if (value == null)
  						throw new ArgumentNullException ("value");
  
 +#if NET_2_0
-+				//UIA Framework event used to indicate that Structure
-+				//has Changed: child item removed
-+				if (ChildRemoved != null)
-+					ChildRemoved (this, index);
++					//UIA Framework event used to indicate that Structure
++					//has Changed: child item removed
++					if (ChildRemoved != null)
++						ChildRemoved (owner, index);
 +#endif
 +
  					object_items[index] = value;
 +					
 +#if NET_2_0
-+				//UIA Framework event used to indicate that Structure
-+				//has Changed: child item added
-+				if (ChildAdded != null)
-+					ChildAdded (this, index);
++					//UIA Framework event used to indicate that Structure
++					//has Changed: child item added
++					if (ChildAdded != null)
++						ChildAdded (owner, index);
 +#endif
 +
  					if (owner.listbox_ctrl != null)
  						owner.listbox_ctrl.InvalidateItem (index);
  					if (index == owner.SelectedIndex) {
-@@ -2059,8 +2088,15 @@
+@@ -1996,6 +2027,13 @@
+ 				object_items.Clear ();
+ 				owner.UpdatedItems ();
+ 				owner.Refresh ();
++				
++#if NET_2_0
++				//UIA Framework event used to indicate that Structure
++				//has Changed: children clear
++				if (ChildrenClear != null)
++					ChildrenClear (owner, EventArgs.Empty);
++#endif
+ 			}
+ 			
+ 			public bool Contains (object value)
+@@ -2057,8 +2095,15 @@
  				
  				if (owner.Sorted)
  					AddItem (item);
@@ -58,13 +74,13 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
 +					//UIA Framework event used to indicate that Structure
 +					//has Changed: child item added
 +					if (ChildAdded != null)
-+						ChildAdded (this, index);
++						ChildAdded (owner, index);
 +#endif					
 +				}
  				
  				owner.EndUpdate ();	// Calls UpdatedItems
  			}
-@@ -2086,6 +2122,13 @@
+@@ -2084,6 +2129,13 @@
  
  				object_items.RemoveAt (index);
  				owner.UpdatedItems ();
@@ -73,12 +89,12 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
 +				//UIA Framework event used to indicate that Structure
 +				//has Changed: child item removed
 +				if (ChildRemoved != null)
-+					ChildRemoved (this, index);
++					ChildRemoved (owner, index);
 +#endif
  			}
  			#endregion Public Methods
  
-@@ -2107,12 +2150,27 @@
+@@ -2105,12 +2157,27 @@
  							if (index <= owner.selected_index && owner.IsHandleCreated)
  								owner.selected_index++;
  								
@@ -86,7 +102,7 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
 +							//UIA Framework event used to indicate that Structure
 +							//has Changed: child item added
 +							if (ChildAdded != null)
-+								ChildAdded (this, index);
++								ChildAdded (owner, index);
 +#endif
 +
  							return index;
@@ -100,7 +116,7 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
 +				//UIA Framework event used to indicate that Structure
 +				//has Changed: child item added
 +				if (ChildAdded != null)
-+					ChildAdded (this, object_items.Count - 1);
++					ChildAdded (owner, object_items.Count - 1);
 +#endif
 +				
  				return object_items.Count - 1;

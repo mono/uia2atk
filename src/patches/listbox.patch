@@ -1,8 +1,8 @@
 Index: class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs
 ===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs	(revision 107679)
+--- class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs	(revision 108175)
 +++ class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs	(working copy)
-@@ -2355,6 +2355,18 @@
+@@ -2355,6 +2355,20 @@
  
  			private ListBox owner;
  			internal ArrayList object_items = new ArrayList ();
@@ -11,42 +11,58 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs
 +#if NET_2_0
 +	    		//UIA Framework events for ListBox Provider used the
 +	    		//generated UIA StructureChanged event
-+	    		//- ItemAdded. Generates StructureChanged.ChildAdded
-+	    		//- ItemRemoved. Generates StructureChanged.ChildRemoved
++	    		//- ChildAdded. Generates StructureChanged.ChildAdded
++	    		//- ChildRemoved. Generates StructureChanged.ChildRemoved
++	    		//- ChildrenClear. Generates StructureChanged.ChildrenReordered
 +			internal event StructureChangeEventHandler ChildAdded;
 +			internal event StructureChangeEventHandler ChildRemoved;
++			internal event EventHandler ChildrenClear;
 +			internal delegate void StructureChangeEventHandler (object sender, int index);
 +#endif
 +			#endregion
  
  			public ObjectCollection (ListBox owner)
  			{
-@@ -2396,8 +2408,24 @@
+@@ -2396,8 +2410,24 @@
  						throw new ArgumentOutOfRangeException ("Index of out range");
  					if (value == null)
  						throw new ArgumentNullException ("value");
 +						
 +#if NET_2_0
-+				//UIA Framework event used to indicate that Structure
-+				//has Changed: child item removed
-+				if (ChildRemoved != null)
-+					ChildRemoved (this, index);
++					//UIA Framework event used to indicate that Structure
++					//has Changed: child item removed
++					if (ChildRemoved != null)
++						ChildRemoved (owner, index);
 +#endif
  
  					object_items[index] = value;
 +					
 +#if NET_2_0
-+				//UIA Framework event used to indicate that Structure
-+				//has Changed: child item added
-+				if (ChildAdded != null)
-+					ChildAdded (this, index);
++					//UIA Framework event used to indicate that Structure
++					//has Changed: child item added
++					if (ChildAdded != null)
++						ChildAdded (owner, index);
 +#endif					
 +
 +					
  					owner.CollectionChanged ();
  				}
  			}
-@@ -2521,6 +2549,13 @@
+@@ -2461,6 +2491,13 @@
+ 				owner.selected_indices.Clear ();
+ 				object_items.Clear ();
+ 				owner.CollectionChanged ();
++
++#if NET_2_0
++				//UIA Framework event used to indicate that Structure
++				//has Changed: children clear
++				if (ChildrenClear != null)
++					ChildrenClear (owner, EventArgs.Empty);
++#endif
+ 			}
+ 			public bool Contains (object value)
+ 			{
+@@ -2521,6 +2558,13 @@
  				object_items.Insert (index, item);
  				owner.CollectionChanged ();
  				owner.EndUpdate ();
@@ -55,12 +71,12 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs
 +				//UIA Framework event used to indicate that Structure
 +				//has Changed: child item added
 +				if (ChildAdded != null)
-+					ChildAdded (this, index);
++					ChildAdded (owner, index);
 +#endif
  			}
  
  			public void Remove (object value)
-@@ -2539,6 +2574,13 @@
+@@ -2539,6 +2583,13 @@
  				owner.selected_indices.Remove (index);
  				object_items.RemoveAt (index);
  				owner.CollectionChanged ();
@@ -69,12 +85,12 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs
 +				//UIA Framework event used to indicate that Structure
 +				//has Changed: child item removed
 +				if (ChildRemoved != null)
-+					ChildRemoved (this, index);
++					ChildRemoved (owner, index);
 +#endif
  			}
  			#endregion Public Methods
  
-@@ -2550,6 +2592,14 @@
+@@ -2550,6 +2601,14 @@
  
  				int cnt = object_items.Count;
  				object_items.Add (item);
@@ -83,7 +99,7 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs
 +				//UIA Framework event used to indicate that Structure
 +				//has Changed: child item added
 +				if (ChildAdded != null)
-+					ChildAdded (this, cnt);
++					ChildAdded (owner, cnt);
 +#endif
 +
  				return cnt;

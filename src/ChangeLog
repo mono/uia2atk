@@ -1,3 +1,9 @@
+2008-07-17  Mario Carrion <mcarrion@novell.com>
+
+	* patches/combobox.patch, patches/listbox.patch: New internal event 
+	added: ChildrenClear. Sender object updated to use owner instead of
+	internal collection instance.
+
 2008-07-11  Mario Carrion <mcarrion@novell.com>
 
 	* patches/listbox.patch: Updated to match SVN.
