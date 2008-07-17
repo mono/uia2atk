@@ -33,22 +33,10 @@ using Mono.UIAutomation.Winforms.Behaviors;
 namespace Mono.UIAutomation.Winforms
 {
 
-	// TODO: Implement ITextProvider, IScrollProvider
-	internal class TextBoxProvider : FragmentControlProvider, /*IValueProvider, ITextProvider, */IScrollProvider
+	internal class TextBoxProvider : FragmentControlProvider
 	{
-#region Protected section
-		
-		protected TextBoxBase textboxbase;
-
-#endregion
-		
-#region Private section
-		
-		private ITextRangeProvider text_range_provider;
-		
-#endregion
 	
-#region Constructors
+		#region Constructors
 
 		public TextBoxProvider (TextBoxBase textBoxBase) : base (textBoxBase)
 		{
@@ -58,191 +46,28 @@ namespace Mono.UIAutomation.Winforms
 			             new TextBoxTextProviderBehavior (this));
 		}
 
-#endregion
+		#endregion
 
-#region Public Methods
-
-		public override void InitializeEvents ()
+		#region Public Methods
+		
+		public virtual object GetPropertyValue (int propertyId)
 		{
-			base.InitializeEvents ();
-			
-			// Edit
-
-			// NameProperty. uses control.Name to emit changes, so right now
-			// we're "cleaning" the previous value.
-			/*SetEvent (ProviderEventType.AutomationElementNameProperty, null);
-			SetEvent (ProviderEventType.TextChangedEvent, 
-			          new TextPatternTextChangedEvent (this));
-			SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty, 
-			          new TextBoxHasKeyBoardFocusPropertyEvent (this));*/
-			
-			// TODO: InvalidatedEvent
-			// TODO: TextSelectionChangedEvent: using textbox.SelectionLength != 0?	
-			// TODO: NameProperty property-changed event.
-			// TODO: ValuePatternIdentifiers.ValueProperty property-changed event.
-			
-			// Document
-			
-			// TODO: AutomationFocusChangedEvent
-			// TODO: HorizontallyScrollableProperty property-changed event.
-			// TODO: HorizontalScrollPercentProperty property-changed event.
-			// TODO: HorizontalViewSizeProperty property-changed event.
-			// TODO: VerticalScrollPercentProperty property-changed event.
-			// TODO: VerticallyScrollableProperty property-changed event.
-			// TODO: VerticalViewSizeProperty property-changed event.
-			// TODO: InvalidatedEvent (DEPENDS)
-			// TODO: TextSelectionChangedEvent
-			// TODO: ValueProperty property-changed event. (NEVER)
-		}
-
-#endregion
-	
-#region IRawElementProviderSimple Members
-	
-		public override object GetPatternProvider (int patternId)
-		{			
-			if (textboxbase.Multiline) {
-				if (patternId == ScrollPatternIdentifiers.Pattern.Id
-				    || patternId == TextPatternIdentifiers.Pattern.Id)
-					return this;
-			} else {
-				if (patternId == ValuePatternIdentifiers.Pattern.Id
-					|| patternId == TextPatternIdentifiers.Pattern.Id)
-					return this;
-			}
-			return null;
-		}
-
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return textboxbase.Multiline ? ControlType.Document.Id : ControlType.Edit.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return textboxbase.Multiline ? "document" : "edit";
-			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) {
-				// TODO: We are using TabIndex to evaluate whether the previous control
-				// is Label (that way we know if this label is associated to the TextBox.
-				// Right?)
-				if (textboxbase.Parent != null) {
-					Label associatedLabel = textboxbase.Parent.GetNextControl (textboxbase, true) as Label;
-					if (associatedLabel != null)
-						return associatedLabel;
-				}
-				return null;
-			} /*else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id) {
-				TextBox textBox = textboxbase as TextBox;
-				if (textBox != null)
-					return (textBox.UseSystemPasswordChar || (int) textBox.PasswordChar != 0);
-				else
-					return null;
-			} */else
+			if (propertyId == AutomationElementIdentifiers.IsTextPatternAvailableProperty.Id)
+				return IsBehaviorEnabled (TextPatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty.Id)
+				return false;
+			else
 				return base.GetPropertyValue (propertyId);
 		}
-		
-#endregion
-		
-//#region IValueProvider Members
-//		
-//		public bool IsReadOnly {
-//			get { return textboxbase.ReadOnly; }
-//		}
-//
-//		public string Value {
-//			get { return textboxbase.Text; }
-//		}
-//
-//		public void SetValue (string value)
-//		{
-//			if (IsReadOnly)
-//				throw new ElementNotEnabledException ();
-//
-//			textboxbase.Text = value;
-//		}
-//		
-//#endregion
-		
-//#region ITextProvider Members
-//		
-//		//TODO: We should connect the events to update this.text_range_provider?
-//		public ITextRangeProvider DocumentRange {
-//			get { 
-//				if (text_range_provider == null)
-//					text_range_provider = new TextRangeProvider (this, textboxbase); 
-//				return text_range_provider;
-//			}
-//		}
-//		
-//		public SupportedTextSelection SupportedTextSelection {
-//			get { return SupportedTextSelection.Single; }
-//		}
-//
-//		public ITextRangeProvider[] GetSelection ()
-//		{
-//			if (SupportedTextSelection == SupportedTextSelection.None)
-//				throw new InvalidOperationException ();
-//				
-//			//TODO: Return null when system cursor is not present, how to?
-//
-//			return new ITextRangeProvider [] { 
-//				new TextRangeProvider (this, textboxbase) };
-//		}
-//		
-//		public ITextRangeProvider[] GetVisibleRanges ()
-//		{
-//			throw new NotImplementedException ();
-//		}
-//		
-//		public ITextRangeProvider RangeFromChild (IRawElementProviderSimple childElement) 
-//		{
-//			throw new NotImplementedException ();
-//		}
-//		
-//		public ITextRangeProvider RangeFromPoint (Point screenLocation)
-//		{
-//			throw new NotImplementedException ();
-//		}
-//		
-//#endregion		
-		
-#region IScrollProvider Members
-		
-		public bool HorizontallyScrollable { 
-			get { throw new NotImplementedException (); }
-		}
-		
-		public double HorizontalScrollPercent { 
-			get { throw new NotImplementedException (); }
-		}
-		
-		public double HorizontalViewSize { 
-			get { throw new NotImplementedException (); }
-		}
-		
-		public bool VerticallyScrollable { 
-			get { throw new NotImplementedException (); }
-		}
-		
-		public double VerticalScrollPercent { 
-			get { throw new NotImplementedException (); }
-		}
-		
-		public double VerticalViewSize {
-			get { throw new NotImplementedException (); }
-		}
 
-		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		public void SetScrollPercent (double horizontalPercent, double verticalPercent) 
-		{
-			throw new NotImplementedException ();
-		}
-		
-#endregion
+		#endregion
 
+		#region Protected section
+		
+		protected TextBoxBase textboxbase;
 
+		#endregion
+		
 	}
 
 }

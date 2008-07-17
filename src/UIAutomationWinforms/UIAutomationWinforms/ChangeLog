@@ -1,3 +1,17 @@
+2008-07-17  Mario Carrion <mcarrion@novell.com>
+
+	* Makefile.am, Mono.UIAutomation.Winforms.mdp: Updated file added.
+	* Mono.UIAutomation.Winforms.Behaviors/TextBoxScrollProviderBehavior.cs: 
+	File added.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Updated to follow
+	coding guidelines: private field providerBehaviors renamed to 
+	provider_behaviors.
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs,
+	Mono.UIAutomation.Winforms.Behaviors/TextBoxTextProviderBehavior.cs,
+	Mono.UIAutomation.Winforms.Behaviors/TextBoxValueProviderBehavior.cs,
+	Mono.UIAutomation.Winforms/TextBoxProvider.cs: Removed commented code.
+	Updated to follow coding guidelines.
+
 2008-07-16  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Navigation/ChildNavigation.cs:

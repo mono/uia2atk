@@ -39,37 +39,37 @@ namespace Mono.UIAutomation.Winforms
 	internal abstract class SimpleControlProvider : IRawElementProviderSimple
 	{
 		
-#region Private Fields
+		#region Private Fields
 
 		private Control control;
 		private Dictionary<ProviderEventType, IConnectable> events;
-		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
+		private Dictionary<AutomationPattern, IProviderBehavior> provider_behaviors;
 		private int runtime_id;
 
-#endregion
+		#endregion
 		
-#region Protected Fields
+		#region Protected Fields
 		
 		protected INavigation navigation;
 		
-#endregion
+		#endregion
 		
-#region Constructors
+		#region Constructors
 		
 		protected SimpleControlProvider (Control control)
 		{
 			this.control = control;
 			
 			events = new Dictionary<ProviderEventType,IConnectable> ();
-			providerBehaviors =
+			provider_behaviors =
 				new Dictionary<AutomationPattern,IProviderBehavior> ();
 			
 			runtime_id = -1;
 		}
 		
-#endregion
+		#endregion
 		
-#region Public Properties
+		#region Public Properties
 		
 		public virtual Control Control {
 			get { return control; }
@@ -85,9 +85,9 @@ namespace Mono.UIAutomation.Winforms
 			set { navigation = value; }
 		}
 		
-#endregion
+		#endregion
 		
-#region Public Methods
+		#region Public Methods
 
 		public virtual void InitializeEvents ()
 		{
@@ -104,20 +104,19 @@ namespace Mono.UIAutomation.Winforms
 //			          new StructureChangedEvent (this));
 		}
 		
-		//TODO: I'm still wondering about the right name for this method
 		public virtual void Terminate ()
 		{
 			if (Control != null) {
 				foreach (IConnectable strategy in events.Values)
 				    strategy.Disconnect (Control);
-				foreach (IProviderBehavior behavior in providerBehaviors.Values)
+				foreach (IProviderBehavior behavior in provider_behaviors.Values)
 					behavior.Disconnect (Control);
 			}
 
 			events.Clear ();
-			providerBehaviors.Clear ();
+			provider_behaviors.Clear ();
 			
-			//TODO: Terminate Navigation??
+			//TODO: Terminate Navigation?
 		}
 
 		public void SetEvent (ProviderEventType type, IConnectable strategy)
@@ -137,21 +136,21 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-#endregion
+		#endregion
 
-#region Protected Methods
+		#region Protected Methods
 		
 		protected void SetBehavior (AutomationPattern pattern, IProviderBehavior behavior)
 		{
 			IProviderBehavior oldBehavior;
-			if (providerBehaviors.TryGetValue (pattern, out oldBehavior) == true) {
+			if (provider_behaviors.TryGetValue (pattern, out oldBehavior) == true) {
 				if (Control != null)
 					oldBehavior.Disconnect (Control);
-				providerBehaviors.Remove (pattern);
+				provider_behaviors.Remove (pattern);
 			}
 			
 			if (behavior != null) {
-				providerBehaviors [pattern] = behavior;
+				provider_behaviors [pattern] = behavior;
 				if (Control != null)
 					behavior.Connect (Control);
 			}
@@ -160,7 +159,7 @@ namespace Mono.UIAutomation.Winforms
 		protected IProviderBehavior GetBehavior (AutomationPattern pattern)
 		{
 			IProviderBehavior behavior;
-			if (providerBehaviors.TryGetValue (pattern, out behavior))
+			if (provider_behaviors.TryGetValue (pattern, out behavior))
 				return behavior;
 			
 			return null;
@@ -169,17 +168,18 @@ namespace Mono.UIAutomation.Winforms
 		protected IEnumerable<IProviderBehavior> ProviderBehaviors
 		{
 			get {
-				return providerBehaviors.Values;
+				return provider_behaviors.Values;
 			}
 		}
 		
 		protected bool IsBehaviorEnabled (AutomationPattern pattern) 
 		{
-			return providerBehaviors.ContainsKey (pattern);
+			return provider_behaviors.ContainsKey (pattern);
 		}
-#endregion
 		
-#region IRawElementProviderSimple Members
+		#endregion
+		
+		#region IRawElementProviderSimple: Specializations
 	
 		// TODO: Get this used in all base classes. Consider refactoring
 		//       so that *all* pattern provider behaviors are dynamically
@@ -253,6 +253,6 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-#endregion
+		#endregion
 	}
 }

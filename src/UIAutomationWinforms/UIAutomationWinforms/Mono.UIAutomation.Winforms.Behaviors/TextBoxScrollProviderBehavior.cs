@@ -24,7 +24,6 @@
 // 
 
 using System;
-using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
@@ -32,13 +31,13 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
-	internal class TextBoxTextProviderBehavior 
-		: ProviderBehavior, ITextProvider
+	internal class TextBoxScrollProviderBehavior 
+		: ProviderBehavior, IScrollProvider
 	{
 		
 		#region Constructor
 		
-		public TextBoxTextProviderBehavior (FragmentControlProvider provider)
+		public TextBoxScrollProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
 		}
@@ -48,82 +47,65 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		#region ProviderBehavior: Specialization
 		
 		public override AutomationPattern ProviderPattern { 
-			get { return TextPatternIdentifiers.Pattern; }
+			get { return ScrollPatternIdentifiers.Pattern; }
 		}
-		
+
 		public override void Connect (Control control)
 		{
-		}
+		}		
 		
 		public override void Disconnect (Control control)
 		{
 		}
 
 		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id) {
-				TextBox textbox = Provider.Control as TextBox;
-				if (textbox != null)
-					return (textbox.UseSystemPasswordChar || (int) textbox.PasswordChar != 0);
-				else
-					return null;
-			} else
-					return base.GetPropertyValue (propertyId);
+		{			
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Document.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "document";
+			else
+				return null;
 		}
-		
 		
 		#endregion
 
-		#region ITextProvider Members
+		#region IScrollProvider: Specialization
 		
-		//TODO: We should connect the events to update this.text_range_provider?
-		public ITextRangeProvider DocumentRange {
-			get { 
-				if (text_range_provider == null)
-					text_range_provider = new TextRangeProvider (this, 
-					                                             (TextBoxBase) Provider.Control); 
-				return text_range_provider;
-			}
+		public bool HorizontallyScrollable { 
+			get { throw new NotImplementedException (); }
 		}
 		
-		public SupportedTextSelection SupportedTextSelection {
-			get { return SupportedTextSelection.Single; }
+		public double HorizontalScrollPercent { 
+			get { throw new NotImplementedException (); }
+		}
+		
+		public double HorizontalViewSize { 
+			get { throw new NotImplementedException (); }
+		}
+		
+		public bool VerticallyScrollable { 
+			get { throw new NotImplementedException (); }
+		}
+		
+		public double VerticalScrollPercent { 
+			get { throw new NotImplementedException (); }
+		}
+		
+		public double VerticalViewSize {
+			get { throw new NotImplementedException (); }
 		}
 
-		public ITextRangeProvider[] GetSelection ()
-		{
-			if (SupportedTextSelection == SupportedTextSelection.None)
-				throw new InvalidOperationException ();
-				
-			//TODO: Return null when system cursor is not present, how to?
-
-			return new ITextRangeProvider [] { 
-				new TextRangeProvider (this, (TextBoxBase) Provider.Control) };
-		}
-		
-		public ITextRangeProvider[] GetVisibleRanges ()
+		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount)
 		{
 			throw new NotImplementedException ();
 		}
 		
-		public ITextRangeProvider RangeFromChild (IRawElementProviderSimple childElement) 
-		{
-			throw new NotImplementedException ();
-		}
-		
-		public ITextRangeProvider RangeFromPoint (Point screenLocation)
+		public void SetScrollPercent (double horizontalPercent, double verticalPercent) 
 		{
 			throw new NotImplementedException ();
 		}
 		
 		#endregion
-		
-		
-		#region Private section
-		
-		private ITextRangeProvider text_range_provider;
-		
-		#endregion		
-		
 	}
 }

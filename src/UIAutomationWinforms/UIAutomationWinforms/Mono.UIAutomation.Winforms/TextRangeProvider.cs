@@ -40,7 +40,7 @@ namespace Mono.UIAutomation.Winforms
 	internal class TextRangeProvider : ITextRangeProvider
 	{
 
-#region Constructors
+		#region Constructors
 
 		public TextRangeProvider (ITextProvider provider, TextBoxBase textboxbase)
 		{
@@ -50,25 +50,25 @@ namespace Mono.UIAutomation.Winforms
 			normalizer = new TextNormalizer (textboxbase);
 		}
 		
-#endregion
+		#endregion
 		
-#region Public Properties 
-
-		public ITextProvider TextProvider {
-			get { return provider; }
+		#region Public Properties 
+		
+		public int EndPoint {
+			get { return normalizer.EndPoint; }
 		}
 		
 		public int StartPoint {
 			get { return normalizer.StartPoint; }
 		}
-		
-		public int EndPoint {
-			get { return normalizer.EndPoint; }
-		}
 
-#endregion
+		public ITextProvider TextProvider {
+			get { return provider; }
+		}		
 
-#region ITextRangeProvider Members
+		#endregion
+
+		#region ITextRangeProvider Members
 
 		public void AddToSelection ()
 		{
@@ -235,15 +235,15 @@ namespace Mono.UIAutomation.Winforms
 			textboxbase.SelectionLength = System.Math.Abs (normalizer.EndPoint - normalizer.StartPoint);
 		}
 		
-#endregion
+		#endregion
 
-#region Private Members
+		#region Private Members
 
+		private TextNormalizer normalizer;
 		private ITextProvider provider;
 		private TextBoxBase textboxbase;
-		private TextNormalizer normalizer;
 
-#endregion
+		#endregion
 
 	}
 }

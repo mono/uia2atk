@@ -58,6 +58,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBarGridProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TextBoxScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBoxTextProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBoxValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationBoundingRectanglePropertyEvent.cs \

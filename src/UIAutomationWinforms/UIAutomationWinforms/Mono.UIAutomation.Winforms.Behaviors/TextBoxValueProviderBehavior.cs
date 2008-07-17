@@ -35,20 +35,27 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		: ProviderBehavior, IValueProvider
 	{
 
-#region Constructor
+		#region Constructor
 		
 		public TextBoxValueProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
 		}
 
-#endregion
+		#endregion
 		
-#region ProviderBehavior: Specialization
-		
+		#region ProviderBehavior: Specialization
+
+		public override AutomationPattern ProviderPattern { 
+			get { return ValuePatternIdentifiers.Pattern; }
+		}
+
+		public override void Connect (Control control)
+		{
+		}
+
 		public override void Disconnect (Control control)
 		{
-//			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, null);
 		}
 
 		public override object GetPropertyValue (int propertyId)
@@ -64,22 +71,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			else
 				return null;
 		}
-
-		public override void Connect (Control control)
-		{
-//			linklabel = (LinkLabel) control;
-//			
-//			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-//			          new LinkLabelInvokePatternInvokedEvent (Provider));
-		}
 		
-		public override AutomationPattern ProviderPattern { 
-			get { return ValuePatternIdentifiers.Pattern; }
-		}
-		
-#endregion
+		#endregion
 
-#region IValueProvider: Specialization
+		#region IValueProvider: Specialization
 		
 		public bool IsReadOnly {
 			get { return ((TextBoxBase) Provider.Control).ReadOnly; }
@@ -97,7 +92,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			Provider.Control.Text = value;
 		}
 		
-#endregion
+		#endregion
 
 	}
 }
