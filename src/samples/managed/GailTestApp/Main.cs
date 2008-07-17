@@ -36,22 +36,29 @@ namespace GailTestApp
 		private static void Main (string[] args)
 		{
 			Start (false);
-			Application.Run ();
 		}
 		
-		private static void Start (bool runMainLoopInNewThread)
+		public static void Start (bool runMainLoopInNewThread)
 		{
-			Application.Init ();
-			win = new MainWindow ();
-			win.Show ();
-			
 			if (runMainLoopInNewThread) {
-				new Thread (new ThreadStart (Application.Run)).Start ();
+				
+				new Thread (new ThreadStart (Run)).Start ();
 				
 				//little hack (it doesn't matter, it's just for the nunit tests) in
 				//order to wait for Gtk initialization
-				Thread.Sleep (6000);
+				Thread.Sleep (5000);
 			}
+			else
+			{
+				Run ();
+			}
+		}
+		
+		private static void Run () {
+			Application.Init ();
+			win = new MainWindow ();
+			win.Show ();
+			Application.Run ();
 		}
 		
 		public static Gtk.Label GiveMeARealLabel ()
