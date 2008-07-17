@@ -1,5 +1,9 @@
 2008-07-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Null instead of String.Empty (according to Gail).
+
+2008-07-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs, BasicWidgetType.cs: More tests (children and role of
 	  children, and some other improvements).
 
