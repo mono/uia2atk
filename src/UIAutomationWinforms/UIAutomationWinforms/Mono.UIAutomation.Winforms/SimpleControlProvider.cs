@@ -234,8 +234,39 @@ namespace Mono.UIAutomation.Winforms
 					Rect rectangle = (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 					return new Point (rectangle.X, rectangle.Y);
 				}
-			}
-			return null;
+			} //TODO: Add IsDockPatternAvailableProperty, IsGridItemPatternAvailableProperty, IsTableItemPatternAvailableProperty
+			else if (propertyId == AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty.Id)
+				return IsBehaviorEnabled (ExpandCollapsePatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id)
+				return IsBehaviorEnabled (GridPatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsInvokePatternAvailableProperty.Id)
+				return IsBehaviorEnabled (InvokePatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty.Id)
+				return IsBehaviorEnabled (MultipleViewPatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty.Id)
+				return IsBehaviorEnabled (RangeValuePatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsScrollItemPatternAvailableProperty.Id)
+				return IsBehaviorEnabled (ScrollItemPatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsScrollPatternAvailableProperty.Id)
+				return IsBehaviorEnabled (ScrollPatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty.Id)
+				return IsBehaviorEnabled (SelectionItemPatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsSelectionPatternAvailableProperty.Id)
+				return IsBehaviorEnabled (SelectionPatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)
+				return IsBehaviorEnabled (TablePatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsTextPatternAvailableProperty.Id)
+				return IsBehaviorEnabled (TextPatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsTogglePatternAvailableProperty.Id)
+				return IsBehaviorEnabled (TogglePatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsTransformPatternAvailableProperty.Id)
+				return IsBehaviorEnabled (TransformPatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsValuePatternAvailableProperty.Id)
+				return IsBehaviorEnabled (ValuePatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsWindowPatternAvailableProperty.Id)
+				return IsBehaviorEnabled (WindowPatternIdentifiers.Pattern);
+			else
+				return null;
 		}
 
 		public virtual IRawElementProviderSimple HostRawElementProvider {
@@ -248,9 +279,7 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		public virtual ProviderOptions ProviderOptions {
-			get {
-				return ProviderOptions.ServerSideProvider;
-			}
+			get { return ProviderOptions.ServerSideProvider; }
 		}
 
 		#endregion

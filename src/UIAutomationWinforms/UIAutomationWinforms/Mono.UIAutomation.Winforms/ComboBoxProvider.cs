@@ -39,7 +39,7 @@ namespace Mono.UIAutomation.Winforms
 	internal class ComboBoxProvider : ListProvider
 	{
 
-#region Constructor
+		#region Constructor
 		
 		public ComboBoxProvider (ComboBox combobox) : base (combobox)
 		{
@@ -52,9 +52,9 @@ namespace Mono.UIAutomation.Winforms
 			listbox_provider.InitializeChildControlStructure ();
 		}
 		
-#endregion
+		#endregion
 		
-#region Public Properties
+		#region Public Properties
 
 		public override INavigation Navigation {
 			get { 
@@ -65,9 +65,9 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-#endregion
+		#endregion
 		
-#region Public Methods
+		#region Public Methods
 		
 		public override void Terminate ()
 		{
@@ -91,9 +91,9 @@ namespace Mono.UIAutomation.Winforms
 			return button_provider;
 		}
 		
-#endregion		
+		#endregion		
 		
-#region SimpleControlProvider: Specializations
+		#region SimpleControlProvider: Specializations
 
 		public override object GetPropertyValue (int propertyId)
 		{
@@ -103,26 +103,22 @@ namespace Mono.UIAutomation.Winforms
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "combo box";
-			else if (propertyId == AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty.Id)
-				return IsBehaviorEnabled (ExpandCollapsePatternIdentifiers.Pattern);
-			else if (propertyId == AutomationElementIdentifiers.IsValuePatternAvailableProperty.Id)
-				return IsBehaviorEnabled (ValuePatternIdentifiers.Pattern);
 			else
 				return base.GetPropertyValue (propertyId);
 		}
-		
-#endregion		
 
-#region FragmentRootControlProvider: Specializations
+		#endregion		
+
+		#region FragmentRootControlProvider: Specializations
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
-#endregion
+		#endregion
 		
-#region ListProvider: Specializations
+		#region ListProvider: Specializations
 		
 		public override bool SupportsMultipleSelection { 
 			get { return false; } 
@@ -201,9 +197,9 @@ namespace Mono.UIAutomation.Winforms
 			UpdateBehaviors ();
 		}
 
-#endregion
+		#endregion
 
-#region Private Methods
+		#region Private Methods
 		
 		private void OnDropDownStyleChanged (object sender, EventArgs args)
 		{
@@ -291,26 +287,20 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-#endregion
-		
-#region Private Fields
+		#endregion
+			
+		#region Private Fields
 		
 		private ComboBox combobox_control;
 		private ComboBoxProvider.ComboBoxButtonProvider button_provider;
 		private ComboBoxProvider.ComboBoxListBoxProvider listbox_provider;
 		private TextBoxProvider textbox_provider;
-		//private ComboBoxProvider.ComboBoxEditProvider edit_provider;
 		
-#endregion		
-
-#region Internal Class: Edit provider
-
-		//TODO: Add Edit Provider internal class
+		#endregion
 		
-#endregion
+		#region Internal Class: ListBox provider
 		
-#region Internal Class: ListBox provider
-		
+		//TODO: This class missing ScrollBar Navigation.
 		internal class ComboBoxListBoxProvider : ListProvider
 		{
 	
@@ -407,8 +397,6 @@ namespace Mono.UIAutomation.Winforms
 	
 				for (int index = 0; index < combobox_control.Items.Count; index++)
 					GenerateChildAddedEvent (index);
-	
-				//TODO: Initiailze ScrollBars
 			}
 
 			private ComboBox combobox_control;
@@ -416,9 +404,9 @@ namespace Mono.UIAutomation.Winforms
 
 		}
 		
-#endregion
+		#endregion
 
-#region Internal Class: Button provider
+		#region Internal Class: Button provider
 
 		internal class ComboBoxButtonProvider : FragmentControlProvider
 		{
@@ -441,7 +429,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-#endregion
+		#endregion
 		
 	}
 }

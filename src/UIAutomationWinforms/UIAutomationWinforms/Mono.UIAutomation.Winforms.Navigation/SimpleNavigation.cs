@@ -34,16 +34,16 @@ namespace Mono.UIAutomation.Winforms.Navigation
 	internal class SimpleNavigation : INavigation
 	{
 
-#region Constructor
+		#region Constructor
 		
 		public SimpleNavigation (IRawElementProviderSimple provider)
 		{
 			this.simple_provider = (SimpleControlProvider) provider;
 		}
 
-#endregion
+		#endregion
 		
-#region INavigation Interface
+		#region INavigation Interface
 		
 		public virtual IRawElementProviderSimple Provider {
 			get { return simple_provider; }
@@ -63,9 +63,13 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		public virtual IRawElementProviderFragment GetPreviousSiblingProvider (NavigationChain chain)
 		{
-			if (chain.Contains (this) == true)
-				return (IRawElementProviderFragment) chain.Find (this).Previous.Value.Provider;
-			else
+			if (chain.Contains (this) == true) {
+				LinkedListNode<INavigation> previousNode = chain.Find (this).Previous;
+				if (previousNode == null)
+					return null;
+				else
+					return (IRawElementProviderFragment) previousNode.Value.Provider;
+			} else
 				return null;
 		}
 
@@ -114,12 +118,12 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				return null;
 		}
 
-#endregion
+		#endregion
 		
-#region Private Fields
+		#region Private Fields
 
 		private SimpleControlProvider simple_provider;
 		
-#endregion
+		#endregion
 	}
 }

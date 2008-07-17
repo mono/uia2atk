@@ -36,7 +36,8 @@ namespace Mono.UIAutomation.Winforms
 	internal class ListItemProvider : FragmentControlProvider
 	{
 
-#region Constructors
+		#region Constructors
+
 		public ListItemProvider (ListProvider provider, ListControl control) 
 			: base (control)
 		{
@@ -45,14 +46,13 @@ namespace Mono.UIAutomation.Winforms
 			
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
 			             new ListItemSelectionProviderBehavior (this));	
-
 			SetBehavior (ScrollItemPatternIdentifiers.Pattern,
 			             new ListItemScrollProviderBehavior (this));
 		}
 
-#endregion
+		#endregion
 		
-#region IRawElementProviderSimple Members
+		#region IRawElementProviderSimple Members
 		
 		public override object GetPropertyValue (int propertyId)
 		{
@@ -66,16 +66,13 @@ namespace Mono.UIAutomation.Winforms
 				return ListControl.Focused && Index == ListControl.SelectedIndex;
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return ListProvider.GetPropertyValue (propertyId);
-			//TODO: AutomationElementIdentifiers.IsOffscreenProperty.Id			
-			//TODO: AutomationElementIdentifiers.BoundingRectangleProperty.Id
-			//TODO: AutomationElementIdentifiers.ClickablePointProperty.Id
 			else
 				return base.GetPropertyValue (propertyId);
 		}
+
+		#endregion
 		
-#endregion
-		
-#region Public Methods
+		#region Public Methods
 
 		public override void InitializeEvents ()
 		{
@@ -84,9 +81,9 @@ namespace Mono.UIAutomation.Winforms
 			name_property = ListProvider.GetItemName (this);
 		}
 		
-#endregion
+		#endregion
 
-#region Public properties
+		#region Public Properties
 
 		public int Index {
 			get { return ListProvider.IndexOfItem (this); }
@@ -109,23 +106,23 @@ namespace Mono.UIAutomation.Winforms
 			get { return list_provider; }
 		}
 
-#endregion		
+		#endregion	
 
-#region IRawElementProviderFragment Interface 
+		#region IRawElementProviderFragment Interface 
 
 		public override IRawElementProviderFragmentRoot FragmentRoot {
 			get { return ListProvider; }			
 		}
 
-#endregion		
+		#endregion		
 		
-#region Private Fields
+		#region Private Fields
 
 		private ListControl list_control;
 		private ListProvider list_provider;
 		private string name_property;
 		
-#endregion
+		#endregion
 		
 	}
 }

@@ -37,11 +37,10 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 
-	//TODO: Should support: MultipleView Pattern and Grid Pattern?
 	internal class ListBoxProvider : ListProvider
 	{
 		
-#region Constructor 
+		#region Constructor 
 
 		public ListBoxProvider (ListBox listbox) : base (listbox)
 		{
@@ -50,9 +49,9 @@ namespace Mono.UIAutomation.Winforms
 			InitializeScrollBehavior ();
 		}
 
-#endregion
+		#endregion
 		
-#region Public Properties
+		#region Public Properties
 		
 		public override INavigation Navigation {
 			get { 
@@ -63,27 +62,25 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public bool HasHorizontalScrollbar
-		{
+		public bool HasHorizontalScrollbar {
 			get { return hscrollbar.Visible == true && hscrollbar.Enabled == true; }
 		}
 		
-		public bool HasVerticalScrollbar
-		{
+		public bool HasVerticalScrollbar {
 			get { return vscrollbar.Visible == true && vscrollbar.Enabled == true; }
 		}		
 		
-#endregion
+		#endregion
 		
-#region Public Events
+		#region Public Events
 		
 		public event ScrollbarNavigableEventHandler HScrollbarNavigationUpdated;
 		
 		public event ScrollbarNavigableEventHandler VScrollbarNavigationUpdated;
 		
-#endregion
+		#endregion
 		
-#region Public Methods
+		#region Public Methods
 		
 		public override void Terminate ()
 		{
@@ -102,39 +99,34 @@ namespace Mono.UIAutomation.Winforms
 				? hscrollbar_provider : vscrollbar_provider;
 		}
 		
-#endregion
+		#endregion
 		
-#region SimpleControlProvider: Specializations
+		#region SimpleControlProvider: Specializations
 
 		public override object GetPropertyValue (int propertyId)
 		{
-			//TODO: Include: HelpTextProperty, LabeledByProperty, NameProperty
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.List.Id;
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "list";
-			else if (propertyId == AutomationElementIdentifiers.IsScrollPatternAvailableProperty.Id)
-				return IsBehaviorEnabled (ScrollPatternIdentifiers.Pattern);
-			else if (propertyId == AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)
-				return false;
 			else
 				return base.GetPropertyValue (propertyId);
 		}
 		
-#endregion
+		#endregion
 		
-#region FragmentControlProvider: Specializations
+		#region FragmentControlProvider: Specializations
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 		
-#endregion
+		#endregion
 		
-#region FragmentRootControlProvider: Specializations
+		#region FragmentRootControlProvider: Specializations
 		
 		public override void InitializeChildControlStructure ()
 		{
@@ -171,9 +163,9 @@ namespace Mono.UIAutomation.Winforms
 				vscrollbar_provider.Terminate ();
 		}
 
-#endregion
+		#endregion
 		
-#region ListProvider: Specializations
+		#region ListProvider: Specializations
 		
 		public override bool SupportsMultipleSelection { 
 			get { 
@@ -234,9 +226,9 @@ namespace Mono.UIAutomation.Winforms
 			return listbox_control.Items;
 		}
 		
-#endregion
+		#endregion
 		
-#region Private Methods: StructureChangedEvent
+		#region Private Methods: StructureChangedEvent
 		
 		private void OnScrollbarNavigationUpdated (object container,
 		                                           ScrollBar scrollbar,
@@ -282,9 +274,9 @@ namespace Mono.UIAutomation.Winforms
 			                                   this);
 		}
 		
-#endregion
+		#endregion
 
-#region Private Methods: Scroll Pattern
+		#region Private Methods: Scroll Pattern
 
 		private void InitializeScrollBehavior () 
 		{
@@ -432,9 +424,9 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-#endregion
+		#endregion
 		
-#region Private Fields
+		#region Private Fields
 		
 		private HScrollBar hscrollbar;
 		private ListBox listbox_control;
@@ -443,9 +435,9 @@ namespace Mono.UIAutomation.Winforms
 		private ScrollBarProvider hscrollbar_provider;
 		private ScrollBarProvider vscrollbar_provider;
 		
-#endregion
+		#endregion
 
-#region Internal Class: ScrollBar provider
+		#region Internal Class: ScrollBar provider
 
 		internal class ListBoxScrollBarProvider : ScrollBarProvider
 		{
@@ -468,7 +460,7 @@ namespace Mono.UIAutomation.Winforms
 			private string name;
 		}
 		
-#endregion
+		#endregion
 	}
 
 }

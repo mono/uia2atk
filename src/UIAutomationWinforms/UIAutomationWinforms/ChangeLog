@@ -1,5 +1,18 @@
 2008-07-17  Mario Carrion <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs: Fixed bug
+	when getting previous sibling and current sibling is first.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs,
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Removed 
+	IsPATTERNAvaliableProperty, base class handles it. Removed commented
+	code.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Added 
+	IsPATTERNAvaliableProperty to GetPropertyValue.
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Removed commented 
+	code. Code beautyfying.
+
+2008-07-17  Mario Carrion <mcarrion@novell.com>
+
 	* Makefile.am, Mono.UIAutomation.Winforms.mdp: Updated file added.
 	* Mono.UIAutomation.Winforms.Behaviors/TextBoxScrollProviderBehavior.cs: 
 	File added.
