@@ -1,5 +1,20 @@
 2008-07-17  Mario Carrion <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.Navigation/ListBoxNavigation.cs: Navigate
+	method overridden when requesting LastChild. Using 
+	provider.ChildrenClear event to update navigation.
+	* Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs: Removed
+	not needed private field provider.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Overriding methods:
+	GetItemsListProvider, GetItemProvider, IndexOfItem, RemoveItemAt.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Setting virtual following
+	methods: GetItemProvider, IndexOfItem and RemoveItemAt. OnChildrenClear
+	added. New protected method added: GenerateChildrenReorderedEvent.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Methods added: 
+	OnMultilineChanged, UpdateBehaviors. Logic added to update behaviors.
+
+2008-07-17  Mario Carrion <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs: Fixed bug
 	when getting previous sibling and current sibling is first.
 	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs,

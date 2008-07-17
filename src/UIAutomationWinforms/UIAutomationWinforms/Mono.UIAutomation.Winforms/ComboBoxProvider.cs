@@ -143,7 +143,7 @@ namespace Mono.UIAutomation.Winforms
 		public override string GetItemName (ListItemProvider item)
 		{
 			if (ContainsItem (item) == true)
-				return (combobox_control).Items [item.Index].ToString ();
+				return combobox_control.Items [item.Index].ToString ();
 			else
 				return string.Empty;
 		}
@@ -195,6 +195,11 @@ namespace Mono.UIAutomation.Winforms
 		public override void InitializeChildControlStructure ()
 		{
 			UpdateBehaviors ();
+		}
+		
+		protected override ListProvider GetItemsListProvider ()
+		{
+			return listbox_provider;
 		}
 
 		#endregion
@@ -329,14 +334,19 @@ namespace Mono.UIAutomation.Winforms
 					return base.GetPropertyValue (propertyId);
 			}
 			
-			public new ListItemProvider GetItemProvider (int index)
+			public override ListItemProvider GetItemProvider (int index)
 			{
 				return combobox_provider.GetItemProvider (index);
 			}
-			
-			public new int IndexOfItem (ListItemProvider item)
+					
+			public override int IndexOfItem (ListItemProvider item)
 			{
 				return combobox_provider.IndexOfItem (item);
+			}
+			
+			public override ListItemProvider RemoveItemAt (int index)
+			{
+				return combobox_provider.RemoveItemAt (index);
 			}
 			
 			public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)

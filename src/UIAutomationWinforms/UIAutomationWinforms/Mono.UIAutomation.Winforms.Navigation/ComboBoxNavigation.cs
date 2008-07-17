@@ -215,7 +215,6 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				return (ComboBoxProvider.ComboBoxListBoxProvider) listbox_provider;
 			}
 
-			private ComboBoxProvider provider;
 			private FragmentRootControlProvider listbox_provider;
 		}	
 		

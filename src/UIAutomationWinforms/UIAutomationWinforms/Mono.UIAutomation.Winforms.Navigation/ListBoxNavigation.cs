@@ -64,6 +64,14 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			
 			DisconnectNavigationEvents ();
 		}
+		
+		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
+		{
+			if (direction == NavigateDirection.LastChild)
+				return provider.GetItemProvider (provider.ItemsCount - 1);
+			else
+				return base.Navigate (direction);
+		}
 
 #endregion
 		
@@ -229,6 +237,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				this.provider = provider;
 				
 				provider.ChildRemoved += new StructureChangeEventHandler (OnChildRemoved);
+				provider.ChildrenClear += new EventHandler (OnChildrenClear);
 			}
 			
 			public override void Terminate ()
@@ -239,6 +248,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				}
 				
 				provider.ChildRemoved -= new StructureChangeEventHandler (OnChildRemoved);
+				provider.ChildrenClear -= new EventHandler (OnChildrenClear);
 			}			
 			
 			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
@@ -268,6 +278,12 @@ namespace Mono.UIAutomation.Winforms.Navigation
 					first_item_provider = null;
 					navigation = null;
 				}
+			}
+			
+			private void OnChildrenClear (object sender, EventArgs args)
+			{
+				first_item_provider = null;
+				navigation = null;
 			}
 
 			private INavigation navigation;

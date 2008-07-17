@@ -44,13 +44,16 @@ namespace Mono.UIAutomation.Winforms
 			
 			SetBehavior (TextPatternIdentifiers.Pattern,
 			             new TextBoxTextProviderBehavior (this));
+			
+			textboxbase.MultilineChanged += new EventHandler (OnMultilineChanged);
+			UpdateBehaviors ();
 		}
 
 		#endregion
 
 		#region Public Methods
 		
-		public virtual object GetPropertyValue (int propertyId)
+		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.IsTextPatternAvailableProperty.Id)
 				return IsBehaviorEnabled (TextPatternIdentifiers.Pattern);
@@ -59,7 +62,38 @@ namespace Mono.UIAutomation.Winforms
 			else
 				return base.GetPropertyValue (propertyId);
 		}
+		
+		public override void Terminate ()
+		{
+			base.Terminate (); 
+			
+			textboxbase.MultilineChanged -= new EventHandler (OnMultilineChanged);
+		}
 
+		#endregion
+		
+		#region Private Methods
+		
+		private void OnMultilineChanged (object sender, EventArgs args)
+		{
+			UpdateBehaviors ();
+		}
+		
+		private void UpdateBehaviors ()
+		{
+			if (textboxbase.Multiline == true) {
+				SetBehavior (ScrollPatternIdentifiers.Pattern,
+				             new TextBoxScrollProviderBehavior (this));
+				SetBehavior (ValuePatternIdentifiers.Pattern,
+				             null);
+			} else {
+				SetBehavior (ScrollPatternIdentifiers.Pattern,
+				             null);
+				SetBehavior (ValuePatternIdentifiers.Pattern,
+				             new TextBoxValueProviderBehavior (this));
+			}
+		}
+		
 		#endregion
 
 		#region Protected section

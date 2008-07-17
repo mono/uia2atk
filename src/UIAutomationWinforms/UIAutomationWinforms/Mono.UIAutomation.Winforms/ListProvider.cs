@@ -80,13 +80,15 @@ namespace Mono.UIAutomation.Winforms
 		
 		public event StructureChangeEventHandler ChildRemoved;
 		
+		public event EventHandler ChildrenClear;
+		
 #endregion
 		
 #region Public Methods
 		
 		public abstract bool IsItemSelected (ListItemProvider item);
 
-		public ListItemProvider GetItemProvider (int index)
+		public virtual ListItemProvider GetItemProvider (int index)
 		{
 			ListItemProvider item;
 			
@@ -94,7 +96,8 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 			else if (index >= items.Count) {
 				for (int loop = items.Count - 1; loop < index; loop++) {
-					item = new ListItemProvider (this, list_control);
+					item = new ListItemProvider (GetItemsListProvider (), 
+					                             list_control);
 					items.Add (item);
 					item.InitializeEvents ();
 				}
@@ -103,7 +106,7 @@ namespace Mono.UIAutomation.Winforms
 			return items [index];
 		}
 		
-		public int IndexOfItem (ListItemProvider item)
+		public virtual int IndexOfItem (ListItemProvider item)
 		{
 			return items.IndexOf (item);
 		}
@@ -116,7 +119,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public abstract void UnselectItem (ListItemProvider item);
 		
-		public ListItemProvider RemoveItemAt (int index)
+		public virtual ListItemProvider RemoveItemAt (int index)
 		{
 			ListItemProvider item = null;
 			
@@ -158,39 +161,67 @@ namespace Mono.UIAutomation.Winforms
 		{
 			//Items
 			try {
-			Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
-			                        GetInstanceOfObjectCollection (), 
-			                        "ChildAdded",
-			                        this, 
-			                        "OnChildAdded");
-			} catch (NotSupportedException) {}
+				Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
+				                        GetInstanceOfObjectCollection (), 
+				                        "ChildAdded",
+				                        this, 
+				                        "OnChildAdded");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ChildAdded not defined", GetType ());
+			}
 			
 			try {
-			Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
-			                        GetInstanceOfObjectCollection (), 
-			                        "ChildRemoved", 
-			                        this, 
-			                        "OnChildRemoved");
-			} catch (NotSupportedException) {}
+				Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
+				                        GetInstanceOfObjectCollection (), 
+				                        "ChildRemoved", 
+				                        this, 
+				                        "OnChildRemoved");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ChildRemoved not defined", GetType ());
+			}
+			
+			try {
+				Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
+				                        GetInstanceOfObjectCollection (),
+				                        "ChildrenClear", 
+				                        this, 
+				                        "OnChildrenClear");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ChildrenClear not defined", GetType ());
+			}
 		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
 			try {
-			Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
-			                           GetInstanceOfObjectCollection (), 
-			                           "ChildAdded",
-			                           this, 
-			                           "OnChildAdded");
-			} catch (NotSupportedException) {}
+					Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
+					                           GetInstanceOfObjectCollection (), 
+					                           "ChildAdded",
+					                           this, 
+					                           "OnChildAdded");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ChildAdded not defined", GetType ());
+			}
 			
 			try {
-			Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
-			                           GetInstanceOfObjectCollection (), 
-			                           "ChildRemoved", 
-			                           this, 
-			                           "OnChildRemoved");
-			} catch (NotSupportedException) {}
+				Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
+				                           GetInstanceOfObjectCollection (), 
+				                           "ChildRemoved", 
+				                           this, 
+				                           "OnChildRemoved");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ChildRemoved not defined", GetType ());
+			}
+
+			try {
+				Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
+				                           GetInstanceOfObjectCollection (), 
+				                           "ChildrenClear", 
+				                           this, 
+				                           "OnChildrenClear");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ChildrenClear not defined", GetType ());
+			}
 			
 			ClearItemsList ();
 		}
@@ -236,10 +267,26 @@ namespace Mono.UIAutomation.Winforms
 			if (ChildRemoved != null)
 				ChildRemoved (this, item, index);
 		}
+		
+		protected void GenerateChildrenReorderedEvent ()
+		{
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenReordered,
+			                                   this);
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+			                                   this);
+
+			if (ChildrenClear != null)
+				ChildrenClear (this, EventArgs.Empty);
+		}
 
 		protected abstract Type GetTypeOfObjectCollection ();
 		
 		protected abstract object GetInstanceOfObjectCollection ();		
+		
+		protected virtual ListProvider GetItemsListProvider ()
+		{
+			return this;
+		}
 
 #endregion
 		
@@ -253,6 +300,12 @@ namespace Mono.UIAutomation.Winforms
 		private void OnChildRemoved (object sender, int index)
 		{
 			GenerateChildRemovedEvent (index);
+		}
+		
+		private void OnChildrenClear (object sender, EventArgs args)
+		{
+			GenerateChildrenReorderedEvent ();
+			ClearItemsList ();
 		}
 		
 #endregion
