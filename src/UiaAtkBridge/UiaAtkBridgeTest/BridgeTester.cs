@@ -53,6 +53,7 @@ namespace UiaAtkBridgeTest
 			}
 			
 			MWF.ComboBox comboBox = new MWF.ComboBox ();
+			comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			foreach (string item in names)
 				comboBox.Items.Add (item);
 			

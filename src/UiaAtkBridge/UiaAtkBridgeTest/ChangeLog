@@ -1,5 +1,10 @@
 2008-07-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* BridgeTester.cs: Let's be specific, we don't support editable
+	  comboboxes yet.
+
+2008-07-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: Null instead of String.Empty (according to Gail).
 
 2008-07-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
