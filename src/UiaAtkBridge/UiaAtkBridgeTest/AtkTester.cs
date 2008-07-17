@@ -560,7 +560,7 @@ namespace UiaAtkBridgeTest
 				atkText.GetTextAtOffset (name.Length, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char5");
 			Assert.AreEqual (name.Length, startOffset, "GetTextAtOffset,Char5,so");
 			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char5,eo");
-			Assert.AreEqual (null,
+			Assert.AreEqual (String.Empty,
 				atkText.GetTextAtOffset (-1, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char6");
 			Assert.AreEqual (name.Length, startOffset, "GetTextAtOffset,Char6,so");
 			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char6,eo");
