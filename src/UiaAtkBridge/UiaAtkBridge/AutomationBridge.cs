@@ -65,6 +65,17 @@ namespace UiaAtkBridge
 		
 #endregion
 		
+#region Public Methods
+		
+		public Adapter GetAdapterForProvider (IRawElementProviderSimple provider)
+		{
+			Adapter adapter = null;
+			providerAdapterMapping.TryGetValue (provider, out adapter);
+			return adapter;
+		}
+		
+#endregion
+		
 #region IAutomationBridge Members
 		
 		public bool ClientsAreListening {
