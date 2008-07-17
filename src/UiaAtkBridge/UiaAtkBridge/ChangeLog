@@ -1,3 +1,8 @@
+2008-07-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* SelectionProviderUserHelper.cs: Guard against NRE and fix some coding
+	  style details.
+
 2008-07-17  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* AutomationBridge.cs: Add GetAdapterForProvider method.

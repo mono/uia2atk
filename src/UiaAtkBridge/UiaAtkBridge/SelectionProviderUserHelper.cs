@@ -48,15 +48,18 @@ namespace UiaAtkBridge
 		public int SelectionCount
 		{
 			get {
-				return selectionProvider.GetSelection().GetLength(0);
+				IRawElementProviderSimple[] selectedItems = selectionProvider.GetSelection ();
+				if (selectedItems == null)
+					return 0;
+				return selectedItems.Length;
 			}
 		}
 
 		public bool AddSelection (int i)
 		{
 			ISelectionItemProvider childItem = ChildItemAtIndex(i);
-				
-			if(childItem != null) {
+			
+			if (childItem != null) {
 				if(selectionProvider.CanSelectMultiple)
 					childItem.AddToSelection();
 				else
@@ -69,14 +72,14 @@ namespace UiaAtkBridge
 		public bool ClearSelection ()
 		{
 			IRawElementProviderSimple[] selectedElements = 
-				selectionProvider.GetSelection();
+				selectionProvider.GetSelection ();
 				
-			for(int i=0; i < selectedElements.GetLength(0); i++) {
+			for (int i=0; i < selectedElements.GetLength(0); i++) {
 				ISelectionItemProvider selectionItemProvider = 
 					(ISelectionItemProvider)selectedElements[i].GetPatternProvider
 						(SelectionItemPatternIdentifiers.Pattern.Id);
 				
-				if(selectionItemProvider != null) {
+				if (selectionItemProvider != null) {
 					selectionItemProvider.RemoveFromSelection();
 				}
 			}	
@@ -117,7 +120,7 @@ namespace UiaAtkBridge
 				return false;
 
 			IRawElementProviderSimple[] selectedElements = 
-				selectionProvider.GetSelection();
+				selectionProvider.GetSelection ();
 				
 			for(int i=0; i < selectedElements.GetLength(0); i++) {
 				ISelectionItemProvider selectionItemProvider = 
@@ -135,7 +138,7 @@ namespace UiaAtkBridge
 #endregion
 
 		
-		private ISelectionItemProvider ChildItemAtIndex(int i)
+		private ISelectionItemProvider ChildItemAtIndex (int i)
 		{
 			IRawElementProviderFragment child = 
 				provider.Navigate(NavigateDirection.FirstChild);
@@ -145,12 +148,12 @@ namespace UiaAtkBridge
 				child = child.Navigate(NavigateDirection.NextSibling);
 			}
 			
-			if(child != null) {
+			if (child != null) {
 				ISelectionItemProvider selectionItemProvider = 
 					(ISelectionItemProvider)provider.GetPatternProvider
 						(SelectionItemPatternIdentifiers.Pattern.Id);
 				
-				if(selectionItemProvider != null) {
+				if (selectionItemProvider != null) {
 					return selectionItemProvider;
 				}
 			}
