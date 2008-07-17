@@ -160,9 +160,9 @@ class Test(object):
       filename = filename[:dot_index] # chop off the extension
 
     control_dir =  os.path.join(Settings.log_path, filename)
-    # try to build a useful dir name that will be unique
+    # try to build a useful dir name that will be unique, not y3k compliant :)
     log_dir = os.path.join(control_dir,"%s_%s" %\
-                            (gethostname(), time.strftime("%H%M%S",\
+                            (gethostname(), time.strftime("%y%m%d%H%M%S",\
                              time.localtime())))
 
     if not os.path.exists(control_dir):

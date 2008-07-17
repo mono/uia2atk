@@ -1,4 +1,9 @@
-2008-07-16  Brian G. Merrell <bgmerrell@gmail.com>
+2008-07-17  Brian G. Merrell <bgmerrell@gmail.com>
+	
+	* drivers/local_run.py: Prefix time with a date so the folder name
+	is unique exactly 24*n hours later.
+
+2008-07-17  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/gtkcheckbutton/gtkcheckbuttonframe.py: put more information in
 	the wrapper script (i.e., this script) to simplify the test script.
