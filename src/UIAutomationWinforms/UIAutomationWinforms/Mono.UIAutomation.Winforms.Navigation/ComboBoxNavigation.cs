@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 	// 1. TextBox - TextBox Provider (may not visible)
 	// 2. ComboBoxItem - ComboBoxItemProvider (0 to n) 
 	// 3. Button - ButtonProvider (may not be visible)
-	internal class ComboBoxNavigation : SimpleNavigation
+	internal class ComboBoxNavigation : ParentNavigation
 	{
 
 #region Constructor
@@ -48,9 +48,8 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			this.provider = provider;
 			combobox_control = (ComboBox) provider.Control;
 
-			chain = new NavigationChain ();
-			listbox_navigation = new ComboBoxListBoxNavigation (chain, provider);
-			chain.AddFirst (listbox_navigation);
+			listbox_navigation = new ComboBoxListBoxNavigation (provider, Chain);
+			Chain.AddFirst (listbox_navigation);
 
 			combobox_control.DropDownStyleChanged += new EventHandler (OnDropDownStyleChanged);
 			UpdateNavigation ();
@@ -69,20 +68,6 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 #endregion
 		
-#region INavigable Interface
-		
-		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
-		{
-			if (direction == NavigateDirection.FirstChild)
-				return (IRawElementProviderFragment) chain.First.Value.Provider;
-			else if (direction == NavigateDirection.LastChild)
-				return (IRawElementProviderFragment) chain.Last.Value.Provider;
-			else
-				return base.Navigate (direction);
-		}
-
-#endregion
-		
 #region Private Methods
 
 		private void OnDropDownStyleChanged (object sender, EventArgs args)
@@ -94,33 +79,33 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		{
 			if (combobox_control.DropDownStyle == ComboBoxStyle.Simple) {
 				if (button_navigation != null) {
-					chain.Remove (button_navigation);
+					Chain.Remove (button_navigation);
 					button_navigation = null;
 				}
 				if (textbox_navigation == null) {
-					textbox_navigation = new ComboBoxTextBoxNavigation (chain,
-					                                                    provider);
-					chain.AddFirst (textbox_navigation);
+					textbox_navigation = new ComboBoxTextBoxNavigation (provider,
+					                                                    Chain);
+					Chain.AddFirst (textbox_navigation);
 				}
 			} else if (combobox_control.DropDownStyle == ComboBoxStyle.DropDown) {
 				if (button_navigation == null) {
-					button_navigation = new ComboBoxButtonNavigation (chain,
-					                                                  provider);
-					chain.AddLast (button_navigation);
+					button_navigation = new ComboBoxButtonNavigation (provider,
+					                                                  Chain);
+					Chain.AddLast (button_navigation);
 				}
 				if (textbox_navigation == null) {
-					textbox_navigation = new ComboBoxTextBoxNavigation (chain,
-					                                                    provider);
-					chain.AddFirst (textbox_navigation);
+					textbox_navigation = new ComboBoxTextBoxNavigation (provider,
+					                                                    Chain);
+					Chain.AddFirst (textbox_navigation);
 				}
 			} else if (combobox_control.DropDownStyle == ComboBoxStyle.DropDownList) {
 				if (button_navigation == null) {
-					button_navigation = new ComboBoxButtonNavigation (chain,
-					                                                  provider);
-					chain.AddLast (button_navigation);
+					button_navigation = new ComboBoxButtonNavigation (provider,
+					                                                  Chain);
+					Chain.AddLast (button_navigation);
 				}
 				if (textbox_navigation != null) {
-					chain.Remove (textbox_navigation);
+					Chain.Remove (textbox_navigation);
 					textbox_navigation = null;
 				}
 			}
@@ -131,7 +116,6 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 #region Private members
 
-		private NavigationChain chain;
 		private ComboBox combobox_control;
 		private ComboBoxProvider provider;
 		private ComboBoxButtonNavigation button_navigation;
@@ -140,43 +124,20 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 #endregion
 		
-#region TextBox Navigation Class
+#region Internal Class: TextBox Navigation
 		
-		class ComboBoxTextBoxNavigation : SimpleNavigation 
+		class ComboBoxTextBoxNavigation : ChildNavigation 
 		{
-			public ComboBoxTextBoxNavigation (NavigationChain chain,
-			                                  ComboBoxProvider provider)
-				: base (provider)
+			public ComboBoxTextBoxNavigation (ComboBoxProvider provider,
+			                                  NavigationChain chain)
+				: base (provider, chain)
 			{
-				this.chain = chain;
-				this.provider = provider;
 			}
 			
-			public override IRawElementProviderSimple Provider {
-				get { return GetTextBoxProvider (); }
-			}
-			
-			public override void Terminate ()
-			{
-				//Nothing to Terminate (we are using ListBoxProvider children providers).
-			}
-
-			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
-			{
-				if (direction == NavigateDirection.Parent)
-					return provider;
-				else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider (chain);
-				else if (direction == NavigateDirection.NextSibling)
-					return GetNextSiblingProvider (chain);
-				else
-					return null;
-			}
-			
-			private TextBoxProvider GetTextBoxProvider ()
+			protected override IRawElementProviderSimple GetChildProvider ()
 			{
 				if (textbox_provider == null) {
-					textbox_provider = (TextBoxProvider) provider.GetChildTextBoxProvider ();
+					textbox_provider = ((ComboBoxProvider) ParentProvider).GetChildTextBoxProvider ();
 					if (textbox_provider != null)
 						textbox_provider.Navigation = this;
 				}
@@ -184,116 +145,78 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				return textbox_provider;
 			}
 			
-			private NavigationChain chain;
-			private ComboBoxProvider provider;
-			private TextBoxProvider textbox_provider;
+			private FragmentControlProvider textbox_provider;
 		}
 		
 #endregion
 		
-#region Button Navigation Class
+#region Internal Class: Button Navigation
 		
-		class ComboBoxButtonNavigation : SimpleNavigation
+		class ComboBoxButtonNavigation : ChildNavigation
 		{
-			public ComboBoxButtonNavigation  (NavigationChain chain,
-			                                  ComboBoxProvider provider)
-				: base (provider)
+			public ComboBoxButtonNavigation (ComboBoxProvider provider,
+			                                 NavigationChain chain)
+				: base (provider, chain)
 			{
-				this.chain = chain;
-				this.provider = provider;
 			}
 			
-			public override IRawElementProviderSimple Provider {
-				get { return GetButtonProvider (); }
-			}
-			
-			public override void Terminate ()
-			{
-				//Nothing to Terminate (we are using ListBoxProvider children providers).
-			}
-
-			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
-			{
-				if (direction == NavigateDirection.Parent)
-					return provider;
-				else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider (chain);
-				else if (direction == NavigateDirection.NextSibling)
-					return GetNextSiblingProvider (chain);
-				else
-					return null;
-			}
-			
-			private ComboBoxProvider.ComboBoxButtonProvider GetButtonProvider ()
+			protected override IRawElementProviderSimple GetChildProvider ()
 			{
 				if (button_provider == null) {
-					button_provider = (ComboBoxProvider.ComboBoxButtonProvider) provider.GetChildButtonProvider ();
+					button_provider = ((ComboBoxProvider) ParentProvider).GetChildButtonProvider ();
 					if (button_provider != null)
 						button_provider.Navigation = this;
 				}
 
 				return button_provider;
 			}
-			
-			private NavigationChain chain;
-			private ComboBoxProvider provider;
-			private ComboBoxProvider.ComboBoxButtonProvider button_provider;
+
+			private FragmentControlProvider button_provider;
 		}
 
 #endregion
 
-#region ListBox Navigation Class
+#region Internal Class: ListBox Navigation
 		
 		//TODO: This class should allow navigating 2 ScrollBars and n items.		
-		class ComboBoxListBoxNavigation : SimpleNavigation
+		class ComboBoxListBoxNavigation : ChildNavigation
 		{
-			public ComboBoxListBoxNavigation (NavigationChain chain,
-			                                  ComboBoxProvider provider)
-				: base (provider)
+			public ComboBoxListBoxNavigation (ComboBoxProvider provider,
+			                                  NavigationChain chain)
+				: base (provider, chain)
 			{
-				this.chain = chain;
-				this.provider = provider;
 			}
 			
-			public override IRawElementProviderSimple Provider {
-				get { return GetListBoxProvider (); }
-			}
-			
-			public override void Terminate ()
+			protected override IRawElementProviderSimple GetChildProvider ()
 			{
-				//Nothing to Terminate (we are using ListBoxProvider children providers).
+				return GetListBoxProvider ();
 			}
 			
 			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 			{
 				//TODO: We aware we are only returning the items, we are missing the scrollbars!
 				if (direction == NavigateDirection.Parent)
-					return provider;
+					return ParentProvider;
 				else if (direction == NavigateDirection.FirstChild)
 					return GetListBoxProvider ().GetItemProvider (0);
 				else if (direction == NavigateDirection.LastChild)
 					return GetListBoxProvider ().GetItemProvider (GetListBoxProvider ().ItemsCount - 1);
-				else if (direction == NavigateDirection.NextSibling)
-					return GetNextSiblingProvider (chain);
-				else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider (chain);
 				else
-					return null;
+					return base.Navigate (direction);
 			}
 			
 			private ComboBoxProvider.ComboBoxListBoxProvider GetListBoxProvider ()
 			{
 				if (listbox_provider == null) {
-					listbox_provider = (ComboBoxProvider.ComboBoxListBoxProvider) provider.GetChildListBoxProvider ();
+					listbox_provider = ((ComboBoxProvider) ParentProvider).GetChildListBoxProvider ();
 					listbox_provider.Navigation = this;
 				}
 
-				return listbox_provider; 
+				return (ComboBoxProvider.ComboBoxListBoxProvider) listbox_provider;
 			}
 
-			private NavigationChain chain;
 			private ComboBoxProvider provider;
-			private ComboBoxProvider.ComboBoxListBoxProvider listbox_provider;
+			private FragmentRootControlProvider listbox_provider;
 		}	
 		
 #endregion

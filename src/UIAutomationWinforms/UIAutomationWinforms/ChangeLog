@@ -1,5 +1,39 @@
 2008-07-16  Mario Carrion <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.Navigation/ChildNavigation.cs:
+	File added. Navigation for child items.
+	* Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs,
+	Mono.UIAutomation.Winforms.Navigation/ListBoxNavigation.cs,
+	Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs:
+	Refactored to use ChildNavigation and ParentNavigation.
+	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs: File added.
+	Navigation for Parent items.
+	* Makefile.am, Mono.UIAutomation.Winforms.mdp: File updated: Added 
+	files.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Calling 
+	InitializeChildControlStructure when instantiating a
+	ListBoxScrollBarProvider.
+	* Mono.UIAutomation.Winforms/ThumbProvider.cs: Deleted file. Moved as
+	internal class into ScrollBarProvider.
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Including internal
+	enumeration ScrollBarButtonOrientation and internal classes
+	ScrollBarButtonProvider and ScrollBarThumbProvider.
+	* Mono.UIAutomation.Winforms/ScrollBarButtonProvider.cs: Deleted file.
+	Moved as internal class into ScrollBarProvider.
+	* Mono.UIAutomation.Winforms/ScrollBarButtonOrientation.cs: Deleted
+	file. Moved as internal enumeration into ScrollBarProvider.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Revamping.
+	* Mono.UIAutomation.Winforms.Behaviors/TextBoxValueProviderBehavior.cs
+	File added. Revamping TextBoxProvider.
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs:
+	Updated due to internal API changes.
+	* Mono.UIAutomation.Winforms.Behaviors/TextBoxTextProviderBehavior.cs:
+	File added. Revamping TextBoxProvider.
+	* Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs:
+	Updated due to internal API changes.
+
+2008-07-16  Mario Carrion <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs,
 	Mono.UIAutomation.Winforms/ButtonProvider.cs,
 	Mono.UIAutomation.Winforms/ThumbProvider.cs,

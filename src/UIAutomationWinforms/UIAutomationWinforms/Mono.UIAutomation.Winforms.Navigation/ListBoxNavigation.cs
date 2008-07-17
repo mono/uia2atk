@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 	// 1. HScrollBar - ScrollBarProvider (may not be visible)
 	// 2. VScrollBar - ScrollBarProvider (may not be visible)
 	// 3. ListBoxItem - ListBoxItemProvider (0 to n) 
-	internal class ListBoxNavigation : SimpleNavigation
+	internal class ListBoxNavigation : ParentNavigation
 	{
 
 #region	Constructor
@@ -47,34 +47,22 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		{
 			this.provider = provider;
 
-			chain = new NavigationChain ();
-			
-			itemroot_navigation = new ListBoxFirstItemNavigation (chain, provider);
+			itemroot_navigation = new ListBoxFirstItemNavigation (provider, Chain);
 			ConnectNavigationEvents ((ListBox) provider.ListControl);
 
 			//TODO: Should we use ChildAdded and ChildRemoved to update items navigation?
-			chain.AddLast (itemroot_navigation);
+			Chain.AddLast (itemroot_navigation);
 		}
 		
 #endregion
 		
-#region SimpleNavigation: Specializations
+#region ParentNavigation: Specializations
 	
 		public override void Terminate ()
 		{
 			base.Terminate ();
 			
 			DisconnectNavigationEvents ();
-		}
-		
-		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
-		{	
-			if (direction == NavigateDirection.FirstChild)
-				return chain.Count == 0 ? null : (IRawElementProviderFragment) chain.First.Value.Provider;
-			else if (direction == NavigateDirection.LastChild)
-				return chain.Count == 0 ? null : (IRawElementProviderFragment) chain.Last.Value.Provider;
-			else
-				return base.Navigate (direction);
 		}
 
 #endregion
@@ -150,20 +138,20 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		                                        bool initialize)
 		{
 			if (initialize == true) {
-				navigation = new ListBoxScrollBarNavigation (chain,
-				                                             (ListBoxProvider) Provider, 
+				navigation = new ListBoxScrollBarNavigation (Provider,
+				                                             Chain, 
 				                                             fieldName);
 				//TODO: Makes sense keeping always same order: Hor, Vert, NItems?
 				if (fieldName == hscrollbar_field_name)
-					chain.AddFirst (navigation);
+					Chain.AddFirst (navigation);
 				else {
 					if (hscrollbar_navigation != null)
-						chain.AddAfter (chain.Find (hscrollbar_navigation), navigation);
+						Chain.AddAfter (Chain.Find (hscrollbar_navigation), navigation);
 					else
-						chain.AddFirst (navigation);
+						Chain.AddFirst (navigation);
 				}
 			} else {
-				chain.Remove (navigation);
+				Chain.Remove (navigation);
 				navigation.Terminate ();
 				navigation = null;
 			}
@@ -173,7 +161,6 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 #region Private Fields
 
-		private NavigationChain chain;
 		private ScrollBar hscrollbar;
 		private ScrollBar vscrollbar;
 		private ListBoxProvider provider;
@@ -187,43 +174,20 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 #region Internal Class: ScrollBar Navigation
 		
-		class ListBoxScrollBarNavigation : SimpleNavigation
+		class ListBoxScrollBarNavigation : ChildNavigation
 		{
-			public ListBoxScrollBarNavigation (NavigationChain chain,
-			                                   ListBoxProvider provider, 
+			public ListBoxScrollBarNavigation (IRawElementProviderSimple provider,
+			                                   NavigationChain chain,
 			                                   string field_name)
-				: base (provider)
+				: base (provider, chain)
 			{
-				this.chain = chain;
-				this.provider = provider;
 				this.field_name = field_name;
 			}
 			
-			public override IRawElementProviderSimple Provider {
-				get { return GetScrollBarProvider (); }
-			}
-			
-			public override void Terminate ()
-			{
-				//Nothing to Terminate (we are using ListBoxProvider children providers).
-			}
-
-			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
-			{
-				if (direction == NavigateDirection.Parent)
-					return provider;
-				else if (direction == NavigateDirection.NextSibling)
-					return GetNextSiblingProvider (chain);
-				else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider (chain);
-				else
-					return scrollbar_navigation.Navigate (direction); 
-			}
-			
-			private ScrollBarProvider GetScrollBarProvider ()
+			protected override IRawElementProviderSimple GetChildProvider ()
 			{
 				if (scrollbar_provider == null) {
-					scrollbar_provider = provider.GetChildScrollBarProvider (GetOrientationFromString ());
+					scrollbar_provider = ((ListBoxProvider) ParentProvider).GetChildScrollBarProvider (GetOrientationFromString ());
 					//We need this navigation to use it later.
 					scrollbar_navigation = scrollbar_provider.Navigation;
 					if (scrollbar_provider != null)
@@ -233,15 +197,21 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				return scrollbar_provider; 
 			}
 			
+			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
+			{
+				if (direction == NavigateDirection.FirstChild)
+					return scrollbar_navigation == null ? null : scrollbar_navigation.Navigate (direction);
+				else
+					return base.Navigate (direction);
+			}
+			
 			private Orientation GetOrientationFromString ()
 			{
 				return field_name == "hscrollbar" ? Orientation.Horizontal 
 					: Orientation.Vertical;
 			}
 
-			private NavigationChain chain;
 			private string field_name;
-			private ListBoxProvider provider;
 			private ScrollBarProvider scrollbar_provider;
 			private INavigation scrollbar_navigation;
 		}
@@ -250,20 +220,15 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 #region Internal Class: ListBoxItem Navigation
 		
-		class ListBoxFirstItemNavigation : SimpleNavigation
+		class ListBoxFirstItemNavigation : ChildNavigation
 		{
-			public ListBoxFirstItemNavigation (NavigationChain chain,
-			                                   ListBoxProvider provider)
-				: base (provider)
+			public ListBoxFirstItemNavigation (ListBoxProvider provider,
+			                                   NavigationChain chain)
+				: base (provider, chain)
 			{
-				this.chain = chain;
 				this.provider = provider;
 				
 				provider.ChildRemoved += new StructureChangeEventHandler (OnChildRemoved);
-			}
-			
-			public override IRawElementProviderSimple Provider {
-				get { return GetListItemProvider (); }
 			}
 			
 			public override void Terminate ()
@@ -278,17 +243,13 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			
 			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 			{
-				if (direction == NavigateDirection.Parent)
-					return provider;
-				else if (direction == NavigateDirection.NextSibling)
+				if (direction == NavigateDirection.NextSibling)
 					return first_item_provider == null ? null : navigation.Navigate (direction);
-				else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider (chain);
 				else
-					return null;
+					return base.Navigate (direction);
 			}
 			
-			private ListItemProvider GetListItemProvider ()
+			protected override IRawElementProviderSimple GetChildProvider ()
 			{
 				if (first_item_provider == null) {
 					first_item_provider = provider.GetItemProvider (0);
@@ -309,8 +270,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				}
 			}
 
-			private NavigationChain chain;
-			private INavigation navigation;			
+			private INavigation navigation;
 			private ListBoxProvider provider;
 			private ListItemProvider first_item_provider;
 		}

@@ -102,9 +102,10 @@ namespace Mono.UIAutomation.Winforms
 			else if ((lb = control as ListBox) != null)
 				provider = new ListBoxProvider (lb);
 			else if ((scb = control as ScrollBar) != null) {
-				if ((lb = scb.Parent as ListBox) != null)
+				if ((lb = scb.Parent as ListBox) != null) {
 					provider = new ListBoxProvider.ListBoxScrollBarProvider (scb);
-				else
+					((FragmentRootControlProvider) provider).InitializeChildControlStructure ();
+				} else
 					provider = new ScrollBarProvider (scb);
 			} else //TODO: We have to solve the problem when there's a Custom control
 				throw new NotImplementedException ("Provider not implemented for control");

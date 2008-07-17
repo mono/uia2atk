@@ -28,13 +28,13 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Behaviors;
 
 namespace Mono.UIAutomation.Winforms
 {
 
 	// TODO: Implement ITextProvider, IScrollProvider
-	internal class TextBoxProvider : FragmentControlProvider, IValueProvider, ITextProvider, IScrollProvider
+	internal class TextBoxProvider : FragmentControlProvider, /*IValueProvider, ITextProvider, */IScrollProvider
 	{
 #region Protected section
 		
@@ -53,6 +53,9 @@ namespace Mono.UIAutomation.Winforms
 		public TextBoxProvider (TextBoxBase textBoxBase) : base (textBoxBase)
 		{
 			this.textboxbase = textBoxBase;
+			
+			SetBehavior (TextPatternIdentifiers.Pattern,
+			             new TextBoxTextProviderBehavior (this));
 		}
 
 #endregion
@@ -67,11 +70,11 @@ namespace Mono.UIAutomation.Winforms
 
 			// NameProperty. uses control.Name to emit changes, so right now
 			// we're "cleaning" the previous value.
-			SetEvent (ProviderEventType.AutomationElementNameProperty, null);
+			/*SetEvent (ProviderEventType.AutomationElementNameProperty, null);
 			SetEvent (ProviderEventType.TextChangedEvent, 
 			          new TextPatternTextChangedEvent (this));
 			SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty, 
-			          new TextBoxHasKeyBoardFocusPropertyEvent (this));
+			          new TextBoxHasKeyBoardFocusPropertyEvent (this));*/
 			
 			// TODO: InvalidatedEvent
 			// TODO: TextSelectionChangedEvent: using textbox.SelectionLength != 0?	
@@ -97,7 +100,7 @@ namespace Mono.UIAutomation.Winforms
 #region IRawElementProviderSimple Members
 	
 		public override object GetPatternProvider (int patternId)
-		{
+		{			
 			if (textboxbase.Multiline) {
 				if (patternId == ScrollPatternIdentifiers.Pattern.Id
 				    || patternId == TextPatternIdentifiers.Pattern.Id)
@@ -126,80 +129,80 @@ namespace Mono.UIAutomation.Winforms
 						return associatedLabel;
 				}
 				return null;
-			} else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id) {
+			} /*else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id) {
 				TextBox textBox = textboxbase as TextBox;
 				if (textBox != null)
 					return (textBox.UseSystemPasswordChar || (int) textBox.PasswordChar != 0);
 				else
 					return null;
-			} else
+			} */else
 				return base.GetPropertyValue (propertyId);
 		}
 		
 #endregion
 		
-#region IValueProvider Members
+//#region IValueProvider Members
+//		
+//		public bool IsReadOnly {
+//			get { return textboxbase.ReadOnly; }
+//		}
+//
+//		public string Value {
+//			get { return textboxbase.Text; }
+//		}
+//
+//		public void SetValue (string value)
+//		{
+//			if (IsReadOnly)
+//				throw new ElementNotEnabledException ();
+//
+//			textboxbase.Text = value;
+//		}
+//		
+//#endregion
 		
-		public bool IsReadOnly {
-			get { return textboxbase.ReadOnly; }
-		}
-
-		public string Value {
-			get { return textboxbase.Text; }
-		}
-
-		public void SetValue (string value)
-		{
-			if (IsReadOnly)
-				throw new ElementNotEnabledException ();
-
-			textboxbase.Text = value;
-		}
-		
-#endregion
-		
-#region ITextProvider Members
-		
-		//TODO: We should connect the events to update this.text_range_provider?
-		public ITextRangeProvider DocumentRange {
-			get { 
-				if (text_range_provider == null)
-					text_range_provider = new TextRangeProvider (this, textboxbase); 
-				return text_range_provider;
-			}
-		}
-		
-		public SupportedTextSelection SupportedTextSelection {
-			get { return SupportedTextSelection.Single; }
-		}
-
-		public ITextRangeProvider[] GetSelection ()
-		{
-			if (SupportedTextSelection == SupportedTextSelection.None)
-				throw new InvalidOperationException ();
-				
-			//TODO: Return null when system cursor is not present, how to?
-
-			return new ITextRangeProvider [] { 
-				new TextRangeProvider (this, textboxbase) };
-		}
-		
-		public ITextRangeProvider[] GetVisibleRanges ()
-		{
-			throw new NotImplementedException ();
-		}
-		
-		public ITextRangeProvider RangeFromChild (IRawElementProviderSimple childElement) 
-		{
-			throw new NotImplementedException ();
-		}
-		
-		public ITextRangeProvider RangeFromPoint (Point screenLocation)
-		{
-			throw new NotImplementedException ();
-		}
-		
-#endregion		
+//#region ITextProvider Members
+//		
+//		//TODO: We should connect the events to update this.text_range_provider?
+//		public ITextRangeProvider DocumentRange {
+//			get { 
+//				if (text_range_provider == null)
+//					text_range_provider = new TextRangeProvider (this, textboxbase); 
+//				return text_range_provider;
+//			}
+//		}
+//		
+//		public SupportedTextSelection SupportedTextSelection {
+//			get { return SupportedTextSelection.Single; }
+//		}
+//
+//		public ITextRangeProvider[] GetSelection ()
+//		{
+//			if (SupportedTextSelection == SupportedTextSelection.None)
+//				throw new InvalidOperationException ();
+//				
+//			//TODO: Return null when system cursor is not present, how to?
+//
+//			return new ITextRangeProvider [] { 
+//				new TextRangeProvider (this, textboxbase) };
+//		}
+//		
+//		public ITextRangeProvider[] GetVisibleRanges ()
+//		{
+//			throw new NotImplementedException ();
+//		}
+//		
+//		public ITextRangeProvider RangeFromChild (IRawElementProviderSimple childElement) 
+//		{
+//			throw new NotImplementedException ();
+//		}
+//		
+//		public ITextRangeProvider RangeFromPoint (Point screenLocation)
+//		{
+//			throw new NotImplementedException ();
+//		}
+//		
+//#endregion		
 		
 #region IScrollProvider Members
 		

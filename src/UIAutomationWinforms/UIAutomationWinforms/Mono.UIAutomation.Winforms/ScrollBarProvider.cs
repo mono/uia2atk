@@ -24,6 +24,8 @@
 // 
 
 using System;
+using System.Drawing;				                                              
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
@@ -34,19 +36,15 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal class ScrollBarProvider : FragmentControlProvider
+	internal class ScrollBarProvider : FragmentRootControlProvider
 	{
 		
 #region Constructor
 
 		public ScrollBarProvider (ScrollBar scrollbar) : base (scrollbar)
 		{
-			scrollbar.ParentChanged += delegate (object sender, 
-			                                     EventArgs args) {
-				UpdateBehavior (scrollbar);
-			};
-
-			UpdateBehavior (scrollbar);
+			Control.ParentChanged += new EventHandler (OnParentChanged);
+			UpdateBehavior ();
 		}
 
 #endregion
@@ -63,8 +61,36 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 #endregion
-
+		
 #region Public Methods
+		
+		public FragmentControlProvider GetChildButtonProvider (ScrollBarButtonOrientation orientation)
+		{
+			if (orientation == ScrollBarButtonOrientation.LargeBack)
+				return large_back_button;
+			else if (orientation == ScrollBarButtonOrientation.LargeForward)
+				return large_forward_button;
+			else if (orientation == ScrollBarButtonOrientation.SmallBack)
+				return small_back_button;
+			else //Is SmallForward
+				return small_forward_button;
+		}
+		
+		public FragmentControlProvider GetChildThumbProvider ()
+		{
+			return thumb;
+		}
+		
+#endregion
+
+#region SimpleControlProvider: Specializations
+		
+		public override void Terminate ()
+		{
+			base.Terminate ();
+			
+			Control.ParentChanged -= new EventHandler (OnParentChanged);
+		}
 		
 		public override void InitializeEvents ()
 		{
@@ -83,7 +109,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 				return Single.NaN;
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
-				return null;			
+				return null;
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return false;
 			else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
@@ -95,13 +121,83 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 #endregion
+		
+#region FragmentRootControlProvider: Specializations
+		
+		public override void InitializeChildControlStructure ()
+		{
+			ScrollBar scrollbar = (ScrollBar) Control;
+			
+			if (small_back_button == null) {
+				small_back_button = new ScrollBarButtonProvider (scrollbar,
+				                                                 ScrollBarButtonOrientation.SmallBack);
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+				                                   small_back_button);
+			}
+			if (small_forward_button == null) {
+				small_forward_button = new ScrollBarButtonProvider (scrollbar,
+				                                                    ScrollBarButtonOrientation.SmallForward);
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+				                                   small_forward_button);
+			}
+			if (thumb == null) {
+				thumb = new ScrollBarThumbProvider (scrollbar);
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+				                                   thumb);				
+			}
+			if (large_back_button == null) {
+				large_back_button = new ScrollBarButtonProvider (scrollbar,
+				                                                 ScrollBarButtonOrientation.LargeBack);
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+				                                   large_back_button);
+			}
+			if (large_forward_button == null) {
+				large_forward_button = new ScrollBarButtonProvider (scrollbar,
+				                                                    ScrollBarButtonOrientation.LargeForward);
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+				                                   large_forward_button);
+			}
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+			                                   this);
+		}
+		
+		public override void FinalizeChildControlStructure ()
+		{
+			if (small_back_button != null) {
+				small_back_button.Terminate ();
+				small_back_button = null;
+			}
+			if (small_forward_button != null) {
+				small_forward_button.Terminate ();
+				small_forward_button = null;
+			}
+			if (large_back_button != null) {
+				large_back_button.Terminate ();
+				large_back_button = null;
+			}
+			if (large_forward_button != null) {
+				large_forward_button.Terminate ();
+				large_forward_button = null;
+			}
+			if (thumb != null) {
+				thumb.Terminate ();
+				thumb = null;
+			}
+		}
+		
+#endregion
 
 #region Private Methods
 		
-		private void UpdateBehavior (ScrollBar scrollbar)
+		private void OnParentChanged (object sender, EventArgs args)
+		{
+			UpdateBehavior ();
+		}
+		
+		private void UpdateBehavior ()
 		{	
 			IRawElementProviderFragment container 
-				= ProviderFactory.FindProvider (scrollbar.Parent);
+				= ProviderFactory.FindProvider (Control.Parent);
 
 			if (container != null) {
 				IScrollProvider provider 
@@ -118,6 +214,132 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 #endregion
+	
+#region Private Fields
+
+		private FragmentControlProvider large_back_button;
+		private FragmentControlProvider large_forward_button;
+		private FragmentControlProvider small_back_button;
+		private FragmentControlProvider small_forward_button;
+		private FragmentControlProvider thumb;
 		
+#endregion
+		
+#region Internal Enumeration: Button Orientation
+		
+		internal enum ScrollBarButtonOrientation
+		{
+			SmallBack,
+			SmallForward,
+			LargeBack,
+			LargeForward
+		}
+		
+#endregion
+
+#region Internal Class: Button Provider
+		
+		internal class ScrollBarButtonProvider : FragmentControlProvider
+		{
+		
+			public ScrollBarButtonProvider (ScrollBar scrollbar_container,
+			                                ScrollBarButtonOrientation orientation)
+				: base (scrollbar_container) 
+			{
+				this.orientation = orientation;
+				this.scrollbar_container = scrollbar_container;
+				
+				SetBehavior (InvokePatternIdentifiers.Pattern, 
+				             new ScrollBarButtonInvokeProviderBehavior (this));
+			}
+	
+			public ScrollBarButtonOrientation Orientation {
+				get { return orientation; }
+			}
+			
+			public ScrollBar ScrollBarContainer {
+				get { return scrollbar_container; }
+			}
+	
+			public override object GetPropertyValue (int propertyId)
+			{
+				//TODO: We may need to get VALID information using Reflection
+				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return GetNameFromOrientation ();
+				else
+					return base.GetPropertyValue (propertyId);
+			}
+			
+			private string GetNameFromOrientation ()
+			{
+				//TODO: Should we use generalization? Should this be translatable?
+				if (orientation == ScrollBarButtonOrientation.LargeBack)
+					return "Back by large amount";
+				else if (orientation == ScrollBarButtonOrientation.LargeForward)
+					return "Forward by large amount";
+				else if (orientation == ScrollBarButtonOrientation.SmallBack)
+					return "Back by small amount";
+				else //Should be ScrollBarButtonOrientation.SmallForward
+					return "Forward by small amount";
+			}		
+	
+			private ScrollBarButtonOrientation orientation;
+			private ScrollBar scrollbar_container;
+		}
+
+#endregion
+		
+#region Internal Class: Thumb Provider
+		
+		internal class ScrollBarThumbProvider : FragmentControlProvider
+		{
+	
+			public ScrollBarThumbProvider (ScrollBar scrollbar) : base (scrollbar)
+			{
+				runtime_id = -1;
+			}
+	
+			public override object GetPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id) {
+					if (runtime_id == -1)
+						runtime_id = Helper.GetUniqueRuntimeId ();
+	
+					return runtime_id;
+				} else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return "Thumb";
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+					return GetThumbArea ();
+				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+					return null; //TODO: We may need to use Reflection to get the "real" value
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return true;
+				else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.Thumb.Id;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return "thumb";
+				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
+					return true;
+				else
+					return null;
+			}
+			
+			private Rect GetThumbArea ()
+			{
+				Rectangle thumbArea = (Rectangle) Helper.GetPrivateField (typeof (ScrollBar), 
+				                                                          Control,
+				                                                          "thumb_area");
+				return Helper.RectangleToRect (thumbArea);
+			}
+			
+			
+			private int runtime_id;
+			
+		}
+		
+#endregion
+
 	}
 }

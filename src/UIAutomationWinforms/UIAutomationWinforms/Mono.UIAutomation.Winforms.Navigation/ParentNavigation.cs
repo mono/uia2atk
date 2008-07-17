@@ -23,14 +23,50 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 
-namespace Mono.UIAutomation.Winforms
-{
+using System.Windows.Automation.Provider;
 
-	internal enum ScrollBarButtonOrientation
+namespace Mono.UIAutomation.Winforms.Navigation
+{
+	
+	internal abstract class ParentNavigation : SimpleNavigation
 	{
-		SmallBack,
-		SmallForward,
-		LargeBack,
-		LargeForward
+
+#region Constructor
+		
+		protected ParentNavigation (IRawElementProviderSimple provider)
+			: base (provider)
+		{
+			chain = new NavigationChain ();
+		}
+		
+#endregion
+		
+#region Public Properties
+		
+		public NavigationChain Chain {
+			get { return chain; }
+		}
+		
+#endregion
+		
+#region INavigable Interface
+		
+		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
+		{
+			if (direction == NavigateDirection.FirstChild)
+				return chain.First == null ? null : (IRawElementProviderFragment) chain.First.Value.Provider;
+			else if (direction == NavigateDirection.LastChild)
+				return chain.Last == null ? null : (IRawElementProviderFragment) chain.Last.Value.Provider;
+			else
+				return base.Navigate (direction);
+		}
+
+#endregion
+		
+#region Private Fields
+		
+		private NavigationChain chain;
+		
+#endregion
 	}
 }

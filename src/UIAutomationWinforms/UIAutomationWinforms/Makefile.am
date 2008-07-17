@@ -58,6 +58,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBarGridProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TextBoxTextProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TextBoxValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationBoundingRectanglePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationFocusChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationHasKeyboardFocusPropertyEvent.cs \
@@ -82,11 +84,13 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/TogglePatternToggleStatePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ValuePatternValueIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ValuePatternValuePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Navigation/ChildNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/INavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/ListBoxNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/ListItemNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs \
+	Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs \
 	Mono.UIAutomation.Winforms/AssemblyInfo.cs \
@@ -107,8 +111,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/ProviderFactory.cs \
 	Mono.UIAutomation.Winforms/RadioButtonProvider.cs \
-	Mono.UIAutomation.Winforms/ScrollBarButtonOrientation.cs \
-	Mono.UIAutomation.Winforms/ScrollBarButtonProvider.cs \
 	Mono.UIAutomation.Winforms/ScrollBarProvider.cs \
 	Mono.UIAutomation.Winforms/SimpleControlProvider.cs \
 	Mono.UIAutomation.Winforms/StatusBarProvider.cs \
@@ -116,7 +118,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms/TextNormalizer.cs \
 	Mono.UIAutomation.Winforms/TextNormalizerPoints.cs \
 	Mono.UIAutomation.Winforms/TextRangeProvider.cs \
-	Mono.UIAutomation.Winforms/ThumbProvider.cs \
 	Mono.UIAutomation.Winforms/WindowProvider.cs \
 	Mono.UIAutomation.Winforms/WordToken.cs \
 	Mono.UIAutomation.Winforms/WordTokenCollection.cs \

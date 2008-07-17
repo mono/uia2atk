@@ -38,7 +38,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 #region Constructors
 		
-		public ScrollBarButtonInvokePatternInvokeEvent (ScrollBarButtonProvider provider) 
+		public ScrollBarButtonInvokePatternInvokeEvent (ScrollBarProvider.ScrollBarButtonProvider provider) 
 			: base (provider)
 		{
 		}
@@ -75,14 +75,14 @@ namespace Mono.UIAutomation.Winforms.Events
 
 		private string GetEventNameFromOrientation ()
 		{
-			ScrollBarButtonProvider provider = (ScrollBarButtonProvider) Provider;
+			ScrollBarProvider.ScrollBarButtonProvider provider = (ScrollBarProvider.ScrollBarButtonProvider) Provider;
 
 			//TODO: Should we use generalization?
-			if (provider.Orientation == ScrollBarButtonOrientation.LargeBack)
+			if (provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.LargeBack)
 				return "LargeDecrementCalled";
-			else if (provider.Orientation == ScrollBarButtonOrientation.LargeForward)
+			else if (provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.LargeForward)
 				return "LargeIncrementCalled";
-			else if (provider.Orientation == ScrollBarButtonOrientation.SmallBack)
+			else if (provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.SmallBack)
 				return "SmallDecrementCalled";
 			else //Should be ScrollBarButtonOrientation.SmallForward
 				return "LargeIncrementCalled";

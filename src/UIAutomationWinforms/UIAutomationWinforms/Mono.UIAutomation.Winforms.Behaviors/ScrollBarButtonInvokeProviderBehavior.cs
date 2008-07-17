@@ -40,7 +40,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 #region Constructor
 		
-		public ScrollBarButtonInvokeProviderBehavior (ScrollBarButtonProvider provider)
+		public ScrollBarButtonInvokeProviderBehavior (ScrollBarProvider.ScrollBarButtonProvider provider)
 			: base (provider)
 		{
 			this.provider = provider;
@@ -73,11 +73,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			string methodName = string.Empty;
 			
 			//TODO: Should we use generalization?			
-			if (provider.Orientation == ScrollBarButtonOrientation.LargeBack)
+			if (provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.LargeBack)
 				methodName = "LargeDecrement";
-			else if (provider.Orientation == ScrollBarButtonOrientation.LargeForward)
+			else if (provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.LargeForward)
 				methodName = "LargeIncrement";
-			else if (provider.Orientation == ScrollBarButtonOrientation.SmallBack)
+			else if (provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.SmallBack)
 				methodName = "SmallDecrement";
 			else //Should be ScrollBarButtonOrientation.SmallForward
 				methodName = "SmallIncrement";
@@ -94,7 +94,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 #region Private Fields
 		
-		private ScrollBarButtonProvider provider;
+		private ScrollBarProvider.ScrollBarButtonProvider provider;
 
 #endregion
 

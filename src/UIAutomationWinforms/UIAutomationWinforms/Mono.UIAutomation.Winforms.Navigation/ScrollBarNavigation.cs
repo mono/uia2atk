@@ -38,138 +38,81 @@ namespace Mono.UIAutomation.Winforms.Navigation
 	// 3. Thumb	- ThumbProvider
 	// 4. ButtonSmallForward - ScrollBarButtonProvider
 	// 5. ButtonLargeForward - ScrollBarButtonProvider
-	internal class ScrollBarNavigation : SimpleNavigation
+	internal class ScrollBarNavigation : ParentNavigation
 	{
 		
-#region	 Constructor
+#region	Constructors
 		
 		public ScrollBarNavigation (ScrollBarProvider provider)
 			: base (provider)
-		{
-			chain = new NavigationChain ();
-			
-			chain.AddLast (new ScrollBarButtonNavigation (chain, 
-			                                              provider, 
-			                                              ScrollBarButtonOrientation.SmallBack));
-			chain.AddLast (new ScrollBarButtonNavigation (chain,
-			                                              provider, 
-			                                              ScrollBarButtonOrientation.LargeBack));
-			chain.AddLast (new ScrollBarThumbNavigation (chain,
-			                                             provider));
-			chain.AddLast (new ScrollBarButtonNavigation (chain,
-			                                              provider, 
-			                                              ScrollBarButtonOrientation.LargeForward));
-			chain.AddLast (new ScrollBarButtonNavigation (chain,
-			                                              provider, 
-			                                              ScrollBarButtonOrientation.SmallForward));
+		{	
+			Chain.AddLast (new ScrollBarButtonNavigation (provider, 
+			                                              Chain,
+			                                              ScrollBarProvider.ScrollBarButtonOrientation.SmallBack));
+			Chain.AddLast (new ScrollBarButtonNavigation (provider, 
+			                                              Chain,
+			                                              ScrollBarProvider.ScrollBarButtonOrientation.LargeBack));
+			Chain.AddLast (new ScrollBarThumbNavigation (provider,
+			                                             Chain));
+			Chain.AddLast (new ScrollBarButtonNavigation (provider, 
+			                                              Chain,
+			                                              ScrollBarProvider.ScrollBarButtonOrientation.LargeForward));
+			Chain.AddLast (new ScrollBarButtonNavigation (provider, 
+			                                              Chain,
+			                                              ScrollBarProvider.ScrollBarButtonOrientation.SmallForward));
 		}
 		
 #endregion
-		
-#region INavigable Interface
-		
-		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
-		{
-			if (direction == NavigateDirection.FirstChild)
-				return (IRawElementProviderFragment) chain.First.Value.Provider;
-			else if (direction == NavigateDirection.LastChild)
-				return (IRawElementProviderFragment) chain.Last.Value.Provider;
-			else
-				return base.Navigate (direction);
-		}
 
-#endregion
+#region Internal Class: Button Navigation
 		
-#region Private Fields
-		
-		private NavigationChain chain;
-		
-#endregion
-		
-#region Button Navigation Class
-		
-		class ScrollBarButtonNavigation : SimpleNavigation
+		class ScrollBarButtonNavigation : ChildNavigation
 		{
-			public ScrollBarButtonNavigation (NavigationChain chain,
-			                                  ScrollBarProvider provider,
-			                                  ScrollBarButtonOrientation orientation)
-				: base (provider)
+			public ScrollBarButtonNavigation (ScrollBarProvider provider,
+			                                  NavigationChain chain,
+			                                  ScrollBarProvider.ScrollBarButtonOrientation orientation)
+				: base (provider, chain)
 			{
-				this.chain = chain;
-				this.provider = provider;
 				this.orientation = orientation;
 			}
 
-			public override IRawElementProviderSimple Provider {
-				get { 
-					if (button_provider == null) {
-						button_provider = new ScrollBarButtonProvider ((ScrollBar) provider.Control,
-						                                               orientation);
-						button_provider.Navigation = this;
-					}
-
-					return button_provider;
-				}
-			}
-			
-			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
+			protected override IRawElementProviderSimple GetChildProvider ()
 			{
-				if (direction == NavigateDirection.Parent)
-					return provider;
-				else if (direction == NavigateDirection.NextSibling)
-					return GetNextSiblingProvider (chain);
-				else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider (chain);
-				else
-					return null; 
+				if (button_provider == null) {
+					button_provider = ((ScrollBarProvider) ParentProvider).GetChildButtonProvider (orientation);
+					button_provider.Navigation = this;
+				}
+
+				return button_provider;
 			}
 			
-			private NavigationChain chain;
-			private ScrollBarButtonProvider button_provider; 
-			private ScrollBarButtonOrientation orientation;
-			private ScrollBarProvider provider;
+			private FragmentControlProvider button_provider; 
+			private ScrollBarProvider.ScrollBarButtonOrientation orientation;
 		}
 		
 #endregion
 		
-#region Thumb Navigation Class
+#region Internal Class: Thumb Navigation
 
-		class ScrollBarThumbNavigation : SimpleNavigation
+		class ScrollBarThumbNavigation : ChildNavigation
 		{
-			public ScrollBarThumbNavigation (NavigationChain chain,
-			                                 ScrollBarProvider provider)
-				: base (provider)
+			public ScrollBarThumbNavigation (ScrollBarProvider provider,
+			                                 NavigationChain chain)
+				: base (provider, chain)
 			{
-				this.chain = chain;
-				this.provider = provider;
 			}
-
-			public override IRawElementProviderSimple Provider {
-				get { 
-					if (thumb_provider == null) {
-						thumb_provider = new ThumbProvider ((ScrollBar) provider.Control);
-						thumb_provider.Navigation = this;
-					}
-
-					return thumb_provider;
+			
+			protected override IRawElementProviderSimple GetChildProvider ()
+			{
+				if (thumb_provider == null) {
+					thumb_provider = ((ScrollBarProvider) ParentProvider).GetChildThumbProvider ();
+					thumb_provider.Navigation = this;
 				}
+				
+				return thumb_provider;
 			}
-			
-			public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
-			{
-				if (direction == NavigateDirection.Parent)
-					return provider;
-				else if (direction == NavigateDirection.NextSibling)
-					return GetNextSiblingProvider (chain);
-				else if (direction == NavigateDirection.PreviousSibling)
-					return GetPreviousSiblingProvider (chain);
-				else
-					return null; 
-			}
-			
-			private NavigationChain chain;
-			private ScrollBarProvider provider;
-			private ThumbProvider thumb_provider;
+
+			private FragmentControlProvider thumb_provider;
 		}
 		
 #endregion
