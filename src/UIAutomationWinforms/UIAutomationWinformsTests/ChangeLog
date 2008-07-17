@@ -1,3 +1,9 @@
+2008-07-17  Mario Carrion  <mcarrion@novell.com>
+
+	* TextBoxProviderTest.cs, TextRangeProviderTest.cs: Temporally disabled.
+	* ComboBoxProviderTest.cs: Updated to latest Navigation changes.
+	* ListBoxProviderTest.cs: ScrollBarTest working.
+
 2008-07-16  Mario Carrion  <mcarrion@novell.com>
 
 	* WindowProviderTest.cs, TextRangeProviderTest.cs, ThumbProviderTest.cs:

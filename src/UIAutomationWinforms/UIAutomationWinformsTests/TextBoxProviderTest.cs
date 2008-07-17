@@ -34,7 +34,7 @@ using NUnit.Framework;
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
 	// TODO: Include ITextProvider, IScrollProvider tests.
-	[TestFixture]
+	//[TestFixture]
 	public class TextBoxProviderTest : BaseProviderTest
 	{
 		
