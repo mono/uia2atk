@@ -1,5 +1,9 @@
 2008-07-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* Button.cs: Remove debug spew, the issue is fixed.
+
+2008-07-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* TextImplementorHelper.cs: Match gail behaviour according to this
 	  silly thing.
 
