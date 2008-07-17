@@ -1,5 +1,10 @@
 2008-07-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs, BasicWidgetType.cs: More tests (children and role of
+	  children, and some other improvements).
+
+2008-07-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: Fix a test that was failing on GailTest.
 
 2008-07-16  Mario Carrion <mcarrion@novell.com>

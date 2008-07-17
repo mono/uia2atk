@@ -54,12 +54,14 @@ namespace UiaAtkBridgeTest
 		public void Label ()
 		{
 			BasicWidgetType type = BasicWidgetType.Label;
-			Atk.Object accessible = InterfaceText (BasicWidgetType.Label);
-			
+			Atk.Object accessible = InterfaceText (type);
+
 			PropertyRole (type, accessible);
 			
 			//a label always contains this state, not because it's multi_line, but because it can be multi_line
 			Assert.IsTrue (accessible.RefStateSet ().ContainsState (Atk.StateType.MultiLine), "RefStateSet().Contains(MultiLine)");
+			
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "Label numChildren");
 		}
 		
 		[Test]
@@ -81,6 +83,8 @@ namespace UiaAtkBridgeTest
 			InterfaceAction (type, atkAction, accessible);
 			
 			PropertyRole (type, accessible);
+			
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "Button numChildren");
 		}
 
 		[Test]
@@ -101,6 +105,8 @@ namespace UiaAtkBridgeTest
 			InterfaceAction (type, atkAction, accessible);
 			
 			PropertyRole (type, accessible);
+			
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "CheckBox numChildren");
 		}
 		
 		[Test]
@@ -132,6 +138,17 @@ namespace UiaAtkBridgeTest
 			InterfaceComponent (type, atkComponent);
 			
 			PropertyRole (type, accessible);
+			
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "RadioButton numChildren");
+		}
+		
+		//[Test]
+		public void TextBoxEntry ()
+		{
+			BasicWidgetType type = BasicWidgetType.TextBoxEntry;
+			Atk.Object accessible = InterfaceText (type);
+			
+			PropertyRole (type, accessible);
 		}
 		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
@@ -145,6 +162,7 @@ namespace UiaAtkBridgeTest
 			string[] names = new string[] { "First item", "Second Item", "Last Item" };
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, true);
+
 			InterfaceComponent (type, atkComponent);
 			
 			PropertyRole (type, accessible);
@@ -156,6 +174,23 @@ namespace UiaAtkBridgeTest
 			Atk.Selection atkSelection = (Atk.Selection)
 				GetAtkObjectThatImplementsInterface <Atk.Selection> (type, names, out accessible, true);
 			InterfaceSelection (atkSelection, names, accessible);
+			
+			Assert.AreEqual (1, accessible.NAccessibleChildren, "ComboBox#RO numChildren");
+			//FIXME: enable this when we test the editable combobox:
+			//Assert.AreEqual (2, accessible.NAccessibleChildren, "ComboBox#editable numChildren");
+			
+			Atk.Object menuChild = accessible.RefAccessibleChild (0);
+			Assert.IsNotNull (menuChild, "ComboBox child#0 should not be null");
+			Assert.AreEqual (menuChild.Name, String.Empty, "the ComboBox menu should not have a name");
+			Assert.AreEqual (menuChild.Role, Atk.Role.Menu, "ComboBox child#0 should be a menu");
+			
+			Assert.AreEqual (names.Length, menuChild.NAccessibleChildren, "ComboBox menu numChildren");
+			Atk.Object menuItemChild = menuChild.RefAccessibleChild (0);
+			Assert.IsNotNull (menuItemChild, "ComboBox child#0 child#0 should not be null");
+			Assert.AreEqual (menuItemChild.Role, Atk.Role.MenuItem, "ComboBox child#0 child#0 should be a menuItem");
+			Assert.AreEqual (menuItemChild.Name, names[0], "ComboBox menuitem names should be the same as the items");
+			
+			Assert.AreEqual (0, menuItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
 		}
 		
 		[Test]
@@ -194,37 +229,37 @@ namespace UiaAtkBridgeTest
 		                                               Atk.Action actionable3, Atk.Object accessible3)
 		{
 			Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#1");
-			System.Threading.Thread.Sleep (2000);
+			System.Threading.Thread.Sleep (3000);
 			Assert.IsTrue (actionable3.DoAction (0), "IAF3RB::DoAction#1");
-			System.Threading.Thread.Sleep (2000);
+			System.Threading.Thread.Sleep (3000);
 			
 			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #1");
 			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #2");
 			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #3");
 			
 			Assert.IsTrue (actionable2.DoAction (0), "IAF3RB::DoAction#1");
-			System.Threading.Thread.Sleep (2000);
+			System.Threading.Thread.Sleep (3000);
 			
 			Assert.IsFalse (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #4");
 			Assert.IsTrue (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #5");
 			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #6");
 
 			Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#2");
-			System.Threading.Thread.Sleep (2000);
+			System.Threading.Thread.Sleep (3000);
 			
 			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #7");
 			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #8");
 			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #9");
 
 			Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#3");
-			System.Threading.Thread.Sleep (2000);
+			System.Threading.Thread.Sleep (3000);
 			
 			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #10");
 			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #11");
 			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #12");
 			
 			Assert.IsTrue (actionable3.DoAction (0), "IAF3RB::DoAction#4");
-			System.Threading.Thread.Sleep (2000);
+			System.Threading.Thread.Sleep (3000);
 			
 			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #13");
 			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #14");
@@ -399,6 +434,9 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.RadioButton:
 				role = Atk.Role.RadioButton;
+				break;
+			case BasicWidgetType.TextBoxEntry:
+				role = Atk.Role.Text;
 				break;
 			default:
 				throw new NotImplementedException ();

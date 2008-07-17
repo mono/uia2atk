@@ -36,6 +36,7 @@ namespace UiaAtkBridgeTest
 		Window,
 		CheckBox,
 		ComboBox,
-		RadioButton
+		RadioButton,
+		TextBoxEntry
 	}
 }
