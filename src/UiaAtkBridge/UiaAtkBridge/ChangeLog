@@ -2,6 +2,7 @@
 
 	* SelectionProviderUserHelper.cs, ComboBox.cs, List.cs: Propagate the
 	  children-list pre-selection to the SelectionProvider helper.
+	* SelectionProviderUserHelper.cs: some coding style fixes.
 
 2008-07-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
