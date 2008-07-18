@@ -1,8 +1,8 @@
 2008-07-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
-	* SelectionProviderUserHelper.cs, ComboBox.cs, List.cs: Propagate the
+	* SelectionProviderUserHelper.cs, ComboBox.cs: Propagate the
 	  children-list pre-selection to the SelectionProvider helper.
-	* SelectionProviderUserHelper.cs: some coding style fixes.
+	* SelectionProviderUserHelper.cs, List.cs: some coding style fixes.
 
 2008-07-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 

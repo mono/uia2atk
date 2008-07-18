@@ -168,8 +168,8 @@ namespace UiaAtkBridge
 				if (selectionItemProvider != null)
 					return selectionItemProvider;
 				else
-					Console.WriteLine("sip es nulllll");
-			}else{ Console.WriteLine("childe es nulllll");}
+					Console.WriteLine("SIP is null");
+			}else{ Console.WriteLine("child is nulllll");}
 			return null;
 		}
 		
