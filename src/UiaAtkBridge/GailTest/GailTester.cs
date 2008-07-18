@@ -159,6 +159,7 @@ namespace UiaAtkBridgeTest
 		{
 			Console.WriteLine ("Kill");
 			GailTestApp.MainClass.Kill ();
+			guiThread.Dispose ();
 		}
 		
 	}

@@ -1,5 +1,11 @@
 2008-07-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* MovingThread.cs: New file for the new class (spaces to tabs).
+	* GailTestApp.mdp: New file added.
+	* Main.cs: Move class to its own file.
+
+2008-07-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* gtk-gui/gui.stetic, Main.cs: Hopefully fix the threading issues when
 	  running the Gail tests.
 

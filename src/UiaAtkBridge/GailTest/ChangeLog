@@ -1,5 +1,9 @@
 2008-07-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* GailTester.cs: Kill the movingThread when dying.
+
+2008-07-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* GailTester.cs: Hopefully fix the threading issues when running the
 	  Gail tests.
 	* GailTest.mdp: This was modified by MD.
