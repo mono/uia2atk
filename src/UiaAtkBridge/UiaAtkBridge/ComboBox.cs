@@ -33,20 +33,30 @@ namespace UiaAtkBridge
 {
 	public class ComboBox : ComponentParentAdapter, Atk.ActionImplementor, Atk.SelectionImplementor
 	{
+		private IRawElementProviderFragment ChildrenHolder {
+			get {
+				if (childrenHolder == null) {
+					IRawElementProviderFragment child = provider.Navigate (NavigateDirection.FirstChild);
+					do {
+						if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
+						  == ControlType.List.Id) 
+							break;
+						child = child.Navigate (NavigateDirection.NextSibling);
+					} while (child != null);
+					childrenHolder = child;
+				}
+				return childrenHolder;
+			}
+		}
+		
+		private IRawElementProviderFragment childrenHolder = null;
+		
 		private string[] ChildrenItems {
 			get {
 				List<string> children = new List<string> ();
 				
 				//Get List child
-				IRawElementProviderFragment child = provider.Navigate (NavigateDirection.FirstChild);
-				do {
-					if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
-					    == ControlType.List.Id) 
-						break;
-					child = child.Navigate (NavigateDirection.NextSibling);
-				} while (child != null);
-
-				child = child.Navigate (NavigateDirection.FirstChild);
+				IRawElementProviderFragment child = ChildrenHolder.Navigate (NavigateDirection.FirstChild);
 				do {
 					children.Add ((string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
 					child = child.Navigate (NavigateDirection.NextSibling);
@@ -82,7 +92,7 @@ namespace UiaAtkBridge
 				//children.Add (new TextEntry());
 				throw new NotImplementedException ("We need to implement the TextEntry bridge class for this kind of combobox");
 			
-			selectionHelper = new SelectionProviderUserHelper(provider, selProvider);
+			selectionHelper = new SelectionProviderUserHelper(provider, selProvider, ChildrenHolder);
 		}
 
 		public override IRawElementProviderSimple Provider {

@@ -153,7 +153,7 @@ AtkObject,
 			string componentName = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = componentName;
 			
-			selectionHelper = new SelectionProviderUserHelper(provider, selectionProvider);
+			selectionHelper = new SelectionProviderUserHelper (provider, selectionProvider);
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()

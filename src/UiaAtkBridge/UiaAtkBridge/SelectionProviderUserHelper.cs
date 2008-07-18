@@ -34,13 +34,21 @@ namespace UiaAtkBridge
 	{
 		private ISelectionProvider					selectionProvider;
 		private IRawElementProviderFragmentRoot		provider;
+		private IRawElementProviderFragment			childrenHolder;
 
+		public SelectionProviderUserHelper (IRawElementProviderFragmentRoot provider,
+		                                    ISelectionProvider selectionProvider) :
+		  this (provider, selectionProvider, null)
+		{
+		}
 		
-		public SelectionProviderUserHelper(IRawElementProviderFragmentRoot provider,
-		                                          ISelectionProvider selectionProvider)
+		public SelectionProviderUserHelper (IRawElementProviderFragmentRoot provider,
+		                                    ISelectionProvider selectionProvider,
+		                                    IRawElementProviderFragment childrenHolder)
 		{
 			this.selectionProvider = selectionProvider;
 			this.provider = provider;
+			this.childrenHolder = (childrenHolder != null) ? childrenHolder : provider;
 		}
 
 #region Atk.SelectionImplementor
@@ -57,7 +65,8 @@ namespace UiaAtkBridge
 
 		public bool AddSelection (int i)
 		{
-			ISelectionItemProvider childItem = ChildItemAtIndex(i);
+			Console.WriteLine ("AddSelection");
+			ISelectionItemProvider childItem = ChildItemAtIndex (i);
 			
 			if (childItem != null) {
 				if(selectionProvider.CanSelectMultiple)
@@ -80,7 +89,7 @@ namespace UiaAtkBridge
 						(SelectionItemPatternIdentifiers.Pattern.Id);
 				
 				if (selectionItemProvider != null) {
-					selectionItemProvider.RemoveFromSelection();
+					selectionItemProvider.RemoveFromSelection ();
 				}
 			}	
 
@@ -89,7 +98,8 @@ namespace UiaAtkBridge
 
 		public bool IsChildSelected (int i)
 		{
-			ISelectionItemProvider childItem = ChildItemAtIndex(i);
+			Console.WriteLine ("IsChildSelected");
+			ISelectionItemProvider childItem = ChildItemAtIndex (i);
 
 			if(childItem != null) {
 				return childItem.IsSelected;
@@ -97,7 +107,7 @@ namespace UiaAtkBridge
 			return false;
 		}
 		
-		public Atk.Object RefSelection (int i)		
+		public Atk.Object RefSelection (int i)
 		{
 			//TODO: Implement
 			throw new NotImplementedException ();
@@ -105,7 +115,8 @@ namespace UiaAtkBridge
 		
 		public bool RemoveSelection (int i)
 		{
-			ISelectionItemProvider childItem = ChildItemAtIndex(i);
+			Console.WriteLine ("RemoveSelection");
+			ISelectionItemProvider childItem = ChildItemAtIndex (i);
 
 			if(childItem != null) {
 				childItem.RemoveFromSelection();
@@ -141,11 +152,12 @@ namespace UiaAtkBridge
 		private ISelectionItemProvider ChildItemAtIndex (int i)
 		{
 			IRawElementProviderFragment child = 
-				provider.Navigate(NavigateDirection.FirstChild);
+				childrenHolder.Navigate(NavigateDirection.FirstChild);
 			int childCount = 0;
 			
 			while( (child != null) && (childCount != i) ) {
 				child = child.Navigate(NavigateDirection.NextSibling);
+				childCount++;
 			}
 			
 			if (child != null) {
@@ -153,10 +165,11 @@ namespace UiaAtkBridge
 					(ISelectionItemProvider)provider.GetPatternProvider
 						(SelectionItemPatternIdentifiers.Pattern.Id);
 				
-				if (selectionItemProvider != null) {
+				if (selectionItemProvider != null)
 					return selectionItemProvider;
-				}
-			}
+				else
+					Console.WriteLine("sip es nulllll");
+			}else{ Console.WriteLine("childe es nulllll");}
 			return null;
 		}
 		
