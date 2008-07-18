@@ -1,3 +1,9 @@
+2008-07-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* GailTester.cs: Hopefully fix the threading issues when running the
+	  Gail tests.
+	* GailTest.mdp: This was modified by MD.
+
 2008-06-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* GailTester.cs: Add real support and only use this mode.

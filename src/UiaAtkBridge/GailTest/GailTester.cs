@@ -33,9 +33,14 @@ namespace UiaAtkBridgeTest
 	[TestFixture]
 	public class GailTester : AtkTester {
 
+		static GailTestApp.MovingThread guiThread = null;
+		
 		static GailTester ()
 		{
-			Gtk.Application.Init ();
+			guiThread = new GailTestApp.MovingThread ();
+			guiThread.Deleg = Gtk.Application.Init;
+			guiThread.Start ();
+			guiThread.JoinUntilSuspend ();
 		}
 		
 		public override object GetAtkObjectThatImplementsInterface <I> (
@@ -55,7 +60,7 @@ namespace UiaAtkBridgeTest
 			
 			Gtk.Widget widget = new Gtk.ComboBox ();
 			if (real)
-				widget = GailTestApp.MainClass.GiveMeARealComboBox ();
+				widget = GailTestApp.MainClass.GiveMeARealComboBox (guiThread);
 
 			//FIXME: update this line when this bug is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=324899
 			((Gtk.ListStore)((Gtk.ComboBox) widget).Model).Clear ();
@@ -89,13 +94,13 @@ namespace UiaAtkBridgeTest
 				widget = new Gtk.Label ();
 				((Gtk.Label)widget).Text = text;
 				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealLabel ();
+					widget = GailTestApp.MainClass.GiveMeARealLabel (guiThread);
 				break;
 			case BasicWidgetType.NormalButton:
 				widget = new Gtk.Button ();
 				((Gtk.Button)widget).Label = text;
 				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealButton ();
+					widget = GailTestApp.MainClass.GiveMeARealButton (guiThread);
 				break;
 			case BasicWidgetType.Window:
 				widget = new Gtk.Window (text);
@@ -107,13 +112,19 @@ namespace UiaAtkBridgeTest
 				widget = new Gtk.CheckButton ();
 				((Gtk.CheckButton)widget).Label = text;
 				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealCheckBox ();
+					widget = GailTestApp.MainClass.GiveMeARealCheckBox (guiThread);
 				break;
 			case BasicWidgetType.RadioButton:
 				if (!real)
 					throw new NotSupportedException ("We cannot use non-real radio buttons because of some wierd behaviour");
 				
-				widget = GailTestApp.MainClass.GiveMeARealRadioButton ();
+				widget = GailTestApp.MainClass.GiveMeARealRadioButton (guiThread);
+				break;
+			case BasicWidgetType.TextBoxEntry:
+				if (!real)
+					throw new NotSupportedException ();
+				
+				widget = GailTestApp.MainClass.GiveMeARealEntry (guiThread);
 				break;
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
@@ -133,15 +144,20 @@ namespace UiaAtkBridgeTest
 			else if (typeof (I) == typeof (Atk.Action)) {
 				return Atk.ActionAdapter.GetObject (widget.Accessible.Handle, false);
 			}
+			else if (typeof (I) == typeof (Atk.EditableText)) {
+				return Atk.EditableTextAdapter.GetObject (widget.Accessible.Handle, false);
+			}
 			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
 				typeof(I).Name);
 		}
 		
 		protected override int ValidNumberOfActionsForAButton { get { return 3; } }
+
 		
 		[TestFixtureTearDown]
 		public void End () 
 		{
+			Console.WriteLine ("Kill");
 			GailTestApp.MainClass.Kill ();
 		}
 		
