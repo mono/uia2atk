@@ -1,3 +1,8 @@
+2008-07-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* AtkTester.cs: Some work on the Edit tests, still not passing (seems
+	  the Name property doesn't work the same way here).
+
 2008-07-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* BridgeTester.cs: Let's be specific, we don't support editable

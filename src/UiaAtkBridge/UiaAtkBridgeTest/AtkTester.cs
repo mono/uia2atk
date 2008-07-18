@@ -93,6 +93,8 @@ namespace UiaAtkBridgeTest
 			BasicWidgetType type = BasicWidgetType.CheckBox;
 			Atk.Object accessible;
 			
+			InterfaceText (type);
+			
 			string name = "test";
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
@@ -142,11 +144,15 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "RadioButton numChildren");
 		}
 		
-		//[Test]
+		[Test]
 		public void TextBoxEntry ()
 		{
 			BasicWidgetType type = BasicWidgetType.TextBoxEntry;
 			Atk.Object accessible = InterfaceText (type);
+			string name = "Edit test";
+			Atk.Action atkAction = (Atk.Action)
+				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
+			InterfaceAction (type, atkAction, accessible);
 			
 			PropertyRole (type, accessible);
 		}
@@ -451,9 +457,13 @@ namespace UiaAtkBridgeTest
 			Atk.Text atkText;
 			string name = "This is a test sentence.\r\nSecond line. Other phrase.\nThird line?";
 
+			bool real = false;
+			if (type == BasicWidgetType.TextBoxEntry)
+				real = true;
+			
 			Atk.Object accessible;
 			atkText = (Atk.Text)
-				GetAtkObjectThatImplementsInterface <Atk.Text> (type, name, out accessible, false);
+				GetAtkObjectThatImplementsInterface <Atk.Text> (type, name, out accessible, real);
 			
 			int nSelections = -1;
 			if (type == BasicWidgetType.Label)
@@ -758,7 +768,7 @@ namespace UiaAtkBridgeTest
 			name = "Tell me; here a sentence\r\nwith EOL but without dot, and other phrase... Heh!";
 
 			atkText = (Atk.Text)
-				GetAtkObjectThatImplementsInterface <Atk.Text> (type, name, out accessible, false);
+				GetAtkObjectThatImplementsInterface <Atk.Text> (type, name, out accessible, real);
 			Assert.AreEqual (name, atkText.GetText(0, name.Length), "GetText#2");
 			
 			expected = "\r\nwith EOL but without dot, and other phrase...";
