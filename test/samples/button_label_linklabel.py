@@ -41,19 +41,37 @@ class RunApp(Form):
         self.label.Location = Point(10,10)
         self.label.AutoSize = True
 
-        # set up Button control
+        # set up Button1 control
         self.button1 = Button()
         self.button1.Name = "button1"
         self.button1.Text = "button1"
         self.button1.Location = Point(10,40)
         self.button1.BackColor = Color.Green
         self.button1.ForeColor = Color.Red
-        self.button1.Click += self.button_click
+        self.button1.Click += self.button1_click
         self.button1.Cursor = Cursors.Hand
+
+        #set up Button2 control:
+        self.button2 = Button()
+        self.button2.Name = "button2"
+        self.button2.Text = "button2"
+        self.button2.Location = Point(10,70)
+        self.button2.BackColor = Color.Green
+        self.button2.ForeColor = Color.Red
+        self.button2.Click += self.button2_click
+        self.button1.Cursor = Cursors.Hand
+
+        #set up Enabled Button3 control:
+        self.button3 = Button()
+        self.button3.Name = "button3"
+        self.button3.Text = "button3"
+        self.button3.Location = Point(10,100)
+        self.button3.ForeColor = Color.Red
+        self.button3.Enabled = False
 
         # set up LinkLabel control
         self.linklabel1 = LinkLabel()
-        self.linklabel1.Location = Point(10,80)
+        self.linklabel1.Location = Point(10,160)
         self.linklabel1.AutoSize = True
         self.linklabel1.DisabledLinkColor = Color.Red
         self.linklabel1.VisitedLinkColor = Color.Blue
@@ -71,12 +89,16 @@ class RunApp(Form):
         # add controls
         self.Controls.Add(self.label)
         self.Controls.Add(self.button1)
+        self.Controls.Add(self.button2)
+        self.Controls.Add(self.button3)
         self.Controls.Add(self.linklabel1)
     
-    def button_click(self, sender, event):
+    def button1_click(self, sender, event):
+        MessageBox.Show("successful clicked me", "message")
+
+    def button2_click(self, sender, event):
         self.count += 1
         self.label.Text = "You have clicked me %s times" % self.count
-        MessageBox.Show("successful clicked me", "message")
 
     def linklabel_clicked(self, sender, LinkClicked):
         self.linklabel1.Links[0].Visited = True

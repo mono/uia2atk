@@ -1,3 +1,8 @@
+2008-07-18  Calen Chen <cachen@novell.com>
+
+	* samples/button_label_linklabel.py: change button1 to open message,
+	button2 to alert label text, button3 as Enable(greyed out). 
+
 2008-07-17  Brian G. Merrell <bgmerrell@gmail.com>
 	
 	* drivers/local_run.py: Prefix time with a date so the folder name
