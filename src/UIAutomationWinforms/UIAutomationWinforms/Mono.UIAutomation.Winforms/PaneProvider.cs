@@ -24,8 +24,6 @@
 // 
 
 using System;
-using System.ComponentModel;
-using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
@@ -33,55 +31,38 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal abstract class FragmentControlProvider 
-		: SimpleControlProvider, IRawElementProviderFragment
+	internal class PaneProvider : FragmentControlProvider
 	{
 
-#region Constructor	
+		#region Constructor
 		
-		protected FragmentControlProvider (Component component) : base (component)
+		public PaneProvider (Control control) : base (control)
 		{
 		}
+		
+		#endregion
+		
+		#region SimpleControlProvider: Specialization
+		
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return string.Empty; //FIXME: "must always be a clear, concise and meaningful title."
+			else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Pane.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "pane";
+			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				return false;
+			else
+				return base.GetPropertyValue (propertyId);
+		}
+		
+		//LabeledByProperty
+		//HelpTextProperty
+		//AccessKeyProperty
+		//NameProperty
+		#endregion
 
-#endregion
-		
-#region IRawElementProviderFragment Interface 
-
-		public virtual System.Windows.Rect BoundingRectangle {
-			get {
-				return (Rect)
-					GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-			}
-		}
-		
-		public virtual IRawElementProviderFragmentRoot FragmentRoot {
-			get { 
-				return (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (Container);
-			}
-		}
-		
-		public virtual IRawElementProviderSimple[] GetEmbeddedFragmentRoots () 
-		{
-			return null;
-		}
-		
-		public virtual int[] GetRuntimeId ()
-		{
-			return new int [] { AutomationInteropProvider.AppendRuntimeId, 
-				(int) GetPropertyValue (AutomationElementIdentifiers.AutomationIdProperty.Id) };
-		}
-		
-		public virtual IRawElementProviderFragment Navigate (NavigateDirection direction) 
-		{
-			return Navigation.Navigate (direction);
-		}
-		
-		public virtual void SetFocus ()
-		{
-			Control.Focus ();
-		}
-
-#endregion
-		
 	}
 }

@@ -313,9 +313,9 @@ namespace Mono.UIAutomation.Winforms
 			if (child != null) {
 				Console.WriteLine (child);
 				
-				if (controlProviders.ContainsKey (child)) {
+				if (component_providers.ContainsKey (child)) {
 					IRawElementProviderSimple provider =
-						controlProviders [child];
+						component_providers [child];
 					IRawElementProviderFragment providerFragment =
 						provider as IRawElementProviderFragment;
 					if (providerFragment != null)
@@ -334,9 +334,9 @@ namespace Mono.UIAutomation.Winforms
 					// TODO: Necessary to delve into child control
 					// for focused element?
 					
-					if (controlProviders.ContainsKey (control)) {
+					if (component_providers.ContainsKey (control)) {
 						IRawElementProviderSimple provider =
-							controlProviders [control];
+							component_providers [control];
 						IRawElementProviderFragment providerFragment =
 							provider as IRawElementProviderFragment;
 						if (providerFragment != null)

@@ -24,64 +24,20 @@
 // 
 
 using System;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal abstract class FragmentControlProvider 
-		: SimpleControlProvider, IRawElementProviderFragment
+	internal class ToolTipProvider : FragmentControlProvider
 	{
 
-#region Constructor	
+		#region Constructor
 		
-		protected FragmentControlProvider (Component component) : base (component)
+		public ToolTipProvider (ToolTip tooltip) : base (null)
 		{
 		}
-
-#endregion
 		
-#region IRawElementProviderFragment Interface 
-
-		public virtual System.Windows.Rect BoundingRectangle {
-			get {
-				return (Rect)
-					GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-			}
-		}
-		
-		public virtual IRawElementProviderFragmentRoot FragmentRoot {
-			get { 
-				return (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (Container);
-			}
-		}
-		
-		public virtual IRawElementProviderSimple[] GetEmbeddedFragmentRoots () 
-		{
-			return null;
-		}
-		
-		public virtual int[] GetRuntimeId ()
-		{
-			return new int [] { AutomationInteropProvider.AppendRuntimeId, 
-				(int) GetPropertyValue (AutomationElementIdentifiers.AutomationIdProperty.Id) };
-		}
-		
-		public virtual IRawElementProviderFragment Navigate (NavigateDirection direction) 
-		{
-			return Navigation.Navigate (direction);
-		}
-		
-		public virtual void SetFocus ()
-		{
-			Control.Focus ();
-		}
-
-#endregion
-		
+		#endregion
 	}
 }

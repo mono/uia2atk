@@ -1,3 +1,21 @@
+2008-07-18  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated. Adde files.
+	* Mono.UIAutomation.Winforms/PaneProvider.cs, 
+	Mono.UIAutomation.Winforms/ErrorProviderProvider.cs,
+	Mono.UIAutomation.Winforms/ToolTipProvider.cs: Added files.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Using Component instead
+	of Control. Updated to coding guidelines.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Using Component
+	instead of Control. New virtual property added: Container. Automation
+	properties: IsXXXXAvaliableProperty moved from bottom to top.
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Using Component
+	instead of Control.
+	* Mono.UIAutomation.Winforms/WindowProvider.cs: Updated to Coding
+	Guidelines.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Using
+	Component instead of Control.
+
 2008-07-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/FormListener.cs: Use ProviderFactory to

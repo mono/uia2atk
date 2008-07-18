@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
 using System.Windows;
 using System.Windows.Automation;
@@ -56,12 +57,12 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Constructors
 		
-		protected SimpleControlProvider (Control control)
+		protected SimpleControlProvider (IComponent control)
 		{
-			this.control = control;
+			this.control = control as Control;
 			
 			events = new Dictionary<ProviderEventType,IConnectable> ();
-			provider_behaviors =
+			provider_behaviors = 
 				new Dictionary<AutomationPattern,IProviderBehavior> ();
 			
 			runtime_id = -1;
@@ -70,6 +71,10 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Public Properties
+		
+		public virtual Component Container {
+			get { return control.Parent; }
+		}
 		
 		public virtual Control Control {
 			get { return control; }
@@ -199,43 +204,9 @@ namespace Mono.UIAutomation.Winforms
 				if (val != null)
 					return val;
 			}
-			
-			if (Control == null)
-				return null;			
-			else if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id) {
-				if (runtime_id == -1)
-					runtime_id = Helper.GetUniqueRuntimeId ();
 
-				return runtime_id;
-			} else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
-				return Control.Enabled;
-			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return Control.Text;
-			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-				return Control.CanFocus;
-			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
-				return !Control.Visible;
-			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
-				return Control.Focused;
-			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
-				return true;
-			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
-				return true;
-			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-				if (Control.Parent == null)
-					return Helper.RectangleToRect (Control.Bounds);
-				else
-					return Helper.RectangleToRect (Control.Parent.RectangleToScreen (Control.Bounds));
-			} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id) {
-				if (Control.Visible == false)
-					return null;
-				else {
-					// TODO: Test. MS behavior is different.
-					Rect rectangle = (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-					return new Point (rectangle.X, rectangle.Y);
-				}
-			} //TODO: Add IsDockPatternAvailableProperty, IsGridItemPatternAvailableProperty, IsTableItemPatternAvailableProperty
-			else if (propertyId == AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty.Id)
+			//TODO: Add IsDockPatternAvailableProperty, IsGridItemPatternAvailableProperty, IsTableItemPatternAvailableProperty
+			if (propertyId == AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty.Id)
 				return IsBehaviorEnabled (ExpandCollapsePatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id)
 				return IsBehaviorEnabled (GridPatternIdentifiers.Pattern);
@@ -265,7 +236,43 @@ namespace Mono.UIAutomation.Winforms
 				return IsBehaviorEnabled (ValuePatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.IsWindowPatternAvailableProperty.Id)
 				return IsBehaviorEnabled (WindowPatternIdentifiers.Pattern);
-			else
+			
+			//Control-like properties
+			if (Control == null)
+				return null;			
+			else if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id) {
+				if (runtime_id == -1)
+					runtime_id = Helper.GetUniqueRuntimeId ();
+
+				return runtime_id;
+			} else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
+				return Control.Enabled;
+			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return Control.Text;
+			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				return Control.CanFocus;
+			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
+				return !Control.Visible;
+			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+				return Control.Focused;
+			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
+				return true;
+			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
+				return true;
+			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+				if (Control.Container == null)
+					return Helper.RectangleToRect (Control.Bounds);
+				else
+					return Helper.RectangleToRect (Control.Parent.RectangleToScreen (Control.Bounds));
+			} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id) {
+				if (Control.Visible == false)
+					return null;
+				else {
+					// TODO: Test. MS behavior is different.
+					Rect rectangle = (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					return new Point (rectangle.X, rectangle.Y);
+				}
+			} else
 				return null;
 		}
 

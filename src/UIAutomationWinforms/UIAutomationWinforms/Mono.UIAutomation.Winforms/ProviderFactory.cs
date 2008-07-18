@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows.Forms;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Navigation;
@@ -40,31 +41,30 @@ namespace Mono.UIAutomation.Winforms
 		//       behaviors depending on the control type, and maybe
 		//       it makes sense for the builder to keep track of
 		//       this mapping?
-		private static Dictionary<Control, IRawElementProviderFragment>
-			controlProviders;
+		private static Dictionary<Component, IRawElementProviderFragment>
+			component_providers;
 		
 		static ProviderFactory ()
 		{
-			controlProviders =
-				new Dictionary<Control,IRawElementProviderFragment> ();
+			component_providers =
+				new Dictionary<Component,IRawElementProviderFragment> ();
 		}
 		
-		public static IRawElementProviderFragment GetProvider (Control control)
+		public static IRawElementProviderFragment GetProvider (Component component)
 		{
-			return GetProvider (control, true);
+			return GetProvider (component, true);
 		}
 		
-		
-		public static IRawElementProviderFragment GetProvider (Control control, 
-		                                                     bool initializeEvents)
+		public static IRawElementProviderFragment GetProvider (Component component, 
+		                                                       bool initializeEvents)
 		{
-			return GetProvider (control, initializeEvents, true);
+			return GetProvider (component, initializeEvents, true);
 		}
 		
 		
-		public static IRawElementProviderFragment GetProvider (Control control, 
-		                                                     bool initializeEvents,
-			                                             bool initializeChildControlStructure)
+		public static IRawElementProviderFragment GetProvider (Component component,
+		                                                       bool initializeEvents,
+		                                                       bool initializeChildControlStructure)
 		{
 			Label l;
 			Button b;
@@ -80,37 +80,37 @@ namespace Mono.UIAutomation.Winforms
 			ListBox lb;
 			ScrollBar scb;
 			
-			if (control == null)
+			if (component == null)
 				return null;
 
-			provider = (FragmentControlProvider) FindProvider (control);
+			provider = (FragmentControlProvider) FindProvider (component);
 			if (provider != null)
 				return provider;
 
-			if ((f = control as Form) != null)
+			if ((f = component as Form) != null)
 				provider = new WindowProvider (f);
-			else if ((gb = control as GroupBox) != null)
+			else if ((gb = component as GroupBox) != null)
 				provider = new GroupBoxProvider (gb);
-			else if ((b = control as Button) != null)
+			else if ((b = component as Button) != null)
 				provider = new ButtonProvider (b);
-			else if ((r = control as RadioButton) != null)
+			else if ((r = component as RadioButton) != null)
 				provider = new RadioButtonProvider (r);
-			else if ((c = control as CheckBox) != null)
+			else if ((c = component as CheckBox) != null)
 				provider = new CheckBoxProvider (c);
-			else if ((t = control as TextBox) != null)
+			else if ((t = component as TextBox) != null)
 				provider = new TextBoxProvider (t);
-			else if ((ll = control as LinkLabel) != null)
+			else if ((ll = component as LinkLabel) != null)
 				provider = new LinkLabelProvider (ll);
-			else if ((l = control as Label) != null)
+			else if ((l = component as Label) != null)
 				provider = new LabelProvider (l);
-			else if ((sb = control as StatusBar) != null)
+			else if ((sb = component as StatusBar) != null)
 				provider = new StatusBarProvider (sb);
-			else if ((cb = control as ComboBox) != null)
+			else if ((cb = component as ComboBox) != null)
 				provider = new ComboBoxProvider (cb);
-			else if ((lb = control as ListBox) != null)
+			else if ((lb = component as ListBox) != null)
 				provider = new ListBoxProvider (lb);
-			else if ((scb = control as ScrollBar) != null) {
-				if ((lb = scb.Parent as ListBox) != null) {
+			else if ((scb = component as ScrollBar) != null) {
+				if ((lb = component.Container as ListBox) != null) {
 					provider = new ListBoxProvider.ListBoxScrollBarProvider (scb);
 					((FragmentRootControlProvider) provider).InitializeChildControlStructure ();
 				} else
@@ -120,17 +120,18 @@ namespace Mono.UIAutomation.Winforms
 			
 			if (provider != null) {
 				// TODO: Make tracking in dictionary optional
-				controlProviders [control] = provider;
+				component_providers [component] = provider;
 				if (initializeEvents)
 					provider.InitializeEvents ();
 				
 				//TODO: Be aware that this may lead to calling
 				//      InitializeChildControlStructure several times
-				if (initializeChildControlStructure &&
-				    control.Parent == null &&
-				    provider is FragmentRootControlProvider) {
+				if (initializeChildControlStructure 
+				    && component.Container == null 
+				    && provider is FragmentRootControlProvider) {
 					FragmentRootControlProvider root =
 						provider as FragmentRootControlProvider;
+					Console.WriteLine ("CALLLING {0}", root.GetType ());
 					root.InitializeChildControlStructure ();
 				}
 				
@@ -139,18 +140,18 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 		}
 		
-		public static void ReleaseProvider (Control control)
+		public static void ReleaseProvider (Component control)
 		{
-			controlProviders.Remove (control);
+			component_providers.Remove (control);
 		}
 		
-		public static IRawElementProviderFragment FindProvider (Control control)
+		public static IRawElementProviderFragment FindProvider (Component control)
 		{
 			IRawElementProviderFragment provider;
 			
 			if (control == null)
 				return null;
-			else if (controlProviders.TryGetValue (control, out provider))
+			else if (component_providers.TryGetValue (control, out provider))
 				return provider;
 
 			return null;

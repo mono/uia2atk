@@ -98,6 +98,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ButtonProvider.cs \
 	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ComboBoxProvider.cs \
+	Mono.UIAutomation.Winforms/ErrorProviderProvider.cs \
 	Mono.UIAutomation.Winforms/FormListener.cs \
 	Mono.UIAutomation.Winforms/FragmentControlProvider.cs \
 	Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs \
@@ -110,6 +111,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ListItemProvider.cs \
 	Mono.UIAutomation.Winforms/ListProvider.cs \
 	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs \
+	Mono.UIAutomation.Winforms/PaneProvider.cs \
 	Mono.UIAutomation.Winforms/ProviderFactory.cs \
 	Mono.UIAutomation.Winforms/RadioButtonProvider.cs \
 	Mono.UIAutomation.Winforms/ScrollBarProvider.cs \
@@ -119,6 +121,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/TextNormalizer.cs \
 	Mono.UIAutomation.Winforms/TextNormalizerPoints.cs \
 	Mono.UIAutomation.Winforms/TextRangeProvider.cs \
+	Mono.UIAutomation.Winforms/ToolTipProvider.cs \
 	Mono.UIAutomation.Winforms/WindowProvider.cs \
 	Mono.UIAutomation.Winforms/WordToken.cs \
 	Mono.UIAutomation.Winforms/WordTokenCollection.cs \

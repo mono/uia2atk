@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
@@ -39,28 +40,18 @@ namespace Mono.UIAutomation.Winforms
 	{
 #region Internal Data
 		
-		internal IDictionary<Control, IRawElementProviderSimple>
-			controlProviders;  // TODO: Fix this...
+		internal IDictionary<Component, IRawElementProviderSimple>
+			component_providers;  // TODO: Fix this...
 		
 #endregion
 
 #region Constructors
 		
-		protected FragmentRootControlProvider (Control control) :
-			base (control)
+		protected FragmentRootControlProvider (Component component) :
+			base (component)
 		{
-			controlProviders =
-				new Dictionary<Control, IRawElementProviderSimple> ();
-			
-			control.ControlAdded += OnControlAdded;
-			control.ControlRemoved += OnControlRemoved;
-			
-			foreach (Control childControl in control.Controls) {
-				IRawElementProviderSimple provider =
-					CreateProvider (childControl);
-				// TODO: Null check, compound, etc?
-				controlProviders [childControl] = provider;
-			}
+			component_providers =
+				new Dictionary<Component, IRawElementProviderSimple> ();
 		}
 		
 #endregion
@@ -76,20 +67,16 @@ namespace Mono.UIAutomation.Winforms
 			//       aren't sent to bridge until the parent's already
 			//       there.  There are about 100 ways to do this
 			//       better.
-			foreach (IRawElementProviderSimple childProvider in controlProviders.Values) {
-				// TODO: Fill in rest of eventargs
-				if (childProvider == null)
-					break;
+			if (Control != null) {				
+				Control.ControlAdded += OnControlAdded;
+				Control.ControlRemoved += OnControlRemoved;
 				
-				Console.WriteLine ("InitializeChildControlStructure. Type of: "+childProvider.GetType ());
-				
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   (IRawElementProviderFragment) childProvider);
-
-				FragmentRootControlProvider rootProvider =
-					childProvider as FragmentRootControlProvider;
-				if (rootProvider != null)
-					rootProvider.InitializeChildControlStructure ();
+				foreach (Component childControl in Control.Controls) {
+					IRawElementProviderSimple provider =
+						CreateProvider (childControl);
+					// TODO: Null check, compound, etc?
+					component_providers [childControl] = provider;
+				}
 			}
 		}
 		
@@ -100,10 +87,10 @@ namespace Mono.UIAutomation.Winforms
 			//       there.  There are about 100 ways to do this
 			//       better.
 			Console.WriteLine ("finalizing");
-			foreach (SimpleControlProvider childProvider in controlProviders.Values)
+			foreach (SimpleControlProvider childProvider in component_providers.Values)
 				childProvider.Terminate ();
 
-			controlProviders.Clear ();
+			component_providers.Clear ();
 		}
 		
 #endregion
@@ -144,8 +131,8 @@ namespace Mono.UIAutomation.Winforms
 			bool radioButtonFound = false;
 			IRawElementProviderSimple removedProvider;
 			
-			if (controlProviders.TryGetValue (args.Control, out removedProvider) == true) {
-				foreach (IRawElementProviderSimple childProvider in controlProviders.Values) {
+			if (component_providers.TryGetValue (args.Control, out removedProvider) == true) {
+				foreach (IRawElementProviderSimple childProvider in component_providers.Values) {
 					if (childProvider != removedProvider &&
 					    (int) childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
 						radioButtonFound = true;
@@ -167,7 +154,7 @@ namespace Mono.UIAutomation.Winforms
 				
 				// TODO: Some sort of disposal
 				
-				controlProviders.Remove (args.Control);
+				component_providers.Remove (args.Control);
 				
 				ProviderFactory.ReleaseProvider (args.Control);
 			}
@@ -177,15 +164,15 @@ namespace Mono.UIAutomation.Winforms
 
 #region Protected Methods
 	
-		protected IRawElementProviderSimple CreateProvider (Control control)
+		protected IRawElementProviderSimple CreateProvider (Component component)
 		{
-			return ProviderFactory.GetProvider (control);
+			return ProviderFactory.GetProvider (component);
 		}
 		
-		protected IRawElementProviderSimple GetProvider (Control control)
+		protected IRawElementProviderSimple GetProvider (Component component)
 		{
-			if (controlProviders.ContainsKey (control))
-				return controlProviders [control];
+			if (component_providers.ContainsKey (component))
+				return component_providers [component];
 			else
 				return null;
 		}

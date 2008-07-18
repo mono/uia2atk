@@ -24,8 +24,7 @@
 // 
 
 using System;
-using System.ComponentModel;
-using System.Windows;
+using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
@@ -33,55 +32,63 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal abstract class FragmentControlProvider 
-		: SimpleControlProvider, IRawElementProviderFragment
+	internal class ErrorProviderProvider : PaneProvider
 	{
-
-#region Constructor	
 		
-		protected FragmentControlProvider (Component component) : base (component)
+		#region Constructor
+		
+		public ErrorProviderProvider (ErrorProvider errorProvider) : base (null)
 		{
+			this.error_provider = errorProvider;
+			controls = new List<Control> ();
 		}
-
-#endregion
 		
-#region IRawElementProviderFragment Interface 
+		#endregion
+		
+		#region PaneProvider: Specializations
+		
+		public override void InitializeEvents ()
+		{
+			base.InitializeEvents ();
+			
+			//TODO: Add delegates whe SetError and ClearError
+		}
+		
+		public override void Terminate ()
+		{
+			base.Terminate ();
 
-		public virtual System.Windows.Rect BoundingRectangle {
-			get {
-				return (Rect)
-					GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+			controls.Clear ();
+		}
+		
+		#endregion
+		
+		#region Private Methods
+		
+		private void OnErrorSet (object sender, Control control)
+		{
+			if (controls.Contains (control) == false) {
+				controls.Add (control);
+				if (controls.Count == 1)
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+					                                   this);
 			}
-		}
-		
-		public virtual IRawElementProviderFragmentRoot FragmentRoot {
-			get { 
-				return (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (Container);
-			}
-		}
-		
-		public virtual IRawElementProviderSimple[] GetEmbeddedFragmentRoots () 
-		{
-			return null;
-		}
-		
-		public virtual int[] GetRuntimeId ()
-		{
-			return new int [] { AutomationInteropProvider.AppendRuntimeId, 
-				(int) GetPropertyValue (AutomationElementIdentifiers.AutomationIdProperty.Id) };
-		}
-		
-		public virtual IRawElementProviderFragment Navigate (NavigateDirection direction) 
-		{
-			return Navigation.Navigate (direction);
-		}
-		
-		public virtual void SetFocus ()
-		{
-			Control.Focus ();
-		}
 
-#endregion
+		}
 		
+		private void OnErrorClear (object sender, Control control)
+		{
+			controls.Clear ();
+		}
+		
+		#endregion
+		
+		#region Private Fields
+		
+		private List<Control> controls;
+		private ErrorProvider error_provider;
+		
+		#endregion
+
 	}
 }
