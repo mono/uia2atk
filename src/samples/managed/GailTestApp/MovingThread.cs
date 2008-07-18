@@ -24,11 +24,10 @@
 // 
 
 using System;
+using System.Threading;
 
 namespace GailTestApp
 {
-	
-	
 	public class MovingThread : IDisposable
 	{
 		public MovingThread()
