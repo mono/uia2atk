@@ -114,7 +114,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				
 				Assert.AreEqual (1, bridge.StructureChangedEvents.Count, "event count");
 				Assert.AreSame (provider, bridge.StructureChangedEvents [0].provider, "event provider");
-				Assert.AreEqual (StructureChangeType.ChildrenBulkRemoved, bridge.StructureChangedEvents [0].e.StructureChangeType, "event change type");
+				Assert.AreEqual (StructureChangeType.ChildRemoved, bridge.StructureChangedEvents [0].e.StructureChangeType, "event change type");
 				
 				Application.DoEvents ();
 			}

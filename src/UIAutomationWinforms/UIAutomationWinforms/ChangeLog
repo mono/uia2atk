@@ -1,3 +1,20 @@
+2008-07-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/FormListener.cs: Use ProviderFactory to
+	  get new WindowProviders so that they are properly tracked by the
+	  factory.  ChildrenBulkAdded->ChildAdded.
+	* Mono.UIAutomation.Winforms/WindowProvider.cs:
+	  ChildrenBulkRemoved->ChildRemoved.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: New overload to
+	  control whether or not InitializeChildControlStructure is called. 
+	  This could probably be handled better.
+	* Mono.UIAutomation.Winforms/Helper.cs: Set runtimeId properly for
+	  ChildrenBulk* StructureChangeTypes.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs:
+	  ChildrenBulkAdded->ChildAdded.  Fix typo in method name when
+	  getting ControlTypeProperty value.  Initial support for child
+	  removal.
+
 2008-07-17  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Navigation/ListBoxNavigation.cs: Navigate

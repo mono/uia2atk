@@ -104,11 +104,19 @@ namespace Mono.UIAutomation.Winforms
 			Form f = (Form) sender;
 			if (formProviders.ContainsKey (f))
 				return;
-			WindowProvider provider = new WindowProvider (f);
+			
+			// Pass false in last argument so that InitializeChildControlStructure
+			// isn't called when the provider is created.  We'll do
+			// that manually after alerting the bridge to the presence
+			// of the new form.
+			WindowProvider provider = (WindowProvider)
+				ProviderFactory.GetProvider (f,
+				                             true,
+				                             false);
 			formProviders [f] = provider;
 			
 			// TODO: Fill in rest of eventargs
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenBulkAdded,
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
 			                                   provider);
 			provider.InitializeChildControlStructure ();
 		}

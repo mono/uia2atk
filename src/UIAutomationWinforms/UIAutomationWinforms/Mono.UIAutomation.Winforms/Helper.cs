@@ -74,7 +74,6 @@ namespace Mono.UIAutomation.Winforms
 		internal static void RaiseStructureChangedEvent (StructureChangeType type,
 		                                                 IRawElementProviderFragment provider)
 		{
-			
 			Console.WriteLine ("Helper.RaiseStructureChangedEvent: {0} - {1} - {2} ",
 			                   type, provider.GetType (), provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
 			
@@ -85,7 +84,10 @@ namespace Mono.UIAutomation.Winforms
 						runtimeId = provider.GetRuntimeId (); 
 					else
 						runtimeId = provider.FragmentRoot.GetRuntimeId ();
-				} else
+				} else if (type == StructureChangeType.ChildrenBulkAdded ||
+				           type == StructureChangeType.ChildrenBulkRemoved)
+					runtimeId = new int[] {0};
+				else
 					runtimeId = provider.GetRuntimeId ();
 				
 				StructureChangedEventArgs invalidatedArgs 

@@ -1,5 +1,12 @@
 2008-07-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* AutomationBridge.cs: Start handling ChildRemoved events for
+	  non-Window controls.  Switch to using ChildAdded instead of
+	  ChildrenBulkAdded.  Still need to add support for ChildrenBulk*
+	  StructureChangeTypes.
+
+2008-07-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* ParentAdapter.cs: Set Adapter.Parent on newly added children.
 
 2008-07-18  Andrés G. Aragoneses <aaragoneses@novell.com> 

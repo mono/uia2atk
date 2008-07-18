@@ -1,3 +1,7 @@
+2008-07-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* WindowProviderTest.cs: ChildrenBulkRemoved->ChildRemoved.
+
 2008-07-17  Mario Carrion  <mcarrion@novell.com>
 
 	* TextBoxProviderTest.cs, TextRangeProviderTest.cs: Temporally disabled.

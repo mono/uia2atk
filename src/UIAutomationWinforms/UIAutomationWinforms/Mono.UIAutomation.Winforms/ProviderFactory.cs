@@ -58,6 +58,14 @@ namespace Mono.UIAutomation.Winforms
 		public static IRawElementProviderFragment GetProvider (Control control, 
 		                                                     bool initializeEvents)
 		{
+			return GetProvider (control, initializeEvents, true);
+		}
+		
+		
+		public static IRawElementProviderFragment GetProvider (Control control, 
+		                                                     bool initializeEvents,
+			                                             bool initializeChildControlStructure)
+		{
 			Label l;
 			Button b;
 			RadioButton r;
@@ -116,9 +124,13 @@ namespace Mono.UIAutomation.Winforms
 				if (initializeEvents)
 					provider.InitializeEvents ();
 				
-				//TODO: Be aware that this may lead to calling InitializeChildControlStructure several times
-				if (control.Parent == null && provider is FragmentRootControlProvider) {
-					FragmentRootControlProvider root = provider as FragmentRootControlProvider;
+				//TODO: Be aware that this may lead to calling
+				//      InitializeChildControlStructure several times
+				if (initializeChildControlStructure &&
+				    control.Parent == null &&
+				    provider is FragmentRootControlProvider) {
+					FragmentRootControlProvider root =
+						provider as FragmentRootControlProvider;
 					root.InitializeChildControlStructure ();
 				}
 				

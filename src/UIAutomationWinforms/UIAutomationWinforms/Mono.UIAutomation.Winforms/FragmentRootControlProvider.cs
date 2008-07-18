@@ -83,7 +83,7 @@ namespace Mono.UIAutomation.Winforms
 				
 				Console.WriteLine ("InitializeChildControlStructure. Type of: "+childProvider.GetType ());
 				
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenBulkAdded,
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
 				                                   (IRawElementProviderFragment) childProvider);
 
 				FragmentRootControlProvider rootProvider =
@@ -118,7 +118,7 @@ namespace Mono.UIAutomation.Winforms
 			IRawElementProviderSimple childProvider =
 				CreateProvider (childControl);
 
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenBulkAdded,
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
 			                                   (IRawElementProviderFragment) childProvider);
 			
 			// TODO: Figure out exactly when to do this (talk to bridge guys)
@@ -147,7 +147,7 @@ namespace Mono.UIAutomation.Winforms
 			if (controlProviders.TryGetValue (args.Control, out removedProvider) == true) {
 				foreach (IRawElementProviderSimple childProvider in controlProviders.Values) {
 					if (childProvider != removedProvider &&
-					    (int) childProvider.GetPatternProvider (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
+					    (int) childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
 						radioButtonFound = true;
 						break;
 					}
@@ -156,7 +156,14 @@ namespace Mono.UIAutomation.Winforms
 					SetBehavior (SelectionPatternIdentifiers.Pattern,
 					             null);
 				
-				// TODO: StructureChangedEvent
+				// StructureChangedEvent
+				// TODO: Use correct arguments, and fix bridge
+				//       to handle them!!!
+				//       Event source: Parent of removed child
+				//       runtimeId: The child that was removed.
+				//       (pg 6 of fxref_uiautomationtypes_p2.pdf)
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
+				                                   (IRawElementProviderFragment)removedProvider);
 				
 				// TODO: Some sort of disposal
 				

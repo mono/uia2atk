@@ -127,7 +127,8 @@ namespace UiaAtkBridge
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) provider;
 			int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			if (e.StructureChangeType == StructureChangeType.ChildrenBulkAdded) {
+			// TODO: Handle ChildrenBulkAdded and ChildrenBulkRemoved
+			if (e.StructureChangeType == StructureChangeType.ChildAdded) {
 				if (controlTypeId == ControlType.Window.Id)
 					HandleNewWindowControlType (simpleProvider);
 				else if (controlTypeId == ControlType.Button.Id)
@@ -138,9 +139,13 @@ namespace UiaAtkBridge
 				else if (controlTypeId == ControlType.CheckBox.Id)
 					HandleNewCheckBoxControlType (simpleProvider);
 				// TODO: Other providers
-			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
+			} else if (e.StructureChangeType == StructureChangeType.ChildRemoved) {
 				if (controlTypeId == ControlType.Window.Id)
 					HandleWindowProviderRemoval ((IWindowProvider)provider);
+				else
+					// TODO: Handle proper documented args
+					//       (see FragmentRootControlProvider)
+					HandleElementRemoval (simpleProvider);
 			}
 			
 			// TODO: Other structure changes
@@ -149,6 +154,20 @@ namespace UiaAtkBridge
 #endregion
 		
 #region Private Methods
+		
+		private void HandleElementRemoval (IRawElementProviderSimple provider)
+		{
+			Adapter adapter = providerAdapterMapping [provider];
+			ParentAdapter parent = adapter.Parent as ParentAdapter;
+			if (parent != null)
+				parent.RemoveChild (adapter);
+			
+			providerAdapterMapping.Remove (provider);
+			try {
+				IntPtr providerHandle = (IntPtr) provider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
+				pointerProviderMapping.Remove (providerHandle);
+			} catch {}
+		}
 		
 		private void HandleNewWindowControlType (IRawElementProviderSimple provider)
 		{
