@@ -1,5 +1,10 @@
 2008-07-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* SelectionProviderUserHelper.cs: Fix typo detected by MarioC and
+	  remove debug spew!
+
+2008-07-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* SelectionProviderUserHelper.cs, ComboBox.cs: Propagate the
 	  children-list pre-selection to the SelectionProvider helper.
 	* SelectionProviderUserHelper.cs, List.cs: some coding style fixes.

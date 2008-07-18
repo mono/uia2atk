@@ -162,14 +162,12 @@ namespace UiaAtkBridge
 			
 			if (child != null) {
 				ISelectionItemProvider selectionItemProvider = 
-					(ISelectionItemProvider)provider.GetPatternProvider
+					(ISelectionItemProvider)child.GetPatternProvider
 						(SelectionItemPatternIdentifiers.Pattern.Id);
 				
 				if (selectionItemProvider != null)
 					return selectionItemProvider;
-				else
-					Console.WriteLine("SIP is null");
-			}else{ Console.WriteLine("child is nulllll");}
+			}
 			return null;
 		}
 		
