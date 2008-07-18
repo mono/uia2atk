@@ -1,5 +1,12 @@
 2008-07-18  Mario Carrion <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Updating
+	to coding guidelines. Missing ChildAdded event added.
+	* Mono.UIAutomation.Winforms/WindowProvider.cs: Updated to Coding
+	Guidelines.	
+
+2008-07-18  Mario Carrion <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated. Adde files.
 	* Mono.UIAutomation.Winforms/PaneProvider.cs, 
 	Mono.UIAutomation.Winforms/ErrorProviderProvider.cs,

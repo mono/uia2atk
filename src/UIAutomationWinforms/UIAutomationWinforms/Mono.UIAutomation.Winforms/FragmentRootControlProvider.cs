@@ -41,7 +41,7 @@ namespace Mono.UIAutomation.Winforms
 #region Internal Data
 		
 		internal IDictionary<Component, IRawElementProviderSimple>
-			component_providers;  // TODO: Fix this...
+			componentProviders;  // TODO: Fix this...
 		
 #endregion
 
@@ -50,7 +50,7 @@ namespace Mono.UIAutomation.Winforms
 		protected FragmentRootControlProvider (Component component) :
 			base (component)
 		{
-			component_providers =
+			componentProviders =
 				new Dictionary<Component, IRawElementProviderSimple> ();
 		}
 		
@@ -75,7 +75,11 @@ namespace Mono.UIAutomation.Winforms
 					IRawElementProviderSimple provider =
 						CreateProvider (childControl);
 					// TODO: Null check, compound, etc?
-					component_providers [childControl] = provider;
+
+					componentProviders [childControl] = provider;
+					
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded, 	 
+					                                   (IRawElementProviderFragment) provider);
 				}
 			}
 		}
@@ -87,10 +91,10 @@ namespace Mono.UIAutomation.Winforms
 			//       there.  There are about 100 ways to do this
 			//       better.
 			Console.WriteLine ("finalizing");
-			foreach (SimpleControlProvider childProvider in component_providers.Values)
+			foreach (SimpleControlProvider childProvider in componentProviders.Values)
 				childProvider.Terminate ();
 
-			component_providers.Clear ();
+			componentProviders.Clear ();
 		}
 		
 #endregion
@@ -131,8 +135,8 @@ namespace Mono.UIAutomation.Winforms
 			bool radioButtonFound = false;
 			IRawElementProviderSimple removedProvider;
 			
-			if (component_providers.TryGetValue (args.Control, out removedProvider) == true) {
-				foreach (IRawElementProviderSimple childProvider in component_providers.Values) {
+			if (componentProviders.TryGetValue (args.Control, out removedProvider) == true) {
+				foreach (IRawElementProviderSimple childProvider in componentProviders.Values) {
 					if (childProvider != removedProvider &&
 					    (int) childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
 						radioButtonFound = true;
@@ -154,7 +158,7 @@ namespace Mono.UIAutomation.Winforms
 				
 				// TODO: Some sort of disposal
 				
-				component_providers.Remove (args.Control);
+				componentProviders.Remove (args.Control);
 				
 				ProviderFactory.ReleaseProvider (args.Control);
 			}
@@ -171,8 +175,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		protected IRawElementProviderSimple GetProvider (Component component)
 		{
-			if (component_providers.ContainsKey (component))
-				return component_providers [component];
+			if (componentProviders.ContainsKey (component))
+				return componentProviders [component];
 			else
 				return null;
 		}
