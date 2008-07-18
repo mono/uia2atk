@@ -42,11 +42,11 @@ namespace Mono.UIAutomation.Winforms
 		//       it makes sense for the builder to keep track of
 		//       this mapping?
 		private static Dictionary<Component, IRawElementProviderFragment>
-			component_providers;
+			componentProviders;
 		
 		static ProviderFactory ()
 		{
-			component_providers =
+			componentProviders =
 				new Dictionary<Component,IRawElementProviderFragment> ();
 		}
 		
@@ -120,7 +120,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			if (provider != null) {
 				// TODO: Make tracking in dictionary optional
-				component_providers [component] = provider;
+				componentProviders [component] = provider;
 				if (initializeEvents)
 					provider.InitializeEvents ();
 				
@@ -142,7 +142,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public static void ReleaseProvider (Component control)
 		{
-			component_providers.Remove (control);
+			componentProviders.Remove (control);
 		}
 		
 		public static IRawElementProviderFragment FindProvider (Component control)
@@ -151,7 +151,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			if (control == null)
 				return null;
-			else if (component_providers.TryGetValue (control, out provider))
+			else if (componentProviders.TryGetValue (control, out provider))
 				return provider;
 
 			return null;
