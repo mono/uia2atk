@@ -182,6 +182,7 @@ public partial class MainWindow {
         this.txtEntry = new Gtk.Entry();
         this.txtEntry.CanFocus = true;
         this.txtEntry.Name = "txtEntry";
+        this.txtEntry.Text = Mono.Unix.Catalog.GetString("test text");
         this.txtEntry.IsEditable = true;
         this.txtEntry.InvisibleChar = '●';
         this.table1.Add(this.txtEntry);
@@ -204,7 +205,7 @@ public partial class MainWindow {
         if ((this.Child != null)) {
             this.Child.ShowAll();
         }
-        this.DefaultWidth = 532;
+        this.DefaultWidth = 534;
         this.DefaultHeight = 300;
         this.Show();
         this.DeleteEvent += new Gtk.DeleteEventHandler(this.OnDeleteEvent);

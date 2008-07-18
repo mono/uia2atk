@@ -45,11 +45,9 @@ namespace GailTestApp {
 		
 		public static void Start (MovingThread guiThread)
 		{
-			if (guiThread.ThreadState == ThreadState.Running)
+			if ((guiThread != null) && (guiThread.ThreadState == ThreadState.Running))
 				return;
 
-			Console.WriteLine (guiThread.ThreadState.ToString());
-			
 			if (guiThread != null) {
 
 				guiThread.Deleg = Run;

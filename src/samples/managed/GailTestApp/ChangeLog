@@ -1,5 +1,10 @@
 2008-07-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* gtk-gui/MainWindow.cs, gtk-gui/gui.stetic: Add some test text.
+	* Main.cs: Fix for the case of running this standalone.
+
+2008-07-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* MovingThread.cs: Fix build.
 
 2008-07-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
