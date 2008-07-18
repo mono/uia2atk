@@ -1,3 +1,7 @@
+2008-07-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ParentAdapter.cs: Set Adapter.Parent on newly added children.
+
 2008-07-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* SelectionProviderUserHelper.cs: Fix typo detected by MarioC and
