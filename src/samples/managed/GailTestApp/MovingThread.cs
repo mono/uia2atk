@@ -61,7 +61,11 @@ namespace GailTestApp
 
 		public ThreadStart Deleg
 		{
-			set { deleg = value; }
+			set { 
+				if (this.internalState == ThreadState.Running)
+					throw new NotSupportedException ("You cannot assign a delegate while the thread is running");
+				deleg = value;
+			}
 		}
 
 		public ThreadState ThreadState
