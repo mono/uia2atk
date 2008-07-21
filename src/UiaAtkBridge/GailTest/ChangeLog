@@ -1,5 +1,12 @@
 2008-07-21  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* gailtest.sh: We need to use NUnit 2.4.7 because it has a feature to
+	  prevent additional appdomains usage (domain=none). However this
+	  feature is undocumented and very awkward to use (that's why we need
+	  to copy all the nunit assemblies into our bin directory).
+
+2008-07-21  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* GailTest.mdp: Revert r108227 on this file in order to fix the project
 	  file.
 
