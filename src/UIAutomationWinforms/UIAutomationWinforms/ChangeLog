@@ -1,5 +1,10 @@
 2008-07-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Remove
+	  extraneous comment.
+
+2008-07-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Instead of
 	  throwing null reference exception if there is no TopLevelControl
 	  when HostRawElementProvider is accessed, return null.
