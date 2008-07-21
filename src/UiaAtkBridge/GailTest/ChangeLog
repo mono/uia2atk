@@ -3,7 +3,10 @@
 	* gailtest.sh: We need to use NUnit 2.4.7 because it has a feature to
 	  prevent additional appdomains usage (domain=none). However this
 	  feature is undocumented and very awkward to use (that's why we need
-	  to copy all the nunit assemblies into our bin directory).
+	  to copy all the nunit assemblies into our bin directory). This version
+	  has also a very annoying bug fixed (about deferring console output
+	  until the end of the tests, thus preventing the debug of infinite
+	  loops, see: http://sourceforge.net/mailarchive/forum.php?thread_name=4881EAA4.2090409%40gmail.com&forum_name=nunit-users ).
 
 2008-07-21  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
