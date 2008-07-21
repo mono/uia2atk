@@ -1,3 +1,9 @@
+2008-07-21  Ray Wang <rawang@gmail.com>
+
+	* samples/notifyicon.py: after 10 sec, balloon tip could be vanished.
+	* samples/listview.py: when click column header, switch item sorting.
+	* samples/test.ico: delete it. do not need it any more.
+
 2008-07-18  Calen Chen <cachen@novell.com>
 
 	* samples/button_label_linklabel.py: change button1 to open message,

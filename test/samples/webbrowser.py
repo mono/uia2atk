@@ -15,7 +15,7 @@ Test accessibility of "WebBrowser" control
 # imports
 import clr
 clr.AddReference('System.Windows.Forms')
-from System.Windows.Forms import Application, DockStyle, Form, WebBrowser, TextBox, Keys
+from System.Windows.Forms import Application, DockStyle, Form, WebBrowser, TextBox
 
 class WebBrowserSample(Form):
     """WebBrowser control class"""
