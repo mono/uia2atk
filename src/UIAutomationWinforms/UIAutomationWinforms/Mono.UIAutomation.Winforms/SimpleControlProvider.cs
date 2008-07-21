@@ -278,7 +278,10 @@ namespace Mono.UIAutomation.Winforms
 
 		public virtual IRawElementProviderSimple HostRawElementProvider {
 			get {
-				if (Control == null)
+				// TODO: Double-check this.  If there is no
+				//       TopLevelControl, should Control.Handle
+				//       be returned, or null as we do here?
+				if (Control == null || Control.TopLevelControl == null)
 					return null;
 				else
 					return AutomationInteropProvider.HostProviderFromHandle (Control.TopLevelControl.Handle);
