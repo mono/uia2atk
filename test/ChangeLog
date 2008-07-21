@@ -1,3 +1,8 @@
+2008-07-21  Brian G. Merrell <bgmerrell@gmail.com>
+	
+	* drivers/update_uia2atk_rpms.sh: Bash script to download the latest
+	uia2atk related rpms and install them.  Needs some error checking.
+
 2008-07-21  Ray Wang <rawang@gmail.com>
 
 	* samples/notifyicon.py: after 10 sec, balloon tip could be vanished.
