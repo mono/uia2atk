@@ -63,8 +63,16 @@ namespace GailTestApp
 		{
 			set { 
 				if (this.internalState == ThreadState.Running)
-					throw new NotSupportedException ("You cannot assign a delegate while the thread is running");
+					throw new NotSupportedException ("You cannot assign a delegate while the thread is running. " + 
+					                                 "Maybe you want to assign a GLib delegate for the mainloop? Use GLibDeleg.");
 				deleg = value;
+			}
+		}
+		
+		public GLib.TimeoutHandler GLibDeleg
+		{
+			set {
+				GLib.Timeout.Add (0, new GLib.TimeoutHandler (value));
 			}
 		}
 
@@ -107,6 +115,49 @@ namespace GailTestApp
 			gThread.Abort();
 			wakeUp.Close();
 			restart.Close();
+		}
+		
+		internal static class GLibHacks
+		{
+			internal class InvokeCB {
+				EventHandler d;
+				object sender;
+				EventArgs args;
+				
+				internal InvokeCB (EventHandler d)
+				{
+					this.d = d;
+					args = EventArgs.Empty;
+					sender = this;
+				}
+				
+//				internal InvokeCB (EventHandler d, object sender, EventArgs args)
+//				{
+//					this.d = d;
+//					this.args = args;
+//					this.sender = sender;
+//				}
+				
+				internal bool Invoke ()
+				{
+					d (sender, args);
+					return false;
+				}
+			}
+			
+			public static void Invoke (EventHandler d)
+			{
+				InvokeCB icb = new InvokeCB (d);
+				
+				GLib.Timeout.Add (0, new GLib.TimeoutHandler (icb.Invoke));
+			}
+	
+//			public static void Invoke (object sender, EventArgs args, EventHandler d)
+//			{
+//				InvokeCB icb = new InvokeCB (d, sender, args);
+//				
+//				GLib.Timeout.Add (0, new GLib.TimeoutHandler (icb.Invoke));
+//			}
 		}
 	}
 

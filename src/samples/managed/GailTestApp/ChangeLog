@@ -1,5 +1,9 @@
 2008-07-21  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* gtk-gui/MainWindow.cs, gtk-gui/gui.stetic: Added a menu.
+
+2008-07-21  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* gtk-gui/gui.stetic, gtk-gui/MainWindow.cs: Added a StatusBar,
 	  requested by Mike Gorse.
 

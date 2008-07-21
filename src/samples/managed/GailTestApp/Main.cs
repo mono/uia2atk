@@ -36,7 +36,8 @@ namespace GailTestApp {
 		
 		private static void Main (string[] args)
 		{
-			Start ();
+			Start (new MovingThread ());
+			Console.WriteLine ("hola");
 		}
 		
 		private static void Start () {
@@ -82,7 +83,7 @@ namespace GailTestApp {
 		{
 			if (win == null)
 				Start (guiThread);
-			
+			//guiThread.Dispose();
 			return win.GiveMeARealButton ();
 		}
 		
