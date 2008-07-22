@@ -1,3 +1,11 @@
+2008-07-22  Calen Chen <cachen@novell.com>
+
+	* samples/contextmenu_menuitem.py: change window's title not use '&'
+	* samples/panel_checkbox_radiobutton.py: change window's title not use '&'
+	* samples/statusbar_statusbarpanel.py: change window's title not use '&'
+	* samples/menustrip_openfiledialog.py: change window's title not use '&'
+	* samples/button_label_linklabel.py: change window's title not use '&'
+
 2008-07-21  Brian G. Merrell <bgmerrell@gmail.com>
 	
 	* drivers/update_uia2atk_rpms.sh: Bash script to download the latest

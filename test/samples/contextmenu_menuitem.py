@@ -29,7 +29,7 @@ class ContextMenuSample(Form):
         """ContextMenuSample class init function."""
 
         # setup title
-        self.Text = "ContextMenu control"
+        self.Text = "ContextMenu_MenuItem controls"
 
         # create menuitems
         self.menuitem1 = MenuItem("Item 1")

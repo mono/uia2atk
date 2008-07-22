@@ -21,7 +21,7 @@ from System.Windows.Forms import *
 class PanelCheckBoxRadioButtonApp(Form):
 
     def __init__(self):
-        self.Text = "Panel&Label&CheckBox&RadioButton"
+        self.Text = "Panel_CheckBox_RadioButton controls"
 
         self.Width = 400
         self.Height = 400

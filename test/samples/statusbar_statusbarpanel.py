@@ -36,7 +36,7 @@ class StatusBarStatusBarPanelApp(Form):
         self.count = 0
 
         # setup form
-        self.Text = "StatusBar & StatusBarPanel Example"
+        self.Text = "StatusBar_StatusBarPanel controls"
         self.Height = 100
 
         # setup button

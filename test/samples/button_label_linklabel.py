@@ -33,7 +33,7 @@ class RunApp(Form):
         """RunApp class init function."""
 
         self.count = 0
-        self.Text = "Button&Label&LinkLabel controls"
+        self.Text = "Button_Label_LinkLabel controls"
 
         # set up Label control
         self.label = Label()

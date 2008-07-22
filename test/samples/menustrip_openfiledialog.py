@@ -23,7 +23,7 @@ import System.Drawing.Text
 class MenuStripOpenFileDialogApp(Form):
 
     def __init__(self):
-        self.Text = "Simple ToolStrip Example"
+        self.Text = "MenuStrip_OpenfileDialog controls"
         self.Width = 800
         self.Height = 500
         self.FormBorderStyle = FormBorderStyle.Fixed3D
