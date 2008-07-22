@@ -118,11 +118,17 @@ namespace GailTestApp {
 			return win.GiveMeARealEntry ();
 		}
 		
-		public static void Kill () 
+		public static void Kill (MovingThread thread) 
+		{
+			thread.GLibDeleg = KillMe;
+		}
+		
+		private static bool KillMe () 
 		{
 			win.Destroy ();
 			win.Dispose ();
 			Application.Quit ();
+			return true;
 		}
 	}
 }

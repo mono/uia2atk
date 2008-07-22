@@ -157,8 +157,12 @@ namespace UiaAtkBridgeTest
 		[TestFixtureTearDown]
 		public void End () 
 		{
-			Console.WriteLine ("Kill");
-			GailTestApp.MainClass.Kill ();
+			Console.WriteLine ("End() called.");
+			GailTestApp.MainClass.Kill (guiThread);
+			
+			//hack: let's wait for the Gtk.Application env to finish gracefully and then we abort the thread
+			System.Threading.Thread.Sleep (1000);
+			
 			guiThread.Dispose ();
 		}
 		

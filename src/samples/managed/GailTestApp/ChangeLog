@@ -1,3 +1,8 @@
+2008-07-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* MainWindow.cs, Main.cs, MovingThread.cs: Finally fix all threading
+	  problems when running the tests, using a GLib.TimeoutHandler.
+
 2008-07-21  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Main.cs, MovingThread.cs: Revert unfinished changes in last commit.

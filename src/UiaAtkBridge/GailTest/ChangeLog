@@ -1,5 +1,10 @@
 2008-07-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* GailTester.cs: Finally fix all threading problems when running the
+	  tests, using a GLib.TimeoutHandler.
+
+2008-07-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* gailtest.sh: Hugh, NUnit 2.4.x series seems to default to run a
 	  separate thread for the tests (this was an option in 2.2.x), so
 	  let's fix all threading problems!

@@ -63,8 +63,16 @@ namespace GailTestApp
 		{
 			set { 
 				if (this.internalState == ThreadState.Running)
-					throw new NotSupportedException ("You cannot assign a delegate while the thread is running");
+					throw new NotSupportedException ("You cannot assign a delegate while the thread is running. " + 
+					                                 "Maybe you want to assign a GLib delegate for the mainloop? Use GLibDeleg.");
 				deleg = value;
+			}
+		}
+		
+		public GLib.TimeoutHandler GLibDeleg
+		{
+			set {
+				GLib.Timeout.Add (0, new GLib.TimeoutHandler (value));
 			}
 		}
 
@@ -104,10 +112,9 @@ namespace GailTestApp
 
 		public void Dispose()
 		{
-			gThread.Abort();
 			wakeUp.Close();
 			restart.Close();
+			gThread.Abort();
 		}
 	}
-
 }
