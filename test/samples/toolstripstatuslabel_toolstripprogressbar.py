@@ -8,6 +8,12 @@
 #              ToolStripProgressBar
 ##############################################################################
 
+# The docstring below is used in the generated log file
+"""
+This sample will show "ToolStripStatusLabel" and "ToolStripProgressBar"  controls in the form.
+It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
+"""
+
 import clr
 import System
 import System.IO
@@ -23,6 +29,8 @@ import System.Drawing.Text
 class RunApp(Form):
 
     def __init__(self):
+
+        # setup form
         self.Text = "Simple ToolStrip Example"
         self.Width = 800
         self.Height = 500
@@ -30,6 +38,7 @@ class RunApp(Form):
 
         self.count = 0        
     
+        # setup textbox
         self.rtb = TextBox()
         self.rtb.Multiline = True
         self.rtb.Dock = DockStyle.Fill
@@ -191,7 +200,7 @@ class RunApp(Form):
         self.ts.Items.Add(self.linklabel)
 
 
-##########################################################################################
+################################################################################
 ##StatusStrip:
         self.statusstrip1 = StatusStrip()
         self.statusstrip1.GripStyle = ToolStripGripStyle.Visible
@@ -199,7 +208,7 @@ class RunApp(Form):
         self.Controls.Add(self.statusstrip1)
 ##ToolStripStatusLabel:
         self.toolstripstatuslabel1 = ToolStripStatusLabel()
-        self.toolstripstatuslabel1.Text = "ToolStripStatusLabel..."
+        self.toolstripstatuslabel1.Text = "Click the button on the left"
         self.toolstripstatuslabel1.BorderStyle = Border3DStyle.Raised
         self.toolstripstatuslabel1.BorderSides = ToolStripStatusLabelBorderSides.Bottom
         self.toolstripstatuslabel1.Spring = True
@@ -216,6 +225,11 @@ class RunApp(Form):
         self.toolstripprogressbar1.Enabled = True
         self.toolstripprogressbar1.Name = "ToolStripProgressBar"
         self.toolstripprogressbar1.ToolTipText = "ToolStripProgressBar"
+        self.toolstripprogressbar1.Minimum = 0
+        self.toolstripprogressbar1.Maximum = 100
+        self.toolstripprogressbar1.Value = 0
+        self.toolstripprogressbar1.Step = 10
+
         self.statusstrip1.Items.Add(self.toolstripprogressbar1)
 
 
@@ -272,11 +286,14 @@ class RunApp(Form):
         self.count_l += 1
         print "Click ToolStripLabel.IsLink %s times" % self.count_l
 
-    def bc(object,sender,event):
-        MessageBox.Show("the first plugin")
-        print "Clicked ToolStripButton at StatusStrip"
-    
-
+    def bc(self, sender, event):
+        #MessageBox.Show("the first plugin")
+        #print "Clicked ToolStripButton at StatusStrip"
+        if self.toolstripprogressbar1.Value < self.toolstripprogressbar1.Maximum:
+            self.toolstripprogressbar1.Value = self.toolstripprogressbar1.Value + self.toolstripprogressbar1.Step
+            self.toolstripstatuslabel1.Text = "It is %d%% of 100%%" % self.toolstripprogressbar1.Value
+        else:
+            self.toolstripstatuslabel1.Text = "Done"
 
 form = RunApp()
 Application.Run(form)

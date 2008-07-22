@@ -10,13 +10,14 @@
 
 # The docstring below is used in the generated log file
 """
-Test accessibility of "HScrollBar" control
+This sample will show "ScrollBar" and "HScrollBar" controls in the form.
+It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
 """
 
 # imports
 import clr
 clr.AddReference('System.Windows.Forms')
-from System.Windows.Forms import Application, DockStyle, Form, HScrollBar
+from System.Windows.Forms import Application, DockStyle, Form, HScrollBar, Label
 
 class HScrollBarSample(Form):
     """HScrollBar control class"""
@@ -26,13 +27,28 @@ class HScrollBarSample(Form):
 
         # setup title
         self.Text = "HScrollBar control"
+        self.Height = 100
+
+        # setup label
+        self.label = Label()
+        self.label.Text = "Value:"
 
         # setup hscrollbar
         self.hscrollbar = HScrollBar()
+        self.hscrollbar.LargeChange = 20
+        self.hscrollbar.SmallChange = 10
+        self.hscrollbar.Minimum = 0
+        self.hscrollbar.Maximum = 119 
+        self.hscrollbar.Value = 0
         self.hscrollbar.Dock = DockStyle.Bottom
+        self.hscrollbar.Scroll += self.on_scroll
 
         # add controls
+        self.Controls.Add(self.label)
         self.Controls.Add(self.hscrollbar)
+
+    def on_scroll(self, sender, event):
+        self.label.Text = "Value: " + str(self.hscrollbar.Value)
 
 # run application
 form = HScrollBarSample()

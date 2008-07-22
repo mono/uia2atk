@@ -10,13 +10,14 @@
 
 # The docstring below is used in the generated log file
 """
-Test accessibility of "VScrollBar" control
+This sample will show "ScrollBar" and "VScrollBar" controls in the form.
+It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
 """
 
 # imports
 import clr
 clr.AddReference('System.Windows.Forms')
-from System.Windows.Forms import Application, DockStyle, Form, VScrollBar
+from System.Windows.Forms import Application, DockStyle, Form, VScrollBar, Label
 
 class VScrollBarSample(Form):
     """VScrollBar control class"""
@@ -27,12 +28,26 @@ class VScrollBarSample(Form):
         # setup title
         self.Text = "VScrollBar control"
 
+        # setup label
+        self.label = Label()
+        self.label.Text = "Value:"
+
         # setup vscrollbar
         self.vscrollbar = VScrollBar()
+        self.vscrollbar.LargeChange = 20
+        self.vscrollbar.SmallChange = 10
+        self.vscrollbar.Minimum = 0
+        self.vscrollbar.Maximum = 119 
+        self.vscrollbar.Value = 0
         self.vscrollbar.Dock = DockStyle.Right
+        self.vscrollbar.Scroll += self.on_scroll
 
         # add controls
+        self.Controls.Add(self.label)
         self.Controls.Add(self.vscrollbar)
+
+    def on_scroll(self, sender, event):
+        self.label.Text = "Value: " + str(self.vscrollbar.Value)
 
 # run application
 form = VScrollBarSample()

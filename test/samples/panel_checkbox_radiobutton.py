@@ -9,6 +9,12 @@
 #              RadioButton
 ##############################################################################
 
+# The docstring below is used in the generated log file
+"""
+This sample will show "Panel", "CheckBox" and "RadioButton"  controls in the form.
+It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
+"""
+
 import clr
 
 clr.AddReference('System.Windows.Forms')
@@ -70,10 +76,17 @@ class PanelCheckBoxRadioButtonApp(Form):
         self.check3.Width = 120
         self.check3.Checked = True
 
+        self.check4 = CheckBox()
+        self.check4.Text = "Beef"
+        self.check4.Location = Point(25, 100)
+        self.check4.Width = 120
+        self.check4.Enabled = False
+
         self.checkPanel.Controls.Add(self.checkLabel)
         self.checkPanel.Controls.Add(self.check1)
         self.checkPanel.Controls.Add(self.check2)
         self.checkPanel.Controls.Add(self.check3)
+        self.checkPanel.Controls.Add(self.check4)
 
     def setupRadioButtons(self):
         self.radioPanel = self.newPanel(0, 200)
@@ -94,6 +107,12 @@ class PanelCheckBoxRadioButtonApp(Form):
         self.radio2.Location = Point(150, 50)
         self.radio2.CheckedChanged += self.checkedChanged
 
+        self.radio3 = RadioButton()
+        self.radio3.Text = "Disabled"
+        self.radio3.Location = Point(260, 50)
+        self.radio3.AutoSize = True
+        self.radio3.Enabled = False
+
         self.radioLabel2 = Label()
         self.radioLabel2.Text = "Go On:____"
         self.radioLabel2.Location = Point(25, 80)
@@ -105,6 +124,7 @@ class PanelCheckBoxRadioButtonApp(Form):
         self.radioPanel.Controls.Add(self.radioLabel2)
         self.radioPanel.Controls.Add(self.radio1)
         self.radioPanel.Controls.Add(self.radio2)
+        self.radioPanel.Controls.Add(self.radio3)
 
     def checkedChanged(self, sender, args):
         if not sender.CheckedChanged:
