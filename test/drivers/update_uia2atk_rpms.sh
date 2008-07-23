@@ -11,4 +11,4 @@ rpm -Uvh *.rpm
 
 # destroy the evidence
 cd ..
-rpm -r $TD
+rm -r $TD

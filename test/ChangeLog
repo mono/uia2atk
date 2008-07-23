@@ -1,3 +1,8 @@
+2008-07-23  Brian G. Merrell <bgmerrell@gmail.com>
+	
+	* drivers/update_uia2atk_rpms.sh:  Fix typo.  When finished, the script
+	will now delete the temporary directory it creates.
+
 2008-07-23  Calen Chen <cachen@novell.com>
 
 	* testers/button_basic_ops.py: add strongwind test script for winforms
@@ -7,8 +12,6 @@
 	* testers/button: add strongwind test for winforms button controls
 	* testers/button/__init__.py: add strongwind test for winforms button controls
 	* testers/button/buttonframe.py: add strongwind test for winforms button controls
-
-
 
 2008-07-22  Ray Wang <rawang@gmail.com>
 
@@ -31,6 +34,7 @@
 	* samples/menustrip_openfiledialog.py: change window's title not use '&'
 	* samples/button_label_linklabel.py: change window's title not use '&'
 
+>>>>>>> .r108554
 2008-07-21  Brian G. Merrell <bgmerrell@gmail.com>
 	
 	* drivers/update_uia2atk_rpms.sh: Bash script to download the latest
