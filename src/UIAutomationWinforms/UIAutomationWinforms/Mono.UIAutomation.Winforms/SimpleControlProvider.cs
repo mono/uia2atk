@@ -44,8 +44,8 @@ namespace Mono.UIAutomation.Winforms
 
 		private Control control;
 		private Dictionary<ProviderEventType, IConnectable> events;
-		private Dictionary<AutomationPattern, IProviderBehavior> provider_behaviors;
-		private int runtime_id;
+		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
+		private int runtimeId;
 
 		#endregion
 		
@@ -62,10 +62,10 @@ namespace Mono.UIAutomation.Winforms
 			this.control = control as Control;
 			
 			events = new Dictionary<ProviderEventType,IConnectable> ();
-			provider_behaviors = 
+			providerBehaviors = 
 				new Dictionary<AutomationPattern,IProviderBehavior> ();
 			
-			runtime_id = -1;
+			runtimeId = -1;
 		}
 		
 		#endregion
@@ -114,12 +114,12 @@ namespace Mono.UIAutomation.Winforms
 			if (Control != null) {
 				foreach (IConnectable strategy in events.Values)
 				    strategy.Disconnect (Control);
-				foreach (IProviderBehavior behavior in provider_behaviors.Values)
+				foreach (IProviderBehavior behavior in providerBehaviors.Values)
 					behavior.Disconnect (Control);
 			}
 
 			events.Clear ();
-			provider_behaviors.Clear ();
+			providerBehaviors.Clear ();
 			
 			//TODO: Terminate Navigation?
 		}
@@ -148,14 +148,14 @@ namespace Mono.UIAutomation.Winforms
 		protected void SetBehavior (AutomationPattern pattern, IProviderBehavior behavior)
 		{
 			IProviderBehavior oldBehavior;
-			if (provider_behaviors.TryGetValue (pattern, out oldBehavior) == true) {
+			if (providerBehaviors.TryGetValue (pattern, out oldBehavior) == true) {
 				if (Control != null)
 					oldBehavior.Disconnect (Control);
-				provider_behaviors.Remove (pattern);
+				providerBehaviors.Remove (pattern);
 			}
 			
 			if (behavior != null) {
-				provider_behaviors [pattern] = behavior;
+				providerBehaviors [pattern] = behavior;
 				if (Control != null)
 					behavior.Connect (Control);
 			}
@@ -164,7 +164,7 @@ namespace Mono.UIAutomation.Winforms
 		protected IProviderBehavior GetBehavior (AutomationPattern pattern)
 		{
 			IProviderBehavior behavior;
-			if (provider_behaviors.TryGetValue (pattern, out behavior))
+			if (providerBehaviors.TryGetValue (pattern, out behavior))
 				return behavior;
 			
 			return null;
@@ -173,13 +173,13 @@ namespace Mono.UIAutomation.Winforms
 		protected IEnumerable<IProviderBehavior> ProviderBehaviors
 		{
 			get {
-				return provider_behaviors.Values;
+				return providerBehaviors.Values;
 			}
 		}
 		
 		protected bool IsBehaviorEnabled (AutomationPattern pattern) 
 		{
-			return provider_behaviors.ContainsKey (pattern);
+			return providerBehaviors.ContainsKey (pattern);
 		}
 		
 		#endregion
@@ -241,10 +241,10 @@ namespace Mono.UIAutomation.Winforms
 			if (Control == null)
 				return null;			
 			else if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id) {
-				if (runtime_id == -1)
-					runtime_id = Helper.GetUniqueRuntimeId ();
+				if (runtimeId == -1)
+					runtimeId = Helper.GetUniqueRuntimeId ();
 
-				return runtime_id;
+				return runtimeId;
 			} else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 				return Control.Enabled;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)

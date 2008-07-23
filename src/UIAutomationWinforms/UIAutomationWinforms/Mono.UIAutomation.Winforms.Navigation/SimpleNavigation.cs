@@ -38,7 +38,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		public SimpleNavigation (IRawElementProviderSimple provider)
 		{
-			this.simple_provider = (SimpleControlProvider) provider;
+			this.simpleProvider = (SimpleControlProvider) provider;
 		}
 
 		#endregion
@@ -46,7 +46,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		#region INavigation Interface
 		
 		public virtual IRawElementProviderSimple Provider {
-			get { return simple_provider; }
+			get { return simpleProvider; }
 		}
 
 		public virtual IRawElementProviderFragment GetNextSiblingProvider (NavigationChain chain)
@@ -75,45 +75,47 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 		public virtual void Terminate ()
 		{
-			if (simple_provider != null)
-				simple_provider.Terminate ();
+			if (simpleProvider != null)
+				simpleProvider.Terminate ();
 		}		
 
 		public virtual IRawElementProviderFragment Navigate (NavigateDirection direction) 
 		{
+			Control containerControl;
+			
 			if (direction == NavigateDirection.Parent) {
-				if (simple_provider.Control.Parent == null)
+				if (simpleProvider.Container == null)
 					return null;
 				else
-					return ProviderFactory.FindProvider (simple_provider.Control.Parent);
-			} else if (direction == NavigateDirection.NextSibling) {
-				if (simple_provider.Control.Parent == null)
+					return ProviderFactory.GetProvider (simpleProvider.Container);
+			} else if (direction == NavigateDirection.NextSibling) {				
+				if ((containerControl = simpleProvider.Container as Control) == null)
 					return null;
 				
-				int next = simple_provider.Control.Parent.Controls.IndexOf (simple_provider.Control) + 1;
-				if (next >= simple_provider.Control.Parent.Controls.Count)
+				int next = containerControl.Controls.IndexOf (simpleProvider.Control) + 1;
+				if (next >= containerControl.Controls.Count)
 					return null;
 				else
-					return ProviderFactory.FindProvider (simple_provider.Control.Parent.Controls [next]);
+					return ProviderFactory.GetProvider (containerControl.Controls [next]);
 			} else if (direction == NavigateDirection.PreviousSibling) {
-				if (simple_provider.Control.Parent == null)
+				if ((containerControl = simpleProvider.Container as Control) == null)
 					return null;
 
-				int previous = simple_provider.Control.Parent.Controls.IndexOf (simple_provider.Control) - 1;
+				int previous = containerControl.Controls.IndexOf (simpleProvider.Control) - 1;
 				if (previous < 0)
 					return null;
 				else
-					return ProviderFactory.FindProvider (simple_provider.Control.Parent.Controls [previous]);
+					return ProviderFactory.GetProvider (containerControl.Controls [previous]);
 			} else if (direction == NavigateDirection.FirstChild) {
-				if (simple_provider.Control.Controls.Count == 0)
+				if (simpleProvider.Control == null || simpleProvider.Control.Controls.Count == 0)
 					return null;
 				else
-					return ProviderFactory.FindProvider (simple_provider.Control.Controls [0]);
+					return ProviderFactory.GetProvider (simpleProvider.Control.Controls [0]);
 			} else if (direction == NavigateDirection.LastChild) {
-				if (simple_provider.Control.Controls.Count == 0)
+				if (simpleProvider.Control == null || simpleProvider.Control.Controls.Count == 0)
 					return null;
 				else
-					return ProviderFactory.FindProvider (simple_provider.Control.Controls [simple_provider.Control.Controls.Count - 1]);
+					return ProviderFactory.GetProvider (simpleProvider.Control.Controls [simpleProvider.Control.Controls.Count - 1]);
 			} else
 				return null;
 		}
@@ -122,7 +124,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		#region Private Fields
 
-		private SimpleControlProvider simple_provider;
+		private SimpleControlProvider simpleProvider;
 		
 		#endregion
 	}

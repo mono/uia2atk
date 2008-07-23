@@ -1,3 +1,12 @@
+2008-07-23  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Private field:
+	provider_behaviors renamed to providerBehaviors, and runtime_id renamed
+	to runtimeId.
+	* Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs: Private
+	field simple_provider renamed to simpleProvider. Updated to use 
+	"Container" instead of using "Control.Parent".
+
 2008-07-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Remove
