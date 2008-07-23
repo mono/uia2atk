@@ -199,3 +199,9 @@ ANIMATED = "animated"
 # 'activated', and/or its backing data has already been downloaded, rendered,
 # or otherwise "visited".
 VISITED = "visited"
+
+
+#list Button's all states
+class Button(object):
+    slist = ['enabled','selectable','sensitive']
+

@@ -4,6 +4,8 @@ class Button(object):
     PRESS = "press"
     RELEASE = "release"
 
+    alist = ['click']
+
 class TableColumnHeader(Button):
     pass
 
@@ -27,3 +29,5 @@ class Range(object):
 
 class TreeView:
     EXPAND_OR_CONTRACT = "expand or contract"
+
+
