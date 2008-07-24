@@ -1,3 +1,12 @@
+2008-07-24  Mario Carrion <mcarrion@novell.com>
+
+	* patches/tooltip.patch: Added file. Updates SWF.Control: Two events
+	added: ToolTipUnhookup and ToolTipHookup. Two method added:
+	UIAToolTipHookup and UIAToolTipUnhookup. Updated 
+	SWF.ToolTip.ToolWindow: Property added: AssociatedControl. 
+	SWF.ToolTip: Calling UIAToolTipUnhookup/UIAToolTipHookup when setting
+	Control tooltip. Two events added: ToolTipHidden/ToolTipShown.
+
 2008-07-17  Mario Carrion <mcarrion@novell.com>
 
 	* patches/combobox.patch, patches/listbox.patch: New internal event 
