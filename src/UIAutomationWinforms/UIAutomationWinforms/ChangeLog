@@ -1,5 +1,11 @@
 2008-07-24  Mario Carrion <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Updated to use 
+	ProviderFactory.GetProvider instead of ProviderFactory.FindProvider.
+	Private field runtime_id renamed to runtimeId.
+
+2008-07-24  Mario Carrion <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Fixed logic to release 
 	Component-based providers.
 	* Mono.UIAutomation.Winforms/FormListener.cs: Delegate added to release

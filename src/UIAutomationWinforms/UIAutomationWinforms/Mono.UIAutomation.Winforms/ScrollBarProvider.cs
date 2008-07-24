@@ -197,7 +197,7 @@ namespace Mono.UIAutomation.Winforms
 		private void UpdateBehavior ()
 		{	
 			IRawElementProviderFragment container 
-				= ProviderFactory.FindProvider (Control.Parent);
+				= ProviderFactory.GetProvider (Container);
 
 			if (container != null) {
 				IScrollProvider provider 
@@ -296,16 +296,16 @@ namespace Mono.UIAutomation.Winforms
 	
 			public ScrollBarThumbProvider (ScrollBar scrollbar) : base (scrollbar)
 			{
-				runtime_id = -1;
+				runtimeId = -1;
 			}
 	
 			public override object GetPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id) {
-					if (runtime_id == -1)
-						runtime_id = Helper.GetUniqueRuntimeId ();
+					if (runtimeId == -1)
+						runtimeId = Helper.GetUniqueRuntimeId ();
 	
-					return runtime_id;
+					return runtimeId;
 				} else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return "Thumb";
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
@@ -335,7 +335,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 			
 			
-			private int runtime_id;
+			private int runtimeId;
 			
 		}
 		
