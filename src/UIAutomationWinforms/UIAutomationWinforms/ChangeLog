@@ -1,3 +1,14 @@
+2008-07-24  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs,
+	Mono.UIAutomation.Winforms/RadioButtonProvider.cs: Updated to use 
+	ProviderFactory.GetProvider instead of ProviderFactory.FindProvider.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: FindProvider: 
+	visibility changed from public to private. Added static field:
+	sharedComponents to keep track of Component-based providers. 
+	ReleaseProvider: updated to call Terminate when removing, if provider
+	is Component-based is removed and Terminated.
+
 2008-07-23  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Private field:

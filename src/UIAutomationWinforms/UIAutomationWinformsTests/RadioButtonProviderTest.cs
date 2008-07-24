@@ -226,11 +226,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			f.Controls.Add (r1);
 			f.Controls.Add (r2);
 			
-			IRawElementProviderSimple provider1 = ProviderFactory.FindProvider (r1);
+			IRawElementProviderSimple provider1 = ProviderFactory.GetProvider (r1);
 			ISelectionItemProvider selectionItem1 = (ISelectionItemProvider)
 				provider1.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
 			
-			IRawElementProviderSimple provider2 = ProviderFactory.FindProvider (r2);
+			IRawElementProviderSimple provider2 = ProviderFactory.GetProvider (r2);
 			ISelectionItemProvider selectionItem2 = (ISelectionItemProvider)
 				provider2.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
 			

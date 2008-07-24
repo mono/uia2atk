@@ -35,6 +35,8 @@ namespace Mono.UIAutomation.Winforms
 
 	public sealed class ProviderFactory
 	{
+		#region Static Fields
+		
 		// NOTE: This may not be the best place to track this...however
 		//       I forsee this factory class evolving into a builder
 		//       class that takes raw providers and attaches provider
@@ -43,12 +45,19 @@ namespace Mono.UIAutomation.Winforms
 		//       this mapping?
 		private static Dictionary<Component, IRawElementProviderFragment>
 			componentProviders;
+		//Read comment in ReleaseProvider method for detailed information.
+		private static Dictionary<Component, int> sharedComponents;
 		
 		static ProviderFactory ()
 		{
 			componentProviders =
 				new Dictionary<Component,IRawElementProviderFragment> ();
+			sharedComponents = new Dictionary<Component, int> ();
 		}
+		
+		#endregion
+		
+		#region Static Public Methods
 		
 		public static IRawElementProviderFragment GetProvider (Component component)
 		{
@@ -79,6 +88,10 @@ namespace Mono.UIAutomation.Winforms
 			ComboBox cb;
 			ListBox lb;
 			ScrollBar scb;
+			PictureBox pb;
+			ErrorProvider ep;
+			ToolTip tt;
+			bool isComponentBased = false;
 			
 			if (component == null)
 				return null;
@@ -115,6 +128,17 @@ namespace Mono.UIAutomation.Winforms
 					((FragmentRootControlProvider) provider).InitializeChildControlStructure ();
 				} else
 					provider = new ScrollBarProvider (scb);
+			} else if ((pb = component as PictureBox) != null)
+				provider = new PaneProvider (pb);
+			//NOTE: The following providers are Component-based meaning that
+			//can be shared.
+			//TODO: Add HelpProviderProvider
+			else if ((ep = component as ErrorProvider) != null) {
+				provider = new ErrorProviderProvider (ep);
+				isComponentBased = true;
+			} else if ((tt = component as ToolTip) != null) {
+				provider = new ToolTipProvider (tt);
+				isComponentBased = true;
 			} else //TODO: We have to solve the problem when there's a Custom control
 				throw new NotImplementedException ("Provider not implemented for control");
 			
@@ -131,8 +155,16 @@ namespace Mono.UIAutomation.Winforms
 				    && provider is FragmentRootControlProvider) {
 					FragmentRootControlProvider root =
 						provider as FragmentRootControlProvider;
-					Console.WriteLine ("CALLLING {0}", root.GetType ());
+					Console.WriteLine ("CALLING {0}", root.GetType ());
 					root.InitializeChildControlStructure ();
+				}
+				
+				//Read comment in ReleaseProvider method for detailed information.
+				if (isComponentBased == true) {
+					if (sharedComponents.ContainsKey (component) == true)
+						sharedComponents [component] = sharedComponents [component] + 1;
+					else
+						sharedComponents.Add (component, 1);
 				}
 				
 				return provider;
@@ -140,21 +172,44 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 		}
 		
-		public static void ReleaseProvider (Component control)
+		//Control-based Providers aren't shared, meaning that you can't
+		//associate the Control with more than one Control/Component, so
+		//releasing it doesn't impact in other providers, however Component-based
+		//Providers are shared, meaning that you can associate the Component with 
+		//one or more Controls, for example the ToolTip and HelpProvider.
+		//We are releasing the Component-based when the number of sharedComponents
+		//reaches 1, that way we aren't creating the provider over and over.
+		public static void ReleaseProvider (Component component)
 		{
-			componentProviders.Remove (control);
+			IRawElementProviderFragment provider;
+			if (componentProviders.TryGetValue (component, 
+			                                    out provider) == true) {
+				if (sharedComponents.ContainsKey (component) == true) {
+					if (sharedComponents [component] == 1) {
+						componentProviders.Remove (component);
+						((FragmentControlProvider) provider).Terminate ();
+						sharedComponents.Remove (component);
+					} else
+						sharedComponents [component] = sharedComponents [component] - 1;
+				} else {
+					componentProviders.Remove (component);
+					((FragmentControlProvider) provider).Terminate ();
+				}
+			}
 		}
 		
-		public static IRawElementProviderFragment FindProvider (Component control)
+		private static IRawElementProviderFragment FindProvider (Component component)
 		{
 			IRawElementProviderFragment provider;
 			
-			if (control == null)
+			if (component == null)
 				return null;
-			else if (componentProviders.TryGetValue (control, out provider))
+			else if (componentProviders.TryGetValue (component, out provider))
 				return provider;
 
 			return null;
 		}
+		
+		#endregion
 	}
 }

@@ -122,7 +122,7 @@ namespace Mono.UIAutomation.Winforms
 		public IRawElementProviderSimple SelectionContainer {
 			get {
 				IRawElementProviderSimple parentProvider =
-					ProviderFactory.FindProvider (radioButton.Parent);
+					ProviderFactory.GetProvider (radioButton.Parent);
 				if (parentProvider != null && parentProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id) != null)
 					return parentProvider;
 				return null;

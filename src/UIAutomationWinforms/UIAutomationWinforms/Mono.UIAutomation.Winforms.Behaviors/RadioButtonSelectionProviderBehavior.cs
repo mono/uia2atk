@@ -53,7 +53,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		{
 			foreach (Control childControl in control.Controls) {
 				IRawElementProviderSimple childProvider =
-					ProviderFactory.FindProvider (childControl);
+					ProviderFactory.GetProvider (childControl);
 				
 				ISelectionItemProvider selectionItem = null;
 				if (childProvider != null)
