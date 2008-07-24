@@ -42,7 +42,7 @@ namespace UiaAtkBridge
 		private Monitor appMonitor = null;
 		private Dictionary<IntPtr, IRawElementProviderSimple>
 			pointerProviderMapping;
-		private Dictionary<IRawElementProviderSimple, Adapter>
+		static private Dictionary<IRawElementProviderSimple, Adapter>
 			providerAdapterMapping;
 		
 #endregion
@@ -67,7 +67,7 @@ namespace UiaAtkBridge
 		
 #region Public Methods
 		
-		public Adapter GetAdapterForProvider (IRawElementProviderSimple provider)
+		static public Adapter GetAdapterForProvider (IRawElementProviderSimple provider)
 		{
 			Adapter adapter = null;
 			providerAdapterMapping.TryGetValue (provider, out adapter);
@@ -138,6 +138,8 @@ namespace UiaAtkBridge
 					HandleNewLabelControlType (simpleProvider);
 				else if (controlTypeId == ControlType.CheckBox.Id)
 					HandleNewCheckBoxControlType (simpleProvider);
+				else if (controlTypeId == ControlType.StatusBar.Id)
+					HandleNewStatusBarControlType (simpleProvider);
 				// TODO: Other providers
 			} else if (e.StructureChangeType == StructureChangeType.ChildRemoved) {
 				if (controlTypeId == ControlType.Window.Id)
@@ -241,6 +243,25 @@ namespace UiaAtkBridge
 			parentObject.AddOneChild (atkCheck);
 			parentObject.AddRelationship (Atk.RelationType.Embeds,
 			                              atkCheck);
+		}
+		
+		private void HandleNewStatusBarControlType (IRawElementProviderSimple provider)
+		{
+			IRawElementProviderSimple parentProvider =
+					provider.HostRawElementProvider;
+			
+			ParentAdapter parentObject =
+				(ParentAdapter) providerAdapterMapping [parentProvider];
+			
+			StatusBar atkStatus;
+			if (provider is IGridProvider)
+				atkStatus = new StatusBarWithGrid (provider);
+ 			else atkStatus = new StatusBar (provider);
+			providerAdapterMapping [provider] = atkStatus;
+			
+			parentObject.AddOneChild (atkStatus);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkStatus);
 		}
 		
 #endregion

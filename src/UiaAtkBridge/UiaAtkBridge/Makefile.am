@@ -58,6 +58,9 @@ FILES =  \
 	ParentAdapter.cs \
 	RadioButton.cs \
 	SelectionProviderUserHelper.cs \
+	StatusBar.cs \
+	StatusBarWithGrid.cs \
+	TableImplementorHelper.cs \
 	TextImplementorHelper.cs \
 	TextLabel.cs \
 	ToggleButton.cs \

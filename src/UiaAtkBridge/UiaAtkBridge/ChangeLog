@@ -1,3 +1,9 @@
+2008-07-24  Mike Gorse <mgorse@novell.com>
+
+	* StatusBar.cs, TableImplementorHelper.cs: Add.
+	* AutomationBridge.cs: Create an adapter for a StatusBar provider.
+	* UiaAtkBridge.mdp, Makefile.am: Add StatusBar.cs and TableImplementorHelper.cs.
+
 2008-07-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* AutomationBridge.cs: Start handling ChildRemoved events for
@@ -50,7 +56,7 @@
 
 2008-07-15  Mike Gorse <mgorse@novell.com>
 
-	* ComboBox.cs: Fix constructor to properly iterate through children
+	* ComboBox.cs: Fix ChildrenItems to properly iterate through children
 
 2008-07-07  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 

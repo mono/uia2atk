@@ -110,6 +110,14 @@ namespace GailTestApp {
 			return win.GiveMeARealRadioButton ();
 		}
 		
+		public static Gtk.Statusbar GiveMeARealStatusbar (MovingThread guiThread)
+		{
+			if (win == null)
+				Start (guiThread);
+			
+			return win.GiveMeARealStatusbar ();
+		}
+		
 		public static Gtk.Entry GiveMeARealEntry (MovingThread guiThread)
 		{
 			if (win == null)

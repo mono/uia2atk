@@ -113,6 +113,7 @@ namespace UiaAtkBridgeTest
 			Atk.ComponentImplementor component = null;
 			Atk.TextImplementor text = null;
 			Atk.ActionImplementor action = null;
+			Atk.TableImplementor table = null;
 			accessible = null;
 
 			switch (type) {
@@ -156,6 +157,15 @@ namespace UiaAtkBridgeTest
 				component = uiaRad;
 				action = uiaRad;
 				break;
+			case BasicWidgetType.StatusBar:
+				MWF.StatusBar sb = new MWF.StatusBar ();
+				sb.Text = name;
+				UiaAtkBridge.StatusBarWithGrid uiaSb = new UiaAtkBridge.StatusBarWithGrid (ProviderFactory.GetProvider (sb));
+				accessible = uiaSb;
+				component = uiaSb;
+				text = uiaSb;
+				table = uiaSb;
+				break;
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
 			default:
@@ -172,11 +182,15 @@ namespace UiaAtkBridgeTest
 			else if (typeof (I) == typeof (Atk.Action)) {
 				return new Atk.ActionAdapter (action);
 			}
+			else if (typeof (I) == typeof (Atk.Table)) {
+				return new Atk.TableAdapter (table);
+			}
 			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
 				typeof(I).Name);
 		}
 		
 		protected override int ValidNumberOfActionsForAButton { get { return 1; } }
+		protected override bool StatusBarImplementsTable { get { return true; } }
 		
 		[Test]
 		public void UIACheckBox ()

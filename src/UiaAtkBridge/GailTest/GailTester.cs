@@ -120,6 +120,12 @@ namespace UiaAtkBridgeTest
 				
 				widget = GailTestApp.MainClass.GiveMeARealRadioButton (guiThread);
 				break;
+			case BasicWidgetType.StatusBar:
+				widget = new Gtk.Statusbar ();
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealStatusbar (guiThread);
+				((Gtk.Statusbar)widget).Push (0, text);
+				break;
 			case BasicWidgetType.TextBoxEntry:
 				if (!real)
 					throw new NotSupportedException ();
@@ -152,6 +158,7 @@ namespace UiaAtkBridgeTest
 		}
 		
 		protected override int ValidNumberOfActionsForAButton { get { return 3; } }
+		protected override bool StatusBarImplementsTable { get { return false; } }
 
 		
 		[TestFixtureTearDown]
