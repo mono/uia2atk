@@ -35,6 +35,14 @@ namespace Mono.UIAutomation.Winforms
 
 	public sealed class ProviderFactory
 	{
+		#region Private constructor
+		
+		private ProviderFactory ()
+		{
+		}
+		
+		#endregion
+		
 		#region Static Fields
 		
 		// NOTE: This may not be the best place to track this...however
@@ -201,9 +209,9 @@ namespace Mono.UIAutomation.Winforms
 			if (component == null)
 				return null;
 			else if (componentProviders.TryGetValue (component, out provider)) {
-				if (sharedComponents.ContainsKey (component) == true) {
+				if (sharedComponents.ContainsKey (component) == true)
 					sharedComponents [component] = sharedComponents [component] + 1;
-				}
+
 				return provider;
 			}
 

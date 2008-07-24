@@ -40,7 +40,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 		}
 		
-#region Internal Static Methods
+		#region Internal Static Methods
 
 		internal static int GetUniqueRuntimeId ()
 		{
@@ -68,6 +68,9 @@ namespace Mono.UIAutomation.Winforms
 			FieldInfo fieldInfo = type.GetField (fieldName,
 			                                     BindingFlags.NonPublic
 			                                     | BindingFlags.Instance);
+			if (fieldInfo == null)
+				throw new NotSupportedException ("Field not found: " + fieldName);
+
 			return fieldInfo.GetValue (reference);
 		}
 		
@@ -103,9 +106,9 @@ namespace Mono.UIAutomation.Winforms
 			                 rectangle.Width, rectangle.Height);
 		}
 		
-#endregion
+		#endregion
 		
-#region Private Static Methods
+		#region Private Static Methods
 		
 		private static void AddRemovePrivateEvent (Type referenceType, object reference, 
 		                                           string eventName, object referenceDelegate,
@@ -127,12 +130,11 @@ namespace Mono.UIAutomation.Winforms
 			eventMethod.Invoke (reference, new object[] { delegateValue });
 		}
 		
-#endregion
+		#endregion
 
-#region Static Fields
+		#region Static Fields
 		
 		static int id = 0;
-		
-#endregion
+		#endregion
 	}
 }

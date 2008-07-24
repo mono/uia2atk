@@ -56,6 +56,13 @@ namespace Mono.UIAutomation.Winforms
 		
 #endregion
 		
+		public override void Terminate ()
+		{
+			base.Terminate (); 
+			
+			FinalizeChildControlStructure ();
+		}
+		
 #region Public Methods
 	
 		//TODO: Are the generated events duplicated? Because we're already
@@ -90,7 +97,6 @@ namespace Mono.UIAutomation.Winforms
 			//       aren't sent to bridge until the parent's already
 			//       there.  There are about 100 ways to do this
 			//       better.
-			Console.WriteLine ("finalizing");
 			foreach (SimpleControlProvider childProvider in componentProviders.Values)
 				childProvider.Terminate ();
 

@@ -46,6 +46,7 @@ namespace Mono.UIAutomation.Winforms
 		private Dictionary<ProviderEventType, IConnectable> events;
 		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
 		private int runtimeId;
+		private ToolTipProvider toolTipProvider;
 
 		#endregion
 		
@@ -57,15 +58,18 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Constructors
 		
-		protected SimpleControlProvider (IComponent control)
+		protected SimpleControlProvider (Component component)
 		{
-			this.control = control as Control;
+			control = component as Control;
 			
 			events = new Dictionary<ProviderEventType,IConnectable> ();
 			providerBehaviors = 
 				new Dictionary<AutomationPattern,IProviderBehavior> ();
 			
 			runtimeId = -1;
+			
+			if (Control != null)
+				InitializeInternalControlEvents ();
 		}
 		
 		#endregion
@@ -76,7 +80,7 @@ namespace Mono.UIAutomation.Winforms
 			get { return control.Parent; }
 		}
 		
-		public virtual Control Control {
+		public Control Control {
 			get { return control; }
 		}
 		
@@ -116,6 +120,8 @@ namespace Mono.UIAutomation.Winforms
 				    strategy.Disconnect (Control);
 				foreach (IProviderBehavior behavior in providerBehaviors.Values)
 					behavior.Disconnect (Control);
+				
+				TerminateInternalControlEvents ();
 			}
 
 			events.Clear ();
@@ -170,16 +176,17 @@ namespace Mono.UIAutomation.Winforms
 			return null;
 		}
 		
-		protected IEnumerable<IProviderBehavior> ProviderBehaviors
-		{
-			get {
-				return providerBehaviors.Values;
-			}
-		}
-		
 		protected bool IsBehaviorEnabled (AutomationPattern pattern) 
 		{
 			return providerBehaviors.ContainsKey (pattern);
+		}
+		
+		#endregion
+		
+		#region Protected Properties
+		
+		protected IEnumerable<IProviderBehavior> ProviderBehaviors {
+			get { return providerBehaviors.Values; }
 		}
 		
 		#endregion
@@ -272,6 +279,11 @@ namespace Mono.UIAutomation.Winforms
 					Rect rectangle = (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 					return new Point (rectangle.X, rectangle.Y);
 				}
+			} else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id) {
+				if (toolTipProvider == null)
+					return null;
+				else
+					return toolTipProvider.ToolTip.GetToolTip (Control);
 			} else
 				return null;
 		}
@@ -289,6 +301,110 @@ namespace Mono.UIAutomation.Winforms
 			get { return ProviderOptions.ServerSideProvider; }
 		}
 
+		#endregion
+		
+		#region Private Methods: ToolTip
+		
+		private void InitializeInternalControlEvents ()
+		{
+			GetPrivateToolTipField ();
+			
+			try {
+				Helper.AddPrivateEvent (typeof (Control), 
+				                        Control, 
+				                        "ToolTipHookup",
+				                        this, 
+				                        "OnToolTipHookup");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ToolTipShown not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
+			
+			try {
+				Helper.AddPrivateEvent (typeof (Control), 
+				                        Control, 
+				                        "ToolTipUnhookup",
+				                        this, 
+				                        "OnToolTipUnhookup");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ToolTipHidden not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
+
+		}
+		
+		private void TerminateInternalControlEvents ()
+		{
+			try {
+				Helper.RemovePrivateEvent (typeof (Control), 
+				                           Control, 
+				                           "ToolTipHookup",
+				                           this, 
+				                           "OnToolTipHookup");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ToolTipShown not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
+			
+			try {
+				Helper.RemovePrivateEvent (typeof (Control), 
+				                           Control, 
+				                           "ToolTipUnhookup",
+				                           this, 
+				                           "OnToolTipUnhookup");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ToolTipUnhookup not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}			
+			
+			if (toolTipProvider != null) {
+				ProviderFactory.ReleaseProvider (toolTipProvider.ToolTip);
+				toolTipProvider = null;
+			}
+
+		}
+		
+		private void GetPrivateToolTipField ()
+		{
+			ToolTip tooltip = null;
+
+			try {
+				tooltip = (ToolTip) Helper.GetPrivateField (typeof (Control),
+				                                            Control,
+				                                            "tool_tip");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: tool_tip field not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
+			
+			if (toolTipProvider != null && tooltip != toolTipProvider.ToolTip) {
+				ProviderFactory.ReleaseProvider (toolTipProvider.ToolTip);
+				toolTipProvider = null;					
+			}
+
+			if (toolTipProvider == null
+			    || (toolTipProvider != null && toolTipProvider.ToolTip != tooltip))
+				toolTipProvider = (ToolTipProvider) ProviderFactory.GetProvider (tooltip);
+		}
+		
+		private void OnToolTipHookup (object sender, EventArgs args)
+		{
+			GetPrivateToolTipField ();
+		}
+
+		private void OnToolTipUnhookup (object sender, EventArgs args)
+		{		
+			if (toolTipProvider != null) {
+				ProviderFactory.ReleaseProvider (toolTipProvider.ToolTip);
+				toolTipProvider = null;
+			}
+		}
+		
 		#endregion
 	}
 }

@@ -1,5 +1,27 @@
 2008-07-24  Mario Carrion <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Added private
+	constructor. Removed not needed {}.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Constructor uses
+	Component instead of IComponent. Control property not virtual. Added
+	logic to connect to internal SWF.Control events: ToolTipHookup and 
+	ToolTipUnhookup to keep track of associated ToolTip. Private field 
+	toolTipProvider added to used get requesting HelpTextProperty 
+	Automation Property.
+	* Mono.UIAutomation.Winforms/ToolTipProvider.cs: Constructor updated.
+	Added logic to connect to internal SWF.ToolTip events: ToolTipShown
+	and ToolTipHidden. Implementation of Tooltip Control Type: method 
+	GetPropertyValue. Property added: ToolTip.
+	* Mono.UIAutomation.Winforms/Helper.cs: Throwing NotSupportedException 
+	exception when requested private field is not found. #region/#endregion
+	updated.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Terminate
+	overridden: calling FinalizeChildControlStructure. 
+	* Mono.UIAutomation.Winforms/PaneProvider.cs: Overriding Container 
+	property.
+
+2008-07-24  Mario Carrion <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Updated to use 
 	ProviderFactory.GetProvider instead of ProviderFactory.FindProvider.
 	Private field runtime_id renamed to runtimeId.

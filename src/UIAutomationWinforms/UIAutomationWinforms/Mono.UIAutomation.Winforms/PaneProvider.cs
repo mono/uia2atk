@@ -24,9 +24,9 @@
 // 
 
 using System;
+using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -36,13 +36,18 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Constructor
 		
-		public PaneProvider (Control control) : base (control)
+		public PaneProvider (Component component) : base (component)
 		{
+			this.component = component;
 		}
 		
 		#endregion
 		
 		#region SimpleControlProvider: Specialization
+		
+		public override Component Container  {
+			get { return component.Container as Component; }
+		}
 		
 		public override object GetPropertyValue (int propertyId)
 		{
@@ -62,6 +67,12 @@ namespace Mono.UIAutomation.Winforms
 		//HelpTextProperty
 		//AccessKeyProperty
 		//NameProperty
+		#endregion
+		
+		#region Private Fields
+		
+		private Component component;
+		
 		#endregion
 
 	}
