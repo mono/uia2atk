@@ -158,6 +158,7 @@ namespace UiaAtkBridgeTest
 		}
 		
 		protected override int ValidNumberOfActionsForAButton { get { return 3; } }
+		protected override int ValidNChildrenForASimpleStatusBar { get { return 1; } }
 		protected override bool StatusBarImplementsTable { get { return false; } }
 
 		

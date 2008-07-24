@@ -1,3 +1,7 @@
+2008-07-24 Mike Gorse <mgorse@novell.com>
+
+	* Main.cs, MainWindow.cs: Support status bars.
+
 2008-07-24  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* gtk-gui/MainWindow.cs, gtk-gui/gui.stetic: Added a Vertical and a

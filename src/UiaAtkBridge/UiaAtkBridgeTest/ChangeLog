@@ -1,4 +1,7 @@
 2008-07-24 Mike Gorse <mgorse@novell.com>
+	* AtkTester.cs, BridgeTester.cs: Add ValidNChildrenForASimpleStatusBar;
+
+2008-07-24 Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs, BasicWidgetType.cs, BridgeTester.cs: Add statusBar
 

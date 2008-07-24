@@ -152,7 +152,7 @@ namespace UiaAtkBridgeTest
 
 			PropertyRole (type, accessible);
 
-			Assert.AreEqual (0, accessible.NAccessibleChildren, "StatusBar numChildren");
+			Assert.AreEqual (ValidNChildrenForASimpleStatusBar, accessible.NAccessibleChildren, "StatusBar numChildren");
 
 			string name = "test";
 			Atk.Component atkComponent = (Atk.Component)
@@ -256,6 +256,7 @@ namespace UiaAtkBridgeTest
 		}
 		
 		protected abstract int ValidNumberOfActionsForAButton { get; }
+		protected abstract int ValidNChildrenForASimpleStatusBar { get; }
 		protected abstract bool StatusBarImplementsTable { get; }
 		
 		private void InterfaceActionFor3RadioButtons (Atk.Action actionable1, Atk.Object accessible1,
