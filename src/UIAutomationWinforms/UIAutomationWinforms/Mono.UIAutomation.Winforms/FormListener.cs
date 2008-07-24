@@ -105,6 +105,11 @@ namespace Mono.UIAutomation.Winforms
 			if (formProviders.ContainsKey (f))
 				return;
 			
+			// Terminate Form provider
+			f.Disposed += delegate (object formSender, EventArgs formArgs) {
+				ProviderFactory.ReleaseProvider ((Form) formSender);
+			};
+			
 			// Pass false in last argument so that InitializeChildControlStructure
 			// isn't called when the provider is created.  We'll do
 			// that manually after alerting the bridge to the presence

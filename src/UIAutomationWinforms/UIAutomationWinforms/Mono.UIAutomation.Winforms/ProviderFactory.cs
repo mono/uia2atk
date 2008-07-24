@@ -155,17 +155,13 @@ namespace Mono.UIAutomation.Winforms
 				    && provider is FragmentRootControlProvider) {
 					FragmentRootControlProvider root =
 						provider as FragmentRootControlProvider;
-					Console.WriteLine ("CALLING {0}", root.GetType ());
+					Console.WriteLine ("ProviderFactory: {0}", root.GetType ());
 					root.InitializeChildControlStructure ();
 				}
 				
 				//Read comment in ReleaseProvider method for detailed information.
-				if (isComponentBased == true) {
-					if (sharedComponents.ContainsKey (component) == true)
-						sharedComponents [component] = sharedComponents [component] + 1;
-					else
-						sharedComponents.Add (component, 1);
-				}
+				if (isComponentBased == true)
+					sharedComponents.Add (component, 1);
 				
 				return provider;
 			} else
@@ -204,8 +200,12 @@ namespace Mono.UIAutomation.Winforms
 			
 			if (component == null)
 				return null;
-			else if (componentProviders.TryGetValue (component, out provider))
+			else if (componentProviders.TryGetValue (component, out provider)) {
+				if (sharedComponents.ContainsKey (component) == true) {
+					sharedComponents [component] = sharedComponents [component] + 1;
+				}
 				return provider;
+			}
 
 			return null;
 		}

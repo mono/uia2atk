@@ -1,5 +1,12 @@
 2008-07-24  Mario Carrion <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Fixed logic to release 
+	Component-based providers.
+	* Mono.UIAutomation.Winforms/FormListener.cs: Delegate added to release
+	Form provider.
+
+2008-07-24  Mario Carrion <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs,
 	Mono.UIAutomation.Winforms/RadioButtonProvider.cs: Updated to use 
 	ProviderFactory.GetProvider instead of ProviderFactory.FindProvider.
