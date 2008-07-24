@@ -1,3 +1,7 @@
+2008-07-24  Ray Wang <rawang@novell.com>
+
+	* samples/printpreviewcontrol.py: implement PrintPreviewControl control
+
 2008-07-24  Calen Chen <cachen@novell.com>
 	* testers/button_basic_ops.py: update test for closing frame window
 	* testers/button/buttonframe.py:update test for closing frame window
@@ -29,7 +33,7 @@
 	* testers/button/buttonframe.py: add strongwind test for winforms button
 	controls
 
-2008-07-22  Ray Wang <rawang@gmail.com>
+2008-07-22  Ray Wang <rawang@novell.com>
 
 	* samples/progressbar.py: add a button and label, when click the button,
 	label reflect the percentage.
@@ -56,7 +60,7 @@
 	* drivers/update_uia2atk_rpms.sh: Bash script to download the latest
 	uia2atk related rpms and install them.  Needs some error checking.
 
-2008-07-21  Ray Wang <rawang@gmail.com>
+2008-07-21  Ray Wang <rawang@novell.com>
 
 	* samples/notifyicon.py: after 10 sec, balloon tip could be vanished.
 	* samples/listview.py: when click column header, switch item sorting.
@@ -122,7 +126,7 @@
 	* testers/gtkbutton/gtkbuttonframe.py: remove "if log:" lines and "if 
 	MessageDialog:" line.
 
-2008-07-14  Ray Wang <rawang@gmail.com>
+2008-07-14  Ray Wang <rawang@novell.com>
 
 	* samples/propertygrid.py: show more room at the top
 	* samples/savefiledialog.py: return the path that the user selected
@@ -134,11 +138,11 @@
 
 	* samples/gtktooltip.py: add a tooltip sample for testing
 
-2008-07-09  Ray Wang <rawang@gmail.com>
+2008-07-09  Ray Wang <rawang@novell.com>
 
 	* samples/checkedlistbox.py: implement CheckedListBox control
 
-2008-07-09  Ray Wang <rawang@gmail.com>
+2008-07-09  Ray Wang <rawang@novell.com>
 
 	* samples/mainmenu.py: add sub-menus and label
 	* samples/panel_checkbox_radiobutton.py: enlarge label size
@@ -176,7 +180,7 @@
 	* drivers/tests.py: add Calen's strongwind tests, add a fake test (keep
 	a fake test in just to test the harness)
 
-2008-07-07  Ray Wang <rawang@gmail.com>
+2008-07-07  Ray Wang <rawang@novell.com>
 
 	* samples/button_label_linklabel.py: cut of the size of Form control
 	* samples/colordialog.py: cut of the size of Form control; display the
@@ -241,12 +245,12 @@
 	* testers/button/buttonframe.py: findAlert was crashing the test,
 	using findDialog instead
 
-2008-07-02  Ray Wang <rawang@gmail.com>
+2008-07-02  Ray Wang <rawang@novell.com>
 
 	* samples/mainmenu.py: implement MainMenu control
 	* samples/printpreviewdialog.py: implement PrintPreviewDialog control
 
-2008-07-01  Ray Wang <rawang@gmail.com>
+2008-07-01  Ray Wang <rawang@novell.com>
 
 	* samples/flowlayoutpanel.py: implement FlowLayoutPanel control
 	* samples/propertygrid.py: implement PropertyGrid control
@@ -259,7 +263,7 @@
 	* samples/button_label_linklabel.py: add text name to MessageBox
 	* testers/button/buttonframe.py: update clickResult to use alfF4()
 
-2008-06-30  Ray Wang <rawang@gmail.com>
+2008-06-30  Ray Wang <rawang@novell.com>
 
 	* samples/tablelayoutpanel.py: implement TableLayoutPanel control
 
@@ -286,7 +290,7 @@
 	and add quit method.  Change indentation of comments.  Remove
 	unused code.
 
-2008-06-27  Ray Wang <rawang@gmail.com>
+2008-06-27  Ray Wang <rawang@novell.com>
 
 	* samples/containercontrol.py: implement ScrollableControl &
 	ContainerControl control
@@ -313,19 +317,19 @@
 	* testers/button/buttonframe.py: add strongwind test script to
 	set definition for gtk sample.
 
-2008-06-25  Ray Wang <rawang@gmail.com>
+2008-06-25  Ray Wang <rawang@novell.com>
 
 	* samples/contexmenu_menuitem.py: implement ContextMenu & MenuItem control
 	* samples/notifyicon.py: implement NotifyIcon control
 	* samples/trackbar.py: implement TrackBar control
 
-2008-06-24  Ray Wang <rawang@gmail.com>
+2008-06-24  Ray Wang <rawang@novell.com>
 
 	* samples/listview.py: implement ListView control
 	* samples/monthcalendar.py: implement Monthcalendar control
 	* samples/webbrowser.py: implement WebBrowser control
 
-2008-06-23  Ray Wang <rawang@gmail.com>
+2008-06-23  Ray Wang <rawang@novell.com>
 
 	* samples/fontdialog.py: Clean up the letter casing
 	* samples/savefiledialog.py: implement FileDialog & SaveFileDialog control
@@ -352,11 +356,11 @@
 	has been done.
 
 
-2008-06-20  Ray Wang <rawang@gmail.com>
+2008-06-20  Ray Wang <rawang@novell.com>
 
 	* samples/picturebox.py: implement PictureBox control
 
-2008-06-19  Ray Wang <rawang@gmail.com>
+2008-06-19  Ray Wang <rawang@novell.com>
 
 	* samples/progressbar.py: Clean up the letter casing
 	* samples/form.py: Clean up the letter casing
