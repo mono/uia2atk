@@ -200,6 +200,8 @@ namespace UiaAtkBridge
 
 		internal string GetText (int startOffset, int endOffset)
 		{
+			if (endOffset == -1)
+				endOffset = text.Length;
 			return text.Substring (startOffset, endOffset);
 		}
 
@@ -248,7 +250,7 @@ namespace UiaAtkBridge
 			}
 
 			stopEarlyOffset = retOffset;
-			while (CharEqualsAny (text [retOffset], seps))
+			while (retOffset < text.Length && CharEqualsAny (text [retOffset], seps))
 				retOffset++;
 			stopLateOffset = retOffset;
 		}
@@ -257,18 +259,18 @@ namespace UiaAtkBridge
 		{
 			int retOffset = startOffset;
 			if (retOffset >= text.Length)
-				return -1;
+				return text.Length;
 			
 			while (!CharEqualsAny (text [retOffset], seps))
 			{
 				if (retOffset == text.Length - 1)
-					return -1;
+					return text.Length;
 				retOffset++;
 			}
-			if (stopEarly || (retOffset == text.Length - 1))
+			if (stopEarly)
 				return retOffset;
 			
-			while (CharEqualsAny (text [retOffset], seps) && (retOffset != text.Length - 1))
+			while ((retOffset < text.Length) && CharEqualsAny (text [retOffset], seps))
 				retOffset++;
 			return retOffset;
 		}

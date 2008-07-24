@@ -1,5 +1,11 @@
 2008-07-24  Mike Gorse <mgorse@novell.com>
 
+	* TextImplementorHelper.cs: Get text to end of line if -1 specified
+	  as end offset.
+	  Various fixes for getting text at the end of a string.
+
+2008-07-24  Mike Gorse <mgorse@novell.com>
+
 	* StatusBar.cs, TableImplementorHelper.cs: Add.
 	* AutomationBridge.cs: Create an adapter for a StatusBar provider.
 	* UiaAtkBridge.mdp, Makefile.am: Add StatusBar.cs and TableImplementorHelper.cs.
