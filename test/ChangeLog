@@ -1,3 +1,11 @@
+2008-07-24  Calen Chen <cachen@novell.com>
+	* samples/checkbox_radiobutton.py: separate checkbox and radiobutton
+	from panel as one application(provider not implemented panel control at
+	present)
+	* drivers/update_uia2atk_rpms.sh: rewrite rpm install with --nodeps
+	--force to avoid dependence error
+
+
 2008-07-23  Brian G. Merrell <bgmerrell@gmail.com>
 	
 	* drivers/update_uia2atk_rpms.sh:  Fix typo.  When finished, the script
@@ -10,8 +18,10 @@
 	* testers/actions.py: add button's actions list
 	* testers/states.py: add button's states list
 	* testers/button: add strongwind test for winforms button controls
-	* testers/button/__init__.py: add strongwind test for winforms button controls
-	* testers/button/buttonframe.py: add strongwind test for winforms button controls
+	* testers/button/__init__.py: add strongwind test for winforms button
+	controls
+	* testers/button/buttonframe.py: add strongwind test for winforms button
+	controls
 
 2008-07-22  Ray Wang <rawang@gmail.com>
 

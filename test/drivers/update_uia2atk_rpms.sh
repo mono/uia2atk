@@ -7,7 +7,7 @@
 TD=`mktemp -d`
 cd $TD
 wget --accept=rpm --progress=dot -r -np -nd -l1 http://build1.sled.lab.novell.com/uia/
-rpm -Uvh *.rpm
+rpm -Uvh *.rpm --nodeps --force
 
 # destroy the evidence
 cd ..
