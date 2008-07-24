@@ -1,9 +1,9 @@
 
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
-# Date:        07/22/2008
-# Description: button.py wrapper script
-#              Used by the button-*.py tests
+# Date:        07/24/2008
+# Description: checkbox.py wrapper script
+#              Used by the checkbox-*.py tests
 ##############################################################################$
 
 import sys
@@ -12,25 +12,27 @@ import actions
 import states
 
 from strongwind import *
-from button import *
+from checkbox import *
 
 
 # class to represent the main window.
-class ButtonFrame(accessibles.Frame):
+class CheckBoxFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
-    BUTTON_ONE = "button1"
-    BUTTON_TWO = "button2"
-    BUTTON_TREE = "button3"
+    CHECK_ONE = "Bananas"
+    CHECK_TWO = "Chicken"
+    CHECK_THREE = "Stuffed Peppers"
+    CHECK_FORE = "Beef"
 
     def __init__(self, accessible):
-        super(ButtonFrame, self).__init__(accessible)
-        self.button1 = self.findPushButton(self.BUTTON_ONE)
-        self.button2 = self.findPushButton(self.BUTTON_TWO)
-        self.button3 = self.findPushButton(self.BUTTON_TREE)
+        super(CheckBoxFrame, self).__init__(accessible)
+        self.check1 = self.findCheckBox(self.CHECK_ONE)
+        self.check2 = self.findCheckBox(self.CHECK_TWO)
+        self.check3 = self.findCheckBox(self.CHECK_THREE)
+        self.check4 = self.findCheckBox(self.CHECK_FORE)
 
-    #diff Button's inital actions list with expectant list in actions.py
+    #diff checkbox's inital actions list with expectant list in actions.py
     def actionsCheck(self, accessible):
         procedurelogger.action('diff %s\'s actions list' % accessible)
         ca = accessible._accessible.queryAction()
@@ -40,15 +42,15 @@ class ButtonFrame(accessibles.Frame):
 
         procedurelogger.expectedResult('%s\'s inital actions list live up to our expectation' % accessible)
         def resultMatches():
-            return alist.sort() == actions.Button.alist.sort()
+            return alist.sort() == actions.CheckBox.alist.sort()
         assert retryUntilTrue(resultMatches)
 
-    #check Button's all expectant states
+    #check checkbox's all expectant states
     def statesCheck(self, accessible):
         procedurelogger.action('check %s\'s all states' % accessible)
 
         procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
-        for a in states.Button.slist:
+        for a in states.CheckBox.slist:
             cmd = "state = accessible." + a
             exec(cmd)
 
@@ -57,12 +59,12 @@ class ButtonFrame(accessibles.Frame):
             else:
                 pass
 
-    #check disable Button's states
-    def assertDisableButton(self, accessible):
+    #check disable checkbox's states
+    def statesDisableCheck(self, accessible):
         procedurelogger.action('check %s\'s all states' % accessible)
 
         procedurelogger.expectedResult('%s\'s all states can\'t be found' % accessible)
-        for a in states.Button.slist:
+        for a in states.CheckBox.slist:
             cmd = "state = accessible." + a
             exec(cmd)
 
@@ -74,16 +76,26 @@ class ButtonFrame(accessibles.Frame):
     #give 'click' action
     def click(self,button):
         procedurelogger.action('Click the %s.' % button)
-        button._doAction(actions.Button.CLICK)
+        button._doAction(actions.CheckBox.CLICK)
 
-    #check the Label text after click button2
-    def assertLabel(self, labelText):
-        procedurelogger.expectedResult('Label text has been changed to \"%s\"' % labelText)
-        self.findLabel(labelText)
+    #check the state after click checkbox
+    def assertChecked(self, accessible):
+        'Raise exception if the accessible does not match the given result'   
+        procedurelogger.expectedResult('\"%s\" is %s' % (accessible, 'checked'))
 
-    #rise message frame window after click button1
-    def assertMessage(self):
-        self.app.findFrame('message')
+        def resultMatches():
+            return accessible.checked
+	
+        assert retryUntilTrue(resultMatches)
+
+    def assertUnchecked(self, accessible):
+        'Raise exception if the accessible does not match the given result'   
+        procedurelogger.expectedResult('%s is %s.' % (accessible, "unchecked"))
+
+        def resultMatches():
+            return not accessible.checked
+	
+        assert retryUntilTrue(resultMatches)
     
     #close application main window after running test
     def quit(self):

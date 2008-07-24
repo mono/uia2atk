@@ -18,7 +18,7 @@ import sys
 import os
 
 from strongwind import *
-from button import *
+from checkbox import *
 from sys import argv
 from os import path
 
@@ -30,7 +30,7 @@ except IndexError:
 
 # open the treeview sample application
 try:
-  app = launchButton(app_path)
+  app = launchCheckBox(app_path)
 except IOError, msg:
   print "ERROR:  %s" % msg
   exit(2)
@@ -40,26 +40,27 @@ if app is None:
   exit(4)
 
 # just an alias to make things shorter
-bFrame = app.buttonFrame
+cbFrame = app.checkBoxFrame
 
-#check Button's actions list
-bFrame.actionsCheck(bFrame.button1)
+#check CheckBox's actions list
+cbFrame.actionsCheck(cbFrame.check1)
 
-#check Button's states list
-bFrame.statesCheck(bFrame.button2)
-bFrame.assertDisableButton(bFrame.button3)
+#check CheckBox's states list
+cbFrame.statesCheck(cbFrame.check2)
+cbFrame.statesDisableCheck(cbFrame.check4)
 
-#click button1 rise message frame window
-bFrame.click(bFrame.button1)
+#click checkbox 'Chicken' 
+cbFrame.click(cbFrame.check2)
 sleep(config.SHORT_DELAY)
-bFrame.assertMessage().altF4()
+cbFrame.assertChecked(cbFrame.check2)
 
-#click button2 change label text
-bFrame.click(bFrame.button2)
+#click checkbox 'Stuffed Peppers'
+cbFrame.click(cbFrame.check3)
 sleep(config.SHORT_DELAY)
-bFrame.assertLabel('You have clicked me 1 times')
+cbFrame.assertUnchecked(cbFrame.check3)
+
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
 #close application frame window
-bFrame.quit()
+cbFrame.quit()

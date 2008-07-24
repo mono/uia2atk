@@ -30,4 +30,7 @@ class Range(object):
 class TreeView:
     EXPAND_OR_CONTRACT = "expand or contract"
 
+class CheckBox(Button):
+    pass
+
 

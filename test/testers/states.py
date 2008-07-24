@@ -205,3 +205,6 @@ VISITED = "visited"
 class Button(object):
     slist = ['enabled','selectable','sensitive']
 
+class CheckBox(Button):
+    pass
+

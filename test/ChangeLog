@@ -1,3 +1,15 @@
+2008-07-25  Calen Chen <cachen@novell.com>
+	* testers/checkbox_basic_ops.py: add test for winforms checkbox control
+	* testers/button_basic_ops.py: delete button2's actionCheck and button1's
+	statesCheck, checking rise message frame by assertMessage()
+	* testers/checkbox: add test for winforms checkbox control
+	* testers/checkbox/__init__.py: add test for winforms checkbox control
+	* testers/checkbox/checkboxframe.py: add test for winforms checkbox
+	* testers/actions.py: add checkbox's action list
+	* testers/states.py: add checkbox's states list
+	* testers/button/buttonframe.py: update assertMessage(),
+	delete clossMessage()
+
 2008-07-24  Brian G. Merrell <bgmerrell@gmail.com>
 	
 	* drivers/update_uia2atk_rpms.sh: move to new "tools" directory
