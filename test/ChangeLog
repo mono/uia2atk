@@ -1,3 +1,10 @@
+2008-07-24  Brian G. Merrell <bgmerrell@gmail.com>
+	
+	* drivers/update_uia2atk_rpms.sh: move to new "tools" directory
+	* tools/update_uia2atk_rpms.sh: add error checking and command-line
+	arguments (script will not use --force and --nodeps by default).  Use 
+	--help for help.
+
 2008-07-24  Ray Wang <rawang@novell.com>
 
 	* samples/printpreviewcontrol.py: implement PrintPreviewControl control
