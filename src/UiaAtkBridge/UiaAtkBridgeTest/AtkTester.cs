@@ -152,6 +152,8 @@ namespace UiaAtkBridgeTest
 
 			PropertyRole (type, accessible);
 
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "StatusBar numChildren");
+
 			string name = "test";
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);

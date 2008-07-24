@@ -1,3 +1,7 @@
+2008-07-24 Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs, BasicWidgetType.cs, BridgeTester.cs: Add statusBar
+
 2008-07-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTester.cs: Some work on the Edit tests, still not passing (seems
