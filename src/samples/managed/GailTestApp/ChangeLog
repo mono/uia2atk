@@ -1,3 +1,8 @@
+2008-07-24  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* gtk-gui/MainWindow.cs, gtk-gui/gui.stetic: Added a Vertical and a
+	  Horizontal scrollbar, requested by Mike Gorse.
+
 2008-07-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* MainWindow.cs, Main.cs, MovingThread.cs: Finally fix all threading
