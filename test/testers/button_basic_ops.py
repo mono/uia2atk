@@ -50,12 +50,15 @@ bFrame.diffActions(bFrame.button3)
 #check Button's states list
 bFrame.statesCheck(bFrame.button1)
 bFrame.statesCheck(bFrame.button2)
-bFrame.statesCheck(bFrame.button3)
+bFrame.assertDisableButton(bFrame.button3)
 
 #click button1 rise message frame window
 bFrame.click(bFrame.button1)
 sleep(config.SHORT_DELAY)
-bFrame.assertMessage()
+mFrame = app.findFrame('message')
+sleep(config.SHORT_DELAY)
+#close message frame window
+mFrame.altF4()
 
 #click button2 change label text
 bFrame.click(bFrame.button2)
@@ -64,4 +67,5 @@ bFrame.assertLabel('You have clicked me 1 times')
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
+#close application frame window
 bFrame.quit()

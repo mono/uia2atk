@@ -1,4 +1,10 @@
 2008-07-24  Calen Chen <cachen@novell.com>
+	* testers/button_basic_ops.py: update test for closing frame window
+	* testers/button/buttonframe.py:update test for closing frame window
+	(test false beause can't get parent 'ipy|application')
+
+
+2008-07-24  Calen Chen <cachen@novell.com>
 	* samples/checkbox_radiobutton.py: separate checkbox and radiobutton
 	from panel as one application(provider not implemented panel control at
 	present)

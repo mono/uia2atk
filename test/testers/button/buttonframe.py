@@ -52,26 +52,37 @@ class ButtonFrame(accessibles.Frame):
             cmd = "state = accessible." + a
             exec(cmd)
 
-            if accessible == self.button3 and state == False:
-                pass
-            elif accessible != self.button3 and state == False:
+            if state == False:
                 print "ERROR: %s can't be checked" % cmd
+            else:
+                pass
 
+    #check disable Button's states
+    def assertDisableButton(self, accessible):
+        procedurelogger.action('check %s\'s all states' % accessible)
+
+        procedurelogger.expectedResult('%s\'s all states can\'t be found' % accessible)
+        for a in states.Button.slist:
+            cmd = "state = accessible." + a
+            exec(cmd)
+
+            if state == True:
+                print "ERROR: %s can't be checked" % cmd
+            else:
+                pass
 
     #give 'click' action
     def click(self,button):
         procedurelogger.action('Click the %s.' % button)
-        button._doAction(a.Button.CLICK)
+        button._doAction(actions.Button.CLICK)
 
     #check the Label text after click button2
     def assertLabel(self, labelText):
         procedurelogger.expectedResult('Label text has been changed to \"%s\"' % labelText)
         self.findLabel(labelText)
 
-    #rise and close message window after click button1
-    def assertMessage(self):
-        self = self.findFrame('message', logName='successful clicked me')
-
+    #close message frame window
+    def closeMessage(self):
         self.altF4()
     
     #close application main window after running test
