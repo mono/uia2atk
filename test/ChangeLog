@@ -1,4 +1,11 @@
 2008-07-25  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/actions.py: use constants already defined in file.  rename
+	'alist' to 'actions' to make it more descriptive.  use tuple instead 
+	of list for 'actions' (tuple makes more sense here because they are
+	immutable).
+
+2008-07-25  Brian G. Merrell <bgmerrell@gmail.com>
 	
 	* tools/update_uia2atk_rpms.sh: update URL and make is a variable
 	* testers/states.py: use constants already defined in file.  rename

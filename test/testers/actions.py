@@ -4,7 +4,7 @@ class Button(object):
     PRESS = "press"
     RELEASE = "release"
 
-    alist = ['click']
+    actions = (CLICK)
 
 class TableColumnHeader(Button):
     pass
