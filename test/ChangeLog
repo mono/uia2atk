@@ -1,5 +1,10 @@
 2008-07-25  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* testers/gtkcheckbutton/gtkcheckbuttonframe.py: forgot to prefix
+	constants with self.
+	
+2008-07-25  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* testers/gtkcheckbutton/gtkcheckbuttonframe.py: remove import from
 	gtkcheckbutton, apparently it's not needed.  use constants that were
 	already there instead of typing strings again.

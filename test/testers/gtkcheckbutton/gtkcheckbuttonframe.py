@@ -28,7 +28,7 @@ class GtkCheckButtonFrame(accessibles.Frame):
 
     def assertChecked(self, accessible):
         'Raise exception if the accessible does not match the given result'   
-        procedurelogger.expectedResult('%s is %s.' % (accessible, RESULT_CHECKED))
+        procedurelogger.expectedResult('%s is %s.' % (accessible, self.RESULT_CHECKED))
         def resultMatches():
             return accessible.checked
 	
@@ -36,7 +36,7 @@ class GtkCheckButtonFrame(accessibles.Frame):
 
     def assertUnchecked(self, accessible):
         'Raise exception if the accessible does not match the given result'   
-        procedurelogger.expectedResult('%s is %s.' % (accessible, RESULT_UNCHECKED))
+        procedurelogger.expectedResult('%s is %s.' % (accessible, self.RESULT_UNCHECKED))
 
         def resultMatches():
             return not accessible.checked
