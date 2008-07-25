@@ -6,6 +6,7 @@
 # Description: Download the latest uia2atk rpms and upgrade to them
 ##############################################################################
 
+URL="http://build1.sled.lab.novell.com/uia/current/"
 opts=""
 
 function usage
@@ -49,7 +50,7 @@ if [ $? != "0" ]; then
     echo "Error:  failed to create and change to a temporary directory"
     exit
 fi
-wget --accept=rpm --progress=dot -r -np -nd -l1 http://build1.sled.lab.novell.com/uia/
+wget --accept=rpm --progress=dot -r -np -nd -l1 $URL
 if [ $? != "0" ]; then
     echo "Error:  failed to download the rpms"
     exit

@@ -50,7 +50,7 @@ class CheckBoxFrame(accessibles.Frame):
         procedurelogger.action('check %s\'s all states' % accessible)
 
         procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
-        for a in states.CheckBox.slist:
+        for a in states.CheckBox.states:
             cmd = "state = accessible." + a
             exec(cmd)
 
@@ -64,7 +64,7 @@ class CheckBoxFrame(accessibles.Frame):
         procedurelogger.action('check %s\'s all states' % accessible)
 
         procedurelogger.expectedResult('%s\'s all states can\'t be found' % accessible)
-        for a in states.CheckBox.slist:
+        for a in states.CheckBox.states:
             cmd = "state = accessible." + a
             exec(cmd)
 

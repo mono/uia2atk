@@ -203,7 +203,7 @@ VISITED = "visited"
 
 #list Button's all states
 class Button(object):
-    slist = ['enabled','selectable','sensitive']
+    states = (ENABLED,SELECTABLE,SENSITIVE)
 
 class CheckBox(Button):
     pass

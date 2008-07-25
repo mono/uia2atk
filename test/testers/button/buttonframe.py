@@ -48,7 +48,7 @@ class ButtonFrame(accessibles.Frame):
         procedurelogger.action('check %s\'s all states' % accessible)
 
         procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
-        for a in states.Button.slist:
+        for a in states.Button.states:
             cmd = "state = accessible." + a
             exec(cmd)
 
@@ -62,7 +62,7 @@ class ButtonFrame(accessibles.Frame):
         procedurelogger.action('check %s\'s all states' % accessible)
 
         procedurelogger.expectedResult('%s\'s all states can\'t be found' % accessible)
-        for a in states.Button.slist:
+        for a in states.Button.states:
             cmd = "state = accessible." + a
             exec(cmd)
 

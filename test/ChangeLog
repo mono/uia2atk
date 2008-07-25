@@ -1,3 +1,13 @@
+2008-07-25  Brian G. Merrell <bgmerrell@gmail.com>
+	
+	* tools/update_uia2atk_rpms.sh: update URL and make is a variable
+	* testers/states.py: use constants already defined in file.  rename
+	'slist' to 'states' to make it more descriptive.  use tuple instead 
+	of list for 'states' (tuple makes more sense here because they are
+	immutable).
+	* testers/checkbox/checkboxframe.py: use 'states' instead of 'slist'
+	* testers/button/buttonframe.py: use 'states' instead of 'slist'
+
 2008-07-25  Calen Chen <cachen@novell.com>
 	* testers/checkbox_basic_ops.py: add test for winforms checkbox control
 	* testers/button_basic_ops.py: delete button2's actionCheck and button1's
