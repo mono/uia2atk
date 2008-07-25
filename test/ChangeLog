@@ -1,5 +1,11 @@
 2008-07-25  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* testers/gtkcheckbutton/gtkcheckbuttonframe.py: remove import from
+	gtkcheckbutton, apparently it's not needed.  use constants that were
+	already there instead of typing strings again.
+	
+2008-07-25  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* testers/actions.py: use constants already defined in file.  rename
 	'alist' to 'actions' to make it more descriptive.  use tuple instead 
 	of list for 'actions' (tuple makes more sense here because they are

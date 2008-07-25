@@ -6,7 +6,6 @@
 ##############################################################################$
 
 from strongwind import *
-from gtkcheckbutton import *
 
 # class to represent the main window.
 class GtkCheckButtonFrame(accessibles.Frame):
@@ -29,7 +28,7 @@ class GtkCheckButtonFrame(accessibles.Frame):
 
     def assertChecked(self, accessible):
         'Raise exception if the accessible does not match the given result'   
-        procedurelogger.expectedResult('%s is %s.' % (accessible, "checked"))
+        procedurelogger.expectedResult('%s is %s.' % (accessible, RESULT_CHECKED))
         def resultMatches():
             return accessible.checked
 	
@@ -37,7 +36,7 @@ class GtkCheckButtonFrame(accessibles.Frame):
 
     def assertUnchecked(self, accessible):
         'Raise exception if the accessible does not match the given result'   
-        procedurelogger.expectedResult('%s is %s.' % (accessible, "unchecked"))
+        procedurelogger.expectedResult('%s is %s.' % (accessible, RESULT_UNCHECKED))
 
         def resultMatches():
             return not accessible.checked
