@@ -40,4 +40,13 @@ namespace UiaAtkBridgeTest
 		StatusBar,
 		TextBoxEntry
 	}
+	
+	internal static class Misc
+	{
+		internal static bool HasReadOnlyText (BasicWidgetType type) {
+			if (type == BasicWidgetType.TextBoxEntry)
+				return false;
+			return true;
+		}
+	}
 }
