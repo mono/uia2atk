@@ -131,11 +131,25 @@ namespace Mono.UIAutomation.Winforms
 			else if ((lb = component as ListBox) != null)
 				provider = new ListBoxProvider (lb);
 			else if ((scb = component as ScrollBar) != null) {
-				if ((lb = component.Container as ListBox) != null) {
+				if ((lb = scb.Parent as ListBox) != null) {
 					provider = new ListBoxProvider.ListBoxScrollBarProvider (scb);
 					((FragmentRootControlProvider) provider).InitializeChildControlStructure ();
-				} else
-					provider = new ScrollBarProvider (scb);
+				} else {
+					//TODO:
+					//   We need to add here a ScrollableControlProvider and then verify
+					//   if the internal scrollbar instances are matching this one,
+					//   if so, then we return a scrollbar, otherwise we return a pane.
+					ScrollableControl scrollable;
+					//ScrollableControlProvider scrollableProvider;
+					if ((scrollable = scb.Parent as ScrollableControl) != null) {
+					//	scrollableProvider = (ScrollableControlProvider) GetProvider (scrollable);
+					//	if (scrollableProvider.ScrollBarExists (scb) == true)
+							provider = new ScrollBarProvider (scb);
+					//	else 
+					//		provider = new PaneProvider (scb);
+					} else
+						provider = new PaneProvider (scb);
+				}
 			} else if ((pb = component as PictureBox) != null)
 				provider = new PaneProvider (pb);
 			//NOTE: The following providers are Component-based meaning that

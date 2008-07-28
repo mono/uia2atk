@@ -32,7 +32,8 @@ using Mono.UIAutomation.Winforms.Behaviors;
 
 namespace Mono.UIAutomation.Winforms
 {
-#region Delegates
+	
+	#region Delegates
 	
 	internal delegate void StructureChangeEventHandler (object sender, 
 	                                                    ListItemProvider item, 
@@ -42,28 +43,28 @@ namespace Mono.UIAutomation.Winforms
 	                                                       ScrollBar scrollbar,
 	                                                       bool navigable);
 
-#endregion
+	#endregion
 	
 	internal abstract class ListProvider : FragmentRootControlProvider
 	{
 
-#region Constructors
+		#region Constructors
 
 		protected ListProvider (ListControl control) : base (control)
 		{
-			list_control = control;
+			listControl = control;
 			items = new List<ListItemProvider> ();
 			
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
 			             new ListSelectionProviderBehavior (this));
 		}
 		
-#endregion
+		#endregion
 		
-#region Public Properties
+		#region Public Properties
 
 		public ListControl ListControl {
-			get { return list_control; }
+			get { return listControl; }
 		}
 	
 		public abstract int ItemsCount { get; }
@@ -72,9 +73,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		public abstract bool SupportsMultipleSelection { get; }
 		
-#endregion
+		#endregion
 		
-#region Public Events
+		#region Public Events
 
 		public event StructureChangeEventHandler ChildAdded;
 		
@@ -82,9 +83,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		public event EventHandler ChildrenClear;
 		
-#endregion
+		#endregion
 		
-#region Public Methods
+		#region Public Methods
 		
 		public abstract bool IsItemSelected (ListItemProvider item);
 
@@ -97,7 +98,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (index >= items.Count) {
 				for (int loop = items.Count - 1; loop < index; loop++) {
 					item = new ListItemProvider (GetItemsListProvider (), 
-					                             list_control);
+					                             listControl);
 					items.Add (item);
 					item.InitializeEvents ();
 				}
@@ -131,31 +132,21 @@ namespace Mono.UIAutomation.Winforms
 			
 			return item;
 		}
+		
+		public abstract void ScrollItemIntoView (ListItemProvider item);
 
-#endregion
+		#endregion
 		
-#region SimpleControlProvider: Specializations
-		
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.IsSelectionPatternAvailableProperty.Id)
-				return true;
-			else
-				return base.GetPropertyValue (propertyId);
-		}
-		
-#endregion
-			
-#region FragmentControlProvider: Specializations
+		#region FragmentControlProvider: Specializations
 
 		public override IRawElementProviderFragment GetFocus ()
 		{
-			return GetItemProvider (list_control.SelectedIndex);
+			return GetItemProvider (listControl.SelectedIndex);
 		}
-			
-#endregion
+
+		#endregion
 		
-#region FragmentRootControlProvider: Specializations
+		#region FragmentRootControlProvider: Specializations
 		
 		public override void InitializeChildControlStructure ()
 		{
@@ -226,9 +217,9 @@ namespace Mono.UIAutomation.Winforms
 			ClearItemsList ();
 		}
 		
-#endregion
+		#endregion
 
-#region Protected Methods
+		#region Protected Methods
 		
 		protected bool ContainsItem (ListItemProvider item)
 		{
@@ -288,9 +279,9 @@ namespace Mono.UIAutomation.Winforms
 			return this;
 		}
 
-#endregion
+		#endregion
 		
-#region Private Methods: StructureChangedEvent
+		#region Private Methods: StructureChangedEvent
 		
 		private void OnChildAdded (object sender, int index)
 		{
@@ -308,14 +299,14 @@ namespace Mono.UIAutomation.Winforms
 			ClearItemsList ();
 		}
 		
-#endregion
+		#endregion
 
-#region Private Fields
+		#region Private Fields
 		
-		private ListControl list_control;
+		private ListControl listControl;
 		private List<ListItemProvider> items;
 		
-#endregion
+		#endregion
 
 	}
 }

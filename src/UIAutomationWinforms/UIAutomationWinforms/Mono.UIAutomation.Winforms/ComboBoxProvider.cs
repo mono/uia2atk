@@ -43,13 +43,13 @@ namespace Mono.UIAutomation.Winforms
 		
 		public ComboBoxProvider (ComboBox combobox) : base (combobox)
 		{
-			combobox_control = combobox;
+			comboboxControl = combobox;
 			
-			combobox_control.DropDownStyleChanged += new EventHandler (OnDropDownStyleChanged);
+			comboboxControl.DropDownStyleChanged += new EventHandler (OnDropDownStyleChanged);
 			
-			listbox_provider = new ComboBoxProvider.ComboBoxListBoxProvider (combobox_control,
+			listboxProvider = new ComboBoxProvider.ComboBoxListBoxProvider (comboboxControl,
 			                                                                 this);
-			listbox_provider.InitializeChildControlStructure ();
+			listboxProvider.InitializeChildControlStructure ();
 		}
 		
 		#endregion
@@ -73,22 +73,22 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.Terminate ();
 			
-			combobox_control.DropDownStyleChanged -= new EventHandler (OnDropDownStyleChanged);
+			comboboxControl.DropDownStyleChanged -= new EventHandler (OnDropDownStyleChanged);
 		}
 		
 		public FragmentControlProvider GetChildTextBoxProvider ()
 		{
-			return textbox_provider;
+			return textboxProvider;
 		}
 		
 		public FragmentRootControlProvider GetChildListBoxProvider ()
 		{
-			return listbox_provider;
+			return listboxProvider;
 		}
 		
 		public FragmentControlProvider GetChildButtonProvider ()
 		{
-			return button_provider;
+			return buttonProvider;
 		}
 		
 		#endregion		
@@ -129,12 +129,12 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		public override int ItemsCount {
-			get { return combobox_control.Items.Count; }
+			get { return comboboxControl.Items.Count; }
 		}
 		
 		public override ListItemProvider[] GetSelectedItemsProviders ()
 		{
-			if (combobox_control.SelectedIndex == -1)
+			if (comboboxControl.SelectedIndex == -1)
 				return null;
 			else
 				return new ListItemProvider [] { (ListItemProvider) GetFocus () };
@@ -143,7 +143,7 @@ namespace Mono.UIAutomation.Winforms
 		public override string GetItemName (ListItemProvider item)
 		{
 			if (ContainsItem (item) == true)
-				return combobox_control.Items [item.Index].ToString ();
+				return comboboxControl.Items [item.Index].ToString ();
 			else
 				return string.Empty;
 		}
@@ -178,17 +178,17 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void FinalizeChildControlStructure ()
 		{
-			if (button_provider != null) {
-				button_provider.Terminate ();
-				button_provider = null;
+			if (buttonProvider != null) {
+				buttonProvider.Terminate ();
+				buttonProvider = null;
 			}
-			if (textbox_provider != null) {
-				textbox_provider.Terminate ();
-				textbox_provider = null;
+			if (textboxProvider != null) {
+				textboxProvider.Terminate ();
+				textboxProvider = null;
 			}
-			if (listbox_provider != null) {
-				listbox_provider.Terminate ();
-				listbox_provider = null;
+			if (listboxProvider != null) {
+				listboxProvider.Terminate ();
+				listboxProvider = null;
 			}
 		}
 
@@ -199,7 +199,12 @@ namespace Mono.UIAutomation.Winforms
 		
 		protected override ListProvider GetItemsListProvider ()
 		{
-			return listbox_provider;
+			return listboxProvider;
+		}
+		
+		public override void ScrollItemIntoView (ListItemProvider item)
+		{
+			throw new NotImplementedException ();
 		}
 
 		#endregion
@@ -213,7 +218,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void UpdateBehaviors () 
 		{
-			if (combobox_control.DropDownStyle == ComboBoxStyle.Simple) {
+			if (comboboxControl.DropDownStyle == ComboBoxStyle.Simple) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern, 
 				             null);
 				SetBehavior (ValuePatternIdentifiers.Pattern,
@@ -221,7 +226,7 @@ namespace Mono.UIAutomation.Winforms
 				
 				TerminateButtonProvider ();
 				InitializeEditProvider ();
-			} else if (combobox_control.DropDownStyle == ComboBoxStyle.DropDown) {
+			} else if (comboboxControl.DropDownStyle == ComboBoxStyle.DropDown) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
 				             new ComboBoxExpandCollapseProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern,
@@ -229,7 +234,7 @@ namespace Mono.UIAutomation.Winforms
 				
 				InitializeButtonProvider ();
 				InitializeEditProvider ();
-			} else if (combobox_control.DropDownStyle == ComboBoxStyle.DropDownList) {
+			} else if (comboboxControl.DropDownStyle == ComboBoxStyle.DropDownList) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
 				             new ComboBoxExpandCollapseProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern, 
@@ -242,13 +247,13 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void InitializeEditProvider ()
 		{
-			if (textbox_provider == null) {
-				TextBox textbox = (TextBox) Helper.GetPrivateField (combobox_control.GetType (), 
-				                                                    combobox_control, 
+			if (textboxProvider == null) {
+				TextBox textbox = (TextBox) Helper.GetPrivateField (typeof (ComboBox), 
+				                                                    comboboxControl, 
 				                                                    "textbox_ctrl");
-				textbox_provider = new TextBoxProvider (textbox);
+				textboxProvider = new TextBoxProvider (textbox);
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   textbox_provider);
+				                                   textboxProvider);
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
 				                                   this);
 			}
@@ -256,23 +261,23 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void TerminateEditProvider ()
 		{
-			if (textbox_provider != null) {
+			if (textboxProvider != null) {
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-				                                   textbox_provider);
+				                                   textboxProvider);
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
 				                                   this);
-				textbox_provider.Terminate ();
-				textbox_provider = null;
+				textboxProvider.Terminate ();
+				textboxProvider = null;
 			}
 		}
 		
 		private void InitializeButtonProvider ()
 		{
-			if (button_provider == null) {
-				button_provider = new ComboBoxProvider.ComboBoxButtonProvider (combobox_control,
+			if (buttonProvider == null) {
+				buttonProvider = new ComboBoxProvider.ComboBoxButtonProvider (comboboxControl,
 				                                                               this);
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   button_provider);
+				                                   buttonProvider);
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
 				                                   this);
 			}
@@ -281,14 +286,14 @@ namespace Mono.UIAutomation.Winforms
 		private void TerminateButtonProvider ()
 		{
 			//TODO: UISpy doesn't report this structure change, according to MSDN we should do so
-			if (button_provider != null) {
+			if (buttonProvider != null) {
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-				                                   button_provider);
+				                                   buttonProvider);
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
 				                                   this);
 				
-				button_provider.Terminate ();
-				button_provider = null;
+				buttonProvider.Terminate ();
+				buttonProvider = null;
 			}
 		}
 		
@@ -296,10 +301,10 @@ namespace Mono.UIAutomation.Winforms
 			
 		#region Private Fields
 		
-		private ComboBox combobox_control;
-		private ComboBoxProvider.ComboBoxButtonProvider button_provider;
-		private ComboBoxProvider.ComboBoxListBoxProvider listbox_provider;
-		private TextBoxProvider textbox_provider;
+		private ComboBox comboboxControl;
+		private ComboBoxProvider.ComboBoxButtonProvider buttonProvider;
+		private ComboBoxProvider.ComboBoxListBoxProvider listboxProvider;
+		private TextBoxProvider textboxProvider;
 		
 		#endregion
 		

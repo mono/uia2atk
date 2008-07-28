@@ -22,56 +22,70 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-using System.Windows;
-using Mono.UIAutomation.Winforms;
-using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
-	internal class ListItemScrollProviderBehavior
-		: ProviderBehavior, IScrollItemProvider
+	internal class ListItemToggleProviderBehavior
+		: ProviderBehavior, IToggleProvider
 	{
-			
+		
 		#region Constructors
 
-		public ListItemScrollProviderBehavior (ListItemProvider provider)
+		public ListItemToggleProviderBehavior (ListItemProvider provider)
 			: base (provider)
 		{
+			this.provider = provider;
 		}
 
-		#endregion
+		#endregion 
 		
-		#region IProviderBehavior Interface
+		#region IProviderBehavior specializations
 
 		public override AutomationPattern ProviderPattern { 
-			get { return ScrollItemPatternIdentifiers.Pattern; }
+			get { return TogglePatternIdentifiers.Pattern; }
 		}
 		
 		public override void Connect (Control control)
 		{
-			//Doesn't generate any UIA event
+			//TODO: Connect event to generate TogglePatternIdentifiers.ToggleStateProperty
 		}
 		
 		public override void Disconnect (Control control)
 		{
-			//Doesn't generate any UIA event
+			//TODO: Disconnect event to generate TogglePatternIdentifiers.ToggleStateProperty
 		}
 		
 		#endregion
 
-		#region IScrollItemProvider Interface
+		#region IToggleProvider specializations 
+	
+		public ToggleState ToggleState {
+			get {
+				return provider.ListProvider.IsItemSelected (provider) == true 
+					? ToggleState.On : ToggleState.On;
+			}
+		}
 		
-		public void ScrollIntoView ()
+		public void Toggle ()
 		{
-			((ListItemProvider) Provider).ListProvider.ScrollItemIntoView ((ListItemProvider) Provider);
+			if (ToggleState == ToggleState.On)
+				provider.ListProvider.UnselectItem (provider);
+			else 
+				provider.ListProvider.SelectItem (provider);
 		}
 
 		#endregion
+
+		#region Private Fields
+		
+		private ListItemProvider provider;
+		
+		#endregion
+
 	}
 }

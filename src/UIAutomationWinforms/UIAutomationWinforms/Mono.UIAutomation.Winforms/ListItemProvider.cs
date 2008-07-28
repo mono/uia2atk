@@ -41,13 +41,17 @@ namespace Mono.UIAutomation.Winforms
 		public ListItemProvider (ListProvider provider, ListControl control) 
 			: base (control)
 		{
-			list_provider = provider;
-			list_control = control;
+			listProvider = provider;
+			listControl = control;
 			
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
 			             new ListItemSelectionProviderBehavior (this));	
 			SetBehavior (ScrollItemPatternIdentifiers.Pattern,
 			             new ListItemScrollProviderBehavior (this));
+			
+			if (listControl is CheckedListBox)
+				SetBehavior (TogglePatternIdentifiers.Pattern,
+				             new ListItemToggleProviderBehavior (this));				
 		}
 
 		#endregion
@@ -61,7 +65,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "list item";
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return name_property;
+				return nameProperty;
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return ListControl.Focused && Index == ListControl.SelectedIndex;
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
@@ -78,7 +82,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeEvents (); 
 			
-			name_property = ListProvider.GetItemName (this);
+			nameProperty = ListProvider.GetItemName (this);
 		}
 		
 		#endregion
@@ -99,11 +103,11 @@ namespace Mono.UIAutomation.Winforms
 		}		
 		
 		public ListControl ListControl {
-			get { return list_control; }
+			get { return listControl; }
 		}
 
 		public ListProvider ListProvider {
-			get { return list_provider; }
+			get { return listProvider; }
 		}
 
 		#endregion	
@@ -118,9 +122,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Fields
 
-		private ListControl list_control;
-		private ListProvider list_provider;
-		private string name_property;
+		private ListControl listControl;
+		private ListProvider listProvider;
+		private string nameProperty;
 		
 		#endregion
 		

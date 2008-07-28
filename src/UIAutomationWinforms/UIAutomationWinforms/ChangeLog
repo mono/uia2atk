@@ -1,3 +1,27 @@
+2008-07-28  Mario Carrion <mcarrion@novell.com>
+
+	* Makefile.am, Mono.UIAutomation.Winforms.mdp: Added file:
+	Mono.UIAutomation.Winforms.Behaviors/ListItemToggleProviderBehavior.cs
+	* Mono.UIAutomation.Winforms.Behaviors/ListItemToggleProviderBehavior.cs:
+	Filed added. Implements Toggle Control Pattern for List Item Control
+	Type.	
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Fixed bug about 
+	ListBox.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Private fields renamed
+	to follow Coding Guidelines. Fixed bug in InitializeScrollBehavior, 
+	using type of ListBox.
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Private fields renamed
+	to follow Coding Guidelines. Using ListItemToggleProviderBehavior when
+	ListControl is CheckedListBox.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Private fields renamed to 
+	follow Coding Guidelines. Abstract method added: ScrollItemIntoView.
+	* Mono.UIAutomation.Winforms/WindowProvider.cs: Overriden methods 
+	commented: Navigate and SetFocus, base class handles methods.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Private fields renamed
+	to follow Coding Guidelines.
+	* Mono.UIAutomation.Winforms.Behaviors/ListItemScrollProviderBehavior.cs:
+	ScrollIntoView method implementation.
+
 2008-07-24  Mario Carrion <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Added private
