@@ -131,6 +131,10 @@ namespace UiaAtkBridgeTest
 					throw new NotSupportedException ();
 				
 				widget = GailTestApp.MainClass.GiveMeARealEntry (guiThread);
+				Gtk.Application.Invoke (delegate {
+					((Gtk.Entry)widget).Text = text;
+				});
+				System.Threading.Thread.Sleep (1000);
 				break;
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
