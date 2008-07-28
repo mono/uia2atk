@@ -1,3 +1,10 @@
+2008-07-28  Calen Chen <cachen@novell.com>
+
+	* testers/checkbox/checkboxframe.py: change list to tuple in 
+	actionscheck(), and update sorted()
+	* testers/button/buttonframe.py: change list to tuple in actionscheck(),
+	and update sorted()
+
 2008-07-25  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/gtkcheckbutton/gtkcheckbuttonframe.py: forgot to prefix

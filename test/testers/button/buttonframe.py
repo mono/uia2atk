@@ -34,13 +34,14 @@ class ButtonFrame(accessibles.Frame):
     def actionsCheck(self, accessible):
         procedurelogger.action('diff %s\'s actions list' % accessible)
         ca = accessible._accessible.queryAction()
-        alist = []
-        for list in range(ca.nActions):
-            alist.append(ca.getName(list))
+        initallist = ()
+        for lists in range(ca.nActions):
+            initallist = (ca.getName(lists))
 
-        procedurelogger.expectedResult('%s\'s inital actions list live up to our expectation' % accessible)
+        procedurelogger.expectedResult('%s\'s inital actions \"%s\" live up to\
+	our expectation' % (accessible,initallists))
         def resultMatches():
-            return alist.sort() == actions.Button.alist.sort()
+            return sorted(initallist) == sorted(actions.Button.actions)
         assert retryUntilTrue(resultMatches)
 
     #check Button's all expectant states
