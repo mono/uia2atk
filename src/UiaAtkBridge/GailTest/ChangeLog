@@ -1,3 +1,7 @@
+2008-07-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* GailTester.cs: Add menu testing.
+
 2008-07-28  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* GailTester.cs: Fix text overriding.

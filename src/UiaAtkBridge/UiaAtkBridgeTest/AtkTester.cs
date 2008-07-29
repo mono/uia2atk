@@ -196,6 +196,35 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "TextBoxEntry numChildren");
 		}
 		
+		[Test]
+		public void Menu () 
+		{
+			BasicWidgetType type = BasicWidgetType.Menu;
+			Atk.Object accessible = null;
+			
+			string name = "Menu";
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			InterfaceComponent (type, atkComponent);
+			//component, action, selection, text
+			
+			PropertyRole (type, accessible);
+			
+			
+			Assert.IsTrue (accessible.NAccessibleChildren > 0, "number of children in menu");
+			
+			Atk.Object menuChild = accessible.RefAccessibleChild (0);
+			Assert.IsNotNull (menuChild, "menu child#0 should not be null");
+			Assert.IsTrue (
+			  ((menuChild.Role == Atk.Role.Menu) ||
+			   (menuChild.Role == Atk.Role.MenuItem) ||
+			   (menuChild.Role == Atk.Role.TearOffMenuItem) ||
+			   (menuChild.Role == Atk.Role.Separator)), "valid roles for a menu child");
+			
+			Assert.IsTrue (menuChild.NAccessibleChildren > 0 || (menuChild.Role != Atk.Role.Menu),
+			   "only grandchildren allowed if parent is menu");
+		}
+		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
 		//the widget, so we kill all with the method marked as [TestFixtureTearDown]
 		[Test]
@@ -259,8 +288,9 @@ namespace UiaAtkBridgeTest
 			if (type == BasicWidgetType.Window) {
 				Assert.AreEqual (Atk.Layer.Window, implementor.Layer, "Component.Layer(Window)");
 				Assert.AreEqual (-1, implementor.MdiZorder, "Component.MdiZorder(Window)");
-			}
-			else {
+			} else if (type == BasicWidgetType.Menu) {
+				Assert.AreEqual (Atk.Layer.Popup, implementor.Layer, "Component.Layer(Menu)");
+			} else {
 				Assert.AreEqual (Atk.Layer.Widget, implementor.Layer, "Component.Layer(notWindow)");
 				//FIXME: still don't know why this is failing in the GailTester, accerciser is lying me?
 				//Assert.AreEqual (0, implementor.MdiZorder, "Component.MdiZorder(notWindow)");
@@ -490,6 +520,9 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.StatusBar:
 				role = Atk.Role.Statusbar;
+				break;
+			case BasicWidgetType.Menu:
+				role = Atk.Role.Menu;
 				break;
 			default:
 				throw new NotImplementedException ();

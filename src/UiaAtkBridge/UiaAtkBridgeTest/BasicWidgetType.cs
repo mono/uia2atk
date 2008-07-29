@@ -38,7 +38,8 @@ namespace UiaAtkBridgeTest
 		ComboBox,
 		RadioButton,
 		StatusBar,
-		TextBoxEntry
+		TextBoxEntry,
+		Menu
 	}
 	
 	internal static class Misc
