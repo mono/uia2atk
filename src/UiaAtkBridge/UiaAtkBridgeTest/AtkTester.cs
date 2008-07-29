@@ -192,6 +192,8 @@ namespace UiaAtkBridgeTest
 			InterfaceComponent (type, atkComponent);
 			
 			PropertyRole (type, accessible);
+			
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "TextBoxEntry numChildren");
 		}
 		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
