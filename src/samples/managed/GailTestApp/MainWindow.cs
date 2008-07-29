@@ -65,6 +65,10 @@ public partial class MainWindow: Gtk.Window
 		return this.txtEntry;
 	}
 	
+	internal Gtk.Menu GiveMeARealMenu () {
+		return (Gtk.Menu)((Gtk.ImageMenuItem)this.menubar1.Children[0]).Submenu;
+	}
+	
 	List <Gtk.RadioButton> radioButtons = new List <Gtk.RadioButton> ();
 	
 	int radioButtonToReturn = -1;

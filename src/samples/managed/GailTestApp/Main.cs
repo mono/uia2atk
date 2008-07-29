@@ -126,6 +126,14 @@ namespace GailTestApp {
 			return win.GiveMeARealEntry ();
 		}
 		
+		public static Gtk.Menu GiveMeARealMenu (MovingThread guiThread)
+		{
+			if (win == null)
+				Start (guiThread);
+			
+			return win.GiveMeARealMenu ();
+		}
+		
 		public static void Kill (MovingThread thread) 
 		{
 			thread.GLibDeleg = KillMe;

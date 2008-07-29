@@ -12,13 +12,15 @@
 
 public partial class MainWindow {
     
-    private Gtk.Action FileAction;
+    private Gtk.Action XFileAction;
     
-    private Gtk.Action HelpAction;
+    private Gtk.Action GimmeHelpAction;
     
     private Gtk.Action AboutAction;
     
     private Gtk.Action QuitAction;
+    
+    private Gtk.Action SomeEditMenuAction;
     
     private Gtk.VBox vbox1;
     
@@ -59,18 +61,21 @@ public partial class MainWindow {
         // Widget MainWindow
         Gtk.UIManager w1 = new Gtk.UIManager();
         Gtk.ActionGroup w2 = new Gtk.ActionGroup("Default");
-        this.FileAction = new Gtk.Action("FileAction", Mono.Unix.Catalog.GetString("File"), null, null);
-        this.FileAction.ShortLabel = Mono.Unix.Catalog.GetString("File");
-        w2.Add(this.FileAction, null);
-        this.HelpAction = new Gtk.Action("HelpAction", Mono.Unix.Catalog.GetString("Help"), null, null);
-        this.HelpAction.ShortLabel = Mono.Unix.Catalog.GetString("Help");
-        w2.Add(this.HelpAction, null);
+        this.XFileAction = new Gtk.Action("XFileAction", Mono.Unix.Catalog.GetString("XFile"), null, null);
+        this.XFileAction.ShortLabel = Mono.Unix.Catalog.GetString("File");
+        w2.Add(this.XFileAction, null);
+        this.GimmeHelpAction = new Gtk.Action("GimmeHelpAction", Mono.Unix.Catalog.GetString("GimmeHelp"), null, null);
+        this.GimmeHelpAction.ShortLabel = Mono.Unix.Catalog.GetString("Help");
+        w2.Add(this.GimmeHelpAction, null);
         this.AboutAction = new Gtk.Action("AboutAction", Mono.Unix.Catalog.GetString("About"), null, null);
         this.AboutAction.ShortLabel = Mono.Unix.Catalog.GetString("About");
         w2.Add(this.AboutAction, null);
         this.QuitAction = new Gtk.Action("QuitAction", Mono.Unix.Catalog.GetString("Quit"), null, null);
         this.QuitAction.ShortLabel = Mono.Unix.Catalog.GetString("Quit");
         w2.Add(this.QuitAction, null);
+        this.SomeEditMenuAction = new Gtk.Action("SomeEditMenuAction", Mono.Unix.Catalog.GetString("SomeEditMenu"), null, null);
+        this.SomeEditMenuAction.ShortLabel = Mono.Unix.Catalog.GetString("SomeEditMenu");
+        w2.Add(this.SomeEditMenuAction, null);
         w1.InsertActionGroup(w2, 0);
         this.AddAccelGroup(w1.AccelGroup);
         this.Name = "MainWindow";
@@ -81,7 +86,7 @@ public partial class MainWindow {
         this.vbox1.Name = "vbox1";
         this.vbox1.Spacing = 6;
         // Container child vbox1.Gtk.Box+BoxChild
-        w1.AddUiFromString("<ui><menubar name='menubar1'><menu action='FileAction'><menuitem action='QuitAction'/></menu><menu action='HelpAction'><menuitem action='AboutAction'/></menu></menubar></ui>");
+        w1.AddUiFromString("<ui><menubar name='menubar1'><menu action='XFileAction'><menuitem action='QuitAction'/></menu><menu action='SomeEditMenuAction'/><menu action='GimmeHelpAction'><menuitem action='AboutAction'/></menu></menubar></ui>");
         this.menubar1 = ((Gtk.MenuBar)(w1.GetWidget("/menubar1")));
         this.menubar1.Name = "menubar1";
         this.vbox1.Add(this.menubar1);
@@ -280,7 +285,7 @@ public partial class MainWindow {
             this.Child.ShowAll();
         }
         this.DefaultWidth = 678;
-        this.DefaultHeight = 234;
+        this.DefaultHeight = 245;
         this.Show();
         this.DeleteEvent += new Gtk.DeleteEventHandler(this.OnDeleteEvent);
     }

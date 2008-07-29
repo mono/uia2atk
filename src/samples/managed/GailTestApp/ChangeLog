@@ -1,3 +1,8 @@
+2008-07-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* MainWindow.cs, gtk-gui/MainWindow.cs, gtk-gui/gui.stetic, Main.cs:
+	  Create API for accessing a menu. (Also rename some menus.)
+
 2008-07-24 Mike Gorse <mgorse@novell.com>
 
 	* Main.cs, MainWindow.cs: Support status bars.

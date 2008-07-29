@@ -8,16 +8,16 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/GailTestApp.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="678 234">
+  <widget class="Gtk.Window" id="MainWindow" design-size="678 245">
     <action-group name="Default">
-      <action id="FileAction">
+      <action id="XFileAction">
         <property name="Type">Action</property>
-        <property name="Label" translatable="yes">File</property>
+        <property name="Label" translatable="yes">XFile</property>
         <property name="ShortLabel" translatable="yes">File</property>
       </action>
-      <action id="HelpAction">
+      <action id="GimmeHelpAction">
         <property name="Type">Action</property>
-        <property name="Label" translatable="yes">Help</property>
+        <property name="Label" translatable="yes">GimmeHelp</property>
         <property name="ShortLabel" translatable="yes">Help</property>
       </action>
       <action id="AboutAction">
@@ -29,6 +29,11 @@
         <property name="Type">Action</property>
         <property name="Label" translatable="yes">Quit</property>
         <property name="ShortLabel" translatable="yes">Quit</property>
+      </action>
+      <action id="SomeEditMenuAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">SomeEditMenu</property>
+        <property name="ShortLabel" translatable="yes">SomeEditMenu</property>
       </action>
     </action-group>
     <property name="MemberName" />
@@ -43,10 +48,11 @@
           <widget class="Gtk.MenuBar" id="menubar1">
             <property name="MemberName" />
             <node name="menubar1" type="Menubar">
-              <node type="Menu" action="FileAction">
+              <node type="Menu" action="XFileAction">
                 <node type="Menuitem" action="QuitAction" />
               </node>
-              <node type="Menu" action="HelpAction">
+              <node type="Menu" action="SomeEditMenuAction" />
+              <node type="Menu" action="GimmeHelpAction">
                 <node type="Menuitem" action="AboutAction" />
               </node>
             </node>
