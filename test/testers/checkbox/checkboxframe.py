@@ -85,7 +85,7 @@ class CheckBoxFrame(accessibles.Frame):
         procedurelogger.expectedResult('\"%s\" is %s' % (accessible, 'checked'))
 
         def resultMatches():
-            return accessible.checked
+            return accessible.states.CHECKED
 	
         assert retryUntilTrue(resultMatches)
 
@@ -94,7 +94,7 @@ class CheckBoxFrame(accessibles.Frame):
         procedurelogger.expectedResult('%s is %s.' % (accessible, "unchecked"))
 
         def resultMatches():
-            return not accessible.checked
+            return not accessible.states.CHECKED
 	
         assert retryUntilTrue(resultMatches)
     

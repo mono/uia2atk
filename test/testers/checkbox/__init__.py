@@ -2,7 +2,7 @@
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        07/24/2008
-#              Application wrapper for CheckBox.py
+# Description: Application wrapper for CheckBox.py
 #              Used by the checkbox-*.py tests
 ##############################################################################$
 

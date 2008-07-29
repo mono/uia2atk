@@ -2,15 +2,15 @@
 
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
-# Date:        07/22/2008
-# Description: Test accessibility of button widget 
-#              Use the buttonframe.py wrapper script
-#              Test the samples/button_label_linklabel.py script
+# Date:        07/24/2008
+# Description: Test accessibility of checkbox widget 
+#              Use the checkboxframe.py wrapper script
+#              Test the samples/checkbox_radiobutton.py script
 ##############################################################################
 
 # The docstring below  is used in the generated log file
 """
-Test accessibility of button widget
+Test accessibility of checkbox widget
 """
 
 # imports

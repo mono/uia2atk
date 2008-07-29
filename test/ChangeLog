@@ -1,5 +1,11 @@
 2008-07-28  Calen Chen <cachen@novell.com>
 
+	* testers/checkbox_basic_ops.py: change "button" character to checkbox
+	* testers/checkbox/__init__.py: add "Description:" on the top
+	* testers/checkbox/checkboxframe.py: change "checked" to "states.CHECKED"
+
+2008-07-28  Calen Chen <cachen@novell.com>
+
 	* testers/checkbox/checkboxframe.py: change list to tuple in 
 	actionscheck(), and update sorted()
 	* testers/button/buttonframe.py: change list to tuple in actionscheck(),
