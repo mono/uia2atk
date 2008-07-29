@@ -140,10 +140,7 @@ namespace UiaAtkBridgeTest
 				if (!real)
 					throw new NotSupportedException ();
 				
-				widget = GailTestApp.MainClass.GiveMeARealMenu (guiThread);
-				Gtk.Application.Invoke (delegate {
-					((Gtk.Menu)widget).Title = text;
-				});
+				widget = GailTestApp.MainClass.GiveMeARealMenu (guiThread, text);
 				System.Threading.Thread.Sleep (1000);
 				break;
 			case BasicWidgetType.ComboBox:
