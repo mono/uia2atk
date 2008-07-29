@@ -65,7 +65,12 @@ public partial class MainWindow: Gtk.Window
 		return this.txtEntry;
 	}
 	
-	internal Gtk.Menu GiveMeARealMenu () {
+	internal Gtk.Menu GiveMeARealMenu (string name) {
+		Gtk.Label lab = (Gtk.Label)((Gtk.ImageMenuItem)this.menubar1.Children[0]).Children[0];
+		Gtk.Application.Invoke (delegate {
+			lab.Text = name;
+		});
+
 		return (Gtk.Menu)((Gtk.ImageMenuItem)this.menubar1.Children[0]).Submenu;
 	}
 	
