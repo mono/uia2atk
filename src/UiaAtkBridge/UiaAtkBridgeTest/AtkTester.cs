@@ -180,10 +180,16 @@ namespace UiaAtkBridgeTest
 		{
 			BasicWidgetType type = BasicWidgetType.TextBoxEntry;
 			Atk.Object accessible = InterfaceText (type);
-			string name = "Edit test";
+			
+			string name = "Edit test#1";
 			Atk.Action atkAction = (Atk.Action)
 				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
 			InterfaceAction (type, atkAction, accessible);
+			
+			name = "Edit test#2";
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			InterfaceComponent (type, atkComponent);
 			
 			PropertyRole (type, accessible);
 		}

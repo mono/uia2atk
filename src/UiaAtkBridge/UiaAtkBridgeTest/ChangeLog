@@ -1,5 +1,9 @@
 2008-07-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: An entry is also a component.
+
+2008-07-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: Fixes for TextBoxEntry in GailTester (Action
 	  interface).
 
