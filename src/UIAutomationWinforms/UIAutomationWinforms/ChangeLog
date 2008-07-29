@@ -1,3 +1,7 @@
+2008-07-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Fix build.
+
 2008-07-28  Mario Carrion <mcarrion@novell.com>
 
 	* Makefile.am, Mono.UIAutomation.Winforms.mdp: Added file:

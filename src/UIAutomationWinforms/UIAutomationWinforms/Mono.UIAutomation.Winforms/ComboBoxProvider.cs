@@ -314,6 +314,9 @@ namespace Mono.UIAutomation.Winforms
 		internal class ComboBoxListBoxProvider : ListProvider
 		{
 	
+			//DELETEME: just to fix compilation issue
+			public override void ScrollItemIntoView (ListItemProvider item) { }
+			
 			public ComboBoxListBoxProvider (ComboBox control, 
 			                                ComboBoxProvider provider)
 				: base (control)
