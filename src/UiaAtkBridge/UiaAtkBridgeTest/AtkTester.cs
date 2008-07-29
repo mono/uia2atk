@@ -307,12 +307,17 @@ namespace UiaAtkBridgeTest
 		
 		private void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible)
 		{
-			if (type == BasicWidgetType.ComboBox) {
-				Assert.AreEqual (1, implementor.NActions, "NActions");
+			int validNumberOfActions = ValidNumberOfActionsForAButton;
+			if ((type == BasicWidgetType.TextBoxEntry) || (type == BasicWidgetType.ComboBox))
+				validNumberOfActions = 1;
+			
+			Assert.AreEqual (validNumberOfActions, implementor.NActions, "NActions");
+			
+			if (type == BasicWidgetType.ComboBox)  {
 				Assert.AreEqual ("press", implementor.GetName (0), "GetName press");
+			} else if (type == BasicWidgetType.TextBoxEntry) {
+				Assert.AreEqual ("activate", implementor.GetName (0), "GetName activate");
 			} else { //Button and Checkbox and RadioButton
-				Assert.AreEqual (ValidNumberOfActionsForAButton, implementor.NActions, "NActions");
-				
 				Assert.AreEqual ("click", implementor.GetName (0), "GetName click");
 				if (ValidNumberOfActionsForAButton > 1) {
 					Assert.AreEqual ("press", implementor.GetName (1), "GetName press");
@@ -332,11 +337,12 @@ namespace UiaAtkBridgeTest
 			if (type != BasicWidgetType.RadioButton)
 				Assert.IsFalse (state.ContainsState (Atk.StateType.Checked), "RefStateSet.!Checked #1");
 			
+
 			if (type != BasicWidgetType.ComboBox) {
 				// only valid actions should work
-				for (int i = 0; i < ValidNumberOfActionsForAButton; i++) 
-					Assert.AreEqual (actionPerformed, implementor.DoAction (i), "DoAction");
-				if ((ValidNumberOfActionsForAButton > 1) // does not apply in UIA because 1 doaction==1click==checked
+				for (int i = 0; i < validNumberOfActions; i++) 
+					Assert.AreEqual (actionPerformed, implementor.DoAction (i), "DoAction(" + i + ")");
+				if ((validNumberOfActions > 1) // does not apply in UIA because 1 doaction==1click==checked
 				                                         // (in GAIL click+press+release==2clicks==unchecked)
 				     && (type == BasicWidgetType.CheckBox))
 					//one more, to leave it checked
@@ -379,10 +385,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.GetLocalizedName (ValidNumberOfActionsForAButton), "GetLocalizedName OOR#2");
 			
 			string descrip = "Some big ugly description";
-			int nActions = ValidNumberOfActionsForAButton;
-			if (type == BasicWidgetType.ComboBox)
-				nActions = 1;
-			for (int i = 0; i < nActions; i++) {
+			for (int i = 0; i < validNumberOfActions; i++) {
 				Assert.IsTrue (implementor.SetDescription(i, descrip), "SetDescription");
 				Assert.AreEqual (descrip, implementor.GetDescription (i), "GetDescription");
 				descrip += ".";
