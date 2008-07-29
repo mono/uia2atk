@@ -205,24 +205,36 @@ namespace UiaAtkBridgeTest
 			string name = "Menu";
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			
+			//FIXME: this test is failing, maybe accerciser digs the name with the Atk.Text interface?
+			//Assert.AreEqual (name, accessible.Name, "name of the menu is the same as its label");
+			
 			InterfaceComponent (type, atkComponent);
-			//component, action, selection, text
+			
+			
+//			Atk.Selection atkSelection = (Atk.Selection)
+//				GetAtkObjectThatImplementsInterface <Atk.Selection> (type, names, out accessible, true);
+//			InterfaceSelection (atkSelection, names, accessible);
+			
+			//TODO: action, text, selection
 			
 			PropertyRole (type, accessible);
 			
 			
 			Assert.IsTrue (accessible.NAccessibleChildren > 0, "number of children in menu");
 			
-			Atk.Object menuChild = accessible.RefAccessibleChild (0);
-			Assert.IsNotNull (menuChild, "menu child#0 should not be null");
-			Assert.IsTrue (
-			  ((menuChild.Role == Atk.Role.Menu) ||
-			   (menuChild.Role == Atk.Role.MenuItem) ||
-			   (menuChild.Role == Atk.Role.TearOffMenuItem) ||
-			   (menuChild.Role == Atk.Role.Separator)), "valid roles for a menu child");
-			
-			Assert.IsTrue (menuChild.NAccessibleChildren > 0 || (menuChild.Role != Atk.Role.Menu),
-			   "only grandchildren allowed if parent is menu");
+			for (int i = 0; i < accessible.NAccessibleChildren; i++){
+				Atk.Object menuChild = accessible.RefAccessibleChild (i);
+				Assert.IsNotNull (menuChild, "menu child#0 should not be null");
+				Assert.IsTrue (
+				  ((menuChild.Role == Atk.Role.Menu) ||
+				   (menuChild.Role == Atk.Role.MenuItem) ||
+				   (menuChild.Role == Atk.Role.TearOffMenuItem) ||
+				   (menuChild.Role == Atk.Role.Separator)), "valid roles for a menu child");
+				
+				Assert.IsTrue (menuChild.NAccessibleChildren > 0 || (menuChild.Role != Atk.Role.Menu),
+				   "only grandchildren allowed if parent is menu");
+			}
 		}
 		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with

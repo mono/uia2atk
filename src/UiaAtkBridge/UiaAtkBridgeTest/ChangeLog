@@ -1,5 +1,9 @@
 2008-07-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Wrap the children tests in a for loop.
+
+2008-07-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs, BasicWidgetType.cs: Add menu testing.
 
 2008-07-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
