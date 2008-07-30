@@ -22,6 +22,7 @@
     <File name="Button.cs" subtype="Code" buildaction="Compile" />
     <File name="Adapter.cs" subtype="Code" buildaction="Compile" />
     <File name="ParentAdapter.cs" subtype="Code" buildaction="Compile" />
+    <File name="ScrollBar.cs" subtype="Code" buildaction="Compile" />
     <File name="StatusBar.cs" subtype="Code" buildaction="Compile" />
     <File name="StatusBarWithGrid.cs" subtype="Code" buildaction="Compile" />
     <File name="TableImplementorHelper.cs" subtype="Code" buildaction="Compile" />

@@ -149,7 +149,8 @@ namespace UiaAtkBridgeTest
 		}
 		
 		[Test]
-		public void StatusBar ()
+		public void StatusBar () { RunInGuiThread (RealStatusBar); }
+		public void RealStatusBar()
 		{
 			BasicWidgetType type = BasicWidgetType.StatusBar;
 			Atk.Object accessible = InterfaceTextSingleLine (type);
@@ -163,7 +164,7 @@ namespace UiaAtkBridgeTest
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
 			InterfaceComponent (type, atkComponent);
 			int x, y, width, height;
-			atkComponent.GetExtents (out x, out y, out width, out height, Atk.CoordType.Window);
+			atkComponent.GetExtents (out x, out y, out width, out height, Atk.CoordType.Screen);
 			Assert.IsTrue (width > 0 && height > 0);
 			if (StatusBarImplementsTable)
 			{
@@ -173,6 +174,54 @@ namespace UiaAtkBridgeTest
 				Assert.IsTrue (atkTable.NRows <= 0);
 				Assert.IsTrue (atkTable.NColumns <= 0);
 			}
+		}
+		
+		[Test]
+		public void HScrollBar ()
+		{
+			BasicWidgetType type = BasicWidgetType.HScrollBar;
+			Atk.Object accessible;
+			string name = "test";
+
+			Atk.Value atkValue = (Atk.Value)
+				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
+			Assert.AreEqual (  0, atkValue.MinimumValue.Val, "HScrollBar MinimumValue");
+			Assert.AreEqual (100, atkValue.MaximumValue.Val, "HScrollBar MaximumValue");
+
+			PropertyRole (type, accessible);
+
+			Atk.StateSet stateSet = accessible.RefStateSet();
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Horizontal), "HScrollBar state");
+
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "HScrollBar numChildren");
+
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			InterfaceComponent (type, atkComponent);
+		}
+		
+		[Test]
+		public void VScrollBar ()
+		{
+			BasicWidgetType type = BasicWidgetType.VScrollBar;
+			Atk.Object accessible;
+			string name = "test";
+
+			Atk.Value atkValue = (Atk.Value)
+				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
+			Assert.AreEqual (  0, atkValue.MinimumValue.Val, "VScrollBar MinimumValue");
+			Assert.AreEqual (100, atkValue.MaximumValue.Val, "VScrollBar MaximumValue");
+
+			PropertyRole (type, accessible);
+
+			Atk.StateSet stateSet = accessible.RefStateSet();
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Vertical), "VScrollBar state");
+
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "VScrollBar numChildren");
+
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			InterfaceComponent (type, atkComponent);
 		}
 		
 		[Test]
@@ -535,6 +584,10 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.Menu:
 				role = Atk.Role.Menu;
+				break;
+			case BasicWidgetType.HScrollBar:
+			case BasicWidgetType.VScrollBar:
+				role = Atk.Role.ScrollBar;
 				break;
 			default:
 				throw new NotImplementedException ();
@@ -1097,5 +1150,8 @@ namespace UiaAtkBridgeTest
 			
 			return accessible;
 		}
+
+		public delegate void VoidDelegate ();
+		public virtual void RunInGuiThread (VoidDelegate d) { d(); }
 	}
 }

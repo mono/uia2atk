@@ -1,3 +1,11 @@
+2008-07-30 Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs, BridgeTester.cs, BasicWidgetType.cs:
+	Support scrollbars and value interface.
+
+	* AtkTester.cs: Add RunInGuiThread and use for StatusBar (needed for
+	GetExtents)
+
 2008-07-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTester.cs: Wrap the children tests in a for loop.

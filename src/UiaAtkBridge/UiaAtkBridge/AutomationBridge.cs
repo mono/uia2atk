@@ -140,6 +140,8 @@ namespace UiaAtkBridge
 					HandleNewCheckBoxControlType (simpleProvider);
 				else if (controlTypeId == ControlType.StatusBar.Id)
 					HandleNewStatusBarControlType (simpleProvider);
+				else if (controlTypeId == ControlType.ScrollBar.Id)
+					HandleNewScrollBarControlType (simpleProvider);
 				// TODO: Other providers
 			} else if (e.StructureChangeType == StructureChangeType.ChildRemoved) {
 				if (controlTypeId == ControlType.Window.Id)
@@ -262,6 +264,22 @@ namespace UiaAtkBridge
 			parentObject.AddOneChild (atkStatus);
 			parentObject.AddRelationship (Atk.RelationType.Embeds,
 			                              atkStatus);
+		}
+		
+		private void HandleNewScrollBarControlType (IRawElementProviderSimple provider)
+		{
+			IRawElementProviderSimple parentProvider =
+					provider.HostRawElementProvider;
+			
+			ParentAdapter parentObject =
+				(ParentAdapter) providerAdapterMapping [parentProvider];
+			
+			ScrollBar atkScroll = new ScrollBar (provider);
+			providerAdapterMapping [provider] = atkScroll;
+			
+			parentObject.AddOneChild (atkScroll);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkScroll);
 		}
 		
 #endregion

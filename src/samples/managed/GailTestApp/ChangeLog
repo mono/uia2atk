@@ -1,3 +1,7 @@
+2008-07-30 Mike Gorse <mgorse@novell.com>
+
+	* Main.cs, MainWindow.cs:
+	Add GiveMeARealHScrollbar and GiveMeARealVScrollBar
 2008-07-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* MainWindow.cs, Main.cs: Play API games to just change a label text.

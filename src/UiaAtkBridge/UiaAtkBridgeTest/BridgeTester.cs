@@ -114,6 +114,7 @@ namespace UiaAtkBridgeTest
 			Atk.TextImplementor text = null;
 			Atk.ActionImplementor action = null;
 			Atk.TableImplementor table = null;
+			Atk.ValueImplementor value = null;
 			accessible = null;
 
 			switch (type) {
@@ -166,6 +167,20 @@ namespace UiaAtkBridgeTest
 				text = uiaSb;
 				table = uiaSb;
 				break;
+			case BasicWidgetType.HScrollBar:
+				MWF.HScrollBar hsb = new MWF.HScrollBar ();
+				UiaAtkBridge.ScrollBar uiaHSb = new UiaAtkBridge.ScrollBar (ProviderFactory.GetProvider (hsb));
+				accessible = uiaHSb;
+				component = uiaHSb;
+				value = uiaHSb;
+				break;
+			case BasicWidgetType.VScrollBar:
+				MWF.VScrollBar vsb = new MWF.VScrollBar ();
+				UiaAtkBridge.ScrollBar uiaVSb = new UiaAtkBridge.ScrollBar (ProviderFactory.GetProvider (vsb));
+				accessible = uiaVSb;
+				component = uiaVSb;
+				value = uiaVSb;
+				break;
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
 			default:
@@ -184,6 +199,9 @@ namespace UiaAtkBridgeTest
 			}
 			else if (typeof (I) == typeof (Atk.Table)) {
 				return new Atk.TableAdapter (table);
+			}
+			else if (typeof (I) == typeof (Atk.Value)) {
+				return new Atk.ValueAdapter (value);
 			}
 			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
 				typeof(I).Name);

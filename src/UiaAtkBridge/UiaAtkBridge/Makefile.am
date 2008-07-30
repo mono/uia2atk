@@ -57,6 +57,7 @@ FILES =  \
 	Pane.cs \
 	ParentAdapter.cs \
 	RadioButton.cs \
+	ScrollBar.cs \
 	SelectionProviderUserHelper.cs \
 	StatusBar.cs \
 	StatusBarWithGrid.cs \

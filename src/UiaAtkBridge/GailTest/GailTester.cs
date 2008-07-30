@@ -89,6 +89,7 @@ namespace UiaAtkBridgeTest
 		{
 			accessible = null;
 			Gtk.Widget widget = null;
+			Gtk.Adjustment adj = new Gtk.Adjustment (2.4, 1.2, 4.8, 0.2, 0.6, 1.2);
 			switch (type) {
 			case BasicWidgetType.Label:
 				widget = new Gtk.Label ();
@@ -143,6 +144,16 @@ namespace UiaAtkBridgeTest
 				widget = GailTestApp.MainClass.GiveMeARealMenu (guiThread, text);
 				System.Threading.Thread.Sleep (1000);
 				break;
+			case BasicWidgetType.HScrollBar:
+				widget = new Gtk.HScrollbar (adj);
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealHScrollbar (guiThread);
+				break;
+			case BasicWidgetType.VScrollBar:
+				widget = new Gtk.VScrollbar (adj);
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealVScrollbar (guiThread);
+				break;
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
 			default:
@@ -164,6 +175,12 @@ namespace UiaAtkBridgeTest
 			else if (typeof (I) == typeof (Atk.EditableText)) {
 				return Atk.EditableTextAdapter.GetObject (widget.Accessible.Handle, false);
 			}
+			else if (typeof (I) == typeof (Atk.Table)) {
+				return Atk.TableAdapter.GetObject (widget.Accessible.Handle, false);
+			}
+			else if (typeof (I) == typeof (Atk.Value)) {
+				return Atk.ValueAdapter.GetObject (widget.Accessible.Handle, false);
+			}
 			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
 				typeof(I).Name);
 		}
@@ -172,6 +189,10 @@ namespace UiaAtkBridgeTest
 		protected override int ValidNChildrenForASimpleStatusBar { get { return 1; } }
 		protected override bool StatusBarImplementsTable { get { return false; } }
 
+		public override void RunInGuiThread (VoidDelegate d)
+		{
+			Gtk.Application.Invoke (delegate { d(); });
+		}
 		
 		[TestFixtureTearDown]
 		public void End () 

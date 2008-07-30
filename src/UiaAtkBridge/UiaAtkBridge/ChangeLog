@@ -1,3 +1,8 @@
+2008-07-30 Mike Gorse <mgorse@novell.com>
+
+	* ScrollBar.cs, AutomationBridge.cs, Makefile.am, UiaAtkBridge.mdp:
+	Add support for ScrollBars.
+
 2008-07-24  Mike Gorse <mgorse@novell.com>
 
 	* TextImplementorHelper.cs: Get text to end of line if -1 specified

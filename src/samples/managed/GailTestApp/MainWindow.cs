@@ -87,6 +87,14 @@ public partial class MainWindow: Gtk.Window
 		return radioButtons [radioButtonToReturn];
 	}
 
+	internal Gtk.HScrollbar GiveMeARealHScrollbar () {
+		return this.hscrollbar1;
+	}
+
+	internal Gtk.VScrollbar GiveMeARealVScrollbar () {
+		return this.vscrollbar1;
+	}
+
 	internal Gtk.Statusbar GiveMeARealStatusbar () {
 		return this.statusbar1;
 	}

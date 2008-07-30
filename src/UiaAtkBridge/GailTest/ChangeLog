@@ -1,3 +1,9 @@
+2008-07-30 Mike Gorse <mgorse@novell.com>
+
+	* GailTester.cs: Support scrollbars, table and value interfaces
+
+	* GailTester.cs: Add RunInGuiThread.
+
 2008-07-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* GailTester.cs: Track API changes.

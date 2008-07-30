@@ -39,7 +39,9 @@ namespace UiaAtkBridgeTest
 		RadioButton,
 		StatusBar,
 		TextBoxEntry,
-		Menu
+		Menu,
+		VScrollBar,
+		HScrollBar
 	}
 	
 	internal static class Misc
