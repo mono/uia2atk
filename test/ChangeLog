@@ -1,3 +1,7 @@
+2008-07-30  Ray Wang <rawang@novell.com>
+
+	* samples/toolbar.py: implement ToolBar & ToolBarButton controls.
+
 2008-07-30  Calen Chen <cachen@novell.com>
 
 	* testers/radiobutton : add new test for radiobutton control

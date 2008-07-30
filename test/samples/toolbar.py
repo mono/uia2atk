@@ -5,11 +5,12 @@
 # Date:        07/30/2008
 # Description: the sample for winforms control:
 #              ToolBar
+#              ToolBarButton
 ##############################################################################
 
 # The docstring below is used in the generated log file
 """
-This sample will show "ToolBar" control in the form.
+This sample will show "ToolBar" and "ToolBarButton" controls in the form.
 It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
 """
 
@@ -17,6 +18,7 @@ It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of cont
 import clr
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
+
 from System.Windows.Forms import (
     Application, Label, Form, ToolBar, ToolBarButton, OpenFileDialog, SaveFileDialog, PrintDialog, DialogResult
 )
@@ -63,7 +65,6 @@ class ToolBarSample(Form):
         self.Controls.Add(self.toolbar)
         self.Controls.Add(self.label)
 
-
     def on_click(self, sender, event):
         btn = self.toolbar.Buttons.IndexOf(event.Button)
         if btn == 0:
@@ -74,7 +75,6 @@ class ToolBarSample(Form):
                 self.label.Text = self.savefiledialog.FileName
         elif btn == 2:
             self.printdialog.ShowDialog()
-
 
 # run application
 form = ToolBarSample()
