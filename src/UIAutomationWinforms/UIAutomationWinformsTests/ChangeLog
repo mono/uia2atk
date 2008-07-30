@@ -1,3 +1,10 @@
+2008-07-30  Mario Carrion <mcarrion@novell.com> 
+
+	* PictureBoxTest.cs: File added.
+	* ScrollBarProviderTest.cs: Code beautyfying.
+	* UIAutomationWinformsTests.mdp: Added PictureBox test.
+	* Makefile.am: Add PictureBox test.
+
 2008-07-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* WindowProviderTest.cs: Add IWindowProvider tests for Minimizable,

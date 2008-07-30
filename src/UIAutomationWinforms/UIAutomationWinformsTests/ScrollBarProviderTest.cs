@@ -38,7 +38,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	public class ScrollBarProviderTest : BaseProviderTest
 	{
 		
-#region Basic Tests
+
+		#region Basic Tests
 		
 		[Test]
 		public void BasicPropertiesTest ()
@@ -76,7 +77,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.OrientationProperty,
-			              true);
+			              OrientationType.Horizontal);
 		}
 		
 		[Test]
@@ -85,9 +86,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			//Name is not supported.
 		}
 		
-#endregion
+		#endregion
 		
-#region Basic Tests
+
+		#region Basic Tests
 
 		[Test]
 		public void NavigationTest ()
@@ -188,15 +190,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			               "fourthButton.LastChild with different Parent");			
 		}
 
-#endregion
-		
-#region BaseProviderTest Overrides
+		#endregion		
+
+		#region BaseProviderTest Overrides
 
 		protected override Control GetControlInstance ()
 		{
 			return new HScrollBar ();
 		}
 		
-#endregion
+		#endregion
 	}
 }

@@ -62,6 +62,7 @@ FILES =  \
 	LinkLabelProviderTest.cs \
 	ListBoxProviderTest.cs \
 	MockBridge.cs \
+	PictureBoxTest.cs \
 	RadioButtonProviderTest.cs \
 	ScrollBarProviderTest.cs \
 	StatusBarProviderTest.cs \
