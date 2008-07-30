@@ -39,17 +39,19 @@ namespace Mono.UIAutomation.Winforms
 	internal class ScrollBarProvider : FragmentRootControlProvider
 	{
 		
-#region Constructor
+		#region Constructor
 
 		public ScrollBarProvider (ScrollBar scrollbar) : base (scrollbar)
 		{
+			orientation = scrollbar is HScrollBar 
+				? OrientationType.Horizontal : OrientationType.Vertical;
 			Control.ParentChanged += new EventHandler (OnParentChanged);
 			UpdateBehavior ();
 		}
 
-#endregion
+		#endregion
 		
-#region Public Properties
+		#region Public Properties
 		
 		public override INavigation Navigation {
 			get {
@@ -60,20 +62,20 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-#endregion
+		#endregion
 		
-#region Public Methods
+		#region Public Methods
 		
 		public FragmentControlProvider GetChildButtonProvider (ScrollBarButtonOrientation orientation)
 		{
 			if (orientation == ScrollBarButtonOrientation.LargeBack)
-				return large_back_button;
+				return largeBackButton;
 			else if (orientation == ScrollBarButtonOrientation.LargeForward)
-				return large_forward_button;
+				return largeForwardButton;
 			else if (orientation == ScrollBarButtonOrientation.SmallBack)
-				return small_back_button;
+				return smallBackButton;
 			else //Is SmallForward
-				return small_forward_button;
+				return smallForwardButton;
 		}
 		
 		public FragmentControlProvider GetChildThumbProvider ()
@@ -81,9 +83,9 @@ namespace Mono.UIAutomation.Winforms
 			return thumb;
 		}
 		
-#endregion
+		#endregion
 
-#region SimpleControlProvider: Specializations
+		#region SimpleControlProvider: Specializations
 		
 		public override void Terminate ()
 		{
@@ -113,49 +115,49 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return false;
 			else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
-				return true;
+				return orientation;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return null;
 			else
 				return base.GetPropertyValue (propertyId);
 		}
 
-#endregion
+		#endregion
 		
-#region FragmentRootControlProvider: Specializations
+		#region FragmentRootControlProvider: Specializations
 		
 		public override void InitializeChildControlStructure ()
 		{
 			ScrollBar scrollbar = (ScrollBar) Control;
 			
-			if (small_back_button == null) {
-				small_back_button = new ScrollBarButtonProvider (scrollbar,
-				                                                 ScrollBarButtonOrientation.SmallBack);
+			if (smallBackButton == null) {
+				smallBackButton = new ScrollBarButtonProvider (scrollbar,
+				                                               ScrollBarButtonOrientation.SmallBack);
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   small_back_button);
+				                                   smallBackButton);
 			}
-			if (small_forward_button == null) {
-				small_forward_button = new ScrollBarButtonProvider (scrollbar,
-				                                                    ScrollBarButtonOrientation.SmallForward);
+			if (smallForwardButton == null) {
+				smallForwardButton = new ScrollBarButtonProvider (scrollbar,
+				                                                  ScrollBarButtonOrientation.SmallForward);
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   small_forward_button);
+				                                   smallForwardButton);
 			}
 			if (thumb == null) {
 				thumb = new ScrollBarThumbProvider (scrollbar);
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
 				                                   thumb);				
 			}
-			if (large_back_button == null) {
-				large_back_button = new ScrollBarButtonProvider (scrollbar,
-				                                                 ScrollBarButtonOrientation.LargeBack);
+			if (largeBackButton == null) {
+				largeBackButton = new ScrollBarButtonProvider (scrollbar,
+				                                               ScrollBarButtonOrientation.LargeBack);
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   large_back_button);
+				                                   largeBackButton);
 			}
-			if (large_forward_button == null) {
-				large_forward_button = new ScrollBarButtonProvider (scrollbar,
-				                                                    ScrollBarButtonOrientation.LargeForward);
+			if (largeForwardButton == null) {
+				largeForwardButton = new ScrollBarButtonProvider (scrollbar,
+				                                                  ScrollBarButtonOrientation.LargeForward);
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   large_forward_button);
+				                                   largeForwardButton);
 			}
 			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
 			                                   this);
@@ -163,21 +165,21 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void FinalizeChildControlStructure ()
 		{
-			if (small_back_button != null) {
-				small_back_button.Terminate ();
-				small_back_button = null;
+			if (smallBackButton != null) {
+				smallBackButton.Terminate ();
+				smallBackButton = null;
 			}
-			if (small_forward_button != null) {
-				small_forward_button.Terminate ();
-				small_forward_button = null;
+			if (smallForwardButton != null) {
+				smallForwardButton.Terminate ();
+				smallForwardButton = null;
 			}
-			if (large_back_button != null) {
-				large_back_button.Terminate ();
-				large_back_button = null;
+			if (largeBackButton != null) {
+				largeBackButton.Terminate ();
+				largeBackButton = null;
 			}
-			if (large_forward_button != null) {
-				large_forward_button.Terminate ();
-				large_forward_button = null;
+			if (largeForwardButton != null) {
+				largeForwardButton.Terminate ();
+				largeForwardButton = null;
 			}
 			if (thumb != null) {
 				thumb.Terminate ();
@@ -185,9 +187,9 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-#endregion
+		#endregion
 
-#region Private Methods
+		#region Private Methods
 		
 		private void OnParentChanged (object sender, EventArgs args)
 		{
@@ -213,19 +215,20 @@ namespace Mono.UIAutomation.Winforms
 				             new ScrollBarRangeValueBehavior (this));
 		}
 
-#endregion
+		#endregion
 	
-#region Private Fields
+		#region Private Fields
 
-		private FragmentControlProvider large_back_button;
-		private FragmentControlProvider large_forward_button;
-		private FragmentControlProvider small_back_button;
-		private FragmentControlProvider small_forward_button;
+		private FragmentControlProvider largeBackButton;
+		private FragmentControlProvider largeForwardButton;
+		private FragmentControlProvider smallBackButton;
+		private FragmentControlProvider smallForwardButton;
 		private FragmentControlProvider thumb;
+		private OrientationType orientation;
 		
-#endregion
+		#endregion
 		
-#region Internal Enumeration: Button Orientation
+		#region Internal Enumeration: Button Orientation
 		
 		internal enum ScrollBarButtonOrientation
 		{
@@ -235,19 +238,19 @@ namespace Mono.UIAutomation.Winforms
 			LargeForward
 		}
 		
-#endregion
+		#endregion
 
-#region Internal Class: Button Provider
+		#region Internal Class: Button Provider
 		
 		internal class ScrollBarButtonProvider : FragmentControlProvider
 		{
 		
-			public ScrollBarButtonProvider (ScrollBar scrollbar_container,
+			public ScrollBarButtonProvider (ScrollBar scrollbarContainer,
 			                                ScrollBarButtonOrientation orientation)
-				: base (scrollbar_container) 
+				: base (scrollbarContainer) 
 			{
 				this.orientation = orientation;
-				this.scrollbar_container = scrollbar_container;
+				this.scrollbarContainer = scrollbarContainer;
 				
 				SetBehavior (InvokePatternIdentifiers.Pattern, 
 				             new ScrollBarButtonInvokeProviderBehavior (this));
@@ -258,7 +261,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 			
 			public ScrollBar ScrollBarContainer {
-				get { return scrollbar_container; }
+				get { return scrollbarContainer; }
 			}
 	
 			public override object GetPropertyValue (int propertyId)
@@ -284,12 +287,12 @@ namespace Mono.UIAutomation.Winforms
 			}		
 	
 			private ScrollBarButtonOrientation orientation;
-			private ScrollBar scrollbar_container;
+			private ScrollBar scrollbarContainer;
 		}
 
-#endregion
+		#endregion
 		
-#region Internal Class: Thumb Provider
+		#region Internal Class: Thumb Provider
 		
 		internal class ScrollBarThumbProvider : FragmentControlProvider
 		{
@@ -339,7 +342,7 @@ namespace Mono.UIAutomation.Winforms
 			
 		}
 		
-#endregion
+		#endregion
 
 	}
 }

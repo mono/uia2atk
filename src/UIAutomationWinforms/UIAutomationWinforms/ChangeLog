@@ -1,3 +1,8 @@
+2008-07-30  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Returrning
+	  SWA.OrientationType instead of true. Following coding guidelines.
+
 2008-07-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Makefile.am,
