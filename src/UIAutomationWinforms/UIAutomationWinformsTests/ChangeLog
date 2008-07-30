@@ -1,5 +1,11 @@
 2008-07-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* WindowProviderTest.cs: Add IWindowProvider tests for Minimizable,
+	  Maximizable, and InteractionState, plus all new tests for
+	  ITransformProvider.  Fixed GetPatternProviderTest.
+
+2008-07-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* GroupBoxProviderTest.cs: Implement basic GroupBox tests.
 	* RadioButtonProviderTest.cs: Test that property values match what
 	  returns from GetPropertyValue.

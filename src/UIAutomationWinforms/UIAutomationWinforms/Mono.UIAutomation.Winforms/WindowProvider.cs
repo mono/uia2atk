@@ -146,7 +146,9 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		public bool IsTopmost {
-			get { return form.TopMost; }
+			get {
+				return form.TopMost;
+			}
 		}
 		
 		public bool IsModal {
@@ -209,17 +211,25 @@ namespace Mono.UIAutomation.Winforms
 
 		public void Move (double x, double y)
 		{
+			// TODO: Test Vista behavior to see if any
+			//       exceptions are thrown with bad input
+			if (!CanMove)
+				throw new InvalidOperationException ("CanMove is false");
 			form.Location = new Point ((int) x, (int) y);
 		}
 
 		public void Resize (double width, double height)
 		{
+			// TODO: Test Vista behavior to see if any
+			//       exceptions are thrown with bad input
+			if (!CanResize)
+				throw new InvalidOperationException ("CanResize is false");
 			form.Size = new Size ((int) width, (int) height);
 		}
 
 		public void Rotate (double degrees)
 		{
-			return;
+			throw new InvalidOperationException ("Cannot rotate a Form");
 		}
 
 #endregion
