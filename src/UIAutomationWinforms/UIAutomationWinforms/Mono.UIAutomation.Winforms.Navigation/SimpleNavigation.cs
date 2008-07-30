@@ -83,6 +83,8 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		{
 			Control containerControl;
 			
+			//TODO: Update ignore ErrorProvider's Custom Controls
+			
 			if (direction == NavigateDirection.Parent) {
 				if (simpleProvider.Container == null)
 					return null;

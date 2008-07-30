@@ -61,6 +61,9 @@ namespace Mono.UIAutomation.Winforms
 			base.Terminate (); 
 			
 			FinalizeChildControlStructure ();
+			
+			if (Control != null)
+				ErrorProviderProvider.InstancesTracker.RemoveUserControlsFromParent (Control);
 		}
 		
 #region Public Methods
@@ -78,9 +81,12 @@ namespace Mono.UIAutomation.Winforms
 				Control.ControlAdded += OnControlAdded;
 				Control.ControlRemoved += OnControlRemoved;
 				
-				foreach (Component childControl in Control.Controls) {
+				foreach (Control childControl in Control.Controls) {
 					IRawElementProviderSimple provider =
 						CreateProvider (childControl);
+					
+					if (childControl == null)
+						continue;
 					// TODO: Null check, compound, etc?
 
 					componentProviders [childControl] = provider;
@@ -114,6 +120,9 @@ namespace Mono.UIAutomation.Winforms
 			Control childControl = args.Control;
 			IRawElementProviderSimple childProvider =
 				CreateProvider (childControl);
+			
+			if (childProvider == null)
+				return;
 
 			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
 			                                   (IRawElementProviderFragment) childProvider);
@@ -174,15 +183,18 @@ namespace Mono.UIAutomation.Winforms
 
 #region Protected Methods
 	
-		protected IRawElementProviderSimple CreateProvider (Component component)
+		protected IRawElementProviderSimple CreateProvider (Control control)
 		{
-			return ProviderFactory.GetProvider (component);
+			if (ErrorProviderProvider.InstancesTracker.IsControlFromErrorProvider (control))
+				return null;
+			
+			return ProviderFactory.GetProvider (control);
 		}
 		
-		protected IRawElementProviderSimple GetProvider (Component component)
+		protected IRawElementProviderSimple GetProvider (Control control)
 		{
-			if (componentProviders.ContainsKey (component))
-				return componentProviders [component];
+			if (componentProviders.ContainsKey (control))
+				return componentProviders [control];
 			else
 				return null;
 		}

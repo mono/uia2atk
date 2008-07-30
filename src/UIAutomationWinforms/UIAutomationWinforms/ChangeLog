@@ -1,3 +1,18 @@
+2008-07-29  Mario Carrion <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs: Added TODO.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: ErrorProvider
+	initialization methods added.
+	* Mono.UIAutomation.Winforms/ToolTipProvider.cs: Fixed message.
+	* Mono.UIAutomation.Winforms/ErrorProviderProvider.cs: Added internal
+	class InstancesTracker.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Throwing 
+	NotImplementedException in ScrollItemIntoView.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Methods
+	CreateProvider and GetProvider use Control instead of Component. 
+	Added tracking Icon-like UserControls added by ErrorProvider.
+	* Mono.UIAutomation.Winforms/PaneProvider.cs: Removed comments.
+
 2008-07-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Fix build.

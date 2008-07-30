@@ -114,7 +114,7 @@ namespace Mono.UIAutomation.Winforms
 				                           this, 
 				                           "OnToolTipHidden");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: OnToolTipHidden not defined in {1}",
+				Console.WriteLine ("{0}: ToolTipHidden not defined in {1}",
 				                   GetType (),
 				                   typeof (ToolTip));
 			}

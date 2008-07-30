@@ -313,9 +313,6 @@ namespace Mono.UIAutomation.Winforms
 		//TODO: This class missing ScrollBar Navigation.
 		internal class ComboBoxListBoxProvider : ListProvider
 		{
-	
-			//DELETEME: just to fix compilation issue
-			public override void ScrollItemIntoView (ListItemProvider item) { }
 			
 			public ComboBoxListBoxProvider (ComboBox control, 
 			                                ComboBoxProvider provider)
@@ -415,6 +412,11 @@ namespace Mono.UIAutomation.Winforms
 	
 				for (int index = 0; index < combobox_control.Items.Count; index++)
 					GenerateChildAddedEvent (index);
+			}
+			
+			public override void ScrollItemIntoView (ListItemProvider item) 
+			{ 
+				throw new NotImplementedException ();
 			}
 
 			private ComboBox combobox_control;

@@ -47,6 +47,7 @@ namespace Mono.UIAutomation.Winforms
 		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
 		private int runtimeId;
 		private ToolTipProvider toolTipProvider;
+		private ErrorProviderProvider errorProvider;
 
 		#endregion
 		
@@ -307,6 +308,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void InitializeInternalControlEvents ()
 		{
+			//ToolTip
 			GetPrivateToolTipField ();
 			
 			try {
@@ -316,7 +318,7 @@ namespace Mono.UIAutomation.Winforms
 				                        this, 
 				                        "OnToolTipHookup");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ToolTipShown not defined in {1}",
+				Console.WriteLine ("{0}: ToolTipHookup not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
 			}
@@ -328,15 +330,42 @@ namespace Mono.UIAutomation.Winforms
 				                        this, 
 				                        "OnToolTipUnhookup");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ToolTipHidden not defined in {1}",
+				Console.WriteLine ("{0}: ToolTipUnhookup not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
 			}
 
+			//ErrorProvider
+			GetPrivateErrorProviderField ();
+
+			try {
+				Helper.AddPrivateEvent (typeof (Control), 
+				                        Control, 
+				                        "ErrorProviderHookup",
+				                        this, 
+				                        "OnErrorProviderHookup");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ErrorProviderHookup not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
+			
+			try {
+				Helper.AddPrivateEvent (typeof (Control), 
+				                        Control, 
+				                        "ErrorProviderUnhookup",
+				                        this, 
+				                        "OnErrorProviderUnhookup");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ErrorProviderUnhookup not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
 		}
 		
 		private void TerminateInternalControlEvents ()
 		{
+			//ToolTip
 			try {
 				Helper.RemovePrivateEvent (typeof (Control), 
 				                           Control, 
@@ -344,7 +373,7 @@ namespace Mono.UIAutomation.Winforms
 				                           this, 
 				                           "OnToolTipHookup");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ToolTipShown not defined in {1}",
+				Console.WriteLine ("{0}: ToolTipHookup not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
 			}
@@ -359,13 +388,42 @@ namespace Mono.UIAutomation.Winforms
 				Console.WriteLine ("{0}: ToolTipUnhookup not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
-			}			
+			}
 			
 			if (toolTipProvider != null) {
 				ProviderFactory.ReleaseProvider (toolTipProvider.ToolTip);
 				toolTipProvider = null;
 			}
+			
+			//ErrorProvider
+			try {
+				Helper.RemovePrivateEvent (typeof (Control), 
+				                           Control, 
+				                           "ErrorProviderHookup",
+				                           this, 
+				                           "OnErrorProviderHookup");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ErrorProviderHookup not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
+			
+			try {
+				Helper.RemovePrivateEvent (typeof (Control), 
+				                           Control, 
+				                           "ErrorProviderUnhookup",
+				                           this, 
+				                           "OnErrorProviderUnhookup");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ErrorProviderUnhookup not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
 
+			if (errorProvider != null) {
+				ProviderFactory.ReleaseProvider (errorProvider.ErrorProvider);
+				errorProvider = null;
+			}
 		}
 		
 		private void GetPrivateToolTipField ()
@@ -392,6 +450,30 @@ namespace Mono.UIAutomation.Winforms
 				toolTipProvider = (ToolTipProvider) ProviderFactory.GetProvider (tooltip);
 		}
 		
+		private void GetPrivateErrorProviderField ()
+		{
+			ErrorProvider error = null;
+
+			try {
+				error = (ErrorProvider) Helper.GetPrivateField (typeof (Control),
+				                                                Control,
+				                                                "error_provider");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: error_provider field not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
+			
+			if (errorProvider != null && error != errorProvider.ErrorProvider) {
+				ProviderFactory.ReleaseProvider (errorProvider.ErrorProvider);
+				errorProvider = null;					
+			}
+
+			if (errorProvider == null
+			    || (errorProvider != null && errorProvider.ErrorProvider != error))
+				errorProvider = (ErrorProviderProvider) ProviderFactory.GetProvider (error);
+		}
+		
 		private void OnToolTipHookup (object sender, EventArgs args)
 		{
 			GetPrivateToolTipField ();
@@ -403,6 +485,21 @@ namespace Mono.UIAutomation.Winforms
 				ProviderFactory.ReleaseProvider (toolTipProvider.ToolTip);
 				toolTipProvider = null;
 			}
+		}
+		
+		private void OnErrorProviderHookup (object sender, UserControl control)
+		{
+			GetPrivateErrorProviderField ();
+			ErrorProviderProvider.InstancesTracker.AddControl (control, Control.Parent);
+		}
+
+		private void OnErrorProviderUnhookup (object sender, UserControl control)
+		{		
+			if (errorProvider != null) {
+				ProviderFactory.ReleaseProvider (errorProvider.ErrorProvider);
+				errorProvider = null;
+			}
+			ErrorProviderProvider.InstancesTracker.RemoveControl (control);			
 		}
 		
 		#endregion

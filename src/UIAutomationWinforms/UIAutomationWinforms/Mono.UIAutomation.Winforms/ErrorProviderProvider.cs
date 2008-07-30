@@ -25,6 +25,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
@@ -32,53 +34,53 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms
 {
 
+	//TODO: Handle ToolTip
 	internal class ErrorProviderProvider : PaneProvider
 	{
 		
 		#region Constructor
 		
-		public ErrorProviderProvider (ErrorProvider errorProvider) : base (null)
+		public ErrorProviderProvider (ErrorProvider errorProvider) : base (errorProvider)
 		{
-			this.error_provider = errorProvider;
-			controls = new List<Control> ();
+			this.errorProvider = errorProvider;
+		}
+
+		#endregion
+		
+		public ErrorProvider ErrorProvider {
+			get { return errorProvider; }
 		}
 		
+		#region SimpleControlProvider: Specializations
+		
+		public override Component Container {
+			get { return errorProvider.ContainerControl; }
+		}
+
 		#endregion
 		
 		#region PaneProvider: Specializations
 		
-		public override void InitializeEvents ()
+		public override object GetPropertyValue (int propertyId)
 		{
-			base.InitializeEvents ();
-			
-			//TODO: Add delegates whe SetError and ClearError
+			if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+				return GetBoundingRectangle ();
+			else
+				return base.GetPropertyValue (propertyId);
 		}
-		
-		public override void Terminate ()
-		{
-			base.Terminate ();
 
-			controls.Clear ();
-		}
-		
 		#endregion
 		
 		#region Private Methods
 		
-		private void OnErrorSet (object sender, Control control)
+		private object GetBoundingRectangle ()
 		{
-			if (controls.Contains (control) == false) {
-				controls.Add (control);
-				if (controls.Count == 1)
-					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-					                                   this);
-			}
-
-		}
-		
-		private void OnErrorClear (object sender, Control control)
-		{
-			controls.Clear ();
+			List<Control> controls = ErrorProviderProvider.InstancesTracker.GetControls (errorProvider.ContainerControl);
+			
+			Rectangle bounding = controls [0].Bounds;
+			for (int index = 1; index < controls.Count; index++)
+				bounding = Rectangle.Union (bounding, controls [index].Bounds);
+			return bounding;
 		}
 		
 		#endregion
@@ -86,7 +88,79 @@ namespace Mono.UIAutomation.Winforms
 		#region Private Fields
 		
 		private List<Control> controls;
-		private ErrorProvider error_provider;
+		private List<Control> tooltips;
+		private ErrorProvider errorProvider;
+		
+		#endregion
+		
+		#region Internal Class: InstancesTracker
+		
+		//NOTE:
+		//     This class tracks added Icon-like Controls when SWF.ErrorProvider.SetError 
+		//     is called. We are tracking this instances because there's one
+		//     provider for all Icon-like controls added and then we need to get 
+		//     Bounds information from each Icon-like control.
+		internal sealed class InstancesTracker 
+		{
+			private InstancesTracker ()
+			{
+			}
+			
+			public static List<Control> GetControls (Control parent)
+			{
+				List<Control> list;
+				controls.TryGetValue (parent, out list);
+				
+				return list;
+			}
+			
+			public static void RemoveUserControlsFromParent (Control parent)
+			{
+				if (controls == null)
+					return;
+
+				controls.Remove (parent);
+			}
+			
+			public static bool IsControlFromErrorProvider (Control control) 
+			{
+				if (controls == null || controls.ContainsKey (control.Parent) == false)
+					return false;
+				else
+					return true;
+			}
+			
+			public static void AddControl (Control control, Control parent)
+			{
+				if (controls == null)
+					controls = new Dictionary<Control, List<Control>> ();
+				
+				List<Control> list;
+				if (controls.TryGetValue (parent, out list) == false) {
+					list = new List<Control> ();
+					controls [parent] = list;
+				}
+
+				if (list.Contains (control) == false)
+					list.Add (control);
+			}
+			
+			public static void RemoveControl (Control control)
+			{
+				if (controls == null)
+					return;
+				
+				List<Control> list;
+				if (controls.TryGetValue (control.Parent, out list) == false)
+					return;
+				
+				list.Remove (control);
+				if (list.Count == 0)
+					controls.Remove (control.Parent);
+			}
+			
+			private static Dictionary<Control, List<Control>> controls;
+		}
 		
 		#endregion
 

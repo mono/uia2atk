@@ -62,11 +62,7 @@ namespace Mono.UIAutomation.Winforms
 			else
 				return base.GetPropertyValue (propertyId);
 		}
-		
-		//LabeledByProperty
-		//HelpTextProperty
-		//AccessKeyProperty
-		//NameProperty
+
 		#endregion
 		
 		#region Private Fields
