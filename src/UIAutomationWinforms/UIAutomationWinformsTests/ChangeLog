@@ -1,3 +1,9 @@
+2008-07-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* GroupBoxProviderTest.cs: Implement basic GroupBox tests.
+	* RadioButtonProviderTest.cs: Test that property values match what
+	  returns from GetPropertyValue.
+
 2008-07-24  Mario Carrion  <mcarrion@novell.com>
 
 	* RadioButtonProviderTest.cs: Updated to use ProviderFactory.GetProvider

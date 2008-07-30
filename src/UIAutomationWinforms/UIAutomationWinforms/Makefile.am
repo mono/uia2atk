@@ -55,6 +55,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListItemToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueBehavior.cs \

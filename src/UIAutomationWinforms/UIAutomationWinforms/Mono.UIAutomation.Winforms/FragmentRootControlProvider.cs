@@ -82,17 +82,21 @@ namespace Mono.UIAutomation.Winforms
 				Control.ControlRemoved += OnControlRemoved;
 				
 				foreach (Control childControl in Control.Controls) {
-					IRawElementProviderSimple provider =
+					IRawElementProviderSimple childProvider =
 						CreateProvider (childControl);
 					
 					if (childControl == null)
 						continue;
 					// TODO: Null check, compound, etc?
 
-					componentProviders [childControl] = provider;
+					componentProviders [childControl] = childProvider;
 					
 					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded, 	 
-					                                   (IRawElementProviderFragment) provider);
+					                                   (IRawElementProviderFragment) childProvider);
+					
+			
+					// TODO: Figure out exactly when to do this (talk to bridge guys)
+					CheckForRadioButtonChild (childProvider);
 				}
 			}
 		}
@@ -120,27 +124,21 @@ namespace Mono.UIAutomation.Winforms
 			Control childControl = args.Control;
 			IRawElementProviderSimple childProvider =
 				CreateProvider (childControl);
-			
 			if (childProvider == null)
 				return;
+
+                        componentProviders [childControl] = childProvider;
 
 			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
 			                                   (IRawElementProviderFragment) childProvider);
 			
 			// TODO: Figure out exactly when to do this (talk to bridge guys)
-			if (GetBehavior (SelectionPatternIdentifiers.Pattern) == null &&
-			    childProvider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id) != null &&
-			    (int) childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
-				RadioButtonSelectionProviderBehavior selectionProvider =
-					new RadioButtonSelectionProviderBehavior ();
-				SetBehavior (SelectionPatternIdentifiers.Pattern,
-				             selectionProvider);
-			}
+			CheckForRadioButtonChild (childProvider);
 			
 			FragmentRootControlProvider rootProvider =
 				childProvider as FragmentRootControlProvider;
 			if (rootProvider != null)
-				InitializeChildControlStructure ();
+				rootProvider.InitializeChildControlStructure ();
 		}
 	
 		private void OnControlRemoved (object sender, ControlEventArgs args)
@@ -179,6 +177,24 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
+#endregion
+		
+#region Private Methods
+		
+		// If a child control is ControlType.RadioButton, this provider
+		// needs to provide SelectionPattern behavior.
+		private void CheckForRadioButtonChild (IRawElementProviderSimple childProvider)
+		{
+			if (GetBehavior (SelectionPatternIdentifiers.Pattern) == null &&
+			    childProvider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id) != null &&
+			    (int) childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
+				RadioButtonSelectionProviderBehavior selectionProvider =
+					new RadioButtonSelectionProviderBehavior ();
+				SetBehavior (SelectionPatternIdentifiers.Pattern,
+				             selectionProvider);
+			}
+		}
+		
 #endregion
 
 #region Protected Methods

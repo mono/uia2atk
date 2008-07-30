@@ -32,6 +32,8 @@ using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
+	// This behavior is designed to be attached to a control that contains
+	// RadioButton children.
 	public class RadioButtonSelectionProviderBehavior : IProviderBehavior, ISelectionProvider
 	{
 #region Private Members

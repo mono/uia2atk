@@ -46,5 +46,33 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 #endregion
+		
+#region Test Methods
+		
+		[Test]
+		public void BasicPropertiesTest ()
+		{
+			GroupBox groupBox = new GroupBox ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (groupBox);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.Group.Id);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
+			              "group");
+		}
+		
+		[Test]
+		public void GetRuntimeIdTest ()
+		{
+			GroupBox groupBox = new GroupBox ();
+			IRawElementProviderFragmentRoot provider =
+				(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (groupBox);
+			
+			Assert.IsNull (provider.GetRuntimeId ());
+		}
+#endregion
 	}
 }

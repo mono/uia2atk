@@ -24,56 +24,28 @@
 // 
 
 using System;
-using System.Linq;
-using System.Collections.Generic;
 using System.Windows.Forms;
 
 using System.Windows.Automation;
-using System.Windows.Automation.Provider;
+
+using Mono.UIAutomation.Winforms.Behaviors;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class RadioButtonProvider : FragmentControlProvider, ISelectionItemProvider
+	internal class RadioButtonProvider : FragmentControlProvider
 	{
-#region Private Fields
-		
-		private RadioButton radioButton;
-		
-#endregion
-		
 #region Constructors
 		
 		public RadioButtonProvider (RadioButton radioButton) :
 			base (radioButton)
 		{
-			this.radioButton = radioButton;
-		
-			//TODO: Use SetEventStrategy
-			radioButton.CheckedChanged += OnCheckedChanged;
-		}
-		
-#endregion
-		
-#region Public Methods
-
-		public override void InitializeEvents ()
-		{
-			base.InitializeEvents ();
-			
-			// TODO: Add events...
+			SetBehavior (SelectionItemPatternIdentifiers.Pattern, 
+			             new RadioButtonSelectionItemProviderBehavior (this));
 		}
 		
 #endregion
 		
 #region IRawElementProviderSimple Members
-		
-		public override object GetPatternProvider (int patternId)
-		{
-			if (patternId == SelectionItemPatternIdentifiers.Pattern.Id)
-				return this;
-			
-			return null;
-		}
 
 		public override object GetPropertyValue (int propertyId)
 		{
@@ -86,67 +58,6 @@ namespace Mono.UIAutomation.Winforms
 			else
 				return base.GetPropertyValue (propertyId);
 		}
-#endregion
-		
-#region ISelectionItem Members
-	
-		public void AddToSelection ()
-		{
-			IEnumerable<RadioButton> otherButtons =
-				from Control c in radioButton.Parent.Controls
-					where c is RadioButton && c != radioButton
-					select (RadioButton)c;
-			
-			foreach (RadioButton button in otherButtons)
-				if (button.Checked)
-					// Assuming CanSelectMultiple==false...
-					throw new InvalidOperationException ("RadioButton");
-			Select ();
-		}
-
-		public bool IsSelected {
-			get { return radioButton.Checked; }
-		}
-
-		public void RemoveFromSelection ()
-		{
-			// Assuming IsSelectionRequired==true and CanSelectMultiple==false...
-			throw new InvalidOperationException ("RadioButton");
-		}
-
-		public void Select ()
-		{
-			radioButton.Checked = true;
-		}
-
-		public IRawElementProviderSimple SelectionContainer {
-			get {
-				IRawElementProviderSimple parentProvider =
-					ProviderFactory.GetProvider (radioButton.Parent);
-				if (parentProvider != null && parentProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id) != null)
-					return parentProvider;
-				return null;
-			}
-		}
-
-#endregion
-		
-#region Event Handlers
-		
-		private void OnCheckedChanged (object sender, EventArgs e)
-		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationEventArgs args =
-					new AutomationEventArgs (SelectionItemPatternIdentifiers.ElementSelectedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (SelectionItemPatternIdentifiers.ElementSelectedEvent,
-				                                                this,
-				                                                args);
-				// TODO: Many other events to fire, including
-				//       property change events!  This is also
-				//       true for other providers, methinks.
-			}
-		}
-		
 #endregion
 	}
 }

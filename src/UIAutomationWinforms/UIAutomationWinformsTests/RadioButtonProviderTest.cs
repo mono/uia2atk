@@ -123,10 +123,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				provider1.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
 			
 			Assert.IsFalse (selectionItem1.IsSelected, "Unchecked");
+			Assert.AreEqual (selectionItem1.IsSelected,
+			                 provider1.GetPropertyValue (SelectionItemPatternIdentifiers.IsSelectedProperty.Id),
+			                 "Property value should match GetPropertyValue");
 			
 			r1.Checked = true;
 			
 			Assert.IsTrue (selectionItem1.IsSelected, "Checked");
+			Assert.AreEqual (selectionItem1.IsSelected,
+			                 provider1.GetPropertyValue (SelectionItemPatternIdentifiers.IsSelectedProperty.Id),
+			                 "Property value should match GetPropertyValue");
 		}
 		
 		[Test]
@@ -237,9 +243,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (formProvider, 
 			                 selectionItem1.SelectionContainer,
 			                 "SelectionContainer should be parent provider");
+			Assert.AreEqual (selectionItem1.SelectionContainer,
+			                 provider1.GetPropertyValue (SelectionItemPatternIdentifiers.SelectionContainerProperty.Id),
+			                 "Property value should match GetPropertyValue");
 			Assert.AreEqual (formProvider,
 			                 selectionItem2.SelectionContainer,
 			                 "SelectionContainer should be parent provider");
+			Assert.AreEqual (selectionItem2.SelectionContainer,
+			                 provider2.GetPropertyValue (SelectionItemPatternIdentifiers.SelectionContainerProperty.Id),
+			                 "Property value should match GetPropertyValue");
 		}
 		
 		[Test]
