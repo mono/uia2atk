@@ -28,30 +28,22 @@ using System.Windows.Forms;
 
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+
+using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class NumericUpDownProvider : FragmentControlProvider, IRangeValueProvider
+	internal class NumericUpDownProvider : FragmentControlProvider
 	{
-#region Private Fields
-		
-		private NumericUpDown upDown;
-		
-#endregion
-		
 #region Constructors
 		
 		public NumericUpDownProvider (NumericUpDown upDown) :
 			base (upDown)
 		{
-			this.upDown = upDown;
-			
-			upDown.ValueChanged += OnValueChanged;
-			//upDown.max
-			
-			// TODO: Use SetEventStrategy
 			// TODO: Child InvokeProviders for up/down!
+			SetBehavior (RangeValuePatternIdentifiers.Pattern,
+			             new NumericUpDownRangeValueProviderBehavior (this));
 		}
 		
 #endregion
@@ -62,6 +54,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeEvents ();
 
+			// TODO: Review...do we need this?
 			SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
 			          new InvokePatternInvokedEvent (this));
 		}
@@ -70,88 +63,16 @@ namespace Mono.UIAutomation.Winforms
 		
 #region IRawElementProviderSimple Members
 		
-		public override object GetPatternProvider (int patternId)
-		{
-			if (patternId == RangeValuePatternIdentifiers.Pattern.Id)
-				return this;
-			
-			return null;
-		}
-		
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.ClassNameProperty.Id)
-				return "WindowsForms10.BUTTON.app.0.bf7d44";
-			else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Spinner.Id;
-			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
-				return false; // TODO: ???
-			else if (propertyId == RangeValuePatternIdentifiers.IsReadOnlyProperty.Id)
-				return IsReadOnly;
-			else if (propertyId == RangeValuePatternIdentifiers.LargeChangeProperty.Id)
-				return LargeChange;
-			else if (propertyId == RangeValuePatternIdentifiers.MaximumProperty.Id)
-				return Maximum;
-			else if (propertyId == RangeValuePatternIdentifiers.MinimumProperty.Id)
-				return Minimum;
-			else if (propertyId == RangeValuePatternIdentifiers.SmallChangeProperty.Id)
-				return SmallChange;
-			else if (propertyId == RangeValuePatternIdentifiers.ValueProperty.Id)
-				return Value;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "spinner";
 			else
 				return base.GetPropertyValue (propertyId);
 		}
 
-#endregion
-		
-#region IRangeValueProvider Members
-	
-		public bool IsReadOnly {
-			get { return upDown.ReadOnly; }
-		}
-
-		public double LargeChange {
-			get { return double.NaN; }
-		}
-
-		public double Maximum {
-			get { return (double) upDown.Maximum; }
-		}
-
-		public double Minimum {
-			get { return (double) upDown.Minimum; }
-		}
-
-		public void SetValue (double value)
-		{
-			if (value < Minimum || value > Maximum)
-				throw new ArgumentOutOfRangeException ();
-			upDown.Value = (decimal) value;
-		}
-
-		public double SmallChange {
-			get { return (double) upDown.Increment; }
-		}
-
-		public double Value {
-			get { return (double) upDown.Value; }
-		}
-
-#endregion
-		
-#region Event Handlers
-		
-		private void OnValueChanged (object sender, EventArgs e)
-		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (RangeValuePatternIdentifiers.ValueProperty,
-					                                        null, // TODO: Test against MS
-					                                        Value);
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, args);
-			}
-		}
-		
 #endregion
 	}
 }

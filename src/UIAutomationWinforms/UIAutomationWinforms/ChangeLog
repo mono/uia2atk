@@ -1,3 +1,12 @@
+2008-07-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile.am,
+	  Mono.UIAutomation.Winforms.Behaviors/NumericUpDownRangeValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.mdp,
+	  Mono.UIAutomation.Winforms/NumericUpDownProvider.cs: Extracting
+	  RangeValueProviderBehavior from NumericUpDownProvider.  Tests and
+	  full factory hook-up to follow.
+
 2008-07-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/WindowProvider.cs: Throw
