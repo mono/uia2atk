@@ -1,3 +1,9 @@
+2008-07-29  Mario Carrion <mcarrion@novell.com>
+
+	* patches/tooltip.patch: Deleted.
+	* patches/tooltip-errorprovider.patch: Added. Updated to support
+	ErrorProvider.
+
 2008-07-24  Mario Carrion <mcarrion@novell.com>
 
 	* patches/tooltip.patch: Added file. Updates SWF.Control: Two events
