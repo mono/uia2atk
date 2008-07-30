@@ -1,4 +1,12 @@
-2008-07-28  Calen Chen <cachen@novell.com>
+2008-07-30  Calen Chen <cachen@novell.com>
+
+	* testers/radiobutton : add new test for radiobutton control
+	* testers/radiobutton/__init__.py : add new test for radiobutton control
+	* testers/radiobutton/radiobuttonframe.py: add new test for radiobutton
+	* testers/radiobutton_basic_ops.py: add new test for radiobutton
+
+
+2008-07-29  Calen Chen <cachen@novell.com>
 
 	* testers/checkbox_basic_ops.py: change "button" character to checkbox
 	* testers/checkbox/__init__.py: add "Description:" on the top
