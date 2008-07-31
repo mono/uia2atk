@@ -27,12 +27,12 @@ class GtkButtonFrame(accessibles.Frame):
     #send "press" action
     def press(self, button):
         procedurelogger.action('Press the %s.' % button)
-        button._doAction(a.Button.PRESS)
+        button.press()
 
     #send "release" action
     def release(self, button):
         procedurelogger.action('release the %s.' % button)
-        button._doAction(a.Button.RELEASE)
+        button.release()
 
     #send "click" action, accerciser abstracts this for us
     def click(self, button):

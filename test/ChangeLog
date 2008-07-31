@@ -1,3 +1,12 @@
+2008-07-31  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* test/samples/gtktutorial.py: make the tutorial sample app a little
+	more complex
+	* test/testers/gtkbutton/gtkbuttonframe.py: no longer using
+	Strongwind's depcrecated _doAction method.
+	* test/testers/gtktreeview/gtktreeviewframe.py: no longer using
+	Strongwind's depcrecated _doAction method.
+	
 2008-07-31  Calen Chen <cachen@novell.com>
 
 	* samples/picturebox.py: add uiaqa_home argument for invoking picture

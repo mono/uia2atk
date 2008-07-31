@@ -39,18 +39,18 @@ class GtkTreeViewFrame(accessibles.Frame):
     # "Action:" info.
     def expand(self, treeview):
         procedurelogger.action('expand %s.' % treeview)
-        treeview._doAction(a.TreeView.EXPAND_OR_CONTRACT)
+        treeview.expandOrContract()
 
     #set contract to send "expand or contract" action. same as expend
     def contract(self, treeview):
         procedurelogger.action('contract %s.' % treeview)
-        treeview._doAction(a.TreeView.EXPAND_OR_CONTRACT)
+        treeview.expandOrContract()
 
     #set Click action for TableColumnHeader
     def tchClick (self,test):
         procedurelogger.action('click %s.' % test)
         treeview = self.findTableColumnHeader("%s" % test)
-        treeview._doAction(a.TableColumnHeader.CLICK)
+        treeview.click()
 
     #check if status list in "interface viewer" in accerciser have "expanded" 
     #status when doing expand or contract action.
