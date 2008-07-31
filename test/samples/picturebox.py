@@ -13,6 +13,7 @@ Test accessibility of "PictureBox" control
 """
 
 # imports
+import os
 import clr
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
@@ -21,11 +22,12 @@ from System.Windows.Forms import (
 )
 from System.Drawing import Image
 
+uiaqa_path = os.environ.get("UIAQA_HOME")
 
 class PictureBoxSample(Form):
     """PictureBox control class"""
     toggle = True
-    path_to_file = "./desktop-blue_soccer.jpg"
+    path_to_file = "%s/samples/desktop-blue_soccer.jpg" % uiaqa_path
     image = None
 
     def __init__(self):
@@ -61,11 +63,11 @@ class PictureBoxSample(Form):
     def on_click(self, sender, event):
         if self.toggle == True:
             self.toggle = False
-            self.path_to_file = "./universe.jpg"
+            self.path_to_file = "%s/samples/universe.jpg" % uiaqa_path
             self.change_picture()
         else:
             self.toggle = True
-            self.path_to_file = "./desktop-blue_soccer.jpg"
+            self.path_to_file = "%s/samples/desktop-blue_soccer.jpg" % uiaqa_path
             self.change_picture()
 
 # run application

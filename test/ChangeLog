@@ -1,3 +1,8 @@
+2008-07-31  Calen Chen <cachen@novell.com>
+
+	* samples/picturebox.py: add uiaqa_home argument for invoking picture
+	from outside samples directory
+
 2008-07-30  Ray Wang <rawang@novell.com>
 
 	* samples/toolbar.py: implement ToolBar & ToolBarButton controls.
