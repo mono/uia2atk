@@ -77,7 +77,7 @@ class CheckBoxFrame(accessibles.Frame):
     #give 'click' action
     def click(self,button):
         procedurelogger.action('Click the %s.' % button)
-        button._doAction(actions.CheckBox.CLICK)
+        button.click()
 
     #check the state after click checkbox
     def assertChecked(self, accessible):

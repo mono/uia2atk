@@ -75,7 +75,7 @@ class ButtonFrame(accessibles.Frame):
     #give 'click' action
     def click(self,button):
         procedurelogger.action('Click the %s.' % button)
-        button._doAction(actions.Button.CLICK)
+        button.click()
 
     #check the Label text after click button2
     def assertLabel(self, labelText):
