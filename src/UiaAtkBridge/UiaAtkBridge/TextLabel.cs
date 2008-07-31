@@ -42,8 +42,8 @@ namespace UiaAtkBridge
 			Role = Atk.Role.Label;
 			
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			Name = text;
 			textExpert = new TextImplementorHelper (text);
+			Name = text;
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()

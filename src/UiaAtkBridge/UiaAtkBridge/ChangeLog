@@ -1,3 +1,8 @@
+2008-07-31 Mike Gorse <mgorse@novell.com>
+
+	* Button.cs, TextLabel.cs, StatusBar.cs: Create textExpert before
+	setting name to avoid exception during reentry
+
 2008-07-30 Mike Gorse <mgorse@novell.com>
 
 	* ScrollBar.cs, AutomationBridge.cs, Makefile.am, UiaAtkBridge.mdp:

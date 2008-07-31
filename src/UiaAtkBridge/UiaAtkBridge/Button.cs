@@ -72,8 +72,8 @@ namespace UiaAtkBridge
 			}
 			
 			string buttonText = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			Name = buttonText;
 			textExpert = new TextImplementorHelper (buttonText);
+			Name = buttonText;
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()

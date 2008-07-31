@@ -42,8 +42,8 @@ namespace UiaAtkBridge
 			Role = Atk.Role.Statusbar;
 			
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			Name = text;
 			textExpert = new TextImplementorHelper (text);
+			Name = text;
 		}
 		
 		public override IRawElementProviderSimple Provider {
