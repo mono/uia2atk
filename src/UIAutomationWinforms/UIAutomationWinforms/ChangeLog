@@ -1,3 +1,10 @@
+2008-08-01  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListItemToggleProviderBehavior.cs:
+	  Fixed bug: Always returning ToggleState.On.
+	* Mono.UIAutomation.Winforms/PaneProvider.cs: Subclassing from
+	  FragmentRootControlProvider instead of FragmentControlProvider.
+
 2008-07-30  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Returrning

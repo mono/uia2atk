@@ -31,7 +31,7 @@ using System.Windows.Automation.Provider;
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal class PaneProvider : FragmentControlProvider
+	internal class PaneProvider : FragmentRootControlProvider
 	{
 
 		#region Constructor

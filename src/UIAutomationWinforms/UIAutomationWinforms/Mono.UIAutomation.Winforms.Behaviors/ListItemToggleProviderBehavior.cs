@@ -67,7 +67,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		public ToggleState ToggleState {
 			get {
 				return provider.ListProvider.IsItemSelected (provider) == true 
-					? ToggleState.On : ToggleState.On;
+					? ToggleState.On : ToggleState.Off;
 			}
 		}
 		
