@@ -1,3 +1,8 @@
+2008-08-04  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* drivers: rename to "harness," which is probably less confusing than
+	"drivers."
+	
 2008-08-04  Calen Chen <cachen@novell.com>
 
 	* testers/vscrollbar_basic_ops.py: add new test code for vscrollbar
