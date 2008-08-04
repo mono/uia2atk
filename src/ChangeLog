@@ -1,3 +1,7 @@
+2008-08-04  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* patches/olive-uia-pc.patch: Committed in r109164 - r109167.
+
 2008-07-29  Mario Carrion <mcarrion@novell.com>
 
 	* patches/tooltip.patch: Deleted.
