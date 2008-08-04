@@ -21,7 +21,7 @@ BUSY = "busy"
 
 # Indicates this object is currently checked, for instance a checkbox is
 # 'non-empty'.
-CHECKED	 = "checked"
+CHECKED = "checked"
 
 # Indicates that this object no longer has a valid backing widget (for
 # instance, if its peer object has been destroyed)
@@ -208,6 +208,9 @@ class Button(object):
 class CheckBox(Button):
     pass
 
-class RadioButton(Button):
-    pass
+class VScrollBar(object):
+    states = (ENABLED,SENSITIVE,VERTICAL)
+
+class HScrollBar(object):
+    states = (ENABLED,SENSITIVE,HORIZONTAL)
 

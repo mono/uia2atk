@@ -1,4 +1,12 @@
-2008-07-31  Calen Chen <cachen@novell.com>
+2008-08-04  Calen Chen <cachen@novell.com>
+
+	* testers/vscrollbar_basic_ops.py: add new test code for vscrollbar
+	* testers/vscrollbar: add new test code for vscrollbar
+	* testers/vscrollbar/__init__.py: add new test code for vscrollbar
+	* testers/vscrollbar/vscrollbarframe.py: add new test code for vscrollbar
+	* testers/states.py: add vscrollbar states list (not confirm)
+
+2008-08-04  Calen Chen <cachen@novell.com>
 
 	* testers/checkbox/checkboxframe.py: correct assertChecked()
 	* testers/radiobutton/radiobuttonframe.py: correct assertChecked()
