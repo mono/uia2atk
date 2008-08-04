@@ -88,9 +88,9 @@ class Settings(object):
     output("  -l | --log=        Where the log(s) should be stored.")
 
   def set_uiaqa_home(self):
-    drivers_dir = sys.path[0]
-    i = drivers_dir.rfind("/")
-    Settings.uiaqa_home = drivers_dir[:i]
+    harness_dir = sys.path[0]
+    i = harness_dir.rfind("/")
+    Settings.uiaqa_home = harness_dir[:i]
 
 class Test(object):
 

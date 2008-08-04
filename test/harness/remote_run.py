@@ -88,7 +88,7 @@ class Kickoff(threading.Thread):
     self.name = name
   def run(self):
     self.status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 \
-                             %s/drivers/local_run.py --log=%s > %s/%s 2>&1" %\
+                             %s/harness/local_run.py --log=%s > %s/%s 2>&1" %\
                              (machines.USERNAME, self.ip, machines.TEST_DIR,\
                               Settings.remote_log_path,\
                               Settings.local_log_path, self.name))

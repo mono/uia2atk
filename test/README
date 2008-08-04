@@ -10,15 +10,13 @@ Directories:
   testers: This directory contains test scripts that are executed against the
           sample applications 
 
-  drivers:  This directory contains scripts that do one or both of the 
+  harness:  This directory contains scripts that do one or both of the 
             following:
 
               1.  Copy test scripts to remote machines
               2.  Copy sample applications to remote machines
               3.  Excute the tests onremote machine
               4.  Copy the remote logs to a centralized location
-
-             Drivers are only needed when executing remote tests.
 
   resources:  This directory contains custom stylesheets and images for
               beautifying log files.
