@@ -208,3 +208,6 @@ class Button(object):
 class CheckBox(Button):
     pass
 
+class RadioButton(Button):
+    pass
+

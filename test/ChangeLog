@@ -1,3 +1,9 @@
+2008-07-31  Calen Chen <cachen@novell.com>
+
+	* testers/checkbox/checkboxframe.py: correct assertChecked()
+	* testers/radiobutton/radiobuttonframe.py: correct assertChecked()
+	* testers/states.py: add RadioButton class
+
 2008-07-31  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/checkbox/checkboxframe.py: no longer using Strongwind's
