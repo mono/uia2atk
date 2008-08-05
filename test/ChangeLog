@@ -1,3 +1,8 @@
+2008-06-05  Ray Wang <rawang@novell.com>
+
+	* samples/checkedlist.py: make label displayed in one line, and items are
+	increased to 10 items
+
 2008-08-05  Calen Chen <cachen@novell.com>
 
 	* testers/vscrollbar_basic_ops.py: update statesCheck

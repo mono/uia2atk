@@ -29,8 +29,10 @@ class CheckedListBoxSample(Form):
 
         # setup label
         self.label = Label()
-        self.label.Height = 100
+        #self.label.Height = 100
+        self.label.AutoSize = True
         self.label.Dock = DockStyle.Top
+        self.label.Text = ""
         
         # setup checkedlistbox
         self.checkedlistbox = CheckedListBox()
@@ -39,8 +41,7 @@ class CheckedListBoxSample(Form):
         self.checkedlistbox.CheckOnClick = True
 
         # add items in CheckedListBox
-        for i in range(5):
-            self.label.Text += "Item %d is: \n" % i 
+        for i in range(10):
             self.checkedlistbox.Items.Add(str(i))
 
         # add controls
@@ -51,10 +52,12 @@ class CheckedListBoxSample(Form):
     def change(self, sender, event):
         """select a item"""
 
-        self.label.Text = "" 
-        for i in range(5):
-            self.label.Text += "Item %d is: " % i + \
-                            str(self.checkedlistbox.GetItemCheckState(i)) + "\n"
+        items = "" 
+        for i in range(10):
+            status = str(self.checkedlistbox.GetItemCheckState(i))
+            if status == "Checked":
+                items += "%d " % i
+        self.label.Text = "Item " + items + ": " + "Checked"
 
 # run application
 form = CheckedListBoxSample()
