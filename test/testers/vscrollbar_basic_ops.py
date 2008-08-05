@@ -43,7 +43,7 @@ if app is None:
 vsbFrame = app.vScrollBarFrame
 
 #check vscrollbar's states list
-vsbFrame.statesCheck()
+vsbFrame.statesCheck(vsbFrame.vscrollbar)
 
 #set value to 50
 vsbFrame.valueScrollBar(50)

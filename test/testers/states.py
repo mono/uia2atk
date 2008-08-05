@@ -209,8 +209,8 @@ class CheckBox(Button):
     pass
 
 class VScrollBar(object):
-    states = (ENABLED,SENSITIVE,VERTICAL)
+    states = (VERTICAL)
 
 class HScrollBar(object):
-    states = (ENABLED,SENSITIVE,HORIZONTAL)
+    states = (HORIZONTAL)
 

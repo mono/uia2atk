@@ -43,7 +43,7 @@ if app is None:
 hsbFrame = app.hScrollBarFrame
 
 #check hscrollbar's states list
-hsbFrame.statesCheck()
+hsbFrame.statesCheck(hsbFrame.hscrollbar)
 
 #set value to 50
 hsbFrame.valueScrollBar(50)
@@ -59,6 +59,12 @@ hsbFrame.assertScrollbar(0)
 hsbFrame.valueScrollBar(100)
 sleep(config.SHORT_DELAY)
 hsbFrame.assertScrollbar(100)
+
+#set value to 100
+hsbFrame.valueScrollBar(119)
+sleep(config.SHORT_DELAY)
+hsbFrame.assertScrollbar(119)
+
 
 #set value to -10
 hsbFrame.valueScrollBar(-10)

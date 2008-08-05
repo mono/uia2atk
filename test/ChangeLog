@@ -1,5 +1,15 @@
 2008-08-05  Calen Chen <cachen@novell.com>
 
+	* testers/vscrollbar_basic_ops.py: update statesCheck
+	* testers/states.py: update scrollbar's state list
+	* testers/hscrollbar/hscrollbarframe.py: update assertScrollbar() with compare
+	current value and setting value, and delete for-loop
+	* testers/hscrollbar_basic_ops.py: update statesCheck in statesCheck()
+	* testers/vscrollbar/vscrollbarframe.py: update assertScrollbar() with compare
+	current value and setting value, and delete for-loop in statesCheck()
+
+2008-08-05  Calen Chen <cachen@novell.com>
+
 	* testers/hscrollbar: add new test code for hscrollbar
 	* testers/hscrollbar/__init__.py: add new test code for hscrollbar
 	* testers/hscrollbar/hscrollbarframe.py: add new test code for hscrollbar
