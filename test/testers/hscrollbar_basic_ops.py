@@ -60,12 +60,6 @@ hsbFrame.valueScrollBar(100)
 sleep(config.SHORT_DELAY)
 hsbFrame.assertScrollbar(100)
 
-#set value to 100
-hsbFrame.valueScrollBar(119)
-sleep(config.SHORT_DELAY)
-hsbFrame.assertScrollbar(119)
-
-
 #set value to -10
 hsbFrame.valueScrollBar(-10)
 sleep(config.SHORT_DELAY)
