@@ -1,19 +1,19 @@
 
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
-# Date:        08/04/2008
-# Description: Application wrapper for vscrollbar.py
-#              Used by the vscrollbar-*.py tests
+# Date:        08/05/2008
+# Description: Application wrapper for hscrollbar.py
+#              Used by the hscrollbar-*.py tests
 ##############################################################################$
 
-'Application wrapper for vscrollbar'
+'Application wrapper for hscrollbar'
 
 from strongwind import *
 
 import os
 
-def launchVScrollBar(exe=None):
-    'Launch vscrollbar with accessibility enabled and return a vscrollbar object.  Log an error and return None if something goes wrong'
+def launchHScrollBar(exe=None):
+    'Launch HScrollBar with accessibility enabled and return a Hscrollbar object.  Log an error and return None if something goes wrong'
 
     if exe is None:
         # make sure we can find the sample application
@@ -23,7 +23,7 @@ def launchVScrollBar(exe=None):
                          "full path or set the\nUIAQA_HOME environment "\
                          "variable."
 
-        exe = '%s/samples/vscrollbar.py' % uiaqa_path
+        exe = '%s/samples/hscrollbar.py' % uiaqa_path
    
     if not os.path.exists(exe):
       raise IOError, "%s does not exist" % exe
@@ -32,23 +32,23 @@ def launchVScrollBar(exe=None):
 
     (app, subproc) = cache.launchApplication(args=args, name='ipy')
 
-    vscrollbar = VScrollBar(app, subproc)
+    hscrollbar = HScrollBar(app, subproc)
 
-    cache.addApplication(vscrollbar)
+    cache.addApplication(hscrollbar)
 
-    vscrollbar.vScrollBarFrame.app = vscrollbar
+    hscrollbar.hScrollBarFrame.app = hscrollbar
 
-    return vscrollbar
+    return hscrollbar
 
 # class to represent the application
 # because now program can't show winforms applicantion items 'showing' state,
 # before runing this test, we should change 'x.showing' to 'not x.showing' in 
 # accessibles.py line 180. remember to revert it after program improving
-class VScrollBar(accessibles.Application):
+class HScrollBar(accessibles.Application):
     #checkShowing=False
     def __init__(self, accessible, subproc=None): 
-        'Get a reference to the VscrollBar window'
-        super(VScrollBar, self).__init__(accessible, subproc)
+        'Get a reference to the HscrollBar window'
+        super(HScrollBar, self).__init__(accessible, subproc)
         
-        self.findFrame(re.compile('^VScrollBar control'), logName='V Scroll Bar')
+        self.findFrame(re.compile('^HScrollBar control'), logName='H Scroll Bar')
 

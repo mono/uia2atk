@@ -1,3 +1,11 @@
+2008-08-05  Calen Chen <cachen@novell.com>
+
+	* testers/hscrollbar: add new test code for hscrollbar
+	* testers/hscrollbar/__init__.py: add new test code for hscrollbar
+	* testers/hscrollbar/hscrollbarframe.py: add new test code for hscrollbar
+	* testers/hscrollbar_basic_ops.py:  add new test code for hscrollbar
+	* testers/vscrollbar/__init__.py: modify character to vscrollbar
+
 2008-08-04  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* drivers: rename to "harness," which is probably less confusing than
@@ -15,7 +23,7 @@
 
 	* testers/checkbox/checkboxframe.py: correct assertChecked()
 	* testers/radiobutton/radiobuttonframe.py: correct assertChecked()
-	* testers/states.py: add RadioButton class
+	* testers/states.py: add RadioButton states list
 
 2008-07-31  Brian G. Merrell <bgmerrell@gmail.com>
 
