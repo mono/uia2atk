@@ -91,7 +91,11 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			// TODO
+			if (eventId == TextPatternIdentifiers.TextChangedEvent) {
+				string newText = provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) as string;
+				Name = newText;
+				textExpert = new TextImplementorHelper (newText);
+			}
 		}
 
 		public string GetText (int startOffset, int endOffset)

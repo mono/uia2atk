@@ -1,3 +1,8 @@
+2008-08-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* TextLabel.cs: Handle TextChangedEvent in provider.  Partial fix for
+	  bug #411328.
+
 2008-07-31 Mike Gorse <mgorse@novell.com>
 
 	* Button.cs, TextLabel.cs, StatusBar.cs: Create textExpert before
