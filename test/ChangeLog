@@ -1,11 +1,11 @@
+2008-06-05  Ray Wang <rawang@novell.com>
+
+	* samples/checkedlist.py: make label displayed in one line, and items are       increased to 10 items
+	* samples/errirprovider.py: implement ErrorProvider controls.
+
 2008-08-05  Calen Chen <cachen@novell.com>
 
 	* testers/hscrollbar_basic_ops.py: delete valueScrollBar(119)
-
-2008-06-05  Ray Wang <rawang@novell.com>
-
-	* samples/checkedlist.py: make label displayed in one line, and items are
-	increased to 10 items
 
 2008-08-05  Calen Chen <cachen@novell.com>
 
