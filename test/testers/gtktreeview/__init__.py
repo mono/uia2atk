@@ -10,23 +10,20 @@
 
 from strongwind import *
 
-import os
+from os.path import exists
+from sys import path
 
 def launchTreeView(exe=None):
     'Launch gtktreeview with accessibility enabled and return a treeview object.  Log an error and return None if something goes wrong'
 
     if exe is None:
         # make sure we can find the sample application
-        uiaqa_path = os.environ.get("UIAQA_HOME")
-        if uiaqa_path is None:
-          raise IOError, "When launching an application you must provide the "\
-                         "full path or set the\nUIAQA_HOME environment "\
-                         "variable."
-
+        harness_dir = path[0]
+        i = harness_dir.rfind("/")
+        uiaqa_path = harness_dir[:i]
         exe = '%s/samples/gtktreeview.py' % uiaqa_path
-   
-    if not os.path.exists(exe):
-      raise IOError, "%s does not exist" % exe
+        if not exists(exe):
+          raise IOError, "Could not find file %s" % exe
   
     args = [exe]
 

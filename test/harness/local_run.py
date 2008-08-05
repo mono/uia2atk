@@ -3,7 +3,7 @@
 ##############################################################################
 # Written by:  Brian G. Merrell <bgmerrell@novell.com>
 # Date:        May 23 2008
-# Description: Run the enabled tests on the local machines
+# Description: Run the enabled tests on the local machine
 ##############################################################################
 
 # import the enabled tests
@@ -194,6 +194,9 @@ class Test(object):
   def cleanup(self):
     output("INFO:  Cleaning up...")
     search = "%s/%s" % (settings.uiaqa_home, "samples")
+    # execute the following command to get a pid and a path of the tests
+    # that might be running still
+    # ps -ax | grep /home/a11y/code/uia2atk/test/samples | awk '{print $1,$6}'
     p1 = s.Popen(["ps","a","x"], stdout=s.PIPE)
     p2 = s.Popen(["grep", search], stdin=p1.stdout, stdout=s.PIPE)
     p3 = s.Popen(["awk", "{print $1,$6}"], stdin=p2.stdout, stdout=s.PIPE)

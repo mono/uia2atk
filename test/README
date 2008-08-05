@@ -30,29 +30,14 @@ Remember:
 EXECUTING TESTS
 ---------------
 
-  SET ENVIRONMENT VARIABLE (RECOMMENDED)
-
-  Set your UIAQA_HOME environment variable to this test directory, for example:
-
-  export UIAQA_HOME=/home/a11y/<test directory>
-
-  To set the environment variable permanently, you might add it to your .bashrc
-  script, or a local boot script (like boot.local in SUSE or rc.local in
-  RedHat).
-
-  NOTE:  If you do not set the environment variable, you must explicitly 
-  specify the full path of the sample application when executing the test
-  script.
-
 EXECUTE THE TEST SCRIPT
 
-  Test scripts can be found in the 'testers' directory.  If you have set your 
-  UIAQA_HOME environment variable, you may simply run the test script
-  without any arguments (i.e., testers/checkbutton-basic-ops.py).
+  You may simply run the test script without any arguments (i.e.,
+  testers/checkbutton-basic-ops.py).  This should always work if you have
+  not modified the test directory structure after obtaining the test code.
 
-  If you did not set your UIAQA_HOME environment variable, you must specify the
-  full path of the sample application when executing the test script.  For
-  example:
+  You may also full path of the sample application when executing the test
+  script.  For example:
 
   ./checkbutton-basic-ops.py /home/a11y/<test directory>/samples/checkButton.py
 

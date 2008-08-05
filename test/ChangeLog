@@ -1,4 +1,17 @@
-2008-06-05  Ray Wang <rawang@novell.com>
+2008-08-05  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* harness/local_run.py: fix trivial type
+	* testers/gtkcheckbutton/__init__.py: remove need to set UIAQA_HOME
+	* testers/gtkbutton/__init__.py: remove need to set UIAQA_HOME
+	* testers/checkbox/__init__.py: remove need to set UIAQA_HOME
+	* testers/radiobutton/__init__.py: remove need to set UIAQA_HOME
+	* testers/hscrollbar/__init__.py: remove need to set UIAQA_HOME
+	* testers/gtktreeview/__init__.py: remove need to set UIAQA_HOME
+	* testers/vscrollbar/__init__.py: remove need to set UIAQA_HOME
+	* testers/button/__init__.py: remove need to set UIAQA_HOME
+	* README: take out reference sto UIAQA_HOME
+	
+2008-08-05  Ray Wang <rawang@novell.com>
 
 	* samples/checkedlist.py: make label displayed in one line, and items are       increased to 10 items
 	* samples/errirprovider.py: implement ErrorProvider controls.
