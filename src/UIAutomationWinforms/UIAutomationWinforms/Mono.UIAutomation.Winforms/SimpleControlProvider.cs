@@ -256,11 +256,20 @@ namespace Mono.UIAutomation.Winforms
 			} else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 				return Control.Enabled;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return Control.Text;
+				return Control.Text; // TODO: Get from Label if necessary
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return Control.CanFocus;
-			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
-				return !Control.Visible;
+			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				System.Drawing.Rectangle bounds =
+					GetControlScreenBounds ();				
+				System.Drawing.Rectangle screen =
+					Screen.GetWorkingArea (Control);
+				// True iff the *entire* control is off-screen
+				return !screen.Contains (bounds.Left, bounds.Bottom) &&
+					!screen.Contains (bounds.Left, bounds.Top) &&
+					!screen.Contains (bounds.Right, bounds.Bottom) &&
+					!screen.Contains (bounds.Right, bounds.Top);
+			}
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return Control.Focused;
 			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
@@ -268,10 +277,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-				if (Control.Container == null)
-					return Helper.RectangleToRect (Control.Bounds);
-				else
-					return Helper.RectangleToRect (Control.Parent.RectangleToScreen (Control.Bounds));
+				return Helper.RectangleToRect (GetControlScreenBounds ());
 			} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id) {
 				if (Control.Visible == false)
 					return null;
@@ -302,6 +308,18 @@ namespace Mono.UIAutomation.Winforms
 			get { return ProviderOptions.ServerSideProvider; }
 		}
 
+		#endregion
+		
+		#region Private Methods
+		
+		private System.Drawing.Rectangle GetControlScreenBounds ()
+		{
+			if (control.Parent == null)
+				return Control.Bounds;
+			else
+				return Control.TopLevelControl.RectangleToScreen (Control.Bounds);
+		}
+		
 		#endregion
 		
 		#region Private Methods: ToolTip
