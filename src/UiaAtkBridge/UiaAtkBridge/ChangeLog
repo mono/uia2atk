@@ -1,5 +1,10 @@
 2008-08-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* ToggleButton.cs: When ToggleState changes, fire NotifyStateChange to
+	  ATK.  Fixes bug #412206.
+
+2008-08-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Adapter.cs: Handle Showing state (mapped to inverse of UIA
 	  IsOffscreenProperty).
 

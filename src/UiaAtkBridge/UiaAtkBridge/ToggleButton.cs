@@ -61,17 +61,10 @@ namespace UiaAtkBridge
 			if (toggleProvider != null) {
 				ToggleState state = toggleProvider.ToggleState;
 				
-				switch (state) {
-				case ToggleState.On:
+				if (IsChecked (state))
 					states.AddState (Atk.StateType.Checked);
-					break;
-				case ToggleState.Indeterminate:
-				case ToggleState.Off:
+				else
 					states.RemoveState (Atk.StateType.Checked);
-					break;
-				default:
-					throw new NotSupportedException ("Unknown toggleState " + state.ToString ());
-				}
 			}
 			
 			return states;
@@ -96,9 +89,23 @@ namespace UiaAtkBridge
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
-				//TODO: emit signal
+				NotifyStateChange ((ulong) Atk.StateType.Checked,
+				                   IsChecked ((ToggleState)e.NewValue));
 			} else {
 				base.RaiseAutomationPropertyChangedEvent (e);
+			}
+		}
+		
+		private bool IsChecked (ToggleState state)
+		{
+			switch (state) {
+			case ToggleState.On:
+				return true;
+			case ToggleState.Indeterminate:
+			case ToggleState.Off:
+				return false;
+			default:
+				throw new NotSupportedException ("Unknown toggleState " + state.ToString ());
 			}
 		}
 	}
