@@ -89,6 +89,7 @@ namespace Mono.UIAutomation.Winforms
 			CheckBox c;
 			TextBox t;
 			LinkLabel ll;
+			NumericUpDown ud;
 			FragmentControlProvider provider = null;
 			Form f;
 			GroupBox gb;
@@ -124,6 +125,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new LinkLabelProvider (ll);
 			else if ((l = component as Label) != null)
 				provider = new LabelProvider (l);
+			else if ((ud = component as NumericUpDown) != null)
+				provider = new NumericUpDownProvider (ud);
 			else if ((sb = component as StatusBar) != null)
 				provider = new StatusBarProvider (sb);
 			else if ((cb = component as ComboBox) != null)

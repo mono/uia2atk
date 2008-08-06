@@ -1,5 +1,11 @@
 2008-08-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Support
+	  NumericUpDownProvider in the factory, even though it's not yet
+	  fully tested.
+
+2008-08-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Proper
 	  implementation of IsOffscreenProperty.  Fix value of
 	  BoundingRectangleProperty (need to check for Control.Parent, not
