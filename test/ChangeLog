@@ -1,3 +1,7 @@
+2008-08-06  Calen Chen <cachen@novell.com>
+
+	* hscrollbar/__init__.py: modify app's name.
+
 2008-08-05  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/local_run.py: fix trivial type
@@ -13,7 +17,8 @@
 	
 2008-08-05  Ray Wang <rawang@novell.com>
 
-	* samples/checkedlist.py: make label displayed in one line, and items are       increased to 10 items
+	* samples/checkedlist.py: make label displayed in one line, and items are
+	increased to 10 items
 	* samples/errirprovider.py: implement ErrorProvider controls.
 
 2008-08-05  Calen Chen <cachen@novell.com>
@@ -24,17 +29,19 @@
 
 	* testers/vscrollbar_basic_ops.py: update statesCheck
 	* testers/states.py: update scrollbar's state list
-	* testers/hscrollbar/hscrollbarframe.py: update assertScrollbar() with compare
-	current value and setting value, and delete for-loop
+	* testers/hscrollbar/hscrollbarframe.py: update assertScrollbar() with
+	compare	current value and setting value, and delete for-loop
 	* testers/hscrollbar_basic_ops.py: update statesCheck in statesCheck()
-	* testers/vscrollbar/vscrollbarframe.py: update assertScrollbar() with compare
-	current value and setting value, and delete for-loop in statesCheck()
+	* testers/vscrollbar/vscrollbarframe.py: update assertScrollbar() with
+	compare	current value and setting value, and delete for-loop in 
+	statesCheck()
 
 2008-08-05  Calen Chen <cachen@novell.com>
 
 	* testers/hscrollbar: add new test code for hscrollbar
 	* testers/hscrollbar/__init__.py: add new test code for hscrollbar
-	* testers/hscrollbar/hscrollbarframe.py: add new test code for hscrollbar
+	* testers/hscrollbar/hscrollbarframe.py: add new test code for 
+	hscrollbar
 	* testers/hscrollbar_basic_ops.py:  add new test code for hscrollbar
 	* testers/vscrollbar/__init__.py: modify character to vscrollbar
 
@@ -48,7 +55,8 @@
 	* testers/vscrollbar_basic_ops.py: add new test code for vscrollbar
 	* testers/vscrollbar: add new test code for vscrollbar
 	* testers/vscrollbar/__init__.py: add new test code for vscrollbar
-	* testers/vscrollbar/vscrollbarframe.py: add new test code for vscrollbar
+	* testers/vscrollbar/vscrollbarframe.py: add new test code for 
+	vscrollbar
 	* testers/states.py: add vscrollbar states list (not confirm)
 
 2008-08-04  Calen Chen <cachen@novell.com>
@@ -135,8 +143,8 @@
 
 2008-07-25  Calen Chen <cachen@novell.com>
 	* testers/checkbox_basic_ops.py: add test for winforms checkbox control
-	* testers/button_basic_ops.py: delete button2's actionCheck and button1's
-	statesCheck, checking rise message frame by assertMessage()
+	* testers/button_basic_ops.py: delete button2's actionCheck and 
+	button1's statesCheck, checking rise message frame by assertMessage()
 	* testers/checkbox: add test for winforms checkbox control
 	* testers/checkbox/__init__.py: add test for winforms checkbox control
 	* testers/checkbox/checkboxframe.py: add test for winforms checkbox
