@@ -1,3 +1,7 @@
+2008-08-06 Mike Gorse <mgorse@novell.com>
+
+	* AutomationBridge.cs: Remove accidentally-committed appMonitor.Quit()
+
 2008-08-05 Mike Gorse <mgorse@novell.com>
 
 	* AutomationBridge.cs: Add getParentAdapter; use Navigate()
