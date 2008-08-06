@@ -1,5 +1,10 @@
 2008-08-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* Adapter.cs: Handle Showing state (mapped to inverse of UIA
+	  IsOffscreenProperty).
+
+2008-08-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* TextLabel.cs: Handle TextChangedEvent in provider.  Partial fix for
 	  bug #411328.
 

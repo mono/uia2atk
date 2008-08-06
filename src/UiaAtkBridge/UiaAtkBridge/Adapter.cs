@@ -50,6 +50,28 @@ namespace UiaAtkBridge
 		public abstract void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e);
 		
 #endregion
+		
+#region Overrides
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			
+			if (Provider != null) {
+				bool showing = !(bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
+				if (showing)
+				{
+					states.AddState (Atk.StateType.Showing);
+				}
+				else
+				{
+					states.RemoveState (Atk.StateType.Showing);
+				}
+			}
+			
+			return states;
+		}
+
+#endregion
 
 		internal System.Windows.Rect BoundingRectangle
 		{
