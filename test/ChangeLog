@@ -1,5 +1,12 @@
 2008-08-06  Calen Chen <cachen@novell.com>
 
+	* testers/scrollbar: add new test code for scroll pane
+	* testers/scrollbar/scrollbarframe.py: add new test code for scroll pane
+	* testers/scrollbar/__init__.py: add new test code for scroll pane
+	* testers/scrollbar_basic_ops.py: add new test code for scroll pane
+
+2008-08-06  Calen Chen <cachen@novell.com>
+
 	* samples/picturebox.py: reset picture's directory
 
 2008-08-06  Calen Chen <cachen@novell.com>
