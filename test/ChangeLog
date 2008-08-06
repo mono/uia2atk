@@ -1,3 +1,8 @@
+2008-08-06  Ray Wang <rawang@novell.com>
+
+	* samples/numericupdown.py: add label to display the value of NumericUpDown.
+	* samples/domainupdown.py: implement DomainUpDown controls
+
 2008-08-06  Calen Chen <cachen@novell.com>
 
 	* testers/scrollbar: add new test code for scroll pane
