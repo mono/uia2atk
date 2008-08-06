@@ -1,5 +1,9 @@
 2008-08-06  Calen Chen <cachen@novell.com>
 
+	* samples/picturebox.py: reset picture's directory
+
+2008-08-06  Calen Chen <cachen@novell.com>
+
 	* hscrollbar/__init__.py: modify app's name.
 
 2008-08-05  Brian G. Merrell <bgmerrell@gmail.com>

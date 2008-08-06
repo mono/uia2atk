@@ -14,6 +14,9 @@ Test accessibility of "PictureBox" control
 
 # imports
 import os
+from sys import path
+from os.path import exists
+
 import clr
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
@@ -22,7 +25,11 @@ from System.Windows.Forms import (
 )
 from System.Drawing import Image
 
-uiaqa_path = os.environ.get("UIAQA_HOME")
+harness_dir = path[0]
+i = harness_dir.rfind("/")
+uiaqa_path = harness_dir[:i]
+
+#uiaqa_path = os.environ.get("UIAQA_HOME")
 
 class PictureBoxSample(Form):
     """PictureBox control class"""
