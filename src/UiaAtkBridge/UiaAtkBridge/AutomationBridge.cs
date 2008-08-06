@@ -129,20 +129,8 @@ namespace UiaAtkBridge
 			int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			// TODO: Handle ChildrenBulkAdded and ChildrenBulkRemoved
 			if (e.StructureChangeType == StructureChangeType.ChildAdded) {
-				if (controlTypeId == ControlType.Window.Id)
-					HandleNewWindowControlType (simpleProvider);
-				else if (controlTypeId == ControlType.Button.Id)
-					// TODO: Consider generalizing...
-					HandleNewButtonControlType (simpleProvider);
-				else if (controlTypeId == ControlType.Text.Id)
-					HandleNewLabelControlType (simpleProvider);
-				else if (controlTypeId == ControlType.CheckBox.Id)
-					HandleNewCheckBoxControlType (simpleProvider);
-				else if (controlTypeId == ControlType.StatusBar.Id)
-					HandleNewStatusBarControlType (simpleProvider);
-				else if (controlTypeId == ControlType.ScrollBar.Id)
-					HandleNewScrollBarControlType (simpleProvider);
-				// TODO: Other providers
+				if (!providerAdapterMapping.ContainsKey (simpleProvider))
+					HandleElementAddition (simpleProvider);
 			} else if (e.StructureChangeType == StructureChangeType.ChildRemoved) {
 				if (controlTypeId == ControlType.Window.Id)
 					HandleWindowProviderRemoval ((IWindowProvider)provider);
@@ -159,6 +147,43 @@ namespace UiaAtkBridge
 		
 #region Private Methods
 		
+		private ParentAdapter GetParentAdapter (IRawElementProviderSimple provider)
+		{
+			IRawElementProviderFragment fragment = (IRawElementProviderFragment)provider;
+			IRawElementProviderSimple parentProvider;
+
+			parentProvider = fragment.Navigate (NavigateDirection.Parent);
+			if (!providerAdapterMapping.ContainsKey (parentProvider))
+			{
+				HandleElementAddition (parentProvider);
+			}
+			return (ParentAdapter)providerAdapterMapping[parentProvider];
+		}
+
+		private void HandleElementAddition (IRawElementProviderSimple simpleProvider)
+		{
+			int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+
+			if (controlTypeId == ControlType.Window.Id)
+				HandleNewWindowControlType (simpleProvider);
+			else if (controlTypeId == ControlType.Button.Id)
+				// TODO: Consider generalizing...
+				HandleNewButtonControlType (simpleProvider);
+			else if (controlTypeId == ControlType.Text.Id)
+				HandleNewLabelControlType (simpleProvider);
+			else if (controlTypeId == ControlType.CheckBox.Id)
+				HandleNewCheckBoxControlType (simpleProvider);
+			else if (controlTypeId == ControlType.List.Id)
+				HandleNewListControlType (simpleProvider);
+			else if (controlTypeId == ControlType.ComboBox.Id)
+				HandleNewComboBoxControlType (simpleProvider);
+			else if (controlTypeId == ControlType.StatusBar.Id)
+				HandleNewStatusBarControlType (simpleProvider);
+			else if (controlTypeId == ControlType.ScrollBar.Id)
+				HandleNewScrollBarControlType (simpleProvider);
+			// TODO: Other providers
+		}
+
 		private void HandleElementRemoval (IRawElementProviderSimple provider)
 		{
 			Adapter adapter = providerAdapterMapping [provider];
@@ -197,15 +222,13 @@ namespace UiaAtkBridge
 				(IRawElementProviderSimple) provider;
 			IntPtr providerHandle = (IntPtr) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
 			pointerProviderMapping.Remove (providerHandle);
+			appMonitor.Quit();
 		}
 		
 		private void HandleNewButtonControlType (IRawElementProviderSimple provider)
 		{
-			IRawElementProviderSimple parentProvider =
-					provider.HostRawElementProvider;
-			
 			ParentAdapter parentObject =
-				(ParentAdapter) providerAdapterMapping [parentProvider];
+				GetParentAdapter (provider);
 			
 			Button atkButton = new Button (provider);
 			providerAdapterMapping [provider] = atkButton;
@@ -217,11 +240,8 @@ namespace UiaAtkBridge
 		
 		private void HandleNewLabelControlType (IRawElementProviderSimple provider)
 		{
-			IRawElementProviderSimple parentProvider =
-					provider.HostRawElementProvider;
-			
 			ParentAdapter parentObject =
-				(ParentAdapter) providerAdapterMapping [parentProvider];
+				GetParentAdapter (provider);
 			
 			TextLabel atkLabel = new TextLabel (provider);
 			providerAdapterMapping [provider] = atkLabel;
@@ -233,11 +253,8 @@ namespace UiaAtkBridge
 		
 		private void HandleNewCheckBoxControlType (IRawElementProviderSimple provider)
 		{
-			IRawElementProviderSimple parentProvider =
-					provider.HostRawElementProvider;
-			
 			ParentAdapter parentObject =
-				(ParentAdapter) providerAdapterMapping [parentProvider];
+				GetParentAdapter (provider);
 			
 			CheckBox atkCheck = new CheckBox (provider);
 			providerAdapterMapping [provider] = atkCheck;
@@ -247,13 +264,36 @@ namespace UiaAtkBridge
 			                              atkCheck);
 		}
 		
+		private void HandleNewListControlType (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject =
+				GetParentAdapter (provider);
+			
+			List atkList = new List ((IRawElementProviderFragmentRoot)provider);
+			providerAdapterMapping [provider] = atkList;
+			
+			parentObject.AddOneChild (atkList);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkList);
+		}
+
+		private void HandleNewComboBoxControlType (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject =
+				GetParentAdapter (provider);
+
+			ComboBox atkCombo = new ComboBox ((IRawElementProviderFragmentRoot)provider);
+			providerAdapterMapping [provider] = atkCombo;
+			
+			parentObject.AddOneChild (atkCombo);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkCombo);
+		}
+		
 		private void HandleNewStatusBarControlType (IRawElementProviderSimple provider)
 		{
-			IRawElementProviderSimple parentProvider =
-					provider.HostRawElementProvider;
-			
 			ParentAdapter parentObject =
-				(ParentAdapter) providerAdapterMapping [parentProvider];
+				GetParentAdapter (provider);
 			
 			StatusBar atkStatus;
 			if (provider is IGridProvider)
@@ -268,11 +308,8 @@ namespace UiaAtkBridge
 		
 		private void HandleNewScrollBarControlType (IRawElementProviderSimple provider)
 		{
-			IRawElementProviderSimple parentProvider =
-					provider.HostRawElementProvider;
-			
 			ParentAdapter parentObject =
-				(ParentAdapter) providerAdapterMapping [parentProvider];
+				GetParentAdapter (provider);
 			
 			ScrollBar atkScroll = new ScrollBar (provider);
 			providerAdapterMapping [provider] = atkScroll;

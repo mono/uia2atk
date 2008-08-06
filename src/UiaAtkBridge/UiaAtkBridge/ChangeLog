@@ -1,3 +1,9 @@
+2008-08-05 Mike Gorse <mgorse@novell.com>
+
+	* AutomationBridge.cs: Add getParentAdapter; use Navigate()
+	  instead of HostRawElementProvider
+	  Support List and ComboBox
+
 2008-08-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* ToggleButton.cs: When ToggleState changes, fire NotifyStateChange to
