@@ -69,8 +69,8 @@ namespace Mono.UIAutomation.Winforms
 			
 			runtimeId = -1;
 			
-			if (Control != null)
-				InitializeInternalControlEvents ();
+			/*if (Control != null)
+				InitializeInternalControlEvents ();*/
 		}
 		
 		#endregion
@@ -122,7 +122,7 @@ namespace Mono.UIAutomation.Winforms
 				foreach (IProviderBehavior behavior in providerBehaviors.Values)
 					behavior.Disconnect (Control);
 				
-				TerminateInternalControlEvents ();
+				/*TerminateInternalControlEvents ();*/
 			}
 
 			events.Clear ();
@@ -323,12 +323,12 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Private Methods: ToolTip
-		
+		/*
 		private void InitializeInternalControlEvents ()
-		{/*
+		{
 			//ToolTip
 			GetPrivateToolTipField ();
-			*/
+			
 			try {
 				Helper.AddPrivateEvent (typeof (Control), 
 				                        Control, 
@@ -352,7 +352,7 @@ namespace Mono.UIAutomation.Winforms
 				                   GetType (),
 				                   typeof (Control));
 			}
-/*
+
 			//ErrorProvider
 			GetPrivateErrorProviderField ();
 
@@ -378,11 +378,11 @@ namespace Mono.UIAutomation.Winforms
 				Console.WriteLine ("{0}: ErrorProviderUnhookup not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
-			}*/
+			}*
 		}
 		
 		private void TerminateInternalControlEvents ()
-		{/*
+		{
 			//ToolTip
 			try {
 				Helper.RemovePrivateEvent (typeof (Control), 
@@ -412,7 +412,7 @@ namespace Mono.UIAutomation.Winforms
 				ProviderFactory.ReleaseProvider (toolTipProvider.ToolTip);
 				toolTipProvider = null;
 			}
-			*/
+			
 			//ErrorProvider
 			try {
 				Helper.RemovePrivateEvent (typeof (Control), 
@@ -437,13 +437,13 @@ namespace Mono.UIAutomation.Winforms
 				                   GetType (),
 				                   typeof (Control));
 			}
-/*
+
 			if (errorProvider != null) {
 				ProviderFactory.ReleaseProvider (errorProvider.ErrorProvider);
 				errorProvider = null;
-			}*/
+			}
 		}
-		/*
+	
 		private void GetPrivateToolTipField ()
 		{
 			ToolTip tooltip = null;

@@ -1,5 +1,10 @@
 2008-08-07  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Commented
+	  internal controls logic.
+
+2008-08-07  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs: File
 	  added. Represents the arguments used when navigation is updated:
 	  added, deleted or cleared.
