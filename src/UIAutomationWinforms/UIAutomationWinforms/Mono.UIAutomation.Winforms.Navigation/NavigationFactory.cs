@@ -22,63 +22,54 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
-using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Winforms;
 
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 	
-	internal class ChildNavigation : SimpleNavigation
+	internal sealed class NavigationFactory
 	{
-		#region Constructor
-
-		public ChildNavigation (FragmentControlProvider provider,
-		                        FragmentRootControlProvider parentProvider) 
-			: base (provider)
+		#region Constructors
+		
+		private NavigationFactory ()
 		{
-			this.parentProvider = parentProvider;
-			parentNavigation = (ParentNavigation) parentProvider.Navigation;
 		}
 		
-		#endregion 
-
-		#region Public Properties
-
-		public ParentNavigation ParentNavigation {
-			get { return parentNavigation; }
-		}
-		
-		public IRawElementProviderFragment ParentProvider {
-			get { return parentProvider; }
-		}
-
 		#endregion
 		
-		#region SimpleNavigation: Specializations
-
-		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
+		#region Public Static Methods
+		
+		public static INavigation CreateNavigation (FragmentControlProvider provider)
 		{
-			if (direction == NavigateDirection.Parent)
-				return ParentProvider;
-			else if (direction == NavigateDirection.NextSibling)
-				return ParentNavigation.GetNextExplicitSiblingProvider (this);
-			else if (direction == NavigateDirection.PreviousSibling)
-				return ParentNavigation.GetPreviousExplicitSiblingProvider (this);
+			return CreateNavigation (provider, null);
+		}
+		
+		public static INavigation CreateNavigation (FragmentControlProvider provider,
+		                                            FragmentRootControlProvider rootProvider)
+		{
+			INavigation navigation;
+			ComboBoxProvider cbox;
+			ListBoxProvider lbox;
+			ScrollBarProvider sbar;
+			ListItemProvider litem;
+			ErrorProviderProvider err;
+			WindowProvider win;
+
+			if ((win = provider as WindowProvider) != null)
+				navigation = new ParentNavigation (win);
+			if (provider is FragmentRootControlProvider)
+				navigation = new ParentNavigation ((FragmentRootControlProvider) provider, 
+				                                   rootProvider);	
+			else if ((litem = provider as ListItemProvider) != null)
+				throw new ArgumentException ();
+			else if ((err = provider as ErrorProviderProvider) != null)
+				navigation = new ErrorProviderNavigation (err);
 			else
-				return null;
-		}
-		
-		public override void Terminate ()
-		{
-		}		
-		
-		#endregion
-		
-		#region Private Properties
+				navigation = new ChildNavigation (provider, rootProvider);
 
-		private ParentNavigation parentNavigation;		
-		private FragmentControlProvider parentProvider;
+			return navigation;
+		}
 		
 		#endregion
 	}

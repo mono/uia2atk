@@ -31,12 +31,12 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 
-	internal class SimpleNavigation : INavigation
+	internal abstract class SimpleNavigation : INavigation
 	{
 
 		#region Constructor
 		
-		public SimpleNavigation (IRawElementProviderSimple provider)
+		protected SimpleNavigation (IRawElementProviderSimple provider)
 		{
 			this.simpleProvider = (SimpleControlProvider) provider;
 		}
@@ -49,28 +49,8 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			get { return simpleProvider; }
 		}
 
-		public virtual IRawElementProviderFragment GetNextSiblingProvider (NavigationChain chain)
+		public virtual void Initialize ()
 		{
-			if (chain.Contains (this) == true) {
-				LinkedListNode<INavigation> nextNode = chain.Find (this).Next;
-				if (nextNode == null)
-					return null;
-				else
-					return (IRawElementProviderFragment) nextNode.Value.Provider;
-			} else
-				return null;
-		}
-		
-		public virtual IRawElementProviderFragment GetPreviousSiblingProvider (NavigationChain chain)
-		{
-			if (chain.Contains (this) == true) {
-				LinkedListNode<INavigation> previousNode = chain.Find (this).Previous;
-				if (previousNode == null)
-					return null;
-				else
-					return (IRawElementProviderFragment) previousNode.Value.Provider;
-			} else
-				return null;
 		}
 
 		public virtual void Terminate ()
@@ -78,50 +58,92 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			if (simpleProvider != null)
 				simpleProvider.Terminate ();
 		}		
+		
+		public abstract IRawElementProviderFragment Navigate (NavigateDirection direction);
 
-		public virtual IRawElementProviderFragment Navigate (NavigateDirection direction) 
+		#endregion
+		
+		#region Private Methods
+
+		private Control GetFirstValidChildControl (Control container)
 		{
-			Control containerControl;
-			
-			//TODO: Update ignore ErrorProvider's Custom Controls
-			
-			if (direction == NavigateDirection.Parent) {
-				if (simpleProvider.Container == null)
-					return null;
-				else
-					return ProviderFactory.GetProvider (simpleProvider.Container);
-			} else if (direction == NavigateDirection.NextSibling) {				
-				if ((containerControl = simpleProvider.Container as Control) == null)
-					return null;
-				
-				int next = containerControl.Controls.IndexOf (simpleProvider.Control) + 1;
-				if (next >= containerControl.Controls.Count)
-					return null;
-				else
-					return ProviderFactory.GetProvider (containerControl.Controls [next]);
-			} else if (direction == NavigateDirection.PreviousSibling) {
-				if ((containerControl = simpleProvider.Container as Control) == null)
-					return null;
-
-				int previous = containerControl.Controls.IndexOf (simpleProvider.Control) - 1;
-				if (previous < 0)
-					return null;
-				else
-					return ProviderFactory.GetProvider (containerControl.Controls [previous]);
-			} else if (direction == NavigateDirection.FirstChild) {
-				if (simpleProvider.Control == null || simpleProvider.Control.Controls.Count == 0)
-					return null;
-				else
-					return ProviderFactory.GetProvider (simpleProvider.Control.Controls [0]);
-			} else if (direction == NavigateDirection.LastChild) {
-				if (simpleProvider.Control == null || simpleProvider.Control.Controls.Count == 0)
-					return null;
-				else
-					return ProviderFactory.GetProvider (simpleProvider.Control.Controls [simpleProvider.Control.Controls.Count - 1]);
-			} else
+			if (container == null || container.Controls.Count == 0)
 				return null;
+			
+			Control firstChild = container.Controls [0];
+			
+			if (ErrorProviderProvider.InstancesTracker.IsControlFromErrorProvider (firstChild)) {
+				if (ErrorProviderProvider.InstancesTracker.IsFirstControlFromErrorProvider (firstChild))
+					return firstChild;
+				else
+					firstChild = GetNextValidSiblingControl (container, firstChild);
+			}
+			
+			return firstChild;
+		}
+		
+		private Control GetLastValidChildControl (Control container)
+		{
+			if (container == null || container.Controls.Count == 0)
+				return null;
+			
+			Control lastChild = container.Controls [container.Controls.Count - 1];
+			
+			if (ErrorProviderProvider.InstancesTracker.IsControlFromErrorProvider (lastChild)) {
+				if (ErrorProviderProvider.InstancesTracker.IsFirstControlFromErrorProvider (lastChild))
+					return lastChild;
+				else
+					lastChild = GetPreviousValidSiblingControl (container, lastChild);
+			}
+			
+			return lastChild;
 		}
 
+		private Control GetNextValidSiblingControl (Control container, Control sibling)
+		{
+			if (sibling == null || container == null) {
+				Console.WriteLine ("IS NULL: GetNextValidSiblingControl: {0} - {1}",
+				                   container == null, sibling == null);
+				return null;
+			}
+			
+			int next = container.Controls.IndexOf (sibling) + 1;
+			if (next >= container.Controls.Count)
+				return null;
+			else {
+				Control nextSibling = container.Controls [next];
+				if (ErrorProviderProvider.InstancesTracker.IsControlFromErrorProvider (nextSibling)) {
+					if (ErrorProviderProvider.InstancesTracker.IsFirstControlFromErrorProvider (nextSibling))
+						return nextSibling;
+					else
+						nextSibling = GetNextValidSiblingControl (container, nextSibling);
+				}
+
+				return nextSibling;
+			}
+		}
+
+		private Control GetPreviousValidSiblingControl (Control container, Control sibling)
+		{
+			if (sibling == null || container == null)
+				return null;
+			
+			int previous = container.Controls.IndexOf (sibling) - 1;
+			if (previous < 0)
+				return null;
+			else {
+				Control prevSibling = container.Controls [previous];
+				if (ErrorProviderProvider.InstancesTracker.IsControlFromErrorProvider (prevSibling)) {
+					if (ErrorProviderProvider.InstancesTracker.IsFirstControlFromErrorProvider (prevSibling))
+						return prevSibling;
+					else
+						prevSibling = GetPreviousValidSiblingControl (container, prevSibling);
+				}
+
+				return prevSibling;
+			}
+		}
+		
 		#endregion
 		
 		#region Private Fields

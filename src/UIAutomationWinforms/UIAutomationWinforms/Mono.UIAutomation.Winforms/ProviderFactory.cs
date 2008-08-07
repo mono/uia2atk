@@ -71,17 +71,9 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return GetProvider (component, true);
 		}
-		
-		public static IRawElementProviderFragment GetProvider (Component component, 
-		                                                       bool initializeEvents)
-		{
-			return GetProvider (component, initializeEvents, true);
-		}
-		
-		
+
 		public static IRawElementProviderFragment GetProvider (Component component,
-		                                                       bool initializeEvents,
-		                                                       bool initializeChildControlStructure)
+		                                                       bool initializeEvents)
 		{
 			Label l;
 			Button b;
@@ -134,17 +126,17 @@ namespace Mono.UIAutomation.Winforms
 			else if ((lb = component as ListBox) != null)
 				provider = new ListBoxProvider (lb);
 			else if ((scb = component as ScrollBar) != null) {
-				if ((lb = scb.Parent as ListBox) != null) {
+				if ((lb = scb.Parent as ListBox) != null)
 					provider = new ListBoxProvider.ListBoxScrollBarProvider (scb);
-					((FragmentRootControlProvider) provider).InitializeChildControlStructure ();
-				} else {
+				else {
 					//TODO:
 					//   We need to add here a ScrollableControlProvider and then verify
 					//   if the internal scrollbar instances are matching this one,
 					//   if so, then we return a scrollbar, otherwise we return a pane.
 					ScrollableControl scrollable;
 					//ScrollableControlProvider scrollableProvider;
-					if ((scrollable = scb.Parent as ScrollableControl) != null) {
+					if ((scrollable = scb.Parent as ScrollableControl) != null
+					    || scb.Parent == null) {
 					//	scrollableProvider = (ScrollableControlProvider) GetProvider (scrollable);
 					//	if (scrollableProvider.ScrollBarExists (scb) == true)
 							provider = new ScrollBarProvider (scb);
@@ -172,17 +164,6 @@ namespace Mono.UIAutomation.Winforms
 				componentProviders [component] = provider;
 				if (initializeEvents)
 					provider.InitializeEvents ();
-				
-				//TODO: Be aware that this may lead to calling
-				//      InitializeChildControlStructure several times
-				if (initializeChildControlStructure 
-				    && component.Container == null 
-				    && provider is FragmentRootControlProvider) {
-					FragmentRootControlProvider root =
-						provider as FragmentRootControlProvider;
-					Console.WriteLine ("ProviderFactory: {0}", root.GetType ());
-					root.InitializeChildControlStructure ();
-				}
 				
 				//Read comment in ReleaseProvider method for detailed information.
 				if (isComponentBased == true)

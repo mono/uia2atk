@@ -22,7 +22,6 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.Drawing;				                                              
 using System.Windows;
@@ -50,20 +49,7 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		#endregion
-		
-		#region Public Properties
-		
-		public override INavigation Navigation {
-			get {
-				if (navigation == null) 
-					navigation = new ScrollBarNavigation (this);
 
-				return navigation; 
-			}
-		}
-		
-		#endregion
-		
 		#region Public Methods
 		
 		public FragmentControlProvider GetChildButtonProvider (ScrollBarButtonOrientation orientation)
@@ -129,38 +115,31 @@ namespace Mono.UIAutomation.Winforms
 		public override void InitializeChildControlStructure ()
 		{
 			ScrollBar scrollbar = (ScrollBar) Control;
-			
+
 			if (smallBackButton == null) {
 				smallBackButton = new ScrollBarButtonProvider (scrollbar,
 				                                               ScrollBarButtonOrientation.SmallBack);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   smallBackButton);
+				OnNavigationChildAdded (false, smallBackButton);
 			}
 			if (smallForwardButton == null) {
 				smallForwardButton = new ScrollBarButtonProvider (scrollbar,
 				                                                  ScrollBarButtonOrientation.SmallForward);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   smallForwardButton);
+				OnNavigationChildAdded (false, smallForwardButton);
 			}
 			if (thumb == null) {
 				thumb = new ScrollBarThumbProvider (scrollbar);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   thumb);				
+				OnNavigationChildAdded (false, thumb);
 			}
 			if (largeBackButton == null) {
 				largeBackButton = new ScrollBarButtonProvider (scrollbar,
 				                                               ScrollBarButtonOrientation.LargeBack);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   largeBackButton);
+				OnNavigationChildAdded (false, largeBackButton);
 			}
 			if (largeForwardButton == null) {
 				largeForwardButton = new ScrollBarButtonProvider (scrollbar,
 				                                                  ScrollBarButtonOrientation.LargeForward);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   largeForwardButton);
+				OnNavigationChildAdded (false, largeForwardButton);
 			}
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-			                                   this);
 		}
 		
 		public override void FinalizeChildControlStructure ()

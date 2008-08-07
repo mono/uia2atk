@@ -24,27 +24,16 @@
 // 
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
-	
-	#region Delegates
-	
-	internal delegate void StructureChangeEventHandler (object sender, 
-	                                                    ListItemProvider item, 
-	                                                    int index);
-	
-	internal delegate void ScrollbarNavigableEventHandler (object container,
-	                                                       ScrollBar scrollbar,
-	                                                       bool navigable);
-
-	#endregion
-	
 	internal abstract class ListProvider : FragmentRootControlProvider
 	{
 
@@ -72,16 +61,6 @@ namespace Mono.UIAutomation.Winforms
 		public abstract int SelectedItemsCount { get; }
 		
 		public abstract bool SupportsMultipleSelection { get; }
-		
-		#endregion
-		
-		#region Public Events
-
-		public event StructureChangeEventHandler ChildAdded;
-		
-		public event StructureChangeEventHandler ChildRemoved;
-		
-		public event EventHandler ChildrenClear;
 		
 		#endregion
 		
@@ -185,11 +164,11 @@ namespace Mono.UIAutomation.Winforms
 		public override void FinalizeChildControlStructure ()
 		{
 			try {
-					Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
-					                           GetInstanceOfObjectCollection (), 
-					                           "ChildAdded",
-					                           this, 
-					                           "OnChildAdded");
+				Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
+				                           GetInstanceOfObjectCollection (), 
+				                           "ChildAdded",
+				                           this, 
+				                           "OnChildAdded");
 			} catch (NotSupportedException) {
 				Console.WriteLine ("{0}: ChildAdded not defined", GetType ());
 			}
@@ -214,6 +193,8 @@ namespace Mono.UIAutomation.Winforms
 				Console.WriteLine ("{0}: ChildrenClear not defined", GetType ());
 			}
 			
+			foreach (ListItemProvider item in items)
+				OnNavigationChildRemoved (false, item);
 			ClearItemsList ();
 		}
 		
@@ -232,43 +213,6 @@ namespace Mono.UIAutomation.Winforms
 				RemoveItemAt (items.Count - 1);
 			}
 		}
-		
-		protected void GenerateChildAddedEvent (int index)
-		{
-			ListItemProvider item = GetItemProvider (index);
-			
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-			                                   item);
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-			                                   this);
-			
-			if (ChildAdded != null)
-				ChildAdded (this, item, index);
-		}
-		
-		protected void GenerateChildRemovedEvent (int index)
-		{
-			ListItemProvider item = RemoveItemAt (index);
-				
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-			                                   item);
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-			                                   this);
-			
-			if (ChildRemoved != null)
-				ChildRemoved (this, item, index);
-		}
-		
-		protected void GenerateChildrenReorderedEvent ()
-		{
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenReordered,
-			                                   this);
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-			                                   this);
-
-			if (ChildrenClear != null)
-				ChildrenClear (this, EventArgs.Empty);
-		}
 
 		protected abstract Type GetTypeOfObjectCollection ();
 		
@@ -282,21 +226,23 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Private Methods: StructureChangedEvent
-		
+
 		private void OnChildAdded (object sender, int index)
 		{
-			GenerateChildAddedEvent (index);
+			ListItemProvider item = GetItemProvider (index);
+			OnNavigationChildAdded (true, item);
 		}
 		
 		private void OnChildRemoved (object sender, int index)
 		{
-			GenerateChildRemovedEvent (index);
+			ListItemProvider item = RemoveItemAt (index);
+			OnNavigationChildRemoved (true, item);
 		}
 		
 		private void OnChildrenClear (object sender, EventArgs args)
 		{
-			GenerateChildrenReorderedEvent ();
 			ClearItemsList ();
+			OnNavigationChildrenClear (true);
 		}
 		
 		#endregion

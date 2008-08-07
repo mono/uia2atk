@@ -22,63 +22,51 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
-using System.Windows.Automation.Provider;
+using System.Windows.Automation;
+using Mono.UIAutomation.Winforms;
 
 namespace Mono.UIAutomation.Winforms.Navigation
 {
+	internal delegate void NavigationEventHandler (FragmentRootControlProvider parentProvider,
+	                                               NavigationEventArgs args);
 	
-	internal class ChildNavigation : SimpleNavigation
+	internal class NavigationEventArgs : EventArgs
 	{
-		#region Constructor
-
-		public ChildNavigation (FragmentControlProvider provider,
-		                        FragmentRootControlProvider parentProvider) 
-			: base (provider)
+		#region Constructors
+		
+		public NavigationEventArgs (bool raiseEvent,
+		                            StructureChangeType changeType,
+		                            FragmentControlProvider childProvider) : base ()
 		{
-			this.parentProvider = parentProvider;
-			parentNavigation = (ParentNavigation) parentProvider.Navigation;
+			this.raiseEvent = raiseEvent;
+			this.changeType = changeType;
+			this.childProvider = childProvider;
 		}
 		
-		#endregion 
-
+		#endregion
+		
 		#region Public Properties
-
-		public ParentNavigation ParentNavigation {
-			get { return parentNavigation; }
+		
+		public FragmentControlProvider ChildProvider {
+			get { return childProvider; }
+		}	
+		
+		public StructureChangeType ChangeType {
+			get { return changeType; }
 		}
 		
-		public IRawElementProviderFragment ParentProvider {
-			get { return parentProvider; }
+		public bool RaiseEvent {
+			get { return raiseEvent; }
 		}
 
 		#endregion
 		
-		#region SimpleNavigation: Specializations
+		#region Private Fields
 
-		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
-		{
-			if (direction == NavigateDirection.Parent)
-				return ParentProvider;
-			else if (direction == NavigateDirection.NextSibling)
-				return ParentNavigation.GetNextExplicitSiblingProvider (this);
-			else if (direction == NavigateDirection.PreviousSibling)
-				return ParentNavigation.GetPreviousExplicitSiblingProvider (this);
-			else
-				return null;
-		}
-		
-		public override void Terminate ()
-		{
-		}		
-		
-		#endregion
-		
-		#region Private Properties
-
-		private ParentNavigation parentNavigation;		
-		private FragmentControlProvider parentProvider;
+		private StructureChangeType changeType;
+		private FragmentControlProvider childProvider;
+		private bool raiseEvent;
 		
 		#endregion
 	}

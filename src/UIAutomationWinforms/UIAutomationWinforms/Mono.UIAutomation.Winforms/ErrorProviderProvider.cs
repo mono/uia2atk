@@ -22,7 +22,7 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
+using Mono.UIAutomation.Winforms.Navigation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -56,10 +56,6 @@ namespace Mono.UIAutomation.Winforms
 		public override Component Container {
 			get { return errorProvider.ContainerControl; }
 		}
-
-		#endregion
-		
-		#region PaneProvider: Specializations
 		
 		public override object GetPropertyValue (int propertyId)
 		{
@@ -73,9 +69,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Methods
 		
-		private object GetBoundingRectangle ()
+		private Rectangle GetBoundingRectangle ()
 		{
-			List<Control> controls = ErrorProviderProvider.InstancesTracker.GetControls (errorProvider.ContainerControl);
+			List<Control> controls = ErrorProviderProvider.InstancesTracker.GetControlsFromParent (errorProvider.ContainerControl);
 			
 			Rectangle bounding = controls [0].Bounds;
 			for (int index = 1; index < controls.Count; index++)
@@ -100,68 +96,234 @@ namespace Mono.UIAutomation.Winforms
 		//     is called. We are tracking this instances because there's one
 		//     provider for all Icon-like controls added and then we need to get 
 		//     Bounds information from each Icon-like control.
+		//
+		//     The dictionary tree follows this structure:
+		//
+		//     ParentControl (dictionary.key)
+		//          \________ InstancesDictionary0 (dictionary.value)
+		//          |                \______________ ErrorProviderInstance0 (key)
+		//          |                                         \_________________ List<Control> (value)
+		//          |                                                              |
+		//          |                                                              |___ Control0 added by ErrorProvider
+		//          |                                                              |___ Control1 added by ErrorProvider
+		//          |                                                              |___ ...
+		//          |                                                              |___ Controln added by ErrorProvider
+		//          |
+		//          \________ InstancesDictionary1 (dictionary.value)
+		//                          \______________ ErrorProviderInstance1 (key)
+		//                                                    \_________________ List<Control> (value)
+		//                                                                         |
+		//                                                                         |___ Control0 added by ErrorProvider
+		//                                                                         |___ Control1 added by ErrorProvider
+		//                                                                         |___ ...
+		//                                                                         |___ Controln added by ErrorProvider
+		// 
+		//
 		internal sealed class InstancesTracker 
 		{
 			private InstancesTracker ()
 			{
 			}
 			
-			public static List<Control> GetControls (Control parent)
+			public static ErrorProviderProvider GetProviderFromControl (Control control)
 			{
-				List<Control> list;
-				controls.TryGetValue (parent, out list);
+				if (dictionary == null)
+					return null;
+				else
+					return dictionary.GetProviderFromControl (control);
+			}
+			
+			public static List<Control> GetControlsFromParent (Control parent)
+			{
+				if (dictionary == null)
+					return null;
 				
-				return list;
+				return dictionary.GetControls (parent);
 			}
 			
 			public static void RemoveUserControlsFromParent (Control parent)
 			{
-				if (controls == null)
+				if (dictionary == null)
 					return;
-
-				controls.Remove (parent);
+				
+				dictionary.RemoveUserControlsFromParent (parent);
 			}
 			
 			public static bool IsControlFromErrorProvider (Control control) 
 			{
-				if (controls == null || controls.ContainsKey (control.Parent) == false)
+				if (dictionary == null)
 					return false;
 				else
-					return true;
+					return dictionary.IsControlFromErrorProvider (control);
 			}
 			
-			public static void AddControl (Control control, Control parent)
+			public static bool IsFirstControlFromErrorProvider (Control control)
 			{
-				if (controls == null)
-					controls = new Dictionary<Control, List<Control>> ();
+				if (dictionary == null)
+					return false;
+				else
+					return dictionary.IsFirstControlFromErrorProvider (control);
+			}
+			
+			public static void AddControl (Control control, 
+			                               Control parent, 
+			                               ErrorProviderProvider provider)
+			{
+				if (dictionary == null)
+					dictionary = new InstancesDictionary ();
 				
-				List<Control> list;
-				if (controls.TryGetValue (parent, out list) == false) {
-					list = new List<Control> ();
-					controls [parent] = list;
-				}
-
-				if (list.Contains (control) == false)
-					list.Add (control);
+				dictionary.AddControl (control, parent, provider);
 			}
 			
-			public static void RemoveControl (Control control)
+			public static void RemoveControl (Control control, Control parent)
 			{
-				if (controls == null)
+				if (dictionary == null)
 					return;
 				
-				List<Control> list;
-				if (controls.TryGetValue (control.Parent, out list) == false)
-					return;
-				
-				list.Remove (control);
-				if (list.Count == 0)
-					controls.Remove (control.Parent);
+				dictionary.RemoveControl (control, parent);
 			}
 			
-			private static Dictionary<Control, List<Control>> controls;
+			private static InstancesDictionary dictionary;
 		}
 		
+		#endregion
+		
+		#region Internal Class: InstancesDictionary
+		
+		class InstancesDictionary 
+		{
+			public InstancesDictionary () 
+			{
+				controlDictionary = new ErrorProviderControlDictionary ();
+				parentDictionary = new ParentDictionary ();
+				providerDictionary = new ErrorProviderDictionary ();
+			}
+			
+			public void AddControl (Control control, 
+			                        Control parent, 
+			                        ErrorProviderProvider provider)
+			{			
+				//UserControl <-> ErrorProvider 
+				if (controlDictionary.ContainsKey (control) == true)
+					return;
+				controlDictionary.Add (control, provider);
+				
+				Console.WriteLine ("Calling: AddControl");
+
+				//ErrorProvider <-> UserControl's
+				ErrorProviderControlList errorControls;
+				if (providerDictionary.TryGetValue (provider, 
+				                                    out errorControls) == false) {
+					errorControls = new ErrorProviderControlList ();
+					providerDictionary [provider] = errorControls;
+				}
+				errorControls.Add (control);
+
+				//Parent <-> UserControl's
+				ErrorProviderControlList parentControls;
+				if (parentDictionary.TryGetValue (parent, 
+				                                  out parentControls) == false) {
+					parentControls = new ErrorProviderControlList ();
+					parentDictionary [parent] = parentControls;
+				}
+				parentControls.Add (control);
+			}
+			
+			public ErrorProviderProvider GetProviderFromControl (Control control)
+			{
+				return controlDictionary [control];
+			}
+			
+			public ErrorProviderControlList GetControls (Control parent)
+			{
+				ErrorProviderControlList parentControls;
+				parentDictionary.TryGetValue (parent, out parentControls);
+				return parentControls;
+			}
+			
+			public bool IsControlFromErrorProvider (Control control) 
+			{
+				return controlDictionary.ContainsKey (control);
+			}
+			
+			public bool IsFirstControlFromErrorProvider (Control control)
+			{
+				if (IsControlFromErrorProvider (control) == false)
+					return false;
+				else {
+					ErrorProviderProvider provider = controlDictionary [control];
+					ErrorProviderControlList errorControls = providerDictionary [provider];
+					return errorControls [0] == control;
+				}
+			}
+			
+			public void RemoveControl (Control control, Control parent)
+			{
+				if (controlDictionary.ContainsKey (control) == false)
+					return;
+				
+				Console.WriteLine ("Calling: RemoveControl");
+				
+				ErrorProviderProvider provider = controlDictionary [control];
+				
+				//UserControl <-> ErrorProvider 
+				controlDictionary.Remove (control);				
+
+				//ErrorProvider <-> UserControl's
+				ErrorProviderControlList errorControls;
+				if (providerDictionary.TryGetValue (provider, 
+				                                    out errorControls) == true) {
+					errorControls.Remove (control);
+					if (errorControls.Count == 0)
+						providerDictionary.Remove (provider);
+				}
+
+				//Parent <-> UserControl's
+				ErrorProviderControlList parentControls;
+				if (parentDictionary.TryGetValue (parent, 
+				                                  out parentControls) == true) {
+					parentControls.Remove (control);
+					if (parentControls.Count == 0)
+						parentDictionary.Remove (parent);
+				}
+			}
+			
+			public void RemoveUserControlsFromParent (Control parent)
+			{
+				Console.WriteLine ("Calling: RemoveUserControlsFromParent");
+				ErrorProviderControlList parentControls;
+				if (parentDictionary.TryGetValue (parent, 
+				                                  out parentControls) == true) {
+					for (; parentControls.Count > 0; )
+						RemoveControl (parentControls [0], parent);
+				}
+			}
+
+			private ErrorProviderControlDictionary controlDictionary;
+			private ParentDictionary parentDictionary;	
+			private ErrorProviderDictionary providerDictionary;
+		}
+		
+		#endregion
+		
+		#region Internal Classes: Dictionaries and Lists
+		
+		class ErrorProviderControlList : List<Control>
+		{
+		}	
+		
+		class ParentDictionary : Dictionary<Control, ErrorProviderControlList>
+		{
+		}
+		
+		class ErrorProviderControlDictionary : Dictionary<Control, ErrorProviderProvider>
+		{
+		}
+		
+		class ErrorProviderDictionary : Dictionary<ErrorProviderProvider, ErrorProviderControlList>
+		{
+		}
+
 		#endregion
 
 	}

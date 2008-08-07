@@ -68,10 +68,7 @@
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListItemScrollProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Navigation/INavigation.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Navigation/ListBoxNavigation.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Navigation/ListItemNavigation.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ScrollBarProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/RangeValuePatternValueEvent.cs" subtype="Code" buildaction="Compile" />
@@ -79,7 +76,6 @@
     <File name="Mono.UIAutomation.Winforms.Behaviors/ButtonInvokeProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ListProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ListItemProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListSelectionProviderBehavior.cs" subtype="Code" buildaction="Compile" />
@@ -100,6 +96,9 @@
     <File name="Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListItemToggleProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/NumericUpDownRangeValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Navigation/ErrorProviderNavigation.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

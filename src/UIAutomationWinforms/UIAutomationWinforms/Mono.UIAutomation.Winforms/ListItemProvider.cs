@@ -91,16 +91,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public int Index {
 			get { return ListProvider.IndexOfItem (this); }
-		}
-
-		public override INavigation Navigation {
-			get { 
-				if (navigation == null)
-					navigation = new ListItemNavigation (this);
-
-				return navigation ;
-			}
-		}		
+		}	
 		
 		public ListControl ListControl {
 			get { return listControl; }

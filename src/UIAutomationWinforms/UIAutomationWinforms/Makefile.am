@@ -89,13 +89,12 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ValuePatternValueIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ValuePatternValuePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Navigation/ChildNavigation.cs \
-	Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs \
+	Mono.UIAutomation.Winforms.Navigation/ErrorProviderNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/INavigation.cs \
-	Mono.UIAutomation.Winforms.Navigation/ListBoxNavigation.cs \
-	Mono.UIAutomation.Winforms.Navigation/ListItemNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs \
+	Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs \
+	Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs \
 	Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs \
-	Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs \
 	Mono.UIAutomation.Winforms/AssemblyInfo.cs \
 	Mono.UIAutomation.Winforms/ButtonProvider.cs \

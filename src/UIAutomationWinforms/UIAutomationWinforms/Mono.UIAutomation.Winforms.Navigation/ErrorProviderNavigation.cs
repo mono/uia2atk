@@ -21,49 +21,37 @@
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
-// 
-
+//
+using Mono.UIAutomation.Winforms;
 using System;
 using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 
-	internal class ListItemNavigation : SimpleNavigation
+	internal class ErrorProviderNavigation : SimpleNavigation
 	{
+		#region Constructors
 		
-#region	 Constructor
-		
-		public ListItemNavigation (ListItemProvider provider)
+		public ErrorProviderNavigation (ErrorProviderProvider provider)
 			: base (provider)
-		
 		{
-			this.provider = provider;
 		}
-
-#endregion
 		
-#region INavigable Interface
+		#endregion
+		
+		#region SimpleNavigation Specializations
 		
 		public override IRawElementProviderFragment Navigate (NavigateDirection direction)
 		{
-			if (direction == NavigateDirection.Parent)
-				return provider.FragmentRoot;
-			else if (direction == NavigateDirection.NextSibling)
-				return provider.ListProvider.GetItemProvider (provider.Index + 1);
-			else if (direction == NavigateDirection.PreviousSibling)
-				return provider.ListProvider.GetItemProvider (provider.Index - 1);
+			if (direction == NavigateDirection.FirstChild 
+			    || direction == NavigateDirection.LastChild)
+				return null;
 			else
 				return null;
+				//return base.Navigate (direction);
 		}
-
-#endregion
 		
-#region Private Fields
-		
-		private ListItemProvider provider;
-		
-#endregion
-
+		#endregion
 	}
 }

@@ -1,3 +1,64 @@
+2008-08-07  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs: File
+	  added. Represents the arguments used when navigation is updated:
+	  added, deleted or cleared.
+	* Mono.UIAutomation.Winforms.Navigation/ScrollBarNavigation.cs,
+	  Mono.UIAutomation.Winforms.Navigation/ListBoxNavigation.cs,
+	  Mono.UIAutomation.Winforms.Navigation/ComboBoxNavigation.cs,
+	  Mono.UIAutomation.Winforms.Navigation/ListItemNavigation.cs: File
+	  deleted. Not needed.
+	* Mono.UIAutomation.Winforms.Navigation/ChildNavigation.cs: Class is
+	  not longer abstract. Chain property removed. ParentNavigation
+	  property added. Removed abstract method GetChildProvider. Updated
+	  to coding guidelines.
+	* Mono.UIAutomation.Winforms.Navigation/ErrorProviderNavigation.cs:
+	  File added. ErrorProvider navigation.
+	* Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs: File
+	  added. Factory to create navigation.
+	* Mono.UIAutomation.Winforms.Navigation/INavigation.cs: Removed
+	  methods: GetNextSiblingProvider and GetPreviousSiblingProvider.
+	* Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs:
+	  Refactored. NOTE: This class will be deleted in the future.
+	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs: Class is
+	  not longer abstract. Supports ParentNavigation as Parent. Property
+	  Chain removed. Overridden Initialize and Terminate to handle
+	  adding, removing and clearing navigations in roots.
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: File updated: Added and
+	  deleted files.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Calling
+	  InitializeChildControlStructure when instantiating a
+	  ListBoxScrollBarProvider.
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Removed Navigation
+	  property. Updated to use new Navigation logic.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Updated to new
+	  Navigation logic. Removed Navigation overridden. Removed events:
+	  HScrollbarNavigationUpdated and VScrollbarNavigationUpdated.
+	  Removed GetChildScrollBarProvider. 
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Removed Navigation
+	  overridden.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: ErrorProvider
+	  and ToolTip sections commented. Removeed virtual from Navigation
+	  property.
+	* Mono.UIAutomation.Winforms/FormListener.cs: Calling Navigation
+	  initialization before raising StructureChanged event.
+	* Mono.UIAutomation.Winforms/ErrorProviderProvider.cs: Updated to track
+	  ErrorProvider-component instances.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Refactored
+	  to support new Navigation. IEnumerable specialization. Added
+	  events: NavigationChildAdded, NavigationChildRemoved,
+	  NavigationChildrenClear. Virtual protected methods added:
+	  OnNavigationChildAdded, OnNavigationChildRemoved,
+	  OnNavigationChildrenClean
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Refactored to handle
+	  new Navigation logic. All StructureChangedEvents removed. Updated
+	  to support coding guidelines.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Removed delegates:
+	  StructureChangedEventHandler and ScrollbarNavigationEventHandler.
+	  Removed events: ChildAdded and ChildRemoved. Removed methods:
+	  GeneratedChildAddedEvent, GeneratedChildRemovedEvent and
+	  GeneratedChildrenReorderedEvent
+
 2008-08-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Support

@@ -44,54 +44,10 @@ namespace Mono.UIAutomation.Winforms
 		public ComboBoxProvider (ComboBox combobox) : base (combobox)
 		{
 			comboboxControl = combobox;
-			
 			comboboxControl.DropDownStyleChanged += new EventHandler (OnDropDownStyleChanged);
-			
-			listboxProvider = new ComboBoxProvider.ComboBoxListBoxProvider (comboboxControl,
-			                                                                 this);
-			listboxProvider.InitializeChildControlStructure ();
 		}
 		
 		#endregion
-		
-		#region Public Properties
-
-		public override INavigation Navigation {
-			get { 
-				if (navigation == null)
-					navigation = new ComboBoxNavigation (this);
-
-				return navigation;
-			}
-		}
-		
-		#endregion
-		
-		#region Public Methods
-		
-		public override void Terminate ()
-		{
-			base.Terminate ();
-			
-			comboboxControl.DropDownStyleChanged -= new EventHandler (OnDropDownStyleChanged);
-		}
-		
-		public FragmentControlProvider GetChildTextBoxProvider ()
-		{
-			return textboxProvider;
-		}
-		
-		public FragmentRootControlProvider GetChildListBoxProvider ()
-		{
-			return listboxProvider;
-		}
-		
-		public FragmentControlProvider GetChildButtonProvider ()
-		{
-			return buttonProvider;
-		}
-		
-		#endregion		
 		
 		#region SimpleControlProvider: Specializations
 
@@ -106,6 +62,13 @@ namespace Mono.UIAutomation.Winforms
 			else
 				return base.GetPropertyValue (propertyId);
 		}
+		
+		public override void Terminate ()
+		{
+			base.Terminate ();
+			
+			comboboxControl.DropDownStyleChanged -= new EventHandler (OnDropDownStyleChanged);
+		}	
 
 		#endregion		
 
@@ -175,26 +138,32 @@ namespace Mono.UIAutomation.Winforms
 			//Doesn't have any list-like children: only Edit, List and Button.
 			return null;
 		}
+
+		public override void InitializeChildControlStructure ()
+		{
+			listboxProvider = new ComboBoxProvider.ComboBoxListBoxProvider (comboboxControl,
+			                                                                this);			
+			OnNavigationChildAdded (true, listboxProvider);
+			UpdateBehaviors ();
+		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
 			if (buttonProvider != null) {
+				OnNavigationChildRemoved (false, buttonProvider);
 				buttonProvider.Terminate ();
 				buttonProvider = null;
 			}
-			if (textboxProvider != null) {
-				textboxProvider.Terminate ();
-				textboxProvider = null;
-			}
 			if (listboxProvider != null) {
+				OnNavigationChildRemoved (false, listboxProvider);
 				listboxProvider.Terminate ();
 				listboxProvider = null;
 			}
-		}
-
-		public override void InitializeChildControlStructure ()
-		{
-			UpdateBehaviors ();
+			if (textboxProvider != null) {
+				OnNavigationChildRemoved (false, textboxProvider);
+				textboxProvider.Terminate ();
+				textboxProvider = null;
+			}
 		}
 		
 		protected override ListProvider GetItemsListProvider ()
@@ -252,20 +221,14 @@ namespace Mono.UIAutomation.Winforms
 				                                                    comboboxControl, 
 				                                                    "textbox_ctrl");
 				textboxProvider = new TextBoxProvider (textbox);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   textboxProvider);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-				                                   this);
+				OnNavigationChildAdded (true, textboxProvider);
 			}
 		}
 		
 		private void TerminateEditProvider ()
 		{
 			if (textboxProvider != null) {
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-				                                   textboxProvider);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-				                                   this);
+				OnNavigationChildRemoved (true, textboxProvider);
 				textboxProvider.Terminate ();
 				textboxProvider = null;
 			}
@@ -276,10 +239,7 @@ namespace Mono.UIAutomation.Winforms
 			if (buttonProvider == null) {
 				buttonProvider = new ComboBoxProvider.ComboBoxButtonProvider (comboboxControl,
 				                                                               this);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-				                                   buttonProvider);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-				                                   this);
+				OnNavigationChildAdded (true, buttonProvider);
 			}
 		}
 		
@@ -287,11 +247,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			//TODO: UISpy doesn't report this structure change, according to MSDN we should do so
 			if (buttonProvider != null) {
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-				                                   buttonProvider);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-				                                   this);
-				
+				OnNavigationChildRemoved (true, buttonProvider);
 				buttonProvider.Terminate ();
 				buttonProvider = null;
 			}
@@ -318,8 +274,8 @@ namespace Mono.UIAutomation.Winforms
 			                                ComboBoxProvider provider)
 				: base (control)
 			{
-				combobox_control = control;
-				combobox_provider = provider;
+				comboboxControl = control;
+				comboboxProvider = provider;
 			}
 	
 			public override object GetPropertyValue (int propertyId)
@@ -341,26 +297,26 @@ namespace Mono.UIAutomation.Winforms
 			
 			public override ListItemProvider GetItemProvider (int index)
 			{
-				return combobox_provider.GetItemProvider (index);
+				return comboboxProvider.GetItemProvider (index);
 			}
 					
 			public override int IndexOfItem (ListItemProvider item)
 			{
-				return combobox_provider.IndexOfItem (item);
+				return comboboxProvider.IndexOfItem (item);
 			}
 			
 			public override ListItemProvider RemoveItemAt (int index)
 			{
-				return combobox_provider.RemoveItemAt (index);
+				return comboboxProvider.RemoveItemAt (index);
 			}
 			
 			public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 			{
-				return combobox_provider.ElementProviderFromPoint (x, y);
+				return comboboxProvider.ElementProviderFromPoint (x, y);
 			}
 			
 			public override int SelectedItemsCount { 
-				get { return combobox_provider.SelectedItemsCount; }
+				get { return comboboxProvider.SelectedItemsCount; }
 			}
 			
 			public override bool SupportsMultipleSelection { 
@@ -368,32 +324,32 @@ namespace Mono.UIAutomation.Winforms
 			}
 			
 			public override int ItemsCount {
-				get { return combobox_provider.ItemsCount; }
+				get { return comboboxProvider.ItemsCount; }
 			}
 			
 			public override ListItemProvider[] GetSelectedItemsProviders ()
 			{
-				return combobox_provider.GetSelectedItemsProviders ();
+				return comboboxProvider.GetSelectedItemsProviders ();
 			}
 			
 			public override string GetItemName (ListItemProvider item)
 			{
-				return combobox_provider.GetItemName (item);
+				return comboboxProvider.GetItemName (item);
 			}
 			
 			public override void SelectItem (ListItemProvider item)
 			{
-				combobox_provider.SelectItem (item);
+				comboboxProvider.SelectItem (item);
 			}
 	
 			public override void UnselectItem (ListItemProvider item)
 			{
-				combobox_provider.UnselectItem (item);
+				comboboxProvider.UnselectItem (item);
 			}
 			
 			public override bool IsItemSelected (ListItemProvider item)
 			{
-				return combobox_provider.IsItemSelected (item);
+				return comboboxProvider.IsItemSelected (item);
 			}
 	
 			protected override Type GetTypeOfObjectCollection ()
@@ -403,24 +359,36 @@ namespace Mono.UIAutomation.Winforms
 			
 			protected override object GetInstanceOfObjectCollection ()
 			{
-				return combobox_control.Items;
+				return comboboxControl.Items;
 			}
 	
 			public override void InitializeChildControlStructure ()
 			{
 				base.InitializeChildControlStructure ();
-	
-				for (int index = 0; index < combobox_control.Items.Count; index++)
-					GenerateChildAddedEvent (index);
+				
+				for (int index = 0; index < comboboxControl.Items.Count; index++) {
+					ListItemProvider item = GetItemProvider (index);
+					OnNavigationChildAdded (false, item);
+				}
 			}
 			
+			public override void FinalizeChildControlStructure ()
+			{
+				base.FinalizeChildControlStructure ();
+				
+				for (int index = 0; index < comboboxControl.Items.Count; index++) {
+					ListItemProvider item = GetItemProvider (index);
+					OnNavigationChildAdded (false, item);
+				}
+			}
+
 			public override void ScrollItemIntoView (ListItemProvider item) 
 			{ 
 				throw new NotImplementedException ();
 			}
 
-			private ComboBox combobox_control;
-			private ComboBoxProvider combobox_provider;
+			private ComboBox comboboxControl;
+			private ComboBoxProvider comboboxProvider;
 
 		}
 		

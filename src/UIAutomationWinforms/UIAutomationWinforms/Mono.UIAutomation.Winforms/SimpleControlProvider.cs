@@ -46,8 +46,8 @@ namespace Mono.UIAutomation.Winforms
 		private Dictionary<ProviderEventType, IConnectable> events;
 		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
 		private int runtimeId;
-		private ToolTipProvider toolTipProvider;
-		private ErrorProviderProvider errorProvider;
+//		private ToolTipProvider toolTipProvider;
+//		private ErrorProviderProvider errorProvider;
 
 		#endregion
 		
@@ -85,14 +85,14 @@ namespace Mono.UIAutomation.Winforms
 			get { return control; }
 		}
 		
-		public virtual INavigation Navigation {
-			get { 
-				if (navigation == null) 
-					navigation = new SimpleNavigation (this);
+		public INavigation Navigation {
+			get { return navigation; }
+			set { 
+				if (value != navigation && navigation != null)
+					navigation.Terminate ();
 
-				return navigation; 
+				navigation = value; 
 			}
-			set { navigation = value; }
 		}
 		
 		#endregion
@@ -286,12 +286,12 @@ namespace Mono.UIAutomation.Winforms
 					Rect rectangle = (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 					return new Point (rectangle.X, rectangle.Y);
 				}
-			} else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id) {
+			} /*else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id) {
 				if (toolTipProvider == null)
 					return null;
 				else
 					return toolTipProvider.ToolTip.GetToolTip (Control);
-			} else
+			} */else
 				return null;
 		}
 
@@ -325,10 +325,10 @@ namespace Mono.UIAutomation.Winforms
 		#region Private Methods: ToolTip
 		
 		private void InitializeInternalControlEvents ()
-		{
+		{/*
 			//ToolTip
 			GetPrivateToolTipField ();
-			
+			*/
 			try {
 				Helper.AddPrivateEvent (typeof (Control), 
 				                        Control, 
@@ -352,7 +352,7 @@ namespace Mono.UIAutomation.Winforms
 				                   GetType (),
 				                   typeof (Control));
 			}
-
+/*
 			//ErrorProvider
 			GetPrivateErrorProviderField ();
 
@@ -378,11 +378,11 @@ namespace Mono.UIAutomation.Winforms
 				Console.WriteLine ("{0}: ErrorProviderUnhookup not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
-			}
+			}*/
 		}
 		
 		private void TerminateInternalControlEvents ()
-		{
+		{/*
 			//ToolTip
 			try {
 				Helper.RemovePrivateEvent (typeof (Control), 
@@ -412,7 +412,7 @@ namespace Mono.UIAutomation.Winforms
 				ProviderFactory.ReleaseProvider (toolTipProvider.ToolTip);
 				toolTipProvider = null;
 			}
-			
+			*/
 			//ErrorProvider
 			try {
 				Helper.RemovePrivateEvent (typeof (Control), 
@@ -437,13 +437,13 @@ namespace Mono.UIAutomation.Winforms
 				                   GetType (),
 				                   typeof (Control));
 			}
-
+/*
 			if (errorProvider != null) {
 				ProviderFactory.ReleaseProvider (errorProvider.ErrorProvider);
 				errorProvider = null;
-			}
+			}*/
 		}
-		
+		/*
 		private void GetPrivateToolTipField ()
 		{
 			ToolTip tooltip = null;
@@ -457,7 +457,7 @@ namespace Mono.UIAutomation.Winforms
 				                   GetType (),
 				                   typeof (Control));
 			}
-			
+
 			if (toolTipProvider != null && tooltip != toolTipProvider.ToolTip) {
 				ProviderFactory.ReleaseProvider (toolTipProvider.ToolTip);
 				toolTipProvider = null;					
@@ -508,7 +508,10 @@ namespace Mono.UIAutomation.Winforms
 		private void OnErrorProviderHookup (object sender, UserControl control)
 		{
 			GetPrivateErrorProviderField ();
-			ErrorProviderProvider.InstancesTracker.AddControl (control, Control.Parent);
+			//TODO: The following call may fail when errorProvider is null
+			ErrorProviderProvider.InstancesTracker.AddControl (control, 
+			                                                   Control.Parent,
+			                                                   errorProvider);
 		}
 
 		private void OnErrorProviderUnhookup (object sender, UserControl control)
@@ -517,8 +520,9 @@ namespace Mono.UIAutomation.Winforms
 				ProviderFactory.ReleaseProvider (errorProvider.ErrorProvider);
 				errorProvider = null;
 			}
-			ErrorProviderProvider.InstancesTracker.RemoveControl (control);			
-		}
+			ErrorProviderProvider.InstancesTracker.RemoveControl (control,
+			                                                      control.Parent);
+		}*/
 		
 		#endregion
 	}

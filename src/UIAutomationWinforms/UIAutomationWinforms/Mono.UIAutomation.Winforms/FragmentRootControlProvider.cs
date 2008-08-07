@@ -24,37 +24,67 @@
 //
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
 	internal abstract class FragmentRootControlProvider 
-		: FragmentControlProvider, IRawElementProviderFragmentRoot
+		: FragmentControlProvider, IRawElementProviderFragmentRoot, IEnumerable<FragmentControlProvider>
 	{
-#region Internal Data
+		#region Internal Data
 		
-		internal IDictionary<Component, IRawElementProviderSimple>
+		internal IDictionary<Component, FragmentControlProvider>
 			componentProviders;  // TODO: Fix this...
 		
-#endregion
+		
+		#endregion
 
-#region Constructors
+		#region Constructors
 		
 		protected FragmentRootControlProvider (Component component) :
 			base (component)
 		{
 			componentProviders =
-				new Dictionary<Component, IRawElementProviderSimple> ();
+				new Dictionary<Component, FragmentControlProvider> ();
+			children = new List<FragmentControlProvider> ();
 		}
 		
-#endregion
+		#endregion
+		
+		#region IEnumerable Specializations
+		
+		public IEnumerator<FragmentControlProvider> GetEnumerator ()
+		{
+			foreach (FragmentControlProvider childProvider in children)
+				yield return childProvider;
+		}
+		
+		IEnumerator IEnumerable.GetEnumerator()
+		{
+			return GetEnumerator();
+		}
+		
+		#endregion
+		
+		#region Public Events
+		
+		public NavigationEventHandler NavigationChildAdded;
+    
+		public NavigationEventHandler NavigationChildRemoved;
+        
+		public NavigationEventHandler NavigationChildrenClear;
+		
+		#endregion
+		
+		#region Public Methods
 		
 		public override void Terminate ()
 		{
@@ -65,8 +95,6 @@ namespace Mono.UIAutomation.Winforms
 			if (Control != null)
 				ErrorProviderProvider.InstancesTracker.RemoveUserControlsFromParent (Control);
 		}
-		
-#region Public Methods
 	
 		//TODO: Are the generated events duplicated? Because we're already
 		//supporting StructureChangeType when Children are added to Controls.
@@ -82,7 +110,7 @@ namespace Mono.UIAutomation.Winforms
 				Control.ControlRemoved += OnControlRemoved;
 				
 				foreach (Control childControl in Control.Controls) {
-					IRawElementProviderSimple childProvider =
+					FragmentControlProvider childProvider =
 						CreateProvider (childControl);
 					
 					if (childControl == null)
@@ -90,11 +118,9 @@ namespace Mono.UIAutomation.Winforms
 					// TODO: Null check, compound, etc?
 
 					componentProviders [childControl] = childProvider;
-					
-					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded, 	 
-					                                   (IRawElementProviderFragment) childProvider);
-					
-			
+					OnNavigationChildAdded (true,
+					                        (FragmentControlProvider) childProvider);
+
 					// TODO: Figure out exactly when to do this (talk to bridge guys)
 					CheckForRadioButtonChild (childProvider);
 				}
@@ -103,42 +129,76 @@ namespace Mono.UIAutomation.Winforms
 		
 		public virtual void FinalizeChildControlStructure ()
 		{
-			// HACK: This is just to make sure control providers
-			//       aren't sent to bridge until the parent's already
-			//       there.  There are about 100 ways to do this
-			//       better.
-			foreach (SimpleControlProvider childProvider in componentProviders.Values)
-				childProvider.Terminate ();
+			foreach (FragmentControlProvider childProvider in componentProviders.Values)
+				OnNavigationChildRemoved (false, 
+				                          (FragmentControlProvider) childProvider);
 
 			componentProviders.Clear ();
 		}
 		
-#endregion
+		#endregion
 		
-#region Private Event Handlers
+		#region Protected Methods
+
+		protected virtual void OnNavigationChildAdded (bool raiseEvent, 
+		                                               FragmentControlProvider childProvider)
+		{
+			childProvider.Navigation = NavigationFactory.CreateNavigation (childProvider, this);
+			childProvider.Navigation.Initialize ();
+
+			//WE MUST GENERATE THIS EVENT before initializing its children
+			if (NavigationChildAdded != null)
+				NavigationChildAdded (this, 
+				                      new NavigationEventArgs (raiseEvent, 
+				                                               StructureChangeType.ChildAdded, 
+				                                               childProvider));			
+			if (childProvider is FragmentRootControlProvider)
+				((FragmentRootControlProvider) childProvider).InitializeChildControlStructure ();			
+
+			children.Add (childProvider);
+		}
+		
+		protected virtual void OnNavigationChildRemoved (bool raiseEvent, 
+		                                                 FragmentControlProvider childProvider)
+		{
+			if (NavigationChildRemoved != null)
+				NavigationChildRemoved (this,
+				                        new NavigationEventArgs (raiseEvent, 
+				                        StructureChangeType.ChildRemoved, 
+				                                                 childProvider));
+			childProvider.Navigation.Terminate ();
+			childProvider.Navigation = null;
+			children.Remove (childProvider);
+		}
+			
+		protected virtual void OnNavigationChildrenClear (bool raiseEvent)
+		{
+			if (NavigationChildrenClear != null)
+				NavigationChildrenClear (this,
+				                         new NavigationEventArgs (raiseEvent, 
+				                                                  StructureChangeType.ChildrenReordered, 
+				                                                  null));
+		}
+               
+		#endregion
+		
+		#region Private Methods: Event Handlers
 	
 		private void OnControlAdded (object sender, ControlEventArgs args)
 		{
 			Console.WriteLine ("ControlAdded: " + args.Control.GetType ().ToString ());
 			
 			Control childControl = args.Control;
-			IRawElementProviderSimple childProvider =
-				CreateProvider (childControl);
+			FragmentControlProvider childProvider = CreateProvider (childControl);
 			if (childProvider == null)
 				return;
 
-                        componentProviders [childControl] = childProvider;
-
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-			                                   (IRawElementProviderFragment) childProvider);
+			componentProviders [childControl] = childProvider;	
+			OnNavigationChildAdded (true, 
+			                        (FragmentControlProvider) childProvider);
 			
 			// TODO: Figure out exactly when to do this (talk to bridge guys)
 			CheckForRadioButtonChild (childProvider);
-			
-			FragmentRootControlProvider rootProvider =
-				childProvider as FragmentRootControlProvider;
-			if (rootProvider != null)
-				rootProvider.InitializeChildControlStructure ();
 		}
 	
 		private void OnControlRemoved (object sender, ControlEventArgs args)
@@ -146,10 +206,10 @@ namespace Mono.UIAutomation.Winforms
 			Console.WriteLine ("ControlRemoved: " + args.Control.GetType ().ToString ());
 			
 			bool radioButtonFound = false;
-			IRawElementProviderSimple removedProvider;
+			FragmentControlProvider removedProvider;
 			
 			if (componentProviders.TryGetValue (args.Control, out removedProvider) == true) {
-				foreach (IRawElementProviderSimple childProvider in componentProviders.Values) {
+				foreach (FragmentControlProvider childProvider in componentProviders.Values) {
 					if (childProvider != removedProvider &&
 					    (int) childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
 						radioButtonFound = true;
@@ -160,26 +220,24 @@ namespace Mono.UIAutomation.Winforms
 					SetBehavior (SelectionPatternIdentifiers.Pattern,
 					             null);
 				
+				// TODO: Some sort of disposal
+				
+				componentProviders.Remove (args.Control);
 				// StructureChangedEvent
 				// TODO: Use correct arguments, and fix bridge
 				//       to handle them!!!
 				//       Event source: Parent of removed child
 				//       runtimeId: The child that was removed.
 				//       (pg 6 of fxref_uiautomationtypes_p2.pdf)
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-				                                   (IRawElementProviderFragment)removedProvider);
-				
-				// TODO: Some sort of disposal
-				
-				componentProviders.Remove (args.Control);
-				
+				OnNavigationChildRemoved (true, 
+				                          (FragmentControlProvider) removedProvider);
 				ProviderFactory.ReleaseProvider (args.Control);
 			}
 		}
 
-#endregion
+		#endregion
 		
-#region Private Methods
+		#region Private Methods
 		
 		// If a child control is ControlType.RadioButton, this provider
 		// needs to provide SelectionPattern behavior.
@@ -195,19 +253,19 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-#endregion
+		#endregion
 
-#region Protected Methods
+		#region Protected Methods
 	
-		protected IRawElementProviderSimple CreateProvider (Control control)
+		protected FragmentControlProvider CreateProvider (Control control)
 		{
 			if (ErrorProviderProvider.InstancesTracker.IsControlFromErrorProvider (control))
 				return null;
 			
-			return ProviderFactory.GetProvider (control);
+			return (FragmentControlProvider) ProviderFactory.GetProvider (control);
 		}
 		
-		protected IRawElementProviderSimple GetProvider (Control control)
+		protected FragmentControlProvider GetProvider (Control control)
 		{
 			if (componentProviders.ContainsKey (control))
 				return componentProviders [control];
@@ -215,9 +273,9 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 		}
 		
-#endregion
+		#endregion
 
-#region IRawElementProviderFragmentRoot Interface
+		#region IRawElementProviderFragmentRoot Interface
 		
 		public virtual IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
@@ -235,14 +293,20 @@ namespace Mono.UIAutomation.Winforms
 			return null;
 		}
 		
-#endregion
+		#endregion
 		
-#region FragmentControlProvider Overrides
+		#region FragmentControlProvider Overrides
 
 		public override IRawElementProviderFragmentRoot FragmentRoot {
 			get { return this; }
 		}
 
-#endregion
+		#endregion
+		
+		#region Private Fields
+		
+		private List<FragmentControlProvider> children;
+		
+		#endregion
 	}
 }

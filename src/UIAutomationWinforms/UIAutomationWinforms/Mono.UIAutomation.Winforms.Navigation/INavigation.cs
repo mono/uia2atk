@@ -28,16 +28,13 @@ using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms.Navigation
 {
-
 	public interface INavigation
 	{
 		IRawElementProviderSimple Provider { get; }
 		
-		IRawElementProviderFragment GetNextSiblingProvider (NavigationChain chain);
-		
-		IRawElementProviderFragment GetPreviousSiblingProvider (NavigationChain chain);
-
 		IRawElementProviderFragment Navigate (NavigateDirection direction);
+		
+		void Initialize ();
 		
 		void Terminate ();
 	}

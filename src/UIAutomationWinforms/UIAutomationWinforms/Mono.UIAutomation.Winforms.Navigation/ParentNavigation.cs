@@ -22,51 +22,167 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
+using System.Collections.Generic;
+using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 	
-	internal abstract class ParentNavigation : SimpleNavigation
+	internal class ParentNavigation : SimpleNavigation
 	{
 
-#region Constructor
+		#region Constructor
 		
-		protected ParentNavigation (IRawElementProviderSimple provider)
-			: base (provider)
+		public ParentNavigation (FragmentRootControlProvider rootProvider,
+		                         FragmentRootControlProvider rootParentProvider)
+			: base (rootProvider)
 		{
 			chain = new NavigationChain ();
+			if (rootParentProvider != null)
+				this.parentNavigation = (ParentNavigation) rootParentProvider.Navigation;
 		}
 		
-#endregion
-		
-#region Public Properties
-		
-		public NavigationChain Chain {
-			get { return chain; }
+		public ParentNavigation (FragmentRootControlProvider rootProvider)
+			: this (rootProvider, null)
+		{
 		}
 		
-#endregion
+		#endregion
 		
-#region INavigable Interface
+		#region INavigable Interface
 		
 		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 		{
-			if (direction == NavigateDirection.FirstChild)
+			if (direction == NavigateDirection.Parent) 
+				return ProviderFactory.GetProvider (((FragmentRootControlProvider) Provider).Container);
+			else if (direction == NavigateDirection.FirstChild)
 				return chain.First == null ? null : (IRawElementProviderFragment) chain.First.Value.Provider;
 			else if (direction == NavigateDirection.LastChild)
 				return chain.Last == null ? null : (IRawElementProviderFragment) chain.Last.Value.Provider;
+			else if (direction == NavigateDirection.NextSibling && parentNavigation != null)
+				return parentNavigation.GetNextExplicitSiblingProvider (this);
+			else if (direction == NavigateDirection.PreviousSibling && parentNavigation != null) 
+				return parentNavigation.GetPreviousExplicitSiblingProvider (this);			
 			else
-				return base.Navigate (direction);
+				return null;
 		}
 
-#endregion
+		public override void Initialize ()
+		{
+			FragmentRootControlProvider rootProvider = (FragmentRootControlProvider) Provider;
+			
+			foreach (FragmentControlProvider child in rootProvider)
+				AddLast (child.Navigation);
+			
+			rootProvider.NavigationChildAdded += new NavigationEventHandler (OnNavigationChildAdded);
+			rootProvider.NavigationChildRemoved += new NavigationEventHandler (OnNavigationChildRemoved);
+			rootProvider.NavigationChildrenClear += new NavigationEventHandler (OnNavigationChildrenClear);
+		}
+
+		public override void Terminate ()
+		{		
+			((FragmentRootControlProvider) Provider).NavigationChildAdded -= new NavigationEventHandler (OnNavigationChildAdded);
+			((FragmentRootControlProvider) Provider).NavigationChildRemoved -= new NavigationEventHandler (OnNavigationChildRemoved);
+			((FragmentRootControlProvider) Provider).NavigationChildrenClear -= new NavigationEventHandler (OnNavigationChildrenClear);
+		}
 		
-#region Private Fields
+		#endregion
+
+		#region Public Methods
+		
+		public IRawElementProviderFragment GetNextExplicitSiblingProvider (INavigation navigation)
+		{
+			if (chain.Contains (navigation) == true) {
+				LinkedListNode<INavigation> nextNode = chain.Find (navigation).Next;
+				if (nextNode == null)
+					return null;
+				else
+					return (IRawElementProviderFragment) nextNode.Value.Provider;
+			} else
+				return null;
+		}
+		
+		public IRawElementProviderFragment GetPreviousExplicitSiblingProvider (INavigation navigation)
+		{
+			if (chain.Contains (navigation) == true) {
+				LinkedListNode<INavigation> previousNode = chain.Find (navigation).Previous;
+				if (previousNode == null)
+					return null;
+				else
+					return (IRawElementProviderFragment) previousNode.Value.Provider;
+			} else
+				return null;
+		}
+		
+		public void AddAfter (INavigation after, INavigation navigation)
+		{
+			chain.AddAfter (chain.Find (after), navigation);
+		}
+		
+		public void AddLast (INavigation navigation)
+		{
+			chain.AddLast (navigation);
+		}
+		
+		public void AddFirst (INavigation navigation)
+		{
+			chain.AddFirst (navigation);
+		}
+		
+		public void Remove (INavigation navigation)
+		{
+			chain.Remove (navigation);
+		}
+
+		#endregion
+		
+		#region Private Fields
+		
+		private void OnNavigationChildAdded (FragmentControlProvider parentProvider,
+		                                     NavigationEventArgs args)
+		{
+			System.Console.WriteLine ("ParentNavigation.ADDED IN Type: {0} - {1}", 
+			                          GetType (),
+			                          args.ChildProvider.GetType ());
+			AddLast (args.ChildProvider.Navigation);
+
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded, 
+			                                   args.ChildProvider);
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+			                                   parentProvider);
+		}
+		
+		private void OnNavigationChildRemoved (FragmentControlProvider parentProvider,
+		                                       NavigationEventArgs args)
+		{
+			System.Console.WriteLine ("ParentNavigation.REMOVED IN Type: {0}", GetType ());
+			Remove (args.ChildProvider.Navigation);
+
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved, 
+			                                   args.ChildProvider);
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+			                                   parentProvider);
+		}
+		
+		private void OnNavigationChildrenClear (FragmentControlProvider parentProvider,
+		                                        NavigationEventArgs args)
+		{
+			chain.Clear ();
+			//TODO: Generate this event?
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenBulkRemoved, 
+			                                   parentProvider);
+			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+			                                   parentProvider);
+		}
+		
+		#endregion
+		
+		#region Private Fields
 		
 		private NavigationChain chain;
+		private ParentNavigation parentNavigation;
 		
-#endregion
+		#endregion
 	}
 }

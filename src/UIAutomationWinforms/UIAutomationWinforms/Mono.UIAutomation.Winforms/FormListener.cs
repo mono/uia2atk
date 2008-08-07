@@ -30,6 +30,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -116,9 +117,11 @@ namespace Mono.UIAutomation.Winforms
 			// of the new form.
 			WindowProvider provider = (WindowProvider)
 				ProviderFactory.GetProvider (f,
-				                             true,
-				                             false);
+				                             true);
 			formProviders [f] = provider;
+			//Initialize navigation to let children use it
+			provider.Navigation = NavigationFactory.CreateNavigation (provider);
+			provider.Navigation.Initialize ();
 			
 			// TODO: Fill in rest of eventargs
 			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
