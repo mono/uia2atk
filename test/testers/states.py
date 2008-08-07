@@ -203,14 +203,17 @@ VISITED = "visited"
 
 #list Button's all states
 class Button(object):
-    states = (ENABLED,SELECTABLE,SENSITIVE)
+    states = (SHOWING,ENABLED,SELECTABLE,SENSITIVE)
+
+class Label(object):
+    states = (SHOWING,MULTI_LINE)
 
 class CheckBox(Button):
     pass
 
 class VScrollBar(object):
-    states = (VERTICAL)
+    states = (SHOWING,VERTICAL)
 
 class HScrollBar(object):
-    states = (HORIZONTAL)
+    states = (SHOWING,HORIZONTAL)
 

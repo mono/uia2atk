@@ -1,3 +1,7 @@
+2008-08-06  Calen Chen <cachen@novell.com>
+
+	* testers/states.py: add showing state to the list
+
 2008-08-06  Ray Wang <rawang@novell.com>
 
 	* samples/numericupdown.py: add label to display the value of NumericUpDown.
