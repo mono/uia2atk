@@ -39,13 +39,20 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	public abstract class BaseProviderTest
 	{
 	
-#region Protected Fields
+		#region Protected Fields
 		
 		protected MockBridge bridge;
 		
-#endregion
+		#endregion
 		
-#region Setup/Teardown
+		#region Private Fields
+		
+		private Form form;
+		private IRawElementProviderFragmentRoot windowProvider;
+		
+		#endregion
+		
+		#region Setup/Teardown
 		
 		[SetUp]
 		public virtual void SetUp ()
@@ -60,6 +67,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			bridgeField.SetValue (null, bridge);
 			
 			bridge.ClientsAreListening = true;
+			
+			form = new Form ();
 		}
 		
 		[TearDown]
@@ -69,11 +78,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			FieldInfo bridgeField =
 				interopProviderType.GetField ("bridge", BindingFlags.NonPublic | BindingFlags.Static);
 			bridgeField.SetValue (null, null);
+			
+			form.Dispose ();
+			windowProvider = null;
 		}
+
+		#endregion
 		
-#endregion
-		
-#region Basic Tests
+		#region Basic Tests
 		
 		[Test]
 		public virtual void IsEnabledPropertyTest ()
@@ -203,15 +215,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              name2);
 		}
 		
-#endregion
+		#endregion
 		
-#region Abstract Members
+		#region Abstract Members
 	
 		protected abstract Control GetControlInstance ();
 
-#endregion
+		#endregion
 	
-#region Protected Helper Methods
+		#region Protected Helper Methods
 		
 		protected void TestProperty (IRawElementProviderSimple provider,
 		                           AutomationProperty property,
@@ -222,7 +234,26 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 property.ProgrammaticName);
 		}
 		
-#endregion
+		protected IRawElementProviderFragment WindowProvider {
+			get { return windowProvider; }
+		}
+		
+		protected Form Form {
+			get { return form; }
+		}
+		
+		protected IRawElementProviderFragment GetProviderFromControl (Control control)
+		{
+			form.Controls.Add (control);
+			form.Size = new System.Drawing.Size (400, 400);
+			form.Show ();
+			
+			windowProvider = (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (form);
+			
+			return windowProvider.Navigate (NavigateDirection.FirstChild);
+		}
+		
+		#endregion
 		
 	}
 	

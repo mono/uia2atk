@@ -38,7 +38,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	public class ComboBoxProviderTest : BaseProviderTest
 	{
 	
-#region Tests
+		#region Tests
 		
 		[Test]
 		public void BasicPropertiesTest ()
@@ -70,9 +70,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              true);			              
 		}
 
-#endregion
+		#endregion
 		
-#region Navigation Test
+		#region Navigation Test
 		
 		[Test]
 		public void NavigateSingleTest ()
@@ -91,7 +91,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderSimple []selection;
 			ISelectionProvider selectionProvider;
 
-			rootProvider = (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (combobox);
+			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (combobox);
 			
 			//By default the ComboBox doesn't have any selected item, so
 			//selection isn't required
@@ -101,22 +101,40 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			selection = selectionProvider.GetSelection ();
 			Assert.IsNull (selection, "selection is null");
-
-			//FirstChild is Edit
-			firstChild = rootProvider.Navigate (NavigateDirection.FirstChild);
-			Assert.AreEqual (ControlType.Edit.Id,
-			                 firstChild.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
-			                 "Should be List");
 			
-			//SeconChild is List
-			secondChild = firstChild.Navigate (NavigateDirection.NextSibling);
-			Assert.IsNotNull (secondChild, "secondChild is null");
-			Assert.AreEqual (ControlType.List.Id,
-			                 secondChild.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
-			                 "Should be Button");
+			//Testin children
 			
+			bool withList = false;
+			bool withEdit = false;
+			bool withButton = false;
+			IRawElementProviderFragment child;
+			IRawElementProviderFragment editChild = null;
+			IRawElementProviderFragment listChild = null;
+			IRawElementProviderFragment buttonChild = null;
+			
+			child = rootProvider.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.Edit.Id) {
+					editChild = child;
+					withEdit = true;
+				} else if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.List.Id) {
+					listChild = child;
+					withList = true;
+				} else if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.Button.Id) {
+					buttonChild = child;
+					withButton = true;
+				}
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.IsTrue (withEdit, "We should have a Edit Control Type.");
+			Assert.IsTrue (withList, "We should have a List Control Type.");
+			Assert.IsTrue (withButton, "We should have a Button Control Type.");
+					
 			//No items in internal collection
-			firstItem = secondChild.Navigate (NavigateDirection.FirstChild);
+			firstItem = listChild.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNull (firstItem, "FirstChild must be null");
 			
 			//Once we have a selected item, selection is required.
@@ -127,51 +145,51 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			selection = selectionProvider.GetSelection ();
 			Assert.IsNotNull (selection, "selection is not null");
-			
-			firstItem = secondChild.Navigate (NavigateDirection.FirstChild);
+
+			firstItem = listChild.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNotNull (firstItem, "FirstChild must not be null");
-			
+
 			secondItem = firstItem.Navigate (NavigateDirection.NextSibling);
 			Assert.IsNull (secondItem, "There isn't a second child");
-			
+
 			combobox.Items.Add ("1");
 			secondItem = firstItem.Navigate (NavigateDirection.NextSibling);
 			Assert.IsNotNull (secondItem, "There is a second child");
 			
 			parent = firstItem.Navigate (NavigateDirection.Parent);
-			Assert.AreEqual (secondChild, parent, "Parent - FirstItem");
-			
+			Assert.AreEqual (listChild, parent, "Parent - FirstItem");
+
 			parent = secondItem.Navigate (NavigateDirection.Parent);
-			Assert.AreEqual (secondChild, parent, "Parent - SecondItem");
+			Assert.AreEqual (listChild, parent, "Parent - SecondItem");
+
+			thirdItem = secondItem.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNull (thirdItem, "There is no third item");
+
+			//Lest navigate from second to first
+			Assert.AreEqual (firstItem,
+			                 secondItem.Navigate (NavigateDirection.PreviousSibling),
+			                 "secondChild.Navigate (PreviousSibling)");
 			
-//			thirdItem = secondItem.Navigate (NavigateDirection.NextSibling);
-//			Assert.IsNull (thirdItem, "There is no third item");
-//
-//			//Lest navigate from second to first
-//			Assert.AreEqual (firstItem,
-//			                 secondItem.Navigate (NavigateDirection.PreviousSibling),
-//			                 "secondChild.Navigate (PreviousSibling)");
-//			
-//			//Remove second
-//			combobox.Items.RemoveAt (1);
-//			secondItem = firstItem.Navigate (NavigateDirection.NextSibling);
-//			Assert.IsNull (secondItem, "There isn't a second child");			
-//			
-//			firstItem = firstChild.Navigate (NavigateDirection.FirstChild);
-//			Assert.IsNotNull (firstItem, "FirstChild must not be null");
+			//Remove second
+			combobox.Items.RemoveAt (1);
+			secondItem = firstItem.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNull (secondItem, "There isn't a second child");			
+			
+			firstItem = listChild.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (firstItem, "FirstChild must not be null");
 
 			//TODO: Add more tests
 		}
 		
-#endregion
+		#endregion
 		
-#region BaseProviderTest Overrides
+		#region BaseProviderTest Overrides
 
 		protected override Control GetControlInstance ()
 		{
 			return new ComboBox ();
 		}
 		
-#endregion
+		#endregion
 	}
 }

@@ -38,7 +38,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	public class ListBoxProviderTest : BaseProviderTest
 	{
 		
-#region Tests
+		#region Tests
 		
 		[Test]
 		public void BasicPropertiesTest ()
@@ -81,10 +81,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			listbox.Items.Add ("test");
 			
 			IRawElementProviderFragmentRoot rootProvider;
+			IRawElementProviderFragmentRoot windowProvider;
 			ISelectionProvider selectionProvider;
 			IRawElementProviderFragment child;
-			
-			rootProvider = (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listbox);
+
+			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (listbox);
+
 			selectionProvider = (ISelectionProvider) rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
 			child = rootProvider.Navigate (NavigateDirection.FirstChild);
 			
@@ -109,14 +111,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              true);
 		}
 		
-#endregion
+		#endregion
 		
-#region Navigate Tests
+		#region Navigate Tests
 		
 		[Test]
 		public void NavigateMultipleTest ()
 		{
 			ListBox listbox = (ListBox) GetControlInstance ();
+			listbox.Size = new System.Drawing.Size (300, 300);
+
 			IRawElementProviderFragmentRoot rootProvider;
 			ISelectionProvider selectionProvider;
 			IRawElementProviderFragment firstChild;
@@ -133,8 +137,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				listbox.Items.Add (string.Format ("Element: {0}", index));
 			index = 0;
 			
-			rootProvider 
-				= (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listbox);
+			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (listbox);
 			selectionProvider 
 				= (ISelectionProvider) rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
 
@@ -175,7 +178,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			bridge.ResetEventLists ();
 			
-			rootProvider = (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listbox);
+			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (listbox);
 			
 			//By default the ListBox doesn't have any selected item, so
 			//selection isn't required 
@@ -260,101 +263,97 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 		}
 		
-#endregion
-		
-		
-#region ScrollBar internal widgets Test
+		#endregion
+
+		#region ScrollBar internal widgets Test
 
 		[Test]
 		public void ScrollBarTest ()
 		{
-			using (Form f = new Form ()) {
-				f.Size = new System.Drawing.Size (500, 500);
+			IRawElementProviderFragmentRoot provider;
+			IRawElementProviderFragment parent = null;
+			IRawElementProviderFragment scrollBar = null;
+			IRawElementProviderFragment child = null;
+			
+			ListBox listbox = (ListBox) GetControlInstance ();
+			listbox.Location = new System.Drawing.Point (3, 3);
+			listbox.Size = new System.Drawing.Size (100, 50);
+			provider = (IRawElementProviderFragmentRoot) GetProviderFromControl (listbox);
+			
+			//We should show the ScrollBar
+			for (int index = 20; index > 0; index--) {
+				listbox.Items.Add (string.Format ("Element {0}", index));
+			}
+			
+			//WE DON'T KNOW THE ORDER OF NAVIGATION
+			//However we know that we have "somewhere" one Vertical Scrollbar
+			
+			bool scrollbarFound = false;
+			
+			child = provider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (child, "FirstChild must not be null");
+			while (child != null) {
 				
-				ListBox listbox = new ListBox ();
-				listbox.Location = new System.Drawing.Point (3, 3);
-				listbox.Size = new System.Drawing.Size (100, 30);
-
-				f.Controls.Add (listbox);
-
-				//We should show the ScrollBar
-				for (int index = 20; index > 0; index--) {
-					listbox.Items.Add (string.Format ("Element {0}", index));
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.ScrollBar.Id
+					&& (OrientationType) child.GetPropertyValue (AutomationElementIdentifiers.OrientationProperty.Id) == OrientationType.Vertical) {
+					scrollbarFound = true;
+					scrollBar = child;
 				}
 				
-				f.Load += delegate (object sender, EventArgs args) {
-					System.Threading.Thread.Sleep (500);
-					IRawElementProviderFragmentRoot provider;
-					//ISelectionProvider selectionProvider;
-					IRawElementProviderFragment scrollbarChild;
-					IRawElementProviderFragment firstChild;
-					IRawElementProviderFragment lastChild;
-					IRawElementProviderFragment buttonChild;
-	
-					provider 
-						= (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listbox);
-					
-					//Should return a ScrollBar, because we have added many items
-					scrollbarChild = provider.Navigate (NavigateDirection.FirstChild);
-					Assert.IsNotNull (scrollbarChild, "FirstChild must not be null");
-					
-					Assert.AreEqual (ControlType.ScrollBar.Id,
-					                 scrollbarChild.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
-					                 "scrollbarChild Control Type must be Scroll.");
+				//ALL elements must have same parent
+				parent = child.Navigate (NavigateDirection.Parent);
+				Assert.AreEqual (provider, parent, "Parents are different");
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			
+			//ScrollBar Tests
+			
+			Assert.IsTrue (scrollbarFound, "ScrollBar not found");
+			
+			int children = 0;
+			
+			child = scrollBar.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				parent = child.Navigate (NavigateDirection.Parent);
+				Assert.AreEqual (scrollBar, parent, "ScrollBar. Parents are different");
+				child = child.Navigate (NavigateDirection.NextSibling);
+				children++;
+			}
+			
+			Assert.AreEqual (5, children, "ScrollBar's children must be 5");
+			
 
-					buttonChild = scrollbarChild.Navigate (NavigateDirection.FirstChild);
-					Assert.IsNotNull (buttonChild , "buttonChild must not be null");
-					
-					Assert.AreEqual (ControlType.Button.Id,
-					                 buttonChild.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
-					                 "buttonChild Control Type must be Buttoon.");
-					
-					
-					//Clearing elements should hide scroll
-					listbox.Items.Clear ();
-					firstChild = provider.Navigate (NavigateDirection.FirstChild);
-					Assert.IsNull (firstChild, "Shouldn't be any children");
-					
-					listbox.Items.Add (1);
-					firstChild = provider.Navigate (NavigateDirection.FirstChild);
-					Assert.IsNotNull (firstChild, "Should be a child");
-					
-					Assert.AreEqual (ControlType.ListItem.Id,
-					                 firstChild.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
-					                 "Item should be ListItem");
-					
-					listbox.Items.Add (2);
-					lastChild = provider.Navigate (NavigateDirection.LastChild);
-					Assert.IsNotNull (lastChild, "lastChild shouldn't be null");
-					
-					Assert.AreEqual (lastChild,
-					                 firstChild.Navigate (NavigateDirection.NextSibling),
-					                 "lastChild = firstChild.NextSibling");
-					
-					//Having this doesn't mean we can navigate it
-					listbox.Items.RemoveAt (1);
-					listbox.ScrollAlwaysVisible = true;
-					Assert.AreEqual (firstChild, 
-					                 provider.Navigate (NavigateDirection.FirstChild),
-					                 "First child should be the same");
-					
-					f.Close ();
-				};
+			//Clearing elements should hide scroll and delete all items.
+			listbox.Items.Clear ();
 
-				Application.Run (f);
+			child = provider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNull (child, "Shouldn't be any children");
+
+			//This won't add scrollbar
+			listbox.Items.Add (1);
+			listbox.Items.Add (2);
+			child = provider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (child, "Should be a child");
+
+			//Children MUST BE ListItem
+			while (child != null) {
+				Assert.AreEqual (ControlType.ListItem.Id,
+				                 child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
+				                 "Item should be ListItem");
+				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 		}
 		
-#endregion
+		#endregion
 
-#region BaseProviderTest Overrides
+		#region BaseProviderTest Overrides
 
 		protected override Control GetControlInstance ()
 		{
 			return new ListBox ();
 		}
 		
-#endregion
+		#endregion
 	
 	}
 }

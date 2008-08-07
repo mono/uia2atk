@@ -1,3 +1,14 @@
+2008-08-07  Mario Carrion <mcarrion@novell.com> 
+
+	* ComboBoxProviderTest.cs, ScrollBarProviderTest.cs,
+	  ListBoxProviderTest.cs, RadioButtonProviderTest.cs: Updated to
+	  navigation changes.
+	* BaseProviderTest.cs: Updated due to Navigation refactoring. All the
+	  controls are added to a Form before running the test.
+	* UIAutomationWinformsTests.mdp, Makefile.am: File added:
+	  CheckedListBoxProviderTest.cs.
+	* CheckedListBoxProviderTest.cs: Test added.
+
 2008-07-30  Mario Carrion <mcarrion@novell.com> 
 
 	* PictureBoxTest.cs: File added.

@@ -218,10 +218,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		[Test]
 		public void SelectionContainerTest ()
-		{
-			Form f = new Form ();
-			
-			IRawElementProviderSimple formProvider = ProviderFactory.GetProvider (f);
+		{		
+			IRawElementProviderSimple formProvider = WindowProvider;
 			
 			RadioButton r1 = new RadioButton ();
 			r1.Checked = false;
@@ -229,10 +227,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			RadioButton r2 = new RadioButton ();
 			r2.Checked = false;
 			
-			f.Controls.Add (r1);
-			f.Controls.Add (r2);
+			Form.Controls.Add (r1);
+			Form.Controls.Add (r2);
 			
 			IRawElementProviderSimple provider1 = ProviderFactory.GetProvider (r1);
+			
 			ISelectionItemProvider selectionItem1 = (ISelectionItemProvider)
 				provider1.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
 			

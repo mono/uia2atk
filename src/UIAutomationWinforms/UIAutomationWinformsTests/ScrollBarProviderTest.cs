@@ -37,8 +37,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	[TestFixture]
 	public class ScrollBarProviderTest : BaseProviderTest
 	{
-		
-
 		#region Basic Tests
 		
 		[Test]
@@ -95,11 +93,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void NavigationTest ()
 		{
 			ScrollBar scrollbar = (ScrollBar) GetControlInstance ();
-			IRawElementProviderFragment provider = ProviderFactory.GetProvider (scrollbar);
-			
-			Assert.AreEqual (null,
-			                 provider.Navigate (NavigateDirection.Parent),
-			                 "Parent should be null");
+			IRawElementProviderFragment provider = GetProviderFromControl (scrollbar);
 			
 			Assert.AreEqual (null,
 			                 provider.Navigate (NavigateDirection.NextSibling),

@@ -56,6 +56,7 @@ FILES =  \
 	BaseProviderTest.cs \
 	ButtonProviderTest.cs \
 	CheckBoxProviderTest.cs \
+	CheckedListBoxProviderTest.cs \
 	ComboBoxProviderTest.cs \
 	GroupBoxProviderTest.cs \
 	LabelProviderTest.cs \
