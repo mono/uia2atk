@@ -37,7 +37,7 @@ namespace UiaAtkBridge
 			get {
 				if (childrenHolder == null) {
 					IRawElementProviderFragment child = provider.Navigate (NavigateDirection.FirstChild);
-					do {
+					while (child != null) {
 						if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
 						  == ControlType.List.Id) 
 							break;
@@ -56,6 +56,8 @@ namespace UiaAtkBridge
 				List<string> children = new List<string> ();
 				
 				//Get List child
+				if (childrenHolder == null)
+					return children.ToArray();
 				IRawElementProviderFragment child = ChildrenHolder.Navigate (NavigateDirection.FirstChild);
 				do {
 					children.Add ((string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
@@ -105,7 +107,7 @@ namespace UiaAtkBridge
 			
 			bool canFocus = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
 			if (canFocus)
-				states.AddState (Atk.StateType.Selectable);
+				states.AddState (Atk.StateType.Focusable);
 			else
 				states.RemoveState (Atk.StateType.Selectable);
 			

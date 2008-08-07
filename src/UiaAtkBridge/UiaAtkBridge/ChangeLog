@@ -1,5 +1,9 @@
 2008-08-07 Mike Gorse <mgorse@novell.com>
 
+	* ComboBox.cs: Avoid crashing if children haven't been initialized yet
+
+2008-08-07 Mike Gorse <mgorse@novell.com>
+
 	* List.cs: Derive from ComponentParentAdapter; add RaiseStructureChangedEvent
 
 2008-08-06 Mike Gorse <mgorse@novell.com>
