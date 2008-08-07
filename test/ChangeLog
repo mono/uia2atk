@@ -1,3 +1,21 @@
+2008-08-07  Calen Chen <cachen@novell.com>
+
+	* testers/states.py: modify some states with '-' to link two word.
+	* testers/label: add new test code for label
+	* testers/label/labelframe.py: add new test code for label
+	* testers/label/__init__.py: add new test code for label
+	* testers/label_basic_ops.py: add new test code for label
+	* testers/button/__init__.py: delete line 41-43 comments, now each 
+	control have 'showing' state
+	* testers/scrollbar/__init__.py: delete line 41-43 comments
+	* testers/scrollbar/scrollbarframe.py: add for-loop in statesCheck()
+	* testers/checkbox/__init__.py: delete line 41-43 comments
+	* testers/radiobutton/__init__.py: delete line 41-43 comments
+	* testers/hscrollbar/__init__.py: delete line 41-43 comments
+	* testers/hscrollbar/hscrollbarframe.py: add for-loop in statesCheck()
+	* testers/vscrollbar/__init__.py: delete line 41-43 comments
+	* testers/vscrollbar/vscrollbarframe.py: add for-loop in statesCheck()
+
 2008-08-06  Calen Chen <cachen@novell.com>
 
 	* testers/states.py: add showing state to the list

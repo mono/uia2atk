@@ -38,9 +38,6 @@ def launchHScrollBar(exe=None):
     return hscrollbar
 
 # class to represent the application
-# because now program can't show winforms applicantion items 'showing' state,
-# before runing this test, we should change 'x.showing' to 'not x.showing' in 
-# accessibles.py line 180. remember to revert it after program improving
 class HScrollBar(accessibles.Application):
     #checkShowing=False
     def __init__(self, accessible, subproc=None): 

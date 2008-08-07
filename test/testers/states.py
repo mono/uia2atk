@@ -63,7 +63,7 @@ ICONIFIED = "iconified"
 MODAL = "modal"
 
 # Indicates this (text) object can contain multiple lines of text
-MULTI_LINE = "multi line"
+MULTI_LINE = "multi_line"
 
 #Indicates this object allows more than one of its children to be selected at
 # the same time, or in the case of text objects, that the object supports
@@ -104,7 +104,7 @@ SENSITIVE = "sensitive"
 SHOWING = "showing"
 
 # Indicates this (text) object can contain only a single line of text
-SINGLE_LINE = "single line"
+SINGLE_LINE = "single_line"
 
 # Indicates that the information returned for this object may no longer be
 # synchronized with the application state. This is implied if the object has
@@ -136,7 +136,7 @@ VISIBLE = "visible"
 # to listening clients, for instance notifications of visibility changes and
 # activation of their contained child objects, without the client having
 # previously requested references to those children.
-MANAGES_DESCENDANTS = "manages descendants"
+MANAGES_DESCENDANTS = "manages_descendants"
 
 # Indicates that a check box is in a state other than checked or not checked.
 # This usually means that the boolean value reflected or controlled by the
@@ -160,7 +160,7 @@ REQUIRED = "required"
 # Indicates that the object has encountered an error condition due to failure
 # of input validation. For instance, a form control may acquire this state in
 # response to invalid or malformed user input.
-INVALID_ENTRY = "invalid entry"
+INVALID_ENTRY = "invalid_entry"
 
 # Indicates that the object in question implements some form of "typeahead" or
 # pre-selection behavior whereby entering the first character of one or more
@@ -171,7 +171,7 @@ INVALID_ENTRY = "invalid entry"
 # behavior may result in full or partial "completion" of the data in the input
 # field, in which case these input events may trigger text-changed events from
 # the AtkText interface. This state supplants ATK_ROLE_AUTOCOMPLETE.
-SUPPORTS_AUTOCOMPLETION = "supports autocompletion"
+SUPPORTS_AUTOCOMPLETION = "supports_autocompletion"
 
 # Indicates that the object in question supports text selection. It should only
 # be exposed on objects which implement the Text interface, in order to
@@ -179,7 +179,7 @@ SUPPORTS_AUTOCOMPLETION = "supports autocompletion"
 # object in question is a selectable child of an object which implements
 # Selection. While similar, text selection and subelement selection are
 # distinct operations.
-SELECTABLE_TEXT = "selectable text"
+SELECTABLE_TEXT = "selectable_text"
 
 # Indicates that the object is the "default" active component, i.e. the object
 # which is activated by an end-user press of the "Enter" or "Return" key.
