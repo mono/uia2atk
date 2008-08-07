@@ -31,7 +31,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class List : ComponentAdapter, Atk.SelectionImplementor
+	public class List : ComponentParentAdapter, Atk.SelectionImplementor
 	{
 		private IRawElementProviderFragmentRoot		provider;
 		private ISelectionProvider					selectionProvider;
@@ -264,6 +264,11 @@ AtkObject,
 			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
 				Name = (string)e.NewValue;
 			}
+		}
+
+		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
+		{
+			//TODO
 		}
 	}
 }
