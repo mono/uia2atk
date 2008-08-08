@@ -70,12 +70,12 @@ namespace UiaAtkBridge
 		
 		public void AddOneChild (Adapter child)
 		{
-			Console.WriteLine ("AddOneChild");
+			Console.WriteLine ("AddOneChild: " + Role + " -> " + child.Role);
 			this.Parent = null;
 			lock (syncRoot) {
 				children.Add (child);
-				child.Parent = this;
 			}
+			child.Parent = this;
 			try {
 				EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Add, (uint)(children.Count - 1), child);
 			}
