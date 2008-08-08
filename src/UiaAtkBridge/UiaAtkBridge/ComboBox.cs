@@ -207,17 +207,17 @@ namespace UiaAtkBridge
 
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			throw new NotImplementedException ();
+			// TODO
 		}
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			throw new NotImplementedException ();
+			// TODO
 		}
 		
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
-			throw new NotImplementedException ();
+			// TODO
 		}
 	}
 }

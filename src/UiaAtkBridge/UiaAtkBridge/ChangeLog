@@ -1,3 +1,7 @@
+2008-08-08 Mike Gorse <mgorse@novell.com>
+
+	* ComboBox.cs: Remove NotImplementedException for events
+
 2008-08-07 Mike Gorse <mgorse@novell.com>
 
 	* ComboBox.cs: Avoid crashing if children haven't been initialized yet
