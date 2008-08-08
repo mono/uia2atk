@@ -1,3 +1,8 @@
+2008-08-08  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs: Fixed
+	  if/else-if sequence. Not throwing exception.
+
 2008-08-07  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Commented

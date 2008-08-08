@@ -55,14 +55,12 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			ListItemProvider litem;
 			ErrorProviderProvider err;
 			WindowProvider win;
-
+			
 			if ((win = provider as WindowProvider) != null)
 				navigation = new ParentNavigation (win);
-			if (provider is FragmentRootControlProvider)
+			else if (provider is FragmentRootControlProvider)
 				navigation = new ParentNavigation ((FragmentRootControlProvider) provider, 
 				                                   rootProvider);	
-			else if ((litem = provider as ListItemProvider) != null)
-				throw new ArgumentException ();
 			else if ((err = provider as ErrorProviderProvider) != null)
 				navigation = new ErrorProviderNavigation (err);
 			else
