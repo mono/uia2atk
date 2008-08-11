@@ -57,7 +57,7 @@ namespace UiaAtkBridgeTest
 			foreach (string item in names)
 				comboBox.Items.Add (item);
 			
-			UiaAtkBridge.ComboBox uiaComb = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (comboBox));
+			UiaAtkBridge.ComboBox uiaComb = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (comboBox, true, true));
 			accessible = uiaComb;
 			component = uiaComb;
 			selection = uiaComb;
@@ -121,7 +121,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.Label:
 				MWF.Label lab = new MWF.Label ();
 				lab.Text = name;
-				UiaAtkBridge.TextLabel uiaLab = new UiaAtkBridge.TextLabel (ProviderFactory.GetProvider (lab));
+				UiaAtkBridge.TextLabel uiaLab = new UiaAtkBridge.TextLabel (ProviderFactory.GetProvider (lab, true, true));
 				accessible = uiaLab;
 				text = uiaLab;
 				component = uiaLab;
@@ -129,7 +129,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.NormalButton:
 				MWF.Button but = new MWF.Button ();
 				but.Text = name;
-				UiaAtkBridge.Button uiaBut = new UiaAtkBridge.Button (ProviderFactory.GetProvider (but));
+				UiaAtkBridge.Button uiaBut = new UiaAtkBridge.Button (ProviderFactory.GetProvider (but, true, true));
 				accessible = uiaBut;
 				text = uiaBut;
 				component = uiaBut;
@@ -138,21 +138,21 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.Window:
 				MWF.Form frm = new MWF.Form ();
 				frm.Name = name;
-				UiaAtkBridge.Window uiaWin = new UiaAtkBridge.Window (ProviderFactory.GetProvider (frm));
+				UiaAtkBridge.Window uiaWin = new UiaAtkBridge.Window (ProviderFactory.GetProvider (frm, true, true));
 				accessible = uiaWin;
 				component = uiaWin;
 				break;
 			case BasicWidgetType.CheckBox:
 				MWF.CheckBox chk = new MWF.CheckBox ();
 				chk.Name = name;
-				UiaAtkBridge.CheckBox uiaChk = new UiaAtkBridge.CheckBox (ProviderFactory.GetProvider (chk));
+				UiaAtkBridge.CheckBox uiaChk = new UiaAtkBridge.CheckBox (ProviderFactory.GetProvider (chk, true, true));
 				accessible = uiaChk;
 				component = uiaChk;
 				action = uiaChk;
 				break;
 			case BasicWidgetType.RadioButton:
 				// the way to group radioButtons is dependent on their parent control
-				IRawElementProviderFragment prov = ProviderFactory.GetProvider (GiveMeARadio (name));
+				IRawElementProviderFragment prov = ProviderFactory.GetProvider (GiveMeARadio (name), true, true);
 				UiaAtkBridge.RadioButton uiaRad = new UiaAtkBridge.RadioButton (prov);
 				accessible = uiaRad;
 				component = uiaRad;
@@ -161,7 +161,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.StatusBar:
 				MWF.StatusBar sb = new MWF.StatusBar ();
 				sb.Text = name;
-				UiaAtkBridge.StatusBarWithGrid uiaSb = new UiaAtkBridge.StatusBarWithGrid (ProviderFactory.GetProvider (sb));
+				UiaAtkBridge.StatusBarWithGrid uiaSb = new UiaAtkBridge.StatusBarWithGrid (ProviderFactory.GetProvider (sb, true, true));
 				accessible = uiaSb;
 				component = uiaSb;
 				text = uiaSb;
@@ -169,14 +169,14 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.HScrollBar:
 				MWF.HScrollBar hsb = new MWF.HScrollBar ();
-				UiaAtkBridge.ScrollBar uiaHSb = new UiaAtkBridge.ScrollBar (ProviderFactory.GetProvider (hsb));
+				UiaAtkBridge.ScrollBar uiaHSb = new UiaAtkBridge.ScrollBar (ProviderFactory.GetProvider (hsb, true, true));
 				accessible = uiaHSb;
 				component = uiaHSb;
 				value = uiaHSb;
 				break;
 			case BasicWidgetType.VScrollBar:
 				MWF.VScrollBar vsb = new MWF.VScrollBar ();
-				UiaAtkBridge.ScrollBar uiaVSb = new UiaAtkBridge.ScrollBar (ProviderFactory.GetProvider (vsb));
+				UiaAtkBridge.ScrollBar uiaVSb = new UiaAtkBridge.ScrollBar (ProviderFactory.GetProvider (vsb, true, true));
 				accessible = uiaVSb;
 				component = uiaVSb;
 				value = uiaVSb;

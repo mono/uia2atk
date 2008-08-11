@@ -1,3 +1,7 @@
+2008-08-11  Mario Carrion <mcarrion@novell.com> 
+
+	* BridgeTester.cs: Updated to use third argument.
+
 2008-07-30 Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs, BridgeTester.cs, BasicWidgetType.cs:
