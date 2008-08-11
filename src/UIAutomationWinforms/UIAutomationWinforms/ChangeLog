@@ -1,5 +1,10 @@
 2008-08-11  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: New argument
+	  forzeInitializeChildren added, by default is set to false.
+
+2008-08-11  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs: Removed
 	  not needed variables.
 	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs: Raising

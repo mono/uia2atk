@@ -69,11 +69,18 @@ namespace Mono.UIAutomation.Winforms
 		
 		public static IRawElementProviderFragment GetProvider (Component component)
 		{
-			return GetProvider (component, true);
+			return GetProvider (component, true, false);
+		}
+		
+		public static IRawElementProviderFragment GetProvider (Component component,
+		                                                       bool initializeEvents)
+		{
+			return GetProvider (component, true, false);
 		}
 
 		public static IRawElementProviderFragment GetProvider (Component component,
-		                                                       bool initializeEvents)
+		                                                       bool initializeEvents,
+		                                                       bool forzeInitializeChildren)
 		{
 			Label l;
 			Button b;
@@ -168,6 +175,11 @@ namespace Mono.UIAutomation.Winforms
 				//Read comment in ReleaseProvider method for detailed information.
 				if (isComponentBased == true)
 					sharedComponents.Add (component, 1);
+				
+				FragmentRootControlProvider root;
+				if (forzeInitializeChildren == true
+				    && (root = provider as FragmentRootControlProvider) != null)
+					root.InitializeChildControlStructure ();
 				
 				return provider;
 			} else
