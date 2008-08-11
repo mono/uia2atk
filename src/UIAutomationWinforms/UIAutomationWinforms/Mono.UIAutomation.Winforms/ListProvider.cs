@@ -226,6 +226,8 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Private Methods: StructureChangedEvent
+		
+#pragma warning disable 169
 
 		private void OnChildAdded (object sender, int index)
 		{
@@ -244,6 +246,8 @@ namespace Mono.UIAutomation.Winforms
 			ClearItemsList ();
 			OnNavigationChildrenClear (true);
 		}
+		
+#pragma warning restore 169
 		
 		#endregion
 

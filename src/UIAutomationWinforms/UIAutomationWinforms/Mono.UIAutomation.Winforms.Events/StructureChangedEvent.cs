@@ -30,40 +30,34 @@ using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
-	// TODO: Should include? 
-	// ChildrenInvalidated, ChildrenBulkAdded, ChildrenBulkRemoved and 
-	// ChildrenReordered
+	//Namespace Mono.UIAutomation.Winforms.Navigation also uses StructureChangeType
 	internal class StructureChangedEvent : ProviderEvent
 	{
 		
-#region Constructor
+		#region Constructor
 
 		public StructureChangedEvent (IRawElementProviderSimple provider)
 			: base (provider)
 		{
 		}
 		
-#endregion
+		#endregion
 		
-#region IConnectable Overrides
+		#region IConnectable specialization
 
 		public override void Connect (Control control)
 		{
 			control.VisibleChanged += new EventHandler (OnStructureChangedEvent);
-			control.ControlAdded += new ControlEventHandler (OnStructureChangedEventAdd);
-			control.ControlRemoved += new ControlEventHandler (OnStructureChangedEventRemoved);
 		}
 
 		public override void Disconnect (Control control)
 		{
 			control.VisibleChanged -= new EventHandler (OnStructureChangedEvent);
-			control.ControlAdded -= new ControlEventHandler (OnStructureChangedEventAdd);
-			control.ControlRemoved -= new ControlEventHandler (OnStructureChangedEventRemoved);			
 		}
 		
-#endregion
+		#endregion
 		
-#region Protected Methods
+		#region Protected Methods
 		
 		protected void OnStructureChangedEvent (object sender, EventArgs e)
 		{
@@ -74,20 +68,8 @@ namespace Mono.UIAutomation.Winforms.Events
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
 				                                   (IRawElementProviderFragment) Provider);
 		}
-			
-		protected void OnStructureChangedEventAdd (object sender, ControlEventArgs e)
-		{
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-			                                   (IRawElementProviderFragment) Provider);
-		}
 		
-		protected void OnStructureChangedEventRemoved (object sender, ControlEventArgs e)
-		{
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-			                                   (IRawElementProviderFragment) Provider);
-		}
-		
-#endregion
+		#endregion
 
 	}
 }

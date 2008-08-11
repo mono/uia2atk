@@ -1,5 +1,15 @@
 2008-08-11  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Using
+	  StructureChangedEvent.
+	* Mono.UIAutomation.Winforms/ListProvider.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs:
+	  Pragma added.
+	* Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs: Handling
+	  VisibleChanged event to generate ChildAdded and ChildRemoved.
+
+2008-08-11  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: New argument
 	  forzeInitializeChildren added, by default is set to false.
 

@@ -110,8 +110,8 @@ namespace Mono.UIAutomation.Winforms
 			          new AutomationHasKeyboardFocusPropertyEvent (this));
 			SetEvent (ProviderEventType.AutomationElementBoundingRectangleProperty,
 			          new AutomationBoundingRectanglePropertyEvent (this));
-//			SetEvent (ProviderEventType.StructureChangedEvent,
-//			          new StructureChangedEvent (this));
+			SetEvent (ProviderEventType.StructureChangedEvent,
+			          new StructureChangedEvent (this));
 		}
 		
 		public virtual void Terminate ()

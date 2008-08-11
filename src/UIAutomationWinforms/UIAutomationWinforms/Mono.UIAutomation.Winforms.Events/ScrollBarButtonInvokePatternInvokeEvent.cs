@@ -87,11 +87,15 @@ namespace Mono.UIAutomation.Winforms.Events
 			else //Should be ScrollBarButtonOrientation.SmallForward
 				return "LargeIncrementCalled";
 		}
+
+#pragma warning disable 169
 		
 		private void OnButtonClicked (object sender, EventArgs e)
 		{
 			InvokeEvent ();
 		}
+		
+#pragma warning restore 169		
 		
 #endregion
 	}
