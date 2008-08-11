@@ -132,11 +132,13 @@ namespace Mono.UIAutomation.Winforms
 			if (HasHorizontalScrollbar == true)
 				RaiseNavigationEvent (StructureChangeType.ChildAdded,
 				                      ref hscrollbarProvider,
-				                      hscrollbar);
+				                      hscrollbar,
+				                      false);
 			if (HasVerticalScrollbar == true)
 				RaiseNavigationEvent (StructureChangeType.ChildAdded,
 				                      ref vscrollbarProvider,
-				                      vscrollbar);
+				                      vscrollbar,
+				                      false);
 		}
 		
 		public override void FinalizeChildControlStructure ()
@@ -236,32 +238,37 @@ namespace Mono.UIAutomation.Winforms
 	           if (navigable == false && vscrollbarProvider != null)
 					RaiseNavigationEvent (StructureChangeType.ChildRemoved,
 					                      ref vscrollbarProvider,
-					                      vscrollbar);
+					                      vscrollbar,
+					                      true);
 	           else if (navigable == true && vscrollbarProvider == null)
 					RaiseNavigationEvent (StructureChangeType.ChildAdded,
 					                      ref vscrollbarProvider,
-					                      vscrollbar);
+					                      vscrollbar,
+					                      true);
 			} else if (scrollbar == hscrollbar) {
 	           if (navigable == false && hscrollbarProvider != null)
 					RaiseNavigationEvent (StructureChangeType.ChildRemoved,
 					                      ref hscrollbarProvider,
-					                      hscrollbar);
+					                      hscrollbar,
+					                      true);
 	           else if (navigable == true && hscrollbarProvider == null)
 					RaiseNavigationEvent (StructureChangeType.ChildAdded,
 					                      ref hscrollbarProvider,
-					                      hscrollbar);
+					                      hscrollbar,
+					                      true);
 			}
 		}
 		
 		private void RaiseNavigationEvent (StructureChangeType type,
 		                                   ref ScrollBarProvider provider,
-		                                   ScrollBar scrollbar)
+		                                   ScrollBar scrollbar,
+		                                   bool generateEvent)
 		{
 			if (type == StructureChangeType.ChildAdded) {
 				provider = (ScrollBarProvider) ProviderFactory.GetProvider (scrollbar);
-				OnNavigationChildAdded (true, provider);
+				OnNavigationChildAdded (generateEvent, provider);
 			} else {
-				OnNavigationChildRemoved (true, provider);
+				OnNavigationChildRemoved (generateEvent, provider);
 				provider.Terminate ();
 				provider = null;
 			}

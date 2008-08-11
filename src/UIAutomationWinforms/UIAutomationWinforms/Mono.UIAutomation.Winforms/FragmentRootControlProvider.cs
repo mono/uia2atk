@@ -118,7 +118,7 @@ namespace Mono.UIAutomation.Winforms
 					// TODO: Null check, compound, etc?
 
 					componentProviders [childControl] = childProvider;
-					OnNavigationChildAdded (true,
+					OnNavigationChildAdded (false,
 					                        (FragmentControlProvider) childProvider);
 
 					// TODO: Figure out exactly when to do this (talk to bridge guys)

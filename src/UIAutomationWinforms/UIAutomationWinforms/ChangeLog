@@ -1,3 +1,19 @@
+2008-08-11  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs: Removed
+	  not needed variables.
+	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs: Raising
+	  event when needed.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: New argument added to
+	  method RaiseNavigationEvent to generate ChildAdded event.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Not
+	  generating ChildAdded event when calling
+	  InitializeChildControlStructure.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Added argument for
+	  methods: UpdateBehaviors, InitializeEditProvider,
+	  TerminateEditProvider, InitializeButtonProvider and
+	  TerminateButtonProvider.
+
 2008-08-08  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs: Fixed

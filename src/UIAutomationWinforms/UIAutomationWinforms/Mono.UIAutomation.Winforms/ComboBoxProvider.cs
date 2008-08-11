@@ -143,8 +143,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			listboxProvider = new ComboBoxProvider.ComboBoxListBoxProvider (comboboxControl,
 			                                                                this);			
-			OnNavigationChildAdded (true, listboxProvider);
-			UpdateBehaviors ();
+			OnNavigationChildAdded (false, listboxProvider);
+			UpdateBehaviors (false);
 		}
 		
 		public override void FinalizeChildControlStructure ()
@@ -182,10 +182,10 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void OnDropDownStyleChanged (object sender, EventArgs args)
 		{
-			UpdateBehaviors ();
+			UpdateBehaviors (true);
 		}
 		
-		private void UpdateBehaviors () 
+		private void UpdateBehaviors (bool generateEvent) 
 		{
 			if (comboboxControl.DropDownStyle == ComboBoxStyle.Simple) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern, 
@@ -193,61 +193,60 @@ namespace Mono.UIAutomation.Winforms
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new ComboBoxValueProviderBehavior (this));
 				
-				TerminateButtonProvider ();
-				InitializeEditProvider ();
+				TerminateButtonProvider (generateEvent);
+				InitializeEditProvider (generateEvent);
 			} else if (comboboxControl.DropDownStyle == ComboBoxStyle.DropDown) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
 				             new ComboBoxExpandCollapseProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new ComboBoxValueProviderBehavior (this));
 				
-				InitializeButtonProvider ();
-				InitializeEditProvider ();
+				InitializeButtonProvider (generateEvent);
+				InitializeEditProvider (generateEvent);
 			} else if (comboboxControl.DropDownStyle == ComboBoxStyle.DropDownList) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
 				             new ComboBoxExpandCollapseProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern, 
 				             null);
 				
-				InitializeButtonProvider ();
-				TerminateEditProvider ();
+				InitializeButtonProvider (generateEvent);
+				TerminateEditProvider (generateEvent);
 			} 
 		}
 		
-		private void InitializeEditProvider ()
+		private void InitializeEditProvider (bool generateEvent)
 		{
 			if (textboxProvider == null) {
 				TextBox textbox = (TextBox) Helper.GetPrivateField (typeof (ComboBox), 
 				                                                    comboboxControl, 
 				                                                    "textbox_ctrl");
 				textboxProvider = new TextBoxProvider (textbox);
-				OnNavigationChildAdded (true, textboxProvider);
+				OnNavigationChildAdded (generateEvent, textboxProvider);
 			}
 		}
 		
-		private void TerminateEditProvider ()
+		private void TerminateEditProvider (bool generateEvent)
 		{
 			if (textboxProvider != null) {
-				OnNavigationChildRemoved (true, textboxProvider);
+				OnNavigationChildRemoved (generateEvent, textboxProvider);
 				textboxProvider.Terminate ();
 				textboxProvider = null;
 			}
 		}
 		
-		private void InitializeButtonProvider ()
+		private void InitializeButtonProvider (bool generateEvent)
 		{
 			if (buttonProvider == null) {
 				buttonProvider = new ComboBoxProvider.ComboBoxButtonProvider (comboboxControl,
 				                                                               this);
-				OnNavigationChildAdded (true, buttonProvider);
+				OnNavigationChildAdded (generateEvent, buttonProvider);
 			}
 		}
 		
-		private void TerminateButtonProvider ()
+		private void TerminateButtonProvider (bool generateEvent)
 		{
-			//TODO: UISpy doesn't report this structure change, according to MSDN we should do so
 			if (buttonProvider != null) {
-				OnNavigationChildRemoved (true, buttonProvider);
+				OnNavigationChildRemoved (generateEvent, buttonProvider);
 				buttonProvider.Terminate ();
 				buttonProvider = null;
 			}

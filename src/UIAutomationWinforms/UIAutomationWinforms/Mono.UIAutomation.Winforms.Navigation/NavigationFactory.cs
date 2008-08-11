@@ -49,10 +49,6 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		                                            FragmentRootControlProvider rootProvider)
 		{
 			INavigation navigation;
-			ComboBoxProvider cbox;
-			ListBoxProvider lbox;
-			ScrollBarProvider sbar;
-			ListItemProvider litem;
 			ErrorProviderProvider err;
 			WindowProvider win;
 			
