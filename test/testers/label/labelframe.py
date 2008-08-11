@@ -30,9 +30,9 @@ class LabelFrame(accessibles.Frame):
 
     #check Label's all expectant states
     def statesCheck(self, accessible):
-        procedurelogger.action('check %s\'s all states' % accessible)
+        procedurelogger.action('check %s\'s all states' % "label")
 
-        procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
+        procedurelogger.expectedResult('%s\'s all states can be found' % "label")
         for a in states.Label.states:
             cmd = "state = accessible." + a
             exec(cmd)

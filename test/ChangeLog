@@ -1,3 +1,12 @@
+2008-08-11  Calen Chen <cachen@novell.com>
+
+	* testers/label/labelframe.py: modify statesCheck()'s output words
+	* testers/form: add new code for Form test to check if can find form
+	and if can close the form (etc. form in accerciser is frame)
+	* testers/form/formframe.py: add new code for Form test
+	* testers/form/__init__.py: add new code for Form test
+	* testers/form_basic_ops.py: add new code for Form test
+
 2008-08-07  Ray Wang <rawang@novell.com>
 
 	* samples/contextmenustrip.py: implement ContextMenuStrip control
