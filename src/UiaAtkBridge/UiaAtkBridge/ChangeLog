@@ -1,3 +1,7 @@
+2008-08-11 Mike Gorse <mgorse@novell.com>
+
+	* RadioButton.cs: Use GetPatternProvider rather than attempting to cast directly
+
 2008-08-08 Mike Gorse <mgorse@novell.com>
 
 	* ParentAdapter.cs: Move setting of Parent outside lock in AddOneChild to avoid deadlock from reentrancy
