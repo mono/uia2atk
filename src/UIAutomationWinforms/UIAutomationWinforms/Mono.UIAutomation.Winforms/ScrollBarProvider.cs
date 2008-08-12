@@ -248,6 +248,8 @@ namespace Mono.UIAutomation.Winforms
 				//TODO: We may need to get VALID information using Reflection
 				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return GetNameFromOrientation ();
+				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
+					return false;
 				else
 					return base.GetPropertyValue (propertyId);
 			}

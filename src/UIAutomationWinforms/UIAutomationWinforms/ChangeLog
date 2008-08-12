@@ -1,5 +1,16 @@
 2008-08-12  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Returning false in
+	  IsContentElementProperty.
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueBehavior.cs:
+	  Code beautyfying.
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs:
+	  Updated to match MWF.ScrollBar patch.
+	* Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs:
+	  Fixed event. Updated to coding guidelines.
+
+2008-08-12  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Navigation/INavigation.cs: Provider
 	  property type changed from IRawElementProviderSimple to
 	  IRawElementProviderFragment

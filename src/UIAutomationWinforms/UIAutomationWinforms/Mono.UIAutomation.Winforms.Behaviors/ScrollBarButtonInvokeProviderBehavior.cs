@@ -38,7 +38,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		: ButtonInvokeProviderBehavior
 	{
 
-#region Constructor
+		#region Constructor
 		
 		public ScrollBarButtonInvokeProviderBehavior (ScrollBarProvider.ScrollBarButtonProvider provider)
 			: base (provider)
@@ -46,24 +46,25 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			this.provider = provider;
 		}
 		
-#endregion
+		#endregion
 		
-#region IProviderBehavior Interface
+		#region IProviderBehavior Interface
 
 		public override void Connect (Control control)
 		{
 			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			          new ScrollBarButtonInvokePatternInvokeEvent (provider));
+			                   new ScrollBarButtonInvokePatternInvokeEvent (provider));
 		}
 		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, null);
+			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
+			                   null);
 		}
 
-#endregion
+		#endregion
 		
-#region IInvokeProvider Members
+		#region IInvokeProvider Members
 		
 		public override void Invoke ()
 		{
@@ -72,31 +73,29 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			
 			string methodName = string.Empty;
 			
-			//TODO: Should we use generalization?			
 			if (provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.LargeBack)
-				methodName = "LargeDecrement";
+				methodName = "UIALargeDecrement";
 			else if (provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.LargeForward)
-				methodName = "LargeIncrement";
+				methodName = "UIALargeIncrement";
 			else if (provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.SmallBack)
-				methodName = "SmallDecrement";
+				methodName = "UIASmallDecrement";
 			else //Should be ScrollBarButtonOrientation.SmallForward
-				methodName = "SmallIncrement";
-
-			Type type = provider.ScrollBarContainer.GetType ();
-			MethodInfo methodInfo = type.GetMethod (methodName,
-			                                        BindingFlags.InvokeMethod
-			                                        | BindingFlags.NonPublic
-			                                        | BindingFlags.Instance);
+				methodName = "UIASmallIncrement";
+			
+			MethodInfo methodInfo = typeof (ScrollBar).GetMethod (methodName,
+			                                                      BindingFlags.InvokeMethod
+			                                                      | BindingFlags.NonPublic
+			                                                      | BindingFlags.Instance);
 			methodInfo.Invoke (provider.ScrollBarContainer, null);
 		}
 		
-#endregion	
+		#endregion	
 		
-#region Private Fields
+		#region Private Fields
 		
 		private ScrollBarProvider.ScrollBarButtonProvider provider;
 
-#endregion
+		#endregion
 
 	}
 }

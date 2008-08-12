@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		: ProviderBehavior, IRangeValueProvider
 	{
 
-#region Constructors
+		#region Constructors
 		
 		public ScrollBarRangeValueBehavior (ScrollBarProvider provider)
 			: base (provider) 
@@ -44,9 +44,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			scrollbar = (ScrollBar) provider.Control;
 		}
 		
-#endregion
+		#endregion
 
-#region IProviderBehavior Interface
+		#region IProviderBehavior Interface
 
 		public override AutomationPattern ProviderPattern {
 			get { return RangeValuePatternIdentifiers.Pattern; }
@@ -82,9 +82,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 				return base.GetPropertyValue (propertyId);
 		}
 
-#endregion	
+		#endregion	
 			
-#region IRangeValueProvider implementation 
+		#region IRangeValueProvider implementation 
 		
 		public void SetValue (double value)
 		{
@@ -118,12 +118,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			get { return scrollbar.Value; }
 		}
 		
-#endregion 
-		
-#region Private Fields
+		#endregion 
+
+		#region Private Fields
 
 		private ScrollBar scrollbar;
 
-#endregion
+		#endregion
 	}
 }
