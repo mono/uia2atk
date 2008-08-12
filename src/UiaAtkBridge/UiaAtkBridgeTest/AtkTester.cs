@@ -185,6 +185,7 @@ namespace UiaAtkBridgeTest
 
 			Atk.Value atkValue = (Atk.Value)
 				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
+				Assert.IsTrue (atkValue != null, "HScrollBar value not null");
 			Assert.AreEqual (  0, atkValue.MinimumValue.Val, "HScrollBar MinimumValue");
 			Assert.AreEqual (100, atkValue.MaximumValue.Val, "HScrollBar MaximumValue");
 
@@ -193,7 +194,7 @@ namespace UiaAtkBridgeTest
 			Atk.StateSet stateSet = accessible.RefStateSet();
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Horizontal), "HScrollBar state");
 
-			Assert.AreEqual (0, accessible.NAccessibleChildren, "HScrollBar numChildren");
+			Assert.AreEqual (ValidNChildrenForAScrollBar, accessible.NAccessibleChildren, "HScrollBar numChildren");
 
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
@@ -209,6 +210,7 @@ namespace UiaAtkBridgeTest
 
 			Atk.Value atkValue = (Atk.Value)
 				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
+				Assert.IsTrue (atkValue != null, "VScrollBar value not null");
 			Assert.AreEqual (  0, atkValue.MinimumValue.Val, "VScrollBar MinimumValue");
 			Assert.AreEqual (100, atkValue.MaximumValue.Val, "VScrollBar MaximumValue");
 
@@ -217,10 +219,31 @@ namespace UiaAtkBridgeTest
 			Atk.StateSet stateSet = accessible.RefStateSet();
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Vertical), "VScrollBar state");
 
-			Assert.AreEqual (0, accessible.NAccessibleChildren, "VScrollBar numChildren");
+			Assert.AreEqual (ValidNChildrenForAScrollBar, accessible.NAccessibleChildren, "VScrollBar numChildren");
 
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			InterfaceComponent (type, atkComponent);
+		}
+		
+		[Test]
+		public void ProgressBar ()
+		{
+			BasicWidgetType type = BasicWidgetType.ProgressBar;
+			Atk.Object accessible;
+			string name = "test";
+
+			Atk.Value atkValue = (Atk.Value)
+				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, false);
+			Assert.AreEqual (  0, atkValue.MinimumValue.Val, "ProgressBar MinimumValue");
+			Assert.AreEqual (100, atkValue.MaximumValue.Val, "ProgressBar MaximumValue");
+
+			PropertyRole (type, accessible);
+
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "ProgressBar numChildren");
+
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, false);
 			InterfaceComponent (type, atkComponent);
 		}
 		
@@ -284,6 +307,29 @@ namespace UiaAtkBridgeTest
 				Assert.IsTrue (menuChild.NAccessibleChildren > 0 || (menuChild.Role != Atk.Role.Menu),
 				   "only grandchildren allowed if parent is menu");
 			}
+		}
+		
+		[Test]
+		public void ListBox ()
+		{
+			BasicWidgetType type = BasicWidgetType.ListBox;
+			Atk.Object accessible;
+			
+			string[] names = new string[] { "First item", "Second Item", "Last Item" };
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, true);
+
+			InterfaceComponent (type, atkComponent);
+			
+			PropertyRole (type, accessible);
+			
+			Assert.AreEqual (3, accessible.NAccessibleChildren, "ListBox#RO numChildren");
+			
+			Atk.Object listItemChild = accessible.RefAccessibleChild (0);
+			Assert.IsNotNull (listItemChild, "ListBox child#0 should not be null");
+			Assert.AreEqual (listItemChild.Role, Atk.Role.ListItem, "ListBox child#0 should be a list item");
+			
+			Assert.AreEqual (0, listItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
 		}
 		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
@@ -360,6 +406,7 @@ namespace UiaAtkBridgeTest
 		
 		protected abstract int ValidNumberOfActionsForAButton { get; }
 		protected abstract int ValidNChildrenForASimpleStatusBar { get; }
+		protected abstract int ValidNChildrenForAScrollBar { get; }
 		protected abstract bool StatusBarImplementsTable { get; }
 		
 		private void InterfaceActionFor3RadioButtons (Atk.Action actionable1, Atk.Object accessible1,
@@ -588,6 +635,9 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.HScrollBar:
 			case BasicWidgetType.VScrollBar:
 				role = Atk.Role.ScrollBar;
+				break;
+			case BasicWidgetType.ProgressBar:
+				role = Atk.Role.ProgressBar;
 				break;
 			default:
 				throw new NotImplementedException ();

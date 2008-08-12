@@ -1,3 +1,7 @@
+2008-08-12  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Test that value is not null before querying it
+
 2008-08-12  Mario Carrion <mcarrion@novell.com> 
 
 	* Bug416602.cs: File added. Unitary tests for Bug #416602.
