@@ -1,3 +1,8 @@
+2008-08-12  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/gtktreeview/gtktreeviewframe.py: Add checking for sort order
+	* testers/gtktreeview_basic_ops.py: Add checking for sort order
+
 2008-08-11  Calen Chen <cachen@novell.com>
 
 	* testers/label/labelframe.py: modify statesCheck()'s output words
