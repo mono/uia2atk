@@ -67,7 +67,7 @@ namespace Mono.UIAutomation.Winforms
 			get { return null; }
 		}
 
-		public virtual object GetPropertyValue (int propertyId)
+		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.ToolTip.Id;
@@ -151,6 +151,8 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
+#pragma warning disable 169		
+		
 		private void OnToolTipShown (object sender, Control associatedControl)
 		{
 			if (AutomationInteropProvider.ClientsAreListening == true) {
@@ -176,6 +178,8 @@ namespace Mono.UIAutomation.Winforms
 				                                                eventArgs);
 			}
 		}
+		
+#pragma warning restore 169
 		
 		#endregion
 		
