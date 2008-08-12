@@ -42,7 +42,7 @@ namespace UiaAtkBridge
 						  == ControlType.List.Id) 
 							break;
 						child = child.Navigate (NavigateDirection.NextSibling);
-					} while (child != null);
+					}
 					childrenHolder = child;
 				}
 				return childrenHolder;

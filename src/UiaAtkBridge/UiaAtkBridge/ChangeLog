@@ -1,3 +1,7 @@
+2008-08-12 Mike Gorse <mgorse@novell.com>
+
+	* ComboBox.cs: Remove infinite loop created in r109920
+
 2008-08-12  Mario Carrion <mcarrion@novell.com> 
 
 	* ParentAdapter.cs: Requests children when
