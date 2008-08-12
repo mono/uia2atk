@@ -34,6 +34,13 @@ namespace UiaAtkBridge
 
 	public abstract class ParentAdapter : Adapter
 	{
+		
+#region Private 
+		
+		private bool requestedChildren = false;
+		
+#endregion
+		
 #region Protected Fields
 		
 		protected static object syncRoot = new object ();
@@ -49,13 +56,19 @@ namespace UiaAtkBridge
 		
 		protected override int OnGetNChildren ()
 		{
-			lock (syncRoot)
+			lock (syncRoot) {
+				if (requestedChildren == false)
+					RequestChildren ();
 				return children.Count;
+			}
 		}
 		
 		protected override Atk.Object OnRefChild (int i)
 		{
 			lock (syncRoot) {
+				if (requestedChildren == false)
+					RequestChildren ();
+				
 				if (i >= children.Count)
 					return null;
 				
@@ -103,6 +116,32 @@ namespace UiaAtkBridge
 			{
 				if (!ex.Message.Contains ("Unknown type"))
 					throw;
+			}
+		}
+		
+#endregion
+		
+		
+#region Private Methods
+		
+		private void RequestChildren ()
+		{
+			if (requestedChildren == true)
+				return;
+
+			requestedChildren = true;
+			
+			IRawElementProviderFragmentRoot root;
+			if ((root = Provider as IRawElementProviderFragmentRoot) == null)
+				return;
+			
+			IRawElementProviderFragment child 
+				= root.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				AutomationInteropProvider.RaiseStructureChangedEvent (child, 
+				                                                      new StructureChangedEventArgs (StructureChangeType.ChildAdded,
+				                                                                                     child.GetRuntimeId ()));				
+				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 		}
 		
