@@ -38,15 +38,15 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		protected SimpleNavigation (IRawElementProviderSimple provider)
 		{
-			this.simpleProvider = (SimpleControlProvider) provider;
+			this.controlProvider = (FragmentControlProvider) provider;
 		}
 
 		#endregion
 		
 		#region INavigation Interface
 		
-		public virtual IRawElementProviderSimple Provider {
-			get { return simpleProvider; }
+		public virtual IRawElementProviderFragment Provider {
+			get { return controlProvider; }
 		}
 
 		public virtual void Initialize ()
@@ -55,8 +55,8 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 		public virtual void Terminate ()
 		{
-			if (simpleProvider != null)
-				simpleProvider.Terminate ();
+			if (controlProvider != null)
+				controlProvider.Terminate ();
 		}		
 		
 		public abstract IRawElementProviderFragment Navigate (NavigateDirection direction);
@@ -148,7 +148,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		#region Private Fields
 
-		private SimpleControlProvider simpleProvider;
+		private FragmentControlProvider controlProvider;
 		
 		#endregion
 	}

@@ -153,11 +153,21 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
 				                        GetInstanceOfObjectCollection (),
-				                        "ChildrenClear", 
+				                        "ChildrenCleared", 
 				                        this, 
-				                        "OnChildrenClear");
+				                        "OnChildrenCleared");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ChildrenClear not defined", GetType ());
+				Console.WriteLine ("{0}: ChildrenCleared not defined", GetType ());
+			}
+			
+			try {
+				Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
+				                        GetInstanceOfObjectCollection (), 
+				                        "ChildrenSorted", 
+				                        this, 
+				                        "OnChildrenSorted");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ChildrenSorted not defined", GetType ());
 			}
 		}
 		
@@ -186,11 +196,21 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
 				                           GetInstanceOfObjectCollection (), 
-				                           "ChildrenClear", 
+				                           "ChildrenCleared", 
 				                           this, 
-				                           "OnChildrenClear");
+				                           "OnChildrenCleared");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ChildrenClear not defined", GetType ());
+				Console.WriteLine ("{0}: ChildrenCleared not defined", GetType ());
+			}
+			
+			try {
+				Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
+				                           GetInstanceOfObjectCollection (), 
+				                           "ChildrenSorted", 
+				                           this, 
+				                           "OnChildrenSorted");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ChildrenSorted not defined", GetType ());
 			}
 			
 			foreach (ListItemProvider item in items)
@@ -241,10 +261,15 @@ namespace Mono.UIAutomation.Winforms
 			OnNavigationChildRemoved (true, item);
 		}
 		
-		private void OnChildrenClear (object sender, EventArgs args)
+		private void OnChildrenCleared (object sender, EventArgs args)
 		{
 			ClearItemsList ();
-			OnNavigationChildrenClear (true);
+			OnNavigationChildrenCleared (true);
+		}
+		
+		private void OnChildrenSorted (object sender, EventArgs args)
+		{
+			OnNavigationChildrenSorted (true);
 		}
 		
 #pragma warning restore 169

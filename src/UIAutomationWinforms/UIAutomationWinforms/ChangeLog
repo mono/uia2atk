@@ -1,3 +1,19 @@
+2008-08-12  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Navigation/INavigation.cs: Provider
+	  property type changed from IRawElementProviderSimple to
+	  IRawElementProviderFragment
+	* Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs: Updated to
+	  match interface contract.
+	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs: Updated to
+	  FragmentRootControlProvider changes. Added handler for
+	  NavigaionChildrenSorted.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Event
+	  NavigationChildrenClear renamed to NavigationChildrenCleared. Added
+	  event: NavigationChildrenSorted.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Updated to match latest
+	  MWF patches.
+
 2008-08-11  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Using

@@ -22,15 +22,13 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
-using System;
 using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 	public interface INavigation
 	{
-		IRawElementProviderSimple Provider { get; }
+		IRawElementProviderFragment Provider { get; }
 		
 		IRawElementProviderFragment Navigate (NavigateDirection direction);
 		

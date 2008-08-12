@@ -80,7 +80,9 @@ namespace Mono.UIAutomation.Winforms
     
 		public NavigationEventHandler NavigationChildRemoved;
         
-		public NavigationEventHandler NavigationChildrenClear;
+		public NavigationEventHandler NavigationChildrenCleared;
+		
+		public NavigationEventHandler NavigationChildrenSorted;
 		
 		#endregion
 		
@@ -171,13 +173,22 @@ namespace Mono.UIAutomation.Winforms
 			children.Remove (childProvider);
 		}
 			
-		protected virtual void OnNavigationChildrenClear (bool raiseEvent)
+		protected virtual void OnNavigationChildrenCleared (bool raiseEvent)
 		{
-			if (NavigationChildrenClear != null)
-				NavigationChildrenClear (this,
-				                         new NavigationEventArgs (raiseEvent, 
-				                                                  StructureChangeType.ChildrenReordered, 
-				                                                  null));
+			if (NavigationChildrenCleared != null)
+				NavigationChildrenCleared (this,
+				                           new NavigationEventArgs (raiseEvent, 
+				                                                    StructureChangeType.ChildrenReordered, 
+				                                                    null));
+		}
+		
+		protected virtual void OnNavigationChildrenSorted (bool raiseEvent)
+		{
+			if (NavigationChildrenSorted != null)
+				NavigationChildrenSorted (this,
+				                          new NavigationEventArgs (raiseEvent, 
+				                                                   StructureChangeType.ChildrenReordered, 
+				                                                   null));
 		}
                
 		#endregion
