@@ -1,5 +1,10 @@
 2008-08-12  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Returning
+	  Container's Provider in FragmentRoot when Container isn't null.
+
+2008-08-12  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs: Using
 	  FragmentRoot instead of using Factory.
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Updated to match new

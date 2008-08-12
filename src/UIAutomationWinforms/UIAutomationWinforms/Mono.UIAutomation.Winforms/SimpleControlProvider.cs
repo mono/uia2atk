@@ -46,15 +46,10 @@ namespace Mono.UIAutomation.Winforms
 		private Dictionary<ProviderEventType, IConnectable> events;
 		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
 		private int runtimeId;
-//		private ToolTipProvider toolTipProvider;
+		private ToolTipProvider toolTipProvider;
+		private INavigation navigation;
 //		private ErrorProviderProvider errorProvider;
 
-		#endregion
-		
-		#region Protected Fields
-		
-		protected INavigation navigation;
-		
 		#endregion
 		
 		#region Constructors
@@ -69,8 +64,8 @@ namespace Mono.UIAutomation.Winforms
 			
 			runtimeId = -1;
 			
-			/*if (Control != null)
-				InitializeInternalControlEvents ();*/
+			if (Control != null)
+				InitializeInternalControlEvents ();
 		}
 		
 		#endregion
@@ -122,7 +117,7 @@ namespace Mono.UIAutomation.Winforms
 				foreach (IProviderBehavior behavior in providerBehaviors.Values)
 					behavior.Disconnect (Control);
 				
-				/*TerminateInternalControlEvents ();*/
+				TerminateInternalControlEvents ();
 			}
 
 			events.Clear ();
@@ -286,12 +281,12 @@ namespace Mono.UIAutomation.Winforms
 					Rect rectangle = (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 					return new Point (rectangle.X, rectangle.Y);
 				}
-			} /*else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id) {
+			} else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id) {
 				if (toolTipProvider == null)
 					return null;
 				else
 					return toolTipProvider.ToolTip.GetToolTip (Control);
-			} */else
+			} else
 				return null;
 		}
 
@@ -323,7 +318,7 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Private Methods: ToolTip
-		/*
+
 		private void InitializeInternalControlEvents ()
 		{
 			//ToolTip
@@ -354,7 +349,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			//ErrorProvider
-			GetPrivateErrorProviderField ();
+			/*GetPrivateErrorProviderField ();
 
 			try {
 				Helper.AddPrivateEvent (typeof (Control), 
@@ -378,7 +373,7 @@ namespace Mono.UIAutomation.Winforms
 				Console.WriteLine ("{0}: ErrorProviderUnhookup not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
-			}*
+			}*/
 		}
 		
 		private void TerminateInternalControlEvents ()
@@ -414,7 +409,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 			
 			//ErrorProvider
-			try {
+			/*try {
 				Helper.RemovePrivateEvent (typeof (Control), 
 				                           Control, 
 				                           "ErrorProviderHookup",
@@ -441,7 +436,7 @@ namespace Mono.UIAutomation.Winforms
 			if (errorProvider != null) {
 				ProviderFactory.ReleaseProvider (errorProvider.ErrorProvider);
 				errorProvider = null;
-			}
+			}*/
 		}
 	
 		private void GetPrivateToolTipField ()
@@ -468,7 +463,7 @@ namespace Mono.UIAutomation.Winforms
 				toolTipProvider = (ToolTipProvider) ProviderFactory.GetProvider (tooltip);
 		}
 		
-		private void GetPrivateErrorProviderField ()
+		/*private void GetPrivateErrorProviderField ()
 		{
 			ErrorProvider error = null;
 
@@ -490,7 +485,9 @@ namespace Mono.UIAutomation.Winforms
 			if (errorProvider == null
 			    || (errorProvider != null && errorProvider.ErrorProvider != error))
 				errorProvider = (ErrorProviderProvider) ProviderFactory.GetProvider (error);
-		}
+		}*/
+		
+#pragma warning disable 169
 		
 		private void OnToolTipHookup (object sender, EventArgs args)
 		{
@@ -505,16 +502,18 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		private void OnErrorProviderHookup (object sender, UserControl control)
+#pragma warning restore 169
+		
+		/*private void OnErrorProviderHookup (object sender, UserControl control)
 		{
 			GetPrivateErrorProviderField ();
 			//TODO: The following call may fail when errorProvider is null
 			ErrorProviderProvider.InstancesTracker.AddControl (control, 
 			                                                   Control.Parent,
 			                                                   errorProvider);
-		}
+		}*/
 
-		private void OnErrorProviderUnhookup (object sender, UserControl control)
+		/*private void OnErrorProviderUnhookup (object sender, UserControl control)
 		{		
 			if (errorProvider != null) {
 				ProviderFactory.ReleaseProvider (errorProvider.ErrorProvider);

@@ -308,8 +308,14 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region FragmentControlProvider Overrides
 
+		//http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.irawelementproviderfragment.fragmentroot.aspx
 		public override IRawElementProviderFragmentRoot FragmentRoot {
-			get { return this; }
+			get { 
+				if (Container == null)
+					return this; 
+				else
+					return (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (Container);
+			}
 		}
 
 		#endregion
