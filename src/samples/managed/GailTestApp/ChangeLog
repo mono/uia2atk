@@ -1,3 +1,8 @@
+2008-08-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* gtk-gui/MainWindow.cs, gtk-gui/gui.stetic: Added a ProgressBar,
+	  requested by Mike Gorse.
+
 2008-07-30 Mike Gorse <mgorse@novell.com>
 
 	* Main.cs, MainWindow.cs:

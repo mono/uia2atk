@@ -54,6 +54,8 @@ public partial class MainWindow {
     
     private Gtk.HScrollbar hscrollbar1;
     
+    private Gtk.ProgressBar progressbar1;
+    
     private Gtk.Statusbar statusbar1;
     
     protected virtual void Build() {
@@ -272,20 +274,28 @@ public partial class MainWindow {
         w17.Expand = false;
         w17.Fill = false;
         // Container child vbox1.Gtk.Box+BoxChild
+        this.progressbar1 = new Gtk.ProgressBar();
+        this.progressbar1.Name = "progressbar1";
+        this.vbox1.Add(this.progressbar1);
+        Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.vbox1[this.progressbar1]));
+        w18.Position = 3;
+        w18.Expand = false;
+        w18.Fill = false;
+        // Container child vbox1.Gtk.Box+BoxChild
         this.statusbar1 = new Gtk.Statusbar();
         this.statusbar1.Name = "statusbar1";
         this.statusbar1.Spacing = 6;
         this.vbox1.Add(this.statusbar1);
-        Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
-        w18.Position = 3;
-        w18.Expand = false;
-        w18.Fill = false;
+        Gtk.Box.BoxChild w19 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
+        w19.Position = 4;
+        w19.Expand = false;
+        w19.Fill = false;
         this.Add(this.vbox1);
         if ((this.Child != null)) {
             this.Child.ShowAll();
         }
         this.DefaultWidth = 678;
-        this.DefaultHeight = 245;
+        this.DefaultHeight = 260;
         this.Show();
         this.DeleteEvent += new Gtk.DeleteEventHandler(this.OnDeleteEvent);
     }

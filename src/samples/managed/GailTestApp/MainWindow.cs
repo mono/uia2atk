@@ -66,12 +66,13 @@ public partial class MainWindow: Gtk.Window
 	}
 	
 	internal Gtk.Menu GiveMeARealMenu (string name) {
-		Gtk.Label lab = (Gtk.Label)((Gtk.ImageMenuItem)this.menubar1.Children[0]).Children[0];
-		Gtk.Application.Invoke (delegate {
-			lab.Text = name;
-		});
-
-		return (Gtk.Menu)((Gtk.ImageMenuItem)this.menubar1.Children[0]).Submenu;
+		Gtk.Menu ret = (Gtk.Menu)((Gtk.ImageMenuItem)this.menubar1.Children[0]).Submenu;
+		
+//		Gtk.Application.Invoke (delegate {
+//			ret.Label = name;
+//		});
+		
+		return ret;
 	}
 	
 	List <Gtk.RadioButton> radioButtons = new List <Gtk.RadioButton> ();
