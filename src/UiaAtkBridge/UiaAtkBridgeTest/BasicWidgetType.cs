@@ -36,12 +36,14 @@ namespace UiaAtkBridgeTest
 		Window,
 		CheckBox,
 		ComboBox,
+		ListBox,
 		RadioButton,
 		StatusBar,
 		TextBoxEntry,
 		Menu,
 		VScrollBar,
-		HScrollBar
+		HScrollBar,
+		ProgressBar
 	}
 	
 	internal static class Misc

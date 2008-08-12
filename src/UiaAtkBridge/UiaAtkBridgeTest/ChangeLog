@@ -1,5 +1,10 @@
 2008-08-12  Mike Gorse <mgorse@novell.com>
 
+	* BasicWidgetType.cs: Add ListBox and ProgressBar
+	* BridgeTester.cs: Add ValidNChildrenForAScrollBar
+
+2008-08-12  Mike Gorse <mgorse@novell.com>
+
 	* AtkTester.cs: Test that value is not null before querying it
 
 2008-08-12  Mario Carrion <mcarrion@novell.com> 

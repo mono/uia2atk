@@ -1,3 +1,7 @@
+2008-08-12  Mike Gorse <mgorse@novell.com>
+
+	* GailTester.cs: Add ValidNChildrenForAScrollBar
+
 2008-08-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* gailtest.sh: Fixes for the mono parallel env.
