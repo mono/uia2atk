@@ -1,6 +1,13 @@
 2008-08-12 Mario Carrion <mcarrion@novell.com>
 
-	* patches/combobox.patch: Deleted. Replacedy by 
+	* patches/scrollbar.patch: Deleted. Replaced by 
+	scrollbar-bug416759.patch.
+	* patches/scrollbar-bug416759.patch: Updated. Renamed to keep track
+	of open bug.
+
+2008-08-12 Mario Carrion <mcarrion@novell.com>
+
+	* patches/combobox.patch: Deleted. Replaced by 
 	combobox-bug416663.patch.
 	* patches/combobox-bug416663.patch: Updated. Renamed to keep track of 
 	open bug.
