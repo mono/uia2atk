@@ -177,6 +177,21 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			firstItem = listChild.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNotNull (firstItem, "FirstChild must not be null");
+			
+			//Validate parents
+			
+			Assert.AreEqual (rootProvider,
+			                 listChild.Navigate (NavigateDirection.Parent),
+			                 "Different parent. LIST");
+			
+			Assert.AreEqual (rootProvider,
+			                 editChild.Navigate (NavigateDirection.Parent),
+			                 "Different parent. EDIT");
+			
+			Assert.AreEqual (rootProvider,
+			                 buttonChild.Navigate (NavigateDirection.Parent),
+			                 "Different parent. BUTTON");
+			
 
 			//TODO: Add more tests
 		}

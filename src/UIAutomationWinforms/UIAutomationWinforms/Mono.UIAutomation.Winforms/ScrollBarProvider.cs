@@ -64,11 +64,6 @@ namespace Mono.UIAutomation.Winforms
 				return smallForwardButton;
 		}
 		
-		public FragmentControlProvider GetChildThumbProvider ()
-		{
-			return thumb;
-		}
-		
 		#endregion
 
 		#region SimpleControlProvider: Specializations

@@ -1,5 +1,18 @@
 2008-08-12  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs: Using
+	  FragmentRoot instead of using Factory.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Updated to match new
+	  constructor.
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Removed not needed
+	  method.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: FragmentRoot
+	  overriden. Constructor updated.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: FragmentRoot
+	  overriden.
+
+2008-08-12  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Returning false in
 	  IsContentElementProperty.
 	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueBehavior.cs:

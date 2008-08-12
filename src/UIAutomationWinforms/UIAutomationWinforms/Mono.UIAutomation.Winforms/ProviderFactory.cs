@@ -134,7 +134,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ListBoxProvider (lb);
 			else if ((scb = component as ScrollBar) != null) {
 				if ((lb = scb.Parent as ListBox) != null)
-					provider = new ListBoxProvider.ListBoxScrollBarProvider (scb);
+					provider = new ListBoxProvider.ListBoxScrollBarProvider ((ListBoxProvider) GetProvider (scb.Parent),
+					                                                         scb);
 				else {
 					//TODO:
 					//   We need to add here a ScrollableControlProvider and then verify

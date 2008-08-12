@@ -276,6 +276,10 @@ namespace Mono.UIAutomation.Winforms
 				comboboxControl = control;
 				comboboxProvider = provider;
 			}
+			
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { return comboboxProvider; }
+			}
 	
 			public override object GetPropertyValue (int propertyId)
 			{

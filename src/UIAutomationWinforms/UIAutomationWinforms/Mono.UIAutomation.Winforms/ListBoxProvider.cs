@@ -413,12 +413,18 @@ namespace Mono.UIAutomation.Winforms
 
 		internal class ListBoxScrollBarProvider : ScrollBarProvider
 		{
-			public ListBoxScrollBarProvider (ScrollBar scrollbar)
+			public ListBoxScrollBarProvider (ListBoxProvider parentProvider, 
+			                                 ScrollBar scrollbar)
 				: base (scrollbar)
 			{
 				//TODO: i18n?
 				name = scrollbar is HScrollBar ? "Horizontal Scroll Bar"
 					: "Vertical Scroll Bar";
+				this.parentProvider = parentProvider;
+			}
+			
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { return parentProvider; }
 			}
 			
 			public override object GetPropertyValue (int propertyId)
@@ -430,6 +436,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 			
 			private string name;
+			private ListBoxProvider parentProvider;
 		}
 		
 		#endregion
