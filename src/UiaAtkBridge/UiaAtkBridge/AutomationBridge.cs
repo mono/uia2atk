@@ -186,7 +186,10 @@ namespace UiaAtkBridge
 
 		private void HandleElementRemoval (IRawElementProviderSimple provider)
 		{
-			Adapter adapter = providerAdapterMapping [provider];
+			Adapter adapter;
+			if (providerAdapterMapping .TryGetValue (provider, out adapter) == false)
+				return;
+
 			ParentAdapter parent = adapter.Parent as ParentAdapter;
 			if (parent != null)
 				parent.RemoveChild (adapter);

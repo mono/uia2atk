@@ -1,3 +1,7 @@
+2008-08-12  Mario Carrion <mcarrion@novell.com> 
+
+	* AutomationBridge.cs: Fixes bug #416602.
+
 2008-08-11 Mike Gorse <mgorse@novell.com>
 
 	* RadioButton.cs: Use GetPatternProvider rather than attempting to cast directly

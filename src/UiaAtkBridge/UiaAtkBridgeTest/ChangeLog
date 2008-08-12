@@ -1,3 +1,9 @@
+2008-08-12  Mario Carrion <mcarrion@novell.com> 
+
+	* Bug416602.cs: File added. Unitary tests for Bug #416602.
+	* bridgetest.sh: Added argument: $* 
+	* UiaAtkBridgeTest.mdp: File added: Bug416602.cs
+
 2008-08-11  Mario Carrion <mcarrion@novell.com> 
 
 	* BridgeTester.cs: Updated to use third argument.
