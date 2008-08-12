@@ -1,3 +1,9 @@
+2008-08-12 Mario Carrion <mcarrion@novell.com>
+
+	* patches/listbox.patch: Deleted. Replaced by listbox-bug416640.patch.
+	* patches/listbox-bug416640.patch: Updated. Renamed to keep track of
+	open bug.
+
 2008-08-04  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* patches/olive-uia-pc.patch: Committed in r109164 - r109167.
