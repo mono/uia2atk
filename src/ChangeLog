@@ -1,5 +1,12 @@
 2008-08-12 Mario Carrion <mcarrion@novell.com>
 
+	* patches/combobox.patch: Deleted. Replacedy by 
+	combobox-bug416663.patch.
+	* patches/combobox-bug416663.patch: Updated. Renamed to keep track of 
+	open bug.
+
+2008-08-12 Mario Carrion <mcarrion@novell.com>
+
 	* patches/listbox.patch: Deleted. Replaced by listbox-bug416640.patch.
 	* patches/listbox-bug416640.patch: Updated. Renamed to keep track of
 	open bug.
