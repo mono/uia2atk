@@ -1,3 +1,7 @@
+2008-08-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* gailtest.sh: Fixes for the mono parallel env.
+
 2008-07-30 Mike Gorse <mgorse@novell.com>
 
 	* GailTester.cs: Support scrollbars, table and value interfaces
