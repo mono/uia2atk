@@ -1,5 +1,11 @@
 2008-08-12  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs,
+	  Mono.UIAutomation.Winforms/ListBoxProvider.cs: Reverted to previous
+	  version.
+
+2008-08-12  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Returning
 	  Container's Provider in FragmentRoot when Container isn't null.
 
