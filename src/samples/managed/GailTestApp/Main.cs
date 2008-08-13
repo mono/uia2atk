@@ -134,6 +134,14 @@ namespace GailTestApp {
 			return win.GiveMeARealStatusbar ();
 		}
 		
+		public static Gtk.ProgressBar GiveMeARealProgressBar (MovingThread guiThread)
+		{
+			if (win == null)
+				Start (guiThread);
+			
+			return win.GiveMeARealProgressBar ();
+		}
+		
 		public static Gtk.Entry GiveMeARealEntry (MovingThread guiThread)
 		{
 			if (win == null)

@@ -1,3 +1,7 @@
+2008-08-13  Mike Gorse <mgorse@novell.com>
+
+	* Main.cs, MainWindow.cs: Add ProgressBar
+
 2008-08-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* MainWindow.cs, Main.cs: Fix a FIXME. It turns out a GailSubMenuItem

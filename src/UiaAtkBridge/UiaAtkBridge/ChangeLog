@@ -1,3 +1,12 @@
+2008-08-13 Mike Gorse <mgorse@novell.com>
+
+	* ScrollBar.cs: Adapt for new Atk.Value api
+	  Use parent scroll provider if no RangeValueProvider
+
+	* SelectionProviderUserHelper.cs: Have AddSelection return true for out-of-range (gail does this)
+	  When unselecting, return false on exception
+	  Implement RefSelection
+
 2008-08-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* ComboBox.cs, ParentMenu.cs, Menu.cs, Makefile.am, UiaAtkBridge.mdp:

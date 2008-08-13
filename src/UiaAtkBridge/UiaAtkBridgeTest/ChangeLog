@@ -1,3 +1,7 @@
+2008-08-13  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Adapt for new Atk.Value api
+
 2008-08-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTester.cs: Use Assert.IsNotNull and test Action interface in Menu

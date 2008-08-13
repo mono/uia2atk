@@ -65,8 +65,14 @@ namespace UiaAtkBridge
 
 		public bool AddSelection (int i)
 		{
-			Console.WriteLine ("AddSelection");
-			ISelectionItemProvider childItem = ChildItemAtIndex (i);
+			Console.WriteLine ("AddSelection" + i);
+				ISelectionItemProvider childItem;
+			try {
+				childItem = ChildItemAtIndex (i);
+			} catch (System.IndexOutOfRangeException) {
+				// This is arguably not right, but it is what gail does
+				return true;
+			}
 			
 			if (childItem != null) {
 				if(selectionProvider.CanSelectMultiple)
@@ -82,6 +88,7 @@ namespace UiaAtkBridge
 		{
 			IRawElementProviderSimple[] selectedElements = 
 				selectionProvider.GetSelection ();
+			bool result = true;
 				
 			for (int i=0; i < selectedElements.GetLength(0); i++) {
 				ISelectionItemProvider selectionItemProvider = 
@@ -89,17 +96,27 @@ namespace UiaAtkBridge
 						(SelectionItemPatternIdentifiers.Pattern.Id);
 				
 				if (selectionItemProvider != null) {
+					try {
 					selectionItemProvider.RemoveFromSelection ();
+	
+					} catch (System.InvalidOperationException) {
+						result = false;
+					}
 				}
 			}	
 
-			return true;
+			return result;
 		}
 
 		public bool IsChildSelected (int i)
 		{
 			Console.WriteLine ("IsChildSelected");
-			ISelectionItemProvider childItem = ChildItemAtIndex (i);
+			ISelectionItemProvider childItem;
+			try {
+				childItem = ChildItemAtIndex (i);
+			} catch (System.IndexOutOfRangeException) {
+				return false;
+			}
 
 			if(childItem != null) {
 				return childItem.IsSelected;
@@ -109,17 +126,34 @@ namespace UiaAtkBridge
 		
 		public Atk.Object RefSelection (int i)
 		{
-			//TODO: Implement
-			throw new NotImplementedException ();
+			Console.WriteLine ("RefSelection: " + i);
+			IRawElementProviderSimple[] selectedElements = 
+				selectionProvider.GetSelection ();
+			try
+			{
+				return AutomationBridge.GetAdapterForProvider (selectedElements[i]);
+			} catch {
+				return null;
+			}
 		}
 		
 		public bool RemoveSelection (int i)
 		{
 			Console.WriteLine ("RemoveSelection");
-			ISelectionItemProvider childItem = ChildItemAtIndex (i);
+			ISelectionItemProvider childItem;
+			try {
+				childItem = ChildItemAtIndex (i);
+			} catch (System.IndexOutOfRangeException) {
+				return false;
+			}
 
 			if(childItem != null) {
-				childItem.RemoveFromSelection();
+				try {
+					childItem.RemoveFromSelection();
+				} catch (System.InvalidOperationException) {
+					// May happen, ie, if a ComboBox requires a selection
+					return false;
+				}
 				return true;
 			}
 			return false;
@@ -160,14 +194,15 @@ namespace UiaAtkBridge
 				childCount++;
 			}
 			
-			if (child != null) {
-				ISelectionItemProvider selectionItemProvider = 
-					(ISelectionItemProvider)child.GetPatternProvider
-						(SelectionItemPatternIdentifiers.Pattern.Id);
+			if (child == null) {
+				throw new System.IndexOutOfRangeException();
+				}
+			ISelectionItemProvider selectionItemProvider = 
+				(ISelectionItemProvider)child.GetPatternProvider
+					(SelectionItemPatternIdentifiers.Pattern.Id);
 				
-				if (selectionItemProvider != null)
-					return selectionItemProvider;
-			}
+			if (selectionItemProvider != null)
+				return selectionItemProvider;
 			return null;
 		}
 		

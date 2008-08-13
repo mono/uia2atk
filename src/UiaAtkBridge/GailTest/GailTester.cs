@@ -89,7 +89,7 @@ namespace UiaAtkBridgeTest
 		{
 			accessible = null;
 			Gtk.Widget widget = null;
-			Gtk.Adjustment adj = new Gtk.Adjustment (2.4, 1.2, 4.8, 0.2, 0.6, 1.2);
+			Gtk.Adjustment adj = new Gtk.Adjustment (50, 0, 100, 1, 10, 20);
 			switch (type) {
 			case BasicWidgetType.Label:
 				widget = new Gtk.Label ();
@@ -153,6 +153,11 @@ namespace UiaAtkBridgeTest
 				widget = new Gtk.VScrollbar (adj);
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealVScrollbar (guiThread);
+				break;
+			case BasicWidgetType.ProgressBar:
+				widget = new Gtk.ProgressBar (adj);
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealProgressBar (guiThread);
 				break;
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");

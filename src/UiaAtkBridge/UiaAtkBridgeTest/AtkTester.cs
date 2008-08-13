@@ -190,8 +190,8 @@ namespace UiaAtkBridgeTest
 				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
 			
 			Assert.IsNotNull (atkValue, "HScrollBar value not null");
-			Assert.AreEqual (  0, atkValue.MinimumValue.Val, "HScrollBar MinimumValue");
-			Assert.AreEqual (100, atkValue.MaximumValue.Val, "HScrollBar MaximumValue");
+			Assert.AreEqual (  0, minimumValue(atkValue), "HScrollBar MinimumValue");
+			Assert.AreEqual (100, maximumValue(atkValue), "HScrollBar MaximumValue");
 
 			PropertyRole (type, accessible);
 
@@ -216,8 +216,8 @@ namespace UiaAtkBridgeTest
 				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
 			
 			Assert.IsNotNull (atkValue, "VScrollBar value not null");
-			Assert.AreEqual (  0, atkValue.MinimumValue.Val, "VScrollBar MinimumValue");
-			Assert.AreEqual (100, atkValue.MaximumValue.Val, "VScrollBar MaximumValue");
+			Assert.AreEqual (  0, minimumValue(atkValue), "VScrollBar MinimumValue");
+			Assert.AreEqual (100, maximumValue(atkValue), "VScrollBar MaximumValue");
 
 			PropertyRole (type, accessible);
 
@@ -240,8 +240,9 @@ namespace UiaAtkBridgeTest
 
 			Atk.Value atkValue = (Atk.Value)
 				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, false);
-			Assert.AreEqual (  0, atkValue.MinimumValue.Val, "ProgressBar MinimumValue");
-			Assert.AreEqual (100, atkValue.MaximumValue.Val, "ProgressBar MaximumValue");
+				Assert.IsTrue (atkValue != null, "ProgressBar value not null");
+			Assert.AreEqual (  0, minimumValue(atkValue), "ProgressBar MinimumValue");
+			Assert.AreEqual (100, maximumValue(atkValue), "ProgressBar MaximumValue");
 
 			PropertyRole (type, accessible);
 
@@ -1217,6 +1218,20 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,WordStart,eo");
 			
 			return accessible;
+		}
+
+		private double minimumValue (Atk.Value value)
+		{
+			GLib.Value gv = new GLib.Value (0);
+			value.GetMinimumValue (ref gv);
+			return (double)gv.Val;
+		}
+
+		private double maximumValue (Atk.Value value)
+		{
+			GLib.Value gv = new GLib.Value (0);
+			value.GetMaximumValue (ref gv);
+			return (double)gv.Val;
 		}
 
 		public delegate void VoidDelegate ();

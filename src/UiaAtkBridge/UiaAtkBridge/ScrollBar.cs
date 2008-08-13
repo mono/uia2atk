@@ -52,36 +52,28 @@ namespace UiaAtkBridge
 			get { return provider; }
 		}
 
-		public GLib.Value MinimumValue
+		public void GetMinimumValue (ref GLib.Value value)
 		{
-			get {
-				return new GLib.Value (rangeValueProvider.Minimum);
-			}
+			value = new GLib.Value (rangeValueProvider != null? rangeValueProvider.Minimum: 0);
 		}
 
-		public GLib.Value MaximumValue
+		public void GetMaximumValue (ref GLib.Value value)
 		{
-			get {
-				return new GLib.Value(rangeValueProvider.Maximum);
-			}
+			value = new GLib.Value (rangeValueProvider != null? rangeValueProvider.Maximum: 100);
 		}
 
-		public GLib.Value MinimumIncrement
+		public void GetMinimumIncrement (ref GLib.Value value)
 		{
-			get {
-				return new GLib.Value (rangeValueProvider.SmallChange);
-			}
+			value = new GLib.Value (rangeValueProvider != null? rangeValueProvider.SmallChange: 1);
 		}
 
-		public GLib.Value CurrentValue
+		public void GetCurrentValue (ref GLib.Value value)
 		{
-			get {
-				if (rangeValueProvider != null)
-					return new GLib.Value (rangeValueProvider.Value);
-				else
-				{
-					return new GLib.Value (orientation == OrientationType.Horizontal? parentScrollProvider.VerticalScrollPercent: parentScrollProvider.HorizontalScrollPercent);
-				}
+			if (rangeValueProvider != null)
+				value = new GLib.Value (rangeValueProvider.Value);
+			else
+			{
+				value = new GLib.Value (orientation == OrientationType.Horizontal? parentScrollProvider.VerticalScrollPercent: parentScrollProvider.HorizontalScrollPercent);
 			}
 		}
 
@@ -89,7 +81,14 @@ namespace UiaAtkBridge
 		{
 			double v = (double)value.Val;
 			if (v < 0 || v > 100) return false;
-			rangeValueProvider.SetValue (v);
+			if (rangeValueProvider != null)
+				rangeValueProvider.SetValue (v);
+			else if (parentScrollProvider == null)
+				return false;
+			else if (orientation == OrientationType.Vertical)
+				parentScrollProvider.SetScrollPercent (parentScrollProvider.HorizontalScrollPercent, v);
+			else
+				parentScrollProvider.SetScrollPercent (v, parentScrollProvider.VerticalScrollPercent);
 			return true;
 		}
 

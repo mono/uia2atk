@@ -101,4 +101,8 @@ public partial class MainWindow: Gtk.Window
 		return this.statusbar1;
 	}
 
+	internal Gtk.ProgressBar GiveMeARealProgressBar () {
+		return this.progressbar1;
+	}
+	
 }

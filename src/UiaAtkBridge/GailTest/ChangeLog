@@ -1,3 +1,8 @@
+2008-08-13 Mike Gorse <mgorse@novell.com>
+
+	* Gailtester.cs: Change gtk adjustment to 0-100 scale
+	Add ProgressBar support
+
 2008-08-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* GailTester.cs: Fix a FIXME. It turns out a GailSubMenuItem is the
