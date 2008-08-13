@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 
 namespace UiaAtkBridgeTest
 {
@@ -40,11 +41,27 @@ namespace UiaAtkBridgeTest
 		RadioButton,
 		StatusBar,
 		TextBoxEntry,
-		Menu,
+		ParentMenu,
 		VScrollBar,
 		HScrollBar,
 		ProgressBar
 	}
+
+//	public class MenuLayout
+//	{
+//		private string labelMenu;
+//		private List<MenuLayout> subMenus;
+//
+//		public MenuLayout (string name, params MenuLayout[] submenus)
+//		{
+//			labelMenu = name;
+//
+//			subMenus = new List <MenuLayout> (submenus);
+//		}
+//		
+//		public string LabelMenu { get { return labelMenu; } }
+//		public List<MenuLayout> SubMenus { get { return subMenus; } }
+//	}
 	
 	internal static class Misc
 	{

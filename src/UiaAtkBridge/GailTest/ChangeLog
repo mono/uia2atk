@@ -1,3 +1,8 @@
+2008-08-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* GailTester.cs: Fix a FIXME. It turns out a GailSubMenuItem is the
+	  Atk.Role.Menu element we need.
+
 2008-08-12  Mike Gorse <mgorse@novell.com>
 
 	* GailTester.cs: Add ValidNChildrenForAScrollBar

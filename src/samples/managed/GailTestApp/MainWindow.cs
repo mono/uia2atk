@@ -65,12 +65,13 @@ public partial class MainWindow: Gtk.Window
 		return this.txtEntry;
 	}
 	
-	internal Gtk.Menu GiveMeARealMenu (string name) {
-		Gtk.Menu ret = (Gtk.Menu)((Gtk.ImageMenuItem)this.menubar1.Children[0]).Submenu;
+	internal Gtk.ImageMenuItem GiveMeARealParentMenu (string name) {
+		Gtk.ImageMenuItem ret = (Gtk.ImageMenuItem)this.menubar1.Children[0];
 		
-//		Gtk.Application.Invoke (delegate {
-//			ret.Label = name;
-//		});
+		Gtk.Application.Invoke (delegate {
+			//TODO: figure out how to rename this:
+			//ret.Text = name;
+		});
 		
 		return ret;
 	}
@@ -99,5 +100,5 @@ public partial class MainWindow: Gtk.Window
 	internal Gtk.Statusbar GiveMeARealStatusbar () {
 		return this.statusbar1;
 	}
-	
+
 }

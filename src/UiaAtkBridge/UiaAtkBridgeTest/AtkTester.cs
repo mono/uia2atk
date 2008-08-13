@@ -24,6 +24,9 @@
 // 
 
 using System;
+
+using System.Collections.Generic;
+
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -201,7 +204,8 @@ namespace UiaAtkBridgeTest
 			InterfaceComponent (type, atkComponent);
 		}
 		
-		[Test]
+		//FIXME: disabled because of http://monoport.com/36793
+		//[Test]
 		public void VScrollBar ()
 		{
 			BasicWidgetType type = BasicWidgetType.VScrollBar;
@@ -268,18 +272,25 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "TextBoxEntry numChildren");
 		}
 		
+//		[Test]
+//		public void MenuBar ()
+//		{
+//			List <MenuLayout> menu = new List <MenuLayout> ();
+//			menu.Add (new MenuLayout ("XFile", new MenuLayout ("Quit")));
+//			menu.Add (new MenuLayout ("GimmeHelp", new MenuLayout ("About")));
+//		}
+		
 		[Test]
 		public void Menu () 
 		{
-			BasicWidgetType type = BasicWidgetType.Menu;
+			BasicWidgetType type = BasicWidgetType.ParentMenu;
 			Atk.Object accessible = null;
 			
-			string name = "Menu";
+			string name = "XFile";
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
 			
-			//FIXME: this test is failing, maybe accerciser digs the name with the Atk.Text interface?
-			//Assert.AreEqual (name, accessible.Name, "name of the menu is the same as its label");
+			Assert.AreEqual (name, accessible.Name, "name of the menu is the same as its label");
 			
 			InterfaceComponent (type, atkComponent);
 			
@@ -395,7 +406,7 @@ namespace UiaAtkBridgeTest
 			if (type == BasicWidgetType.Window) {
 				Assert.AreEqual (Atk.Layer.Window, implementor.Layer, "Component.Layer(Window)");
 				Assert.AreEqual (-1, implementor.MdiZorder, "Component.MdiZorder(Window)");
-			} else if (type == BasicWidgetType.Menu) {
+			} else if (type == BasicWidgetType.ParentMenu) {
 				Assert.AreEqual (Atk.Layer.Popup, implementor.Layer, "Component.Layer(Menu)");
 			} else {
 				Assert.AreEqual (Atk.Layer.Widget, implementor.Layer, "Component.Layer(notWindow)");
@@ -629,7 +640,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.StatusBar:
 				role = Atk.Role.Statusbar;
 				break;
-			case BasicWidgetType.Menu:
+			case BasicWidgetType.ParentMenu:
 				role = Atk.Role.Menu;
 				break;
 			case BasicWidgetType.HScrollBar:
