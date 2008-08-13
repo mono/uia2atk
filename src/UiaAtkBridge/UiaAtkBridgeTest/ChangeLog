@@ -1,5 +1,10 @@
 2008-08-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Use Assert.IsNotNull and test Action interface in Menu
+	  class.
+
+2008-08-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs, BasicWidgetType.cs: Fix a FIXME. It turns out a
 	  GailSubMenuItem is the Atk.Role.Menu element we need.
 

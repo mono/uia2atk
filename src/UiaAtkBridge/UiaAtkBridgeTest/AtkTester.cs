@@ -188,7 +188,8 @@ namespace UiaAtkBridgeTest
 
 			Atk.Value atkValue = (Atk.Value)
 				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
-				Assert.IsTrue (atkValue != null, "HScrollBar value not null");
+			
+			Assert.IsNotNull (atkValue, "HScrollBar value not null");
 			Assert.AreEqual (  0, atkValue.MinimumValue.Val, "HScrollBar MinimumValue");
 			Assert.AreEqual (100, atkValue.MaximumValue.Val, "HScrollBar MaximumValue");
 
@@ -204,8 +205,7 @@ namespace UiaAtkBridgeTest
 			InterfaceComponent (type, atkComponent);
 		}
 		
-		//FIXME: disabled because of http://monoport.com/36793
-		//[Test]
+		[Test]
 		public void VScrollBar ()
 		{
 			BasicWidgetType type = BasicWidgetType.VScrollBar;
@@ -214,7 +214,8 @@ namespace UiaAtkBridgeTest
 
 			Atk.Value atkValue = (Atk.Value)
 				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
-				Assert.IsTrue (atkValue != null, "VScrollBar value not null");
+			
+			Assert.IsNotNull (atkValue, "VScrollBar value not null");
 			Assert.AreEqual (  0, atkValue.MinimumValue.Val, "VScrollBar MinimumValue");
 			Assert.AreEqual (100, atkValue.MaximumValue.Val, "VScrollBar MaximumValue");
 
@@ -230,7 +231,7 @@ namespace UiaAtkBridgeTest
 			InterfaceComponent (type, atkComponent);
 		}
 		
-		[Test]
+ 		[Test]
 		public void ProgressBar ()
 		{
 			BasicWidgetType type = BasicWidgetType.ProgressBar;
@@ -299,10 +300,14 @@ namespace UiaAtkBridgeTest
 //				GetAtkObjectThatImplementsInterface <Atk.Selection> (type, names, out accessible, true);
 //			InterfaceSelection (atkSelection, names, accessible);
 			
-			//TODO: action, text, selection
+			//TODO: text, selection
 			
 			PropertyRole (type, accessible);
 			
+			Atk.Action atkAction = (Atk.Action)
+				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
+			
+			InterfaceAction (type, atkAction, accessible);
 			
 			Assert.IsTrue (accessible.NAccessibleChildren > 0, "number of children in menu");
 			
@@ -313,7 +318,7 @@ namespace UiaAtkBridgeTest
 				  ((menuChild.Role == Atk.Role.Menu) ||
 				   (menuChild.Role == Atk.Role.MenuItem) ||
 				   (menuChild.Role == Atk.Role.TearOffMenuItem) ||
-				   (menuChild.Role == Atk.Role.Separator)), "valid roles for a menu child");
+				   (menuChild.Role == Atk.Role.Separator)), "valid roles for a child of a parentMenu");
 				
 				Assert.IsTrue (menuChild.NAccessibleChildren > 0 || (menuChild.Role != Atk.Role.Menu),
 				   "only grandchildren allowed if parent is menu");
@@ -465,7 +470,9 @@ namespace UiaAtkBridgeTest
 		private void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible)
 		{
 			int validNumberOfActions = ValidNumberOfActionsForAButton;
-			if ((type == BasicWidgetType.TextBoxEntry) || (type == BasicWidgetType.ComboBox))
+			if ((type == BasicWidgetType.TextBoxEntry) ||
+			    (type == BasicWidgetType.ComboBox) || 
+			    (type == BasicWidgetType.ParentMenu))
 				validNumberOfActions = 1;
 			
 			Assert.AreEqual (validNumberOfActions, implementor.NActions, "NActions");
@@ -474,9 +481,9 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual ("press", implementor.GetName (0), "GetName press");
 			} else if (type == BasicWidgetType.TextBoxEntry) {
 				Assert.AreEqual ("activate", implementor.GetName (0), "GetName activate");
-			} else { //Button and Checkbox and RadioButton
+			} else { //Button and Checkbox and RadioButton, and ParentMenu
 				Assert.AreEqual ("click", implementor.GetName (0), "GetName click");
-				if (ValidNumberOfActionsForAButton > 1) {
+				if ((ValidNumberOfActionsForAButton > 1) && (type != BasicWidgetType.ParentMenu)) {
 					Assert.AreEqual ("press", implementor.GetName (1), "GetName press");
 					Assert.AreEqual ("release", implementor.GetName (2), "GetName release");
 				}
