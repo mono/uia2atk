@@ -80,7 +80,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public static IRawElementProviderFragment GetProvider (Component component,
 		                                                       bool initializeEvents,
-		                                                       bool forzeInitializeChildren)
+		                                                       bool forceInitializeChildren)
 		{
 			Label l;
 			Button b;
@@ -177,7 +177,7 @@ namespace Mono.UIAutomation.Winforms
 					sharedComponents.Add (component, 1);
 				
 				FragmentRootControlProvider root;
-				if (forzeInitializeChildren == true
+				if (forceInitializeChildren == true
 				    && (root = provider as FragmentRootControlProvider) != null)
 					root.InitializeChildControlStructure ();
 				

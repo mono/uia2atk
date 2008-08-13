@@ -1,3 +1,7 @@
+2008-08-12  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: forze->force
+
 2008-08-12  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/ToolTipProvider.cs: Fixed virtual method.
