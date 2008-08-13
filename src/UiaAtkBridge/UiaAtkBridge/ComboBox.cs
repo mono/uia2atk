@@ -82,7 +82,7 @@ namespace UiaAtkBridge
 		{
 			this.provider = provider;
 			this.Role = Atk.Role.ComboBox;
-			children.Add (new Menu (ChildrenItems));
+			children.Add (new ParentMenu (ChildrenItems));
 			selProvider = (ISelectionProvider)provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
 			valProvider = (IValueProvider)provider.GetPatternProvider(ValuePatternIdentifiers.Pattern.Id);
 			

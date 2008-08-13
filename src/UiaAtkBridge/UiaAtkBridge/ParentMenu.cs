@@ -32,9 +32,9 @@ namespace UiaAtkBridge
 {
 	
 	
-	public class Menu : ComponentParentAdapter, Atk.SelectionImplementor
+	public class ParentMenu : ComponentParentAdapter, Atk.SelectionImplementor
 	{
-		public Menu (string[] names)
+		public ParentMenu (string[] names)
 		{
 			this.Role = Atk.Role.Menu;
 			this.Name = String.Empty;

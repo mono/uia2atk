@@ -1,3 +1,9 @@
+2008-08-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* ComboBox.cs, ParentMenu.cs, Menu.cs, Makefile.am, UiaAtkBridge.mdp:
+	  Rename Menu to ParentMenu to avoid confusions with Gail's
+	  "SubMenuItem that implements Role.Menu" concept.
+
 2008-08-12 Mike Gorse <mgorse@novell.com>
 
 	* ComboBox.cs: Remove infinite loop created in r109920
