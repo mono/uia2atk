@@ -1,3 +1,8 @@
+2008-08-07  Ray Wang <rawang@novell.com>
+
+	* samples/picturebox.py: Add a label to indicate which picture you are
+	watching
+
 2008-08-12  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/gtktreeview/gtktreeviewframe.py: Add checking for sort order

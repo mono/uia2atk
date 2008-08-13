@@ -21,9 +21,9 @@ import clr
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
 from System.Windows.Forms import (
-    Application, Button, DockStyle, Form, PictureBox, PictureBoxSizeMode
+    Application, Button, Label, DockStyle, Form, PictureBox, PictureBoxSizeMode
 )
-from System.Drawing import Image
+from System.Drawing import Image, Color, Point
 
 harness_dir = path[0]
 i = harness_dir.rfind("/")
@@ -50,6 +50,13 @@ class PictureBoxSample(Form):
         self.button.Text = "Toggle"
         self.button.Click += self.on_click
 
+        # setup label
+        self.label = Label()
+        self.label.Location = Point(10, 100)
+        self.label.ForeColor = Color.Red
+        self.label.Text = "You are watching %s" % self.path_to_file
+        self.label.AutoSize = True
+
         # setup picturebox
         self.picturebox = PictureBox()
         self.picturebox.SizeMode = PictureBoxSizeMode.StretchImage
@@ -58,6 +65,7 @@ class PictureBoxSample(Form):
 
         # add controls
         self.Controls.Add(self.button)
+        self.Controls.Add(self.label)
         self.Controls.Add(self.picturebox)
 
         self.change_picture()
@@ -72,10 +80,12 @@ class PictureBoxSample(Form):
             self.toggle = False
             self.path_to_file = "%s/samples/universe.jpg" % uiaqa_path
             self.change_picture()
+            self.label.Text = "You are watching %s" % self.path_to_file
         else:
             self.toggle = True
             self.path_to_file = "%s/samples/desktop-blue_soccer.jpg" % uiaqa_path
             self.change_picture()
+            self.label.Text = "You are watching %s" % self.path_to_file
 
 # run application
 form = PictureBoxSample()
