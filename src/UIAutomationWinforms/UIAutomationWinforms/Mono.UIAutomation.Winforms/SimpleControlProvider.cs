@@ -309,7 +309,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		private System.Drawing.Rectangle GetControlScreenBounds ()
 		{
-			if (control.Parent == null)
+			if (control.Parent == null || control.TopLevelControl == null)
 				return Control.Bounds;
 			else
 				return Control.TopLevelControl.RectangleToScreen (Control.Bounds);

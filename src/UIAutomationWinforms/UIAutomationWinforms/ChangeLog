@@ -1,3 +1,8 @@
+2008-08-14  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Extra null check
+	  for control.TopLevelControl.
+
 2008-08-12  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: forze->force
