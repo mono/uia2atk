@@ -1,3 +1,7 @@
+2008-08-14  Mario Carrion <mcarrion@novell.com> 
+
+	* LinkLabelProviderTest.cs: Code beautyfing.
+
 2008-08-12  Mario Carrion <mcarrion@novell.com> 
 
 	* ComboBoxProviderTest.cs: Asserts added to validate parent bug.

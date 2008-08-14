@@ -1,3 +1,8 @@
+2008-08-14  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Behaviors/LinkLabelInvokeProviderBehavior.cs:
+	  Using Delegate instead of calling MethodInfo.Invoke.
+
 2008-08-14  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Extra null check

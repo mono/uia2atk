@@ -37,20 +37,21 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 	internal class LinkLabelInvokeProviderBehavior : ProviderBehavior, IInvokeProvider
 	{
 		
-#region Constructor
+		#region Constructor
 		
 		public LinkLabelInvokeProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
 		}
 		
-#endregion
+		#endregion
 
-#region IProviderBehavior Interface
+		#region IProviderBehavior Interface
 		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, null);
+			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
+			                   null);
 		}
 
 		public override object GetPropertyValue (int propertyId)
@@ -65,43 +66,40 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public override void Connect (Control control)
 		{
-			linklabel = (LinkLabel) control;
-			
 			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			          new LinkLabelInvokePatternInvokedEvent (Provider));
+			                   new LinkLabelInvokePatternInvokedEvent (Provider));
 		}
 		
 		public override AutomationPattern ProviderPattern { 
 			get { return InvokePatternIdentifiers.Pattern; }
 		}
 		
-#endregion
+		#endregion
 		
-#region IInvokeProvider Members
+		#region IInvokeProvider Members
 		
 		public void Invoke ()
 		{
-			if (!linklabel.Enabled)
+			if (Provider.Control.Enabled == false)
 				throw new ElementNotEnabledException ();
 			
-			Type type = linklabel.GetType ();
-			MethodInfo methodInfo = type.GetMethod ("OnLinkClicked",
-			                                        BindingFlags.InvokeMethod
-			                                        | BindingFlags.NonPublic
-			                                        | BindingFlags.Instance);
-			//TODO: Verify arguments against MS implementation.
-			LinkLabelLinkClickedEventArgs args = new LinkLabelLinkClickedEventArgs (
-				linklabel.Links [0], MouseButtons.Left);
-			methodInfo.Invoke (linklabel, new object[] { args });
+			MethodInfo methodInfo = typeof (LinkLabel).GetMethod ("OnLinkClicked",
+			                                                      BindingFlags.InvokeMethod
+			                                                      | BindingFlags.NonPublic
+			                                                      | BindingFlags.Instance);
+			LinkLabelLinkClickedEventArgs args 
+				= new LinkLabelLinkClickedEventArgs (((LinkLabel) Provider.Control).Links [0],
+				                                     MouseButtons.Left);
+			
+			Action<LinkLabel, LinkLabelLinkClickedEventArgs> invoke
+				= (Action<LinkLabel,LinkLabelLinkClickedEventArgs>) Delegate.CreateDelegate 
+					(typeof (Action<LinkLabel,LinkLabelLinkClickedEventArgs>),
+					 methodInfo);
+			
+			invoke ((LinkLabel) Provider.Control, args);
 		}
 		
-#endregion		
-		
-#region Private fields
-		
-		private LinkLabel linklabel;
-		
-#endregion
-		
+		#endregion		
+
 	}
 }

@@ -38,7 +38,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	public class LinkLabelProviderTest : BaseProviderTest
 	{
 		
-#region Tests
+		#region Tests
 		
 		[Test]
 		public void BasicPropertiesTest ()
@@ -67,9 +67,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              true);
 		}
 		
-#endregion
+		#endregion
 		
-#region IInvokeEvent
+		#region IInvokeEvent
 		
 		[Test]
 		public void InvokeEventTest ()
@@ -106,16 +106,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			} catch (Exception) { Assert.Fail ("Only ElementNotEnabledException must be thrown"); }
 		}
 		
-#endregion
+		#endregion
 		
-#region BaseProviderTest Overrides
+		#region BaseProviderTest Overrides
 
 		protected override Control GetControlInstance ()
 		{
 			return new LinkLabel ();
 		}
 		
-#endregion
+		#endregion
 
 	}
 }
