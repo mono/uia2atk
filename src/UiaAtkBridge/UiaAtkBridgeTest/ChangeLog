@@ -1,3 +1,20 @@
+2008-08-14 Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: minimumValue -> GetMinimumValue, maximumValue -> GetMaximumValue
+	  Use Assert.isNotNull where appropriate
+	  Add ListBox to PropertyRole
+
+	* AtkTester.cs, BridgeTester.cs: Move ListBox test to BridgeTester.cs, since gtk lists are deprecated
+	  Make some classes protected since BridgeTester.cs now needs them
+	  Remove StatusBarImplementsTable
+
+	* BridgeTester.cs: Support real widgets
+	  Add ListBox
+	  Set chk.Text rather than chk.Name to correspond with other buttons
+	  Set text interface for checkbox
+	  Fetch a ListBox and use its scrollbar rather than creating an isolated ScrollBar
+	  Start adding support for ProgressBars (disabled until MWF mapping committed)
+
 2008-08-13  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs: Adapt for new Atk.Value api

@@ -1,3 +1,8 @@
+2008-08-14 Mike Gorse <mgorse@novell.com>
+
+	* SelectionProviderUserHelper.cs: Fix indents.
+	  Have RefSelection check range rather than using a generic catch
+
 2008-08-13 Mike Gorse <mgorse@novell.com>
 
 	* ScrollBar.cs: Adapt for new Atk.Value api

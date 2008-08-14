@@ -47,21 +47,47 @@ namespace UiaAtkBridgeTest
 			Atk.SelectionImplementor selection = null;
 			accessible = null;
 			
-			if (type != BasicWidgetType.ComboBox) {
+			switch (type) {
+			case BasicWidgetType.ListBox:
+				MWF.ListBox listBox = new MWF.ListBox ();
+				if (real)
+					listBox = lb1;
+				listBox.Items.Clear ();
+				foreach (string item in names)
+					listBox.Items.Add (item);
+			
+				UiaAtkBridge.List uiaList;
+				if (real)
+					uiaList = (UiaAtkBridge.List) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (listBox, true, true));
+				else
+					uiaList = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listBox, true, true));
+				accessible = uiaList;
+				component = uiaList;
+				selection = uiaList;
+				break;
+			case BasicWidgetType.ComboBox:
+				MWF.ComboBox comboBox = new MWF.ComboBox ();
+				if (real)
+					comboBox = cb1;
+				comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+				comboBox.Items.Clear();
+				foreach (string item in names)
+					comboBox.Items.Add (item);
+			
+				UiaAtkBridge.ComboBox uiaComb;
+				if (real)
+					uiaComb = (UiaAtkBridge.ComboBox) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (comboBox, true, true));
+				else
+					uiaComb = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (comboBox, true, true));
+				accessible = uiaComb;
+				component = uiaComb;
+				selection = uiaComb;
+				action = uiaComb;
+				break;
+			default:
 				throw new NotImplementedException ("This AtkTester overload doesn't handle this type of widget: " +
 					type.ToString ());
 			}
-			
-			MWF.ComboBox comboBox = new MWF.ComboBox ();
-			comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			foreach (string item in names)
-				comboBox.Items.Add (item);
-			
-			UiaAtkBridge.ComboBox uiaComb = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (comboBox, true, true));
-			accessible = uiaComb;
-			component = uiaComb;
-			selection = uiaComb;
-			action = uiaComb;
 			
 			if (typeof (I) == typeof (Atk.Component)) {
 				return new Atk.ComponentAdapter (component);
@@ -84,17 +110,36 @@ namespace UiaAtkBridgeTest
 		MWF.RadioButton rad4 = new MWF.RadioButton ();
 		List<MWF.RadioButton> radios = new List<MWF.RadioButton> ();
 		int currentRadio = -1;
+		MWF.ListBox lb1 = new MWF.ListBox ();
+		MWF.ComboBox cb1 = new MWF.ComboBox ();
+		MWF.Label lab1 = new MWF.Label ();
+		MWF.Button but1 = new MWF.Button ();
+		MWF.CheckBox chk1 = new MWF.CheckBox ();
+		MWF.StatusBar sb1 = new MWF.StatusBar ();
+		MWF.ProgressBar pb1 = new MWF.ProgressBar ();
+		MWF.Form form = new MWF.Form ();
 		
 		public BridgeTester () 
 		{
+			cb1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			gb1.Controls.Add (rad1);
 			gb1.Controls.Add (rad2);
 			gb2.Controls.Add (rad3);
 			gb2.Controls.Add (rad4);
+			form.Controls.Add (gb1);
+			form.Controls.Add (gb2);
+			form.Controls.Add (lb1);
+			form.Controls.Add (cb1);
+			form.Controls.Add (lab1);
+			form.Controls.Add (but1);
+			form.Controls.Add (chk1);
+			form.Controls.Add (sb1);
+			//form.Controls.Add (pb1);
 			radios.Add (rad1);
 			radios.Add (rad2);
 			radios.Add (rad3);
 			radios.Add (rad4);
+			form.Show ();
 		}
 		
 		private MWF.RadioButton GiveMeARadio (string name) {
@@ -120,16 +165,28 @@ namespace UiaAtkBridgeTest
 			switch (type) {
 			case BasicWidgetType.Label:
 				MWF.Label lab = new MWF.Label ();
+				if (real)
+					lab = lab1;
 				lab.Text = name;
-				UiaAtkBridge.TextLabel uiaLab = new UiaAtkBridge.TextLabel (ProviderFactory.GetProvider (lab, true, true));
+				UiaAtkBridge.TextLabel uiaLab;
+				if (real)
+					uiaLab = (UiaAtkBridge.TextLabel) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (lab, true, true));
+				else
+					uiaLab = new UiaAtkBridge.TextLabel (ProviderFactory.GetProvider (lab, true, true));
 				accessible = uiaLab;
 				text = uiaLab;
 				component = uiaLab;
 				break;
 			case BasicWidgetType.NormalButton:
 				MWF.Button but = new MWF.Button ();
+				if (real)
+					but = but1;
 				but.Text = name;
-				UiaAtkBridge.Button uiaBut = new UiaAtkBridge.Button (ProviderFactory.GetProvider (but, true, true));
+				UiaAtkBridge.Button uiaBut;
+				if (real)
+					uiaBut = (UiaAtkBridge.Button) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (but, true, true));
+				else
+					uiaBut = new UiaAtkBridge.Button (ProviderFactory.GetProvider (but, true, true));
 				accessible = uiaBut;
 				text = uiaBut;
 				component = uiaBut;
@@ -137,49 +194,111 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.Window:
 				MWF.Form frm = new MWF.Form ();
+				if (real)
+					frm = form;
 				frm.Name = name;
-				UiaAtkBridge.Window uiaWin = new UiaAtkBridge.Window (ProviderFactory.GetProvider (frm, true, true));
+				UiaAtkBridge.Window uiaWin;
+				if (real)
+					uiaWin = (UiaAtkBridge.Window) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (frm, true, true));
+				else
+					uiaWin = new UiaAtkBridge.Window (ProviderFactory.GetProvider (frm, true, true));
 				accessible = uiaWin;
 				component = uiaWin;
 				break;
 			case BasicWidgetType.CheckBox:
 				MWF.CheckBox chk = new MWF.CheckBox ();
-				chk.Name = name;
-				UiaAtkBridge.CheckBox uiaChk = new UiaAtkBridge.CheckBox (ProviderFactory.GetProvider (chk, true, true));
+				if (real)
+					chk = chk1;
+				chk.Text = name;
+				UiaAtkBridge.CheckBox uiaChk;
+				if (real)
+					uiaChk = (UiaAtkBridge.CheckBox) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (chk, true, true));
+				else
+					uiaChk = new UiaAtkBridge.CheckBox (ProviderFactory.GetProvider (chk, true, true));
 				accessible = uiaChk;
 				component = uiaChk;
 				action = uiaChk;
+				text = uiaChk;
 				break;
 			case BasicWidgetType.RadioButton:
 				// the way to group radioButtons is dependent on their parent control
 				IRawElementProviderFragment prov = ProviderFactory.GetProvider (GiveMeARadio (name), true, true);
-				UiaAtkBridge.RadioButton uiaRad = new UiaAtkBridge.RadioButton (prov);
+				UiaAtkBridge.RadioButton uiaRad;
+				if (real)
+					uiaRad = (UiaAtkBridge.RadioButton) UiaAtkBridge.AutomationBridge.GetAdapterForProvider (prov);
+				else
+					uiaRad = new UiaAtkBridge.RadioButton (prov);
 				accessible = uiaRad;
 				component = uiaRad;
 				action = uiaRad;
 				break;
 			case BasicWidgetType.StatusBar:
 				MWF.StatusBar sb = new MWF.StatusBar ();
+				if (real)
+					sb = sb1;
 				sb.Text = name;
-				UiaAtkBridge.StatusBarWithGrid uiaSb = new UiaAtkBridge.StatusBarWithGrid (ProviderFactory.GetProvider (sb, true, true));
+				UiaAtkBridge.StatusBar uiaSb;
+				if (real)
+					uiaSb = (UiaAtkBridge.StatusBar) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (sb, true, true));
+				else
+					uiaSb = new UiaAtkBridge.StatusBar (ProviderFactory.GetProvider (sb, true, true));
 				accessible = uiaSb;
 				component = uiaSb;
 				text = uiaSb;
-				table = uiaSb;
 				break;
 			case BasicWidgetType.HScrollBar:
-				MWF.HScrollBar hsb = new MWF.HScrollBar ();
-				UiaAtkBridge.ScrollBar uiaHSb = new UiaAtkBridge.ScrollBar (ProviderFactory.GetProvider (hsb, true, true));
-				accessible = uiaHSb;
-				component = uiaHSb;
-				value = uiaHSb;
+			{
+				string[] names = new string[] { "First item", "Second Item", "Last Item", "A really, really long item that's here to try to ensure that we have a scrollbar, assuming that it's even possible to have a scrollbar just by having a relaly, really long item and we don't also have to perform some other function which I'm not aware of, like display the form on the screen" };
+				GetAtkObjectThatImplementsInterface <Atk.Component> (BasicWidgetType.ListBox, names, out accessible, real);
+				for (int i = accessible.NAccessibleChildren - 1; i >= 0; i--)
+				{
+					Atk.Object child = accessible.RefAccessibleChild (i);
+					if (child.Role == Atk.Role.ScrollBar && child.RefStateSet().ContainsState(Atk.StateType.Horizontal))
+					{
+						accessible = child;
+						break;
+					}
+				}
+				if (accessible.Role != Atk.Role.ScrollBar)
+					return null;
+				component = (Atk.ComponentImplementor) accessible;
+				value = (Atk.ValueImplementor) accessible;
 				break;
+			}
 			case BasicWidgetType.VScrollBar:
-				MWF.VScrollBar vsb = new MWF.VScrollBar ();
-				UiaAtkBridge.ScrollBar uiaVSb = new UiaAtkBridge.ScrollBar (ProviderFactory.GetProvider (vsb, true, true));
-				accessible = uiaVSb;
-				component = uiaVSb;
-				value = uiaVSb;
+			{
+				string[] names = new string[100];
+				for (int i = 0; i < 100; i++)
+					names[i] = i.ToString();
+				GetAtkObjectThatImplementsInterface <Atk.Component> (BasicWidgetType.ListBox, names, out accessible, real);
+				for (int i = accessible.NAccessibleChildren - 1; i >= 0; i--)
+				{
+					Atk.Object child = accessible.RefAccessibleChild (i);
+					if (child.Role == Atk.Role.ScrollBar && child.RefStateSet().ContainsState(Atk.StateType.Vertical))
+					{
+						accessible = child;
+						break;
+					}
+				}
+				if (accessible.Role != Atk.Role.ScrollBar)
+					return null;
+				component = (Atk.ComponentImplementor) accessible;
+				value = (Atk.ValueImplementor) accessible;
+				break;
+			}
+			case BasicWidgetType.ProgressBar:
+				MWF.ProgressBar pb = new MWF.ProgressBar ();
+				if (real)
+					pb = pb1;
+				UiaAtkBridge.ProgressBar uiaPb;
+				if (real)
+					uiaPb = (UiaAtkBridge.ProgressBar) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (pb, true, true));
+				else
+					uiaPb = new UiaAtkBridge.ProgressBar (ProviderFactory.GetProvider (pb, true, true));
+				accessible = uiaPb;
+				component = uiaPb;
+				text = uiaPb;
+				value = uiaPb;
 				break;
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
@@ -210,13 +329,35 @@ namespace UiaAtkBridgeTest
 		protected override int ValidNumberOfActionsForAButton { get { return 1; } }
 		protected override int ValidNChildrenForASimpleStatusBar { get { return 0; } }
 		protected override int ValidNChildrenForAScrollBar { get { return 3; } }
-		protected override bool StatusBarImplementsTable { get { return true; } }
 		
 		[Test]
 		public void UIACheckBox ()
 		{
 		}
 		
+		[Test]
+		public void ListBox ()
+		{
+			BasicWidgetType type = BasicWidgetType.ListBox;
+			Atk.Object accessible;
+			
+			string[] names = new string[] { "First item", "Second Item", "Last Item" };
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, true);
+
+			InterfaceComponent (type, atkComponent);
+			
+			PropertyRole (type, accessible);
+			
+			Assert.AreEqual (3, accessible.NAccessibleChildren, "ListBox#RO numChildren");
+			
+			Atk.Object listItemChild = accessible.RefAccessibleChild (0);
+			Assert.IsNotNull (listItemChild, "ListBox child#0 should not be null");
+			Assert.AreEqual (listItemChild.Role, Atk.Role.ListItem, "ListBox child#0 should be a list item");
+			
+			Assert.AreEqual (0, listItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
+		}
+
 		//[Test]
 		public void UIAButtonControlType ()
 		{

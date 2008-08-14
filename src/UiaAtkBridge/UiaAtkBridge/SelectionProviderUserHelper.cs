@@ -66,7 +66,7 @@ namespace UiaAtkBridge
 		public bool AddSelection (int i)
 		{
 			Console.WriteLine ("AddSelection" + i);
-				ISelectionItemProvider childItem;
+			ISelectionItemProvider childItem;
 			try {
 				childItem = ChildItemAtIndex (i);
 			} catch (System.IndexOutOfRangeException) {
@@ -97,8 +97,7 @@ namespace UiaAtkBridge
 				
 				if (selectionItemProvider != null) {
 					try {
-					selectionItemProvider.RemoveFromSelection ();
-	
+						selectionItemProvider.RemoveFromSelection ();
 					} catch (System.InvalidOperationException) {
 						result = false;
 					}
@@ -129,12 +128,9 @@ namespace UiaAtkBridge
 			Console.WriteLine ("RefSelection: " + i);
 			IRawElementProviderSimple[] selectedElements = 
 				selectionProvider.GetSelection ();
-			try
-			{
-				return AutomationBridge.GetAdapterForProvider (selectedElements[i]);
-			} catch {
+			if (i < 0 || i >= selectedElements.Length)
 				return null;
-			}
+			return AutomationBridge.GetAdapterForProvider (selectedElements[i]);
 		}
 		
 		public bool RemoveSelection (int i)
@@ -196,7 +192,7 @@ namespace UiaAtkBridge
 			
 			if (child == null) {
 				throw new System.IndexOutOfRangeException();
-				}
+			}
 			ISelectionItemProvider selectionItemProvider = 
 				(ISelectionItemProvider)child.GetPatternProvider
 					(SelectionItemPatternIdentifiers.Pattern.Id);

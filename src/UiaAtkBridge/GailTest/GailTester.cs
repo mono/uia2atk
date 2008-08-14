@@ -193,7 +193,6 @@ namespace UiaAtkBridgeTest
 		protected override int ValidNumberOfActionsForAButton { get { return 3; } }
 		protected override int ValidNChildrenForASimpleStatusBar { get { return 1; } }
 		protected override int ValidNChildrenForAScrollBar { get { return 0; } }
-		protected override bool StatusBarImplementsTable { get { return false; } }
 
 		public override void RunInGuiThread (VoidDelegate d)
 		{
