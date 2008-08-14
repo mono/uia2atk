@@ -39,7 +39,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		: ProviderBehavior, IScrollProvider
 	{
 		
-#region Constructors
+		#region Constructors
 
 		public ListBoxScrollProviderBehavior (ListBoxProvider provider,
 		                                      HScrollBar hscrollbar,
@@ -50,9 +50,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			this.vscrollbar = vscrollbar;
 		}
 
-#endregion
+		#endregion
 		
-#region IProviderBehavior Interface
+		#region IProviderBehavior Interface
 
 		public override AutomationPattern ProviderPattern { 
 			get { return ScrollPatternIdentifiers.Pattern; }
@@ -98,9 +98,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 				return base.GetPropertyValue (propertyId);
 		}
 		
-#endregion
+		#endregion
 		
-#region IScrollProvider Interface
+		#region IScrollProvider Interface
 			
 		public bool HorizontallyScrollable {
 			get {
@@ -121,7 +121,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		//total content area within the control.
 		public double HorizontalViewSize {
 			//TODO: Is this OK?
-			get { return HorizontalViewSize; }
+			get { return HorizontalScrollPercent; }
 		}
 
 		public bool VerticallyScrollable {
@@ -171,9 +171,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			}
 		}
 
-#endregion
+		#endregion
 		
-#region Private Methods
+		#region Private Methods
 
 		private string GetAmountString (ScrollAmount amount) 
 		{
@@ -181,16 +181,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 			switch (amount) {
 			case ScrollAmount.LargeDecrement:
-				str = "LargeDecrement";
+				str = "UIALargeDecrement";
 				break;
 			case ScrollAmount.LargeIncrement:
-				str = "LargeIncrement";
+				str = "UIALargeIncrement";
 				break;
 			case ScrollAmount.SmallDecrement:
-				str = "SmallDecrement";
+				str = "UIASmallDecrement";
 				break;
 			case ScrollAmount.SmallIncrement:
-				str = "SmallIncrement";
+				str = "UIASmallIncrement";
 				break;
 			}
 
@@ -206,17 +206,20 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			                                                      BindingFlags.InvokeMethod
 			                                                      | BindingFlags.NonPublic
 			                                                      | BindingFlags.Instance);
-			methodInfo.Invoke (scrollbar, new object[] { null });
+			Action<ScrollBar> invoke 
+				= (Action<ScrollBar>) Delegate.CreateDelegate (typeof (Action<ScrollBar>), 
+				                                               methodInfo);
+			invoke (scrollbar);
 		}
 		
-#endregion
+		#endregion
 		
-#region Private Fields
+		#region Private Fields
 		
 		private ScrollBar hscrollbar;
 		private ScrollBar vscrollbar;
 		
-#endregion
+		#endregion
 
 	}
 }

@@ -264,11 +264,6 @@ namespace Mono.UIAutomation.Winforms
 				return base.GetPropertyValue (propertyId);
 		}
 		
-		public override int [] GetRuntimeId ()
-		{
-			return null;
-		}
-		
 //		public override IRawElementProviderFragment Navigate (NavigateDirection direction)
 //		{
 //			// TODO: Consider what exactly "first" and "last" are

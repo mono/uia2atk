@@ -86,7 +86,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			                                                      BindingFlags.InvokeMethod
 			                                                      | BindingFlags.NonPublic
 			                                                      | BindingFlags.Instance);
-			methodInfo.Invoke (provider.ScrollBarContainer, null);
+			Action<ScrollBar> invoke 
+				= (Action<ScrollBar>) Delegate.CreateDelegate (typeof (Action<ScrollBar>), 
+				                                               methodInfo);
+			invoke (provider.ScrollBarContainer);
 		}
 		
 		#endregion	
