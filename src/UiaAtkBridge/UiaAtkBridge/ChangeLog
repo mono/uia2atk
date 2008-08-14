@@ -1,5 +1,11 @@
 2008-08-14 Mike Gorse <mgorse@novell.com>
-	* ProgressBar.cs: Added.
+
+	* ListItem.cs: Added.
+	* UiaAtkBridge.mds, Makefile.am: Added ProgressBar.cs and ListItem.cs
+
+2008-08-14 Mike Gorse <mgorse@novell.com>
+
+	* ProgressBar.cs, ListItem.cs: Added.
 
 2008-08-14 Mike Gorse <mgorse@novell.com>
 

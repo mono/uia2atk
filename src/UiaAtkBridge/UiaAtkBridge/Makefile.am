@@ -51,11 +51,13 @@ FILES =  \
 	ComponentImplementorHelper.cs \
 	ComponentParentAdapter.cs \
 	List.cs \
+	ListItem.cs \
 	MenuItem.cs \
 	Monitor.cs \
 	Pane.cs \
 	ParentAdapter.cs \
 	ParentMenu.cs \
+	ProgressBar.cs \
 	RadioButton.cs \
 	ScrollBar.cs \
 	SelectionProviderUserHelper.cs \
