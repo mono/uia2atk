@@ -71,12 +71,12 @@ class PictureBoxFrame(accessibles.Frame):
     #check the picture after click button
     def assertPicture(self, picture=None):
         def resultMatches():
-                if picture == 1:
-                    procedurelogger.expectedResult('picture has been changed to \"%s\"' % "desktop-blue_soccer.jpg")
-                    return self.findLabel("You are watching %s/samples/desktop-blue_soccer.jpg" % uiaqa_path)
-                if picture == 2:
-                    procedurelogger.expectedResult('picture has been changed to \"%s\"' % "universe.jpg")
-                    return self.findLabel("You are watching %s/samples/universe.jpg" % uiaqa_path)
+            if picture == 1:
+                procedurelogger.expectedResult('picture has been changed to \"%s\"' % "desktop-blue_soccer.jpg")
+                return self.findLabel("You are watching %s/samples/desktop-blue_soccer.jpg" % uiaqa_path)
+            if picture == 2:
+                procedurelogger.expectedResult('picture has been changed to \"%s\"' % "universe.jpg")
+                return self.findLabel("You are watching %s/samples/universe.jpg" % uiaqa_path)
         assert retryUntilTrue(resultMatches)
     
     #close application main window after running test

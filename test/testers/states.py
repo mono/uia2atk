@@ -208,6 +208,9 @@ class Button(object):
 class Label(object):
     states = (SHOWING,MULTI_LINE)
 
+class Form(object):
+    states = (SHOWING)
+
 class CheckBox(Button):
     pass
 
@@ -216,4 +219,7 @@ class VScrollBar(object):
 
 class HScrollBar(object):
     states = (SHOWING,HORIZONTAL)
+
+class StatusBar(object):
+    states = (SHOWING)
 

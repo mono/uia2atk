@@ -1,5 +1,14 @@
 2008-08-15  Calen Chen <cachen@novell.com>
 
+	* testers/statusbar_basic_ops.py: add new test for statusbar
+	* testers/statusbar: add new test for statusbar
+	* testers/statusbar/statusbarframe.py: add new test for statusbar
+	* testers/statusbar/__init__.py: add new test for statusbar
+	* testers/picturebox/pictureboxframe.py: adjust indentation
+	* testers/states.py: add states list for statusbar
+
+2008-08-15  Calen Chen <cachen@novell.com>
+
 	* testers/picturebox/pictureboxframe.py: forgot to delete unuseful line
 
 2008-08-15  Calen Chen <cachen@novell.com>
