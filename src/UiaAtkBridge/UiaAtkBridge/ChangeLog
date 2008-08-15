@@ -1,5 +1,9 @@
 2008-08-14 Mike Gorse <mgorse@novell.com>
 
+	* AutomationBridge.cs: Support Group, ListItem, and RadioButton
+
+2008-08-14 Mike Gorse <mgorse@novell.com>
+
 	* ListItem.cs: Added.
 	* UiaAtkBridge.mds, Makefile.am: Added ProgressBar.cs and ListItem.cs
 

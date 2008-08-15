@@ -175,13 +175,21 @@ namespace UiaAtkBridge
 				HandleNewCheckBoxControlType (simpleProvider);
 			else if (controlTypeId == ControlType.List.Id)
 				HandleNewListControlType (simpleProvider);
+			else if (controlTypeId == ControlType.ListItem.Id)
+				HandleNewListItemControlType (simpleProvider);
 			else if (controlTypeId == ControlType.ComboBox.Id)
 				HandleNewComboBoxControlType (simpleProvider);
 			else if (controlTypeId == ControlType.StatusBar.Id)
 				HandleNewStatusBarControlType (simpleProvider);
 			else if (controlTypeId == ControlType.ScrollBar.Id)
 				HandleNewScrollBarControlType (simpleProvider);
+			else if (controlTypeId == ControlType.Group.Id)
+				HandleNewGroupControlType (simpleProvider);
+			else if (controlTypeId == ControlType.RadioButton.Id)
+				HandleNewRadioButtonControlType (simpleProvider);
 			// TODO: Other providers
+			else
+				Console.WriteLine ("AutomationBridge: Unhandled control: " + controlTypeId);
 		}
 
 		private void HandleElementRemoval (IRawElementProviderSimple provider)
@@ -225,6 +233,7 @@ namespace UiaAtkBridge
 				(IRawElementProviderSimple) provider;
 			IntPtr providerHandle = (IntPtr) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
 			pointerProviderMapping.Remove (providerHandle);
+			appMonitor.Quit();
 		}
 		
 		private void HandleNewButtonControlType (IRawElementProviderSimple provider)
@@ -279,6 +288,19 @@ namespace UiaAtkBridge
 			                              atkList);
 		}
 
+		private void HandleNewListItemControlType (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject =
+				GetParentAdapter (provider);
+			
+			ListItem atkItem = new ListItem (provider);
+			providerAdapterMapping [provider] = atkItem;
+			
+			parentObject.AddOneChild (atkItem);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkItem);
+		}
+
 		private void HandleNewComboBoxControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject =
@@ -319,6 +341,32 @@ namespace UiaAtkBridge
 			parentObject.AddOneChild (atkScroll);
 			parentObject.AddRelationship (Atk.RelationType.Embeds,
 			                              atkScroll);
+		}
+		
+		private void HandleNewGroupControlType (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject =
+				GetParentAdapter (provider);
+			
+			Pane atkPane = new Pane (provider);
+			providerAdapterMapping [provider] = atkPane;
+			
+			parentObject.AddOneChild (atkPane);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkPane);
+		}
+		
+		private void HandleNewRadioButtonControlType (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject =
+				GetParentAdapter (provider);
+			
+			RadioButton atkRadio = new RadioButton (provider);
+			providerAdapterMapping [provider] = atkRadio;
+			
+			parentObject.AddOneChild (atkRadio);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkRadio);
 		}
 		
 #endregion
