@@ -26,10 +26,6 @@ class PictureBoxFrame(accessibles.Frame):
         super(PictureBoxFrame, self).__init__(accessible)
         self.button1 = self.findPushButton(self.BUTTON_ONE)
 
-        harness_dir = path[0]
-        i = harness_dir.rfind("/")
-        uiaqa_path = harness_dir[:i]
-
     #diff PictureBox's inital actions list with expectant list in actions.py
     def actionsCheck(self, accessible):
         procedurelogger.action('diff %s\'s actions list' % accessible)

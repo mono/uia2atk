@@ -1,5 +1,9 @@
 2008-08-15  Calen Chen <cachen@novell.com>
 
+	* testers/picturebox/pictureboxframe.py: forgot to delete unuseful line
+
+2008-08-15  Calen Chen <cachen@novell.com>
+
 	* testers/picturebox: add new test for picturebox
 	* testers/picturebox/pictureboxframe.py: add new test for picturebox
 	* testers/picturebox/__init__.py: add new test for picturebox
