@@ -255,6 +255,8 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return Control.CanFocus;
 			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				if (control.Parent != null && control.TopLevelControl == null)
+					return true;
 				System.Drawing.Rectangle bounds =
 					GetControlScreenBounds ();				
 				System.Drawing.Rectangle screen =

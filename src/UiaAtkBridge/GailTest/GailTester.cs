@@ -105,9 +105,8 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.Window:
 				widget = new Gtk.Window (text);
-				//not yet implemented:
-//				if (real)
-//					widget = GailTestApp.MainClass.GiveMeARealWindow ();
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealWindow (guiThread);
 				break;
 			case BasicWidgetType.CheckBox:
 				widget = new Gtk.CheckButton ();

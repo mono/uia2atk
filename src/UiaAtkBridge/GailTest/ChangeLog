@@ -1,3 +1,7 @@
+2008-08-15 Mike Gorse <mgorse@novell.com>
+
+	* GailTester.cs: Support getting a real window
+
 2008-08-14 Mike Gorse <mgorse@novell.com>
 
 	* Gailtester.cs: Remove StatusBarImplementsTable

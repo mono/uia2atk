@@ -36,6 +36,8 @@ namespace UiaAtkBridge
 		public CheckBox (IRawElementProviderSimple provider) : base (provider)
 		{
 			Role = Atk.Role.CheckBox;
+			string buttonText = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+Console.WriteLine ("Check a chick a chuck a chubby checkers: " + buttonText);
 		}
 		
 	}

@@ -158,6 +158,14 @@ namespace GailTestApp {
 			return win.GiveMeARealParentMenu (name);
 		}
 		
+		public static Gtk.Window GiveMeARealWindow (MovingThread guiThread)
+		{
+			if (win == null)
+				Start (guiThread);
+			
+			return win;
+		}
+		
 		public static void Kill (MovingThread thread) 
 		{
 			thread.GLibDeleg = KillMe;

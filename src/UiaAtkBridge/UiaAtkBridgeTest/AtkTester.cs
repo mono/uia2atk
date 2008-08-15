@@ -372,6 +372,7 @@ namespace UiaAtkBridgeTest
 			InterfaceComponent (type, atkComponent);
 			
 			PropertyRole (type, accessible);
+			Parent (type, accessible);
 		}
 		
 		protected void InterfaceComponent (BasicWidgetType type, Atk.Component implementor)
@@ -1189,6 +1190,19 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,WordStart,eo");
 			
 			return accessible;
+		}
+
+		protected void Parent (BasicWidgetType type, Atk.Object accessible)
+		{
+			Atk.Object parent = accessible.Parent;
+			Assert.IsNotNull (parent, "parent not null");
+			if (type == BasicWidgetType.Window)
+				Assert.AreEqual (parent.Role, Atk.Role.Application, "Parent of a frame should be an application");
+			int count = parent.NAccessibleChildren;
+			for (int i = 0; i < count; i++)
+				if (parent.RefAccessibleChild (i) == accessible)
+					return;
+			Assert.Fail ("Object is child of parent");
 		}
 
 		private double GetMinimumValue (Atk.Value value)

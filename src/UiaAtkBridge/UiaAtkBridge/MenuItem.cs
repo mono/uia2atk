@@ -34,6 +34,7 @@ namespace UiaAtkBridge
 
 		public MenuItem (string name)
 		{
+Console.WriteLine ("Added a MenuItem: " + name);
 			this.Name = name;
 		}
 		

@@ -132,12 +132,15 @@ namespace UiaAtkBridge
 			requestedChildren = true;
 			
 			IRawElementProviderFragmentRoot root;
+Console.WriteLine("requesting children");
 			if ((root = Provider as IRawElementProviderFragmentRoot) == null)
 				return;
+Console.WriteLine ("root");
 			
 			IRawElementProviderFragment child 
 				= root.Navigate (NavigateDirection.FirstChild);
 			while (child != null) {
+Console.WriteLine("Raising child");
 				AutomationInteropProvider.RaiseStructureChangedEvent (child, 
 				                                                      new StructureChangedEventArgs (StructureChangeType.ChildAdded,
 				                                                                                     child.GetRuntimeId ()));				

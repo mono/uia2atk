@@ -111,6 +111,15 @@ namespace Mono.UIAutomation.Winforms
 				ProviderFactory.ReleaseProvider ((Form) formSender);
 			};
 			
+Console.WriteLine ("Adding key handler" + f);
+			f.PreviewKeyDown += delegate (object formSender, PreviewKeyDownEventArgs keyPreviewArgs) {
+				Console.WriteLine ("A key esta aqui!");
+			};
+
+			f.KeyDown += delegate (object formSender, KeyEventArgs keyArgs) {
+				Console.WriteLine ("key down");
+			};
+
 			// Pass false in last argument so that InitializeChildControlStructure
 			// isn't called when the provider is created.  We'll do
 			// that manually after alerting the bridge to the presence

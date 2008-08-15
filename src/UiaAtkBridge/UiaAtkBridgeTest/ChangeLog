@@ -1,3 +1,7 @@
+2008-08-15 Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Add parent test for Window (could be added other places as well)
+
 2008-08-14 Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs: minimumValue -> GetMinimumValue, maximumValue -> GetMaximumValue

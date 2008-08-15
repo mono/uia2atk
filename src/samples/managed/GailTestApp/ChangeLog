@@ -1,3 +1,7 @@
+2008-08-15  Mike Gorse <mgorse@novell.com>
+
+	* Main.cs: Support getting a real window
+
 2008-08-13  Mike Gorse <mgorse@novell.com>
 
 	* Main.cs, MainWindow.cs: Add ProgressBar

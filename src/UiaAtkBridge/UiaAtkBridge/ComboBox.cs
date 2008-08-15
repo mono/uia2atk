@@ -51,23 +51,6 @@ namespace UiaAtkBridge
 		
 		private IRawElementProviderFragment childrenHolder = null;
 		
-		private string[] ChildrenItems {
-			get {
-				List<string> children = new List<string> ();
-				
-				//Get List child
-				if (childrenHolder == null)
-					return children.ToArray();
-				IRawElementProviderFragment child = ChildrenHolder.Navigate (NavigateDirection.FirstChild);
-				do {
-					children.Add ((string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
-					child = child.Navigate (NavigateDirection.NextSibling);
-				} while (child != null);
-				
-				return children.ToArray ();
-			}
-		}
-		
 		private string actionDescription = null;
 		private string actionName = "press";
 		private ISelectionProvider 					selProvider;
@@ -82,7 +65,6 @@ namespace UiaAtkBridge
 		{
 			this.provider = provider;
 			this.Role = Atk.Role.ComboBox;
-			children.Add (new ParentMenu (ChildrenItems));
 			selProvider = (ISelectionProvider)provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
 			valProvider = (IValueProvider)provider.GetPatternProvider(ValuePatternIdentifiers.Pattern.Id);
 			
@@ -180,7 +162,18 @@ namespace UiaAtkBridge
 		}
 		bool Atk.SelectionImplementor.AddSelection (int i)
 		{
-			return selectionHelper.AddSelection(i);
+			bool success = selectionHelper.AddSelection(i);
+Console.WriteLine ("select: " + success);
+			if (success)
+			{
+				Atk.TextImplementor sel = selectionHelper.RefSelection (0) as Atk.TextImplementor;
+				Atk.Object obj = selectionHelper.RefSelection (0) as Atk.Object;
+Console.WriteLine ("dbg: obj " + obj);
+Console.WriteLine ("Now sel " + sel);
+				if (sel != null)
+					Name = sel.GetText (0, -1);
+			}
+			return success;
 		}
 		bool Atk.SelectionImplementor.ClearSelection ()
 		{

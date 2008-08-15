@@ -233,6 +233,7 @@ namespace UiaAtkBridge
 				(IRawElementProviderSimple) provider;
 			IntPtr providerHandle = (IntPtr) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
 			pointerProviderMapping.Remove (providerHandle);
+			appMonitor.Quit ();
 		}
 		
 		private void HandleNewButtonControlType (IRawElementProviderSimple provider)
