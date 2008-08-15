@@ -36,7 +36,6 @@ namespace UiaAtkBridge
 	internal class Monitor
 	{
 		private bool useNativeInitialization = true;
-		private GLib.MainLoop mainLoop;
 		
 		public Monitor()
 		{
@@ -59,7 +58,6 @@ namespace UiaAtkBridge
 		{
 			isApplicationStarted = true;
 			Thread glibThread = new Thread (new ThreadStart (GLibMainLoopThread));
-			glibThread.IsBackground = true;
 			glibThread.Start ();
 			GLibHacks.Invoke (delegate (object sender, EventArgs args) {
 				LaunchAtkBridge ();});
@@ -67,18 +65,9 @@ namespace UiaAtkBridge
 		
 		private void GLibMainLoopThread ()
 		{
-			mainLoop = new GLib.MainLoop();
-			mainLoop.Run();
-			Console.WriteLine("I ran");
-			Atk.Util.GetRootHandler = null;
+			new GLib.MainLoop().Run();
 		}
 		
-		public void Quit()
-		{
-			GLibHacks.Invoke (delegate (object sender, EventArgs args) {
-				mainLoop.Quit();});
-		}
-
 		internal static string GetProgramName()
 		{
 			return System.IO.Path.GetFileNameWithoutExtension (Environment.GetCommandLineArgs () [0]);
@@ -168,7 +157,6 @@ namespace UiaAtkBridge
 		
 		private void LaunchAtkBridge ()
 		{
-			Environment.SetEnvironmentVariable ("AT_BRIDGE_NO_TIDY", "1");
 			gnome_accessibility_module_init();
 		}
 		

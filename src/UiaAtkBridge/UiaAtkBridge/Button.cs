@@ -72,7 +72,6 @@ namespace UiaAtkBridge
 			}
 			
 			string buttonText = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-Console.WriteLine ("text: " + buttonText);
 			textExpert = new TextImplementorHelper (buttonText);
 			Name = buttonText;
 		}
