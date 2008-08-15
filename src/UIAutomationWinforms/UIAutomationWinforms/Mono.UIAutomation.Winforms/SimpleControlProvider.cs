@@ -48,7 +48,7 @@ namespace Mono.UIAutomation.Winforms
 		private int runtimeId;
 		private ToolTipProvider toolTipProvider;
 		private INavigation navigation;
-//		private ErrorProviderProvider errorProvider;
+		private ErrorProviderProvider errorProvider;
 
 		#endregion
 		
@@ -64,8 +64,8 @@ namespace Mono.UIAutomation.Winforms
 			
 			runtimeId = -1;
 			
-			if (Control != null)
-				InitializeInternalControlEvents ();
+//			if (Control != null)
+//				InitializeInternalControlEvents ();
 		}
 		
 		#endregion
@@ -117,13 +117,11 @@ namespace Mono.UIAutomation.Winforms
 				foreach (IProviderBehavior behavior in providerBehaviors.Values)
 					behavior.Disconnect (Control);
 				
-				TerminateInternalControlEvents ();
+//				TerminateInternalControlEvents ();
 			}
 
 			events.Clear ();
 			providerBehaviors.Clear ();
-			
-			//TODO: Terminate Navigation?
 		}
 
 		public void SetEvent (ProviderEventType type, IConnectable strategy)
@@ -239,16 +237,17 @@ namespace Mono.UIAutomation.Winforms
 				return IsBehaviorEnabled (ValuePatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.IsWindowPatternAvailableProperty.Id)
 				return IsBehaviorEnabled (WindowPatternIdentifiers.Pattern);
-			
-			//Control-like properties
-			if (Control == null)
-				return null;			
 			else if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id) {
 				if (runtimeId == -1)
 					runtimeId = Helper.GetUniqueRuntimeId ();
 
 				return runtimeId;
-			} else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
+			}
+			
+			//Control-like properties
+			if (Control == null)
+				return null;			
+			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 				return Control.Enabled;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return Control.Text; // TODO: Get from Label if necessary
@@ -314,14 +313,25 @@ namespace Mono.UIAutomation.Winforms
 			else
 				return Control.TopLevelControl.RectangleToScreen (Control.Bounds);
 		}
+
+		private void InitializeInternalControlEvents ()
+		{
+			InitializeToolTipInternalEvents ();
+			InitializeErrorProviderInternalEvents ();
+		}
+		
+		private void TerminateInternalControlEvents ()
+		{
+			TerminateToolTipInternalEvents ();
+			TerminateErrorProviderInternalEvents ();
+		}
 		
 		#endregion
 		
 		#region Private Methods: ToolTip
-
-		private void InitializeInternalControlEvents ()
+		
+		private void InitializeToolTipInternalEvents ()
 		{
-			//ToolTip
 			GetPrivateToolTipField ();
 			
 			try {
@@ -346,39 +356,11 @@ namespace Mono.UIAutomation.Winforms
 				Console.WriteLine ("{0}: ToolTipUnhookup not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
-			}
-
-			//ErrorProvider
-			/*GetPrivateErrorProviderField ();
-
-			try {
-				Helper.AddPrivateEvent (typeof (Control), 
-				                        Control, 
-				                        "ErrorProviderHookup",
-				                        this, 
-				                        "OnErrorProviderHookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ErrorProviderHookup not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
-			
-			try {
-				Helper.AddPrivateEvent (typeof (Control), 
-				                        Control, 
-				                        "ErrorProviderUnhookup",
-				                        this, 
-				                        "OnErrorProviderUnhookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ErrorProviderUnhookup not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}*/
+			}			
 		}
 		
-		private void TerminateInternalControlEvents ()
+		private void TerminateToolTipInternalEvents ()
 		{
-			//ToolTip
 			try {
 				Helper.RemovePrivateEvent (typeof (Control), 
 				                           Control, 
@@ -407,9 +389,85 @@ namespace Mono.UIAutomation.Winforms
 				ProviderFactory.ReleaseProvider (toolTipProvider.ToolTip);
 				toolTipProvider = null;
 			}
+		}
+
+		private void GetPrivateToolTipField ()
+		{
+			ToolTip tooltip = null;
+
+			try {
+				tooltip = Helper.GetPrivateProperty<Control, ToolTip> (typeof (Control),
+				                                                       Control,
+				                                                       "UIAToolTip");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: uia_tool_tip field not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
+
+			if (toolTipProvider != null && tooltip != toolTipProvider.ToolTip) {
+				ProviderFactory.ReleaseProvider (toolTipProvider.ToolTip);
+				toolTipProvider = null;					
+			}
+
+			if (toolTipProvider == null
+			    || (toolTipProvider != null && toolTipProvider.ToolTip != tooltip))
+				toolTipProvider = (ToolTipProvider) ProviderFactory.GetProvider (tooltip);
+		}
+		
+#pragma warning disable 169
+		
+		private void OnToolTipHookup (object sender, EventArgs args)
+		{
+			GetPrivateToolTipField ();
+		}
+
+		private void OnToolTipUnhookup (object sender, EventArgs args)
+		{		
+			if (toolTipProvider != null) {
+				ProviderFactory.ReleaseProvider (toolTipProvider.ToolTip);
+				toolTipProvider = null;
+			}
+		}
+		
+#pragma warning restore 169
+		
+		#endregion
+		
+		#region Private Methods: ErrorProvider
+		
+		private void InitializeErrorProviderInternalEvents ()
+		{
+			GetPrivateErrorProviderField ();
+
+			try {
+				Helper.AddPrivateEvent (typeof (Control), 
+				                        Control, 
+				                        "ErrorProviderHookup",
+				                        this, 
+				                        "OnErrorProviderHookup");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ErrorProviderHookup not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
 			
-			//ErrorProvider
-			/*try {
+			try {
+				Helper.AddPrivateEvent (typeof (Control), 
+				                        Control, 
+				                        "ErrorProviderUnhookup",
+				                        this, 
+				                        "OnErrorProviderUnhookup");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: ErrorProviderUnhookup not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
+		}
+		
+		private void TerminateErrorProviderInternalEvents ()
+		{
+			try {
 				Helper.RemovePrivateEvent (typeof (Control), 
 				                           Control, 
 				                           "ErrorProviderHookup",
@@ -436,43 +494,19 @@ namespace Mono.UIAutomation.Winforms
 			if (errorProvider != null) {
 				ProviderFactory.ReleaseProvider (errorProvider.ErrorProvider);
 				errorProvider = null;
-			}*/
-		}
-	
-		private void GetPrivateToolTipField ()
-		{
-			ToolTip tooltip = null;
-
-			try {
-				tooltip = (ToolTip) Helper.GetPrivateField (typeof (Control),
-				                                            Control,
-				                                            "tool_tip");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: tool_tip field not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
 			}
-
-			if (toolTipProvider != null && tooltip != toolTipProvider.ToolTip) {
-				ProviderFactory.ReleaseProvider (toolTipProvider.ToolTip);
-				toolTipProvider = null;					
-			}
-
-			if (toolTipProvider == null
-			    || (toolTipProvider != null && toolTipProvider.ToolTip != tooltip))
-				toolTipProvider = (ToolTipProvider) ProviderFactory.GetProvider (tooltip);
 		}
-		
-		/*private void GetPrivateErrorProviderField ()
+
+		private void GetPrivateErrorProviderField ()
 		{
 			ErrorProvider error = null;
 
 			try {
-				error = (ErrorProvider) Helper.GetPrivateField (typeof (Control),
-				                                                Control,
-				                                                "error_provider");
+				error = Helper.GetPrivateProperty<Control, ErrorProvider> (typeof (Control),
+				                                                           Control,
+				                                                           "UIAErrorProvider");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: error_provider field not defined in {1}",
+				Console.WriteLine ("{0}: uia_error_provider field not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
 			}
@@ -485,35 +519,21 @@ namespace Mono.UIAutomation.Winforms
 			if (errorProvider == null
 			    || (errorProvider != null && errorProvider.ErrorProvider != error))
 				errorProvider = (ErrorProviderProvider) ProviderFactory.GetProvider (error);
-		}*/
-		
-#pragma warning disable 169
-		
-		private void OnToolTipHookup (object sender, EventArgs args)
-		{
-			GetPrivateToolTipField ();
-		}
-
-		private void OnToolTipUnhookup (object sender, EventArgs args)
-		{		
-			if (toolTipProvider != null) {
-				ProviderFactory.ReleaseProvider (toolTipProvider.ToolTip);
-				toolTipProvider = null;
-			}
 		}
 		
-#pragma warning restore 169
+#pragma warning disable 169		
 		
-		/*private void OnErrorProviderHookup (object sender, UserControl control)
+		private void OnErrorProviderHookup (object sender, UserControl control)
 		{
 			GetPrivateErrorProviderField ();
 			//TODO: The following call may fail when errorProvider is null
 			ErrorProviderProvider.InstancesTracker.AddControl (control, 
 			                                                   Control.Parent,
 			                                                   errorProvider);
-		}*/
+			Console.WriteLine ("SimpleControl.OnErrorProviderHookup");
+		}
 
-		/*private void OnErrorProviderUnhookup (object sender, UserControl control)
+		private void OnErrorProviderUnhookup (object sender, UserControl control)
 		{		
 			if (errorProvider != null) {
 				ProviderFactory.ReleaseProvider (errorProvider.ErrorProvider);
@@ -521,7 +541,9 @@ namespace Mono.UIAutomation.Winforms
 			}
 			ErrorProviderProvider.InstancesTracker.RemoveControl (control,
 			                                                      control.Parent);
-		}*/
+		}
+		
+#pragma warning restore 169
 		
 		#endregion
 	}

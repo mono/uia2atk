@@ -63,13 +63,6 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 #endregion
-		
-#region IRawElementProviderFragmentRoot Overrides
-		
-		public override int [] GetRuntimeId ()
-		{
-			return null;
-		}
-#endregion
+
 	}
 }

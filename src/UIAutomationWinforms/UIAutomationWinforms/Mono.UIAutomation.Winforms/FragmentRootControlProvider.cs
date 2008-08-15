@@ -88,9 +88,21 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Public Methods
 		
+		public void AddChildProvider (bool raiseEvent, 
+		                              FragmentControlProvider provider) 
+		{
+			OnNavigationChildAdded (raiseEvent, provider);
+		}
+		
+		public void RemoveChildProvider (bool raiseEvent, 
+		                                 FragmentControlProvider provider) 
+		{
+			OnNavigationChildRemoved (raiseEvent, provider);
+		}
+		
 		public override void Terminate ()
 		{
-			base.Terminate (); 
+			base.Terminate ();
 			
 			FinalizeChildControlStructure ();
 			
@@ -166,10 +178,14 @@ namespace Mono.UIAutomation.Winforms
 			if (NavigationChildRemoved != null)
 				NavigationChildRemoved (this,
 				                        new NavigationEventArgs (raiseEvent, 
-				                        StructureChangeType.ChildRemoved, 
+				                                                 StructureChangeType.ChildRemoved, 
 				                                                 childProvider));
-			childProvider.Navigation.Terminate ();
-			childProvider.Navigation = null;
+			
+			//TODO: Is this validation *really* needed?
+			if (childProvider.Navigation != null) {
+				childProvider.Navigation.Terminate ();
+				childProvider.Navigation = null;
+			}
 			children.Remove (childProvider);
 		}
 			

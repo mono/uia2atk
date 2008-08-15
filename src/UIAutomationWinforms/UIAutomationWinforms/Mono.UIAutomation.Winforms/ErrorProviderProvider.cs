@@ -33,8 +33,16 @@ using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-
-	//TODO: Handle ToolTip
+	//Calling MWF.ErrorProvider.SetError(control) will add one UserControl to 
+	//control.Parent to show the "Image Exclamation Mark". 
+	//We are doing the following to keep track of those UserControls to ignore 
+	//them when control.Parent.ControlAdded event is generated:
+	//1. Use internal event MWF.Control.ErrorProviderHookup, this is generated 
+	//   in control when MWF.ErrorProvider.SetError(control,"error") is called.
+	//   We keep track of added UserControl instance using InstancesTracker.
+	//2. Use internal event MWF.Control.ErrorProviderUnhookup, this is generated 
+	//   in control when MWF.ErrorProvider.SetError(control,"") is called.
+	//   We remove track of added UserControl instance using InstancesTracker.
 	internal class ErrorProviderProvider : PaneProvider
 	{
 		
@@ -171,7 +179,7 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (dictionary == null)
 					dictionary = new InstancesDictionary ();
-				
+
 				dictionary.AddControl (control, parent, provider);
 			}
 			
@@ -203,12 +211,11 @@ namespace Mono.UIAutomation.Winforms
 			                        Control parent, 
 			                        ErrorProviderProvider provider)
 			{			
-				//UserControl <-> ErrorProvider 
 				if (controlDictionary.ContainsKey (control) == true)
 					return;
-				controlDictionary.Add (control, provider);
 				
-				Console.WriteLine ("Calling: AddControl");
+				//UserControl <-> ErrorProvider 
+				controlDictionary.Add (control, provider);
 
 				//ErrorProvider <-> UserControl's
 				ErrorProviderControlList errorControls;
@@ -227,7 +234,31 @@ namespace Mono.UIAutomation.Winforms
 					parentDictionary [parent] = parentControls;
 				}
 				parentControls.Add (control);
+				
+				//TODO: FIXME
+				if (parentControls.Count == 1) {
+					FragmentRootControlProvider root = (FragmentRootControlProvider) ProviderFactory.GetProvider (parent);
+					root.AddChildProvider (true, provider);		
+				}
+				
+				//To update Navigation
+//				control.VisibleChanged += new EventHandler (OnErrorProviderControlVisibleChanged);
 			}
+			
+//			private void OnErrorProviderControlVisibleChanged (object sender, EventArgs args)
+//			{
+//				if (((Control) sender).Visible == true) {
+//					if (InstancesTracker.IsFirstControlFromErrorProvider ((Control) sender) == true) {
+//						FragmentRootControlProvider root = (FragmentRootControlProvider) ProviderFactory.GetProvider (((Control) sender).Parent);
+//						root.AddChildProvider (true, InstancesTracker.GetProviderFromControl ((Control) sender));
+//					}
+//				} else if (((Control) sender).Visible == false) {
+//					if (InstancesTracker.IsFirstControlFromErrorProvider ((Control) sender) == true) {
+//						FragmentRootControlProvider root = (FragmentRootControlProvider) ProviderFactory.GetProvider (((Control) sender).Parent);
+//						root.RemoveChildProvider (true, InstancesTracker.GetProviderFromControl ((Control) sender));
+//					}
+//				}
+//			}
 			
 			public ErrorProviderProvider GetProviderFromControl (Control control)
 			{
@@ -265,10 +296,37 @@ namespace Mono.UIAutomation.Winforms
 				Console.WriteLine ("Calling: RemoveControl");
 				
 				ErrorProviderProvider provider = controlDictionary [control];
-				
-				//UserControl <-> ErrorProvider 
-				controlDictionary.Remove (control);				
 
+//				control.VisibleChanged -= new EventHandler (OnErrorProviderControlVisibleChanged);
+//				if (IsFirstControlFromErrorProvider (control) == true) {
+//					FragmentRootControlProvider root = (FragmentRootControlProvider) ProviderFactory.GetProvider (parent);
+//					root.RemoveChildProvider (false, provider);
+//				}
+
+
+//				//ErrorProvider <-> UserControl's
+//				ErrorProviderControlList errorControls;
+//				if (providerDictionary.TryGetValue (provider, 
+//				                                    out errorControls) == true) {
+//					errorControls.Remove (control);
+//					if (errorControls.Count == 0)
+//						providerDictionary.Remove (provider);
+//				}
+
+				//Parent <-> UserControl's
+				ErrorProviderControlList parentControls;
+				if (parentDictionary.TryGetValue (parent, 
+				                                  out parentControls) == true) {
+					parentControls.Remove (control);
+					Console.WriteLine ("Size: {0}", parentControls.Count);
+					if (parentControls.Count == 0) {
+						parentDictionary.Remove (parent);
+						//FIXME:
+						FragmentRootControlProvider root = (FragmentRootControlProvider) ProviderFactory.GetProvider (parent);
+						root.RemoveChildProvider (true, provider);	
+					}
+				}
+				
 				//ErrorProvider <-> UserControl's
 				ErrorProviderControlList errorControls;
 				if (providerDictionary.TryGetValue (provider, 
@@ -277,15 +335,9 @@ namespace Mono.UIAutomation.Winforms
 					if (errorControls.Count == 0)
 						providerDictionary.Remove (provider);
 				}
-
-				//Parent <-> UserControl's
-				ErrorProviderControlList parentControls;
-				if (parentDictionary.TryGetValue (parent, 
-				                                  out parentControls) == true) {
-					parentControls.Remove (control);
-					if (parentControls.Count == 0)
-						parentDictionary.Remove (parent);
-				}
+				
+				//UserControl <-> ErrorProvider 
+				controlDictionary.Remove (control);
 			}
 			
 			public void RemoveUserControlsFromParent (Control parent)

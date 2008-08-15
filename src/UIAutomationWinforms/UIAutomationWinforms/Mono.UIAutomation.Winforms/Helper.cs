@@ -46,6 +46,23 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return ++id;
 		}
+		
+		internal static TRestult GetPrivateProperty<T, TRestult> (Type referenceType, 
+		                                                          T reference,
+		                                                          string propertyName)
+		{
+			PropertyInfo propertyInfo = referenceType.GetProperty (propertyName,
+			                                                       BindingFlags.NonPublic
+			                                                       | BindingFlags.Instance
+			                                                       | BindingFlags.GetProperty);
+			if (propertyInfo == null)
+				throw new NotSupportedException ("Property not found: " + propertyName);
+
+			Func<T, TRestult> invoke = 
+				(Func<T, TRestult>) Delegate.CreateDelegate (typeof (Func<T, TRestult>),
+				                                             propertyInfo.GetGetMethod (true));
+			return invoke (reference);
+		}
 
 		internal static void AddPrivateEvent (Type referenceType, object reference, 
 		                                      string eventName, object referenceDelegate,

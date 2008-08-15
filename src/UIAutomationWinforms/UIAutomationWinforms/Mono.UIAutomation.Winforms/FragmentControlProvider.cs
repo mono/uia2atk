@@ -37,15 +37,15 @@ namespace Mono.UIAutomation.Winforms
 		: SimpleControlProvider, IRawElementProviderFragment
 	{
 
-#region Constructor	
+		#region Constructor	
 		
 		protected FragmentControlProvider (Component component) : base (component)
 		{
 		}
-
-#endregion
 		
-#region IRawElementProviderFragment Interface 
+		#endregion
+		
+		#region IRawElementProviderFragment Interface 
 
 		public virtual System.Windows.Rect BoundingRectangle {
 			get {
@@ -65,13 +65,13 @@ namespace Mono.UIAutomation.Winforms
 			return null;
 		}
 		
-		public virtual int[] GetRuntimeId ()
+		public int[] GetRuntimeId ()
 		{
 			return new int [] { AutomationInteropProvider.AppendRuntimeId, 
 				(int) GetPropertyValue (AutomationElementIdentifiers.AutomationIdProperty.Id) };
 		}
 		
-		public virtual IRawElementProviderFragment Navigate (NavigateDirection direction) 
+		public IRawElementProviderFragment Navigate (NavigateDirection direction) 
 		{
 			return Navigation.Navigate (direction);
 		}
@@ -81,7 +81,7 @@ namespace Mono.UIAutomation.Winforms
 			Control.Focus ();
 		}
 
-#endregion
+		#endregion
 		
 	}
 }

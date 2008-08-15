@@ -1,3 +1,18 @@
+2008-08-15  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs: Method removed:
+	  GetRuntimeId.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Updated to
+	  support ToolTip and ErrorProvider.
+	* Mono.UIAutomation.Winforms/ErrorProviderProvider.cs: Implementation
+	  comments added.
+	* Mono.UIAutomation.Winforms/Helper.cs: Method added:
+	  GetPrivateProperty
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Removed
+	  virtual from methods: GetRuntimeId, Navigate.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Methods
+	  added: AddChildProvider, RemoveChildProvider.
+
 2008-08-14  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/WindowProvider.cs: Base class implements
