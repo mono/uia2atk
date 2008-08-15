@@ -1,3 +1,7 @@
+2008-08-15 Mike Gorse <mgorse@novell.com>
+
+	* AutomationBridge.cs: Remove accidentally-committed appMonitor.Quit() (again!)
+
 2008-08-14 Mike Gorse <mgorse@novell.com>
 
 	* AutomationBridge.cs: Support Group, ListItem, and RadioButton
