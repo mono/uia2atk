@@ -69,10 +69,9 @@ public partial class MainWindow: Gtk.Window
 		Gtk.ImageMenuItem ret = (Gtk.ImageMenuItem)this.menubar1.Children[0];
 		
 		Gtk.Application.Invoke (delegate {
-			//TODO: figure out how to rename this:
-			//ret.Text = name;
+			((Gtk.AccelLabel)ret.Child).Text = name;
 		});
-		
+		System.Threading.Thread.Sleep (1000);
 		return ret;
 	}
 	

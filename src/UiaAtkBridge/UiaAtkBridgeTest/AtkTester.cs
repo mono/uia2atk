@@ -280,7 +280,7 @@ namespace UiaAtkBridgeTest
 			BasicWidgetType type = BasicWidgetType.ParentMenu;
 			Atk.Object accessible = null;
 			
-			string name = "XFile";
+			string name = "FileMenu";
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
 			

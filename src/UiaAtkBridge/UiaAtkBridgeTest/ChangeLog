@@ -1,5 +1,9 @@
 2008-08-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Take advantage of the menu renaming.
+
+2008-08-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* BasicWidgetType.cs: Add clarifications.
 
 2008-08-15 Mike Gorse <mgorse@novell.com>
