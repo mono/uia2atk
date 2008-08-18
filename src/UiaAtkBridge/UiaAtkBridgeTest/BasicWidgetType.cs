@@ -32,19 +32,21 @@ namespace UiaAtkBridgeTest
 	// in the Gtk# and in the MWF world (complex ones will need a different test concept type)
 	public enum BasicWidgetType
 	{
+		//widgets in both toolkits:
 		Label,
 		NormalButton,
 		Window,
 		CheckBox,
 		ComboBox,
-		ListBox,
 		RadioButton,
 		StatusBar,
 		TextBoxEntry,
 		ParentMenu,
 		VScrollBar,
 		HScrollBar,
-		ProgressBar
+		ProgressBar,
+		//widgets only in MWF:
+		ListBox
 	}
 
 //	public class MenuLayout
