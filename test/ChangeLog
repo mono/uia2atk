@@ -1,5 +1,16 @@
 2008-08-15  Calen Chen <cachen@novell.com>
 
+	* testers/listbox: add new test for listbox, currently accerciser can't
+	get list's parent '[frame|ListBox control]', and can't use 'click' 
+	action to select listitem.
+	* testers/listbox/__init__.py: add new test for listbox
+	* testers/listbox/listboxframe.py: add new test for listbox
+	* testers/listbox_basic_ops.py: add new test for listbox
+	* testers/states.py: add ListBox and ListItem's states list
+	* testers/actions.py: add ListItem's action list
+
+2008-08-15  Calen Chen <cachen@novell.com>
+
 	* testers/statusbar_basic_ops.py: add new test for statusbar
 	* testers/statusbar: add new test for statusbar
 	* testers/statusbar/statusbarframe.py: add new test for statusbar

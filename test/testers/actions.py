@@ -33,4 +33,6 @@ class TreeView:
 class CheckBox(Button):
     pass
 
+class ListItem(Button):
+    pass
 
