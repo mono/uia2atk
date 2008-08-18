@@ -1,4 +1,4 @@
-2008-08-15  Calen Chen <cachen@novell.com>
+2008-08-18  Calen Chen <cachen@novell.com>
 
 	* testers/listbox: add new test for listbox, currently accerciser can't
 	get list's parent '[frame|ListBox control]', and can't use 'click' 
