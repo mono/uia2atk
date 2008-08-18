@@ -64,12 +64,12 @@ class RadioButtonFrame(accessibles.Frame):
     def statesDisableCheck(self, accessible):
         procedurelogger.action('check %s\'s all states' % accessible)
 
-        procedurelogger.expectedResult('%s\'s all states can\'t be found' % accessible)
+        procedurelogger.expectedResult('%s\'s all states can\'t be found except \'showing\'' % accessible)
         for a in states.RadioButton.states:
             cmd = "state = accessible." + a
             exec(cmd)
 
-            if state == True:
+            if state == True and a != 'showing':
                 print "ERROR: %s can't be checked" % cmd
             else:
                 pass
@@ -77,7 +77,8 @@ class RadioButtonFrame(accessibles.Frame):
     #give 'click' action
     def click(self,button):
         procedurelogger.action('Click the %s.' % button)
-        button.click()
+        #button.click()
+        button._doAction('click')
 
     #check the Label text after click RadioButton
     def assertLabel(self, labelText):

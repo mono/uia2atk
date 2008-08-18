@@ -64,12 +64,12 @@ class CheckBoxFrame(accessibles.Frame):
     def statesDisableCheck(self, accessible):
         procedurelogger.action('check %s\'s all states' % accessible)
 
-        procedurelogger.expectedResult('%s\'s all states can\'t be found' % accessible)
+        procedurelogger.expectedResult('%s\'s all states can\'t be found except \'showing\'' % accessible)
         for a in states.CheckBox.states:
             cmd = "state = accessible." + a
             exec(cmd)
 
-            if state == True:
+            if state == True and a != 'showing':
                 print "ERROR: %s can't be checked" % cmd
             else:
                 pass

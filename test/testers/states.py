@@ -205,6 +205,9 @@ VISITED = "visited"
 class Button(object):
     states = (SHOWING, ENABLED, SELECTABLE, SENSITIVE)
 
+class RadioButton(Button):
+    pass
+
 class Label(object):
     states = (SHOWING, MULTI_LINE)
 

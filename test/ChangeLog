@@ -1,5 +1,15 @@
 2008-08-18  Calen Chen <cachen@novell.com>
 
+	* testers/states.py: add radiobutton's states list
+	* testers/checkbox/checkboxframe.py: modify statesDisableCheck without
+	checking 'showing' state 
+	* testers/radiobutton/radiobuttonframe.py: modify statesDisableCheck 
+	without	checking 'showing' state 
+	* testers/button/buttonframe.py: modify statesDisableCheck withouts
+	checking 'showing' state 
+
+2008-08-18  Calen Chen <cachen@novell.com>
+
 	* testers/listbox: add new test for listbox, currently accerciser can't
 	get list's parent '[frame|ListBox control]', and can't use 'click' 
 	action to select listitem.
