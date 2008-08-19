@@ -93,8 +93,26 @@ namespace UiaAtkBridge
 		{
 			if (eventId == TextPatternIdentifiers.TextChangedEvent) {
 				string newText = provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) as string;
-				Name = newText;
+				
+				// Don't fire spurious events if the text hasn't changed
+				if (textExpert.Text == newText) {
+					return;
+				}
+
+				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+
+				// First delete all text, then insert the new text
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+
 				textExpert = new TextImplementorHelper (newText);
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+				                         newText == null ? 0 : newText.Length);
+
+				// Accessible name and label text are one and
+				// the same, so update accessible name
+				Name = newText;
+
+				EmitVisibleDataChanged ();
 			}
 		}
 

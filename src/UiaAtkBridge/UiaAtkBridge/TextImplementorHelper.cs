@@ -36,6 +36,14 @@ namespace UiaAtkBridge
 			this.text = text;
 		}
 		
+		internal int Length {
+			get { return text != null ? text.Length : 0; }
+		}
+
+		internal string Text {
+			get { return text; }
+		}
+
 		private string text;
 		
 		internal string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)

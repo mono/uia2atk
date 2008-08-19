@@ -1,3 +1,10 @@
+2008-08-19  Brad Taylor  <brad@getcoded.net>
+	
+	* TextLabel.cs: Fire text-changed::delete, text-changed::insert and
+	  visible-data-changed to fix #411328.
+	
+	* TextImplementorHelper.cs: Support API for TextLabel.
+
 2008-08-15 Mike Gorse <mgorse@novell.com>
 
 	* AutomationBridge.cs: Remove accidentally-committed appMonitor.Quit() (again!)
