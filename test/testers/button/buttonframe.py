@@ -39,7 +39,7 @@ class ButtonFrame(accessibles.Frame):
             initallist = (ca.getName(lists))
 
         procedurelogger.expectedResult('%s\'s inital actions \"%s\" live up to\
-	our expectation' % (accessible,initallists))
+	our expectation' % (accessible,initallist))
         def resultMatches():
             return sorted(initallist) == sorted(actions.Button.actions)
         assert retryUntilTrue(resultMatches)

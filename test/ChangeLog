@@ -1,3 +1,16 @@
+2008-08-19  Calen Chen <cachen@novell.com>
+
+	* testers/groupbox,
+	* testers/groupbox/__init__.py,
+	* testers/groupbox/groupboxframe.py,
+	* testers/groupbox_basic_ops.py: add new test for groupbox, after 
+	bug411882 is been fixed we can't use 'button.click' do the action 
+	but need change to 'button._doAction('click'). another problem is when 
+	the test do click action, we should move the mouse through the app 
+	window otherwise the label can't get the new info just like bug415320
+	* testers/button/buttonframe.py : correct initallists to initallist
+	* testers/states.py: correct Pane to Panel
+
 2008-08-18  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/label/__init__.py,

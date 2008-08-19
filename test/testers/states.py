@@ -214,7 +214,7 @@ class Label(object):
 class Form(object):
     states = (SHOWING)
 
-class Pane(object):
+class Panel(object):
     states = (SHOWING)
 
 class CheckBox(Button):
