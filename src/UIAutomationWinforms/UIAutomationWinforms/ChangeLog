@@ -1,3 +1,25 @@
+2008-08-19  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Navigation/ErrorProviderNavigation.cs,
+	  Mono.UIAutomation.Winforms.mdp,
+	  Mono.UIAutomation.Winforms/ErrorProviderProvider.cs, Makefile.am:
+	  ErrorProviderProvider renamed to ErrorProvider.
+	* Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs: Removed
+	  ErrorProviderNavigation reference.
+	* Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs: Removed
+	  not needed methods: GetFirstValidChildControl, 
+	  GetLastValidChildControl, GetNextValidSiblingControl and
+	  GetPreviousValidSiblingControl.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Support added to
+	  handle SWF.ErrorProvider's custom controls.
+	* Mono.UIAutomation.Winforms/ErrorProvider.cs: ErrorProviderProvider
+	  renamed to ErrorProvider. New internal logic to handle added and
+	  removed controls.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Not
+	  instantiating ErrorProvider.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Validation
+	  added in OnNavigationChildAdded and OnNavigationChildRemoved.
+
 2008-08-15  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs: Method removed:

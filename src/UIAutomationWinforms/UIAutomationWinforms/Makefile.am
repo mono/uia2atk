@@ -89,7 +89,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ValuePatternValueIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ValuePatternValuePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Navigation/ChildNavigation.cs \
-	Mono.UIAutomation.Winforms.Navigation/ErrorProviderNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/INavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs \
 	Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs \
@@ -100,7 +99,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ButtonProvider.cs \
 	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ComboBoxProvider.cs \
-	Mono.UIAutomation.Winforms/ErrorProviderProvider.cs \
+	Mono.UIAutomation.Winforms/ErrorProvider.cs \
 	Mono.UIAutomation.Winforms/FormListener.cs \
 	Mono.UIAutomation.Winforms/FragmentControlProvider.cs \
 	Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs \

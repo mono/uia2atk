@@ -90,13 +90,12 @@
     <File name="Mono.UIAutomation.Winforms.Navigation/ChildNavigation.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/TextBoxScrollProviderBehavior.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms/ErrorProviderProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/ErrorProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/PaneProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ToolTipProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListItemToggleProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/NumericUpDownRangeValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Navigation/ErrorProviderNavigation.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs" subtype="Code" buildaction="Compile" />
   </Contents>

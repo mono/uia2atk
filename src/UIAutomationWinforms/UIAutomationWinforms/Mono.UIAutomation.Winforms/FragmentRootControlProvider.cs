@@ -93,7 +93,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			OnNavigationChildAdded (raiseEvent, provider);
 		}
-		
+
 		public void RemoveChildProvider (bool raiseEvent, 
 		                                 FragmentControlProvider provider) 
 		{
@@ -105,9 +105,6 @@ namespace Mono.UIAutomation.Winforms
 			base.Terminate ();
 			
 			FinalizeChildControlStructure ();
-			
-			if (Control != null)
-				ErrorProviderProvider.InstancesTracker.RemoveUserControlsFromParent (Control);
 		}
 	
 		//TODO: Are the generated events duplicated? Because we're already
@@ -143,10 +140,11 @@ namespace Mono.UIAutomation.Winforms
 		
 		public virtual void FinalizeChildControlStructure ()
 		{
-			foreach (FragmentControlProvider childProvider in componentProviders.Values)
+			for (; children.Count > 0; )
 				OnNavigationChildRemoved (false, 
-				                          (FragmentControlProvider) childProvider);
+				                          (FragmentControlProvider) children [0]);
 
+			children.Clear ();
 			componentProviders.Clear ();
 		}
 		
@@ -157,6 +155,9 @@ namespace Mono.UIAutomation.Winforms
 		protected virtual void OnNavigationChildAdded (bool raiseEvent, 
 		                                               FragmentControlProvider childProvider)
 		{
+			if (children.Contains (childProvider) == true)
+				return;
+			
 			childProvider.Navigation = NavigationFactory.CreateNavigation (childProvider, this);
 			childProvider.Navigation.Initialize ();
 
@@ -175,17 +176,20 @@ namespace Mono.UIAutomation.Winforms
 		protected virtual void OnNavigationChildRemoved (bool raiseEvent, 
 		                                                 FragmentControlProvider childProvider)
 		{
+			if (children.Contains (childProvider) == false)
+				return;
+			
 			if (NavigationChildRemoved != null)
 				NavigationChildRemoved (this,
 				                        new NavigationEventArgs (raiseEvent, 
 				                                                 StructureChangeType.ChildRemoved, 
 				                                                 childProvider));
+
+			childProvider.Navigation.Terminate ();
+			childProvider.Navigation = null;
 			
-			//TODO: Is this validation *really* needed?
-			if (childProvider.Navigation != null) {
-				childProvider.Navigation.Terminate ();
-				childProvider.Navigation = null;
-			}
+//			ProviderFactory.ReleaseProvider (childProvider.Control)
+			
 			children.Remove (childProvider);
 		}
 			
@@ -286,9 +290,9 @@ namespace Mono.UIAutomation.Winforms
 	
 		protected FragmentControlProvider CreateProvider (Control control)
 		{
-			if (ErrorProviderProvider.InstancesTracker.IsControlFromErrorProvider (control))
+			if (ErrorProvider.InstancesTracker.IsControlFromErrorProvider (control))
 				return null;
-			
+//			
 			return (FragmentControlProvider) ProviderFactory.GetProvider (control);
 		}
 		

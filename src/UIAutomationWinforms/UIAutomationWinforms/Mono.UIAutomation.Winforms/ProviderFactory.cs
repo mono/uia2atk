@@ -29,6 +29,8 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Navigation;
+using SWFErrorProvider = System.Windows.Forms.ErrorProvider;
+using System.Linq;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -56,11 +58,15 @@ namespace Mono.UIAutomation.Winforms
 		//Read comment in ReleaseProvider method for detailed information.
 		private static Dictionary<Component, int> sharedComponents;
 		
+		private static Dictionary<SWFErrorProvider, List<ErrorProvider>> errorProviders;
+		
 		static ProviderFactory ()
 		{
 			componentProviders =
 				new Dictionary<Component,IRawElementProviderFragment> ();
 			sharedComponents = new Dictionary<Component, int> ();
+			
+			errorProviders = new Dictionary<SWFErrorProvider, List <ErrorProvider>>();
 		}
 		
 		#endregion
@@ -99,6 +105,8 @@ namespace Mono.UIAutomation.Winforms
 			PictureBox pb;
 			ErrorProvider ep;
 			ToolTip tt;
+			Control ctrl;
+			
 			bool isComponentBased = false;
 			
 			if (component == null)
@@ -154,13 +162,35 @@ namespace Mono.UIAutomation.Winforms
 				}
 			} else if ((pb = component as PictureBox) != null)
 				provider = new PaneProvider (pb);
+			else if ((ctrl = component as Control) != null) {
+				//Notice that we don't update the local variable "provider"
+				if (ErrorProvider.InstancesTracker.IsControlFromErrorProvider (ctrl) == true) {
+					SWFErrorProvider swfError = ErrorProvider.InstancesTracker.GetErrorProviderFromControl (ctrl);
+					Control parent = ErrorProvider.InstancesTracker.GetParentFromControl (ctrl);
+					ErrorProvider errorProvider = null;
+
+					if (ErrorProvider.InstancesTracker.IsFirstControlFromErrorProvider (ctrl) == true) {
+						Console.WriteLine ("Is first control!!!");
+						errorProvider = new ErrorProvider (ctrl, swfError);
+						
+						List<ErrorProvider> providers = new List<ErrorProvider> ();
+						providers.Add ((ErrorProvider) errorProvider);
+						errorProviders [swfError] = providers;
+					} else {
+						Console.WriteLine ("Is other control!!");
+						List<ErrorProvider> providers = errorProviders [swfError];
+						
+						errorProvider = (from p in providers
+						                 where p.Parent == parent
+						                 select p).First ();
+						errorProvider.AddControl (ctrl);
+					}
+				}
+			}
 			//NOTE: The following providers are Component-based meaning that
 			//can be shared.
 			//TODO: Add HelpProviderProvider
-			else if ((ep = component as ErrorProvider) != null) {
-				provider = new ErrorProviderProvider (ep);
-				isComponentBased = true;
-			} else if ((tt = component as ToolTip) != null) {
+			else if ((tt = component as ToolTip) != null) {
 				provider = new ToolTipProvider (tt);
 				isComponentBased = true;
 			} else //TODO: We have to solve the problem when there's a Custom control
@@ -180,10 +210,9 @@ namespace Mono.UIAutomation.Winforms
 				if (forceInitializeChildren == true
 				    && (root = provider as FragmentRootControlProvider) != null)
 					root.InitializeChildControlStructure ();
-				
-				return provider;
-			} else
-				return null;
+			}
+			
+			return provider;
 		}
 		
 		//Control-based Providers aren't shared, meaning that you can't

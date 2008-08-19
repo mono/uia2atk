@@ -23,7 +23,6 @@
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
 //      Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,6 +33,7 @@ using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Navigation;
+using SWFErrorProvider = System.Windows.Forms.ErrorProvider;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -48,7 +48,7 @@ namespace Mono.UIAutomation.Winforms
 		private int runtimeId;
 		private ToolTipProvider toolTipProvider;
 		private INavigation navigation;
-		private ErrorProviderProvider errorProvider;
+		private SWFErrorProvider errorProvider;
 
 		#endregion
 		
@@ -64,8 +64,8 @@ namespace Mono.UIAutomation.Winforms
 			
 			runtimeId = -1;
 			
-//			if (Control != null)
-//				InitializeInternalControlEvents ();
+			if (Control != null)
+				InitializeInternalControlEvents ();
 		}
 		
 		#endregion
@@ -117,7 +117,7 @@ namespace Mono.UIAutomation.Winforms
 				foreach (IProviderBehavior behavior in providerBehaviors.Values)
 					behavior.Disconnect (Control);
 				
-//				TerminateInternalControlEvents ();
+				TerminateInternalControlEvents ();
 			}
 
 			events.Clear ();
@@ -490,35 +490,20 @@ namespace Mono.UIAutomation.Winforms
 				                   GetType (),
 				                   typeof (Control));
 			}
-
-			if (errorProvider != null) {
-				ProviderFactory.ReleaseProvider (errorProvider.ErrorProvider);
-				errorProvider = null;
-			}
+			errorProvider = null;
 		}
 
 		private void GetPrivateErrorProviderField ()
 		{
-			ErrorProvider error = null;
-
 			try {
-				error = Helper.GetPrivateProperty<Control, ErrorProvider> (typeof (Control),
-				                                                           Control,
-				                                                           "UIAErrorProvider");
+				errorProvider = Helper.GetPrivateProperty<Control, SWFErrorProvider> (typeof (Control),
+				                                                                      Control,
+				                                                                      "UIAErrorProvider");
 			} catch (NotSupportedException) {
 				Console.WriteLine ("{0}: uia_error_provider field not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
 			}
-			
-			if (errorProvider != null && error != errorProvider.ErrorProvider) {
-				ProviderFactory.ReleaseProvider (errorProvider.ErrorProvider);
-				errorProvider = null;					
-			}
-
-			if (errorProvider == null
-			    || (errorProvider != null && errorProvider.ErrorProvider != error))
-				errorProvider = (ErrorProviderProvider) ProviderFactory.GetProvider (error);
 		}
 		
 #pragma warning disable 169		
@@ -526,21 +511,19 @@ namespace Mono.UIAutomation.Winforms
 		private void OnErrorProviderHookup (object sender, UserControl control)
 		{
 			GetPrivateErrorProviderField ();
+			
 			//TODO: The following call may fail when errorProvider is null
-			ErrorProviderProvider.InstancesTracker.AddControl (control, 
-			                                                   Control.Parent,
-			                                                   errorProvider);
-			Console.WriteLine ("SimpleControl.OnErrorProviderHookup");
+			ErrorProvider.InstancesTracker.AddControl (control, 
+			                                           Control.Parent,
+			                                           errorProvider);			
 		}
 
 		private void OnErrorProviderUnhookup (object sender, UserControl control)
 		{		
-			if (errorProvider != null) {
-				ProviderFactory.ReleaseProvider (errorProvider.ErrorProvider);
-				errorProvider = null;
-			}
-			ErrorProviderProvider.InstancesTracker.RemoveControl (control,
-			                                                      control.Parent);
+			ErrorProvider.InstancesTracker.RemoveControl (control,
+			                                              control.Parent,
+			                                              errorProvider);
+			errorProvider = null;
 		}
 		
 #pragma warning restore 169
