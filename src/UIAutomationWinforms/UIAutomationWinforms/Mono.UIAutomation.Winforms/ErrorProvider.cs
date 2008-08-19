@@ -37,16 +37,22 @@ using SWFErrorProvider = System.Windows.Forms.ErrorProvider;
 namespace Mono.UIAutomation.Winforms
 {
 	// NOTE: 
-	//      Calling MWF.ErrorProvider.SetError(control) will add one UserControl to 
-	//control.Parent to show the "Image Exclamation Mark". 
-	//We are doing the following to keep track of those UserControls to ignore 
-	//them when control.Parent.ControlAdded event is generated:
-	//1. Use internal event MWF.Control.ErrorProviderHookup, this is generated 
-	//   in control when MWF.ErrorProvider.SetError(control,"error") is called.
-	//   We keep track of added UserControl instance using InstancesTracker.
-	//2. Use internal event MWF.Control.ErrorProviderUnhookup, this is generated 
-	//   in control when MWF.ErrorProvider.SetError(control,"") is called.
-	//   We remove track of added UserControl instance using InstancesTracker.
+	//      When calling MWF.ErrorProvider.SetError(control) an instance of 
+	//      UserControl is added to control.Parent and control.ControlAdded is 
+	//      generated. This new UserControl is used to show the "Exclamation 
+	//      Mark Image". We are skipping all those UserControl instances by 
+	//      doing the following:
+	//
+	//      All SWF.Control subclasses support MWF.ErrorProvider.SetError, so
+	//      all Control-based providers use the following internal events
+	//      to keep track of those instances:
+	//      - SWF.Control.ErrorProviderHookup: event generated when 
+	//        MWF.ErrorProvider.SetError(control, "error message") or 
+	//        UserControl.Visible = true
+    //      - SWF.Control.ErrorProviderUnhookup: evet generated when
+    //        MWF.ErrorProvider.SetError(control, "") or 
+	//        UserControl.Visible = false
+	//
 	internal class ErrorProvider : PaneProvider
 	{
 		
@@ -152,7 +158,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Fields
 		
-		private List<Control> tooltips;
 		private List<Control> controls;
 		private Control parent;
 		private SWFErrorProvider errorProvider;
@@ -161,11 +166,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Internal Class: InstancesTracker
 		
-		//NOTE:
-		//     This class tracks added Icon-like Controls when SWF.ErrorProvider.SetError 
-		//     is called. We are tracking this instances because there's one
-		//     provider for all Icon-like controls added and then we need to get 
-		//     Bounds information from each Icon-like control.
+		// NOTE: 
+		//      Class used to keep track of UserControl instances added by 
+		//      SWF.ErrorProvider.
 		internal sealed class InstancesTracker 
 		{
 			private InstancesTracker ()
@@ -207,7 +210,10 @@ namespace Mono.UIAutomation.Winforms
 				}
 				parentControls.Add (control);
 				
-				ErrorProvider errorProvider = (ErrorProvider) ProviderFactory.GetProvider (control);
+				//We create the Provider for that custom control (ErrorProvider), 
+				//this way the instance is created and then, as soon as the 
+				//control is visible will added itself to its parent navigation.
+				ProviderFactory.GetProvider (control);
 			}
 			
 			public static void RemoveControl (Control control, 
@@ -234,14 +240,14 @@ namespace Mono.UIAutomation.Winforms
 				if (parent == null)
 					return null;
 
-				if (parentDictionary == null || parentDictionary.ContainsKey (parent.Control) == false)
+				if (parentDictionary == null
+				    || parentDictionary.ContainsKey (parent.Control) == false)
 					return null;
 				
 				ErrorProviderControlList parentControls = parentDictionary [parent.Control];
 				
 				List<Control> controls =
-					(from c
-					in parentControls
+					(from c in parentControls
 					where dictionary [c] == errorProvider.SWFErrorProvider
 					select c).ToList ();
 				

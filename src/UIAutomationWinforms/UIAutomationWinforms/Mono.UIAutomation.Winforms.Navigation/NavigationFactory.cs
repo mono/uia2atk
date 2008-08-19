@@ -49,7 +49,6 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		                                            FragmentRootControlProvider rootProvider)
 		{
 			INavigation navigation;
-			ErrorProvider err;
 			WindowProvider win;
 			
 			if ((win = provider as WindowProvider) != null)
