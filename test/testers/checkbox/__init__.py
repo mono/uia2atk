@@ -27,7 +27,7 @@ def launchCheckBox(exe=None):
   
     args = [exe]
 
-    (app, subproc) = cache.launchApplication(args=args, name='ipy')
+    (app, subproc) = cache.launchApplication(args=args, name='ipy', wait=config.LONG_DELAY)
 
     checkbox = CheckBox(app, subproc)
 

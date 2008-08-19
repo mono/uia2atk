@@ -1,3 +1,22 @@
+2008-08-18  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/label/__init__.py,
+	* testers/picturebox/__init__.py,
+	* testers/listbox/__init__.py,
+	* testers/checkbox/__init__.py,
+	* testers/radiobutton/__init__.py,
+	* testers/hscrollbar/__init__.py,
+	* testers/statusbar/__init__.py,
+	* testers/vscrollbar/__init__.py,
+	* testers/scrollbar/__init__.py,
+	* testers/form/__init__.py,
+	* testers/button/__init__.py: wait longer (than default) for the
+	application to launch and for the applications list to settle before 
+	searching the desktop for the application that was launched.
+	Evidently, our code and/or WinForms takes a little longer than Gtk
+	and it was causing crashes.  This should fix the issue, if not, we
+	will need to sleep longer.
+
 2008-08-18  Calen Chen <cachen@novell.com>
 
 	* testers/states.py: add radiobutton's states list
