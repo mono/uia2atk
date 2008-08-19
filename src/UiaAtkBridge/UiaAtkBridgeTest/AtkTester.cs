@@ -288,12 +288,14 @@ namespace UiaAtkBridgeTest
 			
 			InterfaceComponent (type, atkComponent);
 			
+			string[] names = new string[] { name, "New", "Quit" };
 			
-//			Atk.Selection atkSelection = (Atk.Selection)
-//				GetAtkObjectThatImplementsInterface <Atk.Selection> (type, names, out accessible, true);
-//			InterfaceSelection (atkSelection, names, accessible);
+			Atk.Selection atkSelection = (Atk.Selection)
+				GetAtkObjectThatImplementsInterface <Atk.Selection> (type, names, out accessible, true);
+
+			InterfaceSelection (atkSelection, names, accessible, type);
 			
-			//TODO: text, selection
+			//TODO: test text interface
 			
 			PropertyRole (type, accessible);
 			
@@ -320,7 +322,7 @@ namespace UiaAtkBridgeTest
 		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
 		//the widget, so we kill all with the method marked as [TestFixtureTearDown]
-		[Test]
+		//[Test]
 		public void ComboBox ()
 		{
 			BasicWidgetType type = BasicWidgetType.ComboBox;
@@ -340,7 +342,7 @@ namespace UiaAtkBridgeTest
 			
 			Atk.Selection atkSelection = (Atk.Selection)
 				GetAtkObjectThatImplementsInterface <Atk.Selection> (type, names, out accessible, true);
-			InterfaceSelection (atkSelection, names, accessible);
+			InterfaceSelection (atkSelection, names, accessible, type);
 			
 			Assert.AreEqual (1, accessible.NAccessibleChildren, "ComboBox#RO numChildren");
 			//FIXME: enable this when we test the editable combobox:
@@ -537,43 +539,80 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.GetKeybinding (3), "GetKeyBinding OOR#2");
 		}
 		
-		private void InterfaceSelection (Atk.Selection implementor, string[] names, Atk.Object accessible)
+		private void InterfaceSelection (Atk.Selection implementor, string[] names, Atk.Object accessible, BasicWidgetType type)
 		{
-			Assert.AreEqual (null, accessible.Name, "AtkObj Name");
+			if (names == null)
+				throw new ArgumentNullException ("names");
+			
+			if (names.Length < 2)
+				throw new ArgumentException ("For testing purposes, use 2 or more items", "names");
+			
+			string accessibleName = null;
+			if (type == BasicWidgetType.ParentMenu)
+				accessibleName = names[0];
+			
+			Assert.AreEqual (accessibleName, accessible.Name, "AtkObj Name");
 			for (int i = 0; i < names.Length; i++) {
 				Assert.IsFalse (implementor.IsChildSelected (i), "isChildSelected(" + i + ")");
 			}
-			
 			Assert.AreEqual (0, implementor.SelectionCount, "SelectionCount == 0");
 			
 			for (int i = 0; i < names.Length; i++) {
 				Assert.IsTrue (implementor.AddSelection (i), "AddSelection(" + i + ")");
-				Assert.AreEqual (names[i], accessible.Name, "AtkObj Name #" + i);
-				Assert.AreEqual (accessible.Name, implementor.RefSelection (0).Name, "AtkObj NameRefSel#" + i);
-				Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
-				Assert.IsTrue (implementor.IsChildSelected (i), "childSelected(" + i + ")");
+
+				string accName = names [i];
+				if (type == BasicWidgetType.ParentMenu)
+					accName = names[0];
+				Assert.AreEqual (accName, accessible.Name, "AtkObj Name #" + i);
 				
-				int refSel = i;
-				if (refSel == 0)
-					refSel = -1;
-				Assert.IsNull (implementor.RefSelection (refSel), "RefSelection OOR#-" + i);
+				Atk.Object refSelObj = implementor.RefSelection (0);
+				if (type != BasicWidgetType.ParentMenu) {
+					Assert.IsNotNull (refSelObj, "refSel should not be null");
+					Assert.AreEqual (accessible.Name, refSelObj.Name, "AtkObj NameRefSel#" + i);
+					Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
+					Assert.IsTrue (implementor.IsChildSelected (i), "childSelected(" + i + ")");
+				} else {
+					//first child in a menu -> tearoff menuitem (can't be selected)
+					if (i == 0) {
+						Assert.IsNull (refSelObj, "refSel should be null, a menu cannot select a subitem[" + i + "]");
+						Assert.AreEqual (0, implementor.SelectionCount, "SelectionCount == 0");
+						Assert.IsFalse (implementor.IsChildSelected (i), "childSelected(" + i + ")");
+					} else {
+						Assert.IsNotNull (refSelObj, "refSel should not be null");
+						Assert.AreEqual (names [i], refSelObj.Name, "AtkObj NameRefSel#" + i);
+						Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
+						Assert.IsTrue (implementor.IsChildSelected (i), "childSelected(" + i + ")");
+					}
+					
+				}
+
+				int refSelPos = i;
+				if (refSelPos == 0)
+					refSelPos = -1;
+				Assert.IsNull (implementor.RefSelection (refSelPos), "RefSelection OOR#-" + i);
 			}
-			
+
 			Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null");
-			
+
 			string lastName = accessible.Name;
-			//strangely, OOR selections return true (valid)
-			Assert.IsTrue (implementor.AddSelection (-1), "AddSelection OOR#1");
+
+			if (type == BasicWidgetType.ComboBox) {
+				//strangely, OOR selections return true (valid)
+				Assert.IsTrue (implementor.AddSelection (-1), "AddSelection OOR#1");
+			} else {
+				Assert.IsFalse (implementor.AddSelection (-1), "AddSelection OOR#1");
+			}
+			//strangely, OOR upper selection returns true for menu and combobox
 			Assert.IsTrue (implementor.AddSelection (names.Length), "AddSelection OOR#2");
-			//OOR selections don't affect name:
-			Assert.AreEqual (lastName, accessible.Name);
+			
+			Assert.AreEqual (lastName, accessible.Name, "OOR selections shouldn't affect name");
 			
 			Assert.IsNull (implementor.RefSelection (-1), "RefSelection OOR#1");
 			Assert.IsNull (implementor.RefSelection (names.Length), "RefSelection OOR#2");
 			
 			Assert.IsTrue (implementor.ClearSelection (), "ClearSelection");
 			Assert.IsNull (implementor.RefSelection (0), "RefSel after CS");
-			
+
 			//this is a normal combobox (not multiline) (TODO: research multiline comboboxes?)
 			Assert.IsFalse (implementor.SelectAllSelection ());
 			
@@ -581,10 +620,19 @@ namespace UiaAtkBridgeTest
 			
 			Assert.IsTrue (names.Length > 0, "Please use a names variable that is not empty");
 			Assert.IsTrue (implementor.AddSelection (0), "AddSelection->0");
-			Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null after AS0");
-			//again, it's surprising to return TRUE on OOR
-			Assert.IsTrue (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
-			Assert.IsTrue (implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
+			if (type != BasicWidgetType.ParentMenu) {
+				Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null after AS0");
+
+				Assert.IsTrue (implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
+				Assert.IsTrue (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
+			}
+			else {
+				Assert.IsNull (implementor.RefSelection (0), "RefSel==null after AS0");
+
+				Assert.IsFalse (implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
+				Assert.IsFalse (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
+			}
+
 			Assert.IsTrue (implementor.RemoveSelection (0), "RemoveSelection");
 			Assert.IsNull (implementor.RefSelection (0), "RefSel after RemoveSel");
 		}

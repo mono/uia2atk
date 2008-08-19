@@ -47,7 +47,7 @@ namespace UiaAtkBridgeTest
 		  BasicWidgetType type, string[] name, out Atk.Object accessible, bool real)
 		{
 			accessible = null;
-			if (type != BasicWidgetType.ComboBox) {
+			if ((type != BasicWidgetType.ComboBox) && (type != BasicWidgetType.ParentMenu)) {
 				throw new NotSupportedException ("This AtkTester overload doesn't handle this type of widget: " +
 					type.ToString ());
 			}
@@ -58,15 +58,31 @@ namespace UiaAtkBridgeTest
 			if (!real)
 				throw new NotSupportedException ("We cannot add items to a non-real ComboBox because of some GtkCritical");
 			
-			Gtk.Widget widget = new Gtk.ComboBox ();
-			if (real)
-				widget = GailTestApp.MainClass.GiveMeARealComboBox (guiThread);
-
-			//FIXME: update this line when this bug is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=324899
-			((Gtk.ListStore)((Gtk.ComboBox) widget).Model).Clear ();
+			Gtk.Widget widget = null;
 			
-			foreach (string text in name) {
-				((Gtk.ComboBox)widget).AppendText (text);
+			switch (type) {
+			case BasicWidgetType.ComboBox:
+				widget = new Gtk.ComboBox ();
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealComboBox (guiThread);
+	
+				//FIXME: update this line when this bug is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=324899
+				((Gtk.ListStore)((Gtk.ComboBox) widget).Model).Clear ();
+				
+				foreach (string text in name) {
+					((Gtk.ComboBox)widget).AppendText (text);
+				}
+				break;
+			case BasicWidgetType.ParentMenu:
+				if (!real)
+					throw new NotSupportedException ("No unreal widget access for ParentMenu now");
+				
+				widget = GailTestApp.MainClass.GiveMeARealParentMenu (guiThread, name[0]);
+				
+				Gtk.Application.Invoke (delegate {
+					//figure out how to remove old menus and add these ones: names[from 1]
+				});
+				break;
 			}
 			
 			accessible = widget.Accessible;

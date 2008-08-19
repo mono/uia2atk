@@ -1,10 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <stetic-interface>
   <configuration>
     <images-root-path>..</images-root-path>
     <target-gtk-version>2.12.1</target-gtk-version>
   </configuration>
-  <widget class="Gtk.Window" id="MainWindow" design-size="678 260">
+  <widget class="Gtk.Window" id="MainWindow" design-size="678 271">
     <action-group name="Default">
       <action id="XFileAction">
         <property name="Type">Action</property>
@@ -31,6 +31,11 @@
         <property name="Label" translatable="yes">SomeEditMenu</property>
         <property name="ShortLabel" translatable="yes">SomeEditMenu</property>
       </action>
+      <action id="NewAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">New</property>
+        <property name="ShortLabel" translatable="yes">New</property>
+      </action>
     </action-group>
     <property name="MemberName" />
     <property name="Title" translatable="yes">MainWindow</property>
@@ -45,6 +50,7 @@
             <property name="MemberName" />
             <node name="menubar1" type="Menubar">
               <node type="Menu" action="XFileAction">
+                <node type="Menuitem" action="NewAction" />
                 <node type="Menuitem" action="QuitAction" />
               </node>
               <node type="Menu" action="SomeEditMenuAction" />

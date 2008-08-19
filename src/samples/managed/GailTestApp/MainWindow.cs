@@ -68,10 +68,24 @@ public partial class MainWindow: Gtk.Window
 	internal Gtk.ImageMenuItem GiveMeARealParentMenu (string name) {
 		Gtk.ImageMenuItem ret = (Gtk.ImageMenuItem)this.menubar1.Children[0];
 		
-		Gtk.Application.Invoke (delegate {
-			((Gtk.AccelLabel)ret.Child).Text = name;
-		});
-		System.Threading.Thread.Sleep (1000);
+		if (!String.IsNullOrEmpty (name)) {
+			Gtk.Application.Invoke (delegate {
+				((Gtk.AccelLabel)ret.Child).Text = name;
+			});
+			System.Threading.Thread.Sleep (1000);
+		}
+
+//DELETEME: testing
+//		Console.WriteLine ("NUUUUUUM children imenuil:");
+//		Console.WriteLine (((Gtk.Menu)ret.Submenu).Children.Length + "he");
+//		Gtk.MenuItem mi = (Gtk.MenuItem) ((Gtk.Menu)ret.Submenu).Children[1];
+//		Gtk.MenuItem empty = (Gtk.MenuItem) ((Gtk.Menu)ret.Submenu).Children[((Gtk.Menu)ret.Submenu).Children.Length - 1];
+//		((Gtk.Menu)ret.Submenu).Remove (empty);
+//		((Gtk.Menu)ret.Submenu).Add (new Gtk.MenuItem ("testingg"));
+//		((Gtk.Menu)ret.Submenu).Add (empty);
+//		System.Threading.Thread.Sleep (10000);
+//		//((Gtk.Menu)ret.Submenu).Children = ((Gtk.Menu)ret.Submenu).Children;
+//		Console.WriteLine ("hey:" + ((Gtk.AccelLabel)mi.Child).Text);
 		return ret;
 	}
 	
