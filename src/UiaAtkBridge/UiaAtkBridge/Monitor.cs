@@ -36,6 +36,7 @@ namespace UiaAtkBridge
 	internal class Monitor
 	{
 		private bool useNativeInitialization = true;
+		private GLib.MainLoop mainLoop;
 		
 		public Monitor()
 		{
@@ -51,13 +52,13 @@ namespace UiaAtkBridge
 			else
 				override_global_event_listener ();
 		}
-		
 		private bool isApplicationStarted = false;
 		
 		public void ApplicationStarts()
 		{
 			isApplicationStarted = true;
 			Thread glibThread = new Thread (new ThreadStart (GLibMainLoopThread));
+			glibThread.IsBackground = true;
 			glibThread.Start ();
 			GLibHacks.Invoke (delegate (object sender, EventArgs args) {
 				LaunchAtkBridge ();});
@@ -65,9 +66,17 @@ namespace UiaAtkBridge
 		
 		private void GLibMainLoopThread ()
 		{
-			new GLib.MainLoop().Run();
+			mainLoop = new GLib.MainLoop();
+			mainLoop.Run();
+			Atk.Util.GetRootHandler = null;
 		}
 		
+		public void Quit()
+		{
+			GLibHacks.Invoke (delegate (object sender, EventArgs args) {
+				mainLoop.Quit();});
+		}
+
 		internal static string GetProgramName()
 		{
 			return System.IO.Path.GetFileNameWithoutExtension (Environment.GetCommandLineArgs () [0]);

@@ -1,3 +1,11 @@
+2008-08-20 Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Add GetCurrentValue.
+
+	* BasicWidgetType.cs, AtkTester.cs, BridgeTester.cs: Add Spinner.
+
+	* AtkTester.cs (InterfaceText): Make protected and reduce sleep time.
+
 2008-08-19  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTester.cs: Revert an unwanted change.

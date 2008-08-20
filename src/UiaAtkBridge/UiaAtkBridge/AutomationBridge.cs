@@ -187,6 +187,8 @@ namespace UiaAtkBridge
 				HandleNewGroupControlType (simpleProvider);
 			else if (controlTypeId == ControlType.RadioButton.Id)
 				HandleNewRadioButtonControlType (simpleProvider);
+			else if (controlTypeId == ControlType.Spinner.Id)
+				HandleNewSpinnerControlType (simpleProvider);
 			// TODO: Other providers
 			else
 				Console.WriteLine ("AutomationBridge: Unhandled control: " + controlTypeId);
@@ -233,6 +235,7 @@ namespace UiaAtkBridge
 				(IRawElementProviderSimple) provider;
 			IntPtr providerHandle = (IntPtr) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
 			pointerProviderMapping.Remove (providerHandle);
+			appMonitor.Quit ();
 		}
 		
 		private void HandleNewButtonControlType (IRawElementProviderSimple provider)
@@ -366,6 +369,23 @@ namespace UiaAtkBridge
 			parentObject.AddOneChild (atkRadio);
 			parentObject.AddRelationship (Atk.RelationType.Embeds,
 			                              atkRadio);
+		}
+		
+		private void HandleNewSpinnerControlType (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject =
+				GetParentAdapter (provider);
+			
+			Adapter atkSpinner;
+			if (provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id) != null)
+				atkSpinner = new List ((IRawElementProviderFragmentRoot)provider);
+ 			else
+				atkSpinner = new Spinner (provider);
+			providerAdapterMapping [provider] = atkSpinner;
+			
+			parentObject.AddOneChild (atkSpinner);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkSpinner);
 		}
 		
 #endregion

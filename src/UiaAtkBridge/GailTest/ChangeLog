@@ -1,3 +1,7 @@
+2008-08-20 Mike Gorse <mgorse@novell.com>
+
+	* GailTester.cs: Add spinner.
+
 2008-08-19  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* GailTester.cs: Support for ParentMenu in the backend function for an

@@ -117,6 +117,7 @@ namespace UiaAtkBridgeTest
 		MWF.CheckBox chk1 = new MWF.CheckBox ();
 		MWF.StatusBar sb1 = new MWF.StatusBar ();
 		MWF.ProgressBar pb1 = new MWF.ProgressBar ();
+		MWF.NumericUpDown nud1 = new MWF.NumericUpDown();
 		MWF.Form form = new MWF.Form ();
 		
 		public BridgeTester () 
@@ -135,6 +136,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (chk1);
 			form.Controls.Add (sb1);
 			//form.Controls.Add (pb1);
+			form.Controls.Add (nud1);
 			radios.Add (rad1);
 			radios.Add (rad2);
 			radios.Add (rad3);
@@ -299,6 +301,22 @@ namespace UiaAtkBridgeTest
 				component = uiaPb;
 				text = uiaPb;
 				value = uiaPb;
+				break;
+			case BasicWidgetType.Spinner:
+				MWF.NumericUpDown nud = new MWF.NumericUpDown();
+				if (real)
+					nud = nud1;
+				nud.Minimum = 0;
+				nud.Maximum = 100;
+				nud.Value = 50;
+				UiaAtkBridge.Spinner uiaSp;
+				if (real)
+					uiaSp = (UiaAtkBridge.Spinner) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (nud, true, true));
+				else
+					uiaSp = new UiaAtkBridge.Spinner (ProviderFactory.GetProvider (nud, true, true));
+				accessible = uiaSp;
+				component = uiaSp;
+				value = uiaSp;
 				break;
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");

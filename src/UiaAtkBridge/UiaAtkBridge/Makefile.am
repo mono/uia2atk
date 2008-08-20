@@ -61,6 +61,7 @@ FILES =  \
 	RadioButton.cs \
 	ScrollBar.cs \
 	SelectionProviderUserHelper.cs \
+	Spinner.cs \
 	StatusBar.cs \
 	StatusBarWithGrid.cs \
 	TableImplementorHelper.cs \

@@ -181,9 +181,7 @@ namespace UiaAtkBridgeTest
 			Atk.Value atkValue = (Atk.Value)
 				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
 			
-			Assert.IsNotNull (atkValue, "HScrollBar value not null");
-			Assert.AreEqual (  0, GetMinimumValue(atkValue), "HScrollBar MinimumValue");
-			Assert.AreEqual (100, GetMaximumValue(atkValue), "HScrollBar MaximumValue");
+			InterfaceValue (type, atkValue);
 
 			PropertyRole (type, accessible);
 
@@ -207,9 +205,7 @@ namespace UiaAtkBridgeTest
 			Atk.Value atkValue = (Atk.Value)
 				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
 			
-			Assert.IsNotNull (atkValue, "VScrollBar value not null");
-			Assert.AreEqual (  0, GetMinimumValue(atkValue), "VScrollBar MinimumValue");
-			Assert.AreEqual (100, GetMaximumValue(atkValue), "VScrollBar MaximumValue");
+			InterfaceValue (type, atkValue);
 
 			PropertyRole (type, accessible);
 
@@ -232,13 +228,31 @@ namespace UiaAtkBridgeTest
 
 			Atk.Value atkValue = (Atk.Value)
 				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, false);
-			Assert.IsNotNull (atkValue, "ProgressBar value not null");
-			Assert.AreEqual (  0, GetMinimumValue(atkValue), "ProgressBar MinimumValue");
-			Assert.AreEqual (100, GetMaximumValue(atkValue), "ProgressBar MaximumValue");
+			InterfaceValue (type, atkValue);
 
 			PropertyRole (type, accessible);
 
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "ProgressBar numChildren");
+
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, false);
+			InterfaceComponent (type, atkComponent);
+		}
+		
+ 		[Test]
+		public void  Spinner ()
+		{
+			BasicWidgetType type = BasicWidgetType.Spinner;
+			Atk.Object accessible;
+			string name = "test";
+
+			Atk.Value atkValue = (Atk.Value)
+				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
+			InterfaceValue (type, atkValue);
+
+			PropertyRole (type, accessible);
+
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "Spinner numChildren");
 
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, false);
@@ -539,7 +553,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.GetKeybinding (3), "GetKeyBinding OOR#2");
 		}
 		
-		private void InterfaceSelection (Atk.Selection implementor, string[] names, Atk.Object accessible, BasicWidgetType type)
+		protected void InterfaceSelection (Atk.Selection implementor, string[] names, Atk.Object accessible, BasicWidgetType type)
 		{
 			if (names == null)
 				throw new ArgumentNullException ("names");
@@ -637,6 +651,15 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.RefSelection (0), "RefSel after RemoveSel");
 		}
 		
+		protected void InterfaceValue (BasicWidgetType type, Atk.Value atkValue)
+		{
+			Assert.IsNotNull (atkValue, "InterfaceValue value not null");
+			Assert.AreEqual (  0, GetMinimumValue(atkValue), "InterfaceValue MinimumValue");
+			Assert.AreEqual (100, GetMaximumValue(atkValue), "InterfaceValue MaximumValue");
+			if (type == BasicWidgetType.Spinner)
+				Assert.AreEqual (50, GetCurrentValue(atkValue), "InterfaceValue MaximumValue");
+		}
+
 		protected void PropertyRole (BasicWidgetType type, Atk.Object accessible)
 		{
 			Atk.Role role = Atk.Role.Unknown;
@@ -678,13 +701,16 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ListBox:
 				role = Atk.Role.List;
 				break;
+			case BasicWidgetType.Spinner:
+				role = Atk.Role.SpinButton;
+				break;
 			default:
 				throw new NotImplementedException ();
 			}
 			Assert.AreEqual (role, accessible.Role, "Atk.Role");
 		}
 		
-		private Atk.Object InterfaceText (BasicWidgetType type)
+		protected Atk.Object InterfaceText (BasicWidgetType type)
 		{
 			int startOffset, endOffset;
 			string expected;
@@ -703,7 +729,7 @@ namespace UiaAtkBridgeTest
 			if ((type == BasicWidgetType.Label) || (type == BasicWidgetType.TextBoxEntry))
 				nSelections = 0;
 			
-			System.Threading.Thread.Sleep (7000);
+			System.Threading.Thread.Sleep (2000);
 
 			Assert.AreEqual (0, atkText.CaretOffset, "CaretOffset");
 			Assert.AreEqual (name.Length, atkText.CharacterCount, "CharacterCount");
@@ -1264,6 +1290,13 @@ namespace UiaAtkBridgeTest
 		{
 			GLib.Value gv = new GLib.Value (0);
 			value.GetMaximumValue (ref gv);
+			return (double)gv.Val;
+		}
+
+		private double GetCurrentValue (Atk.Value value)
+		{
+			GLib.Value gv = new GLib.Value (0);
+			value.GetCurrentValue (ref gv);
 			return (double)gv.Val;
 		}
 

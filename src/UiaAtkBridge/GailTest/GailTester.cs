@@ -174,6 +174,12 @@ namespace UiaAtkBridgeTest
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealProgressBar (guiThread);
 				break;
+			case BasicWidgetType.Spinner:
+				widget = new Gtk.SpinButton (adj, 1, 2);
+				// real not implemented yet
+				//if (real)
+					//widget = GailTestApp.MainClass.GiveMeARealSpinButton (guiThread);
+				break;
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
 			default:
