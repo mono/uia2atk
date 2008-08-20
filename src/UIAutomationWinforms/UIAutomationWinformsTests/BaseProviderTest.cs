@@ -177,6 +177,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		[Test]
+		public virtual void LabeledByPropertyTest ()
+		{
+			TestLabeledBy (true);
+		}
+		
+		[Test]
 		[Ignore ("Not implemented yet")]
 		public virtual void ClickablePointPropertyTest ()
 		{
@@ -251,6 +257,41 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			windowProvider = (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (form);
 			
 			return windowProvider.Navigate (NavigateDirection.FirstChild);
+		}
+
+		protected void TestLabeledBy (bool expectNonNull)
+		{
+			Control control = GetControlInstance ();
+			
+			Form f = control as Form;
+			if (f != null)
+				return;
+			
+			using (f = new Form ()) {
+				f.Controls.Add (control);
+				
+				Label l = new Label ();
+				l.Text = "my label";
+				f.Controls.Add (l);
+				
+				f.Show ();
+			
+				Type formListenerType = typeof (FormListener);
+				MethodInfo onFormAddedMethod =
+					formListenerType.GetMethod ("OnFormAdded", BindingFlags.Static | BindingFlags.NonPublic);
+				onFormAddedMethod.Invoke (null, new object [] {f, null});
+				
+				IRawElementProviderSimple controlProvider =
+					ProviderFactory.GetProvider (control);
+				IRawElementProviderSimple labelProvider =
+					ProviderFactory.GetProvider (l);
+				
+				object labeledBy = controlProvider.GetPropertyValue (AutomationElementIdentifiers.LabeledByProperty.Id);
+				Assert.AreEqual (expectNonNull ? labelProvider : null,
+				                 labeledBy);
+				
+				f.Close ();
+			}
 		}
 		
 		#endregion

@@ -192,6 +192,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			return new HScrollBar ();
 		}
+
+		public override void LabeledByPropertyTest ()
+		{
+			TestLabeledBy (false);
+		}
 		
 		#endregion
 	}

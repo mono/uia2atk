@@ -267,6 +267,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			return new RadioButton ();
 		}
+
+		public override void LabeledByPropertyTest ()
+		{
+			TestLabeledBy (false);
+		}
 		
 #endregion
 	}

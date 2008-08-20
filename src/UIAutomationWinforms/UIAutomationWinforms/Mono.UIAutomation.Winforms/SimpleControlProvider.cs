@@ -251,7 +251,34 @@ namespace Mono.UIAutomation.Winforms
 				return Control.Enabled;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return Control.Text; // TODO: Get from Label if necessary
-			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) {
+				if ((int) GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) ==
+				    ControlType.Text.Id)
+					return null;
+				
+				IRawElementProviderFragment sibling = this as IRawElementProviderFragment;
+				if (sibling == null)
+					return null;
+				IRawElementProviderFragment closestLabel = null;
+				double closestLabelDistance = double.MaxValue;
+				do {
+					sibling = sibling.Navigate (NavigateDirection.NextSibling);
+					if (sibling == null)
+						break;
+					Console.WriteLine ("found sibling");
+					if ((int)sibling.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.Text.Id) {
+						double siblingDistance;
+						if (closestLabel == null ||
+						    ((siblingDistance = DistanceFrom (sibling)) < closestLabelDistance)) {
+							closestLabel = sibling;
+							closestLabelDistance = siblingDistance;
+						}
+					}
+				} while (sibling != null && sibling != this);
+				
+				return closestLabel;
+				
+			} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return Control.CanFocus;
 			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 				System.Drawing.Rectangle bounds =
@@ -305,6 +332,45 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Private Methods
+		
+		private double DistanceFrom (IRawElementProviderSimple otherProvider)
+		{
+			Rect bounds = (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+			Rect otherBounds = (Rect) otherProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+			
+			double [] pointDistances = new double [] {
+				Distance (bounds.BottomLeft, otherBounds.BottomLeft),
+				Distance (bounds.BottomLeft, otherBounds.BottomRight),
+				Distance (bounds.BottomLeft, otherBounds.TopLeft),
+				Distance (bounds.BottomLeft, otherBounds.TopRight),
+				Distance (bounds.BottomRight, otherBounds.BottomLeft),
+				Distance (bounds.BottomRight, otherBounds.BottomRight),
+				Distance (bounds.BottomRight, otherBounds.TopLeft),
+				Distance (bounds.BottomRight, otherBounds.TopRight),
+				Distance (bounds.TopLeft, otherBounds.BottomLeft),
+				Distance (bounds.TopLeft, otherBounds.BottomRight),
+				Distance (bounds.TopLeft, otherBounds.TopLeft),
+				Distance (bounds.TopLeft, otherBounds.TopRight),
+				Distance (bounds.TopRight, otherBounds.BottomLeft),
+				Distance (bounds.TopRight, otherBounds.BottomRight),
+				Distance (bounds.TopRight, otherBounds.TopLeft),
+				Distance (bounds.TopRight, otherBounds.TopRight)
+			};
+			
+			double minDistance = double.MaxValue;
+			
+			foreach (double distance in pointDistances)
+				if (distance < minDistance)
+					minDistance = distance;
+			
+			return minDistance;
+		}
+		
+		private double Distance (System.Windows.Point p1, System.Windows.Point p2)
+		{
+			return System.Math.Abs (System.Math.Sqrt ( System.Math.Pow (p1.X - p2.X, 2) +
+			                                          System.Math.Pow (p1.Y - p2.Y, 2)));
+		}
 		
 		private System.Drawing.Rectangle GetControlScreenBounds ()
 		{
