@@ -1,5 +1,9 @@
 2008-08-19  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* LabelProviderTest.cs: Labels do not support LabeledBy property.
+
+2008-08-19  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* ScrollBarProviderTest.cs, RadioButtonProviderTest.cs,
 	  BaseProviderTest.cs: Support for testing LabeledBy property.
 

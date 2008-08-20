@@ -265,7 +265,6 @@ namespace Mono.UIAutomation.Winforms
 					sibling = sibling.Navigate (NavigateDirection.NextSibling);
 					if (sibling == null)
 						break;
-					Console.WriteLine ("found sibling");
 					if ((int)sibling.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.Text.Id) {
 						double siblingDistance;
 						if (closestLabel == null ||

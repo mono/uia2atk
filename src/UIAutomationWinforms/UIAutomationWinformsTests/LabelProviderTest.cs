@@ -102,6 +102,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			return new Label ();
 		}
+
+		public override void LabeledByPropertyTest ()
+		{
+			TestLabeledBy (false);
+		}
 		
 #endregion
 	}
