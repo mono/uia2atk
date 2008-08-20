@@ -1,3 +1,9 @@
+2008-08-20 Mario Carrion <mcarrion@novell.com>
+
+	* patches/scrollbar-bug416759.patch,
+	  patches/combobox-bug416663.patch,
+	  patches/listbox-bug416640.patch: Updated after reviewing.
+
 2008-08-12 Mario Carrion <mcarrion@novell.com>
 
 	* patches/scrollbar.patch: Deleted. Replaced by 

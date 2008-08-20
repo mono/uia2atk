@@ -1,8 +1,8 @@
 Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
 ===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs	(revision 110245)
+--- class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs	(revision 111121)
 +++ class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs	(working copy)
-@@ -1913,7 +1913,28 @@
+@@ -1913,7 +1913,25 @@
  
  			private ComboBox owner;
  			internal ArrayList object_items = new ArrayList ();
@@ -14,16 +14,13 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
 +			//	We are using Reflection to add/remove internal events.
 +			//	Class ListProvider uses the events.
 +			//
-+	    		//Events used to generate UIA StructureChangedEvent
-+	    		// * ChildAdded: Item has been added.
-+	    		// * ChildRemoved: Item has been removed.
-+	    		// * ChildrenCleared: Items list has been cleared.
-+	    		// * ChildrenSorted: Items list has been sorted.
-+			internal event StructureChangeEventHandler ChildAdded;
-+			internal event StructureChangeEventHandler ChildRemoved;
-+			internal event EventHandler ChildrenCleared;
-+			internal event EventHandler ChildrenSorted;
-+			internal delegate void StructureChangeEventHandler (object sender, int index);
++			//Event used to generate UIA StructureChangedEvent
++			static object CollectionChangedEvent = new object ();
++
++			internal event CollectionChangeEventHandler CollectionChanged {
++				add { owner.Events.AddHandler (CollectionChangedEvent, value); }
++				remove { owner.Events.RemoveHandler (CollectionChangedEvent, value); }
++			}
 +#endif
 +
 +			#endregion
@@ -31,41 +28,51 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
  			public ObjectCollection (ComboBox owner)
  			{
  				this.owner = owner;
-@@ -1943,7 +1964,20 @@
+@@ -1943,7 +1961,26 @@
  					if (value == null)
  						throw new ArgumentNullException ("value");
  
 +#if NET_2_0
 +					//UIA Framework event: Item Removed
-+					if (ChildRemoved != null)
-+						ChildRemoved (owner, index);
++					CollectionChangeEventHandler eh
++						= (CollectionChangeEventHandler) owner.Events [CollectionChangedEvent];
++					if (eh != null)
++						eh (owner,
++						    new CollectionChangeEventArgs (CollectionChangeAction.Remove,
++						                                   index));
 +#endif
 +
  					object_items[index] = value;
 +					
 +#if NET_2_0
 +					//UIA Framework event: Item Added
-+					if (ChildAdded != null)
-+						ChildAdded (owner, index);
++					if (eh != null)
++						eh (owner,
++						    new CollectionChangeEventArgs (CollectionChangeAction.Add,
++						                                   index));
 +#endif
 +
  					if (owner.listbox_ctrl != null)
  						owner.listbox_ctrl.InvalidateItem (index);
  					if (index == owner.SelectedIndex) {
-@@ -1996,6 +2030,12 @@
+@@ -1996,6 +2033,16 @@
  				object_items.Clear ();
  				owner.UpdatedItems ();
  				owner.Refresh ();
 +				
 +#if NET_2_0
 +				//UIA Framework event: Items list cleared
-+				if (ChildrenCleared != null)
-+					ChildrenCleared (owner, EventArgs.Empty);
++				CollectionChangeEventHandler eh
++					= (CollectionChangeEventHandler) owner.Events [CollectionChangedEvent];
++				if (eh != null)
++					eh (owner,
++					    new CollectionChangeEventArgs (CollectionChangeAction.Refresh,
++					                                   -1));
 +#endif
  			}
  			
  			public bool Contains (object value)
-@@ -2057,8 +2097,14 @@
+@@ -2057,8 +2104,18 @@
  				
  				if (owner.Sorted)
  					AddItem (item);
@@ -74,34 +81,46 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
  					object_items.Insert (index, item);
 +#if NET_2_0
 +					//UIA Framework event: Item added
-+					if (ChildAdded != null)
-+						ChildAdded (owner, index);
++					CollectionChangeEventHandler eh
++						= (CollectionChangeEventHandler) owner.Events [CollectionChangedEvent];
++					if (eh != null)
++						eh (owner,
++						    new CollectionChangeEventArgs (CollectionChangeAction.Add,
++						                                   index));
 +#endif					
 +				}
  				
  				owner.EndUpdate ();	// Calls UpdatedItems
  			}
-@@ -2084,6 +2130,12 @@
+@@ -2084,6 +2141,16 @@
  
  				object_items.RemoveAt (index);
  				owner.UpdatedItems ();
 +				
 +#if NET_2_0
 +				//UIA Framework event: Item removed
-+				if (ChildRemoved != null)
-+					ChildRemoved (owner, index);
++				CollectionChangeEventHandler eh
++					= (CollectionChangeEventHandler) owner.Events [CollectionChangedEvent];
++				if (eh != null)
++					eh (owner,
++					    new CollectionChangeEventArgs (CollectionChangeAction.Remove,
++					                                   index));
 +#endif
  			}
  			#endregion Public Methods
  
-@@ -2105,12 +2157,25 @@
+@@ -2105,12 +2172,33 @@
  							if (index <= owner.selected_index && owner.IsHandleCreated)
  								owner.selected_index++;
  								
 +#if NET_2_0
 +							//UIA Framework event: Item added
-+							if (ChildAdded != null)
-+								ChildAdded (owner, index);
++							CollectionChangeEventHandler eh
++								= (CollectionChangeEventHandler) owner.Events [CollectionChangedEvent];
++							if (eh != null)
++								eh (owner,
++								    new CollectionChangeEventArgs (CollectionChangeAction.Add,
++					        			                           index));
 +#endif
 +
  							return index;
@@ -113,23 +132,14 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
 +				
 +#if NET_2_0
 +				//UIA Framework event: Item added
-+				if (ChildAdded != null)
-+					ChildAdded (owner, object_items.Count - 1);
++				CollectionChangeEventHandler eha
++					= (CollectionChangeEventHandler) owner.Events [CollectionChangedEvent];
++				if (eha != null)
++					eha (owner,
++					     new CollectionChangeEventArgs (CollectionChangeAction.Add,
++					    	                            object_items.Count - 1));
 +#endif
 +				
  				return object_items.Count - 1;
  			}
  			
-@@ -2125,6 +2190,12 @@
- 			internal void Sort ()
- 			{
- 				object_items.Sort ();
-+
-+#if NET_2_0
-+				//UIA Framework event: Items list Sorted
-+				if (ChildrenSorted != null)
-+					ChildrenSorted (owner, EventArgs.Empty);
-+#endif
- 			}
- 
- 			#endregion Private Methods
