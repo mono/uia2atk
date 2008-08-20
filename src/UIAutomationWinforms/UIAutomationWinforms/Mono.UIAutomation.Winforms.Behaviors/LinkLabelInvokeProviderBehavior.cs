@@ -54,16 +54,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			                   null);
 		}
 
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Hyperlink.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "hyperlink";
-			else
-				return null;
-		}
-
 		public override void Connect (Control control)
 		{
 			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 

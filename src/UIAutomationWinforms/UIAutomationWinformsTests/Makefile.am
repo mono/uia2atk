@@ -71,7 +71,6 @@ FILES =  \
 	TextBoxProviderTest.cs \
 	TextNormalizerTest.cs \
 	TextRangeProviderTest.cs \
-	ThumbProviderTest.cs \
 	WindowProviderTest.cs \
 	WordTokenizerTest.cs 
 

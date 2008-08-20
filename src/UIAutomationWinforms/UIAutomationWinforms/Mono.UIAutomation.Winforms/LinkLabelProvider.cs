@@ -34,7 +34,7 @@ namespace Mono.UIAutomation.Winforms
 	internal class LinkLabelProvider : FragmentControlProvider
 	{
 
-#region Constructor
+		#region Constructor
 
 		public LinkLabelProvider (LinkLabel linkLabel) : base (linkLabel)
 		{
@@ -42,6 +42,22 @@ namespace Mono.UIAutomation.Winforms
 			             new LinkLabelInvokeProviderBehavior (this));
 		}
 
-#endregion
+		#endregion
+		
+		#region SimpleControlProvider specialization
+
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Hyperlink.Id;
+			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+				return null;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "hyperlink";
+			else
+				return base.GetPropertyValue (propertyId);
+		}		
+		
+		#endregion
 	}
 }
