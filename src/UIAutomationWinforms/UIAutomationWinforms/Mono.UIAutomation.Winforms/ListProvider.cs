@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -129,45 +130,14 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void InitializeChildControlStructure ()
 		{
-			//Items
 			try {
 				Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
 				                        GetInstanceOfObjectCollection (), 
-				                        "ChildAdded",
+				                        "CollectionChanged",
 				                        this, 
-				                        "OnChildAdded");
+				                        "OnCollectionChanged");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ChildAdded not defined", GetType ());
-			}
-			
-			try {
-				Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
-				                        GetInstanceOfObjectCollection (), 
-				                        "ChildRemoved", 
-				                        this, 
-				                        "OnChildRemoved");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ChildRemoved not defined", GetType ());
-			}
-			
-			try {
-				Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
-				                        GetInstanceOfObjectCollection (),
-				                        "ChildrenCleared", 
-				                        this, 
-				                        "OnChildrenCleared");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ChildrenCleared not defined", GetType ());
-			}
-			
-			try {
-				Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
-				                        GetInstanceOfObjectCollection (), 
-				                        "ChildrenSorted", 
-				                        this, 
-				                        "OnChildrenSorted");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ChildrenSorted not defined", GetType ());
+				Console.WriteLine ("{0}: CollectionChanged not defined", GetType ());
 			}
 		}
 		
@@ -176,41 +146,11 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
 				                           GetInstanceOfObjectCollection (), 
-				                           "ChildAdded",
+				                           "CollectionChanged",
 				                           this, 
-				                           "OnChildAdded");
+				                           "OnCollectionChanged");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ChildAdded not defined", GetType ());
-			}
-			
-			try {
-				Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
-				                           GetInstanceOfObjectCollection (), 
-				                           "ChildRemoved", 
-				                           this, 
-				                           "OnChildRemoved");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ChildRemoved not defined", GetType ());
-			}
-
-			try {
-				Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
-				                           GetInstanceOfObjectCollection (), 
-				                           "ChildrenCleared", 
-				                           this, 
-				                           "OnChildrenCleared");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ChildrenCleared not defined", GetType ());
-			}
-			
-			try {
-				Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
-				                           GetInstanceOfObjectCollection (), 
-				                           "ChildrenSorted", 
-				                           this, 
-				                           "OnChildrenSorted");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ChildrenSorted not defined", GetType ());
+				Console.WriteLine ("{0}: CollectionChanged not defined", GetType ());
 			}
 			
 			foreach (ListItemProvider item in items)
@@ -249,27 +189,18 @@ namespace Mono.UIAutomation.Winforms
 		
 #pragma warning disable 169
 
-		private void OnChildAdded (object sender, int index)
+		private void OnCollectionChanged (object sender, CollectionChangeEventArgs args)
 		{
-			ListItemProvider item = GetItemProvider (index);
-			OnNavigationChildAdded (true, item);
-		}
-		
-		private void OnChildRemoved (object sender, int index)
-		{
-			ListItemProvider item = RemoveItemAt (index);
-			OnNavigationChildRemoved (true, item);
-		}
-		
-		private void OnChildrenCleared (object sender, EventArgs args)
-		{
-			ClearItemsList ();
-			OnNavigationChildrenCleared (true);
-		}
-		
-		private void OnChildrenSorted (object sender, EventArgs args)
-		{
-			OnNavigationChildrenSorted (true);
+			if (args.Action == CollectionChangeAction.Add) {
+				ListItemProvider item = GetItemProvider ((int) args.Element);
+				OnNavigationChildAdded (true, item);
+			} else if (args.Action == CollectionChangeAction.Remove) {
+				ListItemProvider item = RemoveItemAt ((int) args.Element);
+				OnNavigationChildRemoved (true, item);
+			} else if (args.Action == CollectionChangeAction.Refresh) {
+				ClearItemsList ();
+				OnNavigationChildrenCleared (true);
+			}
 		}
 		
 #pragma warning restore 169

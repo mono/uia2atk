@@ -78,7 +78,6 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			rootProvider.NavigationChildAdded += new NavigationEventHandler (OnNavigationChildAdded);
 			rootProvider.NavigationChildRemoved += new NavigationEventHandler (OnNavigationChildRemoved);
 			rootProvider.NavigationChildrenCleared += new NavigationEventHandler (OnNavigationChildrenCleared);
-			rootProvider.NavigationChildrenSorted += new NavigationEventHandler (OnNavigationChildrenSorted);
 		}
 
 		public override void Terminate ()
@@ -86,7 +85,6 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			((FragmentRootControlProvider) Provider).NavigationChildAdded -= new NavigationEventHandler (OnNavigationChildAdded);
 			((FragmentRootControlProvider) Provider).NavigationChildRemoved -= new NavigationEventHandler (OnNavigationChildRemoved);
 			((FragmentRootControlProvider) Provider).NavigationChildrenCleared -= new NavigationEventHandler (OnNavigationChildrenCleared);
-			((FragmentRootControlProvider) Provider).NavigationChildrenSorted -= new NavigationEventHandler (OnNavigationChildrenSorted);
 		}
 		
 		#endregion
@@ -186,17 +184,6 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
 				                                   parentProvider);
 			}
-		}
-
-		private void OnNavigationChildrenSorted (FragmentControlProvider parentProvider,
-		                                          NavigationEventArgs args)
-		{
-			if (args.RaiseEvent == true) {
-				foreach (INavigation link in chain) {
-					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-					                                   link.Provider);
-				}
-			}			
 		}
 		
 		#endregion

@@ -1,5 +1,16 @@
 2008-08-20  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs,
+	  Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs:
+	  NavigationChildrenSorted event removed. Method
+	  OnNavigationChildrenSorted removed.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Updated to match latest
+	  patches. Using internal CollectionChanged. Private methods removed:
+	  OnChildAdded, OnChildRemoved, OnChildrenCleared and
+	  OnChildrenSorted. New method added: OnCollectionChanged.
+
+2008-08-20  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/LinkLabelProvider.cs: Added
 	  GetPropertyValue method.
 	* Mono.UIAutomation.Winforms.Behaviors/LinkLabelInvokeProviderBehavior.cs:
