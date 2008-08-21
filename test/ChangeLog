@@ -1,3 +1,12 @@
+2008-08-21  Calen Chen <cachen@novell.com>
+
+	* testers/checkedlistbox_basic_ops.py,
+	* testers/checkedlistbox/__init__.py,
+	* testers/checkedlistbox/checkedlistboxframe.py,
+	* testers/checkedlistbox: add new test for checkedlistbox, currently 
+	accerciser can't get list's parent 'frame', and can't use 'click' 
+	action to select listitem.
+
 2008-08-19  Calen Chen <cachen@novell.com>
 
 	* testers/groupbox,
