@@ -26,22 +26,14 @@ class FormFrame(accessibles.Frame):
         procedurelogger.action('check %s\'s all states' % self)
 
         procedurelogger.expectedResult('%s\'s all states can be found' % self)
-        #for a in states.VScrollBar.states:
-        #    cmd = "state = accessible." + a
-        #   exec(cmd)
+        for s in states.Form.states:
+            cmd = "state = self." + s
+            exec(cmd)
 
-        #    if state == False:
-        #        print "ERROR: %s can't be checked" % cmd
-        #    else:
-        #        pass
-        #if there is just one state in list, should reset it like:
-        cmd = "state = self." + states.Form.states
-        exec(cmd)
-        
-        if state == False:
-            print "ERROR: %s can't can't be checked" % cmd
-        else:
-            pass
+            if state == False:
+                print "ERROR: %s can't be checked" % cmd
+            else:
+                pass
     
     #close Form window
     def quit(self):

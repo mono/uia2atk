@@ -1,3 +1,15 @@
+2008-08-21  Brian G. Merrell <bgmerrell@gmail.com>
+
+	*  tools/update_uia2atk_rpms.sh: add functionality.  better command
+	line argument parsing.  can now get older rpms by using the -d
+	<directory> option where <directory> is a directory from 
+	http://build1.sled.lab.novell.com/uia/
+	*  testers/states.py: Added trailing commas to tuples with only
+	one element (otherwise they aren't tuples).
+	*  testers/form/formframe.py:  Iterate through the tuple (even
+	though there is only one element) because there should and will
+	be more elements in the future.
+
 2008-08-21  Calen Chen <cachen@novell.com>
 
 	* testers/checkedlistbox_basic_ops.py,

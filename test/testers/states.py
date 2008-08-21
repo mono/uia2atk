@@ -212,10 +212,10 @@ class Label(object):
     states = (SHOWING, MULTI_LINE)
 
 class Form(object):
-    states = (SHOWING)
+    states = (SHOWING,)
 
 class Panel(object):
-    states = (SHOWING)
+    states = (SHOWING,)
 
 class CheckBox(Button):
     pass
@@ -227,7 +227,7 @@ class HScrollBar(object):
     states = (SHOWING, HORIZONTAL)
 
 class StatusBar(object):
-    states = (SHOWING)
+    states = (SHOWING,)
 
 class ListBox(object):
     states = (SHOWING, ENABLED, SELECTABLE, SENSITIVE)
