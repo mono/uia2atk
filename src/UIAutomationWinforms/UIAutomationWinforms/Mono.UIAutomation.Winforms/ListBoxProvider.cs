@@ -45,13 +45,13 @@ namespace Mono.UIAutomation.Winforms
 		public ListBoxProvider (ListBox listbox) : base (listbox)
 		{
 			listboxControl = listbox;
-
-			vscrollbar = (VScrollBar) Helper.GetPrivateField (typeof (ListBox), 
-			                                                  listboxControl, 
-			                                                  "vscrollbar");
-			hscrollbar = (HScrollBar) Helper.GetPrivateField (typeof (ListBox), 
-			                                                  listboxControl, 
-			                                                  "hscrollbar");
+			
+			vscrollbar = Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox), 
+			                                                            listboxControl,
+			                                                            "UIAVScrollBar");
+			hscrollbar = Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox),
+			                                                            listboxControl,
+			                                                            "UIAHScrollBar");
 			
 			vscrollbar.VisibleChanged += new EventHandler (UpdateVScrollBehaviorVisible);
 			vscrollbar.EnabledChanged += new EventHandler (UpdateVScrollBehaviorEnable);
@@ -400,10 +400,10 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Fields
 		
-		private HScrollBar hscrollbar;
+		private ScrollBar hscrollbar;
 		private ListBox listboxControl;
 		private bool scrollpatternSet;
-		private VScrollBar vscrollbar;
+		private ScrollBar vscrollbar;
 		private ScrollBarProvider hscrollbarProvider;
 		private ScrollBarProvider vscrollbarProvider;
 		

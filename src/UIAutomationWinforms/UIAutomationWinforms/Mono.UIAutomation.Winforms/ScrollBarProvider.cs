@@ -307,9 +307,10 @@ namespace Mono.UIAutomation.Winforms
 			
 			private Rect GetThumbArea ()
 			{
-				Rectangle thumbArea = (Rectangle) Helper.GetPrivateField (typeof (ScrollBar), 
-				                                                          Control,
-				                                                          "thumb_area");
+				Rectangle thumbArea 
+					= Helper.GetPrivateProperty<ScrollBar, Rectangle> (typeof (ScrollBar), 
+					                                                   (ScrollBar) Control,
+					                                                   "UIAThumbArea");
 				return Helper.RectangleToRect (thumbArea);
 			}
 			

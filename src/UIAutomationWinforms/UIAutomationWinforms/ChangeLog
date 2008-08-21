@@ -1,3 +1,20 @@
+2008-08-21  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Using
+	  GetPrivateProperty. (matches patch in r111296).
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Using
+	  GetPrivateProperty. (matches patch in r111296). Private fields
+	  hscrollbar and vscrollbar using ScrollBar type.
+	* Mono.UIAutomation.Winforms/Helper.cs: Removed GetPrivateField, not
+	  used anymore.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Using
+	  GetPrivateProperty. (matches patch in r111296)
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Using
+	  UIACollectionChanged event instead of CollectionChanged. (matches
+	  patch in r111296). 
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxScrollProviderBehavior.cs:
+	  Replacing HScrollBar -> ScrollBar and VScrollBar -> ScrollBar.
+
 2008-08-20  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs,

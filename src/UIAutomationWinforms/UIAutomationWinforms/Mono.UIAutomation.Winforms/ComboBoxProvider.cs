@@ -217,9 +217,9 @@ namespace Mono.UIAutomation.Winforms
 		private void InitializeEditProvider (bool generateEvent)
 		{
 			if (textboxProvider == null) {
-				TextBox textbox = (TextBox) Helper.GetPrivateField (typeof (ComboBox), 
-				                                                    comboboxControl, 
-				                                                    "textbox_ctrl");
+				TextBox textbox = Helper.GetPrivateProperty<ComboBox, TextBox> (typeof (ComboBox), 
+				                                                                comboboxControl, 
+				                                                                "UIATextBox");
 				textboxProvider = new TextBoxProvider (textbox);
 				OnNavigationChildAdded (generateEvent, textboxProvider);
 			}

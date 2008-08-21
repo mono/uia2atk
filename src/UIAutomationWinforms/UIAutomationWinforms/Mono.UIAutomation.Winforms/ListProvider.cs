@@ -133,7 +133,7 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
 				                        GetInstanceOfObjectCollection (), 
-				                        "CollectionChanged",
+				                        "UIACollectionChanged",
 				                        this, 
 				                        "OnCollectionChanged");
 			} catch (NotSupportedException) {
@@ -146,7 +146,7 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
 				                           GetInstanceOfObjectCollection (), 
-				                           "CollectionChanged",
+				                           "UIACollectionChanged",
 				                           this, 
 				                           "OnCollectionChanged");
 			} catch (NotSupportedException) {

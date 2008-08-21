@@ -47,9 +47,9 @@ namespace Mono.UIAutomation.Winforms
 			return ++id;
 		}
 		
-		internal static TRestult GetPrivateProperty<T, TRestult> (Type referenceType, 
-		                                                          T reference,
-		                                                          string propertyName)
+		internal static TResult GetPrivateProperty<T, TResult> (Type referenceType, 
+		                                                        T reference,
+		                                                        string propertyName)
 		{
 			PropertyInfo propertyInfo = referenceType.GetProperty (propertyName,
 			                                                       BindingFlags.NonPublic
@@ -58,8 +58,8 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyInfo == null)
 				throw new NotSupportedException ("Property not found: " + propertyName);
 
-			Func<T, TRestult> invoke = 
-				(Func<T, TRestult>) Delegate.CreateDelegate (typeof (Func<T, TRestult>),
+			Func<T, TResult> invoke = 
+				(Func<T, TResult>) Delegate.CreateDelegate (typeof (Func<T, TResult>),
 				                                             propertyInfo.GetGetMethod (true));
 			return invoke (reference);
 		}
@@ -78,17 +78,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			AddRemovePrivateEvent (referenceType, reference, eventName, 
 			                       referenceDelegate, delegateName, false);
-		}
-		
-		internal static object GetPrivateField (Type type, object reference, string fieldName)
-		{
-			FieldInfo fieldInfo = type.GetField (fieldName,
-			                                     BindingFlags.NonPublic
-			                                     | BindingFlags.Instance);
-			if (fieldInfo == null)
-				throw new NotSupportedException ("Field not found: " + fieldName);
-
-			return fieldInfo.GetValue (reference);
 		}
 		
 		internal static void RaiseStructureChangedEvent (StructureChangeType type,

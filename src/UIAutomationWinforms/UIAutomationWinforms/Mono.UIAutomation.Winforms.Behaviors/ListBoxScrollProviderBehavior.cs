@@ -42,8 +42,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		#region Constructors
 
 		public ListBoxScrollProviderBehavior (ListBoxProvider provider,
-		                                      HScrollBar hscrollbar,
-		                                      VScrollBar vscrollbar)
+		                                      ScrollBar hscrollbar,
+		                                      ScrollBar vscrollbar)
 			: base (provider)
 		{
 			this.hscrollbar = hscrollbar;
