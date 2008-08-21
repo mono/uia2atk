@@ -84,7 +84,6 @@ namespace UiaAtkBridge
 		public void AddOneChild (Adapter child)
 		{
 			Console.WriteLine ("AddOneChild: " + Role + " -> " + child.Role);
-			this.Parent = null;
 			lock (syncRoot) {
 				children.Add (child);
 			}
