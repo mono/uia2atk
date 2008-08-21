@@ -152,13 +152,6 @@ namespace UiaAtkBridgeTest
 				});
 				System.Threading.Thread.Sleep (1000);
 				break;
-			case BasicWidgetType.ParentMenu:
-				if (!real)
-					throw new NotSupportedException ();
-				
-				widget = GailTestApp.MainClass.GiveMeARealParentMenu (guiThread, text);
-				System.Threading.Thread.Sleep (1000);
-				break;
 			case BasicWidgetType.HScrollBar:
 				widget = new Gtk.HScrollbar (adj);
 				if (real)

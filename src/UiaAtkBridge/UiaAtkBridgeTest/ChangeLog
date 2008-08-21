@@ -1,3 +1,7 @@
+2008-08-21  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* AtkTester.cs: Just use one overload for ParentMenu.
+
 2008-08-21 Mike Gorse <mgorse@novell.com>
 
 	* BridgeTester.cs: Test ListBox parent

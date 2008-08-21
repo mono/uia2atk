@@ -294,15 +294,14 @@ namespace UiaAtkBridgeTest
 			BasicWidgetType type = BasicWidgetType.ParentMenu;
 			Atk.Object accessible = null;
 			
-			string name = "FileMenu";
+			string menuName = "File!";
+			string[] names = new string[] { menuName, "New", "Quit" };
 			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, true);
 			
-			Assert.AreEqual (name, accessible.Name, "name of the menu is the same as its label");
+			Assert.AreEqual (menuName, accessible.Name, "name of the menu is the same as its label");
 			
 			InterfaceComponent (type, atkComponent);
-			
-			string[] names = new string[] { name, "New", "Quit" };
 			
 			Atk.Selection atkSelection = (Atk.Selection)
 				GetAtkObjectThatImplementsInterface <Atk.Selection> (type, names, out accessible, true);
@@ -314,7 +313,7 @@ namespace UiaAtkBridgeTest
 			PropertyRole (type, accessible);
 			
 			Atk.Action atkAction = (Atk.Action)
-				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
+				GetAtkObjectThatImplementsInterface <Atk.Action> (type, names, out accessible, true);
 			
 			InterfaceAction (type, atkAction, accessible);
 			
@@ -412,8 +411,8 @@ namespace UiaAtkBridgeTest
 		protected abstract int ValidNChildrenForAScrollBar { get; }
 		
 		private void InterfaceActionFor3RadioButtons (Atk.Action actionable1, Atk.Object accessible1,
-		                                               Atk.Action actionable2, Atk.Object accessible2,
-		                                               Atk.Action actionable3, Atk.Object accessible3)
+		                                              Atk.Action actionable2, Atk.Object accessible2,
+		                                              Atk.Action actionable3, Atk.Object accessible3)
 		{
 			Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#1");
 			System.Threading.Thread.Sleep (3000);
