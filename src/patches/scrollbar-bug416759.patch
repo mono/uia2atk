@@ -1,7 +1,7 @@
-Index: class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs
+Index: System.Windows.Forms/ScrollBar.cs
 ===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs	(revision 111121)
-+++ class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs	(working copy)
+--- System.Windows.Forms/ScrollBar.cs	(revision 111121)
++++ System.Windows.Forms/ScrollBar.cs	(working copy)
 @@ -783,6 +783,13 @@
  			event_args = new ScrollEventArgs (ScrollEventType.EndScroll, Value);
  			OnScroll (event_args);
@@ -11,7 +11,7 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs
 +			// UIA Framework event invoked when the "LargeIncrement 
 +			// Button" is "clicked" either by using the Invoke Pattern
 +			// or the space between the thumb and the bottom/right button
-+			OnLargeIncrementCalled (EventArgs.Empty);
++			OnUIAScroll (new ScrollEventArgs (ScrollEventType.LargeIncrement, Value));
 +#endif
      		}
  
@@ -25,7 +25,7 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs
 +			// UIA Framework event invoked when the "LargeDecrement 
 +			// Button" is "clicked" either by using the Invoke Pattern
 +			// or the space between the thumb and the top/left button
-+			OnLargeDecrementCalled (EventArgs.Empty);
++			OnUIAScroll (new ScrollEventArgs (ScrollEventType.LargeDecrement, Value));
 +#endif
      		}
  
@@ -39,12 +39,12 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs
 +			// UIA Framework event invoked when the "SmallIncrement 
 +			// Button" (a.k.a bottom/right button) is "clicked" either
 +			// by using the Invoke Pattern or the button itself
-+			OnSmallIncrementCalled (EventArgs.Empty);
++			OnUIAScroll (new ScrollEventArgs (ScrollEventType.SmallIncrement, Value));
 +#endif
      		}
  
      		private void SmallDecrement ()
-@@ -1305,6 +1326,14 @@
+@@ -1305,6 +1326,13 @@
  			event_args = new ScrollEventArgs (ScrollEventType.EndScroll, Value);
  			OnScroll (event_args);
  			Value = event_args.NewValue;
@@ -53,18 +53,17 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs
 +			// UIA Framework event invoked when the "SmallDecrement 
 +			// Button" (a.k.a top/left button) is "clicked" either
 +			// by using the Invoke Pattern or the button itself
-+			OnSmallDecrementCalled (EventArgs.Empty);
-+
++			OnUIAScroll (new ScrollEventArgs (ScrollEventType.SmallDecrement, Value));
 +#endif			
      		}
  
      		private void SetHoldButtonClickTimer ()
-@@ -1528,6 +1557,99 @@
+@@ -1528,6 +1556,64 @@
  			base.OnMouseWheel (e);
  		}
  #endif
 +
-+		#region UIA Framework Section
++		#region UIA Framework Section: Events, Methods and Properties.
 +
 +#if NET_2_0
 +		//NOTE:
@@ -72,63 +71,24 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs
 +		//	Class ScrollBarButtonInvokePatternInvokeEvent uses the events.
 +		//
 +    		// Events used to generate UIA InvokedEvent
-+    		// * LargeIncrementCalled. Large increment UIA Button (Space between Thumb and bottom/right Button)
-+    		// * LargeDecrementCalled. Large decrement UIA Button (Space between Thumb and top/left bBtton)
-+    		// * SmallIncrementCalled. Small increment UIA Button (bottom/right Button)
++		// * args.Type = ScrollEventType.LargeIncrement. Space between Thumb and bottom/right Button
++		// * args.Type = ScrollEventType.LargeDecrement. Space between Thumb and top/left Button
++		// * args.Type = ScrollEventType.SmallIncrement. Small increment UIA Button (bottom/right Button)
 +    		// * SmallDecrementCalled. Small decrement UIA Button (top/left Button)
-+		static object LargeIncrementCalledEvent = new object ();
-+		static object LargeDecrementCalledEvent = new object ();
-+		static object SmallIncrementCalledEvent = new object ();
-+		static object SmallDecrementCalledEvent = new object ();
++		static object UIAScrollEvent = new object ();
 +
-+		internal event EventHandler LargeIncrementCalled {
-+			add { Events.AddHandler (LargeIncrementCalledEvent, value); }
-+			remove { Events.RemoveHandler (LargeIncrementCalledEvent, value); }
++		internal event ScrollEventHandler UIAScroll {
++			add { Events.AddHandler (UIAScrollEvent, value); }
++			remove { Events.RemoveHandler (UIAScrollEvent, value); }
 +		}
 +
-+		internal event EventHandler LargeDecrementCalled {
-+			add { Events.AddHandler (LargeDecrementCalledEvent, value); }
-+			remove { Events.RemoveHandler (LargeDecrementCalledEvent, value); }
-+		}
-+
-+		internal event EventHandler SmallIncrementCalled {
-+			add { Events.AddHandler (SmallIncrementCalledEvent, value); }
-+			remove { Events.RemoveHandler (SmallIncrementCalledEvent, value); }
-+		}
-+
-+		internal event EventHandler SmallDecrementCalled {
-+			add { Events.AddHandler (SmallDecrementCalledEvent, value); }
-+			remove { Events.RemoveHandler (SmallDecrementCalledEvent, value); }
-+		}
-+
-+		internal void OnLargeIncrementCalled (EventArgs args)
++		internal void OnUIAScroll (ScrollEventArgs args)
 +		{
-+			EventHandler eh = (EventHandler) Events [LargeIncrementCalledEvent];
++			ScrollEventHandler eh = (ScrollEventHandler) Events [UIAScrollEvent];
 +			if (eh != null)
 +				eh (this, args);
 +		}
 +
-+		internal void OnLargeDecrementCalled (EventArgs args)
-+		{
-+			EventHandler eh = (EventHandler) Events [LargeDecrementCalledEvent];
-+			if (eh != null)
-+				eh (this, args);
-+		}
-+
-+		internal void OnSmallIncrementCalled (EventArgs args)
-+		{
-+			EventHandler eh = (EventHandler) Events [SmallIncrementCalledEvent];
-+			if (eh != null)
-+				eh (this, args);
-+		}
-+
-+		internal void OnSmallDecrementCalled (EventArgs args)
-+		{
-+			EventHandler eh = (EventHandler) Events [SmallDecrementCalledEvent];
-+			if (eh != null)
-+				eh (this, args);
-+		}
-+	
 +		//NOTE:
 +		//	Wrapper methods used by the Reflection.
 +		//	Class ScrollBarButtonInvokeProviderBehavior uses the events.
@@ -152,9 +112,13 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs
 +		{
 +			SmallDecrement ();
 +		}
++
++		internal Rectangle UIAThumbArea {
++			get { return thumb_area; }
++		}
 +#endif
 +
-+		#endregion
++		#endregion UIA Framework Section: Events, Methods and Properties.
 +
  	 }
  }
