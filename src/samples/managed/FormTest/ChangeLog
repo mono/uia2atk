@@ -1,5 +1,9 @@
 2008-08-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* FormTest.cs: We don't crash now, let's enable the menus.
+
+2008-08-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* FormTest.mdp: Revert last change (gtk refs were already deleted).
 
 2008-08-22  Andrés G. Aragoneses <aaragoneses@novell.com> 

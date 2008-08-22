@@ -107,7 +107,7 @@ namespace FormTest
 			
 			Form bgf = new Form ();
 			bgf.Text = "Background Form";
-			//CreateMenu (bgf);
+			CreateMenu (bgf);
 			bgf.Show ();
 			
 			return f1;
