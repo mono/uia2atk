@@ -1,3 +1,8 @@
+2008-08-22  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Fixed:
+	  should validate childProvider instead of childControl.
+
 2008-08-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Some null
