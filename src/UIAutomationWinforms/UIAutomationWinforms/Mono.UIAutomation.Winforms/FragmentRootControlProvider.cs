@@ -153,7 +153,7 @@ namespace Mono.UIAutomation.Winforms
 		protected virtual void OnNavigationChildAdded (bool raiseEvent, 
 		                                               FragmentControlProvider childProvider)
 		{
-			if (children.Contains (childProvider) == true)
+			if (children.Contains (childProvider) || childProvider == null)
 				return;
 			
 			childProvider.Navigation = NavigationFactory.CreateNavigation (childProvider, this);
@@ -261,6 +261,8 @@ namespace Mono.UIAutomation.Winforms
 		// needs to provide SelectionPattern behavior.
 		private void CheckForRadioButtonChild (IRawElementProviderSimple childProvider)
 		{
+			if (childProvider == null)
+				return;
 			if (GetBehavior (SelectionPatternIdentifiers.Pattern) == null &&
 			    childProvider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id) != null &&
 			    (int) childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {

@@ -1,3 +1,8 @@
+2008-08-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Some null
+	  guarding. Mario, review this when you wake up! Thanks :)
+
 2008-08-21  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Using
