@@ -1,5 +1,9 @@
 2008-08-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* BridgeTester.cs: Add support for parentMenu.
+
+2008-08-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* BasicWidgetType.cs: Add Spinner (probably forgotten by MikeGorse).
 
 2008-08-21  Andrés G. Aragoneses <aaragoneses@novell.com> 

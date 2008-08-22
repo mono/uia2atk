@@ -84,6 +84,24 @@ namespace UiaAtkBridgeTest
 				selection = uiaComb;
 				action = uiaComb;
 				break;
+			case BasicWidgetType.ParentMenu:
+				
+				MWF.ToolStripMenuItem parentMenu = new MWF.ToolStripMenuItem();
+				
+				MWF.ToolStripMenuItem[] subMenus = new MWF.ToolStripMenuItem [names.Length - 1];
+				for (int i = 1; i < names.Length; i++) {
+					MWF.ToolStripMenuItem subMenu = new MWF.ToolStripMenuItem ();
+					subMenu.Text = names [i];
+					subMenus [i - 1] = subMenu;
+				}
+				
+				parentMenu.DropDownItems.AddRange (subMenus);
+				
+				menuStrip1.Items.AddRange (new MWF.ToolStripItem[] {
+					parentMenu
+				});
+				
+				break;
 			default:
 				throw new NotImplementedException ("This AtkTester overload doesn't handle this type of widget: " +
 					type.ToString ());
@@ -119,6 +137,7 @@ namespace UiaAtkBridgeTest
 		MWF.ProgressBar pb1 = new MWF.ProgressBar ();
 		MWF.NumericUpDown nud1 = new MWF.NumericUpDown();
 		MWF.Form form = new MWF.Form ();
+		MWF.MenuStrip menuStrip1 = new MWF.MenuStrip();
 		
 		public BridgeTester () 
 		{
@@ -135,6 +154,8 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (but1);
 			form.Controls.Add (chk1);
 			form.Controls.Add (sb1);
+			form.Controls.Add(menuStrip1);
+			form.MainMenuStrip = menuStrip1;
 			//form.Controls.Add (pb1);
 			form.Controls.Add (nud1);
 			radios.Add (rad1);
