@@ -45,6 +45,7 @@ namespace UiaAtkBridgeTest
 		VScrollBar,
 		HScrollBar,
 		ProgressBar,
+		Spinner,
 		//widgets only in MWF:
 		ListBox
 	}
