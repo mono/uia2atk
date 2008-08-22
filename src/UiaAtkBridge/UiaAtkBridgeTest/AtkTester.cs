@@ -289,7 +289,7 @@ namespace UiaAtkBridgeTest
 //		}
 		
 		[Test]
-		public void Menu () 
+		public void ParentMenu () 
 		{
 			BasicWidgetType type = BasicWidgetType.ParentMenu;
 			Atk.Object accessible = null;

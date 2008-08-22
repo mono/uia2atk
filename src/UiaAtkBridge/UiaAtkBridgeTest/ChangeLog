@@ -1,5 +1,10 @@
 2008-08-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* BridgeTester.cs, AtkTester.cs: Truly enable ParentMenu testing in
+	  UIA.
+
+2008-08-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* BridgeTester.cs: Add support for parentMenu.
 
 2008-08-22  Andrés G. Aragoneses <aaragoneses@novell.com> 

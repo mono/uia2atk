@@ -101,6 +101,17 @@ namespace UiaAtkBridgeTest
 					parentMenu
 				});
 				
+				string [] submenus  = new string [names.Length - 1];
+				Array.Copy (names, 1, submenus, 0, names.Length - 1);
+				
+				//FIXME: change call to ctor to send the provider
+				UiaAtkBridge.ParentMenu uiaPMenu = new UiaAtkBridge.ParentMenu (submenus);
+				accessible = uiaPMenu;
+				component = uiaPMenu;
+				selection = uiaPMenu;
+				//FIXME: uncomment this after committing full ParentMenu class
+				//action = uiaPMenu;
+
 				break;
 			default:
 				throw new NotImplementedException ("This AtkTester overload doesn't handle this type of widget: " +
