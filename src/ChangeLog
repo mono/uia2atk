@@ -1,3 +1,9 @@
+2008-08-22 Mario Carrion <mcarrion@novell.com>
+
+	* patches/scrollbar-bug416759.patch,
+	  patches/combobox-bug416663.patch,
+	  patches/listbox-bug416640.patch: Fixed path.
+
 2008-08-21 Mario Carrion <mcarrion@novell.com>
 
 	* patches/scrollbar-bug416759.patch,

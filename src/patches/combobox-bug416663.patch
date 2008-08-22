@@ -1,7 +1,7 @@
-Index: System.Windows.Forms/ComboBox.cs
+Index: class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs
 ===================================================================
---- System.Windows.Forms/ComboBox.cs	(revision 111121)
-+++ System.Windows.Forms/ComboBox.cs	(working copy)
+--- class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs	(revision 111121)
++++ class/Managed.Windows.Forms/System.Windows.Forms/ComboBox.cs	(working copy)
 @@ -838,6 +838,14 @@
  		}
  		#endregion

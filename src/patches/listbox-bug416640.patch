@@ -1,7 +1,7 @@
-Index: System.Windows.Forms/ListBox.cs
+Index: class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs
 ===================================================================
---- System.Windows.Forms/ListBox.cs	(revision 111121)
-+++ System.Windows.Forms/ListBox.cs	(working copy)
+--- class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs	(revision 111121)
++++ class/Managed.Windows.Forms/System.Windows.Forms/ListBox.cs	(working copy)
 @@ -695,6 +695,18 @@
  
  		#endregion Private Properties

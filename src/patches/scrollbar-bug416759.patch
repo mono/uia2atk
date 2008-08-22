@@ -1,7 +1,7 @@
-Index: System.Windows.Forms/ScrollBar.cs
+Index: class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs
 ===================================================================
---- System.Windows.Forms/ScrollBar.cs	(revision 111121)
-+++ System.Windows.Forms/ScrollBar.cs	(working copy)
+--- class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs	(revision 111121)
++++ class/Managed.Windows.Forms/System.Windows.Forms/ScrollBar.cs	(working copy)
 @@ -783,6 +783,13 @@
  			event_args = new ScrollEventArgs (ScrollEventType.EndScroll, Value);
  			OnScroll (event_args);
