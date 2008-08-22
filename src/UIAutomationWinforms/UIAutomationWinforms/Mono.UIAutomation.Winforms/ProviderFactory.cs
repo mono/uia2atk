@@ -106,6 +106,7 @@ namespace Mono.UIAutomation.Winforms
 			ErrorProvider ep;
 			ToolTip tt;
 			Control ctrl;
+			ProgressBar pgb;
 			
 			bool isComponentBased = false;
 			
@@ -140,6 +141,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ComboBoxProvider (cb);
 			else if ((lb = component as ListBox) != null)
 				provider = new ListBoxProvider (lb);
+			else if ((pgb = component as ProgressBar) != null)
+				provider = new ProgressBarProvider (pgb);
 			else if ((scb = component as ScrollBar) != null) {
 				if ((lb = scb.Parent as ListBox) != null)
 					provider = new ListBoxProvider.ListBoxScrollBarProvider (scb);

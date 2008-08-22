@@ -65,6 +65,7 @@ FILES =  \
 	MockBridge.cs \
 	NumericUpDownProviderTest.cs \
 	PictureBoxTest.cs \
+	ProgressBarProviderTest.cs \
 	RadioButtonProviderTest.cs \
 	ScrollBarProviderTest.cs \
 	StatusBarProviderTest.cs \

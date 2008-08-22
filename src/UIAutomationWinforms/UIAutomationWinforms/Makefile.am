@@ -55,6 +55,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListItemToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/NumericUpDownRangeValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ProgressBarRangeValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ProgressBarValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs \
@@ -77,6 +79,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/GridPatternRowCountPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/LinkLabelInvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ProgressBarRangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \
 	Mono.UIAutomation.Winforms.Events/RangeValuePatternValueEvent.cs \
@@ -113,6 +116,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ListProvider.cs \
 	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/PaneProvider.cs \
+	Mono.UIAutomation.Winforms/ProgressBarProvider.cs \
 	Mono.UIAutomation.Winforms/ProviderFactory.cs \
 	Mono.UIAutomation.Winforms/RadioButtonProvider.cs \
 	Mono.UIAutomation.Winforms/ScrollBarProvider.cs \

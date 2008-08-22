@@ -1,3 +1,9 @@
+2008-08-22  Mario Carrion <mcarrion@novell.com> 
+
+	* UIAutomationWinformsTests.mdp, Makefile.am: ProgressBar provider
+	  support.
+	* ProgressBarProviderTest.cs: File added.
+
 2008-08-20  Mario Carrion <mcarrion@novell.com> 
 
 	* UIAutomationWinformsTests.mdp, Makefile.am, ThumbProviderTest.cs:
