@@ -1,3 +1,9 @@
+2008-08-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* FormTest.mdp: Remove unneeded refs to gtk, etc.
+	* FormTest.cs: Reorganized code and added menus (but not enabled yet,
+	  they cause an NRE on the providers...).
+
 2008-07-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* FormTest.cs: Spaces to tabs.

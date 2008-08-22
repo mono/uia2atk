@@ -34,6 +34,19 @@ namespace FormTest
 	{
 		static void Main (string[] args)
 		{
+			Application.Run (BuildGui ());
+		}
+		
+		static void OnButtonClick (object sender, EventArgs args)
+		{
+			Form f2 = new Form ();
+			f2.Text = "Secondary Form";
+			
+			f2.Show ();
+		}
+		
+		static Form BuildGui ()
+		{
 			Form f1 = new Form ();
 			f1.Text = "Main Form";
 			
@@ -80,7 +93,7 @@ namespace FormTest
 			f1.Controls.Add (rad2);
 			
 			ComboBox cbx = new ComboBox ();
-			cbx.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			cbx.DropDownStyle = ComboBoxStyle.DropDownList;
 			cbx.FormattingEnabled = true;
 			cbx.ImeMode = System.Windows.Forms.ImeMode.NoControl;
 			cbx.Items.AddRange(new object[] {
@@ -94,17 +107,79 @@ namespace FormTest
 			
 			Form bgf = new Form ();
 			bgf.Text = "Background Form";
+			//CreateMenu (bgf);
 			bgf.Show ();
 			
-			Application.Run (f1);
+			return f1;
 		}
 		
-		static void OnButtonClick (object sender, EventArgs args)
+		static void CreateMenu (Form f)
 		{
-			Form f2 = new Form ();
-			f2.Text = "Secondary Form";
+			MenuStrip menuStrip1 = new MenuStrip();
 			
-			f2.Show ();
+			ToolStripMenuItem fileToolStripMenuItem = new ToolStripMenuItem();
+			ToolStripMenuItem newToolStripMenuItem = new ToolStripMenuItem();
+			ToolStripMenuItem quitToolStripMenuItem = new ToolStripMenuItem();
+			ToolStripMenuItem helpToolStripMenuItem = new ToolStripMenuItem();
+			ToolStripMenuItem aboutToolStripMenuItem = new ToolStripMenuItem();
+			
+			// 
+			// menuStrip1
+			// 
+			menuStrip1.Items.AddRange (new ToolStripItem[] {
+				fileToolStripMenuItem,
+				helpToolStripMenuItem
+			});
+			menuStrip1.Location = new System.Drawing.Point (0, 0);
+			menuStrip1.Name = "menuStrip1";
+			menuStrip1.Size = new System.Drawing.Size (284, 24);
+			menuStrip1.Text = "menuStrip1";
+			
+			// 
+			// fileToolStripMenuItem
+			// 
+			fileToolStripMenuItem.DropDownItems.AddRange (new ToolStripItem[] {
+				newToolStripMenuItem,
+				quitToolStripMenuItem
+			});
+			fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+			fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+			fileToolStripMenuItem.Text = "File";
+			
+			// 
+			// newToolStripMenuItem
+			// 
+			newToolStripMenuItem.Name = "newToolStripMenuItem";
+			newToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			newToolStripMenuItem.Text = "New";
+
+			// 
+			// quitToolStripMenuItem
+			// 
+			quitToolStripMenuItem.Name = "quitToolStripMenuItem";
+			quitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			quitToolStripMenuItem.Text = "Quit";
+
+			// 
+			// helpToolStripMenuItem
+			// 
+			helpToolStripMenuItem.DropDownItems.AddRange (
+			  new System.Windows.Forms.ToolStripItem[] { aboutToolStripMenuItem });
+			helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+			helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+			helpToolStripMenuItem.Text = "Help";
+
+			// 
+			// aboutToolStripMenuItem
+			// 
+			aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+			aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+			aboutToolStripMenuItem.Text = "About";
+			
+			
+			
+			f.Controls.Add(menuStrip1);
+			f.MainMenuStrip = menuStrip1;
 		}
 	}
 }
