@@ -191,7 +191,8 @@ namespace UiaAtkBridge
 				HandleNewSpinnerControlType (simpleProvider);
 			// TODO: Other providers
 			else
-				Console.WriteLine ("AutomationBridge: Unhandled control: " + controlTypeId);
+				Console.WriteLine ("AutomationBridge: Unhandled control: " +
+				                   ControlType.LookupById (controlTypeId).ProgrammaticName);
 		}
 
 		private void HandleElementRemoval (IRawElementProviderSimple provider)
