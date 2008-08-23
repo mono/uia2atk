@@ -62,9 +62,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Button.Id;
-			else if (propertyId == AutomationElementIdentifiers.AcceleratorKeyProperty.Id)
+			if (propertyId == AutomationElementIdentifiers.AcceleratorKeyProperty.Id)
 				return null; // TODO
 			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)
 				// TODO: Can't find any way to get tooltip text

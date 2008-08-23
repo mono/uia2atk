@@ -60,11 +60,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Edit.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "edit";
-			else if (propertyId == ValuePatternIdentifiers.IsReadOnlyProperty.Id)
+			if (propertyId == ValuePatternIdentifiers.IsReadOnlyProperty.Id)
 				return IsReadOnly;
 			else if (propertyId == ValuePatternIdentifiers.ValueProperty.Id)
 				return Value;

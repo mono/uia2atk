@@ -46,6 +46,20 @@ namespace Mono.UIAutomation.Winforms
 		
 #endregion
 
+#region IRawElementProviderSimple Overrides
+
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Button.Id;
+			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return Control.Text;
+			else
+				return base.GetPropertyValue (propertyId);
+		}
+
+#endregion
+
 	}
 
 }

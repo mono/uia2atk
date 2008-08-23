@@ -1,3 +1,26 @@
+2008-08-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs: Overriding
+	  NameProperty and LabeledByProperty using best judgment from MSDN
+	  and UISpy experiments.
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs: Moving basic properties
+	  from provider behavior to base provider.  Overriding NameProperty
+	  according to MSDN.
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs,
+	  Mono.UIAutomation.Winforms/RadioButtonProvider.cs,
+	  Mono.UIAutomation.Winforms/LinkLabelProvider.cs,
+	  Mono.UIAutomation.Winforms/WindowProvider.cs: Overriding
+	  NameProperty and/or LabeledByProperty according to MSDN.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Default
+	  implementation of NameProperty returns the Name of the provider
+	  returned by the LabeledByProperty.  If there is no such provider,
+	  the empty string is returned.  Providers should override this as
+	  necessary.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ButtonInvokeProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/TextBoxValueProviderBehavior.cs:
+	  Moving basic properties from provider behavior to base provider.
+
 2008-08-22  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: ProgressBar provider

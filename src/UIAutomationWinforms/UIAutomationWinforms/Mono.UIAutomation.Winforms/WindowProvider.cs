@@ -253,9 +253,12 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override object GetPropertyValue (int propertyId)
 		{
-			// TODO: Complete...figure out by testing Windows implementation (UISpy is helpful)
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Window.Id;
+			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+				return null;
+			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return Control.Text;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "window";
 			else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
