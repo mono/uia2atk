@@ -1,3 +1,9 @@
+2008-08-27 Mario Carrion <mcarrion@novell.com>
+
+	* patches/scrollbar-bug416759.patch: Removed, in mcs: r111270.
+	* patches/combobox-bug416663.patch: Removed, in mcs: r111719.
+	* patches/listbox-bug416640.patch: Removed, in mcs: r111718.
+
 2008-08-22 Mario Carrion <mcarrion@novell.com>
 
 	* patches/scrollbar-bug416759.patch,
