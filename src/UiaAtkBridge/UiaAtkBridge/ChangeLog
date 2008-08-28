@@ -13,7 +13,8 @@
 	* AutomationBridge.cs, Makefile.am, UiaAtkBridge.mdp, Spinner.cs:
 	Add Spinner.
 
-	* AutomationBridge.cs, Monitor.cs: Add Monitor.Quit()
+	* AutomationBridge.cs, Monitor.cs: Add Monitor.Quit() which
+	is a partial fix for BNC#411444.
 
 	* ScrollBar.cs: Check for null providers in GetCurrentValue
 
