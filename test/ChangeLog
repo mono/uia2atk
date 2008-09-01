@@ -1,3 +1,7 @@
+2008-09-01  Ray Wang <rawang@novell.com>
+
+	* samples/pagesetupdialog.py: implement PageSetupDialog control
+
 2008-08-21  Brian G. Merrell <bgmerrell@gmail.com>
 
 	*  tools/update_uia2atk_rpms.sh: add functionality.  better command
