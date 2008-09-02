@@ -92,12 +92,12 @@ namespace UiaAtkBridge
 			return typeof(Monitor).Assembly.GetName().Name;
 		}
 		
-		private static string GetAssemblyVersionNumber()
+		private static string GetAssemblyVersionNumber ()
 		{
-			return typeof(Monitor).Assembly.GetName().Version.ToString();
+			return typeof (Monitor).Assembly.GetName ().Version.ToString ();
 		}
 		
-		internal static uint AddGlobalEventListener(
+		internal static uint AddGlobalEventListener (
 		    GLib.Signal.EmissionHook listener, 
 		    string eventType)
 		{
