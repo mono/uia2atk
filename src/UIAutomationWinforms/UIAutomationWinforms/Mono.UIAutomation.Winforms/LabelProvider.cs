@@ -76,6 +76,10 @@ namespace Mono.UIAutomation.Winforms
 				return false;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "text";
+			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+				return null;
+			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return label.Text;
 			else
 				return base.GetPropertyValue (propertyId);
 		}

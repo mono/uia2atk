@@ -259,10 +259,6 @@ namespace Mono.UIAutomation.Winforms
 					return label.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			}
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) {
-				if ((int) GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) ==
-				    ControlType.Text.Id)
-					return null;
-				
 				IRawElementProviderFragment sibling = this as IRawElementProviderFragment;
 				if (sibling == null)
 					return null;

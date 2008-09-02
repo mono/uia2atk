@@ -1,3 +1,10 @@
+2008-09-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms/LabelProvider.cs,
+	  Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Have
+	  LabelProvider handle LabeledByProperty and NameProperty.  Partial
+	  fix for bug #421831.
+
 2008-09-02  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.Behaviors/ProgressBarRangeValueProviderBehavior.cs:
