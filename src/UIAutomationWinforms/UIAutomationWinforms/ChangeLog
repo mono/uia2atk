@@ -1,3 +1,10 @@
+2008-09-02  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Returning
+	  ControlType in ScrollBarProvider.ScrollBarButtonProvider class.
+	
+	  [Fixes Bug #414937].
+
 2008-08-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs: Overriding

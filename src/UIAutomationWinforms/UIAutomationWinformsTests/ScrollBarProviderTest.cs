@@ -106,6 +106,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderFragment firstButton 
 				= provider.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNotNull (firstButton, "FirstChild shouldn't be null");
+						
+			Assert.AreEqual (firstButton.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
+			                 ControlType.Button.Id);
 			
 			IRawElementProviderFragment fragment 
 				= firstButton.Navigate (NavigateDirection.PreviousSibling);
@@ -115,17 +118,29 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				= firstButton.Navigate (NavigateDirection.NextSibling);
 			Assert.IsNotNull (secondButton, "firstButton.NextSibling shouldn't be null");
 			
+			Assert.AreEqual (secondButton.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
+			                 ControlType.Button.Id);
+			
 			IRawElementProviderFragment thumbProvider
 				= secondButton.Navigate (NavigateDirection.NextSibling);
 			Assert.IsNotNull (thumbProvider, "secondButton.NextSibling shouldn't be null");
+
+			Assert.AreEqual (thumbProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
+			                 ControlType.Thumb.Id);
 			
 			IRawElementProviderFragment thirdButton
 				= thumbProvider.Navigate (NavigateDirection.NextSibling);
 			Assert.IsNotNull (thirdButton, "thumbProvider.NextSibling shouldn't be null");
 			
+			Assert.AreEqual (thirdButton.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
+			                 ControlType.Button.Id);
+			
 			IRawElementProviderFragment fourthButton
 				= thirdButton.Navigate (NavigateDirection.NextSibling);
 			Assert.IsNotNull (fourthButton, "thirdButton.NextSibling shouldn't be null");
+			
+			Assert.AreEqual (fourthButton.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
+			                 ControlType.Button.Id);
 
 			Assert.IsNull (fourthButton.Navigate (NavigateDirection.NextSibling),
 			               "fourthButton.NextSibling should be null");
@@ -196,6 +211,44 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public override void LabeledByPropertyTest ()
 		{
 			TestLabeledBy (false);
+		}
+		
+		#endregion
+		
+		#region Patterns test
+		
+		[Test]
+		public void PatternsTest ()
+		{
+			ListBox listbox = new ListBox ();
+			
+			for (int i = 0; i < 15; i++)
+				listbox.Items.Add (i);
+
+			IRawElementProviderFragmentRoot listboxProvider
+				= (IRawElementProviderFragmentRoot) GetProviderFromControl (listbox);
+			
+			IRawElementProviderFragment scrollBarProvider = null;
+			IRawElementProviderFragment child = 
+				listboxProvider.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.ScrollBar.Id) {
+					scrollBarProvider = child;
+					break;
+				}
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			
+			Assert.IsNotNull (scrollBarProvider, "Should be scrollbar");
+			
+			//I'm inside a ScrollProvider, so RangeValue Pattern should NOT supported
+			Assert.IsFalse ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty.Id),
+			               "Should support RangeValue Pattern");
+			
+			//Lets test buttons!
+			
+			IRawElementProviderFragment firstButton = null;
 		}
 		
 		#endregion

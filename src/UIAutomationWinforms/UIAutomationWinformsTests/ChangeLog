@@ -1,3 +1,10 @@
+2008-09-02  Mario Carrion <mcarrion@novell.com> 
+
+	* ScrollBarProviderTest.cs: Test updated to verify ControlType in
+	  ScrollBarProvider.ScrollBarButtonProvider instances.
+	
+	  [Fixes Bug #414937].
+
 2008-08-22  Mario Carrion <mcarrion@novell.com> 
 
 	* UIAutomationWinformsTests.mdp, Makefile.am: ProgressBar provider
