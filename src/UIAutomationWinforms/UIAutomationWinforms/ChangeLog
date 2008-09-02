@@ -1,3 +1,17 @@
+2008-09-02  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Removed not used
+	  variable.
+	* Mono.UIAutomation.Winforms/ErrorProvider.cs: Tooltip support for
+	  SWF.ErrorProvider added: new internal class
+	  ErrorProviderToolTipProvider. Raising StructureChangedEvent when
+	  tooltip is shown/hidden.
+	* Mono.UIAutomation.Winforms/ToolTipProvider.cs: Internal events and
+	  methods updated to match SWF patch. Raising StructureChangedEvent
+	  when tooltip is shown/hidden.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Internal events
+	  and methods updated to match SWF patch.
+
 2008-09-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms/LabelProvider.cs,

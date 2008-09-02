@@ -103,7 +103,6 @@ namespace Mono.UIAutomation.Winforms
 			ListBox lb;
 			ScrollBar scb;
 			PictureBox pb;
-			ErrorProvider ep;
 			ToolTip tt;
 			Control ctrl;
 			ProgressBar pgb;

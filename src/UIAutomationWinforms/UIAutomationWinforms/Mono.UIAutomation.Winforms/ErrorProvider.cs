@@ -37,21 +37,21 @@ using SWFErrorProvider = System.Windows.Forms.ErrorProvider;
 namespace Mono.UIAutomation.Winforms
 {
 	// NOTE: 
-	//      When calling MWF.ErrorProvider.SetError(control) an instance of 
-	//      UserControl is added to control.Parent and control.ControlAdded is 
-	//      generated. This new UserControl is used to show the "Exclamation 
-	//      Mark Image". We are skipping all those UserControl instances by 
-	//      doing the following:
+	//	When calling MWF.ErrorProvider.SetError(control) an instance of 
+	//	UserControl is added to control.Parent and control.ControlAdded is 
+	//	generated. This new UserControl is used to show the "Exclamation 
+	//	Mark Image". We are skipping all those UserControl instances by 
+	//	doing the following:
 	//
-	//      All SWF.Control subclasses support MWF.ErrorProvider.SetError, so
-	//      all Control-based providers use the following internal events
-	//      to keep track of those instances:
-	//      - SWF.Control.ErrorProviderHookup: event generated when 
-	//        MWF.ErrorProvider.SetError(control, "error message") or 
-	//        UserControl.Visible = true
-    //      - SWF.Control.ErrorProviderUnhookup: evet generated when
-    //        MWF.ErrorProvider.SetError(control, "") or 
-	//        UserControl.Visible = false
+	//	All SWF.Control subclasses support MWF.ErrorProvider.SetError, so
+	//	Control-based providers use the following internal events
+	//	to keep track of those instances:
+	//	- SWF.Control.ErrorProviderHookup: event generated when 
+	//	  MWF.ErrorProvider.SetError(control, "error message") or 
+	//	  UserControl.Visible = true
+	//	- SWF.Control.ErrorProviderUnhookup: event generated when
+	//	  MWF.ErrorProvider.SetError(control, "") or 
+	//	  UserControl.Visible = false
 	//
 	internal class ErrorProvider : PaneProvider
 	{
@@ -59,13 +59,16 @@ namespace Mono.UIAutomation.Winforms
 		#region Constructor
 		
 		public ErrorProvider (Control ctrl,
-		                      SWFErrorProvider errorProvider) : base (errorProvider )
+		                      SWFErrorProvider errorProvider) : base (errorProvider)
 		{	
 			this.errorProvider = errorProvider;
 
 			parent = ErrorProvider.InstancesTracker.GetParentFromControl (ctrl);
 			controls = new List<Control> ();
 			AddControl (ctrl);
+			
+			tooltipProvider = new ErrorProviderToolTipProvider (errorProvider);
+			tooltipProvider.InitializeEvents ();
 		}
 
 		#endregion
@@ -161,6 +164,150 @@ namespace Mono.UIAutomation.Winforms
 		private List<Control> controls;
 		private Control parent;
 		private SWFErrorProvider errorProvider;
+		private ErrorProviderToolTipProvider tooltipProvider;
+		
+		#endregion
+		
+		#region Internal Class: ToolTipProvider
+		
+		internal class ErrorProviderToolTipProvider : FragmentControlProvider
+		{
+			public ErrorProviderToolTipProvider (SWFErrorProvider provider) 
+				: base (provider)
+			{
+				errorProvider = provider;
+				InitializeInternalEvents ();
+			}
+		
+			public override Component Container {
+				get { return null; }
+			}
+	
+			public override object GetPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.ToolTip.Id;
+				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+					return null;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return "tool tip";
+				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)
+					return null;
+				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return tooltipControl.Text;
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+					return null;
+				else
+					return base.GetPropertyValue (propertyId);
+			}
+			
+			public override void Terminate ()
+			{
+				base.Terminate ();
+				
+				try {
+					Helper.RemovePrivateEvent (typeof (SWFErrorProvider), 
+					                           errorProvider, 
+					                           "UIAToolTipShown",
+					                           this, 
+					                           "OnToolTipShown");
+				} catch (NotSupportedException) {
+					Console.WriteLine ("{0}: UIAToolTipShown not defined in {1}",
+					                   GetType (),
+					                   typeof (SWFErrorProvider));
+				}
+				
+				try {
+					Helper.RemovePrivateEvent (typeof (SWFErrorProvider), 
+					                           errorProvider, 
+					                           "UIAToolTipHidden",
+					                           this, 
+					                           "OnToolTipHidden");
+				} catch (NotSupportedException) {
+					Console.WriteLine ("{0}: UIAToolTipHidden not defined in {1}",
+					                   GetType (),
+					                   typeof (SWFErrorProvider));
+				}
+			}
+			
+			private void InitializeInternalEvents () 
+			{
+				try {
+					Helper.AddPrivateEvent (typeof (SWFErrorProvider), 
+					                        errorProvider, 
+					                        "UIAToolTipShown",
+					                        this, 
+					                        "OnToolTipShown");
+				} catch (NotSupportedException) {
+					Console.WriteLine ("{0}: UIAToolTipShown not defined in {1}",
+					                   GetType (),
+					                   typeof (SWFErrorProvider));
+				}
+				
+				try {
+					Helper.AddPrivateEvent (typeof (SWFErrorProvider), 
+					                        errorProvider, 
+					                        "UIAToolTipHidden",
+					                        this, 
+					                        "OnToolTipHidden");
+				} catch (NotSupportedException) {
+					Console.WriteLine ("{0}: UIAToolTipHidden not defined in {1}",
+					                   GetType (),
+					                   typeof (SWFErrorProvider));
+				}
+				
+				try {
+					tooltipControl = Helper.GetPrivateProperty<SWFErrorProvider, Control> (typeof (SWFErrorProvider), 
+					                                                                       errorProvider,
+					                                                                       "UIAToolTip");
+				} catch (NotSupportedException) {
+					Console.WriteLine ("{0}: UIAToolTip property not defined in {1}",
+					                   GetType (),
+					                   typeof (SWFErrorProvider));
+				}
+			}
+			
+#pragma warning disable 169		
+		
+			private void OnToolTipShown (object sender, EventArgs args)
+			{
+				if (AutomationInteropProvider.ClientsAreListening == true) {					
+					//TODO: We need deeper tests in Vista because MS is generating both events
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+					                                   this);
+					
+					AutomationEventArgs eventArgs 
+						= new AutomationEventArgs (AutomationElementIdentifiers.ToolTipOpenedEvent);
+					AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.ToolTipOpenedEvent,
+					                                                this, 
+					                                                eventArgs);
+				}
+			}
+	
+			private void OnToolTipHidden (object sender, EventArgs args)
+			{
+				if (AutomationInteropProvider.ClientsAreListening == true) {
+					//TODO: We need deeper tests in Vista because MS is generating both events
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
+					                                   this);
+					
+					AutomationEventArgs eventArgs 
+						= new AutomationEventArgs (AutomationElementIdentifiers.ToolTipClosedEvent);
+					AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.ToolTipClosedEvent,
+					                                                this, 
+					                                                eventArgs);
+				}
+			}
+		
+#pragma warning restore 169
+			
+			private SWFErrorProvider errorProvider;
+			private Control tooltipControl;
+		}
 		
 		#endregion
 		

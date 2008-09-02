@@ -405,11 +405,11 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.AddPrivateEvent (typeof (Control), 
 				                        Control, 
-				                        "ToolTipHookup",
+				                        "UIAToolTipHookedUp",
 				                        this, 
 				                        "OnToolTipHookup");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ToolTipHookup not defined in {1}",
+				Console.WriteLine ("{0}: UIAToolTipHookedUp not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
 			}
@@ -417,7 +417,7 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.AddPrivateEvent (typeof (Control), 
 				                        Control, 
-				                        "ToolTipUnhookup",
+				                        "UIAToolTipUnhookedUp",
 				                        this, 
 				                        "OnToolTipUnhookup");
 			} catch (NotSupportedException) {
@@ -432,7 +432,7 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.RemovePrivateEvent (typeof (Control), 
 				                           Control, 
-				                           "ToolTipHookup",
+				                           "UIAToolTipHookedUp",
 				                           this, 
 				                           "OnToolTipHookup");
 			} catch (NotSupportedException) {
@@ -444,7 +444,7 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.RemovePrivateEvent (typeof (Control), 
 				                           Control, 
-				                           "ToolTipUnhookup",
+				                           "UIAToolTipUnhookedUp",
 				                           this, 
 				                           "OnToolTipUnhookup");
 			} catch (NotSupportedException) {
@@ -468,7 +468,7 @@ namespace Mono.UIAutomation.Winforms
 				                                                       Control,
 				                                                       "UIAToolTip");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: uia_tool_tip field not defined in {1}",
+				Console.WriteLine ("{0}: UIAToolTip property not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
 			}
@@ -511,7 +511,7 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.AddPrivateEvent (typeof (Control), 
 				                        Control, 
-				                        "ErrorProviderHookup",
+				                        "UIAErrorProviderHookedUp",
 				                        this, 
 				                        "OnErrorProviderHookup");
 			} catch (NotSupportedException) {
@@ -523,11 +523,11 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.AddPrivateEvent (typeof (Control), 
 				                        Control, 
-				                        "ErrorProviderUnhookup",
+				                        "UIAErrorProviderUnhookedUp",
 				                        this, 
 				                        "OnErrorProviderUnhookup");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ErrorProviderUnhookup not defined in {1}",
+				Console.WriteLine ("{0}: UIAErrorProviderUnhookedUp not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
 			}
@@ -538,11 +538,11 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.RemovePrivateEvent (typeof (Control), 
 				                           Control, 
-				                           "ErrorProviderHookup",
+				                           "UIAErrorProviderHookedUp",
 				                           this, 
 				                           "OnErrorProviderHookup");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ErrorProviderHookup not defined in {1}",
+				Console.WriteLine ("{0}: UIAErrorProviderHookedUp not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
 			}
@@ -550,11 +550,11 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.RemovePrivateEvent (typeof (Control), 
 				                           Control, 
-				                           "ErrorProviderUnhookup",
+				                           "UIAErrorProviderUnhookedUp",
 				                           this, 
 				                           "OnErrorProviderUnhookup");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ErrorProviderUnhookup not defined in {1}",
+				Console.WriteLine ("{0}: UIAErrorProviderUnhookedUp not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
 			}
@@ -568,7 +568,7 @@ namespace Mono.UIAutomation.Winforms
 				                                                                      Control,
 				                                                                      "UIAErrorProvider");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: uia_error_provider field not defined in {1}",
+				Console.WriteLine ("{0}: UIAErrorProvider property not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
 			}
@@ -576,20 +576,20 @@ namespace Mono.UIAutomation.Winforms
 		
 #pragma warning disable 169		
 		
-		private void OnErrorProviderHookup (object sender, UserControl control)
+		private void OnErrorProviderHookup (object sender, ControlEventArgs args)
 		{
 			GetPrivateErrorProviderField ();
 			
 			//TODO: The following call may fail when errorProvider is null
-			ErrorProvider.InstancesTracker.AddControl (control, 
+			ErrorProvider.InstancesTracker.AddControl (args.Control, 
 			                                           Control.Parent,
 			                                           errorProvider);			
 		}
 
-		private void OnErrorProviderUnhookup (object sender, UserControl control)
-		{		
-			ErrorProvider.InstancesTracker.RemoveControl (control,
-			                                              control.Parent,
+		private void OnErrorProviderUnhookup (object sender, ControlEventArgs args)
+		{
+			ErrorProvider.InstancesTracker.RemoveControl (args.Control,
+			                                              args.Control.Parent,
 			                                              errorProvider);
 			errorProvider = null;
 		}

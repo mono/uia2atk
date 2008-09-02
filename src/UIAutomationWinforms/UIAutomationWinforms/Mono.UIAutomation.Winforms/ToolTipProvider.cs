@@ -98,11 +98,11 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.RemovePrivateEvent (typeof (ToolTip), 
 				                           ToolTip, 
-				                           "ToolTipShown",
+				                           "UIAToolTipShown",
 				                           this, 
 				                           "OnToolTipShown");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ToolTipShown not defined in {1}",
+				Console.WriteLine ("{0}: UIAToolTipShown not defined in {1}",
 				                   GetType (),
 				                   typeof (ToolTip));
 			}
@@ -110,11 +110,11 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.RemovePrivateEvent (typeof (ToolTip), 
 				                           ToolTip, 
-				                           "ToolTipHidden",
+				                           "UIAToolTipHidden",
 				                           this, 
 				                           "OnToolTipHidden");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ToolTipHidden not defined in {1}",
+				Console.WriteLine ("{0}: UIAToolTipHidden not defined in {1}",
 				                   GetType (),
 				                   typeof (ToolTip));
 			}
@@ -129,7 +129,7 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.AddPrivateEvent (typeof (ToolTip), 
 				                        ToolTip, 
-				                        "ToolTipShown",
+				                        "UIAToolTipShown",
 				                        this, 
 				                        "OnToolTipShown");
 			} catch (NotSupportedException) {
@@ -141,11 +141,11 @@ namespace Mono.UIAutomation.Winforms
 			try {
 				Helper.AddPrivateEvent (typeof (ToolTip), 
 				                        ToolTip, 
-				                        "ToolTipHidden",
+				                        "UIAToolTipHidden",
 				                        this, 
 				                        "OnToolTipHidden");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ToolTipHidden not defined in {1}",
+				Console.WriteLine ("{0}: UIAToolTipHidden not defined in {1}",
 				                   GetType (),
 				                   typeof (ToolTip));
 			}
@@ -153,10 +153,14 @@ namespace Mono.UIAutomation.Winforms
 		
 #pragma warning disable 169		
 		
-		private void OnToolTipShown (object sender, Control associatedControl)
+		private void OnToolTipShown (object sender, ControlEventArgs args)
 		{
 			if (AutomationInteropProvider.ClientsAreListening == true) {
-				message = tooltip.GetToolTip (associatedControl);
+				message = tooltip.GetToolTip (args.Control);
+				
+				//TODO: We need deeper tests in Vista because MS is generating both events
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+				                                   this);
 
 				AutomationEventArgs eventArgs 
 					= new AutomationEventArgs (AutomationElementIdentifiers.ToolTipOpenedEvent);
@@ -166,10 +170,14 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		private void OnToolTipHidden (object sender, Control associatedControl)
+		private void OnToolTipHidden (object sender, ControlEventArgs args)
 		{
 			if (AutomationInteropProvider.ClientsAreListening == true) {
-				message = tooltip.GetToolTip (associatedControl);
+				message = tooltip.GetToolTip (args.Control);
+				
+				//TODO: We need deeper tests in Vista because MS is generating both events
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
+				                                   this);
 
 				AutomationEventArgs eventArgs 
 					= new AutomationEventArgs (AutomationElementIdentifiers.ToolTipClosedEvent);
