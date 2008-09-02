@@ -87,6 +87,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		#region IRangeValuePattern Test
 
+		[Test]
 		public void IRangeValueProviderValueTest ()
 		{
 			ProgressBar progressBar = new ProgressBar ();
@@ -98,11 +99,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (rangeValueProvider,
 			                  "Not returning RangeValuePatternIdentifiers.");
 			
-			Assert.AreEqual (rangeValueProvider.Value,
-			                 progressBar.Value,
-			                 "Value value");
+			double value = (double) progressBar.Value;
+			Assert.AreEqual (rangeValueProvider.Value, value, "Value value");
 		}
 
+		[Test]
 		public void IRangeValueProviderIsReadOnlyTest ()
 		{
 			ProgressBar progressBar = new ProgressBar ();
@@ -119,6 +120,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "IsReadOnly value");
 		}
 		
+		[Test]
 		public void IRangeValueProviderMinimumTest ()
 		{
 			ProgressBar progressBar = new ProgressBar ();
@@ -135,6 +137,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "Minimum value");
 		}
 		
+		[Test]
 		public void IRangeValueProviderMaximumTest ()
 		{
 			ProgressBar progressBar = new ProgressBar ();
@@ -151,6 +154,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "Maximum value");
 		}
 		
+		[Test]
 		public void IRangeValueProviderLargeChangeTest ()
 		{
 			ProgressBar progressBar = new ProgressBar ();
@@ -167,6 +171,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "LargeChange value");
 		}
 		
+		[Test]
 		public void IRangeValueProviderSmallChangeTest ()
 		{
 			ProgressBar progressBar = new ProgressBar ();
@@ -183,6 +188,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "SmallChange value");
 		}
 		
+		[Test]
 		public void IRangeValueProviderSetValueTest ()
 		{
 			ProgressBar progressBar = new ProgressBar ();
@@ -208,13 +214,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			double value = 50;
 			rangeValueProvider.SetValue (value);
-			Assert.AreEqual (value, progressBar.Value, "Value value");
+			Assert.AreEqual (value, progressBar.Value, "SetValue value");
 		}
 		
 		#endregion
 		
 		#region IValuePattern Test
 		
+		[Test]
 		public void IValueProviderValueTest ()
 		{
 			ProgressBar progressBar = new ProgressBar ();
@@ -229,6 +236,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual(valueProvider.Value, progressBar.Text, "Text value");
 		}
 		
+		[Test]
 		public void IValueProviderIsReadOnlyTest ()
 		{
 			ProgressBar progressBar = new ProgressBar ();
@@ -243,6 +251,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (valueProvider.IsReadOnly, true, "IsReadOnly value");
 		}
 		
+		[Test]
 		public void IValueProviderSetValueTest ()
 		{
 			ProgressBar progressBar = new ProgressBar ();
@@ -265,10 +274,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		#region BaseProviderTest Overrides
 
-    	protected override Control GetControlInstance ()
-    	{
-        	return new ProgressBar ();
-    	}
+		protected override Control GetControlInstance ()
+		{
+			return new ProgressBar ();
+		}
 
 		#endregion
     }

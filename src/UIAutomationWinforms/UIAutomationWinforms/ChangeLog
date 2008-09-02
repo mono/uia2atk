@@ -1,5 +1,10 @@
 2008-09-02  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.Behaviors/ProgressBarRangeValueProviderBehavior.cs:
+	  Neville Gao's patch applied.
+
+2008-09-02  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Returning
 	  ControlType in ScrollBarProvider.ScrollBarButtonProvider class.
 	

@@ -1,5 +1,9 @@
 2008-09-02  Mario Carrion <mcarrion@novell.com> 
 
+	* ProgressBarProviderTest.cs: Neville Gao's patch applied.
+
+2008-09-02  Mario Carrion <mcarrion@novell.com> 
+
 	* ScrollBarProviderTest.cs: Test updated to verify ControlType in
 	  ScrollBarProvider.ScrollBarButtonProvider instances.
 	

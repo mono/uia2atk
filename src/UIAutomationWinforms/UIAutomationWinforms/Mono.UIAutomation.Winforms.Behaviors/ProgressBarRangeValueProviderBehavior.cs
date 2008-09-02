@@ -40,6 +40,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		public ProgressBarRangeValueProviderBehavior (ProgressBarProvider provider)
 			: base (provider)
 		{
+			progressBar = (ProgressBar) provider.Control;
 		}
 		
 		#endregion
@@ -86,7 +87,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		#region IRangeValueProvider Members
 		
 		public double Value {
-			get { return progressBar.Value; }
+			get { return (double) progressBar.Value; }
 		}
 		
 		public bool IsReadOnly {
@@ -120,7 +121,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		#endregion
 
 		#region Private Fields
-
+		
 		private ProgressBar progressBar;
 		
 		#endregion
