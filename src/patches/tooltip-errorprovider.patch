@@ -1,8 +1,104 @@
+Index: class/Managed.Windows.Forms/System.Windows.Forms/ErrorProvider.cs
+===================================================================
+--- class/Managed.Windows.Forms/System.Windows.Forms/ErrorProvider.cs	(revision 112104)
++++ class/Managed.Windows.Forms/System.Windows.Forms/ErrorProvider.cs	(working copy)
+@@ -79,10 +79,30 @@
+ 				window.Width = ep.icon.Width;
+ 				window.Height = ep.icon.Height;
+ 
++#if NET_2_0
++				//UIA Framework: Associates ErrorProvider with Control
++				window.VisibleChanged += delegate (object sender, EventArgs args) {
++					if (((UserControl) sender).Visible == false)
++						control.UIAErrorProviderUnhookUp (ep, window);
++					else
++						control.UIAErrorProviderHookUp (ep, window);
++				};
++#endif
++
+ 				if (ep.container != null && control.Parent != null) {
++#if NET_2_0
++					//UIA Framework: Associates ErrorProvider with Control
++					control.UIAErrorProviderHookUp (ep, window);
++#endif
++					
+ 					ep.container.Controls.Add(window);
+ 					ep.container.Controls.SetChildIndex (window, control.Parent.Controls.IndexOf (control) + 1);
+ 				} else if (control.Parent != null) {
++#if NET_2_0
++					//UIA Framework: Associates ErrorProvider with Control
++					control.UIAErrorProviderHookUp (ep, window);
++#endif
++
+ 					control.Parent.Controls.Add(window);
+ 					control.Parent.Controls.SetChildIndex(window, control.Parent.Controls.IndexOf (control) + 1);
+ 				}
+@@ -312,7 +332,44 @@
+ 		private object tag;
+ #endif
+ 		#endregion	// Local Variables
++	
++		#region UIA Framework: Events, Delegates and Methods
++#if NET_2_0
+ 
++		static object UIAToolTipShownEvent = new object ();
++		static object UIAToolTipHiddenEvent = new object ();
++
++		internal event EventHandler UIAToolTipShown {
++			add { Events.AddHandler (UIAToolTipShownEvent, value); }
++			remove { Events.RemoveHandler (UIAToolTipShownEvent, value); }
++		}
++
++		internal event EventHandler UIAToolTipHidden {
++			add { Events.AddHandler (UIAToolTipHiddenEvent, value); }
++			remove { Events.RemoveHandler (UIAToolTipHiddenEvent, value); }
++		}
++
++		internal void OnUIAToolTipHidden () 
++		{
++			EventHandler eh = (EventHandler) Events [UIAToolTipHiddenEvent];
++			if (eh != null)
++				eh (this, EventArgs.Empty);
++		}
++
++		internal void OnUIAToolTipShown () 
++		{
++			EventHandler eh = (EventHandler) Events [UIAToolTipShownEvent];
++			if (eh != null)
++				eh (this, EventArgs.Empty);
++		}
++
++		internal Control UIAToolTip {
++			get { return tooltip; }
++		}
++
++#endif
++		#endregion
++
+ 		#region Public Constructors
+ 		public ErrorProvider()
+ 		{
+@@ -323,6 +380,15 @@
+ 
+ 			icon = ResourceImageLoader.GetIcon ("errorProvider.ico");
+ 			tooltip = new ToolTip.ToolTipWindow();
++#if NET_2_0
++			//UIA Framework: Event used to indicate the ToolTip is shown/hidden.
++			tooltip.VisibleChanged += delegate (object sender, EventArgs args) {
++				if (tooltip.Visible == true)
++					OnUIAToolTipShown ();
++				else if (tooltip.Visible == false)
++					OnUIAToolTipHidden ();
++			};
++#endif
+ 		}
+ 
+ 		public ErrorProvider(ContainerControl parentControl) : this ()
 Index: class/Managed.Windows.Forms/System.Windows.Forms/Control.cs
 ===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/Control.cs	(revision 111121)
+--- class/Managed.Windows.Forms/System.Windows.Forms/Control.cs	(revision 112104)
 +++ class/Managed.Windows.Forms/System.Windows.Forms/Control.cs	(working copy)
-@@ -5930,9 +5930,9 @@
+@@ -5922,9 +5922,9 @@
  				Invalidate ();
  			}
  		}
@@ -13,7 +109,7 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/Control.cs
  		#region OnXXX methods
  #if NET_2_0
  		protected virtual void OnAutoSizeChanged (EventArgs e)
-@@ -6694,6 +6694,7 @@
+@@ -6686,6 +6686,7 @@
  		static object ValidatingEvent = new object ();
  		static object VisibleChangedEvent = new object ();
  
@@ -21,7 +117,7 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/Control.cs
  #if NET_2_0
  		[Browsable (false)]
  		[EditorBrowsable (EditorBrowsableState.Never)]
-@@ -7087,5 +7088,76 @@
+@@ -7079,5 +7080,127 @@
  		}
  
  		#endregion	// Events
@@ -42,17 +138,34 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/Control.cs
 +		//	control, used to generate the following Automation Events:
 +		//	ChildAdded, ToolTipClosedEvent and ToolTipOpenedEvent
 +		//	and to get Automation HelpTextProperty property.
-+		internal event EventHandler ToolTipHookup;
-+		internal event EventHandler ToolTipUnhookup;
-+		internal event ErrorProviderEventHandler ErrorProviderHookup;
-+		internal event ErrorProviderEventHandler ErrorProviderUnhookup;
-+		internal delegate void ErrorProviderEventHandler (object sender, UserControl control);
-+		//tool_tip:
-+		//	To track associated ToolTip.
-+		//error_provider
-+		//	To track associated ErrorProvider.
-+
 +		internal ToolTip uia_tool_tip;
++		internal ErrorProvider uia_error_provider;
++
++		static object UIAToolTipHookupEvent = new object ();
++		static object UIAToolTipUnhookupEvent = new object ();
++		static object UIAErrorProviderHookupEvent = new object ();
++		static object UIAErrorProviderUnhookupEvent = new object ();
++
++		internal event EventHandler UIAToolTipHookedUp {
++			add { Events.AddHandler (UIAToolTipHookupEvent, value); }
++			remove { Events.RemoveHandler (UIAToolTipHookupEvent, value); }
++		}
++
++		internal event EventHandler UIAToolTipUnhookedUp {
++			add { Events.AddHandler (UIAToolTipUnhookupEvent, value); }
++			remove { Events.RemoveHandler (UIAToolTipUnhookupEvent, value); }
++		}
++
++		internal event ControlEventHandler UIAErrorProviderHookedUp {
++			add { Events.AddHandler (UIAErrorProviderHookupEvent, value); }
++			remove { Events.RemoveHandler (UIAErrorProviderHookupEvent, value); }
++		}
++
++		internal event ControlEventHandler UIAErrorProviderUnhookedUp {
++			add { Events.AddHandler (UIAErrorProviderUnhookupEvent, value); }
++			remove { Events.RemoveHandler (UIAErrorProviderUnhookupEvent, value); }
++		}
++
 +		internal ToolTip UIAToolTip {
 +			get { return uia_tool_tip; }
 +			set { 
@@ -60,37 +173,71 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/Control.cs
 +					return;
 +
 +				uia_tool_tip = value;
-+				if (uia_tool_tip != null && ToolTipHookup != null)
-+					ToolTipHookup (this, EventArgs.Empty);
-+				else if (uia_tool_tip == null && ToolTipUnhookup != null)
-+					ToolTipUnhookup (this, EventArgs.Empty);
++				if (uia_tool_tip != null)
++					OnUIAToolTipHookUp ();
++				else if (uia_tool_tip == null)
++					OnUIAToolTipUnhookUp ();
 +			}
 +		}
 +
-+		internal ErrorProvider uia_error_provider;
 +		internal ErrorProvider UIAErrorProvider {
 +			get { return uia_error_provider; }
 +		}
 +
-+		internal void UIAErrorProviderHookup (ErrorProvider errorProvider, UserControl control)
++		internal void OnUIAToolTipHookUp ()
 +		{
-+			Console.WriteLine ("SWF.Control.UIAErrorProviderHookup");
++			EventHandler eh = (EventHandler) Events [UIAToolTipHookupEvent];
++			if (eh != null)
++				eh (this, EventArgs.Empty);
++		}
++
++		internal void OnUIAToolTipUnhookUp ()
++		{
++			EventHandler eh = (EventHandler) Events [UIAToolTipUnhookupEvent];
++			if (eh != null)
++				eh (this, EventArgs.Empty);
++		}
++
++		internal void OnUIAErrorProviderHookUp (ControlEventArgs args)
++		{
++			ControlEventHandler eh
++				= (ControlEventHandler) Events [UIAErrorProviderHookupEvent];
++			if (eh != null)
++				eh (this, args);
++		}
++
++		internal void OnUIAErrorProviderUnhookedUp (ControlEventArgs args)
++		{
++			ControlEventHandler eh
++				= (ControlEventHandler) Events [UIAErrorProviderUnhookupEvent];
++			if (eh != null)
++				eh (this, args);
++		}
++
++		internal void OnUIAToolTipUnhookUp (ControlEventArgs args)
++		{
++			ControlEventHandler eh
++				= (ControlEventHandler) Events [UIAErrorProviderUnhookupEvent];
++			if (eh != null)
++				eh (this, args);
++		}
++
++		internal void UIAErrorProviderHookUp (ErrorProvider errorProvider, UserControl control)
++		{
 +			if (uia_error_provider == errorProvider)
 +				return;
 +
 +			uia_error_provider = errorProvider;
-+			if (ErrorProviderHookup != null)
-+				ErrorProviderHookup (this, control);
++			OnUIAErrorProviderHookUp (new ControlEventArgs (control));
 +		}
 +
-+		internal void UIAErrorProviderUnhookup (ErrorProvider errorProvider, UserControl control)
++		internal void UIAErrorProviderUnhookUp (ErrorProvider errorProvider, UserControl control)
 +		{
 +			if (uia_error_provider != errorProvider)
 +				return;
 +
 +			uia_error_provider = null;
-+			if (ErrorProviderUnhookup != null)
-+				ErrorProviderUnhookup (this, control);
++			OnUIAErrorProviderUnhookedUp (new ControlEventArgs (control));
 +		}
 +#endif
 +		#endregion
@@ -100,25 +247,25 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/Control.cs
  }
 Index: class/Managed.Windows.Forms/System.Windows.Forms/ToolTip.cs
 ===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/ToolTip.cs	(revision 111121)
+--- class/Managed.Windows.Forms/System.Windows.Forms/ToolTip.cs	(revision 112104)
 +++ class/Managed.Windows.Forms/System.Windows.Forms/ToolTip.cs	(working copy)
 @@ -77,6 +77,15 @@
  			#region ToolTipWindow Class Local Variables
  			private Control associated_control;
  			#endregion	// ToolTipWindow Class Local Variables
 +			
-+			#region UIA Framework
++			#region UIA Framework: Property
 +#if NET_2_0
 +			//Property used to set ToolTip's visibility in Control
 +			internal Control AssociatedControl {
 +				get { return associated_control; }
 +			}
 +#endif
-+			#endregion
++			#endregion UIA Framework
  
  			#region ToolTipWindow Class Constructor
  			internal ToolTipWindow() {
-@@ -293,6 +302,12 @@
+@@ -293,6 +302,17 @@
  			timer = new Timer();
  			timer.Enabled = false;
  			timer.Tick +=new EventHandler(timer_Tick);
@@ -126,12 +273,17 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ToolTip.cs
 +
 +#if NET_2_0
 +			//UIA Framework: Event used to indicate that ToolTip is shown
-+			tooltip_window.VisibleChanged += new EventHandler (tooltip_uia_Visible);
++			tooltip_window.VisibleChanged += delegate (object sender, EventArgs args) {
++				if (tooltip_window.Visible == true)
++					OnUIAToolTipShown (new ControlEventArgs (tooltip_window.AssociatedControl));
++				else 
++					OnUIAToolTipHidden (new ControlEventArgs (tooltip_window.AssociatedControl));
++			};
 +#endif
  		}
  
  		public ToolTip(System.ComponentModel.IContainer cont) : this() {
-@@ -504,12 +519,16 @@
+@@ -504,12 +524,16 @@
  
  		public void RemoveAll() {
  			tooltip_strings.Clear();
@@ -149,7 +301,7 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ToolTip.cs
  			// no need for duplicates
  			if (!controls.Contains(control)) {
  				control.MouseEnter += new EventHandler(control_MouseEnter);
-@@ -517,6 +536,10 @@
+@@ -517,6 +541,10 @@
  				control.MouseLeave += new EventHandler(control_MouseLeave);
  				control.MouseDown += new MouseEventHandler (control_MouseDown);
  				controls.Add(control);
@@ -160,7 +312,7 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ToolTip.cs
  			}
  			
  			// if SetToolTip is called from a control and the mouse is currently over that control,
-@@ -657,6 +680,11 @@
+@@ -657,6 +685,11 @@
  
  				tooltip_strings.Clear();
  				
@@ -172,7 +324,7 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ToolTip.cs
  				controls.Clear();
  			}
  		}
-@@ -697,6 +725,8 @@
+@@ -697,6 +730,8 @@
  				control.MouseLeave += new EventHandler (control_MouseLeave);
  				control.MouseDown += new MouseEventHandler (control_MouseDown);
  				controls.Add (control);
@@ -181,107 +333,53 @@ Index: class/Managed.Windows.Forms/System.Windows.Forms/ToolTip.cs
  			}
  		}
  
-@@ -819,6 +849,21 @@
+@@ -819,7 +854,7 @@
  #endif
  				ThemeEngine.Current.DrawToolTip (e.Graphics, e.Bounds, tooltip_window);
  		}
+-
 +		
-+		#region UIA Framework
-+#if NET_2_0
-+		private void tooltip_uia_Visible (object sender, EventArgs args)
-+		{
-+			if (((ToolTipWindow) sender).Visible == true) {
-+				if (ToolTipShown != null)
-+					ToolTipShown (this, ((ToolTipWindow) sender).AssociatedControl);
-+			} else {
-+				if (ToolTipHidden != null)
-+					ToolTipHidden (this, ((ToolTipWindow) sender).AssociatedControl);
-+			}
-+		}
-+#endif
-+		#endregion
- 
  		private bool MouseInControl (Control control, bool fuzzy) {
  			Point	m;
-@@ -932,5 +977,14 @@
+ 			Point	c;
+@@ -934,5 +969,40 @@
  			remove { Events.RemoveHandler (DrawEvent, value); }
  		}
  		#endregion
 +
-+		#region UIA Framework: Events and Delegates
++		#region UIA Framework: Events, Delegates and Methods
 +#if NET_2_0
-+		internal delegate void ToolTipVisibilityEventHandler (object sender, Control associated);
-+		internal event ToolTipVisibilityEventHandler ToolTipShown;
-+		internal event ToolTipVisibilityEventHandler ToolTipHidden;
++
++		static object UIAToolTipShownEvent = new object ();
++		static object UIAToolTipHiddenEvent = new object ();
++
++		internal event ControlEventHandler UIAToolTipShown {
++			add { Events.AddHandler (UIAToolTipShownEvent, value); }
++			remove { Events.RemoveHandler (UIAToolTipShownEvent, value); }
++		}
++
++		internal event ControlEventHandler UIAToolTipHidden {
++			add { Events.AddHandler (UIAToolTipHiddenEvent, value); }
++			remove { Events.RemoveHandler (UIAToolTipHiddenEvent, value); }
++		}
++
++		internal void OnUIAToolTipHidden (ControlEventArgs args)
++		{
++			ControlEventHandler eh 
++				= (ControlEventHandler) Events [UIAToolTipHiddenEvent];
++			if (eh != null)
++				eh (this, args);
++		}
++
++		internal void OnUIAToolTipShown (ControlEventArgs args)
++		{
++			ControlEventHandler eh 
++				= (ControlEventHandler) Events [UIAToolTipShownEvent];
++			if (eh != null)
++				eh (this, args);
++		}
 +
 +#endif
 +		#endregion
  	}
  }
-Index: class/Managed.Windows.Forms/System.Windows.Forms/ErrorProvider.cs
-===================================================================
---- class/Managed.Windows.Forms/System.Windows.Forms/ErrorProvider.cs	(revision 111121)
-+++ class/Managed.Windows.Forms/System.Windows.Forms/ErrorProvider.cs	(working copy)
-@@ -79,10 +79,30 @@
- 				window.Width = ep.icon.Width;
- 				window.Height = ep.icon.Height;
- 
-+#if NET_2_0
-+				//UIA Framework: Associates ErrorProvider with Control
-+				window.VisibleChanged += delegate (object sender, EventArgs args) {
-+					if (((UserControl) sender).Visible == false)
-+						control.UIAErrorProviderUnhookup (ep, window);
-+					else
-+						control.UIAErrorProviderHookup (ep, window);
-+				};
-+#endif
-+
- 				if (ep.container != null) {
-+#if NET_2_0
-+					//UIA Framework: Associates ErrorProvider with Control
-+					control.UIAErrorProviderHookup (ep, window);
-+#endif
-+					
- 					ep.container.Controls.Add(window);
- 					ep.container.Controls.SetChildIndex (window, control.Parent.Controls.IndexOf (control) + 1);
- 				} else if (control.Parent != null) {
-+#if NET_2_0
-+					//UIA Framework: Associates ErrorProvider with Control
-+					control.UIAErrorProviderHookup (ep, window);
-+#endif
-+
- 					control.Parent.Controls.Add(window);
- 					control.Parent.Controls.SetChildIndex(window, control.Parent.Controls.IndexOf (control) + 1);
- 				}
-@@ -312,7 +332,15 @@
- 		private object tag;
- #endif
- 		#endregion	// Local Variables
-+	
-+		#region UIA Framework: Events and Delegates
-+#if NET_2_0
-+		internal event EventHandler ToolTipShown;
-+		internal event EventHandler ToolTipHidden;
- 
-+#endif
-+		#endregion
-+
- 		#region Public Constructors
- 		public ErrorProvider()
- 		{
-@@ -323,6 +351,15 @@
- 
- 			icon = ResourceImageLoader.GetIcon ("errorProvider.ico");
- 			tooltip = new ToolTip.ToolTipWindow();
-+#if NET_2_0
-+			//UIA Framework: Event used to indicate the ToolTip is shown/hidden.
-+			tooltip.VisibleChanged += delegate (object sender, EventArgs args) {
-+				if (tooltip.Visible == true && ToolTipShown != null)
-+					ToolTipShown (this, EventArgs.Empty);
-+				else if (tooltip.Visible == false && ToolTipHidden != null)
-+					ToolTipHidden (this, EventArgs.Empty);
-+			};
-+#endif
- 		}
- 
- 		public ErrorProvider(ContainerControl parentControl) : this ()

@@ -1,3 +1,8 @@
+2008-09-02 Mario Carrion <mcarrion@novell.com>
+
+	* patches/tooltip-errorprovider.patch: Updated to match latest 
+	  repository changes.
+
 2008-08-27 Mario Carrion <mcarrion@novell.com>
 
 	* patches/scrollbar-bug416759.patch: Removed, in mcs: r111270.
