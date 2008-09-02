@@ -1,3 +1,10 @@
+2008-09-02  Calen Chen <cachen@novell.com>
+
+	* testers/tooltip,
+	* testers/tooltip/__init__.py,
+	* testers/tooltip/tooltipframe.py,
+	* testers/tooltip_basic_ops.py: add new test for tooltip,
+
 2008-09-01  Ray Wang <rawang@novell.com>
 
 	* samples/pagesetupdialog.py: implement PageSetupDialog control
