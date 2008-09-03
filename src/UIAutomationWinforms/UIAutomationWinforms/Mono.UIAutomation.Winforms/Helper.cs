@@ -80,30 +80,6 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
-		
-		#region Private Static Methods
-		
-		private static void AddRemovePrivateEvent (Type referenceType, object reference, 
-		                                           string eventName, object referenceDelegate,
-		                                           string delegateName, bool addEvent)
-		{
-			EventInfo eventInfo = referenceType.GetEvent (eventName,
-			                                              BindingFlags.Instance 
-			                                              | BindingFlags.NonPublic);
-			if (eventInfo == null)
-				throw new NotSupportedException ("Event not found: " + eventName);
-			
-			Type delegateType = eventInfo.EventHandlerType;
-			MethodInfo eventMethod = addEvent 
-				? eventInfo.GetAddMethod (true) :eventInfo.GetRemoveMethod (true);
-			Delegate delegateValue = Delegate.CreateDelegate (delegateType, 
-			                                                  referenceDelegate,
-			                                                  delegateName, 
-			                                                  false);
-			eventMethod.Invoke (reference, new object[] { delegateValue });
-		}
-		
-		#endregion
 
 		#region Static Fields
 		

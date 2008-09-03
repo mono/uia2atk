@@ -1,5 +1,10 @@
 2008-09-03  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/Helper.cs: Method removed:
+	  AddRemovePrivateEvent.
+
+2008-09-03  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs,
 	  Mono.UIAutomation.Winforms/SimpleControlProvider.cs,
 	  Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Reflection removed.
