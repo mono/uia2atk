@@ -435,8 +435,6 @@ namespace Mono.UIAutomation.Winforms
 				toolTipProvider = (ToolTipProvider) ProviderFactory.GetProvider (tooltip);
 		}
 		
-#pragma warning disable 169
-		
 		private void OnToolTipHookup (object sender, EventArgs args)
 		{
 			GetPrivateToolTipField ();
@@ -449,8 +447,6 @@ namespace Mono.UIAutomation.Winforms
 				toolTipProvider = null;
 			}
 		}
-		
-#pragma warning restore 169
 		
 		#endregion
 		
@@ -480,8 +476,6 @@ namespace Mono.UIAutomation.Winforms
 			errorProvider = Control.UIAErrorProvider;
 		}
 		
-#pragma warning disable 169		
-		
 		private void OnErrorProviderHookup (object sender, ControlEventArgs args)
 		{
 			GetPrivateErrorProviderField ();
@@ -499,8 +493,6 @@ namespace Mono.UIAutomation.Winforms
 			                                              errorProvider);
 			errorProvider = null;
 		}
-		
-#pragma warning restore 169
 		
 		#endregion
 		
@@ -539,8 +531,6 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-#pragma warning disable 169
-		
 		private void OnHelpProviderHookup (object sender, EventArgs args)
 		{
 			GetPrivateHelpProviderField ();
@@ -553,9 +543,7 @@ namespace Mono.UIAutomation.Winforms
 				helpProvider = null;
 			}
 		}
-		
-#pragma warning restore 169
-		
+
 		#endregion
 	}
 }

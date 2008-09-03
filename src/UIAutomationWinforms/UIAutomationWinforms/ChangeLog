@@ -1,5 +1,9 @@
 2008-09-03  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Removed #pragma.
+
+2008-09-03  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/Helper.cs: Method removed:
 	  AddRemovePrivateEvent.
 
