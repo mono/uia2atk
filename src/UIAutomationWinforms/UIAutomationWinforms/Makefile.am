@@ -108,6 +108,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs \
 	Mono.UIAutomation.Winforms/GroupBoxProvider.cs \
 	Mono.UIAutomation.Winforms/Helper.cs \
+	Mono.UIAutomation.Winforms/HelpProvider.cs \
 	Mono.UIAutomation.Winforms/IConnectable.cs \
 	Mono.UIAutomation.Winforms/LabelProvider.cs \
 	Mono.UIAutomation.Winforms/LinkLabelProvider.cs \
@@ -126,6 +127,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/TextNormalizer.cs \
 	Mono.UIAutomation.Winforms/TextNormalizerPoints.cs \
 	Mono.UIAutomation.Winforms/TextRangeProvider.cs \
+	Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs \
 	Mono.UIAutomation.Winforms/ToolTipProvider.cs \
 	Mono.UIAutomation.Winforms/WindowProvider.cs \
 	Mono.UIAutomation.Winforms/WordToken.cs \

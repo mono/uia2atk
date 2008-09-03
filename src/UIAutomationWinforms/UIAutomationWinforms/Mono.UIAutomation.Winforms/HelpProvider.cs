@@ -22,32 +22,29 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
-using System.ComponentModel;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using SWFHelpProvider = System.Windows.Forms.HelpProvider;
 
 namespace Mono.UIAutomation.Winforms
-{
-
-	internal class ToolTipProvider : ToolTipBaseProvider
+{	
+	
+	internal class HelpProvider : ToolTipBaseProvider
 	{
-
-		#region Constructor
 		
-		public ToolTipProvider (ToolTip tooltip) : base (tooltip)
+		#region Constructors
+		
+		public HelpProvider (SWFHelpProvider helpProvider) : base (helpProvider)
 		{
-			this.tooltip = tooltip;
+			this.helpProvider = helpProvider;
 		}
 		
 		#endregion
 		
 		#region Public Properties
 		
-		public ToolTip ToolTip {
-			get { return tooltip; }
+		public SWFHelpProvider SWFHelpProvider {
+			get { return helpProvider; }
 		}
 		
 		#endregion
@@ -56,24 +53,24 @@ namespace Mono.UIAutomation.Winforms
 
 		protected override object GetObjectReference () 
 		{
-			return ToolTip;
+			return helpProvider;
 		}
 		
 		protected override Type GetReferenceType ()
 		{
-			return typeof (ToolTip);
+			return typeof (SWFHelpProvider);
 		}
 
 		protected override string GetTextFromControl (Control control)
 		{
-			return ToolTip.GetToolTip (control);
+			return helpProvider.GetHelpString (control);
 		}
 		
 		#endregion
 		
 		#region Private Fields
-
-		private ToolTip tooltip;
+		
+		private SWFHelpProvider helpProvider;
 		
 		#endregion
 	}

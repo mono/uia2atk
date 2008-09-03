@@ -34,6 +34,7 @@ using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Navigation;
 using SWFErrorProvider = System.Windows.Forms.ErrorProvider;
+using SWFHelpProvider = System.Windows.Forms.HelpProvider;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -49,6 +50,7 @@ namespace Mono.UIAutomation.Winforms
 		private ToolTipProvider toolTipProvider;
 		private INavigation navigation;
 		private SWFErrorProvider errorProvider;
+		private HelpProvider helpProvider;
 
 		#endregion
 		
@@ -386,12 +388,14 @@ namespace Mono.UIAutomation.Winforms
 		{
 			InitializeToolTipInternalEvents ();
 			InitializeErrorProviderInternalEvents ();
+			InitializeHelpProviderInternalEvents ();
 		}
 		
 		private void TerminateInternalControlEvents ()
 		{
 			TerminateToolTipInternalEvents ();
 			TerminateErrorProviderInternalEvents ();
+			TerminateHelpProviderInternalEvents ();
 		}
 		
 		#endregion
@@ -421,7 +425,7 @@ namespace Mono.UIAutomation.Winforms
 				                        this, 
 				                        "OnToolTipUnhookup");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ToolTipUnhookup not defined in {1}",
+				Console.WriteLine ("{0}: UIAToolTipUnhookedUp not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
 			}			
@@ -436,7 +440,7 @@ namespace Mono.UIAutomation.Winforms
 				                           this, 
 				                           "OnToolTipHookup");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ToolTipHookup not defined in {1}",
+				Console.WriteLine ("{0}: UIAToolTipHookedUp not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
 			}
@@ -448,7 +452,7 @@ namespace Mono.UIAutomation.Winforms
 				                           this, 
 				                           "OnToolTipUnhookup");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ToolTipUnhookup not defined in {1}",
+				Console.WriteLine ("{0}: UIAToolTipUnhookedUp not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
 			}
@@ -515,7 +519,7 @@ namespace Mono.UIAutomation.Winforms
 				                        this, 
 				                        "OnErrorProviderHookup");
 			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ErrorProviderHookup not defined in {1}",
+				Console.WriteLine ("{0}: UIAErrorProviderHookedUp not defined in {1}",
 				                   GetType (),
 				                   typeof (Control));
 			}
@@ -592,6 +596,107 @@ namespace Mono.UIAutomation.Winforms
 			                                              args.Control.Parent,
 			                                              errorProvider);
 			errorProvider = null;
+		}
+		
+#pragma warning restore 169
+		
+		#endregion
+		
+		#region Private Methods: HelpProvider
+		
+		private void GetPrivateHelpProviderField ()
+		{
+			SWFHelpProvider swfHelpProvider = null;
+
+			try {
+				swfHelpProvider = Helper.GetPrivateProperty<Control, SWFHelpProvider> (typeof (Control),
+				                                                                       Control,
+				                                                                       "UIAHelpProvider");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIAHelpProvider property not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
+
+			if (helpProvider != null && swfHelpProvider != helpProvider.SWFHelpProvider) {
+				ProviderFactory.ReleaseProvider (helpProvider.SWFHelpProvider);
+				helpProvider  = null;					
+			}
+
+			if (helpProvider == null
+			    || (helpProvider != null && helpProvider.SWFHelpProvider != swfHelpProvider))
+				helpProvider = (HelpProvider) ProviderFactory.GetProvider (swfHelpProvider);
+		}
+		
+		private void InitializeHelpProviderInternalEvents ()
+		{
+			GetPrivateHelpProviderField ();
+			
+			try {
+				Helper.AddPrivateEvent (typeof (Control), 
+				                        Control, 
+				                        "UIAHelpProviderHookedUp",
+				                        this, 
+				                        "OnHelpProviderHookup");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIAHelpProviderHookedUp not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
+			
+			try {
+				Helper.AddPrivateEvent (typeof (Control), 
+				                        Control, 
+				                        "UIAHelpProviderUnhookedUp",
+				                        this, 
+				                        "OnHelpProviderUnhookedUp");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIAHelpProviderUnhookedUp not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
+		}
+		
+		private void TerminateHelpProviderInternalEvents ()
+		{
+			try {
+				Helper.RemovePrivateEvent (typeof (Control), 
+				                           Control, 
+				                           "UIAHelpProviderHookedUp",
+				                           this, 
+				                           "OnHelpProviderHookup");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIAHelpProviderHookedUp not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
+			
+			try {
+				Helper.RemovePrivateEvent (typeof (Control), 
+				                           Control, 
+				                           "UIAHelpProviderUnhookedUp",
+				                           this, 
+				                           "OnHelpProviderUnhookedUp");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIAHelpProviderUnhookedUp not defined in {1}",
+				                   GetType (),
+				                   typeof (Control));
+			}
+		}
+		
+#pragma warning disable 169
+		
+		private void OnHelpProviderHookup (object sender, EventArgs args)
+		{
+			GetPrivateHelpProviderField ();
+		}
+
+		private void OnHelpProviderUnhookedUp (object sender, EventArgs args)
+		{		
+			if (helpProvider != null) {
+				ProviderFactory.ReleaseProvider (helpProvider.SWFHelpProvider);
+				helpProvider = null;
+			}
 		}
 		
 #pragma warning restore 169

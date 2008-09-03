@@ -30,6 +30,7 @@ using System.Windows.Forms;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Navigation;
 using SWFErrorProvider = System.Windows.Forms.ErrorProvider;
+using SWFHelpProvider = System.Windows.Forms.HelpProvider;
 using System.Linq;
 
 namespace Mono.UIAutomation.Winforms
@@ -106,6 +107,7 @@ namespace Mono.UIAutomation.Winforms
 			ToolTip tt;
 			Control ctrl;
 			ProgressBar pgb;
+			SWFHelpProvider hlp;
 			
 			bool isComponentBased = false;
 			
@@ -191,9 +193,12 @@ namespace Mono.UIAutomation.Winforms
 			}
 			//NOTE: The following providers are Component-based meaning that
 			//can be shared.
-			//TODO: Add HelpProviderProvider
 			else if ((tt = component as ToolTip) != null) {
 				provider = new ToolTipProvider (tt);
+				isComponentBased = true;
+			} else if ((hlp = component as SWFHelpProvider) != null) {
+				provider = new HelpProvider (hlp);
+				Console.WriteLine ("---------------- Helprpororrorori!!");
 				isComponentBased = true;
 			} else //TODO: We have to solve the problem when there's a Custom control
 				throw new NotImplementedException ("Provider not implemented for control");

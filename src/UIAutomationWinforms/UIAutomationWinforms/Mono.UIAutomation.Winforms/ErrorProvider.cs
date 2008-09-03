@@ -170,143 +170,30 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Internal Class: ToolTipProvider
 		
-		internal class ErrorProviderToolTipProvider : FragmentControlProvider
+		internal class ErrorProviderToolTipProvider : ToolTipBaseProvider
 		{
 			public ErrorProviderToolTipProvider (SWFErrorProvider provider) 
 				: base (provider)
 			{
 				errorProvider = provider;
-				InitializeInternalEvents ();
 			}
 		
-			public override Component Container {
-				get { return null; }
-			}
-	
-			public override object GetPropertyValue (int propertyId)
+			protected override object GetObjectReference ()
 			{
-				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-					return ControlType.ToolTip.Id;
-				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
-					return null;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "tool tip";
-				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
-					return false;
-				else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)
-					return null;
-				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return tooltipControl.Text;
-				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-					return false;
-				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
-					return null;
-				else
-					return base.GetPropertyValue (propertyId);
-			}
-			
-			public override void Terminate ()
-			{
-				base.Terminate ();
-				
-				try {
-					Helper.RemovePrivateEvent (typeof (SWFErrorProvider), 
-					                           errorProvider, 
-					                           "UIAToolTipShown",
-					                           this, 
-					                           "OnToolTipShown");
-				} catch (NotSupportedException) {
-					Console.WriteLine ("{0}: UIAToolTipShown not defined in {1}",
-					                   GetType (),
-					                   typeof (SWFErrorProvider));
-				}
-				
-				try {
-					Helper.RemovePrivateEvent (typeof (SWFErrorProvider), 
-					                           errorProvider, 
-					                           "UIAToolTipHidden",
-					                           this, 
-					                           "OnToolTipHidden");
-				} catch (NotSupportedException) {
-					Console.WriteLine ("{0}: UIAToolTipHidden not defined in {1}",
-					                   GetType (),
-					                   typeof (SWFErrorProvider));
-				}
-			}
-			
-			private void InitializeInternalEvents () 
-			{
-				try {
-					Helper.AddPrivateEvent (typeof (SWFErrorProvider), 
-					                        errorProvider, 
-					                        "UIAToolTipShown",
-					                        this, 
-					                        "OnToolTipShown");
-				} catch (NotSupportedException) {
-					Console.WriteLine ("{0}: UIAToolTipShown not defined in {1}",
-					                   GetType (),
-					                   typeof (SWFErrorProvider));
-				}
-				
-				try {
-					Helper.AddPrivateEvent (typeof (SWFErrorProvider), 
-					                        errorProvider, 
-					                        "UIAToolTipHidden",
-					                        this, 
-					                        "OnToolTipHidden");
-				} catch (NotSupportedException) {
-					Console.WriteLine ("{0}: UIAToolTipHidden not defined in {1}",
-					                   GetType (),
-					                   typeof (SWFErrorProvider));
-				}
-				
-				try {
-					tooltipControl = Helper.GetPrivateProperty<SWFErrorProvider, Control> (typeof (SWFErrorProvider), 
-					                                                                       errorProvider,
-					                                                                       "UIAToolTip");
-				} catch (NotSupportedException) {
-					Console.WriteLine ("{0}: UIAToolTip property not defined in {1}",
-					                   GetType (),
-					                   typeof (SWFErrorProvider));
-				}
-			}
-			
-#pragma warning disable 169		
-		
-			private void OnToolTipShown (object sender, EventArgs args)
-			{
-				if (AutomationInteropProvider.ClientsAreListening == true) {					
-					//TODO: We need deeper tests in Vista because MS is generating both events
-					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-					                                   this);
-					
-					AutomationEventArgs eventArgs 
-						= new AutomationEventArgs (AutomationElementIdentifiers.ToolTipOpenedEvent);
-					AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.ToolTipOpenedEvent,
-					                                                this, 
-					                                                eventArgs);
-				}
-			}
-	
-			private void OnToolTipHidden (object sender, EventArgs args)
-			{
-				if (AutomationInteropProvider.ClientsAreListening == true) {
-					//TODO: We need deeper tests in Vista because MS is generating both events
-					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-					                                   this);
-					
-					AutomationEventArgs eventArgs 
-						= new AutomationEventArgs (AutomationElementIdentifiers.ToolTipClosedEvent);
-					AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.ToolTipClosedEvent,
-					                                                this, 
-					                                                eventArgs);
-				}
+				return errorProvider;
 			}
 		
-#pragma warning restore 169
+			protected override Type GetReferenceType ()
+			{
+				return typeof (SWFErrorProvider);
+			}
+
+			protected override string GetTextFromControl (Control control)
+			{
+				return errorProvider.GetError (control);
+			}
 			
 			private SWFErrorProvider errorProvider;
-			private Control tooltipControl;
 		}
 		
 		#endregion

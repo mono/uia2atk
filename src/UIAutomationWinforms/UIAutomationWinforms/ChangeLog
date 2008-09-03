@@ -1,5 +1,24 @@
 2008-09-03  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Provider added:
+	  HelpProvider. New base added used in tooltip-providers:
+	  ToolTipBaseProvider.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: SWF.HelpProvider
+	  provider added.
+	* Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs: File added. Base
+	  class used in tooltip-based providers.
+	* Mono.UIAutomation.Winforms/HelpProvider.cs: SWF.HelpProvider
+	  Provider.
+	* Mono.UIAutomation.Winforms/ErrorProvider.cs: Internal class
+	  ErrorProviderToolTipProvider refactored: subclasses
+	  ToolTipBaseProvider.
+	* Mono.UIAutomation.Winforms/ToolTipProvider.cs: Refactored: subclasses
+	  ToolTipBaseProvider.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Updated to
+	  support SWF.HelpProvider provider.
+
+2008-09-03  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs:
 	  Not using reflection to execute methods. Works since mcs r112203.
 
