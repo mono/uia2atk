@@ -177,9 +177,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		[Test]
-		public virtual void LabeledByPropertyTest ()
+		public virtual void LabeledByAndNamePropertyTest ()
 		{
-			TestLabeledBy (true);
+			TestLabeledByAndName (true, true);
 		}
 		
 		[Test]
@@ -199,26 +199,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 			              control.CanFocus);
-		}
-		
-		[Test]
-		public virtual void NamePropertyTest ()
-		{
-			Control control = GetControlInstance ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
-			
-			string name1 = "test1";
-			string name2 = "test2";
-			
-			control.Text = name1;
-			TestProperty (provider,
-			              AutomationElementIdentifiers.NameProperty,
-			              name1);
-			
-			control.Text = name2;
-			TestProperty (provider,
-			              AutomationElementIdentifiers.NameProperty,
-			              name2);
 		}
 		
 		#endregion
@@ -259,7 +239,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return windowProvider.Navigate (NavigateDirection.FirstChild);
 		}
 
-		protected void TestLabeledBy (bool expectNonNull)
+		protected void TestLabeledByAndName (bool expectNonNull, bool expectNameFromLabel)
 		{
 			Control control = GetControlInstance ();
 			
@@ -289,6 +269,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				object labeledBy = controlProvider.GetPropertyValue (AutomationElementIdentifiers.LabeledByProperty.Id);
 				Assert.AreEqual (expectNonNull ? labelProvider : null,
 				                 labeledBy);
+
+				if (expectNonNull && expectNameFromLabel)
+					Assert.AreEqual (labelProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) as string,
+					                 controlProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) as string,
+					                 "Control name should derive from label name.");
+				else if (expectNonNull && !expectNameFromLabel)
+					Assert.IsTrue (labelProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) as string ==
+					               controlProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) as string,
+					               "Control naame should not derive from label name.");
 				
 				f.Close ();
 			}

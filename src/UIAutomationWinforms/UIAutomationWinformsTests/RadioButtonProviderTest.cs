@@ -268,9 +268,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return new RadioButton ();
 		}
 
-		public override void LabeledByPropertyTest ()
+		public override void LabeledByAndNamePropertyTest ()
 		{
-			TestLabeledBy (false);
+			TestLabeledByAndName (false, false);
+			// TODO: Test Name
 		}
 		
 #endregion

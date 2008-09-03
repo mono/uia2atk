@@ -26,6 +26,8 @@
 
 using System;
 using System.Windows.Forms;
+using System.Reflection;
+
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
@@ -80,6 +82,41 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			return new NumericUpDown ();
 		}
+
+		public override void LabeledByAndNamePropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			
+			Form f = control as Form;
+			if (f != null)
+				return;
+			
+			using (f = new Form ()) {
+				f.Controls.Add (control);
+				
+				Label l = new Label ();
+				l.Text = "my label";
+				f.Controls.Add (l);
+				
+				f.Show ();
+			
+				Type formListenerType = typeof (FormListener);
+				MethodInfo onFormAddedMethod =
+					formListenerType.GetMethod ("OnFormAdded", BindingFlags.Static | BindingFlags.NonPublic);
+				onFormAddedMethod.Invoke (null, new object [] {f, null});
+				
+				IRawElementProviderSimple controlProvider =
+					ProviderFactory.GetProvider (control);
+				IRawElementProviderSimple labelProvider =
+					ProviderFactory.GetProvider (l);
+				
+				object name = controlProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+				Assert.AreEqual (l.Text, name);
+				
+				f.Close ();
+			}
+		}
+
 		
 		#endregion
 

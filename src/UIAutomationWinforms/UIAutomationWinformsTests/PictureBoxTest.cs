@@ -72,7 +72,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return new PictureBox ();
 		}
 		
-		public override void NamePropertyTest ()
+		public override void LabeledByAndNamePropertyTest ()
 		{
 			//TODO: How to get a valid NameProperty?
 		}

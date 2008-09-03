@@ -1,3 +1,11 @@
+2008-09-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ScrollBarProviderTest.cs, RadioButtonProviderTest.cs,
+	  PictureBoxTest.cs, NumericUpDownProviderTest.cs,
+	  LinkLabelProviderTest.cs, LabelProviderTest.cs,
+	  ButtonProviderTest.cs, BaseProviderTest.cs: Fixed tests for
+	  LabeledBy and Name properties.
+
 2008-09-02  Mario Carrion <mcarrion@novell.com> 
 
 	* ProgressBarProviderTest.cs: Neville Gao's patch applied.

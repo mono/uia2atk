@@ -78,10 +78,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              OrientationType.Horizontal);
 		}
 		
-		[Test]
-		public override void NamePropertyTest ()
+		public override void LabeledByAndNamePropertyTest ()
 		{
 			//Name is not supported.
+			TestLabeledByAndName (false, false);
 		}
 		
 		#endregion
@@ -206,11 +206,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		protected override Control GetControlInstance ()
 		{
 			return new HScrollBar ();
-		}
-
-		public override void LabeledByPropertyTest ()
-		{
-			TestLabeledBy (false);
 		}
 		
 		#endregion
