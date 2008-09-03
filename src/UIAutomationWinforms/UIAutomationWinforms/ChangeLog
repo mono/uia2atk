@@ -1,5 +1,9 @@
 2008-09-03  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Reflection removed.
+
+2008-09-03  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Provider added:
 	  HelpProvider. New base added used in tooltip-providers:
 	  ToolTipBaseProvider.

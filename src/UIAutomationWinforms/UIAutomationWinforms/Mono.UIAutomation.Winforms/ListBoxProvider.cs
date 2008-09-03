@@ -46,12 +46,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			listboxControl = listbox;
 			
-			vscrollbar = Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox), 
-			                                                            listboxControl,
-			                                                            "UIAVScrollBar");
-			hscrollbar = Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox),
-			                                                            listboxControl,
-			                                                            "UIAHScrollBar");
+			vscrollbar = listboxControl.UIAVScrollBar;
+			hscrollbar = listboxControl.UIAHScrollBar;
 			
 			vscrollbar.VisibleChanged += new EventHandler (UpdateVScrollBehaviorVisible);
 			vscrollbar.EnabledChanged += new EventHandler (UpdateVScrollBehaviorEnable);
