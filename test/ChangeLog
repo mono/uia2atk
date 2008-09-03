@@ -1,3 +1,9 @@
+2008-09-03  Calen Chen <cachen@novell.com>
+
+	* testers/checkbox/__init__.py: spelling correction
+	* testers/checkbox/checkboxframe.py: delete the action description in 
+	click() instance
+
 2008-09-02  Calen Chen <cachen@novell.com>
 
 	* testers/tooltip,

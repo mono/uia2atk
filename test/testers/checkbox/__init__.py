@@ -41,7 +41,7 @@ def launchCheckBox(exe=None):
 class CheckBox(accessibles.Application):
     #checkShowing=False
     def __init__(self, accessible, subproc=None): 
-        'Get a reference to the Button window'
+        'Get a reference to the checkbox window'
         super(CheckBox, self).__init__(accessible, subproc)
         
         self.findFrame(re.compile('^CheckBox_RadioButton controls'), logName='Check Box')
