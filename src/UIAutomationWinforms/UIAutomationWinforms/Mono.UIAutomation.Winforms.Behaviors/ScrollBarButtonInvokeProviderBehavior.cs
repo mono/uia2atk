@@ -71,25 +71,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			if (!Provider.Control.Enabled)
 				throw new ElementNotEnabledException ();
 			
-			string methodName = string.Empty;
-			
 			if (provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.LargeBack)
-				methodName = "UIALargeDecrement";
+				provider.ScrollBarContainer.UIALargeDecrement ();
 			else if (provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.LargeForward)
-				methodName = "UIALargeIncrement";
+				provider.ScrollBarContainer.UIALargeIncrement ();
 			else if (provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.SmallBack)
-				methodName = "UIASmallDecrement";
+				provider.ScrollBarContainer.UIASmallDecrement ();
 			else //Should be ScrollBarButtonOrientation.SmallForward
-				methodName = "UIASmallIncrement";
-			
-			MethodInfo methodInfo = typeof (ScrollBar).GetMethod (methodName,
-			                                                      BindingFlags.InvokeMethod
-			                                                      | BindingFlags.NonPublic
-			                                                      | BindingFlags.Instance);
-			Action<ScrollBar> invoke 
-				= (Action<ScrollBar>) Delegate.CreateDelegate (typeof (Action<ScrollBar>), 
-				                                               methodInfo);
-			invoke (provider.ScrollBarContainer);
+				provider.ScrollBarContainer.UIASmallIncrement ();
 		}
 		
 		#endregion	
