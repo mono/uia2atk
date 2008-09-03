@@ -31,7 +31,6 @@ using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-
 	internal abstract class ToolTipBaseProvider : FragmentControlProvider 
 	{
 		
@@ -48,12 +47,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override Component Container {
 			get { return null; }
-		}
-		
-		public override void InitializeEvents ()
-		{
-			base.InitializeEvents ();
-			InitializeInternalEvents ();
 		}
 		
 		public override object GetPropertyValue (int propertyId)
@@ -77,74 +70,12 @@ namespace Mono.UIAutomation.Winforms
 			else
 				return base.GetPropertyValue (propertyId);
 		}
-
-		public override void Terminate ()
-		{
-			base.Terminate ();
-			
-			try {
-				Helper.RemovePrivateEvent (GetReferenceType (), 
-				                           GetObjectReference (), 
-				                           "UIAToolTipShown",
-				                           this, 
-				                           "OnToolTipShown");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAToolTipShown not defined in {1}",
-				                   GetType (),
-				                   GetReferenceType ());
-			}
-			
-			try {
-				Helper.RemovePrivateEvent (GetReferenceType (), 
-				                           GetObjectReference (), 
-				                           "UIAToolTipHidden",
-				                           this, 
-				                           "OnToolTipHidden");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAToolTipHidden not defined in {1}",
-				                   GetType (),
-				                   GetReferenceType ());
-			}
-		}
 		
 		#endregion
 		
 		#region Protected Methods
 
-		protected abstract object GetObjectReference ();
-		
-		protected abstract Type GetReferenceType ();
-
 		protected abstract string GetTextFromControl (Control control);
-		
-		protected void InitializeInternalEvents ()
-		{
-			try {
-				Helper.AddPrivateEvent (GetReferenceType (), 
-				                        GetObjectReference (), 
-				                        "UIAToolTipShown",
-				                        this, 
-				                        "OnToolTipShown");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: ToolTipShown not defined in {1}",
-				                   GetType (),
-				                   GetReferenceType ());
-			}
-			
-			try {
-				Helper.AddPrivateEvent (GetReferenceType (), 
-				                        GetObjectReference (), 
-				                        "UIAToolTipHidden",
-				                        this, 
-				                        "OnToolTipHidden");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAToolTipHidden not defined in {1}",
-				                   GetType (),
-				                   GetReferenceType ());
-			}
-		}
-			
-#pragma warning disable 169		
 		
 		protected void OnToolTipShown (object sender, ControlEventArgs args)
 		{
@@ -183,8 +114,6 @@ namespace Mono.UIAutomation.Winforms
 				                                                eventArgs);
 			}
 		}
-		
-#pragma warning restore 169
 		
 		#endregion
 		

@@ -22,8 +22,8 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Automation;
@@ -118,7 +118,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void InitializeChildControlStructure ()
 		{
-			base.InitializeChildControlStructure ();
+			listboxControl.Items.UIACollectionChanged 
+				+= new CollectionChangeEventHandler (OnCollectionChanged);
 			
 			for (int index = 0; index < listboxControl.Items.Count; index++) {
 				ListItemProvider item = GetItemProvider (index);
@@ -135,11 +136,14 @@ namespace Mono.UIAutomation.Winforms
 				                      ref vscrollbarProvider,
 				                      vscrollbar,
 				                      false);
+			
+			base.InitializeChildControlStructure ();
 		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
-			base.FinalizeChildControlStructure ();
+			listboxControl.Items.UIACollectionChanged 
+				-= new CollectionChangeEventHandler (OnCollectionChanged);
 			
 			if (hscrollbarProvider != null) {
 				OnNavigationChildRemoved (false, hscrollbarProvider);
@@ -152,6 +156,8 @@ namespace Mono.UIAutomation.Winforms
 				vscrollbarProvider.Terminate ();
 				vscrollbarProvider = null;
 			}
+			
+			base.FinalizeChildControlStructure ();
 		}
 
 		#endregion
@@ -205,16 +211,6 @@ namespace Mono.UIAutomation.Winforms
 		public override bool IsItemSelected (ListItemProvider item)
 		{
 			return listboxControl.SelectedIndices.Contains (item.Index);
-		}
-		
-		protected override Type GetTypeOfObjectCollection ()
-		{
-			return typeof (ListBox.ObjectCollection);
-		}
-		
-		protected override object GetInstanceOfObjectCollection ()
-		{
-			return listboxControl.Items;
 		}
 		
 		public override void ScrollItemIntoView (ListItemProvider item)

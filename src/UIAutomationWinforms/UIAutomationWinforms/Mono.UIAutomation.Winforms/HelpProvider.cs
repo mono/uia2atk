@@ -49,17 +49,27 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 		
-		#region Protected Methods
-
-		protected override object GetObjectReference () 
+		#region Public Methods
+		
+		public override void InitializeEvents ()
 		{
-			return helpProvider;
+			base.InitializeEvents ();
+			
+			helpProvider.UIAToolTipShown += new ControlEventHandler (OnToolTipShown);
+			helpProvider.UIAToolTipHidden += new ControlEventHandler (OnToolTipHidden);
 		}
 		
-		protected override Type GetReferenceType ()
+		public override void Terminate () 
 		{
-			return typeof (SWFHelpProvider);
+			base.Terminate ();
+			
+			helpProvider.UIAToolTipShown -= new ControlEventHandler (OnToolTipShown);
+			helpProvider.UIAToolTipHidden -= new ControlEventHandler (OnToolTipHidden);
 		}
+		
+		#endregion
+		
+		#region Protected Methods
 
 		protected override string GetTextFromControl (Control control)
 		{

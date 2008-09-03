@@ -125,40 +125,6 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		#endregion
-		
-		#region FragmentRootControlProvider: Specializations
-		
-		public override void InitializeChildControlStructure ()
-		{
-			try {
-				Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
-				                        GetInstanceOfObjectCollection (), 
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnCollectionChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: CollectionChanged not defined", GetType ());
-			}
-		}
-		
-		public override void FinalizeChildControlStructure ()
-		{
-			try {
-				Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
-				                           GetInstanceOfObjectCollection (), 
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnCollectionChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: CollectionChanged not defined", GetType ());
-			}
-			
-			foreach (ListItemProvider item in items)
-				OnNavigationChildRemoved (false, item);
-			ClearItemsList ();
-		}
-		
-		#endregion
 
 		#region Protected Methods
 		
@@ -174,10 +140,6 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		protected abstract Type GetTypeOfObjectCollection ();
-		
-		protected abstract object GetInstanceOfObjectCollection ();		
-		
 		protected virtual ListProvider GetItemsListProvider ()
 		{
 			return this;
@@ -186,10 +148,8 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Private Methods: StructureChangedEvent
-		
-#pragma warning disable 169
 
-		private void OnCollectionChanged (object sender, CollectionChangeEventArgs args)
+		protected void OnCollectionChanged (object sender, CollectionChangeEventArgs args)
 		{
 			if (args.Action == CollectionChangeAction.Add) {
 				ListItemProvider item = GetItemProvider ((int) args.Element);
@@ -202,8 +162,6 @@ namespace Mono.UIAutomation.Winforms
 				OnNavigationChildrenCleared (true);
 			}
 		}
-		
-#pragma warning restore 169
 		
 		#endregion
 

@@ -128,6 +128,13 @@ namespace Mono.UIAutomation.Winforms
 			else
 				return base.GetPropertyValue (propertyId);
 		}
+		
+		public override void Terminate ()
+		{
+			base.Terminate ();
+			
+			tooltipProvider.Terminate ();
+		}
 
 		#endregion
 
@@ -178,14 +185,20 @@ namespace Mono.UIAutomation.Winforms
 				errorProvider = provider;
 			}
 		
-			protected override object GetObjectReference ()
+			public override void InitializeEvents ()
 			{
-				return errorProvider;
+				base.InitializeEvents ();
+				
+				errorProvider.UIAToolTipShown += new ControlEventHandler (OnToolTipShown);
+				errorProvider.UIAToolTipHidden += new ControlEventHandler (OnToolTipHidden);
 			}
-		
-			protected override Type GetReferenceType ()
+			
+			public override void Terminate ()
 			{
-				return typeof (SWFErrorProvider);
+				base.Terminate ();
+				
+				errorProvider.UIAToolTipShown -= new ControlEventHandler (OnToolTipShown);
+				errorProvider.UIAToolTipHidden -= new ControlEventHandler (OnToolTipHidden);
 			}
 
 			protected override string GetTextFromControl (Control control)

@@ -406,56 +406,14 @@ namespace Mono.UIAutomation.Winforms
 		{
 			GetPrivateToolTipField ();
 			
-			try {
-				Helper.AddPrivateEvent (typeof (Control), 
-				                        Control, 
-				                        "UIAToolTipHookedUp",
-				                        this, 
-				                        "OnToolTipHookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAToolTipHookedUp not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
-			
-			try {
-				Helper.AddPrivateEvent (typeof (Control), 
-				                        Control, 
-				                        "UIAToolTipUnhookedUp",
-				                        this, 
-				                        "OnToolTipUnhookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAToolTipUnhookedUp not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}			
+			Control.UIAToolTipHookedUp += new EventHandler (OnToolTipHookup);
+			Control.UIAToolTipUnhookedUp += new EventHandler (OnToolTipUnhookup);
 		}
 		
 		private void TerminateToolTipInternalEvents ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (Control), 
-				                           Control, 
-				                           "UIAToolTipHookedUp",
-				                           this, 
-				                           "OnToolTipHookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAToolTipHookedUp not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
-			
-			try {
-				Helper.RemovePrivateEvent (typeof (Control), 
-				                           Control, 
-				                           "UIAToolTipUnhookedUp",
-				                           this, 
-				                           "OnToolTipUnhookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAToolTipUnhookedUp not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
+			Control.UIAToolTipHookedUp -= new EventHandler (OnToolTipHookup);
+			Control.UIAToolTipUnhookedUp -= new EventHandler (OnToolTipUnhookup);
 			
 			if (toolTipProvider != null) {
 				ProviderFactory.ReleaseProvider (toolTipProvider.ToolTip);
@@ -465,17 +423,7 @@ namespace Mono.UIAutomation.Winforms
 
 		private void GetPrivateToolTipField ()
 		{
-			ToolTip tooltip = null;
-
-			try {
-				tooltip = Helper.GetPrivateProperty<Control, ToolTip> (typeof (Control),
-				                                                       Control,
-				                                                       "UIAToolTip");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAToolTip property not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
+			ToolTip tooltip = Control.UIAToolTip;
 
 			if (toolTipProvider != null && tooltip != toolTipProvider.ToolTip) {
 				ProviderFactory.ReleaseProvider (toolTipProvider.ToolTip);
@@ -511,71 +459,25 @@ namespace Mono.UIAutomation.Winforms
 		private void InitializeErrorProviderInternalEvents ()
 		{
 			GetPrivateErrorProviderField ();
-
-			try {
-				Helper.AddPrivateEvent (typeof (Control), 
-				                        Control, 
-				                        "UIAErrorProviderHookedUp",
-				                        this, 
-				                        "OnErrorProviderHookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAErrorProviderHookedUp not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
 			
-			try {
-				Helper.AddPrivateEvent (typeof (Control), 
-				                        Control, 
-				                        "UIAErrorProviderUnhookedUp",
-				                        this, 
-				                        "OnErrorProviderUnhookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAErrorProviderUnhookedUp not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
+			Control.UIAErrorProviderHookedUp += new ControlEventHandler (OnErrorProviderHookup);
+			Control.UIAErrorProviderUnhookedUp += new ControlEventHandler (OnErrorProviderUnhookup);
 		}
 		
 		private void TerminateErrorProviderInternalEvents ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (Control), 
-				                           Control, 
-				                           "UIAErrorProviderHookedUp",
-				                           this, 
-				                           "OnErrorProviderHookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAErrorProviderHookedUp not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
+			Control.UIAErrorProviderHookedUp -= new ControlEventHandler (OnErrorProviderHookup);
+			Control.UIAErrorProviderUnhookedUp -= new ControlEventHandler (OnErrorProviderUnhookup);
 			
-			try {
-				Helper.RemovePrivateEvent (typeof (Control), 
-				                           Control, 
-				                           "UIAErrorProviderUnhookedUp",
-				                           this, 
-				                           "OnErrorProviderUnhookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAErrorProviderUnhookedUp not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
+			if (errorProvider != null) {
+				ProviderFactory.ReleaseProvider (errorProvider);
+				errorProvider = null;
 			}
-			errorProvider = null;
 		}
 
 		private void GetPrivateErrorProviderField ()
 		{
-			try {
-				errorProvider = Helper.GetPrivateProperty<Control, SWFErrorProvider> (typeof (Control),
-				                                                                      Control,
-				                                                                      "UIAErrorProvider");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAErrorProvider property not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
+			errorProvider = Control.UIAErrorProvider;
 		}
 		
 #pragma warning disable 169		
@@ -606,17 +508,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void GetPrivateHelpProviderField ()
 		{
-			SWFHelpProvider swfHelpProvider = null;
-
-			try {
-				swfHelpProvider = Helper.GetPrivateProperty<Control, SWFHelpProvider> (typeof (Control),
-				                                                                       Control,
-				                                                                       "UIAHelpProvider");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAHelpProvider property not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
+			SWFHelpProvider swfHelpProvider = Control.UIAHelpProvider;
 
 			if (helpProvider != null && swfHelpProvider != helpProvider.SWFHelpProvider) {
 				ProviderFactory.ReleaseProvider (helpProvider.SWFHelpProvider);
@@ -632,55 +524,18 @@ namespace Mono.UIAutomation.Winforms
 		{
 			GetPrivateHelpProviderField ();
 			
-			try {
-				Helper.AddPrivateEvent (typeof (Control), 
-				                        Control, 
-				                        "UIAHelpProviderHookedUp",
-				                        this, 
-				                        "OnHelpProviderHookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAHelpProviderHookedUp not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
-			
-			try {
-				Helper.AddPrivateEvent (typeof (Control), 
-				                        Control, 
-				                        "UIAHelpProviderUnhookedUp",
-				                        this, 
-				                        "OnHelpProviderUnhookedUp");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAHelpProviderUnhookedUp not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
+			Control.UIAHelpProviderHookedUp += new EventHandler (OnHelpProviderHookup);
+			Control.UIAHelpProviderUnhookedUp += new EventHandler (OnHelpProviderUnhookedUp);
 		}
 		
 		private void TerminateHelpProviderInternalEvents ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (Control), 
-				                           Control, 
-				                           "UIAHelpProviderHookedUp",
-				                           this, 
-				                           "OnHelpProviderHookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAHelpProviderHookedUp not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
+			Control.UIAHelpProviderHookedUp -= new EventHandler (OnHelpProviderHookup);
+			Control.UIAHelpProviderUnhookedUp -= new EventHandler (OnHelpProviderUnhookedUp);
 			
-			try {
-				Helper.RemovePrivateEvent (typeof (Control), 
-				                           Control, 
-				                           "UIAHelpProviderUnhookedUp",
-				                           this, 
-				                           "OnHelpProviderUnhookedUp");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAHelpProviderUnhookedUp not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
+			if (helpProvider != null) {
+				ProviderFactory.ReleaseProvider (helpProvider.SWFHelpProvider);
+				helpProvider = null;
 			}
 		}
 		

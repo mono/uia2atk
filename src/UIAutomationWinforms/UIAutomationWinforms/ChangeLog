@@ -1,5 +1,23 @@
 2008-09-03  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs,
+	  Mono.UIAutomation.Winforms/SimpleControlProvider.cs,
+	  Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Reflection removed.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs,
+	  Mono.UIAutomation.Winforms/HelpProvider.cs,
+	  Mono.UIAutomation.Winforms/ErrorProvider.cs,
+	  Mono.UIAutomation.Winforms/ToolTipProvider.cs: Updated to
+	  explicitily set/unset events.
+	* Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs: Methods removed:
+	  InitializeEvents, Terminate, GetObjectReference, GetReferenceType
+	  and InitializeInternalEvents.
+	* Mono.UIAutomation.Winforms/Helper.cs: Reflection methods removed.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Methods removed:
+	  GetInstanceOfObjectCollection, GetTypeOfObjectCollection,
+	  InitializeChildContrlStructure and FinalizeChildControlStructure.
+
+2008-09-03  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs:
 	  Reflection removed.
 
