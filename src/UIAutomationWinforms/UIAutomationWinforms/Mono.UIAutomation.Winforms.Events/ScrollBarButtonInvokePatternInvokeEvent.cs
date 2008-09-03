@@ -48,54 +48,35 @@ namespace Mono.UIAutomation.Winforms.Events
 		#region IConnectable Overriders
 
 		public override void Connect (Control control)
-		{
-			try {
-				Helper.AddPrivateEvent (typeof (ScrollBar), 
-				                        (ScrollBar) control, 
-				                        GetEventNameFromOrientation (),
-				                        this, 
-				                        "OnButtonClicked");
-			} catch (NotSupportedException) {}
+		{		
+			((ScrollBar) control).UIAScroll += new ScrollEventHandler (OnButtonClicked);
+			
 		}
 
 		public override void Disconnect (Control control)
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (ScrollBar), 
-				                           (ScrollBar) control, 
-				                           GetEventNameFromOrientation (),
-				                           this, 
-				                           "OnButtonClicked");	
-			} catch (NotSupportedException) {}		
+			((ScrollBar) control).UIAScroll -= new ScrollEventHandler (OnButtonClicked);
 		}
 
 		#endregion
 
-		#region Private Methods		
-
-		private string GetEventNameFromOrientation ()
+		#region Private Methods
+		
+		private void OnButtonClicked (object sender, ScrollEventArgs args)
 		{
 			ScrollBarProvider.ScrollBarButtonProvider provider 
 				= (ScrollBarProvider.ScrollBarButtonProvider) Provider;
-
-			if (provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.LargeBack)
-				return "LargeDecrementCalled";
-			else if (provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.LargeForward)
-				return "LargeIncrementCalled";
-			else if (provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.SmallBack)
-				return "SmallDecrementCalled";
-			else //Should be ScrollBarButtonOrientation.SmallForward
-				return "SmallIncrementCalled";
+			
+			if ((args.Type == ScrollEventType.LargeDecrement
+			     && provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.LargeBack)
+			    || (args.Type == ScrollEventType.LargeIncrement 
+			        && provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.LargeForward)
+			    || (args.Type == ScrollEventType.SmallDecrement
+			        && provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.SmallBack)
+			    || (args.Type == ScrollEventType.SmallIncrement
+			        && provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.SmallForward))
+				InvokeEvent ();
 		}
-
-#pragma warning disable 169
-		
-		private void OnButtonClicked (object sender, EventArgs e)
-		{
-			InvokeEvent ();
-		}
-		
-#pragma warning restore 169		
 		
 		#endregion
 	}
