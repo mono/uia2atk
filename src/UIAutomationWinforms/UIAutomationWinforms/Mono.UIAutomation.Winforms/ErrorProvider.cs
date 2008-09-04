@@ -69,8 +69,6 @@ namespace Mono.UIAutomation.Winforms
 			
 			tooltipProvider = new ErrorProviderToolTipProvider (errorProvider);
 			tooltipProvider.InitializeEvents ();
-			
-			Console.WriteLine ("ErrorProvider.ctr");
 		}
 
 		#endregion
