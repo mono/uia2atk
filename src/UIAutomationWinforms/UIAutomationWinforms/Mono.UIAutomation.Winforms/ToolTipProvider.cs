@@ -52,31 +52,21 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 		
-		#region Public Methods
-		
-		public override void InitializeEvents ()
-		{
-			base.InitializeEvents ();
-			
-			ToolTip.UIAToolTipShown += new ControlEventHandler (OnToolTipShown);
-			ToolTip.UIAToolTipHidden += new ControlEventHandler (OnToolTipHidden);
-		}
-		
-		public override void Terminate ()
-		{
-			base.Terminate ();
-			
-			ToolTip.UIAToolTipShown -= new ControlEventHandler (OnToolTipShown);
-			ToolTip.UIAToolTipHidden -= new ControlEventHandler (OnToolTipHidden);
-		}
-		
-		#endregion
-		
 		#region Protected Methods
+		
+		protected override object GetReferenceOfToolTip ()
+		{
+			return ToolTip;
+		}
 
 		protected override string GetTextFromControl (Control control)
 		{
 			return ToolTip.GetToolTip (control);
+		}
+		
+		protected override Type GetTypeOfToolTip ()
+		{
+			return typeof (ToolTip);
 		}
 		
 		#endregion

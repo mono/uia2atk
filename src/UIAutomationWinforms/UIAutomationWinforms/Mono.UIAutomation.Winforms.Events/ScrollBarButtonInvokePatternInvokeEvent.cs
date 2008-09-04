@@ -49,18 +49,31 @@ namespace Mono.UIAutomation.Winforms.Events
 
 		public override void Connect (Control control)
 		{		
-			((ScrollBar) control).UIAScroll += new ScrollEventHandler (OnButtonClicked);
-			
+			try {
+				Helper.AddPrivateEvent (typeof (ScrollBar), 
+				                        (ScrollBar) control, 
+				                        "UIAScroll",
+				                        this, 
+				                        "OnButtonClicked");
+			} catch (NotSupportedException) {}			
 		}
 
 		public override void Disconnect (Control control)
 		{
-			((ScrollBar) control).UIAScroll -= new ScrollEventHandler (OnButtonClicked);
+			try {
+				Helper.RemovePrivateEvent (typeof (ScrollBar), 
+				                           (ScrollBar) control, 
+				                           "UIAScroll",
+				                           this, 
+				                           "OnButtonClicked");	
+			} catch (NotSupportedException) {}
 		}
 
 		#endregion
 
 		#region Private Methods
+		
+#pragma warning disable 169
 		
 		private void OnButtonClicked (object sender, ScrollEventArgs args)
 		{
@@ -77,6 +90,8 @@ namespace Mono.UIAutomation.Winforms.Events
 			        && provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.SmallForward))
 				InvokeEvent ();
 		}
+		
+#pragma warning restore 169
 		
 		#endregion
 	}

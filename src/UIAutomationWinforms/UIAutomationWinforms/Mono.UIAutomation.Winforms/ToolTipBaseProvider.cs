@@ -71,13 +71,79 @@ namespace Mono.UIAutomation.Winforms
 				return base.GetPropertyValue (propertyId);
 		}
 		
+		public override void InitializeEvents ()
+		{
+			base.InitializeEvents (); 
+			
+			try {
+				Helper.AddPrivateEvent (GetTypeOfToolTip (), 
+				                        GetReferenceOfToolTip (), 
+				                        "UIAToolTipHidden",
+				                        this, 
+				                        "OnToolTipHidden");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIAToolTipHidden not defined in {1}",
+				                   GetType (),
+				                   GetTypeOfToolTip ());
+			}
+			
+			try {
+				Helper.AddPrivateEvent (GetTypeOfToolTip (), 
+				                        GetReferenceOfToolTip (), 
+				                        "UIAToolTipShown",
+				                        this, 
+				                        "OnToolTipShown");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIAOnToolTipShown not defined in {1}",
+				                   GetType (),
+				                   GetTypeOfToolTip ());
+			}
+		}
+		
+		public override void Terminate ()
+		{
+			base.Terminate (); 
+			
+			try {
+				Helper.RemovePrivateEvent (GetTypeOfToolTip (), 
+				                           GetReferenceOfToolTip (), 
+				                           "UIAToolTipHidden",
+				                           this, 
+				                           "OnToolTipHidden");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIAToolTipHidden not defined in {1}",
+				                   GetType (),
+				                   GetTypeOfToolTip ());
+			}
+			
+			try {
+				Helper.RemovePrivateEvent (GetTypeOfToolTip (), 
+				                           GetReferenceOfToolTip (), 
+				                           "UIAToolTipShown",
+				                           this, 
+				                           "OnToolTipShown");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIAOnToolTipShown not defined in {1}",
+				                   GetType (),
+				                   GetTypeOfToolTip ());
+			}
+		}
+		
 		#endregion
 		
 		#region Protected Methods
+		
+		protected abstract object GetReferenceOfToolTip ();
 
 		protected abstract string GetTextFromControl (Control control);
 		
-		protected void OnToolTipShown (object sender, ControlEventArgs args)
+		protected abstract Type GetTypeOfToolTip ();
+		
+		#endregion
+		
+		#region Private Methods
+		
+		private void OnToolTipShown (object sender, ControlEventArgs args)
 		{
 			if (AutomationInteropProvider.ClientsAreListening == true) {					
 				message = GetTextFromControl (args.Control);
@@ -96,7 +162,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		protected void OnToolTipHidden (object sender, ControlEventArgs args)
+		private void OnToolTipHidden (object sender, ControlEventArgs args)
 		{
 			if (AutomationInteropProvider.ClientsAreListening == true) {
 				message = GetTextFromControl (args.Control);

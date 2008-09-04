@@ -174,14 +174,12 @@ namespace Mono.UIAutomation.Winforms
 					ErrorProvider errorProvider = null;
 
 					if (ErrorProvider.InstancesTracker.IsFirstControlFromErrorProvider (ctrl) == true) {
-						Console.WriteLine ("Is first control!!!");
 						errorProvider = new ErrorProvider (ctrl, swfError);
 						
 						List<ErrorProvider> providers = new List<ErrorProvider> ();
 						providers.Add ((ErrorProvider) errorProvider);
 						errorProviders [swfError] = providers;
 					} else {
-						Console.WriteLine ("Is other control!!");
 						List<ErrorProvider> providers = errorProviders [swfError];
 						
 						errorProvider = (from p in providers
@@ -198,7 +196,6 @@ namespace Mono.UIAutomation.Winforms
 				isComponentBased = true;
 			} else if ((hlp = component as SWFHelpProvider) != null) {
 				provider = new HelpProvider (hlp);
-				Console.WriteLine ("---------------- Helprpororrorori!!");
 				isComponentBased = true;
 			} else //TODO: We have to solve the problem when there's a Custom control
 				throw new NotImplementedException ("Provider not implemented for control");

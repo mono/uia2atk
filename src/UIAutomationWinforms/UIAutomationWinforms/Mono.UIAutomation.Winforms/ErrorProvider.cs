@@ -69,6 +69,8 @@ namespace Mono.UIAutomation.Winforms
 			
 			tooltipProvider = new ErrorProviderToolTipProvider (errorProvider);
 			tooltipProvider.InitializeEvents ();
+			
+			Console.WriteLine ("ErrorProvider.ctr");
 		}
 
 		#endregion
@@ -155,6 +157,8 @@ namespace Mono.UIAutomation.Winforms
 		private void OnControlVisibleChanged (object sender, EventArgs args)
 		{
 			Control control = (Control) sender;
+			
+			Console.WriteLine ("holaaaa");
 
 			if (control.Visible == true) {
 				FragmentRootControlProvider root 
@@ -184,26 +188,20 @@ namespace Mono.UIAutomation.Winforms
 			{
 				errorProvider = provider;
 			}
-		
-			public override void InitializeEvents ()
-			{
-				base.InitializeEvents ();
-				
-				errorProvider.UIAToolTipShown += new ControlEventHandler (OnToolTipShown);
-				errorProvider.UIAToolTipHidden += new ControlEventHandler (OnToolTipHidden);
-			}
 			
-			public override void Terminate ()
+			protected override object GetReferenceOfToolTip ()
 			{
-				base.Terminate ();
-				
-				errorProvider.UIAToolTipShown -= new ControlEventHandler (OnToolTipShown);
-				errorProvider.UIAToolTipHidden -= new ControlEventHandler (OnToolTipHidden);
+				return errorProvider;
 			}
 
 			protected override string GetTextFromControl (Control control)
 			{
 				return errorProvider.GetError (control);
+			}
+		
+			protected override Type GetTypeOfToolTip ()
+			{
+				return typeof (SWFErrorProvider);
 			}
 			
 			private SWFErrorProvider errorProvider;

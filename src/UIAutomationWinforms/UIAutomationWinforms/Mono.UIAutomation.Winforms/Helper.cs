@@ -47,6 +47,39 @@ namespace Mono.UIAutomation.Winforms
 			return ++id;
 		}
 		
+		internal static TResult GetPrivateProperty<T, TResult> (Type referenceType, 
+		                                                        T reference,
+		                                                        string propertyName)
+		{
+			PropertyInfo propertyInfo = referenceType.GetProperty (propertyName,
+			                                                       BindingFlags.NonPublic
+			                                                       | BindingFlags.Instance
+			                                                       | BindingFlags.GetProperty);
+			if (propertyInfo == null)
+				throw new NotSupportedException ("Property not found: " + propertyName);
+
+			Func<T, TResult> invoke = 
+				(Func<T, TResult>) Delegate.CreateDelegate (typeof (Func<T, TResult>),
+				                                             propertyInfo.GetGetMethod (true));
+			return invoke (reference);
+		}
+
+		internal static void AddPrivateEvent (Type referenceType, object reference, 
+		                                      string eventName, object referenceDelegate,
+		                                      string delegateName)
+		{
+			AddRemovePrivateEvent (referenceType, reference, eventName, 
+			                       referenceDelegate, delegateName, true);
+		}
+		
+		internal static void RemovePrivateEvent (Type referenceType, object reference, 
+		                                         string eventName, object referenceDelegate,
+		                                         string delegateName)
+		{
+			AddRemovePrivateEvent (referenceType, reference, eventName, 
+			                       referenceDelegate, delegateName, false);
+		}
+		
 		internal static void RaiseStructureChangedEvent (StructureChangeType type,
 		                                                 IRawElementProviderFragment provider)
 		{
@@ -77,6 +110,30 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return new Rect (rectangle.X, rectangle.Y, 
 			                 rectangle.Width, rectangle.Height);
+		}
+		
+		#endregion
+		
+		#region Private Static Methods
+		
+		private static void AddRemovePrivateEvent (Type referenceType, object reference, 
+		                                           string eventName, object referenceDelegate,
+		                                           string delegateName, bool addEvent)
+		{
+			EventInfo eventInfo = referenceType.GetEvent (eventName,
+			                                              BindingFlags.Instance 
+			                                              | BindingFlags.NonPublic);
+			if (eventInfo == null)
+				throw new NotSupportedException ("Event not found: " + eventName);
+			
+			Type delegateType = eventInfo.EventHandlerType;
+			MethodInfo eventMethod = addEvent 
+				? eventInfo.GetAddMethod (true) :eventInfo.GetRemoveMethod (true);
+			Delegate delegateValue = Delegate.CreateDelegate (delegateType, 
+			                                                  referenceDelegate,
+			                                                  delegateName, 
+			                                                  false);
+			eventMethod.Invoke (reference, new object[] { delegateValue });
 		}
 		
 		#endregion

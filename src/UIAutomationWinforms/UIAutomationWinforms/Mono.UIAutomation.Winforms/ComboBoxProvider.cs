@@ -23,7 +23,6 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using System.ComponentModel;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Automation;
@@ -126,6 +125,18 @@ namespace Mono.UIAutomation.Winforms
 			return ContainsItem (item) == false 
 				? false : item.Index == ListControl.SelectedIndex;
 		}
+		
+		protected override Type GetTypeOfObjectCollection ()
+		{
+			//Doesn't have any list-like children: only Edit, List and Button.
+			return null;
+		}
+		
+		protected override object GetInstanceOfObjectCollection ()
+		{
+			//Doesn't have any list-like children: only Edit, List and Button.
+			return null;
+		}
 
 		public override void InitializeChildControlStructure ()
 		{
@@ -205,7 +216,9 @@ namespace Mono.UIAutomation.Winforms
 		private void InitializeEditProvider (bool generateEvent)
 		{
 			if (textboxProvider == null) {
-				TextBox textbox = comboboxControl.UIATextBox;
+				TextBox textbox = Helper.GetPrivateProperty<ComboBox, TextBox> (typeof (ComboBox), 
+				                                                                comboboxControl, 
+				                                                                "UIATextBox");
 				textboxProvider = (TextBoxProvider) ProviderFactory.GetProvider (textbox);
 				OnNavigationChildAdded (generateEvent, textboxProvider);
 			}
@@ -340,13 +353,20 @@ namespace Mono.UIAutomation.Winforms
 			{
 				return comboboxProvider.IsItemSelected (item);
 			}
+			
+			protected override Type GetTypeOfObjectCollection ()
+			{
+				return typeof (ComboBox.ObjectCollection);
+			}
+			
+			protected override object GetInstanceOfObjectCollection ()
+			{
+				return comboboxControl.Items;
+			}
 	
 			public override void InitializeChildControlStructure ()
 			{
 				base.InitializeChildControlStructure ();
-				
-				comboboxControl.Items.UIACollectionChanged 
-					+= new CollectionChangeEventHandler (OnCollectionChanged);
 				
 				for (int index = 0; index < comboboxControl.Items.Count; index++) {
 					ListItemProvider item = GetItemProvider (index);
@@ -357,9 +377,6 @@ namespace Mono.UIAutomation.Winforms
 			public override void FinalizeChildControlStructure ()
 			{
 				base.FinalizeChildControlStructure ();
-				
-				comboboxControl.Items.UIACollectionChanged 
-					-= new CollectionChangeEventHandler (OnCollectionChanged);
 				
 				for (int index = 0; index < comboboxControl.Items.Count; index++) {
 					ListItemProvider item = GetItemProvider (index);

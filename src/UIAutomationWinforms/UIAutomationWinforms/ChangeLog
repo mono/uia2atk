@@ -1,3 +1,21 @@
+2008-09-04  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Console.WriteLine
+	  removed.
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs,
+	  Mono.UIAutomation.Winforms/ListBoxProvider.cs,
+	  Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs,
+	  Mono.UIAutomation.Winforms/HelpProvider.cs,
+	  Mono.UIAutomation.Winforms/ErrorProvider.cs,
+	  Mono.UIAutomation.Winforms/SimpleControlProvider.cs,
+	  Mono.UIAutomation.Winforms/ToolTipProvider.cs,
+	  Mono.UIAutomation.Winforms/Helper.cs,
+	  Mono.UIAutomation.Winforms/ComboBoxProvider.cs,
+	  Mono.UIAutomation.Winforms/ListProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs:
+	  Reverted to use Reflection instead of friend assembly.
+
 2008-09-03  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Removed #pragma.

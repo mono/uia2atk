@@ -23,7 +23,6 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using System.ComponentModel;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Automation;
@@ -46,8 +45,13 @@ namespace Mono.UIAutomation.Winforms
 		{
 			listboxControl = listbox;
 			
-			vscrollbar = listboxControl.UIAVScrollBar;
-			hscrollbar = listboxControl.UIAHScrollBar;
+			vscrollbar = Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox), 
+			                                                            listboxControl,
+			                                                            "UIAVScrollBar");
+			hscrollbar = Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox),
+			                                                            listboxControl,
+			                                                            "UIAHScrollBar");
+
 			
 			vscrollbar.VisibleChanged += new EventHandler (UpdateVScrollBehaviorVisible);
 			vscrollbar.EnabledChanged += new EventHandler (UpdateVScrollBehaviorEnable);
@@ -118,8 +122,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void InitializeChildControlStructure ()
 		{
-			listboxControl.Items.UIACollectionChanged 
-				+= new CollectionChangeEventHandler (OnCollectionChanged);
+			base.InitializeChildControlStructure ();
 			
 			for (int index = 0; index < listboxControl.Items.Count; index++) {
 				ListItemProvider item = GetItemProvider (index);
@@ -135,15 +138,12 @@ namespace Mono.UIAutomation.Winforms
 				RaiseNavigationEvent (StructureChangeType.ChildAdded,
 				                      ref vscrollbarProvider,
 				                      vscrollbar,
-				                      false);
-			
-			base.InitializeChildControlStructure ();
+				                      false);			
 		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
-			listboxControl.Items.UIACollectionChanged 
-				-= new CollectionChangeEventHandler (OnCollectionChanged);
+			base.FinalizeChildControlStructure ();
 			
 			if (hscrollbarProvider != null) {
 				OnNavigationChildRemoved (false, hscrollbarProvider);
@@ -156,8 +156,6 @@ namespace Mono.UIAutomation.Winforms
 				vscrollbarProvider.Terminate ();
 				vscrollbarProvider = null;
 			}
-			
-			base.FinalizeChildControlStructure ();
 		}
 
 		#endregion
@@ -211,6 +209,16 @@ namespace Mono.UIAutomation.Winforms
 		public override bool IsItemSelected (ListItemProvider item)
 		{
 			return listboxControl.SelectedIndices.Contains (item.Index);
+		}
+		
+		protected override Type GetTypeOfObjectCollection ()
+		{
+			return typeof (ListBox.ObjectCollection);
+		}
+		
+		protected override object GetInstanceOfObjectCollection ()
+		{
+			return listboxControl.Items;
 		}
 		
 		public override void ScrollItemIntoView (ListItemProvider item)
