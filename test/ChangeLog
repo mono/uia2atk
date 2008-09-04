@@ -1,3 +1,18 @@
+2008-09-04  Brad Taylor  <brad@getcoded.net>
+
+	* samples/gtkcombobox.py
+	* samples/gtkhscrollbar.py
+	* samples/gtkhscale.py
+	* samples/gtktoolbar.py
+	* samples/gtkvscrollbar.py
+	* samples/gtkcolorchooserdialog.py
+	* samples/gtkprogressbar.py
+	* samples/gtkradiobutton.py
+	* samples/gtkstatusbar.py
+	* samples/gtkcomboboxentry.py
+	* samples/gtkframe.py
+	* samples/gtknotebook.py: Add samples for various Gtk widgets.
+
 2008-09-04  Ray Wang <rawang@novell.com>
 
 	* samples/threadexceptiondialog.py: implement ThreadExceptionDialog control
