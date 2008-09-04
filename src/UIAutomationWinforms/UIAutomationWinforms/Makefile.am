@@ -117,6 +117,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ListProvider.cs \
 	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/PaneProvider.cs \
+	Mono.UIAutomation.Winforms/PictureBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ProgressBarProvider.cs \
 	Mono.UIAutomation.Winforms/ProviderFactory.cs \
 	Mono.UIAutomation.Winforms/RadioButtonProvider.cs \

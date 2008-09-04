@@ -143,11 +143,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		                                     NavigationEventArgs args)
 		{
 			AddLast (args.ChildProvider.Navigation);
-
-			System.Console.WriteLine ("ParentNavigation.ADDED IN Type: {0} - {1} - '{2}'", 
-			                          GetType (),
-			                          args.ChildProvider.GetType (),
-			                          args.RaiseEvent);			
+	
 			if (args.RaiseEvent == true) {
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded, 
 				                                   args.ChildProvider);
@@ -161,9 +157,6 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		{
 			Remove (args.ChildProvider.Navigation);
 
-			System.Console.WriteLine ("ParentNavigation.REMOVED IN Type: {0} '{1}'", 
-			                          GetType (),
-			                          args.RaiseEvent);
 			if (args.RaiseEvent == true) {
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved, 
 				                                   args.ChildProvider);

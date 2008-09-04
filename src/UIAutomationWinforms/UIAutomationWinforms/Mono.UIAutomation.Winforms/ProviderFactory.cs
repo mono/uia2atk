@@ -165,7 +165,7 @@ namespace Mono.UIAutomation.Winforms
 						provider = new PaneProvider (scb);
 				}
 			} else if ((pb = component as PictureBox) != null)
-				provider = new PaneProvider (pb);
+				provider = new PictureBoxProvider (pb);
 			else if ((ctrl = component as Control) != null) {
 				//Notice that we don't update the local variable "provider"
 				if (ErrorProvider.InstancesTracker.IsControlFromErrorProvider (ctrl) == true) {

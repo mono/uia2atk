@@ -1,5 +1,17 @@
 2008-09-04  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs,
+	  Mono.UIAutomation.Winforms/Helper.cs: Console.WriteLine removed.
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: File added
+	  PictureBoxProvider.cs.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Updated to return
+	  PictureBoxProvider instead of PaneProvider.
+	* Mono.UIAutomation.Winforms/PictureBoxProvider.cs: File added.
+	* Mono.UIAutomation.Winforms/PaneProvider.cs: Removed NameProperty, is
+	  already implemented by SimpleControlProvider.
+
+2008-09-04  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/ErrorProvider.cs: Removed
 	  Console.WriteLine.
 

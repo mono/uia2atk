@@ -22,23 +22,20 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.ComponentModel;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
+using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal class PaneProvider : FragmentRootControlProvider
+	internal class PictureBoxProvider : PaneProvider
 	{
-
-		#region Constructor
 		
-		public PaneProvider (Component component) : base (component)
+		#region Constructors
+
+		public PictureBoxProvider (PictureBox pictureBox) : base (pictureBox)
 		{
-			this.component = component;
 		}
 		
 		#endregion
@@ -46,28 +43,9 @@ namespace Mono.UIAutomation.Winforms
 		#region SimpleControlProvider: Specialization
 		
 		public override Component Container  {
-			get { return component.Container as Component; }
+			get { return Control.Parent; }
 		}
 		
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Pane.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "pane";
-			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-				return false;
-			else
-				return base.GetPropertyValue (propertyId);
-		}
-
 		#endregion
-		
-		#region Private Fields
-		
-		private Component component;
-		
-		#endregion
-
 	}
 }
