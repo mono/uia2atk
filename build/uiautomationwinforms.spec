@@ -21,9 +21,9 @@ URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 AutoReqProv:	on
-#Requires:	mono-core >= 1.9 mono-uia uiaatkbridge
 Requires:	mono-core >= 1.9 olive uiaatkbridge
-BuildRequires:	mono-devel
+#Requires:	mono-core >= 1.9 olive uiaatkbridge
+BuildRequires:	mono-devel mono-nunit olive
 Summary:        Mono UIA Provider
 
 %description

@@ -11,17 +11,17 @@
 # 
 
 Name:           uiaatkbridge
-Version:        106612
-Release:        0.svn
+Version:	110576
+Release:	0.novell
 License:        MIT/X11
 Group:          System/Libraries
 URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 AutoReqProv:    on
-#Requires:	mono-core >= 1.9 mono-uia gtk-sharp2
-Requires:	mono-core >= 1.9 gtk-sharp2 olive
-BuildRequires:	mono-devel gcc 
+Requires:	mono-core >= 1.9 olive gtk-sharp2
+#Requires:	mono-core >= 1.9 gtk-sharp2 olive
+BuildRequires:	mono-devel gcc gtk-sharp2 olive atk-devel
 Summary:        UIA to ATK Bridge
 
 %description
@@ -49,6 +49,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %doc 
 %_prefix/lib/uiaatkbridge/UiaAtkBridge.dll*
+#FIXME: create a devel packagie ? 
 %_prefix/lib/uiaatkbridge/libbridge-glue.so*
 %_prefix/lib/mono/gac/UiaAtkBridge
 
