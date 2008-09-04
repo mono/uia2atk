@@ -151,8 +151,6 @@ namespace Mono.UIAutomation.Winforms
 				//TODO: We need deeper tests in Vista because MS is generating both events
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
 				                                   this);
-				
-				Console.WriteLine ("{0}: ErrorProvider.ToolTipOpenedEvent", GetType ());
 
 				AutomationEventArgs eventArgs 
 					= new AutomationEventArgs (AutomationElementIdentifiers.ToolTipOpenedEvent);
@@ -170,8 +168,6 @@ namespace Mono.UIAutomation.Winforms
 				//TODO: We need deeper tests in Vista because MS is generating both events
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
 				                                   this);
-				
-				Console.WriteLine ("{0}: ErrorProvider.ToolTipClosedEvent", GetType ());				
 				
 				AutomationEventArgs eventArgs 
 					= new AutomationEventArgs (AutomationElementIdentifiers.ToolTipClosedEvent);

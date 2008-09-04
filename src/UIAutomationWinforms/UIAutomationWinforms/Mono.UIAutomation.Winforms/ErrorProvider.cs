@@ -155,8 +155,6 @@ namespace Mono.UIAutomation.Winforms
 		private void OnControlVisibleChanged (object sender, EventArgs args)
 		{
 			Control control = (Control) sender;
-			
-			Console.WriteLine ("holaaaa");
 
 			if (control.Visible == true) {
 				FragmentRootControlProvider root 

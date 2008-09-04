@@ -5,6 +5,11 @@
 
 2008-09-04  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/ErrorProvider.cs: Removed
+	  Console.WriteLine.
+
+2008-09-04  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Console.WriteLine
 	  removed.
 	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs,
