@@ -235,3 +235,6 @@ class ListBox(object):
 class ListItem(object):
     states = (SHOWING, ENABLED, SELECTABLE, SENSITIVE)
 
+class ProgressBar(object):
+    states = (SHOWING,)
+

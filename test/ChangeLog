@@ -1,3 +1,11 @@
+2008-09-04  Calen Chen <cachen@novell.com>
+
+	* testers/progressbar,
+	* testers/progressbar/__init__.py,
+	* testers/progressbar/progressbarframe.py,
+	* testers/progressbar_basic_ops.py: add new test for progressbar
+	* testers/states.py: add progressbar's states
+
 2008-09-03  Calen Chen <cachen@novell.com>
 
 	* testers/checkbox/__init__.py: spelling correction
