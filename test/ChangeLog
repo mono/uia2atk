@@ -1,3 +1,11 @@
+2008-09-24  Brad Taylor  <brad@getcoded.net>
+	
+	* gtkhpaned.py
+	* gtklinkbutton.py
+	* gtkimage.py
+	* gtkprogressbar.py
+	* gtkspinbutton.py: Add more Gtk samples.
+
 2008-09-04  Brad Taylor  <brad@getcoded.net>
 
 	* samples/gtkcombobox.py
