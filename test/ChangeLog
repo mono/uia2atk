@@ -1,3 +1,16 @@
+2008-09-04  Calen Chen <cachen@novell.com>
+
+	*  testers/radiobutton/radiobuttonframe.py: modify indentation issue
+	*  testers/groupbox/groupboxframe.py: Iterate through the tuple (even
+	though there is only one element
+	*  testers/vscrollbar/vscrollbarframe.py: delete the action description in 
+	click() instance, add sleep time befor set value
+        * testers/vscrollbar_basic_ops.py: adjust 50 to 10 value
+	*  testers/button/buttonframe.py: delete the action description in 
+	click() instance
+	*  testers/hscrollbar/hscrollbarframe.py:  add sleep time befor set value
+	*  testers/hscrollbar_basic_ops.py: adjust 50 to 10 value
+
 2008-09-24  Brad Taylor  <brad@getcoded.net>
 	
 	* gtkhpaned.py

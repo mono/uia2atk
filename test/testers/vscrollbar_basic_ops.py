@@ -45,10 +45,10 @@ vsbFrame = app.vScrollBarFrame
 #check vscrollbar's states list
 vsbFrame.statesCheck(vsbFrame.vscrollbar)
 
-#set value to 50
-vsbFrame.valueScrollBar(50)
+#set value to 10
+vsbFrame.valueScrollBar(10)
 sleep(config.SHORT_DELAY)
-vsbFrame.assertScrollbar(50)
+vsbFrame.assertScrollbar(10)
 
 #set value to 0
 vsbFrame.valueScrollBar(0)

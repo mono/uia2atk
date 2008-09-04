@@ -35,7 +35,7 @@ class VScrollBarFrame(accessibles.Frame):
         procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
         for a in states.VScrollBar.states:
             cmd = "state = accessible." + a
-           exec(cmd)
+            exec(cmd)
 
             if state == False:
                 print "ERROR: %s can't be checked" % cmd
@@ -44,9 +44,10 @@ class VScrollBarFrame(accessibles.Frame):
 
     #change vscrollbar's value
     def valueScrollBar(self, newValue=None):
-
         procedurelogger.action('set scrollbar value to \"%s\"' % newValue)
-        self.findScrollBar(None).__setattr__('value', newValue)
+        scrollbar = self.findScrollBar(None)
+        sleep(config.LONG_DELAY)
+        scrollbar.__setattr__('value', newValue)
 
     def assertScrollbar(self, newValue=None):
         maximumValue = self.findScrollBar(None)._accessible.queryValue().maximumValue

@@ -54,7 +54,9 @@ class HScrollBarFrame(accessibles.Frame):
     def valueScrollBar(self, newValue=None):
 
         procedurelogger.action('set scrollbar value to \"%s\"' % newValue)
-        self.findScrollBar(None).__setattr__('value', newValue)
+        scrollbar = self.findScrollBar(None)
+        sleep(config.LONG_DELAY)
+        scrollbar.__setattr__('value', newValue)
 
     def assertScrollbar(self, newValue=None):
         maximumValue = self.findScrollBar(None)._accessible.queryValue().maximumValue

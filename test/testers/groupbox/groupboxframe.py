@@ -48,22 +48,14 @@ class GroupBoxFrame(accessibles.Frame):
         procedurelogger.action('check %s\'s all states' % accessible)
 
         procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
-        #for a in states.VScrollBar.states:
-        #    cmd = "state = accessible." + a
-        #   exec(cmd)
+        for a in states.Panel.states:
+            cmd = "state = accessible." + a
+            exec(cmd)
 
-        #    if state == False:
-        #        print "ERROR: %s can't be checked" % cmd
-        #    else:
-        #        pass
-        #if there is just one state in list, should reset it like:
-        cmd = "state = accessible." + states.Panel.states
-        exec(cmd)
-        
-        if state == False:
-            print "ERROR: %s can't can't be checked" % cmd
-        else:
-            pass
+            if state == False:
+                print "ERROR: %s can't be checked" % cmd
+            else:
+                pass
 
     #search groupbox
     def searchGroupBox(self,boxname=None):
