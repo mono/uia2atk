@@ -23,7 +23,7 @@ License:        LGPL v2.1 or later
 Group:          Development/Languages/Mono
 Summary:        A .NET Runtime Environment
 Url:            http://go-mono.org/
-Version:        2.0
+Version:        112245
 Release:        1
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
@@ -164,6 +164,7 @@ Authors:
 %_bindir/gmcs
 %_bindir/mono-test-install
 %_bindir/mcs
+%_bindir/csharp
 %_bindir/mcs1
 %_bindir/smcs
 %_bindir/mozroots
