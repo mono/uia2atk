@@ -88,15 +88,7 @@ namespace UiaAtkBridge
 				children.Add (child);
 			}
 			child.Parent = this;
-			try {
-				EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Add, (uint)(children.Count - 1), child);
-			}
-			//FIXME: drop this try-catch block when BNC#387220 is fixed
-			catch (Exception ex)
-			{
-				if (!ex.Message.Contains ("Unknown type"))
-					throw;
-			}
+			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Add, (uint)(children.Count - 1), child);
 		}
 		
 		public void RemoveChild (Adapter childToRemove)
@@ -107,15 +99,7 @@ namespace UiaAtkBridge
 				childIndex = children.IndexOf (childToRemove);
 				children.Remove (childToRemove);
 			}
-			try {
-				EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Remove, (uint)childIndex, childToRemove);
-			}
-			//FIXME: drop this try-catch block when BNC#387220 is fixed
-			catch (Exception ex)
-			{
-				if (!ex.Message.Contains ("Unknown type"))
-					throw;
-			}
+			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Remove, (uint)childIndex, childToRemove);
 		}
 		
 #endregion

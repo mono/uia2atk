@@ -1,3 +1,8 @@
+2008-09-05  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* ParentAdapter.cs: Remove workarounds for a bug that is now fixed
+	  (BNC#387220).
+
 2008-09-02  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Monitor.cs: Coding guidelines.
