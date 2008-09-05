@@ -1,3 +1,7 @@
+2008-09-05  Brad Taylor  <brad@getcoded.net>
+	
+	* samples/gtkcalendar.py: Add a calendar sample for Andres.
+
 2008-09-04  Calen Chen <cachen@novell.com>
 
 	*  testers/radiobutton/radiobuttonframe.py: modify indentation issue
@@ -13,11 +17,11 @@
 
 2008-09-24  Brad Taylor  <brad@getcoded.net>
 	
-	* gtkhpaned.py
-	* gtklinkbutton.py
-	* gtkimage.py
-	* gtkprogressbar.py
-	* gtkspinbutton.py: Add more Gtk samples.
+	* samples/gtkhpaned.py
+	* samples/gtklinkbutton.py
+	* samples/gtkimage.py
+	* samples/gtkprogressbar.py
+	* samples/gtkspinbutton.py: Add more Gtk samples.
 
 2008-09-04  Brad Taylor  <brad@getcoded.net>
 
