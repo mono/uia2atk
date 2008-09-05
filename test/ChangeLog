@@ -1,3 +1,12 @@
+2008-09-05  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* keystrokes: Add directory to store orca (keystroke) tests
+	* keystrokes/gtktutorial.py: Add directory named after the sample
+	application that will be executed.  This is needed by the Orca test
+	harness.
+	* keystrokes/gtktutorial.py/gtktutorial_example_1.py:  Orca test
+	example for Gtk sample application gtktutorial.py
+
 2008-09-05  Brad Taylor  <brad@getcoded.net>
 	
 	* samples/gtkcalendar.py: Add a calendar sample for Andres.
@@ -9,13 +18,13 @@
 	though there is only one element
 	*  testers/vscrollbar/vscrollbarframe.py: delete the action description in 
 	click() instance, add sleep time befor set value
-        * testers/vscrollbar_basic_ops.py: adjust 50 to 10 value
+	* testers/vscrollbar_basic_ops.py: adjust 50 to 10 value
 	*  testers/button/buttonframe.py: delete the action description in 
 	click() instance
 	*  testers/hscrollbar/hscrollbarframe.py:  add sleep time befor set value
 	*  testers/hscrollbar_basic_ops.py: adjust 50 to 10 value
 
-2008-09-24  Brad Taylor  <brad@getcoded.net>
+2008-09-04  Brad Taylor  <brad@getcoded.net>
 	
 	* samples/gtkhpaned.py
 	* samples/gtklinkbutton.py
