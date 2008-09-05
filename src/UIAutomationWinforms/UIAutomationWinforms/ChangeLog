@@ -1,3 +1,8 @@
+2008-09-05  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Moved
+	  ControlElementProperty and ContentElementProperty on top.
+
 2008-09-04  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs,

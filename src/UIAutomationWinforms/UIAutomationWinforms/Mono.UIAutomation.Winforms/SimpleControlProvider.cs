@@ -244,8 +244,11 @@ namespace Mono.UIAutomation.Winforms
 					runtimeId = Helper.GetUniqueRuntimeId ();
 
 				return runtimeId;
-			}
-			
+			} else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
+				return true;
+			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
+				return true;
+			 
 			//Control-like properties
 			if (Control == null)
 				return null;			
@@ -297,10 +300,6 @@ namespace Mono.UIAutomation.Winforms
 			}
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return Control.Focused;
-			else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
-				return true;
-			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
-				return true;
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
 				return Helper.RectangleToRect (GetControlScreenBounds ());
 			} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id) {
