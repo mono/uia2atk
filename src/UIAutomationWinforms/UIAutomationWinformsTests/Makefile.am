@@ -58,13 +58,14 @@ FILES =  \
 	CheckBoxProviderTest.cs \
 	CheckedListBoxProviderTest.cs \
 	ComboBoxProviderTest.cs \
+	ErrorProviderTest.cs \
 	GroupBoxProviderTest.cs \
 	LabelProviderTest.cs \
 	LinkLabelProviderTest.cs \
 	ListBoxProviderTest.cs \
 	MockBridge.cs \
 	NumericUpDownProviderTest.cs \
-	PictureBoxTest.cs \
+	PictureBoxProviderTest.cs \
 	ProgressBarProviderTest.cs \
 	RadioButtonProviderTest.cs \
 	ScrollBarProviderTest.cs \

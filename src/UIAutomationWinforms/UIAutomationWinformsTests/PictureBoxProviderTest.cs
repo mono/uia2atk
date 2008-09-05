@@ -23,6 +23,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
@@ -64,17 +65,32 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
+			
+		#region Navigation Test
+		
+		[Test]
+		public void NavigateTest ()
+		{
+			PictureBox pictureBox = (PictureBox) GetControlInstance  ();
+			IRawElementProviderFragmentRoot rootProvider;
+			IRawElementProviderFragment child;
+			
+			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (pictureBox);
+			
+			Assert.IsNotNull (rootProvider, "Provider shouldn't be null");
+
+			child = rootProvider.Navigate (NavigateDirection.FirstChild);
+			
+			Assert.IsNull (child, "PictureBoxProvider shouldn't have children");
+		}
+			
+		#endregion
 		
 		#region BaseProviderTest Overrides
 		
 		protected override Control GetControlInstance ()
 		{
 			return new PictureBox ();
-		}
-		
-		public override void LabeledByAndNamePropertyTest ()
-		{
-			//TODO: How to get a valid NameProperty?
 		}
 		
 		#endregion

@@ -91,6 +91,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public virtual void IsEnabledPropertyTest ()
 		{
 			Control control = GetControlInstance ();
+			if (control == null)
+				return;
+			
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
 			
 			bridge.ResetEventLists ();
@@ -132,6 +135,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public virtual void AutomationIdPropertyTest ()
 		{
 			Control control = GetControlInstance ();
+			if (control == null)
+				return;
+
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
 			
 			TestProperty (provider,
@@ -144,6 +150,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public virtual void BoundingRectanglePropertyTest ()
 		{
 			Control control = GetControlInstance ();
+			if (control == null)
+				return;
+			
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
 			
 			Form f = control as Form;
@@ -242,6 +251,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		protected void TestLabeledByAndName (bool expectNonNull, bool expectNameFromLabel)
 		{
 			Control control = GetControlInstance ();
+			if (control == null)
+				return;
 			
 			Form f = control as Form;
 			if (f != null)

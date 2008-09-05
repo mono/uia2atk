@@ -33,9 +33,10 @@
     <File name="ListBoxProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="ScrollBarProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="NumericUpDownProviderTest.cs" subtype="Code" buildaction="Compile" />
-    <File name="PictureBoxTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="PictureBoxProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="CheckedListBoxProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="ProgressBarProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="ErrorProviderTest.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
