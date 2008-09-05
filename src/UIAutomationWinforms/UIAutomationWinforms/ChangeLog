@@ -1,5 +1,10 @@
 2008-09-05  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Missing
+	  Is*PatternAvailableProperties added.
+
+2008-09-05  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Moved
 	  ControlElementProperty and ContentElementProperty on top.
 

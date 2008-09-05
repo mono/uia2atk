@@ -208,7 +208,6 @@ namespace Mono.UIAutomation.Winforms
 					return val;
 			}
 
-			//TODO: Add IsDockPatternAvailableProperty, IsGridItemPatternAvailableProperty, IsTableItemPatternAvailableProperty
 			if (propertyId == AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty.Id)
 				return IsBehaviorEnabled (ExpandCollapsePatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id)
@@ -239,6 +238,12 @@ namespace Mono.UIAutomation.Winforms
 				return IsBehaviorEnabled (ValuePatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.IsWindowPatternAvailableProperty.Id)
 				return IsBehaviorEnabled (WindowPatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsDockPatternAvailableProperty.Id)
+				return IsBehaviorEnabled (DockPatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id)
+				return IsBehaviorEnabled (GridPatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)
+				return IsBehaviorEnabled (TablePatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id) {
 				if (runtimeId == -1)
 					runtimeId = Helper.GetUniqueRuntimeId ();
