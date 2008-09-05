@@ -65,15 +65,7 @@ namespace atkSharpHelloWorld
 		public void FireChildrenChanged(uint changeIndex, Atk.Object child)
 		{
 			Console.WriteLine ("emitting");
-			try {
-				this.EmitChildrenChanged(Atk.Object.ChildrenChangedDetail.Remove, changeIndex, child);
-			}
-			//FIXME: drop this try-catch block when BNC#387220 is fixed
-			catch (Exception ex)
-			{
-				if (!ex.Message.Contains ("Unknown type"))
-					throw;
-			}
+			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Remove, changeIndex, child);
 			Console.WriteLine ("emitted");
 		}
 		
