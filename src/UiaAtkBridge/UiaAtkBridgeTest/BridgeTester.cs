@@ -84,6 +84,7 @@ namespace UiaAtkBridgeTest
 				selection = uiaComb;
 				action = uiaComb;
 				break;
+				
 			case BasicWidgetType.ParentMenu:
 				
 				MWF.ToolStripMenuItem parentMenu = new MWF.ToolStripMenuItem();
@@ -196,6 +197,8 @@ namespace UiaAtkBridgeTest
 			Atk.ValueImplementor value = null;
 			accessible = null;
 
+			string[] names = null;
+
 			switch (type) {
 			case BasicWidgetType.Label:
 				MWF.Label lab = new MWF.Label ();
@@ -280,9 +283,9 @@ namespace UiaAtkBridgeTest
 				component = uiaSb;
 				text = uiaSb;
 				break;
+
 			case BasicWidgetType.HScrollBar:
-			{
-				string[] names = new string[] { "First item", "Second Item", "Last Item", "A really, really long item that's here to try to ensure that we have a scrollbar, assuming that it's even possible to have a scrollbar just by having a relaly, really long item and we don't also have to perform some other function which I'm not aware of, like display the form on the screen" };
+				names = new string[] { "First item", "Second Item", "Last Item", "A really, really long item that's here to try to ensure that we have a scrollbar, assuming that it's even possible to have a scrollbar just by having a relaly, really long item and we don't also have to perform some other function which I'm not aware of, like display the form on the screen" };
 				GetAtkObjectThatImplementsInterface <Atk.Component> (BasicWidgetType.ListBox, names, out accessible, real);
 				for (int i = accessible.NAccessibleChildren - 1; i >= 0; i--)
 				{
@@ -298,10 +301,9 @@ namespace UiaAtkBridgeTest
 				component = (Atk.ComponentImplementor) accessible;
 				value = (Atk.ValueImplementor) accessible;
 				break;
-			}
+
 			case BasicWidgetType.VScrollBar:
-			{
-				string[] names = new string[100];
+				names = new string[100];
 				for (int i = 0; i < 100; i++)
 					names[i] = i.ToString();
 				GetAtkObjectThatImplementsInterface <Atk.Component> (BasicWidgetType.ListBox, names, out accessible, real);
@@ -319,7 +321,7 @@ namespace UiaAtkBridgeTest
 				component = (Atk.ComponentImplementor) accessible;
 				value = (Atk.ValueImplementor) accessible;
 				break;
-			}
+
 			case BasicWidgetType.ProgressBar:
 				MWF.ProgressBar pb = new MWF.ProgressBar ();
 				if (real)
@@ -334,6 +336,7 @@ namespace UiaAtkBridgeTest
 				text = uiaPb;
 				value = uiaPb;
 				break;
+
 			case BasicWidgetType.Spinner:
 				MWF.NumericUpDown nud = new MWF.NumericUpDown();
 				if (real)
@@ -350,6 +353,7 @@ namespace UiaAtkBridgeTest
 				component = uiaSp;
 				value = uiaSp;
 				break;
+
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
 			default:
