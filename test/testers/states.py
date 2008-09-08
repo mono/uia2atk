@@ -238,3 +238,6 @@ class ListItem(object):
 class ProgressBar(object):
     states = (SHOWING,)
 
+class NumericUpDown(object):
+    states = (SHOWING,)
+

@@ -58,16 +58,17 @@ class ProgressBarFrame(accessibles.Frame):
 
     #set progressbar's value
     def valueProgressBar(self, newValue):
-
-        procedurelogger.action('set scrollbar value to \"%s\"' % newValue)
-        self.progressbar.__setattr__('value', newValue)
+        procedurelogger.action('set progressbar value to \"%s\"' % newValue)
+        progressbar = self.findProgressBar(None)
+        sleep(config.LONG_DELAY)
+        progressbar.__setattr__('value', newValue)
 
     #assert progressbar's value
     def assertValue(self, value=None):
         maximumValue = self.progressbar._accessible.queryValue().maximumValue
 
         def resultMatches():
-            if 0 <= newValue <= maximumValue:
+            if 0 <= value <= maximumValue:
                 procedurelogger.expectedResult('the progressbar\'s current value is \"%s\"' % value)
                 print "progressbar's current value is:", self.progressbar.__getattr__('value')
                 return self.progressbar.__getattr__('value') == value

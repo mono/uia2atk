@@ -1,3 +1,11 @@
+2008-09-04  Calen Chen <cachen@novell.com>
+
+	*  testers/numericupdown,
+	*  testers/numericupdown/numericupdownframe.py,
+	*  testers/numericupdown/__init__.py: add new test for numericupdown
+	*  testers/states.py: add numericupdown's (spin button) state
+	*  testers/progressbar/progressbarframe.py: spelling correction
+
 2008-09-05  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* keystrokes: Add directory to store orca (keystroke) tests
