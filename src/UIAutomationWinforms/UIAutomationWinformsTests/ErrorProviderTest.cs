@@ -104,9 +104,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (3, count, "We should only have 3 children");
 			Assert.IsNotNull (provider, "We should have a provider different than Text");
 
-			
-			//TODO: Test. AutomationElementIdentifiers.LabeledByProperty
-			//TODO: Test. AutomationElementIdentifiers.NameProperty
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
 			              ControlType.Pane.Id);
@@ -137,6 +134,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsDockPatternAvailableProperty,
 			              false);
+			
+			//Test Navigation
+			Assert.IsNull (((IRawElementProviderFragment) provider).Navigate (NavigateDirection.FirstChild),
+			               "child provider should be null");
 		}
 
 		#endregion

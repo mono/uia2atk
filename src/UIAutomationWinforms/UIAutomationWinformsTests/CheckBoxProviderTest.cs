@@ -141,12 +141,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 bridge.AutomationPropertyChangedEvents.Count,
 			                 "event count");
 			
-			object element =
-				bridge.AutomationPropertyChangedEvents [0].element;
-			Assert.AreEqual (provider,
-			                 element,
-			                 "event element");
-			
 			AutomationPropertyChangedEventArgs eventArgs =
 				bridge.AutomationPropertyChangedEvents [0].e;
 			Assert.AreEqual (TogglePatternIdentifiers.ToggleStateProperty,

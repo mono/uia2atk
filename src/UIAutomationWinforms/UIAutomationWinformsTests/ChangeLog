@@ -1,3 +1,8 @@
+2008-09-08  Mario Carrion <mcarrion@novell.com> 
+
+	* CheckBoxProviderTest.cs: Revamp.
+	* ErrorProviderTest.cs: Testing navigation.
+
 2008-09-05  Mario Carrion <mcarrion@novell.com> 
 
 	* PictureBoxTest.cs: Renamed to PictureBoxProviderText.cs
