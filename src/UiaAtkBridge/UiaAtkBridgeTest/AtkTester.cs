@@ -92,6 +92,8 @@ namespace UiaAtkBridgeTest
 			PropertyRole (type, accessible);
 			
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "Button numChildren");
+
+			Parent (type, accessible);
 		}
 
 		[Test]
@@ -116,6 +118,7 @@ namespace UiaAtkBridgeTest
 			PropertyRole (type, accessible);
 			
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "CheckBox numChildren");
+			Parent (type, accessible);
 		}
 		
 		[Test]
@@ -141,6 +144,10 @@ namespace UiaAtkBridgeTest
 			                                 atkAction2, accessible2,
 			                                 atkAction3, accessible3);
 			
+			Parent (type, accessible);
+			Parent (type, accessible2);
+			Parent (type, accessible3);
+
 			name = "test 04";
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
@@ -149,6 +156,8 @@ namespace UiaAtkBridgeTest
 			PropertyRole (type, accessible);
 			
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "RadioButton numChildren");
+
+			Parent (type, accessible);
 		}
 		
 		[Test]
@@ -169,6 +178,8 @@ namespace UiaAtkBridgeTest
 			int x, y, width, height;
 			atkComponent.GetExtents (out x, out y, out width, out height, Atk.CoordType.Screen);
 			Assert.IsTrue (width > 0 && height > 0);
+
+			Parent (type, accessible);
 		}
 		
 		[Test]
@@ -227,7 +238,7 @@ namespace UiaAtkBridgeTest
 			string name = "test";
 
 			Atk.Value atkValue = (Atk.Value)
-				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, false);
+				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
 			InterfaceValue (type, atkValue);
 
 			PropertyRole (type, accessible);
@@ -235,8 +246,10 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "ProgressBar numChildren");
 
 			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, false);
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
 			InterfaceComponent (type, atkComponent);
+
+			Parent (type, accessible);
 		}
 		
  		[Test]
@@ -255,7 +268,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "Spinner numChildren");
 
 			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, false);
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
 			InterfaceComponent (type, atkComponent);
 		}
 		
@@ -335,7 +348,7 @@ namespace UiaAtkBridgeTest
 		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
 		//the widget, so we kill all with the method marked as [TestFixtureTearDown]
-		[Test]
+		//[Test]
 		public void ComboBox ()
 		{
 			BasicWidgetType type = BasicWidgetType.ComboBox;
@@ -716,9 +729,7 @@ namespace UiaAtkBridgeTest
 			Atk.Text atkText;
 			string name = "This is a test sentence.\r\nSecond line. Other phrase.\nThird line?";
 
-			bool real = false;
-			if (type == BasicWidgetType.TextBoxEntry)
-				real = true;
+			bool real = true;
 			
 			Atk.Object accessible;
 			atkText = (Atk.Text)
@@ -1090,9 +1101,7 @@ namespace UiaAtkBridgeTest
 			Atk.Text atkText;
 			string name = "This is a test sentence.";
 
-			bool real = false;
-			if (type == BasicWidgetType.TextBoxEntry)
-				real = true;
+			bool real = true;
 			
 			Atk.Object accessible;
 			atkText = (Atk.Text)

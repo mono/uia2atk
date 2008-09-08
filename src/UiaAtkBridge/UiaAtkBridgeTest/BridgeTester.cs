@@ -168,7 +168,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (sb1);
 			form.Controls.Add(menuStrip1);
 			form.MainMenuStrip = menuStrip1;
-			//form.Controls.Add (pb1);
+			form.Controls.Add (pb1);
 			form.Controls.Add (nud1);
 			radios.Add (rad1);
 			radios.Add (rad2);

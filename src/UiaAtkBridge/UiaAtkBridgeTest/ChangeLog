@@ -1,3 +1,9 @@
+2008-09-08 Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Add Parent() for more tests
+	  Always use real widgets
+	* BridgeTester.cs: Enable ProgressBar
+
 2008-09-08  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* BridgeTester.cs: Coding style: braces confuse a bit on a switch

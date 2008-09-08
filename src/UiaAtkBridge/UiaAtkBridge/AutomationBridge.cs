@@ -181,6 +181,8 @@ namespace UiaAtkBridge
 				HandleNewComboBoxControlType (simpleProvider);
 			else if (controlTypeId == ControlType.StatusBar.Id)
 				HandleNewStatusBarControlType (simpleProvider);
+			else if (controlTypeId == ControlType.ProgressBar.Id)
+				HandleNewProgressBarControlType (simpleProvider);
 			else if (controlTypeId == ControlType.ScrollBar.Id)
 				HandleNewScrollBarControlType (simpleProvider);
 			else if (controlTypeId == ControlType.Group.Id)
@@ -331,6 +333,22 @@ namespace UiaAtkBridge
 			parentObject.AddOneChild (atkStatus);
 			parentObject.AddRelationship (Atk.RelationType.Embeds,
 			                              atkStatus);
+		}
+		
+		private void HandleNewProgressBarControlType (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject =
+				GetParentAdapter (provider);
+			
+			ProgressBar atkProgress;
+			if (provider is IGridProvider)
+				atkProgress = new ProgressBar (provider);
+ 			else atkProgress = new ProgressBar (provider);
+			providerAdapterMapping [provider] = atkProgress;
+			
+			parentObject.AddOneChild (atkProgress);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkProgress);
 		}
 		
 		private void HandleNewScrollBarControlType (IRawElementProviderSimple provider)

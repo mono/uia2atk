@@ -1,3 +1,7 @@
+2008-09-08  Mike Gorse <mgorse@novell.com>
+
+	* AutomationBridge.cs: Handle ProgressBar.
+
 2008-09-05  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* ParentAdapter.cs: Remove workarounds for a bug that is now fixed
