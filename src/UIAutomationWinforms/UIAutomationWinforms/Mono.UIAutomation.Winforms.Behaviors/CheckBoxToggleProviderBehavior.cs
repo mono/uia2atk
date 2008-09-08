@@ -20,98 +20,103 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
+//	Sandy Armstrong <sanfordarmstrong@gmail.com>
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
-
-	internal class TextBoxValueProviderBehavior 
-		: ProviderBehavior, IValueProvider
+	
+	internal class CheckBoxToggleProviderBehavior 
+		: ProviderBehavior, IToggleProvider
 	{
-
+		
 		#region Constructor
 		
-		public TextBoxValueProviderBehavior (FragmentControlProvider provider)
+		public CheckBoxToggleProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
 		}
-
-		#endregion
 		
-		#region ProviderBehavior: Specialization
-
-		public override AutomationPattern ProviderPattern { 
-			get { return ValuePatternIdentifiers.Pattern; }
-		}
-
+		#endregion
+				
+		#region IProviderBehavior Interface
+		
 		public override void Connect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
-			                   new ValuePatternValueIsReadOnlyEvent (Provider));
-			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
-			                   new TextBoxValuePatternValueIsReadOnlyEvent (Provider));
+			Provider.SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
+			                   new TogglePatternToggleStatePropertyEvent (Provider));
 		}
-
+		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
-			                   null);
-			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
+			Provider.SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
 			                   null);
 		}
-
+		
+		public override AutomationPattern ProviderPattern { 
+			get { return TogglePatternIdentifiers.Pattern; }
+		}
+		
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == ValuePatternIdentifiers.IsReadOnlyProperty.Id)
-				return IsReadOnly;
-			else if (propertyId == ValuePatternIdentifiers.ValueProperty.Id)
-				return Value;
+			if (propertyId == TogglePatternIdentifiers.ToggleStateProperty.Id)
+				return ToggleState;
 			else
 				return null;
 		}
-		
-		#endregion
 
-		#region IValueProvider: Specialization
-		
-		public bool IsReadOnly {
-			get { return ((TextBoxBase) Provider.Control).ReadOnly; }
-		}
-		
-		public string Value {
-			get { return Provider.Control.Text; }
-		}
-
-		public void SetValue (string value)
-		{
-			if (IsReadOnly)
-				throw new ElementNotEnabledException ();
-
-			Provider.Control.Text = value;
-		}
-		
 		#endregion
 		
-		#region Private Methods
-		
-		private void OnReadOnlyChanged (object sender, EventArgs args)
+		#region IToggleProvider Members
+	
+		public void Toggle ()
 		{
-			
-		}
-		
-		private void OnValueChanged (object sender, EventArgs args)
-		{
-			
-		}
-		
-		#endregion
+			CheckBox checkbox = (CheckBox) Provider.Control;
 
+			switch (checkbox.CheckState) {
+			case CheckState.Checked:
+				checkbox.CheckState = CheckState.Unchecked;
+				break;
+			case CheckState.Unchecked:
+				if (checkbox.ThreeState)
+					checkbox.CheckState = 
+						CheckState.Indeterminate;
+				else
+					checkbox.CheckState = 
+						CheckState.Checked;
+				break;
+			// Control could still have been set to intermediate
+			// programatically, regardless of ThreeState value.
+			case CheckState.Indeterminate:
+			default:
+				checkbox.CheckState = CheckState.Checked;
+				break;
+			}
+		}
+
+		public ToggleState ToggleState {
+			get {
+				CheckBox checkbox = (CheckBox) Provider.Control;
+				
+				switch (checkbox.CheckState) {
+				case CheckState.Checked:
+					return ToggleState.On;
+				case CheckState.Unchecked:
+					return ToggleState.Off;
+				case CheckState.Indeterminate:
+				default:
+					return ToggleState.Indeterminate;
+				}
+			}
+		}
+
+		#endregion
 	}
 }

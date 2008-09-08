@@ -58,5 +58,14 @@ namespace Mono.UIAutomation.Winforms.Events
 		}
 		
 		#endregion 
+		
+		#region Private Methods
+		
+		private void OnValueChanged (object sender, EventArgs args)
+		{
+			ValueEvent ();
+		}
+		
+		#endregion
 	}
 }

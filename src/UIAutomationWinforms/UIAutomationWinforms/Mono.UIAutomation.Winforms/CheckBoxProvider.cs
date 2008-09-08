@@ -25,27 +25,20 @@
 
 using System;
 using System.Windows.Forms;
-
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Behaviors;
 
 namespace Mono.UIAutomation.Winforms
 {
 	
-	internal class CheckBoxProvider : FragmentControlProvider, IToggleProvider
+	internal class CheckBoxProvider : FragmentControlProvider
 	{
-#region Private Fields
-		
-		private CheckBox checkbox;
-		
-#endregion		
 	
 #region Constructors
 		
 		public CheckBoxProvider (CheckBox checkbox) : base (checkbox)
 		{
-			this.checkbox = checkbox;
 		}
 		
 #endregion
@@ -55,31 +48,19 @@ namespace Mono.UIAutomation.Winforms
 		public override void InitializeEvents ()
 		{
 			base.InitializeEvents ();
-
-			SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
-			          new TogglePatternToggleStatePropertyEvent (this));
+			
+			SetBehavior (TogglePatternIdentifiers.Pattern,
+			             new CheckBoxToggleProviderBehavior (this));
 		}
 		
 #endregion
 		
 #region IRawElementProviderSimple Members
-	
-		public override object GetPatternProvider (int patternId)
-		{
-			if (patternId == TogglePatternIdentifiers.Pattern.Id)
-				return this;
-			
-			return null;
-		}
 		
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.CheckBox.Id;
-			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
-				return null;
-			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return Control.Text;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "check box";
 			else
@@ -87,46 +68,6 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 #endregion
-		
-#region IToggleProvider Members
-	
-		public void Toggle ()
-		{
-			switch (checkbox.CheckState) {
-			case CheckState.Checked:
-				checkbox.CheckState = CheckState.Unchecked;
-				break;
-			case CheckState.Unchecked:
-				if (checkbox.ThreeState)
-					checkbox.CheckState = 
-						CheckState.Indeterminate;
-				else
-					checkbox.CheckState = 
-						CheckState.Checked;
-				break;
-			// Control could still have been set to intermediate
-			// programatically, regardless of ThreeState value.
-			case CheckState.Indeterminate:
-			default:
-				checkbox.CheckState = CheckState.Checked;
-				break;
-			}
-		}
 
-		public ToggleState ToggleState {
-			get {
-				switch (checkbox.CheckState) {
-				case CheckState.Checked:
-					return ToggleState.On;
-				case CheckState.Unchecked:
-					return ToggleState.Off;
-				case CheckState.Indeterminate:
-				default:
-					return ToggleState.Indeterminate;
-				}
-			}
-		}
-
-#endregion
 	}
 }

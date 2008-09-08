@@ -22,51 +22,40 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-using Mono.UIAutomation.Winforms;
+using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
-	
-	internal class ComboBoxExpandCollapseStateEvent 
-		: ExpandCollapsePatternStatePropertyEvent
+
+	internal class TextBoxValuePatternValueIsReadOnlyEvent 
+		: ValuePatternValueIsReadOnlyEvent
 	{
 		
 		#region Constructor
-
-		public ComboBoxExpandCollapseStateEvent (IRawElementProviderSimple provider) 
+		
+		public TextBoxValuePatternValueIsReadOnlyEvent (IRawElementProviderSimple provider)
 			: base (provider)
 		{
 		}
 		
 		#endregion
 		
-		#region EventStrategy Methods
-		
+		#region ProviderEvent Methods
+
 		public override void Connect (Control control)
 		{
-			((ComboBox) control).DropDown += new EventHandler (OnDropDown);
+			((TextBoxBase) control).ReadOnlyChanged 
+				+= new EventHandler (OnIsReadOnlyChanged);
 		}
 
 		public override void Disconnect (Control control)
 		{
-			((ComboBox) control).DropDown -= new EventHandler (OnDropDown);
+			((TextBoxBase) control).ReadOnlyChanged 
+				-= new EventHandler (OnIsReadOnlyChanged);
 		}
 		
-		#endregion
-
-		#region Private method
-		
-		private void OnDropDown (object sender, EventArgs e)
-		{
-			ExpandCollapseStateProperty ();
-		}
-		
-		#endregion
-
+		#endregion 
 	}
 }

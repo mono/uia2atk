@@ -79,10 +79,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		//TODO: We should connect the events to update this.text_range_provider?
 		public ITextRangeProvider DocumentRange {
 			get { 
-				if (text_range_provider == null)
-					text_range_provider = new TextRangeProvider (this, 
+				if (textRangeProvider == null)
+					textRangeProvider = new TextRangeProvider (this, 
 					                                             (TextBoxBase) Provider.Control); 
-				return text_range_provider;
+				return textRangeProvider;
 			}
 		}
 		
@@ -121,7 +121,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 		#region Private section
 		
-		private ITextRangeProvider text_range_provider;
+		private ITextRangeProvider textRangeProvider;
 		
 		#endregion		
 		

@@ -44,6 +44,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ButtonInvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/CheckBoxToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBoxButtonInvokeBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBoxExpandCollapseProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBoxValueProviderBehavior.cs \
@@ -61,7 +62,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBarGridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBoxScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBoxTextProviderBehavior.cs \
@@ -75,6 +76,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ComboBoxButtonInvokePatternInvokeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBoxExpandCollapseStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBoxItemElementSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ExpandCollapsePatternStatePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/GridPatternColumnCountPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/GridPatternRowCountPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/InvokePatternInvokedEvent.cs \
@@ -84,9 +86,11 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \
 	Mono.UIAutomation.Winforms.Events/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/SelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBoxHasKeyBoardFocusPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TextBoxValuePatternValueIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TogglePatternToggleStatePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ValuePatternValueIsReadOnlyEvent.cs \

@@ -22,7 +22,6 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -31,37 +30,21 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 	
-	internal class RangeValuePatternValueEvent : ProviderEvent
+	internal abstract class RangeValuePatternValueEvent : ProviderEvent
 	{
 
-#region Constructor
+		#region Constructor
 
-		public RangeValuePatternValueEvent (IRawElementProviderSimple provider) 
+		protected RangeValuePatternValueEvent (IRawElementProviderSimple provider) 
 			: base (provider)
 		{
 		}
 		
-#endregion
-		
-#region IConnectable Overrides
+		#endregion
 
-		public override void Connect (Control control)
-		{
-			((ScrollBar) control).ValueChanged 
-				+= new EventHandler (OnValueChanged);
-		}
-
-		public override void Disconnect (Control control)
-		{
-			((ScrollBar) control).ValueChanged 
-				-= new EventHandler (OnValueChanged);
-		}
+		#region Private methods
 		
-#endregion 
-		
-#region Protected methods
-		
-		protected void OnValueChanged (object sender, EventArgs e)
+		protected void ValueEvent ()
 		{
 			if (AutomationInteropProvider.ClientsAreListening) {
 				AutomationPropertyChangedEventArgs args =
@@ -72,6 +55,6 @@ namespace Mono.UIAutomation.Winforms.Events
 			}
 		}
 
-#endregion
+		#endregion
 	}
 }

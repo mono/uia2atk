@@ -60,10 +60,18 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public override object GetPropertyValue (int propertyId)
 		{			
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Document.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "document";
+			if (propertyId == ScrollPatternIdentifiers.HorizontallyScrollableProperty.Id)
+				return HorizontallyScrollable;
+			else if (propertyId == ScrollPatternIdentifiers.HorizontalScrollPercentProperty.Id)
+				return HorizontalScrollPercent;
+			else if (propertyId == ScrollPatternIdentifiers.HorizontalViewSizeProperty.Id)
+				return HorizontalViewSize;
+			else if (propertyId == ScrollPatternIdentifiers.VerticallyScrollableProperty.Id)
+				return VerticallyScrollable;
+			else if (propertyId == ScrollPatternIdentifiers.VerticalScrollPercentProperty.Id)
+				return VerticalScrollPercent;
+			else if (propertyId == ScrollPatternIdentifiers.VerticalViewSizeProperty.Id)
+				return VerticalViewSize;
 			else
 				return null;
 		}

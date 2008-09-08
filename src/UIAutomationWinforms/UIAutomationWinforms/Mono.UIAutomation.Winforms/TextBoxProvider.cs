@@ -42,6 +42,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			this.textboxbase = textBoxBase;
 			
+			//Text pattern is supported by both Control Types: Document and Edit
 			SetBehavior (TextPatternIdentifiers.Pattern,
 			             new TextBoxTextProviderBehavior (this));
 			
@@ -52,18 +53,14 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 
 		#region Public Methods
-		
+
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Edit.Id;
+				return textboxbase.Multiline == true ? ControlType.Document.Id : ControlType.Edit.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "edit";
-			else if (propertyId == AutomationElementIdentifiers.IsTextPatternAvailableProperty.Id)
-				return IsBehaviorEnabled (TextPatternIdentifiers.Pattern);
-			else if (propertyId == AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty.Id)
-				return false;
-			else
+				return textboxbase.Multiline == true ? "document" : "edit";
+			else 
 				return base.GetPropertyValue (propertyId);
 		}
 		
@@ -85,16 +82,21 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void UpdateBehaviors ()
 		{
-			if (textboxbase.Multiline == true) {
+			//Here we are changing from Edit to Document and vice versa.
+			if (textboxbase.Multiline == true) { //Document Control Type
 				SetBehavior (ScrollPatternIdentifiers.Pattern,
 				             new TextBoxScrollProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             null);
-			} else {
+				SetBehavior (RangeValuePatternIdentifiers.Pattern,
+				             null);
+			} else { //Edit Control Type
 				SetBehavior (ScrollPatternIdentifiers.Pattern,
 				             null);
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new TextBoxValueProviderBehavior (this));
+				SetBehavior (RangeValuePatternIdentifiers.Pattern,
+				             null);
 			}
 		}
 		

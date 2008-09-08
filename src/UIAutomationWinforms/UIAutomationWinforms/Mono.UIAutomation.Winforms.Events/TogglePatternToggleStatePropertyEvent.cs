@@ -36,11 +36,9 @@ namespace Mono.UIAutomation.Winforms.Events
 
 #region Constructors
 
-		//FIXME: This will crash when revamping to new behavior logic
-		public TogglePatternToggleStatePropertyEvent (IToggleProvider toggleProvider)
-			: base ((IRawElementProviderFragment) toggleProvider)
+		public TogglePatternToggleStatePropertyEvent (IRawElementProviderFragment toggleProvider)
+			: base (toggleProvider)
 		{
-			this.toggleProvider = toggleProvider;
 		}
 		
 #endregion
@@ -67,13 +65,12 @@ namespace Mono.UIAutomation.Winforms.Events
 				AutomationPropertyChangedEventArgs args =
 					new AutomationPropertyChangedEventArgs (TogglePatternIdentifiers.ToggleStateProperty,
 					                                        null, // Mimics MS behavior
-					                                        toggleProvider.ToggleState);
+					                                        Provider.GetPropertyValue (TogglePatternIdentifiers.ToggleStateProperty.Id));
 				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
 			}
 		}
 
 #endregion
 		
-		private IToggleProvider toggleProvider;
 	}
 }

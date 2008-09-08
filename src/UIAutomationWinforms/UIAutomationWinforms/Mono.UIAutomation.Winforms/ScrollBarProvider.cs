@@ -180,13 +180,13 @@ namespace Mono.UIAutomation.Winforms
 					= (IScrollProvider) container.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id);
 				if (provider == null)
 					SetBehavior (RangeValuePatternIdentifiers.Pattern,
-					             new ScrollBarRangeValueBehavior (this));
+					             new ScrollBarRangeValueProviderBehavior (this));
 				else
 					SetBehavior (RangeValuePatternIdentifiers.Pattern, null);
 			} else
 				//TODO: Is this default behavior OK?
 				SetBehavior (RangeValuePatternIdentifiers.Pattern,
-				             new ScrollBarRangeValueBehavior (this));
+				             new ScrollBarRangeValueProviderBehavior (this));
 		}
 
 		#endregion

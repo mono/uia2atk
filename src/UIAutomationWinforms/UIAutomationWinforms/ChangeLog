@@ -1,3 +1,37 @@
+2008-09-08  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated files added.
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Updated to class
+	  name changed.
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs,
+	  Mono.UIAutomation.Winforms.Events/TogglePatternToggleStatePropertyEvent.cs:
+	  Revamped.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Updated to support
+	  Document and Edit control types.
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueProviderBehavior.cs:
+	  Renamed to ScrollBarRangeValueProviderBehavior.
+	* Mono.UIAutomation.Winforms.Behaviors/CheckBoxToggleProviderBehavior.cs:
+	  File added. Revamped.
+	* Mono.UIAutomation.Winforms.Behaviors/TextBoxValueProviderBehavior.cs:
+	  Setting Value Pattern events.
+	* Mono.UIAutomation.Winforms.Behaviors/TextBoxTextProviderBehavior.cs:
+	  Coding guidelines.
+	* Mono.UIAutomation.Winforms.Behaviors/TextBoxScrollProviderBehavior.cs:
+	  Added missing properties.
+	* Mono.UIAutomation.Winforms.Events/TextBoxValuePatternValueIsReadOnlyEvent.cs:
+	  Implements Value pattern for TexBox.
+	* Mono.UIAutomation.Winforms.Events/RangeValuePatternValueEvent.cs:
+	  Changed as abstract class. 
+	* Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternValueEvent.cs:
+	  Implements RangeValue pattern for ScrollBar provider.
+	* Mono.UIAutomation.Winforms.Events/ComboBoxExpandCollapseStateEvent.cs:
+	  Subclassing from ExpandCollapsePatternStatePropertyEvent.
+	* Mono.UIAutomation.Winforms.Events/ProgressBarRangeValuePatternValueEvent.cs:
+	  Added event method.
+	* Mono.UIAutomation.Winforms.Events/ExpandCollapsePatternStatePropertyEvent.cs:
+	  Implements ExpandCollpase Pattern: State Property.
+
 2008-09-05  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Missing

@@ -32,13 +32,13 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
-	internal class ScrollBarRangeValueBehavior 
+	internal class ScrollBarRangeValueProviderBehavior 
 		: ProviderBehavior, IRangeValueProvider
 	{
 
 		#region Constructors
 		
-		public ScrollBarRangeValueBehavior (ScrollBarProvider provider)
+		public ScrollBarRangeValueProviderBehavior (ScrollBarProvider provider)
 			: base (provider) 
 		{
 			scrollbar = (ScrollBar) provider.Control;
@@ -55,7 +55,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		public override void Connect (Control control) 
 		{
 			Provider.SetEvent (ProviderEventType.RangeValuePatternValueProperty,
-			                   new RangeValuePatternValueEvent (Provider));
+			                   new ScrollBarRangeValuePatternValueEvent (Provider));
 		}
 		
 		public override void Disconnect (Control control)
