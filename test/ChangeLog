@@ -1,4 +1,11 @@
-2008-09-04  Calen Chen <cachen@novell.com>
+2008-09-09  Calen Chen <cachen@novell.com>
+
+	*  testers/progressbar_basic_ops.py: update value, change 
+	valueProgressBar() to click()
+	*  testers/progressbar/progressbarframe.py: delete valueProgressBar(), 
+	set value in accerciser is unuseful 
+
+2008-09-08  Calen Chen <cachen@novell.com>
 
 	*  testers/numericupdown,
 	*  testers/numericupdown/numericupdownframe.py,

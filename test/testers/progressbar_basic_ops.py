@@ -55,15 +55,15 @@ pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
 pbFrame.assertValue(20)
 
-#set progressbar's value to 60
-pbFrame.valueProgressBar(60)
+#click button the third time
+pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
-pbFrame.assertLabel("60%")
+pbFrame.assertLabel("30%")
 
-#set progressbar's value to 100
-pbFrame.valueProgressBar(100)
+#click button the fourth time
+pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
-pbFrame.assertValue(100)
+pbFrame.assertValue(40)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

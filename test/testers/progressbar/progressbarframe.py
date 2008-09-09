@@ -56,13 +56,6 @@ class ProgressBarFrame(accessibles.Frame):
             return self.findLabel(None).text == "It is %s percent " % percent + "of 100%"
         assert retryUntilTrue(resultMatches)
 
-    #set progressbar's value
-    def valueProgressBar(self, newValue):
-        procedurelogger.action('set progressbar value to \"%s\"' % newValue)
-        progressbar = self.findProgressBar(None)
-        sleep(config.LONG_DELAY)
-        progressbar.__setattr__('value', newValue)
-
     #assert progressbar's value
     def assertValue(self, value=None):
         maximumValue = self.progressbar._accessible.queryValue().maximumValue
