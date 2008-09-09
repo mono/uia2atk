@@ -45,6 +45,8 @@ namespace UiaAtkBridge
 		static private Dictionary<IRawElementProviderSimple, Adapter>
 			providerAdapterMapping;
 		
+		private int windowProviders;
+		
 #endregion
 
 #region Public Constructor
@@ -61,6 +63,8 @@ namespace UiaAtkBridge
 				new Dictionary<IntPtr,IRawElementProviderSimple> ();
 			providerAdapterMapping =
 				new Dictionary<IRawElementProviderSimple, Adapter>();
+
+			windowProviders = 0;
 		}
 		
 #endregion
@@ -226,6 +230,8 @@ namespace UiaAtkBridge
 			
 			IntPtr providerHandle = (IntPtr) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
 			pointerProviderMapping [providerHandle] = simpleProvider;
+			
+			windowProviders++;
 		}
 		
 		private void HandleWindowProviderRemoval (IWindowProvider provider)
@@ -238,7 +244,10 @@ namespace UiaAtkBridge
 				(IRawElementProviderSimple) provider;
 			IntPtr providerHandle = (IntPtr) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
 			pointerProviderMapping.Remove (providerHandle);
-			appMonitor.Quit ();
+			
+			windowProviders--;
+			if (windowProviders == 0)
+				appMonitor.Quit ();
 		}
 		
 		private void HandleNewButtonControlType (IRawElementProviderSimple provider)

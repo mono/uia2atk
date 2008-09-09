@@ -1,3 +1,11 @@
+2008-09-09  Mario Carrion <mcarrion@novell.com> 
+
+	* AutomationBridge.cs: Quits monitor in last window.
+	
+	  
+	
+	  [Fixes Bug #423240]
+
 2008-09-08  Mike Gorse <mgorse@novell.com>
 
 	* AutomationBridge.cs: Handle ProgressBar.
