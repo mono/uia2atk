@@ -1,3 +1,9 @@
+2008-09-09  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* keystrokes/gtktutorial.py/gtktutorial_example_1.py: Fix typo
+	* keystrokes/gtktutorial.py/gtktutorial_example_2.py: Add a second
+	gtk test example for Orca.
+
 2008-09-09  Calen Chen <cachen@novell.com>
 
 	*  testers/progressbar_basic_ops.py: update value, change 

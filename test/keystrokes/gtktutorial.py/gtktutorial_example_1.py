@@ -47,7 +47,7 @@ sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("Return"))
 sequence.append(WaitForFocus("Column 0", acc_role=pyatspi.ROLE_TABLE_COLUMN_HEADER))
 sequence.append(utils.AssertPresentationAction(
-    "Clicked Button 2",
+    "Clicked Button 1",
    ["BRAILLE LINE:  'gtktutorial.py Application Sample Tree View Frame'",
     "     VISIBLE:  'Sample Tree View Frame', cursor=1",
     "BRAILLE LINE:  'gtktutorial.py Application Sample Tree View Frame TreeTable Column 0 ColumnHeader'",
