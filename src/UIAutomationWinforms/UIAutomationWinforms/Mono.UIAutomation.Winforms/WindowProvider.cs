@@ -75,8 +75,14 @@ namespace Mono.UIAutomation.Winforms
 			
 			FinalizeChildControlStructure ();
 			
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-			                                   this);
+			if (form.Owner == null)
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
+				                                   this);
+			else {
+				WindowProvider ownerProvider = 
+					ProviderFactory.GetProvider (form.Owner, false, false) as WindowProvider;
+				ownerProvider.RemoveChildProvider (true, this);
+			}
 		}
 		
 		private void OnShown (object sender, EventArgs args)

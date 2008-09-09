@@ -119,14 +119,22 @@ namespace Mono.UIAutomation.Winforms
 				ProviderFactory.GetProvider (f,
 				                             true);
 			formProviders [f] = provider;
-			//Initialize navigation to let children use it
-			provider.Navigation = NavigationFactory.CreateNavigation (provider);
-			provider.Navigation.Initialize ();
 			
-			// TODO: Fill in rest of eventargs
-			Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
-			                                   provider);
-			provider.InitializeChildControlStructure ();
+			if (f.Owner == null) { //For example is not MessageBox or f.ShowDialog
+				//Initialize navigation to let children use it
+				provider.Navigation = NavigationFactory.CreateNavigation (provider);
+				provider.Navigation.Initialize ();
+				
+				// TODO: Fill in rest of eventargs
+				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded,
+				                                   provider);
+				provider.InitializeChildControlStructure ();
+			} else {
+				WindowProvider ownerProvider = 
+					ProviderFactory.GetProvider (f.Owner, false, false) as WindowProvider;
+				ownerProvider.AddChildProvider (true, provider);
+			}
+			
 		}
 		
 #endregion

@@ -52,7 +52,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			WindowProvider win;
 			
 			if ((win = provider as WindowProvider) != null)
-				navigation = new ParentNavigation (win);
+				navigation = new ParentNavigation (win, rootProvider);
 			else if (provider is FragmentRootControlProvider)
 				navigation = new ParentNavigation ((FragmentRootControlProvider) provider, 
 				                                   rootProvider);	
