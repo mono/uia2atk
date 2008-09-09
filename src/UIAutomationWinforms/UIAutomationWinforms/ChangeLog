@@ -1,3 +1,8 @@
+2008-09-09  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs: Added Name and
+	  LabeledBy
+
 2008-09-08  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated files added.

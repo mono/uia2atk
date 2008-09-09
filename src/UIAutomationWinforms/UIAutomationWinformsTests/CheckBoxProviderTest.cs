@@ -70,6 +70,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		[Test]
+		public override void LabeledByAndNamePropertyTest ()
+		{
+			TestLabeledByAndName (false, true);
+		}
+		
+		[Test]
 		public void ToggleStatePropertyChangedEventTest ()
 		{
 			CheckBox checkbox = new CheckBox ();

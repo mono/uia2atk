@@ -1,3 +1,7 @@
+2008-09-09  Mario Carrion <mcarrion@novell.com> 
+
+	* CheckBoxProviderTest.cs: Added test to override base implementation.
+
 2008-09-08  Mario Carrion <mcarrion@novell.com> 
 
 	* CheckBoxProviderTest.cs: Revamp.
