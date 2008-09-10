@@ -1,3 +1,12 @@
+2008-09-10  Mario Carrion <mcarrion@novell.com> 
+
+	* ScrollBar.cs: Not using Parent in constructor, instead calling it
+	  when needed in GetCurrentValue and SetCurrentValue.
+	
+	  
+	
+	  [Fixes Bug #414937]
+
 2008-09-10  Mike Gorse <mgorse@novell.com>
 
 	* ScrollBar.cs: Avoid crashing in GetCurrentValue when no provider

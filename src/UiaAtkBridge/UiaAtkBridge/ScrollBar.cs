@@ -42,9 +42,6 @@ namespace UiaAtkBridge
 			this.provider = provider;
 			Role = Atk.Role.ScrollBar;
 			rangeValueProvider = (IRangeValueProvider)provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
-			Adapter parentAdapter = Parent as Adapter;
-			if (parentAdapter != null)
-				parentScrollProvider = (IScrollProvider)parentAdapter.Provider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id);
 			orientation = (OrientationType)provider.GetPropertyValue (AutomationElementIdentifiers.OrientationProperty.Id);
 		}
 		
@@ -71,7 +68,14 @@ namespace UiaAtkBridge
 		{
 			if (rangeValueProvider != null)
 				value = new GLib.Value (rangeValueProvider.Value);
-			else if (parentScrollProvider == null) {
+			
+			if (parentScrollProvider == null)
+				GetScrollProviderFromParent ();
+			
+			//TODO: This double validation will be removed in future versions because
+			//if your SWF.ScrollBar.Parent doesn't support IScrollProvider then your
+			//ScrollBar is not ScrollBar is Pane!!
+			if (parentScrollProvider == null) {
 				Console.WriteLine ("Warning: Scrollbar with no UIA value implementation");
 				value = new GLib.Value ((double)0);
 			}
@@ -87,7 +91,14 @@ namespace UiaAtkBridge
 			if (v < 0 || v > 100) return false;
 			if (rangeValueProvider != null)
 				rangeValueProvider.SetValue (v);
-			else if (parentScrollProvider == null)
+			
+			if (parentScrollProvider == null)
+				GetScrollProviderFromParent ();
+			
+			//TODO: This double validation will be removed in future versions because
+			//if your SWF.ScrollBar.Parent doesn't support IScrollProvider then your
+			//ScrollBar is not ScrollBar is Pane!!
+			if (parentScrollProvider == null)
 				return false;
 			else if (orientation == OrientationType.Vertical)
 				parentScrollProvider.SetScrollPercent (parentScrollProvider.HorizontalScrollPercent, v);
@@ -118,5 +129,13 @@ namespace UiaAtkBridge
 		{
 			// TODO
 		}
+		
+		private void GetScrollProviderFromParent ()
+		{
+			Adapter parentAdapter = Parent as Adapter;
+			if (parentAdapter != null)
+				parentScrollProvider = (IScrollProvider)parentAdapter.Provider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id);
+		}
+		
 		}
 }
