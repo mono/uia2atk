@@ -6,10 +6,6 @@
 # Description: Run the enabled tests on the local machine
 ##############################################################################
 
-# import the enabled tests
-import tests
-
-# other imports
 import sys
 import getopt
 import os
@@ -17,7 +13,7 @@ import time
 from socket import gethostname
 import signal
 import subprocess as s
-
+global tests
 
 # simply takes a string s as input and prints it if running verbosely
 def output(s, newline=True):
@@ -31,21 +27,11 @@ def abort(status):
   ''' exit according to status '''
   exit(status)
 
-
-class Singleton(object):
-  _instance = None
-
-  def __new__(cls, *args, **kwargs):
-    if not cls._instance:
-      cls._instance = super(Singleton, cls).__new__(
-                            cls, *args, **kwargs)
-      return cls._instance
-
-
 class Settings(object):
 
   # static variable, set by ctor
-  is_quiet = None
+  is_smoke = False
+  is_quiet = False
   uiaqa_home = None
   log_path = None
   COUNTDOWN = 5
@@ -67,7 +53,7 @@ class Settings(object):
     opts = []
     args = []
     try:
-      opts, args = getopt.getopt(sys.argv[1:],"hql:",["help","quiet","log="])
+      opts, args = getopt.getopt(sys.argv[1:],"shql:",["smoke","help","quiet","log="])
     except getopt.GetoptError:
       self.help()
 
@@ -80,12 +66,15 @@ class Settings(object):
         abort(0)
       if o in ("-l","--log"):
         Settings.log_path = a
+      if o in ("-s","--smoke"):
+        Settings.is_smoke = True
 
   def help(self):
     output("Common Options:")
     output("  -h | --help        Print help information (this message).")
     output("  -q | --quiet       Don't print anything.")
     output("  -l | --log=        Where the log(s) should be stored.")
+    output("  -s | --smoke       Run only smoke tests")
 
   def set_uiaqa_home(self):
     harness_dir = sys.path[0]
@@ -95,6 +84,15 @@ class Settings(object):
 class Test(object):
 
   def __init__(self):
+
+    # conditional import based on whether we want to run smoke tests or
+    # regression tests
+    global tests
+    if Settings.is_smoke:
+      import smoke_tests as tests
+    else:
+      import tests as tests
+
     self.tests = tests.tests_list
 
   def countdown(self, n):
@@ -214,7 +212,7 @@ class Test(object):
               # If it doesn't exist anymore, cool.
               pass
             output("WARNING:  Could not kill process: %s" % pid)
-      
+  
 class InconceivableError(Exception): pass
 
 class Main(object):
@@ -227,8 +225,7 @@ class Main(object):
     	output("INFO:  Logging to:  %s" % Settings.log_path)
     return r
 
-settings = Settings()
-
 if __name__ == '__main__':
+  settings = Settings()
   main_obj = Main();
   sys.exit(main_obj.main())

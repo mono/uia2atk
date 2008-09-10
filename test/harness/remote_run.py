@@ -33,11 +33,12 @@ def abort(status):
 class Settings(object):
 
   # static variable, set by ctor
-  is_quiet = None
+  is_quiet = False
   remote_log_path = machines.LOG_DIR
   local_log_path = "/tmp/uiaqa"
   is_log_ok = True
-  COUNTDOWN = 10
+  COUNTDOWN = 5
+  is_smoke = False
 
   def __init__(self):
       self.argument_parser()
@@ -46,7 +47,7 @@ class Settings(object):
     opts = []
     args = []
     try:
-      opts, args = getopt.getopt(sys.argv[1:],"hql:",["help","quiet","log="])
+      opts, args = getopt.getopt(sys.argv[1:],"shql:",["smoke","help","quiet","log="])
     except getopt.GetoptError:
       self.help()
 
@@ -57,6 +58,8 @@ class Settings(object):
       if o in ("-h","--help"):
         self.help()
         abort(0)
+      if o in ("-s","--smoke"):
+        Settings.is_smoke = True
       if o in ("-l","--log"):
         Settings.local_log_path = a
         if not os.path.exists(Settings.local_log_path):
@@ -86,11 +89,16 @@ class Kickoff(threading.Thread):
     self.ip = ip
     self.status = -1
     self.name = name
+
   def run(self):
+    smoke_option = ""
+    if Settings.is_smoke:
+      smoke_option = "--smoke"
     self.status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 \
-                             %s/harness/local_run.py --log=%s > %s/%s 2>&1" %\
+                             %s/harness/local_run.py %s --log=%s > \
+                             %s/%s 2>&1" %\
                              (machines.USERNAME, self.ip, machines.TEST_DIR,\
-                              Settings.remote_log_path,\
+                              smoke_option, Settings.remote_log_path,\
                               Settings.local_log_path, self.name))
 
 class Test(object):
@@ -126,7 +134,6 @@ class Test(object):
     for t in ping_list:
       t.join()
       lock.acquire()
-      #output("  %s (%s):...." % (t.name, t.ip), False) 
       output("  %-12s (%10s) ==>" % (t.name, t.ip), False) 
       if t.status == 0:
         output("UP")
@@ -147,7 +154,10 @@ class Test(object):
     return len(self.up_machines)
 
   def execute_tests(self):
-    output("Kicking off remote tests:")
+    s = ""
+    if Settings.is_smoke:
+      s = "smoke "
+    output("Kicking off remote %stests..." % s)
     test_list = []
     failed_machines = []
     good_machines = []

@@ -1,3 +1,10 @@
+2008-09-10  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* local_run.py: Add support for smoke tests
+	* remote_run.py: Add partial support for smoke tests
+	* smoke_tests.py: This is where the tests that make up the smoke test
+	will be specified.
+
 2008-09-09  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* keystrokes/gtktutorial.py/gtktutorial_example_1.py: Fix typo
