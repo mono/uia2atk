@@ -1,3 +1,8 @@
+2008-09-10 Mario Carrion <mcarrion@novell.com>
+
+	* patches/tooltip-errorprovider.patch: Updated to latest 
+	  revision.
+
 2008-09-03 Mario Carrion <mcarrion@novell.com>
 
 	* patches/tooltip-errorprovider.patch: Updated to support 
