@@ -71,9 +71,13 @@ namespace UiaAtkBridge
 		{
 			if (rangeValueProvider != null)
 				value = new GLib.Value (rangeValueProvider.Value);
+			else if (parentScrollProvider == null) {
+				Console.WriteLine ("Warning: Scrollbar with no UIA value implementation");
+				value = new GLib.Value ((double)0);
+			}
 			else
 			{
-				value = new GLib.Value (orientation == OrientationType.Horizontal? parentScrollProvider.VerticalScrollPercent: parentScrollProvider.HorizontalScrollPercent);
+				value = new GLib.Value (orientation == OrientationType.Vertical? parentScrollProvider.VerticalScrollPercent: parentScrollProvider.HorizontalScrollPercent);
 			}
 		}
 

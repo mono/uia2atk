@@ -1,3 +1,8 @@
+2008-09-10  Mike Gorse <mgorse@novell.com>
+
+	* ScrollBar.cs: Avoid crashing in GetCurrentValue when no provider
+	  Return appropriate value for the type
+
 2008-09-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Button.cs: Remove lame catches and point out the exact place where
