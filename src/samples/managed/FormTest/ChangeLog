@@ -1,3 +1,8 @@
+2008-09-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* formtest.sh: Add an example to launch ironpython sample inside the
+	  mono env.
+
 2008-08-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* FormTest.cs: We don't crash now, let's enable the menus.

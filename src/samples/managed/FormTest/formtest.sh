@@ -13,3 +13,4 @@ else
 fi
 
 exec mono FormTest.exe
+#exec mono /usr/lib/IPCE/ipy/ipy.exe ../../../../../../test/samples/button_label_linklabel.py
