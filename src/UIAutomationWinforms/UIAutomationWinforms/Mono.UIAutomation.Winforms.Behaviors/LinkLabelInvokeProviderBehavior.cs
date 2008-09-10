@@ -77,19 +77,39 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			                                                      BindingFlags.InvokeMethod
 			                                                      | BindingFlags.NonPublic
 			                                                      | BindingFlags.Instance);
-			LinkLabelLinkClickedEventArgs args 
-				= new LinkLabelLinkClickedEventArgs (((LinkLabel) Provider.Control).Links [0],
-				                                     MouseButtons.Left);
-			
-			Action<LinkLabel, LinkLabelLinkClickedEventArgs> invoke
+			invokeMethod
 				= (Action<LinkLabel,LinkLabelLinkClickedEventArgs>) Delegate.CreateDelegate 
 					(typeof (Action<LinkLabel,LinkLabelLinkClickedEventArgs>),
 					 methodInfo);
 			
-			invoke ((LinkLabel) Provider.Control, args);
+			PerformClick ();
 		}
 		
-		#endregion		
+		#endregion
+		
+		#region Private Methods
+		
+		private void PerformClick ()
+		{
+	        if (Provider.Control.InvokeRequired == true) {
+	            Provider.Control.BeginInvoke (new MethodInvoker (PerformClick));
+	            return;
+	        }
+			
+			LinkLabelLinkClickedEventArgs args 
+				= new LinkLabelLinkClickedEventArgs (((LinkLabel) Provider.Control).Links [0],
+				                                     MouseButtons.Left);
+			invokeMethod ((LinkLabel) Provider.Control, args);
+			invokeMethod = null;
+		}
+		
+		#endregion
+		
+		#region Private Fields
+		
+		private Action<LinkLabel, LinkLabelLinkClickedEventArgs> invokeMethod;
+		
+		#endregion
 
 	}
 }

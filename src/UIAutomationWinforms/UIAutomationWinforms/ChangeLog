@@ -1,5 +1,20 @@
 2008-09-10  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.Behaviors/ButtonInvokeProviderBehavior.cs:
+	  Using GUI thread to invoke click in button.
+	
+	  
+	
+	  [Fixes bug #415320]
+	* Mono.UIAutomation.Winforms.Behaviors/LinkLabelInvokeProviderBehavior.cs:
+	  Using GUI thread to invoke click in link label.
+	
+	  
+	
+	  [Fixes bug #415320]
+
+2008-09-10  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Behaviors/ListBoxScrollProviderBehavior.cs:
 	  Fixed to support valid values when the hscrollbar or the vscrollbar
 	  aren't visible.

@@ -38,16 +38,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		: ProviderBehavior, IInvokeProvider
 	{
 		
-#region Constructor
+		#region Constructor
 		
 		public ButtonInvokeProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
 		}
 		
-#endregion
+		#endregion
 		
-#region IProviderBehavior Interface
+		#region IProviderBehavior Interface
 
 		public override void Connect (Control control)
 		{
@@ -79,19 +79,33 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			get { return InvokePatternIdentifiers.Pattern; }
 		}
 		
-#endregion
+		#endregion
 		
-#region IInvokeProvider Members
+		#region IInvokeProvider Members
 		
 		public virtual void Invoke ()
 		{
 			if (!Provider.Control.Enabled)
 				throw new ElementNotEnabledException ();
-			
-			// TODO: Make sure this runs on the right thread
+
+			PerformClick ();
+		}
+		
+		#endregion	
+		
+		#region Private Methods
+		
+		private void PerformClick ()
+		{
+	        if (Provider.Control.InvokeRequired == true) {
+	            Provider.Control.BeginInvoke (new MethodInvoker (PerformClick));
+	            return;
+	        }
 			((Button) Provider.Control).PerformClick ();
 		}
 		
-#endregion	
+		#endregion
+		
 	}
+
 }
