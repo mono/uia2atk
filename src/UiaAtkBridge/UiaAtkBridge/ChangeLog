@@ -1,3 +1,8 @@
+2008-09-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Pane.cs: Turn into private what we don't need to expose. Also fix
+	  RefState overriding.
+
 2008-09-09  Mario Carrion <mcarrion@novell.com> 
 
 	* AutomationBridge.cs: Quits monitor in last window.

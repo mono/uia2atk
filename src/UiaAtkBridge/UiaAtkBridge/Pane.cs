@@ -46,9 +46,8 @@ namespace UiaAtkBridge
 			}
 		}
 		
-		// AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id
-		public bool IsKeyboardFocusable
-		{ 
+		private bool IsKeyboardFocusable
+		{
 			get {
 				return (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
 			}
@@ -136,11 +135,30 @@ namespace UiaAtkBridge
 			}
 			
 			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+		}
+		
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
 			
 			if (IsKeyboardFocusable)
-				RefStateSet ().AddState (Atk.StateType.Selectable);
+				states.AddState (Atk.StateType.Selectable);
 			else
-				RefStateSet ().RemoveState (Atk.StateType.Selectable);
+				states.RemoveState (Atk.StateType.Selectable);
+			
+			bool enabled = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			if (enabled)
+			{
+				states.AddState (Atk.StateType.Sensitive);
+				states.AddState (Atk.StateType.Enabled);
+			}
+			else
+			{
+				states.RemoveState (Atk.StateType.Sensitive);
+				states.RemoveState (Atk.StateType.Enabled);
+			}
+			
+			return states;
 		}
 		
 		public override IRawElementProviderSimple Provider {
