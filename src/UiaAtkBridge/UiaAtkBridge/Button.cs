@@ -165,20 +165,13 @@ namespace UiaAtkBridge
 		// Perform the action specified
 		public virtual bool DoAction (int action)
 		{
-			try {
-				if (invokeProvider != null) {
-					try {
-						if (action != 0)
-							return false;
-							
-						invokeProvider.Invoke();
-						return true;
-					} catch (ElementNotEnabledException e) {
-						// TODO: handle this exception? maybe returning false is good enough
-					}
-				}
-			} catch (Exception e) {
-				// TODO: handle a greater exception?
+			if (invokeProvider != null) {
+				if (action != 0)
+					return false;
+
+				//FIXME: beware, this call is blocking (bug#415320)
+				invokeProvider.Invoke();
+				return true;
 			}
 			return false;
 		}

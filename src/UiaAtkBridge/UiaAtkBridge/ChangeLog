@@ -1,5 +1,10 @@
 2008-09-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* Button.cs: Remove lame catches and point out the exact place where
+	  the culprit of bug#415320 is.
+
+2008-09-10  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* Pane.cs: Turn into private what we don't need to expose. Also fix
 	  RefState overriding.
 
