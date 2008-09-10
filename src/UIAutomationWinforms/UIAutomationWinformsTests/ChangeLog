@@ -1,3 +1,7 @@
+2008-09-10  Mario Carrion <mcarrion@novell.com> 
+
+	* ListBoxProviderTest.cs: Test updated to validate bug #414937 found.
+
 2008-09-09  Mario Carrion <mcarrion@novell.com> 
 
 	* CheckBoxProviderTest.cs: Added test to override base implementation.

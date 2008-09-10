@@ -1,3 +1,13 @@
+2008-09-10  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxScrollProviderBehavior.cs:
+	  Fixed to support valid values when the hscrollbar or the vscrollbar
+	  aren't visible.
+	
+	  
+	
+	  [Fixes bug #414937]
+
 2008-09-09  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs: Added

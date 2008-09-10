@@ -322,6 +322,29 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			Assert.AreEqual (5, children, "ScrollBar's children must be 5");
 			
+			
+			//Related to bug: https://bugzilla.novell.com/show_bug.cgi?id=414937
+			//Get IScrollProvider pattern
+			IScrollProvider scrollProvider 
+				= (IScrollProvider) provider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (scrollProvider, "We should have a ScrollProvider in ListBox");
+			
+			//We only have one vscrollbar, so using the provider shouldn't
+			//crash because of missing hscrollbar
+			Assert.IsFalse (scrollProvider.HorizontallyScrollable, "We shoudln't have hscrollbar");
+			Assert.IsTrue (scrollProvider.VerticallyScrollable, "We should have hscrollbar");
+			
+			//Let's move scrollbar
+			scrollProvider.Scroll (ScrollAmount.LargeIncrement,
+			                       ScrollAmount.LargeIncrement);
+			
+			if (scrollProvider.VerticalScrollPercent == 0)
+				Assert.Fail ("Vertical scroll should move");
+			if (scrollProvider.HorizontalScrollPercent != 0)
+				Assert.Fail ("Vertical scroll shouldn't move");
+				
+			
+			//EOF-Bug
 
 			//Clearing elements should hide scroll and delete all items.
 			listbox.Items.Clear ();

@@ -104,17 +104,17 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			
 		public bool HorizontallyScrollable {
 			get {
-				if (((ListBox) Provider.Control).ScrollAlwaysVisible)
-					return hscrollbar.Enabled;
-				else
-					return hscrollbar.Visible;
+				return ((ListBoxProvider) Provider).HasHorizontalScrollbar;
 			}
 		}
 		
-		//The horizontal scroll position as a percentage of the total content 
-		//area within the control.
 		public double HorizontalScrollPercent {
-			get { return (hscrollbar.Value * 100) / hscrollbar.Maximum; }
+			get { 
+				if (hscrollbar.Maximum == 0)
+					return 0;
+				else
+					return (hscrollbar.Value * 100) / hscrollbar.Maximum; 
+			}
 		}
 		
 		//The horizontal size of the viewable region as a percentage of the 
@@ -126,15 +126,17 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public bool VerticallyScrollable {
 			get {
-				if (((ListBox) Provider.Control).ScrollAlwaysVisible)
-					return vscrollbar.Enabled;
-				else
-					return vscrollbar.Visible;
+				return ((ListBoxProvider) Provider).HasVerticalScrollbar;
 			}
 		}
 
 		public double VerticalScrollPercent {
-			get { return (vscrollbar.Value * 100) / vscrollbar.Maximum; }
+			get { 
+				if (vscrollbar.Maximum == 0)
+					return 0;
+				else
+					return (vscrollbar.Value * 100) / vscrollbar.Maximum; 
+			}
 		}
 
 		public double VerticalViewSize {
@@ -145,9 +147,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		public void Scroll (ScrollAmount horizontalAmount, 
 		                    ScrollAmount verticalAmount)
 		{
-			if (horizontalAmount != ScrollAmount.NoAmount)
+			if (horizontalAmount != ScrollAmount.NoAmount
+			    && HorizontallyScrollable)
 				ScrollByAmount (hscrollbar, GetAmountString (horizontalAmount));
-			if (verticalAmount != ScrollAmount.NoAmount)
+			if (verticalAmount != ScrollAmount.NoAmount
+			    && VerticallyScrollable)
 				ScrollByAmount (vscrollbar, GetAmountString (verticalAmount));
 		}
 
