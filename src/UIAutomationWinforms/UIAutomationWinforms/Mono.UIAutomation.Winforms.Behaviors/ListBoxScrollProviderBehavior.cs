@@ -162,16 +162,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 				if (horizontalPercent < 0 || horizontalPercent > 100)
 					throw new ArgumentOutOfRangeException ();
 				else
-					hscrollbar.Value 
-						= (int) ((horizontalPercent * hscrollbar.Maximum) / 100);
+					PerformScrollByPercent (hscrollbar, (int) ((horizontalPercent * hscrollbar.Maximum) / 100));
 			}
 			
 			if (verticalPercent != ScrollPatternIdentifiers.NoScroll) {
 			    if (verticalPercent < 0 || verticalPercent > 100)
 					throw new ArgumentOutOfRangeException ();
 				else 
-					vscrollbar.Value 
-						= (int) ((verticalPercent * vscrollbar.Maximum) / 100);
+					PerformScrollByPercent (vscrollbar, (int) ((verticalPercent * vscrollbar.Maximum) / 100));
 			}
 		}
 
@@ -210,20 +208,46 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			                                                      BindingFlags.InvokeMethod
 			                                                      | BindingFlags.NonPublic
 			                                                      | BindingFlags.Instance);
-			Action<ScrollBar> invoke 
+			invoke
 				= (Action<ScrollBar>) Delegate.CreateDelegate (typeof (Action<ScrollBar>), 
 				                                               methodInfo);
-			invoke (scrollbar);
+			PerformScrollByAmount (scrollbar);
 		}
 		
+		private void PerformScrollByAmount (ScrollBar scrollbar)
+		{
+			if (scrollbar.InvokeRequired == true) {
+				scrollbar.BeginInvoke (new ScrollByAmountDelegate (PerformScrollByAmount),
+				                       new object [] { scrollbar });
+				return;
+			}
+			invoke (scrollbar);
+			invoke = null;
+		}
+		
+		private void PerformScrollByPercent (ScrollBar scrollbar, int value)
+		{
+			if (scrollbar.InvokeRequired == true) {
+				scrollbar.BeginInvoke (new ScrollByPercentDelegate (PerformScrollByPercent),
+				                       new object [] { scrollbar, value });
+				return;
+			}
+			scrollbar.Value = value;
+		}
+
 		#endregion
 		
 		#region Private Fields
 		
 		private ScrollBar hscrollbar;
 		private ScrollBar vscrollbar;
+		private Action<ScrollBar> invoke;
 		
 		#endregion
 
 	}
+	
+	delegate void ScrollByAmountDelegate (ScrollBar scrollbar);
+	delegate void ScrollByPercentDelegate (ScrollBar scrollbar, int value);
+				                      
 }

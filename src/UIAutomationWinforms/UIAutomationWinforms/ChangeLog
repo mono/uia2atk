@@ -1,5 +1,14 @@
 2008-09-11  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxScrollProviderBehavior.cs:
+	  Using BeginInvoke to update scrollbar position.
+	
+	  
+	
+	  [Fixes Bug #425597]
+
+2008-09-11  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs:
 	  Using BeginInvoke to update scrollbar position.
 	
