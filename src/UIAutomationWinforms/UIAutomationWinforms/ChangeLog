@@ -1,5 +1,14 @@
 2008-09-11  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs:
+	  Using BeginInvoke to update scrollbar position.
+	
+	  
+	
+	  [Fixes Bug #414617]
+
+2008-09-11  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueProviderBehavior.cs:
 	  Using BeginInvoke in ScrollBar to set Value.
 	

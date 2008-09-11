@@ -87,17 +87,33 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			                                                      | BindingFlags.NonPublic
 			                                                      | BindingFlags.Instance);
 			if (methodInfo != null) {
-				Action<ScrollBar> invoke 
+				invokeMethod
 					= (Action<ScrollBar>) Delegate.CreateDelegate (typeof (Action<ScrollBar>), 
 					                                               methodInfo);
-				invoke (provider.ScrollBarContainer);
+				PerformScrollBarButtonClick ();
 			}
 		}
 		
 		#endregion	
 		
+		#region Private Methods
+		
+		private void PerformScrollBarButtonClick ()
+		{
+	        if (provider.ScrollBarContainer.InvokeRequired == true) {
+	            provider.ScrollBarContainer.BeginInvoke (new MethodInvoker (PerformScrollBarButtonClick));
+	            return;
+	        }
+			
+			invokeMethod (provider.ScrollBarContainer);
+			invokeMethod = null;
+		}
+		
+		#endregion
+		
 		#region Private Fields
 		
+		private Action<ScrollBar> invokeMethod;
 		private ScrollBarProvider.ScrollBarButtonProvider provider;
 
 		#endregion
