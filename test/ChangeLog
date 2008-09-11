@@ -1,3 +1,11 @@
+2008-09-09  Calen Chen <cachen@novell.com>
+
+	*  testers/statusbar/statusbarframe.py: Iterate through the tuple of
+	statusbar's states
+	*  testers/button_basic_ops.py,
+	*  testers/button/buttonframe.py: modify the method of closing message
+	frame
+
 2008-09-10  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/gtkbutton_label.py: Add simple button and label Gtk example

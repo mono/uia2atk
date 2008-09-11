@@ -83,7 +83,10 @@ class ButtonFrame(accessibles.Frame):
 
     #rise message frame window after click button1
     def assertMessage(self):
-        self.app.findFrame('message')
+        self.message = self.app.findFrame('message')
+
+        self.message.findPushButton('OK').click()
+
     
     #close application main window after running test
     def quit(self):

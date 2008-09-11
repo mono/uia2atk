@@ -27,27 +27,18 @@ class StatusBarFrame(accessibles.Frame):
         self.button1 = self.findPushButton(self.BUTTON_ONE)
 
     #check statusbar's all expectant states
-    def statesCheck(self, accessible=None):
-        accessible = self.findStatusBar(None)
-        procedurelogger.action('check %s\'s all states' % accessible)
+    def statesCheck(self):
+        procedurelogger.action('check %s\'s all states' % self)
 
-        procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
-        #for a in states.VScrollBar.states:
-        #    cmd = "state = accessible." + a
-        #   exec(cmd)
+        procedurelogger.expectedResult('%s\'s all states can be found' % self)
+        for s in states.StatusBar.states:
+            cmd = "state = self." + s
+            exec(cmd)
 
-        #    if state == False:
-        #        print "ERROR: %s can't be checked" % cmd
-        #    else:
-        #        pass
-        #if there is just one state in list, should reset it like:
-        cmd = "state = accessible." + states.StatusBar.states
-        exec(cmd)
-        
-        if state == False:
-            print "ERROR: %s can't can't be checked" % cmd
-        else:
-            pass
+            if state == False:
+                print "ERROR: %s can't be checked" % cmd
+            else:
+                pass
 
     #give 'click' action
     def click(self,button):

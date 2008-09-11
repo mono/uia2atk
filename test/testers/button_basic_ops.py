@@ -52,12 +52,17 @@ bFrame.assertDisableButton(bFrame.button3)
 #click button1 rise message frame window
 bFrame.click(bFrame.button1)
 sleep(config.SHORT_DELAY)
-bFrame.assertMessage().altF4()
+bFrame.assertMessage()
 
 #click button2 change label text
 bFrame.click(bFrame.button2)
 sleep(config.SHORT_DELAY)
 bFrame.assertLabel('You have clicked me 1 times')
+
+#click button2 change label text
+bFrame.click(bFrame.button2)
+sleep(config.SHORT_DELAY)
+bFrame.assertLabel('You have clicked me 2 times')
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
