@@ -1,3 +1,7 @@
+2008-09-11  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* remote_run.py: Add log parsing and e-mail capability for tests
+
 2008-09-12  Calen Chen <cachen@novell.com>
 
 	*  samples/gtklist.py: add gtklist example

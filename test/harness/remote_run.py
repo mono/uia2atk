@@ -39,6 +39,8 @@ class Settings(object):
   is_log_ok = True
   COUNTDOWN = 5
   is_smoke = False
+  test_type = ""
+  email_addresses = []
 
   def __init__(self):
       self.argument_parser()
@@ -47,7 +49,7 @@ class Settings(object):
     opts = []
     args = []
     try:
-      opts, args = getopt.getopt(sys.argv[1:],"shql:",["smoke","help","quiet","log="])
+      opts, args = getopt.getopt(sys.argv[1:],"shql:e:",["smoke","help","quiet","log=","email="])
     except getopt.GetoptError:
       self.help()
 
@@ -60,6 +62,8 @@ class Settings(object):
         abort(0)
       if o in ("-s","--smoke"):
         Settings.is_smoke = True
+      if o in ("-e","--email"):
+        Settings.email_addresses = a.split(',')
       if o in ("-l","--log"):
         Settings.local_log_path = a
         if not os.path.exists(Settings.local_log_path):
@@ -68,9 +72,11 @@ class Settings(object):
 
   def help(self):
     output("Common Options:")
-    output("  -h | --help        Print help information (this message).")
-    output("  -q | --quiet       Don't print anything.")
-    output("  -l | --log=        Where the log(s) should be stored.")
+    output("  -h | --help    Print help information (this message).")
+    output("  -q | --quiet   Don't print anything.")
+    output("  -l | --log=    Where the log(s) should be stored.")
+    output("  -s | --smoke   Run only smoke tests.")
+    output("  -e | --email=  Send e-mail results to comma delineated recipients")
 
 class Ping(threading.Thread):
 
@@ -105,7 +111,10 @@ class Test(object):
 
   def __init__(self):
     self.machines = machines.machines_dict
-
+    self.test_failed_machines = []
+    self.test_failed_message = None
+    if Settings.email_addresses is not None:
+      self.email_message = []
 
   def countdown(self, n):
     ''' Counts down for n seconds and allows the user to abort the program
@@ -191,11 +200,11 @@ class Test(object):
       time.sleep(1)
        
     if len(failed_machines) > 0:
-      output("WARNING:  %i/%i failed to kick off"\
+      output("WARNING:  %i/%i failed"\
               % (len(failed_machines), len(self.up_machines)))
     if settings.is_log_ok:
-      output("INFO:  Remote logs saved to %s" % Settings.remote_log_path)
       output("INFO:  Local logs saved to %s" % Settings.local_log_path)
+    output("INFO:  Remote logs saved to %s" % Settings.remote_log_path)
 
   def setup_logging(self):
     # delete old local log directory if it exists
@@ -215,12 +224,99 @@ class Test(object):
     self.setup_logging()
     self.execute_tests() 
 
+  def parse_logs(self):
+    machine_names = []
+    for up_machine in self.up_machines:
+      machine_names.append(up_machine)
+    for machine_name in machine_names:
+      try:
+        tmp_log_path = "%s" % (os.path.join(Settings.local_log_path, machine_name))
+        f = open(tmp_log_path, 'r')
+        tmp_log = f.readlines()
+        for line in tmp_log:
+          if "Traceback" in line:
+            self.email_message += ["\n===============%s===============\n" % machine_name]
+            self.email_message += tmp_log
+            self.test_failed_machines.append(machine_name)
+            break
+      except IOError, e:
+        output("ERROR:  Could not open log file")
+        output(e)
+
+    test_type = ""
+    if Settings.is_smoke:
+      test_type = "Smoke tests"
+    else:
+      test_type = "Tests"
+    self.test_failed_message = "%s %s\n%s" % \
+             (test_type,
+              "failed for the following device(s):\n",
+              "\n".join(self.test_failed_machines))
+
+  def send_mail(self):
+
+    import smtplib
+
+    output("Preparting e-mail e-mail for:")
+    for addr in Settings.email_addresses:
+      output("  %s" % addr)
+
+    MESSAGE = ("%s\n\nDETAILS:\n%s" % \
+                                      ("".join(self.test_failed_message),
+                                       "".join(self.email_message)))
+    subject = ""
+    if Settings.is_smoke:
+      subject = "[Smoke Tests] "
+    else:
+      subject = "[Regression Tests] "
+
+    if len(self.test_failed_machines) <= 0:
+      subject += "PASS!"
+    else:
+      subject += "FAIL!"
+
+    recipients = Settings.email_addresses
+    sender = "no-reply"
+
+    headers = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n" % (sender, recipients, subject)
+    
+    email = "%s%s" % (headers, MESSAGE)   
+ 
+    output("Sending e-mail...", False)
+    s = smtplib.SMTP()
+    s.connect()
+    try:
+      s.sendmail(sender, recipients, email)
+    except smtplib.SMTPRecipientsRefused:
+      output("ERROR:  ALL RECIPIENTS REFUSED")
+      s.close()
+      return 1
+    except smtplib.SMTPHeloError:
+      output("ERROR:  No response to the 'HELO' greeting.")
+      s.close()
+      return 2
+    except smtplib.SMTPSenderRefused:
+      output("ERROR:  From address refused")
+      s.close()
+      return 3
+    except smtplib.SMTPDataError:
+      output("ERROR")
+      s.close()
+      return 4
+    output("OK")
+    s.close()
+    
+
 class Main(object):
 
   def main(self, argv=None):
     t = Test()
-    return t.run()
-
+    r = t.run()
+    if Settings.is_log_ok:
+      t.parse_logs()
+    if Settings.email_addresses is not None:
+      t.send_mail() 
+    return r
 
 settings = Settings()
 
