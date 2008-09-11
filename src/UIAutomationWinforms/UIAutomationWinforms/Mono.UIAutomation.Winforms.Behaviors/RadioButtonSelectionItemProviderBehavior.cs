@@ -111,7 +111,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public void Select ()
 		{
-			radioButton.Checked = true;
+			PerformSelectDelegate (radioButton);
 		}
 
 		public IRawElementProviderSimple SelectionContainer {
@@ -144,5 +144,20 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 #endregion
 		
+		#region Private Methods
+		
+		private void PerformSelectDelegate (RadioButton radioButton)
+		{
+			if (radioButton.InvokeRequired == true) {
+				radioButton.BeginInvoke (new PerformSelectDelegate (PerformSelectDelegate),
+				                         new object [] { radioButton });
+				return;
+			}
+			radioButton.Checked = true;
+		}
+		
+		#endregion 
 	}
+	
+	delegate void PerformSelectDelegate (RadioButton radioButton);
 }

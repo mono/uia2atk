@@ -82,21 +82,19 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 			switch (checkbox.CheckState) {
 			case CheckState.Checked:
-				checkbox.CheckState = CheckState.Unchecked;
+				PerformToggle (checkbox, CheckState.Unchecked);
 				break;
 			case CheckState.Unchecked:
 				if (checkbox.ThreeState)
-					checkbox.CheckState = 
-						CheckState.Indeterminate;
+					PerformToggle (checkbox, CheckState.Indeterminate);
 				else
-					checkbox.CheckState = 
-						CheckState.Checked;
+					PerformToggle (checkbox, CheckState.Checked);
 				break;
 			// Control could still have been set to intermediate
 			// programatically, regardless of ThreeState value.
 			case CheckState.Indeterminate:
 			default:
-				checkbox.CheckState = CheckState.Checked;
+				PerformToggle (checkbox, CheckState.Checked);
 				break;
 			}
 		}
@@ -118,5 +116,21 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		}
 
 		#endregion
+		
+		#region Private Methods
+		
+		private void PerformToggle (CheckBox checkbox, CheckState state)
+		{
+	        if (checkbox.InvokeRequired == true) {
+	            checkbox.BeginInvoke (new PerformToggleDelegate (PerformToggle),
+				                      new object [] { checkbox, state });
+	            return;
+	        }
+			
+			checkbox.CheckState = state;
+		}
+		#endregion
 	}
+	
+	delegate void PerformToggleDelegate (CheckBox checkbox, CheckState state);
 }
