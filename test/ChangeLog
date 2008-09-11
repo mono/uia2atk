@@ -1,6 +1,7 @@
-2008-09-11  Brian G. Merrell <bgmerrell@gmail.com>
+2008-09-12  Calen Chen <cachen@novell.com>
 
-	* remote_run.py: Add log parsing and e-mail capability for tests
+	*  samples/datagrid.py: add winforms example for DataGrid and 
+	DataGridBoolColumn controls
 
 2008-09-12  Calen Chen <cachen@novell.com>
 
@@ -9,6 +10,10 @@
 	scrollbar's value
 	*  samples/listbox.py: add list item rows to large the 
 	scrollbar's value
+
+2008-09-11  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* remote_run.py: Add log parsing and e-mail capability for tests
 
 2008-09-11  Calen Chen <cachen@novell.com>
 
