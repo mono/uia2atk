@@ -39,7 +39,7 @@ class ListBoxSample(Form):
         self.listbox.Click += self.select
 
         # add items in ListBox
-        for i in range(10):
+        for i in range(20):
             self.listbox.Items.Add(str(i))
 
         # add controls

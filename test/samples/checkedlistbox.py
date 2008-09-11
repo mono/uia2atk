@@ -41,7 +41,7 @@ class CheckedListBoxSample(Form):
         self.checkedlistbox.CheckOnClick = True
 
         # add items in CheckedListBox
-        for i in range(10):
+        for i in range(20):
             self.checkedlistbox.Items.Add(str(i))
 
         # add controls
@@ -53,7 +53,7 @@ class CheckedListBoxSample(Form):
         """select a item"""
 
         items = "" 
-        for i in range(10):
+        for i in range(20):
             status = str(self.checkedlistbox.GetItemCheckState(i))
             if status == "Checked":
                 items += "%d " % i
