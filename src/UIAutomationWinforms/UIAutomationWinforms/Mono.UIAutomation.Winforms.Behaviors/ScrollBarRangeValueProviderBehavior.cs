@@ -56,12 +56,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		{
 			Provider.SetEvent (ProviderEventType.RangeValuePatternValueProperty,
 			                   new ScrollBarRangeValuePatternValueEvent (Provider));
+//			Provider.SetEvent (ProviderEventType.RangeValuePatternIsReadOnlyProperty,
+//			                   new ScrollBarRangeValuePatternIsReadOnlyEvent (Provider));
 		}
 		
 		public override void Disconnect (Control control)
 		{
 			Provider.SetEvent (ProviderEventType.RangeValuePatternValueProperty, 
 			                   null);
+//			Provider.SetEvent (ProviderEventType.RangeValuePatternIsReadOnlyProperty,
+//			                   null);
 		}
 		
 		public override object GetPropertyValue (int propertyId)
@@ -91,11 +95,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			if (value < Minimum || value > Maximum)
 				throw new ArgumentOutOfRangeException ();
 			
-			scrollbar.Value = (int) value;
+			PerformSetValue ((int) value);
 		}
 		
 		public bool IsReadOnly {
-			get { return scrollbar.Enabled; }
+			get { return scrollbar.Enabled == false || scrollbar.Visible == false; }
 		}
 		
 		public double LargeChange {
@@ -119,6 +123,20 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		}
 		
 		#endregion 
+		
+		#region Private Methods
+		
+		private void PerformSetValue (int value)
+		{
+			if (scrollbar.InvokeRequired == true) {
+				scrollbar.BeginInvoke (new PerformSetValueDelegate (PerformSetValue),
+				                       new object [] { value });
+				return;
+			}
+			scrollbar.Value = value;
+		}
+		
+		#endregion
 
 		#region Private Fields
 
@@ -126,4 +144,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		#endregion
 	}
+	
+	delegate void PerformSetValueDelegate (int value);
 }

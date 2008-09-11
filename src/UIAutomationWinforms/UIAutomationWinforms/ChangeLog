@@ -1,3 +1,12 @@
+2008-09-11  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueProviderBehavior.cs:
+	  Using BeginInvoke in ScrollBar to set Value.
+	
+	  
+	
+	  [Fixes Bug #423356]
+
 2008-09-10  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.Behaviors/ButtonInvokeProviderBehavior.cs:
