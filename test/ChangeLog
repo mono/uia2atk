@@ -1,3 +1,9 @@
+2008-09-11  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* gtktreeview_noheader_nochildren.py: Add a second gtktreeview example
+	with no header, no children and a really long name.  The TreeView
+	widget in this example resembles a WinForms listbox.
+
 2008-09-12  Calen Chen <cachen@novell.com>
 
 	*  samples/datagrid.py: add winforms example for DataGrid and 
