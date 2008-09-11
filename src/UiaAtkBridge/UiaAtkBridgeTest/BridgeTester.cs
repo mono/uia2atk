@@ -409,6 +409,10 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (listItemChild, "ListBox child#0 should not be null");
 			Assert.AreEqual (listItemChild.Role, Atk.Role.ListItem, "ListBox child#0 should be a list item");
 			
+			InterfaceAction (BasicWidgetType.ListItem, listItemChild);
+
+			Assert.IsTrue (listItemChild.RefStateSet ().ContainsState (Atk.StateType.Selectable), "RefStateSet().Contains(Selectable)");
+
 			Assert.AreEqual (0, listItemChild.NAccessibleChildren, "ListBox ListItem numChildren");
 
 			Parent (type, accessible);

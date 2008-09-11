@@ -1,3 +1,11 @@
+2008-09-11 Mike Gorse <mgorse@novell.com>
+
+	* BasicWidgetType.cs: Add ListItem.
+	* AtkTester.cs: Add InterfaceAction(BasicWidgetType, Atk.Object).
+	  Support ListItem in InterfaceAction.
+	* Bridgetester.cs: Add InterfaceAction for ListItem.
+	  Have ListItem test for Atk.State.Selectable.
+
 2008-09-08 Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs: Add Parent() for more tests

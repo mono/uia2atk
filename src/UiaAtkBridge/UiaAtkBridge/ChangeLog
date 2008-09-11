@@ -1,3 +1,10 @@
+2008-09-11  Mike Gorse <mgorse@novell.com>
+
+	* AutomationBridge.cs: Support ChildrenBulkRemoved.
+	* ListItem.cs: Add action to select (bug 419019)
+	  Add support for InvokeProvider.
+	  Add Selectable, Sensitive, and Enabled states.
+
 2008-09-10  Mario Carrion <mcarrion@novell.com> 
 
 	* ScrollBar.cs: Not using Parent in constructor, instead calling it

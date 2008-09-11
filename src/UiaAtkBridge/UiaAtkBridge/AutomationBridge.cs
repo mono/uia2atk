@@ -131,7 +131,7 @@ namespace UiaAtkBridge
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) provider;
 			int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			// TODO: Handle ChildrenBulkAdded and ChildrenBulkRemoved
+			// TODO: Handle ChildrenBulkAdded
 			if (e.StructureChangeType == StructureChangeType.ChildAdded) {
 				if (!providerAdapterMapping.ContainsKey (simpleProvider))
 					HandleElementAddition (simpleProvider);
@@ -142,6 +142,8 @@ namespace UiaAtkBridge
 					// TODO: Handle proper documented args
 					//       (see FragmentRootControlProvider)
 					HandleElementRemoval (simpleProvider);
+			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
+				HandleBulkRemoved (simpleProvider);
 			}
 			
 			// TODO: Other structure changes
@@ -218,6 +220,28 @@ namespace UiaAtkBridge
 			} catch {}
 		}
 		
+		
+		private void HandleBulkRemoved (IRawElementProviderSimple provider)
+		{
+			IRawElementProviderFragment fragment;
+			if ((fragment = provider as IRawElementProviderFragment) == null)
+				return;
+			List<Adapter> keep = new List<Adapter> ();
+			IRawElementProviderFragment child = fragment.Navigate(NavigateDirection.FirstChild);
+			while (child != null) {
+				if (providerAdapterMapping.ContainsKey (child))
+					keep.Add (providerAdapterMapping[child]);
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Adapter adapter = providerAdapterMapping[provider];
+			int index = adapter.NAccessibleChildren;
+			while (--index >= 0) {
+				Adapter childAdapter = adapter.RefAccessibleChild (index) as Adapter;
+				if (!keep.Contains(childAdapter))
+					HandleElementRemoval (childAdapter.Provider);
+			}
+		}
+
 		private void HandleNewWindowControlType (IRawElementProviderSimple provider)
 		{
 			IRawElementProviderSimple simpleProvider =

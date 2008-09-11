@@ -30,14 +30,20 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class ListItem : ComponentAdapter, Atk.TextImplementor
+	public class ListItem : ComponentAdapter, Atk.TextImplementor, Atk.ActionImplementor
 	{
 		private IRawElementProviderSimple provider;
+		private IInvokeProvider				invokeProvider;
 		private TextImplementorHelper textExpert = null;
+		private string						selectActionDescription = null;
+		private string						invokeActionDescription = null;
+		protected string					selectActionName = "click";
+		protected string					invokeActionName = "invoke";
 
 		public ListItem (IRawElementProviderSimple provider)
 		{
 			this.provider = provider;
+			invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			textExpert = new TextImplementorHelper (text);
 			Name = text;
@@ -46,6 +52,25 @@ namespace UiaAtkBridge
 
 		public override IRawElementProviderSimple Provider {
 			get { return provider; }
+		}
+
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			
+			states.AddState (Atk.StateType.Selectable);
+			bool enabled = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			if (enabled)
+			{
+				states.AddState (Atk.StateType.Sensitive);
+				states.AddState (Atk.StateType.Enabled);
+			}
+			else
+			{
+				states.RemoveState (Atk.StateType.Sensitive);
+				states.RemoveState (Atk.StateType.Enabled);
+			}
+			return states;
 		}
 
 		public string GetText (int startOffset, int endOffset)
@@ -176,6 +201,95 @@ namespace UiaAtkBridge
 			}
 		}
 
+		// Return the number of actions (Read-Only)
+		public int NActions
+		{
+			get {
+				return (invokeProvider != null? 2: 1);
+			}
+		}
+		
+		// Get a localized name for the specified action
+		public string GetLocalizedName (int action)
+		{
+			// TODO: Localize the name?s
+			switch (action) {
+			case 0:
+			return selectActionName;
+			case 1:
+				return (invokeProvider != null? invokeActionName: null);
+			default:
+				return null;
+			}
+		}
+		
+		// Sets a description of the specified action
+		public bool SetDescription (int action, string description)
+		{
+			switch (action) {
+			case 0:
+				selectActionDescription = description;
+				return true;
+			case 1:
+				if (invokeProvider == null)
+					return false;
+				invokeActionDescription = description;
+				return true;
+			default:
+				return false;
+			}
+		}
+		
+		// Get the key bindings for the specified action
+		public string GetKeybinding (int action)
+		{
+			return null;
+		}
+
+		// Get the name of the specified action
+		public virtual string GetName (int action)
+		{
+			switch (action) {
+			case 0:
+				return selectActionName;
+			case 1:
+				return (invokeProvider != null? invokeActionName: null);
+			default:
+				return null;
+			}
+		}
+		
+		// Get the description of the specified action
+		public string GetDescription (int action)
+		{
+			switch (action) {
+			case 0:
+				return selectActionDescription;
+			case 1:
+				return (invokeProvider != null? invokeActionDescription: null);
+			default:
+				return null;
+			}
+		}
+
+		// Perform the action specified
+		public virtual bool DoAction (int action)
+		{
+			switch (action) {
+			case 0:
+				Atk.SelectionImplementor sel = Parent as Atk.SelectionImplementor;
+				if (sel == null)
+					return false;
+				return sel.AddSelection (IndexInParent);
+			case 1:
+				if (invokeProvider == null)
+					return false;
+				invokeProvider.Invoke();
+				return true;
+			default:
+				return false;
+			}
+		}
 		public int NSelections {
 			get {
 				return 0;
@@ -188,7 +302,28 @@ namespace UiaAtkBridge
 				String stringValue = (String)e.NewValue;
 				textExpert = new TextImplementorHelper (stringValue);
 				Name = stringValue;
+			} else if (e.Property == AutomationElementIdentifiers.IsEnabledProperty) {
+				if((bool)e.NewValue)
+				{
+					OnEnabled ();
+				}
+				else
+				{
+					OnDisabled ();
+				}
 			}
+		}
+
+		private void OnEnabled ()
+		{
+			NotifyStateChange ((ulong) Atk.StateType.Sensitive, true);
+			NotifyStateChange ((ulong) Atk.StateType.Enabled, true);
+		}
+
+		private void OnDisabled ()
+		{
+			NotifyStateChange ((ulong) Atk.StateType.Sensitive, false);
+			NotifyStateChange ((ulong) Atk.StateType.Enabled, false);
 		}
 	}
 }
