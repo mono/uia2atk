@@ -73,7 +73,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public IRawElementProviderFragment Navigate (NavigateDirection direction) 
 		{
-			return Navigation.Navigate (direction);
+			return Navigation == null ? null : Navigation.Navigate (direction);
 		}
 		
 		public virtual void SetFocus ()

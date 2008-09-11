@@ -1,5 +1,10 @@
 2008-09-11  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Fixed NRE when
+	  Navigation is null and executing Navigate.
+
+2008-09-11  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Behaviors/CheckBoxToggleProviderBehavior.cs:
 	  Using BeginInvoke to change CheckBox.CheckState.
 	* Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionItemProviderBehavior.cs:
