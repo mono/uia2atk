@@ -1,5 +1,9 @@
 2008-09-10  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* samples/gtkbutton_label.py: Add simple button and label Gtk example
+
+2008-09-10  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* local_run.py: Add support for smoke tests
 	* remote_run.py: Add partial support for smoke tests
 	* smoke_tests.py: This is where the tests that make up the smoke test
