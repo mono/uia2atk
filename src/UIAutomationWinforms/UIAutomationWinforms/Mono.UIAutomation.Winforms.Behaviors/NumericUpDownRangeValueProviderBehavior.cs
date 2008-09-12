@@ -34,13 +34,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 	internal class NumericUpDownRangeValueProviderBehavior :
 		ProviderBehavior, IRangeValueProvider
 	{
-#region Private Fields
+		#region Private Fields
 		
 		private NumericUpDown upDown;
 		
-#endregion
+		#endregion
 		
-#region Constructor
+		#region Constructor
 		
 		public NumericUpDownRangeValueProviderBehavior (FragmentControlProvider provider) :
 			base (provider)
@@ -48,9 +48,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			upDown = (NumericUpDown) provider.Control;
 		}
 		
-#endregion
+		#endregion
 		
-#region IProviderBehavior Interface
+		#region IProviderBehavior Interface
 
 		public override void Connect (Control control)
 		{
@@ -86,9 +86,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 				return base.GetPropertyValue (propertyId);
 		}
 		
-#endregion
-		
-#region IRangeValueProvider Members
+		#endregion
+	
+		#region IRangeValueProvider Members
 	
 		public bool IsReadOnly {
 			get { return upDown.ReadOnly; }
@@ -110,7 +110,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		{
 			if (value < Minimum || value > Maximum)
 				throw new ArgumentOutOfRangeException ();
-			upDown.Value = (decimal) value;
+
+			PerformSetValue ((decimal) value);
 		}
 
 		public double SmallChange {
@@ -121,9 +122,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			get { return (double) upDown.Value; }
 		}
 
-#endregion
+		#endregion
 		
-#region Event Handlers
+		#region Event Handlers
 		
 		private void OnValueChanged (object sender, EventArgs e)
 		{
@@ -136,6 +137,22 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			}
 		}
 		
-#endregion
+		#endregion
+		
+		#region Private Methods
+		
+		private void PerformSetValue (decimal value) 
+		{
+			if (upDown.InvokeRequired == true) {
+				upDown.BeginInvoke (new NumericUpDownSetValueDelegate (PerformSetValue),
+				                    new object [] { value });
+				return;
+			}
+			upDown.Value = (decimal) value;
+		}
+			
+		#endregion
 	}
+	
+	delegate void NumericUpDownSetValueDelegate (decimal value);
 }

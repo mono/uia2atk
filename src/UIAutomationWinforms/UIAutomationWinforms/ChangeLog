@@ -1,3 +1,12 @@
+2008-09-12  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Behaviors/NumericUpDownRangeValueProviderBehavior.cs:
+	  Using BeginInvoke.
+	
+	  
+	
+	  [Fixes Bug #425774]
+
 2008-09-11  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Fixed NRE when
