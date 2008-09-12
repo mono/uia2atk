@@ -409,8 +409,6 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (listItemChild, "ListBox child#0 should not be null");
 			Assert.AreEqual (listItemChild.Role, Atk.Role.ListItem, "ListBox child#0 should be a list item");
 			
-			InterfaceAction (BasicWidgetType.ListItem, listItemChild);
-
 			Assert.IsTrue (listItemChild.RefStateSet ().ContainsState (Atk.StateType.Selectable), "RefStateSet().Contains(Selectable)");
 
 			Assert.AreEqual (0, listItemChild.NAccessibleChildren, "ListBox ListItem numChildren");
@@ -418,6 +416,10 @@ namespace UiaAtkBridgeTest
 			Atk.SelectionImplementor selection = accessible as Atk.SelectionImplementor;
 			Assert.IsNotNull (selection, "ListBox Atk.Selection should not be null");
 			InterfaceSelection (new Atk.SelectionAdapter(selection), names, accessible, type);
+
+			// Below line needed because InterfaceAction tests that first item is not selected, so that it can test the action
+			selection.AddSelection(1);
+			InterfaceAction (BasicWidgetType.ListItem, listItemChild);
 
 			Parent (type, accessible);
 		}

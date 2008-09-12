@@ -501,6 +501,9 @@ namespace UiaAtkBridgeTest
 				Assert.IsFalse (state.ContainsState (Atk.StateType.Checked), "RefStateSet.!Checked #1");
 			
 
+			if (type == BasicWidgetType.ListItem)
+				Assert.IsFalse (state.ContainsState (Atk.StateType.Selected), "RefStateSet.Selected");
+
 			if (type != BasicWidgetType.ComboBox) {
 				// only valid actions should work
 				for (int i = 0; i < validNumberOfActions; i++) 
@@ -527,6 +530,8 @@ namespace UiaAtkBridgeTest
 				Assert.IsTrue (state.ContainsState (Atk.StateType.Checked), "RefStateSet.Checked");
 			else
 				Assert.IsFalse (state.ContainsState (Atk.StateType.Checked), "RefStateSet.!Checked #2");
+			if (type == BasicWidgetType.ListItem)
+				Assert.IsTrue (state.ContainsState (Atk.StateType.Selected), "RefStateSet.Selected");
 			
 			
 			//still need to figure out why this is null in gail

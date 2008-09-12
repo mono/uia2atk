@@ -71,6 +71,19 @@ namespace UiaAtkBridge
 			return states;
 		}
 
+		protected override int OnGetIndexInParent()
+		{
+			if (Parent == null)
+				return -1;
+			ParentAdapter parent = Parent as ParentAdapter;
+			if (parent != null)
+				return parent.GetIndexOfChild (this);
+			for (int i = Parent.NAccessibleChildren - 1; i >= 0; i--) {
+				if (Parent.RefAccessibleChild(i) == this)
+					return i;
+			}
+			return -1;
+		}
 #endregion
 
 		internal System.Windows.Rect BoundingRectangle

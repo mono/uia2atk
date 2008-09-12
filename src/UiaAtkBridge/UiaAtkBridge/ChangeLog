@@ -1,6 +1,10 @@
 2008-09-12  Mike Gorse <mgorse@novell.com>
 
-	* ListItem.cs: Show Selectable and Selected states whe nappropriate.
+	* Adapter.cs, ParentAdapter.cs: Add GetChildAtIndex.
+
+2008-09-12  Mike Gorse <mgorse@novell.com>
+
+	* ListItem.cs: Show Selectable and Selected states when appropriate.
 
 2008-09-12  Mario Carrion <mcarrion@novell.com> 
 

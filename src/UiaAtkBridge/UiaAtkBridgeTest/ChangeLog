@@ -1,5 +1,10 @@
 2008-09-12 Mike Gorse <mgorse@novell.com>
 
+	* AtkTester.cs: Test ListItem click action
+	* BridgeTester.cs: For ListBox, move Selection test before Action since Selection expects nothing selected at start
+
+2008-09-12 Mike Gorse <mgorse@novell.com>
+
 	* AtkTester.cs, BridgeTester.cs: Test Atk.Selection for ListBox
 	* AtkTester.cs: Test Selectable and Selected states in InterfaceSelection
 

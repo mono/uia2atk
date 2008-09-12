@@ -102,6 +102,10 @@ namespace UiaAtkBridge
 			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Remove, (uint)childIndex, childToRemove);
 		}
 		
+		public int GetIndexOfChild (Atk.Object child)
+		{
+			return children.IndexOf (child);
+		}
 #endregion
 		
 		
