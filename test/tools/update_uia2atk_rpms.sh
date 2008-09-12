@@ -93,7 +93,7 @@ if [ $? != "0" ]; then
     exit 1
 fi
 URL="http://build1.sled.lab.novell.com/uia/$dir/"
-wget -r --accept=rpm -np -nd -l1 $URL
+wget -nv -r --accept=rpm -np -nd -l1 $URL
 
 if [ $? != "0" ]; then
     echo "Error:  failed to download the rpms"

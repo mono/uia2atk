@@ -39,7 +39,6 @@ class Settings(object):
   is_log_ok = True
   COUNTDOWN = 5
   is_smoke = False
-  test_type = ""
   email_addresses = []
   should_update = False
   package_failed_machines = []
@@ -203,7 +202,7 @@ class Test(object):
         if not t.isAlive():
           dead_threads.append(t)
           lock.acquire()
-          output("  %-12s (%10s) ==>" % (t.name, t.ip), False) 
+          output("  TEST COMPLETE:  %-12s (%10s) ==>" % (t.name, t.ip), False) 
           if t.pkg_status == 0 and t.test_status == 0:
             good_machines.append(t.name)
             output("DONE")
@@ -248,9 +247,7 @@ class Test(object):
   
     import urllib
 
-    print "TODO:  compose the mail message"
-    
-    test_type = lambda: Settings.is_smoke == True and "Smoke tests" or "Tests"
+    test_type = lambda: Settings.is_smoke == True and "smoke tests" or "tests"
     status = lambda: len(Kickoff.package_failed_machines) + \
                     len(Kickoff.test_failed_machines) > 0 \
                     and "failed" or "succeeded"
@@ -266,17 +263,16 @@ class Test(object):
     self.summary_message = []
 
     if (len(Kickoff.test_failed_machines) > 0):
-      self.summary_message.append("%s %s\n%s\n\n" % \
-                (test_type(), "failed for the following device(s):\n",
-                "\n".join(Kickoff.test_failed_machines)))
+      self.summary_message.append("%s\n%s\n\n" % \
+                ("Strongwind tests failed for the following device(s):\n",
+                "\n".join(failed_machines)))
 
     if (len(Kickoff.package_failed_machines) > 0):
       self.summary_message.append("%s\n%s\n\n" % \
                 ("Package updates failed for the following device(s):\n",
                 "\n".join(Kickoff.package_failed_machines)))
 
-    self.summary_message.append("%s %s for the following packages:\n\n%s\n\n" %\
-                         (test_type(), status(), revisions))
+    self.summary_message.append("The above %s %s for the following packages:\n\n%s\n\n" % (test_type(), status(), revisions))
 
     
     # add local logs to the detailed message, which will be the second
