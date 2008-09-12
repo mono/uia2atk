@@ -23,37 +23,65 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using System.Windows.Automation;
+using System.Windows.Automation; 
 using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
-	internal abstract class ExpandCollapsePatternStatePropertyEvent 
-		: ProviderEvent
+
+	internal abstract class BaseAutomationPropertyEvent : ProviderEvent
 	{
-		#region Constructor
+		#region Constructors
 		
-		protected ExpandCollapsePatternStatePropertyEvent (IRawElementProviderSimple provider)
+		protected BaseAutomationPropertyEvent (IRawElementProviderSimple provider,
+		                                       AutomationProperty property)
 			: base (provider)
 		{
+			this.property = property;
+			OldValue = Provider.GetPropertyValue (Property.Id);
 		}
 		
 		#endregion
 		
-		#region Protected methods
+		#region Public Properties
 		
-		protected void ExpandCollapseStateProperty ()
+		public AutomationProperty Property {
+			get { return property; }
+		}
+		
+		public object OldValue {
+			get { return oldValue; }
+			private set { oldValue = value; }
+		}
+		
+		#endregion
+		
+		#region Protected Methods
+		
+		protected void RaiseAutomationPropertyChangedEvent ()
 		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
-					                                        null,
-					                                        Provider.GetPropertyValue (ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
+			if (AutomationInteropProvider.ClientsAreListening == true) {
+				object newValue = Provider.GetPropertyValue (Property.Id);
+				
+				if (OldValue != newValue) {
+					AutomationPropertyChangedEventArgs args =					
+						new AutomationPropertyChangedEventArgs (Property,
+						                                        OldValue,
+						                                        newValue);
+					AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, 
+					                                                               args);
+					OldValue = newValue;
+				}
 			}
 		}
 		
 		#endregion
 		
+		#region Private fields
+		
+		private object oldValue;
+		private AutomationProperty property;
+		
+		#endregion
 	}
 }

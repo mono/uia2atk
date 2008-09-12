@@ -41,29 +41,11 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 		
-		#region Public Properties
-		
-		public SWFHelpProvider SWFHelpProvider {
-			get { return helpProvider; }
-		}
-		
-		#endregion
-		
 		#region Protected Methods
 		
-		protected override object GetReferenceOfToolTip ()
-		{
-			return helpProvider;
-		}
-
 		protected override string GetTextFromControl (Control control)
 		{
 			return helpProvider.GetHelpString (control);
-		}
-		
-		protected override Type GetTypeOfToolTip ()
-		{
-			return typeof (SWFHelpProvider);
 		}
 		
 		#endregion

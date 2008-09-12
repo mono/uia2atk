@@ -1,3 +1,9 @@
+2008-09-12  Mario Carrion <mcarrion@novell.com> 
+
+	* BaseProviderTest.cs, CheckBoxProviderTest.cs: Updated to follow
+	  specification:
+	  http://msdn.microsoft.com/en-us/library/system.windows.automation.automationpropertychangedeventargs.automationpropertychangedeventargs.aspx
+
 2008-09-10  Mario Carrion <mcarrion@novell.com> 
 
 	* ListBoxProviderTest.cs: Test updated to validate bug #414937 found.

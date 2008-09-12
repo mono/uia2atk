@@ -31,13 +31,15 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	internal class AutomationIsEnabledPropertyEvent : ProviderEvent
+	internal class AutomationIsEnabledPropertyEvent 
+		: BaseAutomationPropertyEvent
 	{
 		
 #region Constructors
 
 		public AutomationIsEnabledPropertyEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+			: base (provider,
+			        AutomationElementIdentifiers.IsEnabledProperty)
 		{
 		}
 		
@@ -57,17 +59,11 @@ namespace Mono.UIAutomation.Winforms.Events
 
 #endregion
 		
-#region Protected Methods
+#region Private Methods
 		
-		protected void OnEnableChanged (object sender, EventArgs e)
+		private void OnEnableChanged (object sender, EventArgs e)
 		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsEnabledProperty,
-					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
-			}
+			RaiseAutomationPropertyChangedEvent ();
 		}
 		
 #endregion

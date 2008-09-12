@@ -31,19 +31,21 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	internal class ValuePatternValuePropertyEvent : ProviderEvent
+	internal class ValuePatternValuePropertyEvent 
+		: BaseAutomationPropertyEvent
 	{
 		
-#region Constructor
+		#region Constructor
 
 		public ValuePatternValuePropertyEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+			: base (provider,
+			        ValuePatternIdentifiers.ValueProperty)
 		{
 		}
 		
-#endregion
+		#endregion
 		
-#region ProviderEvent Methods
+		#region ProviderEvent Methods
 
 		public override void Connect (Control control)
 		{
@@ -55,22 +57,16 @@ namespace Mono.UIAutomation.Winforms.Events
 			control.TextChanged -= new EventHandler (OnValueChanged);
 		}
 		
-#endregion 
+		#endregion 
 		
-#region Protected methods
+		#region Protected methods
 		
-		protected void OnValueChanged (object sender, EventArgs e)
+		private void OnValueChanged (object sender, EventArgs e)
 		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (ValuePatternIdentifiers.ValueProperty,
-					                                        null,
-					                                        Provider.GetPropertyValue (ValuePatternIdentifiers.ValueProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
-			}
+			RaiseAutomationPropertyChangedEvent ();
 		}
 
-#endregion
+		#endregion
 		
 	}
 }

@@ -56,8 +56,6 @@ namespace Mono.UIAutomation.Winforms
 		//       this mapping?
 		private static Dictionary<Component, IRawElementProviderFragment>
 			componentProviders;
-		//Read comment in ReleaseProvider method for detailed information.
-		private static Dictionary<Component, int> sharedComponents;
 		
 		private static Dictionary<SWFErrorProvider, List<ErrorProvider>> errorProviders;
 		
@@ -65,7 +63,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			componentProviders =
 				new Dictionary<Component,IRawElementProviderFragment> ();
-			sharedComponents = new Dictionary<Component, int> ();
 			
 			errorProviders = new Dictionary<SWFErrorProvider, List <ErrorProvider>>();
 		}
@@ -188,16 +185,11 @@ namespace Mono.UIAutomation.Winforms
 						errorProvider.AddControl (ctrl);
 					}
 				}
-			}
-			//NOTE: The following providers are Component-based meaning that
-			//can be shared.
-			else if ((tt = component as ToolTip) != null) {
+			} else if ((tt = component as ToolTip) != null)
 				provider = new ToolTipProvider (tt);
-				isComponentBased = true;
-			} else if ((hlp = component as SWFHelpProvider) != null) {
+			else if ((hlp = component as SWFHelpProvider) != null)
 				provider = new HelpProvider (hlp);
-				isComponentBased = true;
-			} else //TODO: We have to solve the problem when there's a Custom control
+			else //TODO: We have to solve the problem when there's a Custom control
 				throw new NotImplementedException ("Provider not implemented for control");
 			
 			if (provider != null) {
@@ -205,10 +197,6 @@ namespace Mono.UIAutomation.Winforms
 				componentProviders [component] = provider;
 				if (initializeEvents)
 					provider.InitializeEvents ();
-				
-				//Read comment in ReleaseProvider method for detailed information.
-				if (isComponentBased == true)
-					sharedComponents.Add (component, 1);
 				
 				FragmentRootControlProvider root;
 				if (forceInitializeChildren == true
@@ -219,44 +207,24 @@ namespace Mono.UIAutomation.Winforms
 			return provider;
 		}
 		
-		//Control-based Providers aren't shared, meaning that you can't
-		//associate the Control with more than one Control/Component, so
-		//releasing it doesn't impact in other providers, however Component-based
-		//Providers are shared, meaning that you can associate the Component with 
-		//one or more Controls, for example the ToolTip and HelpProvider.
-		//We are releasing the Component-based when the number of sharedComponents
-		//reaches 1, that way we aren't creating the provider over and over.
 		public static void ReleaseProvider (Component component)
 		{
 			IRawElementProviderFragment provider;
 			if (componentProviders.TryGetValue (component, 
 			                                    out provider) == true) {
-				if (sharedComponents.ContainsKey (component) == true) {
-					if (sharedComponents [component] == 1) {
-						componentProviders.Remove (component);
-						((FragmentControlProvider) provider).Terminate ();
-						sharedComponents.Remove (component);
-					} else
-						sharedComponents [component] = sharedComponents [component] - 1;
-				} else {
-					componentProviders.Remove (component);
-					((FragmentControlProvider) provider).Terminate ();
-				}
+				componentProviders.Remove (component);
+				((FragmentControlProvider) provider).Terminate ();
 			}
 		}
 		
-		private static IRawElementProviderFragment FindProvider (Component component)
+		public static IRawElementProviderFragment FindProvider (Component component)
 		{
 			IRawElementProviderFragment provider;
 			
 			if (component == null)
 				return null;
-			else if (componentProviders.TryGetValue (component, out provider)) {
-				if (sharedComponents.ContainsKey (component) == true)
-					sharedComponents [component] = sharedComponents [component] + 1;
-
+			else if (componentProviders.TryGetValue (component, out provider))
 				return provider;
-			}
 
 			return null;
 		}

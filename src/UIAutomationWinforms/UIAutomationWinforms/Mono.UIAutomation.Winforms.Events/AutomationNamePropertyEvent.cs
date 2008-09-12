@@ -31,19 +31,21 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 	
-	internal class AutomationNamePropertyEvent : ProviderEvent
+	internal class AutomationNamePropertyEvent 
+		: BaseAutomationPropertyEvent
 	{
 		
-#region Constructors
+		#region Constructors
 
 		public AutomationNamePropertyEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+			: base (provider,
+			        AutomationElementIdentifiers.NameProperty)
 		{
 		}
 
-#endregion
+		#endregion
 
-#region	 IConnectable Overrides
+		#region IConnectable Overrides
 
 		public override void Connect (Control control)
 		{
@@ -55,22 +57,16 @@ namespace Mono.UIAutomation.Winforms.Events
 			control.TextChanged -= new EventHandler (OnTextChanged);
 		}
 		
-#endregion
+		#endregion
 		
-#region Protected Methods
+		#region Private Methods
 
-		protected void OnTextChanged (object sender, EventArgs e)
+		private void OnTextChanged (object sender, EventArgs e)
 		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.NameProperty,
-					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
-			}
+			RaiseAutomationPropertyChangedEvent ();
 		}
 
-#endregion
+		#endregion
 
 	}
 }

@@ -31,19 +31,19 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	internal class InvokePatternInvokedEvent : ProviderEvent
+	internal class InvokePatternInvokedEvent : BaseAutomationEvent
 	{
 
-#region Constructors
+		#region Constructors
 
 		public InvokePatternInvokedEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+			: base (provider, InvokePatternIdentifiers.InvokedEvent)
 		{
 		}
 		
-#endregion
+		#endregion
 		
-#region IConnectable Overrides
+		#region IConnectable Overrides
 		
 		public override void Connect (Control control)
 		{
@@ -55,28 +55,15 @@ namespace Mono.UIAutomation.Winforms.Events
 			control.Click -= new EventHandler (OnClick);
 		}
 		
-#endregion
-		
-#region Protected Methods
-		
-		protected void InvokeEvent ()
-		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationEventArgs args = new AutomationEventArgs (InvokePatternIdentifiers.InvokedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (InvokePatternIdentifiers.InvokedEvent, 
-				                                                Provider, args);
-			}
-		}
-		
-#endregion
+		#endregion
 
-#region Private Methods
+		#region Private Methods
 
 		private void OnClick (object sender, EventArgs e)
 		{
-			InvokeEvent ();
+			RaiseAutomationEvent ();
 		}
 
-#endregion
+		#endregion
 	}
 }

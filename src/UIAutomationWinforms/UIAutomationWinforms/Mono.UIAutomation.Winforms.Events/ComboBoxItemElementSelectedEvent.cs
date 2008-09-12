@@ -32,19 +32,19 @@ namespace Mono.UIAutomation.Winforms.Events
 {
 	
 	internal class ComboBoxItemElementSelectedEvent 
-		: SelectionItemPatternElementSelectedEvent
+		: BaseAutomationEvent
 	{
 
-#region Constructor
+		#region Constructor
 
 		public ComboBoxItemElementSelectedEvent (IRawElementProviderSimple provider)
-			: base (provider)
+			: base (provider, SelectionItemPatternIdentifiers.ElementSelectedEvent)
 		{
 		}
 		
-#endregion
+		#endregion
 		
-#region IConnectable Overrides
+		#region IConnectable Overrides
 		
 		public override void Connect (Control control)
 		{
@@ -58,6 +58,15 @@ namespace Mono.UIAutomation.Winforms.Events
 				-= new EventHandler (OnElementSelectedEvent);
 		}
 		
-#endregion
+		#endregion
+		
+		#region Private Methods
+		
+		private void OnElementSelectedEvent (object sender, EventArgs args)
+		{
+			RaiseAutomationEvent ();
+		}
+		
+		#endregion
 	}
 }

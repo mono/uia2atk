@@ -31,19 +31,20 @@ namespace Mono.UIAutomation.Winforms.Events
 {
 
 	internal class TextBoxHasKeyBoardFocusPropertyEvent 
-		: AutomationHasKeyboardFocusPropertyEvent
+		: BaseAutomationPropertyEvent
 	{
 
-#region Constructors
+		#region Constructors
 
 		public TextBoxHasKeyBoardFocusPropertyEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+			: base (provider,
+			        AutomationElementIdentifiers.HasKeyboardFocusProperty)
 		{
 		}
 		
-#endregion
+		#endregion
 		
-#region IConnectable Overrides
+		#region IConnectable Overrides
 		
 		public override void Connect (Control control)
 		{
@@ -57,16 +58,16 @@ namespace Mono.UIAutomation.Winforms.Events
 			((TextBoxBase) control).Leave -= new EventHandler (OnEnterLeave);
 		}
 		
-#endregion
+		#endregion
 
-#region Private Methods		
+		#region Private Methods		
 
 		private void OnEnterLeave (object sender, EventArgs e)
 		{
-			HasKeyboardFocusPropertyEvent ();
+			RaiseAutomationPropertyChangedEvent ();
 		}
 		
-#endregion
+		#endregion
 
 	}
 }

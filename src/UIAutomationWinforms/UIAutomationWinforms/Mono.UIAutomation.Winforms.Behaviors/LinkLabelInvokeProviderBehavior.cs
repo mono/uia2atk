@@ -96,6 +96,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 	            return;
 	        }
 			
+			//TODO: Is index[0] *always* valid?
 			LinkLabelLinkClickedEventArgs args 
 				= new LinkLabelLinkClickedEventArgs (((LinkLabel) Provider.Control).Links [0],
 				                                     MouseButtons.Left);

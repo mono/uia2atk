@@ -1,5 +1,67 @@
 2008-09-12  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: File updated due to
+	  added and deleted files.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Removed
+	  sharedComponents logic: not needed anymore.
+	* Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs,
+	  Mono.UIAutomation.Winforms/HelpProvider.cs,
+	  Mono.UIAutomation.Winforms/ToolTipProvider.cs: Updated to latest
+	  MWF patch.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: New property
+	  ToolTip. Removed ToolTip/HelpProvider reflection, not needed.
+	* Mono.UIAutomation.Winforms/Helper.cs: AddRemovePrivateEvent supports
+	  static delegates.
+	* Mono.UIAutomation.Winforms/ToolTipListener.cs: Added to keep track of
+	  SWF.ToolTip instances shown and hidden.
+	* Mono.UIAutomation.Winforms/HelpProviderListener.cs: Added to keep
+	  track of SWF.HelpProvider instances shown and hidden.
+	* Mono.UIAutomation.Winforms.Behaviors/ButtonInvokeProviderBehavior.cs:
+	  Removed HelpTextProperty (is handled by SimpleControlProvider)
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ComboBoxButtonInvokeBehavior.cs:
+	  Fixed threading issue.
+	* Mono.UIAutomation.Winforms.Behaviors/ListItemScrollProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/GridPatternRowCountPropertyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/GridPatternColumnCountPropertyEvent.cs:
+	  Added FIXME comment.
+	* Mono.UIAutomation.Winforms.Behaviors/LinkLabelInvokeProviderBehavior.cs:
+	  Added TODO comment.
+	* Mono.UIAutomation.Winforms.Events/ComboBoxItemElementSelectedEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/LinkLabelInvokePatternInvokedEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ComboBoxButtonInvokePatternInvokeEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/TextPatternTextChangedEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/InvokePatternInvokedEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/AutomationFocusChangedEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs:
+	  Subclassing BaseAutomationEvent.
+	* Mono.UIAutomation.Winforms.Events/BaseAutomationEvent.cs: Base class
+	  to be used for Automation Events.
+	* Mono.UIAutomation.Winforms.Events/ValuePatternValuePropertyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/TogglePatternToggleStatePropertyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternValueEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ComboBoxExpandCollapseStateEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/AutomationIsEnabledPropertyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ProgressBarRangeValuePatternValueEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ValuePatternValueIsReadOnlyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/AutomationIsOffscreenPropertyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/TextBoxHasKeyBoardFocusPropertyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/TextBoxValuePatternValueIsReadOnlyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/AutomationNamePropertyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/AutomationBoundingRectanglePropertyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/AutomationHasKeyboardFocusPropertyEvent.cs:
+	  Subclassing BaseAutomationPropertyEvent.
+	* Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternIsReadOnlyEvent.cs:
+	  Added: generates IsReadOnlyProperty event for ScrollBar.
+	* Mono.UIAutomation.Winforms.Events/ExpandCollapsePatternStatePropertyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/RangeValuePatternValueEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/SelectionItemPatternElementSelectedEvent.cs:
+	  Deleted: not needed.
+	* Mono.UIAutomation.Winforms.Events/BaseAutomationPropertyEvent.cs:
+	  Base class to be used for Automation Property events.
+
+2008-09-12  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Behaviors/NumericUpDownRangeValueProviderBehavior.cs:
 	  Using BeginInvoke.
 	

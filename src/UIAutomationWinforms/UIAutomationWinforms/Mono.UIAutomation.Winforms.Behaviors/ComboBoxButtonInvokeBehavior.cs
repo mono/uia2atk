@@ -22,27 +22,28 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
 
-	internal class ComboBoxButtonInvokeBehavior : ButtonInvokeProviderBehavior
+	internal class ComboBoxButtonInvokeBehavior 
+		: ButtonInvokeProviderBehavior
 	{
 		
-#region Constructor
+		#region Constructor
 		
 		public ComboBoxButtonInvokeBehavior (ComboBoxProvider provider)
 			: base (provider)
 		{
 		}
 
-#endregion
+		#endregion
 		
-#region IProviderBehavior Interface
+		#region IProviderBehavior Interface
 
 		public override void Connect (Control control)
 		{
@@ -56,19 +57,31 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			                   null);
 		}
 
-#endregion
+		#endregion
 		
-#region IInvokeProvider Members
+		#region IInvokeProvider Members
 		
 		public override void Invoke ()
 		{
-			if (!Provider.Control.Enabled)
+			if (Provider.Control.Enabled == false)
 				throw new ElementNotEnabledException ();
 			
-			((ComboBox) Provider.Control).DroppedDown = true;
+			PerformComboBoxClick ();
 		}
 		
-#endregion	
+		#endregion	
 
+		#region Private Methods
+		
+		private void PerformComboBoxClick ()
+		{
+	        if (Provider.Control.InvokeRequired == true) {
+	            Provider.Control.BeginInvoke (new MethodInvoker (PerformComboBoxClick));
+	            return;
+	        }
+			((ComboBox) Provider.Control).DroppedDown = !((ComboBox) Provider.Control).DroppedDown;
+		}
+		
+		#endregion
 	}
 }

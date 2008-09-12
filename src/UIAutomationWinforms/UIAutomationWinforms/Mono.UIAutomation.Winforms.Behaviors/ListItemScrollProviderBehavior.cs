@@ -69,6 +69,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 		public void ScrollIntoView ()
 		{
+			//FIXME: Use BeginInvoke
 			((ListItemProvider) Provider).ListProvider.ScrollItemIntoView ((ListItemProvider) Provider);
 		}
 

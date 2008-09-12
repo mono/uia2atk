@@ -137,6 +137,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		                              ToggleState expectedState)
 		{
 			bridge.ResetEventLists ();
+			
+			object oldState = provider.ToggleState;
+			
 			checkbox.CheckState = newState;
 			
 			// Test IToggleProvider.ToggleState
@@ -152,7 +155,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (TogglePatternIdentifiers.ToggleStateProperty,
 			                 eventArgs.Property,
 			                 "event args property");
-			Assert.AreEqual (null, // Mimics MS implementation
+			Assert.AreEqual (oldState,
 			                 eventArgs.OldValue,
 			                 "old value");
 			Assert.AreEqual (expectedState,

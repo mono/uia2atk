@@ -31,13 +31,16 @@ namespace Mono.UIAutomation.Winforms.Events
 {
 
 	internal class ScrollBarRangeValuePatternValueEvent 
-		: RangeValuePatternValueEvent
+		: BaseAutomationPropertyEvent
 	{
+		#region Constructor
 		
 		public ScrollBarRangeValuePatternValueEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+			: base (provider, RangeValuePatternIdentifiers.ValueProperty)
 		{
 		}
+		
+		#endregion
 		
 		#region IConnectable Overrides
 
@@ -59,7 +62,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		private void OnValueChanged (object sender, EventArgs e)
 		{
-			ValueEvent ();
+			RaiseAutomationPropertyChangedEvent ();
 		}
 
 		#endregion

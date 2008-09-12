@@ -32,13 +32,15 @@ namespace Mono.UIAutomation.Winforms.Events
 
 	// TODO: VisibleChanged isn't the valid MS behaviour.
 	// We need to connect to some valid event to raise this event.
-	internal class AutomationIsOffscreenPropertyEvent : ProviderEvent
+	internal class AutomationIsOffscreenPropertyEvent 
+		: BaseAutomationPropertyEvent
 	{
 		
 #region Constructors
 		
 		public AutomationIsOffscreenPropertyEvent (IRawElementProviderSimple provider)
-			: base (provider)
+			: base (provider,
+			        AutomationElementIdentifiers.IsOffscreenProperty)
 		{
 		}
 		
@@ -58,18 +60,11 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 #endregion
 		
-#region Protected Methods		
+#region Private Methods		
 		
-		protected void OnVisibleChanged (object sender, EventArgs e)
+		private void OnVisibleChanged (object sender, EventArgs e)
 		{
-			// TODO: Check if IsOffscreenProperty has changed...
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.IsOffscreenProperty,
-					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
-			}
+			RaiseAutomationPropertyChangedEvent ();
 		}
 		
 #endregion

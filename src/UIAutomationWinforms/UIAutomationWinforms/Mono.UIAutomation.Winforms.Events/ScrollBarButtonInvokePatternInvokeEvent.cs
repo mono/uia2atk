@@ -33,13 +33,13 @@ namespace Mono.UIAutomation.Winforms.Events
 {
 
 	internal class ScrollBarButtonInvokePatternInvokeEvent
-		: InvokePatternInvokedEvent
+		: BaseAutomationEvent
 	{
 		
 		#region Constructors
 		
 		public ScrollBarButtonInvokePatternInvokeEvent (ScrollBarProvider.ScrollBarButtonProvider provider) 
-			: base (provider)
+			: base (provider, InvokePatternIdentifiers.InvokedEvent)
 		{
 		}
 				
@@ -88,7 +88,7 @@ namespace Mono.UIAutomation.Winforms.Events
 			        && provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.SmallBack)
 			    || (args.Type == ScrollEventType.SmallIncrement
 			        && provider.Orientation == ScrollBarProvider.ScrollBarButtonOrientation.SmallForward))
-				InvokeEvent ();
+				RaiseAutomationEvent ();
 		}
 		
 #pragma warning restore 169

@@ -44,31 +44,13 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 		
-		#region Public Properties
-		
-		public ToolTip ToolTip {
-			get { return tooltip; }
-		}
-		
-		#endregion
-		
 		#region Protected Methods
-		
-		protected override object GetReferenceOfToolTip ()
-		{
-			return ToolTip;
-		}
 
 		protected override string GetTextFromControl (Control control)
 		{
 			return ToolTip.GetToolTip (control);
 		}
-		
-		protected override Type GetTypeOfToolTip ()
-		{
-			return typeof (ToolTip);
-		}
-		
+
 		#endregion
 		
 		#region Private Fields

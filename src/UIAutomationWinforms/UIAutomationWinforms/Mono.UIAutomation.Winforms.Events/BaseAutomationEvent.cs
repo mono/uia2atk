@@ -23,38 +23,52 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using System.Windows.Automation;
+using System.Windows.Automation; 
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
 	
-	internal abstract class RangeValuePatternValueEvent : ProviderEvent
+	internal abstract class BaseAutomationEvent : ProviderEvent
 	{
-
-		#region Constructor
-
-		protected RangeValuePatternValueEvent (IRawElementProviderSimple provider) 
+		#region Constructors
+		
+		protected BaseAutomationEvent (IRawElementProviderSimple provider,
+		                               AutomationEvent evnt)
 			: base (provider)
 		{
+			this.evnt = evnt;
 		}
 		
 		#endregion
-
-		#region Private methods
 		
-		protected void ValueEvent ()
-		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (RangeValuePatternIdentifiers.ValueProperty,
-					                                        null,
-					                                        Provider.GetPropertyValue (RangeValuePatternIdentifiers.ValueProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
-			}
+		#region Public Properties
+		
+		public AutomationEvent Event {
+			get { return evnt; }
 		}
 
+		#endregion
+		
+		#region Protected Methods
+		
+		protected void RaiseAutomationEvent ()
+		{
+			if (AutomationInteropProvider.ClientsAreListening == true) {
+				AutomationEventArgs args = 
+					new AutomationEventArgs (Event);
+				AutomationInteropProvider.RaiseAutomationEvent (Event, 
+				                                                Provider, 
+				                                                args);
+			}
+		}
+		
+		#endregion
+		
+		#region Private fields
+		
+		private AutomationEvent evnt;
+		
 		#endregion
 	}
 }

@@ -82,7 +82,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		internal static void RaiseStructureChangedEvent (StructureChangeType type,
 		                                                 IRawElementProviderFragment provider)
-		{		
+		{	
 			if (AutomationInteropProvider.ClientsAreListening) {
 				int []runtimeId = null;
 				if (type == StructureChangeType.ChildRemoved) {
@@ -117,19 +117,33 @@ namespace Mono.UIAutomation.Winforms
 		                                           string eventName, object referenceDelegate,
 		                                           string delegateName, bool addEvent)
 		{
-			EventInfo eventInfo = referenceType.GetEvent (eventName,
-			                                              BindingFlags.Instance 
-			                                              | BindingFlags.NonPublic);
+			EventInfo eventInfo;
+			if (reference != null)
+				eventInfo = referenceType.GetEvent (eventName,
+				                                    BindingFlags.Instance 
+				                                    | BindingFlags.NonPublic);
+			else
+				eventInfo = referenceType.GetEvent (eventName,
+				                                    BindingFlags.Static 
+				                                    | BindingFlags.NonPublic);
+				
 			if (eventInfo == null)
 				throw new NotSupportedException ("Event not found: " + eventName);
 			
 			Type delegateType = eventInfo.EventHandlerType;
 			MethodInfo eventMethod = addEvent 
 				? eventInfo.GetAddMethod (true) :eventInfo.GetRemoveMethod (true);
-			Delegate delegateValue = Delegate.CreateDelegate (delegateType, 
-			                                                  referenceDelegate,
-			                                                  delegateName, 
-			                                                  false);
+			Delegate delegateValue;
+			if (reference != null)
+				delegateValue = Delegate.CreateDelegate (delegateType, 
+				                                         referenceDelegate,
+				                                         delegateName, 
+				                                         false);
+			else
+				delegateValue = Delegate.CreateDelegate (delegateType, 
+				                                         (Type) referenceDelegate,
+				                                         delegateName, 
+				                                         false);
 			eventMethod.Invoke (reference, new object[] { delegateValue });
 		}
 		

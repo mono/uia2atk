@@ -22,7 +22,6 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -31,19 +30,21 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	internal class TextPatternTextChangedEvent : ProviderEvent
+	internal class TextPatternTextChangedEvent 
+		: BaseAutomationEvent
 	{
 		
-#region Constructors
+		#region Constructors
 
 		public TextPatternTextChangedEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+			: base (provider,
+			        TextPatternIdentifiers.TextChangedEvent)
 		{
 		}
 		
-#endregion
+		#endregion
 		
-#region IConnectable Overrides
+		#region IConnectable Overrides
 
 		public override void Connect (Control control)
 		{
@@ -55,21 +56,16 @@ namespace Mono.UIAutomation.Winforms.Events
 			control.TextChanged -= new EventHandler (OnTextChanged);
 		}
 
-#endregion
+		#endregion
 		
-#region Protected Methods 
+		#region Private Methods 
 
-		protected void OnTextChanged (object sender, EventArgs e)
+		private void OnTextChanged (object sender, EventArgs e)
 		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationEventArgs eventArgs =
-					new AutomationEventArgs (TextPatternIdentifiers.TextChangedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (TextPatternIdentifiers.TextChangedEvent, 
-				                                                Provider, eventArgs);
-			}
+			RaiseAutomationEvent ();
 		}
 
-#endregion
+		#endregion
 
 	}
 }

@@ -36,16 +36,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		: ProviderBehavior, IValueProvider
 	{
 		
-#region Constructors
-		
+		#region Constructors
+	
 		public ComboBoxValueProviderBehavior (FragmentControlProvider provider)
 			: base (provider) 
 		{
 		}
 
-#endregion		
+		#endregion		
 
-#region IProviderBehavior Interface
+		#region IProviderBehavior Interface
 
 		public override AutomationPattern ProviderPattern {
 			get { return ValuePatternIdentifiers.Pattern; }
@@ -77,9 +77,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 				return base.GetPropertyValue (propertyId);
 		}
 
-#endregion
+		#endregion
 			
-#region IValueProvider Interface
+		#region IValueProvider Interface
 		
 		public bool IsReadOnly {
 			get { return Provider.Control.Enabled == false; }
@@ -91,13 +91,29 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public void SetValue (string value)
 		{
-			if (IsReadOnly)
+			if (IsReadOnly == true)
 				throw new ElementNotEnabledException ();
 
-			Provider.Control.Text = value;
+			PerformSetValue (value);
 		}
 
-#endregion
+		#endregion
 		
+		#region Private Methods
+		
+		private void PerformSetValue (string value) 
+		{
+			if (Provider.Control.InvokeRequired == true) {
+				Provider.Control.BeginInvoke (new ComboBoxSetValueDelegate (PerformSetValue),
+				                              new object [] { value } );
+				return;
+			}
+			
+			Provider.Control.Text = value;
+		}
+		
+		#endregion
 	}
+	
+	delegate void ComboBoxSetValueDelegate (string value);
 }

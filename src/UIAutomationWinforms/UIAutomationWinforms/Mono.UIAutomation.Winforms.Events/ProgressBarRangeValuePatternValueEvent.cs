@@ -30,14 +30,14 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 	
-	internal class ProgressBarRangeValuePatternValueEvent
-		: RangeValuePatternValueEvent
+	internal class ProgressBarRangeValuePatternValueEvent 
+		: BaseAutomationPropertyEvent
 	{
 
 		#region Constructor
 
 		public ProgressBarRangeValuePatternValueEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+			: base (provider, RangeValuePatternIdentifiers.ValueProperty)
 		{
 		}
 		
@@ -63,7 +63,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		private void OnValueChanged (object sender, EventArgs args)
 		{
-			ValueEvent ();
+			RaiseAutomationPropertyChangedEvent ();
 		}
 		
 		#endregion

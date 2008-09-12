@@ -32,19 +32,21 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	internal class ValuePatternValueIsReadOnlyEvent : ProviderEvent
+	internal class ValuePatternValueIsReadOnlyEvent 
+		: BaseAutomationPropertyEvent
 	{
 		
-#region Constructor
+		#region Constructor
 
 		public ValuePatternValueIsReadOnlyEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+			: base (provider,
+			        ValuePatternIdentifiers.IsReadOnlyProperty)
 		{
 		}
 		
-#endregion
+		#endregion
 		
-#region ProviderEvent Methods
+		#region ProviderEvent Methods
 
 		public override void Connect (Control control)
 		{
@@ -56,21 +58,15 @@ namespace Mono.UIAutomation.Winforms.Events
 			control.EnabledChanged -= new EventHandler (OnIsReadOnlyChanged);
 		}
 		
-#endregion 
+		#endregion 
 		
-#region Protected methods
+		#region Protected methods
 		
-		protected void OnIsReadOnlyChanged (object sender, EventArgs e)
+		private void OnIsReadOnlyChanged (object sender, EventArgs e)
 		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (ValuePatternIdentifiers.IsReadOnlyProperty,
-					                                        null,
-					                                        Provider.GetPropertyValue (ValuePatternIdentifiers.IsReadOnlyProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
-			}
+			RaiseAutomationPropertyChangedEvent ();
 		}
 
-#endregion
+		#endregion
 	}
 }

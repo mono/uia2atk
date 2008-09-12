@@ -22,38 +22,49 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
-
-	internal abstract class SelectionItemPatternElementSelectedEvent 
-		: ProviderEvent
+	
+	internal class ScrollBarRangeValuePatternIsReadOnlyEvent 
+		: BaseAutomationPropertyEvent 
 	{
-
-#region Constructor
-
-		protected SelectionItemPatternElementSelectedEvent (IRawElementProviderSimple provider)
-			: base (provider)
+		#region Constructor
+		
+		public ScrollBarRangeValuePatternIsReadOnlyEvent (IRawElementProviderSimple provider)
+			: base (provider, RangeValuePatternIdentifiers.IsReadOnlyProperty)
 		{
 		}
 		
-#endregion
+		#endregion
 		
-#region Private method
+		#region Public Methods
 		
-		protected void OnElementSelectedEvent (object sender, EventArgs e)
+		public override void Connect (Control control)
 		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationEventArgs args = new AutomationEventArgs (SelectionItemPatternIdentifiers.ElementSelectedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (SelectionItemPatternIdentifiers.ElementSelectedEvent, 
-				                                                Provider, args);
-			}
+			((ScrollBar) control).EnabledChanged += new EventHandler (OnIsReadOnlyChanged);
+			((ScrollBar) control).VisibleChanged += new EventHandler (OnIsReadOnlyChanged);
+		}
+
+		public override void Disconnect (Control control)
+		{
+			((ScrollBar) control).EnabledChanged -= new EventHandler (OnIsReadOnlyChanged);
+			((ScrollBar) control).VisibleChanged -= new EventHandler (OnIsReadOnlyChanged);
 		}
 		
-#endregion
+		#endregion
+		
+		#region Private Methods
+		
+		private void OnIsReadOnlyChanged (object sender, EventArgs args)
+		{
+			RaiseAutomationPropertyChangedEvent ();
+		}
+		
+		#endregion
 	}
 }

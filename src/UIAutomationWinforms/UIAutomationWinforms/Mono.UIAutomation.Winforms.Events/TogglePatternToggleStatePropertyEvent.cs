@@ -22,7 +22,6 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -31,19 +30,21 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	internal class TogglePatternToggleStatePropertyEvent : ProviderEvent
+	internal class TogglePatternToggleStatePropertyEvent 
+		: BaseAutomationPropertyEvent
 	{
 
-#region Constructors
+		#region Constructors
 
 		public TogglePatternToggleStatePropertyEvent (IRawElementProviderFragment toggleProvider)
-			: base (toggleProvider)
+			: base (toggleProvider,
+			        TogglePatternIdentifiers.ToggleStateProperty)
 		{
 		}
 		
-#endregion
+		#endregion
 		
-#region IConnectable Overrides
+		#region IConnectable Overrides
 	
 		public override void Connect (Control control)
 		{
@@ -55,22 +56,16 @@ namespace Mono.UIAutomation.Winforms.Events
 			((CheckBox) control).CheckedChanged -= new EventHandler (OnCheckChanged);
 		}
 		
-#endregion
+		#endregion
 		
-#region Protected Methods
+		#region Private Methods
 		
-		protected void OnCheckChanged (object sender, EventArgs e)
+		private void OnCheckChanged (object sender, EventArgs e)
 		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (TogglePatternIdentifiers.ToggleStateProperty,
-					                                        null, // Mimics MS behavior
-					                                        Provider.GetPropertyValue (TogglePatternIdentifiers.ToggleStateProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
-			}
+			RaiseAutomationPropertyChangedEvent ();
 		}
 
-#endregion
+		#endregion
 		
 	}
 }

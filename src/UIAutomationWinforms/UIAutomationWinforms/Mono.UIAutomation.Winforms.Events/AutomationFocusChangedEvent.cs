@@ -31,19 +31,21 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	internal class AutomationFocusChangedEvent : ProviderEvent
+	internal class AutomationFocusChangedEvent 
+		: BaseAutomationEvent
 	{
 		
-#region Constructors
+		#region Constructors
 		
 		public AutomationFocusChangedEvent (IRawElementProviderSimple provider) 
-				: base (provider)
+			: base (provider, 
+			        AutomationElementIdentifiers.AutomationFocusChangedEvent)
 		{
 		}
 		
-#endregion
+		#endregion
 		
-#region IConnectable Overrides
+		#region IConnectable Overrides
 
 		public override void Connect (Control control)
 		{
@@ -55,21 +57,16 @@ namespace Mono.UIAutomation.Winforms.Events
 			control.LostFocus -= new EventHandler (OnFocusChanged);
 		}
 		
-#endregion
+		#endregion
 		
-#region Protected Methods
+		#region Private Methods
 
-		protected void OnFocusChanged (object sender, EventArgs e)
+		private void OnFocusChanged (object sender, EventArgs e)
 		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationEventArgs eventArgs =
-					new AutomationEventArgs (AutomationElementIdentifiers.AutomationFocusChangedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.AutomationFocusChangedEvent,
-				                                                Provider, eventArgs);
-			}
+			RaiseAutomationEvent ();
 		}
 		
-#endregion
+		#endregion
 
 	}
 }

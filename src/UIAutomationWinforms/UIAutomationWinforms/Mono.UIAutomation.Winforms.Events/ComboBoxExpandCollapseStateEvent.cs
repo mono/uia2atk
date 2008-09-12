@@ -33,13 +33,14 @@ namespace Mono.UIAutomation.Winforms.Events
 {
 	
 	internal class ComboBoxExpandCollapseStateEvent 
-		: ExpandCollapsePatternStatePropertyEvent
+		: BaseAutomationPropertyEvent
 	{
 		
 		#region Constructor
 
 		public ComboBoxExpandCollapseStateEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+			: base (provider, 
+			        ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty)
 		{
 		}
 		
@@ -63,7 +64,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		private void OnDropDown (object sender, EventArgs e)
 		{
-			ExpandCollapseStateProperty ();
+			RaiseAutomationPropertyChangedEvent ();
 		}
 		
 		#endregion

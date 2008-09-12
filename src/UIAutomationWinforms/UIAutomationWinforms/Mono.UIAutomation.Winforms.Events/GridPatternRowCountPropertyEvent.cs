@@ -30,6 +30,7 @@ using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
+	//FIXME: Subclass from BaseAutomationPropertyEvent
 
 	internal class GridPatternRowCountPropertyEvent : ProviderEvent
 	{

@@ -185,20 +185,20 @@ namespace Mono.UIAutomation.Winforms
 				errorProvider = provider;
 			}
 			
-			protected override object GetReferenceOfToolTip ()
-			{
-				return errorProvider;
-			}
+//			protected override object GetReferenceOfToolTip ()
+//			{
+//				return errorProvider;
+//			}
 
 			protected override string GetTextFromControl (Control control)
 			{
 				return errorProvider.GetError (control);
 			}
 		
-			protected override Type GetTypeOfToolTip ()
-			{
-				return typeof (SWFErrorProvider);
-			}
+//			protected override Type GetTypeOfToolTip ()
+//			{
+//				return typeof (SWFErrorProvider);
+//			}
 			
 			private SWFErrorProvider errorProvider;
 		}

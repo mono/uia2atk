@@ -52,23 +52,19 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		public override void Connect (Control control)
 		{
 			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			          new InvokePatternInvokedEvent (Provider));
+			                   new InvokePatternInvokedEvent (Provider));
 		}
 		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, null);
+			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
+			                   null);
 		}
 
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.AcceleratorKeyProperty.Id)
 				return null; // TODO
-			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)
-				// TODO: Can't find any way to get tooltip text
-				//       Need to cheat and find them by looking
-				//       at event subscribers?
-				return null;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "button";
 			else
@@ -85,7 +81,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 		public virtual void Invoke ()
 		{
-			if (!Provider.Control.Enabled)
+			if (Provider.Control.Enabled == false)
 				throw new ElementNotEnabledException ();
 
 			PerformClick ();

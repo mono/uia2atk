@@ -31,13 +31,14 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 	
-	internal class AutomationBoundingRectanglePropertyEvent : ProviderEvent
+	internal class AutomationBoundingRectanglePropertyEvent 
+		: BaseAutomationPropertyEvent
 	{
 
 #region Constructors
 		
 		public AutomationBoundingRectanglePropertyEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+			: base (provider, AutomationElementIdentifiers.BoundingRectangleProperty)
 		{
 		}
 		
@@ -57,17 +58,11 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 #endregion
 		
-#region Protected Methods
+#region Private Methods
 
-		protected void OnResize (object sender, EventArgs e)
+		private void OnResize (object sender, EventArgs e)
 		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (AutomationElementIdentifiers.BoundingRectangleProperty,
-					                                        null, // TODO: Test against MS (UI Spy seems to give very odd results on this property)
-					                                        Provider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
-			}
+			RaiseAutomationPropertyChangedEvent ();
 		}
 
 #endregion

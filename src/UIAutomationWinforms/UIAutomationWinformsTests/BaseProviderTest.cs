@@ -104,6 +104,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsTrue ((bool)initialVal, "Should initialize to true");
 			
 			control.Enabled = false;
+
 			Assert.IsFalse ((bool)provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id),
 			                "Toggle to false");
 			
@@ -118,7 +119,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (AutomationElementIdentifiers.IsEnabledProperty,
 			                 eventTuple.e.Property,
 			                 "event property");
-			Assert.AreEqual (null, // TODO: Should it not be true?  Are we mimicking UIA Client-side inappropriately here?
+			Assert.AreEqual (initialVal,
 			                 eventTuple.e.OldValue,
 			                 "Old value when disabled");
 			Assert.AreEqual (false,

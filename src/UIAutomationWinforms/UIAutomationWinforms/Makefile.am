@@ -73,10 +73,11 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/AutomationIsEnabledPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationNamePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/BaseAutomationEvent.cs \
+	Mono.UIAutomation.Winforms.Events/BaseAutomationPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBoxButtonInvokePatternInvokeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBoxExpandCollapseStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBoxItemElementSelectedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ExpandCollapsePatternStatePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/GridPatternColumnCountPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/GridPatternRowCountPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/InvokePatternInvokedEvent.cs \
@@ -84,10 +85,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ProgressBarRangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \
-	Mono.UIAutomation.Winforms.Events/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternValueEvent.cs \
-	Mono.UIAutomation.Winforms.Events/SelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBoxHasKeyBoardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBoxValuePatternValueIsReadOnlyEvent.cs \
@@ -113,6 +113,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/GroupBoxProvider.cs \
 	Mono.UIAutomation.Winforms/Helper.cs \
 	Mono.UIAutomation.Winforms/HelpProvider.cs \
+	Mono.UIAutomation.Winforms/HelpProviderListener.cs \
 	Mono.UIAutomation.Winforms/IConnectable.cs \
 	Mono.UIAutomation.Winforms/LabelProvider.cs \
 	Mono.UIAutomation.Winforms/LinkLabelProvider.cs \
@@ -133,6 +134,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/TextNormalizerPoints.cs \
 	Mono.UIAutomation.Winforms/TextRangeProvider.cs \
 	Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs \
+	Mono.UIAutomation.Winforms/ToolTipListener.cs \
 	Mono.UIAutomation.Winforms/ToolTipProvider.cs \
 	Mono.UIAutomation.Winforms/WindowProvider.cs \
 	Mono.UIAutomation.Winforms/WordToken.cs \

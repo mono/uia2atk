@@ -24,19 +24,21 @@
 // 
 using System;
 using System.Windows.Forms;
+using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
 
 	internal class TextBoxValuePatternValueIsReadOnlyEvent 
-		: ValuePatternValueIsReadOnlyEvent
+		: BaseAutomationPropertyEvent
 	{
 		
 		#region Constructor
 		
 		public TextBoxValuePatternValueIsReadOnlyEvent (IRawElementProviderSimple provider)
-			: base (provider)
+			: base (provider,
+			        ValuePatternIdentifiers.IsReadOnlyProperty)
 		{
 		}
 		
@@ -57,5 +59,14 @@ namespace Mono.UIAutomation.Winforms.Events
 		}
 		
 		#endregion 
+		
+		#region Private Methods
+		
+		private void OnIsReadOnlyChanged (object sender, EventArgs args)
+		{
+			RaiseAutomationPropertyChangedEvent ();
+		}
+		
+		#endregion
 	}
 }

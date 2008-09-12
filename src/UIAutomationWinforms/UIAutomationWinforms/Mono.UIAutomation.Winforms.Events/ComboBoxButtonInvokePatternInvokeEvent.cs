@@ -22,28 +22,28 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.Windows.Forms;
+using System.Windows.Automation;
 using Mono.UIAutomation.Winforms;
 
 namespace Mono.UIAutomation.Winforms.Events
 {
 
 	internal class ComboBoxButtonInvokePatternInvokeEvent 
-		: InvokePatternInvokedEvent
+		: BaseAutomationEvent
 	{
 		
-#region Constructors
+		#region Constructors
 		
 		public ComboBoxButtonInvokePatternInvokeEvent (ComboBoxProvider provider) 
-			: base (provider)
+			: base (provider, InvokePatternIdentifiers.InvokedEvent)
 		{
 		}
 				
-#endregion
+		#endregion
 
-#region IConnectable Overriders
+		#region IConnectable Overriders
 
 		public override void Connect (Control control)
 		{
@@ -55,15 +55,15 @@ namespace Mono.UIAutomation.Winforms.Events
 			((ComboBox) control).DropDown -= new EventHandler (OnDropDown);
 		}
 
-#endregion
+		#endregion
 
-#region Private Methods		
+		#region Private Methods		
 		
 		private void OnDropDown (object sender, EventArgs e)
 		{
-			InvokeEvent ();
+			 RaiseAutomationEvent ();
 		}
 		
-#endregion
+		#endregion
 	}
 }

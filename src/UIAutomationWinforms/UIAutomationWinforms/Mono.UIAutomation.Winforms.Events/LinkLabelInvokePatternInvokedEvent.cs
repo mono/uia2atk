@@ -23,6 +23,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 
@@ -30,19 +31,19 @@ namespace Mono.UIAutomation.Winforms.Events
 {
 
 	internal class LinkLabelInvokePatternInvokedEvent 
-		: InvokePatternInvokedEvent
+		: BaseAutomationEvent
 	{
 		
-#region Constructors
+		#region Constructors
 		
 		public LinkLabelInvokePatternInvokedEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+			: base (provider, InvokePatternIdentifiers.InvokedEvent)
 		{
 		}
 				
-#endregion
+		#endregion
 
-#region IConnectable Overriders
+		#region IConnectable Overriders
 
 		public override void Connect (Control control)
 		{
@@ -56,17 +57,17 @@ namespace Mono.UIAutomation.Winforms.Events
 				new LinkLabelLinkClickedEventHandler (OnLinkClicked);
 		}
 
-#endregion
+		#endregion
 
-#region Private Methods		
+		#region Private Methods		
 
 		private void OnLinkClicked (object sender, 
 		                            LinkLabelLinkClickedEventArgs e)
 		{
-			InvokeEvent ();
+			RaiseAutomationEvent ();
 		}
 		
-#endregion
+		#endregion
 
 	}
 }
