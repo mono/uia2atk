@@ -107,7 +107,6 @@ class Kickoff(threading.Thread):
 
   def run(self):
     smoke_option = lambda: Settings.is_smoke == True and "--smoke" or ""
-    update_option = lambda: Settings.should_update == True and "--update" or ""
     if Settings.should_update:
       output("Updating packages for %s" % self.name)
       self.pkg_status = os.system("ssh -o ConnectTimeout=15 \
@@ -120,12 +119,9 @@ class Kickoff(threading.Thread):
     # don't run the the tests if the pkg_status flag has been changed to
     # from 0
     if self.pkg_status == 0:
-      self.test_status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 \
-                             %s/harness/local_run.py %s %s --log=%s >> \
-                             %s/%s 2>&1" %\
+      self.test_status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 %s/harness/local_run.py %s --log=%s >> %s/%s 2>&1" %\
                              (machines.USERNAME, self.ip, machines.TEST_DIR,
-                              smoke_option(), update_option(),
-                              Settings.remote_log_path,
+                              smoke_option(), Settings.remote_log_path,
                               Settings.local_log_path, self.name))
       if self.test_status != 0:
         Kickoff.test_failed_machines.append(self.name)

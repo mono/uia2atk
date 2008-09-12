@@ -1,5 +1,13 @@
 2008-09-12  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* samples/form.py: Form sample broke for some reason, no time to
+	investigate, just replacing with another basic form sample
+	* harness/remote_run.py: Removed whitespace
+	* harness/machines.py: Removed 64-bit machine, we have no 64-bit
+	packages yet
+
+2008-09-12  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* harness/remote_run.py: Use sudo with the package update command,
 	use the --force option with the package update command
 
