@@ -1,5 +1,10 @@
 2008-09-12  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* harness/remote_run.py: Use sudo with the package update command,
+	use the --force option with the package update command
+
+2008-09-12  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* tools/update_uia2atk_rpms.sh: Make wget less verbose
 	* harness/remote_run.py: Add formatting for console output and email
 	messages

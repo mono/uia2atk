@@ -111,7 +111,7 @@ class Kickoff(threading.Thread):
     if Settings.should_update:
       output("Updating packages for %s" % self.name)
       self.pkg_status = os.system("ssh -o ConnectTimeout=15 \
-                        %s@%s %s/tools/update_uia2atk_rpms.sh >> %s/%s 2>&1" % \
+                        %s@%s sudo %s/tools/update_uia2atk_rpms.sh -f >> %s/%s 2>&1" % \
                         (machines.USERNAME, self.ip, machines.TEST_DIR,\
                         Settings.local_log_path, self.name)) 
       if self.pkg_status != 0:
