@@ -1,3 +1,8 @@
+2008-09-12  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* tools/update_uia2atk_rpms.sh: Add exit codes
+	* harness/remote_run.py: Add features for emailing logs
+
 2008-09-11  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* gtktreeview_noheader_nochildren.py: Add a second gtktreeview example

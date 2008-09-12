@@ -41,7 +41,10 @@ class Settings(object):
   is_smoke = False
   test_type = ""
   email_addresses = []
-
+  should_update = False
+  package_failed_machines = []
+  test_failed_machines = []
+  
   def __init__(self):
       self.argument_parser()
 
@@ -49,7 +52,7 @@ class Settings(object):
     opts = []
     args = []
     try:
-      opts, args = getopt.getopt(sys.argv[1:],"shql:e:",["smoke","help","quiet","log=","email="])
+      opts, args = getopt.getopt(sys.argv[1:],"ushql:e:",["smoke","help","quiet","log=","email=","update-packages"])
     except getopt.GetoptError:
       self.help()
 
@@ -62,6 +65,8 @@ class Settings(object):
         abort(0)
       if o in ("-s","--smoke"):
         Settings.is_smoke = True
+      if o in ("-u","--update"):
+        Settings.should_update = True
       if o in ("-e","--email"):
         Settings.email_addresses = a.split(',')
       if o in ("-l","--log"):
@@ -76,6 +81,7 @@ class Settings(object):
     output("  -q | --quiet   Don't print anything.")
     output("  -l | --log=    Where the log(s) should be stored.")
     output("  -s | --smoke   Run only smoke tests.")
+    output("  -u | --update  Update packages on remote machines")
     output("  -e | --email=  Send e-mail results to comma delineated recipients")
 
 class Ping(threading.Thread):
@@ -89,32 +95,46 @@ class Ping(threading.Thread):
       self.status = os.system("ping -q -c2 %s > /dev/null" % self.ip)
 
 class Kickoff(threading.Thread):
+
+  package_failed_machines = []
+  test_failed_machines = []
     
   def __init__ (self,name,ip):
     threading.Thread.__init__(self)
     self.ip = ip
-    self.status = -1
+    self.test_status = 0
+    self.pkg_status = 0
     self.name = name
 
   def run(self):
-    smoke_option = ""
-    if Settings.is_smoke:
-      smoke_option = "--smoke"
-    self.status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 \
-                             %s/harness/local_run.py %s --log=%s > \
+    smoke_option = lambda: Settings.is_smoke == True and "--smoke" or ""
+    update_option = lambda: Settings.should_update == True and "--update" or ""
+    if Settings.should_update:
+      output("Updating packages for %s" % self.name)
+      self.pkg_status = os.system("ssh -o ConnectTimeout=15 \
+                        %s@%s %s/tools/update_uia2atk_rpms.sh >> %s/%s 2>&1" % \
+                        (machines.USERNAME, self.ip, machines.TEST_DIR,\
+                        Settings.local_log_path, self.name)) 
+      if self.pkg_status != 0:
+        output("WARNING:  Package update failed for %s" % self.name)
+        Kickoff.package_failed_machines.append(self.name)
+    # don't run the the tests if the pkg_status flag has been changed to
+    # from 0
+    if self.pkg_status == 0:
+      self.test_status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 \
+                             %s/harness/local_run.py %s %s --log=%s >> \
                              %s/%s 2>&1" %\
-                             (machines.USERNAME, self.ip, machines.TEST_DIR,\
-                              smoke_option, Settings.remote_log_path,\
+                             (machines.USERNAME, self.ip, machines.TEST_DIR,
+                              smoke_option(), update_option(),
+                              Settings.remote_log_path,
                               Settings.local_log_path, self.name))
+      if self.test_status != 0:
+        Kickoff.test_failed_machines.append(self.name)
 
 class Test(object):
 
   def __init__(self):
     self.machines = machines.machines_dict
-    self.test_failed_machines = []
-    self.test_failed_message = None
-    if Settings.email_addresses is not None:
-      self.email_message = []
 
   def countdown(self, n):
     ''' Counts down for n seconds and allows the user to abort the program
@@ -184,7 +204,7 @@ class Test(object):
           dead_threads.append(t)
           lock.acquire()
           output("  %-12s (%10s) ==>" % (t.name, t.ip), False) 
-          if t.status == 0:
+          if t.pkg_status == 0 and t.test_status == 0:
             good_machines.append(t.name)
             output("DONE")
           else:
@@ -224,53 +244,74 @@ class Test(object):
     self.setup_logging()
     self.execute_tests() 
 
-  def parse_logs(self):
-    machine_names = []
-    for up_machine in self.up_machines:
-      machine_names.append(up_machine)
-    for machine_name in machine_names:
+  def compose_mail_message(self):
+  
+    import urllib
+
+    print "TODO:  compose the mail message"
+    
+    test_type = lambda: Settings.is_smoke == True and "Smoke tests" or "Tests"
+    status = lambda: len(Kickoff.package_failed_machines) + \
+                    len(Kickoff.test_failed_machines) > 0 \
+                    and "failed" or "succeeded"
+  
+    revisions = urllib.urlopen("http://build1.sled.lab.novell.com/uia/current/rpm_revs").read()
+
+    # mathematic union of the failed machines, we will use this to grab
+    # the local logs we want to include in the e-mail
+    failed_machines = list(set(Kickoff.package_failed_machines + \
+                                                Kickoff.test_failed_machines))
+
+    # summary message for the first part of the e-mail
+    self.summary_message = []
+
+    if (len(Kickoff.test_failed_machines) > 0):
+      self.summary_message.append("%s %s\n%s\n\n" % \
+                (test_type(), "failed for the following device(s):\n",
+                "\n".join(Kickoff.test_failed_machines)))
+
+    if (len(Kickoff.package_failed_machines) > 0):
+      self.summary_message.append("%s\n%s\n\n" % \
+                ("Package updates failed for the following device(s):\n",
+                "\n".join(Kickoff.package_failed_machines)))
+
+    self.summary_message.append("%s %s for the following packages:\n\n%s\n\n" %\
+                         (test_type(), status(), revisions))
+
+    
+    # add local logs to the detailed message, which will be the second
+    # part of the e-mail
+    self.detailed_message = []
+    for machine_name in failed_machines:
       try:
         tmp_log_path = "%s" % (os.path.join(Settings.local_log_path, machine_name))
         f = open(tmp_log_path, 'r')
         tmp_log = f.readlines()
-        for line in tmp_log:
-          if "Traceback" in line:
-            self.email_message += ["\n===============%s===============\n" % machine_name]
-            self.email_message += tmp_log
-            self.test_failed_machines.append(machine_name)
-            break
+        self.detailed_message += ["\n===============%s===============\n" % machine_name]
+        self.detailed_message += tmp_log
       except IOError, e:
         output("ERROR:  Could not open log file")
         output(e)
-
-    test_type = ""
-    if Settings.is_smoke:
-      test_type = "Smoke tests"
-    else:
-      test_type = "Tests"
-    self.test_failed_message = "%s %s\n%s" % \
-             (test_type,
-              "failed for the following device(s):\n",
-              "\n".join(self.test_failed_machines))
 
   def send_mail(self):
 
     import smtplib
 
-    output("Preparting e-mail e-mail for:")
+    output("Preparing e-mail for:")
     for addr in Settings.email_addresses:
       output("  %s" % addr)
 
     MESSAGE = ("%s\n\nDETAILS:\n%s" % \
-                                      ("".join(self.test_failed_message),
-                                       "".join(self.email_message)))
+                                      ("".join(self.summary_message),
+                                       "".join(self.detailed_message)))
     subject = ""
     if Settings.is_smoke:
       subject = "[Smoke Tests] "
     else:
       subject = "[Regression Tests] "
 
-    if len(self.test_failed_machines) <= 0:
+    if len(Kickoff.test_failed_machines) + \
+                                   len(Kickoff.package_failed_machines) <= 0:
       subject += "PASS!"
     else:
       subject += "FAIL!"
@@ -312,9 +353,10 @@ class Main(object):
   def main(self, argv=None):
     t = Test()
     r = t.run()
-    if Settings.is_log_ok:
-      t.parse_logs()
     if Settings.email_addresses is not None:
+      if Settings.is_log_ok:
+        #t.parse_logs()
+        t.compose_mail_message()
       t.send_mail() 
     return r
 

@@ -90,19 +90,19 @@ TD=`mktemp -d`
 cd $TD
 if [ $? != "0" ]; then
     echo "Error:  failed to create and change to a temporary directory"
-    exit
+    exit 1
 fi
 URL="http://build1.sled.lab.novell.com/uia/$dir/"
 wget -r --accept=rpm -np -nd -l1 $URL
 
 if [ $? != "0" ]; then
     echo "Error:  failed to download the rpms"
-    exit
+    exit 1
 fi
 rpm -Uvh $opts *.rpm
 if [ $? != "0" ]; then
-    echo "Error:  failed update the rpms"
-    exit
+    echo "Error:  failed to update the rpms"
+    exit 1
 fi
 
 # destroy the evidence
