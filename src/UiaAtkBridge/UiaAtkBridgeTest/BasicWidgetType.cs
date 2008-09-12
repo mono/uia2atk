@@ -47,7 +47,8 @@ namespace UiaAtkBridgeTest
 		ProgressBar,
 		Spinner,
 		//widgets only in MWF:
-		ListBox
+		ListBox,
+		ListItem
 	}
 
 //	public class MenuLayout

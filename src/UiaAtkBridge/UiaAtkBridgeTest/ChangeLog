@@ -1,3 +1,7 @@
+2008-09-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* BasicWidgetType.cs: Fix build.
+
 2008-09-11 Mike Gorse <mgorse@novell.com>
 
 	* BasicWidgetType.cs: Add ListItem.
