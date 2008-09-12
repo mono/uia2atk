@@ -415,6 +415,10 @@ namespace UiaAtkBridgeTest
 
 			Assert.AreEqual (0, listItemChild.NAccessibleChildren, "ListBox ListItem numChildren");
 
+			Atk.SelectionImplementor selection = accessible as Atk.SelectionImplementor;
+			Assert.IsNotNull (selection, "ListBox Atk.Selection should not be null");
+			InterfaceSelection (new Atk.SelectionAdapter(selection), names, accessible, type);
+
 			Parent (type, accessible);
 		}
 

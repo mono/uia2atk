@@ -585,6 +585,9 @@ namespace UiaAtkBridgeTest
 			string accessibleName = null;
 			if (type == BasicWidgetType.ParentMenu)
 				accessibleName = names[0];
+			else if (type == BasicWidgetType.ListBox)
+				// Not sure if this is right; setting so I can test other things -MPG
+				accessibleName = String.Empty;
 			
 			Assert.AreEqual (accessibleName, accessible.Name, "AtkObj Name");
 			for (int i = 0; i < names.Length; i++) {
@@ -598,14 +601,19 @@ namespace UiaAtkBridgeTest
 				string accName = names [i];
 				if (type == BasicWidgetType.ParentMenu)
 					accName = names[0];
+				else if (type == BasicWidgetType.ListBox)
+					accName = String.Empty;
 				Assert.AreEqual (accName, accessible.Name, "AtkObj Name #" + i);
 				
 				Atk.Object refSelObj = implementor.RefSelection (0);
 				if (type != BasicWidgetType.ParentMenu) {
 					Assert.IsNotNull (refSelObj, "refSel should not be null");
-					Assert.AreEqual (accessible.Name, refSelObj.Name, "AtkObj NameRefSel#" + i);
+					if (type != BasicWidgetType.ListBox)
+						Assert.AreEqual (accessible.Name, refSelObj.Name, "AtkObj NameRefSel#" + i);
 					Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
 					Assert.IsTrue (implementor.IsChildSelected (i), "childSelected(" + i + ")");
+					Assert.IsTrue (refSelObj.RefStateSet().ContainsState (Atk.StateType.Selectable), "Selected child should have State.Selectable");
+					Assert.IsTrue (refSelObj.RefStateSet().ContainsState (Atk.StateType.Selected), "Selected child should have State.Selected");
 				} else {
 					//first child in a menu -> tearoff menuitem (can't be selected)
 					if (i == 0) {
@@ -621,6 +629,8 @@ namespace UiaAtkBridgeTest
 					
 				}
 
+				if (i == 1 && type == BasicWidgetType.ListBox)
+					Assert.IsFalse (accessible.RefAccessibleChild(0).RefStateSet().ContainsState (Atk.StateType.Selected), "Unselected child should not have State.Selected");
 				int refSelPos = i;
 				if (refSelPos == 0)
 					refSelPos = -1;
@@ -631,7 +641,7 @@ namespace UiaAtkBridgeTest
 
 			string lastName = accessible.Name;
 
-			if (type == BasicWidgetType.ComboBox) {
+			if (type == BasicWidgetType.ComboBox || type == BasicWidgetType.ListBox) {
 				//strangely, OOR selections return true (valid)
 				Assert.IsTrue (implementor.AddSelection (-1), "AddSelection OOR#1");
 			} else {
@@ -645,21 +655,28 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.RefSelection (-1), "RefSelection OOR#1");
 			Assert.IsNull (implementor.RefSelection (names.Length), "RefSelection OOR#2");
 			
-			Assert.IsTrue (implementor.ClearSelection (), "ClearSelection");
-			Assert.IsNull (implementor.RefSelection (0), "RefSel after CS");
+			if (type != BasicWidgetType.ListBox) {
+				Assert.IsTrue (implementor.ClearSelection (), "ClearSelection");
+				Assert.IsNull (implementor.RefSelection (0), "RefSel after CS");
+			} else {
+				Assert.IsFalse (implementor.ClearSelection (), "ClearSelection");
+			}
 
 			//this is a normal combobox (not multiline) (TODO: research multiline comboboxes?)
 			Assert.IsFalse (implementor.SelectAllSelection ());
 			
-			Assert.IsNull (implementor.RefSelection (0), "RefSel after SAS");
+			if (type != BasicWidgetType.ListBox)
+				Assert.IsNull (implementor.RefSelection (0), "RefSel after SAS");
 			
 			Assert.IsTrue (names.Length > 0, "Please use a names variable that is not empty");
 			Assert.IsTrue (implementor.AddSelection (0), "AddSelection->0");
 			if (type != BasicWidgetType.ParentMenu) {
 				Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null after AS0");
 
-				Assert.IsTrue (implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
-				Assert.IsTrue (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
+				if (type != BasicWidgetType.ListBox) {
+					Assert.IsTrue (implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
+					Assert.IsTrue (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
+				}
 			}
 			else {
 				Assert.IsNull (implementor.RefSelection (0), "RefSel==null after AS0");
@@ -668,8 +685,10 @@ namespace UiaAtkBridgeTest
 				Assert.IsFalse (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
 			}
 
-			Assert.IsTrue (implementor.RemoveSelection (0), "RemoveSelection");
-			Assert.IsNull (implementor.RefSelection (0), "RefSel after RemoveSel");
+			if (type != BasicWidgetType.ListBox) {
+				Assert.IsTrue (implementor.RemoveSelection (0), "RemoveSelection");
+				Assert.IsNull (implementor.RefSelection (0), "RefSel after RemoveSel");
+			}
 		}
 		
 		protected void InterfaceValue (BasicWidgetType type, Atk.Value atkValue)

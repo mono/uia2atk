@@ -1,3 +1,7 @@
+2008-09-12  Mike Gorse <mgorse@novell.com>
+
+	* ListItem.cs: Show Selectable and Selected states whe nappropriate.
+
 2008-09-12  Mario Carrion <mcarrion@novell.com> 
 
 	* ScrollBar.cs: Returning when ScrollBar supports RangeValue provider.

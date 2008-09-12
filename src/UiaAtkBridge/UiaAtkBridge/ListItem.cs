@@ -34,6 +34,7 @@ namespace UiaAtkBridge
 	{
 		private IRawElementProviderSimple provider;
 		private IInvokeProvider				invokeProvider;
+		private ISelectionItemProvider				selectionItemProvider;
 		private TextImplementorHelper textExpert = null;
 		private string						selectActionDescription = null;
 		private string						invokeActionDescription = null;
@@ -44,6 +45,7 @@ namespace UiaAtkBridge
 		{
 			this.provider = provider;
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
+			selectionItemProvider = (ISelectionItemProvider)provider.GetPatternProvider(SelectionItemPatternIdentifiers.Pattern.Id);
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			textExpert = new TextImplementorHelper (text);
 			Name = text;
@@ -59,6 +61,9 @@ namespace UiaAtkBridge
 			Atk.StateSet states = base.OnRefStateSet ();
 			
 			states.AddState (Atk.StateType.Selectable);
+			if (selectionItemProvider.IsSelected)
+				states.AddState (Atk.StateType.Selected);
+
 			bool enabled = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
 			if (enabled)
 			{

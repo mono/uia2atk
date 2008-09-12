@@ -1,3 +1,8 @@
+2008-09-12 Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs, BridgeTester.cs: Test Atk.Selection for ListBox
+	* AtkTester.cs: Test Selectable and Selected states in InterfaceSelection
+
 2008-09-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* BasicWidgetType.cs: Fix build.
