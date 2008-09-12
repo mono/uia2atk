@@ -66,8 +66,10 @@ namespace UiaAtkBridge
 
 		public void GetCurrentValue (ref GLib.Value value)
 		{
-			if (rangeValueProvider != null)
+			if (rangeValueProvider != null) {
 				value = new GLib.Value (rangeValueProvider.Value);
+				return;
+			}
 			
 			if (parentScrollProvider == null)
 				GetScrollProviderFromParent ();
@@ -89,8 +91,10 @@ namespace UiaAtkBridge
 		{
 			double v = (double)value.Val;
 			if (v < 0 || v > 100) return false;
-			if (rangeValueProvider != null)
+			if (rangeValueProvider != null) {
 				rangeValueProvider.SetValue (v);
+				return true;
+			}
 			
 			if (parentScrollProvider == null)
 				GetScrollProviderFromParent ();

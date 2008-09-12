@@ -1,3 +1,11 @@
+2008-09-12  Mario Carrion <mcarrion@novell.com> 
+
+	* ScrollBar.cs: Returning when ScrollBar supports RangeValue provider.
+	
+	  
+	
+	  [Fixes Bug #423356]
+
 2008-09-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* ToggleButton.cs: Change cast to ToggleProvider (fixes BNC#425404).
