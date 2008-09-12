@@ -1,3 +1,7 @@
+2008-09-12  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* ToggleButton.cs: Change cast to ToggleProvider (fixes BNC#425404).
+
 2008-09-11  Mike Gorse <mgorse@novell.com>
 
 	* AutomationBridge.cs: Support ChildrenBulkRemoved.

@@ -39,8 +39,8 @@ namespace UiaAtkBridge
 		
 		public ToggleButton (IRawElementProviderSimple provider) : base (provider)
 		{
-			if (provider is IToggleProvider) {
-				toggleProvider = (IToggleProvider)provider;
+			toggleProvider = (IToggleProvider) provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+			if (toggleProvider != null) {
 				actionName = default_toggle_name;
 				Role = Atk.Role.ToggleButton;
 			}
@@ -72,16 +72,24 @@ namespace UiaAtkBridge
 
 		public override bool DoAction (int action)
 		{
-			if (toggleProvider != null) {
+			Console.WriteLine ("DoAction(ToggleButton)1");
+			//this.NotifyStateChange ((long)
+			if (toggleProvider != null) {Console.WriteLine ("DoAction(ToggleButton)2");
 				try {
-					if (action != 0)
-						return false;
+					Console.WriteLine ("DoAction(ToggleButton)3");
+					if (action != 0){Console.WriteLine ("DoAction(ToggleButton)4");
+						return false;}
+					Console.WriteLine ("DoAction(ToggleButton)5");
 					toggleProvider.Toggle();
+					Console.WriteLine ("DoAction(ToggleButton)6");
 					return true;
 				} catch (ElementNotEnabledException e) {
+					Console.WriteLine ("DoAction(ToggleButton)7");
 					// TODO: handle this exception? maybe returning false is good enough
 				}
+				Console.WriteLine ("DoAction(ToggleButton)8");
 			}
+			Console.WriteLine ("DoAction(ToggleButton)9");
 			return false;
 		}
 		
