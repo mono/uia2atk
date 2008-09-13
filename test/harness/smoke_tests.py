@@ -7,6 +7,5 @@
 # only add finished tests that should execute successfully to this list
 
 tests_list = [
-  "gtktreeview_basic_ops.py",
-  "some_fake_smoke_test.py"
+  "form_basic_ops.py"
 ]

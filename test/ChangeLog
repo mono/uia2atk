@@ -1,5 +1,18 @@
 2008-09-12  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* harness/remote_run.py: Use mailx for sending mail, add --from option
+	to specify email sender
+	* harness/smoke_tests.py: Add form.py to smoke test, get rid of gtk
+	example tests
+	* testers/form/formframe.py: We *cannot* exit cleanly if a test fails,
+	the harness relies on us exiting uncleanly to detect when a test has
+	failed.  Changed error handling, to an assertion.  It is still hard
+	to determine the problem by looking at the log, we will want to try
+	to specify exactly which state is causing the test to fail when we
+	exit.
+
+2008-09-12  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* samples/form.py: Form sample broke for some reason, no time to
 	investigate, just replacing with another basic form sample
 	* harness/remote_run.py: Removed whitespace

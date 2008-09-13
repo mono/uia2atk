@@ -40,6 +40,7 @@ class Settings(object):
   COUNTDOWN = 5
   is_smoke = False
   email_addresses = []
+  from_address = "no-reply"
   should_update = False
   package_failed_machines = []
   test_failed_machines = []
@@ -51,7 +52,7 @@ class Settings(object):
     opts = []
     args = []
     try:
-      opts, args = getopt.getopt(sys.argv[1:],"ushql:e:",["smoke","help","quiet","log=","email=","update-packages"])
+      opts, args = getopt.getopt(sys.argv[1:],"ushql:e:f:",["smoke","help","quiet","log=","email=","update-packages","from="])
     except getopt.GetoptError:
       self.help()
 
@@ -68,6 +69,8 @@ class Settings(object):
         Settings.should_update = True
       if o in ("-e","--email"):
         Settings.email_addresses = a.split(',')
+      if o in ("-f","--from"):
+        Settings.from_address = a
       if o in ("-l","--log"):
         Settings.local_log_path = a
         if not os.path.exists(Settings.local_log_path):
@@ -201,7 +204,7 @@ class Test(object):
           output("  TEST COMPLETE:  %-12s (%10s) ==>" % (t.name, t.ip), False) 
           if t.pkg_status == 0 and t.test_status == 0:
             good_machines.append(t.name)
-            output("DONE")
+            output("OK")
           else:
             failed_machines.append(t.name)
             output("FAILED")
@@ -308,37 +311,24 @@ class Test(object):
     else:
       subject += "FAIL!"
 
-    recipients = Settings.email_addresses
-    sender = "no-reply"
+    to_addrs = ' '.join(Settings.email_addresses)
+    from_addr = Settings.from_address
 
-    headers = "From: %s\r\nTo: %s\r\nSubject: %s\r\n\r\n" % (sender, recipients, subject)
-    
-    email = "%s%s" % (headers, MESSAGE)   
- 
-    output("Sending e-mail...", False)
-    s = smtplib.SMTP()
-    s.connect()
     try:
-      s.sendmail(sender, recipients, email)
-    except smtplib.SMTPRecipientsRefused:
-      output("ERROR:  ALL RECIPIENTS REFUSED")
-      s.close()
-      return 1
-    except smtplib.SMTPHeloError:
-      output("ERROR:  No response to the 'HELO' greeting.")
-      s.close()
-      return 2
-    except smtplib.SMTPSenderRefused:
-      output("ERROR:  From address refused")
-      s.close()
-      return 3
-    except smtplib.SMTPDataError:
-      output("ERROR")
-      s.close()
-      return 4
-    output("OK")
-    s.close()
-    
+      f = open("%s/email" % Settings.local_log_path,'w')
+      f.write(MESSAGE)      
+      f.close()
+      output("Sending e-mail...", False)
+      email_cmd = 'mailx -s "%s" -r "%s" %s < %s/email' % \
+                      (subject, from_addr, to_addrs, Settings.local_log_path)
+      r = os.system(email_cmd)
+      assert r == 0 
+      output("OK")
+    except IOError:
+      outupt("ERROR")
+    except AssertionError:
+      ouput("ERROR")
+   
 
 class Main(object):
 

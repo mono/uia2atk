@@ -30,10 +30,7 @@ class FormFrame(accessibles.Frame):
             cmd = "state = self." + s
             exec(cmd)
 
-            if state == False:
-                print "ERROR: %s can't be checked" % cmd
-            else:
-                pass
+            assert state
     
     #close Form window
     def quit(self):
