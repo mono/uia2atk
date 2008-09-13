@@ -1,3 +1,7 @@
+2008-09-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* ToggleButton.cs: Remove debug spew.
+
 2008-09-12  Mike Gorse <mgorse@novell.com>
 
 	* Adapter.cs, ParentAdapter.cs: Add GetChildAtIndex.

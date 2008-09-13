@@ -72,24 +72,16 @@ namespace UiaAtkBridge
 
 		public override bool DoAction (int action)
 		{
-			Console.WriteLine ("DoAction(ToggleButton)1");
-			//this.NotifyStateChange ((long)
-			if (toggleProvider != null) {Console.WriteLine ("DoAction(ToggleButton)2");
+			if (toggleProvider != null) {
 				try {
-					Console.WriteLine ("DoAction(ToggleButton)3");
-					if (action != 0){Console.WriteLine ("DoAction(ToggleButton)4");
-						return false;}
-					Console.WriteLine ("DoAction(ToggleButton)5");
+					if (action != 0)
+						return false;
 					toggleProvider.Toggle();
-					Console.WriteLine ("DoAction(ToggleButton)6");
 					return true;
 				} catch (ElementNotEnabledException e) {
-					Console.WriteLine ("DoAction(ToggleButton)7");
 					// TODO: handle this exception? maybe returning false is good enough
 				}
-				Console.WriteLine ("DoAction(ToggleButton)8");
 			}
-			Console.WriteLine ("DoAction(ToggleButton)9");
 			return false;
 		}
 		
