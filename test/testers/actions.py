@@ -4,7 +4,7 @@ class Button(object):
     PRESS = "press"
     RELEASE = "release"
 
-    actions = (CLICK)
+    actions = (CLICK,)
 
 class TableColumnHeader(Button):
     pass

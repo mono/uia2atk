@@ -214,6 +214,9 @@ class Label(object):
 class Form(object):
     states = (SHOWING,)
 
+class PictureBox(object):
+    states = (SHOWING,)
+
 class Panel(object):
     states = (SHOWING,)
 

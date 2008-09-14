@@ -7,5 +7,6 @@
 # only add finished tests that should execute successfully to this list
 
 tests_list = [
-  "form_basic_ops.py"
+  "form_basic_ops.py",
+  "picturebox_basic_ops.py"
 ]

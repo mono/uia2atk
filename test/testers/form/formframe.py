@@ -26,11 +26,10 @@ class FormFrame(accessibles.Frame):
         procedurelogger.action('check %s\'s all states' % self)
 
         procedurelogger.expectedResult('%s\'s all states can be found' % self)
-        for s in states.Form.states:
-            cmd = "state = self." + s
-            exec(cmd)
 
-            assert state
+        for s in states.Form.states:
+            state = getattr(self, s)
+            assert state, "Expected state: %s" % (s)
     
     #close Form window
     def quit(self):

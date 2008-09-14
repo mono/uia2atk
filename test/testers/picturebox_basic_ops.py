@@ -44,6 +44,9 @@ if app is None:
 # just an alias to make things shorter
 pbFrame = app.pictureBoxFrame
 
+# check PictureBox's states list
+pbFrame.statesCheck()
+
 #check Button's actions list
 pbFrame.actionsCheck(pbFrame.button1)
 
