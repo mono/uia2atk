@@ -1,4 +1,9 @@
 2008-09-14  Brian G. Merrell <bgmerrell@gmail.com>
+	
+	* samples/picturebox.py: Decrease frame size to better within the
+	800x600 resolution of the test VMs.
+
+2008-09-14  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/smoke_tests.py: Add picturebox_basic_ops to the list of smoke
 	tests.
