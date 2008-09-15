@@ -408,6 +408,7 @@ namespace UiaAtkBridge
 		
 		private void HandleNewRadioButtonControlType (IRawElementProviderSimple provider)
 		{
+			Console.WriteLine ("HandleNewRadioButtonControlType");
 			ParentAdapter parentObject =
 				GetParentAdapter (provider);
 			
