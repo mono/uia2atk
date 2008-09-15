@@ -193,10 +193,13 @@ namespace UiaAtkBridge
 				HandleNewScrollBarControlType (simpleProvider);
 			else if (controlTypeId == ControlType.Group.Id)
 				HandleNewGroupControlType (simpleProvider);
-			else if (controlTypeId == ControlType.RadioButton.Id)
-				HandleNewRadioButtonControlType (simpleProvider);
+			else if (controlTypeId == ControlType.RadioButton.Id){
+				Console.WriteLine ("***********************************RADIO BUTTON");
+				HandleNewRadioButtonControlType (simpleProvider);}
 			else if (controlTypeId == ControlType.Spinner.Id)
 				HandleNewSpinnerControlType (simpleProvider);
+//			else if (controlTypeId == ControlType.Edit.Id)
+//				HandleNewEditControlType (simpleProvider);
 			// TODO: Other providers
 			else
 				Console.WriteLine ("AutomationBridge: Unhandled control: " +
@@ -217,6 +220,7 @@ namespace UiaAtkBridge
 			try {
 				IntPtr providerHandle = (IntPtr) provider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
 				pointerProviderMapping.Remove (providerHandle);
+			//FIXME: why is this? we should have a specific exception here, or a comment explaining
 			} catch {}
 		}
 		
@@ -276,8 +280,7 @@ namespace UiaAtkBridge
 		
 		private void HandleNewButtonControlType (IRawElementProviderSimple provider)
 		{
-			ParentAdapter parentObject =
-				GetParentAdapter (provider);
+			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			Button atkButton = new Button (provider);
 			providerAdapterMapping [provider] = atkButton;
@@ -289,8 +292,7 @@ namespace UiaAtkBridge
 		
 		private void HandleNewLabelControlType (IRawElementProviderSimple provider)
 		{
-			ParentAdapter parentObject =
-				GetParentAdapter (provider);
+			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			TextLabel atkLabel = new TextLabel (provider);
 			providerAdapterMapping [provider] = atkLabel;
@@ -302,8 +304,7 @@ namespace UiaAtkBridge
 		
 		private void HandleNewCheckBoxControlType (IRawElementProviderSimple provider)
 		{
-			ParentAdapter parentObject =
-				GetParentAdapter (provider);
+			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			CheckBox atkCheck = new CheckBox (provider);
 			providerAdapterMapping [provider] = atkCheck;
@@ -315,8 +316,7 @@ namespace UiaAtkBridge
 		
 		private void HandleNewListControlType (IRawElementProviderSimple provider)
 		{
-			ParentAdapter parentObject =
-				GetParentAdapter (provider);
+			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			List atkList = new List ((IRawElementProviderFragmentRoot)provider);
 			providerAdapterMapping [provider] = atkList;
@@ -328,8 +328,7 @@ namespace UiaAtkBridge
 
 		private void HandleNewListItemControlType (IRawElementProviderSimple provider)
 		{
-			ParentAdapter parentObject =
-				GetParentAdapter (provider);
+			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			ListItem atkItem = new ListItem (provider);
 			providerAdapterMapping [provider] = atkItem;
@@ -341,8 +340,7 @@ namespace UiaAtkBridge
 
 		private void HandleNewComboBoxControlType (IRawElementProviderSimple provider)
 		{
-			ParentAdapter parentObject =
-				GetParentAdapter (provider);
+			ParentAdapter parentObject = GetParentAdapter (provider);
 
 			ComboBox atkCombo = new ComboBox ((IRawElementProviderFragmentRoot)provider);
 			providerAdapterMapping [provider] = atkCombo;
@@ -354,8 +352,7 @@ namespace UiaAtkBridge
 		
 		private void HandleNewStatusBarControlType (IRawElementProviderSimple provider)
 		{
-			ParentAdapter parentObject =
-				GetParentAdapter (provider);
+			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			StatusBar atkStatus;
 			if (provider is IGridProvider)
@@ -370,8 +367,7 @@ namespace UiaAtkBridge
 		
 		private void HandleNewProgressBarControlType (IRawElementProviderSimple provider)
 		{
-			ParentAdapter parentObject =
-				GetParentAdapter (provider);
+			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			ProgressBar atkProgress;
 			if (provider is IGridProvider)
@@ -425,8 +421,7 @@ namespace UiaAtkBridge
 		
 		private void HandleNewSpinnerControlType (IRawElementProviderSimple provider)
 		{
-			ParentAdapter parentObject =
-				GetParentAdapter (provider);
+			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			Adapter atkSpinner;
 			if (provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id) != null)
@@ -439,6 +434,18 @@ namespace UiaAtkBridge
 			parentObject.AddRelationship (Atk.RelationType.Embeds,
 			                              atkSpinner);
 		}
+		
+//		private void HandleNewEditControlType (IRawElementProviderSimple provider)
+//		{
+//			ParentAdapter parentObject = GetParentAdapter (provider);
+//			
+//			Adapter atkEdit=  new EditableTextBoxEntry ((IRawElementProviderFragmentRoot)provider);
+//			providerAdapterMapping [provider] = atkEdit;
+//			
+//			parentObject.AddOneChild (atkEdit);
+//			parentObject.AddRelationship (Atk.RelationType.Embeds,
+//			                              atkEdit);
+//		}
 		
 #endregion
 	}

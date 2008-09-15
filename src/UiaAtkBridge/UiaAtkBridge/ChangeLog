@@ -1,3 +1,9 @@
+2008-09-15  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* ComponentImplementorHelper.cs: Coding guidelines.
+	* AutomationBridge.cs: Cosmetic, and add some commented code which is
+	  not ready yet.
+
 2008-09-13  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* ToggleButton.cs: Remove debug spew.

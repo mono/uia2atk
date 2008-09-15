@@ -51,7 +51,7 @@ namespace UiaAtkBridge
 		
 		public virtual uint AddFocusHandler (Atk.FocusHandler handler)
 		{
-			if(focusHandlers.ContainsValue(handler))
+			if (focusHandlers.ContainsValue(handler))
 				return 0;
 			
 			lastFocusHandlerId++;
