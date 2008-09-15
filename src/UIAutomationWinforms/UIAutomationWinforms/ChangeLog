@@ -1,3 +1,12 @@
+2008-09-15  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Fixed
+	  BoundingRectangleProperty.
+	
+	  
+	
+	  [Fixes bug #426254]
+
 2008-09-12  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: File updated due to

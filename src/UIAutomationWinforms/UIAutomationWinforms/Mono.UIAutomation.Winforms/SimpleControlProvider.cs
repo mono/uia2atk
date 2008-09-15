@@ -387,8 +387,12 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (control.Parent == null || control.TopLevelControl == null)
 				return Control.Bounds;
-			else
-				return Control.TopLevelControl.RectangleToScreen (Control.Bounds);
+			else {
+				if (Control.FindForm () == Control.Parent)
+					return Control.TopLevelControl.RectangleToScreen (Control.Bounds);
+				else
+					return Control.Parent.RectangleToScreen (Control.Bounds);
+			}
 		}
 
 		private void InitializeInternalControlEvents ()
