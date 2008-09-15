@@ -32,24 +32,24 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
-    	[TestFixture]
-    	public class StatusBarProviderTest : BaseProviderTest
-    	{
+	[TestFixture]
+	public class StatusBarProviderTest : BaseProviderTest
+	{
 #region Test
 
-        	[Test]
-        	public void BasicPropertiesTest ()
-        	{
-            		StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderSimple provider = ProviderFactory.GetProvider (statusBar);
+		[Test]
+		public void BasicPropertiesTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (statusBar);
 
 			TestProperty (provider,
-				AutomationElementIdentifiers.ControlTypeProperty,
-				ControlType.StatusBar.Id);
+			  AutomationElementIdentifiers.ControlTypeProperty,
+			  ControlType.StatusBar.Id);
 
 			TestProperty (provider,
-				AutomationElementIdentifiers.LocalizedControlTypeProperty,
-				"status bar");
+			  AutomationElementIdentifiers.LocalizedControlTypeProperty,
+			  "status bar");
 		}
 
 		[Test]
@@ -108,7 +108,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (statusBar);
 
 			IGridProvider gridProvider = (IGridProvider)
-				provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
+			  provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (gridProvider, "Not returning GridPatternIdentifiers.");
 
 			int rowValue = 1;
@@ -135,11 +135,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 #region BaseProviderTest Overrides
 
-        	protected override Control GetControlInstance ()
-        	{
-            		return new StatusBar ();
-        	}
+		protected override Control GetControlInstance ()
+		{
+			return new StatusBar ();
+		}
 
 #endregion
-    	}
+	}
 }

@@ -1,3 +1,7 @@
+2008-09-15  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* StatusBarProviderTest.cs: Cosmetic: spaces to tabs.
+
 2008-09-12  Mario Carrion <mcarrion@novell.com> 
 
 	* BaseProviderTest.cs, CheckBoxProviderTest.cs: Updated to follow
