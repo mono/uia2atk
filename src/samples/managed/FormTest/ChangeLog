@@ -1,5 +1,9 @@
 2008-09-15  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* FormTest.cs: Add a textbox sample.
+
+2008-09-15  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* FormTest.cs: Add some controls in order to provide a testcase for bug
 	  426254.
 

@@ -49,8 +49,8 @@ namespace FormTest
 		{
 			Form f1 = new Form ();
 			f1.Text = "Main Form";
-			f1.Height += 60;
-			f1.Width += 60;
+			f1.Height += 90;
+			f1.Width += 70;
 			
 			Button b = new Button ();
 			b.Text = "Click me to open second form!";
@@ -130,6 +130,11 @@ namespace FormTest
 
 			f1.Controls.Add (gpb);
 
+			TextBox tbx = new TextBox ();
+			tbx.Top = gpb.Top + gpb.Height + 30;
+			tbx.Width = f1.Width - 10;
+			f1.Controls.Add (tbx);
+			
 			Form bgf = new Form ();
 			bgf.Text = "Background Form";
 			CreateMenu (bgf);
