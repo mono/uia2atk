@@ -49,6 +49,8 @@ namespace FormTest
 		{
 			Form f1 = new Form ();
 			f1.Text = "Main Form";
+			f1.Height += 60;
+			f1.Width += 60;
 			
 			Button b = new Button ();
 			b.Text = "Click me to open second form!";
@@ -105,6 +107,29 @@ namespace FormTest
 			
 			f1.Controls.Add (cbx);
 			
+			GroupBox gpb = new GroupBox ();
+			gpb.Width = f1.Width - 30;
+			gpb.Height = b.Height * 4;
+			gpb.Top = cbx.Top + 30;
+			gpb.Text = "this is a groupbox";
+			
+			RadioButton rad3 = new RadioButton ();
+			RadioButton rad4 = new RadioButton ();
+
+			gpb.Controls.Add (rad3);
+			gpb.Controls.Add (rad4);
+			
+			rad3.Text = "Test radiobutton 3";
+			rad4.Text = "Test radiobutton 4";
+			rad3.Width = f1.Width;
+			rad4.Width = f1.Width;
+			rad3.Top += 20;
+			rad3.Height = b.Height;
+			rad4.Height = b.Height;
+			rad4.Top = rad3.Top + 30;
+
+			f1.Controls.Add (gpb);
+
 			Form bgf = new Form ();
 			bgf.Text = "Background Form";
 			CreateMenu (bgf);
