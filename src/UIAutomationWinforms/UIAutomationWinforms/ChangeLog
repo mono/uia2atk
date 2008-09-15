@@ -1,5 +1,13 @@
 2008-09-15  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternMinimumEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternMaximumEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternSmallChangeEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternLargeChangeEvent.cs:
+	  Methods Connect/Disconnect updated.
+
+2008-09-15  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated: files added.
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Logic to get
 	  ErrorProvider Provider updated.

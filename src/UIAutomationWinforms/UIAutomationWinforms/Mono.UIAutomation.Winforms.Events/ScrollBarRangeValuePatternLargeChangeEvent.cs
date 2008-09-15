@@ -46,10 +46,24 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		public override void Connect (Control control)
 		{
+			try {
+				Helper.AddPrivateEvent (typeof (ScrollBar),
+				                        control,
+				                        "UIAValueChanged", 
+				                        this,
+				                        "OnLargeChangeChanged");
+			} catch (NotSupportedException) {}
 		}
 
 		public override void Disconnect (Control control)
 		{
+			try {
+				Helper.RemovePrivateEvent (typeof (ScrollBar),
+				                           control,
+				                           "UIAValueChanged", 
+				                           this,
+				                           "OnLargeChangeChanged");
+			} catch (NotSupportedException) {}
 		}
 		
 		#endregion
