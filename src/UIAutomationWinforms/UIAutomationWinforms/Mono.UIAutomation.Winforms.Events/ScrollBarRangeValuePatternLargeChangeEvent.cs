@@ -22,41 +22,46 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
-using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-using SWFErrorProvider = System.Windows.Forms.ErrorProvider;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events
 {
 
-	internal class ToolTipProvider : ToolTipBaseProvider
+	internal class ScrollBarRangeValuePatternLargeChangeEvent
+		: BaseAutomationPropertyEvent
 	{
-
 		#region Constructor
 		
-		public ToolTipProvider (ToolTip tooltip) : base (tooltip)
+		public ScrollBarRangeValuePatternLargeChangeEvent (IRawElementProviderSimple provider)
+			: base (provider, RangeValuePatternIdentifiers.LargeChangeProperty)
 		{
-			this.tooltip = tooltip;
 		}
 		
 		#endregion
 		
-		#region Protected Methods
-
-		protected override string GetTextFromControl (Control control)
+		#region Public Methods
+		
+		public override void Connect (Control control)
 		{
-			return tooltip.GetToolTip (control);
 		}
 
+		public override void Disconnect (Control control)
+		{
+		}
+		
 		#endregion
 		
-		#region Private Fields
-
-		private ToolTip tooltip;
+		#region Private Methods
+		
+		private void OnLargeChangeChanged (object sender, ScrollEventArgs args)
+		{
+			if (args.Type == ScrollEventType.LargeIncrement
+			    || args.Type == ScrollEventType.LargeDecrement)
+				RaiseAutomationPropertyChangedEvent ();
+		}
 		
 		#endregion
 	}

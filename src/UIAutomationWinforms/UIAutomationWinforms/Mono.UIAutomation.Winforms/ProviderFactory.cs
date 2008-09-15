@@ -105,6 +105,7 @@ namespace Mono.UIAutomation.Winforms
 			Control ctrl;
 			ProgressBar pgb;
 			SWFHelpProvider hlp;
+			SWFErrorProvider errp;
 			
 			bool isComponentBased = false;
 			
@@ -163,29 +164,9 @@ namespace Mono.UIAutomation.Winforms
 				}
 			} else if ((pb = component as PictureBox) != null)
 				provider = new PictureBoxProvider (pb);
-			else if ((ctrl = component as Control) != null) {
-				//Notice that we don't update the local variable "provider"
-				if (ErrorProvider.InstancesTracker.IsControlFromErrorProvider (ctrl) == true) {
-					SWFErrorProvider swfError = ErrorProvider.InstancesTracker.GetErrorProviderFromControl (ctrl);
-					Control parent = ErrorProvider.InstancesTracker.GetParentFromControl (ctrl);
-					ErrorProvider errorProvider = null;
-
-					if (ErrorProvider.InstancesTracker.IsFirstControlFromErrorProvider (ctrl) == true) {
-						errorProvider = new ErrorProvider (ctrl, swfError);
-						
-						List<ErrorProvider> providers = new List<ErrorProvider> ();
-						providers.Add ((ErrorProvider) errorProvider);
-						errorProviders [swfError] = providers;
-					} else {
-						List<ErrorProvider> providers = errorProviders [swfError];
-						
-						errorProvider = (from p in providers
-						                 where p.Parent == parent
-						                 select p).First ();
-						errorProvider.AddControl (ctrl);
-					}
-				}
-			} else if ((tt = component as ToolTip) != null)
+			else if ((errp = component as SWFErrorProvider) != null)
+				provider = new ErrorProvider (errp);
+			else if ((tt = component as ToolTip) != null)
 				provider = new ToolTipProvider (tt);
 			else if ((hlp = component as SWFHelpProvider) != null)
 				provider = new HelpProvider (hlp);

@@ -87,6 +87,10 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternIsReadOnlyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternLargeChangeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternMaximumEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternMinimumEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternSmallChangeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBoxHasKeyBoardFocusPropertyEvent.cs \
@@ -107,6 +111,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ComboBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ErrorProvider.cs \
+	Mono.UIAutomation.Winforms/ErrorProviderListener.cs \
 	Mono.UIAutomation.Winforms/FormListener.cs \
 	Mono.UIAutomation.Winforms/FragmentControlProvider.cs \
 	Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs \

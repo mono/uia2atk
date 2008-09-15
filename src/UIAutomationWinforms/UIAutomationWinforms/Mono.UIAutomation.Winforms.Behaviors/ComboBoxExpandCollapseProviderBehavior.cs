@@ -37,16 +37,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		: ProviderBehavior, IExpandCollapseProvider
 	{
 		
-#region Constructor
+		#region Constructor
 		
 		public ComboBoxExpandCollapseProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
 		}
 		
-#endregion
+		#endregion
 
-#region IProviderBehavior Interface
+		#region IProviderBehavior Interface
 		
 		public override AutomationPattern ProviderPattern { 
 			get { return ExpandCollapsePatternIdentifiers.Pattern; }
@@ -72,9 +72,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 				return base.GetPropertyValue (propertyId);
 		}
 		
-#endregion
+		#endregion
 		
-#region IExpandCollapseProvider Interface
+		#region IExpandCollapseProvider Interface
 		
 		public ExpandCollapseState ExpandCollapseState {
 			get {
@@ -85,15 +85,31 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public void Collapse ()
 		{
-			((ComboBox) Provider.Control).DroppedDown = false;
+			PerformExpandOrCollapse ((ComboBox) Provider.Control, false);
 		}
 
 		public void Expand ()
 		{
-			((ComboBox) Provider.Control).DroppedDown = true;
+			PerformExpandOrCollapse ((ComboBox) Provider.Control, true);
 		}
 
-#endregion
+		#endregion
+		
+		#region Private Methods
+		
+		private void PerformExpandOrCollapse (ComboBox combobox, bool droppedDown)
+		{
+			if (combobox.InvokeRequired == true) {
+				combobox.BeginInvoke (new PerformExpandOrCollapseDelegate (PerformExpandOrCollapse),
+				                      new object [] { combobox, droppedDown } );
+				return;
+			}
+			combobox.DroppedDown = droppedDown;
+		}
+		
+		#endregion
 		
 	}
+	
+	delegate void PerformExpandOrCollapseDelegate (ComboBox combobox, bool droppedDown);
 }

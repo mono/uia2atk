@@ -49,7 +49,7 @@ namespace Mono.UIAutomation.Winforms
 		private int runtimeId;
 		private ToolTip tooltip;
 		private INavigation navigation;
-//		private SWFErrorProvider errorProvider;
+		private SWFErrorProvider errorProvider;
 
 		#endregion
 		
@@ -65,8 +65,10 @@ namespace Mono.UIAutomation.Winforms
 			
 			runtimeId = -1;
 			
-			if (Control != null)
-				InitializeInternalControlEvents ();
+			if (Control != null) {
+				ErrorProvider = ErrorProviderListener.GetErrorProviderFromControl (Control);
+				ToolTip = ToolTipListener.GetToolTipFromControl (Control);
+			}
 		}
 		
 		#endregion
@@ -94,6 +96,11 @@ namespace Mono.UIAutomation.Winforms
 		public ToolTip ToolTip {
 			get { return tooltip; }
 			set { tooltip = value; }
+		}
+		
+		public SWFErrorProvider ErrorProvider {
+			get { return errorProvider; }
+			set { errorProvider = value; }
 		}
 		
 		#endregion
@@ -124,8 +131,6 @@ namespace Mono.UIAutomation.Winforms
 				    strategy.Disconnect (Control);
 				foreach (IProviderBehavior behavior in providerBehaviors.Values)
 					behavior.Disconnect (Control);
-				
-				TerminateInternalControlEvents ();
 			}
 
 			events.Clear ();
@@ -394,120 +399,8 @@ namespace Mono.UIAutomation.Winforms
 					return Control.Parent.RectangleToScreen (Control.Bounds);
 			}
 		}
-
-		private void InitializeInternalControlEvents ()
-		{
-//			InitializeErrorProviderInternalEvents ();
-			
-			ToolTip = ToolTipListener.GetToolTipFromControl (Control);
-		}
-		
-		private void TerminateInternalControlEvents ()
-		{
-//			TerminateErrorProviderInternalEvents ();
-		}
 		
 		#endregion
-/*		
-		#region Private Methods: ErrorProvider
-		
-		private void InitializeErrorProviderInternalEvents ()
-		{
-			GetPrivateErrorProviderField ();
-			
-			try {
-				Helper.AddPrivateEvent (typeof (Control), 
-				                        Control, 
-				                        "UIAErrorProviderHookedUp",
-				                        this, 
-				                        "OnErrorProviderHookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAErrorProviderHookup not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
-			
-			try {
-				Helper.AddPrivateEvent (typeof (Control), 
-				                        Control, 
-				                        "UIAErrorProviderUnhookedUp",
-				                        this, 
-				                        "OnErrorProviderUnhookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAErrorProviderUnhookup not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
-		}
-		
-		private void TerminateErrorProviderInternalEvents ()
-		{
-			try {
-				Helper.RemovePrivateEvent (typeof (Control), 
-				                           Control, 
-				                           "UIAErrorProviderHookedUp",
-				                           this, 
-				                           "OnErrorProviderHookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAErrorProviderHookup not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
-			
-			try {
-				Helper.RemovePrivateEvent (typeof (Control), 
-				                           Control, 
-				                           "UIAErrorProviderUnhookedUp",
-				                           this, 
-				                           "OnErrorProviderUnhookup");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAErrorProviderUnhookup not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
-			
-			if (errorProvider != null) {
-				ProviderFactory.ReleaseProvider (errorProvider);
-				errorProvider = null;
-			}
-		}
 
-		private void GetPrivateErrorProviderField ()
-		{
-			try {
-				errorProvider = Helper.GetPrivateProperty<Control, SWFErrorProvider> (typeof (Control),
-				                                                                      Control,
-				                                                                      "UIAErrorProvider");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAErrorProvider field not defined in {1}",
-				                   GetType (),
-				                   typeof (Control));
-			}
-		}
-		
-#pragma warning disable 169
-		
-		private void OnErrorProviderHookup (object sender, ControlEventArgs args)
-		{
-			GetPrivateErrorProviderField ();
-			
-			//TODO: The following call may fail when errorProvider is null
-			ErrorProvider.InstancesTracker.AddControl (args.Control, 
-			                                           Control.Parent,
-			                                           errorProvider);			
-		}
-
-		private void OnErrorProviderUnhookup (object sender, ControlEventArgs args)
-		{
-			ErrorProvider.InstancesTracker.RemoveControl (args.Control,
-			                                              args.Control.Parent,
-			                                              errorProvider);
-			errorProvider = null;
-		}
-		
-#pragma warning restore 169
-		
-		#endregion
-	*/	
 	}
 }

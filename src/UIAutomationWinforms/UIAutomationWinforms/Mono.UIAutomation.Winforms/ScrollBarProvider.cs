@@ -173,7 +173,7 @@ namespace Mono.UIAutomation.Winforms
 		private void UpdateBehavior ()
 		{	
 			IRawElementProviderFragment container 
-				= ProviderFactory.GetProvider (Container);
+				= ProviderFactory.FindProvider (Container);
 
 			if (container != null) {
 				IScrollProvider provider 

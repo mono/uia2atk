@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Forms;
+using SWFErrorProvider = System.Windows.Forms.ErrorProvider;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
@@ -277,9 +278,9 @@ namespace Mono.UIAutomation.Winforms
 	
 		protected FragmentControlProvider CreateProvider (Control control)
 		{
-			if (ErrorProvider.InstancesTracker.IsControlFromErrorProvider (control))
+			if (Mono.UIAutomation.Winforms.ErrorProvider.InstancesTracker.IsControlFromErrorProvider (control))
 				return null;
-//			
+
 			return (FragmentControlProvider) ProviderFactory.GetProvider (control);
 		}
 		

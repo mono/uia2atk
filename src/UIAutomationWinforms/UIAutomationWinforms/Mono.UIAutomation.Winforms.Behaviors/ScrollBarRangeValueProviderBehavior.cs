@@ -54,18 +54,34 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 		public override void Connect (Control control) 
 		{
+			Provider.SetEvent (ProviderEventType.RangeValuePatternIsReadOnlyProperty,
+			                   new ScrollBarRangeValuePatternIsReadOnlyEvent (Provider));
+			Provider.SetEvent (ProviderEventType.RangeValuePatternLargeChangeProperty,
+			                   new ScrollBarRangeValuePatternLargeChangeEvent (Provider));
+			Provider.SetEvent (ProviderEventType.RangeValuePatternMaximumProperty,
+			                   new ScrollBarRangeValuePatternMaximumEvent (Provider));
+			Provider.SetEvent (ProviderEventType.RangeValuePatternMinimumProperty,
+			                   new ScrollBarRangeValuePatternMinimumEvent (Provider));
+			Provider.SetEvent (ProviderEventType.RangeValuePatternSmallChangeProperty,
+			                   new ScrollBarRangeValuePatternSmallChangeEvent (Provider));
 			Provider.SetEvent (ProviderEventType.RangeValuePatternValueProperty,
 			                   new ScrollBarRangeValuePatternValueEvent (Provider));
-//			Provider.SetEvent (ProviderEventType.RangeValuePatternIsReadOnlyProperty,
-//			                   new ScrollBarRangeValuePatternIsReadOnlyEvent (Provider));
 		}
 		
 		public override void Disconnect (Control control)
 		{
+			Provider.SetEvent (ProviderEventType.RangeValuePatternIsReadOnlyProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.RangeValuePatternLargeChangeProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.RangeValuePatternMaximumProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.RangeValuePatternMinimumProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.RangeValuePatternSmallChangeProperty,
+			                   null);
 			Provider.SetEvent (ProviderEventType.RangeValuePatternValueProperty, 
 			                   null);
-//			Provider.SetEvent (ProviderEventType.RangeValuePatternIsReadOnlyProperty,
-//			                   null);
 		}
 		
 		public override object GetPropertyValue (int propertyId)

@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms
 		static ToolTipListener ()
 		{
 			initialized = false;
-			tooltips = new Dictionary<ToolTip,List<Control>> ();
+			tooltips = new Dictionary<ToolTip, List<Control>> ();
 		}
 		
 		#endregion
@@ -45,7 +45,7 @@ namespace Mono.UIAutomation.Winforms
 		#region Private Static Fields
 		
 		private static bool initialized;
-		private static Dictionary<ToolTip, List <Control>> tooltips;
+		private static Dictionary<ToolTip, List<Control>> tooltips;
 
 		#endregion
 		
@@ -53,7 +53,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public static ToolTip GetToolTipFromControl (Control control)
 		{
-			foreach (KeyValuePair<ToolTip, List <Control>> valuePair in
+			foreach (KeyValuePair<ToolTip, List<Control>> valuePair in
 			         tooltips) {
 				if (valuePair.Value.Contains (control) == true)
 					return valuePair.Key;
@@ -120,7 +120,8 @@ namespace Mono.UIAutomation.Winforms
 				tooltips [tooltip] = list;
 				tooltip.Popup += new PopupEventHandler (OnUIAPopup);
 			}
-			list.Add (args.Control);
+			if (list.Contains (args.Control) == false)
+				list.Add (args.Control);
 			
 			//Let's associate ToolTip if Provider for Control already exists
 			FragmentControlProvider provider = 

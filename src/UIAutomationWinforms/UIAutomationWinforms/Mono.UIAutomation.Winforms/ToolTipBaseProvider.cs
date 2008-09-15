@@ -74,12 +74,8 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Protected Methods
-		
-//		protected abstract object GetReferenceOfToolTip ();
 
 		protected abstract string GetTextFromControl (Control control);
-		
-//		protected abstract Type GetTypeOfToolTip ();
 		
 		#endregion
 		

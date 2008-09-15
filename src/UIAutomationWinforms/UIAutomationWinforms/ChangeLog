@@ -1,5 +1,42 @@
 2008-09-15  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated: files added.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Logic to get
+	  ErrorProvider Provider updated.
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Using FindProvider
+	  instead of GetProvider.
+	* Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs: Removed commented
+	  code.
+	* Mono.UIAutomation.Winforms/ErrorProvider.cs: Updated to latest patch.
+	* Mono.UIAutomation.Winforms/ToolTipProvider.cs: Fixes NRE.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Updated to
+	  latest patch: ErrorProvider code removed. New property added:
+	  ErrorProvider.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Updated to
+	  use full class name.
+	* Mono.UIAutomation.Winforms/ToolTipListener.cs: Fixes double adding in
+	  list.
+	* Mono.UIAutomation.Winforms/ErrorProviderListener.cs: Added: used to
+	  keep track of UserControls added by SWF.ErrorProvider.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxExpandCollapseProviderBehavior.cs:
+	  Fixed threading bugs.
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueProviderBehavior.cs:
+	  Added missing event properties.
+	* Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternMinimumEvent.cs:
+	  Generates RangeValuePatternIdentifiers.MinimumProperty in
+	  ScrollBar.
+	* Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternMaximumEvent.cs:
+	  Generates RangeValuePatternIdentifiers.MaximumProperty in
+	  ScrollBar.
+	* Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternSmallChangeEvent.cs:
+	  Generates RangeValuePatternIdentifiers.SmallChangeProperty in
+	  ScrollBar.
+	* Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternLargeChangeEvent.cs:
+	  Generates RangeValuePatternIdentifiers.LargeChangeProperty in
+	  ScrollBar.
+
+2008-09-15  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Fixed
 	  BoundingRectangleProperty.
 	

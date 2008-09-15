@@ -58,17 +58,10 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Constructor
 		
-		public ErrorProvider (Control ctrl,
-		                      SWFErrorProvider errorProvider) : base (errorProvider)
+		public ErrorProvider (SWFErrorProvider errorProvider) : base (errorProvider)
 		{	
 			this.errorProvider = errorProvider;
-
-			parent = ErrorProvider.InstancesTracker.GetParentFromControl (ctrl);
 			controls = new List<Control> ();
-			AddControl (ctrl);
-			
-			tooltipProvider = new ErrorProviderToolTipProvider (errorProvider);
-			tooltipProvider.InitializeEvents ();
 		}
 
 		#endregion
@@ -89,14 +82,17 @@ namespace Mono.UIAutomation.Winforms
 		
 		public void AddControl (Control control)
 		{
+			if (parent == null)
+				parent = InstancesTracker.GetParentFromControl (control);
+
 			if (controls.Contains (control) == false) {
 				controls.Add (control);
-				control.VisibleChanged += new EventHandler (OnControlVisibleChanged);
-				if (controls.Count == 1) {
+				if (controls.Count == 1 && control.Visible == true) {
 					FragmentRootControlProvider root 
 						= (FragmentRootControlProvider) ProviderFactory.GetProvider (Parent);
 					root.AddChildProvider (true, this);
 				}
+				control.VisibleChanged += new EventHandler (OnControlVisibleChanged);
 			}
 		}
 		
@@ -128,13 +124,6 @@ namespace Mono.UIAutomation.Winforms
 			else
 				return base.GetPropertyValue (propertyId);
 		}
-		
-		public override void Terminate ()
-		{
-			base.Terminate ();
-			
-			tooltipProvider.Terminate ();
-		}
 
 		#endregion
 
@@ -143,7 +132,10 @@ namespace Mono.UIAutomation.Winforms
 		private Rect GetBoundingRectangle ()
 		{
 			List<Control> controls 
-				= ErrorProvider.InstancesTracker.GetControlsFromProvider (this);
+				= InstancesTracker.GetControlsFromProvider (this);
+			
+			if (controls == null)
+				return Rect.Empty;
 			
 			Rectangle bounding = controls [0].Bounds;
 			for (int i = 1; i < controls.Count; i++)
@@ -171,7 +163,6 @@ namespace Mono.UIAutomation.Winforms
 		private List<Control> controls;
 		private Control parent;
 		private SWFErrorProvider errorProvider;
-		private ErrorProviderToolTipProvider tooltipProvider;
 		
 		#endregion
 		
@@ -184,22 +175,12 @@ namespace Mono.UIAutomation.Winforms
 			{
 				errorProvider = provider;
 			}
-			
-//			protected override object GetReferenceOfToolTip ()
-//			{
-//				return errorProvider;
-//			}
 
 			protected override string GetTextFromControl (Control control)
 			{
 				return errorProvider.GetError (control);
 			}
 		
-//			protected override Type GetTypeOfToolTip ()
-//			{
-//				return typeof (SWFErrorProvider);
-//			}
-			
 			private SWFErrorProvider errorProvider;
 		}
 		
@@ -210,12 +191,8 @@ namespace Mono.UIAutomation.Winforms
 		// NOTE: 
 		//      Class used to keep track of UserControl instances added by 
 		//      SWF.ErrorProvider.
-		internal sealed class InstancesTracker 
-		{
-			private InstancesTracker ()
-			{
-			}
-			
+		internal static class InstancesTracker
+		{		
 			public static Control GetParentFromControl (Control control)
 			{
 				if (dictionary == null)
@@ -249,12 +226,14 @@ namespace Mono.UIAutomation.Winforms
 					parentControls = new ErrorProviderControlList ();
 					parentDictionary [parent] = parentControls;
 				}
-				parentControls.Add (control);
-				
-				//We create the Provider for that custom control (ErrorProvider), 
-				//this way the instance is created and then, as soon as the 
-				//control is visible will added itself to its parent navigation.
-				ProviderFactory.GetProvider (control);
+				if (parentControls.Contains (control) == false) {
+					parentControls.Add (control);
+					ErrorProvider errorProvider 
+						= (ErrorProvider) ProviderFactory.FindProvider (provider);
+					if (errorProvider == null)
+						errorProvider = (ErrorProvider) ProviderFactory.GetProvider (provider);
+					errorProvider.AddControl (control);
+				}
 			}
 			
 			public static void RemoveControl (Control control, 
@@ -271,13 +250,18 @@ namespace Mono.UIAutomation.Winforms
 			
 			public static SWFErrorProvider GetErrorProviderFromControl (Control control)
 			{
-				return dictionary == null ? null : dictionary [control];
+				if (dictionary == null)
+					return null;
+				
+				SWFErrorProvider provider = null;
+				dictionary.TryGetValue (control, out provider);
+				return provider;
 			}
 			
 			public static List<Control> GetControlsFromProvider (ErrorProvider errorProvider)
 			{
 				FragmentRootControlProvider parent 
-					= (FragmentRootControlProvider) errorProvider.Navigation.Navigate (NavigateDirection.Parent);
+					= (FragmentRootControlProvider) errorProvider.Navigate (NavigateDirection.Parent);
 				if (parent == null)
 					return null;
 
