@@ -33,19 +33,14 @@ class ScrollBarFrame(accessibles.Frame):
 
         procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
         
-        for a in states.HScrollBar.states:
-            cmd = "state = accessible." + a
-            exec(cmd)
-
-            if state == False:
-                print "ERROR: %s can't be checked" % cmd
-            else:
-                pass
+        for a in states.VScrollBar.states:
+            state = getattr(accessible, a)
+            assert state, "Expected state: %s" % (a)
 
     #change scrollbar's value
     def valueScrollBar(self, newValue=None):
 
-        procedurelogger.action('set scrollbar value to \"%s\"' % newValue)
+        procedurelogger.action('set scrollbar value to "%s"' % newValue)
         self.findScrollBar(None).__setattr__('value', newValue)
 
     def assertScrollbar(self, newValue=None):
@@ -53,11 +48,11 @@ class ScrollBarFrame(accessibles.Frame):
 
         def resultMatches():
             if 0 <= newValue <= maximumValue:
-                procedurelogger.expectedResult('the scrollbar\'s current value is \"%s\"' % newValue)
+                procedurelogger.expectedResult('the scrollbar\'s current value is "%s"' % newValue)
                 print "scrollbar's current value is:", self.findScrollBar(None).__getattr__('value')
                 return self.findScrollBar(None).__getattr__('value') == newValue
             else:
-                procedurelogger.expectedResult('value \"%s\" out of run' % newValue)
+                procedurelogger.expectedResult('value "%s" out of run' % newValue)
                 return not self.findScrollBar(None).__getattr__('value') == newValue
         assert retryUntilTrue(resultMatches)
     

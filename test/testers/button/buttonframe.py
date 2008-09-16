@@ -34,15 +34,15 @@ class ButtonFrame(accessibles.Frame):
     def actionsCheck(self, accessible):
         procedurelogger.action('diff %s\'s actions list' % accessible)
         ca = accessible._accessible.queryAction()
-        initallist = ()
+        initallist = []
         for lists in range(ca.nActions):
-            initallist = (ca.getName(lists))
+            initallist.append(ca.getName(lists))
 
-        procedurelogger.expectedResult('%s\'s inital actions \"%s\" live up to\
-	our expectation' % (accessible,initallist))
+        procedurelogger.expectedResult('%s\'s inital actions \"%s\" live up to our expectation' % (accessible,initallist))
         def resultMatches():
             return sorted(initallist) == sorted(actions.Button.actions)
-        assert retryUntilTrue(resultMatches)
+        assert retryUntilTrue(resultMatches), "%s != %s" % \
+                       (sorted(initallist), sorted(actions.Button.actions))
 
     #check Button's all expectant states
     def statesCheck(self, accessible):
@@ -50,13 +50,8 @@ class ButtonFrame(accessibles.Frame):
 
         procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
         for a in states.Button.states:
-            cmd = "state = accessible." + a
-            exec(cmd)
-
-            if state == False:
-                print "ERROR: %s can't be checked" % cmd
-            else:
-                pass
+            state = getattr(accessible, a)
+            assert state, "Expected state: %s" % (a)
 
     #check disable Button's states
     def assertDisableButton(self, accessible):
@@ -64,13 +59,11 @@ class ButtonFrame(accessibles.Frame):
 
         procedurelogger.expectedResult('%s\'s all states can\'t be found except \'showing\'' % accessible)
         for a in states.Button.states:
-            cmd = "state = accessible." + a
-            exec(cmd)
-
-            if state == True and a != 'showing':
-                print "ERROR: %s can't be checked" % cmd
+            state = getattr(accessible, a)
+            if a == 'showing':
+                assert state, "Expected state: %s" % (a)
             else:
-                pass
+                assert not state, "Not expected state: %s" % (a)
 
     #give 'click' action
     def click(self,button):
@@ -86,7 +79,6 @@ class ButtonFrame(accessibles.Frame):
         self.message = self.app.findFrame('message')
 
         self.message.findPushButton('OK').click()
-
     
     #close application main window after running test
     def quit(self):

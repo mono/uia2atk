@@ -34,28 +34,15 @@ class HScrollBarFrame(accessibles.Frame):
         procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
         
         for a in states.HScrollBar.states:
-            cmd = "state = accessible." + a
-            exec(cmd)
-
-            if state == False:
-                print "ERROR: %s can't be checked" % cmd
-            else:
-                pass
-        #if there is just one state in list, should reset it like:
-        #cmd = "state = accessible." + states.HScrollBar.states
-        #exec(cmd)
-        
-        #if state == False:
-        #    print "ERROR: %s can't can't be checked" % cmd
-        #else:
-        #    pass
+            state = getattr(accessible, a)
+            assert state, "Expected state: %s" % (a)
 
     #change hscrollbar's value
     def valueScrollBar(self, newValue=None):
 
-        procedurelogger.action('set scrollbar value to \"%s\"' % newValue)
+        procedurelogger.action('set scrollbar value to "%s"' % newValue)
         scrollbar = self.findScrollBar(None)
-        sleep(config.LONG_DELAY)
+        sleep(config.MEDIUM_DELAY)
         scrollbar.__setattr__('value', newValue)
 
     def assertScrollbar(self, newValue=None):
@@ -63,11 +50,11 @@ class HScrollBarFrame(accessibles.Frame):
 
         def resultMatches():
             if 0 <= newValue <= maximumValue:
-                procedurelogger.expectedResult('the scrollbar\'s current value is \"%s\"' % newValue)
+                procedurelogger.expectedResult('the scrollbar\'s current value is "%s"' % newValue)
                 print "scrollbar's current value is:", self.findScrollBar(None).__getattr__('value')
                 return self.findScrollBar(None).__getattr__('value') == newValue
             else:
-                procedurelogger.expectedResult('value \"%s\" out of run' % newValue)
+                procedurelogger.expectedResult('value "%s" out of run' % newValue)
                 return not self.findScrollBar(None).__getattr__('value') == newValue
         assert retryUntilTrue(resultMatches)
     

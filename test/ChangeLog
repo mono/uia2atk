@@ -1,3 +1,12 @@
+2008-09-16  Calen Chen <cachen@novell.com>
+
+	*  testers/button/buttonframe.py: Use getaddr() instead of
+	exec(), update actionsCheck with a tuple variable
+	*  testers/vscrollbar/vscrollbarframe.py,
+	*  testers/scrollbar/scrollbarframe.py,
+	*  testers/hscrollbar/hscrollbarframe.py: Use getaddr() instead of
+	exec()
+
 2008-09-14  Brian G. Merrell <bgmerrell@gmail.com>
 	
 	* samples/picturebox.py: Decrease frame size to better within the
