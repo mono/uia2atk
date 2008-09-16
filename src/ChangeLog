@@ -1,3 +1,7 @@
+2008-09-16 Mario Carrion <mcarrion@novell.com>
+
+	* patches/tooltip-errorprovider.patch: Deleted. Patch applied in mcs.
+
 2008-09-10 Mario Carrion <mcarrion@novell.com>
 
 	* patches/tooltip-errorprovider.patch: Updated to latest 
