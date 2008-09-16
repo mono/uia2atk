@@ -50,7 +50,6 @@ FILES =  \
 	ComponentAdapter.cs \
 	ComponentImplementorHelper.cs \
 	ComponentParentAdapter.cs \
-	EditableTextBoxEntry.cs \
 	List.cs \
 	ListItem.cs \
 	MenuItem.cs \

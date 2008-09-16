@@ -28,6 +28,3 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
-
-// Purpose: unit tests
-[assembly: InternalsVisibleTo("UiaAtkBridgeTest, PublicKey=f4ceacb585d99812")]

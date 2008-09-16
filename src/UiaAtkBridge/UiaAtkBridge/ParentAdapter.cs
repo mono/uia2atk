@@ -127,7 +127,7 @@ namespace UiaAtkBridge
 			while (child != null) {
 				AutomationInteropProvider.RaiseStructureChangedEvent (child, 
 				                                                      new StructureChangedEventArgs (StructureChangeType.ChildAdded,
-				                                                                                     child.GetRuntimeId ()));
+				                                                                                     child.GetRuntimeId ()));				
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 		}
