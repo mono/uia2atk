@@ -1,3 +1,8 @@
+2008-09-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Button.cs: Woops, shift this in case the property change raises a
+	  signal.
+
 2008-09-16  Mike Gorse  <mgorse@novell.com>
 
 	* List.cs, ListItem.cs: Process selection-related events to send
