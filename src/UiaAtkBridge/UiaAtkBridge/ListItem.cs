@@ -183,7 +183,17 @@ namespace UiaAtkBridge
 		}
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			// TODO
+			if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
+				List list = Parent as List;
+				if (list != null)
+					list.NotifyItemSelected (this);
+				else
+				NotifyStateChange ((ulong) Atk.StateType.Selected, true);
+			}
+			else if (eventId == SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent)
+				NotifyStateChange ((ulong) Atk.StateType.Selected, true);
+			else if (eventId == SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent)
+				NotifyStateChange ((ulong) Atk.StateType.Selected, false);
 		}
 		
 		public int CaretOffset {

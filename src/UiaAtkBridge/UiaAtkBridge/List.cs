@@ -36,6 +36,7 @@ namespace UiaAtkBridge
 		private IRawElementProviderFragmentRoot		provider;
 		private ISelectionProvider					selectionProvider;
 		private SelectionProviderUserHelper	selectionHelper;
+		private Adapter selectedItem;
 		
 /*
 AtkObject,
@@ -269,6 +270,16 @@ AtkObject,
 		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
 		{
 			//TODO
+		}
+
+		internal void NotifyItemSelected (Adapter item)
+		{
+			if (item == selectedItem)
+				return;
+			if (selectedItem != null)
+				selectedItem.NotifyStateChange ((ulong) Atk.StateType.Selected, false);
+			item.NotifyStateChange ((ulong) Atk.StateType.Selected, true);
+			selectedItem = item;
 		}
 	}
 }

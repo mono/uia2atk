@@ -1,3 +1,8 @@
+2008-09-16  Mike Gorse  <mgorse@novell.com>
+
+	* List.cs, ListItem.cs: Process selection-related events to send
+	  state-change notifications for Atk.StateType.Selected
+
 2008-09-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* AutomationBridge.cs: Remove debug spew.
