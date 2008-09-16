@@ -208,9 +208,9 @@ namespace UiaAtkBridge
 
 		internal string GetText (int startOffset, int endOffset)
 		{
-			if (endOffset == -1)
+			if ((endOffset == -1) || (endOffset > text.Length))
 				endOffset = text.Length;
-			return text.Substring (startOffset, endOffset);
+			return text.Substring (startOffset, endOffset - startOffset);
 		}
 
 		internal char GetCharacterAtOffset (int offset)
