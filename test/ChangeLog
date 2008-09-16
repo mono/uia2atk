@@ -1,5 +1,14 @@
 2008-09-16  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* samples/goalie.gif, 
+	* samples/chaos.jpg,
+	* samples/apple-red.png,
+	* samples/important.tif,
+	* samples/soccerball.gif,
+	* samples/gtkimages.py: Add Gtk example with several images
+
+2008-09-16  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* samples/gtkbutton_label.py: Add a third (insensitive) for an
 	insensitive Gtk button example.
 	* testers/states.py: -FOCUSABLE +SENSITIVE +VISIBLE based on Bug
