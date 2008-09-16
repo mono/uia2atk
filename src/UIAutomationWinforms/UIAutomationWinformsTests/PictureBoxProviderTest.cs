@@ -53,7 +53,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
-			              "pane");			
+			              "pane");
 
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsContentElementProperty,

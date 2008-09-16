@@ -1,3 +1,8 @@
+2008-09-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* StatusBarProviderTest.cs, PictureBoxProviderTest.cs,
+	  ErrorProviderTest.cs: Cosmetic.
+
 2008-09-15  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* StatusBarProviderTest.cs: Cosmetic: spaces to tabs.

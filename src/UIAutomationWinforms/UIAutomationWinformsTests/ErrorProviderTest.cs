@@ -119,10 +119,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsControlElementProperty,
 			              true);
-			              
+			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
-			              false);			              
+			              false);
 			
 			//Test patterns:
 			TestProperty (provider,

@@ -76,7 +76,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (statusBar);
 
 			IGridProvider gridProvider = (IGridProvider)
-				provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
+			  provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (gridProvider, "Not returning GridPatternIdentifiers.");
 
 			int value = 1;
@@ -92,7 +92,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (statusBar);
 
 			IGridProvider gridProvider = (IGridProvider)
-				provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
+			  provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (gridProvider, "Not returning GridPatternIdentifiers.");
 
 			int value = 1;
