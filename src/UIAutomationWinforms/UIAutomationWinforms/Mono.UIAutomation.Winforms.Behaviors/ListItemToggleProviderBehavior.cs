@@ -73,6 +73,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		
 		public void Toggle ()
 		{
+			if (provider.ListProvider.Control.InvokeRequired == true) {
+				provider.ListProvider.Control.BeginInvoke (new MethodInvoker (Toggle));
+				return;
+			}
+
 			if (ToggleState == ToggleState.On)
 				provider.ListProvider.UnselectItem (provider);
 			else 

@@ -1,3 +1,14 @@
+2008-09-16  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListItemToggleProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ListItemSelectionProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ListItemScrollProviderBehavior.cs:
+	  Updated to use BeginInvoke.
+	
+	  
+	
+	  [Fixes Bug #419019]
+
 2008-09-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Returning null

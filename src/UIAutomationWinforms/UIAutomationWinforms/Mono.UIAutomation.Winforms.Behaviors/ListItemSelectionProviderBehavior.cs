@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		: ProviderBehavior, ISelectionItemProvider
 	{
 		
-#region Constructors
+		#region Constructors
 
 		public ListItemSelectionProviderBehavior (ListItemProvider provider)
 			: base (provider)
@@ -45,9 +45,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			this.item_provider = provider;
 		}
 		
-#endregion
+		#endregion
 		
-#region IProviderBehavior Interface
+		#region IProviderBehavior Interface
 
 		public override AutomationPattern ProviderPattern { 
 			get { return SelectionItemPatternIdentifiers.Pattern; }
@@ -82,13 +82,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 				return null;
 		}
 		
-#endregion
+		#endregion
 
-#region ISelectionItemProvider Interface
+		#region ISelectionItemProvider Interface
 		
 		public void AddToSelection ()
 		{
-			if (IsSelected)
+			if (IsSelected == true)
 				return;
 			
 			bool multipleSelection = 
@@ -107,6 +107,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 		{
 			if (IsSelected == false)
 				return;
+			
+			if (item_provider.ListProvider.Control.InvokeRequired == true) {
+				item_provider.ListProvider.Control.BeginInvoke (new MethodInvoker (RemoveFromSelection));
+				return;
+			}
 			
 			bool multipleSelection = 
 				(bool) item_provider.ListProvider.GetPropertyValue (SelectionPatternIdentifiers.CanSelectMultipleProperty.Id);
@@ -141,8 +146,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		public void Select ()
 		{
-			if (IsSelected)
+			if (IsSelected == true)
 				return;
+			
+			if (item_provider.ListProvider.Control.InvokeRequired == true) {
+				item_provider.ListProvider.Control.BeginInvoke (new MethodInvoker (Select));
+				return;
+			}
 			
 			item_provider.ListProvider.SelectItem (item_provider);
 			
@@ -169,13 +179,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			get { return item_provider.ListProvider; }
 		}
 
-#endregion
+		#endregion
 		
-#region Private Fields
+		#region Private Fields
 		
 		private ListItemProvider item_provider;
 		
-#endregion
+		#endregion
 		
 	}
 }
