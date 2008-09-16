@@ -1,5 +1,10 @@
 2008-09-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* bridgetest.sh: Remove hacks only needed as workarounds to launch with
+	  option "-domain=none" (only needed in GailTest).
+
+2008-09-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* bridgetest.sh: Seriously, let's use NUnit 2.4.x or higher, its
 	  reports are much better (a TargetInvocationException is clearly
 	  detailed, and shown as breaking the TestFixtureSetup, *not every
