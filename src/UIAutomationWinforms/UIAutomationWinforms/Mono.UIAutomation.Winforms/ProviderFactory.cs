@@ -170,11 +170,14 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ToolTipProvider (tt);
 			else if ((hlp = component as SWFHelpProvider) != null)
 				provider = new HelpProvider (hlp);
-			else //TODO: We have to solve the problem when there's a Custom control
+			else {
+				//TODO: We have to solve the problem when there's a Custom control
 				
 				//FIXME: let's not throw while we are developing, a big WARNING will suffice
 				//throw new NotImplementedException ("Provider not implemented for control " + component.GetType().Name);
 				Console.WriteLine ("WARNING: Provider not implemented for control " + component.GetType().Name);
+				return null;
+			}
 			
 			if (provider != null) {
 				// TODO: Make tracking in dictionary optional

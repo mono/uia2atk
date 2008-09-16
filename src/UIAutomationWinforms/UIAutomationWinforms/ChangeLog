@@ -1,5 +1,10 @@
 2008-09-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Returning null
+	  directly is more explicit.
+
+2008-09-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Exit gracefully when
 	  NIE for now, otherwise FormTest and UiaAtkBridgeTest cannot be run.
 
