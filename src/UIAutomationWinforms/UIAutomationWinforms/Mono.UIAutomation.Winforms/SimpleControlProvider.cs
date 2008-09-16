@@ -187,6 +187,18 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return providerBehaviors.ContainsKey (pattern);
 		}
+
+		protected virtual System.Drawing.Rectangle GetControlScreenBounds ()
+		{
+			if (control.Parent == null || control.TopLevelControl == null)
+				return Control.Bounds;
+			else {
+				if (Control.FindForm () == Control.Parent)
+					return Control.TopLevelControl.RectangleToScreen (Control.Bounds);
+				else
+					return Control.Parent.RectangleToScreen (Control.Bounds);
+			}
+		}
 		
 		#endregion
 		
@@ -386,18 +398,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return System.Math.Abs (System.Math.Sqrt ( System.Math.Pow (p1.X - p2.X, 2) +
 			                                          System.Math.Pow (p1.Y - p2.Y, 2)));
-		}
-		
-		private System.Drawing.Rectangle GetControlScreenBounds ()
-		{
-			if (control.Parent == null || control.TopLevelControl == null)
-				return Control.Bounds;
-			else {
-				if (Control.FindForm () == Control.Parent)
-					return Control.TopLevelControl.RectangleToScreen (Control.Bounds);
-				else
-					return Control.Parent.RectangleToScreen (Control.Bounds);
-			}
 		}
 		
 		#endregion

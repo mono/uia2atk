@@ -110,6 +110,29 @@ namespace Mono.UIAutomation.Winforms
 				return string.Empty;
 		}
 		
+		public override System.Drawing.Rectangle GetItemBoundingRectangle (ListItemProvider item)
+		{
+			//FIXME: We need to improve this
+			int loop = 1; //We start in 1 to add the Edit height or the control height depending on the style
+			int index = item.Index;
+			int totalHeight = 0;
+			System.Drawing.Rectangle rectangle = System.Drawing.Rectangle.Empty;
+			for (; loop < index; loop++)
+				rectangle.Y += comboboxControl.GetItemHeight (loop);
+			
+			rectangle.Height = comboboxControl.GetItemHeight (index);
+			rectangle.Width = comboboxControl.Bounds.Width;
+			rectangle.X = comboboxControl.Bounds.X;		
+			rectangle.Y += comboboxControl.Bounds.Y;
+
+			if (comboboxControl.FindForm () == comboboxControl.Parent)
+				rectangle = comboboxControl.TopLevelControl.RectangleToScreen (rectangle);
+			else
+				rectangle = comboboxControl.Parent.RectangleToScreen (rectangle);
+
+			return rectangle;
+		}
+		
 		public override void SelectItem (ListItemProvider item)
 		{
 			if (ContainsItem (item) == true)
@@ -172,7 +195,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void ScrollItemIntoView (ListItemProvider item)
 		{
-			throw new NotImplementedException ();
+			if (ContainsItem (item) == true)
+				throw new NotImplementedException ();
 		}
 
 		#endregion
@@ -337,6 +361,11 @@ namespace Mono.UIAutomation.Winforms
 			public override string GetItemName (ListItemProvider item)
 			{
 				return comboboxProvider.GetItemName (item);
+			}
+			
+			public override System.Drawing.Rectangle GetItemBoundingRectangle (ListItemProvider item)
+			{
+				return comboboxProvider.GetItemBoundingRectangle (item);
 			}
 			
 			public override void SelectItem (ListItemProvider item)

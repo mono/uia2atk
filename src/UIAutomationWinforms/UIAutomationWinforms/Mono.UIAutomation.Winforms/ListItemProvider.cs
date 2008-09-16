@@ -109,7 +109,16 @@ namespace Mono.UIAutomation.Winforms
 			get { return ListProvider; }			
 		}
 
-		#endregion		
+		#endregion
+		
+		#region Protected Methods
+		
+		protected override System.Drawing.Rectangle GetControlScreenBounds ()
+		{
+			return ListProvider.GetItemBoundingRectangle (this);
+		}
+		
+		#endregion
 		
 		#region Private Fields
 

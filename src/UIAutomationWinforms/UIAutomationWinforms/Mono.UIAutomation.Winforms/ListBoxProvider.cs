@@ -196,6 +196,22 @@ namespace Mono.UIAutomation.Winforms
 			return listboxControl.Items [item.Index].ToString ();
 		}
 		
+		public override System.Drawing.Rectangle GetItemBoundingRectangle (ListItemProvider item)
+		{
+			System.Drawing.Rectangle itemRec = listboxControl.GetItemRectangle (item.Index);
+			System.Drawing.Rectangle rectangle = listboxControl.Bounds;
+			
+			itemRec.X += rectangle.X;
+			itemRec.Y += rectangle.Y;
+			
+			if (listboxControl.FindForm () == listboxControl.Parent)
+				itemRec = listboxControl.TopLevelControl.RectangleToScreen (itemRec);
+			else
+				itemRec = listboxControl.Parent.RectangleToScreen (itemRec);
+
+			return itemRec;
+		}
+		
 		public override void SelectItem (ListItemProvider item)
 		{
 			listboxControl.SetSelected (item.Index, true);

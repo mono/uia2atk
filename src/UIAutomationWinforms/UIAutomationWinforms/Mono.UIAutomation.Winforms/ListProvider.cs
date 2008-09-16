@@ -27,6 +27,7 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
@@ -93,6 +94,8 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		public abstract string GetItemName (ListItemProvider item);
+		
+		public abstract System.Drawing.Rectangle GetItemBoundingRectangle (ListItemProvider item);
 		
 		public abstract ListItemProvider[] GetSelectedItemsProviders ();
 		

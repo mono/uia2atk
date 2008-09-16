@@ -1,5 +1,23 @@
 2008-09-16  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs,
+	  Mono.UIAutomation.Winforms/ListItemProvider.cs,
+	  Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	  GetControlScreenBounds specialization.
+	
+	  [Fixes Bug #419019]
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs:
+	  GetControlScreenBounds, method visibility changed from private to
+	  protected.
+	
+	  [Fixes Bug #419019]
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Abstract method added:
+	  GetItemBoundingRectangle.
+	
+	  [Fixes Bug #419019]
+
+2008-09-16  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Behaviors/ListItemToggleProviderBehavior.cs,
 	  Mono.UIAutomation.Winforms.Behaviors/ListItemSelectionProviderBehavior.cs,
 	  Mono.UIAutomation.Winforms.Behaviors/ListItemScrollProviderBehavior.cs:
