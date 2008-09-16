@@ -71,11 +71,61 @@ namespace UiaAtkBridge
 		
 #region Public Methods
 		
-		static public Adapter GetAdapterForProvider (IRawElementProviderSimple provider)
+		public static Adapter GetAdapterForProviderLazy (IRawElementProviderSimple provider)
 		{
+			return GetAdapterForProvider (provider, false);
+		}
+		
+		[Obsolete("Use GetAdapterForProviderLazy as it's more efficient")]
+		public static Adapter GetAdapterForProvider (IRawElementProviderSimple provider)
+		{
+			return GetAdapterForProvider (provider, true);
+		}
+		
+		private static Adapter GetAdapterForProvider (IRawElementProviderSimple provider, bool avoidLazyLoading)
+		{
+			if (avoidLazyLoading) {
+				Console.WriteLine ("WARNING: obsolete non-lazy-loading GetAdapterForProvider method called.");
+				
+				alreadyRequestedChildren = new List <Atk.Object> ();
+				List <IRawElementProviderSimple> initialProvs = new List<IRawElementProviderSimple> ();
+				
+				foreach (IRawElementProviderSimple providerReady in providerAdapterMapping.Keys) {
+					initialProvs.Add (providerReady);
+				}
+				
+				foreach (IRawElementProviderSimple providerReady in initialProvs) {
+					RequestChildren (providerAdapterMapping [providerReady]);
+				}
+				
+				alreadyRequestedChildren = null;
+			}
+			
 			Adapter adapter = null;
 			providerAdapterMapping.TryGetValue (provider, out adapter);
 			return adapter;
+		}
+		
+		private static List <Atk.Object> alreadyRequestedChildren = null;
+		
+		private static void RequestChildren (Atk.Object adapter) {
+			if (alreadyRequestedChildren.Contains (adapter))
+				return;
+			
+			int nChildren = adapter.NAccessibleChildren;
+			
+			if (nChildren > 0) {
+				for (int i = 0; i < nChildren; i++) {
+					Atk.Object adapterN = adapter.RefAccessibleChild (i);
+					
+					if (i == 0)
+						alreadyRequestedChildren.Add (adapter);
+					
+					RequestChildren (adapterN);
+				}
+			}
+			else
+				alreadyRequestedChildren.Add (adapter);
 		}
 		
 #endregion
@@ -194,7 +244,6 @@ namespace UiaAtkBridge
 			else if (controlTypeId == ControlType.Group.Id)
 				HandleNewGroupControlType (simpleProvider);
 			else if (controlTypeId == ControlType.RadioButton.Id){
-				Console.WriteLine ("***********************************RADIO BUTTON");
 				HandleNewRadioButtonControlType (simpleProvider);}
 			else if (controlTypeId == ControlType.Spinner.Id)
 				HandleNewSpinnerControlType (simpleProvider);

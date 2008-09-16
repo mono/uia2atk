@@ -42,14 +42,14 @@ namespace UiaAtkBridge
 				gridProvider = (ITableProvider)resource.Provider;
 		}
 
-		private Adapter								resource;
+		private Adapter							resource;
 		private ITableProvider					tableProvider = null;
 		private IGridProvider					gridProvider = null;
 
 		public Atk.Object RefAt (int row, int column)
 		{
 			IRawElementProviderSimple item = gridProvider.GetItem (row, column);
-			return AutomationBridge.GetAdapterForProvider (item);
+			return AutomationBridge.GetAdapterForProviderLazy (item);
 		}
 
 		public int GetIndexAt (int row, int column)
@@ -114,7 +114,7 @@ namespace UiaAtkBridge
 		{
 			// TODO: UIA supports multiple headers, but ATK doesn't
 			IRawElementProviderSimple item = tableProvider.GetColumnHeaders()[0];
-			return AutomationBridge.GetAdapterForProvider (item);
+			return AutomationBridge.GetAdapterForProviderLazy (item);
 		}
 
 		public string GetRowDescription (int row)
@@ -126,7 +126,7 @@ namespace UiaAtkBridge
 		{
 			// TODO: UIA supports multiple headers, but ATK doesn't
 			IRawElementProviderSimple item = tableProvider.GetRowHeaders()[0];
-			return AutomationBridge.GetAdapterForProvider (item);
+			return AutomationBridge.GetAdapterForProviderLazy (item);
 		}
 
 		public Atk.Object Summary

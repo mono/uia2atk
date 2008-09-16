@@ -1,5 +1,11 @@
 2008-09-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* TableImplementorHelper.cs, AutomationBridge.cs,
+	  SelectionProviderUserHelper.cs: Provide a way not to use
+	  lazy-loading, in order to fix the RadioButtons unit test.
+
+2008-09-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* Button.cs: Fix the case in which the Name changes: textExpert needs
 	  to be reinitialized.
 	* TextImplementorHelper.cs: Prevent AOOR exception (this case
