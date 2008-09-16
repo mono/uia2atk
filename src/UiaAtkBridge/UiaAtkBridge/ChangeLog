@@ -1,5 +1,9 @@
 2008-09-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AutomationBridge.cs: Remove debug spew.
+
+2008-09-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* TableImplementorHelper.cs, AutomationBridge.cs,
 	  SelectionProviderUserHelper.cs: Provide a way not to use
 	  lazy-loading, in order to fix the RadioButtons unit test.
