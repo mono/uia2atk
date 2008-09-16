@@ -46,8 +46,9 @@ bFrame = app.buttonFrame
 bFrame.actionsCheck(bFrame.button1)
 
 #check Button's states list
+bFrame.statesCheck(bFrame.button1)
 bFrame.statesCheck(bFrame.button2)
-bFrame.assertDisableButton(bFrame.button3)
+bFrame.statesCheck(bFrame.button3)
 
 #click button1 rise message frame window
 bFrame.click(bFrame.button1)

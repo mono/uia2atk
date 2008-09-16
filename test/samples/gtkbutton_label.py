@@ -73,6 +73,26 @@ class MainWindow:
         # show the second button
         self.button2.show()
 
+        # Creates a new button with the label "Button 3".
+        self.button3 = gtk.Button("Button 3")
+ 
+        # Now when the button is clicked, we call the open_dialog method
+        # with a pointer to "button 3" as its argument
+        self.button3.connect("clicked", self.button_three_clicked)
+
+	# disable button three
+	self.button3.set_sensitive(False)
+ 
+        # Instead of add(), we pack this button into the invisible
+        # box, which has been packed into the window.
+        self.vbox.pack_start(self.button3, True, True, 0)
+
+        # Always remember this step, this tells GTK that our preparation for
+        # this button is complete, and it can now be displayed.
+        self.button3.show()
+
+
+
         # show the HBox
         self.hbox.show()
 
@@ -90,6 +110,9 @@ class MainWindow:
 
     def button_two_clicked(self, widget):
         self.label.set_text("button two was clicked last")
+
+    def button_three_clicked(self, widget):
+        self.label.set_text("button three was clicked last")
 
     def main(self):
         gtk.main()

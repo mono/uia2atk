@@ -203,7 +203,7 @@ VISITED = "visited"
 
 #list Button's all states
 class Button(object):
-    states = (SHOWING, ENABLED, SELECTABLE, SENSITIVE)
+    states = (SHOWING, ENABLED, FOCUSABLE, SENSITIVE, VISIBLE)
 
 class RadioButton(Button):
     pass

@@ -46,24 +46,51 @@ class ButtonFrame(accessibles.Frame):
 
     #check Button's all expectant states
     def statesCheck(self, accessible):
-        procedurelogger.action('check %s\'s all states' % accessible)
+        procedurelogger.action('Check %s\'s states' % accessible)
+        if accessible == self.button3:
+            self.assertInsensitiveButtonStates(accessible)    
+        else:
+            self.assertSensitiveButtonStates(accessible)    
 
-        procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
-        for a in states.Button.states:
-            state = getattr(accessible, a)
-            assert state, "Expected state: %s" % (a)
+    def assertInsensitiveButtonStates(self, accessible):
+        # create a list of all states for button except "sensitive"
+        expected_states = [s for s in states.Button.states if s != 'sensitive']
 
-    #check disable Button's states
-    def assertDisableButton(self, accessible):
-        procedurelogger.action('check %s\'s all states' % accessible)
+        procedurelogger.expectedResult('States:  %s' % expected_states)
 
-        procedurelogger.expectedResult('%s\'s all states can\'t be found except \'showing\'' % accessible)
-        for a in states.Button.states:
-            state = getattr(accessible, a)
-            if a == 'showing':
-                assert state, "Expected state: %s" % (a)
-            else:
-                assert not state, "Not expected state: %s" % (a)
+        # get a list of all actual states for accessible
+        actual_states = accessible._accessible.getState().getStates()
+        # need to convert the numbers retreived above into their associated
+        # strings
+        actual_states = [pyatspi.stateToString(s) for s in actual_states]
+
+        # check to make sure our expected states match our actual states
+        diff = set(actual_states).difference(expected_states)
+
+        def resultMaches():
+            return len(diff) == 0, "Did not expect state(s): %s" % diff
+        
+        assert retryUntilTrue(resultMaches)
+
+    def assertSensitiveButtonStates(self, accessible):
+        # create a list of all states for button except "sensitive"
+        expected_states = [s for s in states.Button.states]
+
+        procedurelogger.expectedResult('States:  %s' % expected_states)
+
+        # get a list of all actual states for accessible
+        actual_states = accessible._accessible.getState().getStates()
+        # need to convert the numbers retreived above into their associated
+        # strings
+        actual_states = [pyatspi.stateToString(s) for s in actual_states]
+
+        # check to make sure our expected states match our actual states
+        diff = set(actual_states).difference(expected_states)
+
+        def resultMaches():
+            assert len(diff) == 0, "Did not expect state(s): %s" % diff
+
+        assert retryUntilTrue(resultMaches)
 
     #give 'click' action
     def click(self,button):

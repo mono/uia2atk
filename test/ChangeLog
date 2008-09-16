@@ -1,3 +1,17 @@
+2008-09-16  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/gtkbutton_label.py: Add a third (insensitive) for an
+	insensitive Gtk button example.
+	* testers/states.py: -FOCUSABLE +SENSITIVE +VISIBLE based on Bug
+	426677.
+	* testers/button/buttonframe.py: Use checkStates() for both sensitive
+	and insensitive buttons.  Code algorithm to compare expected states
+	and actual states, and return a set of actual states that were not
+	expected.
+	* testers/button_basic_ops.py: Call checkStates() on all three buttons,
+	no longer call assertDisableButton (as it is handled by checkStates
+	now)
+
 2008-09-16  Calen Chen <cachen@novell.com>
 
 	*  testers/button/buttonframe.py: Use getaddr() instead of
