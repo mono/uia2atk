@@ -32,13 +32,8 @@ class NumericUpDownFrame(accessibles.Frame):
 
         procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
         for a in states.NumericUpDown.states:
-            cmd = "state = accessible." + a
-            exec(cmd)
-
-            if state == False:
-                print "ERROR: %s can't be checked" % cmd
-            else:
-                pass
+            state = getattr(accessible, a)
+            assert state, "Expected state: %s" % (a)
 
     #assert the numericupdown's percent after click button
     def assertLabel(self, percent):
@@ -50,7 +45,7 @@ class NumericUpDownFrame(accessibles.Frame):
 
     #set numericupdown's value
     def valueNumericUpDown(self, newValue):
-        procedurelogger.action('set numericupdown value to \"%s\"' % newValue)
+        procedurelogger.action('set numericupdown value to "%s"' % newValue)
         numericupdown = self.findSpinButton(None)
         sleep(config.LONG_DELAY)
         numericupdown.__setattr__('value', newValue)
@@ -62,14 +57,14 @@ class NumericUpDownFrame(accessibles.Frame):
 
         def resultMatches():
             if value >= self.minimumValue and value <= self.maximumValue:
-                procedurelogger.expectedResult('the numericupdown\'s current value is \"%s\"' % value)
+                procedurelogger.expectedResult('the numericupdown\'s current value is "%s"' % value)
                 return self.numericupdown.__getattr__('value') == value
             elif value > self.maximumValue:
-                procedurelogger.expectedResult('value \"%s\" out of run, the maximum value is \"%s\"' % (value, self.maximumValue))
+                procedurelogger.expectedResult('value "%s" out of run, the maximum value is "%s"' % (value, self.maximumValue))
                 return not self.numericupdown.__getattr__('value') == value 
                 return self.numericupdown.__getattr__('value') == self.maximumValue
             elif value < self.minimumValue:
-                procedurelogger.expectedResult('value \"%s\" out of run, the minimum value is \"%s\"' % (value, self.minimumValue))
+                procedurelogger.expectedResult('value "%s" out of run, the minimum value is "%s"' % (value, self.minimumValue))
                 return not self.numericupdown.__getattr__('value') == value 
                 return self.numericupdown.__getattr__('value') == self.minimumValue
 

@@ -32,16 +32,15 @@ class CheckBoxFrame(accessibles.Frame):
         self.check3 = self.findCheckBox(self.CHECK_THREE)
         self.check4 = self.findCheckBox(self.CHECK_FORE)
 
-    #diff checkbox's inital actions list with expectant list in actions.py
+    #check checkbox's all expectant actions
     def actionsCheck(self, accessible):
         procedurelogger.action('diff %s\'s actions list' % accessible)
         ca = accessible._accessible.queryAction()
-        initallists = ()
+        initallists = []
         for lists in range(ca.nActions):
-            initallists = (ca.getName(lists))
+            initallists .append(ca.getName(lists))
 
-        procedurelogger.expectedResult('%s\'s inital actions \"%s\" live up to\
-	our expectation' % (accessible,initallists))
+        procedurelogger.expectedResult('%s\'s inital actions "%s" live up to our expectation' % (accessible,initallists))
         def resultMatches():
             return sorted(initallists) == sorted(actions.CheckBox.actions)
         assert retryUntilTrue(resultMatches)
@@ -52,27 +51,21 @@ class CheckBoxFrame(accessibles.Frame):
 
         procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
         for a in states.CheckBox.states:
-            cmd = "state = accessible." + a
-            exec(cmd)
-
-            if state == False:
-                print "ERROR: %s can't be checked" % cmd
-            else:
-                pass
+            state = getattr(accessible, a)
+            assert state, "Expected state: %s" % (a)
 
     #check disable checkbox's states
     def statesDisableCheck(self, accessible):
         procedurelogger.action('check %s\'s all states' % accessible)
 
-        procedurelogger.expectedResult('%s\'s all states can\'t be found except \'showing\'' % accessible)
+        procedurelogger.expectedResult('%s\'s all states can\'t be found except "showing"' % accessible)
         for a in states.CheckBox.states:
-            cmd = "state = accessible." + a
-            exec(cmd)
-
-            if state == True and a != 'showing':
-                print "ERROR: %s can't be checked" % cmd
+            state = getattr(accessible, a)
+            if a == 'showing':
+                assert state, "Expected state: %s" % (a)
             else:
-                pass
+                assert not state, "Not expected state: %s" % (a)
+
 
     #give 'click' action
     def click(self,button):
@@ -81,7 +74,7 @@ class CheckBoxFrame(accessibles.Frame):
     #check the state after click checkbox
     def assertChecked(self, accessible):
         'Raise exception if the accessible does not match the given result'   
-        procedurelogger.expectedResult('\"%s\" is %s' % (accessible, 'checked'))
+        procedurelogger.expectedResult('"%s" is %s' % (accessible, 'checked'))
 
         def resultMatches():
             return accessible.checked

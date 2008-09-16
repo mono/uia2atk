@@ -32,16 +32,15 @@ class RadioButtonFrame(accessibles.Frame):
         self.button3 = self.findRadioButton(self.BUTTON_THREE)
         self.label = self.findLabel(self.LABEL)
 
-    #diff RadioButton's inital actions list with expectant list in actions.py
+    #check radiobutton's all expectant states
     def actionsCheck(self, accessible):
         procedurelogger.action('diff %s\'s actions list' % accessible)
         ca = accessible._accessible.queryAction()
-        initallists = ()
+        initallists = []
         for lists in range(ca.nActions):
-            initallists = (ca.getName(lists))
+            initallists.append(ca.getName(lists))
 
-        procedurelogger.expectedResult('%s\'s inital actions \"%s\" live up to\
-	our expectation' % (accessible,initallists))
+        procedurelogger.expectedResult('%s\'s inital actions "%s" live up to our expectation' % (accessible,initallists))
         def resultMatches():
             return sorted(initallists) == sorted(actions.RadioButton.actions)
         assert retryUntilTrue(resultMatches)
@@ -52,27 +51,19 @@ class RadioButtonFrame(accessibles.Frame):
 
         procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
         for a in states.RadioButton.states:
-            cmd = "state = accessible." + a
-            exec(cmd)
+            state = getattr(accessible, a)
+            assert state, "Expected state: %s" % (a)
 
-            if state == False:
-                print "ERROR: %s can't be checked" % cmd
-            else:
-                pass
-
-    #check disable RadioButton's states
     def statesDisableCheck(self, accessible):
         procedurelogger.action('check %s\'s all states' % accessible)
 
-        procedurelogger.expectedResult('%s\'s all states can\'t be found except \'showing\'' % accessible)
+        procedurelogger.expectedResult('%s\'s all states can\'t be found except "showing"' % accessible)
         for a in states.RadioButton.states:
-            cmd = "state = accessible." + a
-            exec(cmd)
-
-            if state == True and a != 'showing':
-                print "ERROR: %s can't be checked" % cmd
+            state = getattr(accessible, a)
+            if a == 'showing':
+                assert state, "Expected state: %s" % (a)
             else:
-                pass
+                assert not state, "Not expected state: %s" % (a)
 
     #give 'click' action
     def click(self,button):
@@ -80,13 +71,13 @@ class RadioButtonFrame(accessibles.Frame):
 
     #check the Label text after click RadioButton
     def assertLabel(self, labelText):
-        procedurelogger.expectedResult('Label text has been changed to \"%s\"' % labelText)
+        procedurelogger.expectedResult('Label text has been changed to "%s"' % labelText)
         self.findLabel(labelText)
 
     #check the state after click RadioButton
     def assertChecked(self, accessible):
         'Raise exception if the accessible does not match the given result'   
-        procedurelogger.expectedResult('\"%s\" is %s' % (accessible, 'checked'))
+        procedurelogger.expectedResult('"%s" is %s' % (accessible, 'checked'))
 
         def resultMatches():
             return accessible.checked

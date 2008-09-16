@@ -34,13 +34,8 @@ class LabelFrame(accessibles.Frame):
 
         procedurelogger.expectedResult('%s\'s all states can be found' % "label")
         for a in states.Label.states:
-            cmd = "state = accessible." + a
-            exec(cmd)
-
-            if state == False:
-                print "ERROR: %s can't be checked" % cmd
-            else:
-                pass
+            state = getattr(accessible, a)
+            assert state, "Expected state: %s" % (a)
 
     #give 'click' action
     def click(self,button):
@@ -48,12 +43,12 @@ class LabelFrame(accessibles.Frame):
 
     #check the Label text after click button2
     def assertLabel(self, labelText):
-        procedurelogger.expectedResult('Label text has been changed to \"%s\"' % labelText)
+        procedurelogger.expectedResult('Label text has been changed to "%s"' % labelText)
         self.findLabel(labelText)
 
     #check label's text value
     def assertText(self, textValue):
-        procedurelogger.expectedResult('Label\'s text value shows in accerciser is \"%s\"' % textValue)
+        procedurelogger.expectedResult('Label\'s text value shows in accerciser is "%s"' % textValue)
         def resultMatches():
             return self.label.text == textValue
         assert retryUntilTrue(resultMatches)

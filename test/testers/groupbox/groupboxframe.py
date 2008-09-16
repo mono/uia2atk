@@ -28,15 +28,15 @@ class GroupBoxFrame(accessibles.Frame):
         self.button1 = self.findPushButton(self.BUTTON_ONE)
         self.button2 = self.findPushButton(self.BUTTON_TWO)
 
-    #diff GroupBox's inital actions list with expectant list in actions.py
+    #check Button's all expectant actions
     def actionsCheck(self, accessible):
         procedurelogger.action('diff %s\'s actions list' % accessible)
         ca = accessible._accessible.queryAction()
-        initallists = ()
+        initallists = []
         for lists in range(ca.nActions):
-            initallists = (ca.getName(lists))
+            initallists.append(ca.getName(lists))
 
-        procedurelogger.expectedResult('%s\'s inital actions \"%s\" live up to\
+        procedurelogger.expectedResult('%s\'s inital actions "%s" live up to\
 	our expectation' % (accessible,initallists))
         def resultMatches():
             return sorted(initallists) == sorted(actions.Button.actions)
@@ -49,39 +49,32 @@ class GroupBoxFrame(accessibles.Frame):
 
         procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
         for a in states.Panel.states:
-            cmd = "state = accessible." + a
-            exec(cmd)
-
-            if state == False:
-                print "ERROR: %s can't be checked" % cmd
-            else:
-                pass
+            state = getattr(accessible, a)
+            assert state, "Expected state: %s" % (a)
 
     #search groupbox
     def searchGroupBox(self,boxname=None):
         if boxname == 'GroupBox1':
-            procedurelogger.action('search for panel of \"%s\"' % boxname)
+            procedurelogger.action('search for panel of "%s"' % boxname)
 
             sleep(config.SHORT_DELAY)
-            procedurelogger.expectedResult('\"%s\" existed' % boxname)
+            procedurelogger.expectedResult('"%s" existed' % boxname)
             self.findPanel('GroupBox1')
 
         elif boxname =='GroupBox2':
-            procedurelogger.action('search for panel of \"%s\"' % boxname)
+            procedurelogger.action('search for panel of "%s"' % boxname)
 
             sleep(config.SHORT_DELAY)
-            procedurelogger.expectedResult('\"%s\" existed' % boxname)
+            procedurelogger.expectedResult('"%s" existed' % boxname)
             self.findPanel('GroupBox2')
 
     #give 'click' action
     def click(self,button):
-        #procedurelogger.action('Click the %s.' % button)
         button.click()
-        #button._doAction('click')
 
     #check the Label text after click button
     def assertLabel(self, labelText):
-        procedurelogger.expectedResult('Label text has been changed to \"%s\"' % labelText)
+        procedurelogger.expectedResult('Label text has been changed to "%s"' % labelText)
         self.findLabel(labelText)
     
     #close application main window after running test

@@ -36,13 +36,8 @@ class ProgressBarFrame(accessibles.Frame):
 
         procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
         for a in states.ProgressBar.states:
-            cmd = "state = accessible." + a
-            exec(cmd)
-
-            if state == False:
-                print "ERROR: %s can't be checked" % cmd
-            else:
-                pass
+            state = getattr(accessible, a)
+            assert state, "Expected state: %s" % (a)
 
     #give 'click' action
     def click(self, button):
@@ -62,11 +57,11 @@ class ProgressBarFrame(accessibles.Frame):
 
         def resultMatches():
             if 0 <= value <= maximumValue:
-                procedurelogger.expectedResult('the progressbar\'s current value is \"%s\"' % value)
+                procedurelogger.expectedResult('the progressbar\'s current value is "%s"' % value)
                 print "progressbar's current value is:", self.progressbar.__getattr__('value')
                 return self.progressbar.__getattr__('value') == value
             else:
-                procedurelogger.expectedResult('value \"%s\" out of run' % value)
+                procedurelogger.expectedResult('value "%s" out of run' % value)
                 return not self.progressbar.__getattr__('value') == value
         assert retryUntilTrue(resultMatches)
     

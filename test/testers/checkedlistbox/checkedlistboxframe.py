@@ -29,15 +29,15 @@ class CheckedListBoxFrame(accessibles.Frame):
         self.listbox = self.findList(None)
         self.listitem0 = self.findListItem(self.LISTITEM0)
 
-    #diff listitem's inital actions list of CheckedListBox with expectant list in actions.py
+    #check ListItem's all expectant actions
     def actionsCheck(self, accessible):
         procedurelogger.action('diff %s\'s actions list' % accessible)
         ca = accessible._accessible.queryAction()
-        initallists = ()
+        initallists = []
         for lists in range(ca.nActions):
-            initallists = (ca.getName(lists))
+            initallists.append(ca.getName(lists))
 
-        procedurelogger.expectedResult('%s\'s inital actions \"%s\" live up to\
+        procedurelogger.expectedResult('%s\'s inital actions "%s" live up to\
 	our expectation' % (accessible,initallists))
         def resultMatches():
             return sorted(initallists) == sorted(actions.ListItem.actions)
@@ -49,13 +49,8 @@ class CheckedListBoxFrame(accessibles.Frame):
 
         procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
         for a in states.ListBox.states:
-            cmd = "state = accessible." + a
-            exec(cmd)
-
-            if state == False:
-                print "ERROR: %s can't be checked" % cmd
-            else:
-                pass
+            state = getattr(accessible, a)
+            assert state, "Expected state: %s" % (a)
 
     #check listitem's all expectant states
     def statesCheck_item(self, accessible):
@@ -63,13 +58,8 @@ class CheckedListBoxFrame(accessibles.Frame):
 
         procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
         for a in states.ListItem.states:
-            cmd = "state = accessible." + a
-            exec(cmd)
-
-            if state == False:
-                print "ERROR: %s can't be checked" % cmd
-            else:
-                pass
+            state = getattr(accessible, a)
+            assert state, "Expected state: %s" % (a)
 
     #give 'click' action
     def click(self,itemname):
@@ -81,7 +71,7 @@ class CheckedListBoxFrame(accessibles.Frame):
     #check the state after click listitem
     def assertItemSelected(self, itemname):
         'Raise exception if the accessible does not match the given result'   
-        procedurelogger.expectedResult('Item \"%s\" is %s' % (itemname, 'selected'))
+        procedurelogger.expectedResult('Item "%s" is %s' % (itemname, 'selected'))
 
         def resultMatches():
             return self.findLabel("Item %s : Checked" % itemname)
@@ -91,7 +81,7 @@ class CheckedListBoxFrame(accessibles.Frame):
     #check the state after click listitem
     def assertChecked(self, itemname):
         'Raise exception if the accessible does not match the given result'   
-        procedurelogger.expectedResult('Item \"%s\" is %s' % (itemname, 'checked'))
+        procedurelogger.expectedResult('Item "%s" is %s' % (itemname, 'checked'))
         accessible = self.findListItem(itemname)
 
         def resultMatches():
@@ -101,7 +91,7 @@ class CheckedListBoxFrame(accessibles.Frame):
 
     def assertUnchecked(self, itemname):
         'Raise exception if the accessible does not match the given result'   
-        procedurelogger.expectedResult('Item \"%s\" is %s.' % (itemname, "unchecked"))
+        procedurelogger.expectedResult('Item "%s" is %s.' % (itemname, "unchecked"))
         accessible = self.findListItem(itemname)
 
         def resultMatches():
