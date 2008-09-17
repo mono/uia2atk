@@ -1,3 +1,11 @@
+2008-09-17  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/button/buttonframe.py: removed retryUntilTrue since it
+	isn't needed in this case.  Fix logic, by calling the difference
+	method from the expected result object instead of the actual result
+	object.  This is because s.difference(t) results in new set with
+	elements in s but not in t.
+
 2008-09-17  Calen Chen <cachen@novell.com>
 
 	*  testers/button/buttonframe.py: modify "return len(diff)" to "return"

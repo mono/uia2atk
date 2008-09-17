@@ -54,7 +54,9 @@ class ButtonFrame(accessibles.Frame):
 
     def assertInsensitiveButtonStates(self, accessible):
         # create a list of all states for button except "sensitive"
-        expected_states = [s for s in states.Button.states if s != 'sensitive']
+        invalid_states = ["sensitive", "enabled"] 
+        expected_states = \
+                    [s for s in states.Button.states if s not in invalid_states]
 
         procedurelogger.expectedResult('States:  %s' % expected_states)
 
@@ -64,14 +66,14 @@ class ButtonFrame(accessibles.Frame):
         # strings
         actual_states = [pyatspi.stateToString(s) for s in actual_states]
 
+        print "Actual states: %s" % actual_states
+
         # check to make sure our expected states match our actual states
-        diff = set(actual_states).difference(expected_states)
+        diff = set(expected_states).difference(set(actual_states))
+        print "diff: %s" % diff
 
-        def resultMaches():
-            return len(diff) == 0, "Did not expect state(s): %s" % diff
+        assert len(diff) == 0, "Did not expect state(s): %s" % list(diff)
         
-        assert retryUntilTrue(resultMaches)
-
     def assertSensitiveButtonStates(self, accessible):
         # create a list of all states for button except "sensitive"
         expected_states = [s for s in states.Button.states]
@@ -85,12 +87,10 @@ class ButtonFrame(accessibles.Frame):
         actual_states = [pyatspi.stateToString(s) for s in actual_states]
 
         # check to make sure our expected states match our actual states
-        diff = set(actual_states).difference(expected_states)
+        diff = set(expected_states).difference(set(actual_states))
+        print "diff: %s" % diff
 
-        def resultMaches():
-            return len(diff) == 0, "Did not expect state(s): %s" % diff
-
-        assert retryUntilTrue(resultMaches)
+        assert len(diff) == 0, "Did not expect state(s): %s" % list(diff)
 
     #give 'click' action
     def click(self,button):
