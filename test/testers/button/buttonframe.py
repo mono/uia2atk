@@ -66,10 +66,20 @@ class ButtonFrame(accessibles.Frame):
         # strings
         actual_states = [pyatspi.stateToString(s) for s in actual_states]
 
-        # check to make sure our expected states match our actual states
-        diff = set(expected_states).difference(set(actual_states))
+        # assert there are no elements in expected_states that are not
+        # in actual_states
+        missing_states = set(expected_states).difference(set(actual_states))
 
-        assert len(diff) == 0, "Did not expect state(s): %s" % list(diff)
+        # assert there are no elements in actual_states that are not
+        # in expected_states
+        extra_states = set(actual_states).difference(set(expected_states))
+
+        is_same = len(missing_states) == 0 and len(extra_states) == 0
+        assert is_same, "\n  %s: %s\n  %s: %s" %\
+                                             ("Missing actual states: ",
+                                               missing_states,
+                                              "Extraneous actual states: ",
+                                               extra_states) 
         
     def assertSensitiveButtonStates(self, accessible):
         # create a list of all states for button except "sensitive"
@@ -83,10 +93,17 @@ class ButtonFrame(accessibles.Frame):
         # strings
         actual_states = [pyatspi.stateToString(s) for s in actual_states]
 
-        # check to make sure our expected states match our actual states
-        diff = set(expected_states).difference(set(actual_states))
+        # assert there are no elements in expected_states that are not
+        # in actual_states and vice versa
+        missing_states = set(expected_states).difference(set(actual_states))
+        extra_states = set(actual_states).difference(set(expected_states))
 
-        assert len(diff) == 0, "Did not expect state(s): %s" % list(diff)
+        is_same = len(missing_states) == 0 and len(extra_states) == 0
+        assert is_same, "\n  %s: %s\n  %s: %s" %\
+                                             ("Missing actual states: ",
+                                               missing_states,
+                                              "Extraneous actual states: ",
+                                               extra_states) 
 
     #give 'click' action
     def click(self,button):
