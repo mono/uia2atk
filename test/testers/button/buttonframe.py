@@ -34,18 +34,23 @@ class ButtonFrame(accessibles.Frame):
     def actionsCheck(self, accessible):
         procedurelogger.action('Check %s\'s actions' % accessible)
 
+        # get list of expected actions 
         expected_actions = actions.Button.actions
-        ca = accessible._accessible.queryAction()
-        actual_actions = []
-        for lists in range(ca.nActions):
-            actual_actions.append(ca.getName(lists))
+
+        # get list of actual actions of the accessible
+        qa = accessible._accessible.queryAction()
+        actual_actions = [qa.getName(i) for i in range(qa.nActions)]
 
         procedurelogger.expectedResult('Actions: %s' % actual_actions)
 
+        # get a list of actual states that are missing or extraneous
         missing_actions = set(expected_actions).difference(set(actual_actions))
         extra_actions = set(actual_actions).difference(set(expected_actions))
 
-        assert len(missing_actions) == 0 and len(extra_actions) == 0, "\n  %s: %s\n  %s: %s" %\
+        # if missing_actions and extra_actions are empty, the test case passes
+        # otherwise, throw an exception
+        is_same = len(missing_actions) == 0 and len(extra_actions) == 0
+        assert is_same, "\n  %s: %s\n  %s: %s" %\
                                              ("Missing actual actions: ",
                                                missing_actions,
                                               "Extraneous actual actions: ",
