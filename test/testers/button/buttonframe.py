@@ -32,17 +32,24 @@ class ButtonFrame(accessibles.Frame):
 
     #diff Button's inital actions list with expectant list in actions.py
     def actionsCheck(self, accessible):
-        procedurelogger.action('diff %s\'s actions list' % accessible)
-        ca = accessible._accessible.queryAction()
-        initallist = []
-        for lists in range(ca.nActions):
-            initallist.append(ca.getName(lists))
+        procedurelogger.action('Check %s\'s actions' % accessible)
 
-        procedurelogger.expectedResult('%s\'s inital actions \"%s\" live up to our expectation' % (accessible,initallist))
-        def resultMatches():
-            return sorted(initallist) == sorted(actions.Button.actions)
-        assert retryUntilTrue(resultMatches), "%s != %s" % \
-                       (sorted(initallist), sorted(actions.Button.actions))
+        expected_actions = actions.Button.actions
+        ca = accessible._accessible.queryAction()
+        actual_actions = []
+        for lists in range(ca.nActions):
+            actual_actions.append(ca.getName(lists))
+
+        procedurelogger.expectedResult('Actions: %s' % actual_actions)
+
+        missing_actions = set(expected_actions).difference(set(actual_actions))
+        extra_actions = set(actual_actions).difference(set(expected_actions))
+
+        assert len(missing_actions) == 0 and len(extra_actions) == 0, "\n  %s: %s\n  %s: %s" %\
+                                             ("Missing actual actions: ",
+                                               missing_actions,
+                                              "Extraneous actual actions: ",
+                                               extra_actions) 
 
     #check Button's all expectant states
     def statesCheck(self, accessible):
@@ -74,8 +81,7 @@ class ButtonFrame(accessibles.Frame):
         # in expected_states
         extra_states = set(actual_states).difference(set(expected_states))
 
-        is_same = len(missing_states) == 0 and len(extra_states) == 0
-        assert is_same, "\n  %s: %s\n  %s: %s" %\
+        assert len(missing_states) == 0 and len(extra_states) == 0, "\n  %s: %s\n  %s: %s" %\
                                              ("Missing actual states: ",
                                                missing_states,
                                               "Extraneous actual states: ",
@@ -98,8 +104,7 @@ class ButtonFrame(accessibles.Frame):
         missing_states = set(expected_states).difference(set(actual_states))
         extra_states = set(actual_states).difference(set(expected_states))
 
-        is_same = len(missing_states) == 0 and len(extra_states) == 0
-        assert is_same, "\n  %s: %s\n  %s: %s" %\
+        assert len(missing_states) == 0 and len(extra_states) == 0, "\n  %s: %s\n  %s: %s" %\
                                              ("Missing actual states: ",
                                                missing_states,
                                               "Extraneous actual states: ",

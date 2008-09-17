@@ -1,3 +1,8 @@
+2008-09-17  Calen Chen <cachen@novell.com>
+
+	*  testers/button/buttonframe.py: change actionsCheck with 'sets' way
+	put is_same into assert to shorten the code
+
 2008-09-17  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/button/buttonframe.py: Fix logic, I was only checking for
