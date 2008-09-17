@@ -348,7 +348,7 @@ namespace UiaAtkBridgeTest
 		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
 		//the widget, so we kill all with the method marked as [TestFixtureTearDown]
-		//[Test]
+		[Test]
 		public void ComboBox ()
 		{
 			BasicWidgetType type = BasicWidgetType.ComboBox;
@@ -388,7 +388,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, menuItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
 		}
 		
-		[Test]
+		//[Test]
 		public void Window ()
 		{
 			BasicWidgetType type = BasicWidgetType.Window;
@@ -617,8 +617,8 @@ namespace UiaAtkBridgeTest
 						Assert.AreEqual (accessible.Name, refSelObj.Name, "AtkObj NameRefSel#" + i);
 					Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
 					Assert.IsTrue (implementor.IsChildSelected (i), "childSelected(" + i + ")");
-					Assert.IsTrue (refSelObj.RefStateSet().ContainsState (Atk.StateType.Selectable), "Selected child should have State.Selectable");
-					Assert.IsTrue (refSelObj.RefStateSet().ContainsState (Atk.StateType.Selected), "Selected child should have State.Selected");
+					Assert.IsTrue (refSelObj.RefStateSet ().ContainsState (Atk.StateType.Selectable), "Selected child should have State.Selectable");
+					Assert.IsTrue (refSelObj.RefStateSet ().ContainsState (Atk.StateType.Selected), "Selected child(" + i + ") should have State.Selected");
 				} else {
 					//first child in a menu -> tearoff menuitem (can't be selected)
 					if (i == 0) {
@@ -1345,6 +1345,6 @@ namespace UiaAtkBridgeTest
 		}
 
 		public delegate void VoidDelegate ();
-		public virtual void RunInGuiThread (VoidDelegate d) { d(); }
+		public virtual void RunInGuiThread (VoidDelegate d) { d (); }
 	}
 }

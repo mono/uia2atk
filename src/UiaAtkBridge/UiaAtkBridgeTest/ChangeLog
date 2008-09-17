@@ -1,3 +1,13 @@
+2008-09-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* AtkTester.cs: Disable the Window test instead of the ComboBox, which
+	  is the one failing in GailTest with:
+	
+	  nunit-console: Fatal IO error 11 (Resource temporarily unavailable)
+	  on X server :0.0.
+	
+	  Also be more verbose in an assert and coding guidelines.
+
 2008-09-16  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs: Relax MaximumValue requirements for Scrollbars
