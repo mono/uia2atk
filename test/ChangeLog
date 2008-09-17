@@ -1,3 +1,10 @@
+2008-09-17  Calen Chen <cachen@novell.com>
+
+	*  testers/notifyicon,
+	*  testers/notifyicon/__init__.py,
+	*  testers/notifyicon/notifyiconframe.py,
+	*  testers/notifyicon_basic_ops.py: add strongwind test for NotifyIcon
+
 2008-09-16  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/goalie.gif, 
@@ -20,6 +27,18 @@
 	* testers/button_basic_ops.py: Call checkStates() on all three buttons,
 	no longer call assertDisableButton (as it is handled by checkStates
 	now)
+
+2008-09-16  Calen Chen <cachen@novell.com>
+
+	*  testers/checkbox/checkboxframe.py,
+	*  testers/radiobutton/radiobuttonframe.py,
+	*  testers/label/labelframe.py,
+	*  testers/groupbox/groupboxframe.py
+	*  testers/checkedlistbox/checkedlistboxframe.py,
+	*  testers/tooltip/tooltipframe.py,
+	*  testers/progressbar/progressbarframe.py,
+	*  testers/numericupdown/numericupdownframe.py: Use getaddr() instead 
+	of exec()
 
 2008-09-16  Calen Chen <cachen@novell.com>
 
