@@ -700,7 +700,10 @@ namespace UiaAtkBridgeTest
 		{
 			Assert.IsNotNull (atkValue, "InterfaceValue value not null");
 			Assert.AreEqual (  0, GetMinimumValue(atkValue), "InterfaceValue MinimumValue");
-			Assert.AreEqual (100, GetMaximumValue(atkValue), "InterfaceValue MaximumValue");
+			if (type == BasicWidgetType.HScrollBar || type == BasicWidgetType.VScrollBar)
+				Assert.IsTrue (GetMaximumValue(atkValue) > 0, "InterfaceValue MaximumValue > 0");
+			else
+				Assert.AreEqual (100, GetMaximumValue(atkValue), "InterfaceValue MaximumValue");
 			if (type == BasicWidgetType.Spinner)
 				Assert.AreEqual (50, GetCurrentValue(atkValue), "InterfaceValue MaximumValue");
 		}

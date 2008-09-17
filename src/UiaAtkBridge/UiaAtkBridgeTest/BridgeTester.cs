@@ -49,10 +49,14 @@ namespace UiaAtkBridgeTest
 			
 			switch (type) {
 			case BasicWidgetType.ListBox:
+			case BasicWidgetType.VScrollBar:
+			case BasicWidgetType.HScrollBar:
 				MWF.ListBox listBox = new MWF.ListBox ();
 				if (real)
 					listBox = lb1;
 				listBox.Items.Clear ();
+				listBox.ScrollAlwaysVisible = (type == BasicWidgetType.VScrollBar);
+				listBox.HorizontalScrollbar = (type == BasicWidgetType.HScrollBar);
 				foreach (string item in names)
 					listBox.Items.Add (item);
 			
@@ -286,7 +290,7 @@ namespace UiaAtkBridgeTest
 
 			case BasicWidgetType.HScrollBar:
 				names = new string[] { "First item", "Second Item", "Last Item", "A really, really long item that's here to try to ensure that we have a scrollbar, assuming that it's even possible to have a scrollbar just by having a relaly, really long item and we don't also have to perform some other function which I'm not aware of, like display the form on the screen" };
-				GetAtkObjectThatImplementsInterface <Atk.Component> (BasicWidgetType.ListBox, names, out accessible, real);
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, real);
 				for (int i = accessible.NAccessibleChildren - 1; i >= 0; i--)
 				{
 					Atk.Object child = accessible.RefAccessibleChild (i);
@@ -306,7 +310,7 @@ namespace UiaAtkBridgeTest
 				names = new string[100];
 				for (int i = 0; i < 100; i++)
 					names[i] = i.ToString();
-				GetAtkObjectThatImplementsInterface <Atk.Component> (BasicWidgetType.ListBox, names, out accessible, real);
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, real);
 				for (int i = accessible.NAccessibleChildren - 1; i >= 0; i--)
 				{
 					Atk.Object child = accessible.RefAccessibleChild (i);
@@ -382,7 +386,7 @@ namespace UiaAtkBridgeTest
 		
 		protected override int ValidNumberOfActionsForAButton { get { return 1; } }
 		protected override int ValidNChildrenForASimpleStatusBar { get { return 0; } }
-		protected override int ValidNChildrenForAScrollBar { get { return 3; } }
+		protected override int ValidNChildrenForAScrollBar { get { return 0; } }
 		
 		[Test]
 		public void UIACheckBox ()

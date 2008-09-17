@@ -1,3 +1,7 @@
+2008-09-16  Mike Gorse  <mgorse@novell.com>
+
+	* AutomationBridge.cs: Disable ScrollBar children.
+
 2008-09-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Button.cs: Woops, shift this in case the property change raises a

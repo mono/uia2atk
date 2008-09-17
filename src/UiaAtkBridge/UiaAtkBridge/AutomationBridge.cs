@@ -331,6 +331,9 @@ namespace UiaAtkBridge
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
+			if (parentObject.Role == Atk.Role.ScrollBar)
+				return;
+
 			Button atkButton = new Button (provider);
 			providerAdapterMapping [provider] = atkButton;
 			

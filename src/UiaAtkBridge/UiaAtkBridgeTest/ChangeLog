@@ -1,3 +1,10 @@
+2008-09-16  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Relax MaximumValue requirements for Scrollbars
+	* BridgeTester.cs: Set HorizontalScrollbar and ScrollAlwaysVisible on
+	  the listbox when testing scrollbars
+	  Assume 0 children for a ScrollBar
+
 2008-09-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* bridgetest.sh: Remove hacks only needed as workarounds to launch with
