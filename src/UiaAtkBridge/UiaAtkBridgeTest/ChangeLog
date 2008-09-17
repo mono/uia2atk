@@ -1,5 +1,9 @@
 2008-09-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Deleted old code.
+
+2008-09-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: Disable the Window test instead of the ComboBox, which
 	  is the one failing in GailTest with:
 	

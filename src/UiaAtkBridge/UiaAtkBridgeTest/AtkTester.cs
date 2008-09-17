@@ -43,15 +43,6 @@ namespace UiaAtkBridgeTest
 		
 		public abstract object GetAtkObjectThatImplementsInterface <I> (
 			BasicWidgetType type, string[] name, out Atk.Object accessible, bool real);
-	
-		private static AtkTester instance;
-		public static AtkTester Instance {
-			get { return instance; }
-		}
-		
-		public AtkTester () {
-			instance = this;
-		}
 		
 		[Test]
 		public void Label ()
