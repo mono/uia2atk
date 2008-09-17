@@ -1,3 +1,9 @@
+2008-09-17  Ray Wang <rawang@novell.com>
+
+    * samples/textbox.py: change its layout and add a normal textbox
+	* samples/combobox_1.py: just a Simple DropDown style of ComboBox
+	* samples/combobox_2.py: just a DropDownList DropDown style of ComboBox
+
 2008-09-17  Calen Chen <cachen@novell.com>
 
 	*  samples/notifyicon.py: change to rise notifyicon by click button
