@@ -241,7 +241,7 @@ namespace UiaAtkBridge
 				}
 			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
 				string newName = (string)e.NewValue;
-				this.textExpert = new TextImplementorHelper (Name);
+				this.textExpert = new TextImplementorHelper (newName);
 				Name = newName;
 			}
 		}
