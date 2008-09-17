@@ -1,5 +1,10 @@
 2008-09-17  Calen Chen <cachen@novell.com>
 
+	*  testers/button/buttonframe.py: modify "return len(diff)" to "return"
+	in assertSensitiveButtonStates
+
+2008-09-17  Calen Chen <cachen@novell.com>
+
 	*  testers/notifyicon,
 	*  testers/notifyicon/__init__.py,
 	*  testers/notifyicon/notifyiconframe.py,

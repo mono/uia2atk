@@ -88,7 +88,7 @@ class ButtonFrame(accessibles.Frame):
         diff = set(actual_states).difference(expected_states)
 
         def resultMaches():
-            assert len(diff) == 0, "Did not expect state(s): %s" % diff
+            return len(diff) == 0, "Did not expect state(s): %s" % diff
 
         assert retryUntilTrue(resultMaches)
 
