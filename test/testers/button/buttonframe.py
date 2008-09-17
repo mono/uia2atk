@@ -86,7 +86,8 @@ class ButtonFrame(accessibles.Frame):
         # in expected_states
         extra_states = set(actual_states).difference(set(expected_states))
 
-        assert len(missing_states) == 0 and len(extra_states) == 0, "\n  %s: %s\n  %s: %s" %\
+        is_same = len(missing_states) == 0 and len(extra_states) == 0
+        assert is_same, "\n  %s: %s\n  %s: %s" %\
                                              ("Missing actual states: ",
                                                missing_states,
                                               "Extraneous actual states: ",
@@ -109,7 +110,8 @@ class ButtonFrame(accessibles.Frame):
         missing_states = set(expected_states).difference(set(actual_states))
         extra_states = set(actual_states).difference(set(expected_states))
 
-        assert len(missing_states) == 0 and len(extra_states) == 0, "\n  %s: %s\n  %s: %s" %\
+        is_same = len(missing_states) == 0 and len(extra_states) == 0
+        assert is_same, "\n  %s: %s\n  %s: %s" %\
                                              ("Missing actual states: ",
                                                missing_states,
                                               "Extraneous actual states: ",
