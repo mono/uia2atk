@@ -56,7 +56,7 @@ class ButtonFrame(accessibles.Frame):
         # create a list of all states for button except "sensitive"
         invalid_states = ["sensitive", "enabled"] 
         expected_states = \
-                    [s for s in states.Button.states if s not in invalid_states]
+                  [s for s in states.Button.states if s not in invalid_states]
 
         procedurelogger.expectedResult('States:  %s' % expected_states)
 
@@ -66,11 +66,8 @@ class ButtonFrame(accessibles.Frame):
         # strings
         actual_states = [pyatspi.stateToString(s) for s in actual_states]
 
-        print "Actual states: %s" % actual_states
-
         # check to make sure our expected states match our actual states
         diff = set(expected_states).difference(set(actual_states))
-        print "diff: %s" % diff
 
         assert len(diff) == 0, "Did not expect state(s): %s" % list(diff)
         
@@ -88,7 +85,6 @@ class ButtonFrame(accessibles.Frame):
 
         # check to make sure our expected states match our actual states
         diff = set(expected_states).difference(set(actual_states))
-        print "diff: %s" % diff
 
         assert len(diff) == 0, "Did not expect state(s): %s" % list(diff)
 

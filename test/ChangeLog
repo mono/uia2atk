@@ -1,5 +1,9 @@
 2008-09-17  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* testers/button/buttonframe.py: removed debug print statements
+
+2008-09-17  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* testers/button/buttonframe.py: removed retryUntilTrue since it
 	isn't needed in this case.  Fix logic, by calling the difference
 	method from the expected result object instead of the actual result
