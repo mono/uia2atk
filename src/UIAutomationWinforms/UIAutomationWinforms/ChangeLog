@@ -1,3 +1,228 @@
+2008-09-17  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated due to added
+	  folders.
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs: Updated to use
+	  Behaviors.Button namespace.
+	* Mono.UIAutomation.Winforms/LabelProvider.cs: Updated to use
+	  Behaviors.Label namespace.
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Updated to use
+	  Behaviors.ScrollBar namespace.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Updated to use
+	  Behaviors.ListBox namespace.
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs: Updated to use
+	  Behaviors.CheckBox namespace.
+	* Mono.UIAutomation.Winforms/ProgressBarProvider.cs,
+	  Mono.UIAutomation.Winforms/NumericUpDownProvider.cs: Updated to use
+	  Behaviors.ProgressBar namespace.
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Updated to use
+	  Behaviors.ListItem namespace.
+	* Mono.UIAutomation.Winforms/RadioButtonProvider.cs: Updated to use
+	  Behaviors.RadioButton namespace.
+	* Mono.UIAutomation.Winforms/LinkLabelProvider.cs: Updated to use
+	  Behaviors.LinkLabel namespace.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Updated to use
+	  Behaviors.ComboBox namespace.
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Updated to use
+	  Behaviors.StatusBar namespace.
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Using
+	  Behaviors.RadioButton namespace.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Updated to use
+	  Behaviors.List namespace.
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Updated to use
+	  Behaviors.TextBox namespace.
+	* Mono.UIAutomation.Winforms.Behaviors/ListSelectionProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ListItemSelectionProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ListItemScrollProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ListItemToggleProviderBehavior.cs:
+	  Moved to ListItem/
+	* Mono.UIAutomation.Winforms.Behaviors/ListBox: ListBox behaviors
+	  folder added.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBox/ScrollProviderBehavior.cs:
+	  Added: IScrollProvider in ListBox.
+	* Mono.UIAutomation.Winforms.Behaviors/ProgressBarValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ProgressBarRangeValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/ProgressBarRangeValuePatternValueEvent.cs:
+	  Moved to ProgressBar/
+	* Mono.UIAutomation.Winforms.Behaviors/ButtonInvokeProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/InvokePatternInvokedEvent.cs:
+	  Moved to Button/
+	* Mono.UIAutomation.Winforms.Behaviors/CheckBox: CheckBox behaviors
+	  folder added.
+	* Mono.UIAutomation.Winforms.Behaviors/CheckBox/ToggleProviderBehavior.cs:
+	  Added: IToggleProvider in CheckBox.
+	* Mono.UIAutomation.Winforms.Behaviors/RadioButton: RadioButton
+	  behaviors folder added.
+	* Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionItemProviderBehavior.cs:
+	  Added: ISelectionItemProvider in RadioButton.
+	* Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionProviderBehavior.cs:
+	  Added: ISelectionProvider in RadioButton.
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem: ListItem behaviors
+	  folder added.
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs:
+	  Added: IToggleProvider in ListItem.
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionProviderBehavior.cs:
+	  Added: ISelectionProvider in ListItem.
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/ScrollProviderBehavior.cs:
+	  Added: IScrollProvider in ListItem.
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox: TextBox behaviors
+	  folder added.
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs:
+	  Added: ITextProvider in TextBox.
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs:
+	  Added: IValueProvider in TextBox.
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/ScrollProviderBehavior.cs:
+	  Added: IScrollProvider in TextBox.
+	* Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionItemProviderBehavior.cs:
+	  Moved to RadioButton/
+	* Mono.UIAutomation.Winforms.Behaviors/NumericUpDown: NumericUpDown
+	  behaviors folder added.
+	* Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/RangeValueProviderBehavior.cs:
+	  Added: IRangeValueProvider in NumericUpDown.
+	* Mono.UIAutomation.Winforms.Behaviors/TextBoxTextProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/TextBoxValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/TextBoxScrollProviderBehavior.cs:
+	  Moved to TextBox/
+	* Mono.UIAutomation.Winforms.Behaviors/ListBoxScrollProviderBehavior.cs:
+	  Moved to ListBox/
+	* Mono.UIAutomation.Winforms.Behaviors/LinkLabelInvokeProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/LinkLabelInvokePatternInvokedEvent.cs:
+	  Moved to LinkLabel/
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBox: ComboBox behaviors
+	  folder added.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/ExpandCollapseProviderBehavior.cs:
+	  Added: IExpandCollapseProvider in ComboBox.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/ButtonInvokeBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/LinkLabel/InvokeProviderBehavior.cs:
+	  Added: IInvokeProvider in internal Button in ComboBox.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/ValueProviderBehavior.cs:
+	  Added: IValueProvider in ComboBox.
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBar: StatusBar behaviors
+	  folder added.
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/GridProviderBehavior.cs:
+	  Added: IGridProvider in StatusBar.
+	* Mono.UIAutomation.Winforms.Behaviors/NumericUpDownRangeValueProviderBehavior.cs:
+	  Moved to NumericUpDown/
+	* Mono.UIAutomation.Winforms.Behaviors/Button: Button behaviors folder
+	  added.
+	* Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs:
+	  Added: IInvokeProvider in Button.
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBar: ScrollBar behaviors
+	  folder added.
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBar/ButtonInvokeProviderBehavior.cs:
+	  Added: IInvokeProvider in internal Button in ScrollBar
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBar/RangeValueProviderBehavior.cs:
+	  Added: IRangeValueProvider in ScrollBar.
+	* Mono.UIAutomation.Winforms.Behaviors/CheckBoxToggleProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/TogglePatternToggleStatePropertyEvent.cs:
+	  Moved to CheckBox/
+	* Mono.UIAutomation.Winforms.Behaviors/ProgressBar: ProgressBar
+	  behaviors folder added.
+	* Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs:
+	  Added: IRangeValueProvider in ProgressBar.
+	* Mono.UIAutomation.Winforms.Behaviors/ProgressBar/ValueProviderBehavior.cs:
+	  Added: IValueProvider in ProgressBar.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBoxExpandCollapseProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ComboBoxValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ComboBoxButtonInvokeBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/ComboBoxButtonInvokePatternInvokeEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ComboBoxExpandCollapseStateEvent.cs:
+	  Moved to ComboBox/
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternIsReadOnlyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternMinimumEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternMaximumEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternLargeChangeEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs:
+	  Moved to ScrollBar/
+	* Mono.UIAutomation.Winforms.Behaviors/LinkLabel: LinkLabel behaviors
+	  folder added.
+	* Mono.UIAutomation.Winforms.Behaviors/List: List behaviors folder
+	  added.
+	* Mono.UIAutomation.Winforms.Behaviors/List/SelectionProviderBehavior.cs:
+	  Added: ISelectionProvider in internal List-based providers.
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBarGridProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/GridPatternRowCountPropertyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/GridPatternColumnCountPropertyEvent.cs:
+	  Moved to StatusBar/
+	* Mono.UIAutomation.Winforms.Events/ComboBoxItemElementSelectedEvent.cs:
+	  Moved to ComboBoxItem/
+	* Mono.UIAutomation.Winforms.Events/ValuePatternValuePropertyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternValueEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternSmallChangeEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ValuePatternValueIsReadOnlyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/TextPatternTextChangedEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/TextBoxValuePatternValueIsReadOnlyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/TextBoxHasKeyBoardFocusPropertyEvent.cs:
+	  Deleted.
+	* Mono.UIAutomation.Winforms.Events/CheckBox: CheckBox events folder
+	  added.
+	* Mono.UIAutomation.Winforms.Events/CheckBox/TogglePatternToggleStatePropertyEvent.cs:
+	  Added: IToggleProvider.ToggleStateProperty in CheckBox.
+	* Mono.UIAutomation.Winforms.Events/ListItem,
+	  Mono.UIAutomation.Winforms.Events/LinkLabel: ListItem events folder
+	  added.
+	* Mono.UIAutomation.Winforms.Events/ListItem/SelectionItemPatternElementAddedToSelectionEvent.cs:
+	  Added: ISelectionItemProvider.ElementAddedToSelection in ListItem.
+	* Mono.UIAutomation.Winforms.Events/TextBox: TextBox events folder
+	  added.
+	* Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueIsReadOnlyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/TextBox/HasKeyBoardFocusPropertyEvent.cs:
+	  File added.
+	* Mono.UIAutomation.Winforms.Events/NumericUpDown: NumericUpDown events
+	  folder added.
+	* Mono.UIAutomation.Winforms.Events/StatusBar: StatusBar events folder
+	  added.
+	* Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternRowCountPropertyEvent.cs:
+	  Added: IGridProvider.RowCount in StatusBar.
+	* Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountPropertyEvent.cs:
+	  Added: IGridProvider.ColumnCount in StatusBar.
+	* Mono.UIAutomation.Winforms.Events/ComboBox: ComboBox events folder
+	  added.
+	* Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValuePropertyEvent.cs:
+	  Added: IValueProvider.Value in ComboBox.
+	* Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValueIsReadOnlyEvent.cs:
+	  Added: IValueProvider.IsReadOnly in ComboBox.
+	* Mono.UIAutomation.Winforms.Events/ComboBox/ExpandCollapsePatternStateEvent.cs:
+	  Added: IExpandCollapseProvider.ExpandCollapseState in ComboBox.
+	* Mono.UIAutomation.Winforms.Events/ComboBox/ButtonInvokePatternInvokedEvent.cs:
+	  Added: IInvokeProvider.InvokedEvent in internal Button in ComboBox.
+	* Mono.UIAutomation.Winforms.Events/Button: Button events folder added.
+	* Mono.UIAutomation.Winforms.Events/Button/InvokePatternInvokedEvent.cs:
+	  Added: IInvokeProvider.InvokedEvent in Button.
+	* Mono.UIAutomation.Winforms.Events/Label: Label events folder added.
+	* Mono.UIAutomation.Winforms.Events/Label/TextPatternTextChangedEvent.cs:
+	  Added: ITextProvider.TextChanged in Label.
+	* Mono.UIAutomation.Winforms.Events/ScrollBar: ScrollBar events folder
+	  added.
+	* Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternIsReadOnlyEvent.cs:
+	  Added: IRangeValueProvider.IsReadOnly in ScrollBar.
+	* Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternMinimumEvent.cs:
+	  Added: IRangeValueProvider.Minimum in ScrollBar.
+	* Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternValueEvent.cs:
+	  Added: IRangeValueProvider.Value in ScrollBar.
+	* Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternMaximumEvent.cs:
+	  Added: IRangeValueProvider.Maximum in ScrollBar.
+	* Mono.UIAutomation.Winforms.Events/ScrollBar/ButtonInvokePatternInvokedEvent.cs:
+	  Added: IInvokeProvider.InvokedEvent in internal Button in
+	  ScrollBar.
+	* Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternSmallChangeEvent.cs:
+	  Added: IRangeValueProvider.SmallChange in ScrollBar.
+	* Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternLargeChangeEvent.cs:
+	  Added: IRangeValueProvider.LargeChange in ScrollBar.
+	* Mono.UIAutomation.Winforms.Events/ComboBoxItem: ComboBoxItem events
+	  folder added.
+	* Mono.UIAutomation.Winforms.Events/ComboBoxItem/SelectionItemPatternElementSelectedEvent.cs:
+	  Added: ISelectionItemProvider.ElementSelected in ComboBoxItem.
+	* Mono.UIAutomation.Winforms.Events/ProgressBar: ProgressBar events
+	  folder added.
+	* Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs:
+	  Added: IRangeValueProvider.Value in ProgressBar.
+	* Mono.UIAutomation.Winforms.Events/LinkLabel/InvokePatternInvokedEvent.cs:
+	  Added: IInvokeProvider.InvokedEvent in LinkLabel.
+
 2008-09-16  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/ListBoxProvider.cs,

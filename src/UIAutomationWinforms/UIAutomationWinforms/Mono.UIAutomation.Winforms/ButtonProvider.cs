@@ -27,8 +27,8 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Behaviors;
+//using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Behaviors.Button;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -41,7 +41,7 @@ namespace Mono.UIAutomation.Winforms
 		public ButtonProvider (Button button) : base (button)
 		{
 			SetBehavior (InvokePatternIdentifiers.Pattern, 
-			             new ButtonInvokeProviderBehavior (this));
+			             new InvokeProviderBehavior (this));
 		}
 		
 #endregion

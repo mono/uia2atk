@@ -34,6 +34,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Navigation;
+using RB = Mono.UIAutomation.Winforms.Behaviors.RadioButton;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -265,8 +266,8 @@ namespace Mono.UIAutomation.Winforms
 			if (GetBehavior (SelectionPatternIdentifiers.Pattern) == null &&
 			    childProvider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id) != null &&
 			    (int) childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
-				RadioButtonSelectionProviderBehavior selectionProvider =
-					new RadioButtonSelectionProviderBehavior ();
+				RB.SelectionProviderBehavior selectionProvider =
+					new RB.SelectionProviderBehavior ();
 				SetBehavior (SelectionPatternIdentifiers.Pattern,
 				             selectionProvider);
 			}

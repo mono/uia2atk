@@ -83,6 +83,10 @@ namespace Mono.UIAutomation.Winforms
 		internal static void RaiseStructureChangedEvent (StructureChangeType type,
 		                                                 IRawElementProviderFragment provider)
 		{	
+			
+			Console.WriteLine ("Helper.RaiseStructureChangedEvent: {0} - '{1}'",
+			                   type, provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
+			
 			if (AutomationInteropProvider.ClientsAreListening) {
 				int []runtimeId = null;
 				if (type == StructureChangeType.ChildRemoved) {

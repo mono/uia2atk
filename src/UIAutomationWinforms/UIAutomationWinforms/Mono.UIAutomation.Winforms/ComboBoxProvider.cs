@@ -30,6 +30,7 @@ using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using System.Windows;
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Behaviors.ComboBox;
 using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
@@ -214,21 +215,21 @@ namespace Mono.UIAutomation.Winforms
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern, 
 				             null);
 				SetBehavior (ValuePatternIdentifiers.Pattern,
-				             new ComboBoxValueProviderBehavior (this));
+				             new ValueProviderBehavior (this));
 				
 				TerminateButtonProvider (generateEvent);
 				InitializeEditProvider (generateEvent);
 			} else if (comboboxControl.DropDownStyle == ComboBoxStyle.DropDown) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
-				             new ComboBoxExpandCollapseProviderBehavior (this));
+				             new ExpandCollapseProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern,
-				             new ComboBoxValueProviderBehavior (this));
+				             new ValueProviderBehavior (this));
 				
 				InitializeButtonProvider (generateEvent);
 				InitializeEditProvider (generateEvent);
 			} else if (comboboxControl.DropDownStyle == ComboBoxStyle.DropDownList) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
-				             new ComboBoxExpandCollapseProviderBehavior (this));
+				             new ExpandCollapseProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern, 
 				             null);
 				
@@ -435,7 +436,7 @@ namespace Mono.UIAutomation.Winforms
 				: base (control)
 			{
 				SetBehavior (InvokePatternIdentifiers.Pattern, 
-				             new ComboBoxButtonInvokeBehavior (provider));
+				             new ButtonInvokeBehavior (provider));
 			}
 	
 			public override object GetPropertyValue (int propertyId)

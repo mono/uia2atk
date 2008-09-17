@@ -31,6 +31,8 @@ using System.Windows.Automation.Provider;
 
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Behaviors.NumericUpDown;
+
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -43,7 +45,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			// TODO: Child InvokeProviders for up/down!
 			SetBehavior (RangeValuePatternIdentifiers.Pattern,
-			             new NumericUpDownRangeValueProviderBehavior (this));
+			             new RangeValueProviderBehavior (this));
 		}
 		
 #endregion
@@ -55,8 +57,8 @@ namespace Mono.UIAutomation.Winforms
 			base.InitializeEvents ();
 
 			// TODO: Review...do we need this?
-			SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			          new InvokePatternInvokedEvent (this));
+//			SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
+//			          new InvokePatternInvokedEvent (this));
 		}
 		
 #endregion

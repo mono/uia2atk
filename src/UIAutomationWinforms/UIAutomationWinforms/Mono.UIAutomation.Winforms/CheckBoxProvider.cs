@@ -28,6 +28,7 @@ using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Behaviors.CheckBox;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -50,7 +51,7 @@ namespace Mono.UIAutomation.Winforms
 			base.InitializeEvents ();
 			
 			SetBehavior (TogglePatternIdentifiers.Pattern,
-			             new CheckBoxToggleProviderBehavior (this));
+			             new ToggleProviderBehavior (this));
 		}
 		
 #endregion

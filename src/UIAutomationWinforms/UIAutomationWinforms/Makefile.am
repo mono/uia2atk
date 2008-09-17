@@ -43,30 +43,30 @@ RESGEN=resgen2
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
-	Mono.UIAutomation.Winforms.Behaviors/ButtonInvokeProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/CheckBoxToggleProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ComboBoxButtonInvokeBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ComboBoxExpandCollapseProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ComboBoxValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/CheckBox/ToggleProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ButtonInvokeBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ExpandCollapseProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/IProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/LinkLabelInvokeProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListBoxScrollProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListItemScrollProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListItemSelectionProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListItemToggleProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListSelectionProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/NumericUpDownRangeValueProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ProgressBarRangeValueProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ProgressBarValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/LinkLabel/InvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/List/SelectionProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListBox/ScrollProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListItem/ScrollProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/RangeValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionItemProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/RadioButtonSelectionProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ScrollBarButtonInvokeProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ScrollBarRangeValueProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/StatusBarGridProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/TextBoxScrollProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/TextBoxTextProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/TextBoxValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ScrollBar/ButtonInvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ScrollBar/RangeValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/StatusBar/GridProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TextBox/ScrollProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationBoundingRectanglePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationFocusChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationHasKeyboardFocusPropertyEvent.cs \
@@ -75,30 +75,31 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/BaseAutomationEvent.cs \
 	Mono.UIAutomation.Winforms.Events/BaseAutomationPropertyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ComboBoxButtonInvokePatternInvokeEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ComboBoxExpandCollapseStateEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ComboBoxItemElementSelectedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/GridPatternColumnCountPropertyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/GridPatternRowCountPropertyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/InvokePatternInvokedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/LinkLabelInvokePatternInvokedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ProgressBarRangeValuePatternValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Button/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/CheckBox/TogglePatternToggleStatePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ComboBox/ButtonInvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ComboBox/ExpandCollapsePatternStateEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValueIsReadOnlyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValuePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ComboBoxItem/SelectionItemPatternElementSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Label/TextPatternTextChangedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/LinkLabel/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListItem/SelectionItemPatternElementAddedToSelectionEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \
-	Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternIsReadOnlyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternLargeChangeEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternMaximumEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternMinimumEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternSmallChangeEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ScrollBarRangeValuePatternValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollBar/ButtonInvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternIsReadOnlyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternLargeChangeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternMaximumEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternMinimumEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternSmallChangeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternRowCountPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/TextBoxHasKeyBoardFocusPropertyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/TextBoxValuePatternValueIsReadOnlyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/TextPatternTextChangedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/TogglePatternToggleStatePropertyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ValuePatternValueIsReadOnlyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ValuePatternValuePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TextBox/HasKeyBoardFocusPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Navigation/ChildNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/INavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs \

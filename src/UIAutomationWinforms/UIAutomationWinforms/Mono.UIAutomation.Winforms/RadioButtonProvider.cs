@@ -29,6 +29,7 @@ using System.Windows.Forms;
 using System.Windows.Automation;
 
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Behaviors.RadioButton;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -40,7 +41,7 @@ namespace Mono.UIAutomation.Winforms
 			base (radioButton)
 		{
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern, 
-			             new RadioButtonSelectionItemProviderBehavior (this));
+			             new SelectionItemProviderBehavior (this));
 		}
 		
 #endregion

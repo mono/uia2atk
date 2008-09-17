@@ -30,6 +30,7 @@ using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using System.Windows;
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Behaviors.ListBox;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Navigation;
 
@@ -397,9 +398,9 @@ namespace Mono.UIAutomation.Winforms
 			if (scrollpatternSet == false) {
 				scrollpatternSet = true;
 				SetBehavior (ScrollPatternIdentifiers.Pattern,
-				             new ListBoxScrollProviderBehavior (this, 
-				                                                hscrollbar,
-				                                                vscrollbar));
+				             new ScrollProviderBehavior (this, 
+				                                         hscrollbar,
+				                                         vscrollbar));
 				//TODO: Generate IsScroll Event
 			}
 		}

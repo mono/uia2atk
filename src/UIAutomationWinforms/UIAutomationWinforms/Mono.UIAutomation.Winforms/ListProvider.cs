@@ -32,6 +32,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Behaviors.List;
 using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
@@ -47,7 +48,7 @@ namespace Mono.UIAutomation.Winforms
 			items = new List<ListItemProvider> ();
 			
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
-			             new ListSelectionProviderBehavior (this));
+			             new SelectionProviderBehavior (this));
 		}
 		
 		#endregion

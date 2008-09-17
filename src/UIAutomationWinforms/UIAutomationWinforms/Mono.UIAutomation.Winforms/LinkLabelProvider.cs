@@ -27,6 +27,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Behaviors.LinkLabel;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -39,7 +40,7 @@ namespace Mono.UIAutomation.Winforms
 		public LinkLabelProvider (LinkLabel linkLabel) : base (linkLabel)
 		{
 			SetBehavior (InvokePatternIdentifiers.Pattern, 
-			             new LinkLabelInvokeProviderBehavior (this));
+			             new InvokeProviderBehavior (this));
 		}
 
 		#endregion

@@ -29,6 +29,7 @@ using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Navigation;
+using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -45,13 +46,13 @@ namespace Mono.UIAutomation.Winforms
 			listControl = control;
 			
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
-			             new ListItemSelectionProviderBehavior (this));	
+			             new SelectionProviderBehavior (this));	
 			SetBehavior (ScrollItemPatternIdentifiers.Pattern,
-			             new ListItemScrollProviderBehavior (this));
+			             new ScrollProviderBehavior (this));
 			
 			if (listControl is CheckedListBox)
 				SetBehavior (TogglePatternIdentifiers.Pattern,
-				             new ListItemToggleProviderBehavior (this));				
+				             new ToggleProviderBehavior (this));				
 		}
 
 		#endregion

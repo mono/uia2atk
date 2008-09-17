@@ -28,19 +28,20 @@ using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Behaviors.StatusBar;
 
 namespace Mono.UIAutomation.Winforms
 {
 	internal class StatusBarProvider : FragmentControlProvider
 	{
-#region Constructors
+		#region Constructors
 
-        	public StatusBarProvider (StatusBar statusBar) : base (statusBar)
-        	{
+		public StatusBarProvider (StatusBar statusBar) : base (statusBar)
+		{
 			SetBehavior (GridPatternIdentifiers.Pattern,
-				new StatusBarGridProviderBehavior (this));
-        	}
+			             new GridProviderBehavior (this));
+		}
 
-#endregion
+		#endregion
 	}
 }

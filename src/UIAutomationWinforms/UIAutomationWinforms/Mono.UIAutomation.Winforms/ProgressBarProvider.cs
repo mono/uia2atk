@@ -27,6 +27,7 @@ using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Behaviors.ProgressBar;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -37,9 +38,9 @@ namespace Mono.UIAutomation.Winforms
     	public ProgressBarProvider (ProgressBar progressBar) : base (progressBar)
     	{
 			SetBehavior (ValuePatternIdentifiers.Pattern,
-			             new ProgressBarValueProviderBehavior (this));
+			             new ValueProviderBehavior (this));
 			SetBehavior (RangeValuePatternIdentifiers.Pattern,
-			             new ProgressBarRangeValueProviderBehavior (this));
+			             new RangeValueProviderBehavior (this));
 		}
 
 		#endregion

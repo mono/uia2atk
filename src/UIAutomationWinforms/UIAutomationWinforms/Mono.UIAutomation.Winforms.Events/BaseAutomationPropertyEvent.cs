@@ -64,6 +64,12 @@ namespace Mono.UIAutomation.Winforms.Events
 				object newValue = Provider.GetPropertyValue (Property.Id);
 				
 				if (OldValue != newValue) {
+					
+					try {
+					Console.WriteLine ("OLDER: {0} NEW: {1} PRP: {2}", OldValue, newValue,
+					                   Property.ProgrammaticName);
+					} catch (Exception) {}
+					
 					AutomationPropertyChangedEventArgs args =					
 						new AutomationPropertyChangedEventArgs (Property,
 						                                        OldValue,

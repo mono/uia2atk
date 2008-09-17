@@ -29,6 +29,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Behaviors.ScrollBar;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Navigation;
 
@@ -180,13 +181,13 @@ namespace Mono.UIAutomation.Winforms
 					= (IScrollProvider) container.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id);
 				if (provider == null)
 					SetBehavior (RangeValuePatternIdentifiers.Pattern,
-					             new ScrollBarRangeValueProviderBehavior (this));
+					             new RangeValueProviderBehavior (this));
 				else
 					SetBehavior (RangeValuePatternIdentifiers.Pattern, null);
 			} else
 				//TODO: Is this default behavior OK?
 				SetBehavior (RangeValuePatternIdentifiers.Pattern,
-				             new ScrollBarRangeValueProviderBehavior (this));
+				             new RangeValueProviderBehavior (this));
 		}
 
 		#endregion
@@ -227,7 +228,7 @@ namespace Mono.UIAutomation.Winforms
 				this.scrollbarContainer = scrollbarContainer;
 				
 				SetBehavior (InvokePatternIdentifiers.Pattern, 
-				             new ScrollBarButtonInvokeProviderBehavior (this));
+				             new ButtonInvokeProviderBehavior (this));
 			}
 	
 			public ScrollBarButtonOrientation Orientation {
