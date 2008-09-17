@@ -1,3 +1,7 @@
+2008-09-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* GailTester.cs: Track API changes, and coding guidelines.
+
 2008-08-21  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* GailTester.cs: Just use one overload for ParentMenu.

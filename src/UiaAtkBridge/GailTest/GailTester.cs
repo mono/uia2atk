@@ -31,7 +31,7 @@ namespace UiaAtkBridgeTest
 {
 	
 	[TestFixture]
-	public class GailTester : AtkTester {
+	public class GailTester : AtkTests {
 
 		static GailTestApp.MovingThread guiThread = null;
 		
@@ -210,7 +210,7 @@ namespace UiaAtkBridgeTest
 
 		public override void RunInGuiThread (VoidDelegate d)
 		{
-			Gtk.Application.Invoke (delegate { d(); });
+			Gtk.Application.Invoke (delegate { d (); });
 		}
 		
 		[TestFixtureTearDown]
