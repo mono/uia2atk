@@ -1,3 +1,7 @@
+2008-09-17  Calen Chen <cachen@novell.com>
+
+	*  samples/notifyicon.py: change to rise notifyicon by click button
+
 2008-09-17  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/button/buttonframe.py: removed debug print statements
@@ -12,7 +16,7 @@
 
 2008-09-17  Calen Chen <cachen@novell.com>
 
-	*  testers/button/buttonframe.py: modify "return len(diff)" to "return"
+	*  testers/button/buttonframe.py: modify "assert len(diff)" to "return"
 	in assertSensitiveButtonStates
 
 2008-09-17  Calen Chen <cachen@novell.com>

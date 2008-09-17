@@ -19,12 +19,12 @@ It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of cont
 
 # imports
 import clr
+
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
-from System.Windows.Forms import (
-    Application, Form, Label, MenuItem, NotifyIcon, Timer , ToolTipIcon
-)
-from System.Drawing import SystemIcons
+
+from System.Windows.Forms import *
+from System.Drawing import *
 
 class NotifyIconSample(Form):
     """NotifyIcon control class"""
@@ -34,28 +34,32 @@ class NotifyIconSample(Form):
 
         # setup label
         self.label = Label()
-        self.label.Text = "Please wait Balloon Tip for around 15 secs,\n\n" + \
-                          "When it comes up, keep moving your mouse.\n\n" + \
-                         "Then it will be vanished after about 10 secs.\n\n" + \
-                          "Or, click on the Balloon Tip directly."
-        self.label.Width = self.Width
-        self.label.Height = self.Height
+        self.label.Text = "Please click button to rise notifyicon"
+        self.label.Location = Point(10,50)
+        self.label.AutoSize = True
         self.Controls.Add(self.label)
         
         # setup title
         self.Text = "NotifyIcon control"
 
         # setup timer
-        self.timer = Timer()
-        self.timer.Interval = 15000
-        self.timer.Tick += self.on_tick
-        self.timer.Start()
+        #self.timer = Timer()
+        #self.timer.Interval = 15000
+        #self.timer.Tick += self.on_tick
+        #self.timer.Start()
+
+        #click button to rise notifyicon
+        self.button = Button()
+        self.button.Text = "button"
+        self.button.Location = Point(10,150)
+        self.button.Click += self.on_tick
+        self.Controls.Add(self.button)
 
         # setup notifyicon
         self.notifyicon = NotifyIcon()
         self.notifyicon.Icon = SystemIcons.Exclamation
         self.notifyicon.BalloonTipTitle = "Hello"
-        self.notifyicon.BalloonTipText = "I'm IronPython, who are you?"
+        self.notifyicon.BalloonTipText = "I'm NotifyIcon"
         self.notifyicon.BalloonTipIcon = ToolTipIcon.Error
 
     def on_tick(self, sender, event):
