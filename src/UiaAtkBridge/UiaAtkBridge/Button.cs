@@ -240,8 +240,9 @@ namespace UiaAtkBridge
 					OnDisabled ();
 				}
 			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
+				string newName = (string)e.NewValue;
 				this.textExpert = new TextImplementorHelper (Name);
-				Name = (string)e.NewValue;
+				Name = newName;
 			}
 		}
 		

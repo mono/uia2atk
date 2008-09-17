@@ -1,3 +1,7 @@
+2008-09-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Button.cs: Correct my lameness on r113228 (my previous commit).
+
 2008-09-16  Mike Gorse  <mgorse@novell.com>
 
 	* AutomationBridge.cs: Disable ScrollBar children.
