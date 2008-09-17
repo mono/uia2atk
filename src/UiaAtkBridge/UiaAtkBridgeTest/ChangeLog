@@ -1,5 +1,10 @@
 2008-09-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTests.cs, AtkTester.cs, UiaAtkBridgeTest.mdp: Split into two
+	  files, as it was getting too long.
+
+2008-09-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: Deleted old code.
 
 2008-09-17  Andrés G. Aragoneses <aaragoneses@novell.com> 

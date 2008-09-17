@@ -26,6 +26,7 @@
     <File name="BasicWidgetType.cs" subtype="Code" buildaction="Compile" />
     <File name="atspimon.py" subtype="Code" buildaction="Nothing" />
     <File name="Bug416602.cs" subtype="Code" buildaction="Compile" />
+    <File name="AtkTests.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
