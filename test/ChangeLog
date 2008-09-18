@@ -1,5 +1,16 @@
 2008-09-17  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* testers/button/buttonframe.option1.py:  Check all states every time
+	statesCheck is called.  The application wrapper keeps track of the
+	expected states based on every action.
+	* testers/button/buttonframe.option2.py:  Check one state when
+	statesCheck is called.  The test script writer keeps track of the
+	expected states based on the actions s/he performs.  The test script
+	writer passes lists of expected state changes (ie., expected states
+	that are different from the default expected states) to statesCheck.
+
+2008-09-17  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* testers/button/buttonframe.py: Rename some local variables (ca -> qa,
 	lists -> i) and use a list comprehension to find actual action names.	
 
