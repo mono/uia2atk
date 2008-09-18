@@ -1,3 +1,10 @@
-2008-09-15  Mario Carrion <mcarrion@novell.com> 
+2008-09-18  Mario Carrion <mcarrion@novell.com> 
+
+	* BaseTest.cs: Pattern tests added, by default all tests are Assert.IsFalse.
+	* LameSpecAttribute.cs: Added.
+	* ScrollBarTest.cs: Updated
+	* UIAutomationWinformsClientTests.csproj: Updated: Added file.
+
+2008-09-17  Mario Carrion <mcarrion@novell.com> 
 
 	* Initial commit.

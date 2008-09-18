@@ -54,6 +54,24 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		#region Automation Properties Tests
 
 		[Test]
+		[Ignore ("No idea how to test")]
+		public virtual void MsdnAutomationIdPropertyTest ()
+		{
+		}
+
+		[Test]
+		[Ignore ("No idea how to test")]
+		public virtual void MsdnBoundingRectanglePropertyTest ()
+		{
+		}
+
+		[Test]
+		[Ignore ("No idea how to test")]
+		public virtual void MsdnIsKeyboardFocusablePropertyTest ()
+		{
+		}
+
+		[Test]
 		public abstract void MsdnNamePropertyTest ();
 
 		[Test]
@@ -79,10 +97,148 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		#region Automation Patterns Tests
 
 		[Test]
-		public abstract void MsdnScrollPatternTest ();
+		public virtual void MsdnDockPatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, DockPatternIdentifiers.Pattern),
+				"DockPattern SHOULD NOT be supported");
+		}
 
 		[Test]
-		public abstract void MsdnRangeValuePatternTest ();
+		public virtual void MsdnExpandCollapsePatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, ExpandCollapsePattern.Pattern),
+				"ExpandCollapse SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnGridPatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, GridPatternIdentifiers.Pattern),
+				"GridPattern SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnGridItemPatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, GridItemPatternIdentifiers.Pattern),
+				"GridItemPattern SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnInvokePatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, InvokePatternIdentifiers.Pattern),
+				"InvokePattern SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnMultipleViewPatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, MultipleViewPatternIdentifiers.Pattern),
+				"MultipleViewPattern SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnRangeValuePatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, RangeValuePatternIdentifiers.Pattern),
+				"RangeValuePattern SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnScrollPatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, ScrollPatternIdentifiers.Pattern),
+				"ScrollPattern SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnScrollItemPatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, ScrollItemPatternIdentifiers.Pattern),
+				"ScrollItemPattern SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnSelectionPatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, SelectionPatternIdentifiers.Pattern),
+				"SelectionPattern SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnSelectionItemPatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, SelectionItemPatternIdentifiers.Pattern),
+				"SelectionItemPattern SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnTablePatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, TablePatternIdentifiers.Pattern),
+				"TablePattern SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnTableItemPatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, TableItemPatternIdentifiers.Pattern),
+				"TableItemPattern SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnTogglePatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, TogglePatternIdentifiers.Pattern),
+				"TogglePattern SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnTransformPatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, TransformPatternIdentifiers.Pattern),
+				"TransformPattern SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnValuePatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, ValuePatternIdentifiers.Pattern),
+				"ValuePattern SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnWindowPatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, WindowPatternIdentifiers.Pattern),
+				"WindowPattern SHOULD NOT be supported");
+		}
+
+		[Test]
+		public virtual void MsdnTextPatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, TextPatternIdentifiers.Pattern),
+				"TextPattern SHOULD NOT be supported");
+		}
 
 		#endregion 
 
@@ -100,6 +256,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 
 		#region Protected Methods
 
+		protected abstract AutomationElement GetAutomationElement ();
+
 		protected AutomationElement GetAutomationElementFromControl (Control control)
 		{
 			Form.Controls.Add (control);
@@ -115,6 +273,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 			Assert.AreEqual (expectedValue, 
 				element.GetCurrentPropertyValue (property),
 				property.ProgrammaticName);
+		}
+
+		protected bool SupportsPattern (AutomationElement element, AutomationPattern pattern)
+		{
+			object rtnPattern;
+			return element.TryGetCurrentPattern (pattern, out rtnPattern);
 		}
 
 		#endregion Protected Methods
