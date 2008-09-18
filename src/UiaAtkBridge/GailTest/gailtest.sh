@@ -10,4 +10,3 @@ cp `find /usr/ -name nunit.util.dll 2> /dev/null | grep -v "\.0" | grep -v NAnt`
 cp `find /usr/ -name nunit.core.dll 2> /dev/null | grep -v "\.0" | grep -v NAnt | grep -v monodevelop` .
 cp `find /usr/ -name nunit.core.interfaces.dll 2> /dev/null | grep -v "\.0"` .
 mono ./nunit-console.exe GailTest.dll -nothread -domain=none
-
