@@ -1,3 +1,7 @@
+2008-09-18  Mike Gorse <mgorse@novell.com>
+
+	* Mono.UIAutomation.WinForms/FormListener.cs: Add a key listener.
+
 2008-09-17  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated due to added

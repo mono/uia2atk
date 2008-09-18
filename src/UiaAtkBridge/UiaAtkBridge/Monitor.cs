@@ -51,6 +51,7 @@ namespace UiaAtkBridge
 				Atk.Util.AddGlobalEventListenerHandler = AddGlobalEventListener;
 			else
 				override_global_event_listener ();
+			Atk.Util.AddKeyEventListenerHandler = AddKeyEventListener;
 		}
 		private bool isApplicationStarted = false;
 		
@@ -121,6 +122,33 @@ namespace UiaAtkBridge
 			return rc;
 		}
 		
+		internal static uint AddKeyEventListener (
+		    Atk.KeySnoopFunc listener)
+		{
+			KeyListenerInfo info = new KeyListenerInfo ();
+			lock (listenerListSync)
+			{
+				info.Id = 0;
+				while (KeyListenerList.ContainsKey (info.Id))
+					info.Id++;
+				info.listener = listener;
+				KeyListenerList.Add (info.Id, info);
+			}
+			return info.Id;
+		}
+		
+		public bool HandleKey (Atk.KeyEventStruct evnt)
+		{
+			if (KeyListenerList.Count == 0)
+				return false;
+			foreach (KeyValuePair<uint, KeyListenerInfo> kvp in KeyListenerList) {
+				int result = kvp.Value.listener (evnt);
+				if (result != 0)
+					return true;
+			}
+			return false;
+		}
+
 		private static uint KeepListener (
 		    GLib.Signal.EmissionHook listener, 
 		    string objType, string signalName)
@@ -131,7 +159,7 @@ namespace UiaAtkBridge
 				//FIXME: drop this workaround for bug#386950
 				if (signalName.Contains ("property")) return 0;
 				
-				lock (listenerListMutex)
+				lock (listenerListSync)
 				{
 					ListenerInfo info = new ListenerInfo();
 					info.Id = (uint) ListenerList.Count + 1;
@@ -148,10 +176,13 @@ namespace UiaAtkBridge
 			}
 		}
 		
-		private static object listenerListMutex = new object ();
+		private static object listenerListSync = new object ();
 		
 		private static Dictionary <uint, ListenerInfo> ListenerList
 			= new Dictionary<uint, ListenerInfo> ();
+		
+		private static Dictionary <uint, KeyListenerInfo> KeyListenerList
+			= new Dictionary<uint, KeyListenerInfo> ();
 		
 		struct ListenerInfo
 		{
@@ -159,6 +190,12 @@ namespace UiaAtkBridge
 			internal string SignalName;
 			internal GLib.GType Type;
 			internal ulong HookId;
+		}
+		
+		struct KeyListenerInfo
+		{
+			internal uint Id;
+			internal Atk.KeySnoopFunc listener;
 		}
 		
 		[DllImport("libatk-bridge")]

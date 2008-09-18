@@ -40,6 +40,7 @@ namespace UiaAtkBridge
 		
 		private bool applicationStarted = false;
 		private Monitor appMonitor = null;
+		private long initTime = DateTime.Now.Ticks;
 		private Dictionary<IntPtr, IRawElementProviderSimple>
 			pointerProviderMapping;
 		static private Dictionary<IRawElementProviderSimple, Adapter>
@@ -146,6 +147,128 @@ namespace UiaAtkBridge
 			return pointerProviderMapping [hwnd];
 		}
 
+		struct KeyDefinition
+		{
+			public uint Keyval;
+			public String String;
+			public KeyDefinition (uint Keyval, String String)
+			{
+				this.Keyval = Keyval;
+				this.String = String;
+			}
+		}
+
+		static Dictionary<int, KeyDefinition> downKeys = new Dictionary<int, KeyDefinition>();
+		static Dictionary<uint, String> keyStrings;
+
+		public void CreateKeyStrings ()
+		{
+			keyStrings = new Dictionary<uint, String>();
+			keyStrings [0xfd1d] = "Print_Screen";
+			keyStrings [0xff08] = "Backspace";
+			keyStrings [0xff09] = "Tab";
+			keyStrings [0xff0b] = "Clear";
+			keyStrings [0xff0d] = "Return";
+			keyStrings [0xff10] = "Line_feed";
+			keyStrings [0xff13] = "Pause";
+			keyStrings [0xff14] = "Scroll_Lock";
+			keyStrings [0xff1b] = "Escape";
+			keyStrings [0xff21] = "Kanji";
+			keyStrings [0xff2d] = "Kana_Lock";
+			keyStrings [0xff31] = "Hangul";
+			keyStrings [0xff50] = "Home";
+			keyStrings [0xff51] = "Left";
+			keyStrings [0xff52] = "Up";
+			keyStrings [0xff53] = "Right";
+			keyStrings [0xff54] = "Down";
+			keyStrings [0xff55] = "Page_Up";
+			keyStrings [0xff56] = "Page_Down";
+			keyStrings [0xff57] = "End";
+			keyStrings [0xff60] = "Select";
+			keyStrings [0xff61] = "Print";
+			keyStrings [0xff62] = "Execute";
+			keyStrings [0xff63] = "Insert";
+			keyStrings [0xff67] = "Menu";
+			keyStrings [0xff67] = "Menu";
+			keyStrings [0xff6a] = "Help";
+			keyStrings [0xff7f] = "Num_Lock";
+			keyStrings[0xff95] = "KP_Home";
+			keyStrings [0xff96] = "KP_Left";
+			keyStrings [0xff97] = "KP_Up";
+			keyStrings [0xff98] = "KP_Right";
+			keyStrings [0xff99] = "KP_Down";
+			keyStrings [0xff9a] = "KP_Page_Up";
+			keyStrings [0xff9b] = "KP_Page_Down";
+			keyStrings [0xff9c] = "KP_Begin";
+			keyStrings [0xff9d] = "KP_End";
+			keyStrings [0xff9e] = "KP_Insert";
+			keyStrings [0xff9f] = "KP_Delete";
+			keyStrings [0xffbe] = "F1";
+			keyStrings [0xffbf] = "F2";
+			keyStrings [0xffc0] = "F3";
+			keyStrings [0xffc1] = "F4";
+			keyStrings [0xffc2] = "F5";
+			keyStrings [0xffc3] = "F6";
+			keyStrings [0xffc4] = "F7";
+			keyStrings [0xffc5] = "F8";
+			keyStrings [0xffc6] = "F9";
+			keyStrings [0xffc7] = "F10";
+			keyStrings [0xffc8] = "F11";
+			keyStrings [0xffc9] = "F12";
+			keyStrings [0xffca] = "F13";
+			keyStrings [0xffcb] = "F14";
+			keyStrings [0xffcc] = "F15";
+			keyStrings [0xffcd] = "F16";
+			keyStrings [0xffce] = "F17";
+			keyStrings [0xffcf] = "F18";
+			keyStrings [0xffd0] = "F19";
+			keyStrings [0xffd1] = "F20";
+			keyStrings [0xffd2] = "F21";
+			keyStrings [0xffd3] = "F22";
+			keyStrings [0xffd4] = "F23";
+			keyStrings [0xffd5] = "F24";
+			keyStrings [0xffe1] = "Shift_L";
+			keyStrings [0xffe2] = "Shift_R";
+			keyStrings [0xffe3] = "Control_L";
+			keyStrings [0xffe4] = "Control_R";
+			keyStrings [0xffe5] = "Caps_Lock";
+			keyStrings [0xffe9] = "Alt_L";
+			keyStrings [0xffea] = "Alt_R";
+			keyStrings [0xffeb] = "Super_L";
+			keyStrings [0xffff] = "Delete";
+		}
+
+			void HandleKeyEvent (AutomationEvent eventId, KeyEventArgs e)
+		{
+			Atk.KeyEventStruct evnt;
+			if (keyStrings == null)
+				CreateKeyStrings ();
+			evnt.Type = (e.Down? 0: 1);
+			evnt.State = 0;
+			if (e.Shift)
+				evnt.State |= 1;
+			if (e.Control)
+				evnt.State |= 4;
+			if (e.Alt)
+				evnt.State |= 8;
+			evnt.Keycode = (ushort)e.Keycode;
+			if (evnt.Type == 1 && downKeys.ContainsKey (e.Keycode)) {
+				// For some reason, we don't get keysym and
+				// string values for KeyUp events, so we
+				// cache the values when th ekey is pressed
+				evnt.Keyval = downKeys [e.Keycode].Keyval;
+				evnt.String = downKeys [e.Keycode].String;
+				downKeys.Remove (e.Keycode);
+			} else {
+				evnt.Keyval = (uint)e.Keysym;
+				evnt.String = (keyStrings.ContainsKey (evnt.Keyval)? keyStrings [evnt.Keyval]: e.Str);
+				downKeys [e.Keycode] = new KeyDefinition ((uint)e.Keysym, evnt.String);
+			}
+			evnt.Length = evnt.String.Length;
+			// TODO: Fill in timestamp
+			evnt.Timestamp = (uint)((DateTime.Now.Ticks - initTime) / 10000);
+			e.SuppressKeyPress = appMonitor.HandleKey (evnt);
+		}
 		
 		public void RaiseAutomationEvent (AutomationEvent eventId, object provider, AutomationEventArgs e)
 		{
@@ -158,6 +281,10 @@ namespace UiaAtkBridge
 				return;
 			}
 			
+			if (eventId == AutomationElementIdentifiers.KeyEvent) {
+				HandleKeyEvent (eventId, (KeyEventArgs)e);
+			}
+
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) provider;
 			if (!providerAdapterMapping.ContainsKey (simpleProvider))

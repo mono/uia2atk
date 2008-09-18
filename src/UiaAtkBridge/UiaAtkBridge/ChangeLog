@@ -1,3 +1,7 @@
+2008-09-18  Mike Gorse <mgorse@novell.com>
+
+	* AutomationBridge.cs, Monitor.cs: Add KeyEvent handler (bug 418524)
+
 2008-09-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Button.cs: *Actually* correct r113228.

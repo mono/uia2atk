@@ -99,6 +99,8 @@ namespace Mono.UIAutomation.Winforms
 			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
 		}
 		
+		static KeyFilter keyFilter = new KeyFilter ();
+
 		static void OnFormAdded (object sender, EventArgs args)
 		{
 			Console.WriteLine ("Form added!");
@@ -135,8 +137,22 @@ namespace Mono.UIAutomation.Winforms
 				ownerProvider.AddChildProvider (true, provider);
 			}
 			
+			Application.AddKeyFilter (keyFilter);
 		}
 		
 #endregion
+	}
+
+	class KeyFilter: IKeyFilter
+	{
+		public bool PreFilterKey (KeyFilterData key)
+		{
+			bool alt = (key.ModifierKeys & Keys.Alt) != 0;
+			bool control = (key.ModifierKeys & Keys.Control) != 0;
+			bool shift = (key.ModifierKeys & Keys.Shift) != 0;
+			System.Windows.Automation.KeyEventArgs eventArgs = new System.Windows.Automation.KeyEventArgs (key.Down, key.keycode, key.keysym, key.str, alt, control, shift);
+			AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.KeyEvent, null, eventArgs);
+			return eventArgs.SuppressKeyPress;
+		}
 	}
 }
