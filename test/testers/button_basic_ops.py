@@ -46,9 +46,9 @@ bFrame = app.buttonFrame
 bFrame.actionsCheck(bFrame.button1)
 
 #check Button's states list
-bFrame.statesCheck(bFrame.button1)
-bFrame.statesCheck(bFrame.button2)
-bFrame.statesCheck(bFrame.button3)
+bFrame.statesCheck(bFrame.button1, 'Button')
+bFrame.statesCheck(bFrame.button2, 'Button')
+bFrame.statesCheck(bFrame.button3, "Button", invalid_states=["sensitive", "enabled"])
 
 #click button1 rise message frame window
 bFrame.click(bFrame.button1)
@@ -62,6 +62,11 @@ bFrame.assertLabel('You have clicked me 1 times')
 
 #click button2 change label text
 bFrame.click(bFrame.button2)
+sleep(config.SHORT_DELAY)
+bFrame.assertLabel('You have clicked me 2 times')
+
+#click button3
+bFrame.click(bFrame.button3)
 sleep(config.SHORT_DELAY)
 bFrame.assertLabel('You have clicked me 2 times')
 

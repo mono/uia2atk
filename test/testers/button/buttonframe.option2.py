@@ -14,8 +14,6 @@ import states
 from strongwind import *
 from button import *
 
-class States
-    
 
 # class to represent the main window.
 class ButtonFrame(accessibles.Frame):
@@ -60,7 +58,7 @@ class ButtonFrame(accessibles.Frame):
 
     #check Button's all expectant states
     def statesCheck(self, accessible, control,
-                                invalid_states=None, add_states=None):
+                                invalid_states=[], add_states=[]):
         """Check the states of an accessible using the default states
         of the accessible (specified by control class in states.py) as
         the default expected states.

@@ -1,3 +1,11 @@
+2008-09-18  Calen Chen <cachen@novell.com>
+
+	*  testers/button/buttonframe.option2.py: update keyword to 
+	invalid_states=[], add_states=[], delete line 'class States'
+	*  testers/button/buttonframe.option2.py: call statesCheck with 
+	invalid_states when check button3, add 'click' action test for
+	button3
+
 2008-09-17  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/button/buttonframe.option1.py:  Check all states every time
