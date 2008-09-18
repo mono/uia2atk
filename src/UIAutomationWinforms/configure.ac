@@ -61,6 +61,8 @@ if test "x$enable_tests" = "xyes" ; then
 fi
 PKG_CHECK_MODULES([MONO_UIA], [mono-uia])
 
+PKG_CHECK_MODULES([MONO], [mono >= 2.1])
+
 dnl package checks, per config
 
 
