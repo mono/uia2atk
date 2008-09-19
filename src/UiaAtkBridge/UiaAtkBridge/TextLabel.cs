@@ -84,11 +84,6 @@ namespace UiaAtkBridge
 			}
 		}
 		
-		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
-		{
-			// TODO
-		}
-		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			if (eventId == TextPatternIdentifiers.TextChangedEvent) {

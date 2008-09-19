@@ -63,7 +63,6 @@ FILES =  \
 	SelectionProviderUserHelper.cs \
 	Spinner.cs \
 	StatusBar.cs \
-	StatusBarWithGrid.cs \
 	TableImplementorHelper.cs \
 	TextImplementorHelper.cs \
 	TextLabel.cs \

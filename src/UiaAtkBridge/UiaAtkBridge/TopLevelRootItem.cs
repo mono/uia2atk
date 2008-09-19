@@ -63,11 +63,6 @@ namespace UiaAtkBridge
 		{
 			// TODO
 		}
-		
-		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
-		{
-			// TODO
-		}
 
 
 	}

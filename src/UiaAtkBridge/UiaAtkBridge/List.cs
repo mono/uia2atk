@@ -232,6 +232,7 @@ AtkObject,
 			if (eventId == AutomationElementIdentifiers.AsyncContentLoadedEvent) {
 				// TODO: Handle AsyncContentLoadedEvent
 			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
+Console.WriteLine("Got the other focus");
 				// TODO: Handle AutomationFocusChangedEvent
 			} else if (eventId == AutomationElementIdentifiers.StructureChangedEvent) {
 				// TODO: Handle StructureChangedEvent
@@ -244,27 +245,8 @@ AtkObject,
 			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
 				//if it's a toggle, it should not be a basic Button class, but CheckBox or other
 				throw new NotSupportedException ("Toggle events should not land here (should not be reached)");
-			} else if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
-				// TODO: Handle BoundingRectangleProperty change
-			} else if (e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
-				//if((bool)e.NewValue)
-					//TODO: call to NotifyStateChange instead of using RefStateSet (the former will cause the call to OnRefState)
-					//RefStateSet ().AddState (Atk.StateType.Visible);
-				//else
-					//TODO: call to NotifyStateChange instead of using RefStateSet (the former will cause the call to OnRefState)
-					//RefStateSet ().RemoveState (Atk.StateType.Visible);
-			} else if (e.Property == AutomationElementIdentifiers.IsEnabledProperty) {
-				if((bool)e.NewValue)
-				{
-					//OnEnabled ();
-				}
-				else
-				{
-					//OnDisabled ();
-				}
-			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
-				Name = (string)e.NewValue;
-			}
+			} else
+				base.RaiseAutomationPropertyChangedEvent (e);
 		}
 
 		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)

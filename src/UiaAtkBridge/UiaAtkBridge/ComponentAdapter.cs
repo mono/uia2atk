@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Windows.Automation;
 
 namespace UiaAtkBridge
 {
@@ -119,6 +120,14 @@ namespace UiaAtkBridge
 			else
 				states.RemoveState (Atk.StateType.Resizable);
 			return states;
+		}
+
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
+				// TODO: Handle BoundingRectangleProperty change
+			} else
+				base.RaiseAutomationPropertyChangedEvent (e);
 		}
 #endregion
 	}

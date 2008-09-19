@@ -83,10 +83,5 @@ namespace UiaAtkBridge
 		{
 			// TODO
 		}
-
-		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
-		{
-			Console.WriteLine ("TODO: Spinner property change: " + e.Property);
-		}
 	}
 }

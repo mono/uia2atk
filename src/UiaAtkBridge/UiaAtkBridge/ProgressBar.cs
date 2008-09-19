@@ -217,6 +217,8 @@ namespace UiaAtkBridge
 			{
 				textExpert = new TextImplementorHelper ((String)e.NewValue);
 			}
+			else
+				base.RaiseAutomationPropertyChangedEvent (e);
 		}
 	}
 }

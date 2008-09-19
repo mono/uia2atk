@@ -129,11 +129,6 @@ namespace UiaAtkBridge
 			// TODO
 		}
 		
-		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
-		{
-			// TODO
-		}
-		
 		private void GetScrollProviderFromParent ()
 		{
 			Adapter parentAdapter = Parent as Adapter;

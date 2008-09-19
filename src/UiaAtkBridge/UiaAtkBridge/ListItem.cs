@@ -312,33 +312,13 @@ namespace UiaAtkBridge
 		}
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property == ValuePatternIdentifiers.ValueProperty)
-			{
+			if (e.Property == ValuePatternIdentifiers.ValueProperty) {
 				String stringValue = (String)e.NewValue;
 				textExpert = new TextImplementorHelper (stringValue);
 				Name = stringValue;
-			} else if (e.Property == AutomationElementIdentifiers.IsEnabledProperty) {
-				if((bool)e.NewValue)
-				{
-					OnEnabled ();
-				}
-				else
-				{
-					OnDisabled ();
-				}
 			}
-		}
-
-		private void OnEnabled ()
-		{
-			NotifyStateChange ((ulong) Atk.StateType.Sensitive, true);
-			NotifyStateChange ((ulong) Atk.StateType.Enabled, true);
-		}
-
-		private void OnDisabled ()
-		{
-			NotifyStateChange ((ulong) Atk.StateType.Sensitive, false);
-			NotifyStateChange ((ulong) Atk.StateType.Enabled, false);
+			else
+				base.RaiseAutomationPropertyChangedEvent (e);
 		}
 	}
 }

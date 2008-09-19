@@ -1,5 +1,12 @@
 2008-09-19  Mike Gorse <mgorse@novell.com>
 
+	* Various files: Handle some property changes in Adapter.cs.
+	  Modify accordingly.
+	* Makefile.am, UiaAtkBridge.mdp, StatusBar.cs: Remove
+	  StatusBarWithGrid.cs; move its class into StatusBar.cs.
+
+2008-09-19  Mike Gorse <mgorse@novell.com>
+
 	* ComponentAdapter.cs, ComponentParentAdapter.cs,
 	  ComponentImplementorHelper.cs: Set Resizable state when needed.
 	* Window.cs: Expose Enabled and Sensitive states. (bug 426146)

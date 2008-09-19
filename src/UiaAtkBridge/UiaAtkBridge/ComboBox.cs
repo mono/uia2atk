@@ -210,11 +210,6 @@ namespace UiaAtkBridge
 			// TODO
 		}
 
-		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
-		{
-			// TODO
-		}
-		
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
 			// TODO

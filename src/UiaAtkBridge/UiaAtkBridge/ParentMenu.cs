@@ -54,11 +54,6 @@ namespace UiaAtkBridge
 			throw new NotImplementedException ();
 		}
 
-		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public int SelectionCount {
 			get {
 				throw new NotImplementedException();
