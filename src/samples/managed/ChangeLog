@@ -1,3 +1,7 @@
+2008-09-19  Mike Gorse <mgorse@novell.com>
+
+	* autogen.sh, configure.ac, expansions.m4, Makefile.include: Added.
+
 2008-06-04  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* GailTestApp/MainWindow.cs, GailTestApp/gtk-gui/MainWindow.cs,

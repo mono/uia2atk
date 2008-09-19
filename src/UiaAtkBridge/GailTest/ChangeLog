@@ -1,3 +1,7 @@
+2008-09-19  Mike Gorse <mgorse@novell.com>
+
+	* Makefile.am: Added.
+
 2008-09-18  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* gailtest.sh: test

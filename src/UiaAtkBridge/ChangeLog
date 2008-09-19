@@ -1,3 +1,7 @@
+2008-09-19  Mike Gorse <mgorse@novell.com>
+
+	Makefile.am, configure.ac: Add GailTest and UiaAtkBridgeTest.
+
 2008-07-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* configure.ac: Remove check for olive, replace with check for

@@ -1,3 +1,7 @@
+2008-09-19  Mike Gorse <mgorse@novell.com>
+
+	* Makefile.am: Added.
+
 2008-08-19  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* MainWindow.cs: Guard against null.

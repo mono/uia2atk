@@ -1,3 +1,8 @@
+2008-09-19  Mike Gorse <mgorse@novell.com>
+
+	* Makefile.am: Added.
+	* BridgeTester.cs: Derive from AtkTests, rather than AtkTester.
+
 2008-09-17  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTests.cs, AtkTester.cs, UiaAtkBridgeTest.mdp: Split into two
