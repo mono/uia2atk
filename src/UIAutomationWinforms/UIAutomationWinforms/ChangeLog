@@ -1,5 +1,10 @@
 2008-09-19  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.Events/AutomationFocusChangedEvent.cs:
+	  Added GotFocus to generate event when control gets focus.
+
+2008-09-19  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/LabelProvider.cs,
 	  Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: TextPattern
 	  events updated.

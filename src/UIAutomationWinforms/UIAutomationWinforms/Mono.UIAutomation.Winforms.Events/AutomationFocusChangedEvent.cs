@@ -49,11 +49,13 @@ namespace Mono.UIAutomation.Winforms.Events
 
 		public override void Connect (Control control)
 		{
+			control.GotFocus += new EventHandler (OnFocusChanged);
 			control.LostFocus += new EventHandler (OnFocusChanged);
 		}
 
 		public override void Disconnect (Control control)
 		{
+			control.GotFocus -= new EventHandler (OnFocusChanged);
 			control.LostFocus -= new EventHandler (OnFocusChanged);
 		}
 		
