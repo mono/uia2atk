@@ -134,10 +134,21 @@ class Test(object):
         output("")
 
     # execute the tests
+    TIMEOUT = 600 # ten minutes
     output("INFO:  Executing tests...")
     status = 0
     for test in found_tests:
-      r = os.system(test)
+      t = s.Popen(test)
+      i = 0
+      while t.poll() is None:
+        i += 1
+        if i >= TIMEOUT:
+          self.kill_process(t.pid)
+          output("ERROR:  test failed to exit after %s seconds" % TIMEOUT)
+          output("ERROR:  this likely means the sample application never exited")
+          break
+        time.sleep(1)
+      r = t.poll()
       if r != 0:
         output("WARNING:  Failed test:  %s" % test)
         status = 1
@@ -189,6 +200,17 @@ class Test(object):
     os.system("cp -r /tmp/strongwind/* %s" % log_dir)
     os.system("cp -r %s/resources/* %s" % (Settings.uiaqa_home, log_dir))
 
+  def kill_process(self, pid):
+    try:
+      output("INFO:  killing process: %s" % pid)
+      os.kill(int(pid), signal.SIGKILL)
+    except OSError, err:
+      # Errno 3 is "No such process"
+      if err.errno == 3:
+        # If it doesn't exist anymore, cool.
+        pass
+      output("WARNING:  Could not kill process: %s" % pid)
+
   def cleanup(self):
     output("INFO:  Cleaning up...")
     search = "%s/%s" % (settings.uiaqa_home, "samples")
@@ -203,15 +225,7 @@ class Test(object):
         pid = pair[0]
         path = pair[1]
         if search in path:
-          try:
-            output("INFO:  killing process: %s" % pid)
-            os.kill(int(pid), signal.SIGKILL)
-          except OSError, err:
-            # Errno 3 is "No such process"
-            if err.errno == 3:
-              # If it doesn't exist anymore, cool.
-              pass
-            output("WARNING:  Could not kill process: %s" % pid)
+          self.kill_process(pid)
   
 class InconceivableError(Exception): pass
 

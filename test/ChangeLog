@@ -1,3 +1,12 @@
+2008-09-19  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* harness/local_run.py: Added timeouts for invididual tests that take
+	longer than 10 minutes to complete.  This will allow subsequent tests
+	to run if the application being run does not exit.  This should help
+	with Bug 427857.  Obviously, a test that times out with be considered
+	a failed test, which means that at the current time, smoke tests are
+	likely to fail until Bug 427857 is fixed.
+
 2008-09-18  Calen Chen <cachen@novell.com>
 
 	*  testers/button/buttonframe.option2.py: update keyword to 
