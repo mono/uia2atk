@@ -7,7 +7,7 @@ ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@
 ASSEMBLY = bin/Debug/GailTest.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = library
-PROJECT_REFERENCES = 
+PROJECT_REFERENCES = $(GAILTESTAPP)
 BUILD_DIR = bin/Debug
 
 GAILTEST_DLL_MDB_SOURCE=bin/Debug/GailTest.dll.mdb
@@ -49,12 +49,12 @@ RESOURCES =
 
 EXTRAS = 
 
+GAILTESTAPP = $(BUILD_DIR)/GailTestApp.exe
 UIAATKBRIDGETEST = $(BUILD_DIR)/UiaAtkBridgeTest.dll
 REFERENCES =  \
 	System  \
 	WindowsBase \
 	nunit.framework \
-	../../samples/managed/GailTestApp/$(BUILD_DIR)/GailTestApp.exe \
 	$(GTK_SHARP_20_LIBS) \
 	$(GLIB_SHARP_20_LIBS)
 
@@ -72,6 +72,12 @@ include $(top_srcdir)/Makefile.include
 $(eval $(call emit_resgen_targets))
 $(build_xamlg_list): %.xaml.g.cs: %.xaml
 	xamlg '$<'
+
+bin/Debug/GailTestApp.exe: ../../samples/managed/GailTestApp/bin/Debug/GailTestApp.exe
+	cp -a $< $@
+
+bin/Release/GailTestApp.exe: ../../samples/managed/GailTestApp/bin/Release/GailTestApp.exe
+	cp -a $< $@
 
 bin/Debug/UiaAtkBridgeTest.dll: ../UiaAtkBridgeTest/bin/Debug/UiaAtkBridgeTest.dll
 	cp -a $< $@
