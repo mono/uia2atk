@@ -1,5 +1,27 @@
 2008-09-19  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated added
+	  SelectionPattern event classes.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs,
+	  Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Updated to generate
+	  ListProvider events used in SelectionPattern behavior.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Events added:
+	  CanSelectMultipleChanged, SelectionRequiredChanged and
+	  SelectionChanged. Protected methods added:
+	  OnCanSelectMultipleChanged, OnSelectionRequiredChanged and
+	  OnSelectionChanged
+	* Mono.UIAutomation.Winforms.Behaviors/List/SelectionProviderBehavior.cs:
+	  Setting events for Selection Pattern.
+	* Mono.UIAutomation.Winforms.Events/List: Events for List added.
+	* Mono.UIAutomation.Winforms.Events/List/SelectionPatternSelectionEvent.cs:
+	  List.SelectionPattern.SelectionProperty event.
+	* Mono.UIAutomation.Winforms.Events/List/SelectionPatternCanSelectMultipleEvent.cs:
+	  List.SelectionPattern.CanSelectMultipleProperty event.
+	* Mono.UIAutomation.Winforms.Events/List/SelectionPatternIsSelectionRequiredEvent.cs:
+	  List.SelectionPattern.IsSelectionRequiredProperty event.
+
+2008-09-19  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated: Automation
 	  Event added.
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Removed not used

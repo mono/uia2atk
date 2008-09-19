@@ -28,6 +28,8 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.List;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.List
 {
@@ -54,25 +56,30 @@ namespace Mono.UIAutomation.Winforms.Behaviors.List
 
 		public override void Connect (Control control)
 		{
-			//TODO: Add related events:
-			//CanSelectMultiple
-			//IsSelectionRequired
-			//GetSelection 
+			Provider.SetEvent (ProviderEventType.SelectionPatternCanSelectMultipleProperty,
+			                   new SelectionPatternCanSelectMultipleEvent (listProvider));
+//			Provider.SetEvent (ProviderEventType.SelectionPatternInvalidatedEvent,
+//			                   null);
+			Provider.SetEvent (ProviderEventType.SelectionPatternIsSelectionRequiredProperty,
+			                   new SelectionPatternIsSelectionRequiredEvent (listProvider));
+			Provider.SetEvent (ProviderEventType.SelectionPatternSelectionProperty,
+			                   new SelectionPatternSelectionEvent (listProvider));
 		}
 		
 		public override void Disconnect (Control control)
 		{
-			//TODO: Add related events:
-//			Provider.SetEvent (ProviderEventType.SelectionCanSelectMultiple,
-//			                   null);
-//			Provider.SetEvent (ProviderEventType.SelectionIsSelectionRequired,
-//			                   null);
-//			Provider.SetEvent (ProviderEventType.SelectionSelection,
-//			                   null);
+			Provider.SetEvent (ProviderEventType.SelectionPatternCanSelectMultipleProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.SelectionPatternInvalidatedEvent,
+			                   null);
+			Provider.SetEvent (ProviderEventType.SelectionPatternIsSelectionRequiredProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.SelectionPatternSelectionProperty,
+			                   null);
 		}
 
 		public override object GetPropertyValue (int propertyId)
-		{
+		{		
 			if (propertyId == SelectionPatternIdentifiers.CanSelectMultipleProperty.Id)
 				return CanSelectMultiple;
 			else if (propertyId == SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id)

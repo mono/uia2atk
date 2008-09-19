@@ -45,6 +45,9 @@ namespace Mono.UIAutomation.Winforms
 		{
 			comboboxControl = combobox;
 			comboboxControl.DropDownStyleChanged += new EventHandler (OnDropDownStyleChanged);
+			
+			//Let's associate SWF.ComboBox events to generate ListProvider events used by SelectionPattern
+			comboboxControl.SelectedIndexChanged += new EventHandler (OnGenerateSelectionPatternsEvents);
 		}
 		
 		#endregion
@@ -68,6 +71,7 @@ namespace Mono.UIAutomation.Winforms
 			base.Terminate ();
 			
 			comboboxControl.DropDownStyleChanged -= new EventHandler (OnDropDownStyleChanged);
+			comboboxControl.SelectedIndexChanged -= new EventHandler (OnGenerateSelectionPatternsEvents);
 		}	
 
 		#endregion		
@@ -97,7 +101,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override ListItemProvider[] GetSelectedItemsProviders ()
 		{
-			if (comboboxControl.SelectedIndex == -1)
+			if (comboboxControl == null || comboboxControl.SelectedIndex == -1)
 				return null;
 			else
 				return new ListItemProvider [] { (ListItemProvider) GetFocus () };
@@ -204,6 +208,15 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Private Methods
 		
+		private void OnGenerateSelectionPatternsEvents (object sender, EventArgs args)
+		{
+			OnSelectionChanged ();
+			OnSelectionRequiredChanged ();
+			//NOTE: 
+			//      This provider doesn't generate SelectionPattern.CanSelectMultipleProperty, 
+			//      event because ComboBox doesn't support multiple selection.
+		}
+		
 		private void OnDropDownStyleChanged (object sender, EventArgs args)
 		{
 			UpdateBehaviors (true);
@@ -307,7 +320,6 @@ namespace Mono.UIAutomation.Winforms
 	
 			public override object GetPropertyValue (int propertyId)
 			{
-				//TODO: Include: HelpTextProperty, LabeledByProperty, NameProperty
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.List.Id;
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
@@ -356,7 +368,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			public override ListItemProvider[] GetSelectedItemsProviders ()
 			{
-				return comboboxProvider.GetSelectedItemsProviders ();
+				return comboboxProvider == null ? null : comboboxProvider.GetSelectedItemsProviders ();
 			}
 			
 			public override string GetItemName (ListItemProvider item)

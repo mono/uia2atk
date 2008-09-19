@@ -85,6 +85,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ComboBoxItem/SelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Label/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/LinkLabel/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/List/SelectionPatternCanSelectMultipleEvent.cs \
+	Mono.UIAutomation.Winforms.Events/List/SelectionPatternIsSelectionRequiredEvent.cs \
+	Mono.UIAutomation.Winforms.Events/List/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListItem/SelectionItemPatternElementAddedToSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \

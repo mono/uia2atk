@@ -46,7 +46,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			listControl = control;
 			items = new List<ListItemProvider> ();
-			
+
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
 			             new SelectionProviderBehavior (this));
 		}
@@ -64,6 +64,16 @@ namespace Mono.UIAutomation.Winforms
 		public abstract int SelectedItemsCount { get; }
 		
 		public abstract bool SupportsMultipleSelection { get; }
+		
+		#endregion
+		
+		#region Public Events
+		
+		public event EventHandler<EventArgs> CanSelectMultipleChanged;
+		
+		public event EventHandler<EventArgs> SelectionRequiredChanged;
+		
+		public event EventHandler<EventArgs> SelectionChanged;
 		
 		#endregion
 		
@@ -186,6 +196,24 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return this;
 		}
+		
+		protected void OnCanSelectMultipleChanged ()
+		{
+			if (CanSelectMultipleChanged != null)
+				CanSelectMultipleChanged (this, EventArgs.Empty);
+		}
+		
+		protected void OnSelectionRequiredChanged ()
+		{
+			if (SelectionRequiredChanged != null)
+				SelectionRequiredChanged (this, EventArgs.Empty);
+		}
+				
+		protected void OnSelectionChanged () 
+		{
+			if (SelectionChanged != null)
+				SelectionChanged (this, EventArgs.Empty);
+		}
 
 		#endregion
 		
@@ -205,6 +233,8 @@ namespace Mono.UIAutomation.Winforms
 				ClearItemsList ();
 				OnNavigationChildrenCleared (true);
 			}
+			OnSelectionRequiredChanged ();
+			OnSelectionChanged ();
 		}
 		
 #pragma warning restore 169

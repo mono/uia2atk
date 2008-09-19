@@ -63,6 +63,9 @@ namespace Mono.UIAutomation.Winforms
 			if ((vscrollbar.Visible == true && vscrollbar.Enabled == true)
 			    || (hscrollbar.Visible == true && hscrollbar.Enabled == true))
 				SetScrollPatternBehavior ();
+		
+			//Let's associate SWF.ListBox events to generate ListProvider events used by SelectionPattern
+			listboxControl.SelectedIndexChanged += new EventHandler (OnGenerateSelectionPatternsEvents);
 		}
 
 		#endregion
@@ -90,6 +93,8 @@ namespace Mono.UIAutomation.Winforms
 
 			hscrollbar.VisibleChanged -= new EventHandler (UpdateHScrollBehaviorVisible);
 			hscrollbar.EnabledChanged -= new EventHandler (UpdateHScrollBehaviorEnable);
+			
+			listboxControl.SelectedIndexChanged -= new EventHandler (OnGenerateSelectionPatternsEvents);
 		}
 		
 		#endregion
@@ -165,8 +170,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override bool SupportsMultipleSelection { 
 			get { 
-				return listboxControl.SelectionMode == SelectionMode.MultiExtended 
-					|| listboxControl.SelectionMode == SelectionMode.MultiSimple;
+				return listboxControl != null 
+					&& (listboxControl.SelectionMode == SelectionMode.MultiExtended 
+					    || listboxControl.SelectionMode == SelectionMode.MultiSimple);
 			} 
 		}
 		
@@ -182,7 +188,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			ListItemProvider []items;
 
-			if (listboxControl.SelectedIndices.Count == 0)
+			if (listboxControl == null || listboxControl.SelectedIndices.Count == 0)
 				return null;
 			
 			items = new ListItemProvider [listboxControl.SelectedIndices.Count];			
@@ -242,6 +248,17 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (ContainsItem (item) == true)
 				listboxControl.TopIndex = item.Index;
+		}
+		
+		#endregion
+		
+		#region Private Methods
+		
+		private void OnGenerateSelectionPatternsEvents (object sender, EventArgs args)
+		{
+			OnSelectionChanged ();
+			OnSelectionRequiredChanged ();
+			//TODO: Add OnCanSelectMultipleChanged
 		}
 		
 		#endregion
