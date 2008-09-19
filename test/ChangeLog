@@ -1,6 +1,6 @@
 2008-09-19  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* harness/local_run.py: Added timeouts for invididual tests that take
+	* harness/local_run.py: Added timeouts for individual tests that take
 	longer than 10 minutes to complete.  This will allow subsequent tests
 	to run if the application being run does not exit.  This should help
 	with Bug 427857.  Obviously, a test that times out with be considered
