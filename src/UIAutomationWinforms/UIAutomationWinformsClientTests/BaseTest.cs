@@ -72,10 +72,19 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		}
 
 		[Test]
+		[Ignore ("No idea how to test")]
+		public virtual void MsdnHelpTextPropertyTest ()
+		{
+		}
+
+		[Test]
 		public abstract void MsdnNamePropertyTest ();
 
 		[Test]
-		public abstract void MsdnClickablePointPropertyTest ();
+		[Ignore ("No idea how to test")]
+		public virtual void MsdnClickablePointPropertyTest ()
+		{
+		}
 
 		[Test]
 		public abstract void MsdnLabeledByPropertyTest ();
