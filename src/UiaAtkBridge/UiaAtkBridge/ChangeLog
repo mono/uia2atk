@@ -1,5 +1,11 @@
 2008-09-19  Mike Gorse <mgorse@novell.com>
 
+	* ComponentAdapter.cs, ComponentParentAdapter.cs,
+	  ComponentImplementorHelper.cs: Set Resizable state when needed.
+	* Window.cs: Expose Enabled and Sensitive states. (bug 426146)
+
+2008-09-19  Mike Gorse <mgorse@novell.com>
+
 	* Adapter.cs: Also add Visible state if IsOffScreenProperty is false
 	* Button.cs: Set Focusable state rather than Selectable (bug 426677)
 

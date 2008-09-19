@@ -80,5 +80,20 @@ namespace UiaAtkBridge
 		public override int MdiZorder {
 			get { return -1; }
 		}
+
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			
+			bool enabled = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			if (enabled) {
+				states.AddState (Atk.StateType.Sensitive);
+				states.AddState (Atk.StateType.Enabled);
+			} else {
+				states.RemoveState (Atk.StateType.Sensitive);
+				states.RemoveState (Atk.StateType.Enabled);
+			}			
+			return states;
+		}
 	}
 }

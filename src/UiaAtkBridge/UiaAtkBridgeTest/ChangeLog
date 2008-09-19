@@ -1,5 +1,9 @@
 2008-09-19  Mike Gorse <mgorse@novell.com>
 
+	* AtkTests.cs: Test window states.
+
+2008-09-19  Mike Gorse <mgorse@novell.com>
+
 	* AtkTests.cs: Test button states.
 
 2008-09-19  Mike Gorse <mgorse@novell.com>

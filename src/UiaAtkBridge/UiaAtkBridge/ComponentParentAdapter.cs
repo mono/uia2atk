@@ -111,5 +111,16 @@ namespace UiaAtkBridge
 		}
 		
 #endregion
+
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			
+			if (componentExpert.CanResize)
+				states.AddState (Atk.StateType.Resizable);
+			else
+				states.RemoveState (Atk.StateType.Resizable);
+			return states;
+		}
 	}
 }

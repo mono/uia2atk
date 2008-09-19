@@ -26,6 +26,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows.Automation;
 
 using System.Windows.Automation.Provider;
 
@@ -36,9 +37,6 @@ namespace UiaAtkBridge
 		public ComponentImplementorHelper (Adapter resource)
 		{
 			this.resource = resource;
-			
-			if (resource.Provider is ITransformProvider)
-				transformProvider = (ITransformProvider)resource.Provider;
 			
 			lastFocusHandlerId = 0;
 			focusHandlers = new Dictionary<uint, Atk.FocusHandler> ();
@@ -107,6 +105,9 @@ namespace UiaAtkBridge
 
 		public bool SetExtents (int x, int y, int width, int height, Atk.CoordType coordType)
 		{
+			if (transformProvider == null)
+				transformProvider = (ITransformProvider) resource.Provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
+			
 			if ((transformProvider != null) && 
 			    (transformProvider.CanResize) && 
 			    (transformProvider.CanMove)) {
@@ -119,6 +120,9 @@ namespace UiaAtkBridge
 
 		public bool SetPosition (int x, int y, Atk.CoordType coordType)
 		{
+			if (transformProvider == null)
+				transformProvider = (ITransformProvider) resource.Provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
+			
 			if ((transformProvider != null) && (transformProvider.CanMove)) {
 				transformProvider.Move (x, y);
 				return true;
@@ -128,6 +132,9 @@ namespace UiaAtkBridge
 
 		public bool SetSize (int width, int height)
 		{
+			if (transformProvider == null)
+				transformProvider = (ITransformProvider) resource.Provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
+			
 			if ((transformProvider != null) && (transformProvider.CanResize)) {
 				transformProvider.Resize (width, height);
 				return true;
@@ -149,6 +156,17 @@ namespace UiaAtkBridge
 
 		public virtual double Alpha {
 			get { return 1; }
+		}
+
+		public bool CanResize {
+			get {
+				if (transformProvider == null)
+					transformProvider = (ITransformProvider) resource.Provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
+			
+				if (transformProvider != null)
+					return transformProvider.CanResize;
+				return false;
+			}
 		}
 	}
 }

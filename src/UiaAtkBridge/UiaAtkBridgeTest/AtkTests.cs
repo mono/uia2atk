@@ -387,6 +387,13 @@ namespace UiaAtkBridgeTest
 			
 			PropertyRole (type, accessible);
 			Parent (type, accessible);
+
+			Atk.StateSet stateSet = accessible.RefStateSet();
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Enabled), "Window Enabled");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Sensitive), "Window Sensitive");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Resizable), "Window Resizable");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Showing), "Window Showing");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Visible), "Window Visible");
 		}
 		
 
