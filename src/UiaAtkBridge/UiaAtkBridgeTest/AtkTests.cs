@@ -64,6 +64,12 @@ namespace UiaAtkBridgeTest
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
 			InterfaceComponent (type, atkComponent);
 			
+			Atk.StateSet stateSet = accessible.RefStateSet();
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Enabled), "Button Enabled");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focusable), "Button Focusable");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Sensitive), "Button Sensitive");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Showing), "Button Showing");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Visible), "Button Visible");
 			name = "test";
 			Atk.Action atkAction = (Atk.Action)
 				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);

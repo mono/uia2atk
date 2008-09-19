@@ -61,6 +61,7 @@ namespace UiaAtkBridge
 				if (showing)
 				{
 					states.AddState (Atk.StateType.Showing);
+					states.AddState (Atk.StateType.Visible);
 				}
 				else
 				{

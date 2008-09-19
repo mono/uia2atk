@@ -1,3 +1,9 @@
+2008-09-19  Mike Gorse <mgorse@novell.com>
+
+	* Adapter.cs: Also add Visible state if IsOffScreenProperty is false
+	* Button.cs: Set Focusable state rather than Selectable (bug 426677)
+
+
 2008-09-18  Mike Gorse <mgorse@novell.com>
 
 	* AutomationBridge.cs, Monitor.cs: Add KeyEvent handler (bug 418524)

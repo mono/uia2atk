@@ -82,9 +82,9 @@ namespace UiaAtkBridge
 			
 			bool canFocus = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
 			if (canFocus)
-				states.AddState (Atk.StateType.Selectable);
+				states.AddState (Atk.StateType.Focusable);
 			else
-				states.RemoveState (Atk.StateType.Selectable);
+				states.RemoveState (Atk.StateType.Focusable);
 			
 			bool enabled = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
 			if (enabled)
