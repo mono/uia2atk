@@ -30,42 +30,76 @@ using System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms.Events
 {
 
-	internal class AutomationIsOffscreenPropertyEvent 
+	internal class AutomationLabeledByPropertyEvent 
 		: BaseAutomationPropertyEvent
 	{
 		
 		#region Constructors
-		
-		public AutomationIsOffscreenPropertyEvent (IRawElementProviderSimple provider)
+
+		public AutomationLabeledByPropertyEvent (IRawElementProviderSimple provider) 
 			: base (provider,
-			        AutomationElementIdentifiers.IsOffscreenProperty)
+			        AutomationElementIdentifiers.LabeledByProperty)
 		{
 		}
 		
 		#endregion
-		
-		#region IConnectable Overrides
-		
+
+		#region IConnectable Overrides		
+
 		public override void Connect (Control control)
 		{
-			control.Resize += new EventHandler (OnIsOffScreen);
-			control.LocationChanged += new EventHandler (OnIsOffScreen);
+			if (control.Parent != null)
+				ConnectEvents (control.Parent);
+			control.ParentChanged += new EventHandler (OnParentChanged);
 		}
 
 		public override void Disconnect (Control control)
 		{
-			control.Resize -= new EventHandler (OnIsOffScreen);
-			control.LocationChanged -= new EventHandler (OnIsOffScreen);
+			DisconnectEvents ();
+			control.ParentChanged -= new EventHandler (OnParentChanged);
+		}
+
+		#endregion
+		
+		#region Private Methods
+		
+		private void ConnectEvents (Control parent)
+		{
+			DisconnectEvents ();
+			
+			this.parent = parent;
+			if (parent != null) {
+				parent.ControlAdded += new ControlEventHandler (OnControlsUpdated);
+				parent.ControlRemoved += new ControlEventHandler (OnControlsUpdated);			
+			}
+		}
+			
+		private void DisconnectEvents ()
+		{
+			if (parent != null) {
+				parent.ControlAdded -= new ControlEventHandler (OnControlsUpdated);
+				parent.ControlRemoved -= new ControlEventHandler (OnControlsUpdated);			
+	
+				this.parent = null;
+			}
+		}
+		
+		private void OnParentChanged (object sender, EventArgs e)
+		{
+			Control control = (Control) sender;
+			ConnectEvents (control.Parent);
+		}
+		
+		private void OnControlsUpdated (object sender, ControlEventArgs e)
+		{
+			RaiseAutomationPropertyChangedEvent ();
 		}
 		
 		#endregion
 		
-		#region Private Methods		
+		#region Private Fields
 		
-		private void OnIsOffScreen (object sender, EventArgs e)
-		{
-			RaiseAutomationPropertyChangedEvent ();
-		}
+		private Control parent;
 		
 		#endregion
 	}

@@ -74,6 +74,8 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Private Static Methods
+		
+#pragma warning disable 169
 
 		private static void OnUIAHelpRequested (object sender, ControlEventArgs args)
 		{
@@ -92,6 +94,8 @@ namespace Mono.UIAutomation.Winforms
 			
 			ProviderFactory.ReleaseProvider (helpProvider);
 		}		
+		
+#pragma warning restore 169
 		
 		#endregion
 	}

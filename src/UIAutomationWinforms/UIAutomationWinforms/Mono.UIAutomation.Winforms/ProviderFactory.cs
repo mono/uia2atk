@@ -102,12 +102,9 @@ namespace Mono.UIAutomation.Winforms
 			ScrollBar scb;
 			PictureBox pb;
 			ToolTip tt;
-			Control ctrl;
 			ProgressBar pgb;
 			SWFHelpProvider hlp;
 			SWFErrorProvider errp;
-			
-			bool isComponentBased = false;
 			
 			if (component == null)
 				return null;

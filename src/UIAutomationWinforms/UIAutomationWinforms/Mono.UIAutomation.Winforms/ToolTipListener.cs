@@ -91,6 +91,8 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Private Static Methods
+		
+#pragma warning disable 169
 
 		private static void OnUIAPopup (object sender, PopupEventArgs args)
 		{
@@ -149,6 +151,8 @@ namespace Mono.UIAutomation.Winforms
 					provider.ToolTip = tooltip;
 			}
 		}
+		
+#pragma warning restore 169
 		
 		#endregion
 		

@@ -108,8 +108,9 @@ namespace Mono.UIAutomation.Winforms
 		#region Public Methods
 
 		public virtual void InitializeEvents ()
-		{
-			// TODO: Add: EventStrategyType.IsOffscreenProperty, DefaultIsOffscreenPropertyEvent
+		{		
+			SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty, 
+			          new AutomationIsOffscreenPropertyEvent (this));
 			SetEvent (ProviderEventType.AutomationElementIsEnabledProperty, 
 			          new AutomationIsEnabledPropertyEvent (this));
 			SetEvent (ProviderEventType.AutomationElementNameProperty,
@@ -120,6 +121,8 @@ namespace Mono.UIAutomation.Winforms
 			          new AutomationBoundingRectanglePropertyEvent (this));
 			SetEvent (ProviderEventType.AutomationFocusChangedEvent,
 			          new AutomationFocusChangedEvent (this));
+			SetEvent (ProviderEventType.AutomationElementLabeledByProperty,
+			          new AutomationLabeledByPropertyEvent (this));
 			
 			//TODO: We need deeper tests before uncommenting this.
 //			SetEvent (ProviderEventType.StructureChangedEvent,

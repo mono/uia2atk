@@ -113,6 +113,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Static Methods
 		
+#pragma warning disable 169
+		
 		private static void OnUIAControlHookUp (object sender, ControlEventArgs args)
 		{
 			Control control = (Control) sender;
@@ -187,13 +189,13 @@ namespace Mono.UIAutomation.Winforms
 		
 		private static void OnUIAUnPopup (object sender, PopupEventArgs args)
 		{
-			SWFErrorProvider error = (SWFErrorProvider) sender;
-
 			if (provider != null) {
 				provider.Hide (args.AssociatedControl);
 				provider.Terminate ();
 			}
 		}
+		
+#pragma warning restore 169		
 		
 		#endregion
 	}

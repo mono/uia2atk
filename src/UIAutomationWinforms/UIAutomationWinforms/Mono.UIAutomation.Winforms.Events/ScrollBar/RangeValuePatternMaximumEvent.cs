@@ -71,11 +71,15 @@ namespace Mono.UIAutomation.Winforms.Events.ScrollBar
 		
 		#region Private Methods
 		
+#pragma warning disable 169		
+		
 		private void OnMaximumChangeChanged (object sender, SWF.ScrollEventArgs args)
 		{
 			if (args.Type == SWF.ScrollEventType.Last)
 				RaiseAutomationPropertyChangedEvent ();
 		}
+		
+#pragma warning restore 169
 		
 		#endregion
 	}

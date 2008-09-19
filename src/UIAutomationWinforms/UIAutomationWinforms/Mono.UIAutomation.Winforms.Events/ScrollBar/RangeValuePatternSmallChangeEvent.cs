@@ -71,12 +71,16 @@ namespace Mono.UIAutomation.Winforms.Events.ScrollBar
 		
 		#region Private Methods
 		
+#pragma warning disable 169
+		
 		private void OnSmallChangeChanged (object sender, SWF.ScrollEventArgs args)
 		{
 			if (args.Type == SWF.ScrollEventType.SmallDecrement
 			    || args.Type == SWF.ScrollEventType.SmallIncrement)
 				RaiseAutomationPropertyChangedEvent ();
 		}
+		
+#pragma warning restore 169
 		
 		#endregion
 	}

@@ -1,5 +1,29 @@
 2008-09-19  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated: Automation
+	  Event added.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Removed not used
+	  variables.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Events added:
+	  IsOffScreen and LabeledBy
+	* Mono.UIAutomation.Winforms/ToolTipListener.cs,
+	  Mono.UIAutomation.Winforms/HelpProviderListener.cs,
+	  Mono.UIAutomation.Winforms/ErrorProviderListener.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternMinimumEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternMaximumEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternSmallChangeEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternLargeChangeEvent.cs:
+	  Using #pragma.
+	* Mono.UIAutomation.Winforms.Events/AutomationIsOffscreenPropertyEvent.cs:
+	  Updated: using Resize and LocationChanged events.
+	* Mono.UIAutomation.Winforms.Events/BaseAutomationPropertyEvent.cs:
+	  Fixed reference comparation. Removed primitive debugging.
+	* Mono.UIAutomation.Winforms.Events/AutomationLabeledByPropertyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ProviderEventType.cs:
+	  LabeledByProperty added.
+
+2008-09-19  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Events/AutomationFocusChangedEvent.cs:
 	  Added GotFocus to generate event when control gets focus.
 

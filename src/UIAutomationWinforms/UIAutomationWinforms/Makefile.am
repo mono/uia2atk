@@ -72,6 +72,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/AutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationIsEnabledPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationIsOffscreenPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/AutomationLabeledByPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/BaseAutomationEvent.cs \
 	Mono.UIAutomation.Winforms.Events/BaseAutomationPropertyEvent.cs \

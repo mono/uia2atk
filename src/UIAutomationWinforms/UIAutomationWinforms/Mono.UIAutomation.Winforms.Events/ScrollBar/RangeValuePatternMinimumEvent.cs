@@ -72,11 +72,15 @@ namespace Mono.UIAutomation.Winforms.Events.ScrollBar
 		
 		#region Private Methods
 		
+#pragma warning disable 169
+		
 		private void OnMinimumChangeChanged (object sender, SWF.ScrollEventArgs args)
 		{
 			if (args.Type == SWF.ScrollEventType.First)
 				RaiseAutomationPropertyChangedEvent ();
 		}
+		
+#pragma warning restore 169		
 		
 		#endregion
 	}
