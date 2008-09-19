@@ -1,5 +1,9 @@
 2008-09-19  Mike Gorse <mgorse@novell.com>
 
+	* Gailtester.cs: Set name after checking for real, not before
+
+2008-09-19  Mike Gorse <mgorse@novell.com>
+
 	* Makefile.am: Added.
 
 2008-09-18  Andrés G. Aragoneses <aaragoneses@novell.com> 

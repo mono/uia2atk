@@ -109,15 +109,15 @@ namespace UiaAtkBridgeTest
 			switch (type) {
 			case BasicWidgetType.Label:
 				widget = new Gtk.Label ();
-				((Gtk.Label)widget).Text = text;
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealLabel (guiThread);
+				((Gtk.Label)widget).Text = text;
 				break;
 			case BasicWidgetType.NormalButton:
 				widget = new Gtk.Button ();
-				((Gtk.Button)widget).Label = text;
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealButton (guiThread);
+				((Gtk.Button)widget).Label = text;
 				break;
 			case BasicWidgetType.Window:
 				widget = new Gtk.Window (text);
@@ -126,9 +126,9 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.CheckBox:
 				widget = new Gtk.CheckButton ();
-				((Gtk.CheckButton)widget).Label = text;
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealCheckBox (guiThread);
+				((Gtk.CheckButton)widget).Label = text;
 				break;
 			case BasicWidgetType.RadioButton:
 				if (!real)
