@@ -81,6 +81,7 @@ bin/Release/GailTestApp.exe: ../../samples/managed/GailTestApp/bin/Release/GailT
 
 bin/Debug/UiaAtkBridgeTest.dll: ../UiaAtkBridgeTest/bin/Debug/UiaAtkBridgeTest.dll
 	cp -a $< $@
+	cp -a $<.mdb $@.mdb
 
 bin/Release/UiaAtkBridgeTest.dll: ../UiaAtkBridgeTest/bin/Release/UiaAtkBridgeTest.dll
 	cp -a $< $@

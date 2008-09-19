@@ -85,12 +85,14 @@ $(build_xamlg_list): %.xaml.g.cs: %.xaml
 
 bin/Debug/UIAutomationWinforms.dll: ../../UIAutomationWinforms/UIAutomationWinforms/bin/Debug/UIAutomationWinforms.dll
 	cp -a $< $@
+	cp -a $<.mdb $@.mdb
 
 bin/Release/UIAutomationWinforms.dll: ../../UIAutomationWinforms/UIAutomationWinforms/bin/Release/UIAutomationWinforms.dll
 	cp -a $< $@
 
 bin/Debug/UiaAtkBridge.dll: ../UiaAtkBridge/bin/Debug/UiaAtkBridge.dll
 	cp -a $< $@
+	cp -a $<.mdb $@.mdb
 
 bin/Release/UiaAtkBridge.dll: ../UiaAtkBridge/bin/Release/UiaAtkBridge.dll
 	cp -a $< $@
