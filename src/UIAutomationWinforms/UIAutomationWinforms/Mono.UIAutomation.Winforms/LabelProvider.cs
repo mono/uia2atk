@@ -56,7 +56,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeEvents ();
 			
-			SetEvent (ProviderEventType.TextChangedEvent, 
+			SetEvent (ProviderEventType.TextPatternTextChangedEvent,
 			          new TextPatternTextChangedEvent (this));
 		}
 

@@ -118,6 +118,8 @@ namespace Mono.UIAutomation.Winforms
 			          new AutomationHasKeyboardFocusPropertyEvent (this));
 			SetEvent (ProviderEventType.AutomationElementBoundingRectangleProperty,
 			          new AutomationBoundingRectanglePropertyEvent (this));
+			SetEvent (ProviderEventType.AutomationFocusChangedEvent,
+			          new AutomationFocusChangedEvent (this));
 			
 			//TODO: We need deeper tests before uncommenting this.
 //			SetEvent (ProviderEventType.StructureChangedEvent,

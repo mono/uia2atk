@@ -50,19 +50,21 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		public override void Connect (Control control)
 		{
-			control.GotFocus += new EventHandler (OnGotFocus);
+			control.GotFocus += new EventHandler (OnFocus);
+			control.LostFocus += new EventHandler (OnFocus);
 		}
 
 		public override void Disconnect (Control control)
 		{
-			control.GotFocus -= new EventHandler (OnGotFocus);
+			control.GotFocus -= new EventHandler (OnFocus);
+			control.LostFocus -= new EventHandler (OnFocus);
 		}
 		
 		#endregion
 		
 		#region Private Methods
 		
-		private void OnGotFocus (object sender, EventArgs e)
+		private void OnFocus (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}

@@ -76,14 +76,6 @@ namespace Mono.UIAutomation.Winforms
 			Control.ParentChanged -= new EventHandler (OnParentChanged);
 		}
 		
-		public override void InitializeEvents ()
-		{
-			base.InitializeEvents (); 
-
-			SetEvent (ProviderEventType.FocusChangedEvent,
-			          new AutomationFocusChangedEvent (this));
-		}
-		
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)

@@ -1,3 +1,15 @@
+2008-09-19  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/LabelProvider.cs,
+	  Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: TextPattern
+	  events updated.
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Generating event
+	  moved to SimpleControlProvider.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Added
+	  AutomationFocusChangedEvent.
+	* Mono.UIAutomation.Winforms.Events/AutomationHasKeyboardFocusPropertyEvent.cs:
+	  Added support to get LostFocus and GotFocus.
+
 2008-09-18  Mike Gorse <mgorse@novell.com>
 
 	* Mono.UIAutomation.WinForms/FormListener.cs: Add a key listener.
