@@ -298,6 +298,8 @@ namespace UiaAtkBridge
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) element;
 			if (!providerAdapterMapping.ContainsKey (simpleProvider))
+				HandleElementAddition (simpleProvider);
+			if (!providerAdapterMapping.ContainsKey (simpleProvider))
 				return;
 			
 			providerAdapterMapping [simpleProvider].RaiseAutomationPropertyChangedEvent (e);
