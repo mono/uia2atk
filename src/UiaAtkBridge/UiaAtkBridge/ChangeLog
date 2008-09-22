@@ -1,3 +1,9 @@
+2008-09-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Button.cs, ComponentAdapter.cs: Enabled and Sensitive states seem to
+	  be implemented by all widgets as default, so let's move the setting
+	  from Button to ComponentAdapter. [Should fix #428255.]
+
 2008-09-20  Mike Gorse <mgorse@novell.com>
 
 	* AutomationBridge.cs: Create adapters when a PropertyChanged

@@ -86,18 +86,6 @@ namespace UiaAtkBridge
 			else
 				states.RemoveState (Atk.StateType.Focusable);
 			
-			bool enabled = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
-			if (enabled)
-			{
-				states.AddState (Atk.StateType.Sensitive);
-				states.AddState (Atk.StateType.Enabled);
-			}
-			else
-			{
-				states.RemoveState (Atk.StateType.Sensitive);
-				states.RemoveState (Atk.StateType.Enabled);
-			}
-			
 			return states;
 		}
 
@@ -189,7 +177,7 @@ namespace UiaAtkBridge
 
 		public GLib.SList DefaultAttributes {
 			get {
-				throw new NotImplementedException();
+				throw new NotImplementedException ();
 			}
 		}
 

@@ -119,6 +119,20 @@ namespace UiaAtkBridge
 				states.AddState (Atk.StateType.Resizable);
 			else
 				states.RemoveState (Atk.StateType.Resizable);
+
+			bool enabled = 
+			  (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			if (enabled)
+			{
+				states.AddState (Atk.StateType.Sensitive);
+				states.AddState (Atk.StateType.Enabled);
+			}
+			else
+			{
+				states.RemoveState (Atk.StateType.Sensitive);
+				states.RemoveState (Atk.StateType.Enabled);
+			}
+			
 			return states;
 		}
 
