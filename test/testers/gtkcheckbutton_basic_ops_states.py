@@ -47,30 +47,39 @@ cbFrame.statesCheck(cbFrame.checkbox1, "CheckBox",
 #check checkbox2 states
 cbFrame.statesCheck(cbFrame.checkbox2, "CheckBox")
 
+#click action to check box1 and add 3 states
 cbFrame.checkbox1.click()
-# need a short delay when checking and unchecking the check boxes
 sleep(config.SHORT_DELAY)
 cbFrame.assertChecked(cbFrame.checkbox1)
 cbFrame.statesCheck(cbFrame.checkbox1, "CheckBox", 
                     add_states=["armed","focused","checked"])
 
+#click action to uncheck box1 and delete 2 states but still focus
 cbFrame.checkbox1.click()
 sleep(config.SHORT_DELAY)
 cbFrame.assertUnchecked(cbFrame.checkbox1)
 cbFrame.statesCheck(cbFrame.checkbox1, "CheckBox", 
                     add_states=["focused"])
 
+#mouseClick move focus and check to checkbox2,rise 'focused' 'checked' state
 cbFrame.checkbox2.mouseClick()
 sleep(config.SHORT_DELAY)
 cbFrame.assertChecked(cbFrame.checkbox2)
 cbFrame.statesCheck(cbFrame.checkbox2, "CheckBox", 
                     add_states=["focused","checked"])
 
+#uncheck checkbox2, delete 'checked' state but still focus
 cbFrame.checkbox2.mouseClick()
 sleep(config.SHORT_DELAY)
 cbFrame.assertUnchecked(cbFrame.checkbox2)
 cbFrame.statesCheck(cbFrame.checkbox2, "CheckBox", 
                     add_states=["focused"])
+
+#click action doesn't move focus
+cbFrame.checkbox1.click()
+sleep(config.SHORT_DELAY)
+cbFrame.statesCheck(cbFrame.checkbox1, "CheckBox", 
+                    add_states=["armed","checked"])
 
 cbFrame.quit()
 

@@ -203,7 +203,7 @@ VISITED = "visited"
 
 #list Button's all states
 class Button(object):
-    states = (SHOWING, ENABLED, FOCUSABLE, SENSITIVE, VISIBLE)
+    states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
 
 class RadioButton(Button):
     pass
@@ -212,7 +212,7 @@ class Label(object):
     states = (SHOWING, MULTI_LINE)
 
 class Form(object):
-    states = (SHOWING,)
+    states = (ENABLED, RESIZABLE, SENSITIVE, SHOWING, VISIBLE)
 
 class PictureBox(object):
     states = (SHOWING,)
@@ -220,8 +220,8 @@ class PictureBox(object):
 class Panel(object):
     states = (SHOWING,)
 
-class CheckBox(Button):
-    pass
+class CheckBox(object):
+    states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
 
 class VScrollBar(object):
     states = (SHOWING, VERTICAL)

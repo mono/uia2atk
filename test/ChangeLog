@@ -1,5 +1,11 @@
 2008-09-22  Calen Chen <cachen@novell.com>
 
+	*  testers/states.py: modify button, checkbox and form's states
+	*  testers/gtkcheckbutton_basic_ops_states.py: add comments and add 
+	click action to show it doesn't move focus
+
+2008-09-22  Calen Chen <cachen@novell.com>
+
 	*  testers/gtkcheckbutton/gtkcheckbuttonframe_states.py,
 	*  testers/gtkcheckbutton_basic_ops_states.py: add states 
 	test for checkbutton, use mouseClick to change keyboard focus then 
