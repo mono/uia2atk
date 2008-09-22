@@ -1,5 +1,11 @@
 2008-09-22  Calen Chen <cachen@novell.com>
 
+	*  testers/checkbox/checkboxframe.py: modify statesCheck to new way
+	*  testers/checkbox_basic_ops_states.py: update comments and add test 
+	to move focus and add test to check states's change
+
+2008-09-22  Calen Chen <cachen@novell.com>
+
 	*  testers/states.py: modify button, checkbox and form's states
 	*  testers/gtkcheckbutton_basic_ops_states.py: add comments and add 
 	click action to show it doesn't move focus
