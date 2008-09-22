@@ -1,5 +1,11 @@
 2008-09-22  Calen Chen <cachen@novell.com>
 
+	*  testers/gtkcheckbutton_basic_ops_states.py: use keyCombo to move 
+	focus then test 'focused' state for checkbutton2, and use mouseCLick to
+	move focus to checkbutton1. 
+
+2008-09-22  Calen Chen <cachen@novell.com>
+
 	*  testers/states.py: modify MULTI_LINE indicate
 	*  testers/label/labelframe.py: update statesCheck to diff actual 
 	states with expect states. I think that is a good way to print log if 
