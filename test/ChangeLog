@@ -1,3 +1,13 @@
+2008-09-22  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/helpers.py: File to hold generic functions that would
+	otherwise be duplicated in several (or all) application wrappers.
+	Added statesCheck to it.
+	* testers/gtkcheckbutton_basic_ops_states.py: Deleted and renamed to
+	gtkcheckbutton_states_check.py
+	* testers/gtkcheckbutton_states_check.py: Example of the new and
+	improved method to check all states of a single accessible.
+
 2008-09-22  Calen Chen <cachen@novell.com>
 
 	*  testers/gtkcheckbutton_basic_ops_states.py: use keyCombo to move 

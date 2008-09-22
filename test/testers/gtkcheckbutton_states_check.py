@@ -17,6 +17,7 @@ Test accessibility of checkbutton widget
 # imports
 from strongwind import *
 from gtkcheckbutton import *
+from helpers import *
 from sys import argv
 from os import path
 
@@ -41,48 +42,48 @@ if app is None:
 cbFrame = app.gtkCheckButtonFrame
 
 #check checkbox1 states with the keyboard focus
-cbFrame.statesCheck(cbFrame.checkbox1, "CheckBox", 
-                    add_states=["focused"])
+statesCheck(cbFrame.checkbox1, "CheckBox", add_states=["focused"])
 
 #check checkbox2 states
-cbFrame.statesCheck(cbFrame.checkbox2, "CheckBox")
+statesCheck(cbFrame.checkbox2, "CheckBox")
 
 #click action to check box1 and add 3 states
 cbFrame.checkbox1.click()
 sleep(config.SHORT_DELAY)
-cbFrame.statesCheck(cbFrame.checkbox1, "CheckBox", 
+statesCheck(cbFrame.checkbox1, "CheckBox", 
                     add_states=["armed","focused","checked"])
 
 #click action to uncheck box1 and delete 2 states but still focus
 cbFrame.checkbox1.click()
 sleep(config.SHORT_DELAY)
-cbFrame.statesCheck(cbFrame.checkbox1, "CheckBox", 
-                    add_states=["focused"])
+statesCheck(cbFrame.checkbox1, "CheckBox", add_states=["focused"])
 
 #click and use keyCombo to move focus to checkbox2,rise 'focused' 'checked' 
 #state
-cbFrame.checkbox2.click()
-cbFrame.keyCombo('Down')
+cbFrame.keyCombo('Down', grabFocus=False)
 sleep(config.SHORT_DELAY)
-cbFrame.statesCheck(cbFrame.checkbox2, "CheckBox", 
+statesCheck(cbFrame.checkbox2, "CheckBox", add_states=["focused"])
+cbFrame.keyCombo('Return', grabFocus=False)
+sleep(config.SHORT_DELAY)
+statesCheck(cbFrame.checkbox2, "CheckBox", 
                     add_states=["armed","focused","checked"])
 
 #click checkbox2 again, delete 'checked' state but still focus
 cbFrame.checkbox2.click()
 sleep(config.SHORT_DELAY)
-cbFrame.statesCheck(cbFrame.checkbox2, "CheckBox", 
-                    add_states=["focused"])
+statesCheck(cbFrame.checkbox2, "CheckBox", add_states=["focused"])
 
 #click checkbox1 doesn't move focus
 cbFrame.checkbox1.click()
 sleep(config.SHORT_DELAY)
-cbFrame.statesCheck(cbFrame.checkbox1, "CheckBox", 
+statesCheck(cbFrame.checkbox1, "CheckBox", 
                     add_states=["armed","checked"])
+statesCheck(cbFrame.checkbox2, "CheckBox", add_states=["focused"])
 
 #use mouseClick to uncheck checkbox1, delete 'checked' state but still focus
 cbFrame.checkbox1.mouseClick()
 sleep(config.SHORT_DELAY)
-cbFrame.statesCheck(cbFrame.checkbox1, "CheckBox", 
+statesCheck(cbFrame.checkbox1, "CheckBox", 
                     add_states=["focused"])
 
 cbFrame.quit()
