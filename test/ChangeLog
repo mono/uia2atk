@@ -1,3 +1,10 @@
+2008-09-22  Calen Chen <cachen@novell.com>
+
+	*  testers/gtkcheckbutton/gtkcheckbuttonframe_states.py,
+	*  testers/gtkcheckbutton_basic_ops_states.py: add states 
+	test for checkbutton, use mouseClick to change keyboard focus then 
+	test 'focused' state for checkbutton2
+
 2008-09-19  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/local_run.py: Added timeouts for individual tests that take
