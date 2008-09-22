@@ -44,8 +44,8 @@ if app is None:
 # just an alias to make things shorter
 lFrame = app.labelFrame
 
-#check Label's states list
-lFrame.statesCheck(lFrame.label)
+#check Label's default states
+lFrame.statesCheck(lFrame.label, "Label")
 
 #click button2 to change label text
 lFrame.click(lFrame.button)
@@ -56,6 +56,9 @@ lFrame.assertLabel('You have clicked me 1 times')
 lFrame.click(lFrame.button)
 sleep(config.SHORT_DELAY)
 lFrame.assertText('You have clicked me 2 times')
+
+#check lable's states again after update text
+lFrame.statesCheck(lFrame.label, "Label")
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

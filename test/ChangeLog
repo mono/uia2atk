@@ -1,5 +1,14 @@
 2008-09-22  Calen Chen <cachen@novell.com>
 
+	*  testers/states.py: modify MULTI_LINE indicate
+	*  testers/label/labelframe.py: update statesCheck to diff actual 
+	states with expect states. I think that is a good way to print log if 
+	missing or extraneous more than two states
+	*  testers/label_basic_ops.py: update statesCheck way, add states check 
+	after update label's text
+
+2008-09-22  Calen Chen <cachen@novell.com>
+
 	*  testers/checkbox/checkboxframe.py: modify statesCheck to new way
 	*  testers/checkbox_basic_ops_states.py: update comments and add test 
 	to move focus and add test to check states's change

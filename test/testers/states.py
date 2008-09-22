@@ -63,7 +63,7 @@ ICONIFIED = "iconified"
 MODAL = "modal"
 
 # Indicates this (text) object can contain multiple lines of text
-MULTI_LINE = "multi_line"
+MULTI_LINE = "multi line"
 
 #Indicates this object allows more than one of its children to be selected at
 # the same time, or in the case of text objects, that the object supports
