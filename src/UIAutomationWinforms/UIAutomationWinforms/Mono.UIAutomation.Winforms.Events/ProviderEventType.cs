@@ -37,6 +37,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		AutomationElementHasKeyboardFocusProperty,
 		AutomationElementBoundingRectangleProperty,
 		AutomationElementLabeledByProperty,
+		AutomationElementIsKeyboardFocusableProperty,
 		//Automation Events
 		AutomationFocusChangedEvent,
 		//Text Pattern

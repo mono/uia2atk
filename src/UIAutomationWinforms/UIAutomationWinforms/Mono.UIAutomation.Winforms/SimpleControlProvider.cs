@@ -123,6 +123,8 @@ namespace Mono.UIAutomation.Winforms
 			          new AutomationFocusChangedEvent (this));
 			SetEvent (ProviderEventType.AutomationElementLabeledByProperty,
 			          new AutomationLabeledByPropertyEvent (this));
+			SetEvent (ProviderEventType.AutomationElementIsKeyboardFocusableProperty,
+			          new AutomationIsKeyboardFocusablePropertyEvent (this));
 			
 			//TODO: We need deeper tests before uncommenting this.
 //			SetEvent (ProviderEventType.StructureChangedEvent,

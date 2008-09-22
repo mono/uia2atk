@@ -71,6 +71,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/AutomationFocusChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationIsEnabledPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/AutomationIsKeyboardFocusablePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationLabeledByPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationNamePropertyEvent.cs \

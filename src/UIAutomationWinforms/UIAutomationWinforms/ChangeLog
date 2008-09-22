@@ -1,3 +1,13 @@
+2008-09-22  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am,
+	  Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: Automation
+	  Event added: IsKeyboardFocusableProperty.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Setting
+	  Automation Event IsKeyboardFocusable.
+	* Mono.UIAutomation.Winforms.Events/AutomationIsKeyboardFocusablePropertyEvent.cs:
+	  File added represents Automation Event IsKeyboardFocusable.
+
 2008-09-19  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated added
