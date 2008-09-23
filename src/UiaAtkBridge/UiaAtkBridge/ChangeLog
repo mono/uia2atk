@@ -1,3 +1,7 @@
+2008-09-23  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* ComponentAdapter.cs: Fix build.
+
 2008-09-22  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Button.cs, ComponentAdapter.cs: Enabled and Sensitive states seem to

@@ -30,7 +30,7 @@ namespace UiaAtkBridge
 {
 	public abstract class ComponentAdapter : Adapter, Atk.ComponentImplementor
 	{
-		public ComponentAdapter()
+		public ComponentAdapter ()
 		{
 			componentExpert = new ComponentImplementorHelper (this);
 		}
@@ -121,7 +121,7 @@ namespace UiaAtkBridge
 				states.RemoveState (Atk.StateType.Resizable);
 
 			bool enabled = 
-			  (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			  (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
 			if (enabled)
 			{
 				states.AddState (Atk.StateType.Sensitive);
