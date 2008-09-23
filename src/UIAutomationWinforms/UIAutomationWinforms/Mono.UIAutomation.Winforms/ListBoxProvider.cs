@@ -23,6 +23,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Automation;
@@ -64,8 +65,7 @@ namespace Mono.UIAutomation.Winforms
 			    || (hscrollbar.Visible == true && hscrollbar.Enabled == true))
 				SetScrollPatternBehavior ();
 		
-			//Let's associate SWF.ListBox events to generate ListProvider events used by SelectionPattern
-			listboxControl.SelectedIndexChanged += new EventHandler (OnGenerateSelectionPatternsEvents);
+			InitializeSelectionPatternEvents ();
 		}
 
 		#endregion
@@ -94,7 +94,7 @@ namespace Mono.UIAutomation.Winforms
 			hscrollbar.VisibleChanged -= new EventHandler (UpdateHScrollBehaviorVisible);
 			hscrollbar.EnabledChanged -= new EventHandler (UpdateHScrollBehaviorEnable);
 			
-			listboxControl.SelectedIndexChanged -= new EventHandler (OnGenerateSelectionPatternsEvents);
+			FinalizeSelectionPatternEvents ();
 		}
 		
 		#endregion
@@ -254,12 +254,67 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Methods
 		
-		private void OnGenerateSelectionPatternsEvents (object sender, EventArgs args)
+		private void InitializeSelectionPatternEvents ()
+		{
+			try {
+				Helper.AddPrivateEvent (typeof (ListBox.SelectedIndexCollection), 
+				                        listboxControl.SelectedIndices, 
+				                        "UIACollectionChanged",
+				                        this, 
+				                        "OnSelectedCollectionChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
+			}
+			
+			try {
+				Helper.AddPrivateEvent (typeof (ListBox), 
+				                        listboxControl, 
+				                        "UIASelectionModeChanged",
+				                        this, 
+				                        "OnSelectionModeChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIASelectionModeChanged not defined", GetType ());
+			}
+
+		}
+		
+		private void FinalizeSelectionPatternEvents ()
+		{
+			try {
+				Helper.RemovePrivateEvent (typeof (ListBox.SelectedIndexCollection), 
+				                           listboxControl.SelectedIndices, 
+				                           "UIACollectionChanged",
+				                           this, 
+				                           "OnSelectedCollectionChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
+			}
+			
+			try {
+				Helper.RemovePrivateEvent (typeof (ListBox), 
+				                           listboxControl, 
+				                           "UIASelectionModeChanged",
+				                           this, 
+				                           "OnSelectionModeChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIASelectionModeChanged not defined", GetType ());
+			}			
+		}
+
+#pragma warning disable 169		
+		
+		private void OnSelectedCollectionChanged (object sender, CollectionChangeEventArgs args)
 		{
 			OnSelectionChanged ();
 			OnSelectionRequiredChanged ();
-			//TODO: Add OnCanSelectMultipleChanged
 		}
+		
+		private void OnSelectionModeChanged (object sender, EventArgs args)
+		{
+			OnCanSelectMultipleChanged ();
+		}
+		
+#pragma warning restore 169
 		
 		#endregion
 

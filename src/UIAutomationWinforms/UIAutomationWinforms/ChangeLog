@@ -1,5 +1,11 @@
 2008-09-22  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Generating
+	  CanSelectMultipleChanged event. Updated to use internal events to
+	  generate SelectionCollectionChanged event.
+
+2008-09-22  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am,
 	  Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: Automation
 	  Event added: IsKeyboardFocusableProperty.
