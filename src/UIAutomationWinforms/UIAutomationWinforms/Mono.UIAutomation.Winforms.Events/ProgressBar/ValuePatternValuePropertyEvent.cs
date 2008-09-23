@@ -27,74 +27,43 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ProgressBar;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ProgressBar
+namespace Mono.UIAutomation.Winforms.Events.ProgressBar
 {
-	internal class ValueProviderBehavior : ProviderBehavior, IValueProvider
+	internal class ValuePatternValuePropertyEvent : BaseAutomationPropertyEvent
 	{
-		#region Constructors
-		
-		public ValueProviderBehavior (ProgressBarProvider provider) 
-			: base (provider)
+		#region Constructor
+
+		public ValuePatternValuePropertyEvent (IRawElementProviderSimple provider)
+			: base (provider, ValuePatternIdentifiers.ValueProperty)
 		{
-			this.progressBar = (SWF.ProgressBar) Provider.Control;
 		}
 		
 		#endregion
-
-		#region IProviderBehavior Interface		
 		
-		public override AutomationPattern ProviderPattern { 
-			get { return ValuePatternIdentifiers.Pattern; }
-		}
+		#region IConnectable Overrides
 
 		public override void Connect (SWF.Control control)
 		{
-			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
-			                   new ValuePatternValuePropertyEvent (Provider));
+			((SWF.ProgressBar) control).TextChanged
+				+= new EventHandler (OnValueChanged);
 		}
-		
+
 		public override void Disconnect (SWF.Control control)
 		{
-			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
-			                   null);
+			((SWF.ProgressBar) control).TextChanged
+				-= new EventHandler (OnValueChanged);
 		}
-
-		public override object GetPropertyValue (int propertyId)
+		
+		#endregion 
+		
+		#region Private Methods
+		
+		private void OnValueChanged (object sender, EventArgs args)
 		{
-			if (propertyId == ValuePatternIdentifiers.ValueProperty.Id)
-				return Value;
-			else if (propertyId == ValuePatternIdentifiers.IsReadOnlyProperty.Id)
-				return IsReadOnly;
-			else
-				return base.GetPropertyValue (propertyId);
+			RaiseAutomationPropertyChangedEvent ();
 		}
-
-		#endregion
-			
-		#region IValueProvider Members
-		
-		public string Value {
-			get { return progressBar.Text; }
-		}
-		
-		public bool IsReadOnly {
-			get { return true; }
-		}		
-
-		public void SetValue (string value)
-		{
-			throw new InvalidOperationException ();
-		}
-
-		#endregion
-		
-		#region Private Fields
-		
-		private SWF.ProgressBar progressBar;
 		
 		#endregion
 	}

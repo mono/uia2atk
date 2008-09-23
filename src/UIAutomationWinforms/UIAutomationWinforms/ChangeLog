@@ -1,3 +1,30 @@
+2008-09-23  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: File updated: Added file
+	  Events/ProgressBar/ValuePatternValuePropertyEvent.cs
+	
+	  
+	
+	  Patch written by: Neville Gao
+	
+	  [Fixes part of bug #428917]
+	* Mono.UIAutomation.Winforms.Behaviors/ProgressBar/ValueProviderBehavior.cs:
+	  ValuePattern.ValueProperty event supported.
+	
+	  
+	
+	  Patch written by: Neville Gao
+	
+	  [Fixes part of bug #428917]
+	* Mono.UIAutomation.Winforms.Events/ProgressBar/ValuePatternValuePropertyEvent.cs:
+	  File added: Represents ValueProperty.
+	
+	  
+	
+	  Patch written by: Neville Gao
+	
+	  [Fixes part of bug #428917]
+
 2008-09-22  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Generating

@@ -91,6 +91,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/List/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListItem/SelectionItemPatternElementAddedToSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ProgressBar/ValuePatternValuePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/ButtonInvokePatternInvokedEvent.cs \
