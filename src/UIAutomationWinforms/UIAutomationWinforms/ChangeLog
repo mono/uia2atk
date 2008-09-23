@@ -1,5 +1,10 @@
 2008-09-23  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Commented
+	  because of NRE in bridge.
+
+2008-09-23  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Updated
 	  SetBehavior method to generated IsXXXPatternAvaliableProperty
 	  Automation Event.

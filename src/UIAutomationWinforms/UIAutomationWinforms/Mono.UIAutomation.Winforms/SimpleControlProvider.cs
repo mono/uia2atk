@@ -183,9 +183,10 @@ namespace Mono.UIAutomation.Winforms
 					behavior.Connect (Control);
 			}
 			
-			if ((exists == true && behavior == null)
-			    || (exists == false && behavior != null))
-				GenerateIsPatternEnabledEvent (pattern);
+			//NOTE: Uncommend when fixed.
+//			if ((exists == true && behavior == null)
+//			    || (exists == false && behavior != null))
+//				GenerateIsPatternEnabledEvent (pattern);
 		}
 		
 		protected IProviderBehavior GetBehavior (AutomationPattern pattern)
