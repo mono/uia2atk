@@ -15,8 +15,47 @@ application wrappers.
 """
 
 import states
+import actions
 from strongwind import *
 
+ #check actions
+def actionsCheck(accessible, control):
+    """Check the actions of an accessible using the default actions
+    of the accessible (specified by control class in actions.py) as
+    the default expected actions.
+   
+    Keyword arguments:
+    accessible -- the accessible whose actions will be checked
+    control -- the class name of the control whose actions we want to check
+
+    """
+    procedurelogger.action('Check %s\'s actions' % accessible)
+
+    #get list of expected actions 
+    expected_actions = actions.__getattribute__(control).actions
+
+    #get list of actual actions of the accessible
+    qa = accessible._accessible.queryAction()
+    actual_actions = [qa.getName(i) for i in range(qa.nActions)]
+
+    sleep(config.SHORT_DELAY)
+
+    procedurelogger.expectedResult('Actions: %s' % actual_actions)
+
+    #get a list of actual states that are missing or extraneous
+    missing_actions = set(expected_actions).difference(set(actual_actions))
+    extra_actions = set(actual_actions).difference(set(expected_actions))
+
+    #if missing_actions and extra_actions are empty, the test case passes
+    #otherwise, throw an exception
+    is_same = len(missing_actions) == 0 and len(extra_actions) == 0
+    assert is_same, "\n  %s: %s\n  %s: %s" %\
+                                         ("Missing actual actions: ",
+                                           missing_actions,
+                                          "Extraneous actual actions: ",
+                                           extra_actions)
+
+#check states
 def statesCheck(accessible, control, invalid_states=[], add_states=[]):
     """Check the states of an accessible using the default states
     of the accessible (specified by control class in states.py) as
@@ -37,6 +76,8 @@ def statesCheck(accessible, control, invalid_states=[], add_states=[]):
     expected_states = \
               [s for s in states_list if s not in invalid_states]
     expected_states = set(expected_states).union(set(add_states))
+
+    sleep(config.SHORT_DELAY)
 
     procedurelogger.expectedResult('States:  %s' % expected_states)
 

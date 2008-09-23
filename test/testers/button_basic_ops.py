@@ -19,6 +19,7 @@ import os
 
 from strongwind import *
 from button import *
+from helpers import *
 from sys import argv
 from os import path
 
@@ -43,30 +44,48 @@ if app is None:
 bFrame = app.buttonFrame
 
 #check Button's actions list
-bFrame.actionsCheck(bFrame.button1)
+actionsCheck(bFrame.button1, "Button")
+actionsCheck(bFrame.button2, "Button")
+actionsCheck(bFrame.button3, "Button")
 
-#check Button's states list
-bFrame.statesCheck(bFrame.button1, 'Button')
-bFrame.statesCheck(bFrame.button2, 'Button')
-bFrame.statesCheck(bFrame.button3, "Button", invalid_states=["sensitive", "enabled"])
+#check Button's original states
+statesCheck(bFrame.button1, "Button")
+statesCheck(bFrame.button2, "Button")
+statesCheck(bFrame.button3, "Button", 
+                   invalid_states=["focusable","sensitive", "enabled"])
+
+#move keyboard focus to button1, rise 'focused' state
+bFrame.keyCombo("Down", grabFocus=False)
+statesCheck(bFrame.button1, "Button", add_states=["focused"])
+
+#move keyboard focus to button2 to rise 'focused' state, button1 get rid of
+#'focused' state
+bFrame.keyCombo("Down", grabFocus=False)
+statesCheck(bFrame.button2, "Button", add_states=["focused"])
+statesCheck(bFrame.button1, "Button")
+
+#can't focus insensitive button3, states invariable
+bFrame.keyCombo("Down", grabFocus=False)
+statesCheck(bFrame.button3, "Button", 
+                   invalid_states=["focusable","sensitive", "enabled"])
 
 #click button1 rise message frame window
 bFrame.click(bFrame.button1)
 sleep(config.SHORT_DELAY)
 bFrame.assertMessage()
 
-#click button2 change label text
+#click button2 to change label text
 bFrame.click(bFrame.button2)
 sleep(config.SHORT_DELAY)
 bFrame.assertLabel('You have clicked me 1 times')
 
-#click button2 change label text
+#click button2 again to change label text
 bFrame.click(bFrame.button2)
 sleep(config.SHORT_DELAY)
 bFrame.assertLabel('You have clicked me 2 times')
 
 #click button3
-bFrame.click(bFrame.button3)
+bFrame.mouseClick(bFrame.button3)
 sleep(config.SHORT_DELAY)
 bFrame.assertLabel('You have clicked me 2 times')
 

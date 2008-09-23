@@ -1,3 +1,18 @@
+2008-09-23  Calen Chen <cachen@novell.com>
+
+	* testers/helpers.py: add actionCheck, add sleep time before 
+	expectedResult
+	* testers/button_basic_ops.py: modify action test, keyCombo move 
+	keyboard to test focused state, use mouseClick to test insensitive 
+	button3's click action (in face it's insignificance to use mouseClick, 
+	however we can't use button.click() because button3 is not sensitive, 
+	but stronwind click() and _doAction() instance have that determine, 
+	maybe we should ask strongwind delete this determine, because perform 
+	action for insensitive widget sometimes would cause issues, so it's 
+	necessary to be test)
+	* testers/button/buttonframe.py: move actionCheck to helpers.py
+
+
 2008-09-22  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/helpers.py: File to hold generic functions that would
