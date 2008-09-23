@@ -26,54 +26,45 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.StatusBar
+namespace Mono.UIAutomation.Winforms.Events.ProgressBar
 {
-	//FIXME: Subclass from BaseAutomationPropertyEvent
-
-	internal class GridPatternRowCountPropertyEvent : ProviderEvent
+	internal class ValuePatternValueEvent : BaseAutomationPropertyEvent
 	{
-		
-#region Constructor
+		#region Constructor
 
-		public GridPatternRowCountPropertyEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+		public ValuePatternValueEvent (IRawElementProviderSimple provider)
+			: base (provider, ValuePatternIdentifiers.ValueProperty)
 		{
 		}
 		
-#endregion
+		#endregion
 		
-#region ProviderEvent Methods
+		#region IConnectable Overrides
 
-		public override void Connect (Control control)
+		public override void Connect (SWF.Control control)
 		{
-			control.ControlAdded += new ControlEventHandler (OnRowCountChanged);
-			control.ControlRemoved += new ControlEventHandler (OnRowCountChanged);
+			((SWF.ProgressBar) control).TextChanged
+				+= new EventHandler (OnValueChanged);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect (SWF.Control control)
 		{
-			control.ControlAdded -= new ControlEventHandler (OnRowCountChanged);
-			control.ControlRemoved -= new ControlEventHandler (OnRowCountChanged);
+			((SWF.ProgressBar) control).TextChanged
+				-= new EventHandler (OnValueChanged);
 		}
 		
-#endregion 
+		#endregion 
 		
-#region Protected methods
+		#region Private Methods
 		
-		protected void OnRowCountChanged (object sender, EventArgs e)
+		private void OnValueChanged (object sender, EventArgs args)
 		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (GridPatternIdentifiers.RowCountProperty,
-					                                        null,
-					                                        Provider.GetPropertyValue (GridPatternIdentifiers.RowCountProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
-			}
+			RaiseAutomationPropertyChangedEvent ();
 		}
-
-#endregion
 		
+		#endregion
 	}
 }

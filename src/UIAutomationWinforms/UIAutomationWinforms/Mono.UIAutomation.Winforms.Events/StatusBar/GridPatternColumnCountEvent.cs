@@ -26,45 +26,54 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Events;
+using System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms.Events.ProgressBar
+namespace Mono.UIAutomation.Winforms.Events.StatusBar
 {
-	internal class ValuePatternValuePropertyEvent : BaseAutomationPropertyEvent
+	//FIXME: Subclass from BaseAutomationPropertyEvent
+
+	internal class GridPatternColumnCountEvent : ProviderEvent
 	{
-		#region Constructor
+		
+#region Constructor
 
-		public ValuePatternValuePropertyEvent (IRawElementProviderSimple provider)
-			: base (provider, ValuePatternIdentifiers.ValueProperty)
+		public GridPatternColumnCountEvent (IRawElementProviderSimple provider) 
+			: base (provider)
 		{
 		}
 		
-		#endregion
+#endregion
 		
-		#region IConnectable Overrides
+#region ProviderEvent Methods
 
-		public override void Connect (SWF.Control control)
+		public override void Connect (Control control)
 		{
-			((SWF.ProgressBar) control).TextChanged
-				+= new EventHandler (OnValueChanged);
+			control.ControlAdded += new ControlEventHandler (OnColumnCountChanged);
+			control.ControlRemoved += new ControlEventHandler (OnColumnCountChanged);
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect (Control control)
 		{
-			((SWF.ProgressBar) control).TextChanged
-				-= new EventHandler (OnValueChanged);
+			control.ControlAdded -= new ControlEventHandler (OnColumnCountChanged);
+			control.ControlRemoved -= new ControlEventHandler (OnColumnCountChanged);
 		}
 		
-		#endregion 
+#endregion 
 		
-		#region Private Methods
+#region Protected methods
 		
-		private void OnValueChanged (object sender, EventArgs args)
+		protected void OnColumnCountChanged (object sender, EventArgs e)
 		{
-			RaiseAutomationPropertyChangedEvent ();
+			if (AutomationInteropProvider.ClientsAreListening) {
+				AutomationPropertyChangedEventArgs args =
+					new AutomationPropertyChangedEventArgs (GridPatternIdentifiers.ColumnCountProperty,
+					                                        null,
+					                                        Provider.GetPropertyValue (GridPatternIdentifiers.ColumnCountProperty.Id));
+				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
+			}
 		}
+
+#endregion
 		
-		#endregion
 	}
 }

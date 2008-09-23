@@ -54,7 +54,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ProgressBar
 		public override void Connect (SWF.Control control)
 		{
 			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
-			                   new ValuePatternValuePropertyEvent (Provider));
+			                   new ValuePatternValueEvent (Provider));
 		}
 		
 		public override void Disconnect (SWF.Control control)

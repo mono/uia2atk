@@ -55,9 +55,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 		public override void Connect (Control control) 
 		{
 			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
-			                   new ValuePatternValuePropertyEvent (Provider));
+			                   new ValuePatternValueEvent (Provider));
 			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
-			                   new ValuePatternValueIsReadOnlyEvent (Provider));
+			                   new ValuePatternIsReadOnlyEvent (Provider));
 		}
 		
 		public override void Disconnect (Control control)

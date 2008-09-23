@@ -78,11 +78,11 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/BaseAutomationEvent.cs \
 	Mono.UIAutomation.Winforms.Events/BaseAutomationPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Button/InvokePatternInvokedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/CheckBox/TogglePatternToggleStatePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/CheckBox/TogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ExpandCollapsePatternStateEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValueIsReadOnlyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValuePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternIsReadOnlyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBoxItem/SelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Label/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/LinkLabel/InvokePatternInvokedEvent.cs \
@@ -91,7 +91,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/List/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListItem/SelectionItemPatternElementAddedToSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ProgressBar/ValuePatternValuePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ProgressBar/ValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/ButtonInvokePatternInvokedEvent.cs \
@@ -101,8 +101,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternMinimumEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternSmallChangeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternValueEvent.cs \
-	Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountPropertyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternRowCountPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountEvent.cs \
+	Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternRowCountEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/HasKeyBoardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueIsReadOnlyEvent.cs \

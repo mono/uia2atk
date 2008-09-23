@@ -56,9 +56,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 		public override void Connect (SWF.Control control)
 		{
 			Provider.SetEvent (ProviderEventType.GridPatternRowCountProperty,
-			                   new GridPatternRowCountPropertyEvent (Provider));
+			                   new GridPatternRowCountEvent (Provider));
 			Provider.SetEvent (ProviderEventType.GridPatternColumnCountProperty,
-			                   new GridPatternColumnCountPropertyEvent (Provider));
+			                   new GridPatternColumnCountEvent (Provider));
 		}
 		
 		public override void Disconnect (SWF.Control control)

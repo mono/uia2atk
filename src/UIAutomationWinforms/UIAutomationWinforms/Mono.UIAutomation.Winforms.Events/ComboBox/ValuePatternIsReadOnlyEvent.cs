@@ -25,47 +25,47 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using SWF = System.Windows.Forms;
+using System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.CheckBox
+namespace Mono.UIAutomation.Winforms.Events.ComboBox
 {
 
-	internal class TogglePatternToggleStatePropertyEvent 
+	internal class ValuePatternIsReadOnlyEvent 
 		: BaseAutomationPropertyEvent
 	{
+		
+		#region Constructor
 
-		#region Constructors
-
-		public TogglePatternToggleStatePropertyEvent (IRawElementProviderFragment toggleProvider)
-			: base (toggleProvider,
-			        TogglePatternIdentifiers.ToggleStateProperty)
+		public ValuePatternIsReadOnlyEvent (IRawElementProviderSimple provider) 
+			: base (provider,
+			        ValuePatternIdentifiers.IsReadOnlyProperty)
 		{
 		}
 		
 		#endregion
 		
-		#region IConnectable Overrides
-	
-		public override void Connect (SWF.Control control)
+		#region ProviderEvent Methods
+
+		public override void Connect (Control control)
 		{
-			((SWF.CheckBox) control).CheckedChanged += new EventHandler (OnCheckChanged);
+			control.EnabledChanged += new EventHandler (OnIsReadOnlyChanged);
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect (Control control)
 		{
-			((SWF.CheckBox) control).CheckedChanged -= new EventHandler (OnCheckChanged);
+			control.EnabledChanged -= new EventHandler (OnIsReadOnlyChanged);
 		}
 		
-		#endregion
+		#endregion 
 		
-		#region Private Methods
+		#region Protected methods
 		
-		private void OnCheckChanged (object sender, EventArgs e)
+		private void OnIsReadOnlyChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
 
 		#endregion
-		
 	}
 }

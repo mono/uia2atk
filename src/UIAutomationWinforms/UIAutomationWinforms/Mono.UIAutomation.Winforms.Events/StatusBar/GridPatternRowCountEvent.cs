@@ -32,12 +32,12 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 {
 	//FIXME: Subclass from BaseAutomationPropertyEvent
 
-	internal class GridPatternColumnCountPropertyEvent : ProviderEvent
+	internal class GridPatternRowCountEvent : ProviderEvent
 	{
 		
 #region Constructor
 
-		public GridPatternColumnCountPropertyEvent (IRawElementProviderSimple provider) 
+		public GridPatternRowCountEvent (IRawElementProviderSimple provider) 
 			: base (provider)
 		{
 		}
@@ -48,27 +48,27 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 
 		public override void Connect (Control control)
 		{
-			control.ControlAdded += new ControlEventHandler (OnColumnCountChanged);
-			control.ControlRemoved += new ControlEventHandler (OnColumnCountChanged);
+			control.ControlAdded += new ControlEventHandler (OnRowCountChanged);
+			control.ControlRemoved += new ControlEventHandler (OnRowCountChanged);
 		}
 
 		public override void Disconnect (Control control)
 		{
-			control.ControlAdded -= new ControlEventHandler (OnColumnCountChanged);
-			control.ControlRemoved -= new ControlEventHandler (OnColumnCountChanged);
+			control.ControlAdded -= new ControlEventHandler (OnRowCountChanged);
+			control.ControlRemoved -= new ControlEventHandler (OnRowCountChanged);
 		}
 		
 #endregion 
 		
 #region Protected methods
 		
-		protected void OnColumnCountChanged (object sender, EventArgs e)
+		protected void OnRowCountChanged (object sender, EventArgs e)
 		{
 			if (AutomationInteropProvider.ClientsAreListening) {
 				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (GridPatternIdentifiers.ColumnCountProperty,
+					new AutomationPropertyChangedEventArgs (GridPatternIdentifiers.RowCountProperty,
 					                                        null,
-					                                        Provider.GetPropertyValue (GridPatternIdentifiers.ColumnCountProperty.Id));
+					                                        Provider.GetPropertyValue (GridPatternIdentifiers.RowCountProperty.Id));
 				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
 			}
 		}

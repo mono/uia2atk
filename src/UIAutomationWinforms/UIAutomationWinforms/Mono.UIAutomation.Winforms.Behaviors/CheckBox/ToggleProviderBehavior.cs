@@ -52,7 +52,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.CheckBox
 		public override void Connect (SWF.Control control)
 		{
 			Provider.SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
-			                   new TogglePatternToggleStatePropertyEvent (Provider));
+			                   new TogglePatternToggleStateEvent (Provider));
 		}
 		
 		public override void Disconnect (SWF.Control control)

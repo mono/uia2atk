@@ -31,15 +31,15 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms.Events.ComboBox
 {
 
-	internal class ValuePatternValueIsReadOnlyEvent 
+	internal class ValuePatternValueEvent 
 		: BaseAutomationPropertyEvent
 	{
 		
 		#region Constructor
 
-		public ValuePatternValueIsReadOnlyEvent (IRawElementProviderSimple provider) 
+		public ValuePatternValueEvent (IRawElementProviderSimple provider) 
 			: base (provider,
-			        ValuePatternIdentifiers.IsReadOnlyProperty)
+			        ValuePatternIdentifiers.ValueProperty)
 		{
 		}
 		
@@ -49,23 +49,24 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 
 		public override void Connect (Control control)
 		{
-			control.EnabledChanged += new EventHandler (OnIsReadOnlyChanged);
+			control.TextChanged += new EventHandler (OnValueChanged);
 		}
 
 		public override void Disconnect (Control control)
 		{
-			control.EnabledChanged -= new EventHandler (OnIsReadOnlyChanged);
+			control.TextChanged -= new EventHandler (OnValueChanged);
 		}
 		
 		#endregion 
 		
 		#region Protected methods
 		
-		private void OnIsReadOnlyChanged (object sender, EventArgs e)
+		private void OnValueChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
 
 		#endregion
+		
 	}
 }

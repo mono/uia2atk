@@ -25,43 +25,42 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Events;
+using SWF = System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms.Events.ComboBox
+namespace Mono.UIAutomation.Winforms.Events.CheckBox
 {
 
-	internal class ValuePatternValuePropertyEvent 
+	internal class TogglePatternToggleStateEvent 
 		: BaseAutomationPropertyEvent
 	{
-		
-		#region Constructor
 
-		public ValuePatternValuePropertyEvent (IRawElementProviderSimple provider) 
-			: base (provider,
-			        ValuePatternIdentifiers.ValueProperty)
+		#region Constructors
+
+		public TogglePatternToggleStateEvent (IRawElementProviderFragment toggleProvider)
+			: base (toggleProvider,
+			        TogglePatternIdentifiers.ToggleStateProperty)
 		{
 		}
 		
 		#endregion
 		
-		#region ProviderEvent Methods
-
-		public override void Connect (Control control)
+		#region IConnectable Overrides
+	
+		public override void Connect (SWF.Control control)
 		{
-			control.TextChanged += new EventHandler (OnValueChanged);
+			((SWF.CheckBox) control).CheckedChanged += new EventHandler (OnCheckChanged);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect (SWF.Control control)
 		{
-			control.TextChanged -= new EventHandler (OnValueChanged);
+			((SWF.CheckBox) control).CheckedChanged -= new EventHandler (OnCheckChanged);
 		}
 		
-		#endregion 
+		#endregion
 		
-		#region Protected methods
+		#region Private Methods
 		
-		private void OnValueChanged (object sender, EventArgs e)
+		private void OnCheckChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
