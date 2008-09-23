@@ -183,10 +183,9 @@ namespace Mono.UIAutomation.Winforms
 					behavior.Connect (Control);
 			}
 			
-			//NOTE: Uncommend when fixed.
-//			if ((exists == true && behavior == null)
-//			    || (exists == false && behavior != null))
-//				GenerateIsPatternEnabledEvent (pattern);
+			if ((exists == true && behavior == null)
+			    || (exists == false && behavior != null))
+				GenerateIsPatternEnabledEvent (pattern);
 		}
 		
 		protected IProviderBehavior GetBehavior (AutomationPattern pattern)
@@ -417,7 +416,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void GenerateIsPatternEnabledEvent (AutomationPattern pattern)
 		{
-			if (AutomationInteropProvider.ClientsAreListening == false)
+			if (AutomationInteropProvider.ClientsAreListening == false
+			    || navigation == null || navigation.Navigate (NavigateDirection.Parent) == null)
 				return;
 			
 			AutomationProperty property = null;
