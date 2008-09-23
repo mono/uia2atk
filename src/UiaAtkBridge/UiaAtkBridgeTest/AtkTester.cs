@@ -230,7 +230,7 @@ namespace UiaAtkBridgeTest
 			
 			string accessibleName = null;
 			if (type == BasicWidgetType.ParentMenu)
-				accessibleName = names[0];
+				accessibleName = names [0];
 			else if (type == BasicWidgetType.ListBox)
 				// Not sure if this is right; setting so I can test other things -MPG
 				accessibleName = String.Empty;

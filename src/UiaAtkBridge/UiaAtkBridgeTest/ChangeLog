@@ -1,3 +1,9 @@
+2008-09-23  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* BridgeTester.cs: Track API changes of last refactoring, and disable a
+	  test that is failing (KeyNotFoundException).
+	* AtkTester.cs: Cosmetic.
+
 2008-09-19  Mike Gorse <mgorse@novell.com>
 
 	* AtkTests.cs: Test window states.

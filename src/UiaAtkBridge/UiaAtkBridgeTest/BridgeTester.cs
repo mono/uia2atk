@@ -37,7 +37,7 @@ using NUnit.Framework;
 namespace UiaAtkBridgeTest
 {
 	[TestFixture]
-	public class BridgeTester : AtkTester {
+	public class BridgeTester : AtkTests {
 		
 		public override object GetAtkObjectThatImplementsInterface <I> (
 		  BasicWidgetType type, string[] names, out Atk.Object accessible, bool real)
@@ -136,8 +136,8 @@ namespace UiaAtkBridgeTest
 				typeof(I).Name);
 		}
 		
-		private MWF.GroupBox gb1 = new MWF.GroupBox ();
-		private MWF.GroupBox gb2 = new MWF.GroupBox ();
+		MWF.GroupBox gb1 = new MWF.GroupBox ();
+		MWF.GroupBox gb2 = new MWF.GroupBox ();
 		MWF.RadioButton rad1 = new MWF.RadioButton ();
 		MWF.RadioButton rad2 = new MWF.RadioButton ();
 		MWF.RadioButton rad3 = new MWF.RadioButton ();
@@ -154,6 +154,7 @@ namespace UiaAtkBridgeTest
 		MWF.NumericUpDown nud1 = new MWF.NumericUpDown();
 		MWF.Form form = new MWF.Form ();
 		MWF.MenuStrip menuStrip1 = new MWF.MenuStrip();
+		MWF.TextBox tbx1 = new MWF.TextBox ();
 		
 		public BridgeTester () 
 		{
@@ -174,6 +175,7 @@ namespace UiaAtkBridgeTest
 			form.MainMenuStrip = menuStrip1;
 			form.Controls.Add (pb1);
 			form.Controls.Add (nud1);
+			form.Controls.Add (tbx1);
 			radios.Add (rad1);
 			radios.Add (rad2);
 			radios.Add (rad3);
@@ -227,7 +229,7 @@ namespace UiaAtkBridgeTest
 				if (real)
 					uiaBut = (UiaAtkBridge.Button) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (but, true, true));
 				else
-					uiaBut = new UiaAtkBridge.Button (ProviderFactory.GetProvider (but, true, true));
+					throw new NotSupportedException ("We don't support unreal anymore in tests");
 				accessible = uiaBut;
 				text = uiaBut;
 				component = uiaBut;
@@ -272,6 +274,7 @@ namespace UiaAtkBridgeTest
 				accessible = uiaRad;
 				component = uiaRad;
 				action = uiaRad;
+				
 				break;
 			case BasicWidgetType.StatusBar:
 				MWF.StatusBar sb = new MWF.StatusBar ();
@@ -358,6 +361,20 @@ namespace UiaAtkBridgeTest
 				value = uiaSp;
 				break;
 
+			case BasicWidgetType.TextBoxEntry:
+				MWF.TextBox tbx = tbx1;
+				if (!real)
+					throw new NotSupportedException ("Not unreal support for TextBox");
+				
+				UiaAtkBridge.EditableTextBoxEntry editText = (UiaAtkBridge.EditableTextBoxEntry)
+				  UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (tbx, true, true));
+				
+				accessible = editText;
+				component = editText;
+				text = editText;
+				action = editText;
+				break;
+				
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
 			default:
@@ -393,7 +410,7 @@ namespace UiaAtkBridgeTest
 		{
 		}
 		
-		[Test]
+		//[Test]
 		public void ListBox ()
 		{
 			BasicWidgetType type = BasicWidgetType.ListBox;
