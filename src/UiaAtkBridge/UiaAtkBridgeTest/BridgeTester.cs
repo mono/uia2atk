@@ -361,19 +361,19 @@ namespace UiaAtkBridgeTest
 				value = uiaSp;
 				break;
 
-			case BasicWidgetType.TextBoxEntry:
-				MWF.TextBox tbx = tbx1;
-				if (!real)
-					throw new NotSupportedException ("Not unreal support for TextBox");
-				
-				UiaAtkBridge.EditableTextBoxEntry editText = (UiaAtkBridge.EditableTextBoxEntry)
-				  UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (tbx, true, true));
-				
-				accessible = editText;
-				component = editText;
-				text = editText;
-				action = editText;
-				break;
+//			case BasicWidgetType.TextBoxEntry:
+//				MWF.TextBox tbx = tbx1;
+//				if (!real)
+//					throw new NotSupportedException ("Not unreal support for TextBox");
+//				
+//				UiaAtkBridge.EditableTextBoxEntry editText = (UiaAtkBridge.EditableTextBoxEntry)
+//				  UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (tbx, true, true));
+//				
+//				accessible = editText;
+//				component = editText;
+//				text = editText;
+//				action = editText;
+//				break;
 				
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
