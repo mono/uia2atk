@@ -1,5 +1,10 @@
 2008-09-23  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/ButtonInvokeBehavior.cs:
+	  Comments added.
+
+2008-09-23  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated ListBox and
 	  ComboBox behaviors and events added. 
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Using SWF alias.

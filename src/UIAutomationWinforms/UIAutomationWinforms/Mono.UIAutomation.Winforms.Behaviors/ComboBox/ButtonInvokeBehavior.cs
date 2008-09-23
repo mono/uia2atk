@@ -31,6 +31,10 @@ using Mono.UIAutomation.Winforms.Events.ComboBox;
 namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 {
 
+	//NOTE:
+	//     This class is used by the internal Button shown when 
+	//     SWF.ComboBox.DropDownStyle is SWF.ComboBoxStyle.Simple or 
+	//     SWF.ComboBoxStyle.DropDown
 	internal class ButtonInvokeBehavior
 		: ProviderBehavior, IInvokeProvider
 	{
