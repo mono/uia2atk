@@ -32,114 +32,177 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
-	[TestFixture]
-	public class StatusBarProviderTest : BaseProviderTest
-	{
-#region Test
+    	[TestFixture]
+    	public class StatusBarProviderTest : BaseProviderTest
+    	{
+		#region Test
 
-		[Test]
-		public void BasicPropertiesTest ()
-		{
-			StatusBar statusBar = new StatusBar ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (statusBar);
-
-			TestProperty (provider,
-			  AutomationElementIdentifiers.ControlTypeProperty,
-			  ControlType.StatusBar.Id);
+        	[Test]
+        	public void BasicPropertiesTest ()
+        	{
+            		StatusBar statusBar = new StatusBar ();
+            		IRawElementProviderSimple provider =
+				ProviderFactory.GetProvider (statusBar);
 
 			TestProperty (provider,
-			  AutomationElementIdentifiers.LocalizedControlTypeProperty,
-			  "status bar");
+			              AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.StatusBar.Id);
+
+			TestProperty (provider,
+			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
+			              "status bar");
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsContentElementProperty,
+			              true);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsControlElementProperty,
+			              true);
 		}
 
 		[Test]
 		public void ProviderPatternTest ()
 		{
 			StatusBar statusBar = new StatusBar ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (statusBar);
+			IRawElementProviderSimple provider =
+				ProviderFactory.GetProvider (statusBar);
 
-			object gridProvider = provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (gridProvider, "Not returning GridPatternIdentifiers.");
-			Assert.IsTrue (gridProvider is IGridProvider, "Not returning GridPatternIdentifiers.");
+			object gridProvider =
+				provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (gridProvider,
+			                  "Not returning GridPatternIdentifiers.");
+			Assert.IsTrue (gridProvider is IGridProvider,
+			               "Not returning GridPatternIdentifiers.");
 		}
 
-#endregion
+		#endregion
 
-#region IGridPattern Test
+		#region IGridPattern Test
 
+		[Test]
 		public void IGridProviderRowCountTest ()
 		{
 			StatusBar statusBar = new StatusBar ();
-			StatusBarPanel panel = new StatusBarPanel ();
-			statusBar.Panels.Add (panel);
-
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (statusBar);
+			IRawElementProviderSimple provider =
+				ProviderFactory.GetProvider (statusBar);
 
 			IGridProvider gridProvider = (IGridProvider)
-			  provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (gridProvider, "Not returning GridPatternIdentifiers.");
-
+				provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (gridProvider,
+			                  "Not returning GridPatternIdentifiers.");
+			
+			int index = 0, elements = 10;
+			for (; index < elements; ++index)
+				statusBar.Panels.Add (string.Format ("Panel: {0}", index));
 			int value = 1;
 			Assert.AreEqual (gridProvider.RowCount, value, "RowCount value");
 		}
 
+		[Test]
 		public void IGridProviderColumnCountTest ()
 		{
 			StatusBar statusBar = new StatusBar ();
-			StatusBarPanel panel = new StatusBarPanel ();
-			statusBar.Panels.Add (panel);
-
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (statusBar);
+			IRawElementProviderSimple provider =
+				ProviderFactory.GetProvider (statusBar);
 
 			IGridProvider gridProvider = (IGridProvider)
-			  provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (gridProvider, "Not returning GridPatternIdentifiers.");
-
-			int value = 1;
+				provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (gridProvider,
+			                  "Not returning GridPatternIdentifiers.");
+			
+			int index = 0, elements = 10;
+			for (; index < elements; ++index)
+				statusBar.Panels.Add (string.Format ("Panel: {0}", index));
+			int value = elements;
 			Assert.AreEqual (gridProvider.ColumnCount, value, "ColumnCount value");
 		}
 
+		[Test]
 		public void IGridProviderGetItemTest ()
 		{
 			StatusBar statusBar = new StatusBar ();
-			StatusBarPanel panel = new StatusBarPanel ();
-			statusBar.Panels.Add (panel);
-
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (statusBar);
+			IRawElementProviderFragmentRoot provider =
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
 
 			IGridProvider gridProvider = (IGridProvider)
-			  provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (gridProvider, "Not returning GridPatternIdentifiers.");
-
-			int rowValue = 1;
-			int columnValue = 1;
-			gridProvider.GetItem (rowValue, columnValue);
-//			Assert.AreEqual (gridProvider., null, "Different value");
-
-			try {
-				rowValue = gridProvider.RowCount + 1;
-				columnValue = gridProvider.ColumnCount + 1;
+				provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (gridProvider,
+			                  "Not returning GridPatternIdentifiers.");
+			
+			int rowValue = 0;
+			int columnValue = 0;
+			statusBar.Panels.Add ("Panel");
+			IRawElementProviderSimple panelProvider = (IRawElementProviderSimple)
+				provider.Navigate (NavigateDirection.FirstChild);
+			IRawElementProviderSimple itemProvider =
 				gridProvider.GetItem (rowValue, columnValue);
+			Assert.AreSame (itemProvider, panelProvider, "GetItem method");
+			
+			try {
+				rowValue = gridProvider.RowCount;
+				columnValue = gridProvider.ColumnCount;
+				itemProvider = gridProvider.GetItem (rowValue, columnValue);
 				Assert.Fail ("ArgumentOutOfRangeException not thrown.");
 			} catch (ArgumentOutOfRangeException) { }
 
 			try {
 				rowValue = -1;
 				columnValue = -1;
-				gridProvider.GetItem (rowValue, columnValue);
+				itemProvider = gridProvider.GetItem (rowValue, columnValue);
 				Assert.Fail ("ArgumentOutOfRangeException not thrown.");
 			} catch (ArgumentOutOfRangeException) { }
 		}
 
-#endregion
+		#endregion
 
-#region BaseProviderTest Overrides
+		#region Navigation Test
 
-		protected override Control GetControlInstance ()
+		[Test]
+		public void NavigationTest ()
 		{
-			return new StatusBar ();
+			StatusBar statusBar = (StatusBar) GetControlInstance ();
+			IRawElementProviderFragmentRoot rootProvider;
+			IRawElementProviderFragment childProvider;
+			IRawElementProviderFragment childParent;
+
+			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
+			
+			int index = 0, elements = 10;
+			string name = string.Empty;
+			for (; index < elements; ++index)
+				statusBar.Panels.Add (string.Format ("Panel: {0}", index));
+			index = 0;
+			
+			childProvider = rootProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (childProvider, "We must have a child");
+			
+			do {
+				childParent = childProvider.Navigate (NavigateDirection.Parent);
+				Assert.AreSame (rootProvider, childParent, 
+				                 "Each child must have same parent");
+				name = (string) childProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+				Assert.AreEqual (string.Format ("Panel: {0}", index++), 
+				                 name, "Different names");
+				childProvider = childProvider.Navigate (NavigateDirection.NextSibling);
+			} while (childProvider != null);
+			Assert.AreEqual (elements, index, "Elements Added = Elements Navigated");
+
+			statusBar.Panels.Clear ();
+
+			childProvider = rootProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNull (childProvider, "We shouldn't have a child");
 		}
 
-#endregion
-	}
+		#endregion
+
+		#region BaseProviderTest Overrides
+
+        	protected override Control GetControlInstance ()
+        	{
+            		return new StatusBar ();
+        	}
+
+		#endregion
+    	}
 }

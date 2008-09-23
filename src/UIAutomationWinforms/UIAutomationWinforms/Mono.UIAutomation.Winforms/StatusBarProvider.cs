@@ -24,24 +24,194 @@
 // 
 
 using System;
+using System.ComponentModel;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.StatusBar;
+using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class StatusBarProvider : FragmentControlProvider
+	internal class StatusBarProvider : FragmentRootControlProvider
 	{
 		#region Constructors
 
-		public StatusBarProvider (StatusBar statusBar) : base (statusBar)
-		{
+        	public StatusBarProvider (StatusBar statusBar) : base (statusBar)
+        	{
+			this.statusBar = statusBar;
+			panels = new List<StatusBarPanelProvider> ();
+			
 			SetBehavior (GridPatternIdentifiers.Pattern,
 			             new GridProviderBehavior (this));
+        	}
+
+		#endregion
+		
+		#region FragmentRootControlProvider: Specializations
+		
+		public override void InitializeChildControlStructure ()
+		{	
+			try {
+				Helper.AddPrivateEvent (typeof (StatusBar.StatusBarPanelCollection),
+				                        statusBar.Panels,
+				                        "UIACollectionChanged",
+				                        this,
+				                        "OnCollectionChanged");
+			} catch (NotSupportedException) { }
+		
+			for (int i = 0; i < statusBar.Panels.Count; ++i) {
+				StatusBarPanelProvider panel = GetPanelProvider (i);
+				OnNavigationChildAdded (false, panel);
+			}
+		}
+		
+		public override void FinalizeChildControlStructure ()
+		{
+			try {
+				Helper.RemovePrivateEvent (typeof (StatusBar.StatusBarPanelCollection),
+				                           statusBar.Panels,
+				                           "UIACollectionChanged",
+				                           this,
+				                           "OnCollectionChanged");
+			} catch (NotSupportedException) { }
+			
+			foreach (StatusBarPanelProvider panel in panels)
+				OnNavigationChildRemoved (false, panel);
+			OnNavigationChildrenCleared (false);
 		}
 
+		#endregion
+		
+		#region Public Methods
+		
+		public StatusBarPanelProvider GetPanelProvider (int index)
+		{
+			StatusBarPanelProvider panel = null;
+			
+			if (index < 0 || index >= statusBar.Panels.Count)
+				return null;
+			else if (index >= panels.Count) {
+				for (int loop = panels.Count - 1; loop < index; ++loop) {
+					panel = new StatusBarPanelProvider (statusBar.Panels [index]);
+					panels.Add (panel);
+					panel.InitializeEvents ();
+				}
+			}
+			
+			return panels [index];
+		}
+		
+		public StatusBarPanelProvider RemovePanelAt (int index)
+		{
+			StatusBarPanelProvider panel = null;
+			
+			if (index < panels.Count) {
+				panel = panels [index];
+				panels.RemoveAt (index);
+				panel.Terminate ();
+			}
+			
+			return panel;
+		}
+		
+		public void ClearPanelsCollection ()
+		{
+			while (panels.Count > 0) {
+				RemovePanelAt (panels.Count - 1);
+			}
+		}
+		
+		#endregion
+		
+		#region Private Methods
+
+		#pragma warning disable 169
+		
+		private void OnCollectionChanged (object sender, CollectionChangeEventArgs args)
+		{
+			if (args.Action == CollectionChangeAction.Add) {
+				StatusBarPanelProvider panel = GetPanelProvider ((int) args.Element);
+				OnNavigationChildAdded (true, panel);
+			} else if (args.Action == CollectionChangeAction.Remove) {
+				StatusBarPanelProvider panel = RemovePanelAt ((int) args.Element);
+				OnNavigationChildRemoved (true, panel);
+			} else if (args.Action == CollectionChangeAction.Refresh) {
+				ClearPanelsCollection ();
+				OnNavigationChildrenCleared (true);
+			}
+		}
+		
+		#pragma warning restore 169
+		
+		#endregion
+		
+		#region SimpleControlProvider: Specializations
+		
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.StatusBar.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "status bar";
+			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+				return null;
+			else
+				return base.GetPropertyValue (propertyId);
+		}
+		
+		#endregion
+		
+		#region Private Fields
+		
+		private StatusBar statusBar;
+		private List<StatusBarPanelProvider> panels;
+		
+		#endregion
+		
+		#region Internal Class: StatusBarPanel Provider
+		
+		internal class StatusBarPanelProvider : FragmentControlProvider
+		{
+			#region Constructors
+
+			public StatusBarPanelProvider (StatusBarPanel statusBarPanel) : base (statusBarPanel)
+			{
+				this.statusBarPanel = statusBarPanel;
+				
+				SetBehavior (TextPatternIdentifiers.Pattern,
+				             new StatusBarPanelTextProviderBehavior (this));
+				SetBehavior (ValuePatternIdentifiers.Pattern,
+				             new StatusBarPanelValueProviderBehavior (this));
+			}
+		
+			#endregion
+		
+			#region Public Methods
+		
+			public override object GetPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.Edit.Id;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return "edit";
+				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return statusBarPanel.Text;
+				else
+					return base.GetPropertyValue (propertyId);
+			}
+		
+			#endregion
+			
+			#region Private Fields
+		
+			private StatusBarPanel statusBarPanel;
+		
+			#endregion
+		}
+		
 		#endregion
 	}
 }

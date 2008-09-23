@@ -1,3 +1,9 @@
+2008-09-23  Mario Carrion <mcarrion@novell.com> 
+
+	* StatusBarProviderTest.cs: Test updated.
+	
+	  [Fixes part of bug #424401]
+
 2008-09-16  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* StatusBarProviderTest.cs, PictureBoxProviderTest.cs,

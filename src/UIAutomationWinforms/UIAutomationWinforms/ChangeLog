@@ -1,5 +1,16 @@
 2008-09-23  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Updated to support
+	  navigation.
+	
+	  [Fixes part of bug #424401]
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelValueProviderBehavior.cs:
+	  Value Provider for StatusBarPanel.
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelTextProviderBehavior.cs:
+	  Text Provider for StatusBarPanel.
+
+2008-09-23  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/ButtonInvokeBehavior.cs:
 	  Comments added.
 
