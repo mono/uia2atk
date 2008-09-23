@@ -23,13 +23,14 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.List
+namespace Mono.UIAutomation.Winforms.Events.ComboBox
 {	
 	internal class SelectionPatternIsSelectionRequiredEvent
 		: BaseAutomationPropertyEvent
@@ -41,38 +42,33 @@ namespace Mono.UIAutomation.Winforms.Events.List
 			: base (provider,
 			        SelectionPatternIdentifiers.IsSelectionRequiredProperty)
 		{
-			listProvider = provider;
 		}
 		
 		#endregion
 		
 		#region ProviderEvent Methods
 
-		public override void Connect (Control control)
+		public override void Connect (SWF.Control control)
 		{
-			listProvider.SelectionRequiredChanged += OnSelectedValueChanged;
+			((SWF.ComboBox) control).SelectedIndexChanged 
+				+= new EventHandler (OnSelectedIndexChanged);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect (SWF.Control control)
 		{
-			listProvider.SelectionRequiredChanged -= OnSelectedValueChanged;
+			((SWF.ComboBox) control).SelectedIndexChanged 
+				-= new EventHandler (OnSelectedIndexChanged);
 		}
 		
 		#endregion 
 		
 		#region Protected methods
 		
-		private void OnSelectedValueChanged (object sender, EventArgs e)
+		private void OnSelectedIndexChanged (object sender, EventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
 
-		#endregion
-		
-		#region Private Fields
-		
-		private ListProvider listProvider;
-		
 		#endregion
 	}
 }

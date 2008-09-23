@@ -23,57 +23,68 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.List
+namespace Mono.UIAutomation.Winforms.Events.ComboBox
 {
-	
-	internal class SelectionPatternSelectionEvent
-		: BaseAutomationPropertyEvent
+	internal class SelectionPatternInvalidatedEvent
+		: BaseAutomationEvent
 	{
-		
-		#region Constructors
 
-		public SelectionPatternSelectionEvent (ListProvider provider)
-			: base (provider, 
-			        SelectionPatternIdentifiers.SelectionProperty)
+		#region Constructor
+
+		public SelectionPatternInvalidatedEvent (ListProvider provider) 
+			: base (provider,
+			        SelectionPatternIdentifiers.InvalidatedEvent)
 		{
-			listProvider = provider;
 		}
 		
 		#endregion
 		
 		#region ProviderEvent Methods
 
-		public override void Connect (Control control)
+		public override void Connect (SWF.Control control)
 		{
-			listProvider.SelectionChanged += OnSelectionChanged;
+			try {
+				Helper.AddPrivateEvent (typeof (SWF.ComboBox.ObjectCollection),
+				                        ((SWF.ComboBox) control).Items, 
+				                        "UIACollectionChanged",
+				                        this, 
+				                        "OnSelectedCollectionChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
+			}
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect (SWF.Control control)
 		{
-			listProvider.SelectionChanged -= OnSelectionChanged;
+			try {
+				Helper.RemovePrivateEvent (typeof (SWF.ComboBox.ObjectCollection),
+				                           ((SWF.ComboBox) control).Items,
+				                           "UIACollectionChanged",
+				                           this, 
+				                           "OnSelectedCollectionChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
+			}
 		}
 		
 		#endregion 
 		
 		#region Protected methods
 		
-		private void OnSelectionChanged (object sender, EventArgs e)
+		private void OnSelectedCollectionChanged (object sender, 
+		                                          CollectionChangeEventArgs args)
 		{
-			RaiseAutomationPropertyChangedEvent ();
+			if (args.Action == CollectionChangeAction.Refresh)
+				RaiseAutomationEvent ();
 		}
 
-		#endregion
-		
-		#region Private Fields
-		
-		private ListProvider listProvider;
-		
 		#endregion
 	}
 }

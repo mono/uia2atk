@@ -22,16 +22,15 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.List;
+using Mono.UIAutomation.Winforms.Events.ListBox;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.List
+namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
 {
 
 	internal class SelectionProviderBehavior 
@@ -40,10 +39,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.List
 		
 		#region Constructors
 
-		public SelectionProviderBehavior (ListProvider provider)
+		public SelectionProviderBehavior (ListBoxProvider provider)
 			: base (provider)
 		{
-			listProvider = provider;
 		}
 		
 		#endregion
@@ -54,19 +52,19 @@ namespace Mono.UIAutomation.Winforms.Behaviors.List
 			get { return SelectionPatternIdentifiers.Pattern; }
 		}
 
-		public override void Connect (Control control)
+		public override void Connect (SWF.Control control)
 		{
 			Provider.SetEvent (ProviderEventType.SelectionPatternCanSelectMultipleProperty,
-			                   new SelectionPatternCanSelectMultipleEvent (listProvider));
-//			Provider.SetEvent (ProviderEventType.SelectionPatternInvalidatedEvent,
-//			                   null);
+			                   new SelectionPatternCanSelectMultipleEvent ((ListBoxProvider) Provider));
+			Provider.SetEvent (ProviderEventType.SelectionPatternInvalidatedEvent,
+			                   new SelectionPatternInvalidatedEvent ((ListBoxProvider) Provider));
 			Provider.SetEvent (ProviderEventType.SelectionPatternIsSelectionRequiredProperty,
-			                   new SelectionPatternIsSelectionRequiredEvent (listProvider));
+			                   new SelectionPatternIsSelectionRequiredEvent ((ListBoxProvider) Provider));
 			Provider.SetEvent (ProviderEventType.SelectionPatternSelectionProperty,
-			                   new SelectionPatternSelectionEvent (listProvider));
+			                   new SelectionPatternSelectionEvent ((ListBoxProvider) Provider));
 		}
 		
-		public override void Disconnect (Control control)
+		public override void Disconnect (SWF.Control control)
 		{
 			Provider.SetEvent (ProviderEventType.SelectionPatternCanSelectMultipleProperty,
 			                   null);
@@ -79,7 +77,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.List
 		}
 
 		public override object GetPropertyValue (int propertyId)
-		{		
+		{
 			if (propertyId == SelectionPatternIdentifiers.CanSelectMultipleProperty.Id)
 				return CanSelectMultiple;
 			else if (propertyId == SelectionPatternIdentifiers.IsSelectionRequiredProperty.Id)
@@ -95,24 +93,27 @@ namespace Mono.UIAutomation.Winforms.Behaviors.List
 		#region ISelectionProvider Members
 
 		public bool CanSelectMultiple {
-			get { return listProvider.SupportsMultipleSelection; }
+			get { 
+				SWF.ListBox listBoxControl = (SWF.ListBox) Provider.Control;
+				
+				return listBoxControl.SelectionMode == SWF.SelectionMode.MultiExtended
+					|| listBoxControl.SelectionMode == SWF.SelectionMode.MultiSimple;
+			}
 		}
 
 		public bool IsSelectionRequired {
-			get { return listProvider.ListControl.SelectedIndex == -1 ? false : true; }
+			get { 
+				SWF.ListBox listBoxControl = (SWF.ListBox) Provider.Control;
+
+				return listBoxControl.SelectedIndices.Count > 0; 
+			}
 		}
 		
 		public IRawElementProviderSimple[] GetSelection ()
 		{
-			return listProvider.GetSelectedItemsProviders ();
+			return ((ListProvider) Provider).GetSelectedItemsProviders ();
 		}
 
-		#endregion
-		
-		#region Private Fields
-
-		private ListProvider listProvider;
-		
 		#endregion
 	}
 }

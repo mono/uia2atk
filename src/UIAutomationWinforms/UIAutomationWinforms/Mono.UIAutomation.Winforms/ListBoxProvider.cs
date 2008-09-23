@@ -64,8 +64,6 @@ namespace Mono.UIAutomation.Winforms
 			if ((vscrollbar.Visible == true && vscrollbar.Enabled == true)
 			    || (hscrollbar.Visible == true && hscrollbar.Enabled == true))
 				SetScrollPatternBehavior ();
-		
-			InitializeSelectionPatternEvents ();
 		}
 
 		#endregion
@@ -93,8 +91,6 @@ namespace Mono.UIAutomation.Winforms
 
 			hscrollbar.VisibleChanged -= new EventHandler (UpdateHScrollBehaviorVisible);
 			hscrollbar.EnabledChanged -= new EventHandler (UpdateHScrollBehaviorEnable);
-			
-			FinalizeSelectionPatternEvents ();
 		}
 		
 		#endregion
@@ -168,14 +164,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region ListProvider: Specializations
 		
-		public override bool SupportsMultipleSelection { 
-			get { 
-				return listboxControl != null 
-					&& (listboxControl.SelectionMode == SelectionMode.MultiExtended 
-					    || listboxControl.SelectionMode == SelectionMode.MultiSimple);
-			} 
-		}
-		
 		public override int SelectedItemsCount { 
 			get { return listboxControl.SelectedItems.Count; }
 		}
@@ -244,6 +232,11 @@ namespace Mono.UIAutomation.Winforms
 			return listboxControl.Items;
 		}
 		
+		protected override IProviderBehavior GetSelectionBehavior ()
+		{
+			return new SelectionProviderBehavior (this);
+		}
+		
 		public override void ScrollItemIntoView (ListItemProvider item)
 		{
 			if (ContainsItem (item) == true)
@@ -252,72 +245,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 		
-		#region Private Methods
-		
-		private void InitializeSelectionPatternEvents ()
-		{
-			try {
-				Helper.AddPrivateEvent (typeof (ListBox.SelectedIndexCollection), 
-				                        listboxControl.SelectedIndices, 
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnSelectedCollectionChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
-			
-			try {
-				Helper.AddPrivateEvent (typeof (ListBox), 
-				                        listboxControl, 
-				                        "UIASelectionModeChanged",
-				                        this, 
-				                        "OnSelectionModeChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIASelectionModeChanged not defined", GetType ());
-			}
-
-		}
-		
-		private void FinalizeSelectionPatternEvents ()
-		{
-			try {
-				Helper.RemovePrivateEvent (typeof (ListBox.SelectedIndexCollection), 
-				                           listboxControl.SelectedIndices, 
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnSelectedCollectionChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
-			
-			try {
-				Helper.RemovePrivateEvent (typeof (ListBox), 
-				                           listboxControl, 
-				                           "UIASelectionModeChanged",
-				                           this, 
-				                           "OnSelectionModeChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIASelectionModeChanged not defined", GetType ());
-			}			
-		}
-
-#pragma warning disable 169		
-		
-		private void OnSelectedCollectionChanged (object sender, CollectionChangeEventArgs args)
-		{
-			OnSelectionChanged ();
-			OnSelectionRequiredChanged ();
-		}
-		
-		private void OnSelectionModeChanged (object sender, EventArgs args)
-		{
-			OnCanSelectMultipleChanged ();
-		}
-		
-#pragma warning restore 169
-		
-		#endregion
-
 		#region Private Methods: Navigation
 		
 		private void UpdateScrollbarNavigation (ScrollBar scrollbar,
@@ -473,7 +400,6 @@ namespace Mono.UIAutomation.Winforms
 				             new ScrollProviderBehavior (this, 
 				                                         hscrollbar,
 				                                         vscrollbar));
-				//TODO: Generate IsScroll Event
 			}
 		}
 		

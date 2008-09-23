@@ -27,7 +27,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 using System.Windows;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ComboBox;
@@ -41,13 +41,10 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Constructor
 		
-		public ComboBoxProvider (ComboBox combobox) : base (combobox)
+		public ComboBoxProvider (SWF.ComboBox combobox) : base (combobox)
 		{
 			comboboxControl = combobox;
 			comboboxControl.DropDownStyleChanged += new EventHandler (OnDropDownStyleChanged);
-			
-			//Let's associate SWF.ComboBox events to generate ListProvider events used by SelectionPattern
-			comboboxControl.SelectedIndexChanged += new EventHandler (OnGenerateSelectionPatternsEvents);
 		}
 		
 		#endregion
@@ -71,7 +68,6 @@ namespace Mono.UIAutomation.Winforms
 			base.Terminate ();
 			
 			comboboxControl.DropDownStyleChanged -= new EventHandler (OnDropDownStyleChanged);
-			comboboxControl.SelectedIndexChanged -= new EventHandler (OnGenerateSelectionPatternsEvents);
 		}	
 
 		#endregion		
@@ -86,10 +82,6 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region ListProvider: Specializations
-		
-		public override bool SupportsMultipleSelection { 
-			get { return false; } 
-		}
 		
 		public override int SelectedItemsCount { 
 			get { return ListControl.SelectedIndex == -1 ? 0 : 1; }
@@ -198,6 +190,11 @@ namespace Mono.UIAutomation.Winforms
 			return listboxProvider;
 		}
 		
+		protected override IProviderBehavior GetSelectionBehavior ()
+		{
+			return new SelectionProviderBehavior (this);
+		}
+		
 		public override void ScrollItemIntoView (ListItemProvider item)
 		{
 			if (ContainsItem (item) == true)
@@ -208,15 +205,6 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Private Methods
 		
-		private void OnGenerateSelectionPatternsEvents (object sender, EventArgs args)
-		{
-			OnSelectionChanged ();
-			OnSelectionRequiredChanged ();
-			//NOTE: 
-			//      This provider doesn't generate SelectionPattern.CanSelectMultipleProperty, 
-			//      event because ComboBox doesn't support multiple selection.
-		}
-		
 		private void OnDropDownStyleChanged (object sender, EventArgs args)
 		{
 			UpdateBehaviors (true);
@@ -224,7 +212,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void UpdateBehaviors (bool generateEvent) 
 		{
-			if (comboboxControl.DropDownStyle == ComboBoxStyle.Simple) {
+			if (comboboxControl.DropDownStyle == SWF.ComboBoxStyle.Simple) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern, 
 				             null);
 				SetBehavior (ValuePatternIdentifiers.Pattern,
@@ -232,7 +220,7 @@ namespace Mono.UIAutomation.Winforms
 				
 				TerminateButtonProvider (generateEvent);
 				InitializeEditProvider (generateEvent);
-			} else if (comboboxControl.DropDownStyle == ComboBoxStyle.DropDown) {
+			} else if (comboboxControl.DropDownStyle == SWF.ComboBoxStyle.DropDown) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
 				             new ExpandCollapseProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern,
@@ -240,7 +228,7 @@ namespace Mono.UIAutomation.Winforms
 				
 				InitializeButtonProvider (generateEvent);
 				InitializeEditProvider (generateEvent);
-			} else if (comboboxControl.DropDownStyle == ComboBoxStyle.DropDownList) {
+			} else if (comboboxControl.DropDownStyle == SWF.ComboBoxStyle.DropDownList) {
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
 				             new ExpandCollapseProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern, 
@@ -254,9 +242,10 @@ namespace Mono.UIAutomation.Winforms
 		private void InitializeEditProvider (bool generateEvent)
 		{
 			if (textboxProvider == null) {
-				TextBox textbox = Helper.GetPrivateProperty<ComboBox, TextBox> (typeof (ComboBox), 
-				                                                                comboboxControl, 
-				                                                                "UIATextBox");
+				SWF.TextBox textbox 
+					= Helper.GetPrivateProperty<SWF.ComboBox, SWF.TextBox> (typeof (SWF.ComboBox), 
+					                                                        comboboxControl, 
+					                                                        "UIATextBox");
 				textboxProvider = (TextBoxProvider) ProviderFactory.GetProvider (textbox);
 				OnNavigationChildAdded (generateEvent, textboxProvider);
 			}
@@ -293,7 +282,7 @@ namespace Mono.UIAutomation.Winforms
 			
 		#region Private Fields
 		
-		private ComboBox comboboxControl;
+		private SWF.ComboBox comboboxControl;
 		private ComboBoxProvider.ComboBoxButtonProvider buttonProvider;
 		private ComboBoxProvider.ComboBoxListBoxProvider listboxProvider;
 		private TextBoxProvider textboxProvider;
@@ -306,7 +295,7 @@ namespace Mono.UIAutomation.Winforms
 		internal class ComboBoxListBoxProvider : ListProvider
 		{
 			
-			public ComboBoxListBoxProvider (ComboBox control, 
+			public ComboBoxListBoxProvider (SWF.ComboBox control, 
 			                                ComboBoxProvider provider)
 				: base (control)
 			{
@@ -358,10 +347,6 @@ namespace Mono.UIAutomation.Winforms
 				get { return comboboxProvider.SelectedItemsCount; }
 			}
 			
-			public override bool SupportsMultipleSelection { 
-				get { return false; }
-			}
-			
 			public override int ItemsCount {
 				get { return comboboxProvider.ItemsCount; }
 			}
@@ -398,13 +383,18 @@ namespace Mono.UIAutomation.Winforms
 			
 			protected override Type GetTypeOfObjectCollection ()
 			{
-				return typeof (ComboBox.ObjectCollection);
+				return typeof (SWF.ComboBox.ObjectCollection);
 			}
 			
 			protected override object GetInstanceOfObjectCollection ()
 			{
 				return comboboxControl.Items;
 			}
+			
+			protected override IProviderBehavior GetSelectionBehavior ()
+			{
+				return new SelectionProviderBehavior (this);
+			}			
 	
 			public override void InitializeChildControlStructure ()
 			{
@@ -431,7 +421,7 @@ namespace Mono.UIAutomation.Winforms
 				throw new NotImplementedException ();
 			}
 
-			private ComboBox comboboxControl;
+			private SWF.ComboBox comboboxControl;
 			private ComboBoxProvider comboboxProvider;
 
 		}
@@ -443,7 +433,7 @@ namespace Mono.UIAutomation.Winforms
 		internal class ComboBoxButtonProvider : FragmentControlProvider
 		{
 
-			public ComboBoxButtonProvider (Control control,
+			public ComboBoxButtonProvider (SWF.Control control,
 			                               ComboBoxProvider provider)
 				: base (control)
 			{

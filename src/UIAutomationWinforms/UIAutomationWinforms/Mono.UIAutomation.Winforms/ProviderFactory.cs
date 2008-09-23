@@ -26,11 +26,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Navigation;
-using SWFErrorProvider = System.Windows.Forms.ErrorProvider;
-using SWFHelpProvider = System.Windows.Forms.HelpProvider;
 using System.Linq;
 
 namespace Mono.UIAutomation.Winforms
@@ -57,14 +55,14 @@ namespace Mono.UIAutomation.Winforms
 		private static Dictionary<Component, IRawElementProviderFragment>
 			componentProviders;
 		
-		private static Dictionary<SWFErrorProvider, List<ErrorProvider>> errorProviders;
+		private static Dictionary<SWF.ErrorProvider, List<ErrorProvider>> errorProviders;
 		
 		static ProviderFactory ()
 		{
 			componentProviders =
 				new Dictionary<Component,IRawElementProviderFragment> ();
 			
-			errorProviders = new Dictionary<SWFErrorProvider, List <ErrorProvider>>();
+			errorProviders = new Dictionary<SWF.ErrorProvider, List <ErrorProvider>>();
 		}
 		
 		#endregion
@@ -86,25 +84,25 @@ namespace Mono.UIAutomation.Winforms
 		                                                       bool initializeEvents,
 		                                                       bool forceInitializeChildren)
 		{
-			Label l;
-			Button b;
-			RadioButton r;
-			CheckBox c;
-			TextBox t;
-			LinkLabel ll;
-			NumericUpDown ud;
+			SWF.Label l;
+			SWF.Button b;
+			SWF.RadioButton r;
+			SWF.CheckBox c;
+			SWF.TextBox t;
+			SWF.LinkLabel ll;
+			SWF.NumericUpDown ud;
 			FragmentControlProvider provider = null;
-			Form f;
-			GroupBox gb;
-			StatusBar sb;
-			ComboBox cb;
-			ListBox lb;
-			ScrollBar scb;
-			PictureBox pb;
-			ToolTip tt;
-			ProgressBar pgb;
-			SWFHelpProvider hlp;
-			SWFErrorProvider errp;
+			SWF.Form f;
+			SWF.GroupBox gb;
+			SWF.StatusBar sb;
+			SWF.ComboBox cb;
+			SWF.ListBox lb;
+			SWF.ScrollBar scb;
+			SWF.PictureBox pb;
+			SWF.ToolTip tt;
+			SWF.ProgressBar pgb;
+			SWF.HelpProvider hlp;
+			SWF.ErrorProvider errp;
 			
 			if (component == null)
 				return null;
@@ -113,43 +111,43 @@ namespace Mono.UIAutomation.Winforms
 			if (provider != null)
 				return provider;
 
-			if ((f = component as Form) != null)
+			if ((f = component as SWF.Form) != null)
 				provider = new WindowProvider (f);
-			else if ((gb = component as GroupBox) != null)
+			else if ((gb = component as SWF.GroupBox) != null)
 				provider = new GroupBoxProvider (gb);
-			else if ((b = component as Button) != null)
+			else if ((b = component as SWF.Button) != null)
 				provider = new ButtonProvider (b);
-			else if ((r = component as RadioButton) != null)
+			else if ((r = component as SWF.RadioButton) != null)
 				provider = new RadioButtonProvider (r);
-			else if ((c = component as CheckBox) != null)
+			else if ((c = component as SWF.CheckBox) != null)
 				provider = new CheckBoxProvider (c);
-			else if ((t = component as TextBox) != null)
+			else if ((t = component as SWF.TextBox) != null)
 				provider = new TextBoxProvider (t);
-			else if ((ll = component as LinkLabel) != null)
+			else if ((ll = component as SWF.LinkLabel) != null)
 				provider = new LinkLabelProvider (ll);
-			else if ((l = component as Label) != null)
+			else if ((l = component as SWF.Label) != null)
 				provider = new LabelProvider (l);
-			else if ((ud = component as NumericUpDown) != null)
+			else if ((ud = component as SWF.NumericUpDown) != null)
 				provider = new NumericUpDownProvider (ud);
-			else if ((sb = component as StatusBar) != null)
+			else if ((sb = component as SWF.StatusBar) != null)
 				provider = new StatusBarProvider (sb);
-			else if ((cb = component as ComboBox) != null)
+			else if ((cb = component as SWF.ComboBox) != null)
 				provider = new ComboBoxProvider (cb);
-			else if ((lb = component as ListBox) != null)
+			else if ((lb = component as SWF.ListBox) != null)
 				provider = new ListBoxProvider (lb);
-			else if ((pgb = component as ProgressBar) != null)
+			else if ((pgb = component as SWF.ProgressBar) != null)
 				provider = new ProgressBarProvider (pgb);
-			else if ((scb = component as ScrollBar) != null) {
-				if ((lb = scb.Parent as ListBox) != null)
+			else if ((scb = component as SWF.ScrollBar) != null) {
+				if ((lb = scb.Parent as SWF.ListBox) != null)
 					provider = new ListBoxProvider.ListBoxScrollBarProvider (scb);
 				else {
 					//TODO:
 					//   We need to add here a ScrollableControlProvider and then verify
 					//   if the internal scrollbar instances are matching this one,
 					//   if so, then we return a scrollbar, otherwise we return a pane.
-					ScrollableControl scrollable;
+					SWF.ScrollableControl scrollable;
 					//ScrollableControlProvider scrollableProvider;
-					if ((scrollable = scb.Parent as ScrollableControl) != null
+					if ((scrollable = scb.Parent as SWF.ScrollableControl) != null
 					    || scb.Parent == null) {
 					//	scrollableProvider = (ScrollableControlProvider) GetProvider (scrollable);
 					//	if (scrollableProvider.ScrollBarExists (scb) == true)
@@ -159,13 +157,13 @@ namespace Mono.UIAutomation.Winforms
 					} else
 						provider = new PaneProvider (scb);
 				}
-			} else if ((pb = component as PictureBox) != null)
+			} else if ((pb = component as SWF.PictureBox) != null)
 				provider = new PictureBoxProvider (pb);
-			else if ((errp = component as SWFErrorProvider) != null)
+			else if ((errp = component as SWF.ErrorProvider) != null)
 				provider = new ErrorProvider (errp);
-			else if ((tt = component as ToolTip) != null)
+			else if ((tt = component as SWF.ToolTip) != null)
 				provider = new ToolTipProvider (tt);
-			else if ((hlp = component as SWFHelpProvider) != null)
+			else if ((hlp = component as SWF.HelpProvider) != null)
 				provider = new HelpProvider (hlp);
 			else {
 				//TODO: We have to solve the problem when there's a Custom control

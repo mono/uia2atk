@@ -1,5 +1,65 @@
 2008-09-23  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated ListBox and
+	  ComboBox behaviors and events added. 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Using SWF alias.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: GetSelectionBehavior
+	  implementation. Removed: InitializeSelectionPatternEvents,
+	  FinalizeSelectionPatternEvents, OnSelectedCollectionChanged,
+	  OnSelectionModeChanged and SupportsMultipleSelection. Using SWF as
+	  alias.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: GetSelectionBehavior
+	  implementation. Removed: OnGenerateSelectionPatternsEvents and
+	  SupportsMultipleSelection. Using SWF as alias.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Removed events:
+	  CanSelectMultipleChanged, SelectionRequiredChanged,
+	  SelectionChanged. Removed property: SupportsMultipleSelection.
+	  Removed protected methods: OnCanSelectMultipleChanged,
+	  OnSelectionRequiredChanged, OnSelectionChanged.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBox/SelectionProviderBehavior.cs:
+	  Selection Pattern support in ListBox.
+	
+	  [Fixes Bug #427980]
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/SelectionProviderBehavior.cs:
+	  Selection Pattern support in ComboBox.
+	
+	  [Fixes Bug #427980]
+	* Mono.UIAutomation.Winforms.Behaviors/List,
+	  Mono.UIAutomation.Winforms.Behaviors/List/SelectionProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/List,
+	  Mono.UIAutomation.Winforms.Events/List/SelectionPatternSelectionEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/List/SelectionPatternCanSelectMultipleEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/List/SelectionPatternIsSelectionRequiredEvent.cs:
+	  No longer needed.
+	* Mono.UIAutomation.Winforms.Events/ListBox: Events support for ListBox
+	  control.
+	* Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternSelectionEvent.cs:
+	  SelectionPattern.SelectionPatternSelectionEvent support added for
+	  ListBox.
+	* Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternCanSelectMultipleEvent.cs:
+	  SelectionPattern.CanSelectMultipleEvent support added for ListBox.
+	* Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternIsSelectionRequiredEvent.cs:
+	  SelectionPattern.IsSelectionRequiredEvent support added for
+	  ListBox.
+	* Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternInvalidatedEvent.cs:
+	  SelectionPattern.InvalidtedEvent support added for ListBox.
+	
+	  [Fixes Bug #427980]
+	* Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternSelectionEvent.cs:
+	  SelectionPattern.SelectionEvent support for ComboBox.
+	
+	  [Fixes Bug #427980]
+	* Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternIsSelectionRequiredEvent.cs:
+	  SelectionPattern.IsSelectionRequiredEvent support for ComboBox.
+	
+	  [Fixes Bug #427980]
+	* Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternInvalidatedEvent.cs:
+	  SelectionPattern.InvalidatedEvent support for ComboBox.
+	
+	  [Fixes Bug #427980]
+
+2008-09-23  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Fixes NRE when
 	  generating AutomationPropertyChanged Event.
 
