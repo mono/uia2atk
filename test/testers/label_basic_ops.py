@@ -19,6 +19,7 @@ import os
 
 from strongwind import *
 from label import *
+from helpers import *
 from sys import argv
 from os import path
 
@@ -44,8 +45,12 @@ if app is None:
 # just an alias to make things shorter
 lFrame = app.labelFrame
 
-#check Label's default states
-lFrame.statesCheck(lFrame.label, "Label")
+#check sensitive Label's default states
+statesCheck(lFrame.label[0], "Label")
+
+#check insensitive Label's default states
+statesCheck(lFrame.label[1], "Label", 
+                        invalid_states=["enabled","sensitive"])
 
 #click button2 to change label text
 lFrame.click(lFrame.button)
@@ -57,8 +62,8 @@ lFrame.click(lFrame.button)
 sleep(config.SHORT_DELAY)
 lFrame.assertText('You have clicked me 2 times')
 
-#check lable's states again after update text
-lFrame.statesCheck(lFrame.label, "Label")
+#check sensitive lable's states again after update text
+statesCheck(lFrame.label[0], "Label")
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
