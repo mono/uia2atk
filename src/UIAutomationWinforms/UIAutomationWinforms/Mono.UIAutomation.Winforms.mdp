@@ -119,7 +119,6 @@
     <File name="Mono.UIAutomation.Winforms.Events/ProgressBar/ValuePatternValueEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListBox/SelectionProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternCanSelectMultipleEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternIsSelectionRequiredEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternSelectionEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListItem/SelectionItemPatternElementAddedToSelectionEvent.cs" subtype="Code" buildaction="FileCopy" />
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternInvalidatedEvent.cs" subtype="Code" buildaction="Compile" />
@@ -130,6 +129,12 @@
     <File name="Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternIsSelectionRequiredEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternSelectionEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontallyScrollableEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternVerticallyScrollableEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontalScrollPercentEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternVerticalScrollPercent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternVerticalViewSizeEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontalViewSizeEvent.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

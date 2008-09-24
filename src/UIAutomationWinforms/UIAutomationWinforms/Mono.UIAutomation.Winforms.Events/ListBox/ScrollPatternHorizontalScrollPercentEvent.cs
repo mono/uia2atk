@@ -23,7 +23,6 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
@@ -31,16 +30,17 @@ using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Events.ListBox
-{	
-	internal class SelectionPatternIsSelectionRequiredEvent
+{
+	
+	internal class ScrollPatternHorizontalScrollPercentEvent
 		: BaseAutomationPropertyEvent
 	{
+		
+		#region Constructors
 
-		#region Constructor
-
-		public SelectionPatternIsSelectionRequiredEvent (ListBoxProvider provider) 
-			: base (provider,
-			        SelectionPatternIdentifiers.IsSelectionRequiredProperty)
+		public ScrollPatternHorizontalScrollPercentEvent (ListBoxProvider provider)
+			: base (provider, 
+			        ScrollPatternIdentifiers.HorizontalScrollPercentProperty)
 		{
 		}
 		
@@ -49,37 +49,26 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 		#region ProviderEvent Methods
 
 		public override void Connect (SWF.Control control)
-		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ListBox.SelectedIndexCollection),
-				                        ((SWF.ListBox) control).SelectedIndices, 
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnSelectedCollectionChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+		{	
+			SWF.ScrollBar hscrollbar 
+				= ((ListBoxProvider) Provider).GetInternalScrollBar (SWF.Orientation.Horizontal);
+			
+			hscrollbar.ValueChanged += new EventHandler (OnScrollPercentChanged);
 		}
 
 		public override void Disconnect (SWF.Control control)
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ListBox.SelectedIndexCollection), 
-				                           ((SWF.ListBox) control).SelectedIndices,
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnSelectedCollectionChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			SWF.ScrollBar hscrollbar 
+				= ((ListBoxProvider) Provider).GetInternalScrollBar (SWF.Orientation.Horizontal);
+			
+			hscrollbar.ValueChanged -= new EventHandler (OnScrollPercentChanged);
 		}
 		
 		#endregion 
 		
 		#region Protected methods
 		
-		private void OnSelectedCollectionChanged (object sender, 
-		                                          CollectionChangeEventArgs args)
+		private void OnScrollPercentChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}

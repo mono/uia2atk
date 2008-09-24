@@ -290,6 +290,8 @@ namespace Mono.UIAutomation.Winforms
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return true;
+			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
+				return false;
 			 
 			//Control-like properties
 			if (Control == null)

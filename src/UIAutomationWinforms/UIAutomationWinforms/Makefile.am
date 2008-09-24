@@ -92,9 +92,14 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ComboBoxItem/SelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Label/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/LinkLabel/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontallyScrollableEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontalScrollPercentEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontalViewSizeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternVerticallyScrollableEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternVerticalScrollPercent.cs \
+	Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternVerticalViewSizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternCanSelectMultipleEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternInvalidatedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternIsSelectionRequiredEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProgressBar/ValuePatternValueEvent.cs \

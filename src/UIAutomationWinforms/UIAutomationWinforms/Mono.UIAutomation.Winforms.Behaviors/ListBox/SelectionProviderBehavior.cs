@@ -54,12 +54,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
 
 		public override void Connect (SWF.Control control)
 		{
+			//NOTE: IsSelectionRequired Property NEVER changes, so we aren't generating it.
 			Provider.SetEvent (ProviderEventType.SelectionPatternCanSelectMultipleProperty,
 			                   new SelectionPatternCanSelectMultipleEvent ((ListBoxProvider) Provider));
 			Provider.SetEvent (ProviderEventType.SelectionPatternInvalidatedEvent,
 			                   new SelectionPatternInvalidatedEvent ((ListBoxProvider) Provider));
-			Provider.SetEvent (ProviderEventType.SelectionPatternIsSelectionRequiredProperty,
-			                   new SelectionPatternIsSelectionRequiredEvent ((ListBoxProvider) Provider));
 			Provider.SetEvent (ProviderEventType.SelectionPatternSelectionProperty,
 			                   new SelectionPatternSelectionEvent ((ListBoxProvider) Provider));
 		}
@@ -102,11 +101,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
 		}
 
 		public bool IsSelectionRequired {
-			get { 
-				SWF.ListBox listBoxControl = (SWF.ListBox) Provider.Control;
-
-				return listBoxControl.SelectedIndices.Count > 0; 
-			}
+			get { return false; }
 		}
 		
 		public IRawElementProviderSimple[] GetSelection ()

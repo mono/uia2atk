@@ -31,6 +31,7 @@ using System.Windows;
 using System.Reflection;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.ListBox;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
 {
@@ -60,24 +61,34 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
 		
 		public override void Connect (SWF.Control control)
 		{
-			//TODO: Add events
-			//HorizontallyScrollable
-			//HorizontalScrollPercent
-			//HorizontalViewSize
-			//VerticallyScrollable
-			//VerticalScrollPercent
-			//VerticalViewSize			
+			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontallyScrollableProperty,
+			                   new ScrollPatternHorizontallyScrollableEvent ((ListBoxProvider) Provider));
+			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalScrollPercentProperty,
+			                   new ScrollPatternHorizontalScrollPercentEvent ((ListBoxProvider) Provider));
+			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalViewSizeProperty,
+			                   new ScrollPatternHorizontalViewSizeEvent ((ListBoxProvider) Provider));
+			Provider.SetEvent (ProviderEventType.ScrollPatternVerticallyScrollableProperty,
+			                   new ScrollPatternVerticallyScrollableEvent ((ListBoxProvider) Provider));
+			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalScrollPercentProperty,
+			                   new ScrollPatternVerticalScrollPercent ((ListBoxProvider) Provider));
+			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalViewSizeProperty,
+			                   new ScrollPatternVerticalViewSizeEvent ((ListBoxProvider) Provider));
 		}
 		
 		public override void Disconnect (SWF.Control control)
-		{
-			//TODO: Delete events
-			//HorizontallyScrollable
-			//HorizontalScrollPercent
-			//HorizontalViewSize
-			//VerticallyScrollable
-			//VerticalScrollPercent
-			//VerticalViewSize
+		{		
+			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontallyScrollableProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalScrollPercentProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalViewSizeProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.ScrollPatternVerticallyScrollableProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalScrollPercentProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalViewSizeProperty,
+			                   null);
 		}
 
 		public override object GetPropertyValue (int propertyId)
@@ -108,20 +119,23 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
 			}
 		}
 		
+		//FIXME: This MUST BE locale-specific
 		public double HorizontalScrollPercent {
 			get { 
-				if (hscrollbar.Maximum == 0)
-					return 0;
+				if (HorizontallyScrollable == false)
+					return ScrollPatternIdentifiers.NoScroll;
 				else
 					return (hscrollbar.Value * 100) / hscrollbar.Maximum; 
 			}
 		}
 		
-		//The horizontal size of the viewable region as a percentage of the 
-		//total content area within the control.
 		public double HorizontalViewSize {
-			//TODO: Is this OK?
-			get { return HorizontalScrollPercent; }
+			get { 
+				if (HorizontallyScrollable == false)
+					return 100;
+				else //TODO: Return valid value
+					return HorizontalScrollPercent; 
+			}
 		}
 
 		public bool VerticallyScrollable {
@@ -130,18 +144,23 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
 			}
 		}
 
+		//FIXME: This MUST BE locale-specific
 		public double VerticalScrollPercent {
 			get { 
-				if (vscrollbar.Maximum == 0)
-					return 0;
+				if (VerticallyScrollable == false)
+					return ScrollPatternIdentifiers.NoScroll;
 				else
 					return (vscrollbar.Value * 100) / vscrollbar.Maximum; 
 			}
 		}
 
 		public double VerticalViewSize {
-			//TODO: Is this OK?
-			get { return VerticalScrollPercent; }
+			get { 
+				if (VerticallyScrollable == false)
+					return 100;
+				else //TODO: Return valid value
+					return VerticalScrollPercent; 
+			}
 		}
 		
 		public void Scroll (ScrollAmount horizontalAmount, 

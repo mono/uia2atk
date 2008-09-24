@@ -1,5 +1,47 @@
 2008-09-24  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: File updated due to
+	  added and deleted files.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: New method added:
+	  GetInternalScrollBar.
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Returning false
+	  in IsPasswordProperty.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBox/SelectionProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternIsSelectionRequiredEvent.cs:
+	  IsSelectionRequired Automation Property Event removed: is always
+	  false.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBox/ScrollProviderBehavior.cs:
+	  Scroll Pattern Events implemented. Missing HorizontalViewSize and
+	  VerticalViewSize properties.
+	
+	  [Fixes part of Bug #428741]
+	* Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternVerticalViewSizeEvent.cs:
+	  Scroll Pattern Event implemented: VerticalViewSize
+	
+	  [Fixes part of Bug #428741]
+	* Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontalViewSizeEvent.cs:
+	  Scroll Pattern Event implemented: HorizontallyViewSize.
+	
+	  [Fixes part of Bug #428741]
+	* Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontallyScrollableEvent.cs:
+	  Scroll Pattern Event implemented: HorizontallyScrollable.
+	
+	  [Fixes part of Bug #428741]
+	* Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternVerticallyScrollableEvent.cs:
+	  Scroll Pattern Event implemented: VerticallyScrollable.
+	
+	  [Fixes part of Bug #428741]
+	* Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternVerticalScrollPercent.cs:
+	  Scroll Pattern Event implemented: VerticalScrollPercent.
+	
+	  [Fixes part of Bug #428741]
+	* Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontalScrollPercentEvent.cs:
+	  Scroll Pattern Event implemented: HorizontallyScrollPercent.
+	
+	  [Fixes part of Bug #428741]
+
+2008-09-24  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/HelpProviderListener.cs: Removed primitive
 	  debugging.
 

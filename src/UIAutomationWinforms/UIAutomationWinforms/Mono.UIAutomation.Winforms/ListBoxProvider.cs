@@ -76,11 +76,16 @@ namespace Mono.UIAutomation.Winforms
 		
 		public bool HasVerticalScrollbar {
 			get { return vscrollbar.Visible == true && vscrollbar.Enabled == true; }
-		}		
+		}
 		
 		#endregion
 		
 		#region Public Methods
+		
+		public ScrollBar GetInternalScrollBar (Orientation orientation)
+		{
+			return orientation == Orientation.Horizontal ? hscrollbar : vscrollbar;
+		}
 		
 		public override void Terminate ()
 		{
