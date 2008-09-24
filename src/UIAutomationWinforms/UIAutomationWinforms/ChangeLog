@@ -1,5 +1,33 @@
 2008-09-24  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated added/deleted
+	  files.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: CheckedListBox
+	  provider added.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs,
+	  Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Methods overridden:
+	  GetToggleState, ToggleItem.
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Updated to use new
+	  behavior classes.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: New abstract methods:
+	  GetToggleState, ToggleItem.
+	* Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs: CheckedListBox
+	  Provider.
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs:
+	  Method added: GetPropertyValue. Event implemented.
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs:
+	  Renamed from SelectionProviderBehavior.
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionProviderBehavior.cs:
+	  Renamed to SelectionItemProviderBehavior.
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/ScrollItemProviderBehavior.cs:
+	  Renamed from ScrollProviderBehavior.
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/ScrollProviderBehavior.cs:
+	  Renamed to ScrollItemProviderBehavior.
+	* Mono.UIAutomation.Winforms.Events/ListItem/TogglePatternToggleStateEvent.cs:
+	  Class added. Generates TogglePattern.ToggleState event.
+
+2008-09-24  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: File updated due to
 	  added and deleted files.
 	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: New method added:

@@ -32,14 +32,15 @@ using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 {
-	
-	internal class SelectionProviderBehavior 
+	//NOTE: 
+	//     About exceptions thrown: http://msdn.microsoft.com/en-us/library/ms749016.aspx
+	internal class SelectionItemProviderBehavior 
 		: ProviderBehavior, ISelectionItemProvider
 	{
 		
 		#region Constructors
 
-		public SelectionProviderBehavior (ListItemProvider provider)
+		public SelectionItemProviderBehavior (ListItemProvider provider)
 			: base (provider)
 		{
 			this.itemProvider = provider;
@@ -126,19 +127,19 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 			else {
 				itemProvider.ListProvider.UnselectItem (itemProvider);
 
-				//TODO: Would be great if this code is refactored to use an Event
-				if (AutomationInteropProvider.ClientsAreListening) {
-					AutomationEvent automationEvent;
-
-					if (itemProvider.ListProvider.SelectedItemsCount == 1)
-						automationEvent = SelectionItemPatternIdentifiers.ElementSelectedEvent;
-					else 
-						automationEvent = SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent;
-	
-					AutomationEventArgs args = new AutomationEventArgs (automationEvent);
-					AutomationInteropProvider.RaiseAutomationEvent (automationEvent, 
-					                                                Provider, args);
-				}
+//				//TODO: Would be great if this code is refactored to use an Event
+//				if (AutomationInteropProvider.ClientsAreListening) {
+//					AutomationEvent automationEvent;
+//
+//					if (itemProvider.ListProvider.SelectedItemsCount == 1)
+//						automationEvent = SelectionItemPatternIdentifiers.ElementSelectedEvent;
+//					else 
+//						automationEvent = SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent;
+//	
+//					AutomationEventArgs args = new AutomationEventArgs (automationEvent);
+//					AutomationInteropProvider.RaiseAutomationEvent (automationEvent, 
+//					                                                Provider, args);
+//				}
 
 			}
 		}
@@ -155,18 +156,18 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 			itemProvider.ListProvider.SelectItem (itemProvider);
 			
 			//TODO: Would be great if this code is refactored to use an Event
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationEvent automationEvent;
-
-				if (itemProvider.ListProvider.SelectedItemsCount == 1)
-					automationEvent = SelectionItemPatternIdentifiers.ElementSelectedEvent;
-				else 
-					automationEvent = SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent;
-
-				AutomationEventArgs args = new AutomationEventArgs (automationEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (automationEvent, 
-				                                                Provider, args);
-			}
+//			if (AutomationInteropProvider.ClientsAreListening) {
+//				AutomationEvent automationEvent;
+//
+//				if (itemProvider.ListProvider.SelectedItemsCount == 1)
+//					automationEvent = SelectionItemPatternIdentifiers.ElementSelectedEvent;
+//				else 
+//					automationEvent = SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent;
+//
+//				AutomationEventArgs args = new AutomationEventArgs (automationEvent);
+//				AutomationInteropProvider.RaiseAutomationEvent (automationEvent, 
+//				                                                Provider, args);
+//			}
 		}
 
 		public bool IsSelected {

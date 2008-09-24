@@ -212,6 +212,16 @@ namespace Mono.UIAutomation.Winforms
 			return itemRec;
 		}
 		
+		public override ToggleState GetToggleState (ListItemProvider item)
+		{
+			return ToggleState.Indeterminate;
+		}
+		
+		public override void ToggleItem (ListItemProvider item)
+		{
+			//Toggle not supported in SWF.ComboBox
+		}
+		
 		public override void SelectItem (ListItemProvider item)
 		{
 			listboxControl.SetSelected (item.Index, true);

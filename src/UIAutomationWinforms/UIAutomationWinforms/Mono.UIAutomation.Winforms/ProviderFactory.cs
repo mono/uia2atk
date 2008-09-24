@@ -96,6 +96,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.GroupBox gb;
 			SWF.StatusBar sb;
 			SWF.ComboBox cb;
+			SWF.CheckedListBox clb;
 			SWF.ListBox lb;
 			SWF.ScrollBar scb;
 			SWF.PictureBox pb;
@@ -133,6 +134,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new StatusBarProvider (sb);
 			else if ((cb = component as SWF.ComboBox) != null)
 				provider = new ComboBoxProvider (cb);
+			else if ((clb = component as SWF.CheckedListBox) != null)
+				provider = new CheckedListBoxProvider (clb);
 			else if ((lb = component as SWF.ListBox) != null)
 				provider = new ListBoxProvider (lb);
 			else if ((pgb = component as SWF.ProgressBar) != null)

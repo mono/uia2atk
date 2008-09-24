@@ -22,79 +22,73 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
+
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using System.Windows;
+using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ListItem;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 {
 
-	internal class ToggleProviderBehavior
-		: ProviderBehavior, IToggleProvider
+	internal class ScrollItemProviderBehavior 
+		: ProviderBehavior, IScrollItemProvider
 	{
-		
+			
 		#region Constructors
 
-		public ToggleProviderBehavior (ListItemProvider provider)
+		public ScrollItemProviderBehavior (ListItemProvider provider)
 			: base (provider)
 		{
 		}
 
-		#endregion 
+		#endregion
 		
-		#region IProviderBehavior specializations
+		#region IProviderBehavior Interface
 
 		public override AutomationPattern ProviderPattern { 
-			get { return TogglePatternIdentifiers.Pattern; }
-		}
-		
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == TogglePatternIdentifiers.ToggleStateProperty.Id)
-				return ToggleState;
-			else
-				return null;
+			get { return ScrollItemPatternIdentifiers.Pattern; }
 		}
 		
 		public override void Connect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
-			                   new TogglePatternToggleStateEvent ((ListItemProvider) Provider));
+			//Doesn't generate any UIA event
 		}
 		
 		public override void Disconnect (Control control)
 		{
-			Provider.SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
-			                   null);
+			//Doesn't generate any UIA event
 		}
 		
 		#endregion
 
-		#region IToggleProvider specializations 
-	
-		public ToggleState ToggleState {
-			get { 
-				ListItemProvider provider = (ListItemProvider) Provider;
-				return provider.ListProvider.GetToggleState (provider); 
-			}
-		}
+		#region IScrollItemProvider Interface
 		
-		public void Toggle ()
+		public void ScrollIntoView ()
 		{
-			ListItemProvider provider = (ListItemProvider) Provider;
-			
-			if (provider.ListProvider.Control.InvokeRequired == true) {
-				provider.ListProvider.Control.BeginInvoke (new MethodInvoker (Toggle));
+			PerformScrollIntoView (((ListItemProvider) Provider).ListProvider);
+		}
+
+		#endregion
+		
+		#region Private Methods
+		
+		private void PerformScrollIntoView (ListProvider provider)
+		{
+			if (provider.Control.InvokeRequired == true) {
+				provider.Control.BeginInvoke (new ScrollIntoViewDelegate (PerformScrollIntoView),
+				                              new object [] { provider });
 				return;
 			}
-			
-			provider.ListProvider.ToggleItem (provider);
+
+			provider.ScrollItemIntoView ((ListItemProvider) Provider);
 		}
-
+		
 		#endregion
-
 	}
+	
+	delegate void ScrollIntoViewDelegate (ListProvider provider);
 }

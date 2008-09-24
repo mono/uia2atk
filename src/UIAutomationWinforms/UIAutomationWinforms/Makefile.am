@@ -53,8 +53,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/LinkLabel/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListBox/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListBox/SelectionProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListItem/ScrollProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListItem/ScrollItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs \
@@ -101,6 +101,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternCanSelectMultipleEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternSelectionEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListItem/TogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProgressBar/ValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \
@@ -127,6 +128,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/AssemblyInfo.cs \
 	Mono.UIAutomation.Winforms/ButtonProvider.cs \
 	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
+	Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ComboBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ErrorProvider.cs \
 	Mono.UIAutomation.Winforms/ErrorProviderListener.cs \

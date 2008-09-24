@@ -97,6 +97,10 @@ namespace Mono.UIAutomation.Winforms
 		
 		public abstract ListItemProvider[] GetSelectedItemsProviders ();
 		
+		public abstract ToggleState GetToggleState (ListItemProvider item);
+		
+		public abstract void ToggleItem (ListItemProvider item);
+		
 		public abstract void SelectItem (ListItemProvider item);
 
 		public abstract void UnselectItem (ListItemProvider item);

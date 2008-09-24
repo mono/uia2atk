@@ -22,73 +22,55 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
-using System.Windows;
-using Mono.UIAutomation.Winforms;
-using Mono.UIAutomation.Winforms.Events;
+using SWF = System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
+namespace Mono.UIAutomation.Winforms.Events.ListItem
 {
 
-	internal class ScrollProviderBehavior 
-		: ProviderBehavior, IScrollItemProvider
+	internal class TogglePatternToggleStateEvent 
+		: BaseAutomationPropertyEvent
 	{
-			
+
 		#region Constructors
 
-		public ScrollProviderBehavior (ListItemProvider provider)
-			: base (provider)
+		public TogglePatternToggleStateEvent (ListItemProvider listItemProvider)
+			: base (listItemProvider,
+			        TogglePatternIdentifiers.ToggleStateProperty)
 		{
-		}
-
-		#endregion
-		
-		#region IProviderBehavior Interface
-
-		public override AutomationPattern ProviderPattern { 
-			get { return ScrollItemPatternIdentifiers.Pattern; }
-		}
-		
-		public override void Connect (Control control)
-		{
-			//Doesn't generate any UIA event
-		}
-		
-		public override void Disconnect (Control control)
-		{
-			//Doesn't generate any UIA event
 		}
 		
 		#endregion
-
-		#region IScrollItemProvider Interface
 		
-		public void ScrollIntoView ()
+		#region IConnectable Overrides
+	
+		public override void Connect (SWF.Control control)
 		{
-			PerformScrollIntoView (((ListItemProvider) Provider).ListProvider);
+			((SWF.CheckedListBox) control).ItemCheck 
+				+= new SWF.ItemCheckEventHandler (OnItemChecked);
 		}
 
+		public override void Disconnect (SWF.Control control)
+		{
+			((SWF.CheckedListBox) control).ItemCheck 
+				-= new SWF.ItemCheckEventHandler (OnItemChecked);
+		}
+		
 		#endregion
 		
 		#region Private Methods
 		
-		private void PerformScrollIntoView (ListProvider provider)
+		private void OnItemChecked (object sender, SWF.ItemCheckEventArgs args)
 		{
-			if (provider.Control.InvokeRequired == true) {
-				provider.Control.BeginInvoke (new ScrollIntoViewDelegate (PerformScrollIntoView),
-				                              new object [] { provider });
-				return;
-			}
-
-			provider.ScrollItemIntoView ((ListItemProvider) Provider);
+			ListItemProvider provider = (ListItemProvider) Provider;
+			
+			if (args.Index == provider.ListProvider.IndexOfItem (provider))
+				RaiseAutomationPropertyChangedEvent ();
 		}
-		
+
 		#endregion
+		
 	}
-	
-	delegate void ScrollIntoViewDelegate (ListProvider provider);
 }

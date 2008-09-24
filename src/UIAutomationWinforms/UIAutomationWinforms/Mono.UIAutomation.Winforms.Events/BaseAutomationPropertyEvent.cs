@@ -63,7 +63,13 @@ namespace Mono.UIAutomation.Winforms.Events
 			if (AutomationInteropProvider.ClientsAreListening == true) {
 				object newValue = Provider.GetPropertyValue (Property.Id);
 				
-				if (object.Equals (OldValue, newValue) == false) {					
+				if (object.Equals (OldValue, newValue) == false) {
+
+					try {
+					Console.WriteLine ("OldValue: {0}. NewValue: {1} Type: {2}",
+					                   OldValue, newValue, Property.ProgrammaticName);
+					} catch (Exception) {}
+					
 					AutomationPropertyChangedEventArgs args =					
 						new AutomationPropertyChangedEventArgs (Property,
 						                                        OldValue,

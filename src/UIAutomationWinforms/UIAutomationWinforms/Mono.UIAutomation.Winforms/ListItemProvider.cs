@@ -46,9 +46,9 @@ namespace Mono.UIAutomation.Winforms
 			listControl = control;
 			
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
-			             new SelectionProviderBehavior (this));	
+			             new SelectionItemProviderBehavior (this));	
 			SetBehavior (ScrollItemPatternIdentifiers.Pattern,
-			             new ScrollProviderBehavior (this));
+			             new ScrollItemProviderBehavior (this));
 			
 			if (listControl is CheckedListBox)
 				SetBehavior (TogglePatternIdentifiers.Pattern,

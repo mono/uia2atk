@@ -130,6 +130,16 @@ namespace Mono.UIAutomation.Winforms
 			return rectangle;
 		}
 		
+		public override ToggleState GetToggleState (ListItemProvider item)
+		{
+			return ToggleState.Indeterminate;
+		}		
+		
+		public override void ToggleItem (ListItemProvider item)
+		{
+			//Toggle not supported in SWF.ComboBox
+		}
+		
 		public override void SelectItem (ListItemProvider item)
 		{
 			if (ContainsItem (item) == true)
@@ -365,6 +375,16 @@ namespace Mono.UIAutomation.Winforms
 			{
 				return comboboxProvider.GetItemBoundingRectangle (item);
 			}
+			
+			public override ToggleState GetToggleState (ListItemProvider item)
+			{
+				return comboboxProvider.GetToggleState (item);
+			}
+			
+			public override void ToggleItem (ListItemProvider item)
+			{
+				//Toggle not supported in internal SWF.ListBox in SWF.ComboBox
+			}			
 			
 			public override void SelectItem (ListItemProvider item)
 			{
