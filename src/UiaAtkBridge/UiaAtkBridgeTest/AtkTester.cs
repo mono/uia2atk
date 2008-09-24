@@ -142,7 +142,7 @@ namespace UiaAtkBridgeTest
 				Assert.IsFalse (state.ContainsState (Atk.StateType.Checked), "RefStateSet.!Checked #1");
 			
 
-			if (type == BasicWidgetType.ListItem)
+			if (type == BasicWidgetType.ListItem || type == BasicWidgetType.CheckedListItem)
 				Assert.IsFalse (state.ContainsState (Atk.StateType.Selected), "RefStateSet.Selected");
 
 			if (type != BasicWidgetType.ComboBox) {
@@ -151,7 +151,7 @@ namespace UiaAtkBridgeTest
 					Assert.AreEqual (actionPerformed, implementor.DoAction (i), "DoAction(" + i + ")");
 				if ((validNumberOfActions > 1) // does not apply in UIA because 1 doaction==1click==checked
 				                                         // (in GAIL click+press+release==2clicks==unchecked)
-				     && (type == BasicWidgetType.CheckBox))
+				     && type == BasicWidgetType.CheckBox)
 					//one more, to leave it checked
 					Assert.AreEqual (actionPerformed, implementor.DoAction (0), "DoAction_Corrective");
 			}
@@ -167,11 +167,11 @@ namespace UiaAtkBridgeTest
 			
 			state = accessible.RefStateSet();
 			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled #2");
-			if ((type == BasicWidgetType.CheckBox) || (type == BasicWidgetType.RadioButton))
+			if ((type == BasicWidgetType.CheckBox) || (type == BasicWidgetType.RadioButton) || (type == BasicWidgetType.CheckedListItem))
 				Assert.IsTrue (state.ContainsState (Atk.StateType.Checked), "RefStateSet.Checked");
 			else
 				Assert.IsFalse (state.ContainsState (Atk.StateType.Checked), "RefStateSet.!Checked #2");
-			if (type == BasicWidgetType.ListItem)
+			if ((type == BasicWidgetType.ListItem) || (type == BasicWidgetType.CheckedListItem))
 				Assert.IsTrue (state.ContainsState (Atk.StateType.Selected), "RefStateSet.Selected");
 			
 			
@@ -185,13 +185,13 @@ namespace UiaAtkBridgeTest
 			
 			//out of range
 			Assert.IsFalse (implementor.DoAction (-1), "DoAction OOR#1");
-			Assert.IsFalse (implementor.DoAction (ValidNumberOfActionsForAButton), "DoAction OOR#2");
+			Assert.IsFalse (implementor.DoAction (validNumberOfActions), "DoAction OOR#2");
 			Assert.IsNull (implementor.GetName (-1), "GetName OOR#1");
-			Assert.IsNull (implementor.GetName (ValidNumberOfActionsForAButton), "GetName OOR#2");
+			Assert.IsNull (implementor.GetName (validNumberOfActions), "GetName OOR#2");
 			Assert.IsNull (implementor.GetDescription (-1), "GetDescription OOR#1");
-			Assert.IsNull (implementor.GetDescription (ValidNumberOfActionsForAButton), "GetDescription OOR#2");
+			Assert.IsNull (implementor.GetDescription (validNumberOfActions), "GetDescription OOR#2");
 			Assert.IsNull (implementor.GetLocalizedName (-1), "GetLocalizedName OOR#1");
-			Assert.IsNull (implementor.GetLocalizedName (ValidNumberOfActionsForAButton), "GetLocalizedName OOR#2");
+			Assert.IsNull (implementor.GetLocalizedName (validNumberOfActions), "GetLocalizedName OOR#2");
 			
 			string descrip = "Some big ugly description";
 			for (int i = 0; i < validNumberOfActions; i++) {
@@ -199,8 +199,8 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (descrip, implementor.GetDescription (i), "GetDescription");
 				descrip += ".";
 			}
-			Assert.IsFalse (implementor.SetDescription(ValidNumberOfActionsForAButton, descrip), "SetDescription OOR");
-			Assert.IsNull (implementor.GetDescription (ValidNumberOfActionsForAButton), "GetDescription OOR#3");
+			Assert.IsFalse (implementor.SetDescription(validNumberOfActions, descrip), "SetDescription OOR");
+			Assert.IsNull (implementor.GetDescription (validNumberOfActions), "GetDescription OOR#3");
 			
 			// With no keybinding set, everything should return null
 			Assert.IsNull (implementor.GetKeybinding (0), "GetKeyBinding#1");
@@ -231,7 +231,7 @@ namespace UiaAtkBridgeTest
 			string accessibleName = null;
 			if (type == BasicWidgetType.ParentMenu)
 				accessibleName = names [0];
-			else if (type == BasicWidgetType.ListBox)
+			else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox)
 				// Not sure if this is right; setting so I can test other things -MPG
 				accessibleName = String.Empty;
 			
@@ -247,14 +247,14 @@ namespace UiaAtkBridgeTest
 				string accName = names [i];
 				if (type == BasicWidgetType.ParentMenu)
 					accName = names[0];
-				else if (type == BasicWidgetType.ListBox)
+				else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox)
 					accName = String.Empty;
 				Assert.AreEqual (accName, accessible.Name, "AtkObj Name #" + i);
 				
 				Atk.Object refSelObj = implementor.RefSelection (0);
 				if (type != BasicWidgetType.ParentMenu) {
 					Assert.IsNotNull (refSelObj, "refSel should not be null");
-					if (type != BasicWidgetType.ListBox)
+					if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox)
 						Assert.AreEqual (accessible.Name, refSelObj.Name, "AtkObj NameRefSel#" + i);
 					Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
 					Assert.IsTrue (implementor.IsChildSelected (i), "childSelected(" + i + ")");
@@ -275,7 +275,7 @@ namespace UiaAtkBridgeTest
 					
 				}
 
-				if (i == 1 && type == BasicWidgetType.ListBox)
+				if (i == 1 && (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox))
 					Assert.IsFalse (accessible.RefAccessibleChild(0).RefStateSet().ContainsState (Atk.StateType.Selected), "Unselected child should not have State.Selected");
 				int refSelPos = i;
 				if (refSelPos == 0)
@@ -287,7 +287,7 @@ namespace UiaAtkBridgeTest
 
 			string lastName = accessible.Name;
 
-			if (type == BasicWidgetType.ComboBox || type == BasicWidgetType.ListBox) {
+			if (type == BasicWidgetType.ComboBox || type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox) {
 				//strangely, OOR selections return true (valid)
 				Assert.IsTrue (implementor.AddSelection (-1), "AddSelection OOR#1");
 			} else {
@@ -301,7 +301,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.RefSelection (-1), "RefSelection OOR#1");
 			Assert.IsNull (implementor.RefSelection (names.Length), "RefSelection OOR#2");
 			
-			if (type != BasicWidgetType.ListBox) {
+			if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox) {
 				Assert.IsTrue (implementor.ClearSelection (), "ClearSelection");
 				Assert.IsNull (implementor.RefSelection (0), "RefSel after CS");
 			} else {
@@ -311,7 +311,7 @@ namespace UiaAtkBridgeTest
 			//this is a normal combobox (not multiline) (TODO: research multiline comboboxes?)
 			Assert.IsFalse (implementor.SelectAllSelection ());
 			
-			if (type != BasicWidgetType.ListBox)
+			if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox)
 				Assert.IsNull (implementor.RefSelection (0), "RefSel after SAS");
 			
 			Assert.IsTrue (names.Length > 0, "Please use a names variable that is not empty");
@@ -319,7 +319,7 @@ namespace UiaAtkBridgeTest
 			if (type != BasicWidgetType.ParentMenu) {
 				Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null after AS0");
 
-				if (type != BasicWidgetType.ListBox) {
+				if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox) {
 					Assert.IsTrue (implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
 					Assert.IsTrue (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
 				}
@@ -331,7 +331,7 @@ namespace UiaAtkBridgeTest
 				Assert.IsFalse (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
 			}
 
-			if (type != BasicWidgetType.ListBox) {
+			if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox) {
 				Assert.IsTrue (implementor.RemoveSelection (0), "RemoveSelection");
 				Assert.IsNull (implementor.RefSelection (0), "RefSel after RemoveSel");
 			}
@@ -404,6 +404,7 @@ namespace UiaAtkBridgeTest
 				role = Atk.Role.ProgressBar;
 				break;
 			case BasicWidgetType.ListBox:
+			case BasicWidgetType.CheckedListBox:
 				role = Atk.Role.List;
 				break;
 			case BasicWidgetType.Spinner:

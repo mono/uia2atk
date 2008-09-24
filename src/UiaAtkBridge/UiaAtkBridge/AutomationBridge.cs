@@ -510,8 +510,12 @@ namespace UiaAtkBridge
 		private void HandleNewListItemControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
+			Adapter atkItem;
+			if (provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id) != null)
+				atkItem = new CheckBox (provider);
+ 			else
+				atkItem = new ListItem (provider);
 			
-			ListItem atkItem = new ListItem (provider);
 			providerAdapterMapping [provider] = atkItem;
 			
 			parentObject.AddOneChild (atkItem);

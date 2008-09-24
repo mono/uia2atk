@@ -50,7 +50,7 @@ namespace UiaAtkBridgeTest
 			switch (type) {
 			case BasicWidgetType.ListBox:
 			case BasicWidgetType.VScrollBar:
-			case BasicWidgetType.HScrollBar:
+			case BasicWidgetType.HScrollBar: {
 				MWF.ListBox listBox = new MWF.ListBox ();
 				if (real)
 					listBox = lb1;
@@ -69,6 +69,25 @@ namespace UiaAtkBridgeTest
 				component = uiaList;
 				selection = uiaList;
 				break;
+			}
+			case BasicWidgetType.CheckedListBox: {
+				MWF.CheckedListBox listBox = new MWF.CheckedListBox ();
+				if (real)
+					listBox = clb1;
+				listBox.Items.Clear ();
+				foreach (string item in names)
+					listBox.Items.Add (item);
+			
+				UiaAtkBridge.List uiaList;
+				if (real)
+					uiaList = (UiaAtkBridge.List) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (listBox, true, true));
+				else
+					uiaList = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listBox, true, true));
+				accessible = uiaList;
+				component = uiaList;
+				selection = uiaList;
+				break;
+			}
 			case BasicWidgetType.ComboBox:
 				MWF.ComboBox comboBox = new MWF.ComboBox ();
 				if (real)
@@ -145,6 +164,7 @@ namespace UiaAtkBridgeTest
 		List<MWF.RadioButton> radios = new List<MWF.RadioButton> ();
 		int currentRadio = -1;
 		MWF.ListBox lb1 = new MWF.ListBox ();
+		MWF.CheckedListBox clb1 = new MWF.CheckedListBox ();
 		MWF.ComboBox cb1 = new MWF.ComboBox ();
 		MWF.Label lab1 = new MWF.Label ();
 		MWF.Button but1 = new MWF.Button ();
@@ -166,6 +186,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (gb1);
 			form.Controls.Add (gb2);
 			form.Controls.Add (lb1);
+			form.Controls.Add (clb1);
 			form.Controls.Add (cb1);
 			form.Controls.Add (lab1);
 			form.Controls.Add (but1);
@@ -411,7 +432,7 @@ namespace UiaAtkBridgeTest
 		{
 		}
 		
-		//[Test]
+		[Test]
 		public void ListBox ()
 		{
 			BasicWidgetType type = BasicWidgetType.ListBox;
@@ -442,6 +463,40 @@ namespace UiaAtkBridgeTest
 			// Below line needed because InterfaceAction tests that first item is not selected, so that it can test the action
 			selection.AddSelection(1);
 			InterfaceAction (BasicWidgetType.ListItem, listItemChild);
+
+			Parent (type, accessible);
+		}
+
+		[Test]
+		public void CheckedListBox ()
+		{
+			BasicWidgetType type = BasicWidgetType.CheckedListBox;
+			Atk.Object accessible;
+			
+			string[] names = new string[] { "First item", "Second Item", "Last Item" };
+			Atk.Component atkComponent = (Atk.Component)
+				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, true);
+
+			InterfaceComponent (type, atkComponent);
+			
+			PropertyRole (type, accessible);
+			
+			Assert.AreEqual (3, accessible.NAccessibleChildren, "ListBox#RO numChildren");
+			
+			Atk.Object listItemChild = accessible.RefAccessibleChild (0);
+			Assert.IsNotNull (listItemChild, "ListBox child#0 should not be null");
+			Assert.AreEqual (listItemChild.Role, Atk.Role.CheckBox, "ListBox child#0 should be a check box");
+			
+			Assert.IsTrue (listItemChild.RefStateSet ().ContainsState (Atk.StateType.Selectable), "RefStateSet().Contains(Selectable)");
+			Assert.AreEqual (0, listItemChild.NAccessibleChildren, "ListBox ListItem numChildren");
+
+			Atk.SelectionImplementor selection = accessible as Atk.SelectionImplementor;
+			Assert.IsNotNull (selection, "ListBox Atk.Selection should not be null");
+			InterfaceSelection (new Atk.SelectionAdapter(selection), names, accessible, type);
+
+			// Below line needed because InterfaceAction tests that first item is not selected, so that it can test the action
+			selection.AddSelection(1);
+			InterfaceAction (BasicWidgetType.CheckedListItem, listItemChild);
 
 			Parent (type, accessible);
 		}

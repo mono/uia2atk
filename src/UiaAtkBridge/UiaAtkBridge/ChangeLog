@@ -1,5 +1,10 @@
 2008-09-24  Mike Gorse <mgorse@novell.com>
 
+	* AutomationBridge.cs: Treat a ListItem with IToggleProvider as a
+	  CheckBox
+
+2008-09-24  Mike Gorse <mgorse@novell.com>
+
 	* AutomationBridge.cs: Only have RaiseAutomationPropertyChangeEvent
 	  create an adapter for HasKeyboardFocusProperty events
 
