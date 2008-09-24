@@ -1,3 +1,8 @@
+2008-09-23  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs, AtkTests.cs, BridgeTester.cs: Add AtkText test for
+	  spinner and associated infrastructure.
+
 2008-09-23  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* BridgeTester.cs: Oops, revert some changes in the last commit that

@@ -1,3 +1,9 @@
+2008-09-23  Mike Gorse <mgorse@novell.com>
+
+	* Spinner.cs: Support AtkText.
+	* List.cs: Remove debugging spew.
+	* Adapter.cs: Add NotifyPropertyChange
+
 2008-09-23  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* ComponentAdapter.cs: Fix build.

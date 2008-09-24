@@ -232,7 +232,6 @@ AtkObject,
 			if (eventId == AutomationElementIdentifiers.AsyncContentLoadedEvent) {
 				// TODO: Handle AsyncContentLoadedEvent
 			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
-Console.WriteLine("Got the other focus");
 				// TODO: Handle AutomationFocusChangedEvent
 			} else if (eventId == AutomationElementIdentifiers.StructureChangedEvent) {
 				// TODO: Handle StructureChangedEvent

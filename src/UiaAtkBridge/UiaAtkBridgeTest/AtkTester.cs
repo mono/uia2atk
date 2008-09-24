@@ -337,7 +337,17 @@ namespace UiaAtkBridgeTest
 			}
 		}
 		
-		protected void InterfaceValue (BasicWidgetType type, Atk.Value atkValue)
+		private void TextMatchesValue (BasicWidgetType type, Atk.Value atkValue, Atk.Text atkText)
+		{
+			if (atkText == null)
+				return;
+			string text = GetCurrentValue (atkValue).ToString ("F2");
+			Assert.AreEqual (text, atkText.GetText (0, -1), "GetText");
+			Assert.AreEqual (text.Length, atkText.CharacterCount, "CharacterCount");
+			Assert.AreEqual (text [0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset");
+		}
+
+		protected void InterfaceValue (BasicWidgetType type, Atk.Value atkValue, Atk.Text atkText)
 		{
 			Assert.IsNotNull (atkValue, "InterfaceValue value not null");
 			Assert.AreEqual (  0, GetMinimumValue(atkValue), "InterfaceValue MinimumValue");
@@ -346,7 +356,13 @@ namespace UiaAtkBridgeTest
 			else
 				Assert.AreEqual (100, GetMaximumValue(atkValue), "InterfaceValue MaximumValue");
 			if (type == BasicWidgetType.Spinner)
-				Assert.AreEqual (50, GetCurrentValue(atkValue), "InterfaceValue MaximumValue");
+				Assert.AreEqual (50, GetCurrentValue(atkValue), "InterfaceValue CurrentValue #1");
+			TextMatchesValue (type, atkValue, atkText);
+		}
+
+		protected void InterfaceValue (BasicWidgetType type, Atk.Value atkValue)
+		{
+			InterfaceValue (type, atkValue, null);
 		}
 
 		protected void PropertyRole (BasicWidgetType type, Atk.Object accessible)

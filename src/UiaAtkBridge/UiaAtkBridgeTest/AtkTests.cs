@@ -247,6 +247,10 @@ namespace UiaAtkBridgeTest
 
 			Atk.Value atkValue = (Atk.Value)
 				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
+			Atk.Text atkText = (Atk.Text)
+				GetAtkObjectThatImplementsInterface <Atk.Text> (type, name, out accessible, true);
+			InterfaceValue (type, atkValue, atkText);
+
 			InterfaceValue (type, atkValue);
 
 			PropertyRole (type, accessible);

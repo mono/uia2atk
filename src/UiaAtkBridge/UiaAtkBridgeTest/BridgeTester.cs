@@ -358,6 +358,7 @@ namespace UiaAtkBridgeTest
 					uiaSp = new UiaAtkBridge.Spinner (ProviderFactory.GetProvider (nud, true, true));
 				accessible = uiaSp;
 				component = uiaSp;
+				text = uiaSp;
 				value = uiaSp;
 				break;
 

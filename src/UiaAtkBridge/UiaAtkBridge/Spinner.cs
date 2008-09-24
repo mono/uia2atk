@@ -32,10 +32,11 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class Spinner : ComponentAdapter, Atk.ValueImplementor
+	public class Spinner : ComponentAdapter, Atk.ValueImplementor, Atk.TextImplementor
 	{
 		private IRawElementProviderSimple provider;
 		private IRangeValueProvider rangeValueProvider;
+		private TextImplementorHelper textExpert = null;
 
 		public Spinner (IRawElementProviderSimple provider)
 		{
@@ -44,6 +45,11 @@ namespace UiaAtkBridge
 			Name = text;
 			Role = Atk.Role.SpinButton;
 			rangeValueProvider = (IRangeValueProvider)provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
+			if (rangeValueProvider != null)
+				text = rangeValueProvider.Value.ToString ("F2");
+			else
+				text = String.Empty;
+			textExpert = new TextImplementorHelper (text);
 		}
 
 		public override IRawElementProviderSimple Provider {
@@ -83,5 +89,154 @@ namespace UiaAtkBridge
 		{
 			// TODO
 		}
+
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			if (e.Property == RangeValuePatternIdentifiers.ValueProperty) {
+				double v = (double)e.NewValue;
+				NotifyPropertyChange ("accessible-value", v);
+
+				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+
+				// First delete all text, then insert the new text
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+
+				string newText = v.ToString ("F2");
+				textExpert = new TextImplementorHelper (newText);
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+				                         newText == null ? 0 : newText.Length);
+			}
+		}
+
+		public int CaretOffset {
+			get {
+				return 0;
+			}
+		}
+
+		public GLib.SList DefaultAttributes {
+			get {
+				//TODO:
+				GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
+				return attribs;
+			}
+		}
+
+		public int CharacterCount {
+			get {
+				return textExpert.Text.Length;
+			}
+		}
+
+		public int NSelections {
+			get {
+				return 0;
+			}
+		}
+		
+		public string GetText (int startOffset, int endOffset)
+		{
+			return textExpert.GetText (startOffset, endOffset);
+		}
+
+		private int selectionStartOffset = 0, selectionEndOffset = 0;
+		
+		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
+		{
+			string ret = 
+				textExpert.GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
+			selectionStartOffset = startOffset;
+			selectionEndOffset = endOffset;
+			return ret;
+		}
+		
+		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
+		{
+			string ret = 
+				textExpert.GetTextAtOffset (offset, boundaryType, out startOffset, out endOffset);
+			selectionStartOffset = startOffset;
+			selectionEndOffset = endOffset;
+			return ret;
+		}
+		
+		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
+		{
+			string ret = 
+				textExpert.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
+			selectionStartOffset = startOffset;
+			selectionEndOffset = endOffset;
+			return ret;
+		}
+		
+		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
+		{
+			// don't ask me why, this is what gail does 
+			// (instead of throwing or returning null):
+			if (offset > Name.Length)
+				offset = Name.Length;
+			else if (offset < 0)
+				offset = 0;
+			
+			//just test values for now:
+			endOffset = Name.Length;
+			startOffset = offset;
+			
+			//TODO:
+			GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
+			return attribs;
+		}
+
+		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
+		{
+			throw new NotImplementedException();
+		}
+
+		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
+		{
+			throw new NotImplementedException();
+		}
+
+		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
+		{
+			startOffset = selectionStartOffset;
+			endOffset = selectionEndOffset;
+			return null;
+		}
+
+		public bool AddSelection (int startOffset, int endOffset)
+		{
+			return false;
+		}
+
+		public bool RemoveSelection (int selectionNum)
+		{
+			return false;
+		}
+
+		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
+		{
+			return false;
+		}
+		
+		public char GetCharacterAtOffset (int offset)
+		{
+			return textExpert.GetCharacterAtOffset (offset);
+		}
+
+		public bool SetCaretOffset (int offset)
+		{
+			return false;
+		}
+
+		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, Atk.TextRectangle rect)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
+		{
+			throw new NotImplementedException();
+		}
+
 	}
 }
