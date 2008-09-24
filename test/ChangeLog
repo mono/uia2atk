@@ -1,6 +1,7 @@
 2008-09-23  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* samples/button_label_linklabel.py:
+	* samples/button_label_linklabel.py: Add an insensitive label for
+	label tests
 	* testers/helpers.py:  Took out sleep in actionsCheck; I don't think
 	it makes sense here because nothing is changing that we might need to
 	wait for.  Please correct me if I am wrong.  I also made the sleep
