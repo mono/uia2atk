@@ -1,5 +1,9 @@
 2008-09-24  Calen Chen <cachen@novell.com>
 
+	* samples/gtkform.py: add an empty form example for gtk
+
+2008-09-24  Calen Chen <cachen@novell.com>
+
 	* testers/label/labelframe.py: update self.lable with findAllLabels 
 	because adding insensitive label. initialize again in assertText to get
 	new text value
