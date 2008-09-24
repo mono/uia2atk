@@ -54,8 +54,6 @@ namespace Mono.UIAutomation.Winforms
 			if (initialized == true)
 				return;
 			
-			Console.WriteLine ("HelprProviderLister.initia");
-			
 			Helper.AddPrivateEvent (typeof (SWFHelpProvider),
 			                        null,
 			                        "UIAHelpRequested", 
