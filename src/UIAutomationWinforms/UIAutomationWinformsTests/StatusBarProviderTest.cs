@@ -59,6 +59,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsControlElementProperty,
 			              true);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.LabeledByProperty,
+			              null);
+			
+			string value = "Name Property";
+			statusBar.Text = value;
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              value);
 		}
 
 		[Test]
@@ -202,6 +212,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
         	{
             		return new StatusBar ();
         	}
+		
+		public override void LabeledByAndNamePropertyTest ()
+		{
+			TestLabeledByAndName (false, false);
+		}
 
 		#endregion
     	}

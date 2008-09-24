@@ -1,3 +1,7 @@
+2008-09-24  Neville Gao <nevillegao@gmail.com>
+
+	* StatusBarProviderTest.cs: Tested LabeledBy and Name Property.
+
 2008-09-23  Mario Carrion <mcarrion@novell.com> 
 
 	* StatusBarProviderTest.cs: Test updated.

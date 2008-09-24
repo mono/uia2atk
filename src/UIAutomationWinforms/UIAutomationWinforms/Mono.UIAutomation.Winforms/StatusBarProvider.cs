@@ -158,6 +158,8 @@ namespace Mono.UIAutomation.Winforms
 				return "status bar";
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 				return null;
+			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return statusBar.Text;
 			else
 				return base.GetPropertyValue (propertyId);
 		}

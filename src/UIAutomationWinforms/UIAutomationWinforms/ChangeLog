@@ -1,3 +1,8 @@
+2008-09-24  Neville Gao <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Added Automation Name
+	Property.
+	
 2008-09-23  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Updated to support
