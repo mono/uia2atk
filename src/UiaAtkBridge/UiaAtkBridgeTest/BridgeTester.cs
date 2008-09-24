@@ -438,7 +438,7 @@ namespace UiaAtkBridgeTest
 			BasicWidgetType type = BasicWidgetType.ListBox;
 			Atk.Object accessible;
 			
-			string[] names = new string[] { "First item", "Second Item", "Last Item" };
+			string[] names = new string[] { simpleTestText, "Second Item", "Last Item" };
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, true);
 
@@ -464,6 +464,8 @@ namespace UiaAtkBridgeTest
 			selection.AddSelection(1);
 			InterfaceAction (BasicWidgetType.ListItem, listItemChild);
 
+			InterfaceTextSingleLine (BasicWidgetType.ListItem, listItemChild);
+
 			Parent (type, accessible);
 		}
 
@@ -473,7 +475,7 @@ namespace UiaAtkBridgeTest
 			BasicWidgetType type = BasicWidgetType.CheckedListBox;
 			Atk.Object accessible;
 			
-			string[] names = new string[] { "First item", "Second Item", "Last Item" };
+			string[] names = new string[] { simpleTestText, "Second Item", "Last Item" };
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, true);
 
@@ -497,6 +499,8 @@ namespace UiaAtkBridgeTest
 			// Below line needed because InterfaceAction tests that first item is not selected, so that it can test the action
 			selection.AddSelection(1);
 			InterfaceAction (BasicWidgetType.CheckedListItem, listItemChild);
+
+			InterfaceTextSingleLine (BasicWidgetType.CheckedListItem, listItemChild);
 
 			Parent (type, accessible);
 		}

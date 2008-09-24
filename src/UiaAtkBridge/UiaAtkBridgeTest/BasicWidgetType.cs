@@ -48,7 +48,9 @@ namespace UiaAtkBridgeTest
 		Spinner,
 		//widgets only in MWF:
 		ListBox,
-		ListItem
+		ListItem,
+		CheckedListBox,
+		CheckedListItem,
 	}
 
 //	public class MenuLayout

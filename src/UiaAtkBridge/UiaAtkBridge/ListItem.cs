@@ -307,7 +307,7 @@ namespace UiaAtkBridge
 		}
 		public int NSelections {
 			get {
-				return 0;
+				return -1;
 			}
 		}
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)

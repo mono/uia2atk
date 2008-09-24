@@ -1,5 +1,10 @@
 2008-09-24  Mike Gorse <mgorse@novell.com>
 
+	* AtkTester.cs, BridgeTester.cs: Test AtkText for ListItem and
+	  CheckedListItem.
+
+2008-09-24  Mike Gorse <mgorse@novell.com>
+
 	* BasicWidgetType.cs, AtkTester.cs, BridgeTester.cs: Test
 	  CheckedListBox.
 

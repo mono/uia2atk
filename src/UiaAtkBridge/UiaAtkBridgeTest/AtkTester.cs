@@ -788,19 +788,14 @@ namespace UiaAtkBridgeTest
 			return accessible;
 		}
 
-		protected Atk.Object InterfaceTextSingleLine (BasicWidgetType type)
+			protected string simpleTestText = "This is a test sentence.";
+
+		protected void InterfaceTextSingleLine (BasicWidgetType type, Atk.Text atkText)
 		{
 			int startOffset, endOffset;
 			string expected;
-			Atk.Text atkText;
-			string name = "This is a test sentence.";
+			string name = simpleTestText;
 
-			bool real = true;
-			
-			Atk.Object accessible;
-			atkText = (Atk.Text)
-				GetAtkObjectThatImplementsInterface <Atk.Text> (type, name, out accessible, real);
-			
 			int nSelections = -1;
 			if (type == BasicWidgetType.Label)
 				nSelections = 0;
@@ -896,28 +891,28 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,WordStart,so");
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,WordStart,eo");
 			
-			expected = "This is a test sentence.";
+			expected = simpleTestText;
 			Assert.AreEqual (expected,
 				atkText.GetTextAtOffset (12, Atk.TextBoundary.LineEnd, out startOffset, out endOffset),
 				"GetTextAtOffset,LineEnd");
 			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,LineEnd,so");
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,LineEnd,eo");
 
-			expected = "This is a test sentence.";
+			expected = simpleTestText;
 			Assert.AreEqual (expected,
 				atkText.GetTextAtOffset (12, Atk.TextBoundary.LineStart, out startOffset, out endOffset),
 				"GetTextAtOffset,LineStart");
 			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,LineStart,so");
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,LineStart,eo");
 			
-			expected = "This is a test sentence.";
+			expected = simpleTestText;
 			Assert.AreEqual (expected,
 				atkText.GetTextAtOffset (18, Atk.TextBoundary.SentenceEnd, out startOffset, out endOffset),
 				"GetTextAtOffset,SentenceEnd");
 			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,SentenceEnd,so");
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,SentenceEnd,eo");
 			
-			expected = "This is a test sentence.";
+			expected = simpleTestText;
 			Assert.AreEqual (expected,
 				atkText.GetTextAtOffset (18, Atk.TextBoundary.SentenceStart, out startOffset, out endOffset),
 				"GetTextAtOffset,SentenceStart");
@@ -964,8 +959,27 @@ namespace UiaAtkBridgeTest
 				"GetTextAfterOffset,WordStart");
 			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,WordStart,so");
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,WordStart,eo");
+		}
+
+		protected Atk.Object InterfaceTextSingleLine (BasicWidgetType type)
+		{
+			bool real = true;
 			
+			Atk.Object accessible;
+			Atk.Text atkText;
+			atkText = (Atk.Text)
+				GetAtkObjectThatImplementsInterface <Atk.Text> (type, simpleTestText, out accessible, real);
+			InterfaceTextSingleLine (type, atkText);
+
 			return accessible;
+		}
+
+		protected void InterfaceTextSingleLine (BasicWidgetType type, Atk.Object accessible)
+		{
+			Atk.TextImplementor implementor = accessible as Atk.TextImplementor;
+			Assert.IsNotNull (implementor, "Atk.Text");
+			Atk.Text atkText = new Atk.TextAdapter (implementor);
+			InterfaceTextSingleLine (type, atkText);
 		}
 
 		protected void Parent (BasicWidgetType type, Atk.Object accessible)

@@ -1,5 +1,9 @@
 2008-09-24  Mike Gorse <mgorse@novell.com>
 
+	* ListItem.cs: NSelections: 0 -> -1
+
+2008-09-24  Mike Gorse <mgorse@novell.com>
+
 	* AutomationBridge.cs: Treat a ListItem with IToggleProvider as a
 	  CheckBox
 
