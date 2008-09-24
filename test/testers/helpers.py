@@ -38,8 +38,6 @@ def actionsCheck(accessible, control):
     qa = accessible._accessible.queryAction()
     actual_actions = [qa.getName(i) for i in range(qa.nActions)]
 
-    sleep(config.SHORT_DELAY)
-
     procedurelogger.expectedResult('Actions: %s' % actual_actions)
 
     #get a list of actual states that are missing or extraneous
@@ -56,7 +54,8 @@ def actionsCheck(accessible, control):
                                            extra_actions)
 
 #check states
-def statesCheck(accessible, control, invalid_states=[], add_states=[]):
+def statesCheck(accessible, control, invalid_states=[],
+                                            add_states=[], pause=True):
     """Check the states of an accessible using the default states
     of the accessible (specified by control class in states.py) as
     the default expected states.
@@ -68,16 +67,19 @@ def statesCheck(accessible, control, invalid_states=[], add_states=[]):
     list of default expected states
     add_states -- a list of states that should be added to the list of
     default expected states
-
+    pause -- whether the function should sleep for a config.SHORT_DELAY seconds
+    before continuing.  Useful when waiting for states to settle after
+    performing an action.
     """
     procedurelogger.action('Check %s\'s states' % accessible)
+    # give states a chance to settle
+    if pause:
+        sleep(config.SHORT_DELAY)
     # create a list of all states for button except "sensitive"
     states_list = states.__getattribute__(control).states
     expected_states = \
               [s for s in states_list if s not in invalid_states]
     expected_states = set(expected_states).union(set(add_states))
-
-    sleep(config.SHORT_DELAY)
 
     procedurelogger.expectedResult('States:  %s' % expected_states)
 

@@ -85,7 +85,7 @@ sleep(config.SHORT_DELAY)
 bFrame.assertLabel('You have clicked me 2 times')
 
 #click button3
-bFrame.mouseClick(bFrame.button3)
+bFrame.button3.mouseClick()
 sleep(config.SHORT_DELAY)
 bFrame.assertLabel('You have clicked me 2 times')
 

@@ -85,6 +85,13 @@ class RunApp(Form):
         self.linklabel1.Links.Add(35, 16, "gmail.novell.com")
         self.linklabel1.LinkClicked += self.linklabel_clicked
         self.linklabel1.Links[1].Enabled = False
+
+        # set up Label control
+        self.insensitive_label = Label()
+        self.insensitive_label.Text = "I'm so insensitive"
+        self.insensitive_label.Location = Point(10,130)
+        self.insensitive_label.AutoSize = True
+        self.insensitive_label.Enabled = False
         
         # add controls
         self.Controls.Add(self.label)
@@ -92,6 +99,7 @@ class RunApp(Form):
         self.Controls.Add(self.button2)
         self.Controls.Add(self.button3)
         self.Controls.Add(self.linklabel1)
+        self.Controls.Add(self.insensitive_label)
     
     def button1_click(self, sender, event):
         MessageBox.Show("successful clicked me", "message")

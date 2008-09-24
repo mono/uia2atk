@@ -1,3 +1,19 @@
+2008-09-23  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/button_label_linklabel.py:
+	* testers/helpers.py:  Took out sleep in actionsCheck; I don't think
+	it makes sense here because nothing is changing that we might need to
+	wait for.  Please correct me if I am wrong.  I also made the sleep
+	optional for statesCheck.  It really isn't needed if we are sleeping
+	from the test script before asserting the result as we have usually
+	been doing thus far.  Again, correct me if I am missing something.
+	* testers/states.py: update states for Label control
+	* testers/button_basic_ops.py: Reviewed.  Fixed bug where we were
+	clicking the frame accessible instead of clicking the button accessible
+	like we intended.
+	* harness/tests.py: Add our first non-gtk regression test!
+	button_basic_ops.
+
 2008-09-23  Calen Chen <cachen@novell.com>
 
 	* testers/helpers.py: add actionCheck, add sleep time before 

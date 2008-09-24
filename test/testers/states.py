@@ -209,7 +209,7 @@ class RadioButton(Button):
     pass
 
 class Label(object):
-    states = (SHOWING, MULTI_LINE)
+    states = (ENABLED, MULTI_LINE, SENSITIVE, SHOWING, VISIBLE)
 
 class Form(object):
     states = (ENABLED, RESIZABLE, SENSITIVE, SHOWING, VISIBLE)
