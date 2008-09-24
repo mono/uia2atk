@@ -1,5 +1,9 @@
 2008-09-24  Mike Gorse <mgorse@novell.com>
 
+	* BridgeTester.cs: Remove special selection handling for ListBox
+
+2008-09-24  Mike Gorse <mgorse@novell.com>
+
 	* AtkTester.cs, BridgeTester.cs: Test AtkText for ListItem and
 	  CheckedListItem.
 

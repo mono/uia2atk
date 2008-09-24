@@ -301,12 +301,8 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.RefSelection (-1), "RefSelection OOR#1");
 			Assert.IsNull (implementor.RefSelection (names.Length), "RefSelection OOR#2");
 			
-			if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox) {
-				Assert.IsTrue (implementor.ClearSelection (), "ClearSelection");
-				Assert.IsNull (implementor.RefSelection (0), "RefSel after CS");
-			} else {
-				Assert.IsFalse (implementor.ClearSelection (), "ClearSelection");
-			}
+			Assert.IsTrue (implementor.ClearSelection (), "ClearSelection");
+			Assert.IsNull (implementor.RefSelection (0), "RefSel after CS");
 
 			//this is a normal combobox (not multiline) (TODO: research multiline comboboxes?)
 			Assert.IsFalse (implementor.SelectAllSelection ());

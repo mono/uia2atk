@@ -213,8 +213,25 @@ namespace UiaAtkBridge
 				// TODO: Handle BoundingRectangleProperty change
 			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
 				string newName = (string)e.NewValue;
-				this.textExpert = new TextImplementorHelper (newName);
+				
+				// Don't fire spurious events if the text hasn't changed
+				if (textExpert.Text == newName)
+					return;
+
+				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+
+				// First delete all text, then insert the new text
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+
+				textExpert = new TextImplementorHelper (newName);
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+				                         newName == null ? 0 : newName.Length);
+
+				// Accessible name and label text are one and
+				// the same, so update accessible name
 				Name = newName;
+
+				EmitVisibleDataChanged ();
 			}
 			else
 				base.RaiseAutomationPropertyChangedEvent (e);

@@ -79,7 +79,9 @@ AC_SUBST(GLIB_LIBS)
 
 AC_CONFIG_FILES([
 Makefile
+GailTest/Makefile
 UiaAtkBridge/Makefile
+UiaAtkBridgeTest/Makefile
 bridge-glue/Makefile
 
 ])

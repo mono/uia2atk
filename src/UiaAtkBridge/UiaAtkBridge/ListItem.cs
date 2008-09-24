@@ -35,6 +35,8 @@ namespace UiaAtkBridge
 		private IRawElementProviderSimple provider;
 		private IInvokeProvider				invokeProvider;
 		private ISelectionItemProvider				selectionItemProvider;
+		private IToggleProvider toggleProvider;
+
 		private TextImplementorHelper textExpert = null;
 		private string						selectActionDescription = null;
 		private string						invokeActionDescription = null;
@@ -46,10 +48,11 @@ namespace UiaAtkBridge
 			this.provider = provider;
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
 			selectionItemProvider = (ISelectionItemProvider)provider.GetPatternProvider(SelectionItemPatternIdentifiers.Pattern.Id);
+			toggleProvider = (IToggleProvider) provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			textExpert = new TextImplementorHelper (text);
 			Name = text;
-			Role = Atk.Role.ListItem;
+			Role = (toggleProvider != null? Atk.Role.CheckBox: Atk.Role.ListItem);
 		}
 
 		public override IRawElementProviderSimple Provider {
@@ -74,6 +77,14 @@ namespace UiaAtkBridge
 			{
 				states.RemoveState (Atk.StateType.Sensitive);
 				states.RemoveState (Atk.StateType.Enabled);
+			}
+			if (toggleProvider != null) {
+				ToggleState state = toggleProvider.ToggleState;
+				
+				if (state == ToggleState.On)
+					states.AddState (Atk.StateType.Checked);
+				else
+					states.RemoveState (Atk.StateType.Checked);
 			}
 			return states;
 		}
@@ -295,6 +306,13 @@ namespace UiaAtkBridge
 				Atk.SelectionImplementor sel = Parent as Atk.SelectionImplementor;
 				if (sel == null)
 					return false;
+				if (toggleProvider != null) {
+					try {
+						toggleProvider.Toggle();
+					} catch (ElementNotEnabledException e) {
+						// TODO: handle this exception?
+					}
+				}
 				return sel.AddSelection (IndexInParent);
 			case 1:
 				if (invokeProvider == null)
@@ -314,8 +332,25 @@ namespace UiaAtkBridge
 		{
 			if (e.Property == ValuePatternIdentifiers.ValueProperty) {
 				String stringValue = (String)e.NewValue;
+				
+				// Don't fire spurious events if the text hasn't changed
+				if (textExpert.Text == stringValue)
+					return;
+
+				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+
+				// First delete all text, then insert the new text
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+
 				textExpert = new TextImplementorHelper (stringValue);
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+				                         stringValue == null ? 0 : stringValue.Length);
+
+				// Accessible name and label text are one and
+				// the same, so update accessible name
 				Name = stringValue;
+
+				EmitVisibleDataChanged ();
 			}
 			else
 				base.RaiseAutomationPropertyChangedEvent (e);

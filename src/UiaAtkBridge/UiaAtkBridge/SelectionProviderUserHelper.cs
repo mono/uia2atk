@@ -128,9 +128,7 @@ namespace UiaAtkBridge
 			Console.WriteLine ("RefSelection: " + i);
 			IRawElementProviderSimple[] selectedElements = 
 				selectionProvider.GetSelection ();
-			if (i < 0 || i >= selectedElements.Length)
-				return null;
-			return AutomationBridge.GetAdapterForProviderLazy (selectedElements[i]);
+			if (selectedElements == null || (i < 0 || i >= selectedElements.Length)) return null; return AutomationBridge.GetAdapterForProviderLazy (selectedElements[i]);
 		}
 		
 		public bool RemoveSelection (int i)

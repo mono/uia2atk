@@ -1,3 +1,8 @@
+2008-09-24  Mike Gorse <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListBox/ScrollProviderBehavior.cs:
+	  Return NoScroll if Maximum == 0
+
 2008-09-24  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated added/deleted
