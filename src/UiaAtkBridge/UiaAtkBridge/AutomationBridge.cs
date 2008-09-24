@@ -297,9 +297,9 @@ namespace UiaAtkBridge
 		{
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) element;
-			if (!providerAdapterMapping.ContainsKey (simpleProvider))
+			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty && !providerAdapterMapping.ContainsKey (simpleProvider))
 				HandleElementAddition (simpleProvider);
-			if (!providerAdapterMapping.ContainsKey (simpleProvider))
+			if (!providerAdapterMapping.ContainsKey (simpleProvider) && windowProviders > 0)
 				return;
 			
 			providerAdapterMapping [simpleProvider].RaiseAutomationPropertyChangedEvent (e);
