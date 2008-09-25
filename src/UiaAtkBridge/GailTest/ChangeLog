@@ -1,3 +1,7 @@
+2008-09-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile.am: Remove install/uninstall.
+
 2008-09-25  Mike Gorse <mgorse@novell.com>
 
 	* Makefile.am: Make subdirs before copying to them

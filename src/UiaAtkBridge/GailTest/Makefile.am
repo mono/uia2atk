@@ -62,10 +62,6 @@ DLL_REFERENCES = $(UIAATKBRIDGETEST)
 
 CLEANFILES = $(PROGRAMFILES)
 
-install-data-local: gac-install
-
-uninstall-local: gac-uninstall
-
 include $(top_srcdir)/Makefile.include
 
 
