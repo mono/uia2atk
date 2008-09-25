@@ -18,7 +18,7 @@ import sys
 import os
 
 from strongwind import *
-from form import *
+from gtkform import *
 from helpers import *
 from sys import argv
 from os import path
@@ -43,18 +43,18 @@ if app is None:
   exit(4)
 
 # just an alias to make things shorter
-fFrame = app.formFrame
+fFrame = app.gtkFormFrame
 
 #check main form's states with 'active' state
 statesCheck(fFrame, "Form", add_states=["active"])
 
-#click button1 to appear extra message widget
-fFrame.click(fFrame.button1)
+#click button2 to appear extra message widget
+fFrame.click(fFrame.button2)
 sleep(config.SHORT_DELAY)
-message = fFrame.app.findFrame("Message Form")
+message = fFrame.app.findDialog("Extra Message")
 
 #check extra message widget's states with 'active' state, without 'resizable'
-statesCheck(message, "Form", invalid_states=["resizable"], add_states=["active"])
+statesCheck(message, "Form", add_states=["active"])
 
 #check main form's states without 'active'
 statesCheck(fFrame, "Form")
@@ -63,7 +63,7 @@ statesCheck(fFrame, "Form")
 #widget get rid of 'active' state
 fFrame.mouseClick()
 statesCheck(fFrame, "Form", add_states=["active"])
-statesCheck(message, "Form", invalid_states=["resizable"])
+statesCheck(message, "Form")
 
 #close extra message widget, main form rise 'active' state again
 message.mouseClick()
@@ -72,7 +72,7 @@ message.altF4()
 statesCheck(fFrame, "Form", add_states=["active"])
 
 #click button2 to appear extra empty form widget
-fFrame.click(fFrame.button2)
+fFrame.click(fFrame.button1)
 sleep(config.SHORT_DELAY)
 extraform = fFrame.app.findFrame("Extra Form")
 
@@ -86,7 +86,7 @@ statesCheck(fFrame, "Form")
 #widget get rid of 'active' state
 fFrame.mouseClick()
 statesCheck(fFrame, "Form", add_states=["active"])
-statesCheck(extraform, "Form", invalid_states=["resizable"])
+statesCheck(extraform, "Form")
 
 #close extra form widget, main form rise 'active' state again
 extraform.mouseClick()

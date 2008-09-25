@@ -1,3 +1,21 @@
+
+2008-09-25  Calen Chen <cachen@novell.com>
+
+	* samples/form.py: update form widget: button1 would rise a message 
+	window, button2 would rise an empty form window, set up position
+	* testers/form_basic_ops.py: add code to test 'active' states and to
+	test states changing for main form widget, extra message widget and 
+	extra empty form widget. add code to close form widget
+	* testers/form/formframe.py: move statesCheck to helpers.py, add click 
+	instance
+	* samples/gtkform.py: update GTK form example with one empty form and  
+	one dialog widget by click button
+	* testers/gtkform_basic_ops.py,
+	* testers/gtkform/__init__.py,
+	* testers/gtkform/gtkformframe.py,
+	* testers/gtkform: add new test for GTK form to investigate how to test 
+	Winforms form with a good coverage
+
 2008-09-24  Calen Chen <cachen@novell.com>
 
 	* samples/gtkform.py: add an empty form example for gtk

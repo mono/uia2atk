@@ -12,14 +12,14 @@ import actions
 import states
 
 from strongwind import *
-from form import *
+from gtkform import *
 
 
 # class to represent the main window.
-class FormFrame(accessibles.Frame):
+class GtkFormFrame(accessibles.Frame):
 
     def __init__(self, accessible):
-        super(FormFrame, self).__init__(accessible)
+        super(GtkFormFrame, self).__init__(accessible)
         self.button1 = self.findPushButton("button1")
         self.button2= self.findPushButton("button2")
 
