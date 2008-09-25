@@ -32,11 +32,9 @@ using Mono.UIAutomation.Winforms.Events.ProgressBar;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.ProgressBar
 {
-	internal class RangeValueProviderBehavior 
-		: ProviderBehavior, IRangeValueProvider
+	internal class RangeValueProviderBehavior : ProviderBehavior, IRangeValueProvider
 	{
-		
-		#region Constructors
+		#region Constructor
 
 		public RangeValueProviderBehavior (ProgressBarProvider provider)
 			: base (provider)
@@ -54,12 +52,27 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ProgressBar
 
 		public override void Connect (SWF.Control control)
 		{
+			// NOTE: IsReadOnly Property NEVER changes.
+			// NOTE: Minimum Property NEVER changes.
+			// NOTE: Maximum Property NEVER changes.
+			// NOTE: LargeChange Property NEVER changes.
+			// NOTE: SmallChange Property NEVER changes.
 			Provider.SetEvent (ProviderEventType.RangeValuePatternValueProperty,
 			                   new RangeValuePatternValueEvent (Provider));
 		}
 		
 		public override void Disconnect (SWF.Control control)
 		{
+			Provider.SetEvent (ProviderEventType.RangeValuePatternIsReadOnlyProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.RangeValuePatternMinimumProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.RangeValuePatternMaximumProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.RangeValuePatternLargeChangeProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.RangeValuePatternSmallChangeProperty,
+			                   null);
 			Provider.SetEvent (ProviderEventType.RangeValuePatternValueProperty,
 			                   null);
 		}
@@ -78,7 +91,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ProgressBar
 				return LargeChange;
 			else if (propertyId == RangeValuePatternIdentifiers.SmallChangeProperty.Id)
 				return SmallChange;
-			
 			else
 				return base.GetPropertyValue (propertyId);
 		}
@@ -140,7 +152,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ProgressBar
 		private SWF.ProgressBar progressBar;
 		
 		#endregion
-		
 	}
 	
 	delegate void PerformSetValueDelegate (int value);

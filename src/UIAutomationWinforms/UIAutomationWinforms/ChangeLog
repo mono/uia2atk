@@ -1,5 +1,16 @@
 2008-09-25  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs:
+	  Updated to implement automation events.
+	
+	  [Fixes Bug #428918]
+	* Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs:
+	  Updated to remove "using SWF = ".
+	
+	  [Fixes Bug #428918]
+
+2008-09-25  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Fixed indentation.
 	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/GridProviderBehavior.cs:
 	  Updated to implement automation events.

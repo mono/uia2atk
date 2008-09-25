@@ -25,16 +25,13 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using SWF = System.Windows.Forms;
+using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Events.ProgressBar
 {
-	
-	internal class RangeValuePatternValueEvent 
-		: BaseAutomationPropertyEvent
+	internal class RangeValuePatternValueEvent : BaseAutomationPropertyEvent
 	{
-
 		#region Constructor
 
 		public RangeValuePatternValueEvent (IRawElementProviderSimple provider) 
@@ -46,23 +43,21 @@ namespace Mono.UIAutomation.Winforms.Events.ProgressBar
 		
 		#region IConnectable Overrides
 
-		public override void Connect (SWF.Control control)
+		public override void Connect (Control control)
 		{
-			((SWF.ProgressBar) control).TextChanged 
-				+= new EventHandler (OnValueChanged);
+			control.TextChanged += new EventHandler (OnValueChanged);
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect (Control control)
 		{
-			((SWF.ProgressBar) control).TextChanged
-				-= new EventHandler (OnValueChanged);
+			control.TextChanged -= new EventHandler (OnValueChanged);
 		}
 		
 		#endregion 
 		
 		#region Private Methods
 		
-		private void OnValueChanged (object sender, EventArgs args)
+		private void OnValueChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
