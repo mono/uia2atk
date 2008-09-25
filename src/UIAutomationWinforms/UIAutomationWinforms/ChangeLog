@@ -1,3 +1,8 @@
+2008-09-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListBox/ScrollProviderBehavior.cs:
+	  Build fixes from Stephen Shaw.
+
 2008-09-24  Mike Gorse <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ListBox/ScrollProviderBehavior.cs:

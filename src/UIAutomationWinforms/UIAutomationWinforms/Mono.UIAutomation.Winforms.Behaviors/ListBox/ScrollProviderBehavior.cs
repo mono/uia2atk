@@ -122,7 +122,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
 		//FIXME: This MUST BE locale-specific
 		public double HorizontalScrollPercent {
 			get { 
-				if (HorizontallyScrollable == false || HScrollbar.Maximum == 0)
+				if (HorizontallyScrollable == false || hscrollbar.Maximum == 0)
 					return ScrollPatternIdentifiers.NoScroll;
 				else
 					return (hscrollbar.Value * 100) / hscrollbar.Maximum; 

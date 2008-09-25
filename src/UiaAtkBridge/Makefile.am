@@ -2,8 +2,8 @@
 EXTRA_DIST =  expansions.m4 mono-uia.snk
 
 if ENABLE_DEBUG
- SUBDIRS =  GailTest UiaAtkBridge bridge-glue UiaAtkBridgeTest
+ SUBDIRS =  UiaAtkBridge bridge-glue UiaAtkBridgeTest GailTest 
 endif
 if ENABLE_RELEASE
- SUBDIRS =  GailTest UiaAtkBridge bridge-glue
+ SUBDIRS =  UiaAtkBridge bridge-glue GailTest 
 endif
