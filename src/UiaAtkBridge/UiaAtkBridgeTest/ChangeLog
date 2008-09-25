@@ -1,3 +1,7 @@
+2008-09-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile.am: Remove install/uninstall lines.
+
 2008-09-24  Mike Gorse <mgorse@novell.com>
 
 	* BridgeTester.cs: Remove special selection handling for ListBox
