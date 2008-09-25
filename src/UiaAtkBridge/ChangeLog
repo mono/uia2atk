@@ -1,5 +1,9 @@
 2008-09-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* configure.ac, Makefile.am: Add --disable-tests configure flag.
+
+2008-09-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Makefile.am: Build fixes from Stephen Shaw.
 
 2008-09-19  Mike Gorse <mgorse@novell.com>

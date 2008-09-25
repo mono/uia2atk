@@ -33,6 +33,12 @@ if test "x$GACUTIL" = "xno" ; then
 fi
 
 
+AC_ARG_ENABLE(tests,
+	AC_HELP_STRING([--disable-tests],
+		[Do not build unit tests [default=no]]),
+		enable_tests=no, enable_tests=yes)
+AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = "xyes")
+
 AC_ARG_ENABLE(debug,
 	AC_HELP_STRING([--enable-debug],
 		[Use 'DEBUG' Configuration [default=YES]]),
