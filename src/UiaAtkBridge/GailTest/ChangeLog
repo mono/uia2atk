@@ -1,3 +1,7 @@
+2008-09-25  Mike Gorse <mgorse@novell.com>
+
+	* Makefile.am: Make subdirs before copying to them
+
 2008-09-19  Mike Gorse <mgorse@novell.com>
 
 	* Gailtester.cs: Set name after checking for real, not before

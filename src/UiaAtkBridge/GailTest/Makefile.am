@@ -74,16 +74,20 @@ $(build_xamlg_list): %.xaml.g.cs: %.xaml
 	xamlg '$<'
 
 bin/Debug/GailTestApp.exe: ../../samples/managed/GailTestApp/bin/Debug/GailTestApp.exe
+	@mkdir -p bin/Debug
 	cp -a $< $@
 
 bin/Release/GailTestApp.exe: ../../samples/managed/GailTestApp/bin/Release/GailTestApp.exe
+	@mkdir -p bin/Release
 	cp -a $< $@
 
 bin/Debug/UiaAtkBridgeTest.dll: ../UiaAtkBridgeTest/bin/Debug/UiaAtkBridgeTest.dll
+	@mkdir -p bin/Debug
 	cp -a $< $@
 	cp -a $<.mdb $@.mdb
 
 bin/Release/UiaAtkBridgeTest.dll: ../UiaAtkBridgeTest/bin/Release/UiaAtkBridgeTest.dll
+	@mkdir -p bin/Release
 	cp -a $< $@
 
 $(ASSEMBLY) $(ASSEMBLY_MDB): $(build_sources) $(build_resources) $(build_datafiles) $(DLL_REFERENCES) $(PROJECT_REFERENCES) $(build_xamlg_list) $(build_satellite_assembly_list)

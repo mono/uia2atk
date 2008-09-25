@@ -84,17 +84,21 @@ $(build_xamlg_list): %.xaml.g.cs: %.xaml
 	xamlg '$<'
 
 bin/Debug/UIAutomationWinforms.dll: ../../UIAutomationWinforms/UIAutomationWinforms/bin/Debug/UIAutomationWinforms.dll
+	@mkdir -p bin/Debug
 	cp -a $< $@
 	cp -a $<.mdb $@.mdb
 
 bin/Release/UIAutomationWinforms.dll: ../../UIAutomationWinforms/UIAutomationWinforms/bin/Release/UIAutomationWinforms.dll
+	@mkdir -p bin/Release
 	cp -a $< $@
 
 bin/Debug/UiaAtkBridge.dll: ../UiaAtkBridge/bin/Debug/UiaAtkBridge.dll
+	@mkdir -p bin/Debug
 	cp -a $< $@
 	cp -a $<.mdb $@.mdb
 
 bin/Release/UiaAtkBridge.dll: ../UiaAtkBridge/bin/Release/UiaAtkBridge.dll
+	@mkdir -p bin/Release
 	cp -a $< $@
 
 $(ASSEMBLY) $(ASSEMBLY_MDB): $(build_sources) $(build_resources) $(build_datafiles) $(DLL_REFERENCES) $(PROJECT_REFERENCES) $(build_xamlg_list) $(build_satellite_assembly_list)
