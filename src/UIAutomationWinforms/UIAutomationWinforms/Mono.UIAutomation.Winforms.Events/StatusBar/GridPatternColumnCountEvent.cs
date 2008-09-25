@@ -26,54 +26,56 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
+using System.ComponentModel;
 
 namespace Mono.UIAutomation.Winforms.Events.StatusBar
 {
-	//FIXME: Subclass from BaseAutomationPropertyEvent
-
-	internal class GridPatternColumnCountEvent : ProviderEvent
+	internal class GridPatternColumnCountEvent : BaseAutomationPropertyEvent
 	{
-		
-#region Constructor
+		#region Constructor
 
 		public GridPatternColumnCountEvent (IRawElementProviderSimple provider) 
-			: base (provider)
+			: base (provider, GridPatternIdentifiers.ColumnCountProperty)
 		{
 		}
 		
-#endregion
+		#endregion
 		
-#region ProviderEvent Methods
+		#region IConnectable Overrides
 
-		public override void Connect (Control control)
+		public override void Connect (SWF.Control control)
 		{
-			control.ControlAdded += new ControlEventHandler (OnColumnCountChanged);
-			control.ControlRemoved += new ControlEventHandler (OnColumnCountChanged);
-		}
-
-		public override void Disconnect (Control control)
-		{
-			control.ControlAdded -= new ControlEventHandler (OnColumnCountChanged);
-			control.ControlRemoved -= new ControlEventHandler (OnColumnCountChanged);
-		}
-		
-#endregion 
-		
-#region Protected methods
-		
-		protected void OnColumnCountChanged (object sender, EventArgs e)
-		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (GridPatternIdentifiers.ColumnCountProperty,
-					                                        null,
-					                                        Provider.GetPropertyValue (GridPatternIdentifiers.ColumnCountProperty.Id));
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
-			}
+			try {
+				Helper.AddPrivateEvent (typeof (SWF.StatusBar.StatusBarPanelCollection),
+				                        ((SWF.StatusBar) control).Panels,
+				                        "UIACollectionChanged",
+				                        this,
+				                        "OnColumnCountChanged");
+			} catch (NotSupportedException) { }
 		}
 
-#endregion
+		public override void Disconnect (SWF.Control control)
+		{
+			try {
+				Helper.RemovePrivateEvent (typeof (SWF.StatusBar.StatusBarPanelCollection),
+				                           ((SWF.StatusBar) control).Panels,
+				                           "UIACollectionChanged",
+				                           this,
+				                           "OnColumnCountChanged");
+			} catch (NotSupportedException) { }
+		}
 		
+		#endregion 
+		
+		#region Private Methods
+		
+		protected void OnColumnCountChanged (object sender, CollectionChangeEventArgs e)
+		{
+			RaiseAutomationPropertyChangedEvent ();
+		}
+
+		#endregion	
 	}
 }

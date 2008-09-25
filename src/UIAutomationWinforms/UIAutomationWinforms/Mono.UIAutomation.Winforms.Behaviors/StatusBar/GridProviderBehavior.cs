@@ -33,21 +33,20 @@ using Mono.UIAutomation.Winforms.Events.StatusBar;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 {
-	internal class GridProviderBehavior 
-		: ProviderBehavior, IGridProvider
+	internal class GridProviderBehavior : ProviderBehavior, IGridProvider
 	{
-		
-#region Constructors
+		#region Constructor
 
 		public GridProviderBehavior (StatusBarProvider provider)
 			: base (provider)
 		{
-			statusBarProvider = provider;
+			this.provider = provider;
+			this.statusBar = (SWF.StatusBar) provider.Control;
 		}
 		
-#endregion
+		#endregion
 
-#region IProviderBehavior Interface		
+		#region IProviderBehavior Interface		
 		
 		public override AutomationPattern ProviderPattern { 
 			get { return GridPatternIdentifiers.Pattern; }
@@ -55,8 +54,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 
 		public override void Connect (SWF.Control control)
 		{
-			Provider.SetEvent (ProviderEventType.GridPatternRowCountProperty,
-			                   new GridPatternRowCountEvent (Provider));
+			// NOTE: RowColumn Property NEVER changes.
 			Provider.SetEvent (ProviderEventType.GridPatternColumnCountProperty,
 			                   new GridPatternColumnCountEvent (Provider));
 		}
@@ -64,55 +62,50 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 		public override void Disconnect (SWF.Control control)
 		{
 			Provider.SetEvent (ProviderEventType.GridPatternRowCountProperty,
-			                null);
+			                   null);
 			Provider.SetEvent (ProviderEventType.GridPatternColumnCountProperty,
-			                null);
+			                   null);
 		}
 
-        	public override object GetPropertyValue (int propertyId)
-        	{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.StatusBar.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "status bar";
-			else if (propertyId == GridPatternIdentifiers.RowCountProperty.Id)
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == GridPatternIdentifiers.RowCountProperty.Id)
 				return RowCount;
 			else if (propertyId == GridPatternIdentifiers.ColumnCountProperty.Id)
 				return ColumnCount;
 			else
 				return base.GetPropertyValue (propertyId);
-        	}
+		}
 
-#endregion
+		#endregion
 		
-#region IGridProvider Members
+		#region IGridProvider Members
 
-        	public int RowCount {
-			// TODO: Return value.
-            		get { return 1; }
-        	}
-
-        	public int ColumnCount {
-			// TODO: Return value.
+		public int RowCount {
 			get { return 1; }
-        	}
+		}
+		
+		public int ColumnCount {
+			get { return statusBar.Panels.Count; }
+		}
 		
 		public IRawElementProviderSimple GetItem (int row, int column)
-                {
-			// TODO: Return value.
-                        if (column > RowCount || row > ColumnCount)
-                                throw new ArgumentOutOfRangeException ();
-                        if (row < 0 || column < 0)
-                                throw new ArgumentOutOfRangeException ();
-                        return null;
-                }
+		{
+			if (column >= RowCount || row >= ColumnCount)
+				throw new ArgumentOutOfRangeException ();
+			if (row < 0 || column < 0)
+				throw new ArgumentOutOfRangeException ();
+			
+			return provider.GetPanelProvider (column);
+		}
 
-#endregion
+		#endregion
 
-#region Private Fields
+		#region Private Fields
 
-		private StatusBarProvider statusBarProvider;
+		private StatusBarProvider provider;
+		private SWF.StatusBar statusBar;
 		
-#endregion
+		#endregion
 	}
 }

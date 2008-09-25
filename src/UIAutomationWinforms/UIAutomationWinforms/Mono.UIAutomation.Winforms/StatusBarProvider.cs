@@ -39,14 +39,14 @@ namespace Mono.UIAutomation.Winforms
 	{
 		#region Constructors
 
-        	public StatusBarProvider (StatusBar statusBar) : base (statusBar)
-        	{
+		public StatusBarProvider (StatusBar statusBar) : base (statusBar)
+		{
 			this.statusBar = statusBar;
 			panels = new List<StatusBarPanelProvider> ();
 			
 			SetBehavior (GridPatternIdentifiers.Pattern,
 			             new GridProviderBehavior (this));
-        	}
+		}
 
 		#endregion
 		

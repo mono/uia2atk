@@ -1,5 +1,18 @@
 2008-09-25  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Fixed indentation.
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/GridProviderBehavior.cs:
+	  Updated to implement automation events.
+	
+	  [Fixes Bug #428905]
+	* Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountEvent.cs:
+	  Updated to subclass BaseAutomationPropertyEvent and support UIA
+	  Event.
+	
+	  [Fixes Bug #428905]
+
+2008-09-25  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Behaviors/ProgressBar/ValueProviderBehavior.cs,
 	  Mono.UIAutomation.Winforms.Events/ProgressBar/ValuePatternValueEvent.cs:
 	  Updated to implement automation events.
