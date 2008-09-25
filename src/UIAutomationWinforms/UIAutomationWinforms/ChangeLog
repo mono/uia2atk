@@ -1,7 +1,38 @@
+2008-09-25  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Behaviors/ProgressBar/ValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/ProgressBar/ValuePatternValueEvent.cs:
+	  Updated to implement automation events.
+	
+	  
+	
+	  [Fixes Bug #428917]
+
 2008-09-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Mono.UIAutomation.Winforms.Behaviors/ListBox/ScrollProviderBehavior.cs:
 	  Build fixes from Stephen Shaw.
+
+2008-09-24  Neville Gao <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Events/ProgressBar/ValuePatternValueEvent.cs:
+	  Updated to remove "using SWF = ".
+	* Mono.UIAutomation.Winforms.Behaviors/ProgressBar/ValueProviderBehavior.cs:
+	  Updated to implement automation events.
+
+2008-09-24  Neville Gao <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountEvent.cs:
+	  Updated to subclass BaseAutomationPropertyEvent and support UIA Event.
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/GridProviderBehavior.cs:
+	  Updated to implement automation events.
+
+2008-09-24  Neville Gao <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs:
+	  Updated to remove "using SWF = ".
+	* Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs:
+	  Updated to implement automation events.
 
 2008-09-24  Mike Gorse <mgorse@novell.com>
 

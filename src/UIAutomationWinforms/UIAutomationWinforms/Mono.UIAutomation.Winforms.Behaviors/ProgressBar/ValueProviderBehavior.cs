@@ -35,7 +35,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ProgressBar
 {
 	internal class ValueProviderBehavior : ProviderBehavior, IValueProvider
 	{
-		#region Constructors
+		#region Constructor
 		
 		public ValueProviderBehavior (ProgressBarProvider provider) 
 			: base (provider)
@@ -53,12 +53,15 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ProgressBar
 
 		public override void Connect (SWF.Control control)
 		{
+			// NOTE: IsReadOnly Property NEVER changes.
 			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
 			                   new ValuePatternValueEvent (Provider));
 		}
 		
 		public override void Disconnect (SWF.Control control)
 		{
+			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
+			                   null);
 			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
 			                   null);
 		}
