@@ -1,5 +1,11 @@
 2008-09-25  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/Helper.cs,
+	  Mono.UIAutomation.Winforms.Events/BaseAutomationPropertyEvent.cs:
+	  Removed primitive debugging.
+
+2008-09-25  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs:
 	  Updated to implement automation events.
 	
