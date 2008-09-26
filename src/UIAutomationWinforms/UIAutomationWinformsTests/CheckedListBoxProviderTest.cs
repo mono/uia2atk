@@ -112,6 +112,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (toggleProvider1.ToggleState, ToggleState.Off);
 			toggleProvider1.Toggle ();
 			Assert.AreEqual (toggleProvider1.ToggleState, ToggleState.On);
+			toggleProvider1.Toggle ();
+			Assert.AreEqual (toggleProvider1.ToggleState, ToggleState.Off);
 			
 			//Add new item
 			child2 = child.Navigate (NavigateDirection.NextSibling);
@@ -125,6 +127,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (toggleProvider2.ToggleState, ToggleState.Off);
 			toggleProvider2.Toggle ();
 			Assert.AreEqual (toggleProvider2.ToggleState, ToggleState.On);
+			toggleProvider2.Toggle ();
+			Assert.AreEqual (toggleProvider2.ToggleState, ToggleState.Off);
 		}
 
 		#endregion

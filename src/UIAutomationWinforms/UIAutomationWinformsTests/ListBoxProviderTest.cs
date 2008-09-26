@@ -195,8 +195,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			//Once we have a selected item, selection is required.
 			listbox.Items.Add (0);
 			listbox.SetSelected (0, true);
-			Assert.AreEqual (true, selectionProvider.IsSelectionRequired, 
-			                 "Is true once an item is selected");			
+			Assert.AreEqual (false, selectionProvider.IsSelectionRequired, 
+			                 "Shouldn't change");
 			
 			selection = selectionProvider.GetSelection ();
 			Assert.IsNotNull (selection, "selection is not null");		
@@ -257,8 +257,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			//We can't remove from selection once an element is selected
 			try {
 				selectionItemProvider.RemoveFromSelection ();
-				Assert.Fail ("Should throw InvalidOperationException.");
 			} catch (InvalidOperationException) {
+				Assert.Fail ("Shouldn't throw InvalidOperationException.");
 			}
 			
 		}
@@ -340,9 +340,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			if (scrollProvider.VerticalScrollPercent == 0)
 				Assert.Fail ("Vertical scroll should move");
-			if (scrollProvider.HorizontalScrollPercent != 0)
-				Assert.Fail ("Vertical scroll shouldn't move");
-				
+//			if (scrollProvider.HorizontalScrollPercent != 100)
+//				Assert.Fail ("Vertical scroll shouldn't move");
 			
 			//EOF-Bug
 
