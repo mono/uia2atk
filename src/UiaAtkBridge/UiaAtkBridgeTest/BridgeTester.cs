@@ -274,11 +274,13 @@ namespace UiaAtkBridgeTest
 				if (real)
 					chk = chk1;
 				chk.Text = name;
-				UiaAtkBridge.CheckBox uiaChk;
+				UiaAtkBridge.CheckBoxButton uiaChk;
 				if (real)
-					uiaChk = (UiaAtkBridge.CheckBox) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (chk, true, true));
+					uiaChk = (UiaAtkBridge.CheckBoxButton) 
+					  UiaAtkBridge.AutomationBridge.GetAdapterForProvider (
+					    (IRawElementProviderSimple) ProviderFactory.GetProvider (chk, true, true));
 				else
-					uiaChk = new UiaAtkBridge.CheckBox (ProviderFactory.GetProvider (chk, true, true));
+					uiaChk = new UiaAtkBridge.CheckBoxButton (ProviderFactory.GetProvider (chk, true, true));
 				accessible = uiaChk;
 				component = uiaChk;
 				action = uiaChk;
