@@ -316,7 +316,7 @@ namespace UiaAtkBridge
 					HandleElementAddition (simpleProvider);
 			} else if (e.StructureChangeType == StructureChangeType.ChildRemoved) {
 				if (controlTypeId == ControlType.Window.Id)
-					HandleWindowProviderRemoval ((IWindowProvider)provider);
+					HandleWindowProviderRemoval (simpleProvider);
 				else
 					// TODO: Handle proper documented args
 					//       (see FragmentRootControlProvider)
@@ -440,7 +440,7 @@ namespace UiaAtkBridge
 			windowProviders++;
 		}
 		
-		private void HandleWindowProviderRemoval (IWindowProvider provider)
+		private void HandleWindowProviderRemoval (IRawElementProviderSimple provider)
 		{
 			Console.WriteLine ("FormIsRemoved");
 			TopLevelRootItem.Instance.RemoveChild (providerAdapterMapping [(IRawElementProviderSimple) provider]);
