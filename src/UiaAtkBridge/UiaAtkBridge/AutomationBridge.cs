@@ -405,6 +405,8 @@ namespace UiaAtkBridge
 		
 		private void HandleBulkRemoved (IRawElementProviderSimple provider)
 		{
+			if (!providerAdapterMapping.ContainsKey (provider))
+				return;
 			IRawElementProviderFragment fragment;
 			if ((fragment = provider as IRawElementProviderFragment) == null)
 				return;
