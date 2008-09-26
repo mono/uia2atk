@@ -39,7 +39,7 @@ class Settings(object):
   is_log_ok = True
   COUNTDOWN = 5
   is_smoke = False
-  email_addresses = []
+  email_addresses = None
   from_address = "no-reply"
   should_update = False
   package_failed_machines = []
@@ -327,7 +327,7 @@ class Test(object):
     except IOError:
       outupt("ERROR")
     except AssertionError:
-      ouput("ERROR")
+      output("ERROR")
    
 
 class Main(object):
@@ -337,7 +337,6 @@ class Main(object):
     r = t.run()
     if Settings.email_addresses is not None:
       if Settings.is_log_ok:
-        #t.parse_logs()
         t.compose_mail_message()
       t.send_mail() 
     return r

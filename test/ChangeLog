@@ -1,3 +1,12 @@
+2008-09-26  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* harness/local_run.py:  If the application that was being tested is
+	still alive when the test that is testing it exits, kill it.
+	* harness/remote_run.py:  Fix problem where script would try to send
+	e-mail when it wasn't supposed to.  Fix typo.
+	* harness/smoke_tests.py:  Remove form.py test until bug 427857 is
+	fixed or we create a less stringent test.
+
 2008-09-26  Brad Taylor  <brad@getcoded.net>
 	
 	* samples/gtktable.py:

@@ -141,12 +141,6 @@ class Test(object):
       t = s.Popen(test)
       i = 0
       while t.poll() is None:
-        i += 1
-        if i >= TIMEOUT:
-          self.kill_process(t.pid)
-          output("ERROR:  test failed to exit after %s seconds" % TIMEOUT)
-          output("ERROR:  this likely means the sample application never exited")
-          break
         time.sleep(1)
       r = t.poll()
       if r != 0:
@@ -204,28 +198,27 @@ class Test(object):
     try:
       output("INFO:  killing process: %s" % pid)
       os.kill(int(pid), signal.SIGKILL)
+      #output("INFO:  killed process: %s" % pid)
     except OSError, err:
       # Errno 3 is "No such process"
       if err.errno == 3:
         # If it doesn't exist anymore, cool.
+        #output("INFO:  process %s does not exist" % pid)
         pass
+        return
       output("WARNING:  Could not kill process: %s" % pid)
 
   def cleanup(self):
-    output("INFO:  Cleaning up...")
-    search = "%s/%s" % (settings.uiaqa_home, "samples")
+    output("INFO:  Cleaning up:")
+    search = "%s/%s" % (Settings.uiaqa_home, "samples")
     # execute the following command to get a pid and a path of the tests
     # that might be running still
     # ps -ax | grep /home/a11y/code/uia2atk/test/samples | awk '{print $1,$6}'
     p1 = s.Popen(["ps","a","x"], stdout=s.PIPE)
     p2 = s.Popen(["grep", search], stdin=p1.stdout, stdout=s.PIPE)
-    p3 = s.Popen(["awk", "{print $1,$6}"], stdin=p2.stdout, stdout=s.PIPE)
-    for pair in [p3.stdout.readline().split()]:
-      if len(pair) == 2:
-        pid = pair[0]
-        path = pair[1]
-        if search in path:
-          self.kill_process(pid)
+    p3 = s.Popen(["awk", "{print $1}"], stdin=p2.stdout, stdout=s.PIPE)
+    for pid in p3.stdout.read().strip().split():
+      self.kill_process(pid)
   
 class InconceivableError(Exception): pass
 
@@ -236,10 +229,11 @@ class Main(object):
     r = t.run()
     t.cleanup()
     if Settings.log_path:
-    	output("INFO:  Logging to:  %s" % Settings.log_path)
+      output("INFO:  Logging to:  %s" % Settings.log_path)
+    output("INFO:  EXITING %s" % os.path.basename(__file__))
     return r
 
 if __name__ == '__main__':
-  settings = Settings()
+  Settings()
   main_obj = Main();
   sys.exit(main_obj.main())
