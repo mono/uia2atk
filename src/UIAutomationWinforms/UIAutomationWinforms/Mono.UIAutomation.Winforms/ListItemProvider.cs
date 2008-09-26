@@ -46,7 +46,7 @@ namespace Mono.UIAutomation.Winforms
 			listControl = control;
 			
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
-			             new SelectionItemProviderBehavior (this));	
+			             listProvider.GetSelectionItemBehavior (this));
 			SetBehavior (ScrollItemPatternIdentifiers.Pattern,
 			             new ScrollItemProviderBehavior (this));
 			

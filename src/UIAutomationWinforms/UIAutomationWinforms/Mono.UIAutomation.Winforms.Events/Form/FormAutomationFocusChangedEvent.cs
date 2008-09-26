@@ -23,43 +23,48 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using Mono.UIAutomation.Winforms;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Navigation
+namespace Mono.UIAutomation.Winforms.Events.Form
 {
-	
-	internal sealed class NavigationFactory
+
+	internal class FormAutomationFocusChangedEvent
+		: AutomationFocusChangedEvent
 	{
+		
 		#region Constructors
 		
-		private NavigationFactory ()
+		public FormAutomationFocusChangedEvent (FormProvider provider) 
+			: base (provider)
 		{
 		}
 		
 		#endregion
 		
-		#region Public Static Methods
-		
-		public static INavigation CreateNavigation (FragmentControlProvider provider)
+		#region IConnectable Overrides
+
+		public override void Connect (SWF.Control control)
 		{
-			return CreateNavigation (provider, null);
+			((SWF.Form) control).Activated += new EventHandler (OnWindowFocusChanged);
+			((SWF.Form) control).Deactivate += new EventHandler (OnWindowFocusChanged);
+		}
+
+		public override void Disconnect (SWF.Control control)
+		{
+			((SWF.Form) control).Activated -= new EventHandler (OnWindowFocusChanged);
+			((SWF.Form) control).Deactivate -= new EventHandler (OnWindowFocusChanged);
 		}
 		
-		public static INavigation CreateNavigation (FragmentControlProvider provider,
-		                                            FragmentRootControlProvider rootProvider)
-		{
-			INavigation navigation;
-			FormProvider win;
-			
-			if ((win = provider as FormProvider) != null)
-				navigation = new ParentNavigation (win, rootProvider);
-			else if (provider is FragmentRootControlProvider)
-				navigation = new ParentNavigation ((FragmentRootControlProvider) provider, 
-				                                   rootProvider);	
-			else
-				navigation = new ChildNavigation (provider, rootProvider);
+		#endregion
+		
+		#region Private Methods
 
-			return navigation;
+		private void OnWindowFocusChanged (object sender, EventArgs e)
+		{
+			RaiseAutomationEvent ();
 		}
 		
 		#endregion

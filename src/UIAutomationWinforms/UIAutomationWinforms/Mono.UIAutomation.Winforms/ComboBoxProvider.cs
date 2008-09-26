@@ -30,6 +30,7 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using System.Windows;
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 using Mono.UIAutomation.Winforms.Behaviors.ComboBox;
 using Mono.UIAutomation.Winforms.Navigation;
 
@@ -203,6 +204,12 @@ namespace Mono.UIAutomation.Winforms
 		protected override IProviderBehavior GetSelectionBehavior ()
 		{
 			return new SelectionProviderBehavior (this);
+		}
+		
+		public override IProviderBehavior GetSelectionItemBehavior (ListItemProvider provider)
+		{
+			//TODO: Fixme
+			return new SelectionItemProviderBehavior (provider);
 		}
 		
 		public override void ScrollItemIntoView (ListItemProvider item)
@@ -414,7 +421,13 @@ namespace Mono.UIAutomation.Winforms
 			protected override IProviderBehavior GetSelectionBehavior ()
 			{
 				return new SelectionProviderBehavior (this);
-			}			
+			}
+			
+			public override IProviderBehavior GetSelectionItemBehavior (ListItemProvider provider)
+			{
+				//TODO: Fixme
+				return new SelectionItemProviderBehavior (provider);
+			}
 	
 			public override void InitializeChildControlStructure ()
 			{

@@ -39,8 +39,8 @@ namespace Mono.UIAutomation.Winforms
 #region Private Static Members
 		
 		static bool initialized = false;
-		static Dictionary<Form, WindowProvider> formProviders =
-			new Dictionary<Form, WindowProvider> ();
+		static Dictionary<Form, FormProvider> formProviders =
+			new Dictionary<Form, FormProvider> ();
 		
 #endregion
 		
@@ -117,7 +117,7 @@ namespace Mono.UIAutomation.Winforms
 			// isn't called when the provider is created.  We'll do
 			// that manually after alerting the bridge to the presence
 			// of the new form.
-			WindowProvider provider = (WindowProvider)
+			FormProvider provider = (FormProvider)
 				ProviderFactory.GetProvider (f,
 				                             true);
 			formProviders [f] = provider;
@@ -132,8 +132,8 @@ namespace Mono.UIAutomation.Winforms
 				                                   provider);
 				provider.InitializeChildControlStructure ();
 			} else {
-				WindowProvider ownerProvider = 
-					ProviderFactory.GetProvider (f.Owner, false, false) as WindowProvider;
+				FormProvider ownerProvider = 
+					ProviderFactory.GetProvider (f.Owner, false, false) as FormProvider;
 				ownerProvider.AddChildProvider (true, provider);
 			}
 			

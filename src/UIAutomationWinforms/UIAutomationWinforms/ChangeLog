@@ -1,3 +1,44 @@
+2008-09-26  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs,
+	  Mono.UIAutomation.Winforms/FormListener.cs: WindowProvider ->
+	  FormProvider
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: WindowProvider renamed
+	  to FormProvider. ListItemSelectionItem Pattern events added.
+	* Mono.UIAutomation.Winforms/FormProvider.cs: Renamed from
+	  WindowProvider.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: WindowProvider ->
+	  FormProvider.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs,
+	  Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	  GetSelectionItemBehavior specialization.
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Using
+	  ListProvider.GetSelectionItemBehavior specialization.
+	* Mono.UIAutomation.Winforms/WindowProvider.cs: Renamed to
+	  FormProvider.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Abstrac method added:
+	  GetSelectionItemBehavior.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBox/ListItemSelectionItemProviderBehavior.cs:
+	  ListItem in ListBox SelectionItem Behavior.
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs:
+	  Removed commented code.
+	* Mono.UIAutomation.Winforms.Behaviors/Form: Form Behaviors folder.
+	* Mono.UIAutomation.Winforms.Behaviors/Form/WindowProviderBehavior.cs:
+	  Form Window Behavior.
+	* Mono.UIAutomation.Winforms.Behaviors/Form/TransformProviderBehavior.cs:
+	  Form Transform Behavior.
+	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementAddedEvent.cs:
+	  ListItem (in ListBox) SelectionItem Pattern ElementAdded event.
+	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementRemovedEvent.cs:
+	  ListItem (in ListBox) SelectionItem Pattern ElementRemoved event.
+	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementSelectedEvent.cs:
+	  ListItem (in ListBox) SelectionItem Pattern ElementSelected event.
+	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternIsSelectedProperty.cs:
+	  ListItem (in ListBox) SelectionItem Pattern IsSelected event.
+	* Mono.UIAutomation.Winforms.Events/Form: Form Events  folder.
+	* Mono.UIAutomation.Winforms.Events/Form/FormAutomationFocusChangedEvent.cs:
+	  Specialization of AutomationFocusChanged for FormProvider
+
 2008-09-25  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/Helper.cs,

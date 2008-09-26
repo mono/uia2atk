@@ -113,7 +113,7 @@ namespace Mono.UIAutomation.Winforms
 				return provider;
 
 			if ((f = component as SWF.Form) != null)
-				provider = new WindowProvider (f);
+				provider = new FormProvider (f);
 			else if ((gb = component as SWF.GroupBox) != null)
 				provider = new GroupBoxProvider (gb);
 			else if ((b = component as SWF.Button) != null)

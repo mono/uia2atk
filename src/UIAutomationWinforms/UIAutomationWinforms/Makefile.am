@@ -49,8 +49,11 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ExpandCollapseProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/Form/TransformProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/Form/WindowProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/IProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/LinkLabel/InvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListBox/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListBox/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListBox/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/ScrollItemProviderBehavior.cs \
@@ -90,8 +93,13 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBoxItem/SelectionItemPatternElementSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Form/FormAutomationFocusChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Label/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/LinkLabel/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementAddedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementRemovedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternIsSelectedProperty.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontallyScrollableEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontalViewSizeEvent.cs \
@@ -133,6 +141,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ErrorProvider.cs \
 	Mono.UIAutomation.Winforms/ErrorProviderListener.cs \
 	Mono.UIAutomation.Winforms/FormListener.cs \
+	Mono.UIAutomation.Winforms/FormProvider.cs \
 	Mono.UIAutomation.Winforms/FragmentControlProvider.cs \
 	Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs \
 	Mono.UIAutomation.Winforms/GroupBoxProvider.cs \
@@ -161,7 +170,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs \
 	Mono.UIAutomation.Winforms/ToolTipListener.cs \
 	Mono.UIAutomation.Winforms/ToolTipProvider.cs \
-	Mono.UIAutomation.Winforms/WindowProvider.cs \
 	Mono.UIAutomation.Winforms/WordToken.cs \
 	Mono.UIAutomation.Winforms/WordTokenCollection.cs \
 	Mono.UIAutomation.Winforms/WordTokenizer.cs 

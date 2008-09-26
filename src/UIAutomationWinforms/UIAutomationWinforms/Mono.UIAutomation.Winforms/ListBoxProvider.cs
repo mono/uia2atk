@@ -252,6 +252,11 @@ namespace Mono.UIAutomation.Winforms
 			return new SelectionProviderBehavior (this);
 		}
 		
+		public override IProviderBehavior GetSelectionItemBehavior (ListItemProvider provider)
+		{
+			return new ListItemSelectionItemProviderBehavior (provider);
+		}
+		
 		public override void ScrollItemIntoView (ListItemProvider item)
 		{
 			if (ContainsItem (item) == true)

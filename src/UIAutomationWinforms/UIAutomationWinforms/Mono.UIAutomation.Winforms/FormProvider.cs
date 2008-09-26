@@ -29,10 +29,13 @@ using System.Drawing;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.Form;
+using Mono.UIAutomation.Winforms.Behaviors.Form;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class WindowProvider : FragmentRootControlProvider, IWindowProvider, ITransformProvider
+	internal class FormProvider : FragmentRootControlProvider
 	{
 #region Private Data
 		
@@ -43,26 +46,39 @@ namespace Mono.UIAutomation.Winforms
 		
 #region Constructors
 
-		public WindowProvider (Form form) : base (form)
+		public FormProvider (Form form) : base (form)
 		{
 			this.form = form;
-			closing = false;
+			
+			SetBehavior (WindowPatternIdentifiers.Pattern,
+			             new WindowProviderBehavior (this));
+			SetBehavior (TransformPatternIdentifiers.Pattern,
+			             new TransformProviderBehavior (this));
 			
 			form.Closed += OnClosed;
 			form.Shown += OnShown;
-			form.Closing += OnClosing;
 			
 			Console.WriteLine ("WindowProvider created");
 		}
 		
 #endregion
 		
+		public override void InitializeEvents ()
+		{
+			base.InitializeEvents (); 
+			
+			
+			SetEvent (ProviderEventType.AutomationFocusChangedEvent,
+			          new FormAutomationFocusChangedEvent (this));
+		}
+
+		
+		//FIXME: Revamp
+		
 #region Private Event Handlers
 		
 		private void OnClosed (object sender, EventArgs args)
 		{
-			closing = false;
-			
 			if (!AutomationInteropProvider.ClientsAreListening)
 				return;
 			
@@ -79,8 +95,8 @@ namespace Mono.UIAutomation.Winforms
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
 				                                   this);
 			else {
-				WindowProvider ownerProvider = 
-					ProviderFactory.GetProvider (form.Owner, false, false) as WindowProvider;
+				FormProvider ownerProvider = 
+					ProviderFactory.GetProvider (form.Owner, false, false) as FormProvider;
 				ownerProvider.RemoveChildProvider (true, this);
 			}
 		}
@@ -97,149 +113,9 @@ namespace Mono.UIAutomation.Winforms
 			                                                eventArgs);
 		}
 		
-		private void OnClosing (object sender, EventArgs args)
-		{
-			closing = true;
-		}
-		
 #endregion
 		
-#region IWindowProvider Members
-		
-		public bool WaitForInputIdle (int milliseconds)
-		{
-			if (milliseconds <= 0 || milliseconds > int.MaxValue)
-				throw new ArgumentOutOfRangeException ("milliseconds");
-			
-			// TODO: How...?
-			// return true iff window enters idle state before timeout occurs...
-			
-			System.Threading.Thread.Sleep (milliseconds);
-			
-			return false;
-		}
-		
-		public void SetVisualState (WindowVisualState state)
-		{
-			switch (state) {
-			case WindowVisualState.Maximized:
-				form.WindowState = FormWindowState.Maximized;
-				break;
-			case WindowVisualState.Minimized:
-				form.WindowState = FormWindowState.Minimized;
-				break;
-			case WindowVisualState.Normal:
-				form.WindowState = FormWindowState.Normal;
-				break;
-			}
-		}
-		
-		public void Close ()
-		{
-			form.Close ();
-		}
-		
-		public bool Minimizable {
-			get {
-				return form.MinimizeBox;
-			}
-		}
-		
-		public bool Maximizable {
-			get {
-				return form.MaximizeBox;
-			}
-		}
-		
-		public bool IsTopmost {
-			get {
-				return form.TopMost;
-			}
-		}
-		
-		public bool IsModal {
-			get {
-				return form.Modal;
-			}
-		}
-		
-		public WindowInteractionState InteractionState {
-			get {
-				if (closing)
-					return WindowInteractionState.Closing;
-				return WindowInteractionState.Running;
-				// TODO: How to check for things like
-				//       NotResponding and BlockedByModalWindow?
-			}
-		}
-		
-		public WindowVisualState VisualState {
-			get {
-				switch (form.WindowState) {
-				case FormWindowState.Maximized:
-					return WindowVisualState.Maximized;
-				case FormWindowState.Minimized:
-					return WindowVisualState.Minimized;
-				case FormWindowState.Normal:
-				default:
-					return WindowVisualState.Normal;
-				}
-			}
-		}
-		
-#endregion
-		
-#region ITransformProvider Members
-	
-		public bool CanMove {
-			get {
-				return form.WindowState == FormWindowState.Normal;
-			}
-		}
 
-		public bool CanResize {
-			get {
-				switch (form.FormBorderStyle) {
-				case FormBorderStyle.Fixed3D:
-				case FormBorderStyle.FixedDialog:
-				case FormBorderStyle.FixedSingle:
-				case FormBorderStyle.FixedToolWindow:
-					return false;
-				default:
-					return true;
-				}
-			}
-		}
-
-		public bool CanRotate {
-			get { return false; }
-		}
-
-		public void Move (double x, double y)
-		{
-			// TODO: Test Vista behavior to see if any
-			//       exceptions are thrown with bad input
-			if (!CanMove)
-				throw new InvalidOperationException ("CanMove is false");
-			form.Location = new Point ((int) x, (int) y);
-		}
-
-		public void Resize (double width, double height)
-		{
-			// TODO: Test Vista behavior to see if any
-			//       exceptions are thrown with bad input
-			if (!CanResize)
-				throw new InvalidOperationException ("CanResize is false");
-			form.Size = new Size ((int) width, (int) height);
-		}
-
-		public void Rotate (double degrees)
-		{
-			throw new InvalidOperationException ("Cannot rotate a Form");
-		}
-
-#endregion
-		
 #region IRawElementProviderFragmentRoot Members
 
 		public override IRawElementProviderSimple HostRawElementProvider {
@@ -248,15 +124,6 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		public override object GetPatternProvider (int patternId)
-		{
-			if (patternId == WindowPatternIdentifiers.Pattern.Id ||
-			    patternId == TransformPatternIdentifiers.Pattern.Id)
-				return this;
-			
-			return base.GetPatternProvider (patternId);
-		}
-		
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)

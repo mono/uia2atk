@@ -124,24 +124,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 			else if (multipleSelection == true && selectionRequired == true 
 			         && itemProvider.ListProvider.SelectedItemsCount == 1)
 				throw new InvalidOperationException ();	
-			else {
+			else
 				itemProvider.ListProvider.UnselectItem (itemProvider);
-
-//				//TODO: Would be great if this code is refactored to use an Event
-//				if (AutomationInteropProvider.ClientsAreListening) {
-//					AutomationEvent automationEvent;
-//
-//					if (itemProvider.ListProvider.SelectedItemsCount == 1)
-//						automationEvent = SelectionItemPatternIdentifiers.ElementSelectedEvent;
-//					else 
-//						automationEvent = SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent;
-//	
-//					AutomationEventArgs args = new AutomationEventArgs (automationEvent);
-//					AutomationInteropProvider.RaiseAutomationEvent (automationEvent, 
-//					                                                Provider, args);
-//				}
-
-			}
 		}
 
 		public void Select ()
@@ -154,20 +138,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 				return;
 			}
 			itemProvider.ListProvider.SelectItem (itemProvider);
-			
-			//TODO: Would be great if this code is refactored to use an Event
-//			if (AutomationInteropProvider.ClientsAreListening) {
-//				AutomationEvent automationEvent;
-//
-//				if (itemProvider.ListProvider.SelectedItemsCount == 1)
-//					automationEvent = SelectionItemPatternIdentifiers.ElementSelectedEvent;
-//				else 
-//					automationEvent = SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent;
-//
-//				AutomationEventArgs args = new AutomationEventArgs (automationEvent);
-//				AutomationInteropProvider.RaiseAutomationEvent (automationEvent, 
-//				                                                Provider, args);
-//			}
 		}
 
 		public bool IsSelected {
