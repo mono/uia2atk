@@ -30,7 +30,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class RadioButton : ToggleButton
+	public class RadioButton : Button
 	{
 		ISelectionItemProvider selProvider;
 		
@@ -38,6 +38,8 @@ namespace UiaAtkBridge
 		{
 			Role = Atk.Role.RadioButton;
 			selProvider = (ISelectionItemProvider)provider.GetPatternProvider(SelectionItemPatternIdentifiers.Pattern.Id);
+			if (selProvider == null)
+				throw new ArgumentException ("The provider for RadioButton should implement the SelectionItem pattern");
 		}
 		
 		public override bool DoAction (int action)

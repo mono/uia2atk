@@ -29,7 +29,6 @@
     <File name="TableImplementorHelper.cs" subtype="Code" buildaction="Compile" />
     <File name="TextLabel.cs" subtype="Code" buildaction="Compile" />
     <File name="TextImplementorHelper.cs" subtype="Code" buildaction="Compile" />
-    <File name="CheckBox.cs" subtype="Code" buildaction="Compile" />
     <File name="Pane.cs" subtype="Code" buildaction="Compile" />
     <File name="ComponentImplementorHelper.cs" subtype="Code" buildaction="Compile" />
     <File name="ComponentAdapter.cs" subtype="Code" buildaction="Compile" />

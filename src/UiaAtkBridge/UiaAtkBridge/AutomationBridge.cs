@@ -192,7 +192,7 @@ namespace UiaAtkBridge
 			keyStrings [0xff67] = "Menu";
 			keyStrings [0xff6a] = "Help";
 			keyStrings [0xff7f] = "Num_Lock";
-			keyStrings[0xff95] = "KP_Home";
+			keyStrings [0xff95] = "KP_Home";
 			keyStrings [0xff96] = "KP_Left";
 			keyStrings [0xff97] = "KP_Up";
 			keyStrings [0xff98] = "KP_Right";
@@ -238,7 +238,7 @@ namespace UiaAtkBridge
 			keyStrings [0xffff] = "Delete";
 		}
 
-			void HandleKeyEvent (AutomationEvent eventId, KeyEventArgs e)
+		void HandleKeyEvent (AutomationEvent eventId, KeyEventArgs e)
 		{
 			Atk.KeyEventStruct evnt;
 			if (keyStrings == null)
@@ -487,7 +487,7 @@ namespace UiaAtkBridge
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
-			CheckBox atkCheck = new CheckBox (provider);
+			CheckBoxButton atkCheck = new CheckBoxButton (provider);
 			providerAdapterMapping [provider] = atkCheck;
 			
 			parentObject.AddOneChild (atkCheck);
@@ -619,7 +619,8 @@ namespace UiaAtkBridge
 //		{
 //			ParentAdapter parentObject = GetParentAdapter (provider);
 //			
-//			Adapter atkEdit=  new EditableTextBoxEntry ((IRawElementProviderFragmentRoot)provider);
+//			Adapter atkEdit = new EditableTextBoxEntry (provider);
+//			
 //			providerAdapterMapping [provider] = atkEdit;
 //			
 //			parentObject.AddOneChild (atkEdit);

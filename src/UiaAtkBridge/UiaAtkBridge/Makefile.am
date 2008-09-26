@@ -45,11 +45,11 @@ FILES =  \
 	AssemblyInfo.cs \
 	AutomationBridge.cs \
 	Button.cs \
-	CheckBox.cs \
 	ComboBox.cs \
 	ComponentAdapter.cs \
 	ComponentImplementorHelper.cs \
 	ComponentParentAdapter.cs \
+	EditableTextBoxEntry.cs \
 	List.cs \
 	ListItem.cs \
 	MenuItem.cs \

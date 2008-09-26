@@ -67,7 +67,7 @@ namespace UiaAtkBridge
 		public GLib.SList DefaultAttributes {
 			get {
 				//TODO:
-				GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
+				GLib.SList attribs = new GLib.SList (typeof(Atk.TextAttribute));
 				return attribs;
 			}
 		}

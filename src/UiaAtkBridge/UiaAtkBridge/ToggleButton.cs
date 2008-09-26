@@ -30,20 +30,17 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	
-	public abstract class ToggleButton : Button
+	public class CheckBoxButton : Button
 	{
-		private static string default_toggle_description = "Cycles through the toggle states of a control.";
-		private static string default_toggle_name = "toggle";
-		
 		private IToggleProvider toggleProvider;
 		
-		public ToggleButton (IRawElementProviderSimple provider) : base (provider)
+		public CheckBoxButton (IRawElementProviderSimple provider) : base (provider)
 		{
 			toggleProvider = (IToggleProvider) provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
-			if (toggleProvider != null) {
-				actionName = default_toggle_name;
-				Role = Atk.Role.ToggleButton;
-			}
+			if (toggleProvider == null)
+				throw new ArgumentException ("The provider for CheckBox should implement the Toggle pattern");
+
+			Role = Atk.Role.CheckBox;
 		}
 		
 		public override string GetName (int action)
