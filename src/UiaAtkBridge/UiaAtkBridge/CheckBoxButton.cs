@@ -85,12 +85,10 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
-				NotifyStateChange ((ulong) Atk.StateType.Checked,
-				                   IsChecked ((ToggleState)e.NewValue));
-			} else {
+			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty)
+				NotifyStateChange (Atk.StateType.Checked, IsChecked ((ToggleState)e.NewValue));
+			else
 				base.RaiseAutomationPropertyChangedEvent (e);
-			}
 		}
 		
 		private bool IsChecked (ToggleState state)

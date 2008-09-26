@@ -1,5 +1,10 @@
 2008-09-26  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* CheckBoxButton.cs: Simplify.
+	* RadioButton.cs: Forgot to send the event to base.
+
+2008-09-26  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* RadioButton.cs: Notify selection event to Atk (fixes #427468).
 
 2008-09-26  Andrés G. Aragoneses <aaragoneses@novell.com> 

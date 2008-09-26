@@ -69,10 +69,12 @@ namespace UiaAtkBridge
 			return states;
 		}
 
-		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
+		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs args)
 		{
-			if (e.EventId == SelectionItemPatternIdentifiers.ElementSelectedEvent)
+			if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent)
 				NotifyStateChange (Atk.StateType.Checked, true);
+			else
+				base.RaiseAutomationEvent (eventId, args);
 		}
 		
 	}
