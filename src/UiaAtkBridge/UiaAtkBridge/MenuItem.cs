@@ -171,7 +171,7 @@ namespace UiaAtkBridge
 			throw new NotImplementedException();
 		}
 
-		public void GetRangeExtents (int start_offset, int end_offset, Atk.CoordType coord_type, Atk.TextRectangle rect)
+		public void GetRangeExtents (int start_offset, int end_offset, Atk.CoordType coord_type, out Atk.TextRectangle rect)
 		{
 			throw new NotImplementedException();
 		}

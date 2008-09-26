@@ -42,8 +42,15 @@ namespace UiaAtkBridge
 			this.provider = provider;
 			rangeValueProvider = (IRangeValueProvider)provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
 			valueProvider = (IValueProvider)provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			textExpert = new TextImplementorHelper (valueProvider != null? valueProvider.Value: String.Empty);
-			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			String text;
+			if (valueProvider != null)
+				text = valueProvider.Value;
+			else if (rangeValueProvider != null)
+				text = rangeValueProvider.Value.ToString ("F2");
+			else
+				text = string.Empty;
+			textExpert = new TextImplementorHelper (text);
+			text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = text;
 			Role = Atk.Role.ProgressBar;
 		}
@@ -132,7 +139,7 @@ namespace UiaAtkBridge
 
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
 		{
-			throw new NotImplementedException();
+			textExpert.GetCharacterExtents (offset, out x, out y, out width, out height, coords);
 		}
 
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
@@ -172,9 +179,9 @@ namespace UiaAtkBridge
 			return false;
 		}
 
-		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, Atk.TextRectangle rect)
+		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
 		{
-			throw new NotImplementedException();
+			textExpert.GetRangeExtents (startOffset, endOffset, coordType, out rect);
 		}
 
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
@@ -216,6 +223,20 @@ namespace UiaAtkBridge
 			if (e.Property == ValuePatternIdentifiers.ValueProperty)
 			{
 				textExpert = new TextImplementorHelper ((String)e.NewValue);
+			}
+			else if (e.Property == RangeValuePatternIdentifiers.ValueProperty) {
+				double v = (double)e.NewValue;
+				NotifyPropertyChange ("accessible-value", v);
+
+				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+
+				// First delete all text, then insert the new text
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+
+				string newText = v.ToString ("F2");
+				textExpert = new TextImplementorHelper (newText);
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+				                         newText == null ? 0 : newText.Length);
 			}
 			else
 				base.RaiseAutomationPropertyChangedEvent (e);

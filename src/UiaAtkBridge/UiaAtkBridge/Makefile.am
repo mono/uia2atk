@@ -41,6 +41,7 @@ RESGEN=resgen2
 all: $(ASSEMBLY) $(PROGRAMFILES) $(ASSEMBLY).config
 
 FILES =  \
+	ActionImplementorHelper.cs \
 	Adapter.cs \
 	AssemblyInfo.cs \
 	AutomationBridge.cs \

@@ -135,7 +135,7 @@ namespace UiaAtkBridge
 
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
 		{
-			throw new NotImplementedException();
+			textExpert.GetCharacterExtents (offset, out x, out y, out width, out height, coords);
 		}
 
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
@@ -175,9 +175,9 @@ namespace UiaAtkBridge
 			return false;
 		}
 
-		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, Atk.TextRectangle rect)
+		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
 		{
-			throw new NotImplementedException();
+			textExpert.GetRangeExtents (startOffset, endOffset, coordType, out rect);
 		}
 
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
@@ -189,6 +189,34 @@ namespace UiaAtkBridge
 		{
 			// TODO
 			Console.WriteLine ("Received StructureChangedEvent in Statusbar--todo");
+		}
+
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			if (e.Property == AutomationElementIdentifiers.NameProperty) {
+				string newName = (string)e.NewValue;
+				
+				// Don't fire spurious events if the text hasn't changed
+				if (textExpert.Text == newName)
+					return;
+
+				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+
+				// First delete all text, then insert the new text
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+
+				textExpert = new TextImplementorHelper (newName, this);
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+				                         newName == null ? 0 : newName.Length);
+
+				// Accessible name and label text are one and
+				// the same, so update accessible name
+				Name = newName;
+
+				EmitVisibleDataChanged ();
+			}
+			else
+				base.RaiseAutomationPropertyChangedEvent (e);
 		}
 	}
 

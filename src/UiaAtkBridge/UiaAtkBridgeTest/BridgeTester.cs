@@ -454,7 +454,13 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (listItemChild, "ListBox child#0 should not be null");
 			Assert.AreEqual (listItemChild.Role, Atk.Role.ListItem, "ListBox child#0 should be a list item");
 			
-			Assert.IsTrue (listItemChild.RefStateSet ().ContainsState (Atk.StateType.Selectable), "RefStateSet().Contains(Selectable)");
+			Atk.StateSet stateSet = listItemChild.RefStateSet ();
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Enabled), "RefStateSet().Contains(Enabled)");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focusable), "RefStateSet().Contains(Focusable)");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Selectable), "RefStateSet().Contains(Selectable)");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Sensitive), "RefStateSet().Contains(Sensitive)");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Showing), "RefStateSet().Contains(Showing)");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Visible), "RefStateSet().Contains(Visible)");
 
 			Assert.AreEqual (0, listItemChild.NAccessibleChildren, "ListBox ListItem numChildren");
 
@@ -491,7 +497,13 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (listItemChild, "ListBox child#0 should not be null");
 			Assert.AreEqual (listItemChild.Role, Atk.Role.CheckBox, "ListBox child#0 should be a check box");
 			
-			Assert.IsTrue (listItemChild.RefStateSet ().ContainsState (Atk.StateType.Selectable), "RefStateSet().Contains(Selectable)");
+			Atk.StateSet stateSet = listItemChild.RefStateSet ();
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Enabled), "RefStateSet().Contains(Enabled)");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focusable), "RefStateSet().Contains(Focusable)");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Selectable), "RefStateSet().Contains(Selectable)");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Sensitive), "RefStateSet().Contains(Sensitive)");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Showing), "RefStateSet().Contains(Showing)");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Visible), "RefStateSet().Contains(Visible)");
 			Assert.AreEqual (0, listItemChild.NAccessibleChildren, "ListBox ListItem numChildren");
 
 			Atk.SelectionImplementor selection = accessible as Atk.SelectionImplementor;

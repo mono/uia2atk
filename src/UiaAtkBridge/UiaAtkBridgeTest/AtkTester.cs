@@ -110,6 +110,8 @@ namespace UiaAtkBridgeTest
 			    (type == BasicWidgetType.ListItem) || 
 			    (type == BasicWidgetType.ParentMenu))
 				validNumberOfActions = 1;
+			else if (type == BasicWidgetType.CheckedListItem)
+				validNumberOfActions = 2;
 			
 			Assert.AreEqual (validNumberOfActions, implementor.NActions, "NActions");
 			
@@ -123,6 +125,8 @@ namespace UiaAtkBridgeTest
 					Assert.AreEqual ("press", implementor.GetName (1), "GetName press");
 					Assert.AreEqual ("release", implementor.GetName (2), "GetName release");
 				}
+				else if (type == BasicWidgetType.CheckedListItem)
+					Assert.AreEqual ("toggle", implementor.GetName (1), "GetName toggle");
 			}
 			
 			bool actionPerformed = true;

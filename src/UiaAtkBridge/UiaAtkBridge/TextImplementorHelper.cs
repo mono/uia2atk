@@ -36,6 +36,12 @@ namespace UiaAtkBridge
 			this.text = text;
 		}
 		
+		internal TextImplementorHelper (string text, Adapter resource)
+		{
+			this.text = text;
+			this.resource = resource;
+		}
+		
 		internal int Length {
 			get { return text != null ? text.Length : 0; }
 		}
@@ -45,6 +51,7 @@ namespace UiaAtkBridge
 		}
 
 		private string text;
+		private Adapter resource = null;
 		
 		internal string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
@@ -365,5 +372,23 @@ namespace UiaAtkBridge
 					bType));
 		}
 
+		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
+		{
+			Atk.TextRectangle rect;
+			GetRangeExtents (offset, offset, coords, out rect);
+			x = rect.X;
+			y = rect.Y;
+			width = rect.Width;
+			height = rect.Height;
+		}
+
+		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
+		{
+			System.Windows.Rect bounds = resource.BoundingRectangle;
+			rect.X = (int)(bounds.X + (bounds.Width * startOffset) / Length);
+			rect.Y = (int)bounds.Y;
+			rect.Height = (int)bounds.Height;
+			rect.Width = (int)(bounds.Width * (endOffset - startOffset)) / Length;
+		}
 	}
 }

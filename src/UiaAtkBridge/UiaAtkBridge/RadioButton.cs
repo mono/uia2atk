@@ -40,6 +40,7 @@ namespace UiaAtkBridge
 			selProvider = (ISelectionItemProvider)provider.GetPatternProvider(SelectionItemPatternIdentifiers.Pattern.Id);
 			if (selProvider == null)
 				throw new ArgumentException ("The provider for RadioButton should implement the SelectionItem pattern");
+			actionName = "click";
 		}
 		
 		public override bool DoAction (int action)

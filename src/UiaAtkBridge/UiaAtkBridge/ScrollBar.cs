@@ -136,5 +136,12 @@ namespace UiaAtkBridge
 				parentScrollProvider = (IScrollProvider)parentAdapter.Provider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id);
 		}
 		
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			if (e.Property == RangeValuePatternIdentifiers.ValueProperty) {
+				double v = (double)e.NewValue;
+				NotifyPropertyChange ("accessible-value", v);
+			}
+		}
 		}
 }

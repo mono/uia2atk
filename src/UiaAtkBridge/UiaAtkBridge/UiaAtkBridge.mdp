@@ -20,6 +20,7 @@
     <File name="Window.cs" subtype="Code" buildaction="Compile" />
     <File name="AutomationBridge.cs" subtype="Code" buildaction="Compile" />
     <File name="Button.cs" subtype="Code" buildaction="Compile" />
+    <File name="ActionImplementorHelper.cs" subtype="Code" buildaction="Compile" />
     <File name="Adapter.cs" subtype="Code" buildaction="Compile" />
     <File name="ParentAdapter.cs" subtype="Code" buildaction="Compile" />
     <File name="ProgressBar.cs" subtype="Code" buildaction="Compile" />

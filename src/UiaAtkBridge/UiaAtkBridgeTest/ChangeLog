@@ -1,3 +1,8 @@
+2008-09-26  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Test CheckedListBox toggle action.
+	* BridgeTester.cs: Test states for ListBox and CheckedListBox.
+
 2008-09-26  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTests.cs: Fix Window test.

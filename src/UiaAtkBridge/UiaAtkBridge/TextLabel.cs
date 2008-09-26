@@ -42,7 +42,7 @@ namespace UiaAtkBridge
 			Role = Atk.Role.Label;
 			
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			textExpert = new TextImplementorHelper (text);
+			textExpert = new TextImplementorHelper (text, this);
 			Name = text;
 		}
 		
@@ -99,7 +99,7 @@ namespace UiaAtkBridge
 				// First delete all text, then insert the new text
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-				textExpert = new TextImplementorHelper (newText);
+				textExpert = new TextImplementorHelper (newText, this);
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         newText == null ? 0 : newText.Length);
 
@@ -165,7 +165,7 @@ namespace UiaAtkBridge
 
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
 		{
-			throw new NotImplementedException();
+			textExpert.GetCharacterExtents (offset, out x, out y, out width, out height, coords);
 		}
 
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
@@ -205,9 +205,9 @@ namespace UiaAtkBridge
 			return false;
 		}
 
-		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, Atk.TextRectangle rect)
+		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
 		{
-			throw new NotImplementedException();
+			textExpert.GetRangeExtents (startOffset, endOffset, coordType, out rect);
 		}
 
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)

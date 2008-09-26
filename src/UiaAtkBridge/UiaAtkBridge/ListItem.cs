@@ -38,10 +38,7 @@ namespace UiaAtkBridge
 		private IToggleProvider toggleProvider;
 
 		private TextImplementorHelper textExpert = null;
-		private string						selectActionDescription = null;
-		private string						invokeActionDescription = null;
-		protected string					selectActionName = "click";
-		protected string					invokeActionName = "invoke";
+		private ActionImplementorHelper actionExpert = null;
 
 		public ListItem (IRawElementProviderSimple provider)
 		{
@@ -51,6 +48,13 @@ namespace UiaAtkBridge
 			toggleProvider = (IToggleProvider) provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			textExpert = new TextImplementorHelper (text);
+			actionExpert = new ActionImplementorHelper ();
+			// TODO: Localize the name?s
+			actionExpert.Add ("click", "click", null, DoClick);
+			if (toggleProvider != null)
+				actionExpert.Add ("toggle", "toggle", null, DoToggle);
+			if (invokeProvider != null)
+				actionExpert.Add ("invoke", "invoke", null, DoInvoke);
 			Name = text;
 			Role = (toggleProvider != null? Atk.Role.CheckBox: Atk.Role.ListItem);
 		}
@@ -67,17 +71,6 @@ namespace UiaAtkBridge
 			if (selectionItemProvider.IsSelected)
 				states.AddState (Atk.StateType.Selected);
 
-			bool enabled = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
-			if (enabled)
-			{
-				states.AddState (Atk.StateType.Sensitive);
-				states.AddState (Atk.StateType.Enabled);
-			}
-			else
-			{
-				states.RemoveState (Atk.StateType.Sensitive);
-				states.RemoveState (Atk.StateType.Enabled);
-			}
 			if (toggleProvider != null) {
 				ToggleState state = toggleProvider.ToggleState;
 				
@@ -143,7 +136,7 @@ namespace UiaAtkBridge
 
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
 		{
-			throw new NotImplementedException();
+			textExpert.GetCharacterExtents (offset, out x, out y, out width, out height, coords);
 		}
 
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
@@ -183,9 +176,9 @@ namespace UiaAtkBridge
 			return false;
 		}
 
-		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, Atk.TextRectangle rect)
+		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
 		{
-			throw new NotImplementedException();
+			textExpert.GetRangeExtents (startOffset, endOffset, coordType, out rect);
 		}
 
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
@@ -231,39 +224,20 @@ namespace UiaAtkBridge
 		public int NActions
 		{
 			get {
-				return (invokeProvider != null? 2: 1);
+				return actionExpert.NActions;
 			}
 		}
 		
 		// Get a localized name for the specified action
 		public string GetLocalizedName (int action)
 		{
-			// TODO: Localize the name?s
-			switch (action) {
-			case 0:
-			return selectActionName;
-			case 1:
-				return (invokeProvider != null? invokeActionName: null);
-			default:
-				return null;
-			}
+			return actionExpert.GetLocalizedName (action);
 		}
 		
 		// Sets a description of the specified action
 		public bool SetDescription (int action, string description)
 		{
-			switch (action) {
-			case 0:
-				selectActionDescription = description;
-				return true;
-			case 1:
-				if (invokeProvider == null)
-					return false;
-				invokeActionDescription = description;
-				return true;
-			default:
-				return false;
-			}
+			return actionExpert.SetDescription (action, description);
 		}
 		
 		// Get the key bindings for the specified action
@@ -275,53 +249,44 @@ namespace UiaAtkBridge
 		// Get the name of the specified action
 		public virtual string GetName (int action)
 		{
-			switch (action) {
-			case 0:
-				return selectActionName;
-			case 1:
-				return (invokeProvider != null? invokeActionName: null);
-			default:
-				return null;
-			}
+			return actionExpert.GetName (action);
 		}
 		
 		// Get the description of the specified action
 		public string GetDescription (int action)
 		{
-			switch (action) {
-			case 0:
-				return selectActionDescription;
-			case 1:
-				return (invokeProvider != null? invokeActionDescription: null);
-			default:
-				return null;
-			}
+			return actionExpert.GetDescription (action);
 		}
 
 		// Perform the action specified
 		public virtual bool DoAction (int action)
 		{
-			switch (action) {
-			case 0:
-				Atk.SelectionImplementor sel = Parent as Atk.SelectionImplementor;
-				if (sel == null)
-					return false;
-				if (toggleProvider != null) {
-					try {
-						toggleProvider.Toggle();
-					} catch (ElementNotEnabledException e) {
-						// TODO: handle this exception?
-					}
-				}
-				return sel.AddSelection (IndexInParent);
-			case 1:
-				if (invokeProvider == null)
-					return false;
-				invokeProvider.Invoke();
-				return true;
-			default:
+			return actionExpert.DoAction (action);
+		}
+
+		internal virtual bool DoClick ()
+		{
+			Atk.SelectionImplementor sel = Parent as Atk.SelectionImplementor;
+			if (sel == null)
+				return false;
+			return sel.AddSelection (IndexInParent);
+		}
+
+		internal bool DoToggle ()
+		{
+			try {
+				toggleProvider.Toggle();
+			} catch (ElementNotEnabledException e) {
+				// TODO: handle this exception?
 				return false;
 			}
+			return true;
+		}
+
+		internal bool DoInvoke ()
+		{
+			invokeProvider.Invoke();
+			return true;
 		}
 		public int NSelections {
 			get {

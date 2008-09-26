@@ -72,19 +72,13 @@ namespace UiaAtkBridge
 			}
 			
 			string buttonText = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			textExpert = new TextImplementorHelper (buttonText);
+			textExpert = new TextImplementorHelper (buttonText, this);
 			Name = buttonText;
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
-			
-			bool canFocus = (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
-			if (canFocus)
-				states.AddState (Atk.StateType.Focusable);
-			else
-				states.RemoveState (Atk.StateType.Focusable);
 			
 			return states;
 		}
@@ -223,7 +217,7 @@ namespace UiaAtkBridge
 				// First delete all text, then insert the new text
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-				textExpert = new TextImplementorHelper (newName);
+				textExpert = new TextImplementorHelper (newName, this);
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         newName == null ? 0 : newName.Length);
 
@@ -302,7 +296,7 @@ namespace UiaAtkBridge
 
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
 		{
-			throw new NotImplementedException();
+			textExpert.GetCharacterExtents (offset, out x, out y, out width, out height, coords);
 		}
 
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
@@ -337,9 +331,9 @@ namespace UiaAtkBridge
 			return false;
 		}
 
-		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, Atk.TextRectangle rect)
+		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
 		{
-			throw new NotImplementedException();
+			textExpert.GetRangeExtents (startOffset, endOffset, coordType, out rect);
 		}
 
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)

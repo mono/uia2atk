@@ -1,5 +1,25 @@
 2008-09-26  Mike Gorse <mgorse@novell.com>
 
+	* ActionImplementorHelper.cs, Makefile.am, UiaAtkBridge.mdp:
+	  Add ActionImplementorHelper.cs.
+	* ScrollBar.cs, ProgressBar.cs: Emit property-changed:accessible-value.
+	* ProgressBar.cs: Support AtkText and signals for RangeValueProvider.
+	* RadioButton.cs: Set action name to Click.
+	* AutomationBridge.cs: Add warning for ChildrenBulkRemoved with no
+	  adapter.
+	* Button.cs, ComponentAdapter.cs, ComponentParentAdapter,cs,
+	  ComboBox.cs, List.cs, ListItem.cs, Pane.cs, RadioButton.cs,
+	  Window.cs: Move Enabled and Focused tests into ComponentAdapter
+	  and ComponentParentAdapter.
+	* StatusBar.cs: Adjust text when name changes.
+	* TextImplementorHelper.cs, Button.cs, ListItem.cs, MenuItem.cs,
+	  ProgressBar.cs, Spinner.cs, StatusBar.cs, TextLabel.cs:
+Write (rather poor) implementations of
+	  GetCharacterExtents and GetRangeExtents.
+	  Update GetRangeExtents prototype for the new API.
+
+2008-09-26  Mike Gorse <mgorse@novell.com>
+
 	* AutomationBridge.cs: Check for presence of adapter before handling
 	  ChildrenBulkRemoved
 
