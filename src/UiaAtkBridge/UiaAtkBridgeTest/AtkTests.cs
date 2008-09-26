@@ -378,8 +378,9 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, menuItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
 		}
 		
-		//[Test]
-		public void Window ()
+		[Test]
+		public void Window () { RunInGuiThread (RealWindow); }
+		public void RealWindow ()
 		{
 			BasicWidgetType type = BasicWidgetType.Window;
 			Atk.Object accessible;
