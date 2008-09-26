@@ -32,39 +32,6 @@ class RadioButtonFrame(accessibles.Frame):
         self.button3 = self.findRadioButton(self.BUTTON_THREE)
         self.label = self.findLabel(self.LABEL)
 
-    #check radiobutton's all expectant states
-    def actionsCheck(self, accessible):
-        procedurelogger.action('diff %s\'s actions list' % accessible)
-        ca = accessible._accessible.queryAction()
-        initallists = []
-        for lists in range(ca.nActions):
-            initallists.append(ca.getName(lists))
-
-        procedurelogger.expectedResult('%s\'s inital actions "%s" live up to our expectation' % (accessible,initallists))
-        def resultMatches():
-            return sorted(initallists) == sorted(actions.RadioButton.actions)
-        assert retryUntilTrue(resultMatches)
-
-    #check RadioButton's all expectant states
-    def statesCheck(self, accessible):
-        procedurelogger.action('check %s\'s all states' % accessible)
-
-        procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
-        for a in states.RadioButton.states:
-            state = getattr(accessible, a)
-            assert state, "Expected state: %s" % (a)
-
-    def statesDisableCheck(self, accessible):
-        procedurelogger.action('check %s\'s all states' % accessible)
-
-        procedurelogger.expectedResult('%s\'s all states can\'t be found except "showing"' % accessible)
-        for a in states.RadioButton.states:
-            state = getattr(accessible, a)
-            if a == 'showing':
-                assert state, "Expected state: %s" % (a)
-            else:
-                assert not state, "Not expected state: %s" % (a)
-
     #give 'click' action
     def click(self,button):
         button.click()
@@ -73,25 +40,6 @@ class RadioButtonFrame(accessibles.Frame):
     def assertLabel(self, labelText):
         procedurelogger.expectedResult('Label text has been changed to "%s"' % labelText)
         self.findLabel(labelText)
-
-    #check the state after click RadioButton
-    def assertChecked(self, accessible):
-        'Raise exception if the accessible does not match the given result'   
-        procedurelogger.expectedResult('"%s" is %s' % (accessible, 'checked'))
-
-        def resultMatches():
-            return accessible.checked
-	
-        assert retryUntilTrue(resultMatches)
-
-    def assertUnchecked(self, accessible):
-        'Raise exception if the accessible does not match the given result'   
-        procedurelogger.expectedResult('%s is %s.' % (accessible, "unchecked"))
-
-        def resultMatches():
-            return not accessible.checked
-	
-        assert retryUntilTrue(resultMatches)
     
     #close application main window after running test
     def quit(self):

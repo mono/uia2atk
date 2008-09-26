@@ -1,3 +1,12 @@
+2008-09-26  Calen Chen <cachen@novell.com>
+
+	* testers/radiobutton/__init__.py: update the app example's name to
+	radiobutton.py
+	* testers/radiobutton/radiobuttonframe.py: move actionsCheck and 
+	statesCheck to helpers.py
+	* testers/radiobutton_basic_ops.py: update test code to test 'click' 
+	action and additional 'focused' 'checked' states. keep to assert 
+	label
 
 2008-09-26  Calen Chen <cachen@novell.com>
 
@@ -11,7 +20,7 @@
 	checkbox.py
 	* testers/checkbox/checkboxframe.py: move actionsCheck and statesCheck 
 	to helpers.py
-	* testers/checkbox_basic_ops.py: update the method to test actions and 
+	* testers/checkbox_basic_ops.py: update the test way of actions and 
 	states 
 
 2008-09-25  Calen Chen <cachen@novell.com>

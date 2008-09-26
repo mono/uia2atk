@@ -21,7 +21,7 @@ def launchRadioButton(exe=None):
         harness_dir = path[0]
         i = harness_dir.rfind("/")
         uiaqa_path = harness_dir[:i]
-        exe = '%s/samples/checkbox_radiobutton.py' % uiaqa_path
+        exe = '%s/samples/radiobutton.py' % uiaqa_path
         if not exists(exe):
           raise IOError, "Could not find file %s" % exe
   
@@ -44,5 +44,5 @@ class RadioButton(accessibles.Application):
         'Get a reference to the RadioButton window'
         super(RadioButton, self).__init__(accessible, subproc)
         
-        self.findFrame(re.compile('^CheckBox_RadioButton controls'), logName='Radio Button')
+        self.findFrame(re.compile('^RadioButton control'), logName='Radio Button')
 
