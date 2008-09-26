@@ -1,4 +1,19 @@
 
+2008-09-26  Calen Chen <cachen@novell.com>
+
+	* samples/checkbox_radiobutton.py: delete this example
+	* samples/checkbox.py,
+	* samples/radiobutton.py: separate from checkbox_radiobutton.py to 
+	stand alone
+	* testers/checkbox_basic_ops_states.py: conflated the states testing  
+	to checkbox_basic_ops.py and delete this file
+	* testers/checkbox/__init__.py: update the app example's name to 
+	checkbox.py
+	* testers/checkbox/checkboxframe.py: move actionsCheck and statesCheck 
+	to helpers.py
+	* testers/checkbox_basic_ops.py: update the method to test actions and 
+	states 
+
 2008-09-25  Calen Chen <cachen@novell.com>
 
 	* samples/form.py: update form widget: button1 would rise a message 
