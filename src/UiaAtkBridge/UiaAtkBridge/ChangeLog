@@ -1,5 +1,9 @@
 2008-09-26  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* CheckBoxButton.cs: Corrected file references.
+
+2008-09-26  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* ToggleButton.cs, CheckBox.cs, RadioButton.cs, Makefile.am,
 	  UiaAtkBridge.mdp: RadioButton doesn't map to an IToggleProvider
 	  (thanks for noticing MGorse!) so we refactor this class hierarchy.

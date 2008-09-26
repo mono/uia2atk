@@ -45,11 +45,11 @@ FILES =  \
 	AssemblyInfo.cs \
 	AutomationBridge.cs \
 	Button.cs \
+	CheckBoxButton.cs \
 	ComboBox.cs \
 	ComponentAdapter.cs \
 	ComponentImplementorHelper.cs \
 	ComponentParentAdapter.cs \
-	EditableTextBoxEntry.cs \
 	List.cs \
 	ListItem.cs \
 	MenuItem.cs \
@@ -66,7 +66,6 @@ FILES =  \
 	TableImplementorHelper.cs \
 	TextImplementorHelper.cs \
 	TextLabel.cs \
-	ToggleButton.cs \
 	TopLevelRootItem.cs \
 	Window.cs 
 
