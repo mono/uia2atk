@@ -62,12 +62,19 @@ namespace UiaAtkBridge
 			Atk.StateSet states = base.OnRefStateSet ();
 			
 			if (selProvider.IsSelected)
-					states.AddState (Atk.StateType.Checked);
+				states.AddState (Atk.StateType.Checked);
 			else
 				states.RemoveState (Atk.StateType.Checked);
 			
 			return states;
 		}
+
+		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
+		{
+			if (e.EventId == SelectionItemPatternIdentifiers.ElementSelectedEvent)
+				NotifyStateChange (Atk.StateType.Checked, true);
+		}
+		
 	}
 	
 }
