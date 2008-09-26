@@ -27,10 +27,6 @@ using System;
 
 using System.Collections.Generic;
 
-using System.Windows;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-
 using NUnit.Framework;
 
 namespace UiaAtkBridgeTest

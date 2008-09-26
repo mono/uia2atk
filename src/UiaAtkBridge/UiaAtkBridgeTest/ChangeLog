@@ -1,5 +1,9 @@
 2008-09-26  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTester.cs: Cleaning not needed using statements.
+
+2008-09-26  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* BridgeTester.cs: Track API changes.
 
 2008-09-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
