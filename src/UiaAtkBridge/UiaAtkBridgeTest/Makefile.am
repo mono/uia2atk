@@ -70,7 +70,19 @@ REFERENCES =  \
 
 DLL_REFERENCES = $(UIAUTOMATIONWINFORMS) $(UIAATKBRIDGE)
 
-CLEANFILES = $(PROGRAMFILES)
+CLEANFILES = $(PROGRAMFILES) \
+	bin/Debug/UIAutomationWinforms.dll \
+	bin/Debug/UIAutomationWinforms.dll.mdb \
+	bin/Debug/UiaAtkBridge.dll \
+	bin/Debug/UiaAtkBridge.dll.mdb \
+	bin/Release/UIAutomationWinforms.dll \
+	bin/Release/UiaAtkBridge.dll
+
+MAINTAINERCLEANFILES = \
+	bridgetest.sh
+
+EXTRA_DIST = \
+	bridgetest.sh.in
 
 include $(top_srcdir)/Makefile.include
 
@@ -98,5 +110,6 @@ bin/Release/UiaAtkBridge.dll: ../UiaAtkBridge/bin/Release/UiaAtkBridge.dll
 	cp -a $< $@
 
 $(ASSEMBLY) $(ASSEMBLY_MDB): $(build_sources) $(build_resources) $(build_datafiles) $(DLL_REFERENCES) $(PROJECT_REFERENCES) $(build_xamlg_list) $(build_satellite_assembly_list)
-	mkdir -p $(shell dirname $(ASSEMBLY))
+	@mkdir -p $(shell dirname $(ASSEMBLY))
+	@chmod +x ./bridgetest.sh
 	$(ASSEMBLY_COMPILER_COMMAND) $(ASSEMBLY_COMPILER_FLAGS) -out:$(ASSEMBLY) -target:$(COMPILE_TARGET) $(build_sources_embed) $(build_resources_embed) $(build_references_ref)

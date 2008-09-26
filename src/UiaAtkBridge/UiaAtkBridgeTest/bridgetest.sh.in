@@ -1,0 +1,10 @@
+#!/bin/bash
+
+DLL=UiaAtkBridgeTest.dll
+
+NUNIT_FLAGS=-nothread
+
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../../bridge-glue/.libs/
+
+(cd bin/Debug; \
+	@MONO@ @NUNIT_PATH@/nunit-console.exe ${NUNIT_FLAGS} ${DLL} $*)

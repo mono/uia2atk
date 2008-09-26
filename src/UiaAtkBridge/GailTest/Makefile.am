@@ -60,7 +60,19 @@ REFERENCES =  \
 
 DLL_REFERENCES = $(UIAATKBRIDGETEST)
 
-CLEANFILES = $(PROGRAMFILES)
+CLEANFILES = $(PROGRAMFILES) \
+	bin/Debug/GailTestApp.exe \
+	bin/Debug/GailTestApp.exe.mdb \
+	bin/Debug/UiaAtkBridgeTest.dll \
+	bin/Debug/UiaAtkBridgeTest.dll.mdb \
+	bin/Release/GailTestApp.exe \
+	bin/Release/UiaAtkBridgeTest.dll
+
+MAINTAINERCLEANFILES = \
+	gailtest.sh
+
+EXTRA_DIST = \
+	gailtest.sh.in
 
 include $(top_srcdir)/Makefile.include
 
@@ -87,5 +99,6 @@ bin/Release/UiaAtkBridgeTest.dll: ../UiaAtkBridgeTest/bin/Release/UiaAtkBridgeTe
 	cp -a $< $@
 
 $(ASSEMBLY) $(ASSEMBLY_MDB): $(build_sources) $(build_resources) $(build_datafiles) $(DLL_REFERENCES) $(PROJECT_REFERENCES) $(build_xamlg_list) $(build_satellite_assembly_list)
-	mkdir -p $(shell dirname $(ASSEMBLY))
+	@mkdir -p $(shell dirname $(ASSEMBLY))
+	@chmod +x ./gailtest.sh
 	$(ASSEMBLY_COMPILER_COMMAND) $(ASSEMBLY_COMPILER_FLAGS) -out:$(ASSEMBLY) -target:$(COMPILE_TARGET) $(build_sources_embed) $(build_resources_embed) $(build_references_ref)

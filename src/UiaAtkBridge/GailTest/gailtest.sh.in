@@ -1,0 +1,16 @@
+#!/bin/bash
+
+DLL="GailTest.dll"
+NUNIT_FLAGS="-nothread -domain=none"
+
+NUNIT_PATH=@NUNIT_PATH@
+
+# --domain=none in NUnit 2.4.7 requires that nunit-console.exe be in the same
+# directory as GailTest.dll
+cp ${NUNIT_PATH}/nunit-console.exe \
+	${NUNIT_PATH}/nunit-console-runner.dll \
+	${NUNIT_PATH}/nunit.util.dll \
+	${NUNIT_PATH}/nunit.core.dll \
+	${NUNIT_PATH}/nunit.core.interfaces.dll bin/Debug/
+(cd bin/Debug; \
+	@MONO@ ./nunit-console.exe ${NUNIT_FLAGS} ${DLL})

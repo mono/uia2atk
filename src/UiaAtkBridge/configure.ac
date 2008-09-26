@@ -17,6 +17,12 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AM_PROG_LIBTOOL
 
+AC_PATH_PROG(MONO, mono, no)
+if test "x$MONO" = "xno"; then
+        AC_MSG_ERROR([mono Not found])
+fi
+AC_SUBST(MONO)
+
 AC_PATH_PROG(GMCS, gmcs, no)
 if test "x$GMCS" = "xno"; then
         AC_MSG_ERROR([gmcs Not found])
@@ -32,11 +38,23 @@ if test "x$GACUTIL" = "xno" ; then
 	AC_MSG_ERROR([No gacutil tool found])
 fi
 
-
 AC_ARG_ENABLE(tests,
 	AC_HELP_STRING([--disable-tests],
 		[Do not build unit tests [default=no]]),
 		enable_tests=no, enable_tests=yes)
+
+NUNIT_PATH=
+
+PKG_CHECK_MODULES(NUNIT, nunit >= 2.4.7, nunit_247=yes, nunit_247=no)
+if test "x$nunit_247" = "xno"; then
+	AC_MSG_WARN([Could not find nunit >= 2.4.7; unit tests will not be available.])
+	enable_tests=no
+else
+	NUNIT_PATH=`pkg-config --variable=assemblies_dir nunit`
+fi
+
+AC_SUBST(NUNIT_PATH)
+
 AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = "xyes")
 
 AC_ARG_ENABLE(debug,
@@ -86,10 +104,11 @@ AC_SUBST(GLIB_LIBS)
 AC_CONFIG_FILES([
 Makefile
 GailTest/Makefile
+GailTest/gailtest.sh
 UiaAtkBridge/Makefile
 UiaAtkBridgeTest/Makefile
+UiaAtkBridgeTest/bridgetest.sh
 bridge-glue/Makefile
-
 ])
 
 AC_OUTPUT

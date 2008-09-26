@@ -1,3 +1,16 @@
+2008-09-26  Brad Taylor  <brad@getcoded.net>
+	
+	* configure.ac: Force NUnit 2.4.7 to run unit tests.  Use autoconf to
+	  correct paths in the *test.sh scripts.
+	
+	* gailtest.sh.in:
+	* bridgetest.sh.in: Remove NUnit 2.4.7 hacks, and require the specific
+	  version to enable tets.
+
+	* GailTest/Makefile.am:
+	* UiaAtkBridgeTest/Makefile.am: Fix up CLEANFILES, add *test.sh.in to
+	  EXTRA_DIST and *test.sh to MAINTAINERCLEANFILES.
+
 2008-09-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* configure.ac, Makefile.am: Add --disable-tests configure flag.
