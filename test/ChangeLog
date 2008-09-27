@@ -1,3 +1,10 @@
+2008-09-27  Calen Chen <cachen@novell.com>
+
+	* testers/states.py: update Panel's states tuple
+	* testers/groupbox/groupboxframe.py: delete actionCheck and statesCheck
+	* testers/groupbox_basic_ops.py: add a way to check if button and label
+	in panel still have correct actions and states
+
 2008-09-27  Ray Wang <rawang@novell.com>
 
 	* samples/checkedlistbox.py: add a CheckedListBox control which has 

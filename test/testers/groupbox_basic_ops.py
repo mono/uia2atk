@@ -19,6 +19,7 @@ import os
 
 from strongwind import *
 from groupbox import *
+from helpers import *
 from sys import argv
 from os import path
 
@@ -42,11 +43,17 @@ if app is None:
 # just an alias to make things shorter
 gbFrame = app.groupBoxFrame
 
-#check Button's actions list
-gbFrame.actionsCheck(gbFrame.button1)
+#check if button in panel still have correct actions
+actionsCheck(gbFrame.button1, "Button")
+actionsCheck(gbFrame.button2, "Button")
 
-#check Panel's states list
-gbFrame.statesCheck()
+#check if button in panel still have correct states
+statesCheck(gbFrame.button1, "Button", add_states=["focused"])
+statesCheck(gbFrame.button2, "Button")
+
+#check if label in panel still have correct states
+statesCheck(gbFrame.label[0], "Label")
+statesCheck(gbFrame.label[1], "Label")
 
 #search for groupbox1 panel
 gbFrame.searchGroupBox('GroupBox1')
@@ -54,16 +61,23 @@ gbFrame.searchGroupBox('GroupBox1')
 #search for groupbox2 panel
 gbFrame.searchGroupBox('GroupBox2')
 
-#click button1 in groupbox1
+#check Panel's states
+statesCheck(gbFrame.panel1, "Panel")
+statesCheck(gbFrame.panel2, "Panel")
+
+#click button1 in groupbox1 to update label
 gbFrame.click(gbFrame.button1)
 sleep(config.SHORT_DELAY)
 gbFrame.assertLabel('1')
 
-#click button2 two times in groupbox2
+#click button2 two times in groupbox2 by click and mouseClick
+#to update label
 gbFrame.click(gbFrame.button2)
-gbFrame.click(gbFrame.button2)
+gbFrame.button2.mouseClick()
 sleep(config.SHORT_DELAY)
 gbFrame.assertLabel('2')
+#button2 rise 'focused' state
+statesCheck(gbFrame.button2, "Button", add_states=["focused"])
 
 #close application frame window
 gbFrame.quit()

@@ -205,8 +205,8 @@ VISITED = "visited"
 class Button(object):
     states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
 
-class RadioButton(Button):
-    pass
+class RadioButton(object):
+    states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
 
 class Label(object):
     states = (ENABLED, MULTI_LINE, SENSITIVE, SHOWING, VISIBLE)
@@ -218,7 +218,7 @@ class PictureBox(object):
     states = (SHOWING,)
 
 class Panel(object):
-    states = (SHOWING,)
+    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
 class CheckBox(object):
     states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
