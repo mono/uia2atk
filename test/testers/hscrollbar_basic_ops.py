@@ -19,6 +19,7 @@ import os
 
 from strongwind import *
 from hscrollbar import *
+from helpers import *
 from sys import argv
 from os import path
 
@@ -42,8 +43,21 @@ if app is None:
 # just an alias to make things shorter
 hsbFrame = app.hScrollBarFrame
 
-#check hscrollbar's states list
-hsbFrame.statesCheck(hsbFrame.hscrollbar)
+#check hscrollbar's default states
+statesCheck(hsbFrame.hscrollbar, "HScrollBar")
+
+#mouse click scrollbar
+hsbFrame.hscrollbar.mouseClick()
+sleep(config.SHORT_DELAY)
+hsbFrame.assertScrollbar(20)
+
+#still have default states
+statesCheck(hsbFrame.hscrollbar, "HScrollBar")
+
+#keyCombo move scrollbar
+hsbFrame.hscrollbar.keyCombo("Page_Down")
+sleep(config.SHORT_DELAY)
+hsbFrame.assertScrollbar(40)
 
 #set value to 10
 hsbFrame.valueScrollBar(10)

@@ -1,5 +1,17 @@
 2008-09-27  Calen Chen <cachen@novell.com>
 
+	* testers/states.py: update vscrollbar and hscrollbar's states tuple
+	* testers/vscrollbar_basic_ops.py: add mouseClick and keyCombo actions,
+	update states test method
+	* testers/vscrollbar/vscrollbarframe.py: delete statesCheck, update 
+	assert scrollbar's value
+	* testers/hscrollbar_basic_ops.py: add mouseClick and keyCombo actions,
+	update states test method
+	* testers/hscrollbar/hscrollbarframe.py: delete statesCheck, update 
+	assert scrollbar's value
+
+2008-09-27  Calen Chen <cachen@novell.com>
+
 	* testers/states.py: update Panel's states tuple
 	* testers/groupbox/groupboxframe.py: delete actionCheck and statesCheck
 	* testers/groupbox_basic_ops.py: add a way to check if button and label

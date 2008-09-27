@@ -19,6 +19,7 @@ import os
 
 from strongwind import *
 from vscrollbar import *
+from helpers import *
 from sys import argv
 from os import path
 
@@ -43,7 +44,20 @@ if app is None:
 vsbFrame = app.vScrollBarFrame
 
 #check vscrollbar's states list
-vsbFrame.statesCheck(vsbFrame.vscrollbar)
+statesCheck(vsbFrame.vscrollbar, "VScrollBar")
+
+#mouse click scrollbar
+vsbFrame.vscrollbar.mouseClick()
+sleep(config.SHORT_DELAY)
+vsbFrame.assertScrollbar(20)
+
+#check hscrollbar's states list
+statesCheck(vsbFrame.vscrollbar, "VScrollBar")
+
+#keyCombo move scrollbar
+vsbFrame.vscrollbar.keyCombo("Page_Down")
+sleep(config.SHORT_DELAY)
+vsbFrame.assertScrollbar(40)
 
 #set value to 10
 vsbFrame.valueScrollBar(10)
@@ -69,6 +83,8 @@ vsbFrame.assertScrollbar(-10)
 vsbFrame.valueScrollBar(210)
 sleep(config.SHORT_DELAY)
 vsbFrame.assertScrollbar(210)
+
+
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

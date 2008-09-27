@@ -27,16 +27,6 @@ class HScrollBarFrame(accessibles.Frame):
         self.label = self.findLabel(self.LABEL)
         self.hscrollbar = self.findScrollBar(None)
 
-    #check hscrollbar's all expectant states
-    def statesCheck(self, accessible):
-        procedurelogger.action('check %s\'s all states' % accessible)
-
-        procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
-        
-        for a in states.HScrollBar.states:
-            state = getattr(accessible, a)
-            assert state, "Expected state: %s" % (a)
-
     #change hscrollbar's value
     def valueScrollBar(self, newValue=None):
 
@@ -48,15 +38,14 @@ class HScrollBarFrame(accessibles.Frame):
     def assertScrollbar(self, newValue=None):
         maximumValue = self.findScrollBar(None)._accessible.queryValue().maximumValue
 
-        def resultMatches():
-            if 0 <= newValue <= maximumValue:
-                procedurelogger.expectedResult('the scrollbar\'s current value is "%s"' % newValue)
-                print "scrollbar's current value is:", self.findScrollBar(None).__getattr__('value')
-                return self.findScrollBar(None).__getattr__('value') == newValue
-            else:
-                procedurelogger.expectedResult('value "%s" out of run' % newValue)
-                return not self.findScrollBar(None).__getattr__('value') == newValue
-        assert retryUntilTrue(resultMatches)
+        if 0 <= newValue <= maximumValue:
+            procedurelogger.expectedResult('the scrollbar\'s current value is "%s"' % newValue)
+            assert self.findScrollBar(None).__getattr__('value') == newValue, \
+                       "scrollbar's current value is %s:" % self.findScrollBar(None).__getattr__('value')
+        else:
+            procedurelogger.expectedResult('value "%s" out of run' % newValue)
+            assert not self.findScrollBar(None).__getattr__('value') == newValue, \
+                       "scrollbar's current value is %s:" % self.findScrollBar(None).__getattr__('value')
     
     #close application window
     def quit(self):

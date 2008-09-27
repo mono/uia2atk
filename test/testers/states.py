@@ -224,10 +224,10 @@ class CheckBox(object):
     states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
 
 class VScrollBar(object):
-    states = (SHOWING, VERTICAL)
+    states = (ENABLED, SENSITIVE, SHOWING, VERTICAL, VISIBLE)
 
 class HScrollBar(object):
-    states = (SHOWING, HORIZONTAL)
+    states = (ENABLED, SENSITIVE, SHOWING, HORIZONTAL, VISIBLE)
 
 class StatusBar(object):
     states = (SHOWING,)
