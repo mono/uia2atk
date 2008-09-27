@@ -1,3 +1,10 @@
+2008-09-27  Neville Gao <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms/ProgressBarProvider.cs,
+	  Mono.UIAutomation.Winforms/StatusBarProvider.cs: Formatted.
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/GridProviderBehavior.cs:
+	  Returned IRawElementProviderSimple object.
+
 2008-09-26  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs,

@@ -35,8 +35,8 @@ namespace Mono.UIAutomation.Winforms
 	{
 		#region Constructors
 
-    	public ProgressBarProvider (ProgressBar progressBar) : base (progressBar)
-    	{
+		public ProgressBarProvider (ProgressBar progressBar) : base (progressBar)
+		{
 			SetBehavior (ValuePatternIdentifiers.Pattern,
 			             new ValueProviderBehavior (this));
 			SetBehavior (RangeValuePatternIdentifiers.Pattern,
@@ -45,7 +45,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#endregion
 		
-		#region IProvider Behavior
+		#region SimpleControlProvider: Specializations
 		
 		public override object GetPropertyValue (int propertyId)
 		{

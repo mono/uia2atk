@@ -130,15 +130,15 @@ namespace Mono.UIAutomation.Winforms
 
 		#pragma warning disable 169
 		
-		private void OnCollectionChanged (object sender, CollectionChangeEventArgs args)
+		private void OnCollectionChanged (object sender, CollectionChangeEventArgs e)
 		{
-			if (args.Action == CollectionChangeAction.Add) {
-				StatusBarPanelProvider panel = GetPanelProvider ((int) args.Element);
+			if (e.Action == CollectionChangeAction.Add) {
+				StatusBarPanelProvider panel = GetPanelProvider ((int) e.Element);
 				OnNavigationChildAdded (true, panel);
-			} else if (args.Action == CollectionChangeAction.Remove) {
-				StatusBarPanelProvider panel = RemovePanelAt ((int) args.Element);
+			} else if (e.Action == CollectionChangeAction.Remove) {
+				StatusBarPanelProvider panel = RemovePanelAt ((int) e.Element);
 				OnNavigationChildRemoved (true, panel);
-			} else if (args.Action == CollectionChangeAction.Refresh) {
+			} else if (e.Action == CollectionChangeAction.Refresh) {
 				ClearPanelsCollection ();
 				OnNavigationChildrenCleared (true);
 			}

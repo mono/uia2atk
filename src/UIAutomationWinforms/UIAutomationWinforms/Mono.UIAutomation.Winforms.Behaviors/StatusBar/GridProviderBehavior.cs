@@ -96,7 +96,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 			if (row < 0 || column < 0)
 				throw new ArgumentOutOfRangeException ();
 			
-			return provider.GetPanelProvider (column);
+			return (IRawElementProviderSimple) provider.GetPanelProvider (column);
 		}
 
 		#endregion
