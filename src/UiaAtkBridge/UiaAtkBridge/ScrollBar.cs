@@ -143,5 +143,5 @@ namespace UiaAtkBridge
 				NotifyPropertyChange ("accessible-value", v);
 			}
 		}
-		}
+	}
 }

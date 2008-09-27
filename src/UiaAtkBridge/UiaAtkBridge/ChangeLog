@@ -1,3 +1,9 @@
+2008-09-26  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Button.cs: Cosmetic.
+	* ScrollBar.cs, ComponentParentAdapter.cs, ActionImplementorHelper.cs:
+	  Just correct some typos from last mgorse's commit.
+
 2008-09-26  Mike Gorse <mgorse@novell.com>
 
 	* ActionImplementorHelper.cs, Makefile.am, UiaAtkBridge.mdp:
@@ -9,14 +15,13 @@
 	  adapter.
 	* Button.cs, ComponentAdapter.cs, ComponentParentAdapter,cs,
 	  ComboBox.cs, List.cs, ListItem.cs, Pane.cs, RadioButton.cs,
-	  Window.cs: Move Enabled and Focused tests into ComponentAdapter
+	  Window.cs: Move Enabled and Focused states into ComponentAdapter
 	  and ComponentParentAdapter.
 	* StatusBar.cs: Adjust text when name changes.
 	* TextImplementorHelper.cs, Button.cs, ListItem.cs, MenuItem.cs,
-	  ProgressBar.cs, Spinner.cs, StatusBar.cs, TextLabel.cs:
-Write (rather poor) implementations of
-	  GetCharacterExtents and GetRangeExtents.
-	  Update GetRangeExtents prototype for the new API.
+	  ProgressBar.cs, Spinner.cs, StatusBar.cs, TextLabel.cs: Write
+	  (rather poor) implementations of GetCharacterExtents and
+	  GetRangeExtents. Update GetRangeExtents prototype for the new API.
 
 2008-09-26  Mike Gorse <mgorse@novell.com>
 

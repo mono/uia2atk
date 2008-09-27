@@ -23,6 +23,8 @@
 //      Mike Gorse <mgorse@novell.com>
 // 
 
+using System.Collections.Generic;
+
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -30,7 +32,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-		internal delegate bool ActionDelegate ();
+	internal delegate bool ActionDelegate ();
 
 	internal struct ActionDescription
 	{
@@ -38,7 +40,7 @@ namespace UiaAtkBridge
 		internal String localizedName;
 		internal String description;
 		internal ActionDelegate DoAction;
-		public ActionDescription (string name, String localizedName, String description, ActionDelegate doAction)
+		internal ActionDescription (string name, String localizedName, String description, ActionDelegate doAction)
 		{
 			this.name = name;
 			this.localizedName = localizedName;
@@ -49,7 +51,7 @@ namespace UiaAtkBridge
 
 	class ActionImplementorHelper
 	{
-		private System.Collections.Generic.List<ActionDescription> actions;
+		private List<ActionDescription> actions;
 
 		public ActionImplementorHelper ()
 		{

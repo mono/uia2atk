@@ -290,7 +290,7 @@ namespace UiaAtkBridge
 			startOffset = offset;
 			
 			//TODO:
-			GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
+			GLib.SList attribs = new GLib.SList (typeof (Atk.TextAttribute));
 			return attribs;
 		}
 
@@ -301,7 +301,7 @@ namespace UiaAtkBridge
 
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
@@ -338,7 +338,7 @@ namespace UiaAtkBridge
 
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 	}
 }
