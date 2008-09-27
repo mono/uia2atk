@@ -34,7 +34,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
     	[TestFixture]
     	public class ProgressBarProviderTest : BaseProviderTest
     	{
-		
 		#region Test
 
 		[Test]
