@@ -17,6 +17,9 @@ It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of cont
 
 
 import clr
+import os
+from sys import path
+from os.path import exists
 
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
@@ -25,6 +28,9 @@ from System.Drawing import *
 from System.Windows.Forms import *
 import System
 
+harness_dir = path[0]
+i = harness_dir.rfind("/")
+uiaqa_path = harness_dir[:i]
 
 class RunApp(Form):
     """Button, Label and LinkLabel controls class"""
@@ -69,9 +75,17 @@ class RunApp(Form):
         self.button3.ForeColor = Color.Red
         self.button3.Enabled = False
 
+        #set up Enabled Button4 control:
+        self.button4 = Button()
+        self.button4.Name = "button4"
+        self.button4.Text = "button4"
+        self.button4.Location = Point(10,130)
+        self.button4.Image = Image.FromFile("%s/samples/apple-red.png" % uiaqa_path)
+        self.button4.AutoSize = True
+
         # set up LinkLabel control
         self.linklabel1 = LinkLabel()
-        self.linklabel1.Location = Point(10,160)
+        self.linklabel1.Location = Point(10,230)
         self.linklabel1.AutoSize = True
         self.linklabel1.DisabledLinkColor = Color.Red
         self.linklabel1.VisitedLinkColor = Color.Blue
@@ -89,7 +103,7 @@ class RunApp(Form):
         # set up Label control
         self.insensitive_label = Label()
         self.insensitive_label.Text = "I'm so insensitive"
-        self.insensitive_label.Location = Point(10,130)
+        self.insensitive_label.Location = Point(10,200)
         self.insensitive_label.AutoSize = True
         self.insensitive_label.Enabled = False
         
@@ -98,6 +112,7 @@ class RunApp(Form):
         self.Controls.Add(self.button1)
         self.Controls.Add(self.button2)
         self.Controls.Add(self.button3)
+        self.Controls.Add(self.button4)
         self.Controls.Add(self.linklabel1)
         self.Controls.Add(self.insensitive_label)
     

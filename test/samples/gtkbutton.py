@@ -5,6 +5,14 @@
 import pygtk
 import gtk
  
+import os
+from sys import path
+from os.path import exists
+
+harness_dir = path[0]
+i = harness_dir.rfind("/")
+uiaqa_path = harness_dir[:i]
+
 class ButtonSample:
  
     # callback that opens a message dialog
@@ -69,7 +77,18 @@ class ButtonSample:
         # The order in which we show the buttons is not really important, but I
         # recommend showing the window last, so it all pops up at once.
 
+        #button3 with image
+        self.image = gtk.Image()
+        self.image.set_from_file("%s/samples/apple-red.png" % uiaqa_path)
+        self.image.show()
+        # a button to contain the image widget
+        self.button3 = gtk.Button()
+        self.button3.add(self.image)
+        self.box1.pack_start(self.button3, True, True, 0)
+        self.button3.connect("clicked", self.open_dialog)
+
         self.button2.show()
+        self.button3.show()
         self.box1.show()
         self.window.show()
 

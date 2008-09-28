@@ -1,5 +1,11 @@
 2008-09-28  Calen Chen <cachen@novell.com>
 
+	* samples/gtkbutton.py,
+	* samples/button_label_linklabel.py: update button example with 
+	image property
+
+2008-09-28  Calen Chen <cachen@novell.com>
+
 	* testers/button_basic_ops.py: assert button's image implementation
 	* testers/button/buttonframe.py: add a way to assert if buttons have 
 	implemented image provider
