@@ -1,3 +1,9 @@
+2008-09-28  Calen Chen <cachen@novell.com>
+
+	* testers/button_basic_ops.py: assert button's image implementation
+	* testers/button/buttonframe.py: add a way to assert if buttons have 
+	implemented image provider
+
 2008-09-27  Calen Chen <cachen@novell.com>
 
 	* testers/states.py: update vscrollbar and hscrollbar's states tuple

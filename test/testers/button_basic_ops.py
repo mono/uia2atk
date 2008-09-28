@@ -47,12 +47,14 @@ bFrame = app.buttonFrame
 actionsCheck(bFrame.button1, "Button")
 actionsCheck(bFrame.button2, "Button")
 actionsCheck(bFrame.button3, "Button")
+actionsCheck(bFrame.button4, "Button")
 
 #check Button's original states
 statesCheck(bFrame.button1, "Button")
 statesCheck(bFrame.button2, "Button")
 statesCheck(bFrame.button3, "Button", 
                    invalid_states=["focusable","sensitive", "enabled"])
+statesCheck(bFrame.button4, "Button")
 
 #move keyboard focus to button1, rise 'focused' state
 bFrame.keyCombo("Down", grabFocus=False)
@@ -88,6 +90,12 @@ bFrame.assertLabel('You have clicked me 2 times')
 bFrame.button3.mouseClick()
 sleep(config.SHORT_DELAY)
 bFrame.assertLabel('You have clicked me 2 times')
+
+#implement button's image
+bFrame.assertImage(bFrame.button1)
+bFrame.assertImage(bFrame.button2)
+bFrame.assertImage(bFrame.button3)
+bFrame.assertImage(bFrame.button4, imageSize=True)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
