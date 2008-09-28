@@ -1,7 +1,7 @@
 2008-09-28  Calen Chen <cachen@novell.com>
 
 	* samples/gtkbutton.py,
-	* samples/button_label_linklabel.py: update button example with 
+	* samples/button_label_linklabel.py: update button's example with 
 	image property
 
 2008-09-28  Calen Chen <cachen@novell.com>
