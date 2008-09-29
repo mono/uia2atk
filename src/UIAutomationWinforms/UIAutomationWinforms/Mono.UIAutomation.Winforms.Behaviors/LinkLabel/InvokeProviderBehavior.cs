@@ -90,7 +90,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.LinkLabel
 		{
 			SWF.LinkLabel linkLabel = (SWF.LinkLabel) Provider.Control;
 
-			if (linkLabel.Links.Count >= index || linkLabel.Links.Count <= index)
+			if (index >= linkLabel.Links.Count || index < 0)
 				return -1;
 			else
 				return linkLabel.Links [index].Start;
@@ -100,7 +100,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.LinkLabel
 		{
 			SWF.LinkLabel linkLabel = (SWF.LinkLabel) Provider.Control;
 
-			if (linkLabel.Links.Count >= index || linkLabel.Links.Count <= index)
+			if (index >= linkLabel.Links.Count || index < 0)
 				return -1;
 			else
 				return linkLabel.Links [index].Length;
@@ -110,7 +110,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.LinkLabel
 		{
 			SWF.LinkLabel linkLabel = (SWF.LinkLabel) Provider.Control;
 
-			if (linkLabel.Links.Count >= index || linkLabel.Links.Count <= index)
+			if (index >= linkLabel.Links.Count || index < 0)
 				return null;
 			else
 				return linkLabel.Links [index].LinkData as string;
@@ -130,7 +130,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.LinkLabel
 		
 		private void PerformClick (SWF.LinkLabel linkLabel, int index)
 		{
-			if (linkLabel.Links.Count >= index || linkLabel.Links.Count <= index)
+			if (index >= linkLabel.Links.Count || index < 0)
 				return;
 
 	        if (linkLabel.InvokeRequired == true) {
