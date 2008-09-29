@@ -80,7 +80,10 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 		private void OnElementSelectedEvent (object sender, 
 		                                     CollectionChangeEventArgs e)
 		{
-			if (((ListItemProvider) Provider).ListProvider.SelectedItemsCount == 1)
+			ListItemProvider provider = (ListItemProvider) Provider;
+			
+			if (((SWF.ListBox) provider.ListControl).SelectedIndex == provider.Index
+			    && provider.ListProvider.SelectedItemsCount == 1)
 				RaiseAutomationEvent ();
 		}
 

@@ -1,5 +1,12 @@
 2008-09-29  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementSelectedEvent.cs:
+	  Fixed to generate valid events.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBox/ListItemSelectionItemProviderBehavior.cs:
+	  Setting right event.
+
+2008-09-29  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.mdp: Updated due to added and deleted
 	  files.
 	* Mono.UIAutomation.Winforms/ListBoxProvider.cs,

@@ -54,8 +54,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
 		
 		public override void Connect (SWF.Control control)
 		{
-//			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent, 
-//			                   new ListItemSelectionItemPatternIsSelectedProperty ((ListItemProvider) Provider));
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent, 
+			                   new ListItemSelectionItemPatternElementSelectedEvent ((ListItemProvider) Provider));
 			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementAddedEvent, 
 			                   new ListItemSelectionItemPatternElementAddedEvent ((ListItemProvider) Provider));
 			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementRemovedEvent, 
