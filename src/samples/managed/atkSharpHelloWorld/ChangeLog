@@ -1,3 +1,7 @@
+2008-09-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* HelloButton.cs: Fix build.
+
 2008-09-05  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* HelloTopLevel.cs: Remove obsolete workaround.

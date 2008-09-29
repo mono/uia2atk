@@ -69,7 +69,7 @@ namespace atkSharpHelloWorld
 		
 		public void FirePushButton ()
 		{
-			NotifyStateChange ((ulong) Atk.StateType.Armed, true);
+			NotifyStateChange (Atk.StateType.Armed, true);
 		}
 
 		public string GetText (int start_offset, int end_offset)
@@ -197,7 +197,7 @@ namespace atkSharpHelloWorld
 			throw new NotImplementedException();
 		}
 
-		public void GetRangeExtents (int start_offset, int end_offset, Atk.CoordType coord_type, Atk.TextRectangle rect)
+		public void GetRangeExtents (int start_offset, int end_offset, Atk.CoordType coord_type, out Atk.TextRectangle rect)
 		{
 			Console.WriteLine ("ATKTEXT: GetRangeExtents");
 			throw new NotImplementedException();
