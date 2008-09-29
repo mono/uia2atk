@@ -1,3 +1,7 @@
+2008-09-29  Mario Carrion <mcarrion@novell.com> 
+
+	* NotListedAttribute.cs: File added.
+
 2008-09-19  Mario Carrion <mcarrion@novell.com> 
 
 	* BaseTest.cs: Added methods: MsdnHelpTextPropertyTest and 
