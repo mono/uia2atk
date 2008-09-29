@@ -103,10 +103,11 @@ namespace Mono.UIAutomation.Winforms
 
 		static void OnFormAdded (object sender, EventArgs args)
 		{
-			Console.WriteLine ("Form added!");
 			Form f = (Form) sender;
 			if (formProviders.ContainsKey (f))
 				return;
+			
+			Console.WriteLine ("Form added!");
 			
 			// Terminate Form provider
 			f.Disposed += delegate (object formSender, EventArgs formArgs) {

@@ -1,3 +1,8 @@
+2008-09-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Mono.UIAutomation.Winforms/FormListener.cs: Move debug spew to avoid
+	  confusions.
+
 2008-09-27  Neville Gao <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ProgressBarProvider.cs,
