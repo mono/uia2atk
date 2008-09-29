@@ -215,8 +215,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override IProviderBehavior GetSelectionItemBehavior (ListItemProvider provider)
 		{
-			//TODO: Fixme
-			return new SelectionItemProviderBehavior (provider);
+			return new ListItemSelectionItemProviderBehavior (provider);
 		}
 		
 		public override void ScrollItemIntoView (ListItemProvider item)
@@ -439,8 +438,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			public override IProviderBehavior GetSelectionItemBehavior (ListItemProvider provider)
 			{
-				//TODO: Fixme
-				return new SelectionItemProviderBehavior (provider);
+				return new ListItemSelectionItemProviderBehavior (provider);
 			}
 	
 			public override void InitializeChildControlStructure ()

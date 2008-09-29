@@ -23,69 +23,53 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.ListBox
+namespace Mono.UIAutomation.Winforms.Events.ComboBox
 {
-	internal class ListItemSelectionItemPatternIsSelectedProperty
-		: BaseAutomationPropertyEvent
+	
+	internal class ListItemSelectionItemPatternElementSelectedEvent
+		: BaseAutomationEvent
 	{
-		
-		#region Constructors
 
-		public ListItemSelectionItemPatternIsSelectedProperty (ListItemProvider provider)
-			: base (provider, 
-			        SelectionItemPatternIdentifiers.IsSelectedProperty)
+		#region Constructor
+
+		public ListItemSelectionItemPatternElementSelectedEvent (IRawElementProviderSimple provider)
+			: base (provider, SelectionItemPatternIdentifiers.ElementSelectedEvent)
 		{
 		}
 		
 		#endregion
 		
-		#region ProviderEvent Methods
-
+		#region IConnectable Overrides
+		
 		public override void Connect (SWF.Control control)
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ListBox.SelectedIndexCollection),
-				                        ((SWF.ListBox) control).SelectedIndices, 
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnIsSelectedChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ComboBox) control).SelectedIndexChanged 
+				+= new EventHandler (OnElementSelectedEvent);
 		}
 
 		public override void Disconnect (SWF.Control control)
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ListBox.SelectedIndexCollection), 
-				                           ((SWF.ListBox) control).SelectedIndices,
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnIsSelectedChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ComboBox) control).SelectedIndexChanged 
+				-= new EventHandler (OnElementSelectedEvent);
 		}
 		
-		#endregion 
+		#endregion
 		
-		#region Protected methods
+		#region Private Methods
 		
-		private void OnIsSelectedChanged (object sender, 
-		                                  CollectionChangeEventArgs e)
+		private void OnElementSelectedEvent (object sender, EventArgs args)
 		{
-			if ((int) e.Element == ((ListItemProvider) Provider).Index)
-			    RaiseAutomationPropertyChangedEvent ();
+			ListItemProvider provider = (ListItemProvider) Provider;
+			
+			if (provider.Index == ((SWF.ComboBox) provider.ListControl).SelectedIndex)
+				RaiseAutomationEvent ();
 		}
-
+		
 		#endregion
 	}
 }
-

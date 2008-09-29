@@ -85,7 +85,6 @@
     <File name="Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValueEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/LinkLabel/InvokePatternInvokedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/Button/InvokePatternInvokedEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Events/ComboBoxItem/SelectionItemPatternElementSelectedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternRowCountEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/TextBox/HasKeyBoardFocusPropertyEvent.cs" subtype="Code" buildaction="Compile" />
@@ -140,11 +139,14 @@
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementSelectedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementAddedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementRemovedEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternIsSelectedProperty.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternIsSelectedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/Form/WindowProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/Form/TransformProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/Form/FormAutomationFocusChangedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/ListItemAutomationHasKeyboardFocusPropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ComboBox/ListItemSelectionItemPatternElementSelectedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ComboBox/ListItemSelectionItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ComboBox/ListItemSelectionItemPatternIsSelectedEvent.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

@@ -23,14 +23,12 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using SWF = System.Windows.Forms;
-using System.Windows;
-using System.Reflection;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ListBox;
+using Mono.UIAutomation.Winforms.Events.ComboBox;
 using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
+namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 {
 
 	internal class ListItemSelectionItemProviderBehavior 
@@ -50,13 +48,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
 		
 		public override void Connect (SWF.Control control)
 		{
-			//NOTE: SelectionItem.SelectionContainer never changes.
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent,
+			// NOTE: 
+			//       - ComboBox doesn't support multiple selection so:
+			//         - ElementAddedEvent not generated.
+			//         - ElementRemovedEvent not generated.
+			//       - SelectionContainer never changes.
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent, 
 			                   new ListItemSelectionItemPatternElementSelectedEvent ((ListItemProvider) Provider));
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementAddedEvent, 
-			                   new ListItemSelectionItemPatternElementAddedEvent ((ListItemProvider) Provider));
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementRemovedEvent, 
-			                   new SelectionItemPatternElementRemovedEvent ((ListItemProvider) Provider));
 			Provider.SetEvent (ProviderEventType.SelectionItemPatternIsSelectedProperty, 
 			                   new ListItemSelectionItemPatternIsSelectedEvent ((ListItemProvider) Provider));
 		}	

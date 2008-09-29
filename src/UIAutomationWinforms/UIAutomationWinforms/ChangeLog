@@ -1,5 +1,30 @@
 2008-09-29  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated due to
+	  added/removed files.
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Updated to use valid
+	  events.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBox/ListItemSelectionItemProviderBehavior.cs:
+	  Using valid class to generate event.
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs:
+	  Set as abstract class.
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/ListItemSelectionItemProviderBehavior.cs:
+	  Moved from ComboBoxItem/
+	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternIsSelectedEvent.cs:
+	  Renamed from ListItemSelectionItemPatternIsSelectedProperty
+	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternIsSelectedProperty.cs:
+	  Renamed to ListItemSelectionItemPatternIsSelectedEvent
+	* Mono.UIAutomation.Winforms.Events/ComboBoxItem: Removed.
+	* Mono.UIAutomation.Winforms.Events/ComboBoxItem/SelectionItemPatternElementSelectedEvent.cs:
+	  Moved to ComboBox/
+	* Mono.UIAutomation.Winforms.Events/ComboBox/ListItemSelectionItemPatternElementSelectedEvent.cs:
+	  ComboBox.ListItem.SelectionItem.ElementSelected event
+	  implementation.
+	* Mono.UIAutomation.Winforms.Events/ComboBox/ListItemSelectionItemPatternIsSelectedEvent.cs:
+	  ComboBox.ListItem.SelectionItem.IsSelected event implementation.
+
+2008-09-29  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementSelectedEvent.cs:
 	  Fixed to generate valid events.
 	* Mono.UIAutomation.Winforms.Behaviors/ListBox/ListItemSelectionItemProviderBehavior.cs:

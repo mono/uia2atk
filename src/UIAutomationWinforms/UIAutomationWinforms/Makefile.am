@@ -47,6 +47,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/CheckBox/ToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ButtonInvokeBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ExpandCollapseProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Form/TransformProviderBehavior.cs \
@@ -87,12 +88,13 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/CheckBox/TogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ExpandCollapsePatternStateEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ComboBox/ListItemSelectionItemPatternElementSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ComboBox/ListItemSelectionItemPatternIsSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternIsSelectionRequiredEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValueEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ComboBoxItem/SelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Form/FormAutomationFocusChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Label/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/LinkLabel/InvokePatternInvokedEvent.cs \
@@ -100,7 +102,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementAddedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementRemovedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementSelectedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternIsSelectedProperty.cs \
+	Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternIsSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontallyScrollableEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontalViewSizeEvent.cs \

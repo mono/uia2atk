@@ -28,17 +28,17 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.ComboBoxItem
+namespace Mono.UIAutomation.Winforms.Events.ComboBox
 {
 	
-	internal class SelectionItemPatternElementSelectedEvent
-		: BaseAutomationEvent
+	internal class ListItemSelectionItemPatternIsSelectedEvent
+		: BaseAutomationPropertyEvent
 	{
 
 		#region Constructor
 
-		public SelectionItemPatternElementSelectedEvent (IRawElementProviderSimple provider)
-			: base (provider, SelectionItemPatternIdentifiers.ElementSelectedEvent)
+		public ListItemSelectionItemPatternIsSelectedEvent (IRawElementProviderSimple provider)
+			: base (provider, SelectionItemPatternIdentifiers.IsSelectedProperty)
 		{
 		}
 		
@@ -64,7 +64,7 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBoxItem
 		
 		private void OnElementSelectedEvent (object sender, EventArgs args)
 		{
-			RaiseAutomationEvent ();
+			RaiseAutomationPropertyChangedEvent ();
 		}
 		
 		#endregion

@@ -22,7 +22,6 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -34,7 +33,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 {
 	//NOTE: 
 	//     About exceptions thrown: http://msdn.microsoft.com/en-us/library/ms749016.aspx
-	internal class SelectionItemProviderBehavior 
+	internal abstract class SelectionItemProviderBehavior 
 		: ProviderBehavior, ISelectionItemProvider
 	{
 		
@@ -54,10 +53,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 			get { return SelectionItemPatternIdentifiers.Pattern; }
 		}		
 
-		public override void Connect (Control control)
-		{
-		}		
-		
 		public override void Disconnect (Control control)
 		{
 			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent, 
