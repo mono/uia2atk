@@ -62,7 +62,9 @@ namespace UiaAtkBridgeTest
 			
 				UiaAtkBridge.List uiaList;
 				if (real)
+#pragma warning disable 618
 					uiaList = (UiaAtkBridge.List) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (listBox, true, true));
+#pragma warning restore 618
 				else
 					uiaList = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listBox, true, true));
 				accessible = uiaList;
@@ -80,7 +82,9 @@ namespace UiaAtkBridgeTest
 			
 				UiaAtkBridge.List uiaList;
 				if (real)
+#pragma warning disable 618
 					uiaList = (UiaAtkBridge.List) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (listBox, true, true));
+#pragma warning restore 618
 				else
 					uiaList = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listBox, true, true));
 				accessible = uiaList;
@@ -99,7 +103,9 @@ namespace UiaAtkBridgeTest
 			
 				UiaAtkBridge.ComboBox uiaComb;
 				if (real)
+#pragma warning disable 618
 					uiaComb = (UiaAtkBridge.ComboBox) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (comboBox, true, true));
+#pragma warning restore 618
 				else
 					uiaComb = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (comboBox, true, true));
 				accessible = uiaComb;
@@ -234,7 +240,9 @@ namespace UiaAtkBridgeTest
 				lab.Text = name;
 				UiaAtkBridge.TextLabel uiaLab;
 				if (real)
+#pragma warning disable 618
 					uiaLab = (UiaAtkBridge.TextLabel) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (lab, true, true));
+#pragma warning restore 618
 				else
 					uiaLab = new UiaAtkBridge.TextLabel (ProviderFactory.GetProvider (lab, true, true));
 				accessible = uiaLab;
@@ -248,7 +256,9 @@ namespace UiaAtkBridgeTest
 				but.Text = name;
 				UiaAtkBridge.Button uiaBut;
 				if (real)
+#pragma warning disable 618
 					uiaBut = (UiaAtkBridge.Button) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (but, true, true));
+#pragma warning restore 618
 				else
 					throw new NotSupportedException ("We don't support unreal anymore in tests");
 				accessible = uiaBut;
@@ -263,7 +273,9 @@ namespace UiaAtkBridgeTest
 				frm.Name = name;
 				UiaAtkBridge.Window uiaWin;
 				if (real)
+#pragma warning disable 618
 					uiaWin = (UiaAtkBridge.Window) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (frm, true, true));
+#pragma warning restore 618
 				else
 					uiaWin = new UiaAtkBridge.Window (ProviderFactory.GetProvider (frm, true, true));
 				accessible = uiaWin;
@@ -276,9 +288,11 @@ namespace UiaAtkBridgeTest
 				chk.Text = name;
 				UiaAtkBridge.CheckBoxButton uiaChk;
 				if (real)
+#pragma warning disable 618
 					uiaChk = (UiaAtkBridge.CheckBoxButton) 
 					  UiaAtkBridge.AutomationBridge.GetAdapterForProvider (
 					    (IRawElementProviderSimple) ProviderFactory.GetProvider (chk, true, true));
+#pragma warning restore 618
 				else
 					uiaChk = new UiaAtkBridge.CheckBoxButton (ProviderFactory.GetProvider (chk, true, true));
 				accessible = uiaChk;
@@ -291,7 +305,9 @@ namespace UiaAtkBridgeTest
 				IRawElementProviderFragment prov = ProviderFactory.GetProvider (GiveMeARadio (name), true, true);
 				UiaAtkBridge.RadioButton uiaRad;
 				if (real)
+#pragma warning disable 618
 					uiaRad = (UiaAtkBridge.RadioButton) UiaAtkBridge.AutomationBridge.GetAdapterForProvider (prov);
+#pragma warning restore 618
 				else
 					uiaRad = new UiaAtkBridge.RadioButton (prov);
 				accessible = uiaRad;
@@ -306,7 +322,9 @@ namespace UiaAtkBridgeTest
 				sb.Text = name;
 				UiaAtkBridge.StatusBar uiaSb;
 				if (real)
+#pragma warning disable 618
 					uiaSb = (UiaAtkBridge.StatusBar) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (sb, true, true));
+#pragma warning restore 618
 				else
 					uiaSb = new UiaAtkBridge.StatusBar (ProviderFactory.GetProvider (sb, true, true));
 				accessible = uiaSb;
@@ -358,7 +376,9 @@ namespace UiaAtkBridgeTest
 					pb = pb1;
 				UiaAtkBridge.ProgressBar uiaPb;
 				if (real)
+#pragma warning disable 618
 					uiaPb = (UiaAtkBridge.ProgressBar) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (pb, true, true));
+#pragma warning restore 618
 				else
 					uiaPb = new UiaAtkBridge.ProgressBar (ProviderFactory.GetProvider (pb, true, true));
 				accessible = uiaPb;
@@ -376,7 +396,9 @@ namespace UiaAtkBridgeTest
 				nud.Value = 50;
 				UiaAtkBridge.Spinner uiaSp;
 				if (real)
+#pragma warning disable 618
 					uiaSp = (UiaAtkBridge.Spinner) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (nud, true, true));
+#pragma warning restore 618
 				else
 					uiaSp = new UiaAtkBridge.Spinner (ProviderFactory.GetProvider (nud, true, true));
 				accessible = uiaSp;

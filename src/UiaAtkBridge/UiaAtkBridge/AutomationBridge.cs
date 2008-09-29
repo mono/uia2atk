@@ -376,6 +376,8 @@ namespace UiaAtkBridge
 				HandleNewRadioButtonControlType (simpleProvider);}
 			else if (controlTypeId == ControlType.Spinner.Id)
 				HandleNewSpinnerControlType (simpleProvider);
+ 			else if (controlTypeId == ControlType.ToolTip.Id)
+ 				HandleNewToolTipControlType (simpleProvider);
 //			else if (controlTypeId == ControlType.Edit.Id)
 //				HandleNewEditControlType (simpleProvider);
 			// TODO: Other providers
@@ -387,14 +389,23 @@ namespace UiaAtkBridge
 		private void HandleElementRemoval (IRawElementProviderSimple provider)
 		{
 			Adapter adapter;
-			if (providerAdapterMapping .TryGetValue (provider, out adapter) == false)
+			if (providerAdapterMapping.TryGetValue (provider, out adapter) == false)
 				return;
+
+			int controlTypeId = (int)provider.GetPropertyValue (
+				AutomationElementIdentifiers.ControlTypeProperty.Id);
+			if (controlTypeId == ControlType.ToolTip.Id) {
+				TopLevelRootItem.Instance.RemoveChild (adapter);
+				providerAdapterMapping.Remove (provider);
+				return;
+			}
 
 			ParentAdapter parent = adapter.Parent as ParentAdapter;
 			if (parent != null)
 				parent.RemoveChild (adapter);
 			
 			providerAdapterMapping.Remove (provider);
+				
 			try {
 				IntPtr providerHandle = (IntPtr) provider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
 				pointerProviderMapping.Remove (providerHandle);
@@ -430,16 +441,13 @@ namespace UiaAtkBridge
 
 		private void HandleNewWindowControlType (IRawElementProviderSimple provider)
 		{
-			IRawElementProviderSimple simpleProvider =
-				(IRawElementProviderSimple) provider;
-			
 			Window newWindow = new Window (provider);
-			providerAdapterMapping [simpleProvider] = newWindow;
+			providerAdapterMapping [provider] = newWindow;
 			
 			TopLevelRootItem.Instance.AddOneChild (newWindow);
 			
-			IntPtr providerHandle = (IntPtr) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
-			pointerProviderMapping [providerHandle] = simpleProvider;
+			IntPtr providerHandle = (IntPtr) provider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
+			pointerProviderMapping [providerHandle] = provider;
 			
 			windowProviders++;
 		}
@@ -632,6 +640,13 @@ namespace UiaAtkBridge
 //			                              atkEdit);
 //		}
 		
+		private void HandleNewToolTipControlType (IRawElementProviderSimple provider)
+		{
+			ToolTip atkToolTip = new ToolTip (provider);
+			providerAdapterMapping [provider] = atkToolTip;
+
+			TopLevelRootItem.Instance.AddOneChild (atkToolTip);
+		}
 #endregion
 	}
 }

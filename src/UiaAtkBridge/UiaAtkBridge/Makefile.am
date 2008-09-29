@@ -67,6 +67,7 @@ FILES =  \
 	TableImplementorHelper.cs \
 	TextImplementorHelper.cs \
 	TextLabel.cs \
+	ToolTip.cs \
 	TopLevelRootItem.cs \
 	Window.cs 
 
