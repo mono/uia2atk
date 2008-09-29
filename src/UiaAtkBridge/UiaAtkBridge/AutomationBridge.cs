@@ -347,6 +347,9 @@ namespace UiaAtkBridge
 
 		private void HandleElementAddition (IRawElementProviderSimple simpleProvider)
 		{
+			if (providerAdapterMapping.ContainsKey (simpleProvider))
+				return;
+
 			int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 
 			if (controlTypeId == ControlType.Window.Id)

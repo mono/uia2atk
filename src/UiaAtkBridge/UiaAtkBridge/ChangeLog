@@ -1,3 +1,8 @@
+2008-09-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* AutomationBridge.cs: Fix related case to bug#427857 (comment#8
+	  indeed).
+
 2008-09-29  Brad Taylor  <brad@getcoded.net>
 	
 	* ToolTip.cs:
