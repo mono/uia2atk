@@ -1,5 +1,22 @@
 2008-09-29  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.mdp: Updated due to added and deleted
+	  files.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs,
+	  Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Method
+	  GetListItemHasKeyboardFocusEvent overriden.
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Using
+	  ListProvider.GetListItemHasKeyboardFocusEvent overriden.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: New abstract method
+	  GetListItemHasKeyboardFocusEvent defined.
+	* Makefile.am: ListBox.ListItem.HasKeyBoardFocusPropertyEvent added.
+	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemAutomationHasKeyboardFocusPropertyEvent.cs:
+	  File added.
+	* Mono.UIAutomation.Winforms.Events/ListItem/SelectionItemPatternElementAddedToSelectionEvent.cs:
+	  File removed: not needed.
+
+2008-09-29  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Behaviors/LinkLabel/InvokeProviderBehavior.cs:
 	  Updated index validation.
 

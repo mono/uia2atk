@@ -182,6 +182,8 @@ namespace Mono.UIAutomation.Winforms
 		protected abstract IProviderBehavior GetSelectionBehavior ();
 		
 		public abstract IProviderBehavior GetSelectionItemBehavior (ListItemProvider provider);
+
+		public abstract IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider);
 		
 		protected abstract Type GetTypeOfObjectCollection ();
 		

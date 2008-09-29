@@ -33,6 +33,7 @@ using System.Windows;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ListBox;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.ListBox;
 using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
@@ -255,6 +256,11 @@ namespace Mono.UIAutomation.Winforms
 		public override IProviderBehavior GetSelectionItemBehavior (ListItemProvider provider)
 		{
 			return new ListItemSelectionItemProviderBehavior (provider);
+		}
+		
+		public override IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider)
+		{
+			return new ListItemAutomationHasKeyboardFocusPropertyEvent (provider);
 		}
 		
 		public override void ScrollItemIntoView (ListItemProvider item)

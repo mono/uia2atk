@@ -23,40 +23,49 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.ListItem
+namespace Mono.UIAutomation.Winforms.Events.ListBox
 {
-	
-	internal class SelectionItemPatternElementAddedToSelectionEvent
-		: BaseAutomationEvent
+
+	internal class ListItemAutomationHasKeyboardFocusPropertyEvent
+		: AutomationHasKeyboardFocusPropertyEvent
 	{
 		
-		public SelectionItemPatternElementAddedToSelectionEvent (IRawElementProviderSimple provider)
-			: base (provider, SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent) 
+		#region Constructors
+
+		public ListItemAutomationHasKeyboardFocusPropertyEvent (ListItemProvider listItemProvider)
+			: base (listItemProvider)
 		{
 		}
 		
-		#region Public Methods
+		#endregion
 		
-		public override void Connect (Control control)
+		#region IConnectable Overrides
+	
+		public override void Connect (SWF.Control control)
 		{
+			((SWF.ListBox) control).SelectedIndexChanged 
+				+= new EventHandler (OnSelectedIndexChanged);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect (SWF.Control control)
 		{
+			((SWF.ListBox) control).SelectedIndexChanged 
+				-= new EventHandler (OnSelectedIndexChanged);
 		}
 		
 		#endregion
 		
 		#region Private Methods
 		
-		private void OnElementAddedToSelection (object sender, ScrollEventArgs args)
+		private void OnSelectedIndexChanged (object sender, EventArgs args)
 		{
-			RaiseAutomationEvent ();
+			RaiseAutomationPropertyChangedEvent ();
 		}
 		
 		#endregion

@@ -28,8 +28,10 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Behaviors;
-using Mono.UIAutomation.Winforms.Navigation;
 using Mono.UIAutomation.Winforms.Behaviors.ListItem;
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.ListItem;
+using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -84,6 +86,13 @@ namespace Mono.UIAutomation.Winforms
 			base.InitializeEvents (); 
 			
 			nameProperty = ListProvider.GetItemName (this);
+			
+			SetEvent (ProviderEventType.AutomationElementIsKeyboardFocusableProperty,
+			          listProvider.GetListItemHasKeyboardFocusEvent (this));
+			
+			//FIXME: Implement this
+			SetEvent (ProviderEventType.AutomationFocusChangedEvent,
+			          null);
 		}
 		
 		#endregion

@@ -206,6 +206,13 @@ namespace Mono.UIAutomation.Winforms
 			return new SelectionProviderBehavior (this);
 		}
 		
+		public override IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider)
+		{
+			//return new AutomationIsKeyboardFocusablePropertyEvent (provider);
+			//FIXME
+			return null;
+		}
+		
 		public override IProviderBehavior GetSelectionItemBehavior (ListItemProvider provider)
 		{
 			//TODO: Fixme
@@ -422,6 +429,13 @@ namespace Mono.UIAutomation.Winforms
 			{
 				return new SelectionProviderBehavior (this);
 			}
+			
+			public override IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider)
+			{
+				//return new AutomationIsKeyboardFocusablePropertyEvent (provider);
+				//FIXME
+				return null;
+			}			
 			
 			public override IProviderBehavior GetSelectionItemBehavior (ListItemProvider provider)
 			{
