@@ -24,6 +24,7 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Windows.Automation;
 using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
@@ -45,6 +46,21 @@ namespace Mono.UIAutomation.Winforms
 		public override Component Container  {
 			get { return Control.Parent; }
 		}
+		
+		#endregion
+		
+		#region SimpleControlProvider specialization
+
+		// TODO: In Vista the PictureBox is defined as Pane Provider
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Image.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "image";
+			else
+				return base.GetPropertyValue (propertyId);
+		}		
 		
 		#endregion
 	}

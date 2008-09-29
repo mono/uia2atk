@@ -1,5 +1,10 @@
 2008-09-29  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/PictureBoxProvider.cs: PictureBox as
+	  ImageControlType.
+
+2008-09-29  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/FormProvider.cs: HasKeyboardFocusProperty
 	  overriden always returning false.
 
