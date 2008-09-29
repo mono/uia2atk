@@ -1,3 +1,8 @@
+2008-09-29  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/FormProvider.cs: HasKeyboardFocusProperty
+	  overriden always returning false.
+
 2008-09-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Mono.UIAutomation.Winforms/FormListener.cs: Move debug spew to avoid

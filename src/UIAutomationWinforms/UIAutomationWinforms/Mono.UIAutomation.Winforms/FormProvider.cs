@@ -57,8 +57,6 @@ namespace Mono.UIAutomation.Winforms
 			
 			form.Closed += OnClosed;
 			form.Shown += OnShown;
-			
-			Console.WriteLine ("WindowProvider created");
 		}
 		
 #endregion
@@ -136,53 +134,11 @@ namespace Mono.UIAutomation.Winforms
 				return "window";
 			else if (propertyId == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
 				return form.Handle; // TODO: Should be int, maybe?
+			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+				return false;
 			else
 				return base.GetPropertyValue (propertyId);
 		}
-		
-//		public override IRawElementProviderFragment Navigate (NavigateDirection direction)
-//		{
-//			// TODO: Consider what exactly "first" and "last" are
-//			//       supposed to mean.  Consider maintaining separate
-//			//       list just containing all of the providers and
-//			//       indexing off of that.
-//			/*
-//			switch (direction) {
-//			case NavigateDirection.FirstChild:
-//				if (form.Controls.Count > 0)
-//					return GetProvider (form.Controls [0]);
-//				break;
-//			case NavigateDirection.LastChild:
-//				for (int i = form.Controls.Count - 1; i >= 0; i--) {
-//					IRawElementProviderSimple provider =
-//						GetProvider (form.Controls [i]);
-//					if (provider != null)
-//						return provider;
-//				}
-//				break;
-//			default:
-//				break;
-//			}
-//			
-//			return null;
-//			
-////			"Fragment roots do not enable navigation to a parent or siblings;
-////			navigation among fragment roots is handled by the default
-////			window providers. Elements in fragments must navigate only 
-////			to other elements within that fragment."
-//		}
-		
-//		public override void SetFocus ()
-//		{
-////			"The UI Automation framework will ensure that the part of
-////			the interface that hosts this fragment is already focused
-////			before calling this method. Your implementation should
-////			update only its internal focus state; for example, by 
-////			repainting a list item to show that it has the focus.
-////			If you prefer that UI Automation not focus the parent window,
-////			set the ProviderOwnsSetFocus option in ProviderOptions for the fragment root."
-//			form.Focus ();
-//		}
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
