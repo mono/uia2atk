@@ -1,5 +1,11 @@
 2008-09-29  Mario Carrion <mcarrion@novell.com> 
 
+	* Makefile.am: UIAutomationBridge reference added.
+	* Mono.UIAutomation.Winforms.Behaviors/LinkLabel/InvokeProviderBehavior.cs:
+	  IHyperText realization.
+
+2008-09-29  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/PictureBoxProvider.cs: PictureBox as
 	  ImageControlType.
 

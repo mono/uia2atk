@@ -27,6 +27,7 @@ using System.Reflection;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Bridge;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.LinkLabel;
@@ -34,7 +35,8 @@ using Mono.UIAutomation.Winforms.Events.LinkLabel;
 namespace Mono.UIAutomation.Winforms.Behaviors.LinkLabel
 {
 
-	internal class InvokeProviderBehavior : ProviderBehavior, IInvokeProvider
+	internal class InvokeProviderBehavior 
+		: ProviderBehavior, IInvokeProvider, IHypertext
 	{
 		
 		#region Constructor
@@ -72,45 +74,88 @@ namespace Mono.UIAutomation.Winforms.Behaviors.LinkLabel
 		{
 			if (Provider.Control.Enabled == false)
 				throw new ElementNotEnabledException ();
+
+			PerformClick ((SWF.LinkLabel) Provider.Control, 0);
+		}
+		
+		#endregion
+		
+		#region IHypertext Specialization
+		
+		public int NumberOfLinks { 
+			get { return ((SWF.LinkLabel) Provider.Control).Links.Count; }
+		}
+		
+		public int Start (int index) 
+		{
+			SWF.LinkLabel linkLabel = (SWF.LinkLabel) Provider.Control;
+
+			if (linkLabel.Links.Count >= index || linkLabel.Links.Count <= index)
+				return -1;
+			else
+				return linkLabel.Links [index].Start;
+		}
+		
+		public int Length (int index)
+		{
+			SWF.LinkLabel linkLabel = (SWF.LinkLabel) Provider.Control;
+
+			if (linkLabel.Links.Count >= index || linkLabel.Links.Count <= index)
+				return -1;
+			else
+				return linkLabel.Links [index].Length;
+		}
+		
+		public string Uri (int index)
+		{
+			SWF.LinkLabel linkLabel = (SWF.LinkLabel) Provider.Control;
+
+			if (linkLabel.Links.Count >= index || linkLabel.Links.Count <= index)
+				return null;
+			else
+				return linkLabel.Links [index].LinkData as string;
+		}
+		
+		public void Invoke (int index)
+		{
+			if (Provider.Control.Enabled == false)
+				throw new ElementNotEnabledException ();
 			
-			MethodInfo methodInfo = typeof (SWF.LinkLabel).GetMethod ("OnLinkClicked",
-			                                                          BindingFlags.InvokeMethod
-			                                                          | BindingFlags.NonPublic
-			                                                          | BindingFlags.Instance);
-			invokeMethod
-				= (Action<SWF.LinkLabel,SWF.LinkLabelLinkClickedEventArgs>) Delegate.CreateDelegate 
-					(typeof (Action<SWF.LinkLabel,SWF.LinkLabelLinkClickedEventArgs>),
-					 methodInfo);
-			
-			PerformClick ();
+			PerformClick ((SWF.LinkLabel) Provider.Control, index);
 		}
 		
 		#endregion
 		
 		#region Private Methods
 		
-		private void PerformClick ()
+		private void PerformClick (SWF.LinkLabel linkLabel, int index)
 		{
-	        if (Provider.Control.InvokeRequired == true) {
-	            Provider.Control.BeginInvoke (new SWF.MethodInvoker (PerformClick));
+			if (linkLabel.Links.Count >= index || linkLabel.Links.Count <= index)
+				return;
+
+	        if (linkLabel.InvokeRequired == true) {
+	            linkLabel.BeginInvoke (new PerformClickDelegate (PerformClick),
+				                       new object [] { linkLabel, index });
 	            return;
 	        }
 			
-			//TODO: Is index[0] *always* valid?
+			MethodInfo methodInfo = typeof (SWF.LinkLabel).GetMethod ("OnLinkClicked",
+			                                                          BindingFlags.InvokeMethod
+			                                                          | BindingFlags.NonPublic
+			                                                          | BindingFlags.Instance);
+			Action<SWF.LinkLabel, SWF.LinkLabelLinkClickedEventArgs> invokeMethod
+				= (Action<SWF.LinkLabel, SWF.LinkLabelLinkClickedEventArgs>) Delegate.CreateDelegate 
+					(typeof (Action<SWF.LinkLabel, SWF.LinkLabelLinkClickedEventArgs>),
+					 methodInfo);
+
 			SWF.LinkLabelLinkClickedEventArgs args 
-				= new SWF.LinkLabelLinkClickedEventArgs (((SWF.LinkLabel) Provider.Control).Links [0],
-				                                     SWF.MouseButtons.Left);
-			invokeMethod ((SWF.LinkLabel) Provider.Control, args);
-			invokeMethod = null;
+				= new SWF.LinkLabelLinkClickedEventArgs (linkLabel.Links [index],
+				                                         SWF.MouseButtons.Left);
+			invokeMethod (linkLabel, args);
 		}
 		
 		#endregion
-		
-		#region Private Fields
-		
-		private Action<SWF.LinkLabel, SWF.LinkLabelLinkClickedEventArgs> invokeMethod;
-		
-		#endregion
-
 	}
+	
+	delegate void PerformClickDelegate (SWF.LinkLabel linkLabel, int index);
 }

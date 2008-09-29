@@ -179,6 +179,7 @@ DATA_FILES =
 RESOURCES = 
 
 REFERENCES =  \
+	UIAutomationBridge \
 	UIAutomationTypes \
 	UIAutomationProvider \
 	WindowsBase \
