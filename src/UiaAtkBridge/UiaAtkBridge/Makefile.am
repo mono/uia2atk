@@ -43,6 +43,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES) $(ASSEMBLY).config
 FILES =  \
 	ActionImplementorHelper.cs \
 	Adapter.cs \
+	AmbiDictionary.cs \
 	AssemblyInfo.cs \
 	AutomationBridge.cs \
 	Button.cs \

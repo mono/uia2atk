@@ -1,5 +1,9 @@
 2008-09-30  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* UiaAtkBridge.mdp, Makefile.am: Fix build.
+
+2008-09-30  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AmbiDictionary.cs, AutomationBridge.cs: Prevent
 	  ObjectDisposedException.
 
