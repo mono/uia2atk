@@ -34,16 +34,8 @@ using System.Linq;
 namespace Mono.UIAutomation.Winforms
 {
 
-	public sealed class ProviderFactory
-	{
-		#region Private constructor
-		
-		private ProviderFactory ()
-		{
-		}
-		
-		#endregion
-		
+	public static class ProviderFactory
+	{	
 		#region Static Fields
 		
 		// NOTE: This may not be the best place to track this...however
@@ -55,6 +47,8 @@ namespace Mono.UIAutomation.Winforms
 		private static Dictionary<Component, IRawElementProviderFragment>
 			componentProviders;
 		
+		private static List<IRawElementProviderFragmentRoot> formProviders;
+		
 		private static Dictionary<SWF.ErrorProvider, List<ErrorProvider>> errorProviders;
 		
 		static ProviderFactory ()
@@ -63,11 +57,18 @@ namespace Mono.UIAutomation.Winforms
 				new Dictionary<Component,IRawElementProviderFragment> ();
 			
 			errorProviders = new Dictionary<SWF.ErrorProvider, List <ErrorProvider>>();
+			
+			formProviders = new List<IRawElementProviderFragmentRoot> ();
 		}
 		
 		#endregion
 		
 		#region Static Public Methods
+		
+		public static List<IRawElementProviderFragmentRoot> GetFormProviders () 
+		{
+			return formProviders;
+		}
 		
 		public static IRawElementProviderFragment GetProvider (Component component)
 		{
@@ -114,9 +115,10 @@ namespace Mono.UIAutomation.Winforms
 			if (provider != null)
 				return provider;
 
-			if ((f = component as SWF.Form) != null)
+			if ((f = component as SWF.Form) != null) {
 				provider = new FormProvider (f);
-			else if ((gb = component as SWF.GroupBox) != null)
+				formProviders.Add ((IRawElementProviderFragmentRoot) provider);
+			} else if ((gb = component as SWF.GroupBox) != null)
 				provider = new GroupBoxProvider (gb);
 			else if ((b = component as SWF.Button) != null)
 				provider = new ButtonProvider (b);
@@ -205,6 +207,8 @@ namespace Mono.UIAutomation.Winforms
 			                                    out provider) == true) {
 				componentProviders.Remove (component);
 				((FragmentControlProvider) provider).Terminate ();
+				if (provider is FormProvider)
+					formProviders.Remove ((FormProvider) provider);
 			}
 		}
 		

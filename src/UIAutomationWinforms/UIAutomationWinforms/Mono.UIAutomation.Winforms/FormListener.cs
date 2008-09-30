@@ -61,6 +61,15 @@ namespace Mono.UIAutomation.Winforms
 			
 			Console.WriteLine ("FormListener Initialized");
 			
+			// We are using this event to tell the bridge that should release all
+			// the FormProvider provider that aren't yet removed.
+			Application.ApplicationExit += delegate (object sender, EventArgs args) {
+				foreach (FormProvider provider in ProviderFactory.GetFormProviders ()) {
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
+					                                   provider);
+				}
+			};
+			
 			Type appType = typeof (Application);
 			// NOTE: FormAdded is fired too frequently (such as
 			//       when the form comes into focus).  A different

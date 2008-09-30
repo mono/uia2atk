@@ -60,11 +60,10 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 #endregion
-		
+
 		public override void InitializeEvents ()
 		{
-			base.InitializeEvents (); 
-			
+			base.InitializeEvents (); 			
 			
 			SetEvent (ProviderEventType.AutomationFocusChangedEvent,
 			          new FormAutomationFocusChangedEvent (this));
@@ -77,6 +76,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void OnClosed (object sender, EventArgs args)
 		{
+			FinalizeChildControlStructure ();
+
 			if (!AutomationInteropProvider.ClientsAreListening)
 				return;
 			
@@ -85,9 +86,7 @@ namespace Mono.UIAutomation.Winforms
 			AutomationInteropProvider.RaiseAutomationEvent (WindowPatternIdentifiers.WindowClosedEvent,
 			                                                this,
 			                                                eventArgs);
-			// TODO: Fill in rest of eventargs
-			
-			FinalizeChildControlStructure ();
+			// TODO: Fill in rest of eventargs			
 			
 			if (form.Owner == null)
 				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
