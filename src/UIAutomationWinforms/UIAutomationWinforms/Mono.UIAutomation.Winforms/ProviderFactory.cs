@@ -104,6 +104,8 @@ namespace Mono.UIAutomation.Winforms
 			SWF.ProgressBar pgb;
 			SWF.HelpProvider hlp;
 			SWF.ErrorProvider errp;
+			SWF.TabControl tc;
+			SWF.TabPage tp;
 			
 			if (component == null)
 				return null;
@@ -168,6 +170,10 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ToolTipProvider (tt);
 			else if ((hlp = component as SWF.HelpProvider) != null)
 				provider = new HelpProvider (hlp);
+			else if ((tc = component as SWF.TabControl) != null)
+				provider = new TabControlProvider (tc);
+			else if ((tp = component as SWF.TabPage) != null)
+				provider = new TabPageProvider (tp);
 			else {
 				//TODO: We have to solve the problem when there's a Custom control
 				

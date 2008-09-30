@@ -1,0 +1,8 @@
+#!/bin/bash
+
+DLL=UIAutomationWinformsTests.dll
+
+NUNIT_FLAGS=-nothread
+
+(cd bin/Debug; \
+	@MONO@ @NUNIT_PATH@/nunit-console.exe ${NUNIT_FLAGS} ${DLL} $*)

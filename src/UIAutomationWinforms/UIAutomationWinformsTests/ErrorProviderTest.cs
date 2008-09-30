@@ -113,14 +113,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              "pane");
 			
 			TestProperty (provider,
-			              AutomationElementIdentifiers.IsContentElementProperty,
-			              true);
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.IsControlElementProperty,
-			              true);
-			
-			TestProperty (provider,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 			              false);
 			

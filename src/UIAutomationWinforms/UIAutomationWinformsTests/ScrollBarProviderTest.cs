@@ -66,14 +66,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              "scroll bar");
 			
 			TestProperty (provider,
-			              AutomationElementIdentifiers.IsContentElementProperty,
-			              false);
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.IsControlElementProperty,
-			              true);
-			
-			TestProperty (provider,
 			              AutomationElementIdentifiers.OrientationProperty,
 			              OrientationType.Horizontal);
 		}
@@ -202,6 +194,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		#endregion		
 
 		#region BaseProviderTest Overrides
+		
+		protected override bool IsContentElement {
+			get { return false; }
+		}
 
 		protected override Control GetControlInstance ()
 		{

@@ -55,14 +55,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              "edit");
 			
 			TestProperty (provider,
-			              AutomationElementIdentifiers.IsContentElementProperty,
-			              true);
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.IsControlElementProperty,
-			              true);
-			
-			TestProperty (provider,
 			              AutomationElementIdentifiers.IsPasswordProperty,
 			              false);
 		}

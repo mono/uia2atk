@@ -20,100 +20,48 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Mario Carrion <mcarrion@novell.com>
+//      Brad Taylor <brad@getcoded.net>
 // 
 
+
 using System;
-using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+
 using Mono.UIAutomation.Winforms;
+
 using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
-	
 	[TestFixture]
-	public class LinkLabelProviderTest : BaseProviderTest
+	public class TabControlProviderTest : BaseProviderTest
 	{
-		
-		#region Tests
-		
 		[Test]
 		public void BasicPropertiesTest ()
 		{
-			LinkLabel linkLabel = new LinkLabel ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (linkLabel);
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.LabeledByProperty,
-			              null);
+			TabControl tc = new TabControl ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (tc);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
-			              ControlType.Hyperlink.Id);
+			              ControlType.Tab.Id);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
-			              "hyperlink");
-		}
-		
-		#endregion
-		
-		#region IInvokeEvent
-		
-		[Test]
-		public void InvokeEventTest ()
-		{
-			LinkLabel linkLabel = new LinkLabel ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (linkLabel);
-			
-			bridge.ResetEventLists ();
-			
-			IInvokeProvider invokeProvider = (IInvokeProvider) 
-				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
-			
-			invokeProvider.Invoke ();
-			
-			Assert.AreEqual (1,
-			                 bridge.AutomationEvents.Count,
-			                 "Event count");
+			              "tab");
 		}
 		
 		[Test]
-		public void InvokeEventDisabledTest ()
+		public override void LabeledByAndNamePropertyTest ()
 		{
-			LinkLabel linkLabel = new LinkLabel ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (linkLabel);
-			
-			linkLabel.Enabled = false;
-			
-			IInvokeProvider invokeProvider = (IInvokeProvider) 
-				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
-			try {
-				invokeProvider.Invoke ();
-				Assert.Fail ("Exception not thrown");
-			} catch (ElementNotEnabledException) { 
-			} catch (Exception) { Assert.Fail ("Only ElementNotEnabledException must be thrown"); }
+			TestLabeledByAndName (true, false);
 		}
-		
-		#endregion
-		
-		#region BaseProviderTest Overrides
 
 		protected override Control GetControlInstance ()
 		{
-			return new LinkLabel ();
+			return new TabControl ();
 		}
-		
-		public override void LabeledByAndNamePropertyTest ()
-		{
-			TestLabeledByAndName (false, false);
-			// TODO: Test Name
-		}		
-		
-		#endregion
-
 	}
 }

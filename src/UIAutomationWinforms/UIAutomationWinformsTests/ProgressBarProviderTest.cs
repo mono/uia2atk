@@ -50,14 +50,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "progress bar");
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.IsContentElementProperty,
-			              true);
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.IsControlElementProperty,
-			              true);
 		}
 
 		[Test]

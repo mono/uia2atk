@@ -130,6 +130,42 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsTrue ((bool)provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id),
 			               "Toggle to true");
 		}
+
+		protected virtual bool IsContentElement {
+			get { return true; }
+		}
+
+		[Test]
+		public virtual void IsContentElementPropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			if (control == null)
+				return;
+
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsContentElementProperty,
+			              IsContentElement);
+		}
+
+		protected virtual bool IsControlElement {
+			get { return true; }
+		}
+
+		[Test]
+		public virtual void IsControlElementPropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			if (control == null)
+				return;
+
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsControlElementProperty,
+			              IsControlElement);
+		}
 		
 		[Test]
 		[Ignore ("This test doesn't work anymore")]

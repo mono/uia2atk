@@ -54,14 +54,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              "list");
 			
 			TestProperty (provider,
-			              AutomationElementIdentifiers.IsContentElementProperty,
-			              true);
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.IsControlElementProperty,
-			              true);
-
-			TestProperty (provider,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 			              true);
 		}

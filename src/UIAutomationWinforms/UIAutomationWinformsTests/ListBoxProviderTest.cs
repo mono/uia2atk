@@ -53,14 +53,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "list");
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.IsContentElementProperty,
-			              true);
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.IsControlElementProperty,
-			              true);
 
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
@@ -97,14 +89,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (child,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "list item");
-			
-			TestProperty (child,
-			              AutomationElementIdentifiers.IsContentElementProperty,
-			              true);
-			
-			TestProperty (child,
-			              AutomationElementIdentifiers.IsControlElementProperty,
-			              true);
 
 			TestProperty (child,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,

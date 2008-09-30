@@ -70,6 +70,8 @@ FILES =  \
 	RadioButtonProviderTest.cs \
 	ScrollBarProviderTest.cs \
 	StatusBarProviderTest.cs \
+	TabControlProviderTest.cs \
+	TabPageProviderTest.cs \
 	TextBoxProviderTest.cs \
 	TextNormalizerTest.cs \
 	TextRangeProviderTest.cs \
@@ -95,7 +97,8 @@ REFERENCES =  \
 
 DLL_REFERENCES = 
 
-CLEANFILES = $(PROGRAMFILES)
+CLEANFILES = $(PROGRAMFILES) \
+	bin/Debug/TestResult.xml
 
 include $(top_srcdir)/Makefile.include
 
@@ -110,5 +113,6 @@ $(build_xamlg_list): %.xaml.g.cs: %.xaml
 	xamlg '$<'
 
 $(ASSEMBLY) $(ASSEMBLY_MDB): $(build_sources) $(build_resources) $(build_datafiles) $(DLL_REFERENCES) $(PROJECT_REFERENCES) $(build_xamlg_list) $(build_satellite_assembly_list)
-	mkdir -p $(shell dirname $(ASSEMBLY))
+	@mkdir -p $(shell dirname $(ASSEMBLY))
 	$(ASSEMBLY_COMPILER_COMMAND) $(ASSEMBLY_COMPILER_FLAGS) -out:$(ASSEMBLY) -target:$(COMPILE_TARGET) $(build_sources_embed) $(build_resources_embed) $(build_references_ref)
+	@chmod +x providertest.sh

@@ -1,3 +1,8 @@
+2008-09-30  Brad Taylor  <brad@getcoded.net>
+	
+	* configure.ac: Require nunit 2.4.7, and generate a providertest.sh
+	  file for the UIAutomationWinformsTests.
+
 2008-09-18  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* configure.ac: Require Mono >= 2.1.

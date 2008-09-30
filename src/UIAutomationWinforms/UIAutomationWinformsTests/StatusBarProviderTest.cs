@@ -53,14 +53,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              "status bar");
 			
 			TestProperty (provider,
-			              AutomationElementIdentifiers.IsContentElementProperty,
-			              true);
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.IsControlElementProperty,
-			              true);
-			
-			TestProperty (provider,
 			              AutomationElementIdentifiers.LabeledByProperty,
 			              null);
 			

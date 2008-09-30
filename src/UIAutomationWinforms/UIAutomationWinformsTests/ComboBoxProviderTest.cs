@@ -58,14 +58,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              "combo box");
 			
 			TestProperty (provider,
-			              AutomationElementIdentifiers.IsContentElementProperty,
-			              true);
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.IsControlElementProperty,
-			              true);
-			              
-			TestProperty (provider,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 			              true);			              
 		}

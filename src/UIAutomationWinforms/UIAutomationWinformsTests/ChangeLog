@@ -1,3 +1,23 @@
+2008-09-30  Brad Taylor  <brad@getcoded.net>
+	
+	* TabControlProviderTest.cs: Add initial test for TabControl.
+
+	* BaseProviderTest.cs:
+	* LabelProviderTest.cs:
+	* TextBoxProviderTest.cs:
+	* ListBoxProviderTest.cs:
+	* ComboBoxProviderTest.cs:
+	* ScrollBarProviderTest.cs:
+	* StatusBarProviderTest.cs:
+	* LinkLabelProviderTest.cs:
+	* PictureBoxProviderTest.cs:
+	* CheckedListBoxProviderTest.cs: Move tests for
+	  IsContentElementProperty and IsControlElementProperty to
+	  BaseProviderTest.
+
+	* Makefile.am:
+	* providertest.sh.in: Add a script that runs the nunit tests.
+
 2008-09-27  Neville Gao <nevillegao@gmail.com>
 
 	* ProgressBarProviderTest.cs: Formatted.

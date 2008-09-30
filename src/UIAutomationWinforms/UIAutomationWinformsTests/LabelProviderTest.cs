@@ -61,10 +61,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              ControlType.Text.Id);
 			
 			TestProperty (provider,
-			              AutomationElementIdentifiers.IsContentElementProperty,
-			              false);
-			
-			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "text");
 		}
@@ -97,6 +93,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 #endregion
 		
 #region BaseProviderTest Overrides
+
+		protected override bool IsContentElement {
+			get { return false; }
+		}
 		
 		protected override Control GetControlInstance ()
 		{

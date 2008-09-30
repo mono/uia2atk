@@ -166,6 +166,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ScrollBarProvider.cs \
 	Mono.UIAutomation.Winforms/SimpleControlProvider.cs \
 	Mono.UIAutomation.Winforms/StatusBarProvider.cs \
+	Mono.UIAutomation.Winforms/TabControlProvider.cs \
+	Mono.UIAutomation.Winforms/TabPageProvider.cs \
 	Mono.UIAutomation.Winforms/TextBoxProvider.cs \
 	Mono.UIAutomation.Winforms/TextNormalizer.cs \
 	Mono.UIAutomation.Winforms/TextNormalizerPoints.cs \
