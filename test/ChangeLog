@@ -1,3 +1,26 @@
+2008-09-30  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/gtkbutton.py: Use rectangle image (instead of a square) so we
+	can be sure height and width are reported properly and aren't inverted
+	* samples/button_label_linklabel.py: Add delegate for the insensitive
+	button that changes the label text when the button is pushed.  This
+	allows us to be sure that clicking the insensitive button has no effect.
+	Use rectangle image instead of the square image.
+	* ChangeLog: Fix typo (getaddr -> getattr)
+	* testers/gtkbutton/gtkbuttonframe.py:  Add assertImageSize method as
+	an example of one way we should test buttons with images.
+	* testers/gtkbutton_basic_ops.py: Call new assertImageSize method for
+	all three buttons.
+	* testers/button/buttonframe.py: Rewrite the assertImage method as the
+	assertImageSize method that matches the example in gtkbuttonframe.py.
+	Remove use of __getattr__, allow overriding of width and height vars,
+	throw assertion errors with more information, etc.
+	* testers/button_basic_ops.py:  Make sure we skip an insensitive
+	button when pressing the down arrow (which would focus a sensitive
+	button), then make sure the sensitive button below it gets focused.
+	Edit method calls to assertImageSize to match the new method definition
+	in the application wrapper.
+
 2008-09-28  Calen Chen <cachen@novell.com>
 
 	* samples/gtkbutton.py,
@@ -290,16 +313,16 @@
 	*  testers/checkedlistbox/checkedlistboxframe.py,
 	*  testers/tooltip/tooltipframe.py,
 	*  testers/progressbar/progressbarframe.py,
-	*  testers/numericupdown/numericupdownframe.py: Use getaddr() instead 
+	*  testers/numericupdown/numericupdownframe.py: Use getattr() instead 
 	of exec()
 
 2008-09-16  Calen Chen <cachen@novell.com>
 
-	*  testers/button/buttonframe.py: Use getaddr() instead of
+	*  testers/button/buttonframe.py: Use getattr() instead of
 	exec(), update actionsCheck with a tuple variable
 	*  testers/vscrollbar/vscrollbarframe.py,
 	*  testers/scrollbar/scrollbarframe.py,
-	*  testers/hscrollbar/hscrollbarframe.py: Use getaddr() instead of
+	*  testers/hscrollbar/hscrollbarframe.py: Use getattr() instead of
 	exec()
 
 2008-09-14  Brian G. Merrell <bgmerrell@gmail.com>
@@ -311,14 +334,14 @@
 
 	* harness/smoke_tests.py: Add picturebox_basic_ops to the list of smoke
 	tests.
-	* testers/picturebox/pictureboxframe.py: Use getaddr() instead of
+	* testers/picturebox/pictureboxframe.py: Use getattr() instead of
 	exec(), add additional information to assert, remove commented code,
 	fix logic to build a list of actual/initial actions.
 	* testers/states.py: Add PictureBox states
 	* testers/picturebox_basic_ops.py: Call the statesCheck method
 	* testers/actions.py: make 'actions' variable a tuple instead of a
 	string
-	* testers/form/formframe.py: Use getaddr() instead of exec, add
+	* testers/form/formframe.py: Use getattr() instead of exec, add
 	additional information to assert
 
 2008-09-12  Brian G. Merrell <bgmerrell@gmail.com>

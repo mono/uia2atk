@@ -40,6 +40,8 @@ class RunApp(Form):
 
         self.count = 0
         self.Text = "Button_Label_LinkLabel controls"
+        self.Height = 400
+        self.Width = 300
 
         # set up Label control
         self.label = Label()
@@ -64,7 +66,7 @@ class RunApp(Form):
         self.button2.Location = Point(10,70)
         self.button2.BackColor = Color.Green
         self.button2.ForeColor = Color.Red
-        self.button2.Click += self.button2_click
+        self.button2.Click += self.change_message
         self.button1.Cursor = Cursors.Hand
 
         #set up Enabled Button3 control:
@@ -73,6 +75,7 @@ class RunApp(Form):
         self.button3.Text = "button3"
         self.button3.Location = Point(10,100)
         self.button3.ForeColor = Color.Red
+        self.button3.Click += self.change_message
         self.button3.Enabled = False
 
         #set up Enabled Button4 control:
@@ -80,7 +83,7 @@ class RunApp(Form):
         self.button4.Name = "button4"
         self.button4.Text = "button4"
         self.button4.Location = Point(10,130)
-        self.button4.Image = Image.FromFile("%s/samples/apple-red.png" % uiaqa_path)
+        self.button4.Image = Image.FromFile("%s/samples/opensuse60x38.gif" % uiaqa_path)
         self.button4.AutoSize = True
 
         # set up LinkLabel control
@@ -119,7 +122,7 @@ class RunApp(Form):
     def button1_click(self, sender, event):
         MessageBox.Show("successful clicked me", "message")
 
-    def button2_click(self, sender, event):
+    def change_message(self, sender, event):
         self.count += 1
         self.label.Text = "You have clicked me %s times" % self.count
 

@@ -79,14 +79,15 @@ class ButtonSample:
 
         #button3 with image
         self.image = gtk.Image()
-        self.image.set_from_file("%s/samples/apple-red.png" % uiaqa_path)
+        self.image.set_from_file("%s/samples/opensuse60x38.gif" % uiaqa_path)
         self.image.show()
         # a button to contain the image widget
         self.button3 = gtk.Button()
-        self.button3.add(self.image)
+        self.button3.set_label("openSUSE")
+        self.button3.set_image(self.image)
+
         self.box1.pack_start(self.button3, True, True, 0)
         self.button3.connect("clicked", self.open_dialog)
-
         self.button2.show()
         self.button3.show()
         self.box1.show()

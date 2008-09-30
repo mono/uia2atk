@@ -48,17 +48,26 @@ class ButtonFrame(accessibles.Frame):
 
         self.message.findPushButton('OK').click()
 
-    #assert button can implement Image provider
-    def assertImage(self, button, imageSize=False):
-        procedurelogger.action("assert %s's image" % button)
-        image = button.__getattr__("imageSize")
+    # assert the size of an image in the button
+    def assertImageSize(self, button, width=60, height=38):
+        procedurelogger.action("assert %s's image size" % button)
+        size = button.imageSize
+        sys.exit(33)
 
-        procedurelogger.expectedResult('"%s" image size is %s' % (button, image))
-        if imageSize == True:
-            assert str(image) != '(-1, -1)', "image NotImplementedError or incorrect size"
-        elif imageSize:
-            assert str(image) == '(-1, -1)', "image NotImplementedError or incorrect size"
-    
+        procedurelogger.expectedResult('"%s" image size is %s x %s' %
+                                                  (button, width, height))
+
+        assert width == size[0], "%s (%s), %s (%s)" %\
+                                            ("expected width",
+                                              width,
+                                             "does not match actual width",
+                                              size[0])
+        assert height == size[1], "%s (%s), %s (%s)" %\
+                                            ("expected height",
+                                              height,
+                                             "does not match actual height",
+                                              size[1])    
+ 
     #close application main window after running test
     def quit(self):
         self.altF4()

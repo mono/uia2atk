@@ -57,6 +57,13 @@ bFrame.assertUnarmed(bFrame.button2);
 #check the rising messagedialog then close it
 bFrame.assertClicked()
 
+# ensure that suse_button reports the image size of its image properly
+bFrame.assertImageSize(bFrame.suse_button)
+
+# ensure that the buttons without images don't report that they have an image
+bFrame.assertImageSize(bFrame.button1, -1, -1)
+bFrame.assertImageSize(bFrame.button2, -1, -1)
+
 #close the sample app
 bFrame.quit()
 

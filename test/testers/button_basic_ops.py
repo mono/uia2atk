@@ -66,8 +66,12 @@ bFrame.keyCombo("Down", grabFocus=False)
 statesCheck(bFrame.button2, "Button", add_states=["focused"])
 statesCheck(bFrame.button1, "Button")
 
-#can't focus insensitive button3, states invariable
+# another down key should skip button3 (because it is insensitive) and focus on
+# button4
 bFrame.keyCombo("Down", grabFocus=False)
+statesCheck(bFrame.button4, "Button", add_states=["focused"])
+
+#can't focus insensitive button3, states invariable
 statesCheck(bFrame.button3, "Button", 
                    invalid_states=["focusable","sensitive", "enabled"])
 
@@ -92,10 +96,10 @@ sleep(config.SHORT_DELAY)
 bFrame.assertLabel('You have clicked me 2 times')
 
 #implement button's image
-bFrame.assertImage(bFrame.button1)
-bFrame.assertImage(bFrame.button2)
-bFrame.assertImage(bFrame.button3)
-bFrame.assertImage(bFrame.button4, imageSize=True)
+bFrame.assertImageSize(bFrame.button4)
+bFrame.assertImageSize(bFrame.button1, -1, -1)
+bFrame.assertImageSize(bFrame.button2, -1, -1)
+bFrame.assertImageSize(bFrame.button3, -1, -1)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
