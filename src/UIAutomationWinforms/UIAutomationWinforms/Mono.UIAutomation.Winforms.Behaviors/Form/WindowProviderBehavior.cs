@@ -55,14 +55,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Form
 		
 		public override void Connect (SWF.Control control) 
 		{
-			//TODO: Implement Automation Event
+			//FIXME: Automation Events not generated
 			form.Closed += OnClosed;
 			form.Closing += OnClosing;
 		}
 		
 		public override void Disconnect (SWF.Control control)
 		{
-			//TODO: Implement Automation Event
+			//FIXME: Automation Events not generated
 			form.Closing -= OnClosing;
 			form.Closed -= OnClosed;
 		}
@@ -105,17 +105,19 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Form
 		
 		public void SetVisualState (WindowVisualState state)
 		{
+			SWF.FormWindowState newState = form.WindowState;
 			switch (state) {
 			case WindowVisualState.Maximized:
-				form.WindowState = SWF.FormWindowState.Maximized;
+				newState = SWF.FormWindowState.Maximized;
 				break;
 			case WindowVisualState.Minimized:
-				form.WindowState = SWF.FormWindowState.Minimized;
+				newState = SWF.FormWindowState.Minimized;
 				break;
 			case WindowVisualState.Normal:
-				form.WindowState = SWF.FormWindowState.Normal;
+				newState = SWF.FormWindowState.Normal;
 				break;
 			}
+			PerformSetVisualState (form, newState);
 		}
 		
 		public void Close ()
@@ -187,6 +189,20 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Form
 		
 		#endregion
 		
+		#region Private Methods
+		
+		private void PerformSetVisualState (SWF.Form form, SWF.FormWindowState state)
+		{
+			if (form.InvokeRequired == true) {
+				form.BeginInvoke (new PerformSetVisualStateDelegate (PerformSetVisualState),
+				                  new object [] { form, state });
+				return;
+			}
+			form.WindowState = state;
+		}
+		
+		#endregion
+		
 		#region Private Fields
 
 		private bool closing;
@@ -194,5 +210,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Form
 
 		#endregion
 	}
+	
+	delegate void PerformSetVisualStateDelegate (SWF.Form form, SWF.FormWindowState state);
 	
 }

@@ -54,12 +54,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Form
 		
 		public override void Connect (SWF.Control control) 
 		{
-			//TODO: Implement Automation Event
+			//FIXME: Automation Events not generated
 		}
 		
 		public override void Disconnect (SWF.Control control)
 		{
-			//TODO: Implement Automation Event
+			//FIXME: Automation Events not generated
 		}
 		
 		public override object GetPropertyValue (int propertyId)
@@ -108,6 +108,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Form
 			//       exceptions are thrown with bad input
 			if (!CanMove)
 				throw new InvalidOperationException ("CanMove is false");
+			
+			if (form.InvokeRequired == true) {
+				form.BeginInvoke (new PerformTransformDelegate (Move),
+				                  new object [] { x, y});
+				return;
+			}
+			
 			form.Location = new Point ((int) x, (int) y);
 		}
 
@@ -117,6 +124,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Form
 			//       exceptions are thrown with bad input
 			if (!CanResize)
 				throw new InvalidOperationException ("CanResize is false");
+			
+			if (form.InvokeRequired == true) {
+				form.BeginInvoke (new PerformTransformDelegate (Resize),
+				                  new object [] { width, height});
+				return;
+			}
+			
 			form.Size = new Size ((int) width, (int) height);
 		}
 
@@ -134,4 +148,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Form
 		#endregion
 		
 	}
+	
+	delegate void PerformTransformDelegate (double width, double height);
+
 }
