@@ -41,7 +41,7 @@ namespace UiaAtkBridge
 		private bool applicationStarted = false;
 		private Monitor appMonitor = null;
 		private long initTime = DateTime.Now.Ticks;
-		private Dictionary<IntPtr, IRawElementProviderSimple>
+		private AmbiDictionary<IntPtr, IRawElementProviderSimple>
 			pointerProviderMapping;
 		static private Dictionary<IRawElementProviderSimple, Adapter>
 			providerAdapterMapping;
@@ -61,7 +61,7 @@ namespace UiaAtkBridge
 				Console.WriteLine ("just made monitor");
 			}
 			pointerProviderMapping =
-				new Dictionary<IntPtr,IRawElementProviderSimple> ();
+				new AmbiDictionary<IntPtr,IRawElementProviderSimple> ();
 			providerAdapterMapping =
 				new Dictionary<IRawElementProviderSimple, Adapter>();
 
@@ -450,7 +450,7 @@ namespace UiaAtkBridge
 			TopLevelRootItem.Instance.AddOneChild (newWindow);
 			
 			IntPtr providerHandle = (IntPtr) provider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
-			pointerProviderMapping [providerHandle] = provider;
+			pointerProviderMapping.Add (providerHandle, provider);
 			
 			windowProviders++;
 		}
@@ -461,10 +461,7 @@ namespace UiaAtkBridge
 			TopLevelRootItem.Instance.RemoveChild (providerAdapterMapping [(IRawElementProviderSimple) provider]);
 			providerAdapterMapping.Remove ((IRawElementProviderSimple) provider);
 			
-			IRawElementProviderSimple simpleProvider =
-				(IRawElementProviderSimple) provider;
-			IntPtr providerHandle = (IntPtr) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
-			pointerProviderMapping.Remove (providerHandle);
+			pointerProviderMapping.Remove (provider);
 			
 			windowProviders--;
 			if (windowProviders == 0)

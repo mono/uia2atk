@@ -1,5 +1,10 @@
 2008-09-30  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AmbiDictionary.cs, AutomationBridge.cs: Prevent
+	  ObjectDisposedException.
+
+2008-09-30  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* Button.cs: Remove obsolete comment, and add a bogus Armed state
 	  change (Press|Release distinction is not supported in UIA).
 
