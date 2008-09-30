@@ -1,5 +1,9 @@
 2008-09-30  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/FormListener.cs: Commented.
+
+2008-09-30  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/FormListener.cs: Raising ChildRemoved when
 	  ApplicationExit and existing FormProvider.
 	* Mono.UIAutomation.Winforms/FormProvider.cs: Finalizing children even
