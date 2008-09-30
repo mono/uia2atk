@@ -1,3 +1,8 @@
+2008-09-30  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Button.cs: Remove obsolete comment, and add a bogus Armed state
+	  change (Press|Release distinction is not supported in UIA).
+
 2008-09-29  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* AutomationBridge.cs: Fix related case to bug#427857 (comment#8

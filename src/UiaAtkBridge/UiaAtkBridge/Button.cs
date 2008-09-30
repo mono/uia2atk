@@ -151,8 +151,10 @@ namespace UiaAtkBridge
 				if (action != 0)
 					return false;
 
-				//FIXME: beware, this call is blocking (bug#415320)
-				invokeProvider.Invoke();
+				OnPressed ();
+				invokeProvider.Invoke ();
+				OnReleased ();
+				
 				return true;
 			}
 			return false;
