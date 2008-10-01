@@ -408,12 +408,7 @@ namespace UiaAtkBridge
 				parent.RemoveChild (adapter);
 			
 			providerAdapterMapping.Remove (provider);
-				
-			try {
-				IntPtr providerHandle = (IntPtr) provider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
-				pointerProviderMapping.Remove (providerHandle);
-			//FIXME: why is this? we should have a specific exception here, or a comment explaining
-			} catch {}
+			pointerProviderMapping.Remove (provider);
 		}
 		
 		
@@ -433,7 +428,7 @@ namespace UiaAtkBridge
 					keep.Add (providerAdapterMapping[child]);
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
-			Adapter adapter = providerAdapterMapping[provider];
+			Adapter adapter = providerAdapterMapping [provider];
 			int index = adapter.NAccessibleChildren;
 			while (--index >= 0) {
 				Adapter childAdapter = adapter.RefAccessibleChild (index) as Adapter;
