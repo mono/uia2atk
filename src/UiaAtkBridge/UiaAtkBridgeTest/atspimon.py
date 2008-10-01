@@ -175,9 +175,11 @@ class Monitor:
     pyatspi.Registry.deregisterEventListener(self._handleEvent,
                                                *self.events)
     pyatspi.Registry.stop()
+
     if Settings.log_file:
       if not Settings.log_file.closed:
         Settings.log_file.close()
+
 
 class Main(object):
 
