@@ -165,13 +165,20 @@ class Monitor:
 
  
   def begin(self):
-    output("Registering Event Listener...")
+    if Settings.xml_format:
+      output('<events>')
+    else:
+      output("Registering Event Listener...")
+
     pyatspi.Registry.registerEventListener(self._handleEvent,
                                              *self.events)
     pyatspi.Registry.start()
   
   def end(self):
-    output("Deregistering Event Listener...")
+    if Settings.xml_format:
+      output('</events>')
+    else:
+      output("Deregistering Event Listener...")
     pyatspi.Registry.deregisterEventListener(self._handleEvent,
                                                *self.events)
     pyatspi.Registry.stop()
