@@ -28,7 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using MWF = System.Windows.Forms;
+using SWF = System.Windows.Forms;
 
 using Mono.UIAutomation.Winforms;
 
@@ -51,7 +51,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ListBox:
 			case BasicWidgetType.VScrollBar:
 			case BasicWidgetType.HScrollBar: {
-				MWF.ListBox listBox = new MWF.ListBox ();
+				SWF.ListBox listBox = new SWF.ListBox ();
 				if (real)
 					listBox = lb1;
 				listBox.Items.Clear ();
@@ -73,7 +73,7 @@ namespace UiaAtkBridgeTest
 				break;
 			}
 			case BasicWidgetType.CheckedListBox: {
-				MWF.CheckedListBox listBox = new MWF.CheckedListBox ();
+				SWF.CheckedListBox listBox = new SWF.CheckedListBox ();
 				if (real)
 					listBox = clb1;
 				listBox.Items.Clear ();
@@ -93,7 +93,7 @@ namespace UiaAtkBridgeTest
 				break;
 			}
 			case BasicWidgetType.ComboBox:
-				MWF.ComboBox comboBox = new MWF.ComboBox ();
+				SWF.ComboBox comboBox = new SWF.ComboBox ();
 				if (real)
 					comboBox = cb1;
 				comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -116,18 +116,18 @@ namespace UiaAtkBridgeTest
 				
 			case BasicWidgetType.ParentMenu:
 				
-				MWF.ToolStripMenuItem parentMenu = new MWF.ToolStripMenuItem();
+				SWF.ToolStripMenuItem parentMenu = new SWF.ToolStripMenuItem();
 				
-				MWF.ToolStripMenuItem[] subMenus = new MWF.ToolStripMenuItem [names.Length - 1];
+				SWF.ToolStripMenuItem[] subMenus = new SWF.ToolStripMenuItem [names.Length - 1];
 				for (int i = 1; i < names.Length; i++) {
-					MWF.ToolStripMenuItem subMenu = new MWF.ToolStripMenuItem ();
+					SWF.ToolStripMenuItem subMenu = new SWF.ToolStripMenuItem ();
 					subMenu.Text = names [i];
 					subMenus [i - 1] = subMenu;
 				}
 				
 				parentMenu.DropDownItems.AddRange (subMenus);
 				
-				menuStrip1.Items.AddRange (new MWF.ToolStripItem[] {
+				menuStrip1.Items.AddRange (new SWF.ToolStripItem[] {
 					parentMenu
 				});
 				
@@ -161,26 +161,26 @@ namespace UiaAtkBridgeTest
 				typeof(I).Name);
 		}
 		
-		MWF.GroupBox gb1 = new MWF.GroupBox ();
-		MWF.GroupBox gb2 = new MWF.GroupBox ();
-		MWF.RadioButton rad1 = new MWF.RadioButton ();
-		MWF.RadioButton rad2 = new MWF.RadioButton ();
-		MWF.RadioButton rad3 = new MWF.RadioButton ();
-		MWF.RadioButton rad4 = new MWF.RadioButton ();
-		List<MWF.RadioButton> radios = new List<MWF.RadioButton> ();
+		SWF.GroupBox gb1 = new SWF.GroupBox ();
+		SWF.GroupBox gb2 = new SWF.GroupBox ();
+		SWF.RadioButton rad1 = new SWF.RadioButton ();
+		SWF.RadioButton rad2 = new SWF.RadioButton ();
+		SWF.RadioButton rad3 = new SWF.RadioButton ();
+		SWF.RadioButton rad4 = new SWF.RadioButton ();
+		List<SWF.RadioButton> radios = new List<SWF.RadioButton> ();
 		int currentRadio = -1;
-		MWF.ListBox lb1 = new MWF.ListBox ();
-		MWF.CheckedListBox clb1 = new MWF.CheckedListBox ();
-		MWF.ComboBox cb1 = new MWF.ComboBox ();
-		MWF.Label lab1 = new MWF.Label ();
-		MWF.Button but1 = new MWF.Button ();
-		MWF.CheckBox chk1 = new MWF.CheckBox ();
-		MWF.StatusBar sb1 = new MWF.StatusBar ();
-		MWF.ProgressBar pb1 = new MWF.ProgressBar ();
-		MWF.NumericUpDown nud1 = new MWF.NumericUpDown();
-		MWF.Form form = new MWF.Form ();
-		MWF.MenuStrip menuStrip1 = new MWF.MenuStrip();
-		MWF.TextBox tbx1 = new MWF.TextBox ();
+		SWF.ListBox lb1 = new SWF.ListBox ();
+		SWF.CheckedListBox clb1 = new SWF.CheckedListBox ();
+		SWF.ComboBox cb1 = new SWF.ComboBox ();
+		SWF.Label lab1 = new SWF.Label ();
+		SWF.Button but1 = new SWF.Button ();
+		SWF.CheckBox chk1 = new SWF.CheckBox ();
+		SWF.StatusBar sb1 = new SWF.StatusBar ();
+		SWF.ProgressBar pb1 = new SWF.ProgressBar ();
+		SWF.NumericUpDown nud1 = new SWF.NumericUpDown();
+		SWF.Form form = new SWF.Form ();
+		SWF.MenuStrip menuStrip1 = new SWF.MenuStrip();
+		SWF.TextBox tbx1 = new SWF.TextBox ();
 		
 		public BridgeTester () 
 		{
@@ -210,7 +210,7 @@ namespace UiaAtkBridgeTest
 			form.Show ();
 		}
 		
-		private MWF.RadioButton GiveMeARadio (string name) {
+		private SWF.RadioButton GiveMeARadio (string name) {
 			if (currentRadio == 3) {
 				currentRadio = -1;
 			}
@@ -234,7 +234,7 @@ namespace UiaAtkBridgeTest
 
 			switch (type) {
 			case BasicWidgetType.Label:
-				MWF.Label lab = new MWF.Label ();
+				SWF.Label lab = new SWF.Label ();
 				if (real)
 					lab = lab1;
 				lab.Text = name;
@@ -250,7 +250,7 @@ namespace UiaAtkBridgeTest
 				component = uiaLab;
 				break;
 			case BasicWidgetType.NormalButton:
-				MWF.Button but = new MWF.Button ();
+				SWF.Button but = new SWF.Button ();
 				if (real)
 					but = but1;
 				but.Text = name;
@@ -267,7 +267,7 @@ namespace UiaAtkBridgeTest
 				action = uiaBut;
 				break;
 			case BasicWidgetType.Window:
-				MWF.Form frm = new MWF.Form ();
+				SWF.Form frm = new SWF.Form ();
 				if (real)
 					frm = form;
 				frm.Name = name;
@@ -282,7 +282,7 @@ namespace UiaAtkBridgeTest
 				component = uiaWin;
 				break;
 			case BasicWidgetType.CheckBox:
-				MWF.CheckBox chk = new MWF.CheckBox ();
+				SWF.CheckBox chk = new SWF.CheckBox ();
 				if (real)
 					chk = chk1;
 				chk.Text = name;
@@ -316,7 +316,7 @@ namespace UiaAtkBridgeTest
 				
 				break;
 			case BasicWidgetType.StatusBar:
-				MWF.StatusBar sb = new MWF.StatusBar ();
+				SWF.StatusBar sb = new SWF.StatusBar ();
 				if (real)
 					sb = sb1;
 				sb.Text = name;
@@ -371,7 +371,7 @@ namespace UiaAtkBridgeTest
 				break;
 
 			case BasicWidgetType.ProgressBar:
-				MWF.ProgressBar pb = new MWF.ProgressBar ();
+				SWF.ProgressBar pb = new SWF.ProgressBar ();
 				if (real)
 					pb = pb1;
 				UiaAtkBridge.ProgressBar uiaPb;
@@ -388,7 +388,7 @@ namespace UiaAtkBridgeTest
 				break;
 
 			case BasicWidgetType.Spinner:
-				MWF.NumericUpDown nud = new MWF.NumericUpDown();
+				SWF.NumericUpDown nud = new SWF.NumericUpDown();
 				if (real)
 					nud = nud1;
 				nud.Minimum = 0;
@@ -408,7 +408,7 @@ namespace UiaAtkBridgeTest
 				break;
 
 //			case BasicWidgetType.TextBoxEntry:
-//				MWF.TextBox tbx = tbx1;
+//				SWF.TextBox tbx = tbx1;
 //				if (!real)
 //					throw new NotSupportedException ("Not unreal support for TextBox");
 //				

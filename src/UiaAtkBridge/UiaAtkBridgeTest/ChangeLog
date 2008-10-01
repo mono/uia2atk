@@ -1,3 +1,8 @@
+2008-09-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* BridgeTester.cs: Change System.Windows.Forms using alias from MWF to
+	  SWF, for the sake of consistency.
+
 2008-09-29  Brad Taylor  <brad@getcoded.net>
 	
 	* Makefile.am:
