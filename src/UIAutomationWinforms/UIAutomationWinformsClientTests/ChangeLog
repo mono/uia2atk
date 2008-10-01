@@ -1,5 +1,9 @@
 2008-10-01  Mario Carrion <mcarrion@novell.com> 
 
+	* UIAutomationWinformsClientTests.csproj: ListBoxTest.cs file renamed.
+
+2008-10-01  Mario Carrion <mcarrion@novell.com> 
+
 	* BaseTest.cs, ButtonTest.cs, CheckBoxTest.cs, ScrollBarTest.cs: New Method 
 	  to test ControlType added.
 	* ListBoxTest.cs: File added.

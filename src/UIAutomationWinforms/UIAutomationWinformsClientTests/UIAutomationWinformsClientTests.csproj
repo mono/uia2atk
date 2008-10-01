@@ -58,7 +58,7 @@
     <Compile Include="ButtonTest.cs" />
     <Compile Include="CheckBoxTest.cs" />
     <Compile Include="LameSpecAttribute.cs" />
-    <Compile Include="ListBox.cs" />
+    <Compile Include="ListBoxTest.cs" />
     <Compile Include="NotListedAttribute.cs" />
     <Compile Include="ScrollBarTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
