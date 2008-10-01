@@ -64,7 +64,8 @@ namespace UiaAtkBridge
 			}
 		}
 
-		public void Remove (K key) {
+		public void Remove (K key)
+		{
 			lock (locking) {
 				V value = default (V);
 				normalDict.TryGetValue (key, out value);
@@ -75,7 +76,8 @@ namespace UiaAtkBridge
 			}
 		}
 
-		public void Remove (V value) {
+		public void Remove (V value)
+		{
 			lock (locking) {
 				K key = default (K);
 				reverseDict.TryGetValue (value, out key);

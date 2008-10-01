@@ -75,7 +75,8 @@ namespace UiaAtkBridge
 		public void Quit()
 		{
 			GLibHacks.Invoke (delegate (object sender, EventArgs args) {
-				mainLoop.Quit();});
+				mainLoop.Quit ();
+			});
 		}
 
 		internal static string GetProgramName()

@@ -458,6 +458,10 @@ namespace UiaAtkBridge
 		private void HandleWindowProviderRemoval (IRawElementProviderSimple provider)
 		{
 			Console.WriteLine ("FormIsRemoved");
+			if (!providerAdapterMapping.ContainsKey (provider))
+				return;
+			Console.WriteLine ("FormIsRemoved_Real");
+			
 			TopLevelRootItem.Instance.RemoveChild (providerAdapterMapping [(IRawElementProviderSimple) provider]);
 			providerAdapterMapping.Remove ((IRawElementProviderSimple) provider);
 			

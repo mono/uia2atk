@@ -1,5 +1,12 @@
 2008-09-30  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AmbiDictionary.cs, Monitor.cs: Cosmetic.
+	* Adapter.cs, Button.cs: Track API changes.
+	* AutomationBridge.cs: Report all form removals (seems to fix bug
+	  427857)
+
+2008-09-30  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AmbiDictionary.cs: Prevent KeyNotFoundException in an additional
 	  case.
 

@@ -51,16 +51,16 @@ namespace UiaAtkBridge
 		{
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {
 				bool focused = (bool)e.NewValue;
-				NotifyStateChange ((ulong) Atk.StateType.Focused, focused);
+				NotifyStateChange (Atk.StateType.Focused, focused);
 				if (focused)
 					Atk.Focus.TrackerNotify (this);
 			} else if (e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
 				bool offscreen = (bool)e.NewValue;
-				NotifyStateChange ((ulong) Atk.StateType.Visible, !offscreen);
+				NotifyStateChange (Atk.StateType.Visible, !offscreen);
 			} else if (e.Property == AutomationElementIdentifiers.IsEnabledProperty) {
 				bool enabled = (bool) e.NewValue;
-				NotifyStateChange ((ulong) Atk.StateType.Enabled, enabled);
-				NotifyStateChange ((ulong) Atk.StateType.Sensitive, enabled);
+				NotifyStateChange (Atk.StateType.Enabled, enabled);
+				NotifyStateChange (Atk.StateType.Sensitive, enabled);
 			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
 				Name = (string)e.NewValue;
 			}

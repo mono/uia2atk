@@ -237,11 +237,11 @@ namespace UiaAtkBridge
 		// notify the state change, regardless of its actual non-effect
 		private void OnPressed ()
 		{
-			NotifyStateChange ((ulong) Atk.StateType.Armed, true);
+			NotifyStateChange (Atk.StateType.Armed, true);
 		}
 		private void OnReleased ()
 		{
-			NotifyStateChange ((ulong) Atk.StateType.Armed, false);
+			NotifyStateChange (Atk.StateType.Armed, false);
 		}
 		
 		public string GetText (int startOffset, int endOffset)

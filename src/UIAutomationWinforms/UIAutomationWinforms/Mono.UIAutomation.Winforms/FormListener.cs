@@ -63,12 +63,12 @@ namespace Mono.UIAutomation.Winforms
 			
 			// We are using this event to tell the bridge that should release all
 			// the FormProvider provider that aren't yet removed.
-//			Application.ApplicationExit += delegate (object sender, EventArgs args) {
-//				foreach (FormProvider provider in ProviderFactory.GetFormProviders ()) {
-//					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-//					                                   provider);
-//				}
-//			};
+			Application.ApplicationExit += delegate (object sender, EventArgs args) {
+				foreach (FormProvider provider in ProviderFactory.GetFormProviders ()) {
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
+					                                   provider);
+				}
+			};
 			
 			Type appType = typeof (Application);
 			// NOTE: FormAdded is fired too frequently (such as
@@ -117,6 +117,9 @@ namespace Mono.UIAutomation.Winforms
 				return;
 			
 			Console.WriteLine ("Form added!");
+
+			FormProvider provider = (FormProvider)
+				ProviderFactory.GetProvider (f, true);
 			
 			// Terminate Form provider
 			f.Disposed += delegate (object formSender, EventArgs formArgs) {
@@ -127,9 +130,7 @@ namespace Mono.UIAutomation.Winforms
 			// isn't called when the provider is created.  We'll do
 			// that manually after alerting the bridge to the presence
 			// of the new form.
-			FormProvider provider = (FormProvider)
-				ProviderFactory.GetProvider (f,
-				                             true);
+
 			formProviders [f] = provider;
 			
 			if (f.Owner == null) { //For example is not MessageBox or f.ShowDialog
