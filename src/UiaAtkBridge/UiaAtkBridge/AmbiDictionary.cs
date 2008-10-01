@@ -66,9 +66,12 @@ namespace UiaAtkBridge
 
 		public void Remove (K key) {
 			lock (locking) {
-				V value = normalDict [key];
-				reverseDict.Remove (value);
-				normalDict.Remove (key);
+				V value = default (V);
+				normalDict.TryGetValue (key, out value);
+				if (value != null) {
+					reverseDict.Remove (value);
+					normalDict.Remove (key);
+				}
 			}
 		}
 

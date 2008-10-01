@@ -1,5 +1,10 @@
 2008-09-30  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AmbiDictionary.cs: Prevent KeyNotFoundException in an additional
+	  case.
+
+2008-09-30  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AutomationBridge.cs, AmbiDictionary.cs: Fixed uniqueness (thanks for
 	  noticing sandy!) and added locking.
 
