@@ -38,17 +38,6 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Internal Static Methods
 
-		internal static object GetDefaultValue (AutomationProperty property)
-		{
-			//AutomationElement
-//			AutomationElementIdentifiers.ClickablePointProperty 
-			
-			//Following properties use null as default value:
-			// - AutomationElement.ClickablePointProperty
-			
-			return null;
-		}
-
 		internal static int GetUniqueRuntimeId ()
 		{
 			return ++id;
@@ -90,10 +79,6 @@ namespace Mono.UIAutomation.Winforms
 		internal static void RaiseStructureChangedEvent (StructureChangeType type,
 		                                                 IRawElementProviderFragment provider)
 		{	
-			
-			Console.WriteLine ("Helper.RaiseStructureChangedEvent: {0} - '{1}'",
-			                   type, provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
-			
 			if (AutomationInteropProvider.ClientsAreListening) {
 				int []runtimeId = null;
 				if (type == StructureChangeType.ChildRemoved) {

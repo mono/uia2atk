@@ -55,14 +55,6 @@ namespace Mono.UIAutomation.Winforms.Events
 		protected void RaiseAutomationEvent ()
 		{
 			if (AutomationInteropProvider.ClientsAreListening == true) {
-				
-				try {
-					Console.WriteLine ("! EVENT: {0}. NAME: {1} -- {2}",
-					                   Event.ProgrammaticName,
-					                   Provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
-					                   Provider.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id));
-				} catch (Exception) {}				
-			
 				AutomationEventArgs args = 
 					new AutomationEventArgs (Event);
 				AutomationInteropProvider.RaiseAutomationEvent (Event, 
