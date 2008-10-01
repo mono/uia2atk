@@ -283,6 +283,7 @@ namespace UiaAtkBridge
 			
 			if (eventId == AutomationElementIdentifiers.KeyEvent) {
 				HandleKeyEvent (eventId, (KeyEventArgs)e);
+				return;
 			}
 
 			IRawElementProviderSimple simpleProvider =
