@@ -463,6 +463,7 @@ namespace Mono.UIAutomation.Winforms
 
 			public override void ScrollItemIntoView (ListItemProvider item) 
 			{ 
+				//FIXME: Implement
 				throw new NotImplementedException ();
 			}
 

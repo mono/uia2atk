@@ -33,14 +33,21 @@ using System.Windows.Automation.Provider;
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal sealed class Helper
+	internal static class Helper
 	{
-		
-		private Helper ()
-		{
-		}
-		
+
 		#region Internal Static Methods
+
+		internal static object GetDefaultValue (AutomationProperty property)
+		{
+			//AutomationElement
+//			AutomationElementIdentifiers.ClickablePointProperty 
+			
+			//Following properties use null as default value:
+			// - AutomationElement.ClickablePointProperty
+			
+			return null;
+		}
 
 		internal static int GetUniqueRuntimeId ()
 		{
@@ -82,7 +89,11 @@ namespace Mono.UIAutomation.Winforms
 		
 		internal static void RaiseStructureChangedEvent (StructureChangeType type,
 		                                                 IRawElementProviderFragment provider)
-		{
+		{	
+			
+			Console.WriteLine ("Helper.RaiseStructureChangedEvent: {0} - '{1}'",
+			                   type, provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
+			
 			if (AutomationInteropProvider.ClientsAreListening) {
 				int []runtimeId = null;
 				if (type == StructureChangeType.ChildRemoved) {
@@ -152,6 +163,7 @@ namespace Mono.UIAutomation.Winforms
 		#region Static Fields
 		
 		static int id = 0;
+
 		#endregion
 	}
 }

@@ -1,3 +1,26 @@
+2008-10-01  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Overriding
+	  GetControlScreenBounds.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBox/ScrollProviderBehavior.cs:
+	  Correct implementation of VerticalViewSize and HorizontalViewSize
+	
+	  
+	
+	  [Fixes Bug #428741]
+	* Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternVerticalViewSizeEvent.cs:
+	  Generating VerticalViewSize Property Event.
+	
+	  
+	
+	  [Fixes Bug #428741]
+	* Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontalViewSizeEvent.cs:
+	  Generating HorizontalViewSize Property Event.
+	
+	  
+	
+	  [Fixes Bug #428741]
+
 2008-10-01  Mike Gorse <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/LinkLabel/InvokeProvider.cs:

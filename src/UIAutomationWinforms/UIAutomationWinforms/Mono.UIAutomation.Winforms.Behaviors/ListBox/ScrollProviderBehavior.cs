@@ -24,6 +24,7 @@
 // 
 
 using System;
+using SD = System.Drawing;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
@@ -133,8 +134,15 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
 			get { 
 				if (HorizontallyScrollable == false)
 					return 100;
-				else //TODO: Return valid value
-					return HorizontalScrollPercent; 
+				else {
+					SD.Rectangle thumbArea 
+						= Helper.GetPrivateProperty<SWF.ScrollBar, SD.Rectangle> (typeof (SWF.ScrollBar),
+						                                                          hscrollbar,
+						                                                          "UIAThumbPosition");
+
+					return ((thumbArea.Width + (thumbArea.Height * 2)) * 100)
+						/ Provider.Control.Width;
+				}
 			}
 		}
 
@@ -158,8 +166,15 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
 			get { 
 				if (VerticallyScrollable == false)
 					return 100;
-				else //TODO: Return valid value
-					return VerticalScrollPercent; 
+				else {
+					SD.Rectangle thumbArea 
+						= Helper.GetPrivateProperty<SWF.ScrollBar, SD.Rectangle> (typeof (SWF.ScrollBar),
+						                                                          vscrollbar,
+						                                                          "UIAThumbPosition");
+
+					return ((thumbArea.Height+ (thumbArea.Width * 2)) * 100)
+						/ Provider.Control.Height;
+				}
 			}
 		}
 		

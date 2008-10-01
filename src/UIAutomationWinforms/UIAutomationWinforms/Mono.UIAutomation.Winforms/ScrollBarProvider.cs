@@ -282,10 +282,6 @@ namespace Mono.UIAutomation.Winforms
 					return runtimeId;
 				} else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return "Thumb";
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-					return GetThumbArea ();
-				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
-					return null; //TODO: We may need to use Reflection to get the "real" value
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
@@ -294,21 +290,26 @@ namespace Mono.UIAutomation.Winforms
 					return "thumb";
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 					return false;
-				else if (propertyId == AutomationElementIdentifiers.IsControlElementProperty.Id)
-					return true;
 				else
 					return null;
 			}
-			
-			private Rect GetThumbArea ()
+
+			protected virtual System.Drawing.Rectangle GetControlScreenBounds ()
 			{
-				Rectangle thumbArea 
+				System.Drawing.Rectangle thumbArea 
 					= Helper.GetPrivateProperty<ScrollBar, Rectangle> (typeof (ScrollBar), 
 					                                                   (ScrollBar) Control,
 					                                                   "UIAThumbArea");
-				return Helper.RectangleToRect (thumbArea);
+				
+				if (Control.Parent == null || Control.TopLevelControl == null)
+					return thumbArea;
+				else {
+					if (Control.FindForm () == Control.Parent)
+						return Control.TopLevelControl.RectangleToScreen (thumbArea);
+					else
+						return Control.Parent.RectangleToScreen (thumbArea);
+				}
 			}
-			
 			
 			private int runtimeId;
 			

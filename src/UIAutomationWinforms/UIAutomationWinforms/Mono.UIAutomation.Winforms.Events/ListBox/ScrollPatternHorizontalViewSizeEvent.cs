@@ -23,6 +23,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
@@ -50,25 +51,43 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 
 		public override void Connect (SWF.Control control)
 		{	
-			SWF.ScrollBar hscrollbar 
-				= ((ListBoxProvider) Provider).GetInternalScrollBar (SWF.Orientation.Horizontal);
-			
-			hscrollbar.Resize += new EventHandler (OnScrollVerticalViewChanged);
+			control.Resize += new EventHandler (OnControlResize);
+			try {
+				Helper.AddPrivateEvent (typeof (SWF.ListBox.ObjectCollection), 
+				                        ((SWF.ListBox) control).Items,
+				                        "UIACollectionChanged",
+				                        this, 
+				                        "OnScrollHorizontalViewChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
+			}
 		}
 
 		public override void Disconnect (SWF.Control control)
 		{
-			SWF.ScrollBar hscrollbar 
-				= ((ListBoxProvider) Provider).GetInternalScrollBar (SWF.Orientation.Horizontal);
-			
-			hscrollbar.Resize -= new EventHandler (OnScrollVerticalViewChanged);
+			control.Resize -= new EventHandler (OnControlResize);
+			try {
+				Helper.RemovePrivateEvent (typeof (SWF.ListBox.ObjectCollection), 
+				                           ((SWF.ListBox) control).Items,
+				                           "UIACollectionChanged",
+				                           this, 
+				                           "OnScrollHorizontalViewChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
+			}
 		}
 		
 		#endregion 
 		
 		#region Protected methods
 		
-		private void OnScrollVerticalViewChanged (object sender, EventArgs e)
+		private void OnControlResize (object sender, EventArgs e)
+		{
+			RaiseAutomationPropertyChangedEvent ();
+		}
+		
+		private void OnScrollHorizontalViewChanged (object sender, 
+		                                            CollectionChangeEventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
