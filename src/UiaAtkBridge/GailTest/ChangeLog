@@ -1,3 +1,7 @@
+2008-10-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* GailTest.mdp: Track last changes in how the tests are being run.
+
 2008-09-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Makefile.am: Remove install/uninstall.

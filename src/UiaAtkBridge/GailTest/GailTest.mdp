@@ -2,7 +2,8 @@
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <CustomCommands>
-        <Command type="Execute" command="./gailtest.sh" workingdir="${TargetDir}" />
+        <Command type="Execute" command="./gailtest.sh" workingdir="" />
+        <Command type="BeforeExecute" command="chmod u+x gailtest.sh" />
       </CustomCommands>
       <Output directory="bin/Debug" assembly="GailTest" />
       <Build debugmode="True" target="Library" />
@@ -19,7 +20,6 @@
   <Contents>
     <File name="GailTester.cs" subtype="Code" buildaction="Compile" />
     <File name="AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
-    <File name="gailtest.sh" subtype="Code" buildaction="Nothing" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
@@ -32,4 +32,5 @@
     <ProjectReference type="Gac" localcopy="True" refto="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <ProjectReference type="Gac" localcopy="True" refto="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
   </References>
+  <GtkDesignInfo />
 </Project>
