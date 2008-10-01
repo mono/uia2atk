@@ -86,21 +86,24 @@ class Settings(object):
     if len(args) > 1:
       output("You may not specify more than one application to monitor.")
       self.help()
+      abort(2)
+
     elif len(args) < 1:
       output("You must specify an application to monitor.")
       self.help()
-    else:
-      reg = pyatspi.Registry()
-      desktop = reg.getDesktop(0)
-      try:
-        desktop.queryTable()
-      except NotImplementedError:
-        pass
-      apps = [app.name for app in desktop]
-      Settings.source_app = args[0]
-      if not Settings.source_app in apps:
-        output("'%s' not found on the desktop" % Settings.source_app)
-        abort(2)
+      abort(2)
+
+    reg = pyatspi.Registry()
+    desktop = reg.getDesktop(0)
+    try:
+      desktop.queryTable()
+    except NotImplementedError:
+      pass
+    apps = [app.name for app in desktop]
+    Settings.source_app = args[0]
+    if not Settings.source_app in apps:
+      output("'%s' not found on the desktop" % Settings.source_app)
+      abort(2)
 
 
 

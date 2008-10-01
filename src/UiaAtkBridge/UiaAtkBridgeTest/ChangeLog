@@ -1,3 +1,7 @@
+2008-10-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* atspimon.py: Make sure we abort when we fail.
+
 2008-09-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* BridgeTester.cs: Change System.Windows.Forms using alias from MWF to
