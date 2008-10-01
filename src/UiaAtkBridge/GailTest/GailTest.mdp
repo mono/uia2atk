@@ -20,6 +20,7 @@
   <Contents>
     <File name="GailTester.cs" subtype="Code" buildaction="Compile" />
     <File name="AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="gailtest.sh.in" subtype="Code" buildaction="Nothing" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

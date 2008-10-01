@@ -37,6 +37,7 @@ namespace UiaAtkBridgeTest
 		
 		static GailTester ()
 		{
+			GLib.Global.ProgramName = "nunit-console";
 			guiThread = new GailTestApp.MovingThread ();
 			guiThread.Deleg = Gtk.Application.Init;
 			guiThread.Start ();
@@ -224,6 +225,8 @@ namespace UiaAtkBridgeTest
 			
 			guiThread.Dispose ();
 		}
+
+		
 		
 	}
 }
