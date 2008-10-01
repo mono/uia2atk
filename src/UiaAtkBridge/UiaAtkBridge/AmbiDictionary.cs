@@ -37,6 +37,9 @@ namespace UiaAtkBridge
 		
 		public AmbiDictionary ()
 		{
+			if (typeof (K) == typeof (V))
+				throw new NotSupportedException ();
+			
 			normalDict = new Dictionary <K, V> ();
 			reverseDict = new Dictionary <V, K> ();
 		}
@@ -47,11 +50,11 @@ namespace UiaAtkBridge
 				return normalDict.ContainsKey (key);
 		}
 
-		public V this [K key]
-		{
+		public V this [K key] {
 			get { 
 				lock (locking) 
-					return normalDict [key]; }
+					return normalDict [key]; 
+			}
 			set {
 				lock (locking) {
 					V oldValue = default (V);

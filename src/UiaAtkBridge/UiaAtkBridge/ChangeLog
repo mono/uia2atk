@@ -1,3 +1,7 @@
+2008-10-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* AmbiDictionary.cs: Fair enough.
+
 2008-10-01  Mike Gorse <mgorse@novell.com>
 
 	* AutomationBridge.cs: Return after calling HandleKeyEvent.
