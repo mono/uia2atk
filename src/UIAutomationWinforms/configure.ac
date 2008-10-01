@@ -79,6 +79,8 @@ PKG_CHECK_MODULES([MONO_UIA], [mono-uia])
 PKG_CHECK_MODULES([MONO], [mono >= 2.1])
 
 dnl package checks, per config
+PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0])
+PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0])
 
 
 AC_CONFIG_FILES([

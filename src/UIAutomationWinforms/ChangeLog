@@ -1,3 +1,9 @@
+2008-09-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* configure.ac: Require glib-sharp, atk-sharp, and Mono.WebBrowser for
+	  use in the WebBrowserProvider.  Add MenuStripProvider and
+	  WebBrowserProvider to build.
+
 2008-09-30  Brad Taylor  <brad@getcoded.net>
 	
 	* configure.ac: Require nunit 2.4.7, and generate a providertest.sh

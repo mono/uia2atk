@@ -1,3 +1,15 @@
+2008-09-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile.am, Mono.UIAutomation.Winforms.mdp: Require glib-sharp,
+	  atk-sharp, and Mono.WebBrowser for use in the WebBrowserProvider. 
+	  Add MenuStripProvider and WebBrowserProvider to build.
+	* Mono.UIAutomation.Winforms/MenuStripProvider.cs: Beginning of
+	  MenuStripProvider implementation.  Not yet enabled in
+	  ProviderFactory.
+	* Mono.UIAutomation.Winforms/WebBrowserProvider.cs: Beginning of
+	  WebBrowserProvider implementation.  Not yet enabled in
+	  ProviderFactory.
+
 2008-09-30  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Mono.UIAutomation.Winforms/FormListener.cs: Report all form removals

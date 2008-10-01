@@ -157,6 +157,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ListBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ListItemProvider.cs \
 	Mono.UIAutomation.Winforms/ListProvider.cs \
+	Mono.UIAutomation.Winforms/MenuStripProvider.cs \
 	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/PaneProvider.cs \
 	Mono.UIAutomation.Winforms/PictureBoxProvider.cs \
@@ -175,6 +176,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs \
 	Mono.UIAutomation.Winforms/ToolTipListener.cs \
 	Mono.UIAutomation.Winforms/ToolTipProvider.cs \
+	Mono.UIAutomation.Winforms/WebBrowserProvider.cs \
 	Mono.UIAutomation.Winforms/WordToken.cs \
 	Mono.UIAutomation.Winforms/WordTokenCollection.cs \
 	Mono.UIAutomation.Winforms/WordTokenizer.cs 
@@ -191,7 +193,10 @@ REFERENCES =  \
 	System \
 	System.Core \
 	System.Drawing \
-	System.Windows.Forms
+	System.Windows.Forms \
+	Mono.WebBrowser \
+	$(GTK_SHARP_20_LIBS) \
+	$(GLIB_SHARP_20_LIBS)
 
 DLL_REFERENCES = 
 
