@@ -450,7 +450,7 @@ namespace UiaAtkBridge
 			TopLevelRootItem.Instance.AddOneChild (newWindow);
 			
 			IntPtr providerHandle = (IntPtr) provider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
-			pointerProviderMapping.Add (providerHandle, provider);
+			pointerProviderMapping [providerHandle] = provider;
 			
 			windowProviders++;
 		}

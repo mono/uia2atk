@@ -32,6 +32,8 @@ namespace UiaAtkBridge
 	
 	public class AmbiDictionary <K, V>
 	{
+
+		object locking = new object ();
 		
 		public AmbiDictionary ()
 		{
@@ -41,33 +43,44 @@ namespace UiaAtkBridge
 
 		public bool ContainsKey (K key)
 		{
-			return normalDict.ContainsKey (key);
+			lock (locking)
+				return normalDict.ContainsKey (key);
 		}
 
 		public V this [K key]
 		{
-			get { return normalDict [key]; }
+			get { 
+				lock (locking) 
+					return normalDict [key]; }
 			set {
-				Add (key, value);
+				lock (locking) {
+					V oldValue = default (V);
+					normalDict.TryGetValue (key, out oldValue);
+					if (oldValue != null)
+						reverseDict.Remove (oldValue);
+					normalDict [key] = value;
+					reverseDict [value] = key;
+				}
 			}
 		}
 
-		public void Add (K key, V value) 
-		{
-			normalDict.Add (key, value);
-			reverseDict.Add (value, key);
-		}
-
 		public void Remove (K key) {
-			V value = normalDict [key];
-			reverseDict.Remove (value);
-			normalDict.Remove (key);
+			lock (locking) {
+				V value = normalDict [key];
+				reverseDict.Remove (value);
+				normalDict.Remove (key);
+			}
 		}
 
 		public void Remove (V value) {
-			K key = reverseDict [value];
-			normalDict.Remove (key);
-			reverseDict.Remove (value);
+			lock (locking) {
+				K key = default (K);
+				reverseDict.TryGetValue (value, out key);
+				if (key != null) {
+					normalDict.Remove (key);
+					reverseDict.Remove (value);
+				}
+			}
 		}
 		
 		Dictionary <K, V> normalDict;

@@ -1,5 +1,10 @@
 2008-09-30  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AutomationBridge.cs, AmbiDictionary.cs: Fixed uniqueness (thanks for
+	  noticing sandy!) and added locking.
+
+2008-09-30  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* UiaAtkBridge.mdp, Makefile.am: Fix build.
 
 2008-09-30  Andrés G. Aragoneses <aaragoneses@novell.com> 
