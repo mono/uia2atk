@@ -154,6 +154,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors.LinkLabel
 			invokeMethod (linkLabel, args);
 		}
 		
+		public bool Enabled (int index)
+		{
+			SWF.LinkLabel linkLabel = (SWF.LinkLabel) Provider.Control;
+
+			if (index >= linkLabel.Links.Count || index < 0)
+				return false;
+			else
+				return linkLabel.Links [index].Enabled;
+		}
+		
 		#endregion
 	}
 	
