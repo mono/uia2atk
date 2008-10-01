@@ -330,7 +330,7 @@ namespace Mono.UIAutomation.Winforms
 				return closestLabel;
 				
 			} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-				return Control.CanFocus;
+				return Control.CanFocus && Control.CanSelect;
 			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 				System.Drawing.Rectangle bounds =
 					GetControlScreenBounds ();				

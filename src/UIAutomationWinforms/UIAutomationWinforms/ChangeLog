@@ -1,5 +1,12 @@
 2008-10-01  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Using CanFocus
+	  and CanSelect for IsKeyboardFocusableProperty.
+	
+	  [Fixes Bug #431447]
+
+2008-10-01  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am:
 	  StatusBar.GridPattern.RowCount event class removed.
 	* Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternRowCountEvent.cs:
