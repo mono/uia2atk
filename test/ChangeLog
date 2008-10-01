@@ -1,3 +1,12 @@
+2008-10-01  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/opensuse60x38.gif: Forgot to add the non-square image mentioned below.
+	* testers/label/labelframe.py:  Search for each label indvididually instead of using
+	findAll.  This way we don't have to guess where the accessible is in the list that findAll
+	returns.  It also makes the test easier to read.
+	* testers/label_basic_ops.py:  Use the variable names for each label found in labelframe
+	instead of using the list that was returned by findAll and its indices.
+
 2008-09-30  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/gtkbutton.py: Use rectangle image (instead of a square) so we

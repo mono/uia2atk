@@ -46,10 +46,10 @@ if app is None:
 lFrame = app.labelFrame
 
 #check sensitive Label's default states
-statesCheck(lFrame.label[0], "Label")
+statesCheck(lFrame.sensitive_label, "Label")
 
 #check insensitive Label's default states
-statesCheck(lFrame.label[1], "Label", 
+statesCheck(lFrame.insensitive_label, "Label", 
                         invalid_states=["enabled","sensitive"])
 
 #click button2 to change label text
@@ -63,7 +63,7 @@ sleep(config.SHORT_DELAY)
 lFrame.assertText('You have clicked me 2 times')
 
 #check sensitive lable's states again after update text
-statesCheck(lFrame.label[0], "Label")
+statesCheck(lFrame.sensitive_label, "Label")
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

@@ -21,12 +21,14 @@ class LabelFrame(accessibles.Frame):
     # constants
     # the available widgets on the window
     BUTTON = "button2"
-    LABEL = ""
+    SENSTIVE_LABEL = "there is nothing now."
+    INSENSITIVE_LABEL = "I'm so insensitive"
 
     def __init__(self, accessible):
         super(LabelFrame, self).__init__(accessible)
         self.button = self.findPushButton(self.BUTTON)
-        self.label = self.findAllLabels(None)
+        self.sensitive_label = self.findLabel(self.SENSTIVE_LABEL)
+        self.insensitive_label = self.findLabel(self.INSENSITIVE_LABEL)
 
     #give 'click' action
     def click(self,button):
