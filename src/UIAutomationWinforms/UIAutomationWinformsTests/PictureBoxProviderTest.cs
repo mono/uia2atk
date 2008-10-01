@@ -47,13 +47,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (pictureBox);
 			
+			// TODO: Vista returns Pane not Image
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
-			              ControlType.Pane.Id);
+			              ControlType.Image.Id);
 			
+			// TODO: Vista return "pane"
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
-			              "pane");
+			              "image");
 		}
 		
 		#endregion

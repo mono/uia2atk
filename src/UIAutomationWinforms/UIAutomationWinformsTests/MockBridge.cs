@@ -100,5 +100,27 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				provider = provider, e = e});
 		}
 #endregion
+		
+		public int GetAutomationEventCount (AutomationEvent eventId)
+		{
+			int count = 0;
+			
+			foreach (AutomationEventTuple evnt in AutomationEvents) {
+				if (evnt.eventId.Id == eventId.Id)
+					count++;
+			}
+			return count;
+		}
+		
+		public int GetAutomationPropertyEventCount (AutomationProperty propertyId)
+		{
+			int count = 0;
+			
+			foreach (AutomationPropertyChangedEventTuple evnt in AutomationPropertyChangedEvents) {
+				if (evnt.e.Property.Id == propertyId.Id)
+					count++;
+			}
+			return count;
+		}
 	}
 }

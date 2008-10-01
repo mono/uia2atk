@@ -93,6 +93,32 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (child,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 			              true);
+
+			//By default ListItem supports: SelectionItemPattern and ScrollItemPattern
+			ISelectionItemProvider selectionItem =
+				child.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id) as ISelectionItemProvider;			
+			Assert.IsNotNull (selectionItem, "ListItem should ALWAYS SUPPORT SelectionItem");
+			
+			IScrollItemProvider scrollItem =
+				child.GetPatternProvider (ScrollItemPatternIdentifiers.Pattern.Id) as IScrollItemProvider;
+			Assert.IsNotNull (scrollItem, "ListItem should ALWAYS SUPPORT ScrollItem");
+			
+			IToggleProvider toggleItem =
+				child.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id) as IToggleProvider;
+			Assert.IsNull (toggleItem, "ListItem SHOULD NOT SUPPORT Toggletlge");
+
+			bridge.ResetEventLists ();
+			selectionItem.AddToSelection ();
+			
+			//Testing events.
+			
+			Assert.AreEqual (1,
+			                bridge.GetAutomationPropertyEventCount (SelectionItemPatternIdentifiers.IsSelectedProperty),
+			                "SelectionItemPatternIdentifiers.IsSelectedProperty");			
+			
+			Assert.AreEqual (1,
+			                bridge.GetAutomationEventCount (SelectionItemPatternIdentifiers.ElementSelectedEvent),
+			                "SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent");
 		}
 		
 		#endregion

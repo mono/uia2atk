@@ -107,6 +107,19 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			toggleProvider1.Toggle ();
 			Assert.AreEqual (toggleProvider1.ToggleState, ToggleState.Off);
 			
+			//By default ListItem supports: SelectionItemPattern and ScrollItemPattern
+			ISelectionItemProvider selectionItem =
+				child.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id) as ISelectionItemProvider;			
+			Assert.IsNotNull (selectionItem, "ListItem should ALWAYS SUPPORT SelectionItem");
+			
+			IScrollItemProvider scrollItem =
+				child.GetPatternProvider (ScrollItemPatternIdentifiers.Pattern.Id) as IScrollItemProvider;
+			Assert.IsNotNull (scrollItem, "ListItem should ALWAYS SUPPORT ScrollItem");
+			
+			IToggleProvider toggleItem =
+				child.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id) as IToggleProvider;
+			Assert.IsNotNull (toggleItem, "ListItem show ALWAYS SUPPORT Toggle");
+			
 			//Add new item
 			child2 = child.Navigate (NavigateDirection.NextSibling);
 			Assert.IsNull (child2, "Child2 should be NULL");
