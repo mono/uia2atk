@@ -39,6 +39,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		#region Properties
 
 		[Test]
+		[Description ("Value: ScrollBar | Notes: This value is the same for all UI frameworks.")]
+		public override void MsdnControlTypePropertyTest () 
+		{
+			AutomationElement child = GetAutomationElement ();
+			Assert.AreEqual (ControlType.ScrollBar,
+				child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty, true),
+				"ControlType");
+		}
+
+		[Test]
 		[LameSpec]
 		[Description ("Value: Null | The scroll bar control does not have content elements "
 			+"and the NameProperty is not required to be set.")]
@@ -149,8 +159,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 			AutomationElement scrollBarChild = null;
 
 			Assert.IsNotNull (child, "ListBox should have children");
-			while (child != null)
-			{
+			while (child != null) {
 				if (child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty, true)
 					== ControlType.ScrollBar)
 				{

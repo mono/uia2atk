@@ -87,6 +87,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		}
 
 		[Test]
+		public abstract void MsdnControlTypePropertyTest ();
+
+		[Test]
 		public abstract void MsdnLabeledByPropertyTest ();
 
 		[Test]

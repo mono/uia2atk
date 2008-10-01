@@ -23,83 +23,62 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.Drawing;
 using System.Windows.Automation;
 using System.Windows.Forms;
 using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms.Client
 {
-	//According to http://msdn.microsoft.com/en-us/library/ms751693.aspx
+	//According to http://msdn.microsoft.com/en-us/library/ms742462.aspx
 	[TestFixture]
-	[Description ("Tests SWF.CheckBox as ControlType.Button")]
-	public class CheckBoxTest : BaseTest
+	[Description ("Tests SWF.ListBox as ControlType.List")]
+	public class ListBoxTest : BaseTest
 	{
-		#region Properties Test
-
 		[Test]
-		[Description ("Value: CheckBox | Notes: This value is the same for all UI frameworks.")]
+		[Description ("Value: List | Notes: This value is the same for all UI frameworks.")]
 		public override void MsdnControlTypePropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
-			Assert.AreEqual (ControlType.CheckBox,
+			Assert.AreEqual (ControlType.List,
 				child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty, true),
 				"ControlType");
 		}
-
+	
 		[Test]
-		[Description ("Vaule: See notes. | Notes: The value of the check box control's Name property is the text that "
-			+"is displayed beside the box that maintains the toggle state. ")]
 		public override void MsdnNamePropertyTest ()
 		{
-			CheckBox checkbox = new CheckBox ();
-			AutomationElement child = GetAutomationElementFromControl (checkbox);
-
-			Assert.AreEqual (checkbox.Text,
-				child.GetCurrentPropertyValue (AutomationElementIdentifiers.NameProperty, true),
-				"NameProperty");
-
-			checkbox.Text = "Unhappy CheckBox";
-			Assert.AreEqual (checkbox.Text,
-				child.GetCurrentPropertyValue (AutomationElementIdentifiers.NameProperty, true),
-				"NameProperty");
+			throw new NotImplementedException ();
 		}
 
 		[Test]
-		[LameSpec]
-		[Description ("Value: Null | Notes: Check boxes are self-labeling controls.")]
 		public override void MsdnLabeledByPropertyTest ()
 		{
-			AutomationElement child = GetAutomationElement ();
-			Assert.AreEqual (null,
-				child.GetCurrentPropertyValue (AutomationElementIdentifiers.LabeledByProperty, true),
-				"LabeledByProperty");
+			throw new NotImplementedException ();
 		}
 
 		[Test]
-		[Description (@"Value ""check box"" | Notes: Localized string corresponding to the CheckBox control type.")]
+		[Description (@"Value: ""list"" | Notes: Localized string corresponding to the List control type. ")]
 		public override void MsdnLocalizedControlTypePropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
-			Assert.AreEqual ("check box",
+			Assert.AreEqual ("list",
 				child.GetCurrentPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty, true),
-				"LocalizedControlType");
+				"IsControlElementProperty");
 		}
 
 		[Test]
-		[Description ("Value: True | Notes: The value of this property must always be True. "
-			+"This means that the check box control must always be included in the content view of "
-			+"the UI Automation tree.")]
+		[Description ("Value: True | Notes: The list control is always included in the content view of the UI Automation tree. .")]
 		public override void MsdnIsContentElementPropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
 			Assert.AreEqual (true,
 				child.GetCurrentPropertyValue (AutomationElementIdentifiers.IsContentElementProperty, true),
-				"IsContentElementProperty");
+				"IsControlElementProperty");
 		}
 
 		[Test]
-		[Description ("Value: True | Notes: The value of this property must always be True. This means "
-			+"that the check box control must always be included in the control view of the UI Automation tree.")]
+		[Description ("Value: True | Notes: The list control is always included in the control view of the UI Automation tree.")]
 		public override void MsdnIsControlElementPropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
@@ -109,7 +88,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		}
 
 		[Test]
-		[NotListed]
+		[NotListedAttribute]
+		[Description ("Is not listed. We are using null as default value.")]
 		public override void MsdnOrientationPropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
@@ -118,41 +98,20 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 				"OrientationProperty");
 		}
 
-		#endregion Properties Test
-
-		#region Pattern Tests
-
-		[Test]
-		[Description ("Support/Value: Required . | Notes: Allows the check box to be cycled through its "
-			+"internal states programmatically.")]
-		public override void MsdnTogglePatternTest ()
-		{
-			AutomationElement element = GetAutomationElement ();
-
-			Assert.IsTrue (SupportsPattern (element, TogglePatternIdentifiers.Pattern),
-				"TogglePattern SHOULD be supported");
-		}
-
-		#endregion
-
 		#region Protected Methods
+
+		private ListBox CreateListBox ()
+		{
+			ListBox listbox = new ListBox ();
+			listbox.Items.AddRange (new object [] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 });
+			listbox.Size = new Size (100, 100);
+			listbox.Location = new Point (3, 3);
+			return listbox;
+		}
 
 		protected override AutomationElement GetAutomationElement ()
 		{
-			return GetAutomationElementFromControl (GetCheckBox ());
-		}
-
-		#endregion Protected Methods
-
-		#region Private Methods
-
-		private CheckBox GetCheckBox ()
-		{
-			CheckBox checkbox = new CheckBox ();
-			checkbox.Text = "I'm a happy SWF CheckBox :)";
-			checkbox.Size = new System.Drawing.Size (100, 30);
-			checkbox.Location = new System.Drawing.Point (5, 5);
-			return checkbox;
+			return GetAutomationElementFromControl (CreateListBox ());
 		}
 
 		#endregion

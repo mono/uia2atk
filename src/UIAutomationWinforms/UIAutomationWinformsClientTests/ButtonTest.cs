@@ -35,6 +35,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 	public class ButtonTest : BaseTest
 	{
 		#region Properties Test 
+
+		[Test]
+		[Description ("Value: Button | Notes: This value is the same for all UI frameworks.")]
+		public override void MsdnControlTypePropertyTest () 
+		{
+			AutomationElement child = GetAutomationElement ();
+			Assert.AreEqual (ControlType.Button,
+				child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty, true),
+				"ControlType");
+		}
 		
 		[Test]
 		[Description ("Value: See notes. | Notes: The name of the button control is the text "
