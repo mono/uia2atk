@@ -118,6 +118,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 				"OrientationProperty");
 		}
 
+		[Test]
+		[Description ("Value: See Notes | Notes: The Help Text should indicate what the end result of activating "
+			+ "the button will be. This information must be exposed through a ToolTip. ")]
+		public override void MsdnHelpTextPropertyTest ()
+		{
+			Button button = GetButton ();
+
+			ToolTip tooltip = new ToolTip ();
+			tooltip.SetToolTip (button, "I'm HelpTextProperty in button");
+
+			AutomationElement child = GetAutomationElementFromControl (button);
+			Assert.AreEqual (tooltip.GetToolTip (button),
+				child.GetCurrentPropertyValue (AutomationElementIdentifiers.HelpTextProperty, true),
+				"HelpTextProperty");
+		}
+
 		#endregion
 
 		#region Pattern Tests

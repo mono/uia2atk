@@ -72,10 +72,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		}
 
 		[Test]
-		[Ignore ("No idea how to test")]
-		public virtual void MsdnHelpTextPropertyTest ()
-		{
-		}
+		public abstract void MsdnHelpTextPropertyTest ();
 
 		[Test]
 		public abstract void MsdnNamePropertyTest ();
@@ -272,8 +269,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 
 		protected AutomationElement GetAutomationElementFromControl (Control control)
 		{
-			Form.Controls.Add (control);
-			Form.Show ();
+			if (Form != control) {
+				Form.Controls.Add (control);
+				Form.Show ();
+			}
 
 			return AutomationElement.FromHandle (control.Handle);
 		}

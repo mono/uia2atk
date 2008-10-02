@@ -124,6 +124,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 				"OrientationProperty");
 		}
 
+		[Test]
+		[NotListedAttribute]
+		[Description ("Is not listed. We are using null as default value.")]
+		public override void MsdnHelpTextPropertyTest () 
+		{
+			AutomationElement child = GetAutomationElement ();
+			Assert.AreEqual (null,
+				child.GetCurrentPropertyValue (AutomationElementIdentifiers.HelpTextProperty, true),
+				"HelpTextProperty");
+		}
+
 		#endregion Properties
 
 		#region Patterns

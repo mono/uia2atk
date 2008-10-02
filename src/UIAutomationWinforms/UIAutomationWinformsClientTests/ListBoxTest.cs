@@ -98,6 +98,23 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 				"OrientationProperty");
 		}
 
+		[Test]
+		[Description ("Value: See Notes | Notes: The Help text for list controls should explain why the user is being "
+			+ @"asked to make a choice from a list of options. For example, ""Selection an item from this list will set the "
+			+ @"display resolution for your monitor.""")]
+		public override void MsdnHelpTextPropertyTest ()
+		{
+			ListBox listbox = CreateListBox ();
+
+			ToolTip tooltip = new ToolTip ();
+			tooltip.SetToolTip (listbox, "I'm HelpTextProperty in listbox");
+
+			AutomationElement child = GetAutomationElementFromControl (listbox);
+			Assert.AreEqual (tooltip.GetToolTip (listbox),
+				child.GetCurrentPropertyValue (AutomationElementIdentifiers.HelpTextProperty, true),
+				"HelpTextProperty");
+		}
+
 		#region Protected Methods
 
 		private ListBox CreateListBox ()

@@ -1,3 +1,8 @@
+2008-10-02  Mario Carrion <mcarrion@novell.com> 
+
+	* BaseTest.cs, ButtonTest.cs, CheckBoxTest.cs, ListBoxTest.cs, 
+	  ScrollBarTest.cs: MsdnHelpTextPropertyTest implementation.
+
 2008-10-01  Mario Carrion <mcarrion@novell.com> 
 
 	* UIAutomationWinformsClientTests.csproj: ListBoxTest.cs file renamed.
