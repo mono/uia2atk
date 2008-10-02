@@ -1,3 +1,13 @@
+2008-10-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+        * atspimon.py: moved from here to parent folder, in order to
+        let it be used by GailTest.
+	* UiaAtkBridgeTest.mdp: Updated.
+
+2008-10-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* atspimon.py: Be full XML compliant.
+
 2008-10-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* atspimon.py: Exit with CTRL+C directly, without keypress.
