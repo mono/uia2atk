@@ -37,6 +37,9 @@
     <File name="CheckedListBoxProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="ProgressBarProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="ErrorProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="TabControlProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="TabPageProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="HelpProviderTest.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

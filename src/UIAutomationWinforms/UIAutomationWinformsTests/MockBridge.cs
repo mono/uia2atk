@@ -122,5 +122,21 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}
 			return count;
 		}
+		
+		public AutomationPropertyChangedEventTuple GetAutomationPropertyEventAt (int index)
+		{
+			if (AutomationPropertyChangedEvents.Count >= index || index < 0)
+				return null;
+			
+			return AutomationPropertyChangedEvents [index];
+		}
+		
+		public AutomationEventTuple GetAutomationEventAt (int index)
+		{
+			if (index >= AutomationEvents.Count || index < 0)
+				return null;
+			
+			return AutomationEvents [index];
+		}
 	}
 }

@@ -1,3 +1,11 @@
+2008-10-02  Mario Carrion <mcarrion@novell.com> 
+
+	* BaseProviderTest.cs: Fixed GetProviderFromControl
+	* Makefile.am, HelpProviderTest.cs, UIAutomationWinformsTests.mdp:
+	  HelpProvider test added.
+	* MockBridge.cs: Net Methods to get: Automation Event and Automation
+	  Property Event
+
 2008-09-30  Mario Carrion <mcarrion@novell.com> 
 
 	* CheckedListBoxProviderTest.cs: Testing behaviors.

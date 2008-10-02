@@ -53,7 +53,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Setup/Teardown
-		
+
 		[SetUp]
 		public virtual void SetUp ()
 		{
@@ -276,13 +276,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		protected IRawElementProviderFragment GetProviderFromControl (Control control)
 		{
-			form.Controls.Add (control);
+			if (form.Contains (control) == false)
+				form.Controls.Add (control);
 			form.Size = new System.Drawing.Size (400, 400);
 			form.Show ();
-			
-			windowProvider = (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (form);
-			
-			return windowProvider.Navigate (NavigateDirection.FirstChild);
+			if (form.Controls.Count == 1) {
+				windowProvider = (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (form);
+				return windowProvider.Navigate (NavigateDirection.FirstChild);
+			} else
+				return (IRawElementProviderFragment) ProviderFactory.GetProvider (control);
 		}
 
 		protected void TestLabeledByAndName (bool expectNonNull, bool expectNameFromLabel)

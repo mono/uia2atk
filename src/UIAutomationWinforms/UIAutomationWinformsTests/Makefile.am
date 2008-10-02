@@ -60,6 +60,7 @@ FILES =  \
 	ComboBoxProviderTest.cs \
 	ErrorProviderTest.cs \
 	GroupBoxProviderTest.cs \
+	HelpProviderTest.cs \
 	LabelProviderTest.cs \
 	LinkLabelProviderTest.cs \
 	ListBoxProviderTest.cs \
