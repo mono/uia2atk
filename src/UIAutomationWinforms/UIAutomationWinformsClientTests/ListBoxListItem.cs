@@ -30,25 +30,30 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms.Client
 {
-	//According to http://msdn.microsoft.com/en-us/library/ms742462.aspx
+	//According to http://msdn.microsoft.com/en-us/library/ms744765.aspx
 	[TestFixture]
-	[Description ("Tests SWF.ListBox as ControlType.List")]
-	public class ListBoxTest : BaseTest
+	[Description ("Tests SWF.ListBox Item as ControlType.ListItem")]
+	public class ListBoxListItem : BaseTest
 	{
 		[Test]
-		[Description ("Value: List | Notes: This value is the same for all UI frameworks.")]
+		[Description ("Value: ListItem | Notes: This value is the same for all UI frameworks.")]
 		public override void MsdnControlTypePropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
-			Assert.AreEqual (ControlType.List,
+			Assert.AreEqual (ControlType.ListItem,
 				child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty, true),
 				"ControlType");
 		}
-	
+
 		[Test]
+		[Description ("Value See Notes | Notes: The value of a list item control's name property comes from the text "
+			+"contents of the item.")]
 		public override void MsdnNamePropertyTest ()
 		{
-			throw new NotImplementedException ();
+			AutomationElement child = GetAutomationElement ();
+			Assert.AreEqual ("1",
+				child.GetCurrentPropertyValue (AutomationElementIdentifiers.NameProperty, true),
+				"NameProperty");
 		}
 
 		[Test]
@@ -58,11 +63,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		}
 
 		[Test]
-		[Description (@"Value: ""list"" | Notes: Localized string corresponding to the List control type. ")]
+		[Description (@"Value: ""list item"" | Notes: The value of a list item control's name property comes from the "
+			+"text contents of the item. ")]
 		public override void MsdnLocalizedControlTypePropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
-			Assert.AreEqual ("list",
+			Assert.AreEqual ("list item",
 				child.GetCurrentPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty, true),
 				"LocalizedControlTypeProperty");
 		}
@@ -78,6 +84,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		}
 
 		[Test]
+		[LameSpec]
 		[Description ("Value: True | Notes: The list control is always included in the control view of the UI Automation tree.")]
 		public override void MsdnIsControlElementPropertyTest ()
 		{
@@ -99,36 +106,58 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		}
 
 		[Test]
-		[Description ("Value: See Notes | Notes: The Help text for list controls should explain why the user is being "
-			+ @"asked to make a choice from a list of options. For example, ""Selection an item from this list will set the "
-			+ @"display resolution for your monitor.""")]
+		[LameSpec]
+		[Description (@"Value: """" | Notes: The Help text for list controls should explain why the user is "
+			+@"being asked to make a choice from a list of options. For example, ""Selecting an item from this list "
+			+@"will set the display resolution for your monitor.""")]
 		public override void MsdnHelpTextPropertyTest ()
 		{
-			ListBox listbox = CreateListBox ();
-
-			ToolTip tooltip = new ToolTip ();
-			tooltip.SetToolTip (listbox, "I'm HelpTextProperty in listbox");
-
-			AutomationElement child = GetAutomationElementFromControl (listbox);
-			Assert.AreEqual (tooltip.GetToolTip (listbox),
+			AutomationElement child = GetAutomationElement ();
+			Assert.AreEqual ("",
 				child.GetCurrentPropertyValue (AutomationElementIdentifiers.HelpTextProperty, true),
 				"HelpTextProperty");
 		}
 
+		#region Automation Patterns Tests
+
+		[Test]
+		public override void MsdnScrollItemPatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsTrue (SupportsPattern (element, ScrollItemPatternIdentifiers.Pattern),
+				"ScrollItemPattern SHOULD be supported");
+		}
+
+		[Test]
+		public override void MsdnSelectionItemPatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsTrue (SupportsPattern (element, SelectionItemPatternIdentifiers.Pattern),
+				"SelectionItemPattern SHOULD be supported");
+		}
+
+		#endregion 
+
 		#region Protected Methods
 
-		private ListBox CreateListBox ()
+		protected override AutomationElement GetAutomationElement ()
 		{
 			ListBox listbox = new ListBox ();
 			listbox.Items.AddRange (new object [] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 });
 			listbox.Size = new Size (100, 100);
 			listbox.Location = new Point (3, 3);
-			return listbox;
-		}
 
-		protected override AutomationElement GetAutomationElement ()
-		{
-			return GetAutomationElementFromControl (CreateListBox ());
+			AutomationElement listboxElement = GetAutomationElementFromControl (listbox);
+
+			AutomationElement child = TreeWalker.ContentViewWalker.GetFirstChild (listboxElement);
+			while (child != null) {
+				if (child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty)
+					== ControlType.ListItem)
+					return child;
+				else
+					child = TreeWalker.ContentViewWalker.GetNextSibling (child);
+			}
+			return null;
 		}
 
 		#endregion
