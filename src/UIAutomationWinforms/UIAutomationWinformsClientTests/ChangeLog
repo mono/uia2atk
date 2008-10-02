@@ -1,5 +1,11 @@
 2008-10-02  Mario Carrion <mcarrion@novell.com> 
 
+	* CheckedListBoxListItem.cs, ListBoxListItem.cs: File added, Tests ListItem.
+	* ListBoxTest.cs: Fixed test message.
+	* UIAutomationWinformsClientTests.csproj: Updated. Files added.
+
+2008-10-02  Mario Carrion <mcarrion@novell.com> 
+
 	* BaseTest.cs, ButtonTest.cs, CheckBoxTest.cs, ListBoxTest.cs, 
 	  ScrollBarTest.cs: MsdnHelpTextPropertyTest implementation.
 
