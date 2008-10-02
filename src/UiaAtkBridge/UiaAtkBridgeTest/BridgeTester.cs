@@ -173,6 +173,7 @@ namespace UiaAtkBridgeTest
 		SWF.CheckedListBox clb1 = new SWF.CheckedListBox ();
 		SWF.ComboBox cb1 = new SWF.ComboBox ();
 		SWF.Label lab1 = new SWF.Label ();
+		SWF.LinkLabel linklab1 = new SWF.LinkLabel ();
 		SWF.Button but1 = new SWF.Button ();
 		SWF.CheckBox chk1 = new SWF.CheckBox ();
 		SWF.StatusBar sb1 = new SWF.StatusBar ();
@@ -185,6 +186,12 @@ namespace UiaAtkBridgeTest
 		public BridgeTester () 
 		{
 			cb1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			linklab1.Links[0].Visited = true;
+			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com";
+			linklab1.Links.Add(9, 16, "www.opensuse.org");
+			linklab1.Links.Add(35, 16, "gmail.novell.com");
+			linklab1.LinkClicked += LinkLabelClicked;
+			linklab1.Links[0].Enabled = false;
 			gb1.Controls.Add (rad1);
 			gb1.Controls.Add (rad2);
 			gb2.Controls.Add (rad3);
@@ -195,6 +202,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (clb1);
 			form.Controls.Add (cb1);
 			form.Controls.Add (lab1);
+			form.Controls.Add (linklab1);
 			form.Controls.Add (but1);
 			form.Controls.Add (chk1);
 			form.Controls.Add (sb1);
@@ -447,6 +455,13 @@ namespace UiaAtkBridgeTest
 				typeof(I).Name);
 		}
 		
+		private int lastClickedLink = -1;
+
+		public void LinkLabelClicked (object source, SWF.LinkLabelLinkClickedEventArgs e)
+		{
+			lastClickedLink = linklab1.Links.IndexOf (e.Link);
+		}
+
 		protected override int ValidNumberOfActionsForAButton { get { return 1; } }
 		protected override int ValidNChildrenForASimpleStatusBar { get { return 0; } }
 		protected override int ValidNChildrenForAScrollBar { get { return 0; } }
@@ -539,6 +554,48 @@ namespace UiaAtkBridgeTest
 			InterfaceTextSingleLine (BasicWidgetType.CheckedListItem, listItemChild);
 
 			Parent (type, accessible);
+		}
+
+		[Test]
+		public void LinkLabel ()
+		{
+			UiaAtkBridge.Hyperlink hyperlink;
+			hyperlink = (UiaAtkBridge.Hyperlink) UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy ((IRawElementProviderSimple) ProviderFactory.GetProvider (linklab1, true, true));
+			Atk.TextAdapter text = new Atk.TextAdapter (hyperlink);
+			Assert.AreEqual (53, text.CharacterCount, "LinkLabel character count");
+			Assert.AreEqual ("openSUSE", text.GetText (0, 8), "LinkLabel GetText");
+			Atk.HypertextAdapter hypertext = new Atk.HypertextAdapter (hyperlink);
+			Assert.AreEqual (2, hypertext.NLinks, "LinkLabel NLinks");
+			Assert.AreEqual (-1, hypertext.GetLinkIndex (8), "GetLinkIndex #1");
+			Assert.AreEqual (0, hypertext.GetLinkIndex (9), "GetLinkIndex #2");
+			Assert.AreEqual (-1, hypertext.GetLinkIndex (25), "GetLinkIndex #3");
+			Assert.AreEqual (1, hypertext.GetLinkIndex (35), "GetLinkIndex #4");
+			Assert.AreEqual (1, hypertext.GetLinkIndex (42), "GetLinkIndex #5");
+			Assert.AreEqual (-1, hypertext.GetLinkIndex (51), "GetLinkIndex #6");
+			Atk.Hyperlink link1 = hypertext.GetLink (0);
+			Assert.AreEqual ("www.opensuse.org", link1.GetUri (0), "Link 1 uri");
+			Assert.IsNull (link1.GetUri (1), "LinkLabel GetUri OOR #1");
+			Assert.IsNull (link1.GetUri (-1), "LinkLabel GetUri OOR #2");
+			Assert.AreEqual (9, link1.StartIndex, "Link 1 StartIndex");
+			Assert.AreEqual (25, link1.EndIndex, "Link 1 EndIndex");
+			Atk.Object obj1 = link1.GetObject (0);
+			Assert.IsNotNull (obj1, "LinkLabel GetObject #1");
+			Assert.IsFalse (obj1.RefStateSet().ContainsState (Atk.StateType.Enabled), "RefStateSet().Contains(Enabled)");
+			Assert.IsNull (link1.GetObject (1), "GetObject OOR #1");
+			Assert.IsNull (link1.GetObject (-1), "GetObject OOR #2");
+			Atk.Hyperlink link2 = hypertext.GetLink (1);
+			Assert.AreEqual ("gmail.novell.com", link2.GetUri (0), "Link 1 uri");
+			Assert.AreEqual (35, link2.StartIndex, "Link 1 StartIndex");
+			Assert.AreEqual (51, link2.EndIndex, "Link 1 EndIndex");
+			Atk.Object obj2 = link2.GetObject (0);
+			Assert.IsNotNull (obj2, "LinkLabel GetObject #2");
+			Assert.IsTrue (obj2.RefStateSet().ContainsState (Atk.StateType.Enabled), "RefStateSet().Contains(Enabled)");
+			Atk.ActionAdapter action = new Atk.ActionAdapter ((Atk.ActionImplementor)obj2);
+			Assert.AreEqual (1, action.NActions, "LinkLabel link NActions");
+			Assert.IsTrue (action.DoAction (0), "LinkLabel DoAction #1");
+			Assert.IsFalse (action.DoAction (1), "LinkLabel DoAction OOR #1");
+			Assert.IsFalse (action.DoAction (-1), "LinkLabel DoAction OOR #2");
+			Assert.AreEqual (1, lastClickedLink, "LastClickedLink");
 		}
 
 		//[Test]

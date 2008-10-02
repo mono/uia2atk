@@ -39,6 +39,7 @@
     <File name="MenuItem.cs" subtype="Code" buildaction="Compile" />
     <File name="CheckBoxButton.cs" subtype="Code" buildaction="Compile" />
     <File name="RadioButton.cs" subtype="Code" buildaction="Compile" />
+    <File name="Hyperlink.cs" subtype="Code" buildaction="Compile" />
     <File name="List.cs" subtype="Code" buildaction="Compile" />
     <File name="ListItem.cs" subtype="Code" buildaction="Compile" />
     <File name="SelectionProviderUserHelper.cs" subtype="Code" buildaction="Compile" />

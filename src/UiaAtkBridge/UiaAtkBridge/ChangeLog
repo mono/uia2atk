@@ -1,3 +1,8 @@
+2008-10-02  Mike Gorse <mgorse@novell.com>
+
+	* Hyperlink.cs, Makefile.am, UiaAtkBridge.mdp: Add Hyperlink.cs.
+	* AutomationBridge.cs: Support Hyperlink.
+
 2008-10-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* AmbiDictionary.cs: Fair enough.
