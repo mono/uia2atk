@@ -100,7 +100,7 @@ class Settings(object):
       desktop.queryTable()
     except NotImplementedError:
       pass
-    apps = [app.name for app in desktop]
+    apps = [app.name for app in desktop if app is not None]
     Settings.source_app = args[0]
     if not Settings.source_app in apps:
       output("'%s' not found on the desktop" % Settings.source_app)
