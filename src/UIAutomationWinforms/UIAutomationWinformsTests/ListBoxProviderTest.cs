@@ -119,6 +119,44 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (1,
 			                bridge.GetAutomationEventCount (SelectionItemPatternIdentifiers.ElementSelectedEvent),
 			                "SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent");
+			
+			bridge.ResetEventLists ();
+			selectionItem.RemoveFromSelection ();
+
+			Assert.AreEqual (1,
+			                bridge.GetAutomationPropertyEventCount (SelectionItemPatternIdentifiers.IsSelectedProperty),
+			                "SelectionItemPatternIdentifiers.IsSelectedProperty");			
+			
+			Assert.AreEqual (0,
+			                bridge.GetAutomationEventCount (SelectionItemPatternIdentifiers.ElementSelectedEvent),
+			                "SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent");
+			
+			bridge.ResetEventLists ();
+			//Lets add a new item in listbox
+			
+			listbox.SelectionMode = SelectionMode.MultiSimple;
+			listbox.Items.Add ("test 2");
+			
+			selectionItem.AddToSelection ();
+			
+			//Get 2nd child
+			IRawElementProviderFragment child2nd = child.Navigate (NavigateDirection.NextSibling);
+			
+			ISelectionItemProvider selectionItem2
+				= child2nd.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id) as ISelectionItemProvider;			
+			Assert.IsNotNull (selectionItem2, "ListItem should ALWAYS SUPPORT SelectionItem");
+			
+			selectionItem2.AddToSelection ();
+
+			Assert.AreEqual (1,
+			                bridge.GetAutomationEventCount (SelectionItemPatternIdentifiers.ElementSelectedEvent),
+			                 "SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent");
+			Assert.AreEqual (2,
+			                bridge.GetAutomationPropertyEventCount (SelectionItemPatternIdentifiers.IsSelectedProperty),
+			                 "SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent");
+			Assert.AreEqual (1,
+			                bridge.GetAutomationEventCount (SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent),
+			                 "SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent");
 		}
 		
 		#endregion

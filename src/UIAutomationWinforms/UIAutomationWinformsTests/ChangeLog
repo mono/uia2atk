@@ -1,5 +1,9 @@
 2008-10-02  Mario Carrion <mcarrion@novell.com> 
 
+	* ListBoxProviderTest.cs: ISelectionItem tests updated.
+
+2008-10-02  Mario Carrion <mcarrion@novell.com> 
+
 	* BaseProviderTest.cs: Fixed GetProviderFromControl
 	* Makefile.am, HelpProviderTest.cs, UIAutomationWinformsTests.mdp:
 	  HelpProvider test added.
