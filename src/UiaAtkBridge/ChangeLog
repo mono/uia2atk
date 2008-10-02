@@ -1,5 +1,9 @@
 2008-10-02  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* atspimon.py: Fix the "casting".
+
+2008-10-02  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* atspimon.py: Escape offending chars for XML.
 
 2008-10-01  Andrés G. Aragoneses  <aaragoneses@novell.com>

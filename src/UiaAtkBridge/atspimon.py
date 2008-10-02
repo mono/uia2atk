@@ -152,7 +152,7 @@ class Monitor:
                                              (event.type,
                                              event.detail1,
                                              event.detail2,
-                                             escape(event.any_data)), False)
+                                             escape(str(event.any_data))), False)
       output('\n', False)
     else:
       output('%s(%s, %s, %s)\n\tsource: ' % (event.type,
