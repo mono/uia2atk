@@ -12,6 +12,7 @@ import os
 import pyatspi
 import atexit
 import getopt
+from xml.sax.saxutils import escape
 
 # simply takes a string s as input and prints it if running verbosely
 def output(s, newline=True):
@@ -151,7 +152,7 @@ class Monitor:
                                              (event.type,
                                              event.detail1,
                                              event.detail2,
-                                             event.any_data), False)
+                                             escape(event.any_data)), False)
       output('\n', False)
     else:
       output('%s(%s, %s, %s)\n\tsource: ' % (event.type,
