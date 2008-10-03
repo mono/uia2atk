@@ -248,6 +248,89 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 #endregion
+
+#region Paragraph methods
+
+		public int ParagraphMoveStartPoint (int count)
+		{
+			return ParagraphMoveStartEndPoint (count, ref start_point);
+		}
+		
+		public int ParagraphMoveEndPoint (int count)
+		{
+			return ParagraphMoveStartEndPoint (count, ref end_point);
+		}
+
+		public int ParagraphMoveStartEndPoint (int count, ref int point)
+		{
+			if (count == 0) {
+				return 0;
+			}
+
+			string text = textboxbase.Text;
+
+			int c = 0, index = 0;
+			if (count > 0) {
+				// walk forward until you see count number of
+				// new lines
+				for (int i = point; i < text.Length; i++) {
+					index = i;
+
+					if (text[i] == Environment.NewLine[0]) {
+						c++;
+
+						if (c == count) {
+							index = i + 1;
+							break;
+						}
+					}
+				}
+
+				// if we didn't find the number of lines we
+				// were asked for, jump to the end of the
+				// string, and count that as a line
+				if (c != count && point < (text.Length - 1)) {
+					c++;
+					index = text.Length;
+				}
+
+				point = index;
+				return c;
+			} else {
+				// walk backwards until you see count number of
+				// new lines
+				for (int i = point - 1; i >= 0; i--) {
+					index = i;
+
+					// stop when you hit count newlines
+					// (plus 1 since we want all the text
+					// leading up to the next newline)
+					if (text[i] == Environment.NewLine[0]) {
+						c--;
+						
+						if (c == (count - 1)) {
+							index = i + 1;
+							c++;
+							break;
+						}
+					}
+				}
+
+				// if we didn't find the number of lines we
+				// were asked for, jump to the front of the
+				// string, and count that as a line
+				if (c != count && point > 0) {
+					c--;
+					index = 0;
+				}
+
+				point = index;
+				return c;
+			}
+
+			return 0;
+		}
+#endregion
 		
 #region Word methods
 		

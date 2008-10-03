@@ -201,28 +201,31 @@ namespace Mono.UIAutomation.Winforms
 				return 0;
 			*/
 			
-			if (unit == TextUnit.Character) {
+			switch (unit) {
+			case TextUnit.Character:
 				if (endpoint == TextPatternRangeEndpoint.Start)
 					return normalizer.CharacterMoveStartPoint (count);
 				else
 					return normalizer.CharacterMoveEndPoint (count);
-			} else if (unit == TextUnit.Format) {
+			case TextUnit.Format:
 				throw new NotImplementedException ();
-			} else if (unit == TextUnit.Word) {
+			case TextUnit.Word:
 				if (endpoint == TextPatternRangeEndpoint.Start)
 					return normalizer.WordMoveStartPoint (count);
 				else
 					return normalizer.WordMoveEndPoint (count);
-			} else if (unit == TextUnit.Line) {
+			case TextUnit.Line:
 				if (endpoint == TextPatternRangeEndpoint.Start)
 					return normalizer.LineMoveStartPoint (count);
 				else
 					return normalizer.LineMoveEndPoint (count);
-			} else if (unit == TextUnit.Paragraph) {
-				throw new NotImplementedException ();
-			} else if (unit == TextUnit.Page) {
-				throw new NotImplementedException ();
-			} else if (unit == TextUnit.Document) {
+			case TextUnit.Paragraph:
+				if (endpoint == TextPatternRangeEndpoint.Start)
+					return normalizer.ParagraphMoveStartPoint (count);
+				else
+					return normalizer.ParagraphMoveEndPoint (count);
+			case TextUnit.Page:
+			case TextUnit.Document:
 				throw new NotImplementedException ();
 			}
 

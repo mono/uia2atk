@@ -35,7 +35,6 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
-	
 	[TestFixture]
 	public class TextRangeProviderTest
 	{
@@ -93,7 +92,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			range = provider.DocumentRange.Clone ();
 
+			// NOTE: These all pass successfully on Windows Vista, so
+			// think twice before you change anything.
 			int moved_units;
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Line, 0);
+			Assert.AreEqual (0, moved_units);
+			Assert.AreEqual (String.Format ("hello{0}world{0}{0}test", Environment.NewLine),
+					 range.GetText (-1));
+
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 1);
 			Assert.AreEqual (1, moved_units, "Moved units are incorrect in +1 character move");
 			Assert.AreEqual (String.Format ("ello{0}world{0}{0}test", Environment.NewLine),
@@ -129,6 +135,120 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual(String.Format ("hello{0}world{0}{0}test", Environment.NewLine),
 					range.GetText (-1), "Text is incorrect in -5 line move");
 		}
+
+ 		[Test]
+		public void MoveEndpointByParagraphSimple ()
+		{
+			textbox.Multiline = true;
+
+			// In case you were wondering, the topic is: things that are awesome
+			textbox.Text = String.Format("bear{0}{0}shark{0}laser{0}{0}volcano", Environment.NewLine);
+
+			range = provider.DocumentRange.Clone ();
+			
+			// NOTE: These all pass successfully on Windows Vista, so
+			// think twice before you change anything.
+			int moved_units;
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, 0);
+			Assert.AreEqual (0, moved_units, "Moved units are incorrect in 0 paragraph move");
+			Assert.AreEqual (String.Format ("bear{0}{0}shark{0}laser{0}{0}volcano", Environment.NewLine),
+					 range.GetText (-1), "Text is incorrect in 0 paragraph move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -1);
+			Assert.AreEqual (0, moved_units, "Moved units are incorrect in -1 paragraph move");
+			Assert.AreEqual (String.Format ("bear{0}{0}shark{0}laser{0}{0}volcano", Environment.NewLine),
+					 range.GetText (-1), "Text is incorrect in -1 paragraph move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, 1);
+			Assert.AreEqual (1, moved_units, "Moved units are incorrect in first +1 paragraph move");
+			Assert.AreEqual (String.Format ("{0}shark{0}laser{0}{0}volcano", Environment.NewLine),
+					 range.GetText (-1), "Text is incorrect in first +1 paragraph move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, 1);
+			Assert.AreEqual (1, moved_units, "Moved units are incorrect in second +1 paragraph move");
+			Assert.AreEqual (String.Format ("shark{0}laser{0}{0}volcano", Environment.NewLine),
+					 range.GetText (-1), "Moved units are incorrect in second +1 paragraph move");
+			
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, 1);
+			Assert.AreEqual (1, moved_units, "Moved units are incorrect in third +1 paragraph move");
+			Assert.AreEqual (String.Format ("laser{0}{0}volcano", Environment.NewLine),
+					 range.GetText (-1), "Text is incorrect in third +1 paragraph move");
+			
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -1);
+			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in first -1 paragraph move");
+			Assert.AreEqual (String.Format ("shark{0}laser{0}{0}volcano", Environment.NewLine),
+					 range.GetText (-1), "Text is incorrect in first -1 paragraph move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -1);
+			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in second -1 paragraph move");
+			Assert.AreEqual (String.Format ("{0}shark{0}laser{0}{0}volcano", Environment.NewLine),
+					 range.GetText (-1), "Text is incorrect in second -1 paragraph move");
+			
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -1);
+			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in third -1 paragraph move");
+			Assert.AreEqual (String.Format ("bear{0}{0}shark{0}laser{0}{0}volcano", Environment.NewLine),
+					 range.GetText (-1), "Text is incorrect in third -1 paragraph move");
+ 		}
+
+ 		[Test]
+		public void MoveEndpointByPargraphIntensive ()
+		{
+			textbox.Multiline = true;
+			textbox.Text = String.Format ("apples{0}{0}pears{0}peaches{0}{0}bananas", Environment.NewLine);
+
+			range = provider.DocumentRange.Clone ();
+			
+			// NOTE: These all pass successfully on Windows Vista, so
+			// think twice before you change anything.
+			int moved_units;
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 1);
+			Assert.AreEqual (1, moved_units, "Moved units are incorrect in 0 paragraph move");
+			Assert.AreEqual (String.Format ("pples{0}{0}pears{0}peaches{0}{0}bananas", Environment.NewLine),
+					 range.GetText (-1), "Text is incorrect in 0 paragraph move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -1);
+			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in -1 paragraph move");
+			Assert.AreEqual (String.Format ("apples{0}{0}pears{0}peaches{0}{0}bananas", Environment.NewLine),
+					 range.GetText (-1), "Text is incorrect in -1 paragraph move");
+
+			range = provider.DocumentRange.Clone ();
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 1);
+			Assert.AreEqual (1, moved_units, "Moved units are incorrect in +1 character move");
+			Assert.AreEqual (String.Format ("pples{0}{0}pears{0}peaches{0}{0}bananas", Environment.NewLine),
+					 range.GetText (-1), "Text is incorrect in +1 character move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, 2);
+			Assert.AreEqual (2, moved_units, "Moved units are incorrect in +2 paragraph move");
+			Assert.AreEqual (String.Format ("pears{0}peaches{0}{0}bananas", Environment.NewLine),
+					 range.GetText (-1), "Text is incorrect in +2 paragraph move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -1);
+			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in first -1 paragraph move");
+			Assert.AreEqual (String.Format ("{0}pears{0}peaches{0}{0}bananas", Environment.NewLine),
+					 range.GetText (-1), "Text is incorrect in -1 paragraph move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -1);
+			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in first -1 paragraph move");
+			Assert.AreEqual (String.Format ("apples{0}{0}pears{0}peaches{0}{0}bananas", Environment.NewLine),
+					 range.GetText (-1), "Text is incorrect in -1 paragraph move");
+			
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, 4);
+			Assert.AreEqual (4, moved_units, "Moved units are incorrect in +4 paragraph move");
+			Assert.AreEqual (String.Format ("{0}bananas", Environment.NewLine),
+					 range.GetText (-1), "Text is incorrect in +4 paragraph move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, 10);
+			Assert.AreEqual (2, moved_units, "Moved units are incorrect in +10 paragraph move");
+			Assert.AreEqual (String.Empty, range.GetText (-1), "Text is incorrect in +10 paragraph move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -10);
+			Assert.AreEqual (-6, moved_units, "Moved units are incorrect in -10 paragraph move");
+			Assert.AreEqual (String.Format ("apples{0}{0}pears{0}peaches{0}{0}bananas", Environment.NewLine),
+					 range.GetText (-1), "Text is incorrect in -10 paragraph move");
+			
+			// Going bananas yet?
+ 		}
 
 		private const string TEST_MESSAGE = "One morning, when Gregor Samsa    woke from troubled dreams, "+
 			"he found himself transformed in his bed into a horrible vermin.He lay on his armour-like back, "+

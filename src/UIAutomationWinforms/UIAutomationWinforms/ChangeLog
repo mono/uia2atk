@@ -1,6 +1,12 @@
 2008-10-03  Brad Taylor  <brad@getcoded.net>
 	
 	* Mono.UIAutomation.Winforms/TextNormalizer.cs:
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Implement
+	  ParagraphMoveStartEndPoint for TextRangeProvider.
+
+2008-10-03  Brad Taylor  <brad@getcoded.net>
+	
+	* Mono.UIAutomation.Winforms/TextNormalizer.cs:
 	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Cleanup, refactor,
 	  implement LineMoveStartEndPoint for TextRangeProvider.
 

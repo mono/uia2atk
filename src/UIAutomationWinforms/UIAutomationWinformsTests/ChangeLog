@@ -1,4 +1,9 @@
 2008-10-03  Brad Taylor  <brad@getcoded.net>
+
+	* UIAutomationWinformsTests/TextRangeProviderTest.cs: Implement a test
+	  for TextUnit.Paragraph.
+
+2008-10-03  Brad Taylor  <brad@getcoded.net>
 	
 	* TextRangeProviderTest.cs: Revive test, implement tests for
 	  MoveEndpointByUnit, specifically with the Line unit.
