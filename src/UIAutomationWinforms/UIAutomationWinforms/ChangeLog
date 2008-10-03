@@ -1,5 +1,9 @@
 2008-10-03  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/TextNormalizer.cs: License header updated.
+
+2008-10-03  Mario Carrion <mcarrion@novell.com> 
+
 	* Makefile.am, Mono.UIAutomation.Winforms.mdp: File added:
 	  ListViewProvider.cs
 	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/SelectionProviderBehavior.cs,
