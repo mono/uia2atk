@@ -43,9 +43,12 @@ FILES =  \
 	AssemblyInfo.cs \
 	AtkTester.cs \
 	AtkTests.cs \
+	AtSpiEvent.cs \
 	BasicWidgetType.cs \
 	BridgeTester.cs \
 	Bug416602.cs \
+	EventCollection.cs \
+	EventMonitor.cs \
 	TestButtonControlType.cs \
 	TestProviderSimple.cs
 
