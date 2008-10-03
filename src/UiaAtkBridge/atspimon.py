@@ -95,12 +95,13 @@ class Settings(object):
       desktop.queryTable()
     except NotImplementedError:
       pass
-    Settings.source_apps = args[0]
+    Settings.source_apps = args[0:]
+
     if not Settings.xml_format:
       apps = [app.name for app in desktop if app is not None]
-      if not Settings.source_apps in apps:
-        output("None of the apps specified were found on the desktop now, so waiting for them to appear...")
-
+      for source_app in self.source_apps:
+        if source_app not in apps:
+          print "Could not find the application: %s" % source_app
 
 class Monitor:
 
