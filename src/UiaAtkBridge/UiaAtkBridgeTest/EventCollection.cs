@@ -55,9 +55,9 @@ namespace UiaAtkBridgeTest
 			}
 		}
 
-		public string OriginalGrossXml ()
+		public string OriginalGrossXml
 		{
-			return originalRepr.Replace ("</event>", "</event>" + Environment.NewLine);
+			get { return originalRepr.Replace ("</event>", "</event>" + Environment.NewLine); }
 		}
 
 		public EventCollection FindByType (string type)

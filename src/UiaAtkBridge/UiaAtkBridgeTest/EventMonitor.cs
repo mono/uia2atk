@@ -59,8 +59,8 @@ namespace UiaAtkBridgeTest
 
 		void OnDataReceived (object sender, DataReceivedEventArgs args)
 		{
-		    if (args.Data != null)
-		        xmlResult += args.Data;
+			if (args.Data != null)
+				xmlResult += args.Data;
 		}
 		
 		internal EventCollection Stop () {

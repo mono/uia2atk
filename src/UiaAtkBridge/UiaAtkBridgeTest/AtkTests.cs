@@ -117,13 +117,13 @@ namespace UiaAtkBridgeTest
 			int numOfEvents = 1;
 			Assert.AreEqual (numOfEvents, typeEvs.Count,
 			                 String.Format ("number of {0} events should be {1}; but we got: {2} {3}",
-			                                evType, numOfEvents, typeEvs.Count, Environment.NewLine + events.ToString ()));
+			                                evType, numOfEvents, typeEvs.Count, Environment.NewLine + events.OriginalGrossXml));
 
 			evType = "object:state-changed:focused";
 			typeEvs = checkboxEvs.FindByType (evType);
 			Assert.AreEqual (numOfEvents, typeEvs.Count,
 			                 String.Format ("number of {0} events should be {1}; but we got: {2} {3}",
-			                                evType, numOfEvents, typeEvs.Count, Environment.NewLine + events.ToString ()));
+			                                evType, numOfEvents, typeEvs.Count, Environment.NewLine + events.OriginalGrossXml));
 		}
 		
 		[Test]
