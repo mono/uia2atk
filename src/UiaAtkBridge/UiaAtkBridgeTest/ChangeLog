@@ -1,3 +1,9 @@
+2008-10-03  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* UiaAtkBridgeTest.mdp, AtkTests.cs, AtSpiEvent.cs, EventCollection.cs,
+	  EventMonitor.cs: Add event testing.
+	* TestButtonControlType.cs: Cosmetic.
+
 2008-10-02  Mike Gorse <mgorse@novell.com>
 
 	* BridgeTester.cs: Add LinkLabel test.

@@ -77,7 +77,7 @@ namespace UiaAtkBridgeTest
 		
 		public void Toggle ()
 		{
-			if(toggleState == ToggleState.Off)
+			if (toggleState == ToggleState.Off)
 				toggleState = ToggleState.On;
 			else if(toggleState == ToggleState.On)
 				toggleState = ToggleState.Indeterminate;

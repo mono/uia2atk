@@ -83,8 +83,10 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
-		public void CheckBox ()
+		public void Checkbox ()
 		{
+			EventMonitor evMon = new EventMonitor ();
+
 			BasicWidgetType type = BasicWidgetType.CheckBox;
 			Atk.Object accessible;
 			
@@ -105,6 +107,12 @@ namespace UiaAtkBridgeTest
 			
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "CheckBox numChildren");
 			Parent (type, accessible);
+
+			EventCollection events = evMon.Stop ();
+			int numOfEvents = 3;
+			Assert.AreEqual (events.Count, numOfEvents,
+			                 String.Format ("number of events should be {0}; but we got: {1}{2}",
+			                                numOfEvents, Environment.NewLine, events.ToString ()));
 		}
 		
 		[Test]
