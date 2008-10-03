@@ -10,5 +10,6 @@ tests_list = [
     "form_basic_ops.py",
     "label_basic_ops.py",
     "button_basic_ops.py",
-    "checkbox_basic_ops.py"
+    "checkbox_basic_ops.py",
+    "radiobutton_basic_ops.py"
 ]

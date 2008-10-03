@@ -49,15 +49,34 @@ actionsCheck(rbFrame.button2, "RadioButton")
 actionsCheck(rbFrame.button3, "RadioButton")
 
 #check radiobutton1 with 'checked' 'focused' states
-statesCheck(rbFrame.button1, "RadioButton", 
-                           add_states=["focused", "checked"])
+statesCheck(rbFrame.button1, "RadioButton", add_states=["focused", "checked"])
+
+# Press 'Right' key until we get back to button1, and check that each check
+# button gets focused state except button3, which should be skipped.  Make sure
+# we can check using the spacebar as we go.
+rbFrame.keyCombo("Right", grabFocus=False)
+statesCheck(rbFrame.button2, "RadioButton", add_states=["focused"])
+statesCheck(rbFrame.button1, "RadioButton", add_states=["checked"])
+rbFrame.keyCombo("space", grabFocus=False)
+sleep(config.SHORT_DELAY)
+rbFrame.assertLabel("You are Female")
+statesCheck(rbFrame.button2, "RadioButton", add_states=["focused", "checked"])
+statesCheck(rbFrame.button1, "RadioButton")
+rbFrame.keyCombo("Right", grabFocus=False)
+statesCheck(rbFrame.button1, "RadioButton", add_states=["focused"])
+statesCheck(rbFrame.button2, "RadioButton", add_states=["checked"])
+rbFrame.keyCombo("space", grabFocus=False)
+sleep(config.SHORT_DELAY)
+rbFrame.assertLabel("You are Male")
+statesCheck(rbFrame.button1, "RadioButton", add_states=["focused", "checked"])
+statesCheck(rbFrame.button2, "RadioButton")
 
 #check radiobutton2 with default states
 statesCheck(rbFrame.button2, "RadioButton")
 
 #check radiobutton3's states
 statesCheck(rbFrame.button3, "RadioButton",
-                           invalid_states=["sensitive", "enabled"])
+                          invalid_states=["sensitive", "enabled", "focusable"])
 
 #click radiobutton2 'Female' to renew label's text 
 rbFrame.click(rbFrame.button2)
@@ -80,7 +99,7 @@ statesCheck(rbFrame.button1, "RadioButton")
 #click insensitive radiobutton3 doesn't change states
 rbFrame.button3.mouseClick()
 statesCheck(rbFrame.button3, "RadioButton",
-                           invalid_states=["sensitive", "enabled"])
+                           invalid_states=["sensitive", "enabled","focusable"])
 
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
