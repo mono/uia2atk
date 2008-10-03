@@ -1,5 +1,9 @@
 2008-10-03  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* atspimon.py: Let's listen for n apps instead of 1.
+
+2008-10-03  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* atspimon.py: Include also the source details from the event in XML
 	  mode.
 

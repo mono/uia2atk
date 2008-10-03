@@ -39,7 +39,7 @@ class Settings(object):
   # static variable, set by ctor
   is_quiet = None
   log_path = None
-  source_app = None
+  source_apps = []
   log_file = None
   xml_format = None
 
@@ -53,7 +53,7 @@ class Settings(object):
         abort(1)
 
   def help(self):
-    output("Usage:  atspimon.py [-hqlx] NAME")
+    output("Usage:  atspimon.py [-hqlx] NAME1 NAME2 ...")
     output("Where NAME is the application to monitor.")
     output('Find NAME in the "Name" column of Accerciser')
     output("")
@@ -84,12 +84,7 @@ class Settings(object):
       if o in ("-x","--xml"):
         Settings.xml_format = True
 
-    if len(args) > 1:
-      output("You may not specify more than one application to monitor.")
-      self.help()
-      abort(2)
-
-    elif len(args) < 1:
+    if len(args) < 1:
       output("You must specify an application to monitor.")
       self.help()
       abort(2)
@@ -100,11 +95,11 @@ class Settings(object):
       desktop.queryTable()
     except NotImplementedError:
       pass
-    Settings.source_app = args[0]
+    Settings.source_apps = args[0]
     if not Settings.xml_format:
       apps = [app.name for app in desktop if app is not None]
-      if not Settings.source_app in apps:
-        output("'%s' not found on the desktop now, waiting for it to appear..." % Settings.source_app)
+      if not Settings.source_apps in apps:
+        output("None of the apps specified were found on the desktop now, so waiting for them to appear...")
 
 
 class Monitor:
@@ -131,7 +126,9 @@ class Monitor:
       app = event.source.getApplication()
       if app:
         app = app.name
-        return settings.source_app in app
+        for source_app in settings.source_apps:
+          if (source_app == app):
+            return True
     return False
 
 
