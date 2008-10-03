@@ -1,3 +1,8 @@
+2008-10-03  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* atspimon.py: Don't abort if the app is not found, we will wait for
+	  it.
+
 2008-10-02  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* atspimon.py: Fix the "casting".
