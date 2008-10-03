@@ -1,3 +1,9 @@
+2008-10-03  Brad Taylor  <brad@getcoded.net>
+	
+	* Mono.UIAutomation.Winforms/TextNormalizer.cs:
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Cleanup, refactor,
+	  implement LineMoveStartEndPoint for TextRangeProvider.
+
 2008-10-01  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Using CanFocus

@@ -195,25 +195,38 @@ namespace Mono.UIAutomation.Winforms
 		public int MoveEndpointByUnit (TextPatternRangeEndpoint endpoint, 
 		                               TextUnit unit, int count)
 		{
+			/* XXX: Needs investigation  --Brad
 			//Same MS behavior
 			if (this == TextProvider.DocumentRange)
 				return 0;
+			*/
 			
 			if (unit == TextUnit.Character) {
 				if (endpoint == TextPatternRangeEndpoint.Start)
 					return normalizer.CharacterMoveStartPoint (count);
 				else
 					return normalizer.CharacterMoveEndPoint (count);
+			} else if (unit == TextUnit.Format) {
+				throw new NotImplementedException ();
 			} else if (unit == TextUnit.Word) {
 				if (endpoint == TextPatternRangeEndpoint.Start)
 					return normalizer.WordMoveStartPoint (count);
 				else
 					return normalizer.WordMoveEndPoint (count);
+			} else if (unit == TextUnit.Line) {
+				if (endpoint == TextPatternRangeEndpoint.Start)
+					return normalizer.LineMoveStartPoint (count);
+				else
+					return normalizer.LineMoveEndPoint (count);
+			} else if (unit == TextUnit.Paragraph) {
+				throw new NotImplementedException ();
+			} else if (unit == TextUnit.Page) {
+				throw new NotImplementedException ();
+			} else if (unit == TextUnit.Document) {
+				throw new NotImplementedException ();
 			}
-			
-			//TODO: Add missing text units.
 
-			throw new NotImplementedException();
+			return 0;
 		}
 
 		public void RemoveFromSelection ()

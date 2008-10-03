@@ -1,3 +1,8 @@
+2008-10-03  Brad Taylor  <brad@getcoded.net>
+	
+	* TextRangeProviderTest.cs: Revive test, implement tests for
+	  MoveEndpointByUnit, specifically with the Line unit.
+
 2008-10-02  Mario Carrion <mcarrion@novell.com> 
 
 	* ListBoxProviderTest.cs: ISelectionItem tests updated.

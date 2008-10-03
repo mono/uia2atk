@@ -56,6 +56,11 @@ namespace Mono.UIAutomation.Winforms
 		
 #region Public properties
 		
+		/**
+		 * NOTE: These points are actually lie between characters,
+		 * specifically to the left of the character who's index they
+		 * refer to.
+		 */
 		public int StartPoint {
 			get { return start_point; }
 		}
@@ -131,47 +136,115 @@ namespace Mono.UIAutomation.Winforms
 			if (textboxbase.Multiline == false) {
 				start_point = 0;
 				end_point = textboxbase.Text.Length;
-			} else {
-				int startIndex = textboxbase.Text.LastIndexOf (Environment.NewLine, 
-				                                               start_point, 
-				                                               start_point);
-				int endIndex = textboxbase.Text.IndexOf (Environment.NewLine,
-				                                         end_point);
-				
-				bool startFound = false;
-				bool endFound = false;
-				
-				if (startIndex == -1) {
-					start_point = 0;
-					startFound = true;
-				} 
-				
-				if (endIndex == -1) {
-					end_point = textboxbase.Text.Length;
-					endFound = true;
-				}
-				
-				if (endFound == false || startFound == false) {
-					int length = 0;
+				return;
+			} 
 
-					startIndex++; //was found, so we need to increase Lines' index.
+			int startIndex = textboxbase.Text.LastIndexOf (Environment.NewLine, 
+								       start_point, 
+								       start_point);
+			int endIndex = textboxbase.Text.IndexOf (Environment.NewLine,
+								 end_point);
+			
+			bool startFound = false;
+			bool endFound = false;
+			
+			if (startIndex == -1) {
+				start_point = 0;
+				startFound = true;
+			} 
+			
+			if (endIndex == -1) {
+				end_point = textboxbase.Text.Length;
+				endFound = true;
+			}
+			
+			if (endFound == false || startFound == false) {
+				int length = 0;
 
-					//TODO: Optimize?
-					for (int index = 0; index < textboxbase.Lines.Length; index++) {
-						if (length == startIndex && startFound == false) {
-							start_point = length;
-							startFound = true;
-						}
-						length += textboxbase.Lines [index].Length;
-						if (length == endIndex && endFound == false) {
-							end_point = length;
-							endFound = true;
-							break;
-						}
-						length++;
+				startIndex++; //was found, so we need to increase Lines' index.
+
+				//TODO: Optimize?
+				for (int index = 0; index < textboxbase.Lines.Length; index++) {
+					if (length == startIndex && startFound == false) {
+						start_point = length;
+						startFound = true;
 					}
+					length += textboxbase.Lines [index].Length;
+					if (length == endIndex && endFound == false) {
+						end_point = length;
+						endFound = true;
+						break;
+					}
+					length++;
 				}
 			}
+		}
+
+		public int LineMoveEndPoint (int count)
+		{
+			return LineMoveStartEndPoint (count, ref end_point);
+		}
+		
+		public int LineMoveStartPoint (int count)
+		{
+			return LineMoveStartEndPoint (count, ref start_point);
+		}
+
+		private int LineMoveStartEndPoint (int count, ref int start_end_point)
+		{
+			if (count == 0) {
+				return 0;
+			}
+
+			string text = textboxbase.Text;
+
+			int c = 0, index = -1;
+			if (count > 0) {
+				// walk forward until you see count number of new lines
+				for (int i = start_end_point; i < text.Length; i++) {
+					if (text[i] == Environment.NewLine[0]) {
+						c++;
+						index = i + 1;
+
+						if (c == count) {
+							break;
+						}
+					}
+				}
+
+				start_end_point = index;
+				return c;
+			} else {
+				// walk backward until you see count number of new lines
+				for (int i = start_end_point - 1; i >= 0; i--) {
+					if (text[i] == Environment.NewLine[0]) {
+						c--;
+						index = i;
+
+						if (c == count) {
+							break;
+						}
+					}
+				}
+
+				// TODO: Investigate why we don't do this for
+				// the count > 0 case
+
+				// Count the remaining characters as a line,
+				// and move the cursor to the front
+
+				// We'll only hit this when we've hit close to
+				// the beginning of the string
+				if (c > count) {
+					c--;
+					index = 0;
+				}
+
+				start_end_point = index;
+				return c;
+			}
+
+			return 0;
 		}
 		
 #endregion
@@ -194,34 +267,40 @@ namespace Mono.UIAutomation.Winforms
 			// is:
 			//      "Hello my baby, hello     {my darling}"
 
-			if (textboxbase.Text [start_point] == separator) {
+			string text = textboxbase.Text;
+			if (text [start_point] == separator) {
 				//TODO: Evaluate perfomance
+				
+				// Walk backwards until you hit a non separator
 				for (index = start_point; index >= 0; index--) {
-					if (textboxbase.Text [index] != separator)
+					if (text [index] != separator)
 						break;
 				}
 				start_point = index + 1;
 			} else {
-				index = textboxbase.Text.LastIndexOf (separator, start_point, start_point);
-				if (index == -1)
-					start_point = 0;
-				else if (index < start_point - 1)
-					start_point = index + 1;
+				// Walk from the start point backwards, finding
+				// the last separator
+				index = text.LastIndexOf (separator, start_point, start_point);
+				start_point = (index == -1) ? 0 : index + 1;
 			}
 
-			if (end_point > 0 && textboxbase.Text [end_point - 1] == separator) {
+			if (end_point > 0 && text [end_point - 1] == separator) {
 				//TODO: Evaluate perfomance
-				for (index = end_point - 1; index < textboxbase.Text.Length; index++) {
-					if (textboxbase.Text [index] != separator)
+				
+				// Extend the range to consume all spaces until the next character
+				for (index = end_point - 1; index < text.Length; index++) {
+					if (text [index] != separator)
 						break;
 				}
 				end_point = index;
 			} else {
-				index = textboxbase.Text.IndexOf (separator, end_point);
-				if (index == -1)
-					end_point = textboxbase.Text.Length;
-				else
+				// Search for the next separator
+				index = text.IndexOf (separator, end_point);
+				if (index == -1) {
+					end_point = text.Length;
+				} else {
 					end_point += index - end_point;
+				}
 			}			
 		}
 
