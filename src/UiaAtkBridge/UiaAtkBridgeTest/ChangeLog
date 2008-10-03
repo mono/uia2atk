@@ -1,5 +1,9 @@
 2008-10-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* UiaAtkBridgeTest.mdp: Enable makefile integration.
+
+2008-10-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* Makefile.am: Add missing files.
 
 2008-10-03  Andrés G. Aragoneses <aaragoneses@novell.com> 
