@@ -1,3 +1,7 @@
+2008-10-03 Brian G. Merrell <bgmerrell@gmail.com> 
+
+	* atspimon.py: Reference source_apps statically just to be consistent
+
 2008-10-03  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* atspimon.py: Doh! Fix string.
@@ -6,9 +10,9 @@
 
 	* atspimon.py: Let's leave the "wait" warning...
 
-2008-10-02 Brian G. Merrell <bgmerrell@gmail.com> 
+2008-10-03 Brian G. Merrell <bgmerrell@gmail.com> 
 
-        * UiaAtkBridge/atspimon.py: Ability to monitor multiple apps
+	* atspimon.py: Ability to monitor multiple apps
 
 2008-10-03  Andrés G. Aragoneses <aaragoneses@novell.com> 
 

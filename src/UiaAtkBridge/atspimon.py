@@ -99,7 +99,7 @@ class Settings(object):
 
     if not Settings.xml_format:
       apps = [app.name for app in desktop if app is not None]
-      for source_app in self.source_apps:
+      for source_app in Settings.source_apps:
         if source_app not in apps:
           output("The app '%s' was not found on the desktop now, so waiting for it to appear..." % source_app)
 
