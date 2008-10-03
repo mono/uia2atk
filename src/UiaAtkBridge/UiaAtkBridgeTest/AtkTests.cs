@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 
 using NUnit.Framework;
 
@@ -109,10 +110,20 @@ namespace UiaAtkBridgeTest
 			Parent (type, accessible);
 
 			EventCollection events = evMon.Stop ();
-			int numOfEvents = 3;
-			Assert.AreEqual (events.Count, numOfEvents,
-			                 String.Format ("number of events should be {0}; but we got: {1}{2}",
-			                                numOfEvents, Environment.NewLine, events.ToString ()));
+			string evType = "object:state-changed:checked";
+			EventCollection checkboxEvs = events.FindByRole(Atk.Role.CheckBox);
+			EventCollection typeEvs = checkboxEvs.FindByType (evType);
+			
+			int numOfEvents = 1;
+			Assert.AreEqual (numOfEvents, typeEvs.Count,
+			                 String.Format ("number of {0} events should be {1}; but we got: {2} {3}",
+			                                evType, numOfEvents, typeEvs.Count, Environment.NewLine + events.ToString ()));
+
+			evType = "object:state-changed:focused";
+			typeEvs = checkboxEvs.FindByType (evType);
+			Assert.AreEqual (numOfEvents, typeEvs.Count,
+			                 String.Format ("number of {0} events should be {1}; but we got: {2} {3}",
+			                                evType, numOfEvents, typeEvs.Count, Environment.NewLine + events.ToString ()));
 		}
 		
 		[Test]

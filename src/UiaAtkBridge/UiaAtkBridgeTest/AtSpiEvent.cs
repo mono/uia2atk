@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Globalization;
 
 namespace UiaAtkBridgeTest
 {
@@ -33,16 +34,23 @@ namespace UiaAtkBridgeTest
 		string type = null;
 		string detail1 = null;
 		string detail2 = null;
-		string name = null;
+		string sourceName = null;
+		Atk.Role sourceRole;
+		string data = null;
 		
 		public string Type {
 			get { return type; }
 			set { type = value; }
 		}
 		
-		public string Name {
-			get { return name; }
-			set { name = value; }
+		public string SourceName {
+			get { return sourceName; }
+			set { sourceName = value; }
+		}
+
+		public Atk.Role SourceRole {
+			get { return sourceRole; }
+			set { sourceRole = value; }
 		}
 		
 		public string Detail2 {
@@ -54,13 +62,31 @@ namespace UiaAtkBridgeTest
 			get { return detail1; }
 			set { detail1 = value; }
 		}
+
+		public string Data {
+			get { return data; }
+			set { data = value; }
+		}
 		
-		internal AtSpiEvent(string type, string detail1, string detail2, string name)
+		internal AtSpiEvent(string sourceName, string sourceRole, string type, string detail1, string detail2, string data)
 		{
 			this.type = type;
 			this.detail1 = detail1;
 			this.detail2 = detail2;
-			this.name = name;
+			this.sourceName = sourceName;
+			this.sourceRole = FromName (sourceRole);
+			this.data = data;
+		}
+
+		internal static Atk.Role FromName (string role)
+		{
+			string newRole = String.Empty;
+			string[] words = role.Split (' ');
+			for (int i = 0; i < words.Length; i++)
+				words [i] = words [i].Substring (0, 1).ToUpper () + words [i].Substring (1);
+			for (int i = 0; i < words.Length; i++)
+				newRole += words [i];
+			return (Atk.Role) Enum.Parse (typeof (Atk.Role), newRole);
 		}
 	}
 }

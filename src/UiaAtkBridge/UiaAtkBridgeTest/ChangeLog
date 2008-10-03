@@ -1,5 +1,14 @@
 2008-10-03  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtSpiEvent.cs: Add support for source.
+	* EventMonitor.cs: The app that nunit launches sometimes appears with a
+	  different name, so let's log all of them.
+	* EventCollection.cs: Support for source. Filter by role. Return
+	  EventCollection instead of List<Foo>.
+	* AtkTests.cs: Handle only the events we want to watch.
+
+2008-10-03  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* Makefile.am: Fix build.
 
 2008-10-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 

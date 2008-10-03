@@ -30,29 +30,44 @@ using System.Xml;
 namespace UiaAtkBridgeTest
 {
 	
-	
 	internal class EventCollection : List <AtSpiEvent>
 	{
 		string originalRepr = null;
+
+		internal EventCollection (List <AtSpiEvent> initalCol, string eventsInXml) : base (initalCol) {
+			this.originalRepr = eventsInXml;
+		}
+		
 		internal EventCollection (string eventsInXml)
 		{
 			originalRepr = eventsInXml;
 			XmlDocument xml = new XmlDocument ();
-			Console.WriteLine ("going to convert:" + eventsInXml);
 			xml.LoadXml (eventsInXml);
 			if (!xml.HasChildNodes)
-				throw new ArgumentException ("XML has to have child nodes", eventsInXml);
+				throw new ArgumentException ("XML must have child nodes", eventsInXml);
 			foreach (XmlElement xmlEvent in xml.GetElementsByTagName ("event")) {
-				this.Add (new AtSpiEvent (xmlEvent.Attributes.GetNamedItem("type").Value,
+				this.Add (new AtSpiEvent (xmlEvent.Attributes.GetNamedItem("source_name").Value,
+				                          xmlEvent.Attributes.GetNamedItem("source_role").Value,
+				                          xmlEvent.Attributes.GetNamedItem("type").Value,
 				                          xmlEvent.Attributes.GetNamedItem("detail1").Value,
 				                          xmlEvent.Attributes.GetNamedItem("detail2").Value,
 				                          xmlEvent.InnerText));
 			}
 		}
 
-		public override string ToString ()
+		public string OriginalGrossXml ()
 		{
 			return originalRepr.Replace ("</event>", "</event>" + Environment.NewLine);
+		}
+
+		public EventCollection FindByType (string type)
+		{
+			return new EventCollection (this.FindAll (delegate (AtSpiEvent ev) { return ev.Type == type; }), originalRepr);
+		}
+		
+		public EventCollection FindByRole (Atk.Role role)
+		{
+			return new EventCollection (this.FindAll (delegate (AtSpiEvent ev) { return ev.SourceRole == role; }), originalRepr);
 		}
 	}
 }
