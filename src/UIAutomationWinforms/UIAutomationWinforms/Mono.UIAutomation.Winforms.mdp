@@ -150,6 +150,7 @@
     <File name="Mono.UIAutomation.Winforms.Events/ComboBox/ListItemSelectionItemPatternIsSelectedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/TabControlProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/TabPageProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/ListViewProvider.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

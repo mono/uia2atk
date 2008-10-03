@@ -106,7 +106,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
 		
 		public IRawElementProviderSimple[] GetSelection ()
 		{
-			return ((ListProvider) Provider).GetSelectedItemsProviders ();
+			return ((ListProvider) Provider).GetSelectedItems ();
 		}
 
 		#endregion

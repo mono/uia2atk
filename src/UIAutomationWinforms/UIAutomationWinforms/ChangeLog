@@ -1,3 +1,40 @@
+2008-10-03  Mario Carrion <mcarrion@novell.com> 
+
+	* Makefile.am, Mono.UIAutomation.Winforms.mdp: File added:
+	  ListViewProvider.cs
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/SelectionProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ListBox/SelectionProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementSelectedEvent.cs:
+	  Updated to ListProvider API changes.
+	* Mono.UIAutomation.Winforms.Events/ComboBox/ListItemSelectionItemPatternElementSelectedEvent.cs:
+	  Using ComboBox instead of ListControl.
+	* Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs: Updated to
+	  ListProvider API changes. Implementing
+	  GetListItemBehaviorRealization
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Updated to
+	  ListProvider API changes. Methods added: GetFocus,
+	  GetItemPropertyValue, GetBehaviorRealization,
+	  GetListItemBehaviorRealization. Methods removed: GetItemName,
+	  GetItemBoundingRectangle, GetToggleState, ToggleItem,
+	  GetSelectionBehavior, GetSelectionItemBehavior. ListControl ->
+	  comboBoxControl. 
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Updated to
+	  ListProvider API changes. Methods added: GetFocus,
+	  GetItemPropertyValue, GetBehaviorRealization,
+	  GetListItemBehaviorRealization. Methods removed: GetItemName,
+	  GetItemBoundingRectangle, GetToggleState, ToggleItem,
+	  GetSelectionBehavior, GetSelectionItemBehavior.
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Contructor updated:
+	  using Control instead of ListControl. Using new ListProvider API:
+	  behaviors are defined by ListProvider specialization, properties
+	  are requested to ListProvider specialization. Method removed:
+	  GetControlScreenBounds. Property removed: ListControl.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Contructor updated: using
+	  Control instead of ListControl. API updated. Code cleaned.
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: SWF.ListView provider
+	  added.
+
 2008-10-03  Brad Taylor  <brad@getcoded.net>
 	
 	* Mono.UIAutomation.Winforms/TextNormalizer.cs:

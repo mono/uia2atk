@@ -128,12 +128,17 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region FragmentRootControlProvider: Specializations
 		
+		public override IRawElementProviderFragment GetFocus ()
+		{
+			return GetItemProviderAt (listboxControl.SelectedIndex);
+		}
+		
 		public override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 			
 			for (int index = 0; index < listboxControl.Items.Count; index++) {
-				ListItemProvider item = GetItemProvider (index);
+				ListItemProvider item = GetItemProviderAt (index);
 				OnNavigationChildAdded (false, item);
 			}
 			
@@ -168,6 +173,37 @@ namespace Mono.UIAutomation.Winforms
 
 		#endregion
 		
+		#region ListItem: Properties Methods
+		
+		public override object GetItemPropertyValue (ListItemProvider item,
+		                                             int propertyId)
+		{
+			if (ContainsItem (item) == false)
+				return null;
+			
+			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return listboxControl.Items [item.Index].ToString ();
+			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+				return listboxControl.Focused && item.Index == listboxControl.SelectedIndex;
+			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+				System.Drawing.Rectangle itemRec = listboxControl.GetItemRectangle (item.Index);
+				System.Drawing.Rectangle rectangle = listboxControl.Bounds;
+				
+				itemRec.X += rectangle.X;
+				itemRec.Y += rectangle.Y;
+				
+				if (listboxControl.FindForm () == listboxControl.Parent)
+					itemRec = listboxControl.TopLevelControl.RectangleToScreen (itemRec);
+				else
+					itemRec = listboxControl.Parent.RectangleToScreen (itemRec);
+	
+				return Helper.RectangleToRect (itemRec);
+			} else
+				return null;
+		}
+		
+		#endregion
+		
 		#region ListProvider: Specializations
 		
 		public override int SelectedItemsCount { 
@@ -178,7 +214,7 @@ namespace Mono.UIAutomation.Winforms
 			get { return listboxControl.Items.Count;  }
 		}
 		
-		public override ListItemProvider[] GetSelectedItemsProviders ()
+		public override ListItemProvider[] GetSelectedItems ()
 		{
 			ListItemProvider []items;
 
@@ -187,40 +223,9 @@ namespace Mono.UIAutomation.Winforms
 			
 			items = new ListItemProvider [listboxControl.SelectedIndices.Count];			
 			for (int index = 0; index < items.Length; index++) 
-				items [index] = GetItemProvider (listboxControl.SelectedIndices [index]);
+				items [index] = GetItemProviderAt (listboxControl.SelectedIndices [index]);
 			
 			return items;
-		}
-		
-		public override string GetItemName (ListItemProvider item)
-		{
-			return listboxControl.Items [item.Index].ToString ();
-		}
-		
-		public override System.Drawing.Rectangle GetItemBoundingRectangle (ListItemProvider item)
-		{
-			System.Drawing.Rectangle itemRec = listboxControl.GetItemRectangle (item.Index);
-			System.Drawing.Rectangle rectangle = listboxControl.Bounds;
-			
-			itemRec.X += rectangle.X;
-			itemRec.Y += rectangle.Y;
-			
-			if (listboxControl.FindForm () == listboxControl.Parent)
-				itemRec = listboxControl.TopLevelControl.RectangleToScreen (itemRec);
-			else
-				itemRec = listboxControl.Parent.RectangleToScreen (itemRec);
-
-			return itemRec;
-		}
-		
-		public override ToggleState GetToggleState (ListItemProvider item)
-		{
-			return ToggleState.Indeterminate;
-		}
-		
-		public override void ToggleItem (ListItemProvider item)
-		{
-			//Toggle not supported in SWF.ComboBox
 		}
 		
 		public override void SelectItem (ListItemProvider item)
@@ -247,17 +252,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return listboxControl.Items;
 		}
-		
-		protected override IProviderBehavior GetSelectionBehavior ()
-		{
-			return new SelectionProviderBehavior (this);
-		}
-		
-		public override IProviderBehavior GetSelectionItemBehavior (ListItemProvider provider)
-		{
-			return new ListItemSelectionItemProviderBehavior (provider);
-		}
-		
+
 		public override IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider)
 		{
 			return new ListItemAutomationHasKeyboardFocusPropertyEvent (provider);
@@ -267,6 +262,27 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (ContainsItem (item) == true)
 				listboxControl.TopIndex = item.Index;
+		}
+		
+		#endregion
+		
+		#region Internal Methods: Get Behaviors
+		
+		internal override IProviderBehavior GetBehaviorRealization (AutomationPattern behavior)
+		{
+			if (behavior == SelectionPatternIdentifiers.Pattern)
+				return new SelectionProviderBehavior (this);
+			else 
+				return null;
+		}		
+		
+		internal override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+		                                                                    ListItemProvider listItem)
+		{
+			if (behavior == SelectionItemPatternIdentifiers.Pattern)
+				return new ListItemSelectionItemProviderBehavior (listItem);
+			else
+				return base.GetListItemBehaviorRealization (behavior, listItem);
 		}
 		
 		#endregion

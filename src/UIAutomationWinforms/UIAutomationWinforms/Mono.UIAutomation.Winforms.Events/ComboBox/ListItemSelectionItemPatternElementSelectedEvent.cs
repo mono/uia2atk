@@ -66,7 +66,7 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 		{
 			ListItemProvider provider = (ListItemProvider) Provider;
 			
-			if (provider.Index == ((SWF.ComboBox) provider.ListControl).SelectedIndex)
+			if (provider.Index == ((SWF.ComboBox) provider.Control).SelectedIndex)
 				RaiseAutomationEvent ();
 		}
 		

@@ -28,7 +28,6 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Behaviors;
-using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.ListItem;
 using Mono.UIAutomation.Winforms.Navigation;
@@ -41,20 +40,32 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Constructors
 
-		public ListItemProvider (ListProvider provider, ListControl control) 
+		public ListItemProvider (ListProvider provider, Control control) 
 			: base (control)
 		{
 			listProvider = provider;
-			listControl = control;
-			
+
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
-			             listProvider.GetSelectionItemBehavior (this));
+			             listProvider.GetListItemBehaviorRealization (SelectionItemPatternIdentifiers.Pattern,
+			                                                          this));
 			SetBehavior (ScrollItemPatternIdentifiers.Pattern,
-			             new ScrollItemProviderBehavior (this));
-			
-			if (listControl is CheckedListBox)
-				SetBehavior (TogglePatternIdentifiers.Pattern,
-				             new ToggleProviderBehavior (this));				
+			             listProvider.GetListItemBehaviorRealization (ScrollItemPatternIdentifiers.Pattern,
+			                                                          this));
+			SetBehavior (TogglePatternIdentifiers.Pattern,
+			             listProvider.GetListItemBehaviorRealization (TogglePatternIdentifiers.Pattern,
+			                                                          this));
+			SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
+			             listProvider.GetListItemBehaviorRealization (ExpandCollapsePatternIdentifiers.Pattern,
+			                                                          this));
+			SetBehavior (ValuePatternIdentifiers.Pattern,
+			             listProvider.GetListItemBehaviorRealization (ValuePatternIdentifiers.Pattern,
+			                                                          this));
+			SetBehavior (GridItemPatternIdentifiers.Pattern,
+			             listProvider.GetListItemBehaviorRealization (GridItemPatternIdentifiers.Pattern,
+			                                                          this));
+			SetBehavior (InvokePatternIdentifiers.Pattern,
+			             listProvider.GetListItemBehaviorRealization (InvokePatternIdentifiers.Pattern,
+			                                                          this));			
 		}
 
 		#endregion
@@ -69,10 +80,11 @@ namespace Mono.UIAutomation.Winforms
 				return "list item";
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return nameProperty;
-			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
-				return ListControl.Focused && Index == ListControl.SelectedIndex;
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-				return ListProvider.GetPropertyValue (propertyId);
+				return ListProvider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
+			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id
+			         || propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+				return ListProvider.GetItemPropertyValue (this, propertyId);
 			else
 				return base.GetPropertyValue (propertyId);
 		}
@@ -85,7 +97,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeEvents (); 
 			
-			nameProperty = ListProvider.GetItemName (this);
+			nameProperty = (string) ListProvider.GetItemPropertyValue (this, 
+			                                                           AutomationElementIdentifiers.NameProperty.Id);
 			
 			SetEvent (ProviderEventType.AutomationElementIsKeyboardFocusableProperty,
 			          listProvider.GetListItemHasKeyboardFocusEvent (this));
@@ -102,10 +115,6 @@ namespace Mono.UIAutomation.Winforms
 		public int Index {
 			get { return ListProvider.IndexOfItem (this); }
 		}	
-		
-		public ListControl ListControl {
-			get { return listControl; }
-		}
 
 		public ListProvider ListProvider {
 			get { return listProvider; }
@@ -121,18 +130,8 @@ namespace Mono.UIAutomation.Winforms
 
 		#endregion
 		
-		#region Protected Methods
-		
-		protected override System.Drawing.Rectangle GetControlScreenBounds ()
-		{
-			return ListProvider.GetItemBoundingRectangle (this);
-		}
-		
-		#endregion
-		
 		#region Private Fields
 
-		private ListControl listControl;
 		private ListProvider listProvider;
 		private string nameProperty;
 		

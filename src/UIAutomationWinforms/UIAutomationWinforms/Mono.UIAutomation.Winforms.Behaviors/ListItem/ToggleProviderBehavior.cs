@@ -78,7 +78,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 		public ToggleState ToggleState {
 			get { 
 				ListItemProvider provider = (ListItemProvider) Provider;
-				return provider.ListProvider.GetToggleState (provider); 
+				return provider.ListProvider.GetItemToggleState (provider); 
 			}
 		}
 		

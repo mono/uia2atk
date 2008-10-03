@@ -27,6 +27,9 @@ using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
+using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Behaviors.ListItem;
+
 namespace Mono.UIAutomation.Winforms
 {
 
@@ -53,7 +56,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public override ToggleState GetToggleState (ListItemProvider item)
+		public override ToggleState GetItemToggleState (ListItemProvider item)
 		{
 			if (ContainsItem (item) == true) {
 				SWF.CheckedListBox checkedListBox = (SWF.CheckedListBox) Control;	
@@ -69,6 +72,19 @@ namespace Mono.UIAutomation.Winforms
 				}
 			} else
 				return ToggleState.Indeterminate;
+		}
+		
+		#endregion
+		
+		#region ListProvider: Methods
+		
+		internal override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+		                                                                    ListItemProvider listItem)
+		{
+			if (behavior == TogglePatternIdentifiers.Pattern)
+				return new ToggleProviderBehavior (listItem);	
+			else
+				return base.GetListItemBehaviorRealization (behavior, listItem);
 		}
 		
 		#endregion

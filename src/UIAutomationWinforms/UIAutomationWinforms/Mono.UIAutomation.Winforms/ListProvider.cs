@@ -27,12 +27,15 @@ using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Collections.Generic;
+using SD = System.Drawing;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Navigation;
+
+using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -41,34 +44,42 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Constructors
 
-		protected ListProvider (ListControl control) : base (control)
+		protected ListProvider (Control control) : base (control)
 		{
-			listControl = control;
 			items = new List<ListItemProvider> ();
 
+			//According to: http://msdn.microsoft.com/en-us/library/ms742462.aspx
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
-			             GetSelectionBehavior ());
+			             GetBehaviorRealization (SelectionPatternIdentifiers.Pattern));
+			SetBehavior (ScrollPatternIdentifiers.Pattern,
+			             GetBehaviorRealization (ScrollPatternIdentifiers.Pattern));
+			SetBehavior (GridPatternIdentifiers.Pattern,
+			             GetBehaviorRealization (GridPatternIdentifiers.Pattern));
+			SetBehavior (MultipleViewPatternIdentifiers.Pattern,
+			             GetBehaviorRealization (MultipleViewPatternIdentifiers.Pattern));
 		}
 		
 		#endregion
 		
-		#region Public Properties
-
-		public ListControl ListControl {
-			get { return listControl; }
-		}
-	
-		public abstract int ItemsCount { get; }
+		#region ListItem: Selection Methods and Properties
 		
 		public abstract int SelectedItemsCount { get; }
+				
+		public abstract ListItemProvider[] GetSelectedItems ();
+		
+		public abstract bool IsItemSelected (ListItemProvider item);
+		
+		public abstract void SelectItem (ListItemProvider item);
+		
+		public abstract void UnselectItem (ListItemProvider item);
 		
 		#endregion
 		
-		#region Public Methods
+		#region ListItem: Collection Methods and Properties
 		
-		public abstract bool IsItemSelected (ListItemProvider item);
-
-		public virtual ListItemProvider GetItemProvider (int index)
+		public abstract int ItemsCount { get; }
+			
+		public virtual ListItemProvider GetItemProviderAt (int index)
 		{
 			ListItemProvider item;
 			
@@ -77,7 +88,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (index >= items.Count) {
 				for (int loop = items.Count - 1; loop < index; loop++) {
 					item = new ListItemProvider (GetItemsListProvider (), 
-					                             listControl);
+					                             Control);
 					items.Add (item);
 					item.InitializeEvents ();
 				}
@@ -90,20 +101,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return items.IndexOf (item);
 		}
-		
-		public abstract string GetItemName (ListItemProvider item);
-		
-		public abstract System.Drawing.Rectangle GetItemBoundingRectangle (ListItemProvider item);
-		
-		public abstract ListItemProvider[] GetSelectedItemsProviders ();
-		
-		public abstract ToggleState GetToggleState (ListItemProvider item);
-		
-		public abstract void ToggleItem (ListItemProvider item);
-		
-		public abstract void SelectItem (ListItemProvider item);
-
-		public abstract void UnselectItem (ListItemProvider item);
 		
 		public virtual ListItemProvider RemoveItemAt (int index)
 		{
@@ -118,16 +115,44 @@ namespace Mono.UIAutomation.Winforms
 			return item;
 		}
 		
-		public abstract void ScrollItemIntoView (ListItemProvider item);
-
+		protected bool ContainsItem (ListItemProvider item)
+		{
+			return item == null ? false : items.Contains (item);
+		}
+		
+		protected void ClearItemsList ()
+		{
+			while (items.Count > 0)
+				RemoveItemAt (items.Count - 1);
+		}		
+		
 		#endregion
 		
-		#region FragmentControlProvider: Specializations
-
-		public override IRawElementProviderFragment GetFocus ()
+		#region ListItem: Toggle Methods
+		
+		public virtual ToggleState GetItemToggleState (ListItemProvider item)
 		{
-			return GetItemProvider (listControl.SelectedIndex);
+			return ToggleState.Indeterminate;
 		}
+		
+		public virtual void ToggleItem (ListItemProvider item)
+		{
+		}
+		
+		#endregion
+		
+		#region ListItem: Scroll Methods
+		
+		public abstract void ScrollItemIntoView (ListItemProvider item);		
+		
+		#endregion
+		
+		#region ListItem: Properties Methods
+		
+		public abstract object GetItemPropertyValue (ListItemProvider item,
+		                                             int propertyId);
+
+		public abstract IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider);		
 
 		#endregion
 		
@@ -164,27 +189,33 @@ namespace Mono.UIAutomation.Winforms
 		}
 	
 		#endregion
+		
+		#region Internal Methods: Get Behaviors
+
+		internal abstract IProviderBehavior GetBehaviorRealization (AutomationPattern behavior);
+		
+		internal virtual IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+		                                                                   ListItemProvider listItem)
+		{
+			//According to: http://msdn.microsoft.com/en-us/library/ms744765.aspx
+			if (behavior == ScrollItemPatternIdentifiers.Pattern) {
+				//MSDN: Supported only if the list item is contained within a container that is scrollable.
+				if (IsBehaviorEnabled (ScrollPatternIdentifiers.Pattern) == true)
+				    return new ScrollItemProviderBehavior (listItem);
+				else
+					return null;
+			} else
+				return null;
+		}
+		
+		#endregion
 
 		#region Protected Methods
 		
-		protected bool ContainsItem (ListItemProvider item)
-		{
-			return item == null ? false : items.Contains (item);
-		}
-		
-		protected void ClearItemsList ()
-		{
-			while (items.Count > 0) {
-				RemoveItemAt (items.Count - 1);
-			}
-		}
-		
-		protected abstract IProviderBehavior GetSelectionBehavior ();
-		
-		public abstract IProviderBehavior GetSelectionItemBehavior (ListItemProvider provider);
+		//NOTE: 
+		//      The following methods WILL BE DELETED in Mono 2.0 (because of
+		//      InternalsVisibleTo attribute)
 
-		public abstract IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider);
-		
 		protected abstract Type GetTypeOfObjectCollection ();
 		
 		protected abstract object GetInstanceOfObjectCollection ();		
@@ -203,7 +234,7 @@ namespace Mono.UIAutomation.Winforms
 		private void OnCollectionChanged (object sender, CollectionChangeEventArgs args)
 		{
 			if (args.Action == CollectionChangeAction.Add) {
-				ListItemProvider item = GetItemProvider ((int) args.Element);
+				ListItemProvider item = GetItemProviderAt ((int) args.Element);
 				OnNavigationChildAdded (true, item);
 			} else if (args.Action == CollectionChangeAction.Remove) {
 				ListItemProvider item = RemoveItemAt ((int) args.Element);
@@ -220,7 +251,6 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Private Fields
 		
-		private ListControl listControl;
 		private List<ListItemProvider> items;
 		
 		#endregion

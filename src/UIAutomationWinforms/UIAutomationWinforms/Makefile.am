@@ -156,6 +156,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ListBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ListItemProvider.cs \
 	Mono.UIAutomation.Winforms/ListProvider.cs \
+	Mono.UIAutomation.Winforms/ListViewProvider.cs \
 	Mono.UIAutomation.Winforms/MenuStripProvider.cs \
 	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/PaneProvider.cs \

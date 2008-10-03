@@ -82,7 +82,7 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 		{
 			ListItemProvider provider = (ListItemProvider) Provider;
 			
-			if (((SWF.ListBox) provider.ListControl).SelectedIndex == provider.Index
+			if (((SWF.ListBox) provider.Control).SelectedIndex == provider.Index
 			    && provider.ListProvider.SelectedItemsCount == 1)
 				RaiseAutomationEvent ();
 		}

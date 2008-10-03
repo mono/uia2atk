@@ -75,6 +75,11 @@ namespace Mono.UIAutomation.Winforms
 
 		#region FragmentRootControlProvider: Specializations
 		
+		public override IRawElementProviderFragment GetFocus ()
+		{
+			return GetItemProviderAt (comboboxControl.SelectedIndex);
+		}		
+		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
 		{
 			throw new NotImplementedException ();
@@ -82,69 +87,66 @@ namespace Mono.UIAutomation.Winforms
 
 		#endregion
 		
+		#region ListItem: Properties Methods
+		
+		public override object GetItemPropertyValue (ListItemProvider item,
+		                                             int propertyId)
+		{
+			if (ContainsItem (item) == false)
+				return null;
+			
+			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return comboboxControl.Items [item.Index].ToString ();
+			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+				return comboboxControl.Focused && item.Index == comboboxControl.SelectedIndex;
+			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+				//FIXME: We need to improve this
+				int loop = 1; //We start in 1 to add the Edit height or the control height depending on the style
+				int index = item.Index;
+				int totalHeight = 0;
+				System.Drawing.Rectangle rectangle = System.Drawing.Rectangle.Empty;
+				for (; loop < index; loop++)
+					rectangle.Y += comboboxControl.GetItemHeight (loop);
+				
+				rectangle.Height = comboboxControl.GetItemHeight (index);
+				rectangle.Width = comboboxControl.Bounds.Width;
+				rectangle.X = comboboxControl.Bounds.X;		
+				rectangle.Y += comboboxControl.Bounds.Y;
+	
+				if (comboboxControl.FindForm () == comboboxControl.Parent)
+					rectangle = comboboxControl.TopLevelControl.RectangleToScreen (rectangle);
+				else
+					rectangle = comboboxControl.Parent.RectangleToScreen (rectangle);
+	
+				return Helper.RectangleToRect (rectangle);
+			} else
+				return null;
+		}
+		
+		#endregion
+		
 		#region ListProvider: Specializations
 		
 		public override int SelectedItemsCount { 
-			get { return ListControl.SelectedIndex == -1 ? 0 : 1; }
+			get { return comboboxControl.SelectedIndex == -1 ? 0 : 1; }
 		}
 		
 		public override int ItemsCount {
 			get { return comboboxControl.Items.Count; }
 		}
 		
-		public override ListItemProvider[] GetSelectedItemsProviders ()
+		public override ListItemProvider[] GetSelectedItems ()
 		{
 			if (comboboxControl == null || comboboxControl.SelectedIndex == -1)
 				return null;
 			else
-				return new ListItemProvider [] { (ListItemProvider) GetFocus () };
-		}
-
-		public override string GetItemName (ListItemProvider item)
-		{
-			if (ContainsItem (item) == true)
-				return comboboxControl.Items [item.Index].ToString ();
-			else
-				return string.Empty;
-		}
-		
-		public override System.Drawing.Rectangle GetItemBoundingRectangle (ListItemProvider item)
-		{
-			//FIXME: We need to improve this
-			int loop = 1; //We start in 1 to add the Edit height or the control height depending on the style
-			int index = item.Index;
-			int totalHeight = 0;
-			System.Drawing.Rectangle rectangle = System.Drawing.Rectangle.Empty;
-			for (; loop < index; loop++)
-				rectangle.Y += comboboxControl.GetItemHeight (loop);
-			
-			rectangle.Height = comboboxControl.GetItemHeight (index);
-			rectangle.Width = comboboxControl.Bounds.Width;
-			rectangle.X = comboboxControl.Bounds.X;		
-			rectangle.Y += comboboxControl.Bounds.Y;
-
-			if (comboboxControl.FindForm () == comboboxControl.Parent)
-				rectangle = comboboxControl.TopLevelControl.RectangleToScreen (rectangle);
-			else
-				rectangle = comboboxControl.Parent.RectangleToScreen (rectangle);
-
-			return rectangle;
-		}
-		
-		public override ToggleState GetToggleState (ListItemProvider item)
-		{
-			return ToggleState.Indeterminate;
-		}		
-		
-		public override void ToggleItem (ListItemProvider item)
-		{
-			//Toggle not supported in SWF.ComboBox
+				return new ListItemProvider [] { GetItemProviderAt (comboboxControl.SelectedIndex) };
 		}
 		
 		public override void SelectItem (ListItemProvider item)
 		{
 			if (ContainsItem (item) == true)
-				ListControl.SelectedIndex = item.Index;
+				comboboxControl.SelectedIndex = item.Index;
 		}
 
 		public override void UnselectItem (ListItemProvider item)
@@ -154,7 +156,7 @@ namespace Mono.UIAutomation.Winforms
 		public override bool IsItemSelected (ListItemProvider item)
 		{
 			return ContainsItem (item) == false 
-				? false : item.Index == ListControl.SelectedIndex;
+				? false : item.Index == comboboxControl.SelectedIndex;
 		}
 		
 		protected override Type GetTypeOfObjectCollection ()
@@ -201,21 +203,11 @@ namespace Mono.UIAutomation.Winforms
 			return listboxProvider;
 		}
 		
-		protected override IProviderBehavior GetSelectionBehavior ()
-		{
-			return new SelectionProviderBehavior (this);
-		}
-		
 		public override IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider)
 		{
 			//return new AutomationIsKeyboardFocusablePropertyEvent (provider);
 			//FIXME
 			return null;
-		}
-		
-		public override IProviderBehavior GetSelectionItemBehavior (ListItemProvider provider)
-		{
-			return new ListItemSelectionItemProviderBehavior (provider);
 		}
 		
 		public override void ScrollItemIntoView (ListItemProvider item)
@@ -224,6 +216,27 @@ namespace Mono.UIAutomation.Winforms
 				throw new NotImplementedException ();
 		}
 
+		#endregion
+		
+		#region Internal Methods: Get Behaviors
+		
+		internal override IProviderBehavior GetBehaviorRealization (AutomationPattern behavior)
+		{
+			if (behavior == SelectionPatternIdentifiers.Pattern)
+				return new SelectionProviderBehavior (this);
+			else 
+				return null;
+		}
+
+		internal override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+		                                                                    ListItemProvider listItem)
+		{
+			if (behavior == SelectionItemPatternIdentifiers.Pattern)
+				return new ListItemSelectionItemProviderBehavior (listItem);
+			else
+				return base.GetListItemBehaviorRealization (behavior, listItem);
+		}
+		
 		#endregion
 
 		#region Private Methods
@@ -346,9 +359,14 @@ namespace Mono.UIAutomation.Winforms
 					return base.GetPropertyValue (propertyId);
 			}
 			
-			public override ListItemProvider GetItemProvider (int index)
+			public override IRawElementProviderFragment GetFocus ()
 			{
-				return comboboxProvider.GetItemProvider (index);
+				return comboboxProvider.GetItemProviderAt (comboboxControl.SelectedIndex);
+			}			
+			
+			public override ListItemProvider GetItemProviderAt (int index)
+			{
+				return comboboxProvider.GetItemProviderAt (index);
 			}
 					
 			public override int IndexOfItem (ListItemProvider item)
@@ -374,31 +392,11 @@ namespace Mono.UIAutomation.Winforms
 				get { return comboboxProvider.ItemsCount; }
 			}
 			
-			public override ListItemProvider[] GetSelectedItemsProviders ()
+			public override ListItemProvider[] GetSelectedItems ()
 			{
-				return comboboxProvider == null ? null : comboboxProvider.GetSelectedItemsProviders ();
+				return comboboxProvider == null ? null : comboboxProvider.GetSelectedItems ();
 			}
-			
-			public override string GetItemName (ListItemProvider item)
-			{
-				return comboboxProvider.GetItemName (item);
-			}
-			
-			public override System.Drawing.Rectangle GetItemBoundingRectangle (ListItemProvider item)
-			{
-				return comboboxProvider.GetItemBoundingRectangle (item);
-			}
-			
-			public override ToggleState GetToggleState (ListItemProvider item)
-			{
-				return comboboxProvider.GetToggleState (item);
-			}
-			
-			public override void ToggleItem (ListItemProvider item)
-			{
-				//Toggle not supported in internal SWF.ListBox in SWF.ComboBox
-			}			
-			
+
 			public override void SelectItem (ListItemProvider item)
 			{
 				comboboxProvider.SelectItem (item);
@@ -424,29 +422,20 @@ namespace Mono.UIAutomation.Winforms
 				return comboboxControl.Items;
 			}
 			
-			protected override IProviderBehavior GetSelectionBehavior ()
-			{
-				return new SelectionProviderBehavior (this);
-			}
-			
+
 			public override IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider)
 			{
 				//return new AutomationIsKeyboardFocusablePropertyEvent (provider);
 				//FIXME
 				return null;
 			}			
-			
-			public override IProviderBehavior GetSelectionItemBehavior (ListItemProvider provider)
-			{
-				return new ListItemSelectionItemProviderBehavior (provider);
-			}
 	
 			public override void InitializeChildControlStructure ()
 			{
 				base.InitializeChildControlStructure ();
 				
 				for (int index = 0; index < comboboxControl.Items.Count; index++) {
-					ListItemProvider item = GetItemProvider (index);
+					ListItemProvider item = GetItemProviderAt (index);
 					OnNavigationChildAdded (false, item);
 				}
 			}
@@ -456,7 +445,7 @@ namespace Mono.UIAutomation.Winforms
 				base.FinalizeChildControlStructure ();
 				
 				for (int index = 0; index < comboboxControl.Items.Count; index++) {
-					ListItemProvider item = GetItemProvider (index);
+					ListItemProvider item = GetItemProviderAt (index);
 					OnNavigationChildAdded (false, item);
 				}
 			}
@@ -465,6 +454,29 @@ namespace Mono.UIAutomation.Winforms
 			{ 
 				//FIXME: Implement
 				throw new NotImplementedException ();
+			}
+
+			public override object GetItemPropertyValue (ListItemProvider item,
+			                                             int propertyId)
+			{
+				return comboboxProvider.GetItemPropertyValue (item, propertyId);
+			}
+
+			internal override IProviderBehavior GetBehaviorRealization (AutomationPattern behavior)
+			{
+				if (behavior == SelectionPatternIdentifiers.Pattern)
+					return new SelectionProviderBehavior (this);
+				else 
+					return null;
+			}		
+			
+			internal override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+			                                                                    ListItemProvider listItem)
+			{
+				if (behavior == SelectionItemPatternIdentifiers.Pattern)
+					return new ListItemSelectionItemProviderBehavior (listItem);
+				else
+					return base.GetListItemBehaviorRealization (behavior, listItem);
 			}
 
 			private SWF.ComboBox comboboxControl;
