@@ -147,8 +147,10 @@ class Monitor:
       return
     
     if Settings.xml_format:
-      output('<event type="%s" detail1="%s" detail2="%s">%s</event>' % 
-                                             (event.type,
+      output('<event source_name="%s" source_role="%s" type="%s" detail1="%s" detail2="%s">%s</event>' % 
+                                             (event.source.name,
+                                             event.source.getRoleName(),
+                                             event.type,
                                              event.detail1,
                                              event.detail2,
                                              escape(str(event.any_data))), False)
@@ -163,7 +165,7 @@ class Monitor:
       output(str(event.host_application), False)
       output('\n', False)
 
- 
+
   def begin(self):
     if Settings.xml_format:
       output('<events>')
