@@ -1,5 +1,9 @@
 2008-10-03  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* atspimon.py: Doh! Fix string.
+
+2008-10-03  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* atspimon.py: Let's leave the "wait" warning...
 
 2008-10-02 Brian G. Merrell <bgmerrell@gmail.com> 

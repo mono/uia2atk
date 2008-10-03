@@ -69,7 +69,8 @@ REFERENCES =  \
 	UIAutomationProvider.dll \
 	$(GTK_SHARP_20_LIBS) \
 	System.Windows.Forms \
-	System.Drawing
+	System.Drawing \
+	System.Xml
 
 DLL_REFERENCES = $(UIAUTOMATIONWINFORMS) $(UIAATKBRIDGE)
 

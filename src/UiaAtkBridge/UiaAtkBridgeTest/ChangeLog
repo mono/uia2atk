@@ -1,3 +1,7 @@
+2008-10-03  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Makefile.am: Fix build.
+
 2008-10-03  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* UiaAtkBridgeTest.mdp: Enable makefile integration.
