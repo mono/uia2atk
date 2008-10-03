@@ -21,7 +21,7 @@ class FormFrame(accessibles.Frame):
     def __init__(self, accessible):
         super(FormFrame, self).__init__(accessible)
         self.button1 = self.findPushButton("button1")
-        self.button2= self.findPushButton("button2")
+        self.button2 = self.findPushButton("button2")
 
     #perform click action
     def click(self, button):

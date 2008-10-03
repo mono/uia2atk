@@ -27,7 +27,7 @@ class CheckBoxApp(Form):
     def __init__(self):
         self.Text = "CheckBox control"
 
-        self.Width = 380
+        self.Width = 420
         self.Height = 200
 
         #checkbox control
@@ -55,7 +55,7 @@ class CheckBoxApp(Form):
         self.check3 = CheckBox()
         self.check3.Text = "Stuffed Peppers"
         self.check3.Location = Point(210, 60)
-        self.check3.Width = 90
+        self.check3.Width = 300
         self.check3.Checked = True
 
         self.check4 = CheckBox()

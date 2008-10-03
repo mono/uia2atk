@@ -1,11 +1,33 @@
+2008-10-03  Brian G. Merrell <bgmerrell@gmail.com>
+	
+	* harness/smoke_tests.py: Add Label test to smoke test suite
+	* harness/tests.py: Add Form, Label, and CheckBox tests to regression
+	suite
+	* samples/checkbox.py: Increase the size of the window and check3
+	so the entire label for check3 shows.
+	* ChangeLog: Fix mysterious >79 character lines (my fault)
+	* testers/checkbox_basic_ops.py: No longer expecting insensitive
+	controls to have the "focusable" state (see Bug 426680).  Added some
+	test cases.
+	* testers/form_basic_ops.py: Reviewd.  Change some logic, because a
+	MessageBox window is modal (http://en.wikipedia.org/wiki/Modal_window),
+	so the clicking on the main window will not activate it until the
+	MessageBox window has been dismissed.  Use a different window to 
+	accomplish the test that had to be changed.
+	* testers/form/formframe.py:  Style/typo fix, add space before "="
+	operator
+
 2008-10-01  Brian G. Merrell <bgmerrell@gmail.com>
 
-	* samples/opensuse60x38.gif: Forgot to add the non-square image mentioned below.
-	* testers/label/labelframe.py:  Search for each label indvididually instead of using
-	findAll.  This way we don't have to guess where the accessible is in the list that findAll
-	returns.  It also makes the test easier to read.
-	* testers/label_basic_ops.py:  Use the variable names for each label found in labelframe
-	instead of using the list that was returned by findAll and its indices.
+	* samples/opensuse60x38.gif: Forgot to add the non-square image
+	mentioned below.
+	* testers/label/labelframe.py:  Search for each label indvididually
+	instead of using findAll.  This way we don't have to guess where the
+	accessible is in the list that findAll returns.  It also makes the test
+	easier to read.
+	* testers/label_basic_ops.py:  Use the variable names for each label
+	found in labelframe instead of using the list that was returned by
+	findAll and its indices.
 
 2008-09-30  Brian G. Merrell <bgmerrell@gmail.com>
 
@@ -13,8 +35,8 @@
 	can be sure height and width are reported properly and aren't inverted
 	* samples/button_label_linklabel.py: Add delegate for the insensitive
 	button that changes the label text when the button is pushed.  This
-	allows us to be sure that clicking the insensitive button has no effect.
-	Use rectangle image instead of the square image.
+	allows us to be sure that clicking the insensitive button has no
+	effect.  Use rectangle image instead of the square image.
 	* ChangeLog: Fix typo (getaddr -> getattr)
 	* testers/gtkbutton/gtkbuttonframe.py:  Add assertImageSize method as
 	an example of one way we should test buttons with images.

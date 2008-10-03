@@ -59,15 +59,14 @@ statesCheck(message, "Form", invalid_states=["resizable"], add_states=["active"]
 #check main form's states without 'active'
 statesCheck(fFrame, "Form")
 
-#change active window to main form widget to rise 'active' state, message 
-#widget get rid of 'active' state
+# click frame, but MessageBox window should remain active
 fFrame.mouseClick()
-statesCheck(fFrame, "Form", add_states=["active"])
-statesCheck(message, "Form", invalid_states=["resizable"])
+#check main form's states again without 'active'
+statesCheck(fFrame, "Form")
+# make sure that the message widget's states stay the same
+statesCheck(message, "Form", invalid_states=["resizable"], add_states=["active"])
 
-#close extra message widget, main form rise 'active' state again
-message.mouseClick()
-sleep(config.SHORT_DELAY)
+#close message form widget, main form rise 'active' state again
 message.altF4()
 statesCheck(fFrame, "Form", add_states=["active"])
 
@@ -79,14 +78,11 @@ extraform = fFrame.app.findFrame("Extra Form")
 #check extra form widget's states with 'active' state
 statesCheck(extraform, "Form", add_states=["active"])
 
-#check main form's states without 'active'
-statesCheck(fFrame, "Form")
-
-#change active window to main form widget to rise 'active' state, empty form  
-#widget get rid of 'active' state
+# click main frame, which should become active
 fFrame.mouseClick()
 statesCheck(fFrame, "Form", add_states=["active"])
-statesCheck(extraform, "Form", invalid_states=["resizable"])
+#check main form's states without 'active'
+statesCheck(extraform, "Form")
 
 #close extra form widget, main form rise 'active' state again
 extraform.mouseClick()

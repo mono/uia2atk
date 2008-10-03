@@ -50,19 +50,33 @@ actionsCheck(cbFrame.check3, "CheckBox")
 actionsCheck(cbFrame.check4, "CheckBox")
 
 #check1 have "focused" state
-statesCheck(cbFrame.check1, "CheckBox", 
-                    add_states=["focused"])
+statesCheck(cbFrame.check1, "CheckBox", add_states=["focused"])
+
+# Press 'Right' key until we get back to check1, and check that each
+# check button gets the focused state except check4, which should be
+# skipped
+cbFrame.keyCombo("Right", grabFocus=False)
+statesCheck(cbFrame.check2, "CheckBox", add_states=["focused"])
+cbFrame.keyCombo("Right", grabFocus=False)
+statesCheck(cbFrame.check3, "CheckBox", add_states=["focused","checked"])
+cbFrame.keyCombo("Right", grabFocus=False)
+statesCheck(cbFrame.check1, "CheckBox", add_states=["focused"])
+
+# check and uncheck with space bar
+cbFrame.keyCombo("space", grabFocus=False)
+statesCheck(cbFrame.check1, "CheckBox", add_states=["focused","checked"])
+cbFrame.keyCombo("space", grabFocus=False)
+statesCheck(cbFrame.check1, "CheckBox", add_states=["focused"])
 
 #check2 have the default states
 statesCheck(cbFrame.check2, "CheckBox")
 
 #check3 have "checked" state
-statesCheck(cbFrame.check3, "CheckBox", 
-                    add_states=["checked"])
+statesCheck(cbFrame.check3, "CheckBox", add_states=["checked"])
 
 #check4 have 2 invalid states
 statesCheck(cbFrame.check4, "CheckBox",
-                    invalid_states=["sensitive", "enabled"])
+                    invalid_states=["sensitive", "enabled","focusable"])
 
 #click check2 would rise 'checked' states but not 'focused'
 cbFrame.click(cbFrame.check2)
@@ -73,6 +87,9 @@ statesCheck(cbFrame.check2, "CheckBox",
 # Make sure that check2 and check3 are multi checked
 statesCheck(cbFrame.check3, "CheckBox",
                     add_states=["checked"])
+
+# Make sure check1 still has focus
+statesCheck(cbFrame.check1, "CheckBox", add_states=["focused"])
 
 #click check3 would get rid of 'checked' states
 cbFrame.click(cbFrame.check3)
@@ -96,10 +113,13 @@ sleep(config.SHORT_DELAY)
 statesCheck(cbFrame.check3, "CheckBox",
                     add_states=["focused", "checked"])
 
+#make sure check1 is no longer focused
+statesCheck(cbFrame.check1, "CheckBox")
+
 #click check4 doesn't update the states
 cbFrame.check4.mouseClick()
 statesCheck(cbFrame.check4, "CheckBox",
-                    invalid_states=["sensitive", "enabled"])
+                    invalid_states=["sensitive", "enabled","focusable"])
 
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
