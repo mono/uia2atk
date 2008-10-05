@@ -1,3 +1,8 @@
+2008-10-05  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* RadioButton.cs: Properly notify about new state. Should close
+	  #428555.
+
 2008-10-02  Mike Gorse <mgorse@novell.com>
 
 	* Hyperlink.cs, Makefile.am, UiaAtkBridge.mdp: Add Hyperlink.cs.

@@ -45,17 +45,17 @@ namespace UiaAtkBridge
 		
 		public override bool DoAction (int action)
 		{
-			if (selProvider != null) {
-				try {
-					if (action != 0)
-						return false;
-					selProvider.Select();
-					return true;
-				} catch (ElementNotEnabledException e) {
-					// TODO: handle this exception? maybe returning false is good enough
-				}
+			if (action != 0)
+				return false;
+
+			if (!selProvider.IsSelected) {
+				NotifyStateChange (Atk.StateType.Checked, true);
+				//theoretically, other radio buttons should catch the AutomationEvent of being unchecked, and fire
+				// their corresponding NotifyStateChange calls
+				selProvider.Select ();
 			}
-			return false;
+			
+			return true;
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()
