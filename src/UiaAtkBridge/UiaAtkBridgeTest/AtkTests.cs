@@ -110,20 +110,16 @@ namespace UiaAtkBridgeTest
 			Parent (type, accessible);
 
 			EventCollection events = evMon.Stop ();
+			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
 			string evType = "object:state-changed:checked";
-			EventCollection checkboxEvs = events.FindByRole(Atk.Role.CheckBox);
+			EventCollection checkboxEvs = events.FindByRole (Atk.Role.CheckBox).FindWithDetail1 ("1");
 			EventCollection typeEvs = checkboxEvs.FindByType (evType);
 			
-			int numOfEvents = 1;
-			Assert.AreEqual (numOfEvents, typeEvs.Count,
-			                 String.Format ("number of {0} events should be {1}; but we got: {2} {3}",
-			                                evType, numOfEvents, typeEvs.Count, Environment.NewLine + events.OriginalGrossXml));
+			Assert.AreEqual (1, typeEvs.Count, "bad number of checked events!" + eventsInXml);
 
 			evType = "object:state-changed:focused";
 			typeEvs = checkboxEvs.FindByType (evType);
-			Assert.AreEqual (numOfEvents, typeEvs.Count,
-			                 String.Format ("number of {0} events should be {1}; but we got: {2} {3}",
-			                                evType, numOfEvents, typeEvs.Count, Environment.NewLine + events.OriginalGrossXml));
+			Assert.AreEqual (1, typeEvs.Count, "bad number of focused events!" + eventsInXml);
 		}
 		
 		[Test]
@@ -144,10 +140,12 @@ namespace UiaAtkBridgeTest
 			name = "test 03";
 			Atk.Action atkAction3 = (Atk.Action)
 				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible3, true);
-			
+
+
 			InterfaceActionFor3RadioButtons (atkAction, accessible,
 			                                 atkAction2, accessible2,
 			                                 atkAction3, accessible3);
+
 			
 			Parent (type, accessible);
 			Parent (type, accessible2);

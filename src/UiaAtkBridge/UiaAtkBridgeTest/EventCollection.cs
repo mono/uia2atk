@@ -69,5 +69,10 @@ namespace UiaAtkBridgeTest
 		{
 			return new EventCollection (this.FindAll (delegate (AtSpiEvent ev) { return ev.SourceRole == role; }), originalRepr);
 		}
+
+		public EventCollection FindWithDetail1 (string str)
+		{
+			return new EventCollection (this.FindAll (delegate (AtSpiEvent ev) { return ev.Detail1 == str; }), originalRepr);
+		}
 	}
 }

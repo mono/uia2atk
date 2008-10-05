@@ -1,3 +1,11 @@
+2008-10-05  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* EventMonitor.cs: Simplify and dispose the process object.
+	* EventCollection.cs: Add more filtering.
+	* AtkTests.cs: Simplified, and prevent the detection of a Focused-
+	  event that may happen in GailTest.
+	* AtkTester.cs: Added event testing to RadioButtons.
+
 2008-10-03  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* EventMonitor.cs: Spaces to tabs.

@@ -72,9 +72,21 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #1");
 			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #2");
 			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #3");
+
+			EventMonitor evMon = new EventMonitor ();
 			
 			Assert.IsTrue (actionable2.DoAction (0), "IAF3RB::DoAction#1");
 			System.Threading.Thread.Sleep (3000);
+
+			// FIXME: should we detect "object:state-changed:focused" events here?? it seems gail doesn't fire them if we use this atk API
+			EventCollection events = evMon.Stop ();
+			string evType = "object:state-changed:checked";
+			EventCollection radioEvs = events.FindByRole (Atk.Role.RadioButton).FindByType (evType);
+			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
+			Assert.AreEqual (2, radioEvs.Count, "bad number of events expected!" + eventsInXml);
+			Assert.IsFalse (radioEvs [0].SourceName == radioEvs [0].SourceName, "events should come from different widgets;" + eventsInXml);
+			Assert.AreEqual (1, radioEvs.FindWithDetail1 ("1").Count, "one should be Checked;" + eventsInXml);
+			Assert.AreEqual (1, radioEvs.FindWithDetail1 ("0").Count, "one should be Checked;" + eventsInXml);
 			
 			Assert.IsFalse (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #4");
 			Assert.IsTrue (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #5");
