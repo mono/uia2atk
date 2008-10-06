@@ -120,7 +120,7 @@ namespace UiaAtkBridge
 				if (canFocus)
 					states.AddState (Atk.StateType.Focusable);
 				else
-					states.RemoveState (Atk.StateType.Selectable);
+					states.RemoveState (Atk.StateType.Focusable);
 
 				bool enabled = 
 			  	(bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);

@@ -105,9 +105,9 @@ namespace UiaAtkBridge
 			if (parentScrollProvider == null)
 				return false;
 			else if (orientation == OrientationType.Vertical)
-				parentScrollProvider.SetScrollPercent (parentScrollProvider.HorizontalScrollPercent, v);
+				parentScrollProvider.SetScrollPercent (parentScrollProvider.VerticalScrollPercent, v);
 			else
-				parentScrollProvider.SetScrollPercent (v, parentScrollProvider.VerticalScrollPercent);
+				parentScrollProvider.SetScrollPercent (v, parentScrollProvider.HorizontalScrollPercent);
 			return true;
 		}
 
