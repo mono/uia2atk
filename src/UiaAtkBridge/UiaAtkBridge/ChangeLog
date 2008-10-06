@@ -1,5 +1,11 @@
 2008-10-06  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* Button.cs, ParentAdapter.cs, Window.cs, ComponentParentAdapter.cs,
+	  TopLevelRootItem.cs, Adapter.cs, ComponentAdapter.cs: Fix P1
+	  bug#429438.
+
+2008-10-06  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* Monitor.cs, TextLabel.cs, TopLevelRootItem.cs: Style guidelines.
 
 2008-10-06  Mike Gorse <mgorse@novell.com>

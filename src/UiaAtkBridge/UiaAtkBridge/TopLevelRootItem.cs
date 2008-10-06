@@ -53,6 +53,28 @@ namespace UiaAtkBridge
 				return instance;
 			}
 		}
+
+		private UiaAtkBridge.Window currentActiveWindow = null;
+		
+		internal override void AddOneChild (Adapter child)
+		{
+			// FIXME: useless check? maybe we should do here: Assert.IsTrue ( child is Window || child is Dialog ) ?
+			if (child is UiaAtkBridge.Window)
+				CheckAndHandleNewActiveWindow ((UiaAtkBridge.Window)child);
+
+			base.AddOneChild (child);
+		}
+
+		internal void CheckAndHandleNewActiveWindow (UiaAtkBridge.Window newWin)
+		{
+			if (object.ReferenceEquals (currentActiveWindow, newWin))
+				return;
+			
+			if (currentActiveWindow != null)
+				currentActiveWindow.LooseActiveState ();
+			currentActiveWindow = newWin;
+			currentActiveWindow.GainActiveState ();
+		}
 		
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{

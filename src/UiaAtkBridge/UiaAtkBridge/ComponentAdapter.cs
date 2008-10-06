@@ -141,6 +141,11 @@ namespace UiaAtkBridge
 			return states;
 		}
 
+		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs args)
+		{
+			base.RaiseAutomationEvent(eventId, args);
+		}
+		
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {

@@ -150,5 +150,10 @@ namespace UiaAtkBridge
 			} else
 				base.RaiseAutomationPropertyChangedEvent (e);
 		}
+
+		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
+		{
+			base.RaiseAutomationEvent (eventId, e);
+		}
 	}
 }

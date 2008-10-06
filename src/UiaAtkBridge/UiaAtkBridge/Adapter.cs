@@ -45,7 +45,19 @@ namespace UiaAtkBridge
 	
 		public abstract IRawElementProviderSimple Provider { get; }
 		
-		public abstract void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e);
+		public virtual void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
+		{
+			if (eventId != AutomationElementIdentifiers.AutomationFocusChangedEvent)
+				return;
+
+			Atk.Object parent = this; //in case this.GetType () == typeof(UiaAtkBridge.Window) 
+			while (!(parent is UiaAtkBridge.Window)) {
+				if (parent == null)
+					throw new Exception ("Parent of an object should not be null");
+				parent = parent.Parent;
+			}
+			TopLevelRootItem.Instance.CheckAndHandleNewActiveWindow ((UiaAtkBridge.Window)parent);
+		}
 		
 		public virtual void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{

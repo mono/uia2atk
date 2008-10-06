@@ -81,7 +81,7 @@ namespace UiaAtkBridge
 		
 #region Public Methods
 		
-		public void AddOneChild (Adapter child)
+		internal virtual void AddOneChild (Adapter child)
 		{
 			Console.WriteLine ("AddOneChild: " + Role + " -> " + child.Role);
 			lock (syncRoot) {
@@ -133,5 +133,11 @@ namespace UiaAtkBridge
 		}
 		
 #endregion
+
+		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs args)
+		{
+			base.RaiseAutomationEvent(eventId, args);
+		}
+		
 	}
 }

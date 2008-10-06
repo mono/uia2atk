@@ -65,7 +65,7 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			// TODO
+			base.RaiseAutomationEvent (eventId, e);
 		}
 		
 		public override Atk.Layer Layer {
@@ -76,11 +76,32 @@ namespace UiaAtkBridge
 			get { return -1; }
 		}
 
+		private bool active = false;
+		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
-			
+			if (active)
+				states.AddState (Atk.StateType.Active);
+			else
+				states.RemoveState (Atk.StateType.Active);
 			return states;
+		}
+
+		private void NewActiveState (bool active)
+		{
+			this.active = active;
+			NotifyStateChange (Atk.StateType.Active, active);
+		}
+		
+		internal void LooseActiveState ()
+		{
+			NewActiveState (false);
+		}
+
+		internal void GainActiveState ()
+		{
+			NewActiveState (true);
 		}
 	}
 }

@@ -198,6 +198,7 @@ namespace UiaAtkBridge
 			} else if (eventId == AutomationElementIdentifiers.StructureChangedEvent) {
 				// TODO: Handle StructureChangedEvent
 			}
+			base.RaiseAutomationEvent (eventId, e);
 		}
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
