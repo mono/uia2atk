@@ -1,3 +1,7 @@
+2008-10-06  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* EventMonitor.cs: Prevent zombie pythons.
+
 2008-10-05  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* EventMonitor.cs: Simplify and dispose the process object.

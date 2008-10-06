@@ -64,7 +64,7 @@ namespace UiaAtkBridgeTest
 		}
 		
 		internal EventCollection Stop () {
-			p.Close ();
+			p.Kill ();
 			p.Dispose ();
 			p = null;
 			//Console.WriteLine ("XML:{0}", xmlResult);
