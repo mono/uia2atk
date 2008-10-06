@@ -1,5 +1,9 @@
 2008-10-06  Mike Gorse <mgorse@novell.com>
 
+	* ScrollBar.cs: Revert last change.
+
+2008-10-06  Mike Gorse <mgorse@novell.com>
+
 	* ComponentAdapter.cs, Scrollbar.cs: Fix typoes with Focusable
 	  state and SetScrollPercent.
 
