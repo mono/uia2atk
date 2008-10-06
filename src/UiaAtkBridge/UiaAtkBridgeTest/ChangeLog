@@ -1,5 +1,9 @@
 2008-10-06  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* bridgetest.sh.in: Prevent DllNotFoundException.
+
+2008-10-06  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* BridgeTester.cs: We don't run SWF.Application.Run() in the tests, so
 	  let's workaround the bridge initialization.
 
