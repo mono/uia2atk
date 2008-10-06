@@ -188,6 +188,22 @@ namespace Mono.UIAutomation.Winforms
 			return LineMoveStartEndPoint (count, ref start_point);
 		}
 
+		private enum ParserState {
+			Normal,
+			LineFeed,
+			CarriageReturn
+		}
+	
+		private ParserState GetState (char c)
+		{
+			if (c == '\r') {
+				return ParserState.CarriageReturn;
+			} else if (c == '\n') {
+				return ParserState.LineFeed;
+			}
+			return ParserState.Normal;
+		}
+
 		private int LineMoveStartEndPoint (int count, ref int start_end_point)
 		{
 			if (count == 0) {
@@ -196,18 +212,39 @@ namespace Mono.UIAutomation.Winforms
 
 			string text = textboxbase.Text;
 
+			ParserState[] state = new ParserState[2];
+			state[0] = state[1] = ParserState.Normal;
+
+			ParserState new_state;
 			int c = 0, index = -1;
+
 			if (count > 0) {
 				// walk forward until you see count number of new lines
 				for (int i = start_end_point; i < text.Length; i++) {
-					if (text[i] == Environment.NewLine[0]) {
+					new_state = GetState (text[i]);
+					
+					// Examples:
+					//  * a\r\nab     * a\r\rab
+					//        ^             ^
+					//  * a\n\nab     * a\nab
+					//        ^           ^
+					if ((state[1] != ParserState.Normal
+					     && new_state == ParserState.Normal)
+					    || (state[1] == ParserState.CarriageReturn
+					        && new_state == ParserState.CarriageReturn)
+					    || (state[1] == ParserState.LineFeed
+					        && new_state != ParserState.Normal)) {
 						c++;
-						index = i + 1;
+						index = i;
 
 						if (c == count) {
+							index += (new_state != ParserState.Normal) ? 1 : 0;
 							break;
 						}
 					}
+
+					state[0] = state[1];
+					state[1] = new_state;
 				}
 
 				start_end_point = index;
@@ -215,14 +252,33 @@ namespace Mono.UIAutomation.Winforms
 			} else {
 				// walk backward until you see count number of new lines
 				for (int i = start_end_point - 1; i >= 0; i--) {
-					if (text[i] == Environment.NewLine[0]) {
+					new_state = GetState (text[i]);
+					
+					// Examples:
+					//  * a\r\nab     * a\r\rab
+					//     ^             ^
+					//  * a\n\nab     * a\nab
+					//     ^           ^
+					if ((state[1] != ParserState.Normal
+					     && new_state == ParserState.Normal)
+					    || (state[1] == ParserState.CarriageReturn
+					        && new_state == ParserState.LineFeed)
+					    || (state[1] == ParserState.CarriageReturn
+					        && new_state == ParserState.CarriageReturn
+						&& state[0] != ParserState.LineFeed)
+					    || (state[1] == ParserState.LineFeed
+					        && new_state == ParserState.LineFeed)) {
 						c--;
-						index = i;
+						index = i + 1;
 
 						if (c == count) {
+							index -= (state[1] == ParserState.Normal && new_state != ParserState.Normal) ? 1 : 0;
 							break;
 						}
 					}
+
+					state[0] = state[1];
+					state[1] = new_state;
 				}
 
 				// TODO: Investigate why we don't do this for
@@ -454,13 +510,10 @@ namespace Mono.UIAutomation.Winforms
 			return new TextNormalizerPoints (start_point, end_point, moved);
 		}
 
-#region Private fields
-		
+#region private fields
 		private TextBoxBase textboxbase;				
 		private int end_point;
 		private int start_point;
-
 #endregion
-		
 	}
 }

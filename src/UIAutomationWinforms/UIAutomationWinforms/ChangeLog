@@ -1,3 +1,9 @@
+2008-10-06  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/TextNormalizer.cs: Rewrite
+	  LineMoveStartEndPoint to support any number of newline types.  This
+	  is needed for RichTextBox.
+
 2008-10-03  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/TextNormalizer.cs: License header updated.
