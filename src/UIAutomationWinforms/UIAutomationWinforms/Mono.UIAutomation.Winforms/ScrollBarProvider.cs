@@ -45,8 +45,12 @@ namespace Mono.UIAutomation.Winforms
 		{
 			orientation = scrollbar is HScrollBar 
 				? OrientationType.Horizontal : OrientationType.Vertical;
-			Control.ParentChanged += new EventHandler (OnParentChanged);
-			UpdateBehavior ();
+			
+			//LAMESPEC: http://msdn.microsoft.com/en-us/library/ms743712.aspx
+			//"This functionality is required to be supported only if the Scroll control 
+			//pattern is not supported on the container that has the scroll bar."
+			SetBehavior (RangeValuePatternIdentifiers.Pattern,
+			             new RangeValueProviderBehavior (this));
 		}
 
 		#endregion
@@ -68,13 +72,6 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 
 		#region SimpleControlProvider: Specializations
-		
-		public override void Terminate ()
-		{
-			base.Terminate ();
-			
-			Control.ParentChanged -= new EventHandler (OnParentChanged);
-		}
 		
 		public override object GetPropertyValue (int propertyId)
 		{
@@ -156,34 +153,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 
-		#region Private Methods
-		
-		private void OnParentChanged (object sender, EventArgs args)
-		{
-			UpdateBehavior ();
-		}
-		
-		private void UpdateBehavior ()
-		{	
-			IRawElementProviderFragment container 
-				= ProviderFactory.FindProvider (Container);
-
-			if (container != null) {
-				IScrollProvider provider 
-					= (IScrollProvider) container.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id);
-				if (provider == null)
-					SetBehavior (RangeValuePatternIdentifiers.Pattern,
-					             new RangeValueProviderBehavior (this));
-				else
-					SetBehavior (RangeValuePatternIdentifiers.Pattern, null);
-			} else
-				//TODO: Is this default behavior OK?
-				SetBehavior (RangeValuePatternIdentifiers.Pattern,
-				             new RangeValueProviderBehavior (this));
-		}
-
-		#endregion
-	
 		#region Private Fields
 
 		private FragmentControlProvider largeBackButton;

@@ -1,3 +1,8 @@
+2008-10-06  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Partial fix for Bug
+	  #432491.
+
 2008-10-06  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/TextNormalizer.cs: Rewrite
