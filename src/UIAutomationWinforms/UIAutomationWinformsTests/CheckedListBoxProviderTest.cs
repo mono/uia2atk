@@ -70,11 +70,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IToggleProvider toggleProvider1;
 			IToggleProvider toggleProvider2;
 			IRawElementProviderFragment child2;			
-			IToggleProvider toggleProvider3;
-			IRawElementProviderFragment child3;			
 			
 			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (listbox);
-			selectionProvider = (ISelectionProvider) rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
 			child = rootProvider.Navigate (NavigateDirection.FirstChild);
 			
 			TestProperty (child,
@@ -96,9 +93,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (child,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 			              true);
+
+			// Should support selection
+			selectionProvider = rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id) as ISelectionProvider;
+			Assert.IsNotNull (selectionProvider, "Selection Pattern in SelectionItem");
+			
+			// TODO: add more selection-related tests
 			
 			//Should support Toggle
-			toggleProvider1 = (IToggleProvider) child.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+			toggleProvider1 = child.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id) as IToggleProvider;
 			Assert.IsNotNull (toggleProvider1, "Toggle Pattern in SelectionItem");
 			
 			Assert.AreEqual (toggleProvider1.ToggleState, ToggleState.Off);

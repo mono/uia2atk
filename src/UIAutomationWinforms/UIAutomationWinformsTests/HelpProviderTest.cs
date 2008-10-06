@@ -69,9 +69,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Form.Controls.Add (swfButton);
 			Form.Controls.Add (swfButtonNoHelp);
 			
-			IRawElementProviderSimple buttonHelpProvider = GetProviderFromControl (swfButton);
-			IRawElementProviderSimple buttonNoHelpProvider = GetProviderFromControl (swfButtonNoHelp);
-			
 			//Testing ToolTipOpenedEvent
 			bridge.ResetEventLists ();
 			swfButton.PerformClick (); //Clicking the button will fake the event!
@@ -159,27 +156,29 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 		//Information provided by Ivan Zlatev: https://bugzilla.novell.com/show_bug.cgi?id=412849
-        [StructLayout (LayoutKind.Sequential)]
-        struct HELPINFO {
-			internal uint cbSize;
-			internal int iContextType;
-			internal int iCtrlId;
-			internal IntPtr hItemHandle;
-			internal uint dwContextId;
-			internal POINT MousePos;
-        }
+		[StructLayout (LayoutKind.Sequential)]
+		struct HELPINFO {
+				internal uint cbSize;
+				internal int iContextType;
+				internal int iCtrlId;
+				internal IntPtr hItemHandle;
+				internal uint dwContextId;
+				internal POINT MousePos;
+		}
 
-        [StructLayout (LayoutKind.Sequential)]
-        struct POINT {
-			int x;
-			int y;
-			
-			public POINT (int x, int y)
-			{
-				this.x = x;
-				this.y = y;
-			}
-        }
+		[StructLayout (LayoutKind.Sequential)]
+		struct POINT {
+#pragma warning disable 414
+				int x;
+				int y;
+				
+				public POINT (int x, int y)
+				{
+					this.x = x;
+					this.y = y;
+				}
+#pragma warning restore 414
+		}
 		
 		#endregion
 		

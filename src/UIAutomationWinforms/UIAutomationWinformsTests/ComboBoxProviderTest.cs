@@ -73,13 +73,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			IRawElementProviderFragmentRoot rootProvider;
 			IRawElementProviderFragment parent;
-			IRawElementProviderFragment firstChild;
-			IRawElementProviderFragment secondChild;
-			IRawElementProviderFragment thirdChild;
 			IRawElementProviderFragment firstItem;
 			IRawElementProviderFragment secondItem;
 			IRawElementProviderFragment thirdItem;
-			IRawElementProviderFragment prevItem;
 			IRawElementProviderSimple []selection;
 			ISelectionProvider selectionProvider;
 

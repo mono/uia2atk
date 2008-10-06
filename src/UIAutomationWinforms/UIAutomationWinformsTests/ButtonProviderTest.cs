@@ -106,9 +106,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void InvokedEventTest ()
 		{
 			Button button = new Button ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (button);
-			IInvokeProvider invokeProvider = (IInvokeProvider)
-				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+//			IRawElementProviderSimple provider = ProviderFactory.GetProvider (button);
+//			IInvokeProvider invokeProvider = (IInvokeProvider)
+//				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 			
 			bridge.ResetEventLists ();
 			

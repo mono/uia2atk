@@ -107,8 +107,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				
 				IRawElementProviderSimple controlProvider =
 					ProviderFactory.GetProvider (control);
-				IRawElementProviderSimple labelProvider =
-					ProviderFactory.GetProvider (l);
 				
 				object name = controlProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 				Assert.AreEqual (l.Text, name);

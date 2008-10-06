@@ -73,13 +73,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			listbox.Items.Add ("test");
 			
 			IRawElementProviderFragmentRoot rootProvider;
-			IRawElementProviderFragmentRoot windowProvider;
 			ISelectionProvider selectionProvider;
 			IRawElementProviderFragment child;
 
 			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (listbox);
 
-			selectionProvider = (ISelectionProvider) rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
+			selectionProvider = rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id) as ISelectionProvider;
+			Assert.IsNotNull (selectionProvider, "Selection Provider for ListBox");
+
 			child = rootProvider.Navigate (NavigateDirection.FirstChild);
 			
 			TestProperty (child,
@@ -170,8 +171,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			listbox.Size = new System.Drawing.Size (300, 300);
 
 			IRawElementProviderFragmentRoot rootProvider;
-			ISelectionProvider selectionProvider;
-			IRawElementProviderFragment firstChild;
 			IRawElementProviderFragment child;
 			IRawElementProviderFragment childParent;
 
@@ -186,8 +185,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			index = 0;
 			
 			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (listbox);
-			selectionProvider 
-				= (ISelectionProvider) rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
 
 			//Loop all elements
 			child = rootProvider.Navigate (NavigateDirection.FirstChild);

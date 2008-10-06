@@ -1,3 +1,20 @@
+2008-10-06  Brad Taylor  <brad@getcoded.net>
+
+	* BaseProviderTest.cs:
+	* HelpProviderTest.cs:
+	* ErrorProviderTest.cs:
+	* WindowProviderTest.cs:
+	* ButtonProviderTest.cs:
+	* ListBoxProviderTest.cs:
+	* TextBoxProviderTest.cs:
+	* ComboBoxProviderTest.cs:
+	* ScrollBarProviderTest.cs:
+	* RadioButtonProviderTest.cs:
+	* NumericUpDownProviderTest.cs:
+	* CheckedListBoxProviderTest.cs: Fix compiler warnings.
+
+	* Makefile.am: Enable -warnaserror.
+
 2008-10-03  Brad Taylor  <brad@getcoded.net>
 
 	* UIAutomationWinformsTests/TextRangeProviderTest.cs: Implement a test

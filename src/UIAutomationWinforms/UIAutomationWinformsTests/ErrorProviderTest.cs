@@ -54,9 +54,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			label2.Size = new System.Drawing.Size (30, 30);
 			label2.Location = new System.Drawing.Point (1, 32);
 			
-			IRawElementProviderSimple label1Provider 
-				= GetProviderFromControl (label1);
-			
 			Form.Controls.Add (label2);
 			
 			//We already have 2 controls (label1 y label2) in the form,

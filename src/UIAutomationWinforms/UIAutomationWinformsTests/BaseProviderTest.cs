@@ -193,7 +193,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
 			
 			Form f = control as Form;
-			int xOffset = 0, yOffset = 0;
 			if (f == null) {
 				f = new Form ();
 				f.Controls.Add (control);
@@ -202,8 +201,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			try {
 				f.Show ();
 				f.Location = new System.Drawing.Point (0, 0);
-				xOffset = f.Location.X;
-				yOffset = f.Location.Y;
 				
 				control.SetBounds (5, 6, 7, 8);
 				System.Drawing.Rectangle screenRect =

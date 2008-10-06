@@ -200,7 +200,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void TextChangedEventTest ()
 		{
 			TextBox textbox = new TextBox ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 
 			bridge.ResetEventLists ();			
 			textbox.Text = "Changed!";

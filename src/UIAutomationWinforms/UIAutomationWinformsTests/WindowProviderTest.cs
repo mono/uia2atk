@@ -460,6 +460,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}
 		}
 		
+		/*
 		[Test]
 		[Ignore ("Not implemented")]
 		public void GetPropertyValueTest ()
@@ -479,6 +480,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
 			}
 		}
+		*/
 		
 		[Test]
 		public void FragmentRootTest ()
@@ -501,6 +503,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}
 		}
 		
+		/*
 		[Test]
 		[Ignore ("Not implemented")]
 		public void GetRuntimeIdTest ()
@@ -550,7 +553,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
 			}
 		}
-		
+		*/
+
 #endregion
 		
 #region BaseProviderTest Overrides

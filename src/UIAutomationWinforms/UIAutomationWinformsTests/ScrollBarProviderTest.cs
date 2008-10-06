@@ -238,8 +238,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			               "Should support RangeValue Pattern");
 			
 			//Lets test buttons!
-			
-			IRawElementProviderFragment firstButton = null;
+			//IRawElementProviderFragment firstButton = null;
 		}
 		
 		#endregion

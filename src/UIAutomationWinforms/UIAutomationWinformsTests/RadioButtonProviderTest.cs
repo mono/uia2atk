@@ -152,10 +152,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			r2.Checked = false;
 			f.Controls.Add (r2);
 			
-			IRawElementProviderSimple provider2 = ProviderFactory.GetProvider (r2);
-			ISelectionItemProvider selectionItem2 = (ISelectionItemProvider)
-				provider2.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
-			
 			// Should *always* throw InvalidOperationException
 			
 			try {
