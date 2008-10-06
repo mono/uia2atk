@@ -1,3 +1,11 @@
+2008-10-06  Calen Chen <cachen@novell.com>
+
+	* testers/checkbox_basic_ops.py: modify 'right' keycombo to 'tab' 
+	keycombo for check2 to show a dotted line frame, it would let the 
+	focused checkbox looks clearly
+	* testers/form_basic_ops.py: check main form's states after rise 
+	message frame, fix incorrect comment
+
 2008-10-03  Brian G. Merrell <bgmerrell@gmail.com>
 	
 	* testers/radiobutton_basic_ops.py: Reviewed.  Add more test cases,

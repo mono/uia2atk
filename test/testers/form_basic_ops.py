@@ -77,11 +77,13 @@ extraform = fFrame.app.findFrame("Extra Form")
 
 #check extra form widget's states with 'active' state
 statesCheck(extraform, "Form", add_states=["active"])
+#check main form's states without 'active'
+statesCheck(fFrame, "Form")
 
 # click main frame, which should become active
 fFrame.mouseClick()
 statesCheck(fFrame, "Form", add_states=["active"])
-#check main form's states without 'active'
+#check extra form's states without 'active'
 statesCheck(extraform, "Form")
 
 #close extra form widget, main form rise 'active' state again

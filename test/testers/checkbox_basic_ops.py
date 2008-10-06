@@ -55,17 +55,25 @@ statesCheck(cbFrame.check1, "CheckBox", add_states=["focused"])
 # Press 'Right' key until we get back to check1, and check that each
 # check button gets the focused state except check4, which should be
 # skipped
-cbFrame.keyCombo("Right", grabFocus=False)
+cbFrame.keyCombo("Tab", grabFocus=False)
+sleep(config.SHORT_DELAY)
 statesCheck(cbFrame.check2, "CheckBox", add_states=["focused"])
+
 cbFrame.keyCombo("Right", grabFocus=False)
+sleep(config.SHORT_DELAY)
 statesCheck(cbFrame.check3, "CheckBox", add_states=["focused","checked"])
+
 cbFrame.keyCombo("Right", grabFocus=False)
+sleep(config.SHORT_DELAY)
 statesCheck(cbFrame.check1, "CheckBox", add_states=["focused"])
 
 # check and uncheck with space bar
 cbFrame.keyCombo("space", grabFocus=False)
+sleep(config.SHORT_DELAY)
 statesCheck(cbFrame.check1, "CheckBox", add_states=["focused","checked"])
+
 cbFrame.keyCombo("space", grabFocus=False)
+sleep(config.SHORT_DELAY)
 statesCheck(cbFrame.check1, "CheckBox", add_states=["focused"])
 
 #check2 have the default states
@@ -118,6 +126,7 @@ statesCheck(cbFrame.check1, "CheckBox")
 
 #click check4 doesn't update the states
 cbFrame.check4.mouseClick()
+sleep(config.SHORT_DELAY)
 statesCheck(cbFrame.check4, "CheckBox",
                     invalid_states=["sensitive", "enabled","focusable"])
 
