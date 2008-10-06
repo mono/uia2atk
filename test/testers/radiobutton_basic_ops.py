@@ -49,57 +49,52 @@ actionsCheck(rbFrame.button2, "RadioButton")
 actionsCheck(rbFrame.button3, "RadioButton")
 
 #check radiobutton1 with 'checked' 'focused' states
-statesCheck(rbFrame.button1, "RadioButton", add_states=["focused", "checked"])
-
-# Press 'Right' key until we get back to button1, and check that each check
-# button gets focused state except button3, which should be skipped.  Make sure
-# we can check using the spacebar as we go.
-rbFrame.keyCombo("Right", grabFocus=False)
-statesCheck(rbFrame.button2, "RadioButton", add_states=["focused"])
-statesCheck(rbFrame.button1, "RadioButton", add_states=["checked"])
-rbFrame.keyCombo("space", grabFocus=False)
-sleep(config.SHORT_DELAY)
-rbFrame.assertLabel("You are Female")
-statesCheck(rbFrame.button2, "RadioButton", add_states=["focused", "checked"])
-statesCheck(rbFrame.button1, "RadioButton")
-rbFrame.keyCombo("Right", grabFocus=False)
-statesCheck(rbFrame.button1, "RadioButton", add_states=["focused"])
-statesCheck(rbFrame.button2, "RadioButton", add_states=["checked"])
-rbFrame.keyCombo("space", grabFocus=False)
-sleep(config.SHORT_DELAY)
-rbFrame.assertLabel("You are Male")
-statesCheck(rbFrame.button1, "RadioButton", add_states=["focused", "checked"])
-statesCheck(rbFrame.button2, "RadioButton")
+rbFrame.keyCombo("Tab", grabFocus=False)
+statesCheck(rbFrame.button1, "RadioButton", 
+                           add_states=["focused", "checked"])
 
 #check radiobutton2 with default states
 statesCheck(rbFrame.button2, "RadioButton")
 
 #check radiobutton3's states
 statesCheck(rbFrame.button3, "RadioButton",
-                          invalid_states=["sensitive", "enabled", "focusable"])
+                           invalid_states=["focusable", "sensitive", "enabled"])
 
-#click radiobutton2 'Female' to renew label's text 
-rbFrame.click(rbFrame.button2)
-sleep(config.SHORT_DELAY)
-rbFrame.assertLabel("You are Female")
-#radiobutton2 rise 'checked' state
-statesCheck(rbFrame.button2, "RadioButton",
+#press "right" key to move focused state to button2
+rbFrame.keyCombo("Right", grabFocus=False)
+statesCheck(rbFrame.button2, "RadioButton", add_states=["focused"])
+#button1 get rid of focused state
+statesCheck(rbFrame.button1, "RadioButton", 
                            add_states=["checked"])
-#radiobutton1 get rid of 'checked' but still focused
+
+#press "space" key to select button2 to rise checked state
+rbFrame.keyCombo("space", grabFocus=False)
+statesCheck(rbFrame.button2, "RadioButton", add_states=["focused", "checked"])
+#button1 get rid of checked state
+statesCheck(rbFrame.button1, "RadioButton")
+
+#click radiobutton1 to renew label's text 
+rbFrame.click(rbFrame.button1)
+sleep(config.SHORT_DELAY)
+rbFrame.assertLabel("You are Male")
+#radiobutton1 rise 'checked' state
 statesCheck(rbFrame.button1, "RadioButton",
+                           add_states=["checked"])
+#radiobutton2 get rid of 'checked' but still focused
+statesCheck(rbFrame.button2, "RadioButton",
                            add_states=["focused"])
 
-#mouse click radiobutton2 to rise 'focused' state and still checked
-rbFrame.button2.mouseClick()
-statesCheck(rbFrame.button2, "RadioButton",
+#mouse click radiobutton1 to rise 'focused' state and still checked
+rbFrame.button1.mouseClick()
+statesCheck(rbFrame.button1, "RadioButton",
                            add_states=["focused", "checked"])
-#radiobutton1 return to default states
-statesCheck(rbFrame.button1, "RadioButton")
+#radiobutton2 return to default states
+statesCheck(rbFrame.button2, "RadioButton")
 
 #click insensitive radiobutton3 doesn't change states
 rbFrame.button3.mouseClick()
 statesCheck(rbFrame.button3, "RadioButton",
-                           invalid_states=["sensitive", "enabled","focusable"])
+                           invalid_states=["focusable", "sensitive", "enabled"])
 
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR

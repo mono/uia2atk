@@ -50,6 +50,8 @@ statesCheck(vsbFrame.vscrollbar, "VScrollBar")
 vsbFrame.vscrollbar.mouseClick()
 sleep(config.SHORT_DELAY)
 vsbFrame.assertScrollbar(20)
+#mouseClick action update label's text
+vsbFrame.assertLabel(20)
 
 #check hscrollbar's states list
 statesCheck(vsbFrame.vscrollbar, "VScrollBar")
@@ -58,6 +60,8 @@ statesCheck(vsbFrame.vscrollbar, "VScrollBar")
 vsbFrame.vscrollbar.keyCombo("Page_Down")
 sleep(config.SHORT_DELAY)
 vsbFrame.assertScrollbar(40)
+#keyCombo action update label's text
+vsbFrame.assertLabel(40)
 
 #set value to 10
 vsbFrame.valueScrollBar(10)

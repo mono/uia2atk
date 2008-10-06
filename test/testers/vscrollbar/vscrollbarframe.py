@@ -30,21 +30,24 @@ class VScrollBarFrame(accessibles.Frame):
     #change vscrollbar's value
     def valueScrollBar(self, newValue=None):
         procedurelogger.action('set scrollbar value to "%s"' % newValue)
-        scrollbar = self.findScrollBar(None)
-        sleep(config.MEDIUM_DELAY)
-        scrollbar.__setattr__('value', newValue)
+        self.vscrollbar.__setattr__('value', newValue)
+
+    def assertLabel(self, newValue=None):
+        procedurelogger.expectedResult('label\'s value changed to "%s"' % newValue)
+        label = self.findLabel("Value: %s" % newValue)
+        assert label
 
     def assertScrollbar(self, newValue=None):
-        maximumValue = self.findScrollBar(None)._accessible.queryValue().maximumValue
+        maximumValue = self.vscrollbar._accessible.queryValue().maximumValue
 
         if 0 <= newValue <= maximumValue:
             procedurelogger.expectedResult('the scrollbar\'s current value is "%s"' % newValue)
-            assert self.findScrollBar(None).__getattr__('value') == newValue, \
-                       "scrollbar's current value is %s:" % self.findScrollBar(None).__getattr__('value')
+            assert self.vscrollbar.__getattr__('value') == newValue, \
+                       "scrollbar's current value is %s:" % self.vscrollbar.__getattr__('value')
         else:
             procedurelogger.expectedResult('value "%s" out of run' % newValue)
-            assert not self.findScrollBar(None).__getattr__('value') == newValue, \
-                       "scrollbar's current value is %s:" % self.findScrollBar(None).__getattr__('value')
+            assert not self.vscrollbar.__getattr__('value') == newValue, \
+                       "scrollbar's current value is %s:" % self.vscrollbar.__getattr__('value')
     
     #close application window
     def quit(self):

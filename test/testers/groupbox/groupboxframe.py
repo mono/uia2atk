@@ -22,28 +22,19 @@ class GroupBoxFrame(accessibles.Frame):
     # the available widgets on the window
     BUTTON_ONE = "button1"
     BUTTON_TWO = "button2"
+    LABEL_ONE = "this is the first Groupbox"
+    LABEL_TWO = "this is the second Groupbox"
+    PANEL_ONE = "GroupBox1"
+    PANEL_TWO = "GroupBox2"
 
     def __init__(self, accessible):
         super(GroupBoxFrame, self).__init__(accessible)
         self.button1 = self.findPushButton(self.BUTTON_ONE)
         self.button2 = self.findPushButton(self.BUTTON_TWO)
-        self.label = self.findAllLabels(None)
-
-    #search groupbox
-    def searchGroupBox(self,boxname=None):
-        if boxname == 'GroupBox1':
-            procedurelogger.action('search for panel of "%s"' % boxname)
-
-            sleep(config.SHORT_DELAY)
-            procedurelogger.expectedResult('"%s" existed' % boxname)
-            self.panel1 = self.findPanel('GroupBox1')
-
-        elif boxname =='GroupBox2':
-            procedurelogger.action('search for panel of "%s"' % boxname)
-
-            sleep(config.SHORT_DELAY)
-            procedurelogger.expectedResult('"%s" existed' % boxname)
-            self.panel2 = self.findPanel('GroupBox2')
+        self.label1 = self.findLabel(self.LABEL_ONE)
+        self.label2 = self.findLabel(self.LABEL_TWO)
+        self.panel1 = self.findPanel(self.PANEL_ONE)
+        self.panel2 = self.findPanel(self.PANEL_TWO)
 
     #give 'click' action
     def click(self,button):

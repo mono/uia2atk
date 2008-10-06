@@ -1,5 +1,22 @@
 2008-10-06  Calen Chen <cachen@novell.com>
 
+	* testers/radiobutton_basic_ops.py: press 'Tab' key to show a dotted 
+	line frame for radiobutton1 to show the focused clearly, change some 
+	logic because adding 'right''space' keyCombo way to select 
+	radiobutton2
+	* testers/groupbox/groupboxframe.py: search for label individually 
+	instead of using findAll, search for panel in init instead in 
+	searchGroupBox
+	* testers/groupbox_basic_ops.py: use the variable names for each label,
+	delete searchGroupBox test
+	* testers/hscrollbar/hscrollbarframe.py,
+	* testers/vscrollbar/vscrollbarframe.py: Add assertLabel test when using
+	mouseClisk and keyCombo action, delete repeated findScrollBar
+	* testers/vscrollbar_basic_ops.py,
+	* testers/hscrollbar_basic_ops.py: add label test
+
+2008-10-06  Calen Chen <cachen@novell.com>
+
 	* testers/checkbox_basic_ops.py: modify 'right' keycombo to 'tab' 
 	keycombo for check2 to show a dotted line frame, it would let the 
 	focused checkbox looks clearly

@@ -50,6 +50,8 @@ statesCheck(hsbFrame.hscrollbar, "HScrollBar")
 hsbFrame.hscrollbar.mouseClick()
 sleep(config.SHORT_DELAY)
 hsbFrame.assertScrollbar(20)
+#mouseClick action update label's text
+hsbFrame.assertLabel(20)
 
 #still have default states
 statesCheck(hsbFrame.hscrollbar, "HScrollBar")
@@ -58,6 +60,8 @@ statesCheck(hsbFrame.hscrollbar, "HScrollBar")
 hsbFrame.hscrollbar.keyCombo("Page_Down")
 sleep(config.SHORT_DELAY)
 hsbFrame.assertScrollbar(40)
+#keyCombo action update label's text
+hsbFrame.assertLabel(40)
 
 #set value to 10
 hsbFrame.valueScrollBar(10)

@@ -52,14 +52,8 @@ statesCheck(gbFrame.button1, "Button", add_states=["focused"])
 statesCheck(gbFrame.button2, "Button")
 
 #check if label in panel still have correct states
-statesCheck(gbFrame.label[0], "Label")
-statesCheck(gbFrame.label[1], "Label")
-
-#search for groupbox1 panel
-gbFrame.searchGroupBox('GroupBox1')
-
-#search for groupbox2 panel
-gbFrame.searchGroupBox('GroupBox2')
+statesCheck(gbFrame.label1, "Label")
+statesCheck(gbFrame.label2, "Label")
 
 #check Panel's states
 statesCheck(gbFrame.panel1, "Panel")
