@@ -1,3 +1,7 @@
+2008-10-06  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Monitor.cs, TextLabel.cs, TopLevelRootItem.cs: Style guidelines.
+
 2008-10-06  Mike Gorse <mgorse@novell.com>
 
 	* ScrollBar.cs: Revert last change.

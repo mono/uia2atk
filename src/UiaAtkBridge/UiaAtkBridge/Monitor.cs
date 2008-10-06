@@ -55,20 +55,21 @@ namespace UiaAtkBridge
 		}
 		private bool isApplicationStarted = false;
 		
-		public void ApplicationStarts()
+		public void ApplicationStarts ()
 		{
 			isApplicationStarted = true;
 			Thread glibThread = new Thread (new ThreadStart (GLibMainLoopThread));
 			glibThread.IsBackground = true;
 			glibThread.Start ();
 			GLibHacks.Invoke (delegate (object sender, EventArgs args) {
-				LaunchAtkBridge ();});
+				LaunchAtkBridge ();
+			});
 		}
 		
 		private void GLibMainLoopThread ()
 		{
-			mainLoop = new GLib.MainLoop();
-			mainLoop.Run();
+			mainLoop = new GLib.MainLoop ();
+			mainLoop.Run ();
 			Atk.Util.GetRootHandler = null;
 		}
 		
@@ -79,19 +80,19 @@ namespace UiaAtkBridge
 			});
 		}
 
-		internal static string GetProgramName()
+		internal static string GetProgramName ()
 		{
 			return System.IO.Path.GetFileNameWithoutExtension (Environment.GetCommandLineArgs () [0]);
 		}
 		
-		private static Atk.Object ReturnTopLevel()
+		private static Atk.Object ReturnTopLevel ()
 		{
 			return TopLevelRootItem.Instance;
 		}
 		
 		private static string GetAssemblyName()
 		{
-			return typeof(Monitor).Assembly.GetName().Name;
+			return typeof (Monitor).Assembly.GetName ().Name;
 		}
 		
 		private static string GetAssemblyVersionNumber ()

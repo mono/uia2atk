@@ -33,9 +33,9 @@ namespace UiaAtkBridge
 {
 	public class TopLevelRootItem : ParentAdapter
 	{
-		private TopLevelRootItem()
+		private TopLevelRootItem ()
 		{
-			this.Name = Monitor.GetProgramName();
+			this.Name = Monitor.GetProgramName ();
 			this.Role = Atk.Role.Application;
 		}
 		
@@ -49,7 +49,7 @@ namespace UiaAtkBridge
 				if (instance == null)
 					lock (syncRoot)
 						if (instance == null)
-							instance = new TopLevelRootItem();
+							instance = new TopLevelRootItem ();
 				return instance;
 			}
 		}

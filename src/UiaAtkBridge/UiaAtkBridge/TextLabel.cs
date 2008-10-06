@@ -212,8 +212,7 @@ namespace UiaAtkBridge
 
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
-		
 	}
 }
