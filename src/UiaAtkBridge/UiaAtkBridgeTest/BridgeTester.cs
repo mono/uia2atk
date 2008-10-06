@@ -185,6 +185,9 @@ namespace UiaAtkBridgeTest
 		
 		public BridgeTester () 
 		{
+			//same effect as Application.Run() (the important bit is this causes a call to ApplicationStarts() ):
+			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
+					
 			cb1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			linklab1.Links[0].Visited = true;
 			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com";
