@@ -1,5 +1,10 @@
 2008-10-07  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Implementation of
+	  FragmentRoot.
+
+2008-10-07  Mario Carrion <mcarrion@novell.com> 
+
 	* Makefile.am, Mono.UIAutomation.Winforms.mdp: MultipleView behavior
 	  added.
 	* Mono.UIAutomation.Winforms.Behaviors/ListView: ListView behaviors

@@ -191,6 +191,12 @@ namespace Mono.UIAutomation.Winforms
 				SetBehavior (InvokePatternIdentifiers.Pattern, 
 				             new ButtonInvokeProviderBehavior (this));
 			}
+			
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { 
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (scrollbarContainer);
+				}
+			}
 	
 			public ScrollBarButtonOrientation Orientation {
 				get { return orientation; }
@@ -240,6 +246,12 @@ namespace Mono.UIAutomation.Winforms
 			public ScrollBarThumbProvider (ScrollBar scrollbar) : base (scrollbar)
 			{
 				runtimeId = -1;
+			}
+			
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { 
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (Control);
+				}
 			}
 	
 			public override object GetPropertyValue (int propertyId)

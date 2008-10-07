@@ -1,3 +1,8 @@
+2008-10-07  Mario Carrion <mcarrion@novell.com> 
+
+	* ScrollBarProviderTest.cs: Test updated to verify FragmentRoot
+	  implementation.
+
 2008-10-07  Brad Taylor  <brad@getcoded.net>
 
 	* UIAutomationWinformsTests/TextRangeProviderTest.cs: Rework tests so

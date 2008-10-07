@@ -142,17 +142,32 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 firstButton.Navigate (NavigateDirection.Parent),
 			               "firstButton with different Parent");
 			Assert.AreEqual (provider,
+			                 firstButton.FragmentRoot,
+			               "firstButton with different FragmentRoot");
+			Assert.AreEqual (provider,
 			                 secondButton.Navigate (NavigateDirection.Parent),
 			               "secondButton with different Parent");
+			Assert.AreEqual (provider,
+			                 secondButton.FragmentRoot,
+			               "secondButton with different FragmentRoot");
 			Assert.AreEqual (provider,
 			                 thumbProvider.Navigate (NavigateDirection.Parent),
 			               "thumbProvider with different Parent");
 			Assert.AreEqual (provider,
+			                 thumbProvider.FragmentRoot,
+			               "thumbProvider with different FragmentRoot");
+			Assert.AreEqual (provider,
 			                 thirdButton.Navigate (NavigateDirection.Parent),
-			               "thirdButton with different Parent");
+			               "thirdButton with different Parent");	
+			Assert.AreEqual (provider,
+			                 thirdButton.FragmentRoot,
+			               "thirdButton with different FragmentRoot");
 			Assert.AreEqual (provider,
 			                 fourthButton.Navigate (NavigateDirection.Parent),
 			               "fourthButton with different Parent");
+			Assert.AreEqual (provider,
+			                 fourthButton.FragmentRoot,
+			               "fourthButton with different FragmentRoot");			
 			
 			//All children MUST not have any children			
 			Assert.AreEqual (null,
@@ -233,8 +248,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			Assert.IsNotNull (scrollBarProvider, "Should be scrollbar");
 			
-			//I'm inside a ScrollProvider, so RangeValue Pattern should NOT supported
-			Assert.IsFalse ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty.Id),
+			//LAMESPEC: This SHOULD BE Assert.IsFalse
+			Assert.IsTrue ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty.Id),
 			               "Should support RangeValue Pattern");
 			
 			//Lets test buttons!
