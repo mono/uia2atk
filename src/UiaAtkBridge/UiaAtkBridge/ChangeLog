@@ -1,5 +1,10 @@
 2008-10-07  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* Button.cs, ComponentAdapter.cs: First unfinished Atk.Image
+	  implementation. (We lack proper MS provider API again...)
+
+2008-10-07  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* ParentAdapter.cs: Remove debug spew.
 	* RadioButton.cs: Fix RadioButton behaviour according to test suite:
 	  Remove state notification (already sent by the event that is raised

@@ -31,8 +31,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class Button : ComponentAdapter, Atk.ActionImplementor, Atk.TextImplementor
-		//TODO:  Atk.ImageImplementor
+	public class Button : ComponentAdapter, Atk.ActionImplementor, Atk.TextImplementor, Atk.ImageImplementor
 	{
 		private static string default_invoke_description = "Sends a request to activate a control and initiate its single, unambiguous action.";
 		private static string default_invoke_name = "click";
@@ -316,7 +315,7 @@ namespace UiaAtkBridge
 
 		public bool AddSelection (int startOffset, int endOffset)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
 		public bool RemoveSelection (int selectionNum)
@@ -343,5 +342,59 @@ namespace UiaAtkBridge
 		{
 			throw new NotImplementedException ();
 		}
+
+
+#region ImageImplementor implementation 
+
+		string imageDescription = null;
+
+		bool? hasImage = null;
+		private bool HasImage {
+			get {
+				if (hasImage == null) {
+					throw new NotImplementedException ();
+				}
+				
+				return hasImage.Value;
+			}
+		}
+		
+		public string ImageDescription
+		{
+			get { return imageDescription; }
+		}
+		
+		public void GetImageSize (out int width, out int height)
+		{
+			width = -1;
+			height = -1;
+			if (HasImage)
+				//no provider API for getting size/pos of an image, so we use the widget's info
+				ComponentExpert.GetSize (out width, out height);
+		}
+		
+		public void GetImagePosition (out int x, out int y, Atk.CoordType coordType)
+		{
+			x = int.MinValue;
+			y = int.MinValue;
+			if (HasImage)
+				//no provider API for getting size/pos of an image, so we use the widget's info
+				ComponentExpert.GetPosition (out x, out y, coordType);
+		}
+		
+		public bool SetImageDescription (string description)
+		{
+			imageDescription = description;
+			return true;
+		}
+		
+		public string ImageLocale 
+		{
+			get { throw new System.NotImplementedException (); }
+		}
+		
+#endregion
+
+
 	}
 }

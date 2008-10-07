@@ -36,6 +36,9 @@ namespace UiaAtkBridge
 		}
 		
 		private ComponentImplementorHelper componentExpert;
+		internal ComponentImplementorHelper ComponentExpert {
+			get { return this.componentExpert; }
+		}
 		
 #region ComponentImplementor Methods
 
