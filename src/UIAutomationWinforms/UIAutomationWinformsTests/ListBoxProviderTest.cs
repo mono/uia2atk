@@ -100,9 +100,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				child.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id) as ISelectionItemProvider;			
 			Assert.IsNotNull (selectionItem, "ListItem should ALWAYS SUPPORT SelectionItem");
 			
-			IScrollItemProvider scrollItem =
-				child.GetPatternProvider (ScrollItemPatternIdentifiers.Pattern.Id) as IScrollItemProvider;
-			Assert.IsNotNull (scrollItem, "ListItem should ALWAYS SUPPORT ScrollItem");
+			
+			IScrollProvider scroll 
+				= rootProvider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider;
+			
+			if (scroll != null) {
+				IScrollItemProvider scrollItem =
+					child.GetPatternProvider (ScrollItemPatternIdentifiers.Pattern.Id) as IScrollItemProvider;
+				Assert.IsNotNull (scrollItem, "ListItem should ALWAYS SUPPORT ScrollItem");
+			}
 			
 			IToggleProvider toggleItem =
 				child.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id) as IToggleProvider;

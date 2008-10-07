@@ -1,5 +1,10 @@
 2008-10-07  Mario Carrion <mcarrion@novell.com> 
 
+	* ListBoxProviderTest.cs, CheckedListBoxProviderTest.cs: Updated to
+	  satisfy specification.
+
+2008-10-07  Mario Carrion <mcarrion@novell.com> 
+
 	* ScrollBarProviderTest.cs: Test updated to verify FragmentRoot
 	  implementation.
 
