@@ -1,3 +1,9 @@
+2008-10-07  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* AtkTester.cs: Fix test.
+	* BridgeTester.cs: Make event debugging more comfortable.
+	* EventMonitor.cs: Be careful about being too quick.
+
 2008-10-06  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* bridgetest.sh.in: Prevent DllNotFoundException.

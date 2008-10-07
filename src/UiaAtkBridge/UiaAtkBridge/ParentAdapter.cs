@@ -83,7 +83,7 @@ namespace UiaAtkBridge
 		
 		internal virtual void AddOneChild (Adapter child)
 		{
-			Console.WriteLine ("AddOneChild: " + Role + " -> " + child.Role);
+			//Console.WriteLine ("AddOneChild: " + Role + " -> " + child.Role);
 			lock (syncRoot) {
 				children.Add (child);
 			}

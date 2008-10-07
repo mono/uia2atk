@@ -84,7 +84,7 @@ namespace UiaAtkBridgeTest
 			EventCollection radioEvs = events.FindByRole (Atk.Role.RadioButton).FindByType (evType);
 			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
 			Assert.AreEqual (2, radioEvs.Count, "bad number of events expected!" + eventsInXml);
-			Assert.IsFalse (radioEvs [0].SourceName == radioEvs [0].SourceName, "events should come from different widgets;" + eventsInXml);
+			Assert.IsFalse (radioEvs [0].SourceName == radioEvs [1].SourceName, "events should come from different widgets;" + eventsInXml);
 			Assert.AreEqual (1, radioEvs.FindWithDetail1 ("1").Count, "one should be Checked;" + eventsInXml);
 			Assert.AreEqual (1, radioEvs.FindWithDetail1 ("0").Count, "one should be Checked;" + eventsInXml);
 			

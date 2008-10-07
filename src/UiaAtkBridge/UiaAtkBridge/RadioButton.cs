@@ -49,9 +49,6 @@ namespace UiaAtkBridge
 				return false;
 
 			if (!selProvider.IsSelected) {
-				NotifyStateChange (Atk.StateType.Checked, true);
-				//theoretically, other radio buttons should catch the AutomationEvent of being unchecked, and fire
-				// their corresponding NotifyStateChange calls
 				selProvider.Select ();
 			}
 			

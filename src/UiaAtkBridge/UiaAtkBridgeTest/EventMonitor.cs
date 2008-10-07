@@ -55,6 +55,8 @@ namespace UiaAtkBridgeTest
 			p.OutputDataReceived += new DataReceivedEventHandler (OnDataReceived);
 			p.Start ();
 			p.BeginOutputReadLine();
+			//wait a bit until atspimon.py initializes
+			System.Threading.Thread.Sleep (1000);
 		}
 
 		void OnDataReceived (object sender, DataReceivedEventArgs args)
