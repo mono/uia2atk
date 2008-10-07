@@ -305,6 +305,36 @@ namespace Mono.UIAutomation.Winforms
 
 #region Paragraph methods
 
+		private bool ForwardPeekNewline (int i, string text, out int n_chars)
+		{
+			n_chars = 0;
+
+			if (i + 1 < text.Length
+			    && text[i] == '\r' && text[i+1] == '\n') {
+				n_chars = 2;
+				return true;
+			} else if (text[i] == '\r' || text[i] == '\n') {
+				n_chars = 1;
+				return true;
+			}
+			return false;
+		}
+
+		private bool BackwardPeekNewline (int i, string text, out int n_chars)
+		{
+			n_chars = 0;
+
+			if (i - 1 >= 0
+			    && text[i] == '\n' && text[i-1] == '\r') {
+				n_chars = 2;
+				return true;
+			} else if (text[i] == '\r' || text[i] == '\n') {
+				n_chars = 1;
+				return true;
+			}
+			return false;
+		}
+
 		public int ParagraphMoveStartPoint (int count)
 		{
 			return ParagraphMoveStartEndPoint (count, ref start_point);
@@ -315,7 +345,7 @@ namespace Mono.UIAutomation.Winforms
 			return ParagraphMoveStartEndPoint (count, ref end_point);
 		}
 
-		public int ParagraphMoveStartEndPoint (int count, ref int point)
+		private int ParagraphMoveStartEndPoint (int count, ref int point)
 		{
 			if (count == 0) {
 				return 0;
@@ -323,20 +353,23 @@ namespace Mono.UIAutomation.Winforms
 
 			string text = textboxbase.Text;
 
-			int c = 0, index = 0;
+			int c = 0, index = 0, n_chars = 0;
 			if (count > 0) {
 				// walk forward until you see count number of
 				// new lines
 				for (int i = point; i < text.Length; i++) {
 					index = i;
 
-					if (text[i] == Environment.NewLine[0]) {
+					if (ForwardPeekNewline (i, text, out n_chars)) {
 						c++;
+						i += n_chars;
 
 						if (c == count) {
-							index = i + 1;
+							index = i;
 							break;
 						}
+
+						i -= 1;  // account for iteration
 					}
 				}
 
@@ -359,14 +392,17 @@ namespace Mono.UIAutomation.Winforms
 					// stop when you hit count newlines
 					// (plus 1 since we want all the text
 					// leading up to the next newline)
-					if (text[i] == Environment.NewLine[0]) {
+					if (BackwardPeekNewline (i, text, out n_chars)) {
 						c--;
-						
+
 						if (c == (count - 1)) {
+							c += 1;
 							index = i + 1;
-							c++;
 							break;
 						}
+
+						i -= n_chars;
+						i += 1;  // account for iteration
 					}
 				}
 

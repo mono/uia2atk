@@ -84,12 +84,30 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			textbox = null;
 		}
 
+		// M.W.F.RichTextBox supports the following newline combinations
 		[Test]
-		public void MoveEndpointByLine ()
+		public void MoveEndpointByLineRich ()
+		{
+			MoveEndpointByLine ("\n");
+		}
+
+		[Test]
+		public void MoveEndpointByLineLimp ()
+		{
+			MoveEndpointByLine ("\r");
+		}
+
+		[Test]
+		public void MoveEndpointByLineHard ()
+		{
+			MoveEndpointByLine ("\r\n");
+		}
+		
+		public void MoveEndpointByLine (string newline_chars)
 		{
 			textbox.Multiline = true;
-			textbox.Text = String.Format ("hello{0}world{0}{0}test", Environment.NewLine);
-			
+			textbox.Text = String.Format ("hello{0}world{0}{0}test", newline_chars);
+
 			range = provider.DocumentRange.Clone ();
 
 			// NOTE: These all pass successfully on Windows Vista, so
@@ -97,52 +115,69 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			int moved_units;
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Line, 0);
 			Assert.AreEqual (0, moved_units);
-			Assert.AreEqual (String.Format ("hello{0}world{0}{0}test", Environment.NewLine),
+			Assert.AreEqual (String.Format ("hello{0}world{0}{0}test", newline_chars),
 					 range.GetText (-1));
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 1);
 			Assert.AreEqual (1, moved_units, "Moved units are incorrect in +1 character move");
-			Assert.AreEqual (String.Format ("ello{0}world{0}{0}test", Environment.NewLine),
+			Assert.AreEqual (String.Format ("ello{0}world{0}{0}test", newline_chars),
 					 range.GetText (-1), "Text is incorrect in +1 character move");
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Line, -1);
 			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in -1 line move");
-			Assert.AreEqual (String.Format ("ello{0}world{0}", Environment.NewLine),
+			Assert.AreEqual (String.Format ("ello{0}world{0}", newline_chars),
 					 range.GetText (-1), "Text is incorrect in -1 line move");
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Line, 1);
-			Assert.AreEqual (1, moved_units, "Moved units are incorrect in 1 line move");
-			Assert.AreEqual (String.Format ("world{0}", Environment.NewLine),
-					 range.GetText (-1), "Text is incorrect in -1 line move");
+			Assert.AreEqual (1, moved_units, "Moved units are incorrect in +1 line move");
+			Assert.AreEqual (String.Format ("world{0}", newline_chars),
+					 range.GetText (-1), "Text is incorrect in +1 line move");
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Line, 10);
 			Assert.AreEqual (1, moved_units, "Moved units are incorrect in +10 line move");
-			Assert.AreEqual (String.Format ("world{0}{0}", Environment.NewLine),
+			Assert.AreEqual (String.Format ("world{0}{0}", newline_chars),
 					 range.GetText (-1), "Text is incorrect in +10 line move");
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, 10);
 			Assert.AreEqual (4, moved_units, "Moved units are incorrect in +10 character move");
-			Assert.AreEqual (String.Format ("world{0}{0}test", Environment.NewLine),
+			Assert.AreEqual (String.Format ("world{0}{0}test", newline_chars),
 					 range.GetText (-1), "Text is incorrect in +10 character move");
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Line, 5);
 			Assert.AreEqual (2, moved_units, "Moved units are incorrect in +5 line move");
-			Assert.AreEqual (String.Format ("test", Environment.NewLine),
+			Assert.AreEqual (String.Format ("test", newline_chars),
 					 range.GetText (-1), "Text is incorrect in +5 line move");
 
 			moved_units = range.MoveEndpointByUnit(TextPatternRangeEndpoint.Start, TextUnit.Line, -5);
 			Assert.AreEqual (-4, moved_units, "Moved units are incorrect in -5 line move");
-			Assert.AreEqual(String.Format ("hello{0}world{0}{0}test", Environment.NewLine),
+			Assert.AreEqual(String.Format ("hello{0}world{0}{0}test", newline_chars),
 					range.GetText (-1), "Text is incorrect in -5 line move");
 		}
 
  		[Test]
-		public void MoveEndpointByParagraphSimple ()
+		public void MoveEndpointByParagraphSimpleHard ()
+		{
+			MoveEndpointByParagraphSimple ("\r\n");
+		}
+
+ 		[Test]
+		public void MoveEndpointByParagraphSimpleLimp ()
+		{
+			MoveEndpointByParagraphSimple ("\r");
+		}
+
+ 		[Test]
+		public void MoveEndpointByParagraphSimpleRich ()
+		{
+			MoveEndpointByParagraphSimple ("\n");
+		}
+
+		private void MoveEndpointByParagraphSimple (string newline)
 		{
 			textbox.Multiline = true;
 
 			// In case you were wondering, the topic is: things that are awesome
-			textbox.Text = String.Format("bear{0}{0}shark{0}laser{0}{0}volcano", Environment.NewLine);
+			textbox.Text = String.Format("bear{0}{0}shark{0}laser{0}{0}volcano", newline);
 
 			range = provider.DocumentRange.Clone ();
 			
@@ -151,50 +186,67 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			int moved_units;
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, 0);
 			Assert.AreEqual (0, moved_units, "Moved units are incorrect in 0 paragraph move");
-			Assert.AreEqual (String.Format ("bear{0}{0}shark{0}laser{0}{0}volcano", Environment.NewLine),
+			Assert.AreEqual (String.Format ("bear{0}{0}shark{0}laser{0}{0}volcano", newline),
 					 range.GetText (-1), "Text is incorrect in 0 paragraph move");
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -1);
 			Assert.AreEqual (0, moved_units, "Moved units are incorrect in -1 paragraph move");
-			Assert.AreEqual (String.Format ("bear{0}{0}shark{0}laser{0}{0}volcano", Environment.NewLine),
+			Assert.AreEqual (String.Format ("bear{0}{0}shark{0}laser{0}{0}volcano", newline),
 					 range.GetText (-1), "Text is incorrect in -1 paragraph move");
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, 1);
 			Assert.AreEqual (1, moved_units, "Moved units are incorrect in first +1 paragraph move");
-			Assert.AreEqual (String.Format ("{0}shark{0}laser{0}{0}volcano", Environment.NewLine),
+			Assert.AreEqual (String.Format ("{0}shark{0}laser{0}{0}volcano", newline),
 					 range.GetText (-1), "Text is incorrect in first +1 paragraph move");
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, 1);
 			Assert.AreEqual (1, moved_units, "Moved units are incorrect in second +1 paragraph move");
-			Assert.AreEqual (String.Format ("shark{0}laser{0}{0}volcano", Environment.NewLine),
+			Assert.AreEqual (String.Format ("shark{0}laser{0}{0}volcano", newline),
 					 range.GetText (-1), "Moved units are incorrect in second +1 paragraph move");
 			
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, 1);
 			Assert.AreEqual (1, moved_units, "Moved units are incorrect in third +1 paragraph move");
-			Assert.AreEqual (String.Format ("laser{0}{0}volcano", Environment.NewLine),
+			Assert.AreEqual (String.Format ("laser{0}{0}volcano", newline),
 					 range.GetText (-1), "Text is incorrect in third +1 paragraph move");
 			
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -1);
 			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in first -1 paragraph move");
-			Assert.AreEqual (String.Format ("shark{0}laser{0}{0}volcano", Environment.NewLine),
+			Assert.AreEqual (String.Format ("shark{0}laser{0}{0}volcano", newline),
 					 range.GetText (-1), "Text is incorrect in first -1 paragraph move");
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -1);
 			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in second -1 paragraph move");
-			Assert.AreEqual (String.Format ("{0}shark{0}laser{0}{0}volcano", Environment.NewLine),
+			Assert.AreEqual (String.Format ("{0}shark{0}laser{0}{0}volcano", newline),
 					 range.GetText (-1), "Text is incorrect in second -1 paragraph move");
 			
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -1);
 			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in third -1 paragraph move");
-			Assert.AreEqual (String.Format ("bear{0}{0}shark{0}laser{0}{0}volcano", Environment.NewLine),
+			Assert.AreEqual (String.Format ("bear{0}{0}shark{0}laser{0}{0}volcano", newline),
 					 range.GetText (-1), "Text is incorrect in third -1 paragraph move");
  		}
 
  		[Test]
-		public void MoveEndpointByPargraphIntensive ()
+		public void MoveEndpointByParagraphIntensiveHard ()
+		{
+			MoveEndpointByParagraphIntensive ("\r\n");
+		}
+
+ 		[Test]
+		public void MoveEndpointByParagraphIntensiveLimp ()
+		{
+			MoveEndpointByParagraphIntensive ("\r");
+		}
+
+ 		[Test]
+		public void MoveEndpointByParagraphIntensiveRich ()
+		{
+			MoveEndpointByParagraphIntensive ("\n");
+		}
+
+		private void MoveEndpointByParagraphIntensive (string newline)
 		{
 			textbox.Multiline = true;
-			textbox.Text = String.Format ("apples{0}{0}pears{0}peaches{0}{0}bananas", Environment.NewLine);
+			textbox.Text = String.Format ("apples{0}{0}pears{0}peaches{0}{0}bananas", newline);
 
 			range = provider.DocumentRange.Clone ();
 			
@@ -203,39 +255,39 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			int moved_units;
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 1);
 			Assert.AreEqual (1, moved_units, "Moved units are incorrect in 0 paragraph move");
-			Assert.AreEqual (String.Format ("pples{0}{0}pears{0}peaches{0}{0}bananas", Environment.NewLine),
+			Assert.AreEqual (String.Format ("pples{0}{0}pears{0}peaches{0}{0}bananas", newline),
 					 range.GetText (-1), "Text is incorrect in 0 paragraph move");
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -1);
 			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in -1 paragraph move");
-			Assert.AreEqual (String.Format ("apples{0}{0}pears{0}peaches{0}{0}bananas", Environment.NewLine),
+			Assert.AreEqual (String.Format ("apples{0}{0}pears{0}peaches{0}{0}bananas", newline),
 					 range.GetText (-1), "Text is incorrect in -1 paragraph move");
 
 			range = provider.DocumentRange.Clone ();
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 1);
 			Assert.AreEqual (1, moved_units, "Moved units are incorrect in +1 character move");
-			Assert.AreEqual (String.Format ("pples{0}{0}pears{0}peaches{0}{0}bananas", Environment.NewLine),
+			Assert.AreEqual (String.Format ("pples{0}{0}pears{0}peaches{0}{0}bananas", newline),
 					 range.GetText (-1), "Text is incorrect in +1 character move");
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, 2);
 			Assert.AreEqual (2, moved_units, "Moved units are incorrect in +2 paragraph move");
-			Assert.AreEqual (String.Format ("pears{0}peaches{0}{0}bananas", Environment.NewLine),
+			Assert.AreEqual (String.Format ("pears{0}peaches{0}{0}bananas", newline),
 					 range.GetText (-1), "Text is incorrect in +2 paragraph move");
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -1);
 			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in first -1 paragraph move");
-			Assert.AreEqual (String.Format ("{0}pears{0}peaches{0}{0}bananas", Environment.NewLine),
+			Assert.AreEqual (String.Format ("{0}pears{0}peaches{0}{0}bananas", newline),
 					 range.GetText (-1), "Text is incorrect in -1 paragraph move");
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -1);
 			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in first -1 paragraph move");
-			Assert.AreEqual (String.Format ("apples{0}{0}pears{0}peaches{0}{0}bananas", Environment.NewLine),
+			Assert.AreEqual (String.Format ("apples{0}{0}pears{0}peaches{0}{0}bananas", newline),
 					 range.GetText (-1), "Text is incorrect in -1 paragraph move");
 			
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, 4);
 			Assert.AreEqual (4, moved_units, "Moved units are incorrect in +4 paragraph move");
-			Assert.AreEqual (String.Format ("{0}bananas", Environment.NewLine),
+			Assert.AreEqual (String.Format ("{0}bananas", newline),
 					 range.GetText (-1), "Text is incorrect in +4 paragraph move");
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, 10);
@@ -244,7 +296,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Paragraph, -10);
 			Assert.AreEqual (-6, moved_units, "Moved units are incorrect in -10 paragraph move");
-			Assert.AreEqual (String.Format ("apples{0}{0}pears{0}peaches{0}{0}bananas", Environment.NewLine),
+			Assert.AreEqual (String.Format ("apples{0}{0}pears{0}peaches{0}{0}bananas", newline),
 					 range.GetText (-1), "Text is incorrect in -10 paragraph move");
 			
 			// Going bananas yet?

@@ -1,3 +1,10 @@
+2008-10-07  Brad Taylor  <brad@getcoded.net>
+	
+	* Mono.UIAutomation.Winforms/TextNormalizer.cs: Rewrite
+	  ParagraphMoveStartEndPoint to support various newline types.  Just
+	  like the recent LineMoveStartEndPoint changes, this is needed for
+	  RichTextBox.
+
 2008-10-06  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.Events/Form/FormAutomationFocusChangedEvent.cs:
