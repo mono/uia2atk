@@ -160,7 +160,7 @@ namespace UiaAtkBridge
 
 		public bool CanResize {
 			get {
-				if (transformProvider == null)
+				if (transformProvider == null && resource.Provider != null)
 					transformProvider = (ITransformProvider) resource.Provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
 			
 				if (transformProvider != null)
