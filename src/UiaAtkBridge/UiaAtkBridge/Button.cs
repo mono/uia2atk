@@ -350,10 +350,12 @@ namespace UiaAtkBridge
 		string imageDescription = null;
 
 		bool? hasImage = null;
+		Mono.UIAutomation.Bridge.IEmbeddedImage embeddedImage = null;
+			
 		private bool HasImage {
 			get {
 				if (hasImage == null) {
-					Mono.UIAutomation.Bridge.IEmbeddedImage embeddedImage = (Mono.UIAutomation.Bridge.IEmbeddedImage)Provider;
+					embeddedImage = (Mono.UIAutomation.Bridge.IEmbeddedImage)Provider;
 					hasImage = (embeddedImage.BoundingRectangle != Rect.Empty);
 				}
 				
@@ -370,18 +372,20 @@ namespace UiaAtkBridge
 		{
 			width = -1;
 			height = -1;
-			if (HasImage)
-				//no provider API for getting size/pos of an image, so we use the widget's info
-				ComponentExpert.GetSize (out width, out height);
+			if (HasImage) {
+				width = (int)embeddedImage.BoundingRectangle.Width;
+				height = (int)embeddedImage.BoundingRectangle.Height;
+			}
 		}
 		
 		public void GetImagePosition (out int x, out int y, Atk.CoordType coordType)
 		{
 			x = int.MinValue;
 			y = int.MinValue;
-			if (HasImage)
-				//no provider API for getting size/pos of an image, so we use the widget's info
-				ComponentExpert.GetPosition (out x, out y, coordType);
+			if (HasImage) {
+				x = (int)embeddedImage.BoundingRectangle.X;
+				y = (int)embeddedImage.BoundingRectangle.Y;
+			}
 		}
 		
 		public bool SetImageDescription (string description)
