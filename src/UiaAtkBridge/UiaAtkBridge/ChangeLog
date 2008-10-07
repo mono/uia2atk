@@ -1,3 +1,9 @@
+2008-10-07  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Button.cs: Use new IEmbeddedImage from UIAutomationBridge, hopefully
+	  finished Atk.Image implementation, lacking yet tests.
+	* Hyperlink.cs: Cosmetic.
+
 2008-10-07  Mike Gorse <mgorse@novell.com>
 
 	* ComponentImplementorHelper.cs: Have CanResize check null before

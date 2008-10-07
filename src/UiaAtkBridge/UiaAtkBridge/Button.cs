@@ -26,6 +26,7 @@
 // 
 
 using System;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
@@ -352,7 +353,8 @@ namespace UiaAtkBridge
 		private bool HasImage {
 			get {
 				if (hasImage == null) {
-					throw new NotImplementedException ();
+					Mono.UIAutomation.Bridge.IEmbeddedImage embeddedImage = (Mono.UIAutomation.Bridge.IEmbeddedImage)Provider;
+					hasImage = (embeddedImage.BoundingRectangle != Rect.Empty);
 				}
 				
 				return hasImage.Value;

@@ -45,7 +45,7 @@ namespace UiaAtkBridge
 		{
 			this.provider = provider;
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
-		hypertext = (IHypertext)invokeProvider;
+			hypertext = (IHypertext)invokeProvider;
 			links = new System.Collections.Generic.List<HyperlinkObject> ();
 			Role = Atk.Role.Label;
 			
