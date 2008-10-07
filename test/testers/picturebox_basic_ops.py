@@ -19,6 +19,7 @@ import os
 
 from strongwind import *
 from picturebox import *
+from helpers import *
 from sys import argv
 from os import path
 
@@ -44,21 +45,37 @@ if app is None:
 # just an alias to make things shorter
 pbFrame = app.pictureBoxFrame
 
-# check PictureBox's states list
-pbFrame.statesCheck()
+#check the actions of button in picturebox
+actionsCheck(pbFrame.button1, "Button")
 
-#check Button's actions list
-pbFrame.actionsCheck(pbFrame.button1)
+#check the states of button and label in picturebox
+statesCheck(pbFrame.button1, "Button", add_states=["focused"])
+statesCheck(pbFrame.label, "Label")
+#check Icon's states
+statesCheck(pbFrame.icon, "Icon")
 
 #click button changing to universi.jpg
 pbFrame.click(pbFrame.button1)
 sleep(config.SHORT_DELAY)
 pbFrame.assertPicture(2)
 
+#check icon role implementation
+pbFrame.assertIcon()
+#check icon's image size
+pbFrame.assertImageSize(pbFrame.icon, 450, 500)
+
 #click button changing to desktop-blue_soccer.jpg
 pbFrame.click(pbFrame.button1)
 sleep(config.SHORT_DELAY)
 pbFrame.assertPicture(1)
+
+#check icon role implementation again
+pbFrame.assertIcon()
+#check icon's image size again
+pbFrame.assertImageSize(pbFrame.icon, 450, 500)
+
+#check button's image size
+pbFrame.assertImageSize(pbFrame.button1)
 
 #close application frame window
 pbFrame.quit()

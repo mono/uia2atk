@@ -43,7 +43,7 @@ class PictureBoxSample(Form):
         # setup title
         self.Text = "PictureBox control"
         self.Height = 500 
-        self.Width = 500
+        self.Width = 450
 
         # setup button
         self.button = Button()

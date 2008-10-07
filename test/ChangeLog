@@ -1,3 +1,14 @@
+2008-10-07  Calen Chen <cachen@novell.com>
+
+	* samples/picturebox.py: modify the window's size with different width 
+	and height, change the button's image to opensuse60x38.gif
+	* testers/picturebox/pictureboxframe.py: delete statesCheck and 
+	actionsCheck, add assertIcon to check picturebox with images, add 
+	assertImageSize to check image implementation
+	* testers/picturebox_basic_ops.py: add icon test, add test for 
+	checking the image size of button and icon
+	* testers/states.py: add states tuple for Icon
+
 2008-10-06  Calen Chen <cachen@novell.com>
 
 	* testers/radiobutton_basic_ops.py: press 'Tab' key to show a dotted 
