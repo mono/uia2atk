@@ -42,7 +42,13 @@ namespace UiaAtkBridgeTest
 		{
 			originalRepr = eventsInXml;
 			XmlDocument xml = new XmlDocument ();
-			xml.LoadXml (eventsInXml);
+			try {
+				xml.LoadXml (eventsInXml);
+			} catch {
+				//Console.WriteLine ("exception when trying to read XML: {0}", eventsInXml);
+				
+				throw new Exception ("XML not valid:" + eventsInXml);
+			}
 			if (!xml.HasChildNodes)
 				throw new ArgumentException ("XML must have child nodes", eventsInXml);
 			foreach (XmlElement xmlEvent in xml.GetElementsByTagName ("event")) {

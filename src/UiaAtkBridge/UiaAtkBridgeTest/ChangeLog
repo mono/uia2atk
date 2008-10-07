@@ -1,5 +1,9 @@
 2008-10-07  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTests.cs: Initial state testing for CheckBox.
+
+2008-10-07  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTester.cs: Fix test.
 	* BridgeTester.cs: Make event debugging more comfortable.
 	* EventMonitor.cs: Be careful about being too quick.

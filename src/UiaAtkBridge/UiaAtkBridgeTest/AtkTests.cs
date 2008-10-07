@@ -71,6 +71,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Sensitive), "Button Sensitive");
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Showing), "Button Showing");
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Visible), "Button Visible");
+			
 			name = "test";
 			Atk.Action atkAction = (Atk.Action)
 				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
@@ -97,6 +98,13 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = (Atk.Component)
 				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
 			InterfaceComponent (type, atkComponent);
+
+			Atk.StateSet stateSet = accessible.RefStateSet ();
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Enabled), "Checkbox Enabled");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Sensitive), "Checkbox Sensitive");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focusable), "Checkbox Focusable");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Showing), "Checkbox Showing");
+			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Visible), "Checkbox Visible");
 			
 			name = "test";
 			Atk.Action atkAction = (Atk.Action)
@@ -410,7 +418,7 @@ namespace UiaAtkBridgeTest
 			PropertyRole (type, accessible);
 			Parent (type, accessible);
 
-			Atk.StateSet stateSet = accessible.RefStateSet();
+			Atk.StateSet stateSet = accessible.RefStateSet ();
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Enabled), "Window Enabled");
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Sensitive), "Window Sensitive");
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Resizable), "Window Resizable");
