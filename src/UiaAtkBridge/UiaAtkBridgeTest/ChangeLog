@@ -1,5 +1,11 @@
 2008-10-07  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* AtkTests.cs: Focused+ events are not sent when using Atk.Action API
+	  (but yes when a *real* user uses the widget, so this is untestable
+	  from this perspective).
+
+2008-10-07  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* AtkTests.cs: Initial state testing for CheckBox.
 
 2008-10-07  Andrés G. Aragoneses <aaragoneses@novell.com> 

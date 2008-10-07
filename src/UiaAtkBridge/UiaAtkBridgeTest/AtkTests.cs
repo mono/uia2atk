@@ -124,10 +124,6 @@ namespace UiaAtkBridgeTest
 			EventCollection typeEvs = checkboxEvs.FindByType (evType);
 			
 			Assert.AreEqual (1, typeEvs.Count, "bad number of checked events!" + eventsInXml);
-
-			evType = "object:state-changed:focused";
-			typeEvs = checkboxEvs.FindByType (evType);
-			Assert.AreEqual (1, typeEvs.Count, "bad number of focused events!" + eventsInXml);
 		}
 		
 		[Test]
