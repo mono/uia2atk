@@ -60,6 +60,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/ScrollItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListView/MultipleViewProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/ValueProviderBehavior.cs \

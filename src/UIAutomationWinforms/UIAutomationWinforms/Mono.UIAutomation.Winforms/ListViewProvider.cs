@@ -27,6 +27,7 @@ using SD = System.Drawing;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Behaviors.ListView;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -43,11 +44,19 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 		
-		#region 
+		#region ListProvider: Internal Methods: Get Behaviors
 		
 		internal override IProviderBehavior GetBehaviorRealization (AutomationPattern behavior)
 		{
-			return null;
+			if (MultipleViewPatternIdentifiers.Pattern == behavior)
+				return new MultipleViewProviderBehavior (this);
+			else if (GridPatternIdentifiers.Pattern == behavior) {         
+				if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
+					return null; //TODO: Return realization
+				else
+					return null;
+			} else
+				return null;
 		}
 		
 		#endregion
@@ -64,11 +73,45 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region ListProvider specializations
 		
+		public override void InitializeChildControlStructure ()
+		{
+			base.InitializeChildControlStructure ();
+			
+			try {
+				Helper.AddPrivateEvent (typeof (SWF.ListView), 
+				                        listView,
+				                        "UIAViewChanged",
+				                        this, 
+				                        "OnUIAViewChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIAViewChanged not defined", GetType ());
+			}			
+		}
+		
+		public override void FinalizeChildControlStructure ()
+		{
+			base.FinalizeChildControlStructure ();
+			
+			try {
+				Helper.RemovePrivateEvent (typeof (SWF.ListView), 
+				                           listView,
+				                           "UIAViewChanged",
+				                           this, 
+				                           "OnUIAViewChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIAViewChanged not defined", GetType ());
+			}			
+		}
+		
 		public override int ItemsCount { 
 			get { return listView.Items.Count; }
 		}
 		
-		public override int SelectedItemsCount { 
+		#endregion
+		
+		#region ListItem: Selection Methods and Properties
+		
+		public override int SelectedItemsCount {
 			get { return listView.SelectedItems.Count; }
 		}
 		
@@ -90,10 +133,23 @@ namespace Mono.UIAutomation.Winforms
 		{
 		}
 		
+		#endregion
+		
 		public override IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider)
 		{
 			return null;
 		}
+		
+		#region ListProvider: ListItem: Scroll Methods
+		
+		public override void ScrollItemIntoView (ListItemProvider item)
+		{
+
+		}
+		
+		#endregion
+		
+		#region ListProvider: Protected Methods
 		
 		protected override Type GetTypeOfObjectCollection ()
 		{
@@ -107,14 +163,36 @@ namespace Mono.UIAutomation.Winforms
 			return null;
 		}
 		
-		public override void ScrollItemIntoView (ListItemProvider item)
+		#endregion
+		
+		#region Private Methods
+		
+		private void OnUIAViewChanged (object sender, EventArgs args)
 		{
+			
+			
+			// Selection Pattern always supported
+			// Scroll Pattern depends on visible/enable scrollbars
 
+			if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
+				SetBehavior (GridPatternIdentifiers.Pattern,
+				             GetBehaviorRealization (GridPatternIdentifiers.Pattern));
+			else
+				SetBehavior (GridPatternIdentifiers.Pattern,
+				             null);
+			
+			
+			//SmallIcon = MultipleView, Selection
+			//LargeIcon = Multipleview, Scroll, Selection
+			//Tile: MultipleView, Scroll, Selection
+			//---
+			//Details = MultipleView, Scroll, Selection, Grid
+			//List = MultipleView, Scroll, Selection, Grid
 		}
 		
 		#endregion
 		
-		#region Private Methods
+		#region Private Fields
 		
 		private SWF.ListView listView;
 		

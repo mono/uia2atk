@@ -1,3 +1,15 @@
+2008-10-07  Mario Carrion <mcarrion@novell.com> 
+
+	* Makefile.am, Mono.UIAutomation.Winforms.mdp: MultipleView behavior
+	  added.
+	* Mono.UIAutomation.Winforms.Behaviors/ListView: ListView behaviors
+	  folder.
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/MultipleViewProviderBehavior.cs:
+	  Implements MultipleView pattern in ListView.
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	  GetBehaviorRealization implementation. Event added to updated
+	  behavios when SWF.ListView.View changes.
+
 2008-10-07  Brad Taylor  <brad@getcoded.net>
 	
 	* Mono.UIAutomation.Winforms/TextNormalizer.cs: Rewrite
