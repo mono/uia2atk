@@ -148,16 +148,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 
 		#region Protected Methods
 
-		protected override AutomationElement GetAutomationElement ()
-		{
-			return GetAutomationElementFromControl (GetCheckBox ());
-		}
-
-		#endregion Protected Methods
-
-		#region Private Methods
-
-		private CheckBox GetCheckBox ()
+		protected override Control GetControl ()
 		{
 			CheckBox checkbox = new CheckBox ();
 			checkbox.Text = "I'm a happy SWF CheckBox :)";

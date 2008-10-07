@@ -61,9 +61,11 @@
     <Compile Include="LameSpecAttribute.cs" />
     <Compile Include="ListBoxListItem.cs" />
     <Compile Include="ListBoxTest.cs" />
+    <Compile Include="ListViewTest.cs" />
     <Compile Include="NotListedAttribute.cs" />
     <Compile Include="ScrollBarTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UISpyMissingAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

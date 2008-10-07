@@ -110,7 +110,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, DockPatternIdentifiers.Pattern),
-				"DockPattern SHOULD NOT be supported");
+				string.Format ("DockPattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -118,7 +119,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, ExpandCollapsePattern.Pattern),
-				"ExpandCollapse SHOULD NOT be supported");
+				string.Format ("ExpandCollapse SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -126,7 +128,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, GridPatternIdentifiers.Pattern),
-				"GridPattern SHOULD NOT be supported");
+				string.Format ("GridPattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -134,7 +137,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, GridItemPatternIdentifiers.Pattern),
-				"GridItemPattern SHOULD NOT be supported");
+				string.Format ("GridItemPattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -142,7 +146,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, InvokePatternIdentifiers.Pattern),
-				"InvokePattern SHOULD NOT be supported");
+				string.Format ("InvokePattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -150,7 +155,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, MultipleViewPatternIdentifiers.Pattern),
-				"MultipleViewPattern SHOULD NOT be supported");
+				string.Format ("MultipleViewPattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -158,7 +164,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, RangeValuePatternIdentifiers.Pattern),
-				"RangeValuePattern SHOULD NOT be supported");
+				string.Format ("RangeValuePattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -166,7 +173,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, ScrollPatternIdentifiers.Pattern),
-				"ScrollPattern SHOULD NOT be supported");
+				string.Format ("ScrollPattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -174,7 +182,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, ScrollItemPatternIdentifiers.Pattern),
-				"ScrollItemPattern SHOULD NOT be supported");
+				string.Format ("ScrollItemPattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -182,7 +191,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, SelectionPatternIdentifiers.Pattern),
-				"SelectionPattern SHOULD NOT be supported");
+				string.Format ("SelectionPattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -190,7 +200,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, SelectionItemPatternIdentifiers.Pattern),
-				"SelectionItemPattern SHOULD NOT be supported");
+				string.Format ("SelectionItemPattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -198,7 +209,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, TablePatternIdentifiers.Pattern),
-				"TablePattern SHOULD NOT be supported");
+				string.Format ("TablePattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -206,7 +218,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, TableItemPatternIdentifiers.Pattern),
-				"TableItemPattern SHOULD NOT be supported");
+				string.Format ("TableItemPattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -214,7 +227,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, TogglePatternIdentifiers.Pattern),
-				"TogglePattern SHOULD NOT be supported");
+				string.Format ("TogglePattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -222,7 +236,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, TransformPatternIdentifiers.Pattern),
-				"TransformPattern SHOULD NOT be supported");
+				string.Format ("TransformPattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -230,7 +245,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, ValuePatternIdentifiers.Pattern),
-				"ValuePattern SHOULD NOT be supported");
+				string.Format ("ValuePattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -238,7 +254,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, WindowPatternIdentifiers.Pattern),
-				"WindowPattern SHOULD NOT be supported");
+				string.Format ("WindowPattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
@@ -246,7 +263,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		{
 			AutomationElement element = GetAutomationElement ();
 			Assert.IsFalse (SupportsPattern (element, TextPatternIdentifiers.Pattern),
-				"TextPattern SHOULD NOT be supported");
+				string.Format ("TextPattern SHOULD NOT be supported in: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		#endregion 
@@ -265,11 +283,25 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 
 		#region Protected Methods
 
-		protected abstract AutomationElement GetAutomationElement ();
+		protected ControlType GetControlTypeFromElement (AutomationElement element)
+		{
+			ControlType controlType 
+				= element.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty) as ControlType;
+			return controlType;
+		}
+
+		protected abstract Control GetControl ();
+
+		protected virtual AutomationElement GetAutomationElement ()
+		{
+			return GetAutomationElementFromControl (GetControl ());
+		}
 
 		protected AutomationElement GetAutomationElementFromControl (Control control)
 		{
 			if (Form != control) {
+				if (Form.Controls.Contains (control) == false)
+					Form.Controls.Remove (control);
 				Form.Controls.Add (control);
 				Form.Show ();
 			}

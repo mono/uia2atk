@@ -52,7 +52,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 			+"must be supplied for the button's Name property.")] 
 		public override void MsdnNamePropertyTest ()
 		{
-			Button button = GetButton ();
+			Button button = GetControl () as Button;
 			AutomationElement child = GetAutomationElementFromControl (button);
 
 			Assert.AreEqual (button.Text,
@@ -123,7 +123,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 			+ "the button will be. This information must be exposed through a ToolTip. ")]
 		public override void MsdnHelpTextPropertyTest ()
 		{
-			Button button = GetButton ();
+			Button button = GetControl () as Button;
 
 			ToolTip tooltip = new ToolTip ();
 			tooltip.SetToolTip (button, "I'm HelpTextProperty in button");
@@ -169,16 +169,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 
 		#region Protected metods
 
-		protected override AutomationElement GetAutomationElement ()
-		{
-			return GetAutomationElementFromControl (GetButton ());
-		}
-
-		#endregion
-
-		#region Private Methods
-
-		private Button GetButton ()
+		protected override Control GetControl ()
 		{
 			Button button = new Button ();
 			button.Text = "I'm a happy SWF button :)";

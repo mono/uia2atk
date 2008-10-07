@@ -27,6 +27,8 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms.Client
 {
+	//Attribute meant to be used when MSDN is not explicit or the documented value is different than implementation
+
 	[AttributeUsage (AttributeTargets.Method, AllowMultiple = false)]
 	public class LameSpecAttribute : CategoryAttribute
 	{

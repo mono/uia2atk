@@ -140,6 +140,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 
 		#region Protected Methods
 
+		protected override Control GetControl ()
+		{
+			return null;
+		}
+
 		protected override AutomationElement GetAutomationElement ()
 		{
 			ListBox listbox = new ListBox ();

@@ -27,12 +27,12 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms.Client
 {
-	//Attribute meant to be used when MSDN doesn't list the Property in "Required UI Automation Properties"
+	//Attribute meant to be used when UISpy doesn't report a Property or Pattern
 
 	[AttributeUsage (AttributeTargets.Method, AllowMultiple = false)]
-	public class NotListedAttribute : CategoryAttribute
+	public class UISpyMissingAttribute : CategoryAttribute
 	{
-		public NotListedAttribute () : base ("NOTLISTED")
+		public UISpyMissingAttribute () : base ("UISPY")
 		{
 		}
 	}

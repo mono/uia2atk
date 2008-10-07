@@ -50,6 +50,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 
 		#region Protected Methods
 
+		protected override Control GetControl ()
+		{
+			CheckedListBox listbox = new CheckedListBox ();
+			listbox.Items.AddRange (new object [] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 });
+			listbox.Size = new Size (100, 100);
+			listbox.Location = new Point (3, 3);
+			return listbox;
+		}
+
 		protected override AutomationElement GetAutomationElement ()
 		{
 			CheckedListBox listbox = new CheckedListBox ();

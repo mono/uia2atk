@@ -1,3 +1,16 @@
+2008-10-07  Mario Carrion <mcarrion@novell.com> 
+
+	* BaseTest.cs: More verbose when failing in Pattern tests. New abstract 
+	method added: GetControl.
+	* ButtonTest.cs, CheckBoxTest.cs, CheckedListBoxListItem.cs, 
+	  ListBoxListItem.cs, ScrollBarTest.cs: GetControl specialization.
+	* NotListedAttribute.cs, LameSpecAttribute.cs: Comment added explaining attribute purpose.
+	* ListBoxTest.cs: GetControl specialization. Patterns implementation.
+	* ListViewTest.cs: File added, tests ListView.
+	* UIAutomationWinformsClientTests.csproj: Updated, added files.
+	* UISpyMissingAttribute.cs: File added. Defines attribute to indicate that
+	UISpy doesn't report Automation Property or Automation Pattern.
+
 2008-10-02  Mario Carrion <mcarrion@novell.com> 
 
 	* CheckedListBoxListItem.cs, ListBoxListItem.cs: File added, Tests ListItem.

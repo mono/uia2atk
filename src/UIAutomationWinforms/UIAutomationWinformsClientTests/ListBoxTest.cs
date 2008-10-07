@@ -35,6 +35,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 	[Description ("Tests SWF.ListBox as ControlType.List")]
 	public class ListBoxTest : BaseTest
 	{
+		#region Properties
+
 		[Test]
 		[Description ("Value: List | Notes: This value is the same for all UI frameworks.")]
 		public override void MsdnControlTypePropertyTest ()
@@ -104,7 +106,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 			+ @"display resolution for your monitor.""")]
 		public override void MsdnHelpTextPropertyTest ()
 		{
-			ListBox listbox = CreateListBox ();
+			ListBox listbox = GetControl () as ListBox;
 
 			ToolTip tooltip = new ToolTip ();
 			tooltip.SetToolTip (listbox, "I'm HelpTextProperty in listbox");
@@ -115,20 +117,33 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 				"HelpTextProperty");
 		}
 
+		#endregion
+
+		#region Patterns
+
+		[Test]
+		[Description ("Support/Value: Required . | Notes: All controls that support the List control type "
+			+ "must implement ISelectionProvider when a selection state is maintained between the items contained "
+			+ "in the control. If the items within the container are not selectable, the Group control type must be used.")]
+		public override void MsdnSelectionPatternTest ()
+		{
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsTrue (SupportsPattern (element, SelectionPatternIdentifiers.Pattern),
+				string.Format ("SelectionPattern SHOULD BE supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
+		}
+
+		#endregion
+
 		#region Protected Methods
 
-		private ListBox CreateListBox ()
+		protected override Control GetControl ()
 		{
 			ListBox listbox = new ListBox ();
 			listbox.Items.AddRange (new object [] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 });
 			listbox.Size = new Size (100, 100);
 			listbox.Location = new Point (3, 3);
 			return listbox;
-		}
-
-		protected override AutomationElement GetAutomationElement ()
-		{
-			return GetAutomationElementFromControl (CreateListBox ());
 		}
 
 		#endregion
