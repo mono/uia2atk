@@ -116,14 +116,25 @@ namespace Mono.UIAutomation.Winforms
 			return point - targePoint;
 		}
 
-		//Character, Format, Word, Line, Paragraph, Page, Document
 		public void ExpandToEnclosingUnit (TextUnit unit)
 		{
-			//TextUnit.Character does nothing.
-			if (unit == TextUnit.Word)
+			switch (unit) {
+			case TextUnit.Character:
+				// This does nothing
+				break;
+			case TextUnit.Format:
+				break;
+			case TextUnit.Word:
 				normalizer.WordNormalize ();
-			else //TODO: Add missing units
-				throw new NotImplementedException();
+				break;
+			case TextUnit.Line:
+				normalizer.LineNormalize ();
+				break;
+			case TextUnit.Paragraph:
+			case TextUnit.Page:
+			case TextUnit.Document:
+				break;
+			}
 		}
 
 		public ITextRangeProvider FindAttribute (int attribute, object value, 

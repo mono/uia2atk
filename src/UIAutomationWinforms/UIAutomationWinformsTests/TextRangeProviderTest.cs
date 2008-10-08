@@ -84,7 +84,104 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			textbox = null;
 		}
 
-		// M.W.F.RichTextBox supports the following newline combinations
+		// TODO: implement MoveEndpointByUnit Character tests
+
+		[Test]
+		public void CharacterNormalize ()
+		{
+			string text = "gomez\rmorticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthing";
+
+			textbox.Multiline = true;
+			textbox.Text = text;
+
+			range = text_provider.DocumentRange.Clone ();
+
+			// NOTE: These all pass successfully on Windows Vista, so
+			// think twice before you change anything.
+			range.ExpandToEnclosingUnit (TextUnit.Character);
+			Assert.AreEqual (text, range.GetText (-1));
+
+			int moved_units;
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 2);
+			Assert.AreEqual (2, moved_units);
+			Assert.AreEqual ("mez\rmorticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthing",
+			                 range.GetText (-1));
+
+			range.ExpandToEnclosingUnit (TextUnit.Character);
+			Assert.AreEqual ("mez\rmorticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthing",
+			                 range.GetText (-1));
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -2);
+			Assert.AreEqual (-2, moved_units);
+			Assert.AreEqual ("mez\rmorticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthi",
+			                 range.GetText (-1));
+
+			range.ExpandToEnclosingUnit (TextUnit.Character);
+			Assert.AreEqual ("mez\rmorticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthi",
+			                 range.GetText (-1));
+		}
+
+		// TODO: implement MoveEndpointByUnit Word tests
+
+		[Test]
+		public void WordNormalize ()
+		{
+			string text = "gomez\rmorticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthing";
+
+			textbox.Multiline = true;
+			textbox.Text = text;
+
+			range = text_provider.DocumentRange.Clone ();
+
+			// NOTE: These all pass successfully on Windows Vista, so
+			// think twice before you change anything.
+			int moved_units;
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 2);
+			Assert.AreEqual (2, moved_units);
+			Assert.AreEqual ("mez\rmorticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthing",
+			                 range.GetText (-1));
+
+			range.ExpandToEnclosingUnit (TextUnit.Word);
+			Assert.AreEqual ("gomez\rmorticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthing",
+			                 range.GetText (-1), "Text incorrect when expanding after first +2 character move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -2);
+			Assert.AreEqual (-2, moved_units);
+			Assert.AreEqual ("gomez\rmorticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthi",
+			                 range.GetText (-1));
+
+			range.ExpandToEnclosingUnit (TextUnit.Word);
+			Assert.AreEqual ("gomez\rmorticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthing",
+			                 range.GetText (-1), "Text incorrect when expanding after -2 character move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 5);
+			Assert.AreEqual (5, moved_units);
+			Assert.AreEqual ("\rmorticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthing",
+			                 range.GetText (-1));
+
+			range.ExpandToEnclosingUnit (TextUnit.Word);
+			Assert.AreEqual ("\rmorticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthing",
+			                 range.GetText (-1), "Text incorrect when expanding after +5 character move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 2);
+			Assert.AreEqual (2, moved_units);
+			Assert.AreEqual ("orticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthing",
+			                 range.GetText (-1));
+
+			range.ExpandToEnclosingUnit (TextUnit.Word);
+			Assert.AreEqual ("morticia\npugsley\r\nwednesday\r\rfester\n\nlurch\r\n\r\nthing",
+			                 range.GetText (-1), "Text incorrect when expanding after second +2 character move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -10);
+			Assert.AreEqual (-10, moved_units);
+			Assert.AreEqual ("morticia\npugsley\r\nwednesday\r\rfester\n\nlurc",
+			                 range.GetText (-1));
+
+			range.ExpandToEnclosingUnit (TextUnit.Word);
+			Assert.AreEqual ("morticia\npugsley\r\nwednesday\r\rfester\n\nlurch",
+			                 range.GetText (-1), "Text incorrect when expanding after -10 character move");
+		}
+
 		[Test]
 		public void MoveEndpointByLineRich ()
 		{

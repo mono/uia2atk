@@ -1,11 +1,15 @@
+2008-10-08  Brad Taylor  <brad@getcoded.net>
+	
+	* TextRangeProviderTest.cs: Add tests for CharacterNormalize and
+	  WordNormalize.
+
 2008-10-08  Mario Carrion <mcarrion@novell.com> 
 
 	* ScrollBarProviderTest.cs: Test to verify IsKeyboardFocusableProperty.
 
 2008-10-08  Brad Taylor  <brad@getcoded.net>
 	
-	* UIAutomationWinformsTests/TextRangeProviderTest.cs: Add tests for the
-	  Page TextUnit.
+	* TextRangeProviderTest.cs: Add tests for the Page TextUnit.
 
 2008-10-07  Mario Carrion <mcarrion@novell.com> 
 

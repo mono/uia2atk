@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Text.RegularExpressions;
 using System.Windows.Automation.Text;
 using System.Windows.Forms;
 
@@ -425,10 +426,15 @@ namespace Mono.UIAutomation.Winforms
 #endregion
 		
 #region Word methods
+		private Regex is_separator = new Regex (@"^\s$", RegexOptions.Compiled);
+
+		private bool IsWordSeparator (char c)
+		{
+			return is_separator.IsMatch (c.ToString ());
+		}
 		
 		public void WordNormalize ()
 		{
-			char separator = ' ';
 			int index = 0;
 			
 			// NOTE: There is a particular condition when either the StartPoint
@@ -443,34 +449,51 @@ namespace Mono.UIAutomation.Winforms
 			//      "Hello my baby, hello     {my darling}"
 
 			string text = textboxbase.Text;
-			if (text [start_point] == separator) {
+			if (IsWordSeparator (text[start_point])) {
 				//TODO: Evaluate perfomance
 				
 				// Walk backwards until you hit a non separator
 				for (index = start_point; index >= 0; index--) {
-					if (text [index] != separator)
+					if (!IsWordSeparator (text[index])) {
 						break;
+					}
 				}
 				start_point = index + 1;
 			} else {
 				// Walk from the start point backwards, finding
 				// the last separator
-				index = text.LastIndexOf (separator, start_point, start_point);
+				
+				index = -1;
+				for (int i = start_point; i >= 0; i--) {
+					if (IsWordSeparator (text[i])) {
+						index = i;
+						break;
+					}
+				}
 				start_point = (index == -1) ? 0 : index + 1;
 			}
 
-			if (end_point > 0 && text [end_point - 1] == separator) {
+			index = -1;
+			if (end_point > 0 && IsWordSeparator (text[end_point - 1])) {
 				//TODO: Evaluate perfomance
 				
 				// Extend the range to consume all spaces until the next character
 				for (index = end_point - 1; index < text.Length; index++) {
-					if (text [index] != separator)
+					if (!IsWordSeparator (text[index])) {
 						break;
+					}
 				}
 				end_point = index;
 			} else {
 				// Search for the next separator
-				index = text.IndexOf (separator, end_point);
+				index = -1;
+				for (int i = end_point; i < text.Length ; i++) {
+					if (IsWordSeparator (text[i])) {
+						index = i;
+						break;
+					}
+				}
+
 				if (index == -1) {
 					end_point = text.Length;
 				} else {
