@@ -66,9 +66,13 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		}
 
 		[Test]
-		[Ignore ("No idea how to test")]
+		[Description ("Implementation in BaseTest. Using true as default value for IsKeyboardFocusable")]
 		public virtual void MsdnIsKeyboardFocusablePropertyTest ()
 		{
+			AutomationElement child = GetAutomationElement ();
+			Assert.AreEqual (true,
+				child.GetCurrentPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty, true),
+				"IsKeyboardFocusable");
 		}
 
 		[Test]
@@ -101,24 +105,24 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		[Test]
 		public abstract void MsdnOrientationPropertyTest ();
 
-                [Test]
-                public virtual void MsdnIsOffscreenPropertyTest()
-                {
-                }
+		[Test]
+		public virtual void MsdnIsOffscreenPropertyTest()
+		{
+		}
 
-                [Test]
-                public virtual void MsdnAcceleratorKeyPropertyTest()
-                {
-                }
+		[Test]
+		public virtual void MsdnAcceleratorKeyPropertyTest()
+		{
+		}
 
-                [Test]
-                public virtual void MsdnAccessKeyPropertyTest()
-                {
-                }
+		[Test]
+		public virtual void MsdnAccessKeyPropertyTest()
+		{
+		}
 
-                [Test]
-                public virtual void MsdnIsPasswordPropertyTest()
-                {
+		[Test]
+		public virtual void MsdnIsPasswordPropertyTest()
+		{
                 }
 
 		#endregion Automation Properties Tests

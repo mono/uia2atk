@@ -39,6 +39,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		#region Properties
 
 		[Test]
+		[Description ("Value: See notes. | Notes: If the control can receive keyboard focus, it must support "
+			+"this property.")]
+		public override void MsdnIsKeyboardFocusablePropertyTest ()
+		{
+			AutomationElement child = GetAutomationElement ();
+			Assert.AreEqual (false,
+				child.GetCurrentPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty, true),
+				"IsKeyboardFocusable");
+		}
+
+		[Test]
 		[Description ("Value: ScrollBar | Notes: This value is the same for all UI frameworks.")]
 		public override void MsdnControlTypePropertyTest () 
 		{
@@ -160,7 +171,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 
 		protected override Control GetControl ()
 		{
-			return null;
+			return new HScrollBar ();
 		}
 
 		protected override AutomationElement GetAutomationElement ()
