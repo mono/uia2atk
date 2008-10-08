@@ -25,9 +25,11 @@
 // 
 
 using System;
+using SD = System.Drawing;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Bridge;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.Button;
@@ -36,7 +38,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Button
 {
 	
 	internal class InvokeProviderBehavior 
-		: ProviderBehavior, IInvokeProvider
+		: ProviderBehavior, IInvokeProvider, IEmbeddedImage
 	{
 		
 		#region Constructor
@@ -44,6 +46,100 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Button
 		public InvokeProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
+		}
+		
+		#endregion
+		
+		#region IEmbeddedImage Interface
+		
+		public System.Windows.Rect BoundingRectangle {
+			get {
+				//Implementation highly based in ThemeWin32Classic.ButtonBase_DrawImage method
+				
+				SWF.Button button = (SWF.Button) Provider.Control;
+				SD.Image image;
+				int	imageX;
+				int	imageY;
+				int	imageWidth;
+				int	imageHeight;
+				int width = button.Width;
+				int height = button.Height;				
+
+				if (button.ImageIndex != -1)
+					image = button.ImageList.Images [button.ImageIndex];
+				else
+					image = button.Image;
+				
+				if (image == null)
+					return System.Windows.Rect.Empty;
+
+				imageWidth = image.Width;
+				imageHeight = image.Height;
+			
+				switch (button.ImageAlign) {
+					case SD.ContentAlignment.TopLeft: {
+						imageX = 5;
+						imageY = 5;
+						break;
+					}
+					
+					case SD.ContentAlignment.TopCenter: {
+						imageX = (width - imageWidth) / 2;
+						imageY = 5;
+						break;
+					}
+					
+					case SD.ContentAlignment.TopRight: {
+						imageX = width - imageWidth - 5;
+						imageY = 5;
+						break;
+					}
+					
+					case SD.ContentAlignment.MiddleLeft: {
+						imageX = 5;
+						imageY = (height - imageHeight) / 2;
+						break;
+					}
+					
+					case SD.ContentAlignment.MiddleCenter: {
+						imageX = (width - imageWidth) / 2;
+						imageY = (height - imageHeight) / 2;
+						break;
+					}
+					
+					case SD.ContentAlignment.MiddleRight: {
+						imageX = width - imageWidth - 4;
+						imageY = (height - imageHeight) / 2;
+						break;
+					}
+					
+					case SD.ContentAlignment.BottomLeft: {
+						imageX = 5;
+						imageY = height - imageHeight - 4;
+						break;
+					}
+					
+					case SD.ContentAlignment.BottomCenter: {
+						imageX = (width - imageWidth) / 2;
+						imageY = height - imageHeight - 4;
+						break;
+					}
+					
+					case SD.ContentAlignment.BottomRight: {
+						imageX = width - imageWidth - 4;
+						imageY = height - imageHeight - 4;
+						break;
+					}
+					
+					default: {
+						imageX = 5;
+						imageY = 5;
+						break;
+					}
+				}
+				
+				return new System.Windows.Rect (imageX, imageY, imageWidth, imageHeight);
+			}
 		}
 		
 		#endregion
