@@ -20,30 +20,16 @@ class StatusBarFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
-    BUTTON_ONE = "Click me"
+    BUTTON_ONE = "button1"
+    BUTTON_TWO = "button2"
 
     def __init__(self, accessible):
         super(StatusBarFrame, self).__init__(accessible)
         self.button1 = self.findPushButton(self.BUTTON_ONE)
-
-    #check statusbar's all expectant states
-    def statesCheck(self):
-        procedurelogger.action('check %s\'s all states' % self)
-
-        procedurelogger.expectedResult('%s\'s all states can be found' % self)
-        for s in states.StatusBar.states:
-            cmd = "state = self." + s
-            exec(cmd)
-
-            if state == False:
-                print "ERROR: %s can't be checked" % cmd
-            else:
-                pass
+        self.button2 = self.findPushButton(self.BUTTON_TWO)
 
     #give 'click' action
     def click(self,button):
-        #procedurelogger.action('Click the %s.' % button)
-        #button._doAction("click")
         button.click()
 
     #assert if can find statusbar
@@ -51,9 +37,18 @@ class StatusBarFrame(accessibles.Frame):
         procedurelogger.action('search for statusbar role')
 
         procedurelogger.expectedResult('succeeded in finding StatusBar role')
+        self.statusbar = self.findStatusBar("texts in statusbar")
+        assert self.statusbar
+
+    #assert statusbar's text value
+    def assertText(self, accessible, textValue):
+        self.statusbar = self.findStatusBar(None)
+
+        procedurelogger.expectedResult('the text of "%s" change to "%s"' % (accessible, textValue))
         def resultMatches():
-            return self.findStatusBar(None)
+            return self.statusbar.text == textValue
         assert retryUntilTrue(resultMatches)
+
     
     #close application main window after running test
     def quit(self):

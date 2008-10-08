@@ -1,3 +1,13 @@
+2008-10-08  Calen Chen <cachen@novell.com>
+
+	* testers/states.py: update statusbar's states tuple
+	* samples/statusbar_statusbarpanel.py: add text for statusbar, add 
+	button2 to change text's value
+	* testers/statusbar/statusbarframe.py: delete statesCheck, add test to 
+	assert statusbar's text value
+	* testers/statusbar_basic_ops.py: import helpers, add test for changing
+	statusbar's text value
+
 2008-10-07  Calen Chen <cachen@novell.com>
 
 	* samples/picturebox.py: modify the window's size with different width 

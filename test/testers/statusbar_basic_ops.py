@@ -19,6 +19,7 @@ import os
 
 from strongwind import *
 from statusbar import *
+from helpers import *
 from sys import argv
 from os import path
 
@@ -44,11 +45,21 @@ if app is None:
 # just an alias to make things shorter
 sbFrame = app.statusBarFrame
 
-#check statusbar's states list
-sbFrame.statesCheck()
-
 #check for statusbar role
 sbFrame.assertStatusBar()
+
+#check statusbar's states
+statesCheck(sbFrame.statusbar, "StatusBar")
+
+#click button2 to change statusbar's text value
+sbFrame.click(sbFrame.button2)
+sleep(config.SHORT_DELAY)
+sbFrame.assertText(sbFrame.statusbar, "Change texts 1 times")
+
+#click button2 to change statusbar's text value again
+sbFrame.click(sbFrame.button2)
+sleep(config.SHORT_DELAY)
+sbFrame.assertText(sbFrame.statusbar, "Change texts 2 times")
 
 #close application frame window
 sbFrame.quit()

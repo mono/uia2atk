@@ -230,7 +230,7 @@ class HScrollBar(object):
     states = (ENABLED, SENSITIVE, SHOWING, HORIZONTAL, VISIBLE)
 
 class StatusBar(object):
-    states = (SHOWING,)
+    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
 class ListBox(object):
     states = (SHOWING, ENABLED, SELECTABLE, SENSITIVE)

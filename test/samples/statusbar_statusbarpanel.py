@@ -33,22 +33,32 @@ class StatusBarStatusBarPanelApp(Form):
         """StatusBarStatusBarPanelApp class init function."""
 
         # a counter
-        self.count = 0
+        self.count1 = 0
+        self.count2 = 0
 
         # setup form
         self.Text = "StatusBar_StatusBarPanel controls"
         self.Height = 100
 
-        # setup button
-        self.button = Button()
-        self.button.Text = "Click me"
-        self.button.AutoSize = True
-        self.button.Click += self.on_click
+        # setup button1
+        self.button1 = Button()
+        self.button1.Text = "button1"
+        self.button1.AutoSize = True
+        self.button1.Location = Point(10, 10)
+        self.button1.Click += self.button1_click
+
+        # setup button2
+        self.button2 = Button()
+        self.button2.Text = "button2"
+        self.button2.AutoSize = True
+        self.button2.Location = Point(120, 10)
+        self.button2.Click += self.button2_click
         
         # set StatusBar and StatusBarPanel. in statusbar add statusbarpanel1 
         # displays status text for an application, statusbarpanel2 displays 
         # the current date.
         self.statusbar = StatusBar()
+        self.statusbar.Text = "texts in statusbar"
         self.statusbar.ShowPanels = True
 
         self.statusbarpanel1 = StatusBarPanel()
@@ -66,11 +76,16 @@ class StatusBarStatusBarPanelApp(Form):
         self.statusbar.Panels.Add(self.statusbarpanel1)
         self.statusbar.Panels.Add(self.statusbarpanel2)
         self.Controls.Add(self.statusbar)
-        self.Controls.Add(self.button)
+        self.Controls.Add(self.button1)
+        self.Controls.Add(self.button2)
 
-    def on_click(self, sender, event):
-        self.count += 1
-        self.statusbarpanel1.Text = "You have click %d times" % self.count
+    def button1_click(self, sender, event):
+        self.count1 += 1
+        self.statusbarpanel1.Text = "You have click %d times" % self.count1
+
+    def button2_click(self, sender, event):
+        self.count2 += 1
+        self.statusbar.Text = "Change texts %d times" % self.count2
 
 # run application
 form = StatusBarStatusBarPanelApp()
