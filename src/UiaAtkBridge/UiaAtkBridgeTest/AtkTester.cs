@@ -35,15 +35,18 @@ namespace UiaAtkBridgeTest
 	public abstract class AtkTester {
 		
 		public abstract object GetAtkObjectThatImplementsInterface <I> (
-			BasicWidgetType type, string name, out Atk.Object accessible, bool real);
+		  BasicWidgetType type, string name, out Atk.Object accessible, bool real)
+		  where I : class;
 		
 		public abstract object GetAtkObjectThatImplementsInterface <I> (
-			BasicWidgetType type, string[] name, out Atk.Object accessible, bool real);
+		  BasicWidgetType type, string[] name, out Atk.Object accessible, bool real)
+		  where I : class;
 
 		public abstract object GetAtkObjectThatImplementsInterfaceAndEmbedsAnImage <I> (
-			BasicWidgetType type, string name, out Atk.Object accessible, bool real);
+		  BasicWidgetType type, string name, out Atk.Object accessible, bool real)
+		  where I : class;
 
-		public abstract object CastToAtkInterface <I> (Atk.Object accessible);
+		public abstract I CastToAtkInterface <I> (Atk.Object accessible) where I : class;
 		
 		protected void InterfaceComponent (BasicWidgetType type, Atk.Component implementor)
 		{

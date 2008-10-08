@@ -36,29 +36,29 @@ using NUnit.Framework;
 
 namespace UiaAtkBridgeTest
 {
+	
 	[TestFixture]
 	public class BridgeTester : AtkTests {
 
-
-		public override object CastToAtkInterface <I> (Atk.Object accessible)
+		public override I CastToAtkInterface <I> (Atk.Object accessible)
 		{
 			if (typeof (I) == typeof (Atk.Component)) {
-				return new Atk.ComponentAdapter ((Atk.ComponentImplementor)accessible);
+				return new Atk.ComponentAdapter ((Atk.ComponentImplementor)accessible) as I;
 			}
 			else if (typeof (I) == typeof (Atk.Text)) {
-				return new Atk.TextAdapter ((Atk.TextImplementor)accessible);
+				return new Atk.TextAdapter ((Atk.TextImplementor)accessible) as I;
 			}
 			else if (typeof (I) == typeof (Atk.Action)) {
-				return new Atk.ActionAdapter ((Atk.ActionImplementor)accessible);
+				return new Atk.ActionAdapter ((Atk.ActionImplementor)accessible) as I;
 			}
 			else if (typeof (I) == typeof (Atk.Table)) {
-				return new Atk.TableAdapter ((Atk.TableImplementor)accessible);
+				return new Atk.TableAdapter ((Atk.TableImplementor)accessible) as I;
 			}
 			else if (typeof (I) == typeof (Atk.Value)) {
-				return new Atk.ValueAdapter ((Atk.ValueImplementor)accessible);
+				return new Atk.ValueAdapter ((Atk.ValueImplementor)accessible) as I;
 			}
 			else if (typeof (I) == typeof (Atk.Image)) {
-				return new Atk.ImageAdapter ((Atk.ImageImplementor)accessible);
+				return new Atk.ImageAdapter ((Atk.ImageImplementor)accessible) as I;
 			}
 			throw new NotImplementedException ("Couldn't cast to interface " +
 				typeof(I).Name);
@@ -255,6 +255,7 @@ namespace UiaAtkBridgeTest
 
 		private object GetAtkObjectThatImplementsInterface <I> (
 			BasicWidgetType type, string name, out Atk.Object accessible, bool real, bool embeddedImage)
+			where I : class
 		{
 			accessible = null;
 

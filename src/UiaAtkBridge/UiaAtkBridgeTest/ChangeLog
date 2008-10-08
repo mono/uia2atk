@@ -1,5 +1,10 @@
 2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs:
+	* BridgeTester.cs: Simplification to avoid casts.
+
+2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Simplify.
 
 2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
