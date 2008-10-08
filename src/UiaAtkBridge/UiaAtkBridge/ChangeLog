@@ -1,3 +1,7 @@
+2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Button.cs: Fix casting for possible custom providers.
+
 2008-10-07  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* Button.cs: Forgot the queries to the embedded image.
