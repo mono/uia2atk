@@ -1,3 +1,8 @@
+2008-10-08  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Returning false
+	  inIsKeyboardFocusableProperty.
+
 2008-10-08  Brad Taylor  <brad@getcoded.net>
 	
 	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Implement TextUnit.Format.

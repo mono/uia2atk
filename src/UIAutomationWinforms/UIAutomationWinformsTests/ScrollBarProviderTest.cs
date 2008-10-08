@@ -68,6 +68,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.OrientationProperty,
 			              OrientationType.Horizontal);
+			
+			// Value returned from Vista tests.
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+			              false); 
 		}
 		
 		public override void LabeledByAndNamePropertyTest ()

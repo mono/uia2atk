@@ -89,6 +89,8 @@ namespace Mono.UIAutomation.Winforms
 				return orientation;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return null;
+			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				return false;
 			else
 				return base.GetPropertyValue (propertyId);
 		}
