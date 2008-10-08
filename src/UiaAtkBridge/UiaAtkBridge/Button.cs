@@ -403,7 +403,7 @@ namespace UiaAtkBridge
 		
 		public string ImageLocale 
 		{
-			get { throw new System.NotImplementedException (); }
+			get { return imageDescription; /*TODO*/}
 		}
 		
 #endregion
