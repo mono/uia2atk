@@ -39,9 +39,9 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal class ListBoxProvider : ListProvider
-	{
-		
+	internal class ListBoxProvider : ListProvider, IScrollBehaviorSubject
+	{		
+	
 		#region Constructor 
 
 		public ListBoxProvider (ListBox listbox) : base (listbox)
@@ -54,29 +54,44 @@ namespace Mono.UIAutomation.Winforms
 			hscrollbar = Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox),
 			                                                            listboxControl,
 			                                                            "UIAHScrollBar");
-
 			
-			vscrollbar.VisibleChanged += new EventHandler (UpdateVScrollBehaviorVisible);
-			vscrollbar.EnabledChanged += new EventHandler (UpdateVScrollBehaviorEnable);
-
-			hscrollbar.VisibleChanged += new EventHandler (UpdateHScrollBehaviorVisible);
-			hscrollbar.EnabledChanged += new EventHandler (UpdateHScrollBehaviorEnable);
+			scrollObserver = new ScrollBehaviorObserver (this,
+			                                             hscrollbar,
+			                                             vscrollbar);
 			
-			if ((vscrollbar.Visible == true && vscrollbar.Enabled == true)
-			    || (hscrollbar.Visible == true && hscrollbar.Enabled == true))
-				SetScrollPatternBehavior ();
+			scrollObserver.HorizontalNavigationUpdated += new NavigationEventHandler (OnHorizontalNavigationUpdated);
+			scrollObserver.VerticalNavigationUpdated += new NavigationEventHandler (OnVerticalNavigationUpdated);
+			scrollObserver.ScrollPatternSupportChanged += new EventHandler (OnScrollPatternSupportChanged);
+			
+			if (scrollObserver.SupportsScrollPattern == true)
+				SetBehavior (ScrollPatternIdentifiers.Pattern,
+				             new ScrollProviderBehavior (this, 
+				                                         hscrollbar, 
+				                                         vscrollbar));
 		}
 
 		#endregion
 		
+		#region IScrollBehaviorSubject specialization
+		
+		public bool SupportsHorizontalScrollbar { 
+			get { return listboxControl.HorizontalScrollbar; } 
+		}
+		
+		public bool SupportsVerticalScrollbar { 
+			get { return true; }
+		}		
+		
+		#endregion
+
 		#region Public Properties
 		
 		public bool HasHorizontalScrollbar {
-			get { return hscrollbar.Visible == true && hscrollbar.Enabled == true; }
+			get { return scrollObserver.HasHorizontalScrollbar; }
 		}
 		
 		public bool HasVerticalScrollbar {
-			get { return vscrollbar.Visible == true && vscrollbar.Enabled == true; }
+			get { return scrollObserver.HasVerticalScrollbar; }
 		}
 		
 		#endregion
@@ -92,11 +107,9 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.Terminate ();
 			
-			vscrollbar.VisibleChanged -= new EventHandler (UpdateVScrollBehaviorVisible);
-			vscrollbar.EnabledChanged -= new EventHandler (UpdateVScrollBehaviorEnable);
-
-			hscrollbar.VisibleChanged -= new EventHandler (UpdateHScrollBehaviorVisible);
-			hscrollbar.EnabledChanged -= new EventHandler (UpdateHScrollBehaviorEnable);
+			scrollObserver.HorizontalNavigationUpdated -= new NavigationEventHandler (OnHorizontalNavigationUpdated);
+			scrollObserver.VerticalNavigationUpdated -= new NavigationEventHandler (OnVerticalNavigationUpdated);
+			scrollObserver.ScrollPatternSupportChanged -= new EventHandler (OnScrollPatternSupportChanged);
 		}
 		
 		#endregion
@@ -334,135 +347,43 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 
-		#region Private Methods: Scroll Pattern
-
-		private void UpdateHScrollBehaviorEnable (object sender, EventArgs args)
-		{
-			//Event used to update Navigation chain
-			if (listboxControl.HorizontalScrollbar == true 
-			    && hscrollbar.Visible == true && hscrollbar.Enabled == true)
-				UpdateScrollbarNavigation (hscrollbar, true);
-			else
-				UpdateScrollbarNavigation (hscrollbar, false);
-			
-			//Updating Behavior
-			if (hscrollbar.Enabled == true) {
-				if (scrollpatternSet == false) {
-					if (listboxControl.HorizontalScrollbar == true) {
-						SetScrollPatternBehavior ();
-					}
-				}
-			} else {
-				if (scrollpatternSet == true) {
-					if (vscrollbar.Visible == true && vscrollbar.Enabled == true)
-						return;
-
-					UnsetScrollPatternBehavior ();
-				}
-			}
-		}
+		#region ScrollBehaviorObserver Methods
 		
-		private void UpdateHScrollBehaviorVisible (object sender, EventArgs args)
+		private void OnScrollPatternSupportChanged (object sender, EventArgs args)
 		{
-			//Event used to update Navigation chain
-			if (listboxControl.HorizontalScrollbar == true 
-			    && hscrollbar.Visible == true && hscrollbar.Enabled == true)
-				UpdateScrollbarNavigation (hscrollbar, true);
-			else
-				UpdateScrollbarNavigation (hscrollbar, false);
-			
-			//Updating Behavior
-			if (scrollpatternSet == false) {
-				if (hscrollbar.Visible == true) {
-					if (hscrollbar.Enabled == false 
-					    || listboxControl.HorizontalScrollbar == false)
-						return;
-
-					SetScrollPatternBehavior ();
-				}
-			} else {
-				if (hscrollbar.Visible == false) {
-					if (vscrollbar.Visible == true && vscrollbar.Enabled)
-						return;
-
-					UnsetScrollPatternBehavior ();
-				}
-			}
-		}
-		
-		private void UpdateVScrollBehaviorEnable (object sender, EventArgs args)
-		{
-			//Event used to update Navigation chain
-			if (listboxControl.ScrollAlwaysVisible == true
-			    && vscrollbar.Visible == true && vscrollbar.Enabled == true)
-				UpdateScrollbarNavigation (vscrollbar, true);
-			else
-				UpdateScrollbarNavigation (vscrollbar, false);
-			
-			//Updating Behavior
-			if (vscrollbar.Visible == true && scrollpatternSet == false) {
-				SetScrollPatternBehavior ();
-			} else if (vscrollbar.Visible == true && scrollpatternSet == true) {
-				if (hscrollbar.Visible == true && hscrollbar.Enabled == true)
-					return;
-				UnsetScrollPatternBehavior ();
-			}
-		}		
-		
-		private void UpdateVScrollBehaviorVisible (object sender, EventArgs args)
-		{
-			//Event used to update Navigation chain
-			if (listboxControl.ScrollAlwaysVisible == false
-			    && vscrollbar.Enabled == true && vscrollbar.Visible == true)
-				UpdateScrollbarNavigation (vscrollbar, true);
-			else
-				UpdateScrollbarNavigation (vscrollbar, false);
-			
-			//Updating Behavior
-			if (scrollpatternSet == false) {
-				if (vscrollbar.Visible == true) {
-					if (vscrollbar.Enabled == false)
-						return;
-					SetScrollPatternBehavior ();
-				}
-			} else {
-				if (vscrollbar.Visible == false) {
-					if (hscrollbar.Visible == true && hscrollbar.Enabled == true)
-						return;
-					UnsetScrollPatternBehavior ();					
-				}
-			}
-		}
-		
-		private void SetScrollPatternBehavior ()
-		{
-			if (scrollpatternSet == false) {
-				scrollpatternSet = true;
+			if (scrollObserver.SupportsScrollPattern == true)
 				SetBehavior (ScrollPatternIdentifiers.Pattern,
 				             new ScrollProviderBehavior (this, 
-				                                         hscrollbar,
+				                                         hscrollbar, 
 				                                         vscrollbar));
-			}
+			else
+				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
 		}
 		
-		private void UnsetScrollPatternBehavior ()
+		private void OnHorizontalNavigationUpdated (object sender,
+		                                            NavigationEventArgs args)
 		{
-			if (scrollpatternSet == true) {
-				scrollpatternSet = false;
-				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
-			}
+			UpdateScrollbarNavigation (hscrollbar,
+			                           args.ChangeType == StructureChangeType.ChildAdded);
 		}
-
+		
+		private void OnVerticalNavigationUpdated (object sender,
+		                                          NavigationEventArgs args)
+		{
+			UpdateScrollbarNavigation (vscrollbar,
+			                           args.ChangeType == StructureChangeType.ChildAdded);
+		}
+		
 		#endregion
 		
 		#region Private Fields
 		
 		private ScrollBar hscrollbar;
 		private ListBox listboxControl;
-		private bool scrollpatternSet;
 		private ScrollBar vscrollbar;
 		private ScrollBarProvider hscrollbarProvider;
 		private ScrollBarProvider vscrollbarProvider;
+		private ScrollBehaviorObserver scrollObserver;
 		
 		#endregion
 

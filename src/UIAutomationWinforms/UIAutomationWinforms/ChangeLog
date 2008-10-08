@@ -1,5 +1,20 @@
 2008-10-08  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated files added.
+	* Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs: New
+	  constructors added. New property: Component.
+	  NavigationEventHandler: first argument type changed to object.
+	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs: Updated to
+	  delegate changes.
+	* Mono.UIAutomation.Winforms/IScrollBehaviorSubject.cs: File added.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Updated to use
+	  ScrollBehaviorObserver. IScrollBehaviorSubject realization.
+	* Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs: File added.
+	  Observes changes in scrollbars to generate events about navigation
+	  and scroll pattern.
+
+2008-10-08  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs:
 	  Using Button X and Y.
 

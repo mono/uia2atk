@@ -135,7 +135,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		#region Private Fields
 
-		private void OnNavigationChildrenUpdated (FragmentControlProvider parentProvider,
+		private void OnNavigationChildrenUpdated (object sender,
 		                                          NavigationEventArgs args)
 		{
 			if (args.ChangeType == StructureChangeType.ChildAdded) {
@@ -145,7 +145,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded, 
 					                                   args.ChildProvider);
 					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-					                                   parentProvider);
+					                                   (FragmentControlProvider) sender);
 				}
 			} else if (args.ChangeType == StructureChangeType.ChildRemoved) {
 				Remove (args.ChildProvider.Navigation);
@@ -154,7 +154,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved, 
 					                                   args.ChildProvider);
 					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-					                                   parentProvider);
+					                                   (FragmentControlProvider) sender);
 				}
 			} else if (args.ChangeType == StructureChangeType.ChildrenReordered) {
 				chain.Clear ();
@@ -162,9 +162,9 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				//TODO: Is this the event to generate?
 				if (args.RaiseEvent == true) {
 					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenBulkRemoved, 
-					                                   parentProvider);
+					                                   (FragmentControlProvider) sender);
 					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-					                                   parentProvider);
+					                                   (FragmentControlProvider) sender);
 				}
 			}
 		}

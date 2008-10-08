@@ -153,6 +153,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/HelpProvider.cs \
 	Mono.UIAutomation.Winforms/HelpProviderListener.cs \
 	Mono.UIAutomation.Winforms/IConnectable.cs \
+	Mono.UIAutomation.Winforms/IScrollBehaviorSubject.cs \
 	Mono.UIAutomation.Winforms/LabelProvider.cs \
 	Mono.UIAutomation.Winforms/LinkLabelProvider.cs \
 	Mono.UIAutomation.Winforms/ListBoxProvider.cs \
@@ -167,6 +168,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ProviderFactory.cs \
 	Mono.UIAutomation.Winforms/RadioButtonProvider.cs \
 	Mono.UIAutomation.Winforms/ScrollBarProvider.cs \
+	Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs \
 	Mono.UIAutomation.Winforms/SimpleControlProvider.cs \
 	Mono.UIAutomation.Winforms/StatusBarProvider.cs \
 	Mono.UIAutomation.Winforms/TabControlProvider.cs \
