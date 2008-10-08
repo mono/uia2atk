@@ -85,27 +85,29 @@ namespace Mono.UIAutomation.Winforms
 		//Be aware of this method because it returns: "the number of units actually moved."
 		//http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.itextrangeprovider.move.aspx
 		//and MS implementation doesn't
-		private int CharacterMoveStartEndPoint (int count, ref int startEndPoint)
+		private int CharacterMoveStartEndPoint (int count, ref int point)
 		{
-			int moved = 0;
-			
-			if (count == 0)
+			if (count == 0) {
 				return 0;
-			
-			if (startEndPoint + count <= 0)
-				moved = startEndPoint;
-			else if (startEndPoint + count >= textboxbase.Text.Length)
-				moved = startEndPoint - textboxbase.Text.Length;
-			else 
-				moved = count;
-			
-			startEndPoint += count;
-			if (startEndPoint < 0)
-				startEndPoint = 0;
-			else if (startEndPoint > textboxbase.Text.Length)
-				startEndPoint = textboxbase.Text.Length;
+			}
 
-			return System.Math.Abs (moved);
+			int moved = 0;
+			int length = textboxbase.Text.Length;
+			int proposed_point = point + count;
+
+			if (proposed_point < 0) {
+				proposed_point = 0;
+				moved = point;
+			} else if (proposed_point > length) {
+				proposed_point = length;
+				moved = length - point;
+			} else {
+				point = proposed_point;
+				return count;
+			}
+
+			point = proposed_point;
+			return (count < 0 ? -1 : 1) * moved;
 		}
 
 #endregion
@@ -513,6 +515,36 @@ namespace Mono.UIAutomation.Winforms
 			return collection.Count;
 		}
 		
+#endregion
+
+#region Page methods
+		
+		public int PageMoveStartPoint (int count)
+		{
+			int length = textboxbase.Text.Length;
+			if (count > 0 && start_point < length) {
+				start_point = length;
+				return 1;
+			} else if (count < 0 && start_point > 0) {
+				start_point = 0;
+				return -1;
+			}
+			return 0;
+		}
+
+		public int PageMoveEndPoint (int count)
+		{
+			int length = textboxbase.Text.Length;
+			if (count > 0 && end_point < length) {
+				end_point = length;
+				return 1;
+			} else if (count < 0 && end_point > 0) {
+				start_point = end_point = 0;
+				return -1;
+			}
+			return 0;
+		}
+
 #endregion
 		
 		public TextNormalizerPoints Move (TextUnit unit, int count) 

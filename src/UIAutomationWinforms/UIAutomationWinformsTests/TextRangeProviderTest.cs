@@ -64,7 +64,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			textbox.SelectionStart = 0;
 
 			IRawElementProviderSimple simple = ProviderFactory.GetProvider (textbox);
-			provider = (ITextProvider)simple.GetPatternProvider (TextPatternIdentifiers.Pattern.Id);
+			text_provider = (ITextProvider)simple.GetPatternProvider (TextPatternIdentifiers.Pattern.Id);
 		}
 
 		[TearDown]
@@ -108,7 +108,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			textbox.Multiline = true;
 			textbox.Text = String.Format ("hello{0}world{0}{0}test", newline_chars);
 
-			range = provider.DocumentRange.Clone ();
+			range = text_provider.DocumentRange.Clone ();
 
 			// NOTE: These all pass successfully on Windows Vista, so
 			// think twice before you change anything.
@@ -179,7 +179,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// In case you were wondering, the topic is: things that are awesome
 			textbox.Text = String.Format("bear{0}{0}shark{0}laser{0}{0}volcano", newline);
 
-			range = provider.DocumentRange.Clone ();
+			range = text_provider.DocumentRange.Clone ();
 			
 			// NOTE: These all pass successfully on Windows Vista, so
 			// think twice before you change anything.
@@ -248,7 +248,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			textbox.Multiline = true;
 			textbox.Text = String.Format ("apples{0}{0}pears{0}peaches{0}{0}bananas", newline);
 
-			range = provider.DocumentRange.Clone ();
+			range = text_provider.DocumentRange.Clone ();
 			
 			// NOTE: These all pass successfully on Windows Vista, so
 			// think twice before you change anything.
@@ -263,7 +263,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (String.Format ("apples{0}{0}pears{0}peaches{0}{0}bananas", newline),
 					 range.GetText (-1), "Text is incorrect in -1 paragraph move");
 
-			range = provider.DocumentRange.Clone ();
+			range = text_provider.DocumentRange.Clone ();
 
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 1);
 			Assert.AreEqual (1, moved_units, "Moved units are incorrect in +1 character move");
@@ -302,6 +302,53 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// Going bananas yet?
  		}
 
+		[Test]
+		public void MoveEndpointByPage ()
+		{
+			textbox.Multiline = true;
+			textbox.Text = String.Format ("apples\r\n\npears\r\r\npeaches\nbananas");
+
+			range = text_provider.DocumentRange.Clone ();
+			
+			// NOTE: These all pass successfully on Windows Vista, so
+			// think twice before you change anything.
+			int moved_units;
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Page, 0);
+			Assert.AreEqual (0, moved_units, "Moved units are incorrect in 0 page move");
+			Assert.AreEqual ("apples\r\n\npears\r\r\npeaches\nbananas", range.GetText (-1),
+			                 "Text is incorrect in 0 page move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 1);
+			Assert.AreEqual (1, moved_units, "Moved units are incorrect in +1 character move");
+			Assert.AreEqual ("pples\r\n\npears\r\r\npeaches\nbananas", range.GetText (-1),
+			                 "Text is incorrect in first +1 character move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Page, -1);
+			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in first -1 page move");
+			Assert.AreEqual ("apples\r\n\npears\r\r\npeaches\nbananas", range.GetText (-1),
+			                 "Text is incorrect in first -1 page move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Page, 1);
+			Assert.AreEqual (1, moved_units, "Moved units are incorrect in first +1 page move");
+			Assert.AreEqual (String.Empty, range.GetText (-1),
+			                 "Text is incorrect in first +1 page move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, -1);
+			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in -1 character move");
+			Assert.AreEqual ("s", range.GetText (-1),
+			                 "Text is incorrect in -1 character move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Page, -1);
+			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in second -1 page move");
+			Assert.AreEqual (String.Empty, range.GetText (-1),
+			                 "Text is incorrect in second -1 page move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Page, 1);
+			Assert.AreEqual (1, moved_units, "Moved units are incorrect in second +1 page move");
+			Assert.AreEqual ("apples\r\n\npears\r\r\npeaches\nbananas", range.GetText (-1),
+			                 "Text is incorrect in second +1 page move");
+		}
+
 		private const string TEST_MESSAGE = "One morning, when Gregor Samsa    woke from troubled dreams, "+
 			"he found himself transformed in his bed into a horrible vermin.He lay on his armour-like back, "+
 			"and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches "+
@@ -316,6 +363,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		private TextBox textbox;
 		private ITextRangeProvider range;
-		private ITextProvider provider;
+		private ITextProvider text_provider;
 	}
 }

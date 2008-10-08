@@ -224,9 +224,13 @@ namespace Mono.UIAutomation.Winforms
 					return normalizer.ParagraphMoveStartPoint (count);
 				else
 					return normalizer.ParagraphMoveEndPoint (count);
+			// Document and Page appear to behave similarly
 			case TextUnit.Page:
 			case TextUnit.Document:
-				throw new NotImplementedException ();
+				if (endpoint == TextPatternRangeEndpoint.Start)
+					return normalizer.PageMoveStartPoint (count);
+				else
+					return normalizer.PageMoveEndPoint (count);
 			}
 
 			return 0;
