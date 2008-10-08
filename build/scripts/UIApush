@@ -1,0 +1,82 @@
+#!/bin/bash -x
+current_date=`date +"%m%d%y"`
+rev_value=0
+rm -rf /tmp/uia
+mkdir /tmp/uia
+touch /tmp/uia/rpm_revs
+printf "%b" 'RPM Rev values for - ' $current_date >> /tmp/uia/rpm_revs
+printf "\n\n\n" >> /tmp/uia/rpm_revs
+ls -la /tmp/uia
+
+#UIAutomationWinforms
+cd ~/wa/msvn/release/packaging/snapshot_packages/noarch/uiautomationwinforms/
+rev_value=`ls -rtd */ | tail -n 1`
+cd `ls -rtd */ | tail -n 1`
+cp *.rpm /tmp/uia
+printf "%b" 'UIAutomation - ' $rev_value >> /tmp/uia/rpm_revs
+printf "\n" >> /tmp/uia/rpm_revs
+
+#Olive
+cd ~/wa/msvn/release/packaging/snapshot_packages/noarch/olive/
+rev_value=`ls -rtd */ | tail -n 1`
+cd `ls -rtd */ | tail -n 1`
+cp *.rpm /tmp/uia
+printf "%b" 'Olive - ' $rev_value >> /tmp/uia/rpm_revs
+printf "\n" >> /tmp/uia/rpm_revs
+
+#Mono UIA Branch
+cd ~/wa/msvn/release/packaging/snapshot_packages/x86/mono/
+rev_value=`ls -rtd */ | tail -n 1`
+cd `ls -rtd */ | tail -n 1`
+cp *.rpm /tmp/uia
+printf "%b" 'Mono - ' $rev_value >> /tmp/uia/rpm_revs
+printf "\n" >> /tmp/uia/rpm_revs
+
+#UiaAtkBridge
+cd ~/wa/msvn/release/packaging/snapshot_packages/suse-110-i586/uiaatkbridge
+rev_value=`ls -rtd */ | tail -n 1`
+cd `ls -rtd */ | tail -n 1`
+cp *.rpm /tmp/uia
+printf "%b" 'UiaAtkBridge - ' $rev_value >> /tmp/uia/rpm_revs
+printf "\n" >> /tmp/uia/rpm_revs
+
+#Gtk Sharp 2.12
+cd ~/wa/msvn/release/packaging/snapshot_packages/suse-110-i586/gtk-sharp212
+rev_value=`ls -rtd */ | tail -n 1`
+cd `ls -rtd */ | tail -n 1`
+cp *.rpm /tmp/uia
+printf "%b" 'Gtk Sharp 2.12 - ' $rev_value >> /tmp/uia/rpm_revs
+printf "\n" >> /tmp/uia/rpm_revs
+
+#libgdiplus
+cd ~/wa/msvn/release/packaging/snapshot_packages/suse-110-i586/libgdiplus
+rev_value=`ls -rtd */ | tail -n 1`
+cd `ls -rtd */ | tail -n 1`
+cp *.rpm /tmp/uia
+printf "%b" 'libgdiplus - ' $rev_value >> /tmp/uia/rpm_revs
+printf "\n" >> /tmp/uia/rpm_revs
+
+#unneeded RPMs 
+cd /tmp/uia
+rm mono-devel-*.rpm
+rm mono-core-debug*.rpm
+rm mono-data-f*.rpm
+rm mono-data-o*.rpm
+rm mono-data-p*.rpm
+rm mono-data-sy*.rpm
+rm mono-jscript-*.rpm
+rm mono-locale-*.rpm
+rm bytefx-data-*.rpm
+rm ibm-data-*.rpm
+rm mono-complete-*.rpm
+rm gtk-sharp2-complete-*.rpm
+rm gtk-sharp2-gapi-*.rpm
+rm gtk-sharp2-doc-*.rpm
+
+
+ssh root@build1.sled.lab.novell.com /root/bin/UIAupdate
+scp /tmp/uia/* root@build1.sled.lab.novell.com:/srv/www/htdocs/uia/current
+ssh qa@uiaqa.sled.lab.novell.com python /var/qa/code/test/harness/remote_run.py -su -e mono-a11y@forge.novell.com,bgmerrell@novell.com,stshaw@novell.com -f bgmerrell@novell.com
+
+mailx stshaw@novell.com -s 'New RPMS - http://build1.sled.lab.novell.com/uia/current' -c bgmerrell@novell.com -c rawang@novell.com -c cachen@novell.com -c ngao@novell.com < /tmp/uia/rpm_revs
+mailx stshaw@novell.com -s 'New RPM script output' -c rawang@novell.com < /tmp/UIAoutput
