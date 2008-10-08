@@ -1,5 +1,9 @@
 2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Button.cs: Heh, we have a method for that.
+
+2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Button.cs: Meh, comparison operators not yet implemented in Mono.
 
 2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>

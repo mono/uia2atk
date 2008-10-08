@@ -363,7 +363,7 @@ namespace UiaAtkBridge
 						hasImage = false;
 					}
 					else
-						hasImage = (embeddedImage.BoundingRectangle.Equals (Rect.Empty));
+						hasImage = embeddedImage.BoundingRectangle.IsEmpty;
 				}
 				
 				return hasImage.Value;
