@@ -1,3 +1,7 @@
+2008-10-08  Mario Carrion <mcarrion@novell.com> 
+
+	* Makefile.am: Removing not added files.
+
 2008-10-08  Neville Gao <nevillegao@gmail.com>
 
 	* Makefile.am, Mono.UIAutomation.Winforms.mdp:
