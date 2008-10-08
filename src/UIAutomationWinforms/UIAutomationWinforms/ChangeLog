@@ -1,5 +1,13 @@
 2008-10-08  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs:
+	  Refactored: Events NavigationChildAdded, NavigationChildRemoved and
+	  NavigationChildrenCleared replaced with NavigationUpdated.
+	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs: Updated to
+	  FragmentRootControlProvider events changes.
+
+2008-10-08  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs:
 	  IEmbeddedImage realization.
 

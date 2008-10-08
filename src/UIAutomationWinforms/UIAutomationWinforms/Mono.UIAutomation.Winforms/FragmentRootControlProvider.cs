@@ -78,11 +78,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Public Events
 		
-		public NavigationEventHandler NavigationChildAdded;
-    
-		public NavigationEventHandler NavigationChildRemoved;
-        
-		public NavigationEventHandler NavigationChildrenCleared;
+		public NavigationEventHandler NavigationUpdated;
 		
 		#endregion
 		
@@ -151,6 +147,12 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Protected Methods
+		
+		protected virtual void OnNavigationUpdated (NavigationEventArgs args)
+		{
+			if (NavigationUpdated != null)
+				NavigationUpdated (this, args);
+		}
 
 		protected virtual void OnNavigationChildAdded (bool raiseEvent, 
 		                                               FragmentControlProvider childProvider)
@@ -162,11 +164,10 @@ namespace Mono.UIAutomation.Winforms
 			childProvider.Navigation.Initialize ();
 
 			//WE MUST GENERATE THIS EVENT before initializing its children
-			if (NavigationChildAdded != null)
-				NavigationChildAdded (this, 
-				                      new NavigationEventArgs (raiseEvent, 
-				                                               StructureChangeType.ChildAdded, 
-				                                               childProvider));			
+			OnNavigationUpdated (new NavigationEventArgs (raiseEvent, 
+			                                              StructureChangeType.ChildAdded, 
+			                                              childProvider));
+
 			if (childProvider is FragmentRootControlProvider)
 				((FragmentRootControlProvider) childProvider).InitializeChildControlStructure ();			
 
@@ -179,11 +180,9 @@ namespace Mono.UIAutomation.Winforms
 			if (children.Contains (childProvider) == false)
 				return;
 			
-			if (NavigationChildRemoved != null)
-				NavigationChildRemoved (this,
-				                        new NavigationEventArgs (raiseEvent, 
-				                                                 StructureChangeType.ChildRemoved, 
-				                                                 childProvider));
+			OnNavigationUpdated (new NavigationEventArgs (raiseEvent, 
+			                                              StructureChangeType.ChildRemoved, 
+			                                              childProvider));
 
 			childProvider.Navigation.Terminate ();
 			childProvider.Navigation = null;
@@ -193,11 +192,9 @@ namespace Mono.UIAutomation.Winforms
 			
 		protected virtual void OnNavigationChildrenCleared (bool raiseEvent)
 		{
-			if (NavigationChildrenCleared != null)
-				NavigationChildrenCleared (this,
-				                           new NavigationEventArgs (raiseEvent, 
-				                                                    StructureChangeType.ChildrenReordered, 
-				                                                    null));
+			OnNavigationUpdated (new NavigationEventArgs (raiseEvent,
+			                                              StructureChangeType.ChildrenReordered, 
+			                                              null));
 		}
                
 		#endregion

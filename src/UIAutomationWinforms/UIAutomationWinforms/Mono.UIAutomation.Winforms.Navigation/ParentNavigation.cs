@@ -75,16 +75,12 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			foreach (FragmentControlProvider child in rootProvider)
 				AddLast (child.Navigation);
 			
-			rootProvider.NavigationChildAdded += new NavigationEventHandler (OnNavigationChildAdded);
-			rootProvider.NavigationChildRemoved += new NavigationEventHandler (OnNavigationChildRemoved);
-			rootProvider.NavigationChildrenCleared += new NavigationEventHandler (OnNavigationChildrenCleared);
+			rootProvider.NavigationUpdated += new NavigationEventHandler (OnNavigationChildrenUpdated);
 		}
 
 		public override void Terminate ()
 		{		
-			((FragmentRootControlProvider) Provider).NavigationChildAdded -= new NavigationEventHandler (OnNavigationChildAdded);
-			((FragmentRootControlProvider) Provider).NavigationChildRemoved -= new NavigationEventHandler (OnNavigationChildRemoved);
-			((FragmentRootControlProvider) Provider).NavigationChildrenCleared -= new NavigationEventHandler (OnNavigationChildrenCleared);
+			((FragmentRootControlProvider) Provider).NavigationUpdated -= new NavigationEventHandler (OnNavigationChildrenUpdated);
 		}
 		
 		#endregion
@@ -138,44 +134,38 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		#endregion
 		
 		#region Private Fields
-		
-		private void OnNavigationChildAdded (FragmentControlProvider parentProvider,
-		                                     NavigationEventArgs args)
-		{
-			AddLast (args.ChildProvider.Navigation);
-	
-			if (args.RaiseEvent == true) {
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded, 
-				                                   args.ChildProvider);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-				                                   parentProvider);
-			}
-		}
-		
-		private void OnNavigationChildRemoved (FragmentControlProvider parentProvider,
-		                                       NavigationEventArgs args)
-		{
-			Remove (args.ChildProvider.Navigation);
 
-			if (args.RaiseEvent == true) {
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved, 
-				                                   args.ChildProvider);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-				                                   parentProvider);
-			}
-		}
-		
-		private void OnNavigationChildrenCleared (FragmentControlProvider parentProvider,
+		private void OnNavigationChildrenUpdated (FragmentControlProvider parentProvider,
 		                                          NavigationEventArgs args)
 		{
-			chain.Clear ();
-			
-			//TODO: Is this the event to generate?
-			if (args.RaiseEvent == true) {
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenBulkRemoved, 
-				                                   parentProvider);
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
-				                                   parentProvider);
+			if (args.ChangeType == StructureChangeType.ChildAdded) {
+				AddLast (args.ChildProvider.Navigation);
+		
+				if (args.RaiseEvent == true) {
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded, 
+					                                   args.ChildProvider);
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+					                                   parentProvider);
+				}
+			} else if (args.ChangeType == StructureChangeType.ChildRemoved) {
+				Remove (args.ChildProvider.Navigation);
+	
+				if (args.RaiseEvent == true) {
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved, 
+					                                   args.ChildProvider);
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+					                                   parentProvider);
+				}
+			} else if (args.ChangeType == StructureChangeType.ChildrenReordered) {
+				chain.Clear ();
+				
+				//TODO: Is this the event to generate?
+				if (args.RaiseEvent == true) {
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenBulkRemoved, 
+					                                   parentProvider);
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildrenInvalidated,
+					                                   parentProvider);
+				}
 			}
 		}
 		
