@@ -114,6 +114,8 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
+			// Selectable added by atk if parent has Atk.Selection
+			states.RemoveState (Atk.StateType.Selectable);
 			states.AddState (orientation == OrientationType.Vertical? Atk.StateType.Vertical: Atk.StateType.Horizontal);
 			return states;
 		}

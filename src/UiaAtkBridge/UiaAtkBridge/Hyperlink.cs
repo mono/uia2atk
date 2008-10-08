@@ -283,7 +283,6 @@ namespace UiaAtkBridge
 
 		protected override Atk.Object OnGetObject (int i)
 		{
-Console.WriteLine ("OnGetObject: " + obj);
 			return (i == 0? obj: null);
 		}
 
