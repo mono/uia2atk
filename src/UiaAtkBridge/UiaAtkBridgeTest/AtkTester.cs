@@ -39,6 +39,11 @@ namespace UiaAtkBridgeTest
 		
 		public abstract object GetAtkObjectThatImplementsInterface <I> (
 			BasicWidgetType type, string[] name, out Atk.Object accessible, bool real);
+
+		public abstract object GetAtkObjectThatImplementsInterfaceAndEmbedsAnImage <I> (
+			BasicWidgetType type, string name, out Atk.Object accessible, bool real);
+
+		public abstract object CastToAtkInterface <I> (Atk.Object accessible);
 		
 		protected void InterfaceComponent (BasicWidgetType type, Atk.Component implementor)
 		{
@@ -373,6 +378,27 @@ namespace UiaAtkBridgeTest
 			InterfaceValue (type, atkValue, null);
 		}
 
+		protected void InterfaceImage (BasicWidgetType type, Atk.Image implementor, Atk.Component component)
+		{
+			Assert.IsNull (implementor.ImageDescription, "ImageDescription == null initially");
+			string myDesc = "Hola mundo";
+			Assert.IsTrue (implementor.SetImageDescription (myDesc), "Setting the img desc should return success");
+			Assert.AreEqual (myDesc, implementor.ImageDescription, "The img desc should have been overriden correctly");
+			int ia, ib, ca, cb;
+			implementor.GetImagePosition (out ia, out ib, Atk.CoordType.Screen);
+			component.GetPosition (out ca, out cb, Atk.CoordType.Screen);
+			Assert.IsTrue (ia > 0, "x of the image must be > 0");
+			Assert.IsTrue (ib > 0, "y of the image must be > 0");
+			Assert.IsTrue (ia > ca, "x of the image must be > x from the widget");
+			Assert.IsTrue (ib > cb, "y of the image must be > y from the widget");
+			implementor.GetImageSize (out ia, out ib);
+			component.GetSize (out ca, out cb);
+			Assert.IsTrue (ia > 0, "width of the image must be > 0");
+			Assert.IsTrue (ib > 0, "height of the image must be > 0");
+			Assert.IsTrue (ia < ca, "width of the image must be < width from the widget");
+			Assert.IsTrue (ib < cb, "height of the image must be < height from the widget");
+		}
+		
 		protected void PropertyRole (BasicWidgetType type, Atk.Object accessible)
 		{
 			Atk.Role role = Atk.Role.Unknown;
@@ -796,7 +822,7 @@ namespace UiaAtkBridgeTest
 			return accessible;
 		}
 
-			protected string simpleTestText = "This is a test sentence.";
+		protected string simpleTestText = "This is a test sentence.";
 
 		protected void InterfaceTextSingleLine (BasicWidgetType type, Atk.Text atkText)
 		{

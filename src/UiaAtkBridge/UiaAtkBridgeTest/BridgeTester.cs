@@ -38,7 +38,23 @@ namespace UiaAtkBridgeTest
 {
 	[TestFixture]
 	public class BridgeTester : AtkTests {
+
+
+		public override object CastToAtkInterface <I> (Atk.Object accessible)
+		{
+			if (typeof (I) == typeof (Atk.Component)) {
+				return new Atk.ComponentAdapter ((Atk.ComponentImplementor)accessible);
+			}
+			throw new NotImplementedException ("Couldn't cast to interface " +
+				typeof(I).Name);
+		}
 		
+		public override object GetAtkObjectThatImplementsInterfaceAndEmbedsAnImage <I> (
+			BasicWidgetType type, string name, out Atk.Object accessible, bool real)
+		{
+			return GetAtkObjectThatImplementsInterface <I> (type, name, out accessible, real, true);
+		}
+
 		public override object GetAtkObjectThatImplementsInterface <I> (
 		  BasicWidgetType type, string[] names, out Atk.Object accessible, bool real)
 		{
@@ -161,6 +177,14 @@ namespace UiaAtkBridgeTest
 				typeof(I).Name);
 		}
 		
+
+		public override object GetAtkObjectThatImplementsInterface <I> (
+		  BasicWidgetType type, string name, out Atk.Object accessible, bool real)
+		{
+			return GetAtkObjectThatImplementsInterface <I> (type, name, out accessible, real, false);
+		}
+
+				
 		SWF.GroupBox gb1 = new SWF.GroupBox ();
 		SWF.GroupBox gb2 = new SWF.GroupBox ();
 		SWF.RadioButton rad1 = new SWF.RadioButton ();
@@ -235,14 +259,16 @@ namespace UiaAtkBridgeTest
 			return radios [currentRadio];
 		}
 		
-		public override object GetAtkObjectThatImplementsInterface <I> (
-		  BasicWidgetType type, string name, out Atk.Object accessible, bool real)
+
+		private object GetAtkObjectThatImplementsInterface <I> (
+			BasicWidgetType type, string name, out Atk.Object accessible, bool real, bool embeddedImage)
 		{
 			Atk.ComponentImplementor component = null;
 			Atk.TextImplementor text = null;
 			Atk.ActionImplementor action = null;
 			Atk.TableImplementor table = null;
 			Atk.ValueImplementor value = null;
+			Atk.ImageImplementor image = null;
 			accessible = null;
 
 			string[] names = null;
@@ -269,6 +295,9 @@ namespace UiaAtkBridgeTest
 				if (real)
 					but = but1;
 				but.Text = name;
+				string uiaQaPath = System.IO.Directory.GetCurrentDirectory ();
+				if (embeddedImage)
+					but.Image = System.Drawing.Image.FromFile (uiaQaPath + "/../../../../../test/samples/opensuse60x38.gif");
 				UiaAtkBridge.Button uiaBut;
 				if (real)
 #pragma warning disable 618
@@ -280,6 +309,7 @@ namespace UiaAtkBridgeTest
 				text = uiaBut;
 				component = uiaBut;
 				action = uiaBut;
+				image = uiaBut;
 				break;
 			case BasicWidgetType.Window:
 				SWF.Form frm = new SWF.Form ();
@@ -457,6 +487,9 @@ namespace UiaAtkBridgeTest
 			}
 			else if (typeof (I) == typeof (Atk.Value)) {
 				return new Atk.ValueAdapter (value);
+			}
+			else if (typeof (I) == typeof (Atk.Image)) {
+				return new Atk.ImageAdapter (image);
 			}
 			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
 				typeof(I).Name);
