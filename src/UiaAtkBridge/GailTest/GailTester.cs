@@ -42,8 +42,14 @@ namespace UiaAtkBridgeTest
 			guiThread.Deleg = Gtk.Application.Init;
 			guiThread.Start ();
 			guiThread.JoinUntilSuspend ();
+
+			GLib.ExceptionManager.UnhandledException += new GLib.UnhandledExceptionHandler (HandleException);
 		}
 		
+		public static void HandleException (GLib.UnhandledExceptionArgs args){
+			args.ExitApplication = true;
+		}
+
 		public override object GetAtkObjectThatImplementsInterface <I> (
 		  BasicWidgetType type, string[] name, out Atk.Object accessible, bool real)
 		{
@@ -218,6 +224,7 @@ namespace UiaAtkBridgeTest
 		public void End () 
 		{
 			Console.WriteLine ("End() called.");
+			EventMonitor.Stop ();
 			GailTestApp.MainClass.Kill (guiThread);
 			
 			//hack: let's wait for the Gtk.Application env to finish gracefully and then we abort the thread

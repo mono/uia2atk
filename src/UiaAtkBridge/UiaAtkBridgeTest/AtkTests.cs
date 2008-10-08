@@ -87,7 +87,7 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void Checkbox ()
 		{
-			EventMonitor evMon = new EventMonitor ();
+			EventMonitor.Start ();
 
 			BasicWidgetType type = BasicWidgetType.CheckBox;
 			Atk.Object accessible;
@@ -117,7 +117,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "CheckBox numChildren");
 			Parent (type, accessible);
 
-			EventCollection events = evMon.Stop ();
+			EventCollection events = EventMonitor.Pause ();
 			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
 			string evType = "object:state-changed:checked";
 			EventCollection checkboxEvs = events.FindByRole (Atk.Role.CheckBox).FindWithDetail1 ("1");

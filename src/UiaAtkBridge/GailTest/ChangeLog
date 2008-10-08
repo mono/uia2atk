@@ -1,3 +1,8 @@
+2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTester.cs: Let's only call atspimon.py once in the tests. I hope
+	this is the last fix to the event-unit-testing system...
+
 2008-10-01  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* GailTester.cs: Let the running test be located

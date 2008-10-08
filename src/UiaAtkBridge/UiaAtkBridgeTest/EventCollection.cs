@@ -40,14 +40,17 @@ namespace UiaAtkBridgeTest
 		
 		internal EventCollection (string eventsInXml)
 		{
+			if (!eventsInXml.Contains("</events>"))
+				eventsInXml = eventsInXml + "</events>";
+			if (!eventsInXml.Contains("<events>"))
+				eventsInXml = "<events>" + eventsInXml;
+			
 			originalRepr = eventsInXml;
 			XmlDocument xml = new XmlDocument ();
 			try {
 				xml.LoadXml (eventsInXml);
-			} catch {
-				//Console.WriteLine ("exception when trying to read XML: {0}", eventsInXml);
-				
-				throw new Exception ("XML not valid:" + eventsInXml);
+			} catch (Exception ex) {
+				throw new Exception ("XML not valid:" + eventsInXml, ex);
 			}
 			if (!xml.HasChildNodes)
 				throw new ArgumentException ("XML must have child nodes", eventsInXml);

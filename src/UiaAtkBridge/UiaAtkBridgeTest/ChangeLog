@@ -1,3 +1,11 @@
+2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs:
+	* EventMonitor.cs:
+	* EventCollection.cs: Let's only call atspimon.py once in the tests. I
+	hope this is the last fix to the event-unit-testing system...
+
 2008-10-07  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
 	* AtkTests.cs: Focused+ events are not sent when using Atk.Action API

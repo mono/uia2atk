@@ -30,14 +30,22 @@ using System.Diagnostics;
 namespace UiaAtkBridgeTest
 {
 	
-	
-	internal class EventMonitor
+	public class EventMonitor
 	{
-		Process p = null;
-		string xmlResult = String.Empty;
-
+		static Process p = null;
+		static string xmlResult = String.Empty;
+		static EventMonitor singleton = null;
+		static object locking = new object ();
 		
-		internal EventMonitor ()
+		internal static void Start () {
+			lock (locking) {
+				if (singleton == null)
+					singleton = new EventMonitor ();
+				xmlResult = String.Empty;
+			}
+		}
+		
+		private EventMonitor ()
 		{
 			string appWatcher = "atspimon.py";
 			string appsToWatch = "nunit-console GtkSharpValue";
@@ -61,16 +69,43 @@ namespace UiaAtkBridgeTest
 
 		void OnDataReceived (object sender, DataReceivedEventArgs args)
 		{
-			if (args.Data != null)
-				xmlResult += args.Data;
+			lock (locking)
+				if (args.Data != null)
+					xmlResult += args.Data;
+		}
+
+		internal static EventCollection Pause () {
+			lock (locking) {
+				if (singleton == null)
+					throw new Exception ("EventMonitor has not been started yet");
+				try {
+					return new EventCollection (xmlResult);
+				}
+				finally {
+					xmlResult = String.Empty;
+				}
+			}
+		}
+
+		public static void Stop () {
+			StopWithResult ();
 		}
 		
-		internal EventCollection Stop () {
-			p.Kill ();
-			p.Dispose ();
-			p = null;
-			//Console.WriteLine ("XML:{0}", xmlResult);
-			return new EventCollection (xmlResult + "</events>");
+		internal static EventCollection StopWithResult () {
+			lock (locking) {
+				if (singleton == null)
+					throw new Exception ("EventMonitor has not been started yet");
+				
+				p.Kill ();
+				p.Dispose ();
+				p = null;
+				try {
+					return new EventCollection (xmlResult);
+				}
+				finally {
+					xmlResult = String.Empty;
+				}
+			}
 		}
 	}
 }
