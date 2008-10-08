@@ -1,3 +1,8 @@
+2008-10-08  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs:
+	  Using Button X and Y.
+
 2008-10-08  Brad Taylor  <brad@getcoded.net>
 	
 	* Mono.UIAutomation.Winforms/TextNormalizer.cs:

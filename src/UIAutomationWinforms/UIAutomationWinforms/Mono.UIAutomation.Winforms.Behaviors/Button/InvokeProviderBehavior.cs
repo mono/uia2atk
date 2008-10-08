@@ -138,6 +138,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Button
 					}
 				}
 				
+				System.Windows.Rect buttonRect 
+					= (System.Windows.Rect) Provider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+				
+				imageX += (int) buttonRect.X;
+				imageY += (int) buttonRect.Y;
+				
 				return new System.Windows.Rect (imageX, imageY, imageWidth, imageHeight);
 			}
 		}
