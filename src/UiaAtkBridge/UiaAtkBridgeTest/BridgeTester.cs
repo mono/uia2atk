@@ -45,6 +45,21 @@ namespace UiaAtkBridgeTest
 			if (typeof (I) == typeof (Atk.Component)) {
 				return new Atk.ComponentAdapter ((Atk.ComponentImplementor)accessible);
 			}
+			else if (typeof (I) == typeof (Atk.Text)) {
+				return new Atk.TextAdapter ((Atk.TextImplementor)accessible);
+			}
+			else if (typeof (I) == typeof (Atk.Action)) {
+				return new Atk.ActionAdapter ((Atk.ActionImplementor)accessible);
+			}
+			else if (typeof (I) == typeof (Atk.Table)) {
+				return new Atk.TableAdapter ((Atk.TableImplementor)accessible);
+			}
+			else if (typeof (I) == typeof (Atk.Value)) {
+				return new Atk.ValueAdapter ((Atk.ValueImplementor)accessible);
+			}
+			else if (typeof (I) == typeof (Atk.Image)) {
+				return new Atk.ImageAdapter ((Atk.ImageImplementor)accessible);
+			}
 			throw new NotImplementedException ("Couldn't cast to interface " +
 				typeof(I).Name);
 		}
@@ -58,9 +73,6 @@ namespace UiaAtkBridgeTest
 		public override object GetAtkObjectThatImplementsInterface <I> (
 		  BasicWidgetType type, string[] names, out Atk.Object accessible, bool real)
 		{
-			Atk.ComponentImplementor component = null;
-			Atk.ActionImplementor action = null;
-			Atk.SelectionImplementor selection = null;
 			accessible = null;
 			
 			switch (type) {
@@ -84,8 +96,6 @@ namespace UiaAtkBridgeTest
 				else
 					uiaList = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listBox, true, true));
 				accessible = uiaList;
-				component = uiaList;
-				selection = uiaList;
 				break;
 			}
 			case BasicWidgetType.CheckedListBox: {
@@ -104,8 +114,6 @@ namespace UiaAtkBridgeTest
 				else
 					uiaList = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listBox, true, true));
 				accessible = uiaList;
-				component = uiaList;
-				selection = uiaList;
 				break;
 			}
 			case BasicWidgetType.ComboBox:
@@ -125,9 +133,6 @@ namespace UiaAtkBridgeTest
 				else
 					uiaComb = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (comboBox, true, true));
 				accessible = uiaComb;
-				component = uiaComb;
-				selection = uiaComb;
-				action = uiaComb;
 				break;
 				
 			case BasicWidgetType.ParentMenu:
@@ -153,8 +158,6 @@ namespace UiaAtkBridgeTest
 				//FIXME: change call to ctor to send the provider
 				UiaAtkBridge.ParentMenu uiaPMenu = new UiaAtkBridge.ParentMenu (submenus);
 				accessible = uiaPMenu;
-				component = uiaPMenu;
-				selection = uiaPMenu;
 				//FIXME: uncomment this after committing full ParentMenu class
 				//action = uiaPMenu;
 
@@ -163,18 +166,8 @@ namespace UiaAtkBridgeTest
 				throw new NotImplementedException ("This AtkTester overload doesn't handle this type of widget: " +
 					type.ToString ());
 			}
-			
-			if (typeof (I) == typeof (Atk.Component)) {
-				return new Atk.ComponentAdapter (component);
-			}
-			else if (typeof (I) == typeof (Atk.Action)) {
-				return new Atk.ActionAdapter (action);
-			}
-			else if (typeof (I) == typeof (Atk.Selection)) {
-				return new Atk.SelectionAdapter (selection);
-			}
-			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
-				typeof(I).Name);
+
+			return CastToAtkInterface<I> (accessible);
 		}
 		
 
@@ -263,12 +256,6 @@ namespace UiaAtkBridgeTest
 		private object GetAtkObjectThatImplementsInterface <I> (
 			BasicWidgetType type, string name, out Atk.Object accessible, bool real, bool embeddedImage)
 		{
-			Atk.ComponentImplementor component = null;
-			Atk.TextImplementor text = null;
-			Atk.ActionImplementor action = null;
-			Atk.TableImplementor table = null;
-			Atk.ValueImplementor value = null;
-			Atk.ImageImplementor image = null;
 			accessible = null;
 
 			string[] names = null;
@@ -287,8 +274,6 @@ namespace UiaAtkBridgeTest
 				else
 					uiaLab = new UiaAtkBridge.TextLabel (ProviderFactory.GetProvider (lab, true, true));
 				accessible = uiaLab;
-				text = uiaLab;
-				component = uiaLab;
 				break;
 			case BasicWidgetType.NormalButton:
 				SWF.Button but = new SWF.Button ();
@@ -308,10 +293,6 @@ namespace UiaAtkBridgeTest
 				else
 					throw new NotSupportedException ("We don't support unreal anymore in tests");
 				accessible = uiaBut;
-				text = uiaBut;
-				component = uiaBut;
-				action = uiaBut;
-				image = uiaBut;
 				break;
 			case BasicWidgetType.Window:
 				SWF.Form frm = new SWF.Form ();
@@ -326,7 +307,6 @@ namespace UiaAtkBridgeTest
 				else
 					uiaWin = new UiaAtkBridge.Window (ProviderFactory.GetProvider (frm, true, true));
 				accessible = uiaWin;
-				component = uiaWin;
 				break;
 			case BasicWidgetType.CheckBox:
 				SWF.CheckBox chk = new SWF.CheckBox ();
@@ -343,9 +323,6 @@ namespace UiaAtkBridgeTest
 				else
 					uiaChk = new UiaAtkBridge.CheckBoxButton (ProviderFactory.GetProvider (chk, true, true));
 				accessible = uiaChk;
-				component = uiaChk;
-				action = uiaChk;
-				text = uiaChk;
 				break;
 			case BasicWidgetType.RadioButton:
 				// the way to group radioButtons is dependent on their parent control
@@ -358,8 +335,6 @@ namespace UiaAtkBridgeTest
 				else
 					uiaRad = new UiaAtkBridge.RadioButton (prov);
 				accessible = uiaRad;
-				component = uiaRad;
-				action = uiaRad;
 				
 				break;
 			case BasicWidgetType.StatusBar:
@@ -375,8 +350,6 @@ namespace UiaAtkBridgeTest
 				else
 					uiaSb = new UiaAtkBridge.StatusBar (ProviderFactory.GetProvider (sb, true, true));
 				accessible = uiaSb;
-				component = uiaSb;
-				text = uiaSb;
 				break;
 
 			case BasicWidgetType.HScrollBar:
@@ -393,8 +366,6 @@ namespace UiaAtkBridgeTest
 				}
 				if (accessible.Role != Atk.Role.ScrollBar)
 					return null;
-				component = (Atk.ComponentImplementor) accessible;
-				value = (Atk.ValueImplementor) accessible;
 				break;
 
 			case BasicWidgetType.VScrollBar:
@@ -413,8 +384,6 @@ namespace UiaAtkBridgeTest
 				}
 				if (accessible.Role != Atk.Role.ScrollBar)
 					return null;
-				component = (Atk.ComponentImplementor) accessible;
-				value = (Atk.ValueImplementor) accessible;
 				break;
 
 			case BasicWidgetType.ProgressBar:
@@ -429,9 +398,6 @@ namespace UiaAtkBridgeTest
 				else
 					uiaPb = new UiaAtkBridge.ProgressBar (ProviderFactory.GetProvider (pb, true, true));
 				accessible = uiaPb;
-				component = uiaPb;
-				text = uiaPb;
-				value = uiaPb;
 				break;
 
 			case BasicWidgetType.Spinner:
@@ -449,9 +415,6 @@ namespace UiaAtkBridgeTest
 				else
 					uiaSp = new UiaAtkBridge.Spinner (ProviderFactory.GetProvider (nud, true, true));
 				accessible = uiaSp;
-				component = uiaSp;
-				text = uiaSp;
-				value = uiaSp;
 				break;
 
 //			case BasicWidgetType.TextBoxEntry:
@@ -475,26 +438,7 @@ namespace UiaAtkBridgeTest
 					type.ToString ());
 			}
 
-			if (typeof (I) == typeof (Atk.Text)) {
-				return new Atk.TextAdapter (text);
-			}
-			else if (typeof (I) == typeof (Atk.Component)) {
-				return new Atk.ComponentAdapter (component);
-			}
-			else if (typeof (I) == typeof (Atk.Action)) {
-				return new Atk.ActionAdapter (action);
-			}
-			else if (typeof (I) == typeof (Atk.Table)) {
-				return new Atk.TableAdapter (table);
-			}
-			else if (typeof (I) == typeof (Atk.Value)) {
-				return new Atk.ValueAdapter (value);
-			}
-			else if (typeof (I) == typeof (Atk.Image)) {
-				return new Atk.ImageAdapter (image);
-			}
-			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
-				typeof(I).Name);
+			return CastToAtkInterface<I> (accessible);
 		}
 		
 		private int lastClickedLink = -1;
