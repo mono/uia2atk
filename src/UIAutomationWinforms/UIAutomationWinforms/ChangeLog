@@ -1,5 +1,9 @@
 2008-10-08  Brad Taylor  <brad@getcoded.net>
 	
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Implement TextUnit.Format.
+
+2008-10-08  Brad Taylor  <brad@getcoded.net>
+	
 	* Mono.UIAutomation.Winforms/TextNormalizer.cs:
 	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Fix
 	  CharacterMoveStartEndPoint and add support for Page and Document

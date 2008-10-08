@@ -195,20 +195,13 @@ namespace Mono.UIAutomation.Winforms
 		public int MoveEndpointByUnit (TextPatternRangeEndpoint endpoint, 
 		                               TextUnit unit, int count)
 		{
-			/* XXX: Needs investigation  --Brad
-			//Same MS behavior
-			if (this == TextProvider.DocumentRange)
-				return 0;
-			*/
-			
+			// NOTE: The order of these cases is crucial
 			switch (unit) {
 			case TextUnit.Character:
 				if (endpoint == TextPatternRangeEndpoint.Start)
 					return normalizer.CharacterMoveStartPoint (count);
 				else
 					return normalizer.CharacterMoveEndPoint (count);
-			case TextUnit.Format:
-				throw new NotImplementedException ();
 			case TextUnit.Word:
 				if (endpoint == TextPatternRangeEndpoint.Start)
 					return normalizer.WordMoveStartPoint (count);
@@ -224,6 +217,10 @@ namespace Mono.UIAutomation.Winforms
 					return normalizer.ParagraphMoveStartPoint (count);
 				else
 					return normalizer.ParagraphMoveEndPoint (count);
+			// LAMESPEC: this should fall back on TextUnit.Word
+			// according to MSDN, but for TextBox, this resembles
+			// TextUnit.Page.
+			case TextUnit.Format:
 			// Document and Page appear to behave similarly
 			case TextUnit.Page:
 			case TextUnit.Document:
