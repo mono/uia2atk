@@ -1,3 +1,7 @@
+2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Button.cs: Fix the image+button impl+tests.
+
 2008-10-08  Mike Gorse <mgorse@novell.com>
 
 	* Hyperlink.cs: Remove debug spew.

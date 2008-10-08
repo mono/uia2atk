@@ -1,5 +1,9 @@
 2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Fix the image+button impl+tests.
+
+2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs:
 	* AtkTester.cs:
 	* BridgeTester.cs: Add Atk.Image unit tests.

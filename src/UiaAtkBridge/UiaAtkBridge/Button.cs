@@ -356,7 +356,8 @@ namespace UiaAtkBridge
 			get {
 				if (hasImage == null) {
 					//type only available in our Provider implementation
-					embeddedImage = Provider as Mono.UIAutomation.Bridge.IEmbeddedImage;
+					embeddedImage = invokeProvider as Mono.UIAutomation.Bridge.IEmbeddedImage;
+					
 					if (embeddedImage == null) {
 						Console.WriteLine ("WARNING: your provider implementation doesn't have unofficial IEmbeddedImage support");
 						hasImage = false;

@@ -296,8 +296,10 @@ namespace UiaAtkBridgeTest
 					but = but1;
 				but.Text = name;
 				string uiaQaPath = System.IO.Directory.GetCurrentDirectory ();
-				if (embeddedImage)
+				if (embeddedImage) {
 					but.Image = System.Drawing.Image.FromFile (uiaQaPath + "/../../../../../test/samples/opensuse60x38.gif");
+					but.AutoSize = true;
+				}
 				UiaAtkBridge.Button uiaBut;
 				if (real)
 #pragma warning disable 618
