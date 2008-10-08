@@ -101,6 +101,26 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		[Test]
 		public abstract void MsdnOrientationPropertyTest ();
 
+                [Test]
+                public virtual void MsdnIsOffscreenPropertyTest()
+                {
+                }
+
+                [Test]
+                public virtual void MsdnAcceleratorKeyPropertyTest()
+                {
+                }
+
+                [Test]
+                public virtual void MsdnAccessKeyPropertyTest()
+                {
+                }
+
+                [Test]
+                public virtual void MsdnIsPasswordPropertyTest()
+                {
+                }
+
 		#endregion Automation Properties Tests
 
 		#region Automation Patterns Tests
