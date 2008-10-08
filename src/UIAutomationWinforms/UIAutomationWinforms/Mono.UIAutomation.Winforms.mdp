@@ -87,6 +87,7 @@
     <File name="Mono.UIAutomation.Winforms.Events/LinkLabel/InvokePatternInvokedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/Button/InvokePatternInvokedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelValuePatternValueEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/TextBox/HasKeyBoardFocusPropertyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueIsReadOnlyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/Label/TextPatternTextChangedEvent.cs" subtype="Code" buildaction="Compile" />

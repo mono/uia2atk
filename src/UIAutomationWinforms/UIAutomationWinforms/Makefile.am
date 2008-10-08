@@ -50,6 +50,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/FontDialog/TransformProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/FontDialog/WindowProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Form/TransformProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Form/WindowProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/IProviderBehavior.cs \
@@ -126,6 +128,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternSmallChangeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountEvent.cs \
+	Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/HasKeyBoardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueIsReadOnlyEvent.cs \
@@ -143,6 +146,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ComboBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ErrorProvider.cs \
 	Mono.UIAutomation.Winforms/ErrorProviderListener.cs \
+	Mono.UIAutomation.Winforms/FontDialogProvider.cs \
 	Mono.UIAutomation.Winforms/FormListener.cs \
 	Mono.UIAutomation.Winforms/FormProvider.cs \
 	Mono.UIAutomation.Winforms/FragmentControlProvider.cs \

@@ -1,3 +1,12 @@
+2008-10-08  Neville Gao <nevillegao@gmail.com>
+
+	* Makefile.am, Mono.UIAutomation.Winforms.mdp:
+	  StatusBarPanelValue event added.
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelValueProviderBehavior.cs:
+	  Automation property event added.
+	* Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelValuePatternValueEvent.cs:
+	  File added.
+
 2008-10-07  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Implementation of

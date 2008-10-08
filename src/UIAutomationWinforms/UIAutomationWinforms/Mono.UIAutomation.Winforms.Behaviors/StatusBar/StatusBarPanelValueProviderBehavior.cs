@@ -27,6 +27,9 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.StatusBar;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 {
@@ -34,14 +37,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 	{
 		#region Constructor
 		
-		public StatusBarPanelValueProviderBehavior (FragmentControlProvider provider)
+		public StatusBarPanelValueProviderBehavior (StatusBarProvider.StatusBarPanelProvider provider)
 			: base (provider)
 		{
 		}
 		
 		#endregion
 		
-		#region IProvider Interface
+		#region IProviderBehavior Interface
 		
 		public override AutomationPattern ProviderPattern {
 			get { return ValuePatternIdentifiers.Pattern; }
@@ -49,10 +52,17 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 		
 		public override void Connect (Control control)
 		{
+			// NOTE: IsReadOnly Property never changes.
+			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
+			                   new StatusBarPanelValuePatternValueEvent (Provider));
 		}
 		
 		public override void Disconnect (Control control)
 		{
+			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
+			                   null);
 		}
 
 		public override object GetPropertyValue (int propertyId)
