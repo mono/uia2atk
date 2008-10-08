@@ -1,5 +1,9 @@
 2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Button.cs: Inverse!
+
+2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Button.cs: Prevent accerciser's crash.
 
 2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
