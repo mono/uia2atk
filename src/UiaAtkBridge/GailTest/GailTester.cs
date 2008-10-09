@@ -46,10 +46,43 @@ namespace UiaAtkBridgeTest
 			GLib.ExceptionManager.UnhandledException += new GLib.UnhandledExceptionHandler (HandleException);
 		}
 		
-		public static void HandleException (GLib.UnhandledExceptionArgs args){
+		static void HandleException (GLib.UnhandledExceptionArgs args){
 			args.ExitApplication = true;
 		}
 
+		public override object GetAtkObjectThatImplementsInterfaceAndEmbedsAnImage <I> (
+		  BasicWidgetType type, string text, out Atk.Object accessible, bool real)
+		{
+			return GetAtkObjectThatImplementsInterface <I> (type, text, out accessible, real, true);
+		}
+
+		public override I CastToAtkInterface <I> (Atk.Object accessible)
+		{
+			if (typeof (I) == typeof (Atk.Text)) {
+				return Atk.TextAdapter.GetObject (accessible.Handle, false) as I;
+			}
+			else if (typeof (I) == typeof (Atk.Component)) {
+				return Atk.ComponentAdapter.GetObject (accessible.Handle, false) as I;
+			}
+			else if (typeof (I) == typeof (Atk.Action)) {
+				return Atk.ActionAdapter.GetObject (accessible.Handle, false) as I;
+			}
+			else if (typeof (I) == typeof (Atk.EditableText)) {
+				return Atk.EditableTextAdapter.GetObject (accessible.Handle, false) as I;
+			}
+			else if (typeof (I) == typeof (Atk.Table)) {
+				return Atk.TableAdapter.GetObject (accessible.Handle, false) as I;
+			}
+			else if (typeof (I) == typeof (Atk.Selection)) {
+				return Atk.SelectionAdapter.GetObject (accessible.Handle, false) as I;
+			}
+			else if (typeof (I) == typeof (Atk.Value)) {
+				return Atk.ValueAdapter.GetObject (accessible.Handle, false) as I;
+			}
+			throw new NotImplementedException ("Couldn't cast to interface " +
+			  typeof (I).Name);
+		}
+		
 		public override object GetAtkObjectThatImplementsInterface <I> (
 		  BasicWidgetType type, string[] name, out Atk.Object accessible, bool real)
 		{
@@ -94,21 +127,18 @@ namespace UiaAtkBridgeTest
 			
 			accessible = widget.Accessible;
 			
-			if (typeof (I) == typeof (Atk.Component)) {
-				return Atk.ComponentAdapter.GetObject (widget.Accessible.Handle, false);
-			}
-			else if (typeof (I) == typeof (Atk.Action)) {
-				return Atk.ActionAdapter.GetObject (widget.Accessible.Handle, false);
-			}
-			else if (typeof (I) == typeof (Atk.Selection)) {
-				return Atk.SelectionAdapter.GetObject (widget.Accessible.Handle, false);
-			}
-			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
-				typeof(I).Name);
+			return CastToAtkInterface <I> (accessible);
 		}
-		
+
 		public override object GetAtkObjectThatImplementsInterface <I> (
 		  BasicWidgetType type, string text, out Atk.Object accessible, bool real)
+		{
+			return GetAtkObjectThatImplementsInterface <I> (type, text, out accessible, real, false);
+		}
+		
+		private object GetAtkObjectThatImplementsInterface <I> (
+		  BasicWidgetType type, string text, out Atk.Object accessible, bool real, bool embeddedImage)
+		  where I : class
 		{
 			accessible = null;
 			Gtk.Widget widget = null;
@@ -125,6 +155,8 @@ namespace UiaAtkBridgeTest
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealButton (guiThread);
 				((Gtk.Button)widget).Label = text;
+				if (embeddedImage)
+					throw new NotImplementedException ("Not yet implemented!");
 				break;
 			case BasicWidgetType.Window:
 				widget = new Gtk.Window (text);
@@ -189,26 +221,7 @@ namespace UiaAtkBridgeTest
 			
 			accessible = widget.Accessible;
 			
-			if (typeof (I) == typeof (Atk.Text)) {
-				return Atk.TextAdapter.GetObject (widget.Accessible.Handle, false);
-			}
-			else if (typeof (I) == typeof (Atk.Component)) {
-				return Atk.ComponentAdapter.GetObject (widget.Accessible.Handle, false);
-			}
-			else if (typeof (I) == typeof (Atk.Action)) {
-				return Atk.ActionAdapter.GetObject (widget.Accessible.Handle, false);
-			}
-			else if (typeof (I) == typeof (Atk.EditableText)) {
-				return Atk.EditableTextAdapter.GetObject (widget.Accessible.Handle, false);
-			}
-			else if (typeof (I) == typeof (Atk.Table)) {
-				return Atk.TableAdapter.GetObject (widget.Accessible.Handle, false);
-			}
-			else if (typeof (I) == typeof (Atk.Value)) {
-				return Atk.ValueAdapter.GetObject (widget.Accessible.Handle, false);
-			}
-			throw new NotImplementedException ("The interface finder backend still hasn't got support for " +
-				typeof(I).Name);
+			return CastToAtkInterface <I> (accessible);
 		}
 		
 		protected override int ValidNumberOfActionsForAButton { get { return 3; } }
