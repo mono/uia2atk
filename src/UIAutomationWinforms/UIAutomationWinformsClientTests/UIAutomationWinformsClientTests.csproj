@@ -58,14 +58,17 @@
     <Compile Include="ButtonTest.cs" />
     <Compile Include="CheckBoxTest.cs" />
     <Compile Include="CheckedListBoxListItem.cs" />
+    <Compile Include="ComboBoxTest.cs" />
     <Compile Include="LameSpecAttribute.cs" />
     <Compile Include="ListBoxListItem.cs" />
     <Compile Include="ListBoxTest.cs" />
     <Compile Include="ListViewTest.cs" />
     <Compile Include="NotListedAttribute.cs" />
     <Compile Include="ProgressBarTest.cs" />
+    <Compile Include="ScrollBarButtonTest.cs" />
     <Compile Include="ScrollBarTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScrollBarThumbTest.cs" />
     <Compile Include="StatusBarPanelTest.cs" />
     <Compile Include="StatusBarTest.cs" />
     <Compile Include="UISpyMissingAttribute.cs" />

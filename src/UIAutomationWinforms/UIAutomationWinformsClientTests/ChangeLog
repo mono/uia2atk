@@ -1,3 +1,10 @@
+2008-10-09  Mario Carrion <mcarrion@novell.com> 
+
+	* ButtonTest.cs: Beautyfying.
+	* ScrollBarThumbTest.cs, ScrollBarTest.cs, ComboBoxTest.cs: File added
+	* ScrollBarButtonTest.cs: Testing ScrollPattern
+	* UIAutomationWinformsClientTests.csproj: Added files.
+
 2008-10-08  Mario Carrion <mcarrion@novell.com> 
 
 	* BaseTest.cs: Testing IsKeyboardFocusable as true.

@@ -108,7 +108,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		}
 
 		[Test]
-		[NotListedAttribute]
+		[NotListed]
 		[Description ("Is not listed. We are using null as default value.")]
 		public override void MsdnOrientationPropertyTest ()
 		{

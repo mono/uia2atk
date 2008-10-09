@@ -31,16 +31,23 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms.Client
 {
-	//According to http://msdn.microsoft.com/en-us/library/ms743712.aspx
+	//According to http://msdn.microsoft.com/en-us/library/ms742539.aspx
 	[TestFixture]
-	[Description ("Tests SWF.ScrollBar (SWF.HScrollBar/SWF.VScrollBar) as ControlType.ScrollBar")]
-	public class ScrollBarTest : BaseTest
-    {
+	[Description ("Tests SWF.ScrollBar internal Thumb as ControlType.Thumb")]
+	public class ScrollBarThumbTest : ScrollBarTest
+	{
 		#region Properties
 
 		[Test]
+		[Ignore ("Not yet implemented")]
+		[Description ("Value: See notes. | Notes: Any point within the visible client area of the Thumb control. ")]
+		public override void MsdnClickablePointPropertyTest ()
+		{
+		}
+
+		[Test]
 		[Description ("Value: See notes. | Notes: If the control can receive keyboard focus, it must support "
-			+"this property.")]
+			+ "this property.")]
 		public override void MsdnIsKeyboardFocusablePropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
@@ -50,19 +57,19 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		}
 
 		[Test]
-		[Description ("Value: ScrollBar | Notes: This value is the same for all UI frameworks.")]
-		public override void MsdnControlTypePropertyTest () 
+		[Description ("Value: Thumb | Notes: This value is the same for all UI frameworks.")]
+		public override void MsdnControlTypePropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
-			Assert.AreEqual (ControlType.ScrollBar,
+			Assert.AreEqual (ControlType.Thumb,
 				child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty, true),
 				"ControlType");
 		}
 
 		[Test]
 		[LameSpec]
-		[Description ("Value: Null | The scroll bar control does not have content elements "
-			+"and the NameProperty is not required to be set.")]
+		[Description ("Value: Null | The Thumb control is not available in the Content View of the UI"
+			+"Automation tree so it odes not require a name. .")]
 		public override void MsdnNamePropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
@@ -72,19 +79,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		}
 
 		[Test]
-		[LameSpec]
-		[Description ("Value: Not a number | Notes: The scroll bar control does not have clickable points. ")]
-		public override void MsdnClickablePointPropertyTest ()
-		{
-			AutomationElement child = GetAutomationElement ();
-			Assert.AreEqual (double.NaN,
-				child.GetCurrentPropertyValue (AutomationElementIdentifiers.ClickablePointProperty, true),
-				"ClickablePointProperty");
-		}
-
-		[Test]
-		[LameSpec]
-		[Description ("Value: null | Notes: Scroll bars do not have labels. ")]
+		[Description ("Value: null | Notes: Thumb controls never have a label. . ")]
 		public override void MsdnLabeledByPropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
@@ -94,19 +89,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		}
 
 		[Test]
-		[Description (@"Value: ""scroll bar"" | Notes: Localized string that corresponds to the Button control type. ")]
+		[Description (@"Value: ""thumb"" | Notes: Localized string corresponding to the Thumb control type. ")]
 		public override void MsdnLocalizedControlTypePropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
-			Assert.AreEqual("scroll bar",
+			Assert.AreEqual ("thumb",
 					child.GetCurrentPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty, true),
 					"LocalizedControlTypeProperty");
 		}
 
 		[Test]
-		[Description ("Value: False | Notes: The scroll bar control is never a content element. "
-			+"If the scroll bar is a standalone control, then it must fulfill the Slider control type and return "
-			+"ControlType.Slider for the ControlType property.")]
+		[Description ("Value: False | Notes: The Thumb control is never content.")]
 		public override void MsdnIsContentElementPropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
@@ -116,7 +109,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		}
 
 		[Test]
-		[Description ("Value: True | Notes: The scroll bar must always be a control.")]
+		[Description ("Value: True | Notes: The Thumb control must always be a control.")]
 		public override void MsdnIsControlElementPropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
@@ -126,20 +119,20 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		}
 
 		[Test]
-		[LameSpec]
-		[Description ("Value: True | Notes: The scroll bar control must always expose its horizontal or vertical orientation. ")]
+		[NotListed]
+		[Description ("Is not listed. We are using null as default value.")]
 		public override void MsdnOrientationPropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
-			Assert.AreEqual (true,
+			Assert.AreEqual (null,
 				child.GetCurrentPropertyValue (AutomationElementIdentifiers.OrientationProperty, true),
 				"OrientationProperty");
 		}
 
 		[Test]
-		[NotListedAttribute]
+		[NotListed]
 		[Description ("Is not listed. We are using null as default value.")]
-		public override void MsdnHelpTextPropertyTest () 
+		public override void MsdnHelpTextPropertyTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
 			Assert.AreEqual (null,
@@ -153,8 +146,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 
 		[Test]
 		[LameSpec]
-		[Description ("Support/Value: Depends | This functionality is required to be supported only if the "
-			+"Scroll control pattern is not supported on the container that has the scroll bar.")]
+		[Description ("Support/Value: Depends | This functionality is required to be supported only if "
+			+"the Scroll control pattern is not supported on the container that has the scroll bar.")]
 		public override void MsdnRangeValuePatternTest ()
 		{
 			AutomationElement child = GetAutomationElement ();
@@ -165,16 +158,21 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 			if (SupportsPattern (child, RangeValuePatternIdentifiers.Pattern) == true
 				&& parentSupportsScrollPattern == true)
 				Assert.Fail ("RangeValuePattern NOT SUPPORTED when parent supports ScrollPattern");
+
+			AutomationElement element = GetAutomationElement ();
+			Assert.IsFalse (SupportsPattern (element, RangeValuePatternIdentifiers.Pattern),
+				string.Format ("RangeValuePattern SHOULD NOT be supported: {0} -> {1}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
 		[Test]
-		[Description ("Support/Value: Never | The Scroll control pattern is never directly supported "
-			+"on the scroll bar. ")]
-		public override void MsdnScrollPatternTest ()
+		[Description ("Support/Value: Depends | Controls that use a Thumb for moving or resizing should "
+			+"implement ITransformProvider.")]
+		public override void  MsdnTransformPatternTest()
 		{
 			AutomationElement element = GetAutomationElement ();
-			Assert.IsFalse (SupportsPattern (element, ScrollPatternIdentifiers.Pattern),
-				string.Format ("ScrollPattern SHOULD NOT be supported: {0} -> {1}",
+			Assert.IsFalse (SupportsPattern (element, TransformPatternIdentifiers.Pattern),
+				string.Format ("TransformPattern SHOULD NOT be supported: {0} -> {1}",
 				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName));
 		}
 
@@ -182,36 +180,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 
 		#region Protected Methods
 
-		protected override Control GetControl ()
-		{
-			return new HScrollBar ();
-		}
-
 		protected override AutomationElement GetAutomationElement ()
 		{
-			ListBox listbox = new ListBox ();
-			listbox.Items.AddRange (new object [] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 });
-			listbox.Size = new Size (100, 100);
-			listbox.Location = new Point (3, 3);
+			AutomationElement scrollBarElement = base.GetAutomationElement ();
+			AutomationElement thumbElement = null;
 
-			AutomationElement listboxElement = GetAutomationElementFromControl (listbox);
-			AutomationElement child = TreeWalker.RawViewWalker.GetFirstChild (listboxElement);
-			AutomationElement scrollBarChild = null;
-
-			Assert.IsNotNull (child, "ListBox should have children");
+			AutomationElement child = TreeWalker.RawViewWalker.GetFirstChild (scrollBarElement);
 			while (child != null) {
 				if (child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty, true)
-					== ControlType.ScrollBar)
-				{
-					scrollBarChild = child;
+					== ControlType.Thumb) {
+					thumbElement  = child;
 					break;
 				}
 				child = TreeWalker.RawViewWalker.GetNextSibling (child);
 			}
 
-			Assert.IsNotNull (scrollBarChild, "We should have ScrollBar element");
-
-			return scrollBarChild;
+			return thumbElement;
 		}
 
 		#endregion
