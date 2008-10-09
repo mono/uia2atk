@@ -74,12 +74,20 @@ namespace Mono.UIAutomation.Winforms
 
 		public int CharacterMoveEndPoint (int count) 
 		{
-			return CharacterMoveStartEndPoint (count, ref end_point);
+			int moved = CharacterMoveStartEndPoint (count, ref end_point);
+			if (end_point < start_point) {
+				start_point = end_point;
+			}
+			return moved;
 		}
 		
 		public int CharacterMoveStartPoint (int count)
 		{
-			return CharacterMoveStartEndPoint (count, ref start_point);
+			int moved = CharacterMoveStartEndPoint (count, ref start_point);
+			if (start_point > end_point) {
+				end_point = start_point;
+			}
+			return moved;
 		}
 		
 		//FIXME: ?
@@ -98,13 +106,14 @@ namespace Mono.UIAutomation.Winforms
 
 			if (proposed_point < 0) {
 				proposed_point = 0;
-				moved = point;
+				moved = point + 1;
 			} else if (proposed_point > length) {
 				proposed_point = length;
 				moved = length - point;
 			} else {
 				point = proposed_point;
-				return count;
+				moved = count;
+				count = 0;
 			}
 
 			point = proposed_point;
@@ -139,46 +148,52 @@ namespace Mono.UIAutomation.Winforms
 				end_point = textboxbase.Text.Length;
 				return;
 			} 
+			
+			int n_chars = 0;
+			string text = textboxbase.Text;
 
-			int startIndex = textboxbase.Text.LastIndexOf (Environment.NewLine, 
-								       start_point, 
-								       start_point);
-			int endIndex = textboxbase.Text.IndexOf (Environment.NewLine,
-								 end_point);
-			
-			bool startFound = false;
-			bool endFound = false;
-			
-			if (startIndex == -1) {
-				start_point = 0;
-				startFound = true;
-			} 
-			
-			if (endIndex == -1) {
-				end_point = textboxbase.Text.Length;
-				endFound = true;
-			}
-			
-			if (endFound == false || startFound == false) {
-				int length = 0;
-
-				startIndex++; //was found, so we need to increase Lines' index.
-
-				//TODO: Optimize?
-				for (int index = 0; index < textboxbase.Lines.Length; index++) {
-					if (length == startIndex && startFound == false) {
-						start_point = length;
-						startFound = true;
-					}
-					length += textboxbase.Lines [index].Length;
-					if (length == endIndex && endFound == false) {
-						end_point = length;
-						endFound = true;
-						break;
-					}
-					length++;
+			// First, fix up the start point
+			int new_start = 0;
+			for (int i = start_point; i >= 0; i--) {
+				if (BackwardPeekNewline (i, text, out n_chars)) {
+					new_start = i + 1;
+					break;
 				}
 			}
+
+			start_point = new_start;
+			
+			// if our range ends with a newline, don't do anything [Case 3]
+			if (end_point - 1 >= 0
+			    && BackwardPeekNewline (end_point - 1, text, out n_chars)) {
+				return;
+			}
+	
+			int new_end = -1;
+			// walk backward until you hit a newline, or the start_point
+			for (int i = end_point; i > start_point; i--) {
+				if (BackwardPeekNewline (i, text, out n_chars)) {
+					new_end = i + 1;
+					break;
+				}
+			}
+			
+			// if we found a newline, move on
+			if (new_end >= 0) {
+				end_point = new_end;
+				return;
+			}
+
+			// we hit the start, so look forward for a newline
+			new_end = text.Length;
+			for (int i = end_point; i < text.Length; i++) {
+				if (ForwardPeekNewline (i, text, out n_chars)) {
+					new_end = i + n_chars;
+					break;
+				}
+			}
+
+			end_point = new_end;
 		}
 
 		public int LineMoveEndPoint (int count)
@@ -450,8 +465,6 @@ namespace Mono.UIAutomation.Winforms
 
 			string text = textboxbase.Text;
 			if (IsWordSeparator (text[start_point])) {
-				//TODO: Evaluate perfomance
-				
 				// Walk backwards until you hit a non separator
 				for (index = start_point; index >= 0; index--) {
 					if (!IsWordSeparator (text[index])) {
@@ -475,8 +488,6 @@ namespace Mono.UIAutomation.Winforms
 
 			index = -1;
 			if (end_point > 0 && IsWordSeparator (text[end_point - 1])) {
-				//TODO: Evaluate perfomance
-				
 				// Extend the range to consume all spaces until the next character
 				for (index = end_point - 1; index < text.Length; index++) {
 					if (!IsWordSeparator (text[index])) {
@@ -570,6 +581,7 @@ namespace Mono.UIAutomation.Winforms
 
 #endregion
 		
+		// TODO: test this
 		public TextNormalizerPoints Move (TextUnit unit, int count) 
 		{
 			if (count == 0)
@@ -590,11 +602,18 @@ namespace Mono.UIAutomation.Winforms
 					moved = WordMoveEndPoint (count);
 					start_point = end_point;
 				} else {
-					moved = WordMoveEndPoint (count);
+					moved = WordMoveStartPoint (count);
 					end_point = start_point;
 				}
 			} else if (unit == TextUnit.Line) {
 				LineNormalize ();
+				if (count > 0) {
+					moved = LineMoveEndPoint (count);
+					start_point = end_point;
+				} else {
+					moved = LineMoveStartPoint (count);
+					end_point = start_point;
+				}
 				//TODO: Add missing logic
 			}
 			

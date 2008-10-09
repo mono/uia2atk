@@ -1,3 +1,9 @@
+2008-10-09  Brad Taylor  <brad@getcoded.net>
+	
+	* Mono.UIAutomation.Winforms/TextNormalizer.cs: Rewrite LineNormalize
+	  based upon tests from Windows.  Fix up Character functions to fix
+	  error uncovered from LineNormalize tests.
+
 2008-10-09  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Updated to match
