@@ -7,6 +7,6 @@
 # only add finished tests that should execute successfully to this list
 
 tests_list = [
-  "picturebox_basic_ops.py",
+  "picturebox_smoke_test.py",
   "label_basic_ops.py"
 ]

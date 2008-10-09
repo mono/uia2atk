@@ -47,8 +47,10 @@ class PictureBoxSample(Form):
 
         # setup button
         self.button = Button()
-        self.button.Text = "Toggle"
+        self.button.Text = "openSUSE"
         self.button.Click += self.on_click
+        self.button.Image = Image.FromFile("%s/samples/opensuse60x38.gif" % uiaqa_path)
+        self.button.AutoSize = True
 
         # setup label
         self.label = Label()

@@ -1,3 +1,13 @@
+2008-10-09  Calen Chen <cachen@novell.com>
+
+	* harness/smoke_tests.py: use picturebox_smoke_test.ops instead 
+	pictruebox_basic_ops.py
+	* samples/picturebox.py: modify the window's size with different width 
+	and height, change the button's image to opensuse60x38.gif
+	* testers/picturebox_smoke_test.py: add picturebox test code to smoke 
+	test
+	* ChangeLog: delete line 20 (its uncorrect file commited in Oct 7)
+
 2008-10-08  Calen Chen <cachen@novell.com>
 
 	* testers/states.py: update statusbar's states tuple
@@ -10,8 +20,6 @@
 
 2008-10-07  Calen Chen <cachen@novell.com>
 
-	* samples/picturebox.py: modify the window's size with different width 
-	and height, change the button's image to opensuse60x38.gif
 	* testers/picturebox/pictureboxframe.py: delete statesCheck and 
 	actionsCheck, add assertIcon to check picturebox with images, add 
 	assertImageSize to check image implementation
