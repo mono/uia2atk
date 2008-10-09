@@ -215,6 +215,8 @@ namespace Mono.UIAutomation.Winforms
 					return GetNameFromOrientation ();
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 					return false;
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return false;				
 				else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Button.Id;
 				else

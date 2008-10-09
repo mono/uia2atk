@@ -208,7 +208,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			               "fourthButton.FirstChild with different Parent");
 			Assert.AreEqual (null,
 			                 fourthButton.Navigate (NavigateDirection.LastChild),
-			               "fourthButton.LastChild with different Parent");			
+			               "fourthButton.LastChild with different Parent");
+			
+			//Internal Button Basic Tests
+			
+			TestProperty (firstButton,
+			              AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.Button.Id);
+			
+			TestProperty (firstButton,
+			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+			              false);
+			
+			//LAMESPEC: The Button control must always be content.
+			TestProperty (firstButton,
+			              AutomationElementIdentifiers.IsContentElementProperty,
+			              false);
 		}
 
 		#endregion		

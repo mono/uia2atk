@@ -1,3 +1,8 @@
+2008-10-09  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Updated to match
+	  Vista tests.
+
 2008-10-08  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated files added.
