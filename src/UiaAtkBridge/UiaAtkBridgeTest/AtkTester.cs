@@ -390,16 +390,16 @@ namespace UiaAtkBridgeTest
 			int ia, ib, ca, cb;
 			implementor.GetImagePosition (out ia, out ib, Atk.CoordType.Screen);
 			component.GetPosition (out ca, out cb, Atk.CoordType.Screen);
-			Assert.IsTrue (ia > 0, "x of the image must be > 0");
-			Assert.IsTrue (ib > 0, "y of the image must be > 0");
-			Assert.IsTrue (ia > ca, "x of the image must be > x from the widget");
-			Assert.IsTrue (ib > cb, "y of the image must be > y from the widget");
+			Assert.IsTrue (ia > 0, "x of the image must be > 0; obtained " + ia);
+			Assert.IsTrue (ib > 0, "y of the image must be > 0; obtained " + ib);
+			Assert.IsTrue (ia > ca, "x of the image must be > x from the widget; obtained " + ia + "<" + ca);
+			Assert.IsTrue (ib > cb, "y of the image must be > y from the widget; obtained " + ia + "<" + cb);
 			implementor.GetImageSize (out ia, out ib);
 			component.GetSize (out ca, out cb);
-			Assert.IsTrue (ia > 0, "width of the image must be > 0");
-			Assert.IsTrue (ib > 0, "height of the image must be > 0");
-			Assert.IsTrue (ia < ca, "width of the image must be < width from the widget");
-			Assert.IsTrue (ib < cb, "height of the image must be < height from the widget");
+			Assert.IsTrue (ia > 0, "width of the image must be > 0; obtained " + ia);
+			Assert.IsTrue (ib > 0, "height of the image must be > 0; obtained " + ia);
+			Assert.IsTrue (ia < ca, "width of the image must be < width from the widget; obtained " + ia + ">" + ca);
+			Assert.IsTrue (ib < cb, "height of the image must be < height from the widget; obtained " + ia + ">" + ca);
 		}
 		
 		protected void PropertyRole (BasicWidgetType type, Atk.Object accessible)

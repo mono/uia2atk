@@ -1,5 +1,9 @@
 2008-10-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* GailTester.cs: Add Gtk.Image testing.
+
+2008-10-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* GailTester.cs: Fix build.
 
 2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>

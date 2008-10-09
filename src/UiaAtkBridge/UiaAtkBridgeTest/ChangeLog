@@ -1,3 +1,9 @@
+2008-10-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs: Be more verbose.
+
+	* BridgeTester.cs: Cosmetic.
+
 2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs:

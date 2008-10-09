@@ -61,7 +61,7 @@ namespace UiaAtkBridgeTest
 				return new Atk.ImageAdapter ((Atk.ImageImplementor)accessible) as I;
 			}
 			throw new NotImplementedException ("Couldn't cast to interface " +
-				typeof(I).Name);
+			  typeof (I).Name);
 		}
 		
 		public override object GetAtkObjectThatImplementsInterfaceAndEmbedsAnImage <I> (
@@ -439,7 +439,7 @@ namespace UiaAtkBridgeTest
 					type.ToString ());
 			}
 
-			return CastToAtkInterface<I> (accessible);
+			return CastToAtkInterface <I> (accessible);
 		}
 		
 		private int lastClickedLink = -1;

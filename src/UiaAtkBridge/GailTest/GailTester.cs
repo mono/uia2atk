@@ -46,7 +46,8 @@ namespace UiaAtkBridgeTest
 			GLib.ExceptionManager.UnhandledException += new GLib.UnhandledExceptionHandler (HandleException);
 		}
 		
-		static void HandleException (GLib.UnhandledExceptionArgs args){
+		static void HandleException (GLib.UnhandledExceptionArgs args)
+		{
 			args.ExitApplication = true;
 		}
 
@@ -58,17 +59,20 @@ namespace UiaAtkBridgeTest
 
 		public override I CastToAtkInterface <I> (Atk.Object accessible)
 		{
-			if (typeof (I) == typeof (Atk.Text)) {
+			if (typeof (I) == typeof (Atk.Action)) {
+				return Atk.ActionAdapter.GetObject (accessible.Handle, false) as I;
+			}
+			else if (typeof (I) == typeof (Atk.Text)) {
 				return Atk.TextAdapter.GetObject (accessible.Handle, false) as I;
 			}
 			else if (typeof (I) == typeof (Atk.Component)) {
 				return Atk.ComponentAdapter.GetObject (accessible.Handle, false) as I;
 			}
-			else if (typeof (I) == typeof (Atk.Action)) {
-				return Atk.ActionAdapter.GetObject (accessible.Handle, false) as I;
-			}
 			else if (typeof (I) == typeof (Atk.EditableText)) {
 				return Atk.EditableTextAdapter.GetObject (accessible.Handle, false) as I;
+			}
+			else if (typeof (I) == typeof (Atk.Image)) {
+				return Atk.ImageAdapter.GetObject (accessible.Handle, false) as I;
 			}
 			else if (typeof (I) == typeof (Atk.Table)) {
 				return Atk.TableAdapter.GetObject (accessible.Handle, false) as I;
@@ -155,8 +159,13 @@ namespace UiaAtkBridgeTest
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealButton (guiThread);
 				((Gtk.Button)widget).Label = text;
-				if (embeddedImage)
-					throw new NotImplementedException ("Not yet implemented!");
+				if (embeddedImage) {
+					string uiaQaPath = System.IO.Directory.GetCurrentDirectory ();
+					Gtk.Image img = new Gtk.Image ();
+					img.FromFile = uiaQaPath + "/../../../../../test/samples/opensuse60x38.gif";
+					img.Show ();
+					((Gtk.Button)widget).Image = img;
+				}
 				break;
 			case BasicWidgetType.Window:
 				widget = new Gtk.Window (text);
