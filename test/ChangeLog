@@ -1,3 +1,11 @@
+2008-10-09  Brian G. Merrell <bgmerrell@gmail.com>
+	
+	* harness/local_run.py: Run python with unbuffered output.  This fixes
+	logging issues when redirecting output.  We were having problems with
+	all Mono output being printed and then all Strongwind output getting
+	printed.  Additionally, when the Strongwind watchdog exited,
+	Strongwind's output was getting truncated and lost.
+
 2008-10-10  Calen Chen <cachen@novell.com>
 
 	* testers/states.py: update states tuple for list and listitem

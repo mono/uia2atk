@@ -138,7 +138,7 @@ class Test(object):
     output("INFO:  Executing tests...")
     status = 0
     for test in found_tests:
-      t = s.Popen(test)
+      t = s.Popen(["python", "-u", test])
       i = 0
       while t.poll() is None:
         time.sleep(1)
