@@ -51,10 +51,9 @@ namespace UiaAtkBridgeTest
 			args.ExitApplication = true;
 		}
 
-		public override object GetAtkObjectThatImplementsInterfaceAndEmbedsAnImage <I> (
-		  BasicWidgetType type, string text, out Atk.Object accessible, bool real)
+		public override Atk.Object GetAccessible (BasicWidgetType type, string text, bool real)
 		{
-			return GetAtkObjectThatImplementsInterface <I> (type, text, out accessible, real, true);
+			return GetAccessible (type, text, real, true);
 		}
 
 		public override I CastToAtkInterface <I> (Atk.Object accessible)
@@ -87,10 +86,9 @@ namespace UiaAtkBridgeTest
 			  typeof (I).Name);
 		}
 		
-		public override object GetAtkObjectThatImplementsInterface <I> (
-		  BasicWidgetType type, string[] name, out Atk.Object accessible, bool real)
+		public override Atk.Object GetAccessible (BasicWidgetType type, string[] name, bool real)
 		{
-			accessible = null;
+			Atk.Object accessible = null;
 			if ((type != BasicWidgetType.ComboBox) && (type != BasicWidgetType.ParentMenu)) {
 				throw new NotSupportedException ("This AtkTester overload doesn't handle this type of widget: " +
 					type.ToString ());
@@ -131,20 +129,18 @@ namespace UiaAtkBridgeTest
 			
 			accessible = widget.Accessible;
 			
-			return CastToAtkInterface <I> (accessible);
+			return accessible;
 		}
 
-		public override object GetAtkObjectThatImplementsInterface <I> (
-		  BasicWidgetType type, string text, out Atk.Object accessible, bool real)
+		public override Atk.Object GetAccessibleThatEmbedsAnImage (
+		  BasicWidgetType type, string text, bool real)
 		{
-			return GetAtkObjectThatImplementsInterface <I> (type, text, out accessible, real, false);
+			return GetAccessible (type, text, real, false);
 		}
 		
-		private object GetAtkObjectThatImplementsInterface <I> (
-		  BasicWidgetType type, string text, out Atk.Object accessible, bool real, bool embeddedImage)
-		  where I : class
+		private Atk.Object GetAccessible (BasicWidgetType type, string text, bool real, bool embeddedImage)
 		{
-			accessible = null;
+			Atk.Object accessible = null;
 			Gtk.Widget widget = null;
 			Gtk.Adjustment adj = new Gtk.Adjustment (50, 0, 100, 1, 10, 20);
 			switch (type) {
@@ -230,7 +226,7 @@ namespace UiaAtkBridgeTest
 			
 			accessible = widget.Accessible;
 			
-			return CastToAtkInterface <I> (accessible);
+			return accessible;
 		}
 		
 		protected override int ValidNumberOfActionsForAButton { get { return 3; } }

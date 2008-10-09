@@ -1,6 +1,13 @@
+2008-10-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	
+
+
+
 2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Button.cs: Inverse!
+	* EditableTextBoxEntr: add stubs.
 
 2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 

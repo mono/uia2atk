@@ -34,17 +34,14 @@ namespace UiaAtkBridgeTest
 	
 	public abstract class AtkTester {
 		
-		public abstract object GetAtkObjectThatImplementsInterface <I> (
-		  BasicWidgetType type, string name, out Atk.Object accessible, bool real)
-		  where I : class;
+		public abstract Atk.Object GetAccessible (
+		  BasicWidgetType type, string name, bool real);
 		
-		public abstract object GetAtkObjectThatImplementsInterface <I> (
-		  BasicWidgetType type, string[] name, out Atk.Object accessible, bool real)
-		  where I : class;
+		public abstract Atk.Object GetAccessible (
+		  BasicWidgetType type, string[] name, bool real);
 
-		public abstract object GetAtkObjectThatImplementsInterfaceAndEmbedsAnImage <I> (
-		  BasicWidgetType type, string name, out Atk.Object accessible, bool real)
-		  where I : class;
+		public abstract Atk.Object GetAccessibleThatEmbedsAnImage (
+		  BasicWidgetType type, string name, bool real);
 
 		public abstract I CastToAtkInterface <I> (Atk.Object accessible) where I : class;
 		
@@ -463,8 +460,8 @@ namespace UiaAtkBridgeTest
 			bool real = true;
 			
 			Atk.Object accessible;
-			atkText = (Atk.Text)
-				GetAtkObjectThatImplementsInterface <Atk.Text> (type, name, out accessible, real);
+			accessible = GetAccessible (type, name, real);
+			atkText = CastToAtkInterface <Atk.Text> (accessible);
 			
 			int nSelections = -1;
 			if ((type == BasicWidgetType.Label) || (type == BasicWidgetType.TextBoxEntry))
@@ -796,8 +793,8 @@ namespace UiaAtkBridgeTest
 			
 			name = "Tell me; here a sentence\r\nwith EOL but without dot, and other phrase... Heh!";
 
-			atkText = (Atk.Text)
-				GetAtkObjectThatImplementsInterface <Atk.Text> (type, name, out accessible, real);
+			accessible = GetAccessible (type, name, real);
+			atkText = CastToAtkInterface <Atk.Text> (accessible);
 			Assert.AreEqual (name, atkText.GetText(0, name.Length), "GetText#2");
 			
 			expected = "\r\nwith EOL but without dot, and other phrase...";
@@ -1002,10 +999,9 @@ namespace UiaAtkBridgeTest
 		{
 			bool real = true;
 			
-			Atk.Object accessible;
-			Atk.Text atkText;
-			atkText = (Atk.Text)
-				GetAtkObjectThatImplementsInterface <Atk.Text> (type, simpleTestText, out accessible, real);
+			Atk.Object accessible = GetAccessible (type, simpleTestText, real);
+			Atk.Text atkText = CastToAtkInterface <Atk.Text> (accessible);
+
 			InterfaceTextSingleLine (type, atkText);
 
 			return accessible;

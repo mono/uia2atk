@@ -1,5 +1,11 @@
 2008-10-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs:
+	* AtkTester.cs:
+	* BridgeTester.cs: *HUGE* simplication.
+
+2008-10-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs: Be more verbose.
 
 	* BridgeTester.cs: Cosmetic.

@@ -56,19 +56,9 @@ namespace UiaAtkBridgeTest
 		{
 			BasicWidgetType type = BasicWidgetType.NormalButton;
 			Atk.Object accessible;
-			
-			InterfaceText (type);
-			
-			string name = "test";
-			
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
-			InterfaceComponent (type, atkComponent);
 
-			Atk.Image atkImage = (Atk.Image)
-				GetAtkObjectThatImplementsInterfaceAndEmbedsAnImage <Atk.Image> (type, name, out accessible, true);
-			atkComponent = (Atk.Component)CastToAtkInterface<Atk.Component> (accessible);
-			InterfaceImage (type, atkImage, atkComponent);
+			string name = "test";
+			accessible = GetAccessible (type, name, true);
 			
 			Atk.StateSet stateSet = accessible.RefStateSet();
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Enabled), "Button Enabled");
@@ -77,9 +67,13 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Showing), "Button Showing");
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Visible), "Button Visible");
 			
-			name = "test";
-			Atk.Action atkAction = (Atk.Action)
-				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
+			InterfaceText (type);
+			
+
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 			
 			PropertyRole (type, accessible);
@@ -87,6 +81,12 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "Button numChildren");
 
 			Parent (type, accessible);
+
+			//test with an image
+			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
+			Atk.Image atkImage = CastToAtkInterface <Atk.Image> (accessible);
+			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+			InterfaceImage (type, atkImage, atkComponent);
 		}
 
 		[Test]
@@ -100,8 +100,8 @@ namespace UiaAtkBridgeTest
 			InterfaceText (type);
 			
 			string name = "test";
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			accessible = GetAccessible (type, name, true);
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
 
 			Atk.StateSet stateSet = accessible.RefStateSet ();
@@ -111,10 +111,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Showing), "Checkbox Showing");
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Visible), "Checkbox Visible");
 			
-			name = "test";
-			Atk.Action atkAction = (Atk.Action)
-				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
-			
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 			
 			PropertyRole (type, accessible);
@@ -138,31 +135,11 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible, accessible2, accessible3;
 			
 			string name = "test 01";
-			Atk.Action atkAction = (Atk.Action)
-				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
+			accessible = GetAccessible (type, name, true);
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
-			
-			name = "test 02";
-			Atk.Action atkAction2 = (Atk.Action)
-				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible2, true);
-			//the third radio button is disconnected from the previous ones
-			name = "test 03";
-			Atk.Action atkAction3 = (Atk.Action)
-				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible3, true);
 
-
-			InterfaceActionFor3RadioButtons (atkAction, accessible,
-			                                 atkAction2, accessible2,
-			                                 atkAction3, accessible3);
-
-			
-			Parent (type, accessible);
-			Parent (type, accessible2);
-			Parent (type, accessible3);
-
-			name = "test 04";
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
 			
 			PropertyRole (type, accessible);
@@ -170,6 +147,24 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "RadioButton numChildren");
 
 			Parent (type, accessible);
+			
+			//more than one radiobutton
+			name = "test 02";
+			accessible2 = GetAccessible (type, name, true);
+			Atk.Action atkAction2 = CastToAtkInterface <Atk.Action> (accessible2);
+
+			//the third radio button is disconnected from the previous ones
+			name = "test 03";
+			accessible3 = GetAccessible (type, name, true);
+			Atk.Action atkAction3 = CastToAtkInterface <Atk.Action> (accessible3);
+
+			InterfaceActionFor3RadioButtons (atkAction, accessible,
+			                                 atkAction2, accessible2,
+			                                 atkAction3, accessible3);
+
+			Parent (type, accessible);
+			Parent (type, accessible2);
+			Parent (type, accessible3);
 		}
 		
 		[Test]
@@ -184,12 +179,12 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (ValidNChildrenForASimpleStatusBar, accessible.NAccessibleChildren, "StatusBar numChildren");
 
 			string name = "test";
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			accessible = GetAccessible (type, name, true);
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
 			int x, y, width, height;
 			atkComponent.GetExtents (out x, out y, out width, out height, Atk.CoordType.Screen);
-			Assert.IsTrue (width > 0 && height > 0);
+			Assert.IsTrue (width > 0 && height > 0, "width and height must be > 0");
 
 			Parent (type, accessible);
 		}
@@ -201,8 +196,8 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible;
 			string name = "test";
 
-			Atk.Value atkValue = (Atk.Value)
-				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
+			accessible = GetAccessible (type, name, true);
+			Atk.Value atkValue = CastToAtkInterface <Atk.Value> (accessible);
 			
 			InterfaceValue (type, atkValue);
 
@@ -213,8 +208,8 @@ namespace UiaAtkBridgeTest
 
 			Assert.AreEqual (ValidNChildrenForAScrollBar, accessible.NAccessibleChildren, "HScrollBar numChildren");
 
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+
 			InterfaceComponent (type, atkComponent);
 		}
 		
@@ -225,8 +220,9 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible;
 			string name = "test";
 
-			Atk.Value atkValue = (Atk.Value)
-				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
+			accessible = GetAccessible (type, name, true);
+			
+			Atk.Value atkValue = CastToAtkInterface <Atk.Value> (accessible);
 			
 			InterfaceValue (type, atkValue);
 
@@ -237,8 +233,8 @@ namespace UiaAtkBridgeTest
 
 			Assert.AreEqual (ValidNChildrenForAScrollBar, accessible.NAccessibleChildren, "VScrollBar numChildren");
 
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+
 			InterfaceComponent (type, atkComponent);
 		}
 		
@@ -249,16 +245,16 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible;
 			string name = "test";
 
-			Atk.Value atkValue = (Atk.Value)
-				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
+			accessible = GetAccessible (type, name, true);
+			Atk.Value atkValue = CastToAtkInterface <Atk.Value> (accessible);
+			
 			InterfaceValue (type, atkValue);
 
 			PropertyRole (type, accessible);
 
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "ProgressBar numChildren");
 
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
 
 			Parent (type, accessible);
@@ -271,10 +267,10 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible;
 			string name = "test";
 
-			Atk.Value atkValue = (Atk.Value)
-				GetAtkObjectThatImplementsInterface <Atk.Value> (type, name, out accessible, true);
-			Atk.Text atkText = (Atk.Text)
-				GetAtkObjectThatImplementsInterface <Atk.Text> (type, name, out accessible, true);
+			accessible = GetAccessible (type, name, true);
+			Atk.Value atkValue = CastToAtkInterface <Atk.Value> (accessible);
+			Atk.Text atkText = CastToAtkInterface <Atk.Text> (accessible);
+
 			InterfaceValue (type, atkValue, atkText);
 
 			InterfaceValue (type, atkValue);
@@ -283,8 +279,8 @@ namespace UiaAtkBridgeTest
 
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "Spinner numChildren");
 
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			
 			InterfaceComponent (type, atkComponent);
 		}
 		
@@ -295,13 +291,15 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible = InterfaceText (type);
 			
 			string name = "Edit test#1";
-			Atk.Action atkAction = (Atk.Action)
-				GetAtkObjectThatImplementsInterface <Atk.Action> (type, name, out accessible, true);
+			accessible = GetAccessible (type, name, true);
+			
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 			
 			name = "Edit test#2";
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			accessible = GetAccessible (type, name, true);
+			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+
 			InterfaceComponent (type, atkComponent);
 			
 			PropertyRole (type, accessible);
@@ -325,15 +323,14 @@ namespace UiaAtkBridgeTest
 			
 			string menuName = "File!";
 			string[] names = new string[] { menuName, "New", "Quit" };
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, true);
+			accessible = GetAccessible (type, names, true);
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			
 			Assert.AreEqual (menuName, accessible.Name, "name of the menu is the same as its label");
 			
 			InterfaceComponent (type, atkComponent);
 			
-			Atk.Selection atkSelection = (Atk.Selection)
-				GetAtkObjectThatImplementsInterface <Atk.Selection> (type, names, out accessible, true);
+			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 
 			InterfaceSelection (atkSelection, names, accessible, type);
 			
@@ -341,8 +338,7 @@ namespace UiaAtkBridgeTest
 			
 			PropertyRole (type, accessible);
 			
-			Atk.Action atkAction = (Atk.Action)
-				GetAtkObjectThatImplementsInterface <Atk.Action> (type, names, out accessible, true);
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			
 			InterfaceAction (type, atkAction, accessible);
 			
@@ -371,19 +367,17 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible;
 			
 			string[] names = new string[] { "First item", "Second Item", "Last Item" };
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, true);
+			accessible = GetAccessible (type, names, true);
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 
 			InterfaceComponent (type, atkComponent);
 			
 			PropertyRole (type, accessible);
 			
-			Atk.Action atkAction = (Atk.Action)
-				GetAtkObjectThatImplementsInterface <Atk.Action> (type, names, out accessible, true);
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 			
-			Atk.Selection atkSelection = (Atk.Selection)
-				GetAtkObjectThatImplementsInterface <Atk.Selection> (type, names, out accessible, true);
+			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			InterfaceSelection (atkSelection, names, accessible, type);
 			
 			Assert.AreEqual (1, accessible.NAccessibleChildren, "ComboBox#RO numChildren");
@@ -408,12 +402,15 @@ namespace UiaAtkBridgeTest
 		public void Window () { RunInGuiThread (RealWindow); }
 		public void RealWindow ()
 		{
+			Console.WriteLine ("RealWindow");
 			BasicWidgetType type = BasicWidgetType.Window;
 			Atk.Object accessible;
 			
 			string name = "test";
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, name, out accessible, true);
+			accessible = GetAccessible (type, name, true);
+			
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+
 			InterfaceComponent (type, atkComponent);
 			
 			PropertyRole (type, accessible);

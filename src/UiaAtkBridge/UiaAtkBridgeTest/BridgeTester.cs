@@ -61,19 +61,19 @@ namespace UiaAtkBridgeTest
 				return new Atk.ImageAdapter ((Atk.ImageImplementor)accessible) as I;
 			}
 			throw new NotImplementedException ("Couldn't cast to interface " +
-			  typeof (I).Name);
+			typeof (I).Name);
 		}
 		
-		public override object GetAtkObjectThatImplementsInterfaceAndEmbedsAnImage <I> (
-			BasicWidgetType type, string name, out Atk.Object accessible, bool real)
+		public override Atk.Object GetAccessibleThatEmbedsAnImage (
+			BasicWidgetType type, string name, bool real)
 		{
-			return GetAtkObjectThatImplementsInterface <I> (type, name, out accessible, real, true);
+			return GetAccessible (type, name, real, true);
 		}
 
-		public override object GetAtkObjectThatImplementsInterface <I> (
-		  BasicWidgetType type, string[] names, out Atk.Object accessible, bool real)
+		public override Atk.Object GetAccessible (
+		  BasicWidgetType type, string[] names, bool real)
 		{
-			accessible = null;
+			Atk.Object accessible = null;
 			
 			switch (type) {
 			case BasicWidgetType.ListBox:
@@ -167,14 +167,13 @@ namespace UiaAtkBridgeTest
 					type.ToString ());
 			}
 
-			return CastToAtkInterface<I> (accessible);
+			return accessible;
 		}
 		
 
-		public override object GetAtkObjectThatImplementsInterface <I> (
-		  BasicWidgetType type, string name, out Atk.Object accessible, bool real)
+		public override Atk.Object GetAccessible (BasicWidgetType type, string name, bool real)
 		{
-			return GetAtkObjectThatImplementsInterface <I> (type, name, out accessible, real, false);
+			return GetAccessible (type, name, real, false);
 		}
 
 				
@@ -253,11 +252,10 @@ namespace UiaAtkBridgeTest
 		}
 		
 
-		private object GetAtkObjectThatImplementsInterface <I> (
-			BasicWidgetType type, string name, out Atk.Object accessible, bool real, bool embeddedImage)
-			where I : class
+		private Atk.Object GetAccessible (
+			BasicWidgetType type, string name, bool real, bool embeddedImage)
 		{
-			accessible = null;
+			Atk.Object accessible = null;
 
 			string[] names = null;
 
@@ -355,7 +353,7 @@ namespace UiaAtkBridgeTest
 
 			case BasicWidgetType.HScrollBar:
 				names = new string[] { "First item", "Second Item", "Last Item", "A really, really long item that's here to try to ensure that we have a scrollbar, assuming that it's even possible to have a scrollbar just by having a relaly, really long item and we don't also have to perform some other function which I'm not aware of, like display the form on the screen" };
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, real);
+				accessible = GetAccessible (type, names, real);
 				for (int i = accessible.NAccessibleChildren - 1; i >= 0; i--)
 				{
 					Atk.Object child = accessible.RefAccessibleChild (i);
@@ -373,7 +371,7 @@ namespace UiaAtkBridgeTest
 				names = new string[100];
 				for (int i = 0; i < 100; i++)
 					names[i] = i.ToString();
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, real);
+				accessible = GetAccessible (type, names, real);
 				for (int i = accessible.NAccessibleChildren - 1; i >= 0; i--)
 				{
 					Atk.Object child = accessible.RefAccessibleChild (i);
@@ -439,7 +437,7 @@ namespace UiaAtkBridgeTest
 					type.ToString ());
 			}
 
-			return CastToAtkInterface <I> (accessible);
+			return accessible;
 		}
 		
 		private int lastClickedLink = -1;
@@ -465,8 +463,8 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible;
 			
 			string[] names = new string[] { simpleTestText, "Second Item", "Last Item" };
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, true);
+			accessible = GetAccessible (type, names, true);
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 
 			InterfaceComponent (type, atkComponent);
 			
@@ -508,8 +506,8 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible;
 			
 			string[] names = new string[] { simpleTestText, "Second Item", "Last Item" };
-			Atk.Component atkComponent = (Atk.Component)
-				GetAtkObjectThatImplementsInterface <Atk.Component> (type, names, out accessible, true);
+			accessible = GetAccessible (type, names, true);
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 
 			InterfaceComponent (type, atkComponent);
 			
