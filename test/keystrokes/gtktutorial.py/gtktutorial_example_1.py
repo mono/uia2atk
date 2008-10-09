@@ -12,7 +12,7 @@ sequence.append(KeyComboAction("KP_7"))
 sequence.append(utils.AssertPresentationAction(
     "Read label",
     ["BRAILLE LINE:  'You have not yet clicked a button $l'",
-     "     VISIBLE:  'You have not yet clicked a butto', cursor=1",
+     "     VISIBLE:  'You have not yet clicked a button', cursor=1",
      "SPEECH OUTPUT: 'You have not yet clicked a button'"]))
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("Tab"))

@@ -1,3 +1,8 @@
+2008-10-09  Ray Wang <rawang@novell.com>
+
+	* keystrokes/gtktutorial.py/gtktutorial_example_1.py: fix a typo
+	* keystrokes/checkbox/checkbox.py: add checkbox keystrokes for orca test
+
 2008-10-09  Calen Chen <cachen@novell.com>
 
 	* harness/smoke_tests.py: use picturebox_smoke_test.ops instead 
