@@ -19,6 +19,7 @@ import os
 
 from strongwind import *
 from checkedlistbox import *
+from helpers import *
 from sys import argv
 from os import path
 
@@ -42,37 +43,75 @@ if app is None:
 # just an alias to make things shorter
 clbFrame = app.checkedListBoxFrame
 
-#check CheckedListBox's actions list
-clbFrame.actionsCheck(clbFrame.listitem0)
+#check listitem's actions
+actionsCheck(clbFrame.listitem[0], "ListItem")
 
-#check CheckedListBox's states list
-clbFrame.statesCheck_box(clbFrame.listbox)
+#check list's states
+statesCheck(clbFrame.listbox1, "List")
+statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
+#use Tab key to move focus, then check list's states
+clbFrame.keyCombo("Tab")
+statesCheck(clbFrame.listbox1, "List", add_states=["focused"])
+statesCheck(clbFrame.listbox2, "List")
 
-#check listitem's states list
-clbFrame.statesCheck_item(clbFrame.listitem0)
+#check default states for ListItem which CheckOnClick is True
+statesCheck(clbFrame.listitem[0], "ListItem")
+#check default states for ListItem which CheckOnClick is False
+statesCheck(clbFrame.listitem[20], "ListItem")
 
-#click listitem to change the label
-clbFrame.click('0')
+#mouse click listitems to change label to show which items are checked or 
+#selected
+clbFrame.listitem[0].mouseClick()
 sleep(config.SHORT_DELAY)
-clbFrame.assertItemSelected('0')
+clbFrame.assertLabel(clbFrame.listitem[0], '0')
 
-clbFrame.click('5')
+clbFrame.listitem[5].mouseClick()
 sleep(config.SHORT_DELAY)
-clbFrame.assertItemSelected('0 5')
+clbFrame.assertLabel(clbFrame.listitem[5], '0 5')
 
-clbFrame.click('8')
+clbFrame.listitem[20].mouseClick()
 sleep(config.SHORT_DELAY)
-clbFrame.assertItemSelected('0 5 8')
+clbFrame.assertLabel(clbFrame.listitem[20], '20')
 
-#click listitem 1 to rise checked state
-clbFrame.click('1')
+clbFrame.listitem[30].mouseClick()
 sleep(config.SHORT_DELAY)
-clbFrame.assertChecked('1')
+clbFrame.assertLabel(clbFrame.listitem[30], '20 30')
 
-#click listitem 1 again checked state disappear
-clbFrame.click('1')
+#click listitem 1 to rise selected state
+clbFrame.click(clbFrame.listitem[1])
 sleep(config.SHORT_DELAY)
-clbFrame.assertUnchecked('1')
+statesCheck(clbFrame.listitem[1], "ListItem", add_states=["selected"])
+
+#click listitem 21 to rise selected state, because focus is moved to list2 so 
+#click action also would rise focused state for listitem
+clbFrame.click(clbFrame.listitem[21])
+sleep(config.SHORT_DELAY)
+statesCheck(clbFrame.listitem[21], "ListItem", add_states=["focused", "selected"])
+
+#toggle listitem 2 to rise checked state, toggle action wouldn't rise selected state
+clbFrame.toggle(clbFrame.listitem[2])
+sleep(config.SHORT_DELAY)
+statesCheck(clbFrame.listitem[2], "ListItem", add_states=["checked"])
+
+#toggle listitem 22 to rise checked state
+clbFrame.toggle(clbFrame.listitem[22])
+sleep(config.SHORT_DELAY)
+statesCheck(clbFrame.listitem[22], "ListItem", add_states=["checked"])
+
+#mouse click listitem 3 to checked and selected
+clbFrame.listitem[3].mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(clbFrame.listitem[3], "ListItem", add_states=["focused", "selected", "checked"])
+
+#mouse click listitem 25 to selected
+clbFrame.listitem[25].mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(clbFrame.listitem[25], "ListItem", add_states=["focused", "selected"])
+
+#mouse click listitem 25 again to checked
+clbFrame.listitem[25].mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(clbFrame.listitem[25], "ListItem", add_states=["focused", "selected", "checked"])
 
 #close application frame window
 clbFrame.quit()

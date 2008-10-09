@@ -33,6 +33,19 @@ class TreeView:
 class CheckBox(Button):
     pass
 
-class ListItem(Button):
+class ListItem(object):
+    CLICK = "click"
+    TOGGLE = "toggle"
+    ACTIVATE = "activate"
+
+    actions = (TOGGLE, CLICK, )
+
+class List(Button):
     pass
+
+class NumericUpDown(object):
+    PRESS = "press"
+    PAGE = "page"
+
+    actions = (PRESS, PAGE)
 

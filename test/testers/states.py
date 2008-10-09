@@ -104,7 +104,7 @@ SENSITIVE = "sensitive"
 SHOWING = "showing"
 
 # Indicates this (text) object can contain only a single line of text
-SINGLE_LINE = "single_line"
+SINGLE_LINE = "single line"
 
 # Indicates that the information returned for this object may no longer be
 # synchronized with the application state. This is implied if the object has
@@ -136,7 +136,7 @@ VISIBLE = "visible"
 # to listening clients, for instance notifications of visibility changes and
 # activation of their contained child objects, without the client having
 # previously requested references to those children.
-MANAGES_DESCENDANTS = "manages_descendants"
+MANAGES_DESCENDANTS = "manages descendants"
 
 # Indicates that a check box is in a state other than checked or not checked.
 # This usually means that the boolean value reflected or controlled by the
@@ -232,11 +232,11 @@ class HScrollBar(object):
 class StatusBar(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
-class ListBox(object):
-    states = (SHOWING, ENABLED, SELECTABLE, SENSITIVE)
+class List(object):
+    states = (ENABLED, FOCUSABLE, MANAGES_DESCENDANTS, SENSITIVE, SHOWING, VISIBLE)
 
 class ListItem(object):
-    states = (SHOWING, ENABLED, SELECTABLE, SENSITIVE)
+    states = (ENABLED, FOCUSABLE, SELECTABLE, SENSITIVE, SHOWING, SINGLE_LINE, TRANSIENT, VISIBLE)
 
 class ProgressBar(object):
     states = (SHOWING,)

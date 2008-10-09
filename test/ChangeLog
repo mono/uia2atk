@@ -1,3 +1,17 @@
+2008-10-10  Calen Chen <cachen@novell.com>
+
+	* testers/states.py: update states tuple for list and listitem
+	* testers/actions.py: update actions tuple for listitem
+	* samples/checkedlistbox.py: extend listitem to shows scrollbar with 
+	bigger value
+	* testers/checkedlistbox/checkedlistboxframe.py: move out actionCheck 
+	and statesCheck, add toggle action, add assertLabel to assert 
+	label text is changed when mouse click listitem
+	* testers/checkedlistbox_basic_ops.py: add click and toggle action to 
+	assert states and actions of list and listitem, add mouse click and 
+	key press to assert label changing and assert "focused" "selected" 
+	"checked" states
+
 2008-10-09  Ray Wang <rawang@novell.com>
 
 	* keystrokes/gtktutorial.py/gtktutorial_example_1.py: fix a typo

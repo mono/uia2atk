@@ -52,6 +52,7 @@ class CheckedListBoxSample(Form):
         # add items in CheckedListBox
         for i in range(20):
             self.checkedlistbox1.Items.Add(str(i))
+        for i in range(20, 50):
             self.checkedlistbox2.Items.Add(str(i))
 
         # add controls
