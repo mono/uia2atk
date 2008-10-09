@@ -1,5 +1,10 @@
 2008-10-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs:
+	* AtkTester.cs: InterfaceTextSingleLine corrections.
+
+2008-10-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs:
 	* BridgeTester.cs: More simplifications.
 

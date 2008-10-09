@@ -987,18 +987,6 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,WordStart,eo");
 		}
 
-		protected Atk.Object InterfaceTextSingleLine (BasicWidgetType type)
-		{
-			bool real = true;
-			
-			Atk.Object accessible = GetAccessible (type, simpleTestText, real);
-			Atk.Text atkText = CastToAtkInterface <Atk.Text> (accessible);
-
-			InterfaceTextSingleLine (type, atkText);
-
-			return accessible;
-		}
-
 		protected void Parent (BasicWidgetType type, Atk.Object accessible)
 		{
 			Atk.Object parent = accessible.Parent;

@@ -133,6 +133,9 @@ namespace UiaAtkBridgeTest
 		{
 			BasicWidgetType type = BasicWidgetType.RadioButton;
 			Atk.Object accessible, accessible2, accessible3;
+
+			//FIXME: figure out why this test doesn't work
+			//InterfaceTextSingleLine (type);
 			
 			string name = "test 01";
 			accessible = GetAccessible (type, name, true);
@@ -172,7 +175,10 @@ namespace UiaAtkBridgeTest
 		public void RealStatusBar()
 		{
 			BasicWidgetType type = BasicWidgetType.StatusBar;
-			Atk.Object accessible = InterfaceTextSingleLine (type);
+
+			Atk.Object accessible = GetAccessible (type, simpleTestText, true);
+			Atk.Text atkText = CastToAtkInterface <Atk.Text> (accessible);
+			InterfaceTextSingleLine (type, atkText);
 
 			PropertyRole (type, accessible);
 
