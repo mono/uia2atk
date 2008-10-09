@@ -229,14 +229,6 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.GetKeybinding (3), "GetKeyBinding OOR#2");
 		}
 		
-		protected void InterfaceAction (BasicWidgetType type, Atk.Object accessible)
-		{
-			Atk.ActionImplementor implementor = accessible as Atk.ActionImplementor;
-			Assert.IsNotNull (implementor, "Atk.Action");
-			Atk.Action action = new Atk.ActionAdapter (implementor);
-			InterfaceAction (type, action, accessible);
-		}
-
 		protected void InterfaceSelection (Atk.Selection implementor, string[] names, Atk.Object accessible, BasicWidgetType type)
 		{
 			if (names == null)
@@ -1005,14 +997,6 @@ namespace UiaAtkBridgeTest
 			InterfaceTextSingleLine (type, atkText);
 
 			return accessible;
-		}
-
-		protected void InterfaceTextSingleLine (BasicWidgetType type, Atk.Object accessible)
-		{
-			Atk.TextImplementor implementor = accessible as Atk.TextImplementor;
-			Assert.IsNotNull (implementor, "Atk.Text");
-			Atk.Text atkText = new Atk.TextAdapter (implementor);
-			InterfaceTextSingleLine (type, atkText);
 		}
 
 		protected void Parent (BasicWidgetType type, Atk.Object accessible)

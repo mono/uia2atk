@@ -492,9 +492,9 @@ namespace UiaAtkBridgeTest
 
 			// Below line needed because InterfaceAction tests that first item is not selected, so that it can test the action
 			selection.AddSelection(1);
-			InterfaceAction (BasicWidgetType.ListItem, listItemChild);
+			InterfaceAction (BasicWidgetType.ListItem, CastToAtkInterface <Atk.Action> (listItemChild), listItemChild);
 
-			InterfaceTextSingleLine (BasicWidgetType.ListItem, listItemChild);
+			InterfaceTextSingleLine (BasicWidgetType.ListItem, CastToAtkInterface <Atk.Text> (listItemChild));
 
 			Parent (type, accessible);
 		}
@@ -534,9 +534,9 @@ namespace UiaAtkBridgeTest
 
 			// Below line needed because InterfaceAction tests that first item is not selected, so that it can test the action
 			selection.AddSelection(1);
-			InterfaceAction (BasicWidgetType.CheckedListItem, listItemChild);
+			InterfaceAction (BasicWidgetType.CheckedListItem, CastToAtkInterface <Atk.Action> (listItemChild), listItemChild);
 
-			InterfaceTextSingleLine (BasicWidgetType.CheckedListItem, listItemChild);
+			InterfaceTextSingleLine (BasicWidgetType.CheckedListItem, CastToAtkInterface <Atk.Text> (listItemChild));
 
 			Parent (type, accessible);
 		}
