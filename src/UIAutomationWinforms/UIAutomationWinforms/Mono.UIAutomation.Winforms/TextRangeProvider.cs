@@ -21,6 +21,7 @@
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
+//	Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
@@ -32,16 +33,13 @@ using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-
-	//A TextPatternRange can represent an 
-	//- insertion point, 
-	//- a subset, or 
-	//- all of the text in a TextPattern container.
+	// A TextPatternRange can represent an 
+	// - insertion point, 
+	// - a subset, or 
+	// - all of the text in a TextPattern container.
 	internal class TextRangeProvider : ITextRangeProvider
 	{
-
-		#region Constructors
-
+#region Constructors
 		public TextRangeProvider (ITextProvider provider, TextBoxBase textboxbase)
 		{
 			this.provider = provider;
@@ -49,71 +47,71 @@ namespace Mono.UIAutomation.Winforms
 			
 			normalizer = new TextNormalizer (textboxbase);
 		}
-		
-		#endregion
-		
-		#region Public Properties 
-		
-		public int EndPoint {
-			get { return normalizer.EndPoint; }
-		}
-		
-		public int StartPoint {
-			get { return normalizer.StartPoint; }
-		}
 
+		private TextRangeProvider (ITextProvider provider, TextBoxBase textboxbase,
+		                           int start_point, int end_point)
+		{
+			this.provider = provider;
+			this.textboxbase = textboxbase;
+			this.normalizer = new TextNormalizer (textboxbase, start_point, end_point);
+		}
+#endregion
+		
+#region Public Properties 
 		public ITextProvider TextProvider {
 			get { return provider; }
 		}		
+#endregion
 
-		#endregion
-
-		#region ITextRangeProvider Members
-
+#region ITextRangeProvider Members
 		public void AddToSelection ()
 		{
-			if (provider.SupportedTextSelection != SupportedTextSelection.Multiple)
+			if (provider.SupportedTextSelection != SupportedTextSelection.Multiple) {
 				throw new InvalidOperationException ();
+			}
 			
 			//TODO: Verify if RichTextBox supports: SupportedTextSelection.Multiple
 		}
-
+	
 		public ITextRangeProvider Clone ()
 		{		
-			TextRangeProvider range = new TextRangeProvider (provider, textboxbase);
-			FieldInfo field = range.GetType ().GetField ("normalizer", 
-			                                             BindingFlags.Instance | BindingFlags.NonPublic);
-			TextNormalizer normalizer = new TextNormalizer (textboxbase, StartPoint, EndPoint);
-			field.SetValue (range, normalizer);
-
-			return (ITextRangeProvider) range;
+			return new TextRangeProvider (provider, textboxbase,
+			                              StartPoint, EndPoint); 
 		}
 
-		//TODO: Evaluate rangeProvider == null
 		public bool Compare (ITextRangeProvider range)
 		{
 			TextRangeProvider rangeProvider = range as TextRangeProvider;
-			if (rangeProvider.TextProvider != provider)
+			if (rangeProvider == null) {
+				return false;
+			}
+
+			if (rangeProvider.TextProvider != provider) {
 				throw new ArgumentException ();
+			}
 		
 			return (rangeProvider.StartPoint == StartPoint) 
 				&& (rangeProvider.EndPoint == EndPoint);
 		}
 
-		//TODO: Evaluate rangeProvider == null
 		public int CompareEndpoints (TextPatternRangeEndpoint endpoint, 
 		                             ITextRangeProvider targetRange,
 		                             TextPatternRangeEndpoint targetEndpoint)
 		{
 			TextRangeProvider targetRangeProvider = targetRange as TextRangeProvider;
-			if (targetRangeProvider.TextProvider != provider)
+			if (targetRangeProvider == null) {
+				throw new ArgumentNullException ();
+			}
+
+			if (targetRangeProvider.TextProvider != provider) {
 				throw new ArgumentException ();
+			}
 			
 			int point = endpoint == TextPatternRangeEndpoint.End ? EndPoint : StartPoint;
-			int targePoint = targetEndpoint == TextPatternRangeEndpoint.End 
+			int targePoint = (targetEndpoint == TextPatternRangeEndpoint.End)
 				? targetRangeProvider.EndPoint : targetRangeProvider.StartPoint;
 
-			return point - targePoint;
+			return point.CompareTo (targePoint);
 		}
 
 		public void ExpandToEnclosingUnit (TextUnit unit)
@@ -133,6 +131,7 @@ namespace Mono.UIAutomation.Winforms
 			case TextUnit.Paragraph:
 			case TextUnit.Page:
 			case TextUnit.Document:
+				// TODO:
 				break;
 			}
 		}
@@ -140,13 +139,35 @@ namespace Mono.UIAutomation.Winforms
 		public ITextRangeProvider FindAttribute (int attribute, object value, 
 		                                         bool backward)
 		{
+			if (textboxbase is TextBox) {
+				return null;
+			}
+
 			throw new NotImplementedException();
 		}
 
 		public ITextRangeProvider FindText (string text, bool backward, 
 		                                    bool ignoreCase)
 		{
-			throw new NotImplementedException();
+			string contents = textboxbase.Text;	
+			StringComparison cmp = ignoreCase ? StringComparison.CurrentCultureIgnoreCase
+			                                  : StringComparison.CurrentCulture;
+			if (String.IsNullOrEmpty (text) || String.IsNullOrEmpty (contents)) {
+				return null;
+			}
+			
+			int index = -1;
+			if (backward) {
+				index = contents.LastIndexOf (text, EndPoint - 1,
+				                              EndPoint - StartPoint, cmp);
+			} else {
+				index = contents.IndexOf (text, StartPoint,
+				                          EndPoint - StartPoint, cmp);
+			}
+
+			return (index >= 0) ? new TextRangeProvider (provider, textboxbase,
+			                                             index, index + text.Length)
+			                    : null;
 		}
 
 		public object GetAttributeValue (int attribute)
@@ -188,12 +209,9 @@ namespace Mono.UIAutomation.Winforms
 			return textboxbase.Text.Substring (startPoint, length);
 		}
 
-		//Character, Format, Word, Line, Paragraph, Page, Document
 		public int Move (TextUnit unit, int count)
 		{	
-			TextNormalizerPoints points = normalizer.Move (unit, count);
-			
-			return points.Moved;
+			return normalizer.Move (unit, count).Moved;
 		}
 
 		public void MoveEndpointByRange (TextPatternRangeEndpoint endpoint, 
@@ -254,7 +272,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public void ScrollIntoView (bool alignToTop)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
 		public void Select ()
@@ -262,16 +280,22 @@ namespace Mono.UIAutomation.Winforms
 			textboxbase.SelectionStart = normalizer.StartPoint;
 			textboxbase.SelectionLength = System.Math.Abs (normalizer.EndPoint - normalizer.StartPoint);
 		}
+#endregion
+
+#region Private Properties
+		private int EndPoint {
+			get { return normalizer.EndPoint; }
+		}
 		
-		#endregion
+		private int StartPoint {
+			get { return normalizer.StartPoint; }
+		}
+#endregion
 
-		#region Private Members
-
+#region Private Members
 		private TextNormalizer normalizer;
 		private ITextProvider provider;
 		private TextBoxBase textboxbase;
-
-		#endregion
-
+#endregion
 	}
 }

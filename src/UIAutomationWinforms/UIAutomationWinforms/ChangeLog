@@ -1,3 +1,10 @@
+2008-10-10  Brad Taylor  <brad@getcoded.net>
+	
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: A bit of
+	  refactoring.  Clean up AddToSelection, Clone, Compare and
+	  CompareEndpoints.  Rewrite FindText and make StartPoint and EndPoint
+	  private to ensure API equivalency with MSDN.
+
 2008-10-10  Neville Gao <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated files deleted.

@@ -84,6 +84,48 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			textbox = null;
 		}
 
+		[Test]
+		public void FindText ()
+		{
+			ITextRangeProvider range1, range2;
+			int moved_units;
+
+			textbox.Text = "gomez thing\r\nmorticia\twednesday ing";
+
+			range = text_provider.DocumentRange.Clone ();
+
+			range1 = range.FindText ("mort", false, false);
+			Assert.AreEqual ("mort", range1.GetText (-1));
+
+			range2 = range1.FindText ("mort", false, false);
+			Assert.AreEqual ("mort", range2.GetText (-1));
+
+			range2 = range1.FindText ("gomez", false, false);
+			Assert.IsNull (range2);
+
+			range2 = range1.FindText ("thing", true, false);
+			Assert.IsNull (range2);
+
+			range1 = range.FindText ("\t", false, false);
+			Assert.AreEqual ("\t", range1.GetText (-1));
+
+			range1 = range.FindText ("dayz", false, false);
+			Assert.IsNull (range1);
+
+			range1 = range.FindText ("HING\r", false, true);
+			Assert.AreEqual ("hing\r", range1.GetText (-1));
+
+			range1 = range.FindText ("HING\r", false, false);
+			Assert.IsNull (range1);
+
+			range1 = range.FindText ("ing", true, false);
+			Assert.AreEqual ("ing", range1.GetText (-1));
+			
+			moved_units = range1.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, -2);
+			Assert.AreEqual (-2, moved_units);
+			Assert.AreEqual ("y ing", range1.GetText (-1));
+		}
+
 		// TODO: implement MoveEndpointByUnit Character tests
 
 		[Test]
