@@ -1,5 +1,9 @@
 2008-10-10  Neville Gao <nevillegao@gmail.com>
 
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Removing not added files.
+
+2008-10-10  Neville Gao <nevillegao@gmail.com>
+
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated files deleted.
 	* Mono.UIAutomation.Winforms/ProgressBarProvider: Updated not to support
 	  ValuePattern.
