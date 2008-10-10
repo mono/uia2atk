@@ -48,7 +48,7 @@ namespace UiaAtkBridgeTest
 		
 		static void HandleException (GLib.UnhandledExceptionArgs args)
 		{
-			args.ExitApplication = true;
+			args.ExitApplication = false;
 		}
 
 		public override Atk.Object GetAccessible (BasicWidgetType type, string text, bool real)

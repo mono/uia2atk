@@ -1,3 +1,7 @@
+2008-10-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTester.cs: Wew, let's not ignore nunit results even if we die.
+
 2008-10-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* GailTester.cs: *HUGE* simplication.
