@@ -64,14 +64,12 @@ namespace UiaAtkBridgeTest
 			typeof (I).Name);
 		}
 		
-		public override Atk.Object GetAccessibleThatEmbedsAnImage (
-			BasicWidgetType type, string name, bool real)
+		public override Atk.Object GetAccessibleThatEmbedsAnImage (BasicWidgetType type, string name, bool real)
 		{
 			return GetAccessible (type, name, real, true);
 		}
 
-		public override Atk.Object GetAccessible (
-		  BasicWidgetType type, string[] names, bool real)
+		public override Atk.Object GetAccessible (BasicWidgetType type, string[] names, bool real)
 		{
 			Atk.Object accessible = null;
 			
@@ -252,8 +250,7 @@ namespace UiaAtkBridgeTest
 		}
 		
 
-		private Atk.Object GetAccessible (
-			BasicWidgetType type, string name, bool real, bool embeddedImage)
+		private Atk.Object GetAccessible (BasicWidgetType type, string name, bool real, bool embeddedImage)
 		{
 			Atk.Object accessible = null;
 
@@ -452,17 +449,12 @@ namespace UiaAtkBridgeTest
 		protected override int ValidNChildrenForAScrollBar { get { return 0; } }
 		
 		[Test]
-		public void UIACheckBox ()
-		{
-		}
-		
-		[Test]
 		public void ListBox ()
 		{
 			BasicWidgetType type = BasicWidgetType.ListBox;
 			Atk.Object accessible;
 			
-			string[] names = new string[] { simpleTestText, "Second Item", "Last Item" };
+			string[] names = new string [] { simpleTestText, "Second Item", "Last Item" };
 			accessible = GetAccessible (type, names, true);
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 
@@ -574,7 +566,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (51, link2.EndIndex, "Link 1 EndIndex");
 			Atk.Object obj2 = link2.GetObject (0);
 			Assert.IsNotNull (obj2, "LinkLabel GetObject #2");
-			Assert.IsTrue (obj2.RefStateSet().ContainsState (Atk.StateType.Enabled), "RefStateSet().Contains(Enabled)");
+			Assert.IsTrue (obj2.RefStateSet ().ContainsState (Atk.StateType.Enabled), "RefStateSet().Contains(Enabled)");
 			Atk.ActionAdapter action = new Atk.ActionAdapter ((Atk.ActionImplementor)obj2);
 			Assert.AreEqual (1, action.NActions, "LinkLabel link NActions");
 			Assert.IsTrue (action.DoAction (0), "LinkLabel DoAction #1");
