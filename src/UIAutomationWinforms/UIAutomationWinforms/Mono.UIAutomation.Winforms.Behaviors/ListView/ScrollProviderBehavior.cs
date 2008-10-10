@@ -26,17 +26,17 @@ using System;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Behaviors.Generic;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ListBox;
+//using Mono.UIAutomation.Winforms.Events.ListView;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
+namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 {
 
-	internal class ScrollProviderBehavior : ScrollProviderBehavior<ListBoxProvider>
+	internal class ScrollProviderBehavior : ScrollProviderBehavior<ListViewProvider>
 	{
 		
 		#region Constructors
 
-		public ScrollProviderBehavior (ListBoxProvider provider)
+		public ScrollProviderBehavior (ListViewProvider provider)
 			: base (provider)
 		{
 		}
@@ -47,18 +47,18 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
 
 		public override void Connect (System.Windows.Forms.Control control)
 		{
-			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontallyScrollableProperty,
-			                   new ScrollPatternHorizontallyScrollableEvent ((ListBoxProvider) Provider));
-			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalScrollPercentProperty,
-			                   new ScrollPatternHorizontalScrollPercentEvent ((ListBoxProvider) Provider));
-			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalViewSizeProperty,
-			                   new ScrollPatternHorizontalViewSizeEvent ((ListBoxProvider) Provider));
-			Provider.SetEvent (ProviderEventType.ScrollPatternVerticallyScrollableProperty,
-			                   new ScrollPatternVerticallyScrollableEvent ((ListBoxProvider) Provider));
-			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalScrollPercentProperty,
-			                   new ScrollPatternVerticalScrollPercent ((ListBoxProvider) Provider));
-			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalViewSizeProperty,
-			                   new ScrollPatternVerticalViewSizeEvent ((ListBoxProvider) Provider));
+//			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontallyScrollableProperty,
+//			                   new ScrollPatternHorizontallyScrollableEvent ((ListViewProvider) Provider));
+//			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalScrollPercentProperty,
+//			                   new ScrollPatternHorizontalScrollPercentEvent ((ListViewProvider) Provider));
+//			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalViewSizeProperty,
+//			                   new ScrollPatternHorizontalViewSizeEvent ((ListViewProvider) Provider));
+//			Provider.SetEvent (ProviderEventType.ScrollPatternVerticallyScrollableProperty,
+//			                   new ScrollPatternVerticallyScrollableEvent ((ListViewProvider) Provider));
+//			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalScrollPercentProperty,
+//			                   new ScrollPatternVerticalScrollPercent ((ListViewProvider) Provider));
+//			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalViewSizeProperty,
+//			                   new ScrollPatternVerticalViewSizeEvent ((ListViewProvider) Provider));
 		}
 	
 		#endregion

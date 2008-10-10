@@ -1,3 +1,7 @@
+2008-10-10  Mario Carrion <mcarrion@novell.com> 
+
+	* ListBoxProviderTest.cs: Tests FragmentRoot in children.
+
 2008-10-08  Brad Taylor  <brad@getcoded.net>
 	
 	* TextRangeProviderTest.cs: Add test for FindText.

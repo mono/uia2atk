@@ -26,15 +26,14 @@ using SWF = System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-	
-	internal interface IScrollBehaviorSubject
+
+	internal interface IScrollBehaviorObserver
 	{
-		IScrollBehaviorObserver ScrollBehaviorObserver { get; }
-		bool SupportsHorizontalScrollbar { get; }
-		bool SupportsVerticalScrollbar { get; }
-		
-		void AddChildProvider (bool raiseEvent, FragmentControlProvider provider);
-		void RemoveChildProvider (bool raiseEvent, FragmentControlProvider provider);
-		FragmentControlProvider GetScrollbarProvider (SWF.ScrollBar scrollbar);
+		bool HasHorizontalScrollbar { get; }
+		bool HasVerticalScrollbar { get; }
+		SWF.ScrollBar HorizontalScrollBar { get; }
+		SWF.ScrollBar VerticalScrollBar { get; }
+		bool SupportsScrollPattern{ get; }
 	}
+	
 }

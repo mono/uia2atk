@@ -48,26 +48,19 @@ namespace Mono.UIAutomation.Winforms
 		{
 			listboxControl = listbox;
 			
-			vscrollbar = Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox), 
-			                                                            listboxControl,
-			                                                            "UIAVScrollBar");
-			hscrollbar = Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox),
-			                                                            listboxControl,
-			                                                            "UIAHScrollBar");
+			ScrollBar vscrollbar 
+				= Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox), 
+				                                                 listboxControl,
+				                                                 "UIAVScrollBar");
+			ScrollBar hscrollbar 
+				= Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox),
+				                                                 listboxControl,
+				                                                 "UIAHScrollBar");
 			
-			scrollObserver = new ScrollBehaviorObserver (this,
-			                                             hscrollbar,
-			                                             vscrollbar);
-			
-			scrollObserver.HorizontalNavigationUpdated += new NavigationEventHandler (OnHorizontalNavigationUpdated);
-			scrollObserver.VerticalNavigationUpdated += new NavigationEventHandler (OnVerticalNavigationUpdated);
-			scrollObserver.ScrollPatternSupportChanged += new EventHandler (OnScrollPatternSupportChanged);
-			
-			if (scrollObserver.SupportsScrollPattern == true)
-				SetBehavior (ScrollPatternIdentifiers.Pattern,
-				             new ScrollProviderBehavior (this, 
-				                                         hscrollbar, 
-				                                         vscrollbar));
+			//ListScrollBehaviorObserver updates Navigation
+			observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);			
+			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
+			UpdateScrollBehavior ();
 		}
 
 		#endregion
@@ -79,19 +72,16 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		public bool SupportsVerticalScrollbar { 
-			get { return true; }
-		}		
-		
-		#endregion
-
-		#region Public Properties
-		
-		public bool HasHorizontalScrollbar {
-			get { return scrollObserver.HasHorizontalScrollbar; }
+			get { return listboxControl.ScrollAlwaysVisible; }
 		}
 		
-		public bool HasVerticalScrollbar {
-			get { return scrollObserver.HasVerticalScrollbar; }
+		public IScrollBehaviorObserver ScrollBehaviorObserver { 
+			get { return observer; }
+		}
+		
+		public FragmentControlProvider GetScrollbarProvider (ScrollBar scrollbar)
+		{
+			return new ListBoxScrollBarProvider (scrollbar, listboxControl);
 		}
 		
 		#endregion
@@ -100,16 +90,17 @@ namespace Mono.UIAutomation.Winforms
 		
 		public ScrollBar GetInternalScrollBar (Orientation orientation)
 		{
-			return orientation == Orientation.Horizontal ? hscrollbar : vscrollbar;
+			if (orientation == Orientation.Horizontal)
+				return observer.HorizontalScrollBar;
+			else
+				return observer.VerticalScrollBar;
 		}
 		
 		public override void Terminate ()
 		{
 			base.Terminate ();
-			
-			scrollObserver.HorizontalNavigationUpdated -= new NavigationEventHandler (OnHorizontalNavigationUpdated);
-			scrollObserver.VerticalNavigationUpdated -= new NavigationEventHandler (OnVerticalNavigationUpdated);
-			scrollObserver.ScrollPatternSupportChanged -= new EventHandler (OnScrollPatternSupportChanged);
+
+			observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
 		}
 		
 		#endregion
@@ -155,33 +146,14 @@ namespace Mono.UIAutomation.Winforms
 				OnNavigationChildAdded (false, item);
 			}
 			
-			if (HasHorizontalScrollbar == true)
-				RaiseNavigationEvent (StructureChangeType.ChildAdded,
-				                      ref hscrollbarProvider,
-				                      hscrollbar,
-				                      false);
-			if (HasVerticalScrollbar == true)
-				RaiseNavigationEvent (StructureChangeType.ChildAdded,
-				                      ref vscrollbarProvider,
-				                      vscrollbar,
-				                      false);			
+			observer.InitializeScrollBarProviders ();
 		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
 			
-			if (hscrollbarProvider != null) {
-				OnNavigationChildRemoved (false, hscrollbarProvider);
-				hscrollbarProvider.Terminate ();
-				hscrollbarProvider = null;
-			}
-
-			if (vscrollbarProvider != null) {
-				OnNavigationChildRemoved (false, vscrollbarProvider);
-				vscrollbarProvider.Terminate ();
-				vscrollbarProvider = null;
-			}
+			observer.FinalizeScrollBarProviders ();
 		}
 
 		#endregion
@@ -224,7 +196,7 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		public override int ItemsCount {
-			get { return listboxControl.Items.Count;  }
+			get { return listboxControl.Items.Count; }
 		}
 		
 		public override ListItemProvider[] GetSelectedItems ()
@@ -299,91 +271,29 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
-		
-		#region Private Methods: Navigation
-		
-		private void UpdateScrollbarNavigation (ScrollBar scrollbar,
-		                                        bool navigable)
-		{
-			if (scrollbar == vscrollbar) {
-	           if (navigable == false && vscrollbarProvider != null)
-					RaiseNavigationEvent (StructureChangeType.ChildRemoved,
-					                      ref vscrollbarProvider,
-					                      vscrollbar,
-					                      true);
-	           else if (navigable == true && vscrollbarProvider == null)
-					RaiseNavigationEvent (StructureChangeType.ChildAdded,
-					                      ref vscrollbarProvider,
-					                      vscrollbar,
-					                      true);
-			} else if (scrollbar == hscrollbar) {
-	           if (navigable == false && hscrollbarProvider != null)
-					RaiseNavigationEvent (StructureChangeType.ChildRemoved,
-					                      ref hscrollbarProvider,
-					                      hscrollbar,
-					                      true);
-	           else if (navigable == true && hscrollbarProvider == null)
-					RaiseNavigationEvent (StructureChangeType.ChildAdded,
-					                      ref hscrollbarProvider,
-					                      hscrollbar,
-					                      true);
-			}
-		}
-		
-		private void RaiseNavigationEvent (StructureChangeType type,
-		                                   ref ScrollBarProvider provider,
-		                                   ScrollBar scrollbar,
-		                                   bool generateEvent)
-		{
-			if (type == StructureChangeType.ChildAdded) {
-				provider = (ScrollBarProvider) ProviderFactory.GetProvider (scrollbar);
-				OnNavigationChildAdded (generateEvent, provider);
-			} else {
-				OnNavigationChildRemoved (generateEvent, provider);
-				provider.Terminate ();
-				provider = null;
-			}
-		}
-		
-		#endregion
 
 		#region ScrollBehaviorObserver Methods
 		
 		private void OnScrollPatternSupportChanged (object sender, EventArgs args)
 		{
-			if (scrollObserver.SupportsScrollPattern == true)
+			UpdateScrollBehavior ();
+		}
+		
+		private void UpdateScrollBehavior ()
+		{
+			if (observer.SupportsScrollPattern == true)
 				SetBehavior (ScrollPatternIdentifiers.Pattern,
-				             new ScrollProviderBehavior (this, 
-				                                         hscrollbar, 
-				                                         vscrollbar));
+				             new ScrollProviderBehavior (this));
 			else
 				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
-		}
-		
-		private void OnHorizontalNavigationUpdated (object sender,
-		                                            NavigationEventArgs args)
-		{
-			UpdateScrollbarNavigation (hscrollbar,
-			                           args.ChangeType == StructureChangeType.ChildAdded);
-		}
-		
-		private void OnVerticalNavigationUpdated (object sender,
-		                                          NavigationEventArgs args)
-		{
-			UpdateScrollbarNavigation (vscrollbar,
-			                           args.ChangeType == StructureChangeType.ChildAdded);
 		}
 		
 		#endregion
 		
 		#region Private Fields
 		
-		private ScrollBar hscrollbar;
 		private ListBox listboxControl;
-		private ScrollBar vscrollbar;
-		private ScrollBarProvider hscrollbarProvider;
-		private ScrollBarProvider vscrollbarProvider;
-		private ScrollBehaviorObserver scrollObserver;
+		private ScrollBehaviorObserver observer;
 		
 		#endregion
 
@@ -391,13 +301,21 @@ namespace Mono.UIAutomation.Winforms
 
 		internal class ListBoxScrollBarProvider : ScrollBarProvider
 		{
-			public ListBoxScrollBarProvider (ScrollBar scrollbar)
+			public ListBoxScrollBarProvider (ScrollBar scrollbar,
+			                                 ListBox listbox)
 				: base (scrollbar)
 			{
+				this.listbox = listbox;
 				//TODO: i18n?
 				name = scrollbar is HScrollBar ? "Horizontal Scroll Bar"
 					: "Vertical Scroll Bar";
 			}
+			
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { 
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (listbox);
+				}
+			}			
 			
 			public override object GetPropertyValue (int propertyId)
 			{
@@ -407,6 +325,7 @@ namespace Mono.UIAutomation.Winforms
 					return base.GetPropertyValue (propertyId);
 			}
 			
+			private ListBox listbox;
 			private string name;
 		}
 		

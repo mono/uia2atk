@@ -1,5 +1,32 @@
 2008-10-10  Mario Carrion <mcarrion@novell.com> 
 
+	* Makefile.am, Mono.UIAutomation.Winforms.mdp: Generic Scroll Behavior
+	  added. Scroll Behavior Observer interface added.
+	* Mono.UIAutomation.Winforms.Behaviors/Generic: Folder added.
+	* Mono.UIAutomation.Winforms.Behaviors/Generic/ScrollProviderBehavior.cs:
+	  Generic ScrollBehavior class.
+	* Mono.UIAutomation.Winforms.Behaviors/ListBox/ScrollProviderBehavior.cs:
+	  Subclassing from Generic.ScrollProviderBehavior.
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs:
+	  Generic.ScrollProviderBehavior specialization.
+	* Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs:
+	  Reverted.
+	* Mono.UIAutomation.Winforms/IScrollBehaviorObserver.cs: File added.
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Using
+	  ScrollBehaviorObserver to update navigation.
+	* Mono.UIAutomation.Winforms/IScrollBehaviorSubject.cs: Interface
+	  updated.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Comment updated.
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Using observer to
+	  update Scroll behavior.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Removed the parent
+	  validation in SWF.ScrollBar: Fixes FragmentRoot.
+	* Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs: Handles
+	  Navigation. Removed events: HorizontalNavigationUpdated,
+	  VerticalNavigationUpdated.
+
+2008-10-10  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Behaviors/TextBox/ScrollProviderBehavior.cs:
 	  Comment added.
 

@@ -354,6 +354,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				//ALL elements must have same parent
 				parent = child.Navigate (NavigateDirection.Parent);
 				Assert.AreEqual (provider, parent, "Parents are different");
+				Assert.AreEqual (child.FragmentRoot, parent, "Parents are different (FragmentRoot)");
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 			

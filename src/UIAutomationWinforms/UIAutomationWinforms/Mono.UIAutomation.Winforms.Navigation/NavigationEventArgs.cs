@@ -35,31 +35,16 @@ namespace Mono.UIAutomation.Winforms.Navigation
 	internal class NavigationEventArgs : EventArgs
 	{
 		#region Constructors
-		
-		public NavigationEventArgs (StructureChangeType changeType,
-		                            Component component) 
-			: this (true, changeType, null, component)
-		{
-		}
 
 		public NavigationEventArgs (bool raiseEvent,
 		                            StructureChangeType changeType,
-		                            FragmentControlProvider childProvider) 
-			: this (raiseEvent, changeType, childProvider, null)
-		{
-		}
-		
-		public NavigationEventArgs (bool raiseEvent,
-		                            StructureChangeType changeType,
-		                            FragmentControlProvider childProvider,
-		                            Component component) : base ()
+		                            FragmentControlProvider childProvider) : base ()
 		{
 			this.raiseEvent = raiseEvent;
 			this.changeType = changeType;
 			this.childProvider = childProvider;
-			this.component = component;
 		}
-		
+	
 		#endregion
 		
 		#region Public Properties
@@ -72,10 +57,6 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			get { return changeType; }
 		}
 		
-		public Component Component {
-			get { return component; }
-		}		
-		
 		public bool RaiseEvent {
 			get { return raiseEvent; }
 		}
@@ -86,7 +67,6 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 		private StructureChangeType changeType;
 		private FragmentControlProvider childProvider;
-		private Component component;		
 		private bool raiseEvent;
 		
 		#endregion

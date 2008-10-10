@@ -29,7 +29,11 @@ using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class ScrollBehaviorObserver
+	//NOTE: 
+	//     This class is meant to be used by providers supporting Scroll Pattern.
+	//     Updates Navigation and generates event to indicate whether should
+	//     support ScrollPattern or not.
+	internal class ScrollBehaviorObserver : IScrollBehaviorObserver
 	{
 		
 		#region Constructors
@@ -50,8 +54,7 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Public Properties
-
-		
+	
 		public bool HasHorizontalScrollbar {
 			get {
 				return HorizontalScrollBar != null 
@@ -112,49 +115,65 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Public Events
 		
-		public NavigationEventHandler HorizontalNavigationUpdated;
-		
-		public NavigationEventHandler VerticalNavigationUpdated;
-		
 		public EventHandler ScrollPatternSupportChanged;
 		
 		#endregion
 		
-		#region Protected Methods
-
-		protected void OnHorizontalNavigationUpdated (NavigationEventArgs args)
-		{
-			if (HorizontalNavigationUpdated != null)
-				HorizontalNavigationUpdated (this, args);
+		#region Public Methods
+		
+		public void InitializeScrollBarProviders ()
+		{			
+			if (HasHorizontalScrollbar == true)
+				RaiseNavigationEvent (StructureChangeType.ChildAdded,
+				                      ref hscrollbarProvider,
+				                      HorizontalScrollBar,
+				                      false);
+			if (HasVerticalScrollbar == true)
+				RaiseNavigationEvent (StructureChangeType.ChildAdded,
+				                      ref vscrollbarProvider,
+				                      VerticalScrollBar,
+				                      false);
 		}
+
+		public void FinalizeScrollBarProviders ()
+		{
+			if (hscrollbarProvider != null) {
+				subject.RemoveChildProvider (false, hscrollbarProvider);
+				hscrollbarProvider.Terminate ();
+				hscrollbarProvider = null;
+			}
+
+			if (vscrollbarProvider != null) {
+				subject.RemoveChildProvider (false, vscrollbarProvider);
+				vscrollbarProvider.Terminate ();
+				vscrollbarProvider = null;
+			}
+		}
+		
+		#endregion
+		
+		#region Protected Methods
 	
 		protected void OnScrollPatternSupportChanged ()
 		{
 			if (ScrollPatternSupportChanged != null)
 				ScrollPatternSupportChanged (this, EventArgs.Empty);
+			
 			scrollpatternSet = !scrollpatternSet;
 		}
-		
-		protected void OnVerticalNavigationUpdated (NavigationEventArgs args)
-		{
-			if (VerticalNavigationUpdated != null)
-				VerticalNavigationUpdated (this, args);
-		}
-		
+
 		#endregion
 		
 		#region Private Methods
 		
 		private void UpdateHScrollBehaviorEnable (object sender, EventArgs args)
 		{
-			//Event used to update Navigation chain
+			//Updating Navigation
 			if (subject.SupportsHorizontalScrollbar == true 
 			    && HorizontalScrollBar.Visible == true && HorizontalScrollBar.Enabled == true)
-				OnHorizontalNavigationUpdated (new NavigationEventArgs (StructureChangeType.ChildAdded,
-				                                                        HorizontalScrollBar));
+				UpdateScrollbarNavigation (HorizontalScrollBar, true);
 			else
-				OnHorizontalNavigationUpdated (new NavigationEventArgs (StructureChangeType.ChildRemoved,
-				                                                        HorizontalScrollBar));
+				UpdateScrollbarNavigation (HorizontalScrollBar, false);
 			
 			//Updating Behavior
 			if (HorizontalScrollBar.Enabled == true) {
@@ -174,14 +193,12 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void UpdateHScrollBehaviorVisible (object sender, EventArgs args)
 		{
-			//Event used to update Navigation chain
+			//Updating Navigation
 			if (subject.SupportsHorizontalScrollbar == true 
 			    && HorizontalScrollBar.Visible == true && HorizontalScrollBar.Enabled == true)
-				OnHorizontalNavigationUpdated (new NavigationEventArgs (StructureChangeType.ChildAdded,
-				                                                        HorizontalScrollBar));
+				UpdateScrollbarNavigation (HorizontalScrollBar, true);
 			else
-				OnHorizontalNavigationUpdated (new NavigationEventArgs (StructureChangeType.ChildRemoved,
-				                                                        HorizontalScrollBar));
+				UpdateScrollbarNavigation (HorizontalScrollBar, false);
 			
 			//Updating Behavior
 			if (scrollpatternSet == false) {
@@ -204,14 +221,12 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void UpdateVScrollBehaviorEnable (object sender, EventArgs args)
 		{
-			//Event used to update Navigation chain
+			//Updating Navigation
 			if (subject.SupportsVerticalScrollbar == true
 			    && VerticalScrollBar.Visible == true && VerticalScrollBar.Enabled == true)
-				OnVerticalNavigationUpdated (new NavigationEventArgs (StructureChangeType.ChildAdded,
-				                                                      VerticalScrollBar));
+				UpdateScrollbarNavigation (VerticalScrollBar, true);
 			else
-				OnVerticalNavigationUpdated  (new NavigationEventArgs (StructureChangeType.ChildRemoved,
-				                                                       VerticalScrollBar));
+				UpdateScrollbarNavigation (VerticalScrollBar, false);
 			
 			//Updating Behavior
 			if (VerticalScrollBar.Visible == true && scrollpatternSet == false)
@@ -225,14 +240,12 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void UpdateVScrollBehaviorVisible (object sender, EventArgs args)
 		{
-			//Event used to update Navigation chain
+			//Updating Navigation
 			if (subject.SupportsVerticalScrollbar == false
 			    && VerticalScrollBar.Enabled == true && VerticalScrollBar.Visible == true)
-				OnVerticalNavigationUpdated (new NavigationEventArgs (StructureChangeType.ChildAdded,
-				                                                      VerticalScrollBar));
+				UpdateScrollbarNavigation (VerticalScrollBar, true);
 			else
-				OnVerticalNavigationUpdated (new NavigationEventArgs (StructureChangeType.ChildAdded,
-				                                                      VerticalScrollBar));
+				UpdateScrollbarNavigation (VerticalScrollBar, false);
 			
 			//Updating Behavior
 			if (scrollpatternSet == false) {
@@ -251,11 +264,60 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
+		
+		#region Private Methods: Navigation
+		
+		private void UpdateScrollbarNavigation (SWF.ScrollBar scrollbar,
+		                                        bool navigable)
+		{
+			if (scrollbar == vscrollbar) {
+	           if (navigable == false && vscrollbarProvider != null)
+					RaiseNavigationEvent (StructureChangeType.ChildRemoved,
+					                      ref vscrollbarProvider,
+					                      vscrollbar,
+					                      true);
+	           else if (navigable == true && vscrollbarProvider == null)
+					RaiseNavigationEvent (StructureChangeType.ChildAdded,
+					                      ref vscrollbarProvider,
+					                      vscrollbar,
+					                      true);
+			} else if (scrollbar == hscrollbar) {
+	           if (navigable == false && hscrollbarProvider != null)
+					RaiseNavigationEvent (StructureChangeType.ChildRemoved,
+					                      ref hscrollbarProvider,
+					                      hscrollbar,
+					                      true);
+	           else if (navigable == true && hscrollbarProvider == null)
+					RaiseNavigationEvent (StructureChangeType.ChildAdded,
+					                      ref hscrollbarProvider,
+					                      hscrollbar,
+					                      true);
+			}
+		}
+		
+		private void RaiseNavigationEvent (StructureChangeType type,
+		                                   ref FragmentControlProvider provider,
+		                                   SWF.ScrollBar scrollbar,
+		                                   bool generateEvent)
+		{
+			if (type == StructureChangeType.ChildAdded) {
+				provider = subject.GetScrollbarProvider (scrollbar);
+				subject.AddChildProvider (generateEvent, provider);
+			} else {
+				subject.RemoveChildProvider (generateEvent, provider);
+				provider.Terminate ();
+				provider = null;
+			}
+		}
+		
+		#endregion
 
 		#region Private Fields
 		
 		private SWF.ScrollBar hscrollbar;
 		private SWF.ScrollBar vscrollbar;
+		private FragmentControlProvider hscrollbarProvider;
+		private FragmentControlProvider vscrollbarProvider;
 		private bool scrollpatternSet;
 		private IScrollBehaviorSubject subject;
 		

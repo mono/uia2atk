@@ -199,7 +199,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			//According to: http://msdn.microsoft.com/en-us/library/ms744765.aspx
 			if (behavior == ScrollItemPatternIdentifiers.Pattern) {
-				//MSDN: Supported only if the list item is contained within a container that is scrollable.
+				//LAMESPEC: Supported only if the list item is contained within a container that is scrollable.
 				if (IsBehaviorEnabled (ScrollPatternIdentifiers.Pattern) == true)
 				    return new ScrollItemProviderBehavior (listItem);
 				else

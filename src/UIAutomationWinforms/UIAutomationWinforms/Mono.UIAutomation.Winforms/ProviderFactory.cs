@@ -145,25 +145,21 @@ namespace Mono.UIAutomation.Winforms
 			else if ((pgb = component as SWF.ProgressBar) != null)
 				provider = new ProgressBarProvider (pgb);
 			else if ((scb = component as SWF.ScrollBar) != null) {
-				if ((lb = scb.Parent as SWF.ListBox) != null)
-					provider = new ListBoxProvider.ListBoxScrollBarProvider (scb);
-				else {
-					//TODO:
-					//   We need to add here a ScrollableControlProvider and then verify
-					//   if the internal scrollbar instances are matching this one,
-					//   if so, then we return a scrollbar, otherwise we return a pane.
-					SWF.ScrollableControl scrollable;
-					//ScrollableControlProvider scrollableProvider;
-					if ((scrollable = scb.Parent as SWF.ScrollableControl) != null
-					    || scb.Parent == null) {
-					//	scrollableProvider = (ScrollableControlProvider) GetProvider (scrollable);
-					//	if (scrollableProvider.ScrollBarExists (scb) == true)
-							provider = new ScrollBarProvider (scb);
-					//	else 
-					//		provider = new PaneProvider (scb);
-					} else
-						provider = new PaneProvider (scb);
-				}
+				//TODO:
+				//   We need to add here a ScrollableControlProvider and then verify
+				//   if the internal scrollbar instances are matching this one,
+				//   if so, then we return a scrollbar, otherwise we return a pane.
+				SWF.ScrollableControl scrollable;
+				//ScrollableControlProvider scrollableProvider;
+				if ((scrollable = scb.Parent as SWF.ScrollableControl) != null
+				    || scb.Parent == null) {
+				//	scrollableProvider = (ScrollableControlProvider) GetProvider (scrollable);
+				//	if (scrollableProvider.ScrollBarExists (scb) == true)
+						provider = new ScrollBarProvider (scb);
+				//	else 
+				//		provider = new PaneProvider (scb);
+				} else
+					provider = new PaneProvider (scb);
 			} else if ((pb = component as SWF.PictureBox) != null)
 				provider = new PictureBoxProvider (pb);
 			else if ((errp = component as SWF.ErrorProvider) != null)

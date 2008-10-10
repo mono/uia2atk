@@ -28,11 +28,12 @@ using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ListView;
+using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
 	
-	internal class ListViewProvider : ListProvider
+	internal class ListViewProvider : ListProvider, IScrollBehaviorSubject
 	{
 		
 		#region Constructors
@@ -40,6 +41,46 @@ namespace Mono.UIAutomation.Winforms
 		public ListViewProvider (SWF.ListView listView) : base (listView)
 		{
 			this.listView = listView;
+			
+			try { //TODO: Remove try-cath when SWF patch applied
+			
+			SWF.ScrollBar vscrollbar 
+					= Helper.GetPrivateProperty<SWF.ListView, SWF.ScrollBar> (typeof (SWF.ListView), 
+					                                                          listView,
+					                                                          "UIAVScrollBar");
+			SWF.ScrollBar hscrollbar 
+					= Helper.GetPrivateProperty<SWF.ListView, SWF.ScrollBar> (typeof (SWF.ListView),
+					                                                          listView,
+					                                                          "UIAHScrollBar");
+				
+			//ListScrollBehaviorObserver updates Navigation
+			observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);			
+			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
+			UpdateScrollBehavior ();
+			
+			} catch (Exception) {}
+		}
+		
+		#endregion
+		
+		#region IScrollBehaviorSubject specialization
+		
+		public bool SupportsHorizontalScrollbar { 
+			get { return listView.Scrollable; } 
+		}
+		
+		public bool SupportsVerticalScrollbar { 
+			get { return listView.Scrollable; }
+		}
+		
+		public IScrollBehaviorObserver ScrollBehaviorObserver { 
+			get { return observer; }
+		}
+		
+		public FragmentControlProvider GetScrollbarProvider (SWF.ScrollBar scrollbar)
+		{
+			//TODO: Implement
+			return null;
 		}
 		
 		#endregion
@@ -50,6 +91,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (MultipleViewPatternIdentifiers.Pattern == behavior)
 				return new MultipleViewProviderBehavior (this);
+//			else if (behavior == SelectionPatternIdentifiers.Pattern) 
+//				return new SelectionProviderBehavior (this); //TODO: Implement
 			else if (GridPatternIdentifiers.Pattern == behavior) {         
 				if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
 					return null; //TODO: Return realization
@@ -72,6 +115,13 @@ namespace Mono.UIAutomation.Winforms
 		#endregion 
 		
 		#region ListProvider specializations
+		
+		public override void Terminate ()
+		{
+			base.Terminate ();
+			
+			observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
+		}
 		
 		public override void InitializeChildControlStructure ()
 		{
@@ -117,7 +167,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override bool IsItemSelected (ListItemProvider item)
 		{
-			return false;
+			return listView.SelectedIndices.Contains (item.Index);
 		}
 		
 		public override ListItemProvider[] GetSelectedItems ()
@@ -127,10 +177,38 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void SelectItem (ListItemProvider item)
 		{
+			if (ContainsItem (item) == true)
+				listView.Items [item.Index].Selected = true;
 		}
 
 		public override void UnselectItem (ListItemProvider item)
 		{
+			if (ContainsItem (item) == true)
+				listView.Items [item.Index].Selected = false;
+		}
+		
+		#endregion
+		
+		#region ListItem: Toggle Methods
+		
+		public override ToggleState GetItemToggleState (ListItemProvider item)
+		{
+			if (listView.CheckBoxes == false)
+				return ToggleState.Indeterminate;
+			
+			if (ContainsItem (item) == true)
+				return listView.Items [item.Index].Checked ? ToggleState.On : ToggleState.Off;
+			else
+				return ToggleState.Indeterminate;
+		}
+		
+		public override void ToggleItem (ListItemProvider item)
+		{
+			if (listView.CheckBoxes == false)
+				return;
+			
+			if (ContainsItem (item) == true)
+				listView.Items [item.Index].Checked = !listView.Items [item.Index].Checked;
 		}
 		
 		#endregion
@@ -144,7 +222,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void ScrollItemIntoView (ListItemProvider item)
 		{
-
 		}
 		
 		#endregion
@@ -153,14 +230,12 @@ namespace Mono.UIAutomation.Winforms
 		
 		protected override Type GetTypeOfObjectCollection ()
 		{
-			//return typeof (SWF.ListView.ListViewItemCollection);
-			return null;
+			return typeof (SWF.ListView.ListViewItemCollection);
 		}
 		
 		protected override object GetInstanceOfObjectCollection ()	
 		{
-			//return listView.Items;
-			return null;
+			return listView.Items;
 		}
 		
 		#endregion
@@ -169,8 +244,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void OnUIAViewChanged (object sender, EventArgs args)
 		{
-			
-			
 			// Selection Pattern always supported
 			// Scroll Pattern depends on visible/enable scrollbars
 
@@ -192,9 +265,28 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 		
+		#region ScrollBehaviorObserver Methods
+		
+		private void OnScrollPatternSupportChanged (object sender, EventArgs args)
+		{
+			UpdateScrollBehavior ();
+		}
+		
+		private void UpdateScrollBehavior ()
+		{
+			if (observer.SupportsScrollPattern == true)
+				SetBehavior (ScrollPatternIdentifiers.Pattern,
+				             new ScrollProviderBehavior (this));
+			else
+				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
+		}
+		
+		#endregion
+		
 		#region Private Fields
 		
 		private SWF.ListView listView;
+		private ScrollBehaviorObserver observer;
 		
 		#endregion
 		
