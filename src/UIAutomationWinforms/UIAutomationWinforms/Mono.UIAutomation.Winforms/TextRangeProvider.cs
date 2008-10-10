@@ -25,11 +25,13 @@
 // 
 
 using System;
+using System.Windows;
 using System.Reflection;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Automation.Text;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -175,10 +177,122 @@ namespace Mono.UIAutomation.Winforms
 			throw new NotImplementedException();
 		}
 
-		public double[] GetBoundingRectangles ()
+		public Rect[] GetBoundingRectangles ()
 		{
-			throw new NotImplementedException();
+			if (StartPoint == EndPoint
+			    || String.IsNullOrEmpty (textboxbase.Text)) {
+				return new Rect[0];
+			}
+
+			object document = GetInternalDocument (textboxbase);
+			if (document == null) {
+				return new Rect[0];
+			}
+			
+			List<Rect> rects = new List<Rect> ();
+
+			int num_lines = GetNumLines (document);
+			for (int i = 0; i < num_lines; i++) {
+				object line = GetLine (document, i);
+				if (line == null) {
+					continue;
+				}
+				
+				rects.Add (GetLineRect (line));
+			}
+
+			return rects.ToArray ();
 		}
+
+#region GetBoundingRectangles support methods
+		private object GetInternalDocument (TextBoxBase textbox)
+		{
+			Type textbox_type = textbox.GetType ();
+			FieldInfo textbox_fi = textbox_type.GetField ("document", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (textbox_fi == null) {
+				// XXX: Is it best to throw an exception here,
+				// or to return silently?
+				throw new Exception ("document field not found in TextBoxBase");
+			}
+			
+			return textbox_fi.GetValue (textbox);
+		}
+
+		private object GetLine (object document, int line)
+		{
+			// TODO: optimize
+			Assembly asm = Assembly.GetAssembly (typeof (TextBoxBase));
+			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
+			if (document_type == null) {
+				throw new Exception ("Internal Document class not found in System.Windows.Forms");
+			}
+
+			MethodInfo mi = document_type.GetMethod ("GetLine", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (mi == null) {
+				throw new Exception ("GetLine method not found in Document class");
+			}
+
+			return mi.Invoke (document, new object[] { line });
+		}
+
+		private int GetNumLines (object document)
+		{
+			Assembly asm = Assembly.GetAssembly (typeof (TextBoxBase));
+			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
+			if (document_type == null) {
+				throw new Exception ("Internal Document class not found in System.Windows.Forms");
+			}
+
+			PropertyInfo pi = document_type.GetProperty ("Lines", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (pi == null) {
+				throw new Exception ("Lines property not found in Document class");
+			}
+
+			return (int)pi.GetValue (document, null);
+		}
+
+		private Rect GetLineRect (object line)
+		{
+			Assembly asm = Assembly.GetAssembly (typeof (TextBoxBase));
+			Type line_type = asm.GetType ("System.Windows.Forms.Line", false);
+			if (line_type == null) {
+				throw new Exception ("Internal Line class not found in System.Windows.Forms");
+			}
+
+			PropertyInfo x_pi
+				= line_type.GetProperty ("X",
+			                                 BindingFlags.NonPublic | BindingFlags.Instance);
+			if (x_pi == null) {
+				throw new Exception ("X property not found in Line class");
+			}
+
+			PropertyInfo y_pi
+				= line_type.GetProperty ("Y",
+			                                 BindingFlags.NonPublic | BindingFlags.Instance);
+			if (y_pi == null) {
+				throw new Exception ("Y property not found in Line class");
+			}
+
+			PropertyInfo width_pi
+				= line_type.GetProperty ("Width",
+			                                 BindingFlags.NonPublic | BindingFlags.Instance);
+			if (width_pi == null) {
+				throw new Exception ("Width property not found in Line class");
+			}
+
+			PropertyInfo height_pi
+				= line_type.GetProperty ("Height",
+			                                 BindingFlags.NonPublic | BindingFlags.Instance);
+			if (height_pi == null) {
+				throw new Exception ("Height property not found in Line class");
+			}
+			
+			return new Rect ((int)x_pi.GetValue (line, null),
+			                 (int)y_pi.GetValue (line, null),
+			                 (int)width_pi.GetValue (line, null),
+			                 (int)height_pi.GetValue (line, null));
+		}
+#endregion
 
 		public IRawElementProviderSimple[] GetChildren ()
 		{

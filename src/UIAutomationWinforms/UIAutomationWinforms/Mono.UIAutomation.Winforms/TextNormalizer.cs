@@ -21,6 +21,7 @@
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
+//	Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
@@ -30,7 +31,6 @@ using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-
 	//Algorithm:
 	//http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.itextrangeprovider.move.aspx
 	public class TextNormalizer
