@@ -37,8 +37,6 @@ namespace Mono.UIAutomation.Winforms
 
 		public ProgressBarProvider (ProgressBar progressBar) : base (progressBar)
 		{
-			SetBehavior (ValuePatternIdentifiers.Pattern,
-			             new ValueProviderBehavior (this));
 			SetBehavior (RangeValuePatternIdentifiers.Pattern,
 			             new RangeValueProviderBehavior (this));
 		}
