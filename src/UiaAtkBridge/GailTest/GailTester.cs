@@ -233,9 +233,11 @@ namespace UiaAtkBridgeTest
 		protected override int ValidNChildrenForASimpleStatusBar { get { return 1; } }
 		protected override int ValidNChildrenForAScrollBar { get { return 0; } }
 
-		public override void RunInGuiThread (VoidDelegate d)
+		public override void RunInGuiThread (System.Threading.ThreadStart d)
 		{
-			Gtk.Application.Invoke (delegate { d (); });
+			Gtk.Application.Invoke (delegate {
+				d ();
+			});
 		}
 		
 		[TestFixtureTearDown]

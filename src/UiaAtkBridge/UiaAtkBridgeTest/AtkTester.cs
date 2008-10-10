@@ -1021,7 +1021,6 @@ namespace UiaAtkBridgeTest
 			return (double)gv.Val;
 		}
 
-		public delegate void VoidDelegate ();
-		public virtual void RunInGuiThread (VoidDelegate d) { d (); }
+		public virtual void RunInGuiThread (System.Threading.ThreadStart d) { d (); }
 	}
 }

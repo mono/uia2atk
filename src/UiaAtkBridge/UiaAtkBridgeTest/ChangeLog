@@ -1,5 +1,9 @@
 2008-10-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: VoidDelegate == ThreadStart
+
+2008-10-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Cosmetic.
 
 2008-10-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
