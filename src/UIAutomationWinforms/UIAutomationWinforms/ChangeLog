@@ -1,3 +1,8 @@
+2008-10-10  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/ScrollProviderBehavior.cs:
+	  Comment added.
+
 2008-10-10  Brad Taylor  <brad@getcoded.net>
 	
 	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: A bit of

@@ -29,6 +29,7 @@ using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 {
+	//TODO: Subclass from Mono.UIAutomation.Winforms.Behaviors.Generic.ScrollProviderBehavior
 
 	internal class ScrollProviderBehavior 
 		: ProviderBehavior, IScrollProvider
