@@ -183,8 +183,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				this.statusBarPanel = statusBarPanel;
 				
-				SetBehavior (TextPatternIdentifiers.Pattern,
-				             new StatusBarPanelTextProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new StatusBarPanelValueProviderBehavior (this));
 			}
