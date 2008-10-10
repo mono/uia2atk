@@ -114,6 +114,12 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListItem/TogglePatternToggleStateEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontallyScrollableEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalScrollPercentEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalViewSizeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticallyScrollableEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalScrollPercent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalViewSizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \

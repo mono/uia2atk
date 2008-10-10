@@ -1,3 +1,29 @@
+2008-10-10  Mario Carrion <mcarrion@novell.com> 
+
+	* Makefile.am, Mono.UIAutomation.Winforms.Events/ListView,
+	  Mono.UIAutomation.Winforms.mdp: ListView.ScrollPattern Events
+	  added.
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs:
+	  ListView.ScrollPattern Events enabled.
+	* Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontallyScrollableEvent.cs:
+	  Represents ListView.ScrollPattern.HorizontallyScrollable Automation
+	  Property Event.
+	* Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalScrollPercentEvent.cs:
+	  Represents ListView.ScrollPattern.HorizontallyScrollPercent
+	  Automation Property Event.
+	* Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalViewSizeEvent.cs:
+	  Represents ListView.ScrollPattern.HorizontalViewSize Automation
+	  Property Event.
+	* Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticallyScrollableEvent.cs:
+	  Represents ListView.ScrollPattern.VerticalScrollable Automation
+	  Property Event.
+	* Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalScrollPercent.cs:
+	  Represents ListView.ScrollPattern.VerticalScrollPercent Automation
+	  Property Event.
+	* Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalViewSizeEvent.cs:
+	  Represents ListView.ScrollPattern.VerticalViewSize Automation
+	  Property Event.
+
 2008-10-10  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Remove unneeded
