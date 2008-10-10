@@ -1,3 +1,7 @@
+2008-10-10  Neville Gao <nevillegao@gmail.com>
+
+	* ProgressBarProviderTest.cs: Deleted ValuePattern test.
+
 2008-10-08  Brad Taylor  <brad@getcoded.net>
 	
 	* TextRangeProviderTest.cs: Add tests for LineNormalize.

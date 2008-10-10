@@ -65,13 +65,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "Not returning RangeValuePatternIdentifiers.");
 			Assert.IsTrue (rangeValueProvider is IRangeValueProvider,
 			               "Not returning RangeValuePatternIdentifiers.");
-			
-			object valueProvider =
-				provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider,
-			                  "Not returning ValuePatternIdentifiers.");
-			Assert.IsTrue (valueProvider is IValueProvider,
-			               "Not returning ValuePatternIdentifiers.");
 		}
 
 		#endregion
@@ -206,59 +199,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			double value = 50;
 			rangeValueProvider.SetValue (value);
 			Assert.AreEqual (value, progressBar.Value, "SetValue value");
-		}
-		
-		#endregion
-		
-		#region IValuePattern Test
-		
-		[Test]
-		public void IValueProviderValueTest ()
-		{
-			ProgressBar progressBar = new ProgressBar ();
-			IRawElementProviderSimple provider =
-				ProviderFactory.GetProvider (progressBar);
-			
-			IValueProvider valueProvider = (IValueProvider)
-				provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider,
-			                  "Not returning ValuePatternIdentifiers.");
-			
-			Assert.AreEqual(valueProvider.Value, progressBar.Text, "Text value");
-		}
-		
-		[Test]
-		public void IValueProviderIsReadOnlyTest ()
-		{
-			ProgressBar progressBar = new ProgressBar ();
-			IRawElementProviderSimple provider =
-				ProviderFactory.GetProvider (progressBar);
-			
-			IValueProvider valueProvider = (IValueProvider)
-				provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider,
-			                  "Not returning ValuePatternIdentifiers.");
-			
-			Assert.AreEqual (valueProvider.IsReadOnly, true, "IsReadOnly value");
-		}
-		
-		[Test]
-		public void IValueProviderSetValueTest ()
-		{
-			ProgressBar progressBar = new ProgressBar ();
-			IRawElementProviderSimple provider =
-				ProviderFactory.GetProvider (progressBar);
-			
-			IValueProvider valueProvider = (IValueProvider)
-				provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider,
-			                  "Not returning ValuePatternIdentifiers.");
-			
-			try {
-				string value = "test";
-				valueProvider.SetValue (value);
-				Assert.Fail ("InvalidOperationException not thrown.");
-			} catch (InvalidOperationException) { }
 		}
 		
 		#endregion
