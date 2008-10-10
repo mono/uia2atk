@@ -1,0 +1,318 @@
+Index: class/Managed.Windows.Forms/System.Windows.Forms/ListView.cs
+===================================================================
+--- class/Managed.Windows.Forms/System.Windows.Forms/ListView.cs	(revision 115497)
++++ class/Managed.Windows.Forms/System.Windows.Forms/ListView.cs	(working copy)
+@@ -102,7 +102,7 @@
+ 		private ItemMatrixLocation [] items_matrix_location;
+ 		private Size item_size; // used for caching item size
+ 		private int custom_column_width; // used when using Columns with SmallIcon/List views
+-		private int hot_item_index = -1;
++		private int hot_item_index = -1; 
+ #if NET_2_0
+ 		private bool hot_tracking;
+ 		private ListViewInsertionMark insertion_mark;
+@@ -762,7 +762,14 @@
+ 		[DefaultValue (true)]
+ 		public bool MultiSelect {
+ 			get { return multiselect; }
+-			set { multiselect = value; }
++			set { 
++
++				multiselect = value; 
++#if NET_2_0
++				// UIA Framework: Event used by Selection Pattern in ListView provider
++				OnUIAMultiSelectChanged ();
++#endif
++			}
+ 		}
+ 
+ 
+@@ -1046,6 +1053,11 @@
+ 					h_scroll.Value = v_scroll.Value = 0;
+ 					view = value; 
+ 					Redraw (true);
++					
++#if NET_2_0
++					// UIA Framework: Event used to update UIA Tree.
++					OnUIAViewChanged ();
++#endif
+ 				}
+ 			}
+ 		}
+@@ -4911,6 +4923,31 @@
+ 			private ListViewGroup group;
+ #endif
+ 
++			#region UIA Framework Events 
++#if NET_2_0
++			//NOTE:
++			//	We are using Reflection to add/remove internal events.
++			//	Class ListViewProvider uses the events.
++			//
++			//Event used to generate UIA StructureChangedEvent
++			static object UIACollectionChangedEvent = new object ();
++
++			internal event CollectionChangeEventHandler UIACollectionChanged {
++				add { owner.Events.AddHandler (UIACollectionChangedEvent, value); }
++				remove { owner.Events.RemoveHandler (UIACollectionChangedEvent, value); }
++			}
++
++			internal void OnUIACollectionChangedEvent (CollectionChangeEventArgs args)
++			{
++				CollectionChangeEventHandler eh
++					= (CollectionChangeEventHandler) owner.Events [UIACollectionChangedEvent];
++				if (eh != null)
++					eh (owner, args);
++			}
++
++#endif
++			#endregion UIA Framework Events 
++
+ 			// The collection can belong to a ListView (main) or to a ListViewGroup (sub-collection)
+ 			// In the later case ListViewItem.ListView never gets modified
+ 			private bool is_main_collection = true;
+@@ -4998,7 +5035,17 @@
+ 					}
+ #endif
+ 
++#if NET_2_0
++					//UIA Framework event: Item Removed
++					OnUIACollectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Remove, index));
++#endif
+ 					list [index] = value;
++
++#if NET_2_0
++					//UIA Framework event: Item Removed
++					OnUIACollectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Add, index));
++#endif
++
+ 					CollectionChanged (true);
+ 				}
+ 			}
+@@ -5034,6 +5081,13 @@
+ 						this [index] = (ListViewItem) value;
+ 					else
+ 						this [index] = new ListViewItem (value.ToString ());
++
++#if NET_2_0
++					//UIA Framework event: Item Replaced
++					OnUIACollectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Remove, index));
++					OnUIACollectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Add, index));
++#endif
++
+ 					OnChange ();
+ 				}
+ 			}
+@@ -5151,6 +5205,11 @@
+ 
+ 				list.Clear ();
+ 				CollectionChanged (false);
++
++#if NET_2_0
++				//UIA Framework event: Items Removed
++				OnUIACollectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Refresh, -1));
++#endif
+ 			}
+ 
+ 			public bool Contains (ListViewItem item)
+@@ -5230,6 +5289,11 @@
+ 				result = list.Add (li);
+ 				CollectionChanged (true);
+ 
++#if NET_2_0
++				//UIA Framework event: Item Added
++				OnUIACollectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Add, list.Count - 1));
++#endif
++
+ 				return result;
+ 			}
+ 
+@@ -5249,6 +5313,11 @@
+ 					this.Insert (index, (ListViewItem) item);
+ 				else
+ 					this.Insert (index, item.ToString ());
++
++#if NET_2_0
++				//UIA Framework event: Item Added
++				OnUIACollectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Add, index));
++#endif
+ 			}
+ 
+ 			void IList.Remove (object item)
+@@ -5319,6 +5388,11 @@
+ 				if (is_main_collection || item.ListView != null)
+ 					CollectionChanged (true);
+ 
++#if NET_2_0
++				//UIA Framework event: Item Added
++				OnUIACollectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Add, index));
++#endif
++
+ 				return item;
+ 			}
+ 
+@@ -5401,6 +5475,11 @@
+ 				CollectionChanged (false);
+ 				if (selection_changed && owner != null)
+ 					owner.OnSelectedIndexChanged (EventArgs.Empty);
++
++#if NET_2_0
++				//UIA Framework event: Item Removed 
++				OnUIACollectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Remove, index));
++#endif
+ 			}
+ 
+ #if NET_2_0
+@@ -5453,6 +5532,11 @@
+ #endif
+ 
+ 				list.Add (value);
++
++#if NET_2_0
++				//UIA Framework event: Item Added
++				OnUIACollectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Add, list.Count - 1));
++#endif
+ 			}
+ 
+ 			void CollectionChanged (bool sort)
+@@ -5509,6 +5593,31 @@
+ 			private readonly ListView owner;
+ 			private ArrayList list;
+ 
++			#region UIA Framework Events 
++#if NET_2_0
++			//NOTE:
++			//	We are using Reflection to add/remove internal events.
++			//	Class ListViewProvider uses the events for Selection Pattern.
++			//
++			//Event used to generate UIA StructureChangedEvent
++			static object UIACollectionChangedEvent = new object ();
++
++			internal event CollectionChangeEventHandler UIACollectionChanged {
++				add { owner.Events.AddHandler (UIACollectionChangedEvent, value); }
++				remove { owner.Events.RemoveHandler (UIACollectionChangedEvent, value); }
++			}
++
++			internal void OnUIACollectionChangedEvent (CollectionChangeEventArgs args)
++			{
++				CollectionChangeEventHandler eh
++					= (CollectionChangeEventHandler) owner.Events [UIACollectionChangedEvent];
++				if (eh != null)
++					eh (owner, args);
++			}
++
++#endif
++			#endregion UIA Framework Events 
++
+ 			#region Public Constructor
+ 			public SelectedIndexCollection (ListView owner)
+ 			{
+@@ -5583,6 +5692,11 @@
+ 
+ 				owner.Items [itemIndex].Selected = true;
+ 
++#if NET_2_0
++				//UIA Framework event: Item Selected
++				OnUIACollectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Remove, itemIndex));
++#endif
++
+ 				if (!owner.IsHandleCreated)
+ 					return 0;
+ 
+@@ -5603,6 +5717,11 @@
+ 				int [] indexes = (int []) List.ToArray (typeof (int));
+ 				foreach (int index in indexes)
+ 					owner.Items [index].Selected = false;
++
++#if NET_2_0
++				//UIA Framework event: Items Unselected
++				OnUIACollectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Refresh, -1));
++#endif
+ 			}
+ 
+ 			public bool Contains (int selectedIndex)
+@@ -5674,6 +5793,11 @@
+ 					throw new ArgumentOutOfRangeException ("itemIndex");
+ 
+ 				owner.Items [itemIndex].Selected = false;
++
++#if NET_2_0
++				//UIA Framework event: Item Unselected
++				OnUIACollectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Remove, itemIndex));
++#endif
+ 			}
+ #endif
+ 			#endregion	// Public Methods
+@@ -5711,6 +5835,11 @@
+ 				int idx = List.BinarySearch (index);
+ 				if (idx != -1)
+ 					List.RemoveAt (idx);
++
++#if NET_2_0
++				//UIA Framework event: Item Unselected
++				OnUIACollectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Remove, idx));
++#endif
+ 			}
+ 
+ 			// actually store index in the collection
+@@ -5732,6 +5861,11 @@
+ 				}
+ 
+ 				List.Insert (iMin, index);
++
++#if NET_2_0
++				//UIA Framework event: Item Selected
++				OnUIACollectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Remove, index));
++#endif
+ 			}
+ #endif
+ 
+@@ -6037,5 +6171,48 @@
+ 		{
+ 		}
+ #endif
++
++#if NET_2_0
++		
++		#region UIA Framework: Methods, Properties and Events
++		
++		static object UIAMultiSelectChangedEvent = new object ();
++		static object UIAViewChangedEvent = new object ();
++
++		internal ScrollBar UIAHScrollBar {
++			get { return h_scroll; }
++		}
++
++		internal ScrollBar UIAVScrollBar {
++			get { return v_scroll; }
++		}
++
++		internal event EventHandler UIAMultiSelectChanged {
++			add { Events.AddHandler (UIAMultiSelectChangedEvent, value); }
++			remove { Events.RemoveHandler (UIAMultiSelectChangedEvent, value); }
++		}
++
++		internal event EventHandler UIAViewChanged {
++			add { Events.AddHandler (UIAViewChangedEvent, value); }
++			remove { Events.RemoveHandler (UIAViewChangedEvent, value); }
++		}
++
++		private void OnUIAMultiSelectChanged ()
++		{
++			EventHandler eh = (EventHandler) Events [UIAMultiSelectChangedEvent];
++			if (eh != null)
++				eh (this, EventArgs.Empty);
++		}
++
++		private void OnUIAViewChanged ()
++		{
++			EventHandler eh = (EventHandler) Events [UIAViewChangedEvent];
++			if (eh != null)
++				eh (this, EventArgs.Empty);
++		}
++
++		#endregion // UIA Framework: Methods, Properties and Events
++
++#endif
+ 	}
+ }

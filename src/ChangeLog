@@ -1,3 +1,7 @@
+2008-10-10 Mario Carrion <mcarrion@novell.com>
+
+	* patches/listview.patch: File added.
+
 2008-10-02 Brian G. Merrell <bgmerrell@gmail.com> 
 
 	* UiaAtkBridge/atspimon.py: Check for dead (as reported by Accerciser)
