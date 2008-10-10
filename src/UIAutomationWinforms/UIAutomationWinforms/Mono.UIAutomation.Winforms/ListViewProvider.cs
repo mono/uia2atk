@@ -91,8 +91,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (MultipleViewPatternIdentifiers.Pattern == behavior)
 				return new MultipleViewProviderBehavior (this);
-//			else if (behavior == SelectionPatternIdentifiers.Pattern) 
-//				return new SelectionProviderBehavior (this); //TODO: Implement
+			else if (behavior == SelectionPatternIdentifiers.Pattern) 
+				return new SelectionProviderBehavior (this);
 			else if (GridPatternIdentifiers.Pattern == behavior) {         
 				if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
 					return null; //TODO: Return realization

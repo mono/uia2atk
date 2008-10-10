@@ -63,6 +63,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/MultipleViewProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListView/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs \
@@ -120,6 +121,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticallyScrollableEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalScrollPercent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalViewSizeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternCanSelectMultipleEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternInvalidatedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \

@@ -1,5 +1,21 @@
 2008-10-10  Mario Carrion <mcarrion@novell.com> 
 
+	* Makefile.am, Mono.UIAutomation.Winforms.mdp: Selection Behavior and
+	  its Events added.
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/SelectionProviderBehavior.cs:
+	  ListView.Selection Behavior implementation.
+	* Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternCanSelectMultipleEvent.cs:
+	  ListView.SelectionPattern.CanSelectMultiple Automation Property
+	  Event.
+	* Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternInvalidatedEvent.cs:
+	  ListView.SelectionPattern.Invalidated Automation Property Event.
+	* Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternSelectionEvent.cs:
+	  ListView.SelectionPattern.Selection Automation Property Event.
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Selection Behavior
+	  enabled.
+
+2008-10-10  Mario Carrion <mcarrion@novell.com> 
+
 	* Makefile.am, Mono.UIAutomation.Winforms.Events/ListView,
 	  Mono.UIAutomation.Winforms.mdp: ListView.ScrollPattern Events
 	  added.
