@@ -1,5 +1,10 @@
 2008-10-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* EventMonitor.cs: Fix [TestFixtureTearDown] when no eventMonitor was
+	started.
+
+2008-10-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs: VoidDelegate == ThreadStart
 
 2008-10-10  Andrés G. Aragoneses  <aaragoneses@novell.com>

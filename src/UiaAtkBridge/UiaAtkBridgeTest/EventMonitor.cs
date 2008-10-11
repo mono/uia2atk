@@ -88,14 +88,20 @@ namespace UiaAtkBridgeTest
 		}
 
 		public static void Stop () {
-			StopWithResult ();
+			StopWithResult (true);
+		}
+
+		internal static EventCollection StopWithResult () {
+			return StopWithResult (false);
 		}
 		
-		internal static EventCollection StopWithResult () {
+		private static EventCollection StopWithResult (bool ignoreNotStarted) {
 			lock (locking) {
-				if (singleton == null)
-					throw new Exception ("EventMonitor has not been started yet");
-				
+				if (singleton == null) {
+					if (ignoreNotStarted)
+						return null;
+					throw new Exception ("EventMonitor has not been started yet"); 
+				}
 				p.Kill ();
 				p.Dispose ();
 				p = null;
