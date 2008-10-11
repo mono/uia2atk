@@ -34,12 +34,9 @@ namespace UiaAtkBridgeTest
 	public abstract class AtkTests : AtkTester
 	{
 		
-		//[Test]
-		public void Label () { RunInGuiThread (RealLabel); }
-		public void RealLabel ()
+		[Test]
+		public void Label ()
 		{
-			Console.WriteLine ("<Test:Label count=\"1\">");
-			
 			BasicWidgetType type = BasicWidgetType.Label;
 			Atk.Object accessible = InterfaceText (type);
 
@@ -52,87 +49,49 @@ namespace UiaAtkBridgeTest
 			
 			//TODO: check parent (it seems it only works for real objects)
 			//Assert.IsNotNull (accessible.Parent, "Label parent");
-
-			Console.WriteLine ("</Test:Label>");
 		}
-
-void Button1 () {
-			Console.WriteLine ("<Test:Button count=\"2\">");
-			Console.WriteLine ("YOOOA!1");
+		
+		[Test]
+		public void Button ()
+		{
 			BasicWidgetType type = BasicWidgetType.NormalButton;
-			
-			Atk.Object accessible = null;
+			Atk.Object accessible;
 
 			string name = "test";
-			//RunInGuiThread (Button1);
-Console.WriteLine ("YOOOA!5");
-			System.Threading.Thread.Sleep (10000);
-			Console.WriteLine ("YOOOA!6");
-			
 			accessible = GetAccessible (type, name, true);
-			Console.WriteLine ("YOOOA!3");
+			
 			Atk.StateSet stateSet = accessible.RefStateSet();
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Enabled), "Button Enabled");
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focusable), "Button Focusable");
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Sensitive), "Button Sensitive");
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Showing), "Button Showing");
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Visible), "Button Visible");
-				Console.WriteLine ("YOOOA!4");
-		}
-
-		void Button2() { InterfaceText (BasicWidgetType.NormalButton); }
-		
-		[Test]
-		//public void Button () { RunInGuiThread (RealButton); }
-		public void RealButton ()
-		{
-
-			RunInGuiThread (Button1);
-			Console.WriteLine ("after first runing thread");
-			System.Threading.Thread.Sleep (5000);
-			Console.WriteLine ("heh after first runing thread");
-			RunInGuiThread (Button2);
-			Console.WriteLine ("</Test:Button>");
-//			Console.WriteLine ("YOOOA!5");
-//
-//			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
-//			Console.WriteLine ("YOOOA!6");
-//			InterfaceComponent (type, atkComponent);
-//
-//			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
-//			Console.WriteLine ("YOOOA!8");
-//			InterfaceAction (type, atkAction, accessible);
-//
-//			Console.WriteLine ("YOOOA!9");
-//			PropertyRole (type, accessible);
-//			Console.WriteLine ("YOOOA!10");
-//			
-//			Assert.AreEqual (0, accessible.NAccessibleChildren, "Button numChildren");
-//Console.WriteLine ("YOOOA!11");
-//			
-//			Parent (type, accessible);
-//Console.WriteLine ("YOOOA!12");
-//			
-//			//test with an image
-//			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
-//			Console.WriteLine ("YOOOA!13");
-//			Atk.Image atkImage = CastToAtkInterface <Atk.Image> (accessible);
-//			Console.WriteLine ("YOOOA!14");
-//			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
-//			Console.WriteLine ("YOOOA!15");
-//			InterfaceImage (type, atkImage, atkComponent);
-//Console.WriteLine ("YOOOA!16");
-//			Console.WriteLine ("</Test:Button>");
-//			Assert.Fail ("test button");
-			//});
-		}
-
-		//[Test]
-		public void Checkbox () { RunInGuiThread (RealCheckbox); }
-		public void RealCheckbox ()
-		{
-			Console.WriteLine ("<Test:Checkbox count=\"3\">");
 			
+			InterfaceText (type);
+			
+
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
+			InterfaceAction (type, atkAction, accessible);
+			
+			PropertyRole (type, accessible);
+			
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "Button numChildren");
+
+			Parent (type, accessible);
+
+			//test with an image
+			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
+			Atk.Image atkImage = CastToAtkInterface <Atk.Image> (accessible);
+			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+			InterfaceImage (type, atkImage, atkComponent);
+		}
+
+		[Test]
+		public void Checkbox ()
+		{
 			EventMonitor.Start ();
 
 			BasicWidgetType type = BasicWidgetType.CheckBox;
@@ -167,15 +126,11 @@ Console.WriteLine ("YOOOA!5");
 			EventCollection typeEvs = checkboxEvs.FindByType (evType);
 			
 			Assert.AreEqual (1, typeEvs.Count, "bad number of checked events!" + eventsInXml);
-
-			Console.WriteLine ("</Test:Checkbox>");
 		}
 		
-		//[Test]
-		public void RadioButtons () { RunInGuiThread (RealRadioButtons); }
-		public void RealRadioButtons ()
+		[Test]
+		public void RadioButtons ()
 		{
-			Console.WriteLine ("<Test:RadioButtons count=\"4\">");
 			BasicWidgetType type = BasicWidgetType.RadioButton;
 			Atk.Object accessible, accessible2, accessible3;
 
@@ -213,11 +168,9 @@ Console.WriteLine ("YOOOA!5");
 			Parent (type, accessible);
 			Parent (type, accessible2);
 			Parent (type, accessible3);
-
-			Console.WriteLine ("</Test:RadioButtons>");
 		}
 		
-		//[Test]
+		[Test]
 		public void StatusBar () { RunInGuiThread (RealStatusBar); }
 		public void RealStatusBar()
 		{
@@ -242,7 +195,7 @@ Console.WriteLine ("YOOOA!5");
 			Parent (type, accessible);
 		}
 		
-		//[Test]
+		[Test]
 		public void HScrollBar ()
 		{
 			BasicWidgetType type = BasicWidgetType.HScrollBar;
@@ -266,7 +219,7 @@ Console.WriteLine ("YOOOA!5");
 			InterfaceComponent (type, atkComponent);
 		}
 		
-		//[Test]
+		[Test]
 		public void VScrollBar ()
 		{
 			BasicWidgetType type = BasicWidgetType.VScrollBar;
@@ -291,7 +244,7 @@ Console.WriteLine ("YOOOA!5");
 			InterfaceComponent (type, atkComponent);
 		}
 		
- 		//[Test]
+ 		[Test]
 		public void ProgressBar ()
 		{
 			BasicWidgetType type = BasicWidgetType.ProgressBar;
@@ -313,7 +266,7 @@ Console.WriteLine ("YOOOA!5");
 			Parent (type, accessible);
 		}
 		
- 		//[Test]
+ 		[Test]
 		public void  Spinner ()
 		{
 			BasicWidgetType type = BasicWidgetType.Spinner;
@@ -337,7 +290,7 @@ Console.WriteLine ("YOOOA!5");
 			InterfaceComponent (type, atkComponent);
 		}
 		
-		//[Test]
+		[Test]
 		public void TextBoxEntry ()
 		{
 			BasicWidgetType type = BasicWidgetType.TextBoxEntry;
@@ -368,7 +321,7 @@ Console.WriteLine ("YOOOA!5");
 //			menu.Add (new MenuLayout ("GimmeHelp", new MenuLayout ("About")));
 //		}
 		
-		//[Test]
+		[Test]
 		public void ParentMenu () 
 		{
 			BasicWidgetType type = BasicWidgetType.ParentMenu;
@@ -413,7 +366,7 @@ Console.WriteLine ("YOOOA!5");
 		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
 		//the widget, so we kill all with the method marked as [TestFixtureTearDown]
-		//[Test]
+		[Test]
 		public void ComboBox ()
 		{
 			BasicWidgetType type = BasicWidgetType.ComboBox;
@@ -451,7 +404,7 @@ Console.WriteLine ("YOOOA!5");
 			Assert.AreEqual (0, menuItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
 		}
 		
-		//[Test]
+		[Test]
 		public void Window () { RunInGuiThread (RealWindow); }
 		public void RealWindow ()
 		{

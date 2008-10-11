@@ -1021,6 +1021,6 @@ namespace UiaAtkBridgeTest
 			return (double)gv.Val;
 		}
 
-		public abstract void RunInGuiThread (System.Threading.ThreadStart d);
+		public virtual void RunInGuiThread (System.Threading.ThreadStart d) { d (); }
 	}
 }
