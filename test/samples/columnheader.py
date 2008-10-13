@@ -30,6 +30,10 @@ class ListViewSample(Form):
         # setup title
         self.Text = "ListView control"
 
+        # setup size
+        self.Width = 700
+        self.Height = 250
+
         # setup listview
         self.listview = ListView()
         self.listview.Height = 250
@@ -42,10 +46,11 @@ class ListViewSample(Form):
         self.columnheader1 = ColumnHeader()
         self.columnheader1.Text = "File name"
         self.columnheader1.TextAlign = HorizontalAlignment.Left
+        self.columnheader1.Width = 200
 
         self.columnheader2 = ColumnHeader()
         self.columnheader2.Text = "Location"
-        self.columnheader2.Width = 210
+        self.columnheader2.Width = 300
 
         # add conlumns
         self.listview.Columns.Add(self.columnheader1)

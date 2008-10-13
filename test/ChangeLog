@@ -1,5 +1,10 @@
 2008-10-13  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* samples/columnheader.py:  increase the width of the window and the
+	width of the first column header (to show entire file name).
+	
+2008-10-13  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* resources/procedures.xsl: modify our custom xsl stylesheet to include
 	the estimated running time of the test.
 	* harness/local_run.py: slightly change the format of the unique log
