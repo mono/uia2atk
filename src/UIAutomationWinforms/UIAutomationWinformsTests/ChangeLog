@@ -1,3 +1,8 @@
+2008-10-13  Mario Carrion <mcarrion@novell.com> 
+
+	* Makefile.am: Assembly signing added.
+	* AssemblyInfo.cs: Updated to handle valid signature.
+
 2008-10-10  Mario Carrion <mcarrion@novell.com> 
 
 	* ListBoxProviderTest.cs: Tests FragmentRoot in children.
