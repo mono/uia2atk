@@ -1,3 +1,13 @@
+2008-10-13  Calen Chen <cachen@novell.com>
+
+	* samples/listbox.py: add MultiColumn property 
+	* testers/listbox/listboxframe.py: add dictionary for find listitem, 
+	add assertText to implement Text, move actionsCheck and statesCheck
+	* testers/listbox_basic_ops.py: update actionsCheck and StatesCheck, 
+	add mouseClick action to assert label changed, assert states after 
+	do click action, add test for implement selection, assert listitem's 
+	text value to test text implementation
+
 2008-10-13  Ray Wang <rawang@novell.com>
 
 	* samples/tabpage.py: change textbox event from Leave to Enter to 

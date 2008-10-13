@@ -19,6 +19,7 @@ import os
 
 from strongwind import *
 from listbox import *
+from helpers import *
 from sys import argv
 from os import path
 
@@ -42,27 +43,45 @@ if app is None:
 # just an alias to make things shorter
 lbFrame = app.listBoxFrame
 
-#check ListBox's actions list
-lbFrame.actionsCheck(lbFrame.listitem0)
+#check ListBox item's actions list
+actionsCheck(lbFrame.listitem[0], "List")
 
 #check ListBox's states list
-lbFrame.statesCheck_box(lbFrame.listbox)
+statesCheck(lbFrame.listbox, "List")
 
-#check ListItem's states list
-lbFrame.statesCheck_item(lbFrame.listitem0)
+#check ListItem0,1's default states
+statesCheck(lbFrame.listitem[0], "ListItem", add_states=["focused", "selected"])
+statesCheck(lbFrame.listitem[1], "ListItem")
 
-#click ListItem 
-lbFrame.click('0')
+#mouse click ListItem to change label value
+lbFrame.listitem[10].mouseClick()
 sleep(config.SHORT_DELAY)
-lbFrame.assertItemSelected('0')
+lbFrame.assertLabel('10')
 
-lbFrame.click('5')
+lbFrame.listitem[18].mouseClick()
 sleep(config.SHORT_DELAY)
-lbFrame.assertItemSelected('5')
+lbFrame.assertLabel('18')
 
-lbFrame.click('8')
+#click action to select listitem0 to rise selected state
+lbFrame.click(lbFrame.listitem[0])
 sleep(config.SHORT_DELAY)
-lbFrame.assertItemSelected('8')
+statesCheck(lbFrame.listitem[0], "ListItem", add_states=["focused", "selected"])
+#listitem18 still focused but not selected
+statesCheck(lbFrame.listitem[18], "ListItem")
+
+#check list selection implementation
+lbFrame.listbox.selectChild(2)
+sleep(config.SHORT_DELAY)
+statesCheck(lbFrame.listitem[2], "ListItem", add_states=["focused", "selected"])
+
+#clear selection
+lbFrame.listbox.clearSelection()
+sleep(config.SHORT_DELAY)
+statesCheck(lbFrame.listitem[2], "ListItem", add_states=["focused"])
+
+#check listitem's Text Value
+lbFrame.assertText()
+
 
 #close application frame window
 lbFrame.quit()

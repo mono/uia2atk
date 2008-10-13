@@ -15,7 +15,10 @@ Test accessibility of "ListBox" control
 # imports
 import clr
 clr.AddReference('System.Windows.Forms')
-from System.Windows.Forms import Application, Form, ListBox, Label, DockStyle
+clr.AddReference('System.Drawing')
+
+from System.Windows.Forms import *
+from System.Drawing import *
 
 class ListBoxSample(Form):
     """ListBox control class"""
@@ -37,10 +40,13 @@ class ListBoxSample(Form):
         self.listbox = ListBox()
         self.listbox.Dock = DockStyle.Top
         self.listbox.Click += self.select
+        self.listbox.MultiColumn = True
 
         # add items in ListBox
         for i in range(20):
             self.listbox.Items.Add(str(i))
+
+        self.listbox.SetSelected(0, True)
 
         # add controls
         self.Controls.Add(self.listbox)
