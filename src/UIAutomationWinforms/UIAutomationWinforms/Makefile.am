@@ -72,6 +72,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBar/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBar/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBar/GridProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs \
@@ -135,6 +136,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternSmallChangeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountEvent.cs \
+	Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelGridItemPatternColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/HasKeyBoardFocusPropertyEvent.cs \

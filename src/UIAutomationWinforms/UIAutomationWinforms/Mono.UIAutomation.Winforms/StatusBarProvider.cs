@@ -185,6 +185,8 @@ namespace Mono.UIAutomation.Winforms
 				
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new StatusBarPanelValueProviderBehavior (this));
+				SetBehavior (GridItemPatternIdentifiers.Pattern,
+				             new StatusBarPanelGridItemProviderBehavior (this, statusBarPanel));
 			}
 		
 			#endregion

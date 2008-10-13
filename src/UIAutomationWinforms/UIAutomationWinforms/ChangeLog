@@ -1,3 +1,12 @@
+2008-10-13  Neville Gao <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated files added.
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Updated to support
+	  StatusBarPanel GridItem pattern.
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelGridItemProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelGridItemPatternColumnEvent.cs:
+	  File added.
+
 2008-10-10  Mario Carrion <mcarrion@novell.com> 
 
 	* Makefile.am, Mono.UIAutomation.Winforms.mdp: Selection Behavior and
