@@ -1,3 +1,10 @@
+2008-10-13  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* resources/procedures.xsl: modify our custom xsl stylesheet to include
+	the estimated running time of the test.
+	* harness/local_run.py: slightly change the format of the unique log
+	directory name so that it is easier to read.
+
 2008-10-13  Calen Chen <cachen@novell.com>
 
 	* testers/listbox/listboxframe.py: add assertTable to implement Table for 
