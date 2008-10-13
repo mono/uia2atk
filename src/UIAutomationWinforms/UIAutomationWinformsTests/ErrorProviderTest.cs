@@ -49,6 +49,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			label1.Size = new System.Drawing.Size (30, 30);
 			label1.Location = new System.Drawing.Point (1, 1);
 			
+			Form.Controls.Add (label1);
+			
 			Label label2 = new Label ();
 			label2.Text = "mundo";
 			label2.Size = new System.Drawing.Size (30, 30);
@@ -57,16 +59,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Form.Controls.Add (label2);
 			
 			//We already have 2 controls (label1 y label2) in the form,
-			//lets navigate to look for ErrorProvider, we *shouldn't* find any
-			
-			IRawElementProviderFragmentRoot formProvider 
-				= (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (Form);
-			Assert.IsNotNull (formProvider, "Form provider shouldn't be null");
+			//lets navigate to look for ErrorProvider, we *shouldn't* find any			
+
+			Assert.IsNotNull (FormProvider, "Form provider shouldn't be null");
 			
 			//Lets verify we have two labels *only*
 			
 			IRawElementProviderFragment child =
-				(IRawElementProviderFragment) formProvider.Navigate (NavigateDirection.FirstChild);
+				(IRawElementProviderFragment) FormProvider.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNotNull (child, "child provider shouldn't be null");
 			int count = 1;
 			while (child != null) {
@@ -83,7 +83,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			errorProvider.SetError (label1, "Error: hola");
 			errorProvider.SetError (label2, "Error: mundo");
 			
-			child = (IRawElementProviderFragment) formProvider.Navigate (NavigateDirection.FirstChild);
+			child = (IRawElementProviderFragment) FormProvider.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNotNull (child, "child provider shouldn't be null");
 			count = 1;
 			

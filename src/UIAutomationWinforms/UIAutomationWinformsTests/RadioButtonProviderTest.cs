@@ -215,7 +215,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void SelectionContainerTest ()
 		{		
-			IRawElementProviderSimple formProvider = WindowProvider;
+			IRawElementProviderSimple formProvider = FormProvider;
 			
 			RadioButton r1 = new RadioButton ();
 			r1.Checked = false;

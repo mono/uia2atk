@@ -1,5 +1,13 @@
 2008-10-13  Mario Carrion <mcarrion@novell.com> 
 
+	* BaseProviderTest.cs: Saving FormProvider to use it in subclasses. New
+	  Test added: FragmentRootAsParentTest.
+	* ErrorProviderTest.cs, RadioButtonProviderTest.cs: Updated to BaseTest
+	  changes.
+	* MockBridge.cs: Method added: GetAutomationPropertyEventFrom
+
+2008-10-13  Mario Carrion <mcarrion@novell.com> 
+
 	* Makefile.am: Assembly signing added.
 	* AssemblyInfo.cs: Updated to handle valid signature.
 

@@ -138,5 +138,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			return AutomationEvents [index];
 		}
+		
+		public AutomationPropertyChangedEventTuple GetAutomationPropertyEventFrom (object element, int id)
+		{
+			foreach (AutomationPropertyChangedEventTuple tuple in AutomationPropertyChangedEvents) {
+				if (tuple.element == element && tuple.e.Property.Id == id)
+					return tuple;
+			}
+			
+			
+			return null;
+		}
 	}
 }

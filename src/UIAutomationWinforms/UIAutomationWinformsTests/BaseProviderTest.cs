@@ -33,6 +33,7 @@ using System.Windows.Automation.Provider;
 
 using NUnit.Framework;
 using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Navigation;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
@@ -48,7 +49,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		#region Private Fields
 		
 		private Form form;
-		private IRawElementProviderFragmentRoot windowProvider;
+		private FormProvider formProvider;
 		
 		#endregion
 		
@@ -56,7 +57,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		[SetUp]
 		public virtual void SetUp ()
-		{
+		{			
 			// Inject a mock automation bridge into the
 			// AutomationInteropProvider, so that we don't try
 			// to load the UiaAtkBridge.
@@ -69,6 +70,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			bridge.ClientsAreListening = true;
 			
 			form = new Form ();
+
+			form.Show ();
+			formProvider = (FormProvider) ProviderFactory.GetProvider (form);
 		}
 		
 		[TearDown]
@@ -79,8 +83,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				interopProviderType.GetField ("bridge", BindingFlags.NonPublic | BindingFlags.Static);
 			bridgeField.SetValue (null, null);
 			
-			form.Dispose ();
-			windowProvider = null;
+			form.Close ();
+			formProvider = null;
 		}
 
 		#endregion
@@ -107,28 +111,39 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			Assert.IsFalse ((bool)provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id),
 			                "Toggle to false");
-			
+
 			Assert.AreEqual (1,
-			                 bridge.AutomationPropertyChangedEvents.Count,
-			                 "event count");
-			AutomationPropertyChangedEventTuple eventTuple =
-				bridge.AutomationPropertyChangedEvents [0];
-			Assert.AreEqual (provider,
-			                 eventTuple.element,
-			                 "event element");
-			Assert.AreEqual (AutomationElementIdentifiers.IsEnabledProperty,
-			                 eventTuple.e.Property,
-			                 "event property");
+			                bridge.GetAutomationPropertyEventCount (AutomationElementIdentifiers.IsEnabledProperty),
+			                 "AutomationElementIdentifiers.ElementAddedToSelectionEvent");
+			
+			AutomationPropertyChangedEventTuple tuple 
+				= bridge.GetAutomationPropertyEventFrom (provider,
+				                                         AutomationElementIdentifiers.IsEnabledProperty.Id);
+			
+			Assert.IsNotNull (tuple, "Tuple missing");
 			Assert.AreEqual (initialVal,
-			                 eventTuple.e.OldValue,
-			                 "Old value when disabled");
+			                 tuple.e.OldValue,
+			                 string.Format ("1st. Old value should be true: '{0}'", tuple.e.OldValue));
 			Assert.AreEqual (false,
-			                 eventTuple.e.NewValue,
-			                 "New value when disabled");
+			                 tuple.e.NewValue,
+			                 string.Format ("1st. New value should be true: '{0}'", tuple.e.NewValue));
+			
+			bridge.ResetEventLists ();
 			
 			control.Enabled = true;
 			Assert.IsTrue ((bool)provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id),
 			               "Toggle to true");
+			
+			tuple 
+				= bridge.GetAutomationPropertyEventFrom (provider,
+				                                         AutomationElementIdentifiers.IsEnabledProperty.Id);
+			Assert.IsNotNull (tuple, "Tuple missing");
+			Assert.AreEqual (false,
+			                 tuple.e.OldValue,
+			                 string.Format ("2nd. Old value should be false: '{0}'", tuple.e.OldValue));
+			Assert.AreEqual (true,
+			                 tuple.e.NewValue,
+			                 string.Format ("2nd. New value should be true: '{0}'", tuple.e.NewValue));
 		}
 
 		protected virtual bool IsContentElement {
@@ -244,6 +259,23 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              control.CanFocus);
 		}
 		
+		[Test]
+		public virtual void FragmentRootAsParentTest ()
+		{
+			Control control = GetControlInstance ();			
+			IRawElementProviderFragment fragment 
+				= (IRawElementProviderFragment) GetProviderFromControl (control);
+			if (fragment != null) {
+				IRawElementProviderFragment parent = fragment.Navigate (NavigateDirection.Parent);
+				
+				//http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.irawelementproviderfragment.fragmentroot.aspx
+				if (parent == null)
+					Assert.AreEqual (fragment, fragment.FragmentRoot, "FragmentRoot != Parent");
+				else
+					Assert.AreEqual (parent, fragment.FragmentRoot, "FragmentRoot != Parent");
+			}
+		}
+		
 		#endregion
 		
 		#region Abstract Members
@@ -263,8 +295,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 property.ProgrammaticName);
 		}
 		
-		protected IRawElementProviderFragment WindowProvider {
-			get { return windowProvider; }
+		internal FormProvider FormProvider {
+			get { return formProvider; }
 		}
 		
 		protected Form Form {
@@ -273,15 +305,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		protected IRawElementProviderFragment GetProviderFromControl (Control control)
 		{
-			if (form.Contains (control) == false)
+			if (form.Contains (control) == false && form != control 
+			    && control != null && ((control as Form) == null))
 				form.Controls.Add (control);
 			form.Size = new System.Drawing.Size (400, 400);
-			form.Show ();
-			if (form.Controls.Count == 1) {
-				windowProvider = (IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (form);
-				return windowProvider.Navigate (NavigateDirection.FirstChild);
-			} else
-				return (IRawElementProviderFragment) ProviderFactory.GetProvider (control);
+
+			return (IRawElementProviderFragment) ProviderFactory.GetProvider (control);
 		}
 
 		protected void TestLabeledByAndName (bool expectNonNull, bool expectNameFromLabel)
@@ -299,8 +328,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				
 				Label l = new Label ();
 				l.Text = "my label";
-				f.Controls.Add (l);
-				
+				f.Controls.Add (l);				
 				f.Show ();
 			
 				Type formListenerType = typeof (FormListener);
