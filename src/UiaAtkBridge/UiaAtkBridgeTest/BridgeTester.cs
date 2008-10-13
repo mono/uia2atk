@@ -40,6 +40,11 @@ namespace UiaAtkBridgeTest
 	[TestFixture]
 	public class BridgeTester : AtkTests {
 
+		public override void RunInGuiThread (System.Threading.ThreadStart d)
+		{
+			d ();
+		}
+		
 		public override I CastToAtkInterface <I> (Atk.Object accessible)
 		{
 			if (typeof (I) == typeof (Atk.Component)) {

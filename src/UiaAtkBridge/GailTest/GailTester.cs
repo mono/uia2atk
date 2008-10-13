@@ -39,21 +39,38 @@ namespace UiaAtkBridgeTest
 		{
 			GLib.Global.ProgramName = "nunit-console";
 			guiThread = new GailTestApp.MovingThread ();
-			guiThread.Deleg = Gtk.Application.Init;
+			guiThread.NotMainLoopDeleg = Gtk.Application.Init;
 			guiThread.Start ();
-			guiThread.JoinUntilSuspend ();
+			guiThread.JoinUntilSuspendedByMainLoop ();
 
-			GLib.ExceptionManager.UnhandledException += new GLib.UnhandledExceptionHandler (HandleException);
+			GailTestApp.MainClass.StartRemotely (guiThread);
+			System.Threading.Thread.Sleep (1000);
+		}
+
+		bool alreadyInGuiThread = false;
+		
+		public override void RunInGuiThread (System.Threading.ThreadStart d)
+		{
+			if (alreadyInGuiThread)
+				throw new Exception ("Hey! You called RunInGuiThread nestedly.");
+			else
+				alreadyInGuiThread = true;
+			
+			try {
+				System.Threading.EventWaitHandle h = guiThread.CallDelegInMainLoop (d);
+				h.WaitOne ();
+				h.Close ();
+				if (guiThread.ExceptionHappened != null)
+					throw guiThread.ExceptionHappened;
+			}
+			finally {
+				alreadyInGuiThread = false;
+			}
 		}
 		
-		static void HandleException (GLib.UnhandledExceptionArgs args)
-		{
-			args.ExitApplication = false;
-		}
-
 		public override Atk.Object GetAccessible (BasicWidgetType type, string text, bool real)
 		{
-			return GetAccessible (type, text, real, true);
+			return GetAccessible (type, text, real, false);
 		}
 
 		public override I CastToAtkInterface <I> (Atk.Object accessible)
@@ -135,7 +152,7 @@ namespace UiaAtkBridgeTest
 		public override Atk.Object GetAccessibleThatEmbedsAnImage (
 		  BasicWidgetType type, string text, bool real)
 		{
-			return GetAccessible (type, text, real, false);
+			return GetAccessible (type, text, real, true);
 		}
 		
 		private Atk.Object GetAccessible (BasicWidgetType type, string text, bool real, bool embeddedImage)
@@ -232,25 +249,23 @@ namespace UiaAtkBridgeTest
 		protected override int ValidNumberOfActionsForAButton { get { return 3; } }
 		protected override int ValidNChildrenForASimpleStatusBar { get { return 1; } }
 		protected override int ValidNChildrenForAScrollBar { get { return 0; } }
-
-		public override void RunInGuiThread (System.Threading.ThreadStart d)
-		{
-			Gtk.Application.Invoke (delegate {
-				d ();
-			});
-		}
 		
 		[TestFixtureTearDown]
 		public void End () 
 		{
-			Console.WriteLine ("End() called.");
-			EventMonitor.Stop ();
-			GailTestApp.MainClass.Kill (guiThread);
+			try {
+				EventMonitor.Stop ();
+				GailTestApp.MainClass.Kill (guiThread);
 			
-			//hack: let's wait for the Gtk.Application env to finish gracefully and then we abort the thread
-			System.Threading.Thread.Sleep (1000);
-			
-			guiThread.Dispose ();
+				//hack: let's wait for the Gtk.Application env to finish gracefully and then we abort the thread
+				System.Threading.Thread.Sleep (1000);
+
+				guiThread.Dispose ();
+			}
+			catch (Exception e) {
+				Console.WriteLine ("Exception occurred in TestFixtureDown:" + e);
+				throw;
+			}
 		}
 
 		

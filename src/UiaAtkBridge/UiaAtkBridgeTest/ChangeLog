@@ -1,3 +1,8 @@
+2008-10-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs:
+	* BridgeTester.cs: Solved all the NUnit+Gtk# threading problems.
+
 2008-10-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* EventMonitor.cs: Fix [TestFixtureTearDown] when no eventMonitor was

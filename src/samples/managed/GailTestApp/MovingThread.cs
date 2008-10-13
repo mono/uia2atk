@@ -28,27 +28,79 @@ using System.Threading;
 
 namespace GailTestApp
 {
-	public class MovingThread : IDisposable
+
+	internal class WaitHandleDelegate
 	{
-		public MovingThread()
+		ThreadStart d;
+		GLib.TimeoutHandler h;
+		EventWaitHandle wakeUp;
+		
+		internal WaitHandleDelegate (ThreadStart d, System.Threading.EventWaitHandle wakeUp)
 		{
-			gThread = new Thread(new ThreadStart(Run));
+			if (d == null)
+				throw new ArgumentNullException ("d");
+			
+			this.d = d;
+			this.h = null;
+			this.wakeUp = wakeUp;
 		}
 
+		internal WaitHandleDelegate (GLib.TimeoutHandler h, System.Threading.EventWaitHandle wakeUp)
+		{
+			if (h == null)
+				throw new ArgumentNullException ("h");
+			
+			this.h = h;
+			this.d = null;
+			this.wakeUp = wakeUp;
+		}
+		
+		internal bool DoWork ()
+		{
+			if (d != null)
+				d ();
+			else
+				h ();
+			return wakeUp.Set ();
+		}
+	}
+
+	
+	public class MovingThread : IDisposable
+	{
+		public MovingThread ()
+		{
+			GLib.ExceptionManager.UnhandledException += new GLib.UnhandledExceptionHandler (HandleException);
+			gThread = new Thread (new ThreadStart (Run));
+		}
+
+		static Exception exceptionHappened = null;
+		static EventWaitHandle lastHandle = null;
+
+		public Exception ExceptionHappened {
+			get { return exceptionHappened; }
+		}
+		
+		static void HandleException (GLib.UnhandledExceptionArgs args)
+		{
+			args.ExitApplication = false;
+			exceptionHappened = (Exception)args.ExceptionObject;
+			lastHandle.Set ();
+		}
+		
 		bool alreadyStarted = false;
 
-		private void Run()
+		private void Run ()
 		{
 			int times = 1;
 			while (true)
 			{
-				//Console.WriteLine("going to run for the {0} time", times);
 				if (deleg != null)
-					deleg.Invoke();
-				 lock (this.forState)
+					deleg.Invoke ();
+				lock (this.forState)
 					this.internalState = ThreadState.Stopped;
-				this.wakeUp.Set();
-				restart.WaitOne();
+				this.wakeUp.Set ();
+				restart.WaitOne ();
 				times++;
 			}
 		}
@@ -59,20 +111,33 @@ namespace GailTestApp
 		private object forState = new object();
 		private ThreadState internalState = ThreadState.Stopped;
 
-		public ThreadStart Deleg
+		public ThreadStart NotMainLoopDeleg
 		{
-			set { 
-				if (this.internalState == ThreadState.Running)
-					throw new NotSupportedException ("You cannot assign a delegate while the thread is running. " + 
-					                                 "Maybe you want to assign a GLib delegate for the mainloop? Use GLibDeleg.");
+			set {
+				lock (this.forState) { 
+					if (this.internalState == ThreadState.Running)
+						throw new NotSupportedException ("The Mainloop seems to be already running. Use a MainLoop delegate.");
+				}
 				deleg = value;
 			}
 		}
 		
-		public GLib.TimeoutHandler GLibDeleg
+		public EventWaitHandle CallDelegInMainLoop (System.Threading.ThreadStart d)
 		{
-			set {
-				GLib.Timeout.Add (0, new GLib.TimeoutHandler (value));
+			exceptionHappened = null;
+			EventWaitHandle wakeUpInMainLoop = new AutoResetEvent (false);
+			lock (this.forState) { 
+				if (this.internalState != ThreadState.Running)
+					throw new NotSupportedException ("The Mainloop is not running yet.");
+				lastHandle = wakeUpInMainLoop;
+			}
+			try {
+				//WaitHandleDelegate w = new WaitHandleDelegate (d, wakeUpInMainLoop);
+				
+				return wakeUpInMainLoop;
+			}
+			finally {
+				Gtk.Application.Invoke ( delegate { d (); wakeUpInMainLoop.Set (); });
 			}
 		}
 
@@ -81,7 +146,7 @@ namespace GailTestApp
 			get { return gThread.ThreadState; }
 		}
 
-		public void JoinUntilSuspend()
+		public void JoinUntilSuspendedByMainLoop ()
 		{
 			bool wait = false;
 			lock (forState)
@@ -90,31 +155,31 @@ namespace GailTestApp
 					wait = true;
 			}
 			if (wait)
-				wakeUp.WaitOne();
+				wakeUp.WaitOne ();
 		}
 
-		public void Start()
+		public void Start ()
 		{
 			if (alreadyStarted)
 			{
 				lock (forState)
 					this.internalState = ThreadState.Running;
-				restart.Set();
+				restart.Set ();
 			}
 			else
 			{
 				alreadyStarted = true;
 				lock (forState)
 					this.internalState = ThreadState.Running;
-				this.gThread.Start();
+				this.gThread.Start ();
 			}
 		}
 
-		public void Dispose()
+		public void Dispose ()
 		{
-			wakeUp.Close();
-			restart.Close();
-			gThread.Abort();
+			wakeUp.Close ();
+			restart.Close ();
+			gThread.Abort ();
 		}
 	}
 }

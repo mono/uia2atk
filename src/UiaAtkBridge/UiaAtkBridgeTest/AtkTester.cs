@@ -182,7 +182,7 @@ namespace UiaAtkBridgeTest
 			// it takes a bit before the State is propagated!
 			System.Threading.Thread.Sleep (4000);
 			
-			state = accessible.RefStateSet();
+			state = accessible.RefStateSet ();
 			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled #2");
 			if ((type == BasicWidgetType.CheckBox) || (type == BasicWidgetType.RadioButton) || (type == BasicWidgetType.CheckedListItem))
 				Assert.IsTrue (state.ContainsState (Atk.StateType.Checked), "RefStateSet.Checked");
@@ -1021,6 +1021,6 @@ namespace UiaAtkBridgeTest
 			return (double)gv.Val;
 		}
 
-		public virtual void RunInGuiThread (System.Threading.ThreadStart d) { d (); }
+		public abstract void RunInGuiThread (System.Threading.ThreadStart d);
 	}
 }

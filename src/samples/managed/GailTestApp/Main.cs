@@ -50,7 +50,7 @@ namespace GailTestApp {
 
 			if (guiThread != null) {
 
-				guiThread.Deleg = Run;
+				guiThread.NotMainLoopDeleg = Run;
 				guiThread.Start ();
 				
 				//little hack (it doesn't matter, it's just for the nunit tests) in
@@ -69,11 +69,16 @@ namespace GailTestApp {
 			win.Show ();
 			Application.Run ();
 		}
+
+		public static void StartRemotely (MovingThread guiThread)
+		{
+			Start (guiThread);
+		}
 		
 		public static Gtk.Label GiveMeARealLabel (MovingThread guiThread)
 		{
 			if (win == null)
-				Start (guiThread);
+				throw new Exception ("You should have started the app first");
 			
 			return win.GiveMeARealLabel ();
 		}
@@ -81,7 +86,7 @@ namespace GailTestApp {
 		public static Gtk.Button GiveMeARealButton (MovingThread guiThread)
 		{
 			if (win == null)
-				Start (guiThread);
+				throw new Exception ("You should have started the app first");
 			
 			return win.GiveMeARealButton ();
 		}
@@ -89,7 +94,7 @@ namespace GailTestApp {
 		public static Gtk.Button GiveMeARealCheckBox (MovingThread guiThread)
 		{
 			if (win == null)
-				Start (guiThread);
+				throw new Exception ("You should have started the app first");
 			
 			return win.GiveMeARealCheckBox ();
 		}
@@ -97,7 +102,7 @@ namespace GailTestApp {
 		public static Gtk.ComboBox GiveMeARealComboBox (MovingThread guiThread)
 		{
 			if (win == null)
-				Start (guiThread);
+				throw new Exception ("You should have started the app first");
 			
 			return win.GiveMeARealComboBox ();
 		}
@@ -105,7 +110,7 @@ namespace GailTestApp {
 		public static Gtk.RadioButton GiveMeARealRadioButton (MovingThread guiThread)
 		{
 			if (win == null)
-				Start (guiThread);
+				throw new Exception ("You should have started the app first");
 			
 			return win.GiveMeARealRadioButton ();
 		}
@@ -113,7 +118,7 @@ namespace GailTestApp {
 		public static Gtk.HScrollbar GiveMeARealHScrollbar (MovingThread guiThread)
 		{
 			if (win == null)
-				Start (guiThread);
+				throw new Exception ("You should have started the app first");
 			
 			return win.GiveMeARealHScrollbar ();
 		}
@@ -121,7 +126,7 @@ namespace GailTestApp {
 		public static Gtk.VScrollbar GiveMeARealVScrollbar (MovingThread guiThread)
 		{
 			if (win == null)
-				Start (guiThread);
+				throw new Exception ("You should have started the app first");
 			
 			return win.GiveMeARealVScrollbar ();
 		}
@@ -129,7 +134,7 @@ namespace GailTestApp {
 		public static Gtk.Statusbar GiveMeARealStatusbar (MovingThread guiThread)
 		{
 			if (win == null)
-				Start (guiThread);
+				throw new Exception ("You should have started the app first");
 			
 			return win.GiveMeARealStatusbar ();
 		}
@@ -137,7 +142,7 @@ namespace GailTestApp {
 		public static Gtk.ProgressBar GiveMeARealProgressBar (MovingThread guiThread)
 		{
 			if (win == null)
-				Start (guiThread);
+				throw new Exception ("You should have started the app first");
 			
 			return win.GiveMeARealProgressBar ();
 		}
@@ -145,7 +150,7 @@ namespace GailTestApp {
 		public static Gtk.Entry GiveMeARealEntry (MovingThread guiThread)
 		{
 			if (win == null)
-				Start (guiThread);
+				throw new Exception ("You should have started the app first");
 			
 			return win.GiveMeARealEntry ();
 		}
@@ -153,7 +158,7 @@ namespace GailTestApp {
 		public static Gtk.ImageMenuItem GiveMeARealParentMenu (MovingThread guiThread, string name)
 		{
 			if (win == null)
-				Start (guiThread);
+				throw new Exception ("You should have started the app first");
 			
 			return win.GiveMeARealParentMenu (name);
 		}
@@ -161,22 +166,25 @@ namespace GailTestApp {
 		public static Gtk.Window GiveMeARealWindow (MovingThread guiThread)
 		{
 			if (win == null)
-				Start (guiThread);
+				throw new Exception ("You should have started the app first");
 			
 			return win;
 		}
 		
 		public static void Kill (MovingThread thread) 
 		{
-			thread.GLibDeleg = KillMe;
+			EventWaitHandle wh = thread.CallDelegInMainLoop (KillMe);
+			wh.WaitOne ();
+			if (thread.ExceptionHappened != null)
+				throw thread.ExceptionHappened;
+			wh.Close ();
 		}
 		
-		private static bool KillMe () 
+		private static void KillMe () 
 		{
 			win.Destroy ();
 			win.Dispose ();
 			Application.Quit ();
-			return true;
 		}
 	}
 }
