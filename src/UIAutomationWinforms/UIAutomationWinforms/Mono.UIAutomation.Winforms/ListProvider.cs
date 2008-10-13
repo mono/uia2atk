@@ -78,8 +78,9 @@ namespace Mono.UIAutomation.Winforms
 		#region ListItem: Collection Methods and Properties
 		
 		public abstract int ItemsCount { get; }
-			
-		public virtual ListItemProvider GetItemProviderAt (int index)
+
+		public virtual ListItemProvider GetItemProviderAt (FragmentRootControlProvider rootProvider,
+		                                                   int index)
 		{
 			ListItemProvider item;
 			
@@ -87,7 +88,8 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 			else if (index >= items.Count) {
 				for (int loop = items.Count - 1; loop < index; loop++) {
-					item = new ListItemProvider (GetItemsListProvider (), 
+					item = new ListItemProvider (rootProvider,
+					                             GetItemsListProvider (), 
 					                             Control);
 					items.Add (item);
 					item.InitializeEvents ();
@@ -224,17 +226,13 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return this;
 		}
-
-		#endregion
-		
-		#region Private Methods: StructureChangedEvent
 				
 #pragma warning disable 169
 
-		private void OnCollectionChanged (object sender, CollectionChangeEventArgs args)
+		protected virtual void OnCollectionChanged (object sender, CollectionChangeEventArgs args)
 		{
 			if (args.Action == CollectionChangeAction.Add) {
-				ListItemProvider item = GetItemProviderAt ((int) args.Element);
+				ListItemProvider item = GetItemProviderAt (this, (int) args.Element);
 				OnNavigationChildAdded (true, item);
 			} else if (args.Action == CollectionChangeAction.Remove) {
 				ListItemProvider item = RemoveItemAt ((int) args.Element);

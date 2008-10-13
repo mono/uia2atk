@@ -35,15 +35,18 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal class ListItemProvider : FragmentControlProvider
+	internal class ListItemProvider : FragmentRootControlProvider
 	{
 
 		#region Constructors
 
-		public ListItemProvider (ListProvider provider, Control control) 
+		public ListItemProvider (FragmentRootControlProvider rootProvider,
+		                         ListProvider provider, 
+		                         Control control) 
 			: base (control)
 		{
 			listProvider = provider;
+			this.rootProvider = rootProvider;
 
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
 			             listProvider.GetListItemBehaviorRealization (SelectionItemPatternIdentifiers.Pattern,
@@ -125,13 +128,14 @@ namespace Mono.UIAutomation.Winforms
 		#region IRawElementProviderFragment Interface 
 
 		public override IRawElementProviderFragmentRoot FragmentRoot {
-			get { return ListProvider; }			
+			get { return rootProvider; }
 		}
 
 		#endregion
 		
 		#region Private Fields
 
+		private FragmentRootControlProvider rootProvider;
 		private ListProvider listProvider;
 		private string nameProperty;
 		

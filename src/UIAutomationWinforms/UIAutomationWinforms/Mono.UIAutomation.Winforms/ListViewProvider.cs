@@ -23,9 +23,12 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using SD = System.Drawing;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ListView;
 using Mono.UIAutomation.Winforms.Navigation;
@@ -59,6 +62,9 @@ namespace Mono.UIAutomation.Winforms
 			UpdateScrollBehavior ();
 			
 			} catch (Exception) {}
+			
+			lastView = listView.View;
+			groups = new Dictionary<SWF.ListViewGroup, ListViewGroupProvider> ();
 		}
 		
 		#endregion
@@ -79,8 +85,23 @@ namespace Mono.UIAutomation.Winforms
 		
 		public FragmentControlProvider GetScrollbarProvider (SWF.ScrollBar scrollbar)
 		{
-			//TODO: Implement
-			return null;
+			return new ListViewScrollBarProvider (scrollbar, listView);
+		}
+		
+		#endregion
+		
+		#region SimpleControlProvider: Specializations
+
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.List.Id;
+			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				return true;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "list";
+			else
+				return base.GetPropertyValue (propertyId);
 		}
 		
 		#endregion
@@ -94,9 +115,9 @@ namespace Mono.UIAutomation.Winforms
 			else if (behavior == SelectionPatternIdentifiers.Pattern) 
 				return new SelectionProviderBehavior (this);
 			else if (GridPatternIdentifiers.Pattern == behavior) {         
-				if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
-					return null; //TODO: Return realization
-				else
+//				if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
+//					return null; //TODO: Return realization
+//				else
 					return null;
 			} else
 				return null;
@@ -109,7 +130,28 @@ namespace Mono.UIAutomation.Winforms
 		public override object GetItemPropertyValue (ListItemProvider item,
 		                                             int propertyId)
 		{
-			return null;
+			if (ContainsItem (item) == false)
+				return null;
+			
+			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return listView.Items [item.Index].ToString ();
+			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+				return listView.Focused && listView.SelectedIndices.Contains (item.Index); //TODO: OK?
+			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+				System.Drawing.Rectangle itemRec = listView.GetItemRect (item.Index);
+				System.Drawing.Rectangle rectangle = listView.Bounds;
+				
+				itemRec.X += rectangle.X;
+				itemRec.Y += rectangle.Y;
+				
+				if (listView.FindForm () == listView.Parent)
+					itemRec = listView.TopLevelControl.RectangleToScreen (itemRec);
+				else
+					itemRec = listView.Parent.RectangleToScreen (itemRec);
+	
+				return Helper.RectangleToRect (itemRec);
+			} else
+				return null;
 		}
 		
 		#endregion 
@@ -135,7 +177,12 @@ namespace Mono.UIAutomation.Winforms
 				                        "OnUIAViewChanged");
 			} catch (NotSupportedException) {
 				Console.WriteLine ("{0}: UIAViewChanged not defined", GetType ());
-			}			
+			}
+			
+			observer.InitializeScrollBarProviders ();
+
+			// Children initialization
+			UpdateChildrenStructure ();
 		}
 		
 		public override void FinalizeChildControlStructure ()
@@ -158,7 +205,7 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
-		
+			
 		#region ListItem: Selection Methods and Properties
 		
 		public override int SelectedItemsCount {
@@ -237,10 +284,61 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return listView.Items;
 		}
+			
+		protected override void OnCollectionChanged (object sender, 
+		                                             CollectionChangeEventArgs args)
+		{
+			if (args.Action == CollectionChangeAction.Add) {
+				InitializeProviderAtIndex ((int) args.Element, true);
+//				OnNavigationChildAdded (true, item);
+			} else if (args.Action == CollectionChangeAction.Remove) {
+				ListItemProvider item = RemoveItemAt ((int) args.Element);
+//				OnNavigationChildRemoved (true, item);
+			} else
+				base.OnCollectionChanged (sender, args);
+		}
 		
-		#endregion
+		#endregion		
 		
 		#region Private Methods
+		
+		private void InitializeProviderAtIndex (int index, bool raiseEvent)
+		{			
+			if (index < 0 || index >= ItemsCount)
+				return;
+			
+			// SWF.View.List: Adds items, nothing else
+			
+			if (listView.View == SWF.View.SmallIcon 
+			    || listView.View == SWF.View.LargeIcon) {
+
+				ListViewGroupProvider groupProvider = null;
+				SWF.ListViewGroup listViewGroup = null;
+				
+				if (listView.Items [index].Group == null) {
+					if (listViewNullGroup == null)
+						listViewNullGroup = new SWF.ListViewGroup ("Default");
+
+					listViewGroup = listViewNullGroup;
+				} else
+					listViewGroup = listView.Items [index].Group;
+				
+				if (groups.TryGetValue (listViewGroup, 
+				                        out groupProvider) == false) {
+					groupProvider = new ListViewGroupProvider (listViewGroup,
+					                                           listView);
+					groups [listViewGroup] = groupProvider;
+						
+					OnNavigationChildAdded (raiseEvent, groupProvider);
+				}
+				
+				ListItemProvider item = GetItemProviderAt (groupProvider, index);
+				groupProvider.AddChildProvider (raiseEvent, item);
+			} else {
+				ListItemProvider item = GetItemProviderAt (this, index);
+				OnNavigationChildAdded (raiseEvent, item);
+			}
+		}
 		
 		private void OnUIAViewChanged (object sender, EventArgs args)
 		{
@@ -254,6 +352,7 @@ namespace Mono.UIAutomation.Winforms
 				SetBehavior (GridPatternIdentifiers.Pattern,
 				             null);
 			
+			UpdateChildrenStructure ();
 			
 			//SmallIcon = MultipleView, Selection
 			//LargeIcon = Multipleview, Scroll, Selection
@@ -262,10 +361,6 @@ namespace Mono.UIAutomation.Winforms
 			//Details = MultipleView, Scroll, Selection, Grid
 			//List = MultipleView, Scroll, Selection, Grid
 		}
-		
-		#endregion
-		
-		#region ScrollBehaviorObserver Methods
 		
 		private void OnScrollPatternSupportChanged (object sender, EventArgs args)
 		{
@@ -281,12 +376,105 @@ namespace Mono.UIAutomation.Winforms
 				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
 		}
 		
+		private void UpdateChildrenStructure ()
+		{
+			bool updateView = lastView != listView.View;
+			
+			if (updateView == true) {			
+				foreach (ListViewGroupProvider groupProvider in groups.Values)
+					groupProvider.Terminate ();
+				groups.Clear ();
+				
+				ClearItemsList ();
+				OnNavigationChildrenCleared (true);
+			}
+			
+			for (int index = 0; index < ItemsCount; index++)
+				InitializeProviderAtIndex (index, updateView);
+		}
+		
 		#endregion
 		
 		#region Private Fields
 		
+		private SWF.View lastView;
 		private SWF.ListView listView;
+		private Dictionary<SWF.ListViewGroup, ListViewGroupProvider> groups;
 		private ScrollBehaviorObserver observer;
+		private SWF.ListViewGroup listViewNullGroup;
+		
+		#endregion
+		
+		#region Internal Class: ScrollBar provider
+
+		internal class ListViewScrollBarProvider : ScrollBarProvider
+		{
+			public ListViewScrollBarProvider (SWF.ScrollBar scrollbar,
+			                                  SWF.ListView listView)
+				: base (scrollbar)
+			{
+				this.listView = listView;
+				//TODO: i18n?
+				name = scrollbar is SWF.HScrollBar ? "Horizontal Scroll Bar"
+					: "Vertical Scroll Bar";
+			}
+			
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { 
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (listView);
+				}
+			}			
+			
+			public override object GetPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return name;
+				else
+					return base.GetPropertyValue (propertyId);
+			}
+			
+			private SWF.ListView listView;
+			private string name;
+		}
+		
+		#endregion
+		
+		#region Internal Class: Group Provider 
+		
+		internal class ListViewGroupProvider : GroupBoxProvider
+		{
+			
+			public ListViewGroupProvider (SWF.ListViewGroup group,
+			                              SWF.ListView listView) : base (null)
+			{
+				this.group = group;
+				this.listView = listView;
+				
+				// TODO: Implement ExpandCollapse
+				// TODO: Implement Grid
+			}
+			
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { 
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (listView);
+				}
+			}
+		
+			public override object GetPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.Group.Id;
+				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return group.Header;
+				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+					return null;
+				else
+					return base.GetPropertyValue (propertyId);
+			}
+			
+			private SWF.ListView listView;
+			private SWF.ListViewGroup group;
+		}
 		
 		#endregion
 		

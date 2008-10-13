@@ -1,5 +1,22 @@
 2008-10-13  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Updated to
+	  GetItemProviderAt API changes. Fixed FinalizeChildrenStructure.
+	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs: Removed private
+	  groupBox: Not used. Changed constructor argument: GroupBox ->
+	  Control
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Updated to
+	  GetItemProviderAt API changes
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Constructor updated:
+	  New argument used to return value in FragmentRoot property.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Argument added in
+	  GetItemProviderAt method. OnCollectionChanged visibillity changed
+	  from private to protected virtual.
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Navigation support
+	  for SWF.View.LargeIcon, SWF.View.SmallIcon and SWF.View.List.
+
+2008-10-13  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/AssemblyInfo.cs: InternalVisibleTo attribute added.
 
 2008-10-13  Neville Gao <nevillegao@gmail.com>

@@ -76,7 +76,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override IRawElementProviderFragment GetFocus ()
 		{
-			return GetItemProviderAt (comboboxControl.SelectedIndex);
+			return GetItemProviderAt (this, comboboxControl.SelectedIndex);
 		}		
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
@@ -139,7 +139,7 @@ namespace Mono.UIAutomation.Winforms
 			if (comboboxControl == null || comboboxControl.SelectedIndex == -1)
 				return null;
 			else
-				return new ListItemProvider [] { GetItemProviderAt (comboboxControl.SelectedIndex) };
+				return new ListItemProvider [] { GetItemProviderAt (this, comboboxControl.SelectedIndex) };
 		}
 		
 		public override void SelectItem (ListItemProvider item)
@@ -360,12 +360,13 @@ namespace Mono.UIAutomation.Winforms
 			
 			public override IRawElementProviderFragment GetFocus ()
 			{
-				return comboboxProvider.GetItemProviderAt (comboboxControl.SelectedIndex);
+				return comboboxProvider.GetItemProviderAt (this, comboboxControl.SelectedIndex);
 			}			
 			
-			public override ListItemProvider GetItemProviderAt (int index)
+			public override ListItemProvider GetItemProviderAt (FragmentRootControlProvider rootProvider,
+			                                                    int index)
 			{
-				return comboboxProvider.GetItemProviderAt (index);
+				return comboboxProvider.GetItemProviderAt (rootProvider, index);
 			}
 					
 			public override int IndexOfItem (ListItemProvider item)
@@ -420,7 +421,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				return comboboxControl.Items;
 			}
-			
 
 			public override IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider)
 			{
@@ -434,17 +434,7 @@ namespace Mono.UIAutomation.Winforms
 				base.InitializeChildControlStructure ();
 				
 				for (int index = 0; index < comboboxControl.Items.Count; index++) {
-					ListItemProvider item = GetItemProviderAt (index);
-					OnNavigationChildAdded (false, item);
-				}
-			}
-			
-			public override void FinalizeChildControlStructure ()
-			{
-				base.FinalizeChildControlStructure ();
-				
-				for (int index = 0; index < comboboxControl.Items.Count; index++) {
-					ListItemProvider item = GetItemProviderAt (index);
+					ListItemProvider item = GetItemProviderAt (this, index);
 					OnNavigationChildAdded (false, item);
 				}
 			}
@@ -460,7 +450,7 @@ namespace Mono.UIAutomation.Winforms
 			{
 				return comboboxProvider.GetItemPropertyValue (item, propertyId);
 			}
-
+			
 			internal override IProviderBehavior GetBehaviorRealization (AutomationPattern behavior)
 			{
 				if (behavior == SelectionPatternIdentifiers.Pattern)
