@@ -53,7 +53,6 @@ class PictureBoxFrame(accessibles.Frame):
     def assertImageSize(self, accessible, width=60, height=38):
         procedurelogger.action("assert %s's image size" % accessible)
         size = accessible.imageSize
-        sys.exit(33)
 
         procedurelogger.expectedResult('"%s" image size is %s x %s' %
                                                   (button, width, height))
