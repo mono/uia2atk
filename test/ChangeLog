@@ -1,3 +1,10 @@
+2008-10-13  Ray Wang <rawang@novell.com>
+
+	* samples/tabpage.py: change textbox event from Leave to Enter to 
+	reflect the tabpage status when click on each one
+	* samples/scrollbar.py: add two listboxs with different scrollbar for 
+	testing
+
 2008-10-13  Calen Chen <cachen@novell.com>
 
 	* testers/picturebox/pictureboxframe.py,

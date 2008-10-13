@@ -40,7 +40,7 @@ class TabControlTabPageSample(Form):
         for i in range(5):
             self.tabpage = TabPage()
             self.tabpage.Text = "Tab %s" % i
-            self.tabpage.Leave += self.on_click
+            self.tabpage.Enter += self.on_click
 
             # add controls
             self.tabcontrol.TabPages.Add(self.tabpage)
