@@ -1,12 +1,24 @@
 2008-10-13  Calen Chen <cachen@novell.com>
 
+	* testers/listbox/listboxframe.py: add assertTable to implement Table for 
+	List role
+	* testers/listbox_basic_ops.py: add assertTable into test. 
+	Bridge_Functional_Specification have mentioned that the provides of 
+	listbox should contains AtkTable, so I think we should test Table 
+	implementation(at present table doesn't implemented for list)
+
+2008-10-13  Calen Chen <cachen@novell.com>
+
 	* samples/listbox.py: add MultiColumn property 
 	* testers/listbox/listboxframe.py: add dictionary for find listitem, 
 	add assertText to implement Text, move actionsCheck and statesCheck
 	* testers/listbox_basic_ops.py: update actionsCheck and StatesCheck, 
-	add mouseClick action to assert label changed, assert states after 
-	do click action, add test for implement selection, assert listitem's 
-	text value to test text implementation
+	add mouseClick action to assert label changed, check states after 
+	do click action, add test for implement selection, check listitem's 
+	text value to test Text implementation(Bridge_Functional_Specification
+	have mentioned that the provides of listbox should contains AtkSelection
+	and the children should contains AtkText, so I think we should test 
+	Selection and Text implementation)
 
 2008-10-13  Ray Wang <rawang@novell.com>
 

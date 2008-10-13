@@ -42,13 +42,22 @@ class ListBoxFrame(accessibles.Frame):
 	
         assert retryUntilTrue(resultMatches)
 
-    #assert Text implementation
+    #assert Text implementation for ListItem role
     def assertText(self, textValue=None):
         procedurelogger.action('check ListItem\'s Text Value')
 
         for textValue in range(20):
             procedurelogger.expectedResult('item "%s"\'s Text is %s' % (self.listitem[textValue],textValue))
             assert self.listitem[textValue].text == str(textValue)
+
+    #assert Table implementation for List role
+    def assertTable(self, accessible, row=11, col=2):
+        procedurelogger.action('check "%s" Table implemetation' % accessible)
+        itable = accessible._accessible.queryTable()
+
+        procedurelogger.expectedResult('"%s" have %s Rows and %s Columns' % (accessible, row, col))
+        assert itable.nRows == row and itable.nColumns == col, "Not match Rows %s and Columns %s" \
+                                                                  % (itable.nRows, itable.nColumns)
     
     #close application main window after running test
     def quit(self):
