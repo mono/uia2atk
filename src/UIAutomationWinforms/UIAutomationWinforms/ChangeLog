@@ -1,3 +1,8 @@
+2008-10-14  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs: Changed
+	  class to static.
+
 2008-10-13  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Updated to

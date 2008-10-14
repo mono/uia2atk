@@ -28,16 +28,8 @@ using Mono.UIAutomation.Winforms;
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 	
-	internal sealed class NavigationFactory
+	internal static class NavigationFactory
 	{
-		#region Constructors
-		
-		private NavigationFactory ()
-		{
-		}
-		
-		#endregion
-		
 		#region Public Static Methods
 		
 		public static INavigation CreateNavigation (FragmentControlProvider provider)
