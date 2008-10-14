@@ -1,3 +1,7 @@
+2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Button.cs: Fix button in order to pass tests without image.
+
 2008-10-14  Mike Gorse <mgorse@novell.com>
 
 	* AutomationBridge.cs: Support hyperlinks.

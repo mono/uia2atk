@@ -397,13 +397,16 @@ namespace UiaAtkBridge
 		
 		public bool SetImageDescription (string description)
 		{
-			imageDescription = description;
-			return true;
+			if (HasImage) {
+				imageDescription = description;
+				return true;
+			}
+			return false;
 		}
 		
 		public string ImageLocale 
 		{
-			get { return imageDescription; /*TODO*/}
+			get { return imageDescription; /*TODO*/ }
 		}
 		
 #endregion
