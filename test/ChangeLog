@@ -1,3 +1,15 @@
+2008-10-14  Calen Chen <cachen@novell.com>
+
+	* testers/listbox/listboxframe.py: add action logs for assertSeletion 
+	and assertClearSelection test
+	* testers/listbox_basic_ops.py: update selection and clear selection 
+	test to show action logs
+	* testers/checkedlistbox/checkedlistboxframe.py: add assertTable to 
+	implement Table test by checking that row and column number is matched, 
+	add assertSelectionChild and assertClearSelection to implement 
+	Selection test
+	* testers/checkedlistbox_basic_ops.py: add test for Table and Selcetion
+
 2008-10-13  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* tools/qamon.py: beginnings of the program to watch for new log files.

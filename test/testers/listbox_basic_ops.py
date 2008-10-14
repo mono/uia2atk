@@ -70,12 +70,12 @@ statesCheck(lbFrame.listitem[0], "ListItem", add_states=["focused", "selected"])
 statesCheck(lbFrame.listitem[18], "ListItem")
 
 #check list selection implementation
-lbFrame.listbox.selectChild(2)
+lbFrame.assertSelectionChild(lbFrame.listbox, 2)
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.listitem[2], "ListItem", add_states=["focused", "selected"])
 
 #clear selection
-lbFrame.listbox.clearSelection()
+lbFrame.assertClearSelection(lbFrame.listbox)
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.listitem[2], "ListItem", add_states=["focused"])
 

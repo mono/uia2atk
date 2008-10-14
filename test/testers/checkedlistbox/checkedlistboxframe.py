@@ -51,6 +51,26 @@ class CheckedListBoxFrame(accessibles.Frame):
         elif listitem.selected:
             procedurelogger.expectedResult('Item "%s" is %s' % (itemname, 'selected'))
             assert self.label2.text == "Item : Checked"
+
+    #assert Selection implementation
+    def assertSelectionChild(self, accessible, childIndex):
+        procedurelogger.action('selecte childIndex %s in "%s"' % (childIndex, accessible))
+
+        accessible.selectChild(childIndex)
+
+    def assertClearSelection(self, accessible):
+        procedurelogger.action('clear selection in "%s"' % (accessible))
+
+        accessible.clearSelection()
+
+    #assert Table implementation for List role to check row and column number is matched
+    def assertTable(self, accessible, row=20, col=1):
+        procedurelogger.action('check "%s" Table implemetation' % accessible)
+        itable = accessible._accessible.queryTable()
+
+        procedurelogger.expectedResult('"%s" have %s Rows and %s Columns' % (accessible, row, col))
+        assert itable.nRows == row and itable.nColumns == col, "Not match Rows %s and Columns %s" \
+                                                                  % (itable.nRows, itable.nColumns)
     
     #close application main window after running test
     def quit(self):

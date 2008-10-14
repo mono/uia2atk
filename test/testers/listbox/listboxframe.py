@@ -50,7 +50,18 @@ class ListBoxFrame(accessibles.Frame):
             procedurelogger.expectedResult('item "%s"\'s Text is %s' % (self.listitem[textValue],textValue))
             assert self.listitem[textValue].text == str(textValue)
 
-    #assert Table implementation for List role
+    #assert Selection implementation
+    def assertSelectionChild(self, accessible, childIndex):
+        procedurelogger.action('selecte childIndex %s in "%s"' % (childIndex, accessible))
+
+        accessible.selectChild(childIndex)
+
+    def assertClearSelection(self, accessible):
+        procedurelogger.action('clear selection in "%s"' % (accessible))
+
+        accessible.clearSelection()
+
+    #assert Table implementation for List role to check row and column number is matched
     def assertTable(self, accessible, row=11, col=2):
         procedurelogger.action('check "%s" Table implemetation' % accessible)
         itable = accessible._accessible.queryTable()

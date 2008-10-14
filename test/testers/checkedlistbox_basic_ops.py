@@ -113,6 +113,30 @@ clbFrame.listitem[25].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[25], "ListItem", add_states=["focused", "selected", "checked"])
 
+#check list selection implementation
+#select item by childIndex
+clbFrame.assertSelectionChild(clbFrame.listbox1, 6)
+sleep(config.SHORT_DELAY)
+statesCheck(clbFrame.listitem[6], "ListItem", add_states=["selected"])
+
+clbFrame.assertSelectionChild(clbFrame.listbox2, 6)
+sleep(config.SHORT_DELAY)
+statesCheck(clbFrame.listitem[26], "ListItem", add_states=["focused", "selected"])
+
+#clear selection
+clbFrame.assertClearSelection(clbFrame.listbox1)
+sleep(config.SHORT_DELAY)
+statesCheck(clbFrame.listitem[6], "ListItem")
+
+clbFrame.assertClearSelection(clbFrame.listbox2)
+sleep(config.SHORT_DELAY)
+statesCheck(clbFrame.listitem[26], "ListItem", add_states=["focused"])
+
+#check list's table implementation
+clbFrame.assertTable(clbFrame.listbox1)
+clbFrame.assertTable(clbFrame.listbox2, row=30, col=1)
+
+
 #close application frame window
 clbFrame.quit()
 
