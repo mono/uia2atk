@@ -370,12 +370,16 @@ namespace UiaAtkBridgeTest
 			InterfaceValue (type, atkValue, null);
 		}
 
-		protected void InterfaceImage (BasicWidgetType type, Atk.Image implementor, Atk.Component component)
+		protected void InterfaceImage (BasicWidgetType type, Atk.Image implementor, Atk.Component component, 
+		                               Atk.Image withoutImageImplementor)
 		{
 			Assert.IsNull (implementor.ImageDescription, "ImageDescription == null initially");
+			Assert.IsNull (withoutImageImplementor.ImageDescription, "wii.ImageDescription == null initially");
 			string myDesc = "Hola mundo";
 			Assert.IsTrue (implementor.SetImageDescription (myDesc), "Setting the img desc should return success");
+			Assert.IsFalse (withoutImageImplementor.SetImageDescription (myDesc), "Setting the img desc should return false");
 			Assert.AreEqual (myDesc, implementor.ImageDescription, "The img desc should have been overriden correctly");
+			Assert.IsNull (withoutImageImplementor.ImageDescription, "wii.ImageDescription == null always");
 			int ia, ib, ca, cb;
 			implementor.GetImagePosition (out ia, out ib, Atk.CoordType.Screen);
 			component.GetPosition (out ca, out cb, Atk.CoordType.Screen);
@@ -383,12 +387,21 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (ib > 0, "y of the image must be > 0; obtained " + ib);
 			Assert.IsTrue (ia > ca, "x of the image must be > x from the widget; obtained " + ia + "<" + ca);
 			Assert.IsTrue (ib > cb, "y of the image must be > y from the widget; obtained " + ia + "<" + cb);
+
+			withoutImageImplementor.GetImagePosition (out ia, out ib, Atk.CoordType.Screen);
+			Assert.AreEqual (ia, int.MinValue, "x of the image must be int.MinValue; obtained " + ia);
+			Assert.AreEqual (ib, int.MinValue, "y of the image must be int.MinValue; obtained " + ib);
+			
 			implementor.GetImageSize (out ia, out ib);
 			component.GetSize (out ca, out cb);
 			Assert.IsTrue (ia > 0, "width of the image must be > 0; obtained " + ia);
-			Assert.IsTrue (ib > 0, "height of the image must be > 0; obtained " + ia);
+			Assert.IsTrue (ib > 0, "height of the image must be > 0; obtained " + ib);
 			Assert.IsTrue (ia < ca, "width of the image must be < width from the widget; obtained " + ia + ">" + ca);
-			Assert.IsTrue (ib < cb, "height of the image must be < height from the widget; obtained " + ia + ">" + ca);
+			Assert.IsTrue (ib < cb, "height of the image must be < height from the widget; obtained " + ib + ">" + cb);
+
+			withoutImageImplementor.GetImageSize (out ia, out ib);
+			Assert.AreEqual (ia, -1, "width of the image must be int.MinValue; obtained " + ia);
+			Assert.AreEqual (ib, -1, "height of the image must be int.MinValue; obtained " + ib);
 		}
 		
 		protected void PropertyRole (BasicWidgetType type, Atk.Object accessible)

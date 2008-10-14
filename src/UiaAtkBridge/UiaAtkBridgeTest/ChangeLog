@@ -1,5 +1,10 @@
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs:
+	* AtkTester.cs: Testing Atk.Image interface in buttons without image.
+
+2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Cosmetic.
 
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
