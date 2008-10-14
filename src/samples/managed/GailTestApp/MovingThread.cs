@@ -29,43 +29,6 @@ using System.Threading;
 namespace GailTestApp
 {
 
-	internal class WaitHandleDelegate
-	{
-		ThreadStart d;
-		GLib.TimeoutHandler h;
-		EventWaitHandle wakeUp;
-		
-		internal WaitHandleDelegate (ThreadStart d, System.Threading.EventWaitHandle wakeUp)
-		{
-			if (d == null)
-				throw new ArgumentNullException ("d");
-			
-			this.d = d;
-			this.h = null;
-			this.wakeUp = wakeUp;
-		}
-
-		internal WaitHandleDelegate (GLib.TimeoutHandler h, System.Threading.EventWaitHandle wakeUp)
-		{
-			if (h == null)
-				throw new ArgumentNullException ("h");
-			
-			this.h = h;
-			this.d = null;
-			this.wakeUp = wakeUp;
-		}
-		
-		internal bool DoWork ()
-		{
-			if (d != null)
-				d ();
-			else
-				h ();
-			return wakeUp.Set ();
-		}
-	}
-
-	
 	public class MovingThread : IDisposable
 	{
 		public MovingThread ()
@@ -122,7 +85,7 @@ namespace GailTestApp
 			}
 		}
 		
-		public EventWaitHandle CallDelegInMainLoop (System.Threading.ThreadStart d)
+		public EventWaitHandle CallDelegInMainLoop (System.Action d)
 		{
 			exceptionHappened = null;
 			EventWaitHandle wakeUpInMainLoop = new AutoResetEvent (false);
@@ -132,8 +95,6 @@ namespace GailTestApp
 				lastHandle = wakeUpInMainLoop;
 			}
 			try {
-				//WaitHandleDelegate w = new WaitHandleDelegate (d, wakeUpInMainLoop);
-				
 				return wakeUpInMainLoop;
 			}
 			finally {

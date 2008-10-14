@@ -40,7 +40,7 @@ namespace UiaAtkBridgeTest
 	[TestFixture]
 	public class BridgeTester : AtkTests {
 
-		public override void RunInGuiThread (System.Threading.ThreadStart d)
+		public override void RunInGuiThread (System.Action d)
 		{
 			d ();
 		}

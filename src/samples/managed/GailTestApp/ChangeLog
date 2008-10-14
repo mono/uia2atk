@@ -1,5 +1,10 @@
 2008-10-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* MovingThread.cs:
+	* GailTestApp.mdp: Semantic cleanup.
+
+2008-10-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Main.cs:
 	* MovingThread.cs: Solved all the NUnit+Gtk# threading problems.
 

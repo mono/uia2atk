@@ -1,5 +1,12 @@
 2008-10-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Makefile.am:
+	* AtkTester.cs:
+	* BridgeTester.cs:
+	* UiaAtkBridgeTest.mdp: Semantic cleanup.
+
+2008-10-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs:
 	* BridgeTester.cs: Solved all the NUnit+Gtk# threading problems.
 

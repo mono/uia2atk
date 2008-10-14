@@ -45,11 +45,13 @@ namespace UiaAtkBridgeTest
 
 			GailTestApp.MainClass.StartRemotely (guiThread);
 			System.Threading.Thread.Sleep (1000);
+			EventMonitor.Start ();
+			System.Threading.Thread.Sleep (1000);
 		}
 
 		bool alreadyInGuiThread = false;
 		
-		public override void RunInGuiThread (System.Threading.ThreadStart d)
+		public override void RunInGuiThread (System.Action d)
 		{
 			if (alreadyInGuiThread)
 				throw new Exception ("Hey! You called RunInGuiThread nestedly.");
@@ -66,6 +68,7 @@ namespace UiaAtkBridgeTest
 			finally {
 				alreadyInGuiThread = false;
 			}
+			System.Threading.Thread.Sleep (2000);
 		}
 		
 		public override Atk.Object GetAccessible (BasicWidgetType type, string text, bool real)
