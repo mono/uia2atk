@@ -576,7 +576,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (obj2, "LinkLabel GetObject #2");
 			Assert.IsTrue (obj2.RefStateSet ().ContainsState (Atk.StateType.Enabled), "RefStateSet().Contains(Enabled)");
 			
-			Atk.Action atkAction = CastToAtkInterface <Atk.Action>(obj2);
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (obj2);
 			Assert.AreEqual (1, atkAction.NActions, "LinkLabel link NActions");
 			Assert.IsTrue (atkAction.DoAction (0), "LinkLabel DoAction #1");
 			Assert.IsFalse (atkAction.DoAction (1), "LinkLabel DoAction OOR #1");

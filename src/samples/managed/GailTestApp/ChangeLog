@@ -1,5 +1,9 @@
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Main.cs: Remove hacky API only needed before StartRemotely ().
+
+2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* MainWindow.cs:
 	* gtk-gui/gui.stetic:
 	* gtk-gui/MainWindow.cs: Add a button-img, for real.

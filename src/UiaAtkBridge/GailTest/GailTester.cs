@@ -38,16 +38,13 @@ namespace UiaAtkBridgeTest
 		static GailTester ()
 		{
 			try {
-				Console.WriteLine (" eooo");
 				GLib.Global.ProgramName = "nunit-console";
 				guiThread = new GailTestApp.MovingThread ();
 				guiThread.NotMainLoopDeleg = Gtk.Application.Init;
 				guiThread.Start ();
 				guiThread.JoinUntilSuspendedByMainLoop ();
 	
-				Console.WriteLine (" eooo5");
 				GailTestApp.MainClass.StartRemotely (guiThread);
-				Console.WriteLine (" eooo3");
 				System.Threading.Thread.Sleep (1000);
 				EventMonitor.Start ();
 				System.Threading.Thread.Sleep (1000);
@@ -135,7 +132,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ComboBox:
 				widget = new Gtk.ComboBox ();
 				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealComboBox (guiThread);
+					widget = GailTestApp.MainClass.GiveMeARealComboBox ();
 	
 				//FIXME: update this line when this bug is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=324899
 				((Gtk.ListStore)((Gtk.ComboBox) widget).Model).Clear ();
@@ -148,7 +145,7 @@ namespace UiaAtkBridgeTest
 				if (!real)
 					throw new NotSupportedException ("No unreal widget access for ParentMenu now");
 				
-				widget = GailTestApp.MainClass.GiveMeARealParentMenu (guiThread, name[0]);
+				widget = GailTestApp.MainClass.GiveMeARealParentMenu (name [0]);
 				
 				Gtk.Application.Invoke (delegate {
 					//figure out how to remove old menus and add these ones: names[from 1]
@@ -176,50 +173,43 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.Label:
 				widget = new Gtk.Label ();
 				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealLabel (guiThread);
+					widget = GailTestApp.MainClass.GiveMeARealLabel ();
 				((Gtk.Label)widget).Text = text;
 				break;
 			case BasicWidgetType.NormalButton:
 				widget = new Gtk.Button ();
 				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealButton (guiThread);
+					widget = GailTestApp.MainClass.GiveMeARealButton ();
 				((Gtk.Button)widget).Label = text;
-				if (embeddedImage) {
-					string uiaQaPath = System.IO.Directory.GetCurrentDirectory ();
-					Gtk.Image img = new Gtk.Image ();
-					img.FromFile = uiaQaPath + "/../../../../../test/samples/opensuse60x38.gif";
-					img.Show ();
-					((Gtk.Button)widget).Image = img;
-				}
 				break;
 			case BasicWidgetType.Window:
 				widget = new Gtk.Window (text);
 				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealWindow (guiThread);
+					widget = GailTestApp.MainClass.GiveMeARealWindow ();
 				break;
 			case BasicWidgetType.CheckBox:
 				widget = new Gtk.CheckButton ();
 				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealCheckBox (guiThread);
+					widget = GailTestApp.MainClass.GiveMeARealCheckBox ();
 				((Gtk.CheckButton)widget).Label = text;
 				break;
 			case BasicWidgetType.RadioButton:
 				if (!real)
 					throw new NotSupportedException ("We cannot use non-real radio buttons because of some wierd behaviour");
 				
-				widget = GailTestApp.MainClass.GiveMeARealRadioButton (guiThread);
+				widget = GailTestApp.MainClass.GiveMeARealRadioButton ();
 				break;
 			case BasicWidgetType.StatusBar:
 				widget = new Gtk.Statusbar ();
 				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealStatusbar (guiThread);
+					widget = GailTestApp.MainClass.GiveMeARealStatusbar ();
 				((Gtk.Statusbar)widget).Push (0, text);
 				break;
 			case BasicWidgetType.TextBoxEntry:
 				if (!real)
 					throw new NotSupportedException ();
 				
-				widget = GailTestApp.MainClass.GiveMeARealEntry (guiThread);
+				widget = GailTestApp.MainClass.GiveMeARealEntry ();
 				Gtk.Application.Invoke (delegate {
 					((Gtk.Entry)widget).Text = text;
 				});
@@ -228,23 +218,23 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.HScrollBar:
 				widget = new Gtk.HScrollbar (adj);
 				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealHScrollbar (guiThread);
+					widget = GailTestApp.MainClass.GiveMeARealHScrollbar ();
 				break;
 			case BasicWidgetType.VScrollBar:
 				widget = new Gtk.VScrollbar (adj);
 				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealVScrollbar (guiThread);
+					widget = GailTestApp.MainClass.GiveMeARealVScrollbar ();
 				break;
 			case BasicWidgetType.ProgressBar:
 				widget = new Gtk.ProgressBar (adj);
 				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealProgressBar (guiThread);
+					widget = GailTestApp.MainClass.GiveMeARealProgressBar ();
 				break;
 			case BasicWidgetType.Spinner:
 				widget = new Gtk.SpinButton (adj, 1, 2);
 				// real not implemented yet
 				//if (real)
-					//widget = GailTestApp.MainClass.GiveMeARealSpinButton (guiThread);
+					//widget = GailTestApp.MainClass.GiveMeARealSpinButton ();
 				break;
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
