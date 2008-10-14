@@ -221,7 +221,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void UpdateVScrollBehaviorEnable (object sender, EventArgs args)
 		{
-			//Updating Navigation
+			//Updating Navigation			
 			if (subject.SupportsVerticalScrollbar == true
 			    && VerticalScrollBar.Visible == true && VerticalScrollBar.Enabled == true)
 				UpdateScrollbarNavigation (VerticalScrollBar, true);
@@ -302,6 +302,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (type == StructureChangeType.ChildAdded) {
 				provider = subject.GetScrollbarProvider (scrollbar);
+				provider.InitializeEvents ();
 				subject.AddChildProvider (generateEvent, provider);
 			} else {
 				subject.RemoveChildProvider (generateEvent, provider);

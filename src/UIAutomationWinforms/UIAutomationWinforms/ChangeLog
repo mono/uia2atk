@@ -1,5 +1,19 @@
 2008-10-14  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Using MultiColumn as
+	  well for SupportsHorizontalScrollBar property. 
+	
+	  [Fixes Bug #435103]
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Returning Control. 
+	
+	  [Fixes Bug #435103]
+	* Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs: Initializing
+	  events in ScrollBarProvider.
+	
+	  [Fixes Bug #435103]
+
+2008-10-14  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs: Changed
 	  class to static.
 

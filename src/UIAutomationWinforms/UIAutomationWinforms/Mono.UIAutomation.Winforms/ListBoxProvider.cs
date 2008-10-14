@@ -68,7 +68,7 @@ namespace Mono.UIAutomation.Winforms
 		#region IScrollBehaviorSubject specialization
 		
 		public bool SupportsHorizontalScrollbar { 
-			get { return listboxControl.HorizontalScrollbar; } 
+			get { return listboxControl.HorizontalScrollbar || listboxControl.MultiColumn; } 
 		}
 		
 		public bool SupportsVerticalScrollbar { 
@@ -312,7 +312,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 			
 			public override IRawElementProviderFragmentRoot FragmentRoot {
-				get { 
+				get {
 					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (listbox);
 				}
 			}			

@@ -196,7 +196,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			public override IRawElementProviderFragmentRoot FragmentRoot {
 				get { 
-					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (scrollbarContainer);
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (Control);
 				}
 			}
 	
