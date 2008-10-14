@@ -179,7 +179,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.NormalButton:
 				widget = new Gtk.Button ();
 				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealButton ();
+					widget = GailTestApp.MainClass.GiveMeARealButton (embeddedImage);
 				((Gtk.Button)widget).Label = text;
 				break;
 			case BasicWidgetType.Window:

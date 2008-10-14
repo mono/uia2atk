@@ -1,5 +1,10 @@
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Main.cs:
+	* MainWindow.cs: Fix the btn+img test.
+
+2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Main.cs: Remove hacky API only needed before StartRemotely ().
 
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>

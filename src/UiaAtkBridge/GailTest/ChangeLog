@@ -1,5 +1,9 @@
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* GailTester.cs: Fix the btn+img test.
+
+2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* GailTester.cs: Remove hacky API only needed before StartRemotely ().
 
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>

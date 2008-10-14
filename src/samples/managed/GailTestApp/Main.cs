@@ -82,13 +82,18 @@ namespace GailTestApp {
 			
 			return win.GiveMeARealLabel ();
 		}
-		
+
 		public static Gtk.Button GiveMeARealButton ()
+		{
+			return GiveMeARealButton (false);
+		}
+		
+		public static Gtk.Button GiveMeARealButton (bool embeddedImage)
 		{
 			if (win == null)
 				throw new Exception ("You should have started the app first");
 			
-			return win.GiveMeARealButton ();
+			return win.GiveMeARealButton (embeddedImage);
 		}
 		
 		public static Gtk.Button GiveMeARealCheckBox ()

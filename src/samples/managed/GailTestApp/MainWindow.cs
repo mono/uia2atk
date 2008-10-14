@@ -81,8 +81,8 @@ public partial class MainWindow: Gtk.Window
 		return this.lblTest1;
 	}
 	
-	internal Gtk.Button GiveMeARealButton () {
-		return this.btnTest1;
+	internal Gtk.Button GiveMeARealButton (bool embeddedImage) {
+		return (embeddedImage ? this.btnWithImg : this.btnTest1);
 	}
 	
 	internal Gtk.CheckButton GiveMeARealCheckBox () {
