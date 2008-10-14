@@ -53,6 +53,7 @@ GAILTESTAPP = $(BUILD_DIR)/GailTestApp.exe
 UIAATKBRIDGETEST = $(BUILD_DIR)/UiaAtkBridgeTest.dll
 REFERENCES =  \
 	System  \
+	System.Core \
 	WindowsBase \
 	nunit.framework \
 	$(GTK_SHARP_20_LIBS) \
