@@ -49,41 +49,25 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Connect (SWF.Control control)
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ListView.SelectedIndexCollection),
-				                        ((SWF.ListView) control).SelectedIndices, 
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnElementSelectedEvent");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListView) control).SelectedIndexChanged += OnElementSelectedEvent;
 		}
 
 		public override void Disconnect (SWF.Control control)
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ListView.SelectedIndexCollection), 
-				                           ((SWF.ListView) control).SelectedIndices,
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnElementSelectedEvent");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListView) control).SelectedIndexChanged -= OnElementSelectedEvent;
 		}
 		
 		#endregion 
 		
 		#region Protected methods
 		
-		private void OnElementSelectedEvent (object sender, 
-		                                     CollectionChangeEventArgs e)
+		private void OnElementSelectedEvent (object sender, EventArgs args)
 		{
 			ListItemProvider provider = (ListItemProvider) Provider;
+			SWF.ListView listView = (SWF.ListView) provider.Control;
 			
-			if (((SWF.ListBox) provider.Control).SelectedIndex == provider.Index
-			    && provider.ListProvider.SelectedItemsCount == 1)
+			if (listView.SelectedIndices.Count == 1
+			    && listView.SelectedIndices.Contains (provider.Index) == true)
 				RaiseAutomationEvent ();
 		}
 

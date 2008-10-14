@@ -43,6 +43,7 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 			: base (provider, 
 			        SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent)
 		{
+			selected = ((SWF.ListView) provider.Control).SelectedIndices.Contains (provider.Index);
 		}
 		
 		#endregion
@@ -51,46 +52,37 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Connect (SWF.Control control)
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ListView.SelectedIndexCollection),
-				                        ((SWF.ListView) control).SelectedIndices, 
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnElementRemovedEvent");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListView) control).SelectedIndexChanged += OnElementRemovedEvent;
 		}
 
 		public override void Disconnect (SWF.Control control)
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ListView.SelectedIndexCollection), 
-				                           ((SWF.ListView) control).SelectedIndices,
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnElementRemovedEvent");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListView) control).SelectedIndexChanged -= OnElementRemovedEvent;
 		}
 		
 		#endregion 
 		
 		#region Protected methods
 		
-		private void OnElementRemovedEvent (object sender, 
-		                                    CollectionChangeEventArgs e)
+		private void OnElementRemovedEvent (object sender, EventArgs args)
 		{
-			if (e.Action == CollectionChangeAction.Remove) {
-				ListItemProvider listItemProvider = (ListItemProvider) Provider;
-
-				if ((int) e.Element == listItemProvider.Index
-				    && listItemProvider.ListProvider.SelectedItemsCount > 1)
-					RaiseAutomationEvent ();
-			}
+			ListItemProvider provider = (ListItemProvider) Provider;
+			SWF.ListView listView = (SWF.ListView) provider.Control;
+			
+			if (selected == true
+			    && listView.SelectedIndices.Count > 1
+			    && listView.SelectedIndices.Contains (provider.Index) == false)
+				RaiseAutomationEvent ();
+			
+			selected = listView.SelectedIndices.Contains (provider.Index);
 		}
 
+		#endregion
+		
+		#region Private Fields
+		
+		private bool selected;
+		
 		#endregion
 	}
 }

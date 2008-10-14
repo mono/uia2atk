@@ -1,5 +1,16 @@
 2008-10-14  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementAddedEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementRemovedEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementSelectedEvent.cs:
+	  Using ListView.SelectedIndexChanged event to generate Automation
+	  Event.
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternIsSelectedEvent.cs:
+	  Using ListView.SelectedIndexChanged event to generate Automation
+	  Property Event.
+
+2008-10-14  Mario Carrion <mcarrion@novell.com> 
+
 	* Makefile.am, Mono.UIAutomation.Winforms.mdp: ListView:
 	  ListItem.SelectionItem Pattern events added
 	* Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementAddedEvent.cs:

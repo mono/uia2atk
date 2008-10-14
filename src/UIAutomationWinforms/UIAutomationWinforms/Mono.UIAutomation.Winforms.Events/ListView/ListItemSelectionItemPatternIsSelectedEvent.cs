@@ -42,6 +42,7 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 			: base (provider, 
 			        SelectionItemPatternIdentifiers.IsSelectedProperty)
 		{
+			selected = ((SWF.ListView) provider.Control).SelectedIndices.Contains (provider.Index);
 		}
 		
 		#endregion
@@ -50,41 +51,36 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Connect (SWF.Control control)
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ListView.SelectedIndexCollection),
-				                        ((SWF.ListView) control).SelectedIndices,
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnIsSelectedChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListView) control).SelectedIndexChanged += OnIsSelectedChanged;
 		}
 
 		public override void Disconnect (SWF.Control control)
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ListView.SelectedIndexCollection), 
-				                           ((SWF.ListView) control).SelectedIndices,
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnIsSelectedChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListView) control).SelectedIndexChanged -= OnIsSelectedChanged;
 		}
 		
 		#endregion 
 		
 		#region Protected methods
 		
-		private void OnIsSelectedChanged (object sender, 
-		                                  CollectionChangeEventArgs e)
+		private void OnIsSelectedChanged (object sender, EventArgs args)
 		{
-			if ((int) e.Element == ((ListItemProvider) Provider).Index)
+			ListItemProvider listItemProvider = (ListItemProvider) Provider;
+			SWF.ListView listView = (SWF.ListView) listItemProvider.Control;
+			bool selectedChanged = listView.SelectedIndices.Contains (listItemProvider.Index);
+			
+			if (selectedChanged != selected) {
 			    RaiseAutomationPropertyChangedEvent ();
+				selected = selectedChanged;
+			}
 		}
 
+		#endregion
+
+		#region Private Fields
+		
+		private bool selected;
+		
 		#endregion
 	}
 }
