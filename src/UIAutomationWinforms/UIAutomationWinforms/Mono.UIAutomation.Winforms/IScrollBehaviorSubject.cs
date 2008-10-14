@@ -30,8 +30,6 @@ namespace Mono.UIAutomation.Winforms
 	internal interface IScrollBehaviorSubject
 	{
 		IScrollBehaviorObserver ScrollBehaviorObserver { get; }
-		bool SupportsHorizontalScrollbar { get; }
-		bool SupportsVerticalScrollbar { get; }
 		
 		void AddChildProvider (bool raiseEvent, FragmentControlProvider provider);
 		void RemoveChildProvider (bool raiseEvent, FragmentControlProvider provider);

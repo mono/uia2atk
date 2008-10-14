@@ -75,16 +75,12 @@ namespace Mono.UIAutomation.Winforms
 				if (hscrollbar == value)
 					return;
 				
-				if (hscrollbar != null) {
-					hscrollbar.VisibleChanged -= UpdateHScrollBehaviorVisible;
-					hscrollbar.EnabledChanged -= UpdateHScrollBehaviorEnable;
-				}
+				if (hscrollbar != null)
+					hscrollbar.EnabledChanged -= UpdateHScrollBehavior;
 				
 				hscrollbar = value;
-				if (hscrollbar != null) {
-					hscrollbar.VisibleChanged += UpdateHScrollBehaviorVisible;
-					hscrollbar.EnabledChanged += UpdateHScrollBehaviorEnable;
-				}
+				if (hscrollbar != null)
+					hscrollbar.EnabledChanged += UpdateHScrollBehavior;
 			}
 		}
 		
@@ -94,16 +90,12 @@ namespace Mono.UIAutomation.Winforms
 				if (vscrollbar == value)
 					return;
 				
-				if (vscrollbar != null) {
-					vscrollbar.VisibleChanged -= UpdateVScrollBehaviorVisible;
-					vscrollbar.EnabledChanged -= UpdateVScrollBehaviorEnable;
-				}
+				if (vscrollbar != null)
+					vscrollbar.EnabledChanged -= UpdateVScrollBehavior;
 				
 				vscrollbar = value;
-				if (vscrollbar != null) {
-					vscrollbar.VisibleChanged += UpdateVScrollBehaviorVisible;
-					vscrollbar.EnabledChanged += UpdateVScrollBehaviorEnable;
-				}
+				if (vscrollbar != null)
+					vscrollbar.EnabledChanged += UpdateVScrollBehavior;
 			}
 		}
 		
@@ -166,100 +158,40 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Methods
 		
-		private void UpdateHScrollBehaviorEnable (object sender, EventArgs args)
+		private void UpdateHScrollBehavior (object sender, EventArgs args)
 		{
 			//Updating Navigation
-			if (subject.SupportsHorizontalScrollbar == true 
-			    && HorizontalScrollBar.Visible == true && HorizontalScrollBar.Enabled == true)
-				UpdateScrollbarNavigation (HorizontalScrollBar, true);
-			else
-				UpdateScrollbarNavigation (HorizontalScrollBar, false);
-			
-			//Updating Behavior
-			if (HorizontalScrollBar.Enabled == true) {
-				if (scrollpatternSet == false) {
-					if (subject.SupportsHorizontalScrollbar == true)
-						OnScrollPatternSupportChanged ();
-				}
-			} else {
-				if (scrollpatternSet == true) {
-					if (vscrollbar.Visible == true && vscrollbar.Enabled == true)
-						return;
-
-					OnScrollPatternSupportChanged ();
-				}
-			}
-		}
-		
-		private void UpdateHScrollBehaviorVisible (object sender, EventArgs args)
-		{
-			//Updating Navigation
-			if (subject.SupportsHorizontalScrollbar == true 
-			    && HorizontalScrollBar.Visible == true && HorizontalScrollBar.Enabled == true)
+			if (HasHorizontalScrollbar == true)
 				UpdateScrollbarNavigation (HorizontalScrollBar, true);
 			else
 				UpdateScrollbarNavigation (HorizontalScrollBar, false);
 			
 			//Updating Behavior
 			if (scrollpatternSet == false) {
-				if (HorizontalScrollBar.Visible == true) {
-					if (HorizontalScrollBar.Enabled == false 
-					    || subject.SupportsHorizontalScrollbar == false)
-						return;
-
+				if (HasHorizontalScrollbar == true) {
 					OnScrollPatternSupportChanged ();
 				}
 			} else {
-				if (HorizontalScrollBar.Visible == false) {
-					if (vscrollbar.Visible == true && vscrollbar.Enabled)
-						return;
-
+				if (HasHorizontalScrollbar == false && HasVerticalScrollbar == false)
 					OnScrollPatternSupportChanged ();
-				}
 			}
 		}
-		
-		private void UpdateVScrollBehaviorEnable (object sender, EventArgs args)
+
+		private void UpdateVScrollBehavior (object sender, EventArgs args)
 		{
 			//Updating Navigation			
-			if (subject.SupportsVerticalScrollbar == true
-			    && VerticalScrollBar.Visible == true && VerticalScrollBar.Enabled == true)
-				UpdateScrollbarNavigation (VerticalScrollBar, true);
-			else
-				UpdateScrollbarNavigation (VerticalScrollBar, false);
-			
-			//Updating Behavior
-			if (VerticalScrollBar.Visible == true && scrollpatternSet == false)
-				OnScrollPatternSupportChanged ();
-			else if (VerticalScrollBar.Visible == true && scrollpatternSet == true) {
-				if (HorizontalScrollBar.Visible == true && HorizontalScrollBar.Enabled == true)
-					return;
-				OnScrollPatternSupportChanged ();
-			}
-		}		
-		
-		private void UpdateVScrollBehaviorVisible (object sender, EventArgs args)
-		{
-			//Updating Navigation
-			if (subject.SupportsVerticalScrollbar == false
-			    && VerticalScrollBar.Enabled == true && VerticalScrollBar.Visible == true)
+			if (HasVerticalScrollbar == true)
 				UpdateScrollbarNavigation (VerticalScrollBar, true);
 			else
 				UpdateScrollbarNavigation (VerticalScrollBar, false);
 			
 			//Updating Behavior
 			if (scrollpatternSet == false) {
-				if (VerticalScrollBar.Visible == true) {
-					if (VerticalScrollBar.Enabled == false)
-						return;
+				if (HasVerticalScrollbar == true)
 					OnScrollPatternSupportChanged ();
-				}
-			} else {
-				if (VerticalScrollBar.Visible == false) {
-					if (HorizontalScrollBar.Visible == true && HorizontalScrollBar.Enabled == true)
-						return;
+			} else  {
+				if (HasVerticalScrollbar == false && HasHorizontalScrollbar == false)
 					OnScrollPatternSupportChanged ();
-				}
 			}
 		}
 		

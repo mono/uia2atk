@@ -66,15 +66,7 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region IScrollBehaviorSubject specialization
-		
-		public bool SupportsHorizontalScrollbar { 
-			get { return listboxControl.HorizontalScrollbar || listboxControl.MultiColumn; } 
-		}
-		
-		public bool SupportsVerticalScrollbar { 
-			get { return listboxControl.ScrollAlwaysVisible; }
-		}
-		
+
 		public IScrollBehaviorObserver ScrollBehaviorObserver { 
 			get { return observer; }
 		}

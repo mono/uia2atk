@@ -71,14 +71,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region IScrollBehaviorSubject specialization
 		
-		public bool SupportsHorizontalScrollbar { 
-			get { return listView.Scrollable; } 
-		}
-		
-		public bool SupportsVerticalScrollbar { 
-			get { return listView.Scrollable; }
-		}
-		
 		public IScrollBehaviorObserver ScrollBehaviorObserver { 
 			get { return observer; }
 		}
@@ -122,6 +114,15 @@ namespace Mono.UIAutomation.Winforms
 			} else
 				return null;
 		}
+
+//		internal override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+//		                                                                    ListItemProvider listItem)
+//		{
+//			if (behavior == SelectionItemPatternIdentifiers.Pattern)
+//				return new ListItemSelectionItemProviderBehavior (listItem);
+//			else
+//				return base.GetListItemBehaviorRealization (behavior, listItem);
+//		}
 		
 		#endregion
 		
@@ -468,6 +469,12 @@ namespace Mono.UIAutomation.Winforms
 					return group.Header;
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)// FIXME: Implement
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)// FIXME: Implement
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)// FIXME: Implement
+					return false;
 				else
 					return base.GetPropertyValue (propertyId);
 			}

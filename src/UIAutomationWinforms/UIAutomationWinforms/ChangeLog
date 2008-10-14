@@ -1,5 +1,15 @@
 2008-10-14  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms/IScrollBehaviorSubject.cs,
+	  Mono.UIAutomation.Winforms/ListBoxProvider.cs,
+	  Mono.UIAutomation.Winforms/ListViewProvider.cs: Properties removed:
+	  SupportsHorizontalScrollBar, SupportsVerticalScrollBar
+	* Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs: Code cleaned.
+	  Properties removed: SupportsHorizontalScrollBar,
+	  SupportsVerticalScrollBar
+
+2008-10-14  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Using MultiColumn as
 	  well for SupportsHorizontalScrollBar property. 
 	
