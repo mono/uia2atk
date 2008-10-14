@@ -392,8 +392,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			if (scrollProvider.VerticalScrollPercent == 0)
 				Assert.Fail ("Vertical scroll should move");
-//			if (scrollProvider.HorizontalScrollPercent != 100)
-//				Assert.Fail ("Vertical scroll shouldn't move");
 			
 			//EOF-Bug
 
@@ -416,6 +414,32 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				                 "Item should be ListItem");
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
+			
+			//https://bugzilla.novell.com/show_bug.cgi?id=435103
+			listbox.Items.Clear ();
+			listbox.MultiColumn = true;
+			listbox.Items.AddRange (new object[] { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16});
+			
+			//We need to have two scrollbars
+			bool horizontalScrollbar = false;
+			bool verticalScrollbar = false;
+			child = provider.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.ScrollBar.Id) {
+					OrientationType orientation
+						= (OrientationType) child.GetPropertyValue (AutomationElementIdentifiers.OrientationProperty.Id);
+
+					if (orientation == OrientationType.Horizontal)
+						horizontalScrollbar = true;
+					else if (orientation == OrientationType.Vertical)
+						verticalScrollbar = true;
+				}
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.IsTrue (horizontalScrollbar, "Missing Horizontal ScrollBar");
+			Assert.IsFalse (verticalScrollbar, "Missing Vertical ScrollBar");
+			
 		}
 		
 		#endregion

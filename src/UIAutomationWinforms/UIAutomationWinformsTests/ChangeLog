@@ -1,3 +1,7 @@
+2008-10-14  Mario Carrion <mcarrion@novell.com> 
+
+	* ListBoxProviderTest.cs: Test updated. To verify Bug #435103.
+
 2008-10-13  Mario Carrion <mcarrion@novell.com> 
 
 	* BaseProviderTest.cs: Saving FormProvider to use it in subclasses. New
