@@ -37,16 +37,25 @@ namespace UiaAtkBridgeTest
 		
 		static GailTester ()
 		{
-			GLib.Global.ProgramName = "nunit-console";
-			guiThread = new GailTestApp.MovingThread ();
-			guiThread.NotMainLoopDeleg = Gtk.Application.Init;
-			guiThread.Start ();
-			guiThread.JoinUntilSuspendedByMainLoop ();
-
-			GailTestApp.MainClass.StartRemotely (guiThread);
-			System.Threading.Thread.Sleep (1000);
-			EventMonitor.Start ();
-			System.Threading.Thread.Sleep (1000);
+			try {
+				Console.WriteLine (" eooo");
+				GLib.Global.ProgramName = "nunit-console";
+				guiThread = new GailTestApp.MovingThread ();
+				guiThread.NotMainLoopDeleg = Gtk.Application.Init;
+				guiThread.Start ();
+				guiThread.JoinUntilSuspendedByMainLoop ();
+	
+				Console.WriteLine (" eooo5");
+				GailTestApp.MainClass.StartRemotely (guiThread);
+				Console.WriteLine (" eooo3");
+				System.Threading.Thread.Sleep (1000);
+				EventMonitor.Start ();
+				System.Threading.Thread.Sleep (1000);
+			}
+			catch (Exception e) {
+				Console.WriteLine ("Exception at tests initialization: " + e);
+				throw;
+			}
 		}
 
 		bool alreadyInGuiThread = false;

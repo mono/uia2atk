@@ -1,3 +1,7 @@
+2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTester.cs: Catch on tests initialization.
+
 2008-10-14  Brad Taylor  <brad@getcoded.net>
 
         * Makefile.am: Add missing reference to System.Core.
