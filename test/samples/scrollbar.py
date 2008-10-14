@@ -35,7 +35,7 @@ class ListBoxSample(Form):
         self.label1.Dock = DockStyle.Top
 
         self.label2 = Label()
-        self.label2.Text = "listbox with horizental scrollbar" 
+        self.label2.Text = "listbox with horizontal scrollbar" 
         self.label2.AutoSize = True
         self.label2.Dock = DockStyle.Top
 

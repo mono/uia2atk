@@ -19,6 +19,7 @@ import os
 
 from strongwind import *
 from scrollbar import *
+from helpers import *
 from sys import argv
 from os import path
 
@@ -42,33 +43,39 @@ if app is None:
 # just an alias to make things shorter
 sbFrame = app.scrollBarFrame
 
-#check hscrollbar's states list
-sbFrame.statesCheck(sbFrame.scrollbar)
+#check vscrollbar's states list
+statesCheck(sbFrame.hscrollbar, "HScrollBar")
+statesCheck(sbFrame.vscrollbar, "VScrollBar")
 
-#set value to 50
-sbFrame.valueScrollBar(5)
+#set value to 10
+sbFrame.valueScrollBar(sbFrame.hscrollbar, 10)
 sleep(config.SHORT_DELAY)
-sbFrame.assertScrollbar(5)
+sbFrame.assertScrollbar(sbFrame.hscrollbar, 10)
 
 #set value to 0
-sbFrame.valueScrollBar(0)
+sbFrame.valueScrollBar(sbFrame.hscrollbar, 0)
 sleep(config.SHORT_DELAY)
-sbFrame.assertScrollbar(0)
+sbFrame.assertScrollbar(sbFrame.hscrollbar, 0) 
 
-#set value to 100
-sbFrame.valueScrollBar(10)
+#set value to 5
+sbFrame.valueScrollBar(sbFrame.vscrollbar, 5)
 sleep(config.SHORT_DELAY)
-sbFrame.assertScrollbar(10)
+sbFrame.assertScrollbar(sbFrame.vscrollbar, 5)
+
+#set value to 0
+sbFrame.valueScrollBar(sbFrame.vscrollbar, 0)
+sleep(config.SHORT_DELAY)
+sbFrame.assertScrollbar(sbFrame.vscrollbar, 0) 
 
 #set value to -10
-sbFrame.valueScrollBar(-10)
+sbFrame.valueScrollBar(sbFrame.vscrollbar, -10)
 sleep(config.SHORT_DELAY)
-sbFrame.assertScrollbar(-10)
+sbFrame.assertScrollbar(sbFrame.vscrollbar, -10)
 
 #set value to 210
-sbFrame.valueScrollBar(210)
+sbFrame.valueScrollBar(sbFrame.hscrollbar, -210)
 sleep(config.SHORT_DELAY)
-sbFrame.assertScrollbar(210)
+sbFrame.assertScrollbar(sbFrame.hscrollbar, -210)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

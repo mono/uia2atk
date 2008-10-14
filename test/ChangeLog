@@ -1,5 +1,12 @@
 2008-10-14  Calen Chen <cachen@novell.com>
 
+	* samples/scrollbar.py: corrected spelling mistake
+	* testers/scrollbar/scrollbarframe.py: initialize to search for 
+	hscrollbar and vscrollbar
+	* testers/scrollbar_basic_ops.py: add test for hscrollbar in listbox2
+
+2008-10-14  Calen Chen <cachen@novell.com>
+
 	* testers/listbox/listboxframe.py: add action logs for assertSeletion 
 	and assertClearSelection test
 	* testers/listbox_basic_ops.py: update selection and clear selection 

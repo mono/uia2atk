@@ -18,43 +18,29 @@ from scrollbar import *
 # class to represent the main window.
 class ScrollBarFrame(accessibles.Frame):
 
-    # constants
-    # the available widgets on the window
-    LABEL = ""
-
     def __init__(self, accessible):
         super(ScrollBarFrame, self).__init__(accessible)
-        self.label = self.findLabel(self.LABEL)
-        self.scrollbar = self.findScrollBar(None)
-
-    #check scrollbar's all expectant states
-    def statesCheck(self, accessible):
-        procedurelogger.action('check %s\'s all states' % accessible)
-
-        procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
-        
-        for a in states.VScrollBar.states:
-            state = getattr(accessible, a)
-            assert state, "Expected state: %s" % (a)
+        self.listbox1 = self.findList("listbox with vertical scrollbar")
+        self.listbox2 = self.findList("listbox with horizontal scrollbar")
+        self.vscrollbar = self.listbox1.findScrollBar(None)
+        self.hscrollbar = self.listbox2.findScrollBar(None)
 
     #change scrollbar's value
-    def valueScrollBar(self, newValue=None):
+    def valueScrollBar(self, scrollbar, newValue=None):
+        procedurelogger.action('set %s value to "%s"' % (scrollbar, newValue))
+        scrollbar.__setattr__('value', newValue)
 
-        procedurelogger.action('set scrollbar value to "%s"' % newValue)
-        self.findScrollBar(None).__setattr__('value', newValue)
+    def assertScrollbar(self, scrollbar, newValue=None):
+        maximumValue = scrollbar._accessible.queryValue().maximumValue
 
-    def assertScrollbar(self, newValue=None):
-        maximumValue = self.findScrollBar(None)._accessible.queryValue().maximumValue
-
-        def resultMatches():
-            if 0 <= newValue <= maximumValue:
-                procedurelogger.expectedResult('the scrollbar\'s current value is "%s"' % newValue)
-                print "scrollbar's current value is:", self.findScrollBar(None).__getattr__('value')
-                return self.findScrollBar(None).__getattr__('value') == newValue
-            else:
-                procedurelogger.expectedResult('value "%s" out of run' % newValue)
-                return not self.findScrollBar(None).__getattr__('value') == newValue
-        assert retryUntilTrue(resultMatches)
+        if 0 <= newValue <= maximumValue:
+            procedurelogger.expectedResult('the %s\'s current value is "%s"' % (scrollbar, newValue))
+            assert scrollbar.__getattr__('value') == newValue, \
+                       "scrollbar's current value is %s:" % scrollbar.__getattr__('value')
+        else:
+            procedurelogger.expectedResult('value "%s" out of run' % newValue)
+            assert not scrollbar.__getattr__('value') == newValue, \
+                       "scrollbar's current value is %s:" % scrollbar.__getattr__('value')
     
     #close application window
     def quit(self):
