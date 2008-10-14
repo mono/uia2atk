@@ -1,5 +1,12 @@
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* GailTestApp.mdp:
+	* gtk-gui/gui.stetic:
+	* gtk-gui/generated.cs:
+	* gtk-gui/MainWindow.cs: I didn't change this. MD did.
+
+2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* gtk-gui/gui.stetic:
 	* gtk-gui/generated.cs:
 	* gtk-gui/MainWindow.cs: Revert previous commit. It makes GailTest
