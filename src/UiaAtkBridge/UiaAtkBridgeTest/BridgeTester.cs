@@ -542,10 +542,13 @@ namespace UiaAtkBridgeTest
 		public void LinkLabel ()
 		{
 			UiaAtkBridge.Hyperlink hyperlink;
-			hyperlink = (UiaAtkBridge.Hyperlink) UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy ((IRawElementProviderSimple) ProviderFactory.GetProvider (linklab1, true, true));
-			Atk.TextAdapter text = new Atk.TextAdapter (hyperlink);
-			Assert.AreEqual (53, text.CharacterCount, "LinkLabel character count");
-			Assert.AreEqual ("openSUSE", text.GetText (0, 8), "LinkLabel GetText");
+			hyperlink = (UiaAtkBridge.Hyperlink) 
+			  UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (
+			    (IRawElementProviderSimple) ProviderFactory.GetProvider (linklab1, true, true));
+			Atk.Text atkText = CastToAtkInterface<Atk.Text> (hyperlink);
+
+			Assert.AreEqual (53, atkText.CharacterCount, "LinkLabel character count");
+			Assert.AreEqual ("openSUSE", atkText.GetText (0, 8), "LinkLabel GetText");
 			Atk.HypertextAdapter hypertext = new Atk.HypertextAdapter (hyperlink);
 			Assert.AreEqual (2, hypertext.NLinks, "LinkLabel NLinks");
 			Assert.AreEqual (-1, hypertext.GetLinkIndex (8), "GetLinkIndex #1");
@@ -572,11 +575,12 @@ namespace UiaAtkBridgeTest
 			Atk.Object obj2 = link2.GetObject (0);
 			Assert.IsNotNull (obj2, "LinkLabel GetObject #2");
 			Assert.IsTrue (obj2.RefStateSet ().ContainsState (Atk.StateType.Enabled), "RefStateSet().Contains(Enabled)");
-			Atk.ActionAdapter action = new Atk.ActionAdapter ((Atk.ActionImplementor)obj2);
-			Assert.AreEqual (1, action.NActions, "LinkLabel link NActions");
-			Assert.IsTrue (action.DoAction (0), "LinkLabel DoAction #1");
-			Assert.IsFalse (action.DoAction (1), "LinkLabel DoAction OOR #1");
-			Assert.IsFalse (action.DoAction (-1), "LinkLabel DoAction OOR #2");
+			
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action>(obj2);
+			Assert.AreEqual (1, atkAction.NActions, "LinkLabel link NActions");
+			Assert.IsTrue (atkAction.DoAction (0), "LinkLabel DoAction #1");
+			Assert.IsFalse (atkAction.DoAction (1), "LinkLabel DoAction OOR #1");
+			Assert.IsFalse (atkAction.DoAction (-1), "LinkLabel DoAction OOR #2");
 			Assert.AreEqual (1, lastClickedLink, "LastClickedLink");
 		}
 

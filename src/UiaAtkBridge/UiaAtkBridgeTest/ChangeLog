@@ -1,3 +1,7 @@
+2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Track API.
+
 2008-10-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs:
