@@ -193,7 +193,8 @@ namespace UiaAtkBridgeTest
 		SWF.ComboBox cb1 = new SWF.ComboBox ();
 		SWF.Label lab1 = new SWF.Label ();
 		SWF.LinkLabel linklab1 = new SWF.LinkLabel ();
-		SWF.Button but1 = new SWF.Button ();
+		SWF.Button butWithoutImage = new SWF.Button ();
+		SWF.Button butWithImage = new SWF.Button ();
 		SWF.CheckBox chk1 = new SWF.CheckBox ();
 		SWF.StatusBar sb1 = new SWF.StatusBar ();
 		SWF.ProgressBar pb1 = new SWF.ProgressBar ();
@@ -206,6 +207,9 @@ namespace UiaAtkBridgeTest
 		{
 			//same effect as Application.Run() (the important bit is this causes a call to ApplicationStarts() ):
 			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
+			string uiaQaPath = System.IO.Directory.GetCurrentDirectory ();
+			butWithImage.Image = System.Drawing.Image.FromFile (uiaQaPath + "/../../../../../test/samples/opensuse60x38.gif");
+			butWithImage.AutoSize = true;
 			
 			cb1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			linklab1.Links[0].Visited = true;
@@ -225,7 +229,8 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (cb1);
 			form.Controls.Add (lab1);
 			form.Controls.Add (linklab1);
-			form.Controls.Add (but1);
+			form.Controls.Add (butWithoutImage);
+			form.Controls.Add (butWithImage);
 			form.Controls.Add (chk1);
 			form.Controls.Add (sb1);
 			form.Controls.Add(menuStrip1);
@@ -279,13 +284,8 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.NormalButton:
 				SWF.Button but = new SWF.Button ();
 				if (real)
-					but = but1;
+					but = (embeddedImage ? butWithImage : butWithoutImage);
 				but.Text = name;
-				string uiaQaPath = System.IO.Directory.GetCurrentDirectory ();
-				if (embeddedImage) {
-					but.Image = System.Drawing.Image.FromFile (uiaQaPath + "/../../../../../test/samples/opensuse60x38.gif");
-					but.AutoSize = true;
-				}
 				UiaAtkBridge.Button uiaBut;
 				if (real)
 #pragma warning disable 618
