@@ -57,6 +57,7 @@ REFERENCES =  \
 	System  \
 	WindowsBase \
 	Mono.Posix \
+	System.Core \
 	$(GTK_SHARP_20_LIBS) \
 	$(GLIB_SHARP_20_LIBS)
 
