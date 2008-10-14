@@ -1,7 +1,3 @@
-2008-10-14  Brad Taylor  <brad@getcoded.net>
-	
-	* Makefile.am: Add missing reference to System.Core.
-
 2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Button.cs: Inverse!
