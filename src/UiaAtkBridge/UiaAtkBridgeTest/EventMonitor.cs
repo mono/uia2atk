@@ -37,7 +37,7 @@ namespace UiaAtkBridgeTest
 		static EventMonitor singleton = null;
 		static object locking = new object ();
 		
-		internal static void Start () {
+		public static void Start () {
 			lock (locking) {
 				if (singleton == null)
 					singleton = new EventMonitor ();
@@ -105,12 +105,9 @@ namespace UiaAtkBridgeTest
 				p.Kill ();
 				p.Dispose ();
 				p = null;
-				try {
-					return new EventCollection (xmlResult);
-				}
-				finally {
-					xmlResult = String.Empty;
-				}
+				string result = xmlResult;
+				xmlResult = String.Empty;
+				return new EventCollection (result);
 			}
 		}
 	}
