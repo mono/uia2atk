@@ -2,6 +2,13 @@
 
 	* gtk-gui/gui.stetic:
 	* gtk-gui/generated.cs:
+	* gtk-gui/MainWindow.cs: Revert previous commit. It makes GailTest
+	crash.
+
+2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* gtk-gui/gui.stetic:
+	* gtk-gui/generated.cs:
 	* gtk-gui/MainWindow.cs: Add an imaged button.
 
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
