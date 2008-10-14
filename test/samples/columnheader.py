@@ -17,7 +17,8 @@ Test accessibility of "ColumnHeader" control
 import clr
 clr.AddReference('System.Windows.Forms')
 from System.Windows.Forms import (
-    Application, DockStyle, Form, ListView, ListViewItem, View, ColumnHeader, SortOrder, HorizontalAlignment
+    Application, DockStyle, Form, ListView, ListViewItem, View, ColumnHeader, 
+    SortOrder, HorizontalAlignment, Label
 )
 from System.IO import DirectoryInfo, FileInfo
 
@@ -27,6 +28,8 @@ class ListViewSample(Form):
     def __init__(self):
         """ListViewSample class init function."""
 
+        self.toggle = True
+
         # setup title
         self.Text = "ListView control"
 
@@ -34,13 +37,18 @@ class ListViewSample(Form):
         self.Width = 700
         self.Height = 250
 
+        # setup label
+        self.label = Label()
+        self.label.Text = "Click Column header to switch items Ascending and Descending sorting."
+        self.label.Dock = DockStyle.Top 
+
         # setup listview
         self.listview = ListView()
         self.listview.Height = 250
         self.listview.Dock = DockStyle.Top
         self.listview.View = View.Details
         self.listview.GridLines = True
-
+        self.listview.ColumnClick += self.listview_click
 
         # setup columnheader
         self.columnheader1 = ColumnHeader()
@@ -69,8 +77,16 @@ class ListViewSample(Form):
 
         # add controls
         self.Controls.Add(self.listview)
+        self.Controls.Add(self.label)
 
-
+    def listview_click(self, sender, event):
+        if self.toggle == True:
+            self.listview.Sorting = SortOrder.Descending
+            self.toggle = False
+        else:
+            self.listview.Sorting = SortOrder.Ascending
+            self.toggle = True
+ 
 # run application
 form = ListViewSample()
 Application.EnableVisualStyles()

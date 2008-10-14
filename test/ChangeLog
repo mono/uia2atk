@@ -1,3 +1,12 @@
+2008-10-14  Ray Wang <rawang@novell.com>
+
+	* samples/columnheader.py: add Click action to act ascending and  
+	descending sort
+	* samples/treeview.py: increase the size of the treeview view area
+	* samples/tabpage.py: add items in each tabpage
+	* samples/statusbar_statusbarpanel.py: enlarge the window size
+	* samples/listview.py: enlarge the window size
+
 2008-10-14  Calen Chen <cachen@novell.com>
 
 	* samples/scrollbar.py: corrected spelling mistake

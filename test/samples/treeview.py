@@ -36,6 +36,7 @@ class TreeViewSample(Form):
         # setup treeview
         self.treeview = TreeView()
         self.treeview.Dock = DockStyle.Left
+        self.treeview.Width = 200
         self.treeview.BeginUpdate()
         self.treeview.Nodes.Add("Parent 1")
         self.treeview.Nodes[0].Nodes.Add("Child 1");

@@ -26,11 +26,14 @@ class ListViewSample(Form):
     def __init__(self):
         """ListViewSample class init function."""
 
+        self.toggle = True
+
         # setup title
         self.Text = "ListView control"
-        self.Width = 300
-        self.Height = 300
-        self.toggle = True
+
+        # setup size
+        self.Width = 500
+        self.Height = 150
 
         # setup label
         self.label = Label()
