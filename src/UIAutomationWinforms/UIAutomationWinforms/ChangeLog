@@ -1,5 +1,23 @@
 2008-10-14  Mario Carrion <mcarrion@novell.com> 
 
+	* Makefile.am, Mono.UIAutomation.Winforms.mdp: ListView:
+	  ListItem.SelectionItem Pattern events added
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementAddedEvent.cs:
+	  ListView: ListItem.SelectionItem.ElementAddedToSelection class.
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementRemovedEvent.cs:
+	  ListView: ListItem.SelectionItem.ElementRemovedFromSelection class.
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementSelectedEvent.cs:
+	  ListView: ListItem.SelectionItem.ElementSelected class.
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternIsSelectedEvent.cs:
+	  ListView: ListItem.SelectionItem.IsSelected class.
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	  GetListItemBehaviorRealization implementation. AutomationProperties
+	  implementation: IsOffScreen, BoundingRectangleProperty
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemSelectionItemProviderBehavior.cs:
+	  ListView: ListItem.SelectionItem behavior class.
+
+2008-10-14  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms/IScrollBehaviorSubject.cs,
 	  Mono.UIAutomation.Winforms/ListBoxProvider.cs,
 	  Mono.UIAutomation.Winforms/ListViewProvider.cs: Properties removed:

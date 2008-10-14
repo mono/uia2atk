@@ -26,7 +26,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using SD = System.Drawing;
+using System.Linq;
 using SWF = System.Windows.Forms;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
@@ -115,14 +117,14 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 		}
 
-//		internal override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
-//		                                                                    ListItemProvider listItem)
-//		{
-//			if (behavior == SelectionItemPatternIdentifiers.Pattern)
-//				return new ListItemSelectionItemProviderBehavior (listItem);
-//			else
-//				return base.GetListItemBehaviorRealization (behavior, listItem);
-//		}
+		internal override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+		                                                                    ListItemProvider listItem)
+		{
+			if (behavior == SelectionItemPatternIdentifiers.Pattern)
+				return new ListItemSelectionItemProviderBehavior (listItem);
+			else
+				return base.GetListItemBehaviorRealization (behavior, listItem);
+		}
 		
 		#endregion
 		
@@ -318,7 +320,9 @@ namespace Mono.UIAutomation.Winforms
 				
 				if (listView.Items [index].Group == null) {
 					if (listViewNullGroup == null)
-						listViewNullGroup = new SWF.ListViewGroup ("Default");
+						listViewNullGroup = Helper.GetPrivateProperty<SWF.ListView, SWF.ListViewGroup> (typeof (SWF.ListView), 
+						                                                                                listView,
+						                                                                                "UIADefaultListViewGroup");
 
 					listViewGroup = listViewNullGroup;
 				} else
@@ -469,14 +473,63 @@ namespace Mono.UIAutomation.Winforms
 					return group.Header;
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
-				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)// FIXME: Implement
-					return false;
-				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)// FIXME: Implement
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+					Rect bounds = GetItemsBoundingRectangle ();				
+					Rect screen = Helper.RectangleToRect (SWF.Screen.GetWorkingArea (listView));
+					// True if the *entire* control is off-screen
+					return !screen.Contains (bounds.Left, bounds.Bottom) 
+						&& !screen.Contains (bounds.Left, bounds.Top) 
+						&& !screen.Contains (bounds.Right, bounds.Bottom) 
+						&& !screen.Contains (bounds.Right, bounds.Top);
+				} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)// FIXME: Implement
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)// FIXME: Implement
 					return false;
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+					return GetItemsBoundingRectangle ();
 				else
 					return base.GetPropertyValue (propertyId);
+			}
+
+			private Rect GetItemsBoundingRectangle ()
+			{
+				SWF.ListViewGroup defaultGroup
+					= Helper.GetPrivateProperty<SWF.ListView, SWF.ListViewGroup> (typeof (SWF.ListView), 
+					                                                              listView,
+					                                                              "UIADefaultListViewGroup");
+				ListViewProvider provider = (ListViewProvider) ProviderFactory.FindProvider (listView);
+				Rect rect = Rect.Empty;
+				
+				if (defaultGroup == group) {
+					for (int index = 0; index < listView.Items.Count; index++) {
+						SWF.ListViewItem item = listView.Items [index];
+						if (item.Group == null)							
+							GetItemBoundingRectangle (provider, item, ref rect);
+					}
+				} else {					
+					for (int index = 0; index < group.Items.Count; index++) {
+						SWF.ListViewItem item = group.Items [index];
+							
+						GetItemBoundingRectangle (provider, item, ref rect);
+					}
+				}
+				
+				return rect;
+
+			}
+
+			private Rect GetItemBoundingRectangle (ListViewProvider provider,
+			                                       SWF.ListViewItem item, 
+			                                       ref Rect rect)
+			{
+				ListItemProvider itemProvider 
+					= provider.GetItemProviderAt (this, item.Index);		
+				Rect rectangle 
+					= (Rect) itemProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+				
+				rect.Union (rectangle);
+				
+				return rect;
 			}
 			
 			private SWF.ListView listView;
