@@ -1,3 +1,7 @@
+2008-10-14  Mike Gorse <mgorse@novell.com>
+
+	* AutomationBridge.cs: Support hyperlinks.
+
 2008-10-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Button.cs: Inverse!

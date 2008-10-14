@@ -26,11 +26,11 @@
 
 using System;
 using System.Collections.Generic;
+using Mono.UIAutomation.Bridge;
 
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
-using Mono.UIAutomation.Bridge;
 
 namespace UiaAtkBridge
 {
@@ -382,6 +382,8 @@ namespace UiaAtkBridge
 				HandleNewSpinnerControlType (simpleProvider);
  			else if (controlTypeId == ControlType.ToolTip.Id)
  				HandleNewToolTipControlType (simpleProvider);
+ 			else if (controlTypeId == ControlType.Hyperlink.Id)
+ 				HandleNewHyperlinkControlType (simpleProvider);
 //			else if (controlTypeId == ControlType.Edit.Id)
 //				HandleNewEditControlType (simpleProvider);
 			// TODO: Other providers
@@ -646,6 +648,25 @@ namespace UiaAtkBridge
 			providerAdapterMapping [provider] = atkToolTip;
 
 			TopLevelRootItem.Instance.AddOneChild (atkToolTip);
+		}
+
+		private void HandleNewHyperlinkControlType (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject = GetParentAdapter (provider);
+			
+			Adapter atkHyperlink;
+			IInvokeProvider invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			if (invokeProvider is IHypertext)
+				atkHyperlink = new Hyperlink (provider);
+			else
+				// We don't have the extension needed to
+				// properly support a hyperlink
+				atkHyperlink = new TextLabel (provider);
+			providerAdapterMapping [provider] = atkHyperlink;
+			
+			parentObject.AddOneChild (atkHyperlink);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkHyperlink);
 		}
 #endregion
 	}
