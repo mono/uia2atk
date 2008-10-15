@@ -1,4 +1,9 @@
-2008-10-14  Mike Gorse <mgorse@novell.com>
+2008-10-15  Mike Gorse <mgorse@novell.com>
+
+	* Monitor.cs: Do not terminate glib main loop; set GetRoot to
+	  null instead [fixes bug 427857, hopefully]
+
+2008-10-15  Mike Gorse <mgorse@novell.com>
 
 	* ParentAdapter.cs: Move RequestChildren calls out of SyncRoot lock,
 	  since they can emit glib signals, which leads to deadlock if
