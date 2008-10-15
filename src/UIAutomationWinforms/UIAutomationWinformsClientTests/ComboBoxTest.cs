@@ -209,6 +209,238 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 
 		#endregion
 
+		#region Children Tests
+
+		[Test]
+		public void ChildrenDropDownStyleDropDownTest ()
+		{
+			ComboBox combobox = GetControl () as ComboBox;
+			combobox.DropDownStyle = ComboBoxStyle.DropDown;
+			AutomationElement element = GetAutomationElementFromControl (combobox);
+
+			//Should Support ValuePattern and ExpandCollapse
+			Assert.IsTrue (SupportsPattern (element, ExpandCollapsePatternIdentifiers.Pattern),
+				string.Format ("ExpandCollapsePattern SHOULD BE supported: {0} -> {1} -> {2}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName, combobox.DropDownStyle));
+
+			Assert.IsTrue (SupportsPattern (element, ValuePatternIdentifiers.Pattern),
+				string.Format ("ValuePattern SHOULD BE supported: {0} -> {1} -> {2}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName, combobox.DropDownStyle));
+			
+			//We should have 3 children
+			int children = 1;
+			AutomationElement child = TreeWalker.RawViewWalker.GetFirstChild (element);
+			AutomationElement listChild = null;
+			AutomationElement editChild = null;
+			AutomationElement buttonChild = null;
+			while (child != null) {
+				if ((ControlType) child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty)
+					== ControlType.List)
+					listChild = child;
+				else if ((ControlType) child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty)
+					== ControlType.Edit)
+					editChild = child;
+				else if ((ControlType) child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty)
+					== ControlType.Button)
+					buttonChild = child;
+
+				child = TreeWalker.RawViewWalker.GetNextSibling (child);
+				if (child != null)
+					children++;
+			}
+
+			Assert.AreEqual (3, children, "We should have 3 children");
+			Assert.IsNotNull (listChild, "ListChild shouldn't be null");
+			Assert.IsNotNull (editChild, "EditChild shouldn't be null");
+			Assert.IsNotNull (buttonChild, "ButtonChild shouldn't be null");
+
+			//Let's verify patterns in listChild items
+			AutomationElement listItemElement = TreeWalker.RawViewWalker.GetFirstChild (listChild);
+			while (listItemElement != null) {
+				if ((ControlType) listItemElement.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty)
+					== ControlType.ListItem)
+					break;
+				listItemElement = TreeWalker.RawViewWalker.GetNextSibling (listItemElement);
+			}
+
+			Assert.IsTrue (SupportsPattern (listItemElement, SelectionItemPatternIdentifiers.Pattern),
+				string.Format ("SelectionItemPattern SHOULD BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+
+			if (SupportsPattern (listChild, ScrollPatternIdentifiers.Pattern) == true) {
+				Assert.IsTrue (SupportsPattern (listItemElement, ScrollItemPatternIdentifiers.Pattern),
+					string.Format ("ScrollItemPattern SHOULD BE supported: {0} -> {1}",
+					GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+			}
+
+			Assert.IsFalse (SupportsPattern (listItemElement, TogglePatternIdentifiers.Pattern),
+				string.Format ("TogglePattern SHOULD NOT BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+			Assert.IsFalse (SupportsPattern (listItemElement, ExpandCollapsePatternIdentifiers.Pattern),
+				string.Format ("ExpandCollapsePattern SHOULD NOT BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+			Assert.IsFalse (SupportsPattern (listItemElement, ValuePatternIdentifiers.Pattern),
+				string.Format ("ValuePattern SHOULD NOT BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+			Assert.IsFalse (SupportsPattern (listItemElement, GridPatternIdentifiers.Pattern),
+				string.Format ("GridPattern SHOULD NOT BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+			Assert.IsFalse (SupportsPattern (listItemElement, InvokePatternIdentifiers.Pattern),
+				string.Format ("InvokePattern SHOULD NOT BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+		}
+
+
+		[Test]
+		public void ChildrenDropDownStyleSimpleTest ()
+		{
+			ComboBox combobox = GetControl () as ComboBox;
+			combobox.DropDownStyle = ComboBoxStyle.Simple;
+			AutomationElement element = GetAutomationElementFromControl (combobox);
+
+			//Should NOT Support ValuePattern and ExpandCollapse
+			Assert.IsFalse (SupportsPattern (element, ExpandCollapsePatternIdentifiers.Pattern),
+				string.Format ("ExpandCollapsePattern SHOULD NOT BE supported: {0} -> {1} -> {2}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName, combobox.DropDownStyle));
+
+			Assert.IsTrue (SupportsPattern (element, ValuePatternIdentifiers.Pattern),
+				string.Format ("ValuePattern SHOULD BE supported: {0} -> {1} -> {2}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName, combobox.DropDownStyle));
+
+			//We should have 2 children
+			int children = 1;
+			AutomationElement child = TreeWalker.RawViewWalker.GetFirstChild (element);
+			AutomationElement listChild = null;
+			AutomationElement editChild = null;
+			while (child != null) {
+				if ((ControlType) child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty)
+					== ControlType.List)
+					listChild = child;
+				else if ((ControlType) child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty)
+					== ControlType.Edit)
+					editChild = child;
+
+				child = TreeWalker.RawViewWalker.GetNextSibling (child);
+				if (child != null)
+					children++;
+			}
+
+			Assert.AreEqual (2, children, "We should have 2 children");
+			Assert.IsNotNull (listChild, "ListChild shouldn't be null");
+			Assert.IsNotNull (editChild, "EditChild shouldn't be null");
+
+			//Let's verify patterns in listChild items
+			AutomationElement listItemElement = TreeWalker.RawViewWalker.GetFirstChild (listChild);
+			while (listItemElement != null) {
+				if ((ControlType) listItemElement.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty)
+					== ControlType.ListItem)
+					break;
+				listItemElement = TreeWalker.RawViewWalker.GetNextSibling (listItemElement);
+			}
+
+			Assert.IsTrue (SupportsPattern (listItemElement, SelectionItemPatternIdentifiers.Pattern),
+				string.Format ("SelectionItemPattern SHOULD BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+
+			if (SupportsPattern (listChild, ScrollPatternIdentifiers.Pattern) == true) {
+				Assert.IsTrue (SupportsPattern (listItemElement, ScrollItemPatternIdentifiers.Pattern),
+					string.Format ("ScrollItemPattern SHOULD BE supported: {0} -> {1}",
+					GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+			}
+
+			Assert.IsFalse (SupportsPattern (listItemElement, TogglePatternIdentifiers.Pattern),
+				string.Format ("TogglePattern SHOULD NOT BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+			Assert.IsFalse (SupportsPattern (listItemElement, ExpandCollapsePatternIdentifiers.Pattern),
+				string.Format ("ExpandCollapsePattern SHOULD NOT BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+			Assert.IsFalse (SupportsPattern (listItemElement, ValuePatternIdentifiers.Pattern),
+				string.Format ("ValuePattern SHOULD NOT BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+			Assert.IsFalse (SupportsPattern (listItemElement, GridPatternIdentifiers.Pattern),
+				string.Format ("GridPattern SHOULD NOT BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+			Assert.IsFalse (SupportsPattern (listItemElement, InvokePatternIdentifiers.Pattern),
+				string.Format ("InvokePattern SHOULD NOT BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+		}
+
+		[Test]
+		public void ChildrenDropDownStyleDropDownListTest ()
+		{
+			ComboBox combobox = GetControl () as ComboBox;
+			combobox.DropDownStyle = ComboBoxStyle.DropDownList;
+			AutomationElement element = GetAutomationElementFromControl (combobox);
+
+			//Should NOT Support ValuePattern and ExpandCollapse
+			Assert.IsTrue (SupportsPattern (element, ExpandCollapsePatternIdentifiers.Pattern),
+				string.Format ("ExpandCollapsePattern SHOULD BE supported: {0} -> {1} -> {2}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName, combobox.DropDownStyle));
+
+			Assert.IsFalse (SupportsPattern (element, ValuePatternIdentifiers.Pattern),
+				string.Format ("ValuePattern SHOULD NOT BE supported: {0} -> {1} -> {2}",
+				GetControl ().GetType (), GetControlTypeFromElement (element).ProgrammaticName, combobox.DropDownStyle));
+
+			//We should have 2 children
+			int children = 1;
+			AutomationElement child = TreeWalker.RawViewWalker.GetFirstChild (element);
+			AutomationElement listChild = null;
+			AutomationElement buttonChild = null;
+			while (child != null) {
+				if ((ControlType) child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty)
+					== ControlType.List)
+					listChild = child;
+				else if ((ControlType) child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty)
+					== ControlType.Button)
+					buttonChild = child;
+
+				child = TreeWalker.RawViewWalker.GetNextSibling (child);
+				if (child != null)
+					children++;
+			}
+
+			Assert.AreEqual (2, children, "We should have 2 children");
+			Assert.IsNotNull (listChild, "ListChild shouldn't be null");
+			Assert.IsNotNull (buttonChild, "ButtonChild shouldn't be null");
+
+			//Let's verify patterns in listChild items
+			AutomationElement listItemElement = TreeWalker.RawViewWalker.GetFirstChild (listChild);
+			while (listItemElement != null) {
+				if ((ControlType) listItemElement.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty)
+					== ControlType.ListItem)
+					break;
+				listItemElement = TreeWalker.RawViewWalker.GetNextSibling (listItemElement);
+			}
+
+			Assert.IsTrue (SupportsPattern (listItemElement, SelectionItemPatternIdentifiers.Pattern),
+				string.Format ("SelectionItemPattern SHOULD BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+
+			if (SupportsPattern (listChild, ScrollPatternIdentifiers.Pattern) == true) {
+				Assert.IsTrue (SupportsPattern (listItemElement, ScrollItemPatternIdentifiers.Pattern),
+					string.Format ("ScrollItemPattern SHOULD BE supported: {0} -> {1}",
+					GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+			}
+
+			Assert.IsFalse (SupportsPattern (listItemElement, TogglePatternIdentifiers.Pattern),
+				string.Format ("TogglePattern SHOULD NOT BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+			Assert.IsFalse (SupportsPattern (listItemElement, ExpandCollapsePatternIdentifiers.Pattern),
+				string.Format ("ExpandCollapsePattern SHOULD NOT BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+			Assert.IsFalse (SupportsPattern (listItemElement, ValuePatternIdentifiers.Pattern),
+				string.Format ("ValuePattern SHOULD NOT BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+			Assert.IsFalse (SupportsPattern (listItemElement, GridPatternIdentifiers.Pattern),
+				string.Format ("GridPattern SHOULD NOT BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+			Assert.IsFalse (SupportsPattern (listItemElement, InvokePatternIdentifiers.Pattern),
+				string.Format ("InvokePattern SHOULD NOT BE supported: {0} -> {1}",
+				GetControlTypeFromElement (listItemElement).ProgrammaticName, combobox.DropDownStyle));
+		}
+
+		#endregion
+
 		#region Protected metods
 
 		protected override Control GetControl ()
