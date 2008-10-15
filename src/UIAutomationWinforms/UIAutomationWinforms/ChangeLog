@@ -1,5 +1,25 @@
 2008-10-15  Mario Carrion <mcarrion@novell.com> 
 
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs:
+	  ListView: ListItem.GridItem pattern.
+	* Makefile.am, Mono.UIAutomation.Winforms.mdp: Updated due to
+	  ListView.ListItem.GridItem pattern.
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternColumnEvent.cs:
+	  ListView: ListItem.GridItem.Column Automation Property Event.
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternRowEvent.cs:
+	  ListView: ListItem.GridItem.Row Automation Property Event.
+	* Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternInvalidatedEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternSelectionEvent.cs:
+	  Using SelectedIndexChanged instead of internal event.
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: New method
+	  Initialize.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Calling Initialize.
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	  ListItemGridItemPattern enabled. Added method to get Header
+	  Bounding Rectangle.
+
+2008-10-15  Mario Carrion <mcarrion@novell.com> 
+
 	* Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs:
 	  Using Helper.GetBoundingRectangleFromButtonBase.
 	* Mono.UIAutomation.Winforms.Behaviors/CheckBox/ToggleProviderBehavior.cs,

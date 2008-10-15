@@ -92,7 +92,7 @@ namespace Mono.UIAutomation.Winforms
 					                             GetItemsListProvider (), 
 					                             Control);
 					items.Add (item);
-					item.InitializeEvents ();
+					item.Initialize ();
 				}
 			}
 			

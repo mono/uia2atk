@@ -25,22 +25,21 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Events.ListView
 {
-	
-	internal class SelectionPatternSelectionEvent
+	internal class ListItemGridItemPatternColumnEvent
 		: BaseAutomationPropertyEvent
 	{
-		
 		#region Constructors
 
-		public SelectionPatternSelectionEvent (ListViewProvider provider)
+		public ListItemGridItemPatternColumnEvent (ListItemProvider provider)
 			: base (provider, 
-			        SelectionPatternIdentifiers.SelectionProperty)
+			        GridItemPatternIdentifiers.ColumnProperty)
 		{
 		}
 		
@@ -50,19 +49,35 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Connect ()
 		{
-			((SWF.ListView) Provider.Control).SelectedIndexChanged += OnSelectedCollectionChanged;
+			try {
+				Helper.AddPrivateEvent (typeof (SWF.ListView.ListViewItemCollection),
+				                        ((SWF.ListView) Provider.Control).Items, 
+				                        "UIACollectionChanged",
+				                        this, 
+				                        "OnColumnPropertyEvent");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
+			}
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.ListView) Provider.Control).SelectedIndexChanged -= OnSelectedCollectionChanged;
+			try {
+				Helper.RemovePrivateEvent (typeof (SWF.ListView.ListViewItemCollection),
+				                           ((SWF.ListView) Provider.Control).Items, 
+				                           "UIACollectionChanged",
+				                           this, 
+				                           "OnColumnPropertyEvent");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
+			}
 		}
 		
 		#endregion 
 		
 		#region Protected methods
-		
-		private void OnSelectedCollectionChanged (object sender, EventArgs args)
+		private void OnColumnPropertyEvent (object sender, 
+		                                    CollectionChangeEventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}

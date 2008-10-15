@@ -26,7 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using SD = System.Drawing;
-using System.Linq;
+using System.Reflection;
 using SWF = System.Windows.Forms;
 using System.Windows;
 using System.Windows.Automation;
@@ -104,6 +104,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		internal override IProviderBehavior GetBehaviorRealization (AutomationPattern behavior)
 		{
+			// See comment in OnUIAViewChanged method
+			
 			if (MultipleViewPatternIdentifiers.Pattern == behavior)
 				return new MultipleViewProviderBehavior (this);
 			else if (behavior == SelectionPatternIdentifiers.Pattern) 
@@ -122,6 +124,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (behavior == SelectionItemPatternIdentifiers.Pattern)
 				return new ListItemSelectionItemProviderBehavior (listItem);
+			else if (behavior == GridItemPatternIdentifiers.Pattern)
+				return new ListItemGridItemProviderBehavior (listItem);
 			else
 				return base.GetListItemBehaviorRealization (behavior, listItem);
 		}
@@ -129,6 +133,14 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region ListItem: Properties Methods
+		
+		public SWF.ListViewItem GetListViewItem (ListItemProvider item)
+		{
+			if (ContainsItem (item) == false)
+				return null;
+			
+			return listView.Items [item.Index];
+		}
 		
 		public override object GetItemPropertyValue (ListItemProvider item,
 		                                             int propertyId)
@@ -141,8 +153,8 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return listView.Focused && listView.SelectedIndices.Contains (item.Index); //TODO: OK?
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-				System.Drawing.Rectangle itemRec = listView.GetItemRect (item.Index);
-				System.Drawing.Rectangle rectangle = listView.Bounds;
+				SD.Rectangle itemRec = listView.GetItemRect (item.Index);
+				SD.Rectangle rectangle = listView.Bounds;
 				
 				itemRec.X += rectangle.X;
 				itemRec.Y += rectangle.Y;
@@ -183,8 +195,6 @@ namespace Mono.UIAutomation.Winforms
 			}
 			
 			observer.InitializeScrollBarProviders ();
-
-			// Children initialization
 			UpdateChildrenStructure ();
 		}
 		
@@ -256,7 +266,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (listView.CheckBoxes == false)
 				return;
-			
+				
 			if (ContainsItem (item) == true)
 				listView.Items [item.Index].Checked = !listView.Items [item.Index].Checked;
 		}
@@ -272,6 +282,16 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void ScrollItemIntoView (ListItemProvider item)
 		{
+			if (ContainsItem (item) == false)
+				return;
+			
+			// According to http://msdn.microsoft.com/en-us/library/system.windows.forms.listview.topitem.aspx
+			if (listView.View == SWF.View.LargeIcon 
+			    || listView.View == SWF.View.SmallIcon
+			    || listView.View == SWF.View.Tile)
+				return;
+			
+			listView.TopItem = listView.Items [item.Index];
 		}
 		
 		#endregion
@@ -291,12 +311,13 @@ namespace Mono.UIAutomation.Winforms
 		protected override void OnCollectionChanged (object sender, 
 		                                             CollectionChangeEventArgs args)
 		{
-			if (args.Action == CollectionChangeAction.Add) {
+			if (args.Action == CollectionChangeAction.Add)
 				InitializeProviderAtIndex ((int) args.Element, true);
-//				OnNavigationChildAdded (true, item);
-			} else if (args.Action == CollectionChangeAction.Remove) {
+			else if (args.Action == CollectionChangeAction.Remove) {
+				Console.WriteLine ("Got remove!");
+				
 				ListItemProvider item = RemoveItemAt ((int) args.Element);
-//				OnNavigationChildRemoved (true, item);
+				OnNavigationChildRemoved (true, item);
 			} else
 				base.OnCollectionChanged (sender, args);
 		}
@@ -310,8 +331,7 @@ namespace Mono.UIAutomation.Winforms
 			if (index < 0 || index >= ItemsCount)
 				return;
 			
-			// SWF.View.List: Adds items, nothing else
-			
+			// View.SmallIcon and View.LargeIcon use Groups
 			if (listView.View == SWF.View.SmallIcon 
 			    || listView.View == SWF.View.LargeIcon) {
 
@@ -339,7 +359,7 @@ namespace Mono.UIAutomation.Winforms
 				
 				ListItemProvider item = GetItemProviderAt (groupProvider, index);
 				groupProvider.AddChildProvider (raiseEvent, item);
-			} else {
+			} else { // When View is SWF.View.List
 				ListItemProvider item = GetItemProviderAt (this, index);
 				OnNavigationChildAdded (raiseEvent, item);
 			}
@@ -347,9 +367,12 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void OnUIAViewChanged (object sender, EventArgs args)
 		{
-			// Selection Pattern always supported
-			// Scroll Pattern depends on visible/enable scrollbars
+			// Behaviors supported no matter the View:
+			// - Selection Behavior: Always supported
+			// - MultipleView Behavior: Always supported
+			// - Scroll Behavior: Set/Unset by ScrollBehaviorObserver.
 
+			// Behaviors supported only by specific View:
 			if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
 				SetBehavior (GridPatternIdentifiers.Pattern,
 				             GetBehaviorRealization (GridPatternIdentifiers.Pattern));
@@ -358,13 +381,6 @@ namespace Mono.UIAutomation.Winforms
 				             null);
 			
 			UpdateChildrenStructure ();
-			
-			//SmallIcon = MultipleView, Selection
-			//LargeIcon = Multipleview, Scroll, Selection
-			//Tile: MultipleView, Scroll, Selection
-			//---
-			//Details = MultipleView, Scroll, Selection, Grid
-			//List = MultipleView, Scroll, Selection, Grid
 		}
 		
 		private void OnScrollPatternSupportChanged (object sender, EventArgs args)
@@ -513,9 +529,36 @@ namespace Mono.UIAutomation.Winforms
 						GetItemBoundingRectangle (provider, item, ref rect);
 					}
 				}
-				
-				return rect;
 
+				//FIXME: Verify this
+//				rect.Union (GetHeaderRectangle (group));
+
+				return rect;
+			}
+			
+			private Rect GetHeaderRectangle (SWF.ListViewGroup group)
+			{
+				// Lets Union the Header Bounds
+				MethodInfo methodInfo = typeof (SWF.ListView).GetMethod ("UIAGetHeaderBounds",
+				                                                         BindingFlags.NonPublic
+				                                                         | BindingFlags.Instance);
+				Func<SWF.ListView, SWF.ListViewGroup, SD.Rectangle> method
+					= (Func<SWF.ListView, SWF.ListViewGroup, SD.Rectangle>) Delegate.CreateDelegate (typeof (Func<SWF.ListView, SWF.ListViewGroup, SD.Rectangle>),
+					                                                                                 methodInfo);
+				
+				
+				SD.Rectangle headerRec = method (listView, group);
+				SD.Rectangle rectangle = listView.Bounds;
+				
+				headerRec.X += rectangle.X;
+				headerRec.Y += rectangle.Y;
+				
+				if (listView.FindForm () == listView.Parent)
+					headerRec = listView.TopLevelControl.RectangleToScreen (headerRec);
+				else
+					headerRec = listView.Parent.RectangleToScreen (headerRec);
+				
+				return Helper.RectangleToRect (headerRec);
 			}
 
 			private Rect GetItemBoundingRectangle (ListViewProvider provider,

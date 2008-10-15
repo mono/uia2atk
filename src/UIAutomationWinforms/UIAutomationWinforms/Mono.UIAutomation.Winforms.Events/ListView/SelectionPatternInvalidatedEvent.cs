@@ -49,39 +49,21 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Connect ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ListView.SelectedIndexCollection),
-				                        ((SWF.ListView) Provider.Control).SelectedIndices, 
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnSelectedCollectionChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListView) Provider.Control).SelectedIndexChanged += OnSelectedCollectionChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ListView.SelectedIndexCollection), 
-				                           ((SWF.ListView) Provider.Control).SelectedIndices,
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnSelectedCollectionChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListView) Provider.Control).SelectedIndexChanged -= OnSelectedCollectionChanged;
 		}
 		
 		#endregion 
 		
 		#region Protected methods
 		
-		private void OnSelectedCollectionChanged (object sender, 
-		                                          CollectionChangeEventArgs args)
+		private void OnSelectedCollectionChanged (object sender, EventArgs args)
 		{
-			if (args.Action == CollectionChangeAction.Refresh)
-				RaiseAutomationEvent ();
+			RaiseAutomationEvent ();
 		}
 
 		#endregion

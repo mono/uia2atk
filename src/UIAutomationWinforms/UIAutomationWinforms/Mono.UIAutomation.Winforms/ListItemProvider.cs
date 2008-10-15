@@ -46,29 +46,7 @@ namespace Mono.UIAutomation.Winforms
 			: base (control)
 		{
 			listProvider = provider;
-			this.rootProvider = rootProvider;
-
-			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
-			             listProvider.GetListItemBehaviorRealization (SelectionItemPatternIdentifiers.Pattern,
-			                                                          this));
-			SetBehavior (ScrollItemPatternIdentifiers.Pattern,
-			             listProvider.GetListItemBehaviorRealization (ScrollItemPatternIdentifiers.Pattern,
-			                                                          this));
-			SetBehavior (TogglePatternIdentifiers.Pattern,
-			             listProvider.GetListItemBehaviorRealization (TogglePatternIdentifiers.Pattern,
-			                                                          this));
-			SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
-			             listProvider.GetListItemBehaviorRealization (ExpandCollapsePatternIdentifiers.Pattern,
-			                                                          this));
-			SetBehavior (ValuePatternIdentifiers.Pattern,
-			             listProvider.GetListItemBehaviorRealization (ValuePatternIdentifiers.Pattern,
-			                                                          this));
-			SetBehavior (GridItemPatternIdentifiers.Pattern,
-			             listProvider.GetListItemBehaviorRealization (GridItemPatternIdentifiers.Pattern,
-			                                                          this));
-			SetBehavior (InvokePatternIdentifiers.Pattern,
-			             listProvider.GetListItemBehaviorRealization (InvokePatternIdentifiers.Pattern,
-			                                                          this));			
+			this.rootProvider = rootProvider;	
 		}
 
 		#endregion
@@ -95,6 +73,33 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Public Methods
+		
+		public void Initialize ()
+		{
+			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
+			             listProvider.GetListItemBehaviorRealization (SelectionItemPatternIdentifiers.Pattern,
+			                                                          this));
+			SetBehavior (ScrollItemPatternIdentifiers.Pattern,
+			             listProvider.GetListItemBehaviorRealization (ScrollItemPatternIdentifiers.Pattern,
+			                                                          this));
+			SetBehavior (TogglePatternIdentifiers.Pattern,
+			             listProvider.GetListItemBehaviorRealization (TogglePatternIdentifiers.Pattern,
+			                                                          this));
+			SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
+			             listProvider.GetListItemBehaviorRealization (ExpandCollapsePatternIdentifiers.Pattern,
+			                                                          this));
+			SetBehavior (ValuePatternIdentifiers.Pattern,
+			             listProvider.GetListItemBehaviorRealization (ValuePatternIdentifiers.Pattern,
+			                                                          this));
+			SetBehavior (GridItemPatternIdentifiers.Pattern,
+			             listProvider.GetListItemBehaviorRealization (GridItemPatternIdentifiers.Pattern,
+			                                                          this));
+			SetBehavior (InvokePatternIdentifiers.Pattern,
+			             listProvider.GetListItemBehaviorRealization (InvokePatternIdentifiers.Pattern,
+			                                                          this));
+			
+			InitializeEvents ();
+		}
 
 		public override void InitializeEvents ()
 		{
