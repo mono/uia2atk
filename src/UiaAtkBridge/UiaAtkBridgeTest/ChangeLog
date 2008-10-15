@@ -1,5 +1,9 @@
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Still issues in the gail side, this is unfixable!
+
+2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs: Fix the RadioButtons test, in the Gail side, for real.
 
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
