@@ -39,11 +39,15 @@ public partial class MainWindow: Gtk.Window
 		radioButtons.Add (this.radiobutton2);
 		
 		string uiaQaPath = LookForImagesDir ();
-		Gtk.Image img = new Gtk.Image ();
-		img.FromFile = System.IO.Path.Combine (uiaQaPath, "opensuse60x38.gif");
-		img.Show ();
-		this.btnWithImg.Image = img;
-
+		Gtk.Image img1 = new Gtk.Image ();
+		img1.FromFile = System.IO.Path.Combine (uiaQaPath, "opensuse60x38.gif");
+		img1.Show ();
+		this.btnWithImg.Image = img1;
+		
+		Gtk.Image img2 = new Gtk.Image ();
+		img2.FromFile = System.IO.Path.Combine (uiaQaPath, "opensuse60x38.gif");
+		img2.Show ();
+		this.checkbutton1.Image = img2;
 	}
 
 	private static string LookForImagesDir () {
