@@ -23,52 +23,38 @@ class NumericUpDownFrame(accessibles.Frame):
 
     def __init__(self, accessible):
         super(NumericUpDownFrame, self).__init__(accessible)
-        self.numericupdown = self.findSpinButton(None)
+        self.numericupdown = self.findAllSpinButtons(None)
+        #editable
+        self.numericupdown0 = self.numericupdown[0]
+        #uneditable
+        self.numericupdown1 = self.numericupdown[1]
 
-    #check numericupdown's all expectant states
-    def statesCheck(self, accessible=None):
-        accessible = self.numericupdown
-        procedurelogger.action('check %s\'s all states' % accessible)
+    #assert numericupdown's Text value
+    def assertText(self, accessible, value):
+        procedurelogger.expectedResult('the %s\'s Text value is "%s"' % (accessible, value))
 
-        procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
-        for a in states.NumericUpDown.states:
-            state = getattr(accessible, a)
-            assert state, "Expected state: %s" % (a)
-
-    #assert the numericupdown's percent after click button
-    def assertLabel(self, percent):
-        procedurelogger.expectedResult('%s percent of progress' % percent)
-
-        def resultMatches():
-            return self.findLabel(None).text == "It is %s percent " % percent + "of 100%"
-        assert retryUntilTrue(resultMatches)
+        assert accessible.text == value, 'Text value not match %s' % value
 
     #set numericupdown's value
-    def valueNumericUpDown(self, newValue):
-        procedurelogger.action('set numericupdown value to "%s"' % newValue)
-        numericupdown = self.findSpinButton(None)
-        sleep(config.LONG_DELAY)
-        numericupdown.__setattr__('value', newValue)
+    def valueNumericUpDown(self, accessible, newValue):
+        procedurelogger.action('set %s value to "%s"' % (accessible, newValue))
+
+        sleep(config.SHORT_DELAY)
+        accessible.__setattr__('value', newValue)
 
     #assert numericupdown's value
-    def assertValue(self, value):
-        self.maximumValue = self.numericupdown._accessible.queryValue().maximumValue
-        self.minimumValue = self.numericupdown._accessible.queryValue().minimumValue
+    def assertValue(self, accessible, newValue):
+        self.maximumValue = accessible._accessible.queryValue().maximumValue
+        self.minimumValue = accessible._accessible.queryValue().minimumValue
 
-        def resultMatches():
-            if value >= self.minimumValue and value <= self.maximumValue:
-                procedurelogger.expectedResult('the numericupdown\'s current value is "%s"' % value)
-                return self.numericupdown.__getattr__('value') == value
-            elif value > self.maximumValue:
-                procedurelogger.expectedResult('value "%s" out of run, the maximum value is "%s"' % (value, self.maximumValue))
-                return not self.numericupdown.__getattr__('value') == value 
-                return self.numericupdown.__getattr__('value') == self.maximumValue
-            elif value < self.minimumValue:
-                procedurelogger.expectedResult('value "%s" out of run, the minimum value is "%s"' % (value, self.minimumValue))
-                return not self.numericupdown.__getattr__('value') == value 
-                return self.numericupdown.__getattr__('value') == self.minimumValue
-
-        assert retryUntilTrue(resultMatches)
+        if  self.minimumValue <= newValue <= self.maximumValue:
+            procedurelogger.expectedResult('the %s\'s current value is "%s"' % (accessible, newValue))
+            assert accessible.__getattr__('value') == newValue, \
+                       "numericupdown's current value is %s:" % accessible.__getattr__('value')
+        else:
+            procedurelogger.expectedResult('value "%s" out of run' % newValue)
+            assert not accessible.__getattr__('value') == newValue, \
+                       "scrollbar's current value is %s:" % accessible.__getattr__('value')
     
     #close application window
     def quit(self):

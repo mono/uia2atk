@@ -242,7 +242,7 @@ class ProgressBar(object):
     states = (SHOWING,)
 
 class NumericUpDown(object):
-    states = (SHOWING,)
+    states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
 
 class Icon(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)

@@ -1,3 +1,21 @@
+2008-10-15  Calen Chen <cachen@novell.com>
+
+	* testers/states.py: update numericupdown states tuple
+	* testers/notifyicon/notifyiconframe.py: move action test, move 
+	assertNotifyIcon test
+	* testers/notifyicon_basic_ops.py: give notifyicon variable, add test 
+	to assert closing notifyicon frame window
+	* samples/numericupdown.py: update example with two numericupdown, one 
+	is editable and incretment value is 20, one isn't editable and 
+	incretment value is 1
+	* testers/numericupdown/numericupdownframe.py: move statesCheck, add 
+	test to assert Text value, initialize two numericupdown which are 
+	editable and uneditable, modify valueNumericUpDown and assertValue
+	* testers/numericupdown_bsic_ops.py: add states test for two 
+	numericupdown, add test to check editable with assertValue and 
+	assertText by typeText action, add test to check increment value by 
+	press Up/Down
+
 2008-10-14  Ray Wang <rawang@novell.com>
 
 	* samples/columnheader.py: add Click action to act ascending and  

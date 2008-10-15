@@ -19,6 +19,7 @@ import os
 
 from strongwind import *
 from notifyicon import *
+from helpers import *
 from sys import argv
 from os import path
 
@@ -42,16 +43,18 @@ if app is None:
 # just an alias to make things shorter
 niFrame = app.notifyIconFrame
 
-#check Button's actions list
-niFrame.actionsCheck(niFrame.button)
-
 #click button rise notifyicon frame window
 niFrame.click(niFrame.button)
-sleep(config.SHORT_DELAY)
-niFrame.assertNotifyIcon()
+#sleep(config.SHORT_DELAY)
+notifyicon = niFrame.app.findFrame("I'm NotifyIcon")
 
-#check notifyicon frame's states list
-niFrame.statesCheck(niFrame.notifyicon)
+#check notifyicon frame states
+statesCheck(notifyicon, "Form", add_states=["focusable"])
+
+#mouse click notifyicon frame window would close it
+notifyicon.mouseClick()
+sleep(config.SHORT_DELAY)
+notifyicon.assertClosed()
 
 #close application frame window
 niFrame.quit()
