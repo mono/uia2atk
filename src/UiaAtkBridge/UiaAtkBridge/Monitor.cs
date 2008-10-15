@@ -70,7 +70,6 @@ namespace UiaAtkBridge
 		{
 			mainLoop = new GLib.MainLoop ();
 			mainLoop.Run ();
-			Atk.Util.GetRootHandler = null;
 		}
 		
 		public void Quit()

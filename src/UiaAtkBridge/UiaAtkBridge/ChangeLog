@@ -1,3 +1,7 @@
+2008-10-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Monitor.cs: No longer needed here.
+
 2008-10-15  Mike Gorse <mgorse@novell.com>
 
 	* Monitor.cs: Do not terminate glib main loop; set GetRoot to
