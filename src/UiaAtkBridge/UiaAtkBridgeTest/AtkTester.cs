@@ -69,20 +69,24 @@ namespace UiaAtkBridgeTest
 		                                              Atk.Action actionable2, Atk.Object accessible2,
 		                                              Atk.Action actionable3, Atk.Object accessible3)
 		{
-			Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#1");
-			System.Threading.Thread.Sleep (3000);
-			Assert.IsTrue (actionable3.DoAction (0), "IAF3RB::DoAction#1");
-			System.Threading.Thread.Sleep (3000);
+			RunInGuiThread ( delegate () {
+				Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#1");
+				System.Threading.Thread.Sleep (3000);
+				Assert.IsTrue (actionable3.DoAction (0), "IAF3RB::DoAction#1");
+				System.Threading.Thread.Sleep (3000);
+				
+				Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #1");
+				Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #2");
+				Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #3");
+			});
 			
-			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #1");
-			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #2");
-			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #3");
-
 			EventMonitor.Start ();
-			
-			Assert.IsTrue (actionable2.DoAction (0), "IAF3RB::DoAction#1");
-			System.Threading.Thread.Sleep (3000);
 
+			RunInGuiThread ( delegate () {
+				Assert.IsTrue (actionable2.DoAction (0), "IAF3RB::DoAction#1");
+				System.Threading.Thread.Sleep (3000);
+			});
+				
 			// FIXME: should we detect "object:state-changed:focused" events here?? it seems gail doesn't fire them if we use this atk API
 			EventCollection events = EventMonitor.Pause ();
 			string evType = "object:state-changed:checked";
@@ -92,31 +96,33 @@ namespace UiaAtkBridgeTest
 			Assert.IsFalse (radioEvs [0].SourceName == radioEvs [1].SourceName, "events should come from different widgets;" + eventsInXml);
 			Assert.AreEqual (1, radioEvs.FindWithDetail1 ("1").Count, "one should be Checked;" + eventsInXml);
 			Assert.AreEqual (1, radioEvs.FindWithDetail1 ("0").Count, "one should be Checked;" + eventsInXml);
-			
-			Assert.IsFalse (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #4");
-			Assert.IsTrue (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #5");
-			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #6");
 
-			Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#2");
-			System.Threading.Thread.Sleep (3000);
-			
-			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #7");
-			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #8");
-			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #9");
-
-			Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#3");
-			System.Threading.Thread.Sleep (3000);
-			
-			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #10");
-			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #11");
-			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #12");
-			
-			Assert.IsTrue (actionable3.DoAction (0), "IAF3RB::DoAction#4");
-			System.Threading.Thread.Sleep (3000);
-			
-			Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #13");
-			Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #14");
-			Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #15");
+			RunInGuiThread ( delegate () {
+				Assert.IsFalse (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #4");
+				Assert.IsTrue (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #5");
+				Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #6");
+	
+				Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#2");
+				System.Threading.Thread.Sleep (3000);
+				
+				Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #7");
+				Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #8");
+				Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #9");
+	
+				Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#3");
+				System.Threading.Thread.Sleep (3000);
+				
+				Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #10");
+				Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #11");
+				Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #12");
+				
+				Assert.IsTrue (actionable3.DoAction (0), "IAF3RB::DoAction#4");
+				System.Threading.Thread.Sleep (3000);
+				
+				Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #13");
+				Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #14");
+				Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #15");
+			});
 		}
 		
 		protected void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible)
