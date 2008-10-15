@@ -143,13 +143,11 @@ namespace UiaAtkBridgeTest
 			BasicWidgetType type = BasicWidgetType.RadioButton;
 			Atk.Object accessible = null, accessible2 = null, accessible3 = null;
 
-			//FIXME: figure out why this test doesn't work
-			//InterfaceTextSingleLine (type);
-			
 			string name = "test 01";
 			RunInGuiThread (delegate () {
-				accessible = GetAccessible (type, name, true);
+				accessible = InterfaceText (type);
 			});
+			
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 

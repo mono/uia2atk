@@ -1,5 +1,9 @@
 2008-10-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs: Added RadioButton.AtkText testing.
+
+2008-10-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs:
 	* AtkTester.cs:
 	* BridgeTester.cs: Refactoring of InterfaceText to make it be just one
