@@ -50,11 +50,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 			get { return TextPatternIdentifiers.Pattern; }
 		}
 		
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 		}
 

@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Events.CheckBox
 
 		#region Constructors
 
-		public TogglePatternToggleStateEvent (IRawElementProviderFragment toggleProvider)
+		public TogglePatternToggleStateEvent (FragmentControlProvider toggleProvider)
 			: base (toggleProvider,
 			        TogglePatternIdentifiers.ToggleStateProperty)
 		{
@@ -46,14 +46,14 @@ namespace Mono.UIAutomation.Winforms.Events.CheckBox
 		
 		#region IConnectable Overrides
 	
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
-			((SWF.CheckBox) control).CheckedChanged += new EventHandler (OnCheckChanged);
+			((SWF.CheckBox) Provider.Control).CheckedChanged += new EventHandler (OnCheckChanged);
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
-			((SWF.CheckBox) control).CheckedChanged -= new EventHandler (OnCheckChanged);
+			((SWF.CheckBox) Provider.Control).CheckedChanged -= new EventHandler (OnCheckChanged);
 		}
 		
 		#endregion

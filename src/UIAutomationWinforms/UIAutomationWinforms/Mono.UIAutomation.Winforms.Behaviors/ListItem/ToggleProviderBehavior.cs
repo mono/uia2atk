@@ -59,13 +59,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 				return null;
 		}
 		
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
 			Provider.SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
 			                   new TogglePatternToggleStateEvent ((ListItemProvider) Provider));
 		}
 		
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
 			                   null);

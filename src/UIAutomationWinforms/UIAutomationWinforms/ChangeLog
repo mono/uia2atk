@@ -1,3 +1,28 @@
+2008-10-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/IConnectable.cs:
+	* Mono.UIAutomation.Winforms.Events/ProviderEvent.cs:
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs: Support
+	connectable events/behaviors for non-Control providers.
+
+	* Mono.UIAutomation.Winforms/MenuStripProvider.cs: Add navigation
+	support, move ToolStripItemProvider into its own file.
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Add support for
+	MenuStrip, ToolStripMenuItem, ToolStripLabel, ToolStripItem, and
+	WebBrowser.
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripMenuItemProvider.cs:
+	* Mono.UIAutomation.Winforms.Events/ToolStripItem/InvokePatternInvokedEvent.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs:
+	Add provider/behavior/event files for ToolStripItem,
+	ToolStripMenuItem, and ToolStripLabel.
+
 2008-10-14  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementAddedEvent.cs,

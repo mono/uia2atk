@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 		
 		#region Constructor
 
-		public ValuePatternValueEvent (IRawElementProviderSimple provider) 
+		public ValuePatternValueEvent (SimpleControlProvider provider) 
 			: base (provider,
 			        ValuePatternIdentifiers.ValueProperty)
 		{
@@ -47,14 +47,14 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 		
 		#region ProviderEvent Methods
 
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
-			control.TextChanged += new EventHandler (OnValueChanged);
+			Provider.Control.TextChanged += new EventHandler (OnValueChanged);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
-			control.TextChanged -= new EventHandler (OnValueChanged);
+			Provider.Control.TextChanged -= new EventHandler (OnValueChanged);
 		}
 		
 		#endregion 

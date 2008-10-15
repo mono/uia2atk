@@ -53,7 +53,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ScrollBar
 			get { return RangeValuePatternIdentifiers.Pattern; }
 		}		
 		
-		public override void Connect (SWF.Control control) 
+		public override void Connect () 
 		{
 			Provider.SetEvent (ProviderEventType.RangeValuePatternIsReadOnlyProperty,
 			                   new RangeValuePatternIsReadOnlyEvent (Provider));
@@ -69,7 +69,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ScrollBar
 			                   new RangeValuePatternValueEvent (Provider));
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.RangeValuePatternIsReadOnlyProperty,
 			                   null);

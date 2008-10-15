@@ -46,7 +46,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		#region IProviderBehavior Interface
 		
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			//NOTE: SelectionItem.SelectionContainer never changes.
 			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent,

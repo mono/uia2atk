@@ -45,7 +45,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		#region IProviderBehavior Interface
 
-		public override void Connect (System.Windows.Forms.Control control)
+		public override void Connect ()
 		{
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontallyScrollableProperty,
 			                   new ScrollPatternHorizontallyScrollableEvent ((ListViewProvider) Provider));

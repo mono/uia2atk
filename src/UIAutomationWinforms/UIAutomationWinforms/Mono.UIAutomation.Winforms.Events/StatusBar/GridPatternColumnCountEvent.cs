@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 	{
 		#region Constructor
 
-		public GridPatternColumnCountEvent (IRawElementProviderSimple provider) 
+		public GridPatternColumnCountEvent (SimpleControlProvider provider) 
 			: base (provider, GridPatternIdentifiers.ColumnCountProperty)
 		{
 		}
@@ -45,22 +45,22 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 		
 		#region IConnectable Overrides
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			try {
 				Helper.AddPrivateEvent (typeof (SWF.StatusBar.StatusBarPanelCollection),
-				                        ((SWF.StatusBar) control).Panels,
+				                        ((SWF.StatusBar) Provider.Control).Panels,
 				                        "UIACollectionChanged",
 				                        this,
 				                        "OnColumnCountChanged");
 			} catch (NotSupportedException) { }
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			try {
 				Helper.RemovePrivateEvent (typeof (SWF.StatusBar.StatusBarPanelCollection),
-				                           ((SWF.StatusBar) control).Panels,
+				                           ((SWF.StatusBar) Provider.Control).Panels,
 				                           "UIACollectionChanged",
 				                           this,
 				                           "OnColumnCountChanged");

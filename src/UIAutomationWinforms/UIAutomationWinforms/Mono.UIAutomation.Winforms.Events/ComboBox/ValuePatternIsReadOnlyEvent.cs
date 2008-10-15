@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 		
 		#region Constructor
 
-		public ValuePatternIsReadOnlyEvent (IRawElementProviderSimple provider) 
+		public ValuePatternIsReadOnlyEvent (SimpleControlProvider provider) 
 			: base (provider,
 			        ValuePatternIdentifiers.IsReadOnlyProperty)
 		{
@@ -47,14 +47,14 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 		
 		#region ProviderEvent Methods
 
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
-			control.EnabledChanged += new EventHandler (OnIsReadOnlyChanged);
+			Provider.Control.EnabledChanged += new EventHandler (OnIsReadOnlyChanged);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
-			control.EnabledChanged -= new EventHandler (OnIsReadOnlyChanged);
+			Provider.Control.EnabledChanged -= new EventHandler (OnIsReadOnlyChanged);
 		}
 		
 		#endregion 

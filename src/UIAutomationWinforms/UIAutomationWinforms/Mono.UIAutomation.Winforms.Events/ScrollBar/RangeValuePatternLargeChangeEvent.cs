@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Events.ScrollBar
 	{
 		#region Constructor
 		
-		public RangeValuePatternLargeChangeEvent (IRawElementProviderSimple provider)
+		public RangeValuePatternLargeChangeEvent (SimpleControlProvider provider)
 			: base (provider, RangeValuePatternIdentifiers.LargeChangeProperty)
 		{
 		}
@@ -45,22 +45,22 @@ namespace Mono.UIAutomation.Winforms.Events.ScrollBar
 		
 		#region Public Methods
 		
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			try {
 				Helper.AddPrivateEvent (typeof (SWF.ScrollBar),
-				                        control,
+				                        Provider.Control,
 				                        "UIAValueChanged", 
 				                        this,
 				                        "OnLargeChangeChanged");
 			} catch (NotSupportedException) {}
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			try {
 				Helper.RemovePrivateEvent (typeof (SWF.ScrollBar),
-				                           control,
+				                           Provider.Control,
 				                           "UIAValueChanged", 
 				                           this,
 				                           "OnLargeChangeChanged");

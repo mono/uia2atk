@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		#region Constructors
 		
-		public AutomationIsOffscreenPropertyEvent (IRawElementProviderSimple provider)
+		public AutomationIsOffscreenPropertyEvent (SimpleControlProvider provider)
 			: base (provider,
 			        AutomationElementIdentifiers.IsOffscreenProperty)
 		{
@@ -46,16 +46,16 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		#region IConnectable Overrides
 		
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
-			control.Resize += new EventHandler (OnIsOffScreen);
-			control.LocationChanged += new EventHandler (OnIsOffScreen);
+			Provider.Control.Resize += new EventHandler (OnIsOffScreen);
+			Provider.Control.LocationChanged += new EventHandler (OnIsOffScreen);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
-			control.Resize -= new EventHandler (OnIsOffScreen);
-			control.LocationChanged -= new EventHandler (OnIsOffScreen);
+			Provider.Control.Resize -= new EventHandler (OnIsOffScreen);
+			Provider.Control.LocationChanged -= new EventHandler (OnIsOffScreen);
 		}
 		
 		#endregion

@@ -55,13 +55,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.RadioButton
 		
 #region IProviderBehavior Interface
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			//TODO: Use SetEventStrategy
 			radioButton.CheckedChanged += OnCheckedChanged;
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			//TODO: Use SetEventStrategy
 			radioButton.CheckedChanged -= OnCheckedChanged;

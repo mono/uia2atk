@@ -48,15 +48,15 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 		
 		#region ProviderEvent Methods
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
-			((SWF.ComboBox) control).SelectedIndexChanged 
+			((SWF.ComboBox) Provider.Control).SelectedIndexChanged 
 				+= new EventHandler (OnSelectedIndexChanged);
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
-			((SWF.ComboBox) control).SelectedIndexChanged 
+			((SWF.ComboBox) Provider.Control).SelectedIndexChanged 
 				-= new EventHandler (OnSelectedIndexChanged);
 		}
 		

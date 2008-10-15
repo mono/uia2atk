@@ -53,12 +53,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 			get { return ScrollItemPatternIdentifiers.Pattern; }
 		}
 		
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
 			//Doesn't generate any UIA event
 		}
 		
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
 			//Doesn't generate any UIA event
 		}

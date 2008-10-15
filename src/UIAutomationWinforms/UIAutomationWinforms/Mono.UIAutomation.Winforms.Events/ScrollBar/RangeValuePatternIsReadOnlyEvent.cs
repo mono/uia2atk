@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Events.ScrollBar
 	{
 		#region Constructor
 		
-		public RangeValuePatternIsReadOnlyEvent (IRawElementProviderSimple provider)
+		public RangeValuePatternIsReadOnlyEvent (SimpleControlProvider provider)
 			: base (provider, RangeValuePatternIdentifiers.IsReadOnlyProperty)
 		{
 		}
@@ -45,16 +45,16 @@ namespace Mono.UIAutomation.Winforms.Events.ScrollBar
 		
 		#region Public Methods
 		
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
-			((SWF.ScrollBar) control).EnabledChanged += new EventHandler (OnIsReadOnlyChanged);
-			((SWF.ScrollBar) control).VisibleChanged += new EventHandler (OnIsReadOnlyChanged);
+			((SWF.ScrollBar) Provider.Control).EnabledChanged += new EventHandler (OnIsReadOnlyChanged);
+			((SWF.ScrollBar) Provider.Control).VisibleChanged += new EventHandler (OnIsReadOnlyChanged);
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
-			((SWF.ScrollBar) control).EnabledChanged -= new EventHandler (OnIsReadOnlyChanged);
-			((SWF.ScrollBar) control).VisibleChanged -= new EventHandler (OnIsReadOnlyChanged);
+			((SWF.ScrollBar) Provider.Control).EnabledChanged -= new EventHandler (OnIsReadOnlyChanged);
+			((SWF.ScrollBar) Provider.Control).VisibleChanged -= new EventHandler (OnIsReadOnlyChanged);
 		}
 		
 		#endregion

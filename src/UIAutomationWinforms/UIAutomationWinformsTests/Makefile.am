@@ -64,6 +64,7 @@ FILES =  \
 	LabelProviderTest.cs \
 	LinkLabelProviderTest.cs \
 	ListBoxProviderTest.cs \
+	MenuStripProviderTest.cs \
 	MockBridge.cs \
 	NumericUpDownProviderTest.cs \
 	PictureBoxProviderTest.cs \
@@ -76,6 +77,8 @@ FILES =  \
 	TextBoxProviderTest.cs \
 	TextNormalizerTest.cs \
 	TextRangeProviderTest.cs \
+	ToolStripLabelProviderTest.cs \
+	ToolStripMenuItemProviderTest.cs \
 	WindowProviderTest.cs \
 	WordTokenizerTest.cs 
 

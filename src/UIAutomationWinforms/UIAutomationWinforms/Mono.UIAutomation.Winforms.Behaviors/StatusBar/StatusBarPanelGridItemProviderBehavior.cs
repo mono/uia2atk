@@ -52,7 +52,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 			get { return GridItemPatternIdentifiers.Pattern; }
 		}
 		
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			// NOTE: Row Property NEVER changes.
 			// NOTE: RowSpan Property NEVER changes.
@@ -62,7 +62,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 			                   new StatusBarPanelGridItemPatternColumnEvent (Provider));
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.GridItemPatternRowProperty,
 			                   null);

@@ -48,7 +48,7 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 		
 		#region ProviderEvent Methods
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{	
 			SWF.ScrollBar hscrollbar 
 				= ((ListBoxProvider) Provider).GetInternalScrollBar (SWF.Orientation.Horizontal);
@@ -57,7 +57,7 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 			hscrollbar.EnabledChanged += new EventHandler (OnScrollableChanged);
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			SWF.ScrollBar hscrollbar 
 				= ((ListBoxProvider) Provider).GetInternalScrollBar (SWF.Orientation.Horizontal);

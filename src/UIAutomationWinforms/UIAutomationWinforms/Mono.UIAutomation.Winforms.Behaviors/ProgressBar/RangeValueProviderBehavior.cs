@@ -50,7 +50,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ProgressBar
 			get { return RangeValuePatternIdentifiers.Pattern; }
 		}
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			// NOTE: IsReadOnly Property NEVER changes.
 			// NOTE: Minimum Property NEVER changes.
@@ -61,7 +61,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ProgressBar
 			                   new RangeValuePatternValueEvent (Provider));
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.RangeValuePatternIsReadOnlyProperty,
 			                   null);

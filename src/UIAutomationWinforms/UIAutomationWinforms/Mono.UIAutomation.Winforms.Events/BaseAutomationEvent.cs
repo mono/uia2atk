@@ -33,7 +33,7 @@ namespace Mono.UIAutomation.Winforms.Events
 	{
 		#region Constructors
 		
-		protected BaseAutomationEvent (IRawElementProviderSimple provider,
+		protected BaseAutomationEvent (SimpleControlProvider provider,
 		                               AutomationEvent evnt)
 			: base (provider)
 		{

@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Events.Label
 		
 		#region Constructors
 
-		public TextPatternTextChangedEvent (IRawElementProviderSimple provider) 
+		public TextPatternTextChangedEvent (SimpleControlProvider provider) 
 			: base (provider,
 			        TextPatternIdentifiers.TextChangedEvent)
 		{
@@ -46,14 +46,14 @@ namespace Mono.UIAutomation.Winforms.Events.Label
 		
 		#region IConnectable Overrides
 
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
-			control.TextChanged += new EventHandler (OnTextChanged);
+			Provider.Control.TextChanged += new EventHandler (OnTextChanged);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
-			control.TextChanged -= new EventHandler (OnTextChanged);
+			Provider.Control.TextChanged -= new EventHandler (OnTextChanged);
 		}
 
 		#endregion

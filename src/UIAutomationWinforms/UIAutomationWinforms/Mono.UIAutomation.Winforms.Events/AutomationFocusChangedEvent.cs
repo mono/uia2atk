@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		#region Constructors
 		
-		public AutomationFocusChangedEvent (IRawElementProviderSimple provider) 
+		public AutomationFocusChangedEvent (SimpleControlProvider provider) 
 			: base (provider, 
 			        AutomationElementIdentifiers.AutomationFocusChangedEvent)
 		{
@@ -47,16 +47,16 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		#region IConnectable Overrides
 
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
-			control.GotFocus += new EventHandler (OnFocusChanged);
-			control.LostFocus += new EventHandler (OnFocusChanged);
+			Provider.Control.GotFocus += new EventHandler (OnFocusChanged);
+			Provider.Control.LostFocus += new EventHandler (OnFocusChanged);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
-			control.GotFocus -= new EventHandler (OnFocusChanged);
-			control.LostFocus -= new EventHandler (OnFocusChanged);
+			Provider.Control.GotFocus -= new EventHandler (OnFocusChanged);
+			Provider.Control.LostFocus -= new EventHandler (OnFocusChanged);
 		}
 		
 		#endregion

@@ -49,13 +49,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.CheckBox
 				
 		#region IProviderBehavior Interface
 		
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			Provider.SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
 			                   new TogglePatternToggleStateEvent (Provider));
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
 			                   null);

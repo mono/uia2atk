@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 
 		#region Constructor
 
-		public ListItemSelectionItemPatternIsSelectedEvent (IRawElementProviderSimple provider)
+		public ListItemSelectionItemPatternIsSelectedEvent (SimpleControlProvider provider)
 			: base (provider, SelectionItemPatternIdentifiers.IsSelectedProperty)
 		{
 		}
@@ -46,15 +46,15 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 		
 		#region IConnectable Overrides
 		
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
-			((SWF.ComboBox) control).SelectedIndexChanged 
+			((SWF.ComboBox) Provider.Control).SelectedIndexChanged 
 				+= new EventHandler (OnElementSelectedEvent);
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
-			((SWF.ComboBox) control).SelectedIndexChanged 
+			((SWF.ComboBox) Provider.Control).SelectedIndexChanged 
 				-= new EventHandler (OnElementSelectedEvent);
 		}
 		

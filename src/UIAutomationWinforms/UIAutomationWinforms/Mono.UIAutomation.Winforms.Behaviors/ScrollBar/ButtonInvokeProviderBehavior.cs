@@ -51,13 +51,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ScrollBar
 		
 		#region IProviderBehavior Interface
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
 			                   new ButtonInvokePatternInvokedEvent (provider));
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
 			                   null);

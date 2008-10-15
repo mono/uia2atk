@@ -53,7 +53,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 			get { return SelectionItemPatternIdentifiers.Pattern; }
 		}		
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent, 
 			                   null);

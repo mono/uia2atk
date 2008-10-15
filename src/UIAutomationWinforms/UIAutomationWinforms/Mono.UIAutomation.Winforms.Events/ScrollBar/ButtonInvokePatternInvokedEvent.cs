@@ -47,22 +47,22 @@ namespace Mono.UIAutomation.Winforms.Events.ScrollBar
 
 		#region IConnectable Overriders
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{		
 			try {
 				Helper.AddPrivateEvent (typeof (SWF.ScrollBar), 
-				                        (SWF.ScrollBar) control, 
+				                        (SWF.ScrollBar) Provider.Control, 
 				                        "UIAScroll",
 				                        this, 
 				                        "OnButtonClicked");
 			} catch (NotSupportedException) {}			
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			try {
 				Helper.RemovePrivateEvent (typeof (SWF.ScrollBar), 
-				                           (SWF.ScrollBar) control, 
+				                           (SWF.ScrollBar) Provider.Control, 
 				                           "UIAScroll",
 				                           this, 
 				                           "OnButtonClicked");	

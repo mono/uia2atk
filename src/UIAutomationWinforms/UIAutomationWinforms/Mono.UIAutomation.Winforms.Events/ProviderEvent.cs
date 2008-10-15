@@ -35,7 +35,7 @@ namespace Mono.UIAutomation.Winforms.Events
 			
 #region Constructor
 
-		protected ProviderEvent (IRawElementProviderSimple provider)
+		protected ProviderEvent (SimpleControlProvider provider)
 		{
 			this.provider = provider;
 		}
@@ -44,15 +44,15 @@ namespace Mono.UIAutomation.Winforms.Events
 			
 #region IConnectable Overriders
 
-		public abstract void Connect (Control control);
+		public abstract void Connect ();
 
-		public abstract void Disconnect (Control control);
+		public abstract void Disconnect ();
 			
 #endregion
 
 #region Protected properties
 			
-		protected IRawElementProviderSimple Provider {
+		protected SimpleControlProvider Provider {
 			get { return provider; }
 		}
 
@@ -60,7 +60,7 @@ namespace Mono.UIAutomation.Winforms.Events
 			
 #region Private fields
 
-		private IRawElementProviderSimple provider;
+		private SimpleControlProvider provider;
 			
 #endregion
 	}

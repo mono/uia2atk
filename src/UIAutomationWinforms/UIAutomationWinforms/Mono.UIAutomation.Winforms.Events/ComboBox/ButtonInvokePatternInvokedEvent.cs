@@ -46,14 +46,14 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 
 		#region IConnectable Overriders
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
-			((SWF.ComboBox) control).DropDown += new EventHandler (OnDropDown);
+			((SWF.ComboBox) Provider.Control).DropDown += new EventHandler (OnDropDown);
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
-			((SWF.ComboBox) control).DropDown -= new EventHandler (OnDropDown);
+			((SWF.ComboBox) Provider.Control).DropDown -= new EventHandler (OnDropDown);
 		}
 
 		#endregion

@@ -52,12 +52,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Form
 			get { return TransformPatternIdentifiers.Pattern; }
 		}		
 		
-		public override void Connect (SWF.Control control) 
+		public override void Connect () 
 		{
 			//FIXME: Automation Events not generated
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			//FIXME: Automation Events not generated
 		}

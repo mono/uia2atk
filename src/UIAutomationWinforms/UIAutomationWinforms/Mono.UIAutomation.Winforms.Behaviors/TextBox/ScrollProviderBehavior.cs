@@ -50,11 +50,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 			get { return ScrollPatternIdentifiers.Pattern; }
 		}
 
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
 		}		
 		
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
 		}
 

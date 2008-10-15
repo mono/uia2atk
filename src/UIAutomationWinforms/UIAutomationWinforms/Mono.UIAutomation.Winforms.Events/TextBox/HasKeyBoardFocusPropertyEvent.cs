@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Events.TextBox
 
 		#region Constructors
 
-		public HasKeyBoardFocusPropertyEvent (IRawElementProviderSimple provider) 
+		public HasKeyBoardFocusPropertyEvent (SimpleControlProvider provider) 
 			: base (provider,
 			        AutomationElementIdentifiers.HasKeyboardFocusProperty)
 		{
@@ -46,16 +46,16 @@ namespace Mono.UIAutomation.Winforms.Events.TextBox
 		
 		#region IConnectable Overrides
 		
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
-			((TextBoxBase) control).Enter += new EventHandler (OnEnterLeave);
-			((TextBoxBase) control).Leave += new EventHandler (OnEnterLeave);
+			((TextBoxBase) Provider.Control).Enter += new EventHandler (OnEnterLeave);
+			((TextBoxBase) Provider.Control).Leave += new EventHandler (OnEnterLeave);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
-			((TextBoxBase) control).Enter -= new EventHandler (OnEnterLeave);
-			((TextBoxBase) control).Leave -= new EventHandler (OnEnterLeave);
+			((TextBoxBase) Provider.Control).Enter -= new EventHandler (OnEnterLeave);
+			((TextBoxBase) Provider.Control).Leave -= new EventHandler (OnEnterLeave);
 		}
 		
 		#endregion

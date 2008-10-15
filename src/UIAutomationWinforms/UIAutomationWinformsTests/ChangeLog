@@ -1,3 +1,13 @@
+2008-10-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* MenuStripProviderTest.cs:
+	* UIAutomationWinformsTests.mdp:
+	* ToolStripLabelProviderTest.cs:
+	* ToolStripMenuItemProviderTest.cs: Add unit tests for
+	MenuStripProvider, ToolStripLabelProvider, and
+	ToolStripMenuItemProvider.
+
 2008-10-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* ButtonProviderTest.cs: Make InvokedEventTest pass again. Uncomment

@@ -52,7 +52,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 			get { return ValuePatternIdentifiers.Pattern; }
 		}		
 		
-		public override void Connect (Control control) 
+		public override void Connect () 
 		{
 			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
 			                   new ValuePatternValueEvent (Provider));
@@ -60,7 +60,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 			                   new ValuePatternIsReadOnlyEvent (Provider));
 		}
 		
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
 			                   null);

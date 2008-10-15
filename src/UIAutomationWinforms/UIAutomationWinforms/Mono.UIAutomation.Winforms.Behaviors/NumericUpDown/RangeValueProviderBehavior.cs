@@ -52,13 +52,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.NumericUpDown
 		
 		#region IProviderBehavior Interface
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			//TODO: Use SetEventStrategy
 			upDown.ValueChanged += OnValueChanged;
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			//TODO: Use SetEventStrategy
 			upDown.ValueChanged -= OnValueChanged;

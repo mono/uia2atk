@@ -50,13 +50,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			get { return MultipleViewPatternIdentifiers.Pattern; }
 		}
 		
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			//NOTE: CurrentViewProperty NEVER changes
 			//NOTE: SupportedViewsProperty NEVER changes
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{	
 			//NOTE: CurrentViewProperty NEVER changes
 			//NOTE: SupportedViewsProperty NEVER changes

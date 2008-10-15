@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms.Events
 
 #region Constructors
 		
-		public AutomationBoundingRectanglePropertyEvent (IRawElementProviderSimple provider) 
+		public AutomationBoundingRectanglePropertyEvent (SimpleControlProvider provider) 
 			: base (provider, AutomationElementIdentifiers.BoundingRectangleProperty)
 		{
 		}
@@ -46,14 +46,14 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 #region IConnectable Overrides
 
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
-			control.Resize += new EventHandler (OnResize);
+			Provider.Control.Resize += new EventHandler (OnResize);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
-			control.Resize -= new EventHandler (OnResize);
+			Provider.Control.Resize -= new EventHandler (OnResize);
 		}
 		
 #endregion

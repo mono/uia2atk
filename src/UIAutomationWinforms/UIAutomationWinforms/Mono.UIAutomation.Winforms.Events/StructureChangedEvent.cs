@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		#region Constructor
 
-		public StructureChangedEvent (IRawElementProviderSimple provider)
+		public StructureChangedEvent (SimpleControlProvider provider)
 			: base (provider)
 		{
 		}
@@ -45,14 +45,14 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		#region IConnectable specialization
 
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
-			control.VisibleChanged += new EventHandler (OnStructureChangedEvent);
+			Provider.Control.VisibleChanged += new EventHandler (OnStructureChangedEvent);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
-			control.VisibleChanged -= new EventHandler (OnStructureChangedEvent);
+			Provider.Control.VisibleChanged -= new EventHandler (OnStructureChangedEvent);
 		}
 		
 		#endregion

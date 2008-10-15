@@ -38,7 +38,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		#region Constructors
 
-		public AutomationHasKeyboardFocusPropertyEvent (IRawElementProviderSimple provider) 
+		public AutomationHasKeyboardFocusPropertyEvent (SimpleControlProvider provider) 
 			: base (provider, 
 			        AutomationElementIdentifiers.HasKeyboardFocusProperty)
 		{
@@ -48,16 +48,16 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		#region IConnectable Overrides		 
 		
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
-			control.GotFocus += new EventHandler (OnFocus);
-			control.LostFocus += new EventHandler (OnFocus);
+			Provider.Control.GotFocus += new EventHandler (OnFocus);
+			Provider.Control.LostFocus += new EventHandler (OnFocus);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
-			control.GotFocus -= new EventHandler (OnFocus);
-			control.LostFocus -= new EventHandler (OnFocus);
+			Provider.Control.GotFocus -= new EventHandler (OnFocus);
+			Provider.Control.LostFocus -= new EventHandler (OnFocus);
 		}
 		
 		#endregion

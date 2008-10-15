@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Events.ScrollBar
 	{
 		#region Constructor
 		
-		public RangeValuePatternValueEvent (IRawElementProviderSimple provider) 
+		public RangeValuePatternValueEvent (SimpleControlProvider provider) 
 			: base (provider, RangeValuePatternIdentifiers.ValueProperty)
 		{
 		}
@@ -45,14 +45,14 @@ namespace Mono.UIAutomation.Winforms.Events.ScrollBar
 		
 		#region IConnectable Overrides
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
-			((SWF.ScrollBar) control).ValueChanged += new EventHandler (OnValueChanged);
+			((SWF.ScrollBar) Provider.Control).ValueChanged += new EventHandler (OnValueChanged);
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
-			((SWF.ScrollBar) control).ValueChanged -= new EventHandler (OnValueChanged);
+			((SWF.ScrollBar) Provider.Control).ValueChanged -= new EventHandler (OnValueChanged);
 		}
 		
 		#endregion 

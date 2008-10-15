@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Events.Button
 
 		#region Constructors
 
-		public InvokePatternInvokedEvent (IRawElementProviderSimple provider) 
+		public InvokePatternInvokedEvent (SimpleControlProvider provider) 
 			: base (provider, InvokePatternIdentifiers.InvokedEvent)
 		{
 		}
@@ -45,14 +45,14 @@ namespace Mono.UIAutomation.Winforms.Events.Button
 		
 		#region IConnectable Overrides
 		
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
-			control.Click += new EventHandler (OnClick);
+			Provider.Control.Click += new EventHandler (OnClick);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
-			control.Click -= new EventHandler (OnClick);
+			Provider.Control.Click -= new EventHandler (OnClick);
 		}
 		
 		#endregion

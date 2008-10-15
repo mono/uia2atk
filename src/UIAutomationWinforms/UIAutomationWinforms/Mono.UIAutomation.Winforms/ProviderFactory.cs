@@ -29,7 +29,6 @@ using System.ComponentModel;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Navigation;
-using System.Linq;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -107,6 +106,12 @@ namespace Mono.UIAutomation.Winforms
 			SWF.ErrorProvider errp;
 			SWF.TabControl tc;
 			SWF.TabPage tp;
+			SWF.WebBrowser wb;
+			
+			SWF.MenuStrip ms;
+			SWF.ToolStripMenuItem tsmi;
+			SWF.ToolStripLabel tsl;
+			SWF.ToolStripItem tsi;
 			
 			if (component == null)
 				return null;
@@ -118,7 +123,9 @@ namespace Mono.UIAutomation.Winforms
 			if ((f = component as SWF.Form) != null) {
 				provider = new FormProvider (f);
 				formProviders.Add ((IRawElementProviderFragmentRoot) provider);
-			} else if ((gb = component as SWF.GroupBox) != null)
+			} else if ((wb = component as SWF.WebBrowser) != null)
+				provider = new WebBrowserProvider (wb);
+			else if ((gb = component as SWF.GroupBox) != null)
 				provider = new GroupBoxProvider (gb);
 			else if ((b = component as SWF.Button) != null)
 				provider = new ButtonProvider (b);
@@ -144,6 +151,14 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ListBoxProvider (lb);
 			else if ((pgb = component as SWF.ProgressBar) != null)
 				provider = new ProgressBarProvider (pgb);
+			else if ((ms = component as SWF.MenuStrip) != null)
+				provider = new MenuStripProvider (ms);
+			else if ((tsmi = component as SWF.ToolStripMenuItem) != null)
+				provider = new ToolStripMenuItemProvider (tsmi);
+			else if ((tsl = component as SWF.ToolStripLabel) != null)
+				provider = new ToolStripLabelProvider (tsl);
+			else if ((tsi = component as SWF.ToolStripItem) != null)
+				provider = new ToolStripItemProvider (tsi);
 			else if ((scb = component as SWF.ScrollBar) != null) {
 				//TODO:
 				//   We need to add here a ScrollableControlProvider and then verify
@@ -174,6 +189,10 @@ namespace Mono.UIAutomation.Winforms
 				provider = new TabPageProvider (tp);
 			else {
 				//TODO: We have to solve the problem when there's a Custom control
+				//	Ideally the first thing we do is send a wndproc message to
+				//	the control to see if it implements its own provider.
+				//	After all, the control may derive from a base control in SWF.
+				//	So that check comes before this big if/else block.
 				
 				//FIXME: let's not throw while we are developing, a big WARNING will suffice
 				//throw new NotImplementedException ("Provider not implemented for control " + component.GetType().Name);
@@ -195,7 +214,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			return provider;
 		}
-		
+
 		public static void ReleaseProvider (Component component)
 		{
 			IRawElementProviderFragment provider;

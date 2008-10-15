@@ -49,14 +49,14 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		
 		#region ProviderEvent Methods
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
-			((SWF.ListView) control).SelectedIndexChanged += OnIsSelectedChanged;
+			((SWF.ListView) Provider.Control).SelectedIndexChanged += OnIsSelectedChanged;
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
-			((SWF.ListView) control).SelectedIndexChanged -= OnIsSelectedChanged;
+			((SWF.ListView) Provider.Control).SelectedIndexChanged -= OnIsSelectedChanged;
 		}
 		
 		#endregion 

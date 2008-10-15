@@ -46,7 +46,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 		
 		#region IProviderBehavior Interface
 		
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			// NOTE: 
 			//       - ComboBox doesn't support multiple selection so:

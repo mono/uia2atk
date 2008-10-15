@@ -48,11 +48,11 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 		
 		#region ProviderEvent Methods
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			try {
 				Helper.AddPrivateEvent (typeof (SWF.ComboBox.ObjectCollection),
-				                        ((SWF.ComboBox) control).Items, 
+				                        ((SWF.ComboBox) Provider.Control).Items, 
 				                        "UIACollectionChanged",
 				                        this, 
 				                        "OnSelectedCollectionChanged");
@@ -61,11 +61,11 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 			}
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			try {
 				Helper.RemovePrivateEvent (typeof (SWF.ComboBox.ObjectCollection),
-				                           ((SWF.ComboBox) control).Items,
+				                           ((SWF.ComboBox) Provider.Control).Items,
 				                           "UIACollectionChanged",
 				                           this, 
 				                           "OnSelectedCollectionChanged");

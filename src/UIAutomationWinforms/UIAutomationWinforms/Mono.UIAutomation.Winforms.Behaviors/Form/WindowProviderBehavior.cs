@@ -53,14 +53,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Form
 			get { return WindowPatternIdentifiers.Pattern; }
 		}		
 		
-		public override void Connect (SWF.Control control) 
+		public override void Connect () 
 		{
 			//FIXME: Automation Events not generated
 			form.Closed += OnClosed;
 			form.Closing += OnClosing;
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			//FIXME: Automation Events not generated
 			form.Closing -= OnClosing;

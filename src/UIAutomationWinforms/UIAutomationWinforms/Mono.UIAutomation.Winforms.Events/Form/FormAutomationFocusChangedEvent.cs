@@ -46,14 +46,14 @@ namespace Mono.UIAutomation.Winforms.Events.Form
 		
 		#region IConnectable Overrides
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
-			((SWF.Form) control).Activated += new EventHandler (OnWindowFocusChanged);
+			((SWF.Form) Provider.Control).Activated += new EventHandler (OnWindowFocusChanged);
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
-			((SWF.Form) control).Activated -= new EventHandler (OnWindowFocusChanged);
+			((SWF.Form) Provider.Control).Activated -= new EventHandler (OnWindowFocusChanged);
 		}
 		
 		#endregion

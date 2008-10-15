@@ -53,13 +53,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 			get { return ExpandCollapsePatternIdentifiers.Pattern; }
 		}
 		
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{		
 			Provider.SetEvent (ProviderEventType.ExpandCollapsePatternExpandCollapseStateProperty, 
 			                   new ExpandCollapsePatternStateEvent (Provider));
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.ExpandCollapsePatternExpandCollapseStateProperty, 
 			                   null);

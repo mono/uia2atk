@@ -52,14 +52,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 			get { return GridPatternIdentifiers.Pattern; }
 		}
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			// NOTE: RowColumn Property NEVER changes.
 			Provider.SetEvent (ProviderEventType.GridPatternColumnCountProperty,
 			                   new GridPatternColumnCountEvent (Provider));
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.GridPatternRowCountProperty,
 			                   null);

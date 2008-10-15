@@ -51,7 +51,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 			get { return ValuePatternIdentifiers.Pattern; }
 		}
 
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
 			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
 			                   new ValuePatternValueIsReadOnlyEvent (Provider));
@@ -60,7 +60,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 //			                   new ValuePatternValueValueEvent (Provider));
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
 			                   null);

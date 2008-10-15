@@ -62,9 +62,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 			get;
 		}
 		
-		public abstract void Disconnect (Control control);
+		public abstract void Disconnect ();
 
-		public abstract void Connect (Control control);
+		public abstract void Connect ();
 		
 		public virtual object GetPropertyValue (int propertyId)
 		{

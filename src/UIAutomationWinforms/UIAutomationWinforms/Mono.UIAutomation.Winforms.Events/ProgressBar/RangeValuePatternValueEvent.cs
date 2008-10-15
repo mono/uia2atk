@@ -34,7 +34,7 @@ namespace Mono.UIAutomation.Winforms.Events.ProgressBar
 	{
 		#region Constructor
 
-		public RangeValuePatternValueEvent (IRawElementProviderSimple provider) 
+		public RangeValuePatternValueEvent (SimpleControlProvider provider) 
 			: base (provider, RangeValuePatternIdentifiers.ValueProperty)
 		{
 		}
@@ -43,14 +43,14 @@ namespace Mono.UIAutomation.Winforms.Events.ProgressBar
 		
 		#region IConnectable Overrides
 
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
-			control.TextChanged += new EventHandler (OnValueChanged);
+			Provider.Control.TextChanged += new EventHandler (OnValueChanged);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
-			control.TextChanged -= new EventHandler (OnValueChanged);
+			Provider.Control.TextChanged -= new EventHandler (OnValueChanged);
 		}
 		
 		#endregion 

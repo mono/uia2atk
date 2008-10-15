@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		#region Constructors
 
-		public AutomationIsKeyboardFocusablePropertyEvent (IRawElementProviderSimple provider) 
+		public AutomationIsKeyboardFocusablePropertyEvent (SimpleControlProvider provider) 
 			: base (provider, 
 			        AutomationElementIdentifiers.IsKeyboardFocusableProperty)
 		{
@@ -50,16 +50,16 @@ namespace Mono.UIAutomation.Winforms.Events
 		//NOTE: 
 		//      We are using EnableChanged and VisibleChanged because we are using Control.CanFocus:
 		//      http://msdn.microsoft.com/en-us/library/system.windows.forms.control.canfocus.aspx
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
-			control.EnabledChanged += new EventHandler (OnKeyBoardFocusableProperty);
-			control.VisibleChanged += new EventHandler (OnKeyBoardFocusableProperty);
+			Provider.Control.EnabledChanged += new EventHandler (OnKeyBoardFocusableProperty);
+			Provider.Control.VisibleChanged += new EventHandler (OnKeyBoardFocusableProperty);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
-			control.EnabledChanged -= new EventHandler (OnKeyBoardFocusableProperty);
-			control.VisibleChanged -= new EventHandler (OnKeyBoardFocusableProperty);
+			Provider.Control.EnabledChanged -= new EventHandler (OnKeyBoardFocusableProperty);
+			Provider.Control.VisibleChanged -= new EventHandler (OnKeyBoardFocusableProperty);
 		}
 		
 		#endregion

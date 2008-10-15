@@ -52,7 +52,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 			get { return SelectionPatternIdentifiers.Pattern; }
 		}
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			//NOTE: CanSelectMultiple Property NEVER changes, so we aren't generating it.
 			Provider.SetEvent (ProviderEventType.SelectionPatternInvalidatedEvent,
@@ -63,7 +63,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 			                   new SelectionPatternSelectionEvent ((ListProvider) Provider));
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.SelectionPatternCanSelectMultipleProperty,
 			                   null);

@@ -108,8 +108,12 @@ namespace Mono.UIAutomation.Winforms
 		#region Public Methods
 
 		public virtual void InitializeEvents ()
-		{		
-			SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty, 
+		{
+			// These events only apply to Control providers
+			if (Control == null)
+				return;
+			
+			SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty,
 			          new AutomationIsOffscreenPropertyEvent (this));
 			SetEvent (ProviderEventType.AutomationElementIsEnabledProperty, 
 			          new AutomationIsEnabledPropertyEvent (this));
@@ -133,12 +137,10 @@ namespace Mono.UIAutomation.Winforms
 		
 		public virtual void Terminate ()
 		{
-			if (Control != null) {
-				foreach (IConnectable strategy in events.Values)
-				    strategy.Disconnect (Control);
-				foreach (IProviderBehavior behavior in providerBehaviors.Values)
-					behavior.Disconnect (Control);
-			}
+			foreach (IConnectable strategy in events.Values)
+			    strategy.Disconnect ();
+			foreach (IProviderBehavior behavior in providerBehaviors.Values)
+				behavior.Disconnect ();
 
 			events.Clear ();
 			providerBehaviors.Clear ();
@@ -149,15 +151,13 @@ namespace Mono.UIAutomation.Winforms
 			IConnectable value;
 			
 			if (events.TryGetValue (type, out value) == true) {			
-				if (Control != null)
-					value.Disconnect (Control);
+				value.Disconnect ();
 				events.Remove (type);
 			}
 
 			if (strategy != null) {
 				events [type] = strategy;
-				if (Control != null)
-					strategy.Connect (Control);
+				strategy.Connect ();
 			}
 		}
 		
@@ -171,16 +171,14 @@ namespace Mono.UIAutomation.Winforms
 			bool exists = false;
 			
 			if (providerBehaviors.TryGetValue (pattern, out oldBehavior) == true) {
-				if (Control != null)
-					oldBehavior.Disconnect (Control);
+				oldBehavior.Disconnect ();
 				providerBehaviors.Remove (pattern);
 				exists = true;
 			}
 			
 			if (behavior != null) {
 				providerBehaviors [pattern] = behavior;
-				if (Control != null)
-					behavior.Connect (Control);
+				behavior.Connect ();
 			}
 			
 			if ((exists == true && behavior == null)
@@ -362,6 +360,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public virtual IRawElementProviderSimple HostRawElementProvider {
 			get {
+				// TODO: Address for Components (*Strip*)
 				if (Control == null || Control.TopLevelControl == null)
 					return null;
 				else

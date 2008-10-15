@@ -35,7 +35,7 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 	{
 		#region Constructor
 
-		public StatusBarPanelGridItemPatternColumnEvent (IRawElementProviderSimple provider)
+		public StatusBarPanelGridItemPatternColumnEvent (SimpleControlProvider provider)
 			: base (provider, GridItemPatternIdentifiers.ColumnProperty)
 		{
 		}
@@ -44,22 +44,22 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 		
 		#region IConnectable Overrides
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			try {
 				Helper.AddPrivateEvent (typeof (SWF.StatusBar.StatusBarPanelCollection),
-				                        ((SWF.StatusBar) control).Panels,
+				                        ((SWF.StatusBar) Provider.Control).Panels,
 				                        "UIACollectionChanged",
 				                        this,
 				                        "OnColumnChanged");
 			} catch (NotSupportedException) { }
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			try {
 				Helper.RemovePrivateEvent (typeof (SWF.StatusBar.StatusBarPanelCollection),
-				                           ((SWF.StatusBar) control).Panels,
+				                           ((SWF.StatusBar) Provider.Control).Panels,
 				                           "UIACollectionChanged",
 				                           this,
 				                           "OnColumnChanged");

@@ -46,15 +46,15 @@ namespace Mono.UIAutomation.Winforms.Events.ListItem
 		
 		#region IConnectable Overrides
 	
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
-			((SWF.CheckedListBox) control).ItemCheck 
+			((SWF.CheckedListBox) Provider.Control).ItemCheck 
 				+= new SWF.ItemCheckEventHandler (OnItemChecked);
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
-			((SWF.CheckedListBox) control).ItemCheck 
+			((SWF.CheckedListBox) Provider.Control).ItemCheck 
 				-= new SWF.ItemCheckEventHandler (OnItemChecked);
 		}
 		

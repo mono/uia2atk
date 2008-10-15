@@ -45,13 +45,13 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		
 		#region ProviderEvent Methods
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{	
 			((ListViewProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar.ValueChanged 
 				+= OnScrollPercentChanged;
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			((ListViewProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar.ValueChanged 
 				-= OnScrollPercentChanged;

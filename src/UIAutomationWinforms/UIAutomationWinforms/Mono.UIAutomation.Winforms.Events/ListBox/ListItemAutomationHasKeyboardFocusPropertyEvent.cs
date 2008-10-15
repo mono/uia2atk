@@ -47,15 +47,15 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 		
 		#region IConnectable Overrides
 	
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
-			((SWF.ListBox) control).SelectedIndexChanged 
+			((SWF.ListBox) Provider.Control).SelectedIndexChanged 
 				+= new EventHandler (OnSelectedIndexChanged);
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
-			((SWF.ListBox) control).SelectedIndexChanged 
+			((SWF.ListBox) Provider.Control).SelectedIndexChanged 
 				-= new EventHandler (OnSelectedIndexChanged);
 		}
 		

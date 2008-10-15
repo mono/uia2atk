@@ -57,7 +57,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Generic
 			get { return ScrollPatternIdentifiers.Pattern; }
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{		
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontallyScrollableProperty,
 			                   null);

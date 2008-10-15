@@ -78,6 +78,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationBoundingRectanglePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationFocusChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationHasKeyboardFocusPropertyEvent.cs \
@@ -146,6 +147,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/HasKeyBoardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueIsReadOnlyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ToolStripItem/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Navigation/ChildNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/INavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs \
@@ -194,6 +196,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms/TextNormalizer.cs \
 	Mono.UIAutomation.Winforms/TextNormalizerPoints.cs \
 	Mono.UIAutomation.Winforms/TextRangeProvider.cs \
+	Mono.UIAutomation.Winforms/ToolStripItemProvider.cs \
+	Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs \
+	Mono.UIAutomation.Winforms/ToolStripMenuItemProvider.cs \
 	Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs \
 	Mono.UIAutomation.Winforms/ToolTipListener.cs \
 	Mono.UIAutomation.Winforms/ToolTipProvider.cs \

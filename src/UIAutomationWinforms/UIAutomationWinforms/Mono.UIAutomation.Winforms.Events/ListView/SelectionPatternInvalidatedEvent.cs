@@ -47,11 +47,11 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		
 		#region ProviderEvent Methods
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			try {
 				Helper.AddPrivateEvent (typeof (SWF.ListView.SelectedIndexCollection),
-				                        ((SWF.ListView) control).SelectedIndices, 
+				                        ((SWF.ListView) Provider.Control).SelectedIndices, 
 				                        "UIACollectionChanged",
 				                        this, 
 				                        "OnSelectedCollectionChanged");
@@ -60,11 +60,11 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 			}
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			try {
 				Helper.RemovePrivateEvent (typeof (SWF.ListView.SelectedIndexCollection), 
-				                           ((SWF.ListView) control).SelectedIndices,
+				                           ((SWF.ListView) Provider.Control).SelectedIndices,
 				                           "UIACollectionChanged",
 				                           this, 
 				                           "OnSelectedCollectionChanged");

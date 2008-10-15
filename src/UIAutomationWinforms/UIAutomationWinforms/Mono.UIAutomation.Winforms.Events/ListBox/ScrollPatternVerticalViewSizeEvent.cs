@@ -49,12 +49,12 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 		
 		#region ProviderEvent Methods
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{	
-			control.Resize += new EventHandler (OnControlResize);
+			Provider.Control.Resize += new EventHandler (OnControlResize);
 			try {
 				Helper.AddPrivateEvent (typeof (SWF.ListBox.ObjectCollection), 
-				                        ((SWF.ListBox) control).Items,
+				                        ((SWF.ListBox) Provider.Control).Items,
 				                        "UIACollectionChanged",
 				                        this, 
 				                        "OnScrollVerticalViewChanged");
@@ -63,12 +63,12 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 			}
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
-			control.Resize -= new EventHandler (OnControlResize);
+			Provider.Control.Resize -= new EventHandler (OnControlResize);
 			try {
 				Helper.RemovePrivateEvent (typeof (SWF.ListBox.ObjectCollection), 
-				                           ((SWF.ListBox) control).Items,
+				                           ((SWF.ListBox) Provider.Control).Items,
 				                           "UIACollectionChanged",
 				                           this, 
 				                           "OnScrollVerticalViewChanged");

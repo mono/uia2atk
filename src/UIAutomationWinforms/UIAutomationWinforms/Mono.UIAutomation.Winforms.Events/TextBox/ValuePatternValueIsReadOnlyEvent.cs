@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Events.TextBox
 		
 		#region Constructor
 		
-		public ValuePatternValueIsReadOnlyEvent (IRawElementProviderSimple provider)
+		public ValuePatternValueIsReadOnlyEvent (SimpleControlProvider provider)
 			: base (provider,
 			        ValuePatternIdentifiers.IsReadOnlyProperty)
 		{
@@ -46,15 +46,15 @@ namespace Mono.UIAutomation.Winforms.Events.TextBox
 		
 		#region ProviderEvent Methods
 
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
-			((TextBoxBase) control).ReadOnlyChanged 
+			((TextBoxBase) Provider.Control).ReadOnlyChanged 
 				+= new EventHandler (OnIsReadOnlyChanged);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
-			((TextBoxBase) control).ReadOnlyChanged 
+			((TextBoxBase) Provider.Control).ReadOnlyChanged 
 				-= new EventHandler (OnIsReadOnlyChanged);
 		}
 		

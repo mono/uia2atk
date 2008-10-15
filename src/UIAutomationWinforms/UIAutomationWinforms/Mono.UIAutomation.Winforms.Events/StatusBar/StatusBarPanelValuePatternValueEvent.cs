@@ -34,7 +34,7 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 	{
 		#region Constructor
 
-		public StatusBarPanelValuePatternValueEvent (IRawElementProviderSimple provider)
+		public StatusBarPanelValuePatternValueEvent (SimpleControlProvider provider)
 			: base (provider, ValuePatternIdentifiers.ValueProperty)
 		{
 		}
@@ -43,14 +43,14 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 		
 		#region IConnectable Overrides
 
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
-			control.TextChanged += new EventHandler (OnValueChanged);
+			Provider.Control.TextChanged += new EventHandler (OnValueChanged);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
-			control.TextChanged -= new EventHandler (OnValueChanged);
+			Provider.Control.TextChanged -= new EventHandler (OnValueChanged);
 		}
 		
 		#endregion 

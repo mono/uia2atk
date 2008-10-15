@@ -38,7 +38,7 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 		
 		#region Constructor
 
-		public ExpandCollapsePatternStateEvent (IRawElementProviderSimple provider) 
+		public ExpandCollapsePatternStateEvent (SimpleControlProvider provider) 
 			: base (provider, 
 			        ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty)
 		{
@@ -48,14 +48,14 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 		
 		#region EventStrategy Methods
 		
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
-			((SWF.ComboBox) control).DropDown += new EventHandler (OnDropDown);
+			((SWF.ComboBox) Provider.Control).DropDown += new EventHandler (OnDropDown);
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
-			((SWF.ComboBox) control).DropDown -= new EventHandler (OnDropDown);
+			((SWF.ComboBox) Provider.Control).DropDown -= new EventHandler (OnDropDown);
 		}
 		
 		#endregion

@@ -50,14 +50,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 			get { return ValuePatternIdentifiers.Pattern; }
 		}
 		
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
 			// NOTE: IsReadOnly Property never changes.
 			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
 			                   new StatusBarPanelValuePatternValueEvent (Provider));
 		}
 		
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
 			                   null);

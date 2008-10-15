@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		
 		#region Constructors
 
-		public AutomationNamePropertyEvent (IRawElementProviderSimple provider) 
+		public AutomationNamePropertyEvent (SimpleControlProvider provider) 
 			: base (provider,
 			        AutomationElementIdentifiers.NameProperty)
 		{
@@ -47,14 +47,14 @@ namespace Mono.UIAutomation.Winforms.Events
 
 		#region IConnectable Overrides
 
-		public override void Connect (Control control)
+		public override void Connect ()
 		{
-			control.TextChanged += new EventHandler (OnTextChanged);
+			Provider.Control.TextChanged += new EventHandler (OnTextChanged);
 		}
 
-		public override void Disconnect (Control control)
+		public override void Disconnect ()
 		{
-			control.TextChanged -= new EventHandler (OnTextChanged);
+			Provider.Control.TextChanged -= new EventHandler (OnTextChanged);
 		}
 		
 		#endregion

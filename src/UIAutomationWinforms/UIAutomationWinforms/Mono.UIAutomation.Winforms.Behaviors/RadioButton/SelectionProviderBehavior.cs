@@ -75,12 +75,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.RadioButton
 		
 #region IProviderBehavior Overrides
 		
-		public void Disconnect (SWF.Control control)
+		public void Disconnect ()
 		{
 			
 		}
 
-		public void Connect (SWF.Control control)
+		public void Connect ()
 		{
 			this.control = control;
 		}

@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms.Events.LinkLabel
 		
 		#region Constructors
 		
-		public InvokePatternInvokedEvent (IRawElementProviderSimple provider) 
+		public InvokePatternInvokedEvent (SimpleControlProvider provider) 
 			: base (provider, InvokePatternIdentifiers.InvokedEvent)
 		{
 		}
@@ -46,15 +46,15 @@ namespace Mono.UIAutomation.Winforms.Events.LinkLabel
 
 		#region IConnectable Overriders
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
-			((SWF.LinkLabel) control).LinkClicked += 
+			((SWF.LinkLabel) Provider.Control).LinkClicked += 
 				new SWF.LinkLabelLinkClickedEventHandler (OnLinkClicked);
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
-			((SWF.LinkLabel) control).LinkClicked -= 
+			((SWF.LinkLabel) Provider.Control).LinkClicked -= 
 				new SWF.LinkLabelLinkClickedEventHandler (OnLinkClicked);
 		}
 

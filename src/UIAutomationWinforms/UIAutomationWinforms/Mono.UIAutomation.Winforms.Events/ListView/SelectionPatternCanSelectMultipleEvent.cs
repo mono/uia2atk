@@ -48,11 +48,11 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		
 		#region ProviderEvent Methods
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{		
 			try {
 				Helper.AddPrivateEvent (typeof (SWF.ListView), 
-				                        control, 
+				                        Provider.Control, 
 				                        "UIAMultiSelectChanged",
 				                        this, 
 				                        "OnSelectionModeChanged");
@@ -61,11 +61,11 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 			}
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			try {
 				Helper.RemovePrivateEvent (typeof (SWF.ListView), 
-				                           control, 
+				                           Provider.Control, 
 				                           "UIAMultiSelectChanged",
 				                           this, 
 				                           "OnSelectionModeChanged");

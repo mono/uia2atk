@@ -32,9 +32,9 @@ namespace Mono.UIAutomation.Winforms
 
 	internal interface IConnectable
 	{
-		void Connect (Control control);
+		void Connect ();
 		
-		void Disconnect (Control control);
+		void Disconnect ();
 	}
 
 }

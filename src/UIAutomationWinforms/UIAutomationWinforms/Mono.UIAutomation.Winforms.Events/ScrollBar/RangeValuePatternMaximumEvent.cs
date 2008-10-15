@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Events.ScrollBar
 	{
 		#region Constructor
 		
-		public RangeValuePatternMaximumEvent (IRawElementProviderSimple provider)
+		public RangeValuePatternMaximumEvent (SimpleControlProvider provider)
 			: base (provider, RangeValuePatternIdentifiers.MaximumProperty)
 		{
 		}
@@ -45,22 +45,22 @@ namespace Mono.UIAutomation.Winforms.Events.ScrollBar
 		
 		#region Public Methods
 		
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			try {
 				Helper.AddPrivateEvent (typeof (SWF.ScrollBar),
-				                        control,
+				                        Provider.Control,
 				                        "UIAValueChanged", 
 				                        this,
 				                        "OnMaximumChangeChanged");
 			} catch (NotSupportedException) {}
 		}
 
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			try {
 				Helper.RemovePrivateEvent (typeof (SWF.ScrollBar),
-				                           control,
+				                           Provider.Control,
 				                           "UIAValueChanged", 
 				                           this,
 				                           "OnMaximumChangeChanged");

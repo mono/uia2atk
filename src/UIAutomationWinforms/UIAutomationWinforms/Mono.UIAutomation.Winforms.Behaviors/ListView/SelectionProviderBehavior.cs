@@ -52,7 +52,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			get { return SelectionPatternIdentifiers.Pattern; }
 		}
 
-		public override void Connect (SWF.Control control)
+		public override void Connect ()
 		{
 			//NOTE: IsSelectionRequired Property NEVER changes, so we aren't generating it.
 
@@ -64,7 +64,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			                   new SelectionPatternSelectionEvent ((ListViewProvider) Provider));
 		}
 		
-		public override void Disconnect (SWF.Control control)
+		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.SelectionPatternCanSelectMultipleProperty,
 			                   null);
