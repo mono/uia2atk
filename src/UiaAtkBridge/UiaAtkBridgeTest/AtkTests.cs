@@ -68,7 +68,6 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Visible), "Button Visible");
 			
 			InterfaceText (type);
-			
 
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
@@ -82,9 +81,8 @@ namespace UiaAtkBridgeTest
 
 			Parent (type, accessible);
 
-			Atk.Image atkWithOutImage, atkWithImage;
-			
 			//test with an image
+			Atk.Image atkWithOutImage, atkWithImage;
 			atkWithOutImage = CastToAtkInterface <Atk.Image> (accessible);
 			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
 			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
@@ -129,6 +127,14 @@ namespace UiaAtkBridgeTest
 			EventCollection typeEvs = checkboxEvs.FindByType (evType);
 			
 			Assert.AreEqual (1, typeEvs.Count, "bad number of checked events!" + eventsInXml);
+
+			//test with an image
+			Atk.Image atkWithOutImage, atkWithImage;
+			atkWithOutImage = CastToAtkInterface <Atk.Image> (accessible);
+			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
+			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
+			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
 		}
 		
 		[Test]
