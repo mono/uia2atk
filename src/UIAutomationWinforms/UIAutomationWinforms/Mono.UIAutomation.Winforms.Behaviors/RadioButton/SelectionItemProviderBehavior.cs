@@ -31,11 +31,12 @@ using SWF = System.Windows.Forms;
 
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Bridge;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.RadioButton
 {
 	internal class SelectionItemProviderBehavior :
-		ProviderBehavior, ISelectionItemProvider
+		ProviderBehavior, ISelectionItemProvider, IEmbeddedImage
 	{
 #region Private Members
 		
@@ -52,6 +53,17 @@ namespace Mono.UIAutomation.Winforms.Behaviors.RadioButton
 		}
 		
 #endregion
+		
+		#region IEmbeddedImage Interface
+		
+		public System.Windows.Rect BoundingRectangle {
+			get {
+				return Helper.GetBoundingRectangleFromButtonBase (Provider, 
+				                                        (SWF.ButtonBase) Provider.Control);
+			}
+		}
+		
+		#endregion
 		
 #region IProviderBehavior Interface
 

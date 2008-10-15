@@ -27,6 +27,7 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Bridge;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.CheckBox;
@@ -35,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.CheckBox
 {
 	
 	internal class ToggleProviderBehavior  
-		: ProviderBehavior, IToggleProvider
+		: ProviderBehavior, IToggleProvider, IEmbeddedImage
 	{
 		
 		#region Constructor
@@ -43,6 +44,17 @@ namespace Mono.UIAutomation.Winforms.Behaviors.CheckBox
 		public ToggleProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
+		}
+		
+		#endregion
+		
+		#region IEmbeddedImage Interface
+		
+		public System.Windows.Rect BoundingRectangle {
+			get {
+				return Helper.GetBoundingRectangleFromButtonBase (Provider, 
+				                                        (SWF.ButtonBase) Provider.Control);
+			}
 		}
 		
 		#endregion

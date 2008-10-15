@@ -37,6 +37,101 @@ namespace Mono.UIAutomation.Winforms
 	{
 
 		#region Internal Static Methods
+		
+		internal static Rect GetBoundingRectangleFromButtonBase (FragmentControlProvider provider,
+		                                                         System.Windows.Forms.ButtonBase buttonBase)
+		{
+			//Implementation highly based in ThemeWin32Classic.ButtonBase_DrawImage method
+			
+			Image image;
+			int	imageX;
+			int	imageY;
+			int	imageWidth;
+			int	imageHeight;
+			int width = buttonBase.Width;
+			int height = buttonBase.Height;				
+
+			if (buttonBase.ImageIndex != -1)
+				image = buttonBase.ImageList.Images [buttonBase.ImageIndex];
+			else
+				image = buttonBase.Image;
+			
+			if (image == null)
+				return Rect.Empty;
+
+			imageWidth = image.Width;
+			imageHeight = image.Height;
+		
+			switch (buttonBase.ImageAlign) {
+				case ContentAlignment.TopLeft: {
+					imageX = 5;
+					imageY = 5;
+					break;
+				}
+				
+				case ContentAlignment.TopCenter: {
+					imageX = (width - imageWidth) / 2;
+					imageY = 5;
+					break;
+				}
+				
+				case ContentAlignment.TopRight: {
+					imageX = width - imageWidth - 5;
+					imageY = 5;
+					break;
+				}
+				
+				case ContentAlignment.MiddleLeft: {
+					imageX = 5;
+					imageY = (height - imageHeight) / 2;
+					break;
+				}
+				
+				case ContentAlignment.MiddleCenter: {
+					imageX = (width - imageWidth) / 2;
+					imageY = (height - imageHeight) / 2;
+					break;
+				}
+				
+				case ContentAlignment.MiddleRight: {
+					imageX = width - imageWidth - 4;
+					imageY = (height - imageHeight) / 2;
+					break;
+				}
+				
+				case ContentAlignment.BottomLeft: {
+					imageX = 5;
+					imageY = height - imageHeight - 4;
+					break;
+				}
+				
+				case ContentAlignment.BottomCenter: {
+					imageX = (width - imageWidth) / 2;
+					imageY = height - imageHeight - 4;
+					break;
+				}
+				
+				case ContentAlignment.BottomRight: {
+					imageX = width - imageWidth - 4;
+					imageY = height - imageHeight - 4;
+					break;
+				}
+				
+				default: {
+					imageX = 5;
+					imageY = 5;
+					break;
+				}
+			}
+			
+			Rect buttonRect 
+				= (Rect) provider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+			
+			imageX += (int) buttonRect.X;
+			imageY += (int) buttonRect.Y;
+			
+			return new Rect (imageX, imageY, imageWidth, imageHeight);
+		}
 
 		internal static int GetUniqueRuntimeId ()
 		{

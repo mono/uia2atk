@@ -1,3 +1,13 @@
+2008-10-15  Mario Carrion <mcarrion@novell.com> 
+
+	* Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs:
+	  Using Helper.GetBoundingRectangleFromButtonBase.
+	* Mono.UIAutomation.Winforms.Behaviors/CheckBox/ToggleProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionItemProviderBehavior.cs:
+	  Bridge.IEmbeddedImage realization.
+	* Mono.UIAutomation.Winforms/Helper.cs: New method
+	  GetBoundingRectangleFromButtonBase.
+
 2008-10-15  Neville Gao <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Supported AccessKey
