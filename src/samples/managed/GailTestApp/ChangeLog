@@ -1,5 +1,10 @@
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Main.cs:
+	* MainWindow.cs: Give a chk+img properly to the AtkTester.
+
+2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* MainWindow.cs:
 	* gtk-gui/gui.stetic:
 	* gtk-gui/MainWindow.cs: Add a checkbox with img (no kidding, they

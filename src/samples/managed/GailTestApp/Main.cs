@@ -96,12 +96,12 @@ namespace GailTestApp {
 			return win.GiveMeARealButton (embeddedImage);
 		}
 		
-		public static Gtk.Button GiveMeARealCheckBox ()
+		public static Gtk.Button GiveMeARealCheckBox (bool embeddedImage)
 		{
 			if (win == null)
 				throw new Exception ("You should have started the app first");
 			
-			return win.GiveMeARealCheckBox ();
+			return win.GiveMeARealCheckBox (embeddedImage);
 		}
 		
 		public static Gtk.ComboBox GiveMeARealComboBox ()

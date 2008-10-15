@@ -190,7 +190,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.CheckBox:
 				widget = new Gtk.CheckButton ();
 				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealCheckBox ();
+					widget = GailTestApp.MainClass.GiveMeARealCheckBox (embeddedImage);
 				((Gtk.CheckButton)widget).Label = text;
 				break;
 			case BasicWidgetType.RadioButton:
