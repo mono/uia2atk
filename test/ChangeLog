@@ -1,5 +1,11 @@
 2008-10-15  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* tools/dashboard.py: tool that will be used to parse logs and
+	dynamically build a web page.  qamon will use this tool when it sees
+	knew log files appear.
+
+2008-10-15  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* tools/qamon.py: Watch for procedures.xml and print the path when
 	it is seen.
 	* harness/local_run.py: Add a file named "status" to the log dir that
