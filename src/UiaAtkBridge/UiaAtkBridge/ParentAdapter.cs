@@ -56,19 +56,19 @@ namespace UiaAtkBridge
 		
 		protected override int OnGetNChildren ()
 		{
+			if (requestedChildren == false)
+				RequestChildren ();
 			lock (syncRoot) {
-				if (requestedChildren == false)
-					RequestChildren ();
 				return children.Count;
 			}
 		}
 		
 		protected override Atk.Object OnRefChild (int i)
 		{
-			lock (syncRoot) {
-				if (requestedChildren == false)
-					RequestChildren ();
+			if (requestedChildren == false)
+				RequestChildren ();
 				
+			lock (syncRoot) {
 				if (i >= children.Count)
 					return null;
 				

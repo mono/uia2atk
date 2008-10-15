@@ -1,3 +1,9 @@
+2008-10-14  Mike Gorse <mgorse@novell.com>
+
+	* ParentAdapter.cs: Move RequestChildren calls out of SyncRoot lock,
+	  since they can emit glib signals, which leads to deadlock if
+	  the glib thread is waiting for a lock.
+
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Button.cs: Fix button in order to pass tests without image.
