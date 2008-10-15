@@ -1,3 +1,10 @@
+2008-10-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs:
+	* BridgeTester.cs: Refactoring of InterfaceText to make it be just one
+	function.
+
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Checkbox+img testing. Only provider side missing bits

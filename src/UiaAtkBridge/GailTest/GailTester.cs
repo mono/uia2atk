@@ -59,10 +59,13 @@ namespace UiaAtkBridgeTest
 		
 		public override void RunInGuiThread (System.Action d)
 		{
-			if (alreadyInGuiThread)
-				throw new Exception ("Hey! You called RunInGuiThread nestedly.");
-			else
-				alreadyInGuiThread = true;
+			if (alreadyInGuiThread) {
+				Console.WriteLine ();
+				Console.WriteLine ("WARNING: You called RunInGuiThread nestedly.");
+				d ();
+				return;
+			}
+			alreadyInGuiThread = true;
 			
 			try {
 				System.Threading.EventWaitHandle h = guiThread.CallDelegInMainLoop (d);

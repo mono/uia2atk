@@ -187,16 +187,15 @@ namespace UiaAtkBridgeTest
 		{
 			BasicWidgetType type = BasicWidgetType.StatusBar;
 
-			Atk.Object accessible = GetAccessible (type, simpleTestText, true);
-			Atk.Text atkText = CastToAtkInterface <Atk.Text> (accessible);
-			InterfaceTextSingleLine (type, atkText);
-
-			PropertyRole (type, accessible);
+			Atk.Object accessible = InterfaceText (type, true);
 
 			Assert.AreEqual (ValidNChildrenForASimpleStatusBar, accessible.NAccessibleChildren, "StatusBar numChildren");
 
 			string name = "test";
 			accessible = GetAccessible (type, name, true);
+
+			PropertyRole (type, accessible);
+			
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
 			int x, y, width, height;
@@ -278,7 +277,7 @@ namespace UiaAtkBridgeTest
 		}
 		
  		[Test]
-		public void  Spinner ()
+		public void Spinner ()
 		{
 			BasicWidgetType type = BasicWidgetType.Spinner;
 			Atk.Object accessible;
@@ -305,7 +304,7 @@ namespace UiaAtkBridgeTest
 		public void TextBoxEntry ()
 		{
 			BasicWidgetType type = BasicWidgetType.TextBoxEntry;
-			Atk.Object accessible = InterfaceText (type);
+			Atk.Object accessible = InterfaceText (type, true);
 			
 			string name = "Edit test#1";
 			accessible = GetAccessible (type, name, true);

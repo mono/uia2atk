@@ -498,7 +498,7 @@ namespace UiaAtkBridgeTest
 			selection.AddSelection(1);
 			InterfaceAction (BasicWidgetType.ListItem, CastToAtkInterface <Atk.Action> (listItemChild), listItemChild);
 
-			InterfaceTextSingleLine (BasicWidgetType.ListItem, CastToAtkInterface <Atk.Text> (listItemChild));
+			InterfaceText (BasicWidgetType.ListItem, true, listItemChild);
 
 			Parent (type, accessible);
 		}
@@ -540,7 +540,7 @@ namespace UiaAtkBridgeTest
 			selection.AddSelection(1);
 			InterfaceAction (BasicWidgetType.CheckedListItem, CastToAtkInterface <Atk.Action> (listItemChild), listItemChild);
 
-			InterfaceTextSingleLine (BasicWidgetType.CheckedListItem, CastToAtkInterface <Atk.Text> (listItemChild));
+			InterfaceText (BasicWidgetType.CheckedListItem, true, listItemChild);
 
 			Parent (type, accessible);
 		}

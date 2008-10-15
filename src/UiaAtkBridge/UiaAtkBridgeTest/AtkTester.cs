@@ -472,85 +472,220 @@ namespace UiaAtkBridgeTest
 			}
 			Assert.AreEqual (role, accessible.Role, "Atk.Role");
 		}
-		
+
 		protected Atk.Object InterfaceText (BasicWidgetType type)
+		{
+			return InterfaceTextAux (type, false, null);
+		}
+
+		protected Atk.Object InterfaceText (BasicWidgetType type, bool onlySingleLine)
+		{
+			return InterfaceTextAux (type, onlySingleLine, null);
+		}
+
+		protected void InterfaceText (BasicWidgetType type, Atk.Object accessible)
+		{
+			InterfaceTextAux (type, false, accessible);
+		}
+		
+		protected void InterfaceText (BasicWidgetType type, bool onlySingleLine, Atk.Object accessible)
+		{
+			InterfaceTextAux (type, onlySingleLine, accessible);
+		}
+		
+		private Atk.Object InterfaceTextAux (BasicWidgetType type, bool onlySingleLine, Atk.Object accessible)
 		{
 			int startOffset, endOffset;
 			string expected;
-			Atk.Text atkText;
-			string name = "This is a test sentence.\r\nSecond line. Other phrase.\nThird line?";
+			string name = simpleTestText;
 
-			bool real = true;
-			
-			Atk.Object accessible;
-			accessible = GetAccessible (type, name, real);
-			atkText = CastToAtkInterface <Atk.Text> (accessible);
+			Atk.Text atkText = null;
+
+			RunInGuiThread (delegate () {
+				if (accessible == null)
+					accessible = GetAccessible (type, name, true);
+				atkText = CastToAtkInterface <Atk.Text> (accessible);
+			});
 			
 			int nSelections = -1;
 			if ((type == BasicWidgetType.Label) || (type == BasicWidgetType.TextBoxEntry))
 				nSelections = 0;
 			
-			System.Threading.Thread.Sleep (2000);
-
-			Assert.AreEqual (0, atkText.CaretOffset, "CaretOffset");
-			Assert.AreEqual (name.Length, atkText.CharacterCount, "CharacterCount");
-			Assert.AreEqual (name [0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset");
-			Assert.AreEqual (name, atkText.GetText (0, name.Length), "GetText");
+			Assert.AreEqual (0, atkText.CaretOffset, "CaretOffset SL");
+			Assert.AreEqual (name.Length, atkText.CharacterCount, "CharacterCount SL");
+			Assert.AreEqual (name [0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset SL");
+			Assert.AreEqual (name, atkText.GetText (0, name.Length), "GetText SL");
 			
-			//any value
-			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (-1), "SetCaretOffset#1");
-			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (0), "SetCaretOffset#2");
-			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (1), "SetCaretOffset#3");
-			
-			int lastCaretOffset = 15;
-			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (lastCaretOffset), "SetCaretOffset#4");
+			//any value (beware, this may change when this is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=556453 )
+			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (-1), "SetCaretOffset#1 SL");
+			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (0), "SetCaretOffset#2 SL");
+			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (1), "SetCaretOffset#3 SL");
+			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (15), "SetCaretOffset#4 SL");
 			
 			// don't do this until bug#393565 is fixed:
 			//Assert.AreEqual (typeof(Atk.TextAttribute), atkText.DefaultAttributes[0].GetType());
 
-			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#1");
+			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#1 SL");
 			
-			int selectionOffset = lastCaretOffset;
-			if (Misc.HasReadOnlyText (type))
-				// you cannot select a label AFAIK so, all zeroes returned!
-				selectionOffset = 0;
-			
-			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#1");
-			Assert.AreEqual (selectionOffset, startOffset, "GetSelection#2");
-			Assert.AreEqual (selectionOffset, endOffset, "GetSelection#3");
-
-			//GetSelection OOR
-			Assert.AreEqual (null, atkText.GetSelection (1, out startOffset, out endOffset), "GetSelection#4");
-			Assert.AreEqual (selectionOffset, startOffset, "GetSelection#5");
-			Assert.AreEqual (selectionOffset, endOffset, "GetSelection#6");
-			Assert.AreEqual (null, atkText.GetSelection (-1, out startOffset, out endOffset), "GetSelection#7");
-			Assert.AreEqual (selectionOffset, startOffset, "GetSelection#8");
-			Assert.AreEqual (selectionOffset, endOffset, "GetSelection#9");
+			// you cannot select a label AFAIK so, all zeroes returned!
+			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#1 SL");
+			Assert.AreEqual (0, startOffset, "GetSelection#2 SL");
+			Assert.AreEqual (0, endOffset, "GetSelection#3 SL");
+			Assert.AreEqual (null, atkText.GetSelection (1, out startOffset, out endOffset), "GetSelection#4 SL");
+			Assert.AreEqual (0, startOffset, "GetSelection#5 SL");
+			Assert.AreEqual (0, endOffset, "GetSelection#6 SL");
+			Assert.AreEqual (null, atkText.GetSelection (-1, out startOffset, out endOffset), "GetSelection#7 SL");
+			Assert.AreEqual (0, startOffset, "GetSelection#8 SL");
+			Assert.AreEqual (0, endOffset, "GetSelection#9 SL");
 			
 			// you cannot select a label AFAIK so, false always returned!
-			Assert.AreEqual (false, atkText.SetSelection (0, 1, 2), "SetSelection#1");
+			Assert.AreEqual (false, atkText.SetSelection (0, 1, 2), "SetSelection#1 SL");
 			// test GetSelection *after* SetSelection
-			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#10");
-			
-			Assert.AreEqual (selectionOffset, startOffset, "GetSelection#11");
-			Assert.AreEqual (selectionOffset, endOffset, "GetSelection#12");
-
+			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#10 SL");
+			Assert.AreEqual (0, startOffset, "GetSelection#11 SL");
+			Assert.AreEqual (0, endOffset, "GetSelection#12 SL");
 			//test crazy numbers for SetSelection
-			Assert.AreEqual (false, atkText.SetSelection (-3, 10, -2), "SetSelection#2");
-			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#13");
-			Assert.AreEqual (selectionOffset, startOffset, "GetSelection#14");
-			Assert.AreEqual (selectionOffset, endOffset, "GetSelection#15");
+			Assert.AreEqual (false, atkText.SetSelection (-3, 10, -2), "SetSelection#2 SL");
+			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#13 SL");
+			Assert.AreEqual (0, startOffset, "GetSelection#14 SL");
+			Assert.AreEqual (0, endOffset, "GetSelection#15 SL");
 			
 			//did NSelections changed?
-			Assert.AreEqual (false, atkText.SetSelection (1, 2, 3), "SetSelection#3");
-			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#2");
-			Assert.AreEqual (false, atkText.RemoveSelection (0), "RemoveSelection#1");
-			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#3");
-			Assert.AreEqual (false, atkText.RemoveSelection (1), "RemoveSelection#2");
-			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#4");
-			Assert.AreEqual (false, atkText.RemoveSelection (-1), "RemoveSelection#3");
-			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#5");
+			Assert.AreEqual (false, atkText.SetSelection (1, 2, 3), "SetSelection#3 SL");
+			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#2 SL");
+			Assert.AreEqual (false, atkText.RemoveSelection (0), "RemoveSelection#1 SL");
+			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#3 SL");
+			Assert.AreEqual (false, atkText.RemoveSelection (1), "RemoveSelection#2 SL");
+			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#4 SL");
+			Assert.AreEqual (false, atkText.RemoveSelection (-1), "RemoveSelection#3 SL");
+			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#5 SL");
 
+
+			//IMPORTANT NOTE about GetText*Offset methods [GetTextAtOffset(),GetTextAfterOffset(),GetTextBeforeOffset()]:
+			//in Gail, they all return null if GetText() has not been called yet, however we may
+			//prefer not to follow this wierd behaviour in the bridge
+			
+			//GetTextAtOffset
+			expected = " test";
+			Assert.AreEqual (expected, 
+				atkText.GetTextAtOffset (12, Atk.TextBoundary.WordEnd, out startOffset, out endOffset),
+				"GetTextAtOffset,WordEnd SL");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,WordEnd,so SL");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,WordEnd,eo SL");
+			
+			//test selections after obtaining text with a different API than GetText
+			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#6 SL");
+			//NSelections == 0, however we have one selection, WTF?:
+			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#16 SL");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#17 SL");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#18 SL");
+			Assert.AreEqual (null, atkText.GetSelection (1, out startOffset, out endOffset), "GetSelection#19 SL");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#20 SL");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#21 SL");
+			Assert.AreEqual (null, atkText.GetSelection (30, out startOffset, out endOffset), "GetSelection#22 SL");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#23 SL");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#24 SL");
+			Assert.AreEqual (null, atkText.GetSelection (-1, out startOffset, out endOffset), "GetSelection#25 SL");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#26 SL");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#27 SL");
+			
+			Assert.AreEqual (false, atkText.SetSelection (0, 0, 0), "SetSelection#3 SL");
+			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#28 SL");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#29 SL");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#30 SL");
+			
+			
+			expected = "test ";
+			Assert.AreEqual (expected, 
+				atkText.GetTextAtOffset (12, Atk.TextBoundary.WordStart, out startOffset, out endOffset),
+				"GetTextAtOffset,WordStart SL");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,WordStart,so SL");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,WordStart,eo SL");
+			
+			expected = simpleTestText;
+			Assert.AreEqual (expected,
+				atkText.GetTextAtOffset (12, Atk.TextBoundary.LineEnd, out startOffset, out endOffset),
+				"GetTextAtOffset,LineEnd SL");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,LineEnd,so SL");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,LineEnd,eo SL");
+
+			expected = simpleTestText;
+			Assert.AreEqual (expected,
+				atkText.GetTextAtOffset (12, Atk.TextBoundary.LineStart, out startOffset, out endOffset),
+				"GetTextAtOffset,LineStart SL");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,LineStart,so SL");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,LineStart,eo SL");
+			
+			expected = simpleTestText;
+			Assert.AreEqual (expected,
+				atkText.GetTextAtOffset (18, Atk.TextBoundary.SentenceEnd, out startOffset, out endOffset),
+				"GetTextAtOffset,SentenceEnd SL");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,SentenceEnd,so SL");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,SentenceEnd,eo SL");
+			
+			expected = simpleTestText;
+			Assert.AreEqual (expected,
+				atkText.GetTextAtOffset (18, Atk.TextBoundary.SentenceStart, out startOffset, out endOffset),
+				"GetTextAtOffset,SentenceStart SL");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,SentenceStart,so SL");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,SentenceStart,eo SL");
+			
+			Assert.AreEqual ("t",
+				atkText.GetTextAtOffset (18, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char1 SL");
+			Assert.AreEqual (18, startOffset, "GetTextAtOffset,Char1,so SL");
+			Assert.AreEqual (19, endOffset, "GetTextAtOffset,Char1,eo SL");
+			Assert.AreEqual (".",
+				atkText.GetTextAtOffset (23, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char2 SL");
+			Assert.AreEqual (23, startOffset, "GetTextAtOffset,Char2,so SL");
+			Assert.AreEqual (24, endOffset, "GetTextAtOffset,Char2,eo SL");
+			Assert.AreEqual ("e",
+				atkText.GetTextAtOffset (name.Length - 2, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char3 SL");
+			Assert.AreEqual (name.Length - 2, startOffset, "GetTextAtOffset,Char3,so SL");
+			Assert.AreEqual (name.Length - 1, endOffset, "GetTextAtOffset,Char3,eo SL");
+			Assert.AreEqual (".",
+				atkText.GetTextAtOffset (name.Length - 1, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char4 SL");
+			Assert.AreEqual (name.Length - 1, startOffset, "GetTextAtOffset,Char4,so SL");
+			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char4,eo SL");
+			Assert.AreEqual (String.Empty,
+				atkText.GetTextAtOffset (name.Length, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char5 SL");
+			Assert.AreEqual (name.Length, startOffset, "GetTextAtOffset,Char5,so SL");
+			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char5,eo SL");
+			Assert.AreEqual (String.Empty,
+				atkText.GetTextAtOffset (-1, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char6 SL");
+			Assert.AreEqual (name.Length, startOffset, "GetTextAtOffset,Char6,so SL");
+			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char6,eo SL");
+
+
+			//GetTextAfterOffset
+			expected = " sentence";
+			Assert.AreEqual (expected, 
+				atkText.GetTextAfterOffset (12, Atk.TextBoundary.WordEnd, out startOffset, out endOffset),
+				"GetTextAfterOffset,WordEnd SL");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,WordEnd,so SL");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,WordEnd,eo SL");
+			
+			expected = "sentence.";
+			Assert.AreEqual (expected, 
+				atkText.GetTextAfterOffset (12, Atk.TextBoundary.WordStart, out startOffset, out endOffset),
+				"GetTextAfterOffset,WordStart SL");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,WordStart,so SL");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,WordStart,eo SL");
+
+			if (onlySingleLine)
+				return accessible;
+			
+			name = "This is a test sentence.\r\nSecond line. Other phrase.\nThird line?";
+
+			RunInGuiThread (delegate () {
+				accessible = GetAccessible (type, name, true);
+				atkText = CastToAtkInterface <Atk.Text> (accessible);
+			});
+
+			System.Threading.Thread.Sleep (2000);
+
+			Assert.AreEqual (name.Length, atkText.CharacterCount, "CharacterCount");
+			Assert.AreEqual (name [0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset");
+			Assert.AreEqual (name, atkText.GetText (0, name.Length), "GetText");
 
 			//IMPORTANT NOTE about GetText*Offset methods [GetTextAtOffset(),GetTextAfterOffset(),GetTextBeforeOffset()]:
 			//in Gail, they all return null if GetText() has not been called yet, however we may
@@ -566,10 +701,6 @@ namespace UiaAtkBridgeTest
 			
 			int indexStartOffset = name.IndexOf (expected);
 			int indexEndOffset = name.IndexOf (expected) + expected.Length;
-			if (!Misc.HasReadOnlyText (type)) {
-				indexStartOffset = lastCaretOffset;
-				indexEndOffset = lastCaretOffset;
-			}
 			
 			//test selections after obtaining text with a different API than GetText
 			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#6");
@@ -600,22 +731,20 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,WordStart,so");
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,WordStart,eo");
 			
-			//textBoxEntry is single-line. TODO: sync this with the new single-line method from mgorse
-			if (type != BasicWidgetType.TextBoxEntry) {
-				expected = "This is a test sentence.";
-				Assert.AreEqual (expected,
-					atkText.GetTextAtOffset (12, Atk.TextBoundary.LineEnd, out startOffset, out endOffset),
-					"GetTextAtOffset,LineEnd");
-				Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,LineEnd,so");
-				Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,LineEnd,eo");
 
-				expected = "This is a test sentence.\r\n";
-				Assert.AreEqual (expected,
-					atkText.GetTextAtOffset (12, Atk.TextBoundary.LineStart, out startOffset, out endOffset),
-					"GetTextAtOffset,LineStart");
-				Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,LineStart,so");
-				Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,LineStart,eo");
-			}
+			expected = "This is a test sentence.";
+			Assert.AreEqual (expected,
+				atkText.GetTextAtOffset (12, Atk.TextBoundary.LineEnd, out startOffset, out endOffset),
+				"GetTextAtOffset,LineEnd");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,LineEnd,so");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,LineEnd,eo");
+
+			expected = "This is a test sentence.\r\n";
+			Assert.AreEqual (expected,
+				atkText.GetTextAtOffset (12, Atk.TextBoundary.LineStart, out startOffset, out endOffset),
+				"GetTextAtOffset,LineStart");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,LineStart,so");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,LineStart,eo");
 			
 			expected = "This is a test sentence.";
 			Assert.AreEqual (expected,
@@ -671,22 +800,19 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,WordStart,so");
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,WordStart,eo");
 			
-			//textBoxEntry is single-line. TODO: sync this with the new single-line method from mgorse
-			if (type != BasicWidgetType.TextBoxEntry) {
-				expected = "\r\nSecond line. Other phrase.";
-				Assert.AreEqual (expected,
-					atkText.GetTextAfterOffset (12, Atk.TextBoundary.LineEnd, out startOffset, out endOffset),
-					"GetTextAfterOffset,LineEnd");
-				Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,LineEnd,so");
-				Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,LineEnd,eo");
+			expected = "\r\nSecond line. Other phrase.";
+			Assert.AreEqual (expected,
+				atkText.GetTextAfterOffset (12, Atk.TextBoundary.LineEnd, out startOffset, out endOffset),
+				"GetTextAfterOffset,LineEnd");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,LineEnd,so");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,LineEnd,eo");
 
-				expected = "Second line. Other phrase.\n";
-				Assert.AreEqual (expected,
-					atkText.GetTextAfterOffset (12, Atk.TextBoundary.LineStart, out startOffset, out endOffset),
-					"GetTextAfterOffset,LineStart");
-				Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,LineStart,so");
-				Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,LineStart,eo");
-			}
+			expected = "Second line. Other phrase.\n";
+			Assert.AreEqual (expected,
+				atkText.GetTextAfterOffset (12, Atk.TextBoundary.LineStart, out startOffset, out endOffset),
+				"GetTextAfterOffset,LineStart");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,LineStart,so");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,LineStart,eo");
 			
 			expected = "\r\nSecond line.";
 			Assert.AreEqual (expected,
@@ -758,20 +884,17 @@ namespace UiaAtkBridgeTest
 			
 			expected = String.Empty;
 			
-			//textBoxEntry is single-line. TODO: sync this with the new single-line method from mgorse
-			if (type != BasicWidgetType.TextBoxEntry) {
-				Assert.AreEqual (expected,
-					atkText.GetTextBeforeOffset (12, Atk.TextBoundary.LineEnd, out startOffset, out endOffset),
-					"GetTextBeforeOffset,LineEnd");
-				Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextBeforeOffset,LineEnd,so");
-				Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextBeforeOffset,LineEnd,eo");
+			Assert.AreEqual (expected,
+				atkText.GetTextBeforeOffset (12, Atk.TextBoundary.LineEnd, out startOffset, out endOffset),
+				"GetTextBeforeOffset,LineEnd");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextBeforeOffset,LineEnd,so");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextBeforeOffset,LineEnd,eo");
 
-				Assert.AreEqual (expected,
-					atkText.GetTextBeforeOffset (12, Atk.TextBoundary.LineStart, out startOffset, out endOffset),
-					"GetTextBeforeOffset,LineStart");
-				Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextBeforeOffset,LineStart,so");
-				Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextBeforeOffset,LineStart,eo");
-			}
+			Assert.AreEqual (expected,
+				atkText.GetTextBeforeOffset (12, Atk.TextBoundary.LineStart, out startOffset, out endOffset),
+				"GetTextBeforeOffset,LineStart");
+			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextBeforeOffset,LineStart,so");
+			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextBeforeOffset,LineStart,eo");
 			
 			Assert.AreEqual (expected,
 				atkText.GetTextBeforeOffset (18, Atk.TextBoundary.SentenceEnd, out startOffset, out endOffset),
@@ -816,7 +939,7 @@ namespace UiaAtkBridgeTest
 			
 			name = "Tell me; here a sentence\r\nwith EOL but without dot, and other phrase... Heh!";
 
-			accessible = GetAccessible (type, name, real);
+			accessible = GetAccessible (type, name, true);
 			atkText = CastToAtkInterface <Atk.Text> (accessible);
 			Assert.AreEqual (name, atkText.GetText(0, name.Length), "GetText#2");
 			
@@ -846,177 +969,6 @@ namespace UiaAtkBridgeTest
 		}
 
 		protected string simpleTestText = "This is a test sentence.";
-
-		protected void InterfaceTextSingleLine (BasicWidgetType type, Atk.Text atkText)
-		{
-			int startOffset, endOffset;
-			string expected;
-			string name = simpleTestText;
-
-			int nSelections = -1;
-			if (type == BasicWidgetType.Label)
-				nSelections = 0;
-			
-			Assert.AreEqual (0, atkText.CaretOffset, "CaretOffset");
-			Assert.AreEqual (name.Length, atkText.CharacterCount, "CharacterCount");
-			Assert.AreEqual (name [0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset");
-			Assert.AreEqual (name, atkText.GetText (0, name.Length), "GetText");
-			
-			//any value
-			Assert.AreEqual (false, atkText.SetCaretOffset (-1), "SetCaretOffset#1");
-			Assert.AreEqual (false, atkText.SetCaretOffset (0), "SetCaretOffset#2");
-			Assert.AreEqual (false, atkText.SetCaretOffset (1), "SetCaretOffset#3");
-			Assert.AreEqual (false, atkText.SetCaretOffset (15), "SetCaretOffset#4");
-			
-			// don't do this until bug#393565 is fixed:
-			//Assert.AreEqual (typeof(Atk.TextAttribute), atkText.DefaultAttributes[0].GetType());
-
-			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#1");
-			
-			// you cannot select a label AFAIK so, all zeroes returned!
-			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#1");
-			Assert.AreEqual (0, startOffset, "GetSelection#2");
-			Assert.AreEqual (0, endOffset, "GetSelection#3");
-			Assert.AreEqual (null, atkText.GetSelection (1, out startOffset, out endOffset), "GetSelection#4");
-			Assert.AreEqual (0, startOffset, "GetSelection#5");
-			Assert.AreEqual (0, endOffset, "GetSelection#6");
-			Assert.AreEqual (null, atkText.GetSelection (-1, out startOffset, out endOffset), "GetSelection#7");
-			Assert.AreEqual (0, startOffset, "GetSelection#8");
-			Assert.AreEqual (0, endOffset, "GetSelection#9");
-			
-			// you cannot select a label AFAIK so, false always returned!
-			Assert.AreEqual (false, atkText.SetSelection (0, 1, 2), "SetSelection#1");
-			// test GetSelection *after* SetSelection
-			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#10");
-			Assert.AreEqual (0, startOffset, "GetSelection#11");
-			Assert.AreEqual (0, endOffset, "GetSelection#12");
-			//test crazy numbers for SetSelection
-			Assert.AreEqual (false, atkText.SetSelection (-3, 10, -2), "SetSelection#2");
-			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#13");
-			Assert.AreEqual (0, startOffset, "GetSelection#14");
-			Assert.AreEqual (0, endOffset, "GetSelection#15");
-			
-			//did NSelections changed?
-			Assert.AreEqual (false, atkText.SetSelection (1, 2, 3), "SetSelection#3");
-			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#2");
-			Assert.AreEqual (false, atkText.RemoveSelection (0), "RemoveSelection#1");
-			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#3");
-			Assert.AreEqual (false, atkText.RemoveSelection (1), "RemoveSelection#2");
-			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#4");
-			Assert.AreEqual (false, atkText.RemoveSelection (-1), "RemoveSelection#3");
-			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#5");
-
-
-			//IMPORTANT NOTE about GetText*Offset methods [GetTextAtOffset(),GetTextAfterOffset(),GetTextBeforeOffset()]:
-			//in Gail, they all return null if GetText() has not been called yet, however we may
-			//prefer not to follow this wierd behaviour in the bridge
-			
-			//GetTextAtOffset
-			expected = " test";
-			Assert.AreEqual (expected, 
-				atkText.GetTextAtOffset (12, Atk.TextBoundary.WordEnd, out startOffset, out endOffset),
-				"GetTextAtOffset,WordEnd");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,WordEnd,so");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,WordEnd,eo");
-			
-			//test selections after obtaining text with a different API than GetText
-			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#6");
-			//NSelections == 0, however we have one selection, WTF?:
-			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#16");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#17");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#18");
-			Assert.AreEqual (null, atkText.GetSelection (1, out startOffset, out endOffset), "GetSelection#19");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#20");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#21");
-			Assert.AreEqual (null, atkText.GetSelection (30, out startOffset, out endOffset), "GetSelection#22");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#23");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#24");
-			Assert.AreEqual (null, atkText.GetSelection (-1, out startOffset, out endOffset), "GetSelection#25");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#26");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#27");
-			
-			Assert.AreEqual (false, atkText.SetSelection (0, 0, 0), "SetSelection#3");
-			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#28");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#29");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#30");
-			
-			
-			expected = "test ";
-			Assert.AreEqual (expected, 
-				atkText.GetTextAtOffset (12, Atk.TextBoundary.WordStart, out startOffset, out endOffset),
-				"GetTextAtOffset,WordStart");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,WordStart,so");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,WordStart,eo");
-			
-			expected = simpleTestText;
-			Assert.AreEqual (expected,
-				atkText.GetTextAtOffset (12, Atk.TextBoundary.LineEnd, out startOffset, out endOffset),
-				"GetTextAtOffset,LineEnd");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,LineEnd,so");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,LineEnd,eo");
-
-			expected = simpleTestText;
-			Assert.AreEqual (expected,
-				atkText.GetTextAtOffset (12, Atk.TextBoundary.LineStart, out startOffset, out endOffset),
-				"GetTextAtOffset,LineStart");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,LineStart,so");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,LineStart,eo");
-			
-			expected = simpleTestText;
-			Assert.AreEqual (expected,
-				atkText.GetTextAtOffset (18, Atk.TextBoundary.SentenceEnd, out startOffset, out endOffset),
-				"GetTextAtOffset,SentenceEnd");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,SentenceEnd,so");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,SentenceEnd,eo");
-			
-			expected = simpleTestText;
-			Assert.AreEqual (expected,
-				atkText.GetTextAtOffset (18, Atk.TextBoundary.SentenceStart, out startOffset, out endOffset),
-				"GetTextAtOffset,SentenceStart");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,SentenceStart,so");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,SentenceStart,eo");
-			
-			Assert.AreEqual ("t",
-				atkText.GetTextAtOffset (18, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char1");
-			Assert.AreEqual (18, startOffset, "GetTextAtOffset,Char1,so");
-			Assert.AreEqual (19, endOffset, "GetTextAtOffset,Char1,eo");
-			Assert.AreEqual (".",
-				atkText.GetTextAtOffset (23, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char2");
-			Assert.AreEqual (23, startOffset, "GetTextAtOffset,Char2,so");
-			Assert.AreEqual (24, endOffset, "GetTextAtOffset,Char2,eo");
-			Assert.AreEqual ("e",
-				atkText.GetTextAtOffset (name.Length - 2, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char3");
-			Assert.AreEqual (name.Length - 2, startOffset, "GetTextAtOffset,Char3,so");
-			Assert.AreEqual (name.Length - 1, endOffset, "GetTextAtOffset,Char3,eo");
-			Assert.AreEqual (".",
-				atkText.GetTextAtOffset (name.Length - 1, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char4");
-			Assert.AreEqual (name.Length - 1, startOffset, "GetTextAtOffset,Char4,so");
-			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char4,eo");
-			Assert.AreEqual (String.Empty,
-				atkText.GetTextAtOffset (name.Length, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char5");
-			Assert.AreEqual (name.Length, startOffset, "GetTextAtOffset,Char5,so");
-			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char5,eo");
-			Assert.AreEqual (String.Empty,
-				atkText.GetTextAtOffset (-1, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char6");
-			Assert.AreEqual (name.Length, startOffset, "GetTextAtOffset,Char6,so");
-			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char6,eo");
-
-
-			//GetTextAfterOffset
-			expected = " sentence";
-			Assert.AreEqual (expected, 
-				atkText.GetTextAfterOffset (12, Atk.TextBoundary.WordEnd, out startOffset, out endOffset),
-				"GetTextAfterOffset,WordEnd");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,WordEnd,so");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,WordEnd,eo");
-			
-			expected = "sentence.";
-			Assert.AreEqual (expected, 
-				atkText.GetTextAfterOffset (12, Atk.TextBoundary.WordStart, out startOffset, out endOffset),
-				"GetTextAfterOffset,WordStart");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,WordStart,so");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,WordStart,eo");
-		}
 
 		protected void Parent (BasicWidgetType type, Atk.Object accessible)
 		{
