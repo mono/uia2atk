@@ -358,6 +358,13 @@ namespace Mono.UIAutomation.Winforms
 				}
 			} else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id) {
 				return ToolTip == null ? null : ToolTip.GetToolTip (Control);
+			} else if (propertyId == AutomationElementIdentifiers.AccessKeyProperty.Id) {
+				if (!Control.Text.Contains ("&"))
+					return null;
+				else {
+					int index = Control.Text.LastIndexOf ('&') + 1;
+					return "Alt+" + Control.Text.Substring (index, 1);
+				}
 			} else
 				return null;
 		}
