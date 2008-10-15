@@ -55,6 +55,7 @@ class Settings(object):
       opts, args = getopt.getopt(sys.argv[1:],"ushql:e:f:",["smoke","help","quiet","log=","email=","update-packages","from="])
     except getopt.GetoptError:
       self.help()
+      sys.exit(1)
 
     for o,a in opts:
       if o in ("-q","--quiet"):

@@ -1,3 +1,14 @@
+2008-10-15  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* tools/qamon.py: Watch for procedures.xml and print the path when
+	it is seen.
+	* harness/local_run.py: Add a file named "status" to the log dir that
+	contains 0 or 1 depending on whether the test failed or passed (0 is
+	good).  Bail with a non-zero return code when bad command line args are
+	used.
+	* harness/remote_run.py: Bail with a non-zero return code when bad
+	command line args are used.
+
 2008-10-15  Calen Chen <cachen@novell.com>
 
 	* testers/states.py: update numericupdown states tuple

@@ -56,6 +56,7 @@ class Settings(object):
       opts, args = getopt.getopt(sys.argv[1:],"shql:",["smoke","help","quiet","log="])
     except getopt.GetoptError:
       self.help()
+      sys.exit(1)
 
     for o,a in opts:
       if o in ("-q","--quiet"):
@@ -94,6 +95,9 @@ class Test(object):
       import tests as tests
 
     self.tests = tests.tests_list
+
+    # set the initial status to 0 (good)
+    self.status = 0
 
   def countdown(self, n):
     ''' Counts down for n seconds and allows the user to abort the program cleanly '''
@@ -136,7 +140,6 @@ class Test(object):
     # execute the tests
     TIMEOUT = 600 # ten minutes
     output("INFO:  Executing tests...")
-    status = 0
     for test in found_tests:
       t = s.Popen(["python", "-u", test])
       i = 0
@@ -145,13 +148,13 @@ class Test(object):
       r = t.poll()
       if r != 0:
         output("WARNING:  Failed test:  %s" % test)
-        status = 1
+        self.status = 1
       try:
         self.log(test)
       except InconceivableError, msg:
         output(msg)
         return 1
-    return status 
+    return self.status 
 
 
   def log(self, test):
@@ -192,6 +195,7 @@ class Test(object):
     # waste time/space
     os.system("cp -r /tmp/strongwind/* %s" % log_dir)
     os.system("cp -r %s/resources/* %s" % (Settings.uiaqa_home, log_dir))
+    os.system("echo %s > %s/status" % (self.status, log_dir))
 
   def kill_process(self, pid):
     try:
