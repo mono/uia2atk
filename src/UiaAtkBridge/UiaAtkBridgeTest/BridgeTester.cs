@@ -179,7 +179,6 @@ namespace UiaAtkBridgeTest
 			return GetAccessible (type, name, real, false);
 		}
 
-				
 		SWF.GroupBox gb1 = new SWF.GroupBox ();
 		SWF.GroupBox gb2 = new SWF.GroupBox ();
 		SWF.RadioButton rad1 = new SWF.RadioButton ();
@@ -195,7 +194,8 @@ namespace UiaAtkBridgeTest
 		SWF.LinkLabel linklab1 = new SWF.LinkLabel ();
 		SWF.Button butWithoutImage = new SWF.Button ();
 		SWF.Button butWithImage = new SWF.Button ();
-		SWF.CheckBox chk1 = new SWF.CheckBox ();
+		SWF.CheckBox chkWithoutImage = new SWF.CheckBox ();
+		SWF.CheckBox chkWithImage = new SWF.CheckBox ();
 		SWF.StatusBar sb1 = new SWF.StatusBar ();
 		SWF.ProgressBar pb1 = new SWF.ProgressBar ();
 		SWF.NumericUpDown nud1 = new SWF.NumericUpDown();
@@ -207,8 +207,14 @@ namespace UiaAtkBridgeTest
 		{
 			//same effect as Application.Run() (the important bit is this causes a call to ApplicationStarts() ):
 			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
+
 			string uiaQaPath = System.IO.Directory.GetCurrentDirectory ();
-			butWithImage.Image = System.Drawing.Image.FromFile (uiaQaPath + "/../../../../../test/samples/opensuse60x38.gif");
+			string imgPath = uiaQaPath + "/../../../../../test/samples/opensuse60x38.gif";
+
+			butWithImage.Image = System.Drawing.Image.FromFile (imgPath);
+			butWithImage.AutoSize = true;
+
+			chkWithImage.Image = System.Drawing.Image.FromFile (imgPath);
 			butWithImage.AutoSize = true;
 			
 			cb1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -231,7 +237,8 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (linklab1);
 			form.Controls.Add (butWithoutImage);
 			form.Controls.Add (butWithImage);
-			form.Controls.Add (chk1);
+			form.Controls.Add (chkWithoutImage);
+			form.Controls.Add (chkWithImage);
 			form.Controls.Add (sb1);
 			form.Controls.Add(menuStrip1);
 			form.MainMenuStrip = menuStrip1;
@@ -312,7 +319,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.CheckBox:
 				SWF.CheckBox chk = new SWF.CheckBox ();
 				if (real)
-					chk = chk1;
+					chk = (embeddedImage ? chkWithImage : chkWithoutImage);
 				chk.Text = name;
 				UiaAtkBridge.CheckBoxButton uiaChk;
 				if (real)

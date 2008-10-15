@@ -1,5 +1,9 @@
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Add chk+img case.
+
+2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Fix btn+img creation.
 
 2008-10-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
