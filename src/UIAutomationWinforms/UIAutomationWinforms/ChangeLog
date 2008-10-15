@@ -1,3 +1,7 @@
+2008-10-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am: Remove references to gtk-gui/*.
+
 2008-10-15  Mario Carrion <mcarrion@novell.com> 
 
 	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs:

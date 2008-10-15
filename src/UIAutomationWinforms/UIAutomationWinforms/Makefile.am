@@ -43,7 +43,6 @@ RESGEN=resgen2
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
-	gtk-gui/generated.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/CheckBox/ToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ButtonInvokeBehavior.cs \
@@ -213,7 +212,7 @@ FILES =  \
 
 DATA_FILES = 
 
-RESOURCES = gtk-gui/gui.stetic 
+RESOURCES =
 
 REFERENCES =  \
 	UIAutomationBridge \
