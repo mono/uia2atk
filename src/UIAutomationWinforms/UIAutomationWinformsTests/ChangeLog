@@ -1,3 +1,9 @@
+2008-10-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* ButtonProviderTest.cs: Make InvokedEventTest pass again. Uncomment
+	creation of provider for the button, and testing that the right
+	provider is sent in the event info.
+
 2008-10-14  Mario Carrion <mcarrion@novell.com> 
 
 	* ListBoxProviderTest.cs: Test updated. To verify Bug #435103.

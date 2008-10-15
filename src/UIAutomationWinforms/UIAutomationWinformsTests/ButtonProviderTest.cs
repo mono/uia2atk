@@ -106,9 +106,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void InvokedEventTest ()
 		{
 			Button button = new Button ();
-//			IRawElementProviderSimple provider = ProviderFactory.GetProvider (button);
-//			IInvokeProvider invokeProvider = (IInvokeProvider)
-//				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (button);
 			
 			bridge.ResetEventLists ();
 			
@@ -123,9 +121,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (InvokePatternIdentifiers.InvokedEvent,
 			                 eventInfo.eventId,
 			                 "event type");
-//			Assert.AreEqual (invokeProvider,
-//			                 eventInfo.provider,
-//			                 "event element");
+			Assert.AreEqual (provider,
+			                 eventInfo.provider,
+			                 "event element");
 			Assert.AreEqual (InvokePatternIdentifiers.InvokedEvent,
 			                 eventInfo.e.EventId,
 			                 "event args event type");
