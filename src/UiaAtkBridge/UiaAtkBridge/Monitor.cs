@@ -76,7 +76,7 @@ namespace UiaAtkBridge
 		public void Quit()
 		{
 			GLibHacks.Invoke (delegate (object sender, EventArgs args) {
-				mainLoop.Quit ();
+				Atk.Util.GetRootHandler = null;
 			});
 		}
 
