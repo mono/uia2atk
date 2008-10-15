@@ -51,6 +51,10 @@ namespace UiaAtkBridgeTest
 		ListItem,
 		CheckedListBox,
 		CheckedListItem,
+		TabControl,
+		TabPage,
+		ListView,
+		GroupBox
 	}
 
 //	public class MenuLayout
