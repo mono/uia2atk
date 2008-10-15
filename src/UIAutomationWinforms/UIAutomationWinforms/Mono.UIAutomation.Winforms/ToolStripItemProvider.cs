@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms
 {
 	internal class ToolStripItemProvider : FragmentRootControlProvider
 	{
-		internal ToolStripItem item; // TODO: Clean this up
+		private ToolStripItem item;
 
 		public ToolStripItemProvider (ToolStripItem item) : base (item)
 		{

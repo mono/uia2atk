@@ -24,7 +24,7 @@
 // 
 
 using System;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -53,12 +53,12 @@ namespace Mono.UIAutomation.Winforms.Events.ToolStripItem
 		
 		public override void Connect ()
 		{
-			itemProvider.item.Click += new EventHandler (OnClick);
+			((SWF.ToolStripItem)Provider.Component).Click += new EventHandler (OnClick);
 		}
 
 		public override void Disconnect ()
 		{
-			itemProvider.item.Click -= new EventHandler (OnClick);
+			((SWF.ToolStripItem)Provider.Component).Click -= new EventHandler (OnClick);
 		}
 		
 		#endregion

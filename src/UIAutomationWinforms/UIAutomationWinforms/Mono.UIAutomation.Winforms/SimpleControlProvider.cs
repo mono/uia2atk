@@ -44,6 +44,7 @@ namespace Mono.UIAutomation.Winforms
 		#region Private Fields
 
 		private Control control;
+		private Component component;
 		private Dictionary<ProviderEventType, IConnectable> events;
 		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
 		private int runtimeId;
@@ -57,6 +58,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		protected SimpleControlProvider (Component component)
 		{
+			this.component = component;
 			control = component as Control;
 			
 			events = new Dictionary<ProviderEventType,IConnectable> ();
@@ -77,6 +79,10 @@ namespace Mono.UIAutomation.Winforms
 		
 		public virtual Component Container {
 			get { return control.Parent; }
+		}
+
+		public Component Component {
+			get { return component; }
 		}
 		
 		public Control Control {

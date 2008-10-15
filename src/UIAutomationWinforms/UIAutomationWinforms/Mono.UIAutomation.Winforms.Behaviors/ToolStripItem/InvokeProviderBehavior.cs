@@ -24,7 +24,7 @@
 // 
 
 using System;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -77,7 +77,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripItem
 		
 		public virtual void Invoke ()
 		{
-			if (itemProvider.item.Enabled == false)
+			if (((SWF.ToolStripItem)Provider.Component).Enabled == false)
 				throw new ElementNotEnabledException ();
 
 			PerformClick ();
@@ -95,7 +95,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripItem
 			//	Provider.Control.BeginInvoke (new MethodInvoker (PerformClick));
 			//	return;
 			//}
-			itemProvider.item.PerformClick ();
+			((SWF.ToolStripItem)Provider.Component).PerformClick ();
 		}
 		
 		#endregion

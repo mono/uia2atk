@@ -1,5 +1,18 @@
 2008-10-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Mono.UIAutomation.Winforms.Events/ToolStripItem/InvokePatternInvokedEvent.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs:
+	Use new Provider.Component property to access the provider's
+	ToolStripItem.
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Add Component
+	property to access the component if it is not a Control.
+
+	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: ToolStripItem
+	reference is now private, not internal.
+
+2008-10-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Mono.UIAutomation.Winforms/IConnectable.cs:
 	* Mono.UIAutomation.Winforms.Events/ProviderEvent.cs:
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs:
