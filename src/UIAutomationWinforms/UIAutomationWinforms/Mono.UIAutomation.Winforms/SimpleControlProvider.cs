@@ -26,15 +26,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Navigation;
-using SWFErrorProvider = System.Windows.Forms.ErrorProvider;
-using SWFHelpProvider = System.Windows.Forms.HelpProvider;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -43,14 +41,14 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Fields
 
-		private Control control;
+		private SWF.Control control;
 		private Component component;
 		private Dictionary<ProviderEventType, IConnectable> events;
 		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
 		private int runtimeId;
-		private ToolTip tooltip;
+		private SWF.ToolTip tooltip;
 		private INavigation navigation;
-		private SWFErrorProvider errorProvider;
+		private SWF.ErrorProvider errorProvider;
 
 		#endregion
 		
@@ -59,7 +57,7 @@ namespace Mono.UIAutomation.Winforms
 		protected SimpleControlProvider (Component component)
 		{
 			this.component = component;
-			control = component as Control;
+			control = component as SWF.Control;
 			
 			events = new Dictionary<ProviderEventType,IConnectable> ();
 			providerBehaviors = 
@@ -85,7 +83,7 @@ namespace Mono.UIAutomation.Winforms
 			get { return component; }
 		}
 		
-		public Control Control {
+		public SWF.Control Control {
 			get { return control; }
 		}
 		
@@ -99,12 +97,12 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public ToolTip ToolTip {
+		public SWF.ToolTip ToolTip {
 			get { return tooltip; }
 			set { tooltip = value; }
 		}
 		
-		public SWFErrorProvider ErrorProvider {
+		public SWF.ErrorProvider ErrorProvider {
 			get { return errorProvider; }
 			set { errorProvider = value; }
 		}
@@ -339,7 +337,7 @@ namespace Mono.UIAutomation.Winforms
 				System.Drawing.Rectangle bounds =
 					GetControlScreenBounds ();				
 				System.Drawing.Rectangle screen =
-					Screen.GetWorkingArea (Control);
+					SWF.Screen.GetWorkingArea (Control);
 				// True iff the *entire* control is off-screen
 				return !screen.Contains (bounds.Left, bounds.Bottom) &&
 					!screen.Contains (bounds.Left, bounds.Top) &&
