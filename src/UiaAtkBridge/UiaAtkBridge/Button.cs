@@ -64,6 +64,7 @@ namespace UiaAtkBridge
 			this.provider = provider;
 			
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
+			imageProvider = invokeProvider;
 			if (invokeProvider != null) {
 				//it seems the default description should be null:
 				//actionDescription = default_invoke_description;
@@ -351,12 +352,13 @@ namespace UiaAtkBridge
 
 		bool? hasImage = null;
 		Mono.UIAutomation.Bridge.IEmbeddedImage embeddedImage = null;
-			
+		protected object imageProvider = null;
+		
 		private bool HasImage {
 			get {
 				if (hasImage == null) {
 					//type only available in our Provider implementation
-					embeddedImage = invokeProvider as Mono.UIAutomation.Bridge.IEmbeddedImage;
+					embeddedImage = imageProvider as Mono.UIAutomation.Bridge.IEmbeddedImage;
 					
 					if (embeddedImage == null) {
 						Console.WriteLine ("WARNING: your provider implementation doesn't have unofficial IEmbeddedImage support");

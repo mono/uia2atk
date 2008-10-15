@@ -1,5 +1,10 @@
 2008-10-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Button.cs:
+	* CheckBoxButton.cs: Support chk+img for #428468.
+
+2008-10-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Monitor.cs: No longer needed here.
 
 2008-10-15  Mike Gorse <mgorse@novell.com>
