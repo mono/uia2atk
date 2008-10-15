@@ -43,7 +43,12 @@ namespace UiaAtkBridgeTest
 			PropertyRole (type, accessible);
 			
 			//a label always contains this state, not because it's multi_line, but because it can be multi_line
-			Assert.IsTrue (accessible.RefStateSet ().ContainsState (Atk.StateType.MultiLine), "RefStateSet().Contains(MultiLine)");
+			States (accessible,
+				Atk.StateType.MultiLine,
+				Atk.StateType.Enabled,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
 			
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "Label numChildren");
 			
@@ -217,8 +222,13 @@ namespace UiaAtkBridgeTest
 
 			PropertyRole (type, accessible);
 
-			Atk.StateSet stateSet = accessible.RefStateSet();
-			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Horizontal), "HScrollBar state");
+			States (accessible,
+				Atk.StateType.Horizontal,
+				Atk.StateType.Enabled,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
+			
 
 			Assert.AreEqual (ValidNChildrenForAScrollBar, accessible.NAccessibleChildren, "HScrollBar numChildren");
 
@@ -242,9 +252,13 @@ namespace UiaAtkBridgeTest
 
 			PropertyRole (type, accessible);
 
-			Atk.StateSet stateSet = accessible.RefStateSet();
-			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Vertical), "VScrollBar state");
-
+			States (accessible,
+				Atk.StateType.Vertical,
+				Atk.StateType.Enabled,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
+			
 			Assert.AreEqual (ValidNChildrenForAScrollBar, accessible.NAccessibleChildren, "VScrollBar numChildren");
 
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
@@ -413,6 +427,29 @@ namespace UiaAtkBridgeTest
 		}
 		
 		[Test]
+		public void TabControl ()
+		{
+			BasicWidgetType type = BasicWidgetType.TabControl;
+			Atk.Object accessible;
+			string[] names = new string[] { simpleTestText, "Second Item", "Last Item" };
+			
+			accessible = GetAccessible (type, names, true);
+			
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+			
+			PropertyRole (type, accessible);
+
+			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
+			InterfaceSelection (atkSelection, names, accessible, type);
+			
+			Assert.AreEqual (2, accessible.NAccessibleChildren, "TabControl numChildren");
+			BasicWidgetType childType = BasicWidgetType.TabPage;
+			Atk.Object child1 = accessible.RefAccessibleChild (0);
+			PropertyRole (childType, child1);
+			InterfaceText (childType, true, child1);
+		}
+
 		public void Window () { RunInGuiThread (RealWindow); }
 		public void RealWindow ()
 		{

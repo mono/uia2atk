@@ -63,6 +63,7 @@ UIAATKBRIDGE = $(BUILD_DIR)/UiaAtkBridge.dll
 
 REFERENCES =  \
 	System  \
+	System.Xml  \
 	WindowsBase \
 	nunit.framework \
 	UIAutomationTypes.dll \

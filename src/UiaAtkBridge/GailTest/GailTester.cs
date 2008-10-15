@@ -118,10 +118,6 @@ namespace UiaAtkBridgeTest
 		public override Atk.Object GetAccessible (BasicWidgetType type, string[] name, bool real)
 		{
 			Atk.Object accessible = null;
-			if ((type != BasicWidgetType.ComboBox) && (type != BasicWidgetType.ParentMenu)) {
-				throw new NotSupportedException ("This AtkTester overload doesn't handle this type of widget: " +
-					type.ToString ());
-			}
 			//this is because of this:
 //Gtk-CRITICAL **: gtk_combo_box_append_text: assertion `GTK_IS_LIST_STORE (combo_box->priv->model)' failed
 //Gtk-CRITICAL **: gtk_combo_box_append_text: assertion `GTK_IS_LIST_STORE (combo_box->priv->model)' failed
@@ -144,6 +140,15 @@ namespace UiaAtkBridgeTest
 					((Gtk.ComboBox)widget).AppendText (text);
 				}
 				break;
+			case BasicWidgetType.TabControl:
+				widget = new Gtk.Notebook ();
+				// real not implemented yet
+				//if (real)
+					//widget = GailTestApp.MainClass.GiveMeARealNotebook (guiThread);
+				int i = 0;
+				foreach (string text in name)
+					((Gtk.Notebook)widget).AppendPage (new Gtk.Label (text), new Gtk.Label ("Tab " + i++));
+				break;
 			case BasicWidgetType.ParentMenu:
 				if (!real)
 					throw new NotSupportedException ("No unreal widget access for ParentMenu now");
@@ -154,6 +159,9 @@ namespace UiaAtkBridgeTest
 					//figure out how to remove old menus and add these ones: names[from 1]
 				});
 				break;
+			default:
+				throw new NotSupportedException ("This AtkTester overload doesn't handle this type of widget: " +
+					type.ToString ());
 			}
 			
 			accessible = widget.Accessible;

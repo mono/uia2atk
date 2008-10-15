@@ -1,3 +1,13 @@
+2008-10-15  Mike Gorse  <mgorse@novell.com>
+
+	* Makefile.am: Add reference to System.Xml.
+	* AtkTests.cs, AtkTester.cs: Test Labels and ScrollBars for
+	  superfluous states.
+	* BridgeTester.cs, BasicWidgetType.cs: Add GroupBox test.
+	* BridgeTester.cs: Have CastToAtkInterface support Atk.Selection.
+	  Set a text label for the form.
+	* AtkTester.cs, AtkTests.cs, BasicWidgetType.cs: Add TabControl test.
+
 2008-10-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Added RadioButton.AtkText testing.

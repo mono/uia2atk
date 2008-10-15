@@ -65,6 +65,9 @@ namespace UiaAtkBridgeTest
 			else if (typeof (I) == typeof (Atk.Image)) {
 				return new Atk.ImageAdapter ((Atk.ImageImplementor)accessible) as I;
 			}
+			else if (typeof (I) == typeof (Atk.Selection)) {
+				return new Atk.SelectionAdapter ((Atk.SelectionImplementor)accessible) as I;
+			}
 			throw new NotImplementedException ("Couldn't cast to interface " +
 			typeof (I).Name);
 		}
@@ -253,6 +256,7 @@ namespace UiaAtkBridgeTest
 			radios.Add (rad2);
 			radios.Add (rad3);
 			radios.Add (rad4);
+			form.Text = "UiaAtkBridge test";
 			form.Show ();
 		}
 		
@@ -589,6 +593,23 @@ namespace UiaAtkBridgeTest
 			Assert.IsFalse (atkAction.DoAction (1), "LinkLabel DoAction OOR #1");
 			Assert.IsFalse (atkAction.DoAction (-1), "LinkLabel DoAction OOR #2");
 			Assert.AreEqual (1, lastClickedLink, "LastClickedLink");
+		}
+
+		[Test]
+		public void GroupBox ()
+		{
+			BasicWidgetType type = BasicWidgetType.GroupBox;
+			Atk.Object accessible = 
+			  UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (
+			    (IRawElementProviderSimple) ProviderFactory.GetProvider (gb1, true, true));
+
+			PropertyRole (type, accessible);
+
+			States (accessible,
+				Atk.StateType.Enabled,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
 		}
 
 		//[Test]

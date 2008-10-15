@@ -467,6 +467,15 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.Spinner:
 				role = Atk.Role.SpinButton;
 				break;
+			case BasicWidgetType.TabControl:
+				role = Atk.Role.PageTabList;
+				break;
+			case BasicWidgetType.TabPage:
+				role = Atk.Role.PageTab;
+				break;
+			case BasicWidgetType.GroupBox:
+				role = Atk.Role.Panel;
+				break;
 			default:
 				throw new NotImplementedException ();
 			}
@@ -981,6 +990,19 @@ namespace UiaAtkBridgeTest
 				if (parent.RefAccessibleChild (i) == accessible)
 					return;
 			Assert.Fail ("Object is child of parent");
+		}
+
+		protected void States (Atk.Object accessible, params Atk.StateType [] expected)
+		{
+			Dictionary<Atk.StateType, bool> expectedStates = new Dictionary<Atk.StateType, bool> ();;
+			foreach (Atk.StateType state in expected)
+				expectedStates [state] = true;
+			Atk.StateSet stateSet = accessible.RefStateSet ();
+			foreach (Atk.StateType state in Enum.GetValues (typeof (Atk.StateType)))
+				if (expectedStates.ContainsKey (state))
+					Assert.IsTrue (stateSet.ContainsState (state), "Missing state: " + state);
+				else
+					Assert.IsFalse (stateSet.ContainsState (state), "Superfluous state: " + state);
 		}
 
 		private double GetMinimumValue (Atk.Value value)
