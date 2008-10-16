@@ -126,7 +126,42 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual ("y ing", range1.GetText (-1));
 		}
 
-		// TODO: implement MoveEndpointByUnit Character tests
+		[Test]
+		public void MoveEndpointByCharacter ()
+		{
+			textbox.Text = "The quick\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.";
+			textbox.Multiline = true;
+
+			range = text_provider.DocumentRange.Clone ();
+
+			int moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 0);
+			Assert.AreEqual (0, moved_units);
+			Assert.AreEqual ("The quick\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.", range.GetText (-1));
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 1);
+			Assert.AreEqual (1, moved_units);
+			Assert.AreEqual ("he quick\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.", range.GetText (-1));
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 8);
+			Assert.AreEqual (8, moved_units);
+			Assert.AreEqual ("\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.", range.GetText (-1));
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 1000);
+			Assert.AreEqual (42, moved_units);
+			Assert.AreEqual (String.Empty, range.GetText (-1));
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, -1000);
+			Assert.AreEqual (-52, moved_units);
+			Assert.AreEqual ("The quick\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.", range.GetText (-1));
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 5);
+			Assert.AreEqual (5, moved_units);
+			Assert.AreEqual ("uick\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.", range.GetText (-1));
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, -3);
+			Assert.AreEqual (-3, moved_units);
+			Assert.AreEqual ("e quick\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.", range.GetText (-1));
+		}
 
 		[Test]
 		public void CharacterNormalize ()
