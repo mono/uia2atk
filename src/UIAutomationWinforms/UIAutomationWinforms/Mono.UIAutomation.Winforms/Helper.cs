@@ -49,7 +49,7 @@ namespace Mono.UIAutomation.Winforms
 			int	imageWidth;
 			int	imageHeight;
 			int width = buttonBase.Width;
-			int height = buttonBase.Height;				
+			int height = buttonBase.Height;			
 
 			if (buttonBase.ImageIndex != -1)
 				image = buttonBase.ImageList.Images [buttonBase.ImageIndex];
@@ -129,8 +129,11 @@ namespace Mono.UIAutomation.Winforms
 			
 			imageX += (int) buttonRect.X;
 			imageY += (int) buttonRect.Y;
-			
-			return new Rect (imageX, imageY, imageWidth, imageHeight);
+
+			Rect imageRect = new Rect (imageX, imageY, imageWidth, imageHeight);
+			buttonRect.Intersect (imageRect);
+
+			return buttonRect;
 		}
 
 		internal static int GetUniqueRuntimeId ()
