@@ -52,8 +52,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.CheckBox
 		
 		public System.Windows.Rect BoundingRectangle {
 			get {
-				return Helper.GetBoundingRectangleFromButtonBase (Provider, 
-				                                        (SWF.ButtonBase) Provider.Control);
+				return Helper.GetBoundingRectangleFromButtonBase (Provider,
+				                                                  (SWF.ButtonBase) Provider.Control);
 			}
 		}
 		
