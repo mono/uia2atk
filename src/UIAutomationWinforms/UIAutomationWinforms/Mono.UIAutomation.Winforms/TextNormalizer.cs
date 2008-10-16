@@ -62,10 +62,12 @@ namespace Mono.UIAutomation.Winforms
 		 */
 		public int StartPoint {
 			get { return start_point; }
+			set { start_point = value; }
 		}
 		
 		public int EndPoint {
 			get { return end_point; }
+			set { end_point = value; }
 		}
 		
 #endregion
@@ -585,13 +587,16 @@ namespace Mono.UIAutomation.Winforms
 					if (c == count) {
 						index = i;
 						break;
+					} else if (c < count) {
+						index = i + 1;
+						break;
 					}
 				}
 
 				// if we didn't find the number of lines we
 				// were asked for, jump to the front of the
 				// string, and count that as a line
-				if (c != count && point > 0) {
+				if (c > count && point > 0) {
 					c--;
 					index = 0;
 				}

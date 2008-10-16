@@ -707,6 +707,44 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// verify that it doesn't crash
 			range.ScrollIntoView (false);
 		}
+		
+		[Test]
+		public void MoveEndpointByRange()
+		{
+			textbox.Multiline = true;
+			textbox.Text = String.Format ("apples\r\n\npears\r\r\npeaches\nbananas");
+
+			ITextRangeProvider range1, range2;
+			range1 = text_provider.DocumentRange.Clone ();
+
+			int moved_units = range1.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 2);
+			Assert.AreEqual (2, moved_units);
+			Assert.AreEqual ("ples\r\n\npears\r\r\npeaches\nbananas", range1.GetText (-1));
+
+			range2 = text_provider.DocumentRange.Clone ();
+			Assert.AreEqual ("apples\r\n\npears\r\r\npeaches\nbananas", range2.GetText (-1));
+
+			range2.MoveEndpointByRange (TextPatternRangeEndpoint.Start, range2, TextPatternRangeEndpoint.Start);
+			Assert.AreEqual ("apples\r\n\npears\r\r\npeaches\nbananas", range2.GetText (-1));
+
+			range2.MoveEndpointByRange (TextPatternRangeEndpoint.Start, range1, TextPatternRangeEndpoint.Start);
+			Assert.AreEqual ("ples\r\n\npears\r\r\npeaches\nbananas", range2.GetText (-1),
+			                 "Might be this one");
+
+			range2 = text_provider.DocumentRange.Clone ();
+
+			range1.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Word, -1);
+			Assert.AreEqual ("ples\r\n\npears\r\r\npeaches\n", range1.GetText (-1), 
+			                 "Or this one?"); 
+
+			range2.MoveEndpointByRange (TextPatternRangeEndpoint.End, range1, TextPatternRangeEndpoint.End);
+			Assert.AreEqual ("apples\r\n\npears\r\r\npeaches\n", range2.GetText (-1)); 
+
+			range2 = text_provider.DocumentRange.Clone ();
+
+			range2.MoveEndpointByRange (TextPatternRangeEndpoint.Start, range1, TextPatternRangeEndpoint.End);
+			Assert.AreEqual ("bananas", range2.GetText (-1)); 
+		}
 
 		private const string TEST_MESSAGE = "One morning, when Gregor Samsa    woke from troubled dreams, "+
 			"he found himself transformed in his bed into a horrible vermin.He lay on his armour-like back, "+

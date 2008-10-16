@@ -1,5 +1,11 @@
 2008-10-16  Brad Taylor  <brad@getcoded.net>
 	
+	* Mono.UIAutomation.Winforms/TextNormalizer.cs:
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Implement
+	  MoveEndpointByRange.
+
+2008-10-16  Brad Taylor  <brad@getcoded.net>
+	
 	* Mono.UIAutomation.Winforms/TextNormalizer.cs: Rewrite
 	  WordMoveStartEndPoint to pass the new unit tests.
 

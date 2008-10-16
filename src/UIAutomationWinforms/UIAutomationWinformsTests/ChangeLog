@@ -1,5 +1,9 @@
 2008-10-16  Brad Taylor  <brad@getcoded.net>
 	
+	* TextRangeProviderTest.cs: Add tests for MoveEndpointByRange.
+
+2008-10-16  Brad Taylor  <brad@getcoded.net>
+	
 	* TextRangeProviderTest.cs: Add tests for MoveEndpointByUnit with
 	  TextUnit.Character.
 

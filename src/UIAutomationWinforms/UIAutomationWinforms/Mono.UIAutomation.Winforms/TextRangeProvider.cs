@@ -123,6 +123,7 @@ namespace Mono.UIAutomation.Winforms
 				// This does nothing
 				break;
 			case TextUnit.Format:
+				// Textbox doesn't support Format
 				break;
 			case TextUnit.Word:
 				normalizer.WordNormalize ();
@@ -131,7 +132,9 @@ namespace Mono.UIAutomation.Winforms
 				normalizer.LineNormalize ();
 				break;
 			case TextUnit.Paragraph:
+				// TODO:
 			case TextUnit.Page:
+				// Textbox doesn't support Page
 			case TextUnit.Document:
 				// TODO:
 				break;
@@ -257,7 +260,16 @@ namespace Mono.UIAutomation.Winforms
 		                                 ITextRangeProvider targetRange, 
 		                                 TextPatternRangeEndpoint targetEndpoint)
 		{
-			throw new NotImplementedException();
+			TextRangeProvider prov = (TextRangeProvider)targetRange;
+			
+			int val = (targetEndpoint == TextPatternRangeEndpoint.Start)
+					? prov.StartPoint : prov.EndPoint;
+
+			if (endpoint == TextPatternRangeEndpoint.Start) {
+				normalizer.StartPoint = val;
+			} else if (endpoint == TextPatternRangeEndpoint.End) {
+				normalizer.EndPoint = val;
+			}
 		}
 
 		public int MoveEndpointByUnit (TextPatternRangeEndpoint endpoint, 
