@@ -90,10 +90,6 @@ namespace Mono.UIAutomation.Winforms
 			return moved;
 		}
 		
-		//FIXME: ?
-		//Be aware of this method because it returns: "the number of units actually moved."
-		//http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.itextrangeprovider.move.aspx
-		//and MS implementation doesn't
 		private int CharacterMoveStartEndPoint (int count, ref int point)
 		{
 			if (count == 0) {
@@ -441,7 +437,7 @@ namespace Mono.UIAutomation.Winforms
 #endregion
 		
 #region Word methods
-		private Regex is_separator = new Regex (@"^\s$", RegexOptions.Compiled);
+		private Regex is_separator = new Regex (@"^[^\w]$", RegexOptions.Compiled);
 
 		private bool IsWordSeparator (char c)
 		{
@@ -523,30 +519,88 @@ namespace Mono.UIAutomation.Winforms
 			return WordMoveStartEndPoint (count, ref start_point);
 		}
 		
-		private int WordMoveStartEndPoint (int count, ref int startEndPoint)
+		private int WordMoveStartEndPoint (int count, ref int point)
 		{
-			//Be aware that both Start and End points must be normalized
-			//otherwise there won't be valid results 
-			if (count == 0)
+			if (count == 0) {
 				return 0;
+			}
 
-			WordTokenizer tokenizer = new WordTokenizer (textboxbase.Text);
-			WordTokenCollection collection;
-			
-			if (count > 0)
-				collection = tokenizer.Forward (startEndPoint, count);
-			else
-				collection = tokenizer.Backwards (startEndPoint - 1, System.Math.Abs (count));
-			
-			if (collection.Count > 0) {
-				if (count > 0)
-					startEndPoint = collection [collection.Count - 1].Index 
-						+ collection [collection.Count - 1].Message.Length;
-				else
-					startEndPoint = collection [collection.Count - 1].Index;
+			int index = 0, c = 0;
+			string text = textboxbase.Text;
+			if (count > 0) {
+				bool last_was_sep = true, last_was_chr = false;
+				for (int i = point; i < text.Length; i++) {
+					index = i;
+
+					if (IsWordSeparator (text[i])) {
+						c++;
+
+						last_was_sep = true;
+						last_was_chr = false;
+					} else {
+						if (last_was_sep) {
+							c++;
+						}
+
+						last_was_sep = false;
+						last_was_chr = true;
+					}
+
+					if (c == (count + 1)) {
+						index = i;
+						c--;
+						break;
+					}
+				}
+
+				// if we didn't find the number of lines we
+				// were asked for, jump to the end of the
+				// string, and count that as a line
+				if (c != count && point < (text.Length - 1)) {
+					c++;
+					index = text.Length;
+				}
+
+				point = index;
+				return c;
+			} else {
+				bool last_was_sep = true, last_was_chr = false;
+				for (int i = point - 1; i >= 0; i--) {
+					index = i;
+
+					if (IsWordSeparator (text[i])) {
+						c--;
+
+						if (last_was_chr) {
+							c--;
+						}
+
+						last_was_chr = false;
+						last_was_sep = true;
+					} else {
+						last_was_chr = true;
+						last_was_sep = false;
+					}
+
+					if (c == count) {
+						index = i;
+						break;
+					}
+				}
+
+				// if we didn't find the number of lines we
+				// were asked for, jump to the front of the
+				// string, and count that as a line
+				if (c != count && point > 0) {
+					c--;
+					index = 0;
+				}
+
+				point = index;
+				return c;
 			}
 			
-			return collection.Count;
+			return 0;
 		}
 		
 #endregion

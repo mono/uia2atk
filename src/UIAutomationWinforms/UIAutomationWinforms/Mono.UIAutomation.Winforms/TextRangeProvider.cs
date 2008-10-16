@@ -204,103 +204,28 @@ namespace Mono.UIAutomation.Winforms
 			return rects.ToArray ();
 		}
 
-#region GetBoundingRectangles support methods
-		private object GetInternalDocument (TextBoxBase textbox)
-		{
-			Type textbox_type = textbox.GetType ();
-			FieldInfo textbox_fi = textbox_type.GetField ("document", BindingFlags.NonPublic | BindingFlags.Instance);
-			if (textbox_fi == null) {
-				// XXX: Is it best to throw an exception here,
-				// or to return silently?
-				throw new Exception ("document field not found in TextBoxBase");
-			}
-			
-			return textbox_fi.GetValue (textbox);
-		}
-
-		private object GetLine (object document, int line)
-		{
-			// TODO: optimize
-			Assembly asm = Assembly.GetAssembly (typeof (TextBoxBase));
-			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
-			if (document_type == null) {
-				throw new Exception ("Internal Document class not found in System.Windows.Forms");
-			}
-
-			MethodInfo mi = document_type.GetMethod ("GetLine", BindingFlags.NonPublic | BindingFlags.Instance);
-			if (mi == null) {
-				throw new Exception ("GetLine method not found in Document class");
-			}
-
-			return mi.Invoke (document, new object[] { line });
-		}
-
-		private int GetNumLines (object document)
-		{
-			Assembly asm = Assembly.GetAssembly (typeof (TextBoxBase));
-			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
-			if (document_type == null) {
-				throw new Exception ("Internal Document class not found in System.Windows.Forms");
-			}
-
-			PropertyInfo pi = document_type.GetProperty ("Lines", BindingFlags.NonPublic | BindingFlags.Instance);
-			if (pi == null) {
-				throw new Exception ("Lines property not found in Document class");
-			}
-
-			return (int)pi.GetValue (document, null);
-		}
-
-		private Rect GetLineRect (object line)
-		{
-			Assembly asm = Assembly.GetAssembly (typeof (TextBoxBase));
-			Type line_type = asm.GetType ("System.Windows.Forms.Line", false);
-			if (line_type == null) {
-				throw new Exception ("Internal Line class not found in System.Windows.Forms");
-			}
-
-			PropertyInfo x_pi
-				= line_type.GetProperty ("X",
-			                                 BindingFlags.NonPublic | BindingFlags.Instance);
-			if (x_pi == null) {
-				throw new Exception ("X property not found in Line class");
-			}
-
-			PropertyInfo y_pi
-				= line_type.GetProperty ("Y",
-			                                 BindingFlags.NonPublic | BindingFlags.Instance);
-			if (y_pi == null) {
-				throw new Exception ("Y property not found in Line class");
-			}
-
-			PropertyInfo width_pi
-				= line_type.GetProperty ("Width",
-			                                 BindingFlags.NonPublic | BindingFlags.Instance);
-			if (width_pi == null) {
-				throw new Exception ("Width property not found in Line class");
-			}
-
-			PropertyInfo height_pi
-				= line_type.GetProperty ("Height",
-			                                 BindingFlags.NonPublic | BindingFlags.Instance);
-			if (height_pi == null) {
-				throw new Exception ("Height property not found in Line class");
-			}
-			
-			return new Rect ((int)x_pi.GetValue (line, null),
-			                 (int)y_pi.GetValue (line, null),
-			                 (int)width_pi.GetValue (line, null),
-			                 (int)height_pi.GetValue (line, null));
-		}
-#endregion
-
 		public IRawElementProviderSimple[] GetChildren ()
 		{
+			// TextBoxes don't have children
+			if (textboxbase is TextBox) {
+				return new IRawElementProviderSimple[0];
+			}
+
 			throw new NotImplementedException();
 		}
 
 		public IRawElementProviderSimple GetEnclosingElement ()
 		{
+			// MSDN: The enclosing AutomationElement, typically the
+			// text provider that supplies the text range.
+			if (textboxbase is TextBox) {
+				return (IRawElementProviderSimple)provider;
+			}
+
+			// MSDN: However, if the text provider supports child
+			// elements such as tables or hyperlinks, then the
+			// enclosing element could be a descendant of the text
+			// provider.
 			throw new NotImplementedException();
 		}
 
@@ -363,8 +288,9 @@ namespace Mono.UIAutomation.Winforms
 			// LAMESPEC: this should fall back on TextUnit.Word
 			// according to MSDN, but for TextBox, this resembles
 			// TextUnit.Page.
+
+			// TextBox doesn't support Page or Format
 			case TextUnit.Format:
-			// Document and Page appear to behave similarly
 			case TextUnit.Page:
 			case TextUnit.Document:
 				if (endpoint == TextPatternRangeEndpoint.Start)
@@ -386,7 +312,20 @@ namespace Mono.UIAutomation.Winforms
 
 		public void ScrollIntoView (bool alignToTop)
 		{
-			throw new NotImplementedException ();
+			// TODO: handle alignToTop
+			
+			// XXX: Not sure if moving the caret is appropriate
+			// here, but the limited API doesn't support any
+			// alternative
+			object document = GetInternalDocument (textboxbase);
+
+			int char_pos;
+			object line, linetag;
+			CharIndexToLineTag (document, StartPoint, out line,
+			                    out linetag, out char_pos);
+			
+			PositionCaret (document, line, char_pos);
+			textboxbase.ScrollToCaret ();
 		}
 
 		public void Select ()
@@ -394,6 +333,140 @@ namespace Mono.UIAutomation.Winforms
 			textboxbase.SelectionStart = normalizer.StartPoint;
 			textboxbase.SelectionLength = System.Math.Abs (normalizer.EndPoint - normalizer.StartPoint);
 		}
+
+#region S.W.F.Document support methods
+		private object GetInternalDocument (TextBoxBase textbox)
+		{
+			Type textbox_type = textbox.GetType ();
+			FieldInfo textbox_fi = textbox_type.GetField ("document", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (textbox_fi == null) {
+				// XXX: Is it best to throw an exception here,
+				// or to return silently?
+				throw new Exception ("document field not found in TextBoxBase");
+			}
+			
+			return textbox_fi.GetValue (textbox);
+		}
+
+		private object GetLine (object document, int line)
+		{
+			Assembly asm = SwfAssembly;
+			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
+			if (document_type == null) {
+				throw new Exception ("Internal Document class not found in System.Windows.Forms");
+			}
+
+			MethodInfo mi = document_type.GetMethod ("GetLine", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (mi == null) {
+				throw new Exception ("GetLine method not found in Document class");
+			}
+
+			return mi.Invoke (document, new object[] { line });
+		}
+
+		private int GetNumLines (object document)
+		{
+			Assembly asm = SwfAssembly;
+			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
+			if (document_type == null) {
+				throw new Exception ("Internal Document class not found in System.Windows.Forms");
+			}
+
+			PropertyInfo pi = document_type.GetProperty ("Lines", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (pi == null) {
+				throw new Exception ("Lines property not found in Document class");
+			}
+
+			return (int)pi.GetValue (document, null);
+		}
+
+		private Rect GetLineRect (object line)
+		{
+			Assembly asm = SwfAssembly;
+			Type line_type = asm.GetType ("System.Windows.Forms.Line", false);
+			if (line_type == null) {
+				throw new Exception ("Internal Line class not found in System.Windows.Forms");
+			}
+
+			PropertyInfo x_pi
+				= line_type.GetProperty ("X",
+			                                 BindingFlags.NonPublic | BindingFlags.Instance);
+			if (x_pi == null) {
+				throw new Exception ("X property not found in Line class");
+			}
+
+			PropertyInfo y_pi
+				= line_type.GetProperty ("Y",
+			                                 BindingFlags.NonPublic | BindingFlags.Instance);
+			if (y_pi == null) {
+				throw new Exception ("Y property not found in Line class");
+			}
+
+			PropertyInfo width_pi
+				= line_type.GetProperty ("Width",
+			                                 BindingFlags.NonPublic | BindingFlags.Instance);
+			if (width_pi == null) {
+				throw new Exception ("Width property not found in Line class");
+			}
+
+			PropertyInfo height_pi
+				= line_type.GetProperty ("Height",
+			                                 BindingFlags.NonPublic | BindingFlags.Instance);
+			if (height_pi == null) {
+				throw new Exception ("Height property not found in Line class");
+			}
+			
+			return new Rect ((int)x_pi.GetValue (line, null),
+			                 (int)y_pi.GetValue (line, null),
+			                 (int)width_pi.GetValue (line, null),
+			                 (int)height_pi.GetValue (line, null));
+		}
+		
+		private void CharIndexToLineTag (object document, int index, out object line,
+		                                 out object linetag, out int pos)
+		{
+			pos = 0;
+			line = linetag = null;
+
+			Assembly asm = SwfAssembly;
+			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
+			if (document_type == null) {
+				throw new Exception ("Internal Document class not found in System.Windows.Forms");
+			}
+
+			MethodInfo mi = document_type.GetMethod ("CharIndexToLineTag", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (mi == null) {
+				throw new Exception ("CharIndexToLineTag method not found in Document class");
+			}
+
+			object[] args = new object[] { index, line, linetag, pos };
+			mi.Invoke (document, args);
+
+			line = args[1];
+			linetag = args[2];
+			pos = (int)args[3];
+		}
+
+		private void PositionCaret (object document, object line, int pos)
+		{
+			Assembly asm = SwfAssembly;
+			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
+			if (document_type == null) {
+				throw new Exception ("Internal Document class not found in System.Windows.Forms");
+			}
+
+			Type line_type = asm.GetType ("System.Windows.Forms.Line", false);
+
+			MethodInfo mi = document_type.GetMethod ("PositionCaret", BindingFlags.NonPublic | BindingFlags.Instance,
+			                                         null, new Type[] { line_type, typeof (int) }, null);
+			if (mi == null) {
+				throw new Exception ("PositionCaret method not found in Document class");
+			}
+
+			mi.Invoke (document, new object[] { line, pos });
+		}
+#endregion
+
 #endregion
 
 #region Private Properties
@@ -404,12 +477,25 @@ namespace Mono.UIAutomation.Winforms
 		private int StartPoint {
 			get { return normalizer.StartPoint; }
 		}
+
+		private Assembly SwfAssembly {
+			get {
+				if (!attempted_swf_load) {
+					swf_asm = Assembly.GetAssembly (typeof (TextBoxBase));
+					attempted_swf_load = true;
+				}
+				return swf_asm;
+			}
+		}
 #endregion
 
 #region Private Members
 		private TextNormalizer normalizer;
 		private ITextProvider provider;
 		private TextBoxBase textboxbase;
+
+		private Assembly swf_asm = null;
+		private bool attempted_swf_load = false;
 #endregion
 	}
 }

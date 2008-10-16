@@ -163,7 +163,61 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 range.GetText (-1));
 		}
 
-		// TODO: implement MoveEndpointByUnit Word tests
+		[Test]
+		public void MoveEndpointByWord ()
+		{
+			textbox.Text = "The quick\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.";
+			textbox.Multiline = true;
+
+			range = text_provider.DocumentRange.Clone ();
+
+			// NOTE: These all pass successfully on Windows Vista, so
+			// think twice before you change anything.
+			int moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Word, 0);
+			Assert.AreEqual (0, moved_units, "Moved units are incorrect in 0 word move");
+			Assert.AreEqual ("The quick\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.", range.GetText (-1),
+			                 "Text is incorrect in 0 word move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Word, 1);
+			Assert.AreEqual (1, moved_units, "Moved units are incorrect in 1 word move");
+			Assert.AreEqual (" quick\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.", range.GetText (-1),
+			                 "Text is incorrect in first +1 word move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Word, -3);
+			Assert.AreEqual (-1, moved_units, "Moved units are incorrect in -3 word move");
+			Assert.AreEqual ("The quick\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.", range.GetText (-1),
+			                 "Text is incorrect in -3 word move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Word, 2);
+			Assert.AreEqual (2, moved_units, "Moved units are incorrect in 2 word move");
+			Assert.AreEqual ("quick\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.", range.GetText (-1),
+			                 "Text is incorrect in +2 word move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Word, 1);
+			Assert.AreEqual (1, moved_units, "Moved units are incorrect in 1 word move");
+			Assert.AreEqual ("\tbrown (fox] \"jumps\"\rover:\nthe  lazy, dog.", range.GetText (-1),
+			                 "Text is incorrect in second +1 word move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Word, 1);
+			Assert.AreEqual (1, moved_units, "Moved units are incorrect in 1 word move");
+			Assert.AreEqual ("brown (fox] \"jumps\"\rover:\nthe  lazy, dog.", range.GetText (-1),
+			                 "Text is incorrect in third +1 word move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Word, 3);
+			Assert.AreEqual (3, moved_units, "Moved units are incorrect in 3 word move");
+			Assert.AreEqual ("fox] \"jumps\"\rover:\nthe  lazy, dog.", range.GetText (-1),
+			                 "Text is incorrect in +3 word move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Word, 4);
+			Assert.AreEqual (4, moved_units, "Moved units are incorrect in 4 word move");
+			Assert.AreEqual ("jumps\"\rover:\nthe  lazy, dog.", range.GetText (-1),
+			                 "Text is incorrect in +4 word move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Word, -2);
+			Assert.AreEqual (-2, moved_units, "Moved units are incorrect in -2 word move");
+			Assert.AreEqual (" \"jumps\"\rover:\nthe  lazy, dog.", range.GetText (-1),
+			                 "Text is incorrect in -2 word move");
+		}
 
 		[Test]
 		public void WordNormalize ()
@@ -596,6 +650,27 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (1, moved_units, "Moved units are incorrect in second +1 page move");
 			Assert.AreEqual ("apples\r\n\npears\r\r\npeaches\nbananas", range.GetText (-1),
 			                 "Text is incorrect in second +1 page move");
+		}
+
+		[Test]
+		public void ScrollIntoView ()
+		{
+			textbox.Multiline = true;
+			textbox.Text = TEST_MESSAGE;
+
+			range = text_provider.DocumentRange.Clone ();
+			
+			int moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Page, 1);
+			Assert.AreEqual (1, moved_units);
+			Assert.AreEqual (String.Empty, range.GetText (-1));
+			
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Word, -3);
+			Assert.AreEqual (-3, moved_units);
+			Assert.AreEqual (" Drops ", range.GetText (-1));
+
+			// We can't actually test this visually, but we can
+			// verify that it doesn't crash
+			range.ScrollIntoView (false);
 		}
 
 		private const string TEST_MESSAGE = "One morning, when Gregor Samsa    woke from troubled dreams, "+

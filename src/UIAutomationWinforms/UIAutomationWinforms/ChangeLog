@@ -1,3 +1,12 @@
+2008-10-16  Brad Taylor  <brad@getcoded.net>
+	
+	* Mono.UIAutomation.Winforms/TextNormalizer.cs: Rewrite
+	  WordMoveStartEndPoint to pass the new unit tests.
+
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Implement
+	  GetChildren, GetEnclosingElement, and ScrollIntoView for TextBox.
+	  Also add support methods.
+
 2008-10-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp: Remove <GtkDesignInfo /> from project
