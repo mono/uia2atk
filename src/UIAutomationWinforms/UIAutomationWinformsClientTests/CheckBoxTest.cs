@@ -144,6 +144,38 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 				"TogglePattern SHOULD be supported");
 		}
 
+		[Test]
+		public void TogglePatternDisabled ()
+		{
+			CheckBox checkbox = GetControl () as CheckBox;
+			AutomationElement element = GetAutomationElementFromControl (checkbox);
+
+			//Enabled
+			Assert.IsTrue (SupportsPattern (element, TogglePatternIdentifiers.Pattern),
+				"ENABLED=true TogglePattern SHOULD be supported");
+
+			//Disabled
+			checkbox.Enabled = false;
+			element = GetAutomationElementFromControl (checkbox);
+			Assert.IsTrue (SupportsPattern (element, TogglePatternIdentifiers.Pattern),
+				"ENABLED=false TogglePattern SHOULD be supported");
+
+			//Lets toggle disable checkbox
+
+			TogglePattern pattern;
+			try {
+				pattern = (TogglePattern) element.GetCurrentPattern (TogglePatternIdentifiers.Pattern);
+				pattern.Toggle ();
+				Assert.Fail ("Should throw ElementNotEnabledException");
+			} catch (ElementNotEnabledException) { }
+
+			checkbox.Enabled = true;
+			try {
+				pattern = (TogglePattern) element.GetCurrentPattern (TogglePatternIdentifiers.Pattern);
+				pattern.Toggle ();
+			} catch (Exception) { Assert.Fail ("Should not throw any exception"); }
+		}
+
 		#endregion
 
 		#region Protected Methods

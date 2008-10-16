@@ -1,3 +1,8 @@
+2008-10-16  Mario Carrion <mcarrion@novell.com> 
+
+	* CheckBoxTest.cs: Updated to verify Toggle pattern when enabled and 
+	disabled.
+
 2008-10-15  Mario Carrion <mcarrion@novell.com> 
 
 	* ComboBoxTest.cs: Testing children.
