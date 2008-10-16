@@ -1,3 +1,10 @@
+2008-10-15  Calen Chen <cachen@novell.com>
+
+	* testers/label/labelframe.py: delect self.label variable from 
+	assertText
+	* testers/checkbox/checkboxframe.py: add assertImageSize to test image
+	* testers/checkbox_basic_ops.py: add test for image implementation
+
 2008-10-15  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* tools/dashboard.py: tool that will be used to parse logs and

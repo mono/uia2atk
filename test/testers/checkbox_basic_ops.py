@@ -130,6 +130,11 @@ sleep(config.SHORT_DELAY)
 statesCheck(cbFrame.check4, "CheckBox",
                     invalid_states=["sensitive", "enabled","focusable"])
 
+#implement checkbox's image
+cbFrame.assertImageSize(cbFrame.check1, -1, -1)
+cbFrame.assertImageSize(cbFrame.check2, -1, -1)
+cbFrame.assertImageSize(cbFrame.check3, -1, -1)
+cbFrame.assertImageSize(cbFrame.check4, -1, -1)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

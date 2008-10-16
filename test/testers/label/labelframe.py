@@ -42,10 +42,9 @@ class LabelFrame(accessibles.Frame):
     #check label's text value
     def assertText(self, textValue):
         #initialize label again to get the new text value
-        self.label = self.findAllLabels(None)
         procedurelogger.expectedResult('Label\'s text value shows in accerciser is "%s"' % textValue)
         def resultMatches():
-            return self.label[0].text == textValue
+            return self.sensitive_label.text == textValue
         assert retryUntilTrue(resultMatches)
     
     #close application main window after running test
