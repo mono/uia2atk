@@ -45,7 +45,7 @@ public partial class MainWindow: Gtk.Window
 		this.btnWithImg.Image = img1;
 		
 		Gtk.Image img2 = new Gtk.Image ();
-		img2.FromFile = System.IO.Path.Combine (uiaQaPath, "opensuse60x38.gif");
+		img2.FromFile = System.IO.Path.Combine (uiaQaPath, "soccerball.gif");
 		img2.Show ();
 		this.checkbutton1.Image = img2;
 	}
