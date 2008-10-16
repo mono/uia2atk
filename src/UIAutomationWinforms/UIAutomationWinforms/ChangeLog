@@ -1,3 +1,8 @@
+2008-10-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.mdp: Remove <GtkDesignInfo /> from project
+	files.
+
 2008-10-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

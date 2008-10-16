@@ -1,3 +1,7 @@
+2008-10-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UiaAtkBridgeTest.mdp: Remove <GtkDesignInfo /> from project files.
+
 2008-10-15  Mike Gorse  <mgorse@novell.com>
 
 	* Makefile.am: Add reference to System.Xml.
