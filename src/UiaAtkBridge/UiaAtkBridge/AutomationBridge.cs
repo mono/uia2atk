@@ -316,12 +316,9 @@ namespace UiaAtkBridge
 				if (!providerAdapterMapping.ContainsKey (simpleProvider))
 					HandleElementAddition (simpleProvider);
 			} else if (e.StructureChangeType == StructureChangeType.ChildRemoved) {
-				if (controlTypeId == ControlType.Window.Id)
-					HandleWindowProviderRemoval (simpleProvider);
-				else
-					// TODO: Handle proper documented args
-					//       (see FragmentRootControlProvider)
-					HandleElementRemoval (simpleProvider);
+				// TODO: Handle proper documented args
+				//       (see FragmentRootControlProvider)
+				HandleElementRemoval (simpleProvider);
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
 				HandleBulkRemoved (simpleProvider);
 			}
@@ -400,16 +397,20 @@ namespace UiaAtkBridge
 
 			int controlTypeId = (int)provider.GetPropertyValue (
 				AutomationElementIdentifiers.ControlTypeProperty.Id);
+			
 			if (controlTypeId == ControlType.ToolTip.Id) {
 				TopLevelRootItem.Instance.RemoveChild (adapter);
-				providerAdapterMapping.Remove (provider);
-				return;
+			} else if (controlTypeId == ControlType.Window.Id) {
+				TopLevelRootItem.Instance.RemoveChild (adapter);
+				windowProviders--;
+				if (windowProviders == 0)
+					appMonitor.Quit ();
+		 	} else {
+				ParentAdapter parent = adapter.Parent as ParentAdapter;
+				if (parent != null)
+					parent.RemoveChild (adapter);
 			}
 
-			ParentAdapter parent = adapter.Parent as ParentAdapter;
-			if (parent != null)
-				parent.RemoveChild (adapter);
-			
 			providerAdapterMapping.Remove (provider);
 			pointerProviderMapping.Remove (provider);
 		}
@@ -451,23 +452,6 @@ namespace UiaAtkBridge
 			pointerProviderMapping [providerHandle] = provider;
 			
 			windowProviders++;
-		}
-		
-		private void HandleWindowProviderRemoval (IRawElementProviderSimple provider)
-		{
-			Console.WriteLine ("FormIsRemoved");
-			if (!providerAdapterMapping.ContainsKey (provider))
-				return;
-			Console.WriteLine ("FormIsRemoved_Real");
-			
-			TopLevelRootItem.Instance.RemoveChild (providerAdapterMapping [(IRawElementProviderSimple) provider]);
-			providerAdapterMapping.Remove ((IRawElementProviderSimple) provider);
-			
-			pointerProviderMapping.Remove (provider);
-			
-			windowProviders--;
-			if (windowProviders == 0)
-				appMonitor.Quit ();
 		}
 		
 		private void HandleNewButtonControlType (IRawElementProviderSimple provider)
