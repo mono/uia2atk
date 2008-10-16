@@ -20,9 +20,13 @@ def output(s, newline=True):
     else:
       print s,
 
+def abort(s):
+    sys.exit(s)
+
 class Settings(object):
 
     is_quiet = False
+    log_dir = None
 
     def __init__(self):
         pass
@@ -35,7 +39,7 @@ class Settings(object):
           opts, args = getopt.getopt(sys.argv[1:],"qh",["help","quiet"])
         except getopt.GetoptError:
           self.help()
-          sys.exit(1)
+          abort(1)
 
         for o,a in opts:
           if o in ("-q","--quiet"):
@@ -45,8 +49,12 @@ class Settings(object):
             self.help()
             sys.exit(0)
 
-        Settings.log_dir = args[0]
-
+        try:
+            Settings.log_dir = args[0]
+        except IndexError, e:
+            output("ERROR: log directory argument is required")
+            abort(1)
+   
     def help(self):
         output("Usage: dashboard [options] <log directory>")
         output("  -h | --help        Print help information (this message)")
@@ -79,37 +87,65 @@ class PageBuilder(object):
                     "ToolStripMenuItem","ToolStripProgressBar",
                     "ToolStripSplitButton","ToolStripTextBox","ToolTip",
                     "VScrollBar","WebBrowser")
-    
-        test_dirs = os.listdir(Settings.log_dir)
+
+        tmp_test_dirs = os.listdir(Settings.log_dir)
         # take out directories that aren't really for tests, like .svn
-        self.test_dirs = [s for s in test_dirs if "_" in s]
-        self.controls_tested = [s[:s.find("_")].lower() for s in test_dirs]
+        self.test_dirs = [s for s in tmp_test_dirs if "_" in s]
+        self.controls_tested = [s[:s.find("_")].lower() for s in self.test_dirs]
+
+        # dashboard_dict's keys are control names and each value is a list
+        # of the most recent log files for the tests associates with each
+        # control
+        self.dashboard_dict = {}
+        new_dirs = []
+        for control in self.controls:
+            if control.lower() in self.controls_tested:
+                new_dirs = [dir for dir in self.test_dirs if dir.startswith("%s_" % control.lower())]
+                new_dirs = [os.path.join(Settings.log_dir, dir) for dir in new_dirs]
+                for i,dir in enumerate(new_dirs):
+                    new_dirs[i] = self.get_newest_subdir(dir)
+                # done buildling list of the most recent log directorie(s), now 
+                # add the list to the dashboard_dict for each control.
+                self.dashboard_dict[control] = new_dirs
+    
+
+    def get_newest_subdir(self, dir):
+        '''return a string of the newest subdir of the string dir'''
+        newest_subdir = c.getoutput("ls %s -tc | head -n1" % dir)
+        return os.path.join(dir, newest_subdir)
 
     def get_status(self, control):
-        '''get the status and return 0 (success), 1 (fail), or -1 (not run)'''
-        if control.lower() in self.controls_tested:
-            status_files = c.getoutput("find %s/%s* -name status" % (Settings.log_dir, control.lower())).split()
-            status_codes = []
-            for status_file in status_files:
-                f = open(status_file)
-                status_codes.append(int(f.read()))
-            if sum(status_codes) == 0:
-                return 0
-            else:
-                return 1  
-        else:
-            return -1
+        '''get the status of the most recent tests for control and return 0
+        (success), 1 (fail), or -1 (not run)'''
+        status_codes = []
 
-    def get_time(self, control):
-        # if we have test results for the control we're getting the time for
-        logs = None
-        if control.lower() in self.controls_tested:
-            # get the combined times of tests
-            logs = c.getoutput("find %s/%s* -name procedures.xml" % (Settings.log_dir, control.lower())).split()
-            times = [self.xmlp.get_time(log) for log in logs]
-            return round(sum(times),1)
-        else:
+        # get the list of the most recent log directorie(s) for each control
+        # if the control is not found in dashboard_dict, then the test has
+        # not been run, so return -1
+        try:
+            new_dirs = self.dashboard_dict[control]
+        except KeyError:
             return -1
+        for dir in new_dirs:
+            f = open("%s/status" % dir)
+            status_codes.append(int(f.read()))
+        if sum(status_codes) == 0:
+            return 0
+        else:
+            return 1
+        
+    def get_time(self, control):
+        # get the list of the most recent log directorie(s) for each control
+        # if the control is not found in dashboard_dict, then the test has
+        # not been run, so return -1
+        new_dirs = []
+        try:
+            new_dirs = self.dashboard_dict[control]
+        except KeyError:
+            return -1
+        procedures_logs = [os.path.join(log,"procedures.xml") for log in new_dirs]
+        times = [self.xmlp.get_time(log) for log in procedures_logs]
+        return round(sum(times),1)
 
     def build_all(self):
         root = ET.Element("dashboard")

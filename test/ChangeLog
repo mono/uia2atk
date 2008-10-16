@@ -1,5 +1,22 @@
 2008-10-16  Brian G. Merrell <bgmerrell@gmail.com>
 
+	* tools/dashboard: add directory to hold the files used to dynamically
+	create and decorate the dashboard web page.
+	* tools/dashboard/qamon.py: tool that monitors a given directory for a
+	certain file and then perform some action.  In our case it is used to
+	monitor the log directory for new log files and then dynamically update
+	the dashboard web page (using dashbaord.py).
+	* tools/dashboard/dashboard_sample.xml: an example of the dashboard web
+	page.
+	* tools/dashboard/dashboard.xsl: extensible stylesheet for the
+	dashboard web page.
+	* tools/dashboard/dashboard.css: cascading stylesheet for the dashboard
+	web page.
+	* tools/dashboard/dashboard.py: tool that parses the logs monitored by
+	qamon and then dynamically creates the dashboard web page.
+
+2008-10-16  Brian G. Merrell <bgmerrell@gmail.com>
+
 	* tools/qamon.py: import dashboard (not used yet) and add help info
 	for the --quiet option.
 	* tools/dashboard.py: add code to parse all logs and build an XML file
