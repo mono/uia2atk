@@ -202,6 +202,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ToolStripItemProvider.cs \
 	Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs \
 	Mono.UIAutomation.Winforms/ToolStripMenuItemProvider.cs \
+	Mono.UIAutomation.Winforms/ToolStripProvider.cs \
 	Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs \
 	Mono.UIAutomation.Winforms/ToolTipListener.cs \
 	Mono.UIAutomation.Winforms/ToolTipProvider.cs \

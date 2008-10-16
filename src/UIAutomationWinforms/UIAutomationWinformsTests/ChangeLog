@@ -1,6 +1,14 @@
 2008-10-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:
+	* ToolStripProviderTest.cs:
+	* UIAutomationWinformsTests.mdp: Add beginning of ToolStripProviderTest.
+
+	* MenuStripProviderTest.cs: Add some property tests.
+
+2008-10-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
 	* MenuStripProviderTest.cs:
 	* UIAutomationWinformsTests.mdp:
 	* ToolStripLabelProviderTest.cs:

@@ -23,7 +23,6 @@
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
-
 using System;
 using System.Windows.Forms;
 using System.Windows.Automation;
@@ -35,22 +34,21 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
-	[TestFixture]
-	public class MenuStripProviderTest : BaseProviderTest
+	public class ToolStripProviderTest : BaseProviderTest
 	{
 		[Test]
 		public void BasicPropertiesTest ()
 		{
-			MenuStrip menu = new MenuStrip ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menu);
+			ToolStrip strip = new ToolStrip ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (strip);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
-			              ControlType.MenuBar.Id);
+			              ControlType.ToolBar.Id);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
-			              "menu bar");
+			              "tool bar");
 
 			// TODO: OrientationProperty, IsKeyboardFocusableProperty, AccessKeyProperty
 		}
@@ -58,18 +56,19 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		// TODO: Test add/removal of items, navigation, etc
 		
 		[Test]
+		[Ignore ("Not implemented")]
 		public void ProviderPatternTest ()
 		{
-			MenuStrip menu = new MenuStrip ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menu);
+			//ToolStrip strip = new ToolStrip ();
+			//IRawElementProviderSimple provider = ProviderFactory.GetProvider (strip);
 
-			// Should never support Transform
-			object transformProvider = provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
-			Assert.IsNull (transformProvider);
+			// Should never support Transform // TODO: Really? Maybe possible. Test in Vista.
+			//object transformProvider = provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
+			//Assert.IsNull (transformProvider);
 
-			// Should never support ExpandCollapse
-			object expandCollapseProvider = provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
-			Assert.IsNull (expandCollapseProvider);
+			// Should never support ExpandCollapse // TODO: Really? I think this is possible. Test in Vista.
+			//object expandCollapseProvider = provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+			//Assert.IsNull (expandCollapseProvider);
 
 			// TODO: When to support dock?
 			//object dockProvider = provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id);
@@ -85,7 +84,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		protected override Control GetControlInstance()
 		{
-			return new MenuStrip ();
+			return new ToolStrip ();
 		}
 	}
 }

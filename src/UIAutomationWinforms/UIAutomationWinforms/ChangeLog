@@ -1,5 +1,19 @@
 2008-10-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs:
+	* Mono.UIAutomation.Winforms/MenuStripProvider.cs: Add ToolStripProvider
+	as base class of MenuStripProvider.
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Support for ToolStrip
+	control.
+
+	* Mono.UIAutomation.Winforms/ToolStripMenuItemProvider.cs: Remove
+	extraneous Console.WriteLine.
+
+2008-10-15  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Makefile.am: Remove references to gtk-gui/*.
 
 2008-10-15  Mario Carrion <mcarrion@novell.com> 

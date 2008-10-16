@@ -109,6 +109,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.WebBrowser wb;
 			
 			SWF.MenuStrip ms;
+			SWF.ToolStrip ts;
 			SWF.ToolStripMenuItem tsmi;
 			SWF.ToolStripLabel tsl;
 			SWF.ToolStripItem tsi;
@@ -153,6 +154,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ProgressBarProvider (pgb);
 			else if ((ms = component as SWF.MenuStrip) != null)
 				provider = new MenuStripProvider (ms);
+			else if ((ts = component as SWF.ToolStrip) != null)
+				provider = new ToolStripProvider (ts);
 			else if ((tsmi = component as SWF.ToolStripMenuItem) != null)
 				provider = new ToolStripMenuItemProvider (tsmi);
 			else if ((tsl = component as SWF.ToolStripLabel) != null)

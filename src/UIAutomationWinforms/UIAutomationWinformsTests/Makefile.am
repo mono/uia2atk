@@ -79,6 +79,7 @@ FILES =  \
 	TextRangeProviderTest.cs \
 	ToolStripLabelProviderTest.cs \
 	ToolStripMenuItemProviderTest.cs \
+	ToolStripProviderTest.cs \
 	WindowProviderTest.cs \
 	WordTokenizerTest.cs 
 

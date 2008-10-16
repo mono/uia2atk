@@ -35,16 +35,13 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class MenuStripProvider : FragmentRootControlProvider
+	internal class MenuStripProvider : ToolStripProvider
 	{
 		private MenuStrip menu;
-		private Dictionary<ToolStripItem, ToolStripItemProvider>
-			itemProviders;
 		
 		public MenuStripProvider (MenuStrip menu) : base (menu)
 		{
 			this.menu = menu;
-			itemProviders = new Dictionary<ToolStripItem, ToolStripItemProvider> ();
 		}
 
 		public override object GetPropertyValue (int propertyId)
@@ -53,10 +50,6 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.MenuBar.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return "menu bar";
-			else if (propertyId == AEIds.NameProperty.Id)
-				return null;
-			else if (propertyId == AEIds.LabeledByProperty.Id)
-				return null;
 			else if (propertyId == AEIds.OrientationProperty.Id) {
 				switch (menu.Orientation) {
 				case Orientation.Vertical:
@@ -65,75 +58,12 @@ namespace Mono.UIAutomation.Winforms
 				default:
 					return OrientationType.Horizontal;
 				}
-			} else if (propertyId == AEIds.AccessKeyProperty.Id)
-				return "ALT";
-			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
+			} else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
 				return true;
+			else if (propertyId == AEIds.AccessKeyProperty.Id)
+				return "ALT";
 			else
 				return base.GetPropertyValue (propertyId);
 		}
-		
-		#region FragmentRootControlProvider: Specializations
-		
-		public override void InitializeChildControlStructure ()
-		{
-			menu.ItemAdded += OnItemAdded;
-			menu.ItemRemoved += OnItemRemoved;
-		
-			foreach (ToolStripItem item in menu.Items) {
-				ToolStripItemProvider itemProvider = GetItemProvider (item);
-				OnNavigationChildAdded (false, itemProvider);
-			}
-		}
-		
-		public override void FinalizeChildControlStructure ()
-		{
-			menu.ItemAdded -= OnItemAdded;
-			menu.ItemRemoved -= OnItemRemoved;
-			
-			foreach (ToolStripItemProvider itemProvider in itemProviders.Values)
-				OnNavigationChildRemoved (false, itemProvider);
-			OnNavigationChildrenCleared (false);
-		}
-
-		#endregion
-
-		#region Private Navigation Methods
-
-		private void OnItemAdded (object sender, ToolStripItemEventArgs e)
-		{
-			ToolStripItemProvider itemProvider = GetItemProvider (e.Item);
-			OnNavigationChildAdded (true, itemProvider);
-		}
-
-		private void OnItemRemoved (object sender, ToolStripItemEventArgs e)
-		{
-			ToolStripItemProvider itemProvider = GetItemProvider (e.Item);
-			itemProviders.Remove (e.Item);
-			itemProvider.Terminate ();
-			OnNavigationChildRemoved (true, itemProvider);
-		}
-
-		private ToolStripItemProvider GetItemProvider (ToolStripItem item)
-		{
-			Console.WriteLine ("GetItemProvider: " + item.Text);
-			ToolStripItemProvider itemProvider;
-			
-			if (!itemProviders.TryGetValue (item, out itemProvider)) {
-				// TODO: Specialize
-				if (item is ToolStripMenuItem)
-					itemProvider = new ToolStripMenuItemProvider ((ToolStripMenuItem) item);
-				else if (item is ToolStripLabel)
-					itemProvider = new ToolStripLabelProvider ((ToolStripLabel) item);
-				else
-					itemProvider = new ToolStripItemProvider (item);
-				itemProviders [item]  = itemProvider;
-				itemProvider.InitializeEvents ();
-			}
-
-			return itemProvider;
-		}
-
-		#endregion
 	}
 }

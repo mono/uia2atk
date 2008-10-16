@@ -23,6 +23,7 @@
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
+
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -32,35 +33,42 @@ using System.Windows.Automation.Provider;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
-using Mono.UIAutomation.Winforms.Behaviors.ToolStripItem;
-
 namespace Mono.UIAutomation.Winforms
 {
-	internal class ToolStripMenuItemProvider : ToolStripItemProvider
+	internal class ToolStripProvider : FragmentRootControlProvider
 	{
-		private ToolStripMenuItem menuItem;
+		private ToolStrip strip;
 		private Dictionary<ToolStripItem, ToolStripItemProvider>
 			itemProviders;
 		
-		public ToolStripMenuItemProvider (ToolStripMenuItem menuItem) : base (menuItem)
+		public ToolStripProvider (ToolStrip strip) : base (strip)
 		{
-			this.menuItem = menuItem;
+			this.strip = strip;
 			itemProviders = new Dictionary<ToolStripItem, ToolStripItemProvider> ();
-			
-			SetBehavior (InvokePatternIdentifiers.Pattern, 
-			             new InvokeProviderBehavior (this));
 		}
 
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == AEIds.ControlTypeProperty.Id)
+				return ControlType.ToolBar.Id;
+			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
+				return "tool bar";
+			else if (propertyId == AEIds.NameProperty.Id)
+				return null;
+			else if (propertyId == AEIds.LabeledByProperty.Id)
+				return null;
+			else
+				return base.GetPropertyValue (propertyId);
+		}
 		
 		#region FragmentRootControlProvider: Specializations
 		
 		public override void InitializeChildControlStructure ()
 		{
-			// No event support!
-			//menuItem.ItemAdded += OnItemAdded;
-			//menuItem.ItemRemoved += OnItemRemoved;
+			strip.ItemAdded += OnItemAdded;
+			strip.ItemRemoved += OnItemRemoved;
 		
-			foreach (ToolStripItem item in menuItem.DropDownItems) {
+			foreach (ToolStripItem item in strip.Items) {
 				ToolStripItemProvider itemProvider = GetItemProvider (item);
 				OnNavigationChildAdded (false, itemProvider);
 			}
@@ -68,9 +76,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void FinalizeChildControlStructure ()
 		{
-			// No event support!
-			//menuItem.ItemAdded -= OnItemAdded;
-			//menuItem.ItemRemoved -= OnItemRemoved;
+			strip.ItemAdded -= OnItemAdded;
+			strip.ItemRemoved -= OnItemRemoved;
 			
 			foreach (ToolStripItemProvider itemProvider in itemProviders.Values)
 				OnNavigationChildRemoved (false, itemProvider);
@@ -100,7 +107,13 @@ namespace Mono.UIAutomation.Winforms
 			ToolStripItemProvider itemProvider;
 			
 			if (!itemProviders.TryGetValue (item, out itemProvider)) {
-				itemProvider = new ToolStripItemProvider (item); // TODO: Specialize
+				// TODO: Specialize
+				if (item is ToolStripMenuItem)
+					itemProvider = new ToolStripMenuItemProvider ((ToolStripMenuItem) item);
+				else if (item is ToolStripLabel)
+					itemProvider = new ToolStripLabelProvider ((ToolStripLabel) item);
+				else
+					itemProvider = new ToolStripItemProvider (item);
 				itemProviders [item]  = itemProvider;
 				itemProvider.InitializeEvents ();
 			}
