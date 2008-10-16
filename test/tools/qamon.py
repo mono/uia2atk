@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import dashboard
 import getopt
 import sys
 from pyinotify import WatchManager, Notifier, ThreadedNotifier, ProcessEvent, \
@@ -46,6 +47,7 @@ class Settings(object):
         output("Usage: qamon.py -d <directory> [-f <filename>]")
         output("Common Options:")
         output("  -h | --help        Print help information (this message)")
+        output("  -q | --quiet       Don't print anything")
         output("  -d | --dir=        The directory where monitoring will begin")
         output("  -f | --file=       The file for which we are looking")
         output("")

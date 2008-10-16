@@ -1,3 +1,16 @@
+2008-10-16  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* tools/qamon.py: import dashboard (not used yet) and add help info
+	for the --quiet option.
+	* tools/dashboard.py: add code to parse all logs and build an XML file
+	with the name of the control that is being tested, the status of the
+	tests for each control, and the time it took for the tests for each
+	control to execute.
+	* harness/local_run.py: create the "status" file before the
+	procedures.xml file.  This is because the procedures.xml is the file
+	that we will monitory with inotify, so when it is created we have to 
+	assume that the "status" file is already created.
+
 2008-10-15  Calen Chen <cachen@novell.com>
 
 	* testers/label/labelframe.py: delect self.label variable from 
