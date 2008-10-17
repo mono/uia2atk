@@ -332,7 +332,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			provider = (IRawElementProviderFragmentRoot) GetProviderFromControl (listbox);
 			
 			//We should show the ScrollBar
-			for (int index = 20; index > 0; index--) {
+			for (int index = 30; index > 0; index--) {
 				listbox.Items.Add (string.Format ("Element {0}", index));
 			}
 			
@@ -343,8 +343,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			child = provider.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNotNull (child, "FirstChild must not be null");
-			while (child != null) {
-				
+			int count = 0;
+			while (child != null) {				
 				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.ScrollBar.Id
 					&& (OrientationType) child.GetPropertyValue (AutomationElementIdentifiers.OrientationProperty.Id) == OrientationType.Vertical) {
 					scrollbarFound = true;
@@ -356,8 +356,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				Assert.AreEqual (provider, parent, "Parents are different");
 				Assert.AreEqual (child.FragmentRoot, parent, "Parents are different (FragmentRoot)");
 				child = child.Navigate (NavigateDirection.NextSibling);
-			}
-			
+				count++;
+			}			
 			//ScrollBar Tests
 			
 			Assert.IsTrue (scrollbarFound, "ScrollBar not found");
@@ -409,6 +409,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			//Children MUST BE ListItem
 			while (child != null) {
+
+				int ctype = (int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+				Console.WriteLine ("tupeo: {0}", ControlType.LookupById (ctype).ProgrammaticName);
 				Assert.AreEqual (ControlType.ListItem.Id,
 				                 child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
 				                 "Item should be ListItem");
@@ -440,6 +443,149 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsTrue (horizontalScrollbar, "Missing Horizontal ScrollBar");
 			Assert.IsFalse (verticalScrollbar, "Missing Vertical ScrollBar");
 			
+		}
+		
+		#endregion
+
+		#region Collection tests
+
+		[Test]
+		public void CollectionTest ()
+		{
+			ListBox listbox = (ListBox) GetControlInstance ();
+
+			IRawElementProviderFragmentRoot list
+				= (IRawElementProviderFragmentRoot) GetProviderFromControl (listbox);
+
+			Assert.IsNotNull (list, "We must have a List");
+
+			IRawElementProviderFragment item0
+				= list.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNull (item0, "We shouldn't have children in List");
+
+			//Add item 0. (Items.Add)
+			
+			bridge.ResetEventLists ();
+			
+			listbox.Items.Add ("Item 0");
+			StructureChangedEventTuple tuple
+				= bridge.GetStructureChangedEventFrom (StructureChangeType.ChildAdded);
+			Assert.IsNotNull (tuple, "We should have tuple");
+			Assert.AreEqual (((IRawElementProviderFragment) tuple.provider).FragmentRoot,
+			                 list, 
+			                 "Added item.FragmentRoot != list");
+			item0 = list.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (item0, "We should have children in List");
+
+			//Add item 1. (Items.Add)
+
+			bridge.ResetEventLists ();
+			listbox.Items.Add ("Item 1");
+			tuple = bridge.GetStructureChangedEventFrom (StructureChangeType.ChildAdded);
+			Assert.IsNotNull (tuple, "We should have tuple");
+			Assert.AreEqual (((IRawElementProviderFragment) tuple.provider).FragmentRoot,
+			                 list,
+			                 "Added item.FragmentRoot != list");
+			IRawElementProviderFragment item1
+				= item0.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNotNull (item1, "We should have children in List");
+
+			Assert.AreEqual (item1.Navigate (NavigateDirection.PreviousSibling), 
+			                 item0, 
+			                 "Navigation invalid: item1 -> item0");
+			Assert.AreEqual (item0.Navigate (NavigateDirection.NextSibling), 
+			                 item1, 
+			                 "Navigation invalid: item1 <- item0");
+
+			//Remove item 0 (Items.RemoveAt)
+
+			bridge.ResetEventLists ();
+			listbox.Items.RemoveAt (0);
+
+			tuple = bridge.GetStructureChangedEventFrom (StructureChangeType.ChildRemoved);
+			Assert.IsNotNull (tuple, "We should have tuple.");
+			Assert.AreEqual (((IRawElementProviderFragment) tuple.provider).FragmentRoot,
+			                 list, 
+			                 "Removed item.FragmentRoot != list");
+			Assert.IsNotNull (list.Navigate (NavigateDirection.FirstChild),
+			                  "We should STILL have children in List");
+			Assert.AreEqual (list.Navigate (NavigateDirection.FirstChild), 
+			                 item1, 
+			                 "Navigation invalid: parent.FirstChild != item1");
+
+			//Add item 2 y 3 (Items.AddRange)
+
+			bridge.ResetEventLists ();
+			listbox.Items.AddRange (new object [] { "Item 2", "Item 3"});
+
+			Assert.AreEqual (2,
+			                 bridge.GetStructureChangedEventCount (StructureChangeType.ChildAdded),
+			                 "We should have two events");
+			StructureChangedEventTuple tuple0 = bridge.GetStructureChangedEventAt (0, 
+			                                                                       StructureChangeType.ChildAdded);
+			Assert.IsNotNull (tuple0, "We should have tuple0.");
+			StructureChangedEventTuple tuple1 = bridge.GetStructureChangedEventAt (1, 
+			                                                                       StructureChangeType.ChildAdded);
+			Assert.IsNotNull (tuple1, "We should have tuple1.");
+			Assert.AreEqual (((IRawElementProviderFragment) tuple0.provider).FragmentRoot,
+			                 list, 
+			                 "Added item2.FragmentRoot != list");
+			Assert.AreEqual (((IRawElementProviderFragment) tuple1.provider).FragmentRoot,
+			                 list, 
+			                 "Added item3.FragmentRoot != list");
+			
+			IRawElementProviderFragment item2
+				= item1.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNotNull (item2, "We should have children in List");
+			IRawElementProviderFragment item3
+				= item2.Navigate (NavigateDirection.NextSibling);
+
+			Assert.AreEqual (item3.Navigate (NavigateDirection.PreviousSibling), 
+			                 item2, 
+			                 "Navigation invalid: item2 -> item3");
+			Assert.AreEqual (item2.Navigate (NavigateDirection.NextSibling), 
+			                 item3, 
+			                 "Navigation invalid: item2 <- item3");
+
+			// We have: "Item1", "Item2" "Item3". Lets replace "Item2" with "Item4"
+			bridge.ResetEventLists ();
+
+			listbox.Items [1] = "Item4";
+
+			Assert.AreEqual (1,
+			                 bridge.GetStructureChangedEventCount (StructureChangeType.ChildRemoved),
+			                 "We should have 1 event");
+			Assert.AreEqual (1,
+			                 bridge.GetStructureChangedEventCount (StructureChangeType.ChildAdded),
+			                 "We should have 1 event");
+			StructureChangedEventTuple tupleReplacedRemoved
+				= bridge.GetStructureChangedEventAt (0,
+				                                     StructureChangeType.ChildRemoved);
+			Assert.IsNotNull (tupleReplacedRemoved, "Replaced: Removed tupple shouldn't be null");
+			Assert.AreEqual (tupleReplacedRemoved.provider,
+			                 item2,
+			                 "Removed item should be Item2");
+			StructureChangedEventTuple tupleReplacedAdded
+				= bridge.GetStructureChangedEventAt (0,
+				                                     StructureChangeType.ChildAdded);
+			Assert.IsNotNull (tupleReplacedAdded, "Replaced: Added tupple shouldn't be null");
+			Assert.AreEqual (tupleReplacedAdded.provider, //Notice that elements ARE NOT SORTED
+			                 item3.Navigate (NavigateDirection.NextSibling),
+			                 "Navigation failed: item3 -> item4");
+			Assert.AreEqual (((IRawElementProviderFragment) tupleReplacedAdded.provider).Navigate (NavigateDirection.PreviousSibling),
+			                 item3,
+			                 "Navigation failed: item3 <- item4");
+
+			// Lets clear all!
+
+			bridge.ResetEventLists ();
+			listbox.Items.Clear ();
+
+			Assert.AreEqual (1,
+			                 bridge.GetStructureChangedEventCount (StructureChangeType.ChildrenBulkRemoved),
+			                 "We should have 1 event");
+			Assert.IsNull (list.Navigate (NavigateDirection.FirstChild),
+			               "We shouldn't have children in List");
 		}
 		
 		#endregion

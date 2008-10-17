@@ -1,3 +1,13 @@
+2008-10-17  Mario Carrion  <mcarrion@novell.com>
+
+	* ListBoxProviderTest.cs:
+	* ComboBoxProviderTest.cs: New test to verify StructureChangedEvents.
+
+	* HelpProviderTest.cs: Updated to API changes.
+
+	* MockBridge.cs: New methods: GetStructureChangedEventCount,
+	GetStructureChangedEventAt, GetStructureChangedEventFrom.
+
 2008-10-17  Brad Taylor  <brad@getcoded.net>
 	
 	* TextRangeProviderTest.cs: Add tests for ExpandToEnclosingUnit with

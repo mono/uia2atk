@@ -77,7 +77,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 bridge.GetAutomationEventCount (AutomationElementIdentifiers.ToolTipOpenedEvent),
 			                 "AutomationElementIdentifiers.ToolTipOpenedEvent");
 			
-			AutomationEventTuple eventTuple = bridge.GetAutomationEventAt (0);
+			AutomationEventTuple eventTuple = bridge.GetAutomationEventAt (0,
+			                                                               StructureChangeType.ChildAdded);
 			Assert.IsNotNull (eventTuple, "GetAutomationEventAt (0)");
 			
 			//We have the HelpProvider!

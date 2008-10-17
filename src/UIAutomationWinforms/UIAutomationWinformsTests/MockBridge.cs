@@ -122,6 +122,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}
 			return count;
 		}
+
+		public int GetStructureChangedEventCount (StructureChangeType changeType)
+		{
+			int count = 0;
+			
+			foreach (StructureChangedEventTuple tuple in StructureChangedEvents) {
+				if (tuple.e.StructureChangeType == changeType)
+					count++;
+			}
+			return count;
+		}
 		
 		public AutomationPropertyChangedEventTuple GetAutomationPropertyEventAt (int index)
 		{
@@ -131,12 +142,30 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return AutomationPropertyChangedEvents [index];
 		}
 		
-		public AutomationEventTuple GetAutomationEventAt (int index)
+		public AutomationEventTuple GetAutomationEventAt (int index,
+		                                                  StructureChangeType type)
 		{
 			if (index >= AutomationEvents.Count || index < 0)
 				return null;
 			
 			return AutomationEvents [index];
+		}
+
+		public StructureChangedEventTuple GetStructureChangedEventAt (int index,
+		                                                              StructureChangeType changeType)
+		{
+			if (index >= StructureChangedEvents.Count || index < 0)
+				return null;
+
+			int counter = 0;
+			foreach (StructureChangedEventTuple tuple in StructureChangedEvents) {
+				if (tuple.e.StructureChangeType == changeType) {
+					if (counter++ == index) 
+					    return tuple;
+				}
+			}			
+			
+			return null;
 		}
 		
 		public AutomationPropertyChangedEventTuple GetAutomationPropertyEventFrom (object element, int id)
@@ -147,6 +176,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}
 			
 			
+			return null;
+		}
+
+		public StructureChangedEventTuple GetStructureChangedEventFrom (StructureChangeType changeType)
+		{
+			foreach (StructureChangedEventTuple tuple in StructureChangedEvents) {
+				if (tuple.e.StructureChangeType == changeType)
+					return tuple;
+			}
+
 			return null;
 		}
 	}
