@@ -328,7 +328,8 @@ namespace UiaAtkBridge
 				//       (see FragmentRootControlProvider)
 				if (HandleTotalElementRemoval (simpleProvider)) {
 					Console.WriteLine ("there are still {0} elements", providerAdapterMapping.Count);
-					Console.WriteLine ("going to call quit");
+					Console.WriteLine ("going to call quit, there are {0} child elements of TLRI", TopLevelRootItem.Instance.NAccessibleChildren);
+
 					appMonitor.Quit ();
 					Console.WriteLine ("successfully called");
 				}

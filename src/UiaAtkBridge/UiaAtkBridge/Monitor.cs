@@ -75,13 +75,13 @@ namespace UiaAtkBridge
 		
 		public void Quit()
 		{
-//			Console.WriteLine ("going to call quitt!!!!!!!");
-//			GLibHacks.Invoke (delegate (object sender, EventArgs args) {
-//				Console.WriteLine ("calling quit in the glib thread");
-//				Atk.Util.GetRootHandler = null;
-//				mainLoop.Quit ();
-//				Console.WriteLine ("I've quited!");
-//			});
+			Console.WriteLine ("going to call quitt!!!!!!!");
+			GLibHacks.Invoke (delegate (object sender, EventArgs args) {
+				Console.WriteLine ("calling quit in the glib thread");
+				Atk.Util.GetRootHandler = null;
+				mainLoop.Quit ();
+				Console.WriteLine ("I've quited!");
+			});
 		}
 
 		internal static string GetProgramName ()
