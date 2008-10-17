@@ -254,6 +254,49 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			Assert.Fail ("Not implemented");
 		}
+
+		[Test]
+		public override void LabeledByAndNamePropertyTest ()
+		{
+			TestLabeledByAndName (false, false);
+		}
+
+		[Test]
+		public void NamePropertyTest ()
+		{
+			RadioButton radioButton = new RadioButton ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (radioButton);
+			radioButton.Text = "first";
+			
+			bridge.ResetEventLists ();
+			
+			string oldState = radioButton.Text;;
+			string newState = "second";
+			
+			radioButton.Text = newState;
+			
+			// Test NameProperty
+			Assert.AreEqual (newState,
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id), 
+			                 "NameProperty");
+			
+			// Test event was fired as expected
+			Assert.AreEqual (1,
+			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 "event count");
+			
+			AutomationPropertyChangedEventArgs eventArgs =
+				bridge.AutomationPropertyChangedEvents [0].e;
+			Assert.AreEqual (AutomationElementIdentifiers.NameProperty,
+			                 eventArgs.Property,
+			                 "event args property");
+			Assert.AreEqual (oldState,
+			                 eventArgs.OldValue,
+			                 "old value");
+			Assert.AreEqual (newState,
+			                 eventArgs.NewValue,
+			                 "new value");
+		}
 		
 #endregion
 		
@@ -262,12 +305,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		protected override Control GetControlInstance ()
 		{
 			return new RadioButton ();
-		}
-
-		public override void LabeledByAndNamePropertyTest ()
-		{
-			TestLabeledByAndName (false, false);
-			// TODO: Test Name
 		}
 		
 #endregion

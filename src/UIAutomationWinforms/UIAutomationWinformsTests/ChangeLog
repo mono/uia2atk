@@ -1,3 +1,10 @@
+2008-10-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* CheckBoxProviderTest.cs: Fix typos.
+
+	* RadioButtonProviderTest.cs: Copy NamePropertyTest from
+	CheckBoxProvider.
+
 2008-10-17  Brad Taylor  <brad@getcoded.net>
 	
 	* TextRangeProviderTest.cs: Add tests for ExpandToEnclosingUnit with

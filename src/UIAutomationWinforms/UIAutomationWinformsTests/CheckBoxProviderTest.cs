@@ -76,7 +76,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 		[Test]
-		public void NameTest ()
+		public void NamePropertyTest ()
 		{
 			CheckBox checkbox = new CheckBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (checkbox);
@@ -89,7 +89,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			checkbox.Text = newState;
 			
-			// Test IToggleProvider.ToggleState
+			// Test NameProperty
 			Assert.AreEqual (newState,
 			                 provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id), 
 			                 "NameProperty");
