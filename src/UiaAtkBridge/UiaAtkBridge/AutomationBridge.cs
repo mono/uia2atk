@@ -56,9 +56,9 @@ namespace UiaAtkBridge
 		{
 			bool newMonitor = false;
 			if (appMonitor == null) {
-				Console.WriteLine ("about to create monitor");
+				//Console.WriteLine ("about to create monitor");
 				appMonitor = new Monitor();
-				Console.WriteLine ("just made monitor");
+				//Console.WriteLine ("just made monitor");
 			}
 			pointerProviderMapping =
 				new AmbiDictionary<IntPtr,IRawElementProviderSimple> ();
@@ -302,11 +302,7 @@ namespace UiaAtkBridge
 			
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) element;
-			// Create an adapter if we haven't already, so that
-			// an AT will know about the control that has focus,
-			// but don't do this if we're shutting down (ie,
-			// providerAdapterMapping.Count == 0)
-			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty && !providerAdapterMapping.ContainsKey (simpleProvider) && providerAdapterMapping.Count > 0)
+			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty && !providerAdapterMapping.ContainsKey (simpleProvider))
 				HandleElementAddition (simpleProvider);
 			if ((!providerAdapterMapping.ContainsKey (simpleProvider)) || windowProviders == 0)
 				return;
@@ -326,14 +322,8 @@ namespace UiaAtkBridge
 			} else if (e.StructureChangeType == StructureChangeType.ChildRemoved) {
 				// TODO: Handle proper documented args
 				//       (see FragmentRootControlProvider)
-				if (HandleTotalElementRemoval (simpleProvider)) {
-					Console.WriteLine ("there are still {0} elements", providerAdapterMapping.Count);
-					Console.WriteLine ("going to call quit, there are {0} child elements of TLRI", TopLevelRootItem.Instance.NAccessibleChildren);
-
+				if (HandleTotalElementRemoval (simpleProvider))
 					appMonitor.Quit ();
-					Console.WriteLine ("successfully called");
-				}
-				Console.WriteLine ("there are still {0} elements", providerAdapterMapping.Count);
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
 				HandleBulkRemoved (simpleProvider);
 			}
@@ -477,7 +467,7 @@ namespace UiaAtkBridge
 		private void HandleBulkRemoved (IRawElementProviderSimple provider)
 		{
 			if (!providerAdapterMapping.ContainsKey (provider)) {
-				Console.WriteLine ("Got a ChildrenBulkRemove for a " + provider + " but no adapter");
+				//Console.WriteLine ("Got a ChildrenBulkRemove for a " + provider + " but no adapter");
 				return;
 			}
 			IRawElementProviderFragment fragment;
@@ -695,6 +685,10 @@ namespace UiaAtkBridge
 		private void HandleNewHyperlinkControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
+			if (parentObject == null) {
+				Console.WriteLine ("WARNING: Could not add hyperlink because its parent was not found");
+				return;
+			}
 			
 			Adapter atkHyperlink;
 			IInvokeProvider invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);

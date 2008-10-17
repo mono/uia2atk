@@ -1,5 +1,10 @@
 2008-10-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Monitor.cs:
+	* AutomationBridge.cs: Start removing debugging traces garbage.
+
+2008-10-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* RadioButton.cs: Enable img introspection (2nd part of bug 428468.
 
 2008-10-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
