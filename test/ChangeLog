@@ -1,3 +1,17 @@
+2008-10-17  Calen Chen <cachen@novell.com>
+
+	* testers/numericupdown/numericupdownframe.py: add enterTextValue to 
+	implement entering value into EditableText action
+	* testers/numericupdown_bsic_ops.py: enter value to 
+	numericupdown0 which is EditableText would update the Value and Text. 
+	enter to numericupdown1 which is UnEditableText wouldn't update Vlue 
+	and Text
+	* testers/gtknumericupdown/__init__.py,
+	* testers/gtknumericupdown_bsic_ops.py,
+	* testers/gtknumericupdown/gtknumericupdownframe.py,
+	* testers/gtknumericupdown: add example test for gtk spinbutton to 
+	investigate how to test EditableText
+
 2008-10-17  Ray Wang <rawang@novell.com>
 
 	* samples/wincheckbox.py: add checkbox sample with same layout as gtk

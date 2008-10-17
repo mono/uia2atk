@@ -12,22 +12,20 @@ import actions
 import states
 
 from strongwind import *
-from numericupdown import *
+from gtknumericupdown import *
 
 
 # class to represent the main window.
-class NumericUpDownFrame(accessibles.Frame):
+class GtkNumericUpDownFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
 
     def __init__(self, accessible):
-        super(NumericUpDownFrame, self).__init__(accessible)
+        super(GtkNumericUpDownFrame, self).__init__(accessible)
         self.numericupdown = self.findAllSpinButtons(None)
         #editable
         self.numericupdown0 = self.numericupdown[0]
-        #uneditable
-        self.numericupdown1 = self.numericupdown[1]
 
     #assert numericupdown's Text value
     def assertText(self, accessible, value):
@@ -42,18 +40,6 @@ class NumericUpDownFrame(accessibles.Frame):
         sleep(config.SHORT_DELAY)
         accessible.__setattr__('value', newValue)
 
-    #enter Text Value for EditableText
-    def enterTextValue(self, accessible, values):
-        procedurelogger.action('in %s enter %s "' % (accessible, values))
-
-        if accessible == self.numericupdown0:
-            accessible.__setattr__('text', values)
-        elif accessible == self.numericupdown1:
-            try:
-                accessible.__setattr__('text', values)
-            except NotImplementedError:
-                pass
-
     #assert numericupdown's value
     def assertValue(self, accessible, newValue):
         self.maximumValue = accessible._accessible.queryValue().maximumValue
@@ -67,6 +53,13 @@ class NumericUpDownFrame(accessibles.Frame):
             procedurelogger.expectedResult('value "%s" out of run' % newValue)
             assert not accessible.__getattr__('value') == newValue, \
                        "scrollbar's current value is %s:" % accessible.__getattr__('value')
+
+    #enter Text Value for EditableText
+    def enterTextValue(self, accessible, values):
+        procedurelogger.action('in %s enter %s "' % (accessible, values))
+
+        accessible.__setattr__('text', values)
+
     
     #close application window
     def quit(self):
