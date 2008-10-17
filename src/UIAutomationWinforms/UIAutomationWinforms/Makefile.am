@@ -61,6 +61,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/ScrollItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/MultipleViewProviderBehavior.cs \

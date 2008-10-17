@@ -110,10 +110,10 @@ namespace Mono.UIAutomation.Winforms
 				return new MultipleViewProviderBehavior (this);
 			else if (behavior == SelectionPatternIdentifiers.Pattern) 
 				return new SelectionProviderBehavior (this);
-			else if (GridPatternIdentifiers.Pattern == behavior) {         
-//				if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
-//					return null; //TODO: Return realization
-//				else
+			else if (GridPatternIdentifiers.Pattern == behavior) {
+				if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
+					return new GridProviderBehavior (this);
+				else
 					return null;
 			} else
 				return null;
@@ -137,14 +137,15 @@ namespace Mono.UIAutomation.Winforms
 		public override object GetItemPropertyValue (ListItemProvider item,
 		                                             int propertyId)
 		{
-			if (ContainsItem (item) == false)
-				return null;
-			
-			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return listView.Items [item.Index].ToString ();
-			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+			if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
+				SWF.ListViewItem listViewItem = (SWF.ListViewItem) item.ObjectItem;
+				return listViewItem.Text;
+			} else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return listView.Focused && listView.SelectedIndices.Contains (item.Index); //TODO: OK?
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+				if (item.Index == -1)
+					return Rect.Empty;
+				
 				SD.Rectangle itemRec = listView.GetItemRect (item.Index);
 				SD.Rectangle rectangle = listView.Bounds;
 				
@@ -229,7 +230,17 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override ListItemProvider[] GetSelectedItems ()
 		{
-			return null;
+			if (listView.SelectedIndices.Count == 0)
+				return null;
+			else {
+				ListItemProvider []providers = new ListItemProvider [listView.SelectedIndices.Count];
+
+				for (int index = 0; index < listView.SelectedIndices.Count; index++)
+					//FIXME: This will fail when Groups are enabled
+					providers [index] = GetItemProviderFrom (this, listView.Items [index]);
+			
+				return providers;
+			}
 		}
 		
 		public override void SelectItem (ListItemProvider item)

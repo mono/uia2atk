@@ -1,3 +1,17 @@
+2008-10-17  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Updated. Grid Pattern added.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Fixed
+	GetItemPropertyValue. GetSelectedItems preview implementation.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs:
+	Fixed DivideByZeroException. 
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs:
+	GridPattern preview in ListView.
+
 2008-10-17  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Implement

@@ -97,7 +97,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		#region IGridItemProvider Specialization
 		
 		public int Row {
-			get { return IndexOf / GroupColumns; }
+			get { 
+				if (GroupColumns == 0)
+					return 0;
+				else
+					return IndexOf / GroupColumns;
+			}
 		}
 		
 		public int Column {
