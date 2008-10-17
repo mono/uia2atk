@@ -803,6 +803,30 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "Text is incorrect in second +1 page move");
 		}
 
+		// For Edit controls, this is the same as PageNormalize
+		[Test]
+		public void DocumentNormalize ()
+		{
+			textbox.Text = "gomez thing\r\nmorticia\twednesday";
+
+			range = text_provider.DocumentRange.Clone ();
+
+			int moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -18);
+			Assert.AreEqual (-18, moved_units);
+			Assert.AreEqual ("gomez thing\r\n", range.GetText (-1));
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 2);
+			Assert.AreEqual (2, moved_units);
+			Assert.AreEqual ("mez thing\r\n", range.GetText (-1));
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -4);
+			Assert.AreEqual (-4, moved_units);
+			Assert.AreEqual ("mez thi", range.GetText (-1));
+
+			range.ExpandToEnclosingUnit (TextUnit.Document);
+			Assert.AreEqual ("gomez thing\r\nmorticia\twednesday", range.GetText (-1));
+		}
+
 		[Test]
 		public void ScrollIntoView ()
 		{

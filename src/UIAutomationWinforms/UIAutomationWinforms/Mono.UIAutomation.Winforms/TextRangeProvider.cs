@@ -137,7 +137,7 @@ namespace Mono.UIAutomation.Winforms
 			case TextUnit.Page:
 				// Textbox doesn't support Page
 			case TextUnit.Document:
-				// TODO:
+				normalizer.DocumentNormalize ();
 				break;
 			}
 		}
@@ -307,9 +307,9 @@ namespace Mono.UIAutomation.Winforms
 			case TextUnit.Page:
 			case TextUnit.Document:
 				if (endpoint == TextPatternRangeEndpoint.Start)
-					return normalizer.PageMoveStartPoint (count);
+					return normalizer.DocumentMoveStartPoint (count);
 				else
-					return normalizer.PageMoveEndPoint (count);
+					return normalizer.DocumentMoveEndPoint (count);
 			}
 
 			return 0;

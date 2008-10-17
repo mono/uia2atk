@@ -1,3 +1,8 @@
+2008-10-17  Brad Taylor  <brad@getcoded.net>
+	
+	* TextRangeProviderTest.cs: Add tests for ExpandToEnclosingUnit with
+	  TextUnit.Document.
+
 2008-10-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* CheckBoxProviderTest.cs: Add NameProperty test that verifies property

@@ -317,9 +317,6 @@ namespace Mono.UIAutomation.Winforms
 					state[1] = new_state;
 				}
 
-				// TODO: Investigate why we don't do this for
-				// the count > 0 case
-
 				// Count the remaining characters as a line,
 				// and move the cursor to the front
 
@@ -445,8 +442,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			int index = 0;
 			
-			// NOTE: There is a particular condition when either the StartPoint
-			// or EndPoint are spaces, for example:
+			// NOTE: There is a particular condition when either
+			// the StartPoint or EndPoint are spaces, for example:
 			//      "Hello my baby, hello  {   my d}arling"
 			// After normalizing string the result is:
 			//      "Hello my baby, hello{     my darling}"
@@ -607,7 +604,7 @@ namespace Mono.UIAutomation.Winforms
 
 #region Page methods
 		
-		public int PageMoveStartPoint (int count)
+		public int DocumentMoveStartPoint (int count)
 		{
 			int length = textboxbase.Text.Length;
 			if (count > 0 && start_point < length) {
@@ -620,7 +617,7 @@ namespace Mono.UIAutomation.Winforms
 			return 0;
 		}
 
-		public int PageMoveEndPoint (int count)
+		public int DocumentMoveEndPoint (int count)
 		{
 			int length = textboxbase.Text.Length;
 			if (count > 0 && end_point < length) {
@@ -633,6 +630,12 @@ namespace Mono.UIAutomation.Winforms
 			return 0;
 		}
 
+		public void DocumentNormalize ()
+		{
+			// Expand range to the document range
+			normalizer.StartPoint = 0;
+			normalizer.EndPoint = textboxbase.Text.Length;
+		}
 #endregion
 		
 		// TODO: test this
@@ -668,7 +671,25 @@ namespace Mono.UIAutomation.Winforms
 					moved = LineMoveStartPoint (count);
 					end_point = start_point;
 				}
-				//TODO: Add missing logic
+			} else if (unit == TextUnit.Paragraph) {
+				ParagraphNormalize ();
+				if (count > 0) {
+					moved = ParagraphMoveEndPoint (count);
+					start_point = end_point;
+				} else {
+					moved = ParagraphMoveStartPoint (count);
+					end_point = start_point;
+				}
+			} else if (unit == TextUnit.Page
+			           || unit == TextUnit.Document) {
+				DocumentNormalize ();
+				if (count > 0) {
+					moved = DocumentMoveEndPoint (count);
+					start_point = end_point;
+				} else {
+					moved = DocumentMoveStartPoint (count);
+					end_point = start_point;
+				}
 			}
 			
 			return new TextNormalizerPoints (start_point, end_point, moved);

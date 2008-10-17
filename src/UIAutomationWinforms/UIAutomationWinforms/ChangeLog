@@ -1,3 +1,8 @@
+2008-10-17  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Implement
+	  DocumentNormalize.
+
 2008-10-17  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs:
