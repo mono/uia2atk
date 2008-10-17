@@ -61,9 +61,12 @@ namespace UiaAtkBridge
 			Thread glibThread = new Thread (new ThreadStart (GLibMainLoopThread));
 			glibThread.IsBackground = true;
 			glibThread.Start ();
-			GLibHacks.Invoke (delegate (object sender, EventArgs args) {
+			AutoResetEvent sync = GLibHacks.Invoke (delegate (object sender, EventArgs args) {
 				LaunchAtkBridge ();
 			});
+			sync.WaitOne ();
+			sync.Close ();
+			sync = null;
 		}
 		
 		private void GLibMainLoopThread ()
@@ -74,11 +77,14 @@ namespace UiaAtkBridge
 		
 		public void Quit()
 		{
-			GLibHacks.Invoke (delegate (object sender, EventArgs args) {
+			AutoResetEvent sync = GLibHacks.Invoke (delegate (object sender, EventArgs args) {
 				ShutdownAtkBridge ();
 				Atk.Util.GetRootHandler = null;
 				mainLoop.Quit ();
 			});
+			sync.WaitOne ();
+			sync.Close ();
+			sync = null;
 		}
 
 		internal static string GetProgramName ()
@@ -231,6 +237,7 @@ namespace UiaAtkBridge
 			EventHandler d;
 			object sender;
 			EventArgs args;
+			internal System.Threading.AutoResetEvent sync = new AutoResetEvent (false);
 			
 			internal InvokeCB (EventHandler d)
 			{
@@ -249,22 +256,27 @@ namespace UiaAtkBridge
 			internal bool Invoke ()
 			{
 				d (sender, args);
+				sync.Set ();
 				return false;
 			}
 		}
 		
-		public static void Invoke (EventHandler d)
+		public static System.Threading.AutoResetEvent Invoke (EventHandler d)
 		{
 			InvokeCB icb = new InvokeCB (d);
 			
 			GLib.Timeout.Add (0, new GLib.TimeoutHandler (icb.Invoke));
+			
+			return icb.sync;
 		}
 
-		public static void Invoke (object sender, EventArgs args, EventHandler d)
+		public static System.Threading.AutoResetEvent Invoke (object sender, EventArgs args, EventHandler d)
 		{
 			InvokeCB icb = new InvokeCB (d, sender, args);
 			
 			GLib.Timeout.Add (0, new GLib.TimeoutHandler (icb.Invoke));
+			
+			return icb.sync;
 		}
 	}
 }
