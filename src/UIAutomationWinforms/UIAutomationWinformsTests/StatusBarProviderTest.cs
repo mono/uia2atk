@@ -56,7 +56,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              AutomationElementIdentifiers.LabeledByProperty,
 			              null);
 			
-			string value = "Name Property";
+			string value = "StatusBar Name Property";
 			statusBar.Text = value;
 			TestProperty (provider,
 			              AutomationElementIdentifiers.NameProperty,
@@ -98,7 +98,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			for (; index < elements; ++index)
 				statusBar.Panels.Add (string.Format ("Panel: {0}", index));
 			int value = 1;
-			Assert.AreEqual (gridProvider.RowCount, value, "RowCount value");
+			Assert.AreEqual (value, gridProvider.RowCount, "RowCount value");
 		}
 
 		[Test]
@@ -117,7 +117,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			for (; index < elements; ++index)
 				statusBar.Panels.Add (string.Format ("Panel: {0}", index));
 			int value = elements;
-			Assert.AreEqual (gridProvider.ColumnCount, value, "ColumnCount value");
+			Assert.AreEqual (value, gridProvider.ColumnCount, "ColumnCount value");
 		}
 
 		[Test]
@@ -139,7 +139,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				provider.Navigate (NavigateDirection.FirstChild);
 			IRawElementProviderSimple itemProvider =
 				gridProvider.GetItem (rowValue, columnValue);
-			Assert.AreSame (itemProvider, panelProvider, "GetItem method");
+			Assert.AreSame (panelProvider, itemProvider, "GetItem method");
 			
 			try {
 				rowValue = gridProvider.RowCount;
@@ -196,6 +196,233 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNull (childProvider, "We shouldn't have a child");
 		}
 
+		#endregion
+		
+		#region StatusBarPanel Test
+
+        	[Test]
+        	public void StatusBarPanelBasicPropertiesTest ()
+        	{
+            		StatusBar statusBar = new StatusBar ();
+            		IRawElementProviderFragmentRoot rootProvider =
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
+			
+			statusBar.Panels.Add ("Panel");
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
+
+			TestProperty (childProvider,
+			              AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.Edit.Id);
+
+			TestProperty (childProvider,
+			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
+			              "edit");
+			
+			string value = "StatusBarPanel Name Property";
+			statusBar.Panels [0].Text = value;
+			TestProperty (childProvider,
+			              AutomationElementIdentifiers.NameProperty,
+			              value);
+		}
+
+		[Test]
+		public void StatusBarPanelProviderPatternTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+            		IRawElementProviderFragmentRoot rootProvider =
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
+			
+			statusBar.Panels.Add ("Panel");
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
+
+			object valueProvider =
+				childProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (valueProvider,
+			                  "Not returning ValuePatternIdentifiers.");
+			Assert.IsTrue (valueProvider is IValueProvider,
+			               "Not returning ValuePatternIdentifiers.");
+			
+			object gridItemProvider =
+				childProvider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (gridItemProvider,
+			                  "Not returning GridItemPatternIdentifiers.");
+			Assert.IsTrue (gridItemProvider is IGridItemProvider,
+			               "Not returning GridItemPatternIdentifiers.");
+		}
+
+		#endregion
+		
+		#region StatusBarPanel IValuePattern Test
+		
+		[Test]
+		public void StatusBarPanelIValueProviderIsReadOnlyTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+            		IRawElementProviderFragmentRoot rootProvider =
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
+			
+			statusBar.Panels.Add ("Panel");
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
+			
+			IValueProvider valueProvider = (IValueProvider)
+				childProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (valueProvider,
+			                  "Not returning ValuePatternIdentifiers.");
+			
+			Assert.IsTrue (valueProvider.IsReadOnly, "IsReadOnly value");
+		}
+		
+		[Test]
+		public void StatusBarPanelIValueProviderValueTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+            		IRawElementProviderFragmentRoot rootProvider =
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
+			
+			string value = "Panel";
+			statusBar.Panels.Add (value);
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
+			
+			IValueProvider valueProvider = (IValueProvider)
+				childProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (valueProvider,
+			                  "Not returning ValuePatternIdentifiers.");
+			
+			Assert.AreEqual (value, valueProvider.Value, "Value value");
+		}
+		
+		[Test]
+		public void StatusBarPanelIValueProviderSetValueTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+            		IRawElementProviderFragmentRoot rootProvider =
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
+			
+			statusBar.Panels.Add ("Panel");
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
+			
+			IValueProvider valueProvider = (IValueProvider)
+				childProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (valueProvider,
+			                  "Not returning ValuePatternIdentifiers.");
+			
+			try {
+				string value = "Another Panel";
+				valueProvider.SetValue (value);
+				Assert.Fail ("ElementNotEnabledException not thrown.");
+			} catch (ElementNotEnabledException) { }
+		}
+
+		#endregion
+		
+		#region StatusBarPanel IGridItemPattern Test
+		
+		[Test]
+		public void StatusBarPanelIGridItemProviderRowTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+            		IRawElementProviderFragmentRoot rootProvider =
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
+			
+			statusBar.Panels.Add ("Panel");
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
+			
+			IGridItemProvider gridItemProvider = (IGridItemProvider)
+				childProvider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (gridItemProvider,
+			                  "Not returning GridItemPatternIdentifiers.");
+			
+			Assert.AreEqual (0, gridItemProvider.Row, "Row value");
+		}
+		
+		[Test]
+		public void StatusBarPanelIGridItemProviderColumnTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+            		IRawElementProviderFragmentRoot rootProvider =
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
+			
+			StatusBarPanel panel = new StatusBarPanel ();
+			panel.Text = "Panel";
+			statusBar.Panels.Add (panel);
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
+			
+			IGridItemProvider gridItemProvider = (IGridItemProvider)
+				childProvider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (gridItemProvider,
+			                  "Not returning GridItemPatternIdentifiers.");
+			
+			int value = statusBar.Panels.IndexOf (panel);
+			Assert.AreEqual (value, gridItemProvider.Column, "Column value");
+		}
+		
+		[Test]
+		public void StatusBarPanelIGridItemProviderRowSpanTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+            		IRawElementProviderFragmentRoot rootProvider =
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
+			
+			statusBar.Panels.Add ("Panel");
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
+			
+			IGridItemProvider gridItemProvider = (IGridItemProvider)
+				childProvider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (gridItemProvider,
+			                  "Not returning GridItemPatternIdentifiers.");
+			
+			Assert.AreEqual (1, gridItemProvider.RowSpan, "RowSpan value");
+		}
+		
+		[Test]
+		public void StatusBarPanelIGridItemProviderColumnSpanTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+            		IRawElementProviderFragmentRoot rootProvider =
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
+			
+			statusBar.Panels.Add ("Panel");
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
+			
+			IGridItemProvider gridItemProvider = (IGridItemProvider)
+				childProvider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (gridItemProvider,
+			                  "Not returning GridItemPatternIdentifiers.");
+			
+			Assert.AreEqual (1, gridItemProvider.ColumnSpan, "ColumnSpan value");
+		}
+		
+		[Test]
+		public void StatusBarPanelIGridItemProviderContainingGridTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+            		IRawElementProviderFragmentRoot rootProvider =
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
+			
+			statusBar.Panels.Add ("Panel");
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
+			
+			IGridItemProvider gridItemProvider = (IGridItemProvider)
+				childProvider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (gridItemProvider,
+			                  "Not returning GridItemPatternIdentifiers.");
+			
+			IRawElementProviderSimple parentProvider = (IRawElementProviderSimple)
+				childProvider.Navigate (NavigateDirection.Parent);
+			IRawElementProviderSimple itemProvider = gridItemProvider.ContainingGrid;
+			Assert.AreSame (parentProvider, itemProvider, "ContainingGrid value");
+		}
+		
 		#endregion
 
 		#region BaseProviderTest Overrides

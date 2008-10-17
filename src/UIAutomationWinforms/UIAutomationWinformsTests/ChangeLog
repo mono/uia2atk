@@ -1,3 +1,8 @@
+2008-10-17  Neville Gao <nevillegao@gmail.com>
+
+	* StatusBarProviderText.cs: Test StatusBarPanel GridItem and Value
+	  pattern.
+
 2008-10-16  Mike Gorse <mgorse@novell.com>
 
 	* CheckBoxProviderTest.cs: Test exception for Toggle when disabled.
