@@ -90,6 +90,36 @@ namespace UiaAtkBridge
 				}
 			}
 		}
+
+		public bool TryGetValue (K key, out V value) {
+			value = default (V);
+			lock (locking) {
+				if (normalDict.ContainsKey (key)) {
+					value = normalDict [key];
+					return true;
+				}
+				return false;
+			}
+		}
+
+		public bool TryGetKey (V value, out K key) {
+			key = default (K);
+			lock (locking) {
+				if (reverseDict.ContainsKey (value)) {
+					key = reverseDict [value];
+					return true;
+				}
+				return false;
+			}
+		}
+
+		public Dictionary<K, V>.KeyCollection Keys {
+			get { return normalDict.Keys; }
+		}
+
+		public int Count {
+			get { return normalDict.Count; }
+		}
 		
 		Dictionary <K, V> normalDict;
 		Dictionary <V, K> reverseDict;

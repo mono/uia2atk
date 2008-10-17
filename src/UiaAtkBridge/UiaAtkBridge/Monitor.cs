@@ -38,7 +38,7 @@ namespace UiaAtkBridge
 		private bool useNativeInitialization = true;
 		private GLib.MainLoop mainLoop;
 		
-		public Monitor()
+		internal Monitor ()
 		{
 			GLib.GType.Init();
 			
@@ -70,13 +70,18 @@ namespace UiaAtkBridge
 		{
 			mainLoop = new GLib.MainLoop ();
 			mainLoop.Run ();
+			//Atk.Util.GetRootHandler = null;
 		}
 		
 		public void Quit()
 		{
-			GLibHacks.Invoke (delegate (object sender, EventArgs args) {
-				Atk.Util.GetRootHandler = null;
-			});
+//			Console.WriteLine ("going to call quitt!!!!!!!");
+//			GLibHacks.Invoke (delegate (object sender, EventArgs args) {
+//				Console.WriteLine ("calling quit in the glib thread");
+//				Atk.Util.GetRootHandler = null;
+//				mainLoop.Quit ();
+//				Console.WriteLine ("I've quited!");
+//			});
 		}
 
 		internal static string GetProgramName ()

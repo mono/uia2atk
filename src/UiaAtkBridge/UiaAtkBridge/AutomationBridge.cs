@@ -43,7 +43,7 @@ namespace UiaAtkBridge
 		private long initTime = DateTime.Now.Ticks;
 		private AmbiDictionary<IntPtr, IRawElementProviderSimple>
 			pointerProviderMapping;
-		static private Dictionary<IRawElementProviderSimple, Adapter>
+		static private AmbiDictionary<IRawElementProviderSimple, Adapter>
 			providerAdapterMapping;
 		
 		private int windowProviders;
@@ -63,7 +63,7 @@ namespace UiaAtkBridge
 			pointerProviderMapping =
 				new AmbiDictionary<IntPtr,IRawElementProviderSimple> ();
 			providerAdapterMapping =
-				new Dictionary<IRawElementProviderSimple, Adapter>();
+				new AmbiDictionary<IRawElementProviderSimple, Adapter>();
 
 			windowProviders = 0;
 		}
@@ -102,9 +102,10 @@ namespace UiaAtkBridge
 				alreadyRequestedChildren = null;
 			}
 			
-			Adapter adapter = null;
-			providerAdapterMapping.TryGetValue (provider, out adapter);
-			return adapter;
+			Adapter adapter;
+			if (providerAdapterMapping.TryGetValue (provider, out adapter))
+				return adapter;
+			return null;
 		}
 		
 		private static List <Atk.Object> alreadyRequestedChildren = null;
@@ -296,11 +297,14 @@ namespace UiaAtkBridge
 		
 		public void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e)
 		{
+			if (element == null)
+				return;
+			
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) element;
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty && !providerAdapterMapping.ContainsKey (simpleProvider))
 				HandleElementAddition (simpleProvider);
-			if (!providerAdapterMapping.ContainsKey (simpleProvider) && windowProviders > 0)
+			if ((!providerAdapterMapping.ContainsKey (simpleProvider)) || windowProviders == 0)
 				return;
 			
 			providerAdapterMapping [simpleProvider].RaiseAutomationPropertyChangedEvent (e);
@@ -318,7 +322,13 @@ namespace UiaAtkBridge
 			} else if (e.StructureChangeType == StructureChangeType.ChildRemoved) {
 				// TODO: Handle proper documented args
 				//       (see FragmentRootControlProvider)
-				HandleElementRemoval (simpleProvider);
+				if (HandleTotalElementRemoval (simpleProvider)) {
+					Console.WriteLine ("there are still {0} elements", providerAdapterMapping.Count);
+					Console.WriteLine ("going to call quit");
+					appMonitor.Quit ();
+					Console.WriteLine ("successfully called");
+				}
+				Console.WriteLine ("there are still {0} elements", providerAdapterMapping.Count);
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
 				HandleBulkRemoved (simpleProvider);
 			}
@@ -336,11 +346,14 @@ namespace UiaAtkBridge
 			IRawElementProviderSimple parentProvider;
 
 			parentProvider = fragment.Navigate (NavigateDirection.Parent);
+
+			if (parentProvider == null)
+				return null;
+			
 			if (!providerAdapterMapping.ContainsKey (parentProvider))
-			{
 				HandleElementAddition (parentProvider);
-			}
-			return (ParentAdapter)providerAdapterMapping[parentProvider];
+			
+			return (ParentAdapter)providerAdapterMapping [parentProvider];
 		}
 
 		private void HandleElementAddition (IRawElementProviderSimple simpleProvider)
@@ -389,11 +402,49 @@ namespace UiaAtkBridge
 				                   ControlType.LookupById (controlTypeId).ProgrammaticName);
 		}
 
-		private void HandleElementRemoval (IRawElementProviderSimple provider)
+		private bool HandleElementRemoval (Atk.Object atkObj)
 		{
+			IRawElementProviderSimple provider;
+			if (providerAdapterMapping.TryGetKey ((Adapter)atkObj, out provider) == false)
+				return false;
+			return HandleElementRemoval (provider);
+		}
+
+		private bool HandleTotalElementRemoval (IRawElementProviderSimple provider)
+		{
+			bool lastWindowProvider = false;
+			
 			Adapter adapter;
 			if (providerAdapterMapping.TryGetValue (provider, out adapter) == false)
-				return;
+				return false;
+
+			foreach (Atk.Object atkObj in GetAdaptersDescendantsFamily (adapter)){
+				if (HandleElementRemoval (atkObj))
+					lastWindowProvider = true;
+			}
+
+			return lastWindowProvider;
+		}
+
+		private List<Atk.Object> GetAdaptersDescendantsFamily (Atk.Object adapter) {
+			List <Atk.Object> list = new List <Atk.Object> ();
+			int nchild = adapter.NAccessibleChildren;
+			if (nchild > 0) {
+				for (int i = 0; i < nchild; i++) {
+					list.AddRange (GetAdaptersDescendantsFamily (adapter.RefAccessibleChild (i)));
+				}
+			}
+			list.Add (adapter);
+			return list;
+		}
+		
+		private bool HandleElementRemoval (IRawElementProviderSimple provider)
+		{
+			bool lastWindowProvider = false;
+			
+			Adapter adapter;
+			if (providerAdapterMapping.TryGetValue (provider, out adapter) == false)
+				return false;
 
 			int controlTypeId = (int)provider.GetPropertyValue (
 				AutomationElementIdentifiers.ControlTypeProperty.Id);
@@ -404,7 +455,7 @@ namespace UiaAtkBridge
 				TopLevelRootItem.Instance.RemoveChild (adapter);
 				windowProviders--;
 				if (windowProviders == 0)
-					appMonitor.Quit ();
+					lastWindowProvider = true;
 		 	} else {
 				ParentAdapter parent = adapter.Parent as ParentAdapter;
 				if (parent != null)
@@ -413,6 +464,8 @@ namespace UiaAtkBridge
 
 			providerAdapterMapping.Remove (provider);
 			pointerProviderMapping.Remove (provider);
+
+			return lastWindowProvider;
 		}
 		
 		
@@ -458,7 +511,7 @@ namespace UiaAtkBridge
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
-			if (parentObject.Role == Atk.Role.ScrollBar)
+			if ((parentObject == null) || (parentObject.Role == Atk.Role.ScrollBar))
 				return;
 
 			Button atkButton = new Button (provider);
@@ -637,6 +690,10 @@ namespace UiaAtkBridge
 		private void HandleNewHyperlinkControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
+			if (parentObject == null) {
+				Console.WriteLine ("WARNING: Could not add hyperlink because its parent was not found");
+				return;
+			}
 			
 			Adapter atkHyperlink;
 			IInvokeProvider invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);

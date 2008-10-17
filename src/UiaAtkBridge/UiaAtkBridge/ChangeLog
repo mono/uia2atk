@@ -1,3 +1,13 @@
+2008-10-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Monitor.cs:
+	* AmbiDictionary.cs:
+	* AutomationBridge.cs: Now we remove the children of an element from
+	providerAdapterMappings and the Atk hierarchy before removing the
+	element. However, we still have hangs or crashes in the end of an app
+	(this is work in progress). Note: even with Quit() disabled we have
+	problems. (Bug 427857)
+
 2008-10-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AutomationBridge.cs: Refactoring targeted to bug 427857.
