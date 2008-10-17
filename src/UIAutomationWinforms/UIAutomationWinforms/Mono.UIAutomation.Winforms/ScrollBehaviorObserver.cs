@@ -75,12 +75,16 @@ namespace Mono.UIAutomation.Winforms
 				if (hscrollbar == value)
 					return;
 				
-				if (hscrollbar != null)
+				if (hscrollbar != null) {
 					hscrollbar.EnabledChanged -= UpdateHScrollBehavior;
+					hscrollbar.VisibleChanged -= UpdateHScrollBehavior;
+				}
 				
 				hscrollbar = value;
-				if (hscrollbar != null)
+				if (hscrollbar != null) {
 					hscrollbar.EnabledChanged += UpdateHScrollBehavior;
+					hscrollbar.VisibleChanged += UpdateHScrollBehavior;
+				}
 			}
 		}
 		
@@ -90,12 +94,16 @@ namespace Mono.UIAutomation.Winforms
 				if (vscrollbar == value)
 					return;
 				
-				if (vscrollbar != null)
+				if (vscrollbar != null) {
 					vscrollbar.EnabledChanged -= UpdateVScrollBehavior;
+					vscrollbar.VisibleChanged -= UpdateVScrollBehavior;
+				}
 				
 				vscrollbar = value;
-				if (vscrollbar != null)
+				if (vscrollbar != null) {
 					vscrollbar.EnabledChanged += UpdateVScrollBehavior;
+					vscrollbar.VisibleChanged += UpdateVScrollBehavior;
+				}
 			}
 		}
 		
@@ -114,7 +122,7 @@ namespace Mono.UIAutomation.Winforms
 		#region Public Methods
 		
 		public void InitializeScrollBarProviders ()
-		{			
+		{
 			if (HasHorizontalScrollbar == true)
 				RaiseNavigationEvent (StructureChangeType.ChildAdded,
 				                      ref hscrollbarProvider,

@@ -1,3 +1,8 @@
+2008-10-17  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs: ScrollBar child
+	not added when Visible changed. Fixed.
+
 2008-10-17  Brad Taylor  <brad@getcoded.net>
 	
 	* Mono.UIAutomation.Winforms/TextNormalizer.cs: 
