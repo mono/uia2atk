@@ -149,7 +149,7 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 			}
 
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
 		public ITextRangeProvider FindText (string text, bool backward, 
@@ -178,7 +178,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public object GetAttributeValue (int attribute)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
 		public Rect[] GetBoundingRectangles ()

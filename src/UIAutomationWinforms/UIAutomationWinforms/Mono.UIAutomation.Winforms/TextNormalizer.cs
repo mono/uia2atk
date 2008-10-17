@@ -633,8 +633,8 @@ namespace Mono.UIAutomation.Winforms
 		public void DocumentNormalize ()
 		{
 			// Expand range to the document range
-			normalizer.StartPoint = 0;
-			normalizer.EndPoint = textboxbase.Text.Length;
+			start_point = 0;
+			end_point = textboxbase.Text.Length;
 		}
 #endregion
 		
