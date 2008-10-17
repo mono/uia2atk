@@ -1,5 +1,10 @@
 2008-10-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Monitor.cs: Call gnome_accessibility_module_shutdown on Quit(). It
+	seems to fix the majority of cases of bug 427857.
+
+2008-10-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Monitor.cs:
 	* AutomationBridge.cs: Reenable QUIT.
 

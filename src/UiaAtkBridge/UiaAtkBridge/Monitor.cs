@@ -78,6 +78,7 @@ namespace UiaAtkBridge
 			Console.WriteLine ("going to call quitt!!!!!!!");
 			GLibHacks.Invoke (delegate (object sender, EventArgs args) {
 				Console.WriteLine ("calling quit in the glib thread");
+				ShutdownAtkBridge ();
 				Atk.Util.GetRootHandler = null;
 				mainLoop.Quit ();
 				Console.WriteLine ("I've quited!");
@@ -206,10 +207,18 @@ namespace UiaAtkBridge
 		
 		[DllImport("libatk-bridge")]
 		static extern void gnome_accessibility_module_init ();
+
+		[DllImport("libatk-bridge")]
+		static extern void gnome_accessibility_module_shutdown ();
 		
 		private void LaunchAtkBridge ()
 		{
-			gnome_accessibility_module_init();
+			gnome_accessibility_module_init ();
+		}
+
+		private void ShutdownAtkBridge ()
+		{
+			gnome_accessibility_module_shutdown ();
 		}
 		
 		[DllImport("libbridge-glue.so")]
