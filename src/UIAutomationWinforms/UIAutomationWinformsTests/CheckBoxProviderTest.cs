@@ -72,7 +72,44 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public override void LabeledByAndNamePropertyTest ()
 		{
-			TestLabeledByAndName (false, true);
+			TestLabeledByAndName (false, false);
+		}
+
+		[Test]
+		public void NameTest ()
+		{
+			CheckBox checkbox = new CheckBox ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (checkbox);
+			checkbox.Text = "first";
+			
+			bridge.ResetEventLists ();
+			
+			string oldState = checkbox.Text;;
+			string newState = "second";
+			
+			checkbox.Text = newState;
+			
+			// Test IToggleProvider.ToggleState
+			Assert.AreEqual (newState,
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id), 
+			                 "NameProperty");
+			
+			// Test event was fired as expected
+			Assert.AreEqual (1,
+			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 "event count");
+			
+			AutomationPropertyChangedEventArgs eventArgs =
+				bridge.AutomationPropertyChangedEvents [0].e;
+			Assert.AreEqual (AutomationElementIdentifiers.NameProperty,
+			                 eventArgs.Property,
+			                 "event args property");
+			Assert.AreEqual (oldState,
+			                 eventArgs.OldValue,
+			                 "old value");
+			Assert.AreEqual (newState,
+			                 eventArgs.NewValue,
+			                 "new value");
 		}
 		
 		[Test]

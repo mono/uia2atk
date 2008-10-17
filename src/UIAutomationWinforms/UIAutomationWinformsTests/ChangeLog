@@ -1,3 +1,8 @@
+2008-10-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* CheckBoxProviderTest.cs: Add NameProperty test that verifies property
+	change events are fired.
+
 2008-10-17  Mario Carrion  <mcarrion@novell.com>
 
 	* ListBoxProviderTest.cs:
