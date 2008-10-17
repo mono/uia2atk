@@ -302,7 +302,11 @@ namespace UiaAtkBridge
 			
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) element;
-			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty && !providerAdapterMapping.ContainsKey (simpleProvider))
+			// Create an adapter if we haven't already, so that
+			// an AT will know about the control that has focus,
+			// but don't do this if we're shutting down (ie,
+			// providerAdapterMapping.Count == 0)
+			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty && !providerAdapterMapping.ContainsKey (simpleProvider) && providerAdapterMapping.Count > 0)
 				HandleElementAddition (simpleProvider);
 			if ((!providerAdapterMapping.ContainsKey (simpleProvider)) || windowProviders == 0)
 				return;
@@ -690,10 +694,6 @@ namespace UiaAtkBridge
 		private void HandleNewHyperlinkControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
-			if (parentObject == null) {
-				Console.WriteLine ("WARNING: Could not add hyperlink because its parent was not found");
-				return;
-			}
 			
 			Adapter atkHyperlink;
 			IInvokeProvider invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
