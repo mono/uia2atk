@@ -313,7 +313,35 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return (IRawElementProviderFragment) ProviderFactory.GetProvider (control);
 		}
 
-		protected void TestLabeledByAndName (bool expectNonNull, bool expectNameFromLabel)
+		protected void TestLabeledByAndName (bool expectNonNullLabel, bool expectNameFromLabel)
+		{
+			TestLabeledByAndName (expectNonNullLabel, expectNameFromLabel, true, false);
+		}
+		
+		/// <summary>
+		/// Simple test of expected relationship between LabeledBy
+		/// property and Name property.  Does not handle change events.
+		/// </summary>
+		/// <param name="expectNonNullLabel">
+		/// A <see cref="System.Boolean"/> indicating whether or not a
+		/// non-null value should be expected when getting LabeledBy.
+		/// </param>
+		/// <param name="expectNameFromLabel">
+		/// A <see cref="System.Boolean"/> indicating whether or not the
+		/// Name property should come from the provider returned by
+		/// LabeledBy. Ignored if expectNonNullLabel is false.
+		/// </param>
+		/// <param name="expectNonNullName">
+		/// A <see cref="System.Boolean"/> indicating whether or not a
+		/// non-null value should be expected when getting Name. Ignored
+		/// if expectNameFromLabel is true.
+		/// </param>
+		/// <param name="expectNameFromText">
+		/// A <see cref="System.Boolean"/> indicating whether or not the
+		/// Name property should come from Control.Text (a common case).
+		/// Ignored if expectNameFromLabel is true.
+		/// </param>
+		protected void TestLabeledByAndName (bool expectNonNullLabel, bool expectNameFromLabel, bool expectNonNullName, bool expectNameFromText)
 		{
 			Control control = GetControlInstance ();
 			if (control == null)
@@ -342,17 +370,25 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					ProviderFactory.GetProvider (l);
 				
 				object labeledBy = controlProvider.GetPropertyValue (AutomationElementIdentifiers.LabeledByProperty.Id);
-				Assert.AreEqual (expectNonNull ? labelProvider : null,
+				Assert.AreEqual (expectNonNullLabel ? labelProvider : null,
 				                 labeledBy);
 
-				if (expectNonNull && expectNameFromLabel)
+				if (expectNonNullLabel && expectNameFromLabel)
 					Assert.AreEqual (labelProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) as string,
 					                 controlProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) as string,
-					                 "Control name should derive from label name.");
-				else if (expectNonNull && !expectNameFromLabel)
+					                 "Control provider name should derive from label name.");
+				else if (expectNonNullLabel && !expectNameFromLabel)
 					Assert.IsTrue (labelProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) as string ==
 					               controlProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) as string,
-					               "Control naame should not derive from label name.");
+					               "Control provider name should not derive from label name.");
+				
+				if (!expectNameFromLabel && expectNonNullName && expectNameFromText)
+					Assert.AreEqual (control.Text,
+					                 controlProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
+					                 "Control provider name should derive from control text.");
+				else if (!expectNameFromLabel && !expectNonNullName)
+					Assert.IsNull (controlProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
+					               "Control provider name should be null.");
 				
 				f.Close ();
 			}
