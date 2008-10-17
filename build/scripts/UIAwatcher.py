@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 import commands as c
 import os
-import getopt
 import shutil
 import sys
 import tempfile
@@ -40,8 +39,17 @@ removeRPMList = """
 class Manager(object):
     q = Queue(0)
 
-    def Add(self, arch):
+    def add(self, arch):
         q.add(Stage1.build(arch))
+
+    def loop(self, q):
+        while true:
+            p = q.get()
+            Stage2.setupRemote()
+            Stage2.copyRPMS(p)
+            if(Stage3.runSmokeTests()):
+                Stage3.runRegressionTests()
+            Stage4.finish()
 
 
 class Stage1(object):
@@ -49,16 +57,16 @@ class Stage1(object):
     def build(self, arch):
         path = tempfile.mkdtemp
         output = open(path, 'w')
-        output.write('RPM Rev values for - ' + time.strftime("%m%d%y" + "\n\n\n")
+        output.write('RPM Rev values for - ' + time.strftime("%m%d%y") + '\n\n\n')
     
-        if(arch == 32):
+        if arch == 32:
             for dir in dirList32 + dirListNoArch:
                 rev_dir = getLatestDir(dir)
                 chdir(os.path.join(dir, rev_dir))
-                shutil.copy2(*.rpm, path)
+                shutil.copy('*.rpm', path)
                 output.write(os.path.basename(dir) + " - " + rev_dir + "\n")              
 
-        if(arch == 64):
+        if arch == 64:
             for dir in dirList64 + dirListNoArch:
                 rev_dir = getLatestDir(dir)
                 chdir(os.path.join(dir, rev_dir))
@@ -90,8 +98,17 @@ class Stage2(object):
 class Stage3(object):
 
     def runSmokeTests(self):
-        c.getoutput('ssh qa@uiaqa.sled.lab.novell.com python /var/qa/code/test/harness/remote_run.py -su -e mono-a11y@forge.novell.com,bgmerrell@novell.com,stshaw@novell.com -f bgmerrell@novell.com') 
+        c.getoutput('ssh qa@uiaqa.sled.lab.novell.com python /var/qa/code/test/harness/remote_run.py -su -e mono-a11y@forge.novell.com,bgmerrell@novell.com,stshaw@novell.com -f bgmerrell@novell.com')
+   
+    def runRegressionTests(self):
+        c.getoutput('ssh qa@uiaqa.sled.lab.novell.com python /var/qa/code/test/harness/remote_run.py -su -e mono-a11y@forge.novell.com,bgmerrell@novell.com,stshaw@novell.com -f bgmerrell@novell.com')
 
+class Stage4(object):
+ 
+    def finish(self):
+        cmdstr = 'mailx stshaw@novell.com -s 'New RPMS - http://build1.sled.lab.novell.com/uia/current' -c bgmerrell@novell.com -c rawang@novell.com -c cachen@novell.com -c ngao@novell.com < %s/rpm_revs' %path
+        c.getoutput(cmdstr)
+       #c.getoutput('mailx stshaw@novell.com -s 'New RPM script output' -c rawang@novell.com < /tmp/UIAoutput')
 
 class Settings(object):
 
