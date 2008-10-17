@@ -126,15 +126,15 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override IRawElementProviderFragment GetFocus ()
 		{
-			return GetItemProviderAt (this, listboxControl.SelectedIndex);
+			return GetItemProviderFrom (this, listboxControl.SelectedItem);
 		}
 		
 		public override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
 			
-			for (int index = 0; index < listboxControl.Items.Count; index++) {
-				ListItemProvider item = GetItemProviderAt (this, index);
+			foreach (object objectItem in listboxControl.Items) {
+				ListItemProvider item = GetItemProviderFrom (this, objectItem);
 				OnNavigationChildAdded (false, item);
 			}
 			
@@ -190,6 +190,11 @@ namespace Mono.UIAutomation.Winforms
 		public override int ItemsCount {
 			get { return listboxControl.Items.Count; }
 		}
+
+		public override int IndexOfObjectItem (object objectItem)
+		{
+			return listboxControl.Items.IndexOf (objectItem);
+		}
 		
 		public override ListItemProvider[] GetSelectedItems ()
 		{
@@ -198,9 +203,9 @@ namespace Mono.UIAutomation.Winforms
 			if (listboxControl == null || listboxControl.SelectedIndices.Count == 0)
 				return null;
 			
-			items = new ListItemProvider [listboxControl.SelectedIndices.Count];			
+			items = new ListItemProvider [listboxControl.SelectedIndices.Count];		
 			for (int index = 0; index < items.Length; index++) 
-				items [index] = GetItemProviderAt (this, listboxControl.SelectedIndices [index]);
+				items [index] = GetItemProviderFrom (this, listboxControl.Items [index]);
 			
 			return items;
 		}

@@ -42,11 +42,13 @@ namespace Mono.UIAutomation.Winforms
 
 		public ListItemProvider (FragmentRootControlProvider rootProvider,
 		                         ListProvider provider, 
-		                         Control control) 
+		                         Control control,
+		                         object objectItem)
 			: base (control)
 		{
 			listProvider = provider;
-			this.rootProvider = rootProvider;	
+			this.rootProvider = rootProvider;
+			this.objectItem = objectItem;
 		}
 
 		#endregion
@@ -120,9 +122,13 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Public Properties
 
+		public object ObjectItem {
+			get { return objectItem; }
+		}
+
 		public int Index {
-			get { return ListProvider.IndexOfItem (this); }
-		}	
+			get { return ListProvider.IndexOfObjectItem (ObjectItem); }
+		}
 
 		public ListProvider ListProvider {
 			get { return listProvider; }
@@ -143,6 +149,7 @@ namespace Mono.UIAutomation.Winforms
 		private FragmentRootControlProvider rootProvider;
 		private ListProvider listProvider;
 		private string nameProperty;
+		private object objectItem;
 		
 		#endregion
 		

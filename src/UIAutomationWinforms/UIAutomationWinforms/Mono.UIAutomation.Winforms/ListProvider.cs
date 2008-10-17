@@ -45,8 +45,8 @@ namespace Mono.UIAutomation.Winforms
 		#region Constructors
 
 		protected ListProvider (Control control) : base (control)
-		{
-			items = new List<ListItemProvider> ();
+		{ 
+			items = new Dictionary<object, ListItemProvider> ();
 
 			//According to: http://msdn.microsoft.com/en-us/library/ms742462.aspx
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
@@ -79,53 +79,53 @@ namespace Mono.UIAutomation.Winforms
 		
 		public abstract int ItemsCount { get; }
 
-		public virtual ListItemProvider GetItemProviderAt (FragmentRootControlProvider rootProvider,
-		                                                   int index)
-		{
-			ListItemProvider item;
-			
-			if (index < 0 || index >= ItemsCount)
-				return null;
-			else if (index >= items.Count) {
-				for (int loop = items.Count - 1; loop < index; loop++) {
-					item = new ListItemProvider (rootProvider,
-					                             GetItemsListProvider (), 
-					                             Control);
-					items.Add (item);
-					item.Initialize ();
-				}
-			}
-			
-			return items [index];
-		}
-		
-		public virtual int IndexOfItem (ListItemProvider item)
-		{
-			return items.IndexOf (item);
-		}
-		
-		public virtual ListItemProvider RemoveItemAt (int index)
+		public abstract int IndexOfObjectItem (object objectItem);
+
+		public virtual ListItemProvider GetItemProviderFrom (FragmentRootControlProvider rootProvider,
+		                                                     object objectItem)
 		{
 			ListItemProvider item = null;
 			
-			if (index < items.Count) {
-				item = items [index];
-				items.RemoveAt (index);
+			if (items.TryGetValue (objectItem, out item) == false) {
+				item = new ListItemProvider (rootProvider,
+				                             GetItemsListProvider (),
+				                             Control,
+				                             objectItem);
+				items [objectItem] = item;
+				item.Initialize ();
+			}
+			
+			return item;
+		}
+
+		public virtual ListItemProvider RemoveItemFrom (object objectItem)
+		{
+			ListItemProvider item = null;
+
+			if (items.TryGetValue (objectItem, out item) == true) {
+				items.Remove (objectItem);
 				item.Terminate ();
 			}
 			
 			return item;
 		}
+
+		protected bool ContainsObject (object objectItem)
+		{
+			return objectItem == null ? false : items.ContainsKey (objectItem);
+		}
 		
 		protected bool ContainsItem (ListItemProvider item)
 		{
-			return item == null ? false : items.Contains (item);
+			return item == null ? false : items.ContainsKey (item.ObjectItem);
 		}
 		
 		protected void ClearItemsList ()
 		{
-			while (items.Count > 0)
-				RemoveItemAt (items.Count - 1);
+			foreach (ListItemProvider provider in items.Values)
+				provider.Terminate ();
+
+			items.Clear ();
 		}		
 		
 		#endregion
@@ -184,9 +184,10 @@ namespace Mono.UIAutomation.Winforms
 			} catch (NotSupportedException) {
 				Console.WriteLine ("{0}: CollectionChanged not defined", GetType ());
 			}
-			
-			foreach (ListItemProvider item in items)
+
+			foreach (ListItemProvider item in items.Values)
 				OnNavigationChildRemoved (false, item);
+
 			ClearItemsList ();
 		}
 	
@@ -232,10 +233,10 @@ namespace Mono.UIAutomation.Winforms
 		protected virtual void OnCollectionChanged (object sender, CollectionChangeEventArgs args)
 		{
 			if (args.Action == CollectionChangeAction.Add) {
-				ListItemProvider item = GetItemProviderAt (this, (int) args.Element);
+				ListItemProvider item = GetItemProviderFrom (this, args.Element);
 				OnNavigationChildAdded (true, item);
 			} else if (args.Action == CollectionChangeAction.Remove) {
-				ListItemProvider item = RemoveItemAt ((int) args.Element);
+				ListItemProvider item = RemoveItemFrom (args.Element);
 				OnNavigationChildRemoved (true, item);
 			} else if (args.Action == CollectionChangeAction.Refresh) {
 				ClearItemsList ();
@@ -249,7 +250,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Private Fields
 		
-		private List<ListItemProvider> items;
+		private Dictionary<object, ListItemProvider> items;
 		
 		#endregion
 

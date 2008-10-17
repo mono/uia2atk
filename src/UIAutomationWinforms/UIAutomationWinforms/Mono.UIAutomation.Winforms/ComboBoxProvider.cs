@@ -44,7 +44,7 @@ namespace Mono.UIAutomation.Winforms
 		public ComboBoxProvider (SWF.ComboBox combobox) : base (combobox)
 		{
 			comboboxControl = combobox;
-			comboboxControl.DropDownStyleChanged += new EventHandler (OnDropDownStyleChanged);
+			comboboxControl.DropDownStyleChanged += OnDropDownStyleChanged;
 		}
 		
 		#endregion
@@ -67,7 +67,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.Terminate ();
 			
-			comboboxControl.DropDownStyleChanged -= new EventHandler (OnDropDownStyleChanged);
+			comboboxControl.DropDownStyleChanged -= OnDropDownStyleChanged;
 		}	
 
 		#endregion		
@@ -76,7 +76,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override IRawElementProviderFragment GetFocus ()
 		{
-			return GetItemProviderAt (this, comboboxControl.SelectedIndex);
+			return GetItemProviderFrom (this, comboboxControl.SelectedItem);
 		}		
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
@@ -133,13 +133,18 @@ namespace Mono.UIAutomation.Winforms
 		public override int ItemsCount {
 			get { return comboboxControl.Items.Count; }
 		}
+
+		public override int IndexOfObjectItem (object objectItem)
+		{
+			return comboboxControl.Items.IndexOf (objectItem);
+		}		
 		
 		public override ListItemProvider[] GetSelectedItems ()
 		{
 			if (comboboxControl == null || comboboxControl.SelectedIndex == -1)
 				return null;
 			else
-				return new ListItemProvider [] { GetItemProviderAt (this, comboboxControl.SelectedIndex) };
+				return new ListItemProvider [] { GetItemProviderFrom (this, comboboxControl.SelectedItem) };
 		}
 		
 		public override void SelectItem (ListItemProvider item)
@@ -360,23 +365,18 @@ namespace Mono.UIAutomation.Winforms
 			
 			public override IRawElementProviderFragment GetFocus ()
 			{
-				return comboboxProvider.GetItemProviderAt (this, comboboxControl.SelectedIndex);
+				return comboboxProvider.GetItemProviderFrom (this, comboboxControl.SelectedItem);
 			}			
 			
-			public override ListItemProvider GetItemProviderAt (FragmentRootControlProvider rootProvider,
-			                                                    int index)
+			public override ListItemProvider GetItemProviderFrom (FragmentRootControlProvider rootProvider,
+			                                                      object objectItem)
 			{
-				return comboboxProvider.GetItemProviderAt (rootProvider, index);
+				return comboboxProvider.GetItemProviderFrom (rootProvider, objectItem);
 			}
 					
-			public override int IndexOfItem (ListItemProvider item)
+			public override ListItemProvider RemoveItemFrom (object objectItem)
 			{
-				return comboboxProvider.IndexOfItem (item);
-			}
-			
-			public override ListItemProvider RemoveItemAt (int index)
-			{
-				return comboboxProvider.RemoveItemAt (index);
+				return comboboxProvider.RemoveItemFrom (objectItem);
 			}
 			
 			public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
@@ -390,6 +390,11 @@ namespace Mono.UIAutomation.Winforms
 			
 			public override int ItemsCount {
 				get { return comboboxProvider.ItemsCount; }
+			}
+
+			public override int IndexOfObjectItem (object objectItem)
+			{
+				return comboboxProvider.IndexOfObjectItem (objectItem);
 			}
 			
 			public override ListItemProvider[] GetSelectedItems ()
@@ -432,9 +437,9 @@ namespace Mono.UIAutomation.Winforms
 			public override void InitializeChildControlStructure ()
 			{
 				base.InitializeChildControlStructure ();
-				
-				for (int index = 0; index < comboboxControl.Items.Count; index++) {
-					ListItemProvider item = GetItemProviderAt (this, index);
+
+				foreach (object objectItem in comboboxControl.Items) {
+					ListItemProvider item = GetItemProviderFrom (this, objectItem);
 					OnNavigationChildAdded (false, item);
 				}
 			}

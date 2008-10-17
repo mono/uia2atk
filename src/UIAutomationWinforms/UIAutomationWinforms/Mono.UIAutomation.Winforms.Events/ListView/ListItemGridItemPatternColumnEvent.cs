@@ -79,7 +79,8 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		private void OnColumnPropertyEvent (object sender, 
 		                                    CollectionChangeEventArgs args)
 		{
-			RaiseAutomationPropertyChangedEvent ();
+//			if (args.Element = ((ListItemProvider) Provider).ObjectItem)
+				RaiseAutomationPropertyChangedEvent ();
 		}
 
 		#endregion

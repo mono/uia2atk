@@ -133,15 +133,7 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region ListItem: Properties Methods
-		
-		public SWF.ListViewItem GetListViewItem (ListItemProvider item)
-		{
-			if (ContainsItem (item) == false)
-				return null;
-			
-			return listView.Items [item.Index];
-		}
-		
+
 		public override object GetItemPropertyValue (ListItemProvider item,
 		                                             int propertyId)
 		{
@@ -215,6 +207,11 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override int ItemsCount { 
 			get { return listView.Items.Count; }
+		}
+
+		public override int IndexOfObjectItem (object objectItem)
+		{
+			return listView.Items.IndexOf (objectItem as SWF.ListViewItem);
 		}
 		
 		#endregion
@@ -312,42 +309,43 @@ namespace Mono.UIAutomation.Winforms
 		                                             CollectionChangeEventArgs args)
 		{
 			if (args.Action == CollectionChangeAction.Add)
-				InitializeProviderAtIndex ((int) args.Element, true);
-			else if (args.Action == CollectionChangeAction.Remove) {
-				Console.WriteLine ("Got remove!");
-				
-				ListItemProvider item = RemoveItemAt ((int) args.Element);
-				OnNavigationChildRemoved (true, item);
-			} else
+				InitializeProviderFrom (args.Element, true);
+			else if (args.Action == CollectionChangeAction.Remove)
+				FinalizeProviderFrom (args.Element, true);
+			else
 				base.OnCollectionChanged (sender, args);
 		}
 		
-		#endregion		
+		#endregion
+
+		#region Public Methods
+
+		public SWF.ListViewGroup GetGroupFrom (SWF.ListViewItem item)
+		{
+			if (item.Group == null) {
+				if (listViewNullGroup == null)
+						listViewNullGroup = Helper.GetPrivateProperty<SWF.ListView, SWF.ListViewGroup> (typeof (SWF.ListView), 
+						                                                                                listView,
+						                                                                                "UIADefaultListViewGroup");
+				return listViewNullGroup;
+			} else
+				return item.Group;
+		}
+
+		#endregion
 		
 		#region Private Methods
 		
-		private void InitializeProviderAtIndex (int index, bool raiseEvent)
+		private void InitializeProviderFrom (object objectItem, bool raiseEvent)
 		{			
-			if (index < 0 || index >= ItemsCount)
-				return;
-			
 			// View.SmallIcon and View.LargeIcon use Groups
 			if (listView.View == SWF.View.SmallIcon 
 			    || listView.View == SWF.View.LargeIcon) {
 
+				SWF.ListViewItem listViewItem = (SWF.ListViewItem) objectItem;
+				SWF.ListViewGroup listViewGroup = GetGroupFrom (listViewItem);
 				ListViewGroupProvider groupProvider = null;
-				SWF.ListViewGroup listViewGroup = null;
-				
-				if (listView.Items [index].Group == null) {
-					if (listViewNullGroup == null)
-						listViewNullGroup = Helper.GetPrivateProperty<SWF.ListView, SWF.ListViewGroup> (typeof (SWF.ListView), 
-						                                                                                listView,
-						                                                                                "UIADefaultListViewGroup");
 
-					listViewGroup = listViewNullGroup;
-				} else
-					listViewGroup = listView.Items [index].Group;
-				
 				if (groups.TryGetValue (listViewGroup, 
 				                        out groupProvider) == false) {
 					groupProvider = new ListViewGroupProvider (listViewGroup,
@@ -356,12 +354,42 @@ namespace Mono.UIAutomation.Winforms
 						
 					OnNavigationChildAdded (raiseEvent, groupProvider);
 				}
-				
-				ListItemProvider item = GetItemProviderAt (groupProvider, index);
+
+				ListItemProvider item = GetItemProviderFrom (groupProvider, objectItem);
 				groupProvider.AddChildProvider (raiseEvent, item);
 			} else { // When View is SWF.View.List
-				ListItemProvider item = GetItemProviderAt (this, index);
+				ListItemProvider item = GetItemProviderFrom (this, objectItem);
 				OnNavigationChildAdded (raiseEvent, item);
+			}
+		}
+
+		private void FinalizeProviderFrom (object objectItem, bool raiseEvent)
+		{
+			// View.SmallIcon and View.LargeIcon use Groups
+			if (listView.View == SWF.View.SmallIcon 
+			    || listView.View == SWF.View.LargeIcon) {
+
+				SWF.ListViewItem listViewItem = (SWF.ListViewItem) objectItem;
+				SWF.ListViewGroup listViewGroup = GetGroupFrom (listViewItem);
+
+				ListViewGroupProvider groupProvider = null;
+
+				if (groups.TryGetValue (listViewGroup, 
+				                        out groupProvider) == true) {
+					ListItemProvider item = GetItemProviderFrom (groupProvider, 
+					                                             objectItem);
+					groupProvider.RemoveChildProvider (raiseEvent, item);
+
+					if (groupProvider.Navigate (NavigateDirection.FirstChild)
+					    == null) {
+						OnNavigationChildRemoved (raiseEvent, groupProvider);
+						groups.Remove (listViewGroup);
+						groupProvider.Terminate ();
+					}
+				}
+			} else {
+				ListItemProvider item = RemoveItemFrom (objectItem);
+				OnNavigationChildRemoved (true, item);
 			}
 		}
 		
@@ -410,10 +438,10 @@ namespace Mono.UIAutomation.Winforms
 				OnNavigationChildrenCleared (true);
 			}
 			
-			for (int index = 0; index < ItemsCount; index++)
-				InitializeProviderAtIndex (index, updateView);
+			foreach (object objectItem in listView.Items)
+				InitializeProviderFrom (objectItem, updateView);
 		}
-		
+
 		#endregion
 		
 		#region Private Fields
@@ -530,10 +558,10 @@ namespace Mono.UIAutomation.Winforms
 					}
 				}
 
-				//FIXME: Verify this
-//				rect.Union (GetHeaderRectangle (group));
+				Rect headerRect = GetHeaderRectangle (group);
+				headerRect.Union (rect);
 
-				return rect;
+				return headerRect;
 			}
 			
 			private Rect GetHeaderRectangle (SWF.ListViewGroup group)
@@ -565,14 +593,16 @@ namespace Mono.UIAutomation.Winforms
 			                                       SWF.ListViewItem item, 
 			                                       ref Rect rect)
 			{
-				ListItemProvider itemProvider 
-					= provider.GetItemProviderAt (this, item.Index);		
-				Rect rectangle 
-					= (Rect) itemProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-				
-				rect.Union (rectangle);
-				
-				return rect;
+				//FIXME
+//				ListItemProvider itemProvider 
+//					= provider.GetItemProviderAt (this, item.Index);		
+//				Rect rectangle 
+//					= (Rect) itemProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+//				
+//				rect.Union (rectangle);
+//				
+//				return rect;
+				return Rect.Empty;
 			}
 			
 			private SWF.ListView listView;

@@ -131,14 +131,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		private int IndexOf {
 			get {
-				SWF.ListViewItem item = viewProvider.GetListViewItem (itemProvider);
-				SWF.ListViewGroup group = item.Group;
+				SWF.ListViewItem item = (SWF.ListViewItem) itemProvider.ObjectItem;
+
+				if (item == null)
+					return -1;
 				
-				if (group == null)
-					group
-						= Helper.GetPrivateProperty<SWF.ListView, SWF.ListViewGroup> (typeof (SWF.ListView), 
-						                                                              (SWF.ListView) viewProvider.Control,
-						                                                              "UIADefaultListViewGroup");
+				SWF.ListViewGroup group = viewProvider.GetGroupFrom (item);
 				
 				return group.Items.IndexOf (item);
 			}

@@ -64,9 +64,7 @@ namespace Mono.UIAutomation.Winforms.Events.ListItem
 		
 		private void OnItemChecked (object sender, SWF.ItemCheckEventArgs args)
 		{
-			ListItemProvider provider = (ListItemProvider) Provider;
-			
-			if (args.Index == provider.ListProvider.IndexOfItem (provider))
+			if (args.Index == ((ListItemProvider) Provider).Index)
 				RaiseAutomationPropertyChangedEvent ();
 		}
 
