@@ -1,3 +1,16 @@
+2008-10-17  Neville Gao <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelGridItemProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelValuePatternValueEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelGridItemPatternColumnEvent.cs:
+	  File updated to support Component and StatusBarPanel TextChanged event.
+	* Mono.UIAutomation.Winforms.Behaviors/ProgressBar/ValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/ProgressBar/ValuePatternValueEvent.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelTextProviderBehavior.cs:
+	  File deleted not to support pattern.
+
 2008-10-16  Mike Gorse <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/CheckBox/ToggleProviderBehavior.cs:

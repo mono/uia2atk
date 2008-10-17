@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms
 {
 	internal class StatusBarProvider : FragmentRootControlProvider
 	{
-		#region Constructors
+		#region Constructor
 
 		public StatusBarProvider (StatusBar statusBar) : base (statusBar)
 		{
@@ -177,7 +177,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		internal class StatusBarPanelProvider : FragmentControlProvider
 		{
-			#region Constructors
+			#region Constructor
 
 			public StatusBarPanelProvider (StatusBarPanel statusBarPanel) : base (statusBarPanel)
 			{
@@ -186,7 +186,7 @@ namespace Mono.UIAutomation.Winforms
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new StatusBarPanelValueProviderBehavior (this));
 				SetBehavior (GridItemPatternIdentifiers.Pattern,
-				             new StatusBarPanelGridItemProviderBehavior (this, statusBarPanel));
+				             new StatusBarPanelGridItemProviderBehavior (this));
 			}
 		
 			#endregion

@@ -37,11 +37,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 	{
 		#region Constructor
 		
-		public StatusBarPanelGridItemProviderBehavior (StatusBarProvider.StatusBarPanelProvider provider,
-		                                               SWF.StatusBarPanel statusBarPanel)
+		public StatusBarPanelGridItemProviderBehavior (StatusBarProvider.StatusBarPanelProvider provider)
 			: base (provider)
 		{
-			this.statusBarPanel = statusBarPanel;
+			this.statusBarPanel = (SWF.StatusBarPanel) Provider.Component;
 		}
 		
 		#endregion

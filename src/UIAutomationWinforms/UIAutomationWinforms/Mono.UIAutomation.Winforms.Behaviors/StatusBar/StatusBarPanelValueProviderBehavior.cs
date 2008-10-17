@@ -26,7 +26,7 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.StatusBar;
@@ -40,6 +40,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 		public StatusBarPanelValueProviderBehavior (StatusBarProvider.StatusBarPanelProvider provider)
 			: base (provider)
 		{
+			this.statusBarPanel = (SWF.StatusBarPanel) Provider.Component;
 		}
 		
 		#endregion
@@ -84,13 +85,19 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 		}
 		
 		public string Value {
-			get { return Provider.Control.Text; }
+			get { return statusBarPanel.Text; }
 		}
 
 		public void SetValue (string value)
 		{
 			throw new ElementNotEnabledException ();
 		}
+		
+		#endregion
+		
+		#region Private Fields
+		
+		private SWF.StatusBarPanel statusBarPanel;
 		
 		#endregion
 	}

@@ -47,8 +47,8 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 		public override void Connect ()
 		{
 			try {
-				Helper.AddPrivateEvent (typeof (SWF.StatusBar.StatusBarPanelCollection),
-				                        ((SWF.StatusBar) Provider.Control).Panels,
+				Helper.AddPrivateEvent (typeof (SWF.StatusBarPanel),
+				                        (SWF.StatusBarPanel) Provider.Component,
 				                        "UIACollectionChanged",
 				                        this,
 				                        "OnColumnChanged");
@@ -58,8 +58,8 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 		public override void Disconnect ()
 		{
 			try {
-				Helper.RemovePrivateEvent (typeof (SWF.StatusBar.StatusBarPanelCollection),
-				                           ((SWF.StatusBar) Provider.Control).Panels,
+				Helper.RemovePrivateEvent (typeof (SWF.StatusBarPanel),
+				                           (SWF.StatusBarPanel) Provider.Component,
 				                           "UIACollectionChanged",
 				                           this,
 				                           "OnColumnChanged");

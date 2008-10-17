@@ -26,7 +26,7 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events.StatusBar
 {
@@ -45,12 +45,24 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 
 		public override void Connect ()
 		{
-			Provider.Control.TextChanged += new EventHandler (OnValueChanged);
+			try {
+				Helper.AddPrivateEvent (typeof (SWF.StatusBarPanel),
+				                        (SWF.StatusBarPanel) Provider.Component,
+				                        "UIATextChanged",
+				                        this,
+				                        "OnValueChanged");
+			} catch (NotSupportedException) { }
 		}
 
 		public override void Disconnect ()
 		{
-			Provider.Control.TextChanged -= new EventHandler (OnValueChanged);
+			try {
+				Helper.RemovePrivateEvent (typeof (SWF.StatusBarPanel),
+				                           (SWF.StatusBarPanel) Provider.Component,
+				                           "UIATextChanged",
+				                           this,
+				                           "OnValueChanged");
+			} catch (NotSupportedException) { }
 		}
 		
 		#endregion 

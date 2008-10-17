@@ -33,7 +33,7 @@ namespace Mono.UIAutomation.Winforms
 {
 	internal class ProgressBarProvider : FragmentControlProvider
 	{
-		#region Constructors
+		#region Constructor
 
 		public ProgressBarProvider (ProgressBar progressBar) : base (progressBar)
 		{
