@@ -125,6 +125,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (CheckState.Indeterminate, checkbox.CheckState, "Second three-state toggle: Intermediate");
 			toggleProvider.Toggle ();
 			Assert.AreEqual (CheckState.Checked, checkbox.CheckState, "Third three-state toggle: Checked");
+
+			checkbox.Enabled = false;
+
+			// Test that an exception is thrown when not enabled
+			try {
+				toggleProvider.Toggle ();
+				Assert.Fail ("Should throw ElementNotEnabledException");
+			} catch (ElementNotEnabledException) { }
 		}
 		
 #endregion

@@ -93,6 +93,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.CheckBox
 		{
 			SWF.CheckBox checkbox = (SWF.CheckBox) Provider.Control;
 
+			if (checkbox.Enabled == false)
+				throw new ElementNotEnabledException ();
+
 			switch (checkbox.CheckState) {
 			case SWF.CheckState.Checked:
 				PerformToggle (checkbox, SWF.CheckState.Unchecked);
