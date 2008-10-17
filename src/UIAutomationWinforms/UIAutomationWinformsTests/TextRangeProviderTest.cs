@@ -392,6 +392,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			range = text_provider.DocumentRange.Clone ();
 
+			// NOTE: These all pass successfully on Windows Vista, so
+			// think twice before you change anything.
+
 			// Case #1
 			int moved_units;
 			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -100);
@@ -639,6 +642,119 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			// Going bananas yet?
  		}
+
+		[Test]
+		public void ParagraphNormalize ()
+		{
+			textbox.Multiline = true;
+			textbox.Text = "gomez thing\r\nmorticia\twednesday";
+
+			range = text_provider.DocumentRange.Clone ();
+
+			// NOTE: These all pass successfully on Windows Vista, so
+			// think twice before you change anything.
+
+			// Case #1
+			int moved_units;
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -100);
+			Assert.AreEqual (-32, moved_units, "Case 1: Moved units are incorrect in -100 character move");
+			Assert.AreEqual (String.Empty, range.GetText (-1), "Case 1: Text is incorrect in -100 character move");
+
+			range.ExpandToEnclosingUnit (TextUnit.Paragraph);
+			Assert.AreEqual ("gomez thing\r\n", range.GetText (-1), "Case 1: Text is incorrect in ExpandToEnclosingUnit");
+
+			// Case #2
+			range = text_provider.DocumentRange.Clone ();
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -23);
+			Assert.AreEqual (-23, moved_units, "Case 2: Moved units are incorrect in -23 character move");
+			Assert.AreEqual ("gomez th", range.GetText (-1), "Case 2: Text is incorrect in -23 character move");
+
+			range.ExpandToEnclosingUnit (TextUnit.Paragraph);
+			Assert.AreEqual ("gomez thing\r\n", range.GetText (-1), "Case 2: Text is incorrect in ExpandToEnclosingUnit");
+
+			// Case #3
+			range = text_provider.DocumentRange.Clone ();
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -18);
+			Assert.AreEqual (-18, moved_units, "Case 3: Moved units are incorrect in -18 character move");
+			Assert.AreEqual ("gomez thing\r\n", range.GetText (-1), "Case 3: Text is incorrect in -18 character move");
+
+			range.ExpandToEnclosingUnit (TextUnit.Paragraph);
+			Assert.AreEqual ("gomez thing\r\n", range.GetText (-1), "Case 3: Text is incorrect in ExpandToEnclosingUnit");
+
+			// Case #4
+			range = text_provider.DocumentRange.Clone ();
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -14);
+			Assert.AreEqual (-14, moved_units, "Case 4: Moved units are incorrect in -14 character move");
+			Assert.AreEqual ("gomez thing\r\nmort", range.GetText (-1), "Case 4: Text is incorrect in -14 character move");
+
+			// XXX: Behaves differently than TextUnit.Line
+			range.ExpandToEnclosingUnit (TextUnit.Paragraph);
+			Assert.AreEqual ("gomez thing\r\nmorticia\twednesday", range.GetText (-1), "Case 4: Text is incorrect in ExpandToEnclosingUnit");
+
+			// Case #5
+			range = text_provider.DocumentRange.Clone ();
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 2);
+			Assert.AreEqual (2, moved_units, "Case 5: Moved units are incorrect in +2 character move");
+			Assert.AreEqual ("mez thing\r\nmorticia\twednesday", range.GetText (-1), "Case 5: Text is incorrect in +2 character move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -100);
+			Assert.AreEqual (-32, moved_units, "Case 5: Moved units are incorrect in -100 character move");
+			Assert.AreEqual (String.Empty, range.GetText (-1), "Case 5: Text is incorrect in -100 character move");
+
+			range.ExpandToEnclosingUnit (TextUnit.Paragraph);
+			Assert.AreEqual ("gomez thing\r\n", range.GetText (-1), "Case 5: Text is incorrect in ExpandToEnclosingUnit");
+
+			// Case #6
+			range = text_provider.DocumentRange.Clone ();
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -18);
+			Assert.AreEqual (-18, moved_units, "Case 6: Moved units are incorrect in -18 character move");
+			Assert.AreEqual ("gomez thing\r\n", range.GetText (-1), "Case 6: Text is incorrect in -18 character move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 2);
+			Assert.AreEqual (2, moved_units, "Case 6: Moved units are incorrect in +2 character move");
+			Assert.AreEqual ("mez thing\r\n", range.GetText (-1), "Case 6: Text is incorrect in 2 character move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -4);
+			Assert.AreEqual (-4, moved_units, "Case 6: Moved units are incorrect in -4 character move");
+			Assert.AreEqual ("mez thi", range.GetText (-1), "Case 6: Text is incorrect in -4 character move");
+
+			range.ExpandToEnclosingUnit (TextUnit.Paragraph);
+			Assert.AreEqual ("gomez thing\r\n", range.GetText (-1), "Case 6: Text is incorrect in ExpandToEnclosingUnit");
+
+			// Case #7
+			range = text_provider.DocumentRange.Clone ();
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -18);
+			Assert.AreEqual (-18, moved_units, "Case 7: Moved units are incorrect in -18 character move");
+			Assert.AreEqual ("gomez thing\r\n", range.GetText (-1), "Case 7: Text is incorrect in -18 character move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 4);
+			Assert.AreEqual (4, moved_units, "Case 7: Moved units are incorrect in +4 character move");
+			Assert.AreEqual ("z thing\r\n", range.GetText (-1), "Case 7: Text is incorrect in +4 character move");
+
+			range.ExpandToEnclosingUnit (TextUnit.Paragraph);
+			Assert.AreEqual ("gomez thing\r\n", range.GetText (-1), "Case 7: Text is incorrect in ExpandToEnclosingUnit");
+
+			// Case #8
+			range = text_provider.DocumentRange.Clone ();
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 2);
+			Assert.AreEqual (2, moved_units, "Case 8: Moved units are incorrect in +2 character move");
+			Assert.AreEqual ("mez thing\r\nmorticia\twednesday", range.GetText (-1), "Case 8: Text is incorrect in +2 character move");
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -16);
+			Assert.AreEqual (-16, moved_units, "Case 8: Moved units are incorrect in -16 character move");
+			Assert.AreEqual ("mez thing\r\nmo", range.GetText (-1), "Case 8: Text is incorrect in -16 character move");
+
+			// XXX: Behaves differently than TextUnit.Line
+			range.ExpandToEnclosingUnit (TextUnit.Paragraph);
+			Assert.AreEqual ("gomez thing\r\nmorticia\twednesday", range.GetText (-1), "Case 8: Text is incorrect in ExpandToEnclosingUnit");
+		}
 
 		[Test]
 		public void MoveEndpointByPage ()

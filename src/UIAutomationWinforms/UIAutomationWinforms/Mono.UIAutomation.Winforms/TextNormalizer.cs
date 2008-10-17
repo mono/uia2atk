@@ -138,8 +138,13 @@ namespace Mono.UIAutomation.Winforms
 		
 		
 #region Line methods
-		
+
 		public void LineNormalize ()
+		{
+			LineParagraphNormalize (true);
+		}
+		
+		private void LineParagraphNormalize (bool is_line)
 		{
 			if (textboxbase.Multiline == false) {
 				start_point = 0;
@@ -168,12 +173,27 @@ namespace Mono.UIAutomation.Winforms
 			}
 	
 			int new_end = -1;
-			// walk backward until you hit a newline, or the start_point
-			for (int i = end_point; i > start_point; i--) {
-				if (BackwardPeekNewline (i, text, out n_chars)) {
-					new_end = i + 1;
-					break;
+			if (is_line) {
+				// walk backward until you hit a newline, or the start_point
+				for (int i = end_point; i > start_point; i--) {
+					if (BackwardPeekNewline (i, text, out n_chars)) {
+						new_end = i + 1;
+						break;
+					}
 				}
+			} else {
+				new_end = text.Length;
+
+				// walk forward until you hit a newline, or the end
+				for (int i = end_point; i < text.Length; i++) {
+					if (ForwardPeekNewline (i, text, out n_chars)) {
+						new_end = i + n_chars;
+						break;
+					}
+				}
+				
+				end_point = new_end;
+				return;
 			}
 			
 			// if we found a newline, move on
@@ -321,34 +341,9 @@ namespace Mono.UIAutomation.Winforms
 
 #region Paragraph methods
 
-		private bool ForwardPeekNewline (int i, string text, out int n_chars)
+		public void ParagraphNormalize ()
 		{
-			n_chars = 0;
-
-			if (i + 1 < text.Length
-			    && text[i] == '\r' && text[i+1] == '\n') {
-				n_chars = 2;
-				return true;
-			} else if (text[i] == '\r' || text[i] == '\n') {
-				n_chars = 1;
-				return true;
-			}
-			return false;
-		}
-
-		private bool BackwardPeekNewline (int i, string text, out int n_chars)
-		{
-			n_chars = 0;
-
-			if (i - 1 >= 0
-			    && text[i] == '\n' && text[i-1] == '\r') {
-				n_chars = 2;
-				return true;
-			} else if (text[i] == '\r' || text[i] == '\n') {
-				n_chars = 1;
-				return true;
-			}
-			return false;
+			LineParagraphNormalize (false);
 		}
 
 		public int ParagraphMoveStartPoint (int count)
@@ -678,6 +673,39 @@ namespace Mono.UIAutomation.Winforms
 			
 			return new TextNormalizerPoints (start_point, end_point, moved);
 		}
+
+
+#region Helper methods
+		private bool ForwardPeekNewline (int i, string text, out int n_chars)
+		{
+			n_chars = 0;
+
+			if (i + 1 < text.Length
+			    && text[i] == '\r' && text[i+1] == '\n') {
+				n_chars = 2;
+				return true;
+			} else if (text[i] == '\r' || text[i] == '\n') {
+				n_chars = 1;
+				return true;
+			}
+			return false;
+		}
+
+		private bool BackwardPeekNewline (int i, string text, out int n_chars)
+		{
+			n_chars = 0;
+
+			if (i - 1 >= 0
+			    && text[i] == '\n' && text[i-1] == '\r') {
+				n_chars = 2;
+				return true;
+			} else if (text[i] == '\r' || text[i] == '\n') {
+				n_chars = 1;
+				return true;
+			}
+			return false;
+		}
+#endregion
 
 #region private fields
 		private TextBoxBase textboxbase;				

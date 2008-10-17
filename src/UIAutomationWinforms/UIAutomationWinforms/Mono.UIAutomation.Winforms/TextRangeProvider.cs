@@ -132,7 +132,8 @@ namespace Mono.UIAutomation.Winforms
 				normalizer.LineNormalize ();
 				break;
 			case TextUnit.Paragraph:
-				// TODO:
+				normalizer.ParagraphNormalize ();
+				break;
 			case TextUnit.Page:
 				// Textbox doesn't support Page
 			case TextUnit.Document:

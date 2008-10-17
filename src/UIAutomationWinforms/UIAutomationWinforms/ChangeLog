@@ -1,3 +1,9 @@
+2008-10-17  Brad Taylor  <brad@getcoded.net>
+	
+	* Mono.UIAutomation.Winforms/TextNormalizer.cs: 
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Implement
+	  ParagraphNormalize.  That was easy.
+
 2008-10-17  Neville Gao <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs,
