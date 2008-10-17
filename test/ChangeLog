@@ -1,5 +1,10 @@
 2008-10-17  Calen Chen <cachen@novell.com>
 
+	* toolstrip_combobox.py: delete this example
+	* toolstripcombobox.py: add application example
+
+2008-10-17  Calen Chen <cachen@novell.com>
+
 	* testers/numericupdown/numericupdownframe.py: add enterTextValue to 
 	implement entering value into EditableText action
 	* testers/numericupdown_bsic_ops.py: enter value to 
