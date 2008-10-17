@@ -76,11 +76,11 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		#endregion 
 		
 		#region Protected methods
+
 		private void OnColumnPropertyEvent (object sender, 
 		                                    CollectionChangeEventArgs args)
 		{
-//			if (args.Element = ((ListItemProvider) Provider).ObjectItem)
-				RaiseAutomationPropertyChangedEvent ();
+			RaiseAutomationPropertyChangedEvent ();
 		}
 
 		#endregion

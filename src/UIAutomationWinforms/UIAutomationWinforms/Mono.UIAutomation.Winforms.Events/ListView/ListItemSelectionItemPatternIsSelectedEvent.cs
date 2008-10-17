@@ -65,15 +65,15 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		
 		private void OnIsSelectedChanged (object sender, EventArgs args)
 		{
+			SWF.ListView listView = (SWF.ListView) sender;
+			ListItemProvider provider = (ListItemProvider) Provider;
 			
-//			SWF.ListView listView = (SWF.ListView) sender;
-//			
-////			bool selectedChanged = listView.SelectedIndices.Contains (listItemProvider.Index);
-//			
-//			if (selectedChanged != selected) {
-//			    RaiseAutomationPropertyChangedEvent ();
-//				selected = selectedChanged;
-//			}
+			bool selectedChanged = listView.SelectedIndices.Contains (provider.Index);
+			
+			if (selectedChanged != selected) {
+			    RaiseAutomationPropertyChangedEvent ();
+				selected = selectedChanged;
+			}
 		}
 
 		#endregion

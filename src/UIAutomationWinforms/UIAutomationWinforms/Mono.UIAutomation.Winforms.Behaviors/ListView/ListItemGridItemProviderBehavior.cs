@@ -97,20 +97,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		#region IGridItemProvider Specialization
 		
 		public int Row {
-			get { 
-//				System.Console.WriteLine ("ROW: Value is : {0}", IndexOf  / GroupColumns);
-				
-				return IndexOf  / GroupColumns;
-			}
+			get { return IndexOf / GroupColumns; }
 		}
 		
 		public int Column {
-			get { 				
-//				System.Console.WriteLine ("COLUM: Value is : {0} - {1}", 
-//				                          IndexOf - (Row * GroupColumns), Row * GroupColumns);
-
-				return IndexOf - (Row * GroupColumns);
-			}
+			get { return IndexOf - (Row * GroupColumns); }
 		}
 		
 		public int RowSpan {
@@ -131,11 +122,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		private int IndexOf {
 			get {
-				SWF.ListViewItem item = (SWF.ListViewItem) itemProvider.ObjectItem;
-
-				if (item == null)
-					return -1;
-				
+				SWF.ListViewItem item = (SWF.ListViewItem) itemProvider.ObjectItem;				
 				SWF.ListViewGroup group = viewProvider.GetGroupFrom (item);
 				
 				return group.Items.IndexOf (item);

@@ -1,5 +1,20 @@
 2008-10-17  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs:
+	Removed commented code.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementAddedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementRemovedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementSelectedEvent.cs:
+	Casting from sender.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternRowEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternColumnEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternIsSelectedEvent.cs:
+	Event enabled.
+
+2008-10-17  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternIsSelectedEvent.cs:
 	Fix builds.
 

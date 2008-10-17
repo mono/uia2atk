@@ -80,8 +80,7 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		private void OnRowPropertyEvent (object sender, 
 		                                 CollectionChangeEventArgs args)
 		{
-//			if (args.Element != ((ListItemProvider) Provider).ObjectItem)
-				RaiseAutomationPropertyChangedEvent ();
+			RaiseAutomationPropertyChangedEvent ();
 		}
 
 		#endregion

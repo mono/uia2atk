@@ -67,7 +67,7 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		private void OnElementRemovedEvent (object sender, EventArgs args)
 		{
 			ListItemProvider provider = (ListItemProvider) Provider;
-			SWF.ListView listView = (SWF.ListView) provider.Control;
+			SWF.ListView listView = (SWF.ListView) sender;
 			
 			if (selected == true
 			    && listView.SelectedIndices.Count > 1

@@ -64,7 +64,7 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		private void OnElementSelectedEvent (object sender, EventArgs args)
 		{
 			ListItemProvider provider = (ListItemProvider) Provider;
-			SWF.ListView listView = (SWF.ListView) provider.Control;
+			SWF.ListView listView = (SWF.ListView) sender;
 			
 			if (listView.SelectedIndices.Count == 1
 			    && listView.SelectedIndices.Contains (provider.Index) == true)
