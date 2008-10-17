@@ -37,10 +37,11 @@ namespace UiaAtkBridge
 		public RadioButton (IRawElementProviderSimple provider) : base (provider)
 		{
 			Role = Atk.Role.RadioButton;
-			selProvider = (ISelectionItemProvider)provider.GetPatternProvider(SelectionItemPatternIdentifiers.Pattern.Id);
+			selProvider = (ISelectionItemProvider)provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
 			if (selProvider == null)
 				throw new ArgumentException ("The provider for RadioButton should implement the SelectionItem pattern");
 			actionName = "click";
+			imageProvider = selProvider;
 		}
 		
 		public override bool DoAction (int action)
