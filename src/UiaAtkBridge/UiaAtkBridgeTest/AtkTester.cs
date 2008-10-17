@@ -403,8 +403,8 @@ namespace UiaAtkBridgeTest
 			component.GetPosition (out ca, out cb, Atk.CoordType.Screen);
 			Assert.IsTrue (ia > 0, "x of the image must be > 0; obtained " + ia);
 			Assert.IsTrue (ib > 0, "y of the image must be > 0; obtained " + ib);
-			Assert.IsTrue (ia > ca, "x of the image must be > x from the widget; obtained " + ia + "<" + ca);
-			Assert.IsTrue (ib > cb, "y of the image must be > y from the widget; obtained " + ia + "<" + cb);
+			Assert.IsTrue (ia >= ca, "x of the image must be >= x from the widget; obtained " + ia + "<" + ca);
+			Assert.IsTrue (ib >= cb, "y of the image must be >= y from the widget; obtained " + ia + "<" + cb);
 
 			withoutImageImplementor.GetImagePosition (out ia, out ib, Atk.CoordType.Screen);
 			Assert.AreEqual (ia, int.MinValue, "x of the image must be int.MinValue; obtained " + ia);
@@ -414,8 +414,8 @@ namespace UiaAtkBridgeTest
 			component.GetSize (out ca, out cb);
 			Assert.IsTrue (ia > 0, "width of the image must be > 0; obtained " + ia);
 			Assert.IsTrue (ib > 0, "height of the image must be > 0; obtained " + ib);
-			Assert.IsTrue (ia < ca, "width of the image must be < width from the widget; obtained " + ia + ">" + ca);
-			Assert.IsTrue (ib < cb, "height of the image must be < height from the widget; obtained " + ib + ">" + cb);
+			Assert.IsTrue (ia <= ca, "width of the image must be <= width from the widget; obtained " + ia + ">" + ca);
+			Assert.IsTrue (ib <= cb, "height of the image must be <= height from the widget; obtained " + ib + ">" + cb);
 
 			withoutImageImplementor.GetImageSize (out ia, out ib);
 			Assert.AreEqual (ia, -1, "width of the image must be int.MinValue; obtained " + ia);

@@ -182,6 +182,14 @@ namespace UiaAtkBridgeTest
 			Parent (type, accessible);
 			Parent (type, accessible2);
 			Parent (type, accessible3);
+
+			//test with an image
+			Atk.Image atkWithOutImage, atkWithImage;
+			atkWithOutImage = CastToAtkInterface <Atk.Image> (accessible);
+			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
+			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
+			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
 		}
 		
 		[Test]

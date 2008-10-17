@@ -1,3 +1,9 @@
+2008-10-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: Add RadioButton+img testing.
+
+	* AtkTester.cs: Be less strict on subcoordinates.
+
 2008-10-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UiaAtkBridgeTest.mdp: Remove <GtkDesignInfo /> from project files.
