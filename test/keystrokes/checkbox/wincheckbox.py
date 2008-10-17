@@ -13,23 +13,24 @@ sequence.append(WaitForFocus("check button 1", acc_role=pyatspi.ROLE_CHECK_BOX))
 sequence.append(KeyComboAction("space"))
 sequence.append(KeyComboAction("space"))
 sequence.append(KeyComboAction("Tab"))
+sequence.append(PauseAction(20000))
 sequence.append(WaitForFocus("check button 2", acc_role=pyatspi.ROLE_CHECK_BOX))
 sequence.append(KeyComboAction("space"))
 sequence.append(KeyComboAction("space"))
 sequence.append(KeyComboAction("Tab"))
 sequence.append(utils.AssertPresentationAction(
     "Check Button",
-    ["BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame <x> check button 1 CheckBox'",
+    ["BRAILLE LINE:  'ipy Application Check Button Frame <x> check button 1 CheckBox'",
     "     VISIBLE:  '<x> check button 1 CheckBox', cursor=1",
-    "BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame < > check button 1 CheckBox'",
+    "BRAILLE LINE:  'ipy Application Check Button Frame < > check button 1 CheckBox'",
     "     VISIBLE:  '< > check button 1 CheckBox', cursor=1",
-    "BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame < > check button 2 CheckBox'",
+    "BRAILLE LINE:  'ipy Application Check Button Frame < > check button 2 CheckBox'",
     "     VISIBLE:  '< > check button 2 CheckBox', cursor=1",
-    "BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame <x> check button 2 CheckBox'",
+    "BRAILLE LINE:  'ipy Application Check Button Frame <x> check button 2 CheckBox'",
     "     VISIBLE:  '<x> check button 2 CheckBox', cursor=1",
-    "BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame < > check button 2 CheckBox'",
+    "BRAILLE LINE:  'ipy Application Check Button Frame < > check button 2 CheckBox'",
     "     VISIBLE:  '< > check button 2 CheckBox', cursor=1",
-    "BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame Quit Button'",
+    "BRAILLE LINE:  'ipy Application Check Button Frame Quit Button'",
     "     VISIBLE:  'Quit Button', cursor=1",
     "SPEECH OUTPUT: 'checked'",
     "SPEECH OUTPUT: 'not checked'",
@@ -41,7 +42,6 @@ sequence.append(utils.AssertPresentationAction(
     "SPEECH OUTPUT: 'Quit button'"]))
 sequence.append(KeyComboAction("Return"))
 
-sequence.append(PauseAction(1000))
 sequence.append(utils.AssertionSummaryAction())
 
 sequence.start()

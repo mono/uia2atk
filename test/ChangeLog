@@ -1,3 +1,13 @@
+2008-10-17  Ray Wang <rawang@novell.com>
+
+	* samples/wincheckbox.py: add checkbox sample with same layout as gtk
+	checkbutton sample.
+	* samples/toolstrip_combobox.py: simplify ToolStripComboBox control
+	sample.
+	* keystrokes/checkbox/checkbox.py: remove duplicate instructions
+	* keystrokes/checkbox/wincheckbox.py: add keystrokes script for winforms
+	checkbox control.
+
 2008-10-16  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* tools/dashboard: add directory to hold the files used to dynamically
