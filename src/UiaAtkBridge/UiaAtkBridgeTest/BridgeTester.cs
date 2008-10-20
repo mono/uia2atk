@@ -285,8 +285,6 @@ namespace UiaAtkBridgeTest
 		private Atk.Object GetAccessible (BasicWidgetType type, string name, bool real, bool embeddedImage)
 		{
 			Atk.Object accessible = null;
-			IRawElementProviderFragment provF = null;
-			IRawElementProviderSimple provS = null;
 			string[] names = null;
 
 			switch (type) {
@@ -295,91 +293,64 @@ namespace UiaAtkBridgeTest
 				if (real)
 					lab = lab1;
 				lab.Text = name;
-				UiaAtkBridge.TextLabel uiaLab;
 				if (real)
-#pragma warning disable 618
-					uiaLab = (UiaAtkBridge.TextLabel) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (lab, true, true));
-#pragma warning restore 618
+					accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (lab, true, true));
 				else
-					uiaLab = new UiaAtkBridge.TextLabel (ProviderFactory.GetProvider (lab, true, true));
-				accessible = uiaLab;
+					accessible = new UiaAtkBridge.TextLabel (ProviderFactory.GetProvider (lab, true, true));
 				break;
 			case BasicWidgetType.NormalButton:
 				SWF.Button but = new SWF.Button ();
 				if (real)
 					but = (embeddedImage ? butWithImage : butWithoutImage);
 				but.Text = name;
-				UiaAtkBridge.Button uiaBut;
-				if (real)
-#pragma warning disable 618
-					uiaBut = (UiaAtkBridge.Button) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (but, true, true));
-#pragma warning restore 618
-				else
+				if (!real)
 					throw new NotSupportedException ("We don't support unreal anymore in tests");
-				accessible = uiaBut;
+				accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (but, true, true));
 				break;
 			case BasicWidgetType.Window:
 				SWF.Form frm = new SWF.Form ();
 				if (real)
 					frm = form;
 				frm.Name = name;
-				UiaAtkBridge.Window uiaWin;
 				if (real)
-#pragma warning disable 618
-					uiaWin = (UiaAtkBridge.Window) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (frm, true, true));
-#pragma warning restore 618
+					accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (frm, true, true));
 				else
-					uiaWin = new UiaAtkBridge.Window (ProviderFactory.GetProvider (frm, true, true));
-				accessible = uiaWin;
+					accessible = new UiaAtkBridge.Window (ProviderFactory.GetProvider (frm, true, true));
 				break;
 			case BasicWidgetType.CheckBox:
 				SWF.CheckBox chk = new SWF.CheckBox ();
 				if (real)
 					chk = (embeddedImage ? chkWithImage : chkWithoutImage);
 				chk.Text = name;
-				UiaAtkBridge.CheckBoxButton uiaChk;
 				if (real)
-#pragma warning disable 618
-					uiaChk = (UiaAtkBridge.CheckBoxButton) 
-					  UiaAtkBridge.AutomationBridge.GetAdapterForProvider (
+					accessible = GetAdapterForProvider (
 					    (IRawElementProviderSimple) ProviderFactory.GetProvider (chk, true, true));
-#pragma warning restore 618
 				else
-					uiaChk = new UiaAtkBridge.CheckBoxButton (ProviderFactory.GetProvider (chk, true, true));
-				accessible = uiaChk;
+					accessible = new UiaAtkBridge.CheckBoxButton (ProviderFactory.GetProvider (chk, true, true));
 				break;
 			case BasicWidgetType.RadioButton:
 				// the way to group radioButtons is dependent on their parent control
 				SWF.RadioButton radio = 
 					(embeddedImage ? radWithImage : GiveMeARadio (name));
-				provF = ProviderFactory.GetProvider (radio, true, true);
-				UiaAtkBridge.RadioButton uiaRad;
+				radio.Text = name;
 				if (real)
-#pragma warning disable 618
-					uiaRad = (UiaAtkBridge.RadioButton) UiaAtkBridge.AutomationBridge.GetAdapterForProvider (provF);
-#pragma warning restore 618
+					accessible = GetAdapterForProvider (ProviderFactory.GetProvider (radio, true, true));
 				else
 					throw new NotSupportedException ("No un-real support for this");
-				accessible = uiaRad;
-				radio.Text = name;
 				break;
 			case BasicWidgetType.StatusBar:
 				SWF.StatusBar sb = new SWF.StatusBar ();
 				if (real)
 					sb = sb1;
 				sb.Text = name;
-				UiaAtkBridge.StatusBar uiaSb;
 				if (real)
-#pragma warning disable 618
-					uiaSb = (UiaAtkBridge.StatusBar) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (sb, true, true));
-#pragma warning restore 618
+					accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (sb, true, true));
 				else
-					uiaSb = new UiaAtkBridge.StatusBar (ProviderFactory.GetProvider (sb, true, true));
-				accessible = uiaSb;
+					accessible = new UiaAtkBridge.StatusBar (ProviderFactory.GetProvider (sb, true, true));
 				break;
 
 			case BasicWidgetType.HScrollBar:
-				names = new string[] { "First item", "Second Item", "Last Item", "A really, really long item that's here to try to ensure that we have a scrollbar, assuming that it's even possible to have a scrollbar just by having a relaly, really long item and we don't also have to perform some other function which I'm not aware of, like display the form on the screen" };
+				names = new string [] { "First item", "Second Item", "Last Item", "A really, really long item that's here to try to ensure that we have a scrollbar, assuming that it's even possible to have a scrollbar just by having a relaly, really long item and we don't also have to perform some other function which I'm not aware of, like display the form on the screen" };
 				accessible = GetAccessible (type, names, real);
 				for (int i = accessible.NAccessibleChildren - 1; i >= 0; i--)
 				{
@@ -395,9 +366,9 @@ namespace UiaAtkBridgeTest
 				break;
 
 			case BasicWidgetType.VScrollBar:
-				names = new string[100];
+				names = new string [100];
 				for (int i = 0; i < 100; i++)
-					names[i] = i.ToString();
+					names [i] = i.ToString();
 				accessible = GetAccessible (type, names, real);
 				for (int i = accessible.NAccessibleChildren - 1; i >= 0; i--)
 				{
@@ -414,16 +385,12 @@ namespace UiaAtkBridgeTest
 
 			case BasicWidgetType.ProgressBar:
 				SWF.ProgressBar pb = new SWF.ProgressBar ();
-				if (real)
+				if (real) {
 					pb = pb1;
-				UiaAtkBridge.ProgressBar uiaPb;
-				if (real)
-#pragma warning disable 618
-					uiaPb = (UiaAtkBridge.ProgressBar) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (pb, true, true));
-#pragma warning restore 618
-				else
-					uiaPb = new UiaAtkBridge.ProgressBar (ProviderFactory.GetProvider (pb, true, true));
-				accessible = uiaPb;
+					accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (pb, true, true));
+				} else {
+					accessible = new UiaAtkBridge.ProgressBar (ProviderFactory.GetProvider (pb, true, true));
+				}
 				break;
 
 			case BasicWidgetType.Spinner:
@@ -433,14 +400,10 @@ namespace UiaAtkBridgeTest
 				nud.Minimum = 0;
 				nud.Maximum = 100;
 				nud.Value = 50;
-				UiaAtkBridge.Spinner uiaSp;
 				if (real)
-#pragma warning disable 618
-					uiaSp = (UiaAtkBridge.Spinner) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (nud, true, true));
-#pragma warning restore 618
+					accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (nud, true, true));
 				else
-					uiaSp = new UiaAtkBridge.Spinner (ProviderFactory.GetProvider (nud, true, true));
-				accessible = uiaSp;
+					accessible = new UiaAtkBridge.Spinner (ProviderFactory.GetProvider (nud, true, true));
 				break;
 
 			case BasicWidgetType.TextBoxEntry:
@@ -448,15 +411,7 @@ namespace UiaAtkBridgeTest
 				if (!real)
 					throw new NotSupportedException ("Not unreal support for TextBox");
 
-				provS = (IRawElementProviderSimple) ProviderFactory.GetProvider (tbxEntry, true, true);
-				Assert.IsNotNull (provS, "Provider retreived from ProvFactory should not be null");
-#pragma warning disable 618
-				UiaAtkBridge.EditableTextBoxEntryView editTextEntry = (UiaAtkBridge.EditableTextBoxEntryView)
-				  UiaAtkBridge.AutomationBridge.GetAdapterForProvider (provS);
-#pragma warning restore 618
-				Assert.IsNotNull (editTextEntry, "Adapter retreived from AutomationBridge should not be null");
-				
-				accessible = editTextEntry;
+				accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (tbxEntry, true, true));
 				break;
 
 			case BasicWidgetType.TextBoxView:
@@ -464,13 +419,7 @@ namespace UiaAtkBridgeTest
 				if (!real)
 					throw new NotSupportedException ("Not unreal support for TextBox");
 
-#pragma warning disable 618
-				UiaAtkBridge.EditableTextBoxEntryView editTextView = (UiaAtkBridge.EditableTextBoxEntryView)
-				  UiaAtkBridge.AutomationBridge.GetAdapterForProvider (
-				    (IRawElementProviderSimple) ProviderFactory.GetProvider (tbxView, true, true));
-#pragma warning restore 618
-				
-				accessible = editTextView;
+				accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (tbxView, true, true));
 				break;
 				
 			case BasicWidgetType.ComboBox:
@@ -481,6 +430,18 @@ namespace UiaAtkBridgeTest
 			}
 
 			return accessible;
+		}
+
+
+		private static Atk.Object GetAdapterForProvider (IRawElementProviderSimple provider)
+		{
+#pragma warning disable 618
+			object adapter = UiaAtkBridge.AutomationBridge.GetAdapterForProvider (provider) as Atk.Object;
+#pragma warning restore 618
+			Assert.IsNotNull (adapter, "Object retreived from AutomationBridge.GetAdapterForProvider should not be null");
+			Atk.Object atkObj = adapter as Atk.Object;
+			Assert.IsNotNull (atkObj, "Object retreived from AutomationBridge.GetAdapterForProvider is not Atk.Object");
+			return atkObj;
 		}
 		
 		private int lastClickedLink = -1;

@@ -1,5 +1,9 @@
 2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Simplified.
+
+2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Adds textbox to the bridge party. Closes #428592.
 
 2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
