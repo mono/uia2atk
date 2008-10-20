@@ -32,6 +32,10 @@ public partial class MainWindow {
     
     private Gtk.HBox hbox1;
     
+    private Gtk.ScrolledWindow GtkScrolledWindow;
+    
+    private Gtk.TreeView treeview2;
+    
     private Gtk.Table table1;
     
     private Gtk.Button btnTest1;
@@ -112,6 +116,19 @@ public partial class MainWindow {
         this.hbox1.Name = "hbox1";
         this.hbox1.Spacing = 6;
         // Container child hbox1.Gtk.Box+BoxChild
+        this.GtkScrolledWindow = new Gtk.ScrolledWindow();
+        this.GtkScrolledWindow.Name = "GtkScrolledWindow";
+        this.GtkScrolledWindow.ShadowType = ((Gtk.ShadowType)(1));
+        // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+        this.treeview2 = new Gtk.TreeView();
+        this.treeview2.CanFocus = true;
+        this.treeview2.Name = "treeview2";
+        this.treeview2.HeadersClickable = true;
+        this.GtkScrolledWindow.Add(this.treeview2);
+        this.hbox1.Add(this.GtkScrolledWindow);
+        Gtk.Box.BoxChild w4 = ((Gtk.Box.BoxChild)(this.hbox1[this.GtkScrolledWindow]));
+        w4.Position = 0;
+        // Container child hbox1.Gtk.Box+BoxChild
         this.table1 = new Gtk.Table(((uint)(4)), ((uint)(3)), false);
         this.table1.Name = "table1";
         this.table1.RowSpacing = ((uint)(6));
@@ -123,11 +140,11 @@ public partial class MainWindow {
         this.btnTest1.UseUnderline = true;
         this.btnTest1.Label = Mono.Unix.Catalog.GetString("hey ya");
         this.table1.Add(this.btnTest1);
-        Gtk.Table.TableChild w3 = ((Gtk.Table.TableChild)(this.table1[this.btnTest1]));
-        w3.LeftAttach = ((uint)(2));
-        w3.RightAttach = ((uint)(3));
-        w3.XOptions = ((Gtk.AttachOptions)(4));
-        w3.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w5 = ((Gtk.Table.TableChild)(this.table1[this.btnTest1]));
+        w5.LeftAttach = ((uint)(2));
+        w5.RightAttach = ((uint)(3));
+        w5.XOptions = ((Gtk.AttachOptions)(4));
+        w5.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
         this.btnWithImg = new Gtk.Button();
         this.btnWithImg.CanFocus = true;
@@ -135,11 +152,11 @@ public partial class MainWindow {
         this.btnWithImg.UseUnderline = true;
         this.btnWithImg.Label = Mono.Unix.Catalog.GetString("IMG");
         this.table1.Add(this.btnWithImg);
-        Gtk.Table.TableChild w4 = ((Gtk.Table.TableChild)(this.table1[this.btnWithImg]));
-        w4.TopAttach = ((uint)(3));
-        w4.BottomAttach = ((uint)(4));
-        w4.XOptions = ((Gtk.AttachOptions)(4));
-        w4.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w6 = ((Gtk.Table.TableChild)(this.table1[this.btnWithImg]));
+        w6.TopAttach = ((uint)(3));
+        w6.BottomAttach = ((uint)(4));
+        w6.XOptions = ((Gtk.AttachOptions)(4));
+        w6.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
         this.cbeTest = Gtk.ComboBoxEntry.NewText();
         this.cbeTest.AppendText(Mono.Unix.Catalog.GetString("First element"));
@@ -147,13 +164,13 @@ public partial class MainWindow {
         this.cbeTest.AppendText(Mono.Unix.Catalog.GetString("Third element"));
         this.cbeTest.Name = "cbeTest";
         this.table1.Add(this.cbeTest);
-        Gtk.Table.TableChild w5 = ((Gtk.Table.TableChild)(this.table1[this.cbeTest]));
-        w5.TopAttach = ((uint)(1));
-        w5.BottomAttach = ((uint)(2));
-        w5.LeftAttach = ((uint)(2));
-        w5.RightAttach = ((uint)(3));
-        w5.XOptions = ((Gtk.AttachOptions)(4));
-        w5.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w7 = ((Gtk.Table.TableChild)(this.table1[this.cbeTest]));
+        w7.TopAttach = ((uint)(1));
+        w7.BottomAttach = ((uint)(2));
+        w7.LeftAttach = ((uint)(2));
+        w7.RightAttach = ((uint)(3));
+        w7.XOptions = ((Gtk.AttachOptions)(4));
+        w7.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
         this.cbxTest = Gtk.ComboBox.NewText();
         this.cbxTest.AppendText(Mono.Unix.Catalog.GetString("FirstItem"));
@@ -161,13 +178,13 @@ public partial class MainWindow {
         this.cbxTest.AppendText(Mono.Unix.Catalog.GetString("LastItem"));
         this.cbxTest.Name = "cbxTest";
         this.table1.Add(this.cbxTest);
-        Gtk.Table.TableChild w6 = ((Gtk.Table.TableChild)(this.table1[this.cbxTest]));
-        w6.TopAttach = ((uint)(1));
-        w6.BottomAttach = ((uint)(2));
-        w6.LeftAttach = ((uint)(1));
-        w6.RightAttach = ((uint)(2));
-        w6.XOptions = ((Gtk.AttachOptions)(4));
-        w6.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w8 = ((Gtk.Table.TableChild)(this.table1[this.cbxTest]));
+        w8.TopAttach = ((uint)(1));
+        w8.BottomAttach = ((uint)(2));
+        w8.LeftAttach = ((uint)(1));
+        w8.RightAttach = ((uint)(2));
+        w8.XOptions = ((Gtk.AttachOptions)(4));
+        w8.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
         this.checkbutton1 = new Gtk.CheckButton();
         this.checkbutton1.CanFocus = true;
@@ -176,11 +193,11 @@ public partial class MainWindow {
         this.checkbutton1.DrawIndicator = true;
         this.checkbutton1.UseUnderline = true;
         this.table1.Add(this.checkbutton1);
-        Gtk.Table.TableChild w7 = ((Gtk.Table.TableChild)(this.table1[this.checkbutton1]));
-        w7.TopAttach = ((uint)(2));
-        w7.BottomAttach = ((uint)(3));
-        w7.XOptions = ((Gtk.AttachOptions)(4));
-        w7.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w9 = ((Gtk.Table.TableChild)(this.table1[this.checkbutton1]));
+        w9.TopAttach = ((uint)(2));
+        w9.BottomAttach = ((uint)(3));
+        w9.XOptions = ((Gtk.AttachOptions)(4));
+        w9.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
         this.chkTest = new Gtk.CheckButton();
         this.chkTest.CanFocus = true;
@@ -189,19 +206,19 @@ public partial class MainWindow {
         this.chkTest.DrawIndicator = true;
         this.chkTest.UseUnderline = true;
         this.table1.Add(this.chkTest);
-        Gtk.Table.TableChild w8 = ((Gtk.Table.TableChild)(this.table1[this.chkTest]));
-        w8.TopAttach = ((uint)(1));
-        w8.BottomAttach = ((uint)(2));
-        w8.XOptions = ((Gtk.AttachOptions)(4));
-        w8.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w10 = ((Gtk.Table.TableChild)(this.table1[this.chkTest]));
+        w10.TopAttach = ((uint)(1));
+        w10.BottomAttach = ((uint)(2));
+        w10.XOptions = ((Gtk.AttachOptions)(4));
+        w10.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
         this.lblTest1 = new Gtk.Label();
         this.lblTest1.Name = "lblTest1";
         this.lblTest1.LabelProp = Mono.Unix.Catalog.GetString("This is a test message\nin a label");
         this.table1.Add(this.lblTest1);
-        Gtk.Table.TableChild w9 = ((Gtk.Table.TableChild)(this.table1[this.lblTest1]));
-        w9.XOptions = ((Gtk.AttachOptions)(4));
-        w9.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w11 = ((Gtk.Table.TableChild)(this.table1[this.lblTest1]));
+        w11.XOptions = ((Gtk.AttachOptions)(4));
+        w11.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
         this.radiobutton1 = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("radiobutton1"));
         this.radiobutton1.CanFocus = true;
@@ -210,13 +227,13 @@ public partial class MainWindow {
         this.radiobutton1.UseUnderline = true;
         this.radiobutton1.Group = new GLib.SList(System.IntPtr.Zero);
         this.table1.Add(this.radiobutton1);
-        Gtk.Table.TableChild w10 = ((Gtk.Table.TableChild)(this.table1[this.radiobutton1]));
-        w10.TopAttach = ((uint)(3));
-        w10.BottomAttach = ((uint)(4));
-        w10.LeftAttach = ((uint)(1));
-        w10.RightAttach = ((uint)(2));
-        w10.XOptions = ((Gtk.AttachOptions)(4));
-        w10.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w12 = ((Gtk.Table.TableChild)(this.table1[this.radiobutton1]));
+        w12.TopAttach = ((uint)(3));
+        w12.BottomAttach = ((uint)(4));
+        w12.LeftAttach = ((uint)(1));
+        w12.RightAttach = ((uint)(2));
+        w12.XOptions = ((Gtk.AttachOptions)(4));
+        w12.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
         this.radiobutton2 = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("radiobutton2"));
         this.radiobutton2.CanFocus = true;
@@ -225,13 +242,13 @@ public partial class MainWindow {
         this.radiobutton2.UseUnderline = true;
         this.radiobutton2.Group = this.radiobutton1.Group;
         this.table1.Add(this.radiobutton2);
-        Gtk.Table.TableChild w11 = ((Gtk.Table.TableChild)(this.table1[this.radiobutton2]));
-        w11.TopAttach = ((uint)(3));
-        w11.BottomAttach = ((uint)(4));
-        w11.LeftAttach = ((uint)(2));
-        w11.RightAttach = ((uint)(3));
-        w11.XOptions = ((Gtk.AttachOptions)(4));
-        w11.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w13 = ((Gtk.Table.TableChild)(this.table1[this.radiobutton2]));
+        w13.TopAttach = ((uint)(3));
+        w13.BottomAttach = ((uint)(4));
+        w13.LeftAttach = ((uint)(2));
+        w13.RightAttach = ((uint)(3));
+        w13.XOptions = ((Gtk.AttachOptions)(4));
+        w13.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
         this.radTest1 = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("rad Opt 0"));
         this.radTest1.CanFocus = true;
@@ -240,13 +257,13 @@ public partial class MainWindow {
         this.radTest1.UseUnderline = true;
         this.radTest1.Group = new GLib.SList(System.IntPtr.Zero);
         this.table1.Add(this.radTest1);
-        Gtk.Table.TableChild w12 = ((Gtk.Table.TableChild)(this.table1[this.radTest1]));
-        w12.TopAttach = ((uint)(2));
-        w12.BottomAttach = ((uint)(3));
-        w12.LeftAttach = ((uint)(1));
-        w12.RightAttach = ((uint)(2));
-        w12.XOptions = ((Gtk.AttachOptions)(4));
-        w12.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w14 = ((Gtk.Table.TableChild)(this.table1[this.radTest1]));
+        w14.TopAttach = ((uint)(2));
+        w14.BottomAttach = ((uint)(3));
+        w14.LeftAttach = ((uint)(1));
+        w14.RightAttach = ((uint)(2));
+        w14.XOptions = ((Gtk.AttachOptions)(4));
+        w14.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
         this.radTest2 = new Gtk.RadioButton(Mono.Unix.Catalog.GetString("rad Opt 1"));
         this.radTest2.CanFocus = true;
@@ -255,13 +272,13 @@ public partial class MainWindow {
         this.radTest2.UseUnderline = true;
         this.radTest2.Group = this.radTest1.Group;
         this.table1.Add(this.radTest2);
-        Gtk.Table.TableChild w13 = ((Gtk.Table.TableChild)(this.table1[this.radTest2]));
-        w13.TopAttach = ((uint)(2));
-        w13.BottomAttach = ((uint)(3));
-        w13.LeftAttach = ((uint)(2));
-        w13.RightAttach = ((uint)(3));
-        w13.XOptions = ((Gtk.AttachOptions)(4));
-        w13.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w15 = ((Gtk.Table.TableChild)(this.table1[this.radTest2]));
+        w15.TopAttach = ((uint)(2));
+        w15.BottomAttach = ((uint)(3));
+        w15.LeftAttach = ((uint)(2));
+        w15.RightAttach = ((uint)(3));
+        w15.XOptions = ((Gtk.AttachOptions)(4));
+        w15.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
         this.txtEntry = new Gtk.Entry();
         this.txtEntry.CanFocus = true;
@@ -270,16 +287,16 @@ public partial class MainWindow {
         this.txtEntry.IsEditable = true;
         this.txtEntry.InvisibleChar = '●';
         this.table1.Add(this.txtEntry);
-        Gtk.Table.TableChild w14 = ((Gtk.Table.TableChild)(this.table1[this.txtEntry]));
-        w14.LeftAttach = ((uint)(1));
-        w14.RightAttach = ((uint)(2));
-        w14.XOptions = ((Gtk.AttachOptions)(4));
-        w14.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w16 = ((Gtk.Table.TableChild)(this.table1[this.txtEntry]));
+        w16.LeftAttach = ((uint)(1));
+        w16.RightAttach = ((uint)(2));
+        w16.XOptions = ((Gtk.AttachOptions)(4));
+        w16.YOptions = ((Gtk.AttachOptions)(4));
         this.hbox1.Add(this.table1);
-        Gtk.Box.BoxChild w15 = ((Gtk.Box.BoxChild)(this.hbox1[this.table1]));
-        w15.Position = 1;
-        w15.Expand = false;
-        w15.Fill = false;
+        Gtk.Box.BoxChild w17 = ((Gtk.Box.BoxChild)(this.hbox1[this.table1]));
+        w17.Position = 1;
+        w17.Expand = false;
+        w17.Fill = false;
         // Container child hbox1.Gtk.Box+BoxChild
         this.vscrollbar1 = new Gtk.VScrollbar(null);
         this.vscrollbar1.Name = "vscrollbar1";
@@ -288,15 +305,15 @@ public partial class MainWindow {
         this.vscrollbar1.Adjustment.PageSize = 10;
         this.vscrollbar1.Adjustment.StepIncrement = 1;
         this.hbox1.Add(this.vscrollbar1);
-        Gtk.Box.BoxChild w16 = ((Gtk.Box.BoxChild)(this.hbox1[this.vscrollbar1]));
-        w16.Position = 2;
-        w16.Expand = false;
-        w16.Fill = false;
+        Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.hbox1[this.vscrollbar1]));
+        w18.Position = 2;
+        w18.Expand = false;
+        w18.Fill = false;
         this.vbox1.Add(this.hbox1);
-        Gtk.Box.BoxChild w17 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
-        w17.Position = 1;
-        w17.Expand = false;
-        w17.Fill = false;
+        Gtk.Box.BoxChild w19 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
+        w19.Position = 1;
+        w19.Expand = false;
+        w19.Fill = false;
         // Container child vbox1.Gtk.Box+BoxChild
         this.hscrollbar1 = new Gtk.HScrollbar(null);
         this.hscrollbar1.Name = "hscrollbar1";
@@ -305,27 +322,27 @@ public partial class MainWindow {
         this.hscrollbar1.Adjustment.PageSize = 10;
         this.hscrollbar1.Adjustment.StepIncrement = 1;
         this.vbox1.Add(this.hscrollbar1);
-        Gtk.Box.BoxChild w18 = ((Gtk.Box.BoxChild)(this.vbox1[this.hscrollbar1]));
-        w18.Position = 2;
-        w18.Expand = false;
-        w18.Fill = false;
+        Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.vbox1[this.hscrollbar1]));
+        w20.Position = 2;
+        w20.Expand = false;
+        w20.Fill = false;
         // Container child vbox1.Gtk.Box+BoxChild
         this.progressbar1 = new Gtk.ProgressBar();
         this.progressbar1.Name = "progressbar1";
         this.vbox1.Add(this.progressbar1);
-        Gtk.Box.BoxChild w19 = ((Gtk.Box.BoxChild)(this.vbox1[this.progressbar1]));
-        w19.Position = 3;
-        w19.Expand = false;
-        w19.Fill = false;
+        Gtk.Box.BoxChild w21 = ((Gtk.Box.BoxChild)(this.vbox1[this.progressbar1]));
+        w21.Position = 3;
+        w21.Expand = false;
+        w21.Fill = false;
         // Container child vbox1.Gtk.Box+BoxChild
         this.statusbar1 = new Gtk.Statusbar();
         this.statusbar1.Name = "statusbar1";
         this.statusbar1.Spacing = 6;
         this.vbox1.Add(this.statusbar1);
-        Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
-        w20.Position = 4;
-        w20.Expand = false;
-        w20.Fill = false;
+        Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
+        w22.Position = 4;
+        w22.Expand = false;
+        w22.Fill = false;
         this.Add(this.vbox1);
         if ((this.Child != null)) {
             this.Child.ShowAll();
