@@ -115,7 +115,7 @@ namespace Mono.UIAutomation.Winforms
 				else
 					itemProvider = new ToolStripItemProvider (item);
 				itemProviders [item]  = itemProvider;
-				itemProvider.InitializeEvents ();
+				itemProvider.Initialize ();
 			}
 
 			return itemProvider;

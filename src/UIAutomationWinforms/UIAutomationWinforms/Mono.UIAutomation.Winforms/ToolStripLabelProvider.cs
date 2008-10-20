@@ -43,12 +43,18 @@ namespace Mono.UIAutomation.Winforms
 		{
 			this.label = label;
 
-			if (label.IsLink)
-				SetBehavior (InvokePatternIdentifiers.Pattern,
-				             new InvokeProviderBehavior (this));
 
 			// TODO: No built-in event for IsLink property changing,
 			//	 may need to patch MWF.
+		}
+
+		public override void Initialize()
+		{
+			base.Initialize ();
+
+			if (label.IsLink)
+				SetBehavior (InvokePatternIdentifiers.Pattern,
+				             new InvokeProviderBehavior (this));
 		}
 
 		public override object GetPropertyValue (int propertyId)

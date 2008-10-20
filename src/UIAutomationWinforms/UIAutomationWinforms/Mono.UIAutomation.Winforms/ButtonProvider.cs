@@ -40,13 +40,19 @@ namespace Mono.UIAutomation.Winforms
 		
 		public ButtonProvider (Button button) : base (button)
 		{
-			SetBehavior (InvokePatternIdentifiers.Pattern, 
-			             new InvokeProviderBehavior (this));
 		}
 		
 #endregion
 
 #region IRawElementProviderSimple Overrides
+
+		public override void Initialize ()
+		{
+			base.Initialize ();
+
+			SetBehavior (InvokePatternIdentifiers.Pattern, 
+			             new InvokeProviderBehavior (this));
+		}
 
 		public override object GetPropertyValue (int propertyId)
 		{

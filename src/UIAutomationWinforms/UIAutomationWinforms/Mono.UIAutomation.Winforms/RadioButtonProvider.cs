@@ -40,13 +40,19 @@ namespace Mono.UIAutomation.Winforms
 		public RadioButtonProvider (RadioButton radioButton) :
 			base (radioButton)
 		{
-			SetBehavior (SelectionItemPatternIdentifiers.Pattern, 
-			             new SelectionItemProviderBehavior (this));
 		}
 		
 #endregion
 		
 #region IRawElementProviderSimple Members
+
+		public override void Initialize()
+		{
+			base.Initialize ();
+
+			SetBehavior (SelectionItemPatternIdentifiers.Pattern, 
+			             new SelectionItemProviderBehavior (this));
+		}
 
 		public override object GetPropertyValue (int propertyId)
 		{

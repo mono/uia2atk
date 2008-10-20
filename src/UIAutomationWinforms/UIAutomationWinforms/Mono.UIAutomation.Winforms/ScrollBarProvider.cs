@@ -45,12 +45,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			orientation = scrollbar is HScrollBar 
 				? OrientationType.Horizontal : OrientationType.Vertical;
-			
-			//LAMESPEC: http://msdn.microsoft.com/en-us/library/ms743712.aspx
-			//"This functionality is required to be supported only if the Scroll control 
-			//pattern is not supported on the container that has the scroll bar."
-			SetBehavior (RangeValuePatternIdentifiers.Pattern,
-			             new RangeValueProviderBehavior (this));
 		}
 
 		#endregion
@@ -72,6 +66,17 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 
 		#region SimpleControlProvider: Specializations
+
+		public override void Initialize ()
+		{
+			base.Initialize ();
+			
+			//LAMESPEC: http://msdn.microsoft.com/en-us/library/ms743712.aspx
+			//"This functionality is required to be supported only if the Scroll control 
+			//pattern is not supported on the container that has the scroll bar."
+			SetBehavior (RangeValuePatternIdentifiers.Pattern,
+			             new RangeValueProviderBehavior (this));
+		}
 		
 		public override object GetPropertyValue (int propertyId)
 		{

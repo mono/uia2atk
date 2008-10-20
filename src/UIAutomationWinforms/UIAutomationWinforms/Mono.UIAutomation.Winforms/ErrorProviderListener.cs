@@ -183,7 +183,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			//We are doing this because SWF.ErroProvider doesn't use SWF.ToolTip :(
 			provider = new ErrorProvider.ErrorProviderToolTipProvider (error);
-			provider.InitializeEvents ();
+			provider.Initialize ();
 			provider.Show (args.AssociatedControl);
 		}
 		

@@ -46,9 +46,9 @@ namespace Mono.UIAutomation.Winforms
 		
 #region Public Methods
 
-		public override void InitializeEvents ()
+		public override void Initialize ()
 		{
-			base.InitializeEvents ();
+			base.Initialize ();
 			
 			SetBehavior (TogglePatternIdentifiers.Pattern,
 			             new ToggleProviderBehavior (this));

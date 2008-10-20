@@ -75,9 +75,13 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Public Methods
-		
-		public void Initialize ()
+
+		public override void Initialize ()
 		{
+			base.Initialize ();
+
+			//Behaviors
+
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
 			             listProvider.GetListItemBehaviorRealization (SelectionItemPatternIdentifiers.Pattern,
 			                                                          this));
@@ -99,16 +103,8 @@ namespace Mono.UIAutomation.Winforms
 			SetBehavior (InvokePatternIdentifiers.Pattern,
 			             listProvider.GetListItemBehaviorRealization (InvokePatternIdentifiers.Pattern,
 			                                                          this));
-			
-			InitializeEvents ();
-		}
 
-		public override void InitializeEvents ()
-		{
-			base.InitializeEvents (); 
-			
-			nameProperty = (string) ListProvider.GetItemPropertyValue (this, 
-			                                                           AutomationElementIdentifiers.NameProperty.Id);
+			// Events
 			
 			SetEvent (ProviderEventType.AutomationElementIsKeyboardFocusableProperty,
 			          listProvider.GetListItemHasKeyboardFocusEvent (this));
@@ -116,6 +112,11 @@ namespace Mono.UIAutomation.Winforms
 			//FIXME: Implement this
 			SetEvent (ProviderEventType.AutomationFocusChangedEvent,
 			          null);
+
+			// Properties
+
+			nameProperty = (string) ListProvider.GetItemPropertyValue (this, 
+			                                                           AutomationElementIdentifiers.NameProperty.Id);
 		}
 		
 		#endregion

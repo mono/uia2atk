@@ -50,20 +50,24 @@ namespace Mono.UIAutomation.Winforms
 		{
 			this.form = form;
 			
-			SetBehavior (WindowPatternIdentifiers.Pattern,
-			             new WindowProviderBehavior (this));
-			SetBehavior (TransformPatternIdentifiers.Pattern,
-			             new TransformProviderBehavior (this));
-			
 			form.Closed += OnClosed;
 			form.Shown += OnShown;
 		}
 		
 #endregion
 
-		public override void InitializeEvents ()
+		public override void Initialize ()
 		{
-			base.InitializeEvents (); 			
+			base.Initialize ();
+
+			// Behaviors
+			
+			SetBehavior (WindowPatternIdentifiers.Pattern,
+			             new WindowProviderBehavior (this));
+			SetBehavior (TransformPatternIdentifiers.Pattern,
+			             new TransformProviderBehavior (this));
+
+			// Events
 			
 			SetEvent (ProviderEventType.AutomationFocusChangedEvent,
 			          new FormAutomationFocusChangedEvent (this));

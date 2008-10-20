@@ -46,25 +46,7 @@ namespace Mono.UIAutomation.Winforms
 		public ListViewProvider (SWF.ListView listView) : base (listView)
 		{
 			this.listView = listView;
-			
-			try { //TODO: Remove try-cath when SWF patch applied
-			
-			SWF.ScrollBar vscrollbar 
-					= Helper.GetPrivateProperty<SWF.ListView, SWF.ScrollBar> (typeof (SWF.ListView), 
-					                                                          listView,
-					                                                          "UIAVScrollBar");
-			SWF.ScrollBar hscrollbar 
-					= Helper.GetPrivateProperty<SWF.ListView, SWF.ScrollBar> (typeof (SWF.ListView),
-					                                                          listView,
-					                                                          "UIAHScrollBar");
-				
-			//ListScrollBehaviorObserver updates Navigation
-			observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);			
-			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
-			UpdateScrollBehavior ();
-			
-			} catch (Exception) {}
-			
+
 			lastView = listView.View;
 			groups = new Dictionary<SWF.ListViewGroup, ListViewGroupProvider> ();
 		}
@@ -85,6 +67,29 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region SimpleControlProvider: Specializations
+
+		public override void Initialize ()
+		{
+			base.Initialize ();
+			
+			try { //TODO: Remove try-cath when SWF patch applied
+			
+			SWF.ScrollBar vscrollbar 
+					= Helper.GetPrivateProperty<SWF.ListView, SWF.ScrollBar> (typeof (SWF.ListView), 
+					                                                          listView,
+					                                                          "UIAVScrollBar");
+			SWF.ScrollBar hscrollbar 
+					= Helper.GetPrivateProperty<SWF.ListView, SWF.ScrollBar> (typeof (SWF.ListView),
+					                                                          listView,
+					                                                          "UIAHScrollBar");
+				
+			//ListScrollBehaviorObserver updates Navigation
+			observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);			
+			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
+			UpdateScrollBehavior ();
+			
+			} catch (Exception) {}
+		}
 
 		public override object GetPropertyValue (int propertyId)
 		{
@@ -108,12 +113,12 @@ namespace Mono.UIAutomation.Winforms
 			
 			if (MultipleViewPatternIdentifiers.Pattern == behavior)
 				return new MultipleViewProviderBehavior (this);
-			else if (behavior == SelectionPatternIdentifiers.Pattern) 
+			else if (SelectionPatternIdentifiers.Pattern == behavior) 
 				return new SelectionProviderBehavior (this);
 			else if (GridPatternIdentifiers.Pattern == behavior) {
-				if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
-					return new GridProviderBehavior (this);
-				else
+//				if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
+//					return new GridProviderBehavior (this);
+//				else
 					return null;
 			} else
 				return null;
@@ -230,17 +235,18 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override ListItemProvider[] GetSelectedItems ()
 		{
-			if (listView.SelectedIndices.Count == 0)
-				return null;
-			else {
-				ListItemProvider []providers = new ListItemProvider [listView.SelectedIndices.Count];
-
-				for (int index = 0; index < listView.SelectedIndices.Count; index++)
-					//FIXME: This will fail when Groups are enabled
-					providers [index] = GetItemProviderFrom (this, listView.Items [index]);
-			
-				return providers;
-			}
+			return null;
+//			if (listView.SelectedIndices.Count == 0)
+//				return null;
+//			else {
+//				ListItemProvider []providers = new ListItemProvider [listView.SelectedIndices.Count];
+//
+//				for (int index = 0; index < listView.SelectedIndices.Count; index++)
+//					//FIXME: This will fail when Groups are enabled
+//					providers [index] = GetItemProviderFrom (this, listView.Items [index]);
+//			
+//				return providers;
+//			}
 		}
 		
 		public override void SelectItem (ListItemProvider item)
@@ -509,9 +515,20 @@ namespace Mono.UIAutomation.Winforms
 			{
 				this.group = group;
 				this.listView = listView;
-				
-				// TODO: Implement ExpandCollapse
-				// TODO: Implement Grid
+
+//				SetBehavior (GridPatternIdentifiers.Pattern,
+//				             new GroupGridProviderBehavior (this));
+//				//TODO: Implement
+//				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
+//				             null);
+			}
+
+			public SWF.ListView View {
+				get { return listView; }
+			}
+
+			public SWF.ListViewGroup Group {
+				get { return group; }
 			}
 			
 			public override IRawElementProviderFragmentRoot FragmentRoot {
@@ -522,9 +539,7 @@ namespace Mono.UIAutomation.Winforms
 		
 			public override object GetPropertyValue (int propertyId)
 			{
-				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-					return ControlType.Group.Id;
-				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return group.Header;
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;

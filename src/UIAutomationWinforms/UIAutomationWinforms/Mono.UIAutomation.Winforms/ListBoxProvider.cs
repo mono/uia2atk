@@ -47,20 +47,6 @@ namespace Mono.UIAutomation.Winforms
 		public ListBoxProvider (ListBox listbox) : base (listbox)
 		{
 			listboxControl = listbox;
-			
-			ScrollBar vscrollbar 
-				= Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox), 
-				                                                 listboxControl,
-				                                                 "UIAVScrollBar");
-			ScrollBar hscrollbar 
-				= Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox),
-				                                                 listboxControl,
-				                                                 "UIAHScrollBar");
-			
-			//ListScrollBehaviorObserver updates Navigation
-			observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);			
-			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
-			UpdateScrollBehavior ();
 		}
 
 		#endregion
@@ -98,6 +84,25 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region SimpleControlProvider: Specializations
+
+		public override void Initialize()
+		{
+			base.Initialize ();
+
+			ScrollBar vscrollbar 
+				= Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox), 
+				                                                 listboxControl,
+				                                                 "UIAVScrollBar");
+			ScrollBar hscrollbar 
+				= Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox),
+				                                                 listboxControl,
+				                                                 "UIAHScrollBar");
+			
+			//ListScrollBehaviorObserver updates Navigation
+			observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);			
+			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
+			UpdateScrollBehavior ();
+		}
 
 		public override object GetPropertyValue (int propertyId)
 		{

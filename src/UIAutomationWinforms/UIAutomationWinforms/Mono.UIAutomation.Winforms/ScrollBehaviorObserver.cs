@@ -242,7 +242,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (type == StructureChangeType.ChildAdded) {
 				provider = subject.GetScrollbarProvider (scrollbar);
-				provider.InitializeEvents ();
+				provider.Initialize ();
 				subject.AddChildProvider (generateEvent, provider);
 			} else {
 				subject.RemoveChildProvider (generateEvent, provider);

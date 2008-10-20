@@ -47,16 +47,6 @@ namespace Mono.UIAutomation.Winforms
 		protected ListProvider (Control control) : base (control)
 		{ 
 			items = new Dictionary<object, ListItemProvider> ();
-
-			//According to: http://msdn.microsoft.com/en-us/library/ms742462.aspx
-			SetBehavior (SelectionPatternIdentifiers.Pattern,
-			             GetBehaviorRealization (SelectionPatternIdentifiers.Pattern));
-			SetBehavior (ScrollPatternIdentifiers.Pattern,
-			             GetBehaviorRealization (ScrollPatternIdentifiers.Pattern));
-			SetBehavior (GridPatternIdentifiers.Pattern,
-			             GetBehaviorRealization (GridPatternIdentifiers.Pattern));
-			SetBehavior (MultipleViewPatternIdentifiers.Pattern,
-			             GetBehaviorRealization (MultipleViewPatternIdentifiers.Pattern));
 		}
 		
 		#endregion
@@ -159,6 +149,21 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region FragmentRootControlProvider: Specializations
+
+		public override void Initialize ()
+		{
+			base.Initialize ();
+
+			//According to: http://msdn.microsoft.com/en-us/library/ms742462.aspx
+			SetBehavior (SelectionPatternIdentifiers.Pattern,
+			             GetBehaviorRealization (SelectionPatternIdentifiers.Pattern));
+			SetBehavior (ScrollPatternIdentifiers.Pattern,
+			             GetBehaviorRealization (ScrollPatternIdentifiers.Pattern));
+			SetBehavior (GridPatternIdentifiers.Pattern,
+			             GetBehaviorRealization (GridPatternIdentifiers.Pattern));
+			SetBehavior (MultipleViewPatternIdentifiers.Pattern,
+			             GetBehaviorRealization (MultipleViewPatternIdentifiers.Pattern));
+		}
 		
 		public override void InitializeChildControlStructure ()
 		{

@@ -43,18 +43,21 @@ namespace Mono.UIAutomation.Winforms
 		public NumericUpDownProvider (NumericUpDown upDown) :
 			base (upDown)
 		{
-			// TODO: Child InvokeProviders for up/down!
-			SetBehavior (RangeValuePatternIdentifiers.Pattern,
-			             new RangeValueProviderBehavior (this));
 		}
 		
 #endregion
 		
 #region Public Methods
 		
-		public override void InitializeEvents ()
+		public override void Initialize ()
 		{
-			base.InitializeEvents ();
+			base.Initialize ();
+
+			// Behaviors
+
+			// TODO: Child InvokeProviders for up/down!
+			SetBehavior (RangeValuePatternIdentifiers.Pattern,
+			             new RangeValueProviderBehavior (this));
 
 			// TODO: Review...do we need this?
 //			SetEvent (ProviderEventType.InvokePatternInvokedEvent, 

@@ -42,6 +42,15 @@ namespace Mono.UIAutomation.Winforms
 		public TextBoxProvider (TextBoxBase textBoxBase) : base (textBoxBase)
 		{
 			this.textboxbase = textBoxBase;
+		}
+
+		#endregion
+
+		#region Public Methods
+
+		public override void Initialize ()
+		{
+			base.Initialize ();
 			
 			//Text pattern is supported by both Control Types: Document and Edit
 			SetBehavior (TextPatternIdentifiers.Pattern,
@@ -50,10 +59,6 @@ namespace Mono.UIAutomation.Winforms
 			textboxbase.MultilineChanged += new EventHandler (OnMultilineChanged);
 			UpdateBehaviors ();
 		}
-
-		#endregion
-
-		#region Public Methods
 
 		public override object GetPropertyValue (int propertyId)
 		{

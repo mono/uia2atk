@@ -489,7 +489,14 @@ namespace Mono.UIAutomation.Winforms
 			                               ComboBoxProvider provider)
 				: base (control)
 			{
-				SetBehavior (InvokePatternIdentifiers.Pattern, 
+				this.provider = provider;
+			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+
+				SetBehavior (InvokePatternIdentifiers.Pattern,
 				             new ButtonInvokeBehavior (provider));
 			}
 	
@@ -503,6 +510,8 @@ namespace Mono.UIAutomation.Winforms
 				else
 					return base.GetPropertyValue (propertyId);
 			}
+
+			private ComboBoxProvider provider;
 		}
 		
 		#endregion

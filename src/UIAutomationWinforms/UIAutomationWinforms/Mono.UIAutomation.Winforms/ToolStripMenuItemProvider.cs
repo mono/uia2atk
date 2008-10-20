@@ -47,12 +47,17 @@ namespace Mono.UIAutomation.Winforms
 			this.menuItem = menuItem;
 			itemProviders = new Dictionary<ToolStripItem, ToolStripItemProvider> ();
 			
+		}
+		
+		#region FragmentRootControlProvider: Specializations
+
+		public override void Initialize()
+		{
+			base.Initialize ();
+
 			SetBehavior (InvokePatternIdentifiers.Pattern, 
 			             new InvokeProviderBehavior (this));
 		}
-
-		
-		#region FragmentRootControlProvider: Specializations
 		
 		public override void InitializeChildControlStructure ()
 		{
@@ -102,7 +107,7 @@ namespace Mono.UIAutomation.Winforms
 			if (!itemProviders.TryGetValue (item, out itemProvider)) {
 				itemProvider = new ToolStripItemProvider (item); // TODO: Specialize
 				itemProviders [item]  = itemProvider;
-				itemProvider.InitializeEvents ();
+				itemProvider.Initialize ();
 			}
 
 			return itemProvider;

@@ -43,14 +43,19 @@ namespace Mono.UIAutomation.Winforms
 		{
 			this.statusBar = statusBar;
 			panels = new List<StatusBarPanelProvider> ();
-			
-			SetBehavior (GridPatternIdentifiers.Pattern,
-			             new GridProviderBehavior (this));
 		}
 
 		#endregion
 		
 		#region FragmentRootControlProvider: Specializations
+
+		public override void Initialize()
+		{
+			base.Initialize ();
+			
+			SetBehavior (GridPatternIdentifiers.Pattern,
+			             new GridProviderBehavior (this));
+		}
 		
 		public override void InitializeChildControlStructure ()
 		{	
@@ -97,7 +102,7 @@ namespace Mono.UIAutomation.Winforms
 				for (int loop = panels.Count - 1; loop < index; ++loop) {
 					panel = new StatusBarPanelProvider (statusBar.Panels [index]);
 					panels.Add (panel);
-					panel.InitializeEvents ();
+					panel.Initialize ();
 				}
 			}
 			

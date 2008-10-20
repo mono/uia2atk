@@ -106,6 +106,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.ErrorProvider errp;
 			SWF.TabControl tc;
 			SWF.TabPage tp;
+			SWF.ListView lv;
 			SWF.WebBrowser wb;
 			
 			SWF.MenuStrip ms;
@@ -190,6 +191,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new TabControlProvider (tc);
 			else if ((tp = component as SWF.TabPage) != null)
 				provider = new TabPageProvider (tp);
+//			else if ((lv = component as SWF.ListView) != null)
+//				provider = new ListViewProvider (lv);
 			else {
 				//TODO: We have to solve the problem when there's a Custom control
 				//	Ideally the first thing we do is send a wndproc message to
@@ -207,7 +210,7 @@ namespace Mono.UIAutomation.Winforms
 				// TODO: Make tracking in dictionary optional
 				componentProviders [component] = provider;
 				if (initializeEvents)
-					provider.InitializeEvents ();
+					provider.Initialize ();
 				
 				FragmentRootControlProvider root;
 				if (forceInitializeChildren == true

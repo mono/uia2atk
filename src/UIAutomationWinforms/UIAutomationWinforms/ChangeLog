@@ -1,5 +1,34 @@
 2008-10-20  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ListProvider.cs:
+	* Mono.UIAutomation.Winforms/FormProvider.cs:
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs:
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs:
+	* Mono.UIAutomation.Winforms/LinkLabelProvider.cs:
+	* Mono.UIAutomation.Winforms/ProgressBarProvider.cs:
+	* Mono.UIAutomation.Winforms/RadioButtonProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripMenuItemProvider.cs: Setting
+	behaviors in Initialize.
+
+	* Mono.UIAutomation.Winforms/LabelProvider.cs:
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs:
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs:
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs:
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs:
+	* Mono.UIAutomation.Winforms/NumericUpDownProvider.cs:
+	* Mono.UIAutomation.Winforms/ErrorProviderListener.cs:
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs:
+	* Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs: InitializeEvents
+	-> Initialize.
+
+2008-10-20  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/HelpProvider.cs:
 	* Mono.UIAutomation.Winforms/ErrorProvider.cs: SWF =
 	System.Windows.Forms.  Implementation GetBoundingRectangle. (Needs

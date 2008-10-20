@@ -39,13 +39,19 @@ namespace Mono.UIAutomation.Winforms
 
 		public LinkLabelProvider (LinkLabel linkLabel) : base (linkLabel)
 		{
-			SetBehavior (InvokePatternIdentifiers.Pattern, 
-			             new InvokeProviderBehavior (this));
 		}
 
 		#endregion
 		
 		#region SimpleControlProvider specialization
+
+		public override void Initialize()
+		{
+			base.Initialize ();
+			
+			SetBehavior (InvokePatternIdentifiers.Pattern,
+			             new InvokeProviderBehavior (this));
+		}
 
 		public override object GetPropertyValue (int propertyId)
 		{

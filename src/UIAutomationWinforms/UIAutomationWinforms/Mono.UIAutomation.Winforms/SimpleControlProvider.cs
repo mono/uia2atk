@@ -111,7 +111,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Public Methods
 
-		public virtual void InitializeEvents ()
+		public virtual void Initialize ()
 		{
 			// These events only apply to Control providers
 			if (Control == null)
