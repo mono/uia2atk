@@ -29,16 +29,6 @@ class ProgressBarFrame(accessibles.Frame):
         self.button = self.findPushButton(self.BUTTON)
         self.progressbar = self.findProgressBar(None)
 
-    #check progressbar's all expectant states
-    def statesCheck(self, accessible=None):
-        accessible = self.progressbar
-        procedurelogger.action('check %s\'s all states' % accessible)
-
-        procedurelogger.expectedResult('%s\'s all states can be found' % accessible)
-        for a in states.ProgressBar.states:
-            state = getattr(accessible, a)
-            assert state, "Expected state: %s" % (a)
-
     #give 'click' action
     def click(self, button):
         button.click()
@@ -52,18 +42,17 @@ class ProgressBarFrame(accessibles.Frame):
         assert retryUntilTrue(resultMatches)
 
     #assert progressbar's value
-    def assertValue(self, value=None):
-        maximumValue = self.progressbar._accessible.queryValue().maximumValue
+    def assertValue(self, progressbar, newValue=None):
+        maximumValue = progressbar._accessible.queryValue().maximumValue
 
-        def resultMatches():
-            if 0 <= value <= maximumValue:
-                procedurelogger.expectedResult('the progressbar\'s current value is "%s"' % value)
-                print "progressbar's current value is:", self.progressbar.__getattr__('value')
-                return self.progressbar.__getattr__('value') == value
-            else:
-                procedurelogger.expectedResult('value "%s" out of run' % value)
-                return not self.progressbar.__getattr__('value') == value
-        assert retryUntilTrue(resultMatches)
+        if 0 <= newValue <= maximumValue:
+            procedurelogger.expectedResult('the %s\'s current value is "%s"' % (progressbar, newValue))
+            assert progressbar.__getattr__('value') == newValue, \
+                       "progressbar's current value is %s:" % progressbar.__getattr__('value')
+        else:
+            procedurelogger.expectedResult('value "%s" out of run' % newValue)
+            assert not progressbar.__getattr__('value') == newValue, \
+                       "progressbar's current value is %s:" % progressbar.__getattr__('value')
     
     #close application window
     def quit(self):

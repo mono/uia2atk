@@ -19,6 +19,7 @@ import os
 
 from strongwind import *
 from progressbar import *
+from helpers import *
 from sys import argv
 from os import path
 
@@ -43,7 +44,7 @@ if app is None:
 pbFrame = app.progressBarFrame
 
 #check progressbar's states list
-pbFrame.statesCheck(pbFrame.progressbar)
+statesCheck(pbFrame.progressbar, "ProgressBar")
 
 #click button the first time
 pbFrame.click(pbFrame.button)
@@ -53,7 +54,7 @@ pbFrame.assertLabel("10%")
 #click button the second time
 pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
-pbFrame.assertValue(20)
+pbFrame.assertValue(pbFrame.progressbar, 20)
 
 #click button the third time
 pbFrame.click(pbFrame.button)
@@ -63,7 +64,10 @@ pbFrame.assertLabel("30%")
 #click button the fourth time
 pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
-pbFrame.assertValue(40)
+pbFrame.assertValue(pbFrame.progressbar, 40)
+
+#check progressbar's states list again
+statesCheck(pbFrame.progressbar, "ProgressBar")
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

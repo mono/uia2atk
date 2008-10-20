@@ -1,5 +1,12 @@
 2008-10-20  Calen Chen <cachen@novell.com>
 
+	* testers/states.py: update states tuple for progressbar
+	* testers/progressbar/progressbarframe.py: modify assertValue
+	* testers/progressbar_basic_ops.py: modify states test, add states test 
+	after update progressbar's value
+
+2008-10-20  Calen Chen <cachen@novell.com>
+
 	* samples/tooltip.py: update the display time to 10000ms
 	* testers/tooltip/tooltipframe.py: use findToolTip instead 
 	findLabel.(at present, winforms app shows "tool tip" role in 

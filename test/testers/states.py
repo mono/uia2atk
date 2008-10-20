@@ -239,7 +239,7 @@ class ListItem(object):
     states = (ENABLED, FOCUSABLE, SELECTABLE, SENSITIVE, SHOWING, SINGLE_LINE, TRANSIENT, VISIBLE)
 
 class ProgressBar(object):
-    states = (SHOWING,)
+    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
 class NumericUpDown(object):
     states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
