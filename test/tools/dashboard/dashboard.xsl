@@ -32,13 +32,13 @@
           <xsl:variable name="status" select="status"/>
           <xsl:choose>
             <xsl:when test="$status = -1">
-              <td><center><img src="grey.png" height="22" width="22"/></center></td>
+              <td><center><img src="grey.png" alt="not run" title="not run" height="22" width="22"/></center></td>
             </xsl:when>
             <xsl:when test="$status = 0">
-              <td><center><img src="green.png" height="22" width="22"/></center></td>
+              <td><center><img src="green.png" alt="pass" title="pass" height="22" width="22"/></center></td>
             </xsl:when>
             <xsl:otherwise>
-              <td><center><img src="red.png" height="22" width="22"/></center></td>
+              <td><center><img src="red.png" alt="fail" title="fail" height="22" width="22"/></center></td>
             </xsl:otherwise>
           </xsl:choose>
           <xsl:variable name="time" select="time"/>
