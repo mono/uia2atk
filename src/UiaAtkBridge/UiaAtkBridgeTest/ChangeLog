@@ -1,3 +1,7 @@
+2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Fix the radiobutton retrieval in the backend.
+
 2008-10-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Add RadioButton+img testing.

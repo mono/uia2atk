@@ -188,6 +188,7 @@ namespace UiaAtkBridgeTest
 		SWF.RadioButton rad2 = new SWF.RadioButton ();
 		SWF.RadioButton rad3 = new SWF.RadioButton ();
 		SWF.RadioButton rad4 = new SWF.RadioButton ();
+		SWF.RadioButton radWithImage = new SWF.RadioButton ();
 		List<SWF.RadioButton> radios = new List<SWF.RadioButton> ();
 		int currentRadio = -1;
 		SWF.ListBox lb1 = new SWF.ListBox ();
@@ -219,6 +220,9 @@ namespace UiaAtkBridgeTest
 
 			chkWithImage.Image = System.Drawing.Image.FromFile (imgPath);
 			butWithImage.AutoSize = true;
+
+			radWithImage.Image = System.Drawing.Image.FromFile (imgPath);
+			radWithImage.AutoSize = true;
 			
 			cb1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			linklab1.Links[0].Visited = true;
@@ -248,6 +252,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (pb1);
 			form.Controls.Add (nud1);
 			form.Controls.Add (tbx1);
+			form.Controls.Add (radWithImage);
 			rad1.Text = "rad1";
 			rad2.Text = "rad2";
 			rad3.Text = "rad3";
@@ -338,16 +343,18 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.RadioButton:
 				// the way to group radioButtons is dependent on their parent control
-				IRawElementProviderFragment prov = ProviderFactory.GetProvider (GiveMeARadio (name), true, true);
+				SWF.RadioButton radio = 
+					(embeddedImage ? radWithImage : GiveMeARadio (name));
+				IRawElementProviderFragment prov = ProviderFactory.GetProvider (radio, true, true);
 				UiaAtkBridge.RadioButton uiaRad;
 				if (real)
 #pragma warning disable 618
 					uiaRad = (UiaAtkBridge.RadioButton) UiaAtkBridge.AutomationBridge.GetAdapterForProvider (prov);
 #pragma warning restore 618
 				else
-					uiaRad = new UiaAtkBridge.RadioButton (prov);
+					throw new NotSupportedException ("No un-real support for this");
 				accessible = uiaRad;
-				
+				radio.Text = name;
 				break;
 			case BasicWidgetType.StatusBar:
 				SWF.StatusBar sb = new SWF.StatusBar ();
