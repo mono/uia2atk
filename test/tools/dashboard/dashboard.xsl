@@ -10,43 +10,57 @@
       <p class="header">
         <span id="documentName">Strongwind Test Status Dashboard</span><br/>
       </p>
-        <table>
+      <p class="summaryTop">
+        <span id="percentPassed">Passed: </span>
+        <xsl:value-of select="dashboard/percentPassed"/>
+        <br/>
+        <span id="totalTime">Total Time: </span>
+        <xsl:value-of select="dashboard/totalTime"/>
+      </p>
+      <table>
+      <tr>
+        <th id="controlNumber"></th>
+        <th id="controlName">Control</th>
+        <th id="status">Status</th>
+        <th id="time">Elapsed Time</th>
+      </tr>
+      <xsl:for-each select="dashboard/control">
         <tr>
-          <th id="controlNumber"></th>
-          <th id="controlName">Control</th>
-          <th id="status">Status</th>
-          <th id="time">Elapsed Time</th>
+          <td><xsl:number/></td>
+          <xsl:variable name="controlName" select="name"/>
+          <td><a href="reports/{$controlName}"><xsl:value-of select="$controlName"/></a></td>
+          <xsl:variable name="status" select="status"/>
+          <xsl:choose>
+            <xsl:when test="$status = -1">
+              <td><img src="grey.png" height="22" width="22"/></td>
+            </xsl:when>
+            <xsl:when test="$status = 0">
+              <td><img src="green.png" height="22" width="22"/></td>
+            </xsl:when>
+            <xsl:otherwise>
+              <td><img src="red.png" height="22" width="22"/></td>
+            </xsl:otherwise>
+          </xsl:choose>
+          <xsl:variable name="time" select="time"/>
+          <xsl:choose>
+            <xsl:when test="$status = 0">
+              <td><xsl:value-of select="time"/></td>
+            </xsl:when>
+            <xsl:otherwise>
+              <td></td>
+            </xsl:otherwise>
+          </xsl:choose>
         </tr>
-        <xsl:for-each select="dashboard/control">
-          <tr>
-            <td><xsl:number/></td>
-            <td><xsl:value-of select="name"/></td>
-            <xsl:variable name="status" select="status"/>
-            <xsl:choose>
-              <xsl:when test="$status = -1">
-                <td>NA</td>
-              </xsl:when>
-              <xsl:when test="$status = 0">
-                <td>Pass</td>
-              </xsl:when>
-              <xsl:otherwise>
-                <td>Fail</td>
-              </xsl:otherwise>
-            </xsl:choose>
-            <xsl:variable name="time" select="time"/>
-            <xsl:choose>
-              <xsl:when test="$status = 0">
-                <td><xsl:value-of select="time"/></td>
-              </xsl:when>
-              <xsl:otherwise>
-                <td>NA</td>
-              </xsl:otherwise>
-            </xsl:choose>
-          </tr>
-        </xsl:for-each>
+      </xsl:for-each>
       </table>
+      <p class="summaryTop">
+        <span id="percentPassed">Passed: </span>
+        <xsl:value-of select="dashboard/percentPassed"/>
+        <br/>
+        <span id="totalTime">Total Time: </span>
+        <xsl:value-of select="dashboard/totalTime"/>
+      </p>
     </body>
   </html>
 </xsl:template>
 </xsl:stylesheet>
-

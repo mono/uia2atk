@@ -92,26 +92,31 @@ class PageBuilder(object):
         # take out directories that aren't really for tests, like .svn
         self.test_dirs = [s for s in tmp_test_dirs if "_" in s]
         self.controls_tested = [s[:s.find("_")].lower() for s in self.test_dirs]
-
         # dashboard_dict's keys are control names and each value is a list
         # of the most recent log files for the tests associates with each
         # control
         self.dashboard_dict = {}
-        new_dirs = []
+        self.reports_dict = {}
         for control in self.controls:
             if control.lower() in self.controls_tested:
-                new_dirs = [dir for dir in self.test_dirs if dir.startswith("%s_" % control.lower())]
-                new_dirs = [os.path.join(Settings.log_dir, dir) for dir in new_dirs]
-                for i,dir in enumerate(new_dirs):
-                    new_dirs[i] = self.get_newest_subdir(dir)
-                # done buildling list of the most recent log directorie(s), now 
+                test_names = [dir for dir in self.test_dirs if dir.startswith("%s_" % control.lower())]
+                test_paths = [os.path.join(Settings.log_dir, dir) for dir in test_names]
+                new_dirs = []
+                for dir in test_paths:
+                    new_dirs.append(self.get_newest_subdir(dir))
+                # done buildling list of the most recent log directorie(s), now
                 # add the list to the dashboard_dict for each control.
                 self.dashboard_dict[control] = new_dirs
     
-
     def get_newest_subdir(self, dir):
         '''return a string of the newest subdir of the string dir'''
-        newest_subdir = c.getoutput("ls %s -tc | head -n1" % dir)
+        newest_subdir = c.getoutput("ls -tc %s | head -n1" % dir)
+        return os.path.join(dir, newest_subdir)
+
+    def get_new_to_old_subdirs(self, dir):
+        '''return a string of all subdirs of dir sorted from newest to
+        oldest'''
+        newest_subdir = c.getoutput("ls -tc %s" % dir)
         return os.path.join(dir, newest_subdir)
 
     def get_status(self, control):
@@ -147,15 +152,37 @@ class PageBuilder(object):
         times = [self.xmlp.get_time(log) for log in procedures_logs]
         return round(sum(times),1)
 
+    def build_report(self, control):
+        raise NotImplementedError
+
     def build_all(self):
+        total_time = 0.0
+        num_passed = 0.0
+        num_tests = 0.0
         root = ET.Element("dashboard")
         for control_name in self.controls:
+            num_tests += 1
             control = ET.SubElement(root, "control")
             ET.SubElement(control, "name").text = control_name
-            control_status = str(self.get_status(control_name))
-            ET.SubElement(control, "status").text = control_status
-            control_time = str(self.get_time(control_name))
-            ET.SubElement(control, "time").text = control_time
+            control_status = self.get_status(control_name)
+            if control_status == 0:
+                num_passed += 1
+            else:
+                # build the report for control_name
+                # self.build_report(control_name)
+                pass
+            ET.SubElement(control, "status").text = str(control_status)
+            time = self.get_time(control_name)
+            # keep track of the total time for successful tests
+            if time > 0 and control_status == 0:
+                total_time += time
+            ET.SubElement(control, "time").text = str(time)
+        ET.SubElement(root, "numTests").text = str(num_tests)
+        ET.SubElement(root, "numPassed").text = str(num_passed)
+        ET.SubElement(root, "percentPassed").text = "%s%s" % \
+                                (str(round((num_passed / num_tests)*100,1)),
+                                 "%")
+        ET.SubElement(root, "totalTime").text = str(total_time)
         f = open('dashboard.xml', 'w')
         f.write('<?xml version="1.0" encoding="UTF-8"?>')
         f.write('<?xml-stylesheet type="text/xsl" href="dashboard.xsl"?>')
