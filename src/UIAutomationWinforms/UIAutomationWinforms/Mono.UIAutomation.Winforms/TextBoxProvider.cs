@@ -33,15 +33,26 @@ using Mono.UIAutomation.Winforms.Behaviors.TextBox;
 
 namespace Mono.UIAutomation.Winforms
 {
-
-	internal class TextBoxProvider : FragmentControlProvider
+	internal class TextBoxProvider : FragmentRootControlProvider, IScrollBehaviorSubject
 	{
-	
 		#region Constructors
 
 		public TextBoxProvider (TextBoxBase textBoxBase) : base (textBoxBase)
 		{
 			this.textboxbase = textBoxBase;
+		}
+
+		#endregion
+
+		#region IScrollBehaviorSubject implementation
+		
+		public IScrollBehaviorObserver ScrollBehaviorObserver {
+			get { return observer; }
+		}
+
+		public FragmentControlProvider GetScrollbarProvider (ScrollBar scrollbar)
+		{
+			return new TextBoxScrollBarProvider (scrollbar, textboxbase);
 		}
 
 		#endregion
@@ -55,6 +66,17 @@ namespace Mono.UIAutomation.Winforms
 			//Text pattern is supported by both Control Types: Document and Edit
 			SetBehavior (TextPatternIdentifiers.Pattern,
 			             new TextProviderBehavior (this));
+
+			ScrollBar vscrollbar 
+				= Helper.GetPrivateProperty<TextBoxBase, ScrollBar> (
+				typeof (TextBoxBase), textboxbase, "UIAVScrollBar");
+			ScrollBar hscrollbar 
+				= Helper.GetPrivateProperty<TextBoxBase, ScrollBar> (
+				typeof (TextBoxBase), textboxbase, "UIAHScrollBar");
+
+			observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);
+			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
+			UpdateScrollBehavior ();
 			
 			textboxbase.MultilineChanged += new EventHandler (OnMultilineChanged);
 			UpdateBehaviors ();
@@ -75,35 +97,50 @@ namespace Mono.UIAutomation.Winforms
 			base.Terminate (); 
 			
 			textboxbase.MultilineChanged -= new EventHandler (OnMultilineChanged);
+			observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
 		}
 
 		#endregion
 		
 		#region Private Methods
+
+		private void OnScrollPatternSupportChanged (object o, EventArgs args)
+		{
+			UpdateScrollBehavior ();
+		}
 		
 		private void OnMultilineChanged (object sender, EventArgs args)
 		{
 			UpdateBehaviors ();
 		}
+
+		private void UpdateScrollBehavior ()
+		{
+			if (observer.SupportsScrollPattern
+			    && textboxbase.Multiline) {
+				SetBehavior (ScrollPatternIdentifiers.Pattern,
+				             new ScrollProviderBehavior (this));
+			} else {
+				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
+			}
+		}
 		
 		private void UpdateBehaviors ()
 		{
 			//Here we are changing from Edit to Document and vice versa.
-			if (textboxbase.Multiline == true) { //Document Control Type
-				SetBehavior (ScrollPatternIdentifiers.Pattern,
-				             new ScrollProviderBehavior (this));
+			if (textboxbase.Multiline) { //Document Control Type
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             null);
 				SetBehavior (RangeValuePatternIdentifiers.Pattern,
 				             null);
 			} else { //Edit Control Type
-				SetBehavior (ScrollPatternIdentifiers.Pattern,
-				             null);
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new ValueProviderBehavior (this));
 				SetBehavior (RangeValuePatternIdentifiers.Pattern,
 				             null);
 			}
+
+			UpdateScrollBehavior ();
 		}
 		
 		#endregion
@@ -111,9 +148,43 @@ namespace Mono.UIAutomation.Winforms
 		#region Protected section
 		
 		protected TextBoxBase textboxbase;
+		protected ScrollBehaviorObserver observer;
 
 		#endregion
 		
+		#region Internal Class: ScrollBar provider
+
+		internal class TextBoxScrollBarProvider : ScrollBarProvider
+		{
+			public TextBoxScrollBarProvider (ScrollBar scrollbar,
+			                                 TextBoxBase textbox)
+				: base (scrollbar)
+			{
+				this.textbox = textbox;
+				//TODO: i18n?
+				name = scrollbar is HScrollBar ? "Horizontal Scroll Bar"
+					: "Vertical Scroll Bar";
+			}
+			
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get {
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (textbox);
+				}
+			}			
+			
+			public override object GetPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return name;
+				else
+					return base.GetPropertyValue (propertyId);
+			}
+			
+			private TextBoxBase textbox;
+			private string name;
+		}
+		
+		#endregion
 	}
 
 }

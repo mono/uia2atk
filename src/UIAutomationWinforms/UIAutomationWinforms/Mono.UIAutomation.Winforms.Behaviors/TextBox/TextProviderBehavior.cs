@@ -21,25 +21,27 @@
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
+//	Brad Taylor <brad@getcoded.net>
 // 
+
 using System;
 using System.Windows;
+using System.Reflection;
 using System.Windows.Automation;
+using System.Windows.Automation.Text;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 {
-
-	internal class TextProviderBehavior
-		: ProviderBehavior, ITextProvider
+	internal class TextProviderBehavior : ProviderBehavior, ITextProvider
 	{
-		
 		#region Constructor
 		
-		public TextProviderBehavior (FragmentControlProvider provider)
+		public TextProviderBehavior (TextBoxProvider provider)
 			: base (provider)
 		{
+			this.textbox_provider = provider;
 		}
 
 		#endregion
@@ -61,13 +63,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id) {
-				SWF.TextBox textbox = Provider.Control as SWF.TextBox;
-				if (textbox != null)
-					return (textbox.UseSystemPasswordChar || (int) textbox.PasswordChar != 0);
-				else
-					return null;
-			} else
-					return base.GetPropertyValue (propertyId);
+				SWF.TextBox textbox = TextBox;
+				return (textbox.UseSystemPasswordChar || (int) textbox.PasswordChar != 0);
+			}
+			return base.GetPropertyValue (propertyId);
 		}
 		
 		
@@ -78,9 +77,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		//TODO: We should connect the events to update this.text_range_provider?
 		public ITextRangeProvider DocumentRange {
 			get { 
-				if (textRangeProvider == null)
+				if (textRangeProvider == null) {
 					textRangeProvider = new TextRangeProvider (this, 
-					                                           (SWF.TextBoxBase) Provider.Control); 
+					                                           (SWF.TextBoxBase) Provider.Control);
+				}
 				return textRangeProvider;
 			}
 		}
@@ -102,27 +102,108 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		
 		public ITextRangeProvider[] GetVisibleRanges ()
 		{
-			throw new NotImplementedException ();
+			Assembly asm = SwfAssembly;
+			object doc = GetDocumentFromTextBoxBase ((SWF.TextBoxBase)TextBox);
+
+			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
+			if (document_type == null) {
+				throw new Exception ("Internal Document class not found in System.Windows.Forms");
+			}
+
+			MethodInfo mi = document_type.GetMethod ("GetVisibleLineIndexes", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (mi == null) {
+				throw new Exception ("GetVisibleLineIndexes method not found in Document class");
+			}
+
+			int start_line = -1, end_line = -1;
+			object[] args = new object[] {
+				TextBox.Bounds, start_line, end_line
+			};
+			mi.Invoke (doc, args);
+			start_line = (int)args[1];
+			end_line = (int)args[2];
+
+			ITextRangeProvider range = DocumentRange.Clone ();
+			range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Line, start_line);
+			range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Line, end_line - start_line);
+
+			return new ITextRangeProvider[] { range };
 		}
 		
 		public ITextRangeProvider RangeFromChild (IRawElementProviderSimple childElement) 
 		{
-			throw new NotImplementedException ();
+			if (childElement == null) {
+				throw new ArgumentNullException ("childElement");
+			}
+			
+			// TextBox can't have children
+			throw new InvalidOperationException ();
 		}
 		
 		public ITextRangeProvider RangeFromPoint (Point screenLocation)
 		{
-			throw new NotImplementedException ();
+			Assembly asm = SwfAssembly;
+			object doc = GetDocumentFromTextBoxBase ((SWF.TextBoxBase)TextBox);
+
+			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
+			if (document_type == null) {
+				throw new Exception ("Internal Document class not found in System.Windows.Forms");
+			}
+
+			MethodInfo mi = document_type.GetMethod ("FindCursor", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (mi == null) {
+				throw new Exception ("FindCursor method not found in Document class");
+			}
+
+			int index = -1;
+			object[] args = new object[] {
+				(int)screenLocation.X, (int)screenLocation.Y, index
+			};
+
+			mi.Invoke (doc, args);
+			index = (int)args[2];
+
+			// Return the degenerate range
+			return (ITextRangeProvider) new TextRangeProvider (
+				this, (SWF.TextBoxBase)TextBox, index, index);
 		}
 		
 		#endregion
+
+		private Assembly SwfAssembly {
+			get {
+				if (!attempted_swf_load) {
+					swf_asm = Assembly.GetAssembly (typeof (SWF.TextBoxBase));
+					attempted_swf_load = true;
+				}
+				return swf_asm;
+			}
+		}
+
+		private SWF.TextBox TextBox {
+			get { return (SWF.TextBox)Provider.Control; }
+		}
 		
-		
-		#region Private section
-		
+		private Assembly swf_asm = null;
+		private bool attempted_swf_load = false;
+
 		private ITextRangeProvider textRangeProvider;
-		
-		#endregion		
-		
+		private TextBoxProvider textbox_provider;
+
+		internal object GetDocumentFromTextBoxBase (SWF.TextBoxBase textbox)
+		{
+			// Copied from TextRangeProvider.cs
+			// I couldn't think of a good way to share this without
+			// introducing a cyclical dependency -- Brad
+			// %-< -------------------------------------------------
+			Type textbox_type = textbox.GetType ();
+			FieldInfo textbox_fi = textbox_type.GetField ("document", BindingFlags.NonPublic | BindingFlags.Instance);
+			if (textbox_fi == null) {
+				throw new Exception ("document field not found in TextBoxBase");
+			}
+
+			return textbox_fi.GetValue (textbox);
+			// ------------------------------------------------- >-%
+		}
 	}
 }

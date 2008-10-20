@@ -50,8 +50,8 @@ namespace Mono.UIAutomation.Winforms
 			normalizer = new TextNormalizer (textboxbase);
 		}
 
-		private TextRangeProvider (ITextProvider provider, TextBoxBase textboxbase,
-		                           int start_point, int end_point)
+		internal TextRangeProvider (ITextProvider provider, TextBoxBase textboxbase,
+		                            int start_point, int end_point)
 		{
 			this.provider = provider;
 			this.textboxbase = textboxbase;

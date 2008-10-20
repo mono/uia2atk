@@ -1,3 +1,16 @@
+2008-10-20  Brad Taylor  <brad@getcoded.net>
+	
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Make ctor internal
+	  instead of private so it can be used from
+	  Mono.UIAutomation.Winforms.Behavior.
+	
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs:
+	  Implement TextPattern methods.  This will require mono from SVN.
+
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/ScrollProviderBehavior.cs:
+	  Partially implement ScrollBarProvider.
+
 2008-10-20  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Reverting last change.

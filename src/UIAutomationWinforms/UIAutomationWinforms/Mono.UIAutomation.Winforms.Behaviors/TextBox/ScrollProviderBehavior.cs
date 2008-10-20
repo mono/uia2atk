@@ -21,99 +21,26 @@
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
-// 
+//      Brad Taylor <brad@getcoded.net>
+//
+
 using System;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using System.Windows.Automation;
+using Mono.UIAutomation.Winforms.Behaviors.Generic;
+using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 {
-	//TODO: Subclass from Mono.UIAutomation.Winforms.Behaviors.Generic.ScrollProviderBehavior
-
-	internal class ScrollProviderBehavior 
-		: ProviderBehavior, IScrollProvider
+	internal class ScrollProviderBehavior : ScrollProviderBehavior<TextBoxProvider>
 	{
-		
-		#region Constructor
-		
-		public ScrollProviderBehavior (FragmentControlProvider provider)
+		public ScrollProviderBehavior (TextBoxProvider provider)
 			: base (provider)
 		{
 		}
-
-		#endregion
 		
-		#region ProviderBehavior: Specialization
-		
-		public override AutomationPattern ProviderPattern { 
-			get { return ScrollPatternIdentifiers.Pattern; }
-		}
-
 		public override void Connect ()
 		{
-		}		
-		
-		public override void Disconnect ()
-		{
 		}
-
-		public override object GetPropertyValue (int propertyId)
-		{			
-			if (propertyId == ScrollPatternIdentifiers.HorizontallyScrollableProperty.Id)
-				return HorizontallyScrollable;
-			else if (propertyId == ScrollPatternIdentifiers.HorizontalScrollPercentProperty.Id)
-				return HorizontalScrollPercent;
-			else if (propertyId == ScrollPatternIdentifiers.HorizontalViewSizeProperty.Id)
-				return HorizontalViewSize;
-			else if (propertyId == ScrollPatternIdentifiers.VerticallyScrollableProperty.Id)
-				return VerticallyScrollable;
-			else if (propertyId == ScrollPatternIdentifiers.VerticalScrollPercentProperty.Id)
-				return VerticalScrollPercent;
-			else if (propertyId == ScrollPatternIdentifiers.VerticalViewSizeProperty.Id)
-				return VerticalViewSize;
-			else
-				return null;
-		}
-		
-		#endregion
-
-		#region IScrollProvider: Specialization
-		
-		public bool HorizontallyScrollable { 
-			get { throw new NotImplementedException (); }
-		}
-		
-		public double HorizontalScrollPercent { 
-			get { throw new NotImplementedException (); }
-		}
-		
-		public double HorizontalViewSize { 
-			get { throw new NotImplementedException (); }
-		}
-		
-		public bool VerticallyScrollable { 
-			get { throw new NotImplementedException (); }
-		}
-		
-		public double VerticalScrollPercent { 
-			get { throw new NotImplementedException (); }
-		}
-		
-		public double VerticalViewSize {
-			get { throw new NotImplementedException (); }
-		}
-
-		public void Scroll (ScrollAmount horizontalAmount, ScrollAmount verticalAmount)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		public void SetScrollPercent (double horizontalPercent, double verticalPercent) 
-		{
-			throw new NotImplementedException ();
-		}
-		
-		#endregion
 	}
 }

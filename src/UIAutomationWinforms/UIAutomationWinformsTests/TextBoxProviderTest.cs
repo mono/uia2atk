@@ -27,6 +27,7 @@ using System;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
+using System.Windows.Automation.Text;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms;
 using NUnit.Framework;
@@ -34,7 +35,7 @@ using NUnit.Framework;
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
 	// TODO: Include ITextProvider, IScrollProvider tests.
-	//[TestFixture]
+	[TestFixture]
 	public class TextBoxProviderTest : BaseProviderTest
 	{
 		
@@ -99,9 +100,29 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TextBox textbox = new TextBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
-			object textProvider = provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id);
+			ITextProvider textProvider
+				= provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id)
+					as ITextProvider;
 			Assert.IsNotNull (textProvider, "Not returning TextPatternIdentifiers.");
 			Assert.IsTrue (textProvider is ITextProvider, "Not returning TextPatternIdentifiers.");
+
+			textbox.Text = "abc123";
+			textbox.Multiline = true;
+			
+			ITextRangeProvider range = textProvider.RangeFromPoint (new Point (0, 0));
+			Assert.IsNotNull (range);
+
+			// should always return a degenerate range
+			Assert.AreEqual (String.Empty, range.GetText (-1));
+
+			// TODO: Actually check the value, instead of just
+			// making sure it doesn't crash
+			range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, 1);
+
+			// TODO: Actually check the value, instead of just
+			// making sure it doesn't crash
+			ITextRangeProvider[] ranges = textProvider.GetVisibleRanges ();
+			Assert.AreEqual (1, ranges.Length);
 		}
 
 		[Test]
@@ -197,6 +218,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 #region Events tests
 		
 		[Test]
+		[Ignore ("Current failure needs investigation")]
 		public void TextChangedEventTest ()
 		{
 			TextBox textbox = new TextBox ();

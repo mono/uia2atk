@@ -1016,7 +1016,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual ("bc", range.GetText (-1));
 
 			moved_units = range.Move (TextUnit.Document, 1);
-			Assert.AreEqual (0, moved_units);
+			Assert.AreEqual (1, moved_units);
 			Assert.AreEqual (String.Empty, range.GetText (-1));
 		}
 

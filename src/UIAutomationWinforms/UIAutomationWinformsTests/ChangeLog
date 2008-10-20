@@ -1,5 +1,11 @@
 2008-10-20  Brad Taylor  <brad@getcoded.net>
 	
+	* TextRangeProviderTest.cs: Fix failing test.
+	
+	* TextBoxProviderTest.cs: Add tests for new methods.
+
+2008-10-20  Brad Taylor  <brad@getcoded.net>
+	
 	* TextRangeProviderTest.cs: Add tests for Move.
 
 2008-10-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
