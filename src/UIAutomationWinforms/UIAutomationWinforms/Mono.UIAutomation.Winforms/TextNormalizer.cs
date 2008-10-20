@@ -31,13 +31,11 @@ using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-	//Algorithm:
-	//http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.itextrangeprovider.move.aspx
+	// Algorithm:
+	// http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.itextrangeprovider.move.aspx
 	public class TextNormalizer
 	{
-
 #region Constructor
-		
 		public TextNormalizer (TextBoxBase textboxbase) 
 			: this (textboxbase, 0, textboxbase.Text.Length)
 		{
@@ -50,11 +48,9 @@ namespace Mono.UIAutomation.Winforms
 			start_point = startPoint;
 			end_point = endPoint;
 		}
-		
 #endregion
 		
 #region Public properties
-		
 		/**
 		 * NOTE: These points are actually lie between characters,
 		 * specifically to the left of the character who's index they
@@ -69,25 +65,23 @@ namespace Mono.UIAutomation.Winforms
 			get { return end_point; }
 			set { end_point = value; }
 		}
-		
 #endregion
 		
 #region Character methods
+		public int CharacterMoveStartPoint (int count)
+		{
+			int moved = CharacterMoveStartEndPoint (count, ref start_point);
+			if (start_point > end_point) {
+				end_point = start_point;
+			}
+			return moved;
+		}
 
 		public int CharacterMoveEndPoint (int count) 
 		{
 			int moved = CharacterMoveStartEndPoint (count, ref end_point);
 			if (end_point < start_point) {
 				start_point = end_point;
-			}
-			return moved;
-		}
-		
-		public int CharacterMoveStartPoint (int count)
-		{
-			int moved = CharacterMoveStartEndPoint (count, ref start_point);
-			if (start_point > end_point) {
-				end_point = start_point;
 			}
 			return moved;
 		}
@@ -117,11 +111,9 @@ namespace Mono.UIAutomation.Winforms
 			point = proposed_point;
 			return (count < 0 ? -1 : 1) * moved;
 		}
-
 #endregion
 
 #region Format methods
-		
 		public int FormatMoveEndPoint (int count)
 		{
 			//TODO: Doesn't work with non-RichTextBox controls
@@ -133,12 +125,10 @@ namespace Mono.UIAutomation.Winforms
 			//TODO: Doesn't work with non-RichTextBox controls
 			throw new NotImplementedException ();
 		}
-		
 #endregion
 		
 		
 #region Line methods
-
 		public void LineNormalize ()
 		{
 			LineParagraphNormalize (true);
@@ -213,15 +203,23 @@ namespace Mono.UIAutomation.Winforms
 
 			end_point = new_end;
 		}
-
-		public int LineMoveEndPoint (int count)
-		{
-			return LineMoveStartEndPoint (count, ref end_point);
-		}
 		
 		public int LineMoveStartPoint (int count)
 		{
-			return LineMoveStartEndPoint (count, ref start_point);
+			int moved = LineMoveStartEndPoint (count, ref start_point);
+			if (start_point > end_point) {
+				end_point = start_point;
+			}
+			return moved;
+		}
+
+		public int LineMoveEndPoint (int count)
+		{
+			int moved = LineMoveStartEndPoint (count, ref end_point);
+			if (end_point < start_point) {
+				start_point = end_point;
+			}
+			return moved;
 		}
 
 		private enum ParserState {
@@ -282,6 +280,11 @@ namespace Mono.UIAutomation.Winforms
 					state[0] = state[1];
 					state[1] = new_state;
 				}
+				
+				if (index < 0) {
+					index = text.Length;
+					c++;
+				}
 
 				start_end_point = index;
 				return c;
@@ -333,11 +336,9 @@ namespace Mono.UIAutomation.Winforms
 
 			return 0;
 		}
-		
 #endregion
 
 #region Paragraph methods
-
 		public void ParagraphNormalize ()
 		{
 			LineParagraphNormalize (false);
@@ -345,12 +346,20 @@ namespace Mono.UIAutomation.Winforms
 
 		public int ParagraphMoveStartPoint (int count)
 		{
-			return ParagraphMoveStartEndPoint (count, ref start_point);
+			int moved = ParagraphMoveStartEndPoint (count, ref start_point);
+			if (start_point > end_point) {
+				end_point = start_point;
+			}
+			return moved;
 		}
 		
 		public int ParagraphMoveEndPoint (int count)
 		{
-			return ParagraphMoveStartEndPoint (count, ref end_point);
+			int moved = ParagraphMoveStartEndPoint (count, ref end_point);
+			if (end_point < start_point) {
+				start_point = end_point;
+			}
+			return moved;
 		}
 
 		private int ParagraphMoveStartEndPoint (int count, ref int point)
@@ -503,14 +512,22 @@ namespace Mono.UIAutomation.Winforms
 			}			
 		}
 
-		public int WordMoveEndPoint (int count)
-		{
-			return WordMoveStartEndPoint (count, ref end_point);
-		}
-		
 		public int WordMoveStartPoint (int count)
 		{
-			return WordMoveStartEndPoint (count, ref start_point);
+			int moved = WordMoveStartEndPoint (count, ref start_point);
+			if (start_point > end_point) {
+				end_point = start_point;
+			}
+			return moved;
+		}
+		
+		public int WordMoveEndPoint (int count)
+		{
+			int moved = WordMoveStartEndPoint (count, ref end_point);
+			if (end_point < start_point) {
+				start_point = end_point;
+			}
+			return moved;
 		}
 		
 		private int WordMoveStartEndPoint (int count, ref int point)
@@ -524,7 +541,7 @@ namespace Mono.UIAutomation.Winforms
 			if (count > 0) {
 				bool last_was_sep = true, last_was_chr = false;
 				for (int i = point; i < text.Length; i++) {
-					index = i;
+					index = i + 1;
 
 					if (IsWordSeparator (text[i])) {
 						c++;
@@ -550,7 +567,7 @@ namespace Mono.UIAutomation.Winforms
 				// if we didn't find the number of lines we
 				// were asked for, jump to the end of the
 				// string, and count that as a line
-				if (c != count && point < (text.Length - 1)) {
+				if (c < count && point < (text.Length - 1)) {
 					c++;
 					index = text.Length;
 				}
@@ -599,11 +616,9 @@ namespace Mono.UIAutomation.Winforms
 			
 			return 0;
 		}
-		
 #endregion
 
 #region Page methods
-		
 		public int DocumentMoveStartPoint (int count)
 		{
 			int length = textboxbase.Text.Length;
@@ -638,58 +653,80 @@ namespace Mono.UIAutomation.Winforms
 		}
 #endregion
 		
-		// TODO: test this
 		public TextNormalizerPoints Move (TextUnit unit, int count) 
 		{
-			if (count == 0)
+			// 0 has no effect
+			if (count == 0) {
 				return new TextNormalizerPoints (start_point, end_point, 0);
+			}
 			
 			int moved = 0;
-			if (unit == TextUnit.Character) {
-				if (count > 0) {
-					moved = CharacterMoveEndPoint (count);
-					start_point = end_point;
-				} else {
-					moved = CharacterMoveStartPoint (count);
-					end_point = start_point;
-				}
-			} else if (unit == TextUnit.Word) {
+			switch (unit) {
+			case TextUnit.Character:
+				// Collapse to a degenerate range
+				end_point = start_point;
+				
+				// Move backward to beginning of boundary
+
+				// Move forward or backward by count
+				moved = CharacterMoveStartPoint (count);
+				
+				// Move endpoint 1 unit
+				CharacterMoveEndPoint (1);
+				break;
+			case TextUnit.Word:
+				// Move backward to beginning of boundary
 				WordNormalize ();
-				if (count > 0) {
-					moved = WordMoveEndPoint (count);
-					start_point = end_point;
-				} else {
-					moved = WordMoveStartPoint (count);
-					end_point = start_point;
-				}
-			} else if (unit == TextUnit.Line) {
+
+				// Collapse to a degenerate range
+				end_point = start_point;
+				
+				// Move forward or backward by count
+				moved = WordMoveStartPoint (count);
+				
+				// Move endpoint 1 unit
+				WordMoveEndPoint (1);
+				break;
+			case TextUnit.Line:
+				// Move backward to beginning of boundary
 				LineNormalize ();
-				if (count > 0) {
-					moved = LineMoveEndPoint (count);
-					start_point = end_point;
-				} else {
-					moved = LineMoveStartPoint (count);
-					end_point = start_point;
-				}
-			} else if (unit == TextUnit.Paragraph) {
+
+				// Collapse to a degenerate range
+				end_point = start_point;
+				
+				// Move forward or backward by count
+				moved = LineMoveStartPoint (count);
+				
+				// Move endpoint 1 unit
+				LineMoveEndPoint (1);
+				break;
+			case TextUnit.Paragraph:
+				// Move backward to beginning of boundary
 				ParagraphNormalize ();
-				if (count > 0) {
-					moved = ParagraphMoveEndPoint (count);
-					start_point = end_point;
-				} else {
-					moved = ParagraphMoveStartPoint (count);
-					end_point = start_point;
-				}
-			} else if (unit == TextUnit.Page
-			           || unit == TextUnit.Document) {
+
+				// Collapse to a degenerate range
+				end_point = start_point;
+				
+				// Move forward or backward by count
+				moved = ParagraphMoveStartPoint (count);
+				
+				// Move endpoint 1 unit
+				ParagraphMoveEndPoint (1);
+				break;
+			case TextUnit.Page:
+			case TextUnit.Document:
+				// Move backward to beginning of boundary
 				DocumentNormalize ();
-				if (count > 0) {
-					moved = DocumentMoveEndPoint (count);
-					start_point = end_point;
-				} else {
-					moved = DocumentMoveStartPoint (count);
-					end_point = start_point;
-				}
+
+				// Collapse to a degenerate range
+				end_point = start_point;
+				
+				// Move forward or backward by count
+				moved = DocumentMoveStartPoint (count);
+				
+				// Move endpoint 1 unit
+				DocumentMoveEndPoint (1);
+				break;
 			}
 			
 			return new TextNormalizerPoints (start_point, end_point, moved);

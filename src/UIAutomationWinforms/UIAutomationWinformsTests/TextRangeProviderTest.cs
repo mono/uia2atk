@@ -852,7 +852,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void MoveEndpointByRange()
 		{
 			textbox.Multiline = true;
-			textbox.Text = String.Format ("apples\r\n\npears\r\r\npeaches\nbananas");
+			textbox.Text = "apples\r\n\npears\r\r\npeaches\nbananas";
 
 			ITextRangeProvider range1, range2;
 			range1 = text_provider.DocumentRange.Clone ();
@@ -884,6 +884,140 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			range2.MoveEndpointByRange (TextPatternRangeEndpoint.Start, range1, TextPatternRangeEndpoint.End);
 			Assert.AreEqual ("bananas", range2.GetText (-1)); 
+		}
+
+		// NOTE: For some unknown reason, Vista returns
+		// String.Empty with any Move () of any unit, so I'm just
+		// assuming it's totally broken/not implemented, so I'm writing
+		// these Move methods to the spec
+		[Test]
+		public void MoveCharacter ()
+		{
+			textbox.Multiline = true;
+			textbox.Text = "abc 123";
+			
+			ITextRangeProvider range = text_provider.DocumentRange.Clone ();
+			
+			int moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 1);
+			Assert.AreEqual (1, moved_units);
+			Assert.AreEqual ("bc 123", range.GetText (-1));
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -4);
+			Assert.AreEqual (-4, moved_units);
+			Assert.AreEqual ("bc", range.GetText (-1));
+
+			moved_units = range.Move (TextUnit.Character, 0);
+			Assert.AreEqual (0, moved_units);
+			Assert.AreEqual ("bc", range.GetText (-1));
+
+			// It's unclear to me how this should work... 
+			moved_units = range.Move (TextUnit.Character, 1);
+			Assert.AreEqual (1, moved_units);
+			Assert.AreEqual ("c", range.GetText (-1));
+		}
+
+		[Test]
+		public void MoveWord ()
+		{
+			textbox.Multiline = true;
+			textbox.Text = "abc 123";
+			
+			ITextRangeProvider range = text_provider.DocumentRange.Clone ();
+			
+			int moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 1);
+			Assert.AreEqual (1, moved_units);
+			Assert.AreEqual ("bc 123", range.GetText (-1));
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -4);
+			Assert.AreEqual (-4, moved_units);
+			Assert.AreEqual ("bc", range.GetText (-1));
+
+			moved_units = range.Move (TextUnit.Word, 0);
+			Assert.AreEqual (0, moved_units);
+			Assert.AreEqual ("bc", range.GetText (-1));
+
+			moved_units = range.Move (TextUnit.Word, 2);
+			Assert.AreEqual (2, moved_units);
+			Assert.AreEqual ("123", range.GetText (-1));
+		}
+
+		[Test]
+		public void MoveLine ()
+		{
+			textbox.Multiline = true;
+			textbox.Text = "abc\n123\n456";
+			
+			ITextRangeProvider range = text_provider.DocumentRange.Clone ();
+			
+			int moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 1);
+			Assert.AreEqual (1, moved_units);
+			Assert.AreEqual ("bc\n123\n456", range.GetText (-1));
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -8);
+			Assert.AreEqual (-8, moved_units);
+			Assert.AreEqual ("bc", range.GetText (-1));
+
+			moved_units = range.Move (TextUnit.Line, 0);
+			Assert.AreEqual (0, moved_units);
+			Assert.AreEqual ("bc", range.GetText (-1));
+
+			moved_units = range.Move (TextUnit.Line, 1);
+			Assert.AreEqual (1, moved_units);
+			Assert.AreEqual ("123\n", range.GetText (-1));
+		}
+
+		[Test]
+		public void MoveParagraph ()
+		{
+			textbox.Multiline = true;
+			textbox.Text = "abc\n123\n456";
+			
+			ITextRangeProvider range = text_provider.DocumentRange.Clone ();
+			
+			int moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 1);
+			Assert.AreEqual (1, moved_units);
+			Assert.AreEqual ("bc\n123\n456", range.GetText (-1));
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -8);
+			Assert.AreEqual (-8, moved_units);
+			Assert.AreEqual ("bc", range.GetText (-1));
+
+			moved_units = range.Move (TextUnit.Paragraph, 0);
+			Assert.AreEqual (0, moved_units);
+			Assert.AreEqual ("bc", range.GetText (-1));
+
+			moved_units = range.Move (TextUnit.Paragraph, -1);
+			Assert.AreEqual (0, moved_units);
+			Assert.AreEqual ("abc\n", range.GetText (-1));
+
+			moved_units = range.Move (TextUnit.Paragraph, 1);
+			Assert.AreEqual (1, moved_units);
+			Assert.AreEqual ("123\n", range.GetText (-1));
+		}
+
+		[Test]
+		public void MoveDocument ()
+		{
+			textbox.Multiline = true;
+			textbox.Text = "abc\n123\n456";
+			
+			ITextRangeProvider range = text_provider.DocumentRange.Clone ();
+			
+			int moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Character, 1);
+			Assert.AreEqual (1, moved_units);
+			Assert.AreEqual ("bc\n123\n456", range.GetText (-1));
+
+			moved_units = range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, -8);
+			Assert.AreEqual (-8, moved_units);
+			Assert.AreEqual ("bc", range.GetText (-1));
+
+			moved_units = range.Move (TextUnit.Document, 0);
+			Assert.AreEqual (0, moved_units);
+			Assert.AreEqual ("bc", range.GetText (-1));
+
+			moved_units = range.Move (TextUnit.Document, 1);
+			Assert.AreEqual (0, moved_units);
+			Assert.AreEqual (String.Empty, range.GetText (-1));
 		}
 
 		private const string TEST_MESSAGE = "One morning, when Gregor Samsa    woke from troubled dreams, "+
