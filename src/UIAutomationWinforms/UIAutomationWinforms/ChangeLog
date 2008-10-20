@@ -1,5 +1,9 @@
 2008-10-20  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Reverting last change.
+
+2008-10-20  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: initializeEvents ->
 	initialize.
 

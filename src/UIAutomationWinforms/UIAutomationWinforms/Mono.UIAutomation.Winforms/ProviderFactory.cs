@@ -71,13 +71,13 @@ namespace Mono.UIAutomation.Winforms
 		
 		public static IRawElementProviderFragment GetProvider (Component component)
 		{
-			return GetProvider (component, true, true);
+			return GetProvider (component, true, false);
 		}
 		
 		public static IRawElementProviderFragment GetProvider (Component component,
 		                                                       bool initialize)
 		{
-			return GetProvider (component, initialize, true);
+			return GetProvider (component, initialize, false);
 		}
 
 		public static IRawElementProviderFragment GetProvider (Component component,
