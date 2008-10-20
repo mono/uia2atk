@@ -352,6 +352,25 @@ namespace UiaAtkBridgeTest
 //			
 //			Assert.AreEqual (0, accessible.NAccessibleChildren, "TextBoxEntry numChildren");
 		}
+
+		[Test]
+		public void TextBoxView ()
+		{
+			BasicWidgetType type = BasicWidgetType.TextBoxView;
+			Atk.Object accessible;// = InterfaceText (type, false);
+			
+			string name = "Edit test#1";
+			accessible = GetAccessible (type, name, true);
+
+			States (accessible,
+			  Atk.StateType.Editable, 
+			  Atk.StateType.Enabled, 
+			  Atk.StateType.Focusable,
+			  Atk.StateType.MultiLine,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible);
+		}
 		
 //		[Test]
 //		public void MenuBar ()

@@ -1,5 +1,9 @@
 2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs: Added basic tests for a multiline textbox.
+
+2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BasicWidgetType.cs: Split textbutton into 2 basicWidgetTypes (1 with 2
 	styles in SWF).
 

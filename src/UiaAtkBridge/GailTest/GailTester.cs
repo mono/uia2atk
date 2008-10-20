@@ -229,6 +229,16 @@ namespace UiaAtkBridgeTest
 				});
 				System.Threading.Thread.Sleep (1000);
 				break;
+			case BasicWidgetType.TextBoxView:
+				if (!real)
+					throw new NotSupportedException ();
+				
+				widget = GailTestApp.MainClass.GiveMeARealTextView ();
+				Gtk.Application.Invoke (delegate {
+					((Gtk.TextView)widget).Buffer.Text = text;
+				});
+				System.Threading.Thread.Sleep (1000);
+				break;
 			case BasicWidgetType.HScrollBar:
 				widget = new Gtk.HScrollbar (adj);
 				if (real)

@@ -1,5 +1,9 @@
 2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* GailTester.cs: Added basic tests for a multiline textbox.
+
+2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* GailTester.cs: Fix the img+rad case.
 
 2008-10-15  Mike Gorse <mgorse@novell.com>
