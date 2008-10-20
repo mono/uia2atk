@@ -70,6 +70,12 @@ namespace GailTestApp {
 			Application.Run ();
 		}
 
+		public static void CheckState ()
+		{
+			if (win == null)
+				throw new Exception ("You should have started the app first");
+		}
+
 		public static void StartRemotely (MovingThread guiThread)
 		{
 			Start (guiThread);
@@ -77,8 +83,7 @@ namespace GailTestApp {
 		
 		public static Gtk.Label GiveMeARealLabel ()
 		{
-			if (win == null)
-				throw new Exception ("You should have started the app first");
+			CheckState ();
 			
 			return win.GiveMeARealLabel ();
 		}
@@ -90,88 +95,77 @@ namespace GailTestApp {
 		
 		public static Gtk.Button GiveMeARealButton (bool embeddedImage)
 		{
-			if (win == null)
-				throw new Exception ("You should have started the app first");
+			CheckState ();
 			
 			return win.GiveMeARealButton (embeddedImage);
 		}
 		
 		public static Gtk.Button GiveMeARealCheckBox (bool embeddedImage)
 		{
-			if (win == null)
-				throw new Exception ("You should have started the app first");
+			CheckState ();
 			
 			return win.GiveMeARealCheckBox (embeddedImage);
 		}
 		
 		public static Gtk.ComboBox GiveMeARealComboBox ()
 		{
-			if (win == null)
-				throw new Exception ("You should have started the app first");
+			CheckState ();
 			
 			return win.GiveMeARealComboBox ();
 		}
 		
-		public static Gtk.RadioButton GiveMeARealRadioButton ()
+		public static Gtk.RadioButton GiveMeARealRadioButton (bool embeddedImage)
 		{
-			if (win == null)
-				throw new Exception ("You should have started the app first");
+			CheckState ();
 			
-			return win.GiveMeARealRadioButton ();
+			return win.GiveMeARealRadioButton (embeddedImage);
 		}
 		
 		public static Gtk.HScrollbar GiveMeARealHScrollbar ()
 		{
-			if (win == null)
-				throw new Exception ("You should have started the app first");
+			CheckState ();
 			
 			return win.GiveMeARealHScrollbar ();
 		}
 		
 		public static Gtk.VScrollbar GiveMeARealVScrollbar ()
 		{
-			if (win == null)
-				throw new Exception ("You should have started the app first");
+			CheckState ();
 			
 			return win.GiveMeARealVScrollbar ();
 		}
 		
 		public static Gtk.Statusbar GiveMeARealStatusbar ()
 		{
-			if (win == null)
-				throw new Exception ("You should have started the app first");
+			CheckState ();
 			
 			return win.GiveMeARealStatusbar ();
 		}
 		
 		public static Gtk.ProgressBar GiveMeARealProgressBar ()
 		{
-			if (win == null)
-				throw new Exception ("You should have started the app first");
+			CheckState ();
 			
 			return win.GiveMeARealProgressBar ();
 		}
 		
 		public static Gtk.Entry GiveMeARealEntry ()
 		{
-			if (win == null)
-				throw new Exception ("You should have started the app first");
+			CheckState ();
 			
 			return win.GiveMeARealEntry ();
 		}
 		
 		public static Gtk.ImageMenuItem GiveMeARealParentMenu (string name)
 		{
-			if (win == null)
-				throw new Exception ("You should have started the app first");
+			CheckState ();
 			
 			return win.GiveMeARealParentMenu (name);
 		}
 		
 		public static Gtk.Window GiveMeARealWindow ()
 		{
-			if (win == null)
-				throw new Exception ("You should have started the app first");
+			CheckState ();
 			
 			return win;
 		}

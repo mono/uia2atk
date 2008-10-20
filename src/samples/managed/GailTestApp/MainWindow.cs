@@ -49,6 +49,11 @@ public partial class MainWindow: Gtk.Window
 		img2.Show ();
 		this.checkbutton1.Image = img2;
 
+		Gtk.Image img3 = new Gtk.Image ();
+		img3.FromFile = System.IO.Path.Combine (uiaQaPath, "apple-red.png");
+		img3.Show ();
+		this.radTest2.Image = img3;
+
 		this.imgTest1.FromFile = System.IO.Path.Combine (uiaQaPath, "goalie.gif");
 
 		this.imgTest2.FromFile = System.IO.Path.Combine (uiaQaPath, "apple-red.png");
@@ -133,8 +138,11 @@ public partial class MainWindow: Gtk.Window
 	
 	int radioButtonToReturn = -1;
 	
-	internal Gtk.RadioButton GiveMeARealRadioButton () {
-
+	internal Gtk.RadioButton GiveMeARealRadioButton (bool embeddedImage)
+	{
+		if (embeddedImage)
+			return radTest2;
+		
 		if (radioButtonToReturn == 3)
 			radioButtonToReturn = -1;
 		

@@ -1,5 +1,11 @@
 2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* MainWindow.cs: Added API to return an imaged radiobutton.
+
+	* Main.cs: Simplify a bit.
+
+2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* MainWindow.cs:
 	* gtk-gui/gui.stetic:
 	* gtk-gui/MainWindow.cs: Added 2 imgs for mgorse.
