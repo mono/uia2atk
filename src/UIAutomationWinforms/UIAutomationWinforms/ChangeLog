@@ -1,3 +1,8 @@
+2008-10-20  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: initializeEvents ->
+	initialize.
+
 2008-10-20  Brad Taylor  <brad@getcoded.net>
 	
 	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Reorganize things,

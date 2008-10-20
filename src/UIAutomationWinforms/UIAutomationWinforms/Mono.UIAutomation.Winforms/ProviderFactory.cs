@@ -71,17 +71,17 @@ namespace Mono.UIAutomation.Winforms
 		
 		public static IRawElementProviderFragment GetProvider (Component component)
 		{
-			return GetProvider (component, true, false);
+			return GetProvider (component, true, true);
 		}
 		
 		public static IRawElementProviderFragment GetProvider (Component component,
-		                                                       bool initializeEvents)
+		                                                       bool initialize)
 		{
-			return GetProvider (component, true, false);
+			return GetProvider (component, initialize, true);
 		}
 
 		public static IRawElementProviderFragment GetProvider (Component component,
-		                                                       bool initializeEvents,
+		                                                       bool initialize,
 		                                                       bool forceInitializeChildren)
 		{
 			SWF.Label l;
@@ -209,7 +209,7 @@ namespace Mono.UIAutomation.Winforms
 			if (provider != null) {
 				// TODO: Make tracking in dictionary optional
 				componentProviders [component] = provider;
-				if (initializeEvents)
+				if (initialize)
 					provider.Initialize ();
 				
 				FragmentRootControlProvider root;
