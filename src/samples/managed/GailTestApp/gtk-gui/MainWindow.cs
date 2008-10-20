@@ -70,6 +70,12 @@ public partial class MainWindow {
     
     private Gtk.HScrollbar hscrollbar1;
     
+    private Gtk.HBox hbox2;
+    
+    private Gtk.ScrolledWindow GtkScrolledWindow1;
+    
+    private Gtk.TextView txtViewTest;
+    
     private Gtk.ProgressBar progressbar1;
     
     private Gtk.Statusbar statusbar1;
@@ -347,28 +353,47 @@ public partial class MainWindow {
         w22.Expand = false;
         w22.Fill = false;
         // Container child vbox1.Gtk.Box+BoxChild
+        this.hbox2 = new Gtk.HBox();
+        this.hbox2.Name = "hbox2";
+        this.hbox2.Spacing = 6;
+        // Container child hbox2.Gtk.Box+BoxChild
+        this.GtkScrolledWindow1 = new Gtk.ScrolledWindow();
+        this.GtkScrolledWindow1.Name = "GtkScrolledWindow1";
+        this.GtkScrolledWindow1.ShadowType = ((Gtk.ShadowType)(1));
+        // Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
+        this.txtViewTest = new Gtk.TextView();
+        this.txtViewTest.CanFocus = true;
+        this.txtViewTest.Name = "txtViewTest";
+        this.GtkScrolledWindow1.Add(this.txtViewTest);
+        this.hbox2.Add(this.GtkScrolledWindow1);
+        Gtk.Box.BoxChild w24 = ((Gtk.Box.BoxChild)(this.hbox2[this.GtkScrolledWindow1]));
+        w24.Position = 1;
+        this.vbox1.Add(this.hbox2);
+        Gtk.Box.BoxChild w25 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+        w25.Position = 3;
+        // Container child vbox1.Gtk.Box+BoxChild
         this.progressbar1 = new Gtk.ProgressBar();
         this.progressbar1.Name = "progressbar1";
         this.vbox1.Add(this.progressbar1);
-        Gtk.Box.BoxChild w23 = ((Gtk.Box.BoxChild)(this.vbox1[this.progressbar1]));
-        w23.Position = 3;
-        w23.Expand = false;
-        w23.Fill = false;
+        Gtk.Box.BoxChild w26 = ((Gtk.Box.BoxChild)(this.vbox1[this.progressbar1]));
+        w26.Position = 4;
+        w26.Expand = false;
+        w26.Fill = false;
         // Container child vbox1.Gtk.Box+BoxChild
         this.statusbar1 = new Gtk.Statusbar();
         this.statusbar1.Name = "statusbar1";
         this.statusbar1.Spacing = 6;
         this.vbox1.Add(this.statusbar1);
-        Gtk.Box.BoxChild w24 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
-        w24.Position = 4;
-        w24.Expand = false;
-        w24.Fill = false;
+        Gtk.Box.BoxChild w27 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
+        w27.Position = 5;
+        w27.Expand = false;
+        w27.Fill = false;
         this.Add(this.vbox1);
         if ((this.Child != null)) {
             this.Child.ShowAll();
         }
         this.DefaultWidth = 733;
-        this.DefaultHeight = 271;
+        this.DefaultHeight = 353;
         this.Show();
         this.DeleteEvent += new Gtk.DeleteEventHandler(this.OnDeleteEvent);
     }

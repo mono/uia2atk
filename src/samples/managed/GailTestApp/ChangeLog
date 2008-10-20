@@ -1,5 +1,10 @@
 2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* gtk-gui/gui.stetic:
+	* gtk-gui/MainWindow.cs: Add a Gtk.TextView
+
+2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* MainWindow.cs: Added API to return an imaged radiobutton.
 
 	* Main.cs: Simplify a bit.
