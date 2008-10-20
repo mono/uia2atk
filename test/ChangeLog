@@ -1,3 +1,9 @@
+2008-10-20  Calen Chen <cachen@novell.com>
+
+	* testers/radiobutton/radiobuttonframe.py: add assertImageSize for 
+	image test
+	* testers/radiobutton_basic_ops.py: add test for image implementation
+
 2008-10-17  Calen Chen <cachen@novell.com>
 
 	* toolstrip_combobox.py: delete this example

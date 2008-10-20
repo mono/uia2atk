@@ -96,6 +96,10 @@ rbFrame.button3.mouseClick()
 statesCheck(rbFrame.button3, "RadioButton",
                            invalid_states=["focusable", "sensitive", "enabled"])
 
+#implement radiobutton's image
+rbFrame.assertImageSize(rbFrame.button1, -1, -1)
+rbFrame.assertImageSize(rbFrame.button2, -1, -1)
+rbFrame.assertImageSize(rbFrame.button3, -1, -1)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

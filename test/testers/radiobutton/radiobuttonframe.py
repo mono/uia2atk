@@ -40,6 +40,25 @@ class RadioButtonFrame(accessibles.Frame):
     def assertLabel(self, labelText):
         procedurelogger.expectedResult('Label text has been changed to "%s"' % labelText)
         self.findLabel(labelText)
+
+    # assert the size of an image in the CheckBox
+    def assertImageSize(self, button, width=-1, height=-1):
+        procedurelogger.action("assert %s's image size" % button)
+        size = button._accessible.queryImage().getImageSize()
+
+        procedurelogger.expectedResult('"%s" image size is %s x %s' %
+                                                  (button, width, height))
+
+        assert width == size[0], "%s (%s), %s (%s)" %\
+                                            ("expected width",
+                                              width,
+                                             "does not match actual width",
+                                              size[0])
+        assert height == size[1], "%s (%s), %s (%s)" %\
+                                            ("expected height",
+                                              height,
+                                             "does not match actual height",
+                                              size[1]) 
     
     #close application main window after running test
     def quit(self):
