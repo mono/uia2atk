@@ -208,8 +208,10 @@ namespace UiaAtkBridgeTest
 				if (!real)
 					throw new NotSupportedException ("We cannot use non-real radio buttons because of some wierd behaviour");
 				
-				widget = GailTestApp.MainClass.GiveMeARealRadioButton ();
-				((Gtk.CheckButton)widget).Label = text;
+				widget = GailTestApp.MainClass.GiveMeARealRadioButton (embeddedImage);
+				RunInGuiThread (delegate {
+					((Gtk.CheckButton)widget).Label = text;
+				});
 				break;
 			case BasicWidgetType.StatusBar:
 				widget = new Gtk.Statusbar ();

@@ -147,12 +147,9 @@ namespace UiaAtkBridgeTest
 		{
 			BasicWidgetType type = BasicWidgetType.RadioButton;
 			Atk.Object accessible = null, accessible2 = null, accessible3 = null;
-
 			string name = "test 01";
-			RunInGuiThread (delegate () {
-				accessible = InterfaceText (type);
-			});
-			
+
+			accessible = GetAccessible (type, name, true);
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 
@@ -183,12 +180,16 @@ namespace UiaAtkBridgeTest
 			Parent (type, accessible2);
 			Parent (type, accessible3);
 
+			RunInGuiThread (delegate () {
+				accessible = InterfaceText (type, true);
+			});
+			
 			//test with an image
 			Atk.Image atkWithOutImage, atkWithImage;
 			atkWithOutImage = CastToAtkInterface <Atk.Image> (accessible);
 			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
 			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
-			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+			atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
 		}
 		
