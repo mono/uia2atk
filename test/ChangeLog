@@ -1,5 +1,12 @@
 2008-10-20  Calen Chen <cachen@novell.com>
 
+	* samples/tooltip.py: update the display time to 10000ms
+	* testers/tooltip/tooltipframe.py: use findToolTip instead 
+	findLabel.(at present, winforms app shows "tool tip" role in 
+	accerciser, but gtk app shows "windows")
+
+2008-10-20  Calen Chen <cachen@novell.com>
+
 	* testers/radiobutton/radiobuttonframe.py: add assertImageSize for 
 	image test
 	* testers/radiobutton_basic_ops.py: add test for image implementation

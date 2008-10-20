@@ -28,15 +28,6 @@ class ToolTipFrame(accessibles.Frame):
         self.button = self.findPushButton(self.BUTTON)
         self.checkbox = self.findCheckBox(self.CHECKBOX)
 
-    #check Label's all expectant states
-    def statesCheck(self, accessible):
-        procedurelogger.action('check %s\'s all states' % "label")
-
-        procedurelogger.expectedResult('%s\'s all states can be found' % "label")
-        for a in states.Label.states:
-            state = getattr(accessible, a)
-            assert state, "Expected state: %s" % (a)
-
     #move mouse to x,y point
     def mousePoint(self, accessible, xOffset=0, yOffset=0):
         procedurelogger.action('move mouse to "%s"' % accessible)
@@ -44,14 +35,13 @@ class ToolTipFrame(accessibles.Frame):
         x = bbox.x + (bbox.width / 2) + xOffset
         y = bbox.y + (bbox.height / 2) + yOffset
         pyatspi.Registry.generateMouseEvent(x, y, 'abs')
-        sleep(config.MEDIUM_DELAY)
 
-    #assert tooltip's label
+    #assert tooltip appear
     def assertTooltip(self, tooltiplabel):
         procedurelogger.expectedResult('Found tooltip, the label is "%s"' % tooltiplabel)
 
         def resultMatches():
-            return self.app.findLabel("%s" % tooltiplabel)
+            return self.app.findToolTip(tooltiplabel)
         assert retryUntilTrue(resultMatches)
 
     

@@ -42,7 +42,7 @@ class ToolTipApp(Form):
 
 ##set ToolTip and link to button1 and checkbox1
         self.tooltip1 = ToolTip()
-        self.tooltip1.AutoPopDelay = 5000
+        self.tooltip1.AutoPopDelay = 10000
         self.tooltip1.InitialDelay = 300
         self.tooltip1.ReshowDelay = 100
         self.tooltip1.ShowAlways = True
