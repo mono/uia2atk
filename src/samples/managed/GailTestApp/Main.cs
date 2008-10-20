@@ -155,6 +155,13 @@ namespace GailTestApp {
 			
 			return win.GiveMeARealEntry ();
 		}
+
+		public static Gtk.TextView GiveMeARealTextView ()
+		{
+			CheckState ();
+			
+			return win.GiveMeARealTextView ();
+		}
 		
 		public static Gtk.ImageMenuItem GiveMeARealParentMenu (string name)
 		{

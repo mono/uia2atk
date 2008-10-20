@@ -109,6 +109,10 @@ public partial class MainWindow: Gtk.Window
 	internal Gtk.Entry GiveMeARealEntry () {
 		return this.txtEntry;
 	}
+
+	internal Gtk.TextView GiveMeARealTextView () {
+		return this.txtViewTest;
+	}
 	
 	internal Gtk.ImageMenuItem GiveMeARealParentMenu (string name) {
 		Gtk.ImageMenuItem ret = (Gtk.ImageMenuItem)this.menubar1.Children[0];
