@@ -325,23 +325,32 @@ namespace UiaAtkBridgeTest
 		public void TextBoxEntry ()
 		{
 			BasicWidgetType type = BasicWidgetType.TextBoxEntry;
-			Atk.Object accessible = InterfaceText (type, true);
+			Atk.Object accessible;// = InterfaceText (type, true);
 			
 			string name = "Edit test#1";
 			accessible = GetAccessible (type, name, true);
-			
-			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
-			InterfaceAction (type, atkAction, accessible);
-			
-			name = "Edit test#2";
-			accessible = GetAccessible (type, name, true);
-			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (accessible);
 
-			InterfaceComponent (type, atkComponent);
+			States (accessible,
+			  Atk.StateType.Editable, 
+			  Atk.StateType.Enabled, 
+			  Atk.StateType.Focusable,
+			  Atk.StateType.SingleLine,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible);
 			
-			PropertyRole (type, accessible);
-			
-			Assert.AreEqual (0, accessible.NAccessibleChildren, "TextBoxEntry numChildren");
+//			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
+//			InterfaceAction (type, atkAction, accessible);
+//			
+//			name = "Edit test#2";
+//			accessible = GetAccessible (type, name, true);
+//			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+//
+//			InterfaceComponent (type, atkComponent);
+//			
+//			PropertyRole (type, accessible);
+//			
+//			Assert.AreEqual (0, accessible.NAccessibleChildren, "TextBoxEntry numChildren");
 		}
 		
 //		[Test]

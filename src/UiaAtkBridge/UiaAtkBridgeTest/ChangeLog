@@ -1,5 +1,12 @@
 2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BasicWidgetType.cs: Split textbutton into 2 basicWidgetTypes (1 with 2
+	styles in SWF).
+
+	* AtkTests.cs: Comment what doesn't work yet.
+
+2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs: Fix the img+rad case.
 
 2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>

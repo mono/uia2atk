@@ -40,7 +40,8 @@ namespace UiaAtkBridgeTest
 		ComboBox,
 		RadioButton,
 		StatusBar,
-		TextBoxEntry,
+		TextBoxEntry, // textbox single-line (gtk: entry)
+		TextBoxView,  // textbox multi-line (gtk: textview)
 		ParentMenu,
 		VScrollBar,
 		HScrollBar,
