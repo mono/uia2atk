@@ -52,6 +52,7 @@ FILES =  \
 	ComponentAdapter.cs \
 	ComponentImplementorHelper.cs \
 	ComponentParentAdapter.cs \
+	EditableTextBoxEntryView.cs \
 	Hyperlink.cs \
 	List.cs \
 	ListItem.cs \

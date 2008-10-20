@@ -393,8 +393,8 @@ namespace UiaAtkBridge
  				HandleNewToolTipControlType (simpleProvider);
  			else if (controlTypeId == ControlType.Hyperlink.Id)
  				HandleNewHyperlinkControlType (simpleProvider);
-//			else if (controlTypeId == ControlType.Edit.Id)
-//				HandleNewEditControlType (simpleProvider);
+			else if ((controlTypeId == ControlType.Document.Id) || (controlTypeId == ControlType.Edit.Id))
+				HandleNewDocumentOrEditControlType (simpleProvider);
 			// TODO: Other providers
 			else
 				Console.WriteLine ("AutomationBridge: Unhandled control: " +
@@ -665,18 +665,18 @@ namespace UiaAtkBridge
 			                              atkSpinner);
 		}
 		
-//		private void HandleNewEditControlType (IRawElementProviderSimple provider)
-//		{
-//			ParentAdapter parentObject = GetParentAdapter (provider);
-//			
-//			Adapter atkEdit = new EditableTextBoxEntry (provider);
-//			
-//			providerAdapterMapping [provider] = atkEdit;
-//			
-//			parentObject.AddOneChild (atkEdit);
-//			parentObject.AddRelationship (Atk.RelationType.Embeds,
-//			                              atkEdit);
-//		}
+		private void HandleNewDocumentOrEditControlType (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject = GetParentAdapter (provider);
+			
+			Adapter atkEditOrDoc = new EditableTextBoxEntryView (provider);
+			
+			providerAdapterMapping [provider] = atkEditOrDoc;
+			
+			parentObject.AddOneChild (atkEditOrDoc);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkEditOrDoc);
+		}
 		
 		private void HandleNewToolTipControlType (IRawElementProviderSimple provider)
 		{

@@ -33,6 +33,9 @@ namespace UiaAtkBridge
 		
 		internal TextImplementorHelper (string text)
 		{
+			if (text == null)
+				throw new ArgumentNullException ("text");
+			
 			this.text = text;
 		}
 		

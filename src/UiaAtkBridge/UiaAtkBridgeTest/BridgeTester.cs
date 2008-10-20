@@ -206,6 +206,7 @@ namespace UiaAtkBridgeTest
 		SWF.Form form = new SWF.Form ();
 		SWF.MenuStrip menuStrip1 = new SWF.MenuStrip();
 		SWF.TextBox tbx1 = new SWF.TextBox ();
+		SWF.TextBox tbx2 = new SWF.TextBox ();
 		
 		public BridgeTester () 
 		{
@@ -225,6 +226,10 @@ namespace UiaAtkBridgeTest
 			radWithImage.AutoSize = true;
 			
 			cb1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+
+			tbx1.Multiline = false;
+			tbx2.Multiline = true;
+
 			linklab1.Links[0].Visited = true;
 			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com";
 			linklab1.Links.Add(9, 16, "www.opensuse.org");
@@ -252,6 +257,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (pb1);
 			form.Controls.Add (nud1);
 			form.Controls.Add (tbx1);
+			form.Controls.Add (tbx2);
 			form.Controls.Add (radWithImage);
 			rad1.Text = "rad1";
 			rad2.Text = "rad2";
@@ -279,7 +285,8 @@ namespace UiaAtkBridgeTest
 		private Atk.Object GetAccessible (BasicWidgetType type, string name, bool real, bool embeddedImage)
 		{
 			Atk.Object accessible = null;
-
+			IRawElementProviderFragment provF = null;
+			IRawElementProviderSimple provS = null;
 			string[] names = null;
 
 			switch (type) {
@@ -345,11 +352,11 @@ namespace UiaAtkBridgeTest
 				// the way to group radioButtons is dependent on their parent control
 				SWF.RadioButton radio = 
 					(embeddedImage ? radWithImage : GiveMeARadio (name));
-				IRawElementProviderFragment prov = ProviderFactory.GetProvider (radio, true, true);
+				provF = ProviderFactory.GetProvider (radio, true, true);
 				UiaAtkBridge.RadioButton uiaRad;
 				if (real)
 #pragma warning disable 618
-					uiaRad = (UiaAtkBridge.RadioButton) UiaAtkBridge.AutomationBridge.GetAdapterForProvider (prov);
+					uiaRad = (UiaAtkBridge.RadioButton) UiaAtkBridge.AutomationBridge.GetAdapterForProvider (provF);
 #pragma warning restore 618
 				else
 					throw new NotSupportedException ("No un-real support for this");
@@ -436,19 +443,35 @@ namespace UiaAtkBridgeTest
 				accessible = uiaSp;
 				break;
 
-//			case BasicWidgetType.TextBoxEntry:
-//				SWF.TextBox tbx = tbx1;
-//				if (!real)
-//					throw new NotSupportedException ("Not unreal support for TextBox");
-//				
-//				UiaAtkBridge.EditableTextBoxEntry editText = (UiaAtkBridge.EditableTextBoxEntry)
-//				  UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (tbx, true, true));
-//				
-//				accessible = editText;
-//				component = editText;
-//				text = editText;
-//				action = editText;
-//				break;
+			case BasicWidgetType.TextBoxEntry:
+				SWF.TextBox tbxEntry = tbx1;
+				if (!real)
+					throw new NotSupportedException ("Not unreal support for TextBox");
+
+				provS = (IRawElementProviderSimple) ProviderFactory.GetProvider (tbxEntry, true, true);
+				Assert.IsNotNull (provS, "Provider retreived from ProvFactory should not be null");
+#pragma warning disable 618
+				UiaAtkBridge.EditableTextBoxEntryView editTextEntry = (UiaAtkBridge.EditableTextBoxEntryView)
+				  UiaAtkBridge.AutomationBridge.GetAdapterForProvider (provS);
+#pragma warning restore 618
+				Assert.IsNotNull (editTextEntry, "Adapter retreived from AutomationBridge should not be null");
+				
+				accessible = editTextEntry;
+				break;
+
+			case BasicWidgetType.TextBoxView:
+				SWF.TextBox tbxView = tbx2;
+				if (!real)
+					throw new NotSupportedException ("Not unreal support for TextBox");
+
+#pragma warning disable 618
+				UiaAtkBridge.EditableTextBoxEntryView editTextView = (UiaAtkBridge.EditableTextBoxEntryView)
+				  UiaAtkBridge.AutomationBridge.GetAdapterForProvider (
+				    (IRawElementProviderSimple) ProviderFactory.GetProvider (tbxView, true, true));
+#pragma warning restore 618
+				
+				accessible = editTextView;
+				break;
 				
 			case BasicWidgetType.ComboBox:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");

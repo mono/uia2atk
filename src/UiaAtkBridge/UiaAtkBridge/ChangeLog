@@ -1,3 +1,13 @@
+2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am:
+	* UiaAtkBridge.mdp:
+	* AutomationBridge.cs:
+	* EditableTextBoxEntry.cs:
+	* TextImplementorHelper.cs:
+	* EditableTextBoxEntryView.cs: Adds textbox to the bridge party. Closes
+	#428592.
+
 2008-10-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Monitor.cs: Prevent being asynchronous when calling the unmanaged land

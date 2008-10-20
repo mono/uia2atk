@@ -32,21 +32,34 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	
-	public class EditableTextBoxEntry : ComponentAdapter, Atk.TextImplementor, 
+	public class EditableTextBoxEntryView : ComponentAdapter, Atk.TextImplementor, 
 	  Atk.ActionImplementor, Atk.EditableTextImplementor, Atk.StreamableContentImplementor
 	{
 		private TextImplementorHelper textExpert = null;
 		private IRawElementProviderSimple provider;
+		private bool multiLine = false;
 		
-		public EditableTextBoxEntry (IRawElementProviderSimple provider)
+		public EditableTextBoxEntryView (IRawElementProviderSimple provider)
 		{
+			this.provider = provider;
 			Role = Atk.Role.Text;
-			
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = text;
 			textExpert = new TextImplementorHelper (text);
+			if ((int)provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) ==
+			    ControlType.Document.Id)
+				multiLine = true;
 		}
 
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			states.AddState (Atk.StateType.Editable);
+			states.AddState (multiLine ? Atk.StateType.MultiLine : Atk.StateType.SingleLine);
+			states.RemoveState (multiLine ? Atk.StateType.SingleLine : Atk.StateType.MultiLine);
+			return states;
+		}
+		
 		#region TextImplementor implementation 
 		
 		public string GetText (int startOffset, int endOffset)
@@ -114,7 +127,7 @@ namespace UiaAtkBridge
 			throw new NotImplementedException ();
 		}
 		
-		public void GetRangeExtents (int start_offset, int end_offset, Atk.CoordType coord_type, Atk.TextRectangle rect)
+		public void GetRangeExtents (int start_offset, int end_offset, Atk.CoordType coord_type, out Atk.TextRectangle rect)
 		{
 			throw new NotImplementedException ();
 		}
