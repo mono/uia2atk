@@ -64,6 +64,10 @@ public partial class MainWindow {
     
     private Gtk.VScrollbar vscrollbar1;
     
+    private Gtk.Image imgTest1;
+    
+    private Gtk.Image imgTest2;
+    
     private Gtk.HScrollbar hscrollbar1;
     
     private Gtk.ProgressBar progressbar1;
@@ -309,11 +313,27 @@ public partial class MainWindow {
         w18.Position = 2;
         w18.Expand = false;
         w18.Fill = false;
-        this.vbox1.Add(this.hbox1);
-        Gtk.Box.BoxChild w19 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
-        w19.Position = 1;
+        // Container child hbox1.Gtk.Box+BoxChild
+        this.imgTest1 = new Gtk.Image();
+        this.imgTest1.Name = "imgTest1";
+        this.hbox1.Add(this.imgTest1);
+        Gtk.Box.BoxChild w19 = ((Gtk.Box.BoxChild)(this.hbox1[this.imgTest1]));
+        w19.Position = 3;
         w19.Expand = false;
         w19.Fill = false;
+        // Container child hbox1.Gtk.Box+BoxChild
+        this.imgTest2 = new Gtk.Image();
+        this.imgTest2.Name = "imgTest2";
+        this.hbox1.Add(this.imgTest2);
+        Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.hbox1[this.imgTest2]));
+        w20.Position = 5;
+        w20.Expand = false;
+        w20.Fill = false;
+        this.vbox1.Add(this.hbox1);
+        Gtk.Box.BoxChild w21 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
+        w21.Position = 1;
+        w21.Expand = false;
+        w21.Fill = false;
         // Container child vbox1.Gtk.Box+BoxChild
         this.hscrollbar1 = new Gtk.HScrollbar(null);
         this.hscrollbar1.Name = "hscrollbar1";
@@ -322,32 +342,32 @@ public partial class MainWindow {
         this.hscrollbar1.Adjustment.PageSize = 10;
         this.hscrollbar1.Adjustment.StepIncrement = 1;
         this.vbox1.Add(this.hscrollbar1);
-        Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.vbox1[this.hscrollbar1]));
-        w20.Position = 2;
-        w20.Expand = false;
-        w20.Fill = false;
+        Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.vbox1[this.hscrollbar1]));
+        w22.Position = 2;
+        w22.Expand = false;
+        w22.Fill = false;
         // Container child vbox1.Gtk.Box+BoxChild
         this.progressbar1 = new Gtk.ProgressBar();
         this.progressbar1.Name = "progressbar1";
         this.vbox1.Add(this.progressbar1);
-        Gtk.Box.BoxChild w21 = ((Gtk.Box.BoxChild)(this.vbox1[this.progressbar1]));
-        w21.Position = 3;
-        w21.Expand = false;
-        w21.Fill = false;
+        Gtk.Box.BoxChild w23 = ((Gtk.Box.BoxChild)(this.vbox1[this.progressbar1]));
+        w23.Position = 3;
+        w23.Expand = false;
+        w23.Fill = false;
         // Container child vbox1.Gtk.Box+BoxChild
         this.statusbar1 = new Gtk.Statusbar();
         this.statusbar1.Name = "statusbar1";
         this.statusbar1.Spacing = 6;
         this.vbox1.Add(this.statusbar1);
-        Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
-        w22.Position = 4;
-        w22.Expand = false;
-        w22.Fill = false;
+        Gtk.Box.BoxChild w24 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
+        w24.Position = 4;
+        w24.Expand = false;
+        w24.Fill = false;
         this.Add(this.vbox1);
         if ((this.Child != null)) {
             this.Child.ShowAll();
         }
-        this.DefaultWidth = 678;
+        this.DefaultWidth = 733;
         this.DefaultHeight = 271;
         this.Show();
         this.DeleteEvent += new Gtk.DeleteEventHandler(this.OnDeleteEvent);

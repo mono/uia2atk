@@ -48,6 +48,10 @@ public partial class MainWindow: Gtk.Window
 		img2.FromFile = System.IO.Path.Combine (uiaQaPath, "soccerball.gif");
 		img2.Show ();
 		this.checkbutton1.Image = img2;
+
+		this.imgTest1.FromFile = System.IO.Path.Combine (uiaQaPath, "goalie.gif");
+
+		this.imgTest2.FromFile = System.IO.Path.Combine (uiaQaPath, "apple-red.png");
 	}
 
 	private static string LookForImagesDir () {

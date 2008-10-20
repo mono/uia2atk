@@ -1,5 +1,11 @@
 2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* MainWindow.cs:
+	* gtk-gui/gui.stetic:
+	* gtk-gui/MainWindow.cs: Added 2 imgs for mgorse.
+
+2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* gtk-gui/gui.stetic:
 	* gtk-gui/MainWindow.cs: Added a TreeView for mgorse.
 
