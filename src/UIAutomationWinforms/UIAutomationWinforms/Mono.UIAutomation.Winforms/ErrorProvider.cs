@@ -26,13 +26,12 @@ using Mono.UIAutomation.Winforms.Navigation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
+using SD = System.Drawing;
 using System.Linq;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
-using SWFErrorProvider = System.Windows.Forms.ErrorProvider;
+using SWF = System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -58,21 +57,21 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Constructor
 		
-		public ErrorProvider (SWFErrorProvider errorProvider) : base (errorProvider)
+		public ErrorProvider (SWF.ErrorProvider errorProvider) : base (errorProvider)
 		{	
 			this.errorProvider = errorProvider;
-			controls = new List<Control> ();
+			controls = new List<SWF.Control> ();
 		}
 
 		#endregion
 		
 		#region Public Properties
 		
-		public SWFErrorProvider SWFErrorProvider {
+		public SWF.ErrorProvider SWFErrorProvider {
 			get { return errorProvider; }
 		}
 	
-		public Control Parent {
+		public SWF.Control Parent {
 			get { return parent; }
 		}
 
@@ -80,7 +79,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Public Methods
 		
-		public void AddControl (Control control)
+		public void AddControl (SWF.Control control)
 		{
 			if (parent == null)
 				parent = InstancesTracker.GetParentFromControl (control);
@@ -96,7 +95,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public void DeleteControl (Control control)
+		public void DeleteControl (SWF.Control control)
 		{
 			if (controls.Contains (control) == true) {
 				if (controls.Count == 1) {
@@ -131,22 +130,22 @@ namespace Mono.UIAutomation.Winforms
 		
 		private Rect GetBoundingRectangle ()
 		{
-			List<Control> controls 
+			List<SWF.Control> controls 
 				= InstancesTracker.GetControlsFromProvider (this);
 			
 			if (controls == null)
 				return Rect.Empty;
 			
-			Rectangle bounding = controls [0].Bounds;
+			SD.Rectangle bounding = controls [0].Bounds;
 			for (int i = 1; i < controls.Count; i++)
-				bounding = Rectangle.Union (bounding, controls [i].Bounds);
+				bounding = SD.Rectangle.Union (bounding, controls [i].Bounds);
 
 			return Helper.RectangleToRect (bounding);
 		}
 		
 		private void OnControlVisibleChanged (object sender, EventArgs args)
 		{
-			Control control = (Control) sender;
+			SWF.Control control = (SWF.Control) sender;
 
 			if (control.Visible == true) {
 				FragmentRootControlProvider root 
@@ -160,9 +159,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Fields
 		
-		private List<Control> controls;
-		private Control parent;
-		private SWFErrorProvider errorProvider;
+		private List<SWF.Control> controls;
+		private SWF.Control parent;
+		private SWF.ErrorProvider errorProvider;
 		
 		#endregion
 		
@@ -170,18 +169,25 @@ namespace Mono.UIAutomation.Winforms
 		
 		internal class ErrorProviderToolTipProvider : ToolTipBaseProvider
 		{
-			public ErrorProviderToolTipProvider (SWFErrorProvider provider) 
+			public ErrorProviderToolTipProvider (SWF.ErrorProvider provider) 
 				: base (provider)
 			{
 				errorProvider = provider;
 			}
 
-			protected override string GetTextFromControl (Control control)
+			protected override Rect GetBoundingRectangle ()
+			{
+				return Helper.RectangleToRect (Helper.GetPrivateProperty<SWF.ErrorProvider, SD.Rectangle> (typeof (SWF.ErrorProvider),
+				                                                                                          errorProvider,
+				                                                                                          "UIAToolTipRectangle"));
+			}
+
+			protected override string GetTextFromControl (SWF.Control control)
 			{
 				return errorProvider.GetError (control);
 			}
 		
-			private SWFErrorProvider errorProvider;
+			private SWF.ErrorProvider errorProvider;
 		}
 		
 		#endregion
@@ -193,13 +199,13 @@ namespace Mono.UIAutomation.Winforms
 		//      SWF.ErrorProvider.
 		internal static class InstancesTracker
 		{		
-			public static Control GetParentFromControl (Control control)
+			public static SWF.Control GetParentFromControl (SWF.Control control)
 			{
 				if (dictionary == null)
 					return null;
 				
 				if (control.Parent == null) {
-					foreach (KeyValuePair<Control, ErrorProviderControlList> 
+					foreach (KeyValuePair<SWF.Control, ErrorProviderControlList>
 					         value in parentDictionary) {
 						if (value.Value.Contains (control) == true)
 							return value.Key;
@@ -209,9 +215,9 @@ namespace Mono.UIAutomation.Winforms
 				return control.Parent;
 			}
 			
-			public static void AddControl (Control control,
-			                               Control parent,
-			                               SWFErrorProvider provider)
+			public static void AddControl (SWF.Control control,
+			                               SWF.Control parent,
+			                               SWF.ErrorProvider provider)
 			{
 				
 				if (dictionary == null) {
@@ -236,9 +242,9 @@ namespace Mono.UIAutomation.Winforms
 				}
 			}
 			
-			public static void RemoveControl (Control control, 
-			                                  Control parent, 
-			                                  SWFErrorProvider provider)
+			public static void RemoveControl (SWF.Control control, 
+			                                  SWF.Control parent, 
+			                                  SWF.ErrorProvider provider)
 			{
 				if (dictionary == null 
 				    || dictionary.ContainsKey (control) == false)
@@ -248,17 +254,17 @@ namespace Mono.UIAutomation.Winforms
 				dictionary.Remove (control);	
 			}			
 			
-			public static SWFErrorProvider GetErrorProviderFromControl (Control control)
+			public static SWF.ErrorProvider GetErrorProviderFromControl (SWF.Control control)
 			{
 				if (dictionary == null)
 					return null;
 				
-				SWFErrorProvider provider = null;
+				SWF.ErrorProvider provider = null;
 				dictionary.TryGetValue (control, out provider);
 				return provider;
 			}
 			
-			public static List<Control> GetControlsFromProvider (ErrorProvider errorProvider)
+			public static List<SWF.Control> GetControlsFromProvider (ErrorProvider errorProvider)
 			{
 				FragmentRootControlProvider parent 
 					= (FragmentRootControlProvider) errorProvider.Navigate (NavigateDirection.Parent);
@@ -271,7 +277,7 @@ namespace Mono.UIAutomation.Winforms
 				
 				ErrorProviderControlList parentControls = parentDictionary [parent.Control];
 				
-				List<Control> controls =
+				List<SWF.Control> controls =
 					(from c in parentControls
 					where dictionary [c] == errorProvider.SWFErrorProvider
 					select c).ToList ();
@@ -279,7 +285,7 @@ namespace Mono.UIAutomation.Winforms
 				return controls;
 			}
 
-			public static bool IsControlFromErrorProvider (Control control) 
+			public static bool IsControlFromErrorProvider (SWF.Control control) 
 			{
 				if (dictionary == null)
 					return false;
@@ -287,12 +293,12 @@ namespace Mono.UIAutomation.Winforms
 					return dictionary.ContainsKey (control);
 			}
 			
-			public static bool IsFirstControlFromErrorProvider (Control control)
+			public static bool IsFirstControlFromErrorProvider (SWF.Control control)
 			{
 				if (IsControlFromErrorProvider (control) == false)
 					return false;
 				
-				IEnumerable<Control> controls =
+				IEnumerable<SWF.Control> controls =
 					from c
 					in parentDictionary [GetParentFromControl (control)]
 					where dictionary [c] == dictionary [control]
@@ -309,15 +315,15 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Internal Classes: Dictionaries and Lists
 		
-		class ErrorProviderControlList : List<Control>
+		class ErrorProviderControlList : List<SWF.Control>
 		{
 		}	
 		
-		class ParentDictionary : Dictionary<Control, ErrorProviderControlList>
+		class ParentDictionary : Dictionary<SWF.Control, ErrorProviderControlList>
 		{
 		}
 		
-		class ErrorProviderControlDictionary : Dictionary<Control, SWFErrorProvider>
+		class ErrorProviderControlDictionary : Dictionary<SWF.Control, SWF.ErrorProvider>
 		{
 		}
 

@@ -21,14 +21,14 @@
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
-// 
-
+//
 using System;
+using SD = System.Drawing;
+using System.Windows;
 using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
-using SWFErrorProvider = System.Windows.Forms.ErrorProvider;
+using SWF = System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -38,7 +38,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Constructor
 		
-		public ToolTipProvider (ToolTip tooltip) : base (tooltip)
+		public ToolTipProvider (SWF.ToolTip tooltip) : base (tooltip)
 		{
 			this.tooltip = tooltip;
 		}
@@ -47,7 +47,14 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Protected Methods
 
-		protected override string GetTextFromControl (Control control)
+		protected override Rect GetBoundingRectangle ()
+		{
+			return Helper.RectangleToRect (Helper.GetPrivateProperty<SWF.ToolTip, SD.Rectangle> (typeof (SWF.ToolTip),
+			                                                                                     tooltip,
+			                                                                                     "UIAToolTipRectangle"));
+		}
+
+		protected override string GetTextFromControl (SWF.Control control)
 		{
 			return tooltip.GetToolTip (control);
 		}
@@ -56,7 +63,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Fields
 
-		private ToolTip tooltip;
+		private SWF.ToolTip tooltip;
 		
 		#endregion
 	}

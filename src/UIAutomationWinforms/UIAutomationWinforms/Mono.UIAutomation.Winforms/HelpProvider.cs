@@ -23,8 +23,9 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using System.Windows.Forms;
-using SWFHelpProvider = System.Windows.Forms.HelpProvider;
+using SD = System.Drawing;
+using System.Windows;
+using SWF = System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {	
@@ -34,7 +35,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Constructors
 		
-		public HelpProvider (SWFHelpProvider helpProvider) : base (helpProvider)
+		public HelpProvider (SWF.HelpProvider helpProvider) : base (helpProvider)
 		{
 			this.helpProvider = helpProvider;
 		}
@@ -42,8 +43,15 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Protected Methods
+
+		protected override Rect GetBoundingRectangle ()
+		{
+			return Helper.RectangleToRect (Helper.GetPrivateProperty<SWF.HelpProvider, SD.Rectangle> (typeof (SWF.HelpProvider),
+			                                                                                          helpProvider,
+			                                                                                          "UIAToolTipRectangle"));
+		}		
 		
-		protected override string GetTextFromControl (Control control)
+		protected override string GetTextFromControl (SWF.Control control)
 		{
 			return helpProvider.GetHelpString (control);
 		}
@@ -52,7 +60,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Fields
 		
-		private SWFHelpProvider helpProvider;
+		private SWF.HelpProvider helpProvider;
 		
 		#endregion
 	}

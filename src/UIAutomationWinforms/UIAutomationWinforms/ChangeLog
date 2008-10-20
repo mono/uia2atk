@@ -1,3 +1,25 @@
+2008-10-20  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/HelpProvider.cs:
+	* Mono.UIAutomation.Winforms/ErrorProvider.cs: SWF =
+	System.Windows.Forms.  Implementation GetBoundingRectangle. (Needs
+	mcs r116513)
+
+[Fixes Bug #436823]
+
+	* Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs: Automation
+	Properties added: BoundingRectangle, IsOffScreen, IsEnabled. New
+	abstract method GetBoundingRectangle. (Needs mcs r116513)
+
+[Fixes Bug
+	#436823]
+
+	* Mono.UIAutomation.Winforms/ToolTipProvider.cs: SWF =
+	System.Windows.Forms.  Implementation GetBoundingRectangle. (Needs
+	mcs r116513)
+
+[Fixes Bug #436823] 
+
 2008-10-17  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

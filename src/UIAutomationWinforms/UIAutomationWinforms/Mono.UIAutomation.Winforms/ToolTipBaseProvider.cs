@@ -22,9 +22,9 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-
 using System;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
@@ -67,6 +67,13 @@ namespace Mono.UIAutomation.Winforms
 				return false;
 			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 				return null;
+			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+				return GetBoundingRectangle ();
+			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
+				//When the tooltip is offscren is hidden, so is removed from tree.
+				return false;
+			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
+				return true;
 			else
 				return base.GetPropertyValue (propertyId);
 		}
@@ -74,6 +81,8 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Protected Methods
+
+		protected abstract Rect GetBoundingRectangle ();
 
 		protected abstract string GetTextFromControl (Control control);
 		
