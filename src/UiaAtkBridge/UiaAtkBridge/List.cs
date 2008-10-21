@@ -146,7 +146,7 @@ AtkObject,
 			
 			selectionProvider = (ISelectionProvider)provider.GetPatternProvider(SelectionPatternIdentifiers.Pattern.Id);
 			if (selectionProvider == null)
-				throw new NotImplementedException ("List should always implement ISelectionProvider");
+				throw new ArgumentException ("List should always implement ISelectionProvider");
 
 			Role = Atk.Role.List;
 			
