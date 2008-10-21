@@ -1,3 +1,9 @@
+2008-10-21  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs:
+	GridItem support when View is List: new property MaxRows, GroupColums
+	renamed to MaxColumns
+
 2008-10-21  Brad Taylor  <brad@getcoded.net>
 	
 	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Make sure to call

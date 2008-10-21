@@ -98,15 +98,24 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		public int Row {
 			get { 
-				if (GroupColumns == 0)
-					return -1;
-				else
-					return IndexOf / GroupColumns;
+				SWF.ListView view = (SWF.ListView) viewProvider.Control;
+
+				if (view.View == SWF.View.List) //From Top to Bottom
+					return MaxRows == 0 ? -1 : IndexOf % MaxRows;					
+				else //From Left to Right
+					return MaxColumns == 0 ? -1 : IndexOf / MaxColumns;
 			}
 		}
 		
 		public int Column {
-			get { return IndexOf - (Row * GroupColumns); }
+			get {
+				SWF.ListView view = (SWF.ListView) viewProvider.Control;
+
+				if (view.View == SWF.View.List) //From Top to Bottom
+					return MaxRows == 0 ? -1 : IndexOf / MaxRows; 
+				else //From Left to Right
+					return IndexOf - (Row * MaxColumns); 
+			}
 		}
 		
 		public int RowSpan {
@@ -127,10 +136,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		private int IndexOf {
 			get {
-				SWF.ListViewItem item = (SWF.ListViewItem) itemProvider.ObjectItem;				
+				SWF.ListViewItem item = (SWF.ListViewItem) itemProvider.ObjectItem;
+
+				if (item.ListView.View == SWF.View.List)
+					return item.ListView.Items.IndexOf (item);
+
 				SWF.ListViewGroup group = viewProvider.GetGroupFrom (item);
 
-				if (viewProvider.IsDefaultGroup (group) == true) {
+				if (viewProvider.IsDefaultGroup (group) == true) {					
 					SWF.ListView listView = (SWF.ListView) viewProvider.Control;
 					int indexOf = 0;
 					bool found = false;					
@@ -152,11 +165,19 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			}
 		}
 		
-		private int GroupColumns {
+		private int MaxColumns {
 			get {
 				return Helper.GetPrivateProperty<SWF.ListView, int> (typeof (SWF.ListView),
 				                                                     (SWF.ListView) viewProvider.Control,
 				                                                     "UIAColumns");
+			}
+		}
+
+		private int MaxRows {
+			get {
+				return Helper.GetPrivateProperty<SWF.ListView, int> (typeof (SWF.ListView),
+				                                                     (SWF.ListView) viewProvider.Control,
+				                                                     "UIARows");
 			}
 		}
 		
