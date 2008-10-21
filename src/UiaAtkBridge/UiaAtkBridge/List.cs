@@ -160,8 +160,6 @@ AtkObject,
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			
-			states.AddState (StateType.ManagesDescendants);
-			
 			return states;
 		}
 
@@ -171,9 +169,7 @@ AtkObject,
 		}
 
 		public GLib.SList DefaultAttributes {
-			get {
-				throw new NotImplementedException();
-			}
+			get { throw new NotImplementedException (); }
 		}
 
 
@@ -242,8 +238,8 @@ AtkObject,
 			if (item == selectedItem)
 				return;
 			if (selectedItem != null)
-				selectedItem.NotifyStateChange ((ulong) Atk.StateType.Selected, false);
-			item.NotifyStateChange ((ulong) Atk.StateType.Selected, true);
+				selectedItem.NotifyStateChange (Atk.StateType.Selected, false);
+			item.NotifyStateChange (Atk.StateType.Selected, true);
 			selectedItem = item;
 		}
 	}
