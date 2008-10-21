@@ -37,7 +37,8 @@ namespace UiaAtkBridgeTest
 		NormalButton,
 		Window,
 		CheckBox,
-		ComboBox,
+		ComboBoxDropDownList,
+		ComboBoxDropDownEntry,
 		RadioButton,
 		StatusBar,
 		TextBoxEntry, // textbox single-line (gtk: entry)
@@ -47,7 +48,9 @@ namespace UiaAtkBridgeTest
 		HScrollBar,
 		ProgressBar,
 		Spinner,
+		
 		//widgets only in MWF:
+		ComboBoxSimple,
 		ListBox,
 		ListItem,
 		CheckedListBox,

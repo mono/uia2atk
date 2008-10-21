@@ -1,5 +1,12 @@
 2008-10-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs:
+	* AtkTester.cs:
+	* BridgeTester.cs:
+	* BasicWidgetType.cs: Add combobox state testing. Closes #428644.
+
+2008-10-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Small fix.
 
 2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>

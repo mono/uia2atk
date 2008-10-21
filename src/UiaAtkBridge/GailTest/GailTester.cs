@@ -128,7 +128,7 @@ namespace UiaAtkBridgeTest
 			Gtk.Widget widget = null;
 			
 			switch (type) {
-			case BasicWidgetType.ComboBox:
+			case BasicWidgetType.ComboBoxDropDownList:
 				widget = new Gtk.ComboBox ();
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealComboBox ();
@@ -260,7 +260,9 @@ namespace UiaAtkBridgeTest
 				//if (real)
 					//widget = GailTestApp.MainClass.GiveMeARealSpinButton ();
 				break;
-			case BasicWidgetType.ComboBox:
+			case BasicWidgetType.ComboBoxDropDownEntry:
+			case BasicWidgetType.ComboBoxDropDownList:
+			case BasicWidgetType.ComboBoxSimple:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
 			default:
 				throw new NotImplementedException ("The widget finder backend still hasn't got support for " +

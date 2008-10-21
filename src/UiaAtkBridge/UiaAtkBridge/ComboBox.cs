@@ -48,7 +48,24 @@ namespace UiaAtkBridge
 				return childrenHolder;
 			}
 		}
-		
+
+		private IRawElementProviderFragment TextBoxHolder {
+			get {
+				if (textboxHolder == null) {
+					IRawElementProviderFragment child = provider.Navigate (NavigateDirection.FirstChild);
+					while (child != null) {
+						if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
+						  == ControlType.Edit.Id) 
+							break;
+						child = child.Navigate (NavigateDirection.NextSibling);
+					}
+					textboxHolder = child;
+				}
+				return textboxHolder;
+			}
+		}
+
+		private IRawElementProviderFragment textboxHolder = null;
 		private IRawElementProviderFragment childrenHolder = null;
 		
 		private string[] ChildrenItems {
@@ -75,24 +92,24 @@ namespace UiaAtkBridge
 		//this one, when not null, indicates that the combobox is editable (like a gtkcomboboxentry vs normal gtkcombobox)
 		private IValueProvider						valProvider;
 		private IRawElementProviderFragmentRoot 	provider;
-		private SelectionProviderUserHelper	selectionHelper;
+		private SelectionProviderUserHelper			selectionHelper;
 		
 		
 		public ComboBox (IRawElementProviderFragmentRoot provider)
 		{
 			this.provider = provider;
 			this.Role = Atk.Role.ComboBox;
-			children.Add (new ParentMenu (ChildrenItems));
+
 			selProvider = (ISelectionProvider)provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
-			valProvider = (IValueProvider)provider.GetPatternProvider(ValuePatternIdentifiers.Pattern.Id);
+			valProvider = (IValueProvider)provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
 			
 			if (selProvider == null)
-				throw new NotImplementedException ("ComboBoxProvider should always implement ISelectionProvider");
+				throw new ArgumentException ("ComboBoxProvider should always implement ISelectionProvider");
 			
 			if (valProvider != null)
-				//not yet ready:
-				//children.Add (new TextEntry());
-				throw new NotImplementedException ("We need to implement the TextEntry bridge class for this kind of combobox");
+				children.Add (new TextBoxEntryView (TextBoxHolder));
+
+			children.Add (new ParentMenu (ChildrenItems));
 			
 			selectionHelper = new SelectionProviderUserHelper(provider, selProvider, ChildrenHolder);
 		}
@@ -104,10 +121,10 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
-			
+			//FIXME: figure out why Gail comboboxes don't like this state
+			states.RemoveState (Atk.StateType.Focusable);
 			return states;
 		}
-
 		
 		int Atk.ActionImplementor.NActions {
 			get {

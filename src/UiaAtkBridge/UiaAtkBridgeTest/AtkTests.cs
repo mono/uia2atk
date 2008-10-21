@@ -428,13 +428,15 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void ComboBox ()
 		{
-			BasicWidgetType type = BasicWidgetType.ComboBox;
+			BasicWidgetType type = BasicWidgetType.ComboBoxDropDownList;
 			Atk.Object accessible;
 			
 			string[] names = new string[] { "First item", "Second Item", "Last Item" };
 			accessible = GetAccessible (type, names, true);
+			
+			StatesComboBox (accessible);
+			
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
-
 			InterfaceComponent (type, atkComponent);
 			
 			PropertyRole (type, accessible);

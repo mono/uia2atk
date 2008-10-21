@@ -122,11 +122,10 @@ namespace UiaAtkBridgeTest
 				accessible = uiaList;
 				break;
 			}
-			case BasicWidgetType.ComboBox:
+			case BasicWidgetType.ComboBoxDropDownList:
 				SWF.ComboBox comboBox = new SWF.ComboBox ();
 				if (real)
-					comboBox = cb1;
-				comboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+					comboBox = cbDDL;
 				comboBox.Items.Clear();
 				foreach (string item in names)
 					comboBox.Items.Add (item);
@@ -193,7 +192,9 @@ namespace UiaAtkBridgeTest
 		int currentRadio = -1;
 		SWF.ListBox lb1 = new SWF.ListBox ();
 		SWF.CheckedListBox clb1 = new SWF.CheckedListBox ();
-		SWF.ComboBox cb1 = new SWF.ComboBox ();
+		SWF.ComboBox cbDD = new SWF.ComboBox ();
+		SWF.ComboBox cbSim = new SWF.ComboBox ();
+		SWF.ComboBox cbDDL = new SWF.ComboBox ();
 		SWF.Label lab1 = new SWF.Label ();
 		SWF.LinkLabel linklab1 = new SWF.LinkLabel ();
 		SWF.Button butWithoutImage = new SWF.Button ();
@@ -225,7 +226,9 @@ namespace UiaAtkBridgeTest
 			radWithImage.Image = System.Drawing.Image.FromFile (imgPath);
 			radWithImage.AutoSize = true;
 			
-			cb1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			cbDDL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			cbDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
+			cbSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
 
 			tbx1.Multiline = false;
 			tbx2.Multiline = true;
@@ -244,7 +247,9 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (gb2);
 			form.Controls.Add (lb1);
 			form.Controls.Add (clb1);
-			form.Controls.Add (cb1);
+			form.Controls.Add (cbDDL);
+			form.Controls.Add (cbDD);
+			form.Controls.Add (cbSim);
 			form.Controls.Add (lab1);
 			form.Controls.Add (linklab1);
 			form.Controls.Add (butWithoutImage);
@@ -421,8 +426,10 @@ namespace UiaAtkBridgeTest
 
 				accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (tbxView, true, true));
 				break;
-				
-			case BasicWidgetType.ComboBox:
+
+			case BasicWidgetType.ComboBoxDropDownEntry:
+			case BasicWidgetType.ComboBoxDropDownList:
+			case BasicWidgetType.ComboBoxSimple:
 				throw new NotSupportedException ("You have to use the GetObject overload that receives a name array");
 			default:
 				throw new NotImplementedException ("The widget finder backend still hasn't got support for " +
@@ -601,6 +608,20 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Sensitive,
 				Atk.StateType.Showing,
 				Atk.StateType.Visible);
+		}
+
+		[Test]
+		public void ComboBoxSimple ()
+		{
+			BasicWidgetType type = BasicWidgetType.ComboBoxSimple;
+
+			Atk.Object accessible = 
+			  UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (
+			    (IRawElementProviderSimple) ProviderFactory.GetProvider (cbSim, true, true));
+			
+			PropertyRole (type, accessible);
+
+			StatesComboBox (accessible);
 		}
 
 		//[Test]

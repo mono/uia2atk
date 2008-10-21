@@ -141,7 +141,7 @@ namespace UiaAtkBridgeTest
 		{
 			int validNumberOfActions = ValidNumberOfActionsForAButton;
 			if ((type == BasicWidgetType.TextBoxEntry) ||
-			    (type == BasicWidgetType.ComboBox) || 
+			    (type == BasicWidgetType.ComboBoxDropDownList) || 
 			    (type == BasicWidgetType.ListItem) || 
 			    (type == BasicWidgetType.ParentMenu))
 				validNumberOfActions = 1;
@@ -150,7 +150,7 @@ namespace UiaAtkBridgeTest
 			
 			Assert.AreEqual (validNumberOfActions, implementor.NActions, "NActions");
 			
-			if (type == BasicWidgetType.ComboBox)  {
+			if (type == BasicWidgetType.ComboBoxDropDownList)  {
 				Assert.AreEqual ("press", implementor.GetName (0), "GetName press");
 			} else if (type == BasicWidgetType.TextBoxEntry) {
 				Assert.AreEqual ("activate", implementor.GetName (0), "GetName activate");
@@ -180,7 +180,7 @@ namespace UiaAtkBridgeTest
 			if (type == BasicWidgetType.ListItem || type == BasicWidgetType.CheckedListItem)
 				Assert.IsFalse (state.ContainsState (Atk.StateType.Selected), "RefStateSet.Selected");
 
-			if (type != BasicWidgetType.ComboBox) {
+			if (type != BasicWidgetType.ComboBoxDropDownList) {
 				// only valid actions should work
 				for (int i = 0; i < validNumberOfActions; i++) 
 					Assert.AreEqual (actionPerformed, implementor.DoAction (i), "DoAction(" + i + ")");
@@ -314,7 +314,9 @@ namespace UiaAtkBridgeTest
 
 			string lastName = accessible.Name;
 
-			if (type == BasicWidgetType.ComboBox || type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox) {
+			if (type == BasicWidgetType.ComboBoxDropDownList || 
+			    type == BasicWidgetType.ListBox || 
+			    type == BasicWidgetType.CheckedListBox) {
 				//strangely, OOR selections return true (valid)
 				Assert.IsTrue (implementor.AddSelection (-1), "AddSelection OOR#1");
 			} else {
@@ -421,6 +423,15 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (ia, -1, "width of the image must be int.MinValue; obtained " + ia);
 			Assert.AreEqual (ib, -1, "height of the image must be int.MinValue; obtained " + ib);
 		}
+
+		protected void StatesComboBox (Atk.Object accessible)
+		{
+			States (accessible,
+				Atk.StateType.Enabled,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
+		}
 		
 		protected void PropertyRole (BasicWidgetType type, Atk.Object accessible)
 		{
@@ -438,7 +449,9 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.CheckBox:
 				role = Atk.Role.CheckBox;
 				break;
-			case BasicWidgetType.ComboBox:
+			case BasicWidgetType.ComboBoxDropDownEntry:
+			case BasicWidgetType.ComboBoxDropDownList:
+			case BasicWidgetType.ComboBoxSimple:
 				role = Atk.Role.ComboBox;
 				break;
 			case BasicWidgetType.RadioButton:
