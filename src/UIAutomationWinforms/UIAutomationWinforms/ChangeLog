@@ -1,3 +1,28 @@
+2008-10-20  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Updated. Files added.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: GridProvider enabled.
+	GetSelectedItems enabled. New method IsDefaultGroup.
+
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: New
+	Property: ChildrenCount. New Method GetProviderAt
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GroupGridProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GroupExpandCollapseProviderBehavior.cs:
+	Grid Pattern implementation in Group control.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs:
+	Fixed when Group is DefaultGroup.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternColumnEvent.cs:
+	Implements GridPattern.Column event in internal ListView.Group
+	provider.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternRowEvent.cs:
+	Implements GridPattern.Row event in internal ListView.Group provider.
+
 2008-10-20  Brad Taylor  <brad@getcoded.net>
 	
 	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Make ctor internal

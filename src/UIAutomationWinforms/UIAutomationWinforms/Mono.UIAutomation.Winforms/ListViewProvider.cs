@@ -40,7 +40,6 @@ namespace Mono.UIAutomation.Winforms
 	
 	internal class ListViewProvider : ListProvider, IScrollBehaviorSubject
 	{
-		
 		#region Constructors
 
 		public ListViewProvider (SWF.ListView listView) : base (listView)
@@ -116,9 +115,9 @@ namespace Mono.UIAutomation.Winforms
 			else if (SelectionPatternIdentifiers.Pattern == behavior) 
 				return new SelectionProviderBehavior (this);
 			else if (GridPatternIdentifiers.Pattern == behavior) {
-//				if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
-//					return new GridProviderBehavior (this);
-//				else
+				if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
+					return new GridProviderBehavior (this);
+				else
 					return null;
 			} else
 				return null;
@@ -208,7 +207,7 @@ namespace Mono.UIAutomation.Winforms
 				                           "OnUIAViewChanged");
 			} catch (NotSupportedException) {
 				Console.WriteLine ("{0}: UIAViewChanged not defined", GetType ());
-			}			
+			}
 		}
 		
 		public override int ItemsCount { 
@@ -235,18 +234,16 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override ListItemProvider[] GetSelectedItems ()
 		{
-			return null;
-//			if (listView.SelectedIndices.Count == 0)
-//				return null;
-//			else {
-//				ListItemProvider []providers = new ListItemProvider [listView.SelectedIndices.Count];
-//
-//				for (int index = 0; index < listView.SelectedIndices.Count; index++)
-//					//FIXME: This will fail when Groups are enabled
-//					providers [index] = GetItemProviderFrom (this, listView.Items [index]);
-//			
-//				return providers;
-//			}
+			if (listView.SelectedIndices.Count == 0)
+				return null;
+			else {
+				ListItemProvider []providers = new ListItemProvider [listView.SelectedIndices.Count];
+
+				for (int index = 0; index < listView.SelectedIndices.Count; index++)
+					providers [index] = GetItemProviderFrom (this, listView.Items [index]);
+			
+				return providers;
+			}
 		}
 		
 		public override void SelectItem (ListItemProvider item)
@@ -324,7 +321,7 @@ namespace Mono.UIAutomation.Winforms
 			
 		protected override void OnCollectionChanged (object sender, 
 		                                             CollectionChangeEventArgs args)
-		{
+		{		
 			if (args.Action == CollectionChangeAction.Add)
 				InitializeProviderFrom (args.Element, true);
 			else if (args.Action == CollectionChangeAction.Remove)
@@ -337,6 +334,11 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Public Methods
 
+		public bool IsDefaultGroup (SWF.ListViewGroup group)
+		{
+			return listViewNullGroup == group;
+		}
+
 		public SWF.ListViewGroup GetGroupFrom (SWF.ListViewItem item)
 		{
 			if (item.Group == null) {
@@ -344,6 +346,7 @@ namespace Mono.UIAutomation.Winforms
 						listViewNullGroup = Helper.GetPrivateProperty<SWF.ListView, SWF.ListViewGroup> (typeof (SWF.ListView), 
 						                                                                                listView,
 						                                                                                "UIADefaultListViewGroup");
+
 				return listViewNullGroup;
 			} else
 				return item.Group;
@@ -368,7 +371,9 @@ namespace Mono.UIAutomation.Winforms
 					groupProvider = new ListViewGroupProvider (listViewGroup,
 					                                           listView);
 					groups [listViewGroup] = groupProvider;
-						
+
+					groupProvider.Initialize ();
+
 					OnNavigationChildAdded (raiseEvent, groupProvider);
 				}
 
@@ -468,6 +473,7 @@ namespace Mono.UIAutomation.Winforms
 		private Dictionary<SWF.ListViewGroup, ListViewGroupProvider> groups;
 		private ScrollBehaviorObserver observer;
 		private SWF.ListViewGroup listViewNullGroup;
+		private SWF.ListView.ListViewItemCollection nullGroupCollection;
 		
 		#endregion
 		
@@ -515,25 +521,29 @@ namespace Mono.UIAutomation.Winforms
 			{
 				this.group = group;
 				this.listView = listView;
-
-//				SetBehavior (GridPatternIdentifiers.Pattern,
-//				             new GroupGridProviderBehavior (this));
-//				//TODO: Implement
-//				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
-//				             null);
 			}
 
-			public SWF.ListView View {
-				get { return listView; }
+			public override void Initialize ()
+			{
+				base.Initialize ();
+
+				SetBehavior (GridPatternIdentifiers.Pattern,
+				             new GroupGridProviderBehavior (this));
+				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
+				             new GroupExpandCollapseProviderBehavior (this));
 			}
 
 			public SWF.ListViewGroup Group {
 				get { return group; }
 			}
+
+			public SWF.ListView View {
+				get { return listView; }
+			}
 			
 			public override IRawElementProviderFragmentRoot FragmentRoot {
 				get { 
-					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (listView);
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (View);
 				}
 			}
 		
@@ -630,7 +640,8 @@ namespace Mono.UIAutomation.Winforms
 //				return rect;
 				return Rect.Empty;
 			}
-			
+
+			private ListViewProvider viewProvider;
 			private SWF.ListView listView;
 			private SWF.ListViewGroup group;
 		}

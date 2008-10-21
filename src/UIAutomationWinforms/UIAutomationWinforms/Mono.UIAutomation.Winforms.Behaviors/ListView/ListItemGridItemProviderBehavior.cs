@@ -99,7 +99,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		public int Row {
 			get { 
 				if (GroupColumns == 0)
-					return 0;
+					return -1;
 				else
 					return IndexOf / GroupColumns;
 			}
@@ -129,8 +129,26 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			get {
 				SWF.ListViewItem item = (SWF.ListViewItem) itemProvider.ObjectItem;				
 				SWF.ListViewGroup group = viewProvider.GetGroupFrom (item);
-				
-				return group.Items.IndexOf (item);
+
+				if (viewProvider.IsDefaultGroup (group) == true) {
+					SWF.ListView listView = (SWF.ListView) viewProvider.Control;
+					int indexOf = 0;
+					bool found = false;					
+					
+					//TODO: Is this OK??
+					for (int index = 0; index < listView.Items.Count; index++) {
+						if (listView.Items [index].Group == null) {
+							if (listView.Items [index] == item) {
+								found = true;
+								break;
+							}
+							indexOf++;
+						}
+					}
+					
+					return found == false ? -1 : indexOf;
+				} else
+					return group.Items.IndexOf (item);
 			}
 		}
 		

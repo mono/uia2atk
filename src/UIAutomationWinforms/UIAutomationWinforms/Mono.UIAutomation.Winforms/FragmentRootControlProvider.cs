@@ -81,8 +81,24 @@ namespace Mono.UIAutomation.Winforms
 		public NavigationEventHandler NavigationUpdated;
 		
 		#endregion
+
+		#region Public Properties
+
+		public int ChildrenCount {
+			get { return children.Count; }
+		}
+
+		#endregion
 		
 		#region Public Methods
+
+		public FragmentControlProvider GetProviderAt (int index)
+		{
+			if (index < 0 || index >= children.Count)
+				return null;
+			else
+				return children [index];
+		}
 		
 		public void AddChildProvider (bool raiseEvent, 
 		                              FragmentControlProvider provider) 
@@ -95,7 +111,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			OnNavigationChildRemoved (raiseEvent, provider);
 		}
-		
+
 		public override void Terminate ()
 		{
 			base.Terminate ();
@@ -289,7 +305,7 @@ namespace Mono.UIAutomation.Winforms
 			else
 				return null;
 		}
-		
+
 		#endregion
 
 		#region IRawElementProviderFragmentRoot Interface
