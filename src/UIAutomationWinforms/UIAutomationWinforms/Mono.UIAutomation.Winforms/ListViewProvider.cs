@@ -88,6 +88,28 @@ namespace Mono.UIAutomation.Winforms
 			UpdateScrollBehavior ();
 			
 			} catch (Exception) {}
+
+			//Event handlers used to set/unset behaviors in ListItem
+			//Toggle Behavior
+			try {
+				Helper.AddPrivateEvent (typeof (SWF.ListView),
+				                        listView, 
+				                        "UIACheckBoxesChanged",
+				                        this, 
+				                        "OnUIACheckBoxesChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIACheckBoxesChanged not defined", GetType ());
+			}
+			//Value Behavior
+			try {
+				Helper.AddPrivateEvent (typeof (SWF.ListView),
+				                        listView, 
+				                        "UIALabelEditChanged",
+				                        this, 
+				                        "OnUIALabelEditChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIALabelEditChanged not defined", GetType ());
+			}
 		}
 
 		public override object GetPropertyValue (int propertyId)
@@ -131,9 +153,17 @@ namespace Mono.UIAutomation.Winforms
 				return new ListItemSelectionItemProviderBehavior (listItem);
 			else if (behavior == GridItemPatternIdentifiers.Pattern)
 				return new ListItemGridItemProviderBehavior (listItem);
-			else if (behavior == ValuePatternIdentifiers.Pattern)
-				return new ListItemValueProviderBehavior (listItem);
-			else
+			else if (behavior == ValuePatternIdentifiers.Pattern) {
+				if (listView.LabelEdit == true)
+					return new ListItemValueProviderBehavior (listItem);
+				else
+					return null;
+			} else if (behavior == TogglePatternIdentifiers.Pattern) {
+				if (listView.CheckBoxes == true)
+					return new ListItemToggleProviderBehavior (listItem);
+				else
+					return null;
+			} else
 				return base.GetListItemBehaviorRealization (behavior, listItem);
 		}
 		
@@ -177,6 +207,28 @@ namespace Mono.UIAutomation.Winforms
 			base.Terminate ();
 			
 			observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
+
+			//Event handlers used to set/unset behaviors in ListItem
+			//Toggle Behavior
+			try {
+				Helper.RemovePrivateEvent (typeof (SWF.ListView),
+				                           listView,
+				                           "UIACheckBoxesChanged",
+				                           this,
+				                           "OnUIACheckBoxesChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIACheckBoxesChanged not defined", GetType ());
+			}
+			//Value Behavior
+			try {
+				Helper.RemovePrivateEvent (typeof (SWF.ListView),
+				                           listView, 
+				                           "UIALabelEditChanged",
+				                           this,
+				                           "OnUIALabelEditChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIALabelEditChanged not defined", GetType ());
+			}
 		}
 		
 		public override void InitializeChildControlStructure ()
@@ -359,7 +411,7 @@ namespace Mono.UIAutomation.Winforms
 		#region Private Methods
 		
 		private void InitializeProviderFrom (object objectItem, bool raiseEvent)
-		{			
+		{
 			// View.SmallIcon and View.LargeIcon use Groups
 			if (listView.View == SWF.View.SmallIcon 
 			    || listView.View == SWF.View.LargeIcon) {
@@ -464,6 +516,24 @@ namespace Mono.UIAutomation.Winforms
 			
 			foreach (object objectItem in listView.Items)
 				InitializeProviderFrom (objectItem, updateView);
+		}
+
+		private void OnUIACheckBoxesChanged (object sender, EventArgs args)
+		{
+			foreach (SWF.ListViewItem item in listView.Items) {
+				//FragmentRoot argument doesn't really matter, because the item already exists
+				ListItemProvider provider = GetItemProviderFrom (null, item);
+				provider.UpdateBehavior (TogglePatternIdentifiers.Pattern);
+			}
+		}
+
+		private void OnUIALabelEditChanged (object sender, EventArgs args)
+		{
+			foreach (SWF.ListViewItem item in listView.Items) {
+				//FragmentRoot argument doesn't really matter, because the item already exists
+				ListItemProvider provider = GetItemProviderFrom (null, item);
+				provider.UpdateBehavior (ValuePatternIdentifiers.Pattern);
+			}
 		}
 
 		#endregion

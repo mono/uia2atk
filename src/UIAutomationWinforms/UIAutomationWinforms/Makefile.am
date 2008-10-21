@@ -61,11 +61,13 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListBox/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/ScrollItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/GroupExpandCollapseProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/GroupGridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemSelectionItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/MultipleViewProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs \
@@ -96,6 +98,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/BaseAutomationPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Button/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/CheckBox/TogglePatternToggleStateEvent.cs \
+	Mono.UIAutomation.Winforms.Events/CheckedListBox/ListItemTogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ExpandCollapsePatternStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ListItemSelectionItemPatternElementSelectedEvent.cs \
@@ -122,7 +125,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternCanSelectMultipleEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternSelectionEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListItem/TogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternRowEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternColumnEvent.cs \
@@ -131,6 +133,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementRemovedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternIsSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/ListItemTogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontallyScrollableEvent.cs \

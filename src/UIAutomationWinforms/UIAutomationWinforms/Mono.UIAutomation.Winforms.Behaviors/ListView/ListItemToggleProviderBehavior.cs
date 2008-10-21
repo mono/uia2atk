@@ -23,14 +23,12 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.CheckedListBox;
+using Mono.UIAutomation.Winforms.Events.ListView;
 using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.CheckedListBox
+namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 {
 
 	internal class ListItemToggleProviderBehavior : ToggleProviderBehavior
@@ -38,15 +36,15 @@ namespace Mono.UIAutomation.Winforms.Behaviors.CheckedListBox
 		
 		#region Constructors
 
-		public ListItemToggleProviderBehavior (ListItemProvider provider)
-			: base (provider)
+		public ListItemToggleProviderBehavior (ListItemProvider itemProvider)
+			: base (itemProvider)
 		{
 		}
 
 		#endregion 
 		
 		#region ToggleProviderBehavior specializations
-
+		
 		public override void Connect ()
 		{
 			Provider.SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
@@ -54,5 +52,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.CheckedListBox
 		}
 
 		#endregion
+
 	}
 }

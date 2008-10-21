@@ -25,34 +25,38 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.CheckedListBox;
-using Mono.UIAutomation.Winforms.Behaviors.ListItem;
+using SWF = System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.CheckedListBox
+namespace Mono.UIAutomation.Winforms.Events.ListView
 {
 
-	internal class ListItemToggleProviderBehavior : ToggleProviderBehavior
+	internal class ListItemTogglePatternToggleStateEvent 
+		: BaseAutomationPropertyEvent
 	{
-		
+
 		#region Constructors
 
-		public ListItemToggleProviderBehavior (ListItemProvider provider)
-			: base (provider)
+		public ListItemTogglePatternToggleStateEvent (ListItemProvider listItemProvider)
+			: base (listItemProvider,
+			        TogglePatternIdentifiers.ToggleStateProperty)
 		{
 		}
-
-		#endregion 
 		
-		#region ToggleProviderBehavior specializations
-
+		#endregion
+		
+		#region IConnectable Overrides
+	
 		public override void Connect ()
 		{
-			Provider.SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
-			                   new ListItemTogglePatternToggleStateEvent ((ListItemProvider) Provider));
+			//TODO: Implement
 		}
 
+		public override void Disconnect ()
+		{
+			//TODO: Implement
+		}
+		
 		#endregion
+		
 	}
 }

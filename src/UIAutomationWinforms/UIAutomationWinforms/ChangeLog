@@ -1,6 +1,39 @@
 2008-10-21  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Added: ListItem.ToggleProvider,
+	ListView.ListItem.ToggleProvider,
+	ListView.ListItem.ToggleProvider.ToggleStateEvent,
+	CheckedListBox.ListItem.ToggleProvider.ToggleStateEvent.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Implementation to
+	update ListItem behavior.
+
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: New method:
+	UpdateBehavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs:
+	Implements Toggle Behavior in ListItem.
+
+	* Mono.UIAutomation.Winforms.Behaviors/CheckedListBox/ListItemToggleProviderBehavior.cs:
+	Subclassing from ListItem.ToggleProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemToggleProviderBehavior.cs:
+	Implements Toggle Behavior in ListView.ListItem.
+
+	* Mono.UIAutomation.Winforms.Events/ListItem:
+	* Mono.UIAutomation.Winforms.Events/ListItem/TogglePatternToggleStateEvent.cs:
+	Removed.
+
+	* Mono.UIAutomation.Winforms.Events/CheckedListBox: Folder added.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemTogglePatternToggleStateEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/CheckedListBox/ListItemTogglePatternToggleStateEvent.cs:
+	TogglePattern.ToggleState event.
+
+2008-10-21  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: ListItem.ToggleProviderBehavior moved
 	to CheckedListBox/ListItemToggleProviderBehavior.
 

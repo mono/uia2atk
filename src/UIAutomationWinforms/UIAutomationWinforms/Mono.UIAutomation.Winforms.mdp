@@ -132,7 +132,6 @@
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternVerticalViewSizeEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontalViewSizeEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListItem/TogglePatternToggleStateEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListBox/ListItemSelectionItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementSelectedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementAddedEvent.cs" subtype="Code" buildaction="Compile" />
@@ -188,8 +187,12 @@
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternValueEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternIsReadOnlyEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/CheckedListBox" subtype="Directory" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/CheckedListBox/ListItemToggleProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemToggleProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/CheckedListBox" subtype="Directory" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/CheckedListBox/ListItemTogglePatternToggleStateEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemTogglePatternToggleStateEvent.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

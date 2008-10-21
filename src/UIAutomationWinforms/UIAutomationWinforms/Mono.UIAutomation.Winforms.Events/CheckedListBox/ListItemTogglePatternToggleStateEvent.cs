@@ -27,16 +27,16 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms.Events.ListItem
+namespace Mono.UIAutomation.Winforms.Events.CheckedListBox
 {
 
-	internal class TogglePatternToggleStateEvent 
+	internal class ListItemTogglePatternToggleStateEvent 
 		: BaseAutomationPropertyEvent
 	{
 
 		#region Constructors
 
-		public TogglePatternToggleStateEvent (ListItemProvider listItemProvider)
+		public ListItemTogglePatternToggleStateEvent (ListItemProvider listItemProvider)
 			: base (listItemProvider,
 			        TogglePatternIdentifiers.ToggleStateProperty)
 		{

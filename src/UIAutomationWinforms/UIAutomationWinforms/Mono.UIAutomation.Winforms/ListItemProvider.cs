@@ -29,7 +29,6 @@ using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ListItem;
 using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
@@ -111,6 +110,13 @@ namespace Mono.UIAutomation.Winforms
 			//FIXME: Implement this
 			SetEvent (ProviderEventType.AutomationFocusChangedEvent,
 			          null);
+		}
+
+		public void UpdateBehavior (AutomationPattern pattern)
+		{			
+			SetBehavior (pattern,
+			             listProvider.GetListItemBehaviorRealization (pattern,
+			                                                          this));
 		}
 		
 		#endregion

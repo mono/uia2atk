@@ -25,34 +25,69 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.CheckedListBox;
-using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.CheckedListBox
+namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 {
 
-	internal class ListItemToggleProviderBehavior : ToggleProviderBehavior
+	internal abstract class ToggleProviderBehavior
+		: ProviderBehavior, IToggleProvider
 	{
 		
 		#region Constructors
 
-		public ListItemToggleProviderBehavior (ListItemProvider provider)
+		protected ToggleProviderBehavior (ListItemProvider provider)
 			: base (provider)
 		{
 		}
 
 		#endregion 
 		
-		#region ToggleProviderBehavior specializations
+		#region IProviderBehavior specializations
 
-		public override void Connect ()
+		public override AutomationPattern ProviderPattern { 
+			get { return TogglePatternIdentifiers.Pattern; }
+		}
+		
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == TogglePatternIdentifiers.ToggleStateProperty.Id)
+				return ToggleState;
+			else
+				return null;
+		}
+		
+		public override void Disconnect ()
 		{
 			Provider.SetEvent (ProviderEventType.TogglePatternToggleStateProperty,
-			                   new ListItemTogglePatternToggleStateEvent ((ListItemProvider) Provider));
+			                   null);
+		}
+		
+		#endregion
+
+		#region IToggleProvider specializations 
+	
+		public ToggleState ToggleState {
+			get { 
+				ListItemProvider provider = (ListItemProvider) Provider;
+				return provider.ListProvider.GetItemToggleState (provider); 
+			}
+		}
+		
+		public void Toggle ()
+		{
+			ListItemProvider provider = (ListItemProvider) Provider;
+			
+			if (provider.ListProvider.Control.InvokeRequired == true) {
+				provider.ListProvider.Control.BeginInvoke (new SWF.MethodInvoker (Toggle));
+				return;
+			}
+			
+			provider.ListProvider.ToggleItem (provider);
 		}
 
 		#endregion
+
 	}
 }
