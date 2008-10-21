@@ -1,3 +1,7 @@
+2008-10-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* List.cs: Cosmetic.
+
 2008-10-21  Brad Taylor  <brad@getcoded.net>
 	
 	* ListItem.cs: Add Transient and SingleLine states to be more like

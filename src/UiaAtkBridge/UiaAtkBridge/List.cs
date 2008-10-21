@@ -137,7 +137,6 @@ AtkObject,
 		}
 
 
-																
 #endregion
 
 
@@ -186,27 +185,27 @@ AtkObject,
 		}
 		public bool AddSelection (int i)
 		{
-			return selectionHelper.AddSelection(i);
+			return selectionHelper.AddSelection (i);
 		}
 		public bool ClearSelection ()
 		{
-			return selectionHelper.ClearSelection();
+			return selectionHelper.ClearSelection ();
 		}
 		public bool IsChildSelected (int i)
 		{
-			return selectionHelper.IsChildSelected(i);
+			return selectionHelper.IsChildSelected (i);
 		}
-		public Atk.Object RefSelection (int i)		
+		public Atk.Object RefSelection (int i)
 		{
-			return selectionHelper.RefSelection(i);
+			return selectionHelper.RefSelection (i);
 		}
 		public bool RemoveSelection (int i)
 		{
-			return selectionHelper.RemoveSelection(i);
+			return selectionHelper.RemoveSelection (i);
 		}
 		public bool SelectAllSelection ()
 		{
-			return selectionHelper.SelectAllSelection();
+			return selectionHelper.SelectAllSelection ();
 		}
 
 #endregion
