@@ -2,6 +2,14 @@
 
 	* Makefile.am:
 	* UiaAtkBridge.mdp:
+	* TextBoxEntryView.cs:
+	* EditableTextBoxEntryView.cs: Rename (shorter, and because it also
+	holds Document besides Edit control types).
+
+2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am:
+	* UiaAtkBridge.mdp:
 	* AutomationBridge.cs:
 	* EditableTextBoxEntry.cs:
 	* TextImplementorHelper.cs:

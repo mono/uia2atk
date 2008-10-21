@@ -52,7 +52,6 @@ FILES =  \
 	ComponentAdapter.cs \
 	ComponentImplementorHelper.cs \
 	ComponentParentAdapter.cs \
-	EditableTextBoxEntryView.cs \
 	Hyperlink.cs \
 	List.cs \
 	ListItem.cs \
@@ -68,6 +67,7 @@ FILES =  \
 	Spinner.cs \
 	StatusBar.cs \
 	TableImplementorHelper.cs \
+	TextBoxEntryView.cs \
 	TextImplementorHelper.cs \
 	TextLabel.cs \
 	ToolTip.cs \
