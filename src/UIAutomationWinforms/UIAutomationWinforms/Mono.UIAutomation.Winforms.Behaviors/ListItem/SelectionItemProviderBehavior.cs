@@ -39,10 +39,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 		
 		#region Constructors
 
-		public SelectionItemProviderBehavior (ListItemProvider provider)
+		protected SelectionItemProviderBehavior (ListItemProvider provider)
 			: base (provider)
 		{
-			this.itemProvider = provider;
+			itemProvider = provider;
 		}
 		
 		#endregion

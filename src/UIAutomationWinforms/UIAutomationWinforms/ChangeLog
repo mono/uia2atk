@@ -1,5 +1,10 @@
 2008-10-21  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs:
+	Constructor changed visibility: public -> protected.
+
+2008-10-21  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: File updated:
 	ListView.ListItem.ValuePattern files added.
