@@ -109,6 +109,7 @@ namespace Mono.UIAutomation.Winforms
 		internal override IProviderBehavior GetBehaviorRealization (AutomationPattern behavior)
 		{
 			// See comment in OnUIAViewChanged method
+			// NOTE: observer sets/unsets ScrollPattern
 			
 			if (behavior == MultipleViewPatternIdentifiers.Pattern)
 				return new MultipleViewProviderBehavior (this);

@@ -29,16 +29,16 @@ using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.ListItem;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
+namespace Mono.UIAutomation.Winforms.Behaviors.CheckedListBox
 {
 
-	internal class ToggleProviderBehavior
+	internal class ListItemToggleProviderBehavior
 		: ProviderBehavior, IToggleProvider
 	{
 		
 		#region Constructors
 
-		public ToggleProviderBehavior (ListItemProvider provider)
+		public ListItemToggleProviderBehavior (ListItemProvider provider)
 			: base (provider)
 		{
 		}

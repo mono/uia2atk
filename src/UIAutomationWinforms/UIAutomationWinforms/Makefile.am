@@ -45,6 +45,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/CheckBox/ToggleProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/CheckedListBox/ListItemToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ButtonInvokeBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ExpandCollapseProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ListItemSelectionItemProviderBehavior.cs \
@@ -60,7 +61,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListBox/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/ScrollItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/GroupExpandCollapseProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/GroupGridProviderBehavior.cs \

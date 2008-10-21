@@ -1,5 +1,26 @@
 2008-10-21  Mario Carrion  <mcarrion@novell.com>
 
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: ListItem.ToggleProviderBehavior moved
+	to CheckedListBox/ListItemToggleProviderBehavior.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Comment added.
+
+	* Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs: Using
+	ListItemToggleProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs:
+	ListItem.ToggleProviderBehavior to
+	CheckedListBox/ListItemToggleProviderBehavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/CheckedListBox: Folder added.
+
+	* Mono.UIAutomation.Winforms.Behaviors/CheckedListBox/ListItemToggleProviderBehavior.cs:
+	CheckedListBox/ListItemToggleProviderBehavior from
+	ListItem.ToggleProviderBehavior.
+
+2008-10-21  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs:
 	Constructor changed visibility: public -> protected.
 

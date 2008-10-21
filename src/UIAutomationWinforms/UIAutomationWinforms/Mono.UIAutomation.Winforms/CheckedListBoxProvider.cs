@@ -26,9 +26,9 @@ using System;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ListItem;
+using Mono.UIAutomation.Winforms.Behaviors.CheckedListBox;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -82,7 +82,7 @@ namespace Mono.UIAutomation.Winforms
 		                                                                    ListItemProvider listItem)
 		{
 			if (behavior == TogglePatternIdentifiers.Pattern)
-				return new ToggleProviderBehavior (listItem);	
+				return new ListItemToggleProviderBehavior (listItem);	
 			else
 				return base.GetListItemBehaviorRealization (behavior, listItem);
 		}
