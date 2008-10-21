@@ -436,7 +436,7 @@ namespace UiaAtkBridgeTest
 		private static Atk.Object GetAdapterForProvider (IRawElementProviderSimple provider)
 		{
 #pragma warning disable 618
-			object adapter = UiaAtkBridge.AutomationBridge.GetAdapterForProvider (provider) as Atk.Object;
+			object adapter = UiaAtkBridge.AutomationBridge.GetAdapterForProvider (provider);
 #pragma warning restore 618
 			Assert.IsNotNull (adapter, "Object retreived from AutomationBridge.GetAdapterForProvider should not be null");
 			Atk.Object atkObj = adapter as Atk.Object;
