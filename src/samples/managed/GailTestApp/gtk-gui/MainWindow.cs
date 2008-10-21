@@ -30,6 +30,8 @@ public partial class MainWindow {
     
     private Gtk.MenuBar menubar1;
     
+    private Gtk.Notebook notebook1;
+    
     private Gtk.HBox hbox1;
     
     private Gtk.ScrolledWindow GtkScrolledWindow;
@@ -68,6 +70,14 @@ public partial class MainWindow {
     
     private Gtk.Image imgTest2;
     
+    private Gtk.Label label1;
+    
+    private Gtk.Calendar calendar1;
+    
+    private Gtk.Label label2;
+    
+    private Gtk.ProgressBar progressbar1;
+    
     private Gtk.HScrollbar hscrollbar1;
     
     private Gtk.HBox hbox2;
@@ -75,8 +85,6 @@ public partial class MainWindow {
     private Gtk.ScrolledWindow GtkScrolledWindow1;
     
     private Gtk.TextView txtViewTest;
-    
-    private Gtk.ProgressBar progressbar1;
     
     private Gtk.Statusbar statusbar1;
     
@@ -122,6 +130,11 @@ public partial class MainWindow {
         w2.Expand = false;
         w2.Fill = false;
         // Container child vbox1.Gtk.Box+BoxChild
+        this.notebook1 = new Gtk.Notebook();
+        this.notebook1.CanFocus = true;
+        this.notebook1.Name = "notebook1";
+        this.notebook1.CurrentPage = 0;
+        // Container child notebook1.Gtk.Notebook+NotebookChild
         this.hbox1 = new Gtk.HBox();
         this.hbox1.Name = "hbox1";
         this.hbox1.Spacing = 6;
@@ -335,11 +348,40 @@ public partial class MainWindow {
         w20.Position = 5;
         w20.Expand = false;
         w20.Fill = false;
-        this.vbox1.Add(this.hbox1);
-        Gtk.Box.BoxChild w21 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
-        w21.Position = 1;
-        w21.Expand = false;
-        w21.Fill = false;
+        this.notebook1.Add(this.hbox1);
+        // Notebook tab
+        this.label1 = new Gtk.Label();
+        this.label1.Name = "label1";
+        this.label1.LabelProp = Mono.Unix.Catalog.GetString("page1");
+        this.notebook1.SetTabLabel(this.hbox1, this.label1);
+        this.label1.ShowAll();
+        // Container child notebook1.Gtk.Notebook+NotebookChild
+        this.calendar1 = new Gtk.Calendar();
+        this.calendar1.CanFocus = true;
+        this.calendar1.Name = "calendar1";
+        this.calendar1.DisplayOptions = ((Gtk.CalendarDisplayOptions)(3));
+        this.notebook1.Add(this.calendar1);
+        Gtk.Notebook.NotebookChild w22 = ((Gtk.Notebook.NotebookChild)(this.notebook1[this.calendar1]));
+        w22.Position = 1;
+        // Notebook tab
+        this.label2 = new Gtk.Label();
+        this.label2.Name = "label2";
+        this.label2.LabelProp = Mono.Unix.Catalog.GetString("page2");
+        this.notebook1.SetTabLabel(this.calendar1, this.label2);
+        this.label2.ShowAll();
+        this.vbox1.Add(this.notebook1);
+        Gtk.Box.BoxChild w23 = ((Gtk.Box.BoxChild)(this.vbox1[this.notebook1]));
+        w23.Position = 1;
+        w23.Expand = false;
+        w23.Fill = false;
+        // Container child vbox1.Gtk.Box+BoxChild
+        this.progressbar1 = new Gtk.ProgressBar();
+        this.progressbar1.Name = "progressbar1";
+        this.vbox1.Add(this.progressbar1);
+        Gtk.Box.BoxChild w24 = ((Gtk.Box.BoxChild)(this.vbox1[this.progressbar1]));
+        w24.Position = 2;
+        w24.Expand = false;
+        w24.Fill = false;
         // Container child vbox1.Gtk.Box+BoxChild
         this.hscrollbar1 = new Gtk.HScrollbar(null);
         this.hscrollbar1.Name = "hscrollbar1";
@@ -348,10 +390,10 @@ public partial class MainWindow {
         this.hscrollbar1.Adjustment.PageSize = 10;
         this.hscrollbar1.Adjustment.StepIncrement = 1;
         this.vbox1.Add(this.hscrollbar1);
-        Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.vbox1[this.hscrollbar1]));
-        w22.Position = 2;
-        w22.Expand = false;
-        w22.Fill = false;
+        Gtk.Box.BoxChild w25 = ((Gtk.Box.BoxChild)(this.vbox1[this.hscrollbar1]));
+        w25.Position = 3;
+        w25.Expand = false;
+        w25.Fill = false;
         // Container child vbox1.Gtk.Box+BoxChild
         this.hbox2 = new Gtk.HBox();
         this.hbox2.Name = "hbox2";
@@ -366,34 +408,26 @@ public partial class MainWindow {
         this.txtViewTest.Name = "txtViewTest";
         this.GtkScrolledWindow1.Add(this.txtViewTest);
         this.hbox2.Add(this.GtkScrolledWindow1);
-        Gtk.Box.BoxChild w24 = ((Gtk.Box.BoxChild)(this.hbox2[this.GtkScrolledWindow1]));
-        w24.Position = 1;
+        Gtk.Box.BoxChild w27 = ((Gtk.Box.BoxChild)(this.hbox2[this.GtkScrolledWindow1]));
+        w27.Position = 1;
         this.vbox1.Add(this.hbox2);
-        Gtk.Box.BoxChild w25 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
-        w25.Position = 3;
-        // Container child vbox1.Gtk.Box+BoxChild
-        this.progressbar1 = new Gtk.ProgressBar();
-        this.progressbar1.Name = "progressbar1";
-        this.vbox1.Add(this.progressbar1);
-        Gtk.Box.BoxChild w26 = ((Gtk.Box.BoxChild)(this.vbox1[this.progressbar1]));
-        w26.Position = 4;
-        w26.Expand = false;
-        w26.Fill = false;
+        Gtk.Box.BoxChild w28 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+        w28.Position = 4;
         // Container child vbox1.Gtk.Box+BoxChild
         this.statusbar1 = new Gtk.Statusbar();
         this.statusbar1.Name = "statusbar1";
         this.statusbar1.Spacing = 6;
         this.vbox1.Add(this.statusbar1);
-        Gtk.Box.BoxChild w27 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
-        w27.Position = 5;
-        w27.Expand = false;
-        w27.Fill = false;
+        Gtk.Box.BoxChild w29 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
+        w29.Position = 6;
+        w29.Expand = false;
+        w29.Fill = false;
         this.Add(this.vbox1);
         if ((this.Child != null)) {
             this.Child.ShowAll();
         }
-        this.DefaultWidth = 733;
-        this.DefaultHeight = 353;
+        this.DefaultWidth = 737;
+        this.DefaultHeight = 452;
         this.Show();
         this.DeleteEvent += new Gtk.DeleteEventHandler(this.OnDeleteEvent);
     }
