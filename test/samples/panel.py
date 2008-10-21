@@ -5,13 +5,11 @@
 # Date:        03/11/2008
 # Description: This is a test application sample for winforms control:
 #              Panel
-#              CheckBox
-#              RadioButton
 ##############################################################################
 
 # The docstring below is used in the generated log file
 """
-This sample will show "Panel", "CheckBox" and "RadioButton"  controls in the form.
+This sample will show "Panel" control in the form.
 It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
 """
 
@@ -27,7 +25,7 @@ from System.Windows.Forms import *
 class PanelCheckBoxRadioButtonApp(Form):
 
     def __init__(self):
-        self.Text = "Panel_CheckBox_RadioButton controls"
+        self.Text = "Panel control"
 
         self.Width = 400
         self.Height = 400
@@ -39,13 +37,15 @@ class PanelCheckBoxRadioButtonApp(Form):
         self.Controls.Add(self.radioPanel)
 
         self.mainLabel1 = Label()
-        self.mainLabel1.Text = "Examples for: Panel, Label, CheckBox, RadioButton"
+        self.mainLabel1.Text = "Examples for: Panel"
         self.mainLabel1.Location = Point(10,10)
         self.mainLabel1.AutoSize = True
         self.Controls.Add(self.mainLabel1)
 
     def newPanel(self, x, y):
         panel = Panel()
+        panel.Text = "panel"
+        panel.Name = "panel"
         panel.Width = 400
         panel.Height = 150
         panel.Location = Point(x, y)
@@ -54,6 +54,8 @@ class PanelCheckBoxRadioButtonApp(Form):
 
     def setupCheckButtons(self):
         self.checkPanel = self.newPanel(0, 50)
+        self.checkPanel.Text = "panel1"
+        self.checkPanel.Name = "panel1"
 
         self.checkLabel = Label()
         self.checkLabel.Text = "multi-choose:"
@@ -90,6 +92,8 @@ class PanelCheckBoxRadioButtonApp(Form):
 
     def setupRadioButtons(self):
         self.radioPanel = self.newPanel(0, 200)
+        self.radioPanel.Text = "panel2"
+        self.radioPanel.Name = "panel2"
 
         self.radioLabel1 = Label()
         self.radioLabel1.Text = "Tell Me Your Gender:"

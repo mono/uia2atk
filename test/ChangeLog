@@ -1,3 +1,13 @@
+
+2008-10-21  Calen Chen <cachen@novell.com>
+
+	* samples/panel.py: add example for panel
+	* samples/panel_checkbox_radiobutton.py: delete this example
+	* testers/panel/panelframe.py,
+	* testers/panel/__init__.py,
+	* testers/panel_basic_ops.py,
+	* testers/panel: add new test for panel control
+
 2008-10-21  Ray Wang <rawang@novell.com>
 
 	* keystrokes/checkbox/wincheckbox.py: wait seconds while starting to 
