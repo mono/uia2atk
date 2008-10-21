@@ -35,11 +35,20 @@ namespace Mono.UIAutomation.Winforms.Behaviors.RadioButton
 	// TODO: Should this class subclass from ProviderBehavior?
 	// This behavior is designed to be attached to a control that contains
 	// RadioButton children.
-	public class SelectionProviderBehavior : IProviderBehavior, ISelectionProvider
+	internal class SelectionProviderBehavior : IProviderBehavior, ISelectionProvider
 	{
 #region Private Members
 		
 		private SWF.Control control;
+#endregion
+
+#region Constructor
+
+		public SelectionProviderBehavior (FragmentRootControlProvider rootProvider)
+		{
+			control = rootProvider.Control;
+		}
+		
 #endregion
 		
 #region ISelectionProvider Overrides
@@ -82,7 +91,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.RadioButton
 
 		public void Connect ()
 		{
-			this.control = control;
+			
 		}
 
 		public object GetPropertyValue (int propertyId)

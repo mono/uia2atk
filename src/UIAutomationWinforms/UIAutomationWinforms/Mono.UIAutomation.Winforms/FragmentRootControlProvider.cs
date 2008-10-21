@@ -280,7 +280,7 @@ namespace Mono.UIAutomation.Winforms
 			    childProvider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id) != null &&
 			    (int) childProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.RadioButton.Id) {
 				RB.SelectionProviderBehavior selectionProvider =
-					new RB.SelectionProviderBehavior ();
+					new RB.SelectionProviderBehavior (this);
 				SetBehavior (SelectionPatternIdentifiers.Pattern,
 				             selectionProvider);
 			}

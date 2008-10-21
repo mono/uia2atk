@@ -1,3 +1,9 @@
+2008-10-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* RadioButtonProviderTest.cs: Add SelectionPatternTest, which tests
+	behavior and properties of the Selection Pattern behavior that should
+	be attached to a RadioButton's parent Control.
+
 2008-10-21  Brad Taylor  <brad@getcoded.net>
 	
 	* TextBoxProviderTest.cs: Add test for ScrollProvider.

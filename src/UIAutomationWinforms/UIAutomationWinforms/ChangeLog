@@ -1,3 +1,10 @@
+2008-10-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionProviderBehavior.cs:
+	Add constructor to RadioButton.SelectionProviderBehavior that takes
+	in the relevant provider, so that the Control can be accessed.
+
 2008-10-21  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

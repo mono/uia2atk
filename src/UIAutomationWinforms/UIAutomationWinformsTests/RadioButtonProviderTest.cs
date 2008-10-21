@@ -256,6 +256,81 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 		[Test]
+		public void SelectionPatternTest ()
+		{
+			IRawElementProviderSimple formProvider = FormProvider;
+			
+			RadioButton r1 = new RadioButton ();
+			r1.Checked = false;
+			
+			RadioButton r2 = new RadioButton ();
+			r2.Checked = false;
+			
+			Form.Controls.Add (r1);
+			Form.Controls.Add (r2);
+
+			// A form with RadioButtons should provide SelectionPattern
+			ISelectionProvider formSelectionProvider = formProvider.GetPatternProvider (
+				SelectionPatternIdentifiers.Pattern.Id) as ISelectionProvider;
+			Assert.IsNotNull (formSelectionProvider,
+			                  "Parent provider should provide Selection Pattern if it has RadioButtons");
+			
+			IRawElementProviderSimple provider1 = ProviderFactory.GetProvider (r1);
+			IRawElementProviderSimple provider2 = ProviderFactory.GetProvider (r2);
+
+			// Test SelectionPattern properties, which don't change
+			// for a control containing RadioButtons
+			Assert.IsFalse (formSelectionProvider.CanSelectMultiple,
+			                "Always false");
+			Assert.IsTrue (formSelectionProvider.IsSelectionRequired,
+			               "Always true");
+
+			// Test GetSelection method
+			IRawElementProviderSimple [] selectedProviders =
+				formSelectionProvider.GetSelection ();
+			Assert.IsNull (selectedProviders,
+			               "No selection initially");
+
+			r1.Checked = true;
+			selectedProviders =
+				formSelectionProvider.GetSelection ();
+			Assert.AreEqual (1, selectedProviders.Length);
+			Assert.AreEqual (provider1, selectedProviders [0]);
+
+			r2.Checked = true;
+			selectedProviders =
+				formSelectionProvider.GetSelection ();
+			Assert.AreEqual (1, selectedProviders.Length);
+			Assert.AreEqual (provider2, selectedProviders [0]);
+
+			// Test adding RadioButtons
+			RadioButton r3 = new RadioButton ();
+			Form.Controls.Add (r3);
+			IRawElementProviderSimple provider3 = ProviderFactory.GetProvider (r3);
+			r3.Checked = true;
+			selectedProviders =
+				formSelectionProvider.GetSelection ();
+			Assert.AreEqual (1, selectedProviders.Length);
+			Assert.AreEqual (provider3, selectedProviders [0]);
+
+			// Test removing RadioButtons
+			Form.Controls.Remove (r3);
+			selectedProviders =
+				formSelectionProvider.GetSelection ();
+			Assert.IsNull (selectedProviders,
+			               "No selection when selected RadioButton is removed from Form");
+
+			// Test that when all RadioButtons are removed, the form
+			// no longer provides SelectionPattern
+			Form.Controls.Remove (r1);
+			Form.Controls.Remove (r2);
+			formSelectionProvider = formProvider.GetPatternProvider (
+				SelectionPatternIdentifiers.Pattern.Id) as ISelectionProvider;
+			Assert.IsNull (formSelectionProvider,
+			                  "Parent provider should not provide Selection Pattern if it has no RadioButtons");
+		}
+
+		[Test]
 		public override void LabeledByAndNamePropertyTest ()
 		{
 			TestLabeledByAndName (false, false, true, true);
