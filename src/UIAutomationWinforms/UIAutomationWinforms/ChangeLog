@@ -1,5 +1,9 @@
 2008-10-21  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Using override.
+
+2008-10-21  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: New internal classes:
 	ListViewHeaderProvider and ListViewHeaderItemProvider
 
