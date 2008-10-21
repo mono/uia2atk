@@ -7,6 +7,7 @@ import utils
 
 sequence = MacroSequence()
 
+sequence.append(PauseAction(5000))
 sequence.append(WaitForWindowActivate("Check Button",None))
 sequence.append(utils.StartRecordingAction())
 sequence.append(WaitForFocus("check button 1", acc_role=pyatspi.ROLE_CHECK_BOX))
@@ -41,7 +42,6 @@ sequence.append(utils.AssertPresentationAction(
     "SPEECH OUTPUT: 'Quit button'"]))
 sequence.append(KeyComboAction("Return"))
 
-sequence.append(PauseAction(1000))
 sequence.append(utils.AssertionSummaryAction())
 
 sequence.start()

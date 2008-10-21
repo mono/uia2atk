@@ -35,12 +35,6 @@ class CheckBoxApp(Form):
         self.check2.Location = Point(22,60)
         self.check2.Click += self.checkbox_click
 
-        self.check3 = CheckBox()
-        self.check3.Text = "check button 3"
-        self.check3.TabIndex = 1
-        self.check3.Location = Point(22, 80)
-        self.check3.Click += self.checkbox_click
-
         self.button = Button()
         self.button.Text = "Quit"
         self.button.TabIndex = 2
@@ -49,7 +43,6 @@ class CheckBoxApp(Form):
         self.button.Click += self.button_click
 
         self.Controls.Add(self.button)
-        self.Controls.Add(self.check3)
         self.Controls.Add(self.check2)
         self.Controls.Add(self.check1)
 

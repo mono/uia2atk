@@ -1,3 +1,10 @@
+2008-10-21  Ray Wang <rawang@novell.com>
+
+	* keystrokes/checkbox/wincheckbox.py: wait seconds while starting to 
+	record
+	* keystrokes/checkbox/checkbox.py: wait seconds while starting to record
+	* samples/wincheckbox.py: remove checkbox3
+
 2008-10-20  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* tools/dashboard/dashboard.xsl: Add alt and title tags to the status

@@ -7,13 +7,14 @@ import utils
 
 sequence = MacroSequence()
 
+sequence.append(PauseAction(5000))
 sequence.append(WaitForWindowActivate("Check Button",None))
 sequence.append(utils.StartRecordingAction())
 sequence.append(WaitForFocus("check button 1", acc_role=pyatspi.ROLE_CHECK_BOX))
 sequence.append(KeyComboAction("space"))
 sequence.append(KeyComboAction("space"))
 sequence.append(KeyComboAction("Tab"))
-sequence.append(PauseAction(20000))
+sequence.append(PauseAction(3000))
 sequence.append(WaitForFocus("check button 2", acc_role=pyatspi.ROLE_CHECK_BOX))
 sequence.append(KeyComboAction("space"))
 sequence.append(KeyComboAction("space"))
