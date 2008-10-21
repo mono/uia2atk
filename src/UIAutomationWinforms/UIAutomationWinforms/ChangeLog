@@ -1,5 +1,10 @@
 2008-10-21  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemTogglePatternToggleStateEvent.cs:
+	Raising event when item checked.
+
+2008-10-21  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: Added: ListItem.ToggleProvider,
 	ListView.ListItem.ToggleProvider,

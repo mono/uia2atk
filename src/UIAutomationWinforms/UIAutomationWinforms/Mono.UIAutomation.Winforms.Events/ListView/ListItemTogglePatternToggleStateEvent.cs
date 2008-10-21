@@ -40,6 +40,7 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 			: base (listItemProvider,
 			        TogglePatternIdentifiers.ToggleStateProperty)
 		{
+			viewItem = (SWF.ListViewItem) listItemProvider.ObjectItem;
 		}
 		
 		#endregion
@@ -48,14 +49,30 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 	
 		public override void Connect ()
 		{
-			//TODO: Implement
+			viewItem.ListView.ItemChecked += OnItemChecked;
 		}
 
 		public override void Disconnect ()
 		{
-			//TODO: Implement
+			viewItem.ListView.ItemChecked -= OnItemChecked;
 		}
 		
+		#endregion
+
+		#region Private Methods
+
+		private void OnItemChecked (object sender, SWF.ItemCheckedEventArgs args) 
+		{
+			if (args.Item == viewItem)
+				RaiseAutomationPropertyChangedEvent ();
+		}
+
+		#endregion
+
+		#region Private Fields
+
+		private SWF.ListViewItem viewItem;
+
 		#endregion
 		
 	}
