@@ -54,8 +54,6 @@ output_file_64.write('RPM (64bit) Rev values for - ' + current_date + '\n\n\n')
 # Fill 32 bit directories
 def get32():
     for d in dir32:
-        print d + " - " + dir32[d]
-        print base_path
         b = base_path + dir32[d]
         print b
         rev_dir = str(getLatestDir(b))
@@ -69,7 +67,9 @@ def get32():
 def get64():
     for d in dir64:
         b = base_path + dir64[d]
+        print b
         rev_dir = getLatestDir(b)
+        print rev_dir
         os.chdir(b + "/" + rev_dir)
         cpcmd = 'cp *.rpm %s' % tmp_path_64
         c.getoutput(cpcmd)
@@ -93,13 +93,17 @@ def removerpms():
 
 def Stage2():
     #ssh root@build1.sled.lab.novell.com /root/bin/UIAupdate
+    print "ssh - UIAupdate"
     c.getoutput('ssh builder@build1.sled.lab.novell.com /home/builder/bin/UIAupdate')
+    print "ssh - UIAupdate64"
     c.getoutput('ssh builder@build1.sled.lab.novell.com /home/builder/bin/UIAupdate64')
 
     #scp /tmp/uia/* root@build1.sled.lab.novell.com:/srv/www/htdocs/uia/current
     cpcmd = 'scp %s builder@build1.sled.lab.novell.com:/srv/www/htdocs/uia/current' % tmp_path_32
+    print "scp - 32"
     c.getoutput(cpcmd)
     cpcmd = 'scp %s builder@build1.sled.lab.novell.com:/srv/www/htdocs/uia/64/current' % tmp_path_64
+    print "scp - 64"
     c.getoutput(cpcmd)
 
 def RunTests():
