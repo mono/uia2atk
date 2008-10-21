@@ -66,6 +66,9 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
+
+			states.AddState (Atk.StateType.Transient);
+			states.AddState (Atk.StateType.SingleLine);
 			
 			states.AddState (Atk.StateType.Selectable);
 			if (selectionItemProvider.IsSelected)

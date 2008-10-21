@@ -1,3 +1,10 @@
+2008-10-21  Brad Taylor  <brad@getcoded.net>
+	
+	* ListItem.cs: Add Transient and SingleLine states to be more like
+	  Table Cell.
+
+	* List.cs: Add ManagesDescendants state to be more like Tree Table.
+
 2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* TextBoxEntryView.cs: Rename class to match filename.

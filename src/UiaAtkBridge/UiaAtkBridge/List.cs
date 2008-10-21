@@ -161,6 +161,8 @@ AtkObject,
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			
+			states.AddState (StateType.ManagesDescendants);
+			
 			return states;
 		}
 
