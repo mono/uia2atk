@@ -416,7 +416,16 @@ namespace Mono.UIAutomation.Winforms
 			// Use groups: View.SmallIcon, View.LargeIcon and View.Tile
 			if (listView.View == SWF.View.SmallIcon 
 			    || listView.View == SWF.View.LargeIcon
-			    || listView.View == SWF.View.Tile) {
+			    || listView.View == SWF.View.Tile
+			    || listView.View == SWF.View.Details) { //FIXME: Change this validation
+
+				if (listView.View == SWF.View.Details) {
+					if (header == null) {
+						header = new ListViewHeaderProvider (listView);
+						header.Initialize ();
+						OnNavigationChildAdded (raiseEvent, header);
+					}
+				}
 
 				SWF.ListViewItem listViewItem = (SWF.ListViewItem) objectItem;
 				SWF.ListViewGroup listViewGroup = GetGroupFrom (listViewItem);
@@ -491,6 +500,8 @@ namespace Mono.UIAutomation.Winforms
 				             null);
 			
 			UpdateChildrenStructure ();
+
+			lastView = listView.View;
 		}
 #pragma warning restore 169
 		
@@ -516,6 +527,11 @@ namespace Mono.UIAutomation.Winforms
 				foreach (ListViewGroupProvider groupProvider in groups.Values)
 					groupProvider.Terminate ();
 				groups.Clear ();
+
+				if (lastView == SWF.View.Details && header != null) {
+					header.Terminate ();
+					header = null;
+				}
 				
 				ClearItemsList ();
 				OnNavigationChildrenCleared (true);
@@ -554,6 +570,7 @@ namespace Mono.UIAutomation.Winforms
 		private Dictionary<SWF.ListViewGroup, ListViewGroupProvider> groups;
 		private ScrollBehaviorObserver observer;
 		private SWF.ListViewGroup listViewNullGroup;
+		private ListViewHeaderProvider header;
 		
 		#endregion
 		
@@ -726,6 +743,124 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
+
+		#region Internal Class: Header Provider 
+		
+		internal class ListViewHeaderProvider : FragmentRootControlProvider
+		{
+			public ListViewHeaderProvider (SWF.ListView view) : base (null)
+			{
+				this.view = view;
+			}
+
+			public override object GetPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.Header.Id;
+				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return "Header";
+				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+					return null;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return "header";
+				else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
+					return OrientationType.Horizontal;
+				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+					//FIXME: Implement
+					return null;
+				} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
+					return true;
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) //FIXME: Implement
+					return null;
+				else
+					return base.GetPropertyValue (propertyId);
+			}
+
+			public override void InitializeChildControlStructure ()
+			{
+				base.InitializeChildControlStructure ();
+
+				Console.WriteLine ("ListViewHeaderProvider.InitializeChildControlStructure");
+
+				foreach (SWF.ColumnHeader header in view.Columns) {
+					ListViewHeaderItemProvider item = new ListViewHeaderItemProvider (this, 
+					                                                                  header);
+					item.Initialize ();
+					OnNavigationChildAdded (false, item);
+				}
+			}
+
+			public IRawElementProviderFragmentRoot FragmentRoot {
+				get { 
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (view); 
+				}
+			}
+
+			private SWF.ListView view;
+		}
+
+		#endregion
+
+		#region Internal Class: Header Provider 
+		
+		internal class ListViewHeaderItemProvider : FragmentControlProvider
+		{
+			public ListViewHeaderItemProvider (ListViewHeaderProvider headerProvider,
+			                                   SWF.ColumnHeader columnHeader) 
+				: base (columnHeader)
+			{
+				this.headerProvider = headerProvider;
+				this.columnHeader = columnHeader;
+
+				Console.WriteLine ("ctr: ListViewHeaderItemProvider");
+			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+
+				//TODO: Implement Invoke Behavior
+			}
+
+			public override object GetPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.HeaderItem.Id;
+				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return columnHeader.Text;
+				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+					return null;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return "header item";
+				else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
+					return OrientationType.Horizontal;
+				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) //FIXME: Implement
+					return null;
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
+					return true;
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) //FIXME: Implement
+					return null;
+				else
+					return base.GetPropertyValue (propertyId);
+			}
+
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { return headerProvider; }
+			}
+
+			private ListViewHeaderProvider headerProvider;
+			private SWF.ColumnHeader columnHeader;
+		}
+
+		#endregion			
 		
 	}
 }
