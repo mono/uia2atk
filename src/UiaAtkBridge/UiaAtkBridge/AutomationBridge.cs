@@ -316,9 +316,7 @@ namespace UiaAtkBridge
 		
 		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
-			IRawElementProviderSimple simpleProvider =
-				(IRawElementProviderSimple) provider;
-			int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			IRawElementProviderSimple simpleProvider = (IRawElementProviderSimple) provider;
 			// TODO: Handle ChildrenBulkAdded
 			if (e.StructureChangeType == StructureChangeType.ChildAdded) {
 				if (!providerAdapterMapping.ContainsKey (simpleProvider))
@@ -669,7 +667,7 @@ namespace UiaAtkBridge
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
-			Adapter atkEditOrDoc = new EditableTextBoxEntryView (provider);
+			Adapter atkEditOrDoc = new TextBoxEntryView (provider);
 			
 			providerAdapterMapping [provider] = atkEditOrDoc;
 			

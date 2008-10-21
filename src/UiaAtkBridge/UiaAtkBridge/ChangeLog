@@ -1,5 +1,11 @@
 2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* TextBoxEntryView.cs: Rename class to match filename.
+
+	* AutomationBridge.cs: Fix a warning.
+
+2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Makefile.am:
 	* UiaAtkBridge.mdp:
 	* TextBoxEntryView.cs:

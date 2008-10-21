@@ -32,14 +32,14 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	
-	public class EditableTextBoxEntryView : ComponentAdapter, Atk.TextImplementor, 
+	public class TextBoxEntryView : ComponentAdapter, Atk.TextImplementor, 
 	  Atk.ActionImplementor, Atk.EditableTextImplementor, Atk.StreamableContentImplementor
 	{
 		private TextImplementorHelper textExpert = null;
 		private IRawElementProviderSimple provider;
 		private bool multiLine = false;
 		
-		public EditableTextBoxEntryView (IRawElementProviderSimple provider)
+		public TextBoxEntryView (IRawElementProviderSimple provider)
 		{
 			this.provider = provider;
 			Role = Atk.Role.Text;
