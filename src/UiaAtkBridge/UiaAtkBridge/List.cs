@@ -159,7 +159,7 @@ AtkObject,
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
-			states.AddState (StateType.ManagesDescendants);
+			states.AddState (Atk.StateType.ManagesDescendants);
 			return states;
 		}
 
