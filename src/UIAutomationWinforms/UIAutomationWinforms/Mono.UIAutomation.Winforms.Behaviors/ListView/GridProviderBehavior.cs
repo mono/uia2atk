@@ -28,6 +28,7 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.ListView;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 {
@@ -41,6 +42,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		public GridProviderBehavior (ListViewProvider provider)
 			: base (provider)
 		{
+			listView = (SWF.ListView) Provider.Control;
 		}
 
 		#endregion
@@ -53,7 +55,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		public override void Connect ()
 		{
-			//TODO: Implement
+			Provider.SetEvent (ProviderEventType.GridPatternColumnCountProperty,
+			                   new GridPatternColumnEvent ((ListViewProvider) Provider));
+			Provider.SetEvent (ProviderEventType.GridPatternRowCountProperty,
+			                   new GridPatternRowEvent ((ListViewProvider) Provider));
 		}
 		
 		public override void Disconnect ()
@@ -78,12 +83,17 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 
 		#region IGridProvider implementation
 
-		public int ColumnCount { 
-			get { return 0; }
+		public int ColumnCount {
+			//Works for View.List
+			get {
+				bool module = listView.Items.Count % RowCount > 0;
+				return (listView.Items.Count / RowCount) + (module ? 1 : 0);
+			}
 		}
 
-		public int RowCount { 
-			get { return 0; }
+		public int RowCount {
+			//Works for View.List
+			get { return MaxRows; }
 		}
 
 		//Remarks: 
@@ -98,11 +108,47 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		//  reflected in the RowCount and ColumnCount properties. If the hidden
 		//  rows and columns have not yet been loaded they should not be counted.
 		public IRawElementProviderSimple GetItem (int row, int column)
-		{
-			return null;
+		{		
+			int rowCount = RowCount;
+			int columnCount = ColumnCount;
+
+			//According to http://msdn.microsoft.com/en-us/library/ms743401.aspx
+			if (row < 0 || column < 0 || row >= rowCount || column >= columnCount)
+			    throw new ArgumentOutOfRangeException ();
+
+			ListViewProvider provider = (ListViewProvider) Provider;
+
+			//Works for View.List
+			return provider.GetProviderAt ((column * rowCount) + row);
 		}
 		
-		#endregion 
+		#endregion
+
+		#region Private Properties
+
+		private int MaxColumns {
+			get {
+				return Helper.GetPrivateProperty<SWF.ListView, int> (typeof (SWF.ListView),
+				                                                     (SWF.ListView) Provider.Control,
+				                                                     "UIAColumns");
+			}
+		}
+
+		private int MaxRows {
+			get {
+				return Helper.GetPrivateProperty<SWF.ListView, int> (typeof (SWF.ListView),
+				                                                     (SWF.ListView) Provider.Control,
+				                                                     "UIARows");
+			}
+		}
+
+		#endregion
+
+		#region
+
+		private SWF.ListView listView;
+
+		#endregion
 
 	}
 				                      

@@ -179,10 +179,11 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return listView.Focused && listView.SelectedIndices.Contains (item.Index); //TODO: OK?
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-				if (item.Index == -1)
+				int index = item.Index;
+				if (index == -1)
 					return Rect.Empty;
 				
-				SD.Rectangle itemRec = listView.GetItemRect (item.Index);
+				SD.Rectangle itemRec = listView.GetItemRect (index);
 				SD.Rectangle rectangle = listView.Bounds;
 				
 				itemRec.X += rectangle.X;
@@ -412,9 +413,10 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void InitializeProviderFrom (object objectItem, bool raiseEvent)
 		{
-			// View.SmallIcon and View.LargeIcon use Groups
+			// Use groups: View.SmallIcon, View.LargeIcon and View.Tile
 			if (listView.View == SWF.View.SmallIcon 
-			    || listView.View == SWF.View.LargeIcon) {
+			    || listView.View == SWF.View.LargeIcon
+			    || listView.View == SWF.View.Tile) {
 
 				SWF.ListViewItem listViewItem = (SWF.ListViewItem) objectItem;
 				SWF.ListViewGroup listViewGroup = GetGroupFrom (listViewItem);
@@ -441,9 +443,10 @@ namespace Mono.UIAutomation.Winforms
 
 		private void FinalizeProviderFrom (object objectItem, bool raiseEvent)
 		{
-			// View.SmallIcon and View.LargeIcon use Groups
+			// Use groups: View.SmallIcon, View.LargeIcon and View.Tile
 			if (listView.View == SWF.View.SmallIcon 
-			    || listView.View == SWF.View.LargeIcon) {
+			    || listView.View == SWF.View.LargeIcon
+			    || listView.View == SWF.View.Tile) {
 
 				SWF.ListViewItem listViewItem = (SWF.ListViewItem) objectItem;
 				SWF.ListViewGroup listViewGroup = GetGroupFrom (listViewItem);

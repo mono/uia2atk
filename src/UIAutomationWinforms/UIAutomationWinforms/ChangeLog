@@ -1,5 +1,24 @@
 2008-10-21  Mario Carrion  <mcarrion@novell.com>
 
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: ListView.Grid.Column and
+	ListView.Grid.Row events added.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs:
+	ListView.Grid.Column and ListView.Grid.Row events enabled. GetItem
+	method implementation. New properties: MaxColumns and MaxRows.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/GridPatternRowEvent.cs:
+	Implements ListView.Grid.Row event.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/GridPatternColumnEvent.cs:
+	Implements ListView.Grid.Column event.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Using groups when View
+	is LargeIcon, Tile, SmallIcon.
+
+2008-10-21  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs:
 	GridItem support when View is List: new property MaxRows, GroupColums
 	renamed to MaxColumns
