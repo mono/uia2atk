@@ -160,12 +160,13 @@ namespace Mono.UIAutomation.Winforms
 		public override object GetItemPropertyValue (ListItemProvider item,
 		                                             int propertyId)
 		{
+			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return item.ObjectItem.ToString ();
+			
 			if (ContainsItem (item) == false)
 				return null;
-			
-			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return listboxControl.Items [item.Index].ToString ();
-			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+
+			if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return listboxControl.Focused && item.Index == listboxControl.SelectedIndex;
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
 				System.Drawing.Rectangle itemRec = listboxControl.GetItemRectangle (item.Index);

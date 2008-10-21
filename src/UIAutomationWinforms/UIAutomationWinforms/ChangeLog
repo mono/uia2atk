@@ -1,3 +1,31 @@
+2008-10-21  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: File updated:
+	ListView.ListItem.ValuePattern files added.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: ListItemValueBehavior
+	enabled.
+
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Returning
+	ObjectItem.ToString () when requesting ListItem name.
+
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Private variable
+	nameProperty removed. Calling ListProvider when requesting Name.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemValueProviderBehavior.cs:
+	Implements Value Pattern in ListView.ListItem.
+
+	* Mono.UIAutomation.Winforms.Events/BaseAutomationPropertyEvent.cs: New
+	method: GetNewPropertyValue.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternIsReadOnlyEvent.cs:
+	Generates ListView.ListItem.ValuePattern.IsReadOnly event.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternValueEvent.cs:
+	Generates ListView.ListItem.ValuePattern.Value event.
+
 2008-10-20  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

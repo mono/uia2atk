@@ -57,14 +57,18 @@ namespace Mono.UIAutomation.Winforms.Events
 		#endregion
 		
 		#region Protected Methods
+
+		protected virtual object GetNewPropertyValue ()
+		{
+			return Provider.GetPropertyValue (Property.Id);
+		}
 		
 		protected void RaiseAutomationPropertyChangedEvent ()
 		{
 			if (AutomationInteropProvider.ClientsAreListening == true) {				
-				object newValue = Provider.GetPropertyValue (Property.Id);
+				object newValue = GetNewPropertyValue ();
 
 				if (object.Equals (OldValue, newValue) == false) {
-					
 					AutomationPropertyChangedEventArgs args =					
 						new AutomationPropertyChangedEventArgs (Property,
 						                                        OldValue,

@@ -110,11 +110,11 @@ namespace Mono.UIAutomation.Winforms
 		{
 			// See comment in OnUIAViewChanged method
 			
-			if (MultipleViewPatternIdentifiers.Pattern == behavior)
+			if (behavior == MultipleViewPatternIdentifiers.Pattern)
 				return new MultipleViewProviderBehavior (this);
-			else if (SelectionPatternIdentifiers.Pattern == behavior) 
+			else if (behavior == SelectionPatternIdentifiers.Pattern) 
 				return new SelectionProviderBehavior (this);
-			else if (GridPatternIdentifiers.Pattern == behavior) {
+			else if (behavior == GridPatternIdentifiers.Pattern) {
 				if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
 					return new GridProviderBehavior (this);
 				else
@@ -130,6 +130,8 @@ namespace Mono.UIAutomation.Winforms
 				return new ListItemSelectionItemProviderBehavior (listItem);
 			else if (behavior == GridItemPatternIdentifiers.Pattern)
 				return new ListItemGridItemProviderBehavior (listItem);
+			else if (behavior == ValuePatternIdentifiers.Pattern)
+				return new ListItemValueProviderBehavior (listItem);
 			else
 				return base.GetListItemBehaviorRealization (behavior, listItem);
 		}
@@ -141,10 +143,9 @@ namespace Mono.UIAutomation.Winforms
 		public override object GetItemPropertyValue (ListItemProvider item,
 		                                             int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
-				SWF.ListViewItem listViewItem = (SWF.ListViewItem) item.ObjectItem;
-				return listViewItem.Text;
-			} else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return ((SWF.ListViewItem) item.ObjectItem).Text;
+			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return listView.Focused && listView.SelectedIndices.Contains (item.Index); //TODO: OK?
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
 				if (item.Index == -1)

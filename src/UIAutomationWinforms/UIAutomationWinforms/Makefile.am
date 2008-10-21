@@ -66,6 +66,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/GroupGridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemSelectionItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/MultipleViewProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/SelectionProviderBehavior.cs \
@@ -130,6 +131,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementRemovedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternIsSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternIsReadOnlyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontallyScrollableEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalViewSizeEvent.cs \

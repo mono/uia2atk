@@ -61,12 +61,11 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.ListItem.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "list item";
-			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return nameProperty;
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return ListProvider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id
-			         || propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+			         || propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id
+			         || propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return ListProvider.GetItemPropertyValue (this, propertyId);
 			else
 				return base.GetPropertyValue (propertyId);
@@ -112,11 +111,6 @@ namespace Mono.UIAutomation.Winforms
 			//FIXME: Implement this
 			SetEvent (ProviderEventType.AutomationFocusChangedEvent,
 			          null);
-
-			// Properties
-
-			nameProperty = (string) ListProvider.GetItemPropertyValue (this, 
-			                                                           AutomationElementIdentifiers.NameProperty.Id);
 		}
 		
 		#endregion
@@ -149,7 +143,6 @@ namespace Mono.UIAutomation.Winforms
 
 		private FragmentRootControlProvider rootProvider;
 		private ListProvider listProvider;
-		private string nameProperty;
 		private object objectItem;
 		
 		#endregion

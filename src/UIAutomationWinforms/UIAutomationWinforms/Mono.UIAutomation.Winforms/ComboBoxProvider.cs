@@ -91,11 +91,12 @@ namespace Mono.UIAutomation.Winforms
 		public override object GetItemPropertyValue (ListItemProvider item,
 		                                             int propertyId)
 		{
+			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return item.ObjectItem.ToString ();
+
 			if (ContainsItem (item) == false)
 				return null;
-			
-			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return comboboxControl.Items [item.Index].ToString ();
+
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return comboboxControl.Focused && item.Index == comboboxControl.SelectedIndex;
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
