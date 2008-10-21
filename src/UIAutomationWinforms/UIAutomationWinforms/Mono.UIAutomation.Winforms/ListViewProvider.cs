@@ -471,7 +471,10 @@ namespace Mono.UIAutomation.Winforms
 				OnNavigationChildRemoved (true, item);
 			}
 		}
-		
+
+// This method is actually used via reflection, so ignore the warning about it
+// not being used
+#pragma warning disable 169
 		private void OnUIAViewChanged (object sender, EventArgs args)
 		{
 			// Behaviors supported no matter the View:
@@ -489,6 +492,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			UpdateChildrenStructure ();
 		}
+#pragma warning restore 169
 		
 		private void OnScrollPatternSupportChanged (object sender, EventArgs args)
 		{
@@ -521,6 +525,7 @@ namespace Mono.UIAutomation.Winforms
 				InitializeProviderFrom (objectItem, updateView);
 		}
 
+#pragma warning disable 169
 		private void OnUIACheckBoxesChanged (object sender, EventArgs args)
 		{
 			foreach (SWF.ListViewItem item in listView.Items) {
@@ -538,6 +543,7 @@ namespace Mono.UIAutomation.Winforms
 				provider.UpdateBehavior (ValuePatternIdentifiers.Pattern);
 			}
 		}
+#pragma warning restore 169
 
 		#endregion
 		
@@ -548,7 +554,6 @@ namespace Mono.UIAutomation.Winforms
 		private Dictionary<SWF.ListViewGroup, ListViewGroupProvider> groups;
 		private ScrollBehaviorObserver observer;
 		private SWF.ListViewGroup listViewNullGroup;
-		private SWF.ListView.ListViewItemCollection nullGroupCollection;
 		
 		#endregion
 		
@@ -716,7 +721,6 @@ namespace Mono.UIAutomation.Winforms
 				return Rect.Empty;
 			}
 
-			private ListViewProvider viewProvider;
 			private SWF.ListView listView;
 			private SWF.ListViewGroup group;
 		}

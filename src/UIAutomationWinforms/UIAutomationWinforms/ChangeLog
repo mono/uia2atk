@@ -1,3 +1,41 @@
+2008-10-21  Brad Taylor  <brad@getcoded.net>
+	
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/FormProvider.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/TextNormalizer.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/TabPageProvider.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ProviderFactory.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ScrollBarProvider.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/WebBrowserProvider.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/TextNormalizerPoints.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripMenuItemProvider.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternRowEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternColumnEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternSelectionEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ToolStripItem/InvokePatternInvokedEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternInvalidatedEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternRowEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternInvalidatedEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternVerticalViewSizeEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalViewSizeEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternColumnEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontalViewSizeEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternIsReadOnlyEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalViewSizeEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternCanSelectMultipleEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelValuePatternValueEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternCanSelectMultipleEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternIsSelectedEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementAddedEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementRemovedEvent.cs:
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementSelectedEvent.cs:
+	Fix compiler warnings.
+
+	* UIAutomationWinforms/Makefile.am: Turn on -warnaserror.
+
 2008-10-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs:

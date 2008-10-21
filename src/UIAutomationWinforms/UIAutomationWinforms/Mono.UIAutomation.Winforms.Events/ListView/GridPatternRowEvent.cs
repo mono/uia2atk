@@ -76,11 +76,14 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		
 		#region Protected methods
 
+// This method is used via reflection, so ignore the never used warning
+#pragma warning disable 169
 		private void OnRowCountPropertyEvent (object sender,
 		                                      CollectionChangeEventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
+#pragma warning restore 169
 
 		#endregion
 	}

@@ -284,7 +284,7 @@ namespace Mono.UIAutomation.Winforms
 					return null;
 			}
 
-			protected virtual System.Drawing.Rectangle GetControlScreenBounds ()
+			protected override System.Drawing.Rectangle GetControlScreenBounds ()
 			{
 				System.Drawing.Rectangle thumbArea 
 					= Helper.GetPrivateProperty<ScrollBar, Rectangle> (typeof (ScrollBar), 

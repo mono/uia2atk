@@ -33,18 +33,11 @@ namespace Mono.UIAutomation.Winforms.Events.ToolStripItem
 {
 	internal class InvokePatternInvokedEvent : BaseAutomationEvent
 	{
-		#region Private Members
-
-		private ToolStripItemProvider itemProvider;
-
-		#endregion
-
 		#region Constructors
 
 		public InvokePatternInvokedEvent (ToolStripItemProvider provider) 
 			: base (provider, InvokePatternIdentifiers.InvokedEvent)
 		{
-			this.itemProvider = provider;
 		}
 		
 		#endregion

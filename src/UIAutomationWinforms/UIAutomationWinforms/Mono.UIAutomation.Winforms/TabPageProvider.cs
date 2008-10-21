@@ -36,7 +36,6 @@ namespace Mono.UIAutomation.Winforms
 	{
 		public TabPageProvider (TabPage control) : base (control)
 		{
-			this.control = control;
 		}
 		
 		public override object GetPropertyValue (int propertyId)
@@ -48,7 +47,5 @@ namespace Mono.UIAutomation.Winforms
 
 			return base.GetPropertyValue (propertyId);
 		}
-		
-		private TabPage control;
 	}
 }

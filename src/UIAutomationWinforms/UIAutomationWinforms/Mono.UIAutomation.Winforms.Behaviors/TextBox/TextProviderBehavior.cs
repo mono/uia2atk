@@ -41,7 +41,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		public TextProviderBehavior (TextBoxProvider provider)
 			: base (provider)
 		{
-			this.textbox_provider = provider;
 		}
 
 		#endregion
@@ -188,7 +187,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		private bool attempted_swf_load = false;
 
 		private ITextRangeProvider textRangeProvider;
-		private TextBoxProvider textbox_provider;
 
 		internal object GetDocumentFromTextBoxBase (SWF.TextBoxBase textbox)
 		{

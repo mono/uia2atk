@@ -48,14 +48,10 @@ namespace Mono.UIAutomation.Winforms
 		
 		private static List<IRawElementProviderFragmentRoot> formProviders;
 		
-		private static Dictionary<SWF.ErrorProvider, List<ErrorProvider>> errorProviders;
-		
 		static ProviderFactory ()
 		{
 			componentProviders =
 				new Dictionary<Component,IRawElementProviderFragment> ();
-			
-			errorProviders = new Dictionary<SWF.ErrorProvider, List <ErrorProvider>>();
 			
 			formProviders = new List<IRawElementProviderFragmentRoot> ();
 		}
@@ -106,7 +102,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.ErrorProvider errp;
 			SWF.TabControl tc;
 			SWF.TabPage tp;
-			SWF.ListView lv;
+//			SWF.ListView lv;
 			SWF.WebBrowser wb;
 			
 			SWF.MenuStrip ms;
@@ -168,10 +164,12 @@ namespace Mono.UIAutomation.Winforms
 				//   We need to add here a ScrollableControlProvider and then verify
 				//   if the internal scrollbar instances are matching this one,
 				//   if so, then we return a scrollbar, otherwise we return a pane.
+#pragma warning disable 219
 				SWF.ScrollableControl scrollable;
 				//ScrollableControlProvider scrollableProvider;
 				if ((scrollable = scb.Parent as SWF.ScrollableControl) != null
 				    || scb.Parent == null) {
+#pragma warning restore 219
 				//	scrollableProvider = (ScrollableControlProvider) GetProvider (scrollable);
 				//	if (scrollableProvider.ScrollBarExists (scb) == true)
 						provider = new ScrollBarProvider (scb);

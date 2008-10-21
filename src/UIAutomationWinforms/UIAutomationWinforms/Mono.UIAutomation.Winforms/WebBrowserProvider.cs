@@ -58,7 +58,7 @@ namespace Mono.UIAutomation.Winforms
 				IWebBrowser iweb = (IWebBrowser) webProp.GetValue (webBrowser, new object [] {});
 	
 				IntPtr raw = iweb.Document.FirstChild.AccessibleObject;
-				if (raw == null)
+				if (raw == IntPtr.Zero)
 					return null;
 				Atk.Object obj = GLib.Object.GetObject (raw, false) as Atk.Object;
 				//obj.Name = webBrowser.Name;

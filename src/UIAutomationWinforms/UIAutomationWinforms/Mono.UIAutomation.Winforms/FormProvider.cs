@@ -40,7 +40,6 @@ namespace Mono.UIAutomation.Winforms
 #region Private Data
 		
 		private Form form;
-		private bool closing;
 		
 #endregion
 		

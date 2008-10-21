@@ -78,10 +78,13 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		
 		#region Protected methods
 		
+// This method is used via reflection, so ignore the never used warning
+#pragma warning disable 169
 		private void OnSelectionModeChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
+#pragma warning restore 169
 
 		#endregion
 	}

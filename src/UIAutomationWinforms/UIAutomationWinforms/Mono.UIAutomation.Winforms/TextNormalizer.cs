@@ -333,8 +333,6 @@ namespace Mono.UIAutomation.Winforms
 				start_end_point = index;
 				return c;
 			}
-
-			return 0;
 		}
 #endregion
 
@@ -434,8 +432,6 @@ namespace Mono.UIAutomation.Winforms
 				point = index;
 				return c;
 			}
-
-			return 0;
 		}
 #endregion
 		
@@ -539,7 +535,7 @@ namespace Mono.UIAutomation.Winforms
 			int index = 0, c = 0;
 			string text = textboxbase.Text;
 			if (count > 0) {
-				bool last_was_sep = true, last_was_chr = false;
+				bool last_was_sep = true;
 				for (int i = point; i < text.Length; i++) {
 					index = i + 1;
 
@@ -547,14 +543,12 @@ namespace Mono.UIAutomation.Winforms
 						c++;
 
 						last_was_sep = true;
-						last_was_chr = false;
 					} else {
 						if (last_was_sep) {
 							c++;
 						}
 
 						last_was_sep = false;
-						last_was_chr = true;
 					}
 
 					if (c == (count + 1)) {
@@ -575,7 +569,7 @@ namespace Mono.UIAutomation.Winforms
 				point = index;
 				return c;
 			} else {
-				bool last_was_sep = true, last_was_chr = false;
+				bool last_was_chr = false;
 				for (int i = point - 1; i >= 0; i--) {
 					index = i;
 
@@ -587,10 +581,8 @@ namespace Mono.UIAutomation.Winforms
 						}
 
 						last_was_chr = false;
-						last_was_sep = true;
 					} else {
 						last_was_chr = true;
-						last_was_sep = false;
 					}
 
 					if (c == count) {
@@ -613,8 +605,6 @@ namespace Mono.UIAutomation.Winforms
 				point = index;
 				return c;
 			}
-			
-			return 0;
 		}
 #endregion
 

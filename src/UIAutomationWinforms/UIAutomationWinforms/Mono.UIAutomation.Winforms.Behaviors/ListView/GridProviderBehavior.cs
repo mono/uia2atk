@@ -126,14 +126,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 
 		#region Private Properties
 
-		private int MaxColumns {
-			get {
-				return Helper.GetPrivateProperty<SWF.ListView, int> (typeof (SWF.ListView),
-				                                                     (SWF.ListView) Provider.Control,
-				                                                     "UIAColumns");
-			}
-		}
-
 		private int MaxRows {
 			get {
 				return Helper.GetPrivateProperty<SWF.ListView, int> (typeof (SWF.ListView),

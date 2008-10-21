@@ -78,12 +78,15 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 		
 		#region Protected methods
 		
+// This method is used via reflection, so ignore the never used warning
+#pragma warning disable 169
 		private void OnSelectedCollectionChanged (object sender, 
 		                                          CollectionChangeEventArgs args)
 		{
 			if (args.Action == CollectionChangeAction.Refresh)
 				RaiseAutomationEvent ();
 		}
+#pragma warning restore 169
 
 		#endregion
 	}

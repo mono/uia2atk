@@ -86,6 +86,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Private Navigation Methods
 
+/*
 		private void OnItemAdded (object sender, ToolStripItemEventArgs e)
 		{
 			ToolStripItemProvider itemProvider = GetItemProvider (e.Item);
@@ -99,6 +100,7 @@ namespace Mono.UIAutomation.Winforms
 			itemProvider.Terminate ();
 			OnNavigationChildRemoved (true, itemProvider);
 		}
+*/
 
 		private ToolStripItemProvider GetItemProvider (ToolStripItem item)
 		{

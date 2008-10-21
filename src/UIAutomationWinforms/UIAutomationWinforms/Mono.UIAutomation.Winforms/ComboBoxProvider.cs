@@ -103,7 +103,6 @@ namespace Mono.UIAutomation.Winforms
 				//FIXME: We need to improve this
 				int loop = 1; //We start in 1 to add the Edit height or the control height depending on the style
 				int index = item.Index;
-				int totalHeight = 0;
 				System.Drawing.Rectangle rectangle = System.Drawing.Rectangle.Empty;
 				for (; loop < index; loop++)
 					rectangle.Y += comboboxControl.GetItemHeight (loop);

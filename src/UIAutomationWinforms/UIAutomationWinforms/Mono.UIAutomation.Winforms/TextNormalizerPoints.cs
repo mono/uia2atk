@@ -29,7 +29,6 @@ namespace Mono.UIAutomation.Winforms
 {
 	public struct TextNormalizerPoints : IEquatable<TextNormalizerPoints>
 	{
-
 		public TextNormalizerPoints (int start, int end, int moved)
 		{
 			Start = start;
@@ -49,6 +48,11 @@ namespace Mono.UIAutomation.Winforms
 				return points.Equals (this);
 			}
 			return false;
+		}
+
+		public override int GetHashCode ()
+		{
+			return (Start ^ End ^ Moved);
 		}
 	
 		public int Start;

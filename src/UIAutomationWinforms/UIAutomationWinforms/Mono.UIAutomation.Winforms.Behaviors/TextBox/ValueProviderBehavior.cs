@@ -99,20 +99,5 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		}
 		
 		#endregion
-		
-		#region Private Methods
-		
-		private void OnReadOnlyChanged (object sender, EventArgs args)
-		{
-			
-		}
-		
-		private void OnValueChanged (object sender, EventArgs args)
-		{
-			
-		}
-		
-		#endregion
-
 	}
 }

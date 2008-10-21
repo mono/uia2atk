@@ -85,11 +85,14 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 			RaiseAutomationPropertyChangedEvent ();
 		}
 		
+// This method is used via reflection, so ignore the never used warning
+#pragma warning disable 169
 		private void OnScrollVerticalViewChanged (object sender, 
 		                                          CollectionChangeEventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
+#pragma warning restore 169
 
 		#endregion
 	}

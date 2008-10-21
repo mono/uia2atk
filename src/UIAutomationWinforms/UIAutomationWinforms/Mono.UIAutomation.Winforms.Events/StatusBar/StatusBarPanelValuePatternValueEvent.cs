@@ -69,10 +69,13 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 		
 		#region Private Methods
 		
+// This method is used via reflection, so ignore the never used warning
+#pragma warning disable 169
 		private void OnValueChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
+#pragma warning restore 169
 		
 		#endregion
 	}
