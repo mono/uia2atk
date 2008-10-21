@@ -214,6 +214,79 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		
 #endregion
+
+#region IScrollProvider Tests
+		
+		[Test]
+		public void IScrollProviderTest ()
+		{
+			TextBox textbox = new TextBox ();
+			textbox.Size = new System.Drawing.Size (30, 30);
+			Form.Controls.Add (textbox);
+			textbox.ScrollBars = ScrollBars.Both;
+
+			IRawElementProviderSimple prov
+				= ProviderFactory.GetProvider (textbox);
+
+			IRawElementProviderFragmentRoot root_prov
+				= (IRawElementProviderFragmentRoot)prov;
+
+			// Case #1: Edit with no text
+			textbox.Text = String.Empty;
+			textbox.Multiline = false;
+
+			IScrollProvider scroll = prov.GetPatternProvider (
+				ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider;
+			Assert.IsNull (scroll, "Edit mode with no text incorrectly supports ScrollProvider");
+
+			// Case #2: Edit with large amount of text
+			textbox.Text = TEST_MESSAGE;
+			textbox.Multiline = false;
+
+			scroll = prov.GetPatternProvider (
+				ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider;
+			Assert.IsNull (scroll, "Edit mode with text incorrectly supports ScrollProvider");
+
+			// Case #3: Document with no text
+			textbox.Text = String.Empty;
+			textbox.Multiline = true;
+
+			scroll = prov.GetPatternProvider (
+				ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider;
+			Assert.IsNull (scroll, "Document mode with no text incorrectly supports ScrollProvider");
+
+			// Case #4: Document with large amount of text
+			textbox.Text = TEST_MESSAGE;
+			textbox.Multiline = true;
+
+			scroll = prov.GetPatternProvider (
+				ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider;
+			Assert.IsNotNull (scroll, "Document mode with text doesn't support ScrollProvider");
+
+			// Test that an event is fired when we scroll vertically
+			bridge.ResetEventLists ();
+			scroll.Scroll (ScrollAmount.NoAmount, ScrollAmount.LargeIncrement);
+			Assert.AreEqual (1, bridge.AutomationEvents.Count,
+			                 "EventCount after scrolling vertically");
+
+			// We can't scroll horizontally, so verify that no event is fired
+			bridge.ResetEventLists ();
+			scroll.Scroll (ScrollAmount.LargeIncrement, ScrollAmount.NoAmount);
+			Assert.AreEqual (0, bridge.AutomationEvents.Count,
+			                 "EventCount after scrolling horizontally");
+
+			IRawElementProviderFragment child;
+			child = root_prov.Navigate (NavigateDirection.FirstChild);
+
+			Assert.IsNotNull (child, "TextBox has no children");
+			TestProperty (child, AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.ScrollBar.Id);
+
+			child = child.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNull (child, "TextBox has more than one scrollbar");
+		}
+
+#endregion
 		
 #region Events tests
 		
@@ -241,6 +314,18 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 #endregion
-
+		
+		// TODO: Move this somewhere else
+		private const string TEST_MESSAGE = "One morning, when Gregor Samsa    woke from troubled dreams, "+
+			"he found himself transformed in his bed into a horrible vermin.He lay on his armour-like back, "+
+			"and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches "+
+			"into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. "+
+			"His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he "+
+			"looked. \"What's happened to me? \" he thought. It wasn't a dream. His room, a proper human room although "+
+			"a little too small, lay peacefully between its four familiar walls. A collection of textile samples lay "+
+			"spread out on the table - Samsa was a travelling salesman - and above it there hung a picture that he had "+
+			"recently cut out of an illustrated magazine and housed in a nice, gilded frame. It showed a lady "+
+			"fitted out with a fur hat and fur boa who sat upright, raising a heavy fur muff that covered the whole "+
+			"of her lower arm towards the viewer. Gregor then turned to look out the window at the dull weather. Drops ";
 	}
 }

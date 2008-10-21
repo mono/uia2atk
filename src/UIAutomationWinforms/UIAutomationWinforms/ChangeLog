@@ -1,3 +1,8 @@
+2008-10-21  Brad Taylor  <brad@getcoded.net>
+	
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Make sure to call
+	  InitializeScrollBarProviders during InitializeChildControlStructure.
+
 2008-10-21  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Events/ListView/ListItemTogglePatternToggleStateEvent.cs:

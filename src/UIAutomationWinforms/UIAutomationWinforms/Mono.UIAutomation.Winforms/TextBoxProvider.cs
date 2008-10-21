@@ -100,6 +100,20 @@ namespace Mono.UIAutomation.Winforms
 			observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
 		}
 
+		public override void InitializeChildControlStructure ()
+		{
+			base.InitializeChildControlStructure ();
+			
+			observer.InitializeScrollBarProviders ();
+		}
+		
+		public override void FinalizeChildControlStructure ()
+		{
+			base.FinalizeChildControlStructure ();
+			
+			observer.FinalizeScrollBarProviders ();
+		}
+
 		#endregion
 		
 		#region Private Methods

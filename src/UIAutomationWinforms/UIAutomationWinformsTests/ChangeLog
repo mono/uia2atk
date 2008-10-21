@@ -1,3 +1,7 @@
+2008-10-21  Brad Taylor  <brad@getcoded.net>
+	
+	* TextBoxProviderTest.cs: Add test for ScrollProvider.
+
 2008-10-20  Brad Taylor  <brad@getcoded.net>
 	
 	* TextRangeProviderTest.cs: Fix failing test.
