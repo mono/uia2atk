@@ -207,6 +207,68 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 
 		#endregion
 
+		#region View.LargeIcon Pattern Tests
+
+		[Test]
+		public void ViewLargeIcon_PatternTest ()
+		{
+			//LAMESPEC: We need to call this otherwise the Groups aren't shown!!
+			Application.EnableVisualStyles ();
+
+			ListView view = new ListView ();
+			view.Size = new Size (100, 100);
+			view.Location = new Point (3, 3);
+
+			//Lets add groups
+			ListViewGroup group0 = new ListViewGroup ("Group 0", HorizontalAlignment.Left);
+			ListViewGroup group1 = new ListViewGroup ("Group 1", HorizontalAlignment.Left);
+
+			view.Groups.AddRange (new ListViewGroup [] { group0, group1 });
+
+			//Lets add items
+			ListViewItem item0_0 = new ListViewItem ("Item 0.0");
+			item0_0.Group = group0;
+			ListViewItem item0_1 = new ListViewItem ("Item 0.1");
+			item0_1.Group = group0;
+			ListViewItem itemD_0 = new ListViewItem ("Item D.0");
+			ListViewItem itemD_1 = new ListViewItem ("Item D.0");
+			ListViewItem item1_0 = new ListViewItem ("Item 1.0");
+			item1_0.Group = group1;
+
+			view.Items.AddRange (new ListViewItem [] { item0_0, item0_1, itemD_0, itemD_1, item1_0 });
+
+			AutomationElement element = GetAutomationElementFromControl (view);
+
+			//When SWF.ListView.ShowGroups = true we only have Group or ScrollBar as children 
+			AutomationElement child = TreeWalker.RawViewWalker.GetFirstChild (element);
+			while (child != null) {
+				ControlType controlType
+					= (ControlType) child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty);
+
+				if (controlType != ControlType.ScrollBar && controlType != ControlType.Group)
+					Assert.Fail (string.Format ("When SWF.ListView.ShowGroups = true we only have Group or ScrollBar as children: {0}",
+						controlType.ProgrammaticName));
+
+				child = TreeWalker.RawViewWalker.GetNextSibling (child);
+			}
+
+			//Lets disable ShowGroups, we must not have groups!
+			view.ShowGroups = false;
+			child = TreeWalker.RawViewWalker.GetFirstChild (element);
+			while (child != null) {
+				ControlType controlType
+					= (ControlType) child.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty);
+
+				if (controlType == ControlType.Group)
+					Assert.Fail (string.Format ("When SWF.ListView.ShowGroups = false we shouldn't have Group: {0}",
+						controlType.ProgrammaticName));
+
+				child = TreeWalker.RawViewWalker.GetNextSibling (child);
+			}
+		}
+
+		#endregion
+
 		#region Protected Methods
 
 		protected override Control GetControl ()
