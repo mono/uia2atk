@@ -1,3 +1,8 @@
+2008-10-22  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Raising ChildRemoved
+	when requested. 
+
 2008-10-22  Brad Taylor  <brad@getcoded.net>
 	
 	* Makefile.am:

@@ -449,6 +449,8 @@ namespace Mono.UIAutomation.Winforms
 						header = new ListViewHeaderProvider (listView);
 						header.Initialize ();
 						OnNavigationChildAdded (raiseEvent, header);
+
+						//FIXME: We have to add ListItem.Children (Edit)
 					}
 				}
 
@@ -478,9 +480,7 @@ namespace Mono.UIAutomation.Winforms
 		private void FinalizeProviderFrom (object objectItem, bool raiseEvent)
 		{
 			// Use groups: View.SmallIcon, View.LargeIcon and View.Tile
-			if (listView.View == SWF.View.SmallIcon 
-			    || listView.View == SWF.View.LargeIcon
-			    || listView.View == SWF.View.Tile) {
+			if (showGroups == true && listView.View != SWF.View.List) {
 
 				SWF.ListViewItem listViewItem = (SWF.ListViewItem) objectItem;
 				SWF.ListViewGroup listViewGroup = GetGroupFrom (listViewItem);
@@ -502,7 +502,7 @@ namespace Mono.UIAutomation.Winforms
 				}
 			} else {
 				ListItemProvider item = RemoveItemFrom (objectItem);
-				OnNavigationChildRemoved (true, item);
+				OnNavigationChildRemoved (raiseEvent, item);
 			}
 		}
 		
