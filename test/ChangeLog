@@ -1,3 +1,9 @@
+2008-10-20  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/checkbox.py: Add a checkbox with an Image property and a
+	BackgroundImage property.
+	* samples/radiobutton.py: Add a radio button with an Image property.
+
 2008-10-22  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* tools/dashboard/light.xcf: Add xcf (the gimp) file so I don't lose it

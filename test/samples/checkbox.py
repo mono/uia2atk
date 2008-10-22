@@ -14,6 +14,8 @@ It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of cont
 """
 
 import clr
+import os
+from sys import path
 
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
@@ -21,6 +23,8 @@ clr.AddReference('System.Drawing')
 from System.Drawing import *
 from System.Windows.Forms import *
 
+harness_dir = path[0]
+uiaqa_path = os.path.dirname(harness_dir)
 
 class CheckBoxApp(Form):
 
@@ -64,11 +68,29 @@ class CheckBoxApp(Form):
         self.check4.Width = 90
         self.check4.Enabled = False
 
+        self.check5 = CheckBox()
+        self.check5.Text = "Fried Lizard"
+        self.check5.Location = Point(10, 120)
+        self.check5.Width = 130
+        self.check5.Enabled = True
+	self.check5.Image = Image.FromFile("%s/samples/opensuse60x38.gif" % uiaqa_path)
+
+        self.check6 = CheckBox()
+        self.check6.Text = "Soylent Green"
+        self.check6.Location = Point(150, 120)
+        self.check6.Width = 130
+        self.check6.Enabled = True
+	self.check6.BackgroundImage = Image.FromFile("%s/samples/tiny_background.png" % uiaqa_path)
+
+
+
         self.Controls.Add(self.checkLabel)
         self.Controls.Add(self.check1)
         self.Controls.Add(self.check2)
         self.Controls.Add(self.check3)
         self.Controls.Add(self.check4)
+        self.Controls.Add(self.check5)
+        self.Controls.Add(self.check6)
 
 form = CheckBoxApp()
 Application.Run(form)
