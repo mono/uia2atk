@@ -70,18 +70,16 @@ namespace UiaAtkBridge
 		
 		private string[] ChildrenItems {
 			get {
-				List<string> children = new List<string> ();
-				
-				//Get List child
-				if (childrenHolder == null)
-					return children.ToArray();
-				IRawElementProviderFragment child = ChildrenHolder.Navigate (NavigateDirection.FirstChild);
-				do {
-					children.Add ((string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
-					child = child.Navigate (NavigateDirection.NextSibling);
-				} while (child != null);
-				
-				return children.ToArray ();
+				List<string> childrenItems = new List<string> ();
+
+				if (childrenHolder != null) {
+					IRawElementProviderFragment child = ChildrenHolder.Navigate (NavigateDirection.FirstChild);
+					do {
+						childrenItems.Add ((string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
+						child = child.Navigate (NavigateDirection.NextSibling);
+					} while (child != null);
+				}
+				return childrenItems.ToArray ();
 			}
 		}
 		
@@ -127,9 +125,7 @@ namespace UiaAtkBridge
 		}
 		
 		int Atk.ActionImplementor.NActions {
-			get {
-				return 1;
-			}
+			get { return 1; }
 		}
 		
 		bool pressed = false;

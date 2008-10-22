@@ -1,5 +1,15 @@
 2008-10-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Test children in ComboBoxSimple. We don't pass it
+	yet.
+
+	* AtkTests.cs: Fix a FIXME by adding a new ComboBoxDropDownEntry test.
+	We don't pass it in the bridge yet.
+
+	* AtkTester.cs: Added a helper method. Coding guidelines.
+
+2008-10-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs:
 	* AtkTester.cs:
 	* BridgeTester.cs:

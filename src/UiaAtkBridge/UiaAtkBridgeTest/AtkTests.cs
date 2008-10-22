@@ -422,19 +422,35 @@ namespace UiaAtkBridgeTest
 				   "only grandchildren allowed if parent is menu");
 			}
 		}
-		
-		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
-		//the widget, so we kill all with the method marked as [TestFixtureTearDown]
+
 		[Test]
-		public void ComboBox ()
+		public void ComboBoxDropDownEntry ()
 		{
-			BasicWidgetType type = BasicWidgetType.ComboBoxDropDownList;
+			BasicWidgetType type = BasicWidgetType.ComboBoxDropDownEntry;
 			Atk.Object accessible;
 			
 			string[] names = new string[] { "First item", "Second Item", "Last Item" };
 			accessible = GetAccessible (type, names, true);
 			
 			StatesComboBox (accessible);
+
+			Assert.AreEqual (2, accessible.NAccessibleChildren, "numChildren; children roles:" + childrenRoles (accessible));
+		}
+		
+		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
+		//the widget, so we kill all with the method marked as [TestFixtureTearDown]
+		[Test]
+		public void ComboBoxDropDownList ()
+		{
+			BasicWidgetType type = BasicWidgetType.ComboBoxDropDownList;
+			Atk.Object accessible;
+			
+			string[] names = new string [] { "First item", "Second Item", "Last Item" };
+			accessible = GetAccessible (type, names, true);
+			
+			StatesComboBox (accessible);
+
+			Assert.AreEqual (1, accessible.NAccessibleChildren, "numChildren; children roles:" + childrenRoles (accessible));
 			
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
@@ -446,10 +462,6 @@ namespace UiaAtkBridgeTest
 			
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			InterfaceSelection (atkSelection, names, accessible, type);
-			
-			Assert.AreEqual (1, accessible.NAccessibleChildren, "ComboBox#RO numChildren");
-			//FIXME: enable this when we test the editable combobox:
-			//Assert.AreEqual (2, accessible.NAccessibleChildren, "ComboBox#editable numChildren");
 			
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);
 			Assert.IsNotNull (menuChild, "ComboBox child#0 should not be null");

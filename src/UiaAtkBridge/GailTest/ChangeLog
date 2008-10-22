@@ -1,5 +1,9 @@
 2008-10-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* GailTester.cs: Added ComboBoxDropDownEntry in the backend.
+
+2008-10-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* GailTester.cs: Add combobox state testing. Closes #428644.
 
 2008-10-20  Andrés G. Aragoneses  <aaragoneses@novell.com>

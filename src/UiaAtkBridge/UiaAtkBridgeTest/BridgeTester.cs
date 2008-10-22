@@ -622,8 +622,10 @@ namespace UiaAtkBridgeTest
 			PropertyRole (type, accessible);
 
 			StatesComboBox (accessible);
-		}
 
+			Assert.AreEqual (2, accessible.NAccessibleChildren, "numChildren; children roles:" + childrenRoles (accessible));
+		}
+		
 		//[Test]
 		public void UIAButtonControlType ()
 		{

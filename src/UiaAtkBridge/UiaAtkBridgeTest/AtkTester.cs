@@ -427,10 +427,20 @@ namespace UiaAtkBridgeTest
 		protected void StatesComboBox (Atk.Object accessible)
 		{
 			States (accessible,
-				Atk.StateType.Enabled,
-				Atk.StateType.Sensitive,
-				Atk.StateType.Showing,
-				Atk.StateType.Visible);
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible);
+		}
+
+		protected string childrenRoles (Atk.Object accessible)
+		{
+			string res = String.Empty;
+			for (int i = 0; i < accessible.NAccessibleChildren; i++)
+				res += accessible.RefAccessibleChild (i).Role.ToString () + ",";
+			if (res == String.Empty)
+				return "<no children>";
+			return res;
 		}
 		
 		protected void PropertyRole (BasicWidgetType type, Atk.Object accessible)
@@ -1002,7 +1012,7 @@ namespace UiaAtkBridgeTest
 			for (int i = 0; i < count; i++)
 				if (parent.RefAccessibleChild (i) == accessible)
 					return;
-			Assert.Fail ("Object is child of parent");
+			Assert.Fail ("Object should be child of parent");
 		}
 
 		protected void States (Atk.Object accessible, params Atk.StateType [] expected)

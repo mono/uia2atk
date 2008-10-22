@@ -128,6 +128,18 @@ namespace UiaAtkBridgeTest
 			Gtk.Widget widget = null;
 			
 			switch (type) {
+			case BasicWidgetType.ComboBoxDropDownEntry:
+				widget = new Gtk.ComboBox ();
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealComboBoxEntry ();
+	
+				//FIXME: update this line when this bug is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=324899
+				((Gtk.ListStore)((Gtk.ComboBox) widget).Model).Clear ();
+				
+				foreach (string text in name) 
+					((Gtk.ComboBox)widget).AppendText (text);
+				
+				break;
 			case BasicWidgetType.ComboBoxDropDownList:
 				widget = new Gtk.ComboBox ();
 				if (real)
@@ -136,9 +148,8 @@ namespace UiaAtkBridgeTest
 				//FIXME: update this line when this bug is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=324899
 				((Gtk.ListStore)((Gtk.ComboBox) widget).Model).Clear ();
 				
-				foreach (string text in name) {
+				foreach (string text in name)
 					((Gtk.ComboBox)widget).AppendText (text);
-				}
 				break;
 			case BasicWidgetType.TabControl:
 				widget = new Gtk.Notebook ();
