@@ -94,14 +94,12 @@ namespace UiaAtkBridgeTest
 				foreach (string item in names)
 					listBox.Items.Add (item);
 			
-				UiaAtkBridge.List uiaList;
 				if (real)
-#pragma warning disable 618
-					uiaList = (UiaAtkBridge.List) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (listBox, true, true));
-#pragma warning restore 618
+					accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
+					                                    ProviderFactory.GetProvider (listBox, true, true));
 				else
-					uiaList = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listBox, true, true));
-				accessible = uiaList;
+					accessible = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) 
+					                                    ProviderFactory.GetProvider (listBox, true, true));
 				break;
 			}
 			case BasicWidgetType.CheckedListBox: {
@@ -112,14 +110,12 @@ namespace UiaAtkBridgeTest
 				foreach (string item in names)
 					listBox.Items.Add (item);
 			
-				UiaAtkBridge.List uiaList;
 				if (real)
-#pragma warning disable 618
-					uiaList = (UiaAtkBridge.List) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (listBox, true, true));
-#pragma warning restore 618
+					accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
+					                                    ProviderFactory.GetProvider (listBox, true, true));
 				else
-					uiaList = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (listBox, true, true));
-				accessible = uiaList;
+					accessible = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) 
+					                                    ProviderFactory.GetProvider (listBox, true, true));
 				break;
 			}
 			case BasicWidgetType.ComboBoxDropDownList:
@@ -130,14 +126,12 @@ namespace UiaAtkBridgeTest
 				foreach (string item in names)
 					comboBox.Items.Add (item);
 			
-				UiaAtkBridge.ComboBox uiaComb;
 				if (real)
-#pragma warning disable 618
-					uiaComb = (UiaAtkBridge.ComboBox) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (comboBox, true, true));
-#pragma warning restore 618
+					accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
+					                                    ProviderFactory.GetProvider (comboBox, true, true));
 				else
-					uiaComb = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (comboBox, true, true));
-				accessible = uiaComb;
+					accessible = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) 
+					                                        ProviderFactory.GetProvider (comboBox, true, true));
 				break;
 				
 			case BasicWidgetType.ParentMenu:
