@@ -157,11 +157,11 @@ namespace UiaAtkBridgeTest
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealNotebook ();
 				Gtk.Notebook notebook = (Gtk.Notebook)widget;
-				while (notebook.NPages > 0)
-					notebook.RemovePage (0);
-				foreach (string text in name)
-					((Gtk.Notebook)widget).AppendPage (new Gtk.Label (text), new Gtk.Label (text));
-				widget.ShowAll ();
+				if (!real) {
+					foreach (string text in name)
+						notebook.AppendPage (new Gtk.Label (text), new Gtk.Label (text));
+					widget.ShowAll ();
+				}
 				break;
 			case BasicWidgetType.ListView:
 				Gtk.TreeStore store = new Gtk.TreeStore (typeof (string));

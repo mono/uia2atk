@@ -263,9 +263,11 @@ namespace UiaAtkBridgeTest
 				accessibleName = String.Empty;
 			
 			Assert.AreEqual (accessibleName, accessible.Name, "AtkObj Name");
-			for (int i = 0; i < names.Length; i++)
-					Assert.IsFalse (implementor.IsChildSelected (i), "isChildSelected(" + i + ")");
-			Assert.AreEqual (0, implementor.SelectionCount, "SelectionCount == 0");
+			if (type != BasicWidgetType.TabControl) {
+				for (int i = 0; i < names.Length; i++)
+						Assert.IsFalse (implementor.IsChildSelected (i), "isChildSelected(" + i + ")");
+				Assert.AreEqual (0, implementor.SelectionCount, "SelectionCount == 0");
+			}
 			
 			for (int i = 0; i < names.Length; i++) {
 				Assert.IsTrue (implementor.AddSelection (i), "AddSelection(" + i + ")");

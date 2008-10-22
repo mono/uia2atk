@@ -482,7 +482,7 @@ namespace UiaAtkBridgeTest
 		{
 			BasicWidgetType type = BasicWidgetType.TabControl;
 			Atk.Object accessible;
-			string[] names = new string[] { simpleTestText, "Second Item", "Last Item" };
+			string[] names = new string[] { "Page1", "Page2" };
 			
 			accessible = GetAccessible (type, names, true);
 			
@@ -494,11 +494,14 @@ namespace UiaAtkBridgeTest
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			InterfaceSelection (atkSelection, names, accessible, type);
 			
-			Assert.AreEqual (3, accessible.NAccessibleChildren, "TabControl numChildren");
+			Assert.AreEqual (names.Length, accessible.NAccessibleChildren, "TabControl numChildren");
 			BasicWidgetType childType = BasicWidgetType.TabPage;
 			Atk.Object child1 = accessible.RefAccessibleChild (0);
 			PropertyRole (childType, child1);
-			InterfaceText (childType, true, child1);
+			Atk.Text atkText = CastToAtkInterface<Atk.Text> (child1);
+			Assert.AreEqual (5, atkText.CharacterCount, "CharacterCount");
+			Assert.AreEqual ("page1", atkText.GetText (0, 5), "GetText #1");
+			Assert.AreEqual ("page1", atkText.GetText (0, -1), "GetText #2");
 		}
 
 		[Test]

@@ -1,5 +1,9 @@
 2008-10-22  Mike Gorse <mgorse@novell.com>
 
+	* GailTester.cs: Do not modify Notebook pages for real widgets.
+
+2008-10-22  Mike Gorse <mgorse@novell.com>
+
 	* GailTester.cs: Use a real notebook.
 	  Add ListView and PictureBox.
 	* gailtest.sh.in: Add --debug.

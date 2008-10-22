@@ -4,6 +4,12 @@
 
 2008-10-22  Mike Gorse  <mgorse@novell.com>
 
+	* AtkTester.cs: Do not assume that a TabControl has no selected
+	  pages at start.
+	* AtkTests.cs: Adapt TabControl test for names used by GailTest.
+
+2008-10-22  Mike Gorse  <mgorse@novell.com>
+
 	* AtkTester.cs, AtkTests.cs, BasicWidgetType.cs, BridgeTester.cs:
 	  Add PictureBox.
 	* AtkTester.cs, AtkTests.cs: Fix TabControl test.
