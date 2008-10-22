@@ -1,3 +1,7 @@
+2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Fix build.
+
 2008-10-22  Mike Gorse  <mgorse@novell.com>
 
 	* AtkTests.cs: Cast TabControl to AtkText in the gui thread.

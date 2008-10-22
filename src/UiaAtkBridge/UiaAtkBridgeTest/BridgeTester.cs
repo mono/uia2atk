@@ -171,8 +171,8 @@ namespace UiaAtkBridgeTest
 				Array.Copy (names, 1, submenus, 0, names.Length - 1);
 				
 				//FIXME: change call to ctor to send the provider
-				UiaAtkBridge.ParentMenu uiaPMenu = new UiaAtkBridge.ParentMenu (submenus);
-				accessible = uiaPMenu;
+//				UiaAtkBridge.ParentMenu uiaPMenu = new UiaAtkBridge.ParentMenu (submenus);
+//				accessible = uiaPMenu;
 				//FIXME: uncomment this after committing full ParentMenu class
 				//action = uiaPMenu;
 
