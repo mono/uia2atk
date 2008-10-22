@@ -1,4 +1,14 @@
-2008-10-20  Brian G. Merrell <bgmerrell@gmail.com>
+2008-10-22  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* tools/dashboard/dashboard_sample.xml: Updated sample of the dashboard
+	* tools/dashboard/dashboard.xsl: Separate regression tests and smoke
+	tests.
+	* tools/dashboard/dashboard.css: Display regression tests and smoke
+	tests side by side.
+	* tools/dashboard/dashboard.py: Separate regression tests and smoke
+	tests.
+
+2008-10-22  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/checkbox.py: Add a checkbox with an Image property and a
 	BackgroundImage property.

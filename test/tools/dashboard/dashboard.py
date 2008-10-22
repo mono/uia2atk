@@ -124,6 +124,8 @@ class PageBuilder(object):
         # of the most recent log files for the tests associates with each
         # control
         self.dashboard = {}
+        self.dashboard_smoke = {}
+        self.dashboard_regression = {}
         self.newest_dirs = {}
         self.reports = {}
         for control in self.controls:
@@ -133,7 +135,33 @@ class PageBuilder(object):
 
                 new_to_old_dirs = []
                 for dir in test_paths:
-                    self.dashboard[control] = self.get_newest_subdirs(dir)
+                    newest_subdirs = self.get_newest_subdirs(dir)
+                    newest_smoke_subdirs = \
+                     [dir for dir in newest_subdirs if "smoke_test" in dir]
+                    newest_regression_subdirs = \
+                     [dir for dir in newest_subdirs if "smoke_test" not in dir]
+                    try:
+                        # get the newest subdirs for each test directory and
+                        # add them to the dashboard dictionary
+                        self.dashboard[control] += newest_subdirs
+                    except KeyError:
+                        self.dashboard[control] = newest_subdirs
+                    # do the same thing but create separate dashboard
+                    # dictionaries for smoke tests and regression tests
+                    if len(newest_smoke_subdirs) > 0:
+                        try:
+                            self.dashboard_smoke[control] += \
+                                                           newest_smoke_subdirs
+                        except KeyError:
+                            self.dashboard_smoke[control] = \
+                                                           newest_smoke_subdirs
+                    if len(newest_regression_subdirs) > 0:
+                        try:
+                            self.dashboard_regression[control] += \
+                                                      newest_regression_subdirs
+                        except KeyError:
+                            self.dashboard_regression[control] = \
+                                                      newest_regression_subdirs
                     new_to_old_dirs.append(self.get_new_to_old_subdirs(dir))
                 # done buildling list of the most recent log directorie(s), now
                 # add the list to the dashboard for each control.
@@ -160,8 +188,6 @@ class PageBuilder(object):
             times = c.getoutput("find %s* -name time" % os.path.join(dir,machine)).split()
             newest_time = 0
             for time_path in times:
-                # get the full time path
-                time_path = os.path.join(dir, time_path)
                 f = open(time_path)
                 time = float(f.read())
                 if time > newest_time:
@@ -169,9 +195,9 @@ class PageBuilder(object):
                     newest_time_path = time_path
             # add the parent directory of the time file to the
             # dashboard
-            time_path = os.path.dirname(newest_time_path)
-            self.update_newest_dirs(machine, time_path)
-            newest_subdirs.append(time_path)
+            test_path = os.path.dirname(newest_time_path)
+            self.update_newest_dirs(machine, test_path)
+            newest_subdirs.append(test_path)
         return newest_subdirs
 
     def get_new_to_old_subdirs(self, dir):
@@ -185,7 +211,7 @@ class PageBuilder(object):
             new_to_old_subdirs[i] = os.path.join(dir, new_to_old_subdirs[i])
         return new_to_old_subdirs
 
-    def get_status(self, control):
+    def get_status(self, control, is_smoke=False):
         '''get the status of the most recent tests for control and return 0
         (success), 1 (fail), or -1 (not run)'''
         status_codes = []
@@ -193,10 +219,17 @@ class PageBuilder(object):
         # get the list of the most recent log directorie(s) for each control
         # if the control is not found in dashboard, then the test has
         # not been run, so return -1
-        try:
-            new_dirs = self.dashboard[control]
-        except KeyError:
-            return -1
+        new_dirs = None
+        if is_smoke:
+            try:
+                new_dirs = self.dashboard_smoke[control]
+            except KeyError:
+                return -1
+        else:
+            try:
+                new_dirs = self.dashboard_regression[control]
+            except KeyError:
+                return -1
         for dir in new_dirs:
             f = open("%s/status" % dir)
             status_codes.append(int(f.read()))
@@ -205,15 +238,21 @@ class PageBuilder(object):
         else:
             return 1
         
-    def get_time(self, control):
+    def get_time(self, control, is_smoke=False):
         # get the list of the most recent log directorie(s) for each control
         # if the control is not found in dashboard, then the test has
         # not been run, so return -1
-        new_dirs = []
-        try:
-            new_dirs = self.dashboard[control]
-        except KeyError:
-            return -1
+        new_dirs = None
+        if is_smoke:
+            try:
+                new_dirs = self.dashboard_smoke[control]
+            except KeyError:
+                return -1
+        else:
+            try:
+                new_dirs = self.dashboard_regression[control]
+            except KeyError:
+                return -1
         procedures_logs = [os.path.join(log,"procedures.xml") for log in new_dirs]
         times = [self.xmlp.get_time(log) for log in procedures_logs]
         return round(sum(times),1)
@@ -222,17 +261,49 @@ class PageBuilder(object):
         raise NotImplementedError
 
     def build_all(self):
-        total_time = 0.0
-        num_passed = 0.0
-        num_tests = 0.0
+        smoke_time = 0.0
+        smoke_num_passed = 0.0
+        smoke_num_tests = 0.0
+        regression_time = 0.0
+        regression_num_passed = 0.0
+        regression_num_tests = 0.0
         root = ET.Element("dashboard")
+
+        # smoke test portion of XML dashboard file
+        smoke = ET.SubElement(root, "smoke")
         for control_name in self.controls:
-            num_tests += 1
-            control = ET.SubElement(root, "control")
+            smoke_num_tests += 1
+            control = ET.SubElement(smoke, "control")
+            ET.SubElement(control, "name").text = control_name
+            control_status = self.get_status(control_name, is_smoke=True)
+            if control_status == 0:
+                smoke_num_passed += 1
+            else:
+                # build the report for control_name
+                # self.build_report(control_name)
+                pass
+            ET.SubElement(control, "status").text = str(control_status)
+            time = self.get_time(control_name, is_smoke=True)
+            # keep track of the total time for successful tests
+            if time > 0 and control_status == 0:
+                smoke_time += time
+            ET.SubElement(control, "time").text = str(time)
+        ET.SubElement(smoke, "numTests").text = str(smoke_num_tests)
+        ET.SubElement(smoke, "numPassed").text = str(smoke_num_passed)
+        ET.SubElement(smoke, "percentPassed").text = "%s%s" % \
+                       (str(round((smoke_num_passed / smoke_num_tests)*100,1)),
+                        "%")
+        ET.SubElement(smoke, "elapsedTime").text = str(smoke_time)
+
+        # regression test portion of XML dashboard file
+        regression = ET.SubElement(root, "regression")
+        for control_name in self.controls:
+            regression_num_tests += 1
+            control = ET.SubElement(regression, "control")
             ET.SubElement(control, "name").text = control_name
             control_status = self.get_status(control_name)
             if control_status == 0:
-                num_passed += 1
+                regression_num_passed += 1
             else:
                 # build the report for control_name
                 # self.build_report(control_name)
@@ -241,14 +312,17 @@ class PageBuilder(object):
             time = self.get_time(control_name)
             # keep track of the total time for successful tests
             if time > 0 and control_status == 0:
-                total_time += time
+                regression_time += time
             ET.SubElement(control, "time").text = str(time)
-        ET.SubElement(root, "numTests").text = str(num_tests)
-        ET.SubElement(root, "numPassed").text = str(num_passed)
-        ET.SubElement(root, "percentPassed").text = "%s%s" % \
-                                (str(round((num_passed / num_tests)*100,1)),
-                                 "%")
-        ET.SubElement(root, "totalTime").text = str(total_time)
+        ET.SubElement(regression, "numTests").text = str(regression_num_tests)
+        ET.SubElement(regression, "numPassed").text = \
+                                                    str(regression_num_passed)
+        ET.SubElement(regression, "percentPassed").text = "%s%s" % \
+             (str(round((regression_num_passed / regression_num_tests)*100,1)),
+              "%")
+        ET.SubElement(regression, "elapsedTime").text = str(regression_time)
+
+        # write the dashboard file to disk
         f = open('dashboard.xml', 'w')
         f.write('<?xml version="1.0" encoding="UTF-8"?>')
         f.write('<?xml-stylesheet type="text/xsl" href="dashboard.xsl"?>')
