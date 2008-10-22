@@ -90,8 +90,7 @@ namespace GailTestApp {
 
 		public static Gtk.TreeView GiveMeARealTreeView ()
 		{
-			if (win == null)
-				throw new Exception ("You should have started the app first");
+			CheckState ();
 			
 			return win.GiveMeARealTreeView ();
 		}
@@ -103,8 +102,7 @@ namespace GailTestApp {
 		
 		public static Gtk.Image GiveMeARealImage (bool embeddedImage)
 		{
-			if (win == null)
-				throw new Exception ("You should have started the app first");
+			CheckState ();
 			
 			return win.GiveMeARealImage (embeddedImage);
 		}
