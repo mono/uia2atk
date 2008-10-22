@@ -38,6 +38,7 @@ namespace UiaAtkBridgeTest
 		public void Label ()
 		{
 			Console.WriteLine ("<Test id=\"Label\">");
+			
 			BasicWidgetType type = BasicWidgetType.Label;
 			Atk.Object accessible = InterfaceText (type);
 
@@ -45,11 +46,11 @@ namespace UiaAtkBridgeTest
 			
 			//a label always contains this state, not because it's multi_line, but because it can be multi_line
 			States (accessible,
-				Atk.StateType.MultiLine,
-				Atk.StateType.Enabled,
-				Atk.StateType.Sensitive,
-				Atk.StateType.Showing,
-				Atk.StateType.Visible);
+			  Atk.StateType.MultiLine,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible);
 			
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "Label numChildren");
 			
@@ -533,15 +534,18 @@ namespace UiaAtkBridgeTest
 		}
 		
 		[Test]
-		public void TabControl ()
+		public void TabControl () { RunInGuiThread (RealTabControl); }
+		public void RealTabControl ()
 		{
 			Console.WriteLine ("<Test id=\"TabControl\">");
 			
 			BasicWidgetType type = BasicWidgetType.TabControl;
-			Atk.Object accessible;
+			Atk.Object accessible = null;
 			string [] names = new string [] { "Page1", "Page2" };
-			
-			accessible = GetAccessible (type, names, true);
+
+			RunInGuiThread (delegate () {
+				accessible = GetAccessible (type, names, true);
+			});
 			
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
@@ -600,6 +604,7 @@ namespace UiaAtkBridgeTest
 			Console.WriteLine ("</Test>");
 		}
 
+		[Test]
 		public void Window () { RunInGuiThread (RealWindow); }
 		public void RealWindow ()
 		{

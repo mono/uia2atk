@@ -1,5 +1,10 @@
 2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs: Use RunInGuiThread in TabControl full test. Re-add test
+	attrib for Window. And cosmetic touches.
+
+2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Fix build.
 
 2008-10-22  Mike Gorse  <mgorse@novell.com>
