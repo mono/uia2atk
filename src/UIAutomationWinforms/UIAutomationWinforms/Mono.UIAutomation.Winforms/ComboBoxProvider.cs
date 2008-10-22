@@ -45,6 +45,10 @@ namespace Mono.UIAutomation.Winforms
 		{
 			comboboxControl = combobox;
 			comboboxControl.DropDownStyleChanged += OnDropDownStyleChanged;
+
+			listboxProvider = new ComboBoxProvider.ComboBoxListBoxProvider (comboboxControl,
+			                                                                this);
+			listboxProvider.Initialize ();
 		}
 		
 		#endregion
@@ -177,9 +181,6 @@ namespace Mono.UIAutomation.Winforms
 
 		public override void InitializeChildControlStructure ()
 		{
-			listboxProvider = new ComboBoxProvider.ComboBoxListBoxProvider (comboboxControl,
-			                                                                this);
-			listboxProvider.Initialize ();
 			OnNavigationChildAdded (false, listboxProvider);
 			UpdateBehaviors (false);
 		}
