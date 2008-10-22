@@ -48,6 +48,7 @@ FILES =  \
 	AutomationBridge.cs \
 	Button.cs \
 	CheckBoxButton.cs \
+	ChildMenuItem.cs \
 	ComboBox.cs \
 	ComponentAdapter.cs \
 	ComponentImplementorHelper.cs \
@@ -56,6 +57,7 @@ FILES =  \
 	Image.cs \
 	List.cs \
 	ListItem.cs \
+	MenuBar.cs \
 	MenuItem.cs \
 	Monitor.cs \
 	Pane.cs \

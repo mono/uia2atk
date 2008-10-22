@@ -400,6 +400,11 @@ namespace UiaAtkBridge
 				HandleNewImageControlType (simpleProvider);
 			else if (controlTypeId == ControlType.ToolBar.Id)
 				HandleNewToolBarControlType (simpleProvider);
+			else if (controlTypeId == ControlType.MenuBar.Id) //for MenuStrip widget
+				// || (controlTypeId == ControlType.Menu.Id)) //for 1.x Menu widget it seems <- TODO
+				HandleNewMenuBarControlType (simpleProvider);
+			else if (controlTypeId == ControlType.MenuItem.Id) //for ToolStripMenuItem widget
+				HandleNewMenuItemControlType (simpleProvider);
 			// TODO: Other providers
 			else
 				Console.WriteLine ("AutomationBridge: Unhandled control: " +
@@ -742,6 +747,47 @@ namespace UiaAtkBridge
 			parentObject.AddRelationship (Atk.RelationType.Embeds,
 			                              atkToolBar);
 		}
+
+		private void HandleNewMenuBarControlType (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject = GetParentAdapter (provider);
+			
+			MenuBar newMenuBar = new MenuBar (provider);
+			providerAdapterMapping [provider] = newMenuBar;
+			
+			parentObject.AddOneChild (newMenuBar);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              newMenuBar);
+		}
+
+		private void HandleNewMenuItemControlType (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject = GetParentAdapter (provider);
+
+			Adapter newAdapter;
+			if (HasChildren (provider))
+				newAdapter = new ParentMenu (provider);
+			else
+				newAdapter = new ChildMenuItem (provider);
+			providerAdapterMapping [provider] = newAdapter;
+			
+			parentObject.AddOneChild (newAdapter);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              newAdapter);
+		}
+
+		private bool HasChildren (IRawElementProviderSimple provider)
+		{
+			if (!(provider is IRawElementProviderFragment))
+				return false;
+
+			IRawElementProviderFragment iter = (IRawElementProviderFragment)provider;
+			iter = iter.Navigate (NavigateDirection.FirstChild);
+			if (iter != null)
+				return true;
+			return false;
+		}
+		
 #endregion
 	}
 }

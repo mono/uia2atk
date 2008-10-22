@@ -1,5 +1,9 @@
 2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Fix backend retrieval in the bridge.
+
+2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs: Children testing fixed and done before Atk interfaces.
 
 2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>

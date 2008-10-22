@@ -151,6 +151,9 @@ namespace UiaAtkBridgeTest
 				break;
 				
 			case BasicWidgetType.ParentMenu:
+
+				if (!real)
+					throw new NotSupportedException ("You, clown, we're gonna deprecate un-real support");
 				
 				SWF.ToolStripMenuItem parentMenu = new SWF.ToolStripMenuItem();
 				
@@ -167,8 +170,8 @@ namespace UiaAtkBridgeTest
 					parentMenu
 				});
 				
-				string [] submenus  = new string [names.Length - 1];
-				Array.Copy (names, 1, submenus, 0, names.Length - 1);
+				accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
+					                                 ProviderFactory.GetProvider (parentMenu, true, true));
 				
 				//FIXME: change call to ctor to send the provider
 //				UiaAtkBridge.ParentMenu uiaPMenu = new UiaAtkBridge.ParentMenu (submenus);

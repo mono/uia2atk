@@ -76,7 +76,7 @@ namespace UiaAtkBridge
 						return false;
 					toggleProvider.Toggle();
 					return true;
-				} catch (ElementNotEnabledException e) {
+				} catch (ElementNotEnabledException) {
 					// TODO: handle this exception? maybe returning false is good enough
 				}
 			}

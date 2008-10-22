@@ -1,3 +1,16 @@
+2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MenuBar.cs:
+	* ChildMenuItem.cs: First stub.
+
+	* Makefile.am:
+	* ParentMenu.cs:
+	* UiaAtkBridge.mdp:
+	* AutomationBridge.cs: First bits for ParentMenu children testing to
+	pass. Still failing because of an NRE in the provider :-m
+
+	* CheckBoxButton.cs: Fix warning.
+
 2008-10-22  Mike Gorse <mgorse@novell.com>
 
 	* Makefile.am, UiaAtkBridge.mdp, ToolBar.cs: Add ToolBar.cs:
