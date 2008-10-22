@@ -540,7 +540,7 @@ namespace UiaAtkBridgeTest
 			
 			BasicWidgetType type = BasicWidgetType.TabControl;
 			Atk.Object accessible;
-			string[] names = new string[] { simpleTestText, "Second Item", "Last Item" };
+			string [] names = new string [] { "Page1", "Page2" };
 			
 			accessible = GetAccessible (type, names, true);
 			
@@ -552,11 +552,48 @@ namespace UiaAtkBridgeTest
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			InterfaceSelection (atkSelection, names, accessible, type);
 			
-			Assert.AreEqual (2, accessible.NAccessibleChildren, "TabControl numChildren");
+			Assert.AreEqual (names.Length, accessible.NAccessibleChildren, "TabControl numChildren");
 			BasicWidgetType childType = BasicWidgetType.TabPage;
 			Atk.Object child1 = accessible.RefAccessibleChild (0);
 			PropertyRole (childType, child1);
-			InterfaceText (childType, true, child1);
+			Atk.Text atkText = CastToAtkInterface<Atk.Text> (child1);
+			Assert.AreEqual (5, atkText.CharacterCount, "CharacterCount");
+			Assert.AreEqual ("page1", atkText.GetText (0, 5), "GetText #1");
+			Assert.AreEqual ("page1", atkText.GetText (0, -1), "GetText #2");
+		}
+
+		[Test]
+		public void PictureBox ()
+		{
+			Console.WriteLine ("<Test id=\"PictureBox\">");
+			
+			BasicWidgetType type = BasicWidgetType.PictureBox;
+			Atk.Object accessible;
+
+			string name = "test";
+			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
+			
+			States (accessible,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible);
+			
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+
+			PropertyRole (type, accessible);
+			
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "Button numChildren");
+
+			Parent (type, accessible);
+
+			Atk.Image atkWithoutImage, atkWithImage;
+			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
+			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+			accessible = GetAccessibleThatEmbedsAnImage (type, name, false);
+			atkWithoutImage = CastToAtkInterface <Atk.Image> (accessible);
+			InterfaceImage (type, atkWithImage, atkComponent, atkWithoutImage);
 
 			Console.WriteLine ("</Test>");
 		}

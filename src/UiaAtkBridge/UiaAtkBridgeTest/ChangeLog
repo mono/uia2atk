@@ -1,5 +1,11 @@
 2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs: Merging problems in previous commit. It seems there's an
+	MD bug about not notifying a new version of a file when svn up (or
+	maybe a FileSystemWatcher bug...).
+
+2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs: Be more verbose in order to find out where it crashed.
 
 2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
