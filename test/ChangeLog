@@ -1,3 +1,18 @@
+2008-10-22  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* tools/dashboard/light.xcf: Add xcf (the gimp) file so I don't lose it
+	* tools/dashboard/dashboard.py: Rework the portion that determines
+	which logs are the most recent and need to be parsed.  Add a dictionary
+	(newest_dirs) whose key is a machine name and whose value is a list of 
+	the newest log files for that machine for each control tested.
+	* tools/dashboard/hot_pink.png: Deleted this.  Very funny Stephen ;D
+	* harness/local_run.py: Add a time file that indicates when the test
+	was run (using time.time())
+	* testers/label_smoke_test.py: Create label_smoke_test.py, which is
+	just a copy of label_basic_ops.py at this point.
+	* harness/smoke_tests.py: Replace label_basic_ops.py with
+	label_smoke_test.py
+
 2008-10-22  Ray Wang <rawang@novell.com>
 
 	* samples/gtkmenubar.py: add gtk.MenuBar widget sample

@@ -193,6 +193,7 @@ class Test(object):
     # XXX: change the log files to reference the resources from 
     # a static location so we don't have to copy these every time and
     # waste time/space
+    os.system("echo %s > %s/time" % (time.time(), log_dir))
     os.system("echo %s > %s/status" % (self.status, log_dir))
     os.system("cp -r /tmp/strongwind/* %s" % log_dir)
     os.system("cp -r %s/resources/* %s" % (Settings.uiaqa_home, log_dir))

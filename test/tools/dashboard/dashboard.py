@@ -76,48 +76,114 @@ class PageBuilder(object):
     def __init__(self, log_dir):
         Settings.log_dir = log_dir
         self.xmlp = XMLParser(Settings.log_dir)
-        self.controls = ("Button","CheckBox","CheckedListBox","ComboBox",
-                    "DomainUpDown","ErrorProvider","GroupBox","HelpProvider",
-                    "HScrollBar","Label","LinkLabel","ListBox","ListView",
-                    "MainMenu", "MaskedTextBox","MenuItem","NumericUpDown",
-                    "Panel", "PictureBox","ProgressBar","RadioButton",
-                    "RichTextBox", "ScrollBar","StatusBar","StatusBarPanel",
-                    "StatusStrip", "TextBox","ToolStrip","ToolStripComboBox",
-                    "ToolStripDropDownButton","ToolStripLabel",
-                    "ToolStripMenuItem","ToolStripProgressBar",
-                    "ToolStripSplitButton","ToolStripTextBox","ToolTip",
-                    "VScrollBar","WebBrowser")
+        self.controls = ("Button",
+                         "CheckBox",
+                         "CheckedListBox",
+                         "ComboBox",
+                         "DomainUpDown",
+                         "ErrorProvider",
+                         "Form",
+                         "GroupBox",
+                         "HelpProvider",
+                         "HScrollBar",
+                         "Label",
+                         "LinkLabel",
+                         "ListBox",
+                         "ListView",
+                         "MainMenu",
+                         "MaskedTextBox",
+                         "MenuItem",
+                         "NumericUpDown",
+                         "Panel",
+                         "PictureBox",
+                         "ProgressBar",
+                         "RadioButton",
+                         "RichTextBox",
+                         "ScrollBar",
+                         "StatusBar",
+                         "StatusBarPanel",
+                         "StatusStrip",
+                         "TextBox",
+                         "ToolStrip",
+                         "ToolStripComboBox",
+                         "ToolStripDropDownButton",
+                         "ToolStripLabel",
+                         "ToolStripMenuItem",
+                         "ToolStripProgressBar",
+                         "ToolStripSplitButton",
+                         "ToolStripTextBox",
+                         "ToolTip",
+                         "VScrollBar",
+                         "WebBrowser")
 
         tmp_test_dirs = os.listdir(Settings.log_dir)
         # take out directories that aren't really for tests, like .svn
         self.test_dirs = [s for s in tmp_test_dirs if "_" in s]
         self.controls_tested = [s[:s.find("_")].lower() for s in self.test_dirs]
-        # dashboard_dict's keys are control names and each value is a list
+        # dashboard's keys are control names and each value is a list
         # of the most recent log files for the tests associates with each
         # control
-        self.dashboard_dict = {}
-        self.reports_dict = {}
+        self.dashboard = {}
+        self.newest_dirs = {}
+        self.reports = {}
         for control in self.controls:
             if control.lower() in self.controls_tested:
                 test_names = [dir for dir in self.test_dirs if dir.startswith("%s_" % control.lower())]
                 test_paths = [os.path.join(Settings.log_dir, dir) for dir in test_names]
-                new_dirs = []
+
+                new_to_old_dirs = []
                 for dir in test_paths:
-                    new_dirs.append(self.get_newest_subdir(dir))
+                    self.dashboard[control] = self.get_newest_subdirs(dir)
+                    new_to_old_dirs.append(self.get_new_to_old_subdirs(dir))
                 # done buildling list of the most recent log directorie(s), now
-                # add the list to the dashboard_dict for each control.
-                self.dashboard_dict[control] = new_dirs
+                # add the list to the dashboard for each control.
+                self.reports[control] = new_to_old_dirs
+        #for key in self.reports:
+        #    for path in self.reports[key]:
+        #        print path
+
+    def update_newest_dirs(self, machine, time_path):
+            try:
+                self.newest_dirs[machine].append(time_path)
+            except KeyError:
+                self.newest_dirs[machine] = [time_path]
     
-    def get_newest_subdir(self, dir):
-        '''return a string of the newest subdir of the string dir'''
-        newest_subdir = c.getoutput("ls -tc %s | head -n1" % dir)
-        return os.path.join(dir, newest_subdir)
+    def get_newest_subdirs(self, dir):
+        '''update dashboard with the newest subdirs of the string dir for
+        each unique machine'''
+        machine_dirs = c.getoutput("ls %s" % dir).split()
+        # get a list of each machine in the log directory
+        machines = list(set([m[:m.find("_")] for m in machine_dirs]))
+        # create a list of the time paths for each machine
+        newest_subdirs = []
+        for machine in machines:
+            times = c.getoutput("find %s* -name time" % os.path.join(dir,machine)).split()
+            newest_time = 0
+            for time_path in times:
+                # get the full time path
+                time_path = os.path.join(dir, time_path)
+                f = open(time_path)
+                time = float(f.read())
+                if time > newest_time:
+                    newest_time = time
+                    newest_time_path = time_path
+            # add the parent directory of the time file to the
+            # dashboard
+            time_path = os.path.dirname(newest_time_path)
+            self.update_newest_dirs(machine, time_path)
+            newest_subdirs.append(time_path)
+        return newest_subdirs
 
     def get_new_to_old_subdirs(self, dir):
-        '''return a string of all subdirs of dir sorted from newest to
+        '''return a list of of all subdirs of dir sorted from newest to
         oldest'''
-        newest_subdir = c.getoutput("ls -tc %s" % dir)
-        return os.path.join(dir, newest_subdir)
+        # get the list of all subdirs dir sorted from newest to oldest
+        new_to_old_subdirs = c.getoutput("ls -tc %s" % dir).split()
+        # get the entire path of the directories and store it in the same
+        # variable 
+        for i in range(len(new_to_old_subdirs)):
+            new_to_old_subdirs[i] = os.path.join(dir, new_to_old_subdirs[i])
+        return new_to_old_subdirs
 
     def get_status(self, control):
         '''get the status of the most recent tests for control and return 0
@@ -125,10 +191,10 @@ class PageBuilder(object):
         status_codes = []
 
         # get the list of the most recent log directorie(s) for each control
-        # if the control is not found in dashboard_dict, then the test has
+        # if the control is not found in dashboard, then the test has
         # not been run, so return -1
         try:
-            new_dirs = self.dashboard_dict[control]
+            new_dirs = self.dashboard[control]
         except KeyError:
             return -1
         for dir in new_dirs:
@@ -141,11 +207,11 @@ class PageBuilder(object):
         
     def get_time(self, control):
         # get the list of the most recent log directorie(s) for each control
-        # if the control is not found in dashboard_dict, then the test has
+        # if the control is not found in dashboard, then the test has
         # not been run, so return -1
         new_dirs = []
         try:
-            new_dirs = self.dashboard_dict[control]
+            new_dirs = self.dashboard[control]
         except KeyError:
             return -1
         procedures_logs = [os.path.join(log,"procedures.xml") for log in new_dirs]
