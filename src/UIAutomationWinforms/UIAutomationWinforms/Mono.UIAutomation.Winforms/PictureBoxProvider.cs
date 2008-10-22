@@ -55,6 +55,10 @@ namespace Mono.UIAutomation.Winforms
 		
 		Rect IEmbeddedImage.BoundingRectangle {
 			get {
+				if (control.Image == null)
+					return Rect.Empty;
+				GraphicsUnit unit = GraphicsUnit.Pixel;
+				RectangleF rectF = control.Image.GetBounds (ref unit);
 				if (unit != GraphicsUnit.Pixel)
 					return Rect.Empty;
 				Rect ret = BoundingRectangle;
