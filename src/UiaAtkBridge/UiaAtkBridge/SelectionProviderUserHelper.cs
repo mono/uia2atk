@@ -33,7 +33,6 @@ namespace UiaAtkBridge
 	internal class SelectionProviderUserHelper
 	{
 		private ISelectionProvider					selectionProvider;
-		private IRawElementProviderFragmentRoot		provider;
 		private IRawElementProviderFragment			childrenHolder;
 
 		public SelectionProviderUserHelper (IRawElementProviderFragmentRoot provider,
@@ -47,7 +46,6 @@ namespace UiaAtkBridge
 		                                    IRawElementProviderFragment childrenHolder)
 		{
 			this.selectionProvider = selectionProvider;
-			this.provider = provider;
 			this.childrenHolder = (childrenHolder != null) ? childrenHolder : provider;
 		}
 
@@ -65,7 +63,6 @@ namespace UiaAtkBridge
 
 		public bool AddSelection (int i)
 		{
-			Console.WriteLine ("AddSelection" + i);
 			ISelectionItemProvider childItem;
 			try {
 				childItem = ChildItemAtIndex (i);
@@ -109,7 +106,6 @@ namespace UiaAtkBridge
 
 		public bool IsChildSelected (int i)
 		{
-			Console.WriteLine ("IsChildSelected");
 			ISelectionItemProvider childItem;
 			try {
 				childItem = ChildItemAtIndex (i);
@@ -125,7 +121,6 @@ namespace UiaAtkBridge
 		
 		public Atk.Object RefSelection (int i)
 		{
-			Console.WriteLine ("RefSelection: " + i);
 			IRawElementProviderSimple[] selectedElements = 
 				selectionProvider.GetSelection ();
 			if (selectedElements == null || (i < 0 || i >= selectedElements.Length)) return null; return AutomationBridge.GetAdapterForProviderLazy (selectedElements[i]);
@@ -133,7 +128,6 @@ namespace UiaAtkBridge
 		
 		public bool RemoveSelection (int i)
 		{
-			Console.WriteLine ("RemoveSelection");
 			ISelectionItemProvider childItem;
 			try {
 				childItem = ChildItemAtIndex (i);

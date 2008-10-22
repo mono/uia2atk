@@ -1,3 +1,11 @@
+2008-10-22  Mike Gorse <mgorse@novell.com>
+
+	* Makefile.am, UiaAtkBridge.mdp, ToolBar.cs: Add ToolBar.cs:
+	* AutomationBridge.cs: Support ToolBar.
+	* ListItem.cs, SelectionProviderUserHelper.cs: Fix warnings.
+	* SelectionProviderUserHelper.cs: Remove debug spew.
+	* TableImplementorHelper.cs: Use GetPatternProvider rather then cast.
+
 2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ComboBox.cs:

@@ -71,6 +71,7 @@ FILES =  \
 	TextBoxEntryView.cs \
 	TextImplementorHelper.cs \
 	TextLabel.cs \
+	ToolBar.cs \
 	ToolTip.cs \
 	TopLevelRootItem.cs \
 	Window.cs 

@@ -35,6 +35,7 @@
     <File name="ComponentAdapter.cs" subtype="Code" buildaction="Compile" />
     <File name="ComponentParentAdapter.cs" subtype="Code" buildaction="Compile" />
     <File name="ComboBox.cs" subtype="Code" buildaction="Compile" />
+    <File name="DatGrid.cs" subtype="Code" buildaction="Compile" />
     <File name="ParentMenu.cs" subtype="Code" buildaction="Compile" />
     <File name="MenuItem.cs" subtype="Code" buildaction="Compile" />
     <File name="CheckBoxButton.cs" subtype="Code" buildaction="Compile" />
@@ -44,6 +45,7 @@
     <File name="List.cs" subtype="Code" buildaction="Compile" />
     <File name="ListItem.cs" subtype="Code" buildaction="Compile" />
     <File name="SelectionProviderUserHelper.cs" subtype="Code" buildaction="Compile" />
+    <File name="ToolBar.cs" subtype="Code" buildaction="Compile" />
     <File name="ToolTip.cs" subtype="Code" buildaction="Compile" />
     <File name="AmbiDictionary.cs" subtype="Code" buildaction="Compile" />
     <File name="TextBoxEntryView.cs" subtype="Code" buildaction="Compile" />

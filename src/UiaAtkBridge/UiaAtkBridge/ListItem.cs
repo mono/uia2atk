@@ -279,7 +279,7 @@ namespace UiaAtkBridge
 		{
 			try {
 				toggleProvider.Toggle();
-			} catch (ElementNotEnabledException e) {
+			} catch (ElementNotEnabledException) {
 				// TODO: handle this exception?
 				return false;
 			}

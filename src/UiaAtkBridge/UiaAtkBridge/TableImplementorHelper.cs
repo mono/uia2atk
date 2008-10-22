@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Windows.Automation;
 using System.Collections.Generic;
 
 using System.Windows.Automation.Provider;
@@ -36,10 +37,8 @@ namespace UiaAtkBridge
 		{
 			this.resource = resource;
 			
-			if (resource.Provider is ITableProvider)
-				tableProvider = (ITableProvider)resource.Provider;
-			if (resource.Provider is IGridProvider)
-				gridProvider = (ITableProvider)resource.Provider;
+			tableProvider = (ITableProvider) resource.Provider.GetPatternProvider (TablePatternIdentifiers.Pattern.Id);;
+			gridProvider = (IGridProvider) resource.Provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);;
 		}
 
 		private Adapter							resource;

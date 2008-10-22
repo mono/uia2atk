@@ -398,6 +398,8 @@ namespace UiaAtkBridge
 				HandleNewDocumentOrEditControlType (simpleProvider);
 			else if (controlTypeId == ControlType.Image.Id)
 				HandleNewImageControlType (simpleProvider);
+			else if (controlTypeId == ControlType.ToolBar.Id)
+				HandleNewToolBarControlType (simpleProvider);
 			// TODO: Other providers
 			else
 				Console.WriteLine ("AutomationBridge: Unhandled control: " +
@@ -727,6 +729,18 @@ namespace UiaAtkBridge
 			parentObject.AddOneChild (atkImage);
 			parentObject.AddRelationship (Atk.RelationType.Embeds,
 			                              atkImage);
+		}
+
+		private void HandleNewToolBarControlType (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject = GetParentAdapter (provider);
+			
+			Adapter atkToolBar = new ToolBar (provider);
+			providerAdapterMapping [provider] = atkToolBar;
+			
+			parentObject.AddOneChild (atkToolBar);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkToolBar);
 		}
 #endregion
 	}
