@@ -1,5 +1,10 @@
 2008-10-21  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Initializing internal
+	ListBox provider.
+
+2008-10-21  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Using override.
 
 2008-10-21  Mario Carrion  <mcarrion@novell.com>

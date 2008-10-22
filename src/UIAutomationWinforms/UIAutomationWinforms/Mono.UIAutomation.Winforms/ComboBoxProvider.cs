@@ -178,7 +178,8 @@ namespace Mono.UIAutomation.Winforms
 		public override void InitializeChildControlStructure ()
 		{
 			listboxProvider = new ComboBoxProvider.ComboBoxListBoxProvider (comboboxControl,
-			                                                                this);			
+			                                                                this);
+			listboxProvider.Initialize ();
 			OnNavigationChildAdded (false, listboxProvider);
 			UpdateBehaviors (false);
 		}
