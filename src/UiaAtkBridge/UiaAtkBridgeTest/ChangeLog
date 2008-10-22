@@ -1,5 +1,9 @@
 2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Add dropdownentry backend support for tests.
+
+2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Simplify.
 
 2008-10-21  Andrés G. Aragoneses  <aaragoneses@novell.com>

@@ -118,20 +118,36 @@ namespace UiaAtkBridgeTest
 					                                    ProviderFactory.GetProvider (listBox, true, true));
 				break;
 			}
-			case BasicWidgetType.ComboBoxDropDownList:
-				SWF.ComboBox comboBox = new SWF.ComboBox ();
-				if (real)
-					comboBox = cbDDL;
-				comboBox.Items.Clear();
+			case BasicWidgetType.ComboBoxDropDownEntry:
+				if (!real)
+					throw new NotSupportedException ("ComboBox has no un-real support");
+
+				cbDD.Items.Clear();
 				foreach (string item in names)
-					comboBox.Items.Add (item);
+					cbDD.Items.Add (item);
+
+				if (real)
+					accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
+					                                    ProviderFactory.GetProvider (cbDD, true, true));
+				else
+					accessible = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) 
+					                                        ProviderFactory.GetProvider (cbDD, true, true));
+				break;
+				
+			case BasicWidgetType.ComboBoxDropDownList:
+				if (!real)
+					throw new NotSupportedException ("ComboBox has no un-real support");
+				
+				cbDDL.Items.Clear();
+				foreach (string item in names)
+					cbDDL.Items.Add (item);
 			
 				if (real)
 					accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
-					                                    ProviderFactory.GetProvider (comboBox, true, true));
+					                                    ProviderFactory.GetProvider (cbDD, true, true));
 				else
 					accessible = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) 
-					                                        ProviderFactory.GetProvider (comboBox, true, true));
+					                                        ProviderFactory.GetProvider (cbDD, true, true));
 				break;
 				
 			case BasicWidgetType.ParentMenu:
