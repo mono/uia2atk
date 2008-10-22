@@ -590,6 +590,34 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		#endregion
 
+		#region Pattern Tests
+
+		[Test]
+		public void PatternsTest ()
+		{
+			ListBox listbox = (ListBox) GetControlInstance ();
+			
+
+			IRawElementProviderFragmentRoot rootProvider
+				= (IRawElementProviderFragmentRoot) GetProviderFromControl (listbox);
+
+			Assert.IsNotNull (rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id),
+			                  "Selection Pattern IS supported");
+
+			//Lets add a lot of items to show scrollbar
+			for (int i = 0; i < 30; i++)
+				listbox.Items.Add (string.Format ("dummy {0}", i));
+
+			Assert.IsNotNull (rootProvider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id),
+			                  "Scroll Pattern IS supported");
+			listbox.Items.Clear ();
+			Assert.IsNull (rootProvider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id),
+			               "Scroll Pattern IS NOT supported");
+		}
+
+		#endregion
+		
+
 		#region BaseProviderTest Overrides
 
 		protected override Control GetControlInstance ()

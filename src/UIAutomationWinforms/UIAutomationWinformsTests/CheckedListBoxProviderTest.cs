@@ -145,6 +145,33 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 		#endregion
+
+		#region Pattern Tests
+
+		[Test]
+		public void PatternsTest ()
+		{
+			CheckedListBox checkedListbox = (CheckedListBox) GetControlInstance ();
+			
+
+			IRawElementProviderFragmentRoot rootProvider
+				= (IRawElementProviderFragmentRoot) GetProviderFromControl (checkedListbox);
+
+			Assert.IsNotNull (rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id),
+			                  "Selection Pattern IS supported");
+
+			//Lets add a lot of items to show scrollbar
+			for (int i = 0; i < 30; i++)
+				checkedListbox.Items.Add (string.Format ("dummy {0}", i));
+
+			Assert.IsNotNull (rootProvider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id),
+			                  "Scroll Pattern IS supported");
+			checkedListbox.Items.Clear ();
+			Assert.IsNull (rootProvider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id),
+			               "Scroll Pattern IS NOT supported");
+		}
+
+		#endregion
 		
 		#region BaseProviderTest Overrides
 

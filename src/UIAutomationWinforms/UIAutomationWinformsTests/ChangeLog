@@ -1,3 +1,14 @@
+2008-10-22  Mario Carrion  <mcarrion@novell.com>
+
+	* BaseProviderTest.cs: Removed Assert, is not always valid because of
+	multiple events generation.
+
+	* ListBoxProviderTest.cs:
+	* ComboBoxProviderTest.cs:
+	* CheckedListBoxProviderTest.cs: Test added PatternsTest.
+
+	* ScrollBarProviderTest.cs: Testing Button pattern.
+
 2008-10-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* RadioButtonProviderTest.cs: Add SelectionPatternTest, which tests

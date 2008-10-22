@@ -338,6 +338,44 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
+
+		#region Pattern Tests
+
+		[Test]
+		public void PatternsTest ()
+		{
+			ComboBox combobox = (ComboBox) GetControlInstance ();
+			combobox.Items.Add ("dummy 0");
+
+			IRawElementProviderFragmentRoot rootProvider
+				= (IRawElementProviderFragmentRoot) GetProviderFromControl (combobox);
+
+			combobox.DropDownStyle = ComboBoxStyle.Simple;
+			Assert.IsNotNull (rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id),
+			                  "Simple: Selection Pattern IS supported");
+			Assert.IsNull (rootProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id),
+			               "Simple: ExpandCollapse Pattern IS NOT supported");
+			Assert.IsNotNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
+			                  "Simple: ValuePattern Pattern IS supported");
+
+			combobox.DropDownStyle = ComboBoxStyle.DropDown;
+			Assert.IsNotNull (rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id),
+			                  "DropDown: Selection Pattern IS supported");
+			Assert.IsNotNull (rootProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id),
+			                  "DropDown: ExpandCollapse Pattern IS supported");
+			Assert.IsNotNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
+			                  "DropDown: ValuePattern Pattern IS supported");
+
+			combobox.DropDownStyle = ComboBoxStyle.DropDownList;
+			Assert.IsNotNull (rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id),
+			                  "DropDownList: Selection Pattern IS supported");
+			Assert.IsNotNull (rootProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id),
+			                  "DropDownList: ExpandCollapse Pattern IS supported");
+			Assert.IsNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
+			               "DropDownList: ValuePattern Pattern IS NOT supported");
+		}
+
+		#endregion
 		
 		#region BaseProviderTest Overrides
 

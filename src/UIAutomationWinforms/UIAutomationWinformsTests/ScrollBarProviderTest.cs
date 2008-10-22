@@ -271,9 +271,19 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			//LAMESPEC: This SHOULD BE Assert.IsFalse
 			Assert.IsTrue ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty.Id),
 			               "Should support RangeValue Pattern");
-			
+
 			//Lets test buttons!
-			//IRawElementProviderFragment firstButton = null;
+			IRawElementProviderFragment buttonProvider
+				= scrollBarProvider.Navigate (NavigateDirection.FirstChild);
+			while (buttonProvider != null) {
+				if ((int) buttonProvider .GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.Button.Id)
+					break;
+				buttonProvider = buttonProvider.Navigate (NavigateDirection.NextSibling);
+			}
+
+			Assert.IsNotNull (buttonProvider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id),
+			                  "Invoke Pattern IS supported");
 		}
 		
 		#endregion

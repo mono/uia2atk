@@ -112,10 +112,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsFalse ((bool)provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id),
 			                "Toggle to false");
 
-			Assert.AreEqual (1,
-			                bridge.GetAutomationPropertyEventCount (AutomationElementIdentifiers.IsEnabledProperty),
-			                 "AutomationElementIdentifiers.ElementAddedToSelectionEvent");
-			
 			AutomationPropertyChangedEventTuple tuple 
 				= bridge.GetAutomationPropertyEventFrom (provider,
 				                                         AutomationElementIdentifiers.IsEnabledProperty.Id);
