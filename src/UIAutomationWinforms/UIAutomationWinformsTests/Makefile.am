@@ -70,6 +70,7 @@ FILES =  \
 	PictureBoxProviderTest.cs \
 	ProgressBarProviderTest.cs \
 	RadioButtonProviderTest.cs \
+	RichTextBoxProviderTest.cs \
 	ScrollBarProviderTest.cs \
 	StatusBarProviderTest.cs \
 	TabControlProviderTest.cs \

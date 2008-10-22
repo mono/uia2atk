@@ -1,3 +1,10 @@
+2008-10-22  Brad Taylor  <brad@getcoded.net>
+	
+	* Makefile.am:
+	* TextBoxProviderTest.cs:
+	* RichTextBoxProviderTest.cs: Add tests for RichTextBoxProvider that
+	subclass from TextBoxProviderTest.
+
 2008-10-22  Mario Carrion  <mcarrion@novell.com>
 
 	* BaseProviderTest.cs: Removed Assert, is not always valid because of

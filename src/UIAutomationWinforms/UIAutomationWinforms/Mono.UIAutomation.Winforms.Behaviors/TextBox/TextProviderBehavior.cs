@@ -34,6 +34,8 @@ using SWF = System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 {
+	// NOTE: This class also supports RichTextBox as they share pretty much
+	// everything
 	internal class TextProviderBehavior : ProviderBehavior, ITextProvider
 	{
 		#region Constructor
@@ -62,12 +64,15 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id) {
-				SWF.TextBox textbox = TextBox;
-				return (textbox.UseSystemPasswordChar || (int) textbox.PasswordChar != 0);
+				if (Provider.Control is SWF.TextBox) {
+					SWF.TextBox textbox = TextBox;
+					return (textbox.UseSystemPasswordChar || (int) textbox.PasswordChar != 0);
+				} else if (Provider.Control is SWF.RichTextBox) {
+					return false;
+				}
 			}
 			return base.GetPropertyValue (propertyId);
 		}
-		
 		
 		#endregion
 
@@ -96,13 +101,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 			//TODO: Return null when system cursor is not present, how to?
 
 			return new ITextRangeProvider [] { 
-				new TextRangeProvider (this, (SWF.TextBoxBase) Provider.Control) };
+				new TextRangeProvider (this, TextBoxBase) };
 		}
 		
 		public ITextRangeProvider[] GetVisibleRanges ()
 		{
 			Assembly asm = SwfAssembly;
-			object doc = GetDocumentFromTextBoxBase ((SWF.TextBoxBase)TextBox);
+			object doc = GetDocumentFromTextBoxBase (TextBoxBase);
 
 			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
 			if (document_type == null) {
@@ -116,7 +121,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 
 			int start_line = -1, end_line = -1;
 			object[] args = new object[] {
-				TextBox.Bounds, start_line, end_line
+				TextBoxBase.Bounds, start_line, end_line
 			};
 			mi.Invoke (doc, args);
 			start_line = (int)args[1];
@@ -135,14 +140,19 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 				throw new ArgumentNullException ("childElement");
 			}
 			
-			// TextBox can't have children
-			throw new InvalidOperationException ();
+			if (Provider.Control is SWF.TextBox) {
+				// TextBox can't have children
+				throw new InvalidOperationException ();
+			}
+			
+			// TODO: RichTextBox code path
+			return null;
 		}
 		
 		public ITextRangeProvider RangeFromPoint (Point screenLocation)
 		{
 			Assembly asm = SwfAssembly;
-			object doc = GetDocumentFromTextBoxBase ((SWF.TextBoxBase)TextBox);
+			object doc = GetDocumentFromTextBoxBase (TextBoxBase);
 
 			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
 			if (document_type == null) {
@@ -164,7 +174,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 
 			// Return the degenerate range
 			return (ITextRangeProvider) new TextRangeProvider (
-				this, (SWF.TextBoxBase)TextBox, index, index);
+				this, TextBoxBase, index, index);
 		}
 		
 		#endregion
@@ -179,8 +189,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 			}
 		}
 
+		private SWF.TextBoxBase TextBoxBase {
+			get { return (SWF.TextBoxBase)Provider.Control; }
+		}
+
+		// NOTE: If you use this, you need to check if it returns null,
+		// as this class is reused for RichTextBox
 		private SWF.TextBox TextBox {
-			get { return (SWF.TextBox)Provider.Control; }
+			get { return Provider.Control as SWF.TextBox; }
 		}
 		
 		private Assembly swf_asm = null;

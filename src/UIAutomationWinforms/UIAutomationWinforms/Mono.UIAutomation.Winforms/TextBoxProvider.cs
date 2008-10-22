@@ -115,20 +115,10 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		#endregion
-		
-		#region Private Methods
 
-		private void OnScrollPatternSupportChanged (object o, EventArgs args)
-		{
-			UpdateScrollBehavior ();
-		}
-		
-		private void OnMultilineChanged (object sender, EventArgs args)
-		{
-			UpdateBehaviors ();
-		}
+		#region Protected Methods
 
-		private void UpdateScrollBehavior ()
+		protected void UpdateScrollBehavior ()
 		{
 			if (observer.SupportsScrollPattern
 			    && textboxbase.Multiline) {
@@ -139,7 +129,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		private void UpdateBehaviors ()
+		protected void UpdateBehaviors ()
 		{
 			//Here we are changing from Edit to Document and vice versa.
 			if (textboxbase.Multiline) { //Document Control Type
@@ -155,6 +145,20 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			UpdateScrollBehavior ();
+		}
+
+		#endregion
+		
+		#region Private Methods
+
+		private void OnScrollPatternSupportChanged (object o, EventArgs args)
+		{
+			UpdateScrollBehavior ();
+		}
+		
+		private void OnMultilineChanged (object sender, EventArgs args)
+		{
+			UpdateBehaviors ();
 		}
 		
 		#endregion

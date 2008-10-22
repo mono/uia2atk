@@ -1,3 +1,13 @@
+2008-10-22  Brad Taylor  <brad@getcoded.net>
+	
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs:
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/RichTextBoxProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs:
+	Add RichTextBox.
+
 2008-10-22  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Primitive debugging

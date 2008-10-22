@@ -20,7 +20,6 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Mario Carrion <mcarrion@novell.com>
 //	Brad Taylor <brad@getcoded.net>
 // 
 
@@ -36,15 +35,13 @@ using NUnit.Framework;
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
 	[TestFixture]
-	public class TextBoxProviderTest : BaseProviderTest
+	public class RichTextBoxProviderTest : BaseProviderTest
 	{
-		
-#region Tests
-		
 		[Test]
 		public void EditPropertiesTest ()
 		{
-			TextBox textbox = new TextBox ();
+			RichTextBox textbox = new RichTextBox ();
+			textbox.Multiline = false;
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			TestProperty (provider,
@@ -62,7 +59,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		public void DocumentPropertiesTest ()
 		{
-			TextBox textbox = new TextBox ();
+			RichTextBox textbox = new RichTextBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			textbox.Multiline = true;
 			
@@ -86,7 +83,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void ValuePatternTest ()
 		{
-			TextBox textbox = new TextBox ();
+			RichTextBox textbox = new RichTextBox ();
+			textbox.Multiline = false;
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			object valueProvider = provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
@@ -97,7 +95,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void TextPatternTest () 
 		{
-			TextBox textbox = new TextBox ();
+			RichTextBox textbox = new RichTextBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			ITextProvider textProvider
@@ -128,23 +126,20 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void RangeValuePatternTest () 
 		{
-			TextBox textbox = new TextBox ();
+			RichTextBox textbox = new RichTextBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			object rangeProvider = provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
 			Assert.IsNull (rangeProvider, "Returned RangeValuePatternIdentifiers.");
 		}
 
-#endregion
-		
-#region IValueProvider Tests
-		
 		[Test]
 		public void IsNotIValueProviderTest ()
 		{
-			TextBox textbox = new TextBox ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
+			RichTextBox textbox = new RichTextBox ();
 			textbox.Multiline = true;
+
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			object valueProvider = 
 				provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
@@ -158,7 +153,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void IValueProviderIsReadOnlyTest ()
 		{
-			TextBox textbox = new TextBox ();
+			RichTextBox textbox = new RichTextBox ();
+			textbox.Multiline = false;
+
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			IValueProvider valueProvider = (IValueProvider)
@@ -175,7 +172,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void IValueProviderValueTest ()
 		{
-			TextBox textbox = new TextBox ();
+			RichTextBox textbox = new RichTextBox ();
+			textbox.Multiline = false;
+
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			IValueProvider valueProvider = (IValueProvider)
@@ -193,7 +192,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void IValueProviderSetValueTest ()
 		{
-			TextBox textbox = new TextBox ();
+			RichTextBox textbox = new RichTextBox ();
+			textbox.Multiline = false;
+
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			IValueProvider valueProvider = (IValueProvider)
@@ -212,18 +213,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			} catch (ElementNotEnabledException) { }
 		}
 		
-		
-#endregion
-
-#region IScrollProvider Tests
-		
 		[Test]
 		public void IScrollProviderTest ()
 		{
-			TextBox textbox = new TextBox ();
+			RichTextBox textbox = new RichTextBox ();
 			textbox.Size = new System.Drawing.Size (30, 30);
 			Form.Controls.Add (textbox);
-			textbox.ScrollBars = ScrollBars.Both;
 
 			IRawElementProviderSimple prov
 				= ProviderFactory.GetProvider (textbox);
@@ -286,15 +281,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNull (child, "TextBox has more than one scrollbar");
 		}
 
-#endregion
-		
-#region Events tests
 		
 		[Test]
 		[Ignore ("Current failure needs investigation")]
 		public void TextChangedEventTest ()
 		{
-			TextBox textbox = new TextBox ();
+			RichTextBox textbox = new RichTextBox ();
 
 			bridge.ResetEventLists ();			
 			textbox.Text = "Changed!";
@@ -304,16 +296,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "Event count");
 		}
 		
-#endregion
-		
-#region BaseProviderTest Overrides
-		
 		protected override Control GetControlInstance ()
 		{
-			return new TextBox ();
+			return new RichTextBox ();
 		}
-		
-#endregion
 		
 		// TODO: Move this somewhere else
 		private const string TEST_MESSAGE = "One morning, when Gregor Samsa    woke from troubled dreams, "+

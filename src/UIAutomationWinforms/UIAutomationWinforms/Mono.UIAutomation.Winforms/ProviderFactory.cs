@@ -85,6 +85,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.RadioButton r;
 			SWF.CheckBox c;
 			SWF.TextBox t;
+			SWF.RichTextBox rt;
 			SWF.LinkLabel ll;
 			SWF.NumericUpDown ud;
 			FragmentControlProvider provider = null;
@@ -189,6 +190,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new TabControlProvider (tc);
 			else if ((tp = component as SWF.TabPage) != null)
 				provider = new TabPageProvider (tp);
+			else if ((rt = component as SWF.RichTextBox) != null)
+				provider = new RichTextBoxProvider (rt);
 //			else if ((lv = component as SWF.ListView) != null)
 //				provider = new ListViewProvider (lv);
 			else {

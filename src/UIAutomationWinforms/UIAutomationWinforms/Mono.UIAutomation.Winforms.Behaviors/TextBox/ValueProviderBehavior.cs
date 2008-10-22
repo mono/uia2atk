@@ -31,7 +31,8 @@ using Mono.UIAutomation.Winforms.Events.TextBox;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 {
-
+	// NOTE: This class also supports RichTextBox as they share pretty much
+	// everything
 	internal class ValueProviderBehavior 
 		: ProviderBehavior, IValueProvider
 	{
