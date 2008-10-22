@@ -34,17 +34,18 @@ namespace UiaAtkBridge
 	
 	public class ParentMenu : ComponentParentAdapter, Atk.SelectionImplementor
 	{
-		public ParentMenu (string[] names)
+		public ParentMenu (IRawElementProviderFragment provider)
 		{
 			this.Role = Atk.Role.Menu;
 			this.Name = String.Empty;
-			
-			foreach (string name in names)
-				this.children.Add (new MenuItem (name));
+
+			IRawElementProviderFragment child = provider.Navigate (NavigateDirection.FirstChild);
+			do {
+				children.Add (new MenuItem ((string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id)));
+				child = child.Navigate (NavigateDirection.NextSibling);
+			} while (child != null);
 		}
 		
-
-
 		public override IRawElementProviderSimple Provider {
 			get { return null; }
 		}

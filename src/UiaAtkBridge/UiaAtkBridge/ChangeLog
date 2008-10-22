@@ -1,5 +1,11 @@
 2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ComboBox.cs:
+	* ParentMenu.cs: Refactored: ChildrenItems navigation is ParentMenu's
+	job.
+
+2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Image.cs: Corrected authors.
 
 2008-10-22  Mike Gorse <mgorse@novell.com>

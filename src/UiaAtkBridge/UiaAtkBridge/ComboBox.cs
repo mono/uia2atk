@@ -68,21 +68,6 @@ namespace UiaAtkBridge
 		private IRawElementProviderFragment textboxHolder = null;
 		private IRawElementProviderFragment childrenHolder = null;
 		
-		private string[] ChildrenItems {
-			get {
-				List<string> childrenItems = new List<string> ();
-
-				if (childrenHolder != null) {
-					IRawElementProviderFragment child = ChildrenHolder.Navigate (NavigateDirection.FirstChild);
-					do {
-						childrenItems.Add ((string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id));
-						child = child.Navigate (NavigateDirection.NextSibling);
-					} while (child != null);
-				}
-				return childrenItems.ToArray ();
-			}
-		}
-		
 		private string actionDescription = null;
 		private string actionName = "press";
 		private ISelectionProvider 					selProvider;
@@ -107,7 +92,7 @@ namespace UiaAtkBridge
 			if (valProvider != null)
 				children.Add (new TextBoxEntryView (TextBoxHolder));
 
-			children.Add (new ParentMenu (ChildrenItems));
+			children.Add (new ParentMenu (ChildrenHolder));
 			
 			selectionHelper = new SelectionProviderUserHelper(provider, selProvider, ChildrenHolder);
 		}
