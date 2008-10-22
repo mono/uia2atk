@@ -50,7 +50,7 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
-		
+	
 		#region ListItem: Selection Methods and Properties
 		
 		public abstract int SelectedItemsCount { get; }
@@ -66,6 +66,13 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region ListItem: Collection Methods and Properties
+
+		public IEnumerable<ListItemProvider> Items {
+			get {
+				foreach (ListItemProvider listItem in items.Values)
+					yield return listItem;
+			}
+		}
 		
 		public abstract int ItemsCount { get; }
 
@@ -112,11 +119,11 @@ namespace Mono.UIAutomation.Winforms
 		
 		protected void ClearItemsList ()
 		{
-			foreach (ListItemProvider provider in items.Values)
+			foreach (ListItemProvider provider in Items)
 				provider.Terminate ();
 
 			items.Clear ();
-		}		
+		}
 		
 		#endregion
 		
@@ -190,7 +197,7 @@ namespace Mono.UIAutomation.Winforms
 				Console.WriteLine ("{0}: CollectionChanged not defined", GetType ());
 			}
 
-			foreach (ListItemProvider item in items.Values)
+			foreach (ListItemProvider item in Items)
 				OnNavigationChildRemoved (false, item);
 
 			ClearItemsList ();

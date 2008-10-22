@@ -47,6 +47,7 @@ namespace Mono.UIAutomation.Winforms
 			this.listView = listView;
 
 			lastView = listView.View;
+			showGroups = listView.ShowGroups;
 			groups = new Dictionary<SWF.ListViewGroup, ListViewGroupProvider> ();
 		}
 		
@@ -109,6 +110,17 @@ namespace Mono.UIAutomation.Winforms
 				                        "OnUIALabelEditChanged");
 			} catch (NotSupportedException) {
 				Console.WriteLine ("{0}: UIALabelEditChanged not defined", GetType ());
+			}
+
+			//Event used to verify if groups is enabled
+			try {
+				Helper.AddPrivateEvent (typeof (SWF.ListView),
+				                        listView, 
+				                        "UIAShowGroupsChanged",
+				                        this, 
+				                        "OnUIAShowGroupsChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIAShowGroupsChanged not defined", GetType ());
 			}
 		}
 
@@ -230,6 +242,17 @@ namespace Mono.UIAutomation.Winforms
 			} catch (NotSupportedException) {
 				Console.WriteLine ("{0}: UIALabelEditChanged not defined", GetType ());
 			}
+
+			//Event used to verify if groups is enabled
+			try {
+				Helper.RemovePrivateEvent (typeof (SWF.ListView),
+				                           listView, 
+				                           "UIAShowGroupsChanged",
+				                           this,
+				                           "OnUIAShowGroupsChanged");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIAShowGroupsChanged not defined", GetType ());
+			}
 		}
 		
 		public override void InitializeChildControlStructure ()
@@ -247,7 +270,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 			
 			observer.InitializeScrollBarProviders ();
-			UpdateChildrenStructure ();
+			UpdateChildrenStructure (false);
 		}
 		
 		public override void FinalizeChildControlStructure ()
@@ -391,19 +414,24 @@ namespace Mono.UIAutomation.Winforms
 
 		public bool IsDefaultGroup (SWF.ListViewGroup group)
 		{
-			return listViewNullGroup == group;
+			return GetDefaultGroup () == group;
+		}
+
+		public SWF.ListViewGroup GetDefaultGroup ()
+		{
+			if (listViewNullGroup == null)
+				listViewNullGroup = Helper.GetPrivateProperty<SWF.ListView, SWF.ListViewGroup> (typeof (SWF.ListView),
+				                                                                                listView,
+				                                                                                "UIADefaultListViewGroup");
+
+			return listViewNullGroup;
 		}
 
 		public SWF.ListViewGroup GetGroupFrom (SWF.ListViewItem item)
 		{
-			if (item.Group == null) {
-				if (listViewNullGroup == null)
-						listViewNullGroup = Helper.GetPrivateProperty<SWF.ListView, SWF.ListViewGroup> (typeof (SWF.ListView), 
-						                                                                                listView,
-						                                                                                "UIADefaultListViewGroup");
-
-				return listViewNullGroup;
-			} else
+			if (item.Group == null)
+				return GetDefaultGroup ();
+			else
 				return item.Group;
 		}
 
@@ -414,10 +442,7 @@ namespace Mono.UIAutomation.Winforms
 		private void InitializeProviderFrom (object objectItem, bool raiseEvent)
 		{
 			// Use groups: View.SmallIcon, View.LargeIcon and View.Tile
-			if (listView.View == SWF.View.SmallIcon 
-			    || listView.View == SWF.View.LargeIcon
-			    || listView.View == SWF.View.Tile
-			    || listView.View == SWF.View.Details) { //FIXME: Change this validation
+			if (showGroups == true && listView.View != SWF.View.List) {
 
 				if (listView.View == SWF.View.Details) {
 					if (header == null) {
@@ -444,7 +469,7 @@ namespace Mono.UIAutomation.Winforms
 
 				ListItemProvider item = GetItemProviderFrom (groupProvider, objectItem);
 				groupProvider.AddChildProvider (raiseEvent, item);
-			} else { // When View is SWF.View.List
+			} else {
 				ListItemProvider item = GetItemProviderFrom (this, objectItem);
 				OnNavigationChildAdded (raiseEvent, item);
 			}
@@ -480,30 +505,6 @@ namespace Mono.UIAutomation.Winforms
 				OnNavigationChildRemoved (true, item);
 			}
 		}
-
-// This method is actually used via reflection, so ignore the warning about it
-// not being used
-#pragma warning disable 169
-		private void OnUIAViewChanged (object sender, EventArgs args)
-		{
-			// Behaviors supported no matter the View:
-			// - Selection Behavior: Always supported
-			// - MultipleView Behavior: Always supported
-			// - Scroll Behavior: Set/Unset by ScrollBehaviorObserver.
-
-			// Behaviors supported only by specific View:
-			if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
-				SetBehavior (GridPatternIdentifiers.Pattern,
-				             GetBehaviorRealization (GridPatternIdentifiers.Pattern));
-			else
-				SetBehavior (GridPatternIdentifiers.Pattern,
-				             null);
-			
-			UpdateChildrenStructure ();
-
-			lastView = listView.View;
-		}
-#pragma warning restore 169
 		
 		private void OnScrollPatternSupportChanged (object sender, EventArgs args)
 		{
@@ -519,45 +520,74 @@ namespace Mono.UIAutomation.Winforms
 				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
 		}
 		
-		private void UpdateChildrenStructure ()
+		private void UpdateChildrenStructure (bool forceUpdate)
 		{
 			bool updateView = lastView != listView.View;
 			
-			if (updateView == true) {			
-				foreach (ListViewGroupProvider groupProvider in groups.Values)
+			if (updateView == true || forceUpdate == true) {			
+				foreach (ListViewGroupProvider groupProvider in groups.Values) {
+					OnNavigationChildRemoved (true, groupProvider);
 					groupProvider.Terminate ();
+				}
 				groups.Clear ();
 
 				if (lastView == SWF.View.Details && header != null) {
+					OnNavigationChildRemoved (true, header);
 					header.Terminate ();
 					header = null;
 				}
+
+				foreach (ListItemProvider itemProvider in Items)
+					OnNavigationChildRemoved (true, itemProvider);
 				
 				ClearItemsList ();
-				OnNavigationChildrenCleared (true);
 			}
 			
 			foreach (object objectItem in listView.Items)
-				InitializeProviderFrom (objectItem, updateView);
+				InitializeProviderFrom (objectItem, updateView || forceUpdate);
 		}
 
 #pragma warning disable 169
 		private void OnUIACheckBoxesChanged (object sender, EventArgs args)
 		{
-			foreach (SWF.ListViewItem item in listView.Items) {
-				//FragmentRoot argument doesn't really matter, because the item already exists
-				ListItemProvider provider = GetItemProviderFrom (null, item);
-				provider.UpdateBehavior (TogglePatternIdentifiers.Pattern);
-			}
+			foreach (ListItemProvider itemProvider in Items)
+				itemProvider.UpdateBehavior (TogglePatternIdentifiers.Pattern);
 		}
 
 		private void OnUIALabelEditChanged (object sender, EventArgs args)
 		{
-			foreach (SWF.ListViewItem item in listView.Items) {
-				//FragmentRoot argument doesn't really matter, because the item already exists
-				ListItemProvider provider = GetItemProviderFrom (null, item);
-				provider.UpdateBehavior (ValuePatternIdentifiers.Pattern);
-			}
+			foreach (ListItemProvider itemProvider in Items)
+				itemProvider.UpdateBehavior (ValuePatternIdentifiers.Pattern);
+		}
+
+		private void OnUIAViewChanged (object sender, EventArgs args)
+		{
+			// Behaviors supported no matter the View:
+			// - Selection Behavior: Always supported
+			// - MultipleView Behavior: Always supported
+			// - Scroll Behavior: Set/Unset by ScrollBehaviorObserver.
+
+			// Behaviors supported only by specific View:
+			if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
+				SetBehavior (GridPatternIdentifiers.Pattern,
+				             GetBehaviorRealization (GridPatternIdentifiers.Pattern));
+			else
+				SetBehavior (GridPatternIdentifiers.Pattern,
+				             null);
+			
+			UpdateChildrenStructure (false);
+
+			lastView = listView.View;
+		}
+
+		private void OnUIAShowGroupsChanged (object sender, EventArgs args)
+		{
+			bool oldValue = showGroups;
+			showGroups = listView.ShowGroups;
+			
+			//We will have to regenerate children
+			if (listView.ShowGroups != oldValue && listView.View != SWF.View.List)
+				UpdateChildrenStructure (true);
 		}
 #pragma warning restore 169
 
@@ -571,6 +601,7 @@ namespace Mono.UIAutomation.Winforms
 		private ScrollBehaviorObserver observer;
 		private SWF.ListViewGroup listViewNullGroup;
 		private ListViewHeaderProvider header;
+		private bool showGroups;
 		
 		#endregion
 		
@@ -750,6 +781,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			public ListViewHeaderProvider (SWF.ListView view) : base (null)
 			{
+				Console.WriteLine ("ctr.ListViewHeaderProvider");
 				this.view = view;
 			}
 
@@ -823,7 +855,8 @@ namespace Mono.UIAutomation.Winforms
 			{
 				base.Initialize ();
 
-				//TODO: Implement Invoke Behavior
+				SetBehavior (InvokePatternIdentifiers.Pattern,
+				             new HeaderItemInvokeProvider (this));
 			}
 
 			public override object GetPropertyValue (int propertyId)

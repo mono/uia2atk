@@ -40,7 +40,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			: base (itemProvider)
 		{
 			this.itemProvider = itemProvider;
-			viewProvider = (ListViewProvider) itemProvider.ListProvider;			
+			viewProvider = (ListViewProvider) itemProvider.ListProvider;
+			view = (SWF.ListView) viewProvider.Control;
+
+			//We need to keep a reference to Group because when removed the 
+			//group is set to null and we need to update the values.
+			group = ((SWF.ListViewItem) itemProvider.ObjectItem).Group;
+			if (group == null)
+				group = viewProvider.GetDefaultGroup ();
 		}
 		
 		#endregion
@@ -138,20 +145,17 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			get {
 				SWF.ListViewItem item = (SWF.ListViewItem) itemProvider.ObjectItem;
 
-				if (item.ListView.View == SWF.View.List)
-					return item.ListView.Items.IndexOf (item);
-
-				SWF.ListViewGroup group = viewProvider.GetGroupFrom (item);
+				if (view.View == SWF.View.List || view.ShowGroups == false)
+					return view.Items.IndexOf (item);
 
 				if (viewProvider.IsDefaultGroup (group) == true) {					
-					SWF.ListView listView = (SWF.ListView) viewProvider.Control;
 					int indexOf = 0;
 					bool found = false;					
 					
 					//TODO: Is this OK??
-					for (int index = 0; index < listView.Items.Count; index++) {
-						if (listView.Items [index].Group == null) {
-							if (listView.Items [index] == item) {
+					for (int index = 0; index < view.Items.Count; index++) {
+						if (view.Items [index].Group == null) {
+							if (view.Items [index] == item) {
 								found = true;
 								break;
 							}
@@ -184,7 +188,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		#endregion
 		
 		#region Private Fields
-		
+
+		private SWF.ListViewGroup group;
+		private SWF.ListView view;
 		private ListItemProvider itemProvider;
 		private ListViewProvider viewProvider;
 		

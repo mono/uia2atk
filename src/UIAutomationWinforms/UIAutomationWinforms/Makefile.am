@@ -65,6 +65,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/GroupExpandCollapseProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/GroupGridProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListView/HeaderItemInvokeProvider.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemToggleProviderBehavior.cs \

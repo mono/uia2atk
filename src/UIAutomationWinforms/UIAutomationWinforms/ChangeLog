@@ -1,3 +1,21 @@
+2008-10-22  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: ListView.HeaderItem Invoke provider
+	added.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Event handler added to
+	refresh children when ListView.ShowGroups changes. New Method:
+	GetDefaultGroup. Setting InvokeProvider in ListViewHeader.
+
+	* Mono.UIAutomation.Winforms/ListProvider.cs: New property: Items.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/HeaderItemInvokeProvider.cs:
+	Implements Invoke Provider in ListView.HeaderItem.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs:
+	Fixes NRE when ListView.ShowGroups is false.
+
 2008-10-22  Mike Gorse <<mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/PictureBox.cs: Add IEmbeddedImage.
