@@ -435,10 +435,27 @@ namespace UiaAtkBridgeTest
 			string menuName = "File!";
 			string[] names = new string[] { menuName, "New", "Quit" };
 			accessible = GetAccessible (type, names, true);
-			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
-			
+
 			Assert.AreEqual (menuName, accessible.Name, "name of the menu is the same as its label");
+
+			Assert.AreEqual (names.Length - 1, accessible.NAccessibleChildren, "number of children");
 			
+			for (int i = 0; i < accessible.NAccessibleChildren; i++){
+				Atk.Object menuChild = accessible.RefAccessibleChild (i);
+				Assert.IsNotNull (menuChild, "menu child#0 should not be null");
+				Assert.IsTrue (
+				  ((menuChild.Role == Atk.Role.Menu) ||
+				   (menuChild.Role == Atk.Role.MenuItem) ||
+				   (menuChild.Role == Atk.Role.TearOffMenuItem) ||
+				   (menuChild.Role == Atk.Role.Separator)), "valid roles for a child of a parentMenu");
+				
+				Assert.IsTrue (menuChild.NAccessibleChildren > 0 || (menuChild.Role != Atk.Role.Menu),
+				   "only grandchildren allowed if parent is menu");
+
+				Assert.AreEqual (menuChild.Name, names [i + 1], "name of the menu is the same as its label");
+			}
+			
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
 			
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
@@ -454,19 +471,6 @@ namespace UiaAtkBridgeTest
 			InterfaceAction (type, atkAction, accessible);
 			
 			Assert.IsTrue (accessible.NAccessibleChildren > 0, "number of children in menu");
-			
-			for (int i = 0; i < accessible.NAccessibleChildren; i++){
-				Atk.Object menuChild = accessible.RefAccessibleChild (i);
-				Assert.IsNotNull (menuChild, "menu child#0 should not be null");
-				Assert.IsTrue (
-				  ((menuChild.Role == Atk.Role.Menu) ||
-				   (menuChild.Role == Atk.Role.MenuItem) ||
-				   (menuChild.Role == Atk.Role.TearOffMenuItem) ||
-				   (menuChild.Role == Atk.Role.Separator)), "valid roles for a child of a parentMenu");
-				
-				Assert.IsTrue (menuChild.NAccessibleChildren > 0 || (menuChild.Role != Atk.Role.Menu),
-				   "only grandchildren allowed if parent is menu");
-			}
 
 			Console.WriteLine ("</Test>");
 		}

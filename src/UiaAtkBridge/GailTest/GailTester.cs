@@ -202,11 +202,32 @@ namespace UiaAtkBridgeTest
 				if (!real)
 					throw new NotSupportedException ("No unreal widget access for ParentMenu now");
 				
-				widget = GailTestApp.MainClass.GiveMeARealParentMenu (name [0]);
+				Gtk.MenuBar menubar = GailTestApp.MainClass.GiveMeARealMenuBar ();
 				
 				Gtk.Application.Invoke (delegate {
-					//figure out how to remove old menus and add these ones: names[from 1]
+					string parentMenuName = name [0];
+					
+					while (menubar.Children.Length > 0)
+						menubar.Remove (menubar.Children[0]);
+			
+					Gtk.Menu parentmenuholder = new Gtk.Menu ();
+			
+					for (int j = 1; j < name.Length; j++) {
+						Gtk.MenuItem submenuitem = new Gtk.MenuItem (name [j]);
+						parentmenuholder.Append (submenuitem);
+						submenuitem.Show ();
+					}
+					
+					Gtk.MenuItem parentMenu = new Gtk.MenuItem (parentMenuName);
+					parentMenu.Submenu = parentmenuholder;
+					
+					menubar.Append (parentMenu);
+					parentMenu.Show();
+
+					widget = parentMenu;
 				});
+				System.Threading.Thread.Sleep (1000);
+				
 				break;
 			default:
 				throw new NotSupportedException ("This AtkTester overload doesn't handle this type of widget: " +

@@ -1,5 +1,11 @@
 2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* MainWindow.cs: Remove garbage.
+
+	* Main.cs: Update API.
+
+2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Main.cs: Simplify.
 
 2008-10-22  Mike Gorse  <mgorse@novell.com>

@@ -189,11 +189,11 @@ namespace GailTestApp {
 			return win.GiveMeARealTextView ();
 		}
 		
-		public static Gtk.ImageMenuItem GiveMeARealParentMenu (string name)
+		public static Gtk.MenuBar GiveMeARealMenuBar ()
 		{
 			CheckState ();
 			
-			return win.GiveMeARealParentMenu (name);
+			return win.GiveMeARealMenuBar ();
 		}
 		
 		public static Gtk.Notebook GiveMeARealNotebook ()
