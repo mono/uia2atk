@@ -37,6 +37,8 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void Label ()
 		{
+			Console.WriteLine ("<Test id=\"Label\">");
+			
 			BasicWidgetType type = BasicWidgetType.Label;
 			Atk.Object accessible = InterfaceText (type);
 
@@ -54,11 +56,15 @@ namespace UiaAtkBridgeTest
 			
 			//TODO: check parent (it seems it only works for real objects)
 			//Assert.IsNotNull (accessible.Parent, "Label parent");
+
+			Console.WriteLine ("</Test>");
 		}
 		
 		[Test]
 		public void Button ()
 		{
+			Console.WriteLine ("<Test id=\"Button\">");
+			
 			BasicWidgetType type = BasicWidgetType.NormalButton;
 			Atk.Object accessible;
 
@@ -93,11 +99,15 @@ namespace UiaAtkBridgeTest
 			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
 			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
+
+			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void Checkbox ()
 		{
+			Console.WriteLine ("<Test id=\"Checkbox\">");
+			
 			EventMonitor.Start ();
 
 			BasicWidgetType type = BasicWidgetType.CheckBox;
@@ -140,11 +150,15 @@ namespace UiaAtkBridgeTest
 			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
 			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
+
+			Console.WriteLine ("</Test>");
 		}
 		
 		[Test]
 		public void RadioButtons ()
 		{
+			Console.WriteLine ("<Test id=\"RadioButtons\">");
+			
 			BasicWidgetType type = BasicWidgetType.RadioButton;
 			Atk.Object accessible = null, accessible2 = null, accessible3 = null;
 			string name = "test 01";
@@ -191,12 +205,16 @@ namespace UiaAtkBridgeTest
 			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
 			atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
+
+			Console.WriteLine ("</Test>");
 		}
 		
 		[Test]
 		public void StatusBar () { RunInGuiThread (RealStatusBar); }
 		public void RealStatusBar()
 		{
+			Console.WriteLine ("<Test id=\"StatusBar\">");
+			
 			BasicWidgetType type = BasicWidgetType.StatusBar;
 
 			Atk.Object accessible = InterfaceText (type, true);
@@ -215,11 +233,15 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (width > 0 && height > 0, "width and height must be > 0");
 
 			Parent (type, accessible);
+
+			Console.WriteLine ("</Test>");
 		}
 		
 		[Test]
 		public void HScrollBar ()
 		{
+			Console.WriteLine ("<Test id=\"HScrollBar\">");
+			
 			BasicWidgetType type = BasicWidgetType.HScrollBar;
 			Atk.Object accessible;
 			string name = "test";
@@ -244,11 +266,15 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 
 			InterfaceComponent (type, atkComponent);
+
+			Console.WriteLine ("</Test>");
 		}
 		
 		[Test]
 		public void VScrollBar ()
 		{
+			Console.WriteLine ("<Test id=\"VScrollBar\">");
+			
 			BasicWidgetType type = BasicWidgetType.VScrollBar;
 			Atk.Object accessible;
 			string name = "test";
@@ -273,11 +299,15 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 
 			InterfaceComponent (type, atkComponent);
+
+			Console.WriteLine ("</Test>");
 		}
 		
  		[Test]
 		public void ProgressBar ()
 		{
+			Console.WriteLine ("<Test id=\"ProgressBar\">");
+			
 			BasicWidgetType type = BasicWidgetType.ProgressBar;
 			Atk.Object accessible;
 			string name = "test";
@@ -295,11 +325,15 @@ namespace UiaAtkBridgeTest
 			InterfaceComponent (type, atkComponent);
 
 			Parent (type, accessible);
+
+			Console.WriteLine ("</Test>");
 		}
 		
  		[Test]
 		public void Spinner ()
 		{
+			Console.WriteLine ("<Test id=\"Spinner\">");
+			
 			BasicWidgetType type = BasicWidgetType.Spinner;
 			Atk.Object accessible;
 			string name = "test";
@@ -319,11 +353,15 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			
 			InterfaceComponent (type, atkComponent);
+
+			Console.WriteLine ("</Test>");
 		}
 		
 		[Test]
 		public void TextBoxEntry ()
 		{
+			Console.WriteLine ("<Test id=\"TextBoxEntry\">");
+			
 			BasicWidgetType type = BasicWidgetType.TextBoxEntry;
 			Atk.Object accessible;// = InterfaceText (type, true);
 			
@@ -351,11 +389,15 @@ namespace UiaAtkBridgeTest
 //			PropertyRole (type, accessible);
 //			
 //			Assert.AreEqual (0, accessible.NAccessibleChildren, "TextBoxEntry numChildren");
+
+			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void TextBoxView ()
 		{
+			Console.WriteLine ("<Test id=\"TextBoxView\">");
+			
 			BasicWidgetType type = BasicWidgetType.TextBoxView;
 			Atk.Object accessible;// = InterfaceText (type, false);
 			
@@ -370,6 +412,8 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);
+
+			Console.WriteLine ("</Test>");
 		}
 		
 //		[Test]
@@ -383,6 +427,8 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void ParentMenu () 
 		{
+			Console.WriteLine ("<Test id=\"ParentMenu\">");
+			
 			BasicWidgetType type = BasicWidgetType.ParentMenu;
 			Atk.Object accessible = null;
 			
@@ -421,11 +467,15 @@ namespace UiaAtkBridgeTest
 				Assert.IsTrue (menuChild.NAccessibleChildren > 0 || (menuChild.Role != Atk.Role.Menu),
 				   "only grandchildren allowed if parent is menu");
 			}
+
+			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void ComboBoxDropDownEntry ()
 		{
+			Console.WriteLine ("<Test id=\"ComboBoxDropDownEntry\">");
+			
 			BasicWidgetType type = BasicWidgetType.ComboBoxDropDownEntry;
 			Atk.Object accessible;
 			
@@ -435,6 +485,8 @@ namespace UiaAtkBridgeTest
 			StatesComboBox (accessible);
 
 			Assert.AreEqual (2, accessible.NAccessibleChildren, "numChildren; children roles:" + childrenRoles (accessible));
+
+			Console.WriteLine ("</Test>");
 		}
 		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
@@ -442,6 +494,8 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void ComboBoxDropDownList ()
 		{
+			Console.WriteLine ("<Test id=\"ComboBoxDropDownList\">");
+			
 			BasicWidgetType type = BasicWidgetType.ComboBoxDropDownList;
 			Atk.Object accessible;
 			
@@ -475,14 +529,18 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (menuItemChild.Name, names[0], "ComboBox menuitem names should be the same as the items");
 			
 			Assert.AreEqual (0, menuItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
+
+			Console.WriteLine ("</Test>");
 		}
 		
 		[Test]
 		public void TabControl ()
 		{
+			Console.WriteLine ("<Test id=\"TabControl\">");
+			
 			BasicWidgetType type = BasicWidgetType.TabControl;
 			Atk.Object accessible;
-			string[] names = new string[] { "Page1", "Page2" };
+			string[] names = new string[] { simpleTestText, "Second Item", "Last Item" };
 			
 			accessible = GetAccessible (type, names, true);
 			
@@ -494,51 +552,20 @@ namespace UiaAtkBridgeTest
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			InterfaceSelection (atkSelection, names, accessible, type);
 			
-			Assert.AreEqual (names.Length, accessible.NAccessibleChildren, "TabControl numChildren");
+			Assert.AreEqual (2, accessible.NAccessibleChildren, "TabControl numChildren");
 			BasicWidgetType childType = BasicWidgetType.TabPage;
 			Atk.Object child1 = accessible.RefAccessibleChild (0);
 			PropertyRole (childType, child1);
-			Atk.Text atkText = CastToAtkInterface<Atk.Text> (child1);
-			Assert.AreEqual (5, atkText.CharacterCount, "CharacterCount");
-			Assert.AreEqual ("page1", atkText.GetText (0, 5), "GetText #1");
-			Assert.AreEqual ("page1", atkText.GetText (0, -1), "GetText #2");
-		}
+			InterfaceText (childType, true, child1);
 
-		[Test]
-		public void PictureBox ()
-		{
-			BasicWidgetType type = BasicWidgetType.PictureBox;
-			Atk.Object accessible;
-
-			string name = "test";
-			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
-			
-			States (accessible,
-				Atk.StateType.Enabled,
-				Atk.StateType.Sensitive,
-				Atk.StateType.Showing,
-				Atk.StateType.Visible);
-			
-			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
-			InterfaceComponent (type, atkComponent);
-
-			PropertyRole (type, accessible);
-			
-			Assert.AreEqual (0, accessible.NAccessibleChildren, "Button numChildren");
-
-			Parent (type, accessible);
-
-			Atk.Image atkWithoutImage, atkWithImage;
-			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
-			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
-			accessible = GetAccessibleThatEmbedsAnImage (type, name, false);
-			atkWithoutImage = CastToAtkInterface <Atk.Image> (accessible);
-			InterfaceImage (type, atkWithImage, atkComponent, atkWithoutImage);
+			Console.WriteLine ("</Test>");
 		}
 
 		public void Window () { RunInGuiThread (RealWindow); }
 		public void RealWindow ()
 		{
+			Console.WriteLine ("<Test id=\"Window\">");
+			
 			BasicWidgetType type = BasicWidgetType.Window;
 			Atk.Object accessible;
 			
@@ -558,6 +585,8 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Resizable), "Window Resizable");
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Showing), "Window Showing");
 			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Visible), "Window Visible");
+
+			Console.WriteLine ("</Test>");
 		}
 		
 
