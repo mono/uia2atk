@@ -113,6 +113,13 @@ namespace GailTestApp {
 			
 			return win.GiveMeARealComboBox ();
 		}
+
+		public static Gtk.ComboBox GiveMeARealComboBoxEntry ()
+		{
+			CheckState ();
+			
+			return win.GiveMeARealComboBoxEntry ();
+		}
 		
 		public static Gtk.RadioButton GiveMeARealRadioButton (bool embeddedImage)
 		{

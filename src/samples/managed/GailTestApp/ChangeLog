@@ -1,5 +1,10 @@
 2008-10-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Main.cs:
+	* MainWindow.cs: ComboBoxEntry facilitator.
+
+2008-10-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* gtk-gui/gui.stetic:
 	* gtk-gui/MainWindow.cs: Added a notebook for mgorse.
 

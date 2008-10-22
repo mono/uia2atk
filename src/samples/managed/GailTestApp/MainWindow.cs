@@ -105,6 +105,10 @@ public partial class MainWindow: Gtk.Window
 	internal Gtk.ComboBox GiveMeARealComboBox () {
 		return this.cbxTest;
 	}
+
+	internal Gtk.ComboBox GiveMeARealComboBoxEntry () {
+		return this.cbeTest;
+	}
 	
 	internal Gtk.Entry GiveMeARealEntry () {
 		return this.txtEntry;
