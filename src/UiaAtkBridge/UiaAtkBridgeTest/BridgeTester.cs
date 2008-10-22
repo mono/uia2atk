@@ -447,15 +447,12 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.PictureBox:
 				SWF.PictureBox pbox = new SWF.PictureBox ();
 				if (real)
-					pbox = (embeddedImage? pboxWithImage: pboxWithoutImage);
-				UiaAtkBridge.Image uiaPbox;
+					pbox = (embeddedImage ? pboxWithImage: pboxWithoutImage);
 				if (real)
-#pragma warning disable 618
-					uiaPbox = (UiaAtkBridge.Image) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (pbox, true, true));
-#pragma warning restore 618
+					accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
+					                                    ProviderFactory.GetProvider (pbox, true, true));
 				else
-					uiaPbox = new UiaAtkBridge.Image (ProviderFactory.GetProvider (pbox, true, true));
-				accessible = uiaPbox;
+					accessible = new UiaAtkBridge.Image (ProviderFactory.GetProvider (pbox, true, true));
 				break;
 
 			case BasicWidgetType.ComboBoxDropDownEntry:
