@@ -781,7 +781,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			public ListViewHeaderProvider (SWF.ListView view) : base (null)
 			{
-				Console.WriteLine ("ctr.ListViewHeaderProvider");
 				this.view = view;
 			}
 
@@ -816,8 +815,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				base.InitializeChildControlStructure ();
 
-				Console.WriteLine ("ListViewHeaderProvider.InitializeChildControlStructure");
-
 				foreach (SWF.ColumnHeader header in view.Columns) {
 					ListViewHeaderItemProvider item = new ListViewHeaderItemProvider (this, 
 					                                                                  header);
@@ -847,8 +844,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				this.headerProvider = headerProvider;
 				this.columnHeader = columnHeader;
-
-				Console.WriteLine ("ctr: ListViewHeaderItemProvider");
 			}
 
 			public override void Initialize ()

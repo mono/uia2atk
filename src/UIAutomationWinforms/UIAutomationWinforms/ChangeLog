@@ -1,5 +1,10 @@
 2008-10-22  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Primitive debugging
+	removed.
+
+2008-10-22  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: ListView.HeaderItem Invoke provider
 	added.
