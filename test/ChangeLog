@@ -1,3 +1,6 @@
+2008-10-22  Ray Wang <rawang@novell.com>
+
+	* samples/gtkmenubar.py: add gtk.MenuBar widget sample
 
 2008-10-21  Calen Chen <cachen@novell.com>
 
