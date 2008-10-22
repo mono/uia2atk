@@ -1,5 +1,9 @@
 2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AutomationBridge.cs: Fix NRE in the ComboBoxDropDownList bridge test.
+
+2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ParentMenu.cs:
 	* ParentAdapter.cs: Cosmetic.
 
