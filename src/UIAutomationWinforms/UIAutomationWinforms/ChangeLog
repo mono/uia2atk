@@ -1,5 +1,10 @@
 2008-10-22  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs:
+	AcceleratorKey is implemented in SimpleControlProvider.
+
+2008-10-22  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Fixes NRE when
 	ComboBox.ListBox.ListItem requests NameProperty. (Patch by Sandy
 	Armstrong)

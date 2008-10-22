@@ -77,9 +77,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Button
 
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.AcceleratorKeyProperty.Id)
-				return null; // TODO
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+			if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "button";
 			else
 				return null;
