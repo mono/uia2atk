@@ -88,6 +88,27 @@ namespace GailTestApp {
 			return win.GiveMeARealLabel ();
 		}
 
+		public static Gtk.TreeView GiveMeARealTreeView ()
+		{
+			if (win == null)
+				throw new Exception ("You should have started the app first");
+			
+			return win.GiveMeARealTreeView ();
+		}
+		
+		public static Gtk.Image GiveMeARealImage ()
+		{
+			return GiveMeARealImage (false);
+		}
+		
+		public static Gtk.Image GiveMeARealImage (bool embeddedImage)
+		{
+			if (win == null)
+				throw new Exception ("You should have started the app first");
+			
+			return win.GiveMeARealImage (embeddedImage);
+		}
+		
 		public static Gtk.Button GiveMeARealButton ()
 		{
 			return GiveMeARealButton (false);
@@ -175,6 +196,13 @@ namespace GailTestApp {
 			CheckState ();
 			
 			return win.GiveMeARealParentMenu (name);
+		}
+		
+		public static Gtk.Notebook GiveMeARealNotebook ()
+		{
+			CheckState ();
+			
+			return win.GiveMeARealNotebook ();
 		}
 		
 		public static Gtk.Window GiveMeARealWindow ()

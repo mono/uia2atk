@@ -24,19 +24,25 @@
 // 
 using System;
 using System.ComponentModel;
+using System.Drawing;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Forms;
+using Mono.UIAutomation.Bridge;
 
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal class PictureBoxProvider : PaneProvider
+	internal class PictureBoxProvider : PaneProvider, IEmbeddedImage
 	{
 		
 		#region Constructors
 
+		private PictureBox control;
+
 		public PictureBoxProvider (PictureBox pictureBox) : base (pictureBox)
 		{
+			control = pictureBox;
 		}
 		
 		#endregion
@@ -47,6 +53,18 @@ namespace Mono.UIAutomation.Winforms
 			get { return Control.Parent; }
 		}
 		
+		Rect IEmbeddedImage.BoundingRectangle {
+			get {
+				if (unit != GraphicsUnit.Pixel)
+					return Rect.Empty;
+				Rect ret = BoundingRectangle;
+				ret.X += rectF.X;
+				ret.Y += rectF.Y;
+				ret.Width = rectF.Width;
+				ret.Height = rectF.Height;
+				return ret;
+			}
+		}
 		#endregion
 		
 		#region SimpleControlProvider specialization
@@ -61,7 +79,6 @@ namespace Mono.UIAutomation.Winforms
 			else
 				return base.GetPropertyValue (propertyId);
 		}		
-		
 		#endregion
 	}
 }

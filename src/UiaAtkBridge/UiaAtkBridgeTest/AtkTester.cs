@@ -263,9 +263,8 @@ namespace UiaAtkBridgeTest
 				accessibleName = String.Empty;
 			
 			Assert.AreEqual (accessibleName, accessible.Name, "AtkObj Name");
-			for (int i = 0; i < names.Length; i++) {
-				Assert.IsFalse (implementor.IsChildSelected (i), "isChildSelected(" + i + ")");
-			}
+			for (int i = 0; i < names.Length; i++)
+					Assert.IsFalse (implementor.IsChildSelected (i), "isChildSelected(" + i + ")");
 			Assert.AreEqual (0, implementor.SelectionCount, "SelectionCount == 0");
 			
 			for (int i = 0; i < names.Length; i++) {
@@ -276,12 +275,14 @@ namespace UiaAtkBridgeTest
 					accName = names[0];
 				else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox)
 					accName = String.Empty;
+				else if (type == BasicWidgetType.TabControl)
+					accName = null;
 				Assert.AreEqual (accName, accessible.Name, "AtkObj Name #" + i);
 				
 				Atk.Object refSelObj = implementor.RefSelection (0);
 				if (type != BasicWidgetType.ParentMenu) {
 					Assert.IsNotNull (refSelObj, "refSel should not be null");
-					if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox)
+					if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl)
 						Assert.AreEqual (accessible.Name, refSelObj.Name, "AtkObj NameRefSel#" + i);
 					Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
 					Assert.IsTrue (implementor.IsChildSelected (i), "childSelected(" + i + ")");
@@ -316,7 +317,8 @@ namespace UiaAtkBridgeTest
 
 			if (type == BasicWidgetType.ComboBoxDropDownList || 
 			    type == BasicWidgetType.ListBox || 
-			    type == BasicWidgetType.CheckedListBox) {
+			    type == BasicWidgetType.CheckedListBox ||
+			    type == BasicWidgetType.TabControl) {
 				//strangely, OOR selections return true (valid)
 				Assert.IsTrue (implementor.AddSelection (-1), "AddSelection OOR#1");
 			} else {
@@ -330,13 +332,15 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.RefSelection (-1), "RefSelection OOR#1");
 			Assert.IsNull (implementor.RefSelection (names.Length), "RefSelection OOR#2");
 			
-			Assert.IsTrue (implementor.ClearSelection (), "ClearSelection");
+			if (type != BasicWidgetType.TabControl) {
+				Assert.IsTrue (implementor.ClearSelection (), "ClearSelection");
 			Assert.IsNull (implementor.RefSelection (0), "RefSel after CS");
+			}
 
 			//this is a normal combobox (not multiline) (TODO: research multiline comboboxes?)
 			Assert.IsFalse (implementor.SelectAllSelection ());
 			
-			if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox)
+			if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl)
 				Assert.IsNull (implementor.RefSelection (0), "RefSel after SAS");
 			
 			Assert.IsTrue (names.Length > 0, "Please use a names variable that is not empty");
@@ -344,7 +348,7 @@ namespace UiaAtkBridgeTest
 			if (type != BasicWidgetType.ParentMenu) {
 				Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null after AS0");
 
-				if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox) {
+				if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl) {
 					Assert.IsTrue (implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
 					Assert.IsTrue (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
 				}
@@ -356,7 +360,7 @@ namespace UiaAtkBridgeTest
 				Assert.IsFalse (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
 			}
 
-			if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox) {
+			if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl) {
 				Assert.IsTrue (implementor.RemoveSelection (0), "RemoveSelection");
 				Assert.IsNull (implementor.RefSelection (0), "RefSel after RemoveSel");
 			}
@@ -397,9 +401,11 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (withoutImageImplementor.ImageDescription, "wii.ImageDescription == null initially");
 			string myDesc = "Hola mundo";
 			Assert.IsTrue (implementor.SetImageDescription (myDesc), "Setting the img desc should return success");
-			Assert.IsFalse (withoutImageImplementor.SetImageDescription (myDesc), "Setting the img desc should return false");
+			if (type != BasicWidgetType.PictureBox)
+				Assert.IsFalse (withoutImageImplementor.SetImageDescription (myDesc), "Setting the img desc should return false");
 			Assert.AreEqual (myDesc, implementor.ImageDescription, "The img desc should have been overriden correctly");
-			Assert.IsNull (withoutImageImplementor.ImageDescription, "wii.ImageDescription == null always");
+			if (type != BasicWidgetType.PictureBox)
+				Assert.IsNull (withoutImageImplementor.ImageDescription, "wii.ImageDescription == null always");
 			int ia, ib, ca, cb;
 			implementor.GetImagePosition (out ia, out ib, Atk.CoordType.Screen);
 			component.GetPosition (out ca, out cb, Atk.CoordType.Screen);
@@ -409,8 +415,8 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (ib >= cb, "y of the image must be >= y from the widget; obtained " + ia + "<" + cb);
 
 			withoutImageImplementor.GetImagePosition (out ia, out ib, Atk.CoordType.Screen);
-			Assert.AreEqual (ia, int.MinValue, "x of the image must be int.MinValue; obtained " + ia);
-			Assert.AreEqual (ib, int.MinValue, "y of the image must be int.MinValue; obtained " + ib);
+			Assert.AreEqual (int.MinValue, ia, "x of the image must be int.MinValue; obtained " + ia);
+			Assert.AreEqual (int.MinValue, ib, "y of the image must be int.MinValue; obtained " + ib);
 			
 			implementor.GetImageSize (out ia, out ib);
 			component.GetSize (out ca, out cb);
@@ -420,8 +426,8 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (ib <= cb, "height of the image must be <= height from the widget; obtained " + ib + ">" + cb);
 
 			withoutImageImplementor.GetImageSize (out ia, out ib);
-			Assert.AreEqual (ia, -1, "width of the image must be int.MinValue; obtained " + ia);
-			Assert.AreEqual (ib, -1, "height of the image must be int.MinValue; obtained " + ib);
+			Assert.AreEqual (-1, ia, "width of the image must be int.MinValue; obtained " + ia);
+			Assert.AreEqual (-1, ib, "height of the image must be int.MinValue; obtained " + ib);
 		}
 
 		protected void StatesComboBox (Atk.Object accessible)
@@ -498,6 +504,12 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.GroupBox:
 				role = Atk.Role.Panel;
+				break;
+			case BasicWidgetType.ListView:
+				role = Atk.Role.TreeTable;
+				break;
+			case BasicWidgetType.PictureBox:
+				role = Atk.Role.Icon;
 				break;
 			default:
 				throw new NotImplementedException ();

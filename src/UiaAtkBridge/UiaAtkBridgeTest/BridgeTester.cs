@@ -216,6 +216,8 @@ namespace UiaAtkBridgeTest
 		SWF.NumericUpDown nud1 = new SWF.NumericUpDown();
 		SWF.Form form = new SWF.Form ();
 		SWF.MenuStrip menuStrip1 = new SWF.MenuStrip();
+		SWF.PictureBox pboxWithoutImage = new SWF.PictureBox ();
+		SWF.PictureBox pboxWithImage = new SWF.PictureBox ();
 		SWF.TextBox tbx1 = new SWF.TextBox ();
 		SWF.TextBox tbx2 = new SWF.TextBox ();
 		
@@ -236,6 +238,9 @@ namespace UiaAtkBridgeTest
 			radWithImage.Image = System.Drawing.Image.FromFile (imgPath);
 			radWithImage.AutoSize = true;
 			
+			pboxWithImage.Image = System.Drawing.Image.FromFile (imgPath);
+			pboxWithImage.AutoSize = true;
+
 			cbDDL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			cbDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
 			cbSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
@@ -271,6 +276,8 @@ namespace UiaAtkBridgeTest
 			form.MainMenuStrip = menuStrip1;
 			form.Controls.Add (pb1);
 			form.Controls.Add (nud1);
+			form.Controls.Add (pboxWithoutImage);
+			form.Controls.Add (pboxWithImage);
 			form.Controls.Add (tbx1);
 			form.Controls.Add (tbx2);
 			form.Controls.Add (radWithImage);
@@ -435,6 +442,20 @@ namespace UiaAtkBridgeTest
 					throw new NotSupportedException ("Not unreal support for TextBox");
 
 				accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (tbxView, true, true));
+				break;
+				
+			case BasicWidgetType.PictureBox:
+				SWF.PictureBox pbox = new SWF.PictureBox ();
+				if (real)
+					pbox = (embeddedImage? pboxWithImage: pboxWithoutImage);
+				UiaAtkBridge.Image uiaPbox;
+				if (real)
+#pragma warning disable 618
+					uiaPbox = (UiaAtkBridge.Image) UiaAtkBridge.AutomationBridge.GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (pbox, true, true));
+#pragma warning restore 618
+				else
+					uiaPbox = new UiaAtkBridge.Image (ProviderFactory.GetProvider (pbox, true, true));
+				accessible = uiaPbox;
 				break;
 
 			case BasicWidgetType.ComboBoxDropDownEntry:

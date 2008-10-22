@@ -1,3 +1,7 @@
+2008-10-22  Mike Gorse <<mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/PictureBox.cs: Add IEmbeddedImage.
+
 2008-10-22  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs:

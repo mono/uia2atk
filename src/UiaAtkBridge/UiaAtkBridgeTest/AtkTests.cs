@@ -494,11 +494,43 @@ namespace UiaAtkBridgeTest
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			InterfaceSelection (atkSelection, names, accessible, type);
 			
-			Assert.AreEqual (2, accessible.NAccessibleChildren, "TabControl numChildren");
+			Assert.AreEqual (3, accessible.NAccessibleChildren, "TabControl numChildren");
 			BasicWidgetType childType = BasicWidgetType.TabPage;
 			Atk.Object child1 = accessible.RefAccessibleChild (0);
 			PropertyRole (childType, child1);
 			InterfaceText (childType, true, child1);
+		}
+
+		[Test]
+		public void PictureBox ()
+		{
+			BasicWidgetType type = BasicWidgetType.PictureBox;
+			Atk.Object accessible;
+
+			string name = "test";
+			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
+			
+			States (accessible,
+				Atk.StateType.Enabled,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
+			
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+
+			PropertyRole (type, accessible);
+			
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "Button numChildren");
+
+			Parent (type, accessible);
+
+			Atk.Image atkWithoutImage, atkWithImage;
+			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
+			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+			accessible = GetAccessibleThatEmbedsAnImage (type, name, false);
+			atkWithoutImage = CastToAtkInterface <Atk.Image> (accessible);
+			InterfaceImage (type, atkWithImage, atkComponent, atkWithoutImage);
 		}
 
 		public void Window () { RunInGuiThread (RealWindow); }

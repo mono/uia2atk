@@ -396,6 +396,8 @@ namespace UiaAtkBridge
  				HandleNewHyperlinkControlType (simpleProvider);
 			else if ((controlTypeId == ControlType.Document.Id) || (controlTypeId == ControlType.Edit.Id))
 				HandleNewDocumentOrEditControlType (simpleProvider);
+			else if (controlTypeId == ControlType.Image.Id)
+				HandleNewImageControlType (simpleProvider);
 			// TODO: Other providers
 			else
 				Console.WriteLine ("AutomationBridge: Unhandled control: " +
@@ -713,6 +715,18 @@ namespace UiaAtkBridge
 			parentObject.AddOneChild (atkHyperlink);
 			parentObject.AddRelationship (Atk.RelationType.Embeds,
 			                              atkHyperlink);
+		}
+
+		private void HandleNewImageControlType (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject = GetParentAdapter (provider);
+			
+			Adapter atkImage = new Image (provider);
+			providerAdapterMapping [provider] = atkImage;
+			
+			parentObject.AddOneChild (atkImage);
+			parentObject.AddRelationship (Atk.RelationType.Embeds,
+			                              atkImage);
 		}
 #endregion
 	}

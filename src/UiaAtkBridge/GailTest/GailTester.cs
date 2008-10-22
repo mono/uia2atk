@@ -154,11 +154,49 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.TabControl:
 				widget = new Gtk.Notebook ();
 				// real not implemented yet
-				//if (real)
-					//widget = GailTestApp.MainClass.GiveMeARealNotebook (guiThread);
-				int i = 0;
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealNotebook ();
+				Gtk.Notebook notebook = (Gtk.Notebook)widget;
+				while (notebook.NPages > 0)
+					notebook.RemovePage (0);
 				foreach (string text in name)
-					((Gtk.Notebook)widget).AppendPage (new Gtk.Label (text), new Gtk.Label ("Tab " + i++));
+					((Gtk.Notebook)widget).AppendPage (new Gtk.Label (text), new Gtk.Label (text));
+				widget.ShowAll ();
+				break;
+			case BasicWidgetType.ListView:
+				Gtk.TreeStore store = new Gtk.TreeStore (typeof (string));
+				Gtk.TreeIter[] iters = new Gtk.TreeIter [8];
+				iters[0] = store.AppendNode ();
+				int i = 0;
+				foreach (string text in name) {
+					int j = 0;
+					while (text [j] == '+')
+						j++;
+					// Don't create a new iter for the first level
+					if (j > i)
+						i++;
+					while (j > i) {
+						iters[i] = store.AppendNode (iters [i - 1]);
+					}
+					i = j;
+					if (i > 0)
+						iters[i] = store.AppendNode (iters [i - 1]);
+					else
+						iters[i] = store.AppendNode ();
+					store.SetValue (iters[i], 0, text);
+				}
+				widget = new Gtk.TreeView (store);
+				// real not implemented yet
+				if (real) {
+					widget = GailTestApp.MainClass.GiveMeARealTreeView ();
+					((Gtk.TreeView)widget).Model = store;
+				}
+				Gtk.TreeViewColumn col = new Gtk.TreeViewColumn ();
+				col.Title = "Column 0";
+				((Gtk.TreeView)widget).AppendColumn (col);
+				Gtk.CellRendererText cell = new Gtk.CellRendererText ();
+				col.PackStart (cell, true);
+				col.AddAttribute (cell, "text", 0);
 				break;
 			case BasicWidgetType.ParentMenu:
 				if (!real)
@@ -270,6 +308,11 @@ namespace UiaAtkBridgeTest
 				// real not implemented yet
 				//if (real)
 					//widget = GailTestApp.MainClass.GiveMeARealSpinButton ();
+				break;
+			case BasicWidgetType.PictureBox:
+				widget = new Gtk.Image ();
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealImage (embeddedImage);
 				break;
 			case BasicWidgetType.ComboBoxDropDownEntry:
 			case BasicWidgetType.ComboBoxDropDownList:

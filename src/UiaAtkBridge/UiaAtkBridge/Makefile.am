@@ -53,6 +53,7 @@ FILES =  \
 	ComponentImplementorHelper.cs \
 	ComponentParentAdapter.cs \
 	Hyperlink.cs \
+	Image.cs \
 	List.cs \
 	ListItem.cs \
 	MenuItem.cs \

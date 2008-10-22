@@ -94,6 +94,14 @@ public partial class MainWindow: Gtk.Window
 		return this.lblTest1;
 	}
 	
+	internal Gtk.TreeView GiveMeARealTreeView () {
+		return treeview2;
+	}
+	
+	internal Gtk.Image GiveMeARealImage (bool embeddedImage) {
+		return (embeddedImage ? this.imgTest1 : this.imgTest2);
+	}
+	
 	internal Gtk.Button GiveMeARealButton (bool embeddedImage) {
 		return (embeddedImage ? this.btnWithImg : this.btnTest1);
 	}
@@ -140,6 +148,10 @@ public partial class MainWindow: Gtk.Window
 //		//((Gtk.Menu)ret.Submenu).Children = ((Gtk.Menu)ret.Submenu).Children;
 //		Console.WriteLine ("hey:" + ((Gtk.AccelLabel)mi.Child).Text);
 		return ret;
+	}
+	
+	internal Gtk.Notebook GiveMeARealNotebook () {
+		return this.notebook1;
 	}
 	
 	List <Gtk.RadioButton> radioButtons = new List <Gtk.RadioButton> ();

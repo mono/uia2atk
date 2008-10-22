@@ -1,3 +1,10 @@
+2008-10-22  Mike Gorse  <mgorse@novell.com>
+
+	* AtkTester.cs, AtkTests.cs, BasicWidgetType.cs, BridgeTester.cs:
+	  Add PictureBox.
+	* AtkTester.cs, AtkTests.cs: Fix TabControl test.
+	* bridgetest.sh.in: Add --debug.
+
 2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: Add dropdownentry backend support for tests.
