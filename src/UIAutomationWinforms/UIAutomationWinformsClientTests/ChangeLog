@@ -1,3 +1,8 @@
+2008-10-22  Neville Gao <nevillegao@gmail.com>
+
+	* UIAutomationWinformsClientTests.csproj: Updated for added file.
+	* DomainUpDownTest.cs: File added.
+
 2008-10-16  Mario Carrion <mcarrion@novell.com> 
 
 	* CheckBoxTest.cs: Updated to verify Toggle pattern when enabled and 
