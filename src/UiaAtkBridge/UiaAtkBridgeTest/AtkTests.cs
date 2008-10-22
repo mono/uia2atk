@@ -38,7 +38,6 @@ namespace UiaAtkBridgeTest
 		public void Label ()
 		{
 			Console.WriteLine ("<Test id=\"Label\">");
-			
 			BasicWidgetType type = BasicWidgetType.Label;
 			Atk.Object accessible = InterfaceText (type);
 
@@ -556,7 +555,10 @@ namespace UiaAtkBridgeTest
 			BasicWidgetType childType = BasicWidgetType.TabPage;
 			Atk.Object child1 = accessible.RefAccessibleChild (0);
 			PropertyRole (childType, child1);
-			Atk.Text atkText = CastToAtkInterface<Atk.Text> (child1);
+			Atk.Text atkText = null;
+			RunInGuiThread (delegate () {
+				atkText = CastToAtkInterface<Atk.Text> (child1);
+			});
 			Assert.AreEqual (5, atkText.CharacterCount, "CharacterCount");
 			Assert.AreEqual ("page1", atkText.GetText (0, 5), "GetText #1");
 			Assert.AreEqual ("page1", atkText.GetText (0, -1), "GetText #2");

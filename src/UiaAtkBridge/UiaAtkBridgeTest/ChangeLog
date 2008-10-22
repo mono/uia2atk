@@ -1,3 +1,7 @@
+2008-10-22  Mike Gorse  <mgorse@novell.com>
+
+	* AtkTests.cs: Cast TabControl to AtkText in the gui thread.
+
 2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Merging problems in previous commit. It seems there's an
