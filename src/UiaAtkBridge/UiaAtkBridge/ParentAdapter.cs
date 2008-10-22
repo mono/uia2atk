@@ -45,8 +45,7 @@ namespace UiaAtkBridge
 		
 		protected static object syncRoot = new object ();
 		
-		protected List<Atk.Object> children =
-			new List<Atk.Object> ();
+		protected List<Atk.Object> children = new List<Atk.Object> ();
 		
 		public abstract void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e);
 		
@@ -58,9 +57,8 @@ namespace UiaAtkBridge
 		{
 			if (requestedChildren == false)
 				RequestChildren ();
-			lock (syncRoot) {
+			lock (syncRoot)
 				return children.Count;
-			}
 		}
 		
 		protected override Atk.Object OnRefChild (int i)

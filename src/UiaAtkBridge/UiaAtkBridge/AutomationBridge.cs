@@ -349,8 +349,11 @@ namespace UiaAtkBridge
 			
 			if (!providerAdapterMapping.ContainsKey (parentProvider))
 				HandleElementAddition (parentProvider);
-			
-			return (ParentAdapter)providerAdapterMapping [parentProvider];
+
+			Adapter parent = null;
+			if (!providerAdapterMapping.TryGetValue (parentProvider, out parent))
+				return null;
+			return (ParentAdapter)parent;
 		}
 
 		private void HandleElementAddition (IRawElementProviderSimple simpleProvider)
@@ -507,6 +510,8 @@ namespace UiaAtkBridge
 		private void HandleNewButtonControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
+			if (parentObject is UiaAtkBridge.ComboBox)
+				return; //ComboBox will handle its children additions on its own
 			
 			if ((parentObject == null) || (parentObject.Role == Atk.Role.ScrollBar))
 				return;
@@ -546,6 +551,8 @@ namespace UiaAtkBridge
 		private void HandleNewListControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
+			if (parentObject is UiaAtkBridge.ComboBox)
+				return; //ComboBox will handle its children additions on its own
 			
 			List atkList = new List ((IRawElementProviderFragmentRoot)provider);
 			providerAdapterMapping [provider] = atkList;
@@ -666,6 +673,8 @@ namespace UiaAtkBridge
 		private void HandleNewDocumentOrEditControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
+			if (parentObject is UiaAtkBridge.ComboBox)
+				return; //ComboBox will handle its children additions on its own
 			
 			Adapter atkEditOrDoc = new TextBoxEntryView (provider);
 			

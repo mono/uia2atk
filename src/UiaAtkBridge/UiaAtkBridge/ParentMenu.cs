@@ -56,38 +56,38 @@ namespace UiaAtkBridge
 
 		public int SelectionCount {
 			get {
-				throw new NotImplementedException();
+				throw new NotImplementedException ();
 			}
 		}
 		
 		public bool AddSelection (int i)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
 		public bool ClearSelection ()
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
 		public Atk.Object RefSelection (int i)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
 		public bool IsChildSelected (int i)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
 		public bool RemoveSelection (int i)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
 		public bool SelectAllSelection ()
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 		
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)

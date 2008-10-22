@@ -1,3 +1,11 @@
+2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ParentMenu.cs:
+	* ParentAdapter.cs: Cosmetic.
+
+	* AutomationBridge.cs: Fix children addition to combobox. This makes
+	ComboBoxSimple test pass.
+
 2008-10-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ComboBox.cs: Better not to hide protected fields.
