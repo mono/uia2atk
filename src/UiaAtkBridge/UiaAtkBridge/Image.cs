@@ -20,9 +20,7 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
-//      Andrés G. Aragoneses <aaragoneses@novell.com>
-//      Calvin Gaisford <cgaisford@novell.com>
+//      Mike Gorse <mgorse@novell.com>
 // 
 
 using System;

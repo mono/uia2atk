@@ -1,3 +1,7 @@
+2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Image.cs: Corrected authors.
+
 2008-10-22  Mike Gorse <mgorse@novell.com>
 
 	* Makefile.am, UiaAtkBridge.mdp, AutomationBridge.cs, Image.cs:
