@@ -13,7 +13,7 @@ class RadioButton:
 
     def __init__(self):
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-        self.window.set_title("RadioButton")
+        self.window.set_title("Radio Button")
         self.window.connect("delete_event", self.delete_event)
         self.window.set_border_width(12)
 

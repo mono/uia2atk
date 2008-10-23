@@ -1,3 +1,11 @@
+2008-10-23  Ray Wang <rawang@novell.com>
+
+	* samples/gtkradiobutton.py: just add a space in the title
+	* samples/winradiobutton.py: winforms samples for orca test, layout is 
+	the same as gtkradiobutton.py
+	* keystrokes/radiobutton/radiobutton.py: add gtkradiobutton orca test
+	keystrokes
+
 2008-10-23  Calen Chen <cachen@novell.com>
 
 	* samples/listbox.py: modify the size for listbox to show all listitems
