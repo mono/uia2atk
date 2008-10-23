@@ -71,6 +71,9 @@ namespace UiaAtkBridge
 #endregion
 		
 #region Public Methods
+
+		static object adapterLookup = new object ();
+		static bool alreadyInLookup = false;
 		
 		public static Adapter GetAdapterForProviderLazy (IRawElementProviderSimple provider)
 		{
@@ -85,35 +88,43 @@ namespace UiaAtkBridge
 		
 		private static Adapter GetAdapterForProvider (IRawElementProviderSimple provider, bool avoidLazyLoading)
 		{
-			if (avoidLazyLoading) {
-				Console.WriteLine ("WARNING: obsolete non-lazy-loading GetAdapterForProvider method called.");
-				
-				alreadyRequestedChildren = new List <Atk.Object> ();
-				List <IRawElementProviderSimple> initialProvs = new List<IRawElementProviderSimple> ();
-				
-				foreach (IRawElementProviderSimple providerReady in providerAdapterMapping.Keys) {
-					initialProvs.Add (providerReady);
+			lock (adapterLookup) {
+				if (alreadyInLookup)
+					throw new Exception ("Cannot run nested GetAdapterForProvider lookups");
+				alreadyInLookup = true;
+
+				try {
+					if (avoidLazyLoading) {
+						Console.WriteLine ("WARNING: obsolete non-lazy-loading GetAdapterForProvider method called.");
+						
+						List <Atk.Object> alreadyRequestedChildren = new List <Atk.Object> ();
+						List <IRawElementProviderSimple> initialProvs = new List <IRawElementProviderSimple> ();
+						
+						foreach (IRawElementProviderSimple providerReady in providerAdapterMapping.Keys) {
+							initialProvs.Add (providerReady);
+						}
+						
+						foreach (IRawElementProviderSimple providerReady in initialProvs) {
+							RequestChildren (providerAdapterMapping [providerReady], alreadyRequestedChildren);
+						}
+						alreadyRequestedChildren = null;
+					}
+					
+					Adapter adapter;
+					if (providerAdapterMapping.TryGetValue (provider, out adapter))
+						return adapter;
+					return null;
 				}
-				
-				foreach (IRawElementProviderSimple providerReady in initialProvs) {
-					RequestChildren (providerAdapterMapping [providerReady]);
+				finally {
+					alreadyInLookup = false;
 				}
-				
-				alreadyRequestedChildren = null;
 			}
-			
-			Adapter adapter;
-			if (providerAdapterMapping.TryGetValue (provider, out adapter))
-				return adapter;
-			return null;
 		}
 		
-		private static List <Atk.Object> alreadyRequestedChildren = null;
-		
-		private static void RequestChildren (Atk.Object adapter) {
+		private static void RequestChildren (Atk.Object adapter, List<Atk.Object> alreadyRequestedChildren) {
 			if (alreadyRequestedChildren.Contains (adapter))
 				return;
-			
+
 			int nChildren = adapter.NAccessibleChildren;
 			
 			if (nChildren > 0) {
@@ -122,8 +133,7 @@ namespace UiaAtkBridge
 					
 					if (i == 0)
 						alreadyRequestedChildren.Add (adapter);
-					
-					RequestChildren (adapterN);
+					RequestChildren (adapterN, alreadyRequestedChildren);
 				}
 			}
 			else

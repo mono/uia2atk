@@ -1,3 +1,8 @@
+2008-10-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AutomationBridge.cs: Prevent threading issues, nested lookups and
+	static shared lists instead of local ones.
+
 2008-10-23  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Hyperlink.cs: Catch ElementNotEnabledException, return false.
