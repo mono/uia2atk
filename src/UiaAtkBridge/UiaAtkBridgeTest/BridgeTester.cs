@@ -163,19 +163,10 @@ namespace UiaAtkBridgeTest
 				}
 				
 				parentMenu.DropDownItems.AddRange (subMenus);
-				
-				menuStrip1.Items.AddRange (new SWF.ToolStripItem[] {
-					parentMenu
-				});
-				
+				menuStrip1.Items.AddRange (new SWF.ToolStripItem [] { parentMenu });
+
 				accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
 					                                 ProviderFactory.GetProvider (parentMenu, true, true));
-				
-				//FIXME: change call to ctor to send the provider
-//				UiaAtkBridge.ParentMenu uiaPMenu = new UiaAtkBridge.ParentMenu (submenus);
-//				accessible = uiaPMenu;
-				//FIXME: uncomment this after committing full ParentMenu class
-				//action = uiaPMenu;
 
 				break;
 			default:
@@ -474,6 +465,8 @@ namespace UiaAtkBridgeTest
 
 		private static Atk.Object GetAdapterForProvider (IRawElementProviderSimple provider)
 		{
+			if (provider == null)
+				throw new ArgumentNullException ("provider");
 #pragma warning disable 618
 			object adapter = UiaAtkBridge.AutomationBridge.GetAdapterForProvider (provider);
 #pragma warning restore 618
