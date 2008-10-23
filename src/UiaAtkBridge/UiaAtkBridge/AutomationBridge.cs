@@ -329,6 +329,8 @@ namespace UiaAtkBridge
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
 				HandleBulkRemoved (simpleProvider);
 			}
+			else
+				Console.WriteLine ("StructureChangedEvent not handled:" + e.StructureChangeType.ToString ());
 			
 			// TODO: Other structure changes
 		}
