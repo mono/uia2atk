@@ -28,7 +28,7 @@ class ListBoxSample(Form):
 
         # setup title
         self.Text = "ListBox control"
-        self.Height = 150
+        self.Height = 200
 
         # setup label
         self.label = Label()
@@ -38,7 +38,7 @@ class ListBoxSample(Form):
 
         # setup listbox
         self.listbox = ListBox()
-        self.listbox.Height = 130
+        self.listbox.Height = 150
         self.listbox.Dock = DockStyle.Top
         self.listbox.Click += self.select
         self.listbox.MultiColumn = True
