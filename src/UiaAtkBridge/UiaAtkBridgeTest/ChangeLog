@@ -1,5 +1,10 @@
 2008-10-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs: Comment what doesn't work yet. Remove duplication. Bring
+	the easier tests to the top.
+
+2008-10-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Adjust the menuitem text.
 
 2008-10-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
