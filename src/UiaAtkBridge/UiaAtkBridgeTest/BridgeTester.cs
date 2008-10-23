@@ -40,6 +40,118 @@ namespace UiaAtkBridgeTest
 	[TestFixture]
 	public class BridgeTester : AtkTests {
 
+		SWF.GroupBox gb1 = new SWF.GroupBox ();
+		SWF.GroupBox gb2 = new SWF.GroupBox ();
+		SWF.RadioButton rad1 = new SWF.RadioButton ();
+		SWF.RadioButton rad2 = new SWF.RadioButton ();
+		SWF.RadioButton rad3 = new SWF.RadioButton ();
+		SWF.RadioButton rad4 = new SWF.RadioButton ();
+		SWF.RadioButton radWithImage = new SWF.RadioButton ();
+		List<SWF.RadioButton> radios = new List<SWF.RadioButton> ();
+		int currentRadio = -1;
+		SWF.ListBox lb1 = new SWF.ListBox ();
+		SWF.CheckedListBox clb1 = new SWF.CheckedListBox ();
+		SWF.ComboBox cbDD = new SWF.ComboBox ();
+		SWF.ComboBox cbSim = new SWF.ComboBox ();
+		SWF.ComboBox cbDDL = new SWF.ComboBox ();
+		SWF.Label lab1 = new SWF.Label ();
+		SWF.LinkLabel linklab1 = new SWF.LinkLabel ();
+		SWF.Button butWithoutImage = new SWF.Button ();
+		SWF.Button butWithImage = new SWF.Button ();
+		SWF.CheckBox chkWithoutImage = new SWF.CheckBox ();
+		SWF.CheckBox chkWithImage = new SWF.CheckBox ();
+		SWF.StatusBar sb1 = new SWF.StatusBar ();
+		SWF.ProgressBar pb1 = new SWF.ProgressBar ();
+		SWF.NumericUpDown nud1 = new SWF.NumericUpDown ();
+		SWF.Form form = new SWF.Form ();
+		SWF.MenuStrip menuStrip1 = new SWF.MenuStrip ();
+		SWF.PictureBox pboxWithoutImage = new SWF.PictureBox ();
+		SWF.PictureBox pboxWithImage = new SWF.PictureBox ();
+		SWF.TextBox tbx1 = new SWF.TextBox ();
+		SWF.TextBox tbx2 = new SWF.TextBox ();
+		
+		public BridgeTester () 
+		{
+			//same effect as Application.Run() (the important bit is this causes a call to ApplicationStarts() ):
+			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
+
+			string uiaQaPath = System.IO.Directory.GetCurrentDirectory ();
+			string imgPath = uiaQaPath + "/../../../../../test/samples/opensuse60x38.gif";
+
+			butWithImage.Image = System.Drawing.Image.FromFile (imgPath);
+			butWithImage.AutoSize = true;
+
+			chkWithImage.Image = System.Drawing.Image.FromFile (imgPath);
+			butWithImage.AutoSize = true;
+
+			radWithImage.Image = System.Drawing.Image.FromFile (imgPath);
+			radWithImage.AutoSize = true;
+			
+			pboxWithImage.Image = System.Drawing.Image.FromFile (imgPath);
+			pboxWithImage.AutoSize = true;
+
+			cbDDL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			cbDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
+			cbSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+
+			tbx1.Multiline = false;
+			tbx2.Multiline = true;
+
+			linklab1.Links[0].Visited = true;
+			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com";
+			linklab1.Links.Add(9, 16, "www.opensuse.org");
+			linklab1.Links.Add(35, 16, "gmail.novell.com");
+			linklab1.LinkClicked += LinkLabelClicked;
+			linklab1.Links[0].Enabled = false;
+			gb1.Controls.Add (rad1);
+			gb1.Controls.Add (rad2);
+			gb2.Controls.Add (rad3);
+			gb2.Controls.Add (rad4);
+			form.Controls.Add (gb1);
+			form.Controls.Add (gb2);
+			form.Controls.Add (lb1);
+			form.Controls.Add (clb1);
+			form.Controls.Add (cbDDL);
+			form.Controls.Add (cbDD);
+			form.Controls.Add (cbSim);
+			form.Controls.Add (lab1);
+			form.Controls.Add (linklab1);
+			form.Controls.Add (butWithoutImage);
+			form.Controls.Add (butWithImage);
+			form.Controls.Add (chkWithoutImage);
+			form.Controls.Add (chkWithImage);
+			form.Controls.Add (sb1);
+			form.Controls.Add(menuStrip1);
+			form.MainMenuStrip = menuStrip1;
+			form.Controls.Add (pb1);
+			form.Controls.Add (nud1);
+			form.Controls.Add (pboxWithoutImage);
+			form.Controls.Add (pboxWithImage);
+			form.Controls.Add (tbx1);
+			form.Controls.Add (tbx2);
+			form.Controls.Add (radWithImage);
+			rad1.Text = "rad1";
+			rad2.Text = "rad2";
+			rad3.Text = "rad3";
+			rad4.Text = "rad4";
+			radios.Add (rad1);
+			radios.Add (rad2);
+			radios.Add (rad3);
+			radios.Add (rad4);
+			form.Text = "UiaAtkBridge test";
+			form.Show ();
+		}
+		
+		private SWF.RadioButton GiveMeARadio (string name) {
+			if (currentRadio == 3) {
+				currentRadio = -1;
+			}
+			
+			currentRadio++;
+			radios [currentRadio].Name = name;
+			return radios [currentRadio];
+		}
+		
 		public override void RunInGuiThread (System.Action d)
 		{
 			d ();
@@ -182,120 +294,7 @@ namespace UiaAtkBridgeTest
 		{
 			return GetAccessible (type, name, real, false);
 		}
-
-		SWF.GroupBox gb1 = new SWF.GroupBox ();
-		SWF.GroupBox gb2 = new SWF.GroupBox ();
-		SWF.RadioButton rad1 = new SWF.RadioButton ();
-		SWF.RadioButton rad2 = new SWF.RadioButton ();
-		SWF.RadioButton rad3 = new SWF.RadioButton ();
-		SWF.RadioButton rad4 = new SWF.RadioButton ();
-		SWF.RadioButton radWithImage = new SWF.RadioButton ();
-		List<SWF.RadioButton> radios = new List<SWF.RadioButton> ();
-		int currentRadio = -1;
-		SWF.ListBox lb1 = new SWF.ListBox ();
-		SWF.CheckedListBox clb1 = new SWF.CheckedListBox ();
-		SWF.ComboBox cbDD = new SWF.ComboBox ();
-		SWF.ComboBox cbSim = new SWF.ComboBox ();
-		SWF.ComboBox cbDDL = new SWF.ComboBox ();
-		SWF.Label lab1 = new SWF.Label ();
-		SWF.LinkLabel linklab1 = new SWF.LinkLabel ();
-		SWF.Button butWithoutImage = new SWF.Button ();
-		SWF.Button butWithImage = new SWF.Button ();
-		SWF.CheckBox chkWithoutImage = new SWF.CheckBox ();
-		SWF.CheckBox chkWithImage = new SWF.CheckBox ();
-		SWF.StatusBar sb1 = new SWF.StatusBar ();
-		SWF.ProgressBar pb1 = new SWF.ProgressBar ();
-		SWF.NumericUpDown nud1 = new SWF.NumericUpDown ();
-		SWF.Form form = new SWF.Form ();
-		SWF.MenuStrip menuStrip1 = new SWF.MenuStrip ();
-		SWF.PictureBox pboxWithoutImage = new SWF.PictureBox ();
-		SWF.PictureBox pboxWithImage = new SWF.PictureBox ();
-		SWF.TextBox tbx1 = new SWF.TextBox ();
-		SWF.TextBox tbx2 = new SWF.TextBox ();
 		
-		public BridgeTester () 
-		{
-			//same effect as Application.Run() (the important bit is this causes a call to ApplicationStarts() ):
-			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
-
-			string uiaQaPath = System.IO.Directory.GetCurrentDirectory ();
-			string imgPath = uiaQaPath + "/../../../../../test/samples/opensuse60x38.gif";
-
-			butWithImage.Image = System.Drawing.Image.FromFile (imgPath);
-			butWithImage.AutoSize = true;
-
-			chkWithImage.Image = System.Drawing.Image.FromFile (imgPath);
-			butWithImage.AutoSize = true;
-
-			radWithImage.Image = System.Drawing.Image.FromFile (imgPath);
-			radWithImage.AutoSize = true;
-			
-			pboxWithImage.Image = System.Drawing.Image.FromFile (imgPath);
-			pboxWithImage.AutoSize = true;
-
-			cbDDL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			cbDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
-			cbSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
-
-			tbx1.Multiline = false;
-			tbx2.Multiline = true;
-
-			linklab1.Links[0].Visited = true;
-			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com";
-			linklab1.Links.Add(9, 16, "www.opensuse.org");
-			linklab1.Links.Add(35, 16, "gmail.novell.com");
-			linklab1.LinkClicked += LinkLabelClicked;
-			linklab1.Links[0].Enabled = false;
-			gb1.Controls.Add (rad1);
-			gb1.Controls.Add (rad2);
-			gb2.Controls.Add (rad3);
-			gb2.Controls.Add (rad4);
-			form.Controls.Add (gb1);
-			form.Controls.Add (gb2);
-			form.Controls.Add (lb1);
-			form.Controls.Add (clb1);
-			form.Controls.Add (cbDDL);
-			form.Controls.Add (cbDD);
-			form.Controls.Add (cbSim);
-			form.Controls.Add (lab1);
-			form.Controls.Add (linklab1);
-			form.Controls.Add (butWithoutImage);
-			form.Controls.Add (butWithImage);
-			form.Controls.Add (chkWithoutImage);
-			form.Controls.Add (chkWithImage);
-			form.Controls.Add (sb1);
-			form.Controls.Add(menuStrip1);
-			form.MainMenuStrip = menuStrip1;
-			form.Controls.Add (pb1);
-			form.Controls.Add (nud1);
-			form.Controls.Add (pboxWithoutImage);
-			form.Controls.Add (pboxWithImage);
-			form.Controls.Add (tbx1);
-			form.Controls.Add (tbx2);
-			form.Controls.Add (radWithImage);
-			rad1.Text = "rad1";
-			rad2.Text = "rad2";
-			rad3.Text = "rad3";
-			rad4.Text = "rad4";
-			radios.Add (rad1);
-			radios.Add (rad2);
-			radios.Add (rad3);
-			radios.Add (rad4);
-			form.Text = "UiaAtkBridge test";
-			form.Show ();
-		}
-		
-		private SWF.RadioButton GiveMeARadio (string name) {
-			if (currentRadio == 3) {
-				currentRadio = -1;
-			}
-			
-			currentRadio++;
-			radios [currentRadio].Name = name;
-			return radios [currentRadio];
-		}
-		
-
 		private Atk.Object GetAccessible (BasicWidgetType type, string name, bool real, bool embeddedImage)
 		{
 			Atk.Object accessible = null;

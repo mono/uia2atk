@@ -1,5 +1,9 @@
 2008-10-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Cosmetic: move ctor and fields to the top.
+
+2008-10-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Remove garbage. Add null guarding.
 
 2008-10-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
