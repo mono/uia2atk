@@ -38,12 +38,18 @@ namespace Mono.UIAutomation.Winforms.Behaviors.LinkLabel
 	internal class InvokeProviderBehavior 
 		: ProviderBehavior, IInvokeProvider, IHypertext
 	{
+		#region Private Members
+
+		private SWF.LinkLabel linkLabel;
+
+		#endregion
 		
 		#region Constructor
 		
 		public InvokeProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
+			this.linkLabel = (SWF.LinkLabel) provider.Control;
 		}
 		
 		#endregion
@@ -72,10 +78,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.LinkLabel
 		
 		public void Invoke ()
 		{
-			if (Provider.Control.Enabled == false)
-				throw new ElementNotEnabledException ();
-
-			PerformClick ((SWF.LinkLabel) Provider.Control, 0);
+			Invoke (0);
 		}
 		
 		#endregion
@@ -83,13 +86,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.LinkLabel
 		#region IHypertext Specialization
 		
 		public int NumberOfLinks { 
-			get { return ((SWF.LinkLabel) Provider.Control).Links.Count; }
+			get { return linkLabel.Links.Count; }
 		}
 		
 		public int Start (int index) 
 		{
-			SWF.LinkLabel linkLabel = (SWF.LinkLabel) Provider.Control;
-
 			if (index >= linkLabel.Links.Count || index < 0)
 				return -1;
 			else
@@ -98,8 +99,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.LinkLabel
 		
 		public int Length (int index)
 		{
-			SWF.LinkLabel linkLabel = (SWF.LinkLabel) Provider.Control;
-
 			if (index >= linkLabel.Links.Count || index < 0)
 				return -1;
 			else
@@ -108,36 +107,42 @@ namespace Mono.UIAutomation.Winforms.Behaviors.LinkLabel
 		
 		public string Uri (int index)
 		{
-			SWF.LinkLabel linkLabel = (SWF.LinkLabel) Provider.Control;
-
 			if (index >= linkLabel.Links.Count || index < 0)
 				return null;
 			else
 				return linkLabel.Links [index].LinkData as string;
 		}
 		
+		public bool Enabled (int index)
+		{
+			if (!linkLabel.Enabled || index >= linkLabel.Links.Count || index < 0)
+				return false;
+			else
+				return linkLabel.Links [index].Enabled;
+		}
+		
 		public void Invoke (int index)
 		{
-			if (Provider.Control.Enabled == false)
+			if (!Enabled (index))
 				throw new ElementNotEnabledException ();
 			
-			PerformClick ((SWF.LinkLabel) Provider.Control, index);
+			PerformClick (index);
 		}
 		
 		#endregion
 		
 		#region Private Methods
 		
-		private void PerformClick (SWF.LinkLabel linkLabel, int index)
+		private void PerformClick (int index)
 		{
 			if (index >= linkLabel.Links.Count || index < 0)
 				return;
 
-	        if (linkLabel.InvokeRequired == true) {
-	            linkLabel.BeginInvoke (new PerformClickDelegate (PerformClick),
-				                       new object [] { linkLabel, index });
-	            return;
-	        }
+			if (linkLabel.InvokeRequired) {
+				linkLabel.BeginInvoke (new PerformClickDelegate (PerformClick),
+				                       new object [] { index });
+				return;
+			}
 			
 			MethodInfo methodInfo = typeof (SWF.LinkLabel).GetMethod ("OnLinkClicked",
 			                                                          BindingFlags.InvokeMethod
@@ -154,18 +159,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.LinkLabel
 			invokeMethod (linkLabel, args);
 		}
 		
-		public bool Enabled (int index)
-		{
-			SWF.LinkLabel linkLabel = (SWF.LinkLabel) Provider.Control;
-
-			if (index >= linkLabel.Links.Count || index < 0)
-				return false;
-			else
-				return linkLabel.Links [index].Enabled;
-		}
-		
 		#endregion
 	}
 	
-	delegate void PerformClickDelegate (SWF.LinkLabel linkLabel, int index);
+	delegate void PerformClickDelegate (int index);
 }

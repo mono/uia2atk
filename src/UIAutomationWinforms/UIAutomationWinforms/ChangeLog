@@ -1,3 +1,11 @@
+2008-10-23  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/LinkLabel/InvokeProviderBehavior.cs:
+	When Invoke is called, make sure to check not only that the LinkLabel
+	is Enabled, but that the correct Links[i] is Enabled.  Fixes bug
+	#438301.  Also includes casting elimination, whitespace fixes, and
+	other code clean-up.
+
 2008-10-23  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: FragmentRoot

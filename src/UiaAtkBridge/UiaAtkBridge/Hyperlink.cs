@@ -396,7 +396,11 @@ namespace UiaAtkBridge
 		{
 			if (action != 0)
 				return false;
-			hyperlink.hypertext.Invoke (index);
+			try {
+				hyperlink.hypertext.Invoke (index);
+			} catch (ElementNotEnabledException) {
+				return false;
+			}
 			return true;
 		}
 
