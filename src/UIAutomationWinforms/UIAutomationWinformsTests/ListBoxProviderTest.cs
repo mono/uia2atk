@@ -305,6 +305,13 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsFalse (firstSelected, "First should be false");
 			Assert.IsTrue (secondSelected, "Second should be true");
 			
+
+			// GetSelection should return the second child
+			IRawElementProviderSimple[] selectedItems = selectionProvider.GetSelection ();
+			Assert.IsNotNull (selectedItems, "GetSelection should not return null");
+			Assert.AreEqual (1, selectedItems.GetLength (0), "GetSelection length");
+			Assert.AreEqual (selectedItems[0], secondChild, "SelectedItems should return second child");
+
 			//We can't remove from selection once an element is selected
 			try {
 				selectionItemProvider.RemoveFromSelection ();

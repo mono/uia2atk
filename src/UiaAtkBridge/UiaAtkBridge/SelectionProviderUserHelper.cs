@@ -87,6 +87,8 @@ namespace UiaAtkBridge
 				selectionProvider.GetSelection ();
 			bool result = true;
 				
+			if (selectedElements == null)
+				return true;
 			for (int i=0; i < selectedElements.GetLength(0); i++) {
 				ISelectionItemProvider selectionItemProvider = 
 					(ISelectionItemProvider)selectedElements[i].GetPatternProvider
@@ -152,18 +154,18 @@ namespace UiaAtkBridge
 			if(!selectionProvider.CanSelectMultiple)
 				return false;
 
-			IRawElementProviderSimple[] selectedElements = 
-				selectionProvider.GetSelection ();
-				
-			for(int i=0; i < selectedElements.GetLength(0); i++) {
+			IRawElementProviderFragment child = 
+				childrenHolder.Navigate(NavigateDirection.FirstChild);
+			while (child != null) {
 				ISelectionItemProvider selectionItemProvider = 
-					(ISelectionItemProvider)selectedElements[i].GetPatternProvider
+					(ISelectionItemProvider)child.GetPatternProvider
 						(SelectionItemPatternIdentifiers.Pattern.Id);
 				
 				if(selectionItemProvider != null) {
 					selectionItemProvider.AddToSelection();
 				} else
 					return false;
+				child.Navigate (NavigateDirection.NextSibling);
 			}	
 			return true;
 		}

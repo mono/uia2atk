@@ -1,3 +1,9 @@
+2008-10-23  Mike Gorse <mgorse@novell.com>
+
+	* SelectionProviderUserHelper.cs: Fix NRE when clearing an empty
+	  selection [bug 438024].
+	  Fix SelectAllSelection.
+
 2008-10-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MenuBar.cs: Cosmetic.
