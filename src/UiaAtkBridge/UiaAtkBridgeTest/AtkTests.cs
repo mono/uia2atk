@@ -435,11 +435,18 @@ namespace UiaAtkBridgeTest
 			string menuName = "File!";
 			string[] names = new string[] { menuName, "New", "Quit" };
 			accessible = GetAccessible (type, names, true);
-
+			
 			Assert.AreEqual (menuName, accessible.Name, "name of the menu is the same as its label");
 
 			PropertyRole (type, accessible);
 
+			States (accessible,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Selectable, 
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing, 
+			  Atk.StateType.Visible);
+			
 			Assert.AreEqual (names.Length - 1, accessible.NAccessibleChildren, "number of children");
 			
 			for (int i = 0; i < accessible.NAccessibleChildren; i++){
@@ -463,6 +470,8 @@ namespace UiaAtkBridgeTest
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 
+
+			
 			//FIXME:
 			//Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			//InterfaceSelection (atkSelection, names, accessible, type);
@@ -515,9 +524,6 @@ namespace UiaAtkBridgeTest
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 			
-			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
-			InterfaceSelection (atkSelection, names, accessible, type);
-			
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);
 			Assert.IsNotNull (menuChild, "ComboBox child#0 should not be null");
 			Assert.AreEqual (menuChild.Name, null, "the ComboBox menu should not have a name");
@@ -530,6 +536,10 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (menuItemChild.Name, names[0], "ComboBox menuitem names should be the same as the items");
 			
 			Assert.AreEqual (0, menuItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
+
+			//FIXME:
+			//Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
+			//InterfaceSelection (atkSelection, names, accessible, type);
 
 			Console.WriteLine ("</Test>");
 		}

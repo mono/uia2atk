@@ -220,9 +220,9 @@ namespace UiaAtkBridgeTest
 					
 					Gtk.MenuItem parentMenu = new Gtk.MenuItem (parentMenuName);
 					parentMenu.Submenu = parentmenuholder;
-					
+
 					menubar.Append (parentMenu);
-					parentMenu.Show();
+					menubar.ShowAll ();
 
 					widget = parentMenu;
 				});

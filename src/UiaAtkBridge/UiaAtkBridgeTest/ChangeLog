@@ -1,5 +1,9 @@
 2008-10-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs: Add state testing and comment what doesn't work yet.
+
+2008-10-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs: Comment what doesn't work yet. Remove duplication. Bring
 	the easier tests to the top.
 
