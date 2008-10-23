@@ -1,3 +1,9 @@
+2008-10-23  Neville Gao <nevillegao@gmail.com>
+
+	* UIAutomationWinformsTests.mdp, Makefile.am: Updated files added.
+	* DomainUpDownProviderTest.cs: File added.
+	* ProgressBarProviderTest.cs: File formatted.
+
 2008-10-22  Brad Taylor  <brad@getcoded.net>
 	
 	* Makefile.am:

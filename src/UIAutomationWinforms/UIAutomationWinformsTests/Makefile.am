@@ -58,6 +58,7 @@ FILES =  \
 	CheckBoxProviderTest.cs \
 	CheckedListBoxProviderTest.cs \
 	ComboBoxProviderTest.cs \
+	DomainUpDownProviderTest.cs \
 	ErrorProviderTest.cs \
 	GroupBoxProviderTest.cs \
 	HelpProviderTest.cs \
