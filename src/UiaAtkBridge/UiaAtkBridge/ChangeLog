@@ -1,5 +1,18 @@
 2008-10-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* MenuBar.cs: Cosmetic.
+
+	* ParentMenu.cs:
+	* ChildMenuItem.cs: Make Name tests pass.
+
+	* Makefile.am: Replaced by ChildMenuItem (can't have children).
+
+	* MenuItem.cs:
+	* UiaAtkBridge.mdp: MenuItem replaced by ChildMenuItem (can't have
+	children).
+
+2008-10-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AutomationBridge.cs: Prevent threading issues, nested lookups and
 	static shared lists instead of local ones.
 

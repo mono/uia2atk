@@ -30,13 +30,11 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	
-	
 	public class MenuBar : ComponentParentAdapter
 	{
 		public MenuBar (IRawElementProviderSimple provider)
 		{
-			this.Role = Atk.Role.MenuBar;
+			Role = Atk.Role.MenuBar;
 		}
 
 		public override IRawElementProviderSimple Provider {

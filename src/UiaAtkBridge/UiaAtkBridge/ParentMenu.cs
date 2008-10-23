@@ -42,9 +42,9 @@ namespace UiaAtkBridge
 			if ((provider as IRawElementProviderFragment) == null)
 				throw new ArgumentException ("Provider for ParentMenu should be IRawElementProviderFragment");
 			
-			this.Role = Atk.Role.Menu;
-			this.Name = String.Empty;
-
+			Role = Atk.Role.Menu;
+			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			
 			IRawElementProviderFragment child = (IRawElementProviderFragment)provider;
 			child = child.Navigate (NavigateDirection.FirstChild);
 			if ((child == null) &&
@@ -53,7 +53,7 @@ namespace UiaAtkBridge
 				throw new ArgumentException ("Provider for ParentMenu should have children if not ComboBox");
 			
 			while (child != null) {
-				children.Add (new MenuItem ((string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id)));
+				children.Add (new ChildMenuItem (child));
 				child = child.Navigate (NavigateDirection.NextSibling);
 			} 
 		}

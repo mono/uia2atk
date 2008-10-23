@@ -35,7 +35,8 @@ namespace UiaAtkBridge
 	{
 		public ChildMenuItem (IRawElementProviderSimple provider)
 		{
-			this.Role = Atk.Role.MenuItem;
+			Role = Atk.Role.MenuItem;
+			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 		}
 
 		public override IRawElementProviderSimple Provider {

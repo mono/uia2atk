@@ -58,7 +58,6 @@ FILES =  \
 	List.cs \
 	ListItem.cs \
 	MenuBar.cs \
-	MenuItem.cs \
 	Monitor.cs \
 	Pane.cs \
 	ParentAdapter.cs \
