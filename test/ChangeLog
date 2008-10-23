@@ -1,3 +1,12 @@
+2008-10-23  Calen Chen <cachen@novell.com>
+
+	* samples/linklabel.py: update this sample to add mult-link, 
+	single-link and unenable-link
+	* testers/linklabel_basic_ops.py,
+	* testers/linklabel/linklabelframe.py,
+	* testers/linklabel/__init__.py,
+	* testers/linklabel: add test for linklabel control
+
 2008-10-23  Ray Wang <rawang@novell.com>
 
 	* samples/gtkradiobutton.py: just add a space in the title
