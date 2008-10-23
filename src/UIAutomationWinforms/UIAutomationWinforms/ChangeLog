@@ -1,3 +1,9 @@
+2008-10-23  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Not compiling ListView-related
+	classes.
+
 2008-10-23  Mike Gorse <<mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Fix GetSelection

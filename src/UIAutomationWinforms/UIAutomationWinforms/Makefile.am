@@ -62,18 +62,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/ScrollItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListView/GroupExpandCollapseProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListView/GroupGridProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListView/HeaderItemInvokeProvider.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemSelectionItemProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemToggleProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemValueProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListView/MultipleViewProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListView/SelectionProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/ListView/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionItemProviderBehavior.cs \
@@ -128,28 +116,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternCanSelectMultipleEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternSelectionEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/GridPatternColumnEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/GridPatternRowEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternColumnEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternRowEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternColumnEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternRowEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementAddedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementRemovedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementSelectedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternIsSelectedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ListItemTogglePatternToggleStateEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternIsReadOnlyEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternValueEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontallyScrollableEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalScrollPercentEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalViewSizeEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticallyScrollableEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalScrollPercent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalViewSizeEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternCanSelectMultipleEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternInvalidatedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \
@@ -200,7 +166,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ListBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ListItemProvider.cs \
 	Mono.UIAutomation.Winforms/ListProvider.cs \
-	Mono.UIAutomation.Winforms/ListViewProvider.cs \
 	Mono.UIAutomation.Winforms/MenuStripProvider.cs \
 	Mono.UIAutomation.Winforms/PaneProvider.cs \
 	Mono.UIAutomation.Winforms/PictureBoxProvider.cs \
