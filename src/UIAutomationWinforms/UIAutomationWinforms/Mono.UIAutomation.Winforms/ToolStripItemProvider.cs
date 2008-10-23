@@ -43,6 +43,12 @@ namespace Mono.UIAutomation.Winforms
 			this.item = item;
 		}
 
+		public override IRawElementProviderFragmentRoot FragmentRoot {		
+			get {
+				return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (item.Owner);
+			}
+		}
+
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
