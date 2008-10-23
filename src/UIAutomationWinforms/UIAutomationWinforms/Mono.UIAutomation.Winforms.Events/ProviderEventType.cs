@@ -87,6 +87,10 @@ namespace Mono.UIAutomation.Winforms.Events
 		ScrollPatternHorizontalScrollPercentProperty,
 		ScrollPatternVerticalScrollPercentProperty,		
 		ScrollPatternVerticallyScrollableProperty,
-		ScrollPatternHorizontallyScrollableProperty
+		ScrollPatternHorizontallyScrollableProperty,
+		//Table Pattern
+		TablePatternColumnHeadersProperty,
+		TablePatternRowHeadersProperty,
+		TablePatternRowOrColumnMajorProperty
 	}
 }

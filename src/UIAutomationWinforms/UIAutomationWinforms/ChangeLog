@@ -1,3 +1,21 @@
+2008-10-23  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: ListView.TableProvider Behavior added.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Helper references
+	removed. TablePattern support. New internal classes:
+	ListViewListItemProvider, ListViewListItemEditProvider
+
+	* Mono.UIAutomation.Winforms/ListProvider.cs: New virtual method:
+	GetNewItemProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/TableProviderBehavior.cs:
+	ListView.TableProvider behavior implementation.
+
+	* Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: TablePattern
+	Event types added.
+
 2008-10-23  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ToolStripProvider.cs:

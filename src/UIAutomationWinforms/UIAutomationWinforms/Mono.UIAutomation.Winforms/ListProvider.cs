@@ -84,10 +84,10 @@ namespace Mono.UIAutomation.Winforms
 			ListItemProvider item = null;
 			
 			if (items.TryGetValue (objectItem, out item) == false) {
-				item = new ListItemProvider (rootProvider,
-				                             GetItemsListProvider (),
-				                             Control,
-				                             objectItem);
+				item = GetNewItemProvider (rootProvider,
+				                           GetItemsListProvider (),
+				                           Control,
+				                           objectItem);
 				items [objectItem] = item;
 				item.Initialize ();
 			}
@@ -123,6 +123,17 @@ namespace Mono.UIAutomation.Winforms
 				provider.Terminate ();
 
 			items.Clear ();
+		}
+
+		protected virtual ListItemProvider GetNewItemProvider (FragmentRootControlProvider rootProvider,
+		                                                       ListProvider provider,
+		                                                       Control control,
+		                                                       object objectItem)
+		{
+			return new ListItemProvider (rootProvider,
+			                             provider, 
+			                             control,
+			                             objectItem);
 		}
 		
 		#endregion
