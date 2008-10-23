@@ -363,7 +363,7 @@ namespace UiaAtkBridgeTest
 			Console.WriteLine ("<Test id=\"TextBoxEntry\">");
 			
 			BasicWidgetType type = BasicWidgetType.TextBoxEntry;
-			Atk.Object accessible;// = InterfaceText (type, true);
+			Atk.Object accessible = InterfaceText (type, true);
 			
 			string name = "Edit test#1";
 			accessible = GetAccessible (type, name, true);

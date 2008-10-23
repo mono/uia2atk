@@ -564,40 +564,46 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (name.Length, atkText.CharacterCount, "CharacterCount SL");
 			Assert.AreEqual (name [0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset SL");
 			Assert.AreEqual (name, atkText.GetText (0, name.Length), "GetText SL");
-			
+
+			int highCaretOffset = 15;
 			//any value (beware, this may change when this is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=556453 )
 			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (-1), "SetCaretOffset#1 SL");
 			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (0), "SetCaretOffset#2 SL");
 			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (1), "SetCaretOffset#3 SL");
-			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (15), "SetCaretOffset#4 SL");
+			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (highCaretOffset), "SetCaretOffset#4 SL");
 			
 			// don't do this until bug#393565 is fixed:
 			//Assert.AreEqual (typeof(Atk.TextAttribute), atkText.DefaultAttributes[0].GetType());
 
 			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#1 SL");
+
+			int caretOffset = 0;
+			if (!Misc.HasReadOnlyText (type))
+				caretOffset = highCaretOffset;
 			
 			// you cannot select a label AFAIK so, all zeroes returned!
 			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#1 SL");
-			Assert.AreEqual (0, startOffset, "GetSelection#2 SL");
-			Assert.AreEqual (0, endOffset, "GetSelection#3 SL");
+			Assert.AreEqual (caretOffset, startOffset, "GetSelection#2 SL");
+			Assert.AreEqual (caretOffset, endOffset, "GetSelection#3 SL");
 			Assert.AreEqual (null, atkText.GetSelection (1, out startOffset, out endOffset), "GetSelection#4 SL");
-			Assert.AreEqual (0, startOffset, "GetSelection#5 SL");
-			Assert.AreEqual (0, endOffset, "GetSelection#6 SL");
+			Assert.AreEqual (caretOffset, startOffset, "GetSelection#5 SL");
+			Assert.AreEqual (caretOffset, endOffset, "GetSelection#6 SL");
+			//yes, it's wierd that we get valid offsets when calling with an OOR int, blame gail! I'm lazy to file a bug
 			Assert.AreEqual (null, atkText.GetSelection (-1, out startOffset, out endOffset), "GetSelection#7 SL");
-			Assert.AreEqual (0, startOffset, "GetSelection#8 SL");
-			Assert.AreEqual (0, endOffset, "GetSelection#9 SL");
+			Assert.AreEqual (caretOffset, startOffset, "GetSelection#8 SL");
+			Assert.AreEqual (caretOffset, endOffset, "GetSelection#9 SL");
 			
 			// you cannot select a label AFAIK so, false always returned!
 			Assert.AreEqual (false, atkText.SetSelection (0, 1, 2), "SetSelection#1 SL");
 			// test GetSelection *after* SetSelection
 			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#10 SL");
-			Assert.AreEqual (0, startOffset, "GetSelection#11 SL");
-			Assert.AreEqual (0, endOffset, "GetSelection#12 SL");
+			Assert.AreEqual (caretOffset, startOffset, "GetSelection#11 SL");
+			Assert.AreEqual (caretOffset, endOffset, "GetSelection#12 SL");
 			//test crazy numbers for SetSelection
 			Assert.AreEqual (false, atkText.SetSelection (-3, 10, -2), "SetSelection#2 SL");
 			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#13 SL");
-			Assert.AreEqual (0, startOffset, "GetSelection#14 SL");
-			Assert.AreEqual (0, endOffset, "GetSelection#15 SL");
+			Assert.AreEqual (caretOffset, startOffset, "GetSelection#14 SL");
+			Assert.AreEqual (caretOffset, endOffset, "GetSelection#15 SL");
 			
 			//did NSelections changed?
 			Assert.AreEqual (false, atkText.SetSelection (1, 2, 3), "SetSelection#3 SL");
@@ -621,27 +627,34 @@ namespace UiaAtkBridgeTest
 				"GetTextAtOffset,WordEnd SL");
 			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,WordEnd,so SL");
 			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,WordEnd,eo SL");
+
+			int startCaretOffset = highCaretOffset;
+			int endCaretOffset = highCaretOffset;
+			if (Misc.HasReadOnlyText (type)) {
+				startCaretOffset = name.IndexOf (expected);
+				endCaretOffset = name.IndexOf (expected) + expected.Length;
+			}
 			
 			//test selections after obtaining text with a different API than GetText
 			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#6 SL");
 			//NSelections == 0, however we have one selection, WTF?:
 			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#16 SL");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#17 SL");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#18 SL");
+			Assert.AreEqual (startCaretOffset, startOffset, "GetSelection#17 SL");
+			Assert.AreEqual (endCaretOffset, endOffset, "GetSelection#18 SL");
 			Assert.AreEqual (null, atkText.GetSelection (1, out startOffset, out endOffset), "GetSelection#19 SL");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#20 SL");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#21 SL");
+			Assert.AreEqual (startCaretOffset, startOffset, "GetSelection#20 SL");
+			Assert.AreEqual (endCaretOffset, endOffset, "GetSelection#21 SL");
 			Assert.AreEqual (null, atkText.GetSelection (30, out startOffset, out endOffset), "GetSelection#22 SL");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#23 SL");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#24 SL");
+			Assert.AreEqual (startCaretOffset, startOffset, "GetSelection#23 SL");
+			Assert.AreEqual (endCaretOffset, endOffset, "GetSelection#24 SL");
 			Assert.AreEqual (null, atkText.GetSelection (-1, out startOffset, out endOffset), "GetSelection#25 SL");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#26 SL");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#27 SL");
+			Assert.AreEqual (startCaretOffset, startOffset, "GetSelection#26 SL");
+			Assert.AreEqual (endCaretOffset, endOffset, "GetSelection#27 SL");
 			
 			Assert.AreEqual (false, atkText.SetSelection (0, 0, 0), "SetSelection#3 SL");
 			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#28 SL");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetSelection#29 SL");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetSelection#30 SL");
+			Assert.AreEqual (startCaretOffset, startCaretOffset, "GetSelection#29 SL");
+			Assert.AreEqual (endCaretOffset, endOffset, "GetSelection#30 SL");
 			
 			
 			expected = "test ";

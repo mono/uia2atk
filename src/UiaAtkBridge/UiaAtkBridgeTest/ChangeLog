@@ -1,3 +1,8 @@
+2008-10-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs: Gtk.Entry (textbox) now passes AtkTests.
+
 2008-10-23  Mike Gorse  <mgorse@novell.com>
 
 	* AtkTester.cs: Test ClearSelection() at the start of
