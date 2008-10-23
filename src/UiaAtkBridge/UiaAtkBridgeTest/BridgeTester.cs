@@ -456,6 +456,9 @@ namespace UiaAtkBridgeTest
 					accessible = new UiaAtkBridge.Image (ProviderFactory.GetProvider (pbox, true, true));
 				break;
 
+			case BasicWidgetType.ListBox:
+			case BasicWidgetType.CheckedListBox:
+			case BasicWidgetType.ParentMenu:
 			case BasicWidgetType.ComboBoxDropDownEntry:
 			case BasicWidgetType.ComboBoxDropDownList:
 			case BasicWidgetType.ComboBoxSimple:
