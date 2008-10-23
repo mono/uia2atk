@@ -73,14 +73,16 @@ class CheckBoxApp(Form):
         self.check5.Location = Point(10, 120)
         self.check5.Width = 130
         self.check5.Enabled = True
-	self.check5.Image = Image.FromFile("%s/samples/opensuse60x38.gif" % uiaqa_path)
+        self.check5.Image = Image.FromFile("%s/samples/opensuse60x38.gif" % uiaqa_path)
+        self.check5.AutoSize = True
 
         self.check6 = CheckBox()
         self.check6.Text = "Soylent Green"
         self.check6.Location = Point(150, 120)
         self.check6.Width = 130
         self.check6.Enabled = True
-	self.check6.BackgroundImage = Image.FromFile("%s/samples/tiny_background.png" % uiaqa_path)
+        self.check6.BackgroundImage = Image.FromFile("%s/samples/tiny_background.png" % uiaqa_path)
+        self.check6.AutoSize = True
 
 
 

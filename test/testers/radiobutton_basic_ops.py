@@ -47,6 +47,7 @@ rbFrame = app.radioButtonFrame
 actionsCheck(rbFrame.button1, "RadioButton")
 actionsCheck(rbFrame.button2, "RadioButton")
 actionsCheck(rbFrame.button3, "RadioButton")
+actionsCheck(rbFrame.button4, "RadioButton")
 
 #check radiobutton1 with 'checked' 'focused' states
 rbFrame.keyCombo("Tab", grabFocus=False)
@@ -96,10 +97,18 @@ rbFrame.button3.mouseClick()
 statesCheck(rbFrame.button3, "RadioButton",
                            invalid_states=["focusable", "sensitive", "enabled"])
 
+#click radiobutton4 which is one with image property
+rbFrame.click(rbFrame.button4)
+sleep(config.SHORT_DELAY)
+rbFrame.assertLabel("You are a lizard")
+#radiobutton4 rise 'checked' state
+statesCheck(rbFrame.button4, "RadioButton", add_states=["checked"])
+
 #implement radiobutton's image
 rbFrame.assertImageSize(rbFrame.button1, -1, -1)
 rbFrame.assertImageSize(rbFrame.button2, -1, -1)
 rbFrame.assertImageSize(rbFrame.button3, -1, -1)
+rbFrame.assertImageSize(rbFrame.button4, 60, 38)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

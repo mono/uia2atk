@@ -24,6 +24,8 @@ class CheckBoxFrame(accessibles.Frame):
     CHECK_TWO = "Chicken"
     CHECK_THREE = "Stuffed Peppers"
     CHECK_FORE = "Beef"
+    CHECK_FIVE = "Fried Lizard"
+    CHECK_SIX = "Soylent Green"
 
     def __init__(self, accessible):
         super(CheckBoxFrame, self).__init__(accessible)
@@ -31,29 +33,12 @@ class CheckBoxFrame(accessibles.Frame):
         self.check2 = self.findCheckBox(self.CHECK_TWO)
         self.check3 = self.findCheckBox(self.CHECK_THREE)
         self.check4 = self.findCheckBox(self.CHECK_FORE)
+        self.check5 = self.findCheckBox(self.CHECK_FIVE)
+        self.check6 = self.findCheckBox(self.CHECK_SIX)
 
     #give 'click' action
     def click(self,button):
         button.click()
-
-    #check the state after click checkbox
-    def assertChecked(self, accessible):
-        'Raise exception if the accessible does not match the given result'   
-        procedurelogger.expectedResult('"%s" is %s' % (accessible, 'checked'))
-
-        def resultMatches():
-            return accessible.checked
-	
-        assert retryUntilTrue(resultMatches)
-
-    def assertUnchecked(self, accessible):
-        'Raise exception if the accessible does not match the given result'   
-        procedurelogger.expectedResult('%s is %s.' % (accessible, "unchecked"))
-
-        def resultMatches():
-            return not accessible.checked
-	
-        assert retryUntilTrue(resultMatches)
 
     # assert the size of an image in the CheckBox
     def assertImageSize(self, button, width=-1, height=-1):

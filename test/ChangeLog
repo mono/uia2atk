@@ -1,3 +1,14 @@
+2008-10-23  Calen Chen <cachen@novell.com>
+
+	* samples/checkbox.py: update sample to autosize the checkbox
+	* testers/checkbox/checkboxframe.py: delete assertCheck and 
+	assertUncheck, initialize checkbox5 and checkbox6
+	* testers/checkbox_basic_ops.py: add test for checkbox5 with image, 
+	add test for checkbox6 with background
+	* testers/radiobutton/radiobuttonframe.py: initialize radiobutton4
+	* testers/radiobutton_basic_ops.py: add test for radiobutton4 with 
+	image
+
 2008-10-22  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* tools/dashboard/dashboard_sample.xml: Updated sample of the dashboard

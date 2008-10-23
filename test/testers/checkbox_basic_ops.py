@@ -48,6 +48,8 @@ actionsCheck(cbFrame.check1, "CheckBox")
 actionsCheck(cbFrame.check2, "CheckBox")
 actionsCheck(cbFrame.check3, "CheckBox")
 actionsCheck(cbFrame.check4, "CheckBox")
+actionsCheck(cbFrame.check5, "CheckBox")
+actionsCheck(cbFrame.check6, "CheckBox")
 
 #check1 have "focused" state
 statesCheck(cbFrame.check1, "CheckBox", add_states=["focused"])
@@ -130,11 +132,25 @@ sleep(config.SHORT_DELAY)
 statesCheck(cbFrame.check4, "CheckBox",
                     invalid_states=["sensitive", "enabled","focusable"])
 
-#implement checkbox's image
-cbFrame.assertImageSize(cbFrame.check1, -1, -1)
-cbFrame.assertImageSize(cbFrame.check2, -1, -1)
-cbFrame.assertImageSize(cbFrame.check3, -1, -1)
-cbFrame.assertImageSize(cbFrame.check4, -1, -1)
+#checkbox with image and background should have correct states and can be 
+#and focused
+cbFrame.check5.mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(cbFrame.check5, "CheckBox", add_states=["focused", "checked"])
+
+cbFrame.check6.mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(cbFrame.check6, "CheckBox", add_states=["focused", "checked"])
+
+#implement checkbox's image, default checkbox have image size(-1*-1)
+cbFrame.assertImageSize(cbFrame.check1)
+cbFrame.assertImageSize(cbFrame.check2)
+cbFrame.assertImageSize(cbFrame.check3)
+cbFrame.assertImageSize(cbFrame.check4)
+#checkbox wich image property have image size(60*38)
+cbFrame.assertImageSize(cbFrame.check5, 60, 38)
+#checkbox with background property have image size(-1*-1)
+cbFrame.assertImageSize(cbFrame.check6)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

@@ -23,6 +23,7 @@ class RadioButtonFrame(accessibles.Frame):
     BUTTON_ONE = "Male"
     BUTTON_TWO = "Female"
     BUTTON_THREE = "Disabled"
+    BUTTON_FOUR = "Lizard"
     LABEL = "Go On:____"
 
     def __init__(self, accessible):
@@ -30,6 +31,7 @@ class RadioButtonFrame(accessibles.Frame):
         self.button1 = self.findRadioButton(self.BUTTON_ONE)
         self.button2 = self.findRadioButton(self.BUTTON_TWO)
         self.button3 = self.findRadioButton(self.BUTTON_THREE)
+        self.button4 = self.findRadioButton(self.BUTTON_FOUR)
         self.label = self.findLabel(self.LABEL)
 
     #give 'click' action
