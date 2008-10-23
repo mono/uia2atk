@@ -1,5 +1,9 @@
 2008-10-23  Calen Chen <cachen@novell.com>
 
+	* samples/listbox.py: modify the size for listbox to show all listitems
+
+2008-10-23  Calen Chen <cachen@novell.com>
+
 	* samples/checkbox.py: update sample to autosize the checkbox
 	* testers/checkbox/checkboxframe.py: delete assertCheck and 
 	assertUncheck, initialize checkbox5 and checkbox6

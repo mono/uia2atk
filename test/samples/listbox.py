@@ -38,6 +38,7 @@ class ListBoxSample(Form):
 
         # setup listbox
         self.listbox = ListBox()
+        self.listbox.Height = 130
         self.listbox.Dock = DockStyle.Top
         self.listbox.Click += self.select
         self.listbox.MultiColumn = True
