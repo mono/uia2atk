@@ -84,7 +84,7 @@ namespace UiaAtkBridgeTest
 			switch (type) {
 			case BasicWidgetType.ListBox:
 			case BasicWidgetType.VScrollBar:
-			case BasicWidgetType.HScrollBar: {
+			case BasicWidgetType.HScrollBar:
 				SWF.ListBox listBox = new SWF.ListBox ();
 				if (real)
 					listBox = lb1;
@@ -101,23 +101,21 @@ namespace UiaAtkBridgeTest
 					accessible = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) 
 					                                    ProviderFactory.GetProvider (listBox, true, true));
 				break;
-			}
-			case BasicWidgetType.CheckedListBox: {
-				SWF.CheckedListBox listBox = new SWF.CheckedListBox ();
+			case BasicWidgetType.CheckedListBox:
+				SWF.CheckedListBox clistBox = new SWF.CheckedListBox ();
 				if (real)
-					listBox = clb1;
-				listBox.Items.Clear ();
+					clistBox = clb1;
+				clistBox.Items.Clear ();
 				foreach (string item in names)
-					listBox.Items.Add (item);
+					clistBox.Items.Add (item);
 			
 				if (real)
 					accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
-					                                    ProviderFactory.GetProvider (listBox, true, true));
+					                                    ProviderFactory.GetProvider (clistBox, true, true));
 				else
 					accessible = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) 
-					                                    ProviderFactory.GetProvider (listBox, true, true));
+					                                    ProviderFactory.GetProvider (clistBox, true, true));
 				break;
-			}
 			case BasicWidgetType.ComboBoxDropDownEntry:
 				if (!real)
 					throw new NotSupportedException ("ComboBox has no un-real support");
@@ -216,9 +214,9 @@ namespace UiaAtkBridgeTest
 		SWF.CheckBox chkWithImage = new SWF.CheckBox ();
 		SWF.StatusBar sb1 = new SWF.StatusBar ();
 		SWF.ProgressBar pb1 = new SWF.ProgressBar ();
-		SWF.NumericUpDown nud1 = new SWF.NumericUpDown();
+		SWF.NumericUpDown nud1 = new SWF.NumericUpDown ();
 		SWF.Form form = new SWF.Form ();
-		SWF.MenuStrip menuStrip1 = new SWF.MenuStrip();
+		SWF.MenuStrip menuStrip1 = new SWF.MenuStrip ();
 		SWF.PictureBox pboxWithoutImage = new SWF.PictureBox ();
 		SWF.PictureBox pboxWithImage = new SWF.PictureBox ();
 		SWF.TextBox tbx1 = new SWF.TextBox ();
