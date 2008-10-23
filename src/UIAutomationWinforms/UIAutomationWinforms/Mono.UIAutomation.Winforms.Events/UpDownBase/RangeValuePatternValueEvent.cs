@@ -26,16 +26,17 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using SWF = System.Windows.Forms;
+using System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.StatusBar
+namespace Mono.UIAutomation.Winforms.Events.UpDownBase
 {
-	internal class StatusBarPanelValuePatternValueEvent : BaseAutomationPropertyEvent
+	internal class RangeValuePatternValueEvent : BaseAutomationPropertyEvent
 	{
 		#region Constructor
 
-		public StatusBarPanelValuePatternValueEvent (SimpleControlProvider provider)
-			: base (provider, ValuePatternIdentifiers.ValueProperty)
+		public RangeValuePatternValueEvent (SimpleControlProvider provider) 
+			: base (provider, RangeValuePatternIdentifiers.ValueProperty)
 		{
 		}
 		
@@ -45,38 +46,24 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 
 		public override void Connect ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.StatusBarPanel),
-				                        (SWF.StatusBarPanel) Provider.Component,
-				                        "UIATextChanged",
-				                        this,
-				                        "OnValueChanged");
-			} catch (NotSupportedException) { }
+			((NumericUpDown) Provider.Control).ValueChanged +=
+				new EventHandler (OnValueChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.StatusBarPanel),
-				                           (SWF.StatusBarPanel) Provider.Component,
-				                           "UIATextChanged",
-				                           this,
-				                           "OnValueChanged");
-			} catch (NotSupportedException) { }
+			((NumericUpDown) Provider.Control).ValueChanged -=
+				new EventHandler (OnValueChanged);
 		}
 		
 		#endregion 
 		
 		#region Private Methods
 		
-		#pragma warning disable 169
-
 		private void OnValueChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-
-		#pragma warning restore 169
 		
 		#endregion
 	}

@@ -29,33 +29,34 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.StatusBar;
+using Mono.UIAutomation.Winforms.Events.UpDownBase;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
+namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 {
-	internal class StatusBarPanelValueProviderBehavior : ProviderBehavior, IValueProvider
+	internal class ValueProviderBehavior : ProviderBehavior, IValueProvider
 	{
 		#region Constructor
-		
-		public StatusBarPanelValueProviderBehavior (StatusBarProvider.StatusBarPanelProvider provider)
+
+		public ValueProviderBehavior (UpDownBaseProvider provider)
 			: base (provider)
 		{
-			this.statusBarPanel = (SWF.StatusBarPanel) provider.Component;
+			this.domainUpDown = (SWF.DomainUpDown) provider.Control;
 		}
 		
 		#endregion
+
+		#region IProviderBehavior Interface		
 		
-		#region IProviderBehavior Interface
-		
-		public override AutomationPattern ProviderPattern {
+		public override AutomationPattern ProviderPattern { 
 			get { return ValuePatternIdentifiers.Pattern; }
 		}
 		
 		public override void Connect ()
 		{
-			// NOTE: IsReadOnly Property never changes.
+			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
+			                   new ValuePatternIsReadOnlyEvent (Provider));
 			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
-			                   new StatusBarPanelValuePatternValueEvent (Provider));
+			                   new ValuePatternValueEvent (Provider));
 		}
 		
 		public override void Disconnect ()
@@ -65,7 +66,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
 			                   null);
 		}
-
+		
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == ValuePatternIdentifiers.IsReadOnlyProperty.Id)
@@ -81,24 +82,44 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 		#region IValueProvider Members
 		
 		public bool IsReadOnly {
-			get { return true; }
+			get { return domainUpDown.ReadOnly; }
 		}
 		
 		public string Value {
-			get { return statusBarPanel.Text; }
+			get { return domainUpDown.Text; }
 		}
-
+		
 		public void SetValue (string value)
 		{
-			throw new ElementNotEnabledException ();
+			if (!domainUpDown.Enabled)
+				throw new ElementNotEnabledException ();
+			
+			PerformSetValue (value);
+		}
+		
+		#endregion
+		
+		#region Private Methods
+		
+		private void PerformSetValue (string value) 
+		{
+			if (domainUpDown.InvokeRequired == true) {
+				domainUpDown.BeginInvoke (new DomainUpDownSetValueDelegate (PerformSetValue),
+				                          new object [] { value } );
+				return;
+			}
+			
+			domainUpDown.Text = value;
 		}
 		
 		#endregion
 		
 		#region Private Fields
 		
-		private SWF.StatusBarPanel statusBarPanel;
+		private SWF.DomainUpDown domainUpDown;
 		
 		#endregion
 	}
+	
+	delegate void DomainUpDownSetValueDelegate (string value);
 }

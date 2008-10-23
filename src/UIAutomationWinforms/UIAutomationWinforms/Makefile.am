@@ -43,7 +43,6 @@ RESGEN=resgen2
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
-	Mono.UIAutomation.Winforms/AssemblyInfo.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/CheckBox/ToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/CheckedListBox/ListItemToggleProviderBehavior.cs \
@@ -74,7 +73,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/MultipleViewProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/SelectionProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionItemProviderBehavior.cs \
@@ -88,12 +86,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs \
-	Mono.UIAutomation.Winforms/ButtonProvider.cs \
-	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
-	Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs \
-	Mono.UIAutomation.Winforms/ComboBoxProvider.cs \
-	Mono.UIAutomation.Winforms/ErrorProvider.cs \
-	Mono.UIAutomation.Winforms/ErrorProviderListener.cs \
+	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationBoundingRectanglePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationFocusChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationHasKeyboardFocusPropertyEvent.cs \
@@ -172,6 +166,23 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/TextBox/HasKeyBoardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternIsReadOnlyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternValueEvent.cs \
+	Mono.UIAutomation.Winforms.Navigation/ChildNavigation.cs \
+	Mono.UIAutomation.Winforms.Navigation/INavigation.cs \
+	Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs \
+	Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs \
+	Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs \
+	Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs \
+	Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs \
+	Mono.UIAutomation.Winforms/AssemblyInfo.cs \
+	Mono.UIAutomation.Winforms/ButtonProvider.cs \
+	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
+	Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs \
+	Mono.UIAutomation.Winforms/ComboBoxProvider.cs \
+	Mono.UIAutomation.Winforms/ErrorProvider.cs \
+	Mono.UIAutomation.Winforms/ErrorProviderListener.cs \
 	Mono.UIAutomation.Winforms/FormListener.cs \
 	Mono.UIAutomation.Winforms/FormProvider.cs \
 	Mono.UIAutomation.Winforms/FragmentControlProvider.cs \
@@ -190,14 +201,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ListProvider.cs \
 	Mono.UIAutomation.Winforms/ListViewProvider.cs \
 	Mono.UIAutomation.Winforms/MenuStripProvider.cs \
-	Mono.UIAutomation.Winforms.Navigation/ChildNavigation.cs \
-	Mono.UIAutomation.Winforms.Navigation/INavigation.cs \
-	Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs \
-	Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs \
-	Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs \
-	Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs \
-	Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs \
-	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/PaneProvider.cs \
 	Mono.UIAutomation.Winforms/PictureBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ProgressBarProvider.cs \
@@ -221,9 +224,10 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs \
 	Mono.UIAutomation.Winforms/ToolTipListener.cs \
 	Mono.UIAutomation.Winforms/ToolTipProvider.cs \
+	Mono.UIAutomation.Winforms/UpDownBaseProvider.cs \
 	Mono.UIAutomation.Winforms/WebBrowserProvider.cs \
-	Mono.UIAutomation.Winforms/WordTokenCollection.cs \
 	Mono.UIAutomation.Winforms/WordToken.cs \
+	Mono.UIAutomation.Winforms/WordTokenCollection.cs \
 	Mono.UIAutomation.Winforms/WordTokenizer.cs 
 
 DATA_FILES = 

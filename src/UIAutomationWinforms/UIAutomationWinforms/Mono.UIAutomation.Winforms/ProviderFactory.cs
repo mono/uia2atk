@@ -87,7 +87,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.TextBox t;
 			SWF.RichTextBox rt;
 			SWF.LinkLabel ll;
-			SWF.NumericUpDown ud;
+			SWF.UpDownBase udb;
 			FragmentControlProvider provider = null;
 			SWF.Form f;
 			SWF.GroupBox gb;
@@ -138,8 +138,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new LinkLabelProvider (ll);
 			else if ((l = component as SWF.Label) != null)
 				provider = new LabelProvider (l);
-			else if ((ud = component as SWF.NumericUpDown) != null)
-				provider = new NumericUpDownProvider (ud);
+			else if ((udb = component as SWF.UpDownBase) != null)
+				provider = new UpDownBaseProvider (udb);
 			else if ((sb = component as SWF.StatusBar) != null)
 				provider = new StatusBarProvider (sb);
 			else if ((cb = component as SWF.ComboBox) != null)

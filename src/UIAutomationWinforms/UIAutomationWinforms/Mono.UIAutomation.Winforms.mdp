@@ -1,4 +1,4 @@
-<Project name="Mono.UIAutomation.Winforms" fileversion="2.0" language="C#" UseParentDirectoryAsNamespace="True" DefaultNamespace="Mono.UIAutomation.Winforms" clr-version="Net_2_0" ctype="DotNetProject">
+<Project name="Mono.UIAutomation.Winforms" fileversion="2.0" language="C#" DefaultNamespace="Mono.UIAutomation.Winforms" clr-version="Net_2_0" UseParentDirectoryAsNamespace="True" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="bin/Debug" signAssembly="True" assemblyKeyFile="../../mono-uia.snk" assembly="UIAutomationWinforms" />
@@ -22,7 +22,6 @@
     <File name="Mono.UIAutomation.Winforms/CheckBoxProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/RadioButtonProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/LabelProvider.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms/NumericUpDownProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/TextBoxProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/Helper.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/LinkLabelProvider.cs" subtype="Code" buildaction="Compile" />
@@ -108,7 +107,6 @@
     <File name="Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/LinkLabel/InvokeProviderBehavior.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/RangeValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListItem/ScrollItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListBox/ScrollProviderBehavior.cs" subtype="Code" buildaction="Compile" />
@@ -195,6 +193,13 @@
     <File name="Mono.UIAutomation.Winforms.Events/ListView/GridPatternColumnEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListView/GridPatternRowEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/HeaderItemInvokeProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/RichTextBoxProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/UpDownBaseProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternValueEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternIsReadOnlyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternValueEvent.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

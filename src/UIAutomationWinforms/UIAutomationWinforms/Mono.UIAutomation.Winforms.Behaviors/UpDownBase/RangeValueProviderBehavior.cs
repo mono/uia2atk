@@ -21,52 +21,69 @@
 // 
 // Authors: 
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//      Neville Gao <nevillegao@gmail.com>
 // 
 
 
 using System;
-using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.UpDownBase;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.NumericUpDown
+namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 {
-	internal class RangeValueProviderBehavior :
-		ProviderBehavior, IRangeValueProvider
+	internal class RangeValueProviderBehavior : ProviderBehavior, IRangeValueProvider
 	{
-		#region Private Fields
-		
-		private SWF.NumericUpDown upDown;
-		
-		#endregion
-		
 		#region Constructor
 		
-		public RangeValueProviderBehavior (FragmentControlProvider provider) :
-			base (provider)
+		public RangeValueProviderBehavior (UpDownBaseProvider provider)
+			: base (provider)
 		{
-			upDown = (SWF.NumericUpDown) provider.Control;
+			numericUpDown = (SWF.NumericUpDown) provider.Control;
 		}
 		
 		#endregion
 		
 		#region IProviderBehavior Interface
-
-		public override void Connect ()
-		{
-			//TODO: Use SetEventStrategy
-			upDown.ValueChanged += OnValueChanged;
-		}
-		
-		public override void Disconnect ()
-		{
-			//TODO: Use SetEventStrategy
-			upDown.ValueChanged -= OnValueChanged;
-		}
 		
 		public override AutomationPattern ProviderPattern { 
 			get { return RangeValuePatternIdentifiers.Pattern; }
 		}
+		
+		public override void Connect ()
+		{
+			// NOTE: LargeChange Property NEVER changes.
+//			Provider.SetEvent (ProviderEventType.RangeValuePatternIsReadOnlyProperty,
+//			                   new RangeValuePatternIsReadOnlyEvent (Provider));
+//			Provider.SetEvent (ProviderEventType.RangeValuePatternMinimumProperty,
+//			                   new RangeValuePatternMinimumEvent (Provider));
+//			Provider.SetEvent (ProviderEventType.RangeValuePatternMaximumProperty,
+//			                   new RangeValuePatternMaximumEvent (Provider));
+//			Provider.SetEvent (ProviderEventType.RangeValuePatternSmallChangeProperty,
+//			                   new RangeValuePatternSmallChangeEvent (Provider));
+			Provider.SetEvent (ProviderEventType.RangeValuePatternValueProperty,
+			                   new RangeValuePatternValueEvent (Provider));
+		}
+		
+		public override void Disconnect ()
+		{
+			Provider.SetEvent (ProviderEventType.RangeValuePatternIsReadOnlyProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.RangeValuePatternMinimumProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.RangeValuePatternMaximumProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.RangeValuePatternLargeChangeProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.RangeValuePatternSmallChangeProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.RangeValuePatternValueProperty,
+			                   null);
+		}
+		
 		
 		public override object GetPropertyValue (int propertyId)
 		{
@@ -91,7 +108,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.NumericUpDown
 		#region IRangeValueProvider Members
 	
 		public bool IsReadOnly {
-			get { return upDown.ReadOnly; }
+			get { return numericUpDown.ReadOnly; }
 		}
 
 		public double LargeChange {
@@ -99,11 +116,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.NumericUpDown
 		}
 
 		public double Maximum {
-			get { return (double) upDown.Maximum; }
+			get { return (double) numericUpDown.Maximum; }
 		}
 
 		public double Minimum {
-			get { return (double) upDown.Minimum; }
+			get { return (double) numericUpDown.Minimum; }
 		}
 
 		public void SetValue (double value)
@@ -115,42 +132,33 @@ namespace Mono.UIAutomation.Winforms.Behaviors.NumericUpDown
 		}
 
 		public double SmallChange {
-			get { return (double) upDown.Increment; }
+			get { return (double) numericUpDown.Increment; }
 		}
 
 		public double Value {
-			get { return (double) upDown.Value; }
+			get { return (double) numericUpDown.Value; }
 		}
 
-		#endregion
-		
-		#region Event Handlers
-		
-		private void OnValueChanged (object sender, EventArgs e)
-		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationPropertyChangedEventArgs args =
-					new AutomationPropertyChangedEventArgs (RangeValuePatternIdentifiers.ValueProperty,
-					                                        null, // TODO: Test against MS
-					                                        Value);
-				AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (Provider, args);
-			}
-		}
-		
 		#endregion
 		
 		#region Private Methods
 		
 		private void PerformSetValue (decimal value) 
 		{
-			if (upDown.InvokeRequired == true) {
-				upDown.BeginInvoke (new NumericUpDownSetValueDelegate (PerformSetValue),
-				                    new object [] { value });
+			if (numericUpDown.InvokeRequired == true) {
+				numericUpDown.BeginInvoke (new NumericUpDownSetValueDelegate (PerformSetValue),
+				                           new object [] { value });
 				return;
 			}
-			upDown.Value = (decimal) value;
+			numericUpDown.Value = (decimal) value;
 		}
 			
+		#endregion
+		
+		#region Private Fields
+		
+		private SWF.NumericUpDown numericUpDown;
+		
 		#endregion
 	}
 	

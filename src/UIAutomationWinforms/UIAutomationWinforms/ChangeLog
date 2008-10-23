@@ -1,3 +1,25 @@
+2008-10-23  Neville Gao <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated files added.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Updated to support
+	  UpDownBaseProvider.
+	* Mono.UIAutomation.Winforms/UpDownBaseProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternIsReadOnlyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternValueEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternValueEvent.cs:
+	  File added.
+	* Mono.UIAutomation.Winforms.Behaviors/NumericUpDown/RangeValueProviderBehavior.cs:
+	  File deleted.
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelGridItemProviderBehavior.cs:
+	  Modified "Provider" to "provider".
+	* Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelValuePatternValueEvent.cs:
+	  File formatted.
+
 2008-10-22  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Raising ChildRemoved

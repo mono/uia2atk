@@ -24,59 +24,55 @@
 // 
 
 using System;
+using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Behaviors.UpDownBase;
+using Mono.UIAutomation.Winforms.Navigation;
 
-namespace Mono.UIAutomation.Winforms.Events.StatusBar
+namespace Mono.UIAutomation.Winforms
 {
-	internal class StatusBarPanelValuePatternValueEvent : BaseAutomationPropertyEvent
+	internal class UpDownBaseProvider : FragmentRootControlProvider
 	{
 		#region Constructor
 
-		public StatusBarPanelValuePatternValueEvent (SimpleControlProvider provider)
-			: base (provider, ValuePatternIdentifiers.ValueProperty)
+		public UpDownBaseProvider (UpDownBase upDownBase) : base (upDownBase)
 		{
+			this.upDownBase = upDownBase;
 		}
 		
 		#endregion
 		
-		#region IConnectable Overrides
-
-		public override void Connect ()
+		#region SimpleControlProvider: Specializations
+		
+		public override void Initialize ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.StatusBarPanel),
-				                        (SWF.StatusBarPanel) Provider.Component,
-				                        "UIATextChanged",
-				                        this,
-				                        "OnValueChanged");
-			} catch (NotSupportedException) { }
-		}
-
-		public override void Disconnect ()
-		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.StatusBarPanel),
-				                           (SWF.StatusBarPanel) Provider.Component,
-				                           "UIATextChanged",
-				                           this,
-				                           "OnValueChanged");
-			} catch (NotSupportedException) { }
+			base.Initialize ();
+			
+			if (upDownBase is System.Windows.Forms.DomainUpDown)
+				SetBehavior (ValuePatternIdentifiers.Pattern,
+				             new ValueProviderBehavior (this));
+			else if (upDownBase is System.Windows.Forms.NumericUpDown)
+				SetBehavior (RangeValuePatternIdentifiers.Pattern,
+				             new RangeValueProviderBehavior (this));
 		}
 		
-		#endregion 
-		
-		#region Private Methods
-		
-		#pragma warning disable 169
-
-		private void OnValueChanged (object sender, EventArgs e)
+		public override object GetPropertyValue (int propertyId)
 		{
-			RaiseAutomationPropertyChangedEvent ();
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Spinner.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "spinner";
+			else
+				return base.GetPropertyValue (propertyId);
 		}
-
-		#pragma warning restore 169
+		
+		#endregion
+		
+		#region Private Fields
+		
+		private UpDownBase upDownBase;
 		
 		#endregion
 	}

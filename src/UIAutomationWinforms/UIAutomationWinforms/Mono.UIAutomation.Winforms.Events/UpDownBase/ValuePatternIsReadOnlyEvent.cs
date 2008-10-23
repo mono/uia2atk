@@ -26,16 +26,17 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using SWF = System.Windows.Forms;
+using System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.StatusBar
+namespace Mono.UIAutomation.Winforms.Events.UpDownBase
 {
-	internal class StatusBarPanelValuePatternValueEvent : BaseAutomationPropertyEvent
+	internal class ValuePatternIsReadOnlyEvent : BaseAutomationPropertyEvent
 	{
 		#region Constructor
 
-		public StatusBarPanelValuePatternValueEvent (SimpleControlProvider provider)
-			: base (provider, ValuePatternIdentifiers.ValueProperty)
+		public ValuePatternIsReadOnlyEvent (SimpleControlProvider provider) 
+			: base (provider, ValuePatternIdentifiers.IsReadOnlyProperty)
 		{
 		}
 		
@@ -45,38 +46,24 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 
 		public override void Connect ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.StatusBarPanel),
-				                        (SWF.StatusBarPanel) Provider.Component,
-				                        "UIATextChanged",
-				                        this,
-				                        "OnValueChanged");
-			} catch (NotSupportedException) { }
+			Provider.Control.EnabledChanged +=
+				new EventHandler (OnIsReadOnlyChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.StatusBarPanel),
-				                           (SWF.StatusBarPanel) Provider.Component,
-				                           "UIATextChanged",
-				                           this,
-				                           "OnValueChanged");
-			} catch (NotSupportedException) { }
+			Provider.Control.EnabledChanged -=
+				new EventHandler (OnIsReadOnlyChanged);
 		}
 		
 		#endregion 
 		
 		#region Private Methods
 		
-		#pragma warning disable 169
-
-		private void OnValueChanged (object sender, EventArgs e)
+		private void OnIsReadOnlyChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-
-		#pragma warning restore 169
 		
 		#endregion
 	}
