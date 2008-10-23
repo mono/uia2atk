@@ -1,5 +1,12 @@
 2008-10-23  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripMenuItemProvider.cs: Use
+	ProviderFactory to create ToolStripItemProviders, so they will be
+	tracked.
+
+2008-10-23  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Mono.UIAutomation.Winforms.Behaviors/LinkLabel/InvokeProviderBehavior.cs:
 	When Invoke is called, make sure to check not only that the LinkLabel
 	is Enabled, but that the correct Links[i] is Enabled.  Fixes bug

@@ -107,7 +107,7 @@ namespace Mono.UIAutomation.Winforms
 			ToolStripItemProvider itemProvider;
 			
 			if (!itemProviders.TryGetValue (item, out itemProvider)) {
-				itemProvider = new ToolStripItemProvider (item); // TODO: Specialize
+				itemProvider = (ToolStripItemProvider) ProviderFactory.GetProvider (item);
 				itemProviders [item]  = itemProvider;
 				itemProvider.Initialize ();
 			}
