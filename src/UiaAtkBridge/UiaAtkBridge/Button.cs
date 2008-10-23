@@ -153,7 +153,11 @@ namespace UiaAtkBridge
 					return false;
 
 				OnPressed ();
-				invokeProvider.Invoke ();
+				try {
+					invokeProvider.Invoke ();
+				} catch (ElementNotEnabledException) {
+					return false;
+				}
 				OnReleased ();
 				
 				return true;
@@ -180,7 +184,7 @@ namespace UiaAtkBridge
 
 		public int CharacterCount {
 			get {
-				return Name.Length;
+				return textExpert.Length;
 			}
 		}
 

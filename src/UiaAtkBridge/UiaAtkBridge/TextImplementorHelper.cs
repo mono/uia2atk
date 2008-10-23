@@ -33,20 +33,17 @@ namespace UiaAtkBridge
 		
 		internal TextImplementorHelper (string text)
 		{
-			if (text == null)
-				throw new ArgumentNullException ("text");
-			
-			this.text = text;
+			this.text = (text != null? text: String.Empty);
 		}
 		
 		internal TextImplementorHelper (string text, Adapter resource)
 		{
-			this.text = text;
+			this.text = (text != null? text: String.Empty);
 			this.resource = resource;
 		}
 		
 		internal int Length {
-			get { return text != null ? text.Length : 0; }
+			get { return text.Length; }
 		}
 
 		internal string Text {

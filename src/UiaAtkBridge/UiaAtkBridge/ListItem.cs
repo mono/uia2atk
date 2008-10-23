@@ -219,7 +219,7 @@ namespace UiaAtkBridge
 
 		public int CharacterCount {
 			get {
-				return Name.Length;
+				return textExpert.Length;
 			}
 		}
 
@@ -288,7 +288,11 @@ namespace UiaAtkBridge
 
 		internal bool DoInvoke ()
 		{
-			invokeProvider.Invoke();
+			try {
+				invokeProvider.Invoke ();
+			} catch (ElementNotEnabledException) {
+				return false;
+			}
 			return true;
 		}
 		public int NSelections {

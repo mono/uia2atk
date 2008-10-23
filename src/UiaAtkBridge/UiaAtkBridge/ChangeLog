@@ -1,3 +1,12 @@
+2008-10-23  Mike Gorse <mgorse@novell.com>
+
+	* BUtton.cs, ListItem.cs: Catch NotEnabledException when calling
+	  an InvokeProvider.
+	* TextImplementorHelper.cs: Allow null text; treat as String.Empty.
+	* Button.cs, Hyperlink.cs, ListItem.cs, ProgressBar.cs,
+	  StatusBar.cs, TextLabel.cs: Have CharacterCount use Text.Length;
+	  fixes NRE if Name is null.
+
 2008-10-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* TopLevelRootItem.cs: Avoid redundant calls to

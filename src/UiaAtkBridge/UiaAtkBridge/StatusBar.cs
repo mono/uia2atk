@@ -66,7 +66,7 @@ namespace UiaAtkBridge
 
 		public int CharacterCount {
 			get {
-				return Name.Length;
+				return textExpert.Length;
 			}
 		}
 
