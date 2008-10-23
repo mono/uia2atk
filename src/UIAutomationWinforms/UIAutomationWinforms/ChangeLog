@@ -1,6 +1,13 @@
 2008-10-23  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ToolStripProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripMenuItemProvider.cs: Don't
+	manually call Initialize on child providers; the ProviderFactory
+	handles that.
+
+2008-10-23  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs:
 	* Mono.UIAutomation.Winforms/ToolStripMenuItemProvider.cs: Use
 	ProviderFactory to create ToolStripItemProviders, so they will be
 	tracked.
