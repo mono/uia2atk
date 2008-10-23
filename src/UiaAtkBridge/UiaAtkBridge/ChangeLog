@@ -1,3 +1,8 @@
+2008-10-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* TopLevelRootItem.cs: Avoid redundant calls to
+	CheckAndHandleNewActiveWindow(). Hopefully fixes #429438 again.
+
 2008-10-23  Mike Gorse <mgorse@novell.com>
 
 	* SelectionProviderUserHelper.cs: Fix NRE when clearing an empty

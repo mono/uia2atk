@@ -58,10 +58,6 @@ namespace UiaAtkBridge
 		
 		internal override void AddOneChild (Adapter child)
 		{
-			// FIXME: useless check? maybe we should do here: Assert.IsTrue ( child is Window || child is Dialog ) ?
-			if (child is UiaAtkBridge.Window)
-				CheckAndHandleNewActiveWindow ((UiaAtkBridge.Window)child);
-
 			base.AddOneChild (child);
 		}
 
