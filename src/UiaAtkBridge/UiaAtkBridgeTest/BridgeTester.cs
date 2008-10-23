@@ -265,7 +265,8 @@ namespace UiaAtkBridgeTest
 				if (!real)
 					throw new NotSupportedException ("You, clown, we're gonna deprecate un-real support");
 				
-				SWF.ToolStripMenuItem parentMenu = new SWF.ToolStripMenuItem();
+				SWF.ToolStripMenuItem parentMenu = new SWF.ToolStripMenuItem ();
+				parentMenu.Text = names [0];
 				
 				SWF.ToolStripMenuItem[] subMenus = new SWF.ToolStripMenuItem [names.Length - 1];
 				for (int i = 1; i < names.Length; i++) {
