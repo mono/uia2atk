@@ -556,11 +556,11 @@ namespace UiaAtkBridgeTest
 				atkText = CastToAtkInterface <Atk.Text> (accessible);
 			});
 			
-			int nSelections = -1;
-			if ((type == BasicWidgetType.Label) || (type == BasicWidgetType.TextBoxEntry))
-				nSelections = 0;
+			int caret = 0;
+			if (type == BasicWidgetType.TextBoxView)
+				caret = name.Length;
 			
-			Assert.AreEqual (0, atkText.CaretOffset, "CaretOffset SL");
+			Assert.AreEqual (caret, atkText.CaretOffset, "CaretOffset SL");
 			Assert.AreEqual (name.Length, atkText.CharacterCount, "CharacterCount SL");
 			Assert.AreEqual (name [0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset SL");
 			Assert.AreEqual (name, atkText.GetText (0, name.Length), "GetText SL");
@@ -575,6 +575,12 @@ namespace UiaAtkBridgeTest
 			// don't do this until bug#393565 is fixed:
 			//Assert.AreEqual (typeof(Atk.TextAttribute), atkText.DefaultAttributes[0].GetType());
 
+			int nSelections = -1;
+			if ((type == BasicWidgetType.Label) || 
+			    (type == BasicWidgetType.TextBoxEntry) ||
+				(type == BasicWidgetType.TextBoxView))
+				nSelections = 0;
+			
 			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#1 SL");
 
 			int caretOffset = 0;
@@ -639,8 +645,9 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#6 SL");
 			//NSelections == 0, however we have one selection, WTF?:
 			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#16 SL");
+			
 			Assert.AreEqual (startCaretOffset, startOffset, "GetSelection#17 SL");
-			Assert.AreEqual (endCaretOffset, endOffset, "GetSelection#18 SL");
+			Assert.AreEqual (endCaretOffset, endOffset, "GetSelection#18.. SL");
 			Assert.AreEqual (null, atkText.GetSelection (1, out startOffset, out endOffset), "GetSelection#19 SL");
 			Assert.AreEqual (startCaretOffset, startOffset, "GetSelection#20 SL");
 			Assert.AreEqual (endCaretOffset, endOffset, "GetSelection#21 SL");
@@ -763,6 +770,11 @@ namespace UiaAtkBridgeTest
 			
 			int indexStartOffset = name.IndexOf (expected);
 			int indexEndOffset = name.IndexOf (expected) + expected.Length;
+
+			if (!Misc.HasReadOnlyText (type)) {
+				indexStartOffset = name.Length;
+				indexEndOffset = name.Length;
+			}
 			
 			//test selections after obtaining text with a different API than GetText
 			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#6");

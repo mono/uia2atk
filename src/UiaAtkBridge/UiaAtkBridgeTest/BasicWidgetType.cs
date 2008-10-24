@@ -81,7 +81,8 @@ namespace UiaAtkBridgeTest
 	internal static class Misc
 	{
 		internal static bool HasReadOnlyText (BasicWidgetType type) {
-			if (type == BasicWidgetType.TextBoxEntry)
+			if ((type == BasicWidgetType.TextBoxEntry) ||
+			    (type == BasicWidgetType.TextBoxView))
 				return false;
 			return true;
 		}
