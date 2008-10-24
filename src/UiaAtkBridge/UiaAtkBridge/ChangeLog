@@ -1,5 +1,10 @@
 2008-10-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ComponentAdapter.cs: Add Focused state for all adapters. Fixes
+	#428227.
+
+2008-10-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* TextLabel.cs: Cosmetic.
 
 2008-10-24  Mike Gorse <mgorse@novell.com>
