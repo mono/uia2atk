@@ -11,13 +11,73 @@
         <span id="documentName">Strongwind Test Status Dashboard</span><br/>
       </p>
       <div class="smoke">
+        <xsl:comment>Convert the number of seconds it took the smoke test to
+        run into days, hours, minutes, and seconds</xsl:comment>
+        <xsl:variable name="numDays" select="floor(number(dashboard/smoke/elapsedTime) div 86400)"/>
+        <xsl:variable name="tmpSec1" select="number(dashboard/smoke/elapsedTime) mod 86400"/>
+        <xsl:variable name="numHours" select="floor($tmpSec1 div 3600)"/>
+        <xsl:variable name="tmpSec2" select="$tmpSec1 mod 3600"/>
+        <xsl:variable name="numMinutes" select="floor($tmpSec2 div 60)"/>
+        <xsl:variable name="numSeconds" select="format-number(number(dashboard/smoke/elapsedTime) mod 60, '#.#')"/>
         <h3>Smoke Tests</h3>
         <p class="summaryTop">
           <span id="percentPassed">Passed: </span>
           <xsl:value-of select="dashboard/smoke/percentPassed"/>
           <br/>
           <span id="regressionTime">Smoke Test Time: </span>
-          <xsl:value-of select="dashboard/smoke/elapsedTime"/>
+          <xsl:if test="$numDays > 0">
+              <span id="days"><xsl:value-of select="$numDays"/></span>
+            <xsl:choose>
+              <xsl:when test="$numDays = 1">
+                <span id="timeDays"> Day</span>
+              </xsl:when>
+              <xsl:otherwise>
+                <span id="timeDays"> Days</span>
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="($numHours > 0) or ($numMinutes > 0) or ($numSeconds > 0)">
+              <span>, </span>
+            </xsl:if>
+          </xsl:if>
+          <xsl:if test="$numHours > 0">
+              <span id="hours"><xsl:value-of select="$numHours"/></span>
+            <xsl:choose>
+              <xsl:when test="$numHours = 1">
+                <span id="timeHours"> Hour</span>
+              </xsl:when>
+              <xsl:otherwise>
+                <span id="timeHours"> Hours</span>
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="($numMinutes > 0) or ($numSeconds > 0)">
+              <span>, </span>
+            </xsl:if>
+          </xsl:if>
+          <xsl:if test="$numMinutes > 0">
+              <span id="minutes"><xsl:value-of select="$numMinutes"/></span>
+            <xsl:choose>
+              <xsl:when test="$numMinutes = 1">
+                <span id="timeMinutes"> Minute</span>
+              </xsl:when>
+              <xsl:otherwise>
+                <span id="timeMinutes"> Minutes</span>
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="$numSeconds > 0">
+              <span>, </span>
+            </xsl:if>
+          </xsl:if>
+          <xsl:if test="$numSeconds > 0">
+              <span id="seconds"><xsl:value-of select="$numSeconds"/></span>
+            <xsl:choose>
+              <xsl:when test="numSeconds = 1">
+                <span id="timeSeconds"> Second</span>
+              </xsl:when>
+              <xsl:otherwise>
+                <span id="timeSeconds"> Seconds</span>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:if>
         </p>
         <table>
         <tr>
@@ -46,7 +106,7 @@
             <xsl:variable name="time" select="time"/>
             <xsl:choose>
               <xsl:when test="$status = 0">
-                <td><xsl:value-of select="time"/></td>
+                <td><xsl:value-of select="time"/>s</td>
               </xsl:when>
               <xsl:otherwise>
                 <td></td>
@@ -59,13 +119,73 @@
       <!-- End of Smoke Test Portion -->
       <!-- Regression Test Portion -->
       <div class="regression">
+        <xsl:comment>Convert the number of seconds it took the regression test to
+        run into days, hours, minutes, and seconds</xsl:comment>
+        <xsl:variable name="numDays" select="floor(number(dashboard/regression/elapsedTime) div 86400)"/>
+        <xsl:variable name="tmpSec1" select="number(dashboard/regression/elapsedTime) mod 86400"/>
+        <xsl:variable name="numHours" select="floor($tmpSec1 div 3600)"/>
+        <xsl:variable name="tmpSec2" select="$tmpSec1 mod 3600"/>
+        <xsl:variable name="numMinutes" select="floor($tmpSec2 div 60)"/>
+        <xsl:variable name="numSeconds" select="format-number(number(dashboard/regression/elapsedTime) mod 60, '#.#')"/>
         <h3>Regression Tests</h3>
         <p class="summaryTop">
           <span id="percentPassed">Passed: </span>
           <xsl:value-of select="dashboard/regression/percentPassed"/>
           <br/>
           <span id="regressionTime">Regression Test Time: </span>
-          <xsl:value-of select="dashboard/regression/elapsedTime"/>
+          <xsl:if test="$numDays > 0">
+              <span id="days"><xsl:value-of select="$numDays"/></span>
+            <xsl:choose>
+              <xsl:when test="$numDays = 1">
+                <span id="timeDays"> Day</span>
+              </xsl:when>
+              <xsl:otherwise>
+                <span id="timeDays"> Days</span>
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="($numHours > 0) or ($numMinutes > 0) or ($numSeconds > 0)">
+              <span>, </span>
+            </xsl:if>
+          </xsl:if>
+          <xsl:if test="$numHours > 0">
+              <span id="hours"><xsl:value-of select="$numHours"/></span>
+            <xsl:choose>
+              <xsl:when test="$numHours = 1">
+                <span id="timeHours"> Hour</span>
+              </xsl:when>
+              <xsl:otherwise>
+                <span id="timeHours"> Hours</span>
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="($numMinutes > 0) or ($numSeconds > 0)">
+              <span>, </span>
+            </xsl:if>
+          </xsl:if>
+          <xsl:if test="$numMinutes > 0">
+              <span id="minutes"><xsl:value-of select="$numMinutes"/></span>
+            <xsl:choose>
+              <xsl:when test="$numMinutes = 1">
+                <span id="timeMinutes"> Minute</span>
+              </xsl:when>
+              <xsl:otherwise>
+                <span id="timeMinutes"> Minutes</span>
+              </xsl:otherwise>
+            </xsl:choose>
+            <xsl:if test="$numSeconds > 0">
+              <span>, </span>
+            </xsl:if>
+          </xsl:if>
+          <xsl:if test="$numSeconds > 0">
+              <span id="seconds"><xsl:value-of select="$numSeconds"/></span>
+            <xsl:choose>
+              <xsl:when test="numSeconds = 1">
+                <span id="timeSeconds"> Second</span>
+              </xsl:when>
+              <xsl:otherwise>
+                <span id="timeSeconds"> Seconds</span>
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:if>
         </p>
         <table>
         <tr>
@@ -94,7 +214,7 @@
             <xsl:variable name="time" select="time"/>
             <xsl:choose>
               <xsl:when test="$status = 0">
-                <td><xsl:value-of select="time"/></td>
+                <td><xsl:value-of select="time"/>s</td>
               </xsl:when>
               <xsl:otherwise>
                 <td></td>

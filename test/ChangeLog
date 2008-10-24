@@ -1,3 +1,11 @@
+2008-10-24  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* tools/dashboard/dashboard.xsl: Add time units to elapsed time numbers
+	and dynamically create human-readable time summaries (e.g., "1 Hour, 23
+	Minutes, 12.4 Seconds" or "32 Minutes, 4.1 Seconds".
+	* harness/remote_run.py: Return a non-zero exit code if the remote
+	tests fail.
+
 2008-10-23  Calen Chen <cachen@novell.com>
 
 	* samples/linklabel.py: update this sample to add mult-link, 

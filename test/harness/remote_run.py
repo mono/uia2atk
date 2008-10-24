@@ -224,6 +224,10 @@ class Test(object):
     if settings.is_log_ok:
       output("INFO:  Local logs saved to %s" % Settings.local_log_path)
     output("INFO:  Remote logs saved to %s" % Settings.remote_log_path)
+    if t.pkg_status == 0 and t.test_status == 0:
+      return 0
+    else:
+      return 1
 
   def setup_logging(self):
     # delete old local log directory if it exists
@@ -241,7 +245,7 @@ class Test(object):
     if not self.check_machines():
       return 1
     self.setup_logging()
-    self.execute_tests() 
+    return self.execute_tests() 
 
   def compose_mail_message(self):
   
