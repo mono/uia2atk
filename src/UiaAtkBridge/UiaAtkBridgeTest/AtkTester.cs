@@ -555,6 +555,11 @@ namespace UiaAtkBridgeTest
 					accessible = GetAccessible (type, name, true);
 				atkText = CastToAtkInterface <Atk.Text> (accessible);
 			});
+
+			if (Misc.HasReadOnlyText (type))
+				Assert.AreEqual (name, accessible.Name, "accessible.Name");
+			else
+				Assert.IsNull (accessible.Name, "accessible.Name");
 			
 			int caret = 0;
 			if (type == BasicWidgetType.TextBoxView)
