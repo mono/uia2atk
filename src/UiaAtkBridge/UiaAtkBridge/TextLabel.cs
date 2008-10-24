@@ -90,9 +90,8 @@ namespace UiaAtkBridge
 				string newText = provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) as string;
 				
 				// Don't fire spurious events if the text hasn't changed
-				if (textExpert.Text == newText) {
+				if (textExpert.Text == newText)
 					return;
-				}
 
 				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
 

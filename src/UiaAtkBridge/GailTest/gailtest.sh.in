@@ -15,6 +15,6 @@ cp ${NUNIT_PATH}/nunit-console.exe \
 (cd bin/Debug; \
 	@MONO@ --debug ./nunit-console.exe ${NUNIT_FLAGS} ${DLL})
 
-	@MONO@ --debug ./nunit-console.exe \
-		${NUNIT_FLAGS} ${DLL}      \
-		-run=UiaAtkBridgeTest.GailTester.TextBoxView )
+#	@MONO@ --debug ./nunit-console.exe \
+#		${NUNIT_FLAGS} ${DLL}      \
+#		-run=UiaAtkBridgeTest.GailTester.TextBoxView )

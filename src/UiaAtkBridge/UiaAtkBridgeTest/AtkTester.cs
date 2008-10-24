@@ -747,7 +747,7 @@ namespace UiaAtkBridgeTest
 
 			if (onlySingleLine)
 				return accessible;
-			
+
 			name = "This is a test sentence.\r\nSecond line. Other phrase.\nThird line?";
 
 			RunInGuiThread (delegate () {
@@ -757,6 +757,11 @@ namespace UiaAtkBridgeTest
 
 			System.Threading.Thread.Sleep (2000);
 
+			if (Misc.HasReadOnlyText (type))
+				Assert.AreEqual (name, accessible.Name, "accessible.Name");
+			else
+				Assert.IsNull (accessible.Name, "accessible.Name");
+			
 			Assert.AreEqual (name.Length, atkText.CharacterCount, "CharacterCount");
 			Assert.AreEqual (name [0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset");
 			Assert.AreEqual (name, atkText.GetText (0, name.Length), "GetText");

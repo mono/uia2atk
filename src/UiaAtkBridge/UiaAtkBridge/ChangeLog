@@ -1,3 +1,7 @@
+2008-10-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* TextLabel.cs: Cosmetic.
+
 2008-10-24  Mike Gorse <mgorse@novell.com>
 
 	* Button.cs, RadioButton.cs: Revert last change.  Add
