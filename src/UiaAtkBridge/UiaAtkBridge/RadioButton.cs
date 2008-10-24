@@ -49,6 +49,11 @@ namespace UiaAtkBridge
 			if (action != 0)
 				return false;
 
+				bool enabled = 
+			  	(bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+				if (!enabled)
+					return false;
+
 			if (!selProvider.IsSelected) {
 				selProvider.Select ();
 			}

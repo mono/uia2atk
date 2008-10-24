@@ -1,5 +1,9 @@
 2008-10-23  Mike Gorse <mgorse@novell.com>
 
+	* radioButton.cs: Have DoAction return false if not enabled.
+
+2008-10-23  Mike Gorse <mgorse@novell.com>
+
 	* BUtton.cs, ListItem.cs: Catch NotEnabledException when calling
 	  an InvokeProvider.
 	* TextImplementorHelper.cs: Allow null text; treat as String.Empty.
