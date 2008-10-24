@@ -37,11 +37,15 @@ namespace UiaAtkBridge
 		public RadioButton (IRawElementProviderSimple provider) : base (provider)
 		{
 			Role = Atk.Role.RadioButton;
-			selProvider = (ISelectionItemProvider)provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+		}
+
+		protected override void InitializeAdditionalProviders ()
+		{
+			selProvider = (ISelectionItemProvider)Provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
 			if (selProvider == null)
 				throw new ArgumentException ("The provider for RadioButton should implement the SelectionItem pattern");
-			actionName = "click";
 			imageProvider = selProvider;
+			actionName = "click";
 		}
 		
 		public override bool DoAction (int action)
@@ -54,9 +58,6 @@ namespace UiaAtkBridge
 				if (!enabled)
 					return false;
 
-			if (selProvider == null)
-				return false;
-
 			if (!selProvider.IsSelected) {
 				selProvider.Select ();
 			}
@@ -68,7 +69,7 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			
-			if (selProvider != null && selProvider.IsSelected)
+			if (selProvider.IsSelected)
 				states.AddState (Atk.StateType.Checked);
 			else
 				states.RemoveState (Atk.StateType.Checked);

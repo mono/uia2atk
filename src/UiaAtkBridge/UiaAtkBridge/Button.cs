@@ -65,6 +65,7 @@ namespace UiaAtkBridge
 			
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
 			imageProvider = invokeProvider;
+			InitializeAdditionalProviders ();
 			if (invokeProvider != null) {
 				//it seems the default description should be null:
 				//actionDescription = default_invoke_description;
@@ -77,6 +78,10 @@ namespace UiaAtkBridge
 			Name = buttonText;
 		}
 		
+		protected virtual void InitializeAdditionalProviders ()
+		{
+		}
+
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();

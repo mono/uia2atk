@@ -1,5 +1,10 @@
 2008-10-24  Mike Gorse <mgorse@novell.com>
 
+	* Button.cs, RadioButton.cs: Revert last change.  Add
+	  InitializeAdditionalProviders (called in Button constructor).
+
+2008-10-24  Mike Gorse <mgorse@novell.com>
+
 	* RadioButton.cs: Check for null selprovider in RefStateSet and
 	  DoAction [bug 438654]
 
