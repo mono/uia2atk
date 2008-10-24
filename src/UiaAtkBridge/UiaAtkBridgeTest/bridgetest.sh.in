@@ -18,3 +18,7 @@ fi
 
 (cd bin/Debug; \
 	@MONO@ --debug @NUNIT_PATH@/nunit-console.exe ${NUNIT_FLAGS} ${DLL} $*)
+
+#	@MONO@ --debug \
+#		@NUNIT_PATH@/nunit-console.exe ${NUNIT_FLAGS} ${DLL} \
+#		-run=UiaAtkBridgeTest.BridgeTester.TextBoxView $*)
