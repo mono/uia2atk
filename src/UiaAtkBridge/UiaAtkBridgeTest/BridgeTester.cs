@@ -312,6 +312,7 @@ namespace UiaAtkBridgeTest
 				else
 					accessible = new UiaAtkBridge.TextLabel (ProviderFactory.GetProvider (lab, true, true));
 				break;
+				
 			case BasicWidgetType.NormalButton:
 				SWF.Button but = new SWF.Button ();
 				if (real)
@@ -321,6 +322,7 @@ namespace UiaAtkBridgeTest
 					throw new NotSupportedException ("We don't support unreal anymore in tests");
 				accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (but, true, true));
 				break;
+				
 			case BasicWidgetType.Window:
 				SWF.Form frm = new SWF.Form ();
 				if (real)
@@ -331,6 +333,7 @@ namespace UiaAtkBridgeTest
 				else
 					accessible = new UiaAtkBridge.Window (ProviderFactory.GetProvider (frm, true, true));
 				break;
+				
 			case BasicWidgetType.CheckBox:
 				SWF.CheckBox chk = new SWF.CheckBox ();
 				if (real)
@@ -342,6 +345,7 @@ namespace UiaAtkBridgeTest
 				else
 					accessible = new UiaAtkBridge.CheckBoxButton (ProviderFactory.GetProvider (chk, true, true));
 				break;
+				
 			case BasicWidgetType.RadioButton:
 				// the way to group radioButtons is dependent on their parent control
 				SWF.RadioButton radio = 
@@ -352,6 +356,7 @@ namespace UiaAtkBridgeTest
 				else
 					throw new NotSupportedException ("No un-real support for this");
 				break;
+				
 			case BasicWidgetType.StatusBar:
 				SWF.StatusBar sb = new SWF.StatusBar ();
 				if (real)
