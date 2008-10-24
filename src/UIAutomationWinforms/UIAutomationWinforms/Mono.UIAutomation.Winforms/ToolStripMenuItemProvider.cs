@@ -61,9 +61,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void InitializeChildControlStructure ()
 		{
-			// No event support!
-			//menuItem.ItemAdded += OnItemAdded;
-			//menuItem.ItemRemoved += OnItemRemoved;
+			menuItem.DropDown.ItemAdded += OnItemAdded;
+			menuItem.DropDown.ItemRemoved += OnItemRemoved;
 		
 			foreach (ToolStripItem item in menuItem.DropDownItems) {
 				ToolStripItemProvider itemProvider = GetItemProvider (item);
@@ -73,9 +72,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void FinalizeChildControlStructure ()
 		{
-			// No event support!
-			//menuItem.ItemAdded -= OnItemAdded;
-			//menuItem.ItemRemoved -= OnItemRemoved;
+			menuItem.DropDown.ItemAdded -= OnItemAdded;
+			menuItem.DropDown.ItemRemoved -= OnItemRemoved;
 			
 			foreach (ToolStripItemProvider itemProvider in itemProviders.Values)
 				OnNavigationChildRemoved (false, itemProvider);
@@ -86,7 +84,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Private Navigation Methods
 
-/*
+
 		private void OnItemAdded (object sender, ToolStripItemEventArgs e)
 		{
 			ToolStripItemProvider itemProvider = GetItemProvider (e.Item);
@@ -100,7 +98,7 @@ namespace Mono.UIAutomation.Winforms
 			itemProvider.Terminate ();
 			OnNavigationChildRemoved (true, itemProvider);
 		}
-*/
+
 
 		private ToolStripItemProvider GetItemProvider (ToolStripItem item)
 		{

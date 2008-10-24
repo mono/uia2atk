@@ -30,6 +30,9 @@ using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
+using Mono.UIAutomation.Winforms.Events;
+using ETSI = Mono.UIAutomation.Winforms.Events.ToolStripItem;
+
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Mono.UIAutomation.Winforms
@@ -59,8 +62,53 @@ namespace Mono.UIAutomation.Winforms
 				return item.Text;
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
+			else if (propertyId == AEIds.IsOffscreenProperty.Id) {
+				System.Drawing.Rectangle bounds =
+					GetItemScreenBounds ();				
+				System.Drawing.Rectangle screen =
+					Screen.GetWorkingArea (bounds);
+				// True iff the *entire* control is off-screen
+				return !screen.Contains (bounds.Left, bounds.Bottom) &&
+					!screen.Contains (bounds.Left, bounds.Top) &&
+					!screen.Contains (bounds.Right, bounds.Bottom) &&
+					!screen.Contains (bounds.Right, bounds.Top);
+			} else if (propertyId == AEIds.IsEnabledProperty.Id)
+				return item.Enabled;
+			else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
+				return item.Selected;
+			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
+				return item.CanSelect;
+			else if (propertyId == AEIds.BoundingRectangleProperty.Id)
+				return Helper.RectangleToRect (GetItemScreenBounds ());
 			else
 				return base.GetPropertyValue (propertyId);
 		}
+
+		public override void Initialize()
+		{
+			base.Initialize ();
+			
+			SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty,
+			          new ETSI.AutomationIsOffscreenPropertyEvent (this));
+			SetEvent (ProviderEventType.AutomationElementIsEnabledProperty, 
+			          new ETSI.AutomationIsEnabledPropertyEvent (this));
+			SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+			          new ETSI.AutomationHasKeyboardFocusPropertyEvent (this));
+			SetEvent (ProviderEventType.AutomationElementBoundingRectangleProperty,
+			          new ETSI.AutomationBoundingRectanglePropertyEvent (this));
+			SetEvent (ProviderEventType.AutomationFocusChangedEvent,
+			          new ETSI.AutomationFocusChangedEvent (this));
+			SetEvent (ProviderEventType.AutomationElementIsKeyboardFocusableProperty,
+			          new ETSI.AutomationIsKeyboardFocusablePropertyEvent (this));
+		}
+
+		protected virtual System.Drawing.Rectangle GetItemScreenBounds ()
+		{
+			if (item.Owner == null)
+				return item.Bounds;
+			else
+				return item.Owner.RectangleToScreen (item.Bounds);
+		}
+
 	}
 }

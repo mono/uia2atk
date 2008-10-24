@@ -132,6 +132,13 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/HasKeyBoardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueIsReadOnlyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationBoundingRectanglePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationFocusChangedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationHasKeyboardFocusPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationIsEnabledPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationIsKeyboardFocusablePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationIsOffscreenPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMaximumEvent.cs \

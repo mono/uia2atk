@@ -1,3 +1,23 @@
+2008-10-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationNamePropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationFocusChangedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationIsEnabledPropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationIsOffscreenPropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationHasKeyboardFocusPropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationBoundingRectanglePropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationIsKeyboardFocusablePropertyEvent.cs:
+	Handle essential property change events for ToolStripItem.
+
+	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: Add support for
+	basic properties (and their change events) that are not handled for
+	Components in SimpleControlProvider.
+
+	* Mono.UIAutomation.Winforms/ToolStripMenuItemProvider.cs: Item
+	add/remove event support is provided by ToolStripMenuItem.DropDown.
+
 2008-10-24  Neville Gao <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated files added.
