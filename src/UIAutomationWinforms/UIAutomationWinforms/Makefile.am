@@ -132,6 +132,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/HasKeyBoardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueIsReadOnlyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationBoundingRectanglePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationFocusChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationHasKeyboardFocusPropertyEvent.cs \

@@ -106,17 +106,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			}
 		}
 
-		//Remarks: 
-		//- Grid coordinates are zero-based with the upper left (or upper
-		//  right cell depending on locale) having coordinates (0,0).
-		//- If a cell is empty a UI Automation provider must still be returned
-		//  in order to support the ContainingGrid property for that cell. This
-		//  is possible when the layout of child elements in the grid is 
-		//  similar to a ragged array.
-		//- Hidden rows and columns, depending on the provider implementation, 
-		//  can be loaded in the UI Automation tree and will therefore be 
-		//  reflected in the RowCount and ColumnCount properties. If the hidden
-		//  rows and columns have not yet been loaded they should not be counted.
 		public IRawElementProviderSimple GetItem (int row, int column)
 		{		
 			int rowCount = RowCount;
@@ -129,8 +118,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			ListViewProvider provider = (ListViewProvider) Provider;
 
 			if (listView.View == SWF.View.Details) {
-				//FIXME: Implement
-				throw new NotImplementedException ();
+				ListViewProvider.ListViewListItemProvider itemProvider 
+					= (ListViewProvider.ListViewListItemProvider) provider.GetProviderAt (row);
+				return itemProvider.GetEditProviderAtColumn (column);
 			} else //Is View.List
 				return provider.GetProviderAt ((column * rowCount) + row);
 		}

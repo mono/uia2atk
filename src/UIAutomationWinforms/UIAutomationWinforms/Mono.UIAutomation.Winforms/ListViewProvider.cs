@@ -236,10 +236,10 @@ namespace Mono.UIAutomation.Winforms
 			if (listView.SelectedIndices.Count == 0)
 				return null;
 			else {
-				ListItemProvider []providers = new ListItemProvider [listView.SelectedIndices.Count];
+				ListItemProvider []providers = new ListItemProvider [listView.SelectedItems.Count];
 
-				for (int index = 0; index < listView.SelectedIndices.Count; index++)
-					providers [index] = GetItemProviderFrom (this, listView.SelectedIndices [index]);
+				for (int index = 0; index < listView.SelectedItems.Count; index++)
+					providers [index] = GetItemProviderFrom (this, listView.SelectedItems [index]);
 			
 				return providers;
 			}
@@ -336,7 +336,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return new ListViewListItemProvider (rootProvider,
 			                                     this,
-			                                     (SWF.ListView) listView,
+			                                     listView,
 			                                     (SWF.ListViewItem) objectItem);
 		}
 		
@@ -837,6 +837,18 @@ namespace Mono.UIAutomation.Winforms
 				get { return item; }
 			}
 
+			public ListViewListItemEditProvider GetEditProviderAtColumn (int column)
+			{
+				if (column < 0 || column >= listView.Columns.Count)
+					return null;
+
+
+				ListViewListItemEditProvider editProvider = null;				
+				providers.TryGetValue (listView.Columns [column], out editProvider);
+
+				return editProvider;
+			}
+
 			public override void Initialize ()
 			{
 				base.Initialize ();
@@ -911,7 +923,6 @@ namespace Mono.UIAutomation.Winforms
 				if (listView.View != SWF.View.Details)
 					return;
 
-				//FIXME: Add/Remove column in internal children
 				SWF.ColumnHeader column = (SWF.ColumnHeader) args.Element;
 
 				if (args.Action == CollectionChangeAction.Add) {
@@ -974,7 +985,6 @@ namespace Mono.UIAutomation.Winforms
 				//http://msdn.microsoft.com/en-us/library/ms748367.aspx
 
 				//FIXME: Implement TableItem
-				//FIXME: Implement GridItem
 
 				SetBehavior (GridItemPatternIdentifiers.Pattern,
 				             new ListItemEditGridItemProviderBehavior (this));

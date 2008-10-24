@@ -23,22 +23,22 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using System.ComponentModel;
+using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Winforms;
-using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.ListView
+namespace Mono.UIAutomation.Winforms.Events.TextBox
 {
-	internal class GridPatternColumnEvent : BaseAutomationPropertyEvent
-	{
-		#region Constructors
 
-		public GridPatternColumnEvent (ListViewProvider provider)
-			: base (provider, 
-			        GridPatternIdentifiers.ColumnCountProperty)
+	internal class ValuePatternValueValueEvent 
+		: BaseAutomationPropertyEvent
+	{
+		
+		#region Constructor
+		
+		public ValuePatternValueValueEvent (SimpleControlProvider provider)
+			: base (provider,
+			        ValuePatternIdentifiers.ValueProperty)
 		{
 		}
 		
@@ -48,30 +48,23 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Connect ()
 		{
-			((SWF.ListView) Provider.Control).Items.UIACollectionChanged 
-				+= OnColumnPropertyEvent;
-			((SWF.ListView) Provider.Control).Columns.UIACollectionChanged
-				+= OnColumnPropertyEvent;
+			Provider.Control.TextChanged += OnTextChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.ListView) Provider.Control).Items.UIACollectionChanged 
-				-= OnColumnPropertyEvent;
-			((SWF.ListView) Provider.Control).Columns.UIACollectionChanged
-				-= OnColumnPropertyEvent;			
+			Provider.Control.TextChanged -= OnTextChanged;
 		}
 		
 		#endregion 
 		
-		#region Private methods
-
-		private void OnColumnPropertyEvent (object sender, 
-		                                    CollectionChangeEventArgs args)
+		#region Private Methods
+		
+		private void OnTextChanged (object sender, EventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-
+		
 		#endregion
 	}
 }

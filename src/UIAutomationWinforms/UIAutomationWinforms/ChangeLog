@@ -1,5 +1,39 @@
 2008-10-24  Mario Carrion  <mcarrion@novell.com>
 
+	* Makefile.am: TextBox.Value.Value event added.
+
+	* Mono.UIAutomation.Winforms.mdp: Events added: ListItemEdit.GridItem
+	and TextBox.Value.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs:
+	Getting Item when View.Details.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GroupExpandCollapseProviderBehavior.cs:
+	Comment updated.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditGridItemProviderBehavior.cs:
+	ListItemEdit.GridItem events enabled.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs:
+	Enabled Value.Value event.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/GridPatternColumnEvent.cs:
+	Also using Column collection change event.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemEditGridItemColumnEvent.cs:
+	ListItemEditGridItem.Column event
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemEditGridItemRowEvent.cs:
+	ListItemEditGridItem.Row event
+
+	* Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueValueEvent.cs:
+	Value.Value event.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: New method:
+	GetEditProviderAtColumn. 
+
+2008-10-24  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: View.Details support:
 	Updated to handle adding, removing and clearing columns.
 

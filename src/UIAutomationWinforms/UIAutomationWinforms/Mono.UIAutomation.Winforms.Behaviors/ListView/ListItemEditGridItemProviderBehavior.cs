@@ -54,11 +54,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		{
 			// NOTE: RowSpan Property NEVER changes.
 			// NOTE: ColumnSpan Property NEVER changes.
-			// NOTE: ContainingGrid Property NEVER changes.			
-//			Provider.SetEvent (ProviderEventType.GridItemPatternRowProperty,
-//			                   new ListItemGridItemPatternRowEvent ((ListItemProvider) Provider));
-//			Provider.SetEvent (ProviderEventType.GridItemPatternColumnProperty,
-//			                   new ListItemGridItemPatternColumnEvent ((ListItemProvider) Provider));
+			// NOTE: ContainingGrid Property NEVER changes.	
+			Provider.SetEvent (ProviderEventType.GridItemPatternRowProperty,
+			                   new ListItemEditGridItemRowEvent (editProvider));
+			Provider.SetEvent (ProviderEventType.GridItemPatternColumnProperty,
+			                   new ListItemEditGridItemColumnEvent (editProvider));
 		}
 		
 		public override void Disconnect ()

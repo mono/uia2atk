@@ -23,74 +23,58 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ListView;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ListView
+namespace Mono.UIAutomation.Winforms.Events.ListView
 {
-
-	internal class GroupExpandCollapseProviderBehavior
-		: ProviderBehavior, IExpandCollapseProvider
+	internal class ListItemEditGridItemColumnEvent : BaseAutomationPropertyEvent
 	{
-		
 		#region Constructors
 
-		public GroupExpandCollapseProviderBehavior (ListViewProvider.ListViewGroupProvider provider)
-			: base (provider)
+		public ListItemEditGridItemColumnEvent (ListViewProvider.ListViewListItemEditProvider provider)
+			: base (provider, 
+			        GridItemPatternIdentifiers.ColumnProperty)
 		{
+			this.provider = provider;
 		}
-
+		
 		#endregion
 		
-		#region IProviderBehavior Interface
+		#region ProviderEvent Methods
 
-		public override AutomationPattern ProviderPattern { 
-			get { return ExpandCollapsePatternIdentifiers.Pattern; }
-		}
-		
 		public override void Connect ()
 		{
-			// NOTE: ExpandCollapseState Property NEVER changes.
+			provider.ItemProvider.ListView.Columns.UIACollectionChanged 
+				+= OnColumnPropertyEvent;
 		}
-		
+
 		public override void Disconnect ()
-		{	
-			Provider.SetEvent (ProviderEventType.ExpandCollapsePatternExpandCollapseStateProperty,
-			                   null);
-		}
-
-		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id)
-				return ExpandCollapseState;
-			else
-				return base.GetPropertyValue (propertyId);
+			provider.ItemProvider.ListView.Columns.UIACollectionChanged 
+				-= OnColumnPropertyEvent;
 		}
 		
-		#endregion
-
-		#region IExpandCollapseProvider Interface
+		#endregion 
 		
-		public ExpandCollapseState ExpandCollapseState {
-			get { return ExpandCollapseState.Expanded; }
-		}
+		#region Private methods
 
-		public void Collapse ()
+		private void OnColumnPropertyEvent (object sender, 
+		                                    CollectionChangeEventArgs args)
 		{
-			//FIXME & LAMESPEC: How to generate this using public API???
-		}
-
-		public void Expand ()
-		{
-			//FIXME & LAMESPEC: How to generate this using public API???
+			RaiseAutomationPropertyChangedEvent ();
 		}
 
 		#endregion
 
+		#region Private Fields
+
+		private ListViewProvider.ListViewListItemEditProvider provider;
+
+		#endregion
 	}
-				                      
 }

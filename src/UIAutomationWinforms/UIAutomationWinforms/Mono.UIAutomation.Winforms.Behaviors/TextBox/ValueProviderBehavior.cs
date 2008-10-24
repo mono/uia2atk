@@ -56,9 +56,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		{
 			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
 			                   new ValuePatternValueIsReadOnlyEvent (Provider));
-			//FIXME: Use valid behavior
-//			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
-//			                   new ValuePatternValueValueEvent (Provider));
+			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
+			                   new ValuePatternValueValueEvent (Provider));
 		}
 
 		public override void Disconnect ()
