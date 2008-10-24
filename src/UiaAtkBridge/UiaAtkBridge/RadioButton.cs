@@ -54,6 +54,9 @@ namespace UiaAtkBridge
 				if (!enabled)
 					return false;
 
+			if (selProvider == null)
+				return false;
+
 			if (!selProvider.IsSelected) {
 				selProvider.Select ();
 			}
@@ -65,7 +68,7 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			
-			if (selProvider.IsSelected)
+			if (selProvider != null && selProvider.IsSelected)
 				states.AddState (Atk.StateType.Checked);
 			else
 				states.RemoveState (Atk.StateType.Checked);
