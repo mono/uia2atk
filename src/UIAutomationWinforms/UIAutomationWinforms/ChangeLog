@@ -1,3 +1,14 @@
+2008-10-24  Neville Gao <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated files added.
+	* Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs:
+	  Updated to support events.
+	* Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMinimumEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMaximumEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternSmallChangeEvent.cs:
+	  File added.
+
 2008-10-23  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

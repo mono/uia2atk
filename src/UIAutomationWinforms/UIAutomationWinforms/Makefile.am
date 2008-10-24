@@ -133,6 +133,10 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/TextBox/HasKeyBoardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMaximumEvent.cs \
+	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMinimumEvent.cs \
+	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternSmallChangeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternValueEvent.cs \

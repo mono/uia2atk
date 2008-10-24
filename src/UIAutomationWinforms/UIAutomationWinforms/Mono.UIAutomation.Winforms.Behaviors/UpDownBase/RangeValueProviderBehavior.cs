@@ -56,14 +56,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 		public override void Connect ()
 		{
 			// NOTE: LargeChange Property NEVER changes.
-//			Provider.SetEvent (ProviderEventType.RangeValuePatternIsReadOnlyProperty,
-//			                   new RangeValuePatternIsReadOnlyEvent (Provider));
-//			Provider.SetEvent (ProviderEventType.RangeValuePatternMinimumProperty,
-//			                   new RangeValuePatternMinimumEvent (Provider));
-//			Provider.SetEvent (ProviderEventType.RangeValuePatternMaximumProperty,
-//			                   new RangeValuePatternMaximumEvent (Provider));
-//			Provider.SetEvent (ProviderEventType.RangeValuePatternSmallChangeProperty,
-//			                   new RangeValuePatternSmallChangeEvent (Provider));
+			Provider.SetEvent (ProviderEventType.RangeValuePatternIsReadOnlyProperty,
+			                   new RangeValuePatternIsReadOnlyEvent (Provider));
+			Provider.SetEvent (ProviderEventType.RangeValuePatternMinimumProperty,
+			                   new RangeValuePatternMinimumEvent (Provider));
+			Provider.SetEvent (ProviderEventType.RangeValuePatternMaximumProperty,
+			                   new RangeValuePatternMaximumEvent (Provider));
+			Provider.SetEvent (ProviderEventType.RangeValuePatternSmallChangeProperty,
+			                   new RangeValuePatternSmallChangeEvent (Provider));
 			Provider.SetEvent (ProviderEventType.RangeValuePatternValueProperty,
 			                   new RangeValuePatternValueEvent (Provider));
 		}
@@ -89,12 +89,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 		{
 			if (propertyId == RangeValuePatternIdentifiers.IsReadOnlyProperty.Id)
 				return IsReadOnly;
-			else if (propertyId == RangeValuePatternIdentifiers.LargeChangeProperty.Id)
-				return LargeChange;
-			else if (propertyId == RangeValuePatternIdentifiers.MaximumProperty.Id)
-				return Maximum;
 			else if (propertyId == RangeValuePatternIdentifiers.MinimumProperty.Id)
 				return Minimum;
+			else if (propertyId == RangeValuePatternIdentifiers.MaximumProperty.Id)
+				return Maximum;
+			else if (propertyId == RangeValuePatternIdentifiers.LargeChangeProperty.Id)
+				return LargeChange;
 			else if (propertyId == RangeValuePatternIdentifiers.SmallChangeProperty.Id)
 				return SmallChange;
 			else if (propertyId == RangeValuePatternIdentifiers.ValueProperty.Id)
@@ -110,33 +110,32 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 		public bool IsReadOnly {
 			get { return numericUpDown.ReadOnly; }
 		}
-
-		public double LargeChange {
-			get { return double.NaN; }
-		}
-
-		public double Maximum {
-			get { return (double) numericUpDown.Maximum; }
-		}
-
+		
 		public double Minimum {
 			get { return (double) numericUpDown.Minimum; }
 		}
-
-		public void SetValue (double value)
-		{
-			if (value < Minimum || value > Maximum)
-				throw new ArgumentOutOfRangeException ();
-
-			PerformSetValue ((decimal) value);
+		
+		public double Maximum {
+			get { return (double) numericUpDown.Maximum; }
 		}
-
+		
+		public double LargeChange {
+			get { return double.NaN; }
+		}
 		public double SmallChange {
 			get { return (double) numericUpDown.Increment; }
 		}
 
 		public double Value {
 			get { return (double) numericUpDown.Value; }
+		}
+		
+		public void SetValue (double value)
+		{
+			if (value < Minimum || value > Maximum)
+				throw new ArgumentOutOfRangeException ();
+
+			PerformSetValue ((decimal) value);
 		}
 
 		#endregion
