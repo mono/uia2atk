@@ -40,22 +40,60 @@ if app is None:
 # just an alias to make things shorter
 cbFrame = app.gtkCheckButtonFrame
 
-cbFrame.checkbox1.click()
-# need a short delay when checking and unchecking the check boxes
-sleep(config.SHORT_DELAY)
-cbFrame.assertChecked(cbFrame.checkbox1)
+#check checkbox1 states with the keyboard focus
+cbFrame.statesCheck(cbFrame.checkbox1, "CheckBox", 
+                    add_states=["focused"])
 
+#check checkbox2 states
+cbFrame.statesCheck(cbFrame.checkbox2, "CheckBox")
+
+#click action to check box1 and add 3 states
 cbFrame.checkbox1.click()
 sleep(config.SHORT_DELAY)
-cbFrame.assertUnchecked(cbFrame.checkbox1)
+cbFrame.statesCheck(cbFrame.checkbox1, "CheckBox", 
+                    add_states=["armed","focused","checked"])
 
+#click action to uncheck box1 and delete 2 states but still focus
+cbFrame.checkbox1.click()
+sleep(config.SHORT_DELAY)
+cbFrame.statesCheck(cbFrame.checkbox1, "CheckBox", 
+                    add_states=["focused"])
+
+#click and use keyCombo to move focus to checkbox2,rise 'focused' 'checked' 
+#state
+cbFrame.checkbox2.click()
+cbFrame.keyCombo('Down')
+sleep(config.SHORT_DELAY)
+cbFrame.statesCheck(cbFrame.checkbox2, "CheckBox", 
+                    add_states=["armed","focused","checked"])
+
+cbFrame.keyCombo('Up')
+sleep(config.SHORT_DELAY)
+cbFrame.statesCheck(cbFrame.checkbox2, "CheckBox", 
+                    add_states=["armed","checked"])
+
+cbFrame.keyCombo('Down')
+sleep(config.SHORT_DELAY)
+cbFrame.statesCheck(cbFrame.checkbox2, "CheckBox", 
+                    add_states=["armed","focused","checked"])
+
+#click checkbox2 again, delete 'checked' state but still focus
 cbFrame.checkbox2.click()
 sleep(config.SHORT_DELAY)
-cbFrame.assertChecked(cbFrame.checkbox2)
+cbFrame.statesCheck(cbFrame.checkbox2, "CheckBox", 
+                    add_states=["focused"])
 
-cbFrame.checkbox2.click()
+#click checkbox1 doesn't move focus
+cbFrame.checkbox1.click()
 sleep(config.SHORT_DELAY)
-cbFrame.assertUnchecked(cbFrame.checkbox2)
+cbFrame.statesCheck(cbFrame.checkbox1, "CheckBox", 
+                    add_states=["armed","checked"])
+
+#use mouseClick to uncheck checkbox1, delete 'checked' state but still focus
+cbFrame.checkbox1.mouseClick()
+sleep(config.SHORT_DELAY)
+cbFrame.statesCheck(cbFrame.checkbox1, "CheckBox", 
+                    add_states=["focused"])
 
 cbFrame.quit()
 
