@@ -1020,6 +1020,82 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (String.Empty, range.GetText (-1));
 		}
 
+		[Test]
+		public void GetAttributeValue ()
+		{
+			textbox.Multiline = true;
+			textbox.Text = "abc\n123\n456";
+			
+			ITextRangeProvider range = text_provider.DocumentRange.Clone ();
+
+			Assert.AreEqual (0, range.GetAttributeValue (TextPattern.BackgroundColorAttribute.Id));
+			Assert.AreEqual (BulletStyle.None, range.GetAttributeValue (TextPattern.BulletStyleAttribute.Id));
+			Assert.AreEqual (CapStyle.None, range.GetAttributeValue (TextPattern.CapStyleAttribute.Id));
+			Assert.AreEqual ("Arial", range.GetAttributeValue (TextPattern.FontNameAttribute.Id));
+		}
+
+		[Test]
+		public void FindAttribute ()
+		{
+			textbox.Multiline = true;
+			textbox.Text = "abc\n123\n456";
+			
+			ITextRangeProvider range1, range2;
+			range1 = text_provider.DocumentRange.Clone ();
+
+			range2 = range1.FindAttribute (TextPattern.FontNameAttribute.Id,
+			                               "Arial", false);
+			Assert.AreEqual ("abc\n123\n456", range2.GetText (-1));
+		}
+
+		[Test]
+		public void RichTextBoxFindAttribute ()
+		{
+			RichTextBox rtb = new RichTextBox ();
+			rtb.Size = new Size (800, 30);
+
+			IRawElementProviderSimple simple = ProviderFactory.GetProvider (rtb);
+			ITextProvider provider = (ITextProvider)simple.GetPatternProvider (TextPatternIdentifiers.Pattern.Id);
+
+			rtb.Multiline = true;
+			rtb.SelectionStart = 0;
+			rtb.SelectionColor = Color.Black;
+			rtb.SelectedText = "abc\n";
+			rtb.SelectionStart = 4;
+			rtb.SelectionColor = Color.Blue;
+			rtb.SelectedText = "123\n";
+			rtb.SelectionStart = 8;
+			rtb.SelectionColor = Color.Black;
+			rtb.SelectedText = "456";
+
+			ITextRangeProvider range1, range2;
+			range1 = provider.DocumentRange.Clone ();
+
+			range2 = range1.FindAttribute (TextPattern.FontNameAttribute.Id,
+			                               "Arial", false);
+			Assert.AreEqual ("abc\n123\n456", range2.GetText (-1));
+			
+			range2 = range1.FindAttribute (TextPattern.ForegroundColorAttribute.Id,
+			                               Color.Blue.ToArgb (), false);
+			Assert.AreEqual ("123\n", range2.GetText (-1));
+			
+			range2 = range1.FindAttribute (TextPattern.ForegroundColorAttribute.Id,
+			                               Color.Blue.ToArgb (), true);
+			Assert.AreEqual ("123\n", range2.GetText (-1));
+
+			range2 = range1.FindAttribute (TextPattern.ForegroundColorAttribute.Id,
+			                               Color.Black.ToArgb (), false);
+			Assert.AreEqual ("abc\n", range2.GetText (-1));
+
+			range2 = range1.FindAttribute (TextPattern.ForegroundColorAttribute.Id,
+			                               Color.Black.ToArgb (), false);
+			Assert.AreEqual ("abc\n", range2.GetText (-1));
+
+			range2 = range1.FindAttribute (TextPattern.ForegroundColorAttribute.Id,
+			                               Color.Black.ToArgb (), true);
+			Assert.AreEqual ("456", range2.GetText (-1));
+		}
+
 		private const string TEST_MESSAGE = "One morning, when Gregor Samsa    woke from troubled dreams, "+
 			"he found himself transformed in his bed into a horrible vermin.He lay on his armour-like back, "+
 			"and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches "+

@@ -25,8 +25,8 @@
 // 
 
 using System;
+using System.Linq;
 using System.Windows;
-using System.Reflection;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Automation.Text;
@@ -142,14 +142,58 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		public ITextRangeProvider FindAttribute (int attribute, object value, 
+		public ITextRangeProvider FindAttribute (int attribute, object @value, 
 		                                         bool backward)
 		{
-			if (textboxbase is TextBox) {
+			// Lazy load mappings
+			if (attr_to_val_handler == null) {
+				PopulateAttributeDictionary ();
+			}
+
+			if (!attr_to_val_handler.ContainsKey (attribute)) {
 				return null;
 			}
 
-			throw new NotImplementedException ();
+			Line line;
+			LineTag tag;
+			int pos;
+
+			LineTagValueHandler val_handler = attr_to_val_handler[attribute];
+			Document d = textboxbase.document;
+			TextRangeProvider range = null;
+
+			if (!backward) {
+				for (int i = StartPoint; i < EndPoint; i += tag.Length) {
+					d.CharIndexToLineTag (i, out line, out tag, out pos);
+					if (val_handler (tag).Equals (@value)) {
+						if (range == null) {
+							range = new TextRangeProvider (provider, textboxbase,
+										       i, i + tag.Length);
+						} else {
+							range.EndPoint += tag.Length;
+						}
+					} else if (range != null) {
+						break;
+					}
+				}
+			} else {
+				for (int i = EndPoint - 1; i >= StartPoint; i -= tag.Length) {
+					d.CharIndexToLineTag (i, out line, out tag, out pos);
+					if (val_handler (tag).Equals (@value)) {
+						if (range == null) {
+							int start = i - tag.Length + 1;
+							range = new TextRangeProvider (provider, textboxbase,
+										       start, start + tag.Length);
+						} else {
+							range.StartPoint -= tag.Length;
+						}
+					} else if (range != null) {
+						break;
+					}
+				}
+			}
+
+			return range;
 		}
 
 		public ITextRangeProvider FindText (string text, bool backward, 
@@ -178,7 +222,43 @@ namespace Mono.UIAutomation.Winforms
 
 		public object GetAttributeValue (int attribute)
 		{
-			throw new NotImplementedException ();
+			// Lazy load mappings
+			if (attr_to_val_handler == null) {
+				PopulateAttributeDictionary ();
+			}
+
+			if (!attr_to_val_handler.ContainsKey (attribute)) {
+				throw new ArgumentException ();
+			}
+
+			LineTagValueHandler val_handler = attr_to_val_handler[attribute];
+
+			Line line;
+			LineTag tag;
+			int pos;
+			
+			List<LineTag> tags = new List<LineTag> ();
+			Document d = textboxbase.document;
+
+			int point = normalizer.StartPoint;
+			while (point < normalizer.EndPoint) {
+				d.CharIndexToLineTag (point, out line,
+				                      out tag, out pos);
+				tags.Add (tag);
+				point += tag.Length + 1;
+			}
+
+			IEnumerable<LineTag> results
+				= tags.Distinct (new LineTagComparer (val_handler));
+
+			int count = results.Count ();
+			if (count == 1) {
+				return val_handler (results.First ());
+			} else if (count > 1) {
+				return TextPattern.MixedAttributeValue;
+			}
+
+			return null;
 		}
 
 		public Rect[] GetBoundingRectangles ()
@@ -188,21 +268,13 @@ namespace Mono.UIAutomation.Winforms
 				return new Rect[0];
 			}
 
-			object document = GetInternalDocument (textboxbase);
-			if (document == null) {
-				return new Rect[0];
-			}
-			
+			Document document = textboxbase.document;
 			List<Rect> rects = new List<Rect> ();
 
-			int num_lines = GetNumLines (document);
-			for (int i = 0; i < num_lines; i++) {
-				object line = GetLine (document, i);
-				if (line == null) {
-					continue;
-				}
-				
-				rects.Add (GetLineRect (line));
+			for (int i = 0; i < document.Lines; i++) {
+				Line line = document.GetLine (i);
+				rects.Add (new Rect (line.X, line.Y,
+				                     line.Width, line.Height));
 			}
 
 			return rects.ToArray ();
@@ -330,14 +402,15 @@ namespace Mono.UIAutomation.Winforms
 			// XXX: Not sure if moving the caret is appropriate
 			// here, but the limited API doesn't support any
 			// alternative
-			object document = GetInternalDocument (textboxbase);
+			Document document = textboxbase.document;
 
+			Line line;
+			LineTag linetag;
 			int char_pos;
-			object line, linetag;
-			CharIndexToLineTag (document, StartPoint, out line,
-			                    out linetag, out char_pos);
+			document.CharIndexToLineTag (StartPoint, out line,
+			                             out linetag, out char_pos);
 			
-			PositionCaret (document, line, char_pos);
+			document.PositionCaret (line, char_pos);
 			textboxbase.ScrollToCaret ();
 		}
 
@@ -346,159 +419,92 @@ namespace Mono.UIAutomation.Winforms
 			textboxbase.SelectionStart = normalizer.StartPoint;
 			textboxbase.SelectionLength = System.Math.Abs (normalizer.EndPoint - normalizer.StartPoint);
 		}
-
-#region S.W.F.Document support methods
-		private object GetInternalDocument (TextBoxBase textbox)
-		{
-			Type textbox_type = textbox.GetType ();
-			FieldInfo textbox_fi = textbox_type.GetField ("document", BindingFlags.NonPublic | BindingFlags.Instance);
-			if (textbox_fi == null) {
-				// XXX: Is it best to throw an exception here,
-				// or to return silently?
-				throw new Exception ("document field not found in TextBoxBase");
-			}
-			
-			return textbox_fi.GetValue (textbox);
-		}
-
-		private object GetLine (object document, int line)
-		{
-			Assembly asm = SwfAssembly;
-			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
-			if (document_type == null) {
-				throw new Exception ("Internal Document class not found in System.Windows.Forms");
-			}
-
-			MethodInfo mi = document_type.GetMethod ("GetLine", BindingFlags.NonPublic | BindingFlags.Instance);
-			if (mi == null) {
-				throw new Exception ("GetLine method not found in Document class");
-			}
-
-			return mi.Invoke (document, new object[] { line });
-		}
-
-		private int GetNumLines (object document)
-		{
-			Assembly asm = SwfAssembly;
-			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
-			if (document_type == null) {
-				throw new Exception ("Internal Document class not found in System.Windows.Forms");
-			}
-
-			PropertyInfo pi = document_type.GetProperty ("Lines", BindingFlags.NonPublic | BindingFlags.Instance);
-			if (pi == null) {
-				throw new Exception ("Lines property not found in Document class");
-			}
-
-			return (int)pi.GetValue (document, null);
-		}
-
-		private Rect GetLineRect (object line)
-		{
-			Assembly asm = SwfAssembly;
-			Type line_type = asm.GetType ("System.Windows.Forms.Line", false);
-			if (line_type == null) {
-				throw new Exception ("Internal Line class not found in System.Windows.Forms");
-			}
-
-			PropertyInfo x_pi
-				= line_type.GetProperty ("X",
-			                                 BindingFlags.NonPublic | BindingFlags.Instance);
-			if (x_pi == null) {
-				throw new Exception ("X property not found in Line class");
-			}
-
-			PropertyInfo y_pi
-				= line_type.GetProperty ("Y",
-			                                 BindingFlags.NonPublic | BindingFlags.Instance);
-			if (y_pi == null) {
-				throw new Exception ("Y property not found in Line class");
-			}
-
-			PropertyInfo width_pi
-				= line_type.GetProperty ("Width",
-			                                 BindingFlags.NonPublic | BindingFlags.Instance);
-			if (width_pi == null) {
-				throw new Exception ("Width property not found in Line class");
-			}
-
-			PropertyInfo height_pi
-				= line_type.GetProperty ("Height",
-			                                 BindingFlags.NonPublic | BindingFlags.Instance);
-			if (height_pi == null) {
-				throw new Exception ("Height property not found in Line class");
-			}
-			
-			return new Rect ((int)x_pi.GetValue (line, null),
-			                 (int)y_pi.GetValue (line, null),
-			                 (int)width_pi.GetValue (line, null),
-			                 (int)height_pi.GetValue (line, null));
-		}
-		
-		private void CharIndexToLineTag (object document, int index, out object line,
-		                                 out object linetag, out int pos)
-		{
-			pos = 0;
-			line = linetag = null;
-
-			Assembly asm = SwfAssembly;
-			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
-			if (document_type == null) {
-				throw new Exception ("Internal Document class not found in System.Windows.Forms");
-			}
-
-			MethodInfo mi = document_type.GetMethod ("CharIndexToLineTag", BindingFlags.NonPublic | BindingFlags.Instance);
-			if (mi == null) {
-				throw new Exception ("CharIndexToLineTag method not found in Document class");
-			}
-
-			object[] args = new object[] { index, line, linetag, pos };
-			mi.Invoke (document, args);
-
-			line = args[1];
-			linetag = args[2];
-			pos = (int)args[3];
-		}
-
-		private void PositionCaret (object document, object line, int pos)
-		{
-			Assembly asm = SwfAssembly;
-			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
-			if (document_type == null) {
-				throw new Exception ("Internal Document class not found in System.Windows.Forms");
-			}
-
-			Type line_type = asm.GetType ("System.Windows.Forms.Line", false);
-
-			MethodInfo mi = document_type.GetMethod ("PositionCaret", BindingFlags.NonPublic | BindingFlags.Instance,
-			                                         null, new Type[] { line_type, typeof (int) }, null);
-			if (mi == null) {
-				throw new Exception ("PositionCaret method not found in Document class");
-			}
-
-			mi.Invoke (document, new object[] { line, pos });
-		}
 #endregion
 
-#endregion
+		private delegate object LineTagValueHandler (LineTag a);
+		private class LineTagComparer : IEqualityComparer<LineTag>
+		{
+			public LineTagComparer (LineTagValueHandler h) { this.val_handler = h; }
+			public bool Equals (LineTag a, LineTag b) { return val_handler (a).Equals (val_handler (b)); }
+			public int GetHashCode (LineTag tag) { return tag.BackColor.GetHashCode (); }
+
+			private LineTagValueHandler val_handler;
+		}
+
+		// Font weights
+		private const int LOGFONT_NORMAL = 400;
+		private const int LOGFONT_BOLD = 700;
+
+		private static Dictionary<int, LineTagValueHandler> attr_to_val_handler = null;
+
+		private void PopulateAttributeDictionary ()
+		{
+			attr_to_val_handler = new Dictionary<int, LineTagValueHandler> ();
+
+			// This is not as much crack as it seems.  This
+			// dictionary maps from the Attributes in TextPattern
+			// to handlers that return the internal Document
+			// representation of the attribute.  It's used in
+			// FindAttribute and GetAttributeValue.  Since this
+			// is a big dictionary, it's also lazy-loaded the first
+			// time FindAttribute or GetAttributeValue are called.
+			attr_to_val_handler.Add (TextPattern.BackgroundColorAttribute.Id,
+			                         x => x.BackColor.ToArgb ());
+			attr_to_val_handler.Add (TextPattern.FontNameAttribute.Id,
+			                         x => x.Font.Name);
+			attr_to_val_handler.Add (TextPattern.FontSizeAttribute.Id,
+			                         x => x.Font.Size);
+			attr_to_val_handler.Add (TextPattern.FontWeightAttribute.Id,
+			                         x => x.Font.Bold ? LOGFONT_BOLD : LOGFONT_NORMAL);
+			attr_to_val_handler.Add (TextPattern.ForegroundColorAttribute.Id,
+			                         x => x.Color.ToArgb ());
+			attr_to_val_handler.Add (TextPattern.IsItalicAttribute.Id,
+			                         x => x.Font.Italic);
+			attr_to_val_handler.Add (TextPattern.StrikethroughStyleAttribute.Id,
+			                         x => x.Font.Strikeout ? TextDecorationLineStyle.Single
+			                                               : TextDecorationLineStyle.None);
+			attr_to_val_handler.Add (TextPattern.TabsAttribute.Id,
+			                         x => new double[0]);
+			attr_to_val_handler.Add (TextPattern.UnderlineStyleAttribute.Id,
+			                         x => x.Font.Underline ? TextDecorationLineStyle.Single
+			                                               : TextDecorationLineStyle.None);
+
+			// Not currently supported by Document API
+			attr_to_val_handler.Add (TextPattern.AnimationStyleAttribute.Id,
+			                         x => AnimationStyle.None);
+			attr_to_val_handler.Add (TextPattern.BulletStyleAttribute.Id,
+			                         x => BulletStyle.None);
+			attr_to_val_handler.Add (TextPattern.CapStyleAttribute.Id,
+			                         x => CapStyle.None);
+			attr_to_val_handler.Add (TextPattern.HorizontalTextAlignmentAttribute.Id,
+			                         x => HorizontalTextAlignment.Left);
+			attr_to_val_handler.Add (TextPattern.IndentationFirstLineAttribute.Id,
+			                         x => 0);
+			attr_to_val_handler.Add (TextPattern.IndentationLeadingAttribute.Id,
+			                         x => 0);
+			attr_to_val_handler.Add (TextPattern.IndentationTrailingAttribute.Id,
+			                         x => 0);
+			attr_to_val_handler.Add (TextPattern.IsHiddenAttribute.Id,
+			                         x => false);
+			attr_to_val_handler.Add (TextPattern.IsReadOnlyAttribute.Id,
+			                         x => false);
+			attr_to_val_handler.Add (TextPattern.IsSubscriptAttribute.Id,
+			                         x => false);
+			attr_to_val_handler.Add (TextPattern.IsSuperscriptAttribute.Id,
+			                         x => false);
+			attr_to_val_handler.Add (TextPattern.OutlineStylesAttribute.Id,
+			                         x => OutlineStyles.None);
+		}
 
 #region Private Properties
 		private int EndPoint {
 			get { return normalizer.EndPoint; }
+			set { normalizer.EndPoint = value; }
 		}
 		
 		private int StartPoint {
 			get { return normalizer.StartPoint; }
-		}
-
-		private Assembly SwfAssembly {
-			get {
-				if (!attempted_swf_load) {
-					swf_asm = Assembly.GetAssembly (typeof (TextBoxBase));
-					attempted_swf_load = true;
-				}
-				return swf_asm;
-			}
+			set { normalizer.StartPoint = value; }
 		}
 #endregion
 
@@ -506,9 +512,6 @@ namespace Mono.UIAutomation.Winforms
 		private TextNormalizer normalizer;
 		private ITextProvider provider;
 		private TextBoxBase textboxbase;
-
-		private Assembly swf_asm = null;
-		private bool attempted_swf_load = false;
 #endregion
 	}
 }

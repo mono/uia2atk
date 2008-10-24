@@ -215,6 +215,7 @@ REFERENCES =  \
 	UIAutomationBridge \
 	UIAutomationTypes \
 	UIAutomationProvider \
+	UIAutomationClient \
 	WindowsBase \
 	System \
 	System.Core \

@@ -97,6 +97,7 @@ REFERENCES =  \
 	UIAutomationTypes \
 	UIAutomationBridge \
 	UIAutomationProvider \
+	UIAutomationClient \
 	WindowsBase \
 	System \
 	System.Drawing \

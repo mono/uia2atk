@@ -1,3 +1,11 @@
+2008-10-24  Brad Taylor  <brad@getcoded.net>
+	
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Implement
+	FindAttribute and GetAttributeValues.  Refactor and remove reflection
+	in lieu of new InternalsVisibleTo.
+
+	* Makefile.am: Add new UIAutomationClient dependency.
+
 2008-10-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:
