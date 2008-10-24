@@ -729,5 +729,10 @@ namespace UiaAtkBridgeTest
 			// TODO: test the bounds that were set
 		}
 
+		[TestFixtureTearDown]
+		public void TearDown ()
+		{
+			form.Close ();
+		}
 	}
 }
