@@ -59,6 +59,7 @@
     <Compile Include="CheckBoxTest.cs" />
     <Compile Include="CheckedListBoxListItem.cs" />
     <Compile Include="ComboBoxTest.cs" />
+    <Compile Include="NumericUpDownTest.cs" />
     <Compile Include="DomainUpDownTest.cs" />
     <Compile Include="LameSpecAttribute.cs" />
     <Compile Include="ListBoxListItem.cs" />

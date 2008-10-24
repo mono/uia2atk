@@ -1,3 +1,8 @@
+2008-10-24  Neville Gao <nevillegao@gmail.com>
+
+	* UIAutomationWinformsClientTests.csproj: Updated for added file.
+	* NumericUpDownTest.cs: File added.
+
 2008-10-22  Mario Carrion <mcarrion@novell.com> 
 
 	* ListViewTest.cs: Pattern Test when View is LargeIcon.

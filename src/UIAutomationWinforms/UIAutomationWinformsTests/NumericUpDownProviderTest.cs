@@ -21,18 +21,14 @@
 // 
 // Authors: 
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//      Neville Gao <nevillegao@gmail.com>
 // 
-
 
 using System;
 using System.Windows.Forms;
-using System.Reflection;
-
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-
 using Mono.UIAutomation.Winforms;
-
 using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
@@ -40,13 +36,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	[TestFixture]
 	public class NumericUpDownProviderTest : BaseProviderTest
 	{
-		#region Basic Tests
+		#region Test
 		
 		[Test]
 		public void BasicPropertiesTest ()
 		{
-			NumericUpDown upDown = new NumericUpDown ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (upDown);
+			NumericUpDown numericUpDown = new NumericUpDown ();
+			IRawElementProviderSimple provider =
+				ProviderFactory.GetProvider (numericUpDown);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
@@ -60,19 +57,123 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void ProviderPatternTest ()
 		{
-			NumericUpDown upDown = new NumericUpDown ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (upDown);
+			NumericUpDown numericUpDown = new NumericUpDown ();
+			IRawElementProviderSimple provider = 
+				ProviderFactory.GetProvider (numericUpDown);
 			
-			object selectionItem =
+			object rangeValueProvider =
 				provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (selectionItem);
-			Assert.IsTrue (selectionItem is IRangeValueProvider,
-			               "IRangeValueProvider");
+			Assert.IsNotNull (rangeValueProvider,
+			                  "Not returning RangeValuePatternIdentifiers.");
+			Assert.IsTrue (rangeValueProvider is IRangeValueProvider,
+			               "Not returning RangeValuePatternIdentifiers.");
 		}
 		
 		#endregion
 		
-		#region IRangeValueProvider Tests
+		#region IRangeValueProvider Test
+		
+		[Test]
+		public void IRangeValueProviderIsReadOnlyTest ()
+		{
+			NumericUpDown numericUpDown = new NumericUpDown ();
+			IRawElementProviderSimple provider = 
+				ProviderFactory.GetProvider (numericUpDown);
+			
+			IRangeValueProvider rangeValueProvider = (IRangeValueProvider)
+				provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (rangeValueProvider,
+			                  "Not returning RangeValuePatternIdentifiers.");
+			
+			Assert.AreEqual (numericUpDown.ReadOnly,
+			                 rangeValueProvider.IsReadOnly,
+			                 "IsReadOnly value");
+		}
+		
+		[Test]
+		public void IRangeValueProviderMinimumTest ()
+		{
+			NumericUpDown numericUpDown = new NumericUpDown ();
+			IRawElementProviderSimple provider = 
+				ProviderFactory.GetProvider (numericUpDown);
+			
+			IRangeValueProvider rangeValueProvider = (IRangeValueProvider)
+				provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (rangeValueProvider,
+			                  "Not returning RangeValuePatternIdentifiers.");;
+			
+			Assert.AreEqual ((double) numericUpDown.Minimum,
+			                 rangeValueProvider.Minimum,
+			                 "Minimum value");
+		}
+		
+		[Test]
+		public void IRangeValueProviderMaximumTest ()
+		{
+			NumericUpDown numericUpDown = new NumericUpDown ();
+			IRawElementProviderSimple provider = 
+				ProviderFactory.GetProvider (numericUpDown);
+			
+			IRangeValueProvider rangeValueProvider = (IRangeValueProvider)
+				provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (rangeValueProvider,
+			                  "Not returning RangeValuePatternIdentifiers.");
+			
+			Assert.AreEqual ((double) numericUpDown.Maximum,
+			                 rangeValueProvider.Maximum,
+			                 "Maximum value");
+		}
+		
+		[Test]
+		public void IRangeValueProviderLargeChangeTest ()
+		{
+			NumericUpDown numericUpDown = new NumericUpDown ();
+			IRawElementProviderSimple provider = 
+				ProviderFactory.GetProvider (numericUpDown);
+			
+			IRangeValueProvider rangeValueProvider = (IRangeValueProvider)
+				provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (rangeValueProvider,
+			                  "Not returning RangeValuePatternIdentifiers.");
+			
+			Assert.AreEqual (double.NaN,
+			                 rangeValueProvider.LargeChange,
+			                 "LargeChange value");
+		}
+		
+		[Test]
+		public void IRangeValueProviderSmallChangeTest ()
+		{
+			NumericUpDown numericUpDown = new NumericUpDown ();
+			IRawElementProviderSimple provider = 
+				ProviderFactory.GetProvider (numericUpDown);
+			
+			IRangeValueProvider rangeValueProvider = (IRangeValueProvider)
+				provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (rangeValueProvider,
+			                  "Not returning RangeValuePatternIdentifiers.");
+			
+			Assert.AreEqual ((double) numericUpDown.Increment,
+			                 rangeValueProvider.SmallChange,
+			                 "SmallChange value");
+		}
+		
+		[Test]
+		public void IRangeValueProviderValueTest ()
+		{
+			NumericUpDown numericUpDown = new NumericUpDown ();
+			IRawElementProviderSimple provider = 
+				ProviderFactory.GetProvider (numericUpDown);
+			
+			IRangeValueProvider rangeValueProvider = (IRangeValueProvider)
+				provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (rangeValueProvider,
+			                  "Not returning RangeValuePatternIdentifiers.");
+			
+			Assert.AreEqual ((double) numericUpDown.Value,
+			                 rangeValueProvider.Value,
+			                 "Value value");
+		}
 		
 		#endregion
 		
@@ -82,41 +183,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			return new NumericUpDown ();
 		}
-
-		public override void LabeledByAndNamePropertyTest ()
-		{
-			Control control = GetControlInstance ();
-			
-			Form f = control as Form;
-			if (f != null)
-				return;
-			
-			using (f = new Form ()) {
-				f.Controls.Add (control);
-				
-				Label l = new Label ();
-				l.Text = "my label";
-				f.Controls.Add (l);
-				
-				f.Show ();
-			
-				Type formListenerType = typeof (FormListener);
-				MethodInfo onFormAddedMethod =
-					formListenerType.GetMethod ("OnFormAdded", BindingFlags.Static | BindingFlags.NonPublic);
-				onFormAddedMethod.Invoke (null, new object [] {f, null});
-				
-				IRawElementProviderSimple controlProvider =
-					ProviderFactory.GetProvider (control);
-				
-				object name = controlProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-				Assert.AreEqual (l.Text, name);
-				
-				f.Close ();
-			}
-		}
-
 		
 		#endregion
-
 	}
 }
