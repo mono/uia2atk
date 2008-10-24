@@ -647,7 +647,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (null, atkText.GetSelection (0, out startOffset, out endOffset), "GetSelection#16 SL");
 			
 			Assert.AreEqual (startCaretOffset, startOffset, "GetSelection#17 SL");
-			Assert.AreEqual (endCaretOffset, endOffset, "GetSelection#18.. SL");
+			Assert.AreEqual (endCaretOffset, endOffset, "GetSelection#18 SL");
 			Assert.AreEqual (null, atkText.GetSelection (1, out startOffset, out endOffset), "GetSelection#19 SL");
 			Assert.AreEqual (startCaretOffset, startOffset, "GetSelection#20 SL");
 			Assert.AreEqual (endCaretOffset, endOffset, "GetSelection#21 SL");

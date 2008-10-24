@@ -1,5 +1,9 @@
 2008-10-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Revert silly change.
+
+2008-10-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Cosmetic.
 
 2008-10-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
