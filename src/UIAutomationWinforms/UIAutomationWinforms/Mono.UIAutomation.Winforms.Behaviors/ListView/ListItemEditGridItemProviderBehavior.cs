@@ -31,23 +31,15 @@ using Mono.UIAutomation.Winforms.Events.ListView;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 {
-	internal class ListItemGridItemProviderBehavior
+	internal class ListItemEditGridItemProviderBehavior
 		: ProviderBehavior, IGridItemProvider
 	{
 		#region Constructors
 		
-		public ListItemGridItemProviderBehavior (ListItemProvider itemProvider)
-			: base (itemProvider)
+		public ListItemEditGridItemProviderBehavior (ListViewProvider.ListViewListItemEditProvider editProvider)
+			: base (editProvider)
 		{
-			this.itemProvider = itemProvider;
-			viewProvider = (ListViewProvider) itemProvider.ListProvider;
-			view = (SWF.ListView) viewProvider.Control;
-
-			//We need to keep a reference to Group because when removed the 
-			//group is set to null and we need to update the values.
-			group = ((SWF.ListViewItem) itemProvider.ObjectItem).Group;
-			if (group == null)
-				group = viewProvider.GetDefaultGroup ();
+			this.editProvider = editProvider;
 		}
 		
 		#endregion
@@ -63,10 +55,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			// NOTE: RowSpan Property NEVER changes.
 			// NOTE: ColumnSpan Property NEVER changes.
 			// NOTE: ContainingGrid Property NEVER changes.			
-			Provider.SetEvent (ProviderEventType.GridItemPatternRowProperty,
-			                   new ListItemGridItemPatternRowEvent ((ListItemProvider) Provider));
-			Provider.SetEvent (ProviderEventType.GridItemPatternColumnProperty,
-			                   new ListItemGridItemPatternColumnEvent ((ListItemProvider) Provider));
+//			Provider.SetEvent (ProviderEventType.GridItemPatternRowProperty,
+//			                   new ListItemGridItemPatternRowEvent ((ListItemProvider) Provider));
+//			Provider.SetEvent (ProviderEventType.GridItemPatternColumnProperty,
+//			                   new ListItemGridItemPatternColumnEvent ((ListItemProvider) Provider));
 		}
 		
 		public override void Disconnect ()
@@ -104,24 +96,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		#region IGridItemProvider Specialization
 		
 		public int Row {
-			get { 
-				SWF.ListView view = (SWF.ListView) viewProvider.Control;
-
-				if (view.View == SWF.View.List) //From Top to Bottom
-					return MaxRows == 0 ? -1 : IndexOf % MaxRows;					
-				else //From Left to Right
-					return MaxColumns == 0 ? -1 : IndexOf / MaxColumns;
+			get {
+				SWF.ListView listView = editProvider.ItemProvider.ListView;
+				return listView.Items.IndexOf (editProvider.ItemProvider.ListViewItem);
 			}
 		}
 		
 		public int Column {
 			get {
-				SWF.ListView view = (SWF.ListView) viewProvider.Control;
-
-				if (view.View == SWF.View.List) //From Top to Bottom
-					return MaxRows == 0 ? -1 : IndexOf / MaxRows; 
-				else //From Left to Right
-					return IndexOf - (Row * MaxColumns); 
+				SWF.ListView listView = editProvider.ItemProvider.ListView;
+				return listView.Columns.IndexOf (editProvider.Header);
 			}
 		}
 		
@@ -139,52 +123,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		#endregion
 		
-		#region Private Methods
-		
-		private int IndexOf {
-			get {
-				SWF.ListViewItem item = (SWF.ListViewItem) itemProvider.ObjectItem;
-
-				if (view.View == SWF.View.List || view.ShowGroups == false)
-					return view.Items.IndexOf (item);
-
-				if (viewProvider.IsDefaultGroup (group) == true) {					
-					int indexOf = 0;
-					bool found = false;					
-					
-					//TODO: Is this OK??
-					for (int index = 0; index < view.Items.Count; index++) {
-						if (view.Items [index].Group == null) {
-							if (view.Items [index] == item) {
-								found = true;
-								break;
-							}
-							indexOf++;
-						}
-					}
-					
-					return found == false ? -1 : indexOf;
-				} else
-					return group.Items.IndexOf (item);
-			}
-		}
-		
-		private int MaxColumns {
-			get { return ((SWF.ListView) viewProvider.Control).UIAColumns; }
-		}
-
-		private int MaxRows {
-			get { return ((SWF.ListView) viewProvider.Control).UIARows; }
-		}
-		
-		#endregion
-		
 		#region Private Fields
 
-		private SWF.ListViewGroup group;
-		private SWF.ListView view;
-		private ListItemProvider itemProvider;
-		private ListViewProvider viewProvider;
+		private ListViewProvider.ListViewListItemEditProvider editProvider;
 		
 		#endregion
 		

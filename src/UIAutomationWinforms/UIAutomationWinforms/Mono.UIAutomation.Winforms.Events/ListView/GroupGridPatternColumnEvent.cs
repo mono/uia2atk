@@ -48,42 +48,25 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Connect ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ListView.ListViewItemCollection),
-				                        ((ListViewProvider.ListViewGroupProvider) Provider).View.Items, 
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnColumnPropertyEvent");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((ListViewProvider.ListViewGroupProvider) Provider).ListView.Items.UIACollectionChanged 
+				+= OnColumnPropertyEvent;
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ListView.ListViewItemCollection),
-				                           ((ListViewProvider.ListViewGroupProvider) Provider).View.Items,
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnColumnPropertyEvent");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((ListViewProvider.ListViewGroupProvider) Provider).ListView.Items.UIACollectionChanged 
+				-= OnColumnPropertyEvent;
 		}
 		
 		#endregion 
 		
-		#region Protected methods
+		#region Private methods
 
-// This method is used via reflection, so ignore the never used warning
-#pragma warning disable 169
 		private void OnColumnPropertyEvent (object sender, 
 		                                    CollectionChangeEventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-#pragma warning restore 169
 
 		#endregion
 	}

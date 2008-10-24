@@ -55,10 +55,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		public override void Connect ()
 		{
-//			Provider.SetEvent (ProviderEventType.TablePatternColumnHeadersProperty,
-//			                   null);
 			// NOTE: RowHeadersProperty Property NEVER changes.
 			// NOTE: RowOrColumnMajor Property NEVER changes.
+			Provider.SetEvent (ProviderEventType.TablePatternColumnHeadersProperty,
+			                   new TablePatternColumnHeadersEvent ((ListViewProvider) Provider));
 		}
 		
 		public override void Disconnect ()

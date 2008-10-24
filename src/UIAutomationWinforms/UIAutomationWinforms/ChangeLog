@@ -1,3 +1,40 @@
+2008-10-24  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: View.Details support:
+	Updated to handle adding, removing and clearing columns.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GroupGridProviderBehavior.cs:
+	Support when ListView.View is View.Details.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditGridItemProviderBehavior.cs:
+	GridItem behavior in ListView.ListItem.Edit provider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/TableProviderBehavior.cs:
+	Table.ColumnHeaders event enabled.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditValueProviderBehavior.cs:
+	Value behavior in ListView.ListItem.Edit provider.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/GridPatternRowEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/GridPatternColumnEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternRowEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternColumnEvent.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs:
+	Not using reflection.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternValueEvent.cs:
+	New event handler added.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemEditValuePatternValueEvent.cs:
+	ListView.ListItem.Edit Value Pattern Value Event.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/TablePatternColumnHeadersEvent.cs:
+	ListView.Table.ColumnHeader event.
+
+	* Mono.UIAutomation.Winforms.mdp: Added: ListItem.Edit.Value behavior,
+	ListItem.Edit.Value events and ListItem.Edit.Grid behavior.
+
 2008-10-24  Brad Taylor  <brad@getcoded.net>
 	
 	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Implement

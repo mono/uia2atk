@@ -48,42 +48,23 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Connect ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ListView.ListViewItemCollection),
-				                        ((SWF.ListView) Provider.Control).Items,
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnRowCountPropertyEvent");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListView) Provider.Control).Items.UIACollectionChanged += OnRowCountPropertyEvent;
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ListView.ListViewItemCollection),
-				                           ((SWF.ListView) Provider.Control).Items,
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnRowCountPropertyEvent");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListView) Provider.Control).Items.UIACollectionChanged -= OnRowCountPropertyEvent;
 		}
 		
 		#endregion 
 		
-		#region Protected methods
+		#region Private methods
 
-// This method is used via reflection, so ignore the never used warning
-#pragma warning disable 169
 		private void OnRowCountPropertyEvent (object sender,
 		                                      CollectionChangeEventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-#pragma warning restore 169
 
 		#endregion
 	}

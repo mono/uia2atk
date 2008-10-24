@@ -583,13 +583,13 @@ namespace Mono.UIAutomation.Winforms
 				get { return group; }
 			}
 
-			public SWF.ListView View {
+			public SWF.ListView ListView {
 				get { return listView; }
 			}
 			
 			public override IRawElementProviderFragmentRoot FragmentRoot {
 				get { 
-					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (View);
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (ListView);
 				}
 			}
 		
@@ -829,6 +829,10 @@ namespace Mono.UIAutomation.Winforms
 				providers = new Dictionary<SWF.ColumnHeader, ListViewListItemEditProvider> ();
 			}
 
+			public SWF.ListView ListView {
+				get { return listView; }
+			}
+
 			public SWF.ListViewItem ListViewItem {
 				get { return item; }
 			}
@@ -908,15 +912,28 @@ namespace Mono.UIAutomation.Winforms
 					return;
 
 				//FIXME: Add/Remove column in internal children
+				SWF.ColumnHeader column = (SWF.ColumnHeader) args.Element;
 
-//				SWF.ColumnHeader header = (SWF.ColumnHeader) args.Element;
-//				if (args.Action == CollectionChangeAction.Add)
-//					FIXME Add
-//				else if (args.Action == CollectionChangeAction.Remove)
-//					FIXME Remove
-//				else
-//					FIXME Clear
+				if (args.Action == CollectionChangeAction.Add) {
+					ListViewListItemEditProvider editProvider 
+						= new ListViewListItemEditProvider (column, this);
+					editProvider.Initialize ();
+					providers [column] = editProvider;
+					OnNavigationChildAdded (true, editProvider);
+				} else if (args.Action == CollectionChangeAction.Remove) {
+					ListViewListItemEditProvider editProvider;
+					if (providers.TryGetValue (column, out editProvider)) {
+						OnNavigationChildRemoved (true, editProvider);
+						editProvider.Terminate ();
+						providers.Remove (column);
+					}
+				} else {
+					foreach (ListViewListItemEditProvider provider in providers.Values)
+						provider.Terminate ();
+					providers.Clear ();
 
+					OnNavigationChildrenCleared (true);
+				}
 			}
 
 			private SWF.ListViewItem item;
@@ -930,19 +947,19 @@ namespace Mono.UIAutomation.Winforms
 		internal class ListViewListItemEditProvider : FragmentControlProvider
 		{
 			public ListViewListItemEditProvider (SWF.ColumnHeader header,
-			                                     ListViewListItemProvider itemProvider) : base (null)
+			                                     ListViewListItemProvider itemProvider)
+				: base (null)
 			{
 				this.header = header;
 				this.itemProvider = itemProvider;
+			}
 
-				listView = (SWF.ListView) itemProvider.Control;
+			public SWF.ColumnHeader Header {
+				get { return header; }
+			}
 
-				//LAMESPEC: Vista does not support Text Pattern.
-				//http://msdn.microsoft.com/en-us/library/ms748367.aspx
-
-				//TODO: Implement TableItem
-				//TODO: Implement GridItem
-				//TODO: Implement Value
+			public ListViewListItemProvider ItemProvider {
+				get { return itemProvider; }
 			}
 
 			public override IRawElementProviderFragmentRoot FragmentRoot {
@@ -953,12 +970,18 @@ namespace Mono.UIAutomation.Winforms
 			{
 				base.Initialize ();
 
+				//LAMESPEC: Vista does not support Text Pattern.
+				//http://msdn.microsoft.com/en-us/library/ms748367.aspx
+
+				//FIXME: Implement TableItem
+				//FIXME: Implement GridItem
+
 				SetBehavior (GridItemPatternIdentifiers.Pattern,
-				             null);
-				SetBehavior (TableItemPatternIdentifiers.Pattern,
-				             null);
+				             new ListItemEditGridItemProviderBehavior (this));
+//				SetBehavior (TableItemPatternIdentifiers.Pattern,
+//				             null);
 				SetBehavior (ValuePatternIdentifiers.Pattern,
-				             null);
+				             new ListItemEditValueProviderBehavior (this));
 			}
 
 			public override object GetPropertyValue (int propertyId)
@@ -968,19 +991,8 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return "edit";
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
-					if (listView.Columns.Count == 0)
-						return string.Empty;
-					else {
-						if (listView.Columns [0] == header)
-							return itemProvider.ListViewItem.Text;
-						else {
-							int indexOf = listView.Columns.IndexOf (header) - 1;
-							if (indexOf < 0)
-								return string.Empty;
-							else
-								return itemProvider.ListViewItem.SubItems [indexOf].Text;
-						}
-					}
+					IValueProvider valueProvider = (IValueProvider) GetBehavior (ValuePatternIdentifiers.Pattern);
+					return valueProvider.Value;
 				} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
@@ -988,18 +1000,16 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
 				else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id) {
-					if (listView.Columns.Count == 0 || listView.Columns [0] == header)
+					if (ItemProvider.ListView.Columns.Count == 0 || ItemProvider.ListView.Columns [0] == header)
 						return string.Empty;
 					else
 						return itemProvider.ListViewItem.ToolTipText;
-				}
-				//FIXME: ClickablePointProperty , BoundingRectangleProperty, IsOffScreen
-				else 
+				} else 
 					return base.GetPropertyValue (propertyId);
+				//FIXME: ClickablePointProperty , BoundingRectangleProperty, IsOffScreen
 			}
 
 			private ListViewListItemProvider itemProvider;
-			private SWF.ListView listView;
 			private SWF.ColumnHeader header;
 		}
 		

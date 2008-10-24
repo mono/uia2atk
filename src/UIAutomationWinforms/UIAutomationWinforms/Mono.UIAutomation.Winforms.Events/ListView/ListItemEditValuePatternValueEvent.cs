@@ -22,24 +22,21 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-using System;
-using System.ComponentModel;
 using System.Windows.Automation;
-using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Winforms;
-using Mono.UIAutomation.Winforms.Events;
-
 namespace Mono.UIAutomation.Winforms.Events.ListView
 {
-	internal class GridPatternColumnEvent : BaseAutomationPropertyEvent
+	internal class ListItemEditValuePatternValueEvent
+		: BaseAutomationPropertyEvent
 	{
+		
 		#region Constructors
 
-		public GridPatternColumnEvent (ListViewProvider provider)
+		public ListItemEditValuePatternValueEvent (ListViewProvider.ListViewListItemEditProvider provider)
 			: base (provider, 
-			        GridPatternIdentifiers.ColumnCountProperty)
+			        ValuePatternIdentifiers.ValueProperty)
 		{
+			editProvider = provider;
 		}
 		
 		#endregion
@@ -48,24 +45,31 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Connect ()
 		{
-			((SWF.ListView) Provider.Control).Items.UIACollectionChanged += OnColumnPropertyEvent;
+			editProvider.ItemProvider.ListViewItem.UIASubItemTextChanged += OnUIATextChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.ListView) Provider.Control).Items.UIACollectionChanged -= OnColumnPropertyEvent;
+			editProvider.ItemProvider.ListViewItem.UIASubItemTextChanged -= OnUIATextChanged;
 		}
 		
 		#endregion 
 		
-		#region Private methods
+		#region Protected methods
 
-		private void OnColumnPropertyEvent (object sender, 
-		                                    CollectionChangeEventArgs args)
+		private void OnUIATextChanged (object sender, SWF.LabelEditEventArgs args)
 		{
-			RaiseAutomationPropertyChangedEvent ();
+			if (args.Item == editProvider.ItemProvider.ListView.Columns.IndexOf (editProvider.Header))
+				RaiseAutomationPropertyChangedEvent ();
 		}
+
+		#endregion
+
+		#region Private Fields
+
+		private ListViewProvider.ListViewListItemEditProvider editProvider;
 
 		#endregion
 	}
 }
+

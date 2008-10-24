@@ -84,16 +84,26 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		#region IGridProvider implementation
 
 		public int ColumnCount {
-			//Works for View.List
 			get {
-				bool module = listView.Items.Count % RowCount > 0;
-				return (listView.Items.Count / RowCount) + (module ? 1 : 0);
+				if (listView.View == SWF.View.Details)
+					return listView.Columns.Count;
+				else { //Is View.List
+					if (RowCount == 0)
+						return -1;
+
+					bool module = listView.Items.Count % RowCount > 0;
+					return (listView.Items.Count / RowCount) + (module ? 1 : 0);
+				}
 			}
 		}
 
 		public int RowCount {
-			//Works for View.List
-			get { return MaxRows; }
+			get {
+				if (listView.View == SWF.View.Details)
+					return listView.Items.Count;
+				else //Is View.List
+					return listView.UIARows; 
+			}
 		}
 
 		//Remarks: 
@@ -118,22 +128,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 
 			ListViewProvider provider = (ListViewProvider) Provider;
 
-			//Works for View.List
-			return provider.GetProviderAt ((column * rowCount) + row);
+			if (listView.View == SWF.View.Details) {
+				//FIXME: Implement
+				throw new NotImplementedException ();
+			} else //Is View.List
+				return provider.GetProviderAt ((column * rowCount) + row);
 		}
 		
-		#endregion
-
-		#region Private Properties
-
-		private int MaxRows {
-			get {
-				return Helper.GetPrivateProperty<SWF.ListView, int> (typeof (SWF.ListView),
-				                                                     (SWF.ListView) Provider.Control,
-				                                                     "UIARows");
-			}
-		}
-
 		#endregion
 
 		#region

@@ -97,16 +97,17 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		public int ColumnCount {
 			get {
-				int maxColums 
-					= Helper.GetPrivateProperty<SWF.ListView, int> (typeof (SWF.ListView),
-					                                                viewGroupProvider.View,
-					                                                "UIAColumns");
-				int itemsInGroup = ItemsInGroupCount ();
-
-				if (itemsInGroup < maxColums)
-					return itemsInGroup;
-				else
-					return maxColums;
+				if (viewGroupProvider.ListView.View == SWF.View.Details)
+					return viewGroupProvider.ListView.Columns.Count;
+				else {
+					int maxColums = viewGroupProvider.ListView.UIAColumns;
+					int itemsInGroup = ItemsInGroupCount ();
+	
+					if (itemsInGroup < maxColums)
+						return itemsInGroup;
+					else
+						return maxColums;
+				}
 			}
 		}
 		
@@ -135,11 +136,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		private int ItemsInGroupCount ()
 		{
 			ListViewProvider listViewProvider
-				= (ListViewProvider) ProviderFactory.FindProvider (viewGroupProvider.View);
+				= (ListViewProvider) ProviderFactory.FindProvider (viewGroupProvider.ListView);
 			if (listViewProvider.IsDefaultGroup (viewGroupProvider.Group) == true) {
 				int itemsInGroup = 0;
-				for (int index = 0; index < viewGroupProvider.View.Items.Count; index++) {
-					if (viewGroupProvider.View.Items [index].Group == null)
+				for (int index = 0; index < viewGroupProvider.ListView.Items.Count; index++) {
+					if (viewGroupProvider.ListView.Items [index].Group == null)
 						itemsInGroup++;
 				}
 				return itemsInGroup;

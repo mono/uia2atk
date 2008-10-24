@@ -32,13 +32,13 @@ using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Events.ListView
 {
-	internal class GridPatternColumnEvent : BaseAutomationPropertyEvent
+	internal class TablePatternColumnHeadersEvent : BaseAutomationPropertyEvent
 	{
 		#region Constructors
 
-		public GridPatternColumnEvent (ListViewProvider provider)
+		public TablePatternColumnHeadersEvent (ListViewProvider provider)
 			: base (provider, 
-			        GridPatternIdentifiers.ColumnCountProperty)
+			        TablePatternIdentifiers.ColumnHeadersProperty)
 		{
 		}
 		
@@ -48,20 +48,26 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Connect ()
 		{
-			((SWF.ListView) Provider.Control).Items.UIACollectionChanged += OnColumnPropertyEvent;
+			ListViewProvider provider = (ListViewProvider) Provider;
+				
+			((SWF.ListView) provider.Control).Columns.UIACollectionChanged
+				+= OnUIAColumnsCollectionChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.ListView) Provider.Control).Items.UIACollectionChanged -= OnColumnPropertyEvent;
+			ListViewProvider provider = (ListViewProvider) Provider;
+				
+			((SWF.ListView) provider.Control).Columns.UIACollectionChanged
+				-= OnUIAColumnsCollectionChanged;
 		}
 		
 		#endregion 
 		
 		#region Private methods
 
-		private void OnColumnPropertyEvent (object sender, 
-		                                    CollectionChangeEventArgs args)
+		private void OnUIAColumnsCollectionChanged (object sender, 
+		                                            CollectionChangeEventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}

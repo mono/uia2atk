@@ -212,6 +212,10 @@
     <File name="Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMaximumEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMinimumEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternSmallChangeEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditValueProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemEditValuePatternValueEvent.cs" subtype="Code" buildaction="Nothing" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/TablePatternColumnHeadersEvent.cs" subtype="Code" buildaction="Nothing" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditGridItemProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

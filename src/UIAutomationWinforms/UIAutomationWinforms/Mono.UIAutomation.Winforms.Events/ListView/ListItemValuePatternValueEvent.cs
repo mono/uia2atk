@@ -21,7 +21,8 @@
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
-// 
+//
+using System;
 using System.Windows.Automation;
 using SWF = System.Windows.Forms;
 
@@ -47,16 +48,24 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		public override void Connect ()
 		{
 			viewItem.ListView.AfterLabelEdit += OnAfterLabelEdit;
+			viewItem.UIATextChanged += OnUIATextChanged;
 		}
 
 		public override void Disconnect ()
 		{
 			viewItem.ListView.AfterLabelEdit -= OnAfterLabelEdit;
+			viewItem.UIATextChanged -= OnUIATextChanged;
 		}
 		
 		#endregion 
 		
-		#region Protected methods
+		#region Private methods
+
+		private void OnUIATextChanged (object sender, EventArgs args)
+		{
+			newText = viewItem.Text;
+			RaiseAutomationPropertyChangedEvent ();
+		}
 
 		private void OnAfterLabelEdit (object sender, SWF.LabelEditEventArgs args)
 		{
