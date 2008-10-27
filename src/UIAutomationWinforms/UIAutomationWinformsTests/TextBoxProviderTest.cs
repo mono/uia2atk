@@ -291,16 +291,19 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 #region Events tests
 		
 		[Test]
-		[Ignore ("Current failure needs investigation")]
 		public void TextChangedEventTest ()
 		{
 			TextBox textbox = new TextBox ();
+			textbox.Size = new System.Drawing.Size (30, 30);
+			Form.Controls.Add (textbox);
+			textbox.ScrollBars = ScrollBars.Both;
 
 			bridge.ResetEventLists ();			
+
 			textbox.Text = "Changed!";
 
 			Assert.AreEqual (1,
-			                 bridge.AutomationEvents.Count,
+			                 bridge.AutomationPropertyChangedEvents.Count,
 			                 "Event count");
 		}
 		
