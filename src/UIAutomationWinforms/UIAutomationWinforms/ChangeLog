@@ -1,3 +1,29 @@
+2008-10-27  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs:
+	GridProviderBehavior returns GridControlType-related properties.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditGridItemProviderBehavior.cs:
+	New property: EditProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditTableItemProviderBehavior.cs:
+	Implements ListView.ListItem.Edit.TableItem provider.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemEditValuePatternValueEvent.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditValueProviderBehavior.cs:
+	Using ColumnHeader instead of Header.
+
+	* Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: TableItem
+	properties added.
+
+	* Mono.UIAutomation.Winforms.mdp: File added:
+	ListView.ListItem.Edit.TableItem provider.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: ListViewHeader listens
+	for ColumnCollection event. ListItem returns
+	DataItemControlType-related when View is Details.
+	ListView.ListItem.Edit.Table provider enabled.
+
 2008-10-24  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am: TextBox.Value.Value event added.

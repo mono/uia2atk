@@ -92,6 +92,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		}
 		
 		#endregion
+
+		#region Protected Properties
+
+		protected ListViewProvider.ListViewListItemEditProvider EditProvider {
+			get { return editProvider; }
+		}
+
+		#endregion
 		
 		#region IGridItemProvider Specialization
 		
@@ -105,7 +113,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		public int Column {
 			get {
 				SWF.ListView listView = editProvider.ItemProvider.ListView;
-				return listView.Columns.IndexOf (editProvider.Header);
+				return listView.Columns.IndexOf (editProvider.ColumnHeader);
 			}
 		}
 		

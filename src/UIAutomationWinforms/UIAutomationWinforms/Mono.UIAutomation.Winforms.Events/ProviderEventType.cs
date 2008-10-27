@@ -91,6 +91,9 @@ namespace Mono.UIAutomation.Winforms.Events
 		//Table Pattern
 		TablePatternColumnHeadersProperty,
 		TablePatternRowHeadersProperty,
-		TablePatternRowOrColumnMajorProperty
+		TablePatternRowOrColumnMajorProperty,
+		//Table Item Pattern
+		TableItemPatternColumnHeaderItemsProperty,
+		TableItemPatternRowHeaderItemsProperty
 	}
 }

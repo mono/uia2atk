@@ -59,7 +59,7 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		private void OnUIATextChanged (object sender, SWF.LabelEditEventArgs args)
 		{
-			if (args.Item == editProvider.ItemProvider.ListView.Columns.IndexOf (editProvider.Header))
+			if (args.Item == editProvider.ItemProvider.ListView.Columns.IndexOf (editProvider.ColumnHeader))
 				RaiseAutomationPropertyChangedEvent ();
 		}
 

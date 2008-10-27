@@ -689,7 +689,21 @@ namespace Mono.UIAutomation.Winforms
 		{
 			public ListViewHeaderProvider (SWF.ListView view) : base (null)
 			{
-				this.view = view;
+				listView = view;
+				headerItems = new Dictionary<SWF.ColumnHeader, ListViewHeaderItemProvider> ();
+			}
+
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { 
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (listView); 
+				}
+			}
+
+			public ListViewHeaderItemProvider GetHeaderItemFrom (SWF.ColumnHeader column)
+			{
+				ListViewHeaderItemProvider headerItem;
+				headerItems.TryGetValue (column, out headerItem);
+				return headerItem;
 			}
 
 			public IRawElementProviderSimple[] GetHeaderItems ()
@@ -731,25 +745,64 @@ namespace Mono.UIAutomation.Winforms
 					return base.GetPropertyValue (propertyId);
 			}
 
+			public override void Initialize ()
+			{
+				base.Initialize ();
+				
+				//Event used to update columns in ListItem when View.Details
+				listView.Columns.UIACollectionChanged += OnUIAColumnsCollectionChanged;
+			}
+
 			public override void InitializeChildControlStructure ()
 			{
 				base.InitializeChildControlStructure ();
 
-				foreach (SWF.ColumnHeader header in view.Columns) {
+				foreach (SWF.ColumnHeader column in listView.Columns) {
 					ListViewHeaderItemProvider item 
-						= new ListViewHeaderItemProvider (this, header);
+						= new ListViewHeaderItemProvider (this, column);
 					item.Initialize ();
 					OnNavigationChildAdded (false, item);
+					headerItems [column] = item;
 				}
 			}
 
-			public override IRawElementProviderFragmentRoot FragmentRoot {
-				get { 
-					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (view); 
+			public override void Terminate ()
+			{
+				base.Terminate ();
+
+				//Event used to update columns in ListItem when View.Details
+				listView.Columns.UIACollectionChanged -= OnUIAColumnsCollectionChanged;
+			}
+
+			private void OnUIAColumnsCollectionChanged (object sender, 
+			                                            CollectionChangeEventArgs args)
+			{
+				SWF.ColumnHeader column = (SWF.ColumnHeader) args.Element;
+				
+				if (args.Action == CollectionChangeAction.Add) {
+					ListViewHeaderItemProvider itemProvider
+						= new ListViewHeaderItemProvider (this, column);
+					itemProvider.Initialize ();
+					headerItems [column] = itemProvider;
+					OnNavigationChildAdded (true, itemProvider);
+				} else if (args.Action == CollectionChangeAction.Remove) {
+					ListViewHeaderItemProvider itemProvider;
+					if (headerItems.TryGetValue (column, out itemProvider)) {
+						OnNavigationChildRemoved (true, itemProvider);
+						itemProvider.Terminate ();
+						headerItems.Remove (column);
+					}
+				} else {
+					foreach (ListViewHeaderItemProvider item in headerItems .Values)
+						item.Terminate ();
+					headerItems.Clear ();
+
+					OnNavigationChildrenCleared (true);
 				}
 			}
 
-			private SWF.ListView view;
+			private Dictionary<SWF.ColumnHeader, ListViewHeaderItemProvider> headerItems;
+			private SWF.ListView listView;
 			
 		} // ListViewHeaderProvider
 
@@ -847,6 +900,21 @@ namespace Mono.UIAutomation.Winforms
 				providers.TryGetValue (listView.Columns [column], out editProvider);
 
 				return editProvider;
+			}
+
+			public override object GetPropertyValue (int propertyId)
+			{
+				if (ListView.View == SWF.View.Details) {
+					//According to: http://msdn.microsoft.com/en-us/library/ms742561.aspx
+					if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+						return ControlType.DataItem.Id;
+					else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+						return "data item";
+					//FIXME: What about ItemTypeProperty & ItemStatusProperty ?
+					else
+						return base.GetPropertyValue (propertyId);
+				} else
+					return base.GetPropertyValue (propertyId);
 			}
 
 			public override void Initialize ()
@@ -965,7 +1033,7 @@ namespace Mono.UIAutomation.Winforms
 				this.itemProvider = itemProvider;
 			}
 
-			public SWF.ColumnHeader Header {
+			public SWF.ColumnHeader ColumnHeader {
 				get { return header; }
 			}
 
@@ -984,12 +1052,10 @@ namespace Mono.UIAutomation.Winforms
 				//LAMESPEC: Vista does not support Text Pattern.
 				//http://msdn.microsoft.com/en-us/library/ms748367.aspx
 
-				//FIXME: Implement TableItem
-
 				SetBehavior (GridItemPatternIdentifiers.Pattern,
 				             new ListItemEditGridItemProviderBehavior (this));
-//				SetBehavior (TableItemPatternIdentifiers.Pattern,
-//				             null);
+				SetBehavior (TableItemPatternIdentifiers.Pattern,
+				             new ListItemEditTableItemProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new ListItemEditValueProviderBehavior (this));
 			}

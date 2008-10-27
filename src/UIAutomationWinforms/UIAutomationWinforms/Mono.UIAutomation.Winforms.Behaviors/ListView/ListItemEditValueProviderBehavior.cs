@@ -39,7 +39,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		public ListItemEditValueProviderBehavior (ListViewProvider.ListViewListItemEditProvider editProvider)
 			: base (editProvider)
 		{
-			columnHeader = editProvider.Header;
+			columnHeader = editProvider.ColumnHeader;
 			listView = editProvider.ItemProvider.ListView;
 			listViewItem = editProvider.ItemProvider.ListViewItem;
 		}
