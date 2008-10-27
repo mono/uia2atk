@@ -1,3 +1,8 @@
+2008-10-27  Ray Wang <rawang@novell.com>
+
+	* keystrokes/radiobutton/winradiobutton.py: add orca-test-keystrokes-script
+	for winforms RadioButton control
+
 2008-10-27  Calen Chen <cachen@novell.com>
 
 	* checkbox_basic_ops.py: update states check for checkbox5 from line 68 
