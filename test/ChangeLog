@@ -1,3 +1,13 @@
+2008-10-27  Calen Chen <cachen@novell.com>
+
+	* samples/linklabel.py: enlarge the width of windows
+	* testers/linklabel/linklabelframe.py: add openLink method to do "jump" 
+	action for enable link. also it can check the Hypertext and Hyperlink 
+	implementation(if they are unimplemented, test can't running getURI 
+	and getLink)
+	* testers/linklabel_basic_ops.py: add test to do "jump" action for 
+	linklabel and assert the new application appear then close it.
+
 2008-10-27  Ray Wang <rawang@novell.com>
 
 	* keystrokes/radiobutton/winradiobutton.py: add orca-test-keystrokes-script

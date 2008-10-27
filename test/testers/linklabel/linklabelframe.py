@@ -22,7 +22,7 @@ class LinkLabelFrame(accessibles.Frame):
     # the available widgets on the window
     LINK1 = re.compile('^openSUSE:www.opensuse.org')
     LINK2 = "calculator:/usr/bin/gcalctool"
-    LINK3 = "gedit:/usr/bin/gedit"
+    LINK3 = "gmail:gmail.novell.com"
 
     def __init__(self, accessible):
         super(LinkLabelFrame, self).__init__(accessible)
@@ -38,28 +38,34 @@ class LinkLabelFrame(accessibles.Frame):
         procedurelogger.expectedResult('got %s link in label %s' % (linknum, accessible))
         assert iaction.getNLinks() == linknum, "missing %s" % url
 
-    #give 'jump' action for linklabel
-    def openLink(self,linklabel):
-        linklabel.jump()
+    #give 'jump' action for linklabel, and implement Hypertext and Hyperlink
+    def openLink(self, accessible, hyperlink=None, index=0):
+        
+        iaction = accessible._accessible.queryHypertext()
+        hyperlink = iaction.getLink(index)
 
-    #close new application without log
-    def close(self):
-        self.keyCombo('<alt>F4', log=False)
+        linkurl = hyperlink.getURI(0)
+
+        linklabel = hyperlink.getObject(0).queryAction()
+
+        procedurelogger.action('do "jump" action for %s' % linkurl)
+        linklabel.doAction(0)
 
     #assert if can invoke the link
     def assertLinkable(self, url):
 
-        def resultMatches():
-            if url == "Firefox":
-                return launchNewApp(url)
+        #def resultMatches():
+        if url == "Firefox":
+            assert launchNewApp(url)
 
-            elif url == "gcalctool":
-                return launchNewApp(url)
+        elif url == "gcalctool":
+            assert launchNewApp(url)
 
-            elif url == "gedit111":
-                return not pyatspi.findDescendant(cache._desktop, lambda x: x.name == url, True)
+        elif url == "gmail":
+            procedurelogger.expectedResult("%s is a disable link, you can't invoke it" % url)
 
-        assert retryUntilTrue(resultMatches)
+            application = pyatspi.findDescendant(cache._desktop, lambda x: x.name == "Firefox", True)
+            assert not application
 
     #close application main window after running test
     def quit(self):

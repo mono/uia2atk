@@ -55,12 +55,33 @@ llFrame.showLink(llFrame.link1, 'www.opensuse.org', 2)
 llFrame.showLink(llFrame.link2, 'calculator')
 llFrame.showLink(llFrame.link3, 'gedit')
 
+#do 'jump' action for link1 to invoke firefox, then close firefox
+llFrame.openLink(llFrame.link1)
+sleep(config.MEDIUM_DELAY)
+llFrame.assertLinkable("Firefox")
+newapp = launchNewApp("Firefox")
+newframe = newapp.findFrame(re.compile("openSUSE.org"))
+newframe.mouseClick()
+newframe.altF4()
+
+#do 'jump' action for link2 to invoke gclctool, then close gclctool
+llFrame.openLink(llFrame.link2)
+sleep(config.MEDIUM_DELAY)
+llFrame.assertLinkable("gcalctool")
+newapp = launchNewApp("gcalctool")
+newapp.findFrame("Calculator").altF4()
+
+#doing 'jump' action for link3 doesn't invoke gedit
+llFrame.openLink(llFrame.link3)
+sleep(config.MEDIUM_DELAY)
+llFrame.assertLinkable("gmail")
+
 #invoke firefox from linklabel1, then close it
 llFrame.keyCombo("Return", grabFocus=False)
 sleep(config.MEDIUM_DELAY)
 llFrame.assertLinkable("Firefox")
 newapp = launchNewApp("Firefox")
-newframe = newapp.findFrame("openSUSE.org - Mozilla Firefox")
+newframe = newapp.findFrame(re.compile("openSUSE.org"))
 newframe.mouseClick()
 newframe.altF4()
 
@@ -74,8 +95,7 @@ newapp.findFrame("Calculator").altF4()
 #un-invoke gedit from linklabel3
 llFrame.link3.mouseClick()
 sleep(config.MEDIUM_DELAY)
-llFrame.assertLinkable("gedit")
-
+llFrame.assertLinkable("gmail")
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

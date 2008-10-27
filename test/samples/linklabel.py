@@ -35,7 +35,7 @@ class RunApp(Form):
         self.count = 0
         self.Text = "LinkLabel control"
         self.Height = 200
-        self.Width = 300
+        self.Width = 350
 
         # set up LinkLabel control
         self.linklabel1 = LinkLabel()
@@ -44,7 +44,7 @@ class RunApp(Form):
         self.linklabel1.Name = "www"
         self.linklabel1.Text = "openSUSE:www.opensuse.org   webmail:gmail.novell.com"
         self.linklabel1.Links.Add(9, 16, "www.opensuse.org")
-        self.linklabel1.Links.Add(33, 16, "gmail.novell.com")
+        self.linklabel1.Links.Add(33, 19, "gmail.novell.com")
         #self.linklabel1.LinkClicked += self.linklabel_clicked
         self.linklabel1.Links[1].Enabled = False
         #self.linklabel1.LinkArea = LinkArea(9, 28)
@@ -61,7 +61,6 @@ class RunApp(Form):
         AddLinkString = "/usr/bin/gcalctool"
         LinkIndex = self.linklabel2.Text.Length
         self.linklabel2.Text += AddLinkString
-        print "aaaaaaa", LinkIndex
 
         #self.linklabel2.Links.Add(10, 28, "/usr/bin/gcalctool")
         self.linklabel2.Links.Add(LinkIndex, (AddLinkString.Length), "/usr/bin/gcalctool")
@@ -72,9 +71,9 @@ class RunApp(Form):
         self.linklabel3 = LinkLabel()
         self.linklabel3.Location = Point(10,100)
         self.linklabel3.AutoSize = True
-        self.linklabel3.Name = "gedit"
-        self.linklabel3.Text = "gedit:/usr/bin/gedit"
-        self.linklabel3.Links.Add(7, 28, "/usr/bin/gedit")
+        self.linklabel3.Name = "gmail"
+        self.linklabel3.Text = "gmail:gmail.novell.com"
+        self.linklabel3.Links.Add(6, 20, "gmail.novell.com")
         self.linklabel3.LinkClicked += self.linklabel3_clicked
         self.linklabel3.Links[0].Enabled = False
 
@@ -101,7 +100,7 @@ class RunApp(Form):
         self.linklabel3.Links[0].Visited = True
         target1 = self.linklabel3.Links[0].LinkData
 
-        if (target1.StartsWith("/usr")):
+        if (target1.StartsWith("gmail")):
             System.Diagnostics.Process.Start(target1)
         else:
             MessageBox.Show("Item clicked: " + target1)
