@@ -43,8 +43,15 @@ namespace UiaAtkBridge
 		{
 			this.provider = provider;
 			Role = Atk.Role.Text;
-			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			Name = text;
+
+			ITextProvider textProvider = (ITextProvider) provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id);
+			IValueProvider valueProvider = (IValueProvider) provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+			if ((textProvider == null) && (valueProvider == null))
+				throw new ArgumentException ("Provider for TextBox should either implement IValue or IText");
+			
+			string text = (textProvider != null) ? textProvider.DocumentRange.GetText (-1) : 
+				valueProvider.Value.ToString ();
+
 			textExpert = new TextImplementorHelper (text);
 			if ((int)provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) ==
 			    ControlType.Document.Id)
@@ -139,7 +146,7 @@ namespace UiaAtkBridge
 		
 		public int CaretOffset {
 			get {
-				throw new NotImplementedException ();
+				return multiLine ? textExpert.Length : 0;
 			}
 		}
 		
@@ -150,9 +157,7 @@ namespace UiaAtkBridge
 		}
 		
 		public int CharacterCount {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return textExpert.Length; }
 		}
 		
 		public int NSelections {
@@ -250,7 +255,7 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			// TODO
+			Console.WriteLine ("automation event for property change:" + e.Property.ProgrammaticName);
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)

@@ -1,3 +1,7 @@
+2008-10-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* TextBoxEntryView.cs: Make some tests pass.
+
 2008-10-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ComponentAdapter.cs: Add Focused state for all adapters. Fixes
