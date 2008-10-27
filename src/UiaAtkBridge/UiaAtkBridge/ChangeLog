@@ -1,5 +1,10 @@
 2008-10-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AutomationBridge.cs: Throwing is more correct than ignoring, because
+	they shouldn't be fired in the first term.
+
+2008-10-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* TextBoxEntryView.cs: Make some tests pass.
 
 2008-10-24  Andrés G. Aragoneses  <aaragoneses@novell.com>

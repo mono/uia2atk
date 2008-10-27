@@ -308,7 +308,7 @@ namespace UiaAtkBridge
 		public void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e)
 		{
 			if (element == null)
-				return;
+				throw new ArgumentNullException ("element");
 			
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) element;
