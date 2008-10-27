@@ -28,7 +28,9 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+
 using SWF = System.Windows.Forms;
+using System.Drawing;
 
 using Mono.UIAutomation.Winforms;
 
@@ -189,7 +191,7 @@ namespace UiaAtkBridgeTest
 			return GetAccessible (type, name, real, true);
 		}
 
-		public override Atk.Object GetAccessible (BasicWidgetType type, string[] names, bool real)
+		public override Atk.Object GetAccessible (BasicWidgetType type, string [] names, bool real)
 		{
 			Atk.Object accessible = null;
 			
@@ -657,6 +659,63 @@ namespace UiaAtkBridgeTest
 
 			Assert.AreEqual (2, accessible.NAccessibleChildren, "numChildren; children roles:" + childrenRoles (accessible));
 		}
+
+		[Test]
+		public void Bug416602 ()
+		{
+			Console.WriteLine ("<Test regression=\"{0}\">", 416602);
+			using (SWF.Form f = new SWF.Form ()) {
+				SWF.ListBox listbox = null;
+				SWF.Button addButton = new SWF.Button ();
+				addButton.Text = "Add listbox";
+				addButton.Click += delegate (object sender, EventArgs args) {
+					if (listbox != null)
+						return;
+					listbox = new SWF.ListBox ();
+					listbox.Items.Add ("1");
+					listbox.Items.Add ("2");
+					listbox.Items.Add ("3");
+					listbox.Size = new Size (100, 100);
+					listbox.Location = new Point (1, 1);
+					f.Controls.Add (listbox);
+				};
+				addButton.Size = new Size (60, 25);
+				addButton.Location = new Point (105, 1);
+				
+				SWF.Button deleteItem = new SWF.Button ();
+				deleteItem.Text = "delete item";
+				deleteItem.Size = new Size (60, 25);
+				deleteItem.Location = new Point (105, 27);
+				deleteItem.Click += delegate (object sender, EventArgs args) {
+					if (listbox == null || listbox.SelectedIndex == -1)
+						return;
+					
+					//The bridge crashes after this line.
+					listbox.Items.RemoveAt (listbox.SelectedIndex);
+				};
+				
+				f.Size = new Size (250, 250);
+				f.Controls.Add (addButton);
+				f.Controls.Add (deleteItem);
+				f.Show ();
+				
+				//Click first button.
+				addButton.PerformClick ();
+
+				//Select item
+				listbox.SelectedIndex = 1;
+				
+				try {
+					//Click delete button
+					//shouldn't raise KeyNotFoundException
+					deleteItem.PerformClick ();
+				} catch (System.Collections.Generic.KeyNotFoundException) {
+					Assert.Fail ("Shouldn't crash");
+				}
+				f.Close ();
+			}
+		}
+
 		
 		//[Test]
 		public void UIAButtonControlType ()

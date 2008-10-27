@@ -1,5 +1,13 @@
 2008-10-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Makefile.am:
+	* Bug416602.cs:
+	* BridgeTester.cs:
+	* UiaAtkBridgeTest.mdp: Fix crasher in the tests. Right now we can't
+	have 2 TestFixtures because of the way this has been designed...
+
+2008-10-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Ooops, typo in previous commit.
 
 2008-10-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
