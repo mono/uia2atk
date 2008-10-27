@@ -1,5 +1,9 @@
 2008-10-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Ooops, typo in previous commit.
+
+2008-10-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Fix the backend for the bridge in the textbox widget
 	case.
 

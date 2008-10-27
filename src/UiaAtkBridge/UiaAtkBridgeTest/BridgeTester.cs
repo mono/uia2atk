@@ -430,7 +430,7 @@ namespace UiaAtkBridgeTest
 				if (!real)
 					throw new NotSupportedException ("Not unreal support for TextBox");
 
-				tbx2.Text = name;
+				tbx1.Text = name;
 				accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (tbxEntry, true, true));
 				break;
 
