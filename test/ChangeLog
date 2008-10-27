@@ -1,3 +1,8 @@
+2008-10-27  Calen Chen <cachen@novell.com>
+
+	* checkbox_basic_ops.py: update states check for checkbox5 from line 68 
+	after doing right key press. 	
+
 2008-10-24  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* tools/dashboard/dashboard.xsl: Add time units to elapsed time numbers

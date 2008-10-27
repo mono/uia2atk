@@ -67,16 +67,16 @@ statesCheck(cbFrame.check3, "CheckBox", add_states=["focused","checked"])
 
 cbFrame.keyCombo("Right", grabFocus=False)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.check1, "CheckBox", add_states=["focused"])
+statesCheck(cbFrame.check5, "CheckBox", add_states=["focused"])
 
 # check and uncheck with space bar
 cbFrame.keyCombo("space", grabFocus=False)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.check1, "CheckBox", add_states=["focused","checked"])
+statesCheck(cbFrame.check5, "CheckBox", add_states=["focused","checked"])
 
 cbFrame.keyCombo("space", grabFocus=False)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.check1, "CheckBox", add_states=["focused"])
+statesCheck(cbFrame.check5, "CheckBox", add_states=["focused"])
 
 #check2 have the default states
 statesCheck(cbFrame.check2, "CheckBox")
@@ -98,23 +98,23 @@ statesCheck(cbFrame.check2, "CheckBox",
 statesCheck(cbFrame.check3, "CheckBox",
                     add_states=["checked"])
 
-# Make sure check1 still has focus
-statesCheck(cbFrame.check1, "CheckBox", add_states=["focused"])
+# Make sure check5 still has focus
+statesCheck(cbFrame.check5, "CheckBox", add_states=["focused"])
 
 #click check3 would get rid of 'checked' states
 cbFrame.click(cbFrame.check3)
 sleep(config.SHORT_DELAY)
 statesCheck(cbFrame.check3, "CheckBox")
 
-#check and uncheck the check1 in succession
-cbFrame.click(cbFrame.check1)
+#check and uncheck the check5 in succession
+cbFrame.click(cbFrame.check5)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.check1, "CheckBox",
+statesCheck(cbFrame.check5, "CheckBox",
                     add_states=["focused", "checked"])
-#uncheck check1 but still focus
-cbFrame.click(cbFrame.check1)
+#uncheck check5 but still focus
+cbFrame.click(cbFrame.check5)
 sleep(config.SHORT_DELAY)
-statesCheck(cbFrame.check1, "CheckBox",
+statesCheck(cbFrame.check5, "CheckBox",
                     add_states=["focused"])
 
 #focus and check check3 by mouseClick would rise 'focused' state for check3
@@ -123,8 +123,8 @@ sleep(config.SHORT_DELAY)
 statesCheck(cbFrame.check3, "CheckBox",
                     add_states=["focused", "checked"])
 
-#make sure check1 is no longer focused
-statesCheck(cbFrame.check1, "CheckBox")
+#make sure check5 is no longer focused
+statesCheck(cbFrame.check5, "CheckBox")
 
 #click check4 doesn't update the states
 cbFrame.check4.mouseClick()
