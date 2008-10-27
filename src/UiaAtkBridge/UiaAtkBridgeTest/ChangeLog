@@ -1,3 +1,8 @@
+2008-10-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Fix the backend for the bridge in the textbox widget
+	case.
+
 2008-10-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Retest accessible with !onlySingleLine case.
