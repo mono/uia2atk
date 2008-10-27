@@ -1,5 +1,10 @@
 2008-10-27  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs:
+	Initializing children structure before raising Automation Event.
+
+2008-10-27  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs:
 	GridProviderBehavior returns GridControlType-related properties.
 

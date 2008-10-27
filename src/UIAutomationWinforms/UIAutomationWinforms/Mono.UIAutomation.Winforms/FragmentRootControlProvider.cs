@@ -179,15 +179,14 @@ namespace Mono.UIAutomation.Winforms
 			childProvider.Navigation = NavigationFactory.CreateNavigation (childProvider, this);
 			childProvider.Navigation.Initialize ();
 
-			//WE MUST GENERATE THIS EVENT before initializing its children
+			children.Add (childProvider);
+
+			if (childProvider is FragmentRootControlProvider)
+				((FragmentRootControlProvider) childProvider).InitializeChildControlStructure ();
+
 			OnNavigationUpdated (new NavigationEventArgs (raiseEvent, 
 			                                              StructureChangeType.ChildAdded, 
 			                                              childProvider));
-
-			if (childProvider is FragmentRootControlProvider)
-				((FragmentRootControlProvider) childProvider).InitializeChildControlStructure ();			
-
-			children.Add (childProvider);
 		}
 		
 		protected virtual void OnNavigationChildRemoved (bool raiseEvent, 
@@ -219,8 +218,6 @@ namespace Mono.UIAutomation.Winforms
 	
 		private void OnControlAdded (object sender, ControlEventArgs args)
 		{
-			Console.WriteLine ("ControlAdded: " + args.Control.GetType ().ToString ());
-			
 			Control childControl = args.Control;
 			FragmentControlProvider childProvider = CreateProvider (childControl);
 			if (childProvider == null)
@@ -236,8 +233,6 @@ namespace Mono.UIAutomation.Winforms
 	
 		private void OnControlRemoved (object sender, ControlEventArgs args)
 		{
-			Console.WriteLine ("ControlRemoved: " + args.Control.GetType ().ToString ());
-			
 			bool radioButtonFound = false;
 			FragmentControlProvider removedProvider;
 			
