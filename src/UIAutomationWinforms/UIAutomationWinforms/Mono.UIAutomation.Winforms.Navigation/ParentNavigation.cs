@@ -54,8 +54,8 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 		{
-			if (direction == NavigateDirection.Parent) 
-				return ((FragmentRootControlProvider) Provider).FragmentRoot;
+			if (direction == NavigateDirection.Parent)
+				return ((IRawElementProviderFragmentRoot) Provider).FragmentRoot;
 			else if (direction == NavigateDirection.FirstChild)
 				return chain.First == null ? null : (IRawElementProviderFragment) chain.First.Value.Provider;
 			else if (direction == NavigateDirection.LastChild)

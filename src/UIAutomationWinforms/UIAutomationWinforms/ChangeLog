@@ -1,5 +1,17 @@
 2008-10-27  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs: Whitespace
+	fix.
+
+	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: For now,
+	returning OwnerItem instead of Owner for FragmentRoot, because that
+	is used to navigate to the parent.  However, I think ultimately this
+	will change back to Owner (because I think this class should be a
+	Fragment and not a FragmentRoot), and the navigation stuff will have
+	to be reworked.
+
+2008-10-27  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs:
 	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Null checks on
 	Control.
