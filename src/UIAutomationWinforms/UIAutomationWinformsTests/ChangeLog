@@ -1,5 +1,10 @@
 2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* TextBoxProviderTest.cs: Found the culprit of the bridge test not
+	working.
+
+2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* TextBoxProviderTest.cs: Remove unneeded bits for the test to pass.
 
 2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>

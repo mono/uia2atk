@@ -296,7 +296,23 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TextBox textbox = new TextBox ();
 			Form.Controls.Add (textbox);
 
-			bridge.ResetEventLists ();			
+			bridge.ResetEventLists ();
+
+			textbox.Text = "Changed!";
+
+			Assert.AreEqual (1,
+			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 "Event count");
+		}
+
+		[Test]
+		public void TextChangedEventTestMultiLine ()
+		{
+			TextBox textbox = new TextBox ();
+			textbox.Multiline = true;
+			Form.Controls.Add (textbox);
+
+			bridge.ResetEventLists ();
 
 			textbox.Text = "Changed!";
 
