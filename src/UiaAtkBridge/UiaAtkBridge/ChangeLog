@@ -1,5 +1,12 @@
 2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Makefile.am:
+	* MenuItem.cs:
+	* ParentMenu.cs:
+	* UiaAtkBridge.mdp: Rename ParentMenu to more convinient name.
+
+2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ComboBox.cs:
 	* Makefile.am:
 	* ParentMenu.cs:

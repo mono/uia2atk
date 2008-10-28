@@ -57,10 +57,10 @@ FILES =  \
 	List.cs \
 	ListItem.cs \
 	MenuBar.cs \
+	MenuItem.cs \
 	Monitor.cs \
 	Pane.cs \
 	ParentAdapter.cs \
-	ParentMenu.cs \
 	ProgressBar.cs \
 	RadioButton.cs \
 	ScrollBar.cs \
