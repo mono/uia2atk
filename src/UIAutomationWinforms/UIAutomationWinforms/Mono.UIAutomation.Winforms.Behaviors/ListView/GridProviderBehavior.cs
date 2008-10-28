@@ -71,13 +71,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 
 		public override object GetPropertyValue (int propertyId)
 		{
-			//According to: http://msdn.microsoft.com/en-us/library/ms742561.aspx
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.DataGrid.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "datagrid";
-			//
-			else if (propertyId == GridPatternIdentifiers.ColumnCountProperty.Id)
+			if (propertyId == GridPatternIdentifiers.ColumnCountProperty.Id)
 				return ColumnCount;
 			else if (propertyId == GridPatternIdentifiers.RowCountProperty.Id)
 				return RowCount;

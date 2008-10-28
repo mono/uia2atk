@@ -85,12 +85,18 @@ namespace Mono.UIAutomation.Winforms
 
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.List.Id;
-			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id) {
+				if (listView.View == SWF.View.Details)
+					return ControlType.DataGrid.Id;
+				else
+					return ControlType.List.Id;
+			} else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id) {
+				if (listView.View == SWF.View.Details)
+					return "datagrid";
+				else
+					return "list";
+			} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return true;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "list";
 			else
 				return base.GetPropertyValue (propertyId);
 		}

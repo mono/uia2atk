@@ -1,5 +1,13 @@
 2008-10-28  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs:
+	Returning DataGrid values in ListViewProvider.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Returning valid
+	ControlType when View.Details.
+
+2008-10-28  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: SWF =
 	System.Windows.Forms 
 
