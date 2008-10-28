@@ -775,6 +775,8 @@ namespace UiaAtkBridge
 		private void HandleNewMenuItemControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
+			if (parentObject == null)
+				return; //doesn't matter, MenuItem will discover its own children during its ctor call
 
 			Adapter newAdapter = new MenuItem (provider);
 			providerAdapterMapping [provider] = newAdapter;

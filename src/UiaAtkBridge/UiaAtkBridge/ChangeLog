@@ -1,6 +1,13 @@
 2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MenuItem.cs:
+	* AutomationBridge.cs: Finished MenuItem basic impl. (#428532)
+
+	* ComponentAdapter.cs: Cosmetic.
+
+2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MenuItem.cs:
 	* ComboBox.cs:
 	* AutomationBridge.cs: Rename class to MenuItem as well.
 

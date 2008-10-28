@@ -31,15 +31,18 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	
-	public class MenuItem : ComponentParentAdapter, Atk.SelectionImplementor
+	public class MenuItem : ComponentParentAdapter, Atk.SelectionImplementor, Atk.ActionImplementor
 	{
 		bool? comboBoxStructure = null;
+		IRawElementProviderSimple provider;
 		
 		public MenuItem (IRawElementProviderSimple provider)
 		{
 			if (provider == null)
 				throw new ArgumentNullException ("provider");
 
+			this.provider = provider;
+			
 			if ((provider as IRawElementProviderFragment) == null)
 				throw new ArgumentException ("Provider for ParentMenu should be IRawElementProviderFragment");
 			
@@ -56,16 +59,32 @@ namespace UiaAtkBridge
 
 			Role = (children.Count > 0 || comboBoxStructure.Value) ? Atk.Role.Menu : Atk.Role.MenuItem;
 		}
+
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			//FIXME: figure out why MenuItem elements in Gail don't like this state
+			// (maybe because they replace it with Selectable?)
+			if (states.ContainsState (Atk.StateType.Focusable)) {
+				states.RemoveState (Atk.StateType.Focusable);
+				states.AddState (Atk.StateType.Selectable);
+			}
+			return states;
+		}
+
+		public override Atk.Layer Layer {
+			get { return Atk.Layer.Popup; }
+		}
 		
 		public override IRawElementProviderSimple Provider {
-			get { return null; }
+			get { return provider; }
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			throw new NotImplementedException ();
 		}
-
+		
 		public int SelectionCount {
 			get {
 				throw new NotImplementedException ();
@@ -106,6 +125,47 @@ namespace UiaAtkBridge
 		{
 			throw new NotImplementedException ();
 		}
+
+		#region Action implementation 
+		
+		public bool DoAction (int i)
+		{
+			throw new System.NotImplementedException ();
+		}
+		
+		public string GetName (int i)
+		{
+			throw new System.NotImplementedException ();
+		}
+		
+		public string GetKeybinding (int i)
+		{
+			throw new System.NotImplementedException ();
+		}
+		
+		public string GetLocalizedName (int i)
+		{
+			throw new System.NotImplementedException ();
+		}
+		
+		public bool SetDescription (int i, string desc)
+		{
+			throw new System.NotImplementedException ();
+		}
+		
+		public string GetDescription (int i)
+		{
+			throw new System.NotImplementedException ();
+		}
+		
+		public int NActions {
+			get {
+				throw new System.NotImplementedException ();
+			}
+		}
+		
+		#endregion 
+		
 		
 	}
 }

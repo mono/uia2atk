@@ -133,7 +133,7 @@ namespace UiaAtkBridge
 					states.RemoveState (Atk.StateType.Focused);
 				
 				bool enabled = 
-			  	(bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+				  (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
 				if (enabled) {
 					states.AddState (Atk.StateType.Sensitive);
 					states.AddState (Atk.StateType.Enabled);
