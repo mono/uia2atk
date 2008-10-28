@@ -28,8 +28,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Forms;
-using SWFErrorProvider = System.Windows.Forms.ErrorProvider;
+using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
@@ -132,7 +131,7 @@ namespace Mono.UIAutomation.Winforms
 				Control.ControlAdded += OnControlAdded;
 				Control.ControlRemoved += OnControlRemoved;
 				
-				foreach (Control childControl in Control.Controls) {
+				foreach (SWF.Control childControl in Control.Controls) {
 					FragmentControlProvider childProvider =
 						CreateProvider (childControl);
 					
@@ -216,9 +215,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Methods: Event Handlers
 	
-		private void OnControlAdded (object sender, ControlEventArgs args)
+		private void OnControlAdded (object sender, SWF.ControlEventArgs args)
 		{
-			Control childControl = args.Control;
+			SWF.Control childControl = args.Control;
 			FragmentControlProvider childProvider = CreateProvider (childControl);
 			if (childProvider == null)
 				return;
@@ -231,7 +230,7 @@ namespace Mono.UIAutomation.Winforms
 			CheckForRadioButtonChild (childProvider);
 		}
 	
-		private void OnControlRemoved (object sender, ControlEventArgs args)
+		private void OnControlRemoved (object sender, SWF.ControlEventArgs args)
 		{
 			bool radioButtonFound = false;
 			FragmentControlProvider removedProvider;
@@ -285,7 +284,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Protected Methods
 	
-		protected FragmentControlProvider CreateProvider (Control control)
+		protected FragmentControlProvider CreateProvider (SWF.Control control)
 		{
 			if (Mono.UIAutomation.Winforms.ErrorProvider.InstancesTracker.IsControlFromErrorProvider (control))
 				return null;
@@ -293,7 +292,7 @@ namespace Mono.UIAutomation.Winforms
 			return (FragmentControlProvider) ProviderFactory.GetProvider (control);
 		}
 		
-		protected FragmentControlProvider GetProvider (Control control)
+		protected FragmentControlProvider GetProvider (SWF.Control control)
 		{
 			if (componentProviders.ContainsKey (control))
 				return componentProviders [control];
