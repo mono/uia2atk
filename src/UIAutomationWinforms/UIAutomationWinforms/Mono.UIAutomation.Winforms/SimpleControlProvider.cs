@@ -76,7 +76,7 @@ namespace Mono.UIAutomation.Winforms
 		#region Public Properties
 		
 		public virtual Component Container {
-			get { return control.Parent; }
+			get { return control != null ? control.Parent : null; }
 		}
 
 		public Component Component {

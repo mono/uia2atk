@@ -31,6 +31,8 @@ using System.Windows.Automation.Provider;
 
 using Mono.UIAutomation.Winforms;
 
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
+
 using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
@@ -136,7 +138,21 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "event args event type");
 		}
 
-		protected override Control GetControlInstance()
+		[Test]
+		public override void LabeledByAndNamePropertyTest()
+		{
+			ToolStripLabel menuItem = new ToolStripLabel ();
+			menuItem.Text = "My menu item";
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
+
+			Assert.AreEqual (menuItem.Text,
+			                 provider.GetPropertyValue (AEIds.NameProperty.Id) as string,
+			                 "Name");
+			Assert.IsNull (provider.GetPropertyValue (AEIds.LabeledByProperty.Id),
+			               "LabeledBy");
+		}
+
+		protected override Control GetControlInstance ()
 		{
 			return null; // TODO: Lots of work...
 		}

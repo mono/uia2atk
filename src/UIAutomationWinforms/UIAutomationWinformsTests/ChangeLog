@@ -1,3 +1,15 @@
+2008-10-27  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* ToolStripProviderTest.cs:
+	* MenuStripProviderTest.cs: Whitespace fixes.
+
+	* ToolStripLabelProviderTest.cs: Add LabeledbyandNamePropertyTest. 
+	Still need to cover change events.
+
+	* ToolStripMenuItemProviderTest.cs: Add LabeledByAndNamePropertyTest
+	(still need to test change events) and NavigationTest (known to fail
+	due to bug in navigation to parent, working on patch).
+
 2008-10-27  Brad Taylor  <brad@getcoded.net>
 	
 	* TextBoxProviderTest.cs: Add necessary magic to get text changed event

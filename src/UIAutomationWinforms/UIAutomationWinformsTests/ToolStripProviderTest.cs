@@ -82,7 +82,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestLabeledByAndName (false, false);
 		}
 
-		protected override Control GetControlInstance()
+		protected override Control GetControlInstance ()
 		{
 			return new ToolStrip ();
 		}

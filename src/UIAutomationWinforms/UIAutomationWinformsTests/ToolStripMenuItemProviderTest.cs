@@ -25,9 +25,12 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 using Mono.UIAutomation.Winforms;
 
@@ -121,7 +124,120 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "event args event type");
 		}
 
-		protected override Control GetControlInstance()
+		[Test]
+		public override void LabeledByAndNamePropertyTest()
+		{
+			ToolStripMenuItem menuItem = new ToolStripMenuItem ();
+			menuItem.Text = "My menu item";
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
+
+			Assert.AreEqual (menuItem.Text,
+			                 provider.GetPropertyValue (AEIds.NameProperty.Id) as string,
+			                 "Name");
+			Assert.IsNull (provider.GetPropertyValue (AEIds.LabeledByProperty.Id),
+			               "LabeledBy");
+		}
+
+		[Test]
+		public void NavigationTest ()
+		{
+			// Set up initial menu item structure, with some sub-items
+			ToolStripMenuItem menuItem = new ToolStripMenuItem ();
+			menuItem.Text = "My menu item";
+			
+			ToolStripMenuItem subMenuItem1 = new ToolStripMenuItem ();
+			subMenuItem1.Text = "sub1";
+			ToolStripMenuItem subMenuItem2 = new ToolStripMenuItem ();
+			subMenuItem2.Text = "sub2";
+
+			menuItem.DropDownItems.Add (subMenuItem1);
+			menuItem.DropDownItems.Add (subMenuItem2);
+
+			// Add item to parent strip, parent strip to form,
+			// and initialize providers
+			MenuStrip strip = new MenuStrip ();
+			strip.Items.Add (menuItem);
+			GetProviderFromControl (strip);
+			
+			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+				ProviderFactory.GetProvider (menuItem);
+			IRawElementProviderFragmentRoot subProvider1 = (IRawElementProviderFragmentRoot)
+				ProviderFactory.GetProvider (subMenuItem1);
+			IRawElementProviderFragmentRoot subProvider2 = (IRawElementProviderFragmentRoot)
+				ProviderFactory.GetProvider (subMenuItem2);
+
+			
+			// Verify that all children are present during navigation
+			List<IRawElementProviderFragment> expectedChildren =
+				new List<IRawElementProviderFragment> ();
+			expectedChildren.Add (subProvider1);
+			expectedChildren.Add (subProvider2);
+
+			VerifyChildren (provider, expectedChildren);
+
+			
+			// Add new sub-item, verify that navigation updates
+			ToolStripMenuItem subMenuItem3 = new ToolStripMenuItem ();
+			subMenuItem3.Text = "sub3";
+			menuItem.DropDownItems.Add (subMenuItem3);
+			IRawElementProviderFragmentRoot subProvider3 = (IRawElementProviderFragmentRoot)
+				ProviderFactory.GetProvider (subMenuItem3);
+			expectedChildren.Add (subProvider3);
+
+			VerifyChildren (provider, expectedChildren);
+
+			
+			// Remove sub-item, verify that navigation updates
+			menuItem.DropDownItems.Remove (subMenuItem1);
+			expectedChildren.Remove (subProvider1);
+
+			VerifyChildren (provider, expectedChildren);
+		}
+
+		private void VerifyChildren (IRawElementProviderFragmentRoot rootProvider,
+		                             List<IRawElementProviderFragment> expectedChildren)
+		{
+			List<IRawElementProviderFragment> foundChildren =
+				new List<IRawElementProviderFragment> ();
+
+			// Find all direct children of rootProvider
+			IRawElementProviderFragment child;
+			child = rootProvider.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				foundChildren.Add (child);
+				IRawElementProviderFragment parent =
+					child.Navigate (NavigateDirection.Parent);
+				Assert.AreEqual (rootProvider, parent,
+				                 "Wrong parent");
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+
+			Assert.AreEqual (expectedChildren.Count, foundChildren.Count,
+			                 "Did not find expected number of children");
+
+			// Check that all expectedChildren were found during navigation
+			List<IRawElementProviderFragment> expectedButNotFound =
+				new List<IRawElementProviderFragment> (expectedChildren);
+			
+			foreach (IRawElementProviderFragment fragment in expectedChildren) {
+				if (foundChildren.Contains (fragment))
+					expectedButNotFound.Remove (fragment);
+			}
+			
+			if (expectedButNotFound.Count > 0) {
+				string message = "These expected children were not found: ";
+				foreach (IRawElementProviderFragment fragment in expectedButNotFound) {
+					string name = fragment.GetPropertyValue (AEIds.NameProperty.Id) as String;
+					if (string.IsNullOrEmpty (name))
+						message += "<no name> , ";
+					else
+						message += name + " , ";
+				}
+				Assert.Fail (message);
+			}
+		}
+
+		protected override Control GetControlInstance ()
 		{
 			return null; // TODO: Lots of work...
 		}

@@ -1,3 +1,9 @@
+2008-10-27  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs:
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: Null checks on
+	Control.
+
 2008-10-27  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.mdp: Updated: files added.

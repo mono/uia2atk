@@ -78,7 +78,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public virtual void SetFocus ()
 		{
-			Control.Focus ();
+			if (Control != null)
+				Control.Focus ();
 		}
 
 		#endregion
