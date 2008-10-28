@@ -1,5 +1,13 @@
 2008-10-28  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Setting Table behavior.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Using
+	InitializeChildrenStructure and FinalizeChildrenStructure in
+	ListView.Header. Setting Table pattern when View.Details.
+
+2008-10-28  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: "datagrid"->"data
 	grid"
 

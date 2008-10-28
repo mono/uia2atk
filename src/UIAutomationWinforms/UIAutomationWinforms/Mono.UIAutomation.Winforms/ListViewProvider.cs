@@ -498,6 +498,13 @@ namespace Mono.UIAutomation.Winforms
 			else
 				SetBehavior (GridPatternIdentifiers.Pattern,
 				             null);
+
+			if (listView.View == SWF.View.Details)
+				SetBehavior (TablePatternIdentifiers.Pattern,
+				             GetBehaviorRealization (TablePatternIdentifiers.Pattern));
+			else
+				SetBehavior (TablePatternIdentifiers.Pattern,
+				             null);
 			
 			UpdateChildrenStructure (false);
 
@@ -751,17 +758,12 @@ namespace Mono.UIAutomation.Winforms
 					return base.GetPropertyValue (propertyId);
 			}
 
-			public override void Initialize ()
-			{
-				base.Initialize ();
-				
-				//Event used to update columns in ListItem when View.Details
-				listView.Columns.UIACollectionChanged += OnUIAColumnsCollectionChanged;
-			}
-
 			public override void InitializeChildControlStructure ()
 			{
 				base.InitializeChildControlStructure ();
+
+				//Event used to update columns in ListItem when View.Details
+				listView.Columns.UIACollectionChanged += OnUIAColumnsCollectionChanged;
 
 				foreach (SWF.ColumnHeader column in listView.Columns) {
 					ListViewHeaderItemProvider item 
@@ -772,17 +774,20 @@ namespace Mono.UIAutomation.Winforms
 				}
 			}
 
-			public override void Terminate ()
+			public override void FinalizeChildControlStructure ()
 			{
-				base.Terminate ();
+				base.FinalizeChildControlStructure ();
 
 				//Event used to update columns in ListItem when View.Details
 				listView.Columns.UIACollectionChanged -= OnUIAColumnsCollectionChanged;
+
+				foreach (ListViewHeaderItemProvider item in headerItems .Values)
+					item.Terminate ();
 			}
 
 			private void OnUIAColumnsCollectionChanged (object sender, 
 			                                            CollectionChangeEventArgs args)
-			{
+			{				
 				SWF.ColumnHeader column = (SWF.ColumnHeader) args.Element;
 				
 				if (args.Action == CollectionChangeAction.Add) {

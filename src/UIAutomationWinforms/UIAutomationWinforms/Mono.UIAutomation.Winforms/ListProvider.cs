@@ -181,6 +181,8 @@ namespace Mono.UIAutomation.Winforms
 			             GetBehaviorRealization (GridPatternIdentifiers.Pattern));
 			SetBehavior (MultipleViewPatternIdentifiers.Pattern,
 			             GetBehaviorRealization (MultipleViewPatternIdentifiers.Pattern));
+			SetBehavior (TablePatternIdentifiers.Pattern,
+			             GetBehaviorRealization (TablePatternIdentifiers.Pattern));
 		}
 		
 		public override void InitializeChildControlStructure ()
