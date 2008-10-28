@@ -1,3 +1,15 @@
+2008-10-27  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* keystrokes/gtktutorial.py,
+	* keystrokes/gtktutorial.py/gtktutorial_example_1.py,
+	* keystrokes/gtktutorial.py/gtktutorial_example_2.py,
+	* keystrokes/winforms,
+	* keystrokes/gtk,
+	* keystrokes/gtk/gtktutorial.py: creating a winforms subdirectory and a
+	gtk subdirectory of keystrokes.  gtk examples should be stored in 
+	keystrokes/gtk while our actual (winforms) tests should be stored in
+	winforms.  Also moving the gtkturial example into keystrokes/gtk.
+
 2008-10-27  Calen Chen <cachen@novell.com>
 
 	* samples/linklabel.py: enlarge the width of windows
