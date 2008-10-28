@@ -1,5 +1,10 @@
 2008-10-28  Ray Wang <rawang@novell.com>
 
+	* keystrokes/gtk/gtkcheckbutton.py/: change name from 
+	checkbox.py to checkbutton.py
+
+2008-10-28  Ray Wang <rawang@novell.com>
+
 	* keystrokes/checkbox: move wincheckbox.py to 
 	keystrokes/winforms/wincheckbox.py/, and checkbox.py to 
 	keystrokes/gtk/gtkcheckbox.py/
