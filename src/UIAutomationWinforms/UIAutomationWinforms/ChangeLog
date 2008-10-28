@@ -1,5 +1,14 @@
 2008-10-28  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Using Helper to
+	get vaild IsOffScreen and ClickablePoint
+
+	* Mono.UIAutomation.Winforms/Helper.cs: New methods: IsOffScreen and
+	GetClickablePoint.
+
+2008-10-28  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ListProvider.cs: Setting Table behavior.
 
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Using

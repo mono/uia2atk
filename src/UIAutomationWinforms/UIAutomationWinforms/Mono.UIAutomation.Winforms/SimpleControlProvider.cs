@@ -333,30 +333,15 @@ namespace Mono.UIAutomation.Winforms
 				
 			} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return Control.CanFocus && Control.CanSelect;
-			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
-				System.Drawing.Rectangle bounds =
-					GetControlScreenBounds ();				
-				System.Drawing.Rectangle screen =
-					SWF.Screen.GetWorkingArea (Control);
-				// True iff the *entire* control is off-screen
-				return !screen.Contains (bounds.Left, bounds.Bottom) &&
-					!screen.Contains (bounds.Left, bounds.Top) &&
-					!screen.Contains (bounds.Right, bounds.Bottom) &&
-					!screen.Contains (bounds.Right, bounds.Top);
-			}
+			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
+				return Helper.IsOffScreen (GetControlScreenBounds (), Control);
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return Control.Focused;
-			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
 				return Helper.RectangleToRect (GetControlScreenBounds ());
-			} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id) {
-				if (Control.Visible == false)
-					return null;
-				else {
-					// TODO: Test. MS behavior is different.
-					Rect rectangle = (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-					return new Point (rectangle.X, rectangle.Y);
-				}
-			} else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id) {
+			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+				return Helper.GetClickablePoint (this);
+			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id) {
 				return ToolTip == null ? null : ToolTip.GetToolTip (Control);
 			} else if (propertyId == AutomationElementIdentifiers.AccessKeyProperty.Id) {
 				if (!Control.Text.Contains ("&"))

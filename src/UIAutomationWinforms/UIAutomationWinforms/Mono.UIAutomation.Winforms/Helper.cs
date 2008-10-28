@@ -27,6 +27,7 @@ using System;
 using System.Drawing;
 using System.Reflection;
 using System.Windows;
+using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
@@ -37,9 +38,39 @@ namespace Mono.UIAutomation.Winforms
 	{
 
 		#region Internal Static Methods
+
+		internal static object GetClickablePoint (SimpleControlProvider provider)
+		{
+			bool offScreen
+				= (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
+			if (offScreen == true)
+				return null;
+			else {
+				// TODO: Verify with MS behavior.
+				Rect rectangle
+					= (Rect) provider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+				return new System.Windows.Point (rectangle.X, rectangle.Y);
+			}
+		}		
+
+		internal static bool IsOffScreen (Rectangle bounds, SWF.Control referenceControl)
+		{
+			return IsOffScreen (Helper.RectangleToRect (bounds), referenceControl);
+		}
+
+		internal static bool IsOffScreen (Rect bounds, SWF.Control referenceControl)
+		{
+			Rect screen = Helper.RectangleToRect (SWF.Screen.GetWorkingArea (referenceControl));
+
+			// True if the *entire* control is off-screen
+			return !screen.Contains (bounds.Left, bounds.Bottom) 
+				&& !screen.Contains (bounds.Left, bounds.Top) 
+				&& !screen.Contains (bounds.Right, bounds.Bottom) 
+				&& !screen.Contains (bounds.Right, bounds.Top);
+		}
 		
 		internal static Rect GetBoundingRectangleFromButtonBase (FragmentControlProvider provider,
-		                                                         System.Windows.Forms.ButtonBase buttonBase)
+		                                                         SWF.ButtonBase buttonBase)
 		{
 			//Implementation highly based in ThemeWin32Classic.ButtonBase_DrawImage method
 			

@@ -382,7 +382,8 @@ namespace Mono.UIAutomation.Winforms
 		private void InitializeProviderFrom (object objectItem, bool raiseEvent)
 		{
 			// Using groups
-			if (showGroups == true && listView.View != SWF.View.List) {
+			if (showGroups == true && listView.View != SWF.View.List
+			    && SWF.Application.VisualStylesEnabled == true) {
 
 				if (listView.View == SWF.View.Details) {
 					if (header == null) {
@@ -417,7 +418,8 @@ namespace Mono.UIAutomation.Winforms
 		private void FinalizeProviderFrom (object objectItem, bool raiseEvent)
 		{
 			// Using groups
-			if (showGroups == true && listView.View != SWF.View.List) {
+			if (showGroups == true && listView.View != SWF.View.List
+			    && SWF.Application.VisualStylesEnabled == true) {
 
 				SWF.ListViewItem listViewItem = (SWF.ListViewItem) objectItem;
 				SWF.ListViewGroup listViewGroup = GetGroupFrom (listViewItem);
@@ -612,18 +614,12 @@ namespace Mono.UIAutomation.Winforms
 					return group.Header;
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
-				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
-					Rect bounds = GetItemsBoundingRectangle ();				
-					Rect screen = Helper.RectangleToRect (SWF.Screen.GetWorkingArea (listView));
-					// True if the *entire* control is off-screen
-					return !screen.Contains (bounds.Left, bounds.Bottom) 
-						&& !screen.Contains (bounds.Left, bounds.Top) 
-						&& !screen.Contains (bounds.Right, bounds.Bottom) 
-						&& !screen.Contains (bounds.Right, bounds.Top);
-				} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)// FIXME: Implement
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
+					return Helper.IsOffScreen (GetItemsBoundingRectangle (), listView);
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
-				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)// FIXME: Implement
-					return false;
+				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
+					return true;
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
 					return GetItemsBoundingRectangle ();
 				else
@@ -1154,16 +1150,29 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return "checkbox";
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return itemProvider.GetPropertyValue (propertyId); //FIXME: Is this ok?
+					return itemProvider.GetPropertyValue (propertyId);
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+					SD.Size checkBoxSize = ItemProvider.ListView.CheckBoxSize;
+					Rect itemSize 
+						= (Rect) ItemProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+
+					itemSize.Width = checkBoxSize.Width;
+					itemSize.Height = checkBoxSize.Height;
+					return itemSize;
+				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+					Rect bounds 
+						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					return Helper.IsOffScreen (bounds, ItemProvider.ListView); 
+				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+					return Helper.GetClickablePoint (this);
 				else
 					return base.GetPropertyValue (propertyId);
-				//FIXME: ClickablePointProperty , BoundingRectangleProperty, IsOffScreen
 			}
 
 			private ListViewListItemProvider itemProvider;
