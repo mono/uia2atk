@@ -92,7 +92,7 @@ namespace Mono.UIAutomation.Winforms
 					return ControlType.List.Id;
 			} else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id) {
 				if (listView.View == SWF.View.Details)
-					return "datagrid";
+					return "data grid";
 				else
 					return "list";
 			} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
