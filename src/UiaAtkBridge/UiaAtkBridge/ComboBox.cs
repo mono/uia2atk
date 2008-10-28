@@ -92,7 +92,7 @@ namespace UiaAtkBridge
 			if (valProvider != null)
 				children.Add (new TextBoxEntryView (TextBoxHolder));
 
-			children.Add (new ParentMenu (ChildrenHolder));
+			children.Add (new ParentMenu (ChildrenHolder)); //yes, even if combobox is empty
 			
 			selectionHelper = new SelectionProviderUserHelper(provider, selProvider, ChildrenHolder);
 		}

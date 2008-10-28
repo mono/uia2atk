@@ -776,28 +776,12 @@ namespace UiaAtkBridge
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
 
-			Adapter newAdapter;
-			if (HasChildren (provider))
-				newAdapter = new ParentMenu (provider);
-			else
-				newAdapter = new ChildMenuItem (provider);
+			Adapter newAdapter = new ParentMenu (provider);
 			providerAdapterMapping [provider] = newAdapter;
 			
 			parentObject.AddOneChild (newAdapter);
 			parentObject.AddRelationship (Atk.RelationType.Embeds,
 			                              newAdapter);
-		}
-
-		private bool HasChildren (IRawElementProviderSimple provider)
-		{
-			if (!(provider is IRawElementProviderFragment))
-				return false;
-
-			IRawElementProviderFragment iter = (IRawElementProviderFragment)provider;
-			iter = iter.Navigate (NavigateDirection.FirstChild);
-			if (iter != null)
-				return true;
-			return false;
 		}
 		
 #endregion

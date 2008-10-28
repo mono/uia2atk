@@ -1,3 +1,15 @@
+2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ComboBox.cs:
+	* Makefile.am:
+	* ParentMenu.cs:
+	* UiaAtkBridge.mdp:
+	* ChildMenuItem.cs:
+	* AutomationBridge.cs: Refactoring: we cannot use different classes for
+	Menu<>MenuItem because they may change the roles at runtime (and we
+	don't want to swap objects on the Atk hierarchy). Thanks for noticing
+	Sandy.
+
 2008-10-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AutomationBridge.cs: Throwing is more correct than ignoring, because

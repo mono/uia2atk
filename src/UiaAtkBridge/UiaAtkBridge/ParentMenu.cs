@@ -34,6 +34,8 @@ namespace UiaAtkBridge
 	
 	public class ParentMenu : ComponentParentAdapter, Atk.SelectionImplementor
 	{
+		bool? comboBoxStructure = null;
+		
 		public ParentMenu (IRawElementProviderSimple provider)
 		{
 			if (provider == null)
@@ -42,20 +44,18 @@ namespace UiaAtkBridge
 			if ((provider as IRawElementProviderFragment) == null)
 				throw new ArgumentException ("Provider for ParentMenu should be IRawElementProviderFragment");
 			
-			Role = Atk.Role.Menu;
 			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+
+			comboBoxStructure = ((int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
+			  == ControlType.List.Id);
 			
-			IRawElementProviderFragment child = (IRawElementProviderFragment)provider;
-			child = child.Navigate (NavigateDirection.FirstChild);
-			if ((child == null) &&
-			    ((int)provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) !=
-			     ControlType.List.Id))
-				throw new ArgumentException ("Provider for ParentMenu should have children if not ComboBox");
-			
+			IRawElementProviderFragment child = ((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
 			while (child != null) {
-				children.Add (new ChildMenuItem (child));
+				children.Add (new ParentMenu (child));
 				child = child.Navigate (NavigateDirection.NextSibling);
-			} 
+			}
+
+			Role = (children.Count > 0 || comboBoxStructure.Value) ? Atk.Role.Menu : Atk.Role.MenuItem;
 		}
 		
 		public override IRawElementProviderSimple Provider {
