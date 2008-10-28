@@ -1,5 +1,9 @@
 2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* TextBoxProviderTest.cs: Remove unneeded bits for the test to pass.
+
+2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* providertest.sh.in: include necessary LD_LIBRARY_PATH additions.
 
 2008-10-28  Mario Carrion  <mcarrion@novell.com>

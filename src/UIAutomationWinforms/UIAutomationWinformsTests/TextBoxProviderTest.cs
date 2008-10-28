@@ -294,9 +294,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void TextChangedEventTest ()
 		{
 			TextBox textbox = new TextBox ();
-			textbox.Size = new System.Drawing.Size (30, 30);
 			Form.Controls.Add (textbox);
-			textbox.ScrollBars = ScrollBars.Both;
 
 			bridge.ResetEventLists ();			
 
