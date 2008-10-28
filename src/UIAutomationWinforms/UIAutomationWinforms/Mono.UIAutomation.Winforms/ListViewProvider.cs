@@ -115,8 +115,9 @@ namespace Mono.UIAutomation.Winforms
 			else if (behavior == SelectionPatternIdentifiers.Pattern) 
 				return new SelectionProviderBehavior (this);
 			else if (behavior == GridPatternIdentifiers.Pattern) {
-				if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
-					return new GridProviderBehavior (this);
+				if (listView.ShowGroups == false || SWF.Application.VisualStylesEnabled == false
+				    || listView.View == SWF.View.List)
+				    return new GridProviderBehavior (this);
 				else
 					return null;
 			} else if (behavior == TablePatternIdentifiers.Pattern) {
@@ -519,8 +520,12 @@ namespace Mono.UIAutomation.Winforms
 			showGroups = listView.ShowGroups;
 			
 			//We will have to regenerate children
-			if (listView.ShowGroups != oldValue && listView.View != SWF.View.List)
+			if (listView.ShowGroups != oldValue && listView.View != SWF.View.List) {
 				UpdateChildrenStructure (true);
+				if (SWF.Application.VisualStylesEnabled == true)
+					SetBehavior (GridPatternIdentifiers.Pattern,
+					             GetBehaviorRealization (GridPatternIdentifiers.Pattern));
+			}
 		}
 
 		#endregion

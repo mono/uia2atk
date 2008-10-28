@@ -305,8 +305,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "View.LargeIcon: MIGHT support Scroll Pattern");
 			Assert.IsNotNull (element.GetPatternProvider (MultipleViewPatternIdentifiers.Pattern.Id), 
 			                  "View.LargeIcon: MIGHT support MultipleView Pattern");
+			view.ShowGroups = false;
+			Assert.IsNotNull (element.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
+			                  "View.LargeIcon: MUST support GridPattern Pattern. view.ShowGroups=false");
+			view.ShowGroups = true;
 			Assert.IsNull (element.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
-			               "View.LargeIcon: SHOULD NOT support GridPattern Pattern");
+			               "View.LargeIcon: SHOULD NOT support GridPattern Pattern view.ShowGroups=true");
 			Assert.IsNull (element.GetPatternProvider (TablePatternIdentifiers.Pattern.Id),
 			               "View.LargeIcon: SHOULD NOT support TablePattern Pattern");
 
@@ -506,8 +510,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "View.SmallIcon: MIGHT support Scroll Pattern");
 			Assert.IsNotNull (element.GetPatternProvider (MultipleViewPatternIdentifiers.Pattern.Id),
 			                  "View.SmallIcon: MIGHT support MultipleView Pattern");
+			view.ShowGroups = false;
+			Assert.IsNotNull (element.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
+			                  "View.SmallIcon: MUST support GridPattern Pattern. view.ShowGroups=false");
+			view.ShowGroups = true;
 			Assert.IsNull (element.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
-			               "View.SmallIcon: SHOULD NOT support GridPattern Pattern");
+			               "View.SmallIcon: SHOULD NOT support GridPattern Pattern view.ShowGroups=true");
 			Assert.IsNull (element.GetPatternProvider (TablePatternIdentifiers.Pattern.Id),
 			               "View.SmallIcon: SHOULD NOT support TablePattern Pattern");
 
@@ -705,8 +713,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "View.List: MIGHT support Scroll Pattern");
 			Assert.IsNotNull (element.GetPatternProvider (MultipleViewPatternIdentifiers.Pattern.Id),
 			                  "View.List: MIGHT support MultipleView Pattern");
+			view.ShowGroups = false;
 			Assert.IsNotNull (element.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
-			                  "View.List: MUST support GridPattern Pattern");
+			                  "View.List: MUST support GridPattern Pattern. view.ShowGroups=false");
+			view.ShowGroups = true;
+			Assert.IsNotNull (element.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
+			                  "View.List: MUST support GridPattern Pattern view.ShowGroups=true");
 			Assert.IsNull (element.GetPatternProvider (TablePatternIdentifiers.Pattern.Id),
 			               "View.List: SHOULD NOT support TablePattern Pattern");
 
@@ -854,8 +866,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "View.Tile: MIGHT support Scroll Pattern");
 			Assert.IsNotNull (element.GetPatternProvider (MultipleViewPatternIdentifiers.Pattern.Id), 
 			                  "View.Tile: MIGHT support MultipleView Pattern");
-			Assert.IsNull (element.GetPatternProvider (GridPatternIdentifiers.Pattern.Id), 
-			               "View.Tile: SHOULD NOT support GridPattern Pattern");
+			view.ShowGroups = false;
+			Assert.IsNotNull (element.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
+			                  "View.Tile: MUST support GridPattern Pattern. view.ShowGroups=false");
+			view.ShowGroups = true;
+			Assert.IsNull (element.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
+			               "View.Tile: SHOULD NOT support GridPattern Pattern view.ShowGroups=true");
 			Assert.IsNull (element.GetPatternProvider (TablePatternIdentifiers.Pattern.Id), 
 			               "View.Tile: SHOULD NOT support TablePattern Pattern");
 
@@ -1042,8 +1058,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "View.Details: MUST support Selection Pattern");
 			Assert.IsNotNull (element.GetPatternProvider (MultipleViewPatternIdentifiers.Pattern.Id),
 			                  "View.Details: MIGHT support MultipleView Pattern");
+			view.ShowGroups = false;
 			Assert.IsNotNull (element.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
-			                  "View.Details: MUST support GridPattern Pattern");
+			                  "View.Details: MUST support GridPattern Pattern. view.ShowGroups=false");
+			view.ShowGroups = true;
+			Assert.IsNull (element.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
+			               "View.Details: SHOULD NOT support GridPattern Pattern view.ShowGroups=true");
 			Assert.IsNotNull (element.GetPatternProvider (TablePatternIdentifiers.Pattern.Id),
 			                  "View.Details: MUST support TablePattern Pattern");
 

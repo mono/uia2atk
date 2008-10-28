@@ -82,11 +82,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		public void Collapse ()
 		{
 			//FIXME & LAMESPEC: How to generate this using public API???
+			System.Console.WriteLine ("WARNING: Collapse is not avaliable in the public API.");
 		}
 
 		public void Expand ()
 		{
 			//FIXME & LAMESPEC: How to generate this using public API???
+			System.Console.WriteLine ("WARNING: Expand is not avaliable in the public API.");
 		}
 
 		#endregion

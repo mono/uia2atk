@@ -1,3 +1,8 @@
+2008-10-28  Mario Carrion  <mcarrion@novell.com>
+
+	* ListViewProviderTest.cs: Testing Grid support when View.ShowGroups is
+	false and true.
+
 2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* TextBoxProviderTest.cs: Found the culprit of the bridge test not

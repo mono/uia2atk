@@ -1,5 +1,14 @@
 2008-10-28  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GroupExpandCollapseProviderBehavior.cs:
+	Calling CWL.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Using Grid behavior
+	when ShowGroups is false, Application.VisualStylesEnabled is false or
+	View.List.
+
+2008-10-28  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Using Helper to
 	get vaild IsOffScreen and ClickablePoint
