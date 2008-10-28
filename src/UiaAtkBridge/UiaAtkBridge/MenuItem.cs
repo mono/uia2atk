@@ -127,41 +127,53 @@ namespace UiaAtkBridge
 		}
 
 		#region Action implementation 
+
+		private string actionDescription = null;
 		
 		public bool DoAction (int i)
 		{
-			throw new System.NotImplementedException ();
+			if (i == 0) {
+				//TODO: open element
+				return true;
+			}
+			return false;
 		}
 		
 		public string GetName (int i)
 		{
-			throw new System.NotImplementedException ();
+			if (i == 0)
+				return "click";
+			return null;
 		}
 		
 		public string GetKeybinding (int i)
 		{
-			throw new System.NotImplementedException ();
+			return null;
 		}
 		
 		public string GetLocalizedName (int i)
 		{
-			throw new System.NotImplementedException ();
+			return null;
 		}
 		
 		public bool SetDescription (int i, string desc)
 		{
-			throw new System.NotImplementedException ();
+			if (i == 0) {
+				actionDescription = desc;
+				return true;
+			}
+			return false;
 		}
 		
 		public string GetDescription (int i)
 		{
-			throw new System.NotImplementedException ();
+			if (i == 0)
+				return actionDescription;
+			return null;
 		}
 		
 		public int NActions {
-			get {
-				throw new System.NotImplementedException ();
-			}
+			get { return 1; }
 		}
 		
 		#endregion 

@@ -215,6 +215,7 @@ namespace UiaAtkBridgeTest
 					accessible = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) 
 					                                    ProviderFactory.GetProvider (listBox, true, true));
 				break;
+				
 			case BasicWidgetType.CheckedListBox:
 				SWF.CheckedListBox clistBox = new SWF.CheckedListBox ();
 				if (real)
@@ -230,6 +231,7 @@ namespace UiaAtkBridgeTest
 					accessible = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) 
 					                                    ProviderFactory.GetProvider (clistBox, true, true));
 				break;
+				
 			case BasicWidgetType.ComboBoxDropDownEntry:
 				if (!real)
 					throw new NotSupportedException ("ComboBox has no un-real support");
@@ -282,7 +284,7 @@ namespace UiaAtkBridgeTest
 
 				accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
 					                                 ProviderFactory.GetProvider (parentMenu, true, true));
-
+				
 				break;
 			default:
 				throw new NotImplementedException ("This AtkTester overload doesn't handle this type of widget: " +

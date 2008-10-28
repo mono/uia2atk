@@ -1,5 +1,9 @@
 2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* MenuItem.cs: Make it pass Atk.Action. (#428534)
+
+2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* MenuItem.cs:
 	* AutomationBridge.cs: Finished MenuItem basic impl. (#428532)
 
