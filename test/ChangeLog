@@ -1,3 +1,12 @@
+2008-10-28  Ray Wang <rawang@novell.com>
+
+	* keystrokes/checkbox: move wincheckbox.py to 
+	keystrokes/winforms/wincheckbox.py/, and checkbox.py to 
+	keystrokes/gtk/gtkcheckbox.py/
+	* keystrokes/radiobutton: move winradiobutton.py to
+	keystrokes/winforms/winradiobutton.py/, and radiobutton.py to 
+	keystrokes/gtk/gtkradiobutton.py/
+
 2008-10-27  Brian G. Merrell <bgmerrell@gmail.com>
 
 	* keystrokes/gtktutorial.py,
