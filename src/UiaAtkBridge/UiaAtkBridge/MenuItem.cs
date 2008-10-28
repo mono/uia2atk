@@ -31,12 +31,11 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	
-	
-	public class ParentMenu : ComponentParentAdapter, Atk.SelectionImplementor
+	public class MenuItem : ComponentParentAdapter, Atk.SelectionImplementor
 	{
 		bool? comboBoxStructure = null;
 		
-		public ParentMenu (IRawElementProviderSimple provider)
+		public MenuItem (IRawElementProviderSimple provider)
 		{
 			if (provider == null)
 				throw new ArgumentNullException ("provider");
@@ -51,7 +50,7 @@ namespace UiaAtkBridge
 			
 			IRawElementProviderFragment child = ((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
 			while (child != null) {
-				children.Add (new ParentMenu (child));
+				children.Add (new MenuItem (child));
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 

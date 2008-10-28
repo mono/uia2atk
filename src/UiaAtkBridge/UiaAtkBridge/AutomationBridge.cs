@@ -776,7 +776,7 @@ namespace UiaAtkBridge
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
 
-			Adapter newAdapter = new ParentMenu (provider);
+			Adapter newAdapter = new MenuItem (provider);
 			providerAdapterMapping [provider] = newAdapter;
 			
 			parentObject.AddOneChild (newAdapter);

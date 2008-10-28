@@ -1,5 +1,11 @@
 2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* MenuItem.cs:
+	* ComboBox.cs:
+	* AutomationBridge.cs: Rename class to MenuItem as well.
+
+2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Makefile.am:
 	* MenuItem.cs:
 	* ParentMenu.cs:
