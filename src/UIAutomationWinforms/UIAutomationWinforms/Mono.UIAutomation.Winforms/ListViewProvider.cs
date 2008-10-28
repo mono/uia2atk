@@ -938,6 +938,12 @@ namespace Mono.UIAutomation.Winforms
 
 				if (lastView == SWF.View.Details)
 					AddEditChildren (false);
+
+				if (listView.CheckBoxes == true) {
+					checkboxProvider = new ListViewListItemCheckBoxProvider (this);
+					checkboxProvider.Initialize ();
+					OnNavigationChildAdded (false, checkboxProvider);
+				}
 			}
 
 			public override void Terminate ()
@@ -967,6 +973,16 @@ namespace Mono.UIAutomation.Winforms
 			private void OnUIACheckBoxesChanged (object sender, EventArgs args)
 			{
 				UpdateBehavior (TogglePatternIdentifiers.Pattern);
+
+				if (checkboxProvider == null) {
+					checkboxProvider = new ListViewListItemCheckBoxProvider (this);
+					checkboxProvider.Initialize ();
+					OnNavigationChildAdded (true, checkboxProvider);
+				} else {
+					checkboxProvider.Terminate ();
+					OnNavigationChildRemoved (true, checkboxProvider);
+					checkboxProvider = null;
+				}
 			}
 	
 			private void OnUIALabelEditChanged (object sender, EventArgs args)
@@ -1019,9 +1035,12 @@ namespace Mono.UIAutomation.Winforms
 			private Dictionary<SWF.ColumnHeader, ListViewListItemEditProvider> providers;
 			private SWF.View lastView;
 			private SWF.ListView listView;
+			private ListViewListItemCheckBoxProvider checkboxProvider;
 		} //ListViewListItemProvider
 
 		#endregion
+
+		#region Internal Class: ListItem Edit Provider 
 
 		internal class ListViewListItemEditProvider : FragmentControlProvider
 		{
@@ -1087,7 +1106,59 @@ namespace Mono.UIAutomation.Winforms
 
 			private ListViewListItemProvider itemProvider;
 			private SWF.ColumnHeader header;
-		}
+		} //ListViewListItemEditProvider
+
+		#endregion
+
+		#region Internal Class: ListItem CheckBox Provider
+
+		internal class ListViewListItemCheckBoxProvider : FragmentControlProvider
+		{
+			public ListViewListItemCheckBoxProvider (ListViewListItemProvider itemProvider)
+				: base (null)
+			{
+				this.itemProvider = itemProvider;
+			}
+
+			public ListViewListItemProvider ItemProvider {
+				get { return itemProvider; }
+			}
+
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { return itemProvider; }
+			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+
+				SetBehavior (TogglePatternIdentifiers.Pattern,
+				             new ListItemCheckBoxToggleProviderBehavior (this));
+			}
+
+			public override object GetPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.CheckBox.Id;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return "checkbox";
+				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return itemProvider.GetPropertyValue (propertyId); //FIXME: Is this ok?
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
+					return true;
+				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+					return null;
+				else
+					return base.GetPropertyValue (propertyId);
+				//FIXME: ClickablePointProperty , BoundingRectangleProperty, IsOffScreen
+			}
+
+			private ListViewListItemProvider itemProvider;
+		} //ListViewListItemEditProvider
+
+		#endregion
 		
 	}
 }
