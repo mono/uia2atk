@@ -1,3 +1,8 @@
+2008-10-28  Neville Gao <nevillegao@gmail.com>
+
+	* UIAutomationWinformsClientTests.csproj: Updated for added file.
+	* PanelTest.cs: File added.
+
 2008-10-27  Mario Carrion <mcarrion@novell.com> 
 
 	* ListViewTest.cs: Updated to test Navigation and pattern in all views.
