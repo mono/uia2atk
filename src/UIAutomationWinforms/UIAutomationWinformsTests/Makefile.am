@@ -65,6 +65,7 @@ FILES =  \
 	LabelProviderTest.cs \
 	LinkLabelProviderTest.cs \
 	ListBoxProviderTest.cs \
+	ListViewProviderTest.cs \
 	MenuStripProviderTest.cs \
 	MockBridge.cs \
 	NumericUpDownProviderTest.cs \

@@ -103,7 +103,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.ErrorProvider errp;
 			SWF.TabControl tc;
 			SWF.TabPage tp;
-//			SWF.ListView lv;
+			SWF.ListView lv;
 			SWF.WebBrowser wb;
 			SWF.Panel p;
 			
@@ -198,8 +198,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new RichTextBoxProvider (rt);
 			else if ((p = component as SWF.Panel) != null)
 				provider = new PanelProvider (p);
-//			else if ((lv = component as SWF.ListView) != null)
-//				provider = new ListViewProvider (lv);
+			else if ((lv = component as SWF.ListView) != null)
+				provider = new ListViewProvider (lv);
 			else {
 				//TODO: We have to solve the problem when there's a Custom control
 				//	Ideally the first thing we do is send a wndproc message to

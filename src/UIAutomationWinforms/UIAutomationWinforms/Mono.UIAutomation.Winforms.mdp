@@ -1,4 +1,4 @@
-<Project name="Mono.UIAutomation.Winforms" fileversion="2.0" language="C#" DefaultNamespace="Mono.UIAutomation.Winforms" clr-version="Net_2_0" UseParentDirectoryAsNamespace="True" ctype="DotNetProject">
+<Project name="Mono.UIAutomation.Winforms" fileversion="2.0" language="C#" UseParentDirectoryAsNamespace="True" DefaultNamespace="Mono.UIAutomation.Winforms" clr-version="Net_2_0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="bin/Debug" signAssembly="True" assemblyKeyFile="../../mono-uia.snk" assembly="UIAutomationWinforms" />
@@ -144,55 +144,55 @@
     <File name="Mono.UIAutomation.Winforms.Events/ComboBox/ListItemSelectionItemPatternIsSelectedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/TabControlProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/TabPageProvider.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms/ListViewProvider.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/MultipleViewProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
+    <File name="Mono.UIAutomation.Winforms/ListViewProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/MultipleViewProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/IScrollBehaviorSubject.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/IScrollBehaviorObserver.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/Generic/ScrollProviderBehavior.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontallyScrollableEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalScrollPercentEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalViewSizeEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticallyScrollableEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalScrollPercent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalViewSizeEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/SelectionProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternCanSelectMultipleEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternInvalidatedEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternSelectionEvent.cs" subtype="Code" buildaction="Nothing" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontallyScrollableEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalScrollPercentEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalViewSizeEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticallyScrollableEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalScrollPercent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalViewSizeEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/SelectionProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternCanSelectMultipleEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternInvalidatedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternSelectionEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelGridItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelGridItemPatternColumnEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemSelectionItemProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternIsSelectedEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementSelectedEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementRemovedEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementAddedEvent.cs" subtype="Code" buildaction="Nothing" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemSelectionItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternIsSelectedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementSelectedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementRemovedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementAddedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ToolStripItem/InvokePatternInvokedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ToolStripItemProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ToolStripMenuItemProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternRowEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternColumnEvent.cs" subtype="Code" buildaction="Nothing" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternRowEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternColumnEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ToolStripProvider.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/GroupGridProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternRowEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternColumnEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/GroupExpandCollapseProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemValueProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternValueEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternIsReadOnlyEvent.cs" subtype="Code" buildaction="Nothing" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/GroupGridProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternRowEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternColumnEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/GroupExpandCollapseProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternValueEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternIsReadOnlyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/CheckedListBox/ListItemToggleProviderBehavior.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemToggleProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemToggleProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/CheckedListBox/ListItemTogglePatternToggleStateEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemTogglePatternToggleStateEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/GridPatternColumnEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/GridPatternRowEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/HeaderItemInvokeProvider.cs" subtype="Code" buildaction="Nothing" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemTogglePatternToggleStateEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/GridPatternColumnEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/GridPatternRowEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/HeaderItemInvokeProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/RichTextBoxProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/UpDownBaseProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
@@ -207,21 +207,21 @@
     <File name="Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationIsKeyboardFocusablePropertyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationIsOffscreenPropertyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationNamePropertyEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/TableProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/TableProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMaximumEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMinimumEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternSmallChangeEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditValueProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemEditValuePatternValueEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/TablePatternColumnHeadersEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditGridItemProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemEditGridItemRowEvent.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemEditGridItemColumnEvent.cs" subtype="Code" buildaction="Nothing" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemEditValuePatternValueEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/TablePatternColumnHeadersEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditGridItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemEditGridItemRowEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemEditGridItemColumnEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueValueEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditTableItemProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemCheckBoxToggleProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
-    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemCheckBoxTogglePatternToggleStateEvent.cs" subtype="Code" buildaction="Nothing" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditTableItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemCheckBoxToggleProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemCheckBoxTogglePatternToggleStateEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ToolStripTextBoxProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/Panel/DockPatternDockPositionEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/Panel/TransformPatternCanMoveEvent.cs" subtype="Code" buildaction="Compile" />
