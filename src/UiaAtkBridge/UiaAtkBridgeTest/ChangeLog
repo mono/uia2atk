@@ -1,5 +1,9 @@
 2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs: Prepare GailTest for ParentMenu+AtkText.
+
+2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Cosmetic.
 
 2008-10-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
