@@ -1,5 +1,9 @@
 2008-10-28  Calen Chen <cachen@novell.com>
 
+	* testers/listbox_basic_ops.py: click list box first before click items
+
+2008-10-28  Calen Chen <cachen@novell.com>
+
 	* testers/linklabel/linklabelframe.py: modify the asserting for 
 	disable linklable doing jump action
 
