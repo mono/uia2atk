@@ -1,3 +1,8 @@
+2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MainWindow.cs:
+	* GailTestApp.mdp: Moved function to make it reusable in the bridge.
+
 2008-10-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MainWindow.cs: Remove garbage.

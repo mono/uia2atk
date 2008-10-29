@@ -78,13 +78,38 @@ namespace UiaAtkBridgeTest
 //		public List<MenuLayout> SubMenus { get { return subMenus; } }
 //	}
 	
-	internal static class Misc
+	public static class Misc
 	{
 		internal static bool HasReadOnlyText (BasicWidgetType type) {
 			if ((type == BasicWidgetType.TextBoxEntry) ||
 			    (type == BasicWidgetType.TextBoxView))
 				return false;
 			return true;
+		}
+
+		public static string LookForImagesDir () {
+			string imgDir = System.IO.Directory.GetCurrentDirectory ();
+			
+			while (imgDir != "/"){
+				if (System.IO.Directory.GetFiles (imgDir, "*.gif").Length == 0)
+					imgDir = System.IO.Path.GetFullPath (System.IO.Path.Combine (imgDir, ".."));
+	
+				else
+					break;
+				
+				string samples = System.IO.Path.Combine (System.IO.Path.Combine (imgDir, "test"), "samples");
+				if (System.IO.Directory.Exists (samples)) { 
+					if (System.IO.Directory.GetFiles (samples, "*.gif").Length > 0) {
+						imgDir = System.IO.Path.GetFullPath (samples);
+						break;
+					}
+				}
+			}
+	
+			if (imgDir != "/")
+				return imgDir;
+	
+			return null;
 		}
 	}
 }

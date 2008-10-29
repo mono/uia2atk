@@ -1,5 +1,9 @@
 2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BasicWidgetType.cs: Moved function to make it reusable in the bridge.
+
+2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Makefile.am: Copy-paste pays off.
 
 2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>

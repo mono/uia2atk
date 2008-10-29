@@ -38,7 +38,7 @@ public partial class MainWindow: Gtk.Window
 		radioButtons.Add (this.radiobutton1);
 		radioButtons.Add (this.radiobutton2);
 		
-		string uiaQaPath = LookForImagesDir ();
+		string uiaQaPath = UiaAtkBridgeTest.Misc.LookForImagesDir ();
 		Gtk.Image img1 = new Gtk.Image ();
 		img1.FromFile = System.IO.Path.Combine (uiaQaPath, "opensuse60x38.gif");
 		img1.Show ();
@@ -57,31 +57,6 @@ public partial class MainWindow: Gtk.Window
 		this.imgTest1.FromFile = System.IO.Path.Combine (uiaQaPath, "goalie.gif");
 
 		this.imgTest2.FromFile = System.IO.Path.Combine (uiaQaPath, "apple-red.png");
-	}
-
-	private static string LookForImagesDir () {
-		string imgDir = System.IO.Directory.GetCurrentDirectory ();
-		
-		while (imgDir != "/"){
-			if (System.IO.Directory.GetFiles (imgDir, "*.gif").Length == 0)
-				imgDir = System.IO.Path.GetFullPath (System.IO.Path.Combine (imgDir, ".."));
-
-			else
-				break;
-			
-			string samples = System.IO.Path.Combine (System.IO.Path.Combine (imgDir, "test"), "samples");
-			if (System.IO.Directory.Exists (samples)) { 
-				if (System.IO.Directory.GetFiles (samples, "*.gif").Length > 0) {
-					imgDir = System.IO.Path.GetFullPath (samples);
-					break;
-				}
-			}
-		}
-
-		if (imgDir != "/")
-			return imgDir;
-
-		return null;
 	}
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
