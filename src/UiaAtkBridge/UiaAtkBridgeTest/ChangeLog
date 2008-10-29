@@ -1,5 +1,12 @@
 2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Makefile.am:
+	* BridgeTests.cs:
+	* BridgeTester.cs:
+	* UiaAtkBridgeTest.mdp: Separate tests from the backend retriever.
+
+2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Fix build.
 
 2008-10-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
