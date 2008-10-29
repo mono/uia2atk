@@ -1,5 +1,10 @@
 2008-10-29  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/PanelProvider.cs: Returning the id not the
+	ControlType.
+
+2008-10-29  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/Helper.cs: New methods: IsOffScreen,
 	GetControlScreenBounds, RectToRectangle.
 

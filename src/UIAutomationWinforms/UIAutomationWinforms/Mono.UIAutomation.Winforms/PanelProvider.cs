@@ -58,7 +58,7 @@ namespace Mono.UIAutomation.Winforms
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Pane;
+				return ControlType.Pane.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "pane";
 			else
