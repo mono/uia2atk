@@ -71,9 +71,12 @@ DLL_REFERENCES = $(UIAUTOMATIONWINFORMS) $(ATKTEST) $(UIAATKBRIDGE)
 CLEANFILES = $(PROGRAMFILES) \
 	bin/Debug/UIAutomationWinforms.dll \
 	bin/Debug/UIAutomationWinforms.dll.mdb \
+	bin/Debug/AtkTest.dll \
+	bin/Debug/AtkTest.dll.mdb \
 	bin/Debug/UiaAtkBridge.dll \
 	bin/Debug/UiaAtkBridge.dll.mdb \
 	bin/Release/UIAutomationWinforms.dll \
+	bin/Release/AtkTest.dll \
 	bin/Release/UiaAtkBridge.dll
 
 MAINTAINERCLEANFILES = \
@@ -104,6 +107,15 @@ bin/Debug/UiaAtkBridge.dll: ../UiaAtkBridge/bin/Debug/UiaAtkBridge.dll
 	cp -a $<.mdb $@.mdb
 
 bin/Release/UiaAtkBridge.dll: ../UiaAtkBridge/bin/Release/UiaAtkBridge.dll
+	@mkdir -p bin/Release
+	cp -a $< $@
+
+bin/Debug/AtkTest.dll: ../AtkTest/bin/Debug/AtkTest.dll
+	@mkdir -p bin/Debug
+	cp -a $< $@
+	cp -a $<.mdb $@.mdb
+
+bin/Release/AtkTest.dll: ../AtkTest/bin/Release/AtkTest.dll
 	@mkdir -p bin/Release
 	cp -a $< $@
 
