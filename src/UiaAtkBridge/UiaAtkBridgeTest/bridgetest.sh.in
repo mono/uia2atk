@@ -4,7 +4,8 @@ DLL=UiaAtkBridgeTest.dll
 
 NUNIT_FLAGS=-nothread
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../../bridge-glue/.libs/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:@TOPDIR@/bridge-glue/.libs/
+#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../../bridge-glue/.libs/
 
 if [ -f /usr/lib/gtk-2.0/modules/libatk-bridge.so ]; then
 	echo We are in a 32bits env

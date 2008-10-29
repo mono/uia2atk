@@ -1,3 +1,7 @@
+2008-10-29  Mario Carrion  <mcarrion@novell.com>
+
+	* configure.ac: Use absolute URLs to be able to run with mono HEAD.
+
 2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* UiaAtkBridge.mds, Makefile.am, configure.ac: Add new project into subsolution.
