@@ -1,5 +1,12 @@
 2008-10-28  Calen Chen <cachen@novell.com>
 
+	* samples/toolstrip_toolstripcombobox.py,
+	* samples/toolstrip.py: separate the example from toolstripcombobox, 
+	delete toolstrip_toolstripcombobox.py, otherwise the toolstripcombobox 
+	would cause crash currently
+
+2008-10-28  Calen Chen <cachen@novell.com>
+
 	* testers/listbox_basic_ops.py: click list box first before click items
 
 2008-10-28  Calen Chen <cachen@novell.com>
