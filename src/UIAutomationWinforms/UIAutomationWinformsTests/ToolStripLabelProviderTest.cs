@@ -55,17 +55,21 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
 			
-			// Should never support Toggle
-			object toggleProvider = provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
-			Assert.IsNull (toggleProvider);
+			// Should never support Text
+			object textProvider = provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id);
+			Assert.IsNull (textProvider);
 
-			// Should never support SelectionItem
-			object selectionItemProvider = provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
-			Assert.IsNull (selectionItemProvider);
+			// Should never support TableItem
+			object tableItemProvider = provider.GetPatternProvider (TableItemPatternIdentifiers.Pattern.Id);
+			Assert.IsNull (tableItemProvider);
 
-			// Should never support ExpandCollapse
-			object expandCollapseProvider = provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
-			Assert.IsNull (expandCollapseProvider);
+			// Should never support RangeValue
+			object rangeValueProvider = provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNull (rangeValueProvider);
+
+			// Should never support Value
+			object valueProvider = provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNull (valueProvider);
 
 			// Support Invoke conditionally
 			object invokeProvider = provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
