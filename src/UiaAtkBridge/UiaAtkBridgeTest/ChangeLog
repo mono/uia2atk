@@ -1,3 +1,14 @@
+2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* Makefile.am:
+	* AtkTester.cs:
+	* AtSpiEvent.cs:
+	* EventMonitor.cs:
+	* BasicWidgetType.cs:
+	* EventCollection.cs:
+	* UiaAtkBridgeTest.mdp: Moved some stuff to another different assembly.
+
 2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Prepare GailTest for ParentMenu+AtkText.

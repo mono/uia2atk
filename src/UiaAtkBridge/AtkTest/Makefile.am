@@ -42,6 +42,7 @@ FILES =  \
 	AssemblyInfo.cs \
 	AtkTester.cs \
 	AtkTests.cs \
+	AtSpiEvent.cs \
 	BasicWidgetType.cs \
 	EventCollection.cs \
 	EventMonitor.cs
@@ -53,10 +54,9 @@ RESOURCES =
 EXTRAS = 
 
 REFERENCES =  \
-	System  \
-	nunit.framework \
-	$(GTK_SHARP_20_LIBS) \
-	$(GLIB_SHARP_20_LIBS) \
+	-pkg:gtk-sharp-2.0 \
+	-pkg:nunit \
+	System \
 	System.Core \
 	System.Xml
 

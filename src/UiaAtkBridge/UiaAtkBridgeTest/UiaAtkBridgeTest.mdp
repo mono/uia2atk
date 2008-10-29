@@ -19,15 +19,6 @@
   <Contents>
     <File name="AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
     <File name="BridgeTester.cs" subtype="Code" buildaction="Compile" />
-    <File name="AtkTester.cs" subtype="Code" buildaction="Compile" />
-    <File name="TestProviderSimple.cs" subtype="Code" buildaction="Compile" />
-    <File name="TestButtonControlType.cs" subtype="Code" buildaction="Compile" />
-    <File name="BasicWidgetType.cs" subtype="Code" buildaction="Compile" />
-    <File name="AtkTests.cs" subtype="Code" buildaction="Compile" />
-    <File name="../atspimon.py" subtype="Code" buildaction="Nothing" />
-    <File name="AtSpiEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="EventCollection.cs" subtype="Code" buildaction="Compile" />
-    <File name="EventMonitor.cs" subtype="Code" buildaction="Compile" />
     <File name="bridgetest.sh.in" subtype="Code" buildaction="Nothing" />
   </Contents>
   <References>
@@ -45,6 +36,7 @@
     <ProjectReference type="Gac" localcopy="True" refto="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <ProjectReference type="Gac" localcopy="True" refto="System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
     <ProjectReference type="Gac" localcopy="True" refto="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Project" localcopy="True" refto="AtkTest" />
   </References>
   <GtkDesignInfo />
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" IsAutotoolsProject="True" RelativeConfigureInPath="..">

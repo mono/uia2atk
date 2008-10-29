@@ -41,15 +41,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
 	AssemblyInfo.cs \
-	AtkTester.cs \
-	AtkTests.cs \
-	AtSpiEvent.cs \
-	BasicWidgetType.cs \
-	BridgeTester.cs \
-	EventCollection.cs \
-	EventMonitor.cs \
-	TestButtonControlType.cs \
-	TestProviderSimple.cs
+	BridgeTester.cs
 
 DATA_FILES = 
 
@@ -59,6 +51,7 @@ EXTRAS =
 
 UIAUTOMATIONWINFORMS = $(BUILD_DIR)/UIAutomationWinforms.dll
 UIAATKBRIDGE = $(BUILD_DIR)/UiaAtkBridge.dll
+ATKTEST = $(BUILD_DIR)/AtkTest.dll
 
 REFERENCES =  \
 	System  \
@@ -73,7 +66,7 @@ REFERENCES =  \
 	System.Core \
 	System.Xml
 
-DLL_REFERENCES = $(UIAUTOMATIONWINFORMS) $(UIAATKBRIDGE)
+DLL_REFERENCES = $(UIAUTOMATIONWINFORMS) $(ATKTEST) $(UIAATKBRIDGE)
 
 CLEANFILES = $(PROGRAMFILES) \
 	bin/Debug/UIAutomationWinforms.dll \

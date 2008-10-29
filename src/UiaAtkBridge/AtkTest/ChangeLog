@@ -1,5 +1,16 @@
 2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Makefile.am:
+	* AtkTest.mdp:
+	* AtkTests.cs:
+	* AtkTester.cs:
+	* AtSpiEvent.cs:
+	* EventMonitor.cs:
+	* EventCollection.cs:
+	* BasicWidgetType.cs: Moved some stuff to another different assembly.
+
+2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Makefile.am: Not sure about my autofoo abilities.
 
 2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
