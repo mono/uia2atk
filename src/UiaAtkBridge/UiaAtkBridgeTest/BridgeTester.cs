@@ -77,6 +77,7 @@ namespace UiaAtkBridgeTest
 			//same effect as Application.Run() (the important bit is this causes a call to ApplicationStarts() ):
 			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
 
+
 			string uiaQaPath = System.IO.Directory.GetCurrentDirectory ();
 			string imgPath = uiaQaPath + "/../../../../../test/samples/opensuse60x38.gif";
 
@@ -719,7 +720,7 @@ namespace UiaAtkBridgeTest
 		}
 
 		
-		//[Test]
+		/*[Test]
 		public void UIAButtonControlType ()
 		{
 			TestButtonControlType pushButton = 
@@ -790,7 +791,7 @@ namespace UiaAtkBridgeTest
 			bridgeAdapter.RaiseAutomationPropertyChangedEvent(args);
 
 			// TODO: test the bounds that were set
-		}
+		}*/
 
 		[TestFixtureTearDown]
 		public void TearDown ()

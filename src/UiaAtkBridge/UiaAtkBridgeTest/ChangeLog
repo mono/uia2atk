@@ -1,3 +1,7 @@
+2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Fix build.
+
 2008-10-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am: Add AtkTest.dll targets.
