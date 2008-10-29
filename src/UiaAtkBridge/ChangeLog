@@ -1,6 +1,6 @@
 2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
-	* UiaAtkBridge.mds: Add new project into subsolution.
+	* UiaAtkBridge.mds, configure.ac: Add new project into subsolution.
 
 2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
 

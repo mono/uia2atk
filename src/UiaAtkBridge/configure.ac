@@ -103,6 +103,7 @@ AC_SUBST(GLIB_LIBS)
 
 AC_CONFIG_FILES([
 Makefile
+AtkTest/Makefile
 GailTest/Makefile
 GailTest/gailtest.sh
 UiaAtkBridge/Makefile
