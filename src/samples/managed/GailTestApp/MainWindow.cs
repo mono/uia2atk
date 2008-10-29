@@ -38,7 +38,7 @@ public partial class MainWindow: Gtk.Window
 		radioButtons.Add (this.radiobutton1);
 		radioButtons.Add (this.radiobutton2);
 		
-		string uiaQaPath = UiaAtkBridgeTest.Misc.LookForImagesDir ();
+		string uiaQaPath = UiaAtkBridgeTest.Misc.LookForParentDir ("*.gif");
 		Gtk.Image img1 = new Gtk.Image ();
 		img1.FromFile = System.IO.Path.Combine (uiaQaPath, "opensuse60x38.gif");
 		img1.Show ();

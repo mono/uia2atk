@@ -1,5 +1,9 @@
 2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* MainWindow.cs: Fix shadow copy issues with mono HEAD.
+
+2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* MainWindow.cs:
 	* GailTestApp.mdp: Moved function to make it reusable in the bridge.
 

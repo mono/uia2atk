@@ -87,11 +87,11 @@ namespace UiaAtkBridgeTest
 			return true;
 		}
 
-		public static string LookForImagesDir () {
+		public static string LookForParentDir (string pattern) {
 			string imgDir = System.IO.Directory.GetCurrentDirectory ();
 			
 			while (imgDir != "/"){
-				if (System.IO.Directory.GetFiles (imgDir, "*.gif").Length == 0)
+				if (System.IO.Directory.GetFiles (imgDir, pattern).Length == 0)
 					imgDir = System.IO.Path.GetFullPath (System.IO.Path.Combine (imgDir, ".."));
 	
 				else
@@ -99,7 +99,7 @@ namespace UiaAtkBridgeTest
 				
 				string samples = System.IO.Path.Combine (System.IO.Path.Combine (imgDir, "test"), "samples");
 				if (System.IO.Directory.Exists (samples)) { 
-					if (System.IO.Directory.GetFiles (samples, "*.gif").Length > 0) {
+					if (System.IO.Directory.GetFiles (samples, pattern).Length > 0) {
 						imgDir = System.IO.Path.GetFullPath (samples);
 						break;
 					}

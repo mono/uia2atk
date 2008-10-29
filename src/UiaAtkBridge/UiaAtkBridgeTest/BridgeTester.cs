@@ -48,9 +48,8 @@ namespace UiaAtkBridgeTest
 			//same effect as Application.Run() (the important bit is this causes a call to ApplicationStarts() ):
 			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
 
-
-			string uiaQaPath = System.IO.Directory.GetCurrentDirectory ();
-			string imgPath = uiaQaPath + "/../../../../../test/samples/opensuse60x38.gif";
+			string uiaQaPath = Misc.LookForParentDir ("*.gif");
+			string imgPath = System.IO.Path.Combine (uiaQaPath, "opensuse60x38.gif");
 
 			butWithImage.Image = System.Drawing.Image.FromFile (imgPath);
 			butWithImage.AutoSize = true;

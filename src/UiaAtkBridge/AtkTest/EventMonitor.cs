@@ -49,9 +49,10 @@ namespace UiaAtkBridgeTest
 		{
 			string appWatcher = "atspimon.py";
 			string appsToWatch = "nunit-console GtkSharpValue";
-			File.Delete (System.IO.Directory.GetCurrentDirectory () + "/atspimon.py");
-			File.Copy (Directory.GetCurrentDirectory () + "/../../../atspimon.py",
-			           Directory.GetCurrentDirectory () + "/atspimon.py");
+			
+			File.Delete (Path.Combine (Directory.GetCurrentDirectory (), "atspimon.py"));
+			File.Copy (Path.Combine (Misc.LookForParentDir ("*.py"), "atspimon.py"),
+			           Path.Combine (Directory.GetCurrentDirectory (), "atspimon.py"));
 			p = new System.Diagnostics.Process ();
 			p.StartInfo.FileName = "python";
 			p.StartInfo.Arguments = String.Format ("-u {0} --xml {1}", appWatcher, appsToWatch);
