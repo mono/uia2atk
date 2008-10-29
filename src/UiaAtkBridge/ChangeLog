@@ -1,3 +1,7 @@
+2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTest: Add new dir for new refactoring, oh my.
+
 2008-10-03 Brian G. Merrell <bgmerrell@gmail.com> 
 
 	* atspimon.py: Reference source_apps statically just to be consistent

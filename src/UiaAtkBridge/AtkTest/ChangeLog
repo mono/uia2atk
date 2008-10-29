@@ -1,0 +1,6 @@
+2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTest.mdp:
+	* AssemblyInfo.cs: Add new dir for new refactoring, oh my.
+
+
