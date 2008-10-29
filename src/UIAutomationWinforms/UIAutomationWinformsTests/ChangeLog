@@ -1,3 +1,8 @@
+2008-10-28  Neville Gao <nevillegao@gmail.com>
+
+	* UIAutomationWinformsTests.mdp, Makefile.am: Updated for added files.
+	* PanelProviderTest.cs: File added.
+
 2008-10-28  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

@@ -1,3 +1,18 @@
+2008-10-28  Neville Gao <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added files.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs:
+	  Added SWF.Panel.
+	* Mono.UIAutomation.Winforms.Events/ProviderEventType.cs:
+	  Added TransformPattern and DockPattern event properties.
+	* Mono.UIAutomation.Winforms/PanelProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/Panel/DockProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/Panel/TransformProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/Panel/TransformPatternCanResizeEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/Panel/TransformPatternCanMoveEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/Panel/DockPatternDockPositionEvent.cs:
+	  Files added.
+
 2008-10-28  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

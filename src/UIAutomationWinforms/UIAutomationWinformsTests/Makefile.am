@@ -68,6 +68,7 @@ FILES =  \
 	MenuStripProviderTest.cs \
 	MockBridge.cs \
 	NumericUpDownProviderTest.cs \
+	PanelProviderTest.cs \
 	PictureBoxProviderTest.cs \
 	ProgressBarProviderTest.cs \
 	RadioButtonProviderTest.cs \
