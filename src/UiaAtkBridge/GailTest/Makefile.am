@@ -51,6 +51,7 @@ EXTRAS =
 
 GAILTESTAPP = $(BUILD_DIR)/GailTestApp.exe
 UIAATKBRIDGETEST = $(BUILD_DIR)/UiaAtkBridgeTest.dll
+ATKTEST = $(BUILD_DIR)/AtkTest.dll
 REFERENCES =  \
 	System  \
 	System.Core \
@@ -59,13 +60,15 @@ REFERENCES =  \
 	$(GTK_SHARP_20_LIBS) \
 	$(GLIB_SHARP_20_LIBS)
 
-DLL_REFERENCES = $(UIAATKBRIDGETEST)
+DLL_REFERENCES = $(UIAATKBRIDGETEST) $(ATKTEST)
 
 CLEANFILES = $(PROGRAMFILES) \
 	bin/Debug/GailTestApp.exe \
 	bin/Debug/GailTestApp.exe.mdb \
 	bin/Debug/UiaAtkBridgeTest.dll \
 	bin/Debug/UiaAtkBridgeTest.dll.mdb \
+	bin/Debug/AtkTest.dll \
+	bin/Debug/AtkTest.dll.mdb \
 	bin/Release/GailTestApp.exe \
 	bin/Release/UiaAtkBridgeTest.dll
 
@@ -96,6 +99,15 @@ bin/Debug/UiaAtkBridgeTest.dll: ../UiaAtkBridgeTest/bin/Debug/UiaAtkBridgeTest.d
 	cp -a $<.mdb $@.mdb
 
 bin/Release/UiaAtkBridgeTest.dll: ../UiaAtkBridgeTest/bin/Release/UiaAtkBridgeTest.dll
+	@mkdir -p bin/Release
+	cp -a $< $@
+
+bin/Debug/AtkTest.dll: ../AtkTest/bin/Debug/AtkTest.dll
+	@mkdir -p bin/Debug
+	cp -a $< $@
+	cp -a $<.mdb $@.mdb
+
+bin/Release/AtkTest.dll: ../AtkTest/bin/Release/AtkTest.dll
 	@mkdir -p bin/Release
 	cp -a $< $@
 

@@ -1,3 +1,8 @@
+2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am:
+	* GailTest.mdp: Fix build.
+
 2008-10-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* gailtest.sh.in: The sample is a comment actually.
