@@ -181,6 +181,10 @@ namespace Mono.UIAutomation.Winforms
 					itemRec = listboxControl.Parent.RectangleToScreen (itemRec);
 	
 				return Helper.RectangleToRect (itemRec);
+			} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				Rect rect
+					= (Rect) item.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+				return Helper.IsOffScreen (rect, listboxControl, true);
 			} else
 				return null;
 		}

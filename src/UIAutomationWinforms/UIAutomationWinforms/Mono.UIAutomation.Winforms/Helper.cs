@@ -39,6 +39,18 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Internal Static Methods
 
+		internal static Rect GetControlScreenBounds (Rectangle bounds, SWF.Control control)
+		{
+			if (control.Parent == null || control.TopLevelControl == null)
+				return Helper.RectangleToRect (bounds);
+			else {
+				if (control.FindForm () == control.Parent)
+					return Helper.RectangleToRect (control.TopLevelControl.RectangleToScreen (bounds));
+				else
+					return Helper.RectangleToRect (control.Parent.RectangleToScreen (bounds));
+			}
+		}
+
 		internal static object GetClickablePoint (SimpleControlProvider provider)
 		{
 			bool offScreen
@@ -58,15 +70,22 @@ namespace Mono.UIAutomation.Winforms
 			return IsOffScreen (Helper.RectangleToRect (bounds), referenceControl);
 		}
 
+		internal static bool IsOffScreen (Rect bounds, SWF.Control referenceControl, bool scrollable)
+		{
+			Rect screen;
+
+			if (scrollable)
+				screen = Helper.GetControlScreenBounds (referenceControl.Bounds, referenceControl);
+			else
+				screen = Helper.RectangleToRect (SWF.Screen.GetWorkingArea (referenceControl));
+				
+
+			return !screen.Contains (bounds);
+		}
+
 		internal static bool IsOffScreen (Rect bounds, SWF.Control referenceControl)
 		{
-			Rect screen = Helper.RectangleToRect (SWF.Screen.GetWorkingArea (referenceControl));
-
-			// True if the *entire* control is off-screen
-			return !screen.Contains (bounds.Left, bounds.Bottom) 
-				&& !screen.Contains (bounds.Left, bounds.Top) 
-				&& !screen.Contains (bounds.Right, bounds.Bottom) 
-				&& !screen.Contains (bounds.Right, bounds.Top);
+			return Helper.IsOffScreen (bounds, referenceControl, false);
 		}
 		
 		internal static Rect GetBoundingRectangleFromButtonBase (FragmentControlProvider provider,
@@ -232,6 +251,12 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return new Rect (rectangle.X, rectangle.Y, 
 			                 rectangle.Width, rectangle.Height);
+		}
+
+		internal static Rectangle RectToRectangle (Rect rectangle) 
+		{
+			return new Rectangle ((int) rectangle.X, (int) rectangle.Y, 
+			                      (int) rectangle.Width, (int) rectangle.Height);
 		}
 		
 		#endregion

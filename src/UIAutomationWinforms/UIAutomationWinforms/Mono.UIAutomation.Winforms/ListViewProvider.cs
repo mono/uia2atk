@@ -181,6 +181,10 @@ namespace Mono.UIAutomation.Winforms
 					itemRec = listView.Parent.RectangleToScreen (itemRec);
 	
 				return Helper.RectangleToRect (itemRec);
+			} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				Rect rect
+					= (Rect) item.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+				return Helper.IsOffScreen (rect, listView, true);
 			} else
 				return null;
 		}
@@ -620,75 +624,53 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
 				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
-					return Helper.IsOffScreen (GetItemsBoundingRectangle (), listView);
+					return Helper.IsOffScreen (ItemsBoundingRectangle, listView, true);
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-					return GetItemsBoundingRectangle ();
+					return ItemsBoundingRectangle;
 				else
 					return base.GetPropertyValue (propertyId);
 			}
 
-			private Rect GetItemsBoundingRectangle ()
-			{
-				SWF.ListViewGroup defaultGroup = listView.UIADefaultListViewGroup;
-				ListViewProvider provider = (ListViewProvider) ProviderFactory.FindProvider (listView);
-				Rect rect = Rect.Empty;
-				
-				if (defaultGroup == group) {
-					for (int index = 0; index < listView.Items.Count; index++) {
-						SWF.ListViewItem item = listView.Items [index];
-						if (item.Group == null)							
-							GetItemBoundingRectangle (provider, item, ref rect);
-					}
-				} else {					
-					for (int index = 0; index < group.Items.Count; index++) {
-						SWF.ListViewItem item = group.Items [index];
-							
-						GetItemBoundingRectangle (provider, item, ref rect);
-					}
+			private Rect HeaderRectangle {
+				get {
+					// Lets Union the Header Bounds			
+					SD.Rectangle headerRec = listView.UIAGetHeaderBounds (group);
+					SD.Rectangle rectangle = listView.Bounds;
+					
+					headerRec.X += rectangle.X;
+					headerRec.Y += rectangle.Y;
+					
+					if (listView.FindForm () == listView.Parent)
+						headerRec = listView.TopLevelControl.RectangleToScreen (headerRec);
+					else
+						headerRec = listView.Parent.RectangleToScreen (headerRec);
+					
+					return Helper.RectangleToRect (headerRec);
 				}
-
-				Rect headerRect = GetHeaderRectangle (group);
-				headerRect.Union (rect);
-
-				return headerRect;
-			}
-			
-			private Rect GetHeaderRectangle (SWF.ListViewGroup group)
-			{
-				// Lets Union the Header Bounds			
-				SD.Rectangle headerRec = listView.UIAGetHeaderBounds (group);
-				SD.Rectangle rectangle = listView.Bounds;
-				
-				headerRec.X += rectangle.X;
-				headerRec.Y += rectangle.Y;
-				
-				if (listView.FindForm () == listView.Parent)
-					headerRec = listView.TopLevelControl.RectangleToScreen (headerRec);
-				else
-					headerRec = listView.Parent.RectangleToScreen (headerRec);
-				
-				return Helper.RectangleToRect (headerRec);
 			}
 
-			private Rect GetItemBoundingRectangle (ListViewProvider provider,
-			                                       SWF.ListViewItem item, 
-			                                       ref Rect rect)
-			{
-				//FIXME
-//				ListItemProvider itemProvider 
-//					= provider.GetItemProviderAt (this, item.Index);		
-//				Rect rectangle 
-//					= (Rect) itemProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-//				
-//				rect.Union (rectangle);
-//				
-//				return rect;
-				return Rect.Empty;
-			}
+			private Rect ItemsBoundingRectangle {
+				get {
+					Rect rect = Rect.Empty;
+	
+					foreach (ListViewListItemProvider itemProvider in this) {
+						Rect rectangle 
+							= (Rect) itemProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+						
+						rect.Union (rectangle);
+					}
+	
+					Rect headerRect = HeaderRectangle;
+					
+					headerRect.Union (rect);
+	
+					return headerRect;
+				}
+			}						
 
 			private SWF.ListView listView;
 			private SWF.ListViewGroup group;
@@ -711,6 +693,10 @@ namespace Mono.UIAutomation.Winforms
 				get { 
 					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (listView); 
 				}
+			}
+
+			public SWF.ListView ListView {
+				get { return listView; }
 			}
 
 			public ListViewHeaderItemProvider GetHeaderItemFrom (SWF.ColumnHeader column)
@@ -747,14 +733,13 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
-					//FIXME: Implement
 					return null;
 				} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) //FIXME: Implement
-					return null;
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+					return Helper.GetControlScreenBounds (listView.UIAHeaderControl, listView);
 				else
 					return base.GetPropertyValue (propertyId);
 			}
@@ -832,6 +817,10 @@ namespace Mono.UIAutomation.Winforms
 				this.columnHeader = columnHeader;
 			}
 
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { return headerProvider; }
+			}			
+
 			public override void Initialize ()
 			{
 				base.Initialize ();
@@ -854,20 +843,29 @@ namespace Mono.UIAutomation.Winforms
 					return OrientationType.Horizontal;
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 					return false;
-				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) //FIXME: Implement
-					return null;
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) //FIXME: Implement
-					return null;
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+					int indexOf = headerProvider.ListView.Columns.IndexOf (columnHeader);
+					Rect headerBounds
+						= (Rect) headerProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					
+					for (int index = 0; index < indexOf; index++)
+						headerBounds.X += headerProvider.ListView.Columns [index].Width;
+					
+					headerBounds.Width = headerProvider.ListView.Columns [indexOf].Width;
+					
+					return headerBounds;
+				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+					Rect bounds 
+						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					return Helper.IsOffScreen (bounds, headerProvider.ListView, true);
+				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+					return Helper.GetClickablePoint (this);
 				else
 					return base.GetPropertyValue (propertyId);
-			}
-
-			public override IRawElementProviderFragmentRoot FragmentRoot {
-				get { return headerProvider; }
 			}
 
 			private ListViewHeaderProvider headerProvider;
@@ -1111,9 +1109,25 @@ namespace Mono.UIAutomation.Winforms
 						return string.Empty;
 					else
 						return itemProvider.ListViewItem.ToolTipText;
-				} else 
+				} else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+					int indexOf = itemProvider.ListView.Columns.IndexOf (header);
+					Rect itemBounds
+						= (Rect) itemProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+
+					for (int index = 0; index < indexOf; index++)
+						itemBounds.X += itemProvider.ListView.Columns [index].Width;
+					
+					itemBounds.Width = itemProvider.ListView.Columns [indexOf].Width;
+					
+					return itemBounds;
+				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+					Rect bounds 
+						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					return Helper.IsOffScreen (bounds, ItemProvider.ListView); 
+				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+					return Helper.GetClickablePoint (this);
+				else
 					return base.GetPropertyValue (propertyId);
-				//FIXME: ClickablePointProperty , BoundingRectangleProperty, IsOffScreen
 			}
 
 			private ListViewListItemProvider itemProvider;
@@ -1173,7 +1187,7 @@ namespace Mono.UIAutomation.Winforms
 				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 					Rect bounds 
 						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-					return Helper.IsOffScreen (bounds, ItemProvider.ListView); 
+					return Helper.IsOffScreen (bounds, ItemProvider.ListView, true); 
 				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 					return Helper.GetClickablePoint (this);
 				else

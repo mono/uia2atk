@@ -1,5 +1,16 @@
 2008-10-29  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/Helper.cs: New methods: IsOffScreen,
+	GetControlScreenBounds, RectToRectangle.
+
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Returning IsOffScren
+	property.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Returning IsOffScren
+	property: Group, LisItemEdit, ListItem, ListItemCheckBox.
+
+2008-10-29  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: ListView files enabled for building.
 
