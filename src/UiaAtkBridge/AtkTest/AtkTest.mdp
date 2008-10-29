@@ -22,7 +22,6 @@
     <File name="EventMonitor.cs" subtype="Code" buildaction="Compile" />
     <File name="../atspimon.py" subtype="Code" buildaction="Nothing" />
     <File name="AtSpiEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Makefile.am" subtype="Code" buildaction="Nothing" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

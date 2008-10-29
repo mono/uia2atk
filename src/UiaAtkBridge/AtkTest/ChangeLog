@@ -1,5 +1,9 @@
 2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTest.mdp: Makefile.am should not be here.
+
+2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Makefile.am: Tests don't get installed.
 
 2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
