@@ -52,164 +52,194 @@ namespace UiaAtkBridge
 
 		private string text;
 		private Adapter resource = null;
+
+		private int selectionStartOffset = 0, selectionEndOffset = 0;
+		
+		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
+		{
+			startOffset = selectionStartOffset;
+			endOffset = selectionEndOffset;
+			return null;
+		}
 		
 		internal string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			switch (boundaryType){
-			case Atk.TextBoundary.Char:
-				
-				endOffset = startOffset = offset + 1;
-				if (startOffset > text.Length)
-					endOffset = startOffset = text.Length;
-				else if (endOffset + 1 <= text.Length)
-					endOffset++;
-
-				return ReturnTextWrtOffset (startOffset);
-				
-			case Atk.TextBoundary.LineEnd:
-				ForwardToNextSeparator (newLineSeparators, offset, out startOffset, out endOffset);
-				endOffset = ForwardToNextSeparator (newLineSeparators, endOffset, true);
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.LineStart:
-				startOffset = ForwardToNextSeparator (newLineSeparators, offset, false);
-				endOffset = ForwardToNextSeparator (newLineSeparators, startOffset, false);
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.WordEnd:
-				ForwardToNextSeparator (wordSeparators, offset, out startOffset, out endOffset);
-				endOffset = ForwardToNextSeparator (wordSeparators, endOffset, true);
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.WordStart:
-				startOffset = ForwardToNextSeparator (wordSeparators, offset, false);
-				endOffset = ForwardToNextSeparator (wordSeparators, startOffset, false);
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.SentenceEnd:
-				ForwardToNextSeparator (sentenceSeparators, offset, out startOffset, out endOffset, true);
-				endOffset = ForwardToNextSeparator (sentenceSeparators, endOffset, true);
-				int testStartOffset, nextStartOffset, testEndOffset, nextEndOffset;
-				ForwardToNextSeparator(softSentenceSeparators, startOffset, out testStartOffset, out nextStartOffset);
-				if (testStartOffset == startOffset)
-					startOffset = nextStartOffset;
-				ForwardToNextSeparator(softSentenceSeparators, startOffset, out testEndOffset, out nextEndOffset);
-				if (testEndOffset == endOffset)
-					endOffset = nextEndOffset;
-				
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.SentenceStart:
-				startOffset = ForwardToNextSeparator (sentenceSeparators, offset, false);
-				endOffset = ForwardToNextSeparator (sentenceSeparators, startOffset, false);
-				
-				endOffset = ForwardToNextSeparator (wordSeparators, endOffset, false);
-				
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			default:
-				throw GetNotSupportedBoundary (boundaryType);
+			startOffset = 0;
+			endOffset = 0;
+			try {
+				switch (boundaryType){
+				case Atk.TextBoundary.Char:
+					
+					endOffset = startOffset = offset + 1;
+					if (startOffset > text.Length)
+						endOffset = startOffset = text.Length;
+					else if (endOffset + 1 <= text.Length)
+						endOffset++;
+	
+					return ReturnTextWrtOffset (startOffset);
+					
+				case Atk.TextBoundary.LineEnd:
+					ForwardToNextSeparator (newLineSeparators, offset, out startOffset, out endOffset);
+					endOffset = ForwardToNextSeparator (newLineSeparators, endOffset, true);
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.LineStart:
+					startOffset = ForwardToNextSeparator (newLineSeparators, offset, false);
+					endOffset = ForwardToNextSeparator (newLineSeparators, startOffset, false);
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.WordEnd:
+					ForwardToNextSeparator (wordSeparators, offset, out startOffset, out endOffset);
+					endOffset = ForwardToNextSeparator (wordSeparators, endOffset, true);
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.WordStart:
+					startOffset = ForwardToNextSeparator (wordSeparators, offset, false);
+					endOffset = ForwardToNextSeparator (wordSeparators, startOffset, false);
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.SentenceEnd:
+					ForwardToNextSeparator (sentenceSeparators, offset, out startOffset, out endOffset, true);
+					endOffset = ForwardToNextSeparator (sentenceSeparators, endOffset, true);
+					int testStartOffset, nextStartOffset, testEndOffset, nextEndOffset;
+					ForwardToNextSeparator(softSentenceSeparators, startOffset, out testStartOffset, out nextStartOffset);
+					if (testStartOffset == startOffset)
+						startOffset = nextStartOffset;
+					ForwardToNextSeparator(softSentenceSeparators, startOffset, out testEndOffset, out nextEndOffset);
+					if (testEndOffset == endOffset)
+						endOffset = nextEndOffset;
+					
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.SentenceStart:
+					startOffset = ForwardToNextSeparator (sentenceSeparators, offset, false);
+					endOffset = ForwardToNextSeparator (sentenceSeparators, startOffset, false);
+					
+					endOffset = ForwardToNextSeparator (wordSeparators, endOffset, false);
+					
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				default:
+					throw GetNotSupportedBoundary (boundaryType);
+				}
+			} finally {
+				selectionStartOffset = startOffset;
+				selectionEndOffset = endOffset;
 			}
 		}
 		
 		internal string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			switch (boundaryType){
-
-			case Atk.TextBoundary.WordEnd:
-				startOffset = BackwardToNextSeparator (wordSeparators, offset, false);
-				endOffset = ForwardToNextSeparator (wordSeparators, offset, true);
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.WordStart:
-				startOffset = BackwardToNextSeparator (wordSeparators, offset, true);
-				endOffset = ForwardToNextSeparator (wordSeparators, offset, false);
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.LineEnd:
-				startOffset = BackwardToNextSeparator (newLineSeparators, offset, false);
-				endOffset = ForwardToNextSeparator (newLineSeparators, offset, true);
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.LineStart:
-				startOffset = BackwardToNextSeparator (newLineSeparators, offset, true);
-				endOffset = ForwardToNextSeparator (newLineSeparators, offset, false);
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.SentenceEnd:
-				startOffset = BackwardToNextSeparator (sentenceSeparators, offset, false);
-				endOffset = ForwardToNextSeparator (sentenceSeparators, offset, true);
-
-				int testEndOffset, nextEndOffset;
-				ForwardToNextSeparator(softSentenceSeparators, startOffset, out testEndOffset, out nextEndOffset);
-				if (testEndOffset == endOffset)
-					endOffset = nextEndOffset;
-				
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.SentenceStart:
-				startOffset = BackwardToNextSeparator (sentenceSeparators, offset, true);
-				endOffset = ForwardToNextSeparator (sentenceSeparators, offset, false);
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.Char:
-				startOffset = offset;
-				if (startOffset < 0) {
-					startOffset = text.Length;
-					endOffset = text.Length;
+			startOffset = 0;
+			endOffset = 0;
+			try {
+				switch (boundaryType){
+	
+				case Atk.TextBoundary.WordEnd:
+					startOffset = BackwardToNextSeparator (wordSeparators, offset, false);
+					endOffset = ForwardToNextSeparator (wordSeparators, offset, true);
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.WordStart:
+					startOffset = BackwardToNextSeparator (wordSeparators, offset, true);
+					endOffset = ForwardToNextSeparator (wordSeparators, offset, false);
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.LineEnd:
+					startOffset = BackwardToNextSeparator (newLineSeparators, offset, false);
+					endOffset = ForwardToNextSeparator (newLineSeparators, offset, true);
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.LineStart:
+					startOffset = BackwardToNextSeparator (newLineSeparators, offset, true);
+					endOffset = ForwardToNextSeparator (newLineSeparators, offset, false);
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.SentenceEnd:
+					startOffset = BackwardToNextSeparator (sentenceSeparators, offset, false);
+					endOffset = ForwardToNextSeparator (sentenceSeparators, offset, true);
+	
+					int testEndOffset, nextEndOffset;
+					ForwardToNextSeparator(softSentenceSeparators, startOffset, out testEndOffset, out nextEndOffset);
+					if (testEndOffset == endOffset)
+						endOffset = nextEndOffset;
+					
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.SentenceStart:
+					startOffset = BackwardToNextSeparator (sentenceSeparators, offset, true);
+					endOffset = ForwardToNextSeparator (sentenceSeparators, offset, false);
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.Char:
+					startOffset = offset;
+					if (startOffset < 0) {
+						startOffset = text.Length;
+						endOffset = text.Length;
+					}
+					else if (offset >= text.Length)
+						endOffset = offset;
+					else
+						endOffset = offset + 1;
+					return ReturnTextWrtOffset (offset);
+					
+				default:
+					throw GetNotSupportedBoundary (boundaryType);
 				}
-				else if (offset >= text.Length)
-					endOffset = offset;
-				else
-					endOffset = offset + 1;
-				return ReturnTextWrtOffset (offset);
-				
-			default:
-				throw GetNotSupportedBoundary (boundaryType);
+			} finally {
+				selectionStartOffset = startOffset;
+				selectionEndOffset = endOffset;
 			}
 		}
 
 		internal string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			switch (boundaryType){
-
-			case Atk.TextBoundary.WordEnd:
-				endOffset = BackwardToNextSeparator (wordSeparators, offset, false);
-				startOffset = BackwardToNextSeparator (wordSeparators, endOffset, false);
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.WordStart:
-				BackwardToNextSeparator (wordSeparators, offset, out endOffset, out startOffset);
-				startOffset = BackwardToNextSeparator (wordSeparators, startOffset, true);
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.LineEnd:
-				endOffset = BackwardToNextSeparator (newLineSeparators, offset, false);
-				startOffset = BackwardToNextSeparator (newLineSeparators, endOffset, false);
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.LineStart:
-				BackwardToNextSeparator (newLineSeparators, offset, out endOffset, out startOffset);
-				startOffset = BackwardToNextSeparator (newLineSeparators, startOffset, true);
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.Char:
-				startOffset = offset - 1;
-				endOffset = offset;
-				return ReturnTextWrtOffset (startOffset);
-
-			case Atk.TextBoundary.SentenceEnd:
-				endOffset = BackwardToNextSeparator (sentenceSeparators, offset, false);
-				startOffset = BackwardToNextSeparator (sentenceSeparators, endOffset, false);
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			case Atk.TextBoundary.SentenceStart:
-				BackwardToNextSeparator (sentenceSeparators, offset, out endOffset, out startOffset);
-				startOffset = BackwardToNextSeparator (sentenceSeparators, startOffset, true);
-				return ReturnTextWrtOffset (startOffset, endOffset);
-				
-			default:
-				throw GetNotSupportedBoundary (boundaryType);
+			startOffset = 0;
+			endOffset = 0;
+			try {
+				switch (boundaryType){
+	
+				case Atk.TextBoundary.WordEnd:
+					endOffset = BackwardToNextSeparator (wordSeparators, offset, false);
+					startOffset = BackwardToNextSeparator (wordSeparators, endOffset, false);
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.WordStart:
+					BackwardToNextSeparator (wordSeparators, offset, out endOffset, out startOffset);
+					startOffset = BackwardToNextSeparator (wordSeparators, startOffset, true);
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.LineEnd:
+					endOffset = BackwardToNextSeparator (newLineSeparators, offset, false);
+					startOffset = BackwardToNextSeparator (newLineSeparators, endOffset, false);
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.LineStart:
+					BackwardToNextSeparator (newLineSeparators, offset, out endOffset, out startOffset);
+					startOffset = BackwardToNextSeparator (newLineSeparators, startOffset, true);
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.Char:
+					startOffset = offset - 1;
+					endOffset = offset;
+					return ReturnTextWrtOffset (startOffset);
+	
+				case Atk.TextBoundary.SentenceEnd:
+					endOffset = BackwardToNextSeparator (sentenceSeparators, offset, false);
+					startOffset = BackwardToNextSeparator (sentenceSeparators, endOffset, false);
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				case Atk.TextBoundary.SentenceStart:
+					BackwardToNextSeparator (sentenceSeparators, offset, out endOffset, out startOffset);
+					startOffset = BackwardToNextSeparator (sentenceSeparators, startOffset, true);
+					return ReturnTextWrtOffset (startOffset, endOffset);
+					
+				default:
+					throw GetNotSupportedBoundary (boundaryType);
+				}
+			} finally {
+				selectionStartOffset = startOffset;
+				selectionEndOffset = endOffset;
 			}
 		}
 

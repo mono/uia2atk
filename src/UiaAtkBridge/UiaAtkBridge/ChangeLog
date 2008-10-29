@@ -1,3 +1,8 @@
+2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* TextLabel.cs:
+	* TextImplementorHelper.cs: Moved some code to make it reusable.
+
 2008-10-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MenuItem.cs: Make it pass Atk.Action. (#428534)

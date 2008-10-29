@@ -114,34 +114,20 @@ namespace UiaAtkBridge
 		{
 			return textExpert.GetText (startOffset, endOffset);
 		}
-
-		private int selectionStartOffset = 0, selectionEndOffset = 0;
 		
 		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			string ret = 
-				textExpert.GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
-			selectionStartOffset = startOffset;
-			selectionEndOffset = endOffset;
-			return ret;
+			return textExpert.GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
 		}
 		
 		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			string ret = 
-				textExpert.GetTextAtOffset (offset, boundaryType, out startOffset, out endOffset);
-			selectionStartOffset = startOffset;
-			selectionEndOffset = endOffset;
-			return ret;
+			return textExpert.GetTextAtOffset (offset, boundaryType, out startOffset, out endOffset);
 		}
 		
 		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			string ret = 
-				textExpert.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
-			selectionStartOffset = startOffset;
-			selectionEndOffset = endOffset;
-			return ret;
+			return textExpert.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
 		}
 		
 		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
@@ -174,9 +160,7 @@ namespace UiaAtkBridge
 
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
-			startOffset = selectionStartOffset;
-			endOffset = selectionEndOffset;
-			return null;
+			return textExpert.GetSelection (selectionNum, out startOffset, out endOffset);
 		}
 
 		public bool AddSelection (int startOffset, int endOffset)
