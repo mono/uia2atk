@@ -111,6 +111,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.ToolStripMenuItem tsmi;
 			SWF.ToolStripLabel tsl;
 			SWF.ToolStripItem tsi;
+			SWF.ToolStripTextBox tstb;
 			
 			if (component == null)
 				return null;
@@ -158,6 +159,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ToolStripMenuItemProvider (tsmi);
 			else if ((tsl = component as SWF.ToolStripLabel) != null)
 				provider = new ToolStripLabelProvider (tsl);
+			else if ((tstb = component as SWF.ToolStripTextBox) != null)
+				provider = new ToolStripTextBoxProvider (tstb);
 			else if ((tsi = component as SWF.ToolStripItem) != null)
 				provider = new ToolStripItemProvider (tsi);
 			else if ((scb = component as SWF.ScrollBar) != null) {

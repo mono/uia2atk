@@ -44,7 +44,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void EditPropertiesTest ()
 		{
-			TextBox textbox = new TextBox ();
+			TextBox textbox = CreateTextBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			TestProperty (provider,
@@ -62,7 +62,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		public void DocumentPropertiesTest ()
 		{
-			TextBox textbox = new TextBox ();
+			TextBox textbox = CreateTextBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			textbox.Multiline = true;
 			
@@ -86,7 +86,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void ValuePatternTest ()
 		{
-			TextBox textbox = new TextBox ();
+			TextBox textbox = CreateTextBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			object valueProvider = provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
@@ -97,7 +97,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void TextPatternTest () 
 		{
-			TextBox textbox = new TextBox ();
+			TextBox textbox = CreateTextBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			ITextProvider textProvider
@@ -128,7 +128,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void RangeValuePatternTest () 
 		{
-			TextBox textbox = new TextBox ();
+			TextBox textbox = CreateTextBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			object rangeProvider = provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
@@ -142,7 +142,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void IsNotIValueProviderTest ()
 		{
-			TextBox textbox = new TextBox ();
+			TextBox textbox = CreateTextBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			textbox.Multiline = true;
 			
@@ -158,7 +158,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void IValueProviderIsReadOnlyTest ()
 		{
-			TextBox textbox = new TextBox ();
+			TextBox textbox = CreateTextBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			IValueProvider valueProvider = (IValueProvider)
@@ -175,7 +175,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void IValueProviderValueTest ()
 		{
-			TextBox textbox = new TextBox ();
+			TextBox textbox = CreateTextBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			IValueProvider valueProvider = (IValueProvider)
@@ -193,7 +193,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void IValueProviderSetValueTest ()
 		{
-			TextBox textbox = new TextBox ();
+			TextBox textbox = CreateTextBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
 			
 			IValueProvider valueProvider = (IValueProvider)
@@ -220,7 +220,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void IScrollProviderTest ()
 		{
-			TextBox textbox = new TextBox ();
+			TextBox textbox = CreateTextBox ();
 			textbox.Size = new System.Drawing.Size (30, 30);
 			Form.Controls.Add (textbox);
 			textbox.ScrollBars = ScrollBars.Both;
@@ -293,7 +293,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void TextChangedEventTest ()
 		{
-			TextBox textbox = new TextBox ();
+			TextBox textbox = CreateTextBox ();
 			Form.Controls.Add (textbox);
 
 			bridge.ResetEventLists ();
@@ -308,7 +308,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void TextChangedEventTestMultiLine ()
 		{
-			TextBox textbox = new TextBox ();
+			TextBox textbox = CreateTextBox ();
 			textbox.Multiline = true;
 			Form.Controls.Add (textbox);
 
@@ -331,6 +331,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 #endregion
+
+		#region Protected Methods
+
+		protected virtual TextBox CreateTextBox ()
+		{
+			return new TextBox ();
+		}
+
+		#endregion
 		
 		// TODO: Move this somewhere else
 		private const string TEST_MESSAGE = "One morning, when Gregor Samsa    woke from troubled dreams, "+

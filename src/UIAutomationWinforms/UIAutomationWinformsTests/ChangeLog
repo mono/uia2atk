@@ -1,5 +1,14 @@
 2008-10-28  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Makefile.am:
+	* TextBoxProviderTest.cs:
+	* UIAutomationWinformsTests.mdp:
+	* ToolStripTextBoxProviderTest.cs: Add ToolStripTextBoxProviderTest as
+	subclass of TextBoxProviderTest, which now creates TextBox instances
+	with a virtual method instead of new.
+
+2008-10-28  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* ToolStripLabelProviderTest.cs: Never support Text, TableItem,
 	RangeValue, or Value patterns.
 

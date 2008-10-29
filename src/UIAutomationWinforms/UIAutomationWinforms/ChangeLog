@@ -1,3 +1,22 @@
+2008-10-28  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms/ToolStripTextBoxProvider.cs: Add start of
+	ToolStripTextBoxProvider implementation, which inherits from
+	TextBoxProvider.
+
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs: Allow any type of
+	FragmentControlProvider inside of a ToolStripProvider (not just
+	ToolStripItemProviders).  I expect that providers for
+	ToolStripTextBox, ToolStripComboBox, and ToolStripProgressBar may
+	simply inherit from providers for TextBox, ComboBox, and ProgressBar,
+	respectively.
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Support for
+	ToolStripTextBoxProvider.  This doesn't seem to break anything new,
+	though I expect things like navigation may not work yet.
+
 2008-10-28  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ListView/GroupExpandCollapseProviderBehavior.cs:

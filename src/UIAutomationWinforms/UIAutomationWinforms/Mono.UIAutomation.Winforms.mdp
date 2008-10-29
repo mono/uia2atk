@@ -222,6 +222,7 @@
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditTableItemProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemCheckBoxToggleProviderBehavior.cs" subtype="Code" buildaction="Nothing" />
     <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemCheckBoxTogglePatternToggleStateEvent.cs" subtype="Code" buildaction="Nothing" />
+    <File name="Mono.UIAutomation.Winforms/ToolStripTextBoxProvider.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

@@ -47,6 +47,7 @@
     <File name="DomainUpDownProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="RichTextBoxProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="ListViewProviderTest.cs" subtype="Code" buildaction="Nothing" />
+    <File name="ToolStripTextBoxProviderTest.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

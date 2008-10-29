@@ -38,13 +38,13 @@ namespace Mono.UIAutomation.Winforms
 	internal class ToolStripProvider : FragmentRootControlProvider
 	{
 		private ToolStrip strip;
-		private Dictionary<ToolStripItem, ToolStripItemProvider>
+		private Dictionary<ToolStripItem, FragmentControlProvider>
 			itemProviders;
 		
 		public ToolStripProvider (ToolStrip strip) : base (strip)
 		{
 			this.strip = strip;
-			itemProviders = new Dictionary<ToolStripItem, ToolStripItemProvider> ();
+			itemProviders = new Dictionary<ToolStripItem, FragmentControlProvider> ();
 		}
 
 		public override object GetPropertyValue (int propertyId)
@@ -69,7 +69,7 @@ namespace Mono.UIAutomation.Winforms
 			strip.ItemRemoved += OnItemRemoved;
 		
 			foreach (ToolStripItem item in strip.Items) {
-				ToolStripItemProvider itemProvider = GetItemProvider (item);
+				FragmentControlProvider itemProvider = GetItemProvider (item);
 				OnNavigationChildAdded (false, itemProvider);
 			}
 		}
@@ -79,7 +79,7 @@ namespace Mono.UIAutomation.Winforms
 			strip.ItemAdded -= OnItemAdded;
 			strip.ItemRemoved -= OnItemRemoved;
 			
-			foreach (ToolStripItemProvider itemProvider in itemProviders.Values)
+			foreach (FragmentControlProvider itemProvider in itemProviders.Values)
 				OnNavigationChildRemoved (false, itemProvider);
 			OnNavigationChildrenCleared (false);
 		}
@@ -90,24 +90,24 @@ namespace Mono.UIAutomation.Winforms
 
 		private void OnItemAdded (object sender, ToolStripItemEventArgs e)
 		{
-			ToolStripItemProvider itemProvider = GetItemProvider (e.Item);
+			FragmentControlProvider itemProvider = GetItemProvider (e.Item);
 			OnNavigationChildAdded (true, itemProvider);
 		}
 
 		private void OnItemRemoved (object sender, ToolStripItemEventArgs e)
 		{
-			ToolStripItemProvider itemProvider = GetItemProvider (e.Item);
+			FragmentControlProvider itemProvider = GetItemProvider (e.Item);
 			itemProviders.Remove (e.Item);
 			itemProvider.Terminate ();
 			OnNavigationChildRemoved (true, itemProvider);
 		}
 
-		private ToolStripItemProvider GetItemProvider (ToolStripItem item)
+		private FragmentControlProvider GetItemProvider (ToolStripItem item)
 		{
-			ToolStripItemProvider itemProvider;
+			FragmentControlProvider itemProvider;
 			
 			if (!itemProviders.TryGetValue (item, out itemProvider)) {
-				itemProvider = (ToolStripItemProvider) ProviderFactory.GetProvider (item);
+				itemProvider = (FragmentControlProvider) ProviderFactory.GetProvider (item);
 				itemProviders [item]  = itemProvider;
 			}
 
