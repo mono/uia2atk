@@ -75,7 +75,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		//Grid Pattern
 		GridPatternRowCountProperty,
 		GridPatternColumnCountProperty,
-		//Grid Item Pattern
+		//GridItem Pattern
 		GridItemPatternRowProperty,
 		GridItemPatternColumnProperty,
 		GridItemPatternRowSpanProperty,
@@ -94,6 +94,12 @@ namespace Mono.UIAutomation.Winforms.Events
 		TablePatternRowOrColumnMajorProperty,
 		//Table Item Pattern
 		TableItemPatternColumnHeaderItemsProperty,
-		TableItemPatternRowHeaderItemsProperty
+		TableItemPatternRowHeaderItemsProperty,
+		//Transform Pattern
+		TransformPatternCanMoveProperty,
+		TransformPatternCanResizeProperty,
+		TransformPatternCanRotateProperty,
+		//Dock Pattern
+		DockPatternDockPositionProperty
 	}
 }

@@ -105,6 +105,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.TabPage tp;
 //			SWF.ListView lv;
 			SWF.WebBrowser wb;
+			SWF.Panel p;
 			
 			SWF.MenuStrip ms;
 			SWF.ToolStrip ts;
@@ -195,6 +196,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new TabPageProvider (tp);
 			else if ((rt = component as SWF.RichTextBox) != null)
 				provider = new RichTextBoxProvider (rt);
+			else if ((p = component as SWF.Panel) != null)
+				provider = new PanelProvider (p);
 //			else if ((lv = component as SWF.ListView) != null)
 //				provider = new ListViewProvider (lv);
 			else {

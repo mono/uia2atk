@@ -62,6 +62,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/ScrollItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListItem/ToggleProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/Panel/DockProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/Panel/TransformProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionItemProviderBehavior.cs \
@@ -116,6 +118,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternCanSelectMultipleEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternSelectionEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Panel/DockPatternDockPositionEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Panel/TransformPatternCanMoveEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Panel/TransformPatternCanResizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \
@@ -179,6 +184,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ListItemProvider.cs \
 	Mono.UIAutomation.Winforms/ListProvider.cs \
 	Mono.UIAutomation.Winforms/MenuStripProvider.cs \
+	Mono.UIAutomation.Winforms/PanelProvider.cs \
 	Mono.UIAutomation.Winforms/PaneProvider.cs \
 	Mono.UIAutomation.Winforms/PictureBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ProgressBarProvider.cs \
