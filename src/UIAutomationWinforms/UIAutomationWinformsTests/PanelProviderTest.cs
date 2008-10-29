@@ -46,7 +46,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
-			              ControlType.Pane);
+			              ControlType.Pane.Id);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,

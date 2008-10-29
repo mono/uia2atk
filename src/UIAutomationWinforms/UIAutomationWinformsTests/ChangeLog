@@ -1,5 +1,9 @@
 2008-10-29  Mario Carrion  <mcarrion@novell.com>
 
+	* PanelProviderTest.cs: Testing valid value.
+
+2008-10-29  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* UIAutomationWinformsTests.mdp: ListView Test enabled for building.
 
