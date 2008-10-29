@@ -4,6 +4,7 @@
 	* keystrokes/gtk/gtkradiobutton.py/radiobutton.py: split the output 
 	* keystrokes/winforms/winradiobutton.py/winradiobutton.py: split the output 
 	* keystrokes/winforms/wincheckbox.py/wincheckbox.py: split the output up 
+	* keystrokes/gtk/gtkbutton.py/gtkbutton.py: add gtkbutton keystrokes
 
 2008-10-28  Calen Chen <cachen@novell.com>
 
