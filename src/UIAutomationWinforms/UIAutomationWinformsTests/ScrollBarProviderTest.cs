@@ -284,6 +284,43 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			Assert.IsNotNull (buttonProvider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id),
 			                  "Invoke Pattern IS supported");
+
+
+			//Testing all other patterns
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id),
+			               "Dock NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id),
+			               "ExpandCollapse NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
+			               "Grid NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id),
+			               "GridItem NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id),
+			               "Invoke NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (MultipleViewPatternIdentifiers.Pattern.Id),
+			               "MultipleView NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id),
+			               "Scroll NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (ScrollItemPatternIdentifiers.Pattern.Id),
+			               "ScrollItem NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id),
+			               "Selection NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id),
+			               "SelectionItem NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (TablePatternIdentifiers.Pattern.Id),
+			               "Table NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (TableItemPatternIdentifiers.Pattern.Id),
+			               "TableItem NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id),
+			               "Toggle NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id),
+			               "Transform NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
+			               "Value NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (WindowPatternIdentifiers.Pattern.Id),
+			               "Window NOT supported");
+			Assert.IsNull (scrollBarProvider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id),
+			               "Text NOT supported");
 		}
 		
 		#endregion
