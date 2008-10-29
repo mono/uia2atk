@@ -1,3 +1,10 @@
+2008-10-29  Ray Wang <rawang@novell.com>
+
+	* keystrokes/gtk/gtkcheckbutton.py/checkbutton.py: split the output 
+	* keystrokes/gtk/gtkradiobutton.py/radiobutton.py: split the output 
+	* keystrokes/winforms/winradiobutton.py/winradiobutton.py: split the output 
+	* keystrokes/winforms/wincheckbox.py/wincheckbox.py: split the output up 
+
 2008-10-28  Calen Chen <cachen@novell.com>
 
 	* samples/toolstrip_toolstripcombobox.py,
