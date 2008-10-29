@@ -34,7 +34,7 @@ class LinkLabelFrame(accessibles.Frame):
     def showLink(self, accessible, url, linknum=1):
         procedurelogger.action("search for %s to calculate link number" % accessible)
         iaction = accessible._accessible.queryHypertext()
-     
+
         procedurelogger.expectedResult('got %s link in label %s' % (linknum, accessible))
         assert iaction.getNLinks() == linknum, "missing %s" % url
 
@@ -65,7 +65,7 @@ class LinkLabelFrame(accessibles.Frame):
             procedurelogger.expectedResult("%s is a disable link, you can't invoke it" % url)
 
             application = pyatspi.findDescendant(cache._desktop, lambda x: x.name == "Firefox", True)
-            assert not application
+            assert not application == "Firefox application"
 
     #close application main window after running test
     def quit(self):

@@ -1,3 +1,8 @@
+2008-10-28  Calen Chen <cachen@novell.com>
+
+	* testers/linklabel/linklabelframe.py: modify the asserting for 
+	disable linklable doing jump action
+
 2008-10-28  Ray Wang <rawang@novell.com>
 
 	* keystrokes/gtk/gtkcheckbutton.py/: change name from 
