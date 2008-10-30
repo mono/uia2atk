@@ -50,7 +50,6 @@ RESOURCES =
 EXTRAS = 
 
 GAILTESTAPP = $(BUILD_DIR)/GailTestApp.exe
-UIAATKBRIDGETEST = $(BUILD_DIR)/UiaAtkBridgeTest.dll
 ATKTEST = $(BUILD_DIR)/AtkTest.dll
 REFERENCES =  \
 	System  \
@@ -60,17 +59,14 @@ REFERENCES =  \
 	$(GTK_SHARP_20_LIBS) \
 	$(GLIB_SHARP_20_LIBS)
 
-DLL_REFERENCES = $(UIAATKBRIDGETEST) $(ATKTEST)
+DLL_REFERENCES = $(ATKTEST)
 
 CLEANFILES = $(PROGRAMFILES) \
 	bin/Debug/GailTestApp.exe \
 	bin/Debug/GailTestApp.exe.mdb \
-	bin/Debug/UiaAtkBridgeTest.dll \
-	bin/Debug/UiaAtkBridgeTest.dll.mdb \
 	bin/Debug/AtkTest.dll \
 	bin/Debug/AtkTest.dll.mdb \
-	bin/Release/GailTestApp.exe \
-	bin/Release/UiaAtkBridgeTest.dll
+	bin/Release/GailTestApp.exe
 
 MAINTAINERCLEANFILES = \
 	gailtest.sh
@@ -90,15 +86,6 @@ bin/Debug/GailTestApp.exe: ../../samples/managed/GailTestApp/bin/Debug/GailTestA
 	cp -a $< $@
 
 bin/Release/GailTestApp.exe: ../../samples/managed/GailTestApp/bin/Release/GailTestApp.exe
-	@mkdir -p bin/Release
-	cp -a $< $@
-
-bin/Debug/UiaAtkBridgeTest.dll: ../UiaAtkBridgeTest/bin/Debug/UiaAtkBridgeTest.dll
-	@mkdir -p bin/Debug
-	cp -a $< $@
-	cp -a $<.mdb $@.mdb
-
-bin/Release/UiaAtkBridgeTest.dll: ../UiaAtkBridgeTest/bin/Release/UiaAtkBridgeTest.dll
 	@mkdir -p bin/Release
 	cp -a $< $@
 
