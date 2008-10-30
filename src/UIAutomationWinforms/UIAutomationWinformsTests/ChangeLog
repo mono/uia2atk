@@ -1,3 +1,8 @@
+2008-10-30  Neville Gao  <nevillegao@gmail.com>
+
+	* DomainUpDownProviderTest.cs, NumericUpDownProviderTest.cs: Tested
+	  navigation and internal buttons.
+
 2008-10-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* ToolStripLabelProviderTest.cs: Add support and associated test for

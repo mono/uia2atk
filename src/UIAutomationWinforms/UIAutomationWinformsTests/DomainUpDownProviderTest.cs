@@ -134,6 +134,56 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		#endregion
 		
+		#region Navigation Test
+
+		[Test]
+		public void NavigationTest ()
+		{
+			DomainUpDown domainUpDown = (DomainUpDown) GetControlInstance ();
+			IRawElementProviderFragmentRoot rootProvider;
+			IRawElementProviderFragment forwardButtonProvider;
+			IRawElementProviderFragment backwardButtonProvider;
+			
+			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (domainUpDown);
+			
+			forwardButtonProvider = rootProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (forwardButtonProvider,
+			                  "ForwardButton shouldn't be null.");
+			Assert.IsNull (forwardButtonProvider.Navigate (NavigateDirection.PreviousSibling),
+			               "ForwardButton should be the first child.");
+			
+			backwardButtonProvider = forwardButtonProvider.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNotNull (backwardButtonProvider,
+			                  "BackwardButton shouldn't be null.");
+			Assert.IsNull (backwardButtonProvider.Navigate (NavigateDirection.NextSibling),
+			               "BackwardButton should be the last child.");
+			
+			Assert.AreEqual (rootProvider,
+			                 forwardButtonProvider.Navigate (NavigateDirection.Parent),
+			                 "ForwardButton with different parent");
+			Assert.AreEqual (rootProvider,
+			                 forwardButtonProvider.FragmentRoot,
+			                 "ForwardButton with different FragmentRoot");
+			Assert.AreEqual (rootProvider,
+			                 backwardButtonProvider.Navigate (NavigateDirection.Parent),
+			                 "BackwardButton with different parent");
+			Assert.AreEqual (rootProvider,
+			                 backwardButtonProvider.FragmentRoot,
+			                 "BackwardButton with different FragmentRoot");
+			
+			TestProperty (forwardButtonProvider,
+			              AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.Button.Id);
+			TestProperty (forwardButtonProvider,
+			              AutomationElementIdentifiers.IsContentElementProperty,
+			              false);
+			TestProperty (forwardButtonProvider,
+			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+			              false);
+		}
+		
+		#endregion
+		
 		#region BaseProviderTest Overrides
 
 		protected override Control GetControlInstance ()
