@@ -1,3 +1,7 @@
+2008-10-30  Brad Taylor  <brad@getcoded.net>
+	
+	* Makefile.am: Fix makefiles so that the tests build.
+
 2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MainWindow.cs: Fix shadow copy issues with mono HEAD.

@@ -58,6 +58,7 @@ REFERENCES =  \
 	WindowsBase \
 	Mono.Posix \
 	System.Core \
+	../../../UiaAtkBridge/AtkTest/bin/Debug/AtkTest.dll \
 	$(GTK_SHARP_20_LIBS) \
 	$(GLIB_SHARP_20_LIBS)
 
