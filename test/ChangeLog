@@ -1,3 +1,13 @@
+2008-10-30  Brian G. Merrell <bgmerrell@gmail.com>
+
+	* test/harness/local_run.py: Added code to store the most recent
+	log in test form in the log directory.  The dashboard will link to
+	this file so anyone can see why a test is failing. 
+	* tools/dashboard/dashboard.xsl: Link to different text log directories
+	depending on if the test is a smoke test or a regression test.  Convert
+	the control name to all lower-case for the link path (e.g., RadioButton
+	smoke test links to <log_path>/smoke/radiobutton.
+
 2008-10-29  Ray Wang <rawang@novell.com>
 
 	* keystrokes/gtk/gtkcheckbutton.py/checkbutton.py: split the output 

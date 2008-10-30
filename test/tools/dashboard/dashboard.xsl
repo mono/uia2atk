@@ -90,7 +90,8 @@
           <tr>
             <td><xsl:number/></td>
             <xsl:variable name="controlName" select="name"/>
-            <td><a href="reports/{$controlName}"><xsl:value-of select="$controlName"/></a></td>
+            <xsl:variable name="controlNameLower" select="translate(name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
+            <td><a href="reports/smoke/{$controlNameLower}"><xsl:value-of select="$controlName"/></a></td>
             <xsl:variable name="status" select="status"/>
             <xsl:choose>
               <xsl:when test="$status = -1">
@@ -119,8 +120,8 @@
       <!-- End of Smoke Test Portion -->
       <!-- Regression Test Portion -->
       <div class="regression">
-        <xsl:comment>Convert the number of seconds it took the regression test to
-        run into days, hours, minutes, and seconds</xsl:comment>
+        <xsl:comment>Convert the number of seconds it took the regression test
+        to run into days, hours, minutes, and seconds</xsl:comment>
         <xsl:variable name="numDays" select="floor(number(dashboard/regression/elapsedTime) div 86400)"/>
         <xsl:variable name="tmpSec1" select="number(dashboard/regression/elapsedTime) mod 86400"/>
         <xsl:variable name="numHours" select="floor($tmpSec1 div 3600)"/>
@@ -198,7 +199,8 @@
           <tr>
             <td><xsl:number/></td>
             <xsl:variable name="controlName" select="name"/>
-            <td><a href="reports/{$controlName}"><xsl:value-of select="$controlName"/></a></td>
+            <xsl:variable name="controlNameLower" select="translate(name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
+            <td><a href="reports/regression/{$controlNameLower}"><xsl:value-of select="$controlName"/></a></td>
             <xsl:variable name="status" select="status"/>
             <xsl:choose>
               <xsl:when test="$status = -1">

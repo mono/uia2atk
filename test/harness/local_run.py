@@ -137,11 +137,26 @@ class Test(object):
       finally:
         output("")
 
+    # create directories for text logs if they don't already exist in the
+    # log_path
+    get_test_type = \
+                  lambda: Settings.is_smoke == True and "smoke" or "regression"
+    test_type_dir = os.path.join(Settings.log_path, get_test_type())
+    if not os.path.exists(test_type_dir):
+      os.mkdir(os.path.join(test_type_dir))
+
     # execute the tests
     TIMEOUT = 600 # ten minutes
     output("INFO:  Executing tests...")
     for test in found_tests:
-      t = s.Popen(["python", "-u", test])
+      control_name = os.path.basename(test).split("_")[0]
+
+      t = s.Popen(["python", "-u", test], stdout=s.PIPE, stderr=s.PIPE)
+      s.Popen(["tee", "%s/%s/%s" % (Settings.log_path,
+                                    get_test_type(),
+                                    control_name)],
+               stdin=t.stdout,
+               stderr=t.stderr)
       i = 0
       while t.poll() is None:
         time.sleep(1)
@@ -165,7 +180,7 @@ class Test(object):
     if dot_index > 0:
       filename = filename[:dot_index] # chop off the extension
 
-    control_dir =  os.path.join(Settings.log_path, filename)
+    control_dir = os.path.join(Settings.log_path, filename)
     # try to build a useful dir name that will be unique, not y3k compliant :)
     log_dir = os.path.join(control_dir,"%s_%s" %\
                             (gethostname(), time.strftime("%m%d%y_%H%M%S")))
