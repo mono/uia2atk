@@ -9,7 +9,7 @@
 
 # The docstring below is used in the generated log file
 """
-This sample will show "ListView" control in the form.
+This sample will show "ListView" control with list mode and LabelEdit property in the form.
 It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
 """
 
@@ -26,26 +26,25 @@ class ListViewSample(Form):
     def __init__(self):
         """ListViewSample class init function."""
 
-        self.toggle = True
-
         # setup title
         self.Text = "ListView control"
-
-        # setup size
-        self.Width = 500
-        self.Height = 150
+        self.Width = 300
+        self.Height = 300
+        self.toggle = True
 
         # setup label
         self.label = Label()
-        self.label.Text = "Click Column header to switch items Ascending and Descending sorting."
+        self.label.Text = "View.List mode with LabelEdit property that means can edit the items text."
         self.label.Dock = DockStyle.Top
 
         # setup listview
         self.listview = ListView()
         # set the view to show details.
-        self.listview.View = View.Details
+        #self.listview.View = View.Details
+        self.listview.View = View.List
         # allow the user to edit item text.
         self.listview.LabelEdit = True
+        self.listview.FullRowSelect = True
         # display grid lines.
         self.listview.GridLines = True
         # sort the items in the list in ascending order.
