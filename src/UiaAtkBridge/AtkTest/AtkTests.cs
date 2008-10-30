@@ -415,6 +415,30 @@ namespace UiaAtkBridgeTest
 
 			Console.WriteLine ("</Test>");
 		}
+
+		[Test]
+		public void MaskedTextBoxEntry ()
+		{
+			Console.WriteLine ("<Test id=\"MaskedTextBoxEntry\">");
+			
+			BasicWidgetType type = BasicWidgetType.TextBoxEntry;
+			Atk.Object accessible = null;
+			
+			accessible = InterfaceText (type, true);
+			
+			string name = "Edit test#1";
+			accessible = GetAccessible (type, name, true);
+
+			States (accessible,
+			  Atk.StateType.Editable, 
+			  Atk.StateType.Enabled, 
+			  Atk.StateType.Focusable,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible);
+
+			Console.WriteLine ("</Test>");
+		}
 		
 //		[Test]
 //		public void MenuBar ()

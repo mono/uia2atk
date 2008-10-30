@@ -1,3 +1,11 @@
+2008-10-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: Add MaskedTextBox basic test.
+
+	* BasicWidgetType.cs: Add new basic widget type.
+
+	* EventMonitor.cs: Cosmetic.
+
 2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* EventMonitor.cs:

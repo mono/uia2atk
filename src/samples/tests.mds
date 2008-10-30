@@ -1,15 +1,19 @@
 <Combine name="Samples" fileversion="2.0">
+  <MonoDevelop.ChangeLogAddIn.ChangeLogInfo policy="UpdateNearestChangeLog" />
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="ManagedTests" configuration="Debug" />
       <Entry build="True" name="UnmanagedTests" configuration="Debug" />
     </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="ManagedTests" configuration="Release" />
+      <Entry build="True" name="UnmanagedTests" configuration="Release" />
+    </Configuration>
   </Configurations>
   <StartMode startupentry="ManagedTests" single="True">
-    <Execute type="None" entry="UnmanagedTests" />
     <Execute type="None" entry="ManagedTests" />
+    <Execute type="None" entry="UnmanagedTests" />
   </StartMode>
-  <MonoDevelop.ChangeLogAddIn.ChangeLogInfo policy="UpdateNearestChangeLog" />
   <Entries>
     <Entry filename="managed/ManagedTests.mds" />
     <Entry filename="unmanaged/UnmanagedTests.mds" />

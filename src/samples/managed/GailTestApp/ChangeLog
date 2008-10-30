@@ -1,5 +1,16 @@
 2008-10-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* MainWindow.cs: Initialize new Gtk.Entry. Adjust API.
+
+	* gtk-gui/gui.stetic:
+	* gtk-gui/MainWindow.cs: Add Gtk.Entry with invisible chars.
+
+	* Main.cs: Adjust API.
+
+	* Makefile.am: Tests don't get installed.
+
+2008-10-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Makefile.am:
 	* GailTestApp.mdp: Trying to enable makefile sync and fix build from the
 	cmd line.

@@ -1,3 +1,8 @@
+2008-10-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Uia2Atk.mds:
+	* samples/tests.mds: Flush.
+
 2008-10-27 Andrés G. Aragoneses <aaragoneses@novell.com>
 
 	* patches/bug526752onBGO.diff: deleted, already committed.

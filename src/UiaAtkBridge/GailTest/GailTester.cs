@@ -293,7 +293,7 @@ namespace UiaAtkBridgeTest
 				if (!real)
 					throw new NotSupportedException ();
 				
-				widget = GailTestApp.MainClass.GiveMeARealEntry ();
+				widget = GailTestApp.MainClass.GiveMeARealEntry (true);
 				Gtk.Application.Invoke (delegate {
 					((Gtk.Entry)widget).Text = text;
 				});
@@ -306,6 +306,16 @@ namespace UiaAtkBridgeTest
 				widget = GailTestApp.MainClass.GiveMeARealTextView ();
 				Gtk.Application.Invoke (delegate {
 					((Gtk.TextView)widget).Buffer.Text = text;
+				});
+				System.Threading.Thread.Sleep (1000);
+				break;
+			case BasicWidgetType.MaskedTextBoxEntry:
+				if (!real)
+					throw new NotSupportedException ();
+				
+				widget = GailTestApp.MainClass.GiveMeARealEntry (false);
+				Gtk.Application.Invoke (delegate {
+					((Gtk.Entry)widget).Text = text;
 				});
 				System.Threading.Thread.Sleep (1000);
 				break;

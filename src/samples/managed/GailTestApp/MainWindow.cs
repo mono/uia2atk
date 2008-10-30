@@ -57,6 +57,8 @@ public partial class MainWindow: Gtk.Window
 		this.imgTest1.FromFile = System.IO.Path.Combine (uiaQaPath, "goalie.gif");
 
 		this.imgTest2.FromFile = System.IO.Path.Combine (uiaQaPath, "apple-red.png");
+
+		this.maskedEntry.Visibility = false;
 	}
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
@@ -93,8 +95,8 @@ public partial class MainWindow: Gtk.Window
 		return this.cbeTest;
 	}
 	
-	internal Gtk.Entry GiveMeARealEntry () {
-		return this.txtEntry;
+	internal Gtk.Entry GiveMeARealEntry (bool visible) {
+		return visible ? this.txtEntry : this.maskedEntry;
 	}
 
 	internal Gtk.TextView GiveMeARealTextView () {

@@ -2,13 +2,13 @@
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="False" name="atkSharpHelloWorld" configuration="Debug" />
-      <Entry build="True" name="FormTest" configuration="Debug" />
-      <Entry build="True" name="GailTestApp" configuration="Debug" />
+      <Entry build="False" name="FormTest" configuration="Debug" />
+      <Entry build="False" name="GailTestApp" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
       <Entry build="False" name="atkSharpHelloWorld" configuration="Release" />
-      <Entry build="True" name="FormTest" configuration="Release" />
-      <Entry build="True" name="GailTestApp" configuration="Release" />
+      <Entry build="False" name="FormTest" configuration="Release" />
+      <Entry build="False" name="GailTestApp" configuration="Release" />
     </Configuration>
   </Configurations>
   <StartMode startupentry="FormTest" single="True">

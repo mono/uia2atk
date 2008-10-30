@@ -1,5 +1,9 @@
 2008-10-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* GailTester.cs: Add new basic widget type. Track API.
+
+2008-10-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Makefile.am:
 	* GailTest.mdp: Ref not needed anymore since refactoring.
 

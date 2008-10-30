@@ -175,11 +175,11 @@ namespace GailTestApp {
 			return win.GiveMeARealProgressBar ();
 		}
 		
-		public static Gtk.Entry GiveMeARealEntry ()
+		public static Gtk.Entry GiveMeARealEntry (bool visible)
 		{
 			CheckState ();
 			
-			return win.GiveMeARealEntry ();
+			return win.GiveMeARealEntry (visible);
 		}
 
 		public static Gtk.TextView GiveMeARealTextView ()

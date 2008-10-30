@@ -41,8 +41,9 @@ namespace UiaAtkBridgeTest
 		ComboBoxDropDownEntry,
 		RadioButton,
 		StatusBar,
-		TextBoxEntry, // textbox single-line (gtk: entry)
-		TextBoxView,  // textbox multi-line (gtk: textview)
+		TextBoxEntry,       // textbox single-line (gtk: entry)
+		TextBoxView,        // textbox multi-line (gtk: textview)
+		MaskedTextBoxEntry, // maskedtextbox (gtk: entry with visibility:false)
 		ParentMenu,
 		VScrollBar,
 		HScrollBar,
