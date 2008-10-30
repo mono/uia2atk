@@ -41,26 +41,26 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
 	AssemblyInfo.cs \
+	gtk-gui/generated.cs \
+	gtk-gui/MainWindow.cs \
 	Main.cs \
 	MainWindow.cs \
-	MovingThread.cs \
-	gtk-gui/generated.cs \
-	gtk-gui/MainWindow.cs
+	MovingThread.cs
 
 DATA_FILES = 
 
-RESOURCES = 
+RESOURCES = gtk-gui/gui.stetic 
 
 EXTRAS = 
 
 REFERENCES =  \
-	System  \
-	WindowsBase \
-	Mono.Posix \
-	System.Core \
 	../../../UiaAtkBridge/AtkTest/bin/Debug/AtkTest.dll \
-	$(GTK_SHARP_20_LIBS) \
-	$(GLIB_SHARP_20_LIBS)
+	Mono.Posix \
+	-pkg:glade-sharp-2.0 \
+	-pkg:glib-sharp-2.0 \
+	-pkg:gtk-sharp-2.0 \
+	System \
+	System.Core
 
 DLL_REFERENCES = 
 

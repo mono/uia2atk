@@ -1,3 +1,9 @@
+2008-10-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am:
+	* GailTestApp.mdp: Trying to enable makefile sync and fix build from the
+	cmd line.
+
 2008-10-30  Brad Taylor  <brad@getcoded.net>
 	
 	* Makefile.am: Fix makefiles so that the tests build.
