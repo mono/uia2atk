@@ -32,13 +32,15 @@ class PictureBoxFrame(accessibles.Frame):
 
     #check the picture after click button
     def assertPicture(self, picture=None):
+        picture1 = "desktop-blue_soccer400x500.jpg"
+        picture2 = "universe300x400.jpg"
         def resultMatches():
             if picture == 1:
-                procedurelogger.expectedResult('picture has been changed to "%s"' % 'desktop-blue_soccer.jpg')
-                return self.findLabel("You are watching %s/samples/desktop-blue_soccer.jpg" % uiaqa_path)
+                procedurelogger.expectedResult('picture has been changed to "%s"' % picture1)
+                return self.findLabel("You are watching %s/samples/%s" % (uiaqa_path, picture1))
             if picture == 2:
-                procedurelogger.expectedResult('picture has been changed to "%s"' % 'universe.jpg')
-                return self.findLabel("You are watching %s/samples/universe.jpg" % uiaqa_path)
+                procedurelogger.expectedResult('picture has been changed to "%s"' % picture2)
+                return self.findLabel("You are watching %s/samples/%s" % (uiaqa_path, picture2))
         assert retryUntilTrue(resultMatches), "Expected picture: %s" % picture
 
     #check icon implementation
@@ -52,10 +54,14 @@ class PictureBoxFrame(accessibles.Frame):
     # assert the size of an image
     def assertImageSize(self, accessible, width=60, height=38):
         procedurelogger.action("assert %s's image size" % accessible)
-        size = accessible.imageSize
+
+        if accessible == self.icon:
+            size = accessible._accessible.queryImage().getImageSize()
+        else:
+            size = accessible.imageSize
 
         procedurelogger.expectedResult('"%s" image size is %s x %s' %
-                                                  (button, width, height))
+                                                  (accessible, width, height))
 
         assert width == size[0], "%s (%s), %s (%s)" %\
                                             ("expected width",

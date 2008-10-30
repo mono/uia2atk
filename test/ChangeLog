@@ -1,3 +1,17 @@
+2008-10-31  Calen Chen <cachen@novell.com>
+
+	* samples/desktop-blue_soccer400x500.jpg, 
+	* samples/universe300x400.jpg: add new picture with modified
+	image size for PictureBox Icon test
+	* samples/desktop-blue_soccer.jpg,
+	* samples/universe.jpg: delete the old picture
+	* samples/picturebox.py: update the example link to new pictures
+	* testers/picturebox/pictureboxframe.py: modify assertImageSize for 
+	icon role which has no attribute 'imageSize' definition in stronwind, 
+	update the picture link
+	* testers/picturebox_basic_ops.py: move Icon states test under 
+	assertIcon, modify the icon size for image implement test
+
 2008-10-30  Calen Chen <cachen@novell.com>
 
 	* samples/listview_list.py: add example with view.list mode and with 

@@ -51,8 +51,6 @@ actionsCheck(pbFrame.button1, "Button")
 #check the states of button and label in picturebox
 statesCheck(pbFrame.button1, "Button", add_states=["focused"])
 statesCheck(pbFrame.label, "Label")
-#check Icon's states
-statesCheck(pbFrame.icon, "Icon")
 
 #click button changing to universi.jpg
 pbFrame.click(pbFrame.button1)
@@ -62,7 +60,9 @@ pbFrame.assertPicture(2)
 #check icon role implementation
 pbFrame.assertIcon()
 #check icon's image size
-pbFrame.assertImageSize(pbFrame.icon, 450, 500)
+pbFrame.assertImageSize(pbFrame.icon, 300, 400)
+#check Icon's states
+statesCheck(pbFrame.icon, "Icon")
 
 #click button changing to desktop-blue_soccer.jpg
 pbFrame.click(pbFrame.button1)
@@ -72,7 +72,9 @@ pbFrame.assertPicture(1)
 #check icon role implementation again
 pbFrame.assertIcon()
 #check icon's image size again
-pbFrame.assertImageSize(pbFrame.icon, 450, 500)
+pbFrame.assertImageSize(pbFrame.icon, 400, 500)
+#check Icon's states
+statesCheck(pbFrame.icon, "Icon")
 
 #check button's image size
 pbFrame.assertImageSize(pbFrame.button1)

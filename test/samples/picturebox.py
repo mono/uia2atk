@@ -20,10 +20,8 @@ from os.path import exists
 import clr
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
-from System.Windows.Forms import (
-    Application, Button, Label, DockStyle, Form, PictureBox, PictureBoxSizeMode
-)
-from System.Drawing import Image, Color, Point
+from System.Windows.Forms import *
+from System.Drawing import *
 
 harness_dir = path[0]
 i = harness_dir.rfind("/")
@@ -34,7 +32,7 @@ uiaqa_path = harness_dir[:i]
 class PictureBoxSample(Form):
     """PictureBox control class"""
     toggle = True
-    path_to_file = "%s/samples/desktop-blue_soccer.jpg" % uiaqa_path
+    path_to_file = "%s/samples/desktop-blue_soccer400x500.jpg" % uiaqa_path
     image = None
 
     def __init__(self):
@@ -80,12 +78,12 @@ class PictureBoxSample(Form):
     def on_click(self, sender, event):
         if self.toggle == True:
             self.toggle = False
-            self.path_to_file = "%s/samples/universe.jpg" % uiaqa_path
+            self.path_to_file = "%s/samples/universe300x400.jpg" % uiaqa_path
             self.change_picture()
             self.label.Text = "You are watching %s" % self.path_to_file
         else:
             self.toggle = True
-            self.path_to_file = "%s/samples/desktop-blue_soccer.jpg" % uiaqa_path
+            self.path_to_file = "%s/samples/desktop-blue_soccer400x500.jpg" % uiaqa_path
             self.change_picture()
             self.label.Text = "You are watching %s" % self.path_to_file
 
