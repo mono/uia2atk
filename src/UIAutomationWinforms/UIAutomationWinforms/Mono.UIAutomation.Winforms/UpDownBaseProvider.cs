@@ -44,16 +44,50 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 		
+		#region FragmentRootControlProvider: Specializations
+		
+		public override void InitializeChildControlStructure ()
+		{
+			UpDownBase upDownBase = (UpDownBase) Control;
+			
+			if (forwardButton == null) {
+				forwardButton = new UpDownBaseButtonProvider (upDownBase,
+				                                              UpDownBaseButtonOrientation.Forward);
+				forwardButton.Initialize ();
+				OnNavigationChildAdded (false, forwardButton);
+			}
+			if (backwardButton == null) {
+				backwardButton = new UpDownBaseButtonProvider (upDownBase,
+				                                               UpDownBaseButtonOrientation.Backward);
+				backwardButton.Initialize ();
+				OnNavigationChildAdded (false, backwardButton);
+			}
+		}
+		
+		public override void FinalizeChildControlStructure ()
+		{
+			if (forwardButton != null) {
+				forwardButton.Terminate ();
+				forwardButton = null;
+			}
+			if (backwardButton != null) {
+				backwardButton.Terminate ();
+				backwardButton = null;
+			}
+		}
+		
+		#endregion
+		
 		#region SimpleControlProvider: Specializations
 		
 		public override void Initialize ()
 		{
 			base.Initialize ();
 			
-			if (upDownBase is System.Windows.Forms.DomainUpDown)
+			if (upDownBase is DomainUpDown)
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new ValueProviderBehavior (this));
-			else if (upDownBase is System.Windows.Forms.NumericUpDown)
+			else if (upDownBase is NumericUpDown)
 				SetBehavior (RangeValuePatternIdentifiers.Pattern,
 				             new RangeValueProviderBehavior (this));
 		}
@@ -73,6 +107,94 @@ namespace Mono.UIAutomation.Winforms
 		#region Private Fields
 		
 		private UpDownBase upDownBase;
+		private FragmentControlProvider forwardButton;
+		private FragmentControlProvider backwardButton;
+		
+		#endregion
+		
+		#region Internal Enumeration: Button Orientation
+		
+		internal enum UpDownBaseButtonOrientation
+		{
+			Forward,
+			Backward
+		}
+		
+		#endregion
+		
+		#region Internal Class: Button Provider
+		
+		internal class UpDownBaseButtonProvider : FragmentControlProvider
+		{
+			#region Constructor
+
+			public UpDownBaseButtonProvider (UpDownBase upDownBase,
+			                                 UpDownBaseButtonOrientation orientation)
+				: base (upDownBase)
+			{
+				this.orientation = orientation;
+			}
+		
+			#endregion
+		
+			#region Public Methods
+			
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { 
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (Control);
+				}
+			}
+			
+			public override void Initialize ()
+			{
+				base.Initialize ();
+				
+				SetBehavior (InvokePatternIdentifiers.Pattern,
+				             new ButtonInvokeProviderBehavior (this));
+			}
+			
+			public override object GetPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.Button.Id;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return "button";
+				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return GetNameProperty ();
+				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return false;
+				else
+					return base.GetPropertyValue (propertyId);
+			}
+			
+			public UpDownBaseButtonOrientation Orientation {
+				get { return orientation; }
+			}
+		
+			#endregion
+			
+			#region Private Methods
+			
+			private string GetNameProperty ()
+			{
+				if (orientation == UpDownBaseButtonOrientation.Forward)
+					return "Forward";
+				else if (orientation == UpDownBaseButtonOrientation.Backward)
+					return "Backward";
+				else
+					return string.Empty;
+			}
+			
+			#endregion
+			
+			#region Private Fields
+			
+			private UpDownBaseButtonOrientation orientation;
+			
+			#endregion
+		}
 		
 		#endregion
 	}

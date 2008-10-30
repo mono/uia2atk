@@ -129,20 +129,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ProgressBar
 			if (value < Minimum || value > Maximum)
 				throw new ArgumentOutOfRangeException ();
 			
-			PerformSetValue ((int) value);
-		}
-		
-		#endregion
-		
-		#region Private Methods
-		
-		private void PerformSetValue (int value)
-		{
 			if (progressBar.InvokeRequired == true) {
-				progressBar.BeginInvoke (new PerformSetValueDelegate (PerformSetValue),
+				progressBar.BeginInvoke (new PerformSetValueDelegate (SetValue),
 				                         new object [] { value });
 				return;
 			}
+			
 			progressBar.Value = (int) value;
 		}
 		
@@ -155,5 +147,5 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ProgressBar
 		#endregion
 	}
 	
-	delegate void PerformSetValueDelegate (int value);
+	delegate void PerformSetValueDelegate (double value);
 }

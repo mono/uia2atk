@@ -1,3 +1,14 @@
+2008-10-29  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added files.
+	* Mono.UIAutomation.Winforms/UpDownBaseProvider.cs: Added internal
+	  buttons.
+	* Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ButtonInvokeProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/UpDownBase/ButtonInvokePatternInvokedEvent.cs:
+	  Files added.
+	* Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs:
+	  Moved delegate into SetValue.
+
 2008-10-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs: Add support and
@@ -28,7 +39,7 @@
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: ListViewProvider
 	enabled.
 
-2008-10-28  Neville Gao <nevillegao@gmail.com>
+2008-10-28  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added files.
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs:
@@ -267,7 +278,7 @@
 	* Mono.UIAutomation.Winforms/ToolStripMenuItemProvider.cs: Item
 	add/remove event support is provided by ToolStripMenuItem.DropDown.
 
-2008-10-24  Neville Gao <nevillegao@gmail.com>
+2008-10-24  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated files added.
 	* Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs:
@@ -334,7 +345,7 @@
 	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: FragmentRoot
 	returns ToolStripItem.Owner Provider.
 
-2008-10-23  Neville Gao <nevillegao@gmail.com>
+2008-10-23  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated files added.
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Updated to support
@@ -761,7 +772,7 @@
 	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Implement
 	  ParagraphNormalize.  That was easy.
 
-2008-10-17  Neville Gao <nevillegao@gmail.com>
+2008-10-17  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs,
 	  Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelValueProviderBehavior.cs,
@@ -859,7 +870,7 @@
 	* Mono.UIAutomation.Winforms/Helper.cs: New method
 	  GetBoundingRectangleFromButtonBase.
 
-2008-10-15  Neville Gao <nevillegao@gmail.com>
+2008-10-15  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Supported AccessKey
 	  property.
@@ -986,7 +997,7 @@
 
 	* Mono.UIAutomation.Winforms/AssemblyInfo.cs: InternalVisibleTo attribute added.
 
-2008-10-13  Neville Gao <nevillegao@gmail.com>
+2008-10-13  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated files added.
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Updated to support
@@ -1085,7 +1096,7 @@
 	  CompareEndpoints.  Rewrite FindText and make StartPoint and EndPoint
 	  private to ensure API equivalency with MSDN.
 
-2008-10-10  Neville Gao <nevillegao@gmail.com>
+2008-10-10  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated files deleted.
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Updated not to support
@@ -1093,11 +1104,11 @@
 	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelTextProviderBehavior.cs:
 	  File deleted.
 
-2008-10-10  Neville Gao <nevillegao@gmail.com>
+2008-10-10  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Removing not added files.
 
-2008-10-10  Neville Gao <nevillegao@gmail.com>
+2008-10-10  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated files deleted.
 	* Mono.UIAutomation.Winforms/ProgressBarProvider: Updated not to support
@@ -1176,7 +1187,7 @@
 
 	* Makefile.am: Removing not added files.
 
-2008-10-08  Neville Gao <nevillegao@gmail.com>
+2008-10-08  Neville Gao  <nevillegao@gmail.com>
 
 	* Makefile.am, Mono.UIAutomation.Winforms.mdp:
 	  StatusBarPanelValue event added.
@@ -1445,7 +1456,7 @@
 	* Mono.UIAutomation.Winforms/FormListener.cs: Move debug spew to avoid
 	  confusions.
 
-2008-09-27  Neville Gao <nevillegao@gmail.com>
+2008-09-27  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ProgressBarProvider.cs,
 	  Mono.UIAutomation.Winforms/StatusBarProvider.cs: Formatted.
@@ -1538,21 +1549,21 @@
 	* Mono.UIAutomation.Winforms.Behaviors/ListBox/ScrollProviderBehavior.cs:
 	  Build fixes from Stephen Shaw.
 
-2008-09-24  Neville Gao <nevillegao@gmail.com>
+2008-09-24  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Events/ProgressBar/ValuePatternValueEvent.cs:
 	  Updated to remove "using SWF = ".
 	* Mono.UIAutomation.Winforms.Behaviors/ProgressBar/ValueProviderBehavior.cs:
 	  Updated to implement automation events.
 
-2008-09-24  Neville Gao <nevillegao@gmail.com>
+2008-09-24  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountEvent.cs:
 	  Updated to subclass BaseAutomationPropertyEvent and support UIA Event.
 	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/GridProviderBehavior.cs:
 	  Updated to implement automation events.
 
-2008-09-24  Neville Gao <nevillegao@gmail.com>
+2008-09-24  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs:
 	  Updated to remove "using SWF = ".
@@ -1639,7 +1650,7 @@
 	* Mono.UIAutomation.Winforms/HelpProviderListener.cs: Removed primitive
 	  debugging.
 
-2008-09-24  Neville Gao <nevillegao@gmail.com>
+2008-09-24  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Added Automation Name
 	Property.
@@ -3230,7 +3241,7 @@
 	* Mono.UIAutomation.Winforms.Events/ComboBoxButtonInvokePatternInvokeEvent.cs:
 	Code beautyfying.
 
-2008-07-15  Neville Gao <nevillegao@gmail.com>
+2008-07-15  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/StatusBarGridProviderBehavior.cs:
 	Uncommenting-out some codes.
@@ -3358,7 +3369,7 @@
 	* Mono.UIAutomation.Winforms.Behaviors/StatusBarGridProviderBehavior.cs:
 	  Commenting-out some code that doesn't currently build.
 
-2008-07-09  Neville Gao <nevillegao@gmail.com>
+2008-07-09  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/StatusBarGridProviderBehavior.cs:
 	Renamed file.
@@ -3413,7 +3424,7 @@
 	* Mono.UIAutomation.Winforms.Events/ScrollBarButtonInvokePatternInvokeEvent.cs:
 	Event names updated to match scrollbar.patch.
 
-2008-07-07  Neville Gao <nevillegao@gmail.com>
+2008-07-07  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/StatusBarGridBehavior.cs: File
 	added.
@@ -3970,7 +3981,7 @@
 	* Mono.UIAutomation.Winforms.Events/DefaultHasKeyboardFocusPropertyEvent.cs:
 	Updated to base class changes.
 
-2008-06-12  Neville Gao <nevillegao@gmail.com>
+2008-06-12  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Synchronized names
 	with GridPatternIdentifiers.cs. Added LocalizedControlTypeProperty.
@@ -3997,7 +4008,7 @@
 	* Mono.UIAutomation.Winforms.Events/EventStrategyType.cs: Added 
 	ExpandCollapseStateProperty.
 
-2008-06-12  Neville Gao <nevillegao@gmail.com>
+2008-06-12  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Added StatusBar
 
@@ -4060,7 +4071,7 @@
 	* Mono.UIAutomation.Winforms/WordTokenizer.cs: Code beautifying.
 	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Change in comment.
 
-2008-06-10  Neville Gao <nevillegao@gmail.com>
+2008-06-10  Neville Gao  <nevillegao@gmail.com>
 
 	* UIAutomationWinforms/Mono.UIAutomation.Winforms.mdp: Updated due to
 	svn conflicts.
@@ -4089,11 +4100,11 @@
 	  handle LabeledByProperty, especially because the default
 	  implementation returns null.
 
-2008-06-06  Neville Gao <nevillegao@gmail.com>
+2008-06-06  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Formatted.
 
-2008-06-06  Neville Gao <nevillegao@gmail.com>
+2008-06-06  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: File updated.
 	* Mono.UIAutomation.Winforms.mdp: Updated due to added file.
@@ -4119,7 +4130,7 @@
 	  controlProviders...that makes mappings made in base class go
 	  bye-bye.
 
-2008-06-04  Neville Gao <nevillegao@gmail.com>
+2008-06-04  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp: Updated due to added files.
 
@@ -4147,7 +4158,7 @@
 	* Mono.UIAutomation.Winforms/FormListener.cs: Descend into
 	  FragmentRootControlProviders when processing child controls.
 
-2008-06-04  Neville Gao <nevillegao@gmail.com>
+2008-06-04  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: File added.
 

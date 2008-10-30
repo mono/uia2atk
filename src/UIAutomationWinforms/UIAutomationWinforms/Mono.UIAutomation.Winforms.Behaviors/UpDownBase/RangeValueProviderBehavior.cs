@@ -84,7 +84,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 			                   null);
 		}
 		
-		
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == RangeValuePatternIdentifiers.IsReadOnlyProperty.Id)

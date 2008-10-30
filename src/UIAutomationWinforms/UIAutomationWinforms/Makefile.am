@@ -93,6 +93,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Events/AutomationBoundingRectanglePropertyEvent.cs \
@@ -189,6 +190,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/UpDownBase/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMaximumEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMinimumEvent.cs \
