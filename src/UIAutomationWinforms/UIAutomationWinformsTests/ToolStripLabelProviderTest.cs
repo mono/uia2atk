@@ -156,6 +156,27 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			               "LabeledBy");
 		}
 
+		[Test]
+		public void IsLinkChangeTest ()
+		{
+			ToolStripLabel menuItem = new ToolStripLabel ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
+			
+			menuItem.IsLink = true;
+			
+			object invokeProvider = provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (invokeProvider,
+			                  "Invoke support when Islink changes to true");
+			Assert.IsTrue (invokeProvider is IInvokeProvider,
+			               "Returned Invoke provider should implement IInvokeProvider");
+
+			menuItem.IsLink = false;
+			
+			invokeProvider = provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			Assert.IsNull (invokeProvider,
+			               "No Invoke support when IsLink changes to false");
+		}
+
 		protected override Control GetControlInstance ()
 		{
 			return null; // TODO: Lots of work...

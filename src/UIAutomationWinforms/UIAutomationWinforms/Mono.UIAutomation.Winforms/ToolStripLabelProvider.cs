@@ -42,10 +42,6 @@ namespace Mono.UIAutomation.Winforms
 		public ToolStripLabelProvider (ToolStripLabel label) : base (label)
 		{
 			this.label = label;
-
-
-			// TODO: No built-in event for IsLink property changing,
-			//	 may need to patch MWF.
 		}
 
 		public override void Initialize()
@@ -55,6 +51,29 @@ namespace Mono.UIAutomation.Winforms
 			if (label.IsLink)
 				SetBehavior (InvokePatternIdentifiers.Pattern,
 				             new InvokeProviderBehavior (this));
+
+			// Need to change ControlType and behaviors if IsLink
+			// property changes
+			try {
+				Helper.AddPrivateEvent (typeof (ToolStripLabel),
+				                        label,
+				                        "UIAIsLinkChanged",
+				                        this,
+				                        "OnIsLinkChanged");
+			} catch (NotSupportedException) { }
+		}
+
+		public override void Terminate()
+		{
+			base.Terminate ();
+
+			try {
+				Helper.RemovePrivateEvent (typeof (ToolStripLabel),
+				                           label,
+				                           "UIAIsLinkChanged",
+				                           this,
+				                           "OnIsLinkChanged");
+			} catch (NotSupportedException) { }
 		}
 
 		public override object GetPropertyValue (int propertyId)
@@ -66,5 +85,21 @@ namespace Mono.UIAutomation.Winforms
 			else
 				return base.GetPropertyValue (propertyId);
 		}
+
+		#pragma warning disable 169
+		
+		private void OnIsLinkChanged (object sender, EventArgs args)
+		{
+			if (label.IsLink)
+				SetBehavior (InvokePatternIdentifiers.Pattern,
+				             new InvokeProviderBehavior (this));
+			else
+				SetBehavior (InvokePatternIdentifiers.Pattern,
+				             null);
+
+			// TODO: How to notify bridge that ControlType has changed?
+		}
+
+		#pragma warning restore 169
 	}
 }
