@@ -13,6 +13,7 @@ import time
 from socket import gethostname
 import signal
 import subprocess as s
+import fileinput
 global tests
 
 # simply takes a string s as input and prints it if running verbosely
@@ -139,24 +140,21 @@ class Test(object):
 
     # create directories for text logs if they don't already exist in the
     # log_path
-    get_test_type = \
-                  lambda: Settings.is_smoke == True and "smoke" or "regression"
-    test_type_dir = os.path.join(Settings.log_path, get_test_type())
+    test_type = "smoke" if Settings.is_smoke else "regression"
+    test_type_dir = os.path.join(Settings.log_path, test_type)
     if not os.path.exists(test_type_dir):
       os.mkdir(os.path.join(test_type_dir))
+
 
     # execute the tests
     TIMEOUT = 600 # ten minutes
     output("INFO:  Executing tests...")
     for test in found_tests:
-      control_name = os.path.basename(test).split("_")[0]
-
+      self.set_test_file_info(test)
+      file_path = os.path.join(Settings.log_path, test_type, self.control_name)
+      self.write_top_portion(file_path)
       t = s.Popen(["python", "-u", test], stdout=s.PIPE, stderr=s.PIPE)
-      s.Popen(["tee", "%s/%s/%s" % (Settings.log_path,
-                                    get_test_type(),
-                                    control_name)],
-               stdin=t.stdout,
-               stderr=t.stderr)
+      s.Popen(["tee", "-a", file_path], stdin=t.stdout, stderr=t.stderr)
       i = 0
       while t.poll() is None:
         time.sleep(1)
@@ -164,6 +162,8 @@ class Test(object):
       if r != 0:
         output("WARNING:  Failed test:  %s" % test)
         self.status = 1
+      else:
+        os.system('echo -n "success" > %s' % file_path)
       try:
         self.log(test)
       except InconceivableError, msg:
@@ -171,23 +171,77 @@ class Test(object):
         return 1
     return self.status 
 
+  def write_top_portion(self, file_path):
+    '''Create the top portion of the summary text log file.  This portion
+    consists of a chronological list of machine names and dates for which
+    the test has failed; the portion ends with a SEPARATOR.  The Strongwind
+    stdout and stderr info for an individual Strongwind test will be dumped
+    after the SEPARATOR'''
 
-  def log(self, test):
-    filename = os.path.basename(test)
+    def write_file(f, is_new):
+      if is_new:
+        f.writelines([self.log_dir,'\n'])
+        f.write(SEPARATOR)
+      else:
+        # chronological list of machine names and dates for which the test has
+        # failed with the most recent log at the end (after SEPARATOR)
+        old_file_tests = []
+        for line in f:
+          if line == SEPARATOR:
+            break
+          else:
+            old_file_tests.append(line)
+        f.close()
+        f = open(file_path,'w')
+        f.writelines(old_file_tests)
+        f.writelines([self.log_dir,'\n'])
+        f.write(SEPARATOR)
+
+    # the separator denotes the division between the list of the consecutive
+    # failed tests and the most recent log
+    SEPARATOR = "---\n"
+
+    # if the previous test was successful, delete the file
+    try:
+      f = open(file_path,'r')
+      if f.readline() == "success":
+        f.close()
+        os.system("rm -rf file_path")   
+      f.close()
+    except IOError:
+      pass
+
+    # write a new file if a text file hasn't beeen created for the test,
+    # otherwise modify the existing file
+    try:
+      f = open(file_path,'a+')
+      is_new = False
+      write_file(f, is_new)
+    except IOError, err:
+      print err
+      is_new = True
+      f = open(file_path,'w+')
+      write_file(f, is_new)
+    f.close()
+
+  def set_test_file_info(self, test):
+    self.filename = os.path.basename(test)
+    self.control_name = os.path.basename(test).split("_")[0]
 
     # take off the file exension
-    dot_index = filename.rfind(".")
+    dot_index = self.filename.rfind(".")
     if dot_index > 0:
-      filename = filename[:dot_index] # chop off the extension
+      self.filename = self.filename[:dot_index] # chop off the extension
 
-    control_dir = os.path.join(Settings.log_path, filename)
+    self.control_dir = os.path.join(Settings.log_path, self.filename)
     # try to build a useful dir name that will be unique, not y3k compliant :)
-    log_dir = os.path.join(control_dir,"%s_%s" %\
+    self.log_dir = os.path.join(self.control_dir,"%s_%s" %\
                             (gethostname(), time.strftime("%m%d%y_%H%M%S")))
 
-    if not os.path.exists(control_dir):
+  def log(self, test):
+    if not os.path.exists(self.control_dir):
       try:
-        os.mkdir(control_dir)
+        os.mkdir(self.control_dir)
         time.sleep(5) # XXX: waiting for cifs, but use a better method
       except OSError, err:
         # Errno 17 is "File exists"
@@ -197,21 +251,21 @@ class Test(object):
           output("WARNING:  Permanent logs will not be stored")
           return 0
   
-    if os.path.exists(log_dir):
+    if os.path.exists(self.log_dir):
         raise InconceivableError,\
-                "ERROR:  Inconceivable!  %s already exists!" % log_dir
+                "ERROR:  Inconceivable!  %s already exists!" % self.log_dir
     
-    os.mkdir(log_dir)
+    os.mkdir(self.log_dir)
     time.sleep(5) # XXX: waiting for cifs, but use a better method
 
     # copy over the resource files
     # XXX: change the log files to reference the resources from 
     # a static location so we don't have to copy these every time and
     # waste time/space
-    os.system("echo %s > %s/time" % (time.time(), log_dir))
-    os.system("echo %s > %s/status" % (self.status, log_dir))
-    os.system("cp -r /tmp/strongwind/* %s" % log_dir)
-    os.system("cp -r %s/resources/* %s" % (Settings.uiaqa_home, log_dir))
+    os.system("echo %s > %s/time" % (time.time(), self.log_dir))
+    os.system("echo %s > %s/status" % (self.status, self.log_dir))
+    os.system("cp -r /tmp/strongwind/* %s" % self.log_dir)
+    os.system("cp -r %s/resources/* %s" % (Settings.uiaqa_home, self.log_dir))
 
   def kill_process(self, pid):
     try:

@@ -1,3 +1,11 @@
+2008-10-31 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* test/harness/local_run.py: Create text reports for each control that
+	lists the tests that are failing for that control and includes the
+	Strongwind terminal output for the most recent failure.  This report
+	is already linked to by the dashboard (the report just wasn't
+	created by now).
+	
 2008-10-31  Ray Wang <rawang@novell.com>
 
 	* keystrokes/winforms/winbutton.py/winbutton.py: add winforms Button
@@ -52,8 +60,10 @@
 
 	* keystrokes/gtk/gtkcheckbutton.py/checkbutton.py: split the output 
 	* keystrokes/gtk/gtkradiobutton.py/radiobutton.py: split the output 
-	* keystrokes/winforms/winradiobutton.py/winradiobutton.py: split the output 
-	* keystrokes/winforms/wincheckbox.py/wincheckbox.py: split the output up 
+	* keystrokes/winforms/winradiobutton.py/winradiobutton.py: split the
+	output 
+	* keystrokes/winforms/wincheckbox.py/wincheckbox.py: split the output
+	up 
 	* keystrokes/gtk/gtkbutton.py/gtkbutton.py: add gtkbutton keystrokes
 
 2008-10-28  Calen Chen <cachen@novell.com>
