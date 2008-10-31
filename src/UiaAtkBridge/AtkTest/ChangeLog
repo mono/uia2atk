@@ -1,5 +1,10 @@
 2008-10-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTest.mdp:
+	* Makefile.am: Fix build for ngao.
+
+2008-10-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs: Add MaskedTextBox basic test.
 
 	* BasicWidgetType.cs: Add new basic widget type.

@@ -56,7 +56,7 @@ EXTRAS =
 
 REFERENCES =  \
 	-pkg:gtk-sharp-2.0 \
-	-pkg:nunit \
+	nunit.framework \
 	System \
 	System.Core \
 	System.Xml
