@@ -27,7 +27,7 @@ class WebBrowserSample(Form):
         self.Text = "WebBrowser control"
         self.Width = 1024
         self.Height = 800
-        url = 'www.google.com'
+        url = 'http://mono-project.com/Accessibility'
 
         # setup webbrowser
         self.webbrowser = WebBrowser()

@@ -1,3 +1,11 @@
+2008-10-31  Ray Wang <rawang@novell.com>
+
+	* keystrokes/winforms/winbutton.py/winbutton.py: add winforms Button
+	keystrokes
+	* keystrokes/gtk/gtkbutton.py/gtkbutton.py: fix some error
+	* samples/winbutton.py: add winform Button sample for orca testing
+	* samples/webbrowser.py: a bit change
+
 2008-10-31  Calen Chen <cachen@novell.com>
 
 	* testers/states.py: add ToolBar tuple for toolstrip
