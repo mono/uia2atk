@@ -247,3 +247,6 @@ class NumericUpDown(object):
 class Icon(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
+class ToolBar(object):
+    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
+

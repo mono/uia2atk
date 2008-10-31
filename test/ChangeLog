@@ -1,5 +1,14 @@
 2008-10-31  Calen Chen <cachen@novell.com>
 
+	* testers/states.py: add ToolBar tuple for toolstrip
+	* testers/toolstrip_basic_ops.py,
+	* testers/toolstrip/toolstripframe.py,
+	* testers/toolstrip/__init__.py,
+	* testers/toolstrip: add new test for toolstrip searching for "tool bar"
+	and check its states
+
+2008-10-31  Calen Chen <cachen@novell.com>
+
 	* samples/desktop-blue_soccer400x500.jpg, 
 	* samples/universe300x400.jpg: add new picture with modified
 	image size for PictureBox Icon test
