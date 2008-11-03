@@ -1,3 +1,7 @@
+2008-11-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* patches/listview.patch: Deleted, already committed.
+
 2008-10-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Uia2Atk.mds:
