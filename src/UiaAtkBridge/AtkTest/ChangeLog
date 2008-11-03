@@ -1,5 +1,9 @@
 2008-11-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Generalize test for all combobox's children.
+
+2008-11-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs:
 	* AtkTester.cs: Add a state for MaskedTextBox. Reuse some code for the
 	ComboBoxEntry widget test.

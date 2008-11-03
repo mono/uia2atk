@@ -441,12 +441,13 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (menuChild.Role, Atk.Role.Menu, "ComboBox child#0 should be a menu");
 			
 			Assert.AreEqual (items.Length, menuChild.NAccessibleChildren, "ComboBox menu numChildren");
-			Atk.Object menuItemChild = menuChild.RefAccessibleChild (0);
-			Assert.IsNotNull (menuItemChild, "ComboBox child#0 child#0 should not be null");
-			Assert.AreEqual (menuItemChild.Role, Atk.Role.MenuItem, "ComboBox child#0 child#0 should be a menuItem");
-			Assert.AreEqual (menuItemChild.Name, items [0], "ComboBox menuitem names should be the same as the items");
-			
-			Assert.AreEqual (0, menuItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
+			for (int i = 0; i < items.Length; i++) {
+				Atk.Object menuItemChild = menuChild.RefAccessibleChild (i);
+				Assert.IsNotNull (menuItemChild, "ComboBox child#0 child#0 should not be null");
+				Assert.AreEqual (menuItemChild.Role, Atk.Role.MenuItem, "ComboBox child#0 child#0 should be a menuItem");
+				Assert.AreEqual (menuItemChild.Name, items [i], "ComboBox menuitem names should be the same as the items");
+				Assert.AreEqual (0, menuItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
+			}
 		}
 		
 		protected void StatesComboBox (Atk.Object accessible)
