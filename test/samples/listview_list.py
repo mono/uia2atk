@@ -16,10 +16,7 @@ It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of cont
 # imports
 import clr
 clr.AddReference('System.Windows.Forms')
-from System.Windows.Forms import (
-    Application, DockStyle, Form, ListView, View, SortOrder, HorizontalAlignment, Label
-)
-
+from System.Windows.Forms import *
 class ListViewSample(Form):
     """ListView control class"""
 
@@ -47,6 +44,8 @@ class ListViewSample(Form):
         self.listview.FullRowSelect = True
         # display grid lines.
         self.listview.GridLines = True
+        #close multiselect property
+        self.listview.MultiSelect = True
         # sort the items in the list in ascending order.
         self.listview.Sorting = SortOrder.Ascending
         # place widget besides left.
@@ -61,8 +60,15 @@ class ListViewSample(Form):
         for i in range(5):
             self.listview.Items.Add("Item " + str(i), i)
 
+        self.checkbox = CheckBox()
+        self.checkbox.Text = "MultiSelect"
+        self.checkbox.Click += self.checkbox_click
+        self.checkbox.Checked = True
+        self.checkbox.Dock = DockStyle.Top
+
         # add controls
         self.Controls.Add(self.listview)
+        self.Controls.Add(self.checkbox)
         self.Controls.Add(self.label)
 
     def on_click(self, sender, event):
@@ -72,6 +78,13 @@ class ListViewSample(Form):
         else:
             self.listview.Sorting = SortOrder.Ascending
             self.toggle = True
+ 
+    #change MultiSelect property
+    def checkbox_click(self, sender, event):
+        if self.checkbox.Checked:
+            self.listview.MultiSelect = True
+        else:
+            self.listview.MultiSelect = False
 
 # run application
 form = ListViewSample()
