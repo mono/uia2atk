@@ -1,3 +1,8 @@
+2008-11-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* AtkTest.mdp: Turn off reference synchronization for makefile
+	integration.
+
 2008-10-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTest.mdp:
