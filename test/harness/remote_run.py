@@ -52,7 +52,7 @@ class Settings(object):
     opts = []
     args = []
     try:
-      opts, args = getopt.getopt(sys.argv[1:],"ushql:e:f:",["smoke","help","quiet","log=","email=","update-packages","from="])
+      opts, args = getopt.getopt(sys.argv[1:],"ushql:e:f:",["smoke","help","quiet","log=","email=","update","from="])
     except getopt.GetoptError:
       self.help()
       sys.exit(1)
@@ -111,21 +111,12 @@ class Kickoff(threading.Thread):
 
   def run(self):
     smoke_option = lambda: Settings.is_smoke == True and "--smoke" or ""
-    if Settings.should_update:
-      output("Updating packages for %s" % self.name)
-      self.pkg_status = os.system("ssh -o ConnectTimeout=15 \
-                        %s@%s sudo %s/tools/update_uia2atk_rpms.sh -f >> %s/%s 2>&1" % \
-                        (machines.USERNAME, self.ip, machines.TEST_DIR,\
-                        Settings.local_log_path, self.name)) 
-      if self.pkg_status != 0:
-        output("WARNING:  Package update failed for %s" % self.name)
-        Kickoff.package_failed_machines.append(self.name)
-    # don't run the the tests if the pkg_status flag has been changed to
-    # from 0
+    update_option = lambda: Settings.is_smoke == True and "--update" or ""
     if self.pkg_status == 0:
       self.test_status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 %s/harness/local_run.py %s --log=%s >> %s/%s 2>&1" %\
                              (machines.USERNAME, self.ip, machines.TEST_DIR,
-                              smoke_option(), Settings.remote_log_path,
+                              " ".join([smoke_option, update_option].strip(),
+                              Settings.remote_log_path,
                               Settings.local_log_path, self.name))
       if self.test_status != 0:
         Kickoff.test_failed_machines.append(self.name)

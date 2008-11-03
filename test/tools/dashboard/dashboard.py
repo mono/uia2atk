@@ -27,6 +27,7 @@ class Settings(object):
 
     is_quiet = False
     log_dir = None
+    output_path = None
 
     def __init__(self):
         pass
@@ -36,18 +37,21 @@ class Settings(object):
         args = []
 
         try:
-          opts, args = getopt.getopt(sys.argv[1:],"qh",["help","quiet"])
+            opts, args = getopt.getopt(sys.argv[1:],"qho:",["help","quiet","output="])
         except getopt.GetoptError:
-          self.help()
-          abort(1)
+            self.help()
+            abort(1)
 
         for o,a in opts:
-          if o in ("-q","--quiet"):
-            Settings.is_quiet = True
+            if o in ("-q","--quiet"):
+                Settings.is_quiet = True
         for o,a in opts:
-          if o in ("-h","--help"):
-            self.help()
-            sys.exit(0)
+            if o in ("-h","--help"):
+                self.help()
+                sys.exit(0)
+            if o in ("-o","--output"):
+                Settings.output_path = a
+ 
 
         try:
             Settings.log_dir = args[0]
@@ -57,8 +61,9 @@ class Settings(object):
    
     def help(self):
         output("Usage: dashboard [options] <log directory>")
-        output("  -h | --help        Print help information (this message)")
-        output("  -q | --quiet       Don't print anything")
+        output("  -h       | --help         Print help information (this message)")
+        output("  -q       | --quiet        Don't print anything")
+        output("  -o <dir> | --output=<dir> Store output files in <dir>")
 
 class XMLParser(object):
 
@@ -322,8 +327,18 @@ class PageBuilder(object):
               "%")
         ET.SubElement(regression, "elapsedTime").text = str(regression_time)
 
-        # write the dashboard file to disk
-        f = open('dashboard.xml', 'w')
+        # write the dashboard file to disk; try to store in
+        # Settings.output_path if it exists, if it doesn't exist or if it
+        # fails, save in the cwd
+        if Settings.output_path is None:
+            f = open('dashboard.xml', 'w')
+        else:
+            try:
+                f = open('%s/dashboard.xml' % Settings.output_path, 'w')
+            except IOError:
+                output("WARN:  Failed to save output to %s, saving to current working directory instead.")
+                f = open('dashboard.xml', 'w')
+                
         f.write('<?xml version="1.0" encoding="UTF-8"?>')
         f.write('<?xml-stylesheet type="text/xsl" href="dashboard.xsl"?>')
         ET.ElementTree(root).write(f)

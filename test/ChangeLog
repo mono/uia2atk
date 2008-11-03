@@ -1,3 +1,16 @@
+2008-11-3 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* tools/update_uia2atk_rpms.sh, 
+	* tools/update_uia2atk_pkgs.sh: Rename from update_uia2atk_rpms.sh to
+	update_uia2atk_pkgs.sh because we are updating more than just RPMs
+	* tools/dashboard/dashboard.py: Add option and functionality for the
+	user to be able to specify where the new dashboard.xml file should be
+	stored
+	* harness/local_run.py: Move code that updates packages from remote_run
+	to this file.  Put the revision numbers for each package in the text
+	report linked to by the dashboard
+	* harness/remote_run.py: Move code that updates packages to local_run
+
 2008-11-03  Calen Chen <cachen@novell.com>
 
 	* samples/listview_list.py: add checkbox to change MultiSelect property

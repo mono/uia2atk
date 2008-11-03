@@ -16,6 +16,8 @@ import subprocess as s
 import fileinput
 global tests
 
+UPDATE_SCRIPT = "update_uia2atk_pkgs.sh"
+
 # simply takes a string s as input and prints it if running verbosely
 def output(s, newline=True):
   if not Settings.is_quiet:
@@ -26,7 +28,6 @@ def output(s, newline=True):
 
 def abort(status):
   ''' exit according to status '''
-  exit(status)
 
 class Settings(object):
 
@@ -36,6 +37,7 @@ class Settings(object):
   uiaqa_home = None
   log_path = None
   COUNTDOWN = 5
+  should_update = False
 
   def __init__(self):
       self.argument_parser()
@@ -54,7 +56,7 @@ class Settings(object):
     opts = []
     args = []
     try:
-      opts, args = getopt.getopt(sys.argv[1:],"shql:",["smoke","help","quiet","log="])
+      opts, args = getopt.getopt(sys.argv[1:],"ushql:",["update","smoke","help","quiet","log="])
     except getopt.GetoptError:
       self.help()
       sys.exit(1)
@@ -70,6 +72,8 @@ class Settings(object):
         Settings.log_path = a
       if o in ("-s","--smoke"):
         Settings.is_smoke = True
+      if o in ("-u","--update"):
+        Settings.should_update = True
 
   def help(self):
     output("Common Options:")
@@ -77,6 +81,7 @@ class Settings(object):
     output("  -q | --quiet       Don't print anything.")
     output("  -l | --log=        Where the log(s) should be stored.")
     output("  -s | --smoke       Run only smoke tests")
+    output("  -u | --update      Update packages on remote machines")
 
   def set_uiaqa_home(self):
     harness_dir = sys.path[0]
@@ -111,6 +116,30 @@ class Test(object):
       remaining-=1
       sys.stdout.flush()
       time.sleep(1)
+ 
+  def update(self):
+    import urllib
+    u = urllib.urlopen("http://build1.sled.lab.novell.com/uia/current/rpm_revs")
+    revision_list = u.readlines()
+    self.revisions = "".join(revision_list[3:])
+    u.close()
+    # mega hack to get the most recent revision directory
+    date = revision_list[0].split()[-1]
+    u = urllib.urlopen("http://build1.sled.lab.novell.com/uia")
+    todays_dirs = []
+    for line in u.readlines():
+        if date in line:
+            # lf is left find
+            # rf is right find
+            lf = line.find(date)
+            rf = line.rfind(date) 
+            todays_dirs.append(line[lf:rf].strip('/">'))
+    todays_dirs.sort()
+    newest_dir = todays_dirs[-1]
+    update_script = \
+                  os.path.join(Settings.uiaqa_home, "tools/%s" % UPDATE_SCRIPT)
+    output("INFO:  Updating packages:")
+    return os.system("sudo %s -f --directory=%s" % (update_script, newest_dir))
 
   def run(self):
     unfound_tests = []
@@ -181,6 +210,7 @@ class Test(object):
     def write_file(f, is_new):
       if is_new:
         f.writelines([self.log_dir,'\n'])
+        f.write("%s%s" % ("  ", self.revisions.replace("\n","\n  ")))
         f.write(SEPARATOR)
       else:
         # chronological list of machine names and dates for which the test has
@@ -195,6 +225,10 @@ class Test(object):
         f = open(file_path,'w')
         f.writelines(old_file_tests)
         f.writelines([self.log_dir,'\n'])
+        f.write("%s%s%s" % \
+                             ("  ",
+                              self.revisions.replace("\n","\n  ").strip(),
+                              "\n"))
         f.write(SEPARATOR)
 
     # the separator denotes the division between the list of the consecutive
@@ -299,8 +333,14 @@ class Main(object):
 
   def main(self, argv=None):
     t = Test()
-    r = t.run()
-    t.cleanup()
+    r = None
+    if Settings.should_update:
+      r = t.update()
+    # if the return status of the update is 0 (success)
+    # or we're not updating packages run the tests
+    if r is None or r == 0:
+      r = t.run()
+      t.cleanup()
     if Settings.log_path:
       output("INFO:  Logging to:  %s" % Settings.log_path)
     output("INFO:  EXITING %s" % os.path.basename(__file__))
