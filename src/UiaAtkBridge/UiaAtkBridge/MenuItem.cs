@@ -53,9 +53,6 @@ namespace UiaAtkBridge
 				Name = name;
 
 			textExpert = new TextImplementorHelper (Name);
-
-			if (Name == String.Empty)
-				Name = null;
 			
 			comboBoxStructure = ((int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
 			  == ControlType.List.Id);
