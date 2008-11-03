@@ -59,6 +59,7 @@
     <Compile Include="CheckBoxTest.cs" />
     <Compile Include="CheckedListBoxListItem.cs" />
     <Compile Include="ComboBoxTest.cs" />
+    <Compile Include="GroupBoxTest.cs" />
     <Compile Include="NumericUpDownTest.cs" />
     <Compile Include="PanelTest.cs" />
     <Compile Include="DomainUpDownTest.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="ListBoxTest.cs" />
     <Compile Include="ListViewTest.cs" />
     <Compile Include="NotListedAttribute.cs" />
+    <Compile Include="PictureBoxTest.cs" />
     <Compile Include="ProgressBarTest.cs" />
     <Compile Include="ScrollBarButtonTest.cs" />
     <Compile Include="ScrollBarTest.cs" />
