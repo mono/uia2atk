@@ -1,3 +1,10 @@
+2008-11-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ComboBox.cs: Some fixes to make more tests pass.
+
+	* MenuItem.cs: Some fixes to make more tests pass. Adding Atk.Text for
+	ParentMenu (not finished).
+
 2008-10-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* TextLabel.cs:
