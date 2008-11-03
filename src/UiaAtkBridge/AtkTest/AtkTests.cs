@@ -428,14 +428,15 @@ namespace UiaAtkBridgeTest
 			
 			string name = "Edit test#1";
 			accessible = GetAccessible (type, name, true);
-
+			
 			States (accessible,
 			  Atk.StateType.Editable, 
 			  Atk.StateType.Enabled, 
 			  Atk.StateType.Focusable,
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,
-			  Atk.StateType.Visible);
+			  Atk.StateType.Visible,
+			  Atk.StateType.SingleLine);
 
 			Console.WriteLine ("</Test>");
 		}
@@ -519,6 +520,13 @@ namespace UiaAtkBridgeTest
 			StatesComboBox (accessible);
 
 			Assert.AreEqual (2, accessible.NAccessibleChildren, "numChildren; children roles:" + childrenRoles (accessible));
+			Atk.Object menuChild = accessible.RefAccessibleChild (0);
+			CheckComboBoxMenuChild (menuChild, names);
+
+			Atk.Object entryChild = accessible.RefAccessibleChild (1);
+			Assert.IsNotNull (entryChild, "ComboBox child#1 should not be null");
+			Assert.AreEqual (entryChild.Role, Atk.Role.Text, "Role of 2nd child");
+			Assert.IsNull (entryChild.Name, "textbox .Name should be null");
 
 			Console.WriteLine ("</Test>");
 		}
@@ -549,17 +557,7 @@ namespace UiaAtkBridgeTest
 			InterfaceAction (type, atkAction, accessible);
 			
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);
-			Assert.IsNotNull (menuChild, "ComboBox child#0 should not be null");
-			Assert.AreEqual (menuChild.Name, null, "the ComboBox menu should not have a name");
-			Assert.AreEqual (menuChild.Role, Atk.Role.Menu, "ComboBox child#0 should be a menu");
-			
-			Assert.AreEqual (names.Length, menuChild.NAccessibleChildren, "ComboBox menu numChildren");
-			Atk.Object menuItemChild = menuChild.RefAccessibleChild (0);
-			Assert.IsNotNull (menuItemChild, "ComboBox child#0 child#0 should not be null");
-			Assert.AreEqual (menuItemChild.Role, Atk.Role.MenuItem, "ComboBox child#0 child#0 should be a menuItem");
-			Assert.AreEqual (menuItemChild.Name, names[0], "ComboBox menuitem names should be the same as the items");
-			
-			Assert.AreEqual (0, menuItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
+			CheckComboBoxMenuChild (menuChild, names);
 
 			//FIXME:
 			//Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);

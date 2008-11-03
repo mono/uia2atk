@@ -435,6 +435,20 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (-1, ib, "height of the image must be int.MinValue; obtained " + ib);
 		}
 
+		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items) {
+			Assert.IsNotNull (menuChild, "ComboBox child#0 should not be null");
+			Assert.AreEqual (menuChild.Name, null, "the ComboBox menu should not have a name");
+			Assert.AreEqual (menuChild.Role, Atk.Role.Menu, "ComboBox child#0 should be a menu");
+			
+			Assert.AreEqual (items.Length, menuChild.NAccessibleChildren, "ComboBox menu numChildren");
+			Atk.Object menuItemChild = menuChild.RefAccessibleChild (0);
+			Assert.IsNotNull (menuItemChild, "ComboBox child#0 child#0 should not be null");
+			Assert.AreEqual (menuItemChild.Role, Atk.Role.MenuItem, "ComboBox child#0 child#0 should be a menuItem");
+			Assert.AreEqual (menuItemChild.Name, items [0], "ComboBox menuitem names should be the same as the items");
+			
+			Assert.AreEqual (0, menuItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
+		}
+		
 		protected void StatesComboBox (Atk.Object accessible)
 		{
 			States (accessible,
