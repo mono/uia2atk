@@ -1,3 +1,8 @@
+2008-11-03  Ray Wang <rawang@novell.com>
+
+	* keystrokes/winforms/winbutton.py/winbutton.py: make it worked
+	* samples/listview_smallimage.py: add SmallImage property of ListView
+
 2008-10-31 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* test/harness/local_run.py: Create text reports for each control that
