@@ -1,3 +1,16 @@
+2008-11-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs:
+	* Mono.UIAutomation.Winforms/ToolStripMenuItemProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripDropDownItemProvider.cs:
+	ToolStripMenuItemProvider -> ToolStripDropDownItemProvider. 
+	TSDropDownItem is the base class of TSMenuItem, TSDropDownButton, and
+	TSSplitButton.  The first two of these are basically identical and
+	are both covered by the TSDropDownItemProvider. 
+	TSSplitButtonProvider will come soon.
+
 2008-10-29  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added files.

@@ -109,7 +109,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			SWF.MenuStrip ms;
 			SWF.ToolStrip ts;
-			SWF.ToolStripMenuItem tsmi;
+			SWF.ToolStripDropDownItem tsddi;
 			SWF.ToolStripLabel tsl;
 			SWF.ToolStripItem tsi;
 			SWF.ToolStripTextBox tstb;
@@ -156,8 +156,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new MenuStripProvider (ms);
 			else if ((ts = component as SWF.ToolStrip) != null)
 				provider = new ToolStripProvider (ts);
-			else if ((tsmi = component as SWF.ToolStripMenuItem) != null)
-				provider = new ToolStripMenuItemProvider (tsmi);
+			else if ((tsddi = component as SWF.ToolStripDropDownItem) != null)
+				provider = new ToolStripDropDownItemProvider (tsddi);
 			else if ((tsl = component as SWF.ToolStripLabel) != null)
 				provider = new ToolStripLabelProvider (tsl);
 			else if ((tstb = component as SWF.ToolStripTextBox) != null)

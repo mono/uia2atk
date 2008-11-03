@@ -38,13 +38,13 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
-	[TestFixture]
-	public class ToolStripMenuItemProviderTest : BaseProviderTest
+	public abstract class ToolStripDropDownItemProviderTest<T> : BaseProviderTest
+		where T : ToolStripDropDownItem
 	{
 		[Test]
 		public void ProviderPatternTest ()
 		{
-			ToolStripMenuItem menuItem = new ToolStripMenuItem ();
+			T menuItem = GetNewToolStripDropDownItem ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
 
 			// Should never support Toggle
@@ -67,7 +67,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void InvokeTest ()
 		{
-			ToolStripMenuItem menuItem = new ToolStripMenuItem ();
+			T menuItem = GetNewToolStripDropDownItem ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
 			IInvokeProvider invokeProvider = (IInvokeProvider)
 				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
@@ -98,9 +98,78 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		[Test]
+		public new void IsEnabledPropertyTest ()
+		{
+			// Set up initial menu item structure, with some sub-items
+			T control = GetNewToolStripDropDownItem ();
+			control.Text = "My menu item";
+			
+			T subMenuItem1 = GetNewToolStripDropDownItem ();
+			subMenuItem1.Text = "sub1";
+			T subMenuItem2 = GetNewToolStripDropDownItem ();
+			subMenuItem2.Text = "sub2";
+
+			control.DropDownItems.Add (subMenuItem1);
+			control.DropDownItems.Add (subMenuItem2);
+
+			// Add item to parent strip, parent strip to form,
+			// and initialize providers
+			MenuStrip strip = new MenuStrip ();
+			strip.Items.Add (control);
+			GetProviderFromControl (strip);
+			
+			//T control = GetNewToolStripDropDownItem ();
+			if (control == null)
+				return;
+			
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			
+			bridge.ResetEventLists ();
+			
+			object initialVal =
+				provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			Assert.IsNotNull (initialVal, "Property returns null");
+			Assert.IsTrue ((bool)initialVal, "Should initialize to true");
+			
+			control.Enabled = false;
+
+			Assert.IsFalse ((bool)provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id),
+			                "Toggle to false");
+
+			AutomationPropertyChangedEventTuple tuple 
+				= bridge.GetAutomationPropertyEventFrom (provider,
+				                                         AutomationElementIdentifiers.IsEnabledProperty.Id);
+			
+			Assert.IsNotNull (tuple, "Tuple missing");
+			Assert.AreEqual (initialVal,
+			                 tuple.e.OldValue,
+			                 string.Format ("1st. Old value should be true: '{0}'", tuple.e.OldValue));
+			Assert.AreEqual (false,
+			                 tuple.e.NewValue,
+			                 string.Format ("1st. New value should be true: '{0}'", tuple.e.NewValue));
+			
+			bridge.ResetEventLists ();
+			
+			control.Enabled = true;
+			Assert.IsTrue ((bool)provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id),
+			               "Toggle to true");
+			
+			tuple 
+				= bridge.GetAutomationPropertyEventFrom (provider,
+				                                         AutomationElementIdentifiers.IsEnabledProperty.Id);
+			Assert.IsNotNull (tuple, "Tuple missing");
+			Assert.AreEqual (false,
+			                 tuple.e.OldValue,
+			                 string.Format ("2nd. Old value should be false: '{0}'", tuple.e.OldValue));
+			Assert.AreEqual (true,
+			                 tuple.e.NewValue,
+			                 string.Format ("2nd. New value should be true: '{0}'", tuple.e.NewValue));
+		}
+		
+		[Test]
 		public void InvokedEventTest ()
 		{
-			ToolStripMenuItem menuItem = new ToolStripMenuItem ();
+			T menuItem = GetNewToolStripDropDownItem ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
 			
 			bridge.ResetEventLists ();
@@ -127,7 +196,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public override void LabeledByAndNamePropertyTest()
 		{
-			ToolStripMenuItem menuItem = new ToolStripMenuItem ();
+			T menuItem = GetNewToolStripDropDownItem ();
 			menuItem.Text = "My menu item";
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
 
@@ -142,12 +211,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void NavigationTest ()
 		{
 			// Set up initial menu item structure, with some sub-items
-			ToolStripMenuItem menuItem = new ToolStripMenuItem ();
+			T menuItem = GetNewToolStripDropDownItem ();
 			menuItem.Text = "My menu item";
 			
-			ToolStripMenuItem subMenuItem1 = new ToolStripMenuItem ();
+			T subMenuItem1 = GetNewToolStripDropDownItem ();
 			subMenuItem1.Text = "sub1";
-			ToolStripMenuItem subMenuItem2 = new ToolStripMenuItem ();
+			T subMenuItem2 = GetNewToolStripDropDownItem ();
 			subMenuItem2.Text = "sub2";
 
 			menuItem.DropDownItems.Add (subMenuItem1);
@@ -177,7 +246,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			
 			// Add new sub-item, verify that navigation updates
-			ToolStripMenuItem subMenuItem3 = new ToolStripMenuItem ();
+			T subMenuItem3 = GetNewToolStripDropDownItem ();
 			subMenuItem3.Text = "sub3";
 			menuItem.DropDownItems.Add (subMenuItem3);
 			IRawElementProviderFragmentRoot subProvider3 = (IRawElementProviderFragmentRoot)
@@ -242,5 +311,39 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return null; // TODO: Lots of work...
 		}
 
+		protected abstract T GetNewToolStripDropDownItem ();
+
+	}
+
+	[TestFixture]
+	public class ToolStripMenuItemProviderTest :
+		ToolStripDropDownItemProviderTest<ToolStripMenuItem>
+	{
+		protected override ToolStripMenuItem GetNewToolStripDropDownItem ()
+		{
+			return new ToolStripMenuItem ();
+		}
+	}
+
+	[TestFixture]
+	public class ToolStripDropDownButtonProviderTest :
+		ToolStripDropDownItemProviderTest<ToolStripDropDownButton>
+	{
+		protected override ToolStripDropDownButton GetNewToolStripDropDownItem ()
+		{
+			return new ToolStripDropDownButton ();
+		}
+	}
+
+	[TestFixture]
+	public class ToolStripSplitButtonProviderTest :
+		ToolStripDropDownItemProviderTest<ToolStripSplitButton>
+	{
+		protected override ToolStripSplitButton GetNewToolStripDropDownItem ()
+		{
+			return new ToolStripSplitButton ();
+		}
+
+		// TODO: Additional tests for ToolStripSplitButton
 	}
 }

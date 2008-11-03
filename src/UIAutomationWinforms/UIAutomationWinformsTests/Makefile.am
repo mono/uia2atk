@@ -81,8 +81,8 @@ FILES =  \
 	TextBoxProviderTest.cs \
 	TextNormalizerTest.cs \
 	TextRangeProviderTest.cs \
+	ToolStripDropDownItemProviderTest.cs \
 	ToolStripLabelProviderTest.cs \
-	ToolStripMenuItemProviderTest.cs \
 	ToolStripProviderTest.cs \
 	ToolStripTextBoxProviderTest.cs \
 	WindowProviderTest.cs \

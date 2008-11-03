@@ -36,15 +36,16 @@ using Mono.UIAutomation.Winforms.Behaviors.ToolStripItem;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class ToolStripMenuItemProvider : ToolStripItemProvider
+	internal class ToolStripDropDownItemProvider : ToolStripItemProvider
 	{
-		private ToolStripMenuItem menuItem;
+		private ToolStripDropDownItem dropDrownItem;
 		private Dictionary<ToolStripItem, ToolStripItemProvider>
 			itemProviders;
 		
-		public ToolStripMenuItemProvider (ToolStripMenuItem menuItem) : base (menuItem)
+		public ToolStripDropDownItemProvider (ToolStripDropDownItem dropDrownItem) :
+			base (dropDrownItem)
 		{
-			this.menuItem = menuItem;
+			this.dropDrownItem = dropDrownItem;
 			itemProviders = new Dictionary<ToolStripItem, ToolStripItemProvider> ();
 			
 		}
@@ -61,10 +62,10 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void InitializeChildControlStructure ()
 		{
-			menuItem.DropDown.ItemAdded += OnItemAdded;
-			menuItem.DropDown.ItemRemoved += OnItemRemoved;
+			dropDrownItem.DropDown.ItemAdded += OnItemAdded;
+			dropDrownItem.DropDown.ItemRemoved += OnItemRemoved;
 		
-			foreach (ToolStripItem item in menuItem.DropDownItems) {
+			foreach (ToolStripItem item in dropDrownItem.DropDownItems) {
 				ToolStripItemProvider itemProvider = GetItemProvider (item);
 				OnNavigationChildAdded (false, itemProvider);
 			}
@@ -72,8 +73,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void FinalizeChildControlStructure ()
 		{
-			menuItem.DropDown.ItemAdded -= OnItemAdded;
-			menuItem.DropDown.ItemRemoved -= OnItemRemoved;
+			dropDrownItem.DropDown.ItemAdded -= OnItemAdded;
+			dropDrownItem.DropDown.ItemRemoved -= OnItemRemoved;
 			
 			foreach (ToolStripItemProvider itemProvider in itemProviders.Values)
 				OnNavigationChildRemoved (false, itemProvider);
