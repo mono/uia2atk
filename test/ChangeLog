@@ -2,6 +2,7 @@
 
 	* keystrokes/winforms/winbutton.py/winbutton.py: make it worked
 	* samples/listview_smallimage.py: add SmallImage property of ListView
+	* samples/listview-items-icons: add images for ImageList use
 
 2008-10-31 Brian G. Merrell <bgmerrell@gmail.com>
 
