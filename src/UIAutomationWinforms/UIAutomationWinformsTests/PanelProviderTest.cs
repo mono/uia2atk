@@ -286,8 +286,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (dockProvider,
 			                  "Not returning DockPatternIdentifiers.");
 			
-			Assert.AreEqual (panel.Dock,
-			                 dockProvider.DockPosition,
+			Assert.AreEqual ((int) panel.Dock,
+			                 (int) dockProvider.DockPosition,
 			                 "Panel is None DockStyle by default.");
 		}
 		
@@ -304,8 +304,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "Not returning DockPatternIdentifiers.");
 			
 			dockProvider.SetDockPosition (DockPosition.Fill);
-			Assert.AreEqual (panel.Dock,
-			                 dockProvider.DockPosition,
+			Assert.AreEqual ((int) panel.Dock,
+			                 (int) dockProvider.DockPosition,
 			                 "Panel should be Fill DockStyle.");
 		}
 		

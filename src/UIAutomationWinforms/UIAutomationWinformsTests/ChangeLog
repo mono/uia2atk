@@ -1,3 +1,7 @@
+2008-11-03  Neville Gao  <nevillegao@gmail.com>
+
+	* PanelProviderTest.cs: Tested Dock pattern.
+
 2008-10-30  Neville Gao  <nevillegao@gmail.com>
 
 	* DomainUpDownProviderTest.cs, NumericUpDownProviderTest.cs: Tested
