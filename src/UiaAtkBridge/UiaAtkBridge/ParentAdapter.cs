@@ -90,7 +90,7 @@ namespace UiaAtkBridge
 			AddRelationship (Atk.RelationType.Embeds, child);
 		}
 		
-		public void RemoveChild (Adapter childToRemove)
+		internal void RemoveChild (Adapter childToRemove)
 		{
 			Console.WriteLine ("RemoveChild");
 			int childIndex;
