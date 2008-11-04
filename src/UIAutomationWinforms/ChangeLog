@@ -1,3 +1,8 @@
+2008-11-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* configure.ac: Magic to avoid using relative URIs 
+	(like in r117441) in LD_LIBRARY_PATH.
+
 2008-09-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* configure.ac: Require glib-sharp, atk-sharp, and Mono.WebBrowser for
