@@ -1,3 +1,19 @@
+2008-11-04  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added files.
+	* Mono.UIAutomation.Winforms/StatusStripProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/StatusStrip/GridProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/StatusStrip/GridPatternColumnCountEvent.cs:
+	  Files added.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Added SWF.StatusStrip.
+	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: Supported
+	  navigating to top-level parent.
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Moved SetBehavior to
+	  Initialize ().
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/GridProviderBehavior.cs:
+	  Combined tow *if* statements.
+	* Mono.UIAutomation.Winforms.Behaviors/NumericUpDown: Folder deleted.
+
 2008-11-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

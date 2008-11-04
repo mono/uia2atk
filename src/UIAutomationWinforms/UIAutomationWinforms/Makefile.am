@@ -89,6 +89,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBar/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/StatusStrip/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs \
@@ -178,6 +179,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelGridItemPatternColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelValuePatternValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/StatusStrip/GridPatternColumnCountEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/HasKeyBoardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueIsReadOnlyEvent.cs \
@@ -241,6 +243,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs \
 	Mono.UIAutomation.Winforms/SimpleControlProvider.cs \
 	Mono.UIAutomation.Winforms/StatusBarProvider.cs \
+	Mono.UIAutomation.Winforms/StatusStripProvider.cs \
 	Mono.UIAutomation.Winforms/TabControlProvider.cs \
 	Mono.UIAutomation.Winforms/TabPageProvider.cs \
 	Mono.UIAutomation.Winforms/TextBoxProvider.cs \

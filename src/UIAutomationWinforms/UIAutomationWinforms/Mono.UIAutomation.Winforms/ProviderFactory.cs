@@ -107,6 +107,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.WebBrowser wb;
 			SWF.Panel p;
 			
+			SWF.StatusStrip ss;
 			SWF.MenuStrip ms;
 			SWF.ToolStrip ts;
 			SWF.ToolStripDropDownItem tsddi;
@@ -152,6 +153,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ListBoxProvider (lb);
 			else if ((pgb = component as SWF.ProgressBar) != null)
 				provider = new ProgressBarProvider (pgb);
+			else if ((ss = component as SWF.StatusStrip) != null)
+				provider = new StatusStripProvider (ss);
 			else if ((ms = component as SWF.MenuStrip) != null)
 				provider = new MenuStripProvider (ms);
 			else if ((ts = component as SWF.ToolStrip) != null)

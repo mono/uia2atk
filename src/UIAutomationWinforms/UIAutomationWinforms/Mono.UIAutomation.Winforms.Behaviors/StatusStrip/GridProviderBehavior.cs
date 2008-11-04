@@ -20,7 +20,7 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-// 	Neville Gao <nevillegao@gmail.com>
+//	Neville Gao <nevillegao@gmail.com>
 // 
 
 using System;
@@ -29,23 +29,23 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.StatusBar;
+using Mono.UIAutomation.Winforms.Events.StatusStrip;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
+namespace Mono.UIAutomation.Winforms.Behaviors.StatusStrip
 {
 	internal class GridProviderBehavior : ProviderBehavior, IGridProvider
 	{
 		#region Constructor
 
-		public GridProviderBehavior (StatusBarProvider provider)
+		public GridProviderBehavior (StatusStripProvider provider)
 			: base (provider)
 		{
 			this.provider = provider;
-			this.statusBar = (SWF.StatusBar) provider.Control;
+			this.statusStrip = (SWF.StatusStrip) provider.Control;
 		}
 		
 		#endregion
-
+		
 		#region IProviderBehavior Interface		
 		
 		public override AutomationPattern ProviderPattern { 
@@ -86,7 +86,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 		}
 		
 		public int ColumnCount {
-			get { return statusBar.Panels.Count; }
+			get { return statusStrip.Items.Count; }
 		}
 		
 		public IRawElementProviderSimple GetItem (int row, int column)
@@ -94,15 +94,15 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 			if (column >= RowCount || row >= ColumnCount || row < 0 || column < 0)
 				throw new ArgumentOutOfRangeException ();
 			
-			return (IRawElementProviderSimple) provider.GetPanelProvider (column);
+			return (IRawElementProviderSimple) provider.GetItemProvider (column);
 		}
 
 		#endregion
 
 		#region Private Fields
 
-		private StatusBarProvider provider;
-		private SWF.StatusBar statusBar;
+		private StatusStripProvider provider;
+		private SWF.StatusStrip statusStrip;
 		
 		#endregion
 	}

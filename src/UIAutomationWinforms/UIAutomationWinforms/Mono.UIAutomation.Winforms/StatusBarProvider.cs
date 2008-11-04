@@ -47,7 +47,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#endregion
 		
-		#region FragmentRootControlProvider: Specializations
+		#region SimpleControlProvider: Specializations
 
 		public override void Initialize()
 		{
@@ -56,6 +56,24 @@ namespace Mono.UIAutomation.Winforms
 			SetBehavior (GridPatternIdentifiers.Pattern,
 			             new GridProviderBehavior (this));
 		}
+		
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.StatusBar.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "status bar";
+			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+				return null;
+			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return statusBar.Text;
+			else
+				return base.GetPropertyValue (propertyId);
+		}
+		
+		#endregion
+		
+		#region FragmentRootControlProvider: Specializations
 		
 		public override void InitializeChildControlStructure ()
 		{	
@@ -153,24 +171,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 		
-		#region SimpleControlProvider: Specializations
-		
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.StatusBar.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "status bar";
-			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
-				return null;
-			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return statusBar.Text;
-			else
-				return base.GetPropertyValue (propertyId);
-		}
-		
-		#endregion
-		
 		#region Private Fields
 		
 		private StatusBar statusBar;
@@ -187,13 +187,22 @@ namespace Mono.UIAutomation.Winforms
 			public StatusBarPanelProvider (StatusBarPanel statusBarPanel) : base (statusBarPanel)
 			{
 				this.statusBarPanel = statusBarPanel;
+			}
+		
+			#endregion
+			
+			#region SimpleControlProvider: Specializations
+
+			public override void Initialize()
+			{
+				base.Initialize ();
 				
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new StatusBarPanelValueProviderBehavior (this));
 				SetBehavior (GridItemPatternIdentifiers.Pattern,
 				             new StatusBarPanelGridItemProviderBehavior (this));
 			}
-		
+			
 			#endregion
 		
 			#region Public Methods

@@ -48,7 +48,10 @@ namespace Mono.UIAutomation.Winforms
 
 		public override IRawElementProviderFragmentRoot FragmentRoot {		
 			get {
-				return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (item.OwnerItem);
+				if (item.OwnerItem != null)
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (item.OwnerItem);
+				else
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (item.Owner);
 			}
 		}
 
