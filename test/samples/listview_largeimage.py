@@ -9,7 +9,7 @@
 
 # The docstring below is used in the generated log file
 """
-This sample will show "ListView" control with SmallImageList mode, CheckBoxes property and CheckItem event in the form.
+This sample will show "ListView" control with LargeImageList mode, CheckBoxes property and CheckItem event in the form.
 It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
 """
 
@@ -38,13 +38,13 @@ class ListViewSample(Form):
 
         # setup title
         self.Text = "ListView control"
-        self.Width = 380
-        self.Height = 330
+        self.Width = 480
+        self.Height = 380
         self.toggle = True
 
         # setup label
         self.label = Label()
-        self.label.Text = "View.SmallImageList mode with CheckBoxes property and ColumnClick&ItemCheck events."
+        self.label.Text = "View.LargeImageList mode with CheckBoxes property and ColumnClick&ItemCheck events."
         self.label.Dock = DockStyle.Top
 
         # setup listview
@@ -59,7 +59,7 @@ class ListViewSample(Form):
         self.listview.Sorting = SortOrder.Ascending
         # place widget besides left.
         self.listview.Dock = DockStyle.Top
-        self.listview.Width = 350
+        self.listview.Width = 460
         self.listview.Height = 300
         self.listview.ColumnClick += self.on_click
         self.listview.ItemCheck += self.item_click
@@ -67,20 +67,18 @@ class ListViewSample(Form):
         # image list
         self.imagelist = ImageList()
         self.imagelist.ColorDepth = ColorDepth.Depth32Bit;
-        self.imagelist.ImageSize = Size(32, 32);
+        self.imagelist.ImageSize = Size(64, 64);
 
         # small images
         names = [
                 "abiword_48.png",
                 "bmp.png",
-                "desktop.png",
                 "disks.png",
-                "distributor-logo.png",
                 "evolution.png"
             ]
 
         for i in names:
-            self.imagelist.Images.Add (Image.FromFile("%s/samples/listview-items-icons/32x32/" % uiaqa_path + i))
+            self.imagelist.Images.Add (Image.FromFile("%s/samples/listview-items-icons/64x64/" % uiaqa_path + i))
 
         self.listview.SmallImageList = self.imagelist
 
@@ -91,15 +89,21 @@ class ListViewSample(Form):
         # add items
         listItem = ["Item0", "Item1", "Item2", "Item3", "Item4", "Item5"]
         num = ["0", "1", "2", "3", "4", "5"]
+        index = 0
 
         self.listview.BeginUpdate()
 
         for count in range(6):
             self.listItem = ListViewItem(listItem[count])
-            self.listItem.ImageIndex = count
+            if count >= len(names):
+                index = 0
+            else:
+                index = count
+            self.listItem.ImageIndex = index
             self.listview.Items.Add(self.listItem)
             self.listItem.SubItems.Add(num[count])
 
+ 
         self.listview.EndUpdate()
 
         # setup label

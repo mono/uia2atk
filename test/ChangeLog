@@ -1,3 +1,10 @@
+2008-11-04  Calen Chen <cachen@novell.com>
+
+	* samples/listview_smallimage.py: update ListView with SmallImageList 
+	mode to show pictures
+	* samples/listview_largeimage.py: add ListView example with 
+	LargeImageList mode
+
 2008-11-04 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* tools/dashboard/qamon.py: add [-d | --dashboard] option, where the
