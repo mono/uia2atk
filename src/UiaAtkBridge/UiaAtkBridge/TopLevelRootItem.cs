@@ -58,6 +58,7 @@ namespace UiaAtkBridge
 		
 		internal override void AddOneChild (Adapter child)
 		{
+			//FIXME: figure out if we need the Embeds relationship in TopLevelRootItem (if yes, we should not call base)
 			base.AddOneChild (child);
 		}
 

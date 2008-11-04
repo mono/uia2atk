@@ -522,9 +522,8 @@ namespace UiaAtkBridge
 		private void HandleNewWindowControlType (IRawElementProviderSimple provider)
 		{
 			Window newWindow = new Window (provider);
-			providerAdapterMapping [provider] = newWindow;
-			
-			TopLevelRootItem.Instance.AddOneChild (newWindow);
+
+			IncludeNewAdapter (provider, newWindow, TopLevelRootItem.Instance);
 			
 			IntPtr providerHandle = (IntPtr) provider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
 			pointerProviderMapping [providerHandle] = provider;
@@ -542,11 +541,8 @@ namespace UiaAtkBridge
 				return;
 
 			Button atkButton = new Button (provider);
-			providerAdapterMapping [provider] = atkButton;
 			
-			parentObject.AddOneChild (atkButton);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkButton);
+			IncludeNewAdapter (provider, atkButton, parentObject);
 		}
 		
 		private void HandleNewLabelControlType (IRawElementProviderSimple provider)
@@ -554,11 +550,8 @@ namespace UiaAtkBridge
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			TextLabel atkLabel = new TextLabel (provider);
-			providerAdapterMapping [provider] = atkLabel;
-			
-			parentObject.AddOneChild (atkLabel);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkLabel);
+
+			IncludeNewAdapter (provider, atkLabel, parentObject);
 		}
 		
 		private void HandleNewCheckBoxControlType (IRawElementProviderSimple provider)
@@ -566,11 +559,8 @@ namespace UiaAtkBridge
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			CheckBoxButton atkCheck = new CheckBoxButton (provider);
-			providerAdapterMapping [provider] = atkCheck;
-			
-			parentObject.AddOneChild (atkCheck);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkCheck);
+
+			IncludeNewAdapter (provider, atkCheck, parentObject);
 		}
 		
 		private void HandleNewListControlType (IRawElementProviderSimple provider)
@@ -580,11 +570,8 @@ namespace UiaAtkBridge
 				return; //ComboBox will handle its children additions on its own
 			
 			List atkList = new List ((IRawElementProviderFragmentRoot)provider);
-			providerAdapterMapping [provider] = atkList;
-			
-			parentObject.AddOneChild (atkList);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkList);
+
+			IncludeNewAdapter (provider, atkList, parentObject);
 		}
 
 		private void HandleNewListItemControlType (IRawElementProviderSimple provider)
@@ -595,11 +582,7 @@ namespace UiaAtkBridge
 			
 			ListItem atkItem = new ListItem (provider);
 			
-			providerAdapterMapping [provider] = atkItem;
-			
-			parentObject.AddOneChild (atkItem);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkItem);
+			IncludeNewAdapter (provider, atkItem, parentObject);
 		}
 
 		private void HandleNewComboBoxControlType (IRawElementProviderSimple provider)
@@ -607,11 +590,8 @@ namespace UiaAtkBridge
 			ParentAdapter parentObject = GetParentAdapter (provider);
 
 			ComboBox atkCombo = new ComboBox ((IRawElementProviderFragmentRoot)provider);
-			providerAdapterMapping [provider] = atkCombo;
 			
-			parentObject.AddOneChild (atkCombo);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkCombo);
+			IncludeNewAdapter (provider, atkCombo, parentObject);
 		}
 		
 		private void HandleNewStatusBarControlType (IRawElementProviderSimple provider)
@@ -619,55 +599,41 @@ namespace UiaAtkBridge
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			StatusBar atkStatus;
+			//FIXME: probably we shouldn't split this in 2 classes
+			//FIXME: not sure if this interface check is correct
 			if (provider is IGridProvider)
 				atkStatus = new StatusBarWithGrid (provider);
- 			else atkStatus = new StatusBar (provider);
-			providerAdapterMapping [provider] = atkStatus;
-			
-			parentObject.AddOneChild (atkStatus);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkStatus);
+ 			else 
+				atkStatus = new StatusBar (provider);
+
+			IncludeNewAdapter (provider, atkStatus, parentObject);
 		}
 		
 		private void HandleNewProgressBarControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
-			ProgressBar atkProgress;
-			if (provider is IGridProvider)
-				atkProgress = new ProgressBar (provider);
- 			else atkProgress = new ProgressBar (provider);
-			providerAdapterMapping [provider] = atkProgress;
+			ProgressBar atkProgress = new ProgressBar (provider);
 			
-			parentObject.AddOneChild (atkProgress);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkProgress);
+			IncludeNewAdapter (provider, atkProgress, parentObject);
 		}
 		
 		private void HandleNewScrollBarControlType (IRawElementProviderSimple provider)
 		{
-			ParentAdapter parentObject =
-				GetParentAdapter (provider);
+			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			ScrollBar atkScroll = new ScrollBar (provider);
-			providerAdapterMapping [provider] = atkScroll;
-			
-			parentObject.AddOneChild (atkScroll);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkScroll);
+
+			IncludeNewAdapter (provider, atkScroll, parentObject);
 		}
 		
 		private void HandleNewGroupControlType (IRawElementProviderSimple provider)
 		{
-			ParentAdapter parentObject =
-				GetParentAdapter (provider);
+			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			Pane atkPane = new Pane (provider);
-			providerAdapterMapping [provider] = atkPane;
-			
-			parentObject.AddOneChild (atkPane);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkPane);
+
+			IncludeNewAdapter (provider, atkPane, parentObject);
 		}
 		
 		private void HandleNewRadioButtonControlType (IRawElementProviderSimple provider)
@@ -675,11 +641,8 @@ namespace UiaAtkBridge
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			RadioButton atkRadio = new RadioButton (provider);
-			providerAdapterMapping [provider] = atkRadio;
-			
-			parentObject.AddOneChild (atkRadio);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkRadio);
+
+			IncludeNewAdapter (provider, atkRadio, parentObject);
 		}
 		
 		private void HandleNewSpinnerControlType (IRawElementProviderSimple provider)
@@ -691,11 +654,8 @@ namespace UiaAtkBridge
 				atkSpinner = new List ((IRawElementProviderFragmentRoot)provider);
  			else
 				atkSpinner = new Spinner (provider);
-			providerAdapterMapping [provider] = atkSpinner;
-			
-			parentObject.AddOneChild (atkSpinner);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkSpinner);
+
+			IncludeNewAdapter (provider, atkSpinner, parentObject);
 		}
 		
 		private void HandleNewDocumentOrEditControlType (IRawElementProviderSimple provider)
@@ -708,17 +668,14 @@ namespace UiaAtkBridge
 			
 			providerAdapterMapping [provider] = atkEditOrDoc;
 			
-			parentObject.AddOneChild (atkEditOrDoc);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkEditOrDoc);
+			IncludeNewAdapter (provider, atkEditOrDoc, parentObject);
 		}
 		
 		private void HandleNewToolTipControlType (IRawElementProviderSimple provider)
 		{
 			ToolTip atkToolTip = new ToolTip (provider);
-			providerAdapterMapping [provider] = atkToolTip;
 
-			TopLevelRootItem.Instance.AddOneChild (atkToolTip);
+			IncludeNewAdapter (provider, atkToolTip, TopLevelRootItem.Instance);
 		}
 
 		private void HandleNewHyperlinkControlType (IRawElementProviderSimple provider)
@@ -733,11 +690,8 @@ namespace UiaAtkBridge
 				// We don't have the extension needed to
 				// properly support a hyperlink
 				atkHyperlink = new TextLabel (provider);
-			providerAdapterMapping [provider] = atkHyperlink;
-			
-			parentObject.AddOneChild (atkHyperlink);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkHyperlink);
+
+			IncludeNewAdapter (provider, atkHyperlink, parentObject);
 		}
 
 		private void HandleNewImageControlType (IRawElementProviderSimple provider)
@@ -745,11 +699,8 @@ namespace UiaAtkBridge
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			Adapter atkImage = new Image (provider);
-			providerAdapterMapping [provider] = atkImage;
-			
-			parentObject.AddOneChild (atkImage);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkImage);
+
+			IncludeNewAdapter (provider, atkImage, parentObject);
 		}
 
 		private void HandleNewToolBarControlType (IRawElementProviderSimple provider)
@@ -757,11 +708,8 @@ namespace UiaAtkBridge
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			Adapter atkToolBar = new ToolBar (provider);
-			providerAdapterMapping [provider] = atkToolBar;
-			
-			parentObject.AddOneChild (atkToolBar);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              atkToolBar);
+
+			IncludeNewAdapter (provider, atkToolBar, parentObject);
 		}
 
 		private void HandleNewMenuBarControlType (IRawElementProviderSimple provider)
@@ -769,11 +717,8 @@ namespace UiaAtkBridge
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
 			MenuBar newMenuBar = new MenuBar (provider);
-			providerAdapterMapping [provider] = newMenuBar;
-			
-			parentObject.AddOneChild (newMenuBar);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              newMenuBar);
+
+			IncludeNewAdapter (provider, newMenuBar, parentObject);
 		}
 
 		private void HandleNewMenuItemControlType (IRawElementProviderSimple provider)
@@ -783,11 +728,13 @@ namespace UiaAtkBridge
 				return; //doesn't matter, MenuItem will discover its own children during its ctor call
 
 			Adapter newAdapter = new MenuItem (provider);
+			IncludeNewAdapter (provider, newAdapter, parentObject);
+		}
+
+		private void IncludeNewAdapter (IRawElementProviderSimple provider, Adapter newAdapter, ParentAdapter parentAdapter)
+		{
+			parentAdapter.AddOneChild (newAdapter);
 			providerAdapterMapping [provider] = newAdapter;
-			
-			parentObject.AddOneChild (newAdapter);
-			parentObject.AddRelationship (Atk.RelationType.Embeds,
-			                              newAdapter);
 		}
 		
 #endregion

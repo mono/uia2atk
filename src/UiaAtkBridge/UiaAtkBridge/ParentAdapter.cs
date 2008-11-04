@@ -87,6 +87,7 @@ namespace UiaAtkBridge
 			}
 			child.Parent = this;
 			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Add, (uint)(children.Count - 1), child);
+			AddRelationship (Atk.RelationType.Embeds, child);
 		}
 		
 		public void RemoveChild (Adapter childToRemove)

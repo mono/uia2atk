@@ -1,5 +1,14 @@
 2008-11-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ParentAdapter.cs:
+	* AutomationBridge.cs: Small refactoring.
+
+	* StatusBarWithGrid.cs: Remove obsolete file.
+
+	* TopLevelRootItem.cs: Add reminder.
+
+2008-11-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ComboBox.cs: Should actually register the new adapter in the
 	dictionary. We need to handle these operations in Adapter creation in
 	a unique place at some point:
