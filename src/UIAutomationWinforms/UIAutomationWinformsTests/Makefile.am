@@ -79,6 +79,7 @@ FILES =  \
 	StatusStripProviderTest.cs \
 	TabControlProviderTest.cs \
 	TabPageProviderTest.cs \
+	TestHelper.cs \
 	TextBoxProviderTest.cs \
 	TextNormalizerTest.cs \
 	TextRangeProviderTest.cs \
@@ -86,6 +87,7 @@ FILES =  \
 	ToolStripLabelProviderTest.cs \
 	ToolStripProviderTest.cs \
 	ToolStripTextBoxProviderTest.cs \
+	ToolTipProviderTest.cs \
 	WindowProviderTest.cs \
 	WordTokenizerTest.cs 
 

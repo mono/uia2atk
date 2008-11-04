@@ -58,17 +58,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[SetUp]
 		public virtual void SetUp ()
 		{			
-			// Inject a mock automation bridge into the
-			// AutomationInteropProvider, so that we don't try
-			// to load the UiaAtkBridge.
-			bridge = new MockBridge ();
-			Type interopProviderType = typeof (AutomationInteropProvider);
-			FieldInfo bridgeField =
-				interopProviderType.GetField ("bridge", BindingFlags.NonPublic | BindingFlags.Static);
-			bridgeField.SetValue (null, bridge);
-			
-			bridge.ClientsAreListening = true;
-			
+			bridge = TestHelper.SetUpEnvironment ();
+
 			form = new Form ();
 
 			form.Show ();
@@ -78,10 +69,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[TearDown]
 		public virtual void TearDown ()
 		{
-			Type interopProviderType = typeof (AutomationInteropProvider);
-			FieldInfo bridgeField =
-				interopProviderType.GetField ("bridge", BindingFlags.NonPublic | BindingFlags.Static);
-			bridgeField.SetValue (null, null);
+			TestHelper.TearDownEnvironment ();
 			
 			form.Close ();
 			formProvider = null;
@@ -283,12 +271,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		#region Protected Helper Methods
 		
 		protected void TestProperty (IRawElementProviderSimple provider,
-		                           AutomationProperty property,
-		                           object expectedValue)
+		                             AutomationProperty property,
+		                             object expectedValue)
 		{
-			Assert.AreEqual (expectedValue,
-			                 provider.GetPropertyValue (property.Id),
-			                 property.ProgrammaticName);
+			TestHelper.TestAutomationProperty (provider, property, expectedValue);
 		}
 		
 		internal FormProvider FormProvider {
