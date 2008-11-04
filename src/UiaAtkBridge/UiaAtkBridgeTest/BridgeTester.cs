@@ -229,10 +229,10 @@ namespace UiaAtkBridgeTest
 			
 				if (real)
 					accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
-					                                    ProviderFactory.GetProvider (cbDD, true, true));
+					                                    ProviderFactory.GetProvider (cbDDL, true, true));
 				else
 					accessible = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) 
-					                                        ProviderFactory.GetProvider (cbDD, true, true));
+					                                        ProviderFactory.GetProvider (cbDDL, true, true));
 				break;
 				
 			case BasicWidgetType.ParentMenu:
