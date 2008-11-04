@@ -1,3 +1,19 @@
+2008-11-04 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* tools/dashboard/qamon.py: add [-d | --dashboard] option, where the
+	user can specify where to store or find the dashboard.xml file.
+	Instantiate PageBuilder object with dashboard path (specified by the
+	--dashboard option) if it is used.
+	* tools/dashboard/dashboard.py: Add output_dir parameter to the 
+	PageBuilder ctor, which specifies where the dashboard.xml file should
+	be saved.  If output_dir is not explicitely specified, the output goes
+	to the cwd.  qamon.py's --dashboard option--if it is used--is passed
+	to the PageBuilder ctor as the output_dir argument.
+	* harness/local_run.py: Add a wait after the creation of the
+	test_type directories (smoke, regression) that contain the text
+	report logs.  This is a hack that gives CIFS some time to settle
+	(already used when creating other directories in this file).
+
 2008-11-04  Calen Chen <cachen@novell.com>
 
 	* testers/listview_list_test.py: add test for focused problem temporary,

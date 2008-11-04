@@ -24,12 +24,13 @@ class Settings(object):
         Settings.mask = EventsCodes.OP_FLAGS["IN_CREATE"]  # watched events
         Settings.is_quiet = False
         Settings.watch_file = "procedures.xml"
+        Settings.dashboard_path = None
 
     def argument_parser(self):
         opts = []
         args = []
         try:
-          opts, args = getopt.getopt(sys.argv[1:],"qf:",["quiet","file="])
+          opts, args = getopt.getopt(sys.argv[1:],"hqf:d:",["help","quiet","file=","dashboard="])
         except getopt.GetoptError:
           self.help()
           sys.exit(1)
@@ -43,6 +44,8 @@ class Settings(object):
             sys.exit(0)
           if o in ("-f","--file"):
             Settings.watch_file = a
+          if o in ("-d","--dashboard"):
+            Settings.dashboard_path = a
 
         try:
             Settings.monitor_path = args[0]
@@ -56,8 +59,8 @@ class Settings(object):
         output("Common Options:")
         output("  -h | --help        Print help information (this message)")
         output("  -q | --quiet       Don't print anything")
-        output("  -d | --dir=        The directory where monitoring will begin")
         output("  -f | --file=       The file for which we are looking")
+        output("  -d | --dashboard=  The directory in which the dashboard files are stored or\n                     should be stored")
         output("")
         output("Description:")
         output("  qamon will begin by monitoring <directory>.  Any new", False)
@@ -95,15 +98,20 @@ class PTmp(ProcessEvent):
             output(event.pathname)
             # no longer watch the the parent directory
             dir = os.path.dirname(event.pathname)
-            #print "INFO: Removing watch from %s" % dir
+            # print "INFO: Removing watch from %s" % dir
             Settings.wm.rm_watch(Settings.wdd[dir])
-            #print "INFO: Removed"
-            #print "INFO: Buildling dashboard..."
+            # print "INFO: Removed"
+            # print "INFO: Buildling dashboard..."
             # build the dashboard
             # TODO:  Only call the dashboard module's update method when
             # available, instead of rebuilding the table from scratch for
             # each update
-            pb = dashboard.PageBuilder(Settings.monitor_path)
+            pb = None
+            if Settings.dashboard_path is not None:
+                pb = dashboard.PageBuilder(Settings.monitor_path,
+                                           Settings.dashboard_path)
+            else:
+                pb = dashboard.PageBuilder(Settings.monitor_path)
             pb.build_all()
 
 if __name__ == "__main__":

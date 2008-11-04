@@ -173,7 +173,7 @@ class Test(object):
     test_type_dir = os.path.join(Settings.log_path, test_type)
     if not os.path.exists(test_type_dir):
       os.mkdir(os.path.join(test_type_dir))
-
+      time.sleep(5) # XXX: waiting for cifs :( use a better method
 
     # execute the tests
     TIMEOUT = 600 # ten minutes
@@ -250,8 +250,8 @@ class Test(object):
     # write a new file if a text file hasn't beeen created for the test,
     # otherwise modify the existing file
     try:
-      f = open(file_path,'a+')
       is_new = False
+      f = open(file_path,'a+')
       write_file(f, is_new)
     except IOError, err:
       print err

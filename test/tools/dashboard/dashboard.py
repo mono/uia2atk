@@ -78,7 +78,9 @@ class XMLParser(object):
 
 class PageBuilder(object):
 
-    def __init__(self, log_dir):
+    def __init__(self, log_dir, output_dir=None):
+        if output_dir is not None:
+            Settings.output_path = output_dir
         Settings.log_dir = log_dir
         self.xmlp = XMLParser(Settings.log_dir)
         self.controls = ("Button",
