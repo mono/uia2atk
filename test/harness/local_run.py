@@ -139,7 +139,9 @@ class Test(object):
     update_script = \
                   os.path.join(Settings.uiaqa_home, "tools/%s" % UPDATE_SCRIPT)
     output("INFO:  Updating packages:")
-    return os.system("sudo %s -f --directory=%s" % (update_script, newest_dir))
+    r = os.system("sudo %s -f --directory=%s" % (update_script, newest_dir))
+    if r != 0:
+        return 1
 
   def run(self):
     unfound_tests = []
