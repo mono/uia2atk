@@ -82,6 +82,11 @@ dnl package checks, per config
 PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0])
 PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0])
 
+THISDIR=$PWD
+cd ../UiaAtkBridge/
+TOPDIR=$PWD
+cd $THISDIR
+AC_SUBST(TOPDIR)
 
 AC_CONFIG_FILES([
 UIAutomationWinforms/Makefile
