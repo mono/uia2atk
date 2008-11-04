@@ -350,7 +350,24 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderFragmentRoot rootProvider
 				= (IRawElementProviderFragmentRoot) GetProviderFromControl (combobox);
 
+			if (combobox.DropDownStyle == ComboBoxStyle.DropDownList)
+				throw new Exception ("combobox default style should not be dropdownlist");
+
+			bridge.ResetEventLists ();
+			combobox.DropDownStyle = ComboBoxStyle.DropDownList;
+			Assert.IsTrue (bridge.StructureChangedEvents.Count > 0,
+			               "Should generate some event after changing to ComboBoxStyle.DropDownList");
+			Assert.IsNotNull (rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id),
+			                  "DropDownList: Selection Pattern IS supported");
+			Assert.IsNotNull (rootProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id),
+			                  "DropDownList: ExpandCollapse Pattern IS supported");
+			Assert.IsNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
+			               "DropDownList: ValuePattern Pattern IS NOT supported");
+
+			bridge.ResetEventLists ();
 			combobox.DropDownStyle = ComboBoxStyle.Simple;
+			Assert.IsTrue (bridge.StructureChangedEvents.Count > 0,
+			               "Should generate some event after changing to ComboBoxStyle.Simple");
 			Assert.IsNotNull (rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id),
 			                  "Simple: Selection Pattern IS supported");
 			Assert.IsNull (rootProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id),
@@ -358,21 +375,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
 			                  "Simple: ValuePattern Pattern IS supported");
 
+			bridge.ResetEventLists ();
 			combobox.DropDownStyle = ComboBoxStyle.DropDown;
+			Assert.IsTrue (bridge.StructureChangedEvents.Count > 0,
+			               "Should generate some event after changing to ComboBoxStyle.DropDown");
 			Assert.IsNotNull (rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id),
 			                  "DropDown: Selection Pattern IS supported");
 			Assert.IsNotNull (rootProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id),
 			                  "DropDown: ExpandCollapse Pattern IS supported");
 			Assert.IsNotNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
 			                  "DropDown: ValuePattern Pattern IS supported");
-
-			combobox.DropDownStyle = ComboBoxStyle.DropDownList;
-			Assert.IsNotNull (rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id),
-			                  "DropDownList: Selection Pattern IS supported");
-			Assert.IsNotNull (rootProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id),
-			                  "DropDownList: ExpandCollapse Pattern IS supported");
-			Assert.IsNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
-			               "DropDownList: ValuePattern Pattern IS NOT supported");
 		}
 
 		#endregion
