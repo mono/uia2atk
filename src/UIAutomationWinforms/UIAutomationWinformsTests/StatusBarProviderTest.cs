@@ -181,8 +181,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			do {
 				childParent = childProvider.Navigate (NavigateDirection.Parent);
-				Assert.AreSame (rootProvider, childParent, 
-				                 "Each child must have same parent");
+				Assert.AreSame (rootProvider, childParent,
+				                "Each child must have same parent");
 				name = (string) childProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 				Assert.AreEqual (string.Format ("Panel: {0}", index++), 
 				                 name, "Different names");

@@ -76,6 +76,7 @@ FILES =  \
 	RichTextBoxProviderTest.cs \
 	ScrollBarProviderTest.cs \
 	StatusBarProviderTest.cs \
+	StatusStripProviderTest.cs \
 	TabControlProviderTest.cs \
 	TabPageProviderTest.cs \
 	TextBoxProviderTest.cs \
