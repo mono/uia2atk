@@ -577,10 +577,12 @@ namespace UiaAtkBridge
 		private void HandleNewListItemControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
-			if (parentObject == null)
-				return; //it's possible that the parent List hasn't got Atk.Object counterpart
-			
-			ListItem atkItem = new ListItem (provider);
+
+			Adapter atkItem;
+			if (parentObject is MenuItem)
+				atkItem = new MenuItem (provider);
+			else
+				atkItem = new ListItem (provider);
 			
 			IncludeNewAdapter (provider, atkItem, parentObject);
 		}
