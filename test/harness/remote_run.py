@@ -114,10 +114,12 @@ class Kickoff(threading.Thread):
     update_option = lambda: Settings.is_smoke == True and "--update" or ""
     if self.pkg_status == 0:
       self.test_status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 %s/harness/local_run.py %s --log=%s >> %s/%s 2>&1" %\
-                             (machines.USERNAME, self.ip, machines.TEST_DIR,
-                              " ".join([smoke_option, update_option].strip(),
-                              Settings.remote_log_path,
-                              Settings.local_log_path, self.name))
+                          (machines.USERNAME, self.ip,
+                           machines.TEST_DIR,
+                           " ".join([smoke_option(), update_option()]).strip(),
+                           Settings.remote_log_path,
+                           Settings.local_log_path,
+                           self.name))
       if self.test_status != 0:
         Kickoff.test_failed_machines.append(self.name)
 

@@ -1,4 +1,9 @@
-2008-11-3 Brian G. Merrell <bgmerrell@gmail.com>
+2008-11-03 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* harness/remote_run.py: I broke this.  I was referencing the function
+	object instead of calling the function, oops.
+
+2008-11-03 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* tools/update_uia2atk_rpms.sh, 
 	* tools/update_uia2atk_pkgs.sh: Rename from update_uia2atk_rpms.sh to
