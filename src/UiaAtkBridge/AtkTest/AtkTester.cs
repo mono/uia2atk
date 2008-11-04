@@ -437,7 +437,7 @@ namespace UiaAtkBridgeTest
 
 		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items) {
 			Assert.IsNotNull (menuChild, "ComboBox child#0 should not be null");
-			Assert.AreEqual (menuChild.Name, null, "the ComboBox menu should not have a name");
+			Assert.IsNull (menuChild.Name, "the ComboBox menu should not have a name");
 			Assert.AreEqual (menuChild.Role, Atk.Role.Menu, "ComboBox child#0 should be a menu");
 			
 			Assert.AreEqual (items.Length, menuChild.NAccessibleChildren, "ComboBox menu numChildren");

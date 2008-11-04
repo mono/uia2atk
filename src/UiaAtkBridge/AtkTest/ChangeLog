@@ -1,3 +1,7 @@
+2008-11-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs: Use IsNotNull rather than Equals(null...
+
 2008-11-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Generalize test for all combobox's children.
