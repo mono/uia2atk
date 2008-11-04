@@ -5,6 +5,12 @@
 
 2008-11-03 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* harness/local_run.py: I broke this script when running without the
+	update option because I was trying to log the code revision information
+	for updated packages even when packages weren't updated.
+
+2008-11-03 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* harness/remote_run.py: I broke this.  I was referencing the function
 	object instead of calling the function, oops.
 

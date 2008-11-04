@@ -210,7 +210,8 @@ class Test(object):
     def write_file(f, is_new):
       if is_new:
         f.writelines([self.log_dir,'\n'])
-        f.write("%s%s" % ("  ", self.revisions.replace("\n","\n  ")))
+        if Settings.should_update:
+          f.write("%s%s" % ("  ", self.revisions.replace("\n","\n  ")))
         f.write(SEPARATOR)
       else:
         # chronological list of machine names and dates for which the test has
@@ -225,10 +226,11 @@ class Test(object):
         f = open(file_path,'w')
         f.writelines(old_file_tests)
         f.writelines([self.log_dir,'\n'])
-        f.write("%s%s%s" % \
-                             ("  ",
-                              self.revisions.replace("\n","\n  ").strip(),
-                              "\n"))
+        if Settings.should_update:
+          f.write("%s%s%s" % \
+                               ("  ",
+                                self.revisions.replace("\n","\n  ").strip(),
+                                "\n"))
         f.write(SEPARATOR)
 
     # the separator denotes the division between the list of the consecutive
