@@ -3,14 +3,12 @@
 	* ComboBox.cs: Should actually register the new adapter in the
 	dictionary. We need to handle these operations in Adapter creation in
 	a unique place at some point:
-- Inclusion in dictionary.
-- Inclusion
-	in ParentObject.
-- Addition of Embeds Atk relationship.
-But I fail to
-	see yet where is the best place. Let's calm down for now as
-	"premature optimization (refactoring?) is the root of all evil", as
-	we have our beloved unit tests anyway ;)
+	- Inclusion in dictionary.
+	- Inclusion in ParentObject.
+	- Addition of Embeds Atk relationship.
+	But I fail to see yet where is the best place. Let's calm down for now 
+	as "premature optimization (refactoring?) is the root of all evil", and
+	because we have our beloved unit tests anyway ;)
 
 	* MenuItem.cs: Avoid crashing.
 
