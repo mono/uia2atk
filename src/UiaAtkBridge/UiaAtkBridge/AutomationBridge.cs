@@ -41,10 +41,12 @@ namespace UiaAtkBridge
 		private bool applicationStarted = false;
 		private Monitor appMonitor = null;
 		private long initTime = DateTime.Now.Ticks;
-		private AmbiDictionary<IntPtr, IRawElementProviderSimple>
-			pointerProviderMapping;
-		static private AmbiDictionary<IRawElementProviderSimple, Adapter>
-			providerAdapterMapping;
+		private AmbiDictionary<IntPtr, IRawElementProviderSimple> pointerProviderMapping;
+		static private AmbiDictionary<IRawElementProviderSimple, Adapter> providerAdapterMapping;
+
+		static internal AmbiDictionary<IRawElementProviderSimple, Adapter> ProviderAdapterMapping {
+			get { return providerAdapterMapping; }
+		}
 		
 		private int windowProviders;
 		
@@ -307,6 +309,7 @@ namespace UiaAtkBridge
 		
 		public void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e)
 		{
+			Console.WriteLine ("AUTOMATIONBRIDGE: RaiseAutomationPropertyChangedEvent");
 			if (element == null)
 				throw new ArgumentNullException ("element");
 			
@@ -326,6 +329,7 @@ namespace UiaAtkBridge
 		
 		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
+			Console.WriteLine ("RaiseStructureChangedEvent:" + e.StructureChangeType.ToString ());
 			IRawElementProviderSimple simpleProvider = (IRawElementProviderSimple) provider;
 			// TODO: Handle ChildrenBulkAdded
 			if (e.StructureChangeType == StructureChangeType.ChildAdded) {
@@ -374,7 +378,7 @@ namespace UiaAtkBridge
 				return;
 
 			int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-
+			Console.WriteLine ("HandleElementAddition" + controlTypeId);
 			if (controlTypeId == ControlType.Window.Id)
 				HandleNewWindowControlType (simpleProvider);
 			else if (controlTypeId == ControlType.Button.Id)
@@ -503,7 +507,7 @@ namespace UiaAtkBridge
 			IRawElementProviderFragment child = fragment.Navigate(NavigateDirection.FirstChild);
 			while (child != null) {
 				if (providerAdapterMapping.ContainsKey (child))
-					keep.Add (providerAdapterMapping[child]);
+					keep.Add (providerAdapterMapping [child]);
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 			Adapter adapter = providerAdapterMapping [provider];

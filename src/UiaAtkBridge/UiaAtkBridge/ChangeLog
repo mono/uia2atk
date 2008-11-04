@@ -1,5 +1,24 @@
 2008-11-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ComboBox.cs: Should actually register the new adapter in the
+	dictionary. We need to handle these operations in Adapter creation in
+	a unique place at some point:
+- Inclusion in dictionary.
+- Inclusion
+	in ParentObject.
+- Addition of Embeds Atk relationship.
+But I fail to
+	see yet where is the best place. Let's calm down for now as
+	"premature optimization (refactoring?) is the root of all evil", as
+	we have our beloved unit tests anyway ;)
+
+	* MenuItem.cs: Avoid crashing.
+
+	* AutomationBridge.cs: Make the mappings dictionary accessible
+	internally.
+
+2008-11-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* MenuItem.cs: Getting rid of a warning emitted at runtime.
 
 2008-11-03  Andrés G. Aragoneses  <aaragoneses@novell.com>

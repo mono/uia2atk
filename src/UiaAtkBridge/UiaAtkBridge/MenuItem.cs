@@ -88,7 +88,7 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			throw new NotImplementedException ();
+			Console.WriteLine ("WARNING: RaiseAutomationEvent({0},...) not handled yet", eventId.ProgrammaticName);
 		}
 		
 		public int SelectionCount {

@@ -88,8 +88,10 @@ namespace UiaAtkBridge
 			
 			if (selProvider == null)
 				throw new ArgumentException ("ComboBoxProvider should always implement ISelectionProvider");
-			
-			children.Add (new MenuItem (ChildrenHolder)); //yes, even if combobox is empty
+
+			MenuItem menu = new MenuItem (ChildrenHolder);
+			children.Add (menu); //yes, even if combobox is empty
+			AutomationBridge.ProviderAdapterMapping [ChildrenHolder] = menu;
 			
 			if (valProvider != null)
 				children.Add (new TextBoxEntryView (TextBoxHolder));
