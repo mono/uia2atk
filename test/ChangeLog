@@ -1,3 +1,8 @@
+2008-11-04  Calen Chen <cachen@novell.com>
+
+	* testers/listview_list_test.py: add test for focused problem temporary,
+	I will delete it after problem being fixed 
+
 2008-11-03 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/remote_run.py: I broke this.  I was referencing the function
