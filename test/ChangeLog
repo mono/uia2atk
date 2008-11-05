@@ -1,5 +1,12 @@
 2008-11-05 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* tools/dashboard/dashboard.xsl: Add package update status based on
+	whether the most recent packaged installed successfully on the listed
+	machines
+	* tools/dashboard/dashboard.css: Add style machine status table
+
+2008-11-05 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* tools/update_uia2atk_pkgs.sh: redirect stderr to stdout for the wget
 	command.  wget apparently prints pretty much everything to stderr.
 	Change "Error" to "ERROR" in all cases.

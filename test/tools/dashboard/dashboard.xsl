@@ -11,12 +11,28 @@
         <span id="documentName">Strongwind Test Status Dashboard</span><br/>
       </p>
       <p class="updateStatus">
-        <xsl:for-each select="dashboard/updateStatus/machine[status='1'][1]">
-            <span id="updateWarn">PACKAGE UPDATES FAILED ON SOME MACHINES:</span><br/>
-        </xsl:for-each>
-        <xsl:for-each select="dashboard/updateStatus/machine[status='1']">
-            <span id="badUpdateMachine"><xsl:value-of select="name"/></span><br/>
-        </xsl:for-each>
+	<h3>Package Update Status</h3>
+        <table>
+          <tr>
+            <th id="machine">Machine</th>
+            <th id="update">Status</th>
+          </tr>
+          <xsl:for-each select="dashboard/updateStatus/machine">
+            <tr>
+              <xsl:variable name="machineName" select="name"/>
+              <td><a href="../../logs/{$machineName}_package_status"><xsl:value-of select="$machineName"/></a></td>
+              <xsl:variable name="status" select="status"/>
+              <xsl:choose>
+                <xsl:when test="$status = 0">
+                  <td><center><img src="green.png" alt="fail" title="fail" height="22" width="22"/></center></td>
+                </xsl:when>
+                <xsl:otherwise>
+                  <td><center><img src="red.png" alt="fail" title="fail" height="22" width="22"/></center></td>
+                </xsl:otherwise>
+              </xsl:choose>
+            </tr>
+          </xsl:for-each>
+        </table>
       </p>
       <div class="smoke">
         <xsl:comment>Convert the number of seconds it took the smoke test to
