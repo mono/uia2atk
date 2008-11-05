@@ -63,22 +63,21 @@ lvFrame.click(lvFrame.listitem[3])
 sleep(config.SHORT_DELAY)
 statesCheck(lvFrame.listitem[3], "ListItem", add_states=["focused", "selected"])
 
-#statesCheck(lvFrame.listitem[1], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvFrame.listitem[1], "ListItem", add_states=["selected"])
 
 #close MultiSelect, then select listitems to check states, 
 #listitem1 disappear selected state
 lvFrame.checkbox.click()
-#lvFrame.checkbox.mouseClick()
 sleep(config.SHORT_DELAY)
-lvFrame.click(lvFrame.listitem[1])
+lvFrame.click(lvFrame.listitem[2])
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[1], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvFrame.listitem[2], "ListItem", add_states=["focused", "selected"])
 
-lvFrame.click(lvFrame.listitem[3])
+lvFrame.click(lvFrame.listitem[4])
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[3], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvFrame.listitem[4], "ListItem", add_states=["focused", "selected"])
 
-#statesCheck(lvFrame.listitem[1], "ListItem")
+statesCheck(lvFrame.listitem[1], "ListItem")
 
 #mouse click ListItem to rise focused and selected states
 lvFrame.mouseClick(log=False)
@@ -86,10 +85,10 @@ lvFrame.listitem[0].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(lvFrame.listitem[0], "ListItem", add_states=["focused", "selected"])
 
-lvFrame.listitem[4].mouseClick()
+lvFrame.listitem[5].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[4], "ListItem", add_states=["focused", "selected"])
-#listitem0 with default states after click listitem4
+statesCheck(lvFrame.listitem[5], "ListItem", add_states=["focused", "selected"])
+#listitem0 with default states after click listitem5
 statesCheck(lvFrame.listitem[0], "ListItem")
 
 #check list selection implementation
@@ -101,11 +100,12 @@ statesCheck(lvFrame.listitem[2], "ListItem", add_states=["focused", "selected"])
 lvFrame.assertClearSelection(lvFrame.list)
 sleep(config.SHORT_DELAY)
 statesCheck(lvFrame.listitem[2], "ListItem")
-#list rise focused state after clear selection
+#listbox rise focused state after clear selection
 statesCheck(lvFrame.list, "List", add_states=["focused"])
 
 #check listitem's text implementation
 lvFrame.assertText(lvFrame.listitem[0], "Item 0")
+lvFrame.assertText(lvFrame.listitem[5], "Item 5")
 
 #check list's table implementation
 lvFrame.assertTable(lvFrame.list)
