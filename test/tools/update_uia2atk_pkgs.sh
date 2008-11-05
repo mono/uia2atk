@@ -68,7 +68,7 @@ while [ $# -gt 0 ]; do
             break
             ;;
         *)
-            echo "Internal Error: option processing error: $1" 1>&2
+            echo "ERROR: option processing error: $1" 1>&2
             exit 1
             ;;
     esac
@@ -89,19 +89,19 @@ fi
 TD=`mktemp -d`
 cd $TD
 if [ $? != "0" ]; then
-    echo "Error:  failed to create and change to a temporary directory"
+    echo "ERROR:  failed to create and change to a temporary directory" 1>&2
     exit 1
 fi
 URL="http://build1.sled.lab.novell.com/uia/$dir/"
-wget -nv -r --accept=rpm -np -nd -l1 $URL
+echo `wget -r -nv --accept=rpm -np -nd -l1 $URL` 2>&1
 
 if [ $? != "0" ]; then
-    echo "Error:  failed to download the rpms"
+    echo "ERROR:  failed to download the rpms" 1>&2
     exit 1
 fi
 rpm -Uvh $opts *.rpm
 if [ $? != "0" ]; then
-    echo "Error:  failed to update the rpms"
+    echo "ERROR:  failed to update the rpms" 1>&2
     exit 1
 fi
 

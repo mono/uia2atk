@@ -1,5 +1,14 @@
 2008-11-05 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* tools/update_uia2atk_pkgs.sh: redirect stderr to stdout for the wget
+	command.  wget apparently prints pretty much everything to stderr.
+	Change "Error" to "ERROR" in all cases.
+	* harness/local_run.py: Print wget output as it runs and store the
+	output in a variable that is later printed to the package update
+	status file in the case that the package update fails on the machine.
+
+2008-11-05 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* tools/dashboard/qamon.py: Watching two files now instead of one.  We
 	watch for new procedures.xml files so we know when a test has been run
 	but we also watch for a [a-z]+(32|64)v[0-9]+_package_status file 

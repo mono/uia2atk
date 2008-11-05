@@ -140,20 +140,27 @@ class Test(object):
     update_script = \
                   os.path.join(Settings.uiaqa_home, "tools/%s" % UPDATE_SCRIPT)
     output("INFO:  Updating packages:")
-    # XXX: use popen, is getting printed
-    r, o = c.getstatusoutput("/usr/bin/sudo %s -f --directory=%s" % \
-                                                  (update_script, newest_dir))
+    t = s.Popen(["/usr/bin/sudo", update_script, "-f", "--directory=%s" % newest_dir], stdout=s.PIPE, stderr=s.PIPE)
+    o = []
+    while True:
+        o_tmp = t.stderr.readline()
+        if o_tmp != '':
+            o.append(o_tmp) 
+        print o_tmp.rstrip()
+        if o_tmp == '' and t.poll() is not None:
+            break
+    r = t.poll()
     if r != 0:
         # create the package_status file.  delete it first so that it 
         # is picked up as a new file by qamon
-        os.system("rm -f %s/%s_package_status" % \
-                                            (Settings.log_path, gethostname()))
-        os.system("echo 1 > %s/%s_package_status" % \
-                                            (Settings.log_path, gethostname()))
-        os.system("echo --- >> %s/%s_package_status" % \
-                                            (Settings.log_path, gethostname()))
-        os.system("echo %s >> %s/%s_package_status" % \
-                                        (o, Settings.log_path, gethostname()))
+        package_status_path = \
+                    "%s/%s_package_status" % (Settings.log_path, gethostname())
+        os.system("rm -f %s" % package_status_path)
+        os.system("echo 1 > %s" % package_status_path)
+        os.system("echo --- >> %s" % package_status_path)
+        f = open(package_status_path, 'a+')
+        f.write("".join(o))
+        f.close()
         return 1
     else:
         os.system("rm -f %s/%s_package_status" % \
