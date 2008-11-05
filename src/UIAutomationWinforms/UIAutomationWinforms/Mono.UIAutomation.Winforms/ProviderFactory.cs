@@ -114,6 +114,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.ToolStripLabel tsl;
 			SWF.ToolStripItem tsi;
 			SWF.ToolStripTextBox tstb;
+			SWF.ToolStripProgressBar tspb;
 			
 			if (component == null)
 				return null;
@@ -167,6 +168,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ToolStripTextBoxProvider (tstb);
 			else if ((tsi = component as SWF.ToolStripItem) != null)
 				provider = new ToolStripItemProvider (tsi);
+			else if ((tspb = component as SWF.ToolStripProgressBar) != null)
+				provider = new ToolStripProgressBarProvider (tspb);
 			else if ((scb = component as SWF.ScrollBar) != null) {
 				//TODO:
 				//   We need to add here a ScrollableControlProvider and then verify

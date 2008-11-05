@@ -4,6 +4,14 @@
 	constructor is called, UiaAtkBridge is *not* loaded.
 
 2008-11-05  Brad Taylor  <brad@getcoded.net>
+
+	* ToolStripProgressBarProviderTest.cs: Add test for
+	ToolStripProgressBarProvider.
+	
+	* ProgressBarProviderTest.cs: Add CreateProgressBar so that it can be
+	extended in ToolStripProgressBarProviderTest.
+
+2008-11-05  Brad Taylor  <brad@getcoded.net>
 	
 	* ToolTipProviderTest.cs: Test that ITextProvider is not implemented.
 

@@ -327,7 +327,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		protected override Control GetControlInstance ()
 		{
-			return new TextBox ();
+			return CreateTextBox ();
 		}
 		
 #endregion

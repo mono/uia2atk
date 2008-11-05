@@ -40,7 +40,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void BasicPropertiesTest ()
 		{
-			ProgressBar progressBar = new ProgressBar ();
+			ProgressBar progressBar = CreateProgressBar ();
 			IRawElementProviderSimple provider =
 				ProviderFactory.GetProvider (progressBar);
 			
@@ -56,7 +56,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void ProviderPatternTest ()
 		{
-			ProgressBar progressBar = new ProgressBar ();
+			ProgressBar progressBar = CreateProgressBar ();
 			IRawElementProviderSimple provider =
 				ProviderFactory.GetProvider (progressBar);
 
@@ -75,7 +75,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void IRangeValueProviderValueTest ()
 		{
-			ProgressBar progressBar = new ProgressBar ();
+			ProgressBar progressBar = CreateProgressBar ();
 			IRawElementProviderSimple provider =
 				ProviderFactory.GetProvider (progressBar);
 
@@ -91,7 +91,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void IRangeValueProviderIsReadOnlyTest ()
 		{
-			ProgressBar progressBar = new ProgressBar ();
+			ProgressBar progressBar = CreateProgressBar ();
 			IRawElementProviderSimple provider =
 				ProviderFactory.GetProvider (progressBar);
 
@@ -108,7 +108,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void IRangeValueProviderMinimumTest ()
 		{
-			ProgressBar progressBar = new ProgressBar ();
+			ProgressBar progressBar = CreateProgressBar ();
 			IRawElementProviderSimple provider =
 				ProviderFactory.GetProvider (progressBar);
 
@@ -125,7 +125,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void IRangeValueProviderMaximumTest ()
 		{
-			ProgressBar progressBar = new ProgressBar ();
+			ProgressBar progressBar = CreateProgressBar ();
 			IRawElementProviderSimple provider =
 				ProviderFactory.GetProvider (progressBar);
 
@@ -142,7 +142,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void IRangeValueProviderLargeChangeTest ()
 		{
-			ProgressBar progressBar = new ProgressBar ();
+			ProgressBar progressBar = CreateProgressBar ();
 			IRawElementProviderSimple provider =
 				ProviderFactory.GetProvider (progressBar);
 
@@ -159,7 +159,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void IRangeValueProviderSmallChangeTest ()
 		{
-			ProgressBar progressBar = new ProgressBar ();
+			ProgressBar progressBar = CreateProgressBar ();
 			IRawElementProviderSimple provider =
 				ProviderFactory.GetProvider (progressBar);
 			
@@ -176,7 +176,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void IRangeValueProviderSetValueTest ()
 		{
-			ProgressBar progressBar = new ProgressBar ();
+			ProgressBar progressBar = CreateProgressBar ();
 			IRawElementProviderSimple provider =
 				ProviderFactory.GetProvider (progressBar);
 			
@@ -204,9 +204,19 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		#endregion
 
+
 		#region BaseProviderTest Overrides
 
 		protected override Control GetControlInstance ()
+		{
+			return CreateProgressBar ();
+		}
+
+		#endregion
+
+		#region Protected Methods
+
+		protected virtual ProgressBar CreateProgressBar ()
 		{
 			return new ProgressBar ();
 		}

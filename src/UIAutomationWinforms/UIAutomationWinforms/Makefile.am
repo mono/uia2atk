@@ -253,6 +253,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ToolStripDropDownItemProvider.cs \
 	Mono.UIAutomation.Winforms/ToolStripItemProvider.cs \
 	Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs \
+	Mono.UIAutomation.Winforms/ToolStripProgressBar.cs \
 	Mono.UIAutomation.Winforms/ToolStripProvider.cs \
 	Mono.UIAutomation.Winforms/ToolStripTextBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs \
@@ -260,8 +261,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ToolTipProvider.cs \
 	Mono.UIAutomation.Winforms/UpDownBaseProvider.cs \
 	Mono.UIAutomation.Winforms/WebBrowserProvider.cs \
-	Mono.UIAutomation.Winforms/WordToken.cs \
 	Mono.UIAutomation.Winforms/WordTokenCollection.cs \
+	Mono.UIAutomation.Winforms/WordToken.cs \
 	Mono.UIAutomation.Winforms/WordTokenizer.cs 
 
 DATA_FILES = 

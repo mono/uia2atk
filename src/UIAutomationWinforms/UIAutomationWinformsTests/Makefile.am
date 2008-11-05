@@ -87,6 +87,7 @@ FILES =  \
 	ToolStripLabelProviderTest.cs \
 	ToolStripProviderTest.cs \
 	ToolStripTextBoxProviderTest.cs \
+	ToolStripProgressBarProviderTest.cs \
 	ToolTipProviderTest.cs \
 	WindowProviderTest.cs \
 	WordTokenizerTest.cs 
