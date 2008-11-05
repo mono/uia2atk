@@ -44,6 +44,21 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			form = new Form ();
 			form.Show ();
+
+			label = new Label ();
+			label.Size = new System.Drawing.Size (30, 30);
+			form.Controls.Add (label);
+
+			tooltip = new ToolTip ();
+			
+			// Causes the tooltip to stay open after you focus
+			// something else.  Second arg must not be empty, but
+			// value is overwritten by Show().
+			tooltip.SetToolTip (label, "ABCDEFGHIJKLMNOP");
+			tooltip.ShowAlways = true;
+
+			// Causes the tooltip to open even though the cursor isn't over the widget
+			//tooltip.Show ("Hello", label, label.Location, 1000);
 		}
 		
 		[TearDown]
@@ -51,21 +66,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			TestHelper.TearDownEnvironment ();
 
+			tooltip.Hide (label);
 			form.Close ();
-			form_provider = null;
 		}
 		
 		[Test]
 		public void ControlPropertiesTest ()
 		{
-			Label label = new Label ();
-			label.Size = new System.Drawing.Size (30, 30);
-			form.Controls.Add (label);
-
-			ToolTip tooltip = new ToolTip ();
-			tooltip.SetToolTip (label, "This is a tooltip");
-			tooltip.Show (null, label);
-			tooltip.ShowAlways = true;
+			// Causes the tooltip to open even though the cursor isn't over the widget
+			tooltip.Show ("ABCDEFGHIJKLMNOP", label, label.Location, 1000);
 
 			IRawElementProviderSimple provider
 				= ProviderFactory.GetProvider (tooltip);
@@ -73,17 +82,47 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestHelper.TestAutomationProperty (
 				provider, AutomationElementIdentifiers.ControlTypeProperty, ControlType.ToolTip.Id);
 			TestHelper.TestAutomationProperty (
-				provider, AutomationElementIdentifiers.NameProperty, "This is a tooltip");
+				provider, AutomationElementIdentifiers.NameProperty, "ABCDEFGHIJKLMNOP");
 			TestHelper.TestAutomationProperty (
 				provider, AutomationElementIdentifiers.LabeledByProperty, null);
 			TestHelper.TestAutomationProperty (
 				provider, AutomationElementIdentifiers.LocalizedControlTypeProperty, "tool tip");
 		}
 
+#region IWindowProvider tests
+		[Test]
+		public void IWindowProviderTest ()
+		{
+			IRawElementProviderSimple provider
+				= ProviderFactory.GetProvider (tooltip);
+
+			IWindowProvider win_prov = provider.GetPatternProvider (
+				WindowPatternIdentifiers.Pattern.Id) as IWindowProvider;
+
+			// SWF in Vista never implements IWindowProvider
+			Assert.IsNull (win_prov);
+		}
+
+		[Test]
+		public void IWindowProviderBalloonTest ()
+		{
+			// SWF in Vista never implements IWindowProvider, even in Balloon mode
+			tooltip.IsBalloon = true;
+
+			IRawElementProviderSimple provider
+				= ProviderFactory.GetProvider (tooltip);
+
+			IWindowProvider win_prov = provider.GetPatternProvider (
+				WindowPatternIdentifiers.Pattern.Id) as IWindowProvider;
+
+			Assert.IsNull (win_prov);
+		}
+#endregion
+
 #region private fields
-		private MockBridge bridge;
 		private Form form;
-		private FormProvider form_provider;
+		private Label label;
+		private ToolTip tooltip;
 #endregion
 	}
 }
