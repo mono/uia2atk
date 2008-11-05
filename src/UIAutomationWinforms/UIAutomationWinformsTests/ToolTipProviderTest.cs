@@ -119,6 +119,37 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 #endregion
 
+#region ITextProvider tests
+		[Test]
+		public void ITextProviderTest ()
+		{
+			IRawElementProviderSimple provider
+				= ProviderFactory.GetProvider (tooltip);
+
+			ITextProvider text_prov = provider.GetPatternProvider (
+				TextPatternIdentifiers.Pattern.Id) as ITextProvider;
+
+			// SWF in Vista never implements ITextProvider
+			Assert.IsNull (text_prov);
+		}
+
+		[Test]
+		public void ITextProviderBalloonTest ()
+		{
+			// SWF in Vista never implements ITextProvider, even in Balloon mode
+			tooltip.IsBalloon = true;
+
+			IRawElementProviderSimple provider
+				= ProviderFactory.GetProvider (tooltip);
+
+			ITextProvider text_prov = provider.GetPatternProvider (
+				TextPatternIdentifiers.Pattern.Id) as ITextProvider;
+
+			// SWF in Vista never implements ITextProvider
+			Assert.IsNull (text_prov);
+		}
+#endregion
+
 #region private fields
 		private Form form;
 		private Label label;
