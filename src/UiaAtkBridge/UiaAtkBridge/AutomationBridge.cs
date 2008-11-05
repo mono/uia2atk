@@ -96,7 +96,7 @@ namespace UiaAtkBridge
 
 				try {
 					if (avoidLazyLoading) {
-						Console.WriteLine ("WARNING: obsolete non-lazy-loading GetAdapterForProvider method called.");
+						Console.Error.WriteLine ("WARNING: obsolete non-lazy-loading GetAdapterForProvider method called.");
 						
 						List <Atk.Object> alreadyRequestedChildren = new List <Atk.Object> ();
 						List <IRawElementProviderSimple> initialProvs = new List <IRawElementProviderSimple> ();
@@ -308,7 +308,6 @@ namespace UiaAtkBridge
 		
 		public void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e)
 		{
-			Console.WriteLine ("AUTOMATIONBRIDGE: RaiseAutomationPropertyChangedEvent");
 			if (element == null)
 				throw new ArgumentNullException ("element");
 			
@@ -328,7 +327,6 @@ namespace UiaAtkBridge
 		
 		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
-			Console.WriteLine ("RaiseStructureChangedEvent:" + e.StructureChangeType.ToString ());
 			IRawElementProviderSimple simpleProvider = (IRawElementProviderSimple) provider;
 			// TODO: Handle ChildrenBulkAdded
 			if (e.StructureChangeType == StructureChangeType.ChildAdded) {
@@ -377,7 +375,6 @@ namespace UiaAtkBridge
 				return;
 
 			int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			Console.WriteLine ("HandleElementAddition" + controlTypeId);
 			if (controlTypeId == ControlType.Window.Id)
 				HandleNewWindowControlType (simpleProvider);
 			else if (controlTypeId == ControlType.Button.Id)

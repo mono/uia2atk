@@ -58,12 +58,8 @@ namespace UiaAtkBridge
 			  == ControlType.List.Id);
 			
 			IRawElementProviderFragment child = ((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
-			while (child != null) {
-				children.Add (new MenuItem (child));
-				child = child.Navigate (NavigateDirection.NextSibling);
-			}
 
-			Role = (children.Count > 0 || comboBoxStructure.Value) ? Atk.Role.Menu : Atk.Role.MenuItem;
+			Role = (child != null || comboBoxStructure.Value) ? Atk.Role.Menu : Atk.Role.MenuItem;
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()
