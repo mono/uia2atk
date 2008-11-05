@@ -59,6 +59,7 @@ namespace UiaAtkBridge
 			
 			IRawElementProviderFragment child = ((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
 
+			//FIXME: take in account Role changes at runtime
 			Role = (child != null || comboBoxStructure.Value) ? Atk.Role.Menu : Atk.Role.MenuItem;
 		}
 
