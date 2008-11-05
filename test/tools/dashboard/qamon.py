@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+import re
 import dashboard
 import getopt
 import sys
@@ -23,14 +24,13 @@ class Settings(object):
         Settings.wdd = None
         Settings.mask = EventsCodes.OP_FLAGS["IN_CREATE"]  # watched events
         Settings.is_quiet = False
-        Settings.watch_file = "procedures.xml"
         Settings.dashboard_path = None
 
     def argument_parser(self):
         opts = []
         args = []
         try:
-          opts, args = getopt.getopt(sys.argv[1:],"hqf:d:",["help","quiet","file=","dashboard="])
+          opts, args = getopt.getopt(sys.argv[1:],"hqf:d:",["help","quiet","dashboard="])
         except getopt.GetoptError:
           self.help()
           sys.exit(1)
@@ -42,8 +42,6 @@ class Settings(object):
           if o in ("-h","--help"):
             self.help()
             sys.exit(0)
-          if o in ("-f","--file"):
-            Settings.watch_file = a
           if o in ("-d","--dashboard"):
             Settings.dashboard_path = a
 
@@ -55,11 +53,10 @@ class Settings(object):
             abort(1) 
 
     def help(self):
-        output("Usage: qamon.py [-f <filename>] <directory>")
+        output("Usage: qamon.py <directory>")
         output("Common Options:")
         output("  -h | --help        Print help information (this message)")
         output("  -q | --quiet       Don't print anything")
-        output("  -f | --file=       The file for which we are looking")
         output("  -d | --dashboard=  The directory in which the dashboard files are stored or\n                     should be stored")
         output("")
         output("Description:")
@@ -67,19 +64,13 @@ class Settings(object):
         output("subdirectories\n  (i.e., subdirectories created", False)
         output("after qamon runs) will also be monitored.\n  New", False)
         output("subdirectories of these directories will also be", False)
-        output("monitored, and so\n  on.  When <filename> is found", False)
-        output("in any of these directories, the full path\n", False)
-        output("  of <filename> is printed and the parent directory", False)
-        output("<filename> is no longer\n  watched.  By default", False)
-        output("<filename> is \"procedures.xml\"", False)
+        output("monitored, and so\n  on.", False)
 
 class Monitor(object):
 
-    def __init__(self, monitor_path=None, watch_file=None):
+    def __init__(self, monitor_path=None):
         if monitor_path is not None:
             Settings.monitor_path = monitor_path
-        if watch_file is not None:
-            Settings.watch_file = watch_file
 
     def run(self):
         p = PTmp()
@@ -91,9 +82,10 @@ class Monitor(object):
 
 class PTmp(ProcessEvent):
     def process_IN_CREATE(self, event):
- 	if os.path.isdir(event.pathname):
-        	Settings.wdd = Settings.wm.add_watch(event.pathname, Settings.mask)
-        elif os.path.basename(event.pathname) == Settings.watch_file:
+        pkg_status_re = re.compile("[a-z]+(32|64)v[0-9]+_package_status")
+        if os.path.isdir(event.pathname):
+            Settings.wdd = Settings.wm.add_watch(event.pathname, Settings.mask)
+        elif os.path.basename(event.pathname) == "procedures.xml":
             # print "INFO: New procedures.xml!"
             output(event.pathname)
             # no longer watch the the parent directory
@@ -113,6 +105,8 @@ class PTmp(ProcessEvent):
             else:
                 pb = dashboard.PageBuilder(Settings.monitor_path)
             pb.build_all()
+        elif pkg_status_re.match(os.path.basename(event.pathname)):
+            print "INFO: new package_status file:\n  %s" % event.pathname
 
 if __name__ == "__main__":
     s = Settings()

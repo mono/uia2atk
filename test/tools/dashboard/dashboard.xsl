@@ -10,6 +10,14 @@
       <p class="header">
         <span id="documentName">Strongwind Test Status Dashboard</span><br/>
       </p>
+      <p class="updateStatus">
+        <xsl:for-each select="dashboard/updateStatus/machine[status='1'][1]">
+            <span id="updateWarn">PACKAGE UPDATES FAILED ON SOME MACHINES:</span><br/>
+        </xsl:for-each>
+        <xsl:for-each select="dashboard/updateStatus/machine[status='1']">
+            <span id="badUpdateMachine"><xsl:value-of select="name"/></span><br/>
+        </xsl:for-each>
+      </p>
       <div class="smoke">
         <xsl:comment>Convert the number of seconds it took the smoke test to
         run into days, hours, minutes, and seconds</xsl:comment>

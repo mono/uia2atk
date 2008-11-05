@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import re
 import getopt
 import sys
 import commands as c
@@ -133,8 +134,10 @@ class PageBuilder(object):
         self.dashboard = {}
         self.dashboard_smoke = {}
         self.dashboard_regression = {}
+        self.update_statuses = {}
         self.newest_dirs = {}
         self.reports = {}
+        self.set_update_statuses()
         for control in self.controls:
             if control.lower() in self.controls_tested:
                 test_names = [dir for dir in self.test_dirs if dir.startswith("%s_" % control.lower())]
@@ -182,6 +185,18 @@ class PageBuilder(object):
                 self.newest_dirs[machine].append(time_path)
             except KeyError:
                 self.newest_dirs[machine] = [time_path]
+    
+    def set_update_statuses(self):
+        reg = re.compile("[a-z]+(32|64)v[0-9]+_package_status")
+        log_dir_ls = os.listdir(Settings.log_dir)
+        update_status_files = \
+             [file for file in log_dir_ls if reg.match(file)]
+        for file in update_status_files:
+            f = open(os.path.join(Settings.log_dir,file))
+            status = f.read(1)
+            machine = file.replace("_package_status","")
+            self.update_statuses[machine] = status
+            f.close()
     
     def get_newest_subdirs(self, dir):
         '''update dashboard with the newest subdirs of the string dir for
@@ -328,6 +343,14 @@ class PageBuilder(object):
              (str(round((regression_num_passed / regression_num_tests)*100,1)),
               "%")
         ET.SubElement(regression, "elapsedTime").text = str(regression_time)
+
+        # get the status of each machines package update
+        updates = ET.SubElement(root, "updateStatus")
+        for machine_name in self.update_statuses:
+            machine = ET.SubElement(updates, "machine")
+            ET.SubElement(machine, "name").text = str(machine_name)
+            ET.SubElement(machine, "status").text = \
+                                        str(self.update_statuses[machine_name])
 
         # write the dashboard file to disk; try to store in
         # Settings.output_path if it exists, if it doesn't exist or if it

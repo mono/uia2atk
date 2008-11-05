@@ -10,6 +10,7 @@ import sys
 import getopt
 import os
 import time
+import commands as c
 from socket import gethostname
 import signal
 import subprocess as s
@@ -139,9 +140,27 @@ class Test(object):
     update_script = \
                   os.path.join(Settings.uiaqa_home, "tools/%s" % UPDATE_SCRIPT)
     output("INFO:  Updating packages:")
-    r = os.system("sudo %s -f --directory=%s" % (update_script, newest_dir))
+    # XXX: use popen, is getting printed
+    r, o = c.getstatusoutput("/usr/bin/sudo %s -f --directory=%s" % \
+                                                  (update_script, newest_dir))
     if r != 0:
+        # create the package_status file.  delete it first so that it 
+        # is picked up as a new file by qamon
+        os.system("rm -f %s/%s_package_status" % \
+                                            (Settings.log_path, gethostname()))
+        os.system("echo 1 > %s/%s_package_status" % \
+                                            (Settings.log_path, gethostname()))
+        os.system("echo --- >> %s/%s_package_status" % \
+                                            (Settings.log_path, gethostname()))
+        os.system("echo %s >> %s/%s_package_status" % \
+                                        (o, Settings.log_path, gethostname()))
         return 1
+    else:
+        os.system("rm -f %s/%s_package_status" % \
+                                            (Settings.log_path, gethostname()))
+        os.system("echo 0 > %s/%s_package_status" % \
+                                            (Settings.log_path, gethostname()))
+        return 0
 
   def run(self):
     unfound_tests = []

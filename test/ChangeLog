@@ -1,3 +1,21 @@
+2008-11-05 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* tools/dashboard/qamon.py: Watching two files now instead of one.  We
+	watch for new procedures.xml files so we know when a test has been run
+	but we also watch for a [a-z]+(32|64)v[0-9]+_package_status file 
+	(e.g., suse32v0, ubuntu64v1) so we know when a machine has attempted
+	to update its packages.  Remove option to specify the file to watch a
+	specific file because we are watching two specific files now.
+	* tools/dashboard/dashboard.css: Add style to the updateStatus class
+	* tools/dashboard/dashboard.py: Parse the
+	[a-z]+(32|64)v[0-9]+_package_status files and put the relevant values
+	in dashboard.xml
+	* harness/local_run.py: Create a package status file based on the
+	host name of the machine where local_run is running.  The file
+	contains a status, 0|1, and a log in case of a failure (1).
+	* tools/dashboard/dashboard.xsl: Include information from the package
+	status files.  Still needs some work.
+
 2008-11-05  Calen Chen <cachen@novell.com>
 
 	* testers/listview_list_ops.py: delete 'focused' state of the first 
