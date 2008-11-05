@@ -43,9 +43,6 @@ namespace UiaAtkBridge
 		private long initTime = DateTime.Now.Ticks;
 		private AmbiDictionary<IntPtr, IRawElementProviderSimple> pointerProviderMapping;
 		static private AmbiDictionary<IRawElementProviderSimple, Adapter> providerAdapterMapping;
-		internal static AmbiDictionary<IRawElementProviderSimple, Adapter> ProviderAdapterMapping {
-			get { return providerAdapterMapping; }
-		}
 		
 		private int windowProviders;
 		
