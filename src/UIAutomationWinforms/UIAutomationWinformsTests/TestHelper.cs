@@ -39,11 +39,23 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	{
 		public static MockBridge SetUpEnvironment ()
 		{
+			Type interopProviderType = typeof (AutomationInteropProvider);
+
+			// HACK: Clear the string referencing the UiaAtkBridge
+			//       assembly so that when AutomationInteropProvider's
+			//       static constructor attempts to load a bridge,
+			//       it will fail.
+			Type bridgeManagerType =
+				interopProviderType.Assembly.GetType ("System.Windows.Automation.Provider.BridgeManager");
+			FieldInfo assemblyField =
+				bridgeManagerType.GetField ("UiaAtkBridgeAssembly",
+				                            BindingFlags.NonPublic | BindingFlags.Static);
+			assemblyField.SetValue (null, string.Empty);
+			
 			// Inject a mock automation bridge into the
 			// AutomationInteropProvider, so that we don't try
 			// to load the UiaAtkBridge.
 			MockBridge bridge = new MockBridge ();
-			Type interopProviderType = typeof (AutomationInteropProvider);
 			FieldInfo bridgeField =
 				interopProviderType.GetField ("bridge", BindingFlags.NonPublic
 				                                        | BindingFlags.Static);
