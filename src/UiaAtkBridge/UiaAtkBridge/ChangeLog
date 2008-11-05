@@ -1,5 +1,10 @@
 2008-11-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* MenuBar.cs:
+	* AutomationBridge.cs: More refactoring.
+
+2008-11-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AutomationBridge.cs: Drop the early return (as we now put the MenuItem
 	inside ComboBox into the mappings). This fixes the bridge tests for
 	ComboBox DropDown.

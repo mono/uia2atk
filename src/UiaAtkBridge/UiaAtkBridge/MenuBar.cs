@@ -32,13 +32,15 @@ namespace UiaAtkBridge
 {
 	public class MenuBar : ComponentParentAdapter
 	{
+		IRawElementProviderSimple provider;
 		public MenuBar (IRawElementProviderSimple provider)
 		{
 			Role = Atk.Role.MenuBar;
+			this.provider = provider;
 		}
 
 		public override IRawElementProviderSimple Provider {
-			get { return null; }
+			get { return provider; }
 		}
 
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
