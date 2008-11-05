@@ -562,10 +562,11 @@ namespace UiaAtkBridge
 		private void HandleNewListControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
+			Adapter atkList;
 			if (parentObject is UiaAtkBridge.ComboBox)
-				return; //ComboBox will handle its children additions on its own
-			
-			List atkList = new List ((IRawElementProviderFragmentRoot)provider);
+				atkList = new MenuItem (provider);
+			else
+				atkList = new List ((IRawElementProviderFragmentRoot)provider);
 
 			IncludeNewAdapter (atkList, parentObject);
 		}
@@ -659,8 +660,6 @@ namespace UiaAtkBridge
 		private void HandleNewDocumentOrEditControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
-			if (parentObject is UiaAtkBridge.ComboBox)
-				return; //ComboBox will handle its children additions on its own
 			
 			Adapter atkEditOrDoc = new TextBoxEntryView (provider);
 			
