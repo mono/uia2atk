@@ -250,6 +250,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/TextNormalizer.cs \
 	Mono.UIAutomation.Winforms/TextNormalizerPoints.cs \
 	Mono.UIAutomation.Winforms/TextRangeProvider.cs \
+	Mono.UIAutomation.Winforms/ToolStripComboBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ToolStripDropDownItemProvider.cs \
 	Mono.UIAutomation.Winforms/ToolStripItemProvider.cs \
 	Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs \

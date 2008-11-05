@@ -43,7 +43,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void BasicPropertiesTest ()
 		{
-			ComboBox combobox = new ComboBox ();
+			ComboBox combobox = GetComboBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (combobox);
 			
 			//TODO: Test. AutomationElementIdentifiers.LabeledByProperty
@@ -69,7 +69,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void NavigateSingleTest ()
 		{
-			ComboBox combobox = (ComboBox) GetControlInstance ();
+			ComboBox combobox = GetComboBox ();
 			
 			IRawElementProviderFragmentRoot rootProvider;
 			IRawElementProviderFragment parent;
@@ -191,7 +191,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void CollectionTest ()
 		{
-			ComboBox combobox = (ComboBox) GetControlInstance ();
+			ComboBox combobox = GetComboBox ();
 
 			IRawElementProviderFragmentRoot rootProvider
 				= (IRawElementProviderFragmentRoot) GetProviderFromControl (combobox);
@@ -344,7 +344,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void PatternsTest ()
 		{
-			ComboBox combobox = (ComboBox) GetControlInstance ();
+			ComboBox combobox = GetComboBox ();
 			combobox.Items.Add ("dummy 0");
 
 			IRawElementProviderFragmentRoot rootProvider
@@ -388,12 +388,21 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 		#endregion
+
+		#region Protected Methods
+
+		protected virtual ComboBox GetComboBox ()
+		{
+			return new ComboBox ();
+		}
+
+		#endregion
 		
 		#region BaseProviderTest Overrides
 
 		protected override Control GetControlInstance ()
 		{
-			return new ComboBox ();
+			return GetComboBox ();
 		}
 		
 		#endregion

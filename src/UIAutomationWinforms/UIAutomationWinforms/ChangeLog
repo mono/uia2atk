@@ -1,3 +1,10 @@
+2008-11-05  Brad Taylor  <brad@getcoded.net>
+	
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs:
+	* Mono.UIAutomation.Winforms/ToolStripComboBoxProvider.cs: Add support
+	for new control.
+
 2008-11-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms.mdp: Remove gtk# and gdk# dependencies, not
