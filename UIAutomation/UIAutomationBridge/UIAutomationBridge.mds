@@ -1,0 +1,16 @@
+<Combine name="UIAutomationBridge" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="UIAutomationBridge" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="UIAutomationBridge" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode single="True">
+    <Execute type="None" entry="UIAutomationBridge" />
+  </StartMode>
+  <Entries>
+    <Entry filename="UIAutomationBridge.mdp" />
+  </Entries>
+</Combine>

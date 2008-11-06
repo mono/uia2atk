@@ -1,0 +1,36 @@
+<Project name="UIAutomationBridge" fileversion="2.0" DefaultNamespace="Mono.UIAutomation.Bridge" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <Output directory="../lib/net_3_0" assembly="UIAutomationBridge" />
+      <Build debugmode="True" target="Library" />
+      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <Output directory="../lib/net_3_0" assembly="UIAutomationBridge" />
+      <Build debugmode="False" target="Library" />
+      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <Contents>
+    <File name="Assembly/AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Bridge/IAutomationBridge.cs" subtype="Code" buildaction="Compile" />
+    <File name="UIAutomationBridge.dll.sources" subtype="Code" buildaction="Nothing" />
+    <File name="Mono.UIAutomation.Bridge/IHypertext.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Bridge/IEmbeddedImage.cs" subtype="Code" buildaction="Compile" />
+  </Contents>
+  <References>
+    <ProjectReference type="Project" localcopy="True" refto="UIAutomationTypes" />
+  </References>
+  <Deployment.LinuxDeployData generateScript="False" />
+  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile">
+    <BuildFilesVar />
+    <DeployFilesVar />
+    <ResourcesVar />
+    <OthersVar />
+    <GacRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
+    <AsmRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
+    <ProjectRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
+  </MonoDevelop.Autotools.MakefileInfo>
+</Project>

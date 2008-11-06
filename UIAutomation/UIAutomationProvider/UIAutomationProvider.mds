@@ -1,0 +1,20 @@
+<Combine name="UIAutomationProvider" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="UIAutomationProvider" configuration="Debug" />
+      <Entry build="True" name="UIAutomationProviderTests" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="UIAutomationProvider" configuration="Release" />
+      <Entry build="True" name="UIAutomationProviderTests" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="UIAutomationProviderTests" single="True">
+    <Execute type="None" entry="UIAutomationProvider" />
+    <Execute type="None" entry="UIAutomationProviderTests" />
+  </StartMode>
+  <Entries>
+    <Entry filename="UIAutomationProvider.mdp" />
+    <Entry filename="UIAutomationProviderTests.mdp" />
+  </Entries>
+</Combine>

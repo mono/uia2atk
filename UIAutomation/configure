@@ -1,0 +1,49 @@
+#!/bin/sh
+#
+# Very simple configure for Olive
+#
+VERSION=0.2
+
+prefix=NONE
+test -e "$CONFIG_SITE" && . "$CONFIG_SITE"
+test "$prefix" = NONE && prefix=/usr/local
+
+while test x$1 != x; do
+	case $1 in
+		--prefix=*)
+			prefix=`echo $1 | sed 's/--prefix=//'`
+			;;
+		--prefix)
+			echo --prefix needs an argument: --prefix=directory >&2
+			;;
+		*)
+			echo Unknown argument $1 >&2
+	esac
+	shift
+done
+
+# ensure pc files are regenerated with make 
+# since the prefix may have changed
+touch data/*.in
+
+export VERSION
+MONO_VERSION=$(awk 'BEGIN {
+  split (ENVIRON["VERSION"] ".0.0.0", vsplit, ".")
+  if(length(vsplit [1]) > 4) {
+    split (substr(ENVIRON["VERSION"], 0, 4) "." substr(ENVIRON["VERSION"], 5) ".0.0", vsplit, ".")
+  }
+  print vsplit [1] "." vsplit [2] "." vsplit [3] "." vsplit [4]
+}')
+
+echo "prefix=$prefix" > build/config.make
+echo "exec_prefix=\${prefix}" >> build/config.make
+echo "mono_libdir=\${exec_prefix}/lib" >> build/config.make
+echo "MCS_FLAGS=-debug+" >> build/config.make
+echo "RUNTIME=mono" >> build/config.make
+echo "OLIVE_VERSION=$VERSION" >> build/config.make
+echo "MONO_VERSION=$MONO_VERSION" >> build/config.make
+
+echo "Olive $VERSION"
+echo
+echo "    Install Prefix: ${prefix}"
+echo

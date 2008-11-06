@@ -32,7 +32,7 @@ Libraries to bridge UIA to ATK
 %setup -q
 
 %build
-./configure --prefix=%_prefix
+./configure --prefix=%_prefix --disable-tests
 make
 
 %install

@@ -12,8 +12,8 @@
 
 
 Name:           uiautomationwinforms
-Version:	112230
-Release:	0.novell
+Version:        106696
+Release:        0.svn
 License:        MIT/X11
 Group:          System/Libraries
 BuildArch:	noarch
@@ -21,8 +21,8 @@ URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 AutoReqProv:	on
-#Requires:	mono-core >= 1.9 mono-uia uiaatkbridge
 Requires:	mono-core >= 1.9 olive uiaatkbridge
+#Requires:	mono-core >= 1.9 olive uiaatkbridge
 BuildRequires:	mono-devel mono-nunit olive
 Summary:        Mono UIA Provider
 
@@ -46,8 +46,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root)
 %doc 
 %_prefix/lib/uiautomationwinforms/UIAutomationWinforms.dll*
-%ghost %_prefix/lib/uiautomationwinforms/UIAutomationWinformsTests.dll*
+#%ghost %_prefix/lib/uiautomationwinforms/UIAutomationWinformsTests.dll*
 %_prefix/lib/mono/gac/UIAutomationWinforms
+
+
 
 
 

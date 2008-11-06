@@ -1,0 +1,80 @@
+// Permission is hereby granted, free of charge, to any person obtaining 
+// a copy of this software and associated documentation files (the 
+// "Software"), to deal in the Software without restriction, including 
+// without limitation the rights to use, copy, modify, merge, publish, 
+// distribute, sublicense, and/or sell copies of the Software, and to 
+// permit persons to whom the Software is furnished to do so, subject to 
+// the following conditions: 
+//  
+// The above copyright notice and this permission notice shall be 
+// included in all copies or substantial portions of the Software. 
+//  
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE 
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION 
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
+// 
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// 
+// Authors: 
+//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+// 
+
+using System;
+
+namespace System.Windows.Automation
+{
+	public static class RangeValuePatternIdentifiers
+	{
+#region Constructor
+		private const int PatternId = 10003;
+		private const int IsReadOnlyPropertyId = 30048;
+		private const int LargeChangePropertyId = 30051;
+		private const int MaximumPropertyId = 30050;
+		private const int MinimumPropertyId = 30049;
+		private const int SmallChangePropertyId = 30052;
+		private const int ValuePropertyId = 30047;
+		
+		static RangeValuePatternIdentifiers ()
+		{
+			Pattern =
+				new AutomationPattern (PatternId,
+				                       "RangeValuePatternIdentifiers.Pattern");
+			IsReadOnlyProperty =
+				new AutomationProperty (IsReadOnlyPropertyId,
+				                        "RangeValuePatternIdentifiers.IsReadOnlyProperty");
+			LargeChangeProperty =
+				new AutomationProperty (LargeChangePropertyId,
+				                        "RangeValuePatternIdentifiers.LargeChangeProperty");
+			MaximumProperty =
+				new AutomationProperty (MaximumPropertyId,
+				                        "RangeValuePatternIdentifiers.MaximumProperty");
+			MinimumProperty =
+				new AutomationProperty (MinimumPropertyId,
+				                        "RangeValuePatternIdentifiers.MinimumProperty");
+			SmallChangeProperty =
+				new AutomationProperty (SmallChangePropertyId,
+				                        "RangeValuePatternIdentifiers.SmallChangeProperty");
+			ValueProperty =
+				new AutomationProperty (ValuePropertyId,
+				                        "RangeValuePatternIdentifiers.ValueProperty");
+		}
+		
+#endregion
+		
+#region Public Fields
+		
+		public static readonly AutomationPattern Pattern;
+		public static readonly AutomationProperty IsReadOnlyProperty;
+		public static readonly AutomationProperty LargeChangeProperty;
+		public static readonly AutomationProperty MaximumProperty;
+		public static readonly AutomationProperty MinimumProperty;
+		public static readonly AutomationProperty SmallChangeProperty;
+		public static readonly AutomationProperty ValueProperty;
+		
+#endregion
+	}
+}

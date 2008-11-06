@@ -17,20 +17,20 @@
 
 # norootforbuild
 
+%define base_version 2.1
+%define revision 114691
+
 %{!?ext_man: %define ext_man .gz}
 Name:           mono-core
 License:        LGPL v2.1 or later
 Group:          Development/Languages/Mono
 Summary:        A .NET Runtime Environment
 Url:            http://go-mono.org/
-Version:        112245
-Release:        1
+Version:	%{revision}
+Release:	0.novell
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 Source0:        mono-%{version}.tar.bz2
-Patch0:		tooltip-errorprovider.patch
-
-ExclusiveArch: %ix86 x86_64
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+ExclusiveArch:  %ix86 x86_64 ppc hppa armv4l sparc s390 ia64 s390x
 Provides:       mono = %{version}-%{release}
 Provides:       mono-ikvm = %{version}-%{release}
 Obsoletes:      mono
@@ -141,7 +141,7 @@ Authors:
     Paolo Molaro <lupus@ximian.com>
     Dietmar Maurer <dietmar@ximian.com>
 
-%files
+%files -f mcs.lang
 %defattr(-, root, root)
 %doc AUTHORS COPYING.LIB ChangeLog NEWS README
 %_bindir/mono
@@ -152,6 +152,7 @@ Authors:
 %_mandir/man1/mcs.1%ext_man
 %_mandir/man1/certmgr.1%ext_man
 %_mandir/man1/chktrust.1%ext_man
+%_mandir/man1/csharp.1%ext_man
 %_mandir/man1/setreg.1%ext_man
 %_mandir/man1/gacutil.1%ext_man
 %_mandir/man1/sn.1%ext_man
@@ -159,12 +160,12 @@ Authors:
 # wrappers
 %_bindir/certmgr
 %_bindir/chktrust
+%_bindir/csharp
 %_bindir/gacutil
 %_bindir/gacutil2
 %_bindir/gmcs
 %_bindir/mono-test-install
 %_bindir/mcs
-%_bindir/csharp
 %_bindir/mcs1
 %_bindir/smcs
 %_bindir/mozroots
@@ -175,6 +176,7 @@ Authors:
 %_prefix/lib/mono/1.0/chktrust.exe*
 %_prefix/lib/mono/1.0/gacutil.exe*
 %_prefix/lib/mono/2.0/gacutil.exe*
+%_prefix/lib/mono/2.0/csharp.exe*
 %_prefix/lib/mono/2.0/gmcs.exe*
 %_prefix/lib/mono/1.0/mcs.exe*
 %_prefix/lib/mono/1.0/mozroots.exe*
@@ -195,6 +197,11 @@ Authors:
 %_prefix/lib/mono/gac/Mono.GetOptions
 %_prefix/lib/mono/1.0/Mono.GetOptions.dll
 %_prefix/lib/mono/2.0/Mono.GetOptions.dll
+%_prefix/lib/mono/gac/Mono.Management
+# rawang added - begin
+%_prefix/lib/mono/2.0/Mono.Management.dll
+%_prefix/lib/mono/2.1/Mono.CompilerServices.SymbolWriter.dll
+# rawang added - end
 %_prefix/lib/mono/gac/Mono.Security
 %_prefix/lib/mono/1.0/Mono.Security.dll
 %_prefix/lib/mono/2.0/Mono.Security.dll
@@ -266,6 +273,8 @@ Authors:
 %_prefix/lib/mono/2.1/System.Core.dll
 %_prefix/lib/mono/gac/System.Net
 %_prefix/lib/mono/2.1/System.Net.dll
+# localizations?
+#%_datadir/locale/*/LC_MESSAGES/mcs.mo
 # Not sure if autobuild allows this...
 %_libdir/pkgconfig/smcs.pc
 
@@ -631,6 +640,11 @@ Authors:
 %_prefix/lib/mono/gac/System.ServiceModel.Web
 %_prefix/lib/mono/2.0/System.ServiceModel.Web.dll
 %_libdir/pkgconfig/wcf.pc
+# rawang added -begin
+%_prefix/lib/mono/2.1/System.Runtime.Serialization.dll
+%_prefix/lib/mono/2.1/System.ServiceModel.Web.dll
+%_prefix/lib/mono/2.1/System.ServiceModel.dll
+# rawang added -end
 
 %package -n mono-web
 License:        LGPL v2.1 or later
@@ -682,7 +696,6 @@ Authors:
 %_prefix/lib/mono/2.0/System.Web.Services.dll
 %_prefix/lib/mono/gac/System.Web.Extensions
 %_prefix/lib/mono/2.0/System.Web.Extensions.dll
-%_prefix/lib/mono/3.5/System.Web.Extensions.dll
 %_prefix/lib/mono/gac/System.Web.Extensions.Design
 %_prefix/lib/mono/2.0/System.Web.Extensions.Design.dll
 %_prefix/lib/mono/3.5/System.Web.Extensions.Design.dll
@@ -919,6 +932,7 @@ fi
 %_prefix/lib/mono/2.0/al.exe*
 %_prefix/lib/mono/1.0/caspol.exe*
 %_prefix/lib/mono/1.0/cert2spc.exe*
+%_prefix/lib/mono/1.0/mono-cil-strip.exe*
 %_prefix/lib/mono/1.0/dtd2xsd.exe*
 %_prefix/lib/mono/1.0/genxs.exe*
 %_prefix/lib/mono/2.0/httpcfg.exe*
@@ -954,6 +968,7 @@ fi
 %_prefix/lib/mono/2.0/xbuild.rsp
 # man pages
 %_mandir/man1/cert2spc.1%ext_man
+%_mandir/man1/mono-cil-strip.1%ext_man
 %_mandir/man1/dtd2xsd.1%ext_man
 %_mandir/man1/genxs.1%ext_man
 %_mandir/man1/httpcfg.1%ext_man
@@ -1003,6 +1018,7 @@ fi
 %_bindir/mono-api-info
 %_bindir/mono-api-info1
 %_bindir/mono-api-info2
+%_bindir/mono-cil-strip
 %_bindir/mono-find-provides
 %_bindir/mono-find-requires
 %_bindir/mono-shlib-cop
@@ -1095,12 +1111,8 @@ Authors:
 %dir %_prefix/lib/mono/compat-1.0
 %dir %_prefix/lib/mono/compat-2.0
 
-%debug_package
 %prep
 %setup -q -n mono-%{version}
-pushd "mcs"
-%patch0
-popd
 
 %build
 # These are only needed if there are patches to the runtime
@@ -1113,13 +1125,11 @@ export CFLAGS=" $RPM_OPT_FLAGS -DKDE_ASSEMBLIES='\"/opt/kde3/%{_lib}\"' -fno-str
 %configure \
   --with-jit=yes \
   --with-ikvm=yes \
-  --with-sigaltstack=no \
   --with-moonlight=yes
 make
 
 %install
-make DESTDIR="$RPM_BUILD_ROOT" install
-
+make DESTDIR=$RPM_BUILD_ROOT install
 # Remove unused files
 rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.a
 rm $RPM_BUILD_ROOT%_libdir/libMonoPosixHelper.la
@@ -1190,6 +1200,7 @@ rm -f $RPM_BUILD_ROOT%_prefix/lib/mono/1.0/transform.exe
 ln -s . %buildroot%_prefix/usr
 RPM_BUILD_ROOT=%buildroot%_prefix /usr/lib/rpm/brp-compress
 rm %buildroot%_prefix/usr
+%find_lang mcs
 
 %clean
 rm -rf ${RPM_BUILD_ROOT}

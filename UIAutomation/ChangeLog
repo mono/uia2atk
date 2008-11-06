@@ -1,0 +1,151 @@
+2008-10-23  Brad Taylor  <brad@getcoded.net>
+	
+	* Makefile:
+	* UIAutomationClient/: Add a new UIA dll.
+
+2008-05-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Moved IAutomationBridge interface to a new
+	  assembly, UIAutomationBridge.
+
+2008-03-20  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile: remove all unexisting public keys.
+
+2008-03-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : make dist fixage.
+
+2008-03-19  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* atlas.pub, orcas.pub, msfinal3.pub, winfx.pub:
+		Remove duplicate and conflicting (same name in other SVN
+		modules but different public keys). 
+	* winfx3.pub: New 3[.5] public key is now named winfx3.pub
+	* silverlight.pub: Add silverlight 2.0 public key.
+	* System.ServiceModel.Web/Assembly/AssemblyInfo.cs
+	* agmono/Assembly/AssemblyInfo.cs
+	* PresentationCore/Assembly/AssemblyInfo.cs
+	* WindowsBase/Assembly/AssemblyInfo.cs
+	* PresentationFramework/Assembly/AssemblyInfo.cs
+	* System.IdentityModel/Assembly/AssemblyInfo.cs
+	* System.Workflow.Activities/Assembly/AssemblyInfo.cs
+	* System.ServiceModel/Assembly/AssemblyInfo.cs
+	* System.Workflow.Runtime/Assembly/AssemblyInfo.cs
+	* System.Workflow.ComponentModel/Assembly/AssemblyInfo.cs
+	* System.Runtime.Serialization/Assembly/AssemblyInfo.cs
+	* UIAutomationProvider/Assembly/AssemblyInfo.cs
+	* System.IdentityModel.Selectors/Assembly/AssemblyInfo.cs
+	* UIAutomationTypes/Assembly/AssemblyInfo.cs:
+		Fix the AssemblyInfo with new key names.
+
+2008-03-03  Marek Safar  <marek.safar@gmail.com>
+
+	* Makefile: Moved System.Data.Linq to mcs.
+
+2008-02-08  Calvin Gaisford <calvinrg@gmail.com>
+
+	* Makefile: Added UIAutomationTypes, UIAutomationProvider to build
+
+2008-02-08  Calvin Gaisford <calvinrg@gmail.com>
+
+	* UIAutomationTypes: Added new directory/code for Automation assmebly
+	* UIAutomationProvider: Added new directory/code for Automation assmebly
+
+2007-11-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : System.Xml.Linq is moved to mcs/class.
+
+2007-09-05  Wade Berrier  <wberrier@novell.com>
+
+	* Makefile: Add orcas.pub to DIST
+	Create 2.1 and 3.5 lib dirs during make dist
+
+2007-09-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : let's just drop System.Web.Extensions from the build.
+	  It will become outdated and will become much easier to import
+	  Mainsoft works (if we really need separate one).
+
+2007-09-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* orcas.pub : new file, got from sn -e System.ServiceModel.Web.dll.
+
+2007-08-24  Marek Safar  <marek.safar@gmail.com>
+
+	* Makefile: Add System.ServiceModel.Web, System.Web.Extensions.
+	
+2007-08-24  Marek Safar  <marek.safar@gmail.com>
+
+	* Makefile: Add 3.5 profile.
+	
+2007-08-23  Marek Safar  <marek.safar@gmail.com>
+
+	* ecma.pub: Copied from mcs.
+
+2007-08-07  Jb Evain  <jbevain@novell.com>
+
+	* Makefile, 2.1 profile: System.Silverlight depends on agmono.
+
+2007-07-23  Miguel de Icaza  <miguel@novell.com>
+
+	* Add System.Windows.Interop/PluginHost.cs to expose the plugin
+	handle to other assemblies (System.Silverlight).
+
+2007-06-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : we can add agclr here. It's mostly stable.
+
+2007-06-04  Olivier Dufour  <olivier.duff@gmail.com>
+
+	* remove Microsoft.Scripting (see mailing list for explaination)
+	
+2007-05-31  Olivier Dufour  <olivier.duff@gmail.com>
+
+	* rename Mono.JScript.Compiler => Microsoft.JScript.Compiler
+	* rename Mono.JScript.Runtime => Microsoft.JScript.Runtime
+	* rename Mono.Scripting => Microsoft.Scripting
+	
+2007-05-30  Joel Reed  <joelwreed@comcast.com>
+
+	* add initial code for System.ServiceModel.Web.dll, with
+	some initial Atom and Rss syndication feed writing code and tests
+
+2007-05-28  Olivier Dufour  <olivier.duff@gmail.com>
+
+	* initial commit for javascript runtime and scripting lib
+	
+2007-05-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : remove Mono.JScript.Compiler which does not build yet.
+
+	  (olivier made change w/o changelog here)
+
+2007-02-27  Wade Berrier  <wberrier@novell.com>
+
+	* Makefile: Add signing keys to DISTFILES,
+	make sure lib output dir is created for 'make dist'
+
+2007-02-26  Wade Berrier  <wberrier@novell.com>
+
+	* Makefile: remove non-existant files from DISTFILES
+	and add some DISTFILES
+
+2007-02-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : System.Xml.XLinq -> System.Xml.Linq
+
+2007-01-19  Marek Safar  <marek.safar@gmail.com>
+
+	* System.Core: Renamed from System.Query.
+
+2006-10-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	(started to log)
+	* Makefile : added System.Runtime.Serialization,
+	  System.IdentityModel, System.IdentityModel.Selectors and
+	  System.ServiceModel.
+	* winfx.pub : new file for signing above assemblies.
+	* System.Runtime.Serialization, System.IdentityModel,
+	  System.IdentityModel.Selectors, System.ServiceModel :
+	  new assemblies for indigo.

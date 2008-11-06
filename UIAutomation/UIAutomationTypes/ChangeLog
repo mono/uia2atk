@@ -1,0 +1,473 @@
+2008-10-27  Mario Carrion  <mcarrion@novell.com>
+
+	* UIAutomationTypesTests.mdp:
+	* UIAutomationTypes_test.dll.sources: Test file added:
+	TableItemPatternIdentifiersTest.
+
+	* System.Windows.Automation/AutomationPattern.cs:
+	* System.Windows.Automation/AutomationProperty.cs:
+	* System.Windows.Automation/TableItemPatternIdentifiers.cs:
+	TableItemPattern support.
+
+2008-10-24  Brad Taylor  <brad@getcoded.net>
+	
+	* System.Windows.Automation/TextPatternIdentifiers.cs: Implement Ids
+	for attributes.
+
+2008-10-23  Mario Carrion  <mcarrion@novell.com>
+
+	* System.Windows.Automation/AutomationProperty.cs:
+	* System.Windows.Automation/TablePatternIdentifiers.cs: Implementation:
+	ColumnHeadersProperty, RowHeadersProperty and
+	RowOrColumnMajorProperty.
+
+2008-10-13  Mario Carrion <mcarrion@novell.com> 
+
+	* UIAutomationTypesTests.mdp, UIAutomationTypes_test.dll.sources: File
+	  added: DockPatternIdentifiersTest.cs
+	* System.Windows.Automation/AutomationProperty.cs:
+	  DockPatternIdentifiers.DockPositionProperty added.
+	* System.Windows.Automation/DockPatternIdentifiers.cs: Properties and
+	  Pattern implementation.
+	* System.Windows.Automation/AutomationPattern.cs:
+	  DockPatternIdentifiers.Pattern added.
+
+2008-10-07  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation/AutomationProperty.cs: MultipleView Pattern
+	  added.
+	* System.Windows.Automation/MultipleViewPatternIdentifiers.cs:
+	  Properties implemented.
+
+2008-10-06  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/AutomationPropertyChangedEventArgs.cs:
+	  EventId value for AutomationPropertyChangedEventArgs should always
+	  be AutomationElementIdentifiers.AutomationPropertyChangedEvent.
+
+2008-09-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/AutomationElementIdentifiers.cs: Added
+	  internal HasNativeAccessibilityObjectProperty and
+	  NativeAccessibilityObjectProperty.  More separation of internal
+	  identifiers from public spec identifiers, which now live in a
+	  different numeric range (60000) designed not to conflict with MS
+	  IDs.
+
+2008-09-26  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation/AutomationProperty.cs,
+	  System.Windows.Automation/TransformPatternIdentifiers.cs:
+	  TransformPatternIdentifiers Properties implementation.
+
+2008-09-18  Mike Gorse <mgorse@novell.com>
+
+	* Assembly/AssemblyInfo.cs: Make visible to UIAutomationTypes
+	  and UiaAtkBridge (for internal KeyEvent)
+	  UIAutomationTypes.dll.sources: Added KeyEventArgs.cs.
+	  UIAutomationTypes/AutomationElementIdentifiers.cs: Added KeyEvent.
+
+2008-08-26  Stephen Shaw <sshaw@decriptor.com> 
+
+	* System.Windows.Automation/AutomationEvent.cs: Made UIAutomationTypes
+	  API stable.  Add remaining files and completed others.
+
+2008-08-25  Stephen Shaw <sshaw@decriptor.com> 
+
+	* System.Windows.Automation/AsyncContentLoadedEventArgs.cs: Added
+	  AsyncContentLoadedEventArgs to System.Windows.Automation
+
+2008-07-30  Mario Carrion <mcarrion@novell.com> 
+
+	* UIAutomationTypes.dll.sources: Updated to include OrientationType
+	  enumeration.
+	* UIAutomationTypes.mdp: Updated to include OrientationType enumeration
+	  file.
+	* UIAutomationTypesTests.mdp, UIAutomationTypes_test.dll.sources:
+	  Updated to include OrientationType Test file.
+	* System.Windows.Automation/OrientationType.cs: File added.
+
+2008-07-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile: Add to 'accessibility' package.
+
+2008-07-23  Neville Gao <nevillegao@gmail.com>
+
+	* System.Windows.Automation/GridItemPatternIdentifiers.cs: File added.
+	* System.Windows.Automation/AutomationProperty.cs: Added
+	GridItemPatternIdentifiers fields.
+	* System.Windows.Automation/AutomationPattern.cs: Returning
+	GridItemPatternIdentifiers pattern.
+	* UIAutomationTypes.mdp: Added file GridItemPatternIdentifiers.
+	* UIAutomationTypesTests.mdp: Added file
+	GridItemPatternIdentifiersTest.
+	* UIAutomationTypes.dll.sources: Added file
+	GridItemPatternIdentifiers.cs.
+	* UIAutomationTypes_test.dll.sources: Added file
+	GridItemPatternIdentifiersTest.cs.
+
+2008-07-04  Neville Gao <nevillegao@gmail.com>
+
+	* System.Windows.Automation/GridPatternIdentifiers.cs: Minor changes.
+
+2008-06-23  Mario Carrion <mcarrion@novell.com>
+
+	* UIAutomationTypes.dll.sources: Added file
+	ScrollItemPatternIdentifiers.cs to build process.
+	* UIAutomationTypes.mdp: Added file: ScrollItemPatternIdentifiers.cs.
+	* UIAutomationTypesTests.mdp: Added file: 
+	ScrollItemPatternIdentifiersTest test.
+	* System.Windows.Automation/ScrollPatternIdentifiers.cs: Added NoScroll
+	field.
+	* System.Windows.Automation/AutomationProperty.cs: Added
+	GridPatternIdentifiers fields.
+	* System.Windows.Automation/GridPatternIdentifiers.cs: Fixed values to
+	match with Vista implementation.
+	* System.Windows.Automation/AutomationPattern.cs: Returning 
+	ScrollItemPatternIdentifiers pattern.
+	* System.Windows.Automation/ScrollItemPatternIdentifiers.cs: File added.
+	* UIAutomationTypes_test.dll.sources: File added 
+	ScrollItemPatternIdentifiersTest.cs.
+
+2008-06-13  Mario Carrion <mcarrion@novell.com>
+
+	* System.Windows.Automation/AutomationProperty.cs: Added 
+	ValuePatternIdentifiers properties to LookUp.
+	* System.Windows.Automation/ValuePatternIdentifiers.cs: Added
+	IsReadOnlyProperty and ValueProperty.
+
+2008-06-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/GridPatternIdentifiers.cs: Properties have
+	  type AutomationProperty, not AutomationPattern.
+
+2008-06-12  Neville Gao <nevillegao@gmail.com>
+
+	* System.Windows.Automation/GridPatternIdentifiers.cs: Determined
+	values.
+
+2008-06-11  Mario Carrion <mcarrion@novell.com>
+
+	* System.Windows.Automation/AutomationProperty.cs: Added lookup support
+	for ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty field.
+	* System.Windows.Automation/ExpandCollapsePatternIdentifiers.cs: Added
+	missing property: ExpandCollapseStateProperty.
+
+2008-06-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/AutomationProperty.cs,
+	  System.Windows.Automation/AutomationEvent.cs: Add lookup support
+	  for SelectionPatternIdentifiers.
+	* System.Windows.Automation/SelectionPatternIdentifiers.cs: Fix
+	  property/event IDs.
+
+2008-06-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/SelectionPatternIdentifiers.cs: Implement
+	  missing properties.
+
+2008-06-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/GridPatternIdentifiers.cs: Fixing
+	  whitespace.
+
+2008-06-06  Neville Gao <nevillegao@gmail.com>
+
+	* System.Windows.Automation/GridPatternIdentifiers.cs: Added properties.
+
+2008-06-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/ScrollPatternIdentifiers.cs: Make internal
+	  id fields private.
+	* System.Windows.Automation/AutomationProperty.cs,
+	  System.Windows.Automation/WindowPatternIdentifiers.cs,
+	  System.Windows.Automation/AutomationEvent.cs: Implement
+	  WindowPatternIdentifiers properties and events.
+
+2008-06-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/InvokePatternIdentifiers.cs,
+	  System.Windows.Automation/ScrollPatternIdentifiers.cs,
+	  System.Windows.Automation/ControlType.cs,
+	  System.Windows.Automation/ExpandCollapsePatternIdentifiers.cs,
+	  System.Windows.Automation/SelectionItemPatternIdentifiers.cs,
+	  System.Windows.Automation/WindowPatternIdentifiers.cs,
+	  System.Windows.Automation/TransformPatternIdentifiers.cs,
+	  System.Windows.Automation/TogglePatternIdentifiers.cs,
+	  System.Windows.Automation/TextPatternIdentifiers.cs,
+	  System.Windows.Automation/GridPatternIdentifiers.cs,
+	  System.Windows.Automation/SelectionPatternIdentifiers.cs,
+	  System.Windows.Automation/TablePatternIdentifiers.cs,
+	  System.Windows.Automation/RangeValuePatternIdentifiers.cs,
+	  System.Windows.Automation/AutomationElementIdentifiers.cs,
+	  System.Windows.Automation/ValuePatternIdentifiers.cs,
+	  System.Windows.Automation/MultipleViewPatternIdentifiers.cs: Make
+	  internal constants private.
+	* System.Windows.Automation/AutomationProperty.cs: Use Id property
+	  instead of internal constants which are now private.  Support
+	  WindowVisualStateProperty.
+	* System.Windows.Automation/AutomationPattern.cs,
+	  System.Windows.Automation/AutomationEvent.cs: Use Id property
+	  instead of internal constants which are now private.
+
+2008-06-02  Mario Carrion <mcarrion@novell.com>
+
+	* System.Windows.Automation/ScrollPatternIdentifiers.cs: Added missing
+	properties to pass tests.
+	* System.Windows.Automation/AutomationProperty.cs: Update LookupById to
+	return ScrollPatternIdentifiers propierties.
+
+2008-06-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	
+
+2008-05-29  Mario Carrion <mcarrion@novell.com>
+
+	* System.Windows.Automation.Text/FlowDirections.cs: Enumeration added.
+	* System.Windows.Automation.Text/HorizontalTextAlignment.cs: Enumeration
+	added.
+	* System.Windows.Automation.Text/AnimationStyle.cs: Enumeration added.
+	* System.Windows.Automation.Text/OutlineStyles.cs: Enumeration added.
+	* System.Windows.Automation.Text/CapStyle.cs: Enumeration added.
+	* System.Windows.Automation.Text/TextDecorationLineStyle.cs: Enumeration
+	added.
+	* System.Windows.Automation.Text/BulletStyle.cs: Enumeration added.
+	* UIAutomationTypes.dll.sources: Updated to build added files.
+	* UIAutomationTypes.mdp: Updated to build added files.
+	* UIAutomationTypesTests.mdp: Updated to build test files.
+	* UIAutomationTypes_test.dll.sources: Updated to build test files.
+
+2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/AutomationTextAttribute.cs: Add
+	  AutomationTextAttribute class.
+
+2008-05-12  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/TextPatternIdentifiers.cs: Update event
+	  IDs.
+
+2008-05-12  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/TextPatternIdentifiers.cs,
+	  System.Windows.Automation/AutomationEvent.cs: Add TextChangedEvent
+	  and TextSelectionChangedEvent.
+
+2008-05-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/AutomationPropertyChangedEventArgs.cs:
+	  Implement constructor, using automatic properties.
+
+2008-04-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/AutomationProperty.cs,
+	  System.Windows.Automation/RangeValuePatternIdentifiers.cs: Fully
+	  implement AutomationProperty fields for
+	  RangeValuePatternIdentifiers.
+
+2008-04-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/RangeValuePatternIdentifiers.cs: Add
+	  missing fields (unimplemented).
+
+2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/InvokePatternIdentifiers.cs,
+	  System.Windows.Automation/AutomationProperty.cs,
+	  System.Windows.Automation/SelectionItemPatternIdentifiers.cs,
+	  System.Windows.Automation/TogglePatternIdentifiers.cs,
+	  System.Windows.Automation/AutomationEvent.cs: Finish implementing
+	  fields for InvokePatternIdentifiers, TogglePatternIdentifiers, and
+	  SelectionItemPatternIdentifiers.
+
+2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/SelectionItemPatternIdentifiers.cs:
+	  Skeleton implementation of remaining SelectionItem fields.
+
+2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/TogglePatternIdentifiers.cs,
+	  System.Windows.Automation/AutomationProperty.cs: Add support for
+	  ToggleStateProperty.
+
+2008-04-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/AutomationProperty.cs: Implemented
+	  AutomationElementIdentifier fields.  Constructor is internal, not
+	  protected.
+	* System.Windows.Automation/AutomationElementIdentifiers.cs:
+	  Implemented AutomationElementIdentifier fields.
+	* System.Windows.Automation/AutomationEvent.cs: Implemented
+	  AutomationElementIdentifier fields.  Constructor is internal, not
+	  protected.  Moved InvokedEvent* stuff where it belongs.
+	* System.Windows.Automation/ControlType.cs: Constructor is internal,
+	  not protected.
+	* System.Windows.Automation/AutomationIdentifier.cs: Constructor and
+	  fields are internal, not protected.
+	* System.Windows.Automation/AutomationPattern.cs: Constructor is
+	  internal, not protected.  Moved AutomationPattern instantiation to
+	  *PatternIdentifiers classes.
+	* System.Windows.Automation/ExpandCollapsePatternIdentifiers.cs,
+	  System.Windows.Automation/GridPatternIdentifiers.cs,
+	  System.Windows.Automation/InvokePatternIdentifiers.cs,
+	  System.Windows.Automation/MultipleViewPatternIdentifiers.cs,
+	  System.Windows.Automation/RangeValuePatternIdentifiers.cs,
+	  System.Windows.Automation/ScrollPatternIdentifiers.cs,
+	  System.Windows.Automation/SelectionItemPatternIdentifiers.cs,
+	  System.Windows.Automation/SelectionPatternIdentifiers.cs,
+	  System.Windows.Automation/TablePatternIdentifiers.cs,
+	  System.Windows.Automation/TextPatternIdentifiers.cs,
+	  System.Windows.Automation/TogglePatternIdentifiers.cs,
+	  System.Windows.Automation/TransformPatternIdentifiers.cs,
+	  System.Windows.Automation/ValuePatternIdentifiers.cs,
+	  System.Windows.Automation/WindowPatternIdentifiers.cs: Moved
+	  AutomationPattern instantiation to *PatternIdentifiers classes.
+
+2008-04-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/ControlType.cs: Handle Document field in
+	  LookupById.
+
+2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/ControlType.cs: Finish implementation of
+	  ControlType.
+
+2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationTypesTests.mdp, UIAutomationTypes_test.dll.sources: Add
+	  *PatternIdentifiersTest classes to MD project and dll.sources.
+	* System.Windows.Automation/InvokePatternIdentifiers.cs,
+	  System.Windows.Automation/ScrollPatternIdentifiers.cs,
+	  System.Windows.Automation/ExpandCollapsePatternIdentifiers.cs,
+	  System.Windows.Automation/SelectionItemPatternIdentifiers.cs,
+	  System.Windows.Automation/WindowPatternIdentifiers.cs,
+	  System.Windows.Automation/TransformPatternIdentifiers.cs,
+	  System.Windows.Automation/TogglePatternIdentifiers.cs,
+	  System.Windows.Automation/TextPatternIdentifiers.cs,
+	  System.Windows.Automation/SelectionPatternIdentifiers.cs,
+	  System.Windows.Automation/GridPatternIdentifiers.cs,
+	  System.Windows.Automation/TablePatternIdentifiers.cs,
+	  System.Windows.Automation/RangeValuePatternIdentifiers.cs,
+	  System.Windows.Automation/ValuePatternIdentifiers.cs,
+	  System.Windows.Automation/MultipleViewPatternIdentifiers.cs:
+	  Initialize Pattern field.
+	* System.Windows.Automation/ControlType.cs: Implement several
+	  ControlType fields based on unit test of MS implementation
+	  (in-progress).
+	* System.Windows.Automation/AutomationPattern.cs: Implement known
+	  AutomationPattern values based on testing the MS implementation.
+	* System.Windows.Automation/AutomationEvent.cs: Implement the
+	  InvokedEvent.
+
+2008-04-11  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/AutomationIdentifier.cs: Implement
+	  CompareTo, Equals, and GetHashCode.  Not tested yet.
+
+2008-04-11  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationTypes.dll.sources, UIAutomationTypes.mdp,
+	  System.Windows.Automation/ScrollPatternIdentifiers.cs,
+	  System.Windows.Automation/ExpandCollapsePatternIdentifiers.cs,
+	  System.Windows.Automation/SelectionItemPatternIdentifiers.cs,
+	  System.Windows.Automation/TransformPatternIdentifiers.cs,
+	  System.Windows.Automation/TogglePatternIdentifiers.cs,
+	  System.Windows.Automation/TextPatternIdentifiers.cs,
+	  System.Windows.Automation/SelectionPatternIdentifiers.cs,
+	  System.Windows.Automation/GridPatternIdentifiers.cs,
+	  System.Windows.Automation/TablePatternIdentifiers.cs,
+	  System.Windows.Automation/RangeValuePatternIdentifiers.cs,
+	  System.Windows.Automation/ValuePatternIdentifiers.cs,
+	  System.Windows.Automation/MultipleViewPatternIdentifiers.cs: Added
+	  some missing *PatternIdentifiers classes.  They do not contain all
+	  members at this point.
+	* UIAutomationTypesTests.mdp, UIAutomationTypes_test.dll.sources:
+	  Include ControlTypeTest, which currently fails.
+
+2008-04-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/InvokePatternIdentifiers.cs: Commenting out
+	  bogus constructor usage that was breaking the build.
+
+2008-04-06  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/StructureChangedEventArgs.cs: Implemented
+	  class.
+
+2008-04-06  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/AutomationElementIdentifiers.cs,
+	  System.Windows.Automation/AutomationEvent.cs,
+	  System.Windows.Automation/AutomationIdentifier.cs,
+	  System.Windows.Automation/AutomationPattern.cs,
+	  System.Windows.Automation/AutomationProperty.cs,
+	  System.Windows.Automation/ControlType.cs: Add protected constructor
+	  to AutomationIdentifier.  Using internal constants to ensure proper
+	  construction of derivied types.  Values need to be determined via
+	  unit test of the MS implementation, and are currently made up.
+	* System.Windows.Automation/AutomationEventArgs.cs,
+	  System.Windows.Automation/StructureChangedEventArgs.cs: Implement
+	  eventargs classes.
+
+2008-03-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationTypes.dll.sources: Added WindowPatternIdentifiers.cs to
+	  assembly build.
+
+2008-03-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationTypes.mdp,
+	  System.Windows.Automation/WindowPatternIdentifiers.cs: Added
+	  WindowPatternIdentifiers.  Fields present but not quite
+	  implemented.
+
+2008-03-11  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationTypes.dll.sources, UIAutomationTypes.mdp,
+	  System.Windows.Automation/AutomationPattern.cs,
+	  System.Windows.Automation/InvokePatternIdentifiers.cs,
+	  System.Windows.Automation/ControlType.cs,
+	  System.Windows.Automation/ElementNotEnabledException.cs: Added
+	  classes necessary to compile simple provider example from MSDN. 
+	  Mostly unimplemented, of course.
+
+2008-02-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Test/System.Windows.Automation.Text,
+	  Test/System.Windows.Automation.Text/TextPatternRangeEndpointTest.cs,
+	  Test/System.Windows.Automation.Text/TextUnitTest.cs,
+	  UIAutomationTypes.mdp, UIAutomationTypesTests.mdp,
+	  UIAutomationTypes_test.dll.sources: Added remaining enum type tests.
+
+2008-02-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile, Test, Test/System.Windows.Automation,
+	  UIAutomationTypes_test.dll.sources: Support for automated unit testing
+	  in UIAutomationTypes.
+	* UIAutomationTypes.mdp, UIAutomationTypes.mds, UIAutomationTypesTests.mdp:
+	  Add unit test project to MonoDevelop solution.  Tweaked project settings
+	  to reconcile nunit and other MD integration with Makefile integration.
+
+2008-02-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationTypes.dll.sources,
+	  System.Windows.Automation/AutomationElementIdentifiers.cs: Added
+	  mostly-unimplemented version of the AutomationElementIdentifiers static
+	  class.
+	* UIAutomationTypes.mdp, UIAutomationTypes.mds: Added MonoDevelop
+	  solution/project for UIAutomationTypes.  Also set 'svn:ignore' property
+	  on this directory for MD-generated user files.
+
+2008-02-08  Calvin Gaisford <calvinrg@gmail.com>
+
+	* Assembly/AssemblyInfo.cs : added for AssemblyInfo
+	* Makefile: Added for build
+	* UIAutomationTypes.dll.sources: Added for build
+
+2008-02-08  Calvin Gaisford <calvinrg@gmail.com>
+
+	(started to log)
+	* System.Windows.Automation : added UI Automation code
+	* System.Windows.Automation.Text : added UI Automation code

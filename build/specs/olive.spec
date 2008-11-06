@@ -11,45 +11,24 @@
 #
 
 Name:     	olive
-Version:	112243
-Release:	0.novell
-Group:		Development/Tools
+Version: 	112243
+Release:	1.novell
+Vendor:		Novell, Inc.
+Distribution:	Novell Packages for SuSE Linux 10.0 / i586
 License:	LGPL
-URL:		http://www.go-mono.com
 BuildRoot:	/var/tmp/%{name}-%{version}-root
 Autoreqprov:    on
 BuildArch:      noarch
+URL:		http://www.go-mono.com
 Source0:	%{name}-%{version}.tar.bz2
 Requires:	mono-core
 BuildRequires:	mono-devel mono-extras, mono-wcf
 Summary:	Mono Olive
+Group:		Development/Tools
 
 %description
 Various .NET 3.0 bits.
 	  
-%prep
-%setup -q
-
-%build
-%configure
-make
-
-%install
-make install DESTDIR=${RPM_BUILD_ROOT}
-
-# change .pc files to /usr/share/pkgconfig/
-mkdir -p $RPM_BUILD_ROOT%{_prefix}/share
-mv $RPM_BUILD_ROOT%{_prefix}/lib/pkgconfig $RPM_BUILD_ROOT%{_prefix}/share/
-
-%clean
-rm -rf "$RPM_BUILD_ROOT"
-
-%if 0%{?fedora_version} || 0%{?rhel_version}
-# Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
-%define _use_internal_dependency_generator 0
-%endif
-%define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-provides ; } | sort | uniq'
-%define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %files
 %defattr(-, root, root)
@@ -80,6 +59,27 @@ rm -rf "$RPM_BUILD_ROOT"
 %_prefix/lib/mono/3.0/System.Workflow.ComponentModel.dll*
 %_prefix/lib/mono/gac/PresentationCore
 %_prefix/lib/mono/3.0/PresentationCore*
-%_prefix/share/pkgconfig/*.pc
+%_prefix/lib/pkgconfig/*.pc
+
+
+%prep
+%setup -q
+
+%build
+%configure
+make
+
+%install
+make install DESTDIR=${RPM_BUILD_ROOT}
+
+%clean
+rm -rf "$RPM_BUILD_ROOT"
+
+%if 0%{?fedora_version} || 0%{?rhel_version}
+# Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
+%define _use_internal_dependency_generator 0
+%endif
+%define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-provides ; } | sort | uniq'
+%define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
 
 %changelog

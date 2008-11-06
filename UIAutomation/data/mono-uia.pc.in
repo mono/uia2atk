@@ -1,0 +1,5 @@
+
+Name: UIAutomation Libraries
+Description: UIAutomation implementation for Mono.
+Version: @VERSION@
+Libs: -r:@a11ydir@/UIAutomationTypes.dll -r:@a11ydir@/UIAutomationBridge.dll -r:@a11ydir@/UIAutomationProvider.dll -r:@net20dir@/WindowsBase.dll

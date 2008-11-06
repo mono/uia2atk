@@ -1,0 +1,191 @@
+2008-10-27  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation/TableItemPatternIdentifiersTest.cs: Test added,
+	tests TableItemPatternIdentifiers class.
+	* UIAutomationTypesTests.csproj: File updated.
+
+2008-10-23  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation/TablePatternIdentifiersTest.cs: Test added:
+	ColumnHeadersProperty, RowHeadersProperty and RowOrColumnMajorProperty.
+
+2008-10-13  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation/DockPatternIdentifiersTest.cs: Tests for 
+	DockPatternIdentifiers.
+	* UIAutomationTypesTests.csproj: File updated.
+
+2008-10-07  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation/MultipleViewPatternIdentifiersTest.cs: Tests for 
+	Properties added.
+
+2008-09-26  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation/TransformPatternIdentifiersTest.cs: Tests for 
+	Properties added.
+	* UIAutomationTypesTests.csproj: NUnit version updated.
+
+2008-07-30  Mario Carrion <mcarrion@novell.com> 
+
+	* UIAutomationTypesTests.csproj: File updated added file: 
+	OrientationTypeTest
+	* System.Windows.Automation/OrientationTypeTest.cs: Added file, test for
+	OrientationType.
+
+2008-07-23  Neville Gao <nevillegao@gmail.com>
+
+	* System.Windows.Automation/GridItemPatternIdentifiersTest.cs: File added.
+	* UIAutomationTypesTests.csproj: Added file
+	GridItemPatternIdentifiersTest.cs.
+
+2008-07-04  Neville Gao <nevillegao@gmail.com>
+
+	* System.Windows.Automation/GridPatternIdentifiersTest.cs: Minor
+	Changes.
+
+2008-06-23  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation/GridPatternIdentifiersTest.cs: Didn't build in
+	Vista.
+	* System.Windows.Automation/ScrollItemPatternIdentifiersTest.cs: File added.
+	Tests ScrollItemPatternIdentifies class.
+	* System.Windows.Automation/ScrollPatternIdentifiersTest.cs: File updated,
+	new test added for NoScroll.
+	* UIAutomationTypesTests.csproj: Updated: Added file.
+
+2008-06-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/GridPatternIdentifiersTest.cs: Fix typo
+	  that was causing build errors.  Testing GridPatternIdentifiers, not
+	  GridItemPatternIdentifiers.
+
+2008-06-13  Mario Carrion <mcarrion@novell.com>
+
+	* System.Windows.Automation/ValuePatternIdentifiersTest.cs: Test added to
+	implement missing fields.
+
+2008-06-12  Neville Gao <nevillegao@gmail.com>
+
+	* System.Wimdows.Automation/GridPatternIdentifiersTest.cs: Tested
+	missing fields.
+
+2008-06-11  Mario Carrion <mcarrion@novell.com>
+
+	* System.Windows.Automation/ExpandCollapsePatternIdentifiersTest.cs: Test 
+	added to implement missing field.
+
+2008-06-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* SelectionPatternIdentifiersTest.cs: Finished property and event fields.
+
+2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* WindowPatternIdentifiersTest.cs: Finished property and event fields.
+	* TextPatternIdentifiersTest.cs: Make sure test method names end in "Test".
+
+2008-06-02  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation/ScrollPatternIdentifiersTest.cs: Missing 
+	propierties added.
+
+2008-05-29  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation.Text/AnimationStyleTest.cs: Tests AnimationStyle
+	enumeration.
+	* System.Windows.Automation.Text/BulletStyleTest.cs: Tests BulletStyle
+	enumeration.
+	* System.Windows.Automation.Text/CapStyleTest.cs: Tests CapStyle 
+	enumeration.
+	* System.Windows.Automation.Text/FlowDirectionsTest.cs: Tests FlowDirections
+	enumeration.
+	* System.Windows.Automation.Text/HorizontalTextAlignmentTest.cs: Tests
+	HorizontalTextAlignment enumeration.
+	* System.Windows.Automation.Text/OutlineStylesTest.cs: Tests OutlineStyles
+	enumeration.
+	* System.Windows.Automation.Text/TextDecorationLineStyleTest.cs: Tests
+	TextDecorationLineStyle enumeration.
+
+2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationTypesTests.csproj: Add VS 2008 project.
+	* UIAutomationTypesTests.sln: Add VS 2008 solution.
+	
+2008-05-12  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* TextPatternIdentifiersTest.cs: Finished events.
+	
+2008-04-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* RangeValuePatternIdentifiersTest.cs: Finished fields.
+
+2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* SelectionItemPatternIdentifiersTest.cs: Finished fields.
+	
+2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* InvokePatternIdentifiersTest.cs: InvokedEvent.
+	* TogglePatternIdentifiersTest.cs: ToggleStateProperty.
+
+2008-04-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ControlTypeTest.cs: Remove "Test" from helper method names.
+
+2008-04-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ControlTypeTest.cs: Test LookupById.
+
+2008-04-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* AutomationElementIdentifiersTest.cs: Complete field tests.
+
+2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ControlTypeTest.cs: Check for null fields first.
+
+2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ControlTypeTest.cs: More informative failures.
+
+2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ControlTypeTest.cs: Tweak unit test to give more helpful output. 
+	  Still messy.
+
+2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* *PatternIdentifiersTest.cs: Added message to null check.
+
+2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* *PatternIdentifiersTest.cs: Fixed expected/actual typo.
+
+2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* *PatternIdentifiersTest.cs: Added tests for various
+	  AutomationPatternIdentifiers.
+
+2008-04-11  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ControlTypeTest.cs: Deleted extraneous commented code.
+
+2008-04-11  Sandy Armstrong <sanfordarmstrong@gmail.com>
+
+	* ControlTypeTest.cs: Completed unit tests with a handy dose of code
+	  generation.  Some refactoring might be in order.
+
+2008-02-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* WindowVisualStateTest.cs, RowOrColumnMajorTest.cs,
+	  AutomationElementIdentifiersTest.cs, SupportedTextSelectionTest.cs,
+	  ScrollAmountTest.cs, ToggleStateTest.cs, ExpandCollapseStateTest.cs,
+	  DockPositionTest.cs, StructureChangeTypeTest.cs,
+	  WindowInteractionStateTest.cs: Added remaining enum type tests.
+
+2008-02-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ChangeLog: Support for automated unit testing in UIAutomationTypes.
+	* AutomationElementIdentifiersTest.cs: Mostly incomplete unit test for
+	  AutomationElementIdentifiers class.
+

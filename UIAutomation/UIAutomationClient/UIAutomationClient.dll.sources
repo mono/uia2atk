@@ -1,0 +1,11 @@
+System.Windows.Automation/AutomationElementCollection.cs
+System.Windows.Automation/AutomationElement.cs
+System.Windows.Automation/AutomationElementMode.cs
+System.Windows.Automation/BasePattern.cs
+System.Windows.Automation/CacheRequest.cs
+System.Windows.Automation/Condition.cs
+System.Windows.Automation/TextPattern.cs
+System.Windows.Automation.Text/TextPatternRange.cs
+../../build/common/MonoTODOAttribute.cs
+Assembly/AssemblyInfo.cs
+../../build/common/Consts.cs

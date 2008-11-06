@@ -1,0 +1,62 @@
+<Project name="UIAutomationProvider" fileversion="2.0" language="C#" DefaultNamespace="System.Windows.Automation.Provider" clr-version="Net_2_0" ctype="DotNetProject">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <Output directory="../lib/net_3_0" assembly="UIAutomationProvider" />
+      <Build debugmode="True" target="Library" />
+      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <Output directory="../lib/net_3_0" assembly="UIAutomationProvider" />
+      <Build debugmode="False" target="Library" />
+      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <Contents>
+    <File name="Assembly/AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/AutomationInteropProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IDockProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IExpandCollapseProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IGridItemProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IGridProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IInvokeProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IMultipleViewProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IRangeValueProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IRawElementProviderAdviseEvents.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IRawElementProviderFragment.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IRawElementProviderFragmentRoot.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IRawElementProviderHwndOverride.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IRawElementProviderSimple.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IScrollItemProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IScrollProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/ISelectionItemProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/ISelectionProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/ITableItemProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/ITableProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/ITextProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/ITextRangeProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IToggleProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/ITransformProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IValueProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/IWindowProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/NavigateDirection.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Provider/ProviderOptions.cs" subtype="Code" buildaction="Compile" />
+    <File name="UIAutomationProvider.dll.sources" subtype="Code" buildaction="Nothing" />
+  </Contents>
+  <References>
+    <ProjectReference type="Project" localcopy="True" refto="UIAutomationTypes" />
+    <ProjectReference type="Project" localcopy="True" refto="UIAutomationBridge" />
+  </References>
+  <Deployment.LinuxDeployData generateScript="False" />
+  <GtkDesignInfo />
+  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile">
+    <BuildFilesVar />
+    <DeployFilesVar />
+    <ResourcesVar />
+    <OthersVar />
+    <GacRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
+    <AsmRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
+    <ProjectRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
+  </MonoDevelop.Autotools.MakefileInfo>
+</Project>

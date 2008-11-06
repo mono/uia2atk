@@ -1,0 +1,20 @@
+<Combine name="UIAutomationTypes" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="UIAutomationTypes" configuration="Debug" />
+      <Entry build="True" name="UIAutomationTypesTests" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="UIAutomationTypes" configuration="Release" />
+      <Entry build="True" name="UIAutomationTypesTests" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="UIAutomationTypes" single="True">
+    <Execute type="None" entry="UIAutomationTypes" />
+    <Execute type="None" entry="UIAutomationTypesTests" />
+  </StartMode>
+  <Entries>
+    <Entry filename="UIAutomationTypes.mdp" />
+    <Entry filename="UIAutomationTypesTests.mdp" />
+  </Entries>
+</Combine>

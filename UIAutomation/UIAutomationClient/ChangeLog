@@ -1,0 +1,8 @@
+2008-10-24  Brad Taylor  <brad@getcoded.net>
+	
+	* System.Windows.Automation/TextPattern.cs: Implement attributes.
+
+2008-10-23  Brad Taylor  <brad@getcoded.net>
+	
+	* Initial import.
+

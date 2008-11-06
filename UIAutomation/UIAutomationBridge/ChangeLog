@@ -1,0 +1,39 @@
+2008-10-07  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* UIAutomationBridge.mdp, Mono.UIAutomation.Bridge/IEmbeddedImage.cs,
+	  UIAutomationBridge.dll.sources, Mono.UIAutomation.Bridge/IImage.cs:
+	  Simplified name and API.
+
+2008-10-07  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
+	* Mono.UIAutomation.Bridge/IImage.cs, UIAutomationBridge.mdp,
+	  UIAutomationBridge.dll.sources: Workaround for 4th item in
+	  http://www.mono-project.com/Accessibility:_Specification_Notes#Feature_requests
+	  .
+
+2008-10-01  Mike Gorse <mgorse@novell.com>
+
+	* Mono.UIAutomation.Bridge/IHypertext.cs: Added Enabled method.
+
+2008-09-29  Mario Carrion <mcarrion@novell.com> 
+
+	* UIAutomationBridge.mdp: File included in solution.
+
+2008-09-29  Mike Gorse <mgorse@novell.com>
+
+	* UIAutomationBridge.dll.sources,
+	  Mono.UIAutomation.Bridge/IHypertext.cs: Added
+	  Mono.UIAutomation.Bridge/IHypertext.cs.
+
+2008-07-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile: Add to 'accessibility' package.
+
+2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Assembly, Assembly/AssemblyInfo.cs, Mono.UIAutomation.Bridge,
+	  Mono.UIAutomation.Bridge/IAutomationBridge.cs, ChangeLog,
+	  UIAutomationBridge.dll.sources, UIAutomationBridge.mdp,
+	  UIAutomationBridge.mds, Makefile: Moved IAutomationBridge interface
+	  to a new assembly, UIAutomationBridge.
+

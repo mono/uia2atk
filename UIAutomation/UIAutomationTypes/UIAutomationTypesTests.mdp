@@ -1,0 +1,76 @@
+<Project name="UIAutomationTypesTests" fileversion="2.0" language="C#" DefaultNamespace="MonoTests.System.Windows.Automation" clr-version="Net_2_0" ctype="DotNetProject">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <Output directory="." assemblyKeyFile="." assembly="UIAutomationTypes_test_net_3_0" />
+      <Build debugmode="True" target="Library" />
+      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <Output directory="." assembly="UIAutomationTypes_test_net_3_0" />
+      <Build debugmode="False" target="Library" />
+      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <Contents>
+    <File name="Test/System.Windows.Automation/AutomationElementIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text" subtype="Directory" buildaction="Compile" />
+    <File name="UIAutomationTypes_test.dll.sources" subtype="Code" buildaction="Nothing" />
+    <File name="Test/System.Windows.Automation.Text/TextPatternRangeEndpointTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text/TextUnitTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/DockPositionTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/ExpandCollapseStateTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/RowOrColumnMajorTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/ScrollAmountTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/StructureChangeTypeTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/SupportedTextSelectionTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/ToggleStateTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/WindowInteractionStateTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/WindowVisualStateTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/ControlTypeTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/ExpandCollapsePatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/GridPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/InvokePatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/MultipleViewPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/RangeValuePatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/ScrollPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/SelectionItemPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/SelectionPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/TablePatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/TextPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/TogglePatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/TransformPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/ValuePatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/WindowPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text/AnimationStyleTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text/BulletStyleTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text/CapStyleTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text/FlowDirectionsTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text/HorizontalTextAlignmentTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text/OutlineStylesTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text/TextDecorationLineStyleTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/ScrollItemPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/GridItemPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/OrientationTypeTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/DockPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/TableItemPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+  </Contents>
+  <References>
+    <ProjectReference type="Gac" localcopy="True" refto="nunit.core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+    <ProjectReference type="Gac" localcopy="True" refto="nunit.framework, Version=2.2.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+    <ProjectReference type="Gac" localcopy="True" refto="nunit.util, Version=2.2.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
+    <ProjectReference type="Project" localcopy="True" refto="UIAutomationTypes" />
+  </References>
+  <Deployment.LinuxDeployData generatePcFile="False" />
+  <GtkDesignInfo />
+  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile" BuildTargetName="test" ExecuteTargetName="run-test">
+    <BuildFilesVar />
+    <DeployFilesVar />
+    <ResourcesVar />
+    <OthersVar />
+    <GacRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
+    <AsmRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
+    <ProjectRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
+  </MonoDevelop.Autotools.MakefileInfo>
+</Project>

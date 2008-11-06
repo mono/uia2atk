@@ -1,0 +1,84 @@
+<Project name="UIAutomationTypes" fileversion="2.0" language="C#" DefaultNamespace="System.Windows.Automation" clr-version="Net_2_0" ctype="DotNetProject">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <Output directory="../lib/net_3_0" assemblyKeyFile="." assembly="UIAutomationTypes" />
+      <Build debugmode="True" target="Library" />
+      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <Output directory="bin/Release" assembly="UIAutomationTypes" />
+      <Build debugmode="False" target="Library" />
+      <Execution runwithwarnings="True" consolepause="True" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <Contents>
+    <File name="System.Windows.Automation/AutomationElementIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/AutomationEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/AutomationEventArgs.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/AutomationIdentifier.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/AutomationProperty.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/AutomationPropertyChangedEventArgs.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/DockPosition.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ExpandCollapseState.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/RowOrColumnMajor.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ScrollAmount.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/StructureChangedEventArgs.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/StructureChangeType.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/SupportedTextSelection.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ToggleState.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/WindowInteractionState.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/WindowVisualState.cs" subtype="Code" buildaction="Compile" />
+    <File name="Assembly/AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="UIAutomationTypes.dll.sources" subtype="Code" buildaction="Nothing" />
+    <File name="System.Windows.Automation/ControlType.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/InvokePatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ElementNotEnabledException.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/AutomationPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/WindowPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/SelectionPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ValuePatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/GridPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/TogglePatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ExpandCollapsePatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/SelectionItemPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/MultipleViewPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/TablePatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/RangeValuePatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ScrollPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/TextPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/TransformPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/AutomationTextAttribute.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/TextPatternRangeEndpoint.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/TextUnit.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/AnimationStyle.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/BulletStyle.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/CapStyle.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/FlowDirections.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/HorizontalTextAlignment.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/OutlineStyles.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/TextDecorationLineStyle.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ScrollItemPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/GridItemPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/OrientationType.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/AsyncContentLoadedEventArgs.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/DockPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ElementNotAvailableException.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/NoClickablePointException.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ProxyAssemblyNotLoadedException.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/TableItemPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/WindowClosedEventArgs.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/TreeScope.cs" subtype="Code" buildaction="Compile" />
+  </Contents>
+  <GtkDesignInfo />
+  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile">
+    <BuildFilesVar />
+    <DeployFilesVar />
+    <ResourcesVar />
+    <OthersVar />
+    <GacRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
+    <AsmRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
+    <ProjectRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
+  </MonoDevelop.Autotools.MakefileInfo>
+</Project>

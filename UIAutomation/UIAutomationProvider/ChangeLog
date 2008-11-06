@@ -1,0 +1,115 @@
+2008-11-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
+	Change UiaAtkBridgeAssembly string from const to static.  This
+	facilitates a hack in our unit tests.
+
+2008-10-10  Brad Taylor  <brad@getcoded.net>
+	
+	* System.Windows.Automation.Provider/ITextRangeProvider.cs:
+	  GetBoundingRectangles returns a Rect[], not a double[].
+
+2008-08-26  Stephen Shaw <sshaw@decriptor.com> 
+
+	* UIAutomationProvider.mdp: Project files updated
+
+2008-07-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile: Add to 'accessibility' package.
+
+2008-05-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation.Provider/IRawElementProviderFragment.cs:
+	  Navigate returns IRawElementProviderFragment, not
+	  IRawElementProviderSimple.
+
+2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomation.mds: Add UIAutomationBridge solution.
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs: Move
+	  IAutomationBridge out to UIAutomationBridge assembly.
+	* UIAutomationProvider.mdp, Makefile: Depend on UIAutomationBridge
+	  project.
+
+2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
+	  Implement HostProviderFromHandle by passing it on to the
+	  IAutomationBridge.
+
+2008-04-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
+	  Style fixes.
+
+2008-04-24  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
+	  Handle missing bridge.
+
+2008-04-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs: When
+	  unable to load the UiaAtkBridge assembly, return null for the
+	  bridge.  This is just temporary to accomodate test code.  Bridge
+	  should be determined through an environment variable or something.
+
+2008-04-06  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
+	  Experimenting with idea of forwarding events along to the bridge
+	  via new IAutomationBridge interface.  This interface will be
+	  defined in a separate assembly that only depends on
+	  UIAutomationTypes.  Internal BridgeManager class is used to find
+	  the class in the bridge assembly that impelements this interface.
+
+2008-03-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationProvider.mdp: Add project reference to UIAutomationTypes.
+
+2008-03-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomation.mds: Fixing errors in solution file.
+
+2008-03-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomation.mds: Fixing name of UIAutomation solution.
+
+2008-03-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomation.mds: Added master solution for UIAutomation.
+
+2008-02-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationProvider_test.dll.sources: Added tests for NavigateDirection
+	  and AutomationInteropProvider.
+	* UIAutomationProvider.mdp, UIAutomationProviderTests.mdp: Added
+	  *.dll.sources to MonoDevelop projects for easier editing.  Fixed default
+	  namespace.
+
+2008-02-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Test, Test/System.Windows.Automation.Provider,
+	  UIAutomationProvider_test.dll.sources, Makefile: Support for automated
+	  unit testing in UIAutomationProvider.
+	* UIAutomationProvider.mdp, UIAutomationProvider.mds,
+	  UIAutomationProviderTests.mdp: Add unit test project to MonoDevelop
+	  solution.  Tweaked project settings to reconcile nunit and other MD
+	  integration with Makefile integration.
+
+2008-02-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationProvider.mdp, UIAutomationProvider.mds: Added MonoDevelop
+	  solution/project for UIAutomationProvider.  Also set 'svn:ignore'
+	  property on this directory for MD-generated user files.
+
+2008-02-08  Calvin Gaisford <calvinrg@gmail.com>
+
+	* Assembly/AssemblyInfo.cs : added AssmeblyInfo
+	* Makefile: added for build
+	* UIAutomationProvider.dll.sources: added for build
+
+2008-02-08  Calvin Gaisford <calvinrg@gmail.com>
+
+	(started to log)
+	* System.Windows.Automation.Provider : added UI Automation
