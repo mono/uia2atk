@@ -1,5 +1,10 @@
 2008-11-05 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* tools/dashboard/qamon.py: Build the dashboard when a new package
+	update status is created.
+
+2008-11-05 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* tools/dashboard/dashboard.xsl: Find the logs for each control in
 	../../logs
 	* harness/local_run.py: Exit when using --help.  Add revision numbers

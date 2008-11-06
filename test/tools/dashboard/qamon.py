@@ -98,6 +98,11 @@ class PTmp(ProcessEvent):
             # TODO:  Only call the dashboard module's update method when
             # available, instead of rebuilding the table from scratch for
             # each update
+            self.build_dashboard()
+        elif pkg_status_re.match(os.path.basename(event.pathname)):
+            self.build_dashboard()
+
+    def build_dashboard(self):
             pb = None
             if Settings.dashboard_path is not None:
                 pb = dashboard.PageBuilder(Settings.monitor_path,
@@ -105,8 +110,6 @@ class PTmp(ProcessEvent):
             else:
                 pb = dashboard.PageBuilder(Settings.monitor_path)
             pb.build_all()
-        elif pkg_status_re.match(os.path.basename(event.pathname)):
-            print "INFO: new package_status file:\n  %s" % event.pathname
 
 if __name__ == "__main__":
     s = Settings()
