@@ -1,3 +1,7 @@
+2008-11-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MenuItem.cs: Fix infinite loop, thanks for reporting Mike!
+
 2008-11-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AutomationBridge.cs: Static property not needed anymore since r118050.

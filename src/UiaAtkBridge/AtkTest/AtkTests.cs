@@ -500,10 +500,9 @@ namespace UiaAtkBridgeTest
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 
-//FIXME: this is not working now, I don't know yet, because of some Overflow exception: http://monoport.com/38052
-//			names [0] = simpleTestText;
-//			accessible = GetAccessible (type, names, true);
-//			InterfaceText (type, true, accessible);
+			names [0] = simpleTestText;
+			accessible = GetAccessible (type, names, true);
+			InterfaceText (type, true, accessible);
 			
 			//FIXME:
 			//Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);

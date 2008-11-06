@@ -226,7 +226,7 @@ namespace UiaAtkBridge
 		
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
-			return GetSelection (selectionNum, out startOffset, out endOffset);
+			return textExpert.GetSelection (selectionNum, out startOffset, out endOffset);
 		}
 		
 		public bool AddSelection (int startOffset, int endOffset)
