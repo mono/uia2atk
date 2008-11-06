@@ -39,6 +39,15 @@ class CheckBoxFrame(accessibles.Frame):
     #give 'click' action
     def click(self,button):
         button.click()
+    
+    #checkbox click event may update the label's text
+    def assertLabel(self, checkbox, labeltext):
+        procedurelogger.expectedResult('update Label\'s text to "%s"' % labeltext)
+
+        if checkbox.checked:
+            assert self.findLabel(labeltext)
+        elif not checkbox.checked:
+            assert self.findLabel(labeltext)
 
     # assert the size of an image in the CheckBox
     def assertImageSize(self, button, width=-1, height=-1):

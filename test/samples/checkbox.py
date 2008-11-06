@@ -50,23 +50,27 @@ class CheckBoxApp(Form):
         self.check1.Text = "Bananas"
         self.check1.Location = Point(10, 60)
         self.check1.Width = 90
+        self.check1.Click += self.check_click
 
         self.check2 = CheckBox()
         self.check2.Text = "Chicken"
         self.check2.Location = Point(110, 60)
         self.check2.Width = 90
+        self.check2.Click += self.check_click
 
         self.check3 = CheckBox()
         self.check3.Text = "Stuffed Peppers"
         self.check3.Location = Point(210, 60)
         self.check3.Width = 300
         self.check3.Checked = True
+        self.check3.Click += self.check_click
 
         self.check4 = CheckBox()
         self.check4.Text = "Beef"
         self.check4.Location = Point(10, 90)
         self.check4.Width = 90
         self.check4.Enabled = False
+        self.check4.Click += self.check_click
 
         self.check5 = CheckBox()
         self.check5.Text = "Fried Lizard"
@@ -75,6 +79,7 @@ class CheckBoxApp(Form):
         self.check5.Enabled = True
         self.check5.Image = Image.FromFile("%s/samples/opensuse60x38.gif" % uiaqa_path)
         self.check5.AutoSize = True
+        self.check5.Click += self.check_click
 
         self.check6 = CheckBox()
         self.check6.Text = "Soylent Green"
@@ -83,6 +88,7 @@ class CheckBoxApp(Form):
         self.check6.Enabled = True
         self.check6.BackgroundImage = Image.FromFile("%s/samples/tiny_background.png" % uiaqa_path)
         self.check6.AutoSize = True
+        self.check6.Click += self.check_click
 
 
 
@@ -93,6 +99,12 @@ class CheckBoxApp(Form):
         self.Controls.Add(self.check4)
         self.Controls.Add(self.check5)
         self.Controls.Add(self.check6)
+
+    def check_click(self, sender, event):
+        if sender.Checked:
+            self.checkLabel.Text = "checked"
+        else:
+            self.checkLabel.Text = "unchecked"
 
 form = CheckBoxApp()
 Application.Run(form)

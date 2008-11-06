@@ -152,6 +152,25 @@ cbFrame.assertImageSize(cbFrame.check5, 60, 38)
 #checkbox with background property have image size(-1*-1)
 cbFrame.assertImageSize(cbFrame.check6)
 
+#test click event to update label's text
+#mouse click checkbox in application directly
+cbFrame.check1.mouseClick()
+sleep(config.SHORT_DELAY)
+cbFrame.assertLabel(cbFrame.check1, "checked")
+
+cbFrame.check1.mouseClick()
+sleep(config.SHORT_DELAY)
+cbFrame.assertLabel(cbFrame.check1, "unchecked")
+
+#do click action py pyatspi
+cbFrame.click(cbFrame.check1)
+sleep(config.SHORT_DELAY)
+cbFrame.assertLabel(cbFrame.check1, "checked")
+
+cbFrame.click(cbFrame.check1)
+sleep(config.SHORT_DELAY)
+cbFrame.assertLabel(cbFrame.check1, "unchecked")
+
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
 #close application frame window

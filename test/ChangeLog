@@ -1,3 +1,12 @@
+2008-11-06  Calen Chen <cachen@novell.com>
+
+	* samples/checkbox.py: add an event to change the label's text when 
+	check and uncheck the checkbox
+	* testers/checkbox/checkboxframe.py: add assertLabel to make sure the 
+	click event is taking effect to change the label's text
+	* testers/checkbox_basic_ops.py: mouse click checkbox and do click 
+	action by pyatspi to assert label's text is being changed
+
 2008-11-05 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/local_run.py: Fix bug: only print output from wget when the
