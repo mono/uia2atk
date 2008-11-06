@@ -34,13 +34,12 @@ namespace UiaAtkBridge
 	public class TopLevelRootItem : ParentAdapter
 	{
 		private TopLevelRootItem ()
+			//exception: TopLevelRootItem doesn't have an UIA counterpart
+			: base (null)
 		{
 			this.Name = Monitor.GetProgramName ();
 			this.Role = Atk.Role.Application;
 		}
-		
-		//exception: TopLevelRootItem doesn't have an UIA counterpart
-		public override IRawElementProviderSimple Provider { get { return null; } }
 		
 		private static volatile TopLevelRootItem instance = null;
 		

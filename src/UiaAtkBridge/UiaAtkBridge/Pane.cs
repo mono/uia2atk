@@ -123,7 +123,7 @@ namespace UiaAtkBridge
 #endregion
 
 		
-		public Pane (IRawElementProviderSimple provider)
+		public Pane (IRawElementProviderSimple provider) : base (provider)
 		{
 			this.provider = provider;
 
@@ -149,10 +149,6 @@ namespace UiaAtkBridge
 			return states;
 		}
 		
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
-		}
-
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			if (eventId == AutomationElementIdentifiers.AsyncContentLoadedEvent) {

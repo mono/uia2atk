@@ -32,15 +32,12 @@ namespace UiaAtkBridge
 {
 	public class Image : ComponentAdapter, Atk.ImageImplementor
 	{
-		private IRawElementProviderSimple	provider;
-
 		bool? hasImage = null;
 		Mono.UIAutomation.Bridge.IEmbeddedImage embeddedImage = null;
 		protected object imageProvider = null;
 
-		public Image (IRawElementProviderSimple provider)
+		public Image (IRawElementProviderSimple provider) : base (provider)
 		{
-			this.provider = provider;
 			this.imageProvider = provider;
 			
 			// Perhaps we should use Atk.Role.Image instead,
@@ -55,10 +52,6 @@ namespace UiaAtkBridge
 			Atk.StateSet states = base.OnRefStateSet ();
 			
 			return states;
-		}
-
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
 		}
 
 #region ImageImplementor implementation 

@@ -34,6 +34,9 @@ namespace UiaAtkBridge
 
 	public abstract class ParentAdapter : Adapter
 	{
+		internal ParentAdapter (IRawElementProviderSimple provider) : base (provider)
+		{
+		}
 		
 #region Private 
 		

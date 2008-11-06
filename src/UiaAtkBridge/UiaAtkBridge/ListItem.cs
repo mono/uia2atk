@@ -32,17 +32,15 @@ namespace UiaAtkBridge
 
 	public class ListItem : ComponentAdapter, Atk.TextImplementor, Atk.ActionImplementor
 	{
-		private IRawElementProviderSimple provider;
 		private IInvokeProvider				invokeProvider;
-		private ISelectionItemProvider				selectionItemProvider;
-		private IToggleProvider toggleProvider;
+		private ISelectionItemProvider		selectionItemProvider;
+		private IToggleProvider				toggleProvider;
 
 		private TextImplementorHelper textExpert = null;
 		private ActionImplementorHelper actionExpert = null;
 
-		public ListItem (IRawElementProviderSimple provider)
+		public ListItem (IRawElementProviderSimple provider) : base (provider)
 		{
-			this.provider = provider;
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
 			selectionItemProvider = (ISelectionItemProvider)provider.GetPatternProvider(SelectionItemPatternIdentifiers.Pattern.Id);
 			toggleProvider = (IToggleProvider) provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
@@ -58,11 +56,7 @@ namespace UiaAtkBridge
 			Name = text;
 			Role = (toggleProvider != null? Atk.Role.CheckBox: Atk.Role.ListItem);
 		}
-
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
-		}
-
+		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();

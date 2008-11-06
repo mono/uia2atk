@@ -140,7 +140,7 @@ AtkObject,
 #endregion
 
 
-		public List (IRawElementProviderFragmentRoot provider)
+		public List (IRawElementProviderFragmentRoot provider) : base (provider)
 		{
 			this.provider = provider;
 			
@@ -162,12 +162,7 @@ AtkObject,
 			states.AddState (Atk.StateType.ManagesDescendants);
 			return states;
 		}
-
 		
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
-		}
-
 		public GLib.SList DefaultAttributes {
 			get { throw new NotImplementedException (); }
 		}

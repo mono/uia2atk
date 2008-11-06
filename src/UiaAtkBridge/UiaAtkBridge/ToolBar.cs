@@ -31,19 +31,11 @@ namespace UiaAtkBridge
 {
 	public class ToolBar : ComponentParentAdapter
 	{
-		private IRawElementProviderSimple 	provider;
-
-		public ToolBar (IRawElementProviderSimple provider)
+		public ToolBar (IRawElementProviderSimple provider) : base (provider)
 		{
-			this.provider = provider;
-
 			Role = Atk.Role.ToolBar;
 			
 			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-		}
-
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
 		}
 
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)

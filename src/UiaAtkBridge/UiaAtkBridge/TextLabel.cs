@@ -36,7 +36,7 @@ namespace UiaAtkBridge
 		
 		private TextImplementorHelper textExpert = null;
 		
-		public TextLabel (IRawElementProviderSimple provider)
+		public TextLabel (IRawElementProviderSimple provider) : base (provider)
 		{
 			this.provider = provider;
 			Role = Atk.Role.Label;
@@ -51,11 +51,6 @@ namespace UiaAtkBridge
 			Atk.StateSet states = base.OnRefStateSet ();
 			states.AddState (Atk.StateType.MultiLine);
 			return states;
-		}
-
-		
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
 		}
 
 		public int CaretOffset {

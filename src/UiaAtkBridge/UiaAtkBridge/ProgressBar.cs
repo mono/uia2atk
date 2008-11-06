@@ -32,14 +32,12 @@ namespace UiaAtkBridge
 
 	public class ProgressBar : ComponentAdapter, Atk.TextImplementor, Atk.ValueImplementor
 	{
-		private IRawElementProviderSimple provider;
 		private IRangeValueProvider rangeValueProvider;
 		private IValueProvider valueProvider;
 		private TextImplementorHelper textExpert = null;
 
-		public ProgressBar (IRawElementProviderSimple provider)
+		public ProgressBar (IRawElementProviderSimple provider) : base (provider)
 		{
-			this.provider = provider;
 			rangeValueProvider = (IRangeValueProvider)provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
 			valueProvider = (IValueProvider)provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
 			String text;
@@ -54,11 +52,7 @@ namespace UiaAtkBridge
 			Name = text;
 			Role = Atk.Role.ProgressBar;
 		}
-
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
-		}
-
+		
 		public void GetMinimumValue (ref GLib.Value value)
 		{
 			value = new GLib.Value (rangeValueProvider != null? rangeValueProvider.Minimum: 0);

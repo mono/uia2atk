@@ -35,15 +35,16 @@ namespace UiaAtkBridge
 
 #region Constructors
 		
-		public Adapter ()
+		public Adapter (IRawElementProviderSimple provider)
 		{
+			Provider = provider;
 		}
 		
 #endregion
 
 #region Adapter Methods
 	
-		public abstract IRawElementProviderSimple Provider { get; }
+		public IRawElementProviderSimple Provider { get; private set; }
 		
 		public virtual void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{

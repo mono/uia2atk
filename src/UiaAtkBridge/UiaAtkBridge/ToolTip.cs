@@ -31,13 +31,8 @@ namespace UiaAtkBridge
 {
 	public class ToolTip : ComponentAdapter
 	{
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
-		}
-		
-		public ToolTip (IRawElementProviderSimple provider)
+		public ToolTip (IRawElementProviderSimple provider) : base (provider)
 		{
-			this.provider = provider;
 			Role = Atk.Role.ToolTip;
 			
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
@@ -53,7 +48,5 @@ namespace UiaAtkBridge
 		{
 			// TODO
 		}
-
-		private IRawElementProviderSimple provider;
 	}
 }

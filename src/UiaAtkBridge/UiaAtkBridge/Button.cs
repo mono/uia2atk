@@ -37,7 +37,6 @@ namespace UiaAtkBridge
 		private static string default_invoke_description = "Sends a request to activate a control and initiate its single, unambiguous action.";
 		private static string default_invoke_name = "click";
 
-		private IRawElementProviderSimple	provider;
 		private IInvokeProvider				invokeProvider;
 		private IToggleProvider				toggleProvider;
 		private string						actionDescription = null;
@@ -59,10 +58,8 @@ namespace UiaAtkBridge
 		// AutomationElementIdentifiers.LabeledByProperty.Id
 		// AutomationElementIdentifiers.LocalizedControlTypeProperty.Id
 		// AutomationElementIdentifiers.NameProperty.Id
-		public Button (IRawElementProviderSimple provider)
+		public Button (IRawElementProviderSimple provider) : base (provider)
 		{
-			this.provider = provider;
-			
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
 			imageProvider = invokeProvider;
 			InitializeAdditionalProviders ();
@@ -128,7 +125,7 @@ namespace UiaAtkBridge
 				return keyBinding;
 
 			keyBinding = (string) 
-				provider.GetPropertyValue (AutomationElementIdentifiers.AcceleratorKeyProperty.Id);
+			  Provider.GetPropertyValue (AutomationElementIdentifiers.AcceleratorKeyProperty.Id);
 			return keyBinding;
 		}
 
@@ -169,12 +166,7 @@ namespace UiaAtkBridge
 			}
 			return false;
 		}
-
 		
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
-		}
-
 		public int CaretOffset {
 			get {
 				return 0;

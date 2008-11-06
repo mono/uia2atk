@@ -31,19 +31,13 @@ namespace UiaAtkBridge
 {
 	public class Window : ComponentParentAdapter
 	{
-		private IRawElementProviderSimple provider;
 		private IRawElementProviderFragmentRoot rootProvider;
 		
-		public Window (IRawElementProviderSimple provider)
+		public Window (IRawElementProviderSimple provider) : base (provider)
 		{
-			this.provider = provider;
 			rootProvider = (IRawElementProviderFragmentRoot) provider;
 			Role = Atk.Role.Frame;
 			Name = (string) rootProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-		}
-		
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
 		}
 		
 		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)

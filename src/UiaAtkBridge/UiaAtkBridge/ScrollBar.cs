@@ -32,21 +32,15 @@ namespace UiaAtkBridge
 
 	public class ScrollBar : ComponentParentAdapter , Atk.ValueImplementor
 	{
-		private IRawElementProviderSimple provider;
 		private IRangeValueProvider rangeValueProvider;
 		private IScrollProvider parentScrollProvider = null;
 		private OrientationType orientation;
 		
-		public ScrollBar (IRawElementProviderSimple provider)
+		public ScrollBar (IRawElementProviderSimple provider) : base (provider)
 		{
-			this.provider = provider;
 			Role = Atk.Role.ScrollBar;
 			rangeValueProvider = (IRangeValueProvider)provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
 			orientation = (OrientationType)provider.GetPropertyValue (AutomationElementIdentifiers.OrientationProperty.Id);
-		}
-		
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
 		}
 
 		public void GetMinimumValue (ref GLib.Value value)

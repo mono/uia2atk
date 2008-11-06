@@ -35,16 +35,13 @@ namespace UiaAtkBridge
 	                        Atk.ActionImplementor, Atk.TextImplementor
 	{
 		bool? comboBoxStructure = null;
-		IRawElementProviderSimple provider = null;
 		TextImplementorHelper textExpert = null;
 		
-		public MenuItem (IRawElementProviderSimple provider)
+		public MenuItem (IRawElementProviderSimple provider) : base (provider)
 		{
 			if (provider == null)
 				throw new ArgumentNullException ("provider");
 
-			this.provider = provider;
-			
 			if ((provider as IRawElementProviderFragment) == null)
 				throw new ArgumentException ("Provider for ParentMenu should be IRawElementProviderFragment");
 
@@ -77,10 +74,6 @@ namespace UiaAtkBridge
 
 		public override Atk.Layer Layer {
 			get { return Atk.Layer.Popup; }
-		}
-		
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)

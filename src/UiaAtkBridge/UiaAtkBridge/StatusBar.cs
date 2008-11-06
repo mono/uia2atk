@@ -32,13 +32,10 @@ namespace UiaAtkBridge
 
 	public class StatusBar : ComponentParentAdapter , Atk.TextImplementor
 	{
-		private IRawElementProviderSimple provider;
-		
 		private TextImplementorHelper textExpert = null;
 		
-		public StatusBar (IRawElementProviderSimple provider)
+		public StatusBar (IRawElementProviderSimple provider) : base (provider)
 		{
-			this.provider = provider;
 			Role = Atk.Role.Statusbar;
 			
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
@@ -46,10 +43,6 @@ namespace UiaAtkBridge
 			Name = text;
 		}
 		
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
-		}
-
 		public int CaretOffset {
 			get {
 				return 0;

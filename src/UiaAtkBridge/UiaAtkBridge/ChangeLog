@@ -1,5 +1,32 @@
 2008-11-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* List.cs:
+	* Pane.cs:
+	* Image.cs:
+	* Button.cs:
+	* Window.cs:
+	* Adapter.cs:
+	* ToolBar.cs:
+	* MenuBar.cs:
+	* Spinner.cs:
+	* ToolTip.cs:
+	* MenuItem.cs:
+	* ListItem.cs:
+	* ComboBox.cs:
+	* TextLabel.cs:
+	* Hyperlink.cs:
+	* ScrollBar.cs:
+	* StatusBar.cs:
+	* ProgressBar.cs:
+	* ParentAdapter.cs:
+	* ComponentAdapter.cs:
+	* TextBoxEntryView.cs:
+	* TopLevelRootItem.cs:
+	* ComponentParentAdapter.cs: Refactoring for the Provider property, it
+	can be handled automatically just in the base class.
+
+2008-11-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* MenuItem.cs: Fix infinite loop, thanks for reporting Mike!
 
 2008-11-05  Andrés G. Aragoneses  <aaragoneses@novell.com>

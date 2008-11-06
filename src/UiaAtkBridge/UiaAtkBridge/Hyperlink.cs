@@ -41,7 +41,7 @@ namespace UiaAtkBridge
 		
 		System.Collections.Generic.List<HyperlinkObject> links;
 
-		public Hyperlink (IRawElementProviderSimple provider)
+		public Hyperlink (IRawElementProviderSimple provider) : base (provider)
 		{
 			this.provider = provider;
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
@@ -60,12 +60,7 @@ namespace UiaAtkBridge
 			states.AddState (Atk.StateType.MultiLine);
 			return states;
 		}
-
 		
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
-		}
-
 		public int CaretOffset {
 			get {
 				return 0;
@@ -311,18 +306,14 @@ namespace UiaAtkBridge
 		private string						actionDescription = null;
 		static string					actionName = "jump";
 
-		public HyperlinkActor (Hyperlink parent, int index)
+		public HyperlinkActor (Hyperlink parent, int index) : base (parent.Provider)
 		{
 			this.Parent = parent;
 			this.hyperlink = parent;
 			this.index = index;
 			parent.AddOneChild (this);
 		}
-
-		public override IRawElementProviderSimple Provider {
-			get { return ((Adapter) Parent).Provider; }
-		}
-
+		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();

@@ -34,13 +34,11 @@ namespace UiaAtkBridge
 
 	public class Spinner : ComponentAdapter, Atk.ValueImplementor, Atk.TextImplementor
 	{
-		private IRawElementProviderSimple provider;
 		private IRangeValueProvider rangeValueProvider;
 		private TextImplementorHelper textExpert = null;
 
-		public Spinner (IRawElementProviderSimple provider)
+		public Spinner (IRawElementProviderSimple provider) : base (provider)
 		{
-			this.provider = provider;
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = text;
 			Role = Atk.Role.SpinButton;
@@ -50,10 +48,6 @@ namespace UiaAtkBridge
 			else
 				text = String.Empty;
 			textExpert = new TextImplementorHelper (text);
-		}
-
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
 		}
 
 		public void GetMinimumValue (ref GLib.Value value)

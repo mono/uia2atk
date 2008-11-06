@@ -25,12 +25,13 @@
 
 using System;
 using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
 	public abstract class ComponentParentAdapter : ParentAdapter, Atk.ComponentImplementor
 	{
-		public ComponentParentAdapter ()
+		public ComponentParentAdapter (IRawElementProviderSimple provider) : base (provider)
 		{
 			componentExpert = new ComponentImplementorHelper (this);
 		}

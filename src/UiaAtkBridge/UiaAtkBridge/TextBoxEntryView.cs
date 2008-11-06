@@ -36,12 +36,10 @@ namespace UiaAtkBridge
 	  Atk.ActionImplementor, Atk.EditableTextImplementor, Atk.StreamableContentImplementor
 	{
 		private TextImplementorHelper textExpert = null;
-		private IRawElementProviderSimple provider;
 		private bool multiLine = false;
 		
-		public TextBoxEntryView (IRawElementProviderSimple provider)
+		public TextBoxEntryView (IRawElementProviderSimple provider) : base (provider)
 		{
-			this.provider = provider;
 			Role = Atk.Role.Text;
 
 			ITextProvider textProvider = (ITextProvider) provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id);
@@ -248,10 +246,6 @@ namespace UiaAtkBridge
 		
 		#endregion 
 		
-		
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
-		}
 		
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{

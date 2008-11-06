@@ -78,7 +78,7 @@ namespace UiaAtkBridge
 		private SelectionProviderUserHelper			selectionHelper;
 		
 		
-		public ComboBox (IRawElementProviderFragmentRoot provider)
+		public ComboBox (IRawElementProviderFragmentRoot provider) : base (provider)
 		{
 			this.provider = provider;
 			this.Role = Atk.Role.ComboBox;
@@ -90,10 +90,6 @@ namespace UiaAtkBridge
 				throw new ArgumentException ("ComboBoxProvider should always implement ISelectionProvider");
 			
 			selectionHelper = new SelectionProviderUserHelper(provider, selProvider, ChildrenHolder);
-		}
-
-		public override IRawElementProviderSimple Provider {
-			get { return provider; }
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()
