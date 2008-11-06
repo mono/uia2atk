@@ -1,6 +1,10 @@
 2008-11-06  Calen Chen <cachen@novell.com>
 
-	* samples/checkbox.py: add an event to change the label's text when 
+	* samples/gtkcheckbutton.py: add an event to change label's text
+
+2008-11-06  Calen Chen <cachen@novell.com>
+
+	* samples/checkbox.py: add an event to change label's text when 
 	check and uncheck the checkbox
 	* testers/checkbox/checkboxframe.py: add assertLabel to make sure the 
 	click event is taking effect to change the label's text

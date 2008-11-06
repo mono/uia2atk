@@ -11,6 +11,10 @@ class CheckButton:
     # The data passed to this method is printed to stdout
     def callback(self, widget, data=None):
         print "%s was toggled %s" % (data, ("OFF", "ON")[widget.get_active()])
+        if widget.get_active():
+            self.label.set_text("checked")
+        else:
+            self.label.set_text("unchecked")
 
     # This callback quits the program
     def delete_event(self, widget, event, data=None):
@@ -72,6 +76,11 @@ class CheckButton:
         # Insert the quit button
         vbox.pack_start(button, True, True, 2)
 
+        #label
+        self.label = gtk.Label("click the checkbutton")
+        vbox.pack_start(self.label, True, True, 2)
+
+        self.label.show()
         button.show()
         vbox.show()
         self.window.show()
