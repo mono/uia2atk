@@ -115,7 +115,7 @@
             <td><xsl:number/></td>
             <xsl:variable name="controlName" select="name"/>
             <xsl:variable name="controlNameLower" select="translate(name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
-            <td><a href="reports/smoke/{$controlNameLower}"><xsl:value-of select="$controlName"/></a></td>
+            <td><a href="../../logs/smoke/{$controlNameLower}"><xsl:value-of select="$controlName"/></a></td>
             <xsl:variable name="status" select="status"/>
             <xsl:choose>
               <xsl:when test="$status = -1">
@@ -224,7 +224,7 @@
             <td><xsl:number/></td>
             <xsl:variable name="controlName" select="name"/>
             <xsl:variable name="controlNameLower" select="translate(name, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')"/>
-            <td><a href="reports/regression/{$controlNameLower}"><xsl:value-of select="$controlName"/></a></td>
+            <td><a href="../../logs/regression/{$controlNameLower}"><xsl:value-of select="$controlName"/></a></td>
             <xsl:variable name="status" select="status"/>
             <xsl:choose>
               <xsl:when test="$status = -1">

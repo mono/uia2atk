@@ -29,6 +29,7 @@ def output(s, newline=True):
 
 def abort(status):
   ''' exit according to status '''
+  sys.exit(status)
 
 class Settings(object):
 
@@ -220,7 +221,16 @@ class Test(object):
         output("WARNING:  Failed test:  %s" % test)
         self.status = 1
       else:
-        os.system('echo -n "success" > %s' % file_path)
+        # if the test was successful prefix the file with a 0, so we can
+        # easily tell that the test was successful based on this log
+        f = open(file_path,'r')
+        log = []
+        for line in f:
+            log.append(line)
+        f.close()
+        os.system('echo "0" > %s' % file_path)
+        f = open(file_path, 'a')
+        f.write("".join(log))
       try:
         self.log(test)
       except InconceivableError, msg:
@@ -268,7 +278,7 @@ class Test(object):
     # if the previous test was successful, delete the file
     try:
       f = open(file_path,'r')
-      if f.readline() == "success":
+      if f.read(1) == "0":
         f.close()
         os.system("rm -rf file_path")   
       f.close()

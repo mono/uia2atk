@@ -1,5 +1,13 @@
 2008-11-05 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* tools/dashboard/dashboard.xsl: Find the logs for each control in
+	../../logs
+	* harness/local_run.py: Exit when using --help.  Add revision numbers
+	and logs to the text report linked to by the dashboard instead of
+	just printing "success" to that file.
+
+2008-11-05 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* tools/dashboard/dashboard.xsl: Add package update status based on
 	whether the most recent packaged installed successfully on the listed
 	machines
