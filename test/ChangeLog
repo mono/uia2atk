@@ -1,3 +1,17 @@
+2008-11-07  Calen Chen <cachen@novell.com>
+
+	* samples/statusstrip.py: add ToolStripDropDownButton,
+        ToolStripDropDownButton,ToolStripProgressBar into statusstrip sample 
+	according to the description in MSDN, delete repeated label
+	* testers/statusstrip/__init__.py,
+	* testers/statusstrip/statusstripframe.py,
+	* testers/statusstrip_basic_ops.py,
+	* testers/statusstrip: add new test for statusstrip to test states for 
+	statusstrip. test states and value change for ToolStripProgressBar. 
+	test states, actions and click event for ToolStripDropDownButton 
+	ToolStripProgressBar and menu items of them. test Text implement and 
+	attribute for ToolStripStatusLabel
+
 2008-11-06  Calen Chen <cachen@novell.com>
 
 	* samples/gtkcheckbutton.py: add an event to change label's text
