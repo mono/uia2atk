@@ -147,7 +147,7 @@ class Test(object):
         o_tmp = t.stderr.readline()
         if o_tmp != '':
             o.append(o_tmp) 
-        print o_tmp.rstrip()
+            print o_tmp.rstrip()
         if o_tmp == '' and t.poll() is not None:
             break
     r = t.poll()
