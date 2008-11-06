@@ -298,7 +298,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			bridge.ResetEventLists ();
 
-			textbox.Text = "Changed!";
+			textbox.Text = "lfesalhafew";
 
 			Assert.AreEqual (1,
 			                 bridge.AutomationPropertyChangedEvents.Count,
@@ -314,7 +314,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			bridge.ResetEventLists ();
 
-			textbox.Text = "Changed!";
+			textbox.Text = "lifewauhfewa";
 
 			Assert.AreEqual (1,
 			                 bridge.AutomationPropertyChangedEvents.Count,

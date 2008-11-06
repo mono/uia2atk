@@ -1,3 +1,7 @@
+2008-11-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* TextBoxProviderTest.cs: Better to use random text.
+
 2008-11-05  Brad Taylor  <brad@getcoded.net>
 	
 	* ComboBoxProviderTest.cs: Rework so that the code can be shared by
