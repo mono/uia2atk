@@ -78,6 +78,8 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void ListBox ()
 		{
+			Console.WriteLine ("<Test id=\"ListBox\">");
+			
 			BasicWidgetType type = BasicWidgetType.ListBox;
 			Atk.Object accessible;
 			
@@ -116,11 +118,15 @@ namespace UiaAtkBridgeTest
 			InterfaceText (BasicWidgetType.ListItem, true, listItemChild);
 
 			Parent (type, accessible);
+
+			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void CheckedListBox ()
 		{
+			Console.WriteLine ("<Test id=\"CheckedListBox\">");
+			
 			BasicWidgetType type = BasicWidgetType.CheckedListBox;
 			Atk.Object accessible;
 			
@@ -158,11 +164,15 @@ namespace UiaAtkBridgeTest
 			InterfaceText (BasicWidgetType.CheckedListItem, true, listItemChild);
 
 			Parent (type, accessible);
+
+			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void LinkLabel ()
 		{
+			Console.WriteLine ("<Test id=\"LinkLabel\">");
+			
 			UiaAtkBridge.Hyperlink hyperlink;
 			hyperlink = (UiaAtkBridge.Hyperlink) 
 			  UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (
@@ -204,11 +214,14 @@ namespace UiaAtkBridgeTest
 			Assert.IsFalse (atkAction.DoAction (1), "LinkLabel DoAction OOR #1");
 			Assert.IsFalse (atkAction.DoAction (-1), "LinkLabel DoAction OOR #2");
 			Assert.AreEqual (1, lastClickedLink, "LastClickedLink");
+
+			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void GroupBox ()
 		{
+			Console.WriteLine ("<Test id=\"GroupBox\">");
 			BasicWidgetType type = BasicWidgetType.GroupBox;
 			Atk.Object accessible = 
 			  UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (
@@ -221,11 +234,15 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Sensitive,
 				Atk.StateType.Showing,
 				Atk.StateType.Visible);
+			
+			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void ComboBoxSimple ()
 		{
+			Console.WriteLine ("<Test id=\"ComboBoxSimple\">");
+			
 			BasicWidgetType type = BasicWidgetType.ComboBoxSimple;
 
 			Atk.Object accessible = 
@@ -237,6 +254,8 @@ namespace UiaAtkBridgeTest
 			StatesComboBox (accessible);
 
 			Assert.AreEqual (2, accessible.NAccessibleChildren, "numChildren; children roles:" + childrenRoles (accessible));
+
+			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
@@ -292,6 +311,8 @@ namespace UiaAtkBridgeTest
 					Assert.Fail ("Shouldn't crash");
 				}
 				f.Close ();
+
+				Console.WriteLine ("</Test>");
 			}
 		}
 
