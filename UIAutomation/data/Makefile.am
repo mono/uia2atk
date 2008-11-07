@@ -4,6 +4,11 @@ SUBDIRS =
 net20dir   = $(prefix)/lib/mono/2.0
 a11ydir    = $(prefix)/lib/mono/accessibility
 
+SHELL = /bin/sh
+MKINSTALLDIRS = $(SHELL) ../mkinstalldirs
+INSTALL = $(SHELL) ../install-sh
+INSTALL_D = $(INSTALL) -c -m 644
+
 all: mono-uia.pc
 
 DISTFILES = mono-uia.pc.in
@@ -17,7 +22,10 @@ mono-uia.pc: mono-uia.pc.in Makefile
 
 install-data-local: mono-uia.pc
 	$(MKINSTALLDIRS) $(DESTDIR)$(prefix)/lib/pkgconfig
-	$(INSTALL_DATA) mono-uia.pc $(DESTDIR)$(prefix)/lib/pkgconfig
+	$(INSTALL_D) mono-uia.pc $(DESTDIR)$(prefix)/lib/pkgconfig
+
+uninstall-local:
+	rm -rf $(DESTDIR)$(prefix)/lib/pkgconfig/mono-uia.pc
 
 clean-local:
 	rm -rf mono-uia.pc
