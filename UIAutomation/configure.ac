@@ -32,6 +32,11 @@ if test "x$GACUTIL" = "xno" ; then
 	AC_MSG_ERROR([No gacutil tool found])
 fi
 
+AC_PATH_PROG(SN, sn, no)
+if test "x$SN" = "xno" ; then
+	AC_MSG_ERROR([No sn tool found])
+fi
+
 
 #AC_ARG_ENABLE(tests,
 #	AC_HELP_STRING([--disable-tests],

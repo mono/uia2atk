@@ -1,5 +1,9 @@
 2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* configure.ac: Check for sn.
+
+2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* mkinstalldirs: Copy from olive.
 
 	* data/Makefile.am: Copy stuff from olive/build/rules.make needed by
