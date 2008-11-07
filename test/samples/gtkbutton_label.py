@@ -28,7 +28,8 @@ class MainWindow:
         self.window.set_border_width(80)
 
         # create a label
-        self.label = gtk.Label("You have not yet clicked a button")
+        self.label = gtk.Label()
+        self.label.set_markup("<span color=\"red\">This is a label</span>"); 
 
         # create a horizontal box (HBox) to organize widgets
         # we will pack two buttons in this box.
@@ -43,6 +44,7 @@ class MainWindow:
 
         # Creates a new button with the label "Button 1".
         self.button1 = gtk.Button("Button 1")
+        self.button1.modify_bg(gtk.STATE_NORMAL,gtk.gdk.color_parse("red"))
  
         # Now when the button is clicked, we call the open_dialog method
         # with a pointer to "button 1" as its argument
@@ -82,16 +84,21 @@ class MainWindow:
 
 	# disable button three
 	self.button3.set_sensitive(False)
+
+        #creates an insensitive label
+        self.insensitive_label = gtk.Label("I'm so insensitive")
+        self.insensitive_label.set_sensitive(False)
  
         # Instead of add(), we pack this button into the invisible
         # box, which has been packed into the window.
         self.vbox.pack_start(self.button3, True, True, 0)
 
+        #pack insensitive label
+        self.vbox.pack_start(self.insensitive_label, True, True, 0)
+
         # Always remember this step, this tells GTK that our preparation for
         # this button is complete, and it can now be displayed.
         self.button3.show()
-
-
 
         # show the HBox
         self.hbox.show()
@@ -101,6 +108,9 @@ class MainWindow:
 
         # show the label
         self.label.show()
+
+        # show the insensitive label
+        self.insensitive_label.show()
 
         # finally, show the window
         self.window.show()

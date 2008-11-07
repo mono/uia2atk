@@ -1,5 +1,10 @@
 2008-11-07  Calen Chen <cachen@novell.com>
 
+	* samples/gtkbutton_label.py: set fg-color for label's text to practice
+	test for attribute
+
+2008-11-07  Calen Chen <cachen@novell.com>
+
 	* samples/statusstrip.py: add ToolStripDropDownButton,
         ToolStripDropDownButton,ToolStripProgressBar into statusstrip sample 
 	according to the description in MSDN, delete repeated label
