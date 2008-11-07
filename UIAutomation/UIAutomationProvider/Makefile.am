@@ -1,0 +1,101 @@
+
+EXTRA_DIST =  
+
+# Warning: This is an automatically generated file, do not edit!
+
+if ENABLE_DEBUG
+ASSEMBLY_COMPILER_COMMAND = gmcs
+ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/2.0 -lib:../lib/Debug -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -debug "-define:DEBUG" -keyfile:../mono.snk
+
+ASSEMBLY = ../lib/Debug/UIAutomationProvider.dll
+ASSEMBLY_MDB = $(ASSEMBLY).mdb
+COMPILE_TARGET = library
+PROJECT_REFERENCES = 
+BUILD_DIR = ../lib/Debug
+
+UIAUTOMATIONWINFORMS_DLL_MDB_SOURCE=../lib/Debug/UIAutomationProvider.dll.mdb
+UIAUTOMATIONWINFORMS_DLL_MDB=$(BUILD_DIR)/UIAutomationProvider.dll.mdb
+
+endif
+
+if ENABLE_RELEASE
+ASSEMBLY_COMPILER_COMMAND = gmcs
+ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/2.0 -lib:../lib/Release -lib:@expanded_libdir@/mono/accessibility -keyfile:../mono.snk -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+
+ASSEMBLY = ../lib/Release/UIAutomationProvider.dll
+ASSEMBLY_MDB = 
+COMPILE_TARGET = library
+PROJECT_REFERENCES = 
+BUILD_DIR = ../lib/Release
+
+UIAUTOMATIONWINFORMS_DLL_MDB=
+
+endif
+
+AL=al2
+SATELLITE_ASSEMBLY_NAME=Mono.UIAutomation.Provider.resources.dll
+
+PROGRAMFILES = \
+	$(UIAUTOMATIONWINFORMS_DLL_MDB)  
+
+
+RESGEN=resgen2
+	
+all: $(ASSEMBLY) $(PROGRAMFILES)
+
+FILES =  \
+	System.Windows.Automation.Provider/AutomationInteropProvider.cs \
+	System.Windows.Automation.Provider/IDockProvider.cs \
+	System.Windows.Automation.Provider/IExpandCollapseProvider.cs \
+	System.Windows.Automation.Provider/IGridItemProvider.cs \
+	System.Windows.Automation.Provider/IGridProvider.cs \
+	System.Windows.Automation.Provider/IInvokeProvider.cs \
+	System.Windows.Automation.Provider/IMultipleViewProvider.cs \
+	System.Windows.Automation.Provider/IRangeValueProvider.cs \
+	System.Windows.Automation.Provider/IRawElementProviderAdviseEvents.cs \
+	System.Windows.Automation.Provider/IRawElementProviderFragment.cs \
+	System.Windows.Automation.Provider/IRawElementProviderFragmentRoot.cs \
+	System.Windows.Automation.Provider/IRawElementProviderHwndOverride.cs \
+	System.Windows.Automation.Provider/IRawElementProviderSimple.cs \
+	System.Windows.Automation.Provider/IScrollItemProvider.cs \
+	System.Windows.Automation.Provider/IScrollProvider.cs \
+	System.Windows.Automation.Provider/ISelectionItemProvider.cs \
+	System.Windows.Automation.Provider/ISelectionProvider.cs \
+	System.Windows.Automation.Provider/ITableItemProvider.cs \
+	System.Windows.Automation.Provider/ITableProvider.cs \
+	System.Windows.Automation.Provider/ITextProvider.cs \
+	System.Windows.Automation.Provider/ITextRangeProvider.cs \
+	System.Windows.Automation.Provider/IToggleProvider.cs \
+	System.Windows.Automation.Provider/ITransformProvider.cs \
+	System.Windows.Automation.Provider/IValueProvider.cs \
+	System.Windows.Automation.Provider/IWindowProvider.cs \
+	System.Windows.Automation.Provider/NavigateDirection.cs \
+	System.Windows.Automation.Provider/ProviderOptions.cs
+
+DATA_FILES = 
+
+RESOURCES =
+
+REFERENCES =  \
+	WindowsBase \
+	System \
+	UIAutomationBridge \
+	UIAutomationTypes
+
+DLL_REFERENCES = 
+
+CLEANFILES = $(PROGRAMFILES)
+
+install-data-local: gac-install
+
+uninstall-local: gac-uninstall
+
+include $(top_srcdir)/Makefile.include
+
+
+$(eval $(call emit_resgen_targets))
+$(build_xamlg_list): %.xaml.g.cs: %.xaml
+	xamlg '$<'
+
+$(ASSEMBLY) $(ASSEMBLY_MDB): $(build_sources) $(build_resources) $(build_datafiles) $(DLL_REFERENCES) $(PROJECT_REFERENCES) $(build_xamlg_list) $(build_satellite_assembly_list)
+	mkdir -p $(shell dirname $(ASSEMBLY))
+	$(ASSEMBLY_COMPILER_COMMAND) $(ASSEMBLY_COMPILER_FLAGS) -out:$(ASSEMBLY) -target:$(COMPILE_TARGET) $(build_sources_embed) $(build_resources_embed) $(build_references_ref)
