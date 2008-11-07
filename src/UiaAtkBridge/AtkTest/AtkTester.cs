@@ -249,10 +249,15 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.GetKeybinding (-1), "GetKeyBinding OOR#1");
 			Assert.IsNull (implementor.GetKeybinding (3), "GetKeyBinding OOR#2");
 
-			DisableWidget (accessible);
-			for (int i = 0; i < validNumberOfActions; i++) 
-				Assert.IsFalse (implementor.DoAction (i), "DoAction(" + i + ") after disabling");
-			EnableWidget (accessible);
+			//sub-items cannot be disabled, mainly because they are not widgets
+			if ((type != BasicWidgetType.ListItem) && (type != BasicWidgetType.ListItem)) {
+				DisableWidget (accessible);
+				for (int i = 0; i < validNumberOfActions; i++) 
+					Assert.IsFalse (implementor.DoAction (i), "DoAction(" + i + ") after disabling");
+				EnableWidget (accessible);
+			}
+
+			
 		}
 		
 		protected void InterfaceSelection (Atk.Selection implementor, string[] names, Atk.Object accessible, BasicWidgetType type)
