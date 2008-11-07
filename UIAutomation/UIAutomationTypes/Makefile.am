@@ -1,36 +1,19 @@
 
 EXTRA_DIST =  
 
-# Warning: This is an automatically generated file, do not edit!
-
-if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
 ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/2.0 -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -debug "-define:DEBUG" -d:NET_2_0
 
-ASSEMBLY = ../lib/Debug/UIAutomationTypes.dll
+ASSEMBLY = ../bin/UIAutomationTypes.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = library
 PROJECT_REFERENCES = 
-BUILD_DIR = ../lib/Debug
+BUILD_DIR = ../bin
 PACKAGE_FLAG = /package accessibility
 
-UIAUTOMATIONTYPES_DLL_MDB_SOURCE=bin/Debug/UIAutomationTypes.dll.mdb
+UIAUTOMATIONTYPES_DLL_MDB_SOURCE=../bin/UIAutomationTypes.dll.mdb
 UIAUTOMATIONTYPES_DLL_MDB=$(BUILD_DIR)/UIAutomationTypes.dll.mdb
 
-endif
-
-if ENABLE_RELEASE
-ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/2.0 -keyfile:../mono.snk -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+
-ASSEMBLY = ../lib/Release/UIAutomationTypes.dll
-ASSEMBLY_MDB = 
-COMPILE_TARGET = library
-PROJECT_REFERENCES = 
-BUILD_DIR = ../lib/Release
-
-UIAUTOMATIONTYPES_DLL_MDB=
-
-endif
 
 AL=al2
 SATELLITE_ASSEMBLY_NAME=Mono.UIAutomation.Types.resources.dll

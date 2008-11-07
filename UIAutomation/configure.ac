@@ -47,22 +47,7 @@ fi
 #	AC_HELP_STRING([--enable-debug],
 #		[Use 'DEBUG' Configuration [default=YES]]),
 #		enable_debug=yes, enable_debug=no)
-AM_CONDITIONAL(ENABLE_DEBUG, test x$enable_debug = xyes)
-if test "x$enable_debug" = "xyes" ; then
-	CONFIG_REQUESTED="yes"
-fi
-AC_ARG_ENABLE(release,
-	AC_HELP_STRING([--enable-release],
-		[Use 'RELEASE' Configuration [default=NO]]),
-		enable_release=yes, enable_release=no)
-AM_CONDITIONAL(ENABLE_RELEASE, test x$enable_release = xyes)
-if test "x$enable_release" = "xyes" ; then
-	CONFIG_REQUESTED="yes"
-fi
-if test -z "$CONFIG_REQUESTED" ; then
-	AM_CONDITIONAL(ENABLE_DEBUG, true)
-	enable_debug=yes
-fi
+
 
 NUNIT_PATH=
 
@@ -82,22 +67,13 @@ dnl package checks, common for all configs
 
 PKG_CHECK_MODULES([MONO], [mono >= 2.0])
 
-dnl package checks, per config
-PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0])
-PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0])
-
-#THISDIR=$PWD
-#cd ../UiaAtkBridge/
-#TOPDIR=$PWD
-#cd $THISDIR
-#AC_SUBST(TOPDIR)
-
 AC_CONFIG_FILES([
 UIAutomationTypes/Makefile
 UIAutomationBridge/Makefile
 UIAutomationClient/Makefile
 UIAutomationProvider/Makefile
 data/Makefile
+data/mono-uia.pc.in
 Makefile
 build/common/Consts.cs
 ])

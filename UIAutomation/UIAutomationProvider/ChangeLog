@@ -1,5 +1,9 @@
 2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Makefile.am: Remove cruft, use bin instead of lib/Debug.
+
+2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Makefile.am: Set PACKAGE_FLAG properly, fix some find/replace bugs.
 
 2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>

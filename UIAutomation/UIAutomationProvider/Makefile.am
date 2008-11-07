@@ -1,36 +1,18 @@
 
 EXTRA_DIST =  
 
-# Warning: This is an automatically generated file, do not edit!
-
-if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/2.0 -lib:../lib/Debug -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -debug "-define:DEBUG" -d:NET_2_0
+ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/2.0 -lib:../bin -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -debug "-define:DEBUG" -d:NET_2_0
 
-ASSEMBLY = ../lib/Debug/UIAutomationProvider.dll
+ASSEMBLY = ../bin/UIAutomationProvider.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = library
 PROJECT_REFERENCES = 
-BUILD_DIR = ../lib/Debug
+BUILD_DIR = ../bin
 PACKAGE_FLAG = /package accessibility
 
-UIAUTOMATIONPROVIDER_DLL_MDB_SOURCE=../lib/Debug/UIAutomationProvider.dll.mdb
+UIAUTOMATIONPROVIDER_DLL_MDB_SOURCE=../bin/UIAutomationProvider.dll.mdb
 UIAUTOMATIONPROVIDER_DLL_MDB=$(BUILD_DIR)/UIAutomationProvider.dll.mdb
-
-endif
-
-if ENABLE_RELEASE
-ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/2.0 -lib:../lib/Release -lib:@expanded_libdir@/mono/accessibility -keyfile:../mono.snk -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+
-ASSEMBLY = ../lib/Release/UIAutomationProvider.dll
-ASSEMBLY_MDB = 
-COMPILE_TARGET = library
-PROJECT_REFERENCES = 
-BUILD_DIR = ../lib/Release
-
-UIAUTOMATIONPROVIDER_DLL_MDB=
-
-endif
 
 AL=al2
 SATELLITE_ASSEMBLY_NAME=Mono.UIAutomation.Provider.resources.dll
