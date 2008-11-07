@@ -1,3 +1,8 @@
+2008-11-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs: Be more readable (besides, we're not using anymore
+	unreal objs).
+
 2008-11-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Reenable test.

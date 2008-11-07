@@ -164,11 +164,6 @@ namespace UiaAtkBridgeTest
 					Assert.AreEqual ("toggle", implementor.GetName (1), "GetName toggle");
 			}
 			
-			bool actionPerformed = true;
-			//this only applies if the CheckBox is not real (in Gail) :-?
-//			if (type == BasicWidgetType.CheckBox)
-//				actionPerformed = false;
-			
 			Atk.StateSet state = accessible.RefStateSet();
 			Assert.IsFalse (state.IsEmpty, "RefStateSet.IsEmpty");
 			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled #1");
@@ -183,16 +178,16 @@ namespace UiaAtkBridgeTest
 			if (type != BasicWidgetType.ComboBoxDropDownList) {
 				// only valid actions should work
 				for (int i = 0; i < validNumberOfActions; i++) 
-					Assert.AreEqual (actionPerformed, implementor.DoAction (i), "DoAction(" + i + ")");
+					Assert.IsTrue (implementor.DoAction (i), "DoAction(" + i + ")");
 				if ((validNumberOfActions > 1) // does not apply in UIA because 1 doaction==1click==checked
 				                                         // (in GAIL click+press+release==2clicks==unchecked)
 				     && type == BasicWidgetType.CheckBox)
 					//one more, to leave it checked
-					Assert.AreEqual (actionPerformed, implementor.DoAction (0), "DoAction_Corrective");
+					Assert.IsTrue (implementor.DoAction (0), "DoAction_Corrective");
 			}
 			else
 			{
-				Assert.AreEqual (actionPerformed, implementor.DoAction (0), "DoAction Combo#1");
+				Assert.IsTrue (implementor.DoAction (0), "DoAction Combo#1");
 				Assert.AreEqual (1, implementor.NActions, "NActions doesn't change");
 				Assert.AreEqual ("press", implementor.GetName (0), "Action[0] doesn't change");
 				Assert.AreEqual (false, implementor.DoAction (0), "DoAction Combo#2");
