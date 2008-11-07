@@ -1,5 +1,16 @@
 2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* data/Makefile:
+	* data/Makefile.am: Rename to Makefile.am, make it start to work.
+
+	* Makefile.am: Add winfx3.pub to EXTRA_DIST.
+
+	* configure.ac: Re-add data/Makefile.
+
+	* build/common/Consts.cs.in: Don't need MonoVersion, afict.
+
+2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* winfx3.pub: Add key for signing these assemblies, copied from olive.
 
 	* configure.ac: Remove data for now, not done fixing this.  Add

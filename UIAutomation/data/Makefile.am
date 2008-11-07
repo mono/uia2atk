@@ -1,10 +1,10 @@
 thisdir = data
 SUBDIRS = 
 
-	net20dir   = $(prefix)/lib/mono/2.0
-	a11ydir    = $(prefix)/lib/mono/accessibility
+net20dir   = $(prefix)/lib/mono/2.0
+a11ydir    = $(prefix)/lib/mono/accessibility
 
-all-local: mono-uia.pc
+all: mono-uia.pc
 
 DISTFILES = mono-uia.pc.in
 
@@ -15,7 +15,7 @@ mono-uia.pc: mono-uia.pc.in Makefile
 	mv $@.tmp2 $@
 	rm $@.tmp
 
-install-local: mono-uia.pc
+install-data-local: mono-uia.pc
 	$(MKINSTALLDIRS) $(DESTDIR)$(prefix)/lib/pkgconfig
 	$(INSTALL_DATA) mono-uia.pc $(DESTDIR)$(prefix)/lib/pkgconfig
 
