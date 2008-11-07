@@ -1,3 +1,10 @@
+2008-11-07  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am:
+	* configure.ac:
+	* WindowsBase/: Import a small portion of WindowsBase so that we can
+	  build UIAutomation* independently of olive.
+
 2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* data/Makefile.am:

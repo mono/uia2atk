@@ -68,6 +68,7 @@ dnl package checks, common for all configs
 PKG_CHECK_MODULES([MONO], [mono >= 2.0])
 
 AC_CONFIG_FILES([
+WindowsBase/Makefile
 UIAutomationTypes/Makefile
 UIAutomationBridge/Makefile
 UIAutomationClient/Makefile
