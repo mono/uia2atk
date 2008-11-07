@@ -129,6 +129,32 @@ namespace UiaAtkBridgeTest
 		{
 			d ();
 		}
+
+		private Dictionary <Atk.Object, System.ComponentModel.Component> mappings = new Dictionary<Atk.Object, System.ComponentModel.Component> ();
+		
+		public override void DisableWidget (Atk.Object accessible)
+		{
+			System.ComponentModel.Component comp = mappings [accessible];
+
+			if (comp is SWF.Control)
+				((SWF.Control)comp).Enabled = false;
+			else if (comp is SWF.ToolStripItem)
+				((SWF.ToolStripItem)comp).Enabled = false;
+			else
+				throw new NotSupportedException ();
+		}
+
+		public override void EnableWidget (Atk.Object accessible)
+		{
+			System.ComponentModel.Component comp = mappings [accessible];
+
+			if (comp is SWF.Control)
+				((SWF.Control)comp).Enabled = true;
+			else if (comp is SWF.ToolStripItem)
+				((SWF.ToolStripItem)comp).Enabled = true;
+			else
+				throw new NotSupportedException ();
+		}
 		
 		public override I CastToAtkInterface <I> (Atk.Object accessible)
 		{
@@ -162,6 +188,13 @@ namespace UiaAtkBridgeTest
 			return GetAccessible (type, name, real, true);
 		}
 
+		private Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget)
+		{
+			Atk.Object acc = GetAdapterForProvider (ProviderFactory.GetProvider (widget, true, true));
+			mappings [acc] = widget;
+			return acc;
+		}
+
 		public override Atk.Object GetAccessible (BasicWidgetType type, string [] names, bool real)
 		{
 			Atk.Object accessible = null;
@@ -180,8 +213,7 @@ namespace UiaAtkBridgeTest
 					listBox.Items.Add (item);
 			
 				if (real)
-					accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
-					                                    ProviderFactory.GetProvider (listBox, true, true));
+					accessible = GetAdapterForWidget (listBox);
 				else
 					accessible = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) 
 					                                    ProviderFactory.GetProvider (listBox, true, true));
@@ -196,8 +228,7 @@ namespace UiaAtkBridgeTest
 					clistBox.Items.Add (item);
 			
 				if (real)
-					accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
-					                                    ProviderFactory.GetProvider (clistBox, true, true));
+					accessible = GetAdapterForWidget (clistBox);
 				else
 					accessible = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) 
 					                                    ProviderFactory.GetProvider (clistBox, true, true));
@@ -212,8 +243,7 @@ namespace UiaAtkBridgeTest
 					cbDD.Items.Add (item);
 
 				if (real)
-					accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
-					                                    ProviderFactory.GetProvider (cbDD, true, true));
+					accessible = GetAdapterForWidget (cbDD);
 				else
 					accessible = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) 
 					                                        ProviderFactory.GetProvider (cbDD, true, true));
@@ -228,8 +258,7 @@ namespace UiaAtkBridgeTest
 					cbDDL.Items.Add (item);
 			
 				if (real)
-					accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
-					                                    ProviderFactory.GetProvider (cbDDL, true, true));
+					accessible = GetAdapterForWidget (cbDDL);
 				else
 					accessible = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) 
 					                                        ProviderFactory.GetProvider (cbDDL, true, true));
@@ -253,8 +282,7 @@ namespace UiaAtkBridgeTest
 				parentMenu.DropDownItems.AddRange (subMenus);
 				menuStrip1.Items.AddRange (new SWF.ToolStripItem [] { parentMenu });
 
-				accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
-					                                 ProviderFactory.GetProvider (parentMenu, true, true));
+				accessible = GetAdapterForWidget (parentMenu);
 				
 				break;
 			default:
@@ -283,7 +311,7 @@ namespace UiaAtkBridgeTest
 					lab = lab1;
 				lab.Text = name;
 				if (real)
-					accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (lab, true, true));
+					accessible = GetAdapterForWidget (lab);
 				else
 					accessible = new UiaAtkBridge.TextLabel (ProviderFactory.GetProvider (lab, true, true));
 				break;
@@ -295,7 +323,7 @@ namespace UiaAtkBridgeTest
 				but.Text = name;
 				if (!real)
 					throw new NotSupportedException ("We don't support unreal anymore in tests");
-				accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (but, true, true));
+				accessible = GetAdapterForWidget (but);
 				break;
 				
 			case BasicWidgetType.Window:
@@ -304,7 +332,7 @@ namespace UiaAtkBridgeTest
 					frm = form;
 				frm.Name = name;
 				if (real)
-					accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (frm, true, true));
+					accessible = GetAdapterForWidget (frm);
 				else
 					accessible = new UiaAtkBridge.Window (ProviderFactory.GetProvider (frm, true, true));
 				break;
@@ -315,8 +343,7 @@ namespace UiaAtkBridgeTest
 					chk = (embeddedImage ? chkWithImage : chkWithoutImage);
 				chk.Text = name;
 				if (real)
-					accessible = GetAdapterForProvider (
-					    (IRawElementProviderSimple) ProviderFactory.GetProvider (chk, true, true));
+					accessible = GetAdapterForWidget (chk);
 				else
 					accessible = new UiaAtkBridge.CheckBoxButton (ProviderFactory.GetProvider (chk, true, true));
 				break;
@@ -327,7 +354,7 @@ namespace UiaAtkBridgeTest
 					(embeddedImage ? radWithImage : GiveMeARadio (name));
 				radio.Text = name;
 				if (real)
-					accessible = GetAdapterForProvider (ProviderFactory.GetProvider (radio, true, true));
+					accessible = GetAdapterForWidget (radio);
 				else
 					throw new NotSupportedException ("No un-real support for this");
 				break;
@@ -338,7 +365,7 @@ namespace UiaAtkBridgeTest
 					sb = sb1;
 				sb.Text = name;
 				if (real)
-					accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (sb, true, true));
+					accessible = GetAdapterForWidget (sb);
 				else
 					accessible = new UiaAtkBridge.StatusBar (ProviderFactory.GetProvider (sb, true, true));
 				break;
@@ -381,7 +408,7 @@ namespace UiaAtkBridgeTest
 				SWF.ProgressBar pb = new SWF.ProgressBar ();
 				if (real) {
 					pb = pb1;
-					accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (pb, true, true));
+					accessible = GetAdapterForWidget (pb);
 				} else {
 					accessible = new UiaAtkBridge.ProgressBar (ProviderFactory.GetProvider (pb, true, true));
 				}
@@ -395,7 +422,7 @@ namespace UiaAtkBridgeTest
 				nud.Maximum = 100;
 				nud.Value = 50;
 				if (real)
-					accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (nud, true, true));
+					accessible = GetAdapterForWidget (nud);
 				else
 					accessible = new UiaAtkBridge.Spinner (ProviderFactory.GetProvider (nud, true, true));
 				break;
@@ -406,7 +433,7 @@ namespace UiaAtkBridgeTest
 					throw new NotSupportedException ("Not unreal support for TextBox");
 
 				tbx1.Text = name;
-				accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (tbxEntry, true, true));
+				accessible = GetAdapterForWidget (tbxEntry);
 				break;
 
 			case BasicWidgetType.TextBoxView:
@@ -415,7 +442,7 @@ namespace UiaAtkBridgeTest
 					throw new NotSupportedException ("Not unreal support for TextBox");
 
 				tbx2.Text = name;
-				accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (tbxView, true, true));
+				accessible = GetAdapterForWidget (tbxView);
 				break;
 				
 			case BasicWidgetType.PictureBox:
@@ -423,8 +450,7 @@ namespace UiaAtkBridgeTest
 				if (real)
 					pbox = (embeddedImage ? pboxWithImage: pboxWithoutImage);
 				if (real)
-					accessible = GetAdapterForProvider ((IRawElementProviderSimple) 
-					                                    ProviderFactory.GetProvider (pbox, true, true));
+					accessible = GetAdapterForWidget (pbox);
 				else
 					accessible = new UiaAtkBridge.Image (ProviderFactory.GetProvider (pbox, true, true));
 				break;
