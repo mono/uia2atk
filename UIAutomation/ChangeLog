@@ -1,3 +1,17 @@
+2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* winfx3.pub: Add key for signing these assemblies, copied from olive.
+
+	* configure.ac: Remove data for now, not done fixing this.  Add
+	buil/common/Consts.cs (still need to set MONO_VERSION).
+
+	* configure:
+	* build/common/MonoVersion.cs:
+	* build/common/TestConfiguration.cs: Remove unneeded files.
+
+	* data/ChangeLog:
+	* build/common/ChangeLog: Removed excessive ChangeLogs.
+
 2008-11-06  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomation.mds: Move top-level solution to top-level.

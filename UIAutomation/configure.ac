@@ -92,8 +92,8 @@ UIAutomationTypes/Makefile
 UIAutomationBridge/Makefile
 UIAutomationClient/Makefile
 UIAutomationProvider/Makefile
-data/Makefile
 Makefile
+build/common/Consts.cs
 ])
 
 AC_OUTPUT

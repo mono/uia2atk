@@ -1,3 +1,8 @@
+2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am: Handle keysigning in AssemblyInfo.cs, define NET_2_0 when
+	compiling.
+
 2008-10-27  Mario Carrion  <mcarrion@novell.com>
 
 	* UIAutomationTypesTests.mdp:
