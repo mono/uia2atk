@@ -76,6 +76,7 @@ namespace UiaAtkBridge
 		private IValueProvider						valProvider;
 		private IRawElementProviderFragmentRoot 	provider;
 		private SelectionProviderUserHelper			selectionHelper;
+		private IExpandCollapseProvider				expandColapseProvider;
 		
 		
 		public ComboBox (IRawElementProviderFragmentRoot provider) : base (provider)
@@ -85,6 +86,7 @@ namespace UiaAtkBridge
 
 			selProvider = (ISelectionProvider)provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
 			valProvider = (IValueProvider)provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+			expandColapseProvider = (IExpandCollapseProvider)provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
 			
 			if (selProvider == null)
 				throw new ArgumentException ("ComboBoxProvider should always implement ISelectionProvider");
@@ -110,8 +112,20 @@ namespace UiaAtkBridge
 		{
 			if (i != 0)
 				return false;
-			pressed = !pressed;
-			return pressed;
+			try {
+				switch (expandColapseProvider.ExpandCollapseState) {
+				case ExpandCollapseState.Collapsed:
+					expandColapseProvider.Expand ();
+					break;
+				case ExpandCollapseState.Expanded:
+					expandColapseProvider.Collapse ();
+					break;
+				default:
+					throw new NotSupportedException ("A combobox should not have an ExpandCollapseState different than Collapsed/Expanded");
+				}
+				return true;
+			} catch (ElementNotEnabledException) { }
+			return false;
 		}
 
 		string Atk.ActionImplementor.GetDescription (int i)

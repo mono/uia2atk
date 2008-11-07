@@ -36,6 +36,7 @@ namespace UiaAtkBridge
 	{
 		bool? comboBoxStructure = null;
 		TextImplementorHelper textExpert = null;
+		IInvokeProvider invokeProvider = null;
 		
 		public MenuItem (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -53,6 +54,9 @@ namespace UiaAtkBridge
 			
 			comboBoxStructure = ((int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
 			  == ControlType.List.Id);
+
+			if (comboBoxStructure.Value)
+				invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
 			
 			IRawElementProviderFragment child = ((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
 
@@ -129,8 +133,12 @@ namespace UiaAtkBridge
 		public bool DoAction (int i)
 		{
 			if (i == 0) {
-				//TODO: open element
-				return true;
+				if (invokeProvider != null)
+				try {
+					invokeProvider.Invoke ();
+					return true;
+				}
+				catch (ElementNotEnabledException) { }
 			}
 			return false;
 		}
