@@ -1,5 +1,10 @@
 2008-11-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Oops, duplicated condition (actually, this is a good
+	candidate for a Gendarme rule!).
+
+2008-11-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs: Prevent tests that were failing incorrectly.
 
 2008-11-07  Andrés G. Aragoneses  <aaragoneses@novell.com>

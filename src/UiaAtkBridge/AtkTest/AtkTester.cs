@@ -250,7 +250,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.GetKeybinding (3), "GetKeyBinding OOR#2");
 
 			//sub-items cannot be disabled, mainly because they are not widgets
-			if ((type != BasicWidgetType.ListItem) && (type != BasicWidgetType.ListItem)) {
+			if ((type != BasicWidgetType.ListItem) && (type != BasicWidgetType.CheckedListItem)) {
 				DisableWidget (accessible);
 				for (int i = 0; i < validNumberOfActions; i++) 
 					Assert.IsFalse (implementor.DoAction (i), "DoAction(" + i + ") after disabling");
