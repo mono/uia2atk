@@ -44,6 +44,10 @@ namespace UiaAtkBridgeTest
 		  BasicWidgetType type, string name, bool real);
 
 		public abstract I CastToAtkInterface <I> (Atk.Object accessible) where I : class;
+
+		public abstract void DisableWidget (Atk.Object accessible);
+
+		public abstract void EnableWidget (Atk.Object accessible);
 		
 		protected void InterfaceComponent (BasicWidgetType type, Atk.Component implementor)
 		{
@@ -240,6 +244,11 @@ namespace UiaAtkBridgeTest
 			//out of range items too
 			Assert.IsNull (implementor.GetKeybinding (-1), "GetKeyBinding OOR#1");
 			Assert.IsNull (implementor.GetKeybinding (3), "GetKeyBinding OOR#2");
+
+			DisableWidget (accessible);
+			for (int i = 0; i < validNumberOfActions; i++) 
+				Assert.IsFalse (implementor.DoAction (i), "DoAction(" + i + ") after disabling");
+			EnableWidget (accessible);
 		}
 		
 		protected void InterfaceSelection (Atk.Selection implementor, string[] names, Atk.Object accessible, BasicWidgetType type)

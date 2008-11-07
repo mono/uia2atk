@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 
 using NUnit.Framework;
 
@@ -78,6 +79,22 @@ namespace UiaAtkBridgeTest
 				alreadyInGuiThread = false;
 			}
 			System.Threading.Thread.Sleep (2000);
+		}
+
+		private Dictionary <Atk.Object, Gtk.Widget> mappings = new Dictionary<Atk.Object, Gtk.Widget> ();
+		
+		public override void DisableWidget (Atk.Object accessible)
+		{
+			RunInGuiThread (delegate () {
+				mappings [accessible].Sensitive = false;
+			});
+		}
+
+		public override void EnableWidget (Atk.Object accessible)
+		{
+			RunInGuiThread (delegate () {
+				mappings [accessible].Sensitive = true;
+			});
 		}
 		
 		public override Atk.Object GetAccessible (BasicWidgetType type, string text, bool real)
@@ -235,6 +252,7 @@ namespace UiaAtkBridgeTest
 			}
 			
 			accessible = widget.Accessible;
+			mappings [accessible] = widget;
 			
 			return accessible;
 		}
@@ -355,6 +373,7 @@ namespace UiaAtkBridgeTest
 			}
 			
 			accessible = widget.Accessible;
+			mappings [accessible] = widget;
 			
 			return accessible;
 		}
