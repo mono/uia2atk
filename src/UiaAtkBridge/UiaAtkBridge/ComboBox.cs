@@ -119,7 +119,7 @@ namespace UiaAtkBridge
 					break;
 				case ExpandCollapseState.Expanded:
 					expandColapseProvider.Collapse ();
-					break;
+					return false;
 				default:
 					throw new NotSupportedException ("A combobox should not have an ExpandCollapseState different than Collapsed/Expanded");
 				}

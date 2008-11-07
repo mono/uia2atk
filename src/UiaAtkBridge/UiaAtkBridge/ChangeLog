@@ -1,5 +1,10 @@
 2008-11-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* MenuItem.cs:
+	* ComboBox.cs: Fix ComboBox failures.
+
+2008-11-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* MenuItem.cs: Fixing MenuItem + AtkAction.
 
 2008-11-07  Andrés G. Aragoneses  <aaragoneses@novell.com>

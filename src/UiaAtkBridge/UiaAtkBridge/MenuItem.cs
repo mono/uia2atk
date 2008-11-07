@@ -51,14 +51,14 @@ namespace UiaAtkBridge
 				Name = name;
 
 			textExpert = new TextImplementorHelper (Name);
-			
-			comboBoxStructure = ((int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
-			  == ControlType.List.Id);
 
-			if (!comboBoxStructure.Value) {
+			int controlType = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			comboBoxStructure = (controlType == ControlType.List.Id);
+
+			if ((!comboBoxStructure.Value) && (controlType != ControlType.ListItem.Id)) {
 				invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
 				if (invokeProvider == null)
-					throw new ArgumentException ("Provider for ParentMenu should implement IInvokeProvider");
+					throw new ArgumentException ("Provider for ParentMenu should implement IInvokeProvider"+(int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) );
 			}
 			
 			IRawElementProviderFragment child = ((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
