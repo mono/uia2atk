@@ -55,8 +55,11 @@ namespace UiaAtkBridge
 			comboBoxStructure = ((int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
 			  == ControlType.List.Id);
 
-			if (comboBoxStructure.Value)
+			if (!comboBoxStructure.Value) {
 				invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
+				if (invokeProvider == null)
+					throw new ArgumentException ("Provider for ParentMenu should implement IInvokeProvider");
+			}
 			
 			IRawElementProviderFragment child = ((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
 
