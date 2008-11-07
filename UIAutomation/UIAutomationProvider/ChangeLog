@@ -1,5 +1,9 @@
 2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Makefile.am: Set PACKAGE_FLAG properly, fix some find/replace bugs.
+
+2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Makefile.am: After compiling, sign.  Should be cleaned up a bit.
 
 2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
