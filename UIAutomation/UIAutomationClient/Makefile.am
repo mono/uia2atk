@@ -43,6 +43,8 @@ RESGEN=resgen2
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
+        Assembly/AssemblyInfo.cs \
+        ../build/common/*.cs \
 	System.Windows.Automation/AutomationElementCollection.cs \
 	System.Windows.Automation/AutomationElement.cs \
 	System.Windows.Automation/AutomationElementMode.cs \

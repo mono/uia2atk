@@ -3164,7 +3164,7 @@ fi
 #cd $THISDIR
 #AC_SUBST(TOPDIR)
 
-ac_config_files="$ac_config_files UIAutomationTypes/Makefile UIAutomationBridge/Makefile UIAutomationClient/Makefile UIAutomationProvider/Makefile Makefile"
+ac_config_files="$ac_config_files UIAutomationTypes/Makefile UIAutomationBridge/Makefile UIAutomationClient/Makefile UIAutomationProvider/Makefile data/Makefile Makefile"
 
 
 cat >confcache <<\_ACEOF
@@ -3768,6 +3768,7 @@ do
     "UIAutomationBridge/Makefile") CONFIG_FILES="$CONFIG_FILES UIAutomationBridge/Makefile" ;;
     "UIAutomationClient/Makefile") CONFIG_FILES="$CONFIG_FILES UIAutomationClient/Makefile" ;;
     "UIAutomationProvider/Makefile") CONFIG_FILES="$CONFIG_FILES UIAutomationProvider/Makefile" ;;
+    "data/Makefile") CONFIG_FILES="$CONFIG_FILES data/Makefile" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
 
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
