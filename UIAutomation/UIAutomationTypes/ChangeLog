@@ -1,5 +1,10 @@
 2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Makefile.am: Add -lib:../bin compiler flag to get local WindowsBase
+	assembly.
+
+2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Makefile.am: Remove cruft, use bin instead of lib/Debug.
 
 2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>

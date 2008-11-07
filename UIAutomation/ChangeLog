@@ -1,3 +1,8 @@
+2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* WindowsBase/Makefile.am: Add "/package 2.0" gacutil flag to create
+	WindowsBase symlink in the correct location.
+
 2008-11-07  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am:
