@@ -10,8 +10,12 @@
       <p class="header">
         <span id="documentName">Strongwind Test Status Dashboard</span><br/>
       </p>
+      <p class="subheader">
+        <span>Last Updated:</span>
+        <xsl:value-of select="dashboard/timeAndDate"/>
+      </p>
       <p class="updateStatus">
-	<h3>Package Update Status</h3>
+        <h3>Package Update Status</h3>
         <table>
           <tr>
             <th id="machine">Machine</th>

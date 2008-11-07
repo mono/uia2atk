@@ -5,6 +5,7 @@ import re
 import getopt
 import sys
 import commands as c
+import time as t
 
 try:
     import xml.etree.ElementTree as ET # python 2.5
@@ -291,6 +292,10 @@ class PageBuilder(object):
         regression_num_passed = 0.0
         regression_num_tests = 0.0
         root = ET.Element("dashboard")
+
+        # add the current time and date to the XML dashboard file
+        ET.SubElement(root, "timeAndDate").text = \
+             " ".join(t.asctime().split()[:-1]+[t.tzname[t.daylight]])
 
         # smoke test portion of XML dashboard file
         smoke = ET.SubElement(root, "smoke")

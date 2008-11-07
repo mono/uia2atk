@@ -1,5 +1,14 @@
 2008-11-07 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* tools/dashboard/dashboard.py: Add the current time and date to the
+	dashboard xml file when it is updated.
+	* tools/dashboard/dashboard.xsl: Display the time and date that the
+	dashboard xml file was last updated.
+	* tools/dashboard/dashboard.css: Style for the time and date info on
+	the dashboard.
+
+2008-11-07 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* harness/local_run.py: Fix bug that was causing 0 to be prefixed
 	multiple times to the text report logs linked to by the dashboard.
 	Text report logs in logs/smoke and logs/regression should now only
