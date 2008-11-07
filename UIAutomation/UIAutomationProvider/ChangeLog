@@ -1,3 +1,7 @@
+2008-11-06  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UIAutomation.mds: Move top-level solution to top-level.
+
 2008-11-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:

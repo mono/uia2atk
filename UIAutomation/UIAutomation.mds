@@ -18,8 +18,8 @@
   </StartMode>
   <MonoDevelop.ChangeLogAddIn.ChangeLogInfo policy="UpdateNearestChangeLog" />
   <Entries>
-    <Entry filename="UIAutomationProvider.mds" />
-    <Entry filename="../UIAutomationTypes/UIAutomationTypes.mds" />
-    <Entry filename="../UIAutomationBridge/UIAutomationBridge.mds" />
+    <Entry filename="UIAutomationProvider/UIAutomationProvider.mds" />
+    <Entry filename="UIAutomationTypes/UIAutomationTypes.mds" />
+    <Entry filename="UIAutomationBridge/UIAutomationBridge.mds" />
   </Entries>
 </Combine>
