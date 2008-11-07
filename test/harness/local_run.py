@@ -223,13 +223,18 @@ class Test(object):
         # if the test was successful prefix the file with a 0, so we can
         # easily tell that the test was successful based on this log
         f = open(file_path,'r')
-        log = []
-        for line in f:
-            log.append(line)
+        first_char = f.read(1)
         f.close()
-        os.system('echo "0" > %s' % file_path)
-        f = open(file_path, 'a')
-        f.write("".join(log))
+        if first_char != "0":
+            f = open(file_path,'r')
+            log = []
+            for line in f:
+                log.append(line)
+            f.close()
+            f = open(file_path, 'w')
+            f.write("0\n")
+            f.write("".join(log))
+            f.close()
       try:
         self.log(test)
       except InconceivableError, msg:

@@ -1,5 +1,12 @@
 2008-11-07 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* harness/local_run.py: Fix bug that was causing 0 to be prefixed
+	multiple times to the text report logs linked to by the dashboard.
+	Text report logs in logs/smoke and logs/regression should now only
+	be prefixed with a single 0 when the most recent test was successful.
+
+22008-11-07 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* tools/dashboard/dashboard.py: Read only the first character of the 
 	test status file to see if the test failed since we are only checking
 	for a 0 or !0.
