@@ -254,7 +254,8 @@ class PageBuilder(object):
                 return -1
         for dir in new_dirs:
             f = open("%s/status" % dir)
-            status_codes.append(int(f.read()))
+            status_codes.append(int(f.read(1)))
+            f.close()
         if sum(status_codes) == 0:
             return 0
         else:

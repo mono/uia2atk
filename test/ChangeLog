@@ -1,3 +1,11 @@
+2008-11-07 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* tools/dashboard/dashboard.py: Read only the first character of the 
+	test status file to see if the test failed since we are only checking
+	for a 0 or !0.
+	* harness/local_run.py: Fix silly bug that would cause any test after
+	a failed test to report a failure also.
+
 2008-11-07  Calen Chen <cachen@novell.com>
 
 	* samples/gtkbutton_label.py: set fg-color for label's text to practice
@@ -6,7 +14,7 @@
 2008-11-07  Calen Chen <cachen@novell.com>
 
 	* samples/statusstrip.py: add ToolStripDropDownButton,
-        ToolStripDropDownButton,ToolStripProgressBar into statusstrip sample 
+	ToolStripDropDownButton,ToolStripProgressBar into statusstrip sample 
 	according to the description in MSDN, delete repeated label
 	* testers/statusstrip/__init__.py,
 	* testers/statusstrip/statusstripframe.py,

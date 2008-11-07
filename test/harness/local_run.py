@@ -104,9 +104,6 @@ class Test(object):
 
     self.tests = tests.tests_list
 
-    # set the initial status to 0 (good)
-    self.status = 0
-
   def countdown(self, n):
     ''' Counts down for n seconds and allows the user to abort the program cleanly '''
 
@@ -208,6 +205,8 @@ class Test(object):
     TIMEOUT = 600 # ten minutes
     output("INFO:  Executing tests...")
     for test in found_tests:
+      # set the initial status to 0 (good)
+      self.status = 0
       self.set_test_file_info(test)
       file_path = os.path.join(Settings.log_path, test_type, self.control_name)
       self.write_top_portion(file_path)
