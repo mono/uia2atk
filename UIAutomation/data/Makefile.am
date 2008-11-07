@@ -1,5 +1,5 @@
-thisdir = data
-SUBDIRS = 
+
+EXTRA_DIST =  
 
 net20dir   = $(prefix)/lib/mono/2.0
 a11ydir    = $(prefix)/lib/mono/accessibility
@@ -10,8 +10,6 @@ INSTALL = $(SHELL) ../install-sh
 INSTALL_D = $(INSTALL) -c -m 644
 
 all: mono-uia.pc
-
-DISTFILES = mono-uia.pc.in
 
 REWRITE=
 mono-uia.pc: mono-uia.pc.in Makefile
@@ -33,3 +31,6 @@ clean-local:
 test-local:
 
 dist-local: dist-default
+
+FILES =  \
+	mono-uia.pc.in
