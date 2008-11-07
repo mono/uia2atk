@@ -195,6 +195,11 @@ namespace UiaAtkBridgeTest
 			return acc;
 		}
 
+		public override Atk.Object GetAccessible (BasicWidgetType type, string [] names)
+		{
+			return GetAccessible (type, names, true);
+		}
+		
 		public override Atk.Object GetAccessible (BasicWidgetType type, string [] names, bool real)
 		{
 			Atk.Object accessible = null;
@@ -294,6 +299,11 @@ namespace UiaAtkBridgeTest
 		}
 		
 
+		public override Atk.Object GetAccessible (BasicWidgetType type, string name)
+		{
+			return GetAccessible (type, name);
+		}
+		
 		public override Atk.Object GetAccessible (BasicWidgetType type, string name, bool real)
 		{
 			return GetAccessible (type, name, real, false);

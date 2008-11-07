@@ -21,6 +21,7 @@
 // 
 // Authors: 
 //      Andres G. Aragoneses <aaragoneses@novell.com>
+//      Michael Gorse <mgorse@novell.com>
 // 
 
 using System;
@@ -81,7 +82,7 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible;
 			
 			string[] names = new string [] { simpleTestText, "Second Item", "Last Item" };
-			accessible = GetAccessible (type, names, true);
+			accessible = GetAccessible (type, names);
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 
 			InterfaceComponent (type, atkComponent);
@@ -124,7 +125,7 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible;
 			
 			string[] names = new string[] { simpleTestText, "Second Item", "Last Item" };
-			accessible = GetAccessible (type, names, true);
+			accessible = GetAccessible (type, names);
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 
 			InterfaceComponent (type, atkComponent);

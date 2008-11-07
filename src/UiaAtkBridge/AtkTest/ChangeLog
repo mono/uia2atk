@@ -1,5 +1,9 @@
 2008-11-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Have new overloads without real param.
+
+2008-11-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs: Add unit testing for bug#427247.
 
 2008-11-07  Andrés G. Aragoneses  <aaragoneses@novell.com>

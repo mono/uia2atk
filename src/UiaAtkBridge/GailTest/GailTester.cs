@@ -96,6 +96,11 @@ namespace UiaAtkBridgeTest
 				mappings [accessible].Sensitive = true;
 			});
 		}
+
+		public override Atk.Object GetAccessible (BasicWidgetType type, string text)
+		{
+			return GetAccessible (type, text, true);
+		}
 		
 		public override Atk.Object GetAccessible (BasicWidgetType type, string text, bool real)
 		{
@@ -131,8 +136,13 @@ namespace UiaAtkBridgeTest
 			throw new NotImplementedException ("Couldn't cast to interface " +
 			  typeof (I).Name);
 		}
+
+		public override Atk.Object GetAccessible (BasicWidgetType type, string [] name)
+		{
+			return GetAccessible (type, name);
+		}
 		
-		public override Atk.Object GetAccessible (BasicWidgetType type, string[] name, bool real)
+		public override Atk.Object GetAccessible (BasicWidgetType type, string [] name, bool real)
 		{
 			Atk.Object accessible = null;
 			//this is because of this:

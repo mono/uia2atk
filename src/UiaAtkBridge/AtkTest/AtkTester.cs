@@ -33,12 +33,16 @@ namespace UiaAtkBridgeTest
 {
 	
 	public abstract class AtkTester {
+
+		public abstract Atk.Object GetAccessible (BasicWidgetType type, string name);
 		
 		public abstract Atk.Object GetAccessible (
 		  BasicWidgetType type, string name, bool real);
+
+		public abstract Atk.Object GetAccessible (BasicWidgetType type, string [] name);
 		
 		public abstract Atk.Object GetAccessible (
-		  BasicWidgetType type, string[] name, bool real);
+		  BasicWidgetType type, string [] name, bool real);
 
 		public abstract Atk.Object GetAccessibleThatEmbedsAnImage (
 		  BasicWidgetType type, string name, bool real);

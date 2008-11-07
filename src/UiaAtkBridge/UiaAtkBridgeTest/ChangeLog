@@ -1,5 +1,11 @@
 2008-11-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTests.cs: Use new overloads, add mgorse to the authors.
+
+	* BridgeTester.cs: Have new overloads without real param.
+
+2008-11-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Track API changes in AtkTest.
 
 2008-11-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
