@@ -2,7 +2,7 @@
 EXTRA_DIST =  expansions.m4 mono.snk
 
 if ENABLE_TESTS
-SUBDIRS =  UIAutomationTypes UIAutomationBridge UIAutomationProvider UIAutomationClient
+SUBDIRS =  UIAutomationTypes UIAutomationBridge UIAutomationProvider UIAutomationClient data
 else
-SUBDIRS =  UIAutomationTypes UIAutomationBridge UIAutomationProvider UIAutomationClient
+SUBDIRS =  UIAutomationTypes UIAutomationBridge UIAutomationProvider UIAutomationClient data
 endif

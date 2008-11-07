@@ -92,6 +92,7 @@ UIAutomationTypes/Makefile
 UIAutomationBridge/Makefile
 UIAutomationClient/Makefile
 UIAutomationProvider/Makefile
+data/Makefile
 Makefile
 ])
 
