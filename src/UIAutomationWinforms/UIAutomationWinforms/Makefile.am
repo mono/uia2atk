@@ -256,14 +256,15 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs \
 	Mono.UIAutomation.Winforms/ToolStripProgressBar.cs \
 	Mono.UIAutomation.Winforms/ToolStripProvider.cs \
+	Mono.UIAutomation.Winforms/ToolStripSplitButtonProvider.cs \
 	Mono.UIAutomation.Winforms/ToolStripTextBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs \
 	Mono.UIAutomation.Winforms/ToolTipListener.cs \
 	Mono.UIAutomation.Winforms/ToolTipProvider.cs \
 	Mono.UIAutomation.Winforms/UpDownBaseProvider.cs \
 	Mono.UIAutomation.Winforms/WebBrowserProvider.cs \
-	Mono.UIAutomation.Winforms/WordTokenCollection.cs \
 	Mono.UIAutomation.Winforms/WordToken.cs \
+	Mono.UIAutomation.Winforms/WordTokenCollection.cs \
 	Mono.UIAutomation.Winforms/WordTokenizer.cs 
 
 DATA_FILES = 
