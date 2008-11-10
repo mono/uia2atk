@@ -1,9 +1,18 @@
 2008-11-10  Calen Chen <cachen@novell.com>
 
+	* testers/combobox_simple/comboboxsimpleframe.py,
+	* testers/combobox_simple/__init__.py,
+	* testers/combobox_simple_ops.py,
+	* testers/combobox_simple: add new strongwind test to check text box 
+	value input, check editableText implementation, test Menu states and 
+	MenuItems states and actions
+
+2008-11-10  Calen Chen <cachen@novell.com>
+
 	* testers/statusbarpanel/statusbarpanelframe.py,
 	* testers/statusbarpanel/__init__.py,
 	* testers/statusbarpanel_basic_ops.py,
-	* testers/statusbarpanel: Add new stronwind test to search for 
+	* testers/statusbarpanel: Add new strongwind test to search for 
 	statusbarpanel as 'text' role name and assert the statusbarpanel's 
 	text, also test states of the statusbarpanel
 
