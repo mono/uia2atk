@@ -79,6 +79,8 @@ namespace UiaAtkBridge
 				states.AddState (Atk.StateType.Active);
 			else
 				states.RemoveState (Atk.StateType.Active);
+			
+			states.RemoveState (Atk.StateType.Focusable);
 			return states;
 		}
 

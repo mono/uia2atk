@@ -1,5 +1,10 @@
 2008-11-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Window.cs: Fixes #429425, however I would like to know why the tests
+	whine about the Showing state, when it works in a separate app.
+
+2008-11-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* MenuBar.cs: Fix MenuBar in the bridge.
 
 2008-11-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
