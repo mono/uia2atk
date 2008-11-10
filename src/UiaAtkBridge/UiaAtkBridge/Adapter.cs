@@ -87,6 +87,22 @@ namespace UiaAtkBridge
 			Atk.StateSet states = base.OnRefStateSet ();
 			
 			if (Provider != null) {
+				bool enabled = 
+				  (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+				if (enabled) {
+					states.AddState (Atk.StateType.Sensitive);
+					states.AddState (Atk.StateType.Enabled);
+				} else {
+					states.RemoveState (Atk.StateType.Sensitive);
+					states.RemoveState (Atk.StateType.Enabled);
+				}
+				
+				bool canFocus = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
+				if (canFocus)
+					states.AddState (Atk.StateType.Focusable);
+				else
+					states.RemoveState (Atk.StateType.Focusable);
+				
 				bool showing = !(bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
 				if (showing)
 				{
