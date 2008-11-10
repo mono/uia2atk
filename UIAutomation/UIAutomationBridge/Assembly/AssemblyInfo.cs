@@ -44,7 +44,7 @@ using System.Security.Permissions;
 [assembly: NeutralResourcesLanguage ("en")]
 [assembly: CLSCompliant (true)]
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile ("../winfx3.pub")]
+[assembly: AssemblyKeyFile ("../../winfx3.pub")]
 
 [assembly: ComVisible (false)]
 [assembly: AllowPartiallyTrustedCallers]

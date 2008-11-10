@@ -69,6 +69,7 @@ PKG_CHECK_MODULES([MONO], [mono >= 2.0])
 
 AC_CONFIG_FILES([
 WindowsBase/Makefile
+WindowsBase/Assembly/AssemblyInfo.cs
 UIAutomationTypes/Makefile
 UIAutomationBridge/Makefile
 UIAutomationClient/Makefile

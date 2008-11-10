@@ -11,7 +11,7 @@ PROJECT_REFERENCES =
 BUILD_DIR = ../bin
 PACKAGE_FLAG = /package 2.0
 
-WINDOWSBASE_DLL_MDB_SOURCE=../bin/WindowsBase.dll.mdb
+WINDOWSBASE_DLL_MDB_SOURCE=$(BUILD_DIR)/WindowsBase.dll.mdb
 WINDOWSBASE_DLL_MDB=$(BUILD_DIR)/WindowsBase.dll.mdb
 
 AL=al2
@@ -59,4 +59,4 @@ $(build_xamlg_list): %.xaml.g.cs: %.xaml
 $(ASSEMBLY) $(ASSEMBLY_MDB): $(build_sources) $(build_resources) $(build_datafiles) $(DLL_REFERENCES) $(PROJECT_REFERENCES) $(build_xamlg_list) $(build_satellite_assembly_list)
 	mkdir -p $(shell dirname $(ASSEMBLY))
 	$(ASSEMBLY_COMPILER_COMMAND) $(ASSEMBLY_COMPILER_FLAGS) -out:$(ASSEMBLY) -target:$(COMPILE_TARGET) $(build_sources_embed) $(build_resources_embed) $(build_references_ref)
-	sn -q -R $(ASSEMBLY) ../mono.snk
+	sn -q -R $(ASSEMBLY) $(top_srcdir)/mono.snk

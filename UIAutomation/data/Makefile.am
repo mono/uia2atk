@@ -5,8 +5,8 @@ net20dir   = $(prefix)/lib/mono/2.0
 a11ydir    = $(prefix)/lib/mono/accessibility
 
 SHELL = /bin/sh
-MKINSTALLDIRS = $(SHELL) ../mkinstalldirs
-INSTALL = $(SHELL) ../install-sh
+MKINSTALLDIRS = $(SHELL) $(top_srcdir)/mkinstalldirs
+INSTALL = $(SHELL) $(top_srcdir)/install-sh
 INSTALL_D = $(INSTALL) -c -m 644
 
 all: mono-uia.pc
