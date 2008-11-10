@@ -69,10 +69,15 @@ PKG_CHECK_MODULES([MONO], [mono >= 2.0])
 
 AC_CONFIG_FILES([
 WindowsBase/Makefile
+WindowsBase/AssemblyInfo.cs
 UIAutomationTypes/Makefile
+UIAutomationTypes/AssemblyInfo.cs
 UIAutomationBridge/Makefile
+UIAutomationBridge/AssemblyInfo.cs
 UIAutomationClient/Makefile
+UIAutomationClient/AssemblyInfo.cs
 UIAutomationProvider/Makefile
+UIAutomationProvider/AssemblyInfo.cs
 data/Makefile
 data/mono-uia.pc.in
 Makefile

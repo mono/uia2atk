@@ -1,3 +1,7 @@
+2008-11-10  Brad Taylor  <brad@getcoded.net>
+	
+	* */: Make distcheck pass.
+
 2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* WindowsBase/Makefile.am: Add "/package 2.0" gacutil flag to create

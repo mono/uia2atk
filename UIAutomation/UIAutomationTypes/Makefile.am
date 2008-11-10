@@ -27,7 +27,7 @@ RESGEN=resgen2
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
-        Assembly/AssemblyInfo.cs \
+        AssemblyInfo.cs \
         ../build/common/*.cs \
 	System.Windows.Automation/AsyncContentLoadedEventArgs.cs \
 	System.Windows.Automation/AutomationElementIdentifiers.cs \

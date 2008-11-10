@@ -32,7 +32,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Permissions;
 
-// General Information about the UIAutomationBridge assembly
+// General Information about the UIAutomationProvider assembly
 // v3.0 Assembly
 
 [assembly: AssemblyCompany (Consts.MonoCompany)]
@@ -44,7 +44,7 @@ using System.Security.Permissions;
 [assembly: NeutralResourcesLanguage ("en")]
 [assembly: CLSCompliant (true)]
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile ("../../winfx3.pub")]
+[assembly: AssemblyKeyFile ("@abs_top_srcdir@/winfx3.pub")]
 
 [assembly: ComVisible (false)]
 [assembly: AllowPartiallyTrustedCallers]

@@ -26,7 +26,7 @@ RESGEN=resgen2
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
-	Assembly/AssemblyInfo.cs \
+	AssemblyInfo.cs \
 	../build/common/*.cs \
 	Mono.UIAutomation.Bridge/IAutomationBridge.cs \
 	Mono.UIAutomation.Bridge/IEmbeddedImage.cs \
