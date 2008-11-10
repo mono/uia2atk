@@ -512,6 +512,9 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.StatusBar:
 				role = Atk.Role.Statusbar;
 				break;
+			case BasicWidgetType.MainMenuBar:
+				role = Atk.Role.MenuBar;
+				break;
 			case BasicWidgetType.ParentMenu:
 				role = Atk.Role.Menu;
 				break;

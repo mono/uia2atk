@@ -460,6 +460,26 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);
+
+			PropertyRole (type, accessible);
+
+			Assert.AreEqual (1, accessible.NAccessibleChildren, "number of children; children roles:" + childrenRoles (accessible));
+
+			for (int i = 0; i < accessible.NAccessibleChildren; i++) {
+				Atk.Object parentMenuChild = accessible.RefAccessibleChild (i);
+				Assert.IsNotNull (parentMenuChild, "menubar child#" + i + " should not be null");
+
+				Assert.IsTrue ( //FIXME: check if it's possible to have a MenuItem alone (like a push button)
+				  (parentMenuChild.Role == Atk.Role.Menu), "menubar children should have Menu role");
+				Assert.AreEqual (names [0], parentMenuChild.Name, "name of the parentmenu is the same as its label");
+			}
+
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+
+			//FIXME:
+			//Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
+			//InterfaceSelection (atkSelection, names, accessible, type);
 			
 			Console.WriteLine ("</Test>");
 //TODO:
@@ -493,7 +513,7 @@ namespace UiaAtkBridgeTest
 			
 			Assert.AreEqual (names.Length - 1, accessible.NAccessibleChildren, "number of children; children roles:" + childrenRoles (accessible));
 			
-			for (int i = 0; i < accessible.NAccessibleChildren; i++){
+			for (int i = 0; i < accessible.NAccessibleChildren; i++) {
 				Atk.Object menuChild = accessible.RefAccessibleChild (i);
 				Assert.IsNotNull (menuChild, "menu child#0 should not be null");
 				Assert.IsTrue (
