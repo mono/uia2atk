@@ -1,3 +1,11 @@
+2008-11-10  Brad Taylor  <brad@getcoded.net>
+	
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms/ToolStripSplitButtonProvider.cs:
+	* Mono.UIAutomation.Winforms.Events/ToolStripSplitButton/ExpandCollapsePatternStateEvent.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripSplitButton/ExpandCollapseProviderBehavior.cs:
+	Wrap up ToolStripSplitButtonProvider, implement IExpandCollapseProvider.
+
 2008-11-10  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

@@ -54,10 +54,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// Should never support SelectionItem
 			object selectionItemProvider = provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
 			Assert.IsNull (selectionItemProvider);
-
-			// Should never support ExpandCollapse
-			object expandCollapseProvider = provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
-			Assert.IsNull (expandCollapseProvider);
 			
 			object invokeProvider = provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (invokeProvider);
@@ -323,6 +319,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			return new ToolStripMenuItem ();
 		}
+
+		[Test]
+		public void ExpandCollapseProvider ()
+		{
+			ToolStripMenuItem menuItem = GetNewToolStripDropDownItem ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (menuItem);
+
+			// Should never support ExpandCollapse
+			object expandCollapseProvider = provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+			Assert.IsNull (expandCollapseProvider);
+		}
 	}
 
 	[TestFixture]
@@ -344,6 +351,39 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return new ToolStripSplitButton ();
 		}
 
-		// TODO: Additional tests for ToolStripSplitButton
+		[Test]
+		public void ExpandCollapseProvider ()
+		{
+			ToolStripSplitButton split_button = GetNewToolStripDropDownItem ();
+			ToolStripMenuItem item = new ToolStripMenuItem ();
+			ToolStrip tool_strip = new ToolStrip ();
+
+			tool_strip.Items.AddRange (new ToolStripItem[] { split_button });
+			split_button.DropDownItems.AddRange (new ToolStripItem[] { item });
+			Form.Controls.Add (tool_strip);
+
+			tool_strip.Show ();
+
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (split_button);
+
+			// Should always support ExpandCollapse
+			IExpandCollapseProvider expandCollapseProvider
+				= (IExpandCollapseProvider) provider.GetPatternProvider (
+					ExpandCollapsePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (expandCollapseProvider);
+
+			Assert.AreEqual (ExpandCollapseState.Collapsed,
+			                 expandCollapseProvider.ExpandCollapseState);
+
+			expandCollapseProvider.Expand ();
+			Assert.AreEqual (ExpandCollapseState.Expanded,
+			                 expandCollapseProvider.ExpandCollapseState);
+
+			expandCollapseProvider.Collapse ();
+			Assert.AreEqual (ExpandCollapseState.Collapsed,
+			                 expandCollapseProvider.ExpandCollapseState);
+
+			// TODO: Test eventing
+		}
 	}
 }

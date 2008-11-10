@@ -20,59 +20,48 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
 //	Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
 
-using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
-
-using Mono.UIAutomation.Winforms.Behaviors.ToolStripSplitButton;
-
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events.ToolStripSplitButton
 {
-	internal class ToolStripSplitButtonProvider : ToolStripDropDownItemProvider
+	internal class ExpandCollapsePatternStateEvent
+		: BaseAutomationPropertyEvent
 	{
-		//private ToolStripSplitButton splitButton;
+#region Constructor
+		public ExpandCollapsePatternStateEvent (SimpleControlProvider provider) 
+			: base (provider, 
+			        ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty)
+		{
+		}
+#endregion
 		
-		public ToolStripSplitButtonProvider (ToolStripSplitButton splitButton) :
-			base (splitButton)
+#region EventStrategy Methods
+		public override void Connect ()
 		{
-			//this.splitButton = splitButton;
+			((SWF.ToolStripSplitButton) Provider.Component).DropDownOpened += new EventHandler (OnDropDown);
+			((SWF.ToolStripSplitButton) Provider.Component).DropDownClosed += new EventHandler (OnDropDown);
 		}
 
-		public override object GetPropertyValue (int propertyId)
+		public override void Disconnect ()
 		{
-			if (propertyId == AEIds.ControlTypeProperty.Id)
-				return ControlType.SplitButton.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return "split button";
-			else if (propertyId == AEIds.LabeledByProperty.Id)
-				return null;
-			else
-				return base.GetPropertyValue (propertyId);
+			((SWF.ToolStripSplitButton) Provider.Component).DropDownOpened -= new EventHandler (OnDropDown);
+			((SWF.ToolStripSplitButton) Provider.Component).DropDownClosed -= new EventHandler (OnDropDown);
 		}
+#endregion
 
-		public override void Initialize ()
+#region Private Methods
+		private void OnDropDown (object sender, EventArgs e)
 		{
-			base.Initialize ();
-
-			SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
-				     new ExpandCollapseProviderBehavior (this));
+			RaiseAutomationPropertyChangedEvent ();
 		}
-
-		public override void Terminate ()
-		{
-			base.Terminate ();
-
-			SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
-				     null);
-		}
+#endregion
 	}
 }
