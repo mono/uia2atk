@@ -1,3 +1,12 @@
+2008-11-10  Calen Chen <cachen@novell.com>
+
+	* testers/statusbarpanel/statusbarpanelframe.py,
+	* testers/statusbarpanel/__init__.py,
+	* testers/statusbarpanel_basic_ops.py,
+	* testers/statusbarpanel: Add new stronwind test to search for 
+	statusbarpanel as 'text' role name and assert the statusbarpanel's 
+	text, also test states of the statusbarpanel
+
 2008-11-07 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* tools/dashboard/dashboard.py: Add the current time and date to the
@@ -14,7 +23,7 @@
 	Text report logs in logs/smoke and logs/regression should now only
 	be prefixed with a single 0 when the most recent test was successful.
 
-22008-11-07 Brian G. Merrell <bgmerrell@gmail.com>
+2008-11-07 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* tools/dashboard/dashboard.py: Read only the first character of the 
 	test status file to see if the test failed since we are only checking
