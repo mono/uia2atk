@@ -97,12 +97,6 @@ namespace UiaAtkBridge
 					states.RemoveState (Atk.StateType.Enabled);
 				}
 				
-				bool canFocus = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
-				if (canFocus)
-					states.AddState (Atk.StateType.Focusable);
-				else
-					states.RemoveState (Atk.StateType.Focusable);
-				
 				bool showing = !(bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
 				if (showing)
 				{

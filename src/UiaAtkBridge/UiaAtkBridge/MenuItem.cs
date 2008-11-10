@@ -70,12 +70,7 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
-			//FIXME: figure out why MenuItem elements in Gail don't like this state
-			// (maybe because they replace it with Selectable?)
-			if (states.ContainsState (Atk.StateType.Focusable)) {
-				states.RemoveState (Atk.StateType.Focusable);
-				states.AddState (Atk.StateType.Selectable);
-			}
+			states.AddState (Atk.StateType.Selectable);
 			return states;
 		}
 
