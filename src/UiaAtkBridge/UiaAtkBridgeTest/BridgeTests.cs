@@ -72,6 +72,8 @@ namespace UiaAtkBridgeTest
 		protected SWF.PictureBox pboxWithImage = new SWF.PictureBox ();
 		protected SWF.TextBox tbx1 = new SWF.TextBox ();
 		protected SWF.TextBox tbx2 = new SWF.TextBox ();
+		protected SWF.ToolStrip toolStrip = new SWF.ToolStrip ();
+		protected SWF.ToolStripComboBox toolStripComboBox = new SWF.ToolStripComboBox ();
 
 		protected int lastClickedLink = -1;
 		
@@ -244,11 +246,21 @@ namespace UiaAtkBridgeTest
 		{
 			Console.WriteLine ("<Test id=\"ComboBoxSimple\">");
 			
+			ComboBoxSimple (null);
+
+			Console.WriteLine ("</Test>");
+		}
+		
+		private void ComboBoxSimple (System.ComponentModel.Component comboBox)
+		{
 			BasicWidgetType type = BasicWidgetType.ComboBoxSimple;
+
+			if (comboBox == null)
+				comboBox = cbSim;
 
 			Atk.Object accessible = 
 			  UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (
-			    (IRawElementProviderSimple) ProviderFactory.GetProvider (cbSim, true, true));
+			    (IRawElementProviderSimple) ProviderFactory.GetProvider (comboBox, true, true));
 			
 			PropertyRole (type, accessible);
 
@@ -260,9 +272,20 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		public void ToolStripComboBoxSimple ()
+		{
+			Console.WriteLine ("<Test id=\"ToolStripComboBoxSimple\">");
+			
+			ComboBoxSimple (toolStripComboBox);
+			
+			Console.WriteLine ("</Test>");
+		}
+
+		[Test]
 		public void Bug416602 ()
 		{
 			Console.WriteLine ("<Test regression=\"{0}\">", 416602);
+			
 			using (SWF.Form f = new SWF.Form ()) {
 				SWF.ListBox listbox = null;
 				SWF.Button addButton = new SWF.Button ();
@@ -312,9 +335,9 @@ namespace UiaAtkBridgeTest
 					Assert.Fail ("Shouldn't crash");
 				}
 				f.Close ();
-
-				Console.WriteLine ("</Test>");
 			}
+			
+			Console.WriteLine ("</Test>");
 		}
 
 	}
