@@ -52,7 +52,7 @@ rm -rf $RPM_BUILD_ROOT
 %_prefix/lib/mono/accessibility/UIAutomationBridge.dll
 %_prefix/lib/mono/gac/UIAutomationClient
 %_prefix/lib/mono/accessibility/UIAutomationClient.dll
-%_libdir/pkgconfig/*.pc
+%_prefix/lib/pkgconfig/*.pc
 
 %package -n mono-winfxcore
 License:	MIT/X11
