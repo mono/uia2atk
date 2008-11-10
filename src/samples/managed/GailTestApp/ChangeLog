@@ -1,3 +1,8 @@
+2008-11-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* gtk-gui/gui.stetic:
+	* gtk-gui/MainWindow.cs: Add a toolbar with 3 buttons.
+
 2008-11-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* GailTestApp.mdp: Turn off reference sychronization in makefile
