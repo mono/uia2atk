@@ -1101,15 +1101,36 @@ namespace UiaAtkBridgeTest
 		protected void States (Atk.Object accessible, params Atk.StateType [] expected)
 		{
 			List <Atk.StateType> expectedStates = new List <Atk.StateType> (expected);
+			List <Atk.StateType> missingStates = new List <Atk.StateType> ();
+			List <Atk.StateType> superfluousStates = new List <Atk.StateType> ();
 			
 			Atk.StateSet stateSet = accessible.RefStateSet ();
-			foreach (Atk.StateType state in Enum.GetValues (typeof (Atk.StateType)))
-				if (expectedStates.Contains (state))
-					Assert.IsTrue (stateSet.ContainsState (state), "Missing state: " + state);
-				else
-					Assert.IsFalse (stateSet.ContainsState (state), "Superfluous state: " + state);
-		}
+			foreach (Atk.StateType state in Enum.GetValues (typeof (Atk.StateType))) {
+				if (expectedStates.Contains (state) && 
+				    (!(stateSet.ContainsState(state))))
+					missingStates.Add (state);
+				else if ((!expectedStates.Contains (state)) && 
+					     (stateSet.ContainsState(state)))
+					superfluousStates.Add (state);
+			}
 
+			string missingStatesMsg = string.Empty;
+			string superfluousStatesMsg = string.Empty;
+
+			if (missingStates.Count != 0) {
+				missingStatesMsg = "Missing states: ";
+				foreach (Atk.StateType state in missingStates)
+					missingStatesMsg += state.ToString () + ",";
+			}
+			if (superfluousStates.Count != 0) {
+				missingStatesMsg = "Superfluous states: ";
+				foreach (Atk.StateType state in superfluousStates)
+					superfluousStatesMsg += state.ToString () + ",";
+			}
+			Assert.IsTrue ((missingStates.Count == 0) && (superfluousStates.Count == 0),
+				missingStatesMsg + " .. " + superfluousStatesMsg);
+		}
+		
 		private double GetMinimumValue (Atk.Value value)
 		{
 			GLib.Value gv = new GLib.Value (0);
