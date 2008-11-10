@@ -445,7 +445,21 @@ namespace UiaAtkBridgeTest
 		public void MainMenuBar ()
 		{
 			Console.WriteLine ("<Test id=\"MainMenuBar\">");
+
+			BasicWidgetType type = BasicWidgetType.MainMenuBar;
+			Atk.Object accessible = null;
 			
+			string menuName = "File!";
+			string[] names = new string[] { menuName, "New", "Quit" };
+			accessible = GetAccessible (type, names, true);
+
+			Assert.IsNull (accessible.Name, "name of the menubar should be null, now it's:" + accessible.Name);
+			
+			States (accessible,
+			  Atk.StateType.Enabled, 
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible);
 			
 			Console.WriteLine ("</Test>");
 //TODO:

@@ -1,3 +1,7 @@
+2008-11-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTester.cs: Basic testing of MenuBar.
+
 2008-11-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* GailTester.cs: Have new overloads without real param.

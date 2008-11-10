@@ -167,6 +167,7 @@ namespace UiaAtkBridgeTest
 					((Gtk.ComboBox)widget).AppendText (text);
 				
 				break;
+				
 			case BasicWidgetType.ComboBoxDropDownList:
 				widget = new Gtk.ComboBox ();
 				if (real)
@@ -178,6 +179,7 @@ namespace UiaAtkBridgeTest
 				foreach (string text in name)
 					((Gtk.ComboBox)widget).AppendText (text);
 				break;
+				
 			case BasicWidgetType.TabControl:
 				widget = new Gtk.Notebook ();
 				// real not implemented yet
@@ -190,6 +192,7 @@ namespace UiaAtkBridgeTest
 					widget.ShowAll ();
 				}
 				break;
+				
 			case BasicWidgetType.ListView:
 				Gtk.TreeStore store = new Gtk.TreeStore (typeof (string));
 				Gtk.TreeIter[] iters = new Gtk.TreeIter [8];
@@ -225,13 +228,15 @@ namespace UiaAtkBridgeTest
 				col.PackStart (cell, true);
 				col.AddAttribute (cell, "text", 0);
 				break;
+				
+			case BasicWidgetType.MainMenuBar:
 			case BasicWidgetType.ParentMenu:
 				if (!real)
 					throw new NotSupportedException ("No unreal widget access for ParentMenu now");
 				
 				Gtk.MenuBar menubar = GailTestApp.MainClass.GiveMeARealMenuBar ();
 				
-				Gtk.Application.Invoke (delegate {
+				RunInGuiThread (delegate {
 					string parentMenuName = name [0];
 					
 					while (menubar.Children.Length > 0)
@@ -251,9 +256,11 @@ namespace UiaAtkBridgeTest
 					menubar.Append (parentMenu);
 					menubar.ShowAll ();
 
-					widget = parentMenu;
+					if (type == BasicWidgetType.MainMenuBar)
+						widget = menubar;
+					else
+						widget = parentMenu;
 				});
-				System.Threading.Thread.Sleep (1000);
 				
 				break;
 			default:

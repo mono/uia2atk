@@ -44,6 +44,7 @@ namespace UiaAtkBridgeTest
 		TextBoxEntry,       // textbox single-line (gtk: entry)
 		TextBoxView,        // textbox multi-line (gtk: textview)
 		MaskedTextBoxEntry, // maskedtextbox (gtk: entry with visibility:false)
+		MainMenuBar,
 		ParentMenu,
 		VScrollBar,
 		HScrollBar,
