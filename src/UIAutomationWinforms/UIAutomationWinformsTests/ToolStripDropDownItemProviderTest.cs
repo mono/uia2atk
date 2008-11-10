@@ -375,15 +375,21 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (ExpandCollapseState.Collapsed,
 			                 expandCollapseProvider.ExpandCollapseState);
 
+			bridge.ResetEventLists ();
+
 			expandCollapseProvider.Expand ();
 			Assert.AreEqual (ExpandCollapseState.Expanded,
 			                 expandCollapseProvider.ExpandCollapseState);
+
+			Assert.AreEqual (1, bridge.AutomationPropertyChangedEvents.Count);
+
+			bridge.ResetEventLists ();
 
 			expandCollapseProvider.Collapse ();
 			Assert.AreEqual (ExpandCollapseState.Collapsed,
 			                 expandCollapseProvider.ExpandCollapseState);
 
-			// TODO: Test eventing
+			Assert.AreEqual (1, bridge.AutomationPropertyChangedEvents.Count);
 		}
 	}
 }

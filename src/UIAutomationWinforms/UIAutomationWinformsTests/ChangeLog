@@ -1,5 +1,10 @@
 2008-11-10  Brad Taylor  <brad@getcoded.net>
 	
+	* ToolStripDropDownItemProviderTest.cs: Test 
+	IExpandCollapseProvider eventing.
+
+2008-11-10  Brad Taylor  <brad@getcoded.net>
+	
 	* ToolStripDropDownItemProviderTest.cs: Add tests for
 	IExpandCollapseProvider.
 
