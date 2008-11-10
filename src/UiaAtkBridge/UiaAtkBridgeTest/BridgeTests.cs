@@ -73,7 +73,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.TextBox tbx1 = new SWF.TextBox ();
 		protected SWF.TextBox tbx2 = new SWF.TextBox ();
 		protected SWF.ToolStrip toolStrip = new SWF.ToolStrip ();
-		protected SWF.ToolStripComboBox toolStripComboBox = new SWF.ToolStripComboBox ();
+		protected SWF.ToolStripComboBox toolStripComboBoxSim = new SWF.ToolStripComboBox ();
 
 		protected int lastClickedLink = -1;
 		
@@ -266,8 +266,16 @@ namespace UiaAtkBridgeTest
 
 			StatesComboBox (accessible);
 
+			string [] names = new string [] { "First item", "Second Item", "Last Item" };
+			((SWF.ComboBox)comboBox).Items.Clear ();
+			foreach(string item in names)
+				((SWF.ComboBox)comboBox).Items.Add (item);
 			Assert.AreEqual (2, accessible.NAccessibleChildren, "numChildren; children roles:" + childrenRoles (accessible));
 
+			Atk.Object menuChild = accessible.RefAccessibleChild (0);
+			CheckComboBoxMenuChild (menuChild, names);
+			//FIXME: maybe we need to test here like we would test a treeview
+			
 			Console.WriteLine ("</Test>");
 		}
 
@@ -276,7 +284,7 @@ namespace UiaAtkBridgeTest
 		{
 			Console.WriteLine ("<Test id=\"ToolStripComboBoxSimple\">");
 			
-			ComboBoxSimple (toolStripComboBox);
+			ComboBoxSimple (toolStripComboBoxSim);
 			
 			Console.WriteLine ("</Test>");
 		}

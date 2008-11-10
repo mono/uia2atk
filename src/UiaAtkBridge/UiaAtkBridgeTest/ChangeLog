@@ -1,6 +1,11 @@
 2008-11-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTests.cs:
+	* BridgeTester.cs: Improve combobox testing.
+
+2008-11-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs:
 	* BridgeTester.cs: Add toolstripcombobox test (failing now).
 
 2008-11-10  Andrés G. Aragoneses  <aaragoneses@novell.com>

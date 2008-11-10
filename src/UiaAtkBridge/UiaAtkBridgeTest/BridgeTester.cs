@@ -71,7 +71,8 @@ namespace UiaAtkBridgeTest
 			tbx1.Multiline = false;
 			tbx2.Multiline = true;
 
-			toolStrip.Items.Add (toolStripComboBox);
+			toolStripComboBoxSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+			toolStrip.Items.Add (toolStripComboBoxSim);
 			//FIXME: uncomment this when toolstripComboBox is ready, right now we got an assert: http://monoport.com/38125
 			//form.Controls.Add (toolStrip);
 
