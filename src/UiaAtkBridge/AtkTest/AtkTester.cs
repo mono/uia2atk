@@ -1100,12 +1100,11 @@ namespace UiaAtkBridgeTest
 
 		protected void States (Atk.Object accessible, params Atk.StateType [] expected)
 		{
-			Dictionary<Atk.StateType, bool> expectedStates = new Dictionary<Atk.StateType, bool> ();;
-			foreach (Atk.StateType state in expected)
-				expectedStates [state] = true;
+			List <Atk.StateType> expectedStates = new List <Atk.StateType> (expected);
+			
 			Atk.StateSet stateSet = accessible.RefStateSet ();
 			foreach (Atk.StateType state in Enum.GetValues (typeof (Atk.StateType)))
-				if (expectedStates.ContainsKey (state))
+				if (expectedStates.Contains (state))
 					Assert.IsTrue (stateSet.ContainsState (state), "Missing state: " + state);
 				else
 					Assert.IsFalse (stateSet.ContainsState (state), "Superfluous state: " + state);
