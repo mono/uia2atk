@@ -1,5 +1,11 @@
 2008-11-10  Brad Taylor  <brad@getcoded.net>
 	
+	* TextBoxProviderTest.cs: Make a note about our divergance from the UIA
+	spec wrt TextBox.  We now implement ValueProvider always so that folks
+	can know when the text has changed.
+
+2008-11-10  Brad Taylor  <brad@getcoded.net>
+	
 	* ToolStripDropDownItemProviderTest.cs: Test 
 	IExpandCollapseProvider eventing.
 

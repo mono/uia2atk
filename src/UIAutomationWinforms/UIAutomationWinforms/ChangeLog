@@ -1,5 +1,10 @@
 2008-11-10  Brad Taylor  <brad@getcoded.net>
 	
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Always implement
+	ValueProvider.
+
+2008-11-10  Brad Taylor  <brad@getcoded.net>
+	
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms/ToolStripSplitButtonProvider.cs:
 	* Mono.UIAutomation.Winforms.Events/ToolStripSplitButton/ExpandCollapsePatternStateEvent.cs:

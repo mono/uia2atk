@@ -144,11 +144,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			TextBox textbox = CreateTextBox ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
+			
+			object valueProvider;
+			/* NOTDOTNET: We diverge from the spec here, as we
+			 * provide ValueProvider in Document mode so folks can
+			 * subscribe to an event to see if text has changed. 
 			textbox.Multiline = true;
 			
 			object valueProvider = 
 				provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
 			Assert.IsNull (valueProvider, "Is returning ValuePatternIdentifiers.");
+			*/ 
 			
 			textbox.Multiline = false;
 			valueProvider = provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
@@ -305,12 +311,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "Event count");
 		}
 
+		// NOTDOTNET: We diverge from the spec here, as we provide
+		// ValueProvider in Document mode so folks can subscribe to an
+		// event to see if text has changed. 
 		[Test]
 		public void TextChangedEventTestMultiLine ()
 		{
 			TextBox textbox = CreateTextBox ();
-			textbox.Multiline = true;
 			Form.Controls.Add (textbox);
+			textbox.Multiline = true;
 
 			bridge.ResetEventLists ();
 

@@ -133,8 +133,11 @@ namespace Mono.UIAutomation.Winforms
 		{
 			//Here we are changing from Edit to Document and vice versa.
 			if (textboxbase.Multiline) { //Document Control Type
-				SetBehavior (ValuePatternIdentifiers.Pattern,
-				             null);
+				// NOTDOTNET: Document control type has no way
+				// to find out of the text has changed, so we
+				// implement ValuePattern always.
+				//SetBehavior (ValuePatternIdentifiers.Pattern,
+				//             null);
 				SetBehavior (RangeValuePatternIdentifiers.Pattern,
 				             null);
 			} else { //Edit Control Type
