@@ -36,6 +36,14 @@ namespace UiaAtkBridge
 		{
 			Role = Atk.Role.MenuBar;
 		}
+
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			//FIXME: figure out why MenuItem elements in Gail don't like this state
+			states.RemoveState (Atk.StateType.Focusable);
+			return states;
+		}
 		
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{

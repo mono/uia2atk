@@ -222,6 +222,7 @@ namespace UiaAtkBridgeTest
 		public void GroupBox ()
 		{
 			Console.WriteLine ("<Test id=\"GroupBox\">");
+			
 			BasicWidgetType type = BasicWidgetType.GroupBox;
 			Atk.Object accessible = 
 			  UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (

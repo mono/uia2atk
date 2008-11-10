@@ -25,6 +25,7 @@
 // 
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -190,8 +191,26 @@ namespace UiaAtkBridgeTest
 
 		private Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget)
 		{
+//			return GetAdapterForWidget (widget, true);
+//		}
+//		private Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget, bool recursive)
+//		{
 			Atk.Object acc = GetAdapterForProvider (ProviderFactory.GetProvider (widget, true, true));
 			mappings [acc] = widget;
+			
+//NOTE: this code fragment below may be useful for discovering child items which don't have a test for themselves alone
+//			System.Reflection.PropertyInfo itemsProp = 
+//			  new List<System.Reflection.PropertyInfo> (widget.GetType ().GetProperties ()).
+//			  Find (delegate (System.Reflection.PropertyInfo p) {
+//				return p.Name == "Items";
+//			  });
+//			if (itemsProp != null) {
+//				object value = itemsProp.GetValue (widget, null);
+//				if (value is ICollection)
+//					foreach (object o in (ICollection)value) 
+//						if (o is System.ComponentModel.Component)
+//							GetAdapterForWidget ((System.ComponentModel.Component)o, false);
+//			}
 			return acc;
 		}
 
@@ -268,7 +287,8 @@ namespace UiaAtkBridgeTest
 					accessible = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) 
 					                                        ProviderFactory.GetProvider (cbDDL, true, true));
 				break;
-				
+
+			case BasicWidgetType.MainMenuBar:
 			case BasicWidgetType.ParentMenu:
 
 				if (!real)
@@ -287,7 +307,10 @@ namespace UiaAtkBridgeTest
 				parentMenu.DropDownItems.AddRange (subMenus);
 				menuStrip1.Items.AddRange (new SWF.ToolStripItem [] { parentMenu });
 
-				accessible = GetAdapterForWidget (parentMenu);
+				if (type == BasicWidgetType.ParentMenu)
+					accessible = GetAdapterForWidget (parentMenu);
+				else
+					accessible = GetAdapterForWidget (menuStrip1);
 				
 				break;
 			default:
