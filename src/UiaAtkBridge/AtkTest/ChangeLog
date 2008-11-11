@@ -1,3 +1,7 @@
+2008-11-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: Use new States helper function.
+
 2008-11-10  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Improve state reporting...

@@ -70,28 +70,28 @@ namespace UiaAtkBridgeTest
 
 			string name = "test";
 			accessible = GetAccessible (type, name, true);
-			
-			Atk.StateSet stateSet = accessible.RefStateSet();
-			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Enabled), "Button Enabled");
-			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focusable), "Button Focusable");
-			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Sensitive), "Button Sensitive");
-			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Showing), "Button Showing");
-			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Visible), "Button Visible");
-			
-			InterfaceText (type);
 
+			States (accessible,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Focusable,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible);
+
+			InterfaceText (type);
+			
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
-
+			
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 			
 			PropertyRole (type, accessible);
 			
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "Button numChildren");
-
+			
 			Parent (type, accessible);
-
+			
 			//test with an image
 			Atk.Image atkWithOutImage, atkWithImage;
 			atkWithOutImage = CastToAtkInterface <Atk.Image> (accessible);
