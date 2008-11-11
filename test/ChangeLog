@@ -1,3 +1,13 @@
+2008-11-11  Calen Chen <cachen@novell.com>
+
+	* samples/gtktoolbar_combobox.py: add a normal combobox into gtktoolbar 
+	to investigate how it is showed in accerciser with what role name
+	* samples/gtkstatusbar_label_combobox_button.py: add a normal label, 
+	normal combobox and ToolButton into gtkstatusbar to investigate how 
+	they are showed in accerciser with what role names. I add these two 
+	samples because our winfroms widget in toolbar and statusbar in 
+	accerciser shows Menu and MenuItem that different with Gtk shows
+
 2008-11-10 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* keystrokes/winforms/winbutton.py/winbutton.py,
