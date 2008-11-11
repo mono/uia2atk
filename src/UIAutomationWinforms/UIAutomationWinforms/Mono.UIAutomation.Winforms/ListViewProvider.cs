@@ -627,6 +627,8 @@ namespace Mono.UIAutomation.Winforms
 					return Helper.IsOffScreen (ItemsBoundingRectangle, listView, true);
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
+				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
@@ -844,6 +846,8 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
@@ -1100,6 +1104,8 @@ namespace Mono.UIAutomation.Winforms
 					return valueProvider.Value;
 				} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
+				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
@@ -1171,6 +1177,8 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return itemProvider.GetPropertyValue (propertyId);
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;

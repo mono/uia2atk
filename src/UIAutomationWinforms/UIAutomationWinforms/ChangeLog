@@ -1,3 +1,10 @@
+2008-11-11  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Support for
+	HasKeyboardFocusProperty in: ListViewHeaderItemProvider,
+	ListViewItemEditProvider, ListViewItemCheckBoxProvider and
+	ListViewGroupProvider.
+
 2008-11-10  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
