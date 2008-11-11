@@ -23,6 +23,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Automation;
 using System.Windows.Forms;
@@ -1302,6 +1303,70 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 
 		#endregion
 
+		#region View.Details TablePattern
+	
+		[Test]
+		public void ViewDetails_TablePatternTest ()
+		{
+			int maxSubitems = 3;
+
+			ListView view = GetListView (3, 10, 4, maxSubitems);
+			view.View = View.Details;
+			view.ShowGroups = true;
+
+			AutomationElement element = GetAutomationElementFromControl (view);
+
+			Assert.AreEqual (true,
+				SupportsPattern (element, TablePatternIdentifiers.Pattern), "element: SHOULD support Tabble Pattern");
+
+			TablePattern pattern = element.GetCurrentPattern (TablePatternIdentifiers.Pattern) as TablePattern;
+
+			Assert.AreEqual (view.Columns.Count,
+				pattern.Current.ColumnCount, "TablePattern.ColumnCount");
+			for (int i = 0; i < 10; i++)
+				view.Items [0].SubItems.Add (string.Format ("new subitem {0}", i));
+			Assert.AreEqual (view.Columns.Count,
+				pattern.Current.ColumnCount, "TablePattern.ColumnCount");
+
+			Assert.AreEqual (view.Items.Count,
+				pattern.Current.RowCount, "TablePattern.RowCount");
+
+			Assert.AreEqual (RowOrColumnMajor.RowMajor,
+				pattern.Current.RowOrColumnMajor, "TablePattern.RowOrColumnMajor");
+
+			Assert.AreEqual (true,
+				pattern.Current.GetRowHeaders ().Length == 0, "TablePattern.GetRowHeaders");
+
+			AutomationElement []columnHeaders = pattern.Current.GetColumnHeaders ();
+
+			Assert.IsNotNull (columnHeaders, "TablePattern.GetColumnHeaders is not null");
+			Assert.AreEqual (view.Columns.Count,
+				columnHeaders.Length, "TablePattern.GetColumnHeaders count");
+
+			//Column headers should point to all the HeaderItem found in Header
+			AutomationElement header = TreeWalker.RawViewWalker.GetFirstChild (element);
+			while (header != null) {
+				if (header.GetCurrentPropertyValue (AutomationElementIdentifiers.ControlTypeProperty)
+					== ControlType.Header)
+					break;
+				header = TreeWalker.RawViewWalker.GetNextSibling (header);
+			}
+
+			Assert.IsNotNull (header, "TablePattern we need a header");
+
+			List<AutomationElement> headerItems = new List<AutomationElement> ();
+			AutomationElement headerItem = TreeWalker.RawViewWalker.GetFirstChild (header);
+			while (headerItem != null) {
+				headerItems.Add (headerItem);
+				headerItem = TreeWalker.RawViewWalker.GetNextSibling (headerItem);
+			}
+
+			for (int columnHeader = 0; columnHeader < columnHeaders.Length; columnHeader++)				
+				Assert.AreEqual (headerItems [columnHeader], columnHeaders [columnHeader], "TablePattern.GetColumnHeaders items");
+		}
+
+		#endregion
+
 		#region Private Methods
 
 		private ListView GetListView (int groups, int items, int defaultGroupItems, int maxSubitems)
@@ -1326,6 +1391,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 			//Default items
 			for (int item = 0; item < defaultGroupItems; item++)
 				view.Items.Add (new ListViewItem (string.Format ("Default #{0}", item)));
+
+			//Columns
+			for (int columns = 0; columns < maxSubitems; columns++)
+				view.Columns.Add (string.Format ("Column {0}", columns));
 
 			return view;
 		}

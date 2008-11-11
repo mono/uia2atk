@@ -1,3 +1,7 @@
+2008-11-10  Mario Carrion <mcarrion@novell.com> 
+
+	* ListViewTest.cs: Testing Table Pattern.
+
 2008-11-03  Neville Gao <nevillegao@gmail.com>
 
 	* UIAutomationWinformsClientTests.csproj: Updated for added file.
