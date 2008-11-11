@@ -1,3 +1,9 @@
+2008-11-10  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/TableProviderBehavior.cs:
+	Updated to pass client tests.
+
 2008-11-10  Brad Taylor  <brad@getcoded.net>
 	
 	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Always implement

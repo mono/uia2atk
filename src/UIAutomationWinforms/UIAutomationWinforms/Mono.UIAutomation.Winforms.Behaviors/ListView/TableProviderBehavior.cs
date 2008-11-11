@@ -88,14 +88,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		public IRawElementProviderSimple[] GetColumnHeaders ()
 		{
 			if (headerProvider == null)
-				return null;
+				return new IRawElementProviderSimple [0];
 			else
 				return headerProvider.GetHeaderItems ();
 		}
 		
 		public IRawElementProviderSimple[] GetRowHeaders ()
 		{
-			return null; //FIXME: Test in Vista
+			return new IRawElementProviderSimple [0];
 		}
 
 		public RowOrColumnMajor RowOrColumnMajor {

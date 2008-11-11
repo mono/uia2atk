@@ -1,3 +1,7 @@
+2008-11-10  Mario Carrion  <mcarrion@novell.com>
+
+	* ListViewProviderTest.cs: TablePattern test.
+
 2008-11-10  Brad Taylor  <brad@getcoded.net>
 	
 	* TextBoxProviderTest.cs: Make a note about our divergance from the UIA

@@ -709,7 +709,7 @@ namespace Mono.UIAutomation.Winforms
 			public IRawElementProviderSimple[] GetHeaderItems ()
 			{
 				if (ChildrenCount == 0)
-					return null;
+					return new IRawElementProviderSimple [0];
 
 				IRawElementProviderSimple []headerItems = new IRawElementProviderSimple [ChildrenCount];
 				for (int index = 0; index < ChildrenCount; index++)

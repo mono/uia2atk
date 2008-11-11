@@ -23,6 +23,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
@@ -1766,7 +1767,72 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			               "We shouldn't have children in List");
 		}
 		
-		#endregion		
+		#endregion
+
+		#region View.Details TablePattern
+	
+		[Test]
+		public void ViewDetails_TablePatternTest ()
+		{
+			int maxSubitems = 3;
+
+			ListView view = GetListView (3, 10, 4, maxSubitems);
+			view.View = View.Details;
+			view.ShowGroups = true;
+
+			
+			IRawElementProviderFragmentRoot viewProvider
+				= (IRawElementProviderFragmentRoot) GetProviderFromControl (view);
+
+			ITableProvider tableProvider 
+				= viewProvider.GetPatternProvider (TablePatternIdentifiers.Pattern.Id) as ITableProvider;
+			Assert.IsNotNull (tableProvider, "Table Provider for ListView");
+
+			Assert.AreEqual (view.Columns.Count,
+			                 tableProvider.ColumnCount, "TablePattern.ColumnCount");
+			for (int i = 0; i < 10; i++)
+				view.Items [0].SubItems.Add (string.Format ("new subitem {0}", i));
+			Assert.AreEqual (view.Columns.Count,
+			                 tableProvider.ColumnCount, "TablePattern.ColumnCount");
+
+			Assert.AreEqual (view.Items.Count,
+			                 tableProvider.RowCount, "TablePattern.RowCount");
+
+			Assert.AreEqual (RowOrColumnMajor.RowMajor,
+			                 tableProvider.RowOrColumnMajor, "TablePattern.RowOrColumnMajor");
+
+			Assert.AreEqual (true,
+			                 tableProvider.GetRowHeaders ().Length == 0, "TablePattern.GetRowHeaders");
+
+			IRawElementProviderSimple []columnHeaders = tableProvider.GetColumnHeaders ();
+
+			Assert.AreEqual (true, columnHeaders.Length == 0, "TablePattern.GetColumnHeaders is not null");
+			Assert.AreEqual (view.Columns.Count,
+			                 columnHeaders.Length, "TablePattern.GetColumnHeaders count");
+
+			//Column headers should point to all the HeaderItem found in Header
+			IRawElementProviderFragment header = viewProvider.Navigate (NavigateDirection.FirstChild);
+			while (header != null) {
+				if ((int) header.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+					== ControlType.Header.Id)
+					break;
+				header = viewProvider.Navigate (NavigateDirection.NextSibling);
+			}
+
+			Assert.IsNotNull (header, "TablePattern we need a header");
+
+			List<IRawElementProviderFragment> headerItems = new List<IRawElementProviderFragment> ();
+			IRawElementProviderFragment headerItem = header.Navigate (NavigateDirection.FirstChild);
+			while (headerItem != null) {
+				headerItems.Add (headerItem);
+				headerItem = headerItem.Navigate (NavigateDirection.NextSibling);
+			}
+
+			for (int columnHeader = 0; columnHeader < columnHeaders.Length; columnHeader++)				
+				Assert.AreEqual (headerItems [columnHeader], columnHeaders [columnHeader], "TablePattern.GetColumnHeaders items");
+		}
+
+		#endregion
 
 		#region BaseProviderTest Overrides
 
