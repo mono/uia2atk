@@ -17,11 +17,16 @@ class ButtonSample:
  
     # callback that opens a message dialog
     def open_dialog(self, widget, data=None):
-        self.dialog = gtk.Dialog()
+        self.dialog = gtk.Dialog(title="Message Dialog",
+                                 flags=gtk.DIALOG_MODAL)
+        self.dialog.add_button("OK", gtk.RESPONSE_CLOSE)
+        self.dialog.set_has_separator(False)
         self.dialog.show()
         self.dialog.set_title("Message Dialog")
         self.dialog.set_border_width(50)
- 
+        response = self.dialog.run()
+        self.dialog.destroy()
+
     # another callback
     def delete_event(self, widget, event, data=None):
         gtk.main_quit()
@@ -77,7 +82,6 @@ class ButtonSample:
         # The order in which we show the buttons is not really important, but I
         # recommend showing the window last, so it all pops up at once.
 
-        #button3 with image
         self.image = gtk.Image()
         self.image.set_from_file("%s/samples/opensuse60x38.gif" % uiaqa_path)
         self.image.show()
@@ -92,6 +96,8 @@ class ButtonSample:
         self.button3.show()
         self.box1.show()
         self.window.show()
+	self.window.set_focus(self.button1)
+        #button3 with image
 
     def main(self):
         gtk.main()

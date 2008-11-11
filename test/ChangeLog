@@ -1,3 +1,11 @@
+2008-11-10 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* keystrokes/winforms/winbutton.py/winbutton.py,
+	* keystrokes/gtk/gtkbutton.py/gtkbutton.py: Redoing these.  Need to 
+	look at them with Ray.  Sorry for the unworkable state.
+	* samples/gtkbutton.py: Update the gtkbutton.py sample to look more
+	like the winbutton.py sample.
+
 2008-11-10  Calen Chen <cachen@novell.com>
 
 	* testers/combobox_simple/comboboxsimpleframe.py,
