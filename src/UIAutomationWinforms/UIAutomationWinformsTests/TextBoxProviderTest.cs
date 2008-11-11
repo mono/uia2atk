@@ -38,6 +38,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	[TestFixture]
 	public class TextBoxProviderTest : BaseProviderTest
 	{
+		private TextBox multiLineTextBox = null;
+		
+		[SetUp]
+		public override void SetUp ()
+		{
+			multiLineTextBox = CreateTextBox ();
+			multiLineTextBox.Multiline = true;
+			justBeforeFormShow += new EventHandler (delegate { Form.Controls.Add (multiLineTextBox); });
+			base.SetUp ();
+		}
 		
 #region Tests
 		
@@ -324,6 +334,18 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			bridge.ResetEventLists ();
 
 			textbox.Text = "lifewauhfewa";
+
+			Assert.AreEqual (1,
+			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 "Event count");
+		}
+
+		[Test]
+		public void TextChangedEventTestMultiLineBeforeFormShow ()
+		{
+			bridge.ResetEventLists ();
+
+			multiLineTextBox.Text = "lifewauhfewa\nsokksooks";
 
 			Assert.AreEqual (1,
 			                 bridge.AutomationPropertyChangedEvents.Count,

@@ -1,3 +1,10 @@
+2008-11-11  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BaseProviderTest.cs:
+	* TextBoxProviderTest.cs: Add a test that is failing.
+
+	* Makefile.am: Flush.
+
 2008-11-10  Mario Carrion  <mcarrion@novell.com>
 
 	* ListViewProviderTest.cs: TablePattern test.
