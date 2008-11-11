@@ -142,8 +142,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return AutomationPropertyChangedEvents [index];
 		}
 		
-		public AutomationEventTuple GetAutomationEventAt (int index,
-		                                                  StructureChangeType type)
+		public AutomationEventTuple GetAutomationEventAt (int index)
 		{
 			if (index >= AutomationEvents.Count || index < 0)
 				return null;

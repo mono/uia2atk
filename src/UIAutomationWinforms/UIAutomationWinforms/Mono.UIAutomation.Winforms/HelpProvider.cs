@@ -26,10 +26,15 @@ using System;
 using SD = System.Drawing;
 using System.Windows;
 using SWF = System.Windows.Forms;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms
-{	
-	
+{
+
+	//NOTE:
+	//     SWF.HelpProvider's ToolTip looks like a tooltip, however in UIA is
+	//     ControlTypePane not a ControlTypeToolTip.
 	internal class HelpProvider : ToolTipBaseProvider
 	{
 		
@@ -41,14 +46,71 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
+
+		#region SimpleControlProvider: Specializations
+		
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Pane.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "pane";
+			else
+				return base.GetPropertyValue (propertyId);
+		}
+
+		#endregion
+
+		#region Public Methods
+		
+		public override void Show (SWF.Control control) 
+		{
+			if (AutomationInteropProvider.ClientsAreListening == true) {					
+				Message = GetTextFromControl (control);
+
+				FragmentControlProvider controlProvider 
+					= ProviderFactory.FindProvider (control) as FragmentControlProvider;
+
+				FragmentRootControlProvider rootProvider 
+					= controlProvider as FragmentRootControlProvider;
+
+				//FIXME: We may need to update this because seems that 
+				//FragmentControlProvider *includes* children.
+				
+				if (rootProvider != null)
+					rootProvider.AddChildProvider (true, this);
+				else {
+					rootProvider 
+						= ProviderFactory.FindProvider (controlProvider.Container) as FragmentRootControlProvider;
+					if (rootProvider != null)
+						rootProvider.AddChildProvider (true, this);
+				}
+			}
+		}
+		
+		public override void Hide (SWF.Control control)
+		{
+			if (AutomationInteropProvider.ClientsAreListening == true) {
+				Message = GetTextFromControl (control);
+
+				//FIXME: We may need to update this because seems that 
+				//FragmentControlProvider *includes* children.
+
+				FragmentRootControlProvider rootProvider 
+					= Navigate (NavigateDirection.Parent) as FragmentRootControlProvider;
+
+				if (rootProvider != null)
+					rootProvider.RemoveChildProvider (true, this);
+			}
+		}
+
+		#endregion
 		
 		#region Protected Methods
 
 		protected override Rect GetBoundingRectangle ()
 		{
-			return Helper.RectangleToRect (Helper.GetPrivateProperty<SWF.HelpProvider, SD.Rectangle> (typeof (SWF.HelpProvider),
-			                                                                                          helpProvider,
-			                                                                                          "UIAToolTipRectangle"));
+			return Helper.RectangleToRect (helpProvider.UIAToolTipRectangle);
 		}		
 		
 		protected override string GetTextFromControl (SWF.Control control)

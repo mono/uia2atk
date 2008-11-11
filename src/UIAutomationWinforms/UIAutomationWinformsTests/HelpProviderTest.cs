@@ -72,17 +72,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			//Testing ToolTipOpenedEvent
 			bridge.ResetEventLists ();
 			swfButton.PerformClick (); //Clicking the button will fake the event!
-			
-			Assert.AreEqual (1,
-			                 bridge.GetAutomationEventCount (AutomationElementIdentifiers.ToolTipOpenedEvent),
-			                 "AutomationElementIdentifiers.ToolTipOpenedEvent");
-			
-			AutomationEventTuple eventTuple = bridge.GetAutomationEventAt (0,
-			                                                               StructureChangeType.ChildAdded);
+
+			StructureChangedEventTuple eventTuple 
+				= bridge.GetStructureChangedEventAt (0, StructureChangeType.ChildAdded);
 			Assert.IsNotNull (eventTuple, "GetAutomationEventAt (0)");
 			
 			//We have the HelpProvider!
 			IRawElementProviderFragment helpProvider = eventTuple.provider as IRawElementProviderFragment;
+
+			Console.WriteLine ("element: {0}", helpProvider.GetType ());
+			
 			Assert.IsNotNull (helpProvider, "helpProvider is null");
 			
 			TestProperty (helpProvider,
@@ -99,11 +98,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			TestProperty (helpProvider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
-			              "tool tip");
+			              "pane");
 			
 			TestProperty (helpProvider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
-			              ControlType.ToolTip.Id);
+			              ControlType.Pane.Id);
 			
 			TestProperty (helpProvider,
 			              AutomationElementIdentifiers.LabeledByProperty,
@@ -120,22 +119,18 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (helpProvider,
 			              AutomationElementIdentifiers.ClickablePointProperty,
 			              null);
-			
-			//FIXME: How to test ToolTipClosedEvent?
-//			bridge.ResetEventLists ();	
-//		
+
+			// TODO: How to allow it?
+//			bridge.ResetEventLists ();
+//
 //			swfButtonNoHelp.PerformClick (); //Clicking this button will close the tooltip
 //			
 //			Assert.AreEqual (1,
 //			                 bridge.GetAutomationEventCount (InvokePatternIdentifiers.InvokedEvent),
 //			                 "AutomationElementIdentifiers.InvokedEvent");
-//			
-//			Assert.AreEqual (1,
-//			                 bridge.GetAutomationEventCount (AutomationElementIdentifiers.ToolTipClosedEvent),
-//			                 "AutomationElementIdentifiers.ToolTipClosedEvent");
-//			
-//			eventTuple = bridge.GetAutomationEventAt (0);
-//			Assert.IsNotNull (eventTuple, "GetAutomationEventAt (0)");
+//	
+//			Assert.IsNotNull (bridge.GetStructureChangedEventAt (0, StructureChangeType.ChildRemoved),
+//			                 "AutomationElementIdentifiers.ChildRemoved");
 		}
 		
 		#endregion
@@ -145,6 +140,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		protected override SWF.Control GetControlInstance ()
 		{
 			return null;
+		}
+
+		protected override bool IsContentElement {
+			get { return false; }
 		}
 		
 		#endregion

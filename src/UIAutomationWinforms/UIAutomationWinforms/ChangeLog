@@ -1,3 +1,8 @@
+2008-11-11  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/HelpProvider.cs: Updated to match Vista
+	tests: HelpProvider's tooltip is Pane not ToolTip.
+
 2008-11-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:
