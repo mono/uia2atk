@@ -193,6 +193,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ToolStripLabel/ControlTypePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripSplitButton/ExpandCollapsePatternStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs \

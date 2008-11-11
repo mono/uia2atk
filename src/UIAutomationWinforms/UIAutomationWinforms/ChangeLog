@@ -1,3 +1,16 @@
+2008-11-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Add new files.
+
+	* Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: Add
+	ControlTypeProperty.
+
+	* Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs:
+	* Mono.UIAutomation.Winforms.Events/ToolStripLabel/ControlTypePropertyEvent.cs:
+	Add new ControlTypePropertyEvent to ToolStripLabelProvider, raised
+	when IsLink property changes.
+
 2008-11-11  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Support for

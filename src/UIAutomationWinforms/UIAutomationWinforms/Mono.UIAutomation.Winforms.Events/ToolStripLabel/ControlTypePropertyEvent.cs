@@ -24,84 +24,59 @@
 // 
 
 using System;
-using System.Windows.Forms;
-
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using SWF = System.Windows.Forms;
 
-using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
-
-using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ToolStripLabel;
-using Mono.UIAutomation.Winforms.Behaviors.ToolStripItem;
-
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events.ToolStripLabel
 {
-	internal class ToolStripLabelProvider : ToolStripItemProvider
+	internal class ControlTypePropertyEvent : BaseAutomationPropertyEvent
 	{
-		private ToolStripLabel label;
-		
-		public ToolStripLabelProvider (ToolStripLabel label) : base (label)
+		#region Constructors
+
+		public ControlTypePropertyEvent (ToolStripLabelProvider provider) 
+			: base (provider,
+			        AutomationElementIdentifiers.ControlTypeProperty)
 		{
-			this.label = label;
 		}
 
-		public override void Initialize()
+		#endregion
+
+		#region IConnectable Overrides
+
+		public override void Connect ()
 		{
-			base.Initialize ();
-			SetEvent (ProviderEventType.ControlTypeProperty,
-			          new ControlTypePropertyEvent (this));
-
-			if (label.IsLink)
-				SetBehavior (InvokePatternIdentifiers.Pattern,
-				             new InvokeProviderBehavior (this));
-
 			try {
-				Helper.AddPrivateEvent (typeof (ToolStripLabel),
-				                        label,
+				Helper.AddPrivateEvent (typeof (SWF.ToolStripLabel),
+				                        (SWF.ToolStripLabel) Provider.Component,
 				                        "UIAIsLinkChanged",
 				                        this,
 				                        "OnIsLinkChanged");
 			} catch (NotSupportedException) { }
 		}
 
-		public override void Terminate()
+		public override void Disconnect ()
 		{
-			base.Terminate ();
-			SetEvent (ProviderEventType.ControlTypeProperty,
-			          null);
-
 			try {
-				Helper.RemovePrivateEvent (typeof (ToolStripLabel),
-				                           label,
+				Helper.RemovePrivateEvent (typeof (SWF.ToolStripLabel),
+				                           (SWF.ToolStripLabel) Provider.Component,
 				                           "UIAIsLinkChanged",
 				                           this,
 				                           "OnIsLinkChanged");
 			} catch (NotSupportedException) { }
 		}
-
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == AEIds.ControlTypeProperty.Id)
-				return label.IsLink ? ControlType.Hyperlink.Id : ControlType.Text.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return label.IsLink ? "hyperlink" : "text";
-			else
-				return base.GetPropertyValue (propertyId);
-		}
-
-		#pragma warning disable 169
 		
-		private void OnIsLinkChanged (object sender, EventArgs args)
+		#endregion
+		
+		#region Private Methods
+		#pragma warning disable 169
+
+		private void OnIsLinkChanged (object sender, EventArgs e)
 		{
-			if (label.IsLink)
-				SetBehavior (InvokePatternIdentifiers.Pattern,
-				             new InvokeProviderBehavior (this));
-			else
-				SetBehavior (InvokePatternIdentifiers.Pattern,
-				             null);
+			RaiseAutomationPropertyChangedEvent ();
 		}
 
 		#pragma warning restore 169
+		#endregion
 	}
 }
