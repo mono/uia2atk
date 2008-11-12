@@ -1,8 +1,3 @@
-2008-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
-
-	* Adapter.cs:
-	* AutomationBridge.cs: Moved *Test assemblies into UiaAtkBridge/Test.
-
 2008-11-12  Mike Gorse <mgorse@novell.com>
 
 	* SelectionProviderUserHelper.cs: For groups, make sure selected items
