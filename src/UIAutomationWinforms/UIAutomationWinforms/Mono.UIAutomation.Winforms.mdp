@@ -55,7 +55,6 @@
     <File name="Mono.UIAutomation.Winforms.Events/AutomationFocusChangedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ListProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ListItemProvider.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Navigation/ChildNavigation.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ErrorProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/PaneProvider.cs" subtype="Code" buildaction="Compile" />
@@ -240,7 +239,6 @@
     <File name="Mono.UIAutomation.Winforms.Events/ToolStripSplitButton/ExpandCollapsePatternStateEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ToolStripComboBoxProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/ToolStripProgressBar.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Events/ToolStripLabel" subtype="Directory" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ToolStripLabel/ControlTypePropertyEvent.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>

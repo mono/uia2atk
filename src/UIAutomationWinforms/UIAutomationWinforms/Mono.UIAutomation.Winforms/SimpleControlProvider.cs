@@ -47,7 +47,6 @@ namespace Mono.UIAutomation.Winforms
 		private Dictionary<AutomationPattern, IProviderBehavior> providerBehaviors;
 		private int runtimeId;
 		private SWF.ToolTip tooltip;
-		private INavigation navigation;
 		private SWF.ErrorProvider errorProvider;
 
 		#endregion
@@ -85,16 +84,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		public SWF.Control Control {
 			get { return control; }
-		}
-		
-		public INavigation Navigation {
-			get { return navigation; }
-			set { 
-				if (value != navigation && navigation != null)
-					navigation.Terminate ();
-
-				navigation = value; 
-			}
 		}
 		
 		public SWF.ToolTip ToolTip {
@@ -418,8 +407,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void GenerateIsPatternEnabledEvent (AutomationPattern pattern)
 		{
-			if (AutomationInteropProvider.ClientsAreListening == false
-			    || navigation == null || navigation.Navigate (NavigateDirection.Parent) == null)
+			if (AutomationInteropProvider.ClientsAreListening == false)
 				return;
 			
 			AutomationProperty property = null;
@@ -461,10 +449,16 @@ namespace Mono.UIAutomation.Winforms
 			else if (pattern == WindowPatternIdentifiers.Pattern)
 				property = AutomationElementIdentifiers.IsWindowPatternAvailableProperty;
 			
-			if (property == null) //This never should happen, theorically
+			if (property == null) //This never should happen, theoretically
 				return;
 
-			bool newValue = (bool) GetPropertyValue (property.Id);
+			bool? val = GetPropertyValue (property.Id) as bool?;
+
+			// TODO: Verify this behavior with Mario
+			if (val == null)
+				return;
+			
+			bool newValue = val ?? false;
 			
 			AutomationPropertyChangedEventArgs args 
 				= new AutomationPropertyChangedEventArgs (property,

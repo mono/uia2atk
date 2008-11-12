@@ -26,9 +26,9 @@ using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms.Navigation
 {
-	public interface INavigation
+	internal interface INavigation
 	{
-		IRawElementProviderFragment Provider { get; }
+		FragmentControlProvider Provider { get; }
 		
 		IRawElementProviderFragment Navigate (NavigateDirection direction);
 		

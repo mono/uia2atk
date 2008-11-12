@@ -38,18 +38,15 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		}
 		
 		public static INavigation CreateNavigation (FragmentControlProvider provider,
-		                                            FragmentRootControlProvider rootProvider)
+		                                            FragmentControlProvider parentProvider)
 		{
-			INavigation navigation;
-			FormProvider win;
+			ParentNavigation parentNavigation = null;
+
+			if (parentProvider != null)
+				parentNavigation = parentProvider.Navigation as ParentNavigation;
 			
-			if ((win = provider as FormProvider) != null)
-				navigation = new ParentNavigation (win, rootProvider);
-			else if (provider is FragmentRootControlProvider)
-				navigation = new ParentNavigation ((FragmentRootControlProvider) provider, 
-				                                   rootProvider);	
-			else
-				navigation = new ChildNavigation (provider, rootProvider);
+			INavigation navigation = new ParentNavigation (provider,
+			                                               parentNavigation);
 
 			return navigation;
 		}

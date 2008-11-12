@@ -29,7 +29,7 @@ using System.Collections.Generic;
 namespace Mono.UIAutomation.Winforms.Navigation
 {
 	
-	public class NavigationChain : LinkedList<INavigation>
+	internal class NavigationChain : LinkedList<INavigation>
 	{
 	}
 }

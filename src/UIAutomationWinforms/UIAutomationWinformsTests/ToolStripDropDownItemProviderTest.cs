@@ -224,11 +224,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			strip.Items.Add (menuItem);
 			GetProviderFromControl (strip);
 			
-			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+			IRawElementProviderFragment provider = (IRawElementProviderFragment)
 				ProviderFactory.GetProvider (menuItem);
-			IRawElementProviderFragmentRoot subProvider1 = (IRawElementProviderFragmentRoot)
+			IRawElementProviderFragment subProvider1 = (IRawElementProviderFragment)
 				ProviderFactory.GetProvider (subMenuItem1);
-			IRawElementProviderFragmentRoot subProvider2 = (IRawElementProviderFragmentRoot)
+			IRawElementProviderFragment subProvider2 = (IRawElementProviderFragment)
 				ProviderFactory.GetProvider (subMenuItem2);
 
 			
@@ -245,7 +245,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			T subMenuItem3 = GetNewToolStripDropDownItem ();
 			subMenuItem3.Text = "sub3";
 			menuItem.DropDownItems.Add (subMenuItem3);
-			IRawElementProviderFragmentRoot subProvider3 = (IRawElementProviderFragmentRoot)
+			IRawElementProviderFragment subProvider3 = (IRawElementProviderFragment)
 				ProviderFactory.GetProvider (subMenuItem3);
 			expectedChildren.Add (subProvider3);
 
@@ -259,7 +259,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			VerifyChildren (provider, expectedChildren);
 		}
 
-		private void VerifyChildren (IRawElementProviderFragmentRoot rootProvider,
+		private void VerifyChildren (IRawElementProviderFragment rootProvider,
 		                             List<IRawElementProviderFragment> expectedChildren)
 		{
 			List<IRawElementProviderFragment> foundChildren =

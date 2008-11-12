@@ -1,3 +1,33 @@
+2008-11-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Navigation/INavigation.cs:
+	* Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs:
+	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs:
+	* Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs:
+	* Mono.UIAutomation.Winforms.Navigation/NavigationFactory.cs:
+	Internalize classes. Update interfaces to reflect that fragments (not
+	just fragment roots) can have navigation children, and that simple
+	providers never use these navigation classes.
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms.Navigation/ChildNavigation.cs: Remove
+	ChildNavigation class.
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs:
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs:
+	* Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs: Fragment
+	providers can have children, not just fragment roots. Moved most
+	navigation infrastructure from FragmentRootControlProvider to
+	FragmentControlProvider.
+
+	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs:
+	ToolStripItemProvider is a fragment, not a fragment root.  Update
+	FragmentRoot property to reflect this, too.
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Remove navigation
+	from this class.
+
 2008-11-11  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am,

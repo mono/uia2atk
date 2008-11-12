@@ -120,12 +120,12 @@ namespace UiaAtkBridge
 
 			requestedChildren = true;
 			
-			IRawElementProviderFragmentRoot root;
-			if ((root = Provider as IRawElementProviderFragmentRoot) == null)
+			IRawElementProviderFragment fragment;
+			if ((fragment = Provider as IRawElementProviderFragment) == null)
 				return;
 			
 			IRawElementProviderFragment child 
-				= root.Navigate (NavigateDirection.FirstChild);
+				= fragment.Navigate (NavigateDirection.FirstChild);
 			while (child != null) {
 				AutomationInteropProvider.RaiseStructureChangedEvent (child, 
 				                                                      new StructureChangedEventArgs (StructureChangeType.ChildAdded,

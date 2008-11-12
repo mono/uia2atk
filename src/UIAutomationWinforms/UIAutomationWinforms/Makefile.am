@@ -204,7 +204,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternValueEvent.cs \
-	Mono.UIAutomation.Winforms.Navigation/ChildNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/INavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/NavigationChain.cs \
 	Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs \

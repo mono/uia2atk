@@ -37,7 +37,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class ToolStripItemProvider : FragmentRootControlProvider
+	internal class ToolStripItemProvider : FragmentControlProvider
 	{
 		private ToolStripItem item;
 
@@ -48,9 +48,9 @@ namespace Mono.UIAutomation.Winforms
 
 		public override IRawElementProviderFragmentRoot FragmentRoot {		
 			get {
-				if (item.OwnerItem != null)
-					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (item.OwnerItem);
-				else
+				//if (item.OwnerItem != null)
+				//	return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (item.OwnerItem);
+				//else
 					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (item.Owner);
 			}
 		}

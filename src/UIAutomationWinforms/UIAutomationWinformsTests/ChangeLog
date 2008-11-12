@@ -1,3 +1,8 @@
+2008-11-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* ToolStripDropDownItemProviderTest.cs: ToolStripDropDownItemProvider is
+	no longer a fragment root.
+
 2008-11-11  Mario Carrion  <mcarrion@novell.com>
 
 	* MockBridge.cs: GetAutomationEventAt: removed second argument.

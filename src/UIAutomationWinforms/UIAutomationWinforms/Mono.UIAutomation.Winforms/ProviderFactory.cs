@@ -231,10 +231,8 @@ namespace Mono.UIAutomation.Winforms
 				if (initialize)
 					provider.Initialize ();
 				
-				FragmentRootControlProvider root;
-				if (forceInitializeChildren == true
-				    && (root = provider as FragmentRootControlProvider) != null)
-					root.InitializeChildControlStructure ();
+				if (forceInitializeChildren == true)
+					provider.InitializeChildControlStructure ();
 			}
 			
 			return provider;

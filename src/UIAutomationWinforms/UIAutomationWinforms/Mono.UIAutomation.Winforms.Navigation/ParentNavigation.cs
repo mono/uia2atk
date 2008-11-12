@@ -34,17 +34,16 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 		#region Constructor
 		
-		public ParentNavigation (FragmentRootControlProvider rootProvider,
-		                         FragmentRootControlProvider rootParentProvider)
-			: base (rootProvider)
+		public ParentNavigation (FragmentControlProvider provider,
+		                         ParentNavigation parentNavigation)
+			: base (provider)
 		{
 			chain = new NavigationChain ();
-			if (rootParentProvider != null)
-				this.parentNavigation = (ParentNavigation) rootParentProvider.Navigation;
+			this.parentNavigation = parentNavigation;
 		}
 		
-		public ParentNavigation (FragmentRootControlProvider rootProvider)
-			: this (rootProvider, null)
+		public ParentNavigation (FragmentControlProvider provider)
+			: this (provider, null)
 		{
 		}
 		
@@ -54,12 +53,21 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		
 		public override IRawElementProviderFragment Navigate (NavigateDirection direction) 
 		{
-			if (direction == NavigateDirection.Parent)
-				return ((IRawElementProviderFragmentRoot) Provider).FragmentRoot;
+			if (direction == NavigateDirection.Parent) {
+				// TODO: Review this
+				// "Fragment roots do not enable navigation to
+				// a parent or siblings; navigation among fragment
+				// roots is handled by the default window providers."
+				// Source: http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.irawelementproviderfragment.navigate.aspx
+				if (Provider is FragmentRootControlProvider)
+					return Provider.FragmentRoot;
+				else
+					return parentNavigation.Provider;
+			}
 			else if (direction == NavigateDirection.FirstChild)
-				return chain.First == null ? null : (IRawElementProviderFragment) chain.First.Value.Provider;
+				return chain.First == null ? null : chain.First.Value.Provider;
 			else if (direction == NavigateDirection.LastChild)
-				return chain.Last == null ? null : (IRawElementProviderFragment) chain.Last.Value.Provider;
+				return chain.Last == null ? null : chain.Last.Value.Provider;
 			else if (direction == NavigateDirection.NextSibling && parentNavigation != null)
 				return parentNavigation.GetNextExplicitSiblingProvider (this);
 			else if (direction == NavigateDirection.PreviousSibling && parentNavigation != null) 
@@ -70,17 +78,15 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 		public override void Initialize ()
 		{
-			FragmentRootControlProvider rootProvider = (FragmentRootControlProvider) Provider;
-			
-			foreach (FragmentControlProvider child in rootProvider)
+			foreach (FragmentControlProvider child in Provider)
 				AddLast (child.Navigation);
 			
-			rootProvider.NavigationUpdated += new NavigationEventHandler (OnNavigationChildrenUpdated);
+			Provider.NavigationUpdated += new NavigationEventHandler (OnNavigationChildrenUpdated);
 		}
 
 		public override void Terminate ()
 		{		
-			((FragmentRootControlProvider) Provider).NavigationUpdated -= new NavigationEventHandler (OnNavigationChildrenUpdated);
+			Provider.NavigationUpdated -= new NavigationEventHandler (OnNavigationChildrenUpdated);
 		}
 		
 		#endregion
@@ -94,7 +100,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				if (nextNode == null)
 					return null;
 				else
-					return (IRawElementProviderFragment) nextNode.Value.Provider;
+					return nextNode.Value.Provider;
 			} else
 				return null;
 		}
@@ -106,7 +112,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				if (previousNode == null)
 					return null;
 				else
-					return (IRawElementProviderFragment) previousNode.Value.Provider;
+					return previousNode.Value.Provider;
 			} else
 				return null;
 		}
