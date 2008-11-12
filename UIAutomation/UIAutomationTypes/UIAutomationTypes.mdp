@@ -30,7 +30,6 @@
     <File name="System.Windows.Automation/ToggleState.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/WindowInteractionState.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/WindowVisualState.cs" subtype="Code" buildaction="Compile" />
-    <File name="Assembly/AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
     <File name="UIAutomationTypes.dll.sources" subtype="Code" buildaction="Nothing" />
     <File name="System.Windows.Automation/ControlType.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/InvokePatternIdentifiers.cs" subtype="Code" buildaction="Compile" />

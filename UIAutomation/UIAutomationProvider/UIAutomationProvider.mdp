@@ -14,7 +14,6 @@
     </Configuration>
   </Configurations>
   <Contents>
-    <File name="Assembly/AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation.Provider/AutomationInteropProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation.Provider/IDockProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation.Provider/IExpandCollapseProvider.cs" subtype="Code" buildaction="Compile" />
