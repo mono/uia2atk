@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../../../../UiaAtkBridge/bridge-glue/.libs/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../../../../bridge-glue/.libs/
 
 if [ -f /usr/lib/gtk-2.0/modules/libatk-bridge.so ]; then
 	echo We are in a 32bits env
@@ -12,5 +12,5 @@ else
 	echo libatk-bridge.so not found && exit
 fi
 
-exec mono FormTest.exe
-#exec mono /usr/lib/IPCE/ipy/ipy.exe ../../../../../../test/samples/button_label_linklabel.py
+#exec mono FormTest.exe
+exec mono /usr/lib/IPCE/ipy/ipy.exe ../../../../../../test/samples/combobox_dropdownlist.py
