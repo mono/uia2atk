@@ -85,10 +85,14 @@ namespace Mono.UIAutomation.Winforms
 		protected abstract Rect GetBoundingRectangle ();
 
 		protected abstract string GetTextFromControl (Control control);
+
+		protected string Message {
+			set { message = value; }
+		}
 		
 		#endregion
 		
-		public void Show (Control control) 
+		public virtual void Show (Control control) 
 		{
 			if (AutomationInteropProvider.ClientsAreListening == true) {					
 				message = GetTextFromControl (control);
@@ -105,7 +109,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public void Hide (Control control)
+		public virtual void Hide (Control control)
 		{
 			if (AutomationInteropProvider.ClientsAreListening == true) {
 				message = GetTextFromControl (control);

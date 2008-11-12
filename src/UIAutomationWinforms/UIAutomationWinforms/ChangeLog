@@ -1,5 +1,9 @@
 2008-11-11  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs: Fixed building.
+
+2008-11-11  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/HelpProvider.cs: Updated to match Vista
 	tests: HelpProvider's tooltip is Pane not ToolTip.
 
