@@ -43,7 +43,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		#region Protected Fields
 		
 		protected MockBridge bridge;
-		protected EventHandler justBeforeFormShow;
 		
 		#endregion
 		
@@ -61,8 +60,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{			
 			bridge = TestHelper.SetUpEnvironment ();
 			form = new Form ();
-			if (justBeforeFormShow != null)
-				justBeforeFormShow (null, null);
 			form.Show ();
 			formProvider = (FormProvider) ProviderFactory.GetProvider (form);
 		}

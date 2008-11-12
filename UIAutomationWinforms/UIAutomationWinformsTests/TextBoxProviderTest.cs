@@ -38,17 +38,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	[TestFixture]
 	public class TextBoxProviderTest : BaseProviderTest
 	{
-		private TextBox multiLineTextBox = null;
-		
-		[SetUp]
-		public override void SetUp ()
-		{
-			multiLineTextBox = CreateTextBox ();
-			multiLineTextBox.Multiline = true;
-			justBeforeFormShow += new EventHandler (delegate { Form.Controls.Add (multiLineTextBox); });
-			base.SetUp ();
-		}
-		
 #region Tests
 		
 		[Test]
@@ -228,7 +217,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			} catch (ElementNotEnabledException) { }
 		}
 		
-		
 #endregion
 
 #region IScrollProvider Tests
@@ -343,9 +331,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void TextChangedEventTestMultiLineBeforeFormShow ()
 		{
+			TextBox textbox = CreateTextBox ();
+			textbox.Multiline = true;
+		
+			Form form = new Form ();
+			form.Controls.Add (textbox);
+
 			bridge.ResetEventLists ();
 
-			multiLineTextBox.Text = "lifewauhfewa\nsokksooks";
+			textbox.Text = "lifewauhfewa\nsokksooks";
 
 			Assert.AreEqual (1,
 			                 bridge.AutomationPropertyChangedEvents.Count,
