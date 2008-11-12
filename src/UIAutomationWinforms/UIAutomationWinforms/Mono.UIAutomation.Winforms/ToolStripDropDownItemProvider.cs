@@ -39,14 +39,14 @@ namespace Mono.UIAutomation.Winforms
 	internal class ToolStripDropDownItemProvider : ToolStripItemProvider
 	{
 		private ToolStripDropDownItem dropDrownItem;
-		private Dictionary<ToolStripItem, ToolStripItemProvider>
+		private Dictionary<ToolStripItem, FragmentControlProvider>
 			itemProviders;
 		
 		public ToolStripDropDownItemProvider (ToolStripDropDownItem dropDrownItem) :
 			base (dropDrownItem)
 		{
 			this.dropDrownItem = dropDrownItem;
-			itemProviders = new Dictionary<ToolStripItem, ToolStripItemProvider> ();
+			itemProviders = new Dictionary<ToolStripItem, FragmentControlProvider> ();
 			
 		}
 		
@@ -66,7 +66,7 @@ namespace Mono.UIAutomation.Winforms
 			dropDrownItem.DropDown.ItemRemoved += OnItemRemoved;
 		
 			foreach (ToolStripItem item in dropDrownItem.DropDownItems) {
-				ToolStripItemProvider itemProvider = GetItemProvider (item);
+				FragmentControlProvider itemProvider = GetItemProvider (item);
 				OnNavigationChildAdded (false, itemProvider);
 			}
 		}
@@ -76,7 +76,7 @@ namespace Mono.UIAutomation.Winforms
 			dropDrownItem.DropDown.ItemAdded -= OnItemAdded;
 			dropDrownItem.DropDown.ItemRemoved -= OnItemRemoved;
 			
-			foreach (ToolStripItemProvider itemProvider in itemProviders.Values)
+			foreach (FragmentControlProvider itemProvider in itemProviders.Values)
 				OnNavigationChildRemoved (false, itemProvider);
 			OnNavigationChildrenCleared (false);
 		}
@@ -88,25 +88,25 @@ namespace Mono.UIAutomation.Winforms
 
 		private void OnItemAdded (object sender, ToolStripItemEventArgs e)
 		{
-			ToolStripItemProvider itemProvider = GetItemProvider (e.Item);
+			FragmentControlProvider itemProvider = GetItemProvider (e.Item);
 			OnNavigationChildAdded (true, itemProvider);
 		}
 
 		private void OnItemRemoved (object sender, ToolStripItemEventArgs e)
 		{
-			ToolStripItemProvider itemProvider = GetItemProvider (e.Item);
+			FragmentControlProvider itemProvider = GetItemProvider (e.Item);
 			itemProviders.Remove (e.Item);
 			itemProvider.Terminate ();
 			OnNavigationChildRemoved (true, itemProvider);
 		}
 
 
-		private ToolStripItemProvider GetItemProvider (ToolStripItem item)
+		private FragmentControlProvider GetItemProvider (ToolStripItem item)
 		{
-			ToolStripItemProvider itemProvider;
+			FragmentControlProvider itemProvider;
 			
 			if (!itemProviders.TryGetValue (item, out itemProvider)) {
-				itemProvider = (ToolStripItemProvider) ProviderFactory.GetProvider (item);
+				itemProvider = (FragmentControlProvider) ProviderFactory.GetProvider (item);
 				itemProviders [item]  = itemProvider;
 			}
 
