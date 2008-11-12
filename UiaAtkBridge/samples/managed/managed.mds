@@ -1,20 +1,20 @@
-<Combine name="ManagedTests" fileversion="2.0">
+<Combine name="managed" fileversion="2.0">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
-      <Entry build="False" name="atkSharpHelloWorld" configuration="Debug" />
-      <Entry build="False" name="FormTest" configuration="Debug" />
+      <Entry build="True" name="FormTest" configuration="Debug" />
+      <Entry build="True" name="atkSharpHelloWorld" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
-      <Entry build="False" name="atkSharpHelloWorld" configuration="Release" />
-      <Entry build="False" name="FormTest" configuration="Release" />
+      <Entry build="True" name="FormTest" configuration="Release" />
+      <Entry build="True" name="atkSharpHelloWorld" configuration="Release" />
     </Configuration>
   </Configurations>
   <StartMode startupentry="FormTest" single="True">
-    <Execute type="None" entry="atkSharpHelloWorld" />
     <Execute type="None" entry="FormTest" />
+    <Execute type="None" entry="atkSharpHelloWorld" />
   </StartMode>
   <Entries>
-    <Entry filename="atkSharpHelloWorld/atkSharpHelloWorld.mdp" />
     <Entry filename="FormTest/FormTest.mdp" />
+    <Entry filename="atkSharpHelloWorld/atkSharpHelloWorld.mdp" />
   </Entries>
 </Combine>

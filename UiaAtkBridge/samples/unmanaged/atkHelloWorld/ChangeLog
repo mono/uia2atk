@@ -1,3 +1,7 @@
+2008-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* atkHelloWorld.mdp: Update for the new locations.
+
 2008-05-19  Andres G. Aragoneses <aaragoneses@novell.com> 
 
 	* hello.c, hellotoplevel.c: Addition is now working.

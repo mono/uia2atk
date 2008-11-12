@@ -1,10 +1,10 @@
-<Combine name="UnmanagedTests" fileversion="2.0">
+<Combine name="unmanaged" fileversion="2.0">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
-      <Entry build="False" name="atkHelloWorld" configuration="Debug" />
+      <Entry build="True" name="atkHelloWorld" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
-      <Entry build="False" name="atkHelloWorld" configuration="Release" />
+      <Entry build="True" name="atkHelloWorld" configuration="Release" />
     </Configuration>
   </Configurations>
   <StartMode startupentry="atkHelloWorld" single="True">

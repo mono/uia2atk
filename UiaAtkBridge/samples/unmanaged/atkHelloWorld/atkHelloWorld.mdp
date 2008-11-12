@@ -1,4 +1,4 @@
-<Project name="atkHelloWorld" fileversion="2.0" language="C" ctype="CProject">
+<Project name="atkHelloWorld" fileversion="2.0" language="C" Target="Bin" ctype="CProject">
   <Configurations active="Debug">
     <Configuration name="Debug" SourceDirectory="." ctype="CProjectConfiguration">
       <Output directory="bin/Debug" output="atkHelloWorld" />
