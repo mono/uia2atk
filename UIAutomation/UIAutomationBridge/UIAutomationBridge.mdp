@@ -1,4 +1,4 @@
-<Project name="UIAutomationBridge" fileversion="2.0" DefaultNamespace="Mono.UIAutomation.Bridge" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+<Project name="UIAutomationBridge" fileversion="2.0" language="C#" DefaultNamespace="Mono.UIAutomation.Bridge" clr-version="Net_2_0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="../lib/net_3_0" assembly="UIAutomationBridge" />
@@ -24,7 +24,8 @@
     <ProjectReference type="Project" localcopy="True" refto="UIAutomationTypes" />
   </References>
   <Deployment.LinuxDeployData generateScript="False" />
-  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile">
+  <GtkDesignInfo />
+  <MonoDevelop.Autotools.MakefileInfo RelativeMakefileName="Makefile">
     <BuildFilesVar />
     <DeployFilesVar />
     <ResourcesVar />

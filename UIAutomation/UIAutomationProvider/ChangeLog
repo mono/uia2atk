@@ -1,3 +1,7 @@
+2008-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* UIAutomationProvider.mdp: Update for new locations.
+
 2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am: Remove cruft, use bin instead of lib/Debug.

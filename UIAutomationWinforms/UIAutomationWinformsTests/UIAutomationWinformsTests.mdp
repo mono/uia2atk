@@ -50,6 +50,10 @@
     <File name="ToolStripTextBoxProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="PanelProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="StatusStripProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="TestHelper.cs" subtype="Code" buildaction="Compile" />
+    <File name="ToolStripComboBoxProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="ToolStripProgressBarProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="ToolTipProviderTest.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

@@ -1,3 +1,7 @@
+2008-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* UIAutomationTypes.mdp: Update for new locations.
+
 2008-11-07  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am: Add -lib:../bin compiler flag to get local WindowsBase
