@@ -1,8 +1,6 @@
-EXTRA_DIST =
-
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG" -keyfile:../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG" -keyfile:../../mono-uia.snk
 
 ASSEMBLY = bin/Debug/AtkTest.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
@@ -17,7 +15,7 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:../../mono-uia.snk
 ASSEMBLY = bin/Release/AtkTest.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library
@@ -64,6 +62,8 @@ REFERENCES =  \
 DLL_REFERENCES = 
 
 CLEANFILES = $(PROGRAMFILES)
+
+EXTRA_DIST = 
 
 include $(top_srcdir)/Makefile.include
 

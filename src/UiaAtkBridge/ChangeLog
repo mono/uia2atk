@@ -1,3 +1,18 @@
+2008-11-12  Brad Taylor  <brad@getcoded.net>
+
+	* configure.ac:
+	* Test/Makefile.am:
+	* Test/configure.ac:
+	* Test/AtkTest/Makefile.am:
+	* Test/GailTest/Makefile.am:
+	* Test/AtkTest/AssemblyInfo.cs
+	* Test/GailTestApp/Makefile.am:
+	* Test/GailTest/AssemblyInfo.cs:
+	* Test/GailTestApp/AssemblyInfo.cs:
+	* Test/UiaAtkBridgeTest/Makefile.am:
+	* Test/UiaAtkBridgeTest/AssemblyInfo.cs: Make the build work under
+	autotools.
+
 2008-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Test/Test.mds:
