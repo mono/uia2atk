@@ -1,3 +1,7 @@
+2008-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* UiaAtkBridgeTest.mdp: Adjusting configure location in MD projects.
+
 2008-11-12  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTester.cs: Set GetRootHandler to null in TearDown method.
