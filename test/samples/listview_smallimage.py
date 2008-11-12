@@ -104,7 +104,7 @@ class ListViewSample(Form):
 
         # setup label
         self.label1 = Label()
-        self.label1.Text = "click the CheckBox to sum the num"
+        self.label1.Text = "click the CheckBox"
         self.label1.Dock = DockStyle.Top
 
         # add controls
@@ -123,9 +123,9 @@ class ListViewSample(Form):
 
     def item_click(self, sender, event):
         if event.CurrentValue == CheckState.Unchecked:
-            self.label1.Text = "Check " + self.listview.Items[event.Index].Text
+            self.label1.Text =  self.listview.Items[event.Index].Text + " Checked"
         elif event.CurrentValue == CheckState.Checked:
-            self.label1.Text = "Uncheck " + self.listview.Items[event.Index].Text
+            self.label1.Text = self.listview.Items[event.Index].Text + " Unchecked"
 
 
             

@@ -1,5 +1,19 @@
 2008-11-12  Calen Chen <cachen@novell.com>
 
+	* testers/listview_largeimage_ops.py: add toggle action for 
+	listitem2 to check the states
+	* samples/listview_smallimage.py: modify the change of label's text 
+	after check and uncheck listitem 
+	* testers/listview_smallimage/listviewsmallimageframe.py,
+	* testers/listview_smallimage/__init__.py,
+	* testers/listview_smallimage_ops.py,
+	* testers/listview_smallimage: add new strongwind test to check states 
+	when do click and toggle action, check text implementation of listitem,
+	check ItemCheck event, check selection implementation, the most 
+	important test is checking image implementation
+
+2008-11-12  Calen Chen <cachen@novell.com>
+
 	* testers/states.py,
 	* testers/actions.py: add actions and states tuple for menu, menu item
 
