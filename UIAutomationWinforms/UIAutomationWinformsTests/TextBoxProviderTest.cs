@@ -336,6 +336,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 			Form form = new Form ();
 			form.Controls.Add (textbox);
+			form.Show ();
 
 			bridge.ResetEventLists ();
 

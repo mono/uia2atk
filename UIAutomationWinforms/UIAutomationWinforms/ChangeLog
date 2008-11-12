@@ -1,3 +1,8 @@
+2008-11-12  Brad Taylor  <brad@getcoded.net>
+	
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Don't forget to add
+	ValueProvider always. [Fixes #443885]
+
 2008-11-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ToolStripDropDownItemProvider.cs: Though

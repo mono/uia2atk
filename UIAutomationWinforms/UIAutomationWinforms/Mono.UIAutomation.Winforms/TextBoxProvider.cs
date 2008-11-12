@@ -138,6 +138,8 @@ namespace Mono.UIAutomation.Winforms
 				// implement ValuePattern always.
 				//SetBehavior (ValuePatternIdentifiers.Pattern,
 				//             null);
+				SetBehavior (ValuePatternIdentifiers.Pattern,
+				             new ValueProviderBehavior (this));
 				SetBehavior (RangeValuePatternIdentifiers.Pattern,
 				             null);
 			} else { //Edit Control Type
