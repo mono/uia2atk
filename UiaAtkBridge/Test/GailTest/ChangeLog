@@ -1,3 +1,7 @@
+2008-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTest.mdp: Add lost ref.
+
 2008-11-12  Mike Gorse  <mgorse@novell.com>
 
 	* Makefile.am: Update paths for migration.
