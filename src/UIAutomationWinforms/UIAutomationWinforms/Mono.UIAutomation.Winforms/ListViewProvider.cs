@@ -32,6 +32,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ListView;
+using Mono.UIAutomation.Winforms.Events.ListView;
 using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
@@ -163,7 +164,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return ((SWF.ListViewItem) item.ObjectItem).Text;
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
-				return listView.Focused && listView.SelectedIndices.Contains (item.Index); //TODO: OK?
+				return listView.Focused && ((SWF.ListViewItem)item.ObjectItem).Focused;
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
 				int index = item.Index;
 				if (index == -1)
@@ -296,7 +297,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider)
 		{
-			return null;
+			return new ListItemAutomationHasKeyboardFocusPropertyEvent (provider);
 		}
 		
 		#region ListProvider: ListItem: Scroll Methods

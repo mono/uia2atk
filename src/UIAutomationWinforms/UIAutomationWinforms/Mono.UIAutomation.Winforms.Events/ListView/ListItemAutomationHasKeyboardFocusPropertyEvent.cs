@@ -20,7 +20,7 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Mario Carrion <mcarrion@novell.com>
+//	Mike Gorse <mgorse@novell.com>
 // 
 using System;
 using System.ComponentModel;
@@ -29,7 +29,7 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.ListBox
+namespace Mono.UIAutomation.Winforms.Events.ListView
 {
 
 	internal class ListItemAutomationHasKeyboardFocusPropertyEvent
@@ -49,13 +49,13 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 	
 		public override void Connect ()
 		{
-			((SWF.ListBox) Provider.Control).UIAFocusedItemChanged 
+			((SWF.ListView) Provider.Control).UIAFocusedItemChanged 
 				+= new EventHandler (OnUIAFocusedItemChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.ListBox) Provider.Control).UIAFocusedItemChanged 
+			((SWF.ListView) Provider.Control).UIAFocusedItemChanged 
 				-= new EventHandler (OnUIAFocusedItemChanged);
 		}
 		

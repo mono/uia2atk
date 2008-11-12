@@ -54,6 +54,7 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Disconnect ()
 		{
+			if (viewItem.ListView != null)
 			viewItem.ListView.ItemChecked -= OnItemChecked;
 		}
 		

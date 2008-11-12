@@ -1,3 +1,20 @@
+2008-11-11  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am,
+	  Mono.UIAutomation.Winforms.Events/ListView/ListItemAutomationHasKeyboardFocusPropertyEvent.cs:
+	  Add ListView ListItem hasKeyboardFocusProperty event.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: For
+	  HasKeyboardFocusProperty, use focused item rather than the
+	  selected item.
+
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs,
+	  Mono.UIAutomation.Winforms.Events/ListBox/ListItemAutomationHasKeyboardFocusPropertyEvent.cs:
+	  : Ditto.
+
+	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemTogglePatternToggleStateEvent.cs:
+	  Check for null ListView.
+
 2008-11-11  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/FormProvider.cs:
@@ -437,7 +454,7 @@
 	* Mono.UIAutomation.Winforms.mdp: Not compiling ListView-related
 	classes.
 
-2008-10-23  Mike Gorse <<mgorse@novell.com>
+2008-10-23  Mike Gorse <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Fix GetSelection
 	  [bug 438024]

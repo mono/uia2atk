@@ -131,7 +131,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override IRawElementProviderFragment GetFocus ()
 		{
-			return GetItemProviderFrom (this, listboxControl.SelectedItem);
+			return GetItemProviderFrom (this, listboxControl.Items [listboxControl.FocusedItem]);
 		}
 		
 		public override void InitializeChildControlStructure ()
@@ -167,7 +167,7 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 
 			if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
-				return listboxControl.Focused && item.Index == listboxControl.SelectedIndex;
+				return listboxControl.Focused && item.Index == listboxControl.FocusedItem;
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
 				System.Drawing.Rectangle itemRec = listboxControl.GetItemRectangle (item.Index);
 				System.Drawing.Rectangle rectangle = listboxControl.Bounds;

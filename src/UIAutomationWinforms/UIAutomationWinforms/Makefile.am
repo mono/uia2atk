@@ -141,6 +141,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListView/GridPatternRowEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternRowEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/ListItemAutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemCheckBoxTogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditGridItemColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditGridItemRowEvent.cs \
