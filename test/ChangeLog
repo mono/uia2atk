@@ -1,3 +1,10 @@
+2008-11-12  Ray Wang <rawang@novell.com>
+
+	* keystrokes/winforms/wincheckbox.py/wincheckbox.py: split the
+	AssertPresentation into pieces, do it more atomically
+	* keystrokes/gtk/gtkcheckbutton.py/checkbutton.py: split the
+	AssertPresentation into pieces, do it more atomically
+
 2008-11-12  Calen Chen <cachen@novell.com>
 
 	* testers/listview_largeimage_ops.py: add toggle action for 

@@ -1,42 +1,46 @@
 #!/usr/bin/python
-"""Test of menu accelerator label output using the gtk-demo UI Manager
-demo.
-"""
+
 from macaroon.playback import *
 import utils
 
 sequence = MacroSequence()
 
-sequence.append(PauseAction(5000))
-sequence.append(WaitForWindowActivate("Check Button",None))
+#sequence.append(WaitForWindowActivate("Check Button",None))
 sequence.append(utils.StartRecordingAction())
-sequence.append(WaitForFocus("check button 1", acc_role=pyatspi.ROLE_CHECK_BOX))
-sequence.append(KeyComboAction("space"))
 sequence.append(KeyComboAction("space"))
 sequence.append(utils.AssertPresentationAction(
-    "Check Button 1",
+    "Check Button 1 checked",
     ["BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame <x> check button 1 CheckBox'",
     "     VISIBLE:  '<x> check button 1 CheckBox', cursor=1",
-    "BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame < > check button 1 CheckBox'",
+    "SPEECH OUTPUT: 'checked'"]))
+sequence.append(utils.StartRecordingAction())
+sequence.append(KeyComboAction("space"))
+sequence.append(utils.AssertPresentationAction(
+    "Check Button 1 not checked",
+    ["BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame < > check button 1 CheckBox'",
     "     VISIBLE:  '< > check button 1 CheckBox', cursor=1",
-    "SPEECH OUTPUT: 'checked'",
     "SPEECH OUTPUT: 'not checked'"]))
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("Tab"))
-sequence.append(WaitForFocus("check button 2", acc_role=pyatspi.ROLE_CHECK_BOX))
-sequence.append(KeyComboAction("space"))
-sequence.append(KeyComboAction("space"))
 sequence.append(utils.AssertPresentationAction(
-    "Check Button 2",
+    "Switch focus to Check Button 2",
     ["BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame < > check button 2 CheckBox'",
     "     VISIBLE:  '< > check button 2 CheckBox', cursor=1",
-    "BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame <x> check button 2 CheckBox'",
-    "     VISIBLE:  '<x> check button 2 CheckBox', cursor=1",
-    "BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame < > check button 2 CheckBox'",
-    "     VISIBLE:  '< > check button 2 CheckBox', cursor=1",
     "SPEECH OUTPUT: ''",
-    "SPEECH OUTPUT: 'check button 2 check box not checked'",
-    "SPEECH OUTPUT: 'checked'",
+    "SPEECH OUTPUT: 'check button 2 check box not checked'"]))
+sequence.append(utils.StartRecordingAction())
+sequence.append(KeyComboAction("space"))
+sequence.append(utils.AssertPresentationAction(
+    "Check Button 2 checked",
+    ["BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame <x> check button 2 CheckBox'",
+    "     VISIBLE:  '<x> check button 2 CheckBox', cursor=1",
+    "SPEECH OUTPUT: 'checked'"]))
+sequence.append(utils.StartRecordingAction())
+sequence.append(KeyComboAction("space"))
+sequence.append(utils.AssertPresentationAction(
+    "Check Button 2 not checked",
+    ["BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame < > check button 2 CheckBox'",
+    "     VISIBLE:  '< > check button 2 CheckBox', cursor=1",
     "SPEECH OUTPUT: 'not checked'"]))
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("Tab"))
