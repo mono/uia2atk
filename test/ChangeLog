@@ -1,3 +1,9 @@
+2008-11-11 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* keystrokes/winforms/winbutton.py/winbutton.py,
+	* keystrokes/gtk/gtkbutton.py/gtkbutton.py: Remove the pauses where we
+	don't want them.
+	
 2008-11-11  Calen Chen <cachen@novell.com>
 
 	* samples/listview_largeimage.py: modify the change of label's text 
