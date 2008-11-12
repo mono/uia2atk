@@ -1,6 +1,8 @@
+EXTRA_DIST =
+
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -debug "-define:DEBUG" -keyfile:../../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -debug "-define:DEBUG"
 
 ASSEMBLY = bin/Debug/UiaAtkBridgeTest.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
@@ -15,7 +17,7 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -keyfile:../../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -keyfile:../mono-uia.snk
 ASSEMBLY = bin/Release/UiaAtkBridgeTest.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library
@@ -91,21 +93,21 @@ $(eval $(call emit_resgen_targets))
 $(build_xamlg_list): %.xaml.g.cs: %.xaml
 	xamlg '$<'
 
-bin/Debug/UIAutomationWinforms.dll: ../../../UIAutomationWinforms/UIAutomationWinforms/bin/Debug/UIAutomationWinforms.dll
+bin/Debug/UIAutomationWinforms.dll: ../../UIAutomationWinforms/UIAutomationWinforms/bin/Debug/UIAutomationWinforms.dll
 	@mkdir -p bin/Debug
 	cp -a $< $@
 	cp -a $<.mdb $@.mdb
 
-bin/Release/UIAutomationWinforms.dll: ../../../UIAutomationWinforms/UIAutomationWinforms/bin/Release/UIAutomationWinforms.dll
+bin/Release/UIAutomationWinforms.dll: ../../UIAutomationWinforms/UIAutomationWinforms/bin/Release/UIAutomationWinforms.dll
 	@mkdir -p bin/Release
 	cp -a $< $@
 
-bin/Debug/UiaAtkBridge.dll: ../../UiaAtkBridge/bin/Debug/UiaAtkBridge.dll
+bin/Debug/UiaAtkBridge.dll: ../UiaAtkBridge/bin/Debug/UiaAtkBridge.dll
 	@mkdir -p bin/Debug
 	cp -a $< $@
 	cp -a $<.mdb $@.mdb
 
-bin/Release/UiaAtkBridge.dll: ../../UiaAtkBridge/bin/Release/UiaAtkBridge.dll
+bin/Release/UiaAtkBridge.dll: ../UiaAtkBridge/bin/Release/UiaAtkBridge.dll
 	@mkdir -p bin/Release
 	cp -a $< $@
 

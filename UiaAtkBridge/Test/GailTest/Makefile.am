@@ -1,6 +1,8 @@
+EXTRA_DIST =
+
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG" -keyfile:../../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG"
 
 ASSEMBLY = bin/Debug/GailTest.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
@@ -15,7 +17,7 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:../../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:../mono-uia.snk
 ASSEMBLY = bin/Release/GailTest.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library
@@ -80,11 +82,11 @@ $(eval $(call emit_resgen_targets))
 $(build_xamlg_list): %.xaml.g.cs: %.xaml
 	xamlg '$<'
 
-bin/Debug/GailTestApp.exe: ../GailTestApp/bin/Debug/GailTestApp.exe
+bin/Debug/GailTestApp.exe: ../../samples/managed/GailTestApp/bin/Debug/GailTestApp.exe
 	@mkdir -p bin/Debug
 	cp -a $< $@
 
-bin/Release/GailTestApp.exe: ../GailTestApp/bin/Release/GailTestApp.exe
+bin/Release/GailTestApp.exe: ../../samples/managed/GailTestApp/bin/Release/GailTestApp.exe
 	@mkdir -p bin/Release
 	cp -a $< $@
 

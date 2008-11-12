@@ -60,4 +60,4 @@ BEAUTIFY THE LOG
 
   In practice, the stylesheets should be edited to point to the appropriate
   resources instead of copying the resources to the directory of every log.
-  This is simply to save storage pace.
+  This is simply to save storage space.
