@@ -54,7 +54,7 @@ RESOURCES = gtk-gui/gui.stetic
 EXTRAS = 
 
 REFERENCES =  \
-	../../../UiaAtkBridge/AtkTest/bin/Debug/AtkTest.dll \
+	../AtkTest/bin/Debug/AtkTest.dll \
 	Mono.Posix \
 	-pkg:glade-sharp-2.0 \
 	-pkg:glib-sharp-2.0 \

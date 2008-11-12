@@ -82,11 +82,11 @@ $(eval $(call emit_resgen_targets))
 $(build_xamlg_list): %.xaml.g.cs: %.xaml
 	xamlg '$<'
 
-bin/Debug/GailTestApp.exe: ../../samples/managed/GailTestApp/bin/Debug/GailTestApp.exe
+bin/Debug/GailTestApp.exe: ../GailTestApp/bin/Debug/GailTestApp.exe
 	@mkdir -p bin/Debug
 	cp -a $< $@
 
-bin/Release/GailTestApp.exe: ../../samples/managed/GailTestApp/bin/Release/GailTestApp.exe
+bin/Release/GailTestApp.exe: ../GailTestApp/bin/Release/GailTestApp.exe
 	@mkdir -p bin/Release
 	cp -a $< $@
 

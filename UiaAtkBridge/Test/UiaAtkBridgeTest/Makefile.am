@@ -93,21 +93,21 @@ $(eval $(call emit_resgen_targets))
 $(build_xamlg_list): %.xaml.g.cs: %.xaml
 	xamlg '$<'
 
-bin/Debug/UIAutomationWinforms.dll: ../../UIAutomationWinforms/UIAutomationWinforms/bin/Debug/UIAutomationWinforms.dll
+bin/Debug/UIAutomationWinforms.dll: ../../../UIAutomationWinforms/UIAutomationWinforms/bin/Debug/UIAutomationWinforms.dll
 	@mkdir -p bin/Debug
 	cp -a $< $@
 	cp -a $<.mdb $@.mdb
 
-bin/Release/UIAutomationWinforms.dll: ../../UIAutomationWinforms/UIAutomationWinforms/bin/Release/UIAutomationWinforms.dll
+bin/Release/UIAutomationWinforms.dll: ../../../UIAutomationWinforms/UIAutomationWinforms/bin/Release/UIAutomationWinforms.dll
 	@mkdir -p bin/Release
 	cp -a $< $@
 
-bin/Debug/UiaAtkBridge.dll: ../UiaAtkBridge/bin/Debug/UiaAtkBridge.dll
+bin/Debug/UiaAtkBridge.dll: ../../UiaAtkBridge/bin/Debug/UiaAtkBridge.dll
 	@mkdir -p bin/Debug
 	cp -a $< $@
 	cp -a $<.mdb $@.mdb
 
-bin/Release/UiaAtkBridge.dll: ../UiaAtkBridge/bin/Release/UiaAtkBridge.dll
+bin/Release/UiaAtkBridge.dll: ../../UiaAtkBridge/bin/Release/UiaAtkBridge.dll
 	@mkdir -p bin/Release
 	cp -a $< $@
 
