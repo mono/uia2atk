@@ -74,6 +74,8 @@ namespace UiaAtkBridgeTest
 		protected SWF.TextBox tbx2 = new SWF.TextBox ();
 		protected SWF.ToolStrip toolStrip = new SWF.ToolStrip ();
 		protected SWF.ToolStripComboBox toolStripComboBoxSim = new SWF.ToolStripComboBox ();
+		protected SWF.ToolStripLabel tsl1 = new SWF.ToolStripLabel ();
+		protected SWF.ListView lv1 = new SWF.ListView ();
 
 		protected int lastClickedLink = -1;
 		
@@ -287,6 +289,69 @@ namespace UiaAtkBridgeTest
 			ComboBoxSimple (toolStripComboBoxSim);
 			
 			Console.WriteLine ("</Test>");
+		}
+
+		[Test]
+		public void ToolStripLabel ()
+		{
+			Console.WriteLine ("<Test id=\"ToolStripLabel\">");
+			Label (BasicWidgetType.ToolStripLabel);
+			Console.WriteLine ("</Test>");
+		}
+
+		[Test]
+		public void ListView2 ()
+		{
+			lv1.View = SWF.View.List;
+			lv1.View = SWF.View.Details;
+			TestListBox ();
+			lv1.View = SWF.View.LargeIcon;
+			TestListBox ();
+			lv1.View = SWF.View.SmallIcon;
+			TestListBox ();
+		}
+
+		public void TestListBox ()
+		{
+			lv1.Items.Clear();
+			lv1.CheckBoxes = false;
+			lv1.Items.Add ("Item1");
+			lv1.Items.Add ("Item2");
+			Atk.Object accessible = UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (ProviderFactory.GetProvider (lv1));
+			Assert.IsNotNull (accessible, "Adapter should not be null");
+			Assert.AreEqual (2, accessible.NAccessibleChildren, "NAccessibleChildren #1");
+			Atk.Object child1 = accessible.RefAccessibleChild (0);
+			Assert.AreEqual (Atk.Role.ListItem, child1.Role, "Child role #1");
+			child1 = null;
+			lv1.Items.Clear();
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren #1");
+			lv1.CheckBoxes = true;
+			lv1.Items.Add ("Item1");
+			lv1.Items[0].Checked = true;
+			lv1.Items.Add ("Item2");
+			child1 = accessible.RefAccessibleChild (0);
+			Assert.AreEqual (Atk.Role.CheckBox, child1.Role, "Child role #2");
+			// TODO: Is SingleLine appropriate?
+			States (child1,
+				Atk.StateType.Checked,
+				Atk.StateType.Enabled,
+				Atk.StateType.Focusable,
+				Atk.StateType.Selectable,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.SingleLine,
+				Atk.StateType.Transient,
+				Atk.StateType.Visible);
+			Atk.Object child2 = accessible.RefAccessibleChild (1);
+			States (child2,
+				Atk.StateType.Enabled,
+				Atk.StateType.Focusable,
+				Atk.StateType.Selectable,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.SingleLine,
+				Atk.StateType.Transient,
+				Atk.StateType.Visible);
 		}
 
 		[Test]

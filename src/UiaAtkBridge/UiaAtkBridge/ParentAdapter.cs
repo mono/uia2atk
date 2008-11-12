@@ -134,6 +134,14 @@ namespace UiaAtkBridge
 			}
 		}
 		
+		internal void UpdateChildren ()
+		{
+			if (requestedChildren) {
+				// TODO: Figure out if this severely impacts performance
+				requestedChildren = false;
+				RequestChildren ();
+			}
+		}
 #endregion
 
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs args)

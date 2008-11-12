@@ -38,8 +38,10 @@ namespace UiaAtkBridgeTest
 		public void Label ()
 		{
 			Console.WriteLine ("<Test id=\"Label\">");
-			
-			BasicWidgetType type = BasicWidgetType.Label;
+			Label (BasicWidgetType.Label);
+		}
+		protected void Label (BasicWidgetType type)
+		{
 			Atk.Object accessible = InterfaceText (type);
 
 			PropertyRole (type, accessible);
@@ -674,6 +676,53 @@ namespace UiaAtkBridgeTest
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithoutImage);
 
 			Console.WriteLine ("</Test>");
+		}
+
+		[Test]
+		public void ListView ()
+		{
+			BasicWidgetType type = BasicWidgetType.ListView;
+			Atk.Object accessible;
+
+			string name = "<table><th><td>Title</td><td>Author</td><td>year</td></th>"+
+				"<tr><td>Non-C#</td>"+
+				"<tr><td>Programming Windows</td><td>Petzold, Charles</td><td>1998</td></tr>"+
+				"<tr><td>Code: The Hidden Language of Computer Hardware and Software</td><td>Petzold, Charles</td><td>2000</td></tr>"+
+				"<tr><td>Coding Techniques for Microsoft Visual Basic .NET</td><td>Connell, John</td><td>2001</td></tr>"+
+				"</tr><tr><td>C#</td>"+
+				"<tr><td>Programming Windows with C#</td><td>Petzold, Charles</td><td>2001</td></tr>"+
+				"<tr><td>C# for Java Developers</td><td>Jones, Allen &amp; Freeman, Adam</td><td>2002</td></tr>"+
+				"</tr></table>";
+			accessible = GetAccessible (type, name, true);
+			
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+			InterfaceComponent (type, atkComponent);
+			
+			PropertyRole (type, accessible);
+
+			Atk.Table atkTable = CastToAtkInterface<Atk.Table> (accessible);
+			Assert.AreEqual (ValidNChildrenForAListView, accessible.NAccessibleChildren, "ListView numChildren");
+			Atk.Object header = accessible.RefAccessibleChild (0);
+			Assert.AreEqual (Atk.Role.TableColumnHeader, header.Role, "Child 0 role");
+			Atk.Object child1 = FindObjectByName (accessible, "Programming Windows with C#");
+			int child1Index = child1.IndexInParent;
+			Assert.IsTrue (child1Index >= 0, "Child 1 index > 0");
+			InterfaceText (child1, "Programming Windows with C#");
+			Assert.IsNotNull (child1, "FindObjectByName #1");
+			Assert.AreEqual (Atk.Role.TableCell, child1.Role, "Child 1 role");
+			Atk.Object group = FindObjectByName (accessible, "C#");
+			int groupIndex = group.IndexInParent;
+			Assert.IsTrue (groupIndex >= 0, "Group index > 0");
+			Assert.IsFalse (child1Index == groupIndex, "Child should have a different index from its group");
+
+			InterfaceText (group, "C#");
+			Relation (Atk.RelationType.NodeChildOf, child1, group);
+
+			Assert.AreEqual (3, atkTable.NColumns, "Table NumColumns");
+			Assert.AreEqual (1, atkTable.GetRowAtIndex (groupIndex), "GetRowAtIndex");
+			Assert.AreEqual (0, atkTable.GetColumnAtIndex (groupIndex), "GetColumnAtIndex");
+			Assert.AreEqual (group, atkTable.RefAt (1, 0), "ListView RefAt");
 		}
 
 		[Test]

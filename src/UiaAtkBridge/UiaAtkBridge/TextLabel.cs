@@ -32,14 +32,15 @@ namespace UiaAtkBridge
 
 	public class TextLabel : ComponentAdapter , Atk.TextImplementor 
 	{
-		private IRawElementProviderSimple provider;
-		
 		private TextImplementorHelper textExpert = null;
 		
 		public TextLabel (IRawElementProviderSimple provider) : base (provider)
 		{
-			this.provider = provider;
-			Role = Atk.Role.Label;
+			int controlTypeId = (int) Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			if (controlTypeId == ControlType.Text.Id)
+				Role = Atk.Role.Label;
+			else if (controlTypeId == ControlType.HeaderItem.Id)
+				Role = Atk.Role.TableColumnHeader;
 			
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			textExpert = new TextImplementorHelper (text, this);
@@ -82,7 +83,7 @@ namespace UiaAtkBridge
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			if (eventId == TextPatternIdentifiers.TextChangedEvent) {
-				string newText = provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) as string;
+				string newText = Provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) as string;
 				
 				// Don't fire spurious events if the text hasn't changed
 				if (textExpert.Text == newText)

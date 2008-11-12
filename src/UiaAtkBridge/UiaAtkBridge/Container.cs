@@ -29,11 +29,17 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class ToolBar : ComponentParentAdapter
+	public class Container : ComponentParentAdapter
 	{
-		public ToolBar (IRawElementProviderSimple provider) : base (provider)
+		public Container (IRawElementProviderSimple provider): base (provider)
 		{
-			Role = Atk.Role.ToolBar;
+			int controlTypeId = (int) Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			if (controlTypeId == ControlType.ToolBar.Id)
+				Role = Atk.Role.ToolBar;
+			else if (controlTypeId == ControlType.Group.Id)
+				Role = Atk.Role.Panel;
+			else
+				Role = Atk.Role.Filler;
 			
 			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 		}
@@ -42,11 +48,11 @@ namespace UiaAtkBridge
 		{
 			if (eventId == AutomationElementIdentifiers.AsyncContentLoadedEvent) {
 				// TODO: Handle AsyncContentLoadedEvent
-			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
-				// TODO: Handle AutomationFocusChangedEvent
 			} else if (eventId == AutomationElementIdentifiers.StructureChangedEvent) {
 				// TODO: Handle StructureChangedEvent
 			}
+			else
+				base.RaiseAutomationEvent (eventId, e);
 		}
 
 		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)

@@ -32,19 +32,21 @@ namespace UiaAtkBridge
 {
 	internal class SelectionProviderUserHelper
 	{
+		private IRawElementProviderFragment provider;
 		private ISelectionProvider					selectionProvider;
 		private IRawElementProviderFragment			childrenHolder;
 
-		public SelectionProviderUserHelper (IRawElementProviderFragmentRoot provider,
+		public SelectionProviderUserHelper (IRawElementProviderFragment provider,
 		                                    ISelectionProvider selectionProvider) :
 		  this (provider, selectionProvider, null)
 		{
 		}
 		
-		public SelectionProviderUserHelper (IRawElementProviderFragmentRoot provider,
+		public SelectionProviderUserHelper (IRawElementProviderFragment provider,
 		                                    ISelectionProvider selectionProvider,
 		                                    IRawElementProviderFragment childrenHolder)
 		{
+			this.provider = provider;
 			this.selectionProvider = selectionProvider;
 			this.childrenHolder = (childrenHolder != null) ? childrenHolder : provider;
 		}
@@ -54,7 +56,7 @@ namespace UiaAtkBridge
 		public int SelectionCount
 		{
 			get {
-				IRawElementProviderSimple[] selectedItems = selectionProvider.GetSelection ();
+				IRawElementProviderSimple[] selectedItems = GetSelection ();
 				if (selectedItems == null)
 					return 0;
 				return selectedItems.Length;
@@ -84,7 +86,7 @@ namespace UiaAtkBridge
 		public bool ClearSelection ()
 		{
 			IRawElementProviderSimple[] selectedElements = 
-				selectionProvider.GetSelection ();
+				GetSelection ();
 			bool result = true;
 				
 			if (selectedElements == null)
@@ -124,8 +126,10 @@ namespace UiaAtkBridge
 		public Atk.Object RefSelection (int i)
 		{
 			IRawElementProviderSimple[] selectedElements = 
-				selectionProvider.GetSelection ();
-			if (selectedElements == null || (i < 0 || i >= selectedElements.Length)) return null; return AutomationBridge.GetAdapterForProviderLazy (selectedElements[i]);
+				GetSelection ();
+			if (selectedElements == null || (i < 0 || i >= selectedElements.Length))
+				return null;
+			return AutomationBridge.GetAdapterForProviderLazy (selectedElements[i]);
 		}
 		
 		public bool RemoveSelection (int i)
@@ -196,5 +200,21 @@ namespace UiaAtkBridge
 			return null;
 		}
 		
+		IRawElementProviderSimple [] GetSelection ()
+		{
+			IRawElementProviderSimple [] elements = selectionProvider.GetSelection ();
+			int controlTypeId = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			if (elements == null || controlTypeId != ControlType.Group.Id)
+				return elements;
+			IRawElementProviderSimple [] ret = new IRawElementProviderSimple [elements.Length];
+			int count = 0;
+			for (int i = ret.Length - 1; i >= 0; i--) {
+				IRawElementProviderFragment parent = ((IRawElementProviderFragment)ret [i]).Navigate (NavigateDirection.Parent);
+				if (parent == childrenHolder)
+					ret [count++] = elements [i];
+			}
+			Array.Resize<IRawElementProviderSimple> (ref ret, count);
+			return ret;
+		}
 	}
 }

@@ -1,3 +1,41 @@
+2008-11-12  Mike Gorse <mgorse@novell.com>
+
+	* SelectionProviderUserHelper.cs: For groups, make sure selected items
+	  are children of the group
+
+	* Makefile.am, UiaAtkBridge.mdp, ToolBar.cs, Container.cs,
+	  StatusBar.cs, TextContainer.cs, AutomationBridge.cs:
+	  ToolBar.cs -> Container.cs.  Have Container.cs also support groups.
+	  StatusBar.cs -> TextContainer.cs.
+
+	* Container.cs: Call base PropertyChange handler for unhandled
+	  events.
+
+	* TableImplementorHelper.cs: Support groups; expose rows corresponding
+	  to groups as in gail
+
+	* List.cs, AutomationBridge.cs: Add ListWithGrid (for ListView).
+
+	* TextLabel.cs: Also support HeaderItem.
+
+	* AutomationBridge.cs: have GetParentAdapter display a warning
+	  if unable to cast rather than crash.
+
+	* AutomationBridge.cs: Handle DataGrid, DataItem, Header and HeaderItem.
+
+	* AutomationBridge.cs: Do not display warning for ControlType.Thumb.
+
+	* ComponentAdapter.cs: Only set Focused if Focusable.
+
+	* TextImplementorHelper.cs, ListItem.cs, MenuItem.cs, ProgressBar.cs:
+	  Spinner.cs, TextBoxEntryView.cs: Remove non-resource constructor,
+	  since GetRangeExtents needs a provider.
+
+	* TextBoxEntryView.cs: Pass PropertyChanged events to the base class.
+
+	* AutomationBridge.cs, ParentAdapter.cs: Handle ChildrenBulkAdded and
+	  ChildrenInvalidated.
+
 2008-11-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* ParentAdapter.cs: Restrict navigation to IRawElementProviderFragment,

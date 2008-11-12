@@ -314,8 +314,16 @@ namespace UiaAtkBridge
 			// an AT will know about the control that has focus,
 			// but don't do this if we're shutting down (ie,
 			// providerAdapterMapping.Count == 0)
-			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty && !providerAdapterMapping.ContainsKey (simpleProvider) && providerAdapterMapping.Count > 0)
+			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty && !providerAdapterMapping.ContainsKey (simpleProvider) && providerAdapterMapping.Count > 0) {
 				HandleElementAddition (simpleProvider);
+				int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+				if (controlTypeId == ControlType.DataItem.Id && simpleProvider is IRawElementProviderFragment) {
+					IRawElementProviderFragment child = ((IRawElementProviderFragment)simpleProvider).Navigate (NavigateDirection.FirstChild);
+					providerAdapterMapping [child].RaiseAutomationPropertyChangedEvent (e);
+					return;
+				}
+			}
+
 			if ((!providerAdapterMapping.ContainsKey (simpleProvider)) || windowProviders == 0)
 				return;
 			
@@ -325,8 +333,9 @@ namespace UiaAtkBridge
 		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
 			IRawElementProviderSimple simpleProvider = (IRawElementProviderSimple) provider;
-			// TODO: Handle ChildrenBulkAdded
-			if (e.StructureChangeType == StructureChangeType.ChildAdded) {
+			if (e.StructureChangeType == StructureChangeType.ChildrenBulkAdded) {
+				HandleBulkAdded (simpleProvider);
+			} else if (e.StructureChangeType == StructureChangeType.ChildAdded) {
 				if (!providerAdapterMapping.ContainsKey (simpleProvider))
 					HandleElementAddition (simpleProvider);
 			} else if (e.StructureChangeType == StructureChangeType.ChildRemoved) {
@@ -336,6 +345,9 @@ namespace UiaAtkBridge
 					appMonitor.Quit ();
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
 				HandleBulkRemoved (simpleProvider);
+			} else if (e.StructureChangeType == StructureChangeType.ChildrenInvalidated) {
+				HandleBulkRemoved (simpleProvider);
+				HandleBulkAdded (simpleProvider);
 			}
 			else
 				Console.WriteLine ("StructureChangedEvent not handled:" + e.StructureChangeType.ToString ());
@@ -357,13 +369,20 @@ namespace UiaAtkBridge
 			if (parentProvider == null)
 				return null;
 			
+			int controlTypeId = (int) parentProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			if (controlTypeId == ControlType.Header.Id || controlTypeId == ControlType.DataItem.Id)
+				return GetParentAdapter (parentProvider);
+
 			if (!providerAdapterMapping.ContainsKey (parentProvider))
 				HandleElementAddition (parentProvider);
 
 			Adapter parent = null;
 			if (!providerAdapterMapping.TryGetValue (parentProvider, out parent))
 				return null;
-			return (ParentAdapter)parent;
+			ParentAdapter ret = parent as ParentAdapter;
+			if (ret == null)
+				Console.WriteLine ("AutomationBridge: warning: Could not cast " + parent + " to ParentAdapter");
+			return ret;
 		}
 
 		private void HandleElementAddition (IRawElementProviderSimple simpleProvider)
@@ -408,14 +427,22 @@ namespace UiaAtkBridge
 			else if (controlTypeId == ControlType.Image.Id)
 				HandleNewImageControlType (simpleProvider);
 			else if (controlTypeId == ControlType.ToolBar.Id)
-				HandleNewToolBarControlType (simpleProvider);
+				HandleNewContainer (simpleProvider);
+			else if (controlTypeId == ControlType.Header.Id)
+				AddChildrenToParent (simpleProvider);
+			else if (controlTypeId == ControlType.HeaderItem.Id)
+				HandleNewHeaderItemControlType (simpleProvider);
 			else if (controlTypeId == ControlType.MenuBar.Id) //for MenuStrip widget
 				// || (controlTypeId == ControlType.Menu.Id)) //for 1.x Menu widget it seems <- TODO
 				HandleNewMenuBarControlType (simpleProvider);
 			else if (controlTypeId == ControlType.MenuItem.Id) //for ToolStripMenuItem widget
 				HandleNewMenuItemControlType (simpleProvider);
+			else if (controlTypeId == ControlType.DataGrid.Id) //for ToolStripMenuItem widget
+				HandleNewDataGridControlType (simpleProvider);
+			else if (controlTypeId == ControlType.DataItem.Id)
+				AddChildrenToParent (simpleProvider);
 			// TODO: Other providers
-			else
+			else if (controlTypeId != ControlType.Thumb.Id)
 				Console.WriteLine ("AutomationBridge: Unhandled control: " +
 				                   ControlType.LookupById (controlTypeId).ProgrammaticName);
 		}
@@ -487,13 +514,38 @@ namespace UiaAtkBridge
 		}
 		
 		
-		private void HandleBulkRemoved (IRawElementProviderSimple provider)
+		private void HandleBulkAdded (IRawElementProviderSimple provider)
 		{
 			if (!providerAdapterMapping.ContainsKey (provider)) {
-				//Console.WriteLine ("Got a ChildrenBulkRemove for a " + provider + " but no adapter");
+				int controlTypeId = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+				if (controlTypeId == ControlType.Header.Id || controlTypeId == ControlType.DataItem.Id) {
+					IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
+					if (fragment != null) {
+						IRawElementProviderFragment parent = fragment.Navigate (NavigateDirection.Parent);
+						HandleBulkAdded (parent);
+					}
+				}
 				return;
 			}
+			ParentAdapter adapter = providerAdapterMapping [provider] as ParentAdapter;
+			if (adapter != null)
+				adapter.UpdateChildren ();
+		}
+
+		private void HandleBulkRemoved (IRawElementProviderSimple provider)
+		{
 			IRawElementProviderFragment fragment;
+			if (!providerAdapterMapping.ContainsKey (provider)) {
+				int controlTypeId = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+				if (controlTypeId == ControlType.Header.Id || controlTypeId == ControlType.DataItem.Id) {
+					fragment = provider as IRawElementProviderFragment;
+					if (fragment != null) {
+						IRawElementProviderFragment parent = fragment.Navigate (NavigateDirection.Parent);
+						HandleBulkRemoved (parent);
+					}
+				}
+				return;
+			}
 			if ((fragment = provider as IRawElementProviderFragment) == null)
 				return;
 			List<Adapter> keep = new List<Adapter> ();
@@ -562,6 +614,8 @@ namespace UiaAtkBridge
 			Adapter atkList;
 			if (parentObject is UiaAtkBridge.ComboBox)
 				atkList = new MenuItem (provider);
+			else if (provider is IGridProvider)
+				atkList = new ListWithGrid ((IRawElementProviderFragmentRoot)provider);
 			else
 				atkList = new List ((IRawElementProviderFragmentRoot)provider);
 
@@ -594,17 +648,17 @@ namespace UiaAtkBridge
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
-			StatusBar atkStatus;
+			TextContainer atkStatus;
 			//FIXME: probably we shouldn't split this in 2 classes
 			//FIXME: not sure if this interface check is correct
 			if (provider is IGridProvider)
-				atkStatus = new StatusBarWithGrid (provider);
+				atkStatus = new TextContainerWithGrid (provider);
  			else 
-				atkStatus = new StatusBar (provider);
+				atkStatus = new TextContainer (provider);
 
 			IncludeNewAdapter (atkStatus, parentObject);
 		}
-		
+
 		private void HandleNewProgressBarControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
@@ -627,9 +681,15 @@ namespace UiaAtkBridge
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
-			Pane atkPane = new Pane (provider);
+			Adapter newAdapter = null;
+			if (parentObject is DataGrid)
+				newAdapter = new DataGridGroup (provider);
+			else if (parentObject is List && provider is IRawElementProviderFragment)
+				newAdapter = new ListGroup ((IRawElementProviderFragment)provider);
+			else
+				newAdapter = new Container (provider);
 
-			IncludeNewAdapter (atkPane, parentObject);
+			IncludeNewAdapter (newAdapter, parentObject);
 		}
 		
 		private void HandleNewRadioButtonControlType (IRawElementProviderSimple provider)
@@ -695,13 +755,14 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkImage, parentObject);
 		}
 
-		private void HandleNewToolBarControlType (IRawElementProviderSimple provider)
+		private void HandleNewContainer (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
-			Adapter atkToolBar = new ToolBar (provider);
-
-			IncludeNewAdapter (atkToolBar, parentObject);
+			Adapter atkContainer = new Container (provider);
+			providerAdapterMapping [provider] = atkContainer;
+			
+			IncludeNewAdapter (atkContainer, parentObject);
 		}
 
 		private void HandleNewMenuBarControlType (IRawElementProviderSimple provider)
@@ -732,6 +793,39 @@ namespace UiaAtkBridge
 			
 			providerAdapterMapping [newAdapter.Provider] = newAdapter;
 			parentAdapter.AddOneChild (newAdapter);
+		}
+		
+		private void HandleNewDataGridControlType (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject = GetParentAdapter (provider);
+
+			Adapter newAdapter = new DataGrid (provider);
+
+			IncludeNewAdapter (newAdapter, parentObject);
+		}
+
+		private void AddChildrenToParent (IRawElementProviderSimple provider)
+		{
+			IRawElementProviderFragment root = provider as IRawElementProviderFragment;
+			if (root == null)
+				return;
+			IRawElementProviderFragment child 
+				= root.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				AutomationInteropProvider.RaiseStructureChangedEvent (child, 
+				                                                      new StructureChangedEventArgs (StructureChangeType.ChildAdded,
+				                                                                                     child.GetRuntimeId ()));				
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+		}
+
+		private void HandleNewHeaderItemControlType (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject = GetParentAdapter (provider);
+			
+			TextLabel atkLabel = new TextLabel (provider);
+
+			IncludeNewAdapter (atkLabel, parentObject);
 		}
 		
 #endregion

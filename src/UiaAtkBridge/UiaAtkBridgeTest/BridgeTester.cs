@@ -25,6 +25,7 @@
 // 
 
 using System;
+using System.Xml;
 using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Automation;
@@ -73,6 +74,7 @@ namespace UiaAtkBridgeTest
 
 			toolStripComboBoxSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
 			toolStrip.Items.Add (toolStripComboBoxSim);
+			toolStrip.Items.Add (tsl1);
 			//FIXME: uncomment this when toolstripComboBox is ready, right now we got an assert: http://monoport.com/38125
 			//form.Controls.Add (toolStrip);
 
@@ -108,6 +110,10 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (pboxWithImage);
 			form.Controls.Add (tbx1);
 			form.Controls.Add (tbx2);
+				// TODO: Move following lines to the end of ListView test to test view switching
+			lv1.View = SWF.View.Details;
+			lv1.ShowGroups = true;
+			form.Controls.Add (lv1);
 			form.Controls.Add (radWithImage);
 			rad1.Text = "rad1";
 			rad2.Text = "rad2";
@@ -118,6 +124,7 @@ namespace UiaAtkBridgeTest
 			radios.Add (rad3);
 			radios.Add (rad4);
 			form.Text = "UiaAtkBridge test";
+			SWF.Application.EnableVisualStyles ();
 			form.Show ();
 		}
 		
@@ -405,7 +412,7 @@ namespace UiaAtkBridgeTest
 				if (real)
 					accessible = GetAdapterForWidget (sb);
 				else
-					accessible = new UiaAtkBridge.StatusBar (ProviderFactory.GetProvider (sb, true, true));
+					accessible = new UiaAtkBridge.TextContainer (ProviderFactory.GetProvider (sb, true, true));
 				break;
 
 			case BasicWidgetType.HScrollBar:
@@ -493,6 +500,34 @@ namespace UiaAtkBridgeTest
 					accessible = new UiaAtkBridge.Image (ProviderFactory.GetProvider (pbox, true, true));
 				break;
 
+			case BasicWidgetType.ToolStripLabel:
+				tsl1.Text = name;
+				accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (tsl1, true, true));
+				break;
+
+			case BasicWidgetType.ListView:
+				XmlDocument xml = new XmlDocument ();
+				xml.LoadXml (name);
+				lv1.Groups.Clear ();
+				lv1.Items.Clear ();
+				foreach (XmlElement th in xml.GetElementsByTagName ("th"))
+					foreach (XmlElement td in th.GetElementsByTagName ("td"))
+						lv1.Columns.Add (new SWF.ColumnHeader (td.InnerText));
+			XmlElement root = xml.DocumentElement;
+				for (XmlNode node = root.FirstChild; node != null; node = node.NextSibling)
+					if (node.Name == "tr") {
+						bool group = false;
+						for (XmlNode child = node.FirstChild; child != null; child = child.NextSibling)
+							if (child.Name == "tr")
+								group = true;
+						if (group)
+							GetListViewGroup (node);
+						else
+							lv1.Items.Add (GetListViewItem (node));
+					}
+				accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (lv1, true, true));
+				break;
+				
 			case BasicWidgetType.ListBox:
 			case BasicWidgetType.CheckedListBox:
 			case BasicWidgetType.ParentMenu:
@@ -508,6 +543,32 @@ namespace UiaAtkBridgeTest
 			return accessible;
 		}
 
+		private void GetListViewGroup (XmlNode node)
+		{
+			XmlElement tr = node as XmlElement;
+			if (tr == null)
+				return;
+			SWF.ListViewGroup group = new SWF.ListViewGroup (tr.FirstChild.InnerText);
+			lv1.Groups.Add (group);
+			for (XmlNode child = node.FirstChild; child != null; child = child.NextSibling)
+				if (child.Name == "tr") {
+					SWF.ListViewItem item = GetListViewItem (child);
+					lv1.Items.Add (item);
+					item.Group = group;
+				}
+		}
+
+		private SWF.ListViewItem GetListViewItem (XmlNode node)
+		{
+			SWF.ListViewItem item = null;
+			for (XmlNode child = node.FirstChild; child != null; child = child.NextSibling)
+				if (child.Name == "td")
+					if (item == null)
+						item = new SWF.ListViewItem (child.InnerText);
+					else
+						item.SubItems.Add (child.InnerText);
+			return item;
+		}
 
 		private static Atk.Object GetAdapterForProvider (IRawElementProviderSimple provider)
 		{
@@ -528,9 +589,9 @@ namespace UiaAtkBridgeTest
 		}
 
 		protected override int ValidNumberOfActionsForAButton { get { return 1; } }
+		protected override int ValidNChildrenForAListView { get { return 22; } }
 		protected override int ValidNChildrenForASimpleStatusBar { get { return 0; } }
 		protected override int ValidNChildrenForAScrollBar { get { return 0; } }
-		
 
 		
 		/*[Test]
@@ -610,6 +671,7 @@ namespace UiaAtkBridgeTest
 		public void TearDown ()
 		{
 			form.Close ();
+			Atk.Util.GetRootHandler = null;
 		}
 	}
 }

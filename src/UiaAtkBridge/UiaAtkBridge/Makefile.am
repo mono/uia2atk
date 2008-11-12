@@ -52,9 +52,13 @@ FILES =  \
 	ComponentAdapter.cs \
 	ComponentImplementorHelper.cs \
 	ComponentParentAdapter.cs \
+	Container.cs \
+	DataGrid.cs \
+	DataGridGroup.cs \
 	Hyperlink.cs \
 	Image.cs \
 	List.cs \
+	ListGroup.cs \
 	ListItem.cs \
 	MenuBar.cs \
 	MenuItem.cs \
@@ -66,12 +70,11 @@ FILES =  \
 	ScrollBar.cs \
 	SelectionProviderUserHelper.cs \
 	Spinner.cs \
-	StatusBar.cs \
 	TableImplementorHelper.cs \
 	TextBoxEntryView.cs \
+	TextContainer.cs \
 	TextImplementorHelper.cs \
 	TextLabel.cs \
-	ToolBar.cs \
 	ToolTip.cs \
 	TopLevelRootItem.cs \
 	Window.cs 

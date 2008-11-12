@@ -61,7 +61,8 @@ namespace UiaAtkBridgeTest
 		TabPage,
 		ListView,
 		GroupBox,
-		PictureBox
+		PictureBox,
+		ToolStripLabel
 	}
 
 //	public class MenuLayout

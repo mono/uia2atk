@@ -47,7 +47,7 @@ namespace UiaAtkBridge
 				text = rangeValueProvider.Value.ToString ("F2");
 			else
 				text = String.Empty;
-			textExpert = new TextImplementorHelper (text);
+			textExpert = new TextImplementorHelper (text, this);
 		}
 
 		public void GetMinimumValue (ref GLib.Value value)
@@ -96,7 +96,7 @@ namespace UiaAtkBridge
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
 				string newText = v.ToString ("F2");
-				textExpert = new TextImplementorHelper (newText);
+				textExpert = new TextImplementorHelper (newText, this);
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         newText == null ? 0 : newText.Length);
 			}

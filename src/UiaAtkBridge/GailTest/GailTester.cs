@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
 
 using NUnit.Framework;
 
@@ -280,6 +281,23 @@ namespace UiaAtkBridgeTest
 			return GetAccessible (type, text, real, true);
 		}
 		
+		private void AddToTreeStore (Gtk.TreeStore store, Gtk.TreeIter [] iters, int i, XmlNode node)
+		{
+			XmlElement tr = node as XmlElement;
+			if (tr == null)
+				return;
+			if (i > 0)
+				iters [i] = store.AppendNode (iters [i - 1]);
+			else
+				iters [i] = store.AppendNode ();
+			int j = 0;
+			for (XmlNode child = node.FirstChild; child != null; child = child.NextSibling)
+				if (child.Name == "tr")
+					AddToTreeStore (store, iters, i + 1, child);
+				else if (child.Name == "td")
+				store.SetValue (iters [i], j++, child.InnerText);
+		}
+
 		private Atk.Object GetAccessible (BasicWidgetType type, string text, bool real, bool embeddedImage)
 		{
 			Atk.Object accessible = null;
@@ -380,6 +398,42 @@ namespace UiaAtkBridgeTest
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealImage (embeddedImage);
 				break;
+			case BasicWidgetType.ListView:
+				Gtk.TreeStore store = null;
+				List<string> columnNames = new List<String> ();
+				XmlDocument xml = new XmlDocument ();
+				xml.LoadXml (text);
+				foreach (XmlElement th in xml.GetElementsByTagName ("th"))
+					foreach (XmlElement td in th.GetElementsByTagName ("td"))
+						columnNames.Add (td.InnerText);
+				if (columnNames.Count == 1)
+					store = new Gtk.TreeStore (typeof (string));
+				else if (columnNames.Count == 2)
+					store = new Gtk.TreeStore (typeof (string), typeof (string));
+				else if (columnNames.Count == 3)
+					store = new Gtk.TreeStore (typeof (string), typeof (string), typeof (string));
+				else
+					Assert.Fail ("This test only supports 1-3 columns; got " + columnNames.Count);
+				Gtk.TreeIter[] iters = new Gtk.TreeIter [8];
+			XmlElement root = xml.DocumentElement;
+				for (XmlNode node = root.FirstChild; node != null; node = node.NextSibling)
+					if (node.Name == "tr")
+						AddToTreeStore (store, iters, 0, node);
+				widget = new Gtk.TreeView (store);
+				if (real) {
+					widget = GailTestApp.MainClass.GiveMeARealTreeView ();
+					((Gtk.TreeView)widget).Model = store;
+				}
+				int i = 0;
+				foreach (string columnName in columnNames) {
+					Gtk.TreeViewColumn col = new Gtk.TreeViewColumn ();
+					col.Title = columnName;
+					((Gtk.TreeView)widget).AppendColumn (col);
+					Gtk.CellRendererText cell = new Gtk.CellRendererText ();
+					col.PackStart (cell, true);
+					col.AddAttribute (cell, "text", i++);
+				}
+				break;
 			case BasicWidgetType.ComboBoxDropDownEntry:
 			case BasicWidgetType.ComboBoxDropDownList:
 			case BasicWidgetType.ComboBoxSimple:
@@ -396,6 +450,7 @@ namespace UiaAtkBridgeTest
 		}
 		
 		protected override int ValidNumberOfActionsForAButton { get { return 3; } }
+		protected override int ValidNChildrenForAListView { get { return 24; } }
 		protected override int ValidNChildrenForASimpleStatusBar { get { return 1; } }
 		protected override int ValidNChildrenForAScrollBar { get { return 0; } }
 		

@@ -54,6 +54,7 @@ ATKTEST = $(BUILD_DIR)/AtkTest.dll
 REFERENCES =  \
 	System  \
 	System.Core \
+	System.Xml \
 	WindowsBase \
 	nunit.framework \
 	$(GTK_SHARP_20_LIBS) \

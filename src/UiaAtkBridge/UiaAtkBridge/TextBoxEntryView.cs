@@ -50,7 +50,7 @@ namespace UiaAtkBridge
 			string text = (textProvider != null) ? textProvider.DocumentRange.GetText (-1) : 
 				valueProvider.Value.ToString ();
 
-			textExpert = new TextImplementorHelper (text);
+			textExpert = new TextImplementorHelper (text, this);
 			if ((int)provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) ==
 			    ControlType.Document.Id)
 				multiLine = true;
@@ -250,6 +250,7 @@ namespace UiaAtkBridge
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			Console.WriteLine ("automation event for property change:" + e.Property.ProgrammaticName);
+			base.RaiseAutomationPropertyChangedEvent (e);
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)

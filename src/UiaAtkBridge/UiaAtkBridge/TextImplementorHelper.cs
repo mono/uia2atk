@@ -31,11 +31,6 @@ namespace UiaAtkBridge
 	internal class TextImplementorHelper
 	{
 		
-		internal TextImplementorHelper (string text)
-		{
-			this.text = (text != null? text: String.Empty);
-		}
-		
 		internal TextImplementorHelper (string text, Adapter resource)
 		{
 			this.text = (text != null? text: String.Empty);

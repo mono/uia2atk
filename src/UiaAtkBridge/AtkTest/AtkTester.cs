@@ -70,6 +70,7 @@ namespace UiaAtkBridgeTest
 		}
 		
 		protected abstract int ValidNumberOfActionsForAButton { get; }
+		protected abstract int ValidNChildrenForAListView { get; }
 		protected abstract int ValidNChildrenForASimpleStatusBar { get; }
 		protected abstract int ValidNChildrenForAScrollBar { get; }
 		
@@ -1083,6 +1084,21 @@ namespace UiaAtkBridgeTest
 			return accessible;
 		}
 
+		// Simpler text test with a variable string
+		protected void InterfaceText (Atk.Object accessible, string text)
+		{
+			Atk.Text atkText = null;
+			RunInGuiThread (delegate () {
+				atkText = CastToAtkInterface <Atk.Text> (accessible);
+			});
+
+			int length = text.Length;
+			Assert.AreEqual (length, atkText.CharacterCount, "Character count");
+			Assert.AreEqual (text, atkText.GetText (0, -1), "GetText");
+			for (int i = 0; i < length; i++)
+				Assert.AreEqual (text [i], atkText.GetCharacterAtOffset (i), "GetCharacterAtOffset" + i);
+		}
+
 		protected string simpleTestText = "This is a test sentence.";
 
 		protected void Parent (BasicWidgetType type, Atk.Object accessible)
@@ -1131,6 +1147,29 @@ namespace UiaAtkBridgeTest
 				missingStatesMsg + " .. " + superfluousStatesMsg);
 		}
 		
+		protected void Relation (Atk.RelationType type, Atk.Object source, params Atk.Object [] expectedTarget)
+		{
+			Atk.RelationSet set = source.RefRelationSet ();
+			Atk.Relation relation = set.GetRelationByType (type);
+			Assert.IsNotNull (relation, "Relation (" + type + ")");
+			Atk.Object [] target = relation.Target;
+			foreach (Atk.Object obj in expectedTarget)
+				Assert.IsTrue (Array.IndexOf (target, obj, 0) >= 0, "Missing relation target");
+			foreach (Atk.Object obj in target)
+				Assert.IsTrue (Array.IndexOf (expectedTarget, obj, 0) >= 0, "Superfluous relation target");
+		}
+
+		protected Atk.Object FindObjectByName (Atk.Object parent, string name)
+		{
+			int count = parent.NAccessibleChildren;
+			for (int i = 0; i < count; i++) {
+				Atk.Object child = parent.RefAccessibleChild (i);
+				if (child.Name == name)
+					return child;
+			}
+			return null;
+		}
+
 		private double GetMinimumValue (Atk.Value value)
 		{
 			GLib.Value gv = new GLib.Value (0);

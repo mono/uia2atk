@@ -30,53 +30,49 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class ProgressBar : ComponentAdapter, Atk.TextImplementor, Atk.ValueImplementor
+	public class TextContainer : ComponentParentAdapter , Atk.TextImplementor
 	{
-		private IRangeValueProvider rangeValueProvider;
-		private IValueProvider valueProvider;
 		private TextImplementorHelper textExpert = null;
-
-		public ProgressBar (IRawElementProviderSimple provider) : base (provider)
+		
+		public TextContainer (IRawElementProviderSimple provider): base (provider)
 		{
-			rangeValueProvider = (IRangeValueProvider)provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
-			valueProvider = (IValueProvider)provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			String text;
-			if (valueProvider != null)
-				text = valueProvider.Value;
-			else if (rangeValueProvider != null)
-				text = rangeValueProvider.Value.ToString ("F2");
-			else
-				text = string.Empty;
+			int controlTypeId = (int) Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			if (controlTypeId == ControlType.StatusBar.Id)
+				Role = Atk.Role.Statusbar;
+			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			textExpert = new TextImplementorHelper (text, this);
-			text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = text;
-			Role = Atk.Role.ProgressBar;
 		}
 		
-		public void GetMinimumValue (ref GLib.Value value)
-		{
-			value = new GLib.Value (rangeValueProvider != null? rangeValueProvider.Minimum: 0);
+		public int CaretOffset {
+			get {
+				return 0;
+			}
 		}
 
-		public void GetMaximumValue (ref GLib.Value value)
-		{
-			value = new GLib.Value (rangeValueProvider != null? rangeValueProvider.Maximum: 0);
+		public GLib.SList DefaultAttributes {
+			get {
+				//TODO:
+				GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
+				return attribs;
+			}
 		}
 
-		public void GetMinimumIncrement (ref GLib.Value value)
-		{
-			value = new GLib.Value ((double)0);
+		public int CharacterCount {
+			get {
+				return textExpert.Length;
+			}
 		}
 
-		public void GetCurrentValue (ref GLib.Value value)
-		{
-			value = new GLib.Value(rangeValueProvider != null? rangeValueProvider.Value: 0);
+		public int NSelections {
+			get {
+				return -1;
+			}
 		}
-
-		public bool SetCurrentValue (GLib.Value value)
+		
+		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			Console.WriteLine ("Some clown called Atk.Value.SetCurrentValue on a ProgressBar");
-			return false;
+			// TODO
 		}
 
 		public string GetText (int startOffset, int endOffset)
@@ -117,9 +113,8 @@ namespace UiaAtkBridge
 		{
 			// don't ask me why, this is what gail does 
 			// (instead of throwing or returning null):
-			int length = textExpert.Length;
-			if (offset > length)
-				offset = length;
+			if (offset > Name.Length)
+				offset = Name.Length;
 			else if (offset < 0)
 				offset = 0;
 			
@@ -183,58 +178,178 @@ namespace UiaAtkBridge
 		{
 			throw new NotImplementedException();
 		}
-		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
+		
+		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
 		{
 			// TODO
-		}
-		
-		public int CaretOffset {
-			get {
-				return 0;
-			}
+			Console.WriteLine ("Received StructureChangedEvent in Statusbar--todo");
 		}
 
-		public GLib.SList DefaultAttributes {
-			get {
-				//TODO:
-				GLib.SList attribs = new GLib.SList (typeof (Atk.TextAttribute));
-				return attribs;
-			}
-		}
-
-		public int CharacterCount {
-			get {
-				return Name.Length;
-			}
-		}
-
-		public int NSelections {
-			get {
-				return 0;
-			}
-		}
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property == ValuePatternIdentifiers.ValueProperty)
-			{
-				textExpert = new TextImplementorHelper ((String)e.NewValue, this);
-			}
-			else if (e.Property == RangeValuePatternIdentifiers.ValueProperty) {
-				double v = (double)e.NewValue;
-				NotifyPropertyChange ("accessible-value", v);
+			if (e.Property == AutomationElementIdentifiers.NameProperty) {
+				string newName = (string)e.NewValue;
+				
+				// Don't fire spurious events if the text hasn't changed
+				if (textExpert.Text == newName)
+					return;
 
 				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
 
 				// First delete all text, then insert the new text
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-				string newText = v.ToString ("F2");
-				textExpert = new TextImplementorHelper (newText, this);
+				textExpert = new TextImplementorHelper (newName, this);
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
-				                         newText == null ? 0 : newText.Length);
+				                         newName == null ? 0 : newName.Length);
+
+				// Accessible name and label text are one and
+				// the same, so update accessible name
+				Name = newName;
+
+				EmitVisibleDataChanged ();
 			}
 			else
 				base.RaiseAutomationPropertyChangedEvent (e);
+		}
+	}
+
+	public class TextContainerWithGrid : TextContainer, Atk.TableImplementor
+	{
+		private TableImplementorHelper tableExpert = null;
+		
+		public TextContainerWithGrid (IRawElementProviderSimple provider) : base (provider)
+		{
+			tableExpert = new TableImplementorHelper (this);
+		}
+		
+		public Atk.Object RefAt (int row, int column)
+		{
+			return tableExpert.RefAt (row, column);
+		}
+
+		public int GetIndexAt (int row, int column)
+		{
+			return tableExpert.GetIndexAt (row, column);
+		}
+
+		public int GetColumnAtIndex (int index)
+		{
+			return tableExpert.GetColumnAtIndex (index);
+		}
+
+		public int GetRowAtIndex (int index)
+		{
+			return tableExpert.GetRowAtIndex (index);
+		}
+
+		public int NColumns { get { return tableExpert.NColumns; } }
+		public int NRows { get { return tableExpert.NRows; } }
+			
+		public int GetColumnExtentAt (int row, int column)
+		{
+			return tableExpert.GetColumnExtentAt (row, column);
+		}
+
+		public int GetRowExtentAt (int row, int column)
+		{
+			return tableExpert.GetRowExtentAt (row, column);
+		}
+
+		public Atk.Object Caption
+		{
+			get { return tableExpert.Caption; } set { tableExpert.Caption = value; }
+		}
+
+		public string GetColumnDescription (int column)
+		{
+			return string.Empty;
+		}
+
+		public Atk.Object GetColumnHeader (int column)
+		{
+			return null;
+		}
+
+		public string GetRowDescription (int row)
+		{
+			return String.Empty;
+		}
+
+		public Atk.Object GetRowHeader (int row)
+		{
+			return null;
+		}
+
+		public Atk.Object Summary
+		{
+			get { return tableExpert.Caption; } set { tableExpert.Caption = value; }
+		}
+
+
+		public void SetColumnDescription (int column, string description)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void SetColumnHeader (int column, Atk.Object header)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void SetRowDescription (int row, string description)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void SetRowHeader (int row, Atk.Object header)
+		{
+			throw new NotImplementedException();
+		}
+
+		public int GetSelectedColumns (out int selected)
+		{
+			return tableExpert.GetSelectedColumns (out selected);
+		}
+
+		public int GetSelectedRows (out int selected)
+		{
+			return tableExpert.GetSelectedRows (out selected);
+		}
+
+		public bool IsColumnSelected (int column)
+		{
+			return tableExpert.IsColumnSelected (column);
+		}
+
+		public bool IsRowSelected (int row)
+		{
+			return tableExpert.IsRowSelected (row);
+		}
+
+		public bool IsSelected (int row, int column)
+		{
+			return tableExpert.IsSelected (row, column);
+		}
+
+		public bool AddRowSelection (int row)
+		{
+			return tableExpert.AddRowSelection (row);
+		}
+
+		public bool RemoveRowSelection (int row)
+		{
+			return tableExpert.RemoveRowSelection (row);
+		}
+
+		public bool AddColumnSelection (int column)
+		{
+			return tableExpert.AddColumnSelection (column);
+		}
+
+		public bool RemoveColumnSelection (int column)
+		{
+			return tableExpert.RemoveColumnSelection (column);
 		}
 	}
 }

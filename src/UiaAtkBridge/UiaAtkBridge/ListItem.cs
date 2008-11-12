@@ -45,7 +45,7 @@ namespace UiaAtkBridge
 			selectionItemProvider = (ISelectionItemProvider)provider.GetPatternProvider(SelectionItemPatternIdentifiers.Pattern.Id);
 			toggleProvider = (IToggleProvider) provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			textExpert = new TextImplementorHelper (text);
+			textExpert = new TextImplementorHelper (text, this);
 			actionExpert = new ActionImplementorHelper ();
 			// TODO: Localize the name?s
 			actionExpert.Add ("click", "click", null, DoClick);
@@ -308,7 +308,7 @@ namespace UiaAtkBridge
 				// First delete all text, then insert the new text
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-				textExpert = new TextImplementorHelper (stringValue);
+				textExpert = new TextImplementorHelper (stringValue, this);
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         stringValue == null ? 0 : stringValue.Length);
 
