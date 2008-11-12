@@ -1,5 +1,9 @@
 2008-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* UiaAtkBridge.mds: Remove projects in old location.
+
+2008-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Test:
 	* AtkTest:
 	* GailTest:
