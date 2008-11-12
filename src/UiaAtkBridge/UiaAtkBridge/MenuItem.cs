@@ -67,20 +67,42 @@ namespace UiaAtkBridge
 			Role = (child != null || comboBoxStructure.Value) ? Atk.Role.Menu : Atk.Role.MenuItem;
 		}
 
+		private bool selected = false;
+		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			states.AddState (Atk.StateType.Selectable);
+			if (selected)
+				states.AddState (Atk.StateType.Selected);
+			else
+				states.RemoveState (Atk.StateType.Selected);
 			return states;
 		}
 
 		public override Atk.Layer Layer {
 			get { return Atk.Layer.Popup; }
 		}
+
+		protected void CancelSelected ()
+		{
+			selected = false;
+			NotifyStateChange (Atk.StateType.Selected, false);
+		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			Console.WriteLine ("WARNING: RaiseAutomationEvent({0},...) not handled yet", eventId.ProgrammaticName);
+			if (eventId == InvokePatternIdentifiers.InvokedEvent) {
+				selected = !selected;
+				NotifyStateChange (Atk.StateType.Selected, selected);
+				if (Parent is MenuItem)
+					((MenuItem)Parent).CancelSelected ();
+			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
+				if (Parent is MenuItem)
+					((MenuItem)Parent).CancelSelected ();
+			} else {
+				Console.WriteLine ("WARNING: RaiseAutomationEvent({0},...) not handled yet", eventId.ProgrammaticName);
+			}
 		}
 		
 		public int SelectionCount {
