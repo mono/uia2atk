@@ -305,6 +305,7 @@ namespace UiaAtkBridge
 		
 		public void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e)
 		{
+			Console.WriteLine ("RaiseAutomationPropertyChangedEvent");
 			if (element == null)
 				throw new ArgumentNullException ("element");
 			

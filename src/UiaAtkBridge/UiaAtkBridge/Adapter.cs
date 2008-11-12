@@ -63,10 +63,11 @@ namespace UiaAtkBridge
 		public virtual void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {
+				Console.WriteLine ("going to notify focus");
 				bool focused = (bool)e.NewValue;
 				NotifyStateChange (Atk.StateType.Focused, focused);
-				if (focused)
-					Atk.Focus.TrackerNotify (this);
+				if (focused){Console.WriteLine ("going to notify focus");
+					Atk.Focus.TrackerNotify (this);}
 			} else if (e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
 				bool offscreen = (bool)e.NewValue;
 				NotifyStateChange (Atk.StateType.Visible, !offscreen);

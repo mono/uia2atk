@@ -1,3 +1,25 @@
+2008-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* autogen.sh:
+	* configure.ac:
+	* expansions.m4: Deleted unneeded autofoo in samples.
+
+	* Makefile.am:
+	* GailTestApp:
+	* Makefile.include:
+	* GailTestApp/gtk-gui:
+	* GailTestApp/Main.cs:
+	* GailTestApp/ChangeLog:
+	* GailTestApp/Makefile.am:
+	* GailTestApp/MainWindow.cs:
+	* GailTestApp/GailTestApp.mdp:
+	* GailTestApp/AssemblyInfo.cs:
+	* GailTestApp/MovingThread.cs:
+	* GailTestApp/gtk-gui/gui.stetic:
+	* GailTestApp/gtk-gui/generated.cs:
+	* GailTestApp/gtk-gui/MainWindow.cs: Moved GailTestApp to
+	UiaAtkBridge/Test.
+
 2008-10-30  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ManagedTests.mds: Flush.

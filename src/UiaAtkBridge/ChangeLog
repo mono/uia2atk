@@ -1,3 +1,40 @@
+2008-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Test:
+	* AtkTest:
+	* GailTest:
+	* Test/AtkTest:
+	* Test/GailTest:
+	* Test/GailTestApp:
+	* UiaAtkBridgeTest:
+	* AtkTest/ChangeLog:
+	* GailTest/ChangeLog:
+	* AtkTest/AtkTest.mdp:
+	* AtkTest/Makefile.am:
+	* AtkTest/AtkTests.cs:
+	* GailTest/Makefile.am:
+	* AtkTest/AtkTester.cs:
+	* Test/UiaAtkBridgeTest:
+	* AtkTest/AtSpiEvent.cs:
+	* GailTest/GailTest.mdp:
+	* GailTest/GailTester.cs:
+	* AtkTest/EventMonitor.cs:
+	* AtkTest/AssemblyInfo.cs:
+	* GailTest/gailtest.sh.in:
+	* GailTest/AssemblyInfo.cs:
+	* UiaAtkBridgeTest/ChangeLog:
+	* AtkTest/EventCollection.cs:
+	* AtkTest/BasicWidgetType.cs:
+	* UiaAtkBridgeTest/Makefile.am:
+	* UiaAtkBridgeTest/BridgeTests.cs:
+	* UiaAtkBridgeTest/AssemblyInfo.cs:
+	* UiaAtkBridgeTest/BridgeTester.cs:
+	* UiaAtkBridgeTest/bridgetest.sh.in:
+	* UiaAtkBridgeTest/UiaAtkBridgeTest.mdp:
+	* UiaAtkBridgeTest/TestProviderSimple.cs:
+	* UiaAtkBridgeTest/TestButtonControlType.cs: Moved *Test assemblies into
+	UiaAtkBridge/Test.
+
 2008-10-29  Mario Carrion  <mcarrion@novell.com>
 
 	* configure.ac: Use absolute URLs to be able to run with mono HEAD.
