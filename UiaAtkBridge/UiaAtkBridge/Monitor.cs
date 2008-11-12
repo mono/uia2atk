@@ -47,12 +47,16 @@ namespace UiaAtkBridge
 			Atk.Util.GetToolkitNameHandler = GetAssemblyName;
 			Atk.Util.GetToolkitVersionHandler = GetAssemblyVersionNumber;
 			
+			Window window = new Window (null);
+			register_window_signals (window.Handle);
+
 			if (!useNativeInitialization)
 				Atk.Util.AddGlobalEventListenerHandler = AddGlobalEventListener;
 			else
 				override_global_event_listener ();
 			Atk.Util.AddKeyEventListenerHandler = AddKeyEventListener;
 		}
+
 		private bool isApplicationStarted = false;
 		
 		public void ApplicationStarts ()
@@ -225,6 +229,8 @@ namespace UiaAtkBridge
 		
 		[DllImport("libbridge-glue.so")]
 		static extern void override_global_event_listener ();
+		[DllImport("libbridge-glue.so")]
+		static extern void register_window_signals (IntPtr dummy_window);
 	}
 	
 	/// <summary>

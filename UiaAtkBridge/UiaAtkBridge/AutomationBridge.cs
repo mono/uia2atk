@@ -497,6 +497,10 @@ namespace UiaAtkBridge
 			if (controlTypeId == ControlType.ToolTip.Id) {
 				TopLevelRootItem.Instance.RemoveChild (adapter);
 			} else if (controlTypeId == ControlType.Window.Id) {
+				// We should do the following, but it would
+				// reintroduce bug 427857.
+				//GLib.Signal.Emit (adapter, "deactivate");
+				//GLib.Signal.Emit (adapter, "destroy");
 				TopLevelRootItem.Instance.RemoveChild (adapter);
 				windowProviders--;
 				if (windowProviders == 0)
@@ -569,9 +573,12 @@ namespace UiaAtkBridge
 			Window newWindow = new Window (provider);
 
 			IncludeNewAdapter (newWindow, TopLevelRootItem.Instance);
-			
+
 			IntPtr providerHandle = (IntPtr) provider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
 			pointerProviderMapping [providerHandle] = provider;
+			
+			GLib.Signal.Emit (newWindow, "create");
+			GLib.Signal.Emit (newWindow, "activate");
 			
 			windowProviders++;
 		}

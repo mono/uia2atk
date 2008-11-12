@@ -1,3 +1,7 @@
+2008-11-12  Mike Gorse <mgorse@novell.com>
+
+	* main.c, main.h: Add register_window_signals [bug 443846]
+
 2008-06-24  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* bridge-glue.mdp: Integrate makefiles into UiaAtkBridge MD projects

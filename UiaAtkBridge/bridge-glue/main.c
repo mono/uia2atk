@@ -21,6 +21,7 @@
 // 
 // Authors: 
 //      Andres G. Aragoneses <aaragoneses@novell.com>
+//      Mike Gorse <mgorse@novell.com>
 // 
 
 #include "main.h"
@@ -32,6 +33,7 @@
 // TODO: rewrite in Vala?? :)
 
 static GHashTable *listener_list = NULL;
+static GType window_type = 0;
 
 guint _add_global_event_listener(
 	GSignalEmissionHook listener,
@@ -74,7 +76,10 @@ _atksharp_add_listener (GSignalEmissionHook listener,
 	guint signal_id;
 	gint rc = 0;
 
-	type = g_type_from_name (object_type);
+	if (!strcmp (object_type, "window"))
+		type = window_type;
+	else
+		type = g_type_from_name (object_type);
 	
 	if (type)
 	{
@@ -123,14 +128,64 @@ guint _add_global_event_listener (
 	// example: Gtk:AtkObject:children-changed
 	split_string = g_strsplit (event_type, ":", 3);
 
-	g_warning (g_strdup_printf ("add global event listener, event_type: %s", event_type));
-
 	if (split_string)
 	{
-		rc = _atksharp_add_listener (listener, split_string[1], split_string[2], event_type);
+		if (!strcmp ("window", split_string[0]))
+			rc = _atksharp_add_listener (listener, "window", split_string[1], event_type);
+		else
+			rc = _atksharp_add_listener (listener, split_string[1], split_string[2], event_type);
 
 		g_strfreev (split_string);
 	}
 
 	return rc;
+}
+
+static const char *window_signal_names[] =
+{
+	"activate",
+	"create",
+	"deactivate",
+	"destroy",
+	"maximize",
+	"minimize",
+	"move",
+	"resize",
+	"restore",
+	NULL
+};
+
+void
+register_window_signals (GObject *dummy_window)
+{
+	window_type = G_TYPE_FROM_INSTANCE (&dummy_window->g_type_instance);
+	const char **pp;
+
+	/* adapted from gailutil.c */
+	for (pp = window_signal_names; *pp; pp++)
+		g_signal_new (*pp,
+                              window_type,
+                              G_SIGNAL_RUN_LAST,
+                              0, /* default signal handler */
+                              NULL, NULL,
+                              g_cclosure_marshal_VOID__VOID,
+                              G_TYPE_NONE, 0);
+}
+
+void
+atksharp_util_override_get_toolkit_name (gpointer cb)
+{
+	AtkUtilClass *klass = g_type_class_peek (ATK_TYPE_UTIL);
+	if (!klass)
+		klass = g_type_class_ref (ATK_TYPE_UTIL);
+	((AtkUtilClass *) klass)->get_toolkit_name = cb;
+}
+
+void
+atksharp_util_override_get_toolkit_version (gpointer cb)
+{
+	AtkUtilClass *klass = g_type_class_peek (ATK_TYPE_UTIL);
+	if (!klass)
+		klass = g_type_class_ref (ATK_TYPE_UTIL);
+	((AtkUtilClass *) klass)->get_toolkit_version = cb;
 }

@@ -34,4 +34,6 @@
 void
 override_global_event_listener ();
 
+void
+register_window_signals (GObject *dummy_window);
 #endif

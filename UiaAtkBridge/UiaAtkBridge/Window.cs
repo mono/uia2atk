@@ -37,7 +37,8 @@ namespace UiaAtkBridge
 		{
 			rootProvider = (IRawElementProviderFragmentRoot) provider;
 			Role = Atk.Role.Frame;
-			Name = (string) rootProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			if (rootProvider != null)
+				Name = (string) rootProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 		}
 		
 		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
