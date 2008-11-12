@@ -3,18 +3,22 @@
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="UiaAtkBridge" configuration="Debug" />
       <Entry build="True" name="bridge-glue" configuration="Debug" />
+      <Entry build="True" name="Test" configuration="Debug" />
     </Configuration>
     <Configuration name="Release" ctype="CombineConfiguration">
       <Entry build="True" name="UiaAtkBridge" configuration="Release" />
       <Entry build="True" name="bridge-glue" configuration="Release" />
+      <Entry build="True" name="Test" configuration="Release" />
     </Configuration>
   </Configurations>
   <StartMode startupentry="UiaAtkBridge" single="True">
     <Execute type="None" entry="UiaAtkBridge" />
     <Execute type="None" entry="bridge-glue" />
+    <Execute type="None" entry="Test" />
   </StartMode>
   <Entries>
     <Entry filename="UiaAtkBridge/UiaAtkBridge.mdp" />
     <Entry filename="bridge-glue/bridge-glue.mdp" />
+    <Entry filename="Test/Test.mds" />
   </Entries>
 </Combine>

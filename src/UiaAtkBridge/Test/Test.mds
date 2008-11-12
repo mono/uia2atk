@@ -1,0 +1,28 @@
+<Combine name="Test" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="AtkTest" configuration="Debug" />
+      <Entry build="True" name="GailTest" configuration="Debug" />
+      <Entry build="True" name="GailTestApp" configuration="Debug" />
+      <Entry build="True" name="UiaAtkBridgeTest" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="AtkTest" configuration="Release" />
+      <Entry build="True" name="GailTest" configuration="Release" />
+      <Entry build="True" name="GailTestApp" configuration="Release" />
+      <Entry build="True" name="UiaAtkBridgeTest" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="AtkTest" single="True">
+    <Execute type="None" entry="AtkTest" />
+    <Execute type="None" entry="GailTest" />
+    <Execute type="None" entry="GailTestApp" />
+    <Execute type="None" entry="UiaAtkBridgeTest" />
+  </StartMode>
+  <Entries>
+    <Entry filename="AtkTest/AtkTest.mdp" />
+    <Entry filename="GailTest/GailTest.mdp" />
+    <Entry filename="GailTestApp/GailTestApp.mdp" />
+    <Entry filename="UiaAtkBridgeTest/UiaAtkBridgeTest.mdp" />
+  </Entries>
+</Combine>
