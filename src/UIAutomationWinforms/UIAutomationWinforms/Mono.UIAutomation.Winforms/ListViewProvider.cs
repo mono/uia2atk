@@ -83,7 +83,7 @@ namespace Mono.UIAutomation.Winforms
 			listView.UIAShowGroupsChanged += OnUIAShowGroupsChanged;
 		}
 
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id) {
 				if (listView.View == SWF.View.Details)
@@ -98,7 +98,7 @@ namespace Mono.UIAutomation.Winforms
 			} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return true;
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 		
 		#endregion
@@ -566,12 +566,12 @@ namespace Mono.UIAutomation.Winforms
 				}
 			}			
 			
-			public override object GetPropertyValue (int propertyId)
+			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return name;
 				else
-					return base.GetPropertyValue (propertyId);
+					return base.GetProviderPropertyValue (propertyId);
 			}
 			
 			private SWF.ListView listView;
@@ -617,7 +617,7 @@ namespace Mono.UIAutomation.Winforms
 				}
 			}
 		
-			public override object GetPropertyValue (int propertyId)
+			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return group.Header;
@@ -634,7 +634,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
 					return ItemsBoundingRectangle;
 				else
-					return base.GetPropertyValue (propertyId);
+					return base.GetProviderPropertyValue (propertyId);
 			}
 
 			private Rect HeaderRectangle {
@@ -720,7 +720,7 @@ namespace Mono.UIAutomation.Winforms
 				return headerItems;
 			}
 
-			public override object GetPropertyValue (int propertyId)
+			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Header.Id;
@@ -743,7 +743,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
 					return Helper.GetControlScreenBounds (listView.UIAHeaderControl, listView);
 				else
-					return base.GetPropertyValue (propertyId);
+					return base.GetProviderPropertyValue (propertyId);
 			}
 
 			public override void InitializeChildControlStructure ()
@@ -831,7 +831,7 @@ namespace Mono.UIAutomation.Winforms
 				             new HeaderItemInvokeProvider (this));
 			}
 
-			public override object GetPropertyValue (int propertyId)
+			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.HeaderItem.Id;
@@ -869,7 +869,7 @@ namespace Mono.UIAutomation.Winforms
 				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 					return Helper.GetClickablePoint (this);
 				else
-					return base.GetPropertyValue (propertyId);
+					return base.GetProviderPropertyValue (propertyId);
 			}
 
 			private ListViewHeaderProvider headerProvider;
@@ -909,14 +909,13 @@ namespace Mono.UIAutomation.Winforms
 				if (column < 0 || column >= listView.Columns.Count)
 					return null;
 
-
 				ListViewListItemEditProvider editProvider = null;				
 				providers.TryGetValue (listView.Columns [column], out editProvider);
 
 				return editProvider;
 			}
 
-			public override object GetPropertyValue (int propertyId)
+			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (ListView.View == SWF.View.Details) {
 					//According to: http://msdn.microsoft.com/en-us/library/ms742561.aspx
@@ -926,9 +925,9 @@ namespace Mono.UIAutomation.Winforms
 						return "data item";
 					//FIXME: What about ItemTypeProperty & ItemStatusProperty ?
 					else
-						return base.GetPropertyValue (propertyId);
+						return base.GetProviderPropertyValue (propertyId);
 				} else
-					return base.GetPropertyValue (propertyId);
+					return base.GetProviderPropertyValue (propertyId);
 			}
 
 			public override void Initialize ()
@@ -1093,7 +1092,7 @@ namespace Mono.UIAutomation.Winforms
 				             new ListItemEditValueProviderBehavior (this));
 			}
 
-			public override object GetPropertyValue (int propertyId)
+			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Edit.Id;
@@ -1133,7 +1132,7 @@ namespace Mono.UIAutomation.Winforms
 				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 					return Helper.GetClickablePoint (this);
 				else
-					return base.GetPropertyValue (propertyId);
+					return base.GetProviderPropertyValue (propertyId);
 			}
 
 			private ListViewListItemProvider itemProvider;
@@ -1168,7 +1167,7 @@ namespace Mono.UIAutomation.Winforms
 				             new ListItemCheckBoxToggleProviderBehavior (this));
 			}
 
-			public override object GetPropertyValue (int propertyId)
+			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.CheckBox.Id;
@@ -1199,7 +1198,7 @@ namespace Mono.UIAutomation.Winforms
 				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 					return Helper.GetClickablePoint (this);
 				else
-					return base.GetPropertyValue (propertyId);
+					return base.GetProviderPropertyValue (propertyId);
 			}
 
 			private ListViewListItemProvider itemProvider;

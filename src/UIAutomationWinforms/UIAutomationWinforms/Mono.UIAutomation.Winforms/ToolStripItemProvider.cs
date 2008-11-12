@@ -55,7 +55,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.MenuItem.Id; // TODO: Verify this default
@@ -84,7 +84,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.BoundingRectangleProperty.Id)
 				return Helper.RectangleToRect (GetItemScreenBounds ());
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 
 		public override void Initialize()

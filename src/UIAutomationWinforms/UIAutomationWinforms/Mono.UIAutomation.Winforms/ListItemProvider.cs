@@ -54,7 +54,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region IRawElementProviderSimple Members
 		
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.ListItem.Id;
@@ -67,7 +67,7 @@ namespace Mono.UIAutomation.Winforms
 			         || propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return ListProvider.GetItemPropertyValue (this, propertyId);
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 
 		#endregion

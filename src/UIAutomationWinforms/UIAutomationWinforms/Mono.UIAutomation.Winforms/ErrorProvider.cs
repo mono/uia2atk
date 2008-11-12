@@ -116,12 +116,12 @@ namespace Mono.UIAutomation.Winforms
 			get { return Parent; }
 		}
 		
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
 				return GetBoundingRectangle ();
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 
 		#endregion

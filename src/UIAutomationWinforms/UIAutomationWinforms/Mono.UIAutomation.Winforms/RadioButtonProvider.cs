@@ -54,7 +54,7 @@ namespace Mono.UIAutomation.Winforms
 			             new SelectionItemProviderBehavior (this));
 		}
 
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.RadioButton.Id;
@@ -65,7 +65,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "radio button";
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 #endregion
 	}

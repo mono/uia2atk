@@ -54,14 +54,14 @@ namespace Mono.UIAutomation.Winforms
 			             new InvokeProviderBehavior (this));
 		}
 
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Button.Id;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return Control.Text;
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 
 #endregion

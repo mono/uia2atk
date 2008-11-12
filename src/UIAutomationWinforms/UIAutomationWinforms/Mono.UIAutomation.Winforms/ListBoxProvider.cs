@@ -104,7 +104,7 @@ namespace Mono.UIAutomation.Winforms
 			UpdateScrollBehavior ();
 		}
 
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.List.Id;
@@ -113,7 +113,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "list";
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 		
 		#endregion
@@ -324,12 +324,12 @@ namespace Mono.UIAutomation.Winforms
 				}
 			}			
 			
-			public override object GetPropertyValue (int propertyId)
+			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return name;
 				else
-					return base.GetPropertyValue (propertyId);
+					return base.GetProviderPropertyValue (propertyId);
 			}
 			
 			private ListBox listbox;

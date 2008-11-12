@@ -47,7 +47,7 @@ namespace Mono.UIAutomation.Winforms
 			itemProviders = new Dictionary<ToolStripItem, FragmentControlProvider> ();
 		}
 
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.ToolBar.Id;
@@ -58,7 +58,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 		
 		#region FragmentRootControlProvider: Specializations

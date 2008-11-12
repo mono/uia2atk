@@ -215,38 +215,9 @@ namespace Mono.UIAutomation.Winforms
 					return Control.Parent.RectangleToScreen (Control.Bounds);
 			}
 		}
-		
-		#endregion
-		
-		#region Protected Properties
-		
-		protected IEnumerable<IProviderBehavior> ProviderBehaviors {
-			get { return providerBehaviors.Values; }
-		}
-		
-		#endregion
-		
-		#region IRawElementProviderSimple: Specializations
-	
-		// TODO: Get this used in all base classes. Consider refactoring
-		//       so that *all* pattern provider behaviors are dynamically
-		//       attached to make this more uniform.
-		public virtual object GetPatternProvider (int patternId)
-		{
-			foreach (IProviderBehavior behavior in ProviderBehaviors)
-				if (behavior.ProviderPattern.Id == patternId)
-					return behavior;
-			return null;
-		}
-		
-		public virtual object GetPropertyValue (int propertyId)
-		{
-			foreach (IProviderBehavior behavior in ProviderBehaviors) {
-				object val = behavior.GetPropertyValue (propertyId);
-				if (val != null)
-					return val;
-			}
 
+		protected virtual object GetProviderPropertyValue (int propertyId)
+		{
 			if (propertyId == AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty.Id)
 				return IsBehaviorEnabled (ExpandCollapsePatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id)
@@ -352,6 +323,40 @@ namespace Mono.UIAutomation.Winforms
 				}
 			} else
 				return null;
+		}
+		
+		#endregion
+		
+		#region Protected Properties
+		
+		protected IEnumerable<IProviderBehavior> ProviderBehaviors {
+			get { return providerBehaviors.Values; }
+		}
+		
+		#endregion
+		
+		#region IRawElementProviderSimple: Specializations
+	
+		// TODO: Get this used in all base classes. Consider refactoring
+		//       so that *all* pattern provider behaviors are dynamically
+		//       attached to make this more uniform.
+		public object GetPatternProvider (int patternId)
+		{
+			foreach (IProviderBehavior behavior in ProviderBehaviors)
+				if (behavior.ProviderPattern.Id == patternId)
+					return behavior;
+			return null;
+		}
+		
+		public object GetPropertyValue (int propertyId)
+		{
+			foreach (IProviderBehavior behavior in ProviderBehaviors) {
+				object val = behavior.GetPropertyValue (propertyId);
+				if (val != null)
+					return val;
+			}
+
+			return GetProviderPropertyValue (propertyId);
 		}
 
 		public virtual IRawElementProviderSimple HostRawElementProvider {

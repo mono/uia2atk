@@ -54,7 +54,7 @@ namespace Mono.UIAutomation.Winforms
 			             new GridProviderBehavior (this));
 		}
 
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.StatusBar.Id;
@@ -63,7 +63,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 				return null;
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 		
 		#endregion

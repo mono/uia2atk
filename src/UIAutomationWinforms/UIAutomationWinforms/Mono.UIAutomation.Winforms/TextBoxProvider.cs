@@ -82,14 +82,14 @@ namespace Mono.UIAutomation.Winforms
 			UpdateBehaviors ();
 		}
 
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return textboxbase.Multiline == true ? ControlType.Document.Id : ControlType.Edit.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return textboxbase.Multiline == true ? "document" : "edit";
 			else 
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 		
 		public override void Terminate ()
@@ -193,12 +193,12 @@ namespace Mono.UIAutomation.Winforms
 				}
 			}			
 			
-			public override object GetPropertyValue (int propertyId)
+			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return name;
 				else
-					return base.GetPropertyValue (propertyId);
+					return base.GetProviderPropertyValue (propertyId);
 			}
 			
 			private TextBoxBase textbox;

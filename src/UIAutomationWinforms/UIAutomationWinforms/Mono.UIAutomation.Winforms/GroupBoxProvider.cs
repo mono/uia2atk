@@ -46,7 +46,7 @@ namespace Mono.UIAutomation.Winforms
 		
 #region IRawElementProviderSimple Overrides
 		
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Group.Id;
@@ -54,18 +54,17 @@ namespace Mono.UIAutomation.Winforms
 				if (!string.IsNullOrEmpty (Control.Text))
 					return Control.Text;
 				else
-					return base.GetPropertyValue (propertyId);
+					return base.GetProviderPropertyValue (propertyId);
 			}
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) {
 				if (!string.IsNullOrEmpty (Control.Text))
 					return null;
 				else
-					return base.GetPropertyValue (propertyId);
-			}
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return base.GetProviderPropertyValue (propertyId);
+			} else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "group";
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 
 #endregion

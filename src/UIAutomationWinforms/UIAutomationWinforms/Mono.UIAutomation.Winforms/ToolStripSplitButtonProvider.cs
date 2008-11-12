@@ -47,7 +47,7 @@ namespace Mono.UIAutomation.Winforms
 			//this.splitButton = splitButton;
 		}
 
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.SplitButton.Id;
@@ -56,7 +56,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 
 		public override void Initialize ()

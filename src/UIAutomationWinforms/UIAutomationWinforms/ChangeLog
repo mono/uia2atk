@@ -1,5 +1,43 @@
 2008-11-11  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/FormProvider.cs:
+	* Mono.UIAutomation.Winforms/HelpProvider.cs:
+	* Mono.UIAutomation.Winforms/PaneProvider.cs:
+	* Mono.UIAutomation.Winforms/PanelProvider.cs:
+	* Mono.UIAutomation.Winforms/LabelProvider.cs:
+	* Mono.UIAutomation.Winforms/ErrorProvider.cs:
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs:
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/TabPageProvider.cs:
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs:
+	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs:
+	* Mono.UIAutomation.Winforms/MenuStripProvider.cs:
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs:
+	* Mono.UIAutomation.Winforms/LinkLabelProvider.cs:
+	* Mono.UIAutomation.Winforms/TabControlProvider.cs:
+	* Mono.UIAutomation.Winforms/PictureBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/WebBrowserProvider.cs:
+	* Mono.UIAutomation.Winforms/UpDownBaseProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs:
+	* Mono.UIAutomation.Winforms/StatusStripProvider.cs:
+	* Mono.UIAutomation.Winforms/RadioButtonProvider.cs:
+	* Mono.UIAutomation.Winforms/ProgressBarProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripSplitButtonProvider.cs:
+	GetProviderPropertyValue implementation.
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: New protected
+	method: GetProviderPropertyValue.
+
+2008-11-11  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs: Fixed building.
 
 2008-11-11  Mario Carrion  <mcarrion@novell.com>

@@ -44,7 +44,7 @@ namespace Mono.UIAutomation.Winforms
 			this.menu = menu;
 		}
 
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.MenuBar.Id;
@@ -63,7 +63,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.AccessKeyProperty.Id)
 				return "ALT";
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 	}
 }

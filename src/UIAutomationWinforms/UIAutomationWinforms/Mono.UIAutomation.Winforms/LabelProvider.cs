@@ -62,14 +62,9 @@ namespace Mono.UIAutomation.Winforms
 
 #endregion
 		
-#region IRawElementProviderSimple Members
-	
-		public override object GetPatternProvider (int patternId)
-		{
-			return null;
-		}
+#region SimpleControlProvider Members
 		
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Text.Id;
@@ -82,7 +77,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return label.Text;
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 
 #endregion

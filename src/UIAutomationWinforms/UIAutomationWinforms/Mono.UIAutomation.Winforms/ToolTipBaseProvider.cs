@@ -49,7 +49,7 @@ namespace Mono.UIAutomation.Winforms
 			get { return null; }
 		}
 		
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.ToolTip.Id;
@@ -75,7 +75,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 				return true;
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 
 		#endregion
@@ -91,6 +91,8 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
+
+		#region Public Methods
 		
 		public virtual void Show (Control control) 
 		{
@@ -125,7 +127,8 @@ namespace Mono.UIAutomation.Winforms
 				                                                eventArgs);
 			}
 		}
-			
+
+		#endregion
 		
 		#region Private Fields
 		

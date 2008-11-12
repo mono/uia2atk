@@ -45,7 +45,7 @@ namespace Mono.UIAutomation.Winforms
 			this.webBrowser = webBrowser;
 		}
 
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Pane.Id;
@@ -64,7 +64,7 @@ namespace Mono.UIAutomation.Winforms
 				//obj.Name = webBrowser.Name;
 				return obj;
 			} else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 	}
 }

@@ -92,14 +92,14 @@ namespace Mono.UIAutomation.Winforms
 				             new RangeValueProviderBehavior (this));
 		}
 		
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Spinner.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "spinner";
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 		
 		#endregion
@@ -153,7 +153,7 @@ namespace Mono.UIAutomation.Winforms
 				             new ButtonInvokeProviderBehavior (this));
 			}
 			
-			public override object GetPropertyValue (int propertyId)
+			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Button.Id;
@@ -166,7 +166,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
 				else
-					return base.GetPropertyValue (propertyId);
+					return base.GetProviderPropertyValue (propertyId);
 			}
 			
 			public UpDownBaseButtonOrientation Orientation {

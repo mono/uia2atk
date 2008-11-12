@@ -49,7 +49,7 @@ namespace Mono.UIAutomation.Winforms
 			get { return component.Container as Component; }
 		}
 		
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Pane.Id;
@@ -58,7 +58,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return false;
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 
 		#endregion

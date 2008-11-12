@@ -124,7 +124,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Window.Id;
@@ -139,7 +139,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return false;
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)

@@ -78,7 +78,7 @@ namespace Mono.UIAutomation.Winforms
 			             new RangeValueProviderBehavior (this));
 		}
 		
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.ScrollBar.Id;
@@ -97,7 +97,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return false;
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 
 		#endregion
@@ -213,7 +213,7 @@ namespace Mono.UIAutomation.Winforms
 				get { return scrollbarContainer; }
 			}
 	
-			public override object GetPropertyValue (int propertyId)
+			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				//TODO: We may need to get VALID information using Reflection
 				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
@@ -225,7 +225,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Button.Id;
 				else
-					return base.GetPropertyValue (propertyId);
+					return base.GetProviderPropertyValue (propertyId);
 			}
 			
 			private string GetNameFromOrientation ()
@@ -263,7 +263,7 @@ namespace Mono.UIAutomation.Winforms
 				}
 			}
 	
-			public override object GetPropertyValue (int propertyId)
+			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id) {
 					if (runtimeId == -1)
@@ -281,7 +281,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 					return false;
 				else
-					return null;
+					return base.GetProviderPropertyValue (propertyId);
 			}
 
 			protected override System.Drawing.Rectangle GetControlScreenBounds ()

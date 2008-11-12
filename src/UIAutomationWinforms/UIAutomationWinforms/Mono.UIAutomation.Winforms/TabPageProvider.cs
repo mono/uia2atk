@@ -38,14 +38,14 @@ namespace Mono.UIAutomation.Winforms
 		{
 		}
 		
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.TabItem.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return "tab item";
 
-			return base.GetPropertyValue (propertyId);
+			return base.GetProviderPropertyValue (propertyId);
 		}
 	}
 }

@@ -58,7 +58,7 @@ namespace Mono.UIAutomation.Winforms
 		
 #region IRawElementProviderSimple Members
 		
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.CheckBox.Id;
@@ -69,7 +69,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) 	 
 				return Control.Text;
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 
 #endregion

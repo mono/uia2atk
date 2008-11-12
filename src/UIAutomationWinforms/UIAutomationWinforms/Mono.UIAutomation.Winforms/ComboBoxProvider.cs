@@ -55,7 +55,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region SimpleControlProvider: Specializations
 
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.ComboBox.Id;
@@ -64,7 +64,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "combo box";
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 		
 		public override void Terminate ()
@@ -349,7 +349,7 @@ namespace Mono.UIAutomation.Winforms
 				get { return comboboxProvider; }
 			}
 	
-			public override object GetPropertyValue (int propertyId)
+			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.List.Id;
@@ -362,7 +362,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)
 					return false;
 				else
-					return base.GetPropertyValue (propertyId);
+					return base.GetProviderPropertyValue (propertyId);
 			}
 			
 			public override IRawElementProviderFragment GetFocus ()
@@ -502,7 +502,7 @@ namespace Mono.UIAutomation.Winforms
 				             new ButtonInvokeBehavior (provider));
 			}
 	
-			public override object GetPropertyValue (int propertyId)
+			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				//TODO: i18n?
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
@@ -510,7 +510,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return "Drop Down Button";
 				else
-					return base.GetPropertyValue (propertyId);
+					return base.GetProviderPropertyValue (propertyId);
 			}
 
 			private ComboBoxProvider provider;

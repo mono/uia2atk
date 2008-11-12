@@ -80,14 +80,14 @@ namespace Mono.UIAutomation.Winforms
 			} catch (NotSupportedException) { }
 		}
 
-		public override object GetPropertyValue (int propertyId)
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return label.IsLink ? ControlType.Hyperlink.Id : ControlType.Text.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return label.IsLink ? "hyperlink" : "text";
 			else
-				return base.GetPropertyValue (propertyId);
+				return base.GetProviderPropertyValue (propertyId);
 		}
 
 		#pragma warning disable 169
