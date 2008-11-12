@@ -105,12 +105,8 @@ AC_SUBST(TOPDIR)
 
 AC_CONFIG_FILES([
 Makefile
-AtkTest/Makefile
-GailTest/Makefile
-GailTest/gailtest.sh
+Test/Makefile
 UiaAtkBridge/Makefile
-UiaAtkBridgeTest/Makefile
-UiaAtkBridgeTest/bridgetest.sh
 bridge-glue/Makefile
 ])
 

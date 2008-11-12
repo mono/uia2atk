@@ -1,5 +1,10 @@
 2008-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Makefile.am:
+	* configure.ac: Update to match new dir structure.
+
+2008-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* UiaAtkBridge.mds: Remove projects in old location.
 
 2008-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
