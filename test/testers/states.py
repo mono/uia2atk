@@ -250,3 +250,9 @@ class Icon(object):
 class ToolBar(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
+class Menu(object):
+    states = (ENABLED, SELECTABLE, SENSITIVE, SHOWING, VISIBLE)
+
+class MenuItem(object):
+    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
+
