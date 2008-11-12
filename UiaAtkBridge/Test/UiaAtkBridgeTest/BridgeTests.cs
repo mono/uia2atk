@@ -82,8 +82,6 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void ListBox ()
 		{
-			Console.WriteLine ("<Test id=\"ListBox\">");
-			
 			BasicWidgetType type = BasicWidgetType.ListBox;
 			Atk.Object accessible;
 			
@@ -122,15 +120,11 @@ namespace UiaAtkBridgeTest
 			InterfaceText (BasicWidgetType.ListItem, true, listItemChild);
 
 			Parent (type, accessible);
-
-			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void CheckedListBox ()
 		{
-			Console.WriteLine ("<Test id=\"CheckedListBox\">");
-			
 			BasicWidgetType type = BasicWidgetType.CheckedListBox;
 			Atk.Object accessible;
 			
@@ -168,15 +162,11 @@ namespace UiaAtkBridgeTest
 			InterfaceText (BasicWidgetType.CheckedListItem, true, listItemChild);
 
 			Parent (type, accessible);
-
-			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void LinkLabel ()
 		{
-			Console.WriteLine ("<Test id=\"LinkLabel\">");
-			
 			UiaAtkBridge.Hyperlink hyperlink;
 			hyperlink = (UiaAtkBridge.Hyperlink) 
 			  UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (
@@ -218,15 +208,11 @@ namespace UiaAtkBridgeTest
 			Assert.IsFalse (atkAction.DoAction (1), "LinkLabel DoAction OOR #1");
 			Assert.IsFalse (atkAction.DoAction (-1), "LinkLabel DoAction OOR #2");
 			Assert.AreEqual (1, lastClickedLink, "LastClickedLink");
-
-			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void GroupBox ()
 		{
-			Console.WriteLine ("<Test id=\"GroupBox\">");
-			
 			BasicWidgetType type = BasicWidgetType.GroupBox;
 			Atk.Object accessible = 
 			  UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (
@@ -239,18 +225,12 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Sensitive,
 				Atk.StateType.Showing,
 				Atk.StateType.Visible);
-			
-			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void ComboBoxSimple ()
 		{
-			Console.WriteLine ("<Test id=\"ComboBoxSimple\">");
-			
 			ComboBoxSimple (null);
-
-			Console.WriteLine ("</Test>");
 		}
 		
 		private void ComboBoxSimple (System.ComponentModel.Component comboBox)
@@ -277,26 +257,18 @@ namespace UiaAtkBridgeTest
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);
 			CheckComboBoxMenuChild (menuChild, names);
 			//FIXME: maybe we need to test here like we would test a treeview
-			
-			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void ToolStripComboBoxSimple ()
 		{
-			Console.WriteLine ("<Test id=\"ToolStripComboBoxSimple\">");
-			
 			ComboBoxSimple (toolStripComboBoxSim);
-			
-			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void ToolStripLabel ()
 		{
-			Console.WriteLine ("<Test id=\"ToolStripLabel\">");
 			Label (BasicWidgetType.ToolStripLabel);
-			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
@@ -357,8 +329,6 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void Bug416602 ()
 		{
-			Console.WriteLine ("<Test regression=\"{0}\">", 416602);
-			
 			using (SWF.Form f = new SWF.Form ()) {
 				SWF.ListBox listbox = null;
 				SWF.Button addButton = new SWF.Button ();
@@ -409,8 +379,6 @@ namespace UiaAtkBridgeTest
 				}
 				f.Close ();
 			}
-			
-			Console.WriteLine ("</Test>");
 		}
 
 	}

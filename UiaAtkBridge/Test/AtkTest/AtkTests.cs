@@ -446,8 +446,6 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void MainMenuBar ()
 		{
-			Console.WriteLine ("<Test id=\"MainMenuBar\">");
-
 			BasicWidgetType type = BasicWidgetType.MainMenuBar;
 			Atk.Object accessible = null;
 			
@@ -483,7 +481,6 @@ namespace UiaAtkBridgeTest
 			//Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			//InterfaceSelection (atkSelection, names, accessible, type);
 			
-			Console.WriteLine ("</Test>");
 //TODO:
 //			List <MenuLayout> menu = new List <MenuLayout> ();
 //			menu.Add (new MenuLayout ("XFile", new MenuLayout ("Quit")));
@@ -493,8 +490,6 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void ParentMenu () 
 		{
-			Console.WriteLine ("<Test id=\"ParentMenu\">");
-			
 			BasicWidgetType type = BasicWidgetType.ParentMenu;
 			Atk.Object accessible = null;
 			
@@ -543,15 +538,11 @@ namespace UiaAtkBridgeTest
 			//FIXME:
 			//Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			//InterfaceSelection (atkSelection, names, accessible, type);
-			
-			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void ComboBoxDropDownEntry ()
 		{
-			Console.WriteLine ("<Test id=\"ComboBoxDropDownEntry\">");
-			
 			BasicWidgetType type = BasicWidgetType.ComboBoxDropDownEntry;
 			Atk.Object accessible;
 			
@@ -568,8 +559,6 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (entryChild, "ComboBox child#1 should not be null");
 			Assert.AreEqual (entryChild.Role, Atk.Role.Text, "Role of 2nd child");
 			Assert.IsNull (entryChild.Name, "textbox .Name should be null");
-
-			Console.WriteLine ("</Test>");
 		}
 		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
@@ -577,8 +566,6 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void ComboBoxDropDownList ()
 		{
-			Console.WriteLine ("<Test id=\"ComboBoxDropDownList\">");
-			
 			BasicWidgetType type = BasicWidgetType.ComboBoxDropDownList;
 			Atk.Object accessible;
 			
@@ -603,16 +590,12 @@ namespace UiaAtkBridgeTest
 			//FIXME:
 			//Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			//InterfaceSelection (atkSelection, names, accessible, type);
-
-			Console.WriteLine ("</Test>");
 		}
 		
 		[Test]
 		public void TabControl () { RunInGuiThread (RealTabControl); }
 		public void RealTabControl ()
 		{
-			Console.WriteLine ("<Test id=\"TabControl\">");
-			
 			BasicWidgetType type = BasicWidgetType.TabControl;
 			Atk.Object accessible = null;
 			string [] names = new string [] { "Page1", "Page2" };
@@ -645,8 +628,6 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void PictureBox ()
 		{
-			Console.WriteLine ("<Test id=\"PictureBox\">");
-			
 			BasicWidgetType type = BasicWidgetType.PictureBox;
 			Atk.Object accessible;
 
@@ -674,8 +655,6 @@ namespace UiaAtkBridgeTest
 			accessible = GetAccessibleThatEmbedsAnImage (type, name, false);
 			atkWithoutImage = CastToAtkInterface <Atk.Image> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithoutImage);
-
-			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
@@ -729,8 +708,6 @@ namespace UiaAtkBridgeTest
 		public void Window () { RunInGuiThread (RealWindow); }
 		public void RealWindow ()
 		{
-			Console.WriteLine ("<Test id=\"Window\">");
-			
 			BasicWidgetType type = BasicWidgetType.Window;
 			Atk.Object accessible;
 			
@@ -750,8 +727,6 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Resizable,
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);
-
-			Console.WriteLine ("</Test>");
 		}
 		
 
