@@ -1,3 +1,15 @@
+2008-11-13  Ray Wang <rawang@novell.com>
+
+	* keystrokes/winforms/winradiobutton.py/winradiobutton.py: split the
+	AssertPresentation into pieces, do it more atomically
+	* keystrokes/gtk/gtkradiobutton.py/radiobutton.py: split the
+	AssertPresentation into pieces, do it more atomically
+	* keystrokes/winforms/winbutton.py/winbutton.py: split the
+	AssertPresentation into pieces, do it more atomically
+	* keystrokes/gtk/gtkbutton.py/gtkbutton.py: split the
+	AssertPresentation into pieces, do it more atomically
+	* samples/webbrowser.py: change the window's size
+
 2008-11-13  Calen Chen <cachen@novell.com>
 
 	* testers/states.py,

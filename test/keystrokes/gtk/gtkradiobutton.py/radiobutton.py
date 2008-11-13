@@ -5,10 +5,7 @@ import utils
 
 sequence = MacroSequence()
 
-sequence.append(PauseAction(5000))
-sequence.append(WaitForWindowActivate("Radio Button",None))
 sequence.append(utils.StartRecordingAction())
-sequence.append(WaitForFocus("Apple", acc_role=pyatspi.ROLE_RADIO_BUTTON))
 sequence.append(KeyComboAction("Down"))
 sequence.append(utils.AssertPresentationAction(
     "Apple Radio Button",
@@ -17,7 +14,6 @@ sequence.append(utils.AssertPresentationAction(
     "SPEECH OUTPUT: ''",
     "SPEECH OUTPUT: 'Banana not selected radio button'"]))
 sequence.append(utils.StartRecordingAction())
-sequence.append(WaitForFocus("Banana", acc_role=pyatspi.ROLE_RADIO_BUTTON))
 sequence.append(KeyComboAction("Down"))
 sequence.append(utils.AssertPresentationAction(
     "Banana Radio Button",
@@ -26,7 +22,6 @@ sequence.append(utils.AssertPresentationAction(
     "SPEECH OUTPUT: ''",
     "SPEECH OUTPUT: 'Cherry not selected radio button'"]))
 sequence.append(utils.StartRecordingAction())
-sequence.append(WaitForFocus("Cherry", acc_role=pyatspi.ROLE_RADIO_BUTTON))
 sequence.append(KeyComboAction("Down"))
 sequence.append(utils.AssertPresentationAction(
     "Cherry Radio Button",
