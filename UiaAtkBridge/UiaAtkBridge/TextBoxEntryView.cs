@@ -249,8 +249,26 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			Console.WriteLine ("automation event for property change:" + e.Property.ProgrammaticName);
-			base.RaiseAutomationPropertyChangedEvent (e);
+			if (e.Property.Id == ValuePatternIdentifiers.ValueProperty.Id) {
+				string newText = (string)e.NewValue;
+				
+				// Don't fire spurious events if the text hasn't changed
+				if (textExpert.Text == newText)
+					return;
+
+				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+
+				// First delete all text, then insert the new text
+				// FIXME: this may not be feasible if the text is being changed by the user (so we delete&insert in every keystroke)
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+
+				textExpert = new TextImplementorHelper (newText, this);
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+				                         newText == null ? 0 : newText.Length);
+
+			}
+			else
+				base.RaiseAutomationPropertyChangedEvent (e);
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
