@@ -86,7 +86,9 @@ namespace UiaAtkBridge
 			double v = (double)value.Val;
 			if (v < 0 || v > 100) return false;
 			if (rangeValueProvider != null) {
-				rangeValueProvider.SetValue (v);
+				try {
+					rangeValueProvider.SetValue (v);
+				} catch (ArgumentOutOfRangeException) {}
 				return true;
 			}
 			

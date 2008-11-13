@@ -1,3 +1,8 @@
+2008-11-13  Mario Carrion  <mcarrion@novell.com>
+
+	* ScrollBar.cs: Swallowing ArgumentOutOfRangeException. Fixes Bug
+	#444471 .
+
 2008-11-13  Mike Gorse <mgorse@novell.com>
 
 	* TextContainer.cs: Use textExpert.Length instead of Name.Length
