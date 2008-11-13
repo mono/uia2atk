@@ -12,23 +12,22 @@ import actions
 import states
 
 from strongwind import *
-from combobox_simple import *
+from combobox_dropdownlist import *
 
 
 # class to represent the main window.
-class ComboBoxFrame(accessibles.Frame):
+class ComboBoxDropDownListFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
     LABEL1 = "You select "
 
     def __init__(self, accessible):
-        super(ComboBoxFrame, self).__init__(accessible)
+        super(ComboBoxDropDownListFrame, self).__init__(accessible)
         self.label1 = self.findLabel(self.LABEL1)
         self.combobox = self.findComboBox(None)
-        self.textbox = self.findText(None)
-        self.menu = self.findMenu(None)
-        self.menuitem = dict([(x, self.findMenuItem(str(x))) for x in range(10)])
+        #self.menu = self.findMenu(None)
+        #self.menuitem = dict([(x, self.findMenuItem(str(x))) for x in range(10)])
 
     #give 'click' action
     def click(self,accessible):
@@ -70,21 +69,6 @@ class ComboBoxFrame(accessibles.Frame):
 
         accessible.clearSelection()
 
-    #input value into text box
-    def inputText(self, values):
-        procedurelogger.action('input %s into text box' % values)
-        self.textbox.typeText(values)
-
-        procedurelogger.expectedResult('the text value of "text box" is %s' % values)
-        assert self.textbox.text == str(values)
-
-    #enter Text Value for EditableText
-    def enterTextValue(self, values):
-        procedurelogger.action('in %s enter %s "' % (accessible, values))
-        self.textbox.__setattr__('text', values)
-
-        procedurelogger.expectedResult('the text value of "text box" is %s' % values)
-        assert self.textbox.text == str(values)
     
     #close application main window after running test
     def quit(self):

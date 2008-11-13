@@ -1,5 +1,20 @@
 2008-11-13  Calen Chen <cachen@novell.com>
 
+	* testers/states.py,
+	* testers/actions.py: add states and actions tuple for combobox
+	* testers/combobox_simple/comboboxsimpleframe.py,
+	* testers/combobox_simple_ops.py:  initialize combobox, add press 
+	action test, add a test to select item5 to check the states of both 
+	item5 and item2, modify the expectation states after doing 
+	enterTextValue
+	* testers/combobox_dropdownlist/comboboxdropdownlistframe.py,
+	* testers/combobox_dropdownlist/__init__.py,
+	* testers/combobox_dropdownlist_ops.py,
+	* testers/combobox_dropdownlist: add new strongwind test to check the 
+	actions&states, test press&click actions and selection implementation
+
+2008-11-13  Calen Chen <cachen@novell.com>
+
 	* testers/hscrollbar_basic_ops.py,
 	* testers/hscrollbar/hscrollbarframe.py,
 	* testers/scrollbar/scrollbarframe.py: modify the assertion log when 

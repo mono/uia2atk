@@ -49,6 +49,11 @@ class NumericUpDown(object):
 
     actions = (PRESS, PAGE)
 
+class ComboBox(object):
+    PRESS = "press"
+
+    actions = (PRESS, )
+
 class Menu(object):
     CLICK = "click"
 
