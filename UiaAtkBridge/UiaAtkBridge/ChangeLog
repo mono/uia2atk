@@ -1,5 +1,9 @@
 2008-11-13  Mario Carrion  <mcarrion@novell.com>
 
+	* ScrollBar.cs: Using if instead of try-catch.
+
+2008-11-13  Mario Carrion  <mcarrion@novell.com>
+
 	* ScrollBar.cs: Swallowing ArgumentOutOfRangeException. Fixes Bug
 	#444471 .
 

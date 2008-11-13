@@ -84,11 +84,10 @@ namespace UiaAtkBridge
 		public bool SetCurrentValue (GLib.Value value)
 		{
 			double v = (double)value.Val;
-			if (v < 0 || v > 100) return false;
 			if (rangeValueProvider != null) {
-				try {
-					rangeValueProvider.SetValue (v);
-				} catch (ArgumentOutOfRangeException) {}
+				if (v < rangeValueProvider.Minimum || v > rangeValueProvider.Maximum)
+					return false;
+				rangeValueProvider.SetValue (v);
 				return true;
 			}
 			

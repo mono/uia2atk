@@ -1,3 +1,7 @@
+2008-11-13  Mario Carrion  <mcarrion@novell.com>
+
+	* AtkTests.cs: Updated to test Set/Get.
+
 2008-11-13  Brad Taylor  <brad@getcoded.net>
 
 	* AtkTest/AtkTests.cs: Add to the ListView test a check for it's
