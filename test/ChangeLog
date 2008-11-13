@@ -1,3 +1,14 @@
+2008-11-13  Calen Chen <cachen@novell.com>
+
+	* testers/hscrollbar_basic_ops.py,
+	* testers/hscrollbar/hscrollbarframe.py,
+	* testers/scrollbar/scrollbarframe.py: modify the assertion log when 
+	newValue is out of run maximum/minimum value
+	* testers/vscrollbar/vscrollbarframe.py,
+	* testers/vscrollbar_basic_ops.py,
+	* testers/scrollbar_basic_ops.py: modify the value to test the out of 
+	running situation
+
 2008-11-12  Ray Wang <rawang@novell.com>
 
 	* keystrokes/winforms/wincheckbox.py/wincheckbox.py: split the

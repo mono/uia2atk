@@ -78,15 +78,15 @@ vsbFrame.valueScrollBar(100)
 sleep(config.SHORT_DELAY)
 vsbFrame.assertScrollbar(100)
 
-#set value to -10
+#set value to -10, minimum value is 0
 vsbFrame.valueScrollBar(-10)
 sleep(config.SHORT_DELAY)
 vsbFrame.assertScrollbar(-10)
 
-#set value to 210
-vsbFrame.valueScrollBar(210)
+#set value to 120, maximum value is 119
+vsbFrame.valueScrollBar(120)
 sleep(config.SHORT_DELAY)
-vsbFrame.assertScrollbar(210)
+vsbFrame.assertScrollbar(120)
 
 
 

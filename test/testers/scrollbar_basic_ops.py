@@ -48,34 +48,44 @@ statesCheck(sbFrame.hscrollbar, "HScrollBar")
 statesCheck(sbFrame.vscrollbar, "VScrollBar")
 
 #set value to 10
-sbFrame.valueScrollBar(sbFrame.hscrollbar, 10)
+sbFrame.valueScrollBar(sbFrame.vscrollbar, 10)
 sleep(config.SHORT_DELAY)
-sbFrame.assertScrollbar(sbFrame.hscrollbar, 10)
+sbFrame.assertScrollbar(sbFrame.vscrollbar, 10)
+
+#set value to 30, the maximum value is 29
+sbFrame.valueScrollBar(sbFrame.vscrollbar, 30)
+sleep(config.SHORT_DELAY)
+sbFrame.assertScrollbar(sbFrame.vscrollbar, 30)
+
+#set value to 0
+sbFrame.valueScrollBar(sbFrame.vscrollbar, 0)
+sleep(config.SHORT_DELAY)
+sbFrame.assertScrollbar(sbFrame.vscrollbar, 0)
+
+#set value to -10, the minimum value is 0
+sbFrame.valueScrollBar(sbFrame.vscrollbar, -10)
+sleep(config.SHORT_DELAY)
+sbFrame.assertScrollbar(sbFrame.vscrollbar, -10) 
+
+#set value to 3
+sbFrame.valueScrollBar(sbFrame.hscrollbar, 3)
+sleep(config.SHORT_DELAY)
+sbFrame.assertScrollbar(sbFrame.hscrollbar, 3)
+
+#set value to 5, the maximum value is 3
+sbFrame.valueScrollBar(sbFrame.hscrollbar, 5)
+sleep(config.SHORT_DELAY)
+sbFrame.assertScrollbar(sbFrame.hscrollbar, 5)
 
 #set value to 0
 sbFrame.valueScrollBar(sbFrame.hscrollbar, 0)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.hscrollbar, 0) 
 
-#set value to 5
-sbFrame.valueScrollBar(sbFrame.vscrollbar, 5)
+#set value to -10, the maximum value is 0
+sbFrame.valueScrollBar(sbFrame.hscrollbar, -10)
 sleep(config.SHORT_DELAY)
-sbFrame.assertScrollbar(sbFrame.vscrollbar, 5)
-
-#set value to 0
-sbFrame.valueScrollBar(sbFrame.vscrollbar, 0)
-sleep(config.SHORT_DELAY)
-sbFrame.assertScrollbar(sbFrame.vscrollbar, 0) 
-
-#set value to -10
-sbFrame.valueScrollBar(sbFrame.vscrollbar, -10)
-sleep(config.SHORT_DELAY)
-sbFrame.assertScrollbar(sbFrame.vscrollbar, -10)
-
-#set value to 210
-sbFrame.valueScrollBar(sbFrame.hscrollbar, -210)
-sleep(config.SHORT_DELAY)
-sbFrame.assertScrollbar(sbFrame.hscrollbar, -210)
+sbFrame.assertScrollbar(sbFrame.hscrollbar, -10)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

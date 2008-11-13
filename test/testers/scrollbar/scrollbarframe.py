@@ -32,13 +32,17 @@ class ScrollBarFrame(accessibles.Frame):
 
     def assertScrollbar(self, scrollbar, newValue=None):
         maximumValue = scrollbar._accessible.queryValue().maximumValue
+        minimumValue = scrollbar._accessible.queryValue().minimumValue
 
         if 0 <= newValue <= maximumValue:
             procedurelogger.expectedResult('the %s\'s current value is "%s"' % (scrollbar, newValue))
             assert scrollbar.__getattr__('value') == newValue, \
                        "scrollbar's current value is %s:" % scrollbar.__getattr__('value')
         else:
-            procedurelogger.expectedResult('value "%s" out of run' % newValue)
+            if newValue > maximumValue:
+                procedurelogger.expectedResult('value "%s" out of run %s' % (newValue, maximumValue))
+            elif newValue < minimumValue:
+                procedurelogger.expectedResult('value "%s" out of run %s' % (newValue, minimumValue))
             assert not scrollbar.__getattr__('value') == newValue, \
                        "scrollbar's current value is %s:" % scrollbar.__getattr__('value')
     
