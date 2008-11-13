@@ -1,5 +1,9 @@
 2008-11-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* TextBoxEntryView.cs: More tests to pass.
+
+2008-11-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* TextBoxEntryView.cs: CLS names.
 
 2008-11-13  Andrés G. Aragoneses  <aaragoneses@novell.com>

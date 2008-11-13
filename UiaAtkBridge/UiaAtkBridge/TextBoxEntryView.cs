@@ -109,7 +109,9 @@ namespace UiaAtkBridge
 		
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
-			throw new NotImplementedException ();
+			startOffset = 0;
+			endOffset = 0;
+			return null;
 		}
 		
 		public bool AddSelection (int startOffset, int endOffset)
@@ -129,7 +131,8 @@ namespace UiaAtkBridge
 		
 		public bool SetCaretOffset (int offset)
 		{
-			throw new NotImplementedException ();
+			//TODO: internal interface
+			return true;
 		}
 		
 		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
@@ -159,9 +162,7 @@ namespace UiaAtkBridge
 		}
 		
 		public int NSelections {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return 0; }
 		}
 		
 		#endregion 
