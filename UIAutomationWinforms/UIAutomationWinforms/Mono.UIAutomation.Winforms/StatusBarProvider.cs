@@ -26,6 +26,7 @@
 using System;
 using System.ComponentModel;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -215,10 +216,49 @@ namespace Mono.UIAutomation.Winforms
 					return "edit";
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return statusBarPanel.Text;
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+					return BoundingRectangle;
+				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
+					return statusBarPanel.Parent != null && statusBarPanel.Parent.Enabled;
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
+					return IsOffscreen ();
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+					return false;
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
 		
+			public override Rect BoundingRectangle {
+				get {
+					return Helper.RectangleToRect (GetScreenBounds ());
+				}
+			}
+
+			public System.Drawing.Rectangle GetScreenBounds ()
+			{
+				System.Drawing.Rectangle rectangle = System.Drawing.Rectangle.Empty;
+				Control parent = statusBarPanel.Parent;
+				if (parent != null && parent.Parent != null)
+					rectangle = parent.Parent.RectangleToScreen (parent.Bounds);
+				rectangle.X += statusBarPanel.X;
+				rectangle.Width = statusBarPanel.Width;
+				return rectangle;
+			}
+
+			public bool IsOffscreen()
+			{
+				System.Drawing.Rectangle bounds =
+					GetScreenBounds ();				
+				System.Drawing.Rectangle screen =
+					Screen.GetWorkingArea (bounds);
+				// True iff the *entire* control is off-screen
+				return !screen.Contains (bounds.Left, bounds.Bottom) &&
+					!screen.Contains (bounds.Left, bounds.Top) &&
+					!screen.Contains (bounds.Right, bounds.Bottom) &&
+					!screen.Contains (bounds.Right, bounds.Top);
+			}
 			#endregion
 			
 			#region Private Fields

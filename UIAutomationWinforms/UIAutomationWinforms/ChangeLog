@@ -1,3 +1,8 @@
+2008-11-13  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Avoid throwing
+	  exceptions for some StatusBarPanel properties.
+
 2008-11-12  Brad Taylor  <brad@getcoded.net>
 	
 	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Don't forget to add
