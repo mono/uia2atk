@@ -128,7 +128,8 @@ namespace UiaAtkBridge
 
 		public bool IsChildSelected (int i)
 		{
-			throw new NotImplementedException ();
+			//TODO: Atk.Selection
+			return false;
 		}
 
 		public bool RemoveSelection (int i)

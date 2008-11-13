@@ -1,3 +1,7 @@
+2008-11-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MenuItem.cs: Prevent crash until we finish impl.
+
 2008-11-13  Mario Carrion  <mcarrion@novell.com>
 
 	* ScrollBar.cs: Using if instead of try-catch.
