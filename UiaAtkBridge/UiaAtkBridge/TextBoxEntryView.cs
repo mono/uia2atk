@@ -92,7 +92,7 @@ namespace UiaAtkBridge
 			return textExpert.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
 		}
 		
-		public GLib.SList GetRunAttributes (int offset, out int start_offset, out int end_offset)
+		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
 			throw new NotImplementedException ();
 		}
@@ -107,22 +107,22 @@ namespace UiaAtkBridge
 			throw new NotImplementedException ();
 		}
 		
-		public string GetSelection (int selection_num, out int start_offset, out int end_offset)
+		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
 			throw new NotImplementedException ();
 		}
 		
-		public bool AddSelection (int start_offset, int end_offset)
+		public bool AddSelection (int startOffset, int endOffset)
 		{
 			throw new NotImplementedException ();
 		}
 		
-		public bool RemoveSelection (int selection_num)
+		public bool RemoveSelection (int selectionNum)
 		{
 			throw new NotImplementedException ();
 		}
 		
-		public bool SetSelection (int selection_num, int start_offset, int end_offset)
+		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
 		{
 			throw new NotImplementedException ();
 		}
@@ -132,12 +132,12 @@ namespace UiaAtkBridge
 			throw new NotImplementedException ();
 		}
 		
-		public void GetRangeExtents (int start_offset, int end_offset, Atk.CoordType coord_type, out Atk.TextRectangle rect)
+		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
 		{
 			throw new NotImplementedException ();
 		}
 		
-		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coord_type, Atk.TextClipType x_clip_type, Atk.TextClipType y_clip_type)
+		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
 		{
 			throw new NotImplementedException ();
 		}
