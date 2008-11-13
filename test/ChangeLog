@@ -1,3 +1,17 @@
+2008-11-14  Calen Chen <cachen@novell.com>
+
+	* samples/combobox_dropdown.py,
+	* samples/combobox_dropdown(default_style).py: rename to 
+	combobox_dropdown.py
+	* testers/combobox_simple_ops.py: correct cbddlFrame to cbFrame from 
+	line 84
+	* testers/combobox_dropdown/comboboxdropdownframe.py,
+	* testers/combobox_dropdown/__init__.py,
+	* testers/combobox_dropdown_ops.py,
+	* testers/combobox_dropdown: add new strongwind test to check the 
+	actions&states, test press&click actions and selection implementation, 
+	test enterEditable property of 'text'
+
 2008-11-13  Ray Wang <rawang@novell.com>
 
 	* keystrokes/winforms/winradiobutton.py/winradiobutton.py: split the

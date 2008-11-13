@@ -81,15 +81,15 @@ statesCheck(cbFrame.menuitem[0], "MenuItem")
 
 #check list selection implementation
 #select item2 to rise focused and selected states
-cbddlFrame.assertSelectionChild(cbddlFrame.menu, 2)
+cbFrame.assertSelectionChild(cbFrame.menu, 2)
 sleep(config.SHORT_DELAY)
-statesCheck(cbddlFrame.menuitem[2], "MenuItem", add_states=["focused", "selected"])
+statesCheck(cbFrame.menuitem[2], "MenuItem", add_states=["focused", "selected"])
 #select item5 to rise focused and selected states
-cbddlFrame.assertSelectionChild(cbddlFrame.menu, 5)
+cbFrame.assertSelectionChild(cbFrame.menu, 5)
 sleep(config.SHORT_DELAY)
-statesCheck(cbddlFrame.menuitem[5], "MenuItem", add_states=["focused", "selected"])
+statesCheck(cbFrame.menuitem[5], "MenuItem", add_states=["focused", "selected"])
 #item2 get rid of focused and selected states
-statesCheck(cbddlFrame.menuitem[2], "MenuItem")
+statesCheck(cbFrame.menuitem[2], "MenuItem")
 
 #clear selection
 cbFrame.assertClearSelection(cbFrame.ComboBox)
