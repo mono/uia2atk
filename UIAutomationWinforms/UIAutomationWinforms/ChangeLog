@@ -1,3 +1,21 @@
+2008-11-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripDropDownItemProvider.cs: If a
+	child item has no provider support, ignore it.
+
+	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: Mark abstract. 
+	In it's current form (ControlType.MenuItem without implementing
+	IInvokeProvider) it would be dangerous to send one of these to the
+	bridge.
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Remove generic support
+	for ToolStripItems, for now.  We will either only support concrete
+	ToolStripItems (explicitly) or add Invoke support to the default
+	ToolStripItemProvider (or make a new default provider class), or
+	support uninvokable menu items differently in the bridge.  Fixes bug
+	#443235, I believe.
+
 2008-11-13  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Avoid throwing

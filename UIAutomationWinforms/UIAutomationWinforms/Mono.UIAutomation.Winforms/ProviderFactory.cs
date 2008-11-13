@@ -113,7 +113,6 @@ namespace Mono.UIAutomation.Winforms
 			SWF.ToolStripSplitButton tssb;
 			SWF.ToolStripDropDownItem tsddi;
 			SWF.ToolStripLabel tsl;
-			SWF.ToolStripItem tsi;
 			SWF.ToolStripTextBox tstb;
 			SWF.ToolStripProgressBar tspb;
 			SWF.ToolStripComboBox tscb;
@@ -170,8 +169,6 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ToolStripLabelProvider (tsl);
 			else if ((tstb = component as SWF.ToolStripTextBox) != null)
 				provider = new ToolStripTextBoxProvider (tstb);
-			else if ((tsi = component as SWF.ToolStripItem) != null)
-				provider = new ToolStripItemProvider (tsi);
 			else if ((tspb = component as SWF.ToolStripProgressBar) != null)
 				provider = new ToolStripProgressBarProvider (tspb);
 			else if ((tscb = component as SWF.ToolStripComboBox) != null)

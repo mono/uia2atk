@@ -37,7 +37,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class ToolStripItemProvider : FragmentControlProvider
+	internal abstract class ToolStripItemProvider : FragmentControlProvider
 	{
 		private ToolStripItem item;
 

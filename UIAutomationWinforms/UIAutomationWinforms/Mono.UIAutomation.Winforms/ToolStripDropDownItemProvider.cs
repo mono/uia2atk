@@ -67,7 +67,8 @@ namespace Mono.UIAutomation.Winforms
 		
 			foreach (ToolStripItem item in dropDrownItem.DropDownItems) {
 				FragmentControlProvider itemProvider = GetItemProvider (item);
-				OnNavigationChildAdded (false, itemProvider);
+				if (itemProvider != null)
+					OnNavigationChildAdded (false, itemProvider);
 			}
 		}
 		
@@ -89,15 +90,18 @@ namespace Mono.UIAutomation.Winforms
 		private void OnItemAdded (object sender, ToolStripItemEventArgs e)
 		{
 			FragmentControlProvider itemProvider = GetItemProvider (e.Item);
-			OnNavigationChildAdded (true, itemProvider);
+			if (itemProvider != null)
+				OnNavigationChildAdded (true, itemProvider);
 		}
 
 		private void OnItemRemoved (object sender, ToolStripItemEventArgs e)
 		{
 			FragmentControlProvider itemProvider = GetItemProvider (e.Item);
-			itemProviders.Remove (e.Item);
-			itemProvider.Terminate ();
-			OnNavigationChildRemoved (true, itemProvider);
+			if (itemProvider != null) {
+				itemProviders.Remove (e.Item);
+				itemProvider.Terminate ();
+				OnNavigationChildRemoved (true, itemProvider);
+			}
 		}
 
 

@@ -65,17 +65,22 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void InitializeChildControlStructure ()
 		{
+			//base.InitializeChildControlStructure ();
+			
 			strip.ItemAdded += OnItemAdded;
 			strip.ItemRemoved += OnItemRemoved;
 		
 			foreach (ToolStripItem item in strip.Items) {
 				FragmentControlProvider itemProvider = GetItemProvider (item);
-				OnNavigationChildAdded (false, itemProvider);
+				if (itemProvider != null)
+					OnNavigationChildAdded (false, itemProvider);
 			}
 		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
+			//base.FinalizeChildControlStructure ();
+			
 			strip.ItemAdded -= OnItemAdded;
 			strip.ItemRemoved -= OnItemRemoved;
 			
@@ -91,15 +96,21 @@ namespace Mono.UIAutomation.Winforms
 		private void OnItemAdded (object sender, ToolStripItemEventArgs e)
 		{
 			FragmentControlProvider itemProvider = GetItemProvider (e.Item);
-			OnNavigationChildAdded (true, itemProvider);
+			if (itemProvider != null) {
+				itemProviders.Remove (e.Item);
+				itemProvider.Terminate ();
+				OnNavigationChildRemoved (true, itemProvider);
+			}
 		}
 
 		private void OnItemRemoved (object sender, ToolStripItemEventArgs e)
 		{
 			FragmentControlProvider itemProvider = GetItemProvider (e.Item);
-			itemProviders.Remove (e.Item);
-			itemProvider.Terminate ();
-			OnNavigationChildRemoved (true, itemProvider);
+			if (itemProvider != null) {
+				itemProviders.Remove (e.Item);
+				itemProvider.Terminate ();
+				OnNavigationChildRemoved (true, itemProvider);
+			}
 		}
 
 		private FragmentControlProvider GetItemProvider (ToolStripItem item)
