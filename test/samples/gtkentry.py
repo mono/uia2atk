@@ -33,7 +33,7 @@ class Entry:
         self.window.show()
 
     def pulse_clicked(self, widget):
-        self.bar.pulse() 
+        self.bar.insert_text ("pulse")
 
 
 def main():
