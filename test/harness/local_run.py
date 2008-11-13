@@ -133,26 +133,41 @@ class Test(object):
             lf = line.find(date)
             rf = line.rfind(date) 
             todays_dirs.append(line[lf:rf].strip('/">'))
-    todays_dirs.sort()
-    newest_dir = todays_dirs[-1]
+    newest_dir = ""
+    if len(todays_dirs) > 1:
+        # remove the date with no "-" because we know it's not the newest.
+        # if it doesn't exist, that's fine.
+        try:
+            todays_dirs.remove(date)
+        except ValueError:
+            pass
+        newest_dash_number = 0
+        for dir in todays_dirs:
+            dash_number = int(dir[dir.find("-")+1:])
+            if dash_number > newest_dash_number:
+                newest_dash_number = dash_number
+            print dir[dir.find("-")+1:]
+        newest_dir = "%s-%s" % (date, newest_dash_number)
+    else:      
+        newest_dir = todays_dirs[0]
     update_script = \
                   os.path.join(Settings.uiaqa_home, "tools/%s" % UPDATE_SCRIPT)
     output("INFO:  Updating packages:")
-    t = s.Popen(["/usr/bin/sudo", update_script, "-f", "--directory=%s" % newest_dir], stdout=s.PIPE, stderr=s.PIPE)
+    t = s.Popen(["/usr/bin/sudo", update_script, "-f", "--directory=%s" % newest_dir], stdout=s.PIPE, stderr=s.STDOUT)
     o = []
     while True:
-        o_tmp = t.stderr.readline()
+        o_tmp = t.stdout.readline()
         if o_tmp != '':
             o.append(o_tmp) 
             print o_tmp.rstrip()
         if o_tmp == '' and t.poll() is not None:
             break
     r = t.poll()
+    package_status_path = \
+                "%s/%s_package_status" % (Settings.log_path, gethostname())
     if r != 0:
         # create the package_status file.  delete it first so that it 
         # is picked up as a new file by qamon
-        package_status_path = \
-                    "%s/%s_package_status" % (Settings.log_path, gethostname())
         os.system("rm -f %s" % package_status_path)
         os.system("echo 1 > %s" % package_status_path)
         os.system("echo --- >> %s" % package_status_path)
@@ -165,6 +180,10 @@ class Test(object):
                                             (Settings.log_path, gethostname()))
         os.system("echo 0 > %s/%s_package_status" % \
                                             (Settings.log_path, gethostname()))
+        os.system("echo --- >> %s" % package_status_path)
+        f = open(package_status_path, 'a+')
+        f.write("".join(o))
+        f.close()
         return 0
 
   def run(self):
