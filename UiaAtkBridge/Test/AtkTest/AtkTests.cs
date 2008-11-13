@@ -37,9 +37,9 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void Label ()
 		{
-			Console.WriteLine ("<Test id=\"Label\">");
 			Label (BasicWidgetType.Label);
 		}
+		
 		protected void Label (BasicWidgetType type)
 		{
 			Atk.Object accessible = InterfaceText (type);
@@ -58,15 +58,11 @@ namespace UiaAtkBridgeTest
 			
 			//TODO: check parent (it seems it only works for real objects)
 			//Assert.IsNotNull (accessible.Parent, "Label parent");
-
-			Console.WriteLine ("</Test>");
 		}
 		
 		[Test]
 		public void Button ()
 		{
-			Console.WriteLine ("<Test id=\"Button\">");
-			
 			BasicWidgetType type = BasicWidgetType.NormalButton;
 			Atk.Object accessible;
 
@@ -101,15 +97,11 @@ namespace UiaAtkBridgeTest
 			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
 			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
-
-			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void Checkbox ()
 		{
-			Console.WriteLine ("<Test id=\"Checkbox\">");
-			
 			EventMonitor.Start ();
 
 			BasicWidgetType type = BasicWidgetType.CheckBox;
@@ -152,15 +144,11 @@ namespace UiaAtkBridgeTest
 			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
 			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
-
-			Console.WriteLine ("</Test>");
 		}
 		
 		[Test]
 		public void RadioButtons ()
 		{
-			Console.WriteLine ("<Test id=\"RadioButtons\">");
-			
 			BasicWidgetType type = BasicWidgetType.RadioButton;
 			Atk.Object accessible = null, accessible2 = null, accessible3 = null;
 			string name = "test 01";
@@ -207,16 +195,12 @@ namespace UiaAtkBridgeTest
 			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
 			atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
-
-			Console.WriteLine ("</Test>");
 		}
 		
 		[Test]
 		public void StatusBar () { RunInGuiThread (RealStatusBar); }
 		public void RealStatusBar()
 		{
-			Console.WriteLine ("<Test id=\"StatusBar\">");
-			
 			BasicWidgetType type = BasicWidgetType.StatusBar;
 
 			Atk.Object accessible = InterfaceText (type, true);
@@ -235,15 +219,11 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (width > 0 && height > 0, "width and height must be > 0");
 
 			Parent (type, accessible);
-
-			Console.WriteLine ("</Test>");
 		}
 		
 		[Test]
 		public void HScrollBar ()
 		{
-			Console.WriteLine ("<Test id=\"HScrollBar\">");
-			
 			BasicWidgetType type = BasicWidgetType.HScrollBar;
 			Atk.Object accessible;
 			string name = "test";
@@ -268,15 +248,11 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 
 			InterfaceComponent (type, atkComponent);
-
-			Console.WriteLine ("</Test>");
 		}
 		
 		[Test]
 		public void VScrollBar ()
 		{
-			Console.WriteLine ("<Test id=\"VScrollBar\">");
-			
 			BasicWidgetType type = BasicWidgetType.VScrollBar;
 			Atk.Object accessible;
 			string name = "test";
@@ -301,15 +277,11 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 
 			InterfaceComponent (type, atkComponent);
-
-			Console.WriteLine ("</Test>");
 		}
 		
  		[Test]
 		public void ProgressBar ()
 		{
-			Console.WriteLine ("<Test id=\"ProgressBar\">");
-			
 			BasicWidgetType type = BasicWidgetType.ProgressBar;
 			Atk.Object accessible;
 			string name = "test";
@@ -327,15 +299,11 @@ namespace UiaAtkBridgeTest
 			InterfaceComponent (type, atkComponent);
 
 			Parent (type, accessible);
-
-			Console.WriteLine ("</Test>");
 		}
 		
  		[Test]
 		public void Spinner ()
 		{
-			Console.WriteLine ("<Test id=\"Spinner\">");
-			
 			BasicWidgetType type = BasicWidgetType.Spinner;
 			Atk.Object accessible;
 			string name = "test";
@@ -355,15 +323,11 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			
 			InterfaceComponent (type, atkComponent);
-
-			Console.WriteLine ("</Test>");
 		}
 		
 		[Test]
 		public void TextBoxEntry ()
 		{
-			Console.WriteLine ("<Test id=\"TextBoxEntry\">");
-			
 			BasicWidgetType type = BasicWidgetType.TextBoxEntry;
 			Atk.Object accessible = InterfaceText (type, true);
 			
@@ -391,15 +355,11 @@ namespace UiaAtkBridgeTest
 //			PropertyRole (type, accessible);
 //			
 //			Assert.AreEqual (0, accessible.NAccessibleChildren, "TextBoxEntry numChildren");
-
-			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void TextBoxView ()
 		{
-			Console.WriteLine ("<Test id=\"TextBoxView\">");
-			
 			BasicWidgetType type = BasicWidgetType.TextBoxView;
 			Atk.Object accessible = InterfaceText (type, false);
 			
@@ -414,15 +374,11 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);
-
-			Console.WriteLine ("</Test>");
 		}
 
 		[Test]
 		public void MaskedTextBoxEntry ()
 		{
-			Console.WriteLine ("<Test id=\"MaskedTextBoxEntry\">");
-			
 			BasicWidgetType type = BasicWidgetType.TextBoxEntry;
 			Atk.Object accessible = null;
 			
@@ -439,8 +395,6 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible,
 			  Atk.StateType.SingleLine);
-
-			Console.WriteLine ("</Test>");
 		}
 		
 		[Test]
