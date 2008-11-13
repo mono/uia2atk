@@ -1,3 +1,8 @@
+2008-11-13  Brad Taylor  <brad@getcoded.net>
+	
+	* List.cs:
+	* DataGrid.cs: Add the proper default states.
+
 2008-11-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* TextBoxEntryView.cs: Capture text changes properly.

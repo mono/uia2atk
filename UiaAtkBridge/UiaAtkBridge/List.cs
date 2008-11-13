@@ -160,6 +160,7 @@ AtkObject,
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			states.AddState (Atk.StateType.ManagesDescendants);
+			states.AddState (Atk.StateType.Focusable);
 			return states;
 		}
 		

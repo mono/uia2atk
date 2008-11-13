@@ -1,3 +1,8 @@
+2008-11-13  Brad Taylor  <brad@getcoded.net>
+
+	* AtkTest/AtkTests.cs: Add to the ListView test a check for it's
+	default states.
+
 2008-11-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: r118663 was not complete.

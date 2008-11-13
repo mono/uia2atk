@@ -632,6 +632,14 @@ namespace UiaAtkBridgeTest
 			InterfaceComponent (type, atkComponent);
 			InterfaceComponent (type, atkComponent);
 			
+			States (accessible,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Focusable,
+			  Atk.StateType.ManagesDescendants,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible);
+
 			PropertyRole (type, accessible);
 
 			Atk.Table atkTable = CastToAtkInterface<Atk.Table> (accessible);
