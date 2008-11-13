@@ -1,13 +1,18 @@
+2008-11-13  Neville Gao  <nevillegao@gmail.com>
+
+	* UIAutomationWinformsClientTests.csproj: Updated for added file.
+	* StatusStripTest.cs: File added.
+
 2008-11-10  Mario Carrion <mcarrion@novell.com> 
 
 	* ListViewTest.cs: Testing Table Pattern.
 
-2008-11-03  Neville Gao <nevillegao@gmail.com>
+2008-11-03  Neville Gao  <nevillegao@gmail.com>
 
-	* UIAutomationWinformsClientTests.csproj: Updated for added file.
+	* UIAutomationWinformsClientTests.csproj: Updated for added files.
 	* PictureBoxTest.cs, GroupBoxTest.cs: Files added.
 
-2008-10-28  Neville Gao <nevillegao@gmail.com>
+2008-10-28  Neville Gao  <nevillegao@gmail.com>
 
 	* UIAutomationWinformsClientTests.csproj: Updated for added file.
 	* PanelTest.cs: File added.
@@ -16,7 +21,7 @@
 
 	* ListViewTest.cs: Updated to test Navigation and pattern in all views.
 
-2008-10-24  Neville Gao <nevillegao@gmail.com>
+2008-10-24  Neville Gao  <nevillegao@gmail.com>
 
 	* UIAutomationWinformsClientTests.csproj: Updated for added file.
 	* NumericUpDownTest.cs: File added.
@@ -25,7 +30,7 @@
 
 	* ListViewTest.cs: Pattern Test when View is LargeIcon.
 
-2008-10-22  Neville Gao <nevillegao@gmail.com>
+2008-10-22  Neville Gao  <nevillegao@gmail.com>
 
 	* UIAutomationWinformsClientTests.csproj: Updated for added file.
 	* DomainUpDownTest.cs: File added.
@@ -51,7 +56,7 @@
 	* BaseTest.cs: Testing IsKeyboardFocusable as true.
 	* ScrollBarTest.cs: Testing IsKeyboardFocusable as false.
 
-2008-10-08  Neville Gao <nevillegao@gmail.com>
+2008-10-08  Neville Gao  <nevillegao@gmail.com>
 
 	* UIAutomationWinformsClientTests.csproj: Updated for added files.
 	* BaseTest.cs: IsOffscreenProperty, AcceleratorKeyProperty, AccessKeyProperty

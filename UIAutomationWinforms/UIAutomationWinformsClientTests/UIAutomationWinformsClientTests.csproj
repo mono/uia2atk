@@ -76,6 +76,7 @@
     <Compile Include="ScrollBarThumbTest.cs" />
     <Compile Include="StatusBarPanelTest.cs" />
     <Compile Include="StatusBarTest.cs" />
+    <Compile Include="StatusStripTest.cs" />
     <Compile Include="UISpyMissingAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
