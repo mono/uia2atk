@@ -1,3 +1,9 @@
+2008-11-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: Disable ListView for now.
+
+	* AtkTester.cs: Unit testing for #436145.
+
 2008-11-13  Mario Carrion  <mcarrion@novell.com>
 
 	* AtkTests.cs: Updated to test Set/Get.

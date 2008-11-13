@@ -642,7 +642,7 @@ namespace UiaAtkBridgeTest
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithoutImage);
 		}
 
-		[Test]
+		//[Test]
 		public void ListView ()
 		{
 			BasicWidgetType type = BasicWidgetType.ListView;

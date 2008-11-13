@@ -67,6 +67,28 @@ namespace UiaAtkBridgeTest
 				//FIXME: still don't know why this is failing in the GailTester, accerciser is lying me?
 				//Assert.AreEqual (0, implementor.MdiZorder, "Component.MdiZorder(notWindow)");
 			}
+
+			//FIXME: spinner seems not to be real
+			if (type == BasicWidgetType.Spinner)
+				return;
+			
+			int x, y, w, h, x2, y2, w2, h2;
+			implementor.GetExtents (out x, out y, out w, out h, Atk.CoordType.Screen);
+			Assert.IsTrue (x > 0, "x > 0");
+			Assert.IsTrue (y > 0, "y > 0");
+			Assert.IsTrue (w > 0, "w > 0");
+			Assert.IsTrue (h > 0, "h > 0");
+
+			implementor.GetExtents (out x2, out y2, out w2, out h2, Atk.CoordType.Window);
+			Assert.IsTrue (x2 >= 0, "x2 > 0");
+			Assert.IsTrue (y2 >= 0, "y2 > 0");
+			Assert.IsTrue (w2 >= 0, "w2 > 0");
+			Assert.IsTrue (h2 >= 0, "h2 > 0");
+
+			Assert.IsTrue (x >= x2, "x >= x2");
+			Assert.IsTrue (y >= y2, "y >= y2");
+			Assert.IsTrue (w >= w2, "w >= w2");
+			Assert.IsTrue (h >= h2, "h >= h2");
 		}
 		
 		protected abstract int ValidNumberOfActionsForAButton { get; }
