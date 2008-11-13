@@ -1,0 +1,6 @@
+2008-11-13  Ray Wang <rawang@novell.com>
+
+	* specs/uiaatkbridge.spec: update .spec from home:uia2atk of OBS
+	* specs/mono-core.spec: update .spec from home:uia2atk of OBS
+	* specs/uiautomationwinforms.spec: update .spec from home:uia2atk of OBS
+	* specs/olive.spec: remove it. we do not need it any more
