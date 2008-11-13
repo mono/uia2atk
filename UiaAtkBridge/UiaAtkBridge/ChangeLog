@@ -1,3 +1,8 @@
+2008-11-13  Mike Gorse <mgorse@novell.com>
+
+	* TextContainer.cs: Use textExpert.Length instead of Name.Length
+	  in case Name == null.
+
 2008-11-13  Brad Taylor  <brad@getcoded.net>
 	
 	* List.cs:

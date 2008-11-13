@@ -113,13 +113,13 @@ namespace UiaAtkBridge
 		{
 			// don't ask me why, this is what gail does 
 			// (instead of throwing or returning null):
-			if (offset > Name.Length)
-				offset = Name.Length;
+			if (offset > textExpert.Length)
+				offset = textExpert.Length;
 			else if (offset < 0)
 				offset = 0;
 			
 			//just test values for now:
-			endOffset = Name.Length;
+			endOffset = textExpert.Length;
 			startOffset = offset;
 			
 			//TODO:
