@@ -39,45 +39,10 @@ using System.Drawing;
 
 namespace UiaAtkBridgeTest
 {
-	
-	public abstract class BridgeTests : AtkTests
+
+	[TestFixture]
+	public class BridgeTests : BridgeTester
 	{
-
-		protected SWF.GroupBox gb1 = new SWF.GroupBox ();
-		protected SWF.GroupBox gb2 = new SWF.GroupBox ();
-		protected SWF.RadioButton rad1 = new SWF.RadioButton ();
-		protected SWF.RadioButton rad2 = new SWF.RadioButton ();
-		protected SWF.RadioButton rad3 = new SWF.RadioButton ();
-		protected SWF.RadioButton rad4 = new SWF.RadioButton ();
-		protected SWF.RadioButton radWithImage = new SWF.RadioButton ();
-		protected List<SWF.RadioButton> radios = new List<SWF.RadioButton> ();
-		protected int currentRadio = -1;
-		protected SWF.ListBox lb1 = new SWF.ListBox ();
-		protected SWF.CheckedListBox clb1 = new SWF.CheckedListBox ();
-		protected SWF.ComboBox cbDD = new SWF.ComboBox ();
-		protected SWF.ComboBox cbSim = new SWF.ComboBox ();
-		protected SWF.ComboBox cbDDL = new SWF.ComboBox ();
-		protected SWF.Label lab1 = new SWF.Label ();
-		protected SWF.LinkLabel linklab1 = new SWF.LinkLabel ();
-		protected SWF.Button butWithoutImage = new SWF.Button ();
-		protected SWF.Button butWithImage = new SWF.Button ();
-		protected SWF.CheckBox chkWithoutImage = new SWF.CheckBox ();
-		protected SWF.CheckBox chkWithImage = new SWF.CheckBox ();
-		protected SWF.StatusBar sb1 = new SWF.StatusBar ();
-		protected SWF.ProgressBar pb1 = new SWF.ProgressBar ();
-		protected SWF.NumericUpDown nud1 = new SWF.NumericUpDown ();
-		protected SWF.Form form = new SWF.Form ();
-		protected SWF.MenuStrip menuStrip1 = new SWF.MenuStrip ();
-		protected SWF.PictureBox pboxWithoutImage = new SWF.PictureBox ();
-		protected SWF.PictureBox pboxWithImage = new SWF.PictureBox ();
-		protected SWF.TextBox tbx1 = new SWF.TextBox ();
-		protected SWF.TextBox tbx2 = new SWF.TextBox ();
-		protected SWF.ToolStrip toolStrip = new SWF.ToolStrip ();
-		protected SWF.ToolStripComboBox toolStripComboBoxSim = new SWF.ToolStripComboBox ();
-		protected SWF.ToolStripLabel tsl1 = new SWF.ToolStripLabel ();
-		protected SWF.ListView lv1 = new SWF.ListView ();
-
-		protected int lastClickedLink = -1;
 		
 		[Test]
 		public void ListBox ()
@@ -99,13 +64,13 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (listItemChild, "ListBox child#0 should not be null");
 			Assert.AreEqual (listItemChild.Role, Atk.Role.ListItem, "ListBox child#0 should be a list item");
 			
-			Atk.StateSet stateSet = listItemChild.RefStateSet ();
-			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Enabled), "RefStateSet().Contains(Enabled)");
-			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focusable), "RefStateSet().Contains(Focusable)");
-			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Selectable), "RefStateSet().Contains(Selectable)");
-			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Sensitive), "RefStateSet().Contains(Sensitive)");
-			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Showing), "RefStateSet().Contains(Showing)");
-			Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Visible), "RefStateSet().Contains(Visible)");
+			States (listItemChild, 
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Focusable,
+			  Atk.StateType.Selectable,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible);
 
 			Assert.AreEqual (0, listItemChild.NAccessibleChildren, "ListBox ListItem numChildren");
 
@@ -168,9 +133,7 @@ namespace UiaAtkBridgeTest
 		public void LinkLabel ()
 		{
 			UiaAtkBridge.Hyperlink hyperlink;
-			hyperlink = (UiaAtkBridge.Hyperlink) 
-			  UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (
-			    (IRawElementProviderSimple) ProviderFactory.GetProvider (linklab1, true, true));
+			hyperlink = (UiaAtkBridge.Hyperlink) GetAdapterForWidget (linklab1);
 			Atk.Text atkText = CastToAtkInterface<Atk.Text> (hyperlink);
 
 			Assert.AreEqual (53, atkText.CharacterCount, "LinkLabel character count");
@@ -214,17 +177,15 @@ namespace UiaAtkBridgeTest
 		public void GroupBox ()
 		{
 			BasicWidgetType type = BasicWidgetType.GroupBox;
-			Atk.Object accessible = 
-			  UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (
-			    (IRawElementProviderSimple) ProviderFactory.GetProvider (gb1, true, true));
+			Atk.Object accessible = GetAdapterForWidget (gb1);
 
 			PropertyRole (type, accessible);
 
 			States (accessible,
-				Atk.StateType.Enabled,
-				Atk.StateType.Sensitive,
-				Atk.StateType.Showing,
-				Atk.StateType.Visible);
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible);
 		}
 
 		[Test]
@@ -240,9 +201,7 @@ namespace UiaAtkBridgeTest
 			if (comboBox == null)
 				comboBox = cbSim;
 
-			Atk.Object accessible = 
-			  UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (
-			    (IRawElementProviderSimple) ProviderFactory.GetProvider (comboBox, true, true));
+			Atk.Object accessible = GetAdapterForWidget (comboBox);
 			
 			PropertyRole (type, accessible);
 
@@ -289,7 +248,7 @@ namespace UiaAtkBridgeTest
 			lv1.CheckBoxes = false;
 			lv1.Items.Add ("Item1");
 			lv1.Items.Add ("Item2");
-			Atk.Object accessible = UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (ProviderFactory.GetProvider (lv1));
+			Atk.Object accessible = GetAdapterForWidget (lv1);
 			Assert.IsNotNull (accessible, "Adapter should not be null");
 			Assert.AreEqual (2, accessible.NAccessibleChildren, "NAccessibleChildren #1");
 			Atk.Object child1 = accessible.RefAccessibleChild (0);

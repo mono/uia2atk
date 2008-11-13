@@ -40,10 +40,43 @@ using NUnit.Framework;
 
 namespace UiaAtkBridgeTest
 {
-	
-	[TestFixture]
-	public class BridgeTester : BridgeTests
+	public abstract class BridgeTester : AtkTests
 	{
+		protected SWF.GroupBox gb1 = new SWF.GroupBox ();
+		protected SWF.GroupBox gb2 = new SWF.GroupBox ();
+		protected SWF.RadioButton rad1 = new SWF.RadioButton ();
+		protected SWF.RadioButton rad2 = new SWF.RadioButton ();
+		protected SWF.RadioButton rad3 = new SWF.RadioButton ();
+		protected SWF.RadioButton rad4 = new SWF.RadioButton ();
+		protected SWF.RadioButton radWithImage = new SWF.RadioButton ();
+		protected List<SWF.RadioButton> radios = new List<SWF.RadioButton> ();
+		protected int currentRadio = -1;
+		protected SWF.ListBox lb1 = new SWF.ListBox ();
+		protected SWF.CheckedListBox clb1 = new SWF.CheckedListBox ();
+		protected SWF.ComboBox cbDD = new SWF.ComboBox ();
+		protected SWF.ComboBox cbSim = new SWF.ComboBox ();
+		protected SWF.ComboBox cbDDL = new SWF.ComboBox ();
+		protected SWF.Label lab1 = new SWF.Label ();
+		protected SWF.LinkLabel linklab1 = new SWF.LinkLabel ();
+		protected SWF.Button butWithoutImage = new SWF.Button ();
+		protected SWF.Button butWithImage = new SWF.Button ();
+		protected SWF.CheckBox chkWithoutImage = new SWF.CheckBox ();
+		protected SWF.CheckBox chkWithImage = new SWF.CheckBox ();
+		protected SWF.StatusBar sb1 = new SWF.StatusBar ();
+		protected SWF.ProgressBar pb1 = new SWF.ProgressBar ();
+		protected SWF.NumericUpDown nud1 = new SWF.NumericUpDown ();
+		protected SWF.Form form = new SWF.Form ();
+		protected SWF.MenuStrip menuStrip1 = new SWF.MenuStrip ();
+		protected SWF.PictureBox pboxWithoutImage = new SWF.PictureBox ();
+		protected SWF.PictureBox pboxWithImage = new SWF.PictureBox ();
+		protected SWF.TextBox tbx1 = new SWF.TextBox ();
+		protected SWF.TextBox tbx2 = new SWF.TextBox ();
+		protected SWF.ToolStrip toolStrip = new SWF.ToolStrip ();
+		protected SWF.ToolStripComboBox toolStripComboBoxSim = new SWF.ToolStripComboBox ();
+		protected SWF.ToolStripLabel tsl1 = new SWF.ToolStripLabel ();
+		protected SWF.ListView lv1 = new SWF.ListView ();
+
+		protected int lastClickedLink = -1;
 		
 		public BridgeTester () 
 		{
@@ -201,7 +234,7 @@ namespace UiaAtkBridgeTest
 			return GetAccessible (type, name, real, true);
 		}
 
-		private Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget)
+		protected Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget)
 		{
 //			return GetAdapterForWidget (widget, true);
 //		}
@@ -225,7 +258,7 @@ namespace UiaAtkBridgeTest
 //			}
 			return acc;
 		}
-
+		
 		public override Atk.Object GetAccessible (BasicWidgetType type, string [] names)
 		{
 			return GetAccessible (type, names, true);
@@ -502,7 +535,7 @@ namespace UiaAtkBridgeTest
 
 			case BasicWidgetType.ToolStripLabel:
 				tsl1.Text = name;
-				accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (tsl1, true, true));
+				accessible = GetAdapterForWidget (tsl1);
 				break;
 
 			case BasicWidgetType.ListView:
@@ -513,7 +546,7 @@ namespace UiaAtkBridgeTest
 				foreach (XmlElement th in xml.GetElementsByTagName ("th"))
 					foreach (XmlElement td in th.GetElementsByTagName ("td"))
 						lv1.Columns.Add (new SWF.ColumnHeader (td.InnerText));
-			XmlElement root = xml.DocumentElement;
+				XmlElement root = xml.DocumentElement;
 				for (XmlNode node = root.FirstChild; node != null; node = node.NextSibling)
 					if (node.Name == "tr") {
 						bool group = false;
@@ -525,7 +558,7 @@ namespace UiaAtkBridgeTest
 						else
 							lv1.Items.Add (GetListViewItem (node));
 					}
-				accessible = GetAdapterForProvider ((IRawElementProviderSimple) ProviderFactory.GetProvider (lv1, true, true));
+				accessible = GetAdapterForWidget (lv1);
 				break;
 				
 			case BasicWidgetType.ListBox:
