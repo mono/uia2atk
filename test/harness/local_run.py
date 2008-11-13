@@ -133,23 +133,10 @@ class Test(object):
             lf = line.find(date)
             rf = line.rfind(date) 
             todays_dirs.append(line[lf:rf].strip('/">'))
-    newest_dir = ""
     if len(todays_dirs) > 1:
-        # remove the date with no "-" because we know it's not the newest.
-        # if it doesn't exist, that's fine.
-        try:
-            todays_dirs.remove(date)
-        except ValueError:
-            pass
-        newest_dash_number = 0
-        for dir in todays_dirs:
-            dash_number = int(dir[dir.find("-")+1:])
-            if dash_number > newest_dash_number:
-                newest_dash_number = dash_number
-            print dir[dir.find("-")+1:]
-        newest_dir = "%s-%s" % (date, newest_dash_number)
-    else:      
-        newest_dir = todays_dirs[0]
+      newest_dir = todays_dirs[-2]
+    else:
+      newest_dir = todays_dirs[0]
     update_script = \
                   os.path.join(Settings.uiaqa_home, "tools/%s" % UPDATE_SCRIPT)
     output("INFO:  Updating packages:")
