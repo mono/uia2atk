@@ -54,6 +54,8 @@ namespace UiaAtkBridge
 			if ((int)provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) ==
 			    ControlType.Document.Id)
 				multiLine = true;
+
+			caretOffset = textExpert.Length;
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()
@@ -129,7 +131,7 @@ namespace UiaAtkBridge
 			return false;
 		}
 
-		int caretOffset = 0;
+		int caretOffset = -1;
 		
 		public bool SetCaretOffset (int offset)
 		{
@@ -270,6 +272,7 @@ namespace UiaAtkBridge
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         newText == null ? 0 : newText.Length);
 
+				caretOffset = textExpert.Length;
 			}
 			else
 				base.RaiseAutomationPropertyChangedEvent (e);

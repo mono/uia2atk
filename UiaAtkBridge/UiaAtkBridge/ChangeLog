@@ -1,5 +1,9 @@
 2008-11-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* TextBoxEntryView.cs: Fixed one more AtkText test.
+
+2008-11-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* TextBoxEntryView.cs: Fixed AtkText for single-line widgets.
 
 2008-11-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
