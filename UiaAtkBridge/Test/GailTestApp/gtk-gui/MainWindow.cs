@@ -78,6 +78,8 @@ public partial class MainWindow {
     
     private Gtk.RadioButton radTest2;
     
+    private Gtk.SpinButton spinbuttonTest1;
+    
     private Gtk.Entry txtEntry;
     
     private Gtk.VScrollbar vscrollbar1;
@@ -360,6 +362,19 @@ public partial class MainWindow {
         w17.XOptions = ((Gtk.AttachOptions)(4));
         w17.YOptions = ((Gtk.AttachOptions)(4));
         // Container child table1.Gtk.Table+TableChild
+        this.spinbuttonTest1 = new Gtk.SpinButton(0, 100, 1);
+        this.spinbuttonTest1.CanFocus = true;
+        this.spinbuttonTest1.Name = "spinbuttonTest1";
+        this.spinbuttonTest1.Adjustment.PageIncrement = 10;
+        this.spinbuttonTest1.ClimbRate = 1;
+        this.spinbuttonTest1.Numeric = true;
+        this.table1.Add(this.spinbuttonTest1);
+        Gtk.Table.TableChild w18 = ((Gtk.Table.TableChild)(this.table1[this.spinbuttonTest1]));
+        w18.TopAttach = ((uint)(4));
+        w18.BottomAttach = ((uint)(5));
+        w18.XOptions = ((Gtk.AttachOptions)(4));
+        w18.YOptions = ((Gtk.AttachOptions)(4));
+        // Container child table1.Gtk.Table+TableChild
         this.txtEntry = new Gtk.Entry();
         this.txtEntry.CanFocus = true;
         this.txtEntry.Name = "txtEntry";
@@ -367,16 +382,16 @@ public partial class MainWindow {
         this.txtEntry.IsEditable = true;
         this.txtEntry.InvisibleChar = '●';
         this.table1.Add(this.txtEntry);
-        Gtk.Table.TableChild w18 = ((Gtk.Table.TableChild)(this.table1[this.txtEntry]));
-        w18.LeftAttach = ((uint)(1));
-        w18.RightAttach = ((uint)(2));
-        w18.XOptions = ((Gtk.AttachOptions)(4));
-        w18.YOptions = ((Gtk.AttachOptions)(4));
+        Gtk.Table.TableChild w19 = ((Gtk.Table.TableChild)(this.table1[this.txtEntry]));
+        w19.LeftAttach = ((uint)(1));
+        w19.RightAttach = ((uint)(2));
+        w19.XOptions = ((Gtk.AttachOptions)(4));
+        w19.YOptions = ((Gtk.AttachOptions)(4));
         this.hbox1.Add(this.table1);
-        Gtk.Box.BoxChild w19 = ((Gtk.Box.BoxChild)(this.hbox1[this.table1]));
-        w19.Position = 1;
-        w19.Expand = false;
-        w19.Fill = false;
+        Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.hbox1[this.table1]));
+        w20.Position = 1;
+        w20.Expand = false;
+        w20.Fill = false;
         // Container child hbox1.Gtk.Box+BoxChild
         this.vscrollbar1 = new Gtk.VScrollbar(null);
         this.vscrollbar1.Name = "vscrollbar1";
@@ -385,26 +400,26 @@ public partial class MainWindow {
         this.vscrollbar1.Adjustment.PageSize = 10;
         this.vscrollbar1.Adjustment.StepIncrement = 1;
         this.hbox1.Add(this.vscrollbar1);
-        Gtk.Box.BoxChild w20 = ((Gtk.Box.BoxChild)(this.hbox1[this.vscrollbar1]));
-        w20.Position = 2;
-        w20.Expand = false;
-        w20.Fill = false;
+        Gtk.Box.BoxChild w21 = ((Gtk.Box.BoxChild)(this.hbox1[this.vscrollbar1]));
+        w21.Position = 2;
+        w21.Expand = false;
+        w21.Fill = false;
         // Container child hbox1.Gtk.Box+BoxChild
         this.imgTest1 = new Gtk.Image();
         this.imgTest1.Name = "imgTest1";
         this.hbox1.Add(this.imgTest1);
-        Gtk.Box.BoxChild w21 = ((Gtk.Box.BoxChild)(this.hbox1[this.imgTest1]));
-        w21.Position = 3;
-        w21.Expand = false;
-        w21.Fill = false;
+        Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.hbox1[this.imgTest1]));
+        w22.Position = 3;
+        w22.Expand = false;
+        w22.Fill = false;
         // Container child hbox1.Gtk.Box+BoxChild
         this.imgTest2 = new Gtk.Image();
         this.imgTest2.Name = "imgTest2";
         this.hbox1.Add(this.imgTest2);
-        Gtk.Box.BoxChild w22 = ((Gtk.Box.BoxChild)(this.hbox1[this.imgTest2]));
-        w22.Position = 5;
-        w22.Expand = false;
-        w22.Fill = false;
+        Gtk.Box.BoxChild w23 = ((Gtk.Box.BoxChild)(this.hbox1[this.imgTest2]));
+        w23.Position = 5;
+        w23.Expand = false;
+        w23.Fill = false;
         this.notebook1.Add(this.hbox1);
         // Notebook tab
         this.label1 = new Gtk.Label();
@@ -418,8 +433,8 @@ public partial class MainWindow {
         this.calendar1.Name = "calendar1";
         this.calendar1.DisplayOptions = ((Gtk.CalendarDisplayOptions)(3));
         this.notebook1.Add(this.calendar1);
-        Gtk.Notebook.NotebookChild w24 = ((Gtk.Notebook.NotebookChild)(this.notebook1[this.calendar1]));
-        w24.Position = 1;
+        Gtk.Notebook.NotebookChild w25 = ((Gtk.Notebook.NotebookChild)(this.notebook1[this.calendar1]));
+        w25.Position = 1;
         // Notebook tab
         this.label2 = new Gtk.Label();
         this.label2.Name = "label2";
@@ -427,18 +442,18 @@ public partial class MainWindow {
         this.notebook1.SetTabLabel(this.calendar1, this.label2);
         this.label2.ShowAll();
         this.vbox1.Add(this.notebook1);
-        Gtk.Box.BoxChild w25 = ((Gtk.Box.BoxChild)(this.vbox1[this.notebook1]));
-        w25.Position = 2;
-        w25.Expand = false;
-        w25.Fill = false;
+        Gtk.Box.BoxChild w26 = ((Gtk.Box.BoxChild)(this.vbox1[this.notebook1]));
+        w26.Position = 2;
+        w26.Expand = false;
+        w26.Fill = false;
         // Container child vbox1.Gtk.Box+BoxChild
         this.progressbar1 = new Gtk.ProgressBar();
         this.progressbar1.Name = "progressbar1";
         this.vbox1.Add(this.progressbar1);
-        Gtk.Box.BoxChild w26 = ((Gtk.Box.BoxChild)(this.vbox1[this.progressbar1]));
-        w26.Position = 3;
-        w26.Expand = false;
-        w26.Fill = false;
+        Gtk.Box.BoxChild w27 = ((Gtk.Box.BoxChild)(this.vbox1[this.progressbar1]));
+        w27.Position = 3;
+        w27.Expand = false;
+        w27.Fill = false;
         // Container child vbox1.Gtk.Box+BoxChild
         this.hscrollbar1 = new Gtk.HScrollbar(null);
         this.hscrollbar1.Name = "hscrollbar1";
@@ -446,11 +461,12 @@ public partial class MainWindow {
         this.hscrollbar1.Adjustment.PageIncrement = 10;
         this.hscrollbar1.Adjustment.PageSize = 10;
         this.hscrollbar1.Adjustment.StepIncrement = 1;
+        this.hscrollbar1.Adjustment.Value = 9.28317766722556;
         this.vbox1.Add(this.hscrollbar1);
-        Gtk.Box.BoxChild w27 = ((Gtk.Box.BoxChild)(this.vbox1[this.hscrollbar1]));
-        w27.Position = 4;
-        w27.Expand = false;
-        w27.Fill = false;
+        Gtk.Box.BoxChild w28 = ((Gtk.Box.BoxChild)(this.vbox1[this.hscrollbar1]));
+        w28.Position = 4;
+        w28.Expand = false;
+        w28.Fill = false;
         // Container child vbox1.Gtk.Box+BoxChild
         this.hbox2 = new Gtk.HBox();
         this.hbox2.Name = "hbox2";
@@ -465,20 +481,20 @@ public partial class MainWindow {
         this.txtViewTest.Name = "txtViewTest";
         this.GtkScrolledWindow1.Add(this.txtViewTest);
         this.hbox2.Add(this.GtkScrolledWindow1);
-        Gtk.Box.BoxChild w29 = ((Gtk.Box.BoxChild)(this.hbox2[this.GtkScrolledWindow1]));
-        w29.Position = 1;
+        Gtk.Box.BoxChild w30 = ((Gtk.Box.BoxChild)(this.hbox2[this.GtkScrolledWindow1]));
+        w30.Position = 1;
         this.vbox1.Add(this.hbox2);
-        Gtk.Box.BoxChild w30 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
-        w30.Position = 5;
+        Gtk.Box.BoxChild w31 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+        w31.Position = 5;
         // Container child vbox1.Gtk.Box+BoxChild
         this.statusbar1 = new Gtk.Statusbar();
         this.statusbar1.Name = "statusbar1";
         this.statusbar1.Spacing = 6;
         this.vbox1.Add(this.statusbar1);
-        Gtk.Box.BoxChild w31 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
-        w31.Position = 7;
-        w31.Expand = false;
-        w31.Fill = false;
+        Gtk.Box.BoxChild w32 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
+        w32.Position = 7;
+        w32.Expand = false;
+        w32.Fill = false;
         this.Add(this.vbox1);
         if ((this.Child != null)) {
             this.Child.ShowAll();
