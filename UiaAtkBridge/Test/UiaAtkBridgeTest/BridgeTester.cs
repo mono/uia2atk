@@ -65,6 +65,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.StatusBar sb1 = new SWF.StatusBar ();
 		protected SWF.ProgressBar pb1 = new SWF.ProgressBar ();
 		protected SWF.NumericUpDown nud1 = new SWF.NumericUpDown ();
+		protected SWF.DomainUpDown dud1 = new SWF.DomainUpDown ();
 		protected SWF.Form form = new SWF.Form ();
 		protected SWF.MenuStrip menuStrip1 = new SWF.MenuStrip ();
 		protected SWF.PictureBox pboxWithoutImage = new SWF.PictureBox ();
@@ -139,6 +140,7 @@ namespace UiaAtkBridgeTest
 			form.MainMenuStrip = menuStrip1;
 			form.Controls.Add (pb1);
 			form.Controls.Add (nud1);
+			form.Controls.Add (dud1);
 			form.Controls.Add (pboxWithoutImage);
 			form.Controls.Add (pboxWithImage);
 			form.Controls.Add (tbx1);
@@ -224,6 +226,9 @@ namespace UiaAtkBridgeTest
 			}
 			else if (typeof (I) == typeof (Atk.Selection)) {
 				return new Atk.SelectionAdapter ((Atk.SelectionImplementor)accessible) as I;
+			}
+			else if (typeof (I) == typeof (Atk.EditableText)) {
+				return new Atk.EditableTextAdapter ((Atk.EditableTextImplementor)accessible) as I;
 			}
 			throw new NotImplementedException ("Couldn't cast to interface " +
 			typeof (I).Name);

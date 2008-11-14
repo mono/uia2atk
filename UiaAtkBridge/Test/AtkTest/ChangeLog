@@ -1,3 +1,9 @@
+2008-11-13  Mike Gorse <mgorse@novell.com>
+
+	* BasicWidgetType.cs: Add DomainUpDown.
+
+	* AtkTester.cs: Add InterfaceEditableText.
+
 2008-11-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Disable ListView for now.

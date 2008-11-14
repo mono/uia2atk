@@ -1,3 +1,7 @@
+2008-11-13  Mike Gorse <mgorse@novell.com>
+
+	* Spinner.cs: Support IValueProvider and Atk.EditableText.
+
 2008-11-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* TextBoxEntryView.cs: Fixed one more AtkText test.

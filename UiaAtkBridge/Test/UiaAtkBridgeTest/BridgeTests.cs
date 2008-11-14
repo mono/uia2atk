@@ -286,6 +286,23 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		public void DomainUpDown ()
+		{
+			BasicWidgetType type = BasicWidgetType.DomainUpDown;
+
+			dud1.Items.Clear ();
+			dud1.Items.Add ("first item");
+			dud1.Items.Add ("second item");
+			dud1.Items.Add ("third item");
+			Atk.Object accessible = UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (ProviderFactory.GetProvider (dud1));
+			dud1.SelectedIndex = 1;
+			InterfaceText (accessible, "second item");
+			dud1.SelectedIndex = 2;
+
+			InterfaceEditableText (type, accessible);
+		}
+
+		[Test]
 		public void Bug416602 ()
 		{
 			using (SWF.Form f = new SWF.Form ()) {

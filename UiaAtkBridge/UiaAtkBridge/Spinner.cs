@@ -32,9 +32,10 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class Spinner : ComponentAdapter, Atk.ValueImplementor, Atk.TextImplementor
+	public class Spinner : ComponentAdapter, Atk.ValueImplementor, Atk.TextImplementor, Atk.EditableTextImplementor
 	{
 		private IRangeValueProvider rangeValueProvider;
+		private IValueProvider valueProvider;
 		private TextImplementorHelper textExpert = null;
 
 		public Spinner (IRawElementProviderSimple provider) : base (provider)
@@ -43,7 +44,10 @@ namespace UiaAtkBridge
 			Name = text;
 			Role = Atk.Role.SpinButton;
 			rangeValueProvider = (IRangeValueProvider)provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
-			if (rangeValueProvider != null)
+			valueProvider = (IValueProvider)provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+			if (valueProvider != null)
+				text = valueProvider.Value;
+			else if (rangeValueProvider != null)
 				text = rangeValueProvider.Value.ToString ("F2");
 			else
 				text = String.Empty;
@@ -89,16 +93,10 @@ namespace UiaAtkBridge
 			if (e.Property == RangeValuePatternIdentifiers.ValueProperty) {
 				double v = (double)e.NewValue;
 				NotifyPropertyChange ("accessible-value", v);
-
-				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
-
-				// First delete all text, then insert the new text
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
-
-				string newText = v.ToString ("F2");
-				textExpert = new TextImplementorHelper (newText, this);
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
-				                         newText == null ? 0 : newText.Length);
+				NewText (v.ToString ("F2"));
+			}
+			else if (e.Property == ValuePatternIdentifiers.ValueProperty) {
+				NewText ((string)e.NewValue);
 			}
 		}
 
@@ -124,7 +122,7 @@ namespace UiaAtkBridge
 
 		public int NSelections {
 			get {
-				return 0;
+				return -1;
 			}
 		}
 		
@@ -133,14 +131,10 @@ namespace UiaAtkBridge
 			return textExpert.GetText (startOffset, endOffset);
 		}
 
-		private int selectionStartOffset = 0, selectionEndOffset = 0;
-		
 		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
 			string ret = 
 				textExpert.GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
-			selectionStartOffset = startOffset;
-			selectionEndOffset = endOffset;
 			return ret;
 		}
 		
@@ -148,8 +142,6 @@ namespace UiaAtkBridge
 		{
 			string ret = 
 				textExpert.GetTextAtOffset (offset, boundaryType, out startOffset, out endOffset);
-			selectionStartOffset = startOffset;
-			selectionEndOffset = endOffset;
 			return ret;
 		}
 		
@@ -157,8 +149,6 @@ namespace UiaAtkBridge
 		{
 			string ret = 
 				textExpert.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
-			selectionStartOffset = startOffset;
-			selectionEndOffset = endOffset;
 			return ret;
 		}
 		
@@ -192,8 +182,8 @@ namespace UiaAtkBridge
 
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
-			startOffset = selectionStartOffset;
-			endOffset = selectionEndOffset;
+			startOffset = 0;
+			endOffset = 0;
 			return null;
 		}
 
@@ -232,5 +222,62 @@ namespace UiaAtkBridge
 			throw new NotImplementedException();
 		}
 
+		private void NewText (string newText)
+		{
+				// Don't fire spurious events if the text hasn't changed
+				if (textExpert.Text == newText)
+					return;
+
+			Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+
+			// First delete all text, then insert the new text
+			adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+
+			textExpert = new TextImplementorHelper (newText, this);
+			adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+				                 newText == null ? 0 : newText.Length);
+		}
+
+		public string TextContents {
+			set {
+				if (valueProvider != null)
+					valueProvider.SetValue (value);
+				else if (rangeValueProvider != null)
+				rangeValueProvider.SetValue (double.Parse (value));
+			}
+		}
+
+		public bool SetRunAttributes (GLib.SList attrib_set, int start_offset, int end_offset)
+		{
+			return false;
+		}
+
+		public void CopyText (int start_pos, int end_pos)
+		{
+			Console.WriteLine ("UiaAtkBridge (spinner): CopyText unimplemented");
+		}
+
+		public void CutText (int start_pos, int end_pos)
+		{
+			Console.WriteLine ("UiaAtkBridge (spinner): CutText unimplemented");
+		}
+
+		public void PasteText (int position)
+		{
+			Console.WriteLine ("UiaAtkBridge (spinner): PasteText unimplemented");
+		}
+
+		public void DeleteText (int start_pos, int end_pos)
+		{
+			TextContents = textExpert.Text.Substring (0, start_pos)
+				+ textExpert.Text.Substring (start_pos + end_pos);
+		}
+
+		public void InsertText (string str1ng, ref int position)
+		{
+			TextContents = textExpert.Text.Substring (0, position)
+				+ str1ng
+				+ textExpert.Text.Substring (position);
+		}
 	}
 }

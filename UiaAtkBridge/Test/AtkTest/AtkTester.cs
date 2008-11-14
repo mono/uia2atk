@@ -581,6 +581,21 @@ namespace UiaAtkBridgeTest
 			return InterfaceTextAux (type, false, null);
 		}
 
+		protected void InterfaceEditableText (BasicWidgetType type, Atk.Object accessible)
+		{
+			Atk.EditableText atkEditableText = CastToAtkInterface<Atk.EditableText> (accessible);
+			atkEditableText.TextContents = "abcdef";
+			InterfaceText (accessible, "abcdef");
+			atkEditableText.DeleteText (2, 2);
+			InterfaceText (accessible, "abef");
+			int pos = 0;
+			atkEditableText.InsertText ("xx", ref pos);
+			InterfaceText (accessible, "xxabef");
+			pos = 5;
+			atkEditableText.InsertText ("zz", ref pos);
+			InterfaceText (accessible, "xxabezzf");
+		}
+
 		protected Atk.Object InterfaceText (BasicWidgetType type, bool onlySingleLine)
 		{
 			return InterfaceTextAux (type, onlySingleLine, null);
