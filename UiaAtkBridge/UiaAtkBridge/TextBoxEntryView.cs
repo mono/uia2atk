@@ -109,8 +109,8 @@ namespace UiaAtkBridge
 		
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
-			startOffset = 0;
-			endOffset = 0;
+			startOffset = caretOffset;
+			endOffset = caretOffset;
 			return null;
 		}
 		
@@ -121,17 +121,20 @@ namespace UiaAtkBridge
 		
 		public bool RemoveSelection (int selectionNum)
 		{
-			throw new NotImplementedException ();
+			return false;
 		}
 		
 		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
 		{
-			throw new NotImplementedException ();
+			return false;
 		}
+
+		int caretOffset = 0;
 		
 		public bool SetCaretOffset (int offset)
 		{
 			//TODO: internal interface
+			caretOffset = offset;
 			return true;
 		}
 		
