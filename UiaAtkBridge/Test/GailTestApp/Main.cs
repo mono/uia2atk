@@ -209,6 +209,13 @@ namespace GailTestApp {
 			
 			return win;
 		}
+
+		public static Gtk.SpinButton GiveMeARealSpinButton ()
+		{
+			CheckState ();
+			
+			return win.GiveMeARealSpinButton ();
+		}
 		
 		public static void Kill (MovingThread thread) 
 		{

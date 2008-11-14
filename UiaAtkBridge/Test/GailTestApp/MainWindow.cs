@@ -142,5 +142,9 @@ public partial class MainWindow: Gtk.Window
 	internal Gtk.ProgressBar GiveMeARealProgressBar () {
 		return this.progressbar1;
 	}
+
+	internal Gtk.SpinButton GiveMeARealSpinButton () {
+		return this.spinbuttonTest1;
+	}
 	
 }
