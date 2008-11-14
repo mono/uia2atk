@@ -35,6 +35,9 @@ namespace UiaAtkBridgeTest
 	public abstract class AtkTester {
 
 		public abstract Atk.Object GetAccessible (BasicWidgetType type, string name);
+
+		public abstract Atk.Object GetAccessible (
+		  BasicWidgetType type, string [] name, object widget);
 		
 		public abstract Atk.Object GetAccessible (
 		  BasicWidgetType type, string name, bool real);
@@ -1140,7 +1143,11 @@ namespace UiaAtkBridgeTest
 
 		protected void Parent (BasicWidgetType type, Atk.Object accessible)
 		{
-			Assert.AreEqual (0, accessible.RefRelationSet ().NRelations, "NRelations == 0");
+			if (type != BasicWidgetType.RadioButton)
+				Assert.AreEqual (0, accessible.RefRelationSet ().NRelations, 
+				                 "NRelations != 0, now " + accessible.RefRelationSet ().NRelations);
+			else
+				Assert.AreEqual (accessible.RefRelationSet ().GetRelation (0).RelationType, Atk.RelationType.MemberOf);
 			
 			Atk.Object parent = accessible.Parent;
 			Assert.IsNotNull (parent, "parent not null");

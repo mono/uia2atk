@@ -140,11 +140,23 @@ namespace UiaAtkBridgeTest
 
 		public override Atk.Object GetAccessible (BasicWidgetType type, string [] name)
 		{
-			return GetAccessible (type, name);
+			return GetAccessible (type, name, null, true);
 		}
-		
+
 		public override Atk.Object GetAccessible (BasicWidgetType type, string [] name, bool real)
 		{
+			return GetAccessible (type, name, null, real);
+		}
+
+		public override Atk.Object GetAccessible (BasicWidgetType type, string [] name, object widget)
+		{
+			return GetAccessible (type, name, widget, true);
+		}
+
+		
+		private Atk.Object GetAccessible (BasicWidgetType type, string [] name, object widget, bool real)
+		{
+			Gtk.Widget gwidget = null;
 			Atk.Object accessible = null;
 			//this is because of this:
 //Gtk-CRITICAL **: gtk_combo_box_append_text: assertion `GTK_IS_LIST_STORE (combo_box->priv->model)' failed
@@ -153,12 +165,19 @@ namespace UiaAtkBridgeTest
 			if (!real)
 				throw new NotSupportedException ("We cannot add items to a non-real ComboBox because of some GtkCritical");
 			
-			Gtk.Widget widget = null;
-			
 			switch (type) {
+			case BasicWidgetType.ComboBoxSimple:
+				throw new NotSupportedException ("This widget isn't supported in Gtk+: " + type.ToString ());
+
+			case BasicWidgetType.ComboBoxDropDownList:
 			case BasicWidgetType.ComboBoxDropDownEntry:
-				widget = new Gtk.ComboBox ();
-				if (real)
+
+				if (!real)
+					throw new NotSupportedException ("You, clown, we're gonna deprecate un-real support");
+
+				if (type == BasicWidgetType.ComboBoxDropDownList)
+					widget = GailTestApp.MainClass.GiveMeARealComboBox ();
+				else
 					widget = GailTestApp.MainClass.GiveMeARealComboBoxEntry ();
 	
 				//FIXME: update this line when this bug is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=324899
@@ -169,20 +188,8 @@ namespace UiaAtkBridgeTest
 				
 				break;
 				
-			case BasicWidgetType.ComboBoxDropDownList:
-				widget = new Gtk.ComboBox ();
-				if (real)
-					widget = GailTestApp.MainClass.GiveMeARealComboBox ();
-	
-				//FIXME: update this line when this bug is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=324899
-				((Gtk.ListStore)((Gtk.ComboBox) widget).Model).Clear ();
-				
-				foreach (string text in name)
-					((Gtk.ComboBox)widget).AppendText (text);
-				break;
-				
 			case BasicWidgetType.TabControl:
-				widget = new Gtk.Notebook ();
+				gwidget = new Gtk.Notebook ();
 				// real not implemented yet
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealNotebook ();
@@ -190,7 +197,7 @@ namespace UiaAtkBridgeTest
 				if (!real) {
 					foreach (string text in name)
 						notebook.AppendPage (new Gtk.Label (text), new Gtk.Label (text));
-					widget.ShowAll ();
+					gwidget.ShowAll ();
 				}
 				break;
 				
@@ -262,15 +269,17 @@ namespace UiaAtkBridgeTest
 					else
 						widget = parentMenu;
 				});
+				gwidget = widget as Gtk.Widget;
 				
 				break;
 			default:
 				throw new NotSupportedException ("This AtkTester overload doesn't handle this type of widget: " +
 					type.ToString ());
 			}
-			
-			accessible = widget.Accessible;
-			mappings [accessible] = widget;
+
+			gwidget = widget as Gtk.Widget;
+			accessible = gwidget.Accessible;
+			mappings [accessible] = gwidget;
 			
 			return accessible;
 		}

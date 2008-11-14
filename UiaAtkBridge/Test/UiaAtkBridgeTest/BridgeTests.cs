@@ -225,6 +225,18 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		public void ToolStripComboBoxDropDownList ()
+		{
+			ComboBoxDropDownList (toolStripComboBoxDDL);
+		}
+
+		[Test]
+		public void ToolStripComboBoxDropDown ()
+		{
+			ComboBoxDropDownEntry (toolStripComboBoxDD);
+		}
+
+		[Test]
 		public void ToolStripLabel ()
 		{
 			Label (BasicWidgetType.ToolStripLabel);

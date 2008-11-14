@@ -74,6 +74,8 @@ namespace UiaAtkBridgeTest
 		protected SWF.TextBox tbx2 = new SWF.TextBox ();
 		protected SWF.ToolStrip toolStrip = new SWF.ToolStrip ();
 		protected SWF.ToolStripComboBox toolStripComboBoxSim = new SWF.ToolStripComboBox ();
+		protected SWF.ToolStripComboBox toolStripComboBoxDDL = new SWF.ToolStripComboBox ();
+		protected SWF.ToolStripComboBox toolStripComboBoxDD = new SWF.ToolStripComboBox ();
 		protected SWF.ToolStripLabel tsl1 = new SWF.ToolStripLabel ();
 		protected SWF.ListView lv1 = new SWF.ListView ();
 
@@ -107,7 +109,12 @@ namespace UiaAtkBridgeTest
 			tbx2.Multiline = true;
 
 			toolStripComboBoxSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
+			toolStripComboBoxDDL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
+			toolStripComboBoxDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			
 			toolStrip.Items.Add (toolStripComboBoxSim);
+			toolStrip.Items.Add (toolStripComboBoxDDL);
+			toolStrip.Items.Add (toolStripComboBoxDD);
 			toolStrip.Items.Add (tsl1);
 			//FIXME: uncomment this when toolstripComboBox is ready, right now we got an assert: http://monoport.com/38125
 			//form.Controls.Add (toolStrip);
@@ -266,10 +273,20 @@ namespace UiaAtkBridgeTest
 		
 		public override Atk.Object GetAccessible (BasicWidgetType type, string [] names)
 		{
-			return GetAccessible (type, names, true);
+			return GetAccessible (type, names, null, true);
+		}
+
+		public override Atk.Object GetAccessible (BasicWidgetType type, string [] names, object widget)
+		{
+			return GetAccessible (type, names, widget, true);
+		}
+
+		public override Atk.Object GetAccessible (BasicWidgetType type, string [] names, bool real)
+		{
+			return GetAccessible (type, names, null, real);
 		}
 		
-		public override Atk.Object GetAccessible (BasicWidgetType type, string [] names, bool real)
+		public Atk.Object GetAccessible (BasicWidgetType type, string [] names, object widget, bool real)
 		{
 			Atk.Object accessible = null;
 			
@@ -307,35 +324,42 @@ namespace UiaAtkBridgeTest
 					accessible = new UiaAtkBridge.List ((IRawElementProviderFragmentRoot) 
 					                                    ProviderFactory.GetProvider (clistBox, true, true));
 				break;
-				
+
+			case BasicWidgetType.ComboBoxSimple:
+			case BasicWidgetType.ComboBoxDropDownList:
 			case BasicWidgetType.ComboBoxDropDownEntry:
 				if (!real)
-					throw new NotSupportedException ("ComboBox has no un-real support");
-
-				cbDD.Items.Clear();
-				foreach (string item in names)
-					cbDD.Items.Add (item);
-
-				if (real)
-					accessible = GetAdapterForWidget (cbDD);
-				else
-					accessible = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) 
-					                                        ProviderFactory.GetProvider (cbDD, true, true));
-				break;
+					throw new NotSupportedException ("You, clown, we're gonna deprecate un-real support");
 				
-			case BasicWidgetType.ComboBoxDropDownList:
-				if (!real)
-					throw new NotSupportedException ("ComboBox has no un-real support");
+				System.ComponentModel.Component comp = null;
+				if (widget != null) {
+					comp = (System.ComponentModel.Component)widget;
+				}
+				else {
+					if (type == BasicWidgetType.ComboBoxDropDownEntry)
+						comp = cbDD;
+					else if (type == BasicWidgetType.ComboBoxDropDownList)
+						comp = cbDDL;
+					else if (type == BasicWidgetType.ComboBoxSimple)
+						comp = cbSim;
+				}
 				
-				cbDDL.Items.Clear();
-				foreach (string item in names)
-					cbDDL.Items.Add (item);
-			
-				if (real)
-					accessible = GetAdapterForWidget (cbDDL);
+				if (comp is SWF.ComboBox) {
+					SWF.ComboBox normalCombo = (SWF.ComboBox)comp;
+					normalCombo.Items.Clear();
+					foreach (string item in names)
+						normalCombo.Items.Add (item);
+				}
+				else if (comp is SWF.ToolStripComboBox) {
+					SWF.ToolStripComboBox stripCombo = (SWF.ToolStripComboBox)comp;
+					stripCombo.Items.Clear();
+					foreach (string item in names)
+						stripCombo.Items.Add (item);
+				}
 				else
-					accessible = new UiaAtkBridge.ComboBox ((IRawElementProviderFragmentRoot) 
-					                                        ProviderFactory.GetProvider (cbDDL, true, true));
+					throw new NotSupportedException ("This kind of ComboBox is not supported: " + comp.GetType ().Name);
+
+				accessible = GetAdapterForWidget (comp);
 				break;
 
 			case BasicWidgetType.MainMenuBar:

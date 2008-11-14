@@ -528,11 +528,19 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void ComboBoxDropDownEntry ()
 		{
+			ComboBoxDropDownEntry (null);
+		}
+		
+		protected void ComboBoxDropDownEntry (object widget)
+		{
 			BasicWidgetType type = BasicWidgetType.ComboBoxDropDownEntry;
 			Atk.Object accessible;
 			
-			string[] names = new string[] { "First item", "Second Item", "Last Item" };
-			accessible = GetAccessible (type, names, true);
+			string [] names = new string[] { "First item", "Second Item", "Last Item" };
+			if (widget != null)
+				accessible = GetAccessible (type, names, widget);
+			else
+				accessible = GetAccessible (type, names);
 			
 			StatesComboBox (accessible);
 
@@ -551,11 +559,21 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void ComboBoxDropDownList ()
 		{
+			ComboBoxDropDownList (null);
+		}
+
+		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
+		//the widget, so we kill all with the method marked as [TestFixtureTearDown]
+		public void ComboBoxDropDownList (object widget)
+		{
 			BasicWidgetType type = BasicWidgetType.ComboBoxDropDownList;
 			Atk.Object accessible;
 			
 			string[] names = new string [] { "First item", "Second Item", "Last Item" };
-			accessible = GetAccessible (type, names, true);
+			if (widget != null)
+				accessible = GetAccessible (type, names, widget);
+			else
+				accessible = GetAccessible (type, names);
 			
 			StatesComboBox (accessible);
 
