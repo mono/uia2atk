@@ -1140,6 +1140,8 @@ namespace UiaAtkBridgeTest
 
 		protected void Parent (BasicWidgetType type, Atk.Object accessible)
 		{
+			Assert.AreEqual (0, accessible.RefRelationSet ().NRelations, "NRelations == 0");
+			
 			Atk.Object parent = accessible.Parent;
 			Assert.IsNotNull (parent, "parent not null");
 			if (type == BasicWidgetType.Window)

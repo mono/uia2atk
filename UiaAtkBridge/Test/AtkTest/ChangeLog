@@ -1,3 +1,7 @@
+2008-11-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs: Add test for bug#444370.
+
 2008-11-13  Mike Gorse <mgorse@novell.com>
 
 	* BasicWidgetType.cs: Add DomainUpDown.
