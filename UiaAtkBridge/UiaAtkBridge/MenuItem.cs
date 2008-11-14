@@ -104,6 +104,16 @@ namespace UiaAtkBridge
 				Console.WriteLine ("WARNING: RaiseAutomationEvent({0},...) not handled yet", eventId.ProgrammaticName);
 			}
 		}
+
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			if (e.Property.Id == SelectionItemPatternIdentifiers.IsSelectedProperty.Id) {
+				selected = (bool)e.NewValue;
+				NotifyStateChange (Atk.StateType.Selected, selected);
+			}
+			else
+				base.RaiseAutomationPropertyChangedEvent (e);
+		}
 		
 		public int SelectionCount {
 			get {
@@ -233,7 +243,7 @@ namespace UiaAtkBridge
 		
 		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
-			throw new NotImplementedException ();
+			return textExpert.GetRunAttributes (offset, out startOffset, out endOffset);
 		}
 		
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)

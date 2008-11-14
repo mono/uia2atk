@@ -1,3 +1,9 @@
+2008-11-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MenuItem.cs:
+	* TextLabel.cs:
+	* TextImplementorHelper.cs: Worked on #428652.
+
 2008-11-14  Brad Taylor  <brad@getcoded.net>
 	
 	* Adapter.cs: Remove NotifyPropertyChange in favor of new method:

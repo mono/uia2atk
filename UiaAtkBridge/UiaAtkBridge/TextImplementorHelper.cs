@@ -415,5 +415,23 @@ namespace UiaAtkBridge
 			rect.Height = (int)bounds.Height;
 			rect.Width = (int)(bounds.Width * (endOffset - startOffset)) / Length;
 		}
+
+		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
+		{
+			// don't ask me why, this is what gail does 
+			// (instead of throwing or returning null):
+			if (offset > text.Length)
+				offset = text.Length;
+			else if (offset < 0)
+				offset = 0;
+			
+			//just test values for now:
+			endOffset = text.Length;
+			startOffset = offset;
+			
+			//TODO:
+			GLib.SList attribs = new GLib.SList (typeof (Atk.TextAttribute));
+			return attribs;
+		}
 	}
 }
