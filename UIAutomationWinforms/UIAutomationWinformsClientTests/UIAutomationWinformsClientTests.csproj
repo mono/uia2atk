@@ -70,6 +70,7 @@
     <Compile Include="NotListedAttribute.cs" />
     <Compile Include="PictureBoxTest.cs" />
     <Compile Include="ProgressBarTest.cs" />
+    <Compile Include="RadioButton.cs" />
     <Compile Include="ScrollBarButtonTest.cs" />
     <Compile Include="ScrollBarTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
