@@ -1,3 +1,9 @@
+2008-11-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* CheckBoxProviderTest.cs: Add additional event testing; make sure
+	ToggleStateProperty change events are raised when Toggle method is
+	called.
+
 2008-11-12  Brad Taylor  <brad@getcoded.net>
 
 	* TextBoxProviderTest.cs: Forgot to add Show ().

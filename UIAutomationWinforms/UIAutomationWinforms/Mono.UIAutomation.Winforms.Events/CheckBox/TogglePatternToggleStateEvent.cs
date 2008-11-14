@@ -49,11 +49,13 @@ namespace Mono.UIAutomation.Winforms.Events.CheckBox
 		public override void Connect ()
 		{
 			((SWF.CheckBox) Provider.Control).CheckedChanged += new EventHandler (OnCheckChanged);
+			((SWF.CheckBox) Provider.Control).Click += new EventHandler (OnCheckChanged);
 		}
 
 		public override void Disconnect ()
 		{
 			((SWF.CheckBox) Provider.Control).CheckedChanged -= new EventHandler (OnCheckChanged);
+			((SWF.CheckBox) Provider.Control).Click -= new EventHandler (OnCheckChanged);
 		}
 		
 		#endregion

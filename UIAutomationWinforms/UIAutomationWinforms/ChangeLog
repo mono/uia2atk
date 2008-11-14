@@ -1,3 +1,15 @@
+2008-11-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Events/CheckBox/TogglePatternToggleStateEvent.cs:
+	Raise ToggleStateProperty change event on Click or CheckChanged, as
+	CheckChanged isn't raised when CheckState changes to Indeterminate.
+
+	* Mono.UIAutomation.Winforms.Behaviors/CheckBox/ToggleProviderBehavior.cs:
+	Call protected CheckBox.InvokeOnClick method instead of setting
+	CheckBox.CheckState property when performing toggle.  Better match
+	for MS behavior, and ensures that Click event is raised.  Fixes bug
+	#442187.
+
 2008-11-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: For

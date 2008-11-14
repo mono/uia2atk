@@ -24,6 +24,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.Reflection;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
@@ -137,13 +138,25 @@ namespace Mono.UIAutomation.Winforms.Behaviors.CheckBox
 		
 		private void PerformToggle (SWF.CheckBox checkbox, SWF.CheckState state)
 		{
-	        if (checkbox.InvokeRequired == true) {
-	            checkbox.BeginInvoke (new PerformToggleDelegate (PerformToggle),
+			if (checkbox.InvokeRequired == true) {
+				checkbox.BeginInvoke (new PerformToggleDelegate (PerformToggle),
 				                      new object [] { checkbox, state });
-	            return;
-	        }
-			
-			checkbox.CheckState = state;
+				return;
+			}
+
+			// NOTE: We can count on presence of InvokeOnClick;
+			//       it is a protected member of CheckBox.
+			//
+			//       This basically simulates a click, which always
+			//       raises the Click event, but strangely does not
+			//       raise CheckChanged when transitioning to
+			//       Indeterminate state. This matches MS behavior.
+			MethodInfo invokeOnClick =
+				typeof (SWF.CheckBox).GetMethod ("InvokeOnClick",
+				                                 BindingFlags.NonPublic |
+				                                 BindingFlags.Instance);
+			invokeOnClick.Invoke (checkbox,
+			                      new object [] {checkbox, EventArgs.Empty});
 		}
 		#endregion
 	}

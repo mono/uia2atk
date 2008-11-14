@@ -145,22 +145,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			// Test two-state toggling
 			Assert.AreEqual (CheckState.Unchecked, checkbox.CheckState, "Start two-state Unchecked");
-			toggleProvider.Toggle ();
+			TestToggleEventWithToggle (toggleProvider, ToggleState.On);
 			Assert.AreEqual (CheckState.Checked, checkbox.CheckState, "First two-state toggle: Checked");
-			toggleProvider.Toggle ();
+			TestToggleEventWithToggle (toggleProvider, ToggleState.Off);
 			Assert.AreEqual (CheckState.Unchecked, checkbox.CheckState, "Second two-state toggle: Unchecked");
-			toggleProvider.Toggle ();
+			TestToggleEventWithToggle (toggleProvider, ToggleState.On);
 			Assert.AreEqual (CheckState.Checked, checkbox.CheckState, "Third two-state toggle: Checked");
 			
 			checkbox.ThreeState = true;
 			
 			// Test three-state toggling
 			Assert.AreEqual (CheckState.Checked, checkbox.CheckState, "Start three-state Checked");
-			toggleProvider.Toggle ();
+			TestToggleEventWithToggle (toggleProvider, ToggleState.Off);
 			Assert.AreEqual (CheckState.Unchecked, checkbox.CheckState, "First three-state toggle: Unchecked");
-			toggleProvider.Toggle ();
+			TestToggleEventWithToggle (toggleProvider, ToggleState.Indeterminate);
 			Assert.AreEqual (CheckState.Indeterminate, checkbox.CheckState, "Second three-state toggle: Intermediate");
-			toggleProvider.Toggle ();
+			TestToggleEventWithToggle (toggleProvider, ToggleState.On);
 			Assert.AreEqual (CheckState.Checked, checkbox.CheckState, "Third three-state toggle: Checked");
 
 			checkbox.Enabled = false;
@@ -186,6 +186,36 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			object oldState = provider.ToggleState;
 			
 			checkbox.CheckState = newState;
+			
+			// Test IToggleProvider.ToggleState
+			Assert.AreEqual (expectedState, provider.ToggleState, "ToggleState");
+			
+			// Test event was fired as expected
+			Assert.AreEqual (1,
+			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 "event count");
+			
+			AutomationPropertyChangedEventArgs eventArgs =
+				bridge.AutomationPropertyChangedEvents [0].e;
+			Assert.AreEqual (TogglePatternIdentifiers.ToggleStateProperty,
+			                 eventArgs.Property,
+			                 "event args property");
+			Assert.AreEqual (oldState,
+			                 eventArgs.OldValue,
+			                 "old value");
+			Assert.AreEqual (expectedState,
+			                 eventArgs.NewValue,
+			                 "new value");
+		}
+			
+		private void TestToggleEventWithToggle (IToggleProvider provider,
+		                              ToggleState expectedState)
+		{
+			bridge.ResetEventLists ();
+			
+			object oldState = provider.ToggleState;
+			
+			provider.Toggle ();
 			
 			// Test IToggleProvider.ToggleState
 			Assert.AreEqual (expectedState, provider.ToggleState, "ToggleState");
