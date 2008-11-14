@@ -1,3 +1,10 @@
+2008-11-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: For
+	IsKeyboardFocusableProperty, add two more constraints: item must be a
+	leaf node of the menu, and parent must be a menu item, not the
+	menu/strip itself.
+
 2008-11-14  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for add files.

@@ -80,7 +80,9 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
 				return item.Selected;
 			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
-				return item.CanSelect;
+				return item.OwnerItem != null &&
+					item.CanSelect &&
+					Navigate (NavigateDirection.FirstChild) == null;
 			else if (propertyId == AEIds.BoundingRectangleProperty.Id)
 				return Helper.RectangleToRect (GetItemScreenBounds ());
 			else
