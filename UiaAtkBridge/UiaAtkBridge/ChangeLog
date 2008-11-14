@@ -1,3 +1,13 @@
+2008-11-14  Brad Taylor  <brad@getcoded.net>
+	
+	* Adapter.cs: Remove NotifyPropertyChange in favor of new method:
+	GLib.Object.Notify.  This will require Gtk# >= r118864.
+
+	* Spinner.cs:
+	* ProgressBar.cs: Use new GLib API.
+
+	* ScrollBar.cs: Use new GLib API [Fixes #428628].
+
 2008-11-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ParentAdapter.cs: Fix bug#444370.

@@ -135,15 +135,5 @@ namespace UiaAtkBridge
 					  AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 			}
 		}
-
-		// TODO: Figure out if this does what we want
-		protected void NotifyPropertyChange (String name, double val)
-		{
-			Atk.PropertyValues v;
-			v.PropertyName = name;
-			v.OldValue = new GLib.Value ((int)0);
-			v.NewValue = new GLib.Value (val);
-			OnPropertyChange (v);
-		}
 	}
 }

@@ -220,15 +220,14 @@ namespace UiaAtkBridge
 				textExpert = new TextImplementorHelper ((String)e.NewValue, this);
 			}
 			else if (e.Property == RangeValuePatternIdentifiers.ValueProperty) {
-				double v = (double)e.NewValue;
-				NotifyPropertyChange ("accessible-value", v);
+				Notify ("accessible-value");
 
 				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
 
 				// First delete all text, then insert the new text
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-				string newText = v.ToString ("F2");
+				string newText = ((double)e.NewValue).ToString ("F2");
 				textExpert = new TextImplementorHelper (newText, this);
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         newText == null ? 0 : newText.Length);

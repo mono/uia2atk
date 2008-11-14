@@ -136,8 +136,7 @@ namespace UiaAtkBridge
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property == RangeValuePatternIdentifiers.ValueProperty) {
-				double v = (double)e.NewValue;
-				NotifyPropertyChange ("accessible-value", v);
+				Notify ("accessible-value");
 			}
 		}
 	}
