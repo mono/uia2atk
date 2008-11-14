@@ -96,11 +96,8 @@ namespace Mono.UIAutomation.Winforms
 		private void OnItemAdded (object sender, ToolStripItemEventArgs e)
 		{
 			FragmentControlProvider itemProvider = GetItemProvider (e.Item);
-			if (itemProvider != null) {
-				itemProviders.Remove (e.Item);
-				itemProvider.Terminate ();
-				OnNavigationChildRemoved (true, itemProvider);
-			}
+			if (itemProvider != null)
+				OnNavigationChildAdded (true, itemProvider);
 		}
 
 		private void OnItemRemoved (object sender, ToolStripItemEventArgs e)

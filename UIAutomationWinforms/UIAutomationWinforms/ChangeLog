@@ -1,5 +1,10 @@
 2008-11-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs: Fix copy/paste error
+	from last commit.
+
+2008-11-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Mono.UIAutomation.Winforms/ToolStripProvider.cs:
 	* Mono.UIAutomation.Winforms/ToolStripDropDownItemProvider.cs: If a
 	child item has no provider support, ignore it.
