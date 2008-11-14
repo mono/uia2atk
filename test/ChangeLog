@@ -1,3 +1,10 @@
+2008-11-14  Calen Chen <cachen@novell.com>
+
+	* samples/toolstripmenuitem.py: add SWF toolstripmenuitem sample which 
+	separate from toolstripmenuitem_statusstrip.py, I add the widget into 
+	menustrip(menu bar) and toolstrip(tool bar)
+	* samples/toolstripmenuitem_statusstrip.py: delete the old sample
+
 2008-11-13 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/local_run.py: Much cleaner logic for finding the most
