@@ -1,5 +1,10 @@
 2008-11-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Prevent NRE, separate Relation testing into it's own
+	method.
+
+2008-11-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs: Inclusions of ToolStripComboBox* widgets for testing.
 
 	* AtkTester.cs: Correct Relation testing for RadioButton.

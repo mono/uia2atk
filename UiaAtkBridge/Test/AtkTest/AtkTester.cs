@@ -1143,11 +1143,7 @@ namespace UiaAtkBridgeTest
 
 		protected void Parent (BasicWidgetType type, Atk.Object accessible)
 		{
-			if (type != BasicWidgetType.RadioButton)
-				Assert.AreEqual (0, accessible.RefRelationSet ().NRelations, 
-				                 "NRelations != 0, now " + accessible.RefRelationSet ().NRelations);
-			else
-				Assert.AreEqual (accessible.RefRelationSet ().GetRelation (0).RelationType, Atk.RelationType.MemberOf);
+			Relations (accessible, type);
 			
 			Atk.Object parent = accessible.Parent;
 			Assert.IsNotNull (parent, "parent not null");
@@ -1191,6 +1187,19 @@ namespace UiaAtkBridgeTest
 			}
 			Assert.IsTrue ((missingStates.Count == 0) && (superfluousStates.Count == 0),
 				missingStatesMsg + " .. " + superfluousStatesMsg);
+		}
+
+		protected void Relations (Atk.Object accessible, BasicWidgetType type)
+		{
+			if (type != BasicWidgetType.RadioButton)
+				Assert.AreEqual (0, accessible.RefRelationSet ().NRelations, 
+				                 "NRelations != 0, now " + accessible.RefRelationSet ().NRelations);
+			else {
+				Assert.AreEqual (1, accessible.RefRelationSet ().NRelations, 
+				                 "NRelations != 1, now " + accessible.RefRelationSet ().NRelations);
+				Assert.AreEqual (accessible.RefRelationSet ().GetRelation (0).RelationType, Atk.RelationType.MemberOf);
+			}
+			
 		}
 		
 		protected void Relation (Atk.RelationType type, Atk.Object source, params Atk.Object [] expectedTarget)
