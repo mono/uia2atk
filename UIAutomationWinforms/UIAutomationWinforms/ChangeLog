@@ -1,3 +1,12 @@
+2008-11-14  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for add files.
+	* Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionItemProviderBehavior.cs:
+	  Updated to support events.
+	* Mono.UIAutomation.Winforms.Events/RadioButton/SelectionItemPatternSelectionContainerEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/RadioButton/SelectionItemPatternIsSelectedEvent.cs:
+	  Files added.
+
 2008-11-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ToolStripProvider.cs: Fix copy/paste error

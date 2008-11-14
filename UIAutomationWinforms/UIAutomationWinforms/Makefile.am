@@ -171,6 +171,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \
+	Mono.UIAutomation.Winforms.Events/RadioButton/SelectionItemPatternIsSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/RadioButton/SelectionItemPatternSelectionContainerEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternLargeChangeEvent.cs \

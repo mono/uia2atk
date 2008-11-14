@@ -31,6 +31,8 @@ using SWF = System.Windows.Forms;
 
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.RadioButton;
 using Mono.UIAutomation.Bridge;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.RadioButton
@@ -69,14 +71,18 @@ namespace Mono.UIAutomation.Winforms.Behaviors.RadioButton
 
 		public override void Connect ()
 		{
-			//TODO: Use SetEventStrategy
-			radioButton.CheckedChanged += OnCheckedChanged;
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternIsSelectedProperty,
+			                   new SelectionItemPatternIsSelectedEvent (Provider));
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternSelectionContainerProperty,
+			                   new SelectionItemPatternSelectionContainerEvent (Provider));
 		}
 		
 		public override void Disconnect ()
 		{
-			//TODO: Use SetEventStrategy
-			radioButton.CheckedChanged -= OnCheckedChanged;
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternIsSelectedProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternSelectionContainerProperty,
+			                   null);
 		}
 		
 		public override AutomationPattern ProviderPattern { 
@@ -136,24 +142,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.RadioButton
 			}
 		}
 
-#endregion
-		
-#region Event Handlers
-		
-		private void OnCheckedChanged (object sender, EventArgs e)
-		{
-			if (AutomationInteropProvider.ClientsAreListening) {
-				AutomationEventArgs args =
-					new AutomationEventArgs (SelectionItemPatternIdentifiers.ElementSelectedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (SelectionItemPatternIdentifiers.ElementSelectedEvent,
-				                                                Provider,
-				                                                args);
-				// TODO: Many other events to fire, including
-				//       property change events!  This is also
-				//       true for other providers, methinks.
-			}
-		}
-		
 #endregion
 		
 		#region Private Methods
