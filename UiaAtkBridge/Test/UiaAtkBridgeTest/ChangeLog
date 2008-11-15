@@ -1,4 +1,8 @@
-2008-11-13  Mike Gorse  <mgorse@novell.com>
+2008-11-14  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTests.cs: Improve CheckedListBox states test.
+
+2008-11-14  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTester.cs, BridgeTests.cs: Add ToolStripProgressBar.
 
