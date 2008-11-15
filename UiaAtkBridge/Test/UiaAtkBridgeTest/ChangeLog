@@ -1,3 +1,7 @@
+2008-11-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Updating comment.
+
 2008-11-14  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTests.cs: Improve CheckedListBox states test.
