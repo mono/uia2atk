@@ -177,7 +177,8 @@ namespace UiaAtkBridgeTest
 			if ((type == BasicWidgetType.TextBoxEntry) ||
 			    (type == BasicWidgetType.ComboBoxDropDownList) || 
 			    (type == BasicWidgetType.ListItem) || 
-			    (type == BasicWidgetType.ParentMenu))
+			    (type == BasicWidgetType.ParentMenu) ||
+			    (type == BasicWidgetType.Spinner))
 				validNumberOfActions = 1;
 			else if (type == BasicWidgetType.CheckedListItem)
 				validNumberOfActions = 2;
@@ -186,7 +187,8 @@ namespace UiaAtkBridgeTest
 			
 			if (type == BasicWidgetType.ComboBoxDropDownList)  {
 				Assert.AreEqual ("press", implementor.GetName (0), "GetName press");
-			} else if (type == BasicWidgetType.TextBoxEntry) {
+			} else if ((type == BasicWidgetType.TextBoxEntry) ||
+			    (type == BasicWidgetType.Spinner)) {
 				Assert.AreEqual ("activate", implementor.GetName (0), "GetName activate");
 			} else { //Button and Checkbox and RadioButton, and ParentMenu
 				Assert.AreEqual ("click", implementor.GetName (0), "GetName click");
@@ -414,7 +416,11 @@ namespace UiaAtkBridgeTest
 		{
 			if (atkText == null)
 				return;
-			string text = GetCurrentValue (atkValue).ToString ("F2");
+			string text;
+			if (type == BasicWidgetType.Spinner)
+				text = GetCurrentValue (atkValue).ToString ();
+			else
+				text = GetCurrentValue (atkValue).ToString ("F2");
 			Assert.AreEqual (text, atkText.GetText (0, -1), "GetText");
 			Assert.AreEqual (text.Length, atkText.CharacterCount, "CharacterCount");
 			Assert.AreEqual (text [0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset");
@@ -428,8 +434,10 @@ namespace UiaAtkBridgeTest
 				Assert.IsTrue (GetMaximumValue(atkValue) > 0, "InterfaceValue MaximumValue > 0");
 			else
 				Assert.AreEqual (100, GetMaximumValue(atkValue), "InterfaceValue MaximumValue");
-			if (type == BasicWidgetType.Spinner)
-				Assert.AreEqual (50, GetCurrentValue(atkValue), "InterfaceValue CurrentValue #1");
+			if (type == BasicWidgetType.Spinner) {
+				Assert.IsTrue (SetCurrentValue (atkValue, 25), "SetCurrentValue");
+				Assert.AreEqual (25, GetCurrentValue(atkValue), "InterfaceValue CurrentValue #1");
+			}
 			TextMatchesValue (type, atkValue, atkText);
 		}
 
@@ -586,6 +594,10 @@ namespace UiaAtkBridgeTest
 
 		protected void InterfaceEditableText (BasicWidgetType type, Atk.Object accessible)
 		{
+			if (type == BasicWidgetType.Spinner) {
+				InterfaceEditableTextWithValue (type, accessible);
+				return;
+			}
 			Atk.EditableText atkEditableText = CastToAtkInterface<Atk.EditableText> (accessible);
 			atkEditableText.TextContents = "abcdef";
 			InterfaceText (accessible, "abcdef");
@@ -596,7 +608,50 @@ namespace UiaAtkBridgeTest
 			InterfaceText (accessible, "xxabef");
 			pos = 5;
 			atkEditableText.InsertText ("zz", ref pos);
+			Assert.AreEqual (7, pos, "Position should increment after insert");
 			InterfaceText (accessible, "xxabezzf");
+		}
+
+		void InterfaceEditableTextWithValue (BasicWidgetType type, Atk.Object accessible)
+		{
+			Atk.EditableText atkEditableText = CastToAtkInterface<Atk.EditableText> (accessible);
+			Atk.Text atkText = CastToAtkInterface<Atk.Text> (accessible);
+			Atk.Value atkValue = CastToAtkInterface<Atk.Value> (accessible);
+			Atk.Action atkAction = CastToAtkInterface<Atk.Action> (accessible);
+			atkEditableText.TextContents = "42";
+			Assert.IsTrue (atkAction.DoAction (0), "DoAction #1");
+			System.Threading.Thread.Sleep (250);
+			Assert.AreEqual (42, GetCurrentValue (atkValue), "CurrentValue #1");
+			TextMatchesValue (type, atkValue, atkText);
+			atkEditableText.DeleteText (1, 2);
+			Assert.AreEqual (42, GetCurrentValue (atkValue), "CurrentValue should not change until DoAction called");
+			Assert.IsTrue (atkAction.DoAction (0), "DoAction #2");
+			System.Threading.Thread.Sleep (250);
+			Assert.AreEqual (4, GetCurrentValue (atkValue), "CurrentValue #3");
+			TextMatchesValue (type, atkValue, atkText);
+			int pos = 0;
+			atkEditableText.InsertText ("6", ref pos);
+			Assert.AreEqual (1, pos, "Position should increment after InsertText");
+			Assert.AreEqual (4, GetCurrentValue (atkValue), "CurrentValue should not change until DoAction called");
+			Assert.IsTrue (atkAction.DoAction (0), "DoAction #3");
+			System.Threading.Thread.Sleep (250);
+			Assert.AreEqual (64, GetCurrentValue (atkValue), "CurrentValue #5");
+			TextMatchesValue (type, atkValue, atkText);
+			atkEditableText.DeleteText (1, 0);
+			Assert.AreEqual ("64", atkText.GetText (0, -1), "GetText #1");
+			atkEditableText.DeleteText (1, -1);
+			Assert.AreEqual ("6", atkText.GetText (0, -1), "GetText #1");
+			atkEditableText.TextContents = "123456";
+			atkEditableText.DeleteText (-4, 4);
+			Assert.AreEqual ("56", atkText.GetText (0, -1), "GetText #1");
+			atkEditableText.DeleteText (54, 99);
+			Assert.AreEqual ("56", atkText.GetText (0, -1), "GetText #1");
+			atkEditableText.DeleteText (0, 99);
+			Assert.AreEqual ("", atkText.GetText (0, -1), "GetText #1");
+			pos = -3;
+			atkEditableText.InsertText ("5", ref pos);
+			Assert.AreEqual ("5", atkText.GetText (0, -1), "GetText #1");
+			Assert.AreEqual (1, pos, "InsertText pos");
 		}
 
 		protected Atk.Object InterfaceText (BasicWidgetType type, bool onlySingleLine)
@@ -1244,6 +1299,12 @@ namespace UiaAtkBridgeTest
 			GLib.Value gv = new GLib.Value (0);
 			value.GetCurrentValue (ref gv);
 			return (double)gv.Val;
+		}
+
+		private bool SetCurrentValue (Atk.Value value, double n)
+		{
+			GLib.Value gv = new GLib.Value (n);
+			return value.SetCurrentValue (gv);
 		}
 
 		public abstract void RunInGuiThread (System.Action d);

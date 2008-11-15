@@ -1,3 +1,7 @@
+2008-11-13  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTester.cs, BridgeTests.cs: Add ToolStripProgressBar.
+
 2008-11-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTests.cs: Inclusions of ToolStripComboBox* widgets for testing.
@@ -5,7 +9,7 @@
 	* BridgeTester.cs: Inclusions of ToolStripComboBox* widgets for testing.
 	Some simplifications as well.
 
-008-11-13  Mike Gorse  <mgorse@novell.com>
+2008-11-13  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTests.cs, BridgeTester.cs: Add DomainUpDown.
 	  Support Atk.EditableText.

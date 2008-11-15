@@ -398,9 +398,8 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.Spinner:
 				widget = new Gtk.SpinButton (adj, 1, 2);
-				// real not implemented yet
-				//if (real)
-					//widget = GailTestApp.MainClass.GiveMeARealSpinButton ();
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealSpinButton ();
 				break;
 			case BasicWidgetType.PictureBox:
 				widget = new Gtk.Image ();

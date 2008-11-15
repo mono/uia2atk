@@ -62,12 +62,20 @@ namespace Mono.UIAutomation.Winforms.Events.CheckedListBox
 		
 		#region Private Methods
 		
+		private SWF.CheckState newValue;
+
 		private void OnItemChecked (object sender, SWF.ItemCheckEventArgs args)
 		{
-			if (args.Index == ((ListItemProvider) Provider).Index)
+			if (args.Index == ((ListItemProvider) Provider).Index) {
+				newValue = args.NewValue;
 				RaiseAutomationPropertyChangedEvent ();
+			}
 		}
 
+		protected override object GetNewPropertyValue ()
+		{
+			return newValue;
+		}
 		#endregion
 		
 	}

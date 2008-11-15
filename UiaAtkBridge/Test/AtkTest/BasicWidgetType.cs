@@ -63,7 +63,8 @@ namespace UiaAtkBridgeTest
 		GroupBox,
 		PictureBox,
 		ToolStripLabel,
-		DomainUpDown
+		DomainUpDown,
+		ToolStripProgressBar
 	}
 
 //	public class MenuLayout

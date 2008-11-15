@@ -715,6 +715,8 @@ namespace UiaAtkBridge
 			Adapter atkSpinner;
 			if (provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id) != null)
 				atkSpinner = new List ((IRawElementProviderFragmentRoot)provider);
+			else if (provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id) != null)
+				atkSpinner = new SpinnerWithValue (provider);
  			else
 				atkSpinner = new Spinner (provider);
 
@@ -765,6 +767,7 @@ namespace UiaAtkBridge
 		private void HandleNewContainer (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
+Console.WriteLine ("provider: " + provider + ", parent adapter: " + parentObject);
 			
 			Adapter atkContainer = new Container (provider);
 			providerAdapterMapping [provider] = atkContainer;

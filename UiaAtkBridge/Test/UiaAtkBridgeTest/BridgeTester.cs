@@ -77,6 +77,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.ToolStripComboBox toolStripComboBoxDDL = new SWF.ToolStripComboBox ();
 		protected SWF.ToolStripComboBox toolStripComboBoxDD = new SWF.ToolStripComboBox ();
 		protected SWF.ToolStripLabel tsl1 = new SWF.ToolStripLabel ();
+		protected SWF.ToolStripProgressBar tspb1 = new SWF.ToolStripProgressBar ();
 		protected SWF.ListView lv1 = new SWF.ListView ();
 
 		protected int lastClickedLink = -1;
@@ -116,6 +117,7 @@ namespace UiaAtkBridgeTest
 			toolStrip.Items.Add (toolStripComboBoxDDL);
 			toolStrip.Items.Add (toolStripComboBoxDD);
 			toolStrip.Items.Add (tsl1);
+			toolStrip.Items.Add (tspb1);
 			//FIXME: uncomment this when toolstripComboBox is ready, right now we got an assert: http://monoport.com/38125
 			//form.Controls.Add (toolStrip);
 
@@ -590,6 +592,9 @@ namespace UiaAtkBridgeTest
 				accessible = GetAdapterForWidget (lv1);
 				break;
 				
+			case BasicWidgetType.ToolStripProgressBar:
+				accessible = GetAdapterForWidget (tspb1);
+				break;
 			case BasicWidgetType.ListBox:
 			case BasicWidgetType.CheckedListBox:
 			case BasicWidgetType.ParentMenu:

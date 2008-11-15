@@ -1,3 +1,8 @@
+2008-11-14  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms.Events/CheckedListBox/ListItemTogglePatternToggleStateEvent.cs:
+	  Take new property value from the event args.
+
 2008-11-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Events/CheckBox/TogglePatternToggleStateEvent.cs:

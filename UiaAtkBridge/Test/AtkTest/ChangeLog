@@ -1,3 +1,10 @@
+2008-11-14  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs, AtkTests.cs: Test EditableText and action for Spinner.
+	  Test returned position after insert.
+
+	* AtkTests.cs, BasicWidgetType.cs: Support ToolStripProgressBar.
+
 2008-11-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Prevent NRE, separate Relation testing into it's own

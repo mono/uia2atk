@@ -1,3 +1,12 @@
+2008-11-14  Mike Gorse  <mgorse@novell.com>
+
+	* ListItem.cs: Listen for toggle events.
+
+	* Spinner.cs: Only implement AtkValue if the control supports
+	  IRangeValueProvider.
+
+	* Spinner.cs: Various AtkEditableText fixes.
+
 2008-11-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MenuItem.cs:

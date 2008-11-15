@@ -32,11 +32,11 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class Spinner : ComponentAdapter, Atk.ValueImplementor, Atk.TextImplementor, Atk.EditableTextImplementor
+	public class Spinner : ComponentAdapter, Atk.TextImplementor, Atk.EditableTextImplementor
 	{
-		private IRangeValueProvider rangeValueProvider;
-		private IValueProvider valueProvider;
-		private TextImplementorHelper textExpert = null;
+		protected IRangeValueProvider rangeValueProvider;
+		protected IValueProvider valueProvider;
+		internal TextImplementorHelper textExpert = null;
 
 		public Spinner (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -48,39 +48,10 @@ namespace UiaAtkBridge
 			if (valueProvider != null)
 				text = valueProvider.Value;
 			else if (rangeValueProvider != null)
-				text = rangeValueProvider.Value.ToString ("F2");
+				text = rangeValueProvider.Value.ToString ();
 			else
 				text = String.Empty;
 			textExpert = new TextImplementorHelper (text, this);
-		}
-
-		public void GetMinimumValue (ref GLib.Value value)
-		{
-			value = new GLib.Value (rangeValueProvider.Minimum);
-		}
-
-		public void GetMaximumValue (ref GLib.Value value)
-		{
-			value = new GLib.Value (rangeValueProvider.Maximum);
-		}
-
-		public void GetMinimumIncrement (ref GLib.Value value)
-		{
-			value = new GLib.Value (rangeValueProvider.SmallChange);
-		}
-
-		public void GetCurrentValue (ref GLib.Value value)
-		{
-			value = new GLib.Value(rangeValueProvider.Value);
-		}
-
-		public bool SetCurrentValue (GLib.Value value)
-		{
-			double v = (double)value.Val;
-			if (v < rangeValueProvider.Minimum || v > rangeValueProvider.Maximum)
-				return false;
-			rangeValueProvider.SetValue (v);
-			return true;
 		}
 
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
@@ -92,7 +63,7 @@ namespace UiaAtkBridge
 		{
 			if (e.Property == RangeValuePatternIdentifiers.ValueProperty) {
 				Notify ("accessible-value");
-				NewText (((double)e.NewValue).ToString ("F2"));
+				NewText (((double)e.NewValue).ToString ());
 			}
 			else if (e.Property == ValuePatternIdentifiers.ValueProperty) {
 				NewText ((string)e.NewValue);
@@ -241,8 +212,10 @@ namespace UiaAtkBridge
 			set {
 				if (valueProvider != null)
 					valueProvider.SetValue (value);
-				else if (rangeValueProvider != null)
-				rangeValueProvider.SetValue (double.Parse (value));
+				else
+					// It's a numeric spinner; do not set
+					// the number until DoAction called
+					NewText (value);
 			}
 		}
 
@@ -268,15 +241,129 @@ namespace UiaAtkBridge
 
 		public void DeleteText (int start_pos, int end_pos)
 		{
+			int length = textExpert.Length;
+			if (start_pos < 0)
+				start_pos = 0;
+			if (end_pos < 0 || end_pos > length)
+				end_pos = length;
+			if (start_pos > end_pos)
+				start_pos = end_pos;
+Console.WriteLine ("start_pos " + start_pos + " end_pos " + end_pos);
 			TextContents = textExpert.Text.Substring (0, start_pos)
-				+ textExpert.Text.Substring (start_pos + end_pos);
+				+ textExpert.Text.Substring (end_pos);
 		}
 
 		public void InsertText (string str1ng, ref int position)
 		{
+			if (position < 0 || position > textExpert.Length)
+				position = textExpert.Length;	// gail
 			TextContents = textExpert.Text.Substring (0, position)
 				+ str1ng
 				+ textExpert.Text.Substring (position);
+			position += str1ng.Length;
+		}
+	}
+
+	public class SpinnerWithValue : Spinner, Atk.ValueImplementor, Atk.ActionImplementor
+	{
+		private string						actionDescription = null;
+		static string					actionName = "activate";
+
+		public SpinnerWithValue (IRawElementProviderSimple provider) : base (provider)
+		{
+		}
+
+		public void GetMinimumValue (ref GLib.Value value)
+		{
+			value = new GLib.Value (rangeValueProvider.Minimum);
+		}
+
+		public void GetMaximumValue (ref GLib.Value value)
+		{
+			value = new GLib.Value (rangeValueProvider.Maximum);
+		}
+
+		public void GetMinimumIncrement (ref GLib.Value value)
+		{
+			value = new GLib.Value (rangeValueProvider.SmallChange);
+		}
+
+		public void GetCurrentValue (ref GLib.Value value)
+		{
+			value = new GLib.Value(rangeValueProvider.Value);
+		}
+
+		public bool SetCurrentValue (GLib.Value value)
+		{
+			double v = (double)value.Val;
+			if (v < rangeValueProvider.Minimum || v > rangeValueProvider.Maximum)
+				return false;
+			rangeValueProvider.SetValue (v);
+			return true;
+		}
+
+		// Return the number of actions (Read-Only)
+		public int NActions
+		{
+			get {
+				return 1;
+			}
+		}
+		
+		// Get a localized name for the specified action
+		public string GetLocalizedName (int action)
+		{
+			if (action != 0)
+				return null;
+
+			// TODO: Localize the name?
+			return actionName;
+		}
+		
+		// Sets a description of the specified action
+		public bool SetDescription (int action, string description)
+		{
+			if (action != 0)
+				return false;
+			
+			actionDescription = description;
+			return true;
+		}
+		
+		// Get the key bindings for the specified action
+		public string GetKeybinding (int action)
+		{
+			return null;
+		}
+
+		// Get the name of the specified action
+		public string GetName (int action)
+		{
+			if (action != 0)
+				return null;
+
+			return actionName;
+		}
+		
+		// Get the description of the specified action
+		public string GetDescription (int action)
+		{
+			if (action != 0)
+				return null;
+
+			return actionDescription;
+		}
+
+		// Perform the action specified
+		public virtual bool DoAction (int action)
+		{
+			if (action != 0)
+				return false;
+			bool enabled = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			if (!enabled)
+				return false;
+			rangeValueProvider.SetValue (double.Parse (textExpert.Text));
+			return true;
 		}
 	}
 }

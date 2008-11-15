@@ -318,8 +318,23 @@ namespace UiaAtkBridge
 
 				EmitVisibleDataChanged ();
 			}
+			else if (e.Property == TogglePatternIdentifiers.ToggleStateProperty)
+				NotifyStateChange (Atk.StateType.Checked, IsChecked ((ToggleState)e.NewValue));
 			else
 				base.RaiseAutomationPropertyChangedEvent (e);
+		}
+
+		private bool IsChecked (ToggleState state)
+		{
+			switch (state) {
+			case ToggleState.On:
+				return true;
+			case ToggleState.Indeterminate:
+			case ToggleState.Off:
+				return false;
+			default:
+				throw new NotSupportedException ("Unknown toggleState " + state.ToString ());
+			}
 		}
 	}
 }

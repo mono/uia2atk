@@ -313,7 +313,11 @@ namespace UiaAtkBridgeTest
  		[Test]
 		public void ProgressBar ()
 		{
-			BasicWidgetType type = BasicWidgetType.ProgressBar;
+			ProgressBar (BasicWidgetType.ProgressBar);
+		}
+
+		protected void ProgressBar (BasicWidgetType type)
+		{
 			Atk.Object accessible;
 			string name = "test";
 
@@ -354,6 +358,11 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			
 			InterfaceComponent (type, atkComponent);
+
+			InterfaceEditableText (type, accessible);
+
+			Atk.Action atkAction = CastToAtkInterface<Atk.Action> (accessible);
+			InterfaceAction (type, atkAction, accessible);
 		}
 		
 		[Test]

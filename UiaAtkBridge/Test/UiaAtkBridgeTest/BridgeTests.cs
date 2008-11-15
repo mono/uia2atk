@@ -314,6 +314,11 @@ namespace UiaAtkBridgeTest
 			InterfaceEditableText (type, accessible);
 		}
 
+		public void ToolStripProgressBar ()
+		{
+			ProgressBar (BasicWidgetType.ToolStripProgressBar);
+		}
+
 		[Test]
 		public void Bug416602 ()
 		{
