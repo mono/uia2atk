@@ -5,30 +5,34 @@ import utils
 
 sequence = MacroSequence()
 
+sequence.append(WaitForWindowActivate("Radio Button",None))
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("Down"))
+sequence.append(WaitForFocus("Banana", acc_role=pyatspi.ROLE_RADIO_BUTTON))
 sequence.append(utils.AssertPresentationAction(
     "Apple Radio Button",
-    ["BRAILLE LINE:  'gtkradiobutton.py Application Radio Button Frame & y Banana RadioButton'",
-    "     VISIBLE:  '& y Banana RadioButton', cursor=1",
+    ["BRAILLE LINE:  'gtkradiobutton.py Application Radio Button Frame &=y Banana RadioButton'",
+    "     VISIBLE:  '&=y Banana RadioButton', cursor=1",
     "SPEECH OUTPUT: ''",
-    "SPEECH OUTPUT: 'Banana not selected radio button'"]))
+    "SPEECH OUTPUT: 'Banana selected radio button'"]))
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("Down"))
+sequence.append(WaitForFocus("Cherry", acc_role=pyatspi.ROLE_RADIO_BUTTON))
 sequence.append(utils.AssertPresentationAction(
     "Banana Radio Button",
-    ["BRAILLE LINE:  'gtkradiobutton.py Application Radio Button Frame & y Cherry RadioButton'",
-    "     VISIBLE:  '& y Cherry RadioButton', cursor=1",
+    ["BRAILLE LINE:  'gtkradiobutton.py Application Radio Button Frame &=y Cherry RadioButton'",
+    "     VISIBLE:  '&=y Cherry RadioButton', cursor=1",
     "SPEECH OUTPUT: ''",
-    "SPEECH OUTPUT: 'Cherry not selected radio button'"]))
+    "SPEECH OUTPUT: 'Cherry selected radio button'"]))
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("Down"))
+sequence.append(WaitForFocus("Apple", acc_role=pyatspi.ROLE_RADIO_BUTTON))
 sequence.append(utils.AssertPresentationAction(
     "Cherry Radio Button",
-    ["BRAILLE LINE:  'gtkradiobutton.py Application Radio Button Frame & y Apple RadioButton'",
-    "     VISIBLE:  '& y Apple RadioButton', cursor=1",
+    ["BRAILLE LINE:  'gtkradiobutton.py Application Radio Button Frame &=y Apple RadioButton'",
+    "     VISIBLE:  '&=y Apple RadioButton', cursor=1",
     "SPEECH OUTPUT: ''",
-    "SPEECH OUTPUT: 'Apple not selected radio button'"]))
+    "SPEECH OUTPUT: 'Apple selected radio button'"]))
 
 sequence.append(utils.AssertionSummaryAction())
 sequence.start()

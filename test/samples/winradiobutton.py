@@ -23,6 +23,7 @@ class RadioButtonApp(Form):
         self.radiobutton1.Text = "Apple"
         self.radiobutton1.TabIndex = 0
         self.radiobutton1.Location = Point(22,25)
+        self.radiobutton1.Checked = True
 
         self.radiobutton2 = RadioButton()
         self.radiobutton2.Text = "Banana"
