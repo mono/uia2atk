@@ -19,11 +19,11 @@ mono-uia.pc: mono-uia.pc.in Makefile
 	rm $@.tmp
 
 install-data-local: mono-uia.pc
-	$(MKINSTALLDIRS) $(DESTDIR)$(libdir)/pkgconfig
-	$(INSTALL_D) mono-uia.pc $(DESTDIR)$(libdir)/pkgconfig
+	$(MKINSTALLDIRS) $(DESTDIR)$(prefix)/lib/pkgconfig
+	$(INSTALL_D) mono-uia.pc $(DESTDIR)$(prefix)/lib/pkgconfig
 
 uninstall-local:
-	rm -rf $(DESTDIR)$(libdir)/pkgconfig/mono-uia.pc
+	rm -rf $(DESTDIR)$(prefix)/lib/pkgconfig/mono-uia.pc
 
 clean-local:
 	rm -rf mono-uia.pc
