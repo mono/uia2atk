@@ -21,6 +21,7 @@ from strongwind import *
 from tooltip import *
 from sys import argv
 from os import path
+from helpers import *
 
 app_path = None 
 try:
@@ -47,12 +48,19 @@ ttFrame = app.toolTipFrame
 #move mouse to button to rise tooltip
 ttFrame.mousePoint(ttFrame.button)
 sleep(config.SHORT_DELAY)
-ttFrame.assertTooltip("show button\'s tooltip")
+ttFrame.assertTooltip("show button's tooltip")
+
+#check states of tooltips
+statesCheck(ttFrame.tooltip, "ToolTip")
 
 #move mouse to checkbox to rise tooltip
 ttFrame.mousePoint(ttFrame.checkbox)
 sleep(config.SHORT_DELAY)
 ttFrame.assertTooltip("my favorite fruit")
+
+#check states of tooltips
+statesCheck(ttFrame.tooltip, "ToolTip")
+
 
 #close application frame window
 ttFrame.quit()

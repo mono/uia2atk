@@ -40,9 +40,9 @@ class ToolTipFrame(accessibles.Frame):
     def assertTooltip(self, tooltiplabel):
         procedurelogger.expectedResult('Found tooltip, the label is "%s"' % tooltiplabel)
 
-        def resultMatches():
-            return self.app.findToolTip(tooltiplabel)
-        assert retryUntilTrue(resultMatches)
+        self.tooltip = self.app.findToolTip(tooltiplabel)
+
+        assert self.tooltip
 
     
     #close application main window after running test

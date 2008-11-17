@@ -1,3 +1,10 @@
+2008-11-17  Calen Chen <cachen@novell.com>
+
+	* testers/tooltip/tooltipframe.py: update assertTooltip to give 
+	self.tooltip 
+	* testers/tooltip_basic_ops.py: add states test for ToolTip role
+	* testers/states.py: give ToolTip tuple
+
 2008-11-14 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* keystrokes/winforms/winradiobutton.py/winradiobutton.py,
