@@ -571,8 +571,6 @@ namespace UiaAtkBridgeTest
 			ComboBoxDropDownList (null);
 		}
 
-		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
-		//the widget, so we kill all with the method marked as [TestFixtureTearDown]
 		public void ComboBoxDropDownList (object widget)
 		{
 			BasicWidgetType type = BasicWidgetType.ComboBoxDropDownList;

@@ -1,3 +1,7 @@
+2008-11-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: Remove dupe comment.
+
 2008-11-14  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs, AtkTests.cs: Test EditableText and action for Spinner.
