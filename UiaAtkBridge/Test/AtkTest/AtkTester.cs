@@ -55,6 +55,8 @@ namespace UiaAtkBridgeTest
 		public abstract void DisableWidget (Atk.Object accessible);
 
 		public abstract void EnableWidget (Atk.Object accessible);
+
+		public abstract Atk.Object GetTopLevelRootItem ();
 		
 		protected void InterfaceComponent (BasicWidgetType type, Atk.Component implementor)
 		{
@@ -213,6 +215,8 @@ namespace UiaAtkBridgeTest
 				Assert.IsFalse (state.ContainsState (Atk.StateType.Selected), "RefStateSet.Selected");
 
 			EventMonitor.Start ();
+
+			Assert.AreEqual (1, GetTopLevelRootItem ().NAccessibleChildren, "Windows in my app should be 1, and I got:" + childrenRoles (GetTopLevelRootItem ()));
 			
 			// only valid actions should work
 			for (int i = 0; i < validNumberOfActions; i++) {
@@ -220,6 +224,15 @@ namespace UiaAtkBridgeTest
 					Assert.IsTrue (implementor.DoAction (i), "DoAction(" + i + ")");
 					Assert.AreEqual (validNumberOfActions, implementor.NActions, "NActions doesn't change");
 				});
+			}
+
+			if ((type == BasicWidgetType.ComboBoxDropDownList) || 
+			    (type == BasicWidgetType.ComboBoxDropDownEntry)) {
+				//because the dropdown represents a new windo!
+				Assert.AreEqual (2, GetTopLevelRootItem ().NAccessibleChildren,
+				  "Windows in my app should be 2 now that I opened the pandora's box; but I got:" + childrenRoles (GetTopLevelRootItem ()));
+				Assert.AreEqual (Atk.Role.Window, GetTopLevelRootItem ().RefAccessibleChild (1).Role);
+				
 			}
 			
 			if (type == BasicWidgetType.CheckBox) {
@@ -249,6 +262,9 @@ namespace UiaAtkBridgeTest
 					});
 				}
 			}
+
+			Assert.AreEqual (1, GetTopLevelRootItem ().NAccessibleChildren, 
+			  "Windows in my app should be 1 again, and I got:" + childrenRoles (GetTopLevelRootItem ()));
 			
 			state = accessible.RefStateSet ();
 			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled #2");
@@ -267,7 +283,7 @@ namespace UiaAtkBridgeTest
 			
 			for (int i = 0; i < ValidNumberOfActionsForAButton; i++) 
 				Assert.IsNull (implementor.GetDescription (i), "GetDescription null");
-			
+
 			//out of range
 			Assert.IsFalse (implementor.DoAction (-1), "DoAction OOR#1");
 			Assert.IsFalse (implementor.DoAction (validNumberOfActions), "DoAction OOR#2");

@@ -121,12 +121,12 @@ namespace UiaAtkBridgeTest
 			//FIXME: uncomment this when toolstripComboBox is ready, right now we got an assert: http://monoport.com/38241
 			//form.Controls.Add (toolStrip);
 
-			linklab1.Links[0].Visited = true;
+			linklab1.Links [0].Visited = true;
 			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com";
-			linklab1.Links.Add(9, 16, "www.opensuse.org");
-			linklab1.Links.Add(35, 16, "gmail.novell.com");
+			linklab1.Links.Add (9, 16, "www.opensuse.org");
+			linklab1.Links.Add (35, 16, "gmail.novell.com");
 			linklab1.LinkClicked += LinkLabelClicked;
-			linklab1.Links[0].Enabled = false;
+			linklab1.Links [0].Enabled = false;
 			gb1.Controls.Add (rad1);
 			gb1.Controls.Add (rad2);
 			gb2.Controls.Add (rad3);
@@ -187,6 +187,10 @@ namespace UiaAtkBridgeTest
 			d ();
 		}
 
+		public override Atk.Object GetTopLevelRootItem () {
+			return UiaAtkBridge.TopLevelRootItem.Instance;
+		}
+		
 		private Dictionary <Atk.Object, System.ComponentModel.Component> mappings = new Dictionary<Atk.Object, System.ComponentModel.Component> ();
 		
 		public override void DisableWidget (Atk.Object accessible)

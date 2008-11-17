@@ -361,7 +361,6 @@ namespace UiaAtkBridgeTest
 				RunInGuiThread (delegate {
 					((Gtk.Entry)widget).Text = text;
 				});
-				System.Threading.Thread.Sleep (1000);
 				break;
 			case BasicWidgetType.TextBoxView:
 				if (!real)
@@ -371,7 +370,6 @@ namespace UiaAtkBridgeTest
 				RunInGuiThread (delegate {
 					((Gtk.TextView)widget).Buffer.Text = text;
 				});
-				System.Threading.Thread.Sleep (1000);
 				break;
 			case BasicWidgetType.MaskedTextBoxEntry:
 				if (!real)
@@ -381,7 +379,6 @@ namespace UiaAtkBridgeTest
 				RunInGuiThread (delegate {
 					((Gtk.Entry)widget).Text = text;
 				});
-				System.Threading.Thread.Sleep (1000);
 				break;
 			case BasicWidgetType.HScrollBar:
 				widget = new Gtk.HScrollbar (adj);
@@ -425,7 +422,7 @@ namespace UiaAtkBridgeTest
 				else
 					Assert.Fail ("This test only supports 1-3 columns; got " + columnNames.Count);
 				Gtk.TreeIter[] iters = new Gtk.TreeIter [8];
-			XmlElement root = xml.DocumentElement;
+				XmlElement root = xml.DocumentElement;
 				for (XmlNode node = root.FirstChild; node != null; node = node.NextSibling)
 					if (node.Name == "tr")
 						AddToTreeStore (store, iters, 0, node);
@@ -463,6 +460,10 @@ namespace UiaAtkBridgeTest
 		protected override int ValidNChildrenForAListView { get { return 24; } }
 		protected override int ValidNChildrenForASimpleStatusBar { get { return 1; } }
 		protected override int ValidNChildrenForAScrollBar { get { return 0; } }
+
+		public override Atk.Object GetTopLevelRootItem () {
+			return GailTestApp.MainClass.GiveMeARealWindow ().Accessible.Parent;
+		}
 		
 		[TestFixtureTearDown]
 		public void End () 

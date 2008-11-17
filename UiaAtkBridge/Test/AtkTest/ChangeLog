@@ -1,5 +1,10 @@
 2008-11-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: So, tests have revealed that comboboxes open an extra
+	window below the toplevel root item.
+
+2008-11-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs:
 	* AtkTester.cs: ComboBoxDropDownEntry meets AtkComponent & AtkAction.
 
