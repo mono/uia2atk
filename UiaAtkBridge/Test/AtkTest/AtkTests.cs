@@ -590,6 +590,14 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (entryChild, "ComboBox child#1 should not be null");
 			Assert.AreEqual (entryChild.Role, Atk.Role.Text, "Role of 2nd child");
 			Assert.IsNull (entryChild.Name, "textbox .Name should be null");
+
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+
+			PropertyRole (type, accessible);
+			
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
+			InterfaceAction (type, atkAction, accessible);
 		}
 		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with

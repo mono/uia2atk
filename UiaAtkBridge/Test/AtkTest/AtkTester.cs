@@ -175,7 +175,8 @@ namespace UiaAtkBridgeTest
 		{
 			int validNumberOfActions = ValidNumberOfActionsForAButton;
 			if ((type == BasicWidgetType.TextBoxEntry) ||
-			    (type == BasicWidgetType.ComboBoxDropDownList) || 
+			    (type == BasicWidgetType.ComboBoxDropDownList) ||
+			    (type == BasicWidgetType.ComboBoxDropDownEntry) || 
 			    (type == BasicWidgetType.ListItem) || 
 			    (type == BasicWidgetType.ParentMenu) ||
 			    (type == BasicWidgetType.Spinner))
@@ -185,7 +186,8 @@ namespace UiaAtkBridgeTest
 			
 			Assert.AreEqual (validNumberOfActions, implementor.NActions, "NActions");
 			
-			if (type == BasicWidgetType.ComboBoxDropDownList)  {
+			if ((type == BasicWidgetType.ComboBoxDropDownList) || 
+			    (type == BasicWidgetType.ComboBoxDropDownEntry)) {
 				Assert.AreEqual ("press", implementor.GetName (0), "GetName press");
 			} else if ((type == BasicWidgetType.TextBoxEntry) ||
 			    (type == BasicWidgetType.Spinner)) {
