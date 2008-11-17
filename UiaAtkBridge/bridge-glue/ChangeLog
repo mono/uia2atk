@@ -1,3 +1,8 @@
+2008-11-17  Mike Gorse <mgorse@novell.com>
+
+	* main.c: Remove register_window_signals (was causing exceptions).
+	  Assume that window signals are created on AtkObject.
+
 2008-11-12  Mike Gorse <mgorse@novell.com>
 
 	* main.c, main.h: Add register_window_signals [bug 443846]

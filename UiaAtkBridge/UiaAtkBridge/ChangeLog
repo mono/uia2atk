@@ -1,3 +1,8 @@
+2008-11-17  Mike Gorse  <mgorse@novell.com>
+
+	* UiaAtkBridge.dll.config.in: Add map for libgobject.
+	* Monitor.cs: Call g_signal_new directly rather than using glue.
+
 2008-11-17  Mario Carrion  <mcarrion@novell.com>
 
 	* ScrollBar.cs: Updated to pass Gail tests.

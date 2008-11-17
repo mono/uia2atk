@@ -33,7 +33,6 @@
 // TODO: rewrite in Vala?? :)
 
 static GHashTable *listener_list = NULL;
-static GType window_type = 0;
 
 guint _add_global_event_listener(
 	GSignalEmissionHook listener,
@@ -77,7 +76,7 @@ _atksharp_add_listener (GSignalEmissionHook listener,
 	gint rc = 0;
 
 	if (!strcmp (object_type, "window"))
-		type = window_type;
+		type = g_type_from_name ("AtkObject");
 	else
 		type = g_type_from_name (object_type);
 	
@@ -154,23 +153,6 @@ static const char *window_signal_names[] =
 	"restore",
 	NULL
 };
-
-void
-register_window_signals (GObject *dummy_window)
-{
-	window_type = G_TYPE_FROM_INSTANCE (&dummy_window->g_type_instance);
-	const char **pp;
-
-	/* adapted from gailutil.c */
-	for (pp = window_signal_names; *pp; pp++)
-		g_signal_new (*pp,
-                              window_type,
-                              G_SIGNAL_RUN_LAST,
-                              0, /* default signal handler */
-                              NULL, NULL,
-                              g_cclosure_marshal_VOID__VOID,
-                              G_TYPE_NONE, 0);
-}
 
 void
 atksharp_util_override_get_toolkit_name (gpointer cb)

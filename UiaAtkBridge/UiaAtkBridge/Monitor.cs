@@ -38,6 +38,29 @@ namespace UiaAtkBridge
 		private bool useNativeInitialization = true;
 		private GLib.MainLoop mainLoop;
 		
+		private void RegisterSignal (System.Type type, string name)
+		{
+			IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup (name);
+			g_signal_new (native_name, ((GLib.GType)type).Val, 2, 0, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, GLib.GType.None.Val, 0);
+			GLib.Marshaller.Free (native_name);
+		}
+
+		private void RegisterWindowSignals ()
+		{
+			// These really should be registered on Window;
+			// registering here instead because it's a well-known
+			// type in the unmanaged world, so glue.c can find it
+			RegisterSignal (typeof (Atk.Object), "activate");
+			RegisterSignal (typeof (Atk.Object), "create");
+			RegisterSignal (typeof (Atk.Object), "deactivate");
+			RegisterSignal (typeof (Atk.Object), "destroy");
+			RegisterSignal (typeof (Atk.Object), "maximize");
+			RegisterSignal (typeof (Atk.Object), "minimize");
+			RegisterSignal (typeof (Atk.Object), "move");
+			RegisterSignal (typeof (Atk.Object), "resize");
+			RegisterSignal (typeof (Atk.Object), "restore");
+		}
+
 		internal Monitor ()
 		{
 			GLib.GType.Init();
@@ -47,9 +70,6 @@ namespace UiaAtkBridge
 			Atk.Util.GetToolkitNameHandler = GetAssemblyName;
 			Atk.Util.GetToolkitVersionHandler = GetAssemblyVersionNumber;
 			
-			Window window = new Window (null);
-			register_window_signals (window.Handle);
-
 			if (!useNativeInitialization)
 				Atk.Util.AddGlobalEventListenerHandler = AddGlobalEventListener;
 			else
@@ -66,6 +86,8 @@ namespace UiaAtkBridge
 			glibThread.IsBackground = true;
 			glibThread.Start ();
 			AutoResetEvent sync = GLibHacks.Invoke (delegate (object sender, EventArgs args) {
+				RegisterWindowSignals ();
+
 				LaunchAtkBridge ();
 			});
 			sync.WaitOne ();
@@ -229,8 +251,8 @@ namespace UiaAtkBridge
 		
 		[DllImport("libbridge-glue.so")]
 		static extern void override_global_event_listener ();
-		[DllImport("libbridge-glue.so")]
-		static extern void register_window_signals (IntPtr dummy_window);
+		[DllImport("libgobject-2.0-0.dll")]
+		static extern void g_signal_new (IntPtr signal_name, IntPtr itype, int signal_flags, uint class_offset, IntPtr accumulator, IntPtr accu_data, IntPtr c_marshaller, IntPtr return_type, uint n_params);
 	}
 	
 	/// <summary>
