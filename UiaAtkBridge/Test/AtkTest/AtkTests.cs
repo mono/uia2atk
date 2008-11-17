@@ -129,14 +129,6 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "CheckBox numChildren");
 			Parent (type, accessible);
 
-			EventCollection events = EventMonitor.Pause ();
-			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
-			string evType = "object:state-changed:checked";
-			EventCollection checkboxEvs = events.FindByRole (Atk.Role.CheckBox).FindWithDetail1 ("1");
-			EventCollection typeEvs = checkboxEvs.FindByType (evType);
-			
-			Assert.AreEqual (1, typeEvs.Count, "bad number of checked events!" + eventsInXml);
-
 			//test with an image
 			Atk.Image atkWithOutImage, atkWithImage;
 			atkWithOutImage = CastToAtkInterface <Atk.Image> (accessible);

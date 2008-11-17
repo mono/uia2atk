@@ -207,10 +207,11 @@ namespace UiaAtkBridgeTest
 			if (type != BasicWidgetType.RadioButton)
 				Assert.IsFalse (state.ContainsState (Atk.StateType.Checked), "RefStateSet.!Checked #1");
 			
-
 			if (type == BasicWidgetType.ListItem || type == BasicWidgetType.CheckedListItem)
 				Assert.IsFalse (state.ContainsState (Atk.StateType.Selected), "RefStateSet.Selected");
 
+			EventMonitor.Pause ();
+			
 			if (type != BasicWidgetType.ComboBoxDropDownList) {
 				// only valid actions should work
 				for (int i = 0; i < validNumberOfActions; i++) {
@@ -232,6 +233,15 @@ namespace UiaAtkBridgeTest
 			}
 			// it takes a bit before the State is propagated!
 			System.Threading.Thread.Sleep (4000);
+
+			if (type == BasicWidgetType.CheckBox) {
+				EventCollection events = EventMonitor.Pause ();
+				string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
+				string evType = "object:state-changed:checked";
+				EventCollection checkboxEvs = events.FindByRole (Atk.Role.CheckBox).FindWithDetail1 ("1");
+				EventCollection typeEvs = checkboxEvs.FindByType (evType);
+				Assert.AreEqual (1, typeEvs.Count, "bad number of checked events!" + eventsInXml);
+			}
 			
 			state = accessible.RefStateSet ();
 			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled #2");

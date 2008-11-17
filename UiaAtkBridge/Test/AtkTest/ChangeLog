@@ -1,5 +1,10 @@
 2008-11-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs:
+	* AtkTester.cs: Move event unit tests to AtkTester.
+
+2008-11-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs: Reduce some sleeps (the tests keep working).
 
 2008-11-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
