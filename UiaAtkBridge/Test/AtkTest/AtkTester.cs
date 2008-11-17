@@ -106,11 +106,11 @@ namespace UiaAtkBridgeTest
 			RunInGuiThread ( delegate () {
 				Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#1");
 			});
-			System.Threading.Thread.Sleep (3000);
+			System.Threading.Thread.Sleep (500);
 			RunInGuiThread ( delegate () {
 				Assert.IsTrue (actionable3.DoAction (0), "IAF3RB::DoAction#1");
 			});
-			System.Threading.Thread.Sleep (3000);
+			System.Threading.Thread.Sleep (500);
 			RunInGuiThread ( delegate () {
 				Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #1");
 				Assert.IsFalse (accessible2.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #2");
@@ -122,7 +122,7 @@ namespace UiaAtkBridgeTest
 			RunInGuiThread ( delegate () {
 				Assert.IsTrue (actionable2.DoAction (0), "IAF3RB::DoAction#1");
 			});
-			System.Threading.Thread.Sleep (3000);
+			System.Threading.Thread.Sleep (500);
 				
 			// FIXME: should we detect "object:state-changed:focused" events here?? it seems gail doesn't fire them if we use this atk API
 			EventCollection events = EventMonitor.Pause ();
@@ -142,7 +142,7 @@ namespace UiaAtkBridgeTest
 				Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#2");
 			});
 			
-			System.Threading.Thread.Sleep (3000);
+			System.Threading.Thread.Sleep (500);
 			
 			RunInGuiThread ( delegate () {
 				Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #7");
@@ -152,7 +152,7 @@ namespace UiaAtkBridgeTest
 				Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#3");
 			});
 
-			System.Threading.Thread.Sleep (3000);
+			System.Threading.Thread.Sleep (500);
 			
 			RunInGuiThread ( delegate () {
 				Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #10");
@@ -162,7 +162,7 @@ namespace UiaAtkBridgeTest
 				Assert.IsTrue (actionable3.DoAction (0), "IAF3RB::DoAction#4");
 			});
 			
-			System.Threading.Thread.Sleep (3000);
+			System.Threading.Thread.Sleep (500);
 			
 			RunInGuiThread ( delegate () {
 				Assert.IsTrue (accessible1.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #13");
