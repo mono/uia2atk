@@ -174,10 +174,10 @@ namespace UiaAtkBridgeTest
 		}
 
 		protected void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible) {
-			InterfaceAction (type, implementor, accessible, 0);
+			InterfaceAction (type, implementor, accessible, null);
 		}
 		
-		protected void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible, int numChildrenForNewGhostWindow)
+		protected void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible, string [] names)
 		{
 			int validNumberOfActions = ValidNumberOfActionsForAButton;
 			if ((type == BasicWidgetType.TextBoxEntry) ||
@@ -230,18 +230,15 @@ namespace UiaAtkBridgeTest
 				});
 			}
 
-			if (numChildrenForNewGhostWindow > 0) {
+			if (names != null) {
 				//because the dropdown represents a new window!
 				Assert.AreEqual (2, GetTopLevelRootItem ().NAccessibleChildren,
 				  "Windows in my app should be 2 now that I opened the pandora's box; but I got:" + childrenRoles (GetTopLevelRootItem ()));
 				Atk.Object newWindow = GetTopLevelRootItem ().RefAccessibleChild (1);
 				Assert.AreEqual (Atk.Role.Window, newWindow.Role, "new window role should be Atk.Role.Window");
 				Assert.AreEqual (1, newWindow.NAccessibleChildren, "the window should contain a child");
-				Assert.AreEqual (Atk.Role.Menu, newWindow.RefAccessibleChild (0).Role, "the window should contain a Menu");
-				Assert.AreEqual (numChildrenForNewGhostWindow, newWindow.RefAccessibleChild (0).NAccessibleChildren, 
-				                 "the Menu should contains some children");
-				Assert.AreEqual (Atk.Role.MenuItem, newWindow.RefAccessibleChild (0).RefAccessibleChild (0).Role);
-				
+
+				CheckComboBoxMenuChild (newWindow.RefAccessibleChild (0), names);
 			}
 			
 			if (type == BasicWidgetType.CheckBox) {
