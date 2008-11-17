@@ -1,3 +1,7 @@
+2008-11-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs: Check NActions after DoAction.
+
 2008-11-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Remove dupe comment.

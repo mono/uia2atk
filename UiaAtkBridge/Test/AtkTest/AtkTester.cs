@@ -213,8 +213,10 @@ namespace UiaAtkBridgeTest
 
 			if (type != BasicWidgetType.ComboBoxDropDownList) {
 				// only valid actions should work
-				for (int i = 0; i < validNumberOfActions; i++) 
+				for (int i = 0; i < validNumberOfActions; i++) {
 					Assert.IsTrue (implementor.DoAction (i), "DoAction(" + i + ")");
+					Assert.AreEqual (validNumberOfActions, implementor.NActions, "NActions doesn't change");
+				}
 				if ((validNumberOfActions > 1) // does not apply in UIA because 1 doaction==1click==checked
 				                                         // (in GAIL click+press+release==2clicks==unchecked)
 				     && type == BasicWidgetType.CheckBox)
