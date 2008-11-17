@@ -1,5 +1,10 @@
 2008-11-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: DoAction#2 for Combo was false because it was not sent
+	synchronously.
+
+2008-11-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs: Not performing DoAction in RunInGuiThread was causing a
 	unique event being sent instead of two so, just catch the first one,
 	and refactor in order to reuse a condition. Also, reduce sleep time a

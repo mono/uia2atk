@@ -212,40 +212,42 @@ namespace UiaAtkBridgeTest
 
 			EventMonitor.Start ();
 			
-			if (type != BasicWidgetType.ComboBoxDropDownList) {
-				// only valid actions should work
+			// only valid actions should work
+			for (int i = 0; i < validNumberOfActions; i++) {
+				RunInGuiThread (delegate {
+					Assert.IsTrue (implementor.DoAction (i), "DoAction(" + i + ")");
+					Assert.AreEqual (validNumberOfActions, implementor.NActions, "NActions doesn't change");
+				});
+			}
+			
+			if (type == BasicWidgetType.CheckBox) {
+
+				EventCollection events = EventMonitor.Pause ();
+				string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
+				string evType = "object:state-changed:checked";
+				EventCollection checkboxEvs = events.FindByRole (Atk.Role.CheckBox).FindWithDetail1 ("1");
+				EventCollection typeEvs = checkboxEvs.FindByType (evType);
+				Assert.AreEqual (1, typeEvs.Count, "bad number of checked events!" + eventsInXml);
+
+				if (validNumberOfActions > 1) {// does not apply in UIA because 1 doaction==1click==checked
+				                               // (in GAIL click+press+release==2clicks==unchecked)
+					//one more, to leave it checked
+					RunInGuiThread (delegate {
+						Assert.IsTrue (implementor.DoAction (0), "DoAction_Corrective");
+					});
+				}
+
+			}
+			else {
+				//test again
 				for (int i = 0; i < validNumberOfActions; i++) {
 					RunInGuiThread (delegate {
 						Assert.IsTrue (implementor.DoAction (i), "DoAction(" + i + ")");
 						Assert.AreEqual (validNumberOfActions, implementor.NActions, "NActions doesn't change");
 					});
 				}
-				if (type == BasicWidgetType.CheckBox) {
-
-					EventCollection events = EventMonitor.Pause ();
-					string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
-					string evType = "object:state-changed:checked";
-					EventCollection checkboxEvs = events.FindByRole (Atk.Role.CheckBox).FindWithDetail1 ("1");
-					EventCollection typeEvs = checkboxEvs.FindByType (evType);
-					Assert.AreEqual (1, typeEvs.Count, "bad number of checked events!" + eventsInXml);
-
-					if (validNumberOfActions > 1) {// does not apply in UIA because 1 doaction==1click==checked
-					                               // (in GAIL click+press+release==2clicks==unchecked)
-						//one more, to leave it checked
-						RunInGuiThread (delegate {
-							Assert.IsTrue (implementor.DoAction (0), "DoAction_Corrective");
-						});
-					}
-
-				}
 			}
-			else
-			{
-				Assert.IsTrue (implementor.DoAction (0), "DoAction Combo#1");
-				Assert.AreEqual (1, implementor.NActions, "NActions doesn't change");
-				Assert.AreEqual ("press", implementor.GetName (0), "Action[0] doesn't change");
-				Assert.AreEqual (false, implementor.DoAction (0), "DoAction Combo#2");
-			}
+
 			// it takes a bit before the State is propagated!
 			System.Threading.Thread.Sleep (2000);
 			
