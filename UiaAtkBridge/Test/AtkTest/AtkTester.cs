@@ -210,19 +210,34 @@ namespace UiaAtkBridgeTest
 			if (type == BasicWidgetType.ListItem || type == BasicWidgetType.CheckedListItem)
 				Assert.IsFalse (state.ContainsState (Atk.StateType.Selected), "RefStateSet.Selected");
 
-			EventMonitor.Pause ();
+			EventMonitor.Start ();
 			
 			if (type != BasicWidgetType.ComboBoxDropDownList) {
 				// only valid actions should work
 				for (int i = 0; i < validNumberOfActions; i++) {
-					Assert.IsTrue (implementor.DoAction (i), "DoAction(" + i + ")");
-					Assert.AreEqual (validNumberOfActions, implementor.NActions, "NActions doesn't change");
+					RunInGuiThread (delegate {
+						Assert.IsTrue (implementor.DoAction (i), "DoAction(" + i + ")");
+						Assert.AreEqual (validNumberOfActions, implementor.NActions, "NActions doesn't change");
+					});
 				}
-				if ((validNumberOfActions > 1) // does not apply in UIA because 1 doaction==1click==checked
-				                                         // (in GAIL click+press+release==2clicks==unchecked)
-				     && type == BasicWidgetType.CheckBox)
-					//one more, to leave it checked
-					Assert.IsTrue (implementor.DoAction (0), "DoAction_Corrective");
+				if (type == BasicWidgetType.CheckBox) {
+
+					EventCollection events = EventMonitor.Pause ();
+					string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
+					string evType = "object:state-changed:checked";
+					EventCollection checkboxEvs = events.FindByRole (Atk.Role.CheckBox).FindWithDetail1 ("1");
+					EventCollection typeEvs = checkboxEvs.FindByType (evType);
+					Assert.AreEqual (1, typeEvs.Count, "bad number of checked events!" + eventsInXml);
+
+					if (validNumberOfActions > 1) {// does not apply in UIA because 1 doaction==1click==checked
+					                               // (in GAIL click+press+release==2clicks==unchecked)
+						//one more, to leave it checked
+						RunInGuiThread (delegate {
+							Assert.IsTrue (implementor.DoAction (0), "DoAction_Corrective");
+						});
+					}
+
+				}
 			}
 			else
 			{
@@ -232,16 +247,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (false, implementor.DoAction (0), "DoAction Combo#2");
 			}
 			// it takes a bit before the State is propagated!
-			System.Threading.Thread.Sleep (4000);
-
-			if (type == BasicWidgetType.CheckBox) {
-				EventCollection events = EventMonitor.Pause ();
-				string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
-				string evType = "object:state-changed:checked";
-				EventCollection checkboxEvs = events.FindByRole (Atk.Role.CheckBox).FindWithDetail1 ("1");
-				EventCollection typeEvs = checkboxEvs.FindByType (evType);
-				Assert.AreEqual (1, typeEvs.Count, "bad number of checked events!" + eventsInXml);
-			}
+			System.Threading.Thread.Sleep (2000);
 			
 			state = accessible.RefStateSet ();
 			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled #2");
