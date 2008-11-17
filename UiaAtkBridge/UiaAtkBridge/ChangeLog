@@ -1,5 +1,9 @@
 2008-11-17  Mike Gorse  <mgorse@novell.com>
 
+	* AutomationBridge.cs: Have HandleKeyEvent check for null appMonitor.
+
+2008-11-17  Mike Gorse  <mgorse@novell.com>
+
 	* UiaAtkBridge.dll.config.in: Add map for libgobject.
 	* Monitor.cs: Call g_signal_new directly rather than using glue.
 

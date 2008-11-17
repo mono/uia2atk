@@ -276,6 +276,8 @@ namespace UiaAtkBridge
 
 		void HandleKeyEvent (AutomationEvent eventId, KeyEventArgs e)
 		{
+			if (appMonitor == null)
+				return;
 			Atk.KeyEventStruct evnt;
 			if (keyStrings == null)
 				CreateKeyStrings ();
