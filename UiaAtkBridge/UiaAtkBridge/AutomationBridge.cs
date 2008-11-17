@@ -147,10 +147,10 @@ namespace UiaAtkBridge
 
  		public bool IsAccessibilityEnabled {
  			get {
-				// FIXME: This is a temporal hack, we will replace it, proposed solutions
+				// FIXME: This is a temporary hack, we will replace it, proposed solutions:
 				// - Use GConf API (we will need to fix threading issues).
 				// - <Insert your fantastic idea here>
-				string output = "false";
+				string output = bool.FalseString;
 				bool enabled = false;
 				
 				ProcessStartInfo
@@ -163,7 +163,7 @@ namespace UiaAtkBridge
 				
 				try {
 					Process gconftool2 = Process.Start (processInfo);
-					output = gconftool2.StandardOutput.ReadToEnd () ?? "false";
+					output = gconftool2.StandardOutput.ReadToEnd () ?? bool.FalseString;
 					gconftool2.WaitForExit ();
 					gconftool2.Close ();
 				} catch (System.IO.FileNotFoundException) {}

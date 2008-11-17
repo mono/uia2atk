@@ -1,3 +1,7 @@
+2008-11-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* AutomationBridge.cs: Fix typo, replace "false" with bool.FalseString.
+
 2008-11-17  Mario Carrion  <mcarrion@novell.com>
 
 	* AutomationBridge.cs: Fixed typo.
