@@ -70,6 +70,10 @@ public partial class MainWindow: Gtk.Window
 		this.vscrollbar1.Adjustment.Upper = 100; //Value tested in AtkTester.InterfaceValue
 		this.vscrollbar1.Adjustment.PageSize = 1;
 		this.vscrollbar1.Adjustment.StepIncrement = 1;
+
+		//Used when testing Atk.Action.GetKeybinding
+		this.btnWithImg.UseUnderline = true;
+		this.btnTest1.UseUnderline = true;
 	}
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)

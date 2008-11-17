@@ -125,10 +125,13 @@ namespace UiaAtkBridge
 				return keyBinding;
 
 			keyBinding = (string) 
-			  Provider.GetPropertyValue (AutomationElementIdentifiers.AcceleratorKeyProperty.Id);
+			  Provider.GetPropertyValue (AutomationElementIdentifiers.AccessKeyProperty.Id);
+
+			if (!string.IsNullOrEmpty (keyBinding))
+				keyBinding = keyBinding.Replace ("Alt+", "<Alt>");
+			
 			return keyBinding;
 		}
-
 		// Get the name of the specified action
 		public virtual string GetName (int action)
 		{

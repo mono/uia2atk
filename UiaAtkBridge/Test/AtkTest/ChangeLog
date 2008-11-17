@@ -1,3 +1,8 @@
+2008-11-17  Mario Carrion  <mcarrion@novell.com>
+
+	* AtkTests.cs: Testing GetKeyBinding. 
+[Fixes Bug #428397]
+
 2008-11-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs:

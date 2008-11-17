@@ -433,7 +433,7 @@ namespace UiaAtkBridgeTest
 				SWF.Button but = new SWF.Button ();
 				if (real)
 					but = (embeddedImage ? butWithImage : butWithoutImage);
-				but.Text = name;
+				but.Text = name.Replace ("_", "&"); // Gtk uses '_' to underline, SWF uses '&'
 				if (!real)
 					throw new NotSupportedException ("We don't support unreal anymore in tests");
 				accessible = GetAdapterForWidget (but);
@@ -454,7 +454,7 @@ namespace UiaAtkBridgeTest
 				SWF.CheckBox chk = new SWF.CheckBox ();
 				if (real)
 					chk = (embeddedImage ? chkWithImage : chkWithoutImage);
-				chk.Text = name;
+				chk.Text = name.Replace ("_", "&"); // Gtk uses '_' to underline, SWF uses '&'
 				if (real)
 					accessible = GetAdapterForWidget (chk);
 				else
@@ -465,7 +465,7 @@ namespace UiaAtkBridgeTest
 				// the way to group radioButtons is dependent on their parent control
 				SWF.RadioButton radio = 
 					(embeddedImage ? radWithImage : GiveMeARadio (name));
-				radio.Text = name;
+				radio.Text = name.Replace ("_", "&"); // Gtk uses '_' to underline, SWF uses '&'
 				if (real)
 					accessible = GetAdapterForWidget (radio);
 				else

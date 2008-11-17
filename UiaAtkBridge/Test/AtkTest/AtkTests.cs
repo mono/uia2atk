@@ -92,11 +92,21 @@ namespace UiaAtkBridgeTest
 			
 			//test with an image
 			Atk.Image atkWithOutImage, atkWithImage;
+			accessible = GetAccessible (type, name, true);
 			atkWithOutImage = CastToAtkInterface <Atk.Image> (accessible);
 			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
 			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
 			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
+
+			//Key Binding tests
+			name = "t_est";
+			accessible = GetAccessible (type, name, true);
+			Assert.IsNull (atkAction.GetKeybinding (-1), "GetKeybinding (-1))");
+			Assert.IsNull (atkAction.GetKeybinding (1), "GetKeybinding (1))");
+			string keyBinding = atkAction.GetKeybinding (0);
+			Assert.IsNotNull (keyBinding, "GetKeybinding (0))");
+			Assert.AreEqual (keyBinding, "<Alt>e", "<Alt>e");
 		}
 
 		[Test]
@@ -136,6 +146,15 @@ namespace UiaAtkBridgeTest
 			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
 			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
+
+			//Key Binding tests
+			name = "te_st";
+			accessible = GetAccessible (type, name, true);
+			Assert.IsNull (atkAction.GetKeybinding (-1), "GetKeybinding (-1))");
+			Assert.IsNull (atkAction.GetKeybinding (1), "GetKeybinding (1))");
+			string keyBinding = atkAction.GetKeybinding (0);
+			Assert.IsNotNull (keyBinding, "GetKeybinding (0))");
+			Assert.AreEqual (keyBinding, "<Alt>s", "<Alt>s");
 		}
 		
 		[Test]
@@ -187,6 +206,15 @@ namespace UiaAtkBridgeTest
 			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
 			atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
+
+			//Key Binding tests
+			name = "_test 01";
+			accessible = GetAccessible (type, name, true);
+			Assert.IsNull (atkAction.GetKeybinding (-1), "GetKeybinding (-1))");
+			Assert.IsNull (atkAction.GetKeybinding (1), "GetKeybinding (1))");
+			string keyBinding = atkAction.GetKeybinding (0);
+			Assert.IsNotNull (keyBinding, "GetKeybinding (0))");
+			Assert.AreEqual (keyBinding, "<Alt>t", "<Alt>t");
 		}
 		
 		[Test]

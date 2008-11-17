@@ -1,3 +1,9 @@
+2008-11-17  Mario Carrion  <mcarrion@novell.com>
+
+	* Button.cs: Using AccessKey instead of AcceleratorKey. Returning valid
+	Atk value.
+[Fixes Bug #428397]
+
 2008-11-17  Mike Gorse  <mgorse@novell.com>
 
 	* AutomationBridge.cs: Have HandleKeyEvent check for null appMonitor.
