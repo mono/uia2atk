@@ -56,10 +56,8 @@ namespace Mono.UIAutomation.Winforms
 		/// </summary>
 		public static void Initialize ()
 		{
-			if (initialized)
+			if (!AutomationInteropProvider.ClientsAreListening || initialized)
 				return;
-			
-			Console.WriteLine ("FormListener Initialized");
 			
 			// We are using this event to tell the bridge that should release all
 			// the FormProvider provider that aren't yet removed.

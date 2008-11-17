@@ -116,8 +116,14 @@ namespace System.Windows.Automation.Provider
 			}
 			if (bridgeType == null)
 				throw new Exception ("No bridge, bummer!");
-			
-			return (IAutomationBridge) Activator.CreateInstance (bridgeType);
+
+			IAutomationBridge bridge
+				= (IAutomationBridge) Activator.CreateInstance (bridgeType);
+			if (!bridge.IsAccessibilityEnabled)
+				return null;
+
+			bridge.Initialize ();
+			return bridge;
 		}
 	}
 }

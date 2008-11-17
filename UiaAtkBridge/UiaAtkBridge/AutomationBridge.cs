@@ -27,7 +27,7 @@
 using System;
 using System.Collections.Generic;
 using Mono.UIAutomation.Bridge;
-
+using System.Diagnostics;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
@@ -53,11 +53,7 @@ namespace UiaAtkBridge
 		public AutomationBridge ()
 		{
 			bool newMonitor = false;
-			if (appMonitor == null) {
-				//Console.WriteLine ("about to create monitor");
-				appMonitor = new Monitor();
-				//Console.WriteLine ("just made monitor");
-			}
+
 			pointerProviderMapping =
 				new AmbiDictionary<IntPtr,IRawElementProviderSimple> ();
 			providerAdapterMapping =
@@ -144,10 +140,41 @@ namespace UiaAtkBridge
 		
 		public bool ClientsAreListening {
 			get {
-				// TODO: How with ATK?
+				// FXIME: Implement to enable/disable bridge when ATs are/aren't running.
 				return true;
 			}
 		}
+
+ 		public bool IsAccessibilityEnabled {
+ 			get {
+				// FIXME: This is a temporal hack, we will replace it, proposed solutions
+				// - Using GConf API and fixing threading issues.
+				// - <Insert your fantastic idea here>
+				string output = "false";
+				bool enabled = false;
+				
+				ProcessStartInfo
+					processInfo = new ProcessStartInfo ("gconftool-2",
+					                                    "-g /desktop/gnome/interface/accessibility");
+				processInfo.UseShellExecute = false;
+				processInfo.ErrorDialog = false;
+				processInfo.CreateNoWindow = true;
+				processInfo.RedirectStandardOutput = true;
+				
+				try {
+					Process gconftool2 = Process.Start (processInfo);
+					output = gconftool2.StandardOutput.ReadToEnd () ?? "false";
+					gconftool2.WaitForExit ();
+					gconftool2.Close ();
+				} catch (System.IO.FileNotFoundException) {}
+
+				try {
+					enabled = bool.Parse (output);
+				} catch (FormatException) {}
+				
+				return enabled;
+ 			}
+ 		}
 		
 		public object HostProviderFromHandle (IntPtr hwnd)
 		{
@@ -353,6 +380,17 @@ namespace UiaAtkBridge
 				Console.WriteLine ("StructureChangedEvent not handled:" + e.StructureChangeType.ToString ());
 			
 			// TODO: Other structure changes
+		}
+
+		public void Initialize ()
+		{
+			if (appMonitor == null)
+				appMonitor = new Monitor();
+		}
+
+		public void Terminate ()
+		{
+			//TODO: Something to terminate ?
 		}
 		
 #endregion

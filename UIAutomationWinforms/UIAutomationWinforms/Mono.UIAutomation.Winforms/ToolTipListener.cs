@@ -25,6 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -64,7 +65,7 @@ namespace Mono.UIAutomation.Winforms
 		//Method called by SWF.ToolTip static constructor
 		public static void Initialize ()
 		{
-			if (initialized == true)
+			if (!AutomationInteropProvider.ClientsAreListening || initialized == true)
 				return;
 			
 			Helper.AddPrivateEvent (typeof (ToolTip),

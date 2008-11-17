@@ -1,3 +1,20 @@
+2008-11-17  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ErrorProviderListener.cs: SWF =
+	System.Windows.Forms. Initializing internal dictionary when
+	ClientsAreListening. Not using Helper.AddPrivateEvent.
+
+	* Mono.UIAutomation.Winforms/FormListener.cs: Initializing internal
+	dictionary when ClientsAreListening.
+
+	* Mono.UIAutomation.Winforms/HelpProviderListener.cs: Initializing
+	internal dictionary when ClientsAreListening. Not using
+	Helper.AddPrivateEvent.
+
+	* Mono.UIAutomation.Winforms/ToolTipListener.cs: Using
+	AutomationInteropProvider.ClientsAreListening IAutomationBridge
+	implementation: IsAccessibilityEnabled, Initialize, Terminate.
+
 2008-11-14  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms.Events/CheckedListBox/ListItemTogglePatternToggleStateEvent.cs:

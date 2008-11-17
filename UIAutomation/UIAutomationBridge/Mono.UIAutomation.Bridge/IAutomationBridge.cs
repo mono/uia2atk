@@ -30,6 +30,8 @@ namespace Mono.UIAutomation.Bridge
 {
 	public interface IAutomationBridge
 	{
+		bool IsAccessibilityEnabled { get; }
+		
 		bool ClientsAreListening { get; }
 		
 		object HostProviderFromHandle (IntPtr hwnd);
@@ -43,5 +45,9 @@ namespace Mono.UIAutomation.Bridge
 		
 		void RaiseStructureChangedEvent (object provider,
 		                                 StructureChangedEventArgs e);
+
+		void Initialize ();
+		
+		void Terminate ();
 	}
 }

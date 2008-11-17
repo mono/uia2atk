@@ -1,3 +1,8 @@
+2008-11-17  Mario Carrion  <mcarrion@novell.com>
+
+	* MockBridge.cs: IAutomationBridge implementation:
+	IsAccessibilityEnabled, Initialize, Terminate.
+
 2008-11-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* CheckBoxProviderTest.cs: Add additional event testing; make sure

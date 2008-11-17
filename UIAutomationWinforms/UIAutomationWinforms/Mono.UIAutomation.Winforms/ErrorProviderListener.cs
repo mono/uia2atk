@@ -23,9 +23,10 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using SWFErrorProvider = System.Windows.Forms.ErrorProvider;
+using SWF = System.Windows.Forms;
 using System.Windows.Forms;
 using System.Collections.Generic;
+using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -39,7 +40,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			provider = null;
 			initialized = false;
-			errorProviders = new Dictionary<SWFErrorProvider, List <Control>> ();
+			errorProviders = new Dictionary<SWF.ErrorProvider, List <Control>> ();
 		}
 		
 		#endregion
@@ -47,16 +48,16 @@ namespace Mono.UIAutomation.Winforms
 		#region Private Static Fields
 		
 		private static bool initialized;
-		private static Dictionary<SWFErrorProvider, List<Control>> errorProviders;
+		private static Dictionary<SWF.ErrorProvider, List<SWF.Control>> errorProviders;
 		private static ErrorProvider.ErrorProviderToolTipProvider provider;
 
 		#endregion
 		
 		#region Public Static Methods
 		
-		public static SWFErrorProvider GetErrorProviderFromControl (Control control)
+		public static SWF.ErrorProvider GetErrorProviderFromControl (Control control)
 		{
-			foreach (KeyValuePair<SWFErrorProvider, List<Control>> valuePair in
+			foreach (KeyValuePair<SWF.ErrorProvider, List<SWF.Control>> valuePair in
 			         errorProviders) {
 				if (valuePair.Value.Contains (control) == true)
 					return valuePair.Key;
@@ -67,44 +68,21 @@ namespace Mono.UIAutomation.Winforms
 		//Method called by SWF.HelpProvider static constructor
 		public static void Initialize ()
 		{
-			if (initialized == true)
+			//FIXME: Should we use IsAccessibilityEnabled instead?
+			if (!AutomationInteropProvider.ClientsAreListening || initialized == true)
 				return;
 
 			//Events used to associate ErrorProvider with Control
-			Helper.AddPrivateEvent (typeof (SWFErrorProvider),
-			                        null,
-			                        "UIAErrorProviderHookUp", 
-			                        typeof (ErrorProviderListener),
-			                        "OnUIAErrorProviderHookUp");
-			Helper.AddPrivateEvent (typeof (SWFErrorProvider),
-			                        null,
-			                        "UIAErrorProviderUnhookUp", 
-			                        typeof (ErrorProviderListener),
-			                        "OnUIAErrorProviderUnhookUp");
+			SWF.ErrorProvider.UIAErrorProviderHookUp += OnUIAErrorProviderHookUp;
+			SWF.ErrorProvider.UIAErrorProviderUnhookUp += OnUIAErrorProviderUnhookUp;
 			
 			//Events used to associate UserControls with Control
-			Helper.AddPrivateEvent (typeof (SWFErrorProvider),
-			                        null,
-			                        "UIAControlHookUp", 
-			                        typeof (ErrorProviderListener),
-			                        "OnUIAControlHookUp");
-			Helper.AddPrivateEvent (typeof (SWFErrorProvider),
-			                        null,
-			                        "UIAControlUnhookUp", 
-			                        typeof (ErrorProviderListener),
-			                        "OnUIAControlUnhookUp");
+			SWF.ErrorProvider.UIAControlHookUp += OnUIAControlHookUp;
+			SWF.ErrorProvider.UIAControlUnhookUp += OnUIAControlUnhookUp;
 			
-			//Events used to associate ToolTip provider			
-			Helper.AddPrivateEvent (typeof (SWFErrorProvider),
-			                        null,
-			                        "UIAPopup", 
-			                        typeof (ErrorProviderListener),
-			                        "OnUIAPopup");
-			Helper.AddPrivateEvent (typeof (SWFErrorProvider),
-			                        null,
-			                        "UIAUnPopup", 
-			                        typeof (ErrorProviderListener),
-			                        "OnUIAUnPopup");
+			//Events used to associate ToolTip provider
+			SWF.ErrorProvider.UIAPopup += OnUIAPopup;
+			SWF.ErrorProvider.UIAUnPopup += OnUIAUnPopup;
 
 			initialized = true;
 		}
@@ -113,12 +91,10 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Static Methods
 		
-#pragma warning disable 169
-		
-		private static void OnUIAControlHookUp (object sender, ControlEventArgs args)
+		private static void OnUIAControlHookUp (object sender, SWF.ControlEventArgs args)
 		{
-			Control control = (Control) sender;
-			SWFErrorProvider errorProvider = GetErrorProviderFromControl (control);
+			SWF.Control control = (SWF.Control) sender;
+			SWF.ErrorProvider errorProvider = GetErrorProviderFromControl (control);
 			
 			if (control.Parent != null)
 				ErrorProvider.InstancesTracker.AddControl (args.Control, 
@@ -126,10 +102,10 @@ namespace Mono.UIAutomation.Winforms
 				                                           errorProvider);
 		}
 		
-		private static void OnUIAControlUnhookUp (object sender, ControlEventArgs args)
+		private static void OnUIAControlUnhookUp (object sender, SWF.ControlEventArgs args)
 		{
-			Control control = (Control) sender;
-			SWFErrorProvider errorProvider = GetErrorProviderFromControl (control);
+			SWF.Control control = (SWF.Control) sender;
+			SWF.ErrorProvider errorProvider = GetErrorProviderFromControl (control);
 			
 			if (control.Parent != null)
 				ErrorProvider.InstancesTracker.RemoveControl (args.Control, 
@@ -137,9 +113,9 @@ namespace Mono.UIAutomation.Winforms
 				                                              errorProvider);
 		}
 
-		private static void OnUIAErrorProviderHookUp (object sender, ControlEventArgs args)
+		private static void OnUIAErrorProviderHookUp (object sender, SWF.ControlEventArgs args)
 		{
-			SWFErrorProvider errorProvider = (SWFErrorProvider) sender;
+			SWF.ErrorProvider errorProvider = (SWF.ErrorProvider) sender;
 			List<Control> list = null;
 
 			if (errorProviders.TryGetValue (errorProvider, out list) == false) {
@@ -156,9 +132,9 @@ namespace Mono.UIAutomation.Winforms
 				provider.ErrorProvider = errorProvider;
 		}
 		
-		private static void OnUIAErrorProviderUnhookUp (object sender, ControlEventArgs args)
+		private static void OnUIAErrorProviderUnhookUp (object sender, SWF.ControlEventArgs args)
 		{
-			SWFErrorProvider errorProvider = (SWFErrorProvider) sender;
+			SWF.ErrorProvider errorProvider = (SWF.ErrorProvider) sender;
 			List<Control> list = null;
 			
 			if (errorProviders.TryGetValue (errorProvider, out list) == true) {
@@ -174,9 +150,9 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		private static void OnUIAPopup (object sender, PopupEventArgs args)
+		private static void OnUIAPopup (object sender, SWF.PopupEventArgs args)
 		{
-			SWFErrorProvider error = (SWFErrorProvider) sender;
+			SWF.ErrorProvider error = (SWF.ErrorProvider) sender;
 			
 			if (provider != null)
 				provider.Terminate ();
@@ -187,15 +163,13 @@ namespace Mono.UIAutomation.Winforms
 			provider.Show (args.AssociatedControl);
 		}
 		
-		private static void OnUIAUnPopup (object sender, PopupEventArgs args)
+		private static void OnUIAUnPopup (object sender, SWF.PopupEventArgs args)
 		{
 			if (provider != null) {
 				provider.Hide (args.AssociatedControl);
 				provider.Terminate ();
 			}
 		}
-		
-#pragma warning restore 169		
 		
 		#endregion
 	}

@@ -74,6 +74,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 #endregion
 	
 #region IAutomationBridge Members
+		public bool IsAccessibilityEnabled { 
+			get { return true; }
+		}
+		
 		public bool ClientsAreListening { get; set; }
 		
 		public object HostProviderFromHandle (IntPtr hwnd)
@@ -99,6 +103,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			StructureChangedEvents.Add (new StructureChangedEventTuple {
 				provider = provider, e = e});
 		}
+
+		public void Initialize () {}
+
+		public void Terminate () {}
 #endregion
 		
 		public int GetAutomationEventCount (AutomationEvent eventId)

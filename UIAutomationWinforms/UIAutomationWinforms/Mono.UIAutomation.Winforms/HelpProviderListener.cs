@@ -24,7 +24,8 @@
 // 
 using System;
 using System.Windows.Forms;
-using SWFHelpProvider = System.Windows.Forms.HelpProvider;
+using SWF = System.Windows.Forms;
+using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -51,20 +52,11 @@ namespace Mono.UIAutomation.Winforms
 		//Method called by SWF.HelpProvider static constructor
 		public static void Initialize ()
 		{
-			if (initialized == true)
+			if (!AutomationInteropProvider.ClientsAreListening || initialized == true)
 				return;
 			
-			Helper.AddPrivateEvent (typeof (SWFHelpProvider),
-			                        null,
-			                        "UIAHelpRequested", 
-			                        typeof (HelpProviderListener),
-			                        "OnUIAHelpRequested");
-			
-			Helper.AddPrivateEvent (typeof (SWFHelpProvider),
-			                        null,
-			                        "UIAHelpUnRequested",
-			                        typeof (HelpProviderListener),
-			                        "OnUIAHelpUnRequested");
+			SWF.HelpProvider.UIAHelpRequested += OnUIAHelpRequested;
+			SWF.HelpProvider.UIAHelpUnRequested += OnUIAHelpUnRequested;
 
 			initialized = true;
 		}
@@ -72,29 +64,25 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Private Static Methods
-		
-#pragma warning disable 169
 
-		private static void OnUIAHelpRequested (object sender, ControlEventArgs args)
+		private static void OnUIAHelpRequested (object sender, SWF.ControlEventArgs args)
 		{
-			SWFHelpProvider helpProvider = (SWFHelpProvider) sender;
+			SWF.HelpProvider helpProvider = (SWF.HelpProvider) sender;
 			HelpProvider provider 
 				= (HelpProvider) ProviderFactory.GetProvider (helpProvider);
 			provider.Show (args.Control);
 		}
 		
-		private static void OnUIAHelpUnRequested (object sender, ControlEventArgs args)
+		private static void OnUIAHelpUnRequested (object sender, SWF.ControlEventArgs args)
 		{
-			SWFHelpProvider helpProvider = (SWFHelpProvider) sender;
+			SWF.HelpProvider helpProvider = (SWF.HelpProvider) sender;
 			HelpProvider provider 
 				= (HelpProvider) ProviderFactory.GetProvider (helpProvider);
 			provider.Hide (args.Control);
 			
 			ProviderFactory.ReleaseProvider (helpProvider);
 		}		
-		
-#pragma warning restore 169
-		
+
 		#endregion
 	}
 }

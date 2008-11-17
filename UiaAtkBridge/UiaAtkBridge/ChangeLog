@@ -1,3 +1,9 @@
+2008-11-17  Mario Carrion  <mcarrion@novell.com>
+
+	* AutomationBridge.cs: IsAccessibilityEnabled implementation to verify
+	if Accessibility is turned on. Initialize calls new Monitor, not
+	constructor. Terminate implementation.
+
 2008-11-14  Mike Gorse  <mgorse@novell.com>
 
 	* ListItem.cs: Listen for toggle events.
