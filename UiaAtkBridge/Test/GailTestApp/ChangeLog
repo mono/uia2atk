@@ -1,3 +1,7 @@
+2008-11-17  Mario Carrion  <mcarrion@novell.com>
+
+	* MainWindow.cs: Adjustment set.
+
 2008-11-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Main.cs:

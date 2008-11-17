@@ -59,6 +59,17 @@ public partial class MainWindow: Gtk.Window
 		this.imgTest2.FromFile = System.IO.Path.Combine (uiaQaPath, "apple-red.png");
 
 		this.maskedEntry.Visibility = false;
+
+		 
+		this.hscrollbar1.Adjustment.Lower = 0; //Value tested in AtkTester.InterfaceValue
+		this.hscrollbar1.Adjustment.Upper = 100; //Value tested in AtkTester.InterfaceValue
+		this.hscrollbar1.Adjustment.PageSize = 1;
+		this.hscrollbar1.Adjustment.StepIncrement = 1;
+
+		this.vscrollbar1.Adjustment.Lower = 0; //Value tested in AtkTester.InterfaceValue
+		this.vscrollbar1.Adjustment.Upper = 100; //Value tested in AtkTester.InterfaceValue
+		this.vscrollbar1.Adjustment.PageSize = 1;
+		this.vscrollbar1.Adjustment.StepIncrement = 1;
 	}
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)

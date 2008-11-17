@@ -1,3 +1,7 @@
+2008-11-17  Mario Carrion  <mcarrion@novell.com>
+
+	* AtkTests.cs: HScrollBar/VScrollBar updated to pass Gail tests.
+
 2008-11-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: DoAction#2 for Combo was false because it was not sent

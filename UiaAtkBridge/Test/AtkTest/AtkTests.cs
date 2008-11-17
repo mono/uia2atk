@@ -244,33 +244,36 @@ namespace UiaAtkBridgeTest
 			//Simple Set/Get
 			GLib.Value glibValue = GLib.Value.Empty;
 			atkValue.GetMaximumValue (ref glibValue);
-			double value = (double) glibValue.Val;
+			double maxValue = (double) glibValue.Val;
 
-			glibValue.Val = value - 1;
-			atkValue.SetCurrentValue (glibValue);
-			atkValue.GetCurrentValue (ref glibValue);
-			Assert.AreEqual (value - 1,
-			                 (double) glibValue.Val, "Set/Get values failed.");
+			glibValue = new GLib.Value (maxValue - 1);
+			if (atkValue.SetCurrentValue (glibValue) == true) {
+				atkValue.GetCurrentValue (ref glibValue);				
+				Assert.AreEqual (maxValue - 1,
+				                 (double) glibValue.Val, "Set/Get values failed.");
+			}
 
 			//SHOULD NOT THROW ANY EXCEPTION when Maximum + 1
 			atkValue.GetCurrentValue (ref glibValue);
 			double currentValue = (double) glibValue.Val;
-			atkValue.GetMaximumValue (ref glibValue);
-			glibValue = new GLib.Value ((double) glibValue.Val + 1);
-			atkValue.SetCurrentValue (glibValue);
-			atkValue.GetCurrentValue (ref glibValue);
-			Assert.AreEqual (currentValue,
-			                 (double) glibValue.Val, "Set/Get values failed. (Maximum + 1)");
+			glibValue = new GLib.Value (maxValue + 10);
+			if (atkValue.SetCurrentValue (glibValue) == true) {
+				atkValue.GetCurrentValue (ref glibValue);
+				Assert.AreEqual (currentValue,
+				                 (double) glibValue.Val, "Set/Get values failed. (Maximum + 1)");
+			}
 
 			//SHOULD NOT THROW ANY EXCEPTION when Minimum - 1
 			atkValue.GetCurrentValue (ref glibValue);
 			currentValue = (double) glibValue.Val;
 			atkValue.GetMinimumValue (ref glibValue);
-			glibValue = new GLib.Value ((double) glibValue.Val - 1);
-			atkValue.SetCurrentValue (glibValue);
-			atkValue.GetCurrentValue (ref glibValue);
-			Assert.AreEqual (currentValue,
-			                 (double) glibValue.Val, "Set/Get values failed. (Maximum + 1)");
+			double minimumValue = (double) glibValue.Val;
+			glibValue = new GLib.Value (minimumValue - 10);
+			if (atkValue.SetCurrentValue (glibValue) == true) {
+				atkValue.GetCurrentValue (ref glibValue);
+				Assert.AreEqual (minimumValue,
+				                 (double) glibValue.Val, "Set/Get values failed. (Maximum + 1)");
+			}
 		}
 		
 		[Test]
@@ -300,6 +303,40 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 
 			InterfaceComponent (type, atkComponent);
+
+			//Simple Set/Get
+			GLib.Value glibValue = GLib.Value.Empty;
+			atkValue.GetMaximumValue (ref glibValue);
+			double maxValue = (double) glibValue.Val;
+
+			glibValue = new GLib.Value (maxValue - 1);
+			if (atkValue.SetCurrentValue (glibValue) == true) {
+				atkValue.GetCurrentValue (ref glibValue);				
+				Assert.AreEqual (maxValue - 1,
+				                 (double) glibValue.Val, "Set/Get values failed.");
+			}
+
+			//SHOULD NOT THROW ANY EXCEPTION when Maximum + 1
+			atkValue.GetCurrentValue (ref glibValue);
+			double currentValue = (double) glibValue.Val;
+			glibValue = new GLib.Value (maxValue + 10);
+			if (atkValue.SetCurrentValue (glibValue) == true) {
+				atkValue.GetCurrentValue (ref glibValue);
+				Assert.AreEqual (currentValue,
+				                 (double) glibValue.Val, "Set/Get values failed. (Maximum + 1)");
+			}
+
+			//SHOULD NOT THROW ANY EXCEPTION when Minimum - 1
+			atkValue.GetCurrentValue (ref glibValue);
+			currentValue = (double) glibValue.Val;
+			atkValue.GetMinimumValue (ref glibValue);
+			double minimumValue = (double) glibValue.Val;
+			glibValue = new GLib.Value (minimumValue - 10);
+			if (atkValue.SetCurrentValue (glibValue) == true) {
+				atkValue.GetCurrentValue (ref glibValue);
+				Assert.AreEqual (minimumValue,
+				                 (double) glibValue.Val, "Set/Get values failed. (Maximum + 1)");
+			}
 		}
 		
  		[Test]

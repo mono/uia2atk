@@ -85,8 +85,10 @@ namespace UiaAtkBridge
 		{
 			double v = (double)value.Val;
 			if (rangeValueProvider != null) {
-				if (v < rangeValueProvider.Minimum || v > rangeValueProvider.Maximum)
+				if (v > rangeValueProvider.Maximum)
 					return false;
+				if (v < rangeValueProvider.Minimum)
+					v = rangeValueProvider.Minimum;
 				rangeValueProvider.SetValue (v);
 				return true;
 			}
