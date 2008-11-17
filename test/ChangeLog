@@ -1,4 +1,10 @@
 2008-11-17 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* tools/update_uia2atk_pkgs.sh: Check whether the machine is running
+	a 32 or 64-bit OS (by checking for /usr/lib64) and set the URL
+	accordingly.
+
+2008-11-17 Brian G. Merrell <bgmerrell@gmail.com>
 	
 	* keystrokes/winforms/winradiobutton.py/winradiobutton.py: Update
 	winradiobutton test to press space to check a radio button (gtk

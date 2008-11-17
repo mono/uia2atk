@@ -92,7 +92,14 @@ if [ $? != "0" ]; then
     echo "ERROR:  failed to create and change to a temporary directory" 1>&2
     exit 1
 fi
-URL="http://build1.sled.lab.novell.com/uia/$dir/"
+
+# check if the OS is 32 or 64 bit and set the URL accordingly
+if [ -d "/usr/lib64" ]; then
+    URL="http://build1.sled.lab.novell.com/uia/64/$dir/"
+else
+    URL="http://build1.sled.lab.novell.com/uia/$dir/"
+fi
+
 echo `wget -r -nv --accept=rpm -np -nd -l1 $URL` 2>&1
 
 if [ $? != "0" ]; then
