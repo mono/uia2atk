@@ -179,12 +179,14 @@ namespace UiaAtkBridgeTest
 					widget = GailTestApp.MainClass.GiveMeARealComboBox ();
 				else
 					widget = GailTestApp.MainClass.GiveMeARealComboBoxEntry ();
-	
-				//FIXME: update this line when this bug is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=324899
-				((Gtk.ListStore)((Gtk.ComboBox) widget).Model).Clear ();
-				
-				foreach (string text in name) 
-					((Gtk.ComboBox)widget).AppendText (text);
+
+				RunInGuiThread (delegate {
+					//FIXME: update this line when this bug is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=324899
+					((Gtk.ListStore)((Gtk.ComboBox) widget).Model).Clear ();
+
+					foreach (string text in name) 
+						((Gtk.ComboBox)widget).AppendText (text);
+				});
 				
 				break;
 				
