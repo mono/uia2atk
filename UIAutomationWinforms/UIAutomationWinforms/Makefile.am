@@ -51,6 +51,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemSelectionItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Form/TransformProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Form/WindowProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Generic/ScrollProviderBehavior.cs \
@@ -120,6 +123,13 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementAddedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementRemovedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternIsSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemValuePatternValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DomainUpDown/SelectionPatternInvalidatedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DomainUpDown/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Form/FormAutomationFocusChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Label/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/LinkLabel/InvokePatternInvokedEvent.cs \
@@ -217,6 +227,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
 	Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ComboBoxProvider.cs \
+	Mono.UIAutomation.Winforms/DomainUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/ErrorProvider.cs \
 	Mono.UIAutomation.Winforms/ErrorProviderListener.cs \
 	Mono.UIAutomation.Winforms/FormListener.cs \
@@ -228,6 +239,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/HelpProvider.cs \
 	Mono.UIAutomation.Winforms/HelpProviderListener.cs \
 	Mono.UIAutomation.Winforms/IConnectable.cs \
+	Mono.UIAutomation.Winforms/IListProvider.cs \
 	Mono.UIAutomation.Winforms/IScrollBehaviorObserver.cs \
 	Mono.UIAutomation.Winforms/IScrollBehaviorSubject.cs \
 	Mono.UIAutomation.Winforms/LabelProvider.cs \

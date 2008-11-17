@@ -1,3 +1,36 @@
+2008-11-17  Brad Taylor  <brad@getcoded.net>
+	
+	* Mono.UIAutomation.Winforms/ListProvider.cs:
+	* Mono.UIAutomation.Winforms/IListProvider.cs:
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/ScrollItemProviderBehavior.cs:
+	Add new IListProvider interface so that DomainUpDownProvider can share
+	some of the code that providers that extend from ListProvider get to.
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Handle DomainUpDown
+	seperately from other UpDownBase controls.
+
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/SelectionProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/DomainUpDown/SelectionPatternSelectionEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DomainUpDown/SelectionPatternInvalidatedEvent.cs:
+	Implement SelectionProvider for DomainUpDown, also add items as
+	children of the DomainUpDown hierarchy
+
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs:
+	* Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemValuePatternValueEvent.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemValueProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemSelectionItemProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternIsSelectedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementAddedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementRemovedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementSelectedEvent.cs:
+	Implement SelectionItemProvider for the fake items created by
+	DomainUpDown.
+
 2008-11-17  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ErrorProviderListener.cs: SWF =

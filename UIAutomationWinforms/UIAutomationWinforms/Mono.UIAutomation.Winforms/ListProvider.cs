@@ -39,7 +39,8 @@ using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal abstract class ListProvider : FragmentRootControlProvider
+	internal abstract class ListProvider
+		: FragmentRootControlProvider, IListProvider
 	{
 
 		#region Constructors
@@ -62,7 +63,7 @@ namespace Mono.UIAutomation.Winforms
 		public abstract void SelectItem (ListItemProvider item);
 		
 		public abstract void UnselectItem (ListItemProvider item);
-		
+
 		#endregion
 		
 		#region ListItem: Collection Methods and Properties
@@ -86,7 +87,6 @@ namespace Mono.UIAutomation.Winforms
 			if (items.TryGetValue (objectItem, out item) == false) {
 				item = GetNewItemProvider (rootProvider,
 				                           GetItemsListProvider (),
-				                           Control,
 				                           objectItem);
 				items [objectItem] = item;
 				item.Initialize ();
@@ -127,12 +127,10 @@ namespace Mono.UIAutomation.Winforms
 
 		protected virtual ListItemProvider GetNewItemProvider (FragmentRootControlProvider rootProvider,
 		                                                       ListProvider provider,
-		                                                       Control control,
 		                                                       object objectItem)
 		{
 			return new ListItemProvider (rootProvider,
 			                             provider, 
-			                             control,
 			                             objectItem);
 		}
 		
@@ -153,7 +151,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region ListItem: Scroll Methods
 		
-		public abstract void ScrollItemIntoView (ListItemProvider item);		
+		public abstract void ScrollItemIntoView (ListItemProvider item);
 		
 		#endregion
 		
@@ -222,8 +220,9 @@ namespace Mono.UIAutomation.Winforms
 
 		internal abstract IProviderBehavior GetBehaviorRealization (AutomationPattern behavior);
 		
-		internal virtual IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
-		                                                                   ListItemProvider listItem)
+		#region IListProvider implementation
+		public virtual IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+		                                                                 ListItemProvider listItem)
 		{
 			//According to: http://msdn.microsoft.com/en-us/library/ms744765.aspx
 			if (behavior == ScrollItemPatternIdentifiers.Pattern) {
@@ -235,6 +234,7 @@ namespace Mono.UIAutomation.Winforms
 			} else
 				return null;
 		}
+		#endregion
 		
 		#endregion
 

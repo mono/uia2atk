@@ -20,75 +20,70 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Mario Carrion <mcarrion@novell.com>
+//	Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
+using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
-using System.Windows;
+using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
+namespace Mono.UIAutomation.Winforms.Events.DomainUpDown
 {
-
-	internal class ScrollItemProviderBehavior 
-		: ProviderBehavior, IScrollItemProvider
+	internal class ListItemSelectionItemPatternIsSelectedEvent
+		: BaseAutomationPropertyEvent
 	{
-			
-		#region Constructors
-
-		public ScrollItemProviderBehavior (ListItemProvider provider)
-			: base (provider)
+#region Public Methods
+		public ListItemSelectionItemPatternIsSelectedEvent (ListItemProvider provider)
+			: base (provider, 
+			        SelectionItemPatternIdentifiers.IsSelectedProperty)
 		{
+			selected = IsSelected;
 		}
-
-		#endregion
+#endregion
 		
-		#region IProviderBehavior Interface
-
-		public override AutomationPattern ProviderPattern { 
-			get { return ScrollItemPatternIdentifiers.Pattern; }
-		}
-		
+#region ProviderEvent Methods
 		public override void Connect ()
 		{
-			//Doesn't generate any UIA event
+			DomainUpDownControl.SelectedItemChanged += OnIsSelectedChanged;
 		}
-		
+
 		public override void Disconnect ()
 		{
-			//Doesn't generate any UIA event
+			DomainUpDownControl.SelectedItemChanged -= OnIsSelectedChanged;
 		}
+#endregion 
 		
-		#endregion
-
-		#region IScrollItemProvider Interface
-		
-		public void ScrollIntoView ()
+#region Private Methods
+		private void OnIsSelectedChanged (object sender, EventArgs args)
 		{
-			PerformScrollIntoView (((ListItemProvider) Provider).ListProvider);
-		}
-
-		#endregion
-		
-		#region Private Methods
-		
-		private void PerformScrollIntoView (IListProvider provider)
-		{
-			if (provider.Control.InvokeRequired == true) {
-				provider.Control.BeginInvoke (new ScrollIntoViewDelegate (PerformScrollIntoView),
-				                              new object [] { provider });
-				return;
+			if (IsSelected != selected) {
+				RaiseAutomationPropertyChangedEvent ();
 			}
-
-			provider.ScrollItemIntoView ((ListItemProvider) Provider);
+			
+			selected = IsSelected;
 		}
+#endregion
+
+#region Private Properties
+		private bool IsSelected {
+			get {
+				ListItemProvider prov = ((ListItemProvider)Provider);
+				return prov.ListProvider.IsItemSelected (prov);
+			}
+		}
+
+		private SWF.DomainUpDown DomainUpDownControl {
+			get { return (SWF.DomainUpDown) ((ListItemProvider) Provider).ListProvider.Control; }
+		}
+#endregion
 		
-		#endregion
+#region Private Fields
+		private bool selected;
+#endregion
 	}
-	
-	delegate void ScrollIntoViewDelegate (ListProvider provider);
 }
+

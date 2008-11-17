@@ -130,8 +130,8 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 		}
 
-		internal override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
-		                                                                    ListItemProvider listItem)
+		public override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+		                                                                  ListItemProvider listItem)
 		{
 			if (behavior == SelectionItemPatternIdentifiers.Pattern)
 				return new ListItemSelectionItemProviderBehavior (listItem);
@@ -343,7 +343,6 @@ namespace Mono.UIAutomation.Winforms
 
 		protected override ListItemProvider GetNewItemProvider (FragmentRootControlProvider rootProvider,
 		                                                        ListProvider provider,
-		                                                        SWF.Control control,
 		                                                        object objectItem)
 		{
 			return new ListViewListItemProvider (rootProvider,
@@ -888,7 +887,7 @@ namespace Mono.UIAutomation.Winforms
 			                                 ListViewProvider listViewProvider, 
 			                                 SWF.ListView listView,
 			                                 SWF.ListViewItem listViewItem)
-				: base (rootProvider, listViewProvider, listView, listViewItem)
+				: base (rootProvider, listViewProvider, listViewItem)
 			{
 				this.listView = listView;
 				lastView = listView.View;

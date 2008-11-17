@@ -88,6 +88,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.RichTextBox rt;
 			SWF.LinkLabel ll;
 			SWF.UpDownBase udb;
+			SWF.DomainUpDown dud;
 			FragmentControlProvider provider = null;
 			SWF.Form f;
 			SWF.GroupBox gb;
@@ -121,8 +122,9 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 
 			provider = (FragmentControlProvider) FindProvider (component);
-			if (provider != null)
+			if (provider != null) {
 				return provider;
+			}
 
 			if ((f = component as SWF.Form) != null) {
 				provider = new FormProvider (f);
@@ -143,6 +145,9 @@ namespace Mono.UIAutomation.Winforms
 				provider = new LinkLabelProvider (ll);
 			else if ((l = component as SWF.Label) != null)
 				provider = new LabelProvider (l);
+			// NOTE: DomainUpDown must always be before UpDownBase in this list.
+			else if ((dud = component as SWF.DomainUpDown) != null)
+				provider = new DomainUpDownProvider (dud);
 			else if ((udb = component as SWF.UpDownBase) != null)
 				provider = new UpDownBaseProvider (udb);
 			else if ((sb = component as SWF.StatusBar) != null)

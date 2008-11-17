@@ -78,8 +78,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region ListProvider: Methods
 		
-		internal override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
-		                                                                    ListItemProvider listItem)
+		public override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+		                                                                  ListItemProvider listItem)
 		{
 			if (behavior == TogglePatternIdentifiers.Pattern)
 				return new ListItemToggleProviderBehavior (listItem);	

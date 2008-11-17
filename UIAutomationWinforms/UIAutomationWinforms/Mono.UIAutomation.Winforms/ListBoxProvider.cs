@@ -39,7 +39,7 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal class ListBoxProvider : ListProvider, IScrollBehaviorSubject
+	internal class ListBoxProvider : ListProvider, IScrollBehaviorSubject, IListProvider
 	{		
 	
 		#region Constructor 
@@ -268,8 +268,8 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 		}		
 		
-		internal override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
-		                                                                    ListItemProvider listItem)
+		public override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+		                                                                  ListItemProvider listItem)
 		{
 			if (behavior == SelectionItemPatternIdentifiers.Pattern)
 				return new ListItemSelectionItemProviderBehavior (listItem);

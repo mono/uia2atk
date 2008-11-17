@@ -1,3 +1,8 @@
+2008-11-17  Brad Taylor  <brad@getcoded.net>
+
+	* DomainUpDownProviderTest.cs: Test SelectionProvider, navigation and
+	SelectionItem interfaces.
+
 2008-11-17  Mario Carrion  <mcarrion@novell.com>
 
 	* MockBridge.cs: IAutomationBridge implementation:

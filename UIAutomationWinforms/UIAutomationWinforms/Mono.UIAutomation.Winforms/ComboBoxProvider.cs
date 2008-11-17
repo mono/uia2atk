@@ -234,8 +234,8 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 		}
 
-		internal override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
-		                                                                    ListItemProvider listItem)
+		public override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+		                                                                  ListItemProvider listItem)
 		{
 			if (behavior == SelectionItemPatternIdentifiers.Pattern)
 				return new ListItemSelectionItemProviderBehavior (listItem);
@@ -466,8 +466,8 @@ namespace Mono.UIAutomation.Winforms
 					return null;
 			}		
 			
-			internal override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
-			                                                                    ListItemProvider listItem)
+			public override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+			                                                                  ListItemProvider listItem)
 			{
 				if (behavior == SelectionItemPatternIdentifiers.Pattern)
 					return new ListItemSelectionItemProviderBehavior (listItem);

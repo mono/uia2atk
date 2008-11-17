@@ -66,6 +66,56 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "Not returning ValuePatternIdentifiers.");
 			Assert.IsTrue (valueProvider is IValueProvider,
 			               "Not returning ValuePatternIdentifiers.");
+
+			object selectionProvider =
+				provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (selectionProvider,
+			                  "Not returning SelectionPatternIdentifiers.");
+			Assert.IsTrue (selectionProvider is ISelectionProvider,
+			               "Not returning SelectionPatternIdentifiers.");
+		}
+
+		#endregion
+
+		#region ISelectionPattern Test
+		
+		[Test]
+		public void ISelectionPatternTest ()
+		{
+			DomainUpDown domainUpDown = new DomainUpDown ();
+			domainUpDown.Items.Add ("First");
+			domainUpDown.Items.Add ("Second");
+			domainUpDown.Items.Add ("Third");
+			domainUpDown.Items.Add ("Fourth");
+			Form.Controls.Add (domainUpDown);
+
+			IRawElementProviderSimple provider =
+				ProviderFactory.GetProvider (domainUpDown);
+			ISelectionProvider prov
+				= (ISelectionProvider)provider.GetPatternProvider (
+					SelectionPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (prov);
+	
+			IRawElementProviderSimple[] items;
+			
+			// Test initial no selection
+			Assert.AreEqual (-1, domainUpDown.SelectedIndex);
+			items = prov.GetSelection ();
+			Assert.IsNotNull (items, "Should never return null");
+			Assert.AreEqual (0, items.Length, "Too many items returned");
+
+			// Test first item selection
+			domainUpDown.SelectedIndex = 0;
+			Assert.AreEqual (0, domainUpDown.SelectedIndex);
+
+			items = prov.GetSelection ();
+			Assert.IsNotNull (items, "Should never return null");
+			Assert.AreEqual (1, items.Length, "Too many or too few items returned");
+			
+			IValueProvider item_val_prov
+				= (IValueProvider)items[0].GetPatternProvider (
+					ValuePatternIdentifiers.Pattern.Id);
+			Assert.AreEqual ("First", item_val_prov.Value);
 		}
 
 		#endregion
@@ -180,6 +230,63 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (forwardButtonProvider,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 			              false);
+		}
+
+		[Test]
+		public void ItemsNavigationTest ()
+		{
+			DomainUpDown domainUpDown = (DomainUpDown) GetControlInstance ();
+			domainUpDown.Items.Add ("First");
+			domainUpDown.Items.Add ("Second");
+			domainUpDown.Items.Add ("Third");
+			domainUpDown.Items.Add ("Fourth");
+			Form.Controls.Add (domainUpDown);
+
+			IRawElementProviderFragmentRoot rootProvider;
+			IRawElementProviderFragment childProvider;
+			
+			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (domainUpDown);
+
+			// Skip over the Forward and Backward buttons
+			childProvider = rootProvider.Navigate (NavigateDirection.FirstChild);
+			childProvider = childProvider.Navigate (NavigateDirection.NextSibling);
+			childProvider = childProvider.Navigate (NavigateDirection.NextSibling);
+			
+			IValueProvider item_val_prov
+				= (IValueProvider)childProvider.GetPatternProvider (
+					ValuePatternIdentifiers.Pattern.Id);
+			Assert.AreEqual ("First", item_val_prov.Value);
+
+			childProvider = childProvider.Navigate (NavigateDirection.NextSibling);
+			item_val_prov
+				= (IValueProvider)childProvider.GetPatternProvider (
+					ValuePatternIdentifiers.Pattern.Id);
+			Assert.AreEqual ("Second", item_val_prov.Value);
+
+			// Try to select the Second item
+			ISelectionItemProvider sel_item_prov
+				= (ISelectionItemProvider)childProvider.GetPatternProvider (
+					SelectionItemPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (sel_item_prov);
+
+			sel_item_prov.Select ();
+			Assert.AreEqual (1, domainUpDown.SelectedIndex);
+
+			// Verify that the SelectionProvider reflects the new
+			// selection
+			ISelectionProvider sel_prov
+				= (ISelectionProvider)rootProvider.GetPatternProvider (
+					SelectionPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (sel_prov);
+			
+			IRawElementProviderSimple[] children = sel_prov.GetSelection ();
+			Assert.IsNotNull (children);
+			Assert.AreEqual (1, children.Length);
+			
+			IValueProvider val_prov
+				= (IValueProvider)children[0].GetPatternProvider (
+					ValuePatternIdentifiers.Pattern.Id);
+			Assert.AreEqual ("Second", val_prov.Value);
 		}
 		
 		#endregion
