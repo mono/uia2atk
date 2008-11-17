@@ -247,9 +247,6 @@ namespace UiaAtkBridgeTest
 					});
 				}
 			}
-
-			// it takes a bit before the State is propagated!
-			System.Threading.Thread.Sleep (2000);
 			
 			state = accessible.RefStateSet ();
 			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled #2");

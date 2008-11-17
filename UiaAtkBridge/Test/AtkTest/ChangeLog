@@ -1,3 +1,7 @@
+2008-11-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs: Sleep not needed after adding RunInGuiThread.
+
 2008-11-17  Mario Carrion  <mcarrion@novell.com>
 
 	* AtkTests.cs: HScrollBar/VScrollBar updated to pass Gail tests.
