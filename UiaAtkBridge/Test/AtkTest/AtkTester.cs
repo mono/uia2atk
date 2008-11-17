@@ -172,8 +172,12 @@ namespace UiaAtkBridgeTest
 				Assert.IsTrue (accessible3.RefStateSet ().ContainsState (Atk.StateType.Checked), "IAF3RB::Checked #15");
 			});
 		}
+
+		protected void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible) {
+			InterfaceAction (type, implementor, accessible, 0);
+		}
 		
-		protected void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible)
+		protected void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible, int numChildrenForNewGhostWindow)
 		{
 			int validNumberOfActions = ValidNumberOfActionsForAButton;
 			if ((type == BasicWidgetType.TextBoxEntry) ||
@@ -226,12 +230,17 @@ namespace UiaAtkBridgeTest
 				});
 			}
 
-			if ((type == BasicWidgetType.ComboBoxDropDownList) || 
-			    (type == BasicWidgetType.ComboBoxDropDownEntry)) {
-				//because the dropdown represents a new windo!
+			if (numChildrenForNewGhostWindow > 0) {
+				//because the dropdown represents a new window!
 				Assert.AreEqual (2, GetTopLevelRootItem ().NAccessibleChildren,
 				  "Windows in my app should be 2 now that I opened the pandora's box; but I got:" + childrenRoles (GetTopLevelRootItem ()));
-				Assert.AreEqual (Atk.Role.Window, GetTopLevelRootItem ().RefAccessibleChild (1).Role);
+				Atk.Object newWindow = GetTopLevelRootItem ().RefAccessibleChild (1);
+				Assert.AreEqual (Atk.Role.Window, newWindow.Role, "new window role should be Atk.Role.Window");
+				Assert.AreEqual (1, newWindow.NAccessibleChildren, "the window should contain a child");
+				Assert.AreEqual (Atk.Role.Menu, newWindow.RefAccessibleChild (0).Role, "the window should contain a Menu");
+				Assert.AreEqual (numChildrenForNewGhostWindow, newWindow.RefAccessibleChild (0).NAccessibleChildren, 
+				                 "the Menu should contains some children");
+				Assert.AreEqual (Atk.Role.MenuItem, newWindow.RefAccessibleChild (0).RefAccessibleChild (0).Role);
 				
 			}
 			

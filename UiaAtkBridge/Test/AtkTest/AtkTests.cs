@@ -597,7 +597,7 @@ namespace UiaAtkBridgeTest
 			PropertyRole (type, accessible);
 			
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
-			InterfaceAction (type, atkAction, accessible);
+			InterfaceAction (type, atkAction, accessible, names.Length);
 		}
 		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
@@ -629,7 +629,7 @@ namespace UiaAtkBridgeTest
 			PropertyRole (type, accessible);
 			
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
-			InterfaceAction (type, atkAction, accessible);
+			InterfaceAction (type, atkAction, accessible, names.Length);
 			
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);
 			CheckComboBoxMenuChild (menuChild, names);
