@@ -148,7 +148,7 @@ namespace UiaAtkBridge
  		public bool IsAccessibilityEnabled {
  			get {
 				// FIXME: This is a temporal hack, we will replace it, proposed solutions
-				// - Using GConf API and fixing threading issues.
+				// - Use GConf API (we will need to fix threading issues).
 				// - <Insert your fantastic idea here>
 				string output = "false";
 				bool enabled = false;
