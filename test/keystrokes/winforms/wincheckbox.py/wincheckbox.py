@@ -22,6 +22,7 @@ sequence.append(utils.AssertPresentationAction(
     "SPEECH OUTPUT: 'not checked'"]))
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("Tab"))
+sequence.append(WaitForFocus("check button 2", acc_role=pyatspi.ROLE_CHECK_BOX))
 sequence.append(utils.AssertPresentationAction(
     "Switch focus to Check Button 2",
     ["BRAILLE LINE:  'ipy Application Check Button Frame < > check button 2 CheckBox'",
@@ -44,6 +45,7 @@ sequence.append(utils.AssertPresentationAction(
     "SPEECH OUTPUT: 'not checked'"]))
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("Tab"))
+sequence.append(WaitForFocus("Quit", acc_role=pyatspi.ROLE_PUSH_BUTTON))
 sequence.append(utils.AssertPresentationAction(
     "Quit Button",
     ["BRAILLE LINE:  'ipy Application Check Button Frame Quit Button'",

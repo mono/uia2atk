@@ -5,7 +5,7 @@ import utils
 
 sequence = MacroSequence()
 
-#sequence.append(WaitForWindowActivate("Check Button",None))
+sequence.append(WaitForWindowActivate("Check Button",None))
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("space"))
 sequence.append(utils.AssertPresentationAction(
@@ -22,6 +22,7 @@ sequence.append(utils.AssertPresentationAction(
     "SPEECH OUTPUT: 'not checked'"]))
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("Tab"))
+sequence.append(WaitForFocus("check button 2", acc_role=pyatspi.ROLE_CHECK_BOX))
 sequence.append(utils.AssertPresentationAction(
     "Switch focus to Check Button 2",
     ["BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame < > check button 2 CheckBox'",
@@ -44,6 +45,7 @@ sequence.append(utils.AssertPresentationAction(
     "SPEECH OUTPUT: 'not checked'"]))
 sequence.append(utils.StartRecordingAction())
 sequence.append(KeyComboAction("Tab"))
+sequence.append(WaitForFocus("Quit", acc_role=pyatspi.ROLE_PUSH_BUTTON))
 sequence.append(utils.AssertPresentationAction(
     "Quit Button",
     ["BRAILLE LINE:  'gtkcheckbutton.py Application Check Button Frame Quit Button'",

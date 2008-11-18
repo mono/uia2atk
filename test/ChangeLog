@@ -1,3 +1,11 @@
+2008-11-18 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* keystrokes/winforms/wincheckbox.py/wincheckbox.py: Add WaitForFocus
+	calls where appropriate.
+	* keystrokes/gtk/gtkcheckbutton.py/checkbutton.py:  Add
+	WaitForWindowActivate to begin the test.  Add WaitForFocus calls where
+	appropriate.
+
 2008-11-18  Calen Chen <cachen@novell.com>
 
 	* testers/listview_list_ops.py: delete "focused" from comment in line56
