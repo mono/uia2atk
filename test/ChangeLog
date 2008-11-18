@@ -1,5 +1,12 @@
 2008-11-18 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* tools/update_uia2atk_pkgs.sh: Workaround for buggy wget return
+	codes:  Check to make sure we downloaded >0 file(s) to the temporary
+	directory to which the packages are downloaded, if not, exit with
+	error status.
+
+2008-11-18 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* keystrokes/winforms/wincheckbox.py/wincheckbox.py: Add WaitForFocus
 	calls where appropriate.
 	* keystrokes/gtk/gtkcheckbutton.py/checkbutton.py:  Add

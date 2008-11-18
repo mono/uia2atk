@@ -106,6 +106,17 @@ if [ $? != "0" ]; then
     echo "ERROR:  failed to download the rpms" 1>&2
     exit 1
 fi
+
+num_files=`ls -1 | wc -l`
+
+# can't rely on wget's return code
+# (https://savannah.gnu.org/bugs/index.php?23348), so return error if
+# no files were downloaded
+if [ $num_files -eq 0 ]; then
+    echo "ERROR:  failed to download the rpms" 
+    exit 1
+fi
+
 rpm -Uvh $opts *.rpm
 if [ $? != "0" ]; then
     echo "ERROR:  failed to update the rpms" 1>&2
