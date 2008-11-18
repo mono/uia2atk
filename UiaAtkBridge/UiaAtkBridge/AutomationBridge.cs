@@ -754,7 +754,10 @@ namespace UiaAtkBridge
 			
 			Adapter atkSpinner;
 			if (provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id) != null)
-				atkSpinner = new List ((IRawElementProviderFragmentRoot)provider);
+				if (provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id) != null)
+					atkSpinner = new ListWithEditableText ((IRawElementProviderFragmentRoot)provider);
+				else
+					atkSpinner = new List ((IRawElementProviderFragmentRoot)provider);
 			else if (provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id) != null)
 				atkSpinner = new SpinnerWithValue (provider);
  			else

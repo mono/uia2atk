@@ -1,3 +1,8 @@
+2008-11-19  Brad Taylor  <brad@getcoded.net>
+	
+	* List.cs:
+	* AutomationBridge.cs: Implement Atk.EditableText for DomainDropDown.
+
 2008-11-17  Mario Carrion  <mcarrion@novell.com>
 
 	* Button.cs: Using AccessKey instead of AcceleratorKey. Returning valid

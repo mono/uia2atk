@@ -240,6 +240,216 @@ AtkObject,
 		}
 	}
 
+	public class ListWithEditableText
+		: List, Atk.TextImplementor, Atk.EditableTextImplementor
+	{
+		private TextImplementorHelper text_helper;
+
+		public ListWithEditableText (IRawElementProviderFragmentRoot provider)
+			: base (provider)
+		{
+			IValueProvider value_prov
+				= (IValueProvider) provider.GetPatternProvider (
+					ValuePatternIdentifiers.Pattern.Id);
+			if (value_prov == null) {
+				throw new ArgumentException ("Provider does not implement IValue");
+			}
+
+			text_helper = new TextImplementorHelper (TextContents, this);
+			caretOffset = text_helper.Length;
+		}
+
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			states.AddState (Atk.StateType.Editable);
+			states.AddState (Atk.StateType.SingleLine);
+			return states;
+		}
+
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			if (e.Property != ValuePatternIdentifiers.ValueProperty) {
+				return;
+			}
+
+			string new_text = TextContents;
+			
+			// Don't fire spurious events if the text hasn't changed
+			if (text_helper.Text == new_text)
+				return;
+
+			Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+
+			// First delete all text, then insert the new text
+			adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, text_helper.Length);
+
+			text_helper = new TextImplementorHelper (new_text, this);
+			adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+						 new_text == null ? 0 : new_text.Length);
+
+			EmitVisibleDataChanged ();
+		}
+
+#region TextImplementor Implementation 
+		public string GetText (int startOffset, int endOffset)
+		{
+			return text_helper.GetText (startOffset, endOffset);
+		}
+		
+		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
+		{
+			return text_helper.GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
+		}
+		
+		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
+		{
+			return text_helper.GetTextAtOffset (offset, boundaryType, out startOffset, out endOffset);
+		}
+		
+		public char GetCharacterAtOffset (int offset)
+		{
+			return text_helper.GetCharacterAtOffset (offset);
+		}
+		
+		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
+		{
+			return text_helper.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
+		}
+		
+		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
+		{
+			return text_helper.GetRunAttributes (offset, out startOffset, out endOffset);
+		}
+		
+		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
+		{
+			text_helper.GetCharacterExtents (offset, out x, out y, out width, out height, coords);
+		}
+		
+		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
+		{
+			throw new NotImplementedException ();
+		}
+		
+		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
+		{
+			startOffset = caretOffset;
+			endOffset = caretOffset;
+			return null;
+		}
+		
+		public bool AddSelection (int startOffset, int endOffset)
+		{
+			throw new NotImplementedException ();
+		}
+		
+		public bool RemoveSelection (int selectionNum)
+		{
+			return false;
+		}
+		
+		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
+		{
+			return false;
+		}
+
+		int caretOffset = -1;
+		
+		public bool SetCaretOffset (int offset)
+		{
+			//TODO: internal interface
+			caretOffset = offset;
+			return true;
+		}
+		
+		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
+		{
+			text_helper.GetRangeExtents (startOffset, endOffset, coordType, out rect);
+		}
+		
+		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
+		{
+			throw new NotImplementedException ();
+		}
+		
+		public int CaretOffset {
+			get { return text_helper.Length; }
+		}
+		
+		public GLib.SList DefaultAttributes {
+			get { throw new NotImplementedException (); }
+		}
+		
+		public int CharacterCount {
+			get { return text_helper.Length; }
+		}
+		
+		public int NSelections {
+			get { return 0; }
+		}
+#endregion 
+
+#region EditableTextImplementor implementation 
+		public bool SetRunAttributes (GLib.SList attrib_set, int start_offset, int end_offset)
+		{
+			return false;
+		}
+		
+		public void InsertText (string str, ref int position)
+		{
+			if (position < 0 || position > text_helper.Length)
+				position = text_helper.Length;	// gail
+			TextContents = text_helper.Text.Substring (0, position)
+				+ str
+				+ text_helper.Text.Substring (position);
+			position += str.Length;
+		}
+		
+		public void CopyText (int start_pos, int end_pos)
+		{
+			Console.WriteLine ("UiaAtkBridge (ListWithEditableText): CopyText unimplemented");
+		}
+		
+		public void CutText (int start_pos, int end_pos)
+		{
+			Console.WriteLine ("UiaAtkBridge (ListWithEditableText): CutText unimplemented");
+		}
+		
+		public void DeleteText (int start_pos, int end_pos)
+		{
+			if (start_pos < 0)
+				start_pos = 0;
+			if (end_pos < 0 || end_pos > text_helper.Length)
+				end_pos = text_helper.Length;
+			if (start_pos > end_pos)
+				start_pos = end_pos;
+
+			TextContents = TextContents.Remove (start_pos, end_pos - start_pos);
+		}
+		
+		public void PasteText (int position)
+		{
+			Console.WriteLine ("UiaAtkBridge (ListWithEditableText): PasteText unimplemented");
+		}
+		
+		public string TextContents {
+			get {
+				IValueProvider value_prov
+					= (IValueProvider) Provider.GetPatternProvider (
+						ValuePatternIdentifiers.Pattern.Id);
+				return value_prov.Value.ToString ();
+			}
+			set {
+				IValueProvider value_prov
+					= (IValueProvider) Provider.GetPatternProvider (
+						ValuePatternIdentifiers.Pattern.Id);
+				value_prov.SetValue (value);
+			}
+		}
+#endregion 
+	}
+
 	public class ListWithGrid : List, Atk.TableImplementor
 	{
 		private TableImplementorHelper tableExpert = null;
