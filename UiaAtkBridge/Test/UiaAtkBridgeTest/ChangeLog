@@ -1,3 +1,8 @@
+2008-11-18  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am: Copy UiaAtkBridge.dll.config into bin/Debug (or
+	bin/Release).
+
 2008-11-17  Mario Carrion  <mcarrion@novell.com>
 
 	* BridgeTester.cs: Adding string.Replace to test KeyBinding in

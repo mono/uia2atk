@@ -106,10 +106,12 @@ bin/Debug/UiaAtkBridge.dll: ../../UiaAtkBridge/bin/Debug/UiaAtkBridge.dll
 	@mkdir -p bin/Debug
 	cp -a $< $@
 	cp -a $<.mdb $@.mdb
+	cp -a $<.config $@.config
 
 bin/Release/UiaAtkBridge.dll: ../../UiaAtkBridge/bin/Release/UiaAtkBridge.dll
 	@mkdir -p bin/Release
 	cp -a $< $@
+	cp -a $<.config $@.config
 
 bin/Debug/AtkTest.dll: ../AtkTest/bin/Debug/AtkTest.dll
 	@mkdir -p bin/Debug
