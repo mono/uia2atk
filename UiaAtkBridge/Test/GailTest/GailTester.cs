@@ -446,7 +446,7 @@ namespace UiaAtkBridgeTest
 					col.AddAttribute (cell, "text", i++);
 				}
 				break;
-			case BasicWidgetType.Pane:
+			case BasicWidgetType.ContainerPanel:
 				widget = new Gtk.Frame ();
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealFrame ();
