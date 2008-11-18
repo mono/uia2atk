@@ -71,13 +71,13 @@
     <File name="System.Windows.Automation/TreeScope.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <GtkDesignInfo />
-  <MonoDevelop.Autotools.MakefileInfo RelativeMakefileName="Makefile">
+  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile">
     <BuildFilesVar />
     <DeployFilesVar />
     <ResourcesVar />
     <OthersVar />
-    <GacRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
-    <AsmRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
-    <ProjectRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
+    <GacRefVar />
+    <AsmRefVar />
+    <ProjectRefVar />
   </MonoDevelop.Autotools.MakefileInfo>
 </Project>

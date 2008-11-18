@@ -27,13 +27,13 @@
   </References>
   <Deployment.LinuxDeployData generatePcFile="False" />
   <GtkDesignInfo />
-  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile" BuildTargetName="test" ExecuteTargetName="run-test">
+  <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile" ExecuteTargetName="run">
     <BuildFilesVar />
     <DeployFilesVar />
     <ResourcesVar />
     <OthersVar />
-    <GacRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
-    <AsmRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
-    <ProjectRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
+    <GacRefVar Prefix="-r:" />
+    <AsmRefVar Prefix="-r:" />
+    <ProjectRefVar Prefix="-r:" />
   </MonoDevelop.Autotools.MakefileInfo>
 </Project>

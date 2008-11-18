@@ -1,3 +1,8 @@
+2008-11-18  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UIAutomationProvider.mdp:
+	* UIAutomationProviderTests.mdp: Add makefile integration.
+
 2008-11-17  Mario Carrion  <mcarrion@novell.com>
 
 	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
