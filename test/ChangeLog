@@ -1,3 +1,8 @@
+2008-11-18  Calen Chen <cachen@novell.com>
+
+	* samples/listview_details.py: shorten the height of listview to show 
+	the scrollbar
+
 2008-11-17 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* tools/update_uia2atk_pkgs.sh: Check whether the machine is running
