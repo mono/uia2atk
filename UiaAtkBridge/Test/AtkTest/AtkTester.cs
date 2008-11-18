@@ -57,6 +57,8 @@ namespace UiaAtkBridgeTest
 		public abstract void EnableWidget (Atk.Object accessible);
 
 		public abstract Atk.Object GetTopLevelRootItem ();
+
+		public abstract bool IsBGO561414Addressed ();
 		
 		protected void InterfaceComponent (BasicWidgetType type, Atk.Component implementor)
 		{
@@ -329,7 +331,7 @@ namespace UiaAtkBridgeTest
 			
 		}
 		
-		protected void InterfaceSelection (Atk.Selection implementor, string[] names, Atk.Object accessible, BasicWidgetType type)
+		protected void InterfaceSelection (Atk.Selection implementor, string [] names, Atk.Object accessible, BasicWidgetType type)
 		{
 			if (names == null)
 				throw new ArgumentNullException ("names");
@@ -356,7 +358,7 @@ namespace UiaAtkBridgeTest
 			
 			for (int i = 0; i < names.Length; i++) {
 				Assert.IsTrue (implementor.AddSelection (i), "AddSelection(" + i + ")");
-
+				
 				string accName = names [i];
 				if (type == BasicWidgetType.ParentMenu)
 					accName = names[0];
@@ -374,7 +376,11 @@ namespace UiaAtkBridgeTest
 					Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
 					Assert.IsTrue (implementor.IsChildSelected (i), "childSelected(" + i + ")");
 					Assert.IsTrue (refSelObj.RefStateSet ().ContainsState (Atk.StateType.Selectable), "Selected child should have State.Selectable");
-					Assert.IsTrue (refSelObj.RefStateSet ().ContainsState (Atk.StateType.Selected), "Selected child(" + i + ") should have State.Selected");
+					if (((type == BasicWidgetType.ComboBoxDropDownList) ||
+					     (type == BasicWidgetType.ComboBoxDropDownEntry))
+					    && (IsBGO561414Addressed ())) {
+						Assert.IsTrue (refSelObj.RefStateSet ().ContainsState (Atk.StateType.Selected), "Selected child(" + i + ") should have State.Selected");
+					}
 				} else {
 					//first child in a menu -> tearoff menuitem (can't be selected)
 					if (i == 0) {

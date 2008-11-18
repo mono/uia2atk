@@ -1,3 +1,9 @@
+2008-11-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs: ComboBox + AtkSelection, now that we understood a gail
+	bug completely.
+
 2008-11-17  Mario Carrion  <mcarrion@novell.com>
 
 	* AtkTests.cs: Testing GetKeyBinding. 

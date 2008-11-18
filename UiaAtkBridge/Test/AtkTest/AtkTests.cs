@@ -663,8 +663,8 @@ namespace UiaAtkBridgeTest
 			CheckComboBoxMenuChild (menuChild, names);
 
 			//FIXME:
-			//Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
-			//InterfaceSelection (atkSelection, names, accessible, type);
+			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
+			InterfaceSelection (atkSelection, names, accessible, type);
 		}
 		
 		[Test]

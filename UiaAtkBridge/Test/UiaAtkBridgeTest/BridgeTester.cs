@@ -190,6 +190,11 @@ namespace UiaAtkBridgeTest
 		public override Atk.Object GetTopLevelRootItem () {
 			return UiaAtkBridge.TopLevelRootItem.Instance;
 		}
+
+		public override bool IsBGO561414Addressed ()
+		{
+			return true;
+		}
 		
 		private Dictionary <Atk.Object, System.ComponentModel.Component> mappings = new Dictionary<Atk.Object, System.ComponentModel.Component> ();
 		

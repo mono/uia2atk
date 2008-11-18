@@ -1,3 +1,8 @@
+2008-11-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTester.cs: ComboBox + AtkSelection, now that we understood a gail
+	bug completely.
+
 2008-11-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* GailTester.cs: Implement new abstract function. Remove some unneeded

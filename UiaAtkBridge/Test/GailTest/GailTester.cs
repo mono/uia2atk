@@ -98,6 +98,11 @@ namespace UiaAtkBridgeTest
 			});
 		}
 
+		public override bool IsBGO561414Addressed ()
+		{
+			return false;
+		}
+
 		public override Atk.Object GetAccessible (BasicWidgetType type, string text)
 		{
 			return GetAccessible (type, text, true);
