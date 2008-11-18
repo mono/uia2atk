@@ -181,7 +181,7 @@ namespace Mono.UIAutomation.Winforms
 			foreach (object val in control.Items) {
 				prov = new ListItemProvider (
 					(FragmentRootControlProvider)FragmentRoot,
-					(IListProvider)this, val
+					(IListProvider)this, null, val
 				);
 				prov.Initialize ();
 				AddChildProvider (true, prov);

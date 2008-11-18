@@ -41,8 +41,9 @@ namespace Mono.UIAutomation.Winforms
 
 		public ListItemProvider (FragmentRootControlProvider rootProvider,
 		                         IListProvider provider, 
+		                         Control control,
 		                         object objectItem)
-			: base (null)
+			: base (control)
 		{
 			listProvider = provider;
 			this.rootProvider = rootProvider;

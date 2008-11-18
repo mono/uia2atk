@@ -343,6 +343,7 @@ namespace Mono.UIAutomation.Winforms
 
 		protected override ListItemProvider GetNewItemProvider (FragmentRootControlProvider rootProvider,
 		                                                        ListProvider provider,
+		                                                        SWF.Control control,
 		                                                        object objectItem)
 		{
 			return new ListViewListItemProvider (rootProvider,
@@ -887,7 +888,7 @@ namespace Mono.UIAutomation.Winforms
 			                                 ListViewProvider listViewProvider, 
 			                                 SWF.ListView listView,
 			                                 SWF.ListViewItem listViewItem)
-				: base (rootProvider, listViewProvider, listViewItem)
+				: base (rootProvider, listViewProvider, listView, listViewItem)
 			{
 				this.listView = listView;
 				lastView = listView.View;
