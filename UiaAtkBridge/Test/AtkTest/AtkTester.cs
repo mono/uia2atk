@@ -381,6 +381,11 @@ namespace UiaAtkBridgeTest
 					    && (IsBGO561414Addressed ())) {
 						Assert.IsTrue (refSelObj.RefStateSet ().ContainsState (Atk.StateType.Selected), "Selected child(" + i + ") should have State.Selected");
 					}
+					for (int j = 0; j < names.Length; j++) {
+						if (j == i)
+							continue;
+						Assert.IsFalse (refSelObj.RefStateSet ().ContainsState (Atk.StateType.Selected), "Unselected child(" + j + ") shouldn't have State.Selected");
+					}
 				} else {
 					//first child in a menu -> tearoff menuitem (can't be selected)
 					if (i == 0) {
@@ -395,13 +400,15 @@ namespace UiaAtkBridgeTest
 					}
 					
 				}
-
 				if (i == 1 && (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox))
 					Assert.IsFalse (accessible.RefAccessibleChild(0).RefStateSet().ContainsState (Atk.StateType.Selected), "Unselected child should not have State.Selected");
 				int refSelPos = i;
 				if (refSelPos == 0)
 					refSelPos = -1;
 				Assert.IsNull (implementor.RefSelection (refSelPos), "RefSelection OOR#-" + i);
+
+				if (i != names.Length - 1)
+					Assert.IsTrue (implementor.RemoveSelection (i), "restoring initial situation should be a valid operation");
 			}
 
 			Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null");
@@ -429,7 +436,7 @@ namespace UiaAtkBridgeTest
 			
 			if (type != BasicWidgetType.TabControl) {
 				Assert.IsTrue (implementor.ClearSelection (), "ClearSelection");
-			Assert.IsNull (implementor.RefSelection (0), "RefSel after CS");
+				Assert.IsNull (implementor.RefSelection (0), "RefSel after CS");
 			}
 
 			//this is a normal combobox (not multiline) (TODO: research multiline comboboxes?)
