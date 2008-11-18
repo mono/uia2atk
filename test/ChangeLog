@@ -1,5 +1,13 @@
 2008-11-18 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* harness/local_run.py: Fedora returns fqdn to gethostname(), add code
+	to grab only the hostname regardless of what gethostname() returns as
+	long as the hostname is first (e.g., myhost.example.com).
+	* harness/machines.py: Add suse64, fedora32, and fedora64 machines to
+	the list of machines on which tests should be run.
+
+2008-11-18 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* tools/update_uia2atk_pkgs.sh: Workaround for buggy wget return
 	codes:  Check to make sure we downloaded >0 file(s) to the temporary
 	directory to which the packages are downloaded, if not, exit with

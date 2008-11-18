@@ -150,8 +150,8 @@ class Test(object):
         if o_tmp == '' and t.poll() is not None:
             break
     r = t.poll()
-    package_status_path = \
-                "%s/%s_package_status" % (Settings.log_path, gethostname())
+    package_status_path = "%s/%s_package_status" % \
+                            (Settings.log_path, gethostname().split(".")[0])
     if r != 0:
         # create the package_status file.  delete it first so that it 
         # is picked up as a new file by qamon
