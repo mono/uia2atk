@@ -408,11 +408,12 @@ namespace UiaAtkBridgeTest
 
 			string lastName = accessible.Name;
 
-			if (type == BasicWidgetType.ComboBoxDropDownList || 
+			if (type == BasicWidgetType.ComboBoxDropDownList ||
+			    type == BasicWidgetType.ComboBoxDropDownEntry || 
 			    type == BasicWidgetType.ListBox || 
 			    type == BasicWidgetType.CheckedListBox ||
 			    type == BasicWidgetType.TabControl) {
-				//strangely, OOR selections return true (valid)
+				//strangely, OOR selections return true (valid) -> TODO: report bug on Gail
 				Assert.IsTrue (implementor.AddSelection (-1), "AddSelection OOR#1");
 			} else {
 				Assert.IsFalse (implementor.AddSelection (-1), "AddSelection OOR#1");
@@ -421,8 +422,9 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (implementor.AddSelection (names.Length), "AddSelection OOR#2");
 			
 			Assert.AreEqual (lastName, accessible.Name, "OOR selections shouldn't affect name");
+
+			Assert.IsNull (implementor.RefSelection (-1), "RefSelection OOR#1"); 
 			
-			Assert.IsNull (implementor.RefSelection (-1), "RefSelection OOR#1");
 			Assert.IsNull (implementor.RefSelection (names.Length), "RefSelection OOR#2");
 			
 			if (type != BasicWidgetType.TabControl) {

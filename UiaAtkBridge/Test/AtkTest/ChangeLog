@@ -1,6 +1,11 @@
 2008-11-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs:
+	* AtkTester.cs: ComboBoxDropDownEntry + Atk.Selection as well.
+
+2008-11-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
 	* AtkTester.cs: ComboBox + AtkSelection, now that we understood a gail
 	bug completely.
 
