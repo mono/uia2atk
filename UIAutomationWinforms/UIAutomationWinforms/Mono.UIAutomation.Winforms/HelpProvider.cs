@@ -46,65 +46,6 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
-
-		#region SimpleControlProvider: Specializations
-		
-		protected override object GetProviderPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Pane.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "pane";
-			else
-				return base.GetProviderPropertyValue (propertyId);
-		}
-
-		#endregion
-
-		#region Public Methods
-		
-		public override void Show (SWF.Control control) 
-		{
-			if (AutomationInteropProvider.ClientsAreListening == true) {					
-				Message = GetTextFromControl (control);
-
-				FragmentControlProvider controlProvider 
-					= ProviderFactory.FindProvider (control) as FragmentControlProvider;
-
-				FragmentRootControlProvider rootProvider 
-					= controlProvider as FragmentRootControlProvider;
-
-				//FIXME: We may need to update this because seems that 
-				//FragmentControlProvider *includes* children.
-				
-				if (rootProvider != null)
-					rootProvider.AddChildProvider (true, this);
-				else {
-					rootProvider 
-						= ProviderFactory.FindProvider (controlProvider.Container) as FragmentRootControlProvider;
-					if (rootProvider != null)
-						rootProvider.AddChildProvider (true, this);
-				}
-			}
-		}
-		
-		public override void Hide (SWF.Control control)
-		{
-			if (AutomationInteropProvider.ClientsAreListening == true) {
-				Message = GetTextFromControl (control);
-
-				//FIXME: We may need to update this because seems that 
-				//FragmentControlProvider *includes* children.
-
-				FragmentRootControlProvider rootProvider 
-					= Navigate (NavigateDirection.Parent) as FragmentRootControlProvider;
-
-				if (rootProvider != null)
-					rootProvider.RemoveChildProvider (true, this);
-			}
-		}
-
-		#endregion
 		
 		#region Protected Methods
 

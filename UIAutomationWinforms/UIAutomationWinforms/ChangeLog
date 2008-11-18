@@ -1,3 +1,8 @@
+2008-11-18  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/HelpProvider.cs: Using ToolTipControlType
+	instead of PaneControlType.
+
 2008-11-18  Brad Taylor  <brad@getcoded.net>
 	
 	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs: Make sub-items of

@@ -98,11 +98,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			TestProperty (helpProvider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
-			              "pane");
+			              "tool tip");
 			
 			TestProperty (helpProvider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
-			              ControlType.Pane.Id);
+			              ControlType.ToolTip.Id);
 			
 			TestProperty (helpProvider,
 			              AutomationElementIdentifiers.LabeledByProperty,

@@ -1,3 +1,8 @@
+2008-11-18  Mario Carrion  <mcarrion@novell.com>
+
+	* HelpProviderTest.cs: Using ToolTipControlType instead of
+	PaneControlType.
+
 2008-11-18  Brad Taylor  <brad@getcoded.net>
 
 	* DomainUpDownProviderTest.cs: Add an assert to verify that the
