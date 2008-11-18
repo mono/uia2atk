@@ -40,7 +40,7 @@ class ListViewFrame(accessibles.Frame):
 
         procedurelogger.expectedResult('the text of "%s" is %s' % (accessible,item))
 
-        assert accessible.text == "Item 0"
+        assert accessible.text == item
 
     #assert Selection implementation
     def assertSelectionChild(self, accessible, childIndex):

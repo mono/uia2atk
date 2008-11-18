@@ -47,21 +47,21 @@ lvFrame = app.listViewFrame
 actionsCheck(lvFrame.listitem[0], "List")
 
 #check ListView's states list
-statesCheck(lvFrame.list, "List", add_states=["focused"])
+statesCheck(lvFrame.list, "List")
 
 #check ListItem0,1's default states
-statesCheck(lvFrame.listitem[0], "ListItem")
+statesCheck(lvFrame.listitem[0], "ListItem", add_states=["focused"])
 statesCheck(lvFrame.listitem[1], "ListItem")
 
 #click listitem to rise selected and focused states, listitem1 also with 
 #selected states after click listitem3 because MultiSelect is True
 lvFrame.click(lvFrame.listitem[1])
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[1], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvFrame.listitem[1], "ListItem", add_states=["selected"])
 
 lvFrame.click(lvFrame.listitem[3])
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[3], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvFrame.listitem[3], "ListItem", add_states=["selected"])
 
 statesCheck(lvFrame.listitem[1], "ListItem", add_states=["selected"])
 
@@ -71,11 +71,11 @@ lvFrame.checkbox.click()
 sleep(config.SHORT_DELAY)
 lvFrame.click(lvFrame.listitem[2])
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[2], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvFrame.listitem[2], "ListItem", add_states=["selected"])
 
 lvFrame.click(lvFrame.listitem[4])
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[4], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvFrame.listitem[4], "ListItem", add_states=["selected"])
 
 statesCheck(lvFrame.listitem[1], "ListItem")
 
@@ -85,27 +85,32 @@ lvFrame.listitem[0].mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(lvFrame.listitem[0], "ListItem", add_states=["focused", "selected"])
 
-lvFrame.listitem[5].mouseClick()
+lvFrame.listitem[4].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[5], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvFrame.listitem[4], "ListItem", add_states=["focused", "selected"])
 #listitem0 with default states after click listitem5
 statesCheck(lvFrame.listitem[0], "ListItem")
+
+lvFrame.keyCombo("Up", grabFocus=False)
+statesCheck(lvFrame.listitem[3], "ListItem", add_states=["focused", "selected"])
 
 #check list selection implementation
 lvFrame.assertSelectionChild(lvFrame.list, 2)
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[2], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvFrame.listitem[2], "ListItem", add_states=["selected"])
 
 #clear selection
 lvFrame.assertClearSelection(lvFrame.list)
 sleep(config.SHORT_DELAY)
 statesCheck(lvFrame.listitem[2], "ListItem")
-#listbox rise focused state after clear selection
-statesCheck(lvFrame.list, "List", add_states=["focused"])
+#listitem3 still focused
+statesCheck(lvFrame.listitem[3], "ListItem", add_states=["focused"])
+#check listbox state after clear selection
+statesCheck(lvFrame.list, "List")
 
 #check listitem's text implementation
 lvFrame.assertText(lvFrame.listitem[0], "Item 0")
-lvFrame.assertText(lvFrame.listitem[5], "Item 5")
+lvFrame.assertText(lvFrame.listitem[4], "Item 4")
 
 #check list's table implementation
 lvFrame.assertTable(lvFrame.list)

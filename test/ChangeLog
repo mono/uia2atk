@@ -1,5 +1,16 @@
 2008-11-18  Calen Chen <cachen@novell.com>
 
+	* testers/listview_list/listviewframe.py: modify the assertion in 
+	assertText from "item 0" to item
+	* testers/listview_list_ops.py: due to Mike's reply, mouse click and 
+	keyCombo would give focused state to list item, list never focused, so 
+	I delete "focused" from list state check,and add "focused" to listitem0
+	state check. currently "click" action doesn't give focused state, so I 
+	delete focused from listitem state check after doing click action. I 
+	add a keyCombo action for checking focused state to be rised
+
+2008-11-18  Calen Chen <cachen@novell.com>
+
 	* samples/listview_details.py: shorten the height of listview to show 
 	the scrollbar
 
