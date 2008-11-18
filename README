@@ -1,3 +1,14 @@
-Refer to http://www.mono-project.com/Accessibility
+Home of effort to implement UI Automation (UIA) on Linux
+( See http://www.mono-project.com/Accessibility )
 
-[To be completed.]
+UIAutomation: Implementation of Microsoft UIA assemblies.
+UIAutomationWinforms: UIA providers for winforms controls and components.
+UiaAtkBridge: Bridge between UIA providers and ATK+.
+
+Uia2Atk.mds: MonoDevelop solution for code in above projects.
+
+patches: Pending patches to other projects (usually Mono winforms).
+
+test: Samples, tests, and other QA resources.
+
+build: Package build scripts and resources.
