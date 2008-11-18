@@ -1,5 +1,13 @@
 2008-11-18  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs: Dump
+	errors and exceptions to console when bridge fails to load for
+	whatever reason. Should help when troubleshooting bad
+	packages/installs. Users will only see this if they have at least a
+	partial UIA install (that's broken).
+
+2008-11-18  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* UIAutomationProvider.mdp:
 	* UIAutomationProviderTests.mdp: Add makefile integration.
 

@@ -99,8 +99,10 @@ namespace System.Windows.Automation.Provider
 			Assembly bridgeAssembly = null;
 			try {
 				bridgeAssembly = Assembly.Load (UiaAtkBridgeAssembly);
-			} catch {
-				// TODO: This is just here for testing
+			} catch (Exception e){
+				Console.WriteLine (string.Format ("Error loading UIA bridge ({0}): {1}",
+				                                  UiaAtkBridgeAssembly,
+				                                  e));
 				return null;
 			}
 			
@@ -114,16 +116,24 @@ namespace System.Windows.Automation.Provider
 					break;
 				}
 			}
-			if (bridgeType == null)
-				throw new Exception ("No bridge, bummer!");
-
-			IAutomationBridge bridge
-				= (IAutomationBridge) Activator.CreateInstance (bridgeType);
-			if (!bridge.IsAccessibilityEnabled)
+			if (bridgeType == null) {
+				Console.WriteLine ("No UIA bridge found in assembly: " +
+				                     UiaAtkBridgeAssembly);
 				return null;
+			}
 
-			bridge.Initialize ();
-			return bridge;
+			try {
+				IAutomationBridge bridge
+					= (IAutomationBridge) Activator.CreateInstance (bridgeType);
+				if (!bridge.IsAccessibilityEnabled)
+					return null;
+
+				bridge.Initialize ();
+				return bridge;
+			} catch (Exception e) {
+				Console.WriteLine ("Failed to load UIA bridge: " + e);
+				return null;
+			}
 		}
 	}
 }
