@@ -637,6 +637,10 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.PictureBox:
 				role = Atk.Role.Icon;
 				break;
+			case BasicWidgetType.Pane:
+			case BasicWidgetType.ErrorProvider:
+				role = Atk.Role.Panel;
+				break;
 			default:
 				throw new NotImplementedException ();
 			}

@@ -481,6 +481,8 @@ namespace UiaAtkBridge
 				HandleNewDataGridControlType (simpleProvider);
 			else if (controlTypeId == ControlType.DataItem.Id)
 				AddChildrenToParent (simpleProvider);
+			else if (controlTypeId == ControlType.Pane.Id)
+				HandleNewContainer (simpleProvider);			
 			// TODO: Other providers
 			else if (controlTypeId != ControlType.Thumb.Id)
 				Console.WriteLine ("AutomationBridge: Unhandled control: " +

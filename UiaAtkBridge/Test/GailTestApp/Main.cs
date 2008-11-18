@@ -216,6 +216,13 @@ namespace GailTestApp {
 			
 			return win.GiveMeARealSpinButton ();
 		}
+
+		public static Gtk.Frame GiveMeARealFrame ()
+		{
+			CheckState ();
+			
+			return win.GiveMeARealFrame ();
+		}
 		
 		public static void Kill (MovingThread thread) 
 		{

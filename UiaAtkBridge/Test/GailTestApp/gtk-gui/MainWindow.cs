@@ -104,6 +104,12 @@ public partial class MainWindow {
     
     private Gtk.TextView txtViewTest;
     
+    private Gtk.Frame frame1;
+    
+    private Gtk.Alignment GtkAlignment;
+    
+    private Gtk.Label GtkLabel13;
+    
     private Gtk.Statusbar statusbar1;
     
     protected virtual void Build() {
@@ -483,24 +489,43 @@ public partial class MainWindow {
         this.hbox2.Add(this.GtkScrolledWindow1);
         Gtk.Box.BoxChild w30 = ((Gtk.Box.BoxChild)(this.hbox2[this.GtkScrolledWindow1]));
         w30.Position = 1;
+        // Container child hbox2.Gtk.Box+BoxChild
+        this.frame1 = new Gtk.Frame();
+        this.frame1.Name = "frame1";
+        this.frame1.ShadowType = ((Gtk.ShadowType)(0));
+        // Container child frame1.Gtk.Container+ContainerChild
+        this.GtkAlignment = new Gtk.Alignment(0F, 0F, 1F, 1F);
+        this.GtkAlignment.Name = "GtkAlignment";
+        this.GtkAlignment.LeftPadding = ((uint)(12));
+        this.frame1.Add(this.GtkAlignment);
+        this.GtkLabel13 = new Gtk.Label();
+        this.GtkLabel13.Name = "GtkLabel13";
+        this.GtkLabel13.LabelProp = Mono.Unix.Catalog.GetString("<b>frame1</b>");
+        this.GtkLabel13.UseMarkup = true;
+        this.frame1.LabelWidget = this.GtkLabel13;
+        this.hbox2.Add(this.frame1);
+        Gtk.Box.BoxChild w32 = ((Gtk.Box.BoxChild)(this.hbox2[this.frame1]));
+        w32.Position = 2;
+        w32.Expand = false;
+        w32.Fill = false;
         this.vbox1.Add(this.hbox2);
-        Gtk.Box.BoxChild w31 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
-        w31.Position = 5;
+        Gtk.Box.BoxChild w33 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+        w33.Position = 5;
         // Container child vbox1.Gtk.Box+BoxChild
         this.statusbar1 = new Gtk.Statusbar();
         this.statusbar1.Name = "statusbar1";
         this.statusbar1.Spacing = 6;
         this.vbox1.Add(this.statusbar1);
-        Gtk.Box.BoxChild w32 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
-        w32.Position = 7;
-        w32.Expand = false;
-        w32.Fill = false;
+        Gtk.Box.BoxChild w34 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
+        w34.Position = 7;
+        w34.Expand = false;
+        w34.Fill = false;
         this.Add(this.vbox1);
         if ((this.Child != null)) {
             this.Child.ShowAll();
         }
-        this.DefaultWidth = 737;
-        this.DefaultHeight = 506;
+        this.DefaultWidth = 757;
+        this.DefaultHeight = 516;
         this.Show();
         this.DeleteEvent += new Gtk.DeleteEventHandler(this.OnDeleteEvent);
     }

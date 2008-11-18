@@ -8,7 +8,7 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/GailTestApp.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="737 506">
+  <widget class="Gtk.Window" id="MainWindow" design-size="757 516">
     <action-group name="Default">
       <action id="XFileAction">
         <property name="Type">Action</property>
@@ -345,6 +345,7 @@ in a label</property>
                         <property name="MemberName" />
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">radiobutton1</property>
+                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
@@ -397,6 +398,7 @@ in a label</property>
                         <property name="MemberName" />
                         <property name="CanFocus">True</property>
                         <property name="Label" translatable="yes">rad Opt 0</property>
+                        <property name="Active">True</property>
                         <property name="DrawIndicator">True</property>
                         <property name="HasLabel">True</property>
                         <property name="UseUnderline">True</property>
@@ -629,7 +631,37 @@ in a label</property>
               </packing>
             </child>
             <child>
-              <placeholder />
+              <widget class="Gtk.Frame" id="frame1">
+                <property name="MemberName" />
+                <property name="ShadowType">None</property>
+                <child>
+                  <widget class="Gtk.Alignment" id="GtkAlignment">
+                    <property name="MemberName" />
+                    <property name="Xalign">0</property>
+                    <property name="Yalign">0</property>
+                    <property name="LeftPadding">12</property>
+                    <child>
+                      <placeholder />
+                    </child>
+                  </widget>
+                </child>
+                <child>
+                  <widget class="Gtk.Label" id="GtkLabel13">
+                    <property name="MemberName" />
+                    <property name="LabelProp" translatable="yes">&lt;b&gt;frame1&lt;/b&gt;</property>
+                    <property name="UseMarkup">True</property>
+                  </widget>
+                  <packing>
+                    <property name="type">label_item</property>
+                  </packing>
+                </child>
+              </widget>
+              <packing>
+                <property name="Position">2</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
             </child>
           </widget>
           <packing>

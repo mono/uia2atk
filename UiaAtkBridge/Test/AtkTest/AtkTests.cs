@@ -813,7 +813,29 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);
 		}
-		
 
+		[Test]
+		public void Pane ()
+		{
+			BasicWidgetType type = BasicWidgetType.Pane;
+			Atk.Object accessible;
+			
+			string name = "test";
+			accessible = GetAccessible (type, name, true);
+			
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+
+			InterfaceComponent (type, atkComponent);
+			
+			PropertyRole (type, accessible);
+			Parent (type, accessible);
+
+			States (accessible,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible);
+		}
+		
 	}
 }

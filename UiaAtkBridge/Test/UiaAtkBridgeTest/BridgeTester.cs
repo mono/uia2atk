@@ -604,6 +604,16 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ToolStripProgressBar:
 				accessible = GetAdapterForWidget (tspb1);
 				break;
+			case BasicWidgetType.Pane://In the future we may return something different in Pane
+			case BasicWidgetType.ErrorProvider:
+				if (!real)
+					throw new NotSupportedException ("We don't support unreal anymore in tests");
+					
+				// the way to group radioButtons is dependent on their parent control
+				SWF.ErrorProvider errorProvider = new SWF.ErrorProvider ();
+				errorProvider.SetError (butWithImage, "Error message");
+				accessible = GetAdapterForWidget (errorProvider);
+				break;
 			case BasicWidgetType.ListBox:
 			case BasicWidgetType.CheckedListBox:
 			case BasicWidgetType.ParentMenu:

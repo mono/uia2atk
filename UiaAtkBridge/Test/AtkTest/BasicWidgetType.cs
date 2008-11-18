@@ -50,6 +50,7 @@ namespace UiaAtkBridgeTest
 		HScrollBar,
 		ProgressBar,
 		Spinner,
+		Pane,
 		
 		//widgets only in MWF:
 		ComboBoxSimple,
@@ -64,7 +65,8 @@ namespace UiaAtkBridgeTest
 		PictureBox,
 		ToolStripLabel,
 		DomainUpDown,
-		ToolStripProgressBar
+		ToolStripProgressBar,
+		ErrorProvider
 	}
 
 //	public class MenuLayout
