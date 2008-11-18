@@ -119,7 +119,14 @@ namespace Mono.UIAutomation.Winforms
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-				return GetBoundingRectangle ();
+				return Helper.GetControlScreenBounds (GetBoundingRectangle (), 
+				                                      InstancesTracker.GetControlsFromProvider (this) [0]);
+			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
+				return true;
+			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
+				return Helper.IsOffScreen (Helper.RectangleToRect (GetBoundingRectangle ()), Parent);
+			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return string.Empty;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
@@ -128,19 +135,19 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Private Methods
 		
-		private Rect GetBoundingRectangle ()
+		private SD.Rectangle GetBoundingRectangle ()
 		{
 			List<SWF.Control> controls 
 				= InstancesTracker.GetControlsFromProvider (this);
 			
 			if (controls == null)
-				return Rect.Empty;
+				return SD.Rectangle.Empty;
 			
 			SD.Rectangle bounding = controls [0].Bounds;
 			for (int i = 1; i < controls.Count; i++)
 				bounding = SD.Rectangle.Union (bounding, controls [i].Bounds);
 
-			return Helper.RectangleToRect (bounding);
+			return bounding;
 		}
 		
 		private void OnControlVisibleChanged (object sender, EventArgs args)
