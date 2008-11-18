@@ -100,6 +100,7 @@ class PTmp(ProcessEvent):
             # each update
             self.build_dashboard()
         elif pkg_status_re.match(os.path.basename(event.pathname)):
+            print "INFO: new package status file %s" % event.pathname
             self.build_dashboard()
 
     def build_dashboard(self):

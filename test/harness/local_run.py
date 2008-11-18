@@ -216,7 +216,7 @@ class Test(object):
       self.set_test_file_info(test)
       file_path = os.path.join(Settings.log_path, test_type, self.control_name)
       self.write_top_portion(file_path)
-      t = s.Popen(["python", "-u", test], stdout=s.PIPE, stderr=s.PIPE)
+      t = s.Popen(["python", "-u", test], stdout=s.PIPE, stderr=s.STDOUT)
       s.Popen(["tee", "-a", file_path], stdin=t.stdout, stderr=t.stderr)
       i = 0
       while t.poll() is None:
@@ -290,7 +290,7 @@ class Test(object):
       f = open(file_path,'r')
       if f.read(1) == "0":
         f.close()
-        os.system("rm -rf file_path")   
+        os.system("rm -rf %s" % file_path)
       f.close()
     except IOError:
       pass

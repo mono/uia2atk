@@ -1,5 +1,15 @@
 2008-11-18 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* tools/dashboard/qamon.py: add debug statement to determine when a 
+	new package_status file appears.
+	* harness/local_run.py: Fix annoying bug that was causing only stdout
+	output (and not stderr) to be saved to the text summary log for each
+	control that is linked to from the dashboard.  Also fix bug that was 
+	causing the text summary logs for each control to not be deleted when
+	a test was successful the previous time it was ran.
+
+2008-11-18 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* harness/local_run.py: Fedora returns fqdn to gethostname(), add code
 	to grab only the hostname regardless of what gethostname() returns as
 	long as the hostname is first (e.g., myhost.example.com).
