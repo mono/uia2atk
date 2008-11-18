@@ -817,7 +817,7 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void Pane ()
 		{
-			BasicWidgetType type = BasicWidgetType.Pane;
+			BasicWidgetType type = BasicWidgetType.ContainerPanel;
 			Atk.Object accessible;
 			
 			string name = "test";

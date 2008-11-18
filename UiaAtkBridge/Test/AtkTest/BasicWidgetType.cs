@@ -50,7 +50,7 @@ namespace UiaAtkBridgeTest
 		HScrollBar,
 		ProgressBar,
 		Spinner,
-		Pane,
+		ContainerPanel,
 		
 		//widgets only in MWF:
 		ComboBoxSimple,
