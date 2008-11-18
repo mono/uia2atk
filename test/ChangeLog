@@ -1,5 +1,13 @@
 2008-11-18  Calen Chen <cachen@novell.com>
 
+	* testers/listview_list_ops.py: delete "focused" from comment in line56
+	* testers/listview_smallimage_ops.py,
+	* testers/listview_largeimage_ops.py:  delete "focused" from list state 
+	checking,and add "focused" to listitem0 state checking. delete focused from 
+	listitem state checking after doing click action. 
+
+2008-11-18  Calen Chen <cachen@novell.com>
+
 	* testers/listview_list/listviewframe.py: modify the assertion in 
 	assertText from "item 0" to item
 	* testers/listview_list_ops.py: due to Mike's reply, mouse click and 

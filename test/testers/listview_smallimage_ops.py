@@ -51,21 +51,21 @@ lvsiFrame = app.listViewSmallImageFrame
 actionsCheck(lvsiFrame.listitem[0], "ListItem")
 
 #check ListView's states list
-statesCheck(lvsiFrame.list, "List", add_states=["focused"])
+statesCheck(lvsiFrame.list, "List")
 
 #check ListItem0,1's default states
-statesCheck(lvsiFrame.listitem[0], "ListItem")
+statesCheck(lvsiFrame.listitem[0], "ListItem", add_states=["focused"])
 statesCheck(lvsiFrame.listitem[1], "ListItem")
 
-#click listitem to rise selected and focused states, listitem1 also with 
+#click listitem to rise selected states, listitem1 also with 
 #selected states after click listitem3 because MultiSelect is True
 lvsiFrame.click(lvsiFrame.listitem[1])
 sleep(config.SHORT_DELAY)
-statesCheck(lvsiFrame.listitem[1], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvsiFrame.listitem[1], "ListItem", add_states=["selected"])
 
 lvsiFrame.click(lvsiFrame.listitem[3])
 sleep(config.SHORT_DELAY)
-statesCheck(lvsiFrame.listitem[3], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvsiFrame.listitem[3], "ListItem", add_states=["selected"])
 
 statesCheck(lvsiFrame.listitem[1], "ListItem", add_states=["selected"])
 
@@ -73,12 +73,12 @@ statesCheck(lvsiFrame.listitem[1], "ListItem", add_states=["selected"])
 lvsiFrame.toggle(lvsiFrame.listitem[1])
 sleep(config.SHORT_DELAY)
 statesCheck(lvsiFrame.listitem[1], "ListItem", \
-                                    add_states=["checked", "focused", "selected"])
+                                    add_states=["checked", "selected"])
 
 lvsiFrame.toggle(lvsiFrame.listitem[1])
 sleep(config.SHORT_DELAY)
 statesCheck(lvsiFrame.listitem[1], "ListItem", \
-                                    add_states=["focused", "selected"])
+                                    add_states=["selected"])
 #toggle listitem2 to checked but without focused and selected
 lvsiFrame.toggle(lvsiFrame.listitem[2])
 sleep(config.SHORT_DELAY)
@@ -120,15 +120,14 @@ lvsiFrame.assertLabel(lvsiFrame.listitem[2], 'Item2')
 #check list selection implementation
 lvsiFrame.assertSelectionChild(lvsiFrame.list, 2)
 sleep(config.SHORT_DELAY)
-statesCheck(lvsiFrame.listitem[2], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvsiFrame.listitem[2], "ListItem", add_states=["selected"])
 
 #clear selection
 lvsiFrame.assertClearSelection(lvsiFrame.list)
 sleep(config.SHORT_DELAY)
 statesCheck(lvsiFrame.listitem[2], "ListItem")
-#listbox rise focused state after clear selection
-statesCheck(lvsiFrame.list, "List", add_states=["focused"]\
-                                   ,invalid_states=["focusable"])
+#check listbox state after clear selection
+statesCheck(lvsiFrame.list, "List")
 
 #################################################################
 #test for text implementation

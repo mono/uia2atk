@@ -53,7 +53,7 @@ statesCheck(lvFrame.list, "List")
 statesCheck(lvFrame.listitem[0], "ListItem", add_states=["focused"])
 statesCheck(lvFrame.listitem[1], "ListItem")
 
-#click listitem to rise selected and focused states, listitem1 also with 
+#click listitem to rise selected states, listitem1 also with 
 #selected states after click listitem3 because MultiSelect is True
 lvFrame.click(lvFrame.listitem[1])
 sleep(config.SHORT_DELAY)

@@ -51,21 +51,21 @@ lvliFrame = app.listViewLargeImageFrame
 actionsCheck(lvliFrame.listitem[0], "ListItem")
 
 #check ListView's states list
-statesCheck(lvliFrame.list, "List", add_states=["focused"])
+statesCheck(lvliFrame.list, "List")
 
 #check ListItem0,1's default states
-statesCheck(lvliFrame.listitem[0], "ListItem")
+statesCheck(lvliFrame.listitem[0], "ListItem", add_states=["focused"])
 statesCheck(lvliFrame.listitem[1], "ListItem")
 
-#click listitem to rise selected and focused states, listitem1 also with 
+#click listitem to rise selected states, listitem1 also with 
 #selected states after click listitem3 because MultiSelect is True
 lvliFrame.click(lvliFrame.listitem[1])
 sleep(config.SHORT_DELAY)
-statesCheck(lvliFrame.listitem[1], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvliFrame.listitem[1], "ListItem", add_states=["selected"])
 
 lvliFrame.click(lvliFrame.listitem[3])
 sleep(config.SHORT_DELAY)
-statesCheck(lvliFrame.listitem[3], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvliFrame.listitem[3], "ListItem", add_states=["selected"])
 
 statesCheck(lvliFrame.listitem[1], "ListItem", add_states=["selected"])
 
@@ -73,21 +73,21 @@ statesCheck(lvliFrame.listitem[1], "ListItem", add_states=["selected"])
 lvliFrame.toggle(lvliFrame.listitem[1])
 sleep(config.SHORT_DELAY)
 statesCheck(lvliFrame.listitem[1], "ListItem", \
-                                    add_states=["checked", "focused", "selected"])
+                                    add_states=["checked", "selected"])
 
 lvliFrame.toggle(lvliFrame.listitem[1])
 sleep(config.SHORT_DELAY)
 statesCheck(lvliFrame.listitem[1], "ListItem", \
-                                    add_states=["focused", "selected"])
+                                    add_states=["selected"])
 #toggle listitem2 to checked but without focused and selected
-lvsiFrame.toggle(lvsiFrame.listitem[2])
+lvliFrame.toggle(lvliFrame.listitem[2])
 sleep(config.SHORT_DELAY)
-statesCheck(lvsiFrame.listitem[2], "ListItem", \
+statesCheck(lvliFrame.listitem[2], "ListItem", \
                                     add_states=["checked"])
 
-lvsiFrame.toggle(lvsiFrame.listitem[2])
+lvliFrame.toggle(lvliFrame.listitem[2])
 sleep(config.SHORT_DELAY)
-statesCheck(lvsiFrame.listitem[2], "ListItem")
+statesCheck(lvliFrame.listitem[2], "ListItem")
 
 #mouse click ListItem to rise focused and selected states
 lvliFrame.mouseClick(log=False)
@@ -120,14 +120,14 @@ lvliFrame.assertLabel(lvliFrame.listitem[2], 'Item2')
 #check list selection implementation
 lvliFrame.assertSelectionChild(lvliFrame.list, 2)
 sleep(config.SHORT_DELAY)
-statesCheck(lvliFrame.listitem[2], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvliFrame.listitem[2], "ListItem", add_states=["selected"])
 
 #clear selection
 lvliFrame.assertClearSelection(lvliFrame.list)
 sleep(config.SHORT_DELAY)
 statesCheck(lvliFrame.listitem[2], "ListItem")
-#listbox rise focused state after clear selection
-statesCheck(lvliFrame.list, "List", add_states=["focused"])
+#check listbox state after clear selection
+statesCheck(lvliFrame.list, "List")
 
 #################################################################
 #test for text implementation
