@@ -1,3 +1,8 @@
+2008-11-18  Brad Taylor  <brad@getcoded.net>
+
+	* DomainUpDownProviderTest.cs: Add an assert to verify that the
+	children of a DomainUpDown know who their baby-daddy is.
+
 2008-11-17  Brad Taylor  <brad@getcoded.net>
 
 	* DomainUpDownProviderTest.cs: Test SelectionProvider, navigation and

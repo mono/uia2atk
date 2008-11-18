@@ -112,10 +112,7 @@ namespace Mono.UIAutomation.Winforms
 				// TODO: What to do here?
 				return false;
 			} else if (propertyId == AEIds.BoundingRectangleProperty.Id) {
-				return Rect.Empty;
-			} else if (propertyId == AEIds.IsOffscreenProperty.Id) {
-				// XXX: is this the right thing to do?
-				return true;
+				return GetProviderPropertyValue (AEIds.BoundingRectangleProperty.Id);
 			}
 			return null;
 		}
@@ -179,9 +176,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			ListItemProvider prov;
 			foreach (object val in control.Items) {
-				prov = new ListItemProvider (
-					(FragmentRootControlProvider)FragmentRoot,
-					(IListProvider)this, null, val
+				prov = new DomainUpDownListItemProvider (
+					this, (IListProvider)this, val
 				);
 				prov.Initialize ();
 				AddChildProvider (true, prov);
@@ -195,6 +191,8 @@ namespace Mono.UIAutomation.Winforms
 				RemoveChildProvider (true, prov);
 				prov.Terminate ();
 			}
+
+			children.Clear ();
 		}
 
 		private void OnCollectionChanged (int index, int size_delta)
@@ -202,5 +200,30 @@ namespace Mono.UIAutomation.Winforms
 			RemoveCollectionItems ();
 			AddCollectionItems ();
 		}
+	}
+
+	internal class DomainUpDownListItemProvider
+		: ListItemProvider
+	{
+#region Public Methods
+		public DomainUpDownListItemProvider (FragmentRootControlProvider rootProvider,
+		                                     IListProvider provider, object objectItem)
+			: base (rootProvider, provider, null, objectItem)
+		{
+		}
+#endregion
+
+#region IRawElementProviderSimple Implementation
+		protected override object GetProviderPropertyValue (int propertyId)
+		{
+			if (propertyId == AEIds.IsEnabledProperty.Id) {
+				return true;
+			} else if (propertyId == AEIds.IsOffscreenProperty.Id) {
+				// Item is onscreen only when selected
+				return !ListProvider.IsItemSelected (this);
+			}
+			return base.GetProviderPropertyValue (propertyId);
+		}
+#endregion
 	}
 }

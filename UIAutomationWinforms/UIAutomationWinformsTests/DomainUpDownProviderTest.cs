@@ -257,6 +257,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					ValuePatternIdentifiers.Pattern.Id);
 			Assert.AreEqual ("First", item_val_prov.Value);
 
+			// Ensure the parent is set correctly
+			Assert.AreEqual (childProvider.Navigate (NavigateDirection.Parent),
+			                 rootProvider);
+
 			childProvider = childProvider.Navigate (NavigateDirection.NextSibling);
 			item_val_prov
 				= (IValueProvider)childProvider.GetPatternProvider (

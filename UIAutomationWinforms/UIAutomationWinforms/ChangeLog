@@ -1,11 +1,19 @@
 2008-11-18  Brad Taylor  <brad@getcoded.net>
 	
-	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ListProvider.cs:
-	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs:
-	* UIAutomationWinforms/Mono.UIAutomation.Winforms/ListItemProvider.cs:
-	* UIAutomationWinforms/Mono.UIAutomation.Winforms/DomainUpDownProvider.cs:
-	Revert previous changes that removed the SWF.Control property from
-	ListItemProvider's constructor.
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs: Make sub-items of
+	DomainUpDown not crash when viewed from Accerciser.
+
+	* Mono.UIAutomation.Winforms/UpDownBaseProvider.cs: Make the buttons
+	fire events, so that the Bridge adds the controls in the right order.
+
+2008-11-18  Brad Taylor  <brad@getcoded.net>
+	
+	* Mono.UIAutomation.Winforms/ListProvider.cs:
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs:
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs: Revert previous
+	changes that removed the SWF.Control property from ListItemProvider's
+	constructor.
 	
 2008-11-17  Brad Taylor  <brad@getcoded.net>
 	
