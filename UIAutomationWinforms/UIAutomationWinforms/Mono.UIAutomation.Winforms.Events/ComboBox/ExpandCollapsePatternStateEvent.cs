@@ -50,24 +50,48 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 		
 		public override void Connect ()
 		{
-			((SWF.ComboBox) Provider.Control).DropDown += new EventHandler (OnDropDown);
+			((SWF.ComboBox) Provider.Control).DropDown += OnDropDown;
+			((SWF.ComboBox) Provider.Control).DropDownClosed += OnDropDownClosed;
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.ComboBox) Provider.Control).DropDown -= new EventHandler (OnDropDown);
+			((SWF.ComboBox) Provider.Control).DropDown -= OnDropDown;
+			((SWF.ComboBox) Provider.Control).DropDownClosed -= OnDropDownClosed;
 		}
 		
 		#endregion
 
-		#region Private method
+
+		#region Protected Methods
+
+		protected override object GetNewPropertyValue ()
+		{
+			return expandCollapseState;
+		}
+
+		#endregion
+
+		#region Private methods
 		
 		private void OnDropDown (object sender, EventArgs e)
 		{
+			expandCollapseState = ExpandCollapseState.Expanded;
+			RaiseAutomationPropertyChangedEvent ();
+		}
+
+		private void OnDropDownClosed (object sender, EventArgs e)
+		{
+			expandCollapseState = ExpandCollapseState.Collapsed;
 			RaiseAutomationPropertyChangedEvent ();
 		}
 		
 		#endregion
 
+		#region Private Fields
+
+		private ExpandCollapseState expandCollapseState;
+
+		#endregion
 	}
 }

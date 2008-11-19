@@ -1,5 +1,10 @@
 2008-11-19  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.Events/ComboBox/ExpandCollapsePatternStateEvent.cs:
+	Raising valid event when expanding/collapsing.
+
+2008-11-19  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Calling Initialize in
 	children providers.
 
