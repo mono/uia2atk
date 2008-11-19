@@ -1,3 +1,13 @@
+2008-11-19  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/ToolStripTextBoxProvider.cs: Clean up
+	unneeded comments and debug output.
+
+	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs: Only return
+	Provider.FragmentRoot as parent if no parent is given. This goes
+	somewhat against the UIA spec, but I'm not sure how else things could
+	work.
+
 2008-11-19  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs, Makefile.am,

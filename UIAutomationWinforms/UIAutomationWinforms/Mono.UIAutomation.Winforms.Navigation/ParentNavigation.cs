@@ -59,7 +59,9 @@ namespace Mono.UIAutomation.Winforms.Navigation
 				// a parent or siblings; navigation among fragment
 				// roots is handled by the default window providers."
 				// Source: http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.irawelementproviderfragment.navigate.aspx
-				if (Provider is FragmentRootControlProvider)
+//				if (Provider is FragmentRootControlProvider)
+//					return Provider.FragmentRoot;
+				if (parentNavigation == null)
 					return Provider.FragmentRoot;
 				else
 					return parentNavigation.Provider;

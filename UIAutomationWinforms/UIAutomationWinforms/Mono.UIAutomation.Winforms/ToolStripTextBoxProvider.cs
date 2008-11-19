@@ -37,9 +37,6 @@ namespace Mono.UIAutomation.Winforms
 		public ToolStripTextBoxProvider (SWF.ToolStripTextBox stripTextBox) :
 			base (stripTextBox.TextBox)
 		{
-			// TODO: Behavior specific to ToolStripTextBox
-			//       (navigation, etc?)
-			Console.WriteLine ("ToolStripTextBoxProvider made");
 		}
 	}
 }
