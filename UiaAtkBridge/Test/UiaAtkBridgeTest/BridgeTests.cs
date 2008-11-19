@@ -204,16 +204,13 @@ namespace UiaAtkBridgeTest
 			if (comboBox == null)
 				comboBox = cbSim;
 
-			Atk.Object accessible = GetAdapterForWidget (comboBox);
+			string [] names = new string [] { "First Item", "Second Item", "Last item" };
+			Atk.Object accessible = GetAccessible (type, names, comboBox);
 			
 			PropertyRole (type, accessible);
 
 			StatesComboBox (accessible);
 
-			string [] names = new string [] { "First item", "Second Item", "Last Item" };
-			((SWF.ComboBox)comboBox).Items.Clear ();
-			foreach(string item in names)
-				((SWF.ComboBox)comboBox).Items.Add (item);
 			Assert.AreEqual (2, accessible.NAccessibleChildren, "numChildren; children roles:" + childrenRoles (accessible));
 
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);

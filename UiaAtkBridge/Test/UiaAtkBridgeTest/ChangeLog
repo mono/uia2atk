@@ -1,5 +1,9 @@
 2008-11-19  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTests.cs: Fix a ComboBoxSimple test.
+
+2008-11-19  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Provider working now for the ToolStrip*!
 
 2008-11-18  Mike Gorse  <mgorse@novell.com>
