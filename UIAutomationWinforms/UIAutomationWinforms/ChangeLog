@@ -1,3 +1,8 @@
+2008-11-18  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/WebBrowserProvider.cs: Support for
+	LocalizedControlTypeProperty.
+
 2008-11-18  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ErrorProvider.cs: Returning missing
