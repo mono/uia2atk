@@ -1,3 +1,7 @@
+2008-11-19  Mario Carrion <mcarrion@novell.com> 
+
+	* LinkLabelTest.cs: File added.
+
 2008-11-14  Neville Gao  <nevillegao@gmail.com>
 
 	* UIAutomationWinformsClientTests.csproj: Updated for added file.

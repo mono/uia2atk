@@ -60,6 +60,7 @@
     <Compile Include="CheckedListBoxListItem.cs" />
     <Compile Include="ComboBoxTest.cs" />
     <Compile Include="GroupBoxTest.cs" />
+    <Compile Include="LinkLabelTest.cs" />
     <Compile Include="NumericUpDownTest.cs" />
     <Compile Include="PanelTest.cs" />
     <Compile Include="DomainUpDownTest.cs" />
