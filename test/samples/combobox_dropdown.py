@@ -42,6 +42,7 @@ class ComboBoxSample(Form):
         # add items in ComboBox
         for i in range(10):
             self.combobox.Items.Add(str(i))
+        self.combobox.SelectedIndex = 1
 
         # add controls
         self.Controls.Add(self.combobox)
