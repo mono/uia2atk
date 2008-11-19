@@ -309,7 +309,7 @@ namespace UiaAtkBridgeTest
 			dud1.Items.Add ("first item");
 			dud1.Items.Add ("second item");
 			dud1.Items.Add ("third item");
-			Atk.Object accessible = UiaAtkBridge.AutomationBridge.GetAdapterForProviderLazy (ProviderFactory.GetProvider (dud1));
+			Atk.Object accessible = GetAdapterForWidget (dud1);
 			dud1.SelectedIndex = 1;
 			InterfaceText (accessible, "second item");
 			dud1.SelectedIndex = 2;
