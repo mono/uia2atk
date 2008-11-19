@@ -34,6 +34,7 @@ using System.Windows.Automation.Provider;
 
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.DomainUpDown;
 using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 using Mono.UIAutomation.Winforms.Behaviors.DomainUpDown;
 
@@ -99,9 +100,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider prov)
 		{
-			// TODO:
-			// return new ListItemAutomationHasKeyboardFocusPropertyEvent (prov);
-			return null;
+			return new ListItemAutomationHasKeyboardFocusPropertyEvent (prov);
 		}
 
 		public object GetItemPropertyValue (ListItemProvider prov, int propertyId)
@@ -109,8 +108,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.NameProperty.Id) {
 				return (string)prov.ObjectItem;
 			} else if (propertyId == AEIds.HasKeyboardFocusProperty.Id) {
-				// TODO: What to do here?
-				return false;
+				return IsItemSelected (prov);
 			} else if (propertyId == AEIds.BoundingRectangleProperty.Id) {
 				return GetProviderPropertyValue (AEIds.BoundingRectangleProperty.Id);
 			}

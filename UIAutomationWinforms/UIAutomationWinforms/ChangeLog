@@ -1,3 +1,9 @@
+2008-11-19  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs, Makefile.am,
+	  Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemAutomationHasKeyboardFocusPropertyEvent.cs:
+	  Have DomainUpDown ListItems indicate keyboard focus when selected.
+
 2008-11-18  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/WebBrowserProvider.cs: Support for
