@@ -1,5 +1,10 @@
 2008-11-19  Calen Chen <cachen@novell.com>
 
+	* testers/checkedlistbox_basic_ops.py: add test for checking if toggle 
+	action can update lable text
+
+2008-11-19  Calen Chen <cachen@novell.com>
+
 	* testers/groupbox_basic_ops.py: according to msdn I add state test for 
 	buttons with focused and groubox withou focused by using keyCombo to 
 	move the focus because the complete groubox itself cannot be focused

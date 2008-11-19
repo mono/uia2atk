@@ -29,7 +29,7 @@ try:
 except IndexError:
   pass #expected
 
-# open the treeview sample application
+# open the checkedlistbox sample application
 try:
   app = launchCheckedListBox(app_path)
 except IOError, msg:
@@ -48,14 +48,14 @@ actionsCheck(clbFrame.listitem[0], "ListItem")
 
 #check list's states
 statesCheck(clbFrame.listbox1, "List")
-statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
+statesCheck(clbFrame.listbox2, "List")
 #use Tab key to move focus, then check list's states
 clbFrame.keyCombo("Tab")
-statesCheck(clbFrame.listbox1, "List", add_states=["focused"])
+statesCheck(clbFrame.listbox1, "List")
 statesCheck(clbFrame.listbox2, "List")
 
 #check default states for ListItem which CheckOnClick is True
-statesCheck(clbFrame.listitem[0], "ListItem")
+statesCheck(clbFrame.listitem[0], "ListItem", add_states=["focused"])
 #check default states for ListItem which CheckOnClick is False
 statesCheck(clbFrame.listitem[20], "ListItem")
 
@@ -131,6 +131,16 @@ statesCheck(clbFrame.listitem[6], "ListItem")
 clbFrame.assertClearSelection(clbFrame.listbox2)
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[26], "ListItem", add_states=["focused"])
+
+#toggle action would update the label text
+clbFrame.toggle(clbFrame.listitem[10])
+sleep(config.SHORT_DELAY)
+clbFrame.assertLabel(clbFrame.listitem[10], '0 2 3 5 10')
+
+clbFrame.click(clbFrame.listitem[20])
+clbFrame.toggle(clbFrame.listitem[20])
+sleep(config.SHORT_DELAY)
+clbFrame.assertLabel(clbFrame.listitem[20], '2 5 20')
 
 #check list's table implementation
 clbFrame.assertTable(clbFrame.listbox1)
