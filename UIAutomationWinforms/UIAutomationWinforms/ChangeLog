@@ -1,3 +1,8 @@
+2008-11-19  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Calling Initialize in
+	children providers.
+
 2008-11-19  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ToolStripTextBoxProvider.cs: Clean up

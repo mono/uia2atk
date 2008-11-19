@@ -289,6 +289,7 @@ namespace Mono.UIAutomation.Winforms
 					                                                        comboboxControl, 
 					                                                        "UIATextBox");
 				textboxProvider = (TextBoxProvider) ProviderFactory.GetProvider (textbox);
+				textboxProvider.Initialize ();
 				OnNavigationChildAdded (generateEvent, textboxProvider);
 			}
 		}
@@ -306,7 +307,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (buttonProvider == null) {
 				buttonProvider = new ComboBoxProvider.ComboBoxButtonProvider (comboboxControl,
-				                                                               this);
+				                                                              this);
+				buttonProvider.Initialize ();
 				OnNavigationChildAdded (generateEvent, buttonProvider);
 			}
 		}
