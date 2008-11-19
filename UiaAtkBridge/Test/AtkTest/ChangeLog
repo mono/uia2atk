@@ -1,3 +1,7 @@
+2008-11-19  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Fix DeleteText in InterfaceEditableText.
+
 2008-11-19  Neville Gao  <nevillegao@gmail.com>
 
 	* AtkTest/AtkTester.cs, BasicWidgetType.cs: Added SWF.StatusStrip.

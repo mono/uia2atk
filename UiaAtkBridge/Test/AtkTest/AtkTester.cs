@@ -664,7 +664,7 @@ namespace UiaAtkBridgeTest
 			Atk.EditableText atkEditableText = CastToAtkInterface<Atk.EditableText> (accessible);
 			atkEditableText.TextContents = "abcdef";
 			InterfaceText (accessible, "abcdef");
-			atkEditableText.DeleteText (2, 2);
+			atkEditableText.DeleteText (2, 4);
 			InterfaceText (accessible, "abef");
 			int pos = 0;
 			atkEditableText.InsertText ("xx", ref pos);
