@@ -119,8 +119,7 @@ namespace UiaAtkBridgeTest
 			toolStrip.Items.Add (toolStripComboBoxDD);
 			toolStrip.Items.Add (tsl1);
 			toolStrip.Items.Add (tspb1);
-			//FIXME: uncomment this when toolstripComboBox is ready, right now we got an assert: http://monoport.com/38241
-			//form.Controls.Add (toolStrip);
+			form.Controls.Add (toolStrip);
 
 			linklab1.Links [0].Visited = true;
 			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com";

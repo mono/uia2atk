@@ -1,3 +1,7 @@
+2008-11-19  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Provider working now for the ToolStrip*!
+
 2008-11-18  Mike Gorse  <mgorse@novell.com>
 
 	* makefile.am: Remove redundant EXTRA_DIST.
