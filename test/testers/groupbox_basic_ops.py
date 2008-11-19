@@ -29,7 +29,7 @@ try:
 except IndexError:
   pass #expected
 
-# open the treeview sample application
+# open the groupbox sample application
 try:
   app = launchGroupBox(app_path)
 except IOError, msg:
@@ -57,6 +57,25 @@ statesCheck(gbFrame.label2, "Label")
 
 #check Panel's states
 statesCheck(gbFrame.panel1, "Panel")
+statesCheck(gbFrame.panel2, "Panel")
+
+#Only controls that are contained within the GroupBox control can be selected 
+#or receive focus. The complete GroupBox itself cannot be selected or receive 
+#focus. so pressing Tab key would move focused state from button1 to button2
+gbFrame.keyCombo("Tab", grabFocus=False)
+
+statesCheck(gbFrame.button1, "Button")
+
+statesCheck(gbFrame.button2, "Button", add_states=["focused"])
+
+statesCheck(gbFrame.panel2, "Panel")
+#press Tab key again to move focused state from button2 to button1
+gbFrame.keyCombo("Tab", grabFocus=False)
+
+statesCheck(gbFrame.button2, "Button")
+
+statesCheck(gbFrame.button1, "Button", add_states=["focused"])
+
 statesCheck(gbFrame.panel2, "Panel")
 
 #click button1 in groupbox1 to update label
