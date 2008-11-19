@@ -1,3 +1,8 @@
+2008-11-19  Brad Taylor  <brad@getcoded.net>
+	
+	* TextBoxEntryView.cs: Partially implement AtkEditableText to stop it
+	from crashing when browsed from Accerciser.
+
 2008-11-18  Mario Carrion  <mcarrion@novell.com>
 
 	* AutomationBridge.cs: Handling ControlTypePane: Container.

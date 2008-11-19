@@ -37,13 +37,15 @@ namespace UiaAtkBridge
 	{
 		private TextImplementorHelper textExpert = null;
 		private bool multiLine = false;
+		private ITextProvider textProvider;
+		private IValueProvider valueProvider;
 		
 		public TextBoxEntryView (IRawElementProviderSimple provider) : base (provider)
 		{
 			Role = Atk.Role.Text;
 
-			ITextProvider textProvider = (ITextProvider) provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id);
-			IValueProvider valueProvider = (IValueProvider) provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+			textProvider = (ITextProvider) provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id);
+			valueProvider = (IValueProvider) provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
 			if ((textProvider == null) && (valueProvider == null))
 				throw new ArgumentException ("Provider for TextBox should either implement IValue or IText");
 			
@@ -96,12 +98,12 @@ namespace UiaAtkBridge
 		
 		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
-			throw new NotImplementedException ();
+			return textExpert.GetRunAttributes (offset, out startOffset, out endOffset);
 		}
 		
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
 		{
-			throw new NotImplementedException ();
+			textExpert.GetCharacterExtents (offset, out x, out y, out width, out height, coords);
 		}
 		
 		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
@@ -142,7 +144,7 @@ namespace UiaAtkBridge
 		
 		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
 		{
-			throw new NotImplementedException ();
+			textExpert.GetRangeExtents (startOffset, endOffset, coordType, out rect);
 		}
 		
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
@@ -206,7 +208,8 @@ namespace UiaAtkBridge
 
 		int Atk.ActionImplementor.NActions {
 			get {
-				throw new NotImplementedException ();
+				// TODO:
+				return 0;
 			}
 		}
 		
@@ -214,39 +217,57 @@ namespace UiaAtkBridge
 		
 		#region EditableTextImplementor implementation 
 		
-		bool Atk.EditableTextImplementor.SetRunAttributes (GLib.SList attrib_set, int start_offset, int end_offset)
+		public bool SetRunAttributes (GLib.SList attrib_set, int start_offset, int end_offset)
 		{
-			throw new NotImplementedException ();
+			return false;
 		}
 		
-		void Atk.EditableTextImplementor.InsertText (string str1ng, ref int position)
+		public void InsertText (string str, ref int position)
 		{
-			throw new NotImplementedException ();
+			if (position < 0 || position > textExpert.Length)
+				position = textExpert.Length;	// gail
+			TextContents = textExpert.Text.Substring (0, position)
+				+ str
+				+ textExpert.Text.Substring (position);
+			position += str.Length;
 		}
 		
-		void Atk.EditableTextImplementor.CopyText (int start_pos, int end_pos)
+		public void CopyText (int start_pos, int end_pos)
 		{
-			throw new NotImplementedException ();
+			Console.WriteLine ("UiaAtkBridge (TextBoxEntryView): CopyText unimplemented");
 		}
 		
-		void Atk.EditableTextImplementor.CutText (int start_pos, int end_pos)
+		public void CutText (int start_pos, int end_pos)
 		{
-			throw new NotImplementedException ();
+			Console.WriteLine ("UiaAtkBridge (TextBoxEntryView): CutText unimplemented");
 		}
 		
-		void Atk.EditableTextImplementor.DeleteText (int start_pos, int end_pos)
+		public void DeleteText (int start_pos, int end_pos)
 		{
-			throw new NotImplementedException ();
+			if (start_pos < 0)
+				start_pos = 0;
+			if (end_pos < 0 || end_pos > textExpert.Length)
+				end_pos = textExpert.Length;
+			if (start_pos > end_pos)
+				start_pos = end_pos;
+
+			TextContents = TextContents.Remove (start_pos, end_pos - start_pos);
 		}
 		
-		void Atk.EditableTextImplementor.PasteText (int position)
+		public void PasteText (int position)
 		{
-			throw new NotImplementedException ();
+			Console.WriteLine ("UiaAtkBridge (TextBoxEntryView): PasteText unimplemented");
 		}
 		
-		string Atk.EditableTextImplementor.TextContents {
+		public string TextContents {
+			get { return valueProvider.Value.ToString (); }
 			set {
-				throw new NotImplementedException ();
+				if (valueProvider == null) {
+					Console.Error.WriteLine ("WARNING: Cannot set text on a TextBox that does not implement IValueProvider.");
+					return;
+				}
+			
+				valueProvider.SetValue (value);
 			}
 		}
 		
@@ -302,7 +323,8 @@ namespace UiaAtkBridge
 		
 		public int NMimeTypes {
 			get {
-				throw new NotImplementedException ();
+				// TODO:
+				return 0;
 			}
 		}
 		
