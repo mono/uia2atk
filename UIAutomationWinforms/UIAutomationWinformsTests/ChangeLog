@@ -1,3 +1,11 @@
+2008-11-19  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* WebBrowserProviderTest.cs:
+	* UIAutomationWinformsTests.mdp: Adding buggy WebBrowserProviderTest,
+	but setting to Ignore for now.  Can run tests individually, but
+	trying to run the whole suite causes nunit to hang for a few minutes,
+	then crash.
+
 2008-11-18  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* MenuStripProviderTest.cs:
