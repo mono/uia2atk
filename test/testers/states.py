@@ -262,3 +262,6 @@ class ComboBox(object):
 class ToolTip(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
+class MenuStrip(object):
+    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
+

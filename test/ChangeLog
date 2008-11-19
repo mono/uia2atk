@@ -1,3 +1,11 @@
+2008-11-19  Ray Wang <rawang@novell.com>
+
+	* samples/menustrip.py: new samples for MenuStrip Control
+	* testers/menustrip/__init__.py: the init of menustrip package
+	* testers/menustrip/menustripframe.py: the profile of the menustrip sample
+	* testers/states.py: add MenuStrip's status
+	* testers/menustrip_basic_ops.py: main test script of menustrip
+
 2008-11-19  Calen Chen <cachen@novell.com>
 
 	* testers/checkedlistbox_basic_ops.py: add test for checking if toggle 
