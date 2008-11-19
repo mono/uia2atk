@@ -1,4 +1,14 @@
 2008-11-19  Brad Taylor  <brad@getcoded.net>
+
+	* Adapter.cs: Add RemoveFromParent method to ensure that the adapter
+	isn't visible when removed.  Incidentally, that's the only way we know
+	from the Provider side that our control is hidden.  Also augment
+	OnRefStateSet to not return Visible or Showing if the widget has no
+	parent.
+
+	* ParentAdapter.cs: Call the child's new RemoveFromParent method.
+
+2008-11-19  Brad Taylor  <brad@getcoded.net>
 	
 	* TextBoxEntryView.cs: Partially implement AtkEditableText to stop it
 	from crashing when browsed from Accerciser.

@@ -97,6 +97,7 @@ namespace UiaAtkBridge
 			Console.WriteLine ("RemoveChild");
 			int childIndex;
 			lock (syncRoot) {
+				childToRemove.RemoveFromParent ();
 				childIndex = children.IndexOf (childToRemove);
 				children.Remove (childToRemove);
 			}

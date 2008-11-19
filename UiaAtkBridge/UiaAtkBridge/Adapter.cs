@@ -78,6 +78,17 @@ namespace UiaAtkBridge
 				Name = (string)e.NewValue;
 			}
 		}
+
+		public void RemoveFromParent ()
+		{
+			Parent = null;
+
+			Atk.StateSet states = RefStateSet ();
+			states.RemoveState (Atk.StateType.Showing);
+			states.RemoveState (Atk.StateType.Visible);
+			NotifyStateChange (Atk.StateType.Showing, false);
+			NotifyStateChange (Atk.StateType.Visible, false);
+		}
 		
 #endregion
 		
@@ -97,15 +108,13 @@ namespace UiaAtkBridge
 					states.RemoveState (Atk.StateType.Enabled);
 				}
 				
-				bool showing = !(bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
-				if (showing)
-				{
+				bool is_offscreen = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
+				if (Parent != null && !is_offscreen) {
 					states.AddState (Atk.StateType.Showing);
 					states.AddState (Atk.StateType.Visible);
-				}
-				else
-				{
+				} else {
 					states.RemoveState (Atk.StateType.Showing);
+					states.RemoveState (Atk.StateType.Visible);
 				}
 			}
 			
