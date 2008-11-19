@@ -80,9 +80,6 @@ lbFrame.assertClearSelection(lbFrame.listbox)
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.listitem[2], "ListItem", add_states=["focused"])
 
-#check list's table implementation
-lbFrame.assertTable(lbFrame.listbox)
-
 #check listitem's Text Value
 lbFrame.assertText()
 

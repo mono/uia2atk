@@ -60,15 +60,6 @@ class ListBoxFrame(accessibles.Frame):
         procedurelogger.action('clear selection in "%s"' % (accessible))
 
         accessible.clearSelection()
-
-    #assert Table implementation for List role to check row and column number is matched
-    def assertTable(self, accessible, row=11, col=2):
-        procedurelogger.action('check "%s" Table implemetation' % accessible)
-        itable = accessible._accessible.queryTable()
-
-        procedurelogger.expectedResult('"%s" have %s Rows and %s Columns' % (accessible, row, col))
-        assert itable.nRows == row and itable.nColumns == col, "Not match Rows %s and Columns %s" \
-                                                                  % (itable.nRows, itable.nColumns)
     
     #close application main window after running test
     def quit(self):

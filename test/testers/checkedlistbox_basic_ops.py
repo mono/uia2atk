@@ -142,10 +142,6 @@ clbFrame.toggle(clbFrame.listitem[20])
 sleep(config.SHORT_DELAY)
 clbFrame.assertLabel(clbFrame.listitem[20], '2 5 20')
 
-#check list's table implementation
-clbFrame.assertTable(clbFrame.listbox1)
-clbFrame.assertTable(clbFrame.listbox2, row=30, col=1)
-
 
 #close application frame window
 clbFrame.quit()
