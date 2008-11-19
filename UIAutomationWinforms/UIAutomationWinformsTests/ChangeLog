@@ -1,3 +1,8 @@
+2008-11-18  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* MenuStripProviderTest.cs:
+	* ToolStripProviderTest.cs: Finish supported pattern tests.
+
 2008-11-18  Mario Carrion  <mcarrion@novell.com>
 
 	* HelpProviderTest.cs: Using ToolTipControlType instead of

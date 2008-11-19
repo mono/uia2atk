@@ -65,16 +65,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			// Should never support Transform
 			object transformProvider = provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
-			Assert.IsNull (transformProvider);
+			Assert.IsNull (transformProvider, "Transform pattern should not be supported");
 
 			// Should never support ExpandCollapse
 			object expandCollapseProvider = provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
-			Assert.IsNull (expandCollapseProvider);
+			Assert.IsNull (expandCollapseProvider, "ExpandCollapse pattern should not be supported");
 
-			// TODO: When to support dock?
-			//object dockProvider = provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id);
-			//Assert.IsNotNull (dockProvider);
-			//Assert.IsTrue (dockProvider is IDockProvider, "IDockProvider");
+			// Should never support Dock
+			object dockProvider = provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id);
+			Assert.IsNull (dockProvider, "Dock pattern should not be supported");
 		}
 
 		[Test]

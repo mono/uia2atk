@@ -34,6 +34,7 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
+	[TestFixture]
 	public class ToolStripProviderTest : BaseProviderTest
 	{
 		[Test]
@@ -56,24 +57,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		// TODO: Test add/removal of items, navigation, etc
 		
 		[Test]
-		[Ignore ("Not implemented")]
 		public void ProviderPatternTest ()
 		{
-			//ToolStrip strip = new ToolStrip ();
-			//IRawElementProviderSimple provider = ProviderFactory.GetProvider (strip);
+			ToolStrip strip = new ToolStrip ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (strip);
 
-			// Should never support Transform // TODO: Really? Maybe possible. Test in Vista.
-			//object transformProvider = provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
-			//Assert.IsNull (transformProvider);
+			// Should never support Transform
+			object transformProvider = provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
+			Assert.IsNull (transformProvider, "Transform pattern should not be supported");
 
-			// Should never support ExpandCollapse // TODO: Really? I think this is possible. Test in Vista.
-			//object expandCollapseProvider = provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
-			//Assert.IsNull (expandCollapseProvider);
+			// Should never support ExpandCollapse
+			object expandCollapseProvider = provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+			Assert.IsNull (expandCollapseProvider, "ExpandCollapse pattern should not be supported");
 
-			// TODO: When to support dock?
-			//object dockProvider = provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id);
-			//Assert.IsNotNull (dockProvider);
-			//Assert.IsTrue (dockProvider is IDockProvider, "IDockProvider");
+			// Should never support Dock
+			object dockProvider = provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id);
+			Assert.IsNull (dockProvider, "Dock pattern should not be supported");
 		}
 
 		[Test]
