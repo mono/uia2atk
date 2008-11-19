@@ -377,9 +377,9 @@ namespace UiaAtkBridgeTest
 					Assert.IsTrue (implementor.IsChildSelected (i), "childSelected(" + i + ")");
 					Assert.IsTrue (refSelObj.RefStateSet ().ContainsState (Atk.StateType.Selectable), "Selected child should have State.Selectable");
 					if (((type == BasicWidgetType.ComboBoxDropDownList) ||
-					     (type == BasicWidgetType.ComboBoxDropDownEntry))
-					    && (IsBGO561414Addressed ())) {
-						Assert.IsTrue (refSelObj.RefStateSet ().ContainsState (Atk.StateType.Selected), "Selected child(" + i + ") should have State.Selected");
+					     (type == BasicWidgetType.ComboBoxDropDownEntry))) {
+						Assert.IsTrue (refSelObj.RefStateSet ().ContainsState (Atk.StateType.Selected) ==
+						  IsBGO561414Addressed (), "Selected child(" + i + ") should have State.Selected");
 					}
 					for (int j = 0; j < names.Length; j++) {
 						if (j == i)
