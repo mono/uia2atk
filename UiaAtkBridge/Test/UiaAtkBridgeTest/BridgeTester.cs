@@ -63,6 +63,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.CheckBox chkWithoutImage = new SWF.CheckBox ();
 		protected SWF.CheckBox chkWithImage = new SWF.CheckBox ();
 		protected SWF.StatusBar sb1 = new SWF.StatusBar ();
+		protected SWF.StatusStrip ss1 = new SWF.StatusStrip ();
 		protected SWF.ProgressBar pb1 = new SWF.ProgressBar ();
 		protected SWF.NumericUpDown nud1 = new SWF.NumericUpDown ();
 		protected SWF.DomainUpDown dud1 = new SWF.DomainUpDown ();
@@ -145,6 +146,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (chkWithoutImage);
 			form.Controls.Add (chkWithImage);
 			form.Controls.Add (sb1);
+			form.Controls.Add (ss1);
 			form.Controls.Add(menuStrip1);
 			form.MainMenuStrip = menuStrip1;
 			form.Controls.Add (pb1);

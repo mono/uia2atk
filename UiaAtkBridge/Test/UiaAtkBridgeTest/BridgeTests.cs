@@ -321,6 +321,35 @@ namespace UiaAtkBridgeTest
 		{
 			ProgressBar (BasicWidgetType.ToolStripProgressBar);
 		}
+		
+		[Test]
+		public void StatusStrip ()
+		{
+			BasicWidgetType type = BasicWidgetType.StatusStrip;
+			
+			Atk.Object accessible = GetAdapterForWidget (ss1);
+			Assert.IsNotNull (accessible, "Adapter should not be null");
+			States (accessible,
+			        Atk.StateType.Enabled,
+			        Atk.StateType.Sensitive,
+			        Atk.StateType.Showing,
+			        Atk.StateType.Visible);
+			
+			PropertyRole (type, accessible);
+			
+			ss1.Items.Clear ();
+			ss1.Items.Add ("first item");
+			ss1.Items.Add ("second item");
+			ss1.Items.Add ("third item");
+			Assert.AreEqual (3, accessible.NAccessibleChildren, "NAccessibleChildren #1");
+			
+			Atk.Object child1 = accessible.RefAccessibleChild (0);
+			Assert.AreEqual (Atk.Role.Label, child1.Role, "Child role #1");
+			InterfaceText (child1, "first item");
+			
+			ss1.Items.Clear ();
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren #2");
+		}
 
 		[Test]
 		public void Bug416602 ()
