@@ -90,6 +90,7 @@ FILES =  \
 	ToolStripProviderTest.cs \
 	ToolStripTextBoxProviderTest.cs \
 	ToolTipProviderTest.cs \
+	WebBrowserProviderTest.cs \
 	WindowProviderTest.cs \
 	WordTokenizerTest.cs 
 

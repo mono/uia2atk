@@ -1,5 +1,9 @@
 2008-11-19  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Makefile.am: Add WebBrowerProviderTest.cs.
+
+2008-11-19  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* WebBrowserProviderTest.cs:
 	* UIAutomationWinformsTests.mdp: Adding buggy WebBrowserProviderTest,
 	but setting to Ignore for now.  Can run tests individually, but
