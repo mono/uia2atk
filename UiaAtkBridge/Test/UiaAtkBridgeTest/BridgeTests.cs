@@ -141,6 +141,14 @@ namespace UiaAtkBridgeTest
 			hyperlink = (UiaAtkBridge.Hyperlink) GetAdapterForWidget (linklab1);
 			Atk.Text atkText = CastToAtkInterface<Atk.Text> (hyperlink);
 
+			States (hyperlink,
+				Atk.StateType.Enabled,
+				Atk.StateType.Focusable,
+				Atk.StateType.MultiLine,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
+
 			Assert.AreEqual (53, atkText.CharacterCount, "LinkLabel character count");
 			Assert.AreEqual ("openSUSE", atkText.GetText (0, 8), "LinkLabel GetText");
 			Atk.HypertextAdapter hypertext = new Atk.HypertextAdapter (hyperlink);

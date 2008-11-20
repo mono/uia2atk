@@ -244,7 +244,7 @@ namespace UiaAtkBridgeTest
 				CheckComboBoxMenuChild (newWindow.RefAccessibleChild (0), names);
 			}
 			
-			if (type == BasicWidgetType.CheckBox) {
+			if (type == BasicWidgetType.CheckBox || type == BasicWidgetType.CheckedListItem) {
 
 				EventCollection events = EventMonitor.Pause ();
 				string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
@@ -253,7 +253,8 @@ namespace UiaAtkBridgeTest
 				EventCollection typeEvs = checkboxEvs.FindByType (evType);
 				Assert.AreEqual (1, typeEvs.Count, "bad number of checked events!" + eventsInXml);
 
-				if (validNumberOfActions > 1) {// does not apply in UIA because 1 doaction==1click==checked
+				if (type == BasicWidgetType.CheckBox &&
+				    validNumberOfActions > 1) {// does not apply in UIA because 1 doaction==1click==checked
 				                               // (in GAIL click+press+release==2clicks==unchecked)
 					//one more, to leave it checked
 					RunInGuiThread (delegate {

@@ -1,3 +1,7 @@
+2008-11-20  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Fix CheckedListBox test.
+
 2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Fix remaining issues and tests for ComboBoxes and

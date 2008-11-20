@@ -1,3 +1,7 @@
+2008-11-20  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTests.cs: test LinkLabel states.
+
 2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: UIA doesn't allow emptying the selection of a
