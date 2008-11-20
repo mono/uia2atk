@@ -246,7 +246,7 @@ namespace Mono.UIAutomation.Winforms
 		public override ListItemProvider[] GetSelectedItems ()
 		{
 			if (listView.SelectedIndices.Count == 0)
-				return null;
+				return new ListItemProvider [0];
 			else {
 				ListItemProvider []providers = new ListItemProvider [listView.SelectedItems.Count];
 

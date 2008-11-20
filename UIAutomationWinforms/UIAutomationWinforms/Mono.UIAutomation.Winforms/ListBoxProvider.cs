@@ -211,7 +211,7 @@ namespace Mono.UIAutomation.Winforms
 			ListItemProvider []items;
 
 			if (listboxControl == null || listboxControl.SelectedIndices.Count == 0)
-				return null;
+				return new ListItemProvider [0];
 			
 			items = new ListItemProvider [listboxControl.SelectedIndices.Count];		
 			for (int index = 0; index < items.Length; index++) 

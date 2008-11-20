@@ -77,7 +77,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.RadioButton
 					return new IRawElementProviderSimple[] { childProvider };
 			}
 			
-			return null; // TODO: Agree on default value, as MSDN doesn't care
+			return new IRawElementProviderSimple [0];
 		}
 
 #endregion

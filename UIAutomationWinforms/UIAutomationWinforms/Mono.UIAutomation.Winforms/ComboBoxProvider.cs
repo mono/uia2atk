@@ -146,7 +146,7 @@ namespace Mono.UIAutomation.Winforms
 		public override ListItemProvider[] GetSelectedItems ()
 		{
 			if (comboboxControl == null || comboboxControl.SelectedIndex == -1)
-				return null;
+				return new ListItemProvider [0];
 			else
 				return new ListItemProvider [] { GetItemProviderFrom (this, comboboxControl.SelectedItem) };
 		}
@@ -403,7 +403,10 @@ namespace Mono.UIAutomation.Winforms
 			
 			public override ListItemProvider[] GetSelectedItems ()
 			{
-				return comboboxProvider == null ? null : comboboxProvider.GetSelectedItems ();
+				if (comboboxProvider == null)
+					return new ListItemProvider [0];
+				else
+					return comboboxProvider.GetSelectedItems ();
 			}
 
 			public override void SelectItem (ListItemProvider item)
