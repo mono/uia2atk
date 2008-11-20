@@ -55,10 +55,7 @@ namespace UiaAtkBridge
 
 		public int SelectionCount
 		{
-			get {
-				var selectedItems = GetSelection ();
-				return (selectedItems == null) ? 0 : selectedItems.Length;
-			}
+			get { return GetSelection ().Length; }
 		}
 
 		public bool AddSelection (int i)
@@ -86,7 +83,7 @@ namespace UiaAtkBridge
 			var selectedElements = GetSelection ();
 			bool result = true;
 			
-			if (selectedElements == null)
+			if (selectedElements.Length == 0)
 				return true;
 			for (int i=0; i < selectedElements.Length; i++) {
 				ISelectionItemProvider selectionItemProvider = 
@@ -124,7 +121,7 @@ namespace UiaAtkBridge
 		{
 			IRawElementProviderSimple[] selectedElements = 
 				GetSelection ();
-			if (selectedElements == null || (i < 0 || i >= selectedElements.Length))
+			if (selectedElements.Length == 0 || (i < 0 || i >= selectedElements.Length))
 				return null;
 			return AutomationBridge.GetAdapterForProviderLazy (selectedElements[i]);
 		}

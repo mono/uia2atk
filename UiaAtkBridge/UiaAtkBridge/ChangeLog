@@ -1,3 +1,10 @@
+2008-11-20  Mario Carrion  <mcarrion@novell.com>
+
+	* ListItem.cs: Subclassing from ComponentParentAdapter instead of
+	ComponentAdapter (to handle CheckBox and Edit children).
+
+	* SelectionProviderUserHelper.cs: Using Length instead of null.
+
 2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* TextImplementorHelper.cs: Cosmetic.

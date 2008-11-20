@@ -30,7 +30,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class ListItem : ComponentAdapter, Atk.TextImplementor, Atk.ActionImplementor
+	public class ListItem : ComponentParentAdapter, Atk.TextImplementor, Atk.ActionImplementor
 	{
 		private IInvokeProvider				invokeProvider;
 		private ISelectionItemProvider		selectionItemProvider;
@@ -322,6 +322,11 @@ namespace UiaAtkBridge
 				NotifyStateChange (Atk.StateType.Checked, IsChecked ((ToggleState)e.NewValue));
 			else
 				base.RaiseAutomationPropertyChangedEvent (e);
+		}
+
+		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
+		{
+			//TODO: Something to add?
 		}
 
 		private bool IsChecked (ToggleState state)
