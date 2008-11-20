@@ -116,45 +116,48 @@ namespace UiaAtkBridge
 		}
 		
 		public int SelectionCount {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return 0; }
 		}
 		
 		public bool AddSelection (int i)
 		{
-			throw new NotImplementedException ();
+			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
+			return false;
 		}
 
 		public bool ClearSelection ()
 		{
-			throw new NotImplementedException ();
+			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
+			return false;
 		}
 
 		public Atk.Object RefSelection (int i)
 		{
-			throw new NotImplementedException ();
+			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
+			return null;
 		}
 
 		public bool IsChildSelected (int i)
 		{
+			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
 			//TODO: Atk.Selection
 			return false;
 		}
 
 		public bool RemoveSelection (int i)
 		{
+			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
 			return false;
 		}
 
 		public bool SelectAllSelection ()
 		{
-			throw new NotImplementedException ();
+			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
+			return false;
 		}
 		
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
-			throw new NotImplementedException ();
 		}
 
 		#region Action implementation 
@@ -278,7 +281,7 @@ namespace UiaAtkBridge
 		
 		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
 		{
-			throw new NotImplementedException ();
+			textExpert.GetRangeExtents (startOffset, endOffset, coordType, out rect);
 		}
 		
 		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)

@@ -1,3 +1,9 @@
+2008-11-20  Brad Taylor  <brad@getcoded.net>
+	
+	* MenuItem.cs: Remove NotImplementedExceptions in favor of console
+	warnings so that folks can still use this control despite unimplemented
+	API.
+
 2008-11-20  Mike Gorse  <mgorse@novell.com>
 
 	* DataGrid.cs, List.cs, ListGroup.cs, TextContainer.cs,

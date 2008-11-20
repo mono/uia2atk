@@ -1,3 +1,8 @@
+2008-11-20  Brad Taylor  <brad@getcoded.net>
+	
+	* samples/toolstripdropdownbutton.py: Rework so that it exploits
+	implemented API.  ToolStripButton is not yet implemented.
+
 2008-11-20  Calen Chen <cachen@novell.com>
 
 	* samples/progressbar.py: modify the example from exiting the 

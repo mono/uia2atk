@@ -99,19 +99,19 @@ class ToolStripDropDownButtonApp(Form):
         self.db.DropDownDirection = ToolStripDropDownDirection.Left
         self.db.ShowDropDownArrow = True
         
-        self.br = ToolStripButton()
+        self.br = ToolStripMenuItem()
         self.br.ForeColor = Color.Red
         self.br.Text = "Red"
         self.br.Name = "Red"
-        self.bu = ToolStripButton()
+        self.bu = ToolStripMenuItem()
         self.bu.ForeColor = Color.Blue
         self.bu.Text = "Blue"
         self.bu.Name = "Blue"
         self.br.Click += self.cc
         self.bu.Click += self.cc
         
-        self.dd.Items.Add(self.br)
-        self.dd.Items.Add(self.bu)
+        self.db.DropDownItems.Add(self.br)
+        self.db.DropDownItems.Add(self.bu)
         self.ts.Items.Add(self.db)
 
 ##MenuStrip
