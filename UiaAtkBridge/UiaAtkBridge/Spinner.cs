@@ -32,7 +32,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class Spinner : ComponentAdapter, Atk.TextImplementor, Atk.EditableTextImplementor
+	public abstract class Spinner : ComponentAdapter, Atk.TextImplementor, Atk.EditableTextImplementor
 	{
 		protected IRangeValueProvider rangeValueProvider;
 		protected IValueProvider valueProvider;

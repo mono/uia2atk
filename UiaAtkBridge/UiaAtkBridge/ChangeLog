@@ -1,3 +1,9 @@
+2008-11-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Spinner.cs:
+	* AutomationBridge.cs: Spinner base class is no longer used directly;
+	marking abstract to avoid confusion.
+
 2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ComboBox.cs: Micro-optimization and fix for when the combobox is

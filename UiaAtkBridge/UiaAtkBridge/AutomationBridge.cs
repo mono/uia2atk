@@ -769,7 +769,7 @@ namespace UiaAtkBridge
 			else if (provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id) != null)
 				atkSpinner = new SpinnerWithValue (provider);
  			else
-				atkSpinner = new Spinner (provider);
+				return;
 
 			IncludeNewAdapter (atkSpinner, parentObject);
 		}

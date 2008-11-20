@@ -543,7 +543,7 @@ namespace UiaAtkBridgeTest
 				if (real)
 					accessible = GetAdapterForWidget (nud);
 				else
-					accessible = new UiaAtkBridge.Spinner (ProviderFactory.GetProvider (nud, true, true));
+					accessible = new UiaAtkBridge.SpinnerWithValue (ProviderFactory.GetProvider (nud, true, true));
 				break;
 
 			case BasicWidgetType.TextBoxEntry:
