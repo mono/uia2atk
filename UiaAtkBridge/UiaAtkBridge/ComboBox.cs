@@ -119,7 +119,7 @@ namespace UiaAtkBridge
 					break;
 				case ExpandCollapseState.Expanded:
 					expandColapseProvider.Collapse ();
-					return false;
+					break;
 				default:
 					throw new NotSupportedException ("A combobox should not have an ExpandCollapseState different than Collapsed/Expanded");
 				}
@@ -198,8 +198,29 @@ namespace UiaAtkBridge
 
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			// TODO
+			base.RaiseAutomationEvent (eventId, e);
 		}
+
+		private Window fakeWindow = null;
+		
+		public override void RaiseAutomationPropertyChangedEvent (System.Windows.Automation.AutomationPropertyChangedEventArgs e)
+		{
+			if (e.Property.Id != ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id) {
+				base.RaiseAutomationPropertyChangedEvent (e);
+				return;
+			}
+
+			if ((ExpandCollapseState)e.NewValue == ExpandCollapseState.Expanded) {
+				if (fakeWindow == null) {
+					fakeWindow = new Window ();
+					fakeWindow.AddOneChild ((Adapter)RefAccessibleChild (0));
+					TopLevelRootItem.Instance.AddOneChild (fakeWindow);
+				}
+			} else if ((ExpandCollapseState)e.NewValue == ExpandCollapseState.Collapsed) {
+				TopLevelRootItem.Instance.RemoveChild (fakeWindow);
+			}
+		}
+
 
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{

@@ -40,6 +40,11 @@ namespace UiaAtkBridge
 			if (rootProvider != null)
 				Name = (string) rootProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 		}
+
+		internal Window () : base (null)
+		{
+			Role = Atk.Role.Window;
+		}
 		
 		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
 		{

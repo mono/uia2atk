@@ -88,7 +88,9 @@ namespace UiaAtkBridge
 			lock (syncRoot) {
 				children.Add (child);
 			}
-			child.Parent = this;
+			//we may want that a child has 2 parents
+			if (child.Parent == null)
+				child.Parent = this;
 			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Add, (uint)(children.Count - 1), child);
 		}
 		
@@ -97,7 +99,7 @@ namespace UiaAtkBridge
 			Console.WriteLine ("RemoveChild");
 			int childIndex;
 			lock (syncRoot) {
-				childToRemove.RemoveFromParent ();
+				childToRemove.RemoveFromParent (this);
 				childIndex = children.IndexOf (childToRemove);
 				children.Remove (childToRemove);
 			}
@@ -127,9 +129,10 @@ namespace UiaAtkBridge
 			IRawElementProviderFragment child 
 				= fragment.Navigate (NavigateDirection.FirstChild);
 			while (child != null) {
-				AutomationInteropProvider.RaiseStructureChangedEvent (child, 
-				                                                      new StructureChangedEventArgs (StructureChangeType.ChildAdded,
-				                                                                                     child.GetRuntimeId ()));				
+				AutomationInteropProvider.RaiseStructureChangedEvent (
+				  child,
+				  new StructureChangedEventArgs (StructureChangeType.ChildAdded,
+				                                 child.GetRuntimeId ()));
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 		}

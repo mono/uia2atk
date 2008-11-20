@@ -310,6 +310,9 @@ namespace UiaAtkBridge
 		
 		public void RaiseAutomationEvent (AutomationEvent eventId, object provider, AutomationEventArgs e)
 		{
+//			if (e!= null)
+//				Console.WriteLine ("RaiseAutomationEvent{0}", e.EventId.ProgrammaticName);
+			
 			// TODO: Find better way to pass PreRun event on to bridge
 			//        (nullx3 is a magic value)
 			//        (once bridge events are working, should be able to happen upon construction, right?)
@@ -336,6 +339,9 @@ namespace UiaAtkBridge
 		{
 			if (element == null)
 				throw new ArgumentNullException ("element");
+			
+//			Console.WriteLine ("RaiseAutomationPropertyChangedEvent{0}:{1}", 
+//			  e.Property.ProgrammaticName, e == null ? "" : e.NewValue == null ? "" : e.NewValue.ToString());
 			
 			IRawElementProviderSimple simpleProvider =
 				(IRawElementProviderSimple) element;
@@ -841,12 +847,13 @@ Console.WriteLine ("provider: " + provider + ", parent adapter: " + parentObject
 
 		internal static void IncludeNewAdapter (Adapter newAdapter, ParentAdapter parentAdapter)
 		{
-			if (newAdapter.Provider == null)
+			if ((newAdapter.Provider == null) && (parentAdapter != TopLevelRootItem.Instance))
 				throw new ArgumentException (String.Format ("{0} adapter should have a not null provider", newAdapter.GetType ().Name));
 //			if (providerAdapterMapping.ContainsKey (newAdapter.Provider))
 //				return;
-			
-			providerAdapterMapping [newAdapter.Provider] = newAdapter;
+
+			if (newAdapter.Provider != null)
+				providerAdapterMapping [newAdapter.Provider] = newAdapter;
 			parentAdapter.AddOneChild (newAdapter);
 		}
 		
