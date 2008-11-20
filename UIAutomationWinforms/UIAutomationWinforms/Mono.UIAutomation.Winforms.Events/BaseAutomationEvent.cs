@@ -55,6 +55,11 @@ namespace Mono.UIAutomation.Winforms.Events
 		protected void RaiseAutomationEvent ()
 		{
 			if (AutomationInteropProvider.ClientsAreListening == true) {
+				try {
+				Console.WriteLine ("RaiseAutomationEvent. Raising: {0} - {1}", 
+				                   Event.ProgrammaticName, Provider.GetType ());
+				} catch (Exception) {}
+				
 				AutomationEventArgs args = 
 					new AutomationEventArgs (Event);
 				AutomationInteropProvider.RaiseAutomationEvent (Event, 
