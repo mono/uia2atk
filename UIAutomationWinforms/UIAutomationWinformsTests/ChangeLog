@@ -1,3 +1,7 @@
+2008-11-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* ToolStripTextBoxProviderTest.cs: Add navigation test.
+
 2008-11-19  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am: Add WebBrowerProviderTest.cs.

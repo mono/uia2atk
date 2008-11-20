@@ -25,6 +25,10 @@
 
 using System;
 using System.Windows.Forms;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+
+using Mono.UIAutomation.Winforms;
 
 using NUnit.Framework;
 
@@ -33,6 +37,34 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	[TestFixture]
 	public class ToolStripTextBoxProviderTest : TextBoxProviderTest
 	{
+		[Test]
+		public void NavigationTest ()
+		{
+			ToolStrip strip = new ToolStrip ();
+			ToolStripTextBox stripTextBox1 = new ToolStripTextBox ();
+			ToolStripMenuItem item = new ToolStripMenuItem ();
+			ToolStripTextBox stripTextBox2 = new ToolStripTextBox ();
+
+			item.DropDownItems.Add (stripTextBox2);
+			strip.Items.Add (item);
+			strip.Items.Add (stripTextBox1);
+
+			IRawElementProviderFragment stripProvider =
+				GetProviderFromControl (strip);
+			
+			IRawElementProviderFragment itemProvider = (IRawElementProviderFragment)
+				ProviderFactory.GetProvider (item);
+
+			IRawElementProviderFragment box1Provider = (IRawElementProviderFragment)
+				ProviderFactory.GetProvider (stripTextBox1);
+			IRawElementProviderFragment box2Provider = (IRawElementProviderFragment)
+				ProviderFactory.GetProvider (stripTextBox2);
+
+			Assert.AreEqual (stripProvider,
+			                 box1Provider.Navigate (NavigateDirection.Parent));
+			Assert.AreEqual (itemProvider,
+			                 box2Provider.Navigate (NavigateDirection.Parent));
+		}
 		
 		protected override TextBox CreateTextBox ()
 		{
