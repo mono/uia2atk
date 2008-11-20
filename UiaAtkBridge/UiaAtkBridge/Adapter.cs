@@ -81,15 +81,12 @@ namespace UiaAtkBridge
 
 		public void RemoveFromParent (ParentAdapter parent)
 		{
+			NotifyStateChange (Atk.StateType.Showing, false);
+			NotifyStateChange (Atk.StateType.Visible, false);
+
 			//don't remove the parent if this was not the first parent
 			if (parent == Parent)
 				Parent = null;
-
-			Atk.StateSet states = RefStateSet ();
-			states.RemoveState (Atk.StateType.Showing);
-			states.RemoveState (Atk.StateType.Visible);
-			NotifyStateChange (Atk.StateType.Showing, false);
-			NotifyStateChange (Atk.StateType.Visible, false);
 		}
 		
 #endregion

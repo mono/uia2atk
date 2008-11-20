@@ -304,7 +304,7 @@ namespace UiaAtkBridgeTest
 			}
 		}
 		
-		//[Test] disabled for now because of http://monoport.com/38320 (bridge tests)
+		[Test]
 		public void VScrollBar ()
 		{
 			BasicWidgetType type = BasicWidgetType.VScrollBar;
