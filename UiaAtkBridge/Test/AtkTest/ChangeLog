@@ -1,5 +1,10 @@
 2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Fix remaining issues and tests for ComboBoxes and
+	Atk.Selection.
+
+2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs: Avoid duplicate test messages.
 
 2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>

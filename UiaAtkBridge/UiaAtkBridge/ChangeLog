@@ -1,5 +1,10 @@
 2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ComboBox.cs: Fix remaining issues and tests for ComboBoxes and
+	Atk.Selection.
+
+2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ComboBox.cs: Reset the name, just in case UIA allows that in the
 	future...
 

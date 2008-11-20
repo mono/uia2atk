@@ -193,6 +193,9 @@ namespace UiaAtkBridge
 		}
 		public bool RemoveSelection (int i)
 		{
+			if (!selectionHelper.IsChildSelected (i))
+				return true;
+			
 			bool success = selectionHelper.RemoveSelection (i);
 			
 			//will likely never happen because UIA throws IOE...

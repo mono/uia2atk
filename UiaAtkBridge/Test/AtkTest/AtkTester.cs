@@ -105,8 +105,8 @@ namespace UiaAtkBridgeTest
 		protected abstract bool AllowsEmptyingSelectionOnComboBoxes { get; }
 		
 		protected void InterfaceActionFor3RadioButtons (Atk.Action actionable1, Atk.Object accessible1,
-		                                              Atk.Action actionable2, Atk.Object accessible2,
-		                                              Atk.Action actionable3, Atk.Object accessible3)
+		                                                Atk.Action actionable2, Atk.Object accessible2,
+		                                                Atk.Action actionable3, Atk.Object accessible3)
 		{
 			RunInGuiThread ( delegate () {
 				Assert.IsTrue (actionable1.DoAction (0), "IAF3RB::DoAction#1");
@@ -412,9 +412,12 @@ namespace UiaAtkBridgeTest
 					refSelPos = -1;
 				Assert.IsNull (implementor.RefSelection (refSelPos), "RefSelection OOR#-" + i);
 
+				bool removeSelectionSuccess = true;
+				if (type == BasicWidgetType.ComboBoxDropDownEntry || type == BasicWidgetType.ComboBoxDropDownList)
+					removeSelectionSuccess = AllowsEmptyingSelectionOnComboBoxes;
 				if (i != names.Length - 1)
 					Assert.AreEqual (implementor.RemoveSelection (i),
-					  AllowsEmptyingSelectionOnComboBoxes,
+					  removeSelectionSuccess,
 					  "restoring initial situation of a combobox to empty selection");
 			}
 
@@ -440,17 +443,24 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.RefSelection (-1), "RefSelection OOR#1"); 
 			
 			Assert.IsNull (implementor.RefSelection (names.Length), "RefSelection OOR#2");
+
+			Atk.Object currentSel = null;
 			
 			if (type != BasicWidgetType.TabControl) {
-				Assert.IsTrue (implementor.ClearSelection (), "ClearSelection #2");
-				Assert.IsNull (implementor.RefSelection (0), "RefSel after CS");
+				bool clearSelection = true;
+				if (type == BasicWidgetType.ComboBoxDropDownEntry || type == BasicWidgetType.ComboBoxDropDownList)
+					clearSelection = AllowsEmptyingSelectionOnComboBoxes;
+				Assert.AreEqual (clearSelection, implementor.ClearSelection (), "ClearSelection #2");
+				currentSel = implementor.RefSelection (0);
+				if (clearSelection)
+					Assert.IsNull (currentSel, "RefSel after CS");
 			}
 
 			//this is a normal combobox (not multiline) (TODO: research multiline comboboxes?)
 			Assert.IsFalse (implementor.SelectAllSelection ());
 			
 			if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl)
-				Assert.IsNull (implementor.RefSelection (0), "RefSel after SAS");
+				Assert.AreEqual (currentSel, implementor.RefSelection (0), "RefSel after SAS");
 			
 			Assert.IsTrue (names.Length > 0, "Please use a names variable that is not empty");
 			Assert.IsTrue (implementor.AddSelection (0), "AddSelection->0");
@@ -469,7 +479,12 @@ namespace UiaAtkBridgeTest
 				Assert.IsFalse (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
 			}
 
-			if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl) {
+			if (type != BasicWidgetType.ListBox &&
+			    type != BasicWidgetType.CheckedListBox &&
+			    type != BasicWidgetType.TabControl &&
+			    type != BasicWidgetType.ComboBoxDropDownEntry &&
+			    type != BasicWidgetType.ComboBoxDropDownList)
+			{
 				Assert.IsTrue (implementor.RemoveSelection (0), "RemoveSelection");
 				Assert.IsNull (implementor.RefSelection (0), "RefSel after RemoveSel");
 			}
