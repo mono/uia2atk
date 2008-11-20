@@ -201,7 +201,7 @@ namespace UiaAtkBridge
 		{
 			IRawElementProviderSimple [] elements = selectionProvider.GetSelection ();
 			int controlTypeId = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			if (elements == null || controlTypeId != ControlType.Group.Id)
+			if (elements.Length == 0 || controlTypeId != ControlType.Group.Id)
 				return elements;
 			IRawElementProviderSimple [] ret = new IRawElementProviderSimple [elements.Length];
 			int count = 0;
