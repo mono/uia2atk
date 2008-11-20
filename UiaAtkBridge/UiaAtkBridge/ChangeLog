@@ -1,5 +1,9 @@
 2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AutomationBridge.cs: Reverting unneeded refactoring from r119417.
+
+2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ComboBox.cs: Fix some selection tests.
 
 2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>

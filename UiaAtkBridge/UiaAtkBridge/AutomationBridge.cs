@@ -851,13 +851,14 @@ namespace UiaAtkBridge
 
 		internal static void IncludeNewAdapter (Adapter newAdapter, ParentAdapter parentAdapter)
 		{
-			if ((newAdapter.Provider == null) && (parentAdapter != TopLevelRootItem.Instance))
+			if (newAdapter.Provider == null)
 				throw new ArgumentException (String.Format ("{0} adapter should have a not null provider", newAdapter.GetType ().Name));
+
+			//FIXME: figure out why we can't uncomment this:
 //			if (providerAdapterMapping.ContainsKey (newAdapter.Provider))
 //				return;
 
-			if (newAdapter.Provider != null)
-				providerAdapterMapping [newAdapter.Provider] = newAdapter;
+			providerAdapterMapping [newAdapter.Provider] = newAdapter;
 			parentAdapter.AddOneChild (newAdapter);
 		}
 		
