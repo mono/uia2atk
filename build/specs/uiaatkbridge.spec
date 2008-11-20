@@ -11,8 +11,8 @@
 # 
 
 Name:           uiaatkbridge
-Version:	118524
-Release:	0.novell
+Version:	0.9
+Release:	0
 License:        MIT/X11
 Group:          System/Libraries
 URL:		http://www.mono-project.com/Accessibility

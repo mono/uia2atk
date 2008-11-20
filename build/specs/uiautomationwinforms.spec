@@ -12,8 +12,8 @@
 
 
 Name:           uiautomationwinforms
-Version:	118540
-Release:	0.novell
+Version:	0.9
+Release:	0
 License:        MIT/X11
 Group:          System/Libraries
 BuildArch:	noarch

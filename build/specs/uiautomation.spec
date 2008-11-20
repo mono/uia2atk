@@ -13,16 +13,15 @@
 
 Name:           mono-uia
 Version:        0.9
-Release:        0.svn
+Release:        0
 License:        MIT/X11
 Group:          System/Libraries
-BuildArch:	noarch
 URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 AutoReqProv:	on
 Requires:	mono-core >= 2.2
-BuildRequires:	mono-devel mono-nunit
+BuildRequires:	mono-core >= 2.2 mono-devel mono-nunit
 Summary:        Implementations of members and interfaces based on MS UIA API
 
 %description
@@ -32,11 +31,15 @@ Implementations of the members and interfaces based on MS UIA API
 %setup -q
 
 %build
-./configure --prefix=%_prefix
+./configure --prefix=%_prefix 
 make
 
 %install
 make DESTDIR=$RPM_BUILD_ROOT install
+%ifarch x86_64
+mkdir $RPM_BUILD_ROOT%_prefix/lib64/pkgconfig -p
+mv $RPM_BUILD_ROOT%_prefix/lib/pkgconfig/*.pc $RPM_BUILD_ROOT%_prefix/lib64/pkgconfig/
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -44,6 +47,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 #%doc README COPYING
+%_prefix/lib/mono/accessibility
 %_prefix/lib/mono/gac/UIAutomationProvider
 %_prefix/lib/mono/accessibility/UIAutomationProvider.dll
 %_prefix/lib/mono/gac/UIAutomationTypes
@@ -52,13 +56,13 @@ rm -rf $RPM_BUILD_ROOT
 %_prefix/lib/mono/accessibility/UIAutomationBridge.dll
 %_prefix/lib/mono/gac/UIAutomationClient
 %_prefix/lib/mono/accessibility/UIAutomationClient.dll
-%_prefix/lib/pkgconfig/*.pc
+%_libdir/pkgconfig/*.pc
 
 %package -n mono-winfxcore
 License:	MIT/X11
 Summary:	Parts of winfx
 Group:		Development/Languages/Mono
-Requires:	mono-core >= 1.9
+Requires:	mono-core >= 2.2
 
 %description -n mono-winfxcore
 The Mono Project is an open development initiative that is working to
