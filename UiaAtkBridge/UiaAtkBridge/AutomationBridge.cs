@@ -349,7 +349,9 @@ namespace UiaAtkBridge
 			// an AT will know about the control that has focus,
 			// but don't do this if we're shutting down (ie,
 			// providerAdapterMapping.Count == 0)
-			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty && !providerAdapterMapping.ContainsKey (simpleProvider) && providerAdapterMapping.Count > 0) {
+			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty &&
+			  !providerAdapterMapping.ContainsKey (simpleProvider) &&
+			  providerAdapterMapping.Count > 0) {
 				HandleElementAddition (simpleProvider);
 				int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 				if (controlTypeId == ControlType.DataItem.Id && simpleProvider is IRawElementProviderFragment) {

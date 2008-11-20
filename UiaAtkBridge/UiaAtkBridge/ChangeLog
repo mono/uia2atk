@@ -1,3 +1,8 @@
+2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ComboBox.cs:
+	* AutomationBridge.cs: Cosmetic.
+
 2008-11-20  Brad Taylor  <brad@getcoded.net>
 	
 	* MenuItem.cs: Remove NotImplementedExceptions in favor of console

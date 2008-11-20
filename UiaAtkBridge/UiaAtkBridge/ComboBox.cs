@@ -171,27 +171,27 @@ namespace UiaAtkBridge
 		}
 		bool Atk.SelectionImplementor.AddSelection (int i)
 		{
-			return selectionHelper.AddSelection(i);
+			return selectionHelper.AddSelection (i);
 		}
 		bool Atk.SelectionImplementor.ClearSelection ()
 		{
-			return selectionHelper.ClearSelection();
+			return selectionHelper.ClearSelection ();
 		}
 		Atk.Object Atk.SelectionImplementor.RefSelection (int i)
 		{
-			return selectionHelper.RefSelection(i);
+			return selectionHelper.RefSelection (i);
 		}
 		bool Atk.SelectionImplementor.IsChildSelected (int i)
 		{
-			return selectionHelper.IsChildSelected(i);
+			return selectionHelper.IsChildSelected (i);
 		}
 		bool Atk.SelectionImplementor.RemoveSelection (int i)
 		{
-			return selectionHelper.RemoveSelection(i);
+			return selectionHelper.RemoveSelection (i);
 		}
 		bool Atk.SelectionImplementor.SelectAllSelection ()
 		{
-			return selectionHelper.SelectAllSelection();
+			return selectionHelper.SelectAllSelection ();
 		}
 
 #endregion
