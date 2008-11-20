@@ -49,8 +49,6 @@ namespace Mono.UIAutomation.Winforms
 		public override void Initialize()
 		{
 			base.Initialize ();
-			SetEvent (ProviderEventType.AutomationElementControlTypeProperty,
-			          new ControlTypePropertyEvent (this));
 
 			if (label.IsLink)
 				SetBehavior (InvokePatternIdentifiers.Pattern,
@@ -68,8 +66,6 @@ namespace Mono.UIAutomation.Winforms
 		public override void Terminate()
 		{
 			base.Terminate ();
-			SetEvent (ProviderEventType.AutomationElementControlTypeProperty,
-			          null);
 
 			try {
 				Helper.RemovePrivateEvent (typeof (ToolStripLabel),
