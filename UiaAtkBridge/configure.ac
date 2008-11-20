@@ -1,5 +1,5 @@
 AC_PREREQ([2.54])
-AC_INIT([UiaAtkBridge], [109393])
+AC_INIT([UiaAtkBridge], [0.9])
 AM_INIT_AUTOMAKE([foreign])
 
 # pkg-config
