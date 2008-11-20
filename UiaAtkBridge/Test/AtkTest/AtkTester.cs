@@ -442,7 +442,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.RefSelection (names.Length), "RefSelection OOR#2");
 			
 			if (type != BasicWidgetType.TabControl) {
-				Assert.IsTrue (implementor.ClearSelection (), "ClearSelection");
+				Assert.IsTrue (implementor.ClearSelection (), "ClearSelection #2");
 				Assert.IsNull (implementor.RefSelection (0), "RefSel after CS");
 			}
 

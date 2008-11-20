@@ -1,5 +1,9 @@
 2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Avoid duplicate test messages.
+
+2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs: UIA doesn't allow emptying the selection of a combobox
 	which already had a user selection.
 
