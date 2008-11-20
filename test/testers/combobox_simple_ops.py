@@ -41,7 +41,7 @@ if app is None:
   exit(4)
 
 # just an alias to make things shorter
-cbFrame = app.comboBoxFrame
+cbFrame = app.comboBoxSimpleFrame
 
 #check ComboBox's actions
 actionsCheck(cbFrame.combobox, "ComboBox")

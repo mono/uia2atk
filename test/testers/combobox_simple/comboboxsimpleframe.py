@@ -16,14 +16,14 @@ from combobox_simple import *
 
 
 # class to represent the main window.
-class ComboBoxFrame(accessibles.Frame):
+class ComboBoxSimpleFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
     LABEL1 = "You select "
 
     def __init__(self, accessible):
-        super(ComboBoxFrame, self).__init__(accessible)
+        super(ComboBoxSimpleFrame, self).__init__(accessible)
         self.label1 = self.findLabel(self.LABEL1)
         self.combobox = self.findComboBox(None)
         self.textbox = self.findText(None)

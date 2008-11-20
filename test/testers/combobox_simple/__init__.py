@@ -35,7 +35,7 @@ def launchComboBox(exe=None):
 
     cache.addApplication(combobox)
 
-    combobox.comboBoxFrame.app = combobox
+    combobox.comboBoxSimpleFrame.app = combobox
 
     return combobox
 
@@ -46,5 +46,5 @@ class ComboBox(accessibles.Application):
         'Get a reference to the combobox window'
         super(ComboBox, self).__init__(accessible, subproc)
         
-        self.findFrame(re.compile('^ComboBox control'), logName='Combo Box')
+        self.findFrame(re.compile('^ComboBox control'), logName='Combo Box Simple')
 

@@ -254,7 +254,7 @@ class Menu(object):
     states = (ENABLED, SELECTABLE, SENSITIVE, SHOWING, VISIBLE)
 
 class MenuItem(object):
-    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
+    states = (ENABLED, SELECTABLE, SENSITIVE, SHOWING, VISIBLE)
 
 class ComboBox(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
