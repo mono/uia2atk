@@ -69,7 +69,9 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Focusable,
 			  Atk.StateType.Selectable,
 			  Atk.StateType.Sensitive,
+			  Atk.StateType.SingleLine,
 			  Atk.StateType.Showing,
+			  Atk.StateType.Transient,
 			  Atk.StateType.Visible);
 
 			Assert.AreEqual (0, listItemChild.NAccessibleChildren, "ListBox ListItem numChildren");
@@ -307,13 +309,20 @@ namespace UiaAtkBridgeTest
 			dud1.Items.Add ("second item");
 			dud1.Items.Add ("third item");
 			Atk.Object accessible = GetAdapterForWidget (dud1);
+			PropertyRole (type, accessible);
+
+			Assert.AreEqual (3, accessible.NAccessibleChildren, "NAccessibleChildren");
+
 			dud1.SelectedIndex = 1;
 			InterfaceText (accessible, "second item");
-			dud1.SelectedIndex = 2;
 
 			InterfaceEditableText (type, accessible);
+
+			dud1.Items.Clear ();
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren after clear [need SWF fix]");
 		}
 
+		[Test]
 		public void ToolStripProgressBar ()
 		{
 			ProgressBar (BasicWidgetType.ToolStripProgressBar);
@@ -345,7 +354,7 @@ namespace UiaAtkBridgeTest
 			InterfaceText (child1, "first item");
 			
 			ss1.Items.Clear ();
-			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren #2");
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren after clear [need SWF fix]");
 		}
 
 		[Test]

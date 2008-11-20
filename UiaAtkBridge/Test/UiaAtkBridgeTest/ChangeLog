@@ -1,3 +1,13 @@
+2008-11-19  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTests.cs: Test for SingleLine and Transient in ListBox test.
+
+	* BridgeTests.cs: Enable ProgressBar test.
+
+	* BridgeTests.cs: Test PropertyRole for DomainUpDown
+	  Test NAccessibleChildren before and after clear [clear currently
+	  fails due to a missing SWF event]
+
 2008-11-19  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTests.cs: Fix a ComboBoxSimple test.

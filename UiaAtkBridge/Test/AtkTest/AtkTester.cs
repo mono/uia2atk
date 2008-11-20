@@ -618,6 +618,7 @@ namespace UiaAtkBridgeTest
 				role = Atk.Role.ScrollBar;
 				break;
 			case BasicWidgetType.ProgressBar:
+			case BasicWidgetType.ToolStripProgressBar:
 				role = Atk.Role.ProgressBar;
 				break;
 			case BasicWidgetType.ListBox:
@@ -625,6 +626,7 @@ namespace UiaAtkBridgeTest
 				role = Atk.Role.List;
 				break;
 			case BasicWidgetType.Spinner:
+			case BasicWidgetType.DomainUpDown:
 				role = Atk.Role.SpinButton;
 				break;
 			case BasicWidgetType.TabControl:

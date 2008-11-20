@@ -1,3 +1,8 @@
+2008-11-19  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Add DomainUpDown and ToolStripProgressBar
+	  in PropertyRole.
+
 2008-11-19  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Take in account *another* bug in gail.
