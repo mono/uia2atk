@@ -384,9 +384,11 @@ namespace UiaAtkBridgeTest
 					for (int j = 0; j < names.Length; j++) {
 						if (j == i)
 							continue;
-						Assert.IsFalse (
-						  accessible.RefAccessibleChild (0).RefAccessibleChild (j).RefStateSet ().ContainsState (
-						    Atk.StateType.Selected), "Unselected child(" + j + ") shouldn't have State.Selected");
+						if (type == BasicWidgetType.ComboBoxDropDownEntry ||
+						    type == BasicWidgetType.ComboBoxDropDownList)
+							Assert.IsFalse (
+							  accessible.RefAccessibleChild (0).RefAccessibleChild (j).RefStateSet ().ContainsState (
+							    Atk.StateType.Selected), "Unselected child(" + j + ") shouldn't have State.Selected");
 					}
 				} else {
 					//first child in a menu -> tearoff menuitem (can't be selected)

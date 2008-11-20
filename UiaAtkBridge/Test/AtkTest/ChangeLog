@@ -1,3 +1,7 @@
+2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs: Fix a test (CheckedListBox).
+
 2008-11-19  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Commented the correct case.
