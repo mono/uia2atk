@@ -23,6 +23,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.Windows.Automation;
 
 namespace Mono.UIAutomation.Winforms.Behaviors
 {
@@ -34,16 +35,22 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		#region Constructors
 		
-		public ProviderBehaviorEventArgs (IProviderBehavior behavior, 
+		public ProviderBehaviorEventArgs (IProviderBehavior behavior,
+		                                  AutomationPattern pattern,
 		                                  bool replaced)
 		{
 			this.replaced = replaced;
 			this.behavior = behavior;
+			this.pattern = pattern;
 		}
 
 		#endregion
 
 		#region Public Properties
+
+		public AutomationPattern Pattern {
+			get { return pattern; }
+		}
 
 		public bool Replaced {
 			get { return replaced; }
@@ -59,6 +66,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors
 
 		private bool replaced;
 		private IProviderBehavior behavior;
+		private AutomationPattern pattern;
 
 		#endregion
 	}

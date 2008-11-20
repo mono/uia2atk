@@ -110,6 +110,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			SetEvent (ProviderEventType.AutomationElementControlTypeProperty,
 			          new AutomationControlTypePropertyEvent (this));
+			SetEvent (ProviderEventType.AutomationElementIsPatternAvailableProperty,
+			          new AutomationIsPatternAvailablePropertyEvent (this));
 
 			// These events only apply to Control providers
 			if (Control == null)
@@ -183,13 +185,10 @@ namespace Mono.UIAutomation.Winforms
 				behavior.Connect ();
 			}
 
-			OnProviderBehaviorSet (new ProviderBehaviorEventArgs (behavior, 
+			OnProviderBehaviorSet (new ProviderBehaviorEventArgs (behavior,
+			                                                      pattern,
 			                                                      exists));
-			/*
-			if ((exists == true && behavior == null)
-			    || (exists == false && behavior != null))
-				GenerateIsPatternEnabledEvent (pattern);
-			*/
+
 		}
 		
 		protected IProviderBehavior GetBehavior (AutomationPattern pattern)
@@ -423,70 +422,7 @@ namespace Mono.UIAutomation.Winforms
 			return System.Math.Abs (System.Math.Sqrt ( System.Math.Pow (p1.X - p2.X, 2) +
 			                                          System.Math.Pow (p1.Y - p2.Y, 2)));
 		}
-		/*
-		private void GenerateIsPatternEnabledEvent (AutomationPattern pattern)
-		{
-			if (AutomationInteropProvider.ClientsAreListening == false)
-				return;
-			
-			AutomationProperty property = null;
 
-			if (pattern == DockPatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsDockPatternAvailableProperty;
-			else if (pattern == ExpandCollapsePatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty;
-			else if (pattern == GridItemPatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsGridItemPatternAvailableProperty;
-			else if (pattern == GridPatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsGridPatternAvailableProperty;
-			else if (pattern == InvokePatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsInvokePatternAvailableProperty;
-			else if (pattern == MultipleViewPatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty;
-			else if (pattern == RangeValuePatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty;
-			else if (pattern == ScrollItemPatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsScrollItemPatternAvailableProperty;
-			else if (pattern == ScrollPatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsScrollPatternAvailableProperty;
-			else if (pattern == SelectionItemPatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty;
-			else if (pattern == SelectionPatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsSelectionPatternAvailableProperty;
-			else if (pattern == TableItemPatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsTableItemPatternAvailableProperty;
-			else if (pattern == TablePatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsTablePatternAvailableProperty;
-			else if (pattern == TextPatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsTextPatternAvailableProperty;
-			else if (pattern == TogglePatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsTogglePatternAvailableProperty;
-			else if (pattern == TransformPatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsTransformPatternAvailableProperty;
-			else if (pattern == ValuePatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsValuePatternAvailableProperty;
-			else if (pattern == WindowPatternIdentifiers.Pattern)
-				property = AutomationElementIdentifiers.IsWindowPatternAvailableProperty;
-			
-			if (property == null) //This never should happen, theoretically
-				return;
-
-			bool? val = GetPropertyValue (property.Id) as bool?;
-
-			// TODO: Verify this behavior with Mario
-			if (val == null)
-				return;
-			
-			bool newValue = val ?? false;
-			
-			AutomationPropertyChangedEventArgs args 
-				= new AutomationPropertyChangedEventArgs (property,
-				                                          !newValue,
-				                                          newValue);
-			AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, 
-			                                                               args);
-		}
-		*/
 		#endregion
 
 	}

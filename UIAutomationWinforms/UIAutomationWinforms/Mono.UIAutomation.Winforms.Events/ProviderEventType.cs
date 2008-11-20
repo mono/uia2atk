@@ -39,6 +39,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		AutomationElementLabeledByProperty,
 		AutomationElementIsKeyboardFocusableProperty,
 		AutomationElementControlTypeProperty,
+		AutomationElementIsPatternAvailableProperty, //Used for each Is*PatternAvailable
 		//Automation Events
 		AutomationFocusChangedEvent,
 		//Text Pattern

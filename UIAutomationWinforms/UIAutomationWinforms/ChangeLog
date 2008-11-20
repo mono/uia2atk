@@ -1,3 +1,21 @@
+2008-11-20  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: File added: Events/IsPatternAvailable.
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Setting
+	AutomationElementIsPatternAvailableProperty.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ProviderBehaviorEventArgs.cs: New
+	argument added: Pattern.
+
+	* Mono.UIAutomation.Winforms.Events/AutomationIsPatternAvailablePropertyEvent.cs:
+	File added: Events/IsPatternAvailable. Raises: IsXXXPatternAvailable
+	Automation Property Event.
+
+	* Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: New value
+	added: AutomationElementIsPatternAvailableProperty.
+
 2008-11-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs: Remove bad using
