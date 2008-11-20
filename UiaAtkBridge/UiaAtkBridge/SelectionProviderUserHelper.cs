@@ -205,8 +205,8 @@ namespace UiaAtkBridge
 				return elements;
 			IRawElementProviderSimple [] ret = new IRawElementProviderSimple [elements.Length];
 			int count = 0;
-			for (int i = ret.Length - 1; i >= 0; i--) {
-				IRawElementProviderFragment parent = ((IRawElementProviderFragment)ret [i]).Navigate (NavigateDirection.Parent);
+			for (int i = 0; i < elements.Length; i++) {
+				IRawElementProviderFragment parent = ((IRawElementProviderFragment)elements [i]).Navigate (NavigateDirection.Parent);
 				if (parent == childrenHolder)
 					ret [count++] = elements [i];
 			}

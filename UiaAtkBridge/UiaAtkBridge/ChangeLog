@@ -1,4 +1,7 @@
 2008-11-20  Mike Gorse  <mgorse@novell.com>
+	* SelectionProviderUserHelper.cs: Fix GetSelection.
+
+2008-11-20  Mike Gorse  <mgorse@novell.com>
 
 	* Hyperlink.cs: Set Focusable.
 
