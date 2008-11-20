@@ -1,5 +1,10 @@
 2008-11-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs: Remove bad using
+	statement.
+
+2008-11-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp:
 	* Mono.UIAutomation.Winforms.Events/ToolStripLabel:

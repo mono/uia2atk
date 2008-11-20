@@ -32,7 +32,6 @@ using System.Windows.Automation.Provider;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ToolStripLabel;
 using Mono.UIAutomation.Winforms.Behaviors.ToolStripItem;
 
 namespace Mono.UIAutomation.Winforms
