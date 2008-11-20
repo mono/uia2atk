@@ -1,7 +1,15 @@
 2008-11-20 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* samples/linklabel.py: Disable the links that were disabled before.
+	* testers/linklabel/linklabelframe.py: Compensate for the name of a
+	link that changed in the sample.
+
+2008-11-20 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* samples/linklabel.py: create a single generic method to handle link
 	label clicks, remove all the others.  Temporarily enable all links.
+	Rename one of the links (gmail:www.gmail.com instead of
+	gmail:gmail.novell.com).
 	* samples/button_label_linklabel.py: create a single generic method to
 	handle link label clicks, remove all the others. 
 

@@ -45,7 +45,7 @@ class RunApp(Form):
         self.linklabel1.Text = "openSUSE:www.opensuse.org\n\n webmail:gmail.novell.com"
         self.linklabel1.Links.Add(9, 16, "http://www.opensuse.org")
         self.linklabel1.Links.Add(34, 19, "http://gmail.novell.com")
-        self.linklabel1.Links[1].Enabled = True
+        self.linklabel1.Links[1].Enabled = False
         self.linklabel1.LinkClicked += self.linklabel_clicked
 
         # set up LinkLabel control
@@ -72,7 +72,7 @@ class RunApp(Form):
         self.linklabel3.Text = "gmail:www.gmail.com"
         self.linklabel3.Links.Add(6, 20, "http://www.gmail.com")
         self.linklabel3.LinkClicked += self.linklabel_clicked
-        self.linklabel3.Links[0].Enabled = True
+        self.linklabel3.Links[0].Enabled = False
 
         self.Controls.Add(self.linklabel1)
         self.Controls.Add(self.linklabel2)

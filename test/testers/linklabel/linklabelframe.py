@@ -22,7 +22,7 @@ class LinkLabelFrame(accessibles.Frame):
     # the available widgets on the window
     LINK1 = re.compile('^openSUSE:www.opensuse.org')
     LINK2 = "calculator:/usr/bin/gcalctool"
-    LINK3 = "gmail:gmail.novell.com"
+    LINK3 = "gmail:www.gmail.com"
 
     def __init__(self, accessible):
         super(LinkLabelFrame, self).__init__(accessible)
