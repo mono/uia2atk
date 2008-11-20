@@ -30,7 +30,8 @@ class VScrollBarFrame(accessibles.Frame):
     #change vscrollbar's value
     def valueScrollBar(self, newValue=None):
         procedurelogger.action('set scrollbar value to "%s"' % newValue)
-        self.vscrollbar.__setattr__('value', newValue)
+        #self.vscrollbar.__setattr__('value', newValue)
+        self.vscrollbar.value = newValue
 
     def assertLabel(self, newValue=None):
         procedurelogger.expectedResult('label\'s value changed to "%s"' % newValue)
@@ -43,15 +44,15 @@ class VScrollBarFrame(accessibles.Frame):
 
         if 0 <= newValue <= maximumValue:
             procedurelogger.expectedResult('the scrollbar\'s current value is "%s"' % newValue)
-            assert self.vscrollbar.__getattr__('value') == newValue, \
-                       "scrollbar's current value is %s:" % self.vscrollbar.__getattr__('value')
+            assert self.vscrollbar.value == newValue, \
+                       "scrollbar's current value is %s:" % self.vscrollbar.value
         else:
             if newValue > maximumValue:
                 procedurelogger.expectedResult('value "%s" out of run %s' % (newValue, maximumValue))
             elif newValue < minimumValue:
                 procedurelogger.expectedResult('value "%s" out of run %s' % (newValue, minimumValue))
-            assert not self.vscrollbar.__getattr__('value') == newValue, \
-                       "scrollbar's current value is %s:" % self.vscrollbar.__getattr__('value')
+            assert not self.vscrollbar.value == newValue, \
+                       "scrollbar's current value is %s:" % self.vscrollbar.value
     
     #close application window
     def quit(self):

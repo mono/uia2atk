@@ -10,6 +10,19 @@
 	keyCombo and mouseClick action also click and toggle action. adjust the
 	test order. rewrite test for checking label text is changed
 	
+2008-11-20 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/vscrollbar/vscrollbarframe.py: __getattr__ and __setattr__
+	normally shouldn't be used.  self.vscrollbar.__getattr__('value') is
+	the same as self.vscrollbar.value and
+	self.vscrollbar.__setattr__('value', newValue') is the same as
+	self.vscrollbar.value = newValue.  There is rarely any need to call
+	the methods surrounded by "__" directly.  For more information see
+	http://books.google.com/books?id=HMvf12TnJQIC chapter 9.
+	* testers/vscrollbar_basic_ops.py: Check the "Value:" label when
+	we set the VScrollBar value using at-spi (i.e.,
+	self.vscrollbar.value = newValue from vscrollbarframe.py).  Currently,
+	this causes the test to fail due to Bug 425597.
 
 2008-11-20 Brian G. Merrell <bgmerrell@gmail.com>
 

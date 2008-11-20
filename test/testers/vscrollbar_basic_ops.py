@@ -46,14 +46,16 @@ vsbFrame = app.vScrollBarFrame
 #check vscrollbar's states list
 statesCheck(vsbFrame.vscrollbar, "VScrollBar")
 
-#mouse click scrollbar
+# mouse click scrollbar
+# the mouseClick method will, by default, click on the middle of the scrollbar,
+# which scrolls down to 20
 vsbFrame.vscrollbar.mouseClick()
 sleep(config.SHORT_DELAY)
 vsbFrame.assertScrollbar(20)
 #mouseClick action update label's text
 vsbFrame.assertLabel(20)
 
-#check hscrollbar's states list
+#check vscrollbar's states list
 statesCheck(vsbFrame.vscrollbar, "VScrollBar")
 
 #keyCombo move scrollbar
@@ -67,28 +69,31 @@ vsbFrame.assertLabel(40)
 vsbFrame.valueScrollBar(10)
 sleep(config.SHORT_DELAY)
 vsbFrame.assertScrollbar(10)
+vsbFrame.assertLabel(10)
 
 #set value to 0
 vsbFrame.valueScrollBar(0)
 sleep(config.SHORT_DELAY)
 vsbFrame.assertScrollbar(0)
+vsbFrame.assertLabel(0)
 
 #set value to 100
 vsbFrame.valueScrollBar(100)
 sleep(config.SHORT_DELAY)
 vsbFrame.assertScrollbar(100)
+vsbFrame.assertLabel(100)
 
 #set value to -10, minimum value is 0
 vsbFrame.valueScrollBar(-10)
 sleep(config.SHORT_DELAY)
 vsbFrame.assertScrollbar(-10)
+vsbFrame.assertLabel(0)
 
 #set value to 120, maximum value is 119
-vsbFrame.valueScrollBar(120)
+vsbFrame.valueScrollBar(119)
 sleep(config.SHORT_DELAY)
-vsbFrame.assertScrollbar(120)
-
-
+vsbFrame.assertScrollbar(119)
+vsbFrame.assertLabel(100)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
