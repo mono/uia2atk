@@ -1,3 +1,10 @@
+2008-11-20 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/linklabel.py: create a single generic method to handle link
+	label clicks, remove all the others.  Temporarily enable all links.
+	* samples/button_label_linklabel.py: create a single generic method to
+	handle link label clicks, remove all the others. 
+
 2008-11-20  Brad Taylor  <brad@getcoded.net>
 	
 	* samples/toolstripdropdownbutton.py: Rework so that it exploits

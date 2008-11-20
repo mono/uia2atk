@@ -42,18 +42,15 @@ class RunApp(Form):
         self.linklabel1.Location = Point(10,20)
         self.linklabel1.AutoSize = True
         self.linklabel1.Name = "www"
-        self.linklabel1.Text = "openSUSE:www.opensuse.org   webmail:gmail.novell.com"
-        self.linklabel1.Links.Add(9, 16, "www.opensuse.org")
-        self.linklabel1.Links.Add(33, 19, "gmail.novell.com")
-        #self.linklabel1.LinkClicked += self.linklabel_clicked
-        self.linklabel1.Links[1].Enabled = False
-        #self.linklabel1.LinkArea = LinkArea(9, 28)
-        #self.linklabel1.Links[0].LinkData = "www.opensuse.org"
-        self.linklabel1.LinkClicked += self.linklabel1_clicked
+        self.linklabel1.Text = "openSUSE:www.opensuse.org\n\n webmail:gmail.novell.com"
+        self.linklabel1.Links.Add(9, 16, "http://www.opensuse.org")
+        self.linklabel1.Links.Add(34, 19, "http://gmail.novell.com")
+        self.linklabel1.Links[1].Enabled = True
+        self.linklabel1.LinkClicked += self.linklabel_clicked
 
         # set up LinkLabel control
         self.linklabel2 = LinkLabel()
-        self.linklabel2.Location = Point(10,70)
+        self.linklabel2.Location = Point(10,80)
         self.linklabel2.AutoSize = True
         self.linklabel2.Name = "calculator"
         self.linklabel2.Text = "calculator:"
@@ -64,46 +61,26 @@ class RunApp(Form):
 
         #self.linklabel2.Links.Add(10, 28, "/usr/bin/gcalctool")
         self.linklabel2.Links.Add(LinkIndex, (AddLinkString.Length), "/usr/bin/gcalctool")
-        self.linklabel2.LinkClicked += self.linklabel2_clicked
+        self.linklabel2.LinkClicked += self.linklabel_clicked
         self.linklabel2.Links[0].Enabled = True
 
         # set up LinkLabel control
         self.linklabel3 = LinkLabel()
-        self.linklabel3.Location = Point(10,100)
+        self.linklabel3.Location = Point(10,110)
         self.linklabel3.AutoSize = True
         self.linklabel3.Name = "gmail"
-        self.linklabel3.Text = "gmail:gmail.novell.com"
-        self.linklabel3.Links.Add(6, 20, "gmail.novell.com")
-        self.linklabel3.LinkClicked += self.linklabel3_clicked
-        self.linklabel3.Links[0].Enabled = False
+        self.linklabel3.Text = "gmail:www.gmail.com"
+        self.linklabel3.Links.Add(6, 20, "http://www.gmail.com")
+        self.linklabel3.LinkClicked += self.linklabel_clicked
+        self.linklabel3.Links[0].Enabled = True
 
         self.Controls.Add(self.linklabel1)
         self.Controls.Add(self.linklabel2)
         self.Controls.Add(self.linklabel3)
 
-    def linklabel1_clicked(self, sender, LinkClicked):
-        self.linklabel1.Links[0].Visited = True
-        target1 = self.linklabel1.Links[0].LinkData
-
-        System.Diagnostics.Process.Start(target1)
-
-    def linklabel2_clicked(self, sender, LinkClicked):
-        self.linklabel2.Links[0].Visited = True
-        target1 = self.linklabel2.Links[0].LinkData
-
-        if (target1.StartsWith("/usr")):
-            System.Diagnostics.Process.Start(target1)
-        else:
-            MessageBox.Show("Item clicked: " + target1)
-
-    def linklabel3_clicked(self, sender, LinkClicked):
-        self.linklabel3.Links[0].Visited = True
-        target1 = self.linklabel3.Links[0].LinkData
-
-        if (target1.StartsWith("gmail")):
-            System.Diagnostics.Process.Start(target1)
-        else:
-            MessageBox.Show("Item clicked: " + target1)
+    def linklabel_clicked(self, sender, LinkClicked):
+	LinkClicked.Link.Visited = True
+        System.Diagnostics.Process.Start(LinkClicked.Link.LinkData)
 
 form = RunApp()
 Application.Run(form)

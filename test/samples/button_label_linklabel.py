@@ -96,10 +96,10 @@ class RunApp(Form):
         self.linklabel1.LinkColor = Color.Navy
         self.linklabel1.TabIndex = 0
         self.linklabel1.TabStop = True
-        self.linklabel1.Links[0].Visited = True
+        self.linklabel1.Links[0].Visited = False
         self.linklabel1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com"
-        self.linklabel1.Links.Add(9, 16, "www.opensuse.org")
-        self.linklabel1.Links.Add(35, 16, "gmail.novell.com")
+        self.linklabel1.Links.Add(9, 16, "http://www.opensuse.org")
+        self.linklabel1.Links.Add(35, 16, "http://gmail.novell.com")
         self.linklabel1.LinkClicked += self.linklabel_clicked
         self.linklabel1.Links[1].Enabled = False
 
@@ -129,12 +129,8 @@ class RunApp(Form):
     def linklabel_clicked(self, sender, LinkClicked):
         self.linklabel1.Links[0].Visited = True
         self.linklabel1.Links[1].Visited = True
-        target = self.linklabel1.Links[0].LinkData
 
-        if (target.StartsWith("www")):
-            System.Diagnostics.Process.Start(target)
-        else:
-            MessageBox.Show("Item clicked: " + target)
+        System.Diagnostics.Process.Start(LinkClicked.Link.LinkData)
 
 form = RunApp()
 Application.Run(form)
