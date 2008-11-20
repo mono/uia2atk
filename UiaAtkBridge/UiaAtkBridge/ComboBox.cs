@@ -193,7 +193,13 @@ namespace UiaAtkBridge
 		}
 		public bool RemoveSelection (int i)
 		{
-			return selectionHelper.RemoveSelection (i);
+			bool success = selectionHelper.RemoveSelection (i);
+			
+			//will likely never happen because UIA throws IOE...
+			if ((success) && (!selProvider.CanSelectMultiple))
+				Name = String.Empty;
+			
+			return success;
 		}
 		public bool SelectAllSelection ()
 		{

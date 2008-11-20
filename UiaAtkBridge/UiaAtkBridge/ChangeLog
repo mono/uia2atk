@@ -1,3 +1,8 @@
+2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ComboBox.cs: Reset the name, just in case UIA allows that in the
+	future...
+
 2008-11-20  Mario Carrion  <mcarrion@novell.com>
 
 	* SelectionProviderUserHelper.cs: ISelectionProvider.GetSelection
