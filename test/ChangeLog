@@ -1,3 +1,16 @@
+2008-11-20  Calen Chen <cachen@novell.com>
+
+	* samples/checkedlistbox.py: modify check_items to show correct item 
+	names those are checked in checkedlistbox2
+	* testers/checkedlistbox/checkedlistboxframe.py: add log info for doing
+	toggle action. giving "if" statement for listitem which is in 
+	checkedlistbox1 or checkedlistbox2 to assert label text is changed
+	* testers/checkedlistbox_basic_ops.py: make the test with a big 
+	expanding job. modify comments, add and expand states test with doing 
+	keyCombo and mouseClick action also click and toggle action. adjust the
+	test order. rewrite test for checking label text is changed
+	
+
 2008-11-20 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/linklabel.py: Disable the links that were disabled before.

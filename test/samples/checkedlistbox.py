@@ -16,7 +16,10 @@ It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of cont
 # imports
 import clr
 clr.AddReference('System.Windows.Forms')
-from System.Windows.Forms import Application, Form, CheckedListBox, Label, DockStyle
+clr.AddReference('System.Drawing')
+
+from System.Drawing import *
+from System.Windows.Forms import *
 
 class CheckedListBoxSample(Form):
     """CheckedListBox control class"""
@@ -65,12 +68,6 @@ class CheckedListBoxSample(Form):
     def change(self, sender, event):
         """select a item"""
 
-#        items = "" 
-#        for i in range(20):
-#            status = str(self.checkedlistbox1.GetItemCheckState(i))
-#            if status == "Checked":
-#                items += "%d " % i
-
         if sender is self.checkedlistbox1:
             items = self.check_items(self.checkedlistbox1)
             self.label1.Text = "Item " + items + ": " + "Checked"
@@ -80,12 +77,20 @@ class CheckedListBoxSample(Form):
             self.label2.Text = "Item " + items + ": " + "Checked"
 
     def check_items(self, control):
-       items = "" 
-       for i in range(20):
-           status = str(control.GetItemCheckState(i))
-           if status == "Checked":
-               items += "%d " % i
-       return items
+        items = "" 
+
+        if control == self.checkedlistbox1:
+            for i in range(20):
+                status = str(control.GetItemCheckState(i))
+                if status == "Checked":
+                    items += "%d " % i
+        elif control == self.checkedlistbox2:
+            for i in range(30):
+                status = str(control.GetItemCheckState(i)) 
+                if status == "Checked":
+                    i += 20
+                    items += "%d " % i
+        return items
 
 # run application
 form = CheckedListBoxSample()

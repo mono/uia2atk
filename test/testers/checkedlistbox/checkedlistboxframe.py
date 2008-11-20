@@ -37,18 +37,22 @@ class CheckedListBoxFrame(accessibles.Frame):
 
     #give 'toggle' action
     def toggle(self, item):
+        procedurelogger.action('Toggle the "%s"' % (item))
         item.toggle()
 
-    #click listitem0-19 would rise checked state and shows which item is checked
+    #click listitem0-19 would rise checked state and showing which items are checked
     #click listitem20-39 would rise selected state and doesn't show which item 
-    #is checked in label text
-    def assertLabel(self, listitem, itemname):
+    #is checked in label text, but mouse click two times or click and toggle again
+    #would showing which items are checked
+    def assertLabel(self, itemnum, itemname):
         'Raise exception if the accessible does not match the given result'   
-            
-        if listitem.checked:
+        if 0 <= itemnum <= 19 and self.listitem[itemnum].checked:
             procedurelogger.expectedResult('Item "%s" is %s' % (itemname, 'checked'))
             assert self.label1.text == "Item %s : Checked" % itemname
-        elif listitem.selected:
+        elif itemnum > 19 and self.listitem[itemnum].checked:
+            procedurelogger.expectedResult('Item "%s" is %s' % (itemname, 'checked'))
+            assert self.label2.text == "Item %s : Checked" % itemname
+        elif itemnum > 19 and self.listitem[itemnum].selected:
             procedurelogger.expectedResult('Item "%s" is %s' % (itemname, 'selected'))
             assert self.label2.text == "Item : Checked"
 
