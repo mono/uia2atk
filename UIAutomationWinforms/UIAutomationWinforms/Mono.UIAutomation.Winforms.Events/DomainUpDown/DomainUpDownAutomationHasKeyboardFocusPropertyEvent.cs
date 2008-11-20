@@ -22,67 +22,54 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
+
 using System;
-using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Events.DomainUpDown
 {
-
-	internal class ListItemAutomationHasKeyboardFocusPropertyEvent
+	
+	internal class DomainUpDownAutomationHasKeyboardFocusPropertyEvent 
 		: AutomationHasKeyboardFocusPropertyEvent
 	{
 		
 		#region Constructors
 
-		public ListItemAutomationHasKeyboardFocusPropertyEvent (ListItemProvider listItemProvider)
-			: base (listItemProvider)
+		public DomainUpDownAutomationHasKeyboardFocusPropertyEvent (DomainUpDownProvider provider)
+			: base (provider)
 		{
 		}
 		
 		#endregion
 		
-		#region IConnectable Overrides
-	
+		#region IConnectable Overrides		 
+		
 		public override void Connect ()
 		{
-			DomainUpDownControl.SelectedItemChanged 
-				+= new EventHandler (OnSelectedItemChanged);
-			DomainUpDownControl.TextChanged 
-				+= new EventHandler (OnTextChanged);
+			base.Connect ();
+			Provider.Control.TextChanged += new EventHandler (OnTextChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			DomainUpDownControl.SelectedItemChanged 
-				-= new EventHandler (OnSelectedItemChanged);
-			DomainUpDownControl.TextChanged 
-				-= new EventHandler (OnTextChanged);
+			Provider.Control.TextChanged -= new EventHandler (OnTextChanged);
+			base.Disconnect ();
 		}
 		
 		#endregion
 		
 		#region Private Methods
 		
-		private void OnSelectedItemChanged (object sender, EventArgs args)
-		{
-			RaiseAutomationPropertyChangedEvent ();
-		}
-
-		private void OnTextChanged (object sender, EventArgs args)
+		private void OnTextChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
 		
-		#endregion
-
-#region Private Properties
-		private SWF.DomainUpDown DomainUpDownControl {
-			get { return (SWF.DomainUpDown) ((ListItemProvider) Provider).ListProvider.Control; }
-		}
-#endregion
+		#endregion 
+		
 	}
 }

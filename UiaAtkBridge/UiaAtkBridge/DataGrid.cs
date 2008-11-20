@@ -122,22 +122,22 @@ namespace UiaAtkBridge
 
 		public void SetColumnDescription (int column, string description)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: SetColumnDescription unimplemented");
 		}
 
 		public void SetColumnHeader (int column, Atk.Object header)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: SetColumnHeader unimplemented");
 		}
 
 		public void SetRowDescription (int row, string description)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: SetRowDescription unimplemented");
 		}
 
 		public void SetRowHeader (int row, Atk.Object header)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: SetRowHeader unimplemented");
 		}
 
 		public int GetSelectedColumns (out int selected)

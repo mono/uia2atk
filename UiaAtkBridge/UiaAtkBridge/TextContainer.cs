@@ -289,22 +289,22 @@ namespace UiaAtkBridge
 
 		public void SetColumnDescription (int column, string description)
 		{
-			throw new NotImplementedException();
+			tableExpert.SetColumnDescription (column, description);
 		}
 
 		public void SetColumnHeader (int column, Atk.Object header)
 		{
-			throw new NotImplementedException();
+			tableExpert.SetColumnHeader (column, header);
 		}
 
 		public void SetRowDescription (int row, string description)
 		{
-			throw new NotImplementedException();
+			tableExpert.SetRowDescription (row, description);
 		}
 
 		public void SetRowHeader (int row, Atk.Object header)
 		{
-			throw new NotImplementedException();
+			tableExpert.SetRowHeader (row, header);
 		}
 
 		public int GetSelectedColumns (out int selected)
@@ -326,7 +326,6 @@ namespace UiaAtkBridge
 		{
 			return tableExpert.IsRowSelected (row);
 		}
-
 		public bool IsSelected (int row, int column)
 		{
 			return tableExpert.IsSelected (row, column);

@@ -1,3 +1,10 @@
+2008-11-20  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs, Makefile.am,
+	  Mono.UIAutomation.Winforms.Events/DomainUpDown/DomainUpDownAutomationHasKeyboardFocusPropertyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemAutomationHasKeyboardFocusPropertyEvent.cs:
+	  Set focus on the spinner when the use ris editing text.
+
 2008-11-19  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Events/ComboBox/ExpandCollapsePatternStateEvent.cs:

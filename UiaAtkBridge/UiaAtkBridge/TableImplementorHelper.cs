@@ -43,6 +43,8 @@ namespace UiaAtkBridge
 		private Adapter							resource;
 		private ITableProvider					tableProvider = null;
 		private TableGroupAggregator aggregator = null;
+		private Atk.Object caption = null;
+		private Atk.Object summary = null;
 
 		internal IGridProvider GridProvider {
 			get {
@@ -68,7 +70,10 @@ Adapter i = AutomationBridge.GetAdapterForProviderLazy (item);
 
 		public int GetIndexAt (int row, int column)
 		{
-			throw new NotImplementedException();
+			Atk.Object child = RefAt (row, column);
+			if (child == null)
+				return -1;
+			return child.IndexInParent;
 		}
 
 		public int GetColumnAtIndex (int index)
@@ -137,13 +142,13 @@ Adapter i = AutomationBridge.GetAdapterForProviderLazy (item);
 
 		public Atk.Object Caption
 		{
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
+			get { return caption; }
+			set { caption = value; }
 		}
 
 		public string GetColumnDescription (int column)
 		{
-			throw new NotImplementedException();
+			return null;
 		}
 
 		public Atk.Object GetColumnHeader (int column)
@@ -155,7 +160,7 @@ Adapter i = AutomationBridge.GetAdapterForProviderLazy (item);
 
 		public string GetRowDescription (int row)
 		{
-			throw new NotImplementedException();
+			return null;
 		}
 
 		public Atk.Object GetRowHeader (int row)
@@ -167,73 +172,105 @@ Adapter i = AutomationBridge.GetAdapterForProviderLazy (item);
 
 		public Atk.Object Summary
 		{
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
+			get { return summary; }
+			set { summary = value; }
 		}
 
 		public void SetColumnDescription (int column, string description)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: SetColumnDescription unimplemented");
 		}
 
 		public void SetColumnHeader (int column, Atk.Object header)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: SetColumnHeader unimplemented");
 		}
 
 		public void SetRowDescription (int row, string description)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: SetRowDescription unimplemented");
 		}
 
 		public void SetRowHeader (int row, Atk.Object header)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: SetRowHeader unimplemented");
 		}
 
+		public int GetSelectedColumns (out int [] selected)
+		{
+			Console.WriteLine ("UiaAtkBridge: GetSelectedColumns unimplemented");
+			selected = null;
+			return 0;
+		}
+
+		public int GetSelectedRows (out int [] selected)
+		{
+			Console.WriteLine ("UiaAtkBridge: GetSelectedRows unimplemented");
+			selected = null;
+			return 0;
+		}
+
+		// The below two functions should go away as soon as the
+		// atk-sharp api is fixed.
 		public int GetSelectedColumns (out int selected)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: GetSelectedColumns unimplemented");
+			selected = 0;
+			return 0;
 		}
 
 		public int GetSelectedRows (out int selected)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: GetSelectedRows unimplemented");
+			selected = 0;
+			return 0;
 		}
 
 		public bool IsColumnSelected (int column)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: IsColumnSelected unimplemented");
+			return false;
 		}
 
 		public bool IsRowSelected (int row)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: IsRowSelected unimplemented");
+			return false;
 		}
 
 		public bool IsSelected (int row, int column)
 		{
-			throw new NotImplementedException();
+			IRawElementProviderSimple item = GridProvider.GetItem (row, column);
+			if (item == null)
+				return false;
+			ISelectionItemProvider selectionItemProvider = (ISelectionItemProvider) item.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+			if (selectionItemProvider != null)
+				return selectionItemProvider.IsSelected;
+			return false;
 		}
 
 		public bool AddRowSelection (int row)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: AddRowSelection unimplemented");
+			return false;
 		}
 
 		public bool RemoveRowSelection (int row)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: RemoveRowSelection unimplemented");
+			return false;
 		}
 
 		public bool AddColumnSelection (int column)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: AddColumnSelection unimplemented");
+			return false;
 		}
 
 		public bool RemoveColumnSelection (int column)
 		{
-			throw new NotImplementedException();
+			Console.WriteLine ("UiaAtkBridge: RemoveColumnSelection unimplemented");
+			return false;
 		}
 
 		internal int RowAdjustment (IRawElementProviderSimple provider)

@@ -1,3 +1,18 @@
+2008-11-20  Mike Gorse  <mgorse@novell.com>
+
+	* DataGrid.cs, List.cs, ListGroup.cs, TextContainer.cs,
+	  TableImplementorHelper.cs:
+	  Remove NotImplemented exceptions; replace with warnings.
+
+	* AutomationBridge.cs: Remove debug CWL.
+
+	* AutomationBridge.cs: Do not expose DomainUpDown buttons.
+
+	* AutomationBridge.cs: Backspace -> BackSpace
+
+	* List.cs, TextImplementorHelper.cs: Add HandleSimpleChange to handle
+	  partial text inserts/deletes (needs improvement).
+
 2008-11-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Spinner.cs:

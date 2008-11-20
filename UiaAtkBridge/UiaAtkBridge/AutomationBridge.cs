@@ -201,7 +201,7 @@ namespace UiaAtkBridge
 		{
 			keyStrings = new Dictionary<uint, String>();
 			keyStrings [0xfd1d] = "Print_Screen";
-			keyStrings [0xff08] = "Backspace";
+			keyStrings [0xff08] = "BackSpace";
 			keyStrings [0xff09] = "Tab";
 			keyStrings [0xff0b] = "Clear";
 			keyStrings [0xff0d] = "Return";
@@ -637,6 +637,9 @@ namespace UiaAtkBridge
 			if (parentObject is UiaAtkBridge.ComboBox)
 				return; //ComboBox will handle its children additions on its own
 			
+			if (parentObject is UiaAtkBridge.List)
+				return; //Not replicating DomainUpDown buttons
+			
 			if ((parentObject == null) || (parentObject.Role == Atk.Role.ScrollBar))
 				return;
 
@@ -818,7 +821,6 @@ namespace UiaAtkBridge
 		private void HandleNewContainer (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
-Console.WriteLine ("provider: " + provider + ", parent adapter: " + parentObject);
 			
 			Adapter atkContainer = new Container (provider);
 			providerAdapterMapping [provider] = atkContainer;

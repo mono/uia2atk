@@ -433,5 +433,33 @@ namespace UiaAtkBridge
 			GLib.SList attribs = new GLib.SList (typeof (Atk.TextAttribute));
 			return attribs;
 		}
+
+		public bool HandleSimpleChange (string newText)
+		{
+			if (text == newText)
+				return true;
+			int oldLength = Length;
+			int newLength = newText.Length;
+			// TODO: Handle changes at the beginning or middle of a string
+			if (newLength > oldLength) {
+				if (newText.Substring (0, oldLength) == text) {
+					text = newText;
+					Atk.TextAdapter adapter = new Atk.TextAdapter ((Atk.TextImplementor)resource);
+					adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, oldLength, newLength - oldLength);
+				GLib.Signal.Emit (resource, "text_caret_moved", newLength);
+					return true;
+				}
+			}
+			else if (oldLength > newLength) {
+				if (text.Substring (0, newLength) == newText) {
+					Atk.TextAdapter adapter = new Atk.TextAdapter ((Atk.TextImplementor)resource);
+					adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, newLength, oldLength - newLength);
+					text = newText;
+				GLib.Signal.Emit (resource, "text_caret_moved", newLength);
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 }

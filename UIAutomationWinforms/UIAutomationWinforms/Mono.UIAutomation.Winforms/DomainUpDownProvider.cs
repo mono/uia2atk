@@ -61,7 +61,22 @@ namespace Mono.UIAutomation.Winforms
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
 			             new SelectionProviderBehavior (this));
 			
+			SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+			          new DomainUpDownAutomationHasKeyboardFocusPropertyEvent (this));
 			control.Items.CollectionChanged += OnCollectionChanged;
+		}
+#endregion
+
+		#region SimpleControlProvider: Specializations
+		protected override object GetProviderPropertyValue (int propertyId)
+		{
+			if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				// TODO: Should this go in UpDownBase?
+				return true;
+			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+				 return control.Focused && (control.SelectedIndex == -1 || control.Text != (string)control.SelectedItem);
+			else
+				return base.GetProviderPropertyValue (propertyId);
 		}
 #endregion
 
@@ -108,7 +123,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.NameProperty.Id) {
 				return (string)prov.ObjectItem;
 			} else if (propertyId == AEIds.HasKeyboardFocusProperty.Id) {
-				return IsItemSelected (prov);
+				return IsItemSelected (prov) && (string)prov.ObjectItem == Control.Text;
 			} else if (propertyId == AEIds.BoundingRectangleProperty.Id) {
 				return GetProviderPropertyValue (AEIds.BoundingRectangleProperty.Id);
 			}

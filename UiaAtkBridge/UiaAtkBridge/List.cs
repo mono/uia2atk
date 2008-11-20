@@ -81,7 +81,7 @@ AtkObject,
 		}
 
 		// AutomationElementIdentifiers.ControlTypeProperty.Id
-		public int ControlType
+		public int ControlTypeId
 		{ 
 			get {
 				return (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
@@ -148,7 +148,11 @@ AtkObject,
 			if (selectionProvider == null)
 				throw new ArgumentException ("List should always implement ISelectionProvider");
 
-			Role = Atk.Role.List;
+			int controlTypeId = (int) Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			if (controlTypeId == ControlType.Spinner.Id)
+				Role = Atk.Role.SpinButton;
+			else
+				Role = Atk.Role.List;
 			
 			string componentName = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = componentName;
@@ -270,13 +274,13 @@ AtkObject,
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property != ValuePatternIdentifiers.ValueProperty) {
+				base.RaiseAutomationPropertyChangedEvent (e);
 				return;
 			}
 
 			string new_text = TextContents;
 			
-			// Don't fire spurious events if the text hasn't changed
-			if (text_helper.Text == new_text)
+			if (text_helper.HandleSimpleChange (new_text))
 				return;
 
 			Atk.TextAdapter adapter = new Atk.TextAdapter (this);
@@ -287,6 +291,8 @@ AtkObject,
 			text_helper = new TextImplementorHelper (new_text, this);
 			adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 						 new_text == null ? 0 : new_text.Length);
+			// TODO: The below line isn't quite right
+			GLib.Signal.Emit (this, "text_caret_moved", new_text.Length);
 
 			EmitVisibleDataChanged ();
 		}
@@ -525,22 +531,22 @@ AtkObject,
 
 		public void SetColumnDescription (int column, string description)
 		{
-			throw new NotImplementedException();
+			tableExpert.SetColumnDescription (column, description);
 		}
 
 		public void SetColumnHeader (int column, Atk.Object header)
 		{
-			throw new NotImplementedException();
+			tableExpert.SetColumnHeader (column, header);
 		}
 
 		public void SetRowDescription (int row, string description)
 		{
-			throw new NotImplementedException();
+			tableExpert.SetRowDescription (row, description);
 		}
 
 		public void SetRowHeader (int row, Atk.Object header)
 		{
-			throw new NotImplementedException();
+			tableExpert.SetRowHeader (row, header);
 		}
 
 		public int GetSelectedColumns (out int selected)
