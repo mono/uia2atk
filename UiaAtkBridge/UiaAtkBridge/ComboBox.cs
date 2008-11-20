@@ -210,13 +210,14 @@ namespace UiaAtkBridge
 				return;
 			}
 
-			if ((ExpandCollapseState)e.NewValue == ExpandCollapseState.Expanded) {
+			ExpandCollapseState newState = (ExpandCollapseState)e.NewValue;
+			if (newState == ExpandCollapseState.Expanded) {
 				if (fakeWindow == null) {
 					fakeWindow = new Window ();
 					fakeWindow.AddOneChild ((Adapter)RefAccessibleChild (0));
-					TopLevelRootItem.Instance.AddOneChild (fakeWindow);
 				}
-			} else if ((ExpandCollapseState)e.NewValue == ExpandCollapseState.Collapsed) {
+				TopLevelRootItem.Instance.AddOneChild (fakeWindow);
+			} else if (newState == ExpandCollapseState.Collapsed) {
 				TopLevelRootItem.Instance.RemoveChild (fakeWindow);
 			}
 		}
