@@ -148,7 +148,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 				                           new object [] { value });
 				return;
 			}
-			numericUpDown.Value = (decimal) value;
+			numericUpDown.Value = value;
 		}
 			
 		#endregion

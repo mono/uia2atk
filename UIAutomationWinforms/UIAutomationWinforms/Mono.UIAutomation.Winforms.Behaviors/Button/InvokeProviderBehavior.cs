@@ -105,10 +105,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Button
 		
 		private void PerformClick ()
 		{
-	        if (Provider.Control.InvokeRequired == true) {
-	            Provider.Control.BeginInvoke (new SWF.MethodInvoker (PerformClick));
-	            return;
-	        }
+			if (Provider.Control.InvokeRequired == true) {
+				Provider.Control.BeginInvoke (new SWF.MethodInvoker (PerformClick));
+				return;
+			}
 			((SWF.Button) Provider.Control).PerformClick ();
 		}
 		

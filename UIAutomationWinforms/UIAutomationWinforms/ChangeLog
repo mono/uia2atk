@@ -1,3 +1,14 @@
+2008-11-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs:
+	Whitespace fix.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs:
+	Use BeginInvoke to set value, when necessary.
+
+	* Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs:
+	Removing extraneous cast.
+
 2008-11-20  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Return accurate

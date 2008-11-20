@@ -95,8 +95,25 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 			if (IsReadOnly)
 				throw new ElementNotEnabledException ();
 
+			PerformSetValue (value);
+		}
+		
+		#endregion
+
+		#region Private Members
+		
+		private void PerformSetValue (string value)
+		{
+			if (Provider.Control.InvokeRequired) {
+				Provider.Control.BeginInvoke (new SetValueDelegate (PerformSetValue),
+				                              new object [] {value});
+				return;
+			}
+			
 			Provider.Control.Text = value;
 		}
+
+		private delegate void SetValueDelegate (string val);
 		
 		#endregion
 	}
