@@ -165,31 +165,37 @@ namespace UiaAtkBridge
 
 #region Atk.SelectionImplementor
 
-		int Atk.SelectionImplementor.SelectionCount
+		public int SelectionCount
 		{
 			get { return selectionHelper.SelectionCount; }
 		}
-		bool Atk.SelectionImplementor.AddSelection (int i)
+		public bool AddSelection (int i)
 		{
-			return selectionHelper.AddSelection (i);
+			try{
+				return selectionHelper.AddSelection (i);
+			} finally {
+				if (!selProvider.CanSelectMultiple)
+					Name = RefSelection (0).Name;
+			}
 		}
-		bool Atk.SelectionImplementor.ClearSelection ()
+		public bool ClearSelection ()
 		{
+			Name = String.Empty;
 			return selectionHelper.ClearSelection ();
 		}
-		Atk.Object Atk.SelectionImplementor.RefSelection (int i)
+		public Atk.Object RefSelection (int i)
 		{
 			return selectionHelper.RefSelection (i);
 		}
-		bool Atk.SelectionImplementor.IsChildSelected (int i)
+		public bool IsChildSelected (int i)
 		{
 			return selectionHelper.IsChildSelected (i);
 		}
-		bool Atk.SelectionImplementor.RemoveSelection (int i)
+		public bool RemoveSelection (int i)
 		{
 			return selectionHelper.RemoveSelection (i);
 		}
-		bool Atk.SelectionImplementor.SelectAllSelection ()
+		public bool SelectAllSelection ()
 		{
 			return selectionHelper.SelectAllSelection ();
 		}
