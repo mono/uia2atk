@@ -49,7 +49,7 @@ namespace Mono.UIAutomation.Winforms
 		public override void Initialize()
 		{
 			base.Initialize ();
-			SetEvent (ProviderEventType.ControlTypeProperty,
+			SetEvent (ProviderEventType.AutomationElementControlTypeProperty,
 			          new ControlTypePropertyEvent (this));
 
 			if (label.IsLink)
@@ -68,7 +68,7 @@ namespace Mono.UIAutomation.Winforms
 		public override void Terminate()
 		{
 			base.Terminate ();
-			SetEvent (ProviderEventType.ControlTypeProperty,
+			SetEvent (ProviderEventType.AutomationElementControlTypeProperty,
 			          null);
 
 			try {

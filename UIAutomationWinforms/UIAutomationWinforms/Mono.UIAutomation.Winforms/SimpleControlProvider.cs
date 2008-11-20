@@ -97,11 +97,20 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
+
+		#region Public Events
+		
+		public event ProviderBehaviorEventHandler ProviderBehaviorSet;
+		
+		#endregion
 		
 		#region Public Methods
 
 		public virtual void Initialize ()
 		{
+			SetEvent (ProviderEventType.AutomationElementControlTypeProperty,
+			          new AutomationControlTypePropertyEvent (this));
+
 			// These events only apply to Control providers
 			if (Control == null)
 				return;
@@ -173,10 +182,14 @@ namespace Mono.UIAutomation.Winforms
 				providerBehaviors [pattern] = behavior;
 				behavior.Connect ();
 			}
-			
+
+			OnProviderBehaviorSet (new ProviderBehaviorEventArgs (behavior, 
+			                                                      exists));
+			/*
 			if ((exists == true && behavior == null)
 			    || (exists == false && behavior != null))
 				GenerateIsPatternEnabledEvent (pattern);
+			*/
 		}
 		
 		protected IProviderBehavior GetBehavior (AutomationPattern pattern)
@@ -313,6 +326,12 @@ namespace Mono.UIAutomation.Winforms
 			} else
 				return null;
 		}
+
+		protected void OnProviderBehaviorSet (ProviderBehaviorEventArgs args)
+		{
+			if (ProviderBehaviorSet != null)
+				ProviderBehaviorSet (this, args);
+		}
 		
 		#endregion
 		
@@ -404,7 +423,7 @@ namespace Mono.UIAutomation.Winforms
 			return System.Math.Abs (System.Math.Sqrt ( System.Math.Pow (p1.X - p2.X, 2) +
 			                                          System.Math.Pow (p1.Y - p2.Y, 2)));
 		}
-		
+		/*
 		private void GenerateIsPatternEnabledEvent (AutomationPattern pattern)
 		{
 			if (AutomationInteropProvider.ClientsAreListening == false)
@@ -467,7 +486,7 @@ namespace Mono.UIAutomation.Winforms
 			AutomationInteropProvider.RaiseAutomationPropertyChangedEvent (this, 
 			                                                               args);
 		}
-		
+		*/
 		#endregion
 
 	}

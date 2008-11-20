@@ -1,3 +1,24 @@
+2008-11-20  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Files added:
+	Behaviors/ProviderBehaviorEventArgs.cs and 
+	Events/AutomationControlTypePropertyEvent.cs.
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: New event:
+	ProviderBehaviorSet. Setting AutomationControlTypePropertyEvent. New
+	protected method OnProviderBehaviorSet.
+
+	* Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs:
+	* Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: ControlType ->
+	AutomationElementControlType
+
+	* Mono.UIAutomation.Winforms.Behaviors/ProviderBehaviorEventArgs.cs:
+	ProviderBehavior Event arguments.
+
+	* Mono.UIAutomation.Winforms.Events/AutomationControlTypePropertyEvent.cs:
+	ControlType Automation Property Event
+
 2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/ExpandCollapseProviderBehavior.cs:
