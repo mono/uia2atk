@@ -41,18 +41,32 @@ class ProgressBarFrame(accessibles.Frame):
             return self.findLabel(None).text == "It is %s percent " % percent + "of 100%"
         assert retryUntilTrue(resultMatches)
 
-    #assert progressbar's value
-    def assertValue(self, progressbar, newValue=None):
-        maximumValue = progressbar._accessible.queryValue().maximumValue
+    #insert value
+    def value(self, newValue=None):
+        procedurelogger.action('set ProgressBar value to "%s"' % newValue)
+        self.progressbar.__setattr__('value', newValue)
 
-        if 0 <= newValue <= maximumValue:
-            procedurelogger.expectedResult('the %s\'s current value is "%s"' % (progressbar, newValue))
-            assert progressbar.__getattr__('value') == newValue, \
-                       "progressbar's current value is %s:" % progressbar.__getattr__('value')
-        else:
-            procedurelogger.expectedResult('value "%s" out of run' % newValue)
-            assert not progressbar.__getattr__('value') == newValue, \
-                       "progressbar's current value is %s:" % progressbar.__getattr__('value')
+    #assert maximumValue and minimumValue
+    def assertValueImplemented(self, valueType):
+        maximumValue = self.progressbar._accessible.queryValue().maximumValue
+        minimumValue = self.progressbar._accessible.queryValue().minimumValue
+
+        procedurelogger.action('check for %s' % valueType)
+
+        if valueType == "maximumValue":
+            procedurelogger.expectedResult('%s is 100' % valueType)
+            assert maximumValue == 100, "maximumValue is %s:" % maximumValue
+        if valueType == "minimumValue":
+            procedurelogger.expectedResult('%s is 0' % valueType)
+            assert minimumValue == 0, "minimumValue is %s:" % minimumValue
+
+    #assert progressbar's value
+    def assertCurrnetValue(self, accessible, value):
+        procedurelogger.expectedResult('ProgressBar\'s current value is "%s"' % value)
+
+        assert accessible.__getattr__('value') == value, \
+                       "progressbar's current value is %s:" % accessible.__getattr__('value')
+
     
     #close application window
     def quit(self):

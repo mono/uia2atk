@@ -46,25 +46,60 @@ pbFrame = app.progressBarFrame
 #check progressbar's states list
 statesCheck(pbFrame.progressbar, "ProgressBar")
 
-#click button the first time
+#click button each time, current value would increase 20, when it runout to 100
+#it would return to 0 and start progress again
 pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
-pbFrame.assertLabel("10%")
+pbFrame.assertLabel("20%")
+pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
 
-#click button the second time
 pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
-pbFrame.assertValue(pbFrame.progressbar, 20)
+pbFrame.assertLabel("40%")
+pbFrame.assertCurrnetValue(pbFrame.progressbar, 40)
 
-#click button the third time
 pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
-pbFrame.assertLabel("30%")
+pbFrame.assertLabel("60%")
+pbFrame.assertCurrnetValue(pbFrame.progressbar, 60)
 
-#click button the fourth time
 pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
-pbFrame.assertValue(pbFrame.progressbar, 40)
+pbFrame.assertLabel("80%")
+pbFrame.assertCurrnetValue(pbFrame.progressbar, 80)
+
+pbFrame.click(pbFrame.button)
+sleep(config.SHORT_DELAY)
+pbFrame.assertLabel("100%")
+pbFrame.assertCurrnetValue(pbFrame.progressbar, 100)
+#start progress again after the value increase to 100
+pbFrame.click(pbFrame.button)
+sleep(config.SHORT_DELAY)
+pbFrame.assertLabel("20%")
+pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
+
+#if yo enter number under Value in accerciser you would still get the lastest 
+#value, you can't change the progress by give value
+pbFrame.value(10)
+sleep(config.SHORT_DELAY)
+pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
+
+pbFrame.value(100)
+sleep(config.SHORT_DELAY)
+pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
+
+pbFrame.value(-1)
+sleep(config.SHORT_DELAY)
+pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
+
+pbFrame.value(101)
+sleep(config.SHORT_DELAY)
+pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
+
+#maximumValue is 100 and minimumValue is 0
+pbFrame.assertValueImplemented("maximumValue")
+
+pbFrame.assertValueImplemented("minimumValue")
 
 #check progressbar's states list again
 statesCheck(pbFrame.progressbar, "ProgressBar")

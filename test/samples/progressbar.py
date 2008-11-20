@@ -51,7 +51,7 @@ class ProgressBarSample(Form):
         self.progressbar.Minimum = 0
         self.progressbar.Maximum = 100
         self.progressbar.Value = 0
-        self.progressbar.Step = 10 
+        self.progressbar.Step = 20 
         self.progressbar.Location = Point(0, 50)
 
         # add controls
@@ -67,7 +67,11 @@ class ProgressBarSample(Form):
             self.label.Text = "It is %d%% percent of 100%%" % \
                               self.progressbar.Value
         else:
-            Application.Exit()
+            self.progressbar.Value = 0
+            self.progressbar.Value = self.progressbar.Value + \
+                                     self.progressbar.Step
+            self.label.Text = "It is %d%% percent of 100%%" % \
+                              self.progressbar.Value
 
 # run application
 form = ProgressBarSample()

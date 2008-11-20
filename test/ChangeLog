@@ -1,5 +1,19 @@
 2008-11-20  Calen Chen <cachen@novell.com>
 
+	* samples/progressbar.py: modify the example from exiting the 
+	application to return the progressbar value to 0 and start progress 
+	again when the value is bigger than Maximum after click button
+	* testers/progressbar/progressbarframe.py: add assertValueImplemented 
+	to assert maximumValue and minimumValue. add value to input value to 
+	check that current progressbar value doesn't change. rename and update 
+	assertCurrnetValue
+	* testers/progressbar_basic_ops.py: add test for checking progress 
+	start again when the value is bigger then Maximum. add test for 
+	checking maximumValue and minimumValue. update test for checking insert
+	value
+
+2008-11-20  Calen Chen <cachen@novell.com>
+
 	* testers/states.py: add selectable state into menuitem tuple
 	* testers/combobox_simple/comboboxsimpleframe.py: update class name
 	* testers/combobox_simple/__init__.py: update log name
