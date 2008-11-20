@@ -1,3 +1,8 @@
+2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/ExpandCollapseProviderBehavior.cs:
+	Throw ElementNotEnabledException on Expand and Collapse.
+
 2008-11-20  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs, Makefile.am,

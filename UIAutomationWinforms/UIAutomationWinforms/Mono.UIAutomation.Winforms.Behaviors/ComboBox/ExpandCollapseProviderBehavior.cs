@@ -86,11 +86,17 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 
 		public void Collapse ()
 		{
+			if (Provider.Control.Enabled == false)
+				throw new ElementNotEnabledException ();
+			
 			PerformExpandOrCollapse ((SWF.ComboBox) Provider.Control, false);
 		}
 
 		public void Expand ()
 		{
+			if (Provider.Control.Enabled == false)
+				throw new ElementNotEnabledException ();
+			
 			PerformExpandOrCollapse ((SWF.ComboBox) Provider.Control, true);
 		}
 
