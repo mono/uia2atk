@@ -44,7 +44,7 @@ namespace UiaAtkBridgeTest
 	public class BridgeTests : BridgeTester
 	{
 		
-		[Test]
+		//[Test] disabled for now because of http://monoport.com/38319
 		public void ListBox ()
 		{
 			BasicWidgetType type = BasicWidgetType.ListBox;

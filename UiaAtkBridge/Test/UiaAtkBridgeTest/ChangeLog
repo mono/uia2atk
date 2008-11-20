@@ -1,3 +1,8 @@
+2008-11-19  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs: Disabled some tests because they are blocking the
+	rest.
+
 2008-11-19  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTests.cs: Test for SingleLine and Transient in ListBox test.
