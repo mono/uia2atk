@@ -412,5 +412,25 @@ namespace UiaAtkBridgeTest
 			}
 		}
 
+		[Test]
+		public void ToolStripDropDownButton ()
+		{
+			BasicWidgetType type = BasicWidgetType.ToolStripDropDownButton;
+
+			string[] extreme_fjords = new string[] {
+				"Scoresby Sund", "Sognefjord", "Hardangerfjord"
+			};
+			
+			Atk.Object accessible = GetAccessible (type, extreme_fjords);
+			PropertyRole (type, accessible);
+
+			for (int i = 0; i < extreme_fjords.Length; i++) {
+				Atk.Object child = accessible.RefAccessibleChild (i);
+				Assert.AreEqual (Atk.Role.MenuItem, child.Role,
+				                 String.Format ("Child role #{0}", i));
+				InterfaceText (child, extreme_fjords[i]);
+			}
+		}
+
 	}
 }

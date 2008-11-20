@@ -80,6 +80,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.ToolStripLabel tsl1 = new SWF.ToolStripLabel ();
 		protected SWF.ToolStripProgressBar tspb1 = new SWF.ToolStripProgressBar ();
 		protected SWF.ListView lv1 = new SWF.ListView ();
+		protected SWF.ToolStripDropDownButton tsddb = new SWF.ToolStripDropDownButton ();
 
 		protected int lastClickedLink = -1;
 		
@@ -119,6 +120,7 @@ namespace UiaAtkBridgeTest
 			toolStrip.Items.Add (toolStripComboBoxDD);
 			toolStrip.Items.Add (tsl1);
 			toolStrip.Items.Add (tspb1);
+			toolStrip.Items.Add (tsddb);
 			form.Controls.Add (toolStrip);
 
 			linklab1.Links [0].Visited = true;
@@ -398,6 +400,15 @@ namespace UiaAtkBridgeTest
 				else
 					accessible = GetAdapterForWidget (menuStrip1);
 				
+				break;
+			case BasicWidgetType.ToolStripDropDownButton:
+				foreach (string name in names) {
+					SWF.ToolStripMenuItem item
+						= new SWF.ToolStripMenuItem ();
+					item.Text = name;
+					tsddb.DropDownItems.Add (item);
+				}
+				accessible = GetAdapterForWidget (tsddb);
 				break;
 			default:
 				throw new NotImplementedException ("This AtkTester overload doesn't handle this type of widget: " +
