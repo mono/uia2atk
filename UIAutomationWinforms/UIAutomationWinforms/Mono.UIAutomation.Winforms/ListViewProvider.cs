@@ -1188,10 +1188,12 @@ namespace Mono.UIAutomation.Winforms
 					SD.Size checkBoxSize = ItemProvider.ListView.CheckBoxSize;
 					Rect itemSize 
 						= (Rect) ItemProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-
-					itemSize.Width = checkBoxSize.Width;
-					itemSize.Height = checkBoxSize.Height;
-					return itemSize;
+					
+					Rect checkBoxRect = itemSize;
+					checkBoxRect.Y = itemSize.Y + (itemSize.Height / 2) - (checkBoxSize.Height / 2);
+					checkBoxRect.Width = checkBoxSize.Width;
+					checkBoxRect.Height = checkBoxSize.Height;
+					return checkBoxRect;
 				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 					Rect bounds 
 						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
