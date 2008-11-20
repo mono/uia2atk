@@ -1,3 +1,8 @@
+2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: UIA doesn't allow emptying the selection of a
+	combobox which already had a user selection.
+
 2008-11-20  Brad Taylor  <brad@getcoded.net>
 	
 	* BridgeTests.cs:

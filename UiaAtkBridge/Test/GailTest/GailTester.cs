@@ -103,6 +103,10 @@ namespace UiaAtkBridgeTest
 			return false;
 		}
 
+		protected override bool AllowsEmptyingSelectionOnComboBoxes { 
+			get { return true; }
+		}
+		
 		public override Atk.Object GetAccessible (BasicWidgetType type, string text)
 		{
 			return GetAccessible (type, text, true);

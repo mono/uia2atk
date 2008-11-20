@@ -198,6 +198,10 @@ namespace UiaAtkBridgeTest
 		{
 			return true;
 		}
+
+		protected override bool AllowsEmptyingSelectionOnComboBoxes { 
+			get { return false; }
+		}
 		
 		private Dictionary <Atk.Object, System.ComponentModel.Component> mappings = new Dictionary<Atk.Object, System.ComponentModel.Component> ();
 		

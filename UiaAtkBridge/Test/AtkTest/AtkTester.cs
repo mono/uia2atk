@@ -102,6 +102,7 @@ namespace UiaAtkBridgeTest
 		protected abstract int ValidNChildrenForAListView { get; }
 		protected abstract int ValidNChildrenForASimpleStatusBar { get; }
 		protected abstract int ValidNChildrenForAScrollBar { get; }
+		protected abstract bool AllowsEmptyingSelectionOnComboBoxes { get; }
 		
 		protected void InterfaceActionFor3RadioButtons (Atk.Action actionable1, Atk.Object accessible1,
 		                                              Atk.Action actionable2, Atk.Object accessible2,
@@ -348,9 +349,9 @@ namespace UiaAtkBridgeTest
 			
 			Assert.AreEqual (accessibleName, accessible.Name, "AtkObj Name");
 			if (type == BasicWidgetType.TabControl)
-				Assert.IsFalse (implementor.ClearSelection(), "ClearSelection");
+				Assert.IsFalse (implementor.ClearSelection (), "ClearSelection");
 			else {
-				Assert.IsTrue (implementor.ClearSelection(), "ClearSelection");
+				Assert.IsTrue (implementor.ClearSelection (), "ClearSelection");
 				for (int i = 0; i < names.Length; i++)
 						Assert.IsFalse (implementor.IsChildSelected (i), "isChildSelected(" + i + ")");
 				Assert.AreEqual (0, implementor.SelectionCount, "SelectionCount == 0");
@@ -412,7 +413,9 @@ namespace UiaAtkBridgeTest
 				Assert.IsNull (implementor.RefSelection (refSelPos), "RefSelection OOR#-" + i);
 
 				if (i != names.Length - 1)
-					Assert.IsTrue (implementor.RemoveSelection (i), "restoring initial situation should be a valid operation");
+					Assert.AreEqual (implementor.RemoveSelection (i),
+					  AllowsEmptyingSelectionOnComboBoxes,
+					  "restoring initial situation of a combobox to empty selection");
 			}
 
 			Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null");
