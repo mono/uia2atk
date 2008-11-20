@@ -1,3 +1,7 @@
+2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* TextImplementorHelper.cs: Cosmetic.
+
 2008-11-20  Brad Taylor  <brad@getcoded.net>
 
 	* Adapter.cs: Removing states manually is unnecessary and leads to
@@ -84,16 +88,6 @@
 	* ParentAdapter.cs:
 	* AutomationBridge.cs: Implemented the fake window under the top level
 	root item for ComboBox+Atk.Action.
-
-2008-11-19  Brad Taylor  <brad@getcoded.net>
-
-	* Adapter.cs: Add RemoveFromParent method to ensure that the adapter
-	isn't visible when removed.  Incidentally, that's the only way we know
-	from the Provider side that our control is hidden.  Also augment
-	OnRefStateSet to not return Visible or Showing if the widget has no
-	parent.
-
-	* ParentAdapter.cs: Call the child's new RemoveFromParent method.
 
 2008-11-19  Brad Taylor  <brad@getcoded.net>
 	

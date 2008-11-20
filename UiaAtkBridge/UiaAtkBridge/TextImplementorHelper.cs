@@ -446,7 +446,7 @@ namespace UiaAtkBridge
 					text = newText;
 					Atk.TextAdapter adapter = new Atk.TextAdapter ((Atk.TextImplementor)resource);
 					adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, oldLength, newLength - oldLength);
-				GLib.Signal.Emit (resource, "text_caret_moved", newLength);
+					GLib.Signal.Emit (resource, "text_caret_moved", newLength);
 					return true;
 				}
 			}
@@ -455,7 +455,7 @@ namespace UiaAtkBridge
 					Atk.TextAdapter adapter = new Atk.TextAdapter ((Atk.TextImplementor)resource);
 					adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, newLength, oldLength - newLength);
 					text = newText;
-				GLib.Signal.Emit (resource, "text_caret_moved", newLength);
+					GLib.Signal.Emit (resource, "text_caret_moved", newLength);
 					return true;
 				}
 			}
