@@ -32,9 +32,9 @@ namespace UiaAtkBridge
 {
 	internal class SelectionProviderUserHelper
 	{
-		private IRawElementProviderFragment provider;
-		private ISelectionProvider					selectionProvider;
-		private IRawElementProviderFragment			childrenHolder;
+		private IRawElementProviderFragment		provider;
+		private ISelectionProvider				selectionProvider;
+		private IRawElementProviderFragment		childrenHolder;
 
 		public SelectionProviderUserHelper (IRawElementProviderFragment provider,
 		                                    ISelectionProvider selectionProvider) :
@@ -56,10 +56,8 @@ namespace UiaAtkBridge
 		public int SelectionCount
 		{
 			get {
-				IRawElementProviderSimple[] selectedItems = GetSelection ();
-				if (selectedItems == null)
-					return 0;
-				return selectedItems.Length;
+				var selectedItems = GetSelection ();
+				return (selectedItems == null) ? 0 : selectedItems.Length;
 			}
 		}
 
@@ -74,7 +72,7 @@ namespace UiaAtkBridge
 			}
 			
 			if (childItem != null) {
-				if(selectionProvider.CanSelectMultiple)
+				if (selectionProvider.CanSelectMultiple)
 					childItem.AddToSelection();
 				else
 					childItem.Select();
@@ -85,13 +83,12 @@ namespace UiaAtkBridge
 
 		public bool ClearSelection ()
 		{
-			IRawElementProviderSimple[] selectedElements = 
-				GetSelection ();
+			var selectedElements = GetSelection ();
 			bool result = true;
-				
+			
 			if (selectedElements == null)
 				return true;
-			for (int i=0; i < selectedElements.GetLength(0); i++) {
+			for (int i=0; i < selectedElements.Length; i++) {
 				ISelectionItemProvider selectionItemProvider = 
 					(ISelectionItemProvider)selectedElements[i].GetPatternProvider
 						(SelectionItemPatternIdentifiers.Pattern.Id);
@@ -117,7 +114,7 @@ namespace UiaAtkBridge
 				return false;
 			}
 
-			if(childItem != null) {
+			if (childItem != null) {
 				return childItem.IsSelected;
 			}
 			return false;
