@@ -1,3 +1,7 @@
+2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* RadioButtonProviderTest.cs: Should return empty array, not null.
+
 2008-11-21  Mario Carrion  <mcarrion@novell.com>
 
 	* ListBoxProviderTest.cs:

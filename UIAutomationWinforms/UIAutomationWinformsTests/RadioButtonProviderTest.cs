@@ -317,7 +317,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Form.Controls.Remove (r3);
 			selectedProviders =
 				formSelectionProvider.GetSelection ();
-			Assert.IsNull (selectedProviders,
+			Assert.IsTrue (selectedProviders == null || selectedProviders.Length == 0,
 			               "No selection when selected RadioButton is removed from Form");
 
 			// Test that when all RadioButtons are removed, the form
