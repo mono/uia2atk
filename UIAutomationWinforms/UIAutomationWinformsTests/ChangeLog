@@ -1,3 +1,7 @@
+2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* providertest.sh.in: Remove references to UiaAtkBridge.
+
 2008-11-21  Brad Taylor  <brad@getcoded.net>
 	
 	* TextNormalizerTest.cs: Forgot to remove this test.  This code is
