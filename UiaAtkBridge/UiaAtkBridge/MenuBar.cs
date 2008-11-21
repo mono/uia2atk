@@ -47,7 +47,8 @@ namespace UiaAtkBridge
 		
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
-			throw new NotImplementedException ();
+			//TODO
+			return;
 		}
 	}
 }

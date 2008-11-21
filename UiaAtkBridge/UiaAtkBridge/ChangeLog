@@ -1,3 +1,7 @@
+2008-11-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MenuBar.cs: Avoid throwing.
+
 2008-11-21  Mike Gorse  <mgorse@novell.com>
 
 	* List.cs, Spinner.cs, TextBoxEntryView.cs, TextImplementorHelper.cs:
