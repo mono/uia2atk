@@ -1,5 +1,10 @@
 2008-11-21 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* harness/tests.py: This test is finished.  I am adding it to the
+	regression test suite.
+
+2008-11-21 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* harness/local_run.py: Always check to make sure the hostname
 	returned by gethostname() is only the hostname (and not the FQDN).
 	Add logic to find the RPM directory based on OS and arch.
