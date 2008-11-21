@@ -71,15 +71,7 @@ Its objective is to enable Unix developers to build and deploy
 cross-platform .NET applications. The project will implement various
 technologies that have been submitted to the ECMA for standardization.
 
-Database connectivity for Mono.
-
-
-
-Authors:
---------
-    Miguel de Icaza <miguel@ximian.com>
-    Paolo Molaro <lupus@ximian.com>
-    Dietmar Maurer <dietmar@ximian.com>
+Parts of winfx
 
 %files -n mono-winfxcore
 %defattr(-, root, root)

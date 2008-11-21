@@ -22,11 +22,11 @@ Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 AutoReqProv:	on
 Requires:	mono-core >= 2.2 mono-uia mono-winfxcore uiaatkbridge
-BuildRequires:	mono-devel mono-nunit mono-uia mono-winfxcore glib-sharp2 gtk-sharp2
-Summary:        Mono UIA Provider
+BuildRequires:	mono-devel mono-nunit mono-uia mono-winfxcore glib-sharp2 gtk-sharp2 >= 2.12.6
+Summary:        Mono Winforms UIA Provider
 
 %description
-Mono UIA Provider
+Mono Winforms UIA Provider
 
 %prep
 %setup -q
