@@ -31,11 +31,12 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-
+	/// <summary>
+	/// Adapter for a ControlType.Spinner that does not implement IValuePattern.
+	/// </summary>
 	public abstract class Spinner : ComponentAdapter, Atk.TextImplementor, Atk.EditableTextImplementor
 	{
 		protected IRangeValueProvider rangeValueProvider;
-		protected IValueProvider valueProvider;
 		internal TextImplementorHelper textExpert = null;
 
 		public Spinner (IRawElementProviderSimple provider) : base (provider)
@@ -44,10 +45,7 @@ namespace UiaAtkBridge
 			Name = text;
 			Role = Atk.Role.SpinButton;
 			rangeValueProvider = (IRangeValueProvider)provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
-			valueProvider = (IValueProvider)provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			if (valueProvider != null)
-				text = valueProvider.Value;
-			else if (rangeValueProvider != null)
+			if (rangeValueProvider != null)
 				text = rangeValueProvider.Value.ToString ();
 			else
 				text = String.Empty;
@@ -63,10 +61,7 @@ namespace UiaAtkBridge
 		{
 			if (e.Property == RangeValuePatternIdentifiers.ValueProperty) {
 				Notify ("accessible-value");
-				NewText (((double)e.NewValue).ToString ());
-			}
-			else if (e.Property == ValuePatternIdentifiers.ValueProperty) {
-				NewText ((string)e.NewValue);
+				NewText (e.NewValue.ToString ());
 			}
 		}
 
@@ -124,20 +119,7 @@ namespace UiaAtkBridge
 		
 		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
-			// don't ask me why, this is what gail does 
-			// (instead of throwing or returning null):
-			if (offset > Name.Length)
-				offset = Name.Length;
-			else if (offset < 0)
-				offset = 0;
-			
-			//just test values for now:
-			endOffset = Name.Length;
-			startOffset = offset;
-			
-			//TODO:
-			GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
-			return attribs;
+			return textExpert.GetRunAttributes (offset, out startOffset, out endOffset);
 		}
 
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
@@ -194,9 +176,9 @@ namespace UiaAtkBridge
 
 		private void NewText (string newText)
 		{
-				// Don't fire spurious events if the text hasn't changed
-				if (textExpert.Text == newText)
-					return;
+			// Don't fire spurious events if the text hasn't changed
+			if (textExpert.HandleSimpleChange (newText))
+				return;
 
 			Atk.TextAdapter adapter = new Atk.TextAdapter (this);
 
@@ -210,12 +192,16 @@ namespace UiaAtkBridge
 
 		public string TextContents {
 			set {
-				if (valueProvider != null)
-					valueProvider.SetValue (value);
-				else
-					// It's a numeric spinner; do not set
-					// the number until DoAction called
-					NewText (value);
+				// TODO: This gets better behavior in Accerciser, but fails tests
+				/*double parsedVal;
+				if (rangeValueProvider != null && double.TryParse (value, out parsedVal) &&
+				         parsedVal > rangeValueProvider.Minimum &&
+				         parsedVal < rangeValueProvider.Maximum)
+					rangeValueProvider.SetValue (parsedVal);*/
+				
+				// It's a numeric spinner; do not set
+				// the number until DoAction called
+				NewText (value);
 			}
 		}
 
@@ -253,26 +239,41 @@ Console.WriteLine ("start_pos " + start_pos + " end_pos " + end_pos);
 				+ textExpert.Text.Substring (end_pos);
 		}
 
-		public void InsertText (string str1ng, ref int position)
+		public void InsertText (string text, ref int position)
 		{
 			if (position < 0 || position > textExpert.Length)
 				position = textExpert.Length;	// gail
 			TextContents = textExpert.Text.Substring (0, position)
-				+ str1ng
+				+ text
 				+ textExpert.Text.Substring (position);
-			position += str1ng.Length;
+			position += text.Length;
 		}
+
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			states.AddState (Atk.StateType.SingleLine);
+			states.AddState (Atk.StateType.Editable);
+			return states;
+		}
+
 	}
 
 	public class SpinnerWithValue : Spinner, Atk.ValueImplementor, Atk.ActionImplementor
 	{
-		private string						actionDescription = null;
-		static string					actionName = "activate";
+		#region Private Members
+		private ActionImplementorHelper actionExpert = null;
+		#endregion
 
+		#region Constructor
 		public SpinnerWithValue (IRawElementProviderSimple provider) : base (provider)
 		{
+			actionExpert = new ActionImplementorHelper ();
+			actionExpert.Add ("activate", "activate", null, DoActivate);
 		}
+		#endregion
 
+		#region ValueImplementor Members
 		public void GetMinimumValue (ref GLib.Value value)
 		{
 			value = new GLib.Value (rangeValueProvider.Minimum);
@@ -301,33 +302,27 @@ Console.WriteLine ("start_pos " + start_pos + " end_pos " + end_pos);
 			rangeValueProvider.SetValue (v);
 			return true;
 		}
+		#endregion
 
+		#region ActionImplementor Members
 		// Return the number of actions (Read-Only)
 		public int NActions
 		{
 			get {
-				return 1;
+				return actionExpert.NActions;
 			}
 		}
 		
 		// Get a localized name for the specified action
 		public string GetLocalizedName (int action)
 		{
-			if (action != 0)
-				return null;
-
-			// TODO: Localize the name?
-			return actionName;
+			return actionExpert.GetLocalizedName (action);
 		}
 		
 		// Sets a description of the specified action
 		public bool SetDescription (int action, string description)
 		{
-			if (action != 0)
-				return false;
-			
-			actionDescription = description;
-			return true;
+			return actionExpert.SetDescription (action, description);
 		}
 		
 		// Get the key bindings for the specified action
@@ -339,31 +334,38 @@ Console.WriteLine ("start_pos " + start_pos + " end_pos " + end_pos);
 		// Get the name of the specified action
 		public string GetName (int action)
 		{
-			if (action != 0)
-				return null;
-
-			return actionName;
+			return actionExpert.GetName (action);
 		}
 		
 		// Get the description of the specified action
 		public string GetDescription (int action)
 		{
-			if (action != 0)
-				return null;
-
-			return actionDescription;
+			return actionExpert.GetDescription (action);
 		}
 
 		// Perform the action specified
 		public virtual bool DoAction (int action)
 		{
-			if (action != 0)
-				return false;
+			return actionExpert.DoAction (action);
+		}
+		#endregion
+
+		#region Private Methods
+		private bool DoActivate ()
+		{
 			bool enabled = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
 			if (!enabled)
 				return false;
+
+			double val;
+			if (!double.TryParse (textExpert.Text, out val) ||
+			    val > rangeValueProvider.Maximum ||
+			    val < rangeValueProvider.Minimum)
+				return false;
+			
 			rangeValueProvider.SetValue (double.Parse (textExpert.Text));
 			return true;
 		}
+		#endregion
 	}
 }

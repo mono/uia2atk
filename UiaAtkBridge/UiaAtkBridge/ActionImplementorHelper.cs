@@ -34,7 +34,7 @@ namespace UiaAtkBridge
 
 	internal delegate bool ActionDelegate ();
 
-	internal struct ActionDescription
+	internal class ActionDescription
 	{
 		internal String name;
 		internal String localizedName;
@@ -49,7 +49,7 @@ namespace UiaAtkBridge
 		}
 	}
 
-	class ActionImplementorHelper
+	internal class ActionImplementorHelper
 	{
 		private List<ActionDescription> actions;
 
@@ -92,9 +92,7 @@ namespace UiaAtkBridge
 		{
 			if (action < 0 || action >= NActions)
 				return false;
-			ActionDescription oldDesc = actions[action];
-			actions.Insert (action, new ActionDescription (oldDesc.name, oldDesc.localizedName, description, oldDesc.DoAction));
-			actions.RemoveAt (action + 1);
+			actions[action].description = description;
 			return true;
 		}
 

@@ -1,3 +1,14 @@
+2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Spinner.cs: Remove any support for IValueProvider from Spinner.  Use
+	GetRunAttributes and HandleSimpleChange from TextImplentorHelper. 
+	Add Editable and SingleLine states.  Use ActionImplementorHelper in
+	SpinnerWithValue, and add boundary checking to activate action
+	method.
+
+	* ActionImplementorHelper.cs: Make ActionDescription a class instead of
+	a struct, allowing some code cleanup in ActionImplementorHelper.
+
 2008-11-20  Mike Gorse  <mgorse@novell.com>
 
 	* List.cs, ListGroup.cs, DataGrid.cs, TextContainer.cs: Add correct
