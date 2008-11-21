@@ -105,6 +105,8 @@ namespace Mono.UIAutomation.Winforms
 			          new ETSI.AutomationFocusChangedEvent (this));
 			SetEvent (ProviderEventType.AutomationElementIsKeyboardFocusableProperty,
 			          new ETSI.AutomationIsKeyboardFocusablePropertyEvent (this));
+			SetEvent (ProviderEventType.AutomationElementNameProperty,
+			          new ETSI.AutomationNamePropertyEvent (this));
 		}
 
 		protected virtual System.Drawing.Rectangle GetItemScreenBounds ()
