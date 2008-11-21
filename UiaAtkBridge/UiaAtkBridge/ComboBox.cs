@@ -78,10 +78,18 @@ namespace UiaAtkBridge
 		private SelectionProviderUserHelper			selectionHelper;
 		private IExpandCollapseProvider				expandColapseProvider;
 		
-		
-		public ComboBox (IRawElementProviderFragmentRoot provider) : base (provider)
+
+		internal static bool IsSimple (IRawElementProviderSimple provider)
 		{
-			this.provider = provider;
+			return provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id) == null;
+		}
+		
+		public ComboBox (IRawElementProviderSimple provider) : base (provider)
+		{
+			this.provider = provider as IRawElementProviderFragmentRoot;
+			if (provider == null)
+				throw new ArgumentException ("Provider should be IRawElementProviderFragmentRoot");
+			
 			this.Role = Atk.Role.ComboBox;
 
 			selProvider = (ISelectionProvider)provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
@@ -91,7 +99,7 @@ namespace UiaAtkBridge
 			if (selProvider == null)
 				throw new ArgumentException ("ComboBoxProvider should always implement ISelectionProvider");
 			
-			selectionHelper = new SelectionProviderUserHelper(provider, selProvider, ChildrenHolder);
+			selectionHelper = new SelectionProviderUserHelper (this.provider, selProvider, ChildrenHolder);
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()

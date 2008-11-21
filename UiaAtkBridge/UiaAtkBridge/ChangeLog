@@ -1,3 +1,11 @@
+2008-11-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ComboBox.cs:
+	* AutomationBridge.cs:
+	* ComponentParentAdapter.cs: Unhandle ComboBoxSimple.
+
+	* MenuItem.cs: Be more verbose.
+
 2008-11-20  Mike Gorse  <mgorse@novell.com>
 
 	* ListItem.cs: Add Atk.StateType.Focusable.

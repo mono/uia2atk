@@ -353,17 +353,18 @@ namespace UiaAtkBridge
 			// an AT will know about the control that has focus,
 			// but don't do this if we're shutting down (ie,
 			// providerAdapterMapping.Count == 0)
-			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty &&
-			  !providerAdapterMapping.ContainsKey (simpleProvider) &&
-			  providerAdapterMapping.Count > 0) {
-				HandleElementAddition (simpleProvider);
-				int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-				if (controlTypeId == ControlType.DataItem.Id && simpleProvider is IRawElementProviderFragment) {
-					IRawElementProviderFragment child = ((IRawElementProviderFragment)simpleProvider).Navigate (NavigateDirection.FirstChild);
-					((Adapter)providerAdapterMapping [child]).RaiseAutomationPropertyChangedEvent (e);
-					return;
-				}
-			}
+			// TODO: delete this code after we determine it's useless; indeed, it's dangerous because some widgets just are not finished yet
+//			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty &&
+//			  !providerAdapterMapping.ContainsKey (simpleProvider) &&
+//			  providerAdapterMapping.Count > 0) {
+//				HandleElementAddition (simpleProvider);
+//				int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+//				if (controlTypeId == ControlType.DataItem.Id && simpleProvider is IRawElementProviderFragment) {
+//					IRawElementProviderFragment child = ((IRawElementProviderFragment)simpleProvider).Navigate (NavigateDirection.FirstChild);
+//					((Adapter)providerAdapterMapping [child]).RaiseAutomationPropertyChangedEvent (e);
+//					return;
+//				}
+//			}
 
 			if ((!providerAdapterMapping.ContainsKey (simpleProvider)) || windowProviders == 0)
 				return;
@@ -715,6 +716,10 @@ namespace UiaAtkBridge
 		private void HandleNewListControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
+			if (parentObject == null)
+				//see the TODO in HandleNewComboBoxControlType
+				return;
+			
 			Adapter atkList;
 			if (parentObject is UiaAtkBridge.ComboBox)
 				atkList = new MenuItem (provider);
@@ -729,6 +734,9 @@ namespace UiaAtkBridge
 		private void HandleNewListItemControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
+			if (parentObject == null)
+				//see the TODO in HandleNewComboBoxControlType
+				return;
 
 			Adapter atkItem;
 			if (parentObject is MenuItem)
@@ -742,8 +750,11 @@ namespace UiaAtkBridge
 		private void HandleNewComboBoxControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
-
-			ComboBox atkCombo = new ComboBox ((IRawElementProviderFragmentRoot)provider);
+			if (ComboBox.IsSimple (provider))
+				//TODO:
+				return;
+ 			
+			ComboBox atkCombo = new ComboBox (provider);
 			
 			IncludeNewAdapter (atkCombo, parentObject);
 		}

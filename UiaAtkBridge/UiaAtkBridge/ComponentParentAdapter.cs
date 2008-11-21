@@ -31,6 +31,7 @@ namespace UiaAtkBridge
 {
 	public abstract class ComponentParentAdapter : ParentAdapter, Atk.ComponentImplementor
 	{
+		//FIXME: should we receive a IRawElementProviderFragmentRoot instead? this way we can drop ArgumentExceptions in derived classes' ctors
 		public ComponentParentAdapter (IRawElementProviderSimple provider) : base (provider)
 		{
 			componentExpert = new ComponentImplementorHelper (this);

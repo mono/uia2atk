@@ -143,31 +143,32 @@ namespace UiaAtkBridge
 
 		public Atk.Object RefSelection (int i)
 		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
+			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (RefSelection)");
 			return null;
 		}
 
 		public bool IsChildSelected (int i)
 		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
+			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (IsChildSelected)");
 			//TODO: Atk.Selection
 			return false;
 		}
 
 		public bool RemoveSelection (int i)
 		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
+			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (RemoveSelection)");
 			return false;
 		}
 
 		public bool SelectAllSelection ()
 		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
+			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (SelectAllSelection)");
 			return false;
 		}
 		
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
+			//TODO
 		}
 
 		#region Action implementation 
