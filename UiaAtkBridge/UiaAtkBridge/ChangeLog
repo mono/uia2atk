@@ -1,5 +1,9 @@
 2008-11-21  Mario Carrion  <mcarrion@novell.com>
 
+	* List.cs: Reverting.
+
+2008-11-21  Mario Carrion  <mcarrion@novell.com>
+
 	* List.cs: Supporting ControlType event. Raised when View changes
 	to/from Details.
 
