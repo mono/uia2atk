@@ -59,6 +59,7 @@ namespace UiaAtkBridge
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			// TODO
+			base.RaiseAutomationEvent (eventId, e);
 		}
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
@@ -66,7 +67,8 @@ namespace UiaAtkBridge
 			if (e.Property == RangeValuePatternIdentifiers.ValueProperty) {
 				Notify ("accessible-value");
 				NewText (e.NewValue.ToString ());
-			}
+			} else
+				base.RaiseAutomationPropertyChangedEvent (e);
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()

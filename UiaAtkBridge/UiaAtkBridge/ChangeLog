@@ -1,5 +1,9 @@
 2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Spinner.cs: Call base methods in RaiseAutomation*Event overrides.
+
+2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Spinner.cs: Reorganized code a bit, added regions, etc, for
 	readability.
 
