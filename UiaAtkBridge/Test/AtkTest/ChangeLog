@@ -1,3 +1,7 @@
+2008-11-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: Marking some tests as ignore.
+
 2008-11-20  Brad Taylor  <brad@getcoded.net>
 	
 	* AtkTests.cs: Re-enable the VScrollBar test.
