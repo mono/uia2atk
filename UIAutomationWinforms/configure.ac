@@ -76,7 +76,7 @@ AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = "xyes")
 dnl package checks, common for all configs
 PKG_CHECK_MODULES([MONO_UIA], [mono-uia])
 
-PKG_CHECK_MODULES([MONO], [mono >= 2.1])
+PKG_CHECK_MODULES([MONO], [mono >= 2.2])
 
 dnl package checks, per config
 PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0])
