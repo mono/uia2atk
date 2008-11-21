@@ -1,0 +1,67 @@
+UIAutomationWinforms is a project of the Mono Accessibility team. Its purpose
+is to implement provider pattern interfaces defined in Microsoft's UI Automation
+(UIA) specification for the standard controls provided by System.Windows.Forms.
+
+More information about the Mono Accessibility team and UIA on Linux can be found
+on our wiki:
+
+http://www.mono-project.com/Accessibility
+
+
+1. Package contents
+===================
+
+Implementation of UIA providers for Mono's Winforms controls.  This package
+provides the following assemblies:
+
+	UIAutomationWinforms.dll: Contains infrastructure for getting info from
+	                          Mono's Winforms controls, creating providers
+	                          for the controls, and interfacing with the
+	                          UIA core to get provider information to the
+	                          native accessibility bridge (eg UiaAtkBridge).
+
+
+2. Compilation and Installation
+===============================
+
+	a. Build Requirements
+	---------------------
+
+		To build UIAutomationWinforms, you will need the following components:
+
+			* pkg-config
+			* mono >= 2.2
+			* gtk-sharp2
+			* glib-sharp2
+			* mono-uia >= 0.9 (provided by UIAutomation package)
+			* Tests require nunit >= 2.4.7
+
+	b. Building the Software
+	------------------------
+
+		If you obtained this package as an officially released tarball,
+		this is very simple, use configure and make:
+
+			./configure --prefix=/usr/local
+			make
+			make install
+
+	c. Building the Software from SVN
+	---------------------------------
+
+		If you obtained this package from Subversion, use autogen.sh:
+
+			./autogen.sh --prefix=/usr/local
+			make
+			make install
+
+		Please note that unreleased versions of this software may
+		require an unreleased version of Mono. The Mono a11y team must
+		sometimes patch Mono's Winforms controls to enhance UIA support.
+		In that case, it is recommended to install this package, Mono,
+		and other dependencies in a parallel environment.  Instructions
+		are available on the wiki:
+
+		http://mono-project.com/Accessibility:_Getting_Started_With_Development
+
+		http://www.mono-project.com/Parallel_Mono_Environments

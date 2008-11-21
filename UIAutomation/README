@@ -5,6 +5,7 @@ Accessibility team and UIA on Linux can be found on our wiki:
 
 http://www.mono-project.com/Accessibility
 
+
 1. Package contents
 ===================
 
@@ -23,7 +24,6 @@ provides the following assemblies:
 	WindowsBase.dll: Minimal version of this otherwise-unreleased assembly,
 	                 containing only the types needed by the above DLLs.
 	                 Development can be tracked in the olive module in SVN.
-
 
 
 2. Compilation and Installation
