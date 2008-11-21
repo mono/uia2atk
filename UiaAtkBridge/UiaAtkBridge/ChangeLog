@@ -1,5 +1,10 @@
 2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Spinner.cs: Reorganized code a bit, added regions, etc, for
+	readability.
+
+2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Spinner.cs: Remove any support for IValueProvider from Spinner.  Use
 	GetRunAttributes and HandleSimpleChange from TextImplentorHelper. 
 	Add Editable and SingleLine states.  Use ActionImplementorHelper in

@@ -22,8 +22,7 @@
 // Authors:
 //      Mike Gorse <mgorse@novell.com>
 // 
-// Note: This class handles spinners that set a numeric value.
-// Spinners that select items instead are treated as lists.
+
 
 using System;
 using System.Windows.Automation;
@@ -32,13 +31,16 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	/// <summary>
-	/// Adapter for a ControlType.Spinner that does not implement IValuePattern.
+	/// Adapter for a ControlType.Spinner that does not implement ValuePattern.
 	/// </summary>
 	public abstract class Spinner : ComponentAdapter, Atk.TextImplementor, Atk.EditableTextImplementor
 	{
+		#region Fields
 		protected IRangeValueProvider rangeValueProvider;
 		internal TextImplementorHelper textExpert = null;
+		#endregion
 
+		#region Constructor
 		public Spinner (IRawElementProviderSimple provider) : base (provider)
 		{
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
@@ -51,7 +53,9 @@ namespace UiaAtkBridge
 				text = String.Empty;
 			textExpert = new TextImplementorHelper (text, this);
 		}
+		#endregion
 
+		#region Overridden Members
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			// TODO
@@ -65,6 +69,16 @@ namespace UiaAtkBridge
 			}
 		}
 
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			states.AddState (Atk.StateType.SingleLine);
+			states.AddState (Atk.StateType.Editable);
+			return states;
+		}
+		#endregion
+
+		#region TextImplementor Members
 		public int CaretOffset {
 			get {
 				return 0;
@@ -173,23 +187,9 @@ namespace UiaAtkBridge
 		{
 			throw new NotImplementedException();
 		}
+		#endregion
 
-		private void NewText (string newText)
-		{
-			// Don't fire spurious events if the text hasn't changed
-			if (textExpert.HandleSimpleChange (newText))
-				return;
-
-			Atk.TextAdapter adapter = new Atk.TextAdapter (this);
-
-			// First delete all text, then insert the new text
-			adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
-
-			textExpert = new TextImplementorHelper (newText, this);
-			adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
-				                 newText == null ? 0 : newText.Length);
-		}
-
+		#region EditableTextImplementor Members
 		public string TextContents {
 			set {
 				// TODO: This gets better behavior in Accerciser, but fails tests
@@ -248,14 +248,25 @@ Console.WriteLine ("start_pos " + start_pos + " end_pos " + end_pos);
 				+ textExpert.Text.Substring (position);
 			position += text.Length;
 		}
+		#endregion
 
-		protected override Atk.StateSet OnRefStateSet ()
+		#region Private Methods
+		private void NewText (string newText)
 		{
-			Atk.StateSet states = base.OnRefStateSet ();
-			states.AddState (Atk.StateType.SingleLine);
-			states.AddState (Atk.StateType.Editable);
-			return states;
+			// Don't fire spurious events if the text hasn't changed
+			if (textExpert.HandleSimpleChange (newText))
+				return;
+
+			Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+
+			// First delete all text, then insert the new text
+			adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+
+			textExpert = new TextImplementorHelper (newText, this);
+			adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+				                 newText == null ? 0 : newText.Length);
 		}
+		#endregion
 
 	}
 
