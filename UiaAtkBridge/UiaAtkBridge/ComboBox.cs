@@ -232,7 +232,7 @@ namespace UiaAtkBridge
 
 #endregion
 
-		private void RaiseSelectionChanged ()
+		internal void RaiseSelectionChanged ()
 		{
 			GLib.Signal.Emit (this, "selection-changed");
 		}

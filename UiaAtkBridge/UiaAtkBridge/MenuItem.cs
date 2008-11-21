@@ -85,9 +85,13 @@ namespace UiaAtkBridge
 		}
 
 		protected void CancelSelected ()
-		{
+		{ 
 			selected = false;
 			NotifyStateChange (Atk.StateType.Selected, false);
+			if (Parent is MenuItem)
+				((MenuItem)Parent).CancelSelected ();
+			else if (Parent is ComboBox)
+				((ComboBox)Parent).RaiseSelectionChanged ();
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
@@ -100,8 +104,14 @@ namespace UiaAtkBridge
 			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
 				if (Parent is MenuItem)
 					((MenuItem)Parent).CancelSelected ();
+			} else if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
+				selected = true;
+				NotifyStateChange (Atk.StateType.Selected, selected);
+				if (Parent is MenuItem)
+					((MenuItem)Parent).CancelSelected ();
 			} else {
 				Console.WriteLine ("WARNING: RaiseAutomationEvent({0},...) not handled yet", eventId.ProgrammaticName);
+				base.RaiseAutomationEvent (eventId, e);
 			}
 		}
 
