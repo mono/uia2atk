@@ -37,6 +37,7 @@ using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.DomainUpDown;
 using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 using Mono.UIAutomation.Winforms.Behaviors.DomainUpDown;
+using Mono.UIAutomation.Winforms.Behaviors.UpDownBase;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -57,6 +58,9 @@ namespace Mono.UIAutomation.Winforms
 		public override void Initialize ()
 		{
 			base.Initialize ();
+			
+			SetBehavior (ValuePatternIdentifiers.Pattern,
+			             new ValueProviderBehavior (this));
 
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
 			             new SelectionProviderBehavior (this));

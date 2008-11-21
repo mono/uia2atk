@@ -33,13 +33,12 @@ using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class UpDownBaseProvider : FragmentRootControlProvider
+	internal abstract class UpDownBaseProvider : FragmentRootControlProvider
 	{
 		#region Constructor
 
 		public UpDownBaseProvider (UpDownBase upDownBase) : base (upDownBase)
 		{
-			this.upDownBase = upDownBase;
 		}
 		
 		#endregion
@@ -80,18 +79,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region SimpleControlProvider: Specializations
 		
-		public override void Initialize ()
-		{
-			base.Initialize ();
-			
-			if (upDownBase is DomainUpDown)
-				SetBehavior (ValuePatternIdentifiers.Pattern,
-				             new ValueProviderBehavior (this));
-			else if (upDownBase is NumericUpDown)
-				SetBehavior (RangeValuePatternIdentifiers.Pattern,
-				             new RangeValueProviderBehavior (this));
-		}
-		
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
@@ -106,7 +93,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Private Fields
 		
-		private UpDownBase upDownBase;
 		private FragmentControlProvider forwardButton;
 		private FragmentControlProvider backwardButton;
 		

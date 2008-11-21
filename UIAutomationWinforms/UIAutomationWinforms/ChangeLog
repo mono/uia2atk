@@ -1,5 +1,19 @@
 2008-11-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Mono.UIAutomation.Winforms/NumericUpDownProvider.cs: Re-create this
+	class as a simple subclass of UpDownBaseProvider for setting
+	behaviors.
+
+	* Mono.UIAutomation.Winforms/UpDownBaseProvider.cs:
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs: Mark
+	UpDownBaseProvider abstract, move control-specific Initialize logic
+	to control-specific providers.
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Don't support
+	UpDownBase; support NumericUpDown with NumericUpDownProvider.
+
+2008-11-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs:
 	Make Invoke thread-safe.
 

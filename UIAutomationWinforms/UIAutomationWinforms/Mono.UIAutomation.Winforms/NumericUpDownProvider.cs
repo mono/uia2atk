@@ -27,57 +27,24 @@ using System;
 using System.Windows.Forms;
 
 using System.Windows.Automation;
-using System.Windows.Automation.Provider;
 
-using Mono.UIAutomation.Winforms.Behaviors;
-using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Behaviors.NumericUpDown;
-
+using Mono.UIAutomation.Winforms.Behaviors.UpDownBase;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class NumericUpDownProvider : FragmentControlProvider
+	internal class NumericUpDownProvider : UpDownBaseProvider
 	{
-#region Constructors
-		
-		public NumericUpDownProvider (NumericUpDown upDown) :
-			base (upDown)
+		public NumericUpDownProvider (NumericUpDown upDown) : base (upDown)
 		{
 		}
-		
-#endregion
-		
-#region Public Methods
 		
 		public override void Initialize ()
 		{
 			base.Initialize ();
-
-			// Behaviors
-
-			// TODO: Child InvokeProviders for up/down!
+			
 			SetBehavior (RangeValuePatternIdentifiers.Pattern,
 			             new RangeValueProviderBehavior (this));
-
-			// TODO: Review...do we need this?
-//			SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-//			          new InvokePatternInvokedEvent (this));
-		}
-		
-#endregion
-		
-#region IRawElementProviderSimple Members
-		
-		public override object GetPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Spinner.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "spinner";
-			else
-				return base.GetPropertyValue (propertyId);
 		}
 
-#endregion
 	}
 }
