@@ -186,7 +186,9 @@ namespace Mono.UIAutomation.Winforms
 				Rect rect
 					= (Rect) item.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 				return Helper.IsOffScreen (rect, listView, true);
-			} else
+			} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				return true;
+			else
 				return null;
 		}
 		
