@@ -88,7 +88,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "Is false by default");
 
 			selection = selectionProvider.GetSelection ();
-			Assert.IsNull (selection, "selection is null");
+			Assert.AreEqual (0, selection.Length, "no selected items");
 			
 			//Testin children
 			

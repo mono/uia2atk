@@ -1,3 +1,10 @@
+2008-11-21  Mario Carrion  <mcarrion@novell.com>
+
+	* ListBoxProviderTest.cs:
+	* ComboBoxProviderTest.cs:
+	* RadioButtonProviderTest.cs: ISelectionProvider.GetSelection returns an
+	empty array, not null.
+
 2008-11-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* ToolStripTextBoxProviderTest.cs: Add navigation test.

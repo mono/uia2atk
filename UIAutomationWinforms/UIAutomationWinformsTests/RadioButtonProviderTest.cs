@@ -288,8 +288,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// Test GetSelection method
 			IRawElementProviderSimple [] selectedProviders =
 				formSelectionProvider.GetSelection ();
-			Assert.IsNull (selectedProviders,
-			               "No selection initially");
+			Assert.AreEqual (0, selectedProviders.Length,
+			                 "No selection initially");
 
 			r1.Checked = true;
 			selectedProviders =
