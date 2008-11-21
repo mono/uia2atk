@@ -1,3 +1,8 @@
+2008-11-21  Mario Carrion  <mcarrion@novell.com>
+
+	* List.cs: Supporting ControlType event. Raised when View changes
+	to/from Details.
+
 2008-11-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MenuBar.cs: Avoid throwing.

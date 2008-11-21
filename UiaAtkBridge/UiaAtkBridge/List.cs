@@ -221,7 +221,19 @@ AtkObject,
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
+			if (e.Property == AutomationElementIdentifiers.ControlTypeProperty) {
+				//We remove the current Adapter and add it again to reflect the ControlType change
+				StructureChangedEventArgs args 
+					= new StructureChangedEventArgs (StructureChangeType.ChildRemoved, 
+					                                 new int[] { 0 }); //TODO: Fix ?
+				AutomationInteropProvider.RaiseStructureChangedEvent (Provider,
+				                                                      args);
+
+				args = new StructureChangedEventArgs (StructureChangeType.ChildAdded,
+				                                      new int[] { 0 }); //TODO: Fix ?
+				AutomationInteropProvider.RaiseStructureChangedEvent (Provider,
+				                                                      args);
+			} else if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
 				//if it's a toggle, it should not be a basic Button class, but CheckBox or other
 				throw new NotSupportedException ("Toggle events should not land here (should not be reached)");
 			} else
