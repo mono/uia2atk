@@ -1,3 +1,7 @@
+2008-11-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Fixing horrible typo.
+
 2008-11-20  Brad Taylor  <brad@getcoded.net>
 	
 	* BridgeTests.cs: Re-enable the ListBox test.
