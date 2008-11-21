@@ -1,4 +1,8 @@
-2008-11-20  Calen Chen <cachen@novell.com>
+2008-11-21  Calen Chen <cachen@novell.com>
+
+	* ChangeLog: rewrite date time for what time I updated checkedlistbox
+
+2008-11-21  Calen Chen <cachen@novell.com>
 
 	* samples/checkedlistbox.py: modify check_items to show correct item 
 	names those are checked in checkedlistbox2
