@@ -1,3 +1,9 @@
+2008-11-21 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* harness/local_run.py: Always check to make sure the hostname
+	returned by gethostname() is only the hostname (and not the FQDN).
+	Add logic to find the RPM directory based on OS and arch.
+
 2008-11-20 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/vscrollbar.py: Use ValueChanged event instead of Scroll

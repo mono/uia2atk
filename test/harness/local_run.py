@@ -12,12 +12,14 @@ import os
 import time
 import commands as c
 from socket import gethostname
+from urlparse import urljoin
 import signal
 import subprocess as s
 import fileinput
 global tests
 
 UPDATE_SCRIPT = "update_uia2atk_pkgs.sh"
+HOSTNAME = gethostname().split(".")[0]
 
 # simply takes a string s as input and prints it if running verbosely
 def output(s, newline=True):
@@ -118,13 +120,29 @@ class Test(object):
  
   def update(self):
     import urllib
-    u = urllib.urlopen("http://build1.sled.lab.novell.com/uia/current/rpm_revs")
+    url_part1 = "http://build1.sled.lab.novell.com/uia/"
+    osystem = ""
+    arch = ""
+    if os.path.exists("/usr/lib64"):
+        arch = "64"
+    else:
+        arch = "32"
+    if os.path.exists("/etc/fedora-release"):
+        osystem = "fedora"
+    elif os.path.exists("/etc/SuSE-release"):
+        osystem = "opensuse"
+    url_part2 = "/".join((osystem, arch, "current", "rpm_revs"))
+    url = urljoin(url_part1, url_part2)
+    print "url: %s" % url
+    u = urllib.urlopen(url)
     revision_list = u.readlines()
     self.revisions = "".join(revision_list[3:])
     u.close()
     # mega hack to get the most recent revision directory
     date = revision_list[0].split()[-1]
-    u = urllib.urlopen("http://build1.sled.lab.novell.com/uia")
+    # open the directory for the arch (the directory with all of the date
+    # directories
+    u = urllib.urlopen(urljoin(url, ".."))
     todays_dirs = []
     for line in u.readlines():
         if date in line:
@@ -151,7 +169,7 @@ class Test(object):
             break
     r = t.poll()
     package_status_path = "%s/%s_package_status" % \
-                            (Settings.log_path, gethostname().split(".")[0])
+                            (Settings.log_path, HOSTNAME)
     if r != 0:
         # create the package_status file.  delete it first so that it 
         # is picked up as a new file by qamon
@@ -164,9 +182,9 @@ class Test(object):
         return 1
     else:
         os.system("rm -f %s/%s_package_status" % \
-                                            (Settings.log_path, gethostname()))
+                                            (Settings.log_path, HOSTNAME))
         os.system("echo 0 > %s/%s_package_status" % \
-                                            (Settings.log_path, gethostname()))
+                                            (Settings.log_path, HOSTNAME))
         os.system("echo --- >> %s" % package_status_path)
         f = open(package_status_path, 'a+')
         f.write("".join(o))
@@ -320,7 +338,7 @@ class Test(object):
     self.control_dir = os.path.join(Settings.log_path, self.filename)
     # try to build a useful dir name that will be unique, not y3k compliant :)
     self.log_dir = os.path.join(self.control_dir,"%s_%s" %\
-                            (gethostname(), time.strftime("%m%d%y_%H%M%S")))
+                                  (HOSTNAME, time.strftime("%m%d%y_%H%M%S")))
 
   def log(self, test):
     if not os.path.exists(self.control_dir):
