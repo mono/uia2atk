@@ -93,7 +93,7 @@ vsbFrame.assertLabel(0)
 vsbFrame.valueScrollBar(119)
 sleep(config.SHORT_DELAY)
 vsbFrame.assertScrollbar(119)
-vsbFrame.assertLabel(100)
+vsbFrame.assertLabel(119)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

@@ -1,3 +1,17 @@
+2008-11-20 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/vscrollbar.py: Use ValueChanged event instead of Scroll
+	event.  For more details see Comment #2 of Bug 447338.  The "Value:"
+	label now updates when the VScrollBar value is changed over at-spi.
+	* testers/vscrollbar_basic_ops.py: The "Value" label actually goes
+	above the number it can go when scrolling manually (with the mouse
+	or keyboard).  So I adjusted this test to expect a value of 119 when
+	the test sets the vscrollbar value to 119.  This differs from Gtk,
+	because the value label never goes above the value that it can be
+	increased to manually.  I really don't think this matters much, so I am
+	okay with the slight difference.  This test runs successfully at this
+	point.
+
 2008-11-21  Calen Chen <cachen@novell.com>
 
 	* ChangeLog: rewrite date time for what time I updated checkedlistbox

@@ -40,13 +40,13 @@ class VScrollBarSample(Form):
         self.vscrollbar.Maximum = 119 
         self.vscrollbar.Value = 0
         self.vscrollbar.Dock = DockStyle.Right
-        self.vscrollbar.Scroll += self.on_scroll
+        self.vscrollbar.ValueChanged += self.on_value
 
         # add controls
         self.Controls.Add(self.label)
         self.Controls.Add(self.vscrollbar)
 
-    def on_scroll(self, sender, event):
+    def on_value(self, sender, event):
         self.label.Text = "Value: " + str(self.vscrollbar.Value)
 
 # run application
