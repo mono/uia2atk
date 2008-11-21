@@ -452,7 +452,7 @@ namespace UiaAtkBridge
 			return (startOff > endOff);
 		}
 
-		public bool HandleSimpleChange (string newText)
+		public bool HandleSimpleChange (string newText, ref int caretOffset)
 		{
 			if (text == newText)
 				return true;
@@ -465,7 +465,8 @@ namespace UiaAtkBridge
 					Atk.TextAdapter adapter = new Atk.TextAdapter ((Atk.TextImplementor)resource);
 					adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, offset, newLength - oldLength);
 					// TODO: Next line isn't right; remove it when we have a better way of finding the caret
-					GLib.Signal.Emit (resource, "text_caret_moved", offset + (newLength - oldLength));
+					caretOffset = offset + (newLength - oldLength);
+					GLib.Signal.Emit (resource, "text_caret_moved", caretOffset);
 					return true;
 				}
 			}
@@ -474,7 +475,8 @@ namespace UiaAtkBridge
 					Atk.TextAdapter adapter = new Atk.TextAdapter ((Atk.TextImplementor)resource);
 					adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, offset, oldLength - newLength);
 					text = newText;
-					GLib.Signal.Emit (resource, "text_caret_moved", offset);
+					caretOffset = offset;
+					GLib.Signal.Emit (resource, "text_caret_moved", caretOffset);
 					return true;
 				}
 			}

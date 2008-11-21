@@ -37,7 +37,7 @@ namespace UiaAtkBridge
 			Role = Atk.Role.TableCell;
 		}
 
-		internal override void AddOneChild (Adapter child)
+		internal override void AddOneChild (Atk.Object child)
 		{
 			((ParentAdapter)Parent).AddOneChild (child);
 		}

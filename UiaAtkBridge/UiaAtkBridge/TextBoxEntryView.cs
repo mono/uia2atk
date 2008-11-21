@@ -280,7 +280,7 @@ namespace UiaAtkBridge
 				string newText = (string)e.NewValue;
 				
 				// Don't fire spurious events if the text hasn't changed
-				if (textExpert.HandleSimpleChange (newText))
+				if (textExpert.HandleSimpleChange (newText, ref caretOffset))
 					return;
 
 				Atk.TextAdapter adapter = new Atk.TextAdapter (this);

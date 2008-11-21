@@ -82,7 +82,7 @@ namespace UiaAtkBridge
 		
 #region Public Methods
 		
-		internal virtual void AddOneChild (Adapter child)
+		internal virtual void AddOneChild (Atk.Object child)
 		{
 			//Console.WriteLine ("AddOneChild: " + Role + " -> " + child.Role);
 			lock (syncRoot) {
@@ -94,12 +94,13 @@ namespace UiaAtkBridge
 			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Add, (uint)(children.Count - 1), child);
 		}
 		
-		internal void RemoveChild (Adapter childToRemove)
+		internal void RemoveChild (Atk.Object childToRemove)
 		{
-			Console.WriteLine ("RemoveChild");
 			int childIndex;
 			lock (syncRoot) {
-				childToRemove.RemoveFromParent (this);
+				Adapter adapter = childToRemove as Adapter;
+				if (adapter != null)
+					adapter.RemoveFromParent (this);
 				childIndex = children.IndexOf (childToRemove);
 				children.Remove (childToRemove);
 			}

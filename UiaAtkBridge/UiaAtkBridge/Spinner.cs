@@ -255,8 +255,8 @@ Console.WriteLine ("start_pos " + start_pos + " end_pos " + end_pos);
 		#region Private Methods
 		private void NewText (string newText)
 		{
-			// Don't fire spurious events if the text hasn't changed
-			if (textExpert.HandleSimpleChange (newText))
+			int caretOffset = textExpert.Length;
+			if (textExpert.HandleSimpleChange (newText, ref caretOffset))
 				return;
 
 			Atk.TextAdapter adapter = new Atk.TextAdapter (this);

@@ -55,7 +55,7 @@ namespace UiaAtkBridge
 
 		private UiaAtkBridge.Window currentActiveWindow = null;
 		
-		internal override void AddOneChild (Adapter child)
+		internal override void AddOneChild (Atk.Object child)
 		{
 			//FIXME: figure out if we need the Embeds relationship in TopLevelRootItem (if yes, we should not call base)
 			base.AddOneChild (child);

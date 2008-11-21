@@ -280,7 +280,7 @@ AtkObject,
 
 			string new_text = TextContents;
 			
-			if (text_helper.HandleSimpleChange (new_text))
+			if (text_helper.HandleSimpleChange (new_text, ref caretOffset))
 				return;
 
 			Atk.TextAdapter adapter = new Atk.TextAdapter (this);

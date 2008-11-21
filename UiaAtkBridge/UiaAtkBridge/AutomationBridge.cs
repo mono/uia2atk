@@ -42,7 +42,7 @@ namespace UiaAtkBridge
 		private Monitor appMonitor = null;
 		private long initTime = DateTime.Now.Ticks;
 		private AmbiDictionary<IntPtr, IRawElementProviderSimple> pointerProviderMapping;
-		static private AmbiDictionary<IRawElementProviderSimple, Adapter> providerAdapterMapping;
+		static private AmbiDictionary<IRawElementProviderSimple, Atk.Object> providerAdapterMapping;
 		
 		private int windowProviders;
 		
@@ -57,7 +57,7 @@ namespace UiaAtkBridge
 			pointerProviderMapping =
 				new AmbiDictionary<IntPtr,IRawElementProviderSimple> ();
 			providerAdapterMapping =
-				new AmbiDictionary<IRawElementProviderSimple, Adapter>();
+				new AmbiDictionary<IRawElementProviderSimple, Atk.Object>();
 
 			windowProviders = 0;
 		}
@@ -99,14 +99,16 @@ namespace UiaAtkBridge
 						}
 						
 						foreach (IRawElementProviderSimple providerReady in initialProvs) {
-							RequestChildren (providerAdapterMapping [providerReady], alreadyRequestedChildren);
+							Adapter adapter = providerAdapterMapping [providerReady] as Adapter;
+							if (adapter != null)
+								RequestChildren (adapter, alreadyRequestedChildren);
 						}
 						alreadyRequestedChildren = null;
 					}
 					
-					Adapter adapter;
-					if (providerAdapterMapping.TryGetValue (provider, out adapter))
-						return adapter;
+					Atk.Object obj;
+					if (providerAdapterMapping.TryGetValue (provider, out obj))
+						return obj as Adapter;
 					return null;
 				}
 				finally {
@@ -293,7 +295,7 @@ namespace UiaAtkBridge
 			if (evnt.Type == 1 && downKeys.ContainsKey (e.Keycode)) {
 				// For some reason, we don't get keysym and
 				// string values for KeyUp events, so we
-				// cache the values when th ekey is pressed
+				// cache the values when the key is pressed
 				evnt.Keyval = downKeys [e.Keycode].Keyval;
 				evnt.String = downKeys [e.Keycode].String;
 				downKeys.Remove (e.Keycode);
@@ -332,7 +334,9 @@ namespace UiaAtkBridge
 			if (!providerAdapterMapping.ContainsKey (simpleProvider))
 				return;
 			
-			providerAdapterMapping [simpleProvider].RaiseAutomationEvent (eventId, e);
+			Adapter adapter = providerAdapterMapping [simpleProvider] as Adapter;
+			if (adapter != null)
+				adapter.RaiseAutomationEvent (eventId, e);
 		}
 		
 		public void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e)
@@ -356,7 +360,7 @@ namespace UiaAtkBridge
 				int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 				if (controlTypeId == ControlType.DataItem.Id && simpleProvider is IRawElementProviderFragment) {
 					IRawElementProviderFragment child = ((IRawElementProviderFragment)simpleProvider).Navigate (NavigateDirection.FirstChild);
-					providerAdapterMapping [child].RaiseAutomationPropertyChangedEvent (e);
+					((Adapter)providerAdapterMapping [child]).RaiseAutomationPropertyChangedEvent (e);
 					return;
 				}
 			}
@@ -364,7 +368,9 @@ namespace UiaAtkBridge
 			if ((!providerAdapterMapping.ContainsKey (simpleProvider)) || windowProviders == 0)
 				return;
 			
-			providerAdapterMapping [simpleProvider].RaiseAutomationPropertyChangedEvent (e);
+			Adapter adapter = providerAdapterMapping [simpleProvider] as Adapter;
+			if (adapter != null)
+				adapter.RaiseAutomationPropertyChangedEvent (e);
 		}
 		
 		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
@@ -424,7 +430,7 @@ namespace UiaAtkBridge
 			if (!providerAdapterMapping.ContainsKey (parentProvider))
 				HandleElementAddition (parentProvider);
 
-			Adapter parent = null;
+			Atk.Object parent = null;
 			if (!providerAdapterMapping.TryGetValue (parentProvider, out parent))
 				return null;
 			ParentAdapter ret = parent as ParentAdapter;
@@ -435,6 +441,11 @@ namespace UiaAtkBridge
 
 		private void HandleElementAddition (IRawElementProviderSimple simpleProvider)
 		{
+			bool? hasNativeAtkObj = (bool?) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.HasNativeAccessibilityObjectProperty.Id);
+			if (hasNativeAtkObj == true &&
+			    HandleNewControlWithNativeObject (simpleProvider))
+				return;
+
 			if (providerAdapterMapping.ContainsKey (simpleProvider))
 				return;
 
@@ -500,17 +511,21 @@ namespace UiaAtkBridge
 		private bool HandleElementRemoval (Atk.Object atkObj)
 		{
 			IRawElementProviderSimple provider;
-			if (providerAdapterMapping.TryGetKey ((Adapter)atkObj, out provider) == false)
-				return false;
-			return HandleElementRemoval (provider);
+			if (atkObj is Adapter &&
+			    providerAdapterMapping.TryGetKey ((Adapter)atkObj, out provider))
+				return HandleElementRemoval (provider);
+			return false;
 		}
 
 		private bool HandleTotalElementRemoval (IRawElementProviderSimple provider)
 		{
 			bool lastWindowProvider = false;
 			
-			Adapter adapter;
-			if (providerAdapterMapping.TryGetValue (provider, out adapter) == false)
+			Atk.Object obj;
+			if (providerAdapterMapping.TryGetValue (provider, out obj) == false)
+				return false;
+			Adapter adapter = obj as Adapter;
+			if (adapter == null)
 				return false;
 
 			foreach (Atk.Object atkObj in GetAdaptersDescendantsFamily (adapter)){
@@ -535,11 +550,22 @@ namespace UiaAtkBridge
 		
 		private bool HandleElementRemoval (IRawElementProviderSimple provider)
 		{
+			bool? hasNativeAtkObj = (bool?) provider.GetPropertyValue (AutomationElementIdentifiers.HasNativeAccessibilityObjectProperty.Id);
+			if (hasNativeAtkObj == true) {
+				Atk.Object nativeObj = (Atk.Object)
+					provider.GetPropertyValue (AutomationElementIdentifiers.NativeAccessibilityObjectProperty.Id);
+				ParentAdapter parent = nativeObj.Parent as ParentAdapter;
+				if (parent != null)
+					parent.RemoveChild (nativeObj);
+				return false;
+			}
+			
 			bool lastWindowProvider = false;
 			
-			Adapter adapter;
-			if (providerAdapterMapping.TryGetValue (provider, out adapter) == false)
+			Atk.Object obj;
+			if (providerAdapterMapping.TryGetValue (provider, out obj) == false)
 				return false;
+			Adapter adapter = (Adapter)obj;
 
 			int controlTypeId = (int)provider.GetPropertyValue (
 				AutomationElementIdentifiers.ControlTypeProperty.Id);
@@ -602,17 +628,17 @@ namespace UiaAtkBridge
 			}
 			if ((fragment = provider as IRawElementProviderFragment) == null)
 				return;
-			List<Adapter> keep = new List<Adapter> ();
+			List<Atk.Object> keep = new List<Atk.Object> ();
 			IRawElementProviderFragment child = fragment.Navigate(NavigateDirection.FirstChild);
 			while (child != null) {
 				if (providerAdapterMapping.ContainsKey (child))
 					keep.Add (providerAdapterMapping [child]);
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
-			Adapter adapter = providerAdapterMapping [provider];
-			int index = adapter.NAccessibleChildren;
+			Atk.Object obj = providerAdapterMapping [provider];
+			int index = obj.NAccessibleChildren;
 			while (--index >= 0) {
-				Adapter childAdapter = adapter.RefAccessibleChild (index) as Adapter;
+				Adapter childAdapter = obj.RefAccessibleChild (index) as Adapter;
 				if (!keep.Contains(childAdapter))
 					HandleElementRemoval (childAdapter.Provider);
 			}
@@ -659,6 +685,24 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkLabel, parentObject);
 		}
 		
+		private bool HandleNewControlWithNativeObject (IRawElementProviderSimple provider)
+		{
+			ParentAdapter parentObject = GetParentAdapter (provider);
+
+			// TODO: Thread this better
+			System.Threading.Thread.Sleep (500);
+			Atk.Object nativeObj = (Atk.Object)
+				provider.GetPropertyValue (AutomationElementIdentifiers.NativeAccessibilityObjectProperty.Id);
+			
+			if (nativeObj == null) {
+				Console.WriteLine ("UiaAtkBridge: Couldn't get an atk object for a WebBrowser");
+				return false;
+			}
+				providerAdapterMapping [provider] = nativeObj;
+			parentObject.AddOneChild (nativeObj);
+			return true;
+		}
+
 		private void HandleNewCheckBoxControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
