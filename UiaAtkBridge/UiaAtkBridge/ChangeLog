@@ -1,5 +1,9 @@
 2008-11-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ComponentParentAdapter.cs: Update FIXME.
+
+2008-11-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ComboBox.cs:
 	* AutomationBridge.cs:
 	* ComponentParentAdapter.cs: Unhandle ComboBoxSimple.
