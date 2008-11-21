@@ -89,13 +89,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripItem
 		
 		private void PerformClick ()
 		{
-			// TODO: Make thread-safe using parent control or form:
-			// See: http://www.codeproject.com/KB/miscctrl/ToolStripStatusLabelCtrl.aspx
-			//if (Provider.Control.InvokeRequired == true) {
-			//	Provider.Control.BeginInvoke (new MethodInvoker (PerformClick));
-			//	return;
-			//}
-			((SWF.ToolStripItem)Provider.Component).PerformClick ();
+			SWF.ToolStripItem item = (SWF.ToolStripItem) Provider.Component;
+			if (item.Owner != null && item.Owner.InvokeRequired) {
+				item.Owner.BeginInvoke (new SWF.MethodInvoker (PerformClick));
+				return;
+			}
+			item.PerformClick ();
 		}
 		
 		#endregion

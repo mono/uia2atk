@@ -1,3 +1,8 @@
+2008-11-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs:
+	Make Invoke thread-safe.
+
 2008-11-20  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
