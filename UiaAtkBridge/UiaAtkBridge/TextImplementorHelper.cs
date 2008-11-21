@@ -434,28 +434,47 @@ namespace UiaAtkBridge
 			return attribs;
 		}
 
+		bool IsAddition (string super, string sub, out int offset)
+		{
+			int startOff = 0;
+			int subLength = sub.Length;
+			while (startOff < subLength && super [startOff] == sub [startOff])
+				startOff++;
+			if (startOff == subLength) {
+				offset = startOff;
+				return true;
+			}
+			int endOff = subLength - 1;
+			int diff = super.Length - subLength;
+			while (endOff >= startOff && sub [endOff] == super [endOff + diff])
+				endOff--;
+			offset = startOff;
+			return (startOff > endOff);
+		}
+
 		public bool HandleSimpleChange (string newText)
 		{
 			if (text == newText)
 				return true;
 			int oldLength = Length;
 			int newLength = newText.Length;
-			// TODO: Handle changes at the beginning or middle of a string
+			int offset;
 			if (newLength > oldLength) {
-				if (newText.Substring (0, oldLength) == text) {
+				if (IsAddition (newText, text, out offset)) {
 					text = newText;
 					Atk.TextAdapter adapter = new Atk.TextAdapter ((Atk.TextImplementor)resource);
-					adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, oldLength, newLength - oldLength);
-					GLib.Signal.Emit (resource, "text_caret_moved", newLength);
+					adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, offset, newLength - oldLength);
+					// TODO: Next line isn't right; remove it when we have a better way of finding the caret
+					GLib.Signal.Emit (resource, "text_caret_moved", offset + (newLength - oldLength));
 					return true;
 				}
 			}
 			else if (oldLength > newLength) {
-				if (text.Substring (0, newLength) == newText) {
+				if (IsAddition (text, newText, out offset)) {
 					Atk.TextAdapter adapter = new Atk.TextAdapter ((Atk.TextImplementor)resource);
-					adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, newLength, oldLength - newLength);
+					adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, offset, oldLength - newLength);
 					text = newText;
-					GLib.Signal.Emit (resource, "text_caret_moved", newLength);
+					GLib.Signal.Emit (resource, "text_caret_moved", offset);
 					return true;
 				}
 			}

@@ -307,12 +307,23 @@ namespace UiaAtkBridge
 			tableExpert.SetRowHeader (row, header);
 		}
 
+		// TODO: Remove next two methods when atk-sharp is fixed
 		public int GetSelectedColumns (out int selected)
 		{
 			return tableExpert.GetSelectedColumns (out selected);
 		}
 
+		public int GetSelectedColumns (out int [] selected)
+		{
+			return tableExpert.GetSelectedColumns (out selected);
+		}
+
 		public int GetSelectedRows (out int selected)
+		{
+			return tableExpert.GetSelectedRows (out selected);
+		}
+
+		public int GetSelectedRows (out int [] selected)
 		{
 			return tableExpert.GetSelectedRows (out selected);
 		}

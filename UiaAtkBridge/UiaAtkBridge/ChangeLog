@@ -1,3 +1,15 @@
+2008-11-20  Mike Gorse  <mgorse@novell.com>
+
+	* List.cs, ListGroup.cs, DataGrid.cs, TextContainer.cs: Add correct
+	  GetSelectedRow/Column functions; will remove the old ones once
+	  atk-sharp is fixed.
+
+	* TextBoxEntryView.cs, TextImplementorHelper.cs: Improve IsSimpleChange
+	  and use for TextBox.
+
+	* AutomationBridge.cs: Check for null parent (may happen if a child
+	  is added where the adapter is not descended from ParentAdapter)
+
 2008-11-20  Mario Carrion  <mcarrion@novell.com>
 
 	* ListItem.cs: Subclassing from ComponentParentAdapter instead of
@@ -15,6 +27,7 @@
 	problems when children are being removed and disposed of.
 
 2008-11-20  Mike Gorse  <mgorse@novell.com>
+
 	* SelectionProviderUserHelper.cs: Fix GetSelection.
 
 2008-11-20  Mike Gorse  <mgorse@novell.com>

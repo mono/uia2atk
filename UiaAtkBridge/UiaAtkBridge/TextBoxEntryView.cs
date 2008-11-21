@@ -280,13 +280,12 @@ namespace UiaAtkBridge
 				string newText = (string)e.NewValue;
 				
 				// Don't fire spurious events if the text hasn't changed
-				if (textExpert.Text == newText)
+				if (textExpert.HandleSimpleChange (newText))
 					return;
 
 				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
 
 				// First delete all text, then insert the new text
-				// FIXME: this may not be feasible if the text is being changed by the user (so we delete&insert in every keystroke)
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
 				textExpert = new TextImplementorHelper (newText, this);

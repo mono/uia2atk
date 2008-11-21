@@ -858,6 +858,9 @@ namespace UiaAtkBridge
 //			if (providerAdapterMapping.ContainsKey (newAdapter.Provider))
 //				return;
 
+			if (parentAdapter == null)
+				return;
+
 			providerAdapterMapping [newAdapter.Provider] = newAdapter;
 			parentAdapter.AddOneChild (newAdapter);
 		}
