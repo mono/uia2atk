@@ -81,7 +81,6 @@ FILES =  \
 	TabPageProviderTest.cs \
 	TestHelper.cs \
 	TextBoxProviderTest.cs \
-	TextNormalizerTest.cs \
 	TextRangeProviderTest.cs \
 	ToolStripComboBoxProviderTest.cs \
 	ToolStripDropDownItemProviderTest.cs \

@@ -1,3 +1,9 @@
+2008-11-21  Brad Taylor  <brad@getcoded.net>
+	
+	* TextNormalizerTest.cs: Forgot to remove this test.  This code is
+	being tested much more effectively via TextBoxProviderTest and
+	TextRangeProviderTest now.
+
 2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* RadioButtonProviderTest.cs: Specifically, GetSelection should return
