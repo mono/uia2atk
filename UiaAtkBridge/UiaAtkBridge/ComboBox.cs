@@ -171,26 +171,40 @@ namespace UiaAtkBridge
 		}
 		public bool AddSelection (int i)
 		{
-			try{
-				return selectionHelper.AddSelection (i);
-			} finally {
+			bool success = selectionHelper.AddSelection (i);
+
+			if (success) {
 				if (!selProvider.CanSelectMultiple)
 					Name = RefSelection (0).Name;
+				RaiseSelectionChanged ();
 			}
+
+			return success;
 		}
+		
 		public bool ClearSelection ()
 		{
-			Name = String.Empty;
-			return selectionHelper.ClearSelection ();
+			bool success = selectionHelper.ClearSelection ();
+
+			//will likely never happen because UIA throws IOE...
+			if (success) {
+				Name = String.Empty;
+				RaiseSelectionChanged ();
+			}
+			
+			return success;
 		}
+		
 		public Atk.Object RefSelection (int i)
 		{
 			return selectionHelper.RefSelection (i);
 		}
+		
 		public bool IsChildSelected (int i)
 		{
 			return selectionHelper.IsChildSelected (i);
 		}
+		
 		public bool RemoveSelection (int i)
 		{
 			if (!selectionHelper.IsChildSelected (i))
@@ -199,18 +213,30 @@ namespace UiaAtkBridge
 			bool success = selectionHelper.RemoveSelection (i);
 			
 			//will likely never happen because UIA throws IOE...
-			if ((success) && (!selProvider.CanSelectMultiple))
-				Name = String.Empty;
+			if (success) {
+				if (!selProvider.CanSelectMultiple)
+					Name = String.Empty;
+				RaiseSelectionChanged ();
+			}
 			
 			return success;
 		}
+		
 		public bool SelectAllSelection ()
 		{
-			return selectionHelper.SelectAllSelection ();
+			bool success = selectionHelper.SelectAllSelection ();
+			if (success)
+				RaiseSelectionChanged ();
+			return success;
 		}
 
 #endregion
 
+		private void RaiseSelectionChanged ()
+		{
+			GLib.Signal.Emit (this, "selection-changed");
+		}
+		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			base.RaiseAutomationEvent (eventId, e);

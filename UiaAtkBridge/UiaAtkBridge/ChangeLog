@@ -1,3 +1,7 @@
+2008-11-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ComboBox.cs: Firing selection-changed.
+
 2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Spinner.cs: Call base methods in RaiseAutomation*Event overrides.
