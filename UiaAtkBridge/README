@@ -1,7 +1,7 @@
 UiaAtkBridge is a project of the Mono Accessibility team. Its purpose
 is to translate between providers implementing interfaces from Microsoft's
 UI Automation (UIA) specification, and the native accessibility infrastructure
-on the Linux desktop (ATK+).
+on the Linux desktop (ATK).
 
 The bridge contains adapter Atk.Objects that wrap UIA providers.  Adapter
 behavior is determined by provider ControlType and supported pattern interfaces.
@@ -17,7 +17,7 @@ http://www.mono-project.com/Accessibility
 1. Package contents
 ===================
 
-Bridge between UIA providers and ATK+.  This package provides the following
+Bridge between UIA providers and ATK.  This package provides the following
 libraries:
 
 	UiaAtkBridge.dll: Contains IAutomationBridge implementation and adapters

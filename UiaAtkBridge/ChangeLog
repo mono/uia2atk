@@ -1,5 +1,9 @@
 2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* README: ATK+ -> ATK.
+
+2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* README: Add READMEs for these tarballs, containing package information
 	and installation instructions.
 
