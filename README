@@ -1,5 +1,23 @@
-Home of effort to implement UI Automation (UIA) on Linux
-( See http://www.mono-project.com/Accessibility )
+Home of effort to implement UI Automation (UIA) on Linux.
+
+
+Summary (from http://www.mono-project.com/Accessibility )
+=========================================================
+
+    * Project Goals
+          o Make WinForms accessible
+          o Make Moonlight accessible
+          o Allow UI Automation based Accessibility Technologies to run on Linux 
+
+UI Automation: The User Interface Automation (UIA) specification is an advanced
+accessibility framework that Microsoft has released to the community including
+an irrevocable pledge of patent rights for anyone implementing the specification.
+This [project includes] work to build a Linux implementation of the UIA and an
+adapter to make it work well with Linux accessibility projects. 
+
+
+Directory Layout
+================
 
 UIAutomation: Implementation of Microsoft UIA assemblies.
 UIAutomationWinforms: UIA providers for winforms controls and components.
