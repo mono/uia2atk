@@ -1,3 +1,7 @@
+2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* configure.ac: Remove unnecessary check for bridge libraries.
+
 2008-11-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* COPYING: Add to top-level of each tarball.

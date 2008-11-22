@@ -94,14 +94,18 @@ namespace System.Windows.Automation.Provider
 		
 		public static IAutomationBridge GetAutomationBridge ()
 		{
-			// TODO: Get bridge assembly details from env var or
-			//       some other run-time value?
+			// Let MONO_UIA_BRIDGE env var override default bridge
+			string bridgeAssemblyName =
+				Environment.GetEnvironmentVariable ("MONO_UIA_BRIDGE");
+			if (string.IsNullOrEmpty (bridgeAssemblyVar))
+				bridgeAssemblyName = UiaAtkBridgeAssembly;
+			
 			Assembly bridgeAssembly = null;
 			try {
-				bridgeAssembly = Assembly.Load (UiaAtkBridgeAssembly);
+				bridgeAssembly = Assembly.Load (bridgeAssemblyName);
 			} catch (Exception e){
 				Console.WriteLine (string.Format ("Error loading UIA bridge ({0}): {1}",
-				                                  UiaAtkBridgeAssembly,
+				                                  bridgeAssemblyName,
 				                                  e));
 				return null;
 			}
@@ -118,7 +122,7 @@ namespace System.Windows.Automation.Provider
 			}
 			if (bridgeType == null) {
 				Console.WriteLine ("No UIA bridge found in assembly: " +
-				                     UiaAtkBridgeAssembly);
+				                   bridgeAssemblyName);
 				return null;
 			}
 

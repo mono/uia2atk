@@ -1,3 +1,11 @@
+2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs: New
+	MONO_UIA_BRIDGE environment variable lets user set assembly name
+	indicating what bridge should be loaded.  A bad value will cause null
+	to be returned; an empty or null value will cause the UiaAtkBridge
+	assembly to be loaded.
+
 2008-11-18  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* System.Windows.Automation.Provider/AutomationInteropProvider.cs: Dump

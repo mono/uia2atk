@@ -41,6 +41,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			Type interopProviderType = typeof (AutomationInteropProvider);
 
+			// Set the bridge assembly name to a value that will
+			// fail when the static constructor attempts to load it.
+			Environment.SetEnvironmentVariable ("MONO_UIA_BRIDGE",
+			                                    "garbage");
+
+			/*
 			// HACK: Clear the string referencing the UiaAtkBridge
 			//       assembly so that when AutomationInteropProvider's
 			//       static constructor attempts to load a bridge,
@@ -51,6 +57,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				bridgeManagerType.GetField ("UiaAtkBridgeAssembly",
 				                            BindingFlags.NonPublic | BindingFlags.Static);
 			assemblyField.SetValue (null, string.Empty);
+			*/
 			
 			// Inject a mock automation bridge into the
 			// AutomationInteropProvider, so that we don't try
@@ -72,6 +79,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			FieldInfo bridgeField =
 				interopProviderType.GetField ("bridge", BindingFlags.NonPublic | BindingFlags.Static);
 			bridgeField.SetValue (null, null);
+
+			
+			Environment.SetEnvironmentVariable ("MONO_UIA_BRIDGE",
+			                                   string.Empty);
 		}
 
 		public static void TestAutomationProperty (IRawElementProviderSimple provider,
