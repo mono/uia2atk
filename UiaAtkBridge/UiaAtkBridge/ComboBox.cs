@@ -31,6 +31,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
+	//TODO: separate into ComboBoxSimple (with AtkAction) y ComboBox (w/o AtkAction)
 	public class ComboBox : ComponentParentAdapter, Atk.ActionImplementor, Atk.SelectionImplementor
 	{
 		private IRawElementProviderFragment ChildrenHolder {
@@ -79,9 +80,9 @@ namespace UiaAtkBridge
 		private IExpandCollapseProvider				expandColapseProvider;
 		
 
-		internal static bool IsSimple (IRawElementProviderSimple provider)
+		internal bool IsSimple ()
 		{
-			return provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id) == null;
+			return Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id) == null;
 		}
 		
 		public ComboBox (IRawElementProviderSimple provider) : base (provider)
