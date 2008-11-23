@@ -1338,7 +1338,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (0, accessible.RefRelationSet ().NRelations, 
 				                 "NRelations != 0, now " + accessible.RefRelationSet ().NRelations);
 			} else {
-				//FIXME: uncomment this when http://bugzilla.gnome.org/show_bug.cgi?id=561598 is fixed
+				//FIXME: uncomment this when we fix https://bugzilla.novell.com/show_bug.cgi?id=447885
 				//Assert.AreEqual (1, accessible.RefRelationSet ().NRelations, 
 				//                 "NRelations != 1, now " + accessible.RefRelationSet ().NRelations);
 				//Assert.AreEqual (accessible.RefRelationSet ().GetRelation (0).RelationType, Atk.RelationType.MemberOf);
