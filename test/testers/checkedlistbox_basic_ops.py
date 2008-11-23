@@ -56,8 +56,7 @@ statesCheck(clbFrame.listbox2, "List")
 #check default states for ListItem 0 which in "CheckOnClick is True" list
 statesCheck(clbFrame.listitem[0], "ListItem")
 #check default states for ListItem 20 which in "CheckOnClick is False" list
-#with focused
-statesCheck(clbFrame.listitem[20], "ListItem", add_states=["focused"])
+statesCheck(clbFrame.listitem[20], "ListItem")
 
 #use keyCombo with "Tab" to change the focus from listitem 20 to listitem 0
 clbFrame.keyCombo("Tab", grabFocus = False)
