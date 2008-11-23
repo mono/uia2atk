@@ -144,47 +144,63 @@ clbFrame.assertClearSelection(clbFrame.listbox2)
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[20], "ListItem", add_states=["focused"])
 
-########assert label's text to check event by mouseClick and Toggle action
-#check listitem 2 to change label to "Item 2 : Checked"
+########mouseClick and Toggle listitem to change label's text
+#one time mouseClick listitems in checkedlistbox1 would change label's text
+#check listitem 2 to change label to "Item 2 Checked"
 clbFrame.listitem[2].mouseClick()
 sleep(config.SHORT_DELAY)
 clbFrame.assertLabel(2, '2')
-#multi check listitem 5 to change label to "Item 2 5 : Checked"
+#multi check listitem 5 to change label to "Item 2 5 Checked"
 clbFrame.listitem[5].mouseClick()
 sleep(config.SHORT_DELAY)
 clbFrame.assertLabel(5, '2 5')
-#selecte listitem 20 by click one time to change label to "Item : Checked"
+
+#two times mouseClick listitems in checkedlistbox2 would change label's text
+#selecte listitem 20 by mouseClick in one time doesn't change label text
 clbFrame.listitem[20].mouseClick()
 sleep(config.SHORT_DELAY)
-clbFrame.assertLabel(20, '20')
-#selecte listitem 22 by click one time to change label to "Item : Checked"
-clbFrame.listitem[22].mouseClick()
+clbFrame.assertLabel(20, newlabel="Item 23 Unchecked")
+#Check listitem 20 by mouseClick in second time would change label text
+clbFrame.listitem[20].mouseClick()
 sleep(config.SHORT_DELAY)
-clbFrame.assertLabel(22, '22')
-#check listitem 20 by click second time to change label to "Item 22 : Checked"
-clbFrame.listitem[22].mouseClick()
+clbFrame.assertLabel(20, newlabel="Item 20 Checked")
+#Uncheck listitem 20 by mouseClick again would change label text
+clbFrame.listitem[20].mouseClick()
 sleep(config.SHORT_DELAY)
-clbFrame.assertLabel(22, '22')
+clbFrame.assertLabel(20, newlabel="Item 20 Unchecked")
 
-#toggle action would update the label text to "Item 0 2 5 : Checked"
-clbFrame.toggle(clbFrame.listitem[0])
-sleep(config.SHORT_DELAY)
-clbFrame.assertLabel(0, '0 2 5')
-#toggle again to delete 0 from label text to be "Item 2 5 : Checked"
+#in checkedlistbox1 toggle action would rise checked but doesn't change label 
+#but click action can change label because using SelectedIndexChanged event
 clbFrame.toggle(clbFrame.listitem[0])
 sleep(config.SHORT_DELAY)
 clbFrame.assertLabel(0, '2 5')
 
-#listitem in list2 should be selected by click then toggle action can check it
-clbFrame.click(clbFrame.listitem[20])
-clbFrame.toggle(clbFrame.listitem[20])
+clbFrame.click(clbFrame.listitem[0])
 sleep(config.SHORT_DELAY)
-clbFrame.assertLabel(20, '20 22')
-#toggle again to delete 20 from label text to be "Item 22 : Checked"
-clbFrame.toggle(clbFrame.listitem[20])
+clbFrame.assertLabel(0, '0 2 5')
+#toggle again to unchecked listitem2 but never change label
+clbFrame.toggle(clbFrame.listitem[2])
 sleep(config.SHORT_DELAY)
-clbFrame.assertLabel(20, '22')
+clbFrame.assertLabel(0, '0 2 5')
 
+clbFrame.click(clbFrame.listitem[2])
+sleep(config.SHORT_DELAY)
+clbFrame.assertLabel(0, '0 5')
+
+#in checkedlistbox2 "toggle" action would check listitem and change label, 
+#"click" action would selecte listitem but doesn't change label because using
+#ItemCheck event
+clbFrame.click(clbFrame.listitem[21])
+sleep(config.SHORT_DELAY)
+clbFrame.assertLabel(21 , newlabel="Item 20 Unchecked")
+
+clbFrame.toggle(clbFrame.listitem[21])
+sleep(config.SHORT_DELAY)
+clbFrame.assertLabel(21, newlabel="Item 21 Checked")
+
+clbFrame.toggle(clbFrame.listitem[21])
+sleep(config.SHORT_DELAY)
+clbFrame.assertLabel(21, newlabel="Item 21 Unchecked")
 
 #close application frame window
 clbFrame.quit()

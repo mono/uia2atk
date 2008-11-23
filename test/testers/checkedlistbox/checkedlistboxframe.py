@@ -44,17 +44,17 @@ class CheckedListBoxFrame(accessibles.Frame):
     #click listitem20-39 would rise selected state and doesn't show which item 
     #is checked in label text, but mouse click two times or click and toggle again
     #would showing which items are checked
-    def assertLabel(self, itemnum, itemname):
+    def assertLabel(self, itemnum, itemname=None, newlabel=None):
         'Raise exception if the accessible does not match the given result'   
         if 0 <= itemnum <= 19 and self.listitem[itemnum].checked:
             procedurelogger.expectedResult('Item "%s" is %s' % (itemname, 'checked'))
-            assert self.label1.text == "Item %s : Checked" % itemname
+            assert self.label1.text == "Item %s Checked" % itemname
         elif itemnum > 19 and self.listitem[itemnum].checked:
-            procedurelogger.expectedResult('Item "%s" is %s' % (itemname, 'checked'))
-            assert self.label2.text == "Item %s : Checked" % itemname
-        elif itemnum > 19 and self.listitem[itemnum].selected:
-            procedurelogger.expectedResult('Item "%s" is %s' % (itemname, 'selected'))
-            assert self.label2.text == "Item : Checked"
+            procedurelogger.expectedResult('%s' % newlabel)
+            assert self.label2.text == newlabel
+        elif itemnum > 19 and not self.listitem[itemnum].checked:
+            procedurelogger.expectedResult('%s' % newlabel)
+            assert self.label2.text == newlabel
 
     #assert Selection implementation
     def assertSelectionChild(self, accessible, childIndex):

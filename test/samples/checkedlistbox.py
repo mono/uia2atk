@@ -29,6 +29,8 @@ class CheckedListBoxSample(Form):
 
         # setup title
         self.Text = "CheckedListBox control"
+        self.Width = 300
+        self.Height = 350
 
         # setup label
         self.label1 = Label()
@@ -44,12 +46,12 @@ class CheckedListBoxSample(Form):
         # setup checkedlistboxs
         self.checkedlistbox1 = CheckedListBox()
         self.checkedlistbox1.Dock = DockStyle.Top
-        self.checkedlistbox1.SelectedIndexChanged += self.change
+        self.checkedlistbox1.SelectedIndexChanged += self.select_change
         self.checkedlistbox1.CheckOnClick = True
 
         self.checkedlistbox2 = CheckedListBox()
         self.checkedlistbox2.Dock = DockStyle.Top
-        self.checkedlistbox2.SelectedIndexChanged += self.change
+        self.checkedlistbox2.ItemCheck += self.toggle_change
         self.checkedlistbox2.CheckOnClick = False
 
         # add items in CheckedListBox
@@ -64,33 +66,22 @@ class CheckedListBoxSample(Form):
         self.Controls.Add(self.checkedlistbox1)
         self.Controls.Add(self.label1)
 
-    # CheckedListBox check change event
-    def change(self, sender, event):
-        """select a item"""
+    # SelectedIndexChanged change label's texts
+    def select_change(self, sender, event):
+        item = ""
+        for i in range(self.checkedlistbox1.CheckedItems.Count):
+            item += "" + self.checkedlistbox1.CheckedItems[i]
+            item += " "
+        self.label1.Text =  "Item " + item + "Checked"
 
-        if sender is self.checkedlistbox1:
-            items = self.check_items(self.checkedlistbox1)
-            self.label1.Text = "Item " + items + ": " + "Checked"
-
-        if sender is self.checkedlistbox2:
-            items = self.check_items(self.checkedlistbox2)
-            self.label2.Text = "Item " + items + ": " + "Checked"
-
-    def check_items(self, control):
-        items = "" 
-
-        if control == self.checkedlistbox1:
-            for i in range(20):
-                status = str(control.GetItemCheckState(i))
-                if status == "Checked":
-                    items += "%d " % i
-        elif control == self.checkedlistbox2:
-            for i in range(30):
-                status = str(control.GetItemCheckState(i)) 
-                if status == "Checked":
-                    i += 20
-                    items += "%d " % i
-        return items
+    #ItemCheck change label's texts
+    def toggle_change(self, sender, event):
+        if event.CurrentValue == CheckState.Unchecked:
+            item = self.checkedlistbox2.Items[event.Index]
+            self.label2.Text =  "Item " + item + " Checked"
+        elif event.CurrentValue == CheckState.Checked:
+            item = self.checkedlistbox2.Items[event.Index]
+            self.label2.Text =  "Item " + item + " Unchecked"
 
 # run application
 form = CheckedListBoxSample()

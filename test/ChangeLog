@@ -1,3 +1,19 @@
+2008-11-23  Calen Chen <cachen@novell.com>
+
+	* samples/checkedlistbox.py: checkedlistbox1 still with 
+	SelectedIndexChanged event that would change label's text when doing 
+	"click" action to select in accerciser, checkedlistbox2 with ItemCheck 
+	event that would change label's text when doing toggle action to 
+	check/uncheck in accerciser
+	* testers/checkedlistbox/checkedlistboxframe.py: modify assertLabel 
+	method to add "itemname=None, newlabel=None" for asserting label change
+	* testers/checkedlistbox_basic_ops.py: update toggle and click action 
+	test, in checkedlistbox1 toggle action would rise checked but doesn't 
+	change label but click action can change label because using 
+	SelectedIndexChanged event. in checkedlistbox2 "toggle" action would 
+	check listitem and change label, "click" action would selecte listitem 
+	but doesn't change label because using ItemCheck event
+
 2008-11-21 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/tests.py: This test is finished.  I am adding it to the
