@@ -353,18 +353,17 @@ namespace UiaAtkBridge
 			// an AT will know about the control that has focus,
 			// but don't do this if we're shutting down (ie,
 			// providerAdapterMapping.Count == 0)
-			// TODO: delete this code after we determine it's useless; indeed, it's dangerous because some widgets just are not finished yet
-//			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty &&
-//			  !providerAdapterMapping.ContainsKey (simpleProvider) &&
-//			  providerAdapterMapping.Count > 0) {
-//				HandleElementAddition (simpleProvider);
-//				int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-//				if (controlTypeId == ControlType.DataItem.Id && simpleProvider is IRawElementProviderFragment) {
-//					IRawElementProviderFragment child = ((IRawElementProviderFragment)simpleProvider).Navigate (NavigateDirection.FirstChild);
-//					((Adapter)providerAdapterMapping [child]).RaiseAutomationPropertyChangedEvent (e);
-//					return;
-//				}
-//			}
+			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty &&
+			  !providerAdapterMapping.ContainsKey (simpleProvider) &&
+			  providerAdapterMapping.Count > 0) {
+				HandlePossiblePreExistingProvider (simpleProvider);
+				int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+				if (controlTypeId == ControlType.DataItem.Id && simpleProvider is IRawElementProviderFragment) {
+					IRawElementProviderFragment child = ((IRawElementProviderFragment)simpleProvider).Navigate (NavigateDirection.FirstChild);
+					((Adapter)providerAdapterMapping [child]).RaiseAutomationPropertyChangedEvent (e);
+					return;
+				}
+			}
 
 			if ((!providerAdapterMapping.ContainsKey (simpleProvider)) || windowProviders == 0)
 				return;
@@ -953,6 +952,25 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkLabel, parentObject);
 		}
 		
+		// This whole function is a hack to work around the
+		// bridge not instantiating providers for controls which
+		// existed prior to the provider being created.
+		private void HandlePossiblePreExistingProvider (IRawElementProviderSimple provider)
+		{
+			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
+			if (fragment == null)
+				return;
+			IRawElementProviderFragment parent = fragment.Navigate (NavigateDirection.Parent);
+			if (parent == null || parent == provider)
+				return;
+			Atk.Object obj = null;
+			if (!providerAdapterMapping.TryGetValue (parent, out obj))
+				HandlePossiblePreExistingProvider (parent);
+			ParentAdapter parentAdapter = obj as ParentAdapter;
+			if (parentAdapter != null)
+				parentAdapter.RequestChildren ();
+		}
+
 #endregion
 	}
 }

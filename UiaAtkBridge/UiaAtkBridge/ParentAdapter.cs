@@ -111,12 +111,8 @@ namespace UiaAtkBridge
 		{
 			return children.IndexOf (child);
 		}
-#endregion
-		
-		
-#region Private Methods
-		
-		private void RequestChildren ()
+
+		internal void RequestChildren ()
 		{
 			if (requestedChildren == true)
 				return;
@@ -137,6 +133,11 @@ namespace UiaAtkBridge
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 		}
+		
+#endregion
+		
+		
+#region Private Methods
 		
 		internal void UpdateChildren ()
 		{

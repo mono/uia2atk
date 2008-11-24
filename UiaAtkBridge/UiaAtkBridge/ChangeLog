@@ -1,3 +1,8 @@
+2008-11-24  Mike Gorse  <mgorse@novell.com>
+
+	* ParentAdapter.cs: Make RequestChildren internal.
+	* AutomationBridge.cs: Call RequestChildren on an object's parent when receiving focus.
+
 2008-11-24  Mario Carrion  <mcarrion@novell.com>
 
 	* List.cs: Backported from trunk/uia2atk r119797. [Fixes Bug #448020]
