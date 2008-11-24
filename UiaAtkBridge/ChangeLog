@@ -1,5 +1,12 @@
 2008-11-24  Brad Taylor  <brad@getcoded.net>
 
+	* configure.ac:
+	* UiaAtkBridge/Makefile.am:
+	* UiaAtkBridge/UiaAtkBridge.dll.config.in: Properly detect where
+	gtk+-2.0 lives, and use that to generate a proper dll map
+
+2008-11-24  Brad Taylor  <brad@getcoded.net>
+
 	* bridge-glue/Makefile.am: Don't overwrite libdir.  Use $(libdir)
 	instead of $(prefix)/lib.
 

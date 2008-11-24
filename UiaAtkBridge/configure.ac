@@ -55,6 +55,9 @@ fi
 
 AC_SUBST(NUNIT_PATH)
 
+GTK_MODULES_DIR=`pkg-config --variable=libdir gtk+-2.0`/gtk-2.0/modules
+AC_SUBST(GTK_MODULES_DIR)
+
 AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = "xyes")
 
 AC_ARG_ENABLE(debug,
