@@ -1,5 +1,9 @@
 2008-11-24  Brad Taylor  <brad@getcoded.net>
 	
+	* patches/atk-bridge-lib64.patch: More hack.
+
+2008-11-24  Brad Taylor  <brad@getcoded.net>
+	
 	* patches/atk-bridge-lib64.patch: Add hacky fix for lib64 problem.
 
 2008-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
