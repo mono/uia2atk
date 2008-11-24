@@ -1,3 +1,8 @@
+2008-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
+	Typo/compilation fix.
+
 2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* System.Windows.Automation.Provider/AutomationInteropProvider.cs: New

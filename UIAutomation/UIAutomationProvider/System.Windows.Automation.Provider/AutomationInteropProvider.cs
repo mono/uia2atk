@@ -97,7 +97,7 @@ namespace System.Windows.Automation.Provider
 			// Let MONO_UIA_BRIDGE env var override default bridge
 			string bridgeAssemblyName =
 				Environment.GetEnvironmentVariable ("MONO_UIA_BRIDGE");
-			if (string.IsNullOrEmpty (bridgeAssemblyVar))
+			if (string.IsNullOrEmpty (bridgeAssemblyName))
 				bridgeAssemblyName = UiaAtkBridgeAssembly;
 			
 			Assembly bridgeAssembly = null;
