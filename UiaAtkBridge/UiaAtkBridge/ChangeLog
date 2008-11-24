@@ -1,3 +1,7 @@
+2008-11-21  Mike Gorse  <mgorse@novell.com>
+
+	* UiaAtkBridge.dll.config.in: Fix path.
+
 2008-11-24  Mario Carrion  <mcarrion@novell.com>
 
 	* ComponentImplementorHelper.cs: GrabFocus implementation [Needed by Bug
@@ -56,7 +60,7 @@
 
 	* MenuItem.cs: Be more verbose.
 
-2008-11-20  Mike Gorse  <mgorse@novell.com>
+2008-11-21  Mike Gorse  <mgorse@novell.com>
 
 	* ListItem.cs: Add Atk.StateType.Focusable.
 
