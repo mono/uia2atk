@@ -31,32 +31,28 @@ Implementations of the members and interfaces based on MS UIA API
 %setup -q
 
 %build
-./configure --prefix=%_prefix 
+%configure
 make
 
 %install
-make DESTDIR=$RPM_BUILD_ROOT install
-%ifarch x86_64
-mkdir $RPM_BUILD_ROOT%_prefix/lib64/pkgconfig -p
-mv $RPM_BUILD_ROOT%_prefix/lib/pkgconfig/*.pc $RPM_BUILD_ROOT%_prefix/lib64/pkgconfig/
-%endif
+make DESTDIR=%{buildroot} install
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-#%doc README COPYING
-%_prefix/lib/mono/accessibility
-%_prefix/lib/mono/gac/UIAutomationProvider
-%_prefix/lib/mono/accessibility/UIAutomationProvider.dll
-%_prefix/lib/mono/gac/UIAutomationTypes
-%_prefix/lib/mono/accessibility/UIAutomationTypes.dll
-%_prefix/lib/mono/gac/UIAutomationBridge
-%_prefix/lib/mono/accessibility/UIAutomationBridge.dll
-%_prefix/lib/mono/gac/UIAutomationClient
-%_prefix/lib/mono/accessibility/UIAutomationClient.dll
-%_libdir/pkgconfig/*.pc
+%doc README COPYING NEWS
+%{_prefix}/lib/mono/accessibility
+%{_prefix}/lib/mono/gac/UIAutomationProvider
+%{_prefix}/lib/mono/accessibility/UIAutomationProvider.dll
+%{_prefix}/lib/mono/gac/UIAutomationTypes
+%{_prefix}/lib/mono/accessibility/UIAutomationTypes.dll
+%{_prefix}/lib/mono/gac/UIAutomationBridge
+%{_prefix}/lib/mono/accessibility/UIAutomationBridge.dll
+%{_prefix}/lib/mono/gac/UIAutomationClient
+%{_prefix}/lib/mono/accessibility/UIAutomationClient.dll
+%{_libdir}/pkgconfig/*.pc
 
 %package -n mono-winfxcore
 License:	MIT/X11
@@ -75,8 +71,8 @@ Parts of winfx
 
 %files -n mono-winfxcore
 %defattr(-, root, root)
-%_prefix/lib/mono/gac/WindowsBase
-%_prefix/lib/mono/2.0/WindowsBase.dll
+%{_prefix}/lib/mono/gac/WindowsBase
+%{_prefix}/lib/mono/2.0/WindowsBase.dll
 
 
 %if 0%{?fedora_version} || 0%{?rhel_version}
