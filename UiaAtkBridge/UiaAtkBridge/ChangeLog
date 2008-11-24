@@ -1,3 +1,7 @@
+2008-11-21  Mike Gorse  <mgorse@novell.com>
+
+	* UiaAtkBridge.dll.config.in: Fix path.
+
 2008-11-24  Brad Taylor  <brad@getcoded.net>
 	
 	* UiaAtkBridge.dll.config.in: Try this fix for 64 bit systems.
