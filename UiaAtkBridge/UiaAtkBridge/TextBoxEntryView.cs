@@ -37,6 +37,7 @@ namespace UiaAtkBridge
 	{
 		private TextImplementorHelper textExpert = null;
 		private bool multiLine = false;
+		private bool editable = true;
 		private ITextProvider textProvider;
 		private IValueProvider valueProvider;
 		
@@ -57,13 +58,21 @@ namespace UiaAtkBridge
 			    ControlType.Document.Id)
 				multiLine = true;
 
+			if (valueProvider != null && valueProvider.IsReadOnly)
+				editable = false;
+
 			caretOffset = textExpert.Length;
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
-			states.AddState (Atk.StateType.Editable);
+
+			if (editable)
+				states.AddState (Atk.StateType.Editable);
+			else
+				states.RemoveState (Atk.StateType.Editable);
+			
 			states.AddState (multiLine ? Atk.StateType.MultiLine : Atk.StateType.SingleLine);
 			states.RemoveState (multiLine ? Atk.StateType.SingleLine : Atk.StateType.MultiLine);
 			return states;
@@ -266,8 +275,9 @@ namespace UiaAtkBridge
 					Console.Error.WriteLine ("WARNING: Cannot set text on a TextBox that does not implement IValueProvider.");
 					return;
 				}
-			
-				valueProvider.SetValue (value);
+
+				if (!valueProvider.IsReadOnly)
+					valueProvider.SetValue (value);
 			}
 		}
 		
@@ -294,7 +304,14 @@ namespace UiaAtkBridge
 
 				caretOffset = textExpert.Length;
 			}
-			else
+			else if (e.Property.Id == ValuePatternIdentifiers.IsReadOnlyProperty.Id) {
+				bool? isReadOnlyVal = e.NewValue as bool?;
+				if (isReadOnlyVal == null && valueProvider != null)
+					isReadOnlyVal = valueProvider.IsReadOnly;
+				editable = isReadOnlyVal ?? false;
+				
+				NotifyStateChange (Atk.StateType.Editable, editable);
+			} else
 				base.RaiseAutomationPropertyChangedEvent (e);
 		}
 		
