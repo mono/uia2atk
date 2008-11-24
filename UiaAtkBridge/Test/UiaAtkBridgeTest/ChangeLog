@@ -1,3 +1,7 @@
+2008-11-24  Mario Carrion  <mcarrion@novell.com>
+
+	* BridgeTests.cs: Ignore added: crashes unitary tests.
+
 2008-11-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTests.cs: Marking some tests as ignore.

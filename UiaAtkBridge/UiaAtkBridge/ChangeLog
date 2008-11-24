@@ -1,3 +1,8 @@
+2008-11-24  Mario Carrion  <mcarrion@novell.com>
+
+	* List.cs: Supporting ControlType event. Raised when SWF.ListView.View
+	changes to/from Details.
+
 2008-11-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* List.cs:
