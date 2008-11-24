@@ -565,6 +565,14 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (menuChild, "ComboBox child#0 should not be null");
 			Assert.IsNull (menuChild.Name, "the ComboBox menu should not have a name");
 			Assert.AreEqual (menuChild.Role, Atk.Role.Menu, "ComboBox child#0 should be a menu");
+
+//FIXME: uncomment this when BNC#448009 is fixed
+//			Atk.Action action = null;
+//			try {
+//				action = CastToAtkInterface<Atk.Action> (menuChild);
+//			}
+//			catch { }
+//			Assert.IsNull (action, "the Menu child of a combobox should not implement Atk.Action");
 			
 			Assert.AreEqual (items.Length, menuChild.NAccessibleChildren, "ComboBox menu numChildren");
 			for (int i = 0; i < items.Length; i++) {

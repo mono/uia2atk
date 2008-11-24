@@ -1,3 +1,7 @@
+2008-11-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs: Negative testing of interfaces.
+
 2008-11-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Update comment.
