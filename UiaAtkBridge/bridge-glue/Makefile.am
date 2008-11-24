@@ -1,5 +1,5 @@
-libdir = $(prefix)/lib/uiaatkbridge
-lib_LTLIBRARIES = libbridge-glue.la
+bridgegluedir = $(libdir)/uiaatkbridge
+bridgeglue_LTLIBRARIES = libbridge-glue.la
 
 libbridge_glue_la_LDFLAGS = -module - avoid-version -no-undefined 
 
