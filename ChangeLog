@@ -1,3 +1,7 @@
+2008-11-24  Brad Taylor  <brad@getcoded.net>
+	
+	* NEWS: Small morsel about the 0.9 release.
+
 2008-11-20  Stephen Shaw  <sshaw@decriptor.com>
 
 	* UiaAtkBridge/configure.ac: Updated version to 0.9
