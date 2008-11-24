@@ -1,3 +1,7 @@
+2008-11-24  Mario Carrion  <mcarrion@novell.com>
+
+	* List.cs: Backported from trunk/uia2atk r119797. [Fixes Bug #448020]
+
 2008-11-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ComboBox.cs:
