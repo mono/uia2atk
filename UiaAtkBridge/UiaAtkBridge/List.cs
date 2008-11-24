@@ -153,8 +153,11 @@ AtkObject,
 				Role = Atk.Role.SpinButton;
 			else
 				Role = Atk.Role.List;
-			
-			string componentName = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+
+			//ControlTypeList returns Name from one static label, Atk returns ""
+			string componentName = string.Empty;
+			if (controlTypeId != ControlType.List.Id)
+				componentName = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Name = componentName;
 			
 			selectionHelper = new SelectionProviderUserHelper (provider, selectionProvider);
