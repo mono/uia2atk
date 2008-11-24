@@ -27,8 +27,11 @@ class CheckedListBoxFrame(accessibles.Frame):
         super(CheckedListBoxFrame, self).__init__(accessible)
         self.label1 = self.findLabel(self.LABEL1)
         self.label2 = self.findLabel(self.LABEL2)
-        self.listbox1 = self.findList(self.LABEL1)
-        self.listbox2 = self.findList(self.LABEL2)
+        self.list = self.findAllLists(None)
+        #listbox1 with CheckOnClick = True
+        self.listbox1 = self.list[1]
+        #listbox2 with CheckOnClick = False
+        self.listbox2 = self.list[0]
         self.listitem = dict([(x, self.findCheckBox(str(x))) for x in range(50)])            
 
     #give 'click' action
@@ -40,10 +43,7 @@ class CheckedListBoxFrame(accessibles.Frame):
         procedurelogger.action('Toggle the "%s"' % (item))
         item.toggle()
 
-    #click listitem0-19 would rise checked state and showing which items are checked
-    #click listitem20-39 would rise selected state and doesn't show which item 
-    #is checked in label text, but mouse click two times or click and toggle again
-    #would showing which items are checked
+    #assert label change after doing click and toggle or mouseClick action
     def assertLabel(self, itemnum, itemname=None, newlabel=None):
         'Raise exception if the accessible does not match the given result'   
         if 0 <= itemnum <= 19 and self.listitem[itemnum].checked:

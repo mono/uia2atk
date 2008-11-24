@@ -1,3 +1,8 @@
+2008-11-24  Calen Chen <cachen@novell.com>
+
+	* testers/checkedlistbox/checkedlistboxframe.py: rewrite the initiation 
+	for self.listbox1 and self.listbox2 due to bug448020
+
 2008-11-23  Calen Chen <cachen@novell.com>
 
 	* testers/checkedlistbox_basic_ops.py: delete "focused" state in the 
