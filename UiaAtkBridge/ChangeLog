@@ -1,4 +1,9 @@
-2008-11-12  Brad Taylor  <brad@getcoded.net>
+2008-11-24  Brad Taylor  <brad@getcoded.net>
+
+	* bridge-glue/Makefile.am: Don't overwrite libdir.  Use $(libdir)
+	instead of $(prefix)/lib.
+
+2008-11-24  Brad Taylor  <brad@getcoded.net>
 	
 	* NEWS: Move NEWS file into each individual module.
 
