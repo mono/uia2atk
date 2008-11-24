@@ -107,6 +107,7 @@ include $(top_srcdir)/Makefile.include
 
 $(ASSEMBLY).config: $(srcdir)/UiaAtkBridge.dll.config.in Makefile
 	sed -e "s|\@expanded_lib_dir\@|@expanded_libdir@|" \
+	    -e "s|\@GTK_MODULES_DIR\@|@GTK_MODULES_DIR@|" \
 	    < $< > $@
 
 
