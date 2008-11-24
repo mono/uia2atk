@@ -93,7 +93,12 @@ namespace UiaAtkBridge
 
 		public virtual bool GrabFocus ()
 		{
-			//TODO: Implement GrabFocus
+			IRawElementProviderFragment fragment = null;
+			if ((fragment = resource.Provider as IRawElementProviderFragment) != null) {
+				fragment.SetFocus ();
+				return true;
+			}
+
 			return false;
 		}
 

@@ -489,6 +489,33 @@ namespace UiaAtkBridgeTest
 				Assert.IsTrue (implementor.RemoveSelection (0), "RemoveSelection");
 				Assert.IsNull (implementor.RefSelection (0), "RefSel after RemoveSel");
 			}
+
+			if (type != BasicWidgetType.ComboBoxDropDownEntry
+			    && type != BasicWidgetType.ComboBoxDropDownList) {
+				Console.WriteLine ("hereclearing");
+				implementor.ClearSelection ();
+
+				//We select first item and then grab focus
+				implementor.AddSelection (0);
+				currentSel = implementor.RefSelection (0);
+				Atk.Component atkComponentCurrentSel = CastToAtkInterface <Atk.Component> (currentSel);
+				atkComponentCurrentSel.GrabFocus ();
+
+				Atk.StateSet stateSet = currentSel.RefStateSet ();
+				Assert.IsFalse (stateSet.ContainsState (Atk.StateType.Focused), "No Focused in selected item.");
+
+				//In List
+				//Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+				//atkComponent.GrabFocus ();
+				States (accessible,
+				        Atk.StateType.Enabled,
+				        Atk.StateType.Focusable,
+				        Atk.StateType.Focused,
+				        Atk.StateType.ManagesDescendants,
+				        Atk.StateType.Sensitive,
+				        Atk.StateType.Showing,
+				        Atk.StateType.Visible);
+			}
 		}
 		
 		private void TextMatchesValue (BasicWidgetType type, Atk.Value atkValue, Atk.Text atkText)

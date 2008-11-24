@@ -1,3 +1,7 @@
+2008-11-24  Mario Carrion  <mcarrion@novell.com>
+
+	* AtkTester.cs: Tests for Focused in Lists. [Fixes Bug #438024]
+
 2008-11-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Negative testing of interfaces.

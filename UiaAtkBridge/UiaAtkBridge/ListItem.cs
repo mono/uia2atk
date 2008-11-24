@@ -303,7 +303,13 @@ namespace UiaAtkBridge
 		}
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property == ValuePatternIdentifiers.ValueProperty) {
+			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {
+				bool focused = (bool) e.NewValue;
+				Adapter parentAdapter = (Adapter) Parent;
+				parentAdapter.NotifyStateChange (Atk.StateType.Focused, focused);
+				if (focused)
+					Atk.Focus.TrackerNotify (parentAdapter);
+			} else if (e.Property == ValuePatternIdentifiers.ValueProperty) {
 				String stringValue = (String)e.NewValue;
 				
 				// Don't fire spurious events if the text hasn't changed

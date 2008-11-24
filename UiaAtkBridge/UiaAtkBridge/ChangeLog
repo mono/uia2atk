@@ -1,3 +1,11 @@
+2008-11-24  Mario Carrion  <mcarrion@novell.com>
+
+	* ComponentImplementorHelper.cs: GrabFocus implementation [Needed by Bug
+	#438024]
+
+	* ListItem.cs: When getting focus set Focused to parent. [Fixes Bug
+	#438024]
+
 2008-11-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Makefile.am:
