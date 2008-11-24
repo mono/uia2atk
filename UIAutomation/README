@@ -1,0 +1,58 @@
+UIAutomation is a project of the Mono Accessibility team. Its purpose is to
+implement assemblies that define common types, interfaces, and identifiers
+defined in Microsoft's UIA specification.  More information about the Mono
+Accessibility team and UIA on Linux can be found on our wiki:
+
+http://www.mono-project.com/Accessibility
+
+
+1. Package contents
+===================
+
+Implementation of Microsoft UI Automation (UIA) assemblies.  This package
+provides the following assemblies:
+
+	UIAutomationTypes.dll: Types, constants, and identifiers.
+	UIAutomationProvider.dll: Provider pattern interface definitions.
+	UIAutomationClient.dll: Types used by UIA clients to get element info.
+	( See http://msdn.microsoft.com/en-us/library/ms747327.aspx )
+
+	UIAutomationBridge.dll: Defines interfaces unique to Mono's UIA
+	                        implementation, that must be implemented by
+	                        compatible a11y bridges or providers.
+
+	WindowsBase.dll: Minimal version of this otherwise-unreleased assembly,
+	                 containing only the types needed by the above DLLs.
+	                 Development can be tracked in the olive module in SVN.
+
+
+2. Compilation and Installation
+===============================
+
+	a. Build Requirements
+	---------------------
+
+		To build UIAutomation, you will need the following components:
+
+			* pkg-config
+			* mono >= 2.0
+			* Tests require nunit >= 2.4.7
+
+	b. Building the Software
+	------------------------
+
+		If you obtained this package as an officially released tarball,
+		this is very simple, use configure and make:
+
+			./configure --prefix=/usr/local
+			make
+			make install
+
+	c. Building the Software from SVN
+	---------------------------------
+
+		If you obtained this package from Subversion, use autogen.sh:
+
+			./autogen.sh --prefix=/usr/local
+			make
+			make install
