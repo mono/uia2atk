@@ -1,3 +1,9 @@
+2008-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* samples/statusbar_statusbarpanel.py: Typo fix...test crashed because
+	it as looking for "statusbarpanel.icon" instead of
+	"statusbarpanel.ico".
+
 2008-11-24  Calen Chen <cachen@novell.com>
 
 	* samples/statusbarpanel.icon: icon file for statusbarpanel sample
