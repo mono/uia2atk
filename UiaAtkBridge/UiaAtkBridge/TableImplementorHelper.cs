@@ -64,7 +64,6 @@ namespace UiaAtkBridge
 			IRawElementProviderSimple item = GridProvider.GetItem (row, column);
 			if (item == null)
 				return null;
-Adapter i = AutomationBridge.GetAdapterForProviderLazy (item);
 			return AutomationBridge.GetAdapterForProviderLazy (item);
 		}
 

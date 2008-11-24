@@ -1,3 +1,8 @@
+2008-11-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* List.cs:
+	* TableImplementorHelper.cs: Kill 2 warnings.
+
 2008-11-24  Brad Taylor  <brad@getcoded.net>
 	
 	* UiaAtkBridge.dll.config.in: Try this fix for 64 bit systems.

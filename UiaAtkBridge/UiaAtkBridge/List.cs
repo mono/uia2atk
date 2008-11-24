@@ -386,10 +386,6 @@ AtkObject,
 			get { return text_helper.Length; }
 		}
 		
-		public GLib.SList DefaultAttributes {
-			get { throw new NotImplementedException (); }
-		}
-		
 		public int CharacterCount {
 			get { return text_helper.Length; }
 		}
