@@ -1,3 +1,7 @@
+2008-11-12  Brad Taylor  <brad@getcoded.net>
+	
+	* NEWS: Move NEWS file into each individual module.
+
 2008-11-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* COPYING: Add to top-level of each tarball.
