@@ -1,0 +1,76 @@
+UiaAtkBridge is a project of the Mono Accessibility team. Its purpose
+is to translate between providers implementing interfaces from Microsoft's
+UI Automation (UIA) specification, and the native accessibility infrastructure
+on the Linux desktop (ATK).
+
+The bridge contains adapter Atk.Objects that wrap UIA providers.  Adapter
+behavior is determined by provider ControlType and supported pattern interfaces.
+The bridge implements interfaces from UIAutomationBridge which allow the UI
+Automation core to send it automation events and provider information.
+
+More information about the Mono Accessibility team and UIA on Linux can be found
+on our wiki:
+
+http://www.mono-project.com/Accessibility
+
+
+1. Package contents
+===================
+
+Bridge between UIA providers and ATK.  This package provides the following
+libraries:
+
+	UiaAtkBridge.dll: Contains IAutomationBridge implementation and adapters
+	                  that wrap UIA providers in Atk.Objects.
+	libbridge-glue.so: Glue code that doesn't make sense to write managed,
+                           and that does not fit in bindings like gtk-sharp.
+
+
+2. Compilation and Installation
+===============================
+
+	a. Build Requirements
+	---------------------
+
+		To build UiaAtkBridge, you will need the following components:
+
+			* pkg-config
+			* mono >= 2.0
+			* gtk-sharp2 >= 2.12.6
+			* glib-sharp2 >= 2.12.6
+			* libgobject
+			* libgmodule
+			* libglib
+			* atk
+			* mono-uia >= 0.9 (provided by UIAutomation package)
+			* Tests require nunit >= 2.4.7
+
+	b. Building the Software
+	------------------------
+
+		If you obtained this package as an officially released tarball,
+		this is very simple, use configure and make:
+
+			./configure --prefix=/usr/local
+			make
+			make install
+
+	c. Building the Software from SVN
+	---------------------------------
+
+		If you obtained this package from Subversion, use autogen.sh:
+
+			./autogen.sh --prefix=/usr/local
+			make
+			make install
+
+		Please note that unreleased versions of this software may
+		require an unreleased version of gtk-sharp. The Mono a11y team
+		must sometimes patch gtk/glib/atk-sharp to enhance UIA support.
+		In that case, it is recommended to install this package, Mono,
+		and other dependencies in a parallel environment.  Instructions
+		are available on the wiki:
+
+		http://mono-project.com/Accessibility:_Getting_Started_With_Development
+
+		http://www.mono-project.com/Parallel_Mono_Environments
