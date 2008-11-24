@@ -30,8 +30,5 @@ machines_dict = {
 }
 '''
 machines_dict = {
-  "suse32v0" : ("151.155.248.171", "suse32v0.sled.lab.novell.com"),
-  "suse64v0" : ("151.155.248.172", "suse64v0.sled.lab.novell.com"),
-  "fedora32v0" : ("151.155.248.169", "fedora32v0.sled.lab.novell.com"),
-  "fedora64v0" : ("151.155.248.170", "fedora64v0.sled.lab.novell.com")
+  "fedora32v0" : ("151.155.248.169", "fedora32v0.sled.lab.novell.com")
 }

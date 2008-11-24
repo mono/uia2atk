@@ -1,3 +1,26 @@
+2008-11-24 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/icons: Add directory in which to store icons
+	* samples/icons/invisible_4bit.ico,
+	* samples/icons/message_4bit.ico,
+	* samples/icons/warn.ico,
+	* samples/icons/statusbarpanel.ico,
+	* samples/icons/TrayIcon.ico,
+	* samples/icons/connecting_4bit.ico,
+	* samples/icons/novell.ico,
+	* samples/icons/extended-away_4bit.ico,
+	* samples/icons/available_4bit.ico,
+	* samples/icons/away_4bit.ico,
+	* samples/icons/busy_4bit.ico,
+	* samples/icons/offline_4bit.ico,
+	* samples/statusbarpanel.ico: Store a bunch of icons for sample apps
+	* samples/gtkradiobutton_2_groups.py: Add a Gtk radio button example
+	that has two different sets of radio buttons
+	* samples/statusbar_statusbarpanel.py: Use the Novell icon instead, the
+	previous icon claimed to have 15 icons (I ran 'file foo.ico' and opened
+	it in The Gimp) and I wasn't sure why.  The Novell icon should be more
+	"normal" as it has 1 icon.  We may want to look into this more later.
+
 2008-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* samples/statusbar_statusbarpanel.py: Typo fix...test crashed because
