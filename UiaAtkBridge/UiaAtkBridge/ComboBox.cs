@@ -31,8 +31,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	//TODO: separate into ComboBoxSimple (with AtkAction) y ComboBox (w/o AtkAction)
-	public class ComboBox : ComponentParentAdapter, Atk.ActionImplementor, Atk.SelectionImplementor
+	public class ComboBox : ComponentParentAdapter, Atk.SelectionImplementor
 	{
 		private IRawElementProviderFragment ChildrenHolder {
 			get {
@@ -69,21 +68,12 @@ namespace UiaAtkBridge
 		private IRawElementProviderFragment textboxHolder = null;
 		private IRawElementProviderFragment childrenHolder = null;
 		
-		private string actionDescription = null;
-		private string actionName = "press";
 		private ISelectionProvider 					selProvider;
 		
 		//this one, when not null, indicates that the combobox is editable (like a gtkcomboboxentry vs normal gtkcombobox)
 		private IValueProvider						valProvider;
 		private IRawElementProviderFragmentRoot 	provider;
 		private SelectionProviderUserHelper			selectionHelper;
-		private IExpandCollapseProvider				expandColapseProvider;
-		
-
-		internal bool IsSimple ()
-		{
-			return Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id) == null;
-		}
 		
 		public ComboBox (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -95,12 +85,16 @@ namespace UiaAtkBridge
 
 			selProvider = (ISelectionProvider)provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
 			valProvider = (IValueProvider)provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			expandColapseProvider = (IExpandCollapseProvider)provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
 			
 			if (selProvider == null)
 				throw new ArgumentException ("ComboBoxProvider should always implement ISelectionProvider");
 			
 			selectionHelper = new SelectionProviderUserHelper (this.provider, selProvider, ChildrenHolder);
+		}
+
+		internal static bool IsSimple (IRawElementProviderSimple provider)
+		{
+			return provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id) == null;
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()
@@ -109,67 +103,6 @@ namespace UiaAtkBridge
 			//FIXME: figure out why Gail comboboxes don't like this state
 			states.RemoveState (Atk.StateType.Focusable);
 			return states;
-		}
-		
-		int Atk.ActionImplementor.NActions {
-			get { return 1; }
-		}
-		
-		bool pressed = false;
-		
-		bool Atk.ActionImplementor.DoAction (int i)
-		{
-			if (i != 0)
-				return false;
-			try {
-				switch (expandColapseProvider.ExpandCollapseState) {
-				case ExpandCollapseState.Collapsed:
-					expandColapseProvider.Expand ();
-					break;
-				case ExpandCollapseState.Expanded:
-					expandColapseProvider.Collapse ();
-					break;
-				default:
-					throw new NotSupportedException ("A combobox should not have an ExpandCollapseState different than Collapsed/Expanded");
-				}
-				return true;
-			} catch (ElementNotEnabledException) { }
-			return false;
-		}
-
-		string Atk.ActionImplementor.GetDescription (int i)
-		{
-			if (i != 0)
-				return null;
-			return actionDescription;
-		}
-
-		string Atk.ActionImplementor.GetName (int i)
-		{
-			if (i != 0)
-				return null;
-			return actionName;
-		}
-
-		string Atk.ActionImplementor.GetKeybinding (int i)
-		{
-			//TODO:
-			return null;
-		}
-
-		bool Atk.ActionImplementor.SetDescription (int i, string desc)
-		{
-			if (i != 0)
-				return false;
-			actionDescription = desc;
-			return true;
-		}
-
-		string Atk.ActionImplementor.GetLocalizedName (int i)
-		{
-			if (i != 0)
-				return null;
-			return actionName;
 		}
 
 #region Atk.SelectionImplementor
@@ -251,27 +184,10 @@ namespace UiaAtkBridge
 			base.RaiseAutomationEvent (eventId, e);
 		}
 
-		private Window fakeWindow = null;
-		
 		public override void RaiseAutomationPropertyChangedEvent (System.Windows.Automation.AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property.Id != ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id) {
-				base.RaiseAutomationPropertyChangedEvent (e);
-				return;
-			}
-
-			ExpandCollapseState newState = (ExpandCollapseState)e.NewValue;
-			if (newState == ExpandCollapseState.Expanded) {
-				if (fakeWindow == null) {
-					fakeWindow = new Window ();
-					fakeWindow.AddOneChild ((Adapter)RefAccessibleChild (0));
-				}
-				TopLevelRootItem.Instance.AddOneChild (fakeWindow);
-			} else if (newState == ExpandCollapseState.Collapsed) {
-				TopLevelRootItem.Instance.RemoveChild (fakeWindow);
-			}
+			base.RaiseAutomationPropertyChangedEvent (e);
 		}
-
 
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{

@@ -49,6 +49,7 @@ FILES =  \
 	Button.cs \
 	CheckBoxButton.cs \
 	ComboBox.cs \
+	ComboBoxDropDown.cs \
 	ComboBoxItem.cs \
 	ComboBoxTable.cs \
 	ComponentAdapter.cs \

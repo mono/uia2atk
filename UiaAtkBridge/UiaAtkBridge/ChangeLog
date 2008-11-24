@@ -1,3 +1,12 @@
+2008-11-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am:
+	* ComboBox.cs:
+	* UiaAtkBridge.mdp:
+	* ComboBoxDropDown.cs:
+	* AutomationBridge.cs: Finish a TODO (drop Atk.Action from ComboBox,
+	create ComboBoxDropDown subclass that implements it).
+
 2008-11-24  Mario Carrion  <mcarrion@novell.com>
 
 	* List.cs: Supporting ControlType event. Raised when SWF.ListView.View

@@ -716,15 +716,13 @@ namespace UiaAtkBridge
 		private void HandleNewListControlType (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
-			if (parentObject == null)
-				//see the TODO in HandleNewComboBoxControlType
-				return;
+
 			Adapter atkList;
 			if (parentObject is UiaAtkBridge.ComboBox) {
-				if (((UiaAtkBridge.ComboBox)parentObject).IsSimple ())
-					atkList = new ComboBoxTable (provider);
-				else
+				if (parentObject is UiaAtkBridge.ComboBoxDropDown)
 					atkList = new MenuItem (provider);
+				else
+					atkList = new ComboBoxTable (provider);
 			}
 			else if (provider is IGridProvider)
 				atkList = new ListWithGrid ((IRawElementProviderFragmentRoot)provider);
@@ -753,7 +751,11 @@ namespace UiaAtkBridge
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
 			
-			ComboBox atkCombo = new ComboBox (provider);
+			ComboBox atkCombo;
+			if (UiaAtkBridge.ComboBox.IsSimple (provider))
+				atkCombo = new ComboBox (provider);
+			else
+				atkCombo = new ComboBoxDropDown (provider);
 			
 			IncludeNewAdapter (atkCombo, parentObject);
 		}

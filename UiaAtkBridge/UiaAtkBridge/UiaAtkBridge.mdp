@@ -34,7 +34,7 @@
     <File name="ComponentImplementorHelper.cs" subtype="Code" buildaction="Compile" />
     <File name="ComponentAdapter.cs" subtype="Code" buildaction="Compile" />
     <File name="ComponentParentAdapter.cs" subtype="Code" buildaction="Compile" />
-    <File name="ComboBox.cs" subtype="Code" buildaction="Compile" />
+    <File name="ComboBoxDropDown.cs" subtype="Code" buildaction="Compile" />
     <File name="MenuItem.cs" subtype="Code" buildaction="Compile" />
     <File name="CheckBoxButton.cs" subtype="Code" buildaction="Compile" />
     <File name="RadioButton.cs" subtype="Code" buildaction="Compile" />
@@ -54,6 +54,7 @@
     <File name="UiaAtkBridge.dll.config.in" subtype="Code" buildaction="Nothing" />
     <File name="ComboBoxTable.cs" subtype="Code" buildaction="Compile" />
     <File name="ComboBoxItem.cs" subtype="Code" buildaction="Compile" />
+    <File name="ComboBox.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
