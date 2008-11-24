@@ -74,6 +74,8 @@ public partial class MainWindow: Gtk.Window
 		//Used when testing Atk.Action.GetKeybinding
 		this.btnWithImg.UseUnderline = true;
 		this.btnTest1.UseUnderline = true;
+
+		this.WindowPosition = WindowPosition.CenterAlways;
 	}
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
