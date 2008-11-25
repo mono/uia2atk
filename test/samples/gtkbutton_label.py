@@ -29,6 +29,7 @@ class MainWindow:
 
         # create a label
         self.label = gtk.Label()
+        self.label.set_name("label name")
         self.label.set_markup("<span color=\"red\">This is a label</span>"); 
 
         # create a horizontal box (HBox) to organize widgets
@@ -44,6 +45,7 @@ class MainWindow:
 
         # Creates a new button with the label "Button 1".
         self.button1 = gtk.Button("Button 1")
+        self.button1.set_name("name of Button1")
         self.button1.modify_bg(gtk.STATE_NORMAL,gtk.gdk.color_parse("red"))
  
         # Now when the button is clicked, we call the open_dialog method
@@ -66,6 +68,7 @@ class MainWindow:
  
         # Do these same steps again to create a second button
         self.button2 = gtk.Button("Button 2")
+        self.button2.set_name("name of Button2")
  
         self.button2.connect("clicked", self.button_two_clicked)
  
@@ -77,6 +80,7 @@ class MainWindow:
 
         # Creates a new button with the label "Button 3".
         self.button3 = gtk.Button("Button 3")
+        self.button3.set_name("name of Button3")
  
         # Now when the button is clicked, we call the open_dialog method
         # with a pointer to "button 3" as its argument

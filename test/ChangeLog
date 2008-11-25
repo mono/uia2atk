@@ -1,3 +1,9 @@
+2008-11-25  Calen Chen <cachen@novell.com>
+
+	* samples/gtklist.py: add new gtk.List example
+	* samples/gtkliststore.py: mv from old gtklist.py 
+	* samples/gtkbutton_label.py: give Name property for button and label
+
 2008-11-24 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/remote_run.py: Fix another issue with text redirected to
@@ -6,7 +12,7 @@
 	until the harness bugs related to running tests on multiple machines
 	at once get cleared up.
 
-2008-11-24  Calen Chen <cachen@novell.com>
+2008-11-25  Calen Chen <cachen@novell.com>
 
 	* samples/listbox.py,
 	* samples/checkedlistbox.py: give Name and Text property for list
