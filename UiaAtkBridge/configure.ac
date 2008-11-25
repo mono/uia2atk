@@ -86,6 +86,7 @@ fi
 PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0])
 PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0])
 PKG_CHECK_MODULES([MONO_UIA], [mono-uia])
+
 #Bridge-glue checks
 PKG_CHECK_MODULES(ATK, atk)
 AC_SUBST(ATK_CFLAGS)

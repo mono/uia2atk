@@ -2,7 +2,7 @@ EXTRA_DIST =
 
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG"
+ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG"
 
 ASSEMBLY = bin/Debug/GailTestApp.exe
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
@@ -17,7 +17,7 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:../mono-uia.snk
 ASSEMBLY = bin/Release/GailTestApp.exe
 ASSEMBLY_MDB = 
 COMPILE_TARGET = exe
@@ -54,13 +54,11 @@ RESOURCES = gtk-gui/gui.stetic
 EXTRAS = 
 
 REFERENCES =  \
-	../AtkTest/bin/Debug/AtkTest.dll \
-	Mono.Posix \
-	-pkg:glade-sharp-2.0 \
-	-pkg:glib-sharp-2.0 \
-	-pkg:gtk-sharp-2.0 \
 	System \
-	System.Core
+	Mono.Posix \
+	System.Core \
+	../AtkTest/bin/Debug/AtkTest.dll \
+	$(GTK_SHARP_20_LIBS)
 
 DLL_REFERENCES = 
 

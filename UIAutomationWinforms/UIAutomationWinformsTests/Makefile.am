@@ -5,7 +5,7 @@ EXTRA_DIST =
 
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -keyfile:../mono-uia.snk -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -debug "-define:DEBUG"
+ASSEMBLY_COMPILER_FLAGS = -keyfile:../mono-uia.snk -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -debug "-define:DEBUG"
 
 ASSEMBLY = bin/Debug/UIAutomationWinformsTests.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
@@ -24,7 +24,7 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS =  -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -keyfile:../mono-uia.snk -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+
+ASSEMBLY_COMPILER_FLAGS = -keyfile:../mono-uia.snk -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+
 ASSEMBLY = bin/Release/UIAutomationWinformsTests.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library
@@ -100,16 +100,12 @@ RESOURCES =
 EXTRAS = 
 
 REFERENCES =  \
-	../UIAutomationWinforms/bin/Debug/UIAutomationWinforms.dll \
-	-pkg:mono-nunit \
-	UIAutomationTypes \
-	UIAutomationBridge \
-	UIAutomationProvider \
-	UIAutomationClient \
-	WindowsBase \
 	System \
 	System.Drawing \
-	System.Windows.Forms
+	-pkg:mono-nunit \
+	System.Windows.Forms \
+	../UIAutomationWinforms/bin/Debug/UIAutomationWinforms.dll \
+	$(MONO_UIA_LIBS)
 
 DLL_REFERENCES = 
 

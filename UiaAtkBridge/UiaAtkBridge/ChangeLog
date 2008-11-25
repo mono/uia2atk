@@ -1,3 +1,9 @@
+2008-11-25  Brad Taylor  <brad@getcoded.net>
+	
+	* Makefile.am: Use $(MONO_UIA_LIBS) instead of hardcoding paths.
+
+	* UiaAtkBridge.dll.config.in: Revert incorrect path change.
+
 2008-11-25  Stephen Shaw  <sshaw@decriptor.com>
 
 	* UiaAtkBridge.dll.config.in: Fix path for libatk-bridge.so

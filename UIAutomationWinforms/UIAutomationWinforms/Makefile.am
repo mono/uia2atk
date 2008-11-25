@@ -5,7 +5,7 @@ EXTRA_DIST =
 
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -debug "-define:DEBUG" -keyfile:../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+ -debug "-define:DEBUG" -keyfile:../mono-uia.snk
 
 ASSEMBLY = bin/Debug/UIAutomationWinforms.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
@@ -20,7 +20,7 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -keyfile:../mono-uia.snk -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+
+ASSEMBLY_COMPILER_FLAGS = -keyfile:../mono-uia.snk -noconfig -codepage:utf8 -warn:4 -warnaserror -optimize+
 ASSEMBLY = bin/Release/UIAutomationWinforms.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library
@@ -294,18 +294,13 @@ DATA_FILES =
 RESOURCES =
 
 REFERENCES =  \
-	UIAutomationBridge \
-	UIAutomationTypes \
-	UIAutomationProvider \
-	UIAutomationClient \
-	WindowsBase \
 	System \
 	System.Core \
 	System.Drawing \
-	System.Windows.Forms \
 	Mono.WebBrowser \
-	$(GTK_SHARP_20_LIBS) \
-	$(GLIB_SHARP_20_LIBS)
+	System.Windows.Forms \
+	$(MONO_UIA_LIBS) \
+	$(GTK_SHARP_20_LIBS)
 
 DLL_REFERENCES = 
 

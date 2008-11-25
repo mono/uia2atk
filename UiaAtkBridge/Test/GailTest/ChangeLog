@@ -1,3 +1,7 @@
+2008-11-25  Brad Taylor  <brad@getcoded.net>
+	
+	* Makefile.am: Use $(MONO_UIA_LIBS) instead of hardcoding paths.
+
 2008-11-20  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* GailTester.cs: UIA doesn't allow emptying the selection of a combobox

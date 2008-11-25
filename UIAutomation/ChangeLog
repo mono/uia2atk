@@ -1,3 +1,7 @@
+2008-11-25  Brad Taylor  <brad@getcoded.net>
+	
+	* data/mono-uia.pc.in.in: Add UIAutomationClient to the Libs directive.
+
 2008-11-24  Stephen Shaw <sshaw@decriptor.com>
 
 	* Makefile.include: Try fix for gacutilling assemblies inside of RPM

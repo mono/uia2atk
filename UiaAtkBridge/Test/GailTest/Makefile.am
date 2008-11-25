@@ -2,7 +2,7 @@ EXTRA_DIST =
 
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG"
+ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG"
 
 ASSEMBLY = bin/Debug/GailTest.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
@@ -17,7 +17,7 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:../mono-uia.snk
 ASSEMBLY = bin/Release/GailTest.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library
@@ -53,12 +53,11 @@ GAILTESTAPP = $(BUILD_DIR)/GailTestApp.exe
 ATKTEST = $(BUILD_DIR)/AtkTest.dll
 REFERENCES =  \
 	System  \
-	System.Core \
 	System.Xml \
-	WindowsBase \
+	System.Core \
 	nunit.framework \
-	$(GTK_SHARP_20_LIBS) \
-	$(GLIB_SHARP_20_LIBS)
+	$(MONO_UIA_LIBS) \
+	$(GTK_SHARP_20_LIBS)
 
 DLL_REFERENCES = $(ATKTEST)
 
