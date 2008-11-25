@@ -213,11 +213,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			TestProperty (childProvider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
-			              ControlType.Edit.Id);
+			              ControlType.Text.Id);
 
 			TestProperty (childProvider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
-			              "edit");
+			              "text");
 			
 			string value = "StatusBarPanel Name Property";
 			statusBar.Panels [0].Text = value;
@@ -239,10 +239,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			object valueProvider =
 				childProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider,
-			                  "Not returning ValuePatternIdentifiers.");
-			Assert.IsTrue (valueProvider is IValueProvider,
-			               "Not returning ValuePatternIdentifiers.");
+			Assert.IsNull (valueProvider,
+			                  "Should not return ValuePatternIdentifiers.");
 			
 			object gridItemProvider =
 				childProvider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
@@ -250,72 +248,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "Not returning GridItemPatternIdentifiers.");
 			Assert.IsTrue (gridItemProvider is IGridItemProvider,
 			               "Not returning GridItemPatternIdentifiers.");
-		}
-
-		#endregion
-		
-		#region StatusBarPanel IValuePattern Test
-		
-		[Test]
-		public void StatusBarPanelIValueProviderIsReadOnlyTest ()
-		{
-			StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
-				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
-			
-			statusBar.Panels.Add ("Panel");
-			IRawElementProviderFragment childProvider =
-				rootProvider.Navigate (NavigateDirection.FirstChild);
-			
-			IValueProvider valueProvider = (IValueProvider)
-				childProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider,
-			                  "Not returning ValuePatternIdentifiers.");
-			
-			Assert.IsTrue (valueProvider.IsReadOnly, "IsReadOnly value");
-		}
-		
-		[Test]
-		public void StatusBarPanelIValueProviderValueTest ()
-		{
-			StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
-				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
-			
-			string value = "Panel";
-			statusBar.Panels.Add (value);
-			IRawElementProviderFragment childProvider =
-				rootProvider.Navigate (NavigateDirection.FirstChild);
-			
-			IValueProvider valueProvider = (IValueProvider)
-				childProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider,
-			                  "Not returning ValuePatternIdentifiers.");
-			
-			Assert.AreEqual (value, valueProvider.Value, "Value value");
-		}
-		
-		[Test]
-		public void StatusBarPanelIValueProviderSetValueTest ()
-		{
-			StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
-				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
-			
-			statusBar.Panels.Add ("Panel");
-			IRawElementProviderFragment childProvider =
-				rootProvider.Navigate (NavigateDirection.FirstChild);
-			
-			IValueProvider valueProvider = (IValueProvider)
-				childProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider,
-			                  "Not returning ValuePatternIdentifiers.");
-			
-			try {
-				string value = "Another Panel";
-				valueProvider.SetValue (value);
-				Assert.Fail ("ElementNotEnabledException not thrown.");
-			} catch (ElementNotEnabledException) { }
 		}
 
 		#endregion

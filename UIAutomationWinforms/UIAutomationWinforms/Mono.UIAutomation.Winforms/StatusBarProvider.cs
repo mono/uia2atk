@@ -198,8 +198,6 @@ namespace Mono.UIAutomation.Winforms
 			{
 				base.Initialize ();
 				
-				SetBehavior (ValuePatternIdentifiers.Pattern,
-				             new StatusBarPanelValueProviderBehavior (this));
 				SetBehavior (GridItemPatternIdentifiers.Pattern,
 				             new StatusBarPanelGridItemProviderBehavior (this));
 			}
@@ -211,9 +209,9 @@ namespace Mono.UIAutomation.Winforms
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-					return ControlType.Edit.Id;
+					return ControlType.Text.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "edit";
+					return "text";
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return statusBarPanel.Text;
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)

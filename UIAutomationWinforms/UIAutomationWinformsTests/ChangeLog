@@ -1,3 +1,10 @@
+2008-11-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* StatusBarProviderTest.cs: Change ControlType of StatusBarPanelProvider
+	from Edit to Text, and get rid of ValueProvider behavior. This goes
+	against Vista, but makes more sense given the behavior of
+	StatusBarPanel. Fixes bug #448465.
+
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: Use $(MONO_UIA_LIBS) instead of hardcoding paths.
