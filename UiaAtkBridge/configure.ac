@@ -55,6 +55,10 @@ fi
 
 AC_SUBST(NUNIT_PATH)
 
+# Require Gtk+ devel package so that we can get access at the pc file to
+# construct a path to the modules directory
+PKG_CHECK_MODULES([GTK20], [gtk+-2.0 >= 2.12])
+
 GTK_MODULES_DIR=`pkg-config --variable=libdir gtk+-2.0`/gtk-2.0/modules
 AC_SUBST(GTK_MODULES_DIR)
 
