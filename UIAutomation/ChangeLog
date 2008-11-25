@@ -1,5 +1,9 @@
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 	
+	* Makefile.include: Correct path for 64-bit systems.
+
+2008-11-25  Brad Taylor  <brad@getcoded.net>
+	
 	* data/mono-uia.pc.in.in: Add UIAutomationClient to the Libs directive.
 
 2008-11-12  Brad Taylor  <brad@getcoded.net>

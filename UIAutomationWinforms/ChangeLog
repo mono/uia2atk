@@ -1,3 +1,7 @@
+2008-11-25  Brad Taylor  <brad@getcoded.net>
+	
+	* Makefile.include: Correct path for 64-bit systems.
+
 2008-11-12  Brad Taylor  <brad@getcoded.net>
 	
 	* NEWS: Move NEWS file into each individual module.

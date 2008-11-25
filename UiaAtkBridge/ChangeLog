@@ -1,5 +1,9 @@
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 	
+	* Makefile.include: Correct path for 64-bit systems.
+
+2008-11-25  Brad Taylor  <brad@getcoded.net>
+	
 	* configure.ac: Require gtk+-2.0 at build time so that we can be sure
 	we know how to construct a path to the modules dir.
 
