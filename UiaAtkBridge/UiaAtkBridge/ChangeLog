@@ -1,3 +1,8 @@
+2008-11-25  Mike Gorse  <mgorse@novell.com>
+
+	* Hyperlink.cs: Fetch children on NAccessibleChildren, not just
+	  on NLinks [bug 448887]
+
 2008-11-25  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Hyperlink.cs: Cosmetic.
@@ -6,6 +11,7 @@
 
 	* Hyperlink.cs: Add a role to sub-hyperlink objects (fixes #447231).
 
+>>>>>>> .r119995
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 	
 	* Makefile.am: Use $(MONO_UIA_LIBS) instead of hardcoding paths.
@@ -19,7 +25,7 @@
 	and remove "editable" state based on value of IsReadOnly. Fixes crash
 	in bug #448034.
 
-2008-11-21  Mike Gorse  <mgorse@novell.com>
+2008-11-24  Mike Gorse  <mgorse@novell.com>
 
 	* UiaAtkBridge.dll.config.in: Fix path.
 

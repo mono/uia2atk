@@ -238,12 +238,26 @@ namespace UiaAtkBridge
 
 		public int NLinks {
 			get {
-				while (links.Count > hypertext.NumberOfLinks)
-					links.RemoveAt (links.Count - 1);
-				while (links.Count < hypertext.NumberOfLinks)
-					links.Add (new HyperlinkObject (this, links.Count));
+				AdjustLinkObjects ();
 				return links.Count;
 			}
+		}
+
+		protected override int OnGetNChildren ()
+		{
+			AdjustLinkObjects ();
+			return base.OnGetNChildren ();
+		}
+
+		// TODO: We really should have an event instead of doing this;
+		// would reduce the likelihood of a race condition
+		private void AdjustLinkObjects ()
+		{
+			while (links.Count > hypertext.NumberOfLinks)
+				links.RemoveAt (links.Count - 1);
+			while (links.Count < hypertext.NumberOfLinks)
+				links.Add (new HyperlinkObject (this, links.Count));
+			return links.Count;
 		}
 
 		public int GetLinkIndex (int char_index)
