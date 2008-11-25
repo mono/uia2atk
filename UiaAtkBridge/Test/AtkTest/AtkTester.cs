@@ -704,6 +704,12 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ErrorProvider:
 				role = Atk.Role.Panel;
 				break;
+			case BasicWidgetType.ToolStripSplitButton:
+				role = Atk.Role.Filler;
+				break;
+			case BasicWidgetType.ToolStripDropDownButton:
+				role = Atk.Role.MenuItem;
+				break;
 			default:
 				throw new NotImplementedException ();
 			}

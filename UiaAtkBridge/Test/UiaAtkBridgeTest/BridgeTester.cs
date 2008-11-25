@@ -81,6 +81,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.ToolStripProgressBar tspb1 = new SWF.ToolStripProgressBar ();
 		protected SWF.ListView lv1 = new SWF.ListView ();
 		protected SWF.ToolStripDropDownButton tsddb = new SWF.ToolStripDropDownButton ();
+		protected SWF.ToolStripSplitButton tssb = new SWF.ToolStripSplitButton ();
 
 		protected int lastClickedLink = -1;
 		
@@ -121,6 +122,7 @@ namespace UiaAtkBridgeTest
 			toolStrip.Items.Add (tsl1);
 			toolStrip.Items.Add (tspb1);
 			toolStrip.Items.Add (tsddb);
+			toolStrip.Items.Add (tssb);
 			form.Controls.Add (toolStrip);
 
 			linklab1.Links [0].Visited = true;
@@ -405,6 +407,16 @@ namespace UiaAtkBridgeTest
 					accessible = GetAdapterForWidget (menuStrip1);
 				
 				break;
+			case BasicWidgetType.ToolStripSplitButton:
+				tssb.Text = names [0];
+				for (int i = 1; i < names.Length; i++) {
+					SWF.ToolStripMenuItem item
+						= new SWF.ToolStripMenuItem ();
+					item.Text = names [i];
+					tssb.DropDownItems.Add (item);
+				}
+				accessible = GetAdapterForWidget (tssb);
+				break;
 			case BasicWidgetType.ToolStripDropDownButton:
 				foreach (string name in names) {
 					SWF.ToolStripMenuItem item
@@ -676,6 +688,7 @@ namespace UiaAtkBridgeTest
 		{
 			if (provider == null)
 				throw new ArgumentNullException ("provider");
+
 #pragma warning disable 618
 			object adapter = UiaAtkBridge.AutomationBridge.GetAdapterForProvider (provider);
 #pragma warning restore 618

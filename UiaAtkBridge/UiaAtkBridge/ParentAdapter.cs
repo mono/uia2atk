@@ -51,6 +51,11 @@ namespace UiaAtkBridge
 		protected List<Atk.Object> children = new List<Atk.Object> ();
 		
 		public abstract void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e);
+
+		// Here, unmanaged => children with ManagesRemoval = true
+		protected virtual void RemoveUnmanagedChildren ()
+		{
+		}
 		
 #endregion
 		
@@ -94,8 +99,18 @@ namespace UiaAtkBridge
 			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Add, (uint)(children.Count - 1), child);
 		}
 		
-		internal void RemoveChild (Atk.Object childToRemove)
+		internal virtual void RemoveChild (Atk.Object childToRemove)
 		{
+			if (childToRemove == null) {
+				return;
+			}
+
+			Console.WriteLine ("RemoveChild: {0}", childToRemove.GetType ());
+			
+			if (childToRemove is ParentAdapter) {
+				((ParentAdapter)childToRemove).RemoveUnmanagedChildren ();
+			}
+
 			int childIndex;
 			lock (syncRoot) {
 				Adapter adapter = childToRemove as Adapter;
@@ -107,7 +122,7 @@ namespace UiaAtkBridge
 			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Remove, (uint)childIndex, childToRemove);
 		}
 		
-		public int GetIndexOfChild (Atk.Object child)
+		public virtual int GetIndexOfChild (Atk.Object child)
 		{
 			return children.IndexOf (child);
 		}
@@ -116,7 +131,7 @@ namespace UiaAtkBridge
 		
 #region Private Methods
 		
-		private void RequestChildren ()
+		protected virtual void RequestChildren ()
 		{
 			if (requestedChildren == true)
 				return;

@@ -1,5 +1,10 @@
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 	
+	* AtkTester.cs:
+	* BasicWidgetType.cs: Add support for ToolStripSplitButton.
+
+2008-11-25  Brad Taylor  <brad@getcoded.net>
+	
 	* Makefile.am: Clean up references.
 
 2008-11-24  Mario Carrion  <mcarrion@novell.com>

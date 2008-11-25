@@ -1,3 +1,22 @@
+2008-11-25  Brad Taylor  <brad@getcoded.net>
+
+	* Adapter.cs: Add concept of an Adapter that manages it's own
+	lifecycle, e.g.: isn't removed by HandleBulkRemove.  This is mainly
+	used for "fake" widgets.
+
+	* ParentAdapter.cs: Allow RemoveChild, GetIndexOfChild, and
+	RequestChildren to be overridden.  Also add and call
+	RemoveUnmanagedChildren when a parent is being removed so that it can
+	clean up it's self-managed children, if any.
+	
+	* Makefile.am:
+	* SplitButton.cs:
+	* ExpandCollapseButton.cs: Add classes for emulating Gtk+'s
+	MenuToolBarItem when adapting ToolStripSplitButton.
+
+	* AutomationBridge.cs: Handle the case when we're disposing and
+	interrupted by an event, causing an element to be added, better.
+
 2008-11-25  Mike Gorse  <mgorse@novell.com>
 
 	* Hyperlink.cs: Fetch children on NAccessibleChildren, not just
@@ -11,7 +30,6 @@
 
 	* Hyperlink.cs: Add a role to sub-hyperlink objects (fixes #447231).
 
->>>>>>> .r119995
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 	
 	* Makefile.am: Use $(MONO_UIA_LIBS) instead of hardcoding paths.
