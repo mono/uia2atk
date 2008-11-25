@@ -24,8 +24,11 @@
 // 
 
 using System;
+using System.Collections.Generic;
+
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+
 using Mono.UIAutomation.Bridge;
 
 namespace UiaAtkBridge
@@ -39,14 +42,14 @@ namespace UiaAtkBridge
 		
 		private TextImplementorHelper textExpert = null;
 		
-		System.Collections.Generic.List<HyperlinkObject> links;
+		private List<HyperlinkObject> links;
 
 		public Hyperlink (IRawElementProviderSimple provider) : base (provider)
 		{
 			this.provider = provider;
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 			hypertext = (IHypertext)invokeProvider;
-			links = new System.Collections.Generic.List<HyperlinkObject> ();
+			links = new List<HyperlinkObject> ();
 			Role = Atk.Role.Label;
 			
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
@@ -236,13 +239,11 @@ namespace UiaAtkBridge
 		public int NLinks {
 			get {
 				while (links.Count > hypertext.NumberOfLinks)
-				links.RemoveAt (links.Count - 1);
-			while (links.Count < hypertext.NumberOfLinks)
-				links.Add (new HyperlinkObject (this, links.Count));
-
-			return links.Count;
-		}
-
+					links.RemoveAt (links.Count - 1);
+				while (links.Count < hypertext.NumberOfLinks)
+					links.Add (new HyperlinkObject (this, links.Count));
+				return links.Count;
+			}
 		}
 
 		public int GetLinkIndex (int char_index)
@@ -308,9 +309,9 @@ namespace UiaAtkBridge
 
 	class HyperlinkActor: Adapter, Atk.ActionImplementor
 	{
-			private Hyperlink hyperlink;
+		private Hyperlink hyperlink;
 		private int index;
-		private string						actionDescription = null;
+		private string					actionDescription = null;
 		static string					actionName = "jump";
 
 		public HyperlinkActor (Hyperlink parent, int index) : base (parent.Provider)
