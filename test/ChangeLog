@@ -1,5 +1,10 @@
 2008-11-25  Calen Chen <cachen@novell.com>
 
+	* samples/gtklist.py: add gtk.ListItem into gtk.List as referance to test 
+	states for listitem role
+
+2008-11-25  Calen Chen <cachen@novell.com>
+
 	* testers/states.py: modify list states tuple due to bug448499
 	* testers/checkedlistbox_basic_ops.py: readd "focused" state to 
 	listitem20 for which checking default states

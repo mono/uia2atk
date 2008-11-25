@@ -15,7 +15,13 @@ def main():
     label.show()
 
     ls = gtk.List()
-    ls.set_name("bbb")
+    item1 = gtk.ListItem("item1")
+    item2 = gtk.ListItem("item2")
+    item3 = gtk.ListItem("item3")
+    item4 = gtk.ListItem("item4")
+    item5 = gtk.ListItem("item5")
+    ls.append_items([item1, item2, item3, item4, item5])
+
     selection = ls.get_selection()
     ls.show()
     vbox.pack_start(ls, True)
