@@ -3,7 +3,7 @@ EXTRA_DIST =  UiaAtkBridge.dll.config.in
 
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG" -keyfile:../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG" -keyfile:../mono-uia.snk
 
 ASSEMBLY = bin/Debug/UiaAtkBridge.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
@@ -18,7 +18,7 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:../mono-uia.snk
 ASSEMBLY = bin/Release/UiaAtkBridge.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library
@@ -90,12 +90,8 @@ EXTRAS =
 
 REFERENCES =  \
 	System  \
-	UIAutomationTypes \
-	UIAutomationProvider \
-	UIAutomationBridge \
-	WindowsBase \
-	$(GTK_SHARP_20_LIBS) \
-	$(GLIB_SHARP_20_LIBS)
+	$(MONO_UIA_LIBS) \
+	$(GTK_SHARP_20_LIBS)
 
 DLL_REFERENCES = 
 
@@ -109,7 +105,7 @@ include $(top_srcdir)/Makefile.include
 
 
 $(ASSEMBLY).config: $(srcdir)/UiaAtkBridge.dll.config.in Makefile
-	sed -e "s|\@expanded_lib_dir\@|@expanded_libdir@|" \
+	sed -e "s|\@expanded_libdir\@|@expanded_libdir@|" \
 	    -e "s|\@GTK_MODULES_DIR\@|@GTK_MODULES_DIR@|" \
 	    < $< > $@
 

@@ -1,6 +1,6 @@
 if ENABLE_DEBUG
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG" -keyfile:../../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -debug "-define:DEBUG" -keyfile:../../mono-uia.snk
 
 ASSEMBLY = bin/Debug/AtkTest.dll
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
@@ -15,7 +15,7 @@ endif
 
 if ENABLE_RELEASE
 ASSEMBLY_COMPILER_COMMAND = gmcs
-ASSEMBLY_COMPILER_FLAGS = -lib:@expanded_libdir@/mono/3.0 -lib:@expanded_libdir@/mono/accessibility -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:../../mono-uia.snk
+ASSEMBLY_COMPILER_FLAGS = -noconfig -codepage:utf8 -warn:4 -optimize+ -keyfile:../../mono-uia.snk
 ASSEMBLY = bin/Release/AtkTest.dll
 ASSEMBLY_MDB = 
 COMPILE_TARGET = library
@@ -53,11 +53,11 @@ RESOURCES =
 EXTRAS = 
 
 REFERENCES =  \
-	-pkg:gtk-sharp-2.0 \
-	nunit.framework \
 	System \
+	System.Xml \
 	System.Core \
-	System.Xml
+	nunit.framework \
+	$(GTK_SHARP_20_LIBS)
 
 DLL_REFERENCES = 
 

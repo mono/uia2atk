@@ -1,5 +1,5 @@
 <configuration>
 	<dllmap dll="libatk-bridge" target="@GTK_MODULES_DIR@/libatk-bridge.so"/>
-	<dllmap dll="libbridge-glue.so" target="@expanded_lib_dir@/uiaatkbridge/libbridge-glue.so"/>
+	<dllmap dll="libbridge-glue.so" target="@expanded_libdir@/uiaatkbridge/libbridge-glue.so"/>
 	<dllmap dll="libgobject-2.0-0.dll" target="libgobject-2.0.so.0"/>
 </configuration>
