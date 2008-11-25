@@ -113,7 +113,7 @@ class Kickoff(threading.Thread):
     smoke_option = lambda: Settings.is_smoke == True and "--smoke" or ""
     update_option = lambda: Settings.is_smoke == True and "--update" or ""
     if self.pkg_status == 0:
-      self.test_status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 %s/harness/local_run.py %s --log=%s >> %s/%s 2>&1" %\
+      self.test_status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 python -u %s/harness/local_run.py %s --log=%s >> %s/%s 2>&1" %\
                           (machines.USERNAME, self.ip,
                            machines.TEST_DIR,
                            " ".join([smoke_option(), update_option()]).strip(),
