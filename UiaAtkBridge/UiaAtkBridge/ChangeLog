@@ -1,3 +1,7 @@
+2008-11-25  Mike Gorse  <mgorse@novell.com>
+
+	* Hyperlink.cs: Remove errant return line.
+
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 
 	* Adapter.cs: Add concept of an Adapter that manages it's own

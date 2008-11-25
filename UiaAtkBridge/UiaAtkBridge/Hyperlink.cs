@@ -257,7 +257,6 @@ namespace UiaAtkBridge
 				links.RemoveAt (links.Count - 1);
 			while (links.Count < hypertext.NumberOfLinks)
 				links.Add (new HyperlinkObject (this, links.Count));
-			return links.Count;
 		}
 
 		public int GetLinkIndex (int char_index)
