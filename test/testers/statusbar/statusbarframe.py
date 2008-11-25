@@ -21,12 +21,10 @@ class StatusBarFrame(accessibles.Frame):
     # constants
     # the available widgets on the window
     BUTTON_ONE = "button1"
-    BUTTON_TWO = "button2"
 
     def __init__(self, accessible):
         super(StatusBarFrame, self).__init__(accessible)
         self.button1 = self.findPushButton(self.BUTTON_ONE)
-        self.button2 = self.findPushButton(self.BUTTON_TWO)
 
     #give 'click' action
     def click(self,button):
@@ -35,10 +33,8 @@ class StatusBarFrame(accessibles.Frame):
     #assert if can find statusbar
     def assertStatusBar(self):
         procedurelogger.action('search for statusbar role')
-
-        procedurelogger.expectedResult('succeeded in finding StatusBar role')
-        self.statusbar = self.findStatusBar("texts in statusbar")
-        assert self.statusbar
+        self.statusbar = self.findStatusBar("Ye Olde Status Bar Text")
+        procedurelogger.expectedResult('Succeeded in finding StatusBar')
 
     #assert statusbar's text value
     def assertText(self, accessible, textValue):

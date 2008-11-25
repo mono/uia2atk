@@ -8,5 +8,6 @@
 
 tests_list = [
   "picturebox_smoke_test.py",
-  "label_smoke_test.py"
+  "label_smoke_test.py",
+  "statusbar_smoke_test.py"
 ]

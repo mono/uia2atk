@@ -1,11 +1,28 @@
+2008-11-25 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/statusbar.py: Add new statusbar example that does not use a
+	panel.
+	* testers/statusbar/__init__.py,
+	* testers/statusbar/statusbarframe.py: Rewrite for the new statusbar
+	sample that does not use the panel.
+	* testers/statusbar_basic_ops.py: Rewrite the statusbar test to only
+	focus on the statusbar control and not include the panel.
+	* harness/tests.py: Add statusbar_basic_ops to the regression test
+	suite
+	* testers/statusbarpanel_smoke_test.py: Create a smoke test version
+	of the StatusBar test.  At this point it is the same as the regular
+	test, which is simple enough to make it a good fit for a smoke test.
+	* harness/smoke_tests.py: Add statusbarpanel_smoke_test.py to smoke
+	test suite.
+
 2008-11-25  Calen Chen <cachen@novell.com>
 
 	* testers/states.py: modify "list item" states tuple due to bug448499
 
 2008-11-25  Calen Chen <cachen@novell.com>
 
-	* samples/gtklist.py: add gtk.ListItem into gtk.List as referance to test 
-	states for listitem role
+	* samples/gtklist.py: add gtk.ListItem into gtk.List as referance to
+	test states for listitem role
 
 2008-11-25  Calen Chen <cachen@novell.com>
 

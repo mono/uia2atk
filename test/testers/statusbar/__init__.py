@@ -22,7 +22,7 @@ def launchStatusBar(exe=None):
         i = harness_dir.rfind("/")
         uiaqa_path = harness_dir[:i]
 
-        exe = '%s/samples/statusbar_statusbarpanel.py' % uiaqa_path
+        exe = '%s/samples/statusbar.py' % uiaqa_path
         if not exists(exe):
           raise IOError, "Could not find file %s" % exe
   
@@ -45,5 +45,5 @@ class StatusBar(accessibles.Application):
         'Get a reference to the statusbar window'
         super(StatusBar, self).__init__(accessible, subproc)
         
-        self.findFrame(re.compile('^StatusBar_StatusBarPanel controls'), logName='Status Bar')
+        self.findFrame(re.compile('^StatusBar controls'), logName='Status Bar')
 

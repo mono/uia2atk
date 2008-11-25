@@ -12,5 +12,6 @@ tests_list = [
     "button_basic_ops.py",
     "checkbox_basic_ops.py",
     "radiobutton_basic_ops.py",
-    "vscrollbar_basic_ops.py"
+    "vscrollbar_basic_ops.py",
+    "statusbar_basic_ops.py"
 ]
