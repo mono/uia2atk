@@ -266,7 +266,7 @@ namespace UiaAtkBridge
 		}
 	}
 
-	public class HyperlinkObject: Atk.Hyperlink
+	public class HyperlinkObject : Atk.Hyperlink
 	{
 		Hyperlink resource;
 		private int index;
@@ -315,6 +315,7 @@ namespace UiaAtkBridge
 
 		public HyperlinkActor (Hyperlink parent, int index) : base (parent.Provider)
 		{
+			Role = Atk.Role.PushButton;
 			this.Parent = parent;
 			this.hyperlink = parent;
 			this.index = index;
