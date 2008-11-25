@@ -1,3 +1,8 @@
+2008-11-25  Brad Taylor  <brad@getcoded.net>
+	
+	* configure.ac: Require gtk+-2.0 at build time so that we can be sure
+	we know how to construct a path to the modules dir.
+
 2008-11-24  Brad Taylor  <brad@getcoded.net>
 
 	* configure.ac:
