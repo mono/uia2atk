@@ -42,7 +42,7 @@ rm -f %{buildroot}/%_libdir/uiaatkbridge/libbridge-glue.a
 rm -f %{buildroot}/%_libdir/uiaatkbridge/libbridge-glue.la
 
 %clean
-#rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
