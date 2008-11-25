@@ -1,3 +1,7 @@
+2008-11-25  Stephen Shaw  <sshaw@decriptor.com>
+
+	* UiaAtkBridge.dll.config.in: Fix path for libatk-bridge.so
+
 2008-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* TextBoxEntryView.cs: Do not call valueProvider.SetValue if
