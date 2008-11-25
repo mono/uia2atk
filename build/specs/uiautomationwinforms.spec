@@ -44,7 +44,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc COPYING README NEWS 
-%_prefix/lib/uiautomationwinforms/UIAutomationWinforms.dll*
+%_libdir/uiautomationwinforms/UIAutomationWinforms.dll*
 %_prefix/lib/mono/gac/UIAutomationWinforms
 
 %changelog

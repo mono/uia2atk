@@ -47,8 +47,8 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc COPYING README NEWS
-%_prefix/lib/uiaatkbridge
-%_prefix/lib/uiaatkbridge/UiaAtkBridge.dll*
+%_libdir/uiaatkbridge
+%_libdir/uiaatkbridge/UiaAtkBridge.dll*
 %_prefix/lib/mono/gac/UiaAtkBridge
 
 %package -n uiaatkbridge-devel
