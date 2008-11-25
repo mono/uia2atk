@@ -45,11 +45,15 @@ class CheckedListBoxSample(Form):
         
         # setup checkedlistboxs
         self.checkedlistbox1 = CheckedListBox()
+        self.checkedlistbox1.Name = "list1 name"
+        self.checkedlistbox1.Text = "list1 text"
         self.checkedlistbox1.Dock = DockStyle.Top
         self.checkedlistbox1.SelectedIndexChanged += self.select_change
         self.checkedlistbox1.CheckOnClick = True
 
         self.checkedlistbox2 = CheckedListBox()
+        self.checkedlistbox2.Name = "list2 name"
+        self.checkedlistbox2.Text = "list2 text"
         self.checkedlistbox2.Dock = DockStyle.Top
         self.checkedlistbox2.ItemCheck += self.toggle_change
         self.checkedlistbox2.CheckOnClick = False

@@ -38,6 +38,8 @@ class ListBoxSample(Form):
 
         # setup listbox
         self.listbox = ListBox()
+        self.listbox.Name = "listbox name"
+        self.listbox.Text = "listbox text"
         self.listbox.Height = 150
         self.listbox.Dock = DockStyle.Top
         self.listbox.Click += self.select
