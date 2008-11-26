@@ -45,8 +45,8 @@ clbFrame = app.checkedListBoxFrame
 
 ########Check Action
 #check listitem's actions
-actionsCheck(clbFrame.listitem[0], "ListItem")
-actionsCheck(clbFrame.listitem[20], "ListItem")
+actionsCheck(clbFrame.listitem[0], "CheckedListItem")
+actionsCheck(clbFrame.listitem[20], "CheckedListItem")
 
 ########Check States after doing Click, Taggle, mouseClick, keyCombo
 #check list's states

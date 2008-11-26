@@ -1,5 +1,9 @@
 2008-11-26  Calen Chen <cachen@novell.com>
 
+	* testers/checkedlistbox_basic_ops.py: modify listitem action test
+
+2008-11-26  Calen Chen <cachen@novell.com>
+
 	* samples/statusbarpanel.py: rename from statusbar_statusbarpanel.py
 	* samples/statusbar_statusbarpanel.py: delete this example
 
