@@ -44,6 +44,8 @@ namespace UiaAtkBridge
 
 #region Adapter Methods
 	
+		static long lastFocusLossTime = System.DateTime.Now.Ticks;
+
 		public IRawElementProviderSimple Provider { get; private set; }
 
 		protected bool manages_removal = true;
@@ -71,11 +73,21 @@ namespace UiaAtkBridge
 		
 		public virtual void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
+			long curTime = System.DateTime.Now.Ticks;
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {
 				bool focused = (bool)e.NewValue;
+				// Hack -- we don't get an event when a window
+				// is deactivated, and we get the activate
+				// event after a focus event, which isn't the
+				// order we want.
+				if (focused && (curTime - lastFocusLossTime > 1000000))
+					TopLevelRootItem.Instance.SendWindowActivate ();
+
 				NotifyStateChange (Atk.StateType.Focused, focused);
 				if (focused)
 					Atk.Focus.TrackerNotify (this);
+				else
+					lastFocusLossTime = curTime;
 			} else if (e.Property == AutomationElementIdentifiers.IsOffscreenProperty) { 
 				bool offscreen = (bool)e.NewValue;
 				NotifyStateChange (Atk.StateType.Visible, !offscreen);

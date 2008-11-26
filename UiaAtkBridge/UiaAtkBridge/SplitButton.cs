@@ -57,7 +57,7 @@ namespace UiaAtkBridge
 #region Protected Methods
 		// Intentionally don't RequestChildren, as this walks the UIA
 		// hierarchy which is different than ours
-		protected override void RequestChildren ()
+		internal override void RequestChildren ()
 		{
 		}
 

@@ -53,6 +53,12 @@ namespace UiaAtkBridge
 			}
 		}
 
+		public void SendWindowActivate ()
+		{
+			if (currentActiveWindow != null)
+				GLib.Signal.Emit (currentActiveWindow, "activate");
+		}
+
 		private UiaAtkBridge.Window currentActiveWindow = null;
 		
 		internal override void AddOneChild (Atk.Object child)

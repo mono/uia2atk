@@ -306,6 +306,10 @@ namespace UiaAtkBridge
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {
 				bool focused = (bool) e.NewValue;
 				Adapter parentAdapter = (Adapter) Parent;
+				if (parentAdapter is List) {
+					((List)parentAdapter).HandleItemFocus (this, focused);
+					return;
+					}
 				parentAdapter.NotifyStateChange (Atk.StateType.Focused, focused);
 				if (focused)
 					Atk.Focus.TrackerNotify (parentAdapter);

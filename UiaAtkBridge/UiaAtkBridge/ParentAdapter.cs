@@ -131,7 +131,7 @@ namespace UiaAtkBridge
 		
 #region Private Methods
 		
-		protected virtual void RequestChildren ()
+		internal virtual void RequestChildren ()
 		{
 			if (requestedChildren == true)
 				return;

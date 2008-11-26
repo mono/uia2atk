@@ -1,3 +1,17 @@
+2008-11-26  Mike Gorse  <mgorse@novell.com>
+
+	* ParentAdapter.cs, SplitButton.cs: Make RequestChildren internal.
+
+	* List.cs, ListItem.cs: Send active-descendant-changed when a ListItem
+	  gains focus.
+
+	* AutomationBridge.cs: Remove TODO that was done a long time ago.
+
+	* Adapter.cs, TopLevelRootItem.cs: Add hack to emit window:activate
+	  when regaining focus.
+
+	* AutomationBridge.cs: Create an adapter as needed to send Focus events.
+
 2008-11-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* RadioButton.cs:

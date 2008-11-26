@@ -37,6 +37,7 @@ namespace UiaAtkBridge
 		private ISelectionProvider					selectionProvider;
 		private SelectionProviderUserHelper	selectionHelper;
 		private Adapter selectedItem;
+		private bool hasFocus = false;
 		
 /*
 AtkObject,
@@ -175,6 +176,18 @@ AtkObject,
 			get { throw new NotImplementedException (); }
 		}
 
+		internal void HandleItemFocus (Adapter item, bool itemFocused)
+		{
+			bool listFocused = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
+			if (hasFocus != listFocused) {
+				NotifyStateChange (Atk.StateType.Focused, listFocused);
+				if (listFocused)
+					Atk.Focus.TrackerNotify (this);
+			}
+			if (itemFocused)
+				GLib.Signal.Emit (this, "active-descendant-changed", item.Handle);
+			hasFocus = listFocused;
+		}
 
 #region Atk.SelectionImplementor
 
