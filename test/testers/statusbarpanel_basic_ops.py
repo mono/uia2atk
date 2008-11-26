@@ -16,6 +16,7 @@ Test accessibility of statusbarpanel widget
 # imports
 import sys
 import os
+import time
 
 from strongwind import *
 from statusbarpanel import *
@@ -45,24 +46,36 @@ if app is None:
 # just an alias to make things shorter
 sbpFrame = app.statusBarPanelFrame
 
-#check for statusbar role
-sbpFrame.assertStatusBar()
-sbpFrame.assertPanel()
-
-#check statusbar and statusbarpanel's states
-statesCheck(sbpFrame.statusbar, "StatusBar")
-statesCheck(sbpFrame.panel1, "Panel")
-statesCheck(sbpFrame.panel2, "Panel")
+#check statusbarpanel's states
+statesCheck(sbpFrame.panel1, "StatusBarPanel")
+statesCheck(sbpFrame.panel2, "StatusBarPanel")
+statesCheck(sbpFrame.panel3, "StatusBarPanel")
 
 #click button1 to change statusbarpanel's text value
 sbpFrame.click(sbpFrame.button1)
 sleep(config.SHORT_DELAY)
 sbpFrame.assertText(sbpFrame.panel1, "You have click 1 times")
 
-#click button1 to change statusbar's text value again
+#click button1 to change statusbarpanel's text value again
 sbpFrame.click(sbpFrame.button1)
 sleep(config.SHORT_DELAY)
-sbpFrame.assertText(sbpFrame.statusbar, "You have click 2 times")
+sbpFrame.assertText(sbpFrame.panel1, "You have click 2 times")
+
+#enter Text Value to make sure the text is uneditable
+sbpFrame.enterTextValue(sbpFrame.panel1, "enter text")
+sleep(config.SHORT_DELAY)
+sbpFrame.assertText(sbpFrame.panel1, "You have click 2 times")
+
+sbpFrame.enterTextValue(sbpFrame.panel2, "enter text")
+sleep(config.SHORT_DELAY)
+sbpFrame.assertText(sbpFrame.panel2, "statusbarpanel2")
+
+sbpFrame.enterTextValue(sbpFrame.panel3, "enter text")
+sleep(config.SHORT_DELAY)
+sbpFrame.assertText(sbpFrame.panel3, "Icon")
+
+#check icon image size in statusbarpanel3 to make sure Image is implemented
+sbpFrame.assertImageSize(sbpFrame.panel3)
 
 #close application frame window
 sbpFrame.quit()

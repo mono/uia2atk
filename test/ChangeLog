@@ -1,3 +1,16 @@
+2008-11-26  Calen Chen <cachen@novell.com>
+
+	* samples/statusbarpanel.py: rewrite text for statusbarpanel
+	* testers/statusbarpanel/__init__.py: change the application to 
+	statusbarpanel.py
+	* testers/statusbarpanel/statusbarpanelframe.py: initate panel1&panel2
+	&panel3,  add enterTextValue method to make sure the text is uneditable,
+	add assertImageSize method to test panel3 icon property
+	* testers/statusbarpanel_basic_ops.py: add test to to make sure the text 
+	is uneditable. add test to make sure in panel3 icon property Image is 
+	implemented(see bug448074). modify test to assert text changing.
+	* testers/states.py: add statusbarpanel states tuple
+
 2008-11-26  Ray Wang <rawang@novell.com>
 
 	* samples/gtkcontainer.py: add GtkContainer widget sample (since

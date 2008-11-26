@@ -232,6 +232,9 @@ class HScrollBar(object):
 class StatusBar(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
+class StatusBarPanel(object):
+    states = (ENABLED, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
+
 class List(object):
     #states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
     states = (ENABLED, FOCUSABLE, MANAGES_DESCENDANTS, SENSITIVE, SHOWING, VISIBLE)

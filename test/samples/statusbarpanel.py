@@ -24,7 +24,11 @@ clr.AddReference('System')
 from System.Windows.Forms import *
 from System.Drawing import *
 from System import *
+from sys import path
 
+harness_dir = path[0]
+i = harness_dir.rfind("/")
+uiaqa_path = harness_dir[:i]
 
 class StatusBarStatusBarPanelApp(Form):
     """StatusBar and StatusBarPanel controls class"""
@@ -65,17 +69,24 @@ class StatusBarStatusBarPanelApp(Form):
         self.statusbarpanel1 = StatusBarPanel()
         self.statusbarpanel1.BorderStyle = StatusBarPanelBorderStyle.Sunken
         self.statusbarpanel1.AutoSize = StatusBarPanelAutoSize.Spring
-        self.statusbarpanel1.Text = "Started: " + \
-                                    System.DateTime.Now.ToShortTimeString()
+        self.statusbarpanel1.Text = System.DateTime.Today.ToLongDateString() + \
+					", " + System.DateTime.Now.ToShortTimeString()
 
         self.statusbarpanel2 = StatusBarPanel()
         self.statusbarpanel2.BorderStyle = StatusBarPanelBorderStyle.Raised
         self.statusbarpanel2.AutoSize = StatusBarPanelAutoSize.Contents
-        self.statusbarpanel2.Text = System.DateTime.Today.ToLongDateString()
+        self.statusbarpanel2.Text = "statusbarpanel2"
+
+        self.statusbarpanel3 = StatusBarPanel()
+        self.statusbarpanel3.BorderStyle = StatusBarPanelBorderStyle.Raised
+        self.statusbarpanel3.AutoSize = StatusBarPanelAutoSize.Contents
+        self.statusbarpanel3.Text = "Icon"
+        self.statusbarpanel3.Icon = Icon("%s/samples/icons/novell.ico" % uiaqa_path)
 
         # add controls
         self.statusbar.Panels.Add(self.statusbarpanel1)
         self.statusbar.Panels.Add(self.statusbarpanel2)
+        self.statusbar.Panels.Add(self.statusbarpanel3)
         self.Controls.Add(self.statusbar)
         self.Controls.Add(self.button1)
         self.Controls.Add(self.button2)

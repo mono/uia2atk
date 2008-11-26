@@ -27,35 +27,51 @@ class StatusBarPanelFrame(accessibles.Frame):
         super(StatusBarPanelFrame, self).__init__(accessible)
         self.button1 = self.findPushButton(self.BUTTON_ONE)
         self.button2 = self.findPushButton(self.BUTTON_TWO)
+        self.statusbar = self.findStatusBar("texts in statusbar")
+        self.panel = self.findAllTexts(None)
+        #statusbarpanel1.Text with time
+        self.panel1 = self.panel[0]
+        #statusbarpanel2.Text with date
+        self.panel2 = self.panel[1]
+        #statusbarpanel3.Icon
+        self.panel3 = self.panel[2]
 
     #give 'click' action
     def click(self,button):
         button.click()
 
-    #assert if can find statusbar
-    def assertStatusBar(self):
-        procedurelogger.action('search for statusbar role')
+    #enter Text Value to make sure the text is uneditable
+    def enterTextValue(self, accessible, entertext):
+        procedurelogger.action('try input %s in %s which is uneditable "' % (entertext, accessible))
 
-        procedurelogger.expectedResult('succeeded in finding StatusBar role')
-        self.statusbar = self.findStatusBar("texts in statusbar")
-        assert self.statusbar
+        accessible.text = entertext
 
-    #assert if can find statusbarpanel
-    def assertPanel(self):
-        procedurelogger.action('search for StatusBarPanle as "text" role name')
-        self.panel = self.findAllTexts(None)
-        self.panel1 = self.panel[0]
-        self.panel2 = self.panel[1]
-
-        procedurelogger.expectedResult('succeeded in finding "text" role')
-        assert self.panel1 and self.panel2
-
-    #assert statusbarpanel's text value
+    #assert statusbarpanel's text value after click button1
     def assertText(self, accessible, textValue):
         procedurelogger.expectedResult('the text of "%s" change to "%s"' % (accessible, textValue))
         def resultMatches():
             return accessible.text == textValue
         assert retryUntilTrue(resultMatches)
+
+    # assert the size of an image in the statusbarpanel3
+    def assertImageSize(self, accessible, width=32, height=32):
+        procedurelogger.action("assert %s's image size" % accessible)
+        size = accessible.imageSize
+
+        procedurelogger.expectedResult('"%s" image size is %s x %s' %
+                                                  (accessible, width, height))
+
+        assert width == size[0], "%s (%s), %s (%s)" %\
+                                            ("expected width",
+                                              width,
+                                             "does not match actual width",
+                                              size[0])
+        assert height == size[1], "%s (%s), %s (%s)" %\
+                                            ("expected height",
+                                              height,
+                                             "does not match actual height",
+                                              size[1])    
+        
 
     
     #close application main window after running test
