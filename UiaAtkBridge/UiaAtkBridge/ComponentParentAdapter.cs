@@ -24,6 +24,7 @@
 // 
 
 using System;
+using SCG = System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
@@ -38,6 +39,36 @@ namespace UiaAtkBridge
 		}
 		
 		private ComponentImplementorHelper componentExpert;
+
+		internal Atk.Relation RadioButsRelation { get; private set; }
+		
+		internal override void AddOneChild (Atk.Object child)
+		{
+			base.AddOneChild (child);
+
+			RadioButton rad = child as RadioButton;
+			if (rad == null)
+				return;
+
+			if (RadioButsRelation == null)
+				RadioButsRelation = new Atk.Relation (new Atk.Object [] { rad }, Atk.RelationType.MemberOf);
+			else
+				RadioButsRelation.AddTarget (rad);
+		}
+
+		internal override void RemoveChild (Atk.Object childToRemove)
+		{
+			base.RemoveChild (childToRemove);
+
+			RadioButton rad = childToRemove as RadioButton;
+			if (rad == null)
+				return;
+
+			SCG.List <Atk.Object> restRads = new SCG.List<Atk.Object> (RadioButsRelation.Target);
+			restRads.Remove ((Atk.Object)rad);
+			RadioButsRelation = new Atk.Relation (restRads.ToArray (), Atk.RelationType.MemberOf);
+		}
+
 		
 #region ComponentImplementor Methods
 

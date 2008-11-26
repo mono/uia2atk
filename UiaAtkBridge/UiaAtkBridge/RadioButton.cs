@@ -47,6 +47,13 @@ namespace UiaAtkBridge
 			imageProvider = selProvider;
 			actionName = "click";
 		}
+
+		protected override Atk.RelationSet OnRefRelationSet ()
+		{
+			Atk.RelationSet relSet = base.OnRefRelationSet ();
+			relSet.Add (((ComponentParentAdapter)Parent).RadioButsRelation);
+			return relSet;
+		}
 		
 		public override bool DoAction (int action)
 		{
