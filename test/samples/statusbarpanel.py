@@ -24,11 +24,7 @@ clr.AddReference('System')
 from System.Windows.Forms import *
 from System.Drawing import *
 from System import *
-from sys import path
 
-harness_dir = path[0]
-i = harness_dir.rfind("/")
-uiaqa_path = harness_dir[:i]
 
 class StatusBarStatusBarPanelApp(Form):
     """StatusBar and StatusBarPanel controls class"""
@@ -77,16 +73,9 @@ class StatusBarStatusBarPanelApp(Form):
         self.statusbarpanel2.AutoSize = StatusBarPanelAutoSize.Contents
         self.statusbarpanel2.Text = System.DateTime.Today.ToLongDateString()
 
-        self.statusbarpanel3 = StatusBarPanel()
-        self.statusbarpanel3.BorderStyle = StatusBarPanelBorderStyle.Raised
-        self.statusbarpanel3.AutoSize = StatusBarPanelAutoSize.Contents
-        self.statusbarpanel3.Text = "Icon"
-        self.statusbarpanel3.Icon = Icon("%s/samples/icons/novell.ico" % uiaqa_path)
-
         # add controls
         self.statusbar.Panels.Add(self.statusbarpanel1)
         self.statusbar.Panels.Add(self.statusbarpanel2)
-        self.statusbar.Panels.Add(self.statusbarpanel3)
         self.Controls.Add(self.statusbar)
         self.Controls.Add(self.button1)
         self.Controls.Add(self.button2)

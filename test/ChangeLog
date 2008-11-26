@@ -1,5 +1,10 @@
 2008-11-26  Calen Chen <cachen@novell.com>
 
+	* samples/statusbarpanel.py: rename from statusbar_statusbarpanel.py
+	* samples/statusbar_statusbarpanel.py: delete this example
+
+2008-11-26  Calen Chen <cachen@novell.com>
+
 	* testers/states.py: revert list and list item states tuple
 	* testers/actions.py: add CheckedListItem class for checkecklistbox, 
 	modify ListItem class for listbox action test
