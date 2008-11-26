@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+# vim: set tabstop=4 shiftwidth=4 expandtab
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        08/18/2008
@@ -14,14 +14,16 @@ Test accessibility of listbox widget
 """
 
 # imports
-import sys
-import os
 
-from strongwind import *
+#import sys
+#import os
+#from os import path
+#from strongwind import *
 from listbox import *
 from helpers import *
+from states import *
+from actions import *
 from sys import argv
-from os import path
 
 app_path = None 
 try:
@@ -44,7 +46,7 @@ if app is None:
 lbFrame = app.listBoxFrame
 
 #check ListBox item's actions list
-actionsCheck(lbFrame.listitem[0], "List")
+actionsCheck(lbFrame.listitem[0], "ListItem")
 
 #check ListBox's states list
 statesCheck(lbFrame.listbox, "List")
@@ -54,31 +56,40 @@ statesCheck(lbFrame.listitem[0], "ListItem", add_states=["focused", "selected"])
 statesCheck(lbFrame.listitem[1], "ListItem")
 
 #mouse click ListItem to change label value
-lbFrame.mouseClick(log=False)
+#lbFrame.mouseClick(log=False)
 lbFrame.listitem[10].mouseClick()
 sleep(config.SHORT_DELAY)
 lbFrame.assertLabel('10')
 
-lbFrame.listitem[18].mouseClick()
+#lbFrame.mouseClick(log=False)
+lbFrame.listitem[19].mouseClick()
 sleep(config.SHORT_DELAY)
-lbFrame.assertLabel('18')
+lbFrame.assertLabel('19')
 
 #click action to select listitem0 to rise selected state
 lbFrame.click(lbFrame.listitem[0])
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.listitem[0], "ListItem", add_states=["focused", "selected"])
-#listitem18 still focused but not selected
-statesCheck(lbFrame.listitem[18], "ListItem")
+#listitem19 still focused but not selected
+statesCheck(lbFrame.listitem[19], "ListItem")
 
 #check list selection implementation
-lbFrame.assertSelectionChild(lbFrame.listbox, 2)
+lbFrame.assertSelectionChild(lbFrame.listbox, 0)
 sleep(config.SHORT_DELAY)
-statesCheck(lbFrame.listitem[2], "ListItem", add_states=["focused", "selected"])
+statesCheck(lbFrame.listitem[0], "ListItem", add_states=["focused", "selected"])
 
 #clear selection
 lbFrame.assertClearSelection(lbFrame.listbox)
 sleep(config.SHORT_DELAY)
-statesCheck(lbFrame.listitem[2], "ListItem", add_states=["focused"])
+statesCheck(lbFrame.listitem[0], "ListItem", add_states=["focused"])
+
+#
+lbFrame.assertSelectionChild(lbFrame.listbox, 19)
+sleep(config.SHORT_DELAY)
+statesCheck(lbFrame.listitem[19], "ListItem", add_states=["focused", "selected"])
+lbFrame.assertClearSelection(lbFrame.listbox)
+sleep(config.SHORT_DELAY)
+statesCheck(lbFrame.listitem[19], "ListItem", add_states=["focused"])
 
 #check listitem's Text Value
 lbFrame.assertText()

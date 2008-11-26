@@ -1,4 +1,4 @@
-
+# vim: set tabstop=4 shiftwidth=4 expandtab
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        08/18/2008
@@ -6,15 +6,17 @@
 #              Used by the listbox-*.py tests
 ##############################################################################$
 
-'Application wrapper for listbox'
+'''Application wrapper for listbox.py'''
 
 from strongwind import *
-
 from os.path import exists
 from sys import path
 
 def launchListBox(exe=None):
-    'Launch listbox with accessibility enabled and return a listbox object.  Log an error and return None if something goes wrong'
+    '''
+    Launch listbox with accessibility enabled and return a listbox object.
+    Log an error and return None if something goes wrong
+    '''
 
     if exe is None:
         # make sure we can find the sample application
@@ -39,10 +41,9 @@ def launchListBox(exe=None):
 
 # class to represent the application
 class ListBox(accessibles.Application):
-    #checkShowing=False
+
     def __init__(self, accessible, subproc=None): 
-        'Get a reference to the listbox window'
+        '''Get a reference to the listbox window'''
         super(ListBox, self).__init__(accessible, subproc)
         
-        self.findFrame(re.compile('^ListBox control'), logName='List Box')
-
+        self.findFrame(re.compile('^ListBox'), logName='List Box')

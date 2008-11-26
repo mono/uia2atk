@@ -1,3 +1,15 @@
+2008-11-26  Ray Wang <rawang@novell.com>
+
+	* samples/gtkcontainer.py: add GtkContainer widget sample (since
+	GtkContainer is a base class, and GtkVBox inherit from GtkContainer)
+	* samples/toolstripcombobox.py: the label changes when selecting 
+	different font size
+	* samples/listbox.py: make listbox more wider in order to show all the
+	items in the window
+	* testers/menustrip_basic_ops.py: re-order the output
+	* testers/listbox/__init__.py, testers/listbox/listboxframe.py, 
+	testers/listbox_basic_ops.py: improve listbox strongwind test
+
 2008-11-26  Calen Chen <cachen@novell.com>
 
 	* testers/checkedlistbox_basic_ops.py: modify listitem action test

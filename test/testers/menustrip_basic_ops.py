@@ -44,7 +44,7 @@ msFrame = app.menuStripFrame
 # check states of menustrip
 statesCheck(msFrame.menustrip, "MenuStrip")
 
-print "INFO:  Log written to: %s" % config.OUTPUT_DIR
-
 # close application frame window
 msFrame.quit()
+
+print "INFO:  Log written to: %s" % config.OUTPUT_DIR

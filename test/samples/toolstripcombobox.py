@@ -10,7 +10,7 @@
 
 # The docstring below is used in the generated log file
 """
-This sample will show "ToolStripStatusLabel" and "ToolStripProgressBar"  controls in the form.
+This sample will show "ToolStripComboBox" controls in the form.
 It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of controls.
 """
 
@@ -23,7 +23,7 @@ from System.Windows.Forms import *
 from System.Drawing import *
 
 
-class RunApp(Form):
+class ToolStripComboBoxSample(Form):
 
     def __init__(self):
 
@@ -53,7 +53,6 @@ class RunApp(Form):
         self.toolstrip_combobox.AutoSize = False
         self.toolstrip_combobox.Width = 45
         self.toolstrip_combobox.SelectedIndexChanged += self.toolstrip_combobox_SelectedIndexChanged
-
         
         # add Controls
         self.toolstrip.Items.Add(self.toolstrip_combobox)
@@ -61,8 +60,10 @@ class RunApp(Form):
         self.Controls.Add(self.toolstrip)
 
     def toolstrip_combobox_SelectedIndexChanged(self, sender, event):
-        if(self.toolstrip_combobox.SelectedIndex >= 0):
-            self.label.Font = Font(self.label.Font.Name, int(self.toolstrip_combobox.SelectedItem))
+        if self.toolstrip_combobox.SelectedIndex >= 0:
+            self.label.Text = "The font size is %d" % int(self.toolstrip_combobox.SelectedItem)
+            self.label.Font = Font(self.label.Font.Name, 
+                                   int(self.toolstrip_combobox.SelectedItem))
 
-form = RunApp()
+form = ToolStripComboBoxSample()
 Application.Run(form)
