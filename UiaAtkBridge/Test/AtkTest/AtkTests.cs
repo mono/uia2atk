@@ -42,7 +42,8 @@ namespace UiaAtkBridgeTest
 		
 		protected void Label (BasicWidgetType type)
 		{
-			Atk.Object accessible = InterfaceText (type);
+			Atk.Object accessible = InterfaceText (type,
+				(type == BasicWidgetType.ToolStripLabel));
 
 			PropertyRole (type, accessible);
 			
@@ -833,6 +834,7 @@ namespace UiaAtkBridgeTest
 
 			States (accessible,
 			  Atk.StateType.Enabled,
+			(ContainerPanelIsResizable? Atk.StateType.Resizable: Atk.StateType.Enabled),
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);

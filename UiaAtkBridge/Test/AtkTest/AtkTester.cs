@@ -98,6 +98,7 @@ namespace UiaAtkBridgeTest
 			Assert.IsTrue (h >= h2, "h >= h2");
 		}
 		
+		protected abstract bool ContainerPanelIsResizable { get; }
 		protected abstract int ValidNumberOfActionsForAButton { get; }
 		protected abstract int ValidNChildrenForAListView { get; }
 		protected abstract int ValidNChildrenForASimpleStatusBar { get; }
@@ -635,6 +636,7 @@ namespace UiaAtkBridgeTest
 			Atk.Role role = Atk.Role.Unknown;
 			switch (type) {
 			case BasicWidgetType.Label:
+			case BasicWidgetType.ToolStripLabel:
 				role = Atk.Role.Label;
 				break;
 			case BasicWidgetType.NormalButton:
@@ -838,6 +840,7 @@ namespace UiaAtkBridgeTest
 
 			int nSelections = -1;
 			if ((type == BasicWidgetType.Label) || 
+			    (type == BasicWidgetType.ToolStripLabel) ||
 			    (type == BasicWidgetType.TextBoxEntry) ||
 				(type == BasicWidgetType.TextBoxView))
 				nSelections = 0;

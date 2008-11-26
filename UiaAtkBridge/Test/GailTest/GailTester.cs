@@ -470,6 +470,7 @@ namespace UiaAtkBridgeTest
 			return accessible;
 		}
 		
+		protected override bool ContainerPanelIsResizable { get { return false; } }
 		protected override int ValidNumberOfActionsForAButton { get { return 3; } }
 		protected override int ValidNChildrenForAListView { get { return 24; } }
 		protected override int ValidNChildrenForASimpleStatusBar { get { return 1; } }

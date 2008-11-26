@@ -1,3 +1,7 @@
+2008-11-26  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTests.cs, BridgeTester.cs: Test SWF.Panel.
+
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 
 	* BridgeTests.cs:

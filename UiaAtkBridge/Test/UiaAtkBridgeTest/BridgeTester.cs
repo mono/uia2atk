@@ -69,6 +69,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.DomainUpDown dud1 = new SWF.DomainUpDown ();
 		protected SWF.Form form = new SWF.Form ();
 		protected SWF.MenuStrip menuStrip1 = new SWF.MenuStrip ();
+		protected SWF.Panel panel1 = new SWF.Panel ();
 		protected SWF.PictureBox pboxWithoutImage = new SWF.PictureBox ();
 		protected SWF.PictureBox pboxWithImage = new SWF.PictureBox ();
 		protected SWF.TextBox tbx1 = new SWF.TextBox ();
@@ -155,6 +156,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (pb1);
 			form.Controls.Add (nud1);
 			form.Controls.Add (dud1);
+			form.Controls.Add (panel1);
 			form.Controls.Add (pboxWithoutImage);
 			form.Controls.Add (pboxWithImage);
 			form.Controls.Add (tbx1);
@@ -633,6 +635,8 @@ namespace UiaAtkBridgeTest
 				accessible = GetAdapterForWidget (tspb1);
 				break;
 			case BasicWidgetType.ContainerPanel://In the future we may return something different in Pane
+				accessible = GetAdapterForWidget (panel1);
+				break;
 			case BasicWidgetType.ErrorProvider:
 				if (!real)
 					throw new NotSupportedException ("We don't support unreal anymore in tests");
@@ -703,6 +707,7 @@ namespace UiaAtkBridgeTest
 			lastClickedLink = linklab1.Links.IndexOf (e.Link);
 		}
 
+		protected override bool ContainerPanelIsResizable { get { return true; } }
 		protected override int ValidNumberOfActionsForAButton { get { return 1; } }
 		protected override int ValidNChildrenForAListView { get { return 22; } }
 		protected override int ValidNChildrenForASimpleStatusBar { get { return 0; } }

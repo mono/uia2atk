@@ -334,6 +334,18 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		public void PaneChildren ()
+		{
+			SWF.Button button = new SWF.Button ();
+			Atk.Object accessible = GetAdapterForWidget (panel1);
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren #1");
+			panel1.Controls.Add (button);
+			Assert.AreEqual (1, accessible.NAccessibleChildren, "NAccessibleChildren #2");
+			panel1.Controls.Remove (button);
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren #3");
+		}
+
+		[Test]
 		public void ToolStripProgressBar ()
 		{
 			ProgressBar (BasicWidgetType.ToolStripProgressBar);
