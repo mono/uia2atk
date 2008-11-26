@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -248,6 +249,53 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "Not returning GridItemPatternIdentifiers.");
 			Assert.IsTrue (gridItemProvider is IGridItemProvider,
 			               "Not returning GridItemPatternIdentifiers.");
+		}
+
+		[Test]
+		public void StatusBarPanelNamePropertyChangedEventTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+            		IRawElementProviderFragmentRoot rootProvider =
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
+
+			string panelName = "original panel name";
+			StatusBarPanel panel = new StatusBarPanel ();
+			panel.Text = panelName;
+			
+			statusBar.Panels.Add (panel);
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
+
+			TestProperty (childProvider,
+			              AutomationElementIdentifiers.NameProperty,
+			              panelName);
+
+			bridge.ResetEventLists ();
+
+			string newPanelName = "new panel name";
+			panel.Text = newPanelName;
+
+			TestProperty (childProvider,
+			              AutomationElementIdentifiers.NameProperty,
+			              newPanelName);
+
+			Assert.AreEqual (1,
+			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 "Name property change event expected");
+			AutomationPropertyChangedEventTuple eventTuple =
+				bridge.AutomationPropertyChangedEvents [0];
+			Assert.AreEqual (childProvider,
+			                 eventTuple.element,
+			                 "event sender");
+			Assert.AreEqual (AutomationElementIdentifiers.NameProperty,
+			                 eventTuple.e.Property,
+			                 "event property");
+			Assert.AreEqual (newPanelName,
+			                 eventTuple.e.NewValue,
+			                 "event new value");
+			Assert.AreEqual (panelName,
+			                 eventTuple.e.OldValue,
+			                 "event old value");
 		}
 
 		#endregion

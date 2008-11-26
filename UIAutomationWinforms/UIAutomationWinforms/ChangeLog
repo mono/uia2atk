@@ -1,3 +1,14 @@
+2008-11-26  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelValueProviderBehavior.cs:
+	Rename and repurpose StatusBarPanelValuePatternValueEvent into
+	AutomationNamePropertyEvent.
+
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Handle property
+	changes for AutomationElementNameProperty.  Fixes bug #449317.
+
 2008-11-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

@@ -30,8 +30,13 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+
+using Mono.UIAutomation.Bridge;
+
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.StatusBar;
+using Mono.UIAutomation.Winforms.Events;
+using ESB = Mono.UIAutomation.Winforms.Events.StatusBar;
 using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
@@ -181,7 +186,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Internal Class: StatusBarPanel Provider
 		
-		internal class StatusBarPanelProvider : FragmentControlProvider
+		internal class StatusBarPanelProvider : FragmentControlProvider, IEmbeddedImage
 		{
 			#region Constructor
 
@@ -200,6 +205,8 @@ namespace Mono.UIAutomation.Winforms
 				
 				SetBehavior (GridItemPatternIdentifiers.Pattern,
 				             new StatusBarPanelGridItemProviderBehavior (this));
+				SetEvent (ProviderEventType.AutomationElementNameProperty,
+				          new ESB.AutomationNamePropertyEvent (this));
 			}
 			
 			#endregion

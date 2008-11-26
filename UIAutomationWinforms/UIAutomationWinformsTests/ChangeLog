@@ -1,3 +1,7 @@
+2008-11-26  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* StatusBarProviderTest.cs: Add test for Name property change.
+
 2008-11-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* StatusBarProviderTest.cs: Change ControlType of StatusBarPanelProvider

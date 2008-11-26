@@ -30,12 +30,12 @@ using SWF = System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events.StatusBar
 {
-	internal class StatusBarPanelValuePatternValueEvent : BaseAutomationPropertyEvent
+	internal class AutomationNamePropertyEvent : BaseAutomationPropertyEvent
 	{
 		#region Constructor
 
-		public StatusBarPanelValuePatternValueEvent (SimpleControlProvider provider)
-			: base (provider, ValuePatternIdentifiers.ValueProperty)
+		public AutomationNamePropertyEvent (StatusBarProvider.StatusBarPanelProvider provider)
+			: base (provider, AutomationElementIdentifiers.NameProperty)
 		{
 		}
 		
