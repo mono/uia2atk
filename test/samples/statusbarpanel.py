@@ -69,8 +69,7 @@ class StatusBarStatusBarPanelApp(Form):
         self.statusbarpanel1 = StatusBarPanel()
         self.statusbarpanel1.BorderStyle = StatusBarPanelBorderStyle.Sunken
         self.statusbarpanel1.AutoSize = StatusBarPanelAutoSize.Spring
-        self.statusbarpanel1.Text = System.DateTime.Today.ToLongDateString() + \
-					", " + System.DateTime.Now.ToShortTimeString()
+        self.statusbarpanel1.Text = "statusbarpanel1"
 
         self.statusbarpanel2 = StatusBarPanel()
         self.statusbarpanel2.BorderStyle = StatusBarPanelBorderStyle.Raised
