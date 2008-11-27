@@ -1,3 +1,7 @@
+2008-11-27  Neville Gao  <nevillegao@gmail.com>
+
+	* TextBoxEntryView.cs: Implemented StreamableContentImplementor
+
 2008-11-26  Mike Gorse  <mgorse@novell.com>
 
 	* ParentAdapter.cs, SplitButton.cs: Make RequestChildren internal.

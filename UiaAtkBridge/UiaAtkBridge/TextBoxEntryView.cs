@@ -324,17 +324,17 @@ namespace UiaAtkBridge
 		
 		public string GetMimeType (int i)
 		{
-			throw new NotImplementedException ();
+			return string.Empty;
 		}
 		
 		public IntPtr GetStream (string mime_type)
 		{
-			throw new NotImplementedException ();
+			return IntPtr.Zero;
 		}
 		
 		public string GetUri (string mime_type)
 		{
-			throw new NotImplementedException ();
+			return string.Empty;
 		}
 		
 		public int NMimeTypes {
