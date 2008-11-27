@@ -56,12 +56,11 @@ statesCheck(lbFrame.listitem[0], "ListItem", add_states=["focused", "selected"])
 statesCheck(lbFrame.listitem[1], "ListItem")
 
 #mouse click ListItem to change label value
-#lbFrame.mouseClick(log=False)
+lbFrame.mouseClick(log=False)
 lbFrame.listitem[10].mouseClick()
 sleep(config.SHORT_DELAY)
 lbFrame.assertLabel('10')
 
-#lbFrame.mouseClick(log=False)
 lbFrame.listitem[19].mouseClick()
 sleep(config.SHORT_DELAY)
 lbFrame.assertLabel('19')
