@@ -31,24 +31,24 @@ Libraries to bridge UIA to ATK
 %setup -q
 
 %build
-./configure --prefix=%_prefix --disable-tests
+%configure --disable-tests
 make
 
 %install
-make DESTDIR=$RPM_BUILD_ROOT install
+make DESTDIR=%{buildroot} install
 
 #file we don't care about
-rm -f $RPM_BUILD_ROOT/%_prefix/lib/uiaatkbridge/libbridge-glue.a
-rm -f $RPM_BUILD_ROOT/%_prefix/lib/uiaatkbridge/libbridge-glue.la
+rm -f %{buildroot}/%_libdir/uiaatkbridge/libbridge-glue.a
+rm -f %{buildroot}/%_libdir/uiaatkbridge/libbridge-glue.la
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc ChangeLog
-%_prefix/lib/uiaatkbridge
-%_prefix/lib/uiaatkbridge/UiaAtkBridge.dll*
+%doc COPYING README NEWS
+%_libdir/uiaatkbridge
+%_libdir/uiaatkbridge/UiaAtkBridge.dll*
 %_prefix/lib/mono/gac/UiaAtkBridge
 
 %package -n uiaatkbridge-devel
@@ -62,19 +62,11 @@ UiaAtkBridge devel package
 Libraries to bridge UIA to ATK
 %files -n uiaatkbridge-devel
 %defattr(-,root,root)
-%_prefix/lib/uiaatkbridge
-%_prefix/lib/uiaatkbridge/libbridge-glue.so*
+%_libdir/uiaatkbridge
+%_libdir/uiaatkbridge/libbridge-glue.so*
 
 %post devel -p /sbin/ldconfig
 
 %postun devel -p /sbin/ldconfig
-
-%if 0%{?fedora_version} || 0%{?rhel_version}
-# Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
-%define _use_internal_dependency_generator 0
-%endif
-%define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-provides ; } | sort | uniq'
-%define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
-
 
 %changelog

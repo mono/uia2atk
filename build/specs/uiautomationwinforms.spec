@@ -32,30 +32,20 @@ Mono Winforms UIA Provider
 %setup -q
 
 %build
-./configure --prefix=%_prefix --disable-tests
+%configure --disable-tests
 make
 
 %install
-make DESTDIR=$RPM_BUILD_ROOT install
+make DESTDIR=%{buildroot} install
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-%doc 
-%_prefix/lib/uiautomationwinforms/UIAutomationWinforms.dll*
+%doc COPYING README NEWS 
+%_libdir/uiautomationwinforms/UIAutomationWinforms.dll*
 %_prefix/lib/mono/gac/UIAutomationWinforms
-
-
-
-%if 0%{?fedora_version} || 0%{?rhel_version}
-# Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
-%define _use_internal_dependency_generator 0
-%endif
-%define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-provides ; } | sort | uniq'
-%define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
-
 
 %changelog
 

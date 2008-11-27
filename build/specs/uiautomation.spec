@@ -31,32 +31,28 @@ Implementations of the members and interfaces based on MS UIA API
 %setup -q
 
 %build
-./configure --prefix=%_prefix 
+%configure
 make
 
 %install
-make DESTDIR=$RPM_BUILD_ROOT install
-%ifarch x86_64
-mkdir $RPM_BUILD_ROOT%_prefix/lib64/pkgconfig -p
-mv $RPM_BUILD_ROOT%_prefix/lib/pkgconfig/*.pc $RPM_BUILD_ROOT%_prefix/lib64/pkgconfig/
-%endif
+make DESTDIR=%{buildroot} install
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
-#%doc README COPYING
-%_prefix/lib/mono/accessibility
-%_prefix/lib/mono/gac/UIAutomationProvider
-%_prefix/lib/mono/accessibility/UIAutomationProvider.dll
-%_prefix/lib/mono/gac/UIAutomationTypes
-%_prefix/lib/mono/accessibility/UIAutomationTypes.dll
-%_prefix/lib/mono/gac/UIAutomationBridge
-%_prefix/lib/mono/accessibility/UIAutomationBridge.dll
-%_prefix/lib/mono/gac/UIAutomationClient
-%_prefix/lib/mono/accessibility/UIAutomationClient.dll
-%_libdir/pkgconfig/*.pc
+%doc README COPYING NEWS
+%{_prefix}/lib/mono/accessibility
+%{_prefix}/lib/mono/gac/UIAutomationProvider
+%{_prefix}/lib/mono/accessibility/UIAutomationProvider.dll
+%{_prefix}/lib/mono/gac/UIAutomationTypes
+%{_prefix}/lib/mono/accessibility/UIAutomationTypes.dll
+%{_prefix}/lib/mono/gac/UIAutomationBridge
+%{_prefix}/lib/mono/accessibility/UIAutomationBridge.dll
+%{_prefix}/lib/mono/gac/UIAutomationClient
+%{_prefix}/lib/mono/accessibility/UIAutomationClient.dll
+%{_libdir}/pkgconfig/*.pc
 
 %package -n mono-winfxcore
 License:	MIT/X11
@@ -75,17 +71,8 @@ Parts of winfx
 
 %files -n mono-winfxcore
 %defattr(-, root, root)
-%_prefix/lib/mono/gac/WindowsBase
-%_prefix/lib/mono/2.0/WindowsBase.dll
-
-
-%if 0%{?fedora_version} || 0%{?rhel_version}
-# Allows overrides of __find_provides in fedora distros... (already set to zero on newer suse distros)
-%define _use_internal_dependency_generator 0
-%endif
-%define __find_provides env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-provides && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-provides ; } | sort | uniq'
-%define __find_requires env sh -c 'filelist=($(cat)) && { printf "%s\\n" "${filelist[@]}" | /usr/lib/rpm/find-requires && printf "%s\\n" "${filelist[@]}" | /usr/bin/mono-find-requires ; } | sort | uniq'
-
+%{_prefix}/lib/mono/gac/WindowsBase
+%{_prefix}/lib/mono/2.0/WindowsBase.dll
 
 %changelog
 
