@@ -1,3 +1,10 @@
+2008-11-27  Calen Chen <cachen@novell.com>
+
+	* testers/combobox_dropdown/comboboxdropdownframe.py: delete 
+	expectedResult from inputText and enterTextValue method
+	* testers/combobox_dropdown_ops.py: expand some test to assert the text 
+	of Label and TextBox is changing. 
+
 2008-11-26  Calen Chen <cachen@novell.com>
 
 	* samples/statusbarpanel.py: rewrite text for statusbarpanel

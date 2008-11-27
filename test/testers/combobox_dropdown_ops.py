@@ -55,21 +55,24 @@ statesCheck(cbddFrame.menu, "Menu")
 
 #check menuitem0,1's default states
 statesCheck(cbddFrame.menuitem[0], "MenuItem")
-statesCheck(cbddFrame.menuitem[1], "MenuItem")
+statesCheck(cbddFrame.menuitem[1], "MenuItem", \
+                                add_states=["focused", "selected"])
 
 #check menuitem's text is implemented
 cbddFrame.assertItemText()
 
 #test press action than using mouse click menuitem to change label's text
 cbddFrame.press(cbddFrame.combobox)
-cbddFrame.menuitem[1].mouseClick()
 sleep(config.SHORT_DELAY)
-cbddFrame.assertLabel('1')
+cbddFrame.keyCombo("Down", grabFocus = False)
+sleep(config.SHORT_DELAY)
+cbddFrame.assertLabel('2')
 
 cbddFrame.press(cbddFrame.combobox)
-cbddFrame.menuitem[9].mouseClick()
 sleep(config.SHORT_DELAY)
-cbddFrame.assertLabel('9')
+cbddFrame.keyCombo("Down", grabFocus = False)
+sleep(config.SHORT_DELAY)
+cbddFrame.assertLabel('3')
 
 #do click action to select menuitem0 but not change the states(the same as Gtk),
 #also update text value
@@ -78,12 +81,21 @@ sleep(config.SHORT_DELAY)
 cbddFrame.assertText(cbddFrame.textbox, 0)
 
 statesCheck(cbddFrame.menuitem[0], "MenuItem")
+#if you press menu to show the menu list, menuitem0 would rise "focused" 
+#and "selected"(the same as Gtk)
+cbddFrame.combobox.mouseClick()
+statesCheck(cbddFrame.menuitem[0], "MenuItem", add_states=["focused", "selected"])
+
+#do click action to select menuitem also may change label's text
+cbddFrame.click(cbddFrame.menuitem[2])
+sleep(config.SHORT_DELAY)
+cbddFrame.assertLabel('2')
 
 #check selection is implementation
 #select item2 to rise focused and selected states
-cbddFrame.assertSelectionChild(cbddFrame.menu, 2)
+cbddFrame.assertSelectionChild(cbddFrame.menu, 3)
 sleep(config.SHORT_DELAY)
-statesCheck(cbddFrame.menuitem[2], "MenuItem", add_states=["focused", "selected"])
+statesCheck(cbddFrame.menuitem[3], "MenuItem", add_states=["focused", "selected"])
 #select item5 to rise focused and selected states
 cbddFrame.assertSelectionChild(cbddFrame.menu, 5)
 sleep(config.SHORT_DELAY)
@@ -96,14 +108,24 @@ cbddFrame.assertClearSelection(cbddFrame.ComboBox)
 sleep(config.SHORT_DELAY)
 statesCheck(cbddFrame.menuitem[5], "MenuItem")
 
-#inter '6' to text box to check the text value, menuitem[6] would be selected
+#inter '6' to text box to check the text value
 cbddFrame.inputText(6)
-
+sleep(config.SHORT_DELAY)
+#label's text is changed
+cbddFrame.assertLabel('6')
+#the text of textbox is changed to 6
+cbddFrame.assertText(cbddFrame.textbox, 6)
+# menuitem[6] would be selected and focused
 statesCheck(cbddFrame.menuitem[6], "MenuItem", add_states=["focused", "selected"])
 
-#test editable Text by enter text value '8' without change the states
+#test editable Text by enter text value '8' 
 cbddFrame.enterTextValue(8)
-
+sleep(config.SHORT_DELAY)
+#label's text is changed
+cbddFrame.assertLabel('8')
+#the text of textbox is changed to 8
+cbddFrame.assertText(cbddFrame.textbox, 8)
+#without change the states
 statesCheck(cbddFrame.menuitem[8], "MenuItem")
 
 #close application frame window

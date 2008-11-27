@@ -20,7 +20,7 @@ class ComboBoxDropDownFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
-    LABEL1 = "You select "
+    LABEL1 = "You select 1"
 
     def __init__(self, accessible):
         super(ComboBoxDropDownFrame, self).__init__(accessible)
@@ -55,8 +55,8 @@ class ComboBoxDropDownFrame(accessibles.Frame):
             assert self.menuitem[textValue].text == str(textValue)
 
     #assert Text value after do click action
-    def assertText(self, accessible, value):
-        procedurelogger.expectedResult('the text value of %s is %s' % (accessible,values))
+    def assertText(self, accessible, values):
+        procedurelogger.expectedResult('the text of %s is %s' % (accessible,values))
         assert accessible.text == str(values)
 
     #assert Selection implementation for Menu
@@ -75,16 +75,10 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         procedurelogger.action('input %s into text box' % values)
         self.textbox.typeText(values)
 
-        procedurelogger.expectedResult('the text value of "text box" is %s' % values)
-        assert self.textbox.text == str(values)
-
     #enter Text Value for EditableText
     def enterTextValue(self, values):
         procedurelogger.action('in %s enter %s "' % (accessible, values))
         self.textbox.__setattr__('text', values)
-
-        procedurelogger.expectedResult('the text value of "text box" is %s' % values)
-        assert self.textbox.text == str(values)
     
     #close application main window after running test
     def quit(self):
