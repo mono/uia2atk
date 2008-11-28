@@ -26,7 +26,7 @@ def launchScrollBar(exe=None):
                          "full path or set the\nUIAQA_HOME environment "\
                          "variable."
 
-        exe = '%s/samples/checkedlistbox.py' % uiaqa_path
+        exe = '%s/samples/scrollbar.py' % uiaqa_path
    
     if not os.path.exists(exe):
       raise IOError, "%s does not exist" % exe
@@ -50,5 +50,5 @@ class ScrollBar(accessibles.Application):
         'Get a reference to the scrollBar window'
         super(ScrollBar, self).__init__(accessible, subproc)
         
-        self.findFrame(re.compile('^CheckedListBox control'), logName='Scroll Bar')
+        self.findFrame(re.compile('^ScrollBar control'), logName='Scroll Bar')
 

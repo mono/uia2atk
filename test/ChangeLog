@@ -1,3 +1,13 @@
+2008-11-28  Calen Chen <cachen@novell.com>
+
+	* samples/scrollbar.py: modify the position to show listbox in order
+	* testers/scrollbar/__init__.py: modify application file name
+	* testers/scrollbar/scrollbarframe.py: initialize listbox and listitem
+	* testers/scrollbar_basic_ops.py: add test to scroll the horizontal bar
+	then use mouseClick listitem to check if the bar is scrolling then 
+	assert scrollbar value. click listitem then press left keyboard to 
+	scroll bar to assert the value is changed
+
 2008-11-27  Calen Chen <cachen@novell.com>
 
 	* testers/combobox_dropdown/comboboxdropdownframe.py: delete 

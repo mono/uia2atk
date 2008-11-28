@@ -17,7 +17,7 @@ import clr
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
 from System.Windows.Forms import Application, Form, ListBox, Label, DockStyle
-from System.Drawing import Size
+from System.Drawing import Size, Point
 
 class ListBoxSample(Form):
     """ListBox control class"""
@@ -26,26 +26,29 @@ class ListBoxSample(Form):
         """ListBoxSample class init function."""
 
         # setup title
-        self.Text = "ListBox control"
+        self.Text = "ScrollBar control"
 
         # setup label
         self.label1 = Label()
         self.label1.Text = "listbox with vertical scrollbar" 
         self.label1.AutoSize = True
-        self.label1.Dock = DockStyle.Top
+        self.label1.Location = Point(10, 10)
+
+        # setup listbox1
+        self.listbox1 = ListBox()
+        self.listbox1.Width = 260
+        self.listbox1.Location = Point(10, 40)
 
         self.label2 = Label()
         self.label2.Text = "listbox with horizontal scrollbar" 
         self.label2.AutoSize = True
-        self.label2.Dock = DockStyle.Top
+        self.label2.Location = Point(10, 150)
 
-        # setup listbox
-        self.listbox1 = ListBox()
-        self.listbox1.Dock = DockStyle.Top
-
+        # setup listbox2
         self.listbox2 = ListBox()
-        self.listbox2.Dock = DockStyle.Top
+        self.listbox2.Width = 260
         self.listbox2.MultiColumn = True
+        self.listbox2.Location = Point(10, 180)
 
         # add items in ListBox
         for i in range(30):
@@ -53,10 +56,11 @@ class ListBoxSample(Form):
             self.listbox2.Items.Add(str(i))
 
         # add controls
-        self.Controls.Add(self.listbox2)
-        self.Controls.Add(self.label2)
-        self.Controls.Add(self.listbox1)
         self.Controls.Add(self.label1)
+        self.Controls.Add(self.listbox1)
+        self.Controls.Add(self.label2)
+        self.Controls.Add(self.listbox2)
+
 
 # run application
 form = ListBoxSample()

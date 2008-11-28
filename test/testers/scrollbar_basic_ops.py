@@ -47,45 +47,114 @@ sbFrame = app.scrollBarFrame
 statesCheck(sbFrame.hscrollbar, "HScrollBar")
 statesCheck(sbFrame.vscrollbar, "VScrollBar")
 
+sbFrame.mouseClick(log=False)
+
+##scroll the vertical bar, use mouseClick to check if the bar is scrolling, 
+##then assert scrollbar value
+
 #set value to 10
 sbFrame.valueScrollBar(sbFrame.vscrollbar, 10)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.vscrollbar, 10)
+
+sbFrame.list1item[10].mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(sbFrame.list1item[10], "ListItem", add_states=["selected"])
+
+#set value to 29
+sbFrame.valueScrollBar(sbFrame.vscrollbar, 29)
+sleep(config.SHORT_DELAY)
+sbFrame.assertScrollbar(sbFrame.vscrollbar, 29)
+
+sbFrame.list1item[29].mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(sbFrame.list1item[29],"ListItem", add_states=["selected"])
 
 #set value to 30, the maximum value is 29
 sbFrame.valueScrollBar(sbFrame.vscrollbar, 30)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.vscrollbar, 30)
 
+sbFrame.list1item[29].mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(sbFrame.list1item[29], "ListItem", add_states=["selected"])
+
 #set value to 0
 sbFrame.valueScrollBar(sbFrame.vscrollbar, 0)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.vscrollbar, 0)
+
+sbFrame.list1item[0].mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(sbFrame.list1item[0], "ListItem", add_states=["selected"])
 
 #set value to -10, the minimum value is 0
 sbFrame.valueScrollBar(sbFrame.vscrollbar, -10)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.vscrollbar, -10) 
 
+sbFrame.list1item[5].mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(sbFrame.list1item[5], "ListItem", add_states=["selected"])
+
+#use keyboard to scroll bar to assert the value
+sbFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+sbFrame.assertScrollbar(sbFrame.vscrollbar, 1) 
+
+##scroll the horizontal bar, use mouseClick to check if the bar is scrolling, 
+##then assert scrollbar value
+
 #set value to 3
 sbFrame.valueScrollBar(sbFrame.hscrollbar, 3)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.hscrollbar, 3)
 
-#set value to 5, the maximum value is 3
-sbFrame.valueScrollBar(sbFrame.hscrollbar, 5)
+sbFrame.mouseClick(log=False)
+sbFrame.list2item[15].mouseClick()
 sleep(config.SHORT_DELAY)
-sbFrame.assertScrollbar(sbFrame.hscrollbar, 5)
+statesCheck(sbFrame.list2item[15], "ListItem", add_states=["selected"])
+
+#set value to 7
+sbFrame.valueScrollBar(sbFrame.hscrollbar, 7)
+sleep(config.SHORT_DELAY)
+sbFrame.assertScrollbar(sbFrame.hscrollbar, 7)
+
+sbFrame.list2item[29].mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(sbFrame.list2item[29], "ListItem", add_states=["selected"])
+
+#set value to 8, the maximum value is 7
+sbFrame.valueScrollBar(sbFrame.hscrollbar, 8)
+sleep(config.SHORT_DELAY)
+sbFrame.assertScrollbar(sbFrame.hscrollbar, 8)
+
+sbFrame.list2item[29].mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(sbFrame.list2item[29], "ListItem", add_states=["selected"])
 
 #set value to 0
 sbFrame.valueScrollBar(sbFrame.hscrollbar, 0)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.hscrollbar, 0) 
 
+sbFrame.list2item[0].mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(sbFrame.list2item[0], "ListItem", add_states=["selected"])
+
 #set value to -10, the maximum value is 0
 sbFrame.valueScrollBar(sbFrame.hscrollbar, -10)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.hscrollbar, -10)
+
+sbFrame.list2item[4].mouseClick()
+sleep(config.SHORT_DELAY)
+statesCheck(sbFrame.list2item[4], "ListItem", add_states=["selected"])
+
+#use keyboard to scroll bar to assert the value
+sbFrame.keyCombo("Left", grabFocus=False)
+sleep(config.SHORT_DELAY)
+sbFrame.assertScrollbar(sbFrame.hscrollbar, 1) 
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
