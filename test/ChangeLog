@@ -1,5 +1,12 @@
 2008-11-28  Calen Chen <cachen@novell.com>
 
+	* samples/toolstripdropdownbutton.py: reduce windows size, delete 
+	extraneous widget except for toolstrip and toolstipdropdownbutton. 
+	using 	DropDownItemClicked event, click DropDownItem would change 
+	label's back color
+
+2008-11-28  Calen Chen <cachen@novell.com>
+
 	* samples/scrollbar.py: modify the position to show listbox in order
 	* testers/scrollbar/__init__.py: modify application file name
 	* testers/scrollbar/scrollbarframe.py: initialize listbox and listitem
