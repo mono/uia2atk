@@ -1,3 +1,10 @@
+2008-12-01  Calen Chen <cachen@novell.com>
+
+	* samples/toolstripprogressbar.py: reduce windows size. delete 
+	extraneous widget except for statusstrip and toolstripprogressbar.
+	add button1 to process the progressbar value, add label to show the 
+	process of progressbar
+
 2008-11-28  Calen Chen <cachen@novell.com>
 
 	* samples/toolstripdropdownbutton.py: reduce windows size, delete 
