@@ -35,12 +35,13 @@ namespace UiaAtkBridge
 		//FIXME: should we receive a IRawElementProviderFragment instead? this way we can drop ArgumentExceptions in derived classes' ctors
 		public ComponentParentAdapter (IRawElementProviderSimple provider) : base (provider)
 		{
+			RadioButtons = new SCG.List <RadioButton> ();
 			componentExpert = new ComponentImplementorHelper (this);
 		}
 		
 		private ComponentImplementorHelper componentExpert;
 
-		internal Atk.Relation RadioButsRelation { get; private set; }
+		internal SCG.List <RadioButton> RadioButtons { get; private set; }
 		
 		internal override void AddOneChild (Atk.Object child)
 		{
@@ -50,27 +51,17 @@ namespace UiaAtkBridge
 			if (rad == null)
 				return;
 
-			if (RadioButsRelation == null)
-				RadioButsRelation = new Atk.Relation (new Atk.Object [] { rad }, Atk.RelationType.MemberOf);
-			else
-				RadioButsRelation.AddTarget (rad);
+			RadioButtons.Add (rad);
 		}
 
 		internal override void RemoveChild (Atk.Object childToRemove)
 		{
 			RadioButton rad = childToRemove as RadioButton;
-			if (rad != null) {
-				Atk.Relation newRelation = null;
-				SCG.List <Atk.Object> restRads = new SCG.List<Atk.Object> (RadioButsRelation.Target);
-				restRads.Remove ((Atk.Object)rad);
-				if (restRads.Count > 0)
-					newRelation = new Atk.Relation (restRads.ToArray (), Atk.RelationType.MemberOf);
-				RadioButsRelation = newRelation;
-			}
+			if (rad != null)
+				RadioButtons.Remove (rad);
 
 			base.RemoveChild (childToRemove);
 		}
-
 		
 #region ComponentImplementor Methods
 

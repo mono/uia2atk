@@ -52,9 +52,9 @@ namespace UiaAtkBridge
 		{
 			Atk.RelationSet relSet = base.OnRefRelationSet ();
 			if (Parent != null) {
-				var rel = ((ComponentParentAdapter)Parent).RadioButsRelation;
-				if (rel != null)
-					relSet.Add (((ComponentParentAdapter)Parent).RadioButsRelation);
+				var rel = new Atk.Relation (((ComponentParentAdapter)Parent).RadioButtons.ToArray (), 
+				                            Atk.RelationType.MemberOf);
+				relSet.Add (rel);
 			}
 			return relSet;
 		}

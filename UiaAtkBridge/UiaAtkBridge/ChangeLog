@@ -1,5 +1,10 @@
 2008-12-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* RadioButton.cs:
+	* ComponentParentAdapter.cs: Fix ref issues with Atk.Relation.
+
+2008-12-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* RadioButton.cs: More null guarding.
 
 2008-12-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
