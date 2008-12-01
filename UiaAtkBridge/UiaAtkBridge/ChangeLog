@@ -1,5 +1,9 @@
 2008-12-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* RadioButton.cs: More null guarding.
+
+2008-12-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* RadioButton.cs: Identation and coding guidelines.
 
 2008-12-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
