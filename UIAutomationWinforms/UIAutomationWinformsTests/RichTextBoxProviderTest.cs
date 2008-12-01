@@ -35,226 +35,61 @@ using NUnit.Framework;
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
 	[TestFixture]
-	public class RichTextBoxProviderTest : BaseProviderTest
+	public class RichTextBoxProviderTest
+		: TextBoxBaseProviderTest<RichTextBox>
 	{
-		[Test]
-		public void EditPropertiesTest ()
+		protected override RichTextBox GetTextBoxBase ()
 		{
-			RichTextBox textbox = new RichTextBox ();
-			textbox.Multiline = false;
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.ControlTypeProperty,
-			              ControlType.Edit.Id);
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
-			              "edit");
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.IsPasswordProperty,
-			              false);
+			return new RichTextBox ();
 		}
+
+#region IScrollProvider Tests
 		
-		public void DocumentPropertiesTest ()
-		{
-			RichTextBox textbox = new RichTextBox ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
-			textbox.Multiline = true;
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.ControlTypeProperty,
-			              ControlType.Document.Id);
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
-			              "document");
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.IsContentElementProperty,
-			              true);
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.IsControlElementProperty,
-			              true);
-		}
-		
-		[Test]
-		public void ValuePatternTest ()
-		{
-			RichTextBox textbox = new RichTextBox ();
-			textbox.Multiline = false;
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
-			
-			object valueProvider = provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider, "Not returning ValuePatternIdentifiers.");
-			Assert.IsTrue (valueProvider is IValueProvider, "Not returning ValuePatternIdentifiers");
-		}
-		
-		[Test]
-		public void TextPatternTest () 
-		{
-			RichTextBox textbox = new RichTextBox ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
-			
-			ITextProvider textProvider
-				= provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id)
-					as ITextProvider;
-			Assert.IsNotNull (textProvider, "Not returning TextPatternIdentifiers.");
-			Assert.IsTrue (textProvider is ITextProvider, "Not returning TextPatternIdentifiers.");
-
-			textbox.Text = "abc123";
-			textbox.Multiline = true;
-			
-			ITextRangeProvider range = textProvider.RangeFromPoint (new Point (0, 0));
-			Assert.IsNotNull (range);
-
-			// should always return a degenerate range
-			Assert.AreEqual (String.Empty, range.GetText (-1));
-
-			// TODO: Actually check the value, instead of just
-			// making sure it doesn't crash
-			range.MoveEndpointByUnit (TextPatternRangeEndpoint.End, TextUnit.Character, 1);
-
-			// TODO: Actually check the value, instead of just
-			// making sure it doesn't crash
-			ITextRangeProvider[] ranges = textProvider.GetVisibleRanges ();
-			Assert.AreEqual (1, ranges.Length);
-		}
-
-		[Test]
-		public void RangeValuePatternTest () 
-		{
-			RichTextBox textbox = new RichTextBox ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
-			
-			object rangeProvider = provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNull (rangeProvider, "Returned RangeValuePatternIdentifiers.");
-		}
-
-		[Test]
-		public void IsNotIValueProviderTest ()
-		{
-			RichTextBox textbox = new RichTextBox ();
-			textbox.Multiline = true;
-
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
-			
-			object valueProvider = 
-				provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNull (valueProvider, "Is returning ValuePatternIdentifiers.");
-			
-			textbox.Multiline = false;
-			valueProvider = provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider, "Is not returning ValuePatternIdentifiers.");
-		}
-		
-		[Test]
-		public void IValueProviderIsReadOnlyTest ()
-		{
-			RichTextBox textbox = new RichTextBox ();
-			textbox.Multiline = false;
-
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
-			
-			IValueProvider valueProvider = (IValueProvider)
-				provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider, "Not returning ValuePatternIdentifiers.");
-
-			textbox.ReadOnly = true;
-			Assert.AreEqual (valueProvider.IsReadOnly, true, "Is read only");
-			
-			textbox.ReadOnly = false;
-			Assert.AreEqual (valueProvider.IsReadOnly, false, "Is not only");
-		}
-		
-		[Test]
-		public void IValueProviderValueTest ()
-		{
-			RichTextBox textbox = new RichTextBox ();
-			textbox.Multiline = false;
-
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
-			
-			IValueProvider valueProvider = (IValueProvider)
-				provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider, "Not returning ValuePatternIdentifiers.");
-			
-			Assert.AreEqual (valueProvider.Value, string.Empty, "Empty value");
-
-			string value = "Hello world";
-			
-			textbox.Text = value;
-			Assert.AreEqual (valueProvider.Value, value, "HelloWorld value");
-		}
-		
-		[Test]
-		public void IValueProviderSetValueTest ()
-		{
-			RichTextBox textbox = new RichTextBox ();
-			textbox.Multiline = false;
-
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (textbox);
-			
-			IValueProvider valueProvider = (IValueProvider)
-				provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider, "Not returning ValuePatternIdentifiers.");
-			
-			string value = "Hello world";
-
-			valueProvider.SetValue (value);
-			Assert.AreEqual (valueProvider.Value, value, "Different value");
-
-			try {
-				textbox.ReadOnly = true;
-				valueProvider.SetValue (value);
-				Assert.Fail ("ElementNotEnabledException not thrown.");
-			} catch (ElementNotEnabledException) { }
-		}
-		
+		// No good way to share this:
+		// Copied from TextBoxProviderTest
 		[Test]
 		public void IScrollProviderTest ()
 		{
-			RichTextBox textbox = new RichTextBox ();
-			textbox.Size = new System.Drawing.Size (30, 30);
-			Form.Controls.Add (textbox);
+			RichTextBox textBox;
+			IRawElementProviderSimple provider;
+			GetProviderAndControl (out provider, out textBox);
 
-			IRawElementProviderSimple prov
-				= ProviderFactory.GetProvider (textbox);
+			textBox.Size = new System.Drawing.Size (30, 30);
+			Form.Controls.Add (textBox);
+			textBox.ScrollBars = RichTextBoxScrollBars.Both;
 
 			IRawElementProviderFragmentRoot root_prov
-				= (IRawElementProviderFragmentRoot)prov;
+				= (IRawElementProviderFragmentRoot)provider;
 
 			// Case #1: Edit with no text
-			textbox.Text = String.Empty;
-			textbox.Multiline = false;
+			textBox.Text = String.Empty;
+			textBox.Multiline = false;
 
-			IScrollProvider scroll = prov.GetPatternProvider (
+			IScrollProvider scroll = provider.GetPatternProvider (
 				ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider;
 			Assert.IsNull (scroll, "Edit mode with no text incorrectly supports ScrollProvider");
 
 			// Case #2: Edit with large amount of text
-			textbox.Text = TEST_MESSAGE;
-			textbox.Multiline = false;
+			textBox.Text = TEST_MESSAGE;
+			textBox.Multiline = false;
 
-			scroll = prov.GetPatternProvider (
+			scroll = provider.GetPatternProvider (
 				ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider;
 			Assert.IsNull (scroll, "Edit mode with text incorrectly supports ScrollProvider");
 
 			// Case #3: Document with no text
-			textbox.Text = String.Empty;
-			textbox.Multiline = true;
+			textBox.Text = String.Empty;
+			textBox.Multiline = true;
 
-			scroll = prov.GetPatternProvider (
+			scroll = provider.GetPatternProvider (
 				ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider;
 			Assert.IsNull (scroll, "Document mode with no text incorrectly supports ScrollProvider");
 
 			// Case #4: Document with large amount of text
-			textbox.Text = TEST_MESSAGE;
-			textbox.Multiline = true;
+			textBox.Text = TEST_MESSAGE;
+			textBox.Multiline = true;
 
-			scroll = prov.GetPatternProvider (
+			scroll = provider.GetPatternProvider (
 				ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider;
 			Assert.IsNotNull (scroll, "Document mode with text doesn't support ScrollProvider");
 
@@ -273,45 +108,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderFragment child;
 			child = root_prov.Navigate (NavigateDirection.FirstChild);
 
-			Assert.IsNotNull (child, "TextBox has no children");
+			Assert.IsNotNull (child, "textBox has no children");
 			TestProperty (child, AutomationElementIdentifiers.ControlTypeProperty,
 			              ControlType.ScrollBar.Id);
 
 			child = child.Navigate (NavigateDirection.NextSibling);
-			Assert.IsNull (child, "TextBox has more than one scrollbar");
+			Assert.IsNull (child, "textBox has more than one scrollbar");
 		}
 
-		
-		[Test]
-		[Ignore ("Current failure needs investigation")]
-		public void TextChangedEventTest ()
-		{
-			RichTextBox textbox = new RichTextBox ();
-
-			bridge.ResetEventLists ();			
-			textbox.Text = "Changed!";
-
-			Assert.AreEqual (1,
-			                 bridge.AutomationEvents.Count,
-			                 "Event count");
-		}
-		
-		protected override Control GetControlInstance ()
-		{
-			return new RichTextBox ();
-		}
-		
-		// TODO: Move this somewhere else
-		private const string TEST_MESSAGE = "One morning, when Gregor Samsa    woke from troubled dreams, "+
-			"he found himself transformed in his bed into a horrible vermin.He lay on his armour-like back, "+
-			"and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches "+
-			"into stiff sections. The bedding was hardly able to cover it and seemed ready to slide off any moment. "+
-			"His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he "+
-			"looked. \"What's happened to me? \" he thought. It wasn't a dream. His room, a proper human room although "+
-			"a little too small, lay peacefully between its four familiar walls. A collection of textile samples lay "+
-			"spread out on the table - Samsa was a travelling salesman - and above it there hung a picture that he had "+
-			"recently cut out of an illustrated magazine and housed in a nice, gilded frame. It showed a lady "+
-			"fitted out with a fur hat and fur boa who sat upright, raising a heavy fur muff that covered the whole "+
-			"of her lower arm towards the viewer. Gregor then turned to look out the window at the dull weather. Drops ";
+#endregion
 	}
 }

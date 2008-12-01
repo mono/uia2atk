@@ -66,6 +66,7 @@ FILES =  \
 	LinkLabelProviderTest.cs \
 	ListBoxProviderTest.cs \
 	ListViewProviderTest.cs \
+	MaskedTextBoxProviderTest.cs \
 	MenuStripProviderTest.cs \
 	MockBridge.cs \
 	NumericUpDownProviderTest.cs \
@@ -80,6 +81,7 @@ FILES =  \
 	TabControlProviderTest.cs \
 	TabPageProviderTest.cs \
 	TestHelper.cs \
+	TextBoxBaseProviderTest.cs \
 	TextBoxProviderTest.cs \
 	TextRangeProviderTest.cs \
 	ToolStripComboBoxProviderTest.cs \

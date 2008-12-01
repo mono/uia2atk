@@ -35,7 +35,8 @@ using NUnit.Framework;
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
 	[TestFixture]
-	public class ToolStripTextBoxProviderTest : TextBoxProviderTest
+	public class ToolStripTextBoxProviderTest
+		: TextBoxBaseProviderTest<TextBox>
 	{
 		[Test]
 		public void NavigationTest ()
@@ -66,7 +67,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 box2Provider.Navigate (NavigateDirection.Parent));
 		}
 		
-		protected override TextBox CreateTextBox ()
+		protected override TextBox GetTextBoxBase ()
 		{
 			ToolStripTextBox stripTextBox = new ToolStripTextBox ();
 			return stripTextBox.TextBox;
