@@ -1,3 +1,10 @@
+2008-12-01  Mario Carrion  <mcarrion@novell.com>
+
+	* Window.cs: Setting Atk.Rol.Dialog when Window's Parent is different to
+	Window and null.
+
+[Fixes bug: #444325]
+
 2008-11-27  Neville Gao  <nevillegao@gmail.com>
 
 	* TextBoxEntryView.cs: Implemented StreamableContentImplementor

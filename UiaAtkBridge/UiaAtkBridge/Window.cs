@@ -36,9 +36,18 @@ namespace UiaAtkBridge
 		public Window (IRawElementProviderSimple provider) : base (provider)
 		{
 			rootProvider = (IRawElementProviderFragmentRoot) provider;
-			Role = Atk.Role.Frame;
-			if (rootProvider != null)
+			if (rootProvider != null) {
 				Name = (string) rootProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+				IRawElementProviderFragment rootOfRootProvider 
+					= (IRawElementProviderFragment) rootProvider.Navigate (NavigateDirection.Parent);
+				//NavigateDirection.Parent in IRawElementProviderFragmentRoot-based provider 
+				//return FragmentRoot and FragmentRoot is the same reference.
+				if (rootOfRootProvider != null && rootOfRootProvider != rootProvider)
+					Role = Atk.Role.Dialog;
+				else
+					Role = Atk.Role.Frame;
+			} else
+				Role = Atk.Role.Frame;
 		}
 
 		internal Window () : base (null)
