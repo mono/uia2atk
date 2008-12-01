@@ -1,3 +1,13 @@
+2008-12-01  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: 
+	* Mono.UIAutomation.Winforms/MaskedTextBoxProvider.cs: Add
+	MaskedTextBox implementation.
+
+	* Mono.UIAutomation.Winforms/RichTextBoxProvider.cs: Removed unused
+	method.
+
 2008-11-26  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

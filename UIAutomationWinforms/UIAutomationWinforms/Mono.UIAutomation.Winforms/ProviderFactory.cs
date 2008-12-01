@@ -107,6 +107,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.ListView lv;
 			SWF.WebBrowser wb;
 			SWF.Panel p;
+			SWF.MaskedTextBox mtb;
 			
 			SWF.StatusStrip ss;
 			SWF.MenuStrip ms;
@@ -214,6 +215,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new PanelProvider (p);
 			else if ((lv = component as SWF.ListView) != null)
 				provider = new ListViewProvider (lv);
+			else if ((mtb = component as SWF.MaskedTextBox) != null)
+				provider = new MaskedTextBoxProvider (mtb);
 			else {
 				//TODO: We have to solve the problem when there's a Custom control
 				//	Ideally the first thing we do is send a wndproc message to

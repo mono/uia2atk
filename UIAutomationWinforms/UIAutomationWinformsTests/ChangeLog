@@ -1,3 +1,16 @@
+2008-12-01  Brad Taylor  <brad@getcoded.net>
+
+	* UIAutomationWinforms/Makefile.am: 
+	* UIAutomationWinformsTests/Makefile.am: 
+	* UIAutomationWinformsTests/TextBoxProviderTest.cs: 
+	* UIAutomationWinformsTests/TextBoxBaseProviderTest.cs: 
+	* UIAutomationWinformsTests/RichTextBoxProviderTest.cs: 
+	* UIAutomationWinformsTests/ToolStripTextBoxProviderTest.cs: Refactor
+	the TextBox* tests so that they share code better.
+
+	* UIAutomationWinformsTests/MaskedTextBoxProviderTest.cs: Add test for
+	MaskedTextBox.
+
 2008-11-26  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* StatusBarProviderTest.cs: Add test for Name property change.

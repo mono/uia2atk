@@ -28,14 +28,12 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Behaviors;
-using Mono.UIAutomation.Winforms.Behaviors.TextBox;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class RichTextBoxProvider : TextBoxProvider
+	internal class MaskedTextBoxProvider : TextBoxProvider
 	{
-		public RichTextBoxProvider (TextBoxBase textBoxBase) : base (textBoxBase)
+		public MaskedTextBoxProvider (TextBoxBase textBoxBase) : base (textBoxBase)
 		{
 		}
 	}

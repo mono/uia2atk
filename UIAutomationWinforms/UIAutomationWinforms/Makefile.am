@@ -251,6 +251,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ListItemProvider.cs \
 	Mono.UIAutomation.Winforms/ListProvider.cs \
 	Mono.UIAutomation.Winforms/ListViewProvider.cs \
+	Mono.UIAutomation.Winforms/MaskedTextBoxProvider.cs \
 	Mono.UIAutomation.Winforms/MenuStripProvider.cs \
 	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/PanelProvider.cs \
