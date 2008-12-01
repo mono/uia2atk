@@ -66,7 +66,7 @@ class RunApp(Form):
         self.toolstripprogressbar1.Minimum = 0
         self.toolstripprogressbar1.Maximum = 100
         self.toolstripprogressbar1.Value = 0
-        self.toolstripprogressbar1.Step = 10
+        self.toolstripprogressbar1.Step = 20
 
         self.statusstrip1.Items.Add(self.toolstripprogressbar1)
 

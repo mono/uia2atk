@@ -1,5 +1,18 @@
 2008-12-01  Calen Chen <cachen@novell.com>
 
+	* samples/toolstripprogressbar.py: modify Step value to 20
+	* testers/toolstripprogressbar_basic_ops.py,
+	* testers/toolstripprogressbar/__init__.py,
+	* testers/toolstripprogressbar/toolstripprogressbarframe.py,
+	* testers/toolstripprogressbar: add new test to check states, to check 
+	if progressbar's value and label's text is changed when clicking
+	button, to check maximum value and minimum value
+	* testers/progressbar/progressbarframe.py: change 
+	self.progressbar.__getattr__() and self.progressbar.__setattr__() to
+	self.progressbar.value
+
+2008-12-01  Calen Chen <cachen@novell.com>
+
 	* samples/toolstripprogressbar.py: reduce windows size. delete 
 	extraneous widget except for statusstrip and toolstripprogressbar.
 	add button1 to process the progressbar value, add label to show the 

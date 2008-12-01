@@ -2,8 +2,8 @@
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        09/04/2008
-# Description: progressbar.py wrapper script
-#              Used by the progressbar-*.py tests
+# Description: toolstripprogressbar.py wrapper script
+#              Used by the toolstripprogressbar-*.py tests
 ##############################################################################$
 
 import sys
@@ -12,19 +12,19 @@ import actions
 import states
 
 from strongwind import *
-from progressbar import *
+from toolstripprogressbar import *
 
 
 # class to represent the main window.
-class ProgressBarFrame(accessibles.Frame):
+class ToolStripProgressBarFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
-    LABEL = "It is 0 percent of 100%"
-    BUTTON = "Click"
+    LABEL = "It is 0% of 100%"
+    BUTTON = "button1"
 
     def __init__(self, accessible):
-        super(ProgressBarFrame, self).__init__(accessible)
+        super(ToolStripProgressBarFrame, self).__init__(accessible)
         self.label = self.findLabel(self.LABEL)
         self.button = self.findPushButton(self.BUTTON)
         self.progressbar = self.findProgressBar(None)
@@ -33,12 +33,12 @@ class ProgressBarFrame(accessibles.Frame):
     def click(self, button):
         button.click()
 
-    #assert the progress's percent after click button
-    def assertLabel(self, percent):
-        procedurelogger.expectedResult('%s percent of progress' % percent)
+    #assert the toolstripprogress's percent after click button
+    def assertLabel(self, newlabel):
+        procedurelogger.expectedResult('label shows "%s"' % newlabel)
 
         def resultMatches():
-            return self.findLabel(None).text == "It is %s percent " % percent + "of 100%"
+            return self.label.text == newlabel
         assert retryUntilTrue(resultMatches)
 
     #insert value
