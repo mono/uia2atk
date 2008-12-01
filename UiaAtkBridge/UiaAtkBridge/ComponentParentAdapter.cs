@@ -58,15 +58,17 @@ namespace UiaAtkBridge
 
 		internal override void RemoveChild (Atk.Object childToRemove)
 		{
-			base.RemoveChild (childToRemove);
-
 			RadioButton rad = childToRemove as RadioButton;
-			if (rad == null)
-				return;
+			if (rad != null) {
+				Atk.Relation newRelation = null;
+				SCG.List <Atk.Object> restRads = new SCG.List<Atk.Object> (RadioButsRelation.Target);
+				restRads.Remove ((Atk.Object)rad);
+				if (restRads.Count > 0)
+					newRelation = new Atk.Relation (restRads.ToArray (), Atk.RelationType.MemberOf);
+				RadioButsRelation = newRelation;
+			}
 
-			SCG.List <Atk.Object> restRads = new SCG.List<Atk.Object> (RadioButsRelation.Target);
-			restRads.Remove ((Atk.Object)rad);
-			RadioButsRelation = new Atk.Relation (restRads.ToArray (), Atk.RelationType.MemberOf);
+			base.RemoveChild (childToRemove);
 		}
 
 		

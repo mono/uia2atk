@@ -51,7 +51,9 @@ namespace UiaAtkBridge
 		protected override Atk.RelationSet OnRefRelationSet ()
 		{
 			Atk.RelationSet relSet = base.OnRefRelationSet ();
-			relSet.Add (((ComponentParentAdapter)Parent).RadioButsRelation);
+			var rel = ((ComponentParentAdapter)Parent).RadioButsRelation;
+			if (rel != null)
+				relSet.Add (((ComponentParentAdapter)Parent).RadioButsRelation);
 			return relSet;
 		}
 		

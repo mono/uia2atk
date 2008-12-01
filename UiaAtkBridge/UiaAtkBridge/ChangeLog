@@ -1,3 +1,9 @@
+2008-12-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* RadioButton.cs:
+	* ComponentParentAdapter.cs: Trying to fix threading issues introduced
+	in r120088.
+
 2008-12-01  Mario Carrion  <mcarrion@novell.com>
 
 	* Window.cs: Setting Atk.Rol.Dialog when Window's Parent is different to
