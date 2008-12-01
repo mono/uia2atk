@@ -1,3 +1,13 @@
+2008-12-01  Ray Wang <rawang@novell.com>
+
+	* samples/splitter.py: make the bottom label fill the form
+	* testers/listbox_basic_ops.py: code clean up
+	* testers/numericupdown_basic_ops.py: rename from
+	numericupdown_bsic_ops.py
+	* testers/numericupdown/numericupdownframe.py,
+	testers/numericupdown/__init__.py, testers/numericupdown_basic_ops.py:
+	update NumericUpDown strongwind test
+
 2008-12-01  Calen Chen <cachen@novell.com>
 
 	* samples/toolstripprogressbar.py: modify Step value to 20

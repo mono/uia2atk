@@ -1,4 +1,4 @@
-
+# vim: set tabstop=4 shiftwidth=4 expandtab
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        09/08/2008
@@ -6,15 +6,17 @@
 #              Used by the numericupdown-*.py tests
 ##############################################################################$
 
-'Application wrapper for numericupdown'
+'''Application wrapper for numericupdown'''
 
 from strongwind import *
-
 from os.path import exists
 from sys import path
 
 def launchNumericUpDown(exe=None):
-    'Launch numericupdown with accessibility enabled and return a numericupdown object.  Log an error and return None if something goes wrong'
+    '''
+    Launch numericupdown with accessibility enabled and return a numericupdown object.  
+    Log an error and return None if something goes wrong
+    '''
 
     if exe is None:
         # make sure we can find the sample application
@@ -39,10 +41,9 @@ def launchNumericUpDown(exe=None):
 
 # class to represent the application
 class NumericUpDown(accessibles.Application):
-    #checkShowing=False
-    def __init__(self, accessible, subproc=None): 
-        'Get a reference to the numericupdown window'
-        super(NumericUpDown, self).__init__(accessible, subproc)
-        
-        self.findFrame(re.compile('^NumericUpDown Example'), logName='Numeric Up Down')
 
+    def __init__(self, accessible, subproc=None):
+        '''Get a reference to the numericupdown window'''
+        super(NumericUpDown, self).__init__(accessible, subproc)
+
+        self.findFrame(re.compile('^NumericUpDown'), logName='Numeric Up Down')

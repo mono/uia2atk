@@ -35,7 +35,7 @@ class SplitterSample(Form):
         self.label1.Text = "label1 on one side against splitter"
 
         self.label2 = Label()
-        self.label2.Dock = DockStyle.Top
+        self.label2.Dock = DockStyle.Fill
         self.label2.Text = "label2 on the other side against splitter"
         self.label2.BackColor = Color.Coral
 

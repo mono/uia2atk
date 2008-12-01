@@ -12,13 +12,7 @@
 """
 Test accessibility of listbox widget
 """
-
 # imports
-
-#import sys
-#import os
-#from os import path
-#from strongwind import *
 from listbox import *
 from helpers import *
 from states import *
@@ -72,20 +66,22 @@ statesCheck(lbFrame.listitem[0], "ListItem", add_states=["focused", "selected"])
 #listitem19 still focused but not selected
 statesCheck(lbFrame.listitem[19], "ListItem")
 
-#check list selection implementation
+#check first listitem selection implementation
 lbFrame.assertSelectionChild(lbFrame.listbox, 0)
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.listitem[0], "ListItem", add_states=["focused", "selected"])
 
-#clear selection
+#clear first listitem selection
 lbFrame.assertClearSelection(lbFrame.listbox)
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.listitem[0], "ListItem", add_states=["focused"])
 
-#
+#check last listitem selection implemention
 lbFrame.assertSelectionChild(lbFrame.listbox, 19)
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.listitem[19], "ListItem", add_states=["focused", "selected"])
+
+#clear last listitem selection
 lbFrame.assertClearSelection(lbFrame.listbox)
 sleep(config.SHORT_DELAY)
 statesCheck(lbFrame.listitem[19], "ListItem", add_states=["focused"])
