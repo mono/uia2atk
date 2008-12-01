@@ -1,3 +1,9 @@
+2008-12-01  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Returning valid value
+	when requesting NameProperty.
+[Fixes Bug #448020]
+
 2008-12-01  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

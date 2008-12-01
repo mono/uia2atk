@@ -39,6 +39,27 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	{
 		
 		#region Tests
+
+		[Test]
+		public override void LabeledByAndNamePropertyTest ()
+		{
+			ListBox listbox = new ListBox ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (listbox);
+			
+			listbox.Text = "listbox text set";
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              "listbox text set");
+
+			listbox.Text = "hello world";
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              "hello world");
+
+			TestProperty (provider,
+			              AutomationElementIdentifiers.LabeledByProperty,
+			              null);
+		}		
 		
 		[Test]
 		public void BasicPropertiesTest ()
@@ -57,12 +78,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 			              true);
+
+
 			
 			//TODO: AutomationElementIdentifiers.BoundingRectangleProperty
 			//TODO: AutomationElementIdentifiers.ClickablePointProperty
 			//TODO: AutomationElementIdentifiers.IsKeyboardFocusableProperty
-			//TODO: AutomationElementIdentifiers.NameProperty
-			//TODO: AutomationElementIdentifiers.LabeledByProperty
 			//TODO: AutomationElementIdentifiers.HelpTextProperty
 		}
 		

@@ -1,3 +1,10 @@
+2008-12-01  Mario Carrion  <mcarrion@novell.com>
+
+	* ListBoxProviderTest.cs:
+	* CheckedListBoxProviderTest.cs: Testing NameProperty.
+[Fixes Bug
+	#448020]
+
 2008-12-01  Brad Taylor  <brad@getcoded.net>
 
 	* UIAutomationWinforms/Makefile.am: 

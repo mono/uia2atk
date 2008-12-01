@@ -39,6 +39,27 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	{
 
 		#region Tests
+
+		[Test]
+		public override void LabeledByAndNamePropertyTest ()
+		{
+			CheckedListBox checkedListbox = new CheckedListBox ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (checkedListbox);
+			
+			checkedListbox.Text = "checkedlistbox text set";
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              "checkedlistbox text set");
+
+			checkedListbox.Text = "hello world";
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              "hello world");
+
+			TestProperty (provider,
+			              AutomationElementIdentifiers.LabeledByProperty,
+			              null);
+		}	
 		
 		[Test]
 		public void BasicPropertiesTest ()
