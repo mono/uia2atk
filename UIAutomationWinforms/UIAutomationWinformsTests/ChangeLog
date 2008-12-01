@@ -1,3 +1,8 @@
+2008-12-01  Brad Taylor  <brad@getcoded.net>
+
+	* TabControlProviderTest.cs: Test new ISelectionProvider
+	implementation.
+
 2008-12-01  Mario Carrion  <mcarrion@novell.com>
 
 	* ListBoxProviderTest.cs:

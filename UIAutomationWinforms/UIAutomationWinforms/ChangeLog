@@ -1,3 +1,12 @@
+2008-12-01  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/TabControlProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/TabControl/SelectionProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/TabControl/SelectionPatternSelectionEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/TabControl/SelectionPatternInvalidatedEvent.cs:
+	Implement ISelectionProvider for TabControl.
+
 2008-12-01  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: Returning valid value

@@ -29,11 +29,15 @@ using System.Windows.Forms;
 using System.Windows.Automation;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Winforms.Behaviors.TabControl;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class TabControlProvider : FragmentRootControlProvider
+	internal class TabControlProvider
+		: FragmentRootControlProvider
 	{
+#region Public Methods
+
 		public TabControlProvider (TabControl control) : base (control)
 		{
 			this.control = control;
@@ -51,8 +55,14 @@ namespace Mono.UIAutomation.Winforms
 			// VerticalScrollPercentProperty
 			// VerticalViewSizeProperty
 			// StructureChangedEvent ??
+			SetBehavior (SelectionPatternIdentifiers.Pattern,
+				     new SelectionProviderBehavior (this));
 		}
-		
+
+#endregion
+
+#region Protected Methods
+
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
@@ -65,7 +75,13 @@ namespace Mono.UIAutomation.Winforms
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
+
+#endregion
 		
+#region Private Fields
+
 		private TabControl control;
+
+#endregion
 	}
 }

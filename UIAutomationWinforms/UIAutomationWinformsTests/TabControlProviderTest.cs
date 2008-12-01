@@ -42,7 +42,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void BasicPropertiesTest ()
 		{
 			TabControl tc = new TabControl ();
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (tc);
+			IRawElementProviderSimple provider
+				= ProviderFactory.GetProvider (tc);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
@@ -51,6 +52,40 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "tab");
+		}
+
+		[Test]
+		public void ISelectionProviderEventTest ()
+		{
+			TabControl tc = new TabControl ();
+			TabPage tp1 = new TabPage ();
+			TabPage tp2 = new TabPage ();
+			tc.Controls.Add (tp1);
+			tc.Controls.Add (tp2);
+			Form.Controls.Add (tc);
+			
+			IRawElementProviderSimple provider
+				= ProviderFactory.GetProvider (tc);
+
+			object selectionProvider
+				= provider.GetPatternProvider (
+					SelectionPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (selectionProvider, "Not returning SelectionPatternIdentifiers.");
+			Assert.IsTrue (selectionProvider is ISelectionProvider, "Not returning SelectionPatternIdentifiers");
+
+			tc.SelectTab (0);
+
+			// Case 1: Select currently selected tab
+			bridge.ResetEventLists ();
+			tc.SelectTab (0);
+			Assert.AreEqual (0, bridge.AutomationEvents.Count,
+			                 "EventCount after selecting selected tab");
+
+			// Case 2: Select different tab
+			bridge.ResetEventLists ();
+			tc.SelectTab (1);
+			Assert.AreEqual (1, bridge.AutomationEvents.Count,
+			                 "EventCount after selecting new tab");
 		}
 		
 		[Test]
