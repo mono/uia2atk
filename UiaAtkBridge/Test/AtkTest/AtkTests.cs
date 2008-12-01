@@ -477,7 +477,7 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void MaskedTextBoxEntry ()
 		{
-			BasicWidgetType type = BasicWidgetType.TextBoxEntry;
+			BasicWidgetType type = BasicWidgetType.MaskedTextBoxEntry;
 			Atk.Object accessible = null;
 			
 			accessible = InterfaceText (type, true);
