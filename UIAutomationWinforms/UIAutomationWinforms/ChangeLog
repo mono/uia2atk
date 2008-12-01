@@ -1,5 +1,11 @@
 2008-12-01  Brad Taylor  <brad@getcoded.net>
 
+	* Mono.UIAutomation.Winforms/TabControlProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/TabControl/SelectionProviderBehavior.cs: 
+	Flesh out GetSelection ().
+
+2008-12-01  Brad Taylor  <brad@getcoded.net>
+
 	* Makefile.am: 
 	* Mono.UIAutomation.Winforms/TabControlProvider.cs: 
 	* Mono.UIAutomation.Winforms.Behaviors/TabControl/SelectionProviderBehavior.cs: 

@@ -67,11 +67,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderSimple provider
 				= ProviderFactory.GetProvider (tc);
 
-			object selectionProvider
+			ISelectionProvider selectionProvider
 				= provider.GetPatternProvider (
-					SelectionPatternIdentifiers.Pattern.Id);
+					SelectionPatternIdentifiers.Pattern.Id) as ISelectionProvider;
 			Assert.IsNotNull (selectionProvider, "Not returning SelectionPatternIdentifiers.");
-			Assert.IsTrue (selectionProvider is ISelectionProvider, "Not returning SelectionPatternIdentifiers");
 
 			tc.SelectTab (0);
 
@@ -86,6 +85,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			tc.SelectTab (1);
 			Assert.AreEqual (1, bridge.AutomationEvents.Count,
 			                 "EventCount after selecting new tab");
+			
+			IRawElementProviderSimple[] pageProviders
+				= selectionProvider.GetSelection ();
+			Assert.IsNotNull (pageProviders, "Null selection returned");
+			Assert.AreEqual (1, pageProviders.Length,
+			                 "Less/More than one selected page returned");
+
+			IRawElementProviderSimple pageProvider = pageProviders[0];
+			
+			// TODO: flesh this out when we implement TabPageProvider
+			Assert.IsNotNull (pageProvider);
 		}
 		
 		[Test]

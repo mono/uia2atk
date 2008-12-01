@@ -1,5 +1,10 @@
 2008-12-01  Brad Taylor  <brad@getcoded.net>
 
+	* TabControlProviderTest.cs: Verify that GetSelection returns correct
+	values.
+
+2008-12-01  Brad Taylor  <brad@getcoded.net>
+
 	* TabControlProviderTest.cs: Test new ISelectionProvider
 	implementation.
 

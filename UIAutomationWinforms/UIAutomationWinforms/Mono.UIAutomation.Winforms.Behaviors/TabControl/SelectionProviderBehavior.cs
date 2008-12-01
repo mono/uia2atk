@@ -96,7 +96,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TabControl
 
 		public IRawElementProviderSimple[] GetSelection ()
 		{
-			return new IRawElementProviderSimple[0];
+			TabPageProvider prov
+				= ((TabControlProvider) Provider).GetSelectedTab ();
+			if (prov == null) {
+				return new IRawElementProviderSimple[0];
+			}
+			
+			return new IRawElementProviderSimple[] { prov };
 		}
 
 #endregion

@@ -77,6 +77,15 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 #endregion
+
+		internal TabPageProvider GetSelectedTab ()
+		{
+			if (control.SelectedTab == null) {
+				return null;
+			}
+
+			return new TabPageProvider (control.SelectedTab);
+		}
 		
 #region Private Fields
 
