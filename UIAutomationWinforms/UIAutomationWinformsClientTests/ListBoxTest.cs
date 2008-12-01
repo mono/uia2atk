@@ -50,13 +50,30 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
 		[Test]
 		public override void MsdnNamePropertyTest ()
 		{
-			throw new NotImplementedException ();
+			ListBox listbox = GetControl () as ListBox;
+			AutomationElement element = GetAutomationElementFromControl (listbox);
+			
+			listbox.Text = "listbox text";
+			Assert.AreEqual ("listbox text",
+				element.GetCurrentPropertyValue (AutomationElementIdentifiers.NameProperty, true),
+				"NameProperty");
+
+			listbox.Text = "other listbox text";
+			Assert.AreEqual ("other listbox text",
+				element.GetCurrentPropertyValue (AutomationElementIdentifiers.NameProperty, true),
+				"NameProperty");
 		}
 
 		[Test]
 		public override void MsdnLabeledByPropertyTest ()
 		{
-			throw new NotImplementedException ();
+			ListBox listbox = GetControl () as ListBox;
+			AutomationElement element = GetAutomationElementFromControl (listbox);
+			
+			listbox.Text = "listbox text";
+			Assert.AreEqual (null,
+				element.GetCurrentPropertyValue (AutomationElementIdentifiers.LabeledByProperty, true),
+				"LabeledByProperty");
 		}
 
 		[Test]
