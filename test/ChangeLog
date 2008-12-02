@@ -1,5 +1,10 @@
 2008-12-02  Calen Chen <cachen@novell.com>
 
+	* samples/statusstrip.py: delete ToolStripButton, modify items and event 
+	of ToolStripDropDownButton
+
+2008-12-02  Calen Chen <cachen@novell.com>
+
 	* testers/states.py: add CheckBoxListItem tuple inherit from ListItem
 	* testers/checkedlistbox/checkedlistboxframe.py: modify initiation of 
 	listbox1 and listbox2 because updated the example to adjust the order

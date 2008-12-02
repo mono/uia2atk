@@ -33,13 +33,22 @@ class RunApp(Form):
         """RunApp class init function."""
 
         self.Text = "StatusStrip control"
-        self.Width = 450
+        self.Width = 650
         self.Height = 200
+
+        #click button to change progressbar's process
+        self.button = Button()
+        self.button.Text = "button1"
+        self.button.Location = Point(10, 20)
+        self.button.AutoSize = True
+        self.button.Click += self.bc
+        self.Controls.Add(self.button)
 
         #set up label
         self.mainLabel1 = Label()
         self.mainLabel1.Text = "Examples for: StatusStrip."
         self.mainLabel1.AutoSize = True
+        self.mainLabel1.Location = Point(10, 60)
         self.Controls.Add(self.mainLabel1)
 
         #set StatusStrip:
@@ -56,55 +65,35 @@ class RunApp(Form):
         self.toolstripstatuslabel1.BorderSides = ToolStripStatusLabelBorderSides.Bottom
         self.toolstripstatuslabel1.Spring = True
 
-        #set ToolStripButton:
-        self.toolstripbutton1 = ToolStripButton("Click Me")
-        self.toolstripbutton1.Click += self.toolstripbutton1Click
-
         #add toolstripDropDownButton
         self.db = ToolStripDropDownButton()
-        self.dd = ToolStripDropDown()
         self.db.Text = "ToolStripDropDownButton"
-        self.db.DropDown = self.dd
+        self.db.DropDownDirection = ToolStripDropDownDirection.Left
+        self.db.ShowDropDownArrow = True
         
-        self.br = ToolStripButton()
-        self.br.ForeColor = Color.Red
-        self.br.Text = "Red"
-        self.br.Name = "Red"
-        self.bu = ToolStripButton()
-        self.bu.ForeColor = Color.Blue
-        self.bu.Text = "Blue"
-        self.bu.Name = "Blue"
-        self.br.Click += self.cc
-        self.bu.Click += self.cc
-        
-        self.dd.Items.Add(self.br)
-        self.dd.Items.Add(self.bu)
+        self.db.DropDownItems.Add("Red")
+        self.db.DropDownItems.Add("Blue")
+        self.db.DropDownItemClicked += self.db_click
 
         #add toolstripsplitbutton
         self.tssb = ToolStripSplitButton()
         self.tssb.Text = "ToolStripSplitButton"
-        self.tsmi1 = ToolStripMenuItem("Blue Color")
-        self.tsmi1.ForeColor = Color.Blue
-        self.tsmi2 = ToolStripMenuItem("Red Color")
-        self.tsmi2.ForeColor = Color.Red
-        self.tsmi1.Click += self.tsmi_c
-        self.tsmi2.Click += self.tsmi_c
 
-        self.tssb.DropDownItems.Add(self.tsmi1)
-        self.tssb.DropDownItems.Add(self.tsmi2)
+        self.tssb.DropDownItems.Add("Blue Color")
+        self.tssb.DropDownItems.Add("Red Color")
+        self.tssb.DropDownItemClicked += self.tssb_click
 
         #add toolstripprogressbar
         self.toolstripprogressbar1 = ToolStripProgressBar()
         self.toolstripprogressbar1.Enabled = True
-        self.toolstripprogressbar1.Name = "ToolStripProgressBar"
+        self.toolstripprogressbar1.Text = "ToolStripProgressBar"
         self.toolstripprogressbar1.ToolTipText = "ToolStripProgressBar"
         self.toolstripprogressbar1.Minimum = 0
         self.toolstripprogressbar1.Maximum = 100
         self.toolstripprogressbar1.Value = 0
-        self.toolstripprogressbar1.Step = 10
+        self.toolstripprogressbar1.Step = 20
 
         # add items into statusstrip
-        self.statusstrip1.Items.Add(self.toolstripbutton1)
         self.statusstrip1.Items.Add(self.toolstripstatuslabel1)
         self.statusstrip1.Items.Add(self.db)
         self.statusstrip1.Items.Add(self.tssb)
@@ -112,24 +101,27 @@ class RunApp(Form):
 
         self.Controls.Add(self.statusstrip1)
 
-    def toolstripbutton1Click(self, sender, event):
-        #MessageBox.Show("message box")
+    def bc(self, sender, event):
         if self.toolstripprogressbar1.Value < self.toolstripprogressbar1.Maximum:
             self.toolstripprogressbar1.Value = self.toolstripprogressbar1.Value + self.toolstripprogressbar1.Step
-            self.toolstripstatuslabel1.Text = "It is %d%% of 100%%" % self.toolstripprogressbar1.Value
+            self.mainLabel1.Text = "It is %d%% of 100%%" % self.toolstripprogressbar1.Value
         else:
-            self.toolstripstatuslabel1.Text = "Done"
+            self.mainLabel1.Text = "Done"
 
-    def cc(self, sender, event):
-        if sender == self.br:
-            self.mainLabel1.ForeColor = Color.Red
-        else:
-            self.mainLabel1.ForeColor = Color.Blue
+    def db_click(self, sender, event):
+        if event.ClickedItem.Text is "Red":
+            self.mainLabel1.Text = "You selected %s" % event.ClickedItem
+            self.mainLabel1.BackColor = Color.Red
+        elif event.ClickedItem.Text is "Blue":
+            self.mainLabel1.Text = "You selected %s" % event.ClickedItem
+            self.mainLabel1.BackColor = Color.Blue
 
-    def tsmi_c(self, sender, event):
-        if sender == self.tsmi1:
+    def tssb_click(self, sender, event):
+        if event.ClickedItem.Text is "Red Color":
+            self.toolstripstatuslabel1.Text = " You selected %s" % event.ClickedItem
             self.toolstripstatuslabel1.ForeColor = Color.Blue
-        else:
+        elif event.ClickedItem.Text is "Blue Color":
+            self.toolstripstatuslabel1.Text = " You selected %s" % event.ClickedItem
             self.toolstripstatuslabel1.ForeColor = Color.Red
     
 
