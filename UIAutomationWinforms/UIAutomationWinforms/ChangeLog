@@ -1,6 +1,13 @@
 2008-12-02  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: 
+	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: Add initial
+	implementation of MonthCalendarProvider.
+
+2008-12-02  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
 	* Mono.UIAutomation.Winforms/TabPageProvider.cs: 
 	* Mono.UIAutomation.Winforms/TabControlProvider.cs: 
 	* Mono.UIAutomation.Winforms.Behaviors/TabControl/SelectionProviderBehavior.cs: 

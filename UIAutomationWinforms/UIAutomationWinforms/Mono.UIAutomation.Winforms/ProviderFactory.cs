@@ -108,6 +108,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.WebBrowser wb;
 			SWF.Panel p;
 			SWF.MaskedTextBox mtb;
+			SWF.MonthCalendar mc;
 			
 			SWF.StatusStrip ss;
 			SWF.MenuStrip ms;
@@ -217,6 +218,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ListViewProvider (lv);
 			else if ((mtb = component as SWF.MaskedTextBox) != null)
 				provider = new MaskedTextBoxProvider (mtb);
+			else if ((mc = component as SWF.MonthCalendar) != null)
+				provider = new MonthCalendarProvider (mc);
 			else {
 				//TODO: We have to solve the problem when there's a Custom control
 				//	Ideally the first thing we do is send a wndproc message to

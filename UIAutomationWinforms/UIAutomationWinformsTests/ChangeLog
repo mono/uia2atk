@@ -1,5 +1,11 @@
 2008-12-02  Brad Taylor  <brad@getcoded.net>
 
+	* Makefile.am: 
+	* MonthCalendarProviderTest.cs: Add initial test for
+	MonthCalendarProvider.
+
+2008-12-02  Brad Taylor  <brad@getcoded.net>
+
 	* TabPageProviderTest.cs: Verify that IInvokeProvider is not
 	implemented, and don't test TabControl inadvertently.
 
