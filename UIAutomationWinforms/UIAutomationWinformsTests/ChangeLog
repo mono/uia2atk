@@ -1,5 +1,10 @@
 2008-12-02  Brad Taylor  <brad@getcoded.net>
 
+	* TabPageProviderTest.cs: Verify that IInvokeProvider is not
+	implemented, and don't test TabControl inadvertently.
+
+2008-12-02  Brad Taylor  <brad@getcoded.net>
+
 	* TabPageProviderTest.cs: Test ISelectionItemProvider interface.
 
 2008-12-02  Mike Gorse <mgorse@novell.com>

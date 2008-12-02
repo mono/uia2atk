@@ -127,7 +127,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsTrue (sel_item_prov.IsSelected, "Tab 0 was unselected");
 		}
 
-
 		[Test]
 		[ExpectedException (typeof (InvalidOperationException))]
 		public void ISelectionItemProvider_InvalidAddTest ()
@@ -161,6 +160,18 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			sel_item_prov.RemoveFromSelection ();
 		}
+
+		[Test]
+		public void IInvokeProviderNoTest ()
+		{
+			IRawElementProviderSimple provider
+				= ProviderFactory.GetProvider (tabPage1);
+
+			object invokeProvider
+				= provider.GetPatternProvider (
+					InvokePatternIdentifiers.Pattern.Id);
+			Assert.IsNull (invokeProvider, "Implements IInvokeProvider when Support: No");
+		}
 		
 		[Test]
 		public override void LabeledByAndNamePropertyTest ()
@@ -170,7 +181,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		protected override Control GetControlInstance ()
 		{
-			return new TabControl ();
+			return null;
 		}
 
 		private TabControl tabControl;
