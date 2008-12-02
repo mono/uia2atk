@@ -1,4 +1,11 @@
 2008-12-02  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTests.cs: Add StatusBarPanel test.
+
+	* BridgeTests.cs: Test states for ToolStrip.
+
+2008-12-02  Mike Gorse  <mgorse@novell.com>
+
 	* BridgeTests.cs: Add ToolStrip test.
 
 2008-12-01  Mike Gorse  <mgorse@novell.com>

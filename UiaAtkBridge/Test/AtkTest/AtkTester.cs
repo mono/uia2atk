@@ -713,6 +713,9 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ToolStrip:
 				role = Atk.Role.ToolBar;
 				break;
+			case BasicWidgetType.StatusBarPanel:
+				role = Atk.Role.Panel;
+				break;
 			default:
 				throw new NotImplementedException ();
 			}

@@ -1,5 +1,9 @@
 2008-12-02  Mike Gorse <mgorse@novell.com>
 
+* BasicWidgetType.cs, AtkTester.cs: Add StatusBarPanel.
+
+2008-12-02  Mike Gorse <mgorse@novell.com>
+
 	* BasicWidgetType.cs, AtkTester.cs: Add ToolStrip.
 
 2008-12-02  Andrés G. Aragoneses  <aaragoneses@novell.com>

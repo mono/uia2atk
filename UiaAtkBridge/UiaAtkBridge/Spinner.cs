@@ -74,7 +74,12 @@ namespace UiaAtkBridge
 				Notify ("accessible-value");
 				if (valueProvider == null)
 					NewText (e.NewValue.ToString ());
-			} else if (e.Property == RangeValuePatternIdentifiers.IsReadOnlyProperty || e.Property == ValuePatternIdentifiers.IsReadOnlyProperty) {
+			} else if (e.Property == RangeValuePatternIdentifiers.IsReadOnlyProperty) {
+				NotifyStateChange (Atk.StateType.Editable, !(bool)e.NewValue);
+			} else if (rangeValueProvider == null && e.Property == ValuePatternIdentifiers.IsReadOnlyProperty) {
+				// If we have both rangeValueProvider and
+				// Valueprovider, we'll get two notifications,
+				// so we should ignore one
 				NotifyStateChange (Atk.StateType.Editable, !(bool)e.NewValue);
 			} else if (e.Property == ValuePatternIdentifiers.ValueProperty) {
 				NewText ((string)e.NewValue);

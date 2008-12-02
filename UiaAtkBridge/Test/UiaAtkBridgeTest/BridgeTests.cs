@@ -503,6 +503,40 @@ namespace UiaAtkBridgeTest
 			InterfaceComponent (type, atkComponent);
 			if (accessible.NAccessibleChildren < 2)
 				Assert.Fail ("ToolStrip should have children");
+
+			States (accessible,
+				Atk.StateType.Enabled,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
+		}
+
+		[Test]
+		public void StatusBarPanel ()
+		{
+			BasicWidgetType type = BasicWidgetType.StatusBarPanel;
+
+			Atk.Object sb = GetAdapterForWidget (sb1);
+			sb1.ShowPanels = true;
+			SWF.StatusBarPanel panel1 = new SWF.StatusBarPanel ();
+			string panelText = "Panel 1";
+			panel1.Text = panelText;
+			sb1.Panels.Add (panel1);
+			Assert.AreEqual (1, sb.NAccessibleChildren, "StatusBar should have 1 child after panel is added");
+			Atk.Object panel = sb.RefAccessibleChild (0);
+			PropertyRole (type, panel);
+			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (panel);
+			InterfaceComponent (type, atkComponent);
+
+			Assert.AreEqual (panel.NAccessibleChildren, 0, "StatusBar panel should not have children");
+			Assert.AreEqual (panelText, panel.Name, "Panel name should match the text");
+			InterfaceText (panel, panelText);
+
+			States (panel,
+				Atk.StateType.Enabled,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
 		}
 	}
 }

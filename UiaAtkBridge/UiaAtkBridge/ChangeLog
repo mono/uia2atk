@@ -1,3 +1,11 @@
+2008-12-02  Mike Gorse  <mgorse@novell.com>
+
+	* TextLabel.cs: Set StatusBarPanel to Atk.Role.Panel to match spec.
+	  Do not set Atk.StateType.MultiLine for a StatusBarPanel.
+
+	* Spinner.cs: Avoid responding to duplicate ReadOnly events if
+	  both ValueProvider and RangeValueProvider are supported.
+
 2008-12-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AutomationBridge.cs: Coding guidelines.
