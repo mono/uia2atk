@@ -110,14 +110,14 @@ namespace UiaAtkBridge
 					if (providerAdapterMapping.TryGetValue (provider, out obj))
 						return obj as Adapter;
 					return null;
-				}
-				finally {
+				} finally {
 					alreadyInLookup = false;
 				}
 			}
 		}
 		
-		private static void RequestChildren (Atk.Object adapter, List<Atk.Object> alreadyRequestedChildren) {
+		private static void RequestChildren (Atk.Object adapter, List<Atk.Object> alreadyRequestedChildren)
+		{
 			if (alreadyRequestedChildren.Contains (adapter))
 				return;
 
