@@ -94,6 +94,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusStrip/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TabControl/SelectionProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TabPage/SelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs \
@@ -203,6 +204,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TabControl/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TabControl/SelectionPatternSelectionEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TabPage/SelectionItemPatternElementRemovedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TabPage/SelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/HasKeyBoardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueValueEvent.cs \
@@ -290,8 +293,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ToolTipProvider.cs \
 	Mono.UIAutomation.Winforms/UpDownBaseProvider.cs \
 	Mono.UIAutomation.Winforms/WebBrowserProvider.cs \
-	Mono.UIAutomation.Winforms/WordToken.cs \
 	Mono.UIAutomation.Winforms/WordTokenCollection.cs \
+	Mono.UIAutomation.Winforms/WordToken.cs \
 	Mono.UIAutomation.Winforms/WordTokenizer.cs 
 
 DATA_FILES = 

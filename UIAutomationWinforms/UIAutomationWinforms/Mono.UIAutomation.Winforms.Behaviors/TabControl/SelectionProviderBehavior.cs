@@ -24,11 +24,11 @@
 // 
 
 using System;
-using SWF = System.Windows.Forms;
 using System.Windows.Automation;
-using System.Windows.Automation.Provider;
+using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
+using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Events.TabControl;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.TabControl

@@ -21,21 +21,25 @@
 // 
 // Authors: 
 //	Brad Taylor <brad@getcoded.net>
-// 
+//
 
 using System;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Windows.Automation;
-using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Winforms.Behaviors.TabPage;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class TabPageProvider : FragmentControlProvider
+	internal class TabPageProvider
+		: FragmentControlProvider
 	{
 		public TabPageProvider (TabPage control) : base (control)
 		{
+			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
+				     new SelectionItemProviderBehavior (this));
 		}
 		
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -46,6 +50,19 @@ namespace Mono.UIAutomation.Winforms
 				return "tab item";
 
 			return base.GetProviderPropertyValue (propertyId);
+		}
+
+		internal TabControlProvider TabControlProvider {
+			get { return (TabControlProvider) Navigate (NavigateDirection.Parent); }
+		}
+
+		internal bool IsSelected {
+			get {
+				if (TabControlProvider == null)
+					return false;
+
+				return TabControlProvider.IsItemSelected (this);
+			}
 		}
 	}
 }

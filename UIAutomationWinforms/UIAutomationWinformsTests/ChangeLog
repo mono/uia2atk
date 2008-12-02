@@ -1,3 +1,7 @@
+2008-12-02  Brad Taylor  <brad@getcoded.net>
+
+	* TabPageProviderTest.cs: Test ISelectionItemProvider interface.
+
 2008-12-02  Mike Gorse <mgorse@novell.com>
 
 	* DomainUpDownProviderTest.cs: Test setting value when ReadOnly.

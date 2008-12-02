@@ -42,19 +42,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			this.control = control;
 
-			// ISelectionProvider
-			// IsSelectionRequired
-			// CanSelectMultiple
-			// IScrollProvider
-
-			// Events:
-			// Depends -- 
-			// HorizontallyScrollableProperty
-			// HorizontalScrollPercentProperty
-			// HorizontalViewSizeProperty
-			// VerticalScrollPercentProperty
-			// VerticalViewSizeProperty
-			// StructureChangedEvent ??
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
 				     new SelectionProviderBehavior (this));
 		}
@@ -78,6 +65,10 @@ namespace Mono.UIAutomation.Winforms
 
 #endregion
 
+		internal bool HasSelection {
+			get { return (control.SelectedIndex > -1); }
+		}
+
 		internal TabPageProvider GetSelectedTab ()
 		{
 			if (control.SelectedTab == null) {
@@ -85,6 +76,16 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			return new TabPageProvider (control.SelectedTab);
+		}
+
+		internal void SelectItem (TabPageProvider tabPage)
+		{
+			control.SelectedTab = (TabPage) tabPage.Control;
+		}
+
+		internal bool IsItemSelected (TabPageProvider tabPage)
+		{
+			return (control.SelectedTab == (TabPage) tabPage.Control);
 		}
 		
 #region Private Fields

@@ -1,3 +1,14 @@
+2008-12-02  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/TabPageProvider.cs: 
+	* Mono.UIAutomation.Winforms/TabControlProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/TabControl/SelectionProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/TabPage/SelectionItemProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/TabPage/SelectionItemPatternElementRemovedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/TabPage/SelectionItemPatternElementSelectedEvent.cs:
+	Implement ISelectionItemProvider for TabPage.
+
 2008-12-02  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ValueProvider.cs:
