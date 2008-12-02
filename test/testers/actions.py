@@ -5,6 +5,8 @@ class Button(object):
     RELEASE = "release"
 
     actions = (CLICK,)
+class ToggleButton(Button):
+    pass
 
 class TableColumnHeader(Button):
     pass

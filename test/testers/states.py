@@ -205,6 +205,9 @@ VISITED = "visited"
 class Button(object):
     states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
 
+class ToggleButton(object):
+    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
+
 class RadioButton(object):
     states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
 

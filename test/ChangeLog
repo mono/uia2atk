@@ -1,5 +1,18 @@
 2008-12-02  Calen Chen <cachen@novell.com>
 
+	* testers/states.py: add ToggleButton states tuple
+	* testers/actions.py: add ToggleButton actions tuple
+	* samples/statusstrip.py: add button1 to be clicked to change value of
+	toolstripprogressbar
+	* testers/statusstrip/statusstripframe.py: search for statusstrip with 
+	"status bar" role, search for all children under statusstrip in init
+	* testers/statusstrip_basic_ops.py: test states and actions of 
+	statusstrip, toolstriplabel, toolstripdropdownbutton, 
+	toolstripsplitbutton, and toolstripprogressbar. assert label is changed
+	after click button1 and menu items
+
+2008-12-02  Calen Chen <cachen@novell.com>
+
 	* samples/statusstrip.py: delete ToolStripButton, modify items and event 
 	of ToolStripDropDownButton
 

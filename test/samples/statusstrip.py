@@ -104,9 +104,9 @@ class RunApp(Form):
     def bc(self, sender, event):
         if self.toolstripprogressbar1.Value < self.toolstripprogressbar1.Maximum:
             self.toolstripprogressbar1.Value = self.toolstripprogressbar1.Value + self.toolstripprogressbar1.Step
-            self.mainLabel1.Text = "It is %d%% of 100%%" % self.toolstripprogressbar1.Value
+            self.toolstripstatuslabel1.Text = "It is %d%% of 100%%" % self.toolstripprogressbar1.Value
         else:
-            self.mainLabel1.Text = "Done"
+            self.toolstripstatuslabel1.Text = "Done"
 
     def db_click(self, sender, event):
         if event.ClickedItem.Text is "Red":
@@ -118,11 +118,11 @@ class RunApp(Form):
 
     def tssb_click(self, sender, event):
         if event.ClickedItem.Text is "Red Color":
-            self.toolstripstatuslabel1.Text = " You selected %s" % event.ClickedItem
-            self.toolstripstatuslabel1.ForeColor = Color.Blue
-        elif event.ClickedItem.Text is "Blue Color":
-            self.toolstripstatuslabel1.Text = " You selected %s" % event.ClickedItem
+            self.toolstripstatuslabel1.Text = "You selected %s" % event.ClickedItem
             self.toolstripstatuslabel1.ForeColor = Color.Red
+        elif event.ClickedItem.Text is "Blue Color":
+            self.toolstripstatuslabel1.Text = "You selected %s" % event.ClickedItem
+            self.toolstripstatuslabel1.ForeColor = Color.Blue
     
 
 form = RunApp()

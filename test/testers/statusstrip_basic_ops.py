@@ -10,7 +10,8 @@
 
 # The docstring below  is used in the generated log file
 """
-Test accessibility of statusstrip widget
+Test accessibility of statusstrip widget which include toolstriplabel, 
+toolstripdropdownbutton, toolstripsplitbutton and toolstripprogressbar.
 """
 
 # imports
@@ -45,79 +46,64 @@ if app is None:
 # just an alias to make things shorter
 ssFrame = app.statusStripFrame
 
-#check for statusbar role
-ssFrame.assertStatusBar()
-
 #check statusbar's states
-statesCheck(ssFrame.statusbar, "StatusBar")
+statesCheck(ssFrame.statusstrip, "StatusBar")
 
 #############################################################################
-#test status and values of ToolStripProgressBar and ToolStripStatusLabel in 
+#test status and value of ToolStripProgressBar and ToolStripStatusLabel in 
 #StatusStrip
 #############################################################################
 statesCheck(ssFrame.ProgressBar, "ProgressBar")
 statesCheck(ssFrame.StripLabel, "Label")
 
 #click StripButton the first time
-ssFrame.click(ssFrame.StripButton)
+ssFrame.click(ssFrame.button)
 sleep(config.SHORT_DELAY)
-ssFrame.assertLabel(ssFrame.StripLabel, "10%")
+ssFrame.assertLabel(ssFrame.StripLabel, "It is 20% of 100%")
+ssFrame.assertProgressBarValue(ssFrame.ProgressBar, 20)
 
 #click StripButton the second time
-ssFrame.click(ssFrame.StripButton)
+ssFrame.click(ssFrame.button)
 sleep(config.SHORT_DELAY)
-ssFrame.assertValue(ssFrame.ProgressBar, 20)
-
-#click StripButton the third time
-ssFrame.click(ssFrame.StripButton)
-sleep(config.SHORT_DELAY)
-ssFrame.assertLabel(ssFrame.StripLabel, "30%")
-
-#click StripButton the fourth time
-ssFrame.click(ssFrame.StripButton)
-sleep(config.SHORT_DELAY)
-ssFrame.assertValue(ssFrame.ProgressBar, 40)
+ssFrame.assertLabel(ssFrame.StripLabel, "It is 40% of 100%")
+ssFrame.assertProgressBarValue(ssFrame.ProgressBar, 40)
 
 ###############################################################
 #test ToolStripDropDownButton's states and actions in StatusStrip
 ###############################################################
-actionCheck(ssFrame.DropDownButton, "Button")
-actionCheck(ssFrame.DropDownButton_item1, "MenuItem")
-actionCheck(ssFrame.DropDownButton_item2, "MenuItem")
+actionsCheck(ssFrame.DropDownButton_item1, "MenuItem")
+actionsCheck(ssFrame.DropDownButton_item2, "MenuItem")
 
-statesCheck(ssFrame.DropDownButton, "Button")
 statesCheck(ssFrame.DropDownButton_item1, "MenuItem")
 statesCheck(ssFrame.DropDownButton_item2, "MenuItem")
 
 ssFrame.click(ssFrame.DropDownButton_item1)
 sleep(config.SHORT_DELAY)
-ssFrame.assertTextColor(ssFrame.MainLabel, "Red")
+ssFrame.assertLabel(ssFrame.MainLabel, "You selected Red")
 
 ssFrame.click(ssFrame.DropDownButton_item2)
 sleep(config.SHORT_DELAY)
-ssFrame.assertTextColor(ssFrame.MainLabel, "Blue")
+ssFrame.assertLabel(ssFrame.MainLabel, "You selected Blue")
 
 ###############################################################
 #test ToolStripSplitButton's states and actions in StatusStrip
 ###############################################################
-actionCheck(ssFrame.SplitButton, "Button")
-actionCheck(ssFrame.SplitButton_item1, "MenuItem")
-actionCheck(ssFrame.SplitButton_item2, "MenuItem")
+actionsCheck(ssFrame.SplitButton_item1, "MenuItem")
+actionsCheck(ssFrame.SplitButton_item2, "MenuItem")
 
-statesCheck(ssFrame.SplitButton, "Button")
 statesCheck(ssFrame.SplitButton_item1, "MenuItem")
 statesCheck(ssFrame.SplitButton_item2, "MenuItem")
 
 ssFrame.click(ssFrame.SplitButton_item1)
 sleep(config.SHORT_DELAY)
-ssFrame.assertTextColor(ssFrame.StripLabel, "Blue")
+ssFrame.assertLabel(ssFrame.StripLabel, "You selected Blue Color")
 
 ssFrame.click(ssFrame.SplitButton_item2)
 sleep(config.SHORT_DELAY)
-ssFrame.assertTextColor(ssFrame.StripLabel, "Red")
+ssFrame.assertLabel(ssFrame.StripLabel, "You selected Red Color")
 
 
 #close application frame window
-sbFrame.quit()
+ssFrame.quit()
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
