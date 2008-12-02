@@ -1,3 +1,7 @@
+2008-12-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BasicWidgetType.cs: Add FIXME.
+
 2008-12-02  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs: Test EditableText when ReadOnly.

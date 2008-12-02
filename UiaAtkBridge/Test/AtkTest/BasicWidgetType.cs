@@ -98,6 +98,8 @@ namespace UiaAtkBridgeTest
 		}
 
 		public static string LookForParentDir (string pattern) {
+			//FIXME: it seems we should use this when bnc#450433 is fixed:
+			//string imgDir =  System.IO.Path.GetDirectoryName (System.Reflection.Assembly.GetExecutingAssembly ().CodeBase);
 			string imgDir = System.IO.Directory.GetCurrentDirectory ();
 			
 			while (imgDir != "/"){
