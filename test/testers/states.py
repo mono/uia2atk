@@ -232,8 +232,8 @@ class HScrollBar(object):
 class StatusBar(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
-class StatusBarPanel(object):
-    states = (ENABLED, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
+class StatusBarPanel(Label):
+    pass
 
 class List(object):
     #states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
@@ -243,8 +243,14 @@ class ListItem(object):
     #states = (ENABLED, FOCUSABLE, SELECTABLE, SENSITIVE, SHOWING, VISIBLE)
     states = (ENABLED, FOCUSABLE, SELECTABLE, SENSITIVE, SHOWING, SINGLE_LINE, TRANSIENT, VISIBLE)
 
+class CheckBoxListItem(ListItem):
+    pass
+
 class ProgressBar(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
+
+class ToolStripProgressBar(ProgressBar):
+    pass
 
 class NumericUpDown(object):
     states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)

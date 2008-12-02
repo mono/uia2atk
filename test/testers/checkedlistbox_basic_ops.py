@@ -49,39 +49,36 @@ actionsCheck(clbFrame.listitem[0], "CheckedListItem")
 actionsCheck(clbFrame.listitem[20], "CheckedListItem")
 
 ########Check States after doing Click, Taggle, mouseClick, keyCombo
-#check list's states
-statesCheck(clbFrame.listbox1, "List")
+#check list's states, list1 with focused
+statesCheck(clbFrame.listbox1, "List", add_states=["focused"])
 statesCheck(clbFrame.listbox2, "List")
 
 #check default states for ListItem 0 which in "CheckOnClick is True" list
-statesCheck(clbFrame.listitem[0], "ListItem")
+statesCheck(clbFrame.listitem[0], "CheckBoxListItem")
 #check default states for ListItem 20 which in "CheckOnClick is False" list
-statesCheck(clbFrame.listitem[20], "ListItem", add_states=["focused"])
+statesCheck(clbFrame.listitem[20], "CheckBoxListItem")
 
-#use keyCombo with "Tab" to change the focus from listitem 20 to listitem 0
+#use keyCombo with "Tab" to change the focus from listbox1 to listbox2
 clbFrame.keyCombo("Tab", grabFocus = False)
-statesCheck(clbFrame.listitem[0], "ListItem", add_states=["focused"])
+statesCheck(clbFrame.listbox1, "List")
+statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 
-statesCheck(clbFrame.listitem[20], "ListItem")
-
-#click listitem 1 to rise selected state
-clbFrame.click(clbFrame.listitem[1])
-sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[1], "ListItem", add_states=["focused", "selected"])
-
-#use keyCombo with "Tab" and "Space" key to focus and check listitem20
-clbFrame.keyCombo("Tab", grabFocus = False)
+#use keyCombo with "Space" key to check listitem20
 clbFrame.keyCombo("space", grabFocus = False)
-statesCheck(clbFrame.listitem[20], "ListItem", add_states=["focused", "checked"])
+statesCheck(clbFrame.listitem[20], "ListItem", add_states=["checked"])
 #press "space" again to uncheck but still focused
 clbFrame.keyCombo("space", grabFocus = False)
-statesCheck(clbFrame.listitem[20], "ListItem", add_states=["focused"])
+statesCheck(clbFrame.listitem[20], "ListItem")
 
-#click listitem 21 to rise selected state, because focus has moved to list2 so 
-#click action also would rise focused state for listitem
+#do "click" listitem 1 to rise selected state
+clbFrame.click(clbFrame.listitem[1])
+sleep(config.SHORT_DELAY)
+statesCheck(clbFrame.listitem[1], "ListItem", add_states=["selected"])
+
+#do "click" listitem 21 to rise selected state
 clbFrame.click(clbFrame.listitem[21])
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[21], "ListItem", add_states=["focused", "selected"])
+statesCheck(clbFrame.listitem[21], "ListItem", add_states=["selected"])
 
 #toggle to check/uncheck listitem2 which wouldn't rise selected state
 clbFrame.toggle(clbFrame.listitem[2])
@@ -101,28 +98,32 @@ clbFrame.toggle(clbFrame.listitem[22])
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[22], "ListItem")
 
-#mouse click listitem 3 to focused, checked and selected
+#mouse click listitem 3 to checked and selected, focus to listbox1
 clbFrame.mouseClick(log=False)
 clbFrame.listitem[3].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[3], "ListItem", add_states=["focused", "selected", "checked"])
-#mouse click listitem 3 again to uncheck it, but still with focused and selected
+statesCheck(clbFrame.listitem[3], "ListItem", add_states=["selected", "checked"])
+statesCheck(clbFrame.listbox1, "List", add_states=["focused"])
+#mouse click listitem 3 again to uncheck it, but listbox1 still with focused
 clbFrame.listitem[3].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[3], "ListItem", add_states=["focused", "selected"])
+statesCheck(clbFrame.listitem[3], "ListItem", add_states=["selected"])
+statesCheck(clbFrame.listbox1, "List", add_states=["focused"])
 
-#mouse click listitem 23 to selected
+#mouse click listitem 23 to selected, focus to listbox2
 clbFrame.listitem[23].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[23], "ListItem", add_states=["focused", "selected"])
-#mouse click listitem 23 again to checked, still with focused and selected
+statesCheck(clbFrame.listitem[23], "ListItem", add_states=["selected"])
+statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
+#mouse click listitem 23 again to checked
 clbFrame.listitem[23].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[23], "ListItem", add_states=["focused", "selected", "checked"])
-#mouse click listitem 23 again to uncheck it, still with focused and selected
+statesCheck(clbFrame.listitem[23], "ListItem", add_states=["selected", "checked"])
+#mouse click listitem 23 again to uncheck it, listbox2 still with focused
 clbFrame.listitem[23].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[23], "ListItem", add_states=["focused", "selected"])
+statesCheck(clbFrame.listitem[23], "ListItem", add_states=["selected"])
+statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 
 ########check list selection implementation
 #select item by childIndex to rise selected state
@@ -132,19 +133,21 @@ statesCheck(clbFrame.listitem[0], "ListItem", add_states=["selected"])
 
 clbFrame.assertSelectionChild(clbFrame.listbox2, 0)
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[20], "ListItem", add_states=["focused", "selected"])
+statesCheck(clbFrame.listitem[20], "ListItem", add_states=["selected"])
 
-#clear selection to get rid of selected state
+#clear selection to get rid of selected state, listbox2 with focused
 clbFrame.assertClearSelection(clbFrame.listbox1)
 sleep(config.SHORT_DELAY)
 statesCheck(clbFrame.listitem[0], "ListItem")
+statesCheck(clbFrame.listbox1, "List")
 
 clbFrame.assertClearSelection(clbFrame.listbox2)
 sleep(config.SHORT_DELAY)
-statesCheck(clbFrame.listitem[20], "ListItem", add_states=["focused"])
+statesCheck(clbFrame.listitem[20], "ListItem")
+statesCheck(clbFrame.listbox2, "List", add_states=["focused"])
 
 ########mouseClick and Toggle listitem to change label's text
-#one time mouseClick listitems in checkedlistbox1 would change label's text
+#one time mouseClick listitems in listbox1 would change label's text
 #check listitem 2 to change label to "Item 2 Checked"
 clbFrame.listitem[2].mouseClick()
 sleep(config.SHORT_DELAY)
@@ -154,7 +157,7 @@ clbFrame.listitem[5].mouseClick()
 sleep(config.SHORT_DELAY)
 clbFrame.assertLabel(5, '2 5')
 
-#two times mouseClick listitems in checkedlistbox2 would change label's text
+#two times mouseClick listitems in listbox2 would change label's text
 #selecte listitem 20 by mouseClick in one time doesn't change label text
 clbFrame.listitem[20].mouseClick()
 sleep(config.SHORT_DELAY)
@@ -168,7 +171,7 @@ clbFrame.listitem[20].mouseClick()
 sleep(config.SHORT_DELAY)
 clbFrame.assertLabel(20, newlabel="Item 20 Unchecked")
 
-#in checkedlistbox1 toggle action would rise checked but doesn't change label 
+#in listbox1 toggle action would rise checked but doesn't change label 
 #but click action can change label because using SelectedIndexChanged event
 clbFrame.toggle(clbFrame.listitem[0])
 sleep(config.SHORT_DELAY)
@@ -186,7 +189,7 @@ clbFrame.click(clbFrame.listitem[2])
 sleep(config.SHORT_DELAY)
 clbFrame.assertLabel(0, '0 5')
 
-#in checkedlistbox2 "toggle" action would check listitem and change label, 
+#in listbox2 "toggle" action would check listitem and change label, 
 #"click" action would selecte listitem but doesn't change label because using
 #ItemCheck event
 clbFrame.click(clbFrame.listitem[21])
