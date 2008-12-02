@@ -1,3 +1,6 @@
+2008-12-02  Mike Gorse  <mgorse@novell.com>
+	* BridgeTests.cs: Add ToolStrip test.
+
 2008-12-01  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTester.cs: Add SetReadOnly.

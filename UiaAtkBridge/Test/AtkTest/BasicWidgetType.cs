@@ -69,7 +69,8 @@ namespace UiaAtkBridgeTest
 		ErrorProvider,
 		StatusStrip,
 		ToolStripDropDownButton,
-		ToolStripSplitButton
+		ToolStripSplitButton,
+		ToolStrip
 	}
 
 //	public class MenuLayout

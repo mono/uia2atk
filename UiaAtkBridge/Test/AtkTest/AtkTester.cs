@@ -710,6 +710,9 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ToolStripDropDownButton:
 				role = Atk.Role.MenuItem;
 				break;
+			case BasicWidgetType.ToolStrip:
+				role = Atk.Role.ToolBar;
+				break;
 			default:
 				throw new NotImplementedException ();
 			}
