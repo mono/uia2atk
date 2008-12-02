@@ -1,5 +1,11 @@
 2008-12-02  Brad Taylor  <brad@getcoded.net>
 
+	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: Add a DataGrid
+	child of MonthCalendar, a Header child of DataGrid and a HeaderItem
+	child of Header.
+
+2008-12-02  Brad Taylor  <brad@getcoded.net>
+
 	* Makefile.am: 
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: 
 	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: Add initial

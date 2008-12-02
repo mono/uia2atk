@@ -1,5 +1,10 @@
 2008-12-02  Brad Taylor  <brad@getcoded.net>
 
+	* MonthCalendarProviderTest.cs: Test navigation and contents of
+	HeaderItem children.
+
+2008-12-02  Brad Taylor  <brad@getcoded.net>
+
 	* Makefile.am: 
 	* MonthCalendarProviderTest.cs: Add initial test for
 	MonthCalendarProvider.

@@ -37,32 +37,96 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	[TestFixture]
 	public class MonthCalendarProviderTest : BaseProviderTest
 	{
+		private MonthCalendar calendar;
+		private IRawElementProviderSimple calendarProvider;
+
+		[SetUp]
+		public override void SetUp ()
+		{
+			base.SetUp ();
+
+			calendar = (MonthCalendar) GetControlInstance ();
+			Form.Controls.Add (calendar);
+			Form.Show ();
+
+			calendarProvider
+				= ProviderFactory.GetProvider (calendar);
+		}
+
 		[Test]
 		public void BasicPropertiesTest ()
 		{
-			MonthCalendar cal = (MonthCalendar) GetControlInstance ();
-			IRawElementProviderSimple provider
-				= ProviderFactory.GetProvider (cal);
-			
-			TestProperty (provider,
+			TestProperty (calendarProvider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
 			              ControlType.Calendar.Id);
 			
-			TestProperty (provider,
+			TestProperty (calendarProvider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "calendar");
+		}
 
+		[Test]
+		public void NavigationTest ()
+		{
 			IRawElementProviderFragmentRoot rootProvider
-				= (IRawElementProviderFragmentRoot) provider;
+				= (IRawElementProviderFragmentRoot) calendarProvider;
 
-			object child;
-			child = rootProvider.Navigate (NavigateDirection.FirstChild);
-			Console.WriteLine ("Has children? {0}", child != null);
+			IRawElementProviderSimple child
+				= rootProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (child, "MonthCalendar has no children");
+
+			TestProperty (child,
+			              AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.DataGrid.Id);
+			TestProperty (child,
+			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
+			              "data grid");
+
+			IRawElementProviderSimple header
+				= ((IRawElementProviderFragmentRoot) child).Navigate (
+					NavigateDirection.FirstChild);
+			Assert.IsNotNull (header, "MonthCalendarDataGrid has no children");
+
+			TestProperty (header,
+			              AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.Header.Id);
+			TestProperty (header,
+			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
+			              "header");
+
+			int numChildren = 0;
+
+			IRawElementProviderSimple headerItem
+				= ((IRawElementProviderFragmentRoot) header).Navigate (
+						NavigateDirection.FirstChild);
+			while (headerItem != null) {
+				TestProperty (headerItem,
+					      AutomationElementIdentifiers.ControlTypeProperty,
+					      ControlType.HeaderItem.Id);
+				TestProperty (headerItem,
+					      AutomationElementIdentifiers.LocalizedControlTypeProperty,
+					      "header item");
+				
+				Assert.AreEqual (any_given_sunday.AddDays (numChildren).ToString ("ddd"),
+				                 headerItem.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
+				                 "Day name in header is incorrect");
+				
+				numChildren++;
+				headerItem = ((IRawElementProviderFragment) headerItem)
+					.Navigate (NavigateDirection.NextSibling);
+			}
+
+			Assert.AreEqual (DAYS_IN_WEEK, numChildren, "Not returning the correct number of days in a week");
 		}
 
 		protected override Control GetControlInstance ()
 		{
 			return new MonthCalendar ();
 		}
+
+		// XXX: This will only work in a Gregorian calendar.
+		private const int DAYS_IN_WEEK = 7;
+
+		private DateTime any_given_sunday = new DateTime (2008, 12, 7);
 	}
 }
