@@ -1,3 +1,8 @@
+2008-12-01  Mike Gorse <mgorse@novell.com>
+
+	* Makefile.am, UIAutomationBridge.mdp,
+	  Mono.UIAutomation.Bridge/EditableRange.cs: Add EditableRange.cs.
+
 2008-11-18  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationBridge.mdp: Add makefile integration.

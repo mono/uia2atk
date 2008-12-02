@@ -1,3 +1,11 @@
+2008-12-01  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Add SetReadOnly.
+	* AtkTester.cs: Test component for Spinner.
+	* AtkTests.cs: Test Editable state for Spinner.
+
+	* AtkTester.cs: Fix some assert strings.
+
 2008-12-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Fix typo.

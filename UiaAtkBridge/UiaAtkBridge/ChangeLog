@@ -1,3 +1,10 @@
+2008-12-01  Mike Gorse  <mgorse@novell.com>
+
+	* Spinner.cs: Set a NumericUpDown's text for AtkEditableText
+	  methods (but do not change numeric value). [bug 450371]
+
+	* Spinner.cs: Only set Editable state when not readonly [bug 450358]
+
 2008-12-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* RadioButton.cs:

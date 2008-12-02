@@ -27,16 +27,19 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Bridge;
 
 namespace UiaAtkBridge
 {
 	/// <summary>
-	/// Adapter for a ControlType.Spinner that does not implement ValuePattern.
+	/// Adapter for a ControlType.Spinner that does not implement SelectionPattern.
 	/// </summary>
 	public abstract class Spinner : ComponentAdapter, Atk.TextImplementor, Atk.EditableTextImplementor
 	{
 		#region Fields
 		protected IRangeValueProvider rangeValueProvider;
+		protected IValueProvider valueProvider;
+		protected IEditableRange editableRange = null;
 		internal TextImplementorHelper textExpert = null;
 		#endregion
 
@@ -47,10 +50,13 @@ namespace UiaAtkBridge
 			Name = text;
 			Role = Atk.Role.SpinButton;
 			rangeValueProvider = (IRangeValueProvider)provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
-			if (rangeValueProvider != null)
+			if (rangeValueProvider != null) {
+				editableRange = rangeValueProvider as IEditableRange;
 				text = rangeValueProvider.Value.ToString ();
+			}
 			else
 				text = String.Empty;
+			valueProvider = (IValueProvider)provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
 			textExpert = new TextImplementorHelper (text, this);
 		}
 		#endregion
@@ -66,7 +72,12 @@ namespace UiaAtkBridge
 		{
 			if (e.Property == RangeValuePatternIdentifiers.ValueProperty) {
 				Notify ("accessible-value");
-				NewText (e.NewValue.ToString ());
+				if (valueProvider == null)
+					NewText (e.NewValue.ToString ());
+			} else if (e.Property == RangeValuePatternIdentifiers.IsReadOnlyProperty || e.Property == ValuePatternIdentifiers.IsReadOnlyProperty) {
+				NotifyStateChange (Atk.StateType.Editable, !(bool)e.NewValue);
+			} else if (e.Property == ValuePatternIdentifiers.ValueProperty) {
+				NewText ((string)e.NewValue);
 			} else
 				base.RaiseAutomationPropertyChangedEvent (e);
 		}
@@ -75,7 +86,12 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			states.AddState (Atk.StateType.SingleLine);
-			states.AddState (Atk.StateType.Editable);
+
+			if (!ReadOnly)
+				states.AddState (Atk.StateType.Editable);
+			else
+				states.RemoveState (Atk.StateType.Editable);
+
 			return states;
 		}
 		#endregion
@@ -203,7 +219,12 @@ namespace UiaAtkBridge
 				
 				// It's a numeric spinner; do not set
 				// the number until DoAction called
-				NewText (value);
+				if (editableRange != null)
+					editableRange.BeginEdit ();
+			if (valueProvider != null)
+					valueProvider.SetValue (value);
+				else
+					NewText (value);
 			}
 		}
 
@@ -236,7 +257,6 @@ namespace UiaAtkBridge
 				end_pos = length;
 			if (start_pos > end_pos)
 				start_pos = end_pos;
-Console.WriteLine ("start_pos " + start_pos + " end_pos " + end_pos);
 			TextContents = textExpert.Text.Substring (0, start_pos)
 				+ textExpert.Text.Substring (end_pos);
 		}
@@ -267,6 +287,14 @@ Console.WriteLine ("start_pos " + start_pos + " end_pos " + end_pos);
 			textExpert = new TextImplementorHelper (newText, this);
 			adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                 newText == null ? 0 : newText.Length);
+		}
+
+		protected virtual bool ReadOnly {
+			get {
+				if (rangeValueProvider != null)
+					return (bool) Provider.GetPropertyValue (RangeValuePatternIdentifiers.IsReadOnlyProperty.Id);
+				return false;
+			}
 		}
 		#endregion
 
@@ -376,8 +404,17 @@ Console.WriteLine ("start_pos " + start_pos + " end_pos " + end_pos);
 			    val < rangeValueProvider.Minimum)
 				return false;
 			
-			rangeValueProvider.SetValue (double.Parse (textExpert.Text));
+			if (editableRange != null)
+				editableRange.EndEdit ();
+			else
+				rangeValueProvider.SetValue (double.Parse (textExpert.Text));
 			return true;
+		}
+
+		protected override bool ReadOnly {
+			get {
+				return (bool) Provider.GetPropertyValue (RangeValuePatternIdentifiers.IsReadOnlyProperty.Id);
+			}
 		}
 		#endregion
 	}

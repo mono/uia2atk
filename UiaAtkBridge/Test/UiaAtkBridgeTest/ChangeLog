@@ -1,3 +1,7 @@
+2008-12-01  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTester.cs: Add SetReadOnly.
+
 2008-11-26  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTests.cs, BridgeTester.cs: Test SWF.Panel.

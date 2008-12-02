@@ -49,6 +49,9 @@ namespace Mono.UIAutomation.Winforms
 		{
 			UpDownBase upDownBase = (UpDownBase) Control;
 			
+			SetBehavior (ValuePatternIdentifiers.Pattern,
+			             new ValueProviderBehavior (this));
+
 			if (forwardButton == null) {
 				forwardButton = new UpDownBaseButtonProvider (upDownBase,
 				                                              UpDownBaseButtonOrientation.Forward);

@@ -233,6 +233,16 @@ namespace UiaAtkBridgeTest
 				throw new NotSupportedException ();
 		}
 		
+		public override void SetReadOnly (Atk.Object accessible, bool readOnly)
+		{
+			System.ComponentModel.Component comp = mappings [accessible];
+
+			if (comp is SWF.UpDownBase)
+				((SWF.UpDownBase)comp).ReadOnly = readOnly;
+			else
+				throw new NotSupportedException ();
+		}
+
 		public override I CastToAtkInterface <I> (Atk.Object accessible)
 		{
 			if (typeof (I) == typeof (Atk.Component)) {

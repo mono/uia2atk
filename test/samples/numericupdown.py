@@ -37,6 +37,8 @@ class NumericUpDownApp(Form):
         self.numercupdown1.Maximum = 2500
         self.numercupdown1.Minimum = -100
         self.numercupdown1.Increment  = 20
+        self.numercupdown1.ReadOnly = False
+        self.numercupdown1.UserEdit = True
 
         self.Controls.Add(self.numercupdown1)
 

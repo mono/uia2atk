@@ -59,9 +59,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.Initialize ();
 			
-			SetBehavior (ValuePatternIdentifiers.Pattern,
-			             new ValueProviderBehavior (this));
-
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
 			             new SelectionProviderBehavior (this));
 			

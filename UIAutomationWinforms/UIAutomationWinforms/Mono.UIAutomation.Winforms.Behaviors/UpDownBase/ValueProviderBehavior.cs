@@ -40,7 +40,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 		public ValueProviderBehavior (UpDownBaseProvider provider)
 			: base (provider)
 		{
-			this.domainUpDown = (SWF.DomainUpDown) provider.Control;
+			this.upDownBase = (SWF.UpDownBase) provider.Control;
 		}
 		
 		#endregion
@@ -82,16 +82,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 		#region IValueProvider Members
 		
 		public bool IsReadOnly {
-			get { return domainUpDown.ReadOnly; }
+			get { return upDownBase.ReadOnly; }
 		}
 		
 		public string Value {
-			get { return domainUpDown.Text; }
+			get { return upDownBase.Text; }
 		}
 		
 		public void SetValue (string value)
 		{
-			if (!domainUpDown.Enabled)
+			if (!upDownBase.Enabled)
 				throw new ElementNotEnabledException ();
 			
 			PerformSetValue (value);
@@ -103,23 +103,23 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 		
 		private void PerformSetValue (string value) 
 		{
-			if (domainUpDown.InvokeRequired == true) {
-				domainUpDown.BeginInvoke (new DomainUpDownSetValueDelegate (PerformSetValue),
+			if (upDownBase.InvokeRequired == true) {
+				upDownBase.BeginInvoke (new UpDownBaseSetValueDelegate (PerformSetValue),
 				                          new object [] { value } );
 				return;
 			}
 			
-			domainUpDown.Text = value;
+			upDownBase.Text = value;
 		}
 		
 		#endregion
 		
 		#region Private Fields
 		
-		private SWF.DomainUpDown domainUpDown;
+		private SWF.UpDownBase upDownBase;
 		
 		#endregion
 	}
 	
-	delegate void DomainUpDownSetValueDelegate (string value);
+	delegate void UpDownBaseSetValueDelegate (string value);
 }

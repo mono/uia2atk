@@ -29,13 +29,14 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Bridge;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.UpDownBase;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 {
-	internal class RangeValueProviderBehavior : ProviderBehavior, IRangeValueProvider
+	internal class RangeValueProviderBehavior : ProviderBehavior, IRangeValueProvider, IEditableRange
 	{
 		#region Constructor
 		
@@ -139,6 +140,20 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 
 		#endregion
 		
+		#region IEditableRange Members
+		public void BeginEdit ()
+		{
+			double v = Value;	// hack -- force validate
+			if (v > 0) v = 0;
+			numericUpDown.BeginInit ();
+		}
+
+		public void EndEdit ()
+		{
+			PerformSetValue (decimal.Parse (numericUpDown.Text));
+			numericUpDown.EndInit ();
+		}
+		#endregion
 		#region Private Methods
 		
 		private void PerformSetValue (decimal value) 

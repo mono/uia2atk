@@ -1,3 +1,13 @@
+2008-12-01  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/UpDownBaseProvider.cs
+	  Mono.UIAutomation.Winforms/DomainUpDownProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ValueProvider.cs:
+	  Have NumericUpDown support IValueProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProvider.cs:
+	  Add IEditableRange.
+
 2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

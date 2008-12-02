@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Xml;
 
 using NUnit.Framework;
@@ -88,6 +89,19 @@ namespace UiaAtkBridgeTest
 		{
 			RunInGuiThread (delegate () {
 				mappings [accessible].Sensitive = false;
+			});
+		}
+
+		[DllImport("libgobject-2.0.so.0")]
+		static extern void g_object_set_property (IntPtr obj, IntPtr name, ref GLib.Value val);
+
+		public override void SetReadOnly (Atk.Object accessible, bool readOnly)
+		{
+			RunInGuiThread (delegate () {
+				GLib.Value val = new GLib.Value (!readOnly);
+				IntPtr native_name = GLib.Marshaller.StringToPtrGStrdup ("editable");
+				g_object_set_property (mappings [accessible].Handle, native_name, ref val);
+				GLib.Marshaller.Free (native_name);
 			});
 		}
 

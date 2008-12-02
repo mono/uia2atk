@@ -56,6 +56,8 @@ namespace UiaAtkBridgeTest
 
 		public abstract void EnableWidget (Atk.Object accessible);
 
+		public abstract void SetReadOnly (Atk.Object accessible, bool readOnly);
+
 		public abstract Atk.Object GetTopLevelRootItem ();
 
 		public abstract bool IsBGO561414Addressed ();
@@ -75,10 +77,6 @@ namespace UiaAtkBridgeTest
 				//Assert.AreEqual (0, implementor.MdiZorder, "Component.MdiZorder(notWindow)");
 			}
 
-			//FIXME: spinner seems not to be real
-			if (type == BasicWidgetType.Spinner)
-				return;
-			
 			int x, y, w, h, x2, y2, w2, h2;
 			implementor.GetExtents (out x, out y, out w, out h, Atk.CoordType.Screen);
 			Assert.IsTrue (x > 0, "x > 0");
@@ -771,17 +769,18 @@ namespace UiaAtkBridgeTest
 			atkEditableText.DeleteText (1, 0);
 			Assert.AreEqual ("64", atkText.GetText (0, -1), "GetText #1");
 			atkEditableText.DeleteText (1, -1);
-			Assert.AreEqual ("6", atkText.GetText (0, -1), "GetText #1");
+			Assert.AreEqual ("6", atkText.GetText (0, -1), "GetText #2");
 			atkEditableText.TextContents = "123456";
+			Assert.AreEqual ("123456", atkText.GetText (0, -1), "GetText #3");
 			atkEditableText.DeleteText (-4, 4);
-			Assert.AreEqual ("56", atkText.GetText (0, -1), "GetText #1");
+			Assert.AreEqual ("56", atkText.GetText (0, -1), "GetText #4");
 			atkEditableText.DeleteText (54, 99);
-			Assert.AreEqual ("56", atkText.GetText (0, -1), "GetText #1");
+			Assert.AreEqual ("56", atkText.GetText (0, -1), "GetText #5");
 			atkEditableText.DeleteText (0, 99);
-			Assert.AreEqual ("", atkText.GetText (0, -1), "GetText #1");
+			Assert.AreEqual ("", atkText.GetText (0, -1), "GetText #6");
 			pos = -3;
 			atkEditableText.InsertText ("5", ref pos);
-			Assert.AreEqual ("5", atkText.GetText (0, -1), "GetText #1");
+			Assert.AreEqual ("5", atkText.GetText (0, -1), "GetText #7");
 			Assert.AreEqual (1, pos, "InsertText pos");
 		}
 
