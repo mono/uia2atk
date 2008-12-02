@@ -32,29 +32,33 @@ class CheckedListBoxSample(Form):
         self.Width = 300
         self.Height = 350
 
-        # setup label
+        # setup label1
         self.label1 = Label()
         self.label1.AutoSize = True
-        self.label1.Dock = DockStyle.Top
+        self.label1.Location = Point(10, 20)
         self.label1.Text = "CheckOnClick True"
-        
-        self.label2 = Label()
-        self.label2.AutoSize = True
-        self.label2.Dock = DockStyle.Top
-        self.label2.Text = "CheckOnClick False"
-        
-        # setup checkedlistboxs
+
+        # setup checkedlistboxs1
         self.checkedlistbox1 = CheckedListBox()
         self.checkedlistbox1.Name = "list1 name"
         self.checkedlistbox1.Text = "list1 text"
-        self.checkedlistbox1.Dock = DockStyle.Top
+        self.checkedlistbox1.Location = Point(10, 50)
+        self.checkedlistbox1.Width = 260
         self.checkedlistbox1.SelectedIndexChanged += self.select_change
         self.checkedlistbox1.CheckOnClick = True
-
+        
+        # setup label2
+        self.label2 = Label()
+        self.label2.AutoSize = True
+        self.label2.Location = Point(10, 160)
+        self.label2.Text = "CheckOnClick False"
+        
+        # setup checkedlistboxs2
         self.checkedlistbox2 = CheckedListBox()
         self.checkedlistbox2.Name = "list2 name"
         self.checkedlistbox2.Text = "list2 text"
-        self.checkedlistbox2.Dock = DockStyle.Top
+        self.checkedlistbox2.Location = Point(10, 190)
+        self.checkedlistbox2.Width = 260
         self.checkedlistbox2.ItemCheck += self.toggle_change
         self.checkedlistbox2.CheckOnClick = False
 
@@ -65,10 +69,10 @@ class CheckedListBoxSample(Form):
             self.checkedlistbox2.Items.Add(str(i))
 
         # add controls
-        self.Controls.Add(self.checkedlistbox2)
-        self.Controls.Add(self.label2)
-        self.Controls.Add(self.checkedlistbox1)
         self.Controls.Add(self.label1)
+        self.Controls.Add(self.checkedlistbox1)
+        self.Controls.Add(self.label2)
+        self.Controls.Add(self.checkedlistbox2)
 
     # SelectedIndexChanged change label's texts
     def select_change(self, sender, event):

@@ -1,3 +1,8 @@
+2008-12-01  Calen Chen <cachen@novell.com>
+
+	* samples/checkedlistbox.py: adjust the order of label and listbox to 
+	show more stable in accerciser
+
 2008-12-01  Ray Wang <rawang@novell.com>
 
 	* samples/splitter.py: make the bottom label fill the form
