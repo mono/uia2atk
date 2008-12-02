@@ -296,6 +296,21 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (panelName,
 			                 eventTuple.e.OldValue,
 			                 "event old value");
+
+			Assert.AreEqual (1,
+			                 bridge.AutomationEvents.Count,
+			                 "TextPattern text change event expected");
+			AutomationEventTuple eventTuple2 =
+				bridge.AutomationEvents [0];
+			Assert.AreEqual (childProvider,
+			                 eventTuple2.provider,
+			                 "event sender");
+			Assert.AreEqual (TextPatternIdentifiers.TextChangedEvent,
+			                 eventTuple2.eventId,
+			                 "event id");
+			Assert.AreEqual (TextPatternIdentifiers.TextChangedEvent,
+			                 eventTuple2.e.EventId,
+			                 "event id");
 		}
 
 		#endregion

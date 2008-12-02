@@ -32,6 +32,7 @@ using System.Windows.Automation.Provider;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 using Mono.UIAutomation.Winforms.Events;
+using ETSI = Mono.UIAutomation.Winforms.Events.ToolStripItem;
 using Mono.UIAutomation.Winforms.Behaviors.ToolStripItem;
 
 namespace Mono.UIAutomation.Winforms
@@ -52,6 +53,9 @@ namespace Mono.UIAutomation.Winforms
 			if (label.IsLink)
 				SetBehavior (InvokePatternIdentifiers.Pattern,
 				             new InvokeProviderBehavior (this));
+			else
+				SetEvent (ProviderEventType.TextPatternTextChangedEvent,
+				          new ETSI.TextPatternTextChangedEvent (this));
 
 			try {
 				Helper.AddPrivateEvent (typeof (ToolStripLabel),
@@ -89,12 +93,17 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void OnIsLinkChanged (object sender, EventArgs args)
 		{
-			if (label.IsLink)
+			if (label.IsLink) {
 				SetBehavior (InvokePatternIdentifiers.Pattern,
 				             new InvokeProviderBehavior (this));
-			else
+				SetEvent (ProviderEventType.TextPatternTextChangedEvent,
+				          null);
+			} else {
 				SetBehavior (InvokePatternIdentifiers.Pattern,
 				             null);
+				SetEvent (ProviderEventType.TextPatternTextChangedEvent,
+				          new ETSI.TextPatternTextChangedEvent (this));
+			}
 		}
 
 		#pragma warning restore 169

@@ -1,3 +1,8 @@
+2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UIAutomationWinformsTests/StatusBarProviderText: Test that
+	TextPatternTextChangedEvent is raised along with name property change.
+
 2008-12-01  Brad Taylor  <brad@getcoded.net>
 
 	* TabControlProviderTest.cs: Verify that GetSelection returns correct

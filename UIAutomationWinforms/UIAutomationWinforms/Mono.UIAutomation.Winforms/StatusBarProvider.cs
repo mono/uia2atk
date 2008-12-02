@@ -207,6 +207,8 @@ namespace Mono.UIAutomation.Winforms
 				             new StatusBarPanelGridItemProviderBehavior (this));
 				SetEvent (ProviderEventType.AutomationElementNameProperty,
 				          new ESB.AutomationNamePropertyEvent (this));
+				SetEvent (ProviderEventType.TextPatternTextChangedEvent,
+				          new ESB.TextPatternTextChangedEvent (this));
 			}
 			
 			#endregion

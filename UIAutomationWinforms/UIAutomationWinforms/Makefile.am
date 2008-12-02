@@ -198,6 +198,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/StatusBar/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelGridItemPatternColumnEvent.cs \
+	Mono.UIAutomation.Winforms.Events/StatusBar/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusStrip/GridPatternColumnCountEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TabControl/SelectionPatternInvalidatedEvent.cs \
@@ -213,6 +214,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ToolStripItem/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripSplitButton/ExpandCollapsePatternStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs \

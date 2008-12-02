@@ -1,3 +1,14 @@
+2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms/StatusBarProvider:
+	* Mono.UIAutomation.Winforms/ToolStripLabelProvider:
+	* Mono.UIAutomation.Winforms.Events/StatusBar/TextPatternTextChangedEvent:
+	* Mono.UIAutomation.Winforms.Events/ToolStripItem/TextPatternTextChangedEvent:
+	Add support for TextPatternTextChangedEvent to providers of
+	ControlType.Text.
+
 2008-12-01  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/TabControlProvider.cs: 
