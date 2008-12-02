@@ -176,6 +176,13 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			} catch (ElementNotEnabledException) { }
 			
 			domainUpDown.Enabled = true;
+			try {
+				domainUpDown.ReadOnly = true;
+				valueProvider.SetValue ("NEW Item");
+				Assert.Fail ("ElementNotEnabledException not thrown.");
+			} catch (ElementNotEnabledException) { }
+			domainUpDown.ReadOnly = false;
+
 			string value = "NEW Item";
 			valueProvider.SetValue (value);
 			domainUpDown.DownButton ();

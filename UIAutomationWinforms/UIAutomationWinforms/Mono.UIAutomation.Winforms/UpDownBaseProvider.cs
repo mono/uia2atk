@@ -43,15 +43,22 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 		
+#region Public Methods
+		public override void Initialize ()
+		{
+			base.Initialize ();
+
+			SetBehavior (ValuePatternIdentifiers.Pattern,
+			             new ValueProviderBehavior (this));
+		}
+#endregion
+
 		#region FragmentRootControlProvider: Specializations
 		
 		public override void InitializeChildControlStructure ()
 		{
 			UpDownBase upDownBase = (UpDownBase) Control;
 			
-			SetBehavior (ValuePatternIdentifiers.Pattern,
-			             new ValueProviderBehavior (this));
-
 			if (forwardButton == null) {
 				forwardButton = new UpDownBaseButtonProvider (upDownBase,
 				                                              UpDownBaseButtonOrientation.Forward);

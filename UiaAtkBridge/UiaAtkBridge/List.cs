@@ -474,7 +474,9 @@ AtkObject,
 				IValueProvider value_prov
 					= (IValueProvider) Provider.GetPatternProvider (
 						ValuePatternIdentifiers.Pattern.Id);
-				value_prov.SetValue (value);
+				try {
+					value_prov.SetValue (value);
+				} catch (ElementNotEnabledException){}
 			}
 		}
 #endregion 

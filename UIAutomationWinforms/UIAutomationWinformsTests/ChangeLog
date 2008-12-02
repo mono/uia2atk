@@ -1,3 +1,7 @@
+2008-12-02  Mike Gorse <mgorse@novell.com>
+
+	* DomainUpDownProviderTest.cs: Test setting value when ReadOnly.
+
 2008-11-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationWinformsTests/StatusBarProviderText: Test that

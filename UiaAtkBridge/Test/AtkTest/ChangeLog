@@ -1,3 +1,7 @@
+2008-12-02  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Test EditableText when ReadOnly.
+
 2008-12-01  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs: Add SetReadOnly.

@@ -1,3 +1,11 @@
+2008-12-02  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ValueProvider.cs:
+	  Throw exception when setting value if ReadOnly.
+
+	* Mono.UIAutomation.Winforms/UpDownBaseProvider.cs: Fix
+	  initialization of ValueProvider.
+
 2008-12-01  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/UpDownBaseProvider.cs

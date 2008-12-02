@@ -739,6 +739,8 @@ namespace UiaAtkBridgeTest
 			atkEditableText.InsertText ("zz", ref pos);
 			Assert.AreEqual (7, pos, "Position should increment after insert");
 			InterfaceText (accessible, "xxabezzf");
+
+			EditReadOnly (accessible);
 		}
 
 		void InterfaceEditableTextWithValue (BasicWidgetType type, Atk.Object accessible)
@@ -782,6 +784,22 @@ namespace UiaAtkBridgeTest
 			atkEditableText.InsertText ("5", ref pos);
 			Assert.AreEqual ("5", atkText.GetText (0, -1), "GetText #7");
 			Assert.AreEqual (1, pos, "InsertText pos");
+
+			EditReadOnly (accessible);
+		}
+
+		void EditReadOnly (Atk.Object accessible)
+		{
+			Atk.EditableText atkEditableText = CastToAtkInterface<Atk.EditableText> (accessible);
+			Atk.Text atkText = CastToAtkInterface<Atk.Text> (accessible);
+
+			atkEditableText.TextContents = "0";
+			SetReadOnly (accessible, true);
+			atkEditableText.TextContents = "5";
+			int pos = 0;
+			atkEditableText.InsertText ("6", ref pos);
+			atkEditableText.DeleteText (0, 2);
+			Assert.AreEqual ("0", atkText.GetText (0, -1), "AtkEditableText should not change text if ReadOnly");
 		}
 
 		protected Atk.Object InterfaceText (BasicWidgetType type, bool onlySingleLine)

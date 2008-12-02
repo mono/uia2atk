@@ -109,6 +109,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 				return;
 			}
 			
+			if (IsReadOnly)
+				throw new ElementNotEnabledException ();
+
 			upDownBase.Text = value;
 		}
 		

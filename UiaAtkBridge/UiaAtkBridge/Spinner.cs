@@ -221,8 +221,11 @@ namespace UiaAtkBridge
 				// the number until DoAction called
 				if (editableRange != null)
 					editableRange.BeginEdit ();
-			if (valueProvider != null)
-					valueProvider.SetValue (value);
+				if (valueProvider != null) {
+					try {
+						valueProvider.SetValue (value);
+					} catch (ElementNotEnabledException){}
+			}
 				else
 					NewText (value);
 			}
