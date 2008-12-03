@@ -42,25 +42,53 @@ sleep(config.SHORT_DELAY)
 if app is None:
   exit(4)
 
+TIP1 = "show button's tooltip"
+TIP2 = "my favorite fruit"
+
 # just an alias to make things shorter
 ttFrame = app.toolTipFrame
 
-#move mouse to button to rise tooltip
-ttFrame.mousePoint(ttFrame.button)
+#move mouse to button to rise tooltip 1
+ttFrame.button.mouseMove()
 sleep(config.SHORT_DELAY)
-ttFrame.assertTooltip("show button's tooltip")
+ttFrame.assertTooltip(TIP1)
 
 #check states of tooltips
 statesCheck(ttFrame.tooltip, "ToolTip")
 
-#move mouse to checkbox to rise tooltip
-ttFrame.mousePoint(ttFrame.checkbox)
+#move mouse to label
+ttFrame.label1.mouseMove()
 sleep(config.SHORT_DELAY)
-ttFrame.assertTooltip("my favorite fruit")
+
+#now there should be no tooltips
+ttFrame.assertNoTooltip(TIP1)
+ttFrame.assertNoTooltip(TIP2)
+
+#move mouse to checkbox to rise tooltip 2
+ttFrame.checkbox.mouseMove()
+sleep(config.SHORT_DELAY)
+ttFrame.assertTooltip(TIP2)
 
 #check states of tooltips
 statesCheck(ttFrame.tooltip, "ToolTip")
 
+#move mouse to label
+ttFrame.label1.mouseMove()
+sleep(config.SHORT_DELAY)
+
+#now there should be no tooltip 2
+ttFrame.assertNoTooltip(TIP2)
+
+# make sure that the tooltips rise in succession
+#move mouse to button to rise tooltip 1
+ttFrame.button.mouseMove()
+sleep(config.SHORT_DELAY)
+ttFrame.assertTooltip(TIP1)
+
+#move mouse to checkbox to rise tooltip 2
+ttFrame.checkbox.mouseMove()
+sleep(config.SHORT_DELAY)
+ttFrame.assertTooltip(TIP2)
 
 #close application frame window
 ttFrame.quit()

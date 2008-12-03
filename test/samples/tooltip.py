@@ -23,10 +23,16 @@ class ToolTipApp(Form):
         self.FormBorderStyle = FormBorderStyle.Fixed3D
 
         self.mainLabel1 = Label()
-        self.mainLabel1.Text = "Examples for: ToolTip\nSite your mouse to button and checkbox, you will see some info"
+        self.mainLabel1.Text = "Examples for: ToolTip"
         self.mainLabel1.Location = Point(10,10)
         self.mainLabel1.AutoSize = True
         self.Controls.Add(self.mainLabel1)
+
+        self.mainLabel2 = Label()
+        self.mainLabel2.Text = "Hover your mouse over button and checkbox to see tooltips"
+        self.mainLabel2.Location = Point(10,40)
+        self.mainLabel2.AutoSize = True
+        self.Controls.Add(self.mainLabel2)
 
         self.button1 = Button()
         self.button1.Text = "ToolTip button"

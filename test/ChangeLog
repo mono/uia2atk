@@ -1,3 +1,15 @@
+2008-12-02 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/tooltip/tooltipframe.py: Add a method to test for tooltips
+	that should _not_ be present.  Find a label (so we can move the
+	mouse cursor to it when we don't want any tooltips to be present).
+	* samples/tooltip.py: Separate the label into two labels so the first
+	label is easier to find in tooltipframe.py.
+	* testers/tooltip_basic_ops.py: Add additional tests that check if 
+	tooltips are present when they shouldn't be.  Use new Strongwind
+	method "mouseMove" instead of "ttFrame.mousePoint" (this requires
+	revision 27 of Strongwind or higher).  Add a few more tests.
+
 2008-12-02  Calen Chen <cachen@novell.com>
 
 	* testers/states.py: add ToggleButton states tuple

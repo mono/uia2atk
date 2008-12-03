@@ -27,24 +27,25 @@ class ToolTipFrame(accessibles.Frame):
         super(ToolTipFrame, self).__init__(accessible)
         self.button = self.findPushButton(self.BUTTON)
         self.checkbox = self.findCheckBox(self.CHECKBOX)
-
-    #move mouse to x,y point
-    def mousePoint(self, accessible, xOffset=0, yOffset=0):
-        procedurelogger.action('move mouse to "%s"' % accessible)
-        bbox = accessible.extents
-        x = bbox.x + (bbox.width / 2) + xOffset
-        y = bbox.y + (bbox.height / 2) + yOffset
-        pyatspi.Registry.generateMouseEvent(x, y, 'abs')
+        self.label1 = self.findLabel("Examples for: ToolTip")
 
     #assert tooltip appear
     def assertTooltip(self, tooltiplabel):
-        procedurelogger.expectedResult('Found tooltip, the label is "%s"' % tooltiplabel)
-
+        procedurelogger.action('Check if "%s" is present' % tooltiplabel)
+        procedurelogger.expectedResult('Tooltip "%s" is present' % tooltiplabel)
         self.tooltip = self.app.findToolTip(tooltiplabel)
 
         assert self.tooltip
 
-    
+    def assertNoTooltip(self, tooltiplabel):
+        procedurelogger.action('Check if "%s" is present' % tooltiplabel)
+        procedurelogger.expectedResult('Tooltip "%s" is not present' % tooltiplabel)
+        try:
+            self.app.findToolTip(tooltiplabel)
+        except errors.SearchError:
+            return
+        assert False, 'Tooltip "%s" should not be present' 
+             
     #close application main window after running test
     def quit(self):
         self.altF4()
