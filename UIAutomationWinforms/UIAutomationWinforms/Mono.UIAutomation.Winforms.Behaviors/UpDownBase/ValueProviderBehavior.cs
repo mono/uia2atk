@@ -91,7 +91,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 		
 		public void SetValue (string value)
 		{
-			if (!upDownBase.Enabled)
+			if (!upDownBase.Enabled || upDownBase.ReadOnly)
 				throw new ElementNotEnabledException ();
 			
 			PerformSetValue (value);
@@ -109,9 +109,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 				return;
 			}
 			
-			if (IsReadOnly)
-				throw new ElementNotEnabledException ();
-
 			upDownBase.Text = value;
 		}
 		

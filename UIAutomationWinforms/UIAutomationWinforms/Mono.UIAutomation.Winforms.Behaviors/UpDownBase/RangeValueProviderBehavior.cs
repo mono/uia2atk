@@ -141,17 +141,21 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 		#endregion
 		
 		#region IEditableRange Members
-		public void BeginEdit ()
+		public void BeginEdit (String text)
 		{
-			double v = Value;	// hack -- force validate
-			if (v > 0) v = 0;
-			numericUpDown.BeginInit ();
+			if (IsReadOnly)
+				throw new ElementNotEnabledException ();
+			numericUpDown.txtView.Text = text;
 		}
 
-		public void EndEdit ()
+		public void CommitEdit ()
 		{
-			PerformSetValue (decimal.Parse (numericUpDown.Text));
-			numericUpDown.EndInit ();
+			decimal value = decimal.Parse (numericUpDown.Text);
+			if (value < numericUpDown.Minimum)
+				value = numericUpDown.Minimum;
+			if (value > numericUpDown.Maximum)
+				value = numericUpDown.Maximum;
+			numericUpDown.Value = value;
 		}
 		#endregion
 		#region Private Methods

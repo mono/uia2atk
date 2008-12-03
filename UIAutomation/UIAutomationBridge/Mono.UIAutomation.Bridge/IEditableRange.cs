@@ -31,7 +31,7 @@ namespace Mono.UIAutomation.Bridge
 {
 	public interface IEditableRange
 	{
-		void BeginEdit ();
-		void EndEdit ();
+		void BeginEdit (string text);
+		void CommitEdit ();
 	}
 }

@@ -760,7 +760,9 @@ namespace UiaAtkBridgeTest
 			System.Threading.Thread.Sleep (250);
 			Assert.AreEqual (42, GetCurrentValue (atkValue), "CurrentValue #1");
 			TextMatchesValue (type, atkValue, atkText);
+Console.WriteLine ("AtkTester: Going to delete text");
 			atkEditableText.DeleteText (1, 2);
+Console.WriteLine ("AtkTester: text deleted");
 			Assert.AreEqual (42, GetCurrentValue (atkValue), "CurrentValue should not change until DoAction called");
 			Assert.IsTrue (atkAction.DoAction (0), "DoAction #2");
 			System.Threading.Thread.Sleep (250);
@@ -778,18 +780,16 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual ("64", atkText.GetText (0, -1), "GetText #1");
 			atkEditableText.DeleteText (1, -1);
 			Assert.AreEqual ("6", atkText.GetText (0, -1), "GetText #2");
-			atkEditableText.TextContents = "123456";
-			Assert.AreEqual ("123456", atkText.GetText (0, -1), "GetText #3");
-			atkEditableText.DeleteText (-4, 4);
-			Assert.AreEqual ("56", atkText.GetText (0, -1), "GetText #4");
+			atkEditableText.TextContents = "56";
+			Assert.AreEqual ("56", atkText.GetText (0, -1), "GetText #3");
+			atkEditableText.DeleteText (-1, 1);
+			Assert.AreEqual ("6", atkText.GetText (0, -1), "GetText #4");
 			atkEditableText.DeleteText (54, 99);
-			Assert.AreEqual ("56", atkText.GetText (0, -1), "GetText #5");
-			atkEditableText.DeleteText (0, 99);
-			Assert.AreEqual ("", atkText.GetText (0, -1), "GetText #6");
+			Assert.AreEqual ("6", atkText.GetText (0, -1), "GetText #5");
 			pos = -3;
 			atkEditableText.InsertText ("5", ref pos);
-			Assert.AreEqual ("5", atkText.GetText (0, -1), "GetText #7");
-			Assert.AreEqual (1, pos, "InsertText pos");
+			Assert.AreEqual ("65", atkText.GetText (0, -1), "GetText #6");
+			Assert.AreEqual (2, pos, "InsertText pos");
 
 			EditReadOnly (accessible);
 		}
@@ -799,6 +799,7 @@ namespace UiaAtkBridgeTest
 			Atk.EditableText atkEditableText = CastToAtkInterface<Atk.EditableText> (accessible);
 			Atk.Text atkText = CastToAtkInterface<Atk.Text> (accessible);
 
+			SetReadOnly (accessible, false);
 			atkEditableText.TextContents = "0";
 			SetReadOnly (accessible, true);
 			atkEditableText.TextContents = "5";
@@ -1436,28 +1437,28 @@ namespace UiaAtkBridgeTest
 			return null;
 		}
 
-		private double GetMinimumValue (Atk.Value value)
+		protected double GetMinimumValue (Atk.Value value)
 		{
 			GLib.Value gv = new GLib.Value (0);
 			value.GetMinimumValue (ref gv);
 			return (double)gv.Val;
 		}
 
-		private double GetMaximumValue (Atk.Value value)
+		protected double GetMaximumValue (Atk.Value value)
 		{
 			GLib.Value gv = new GLib.Value (0);
 			value.GetMaximumValue (ref gv);
 			return (double)gv.Val;
 		}
 
-		private double GetCurrentValue (Atk.Value value)
+		protected double GetCurrentValue (Atk.Value value)
 		{
 			GLib.Value gv = new GLib.Value (0);
 			value.GetCurrentValue (ref gv);
 			return (double)gv.Val;
 		}
 
-		private bool SetCurrentValue (Atk.Value value, double n)
+		protected bool SetCurrentValue (Atk.Value value, double n)
 		{
 			GLib.Value gv = new GLib.Value (n);
 			return value.SetCurrentValue (gv);

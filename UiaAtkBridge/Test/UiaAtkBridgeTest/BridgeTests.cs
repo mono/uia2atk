@@ -538,6 +538,9 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Showing,
 				Atk.StateType.Visible,
 			        Atk.StateType.MultiLine);
+
+			sb1.Panels.Remove (panel1);
+			Assert.AreEqual (0, sb.NAccessibleChildren, "StatusBar should not have children after panel is removed");
 		}
 	}
 }

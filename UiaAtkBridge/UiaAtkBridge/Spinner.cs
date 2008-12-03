@@ -224,12 +224,15 @@ namespace UiaAtkBridge
 				
 				// It's a numeric spinner; do not set
 				// the number until DoAction called
-				if (editableRange != null)
-					editableRange.BeginEdit ();
-				if (valueProvider != null) {
+				if (editableRange != null) {
+					try {
+						editableRange.BeginEdit (value);
+					} catch (ElementNotEnabledException){Console.WriteLine("exception");}
+				}
+				else if (valueProvider != null) {
 					try {
 						valueProvider.SetValue (value);
-					} catch (ElementNotEnabledException){}
+					} catch (ElementNotEnabledException){Console.WriteLine("exception");}
 			}
 				else
 					NewText (value);
@@ -413,7 +416,7 @@ namespace UiaAtkBridge
 				return false;
 			
 			if (editableRange != null)
-				editableRange.EndEdit ();
+				editableRange.CommitEdit ();
 			else
 				rangeValueProvider.SetValue (double.Parse (textExpert.Text));
 			return true;
