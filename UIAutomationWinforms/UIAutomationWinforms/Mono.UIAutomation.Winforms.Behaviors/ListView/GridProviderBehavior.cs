@@ -119,10 +119,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 
 			if (listView.View == SWF.View.Details) {
 				ListViewProvider.ListViewListItemProvider itemProvider 
-					= (ListViewProvider.ListViewListItemProvider) provider.GetProviderAt (row);
+					= (ListViewProvider.ListViewListItemProvider) provider.GetChildProviderAt (row);
 				return itemProvider.GetEditProviderAtColumn (column);
 			} else //Is View.List
-				return provider.GetProviderAt ((column * rowCount) + row);
+				return provider.GetChildProviderAt ((column * rowCount) + row);
 		}
 		
 		#endregion

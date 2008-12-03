@@ -718,7 +718,7 @@ namespace Mono.UIAutomation.Winforms
 
 				IRawElementProviderSimple []headerItems = new IRawElementProviderSimple [ChildrenCount];
 				for (int index = 0; index < ChildrenCount; index++)
-					headerItems [index] = GetProviderAt (index);
+					headerItems [index] = GetChildProviderAt (index);
 
 				return headerItems;
 			}

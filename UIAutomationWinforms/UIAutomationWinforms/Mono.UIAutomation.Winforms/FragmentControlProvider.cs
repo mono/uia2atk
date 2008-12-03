@@ -106,7 +106,12 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Public Methods
 
-		public FragmentControlProvider GetProviderAt (int index)
+		public int GetChildProviderIndexOf (FragmentControlProvider provider)
+		{
+			return provider == null ? -1 : children.IndexOf (provider);
+		}
+
+		public FragmentControlProvider GetChildProviderAt (int index)
 		{
 			if (index < 0 || index >= children.Count)
 				return null;

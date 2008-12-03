@@ -1,3 +1,13 @@
+2008-12-03  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GroupGridProviderBehavior.cs:
+	GetProviderAt -> GetChildProviderAt
+
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: GetProviderAt
+	-> GetChildProviderAt. New method: GetChildProviderIndexOf.
+
 2008-12-03  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 
