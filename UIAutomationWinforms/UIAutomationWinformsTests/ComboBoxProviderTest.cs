@@ -136,6 +136,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			firstItem = listChild.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNotNull (firstItem, "FirstChild must not be null");
+			Assert.AreEqual (
+			  firstItem.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id), ControlType.ListItem.Id,
+			  "a combobox item is listitem");
 
 			secondItem = firstItem.Navigate (NavigateDirection.NextSibling);
 			Assert.IsNull (secondItem, "There isn't a second child");
