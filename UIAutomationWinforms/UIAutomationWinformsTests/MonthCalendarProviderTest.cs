@@ -24,7 +24,9 @@
 // 
 
 using System;
+using System.Threading;
 using System.Windows.Forms;
+using System.Globalization;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
@@ -37,13 +39,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	[TestFixture]
 	public class MonthCalendarProviderTest : BaseProviderTest
 	{
-		private MonthCalendar calendar;
-		private IRawElementProviderSimple calendarProvider;
-
 		[SetUp]
 		public override void SetUp ()
 		{
 			base.SetUp ();
+			
+			oldCulture = Thread.CurrentThread.CurrentCulture;
+
+			// Ensure that we're in the US locale so that we can
+			// test Gregorian calendars.
+			//
+			// Regardless, Mono doesn't support anything else at
+			// the moment, but let's just be cautious.
+			Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+			currentCalendar = Thread.CurrentThread.CurrentCulture.Calendar;
+
+			daysInWeek = (currentCalendar.AddWeeks (anyGivenSunday, 1) - anyGivenSunday).Days;
 
 			calendar = (MonthCalendar) GetControlInstance ();
 			Form.Controls.Add (calendar);
@@ -51,6 +62,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			calendarProvider
 				= ProviderFactory.GetProvider (calendar);
+		}
+
+		[TearDown]
+		public override void TearDown ()
+		{
+			base.TearDown ();	
+
+			// Restore previously set culture
+			Thread.CurrentThread.CurrentCulture = oldCulture;
 		}
 
 		[Test]
@@ -107,7 +127,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					      AutomationElementIdentifiers.LocalizedControlTypeProperty,
 					      "header item");
 				
-				Assert.AreEqual (any_given_sunday.AddDays (numChildren).ToString ("ddd"),
+				Assert.AreEqual (anyGivenSunday.AddDays (numChildren).ToString ("ddd"),
 				                 headerItem.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
 				                 "Day name in header is incorrect");
 				
@@ -116,7 +136,45 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					.Navigate (NavigateDirection.NextSibling);
 			}
 
-			Assert.AreEqual (DAYS_IN_WEEK, numChildren, "Not returning the correct number of days in a week");
+			Assert.AreEqual (daysInWeek, numChildren, "Not returning the correct number of days in a week");
+		}
+
+		[Test]
+		public void IGridProviderTest ()
+		{
+			TestGridProvider (calendarProvider);
+		}
+
+		[Test]
+		public void DataGridIGridProviderTest ()
+		{
+			IRawElementProviderSimple provider
+				= ((IRawElementProviderFragmentRoot) calendarProvider)
+					.Navigate (NavigateDirection.FirstChild);
+			TestGridProvider (provider);
+		}
+
+		public void TestGridProvider (IRawElementProviderSimple provider)
+		{
+			IGridProvider gridProvider = (IGridProvider)
+				provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
+			
+			Assert.AreEqual (daysInWeek, gridProvider.ColumnCount);
+			Assert.AreEqual (6, gridProvider.RowCount);
+
+			DateTime date = calendar.GetDisplayRange (false).Start;
+			for (int r = 0; r < 6; r++) {
+				for (int c = 0; c < daysInWeek; c++) {
+					IRawElementProviderSimple child
+						= gridProvider.GetItem (r, c);
+					
+					Assert.AreEqual (date.Day.ToString (),
+							 child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
+							 "Day name for grid item is incorrect");
+
+					date = date.AddDays (1);
+				}
+			}
 		}
 
 		protected override Control GetControlInstance ()
@@ -124,9 +182,13 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return new MonthCalendar ();
 		}
 
-		// XXX: This will only work in a Gregorian calendar.
-		private const int DAYS_IN_WEEK = 7;
+		private MonthCalendar calendar;
+		private IRawElementProviderSimple calendarProvider;
+		private Calendar currentCalendar;
 
-		private DateTime any_given_sunday = new DateTime (2008, 12, 7);
+		private CultureInfo oldCulture;
+		private static int daysInWeek;
+
+		private DateTime anyGivenSunday = new DateTime (2008, 12, 7);
 	}
 }

@@ -24,11 +24,14 @@
 //
 
 using System;
-using System.ComponentModel;
+using System.Threading;
+using System.Globalization;
 using System.Windows.Forms;
+using System.ComponentModel;
 using System.Windows.Automation;
+using System.Collections.Generic;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Winforms.Behaviors.TabPage;
+using Mono.UIAutomation.Winforms.Behaviors.MonthCalendar;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Mono.UIAutomation.Winforms
@@ -40,6 +43,16 @@ namespace Mono.UIAutomation.Winforms
 		{
 		}
 
+		static MonthCalendarProvider ()
+		{
+			// XXX: Mono's MonthCalendar control seems to only
+			// support the Gregorian calendar.
+
+			// Calendar cal = Thread.CurrentThread.CurrentCulture.Calendar;
+			Calendar cal = new CultureInfo ("en-US").Calendar;
+			numDaysInWeek = (cal.AddWeeks (fixedDate, 1) - fixedDate).Days;
+		}
+
 		public override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
@@ -47,13 +60,18 @@ namespace Mono.UIAutomation.Winforms
 			childDataGrid = new MonthCalendarDataGridProvider (this);
 			childDataGrid.Initialize ();
 			AddChildProvider (true, childDataGrid);
+			
+			// Don't ask me why, but Calendar needs to implement
+			// Grid as well as the DataGrid child...
+			SetBehavior (GridPatternIdentifiers.Pattern,
+			             new GridProviderBehavior (childDataGrid));
 		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
 		}
-		
+
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
@@ -64,7 +82,14 @@ namespace Mono.UIAutomation.Winforms
 			return base.GetProviderPropertyValue (propertyId);
 		}
 
+		static internal int DaysInWeek {
+			get { return numDaysInWeek; }
+		}
+
 		private MonthCalendarDataGridProvider childDataGrid;
+
+		private static int numDaysInWeek = 0;
+		private static DateTime fixedDate = new DateTime (2001, 01, 01);
 	}
 
 	internal class MonthCalendarDataGridProvider : FragmentRootControlProvider
@@ -73,9 +98,18 @@ namespace Mono.UIAutomation.Winforms
 			: base (calendarProvider.Control)
 		{
 			this.calendarProvider = calendarProvider;
+			this.calendar = (MonthCalendar) calendarProvider.Control;
 
 			// TODO TODO TODO
 			this.calendarProvider.ToString ();
+		}
+
+		public override void Initialize ()
+		{
+			base.Initialize ();
+			
+			SetBehavior (GridPatternIdentifiers.Pattern,
+			             new GridProviderBehavior (this));
 		}
 
 		public override void InitializeChildControlStructure ()
@@ -85,11 +119,55 @@ namespace Mono.UIAutomation.Winforms
 			headerProvider = new MonthCalendarHeaderProvider (calendarProvider);
 			headerProvider.Initialize ();
 			AddChildProvider (true, headerProvider);
+
+			MonthCalendarListItemProvider item;
+			SelectionRange range = calendar.GetDisplayRange (false);
+			for (DateTime d = range.Start;
+			     d <= range.End; d = d.AddDays (1)) {
+				item = new MonthCalendarListItemProvider (
+					this, Control, d);
+				item.Initialize ();
+				AddChildProvider (true, item);
+				gridChildren.Add (d, item);
+			}
 		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
+		}
+
+		public int RowCount {
+			get {
+				return (int) System.Math.Ceiling (
+					(double) gridChildren.Count / (double) MonthCalendarProvider.DaysInWeek);
+			}
+		}
+
+		public int ColumnCount {
+			get { return MonthCalendarProvider.DaysInWeek; }
+		}
+		
+		public IRawElementProviderSimple GetItem (int row, int col)
+		{
+			if (row < 0 || row >= RowCount) {
+				throw new ArgumentException ("row");
+			}
+
+			if (col < 0 || col >= ColumnCount) {
+				throw new ArgumentException ("col");
+			}
+
+			SelectionRange range = calendar.GetDisplayRange (false);
+			DateTime date = range.Start.AddDays (
+				col + (row * MonthCalendarProvider.DaysInWeek)
+			);
+
+			if (!gridChildren.ContainsKey (date)) {
+				throw new ArgumentException ();
+			}
+
+			return gridChildren[date];
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -102,8 +180,40 @@ namespace Mono.UIAutomation.Winforms
 			return base.GetProviderPropertyValue (propertyId);
 		}
 
+		private MonthCalendar calendar;
 		private MonthCalendarProvider calendarProvider;
 		private MonthCalendarHeaderProvider headerProvider;
+		private Dictionary<DateTime, MonthCalendarListItemProvider> gridChildren
+			= new Dictionary<DateTime, MonthCalendarListItemProvider> ();
+	}
+
+	internal class MonthCalendarListItemProvider : FragmentControlProvider
+	{
+		public MonthCalendarListItemProvider (FragmentRootControlProvider rootProvider,
+		                                      Control control, DateTime date)
+			: base (control)
+		{
+			this.date = date;
+		}
+
+		protected override object GetProviderPropertyValue (int propertyId)
+		{
+			if (propertyId == AEIds.ControlTypeProperty.Id)
+				return ControlType.ListItem.Id;
+			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
+				return "list item";
+			else if (propertyId == AEIds.NameProperty.Id)
+				return GetDateString ();
+
+			return base.GetProviderPropertyValue (propertyId);
+		}
+
+		private string GetDateString ()
+		{
+			return date.Day.ToString ();
+		}
+
+		private DateTime date;
 	}
 
 	internal class MonthCalendarHeaderProvider : FragmentRootControlProvider
@@ -111,11 +221,7 @@ namespace Mono.UIAutomation.Winforms
 		public MonthCalendarHeaderProvider (MonthCalendarProvider calendarProvider)
 			: base (calendarProvider.Control)
 		{
-			this.calendarProvider = calendarProvider;
 			this.calendar = (MonthCalendar) calendarProvider.Control;
-
-			// TODO TODO TODO
-			this.calendarProvider.ToString ();
 		}
 
 		public override void InitializeChildControlStructure ()
@@ -141,6 +247,12 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.Header.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return "header";
+			else if (propertyId == AEIds.OrientationProperty.Id)
+				return OrientationType.Horizontal;
+			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
+				return false;
+			else if (propertyId == AEIds.IsContentElementProperty.Id)
+				return false;
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
@@ -150,7 +262,8 @@ namespace Mono.UIAutomation.Winforms
 		// this without refactoring MonthCalendar considerably.
 		private DateTime[] GetDaysInWeek ()
 		{
-			DateTime[] days = new DateTime[DAYS_IN_WEEK];
+			int days_in_week = MonthCalendarProvider.DaysInWeek;
+			DateTime[] days = new DateTime[days_in_week];
 
 			DateTime sunday = new DateTime (2006, 10, 1);
 			DayOfWeek first_day_of_week = calendar.GetDayOfWeek (calendar.FirstDayOfWeek);
@@ -158,7 +271,7 @@ namespace Mono.UIAutomation.Winforms
 			for (int i = 0; i < days.Length; i++) {
 				int position = i - (int) first_day_of_week;
 				if (position < 0) {
-					position = DAYS_IN_WEEK + position;
+					position = days_in_week + position;
 				}
 
 				days[i] = sunday.AddDays (i + (int) first_day_of_week);
@@ -168,12 +281,6 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		private MonthCalendar calendar;
-		private MonthCalendarProvider calendarProvider;
-
-		// Change this if we should ever need to support a
-		// non-Gregorian calendar
-		private const int DAYS_IN_WEEK = 7;
-
 		private const string HEADER_ITEM_DAY_FORMAT = "ddd";
 	}
 
@@ -183,11 +290,7 @@ namespace Mono.UIAutomation.Winforms
 		                                        Control control, string label)
 			: base (control)
 		{
-			this.rootProvider = rootProvider;
 			this.label = label;
-			
-			// TODO TODO TODO
-			this.rootProvider.ToString ();
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -196,13 +299,12 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.HeaderItem.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return "header item";
-			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+			else if (propertyId == AEIds.NameProperty.Id)
 				return label;
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
 
 		private string label;
-		private FragmentRootControlProvider rootProvider;
 	}
 }

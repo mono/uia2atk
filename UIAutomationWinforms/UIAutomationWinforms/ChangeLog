@@ -1,3 +1,18 @@
+2008-12-03  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms.Behaviors/MonthCalendar: 
+	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/GridProviderBehavior.cs: 
+	Implement IGridProvider for the MonthCalendar as well as its
+	fabricated DataGrid child.
+
+2008-12-03  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs: 
+	Make the Invoke action pop down the menu as well as click on it. [Fixes
+	#449940]
+
 2008-12-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs:
