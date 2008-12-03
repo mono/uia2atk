@@ -1,5 +1,10 @@
 2008-12-03  Brad Taylor  <brad@getcoded.net>
 
+	* MonthCalendarProviderTest.cs: Lots of refactoring, also test
+	ITableProvider for MonthCalendar's DataGrid.
+
+2008-12-03  Brad Taylor  <brad@getcoded.net>
+
 	* MonthCalendarProviderTest.cs: Test the new IGridItemProvider
 	implementation for ListItem children of MonthCalendar's DataGrid.  Say
 	that three times fast.

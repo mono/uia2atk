@@ -120,19 +120,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				= ((IRawElementProviderFragmentRoot) header).Navigate (
 						NavigateDirection.FirstChild);
 			while (headerItem != null) {
-				TestProperty (headerItem,
-					      AutomationElementIdentifiers.ControlTypeProperty,
-					      ControlType.HeaderItem.Id);
-				TestProperty (headerItem,
-					      AutomationElementIdentifiers.LocalizedControlTypeProperty,
-					      "header item");
-				
-				Assert.AreEqual (anyGivenSunday.AddDays (numChildren).ToString ("ddd"),
-				                 headerItem.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
-				                 "Day name in header is incorrect");
-
-				Assert.AreEqual (header, ((IRawElementProviderFragment) headerItem)
-					.Navigate (NavigateDirection.Parent));
+				TestHeaderItem (headerItem, header, numChildren);
 				
 				numChildren++;
 				headerItem = ((IRawElementProviderFragment) headerItem)
@@ -140,6 +128,25 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}
 
 			Assert.AreEqual (daysInWeek, numChildren, "Not returning the correct number of days in a week");
+		}
+
+		private void TestHeaderItem (IRawElementProviderSimple headerItem,
+		                             IRawElementProviderSimple header,
+		                             int index)
+		{
+			TestProperty (headerItem,
+				      AutomationElementIdentifiers.ControlTypeProperty,
+				      ControlType.HeaderItem.Id);
+			TestProperty (headerItem,
+				      AutomationElementIdentifiers.LocalizedControlTypeProperty,
+				      "header item");
+			
+			Assert.AreEqual (anyGivenSunday.AddDays (index).ToString ("ddd"),
+					 headerItem.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
+					 "Day name in header is incorrect");
+
+			Assert.AreEqual (header, ((IRawElementProviderFragment) headerItem).Navigate (
+				NavigateDirection.Parent));
 		}
 
 		[Test]
@@ -187,24 +194,13 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void ListItemIGridItemProviderTest ()
 		{
-			IRawElementProviderFragmentRoot rootProvider
-				= (IRawElementProviderFragmentRoot) calendarProvider;
-			
-			// The datagrid is the MonthCalendar's first child
-			IRawElementProviderFragmentRoot dataGridProvider
-				= (IRawElementProviderFragmentRoot)
-				  rootProvider.Navigate (NavigateDirection.FirstChild);
+			IRawElementProviderFragmentRoot dataGridProvider;
+			IRawElementProviderFragment child;
+
+			GetDataGridAndFirstListItem (out dataGridProvider, out child);
 
 			IGridProvider gridProvider = (IGridProvider)
 				dataGridProvider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
-			
-			// Skip over the header, and get right to the ListItems
-			IRawElementProviderFragment child
-				= (IRawElementProviderFragment)
-				  dataGridProvider.Navigate (NavigateDirection.FirstChild);
-			
-			child = (IRawElementProviderFragment) dataGridProvider.Navigate (
-					NavigateDirection.NextSibling);
 
 			while (child != null) {
 				TestProperty (child,
@@ -232,6 +228,53 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				child = ((IRawElementProviderFragment) child)
 					.Navigate (NavigateDirection.NextSibling);
 			}
+		}
+
+		[Test]
+		public void ITableProviderTest ()
+		{
+			IRawElementProviderFragmentRoot dataGridProvider;
+			IRawElementProviderFragment child;
+			
+			GetDataGridAndFirstListItem (out dataGridProvider, out child);
+
+			ITableProvider tableProvider
+				= dataGridProvider.GetPatternProvider (TablePatternIdentifiers.Pattern.Id)
+					 as ITableProvider;
+			Assert.IsNotNull (tableProvider, "Does not implement ITableProvider");
+
+			IRawElementProviderSimple header
+				= dataGridProvider.Navigate (NavigateDirection.FirstChild);
+
+			IRawElementProviderSimple[] headerItems
+				= tableProvider.GetColumnHeaders ();
+			for (int i = 0; i < headerItems.Length; i++) {
+				TestHeaderItem (headerItems[i],
+				                header, i);
+			}
+
+			IRawElementProviderSimple[] rowHeaders
+				= tableProvider.GetRowHeaders ();
+			Assert.AreEqual (0, rowHeaders.Length);
+		}
+
+		public void GetDataGridAndFirstListItem (out IRawElementProviderFragmentRoot dataGrid,
+		                                         out IRawElementProviderFragment firstChild)
+		{
+			IRawElementProviderFragmentRoot rootProvider
+				= (IRawElementProviderFragmentRoot) calendarProvider;
+			
+			// The datagrid is the MonthCalendar's first child
+			dataGrid = (IRawElementProviderFragmentRoot)
+				  rootProvider.Navigate (NavigateDirection.FirstChild);
+			
+			IRawElementProviderFragmentRoot child
+				= (IRawElementProviderFragmentRoot) dataGrid.Navigate (
+					NavigateDirection.FirstChild);
+
+			// Header is next, but skip that
+			firstChild = (IRawElementProviderFragment) child.Navigate (
+					NavigateDirection.NextSibling);
 		}
 
 		protected override Control GetControlInstance ()

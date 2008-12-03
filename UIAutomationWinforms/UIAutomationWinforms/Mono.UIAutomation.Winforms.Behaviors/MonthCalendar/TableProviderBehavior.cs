@@ -20,7 +20,7 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Brad Taylor <brad@getcoded.net>
+//	Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
@@ -32,65 +32,80 @@ using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.MonthCalendar
 {
-	internal class GridProviderBehavior : ProviderBehavior, IGridProvider
+	internal class TableProviderBehavior 
+		: GridProviderBehavior, ITableProvider
 	{
-#region Public Methods
-		public GridProviderBehavior (MonthCalendarDataGridProvider provider)
+#region Constructors
+
+		public TableProviderBehavior (MonthCalendarDataGridProvider provider)
 			: base (provider)
 		{
-			this.provider = provider;
-		}
-#endregion
-		
-#region IProviderBehavior Interface		
-		public override AutomationPattern ProviderPattern { 
-			get { return GridPatternIdentifiers.Pattern; }
+			headerProvider = provider.HeaderProvider;
 		}
 
+#endregion
+		
+#region IProviderBehavior Interface
+
+		public override AutomationPattern ProviderPattern { 
+			get { return TablePatternIdentifiers.Pattern; }
+		}
+		
 		public override void Connect ()
 		{
-			//NOTE: RowCount Property NEVER changes, so we aren't generating it.
-			//NOTE: ColumnCount Property NEVER changes, so we aren't generating it.
+			// NOTE: RowHeadersProperty Property NEVER changes.
+			// NOTE: RowOrColumnMajor Property NEVER changes.
+			// NOTE: ColumnHeaders never change.
 		}
 		
 		public override void Disconnect ()
-		{
-			Provider.SetEvent (ProviderEventType.GridPatternRowCountProperty,
+		{	
+			Provider.SetEvent (ProviderEventType.TablePatternColumnHeadersProperty,
 			                   null);
-			Provider.SetEvent (ProviderEventType.GridPatternColumnCountProperty,
+			Provider.SetEvent (ProviderEventType.TablePatternRowHeadersProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.TablePatternRowOrColumnMajorProperty,
 			                   null);
 		}
 
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == GridPatternIdentifiers.RowCountProperty.Id) {
-				return RowCount;
-			} else if (propertyId == GridPatternIdentifiers.ColumnCountProperty.Id) {
-				return ColumnCount;
-			}
-			return null;
+			if (propertyId == TablePatternIdentifiers.ColumnHeadersProperty.Id)
+				return GetColumnHeaders ();
+			else if (propertyId == TablePatternIdentifiers.RowHeadersProperty.Id)
+				return GetRowHeaders ();
+			else
+				return base.GetPropertyValue (propertyId);
 		}
+
 #endregion
+
+#region ITableProvider implementation 
 		
-#region IGridProvider Implementation
-
-		public int RowCount {
-			get { return provider.RowCount; }
-		}
-
-		public int ColumnCount {
-			get { return provider.ColumnCount; }
-		}
-
-		public IRawElementProviderSimple GetItem (int row, int col)
+		public IRawElementProviderSimple[] GetColumnHeaders ()
 		{
-			return provider.GetItem (row, col);
+			if (headerProvider == null)
+				return new IRawElementProviderSimple [0];
+			else
+				return headerProvider.GetHeaderItems ();
+		}
+		
+		public IRawElementProviderSimple[] GetRowHeaders ()
+		{
+			return new IRawElementProviderSimple [0];
+		}
+
+		public RowOrColumnMajor RowOrColumnMajor {
+			get { return RowOrColumnMajor.RowMajor; }
 		}
 
 #endregion
 
-#region Protected Fields
-		protected MonthCalendarDataGridProvider provider;
+#region Private Fields
+
+		private MonthCalendarHeaderProvider headerProvider;
+
 #endregion
 	}
+				                      
 }
