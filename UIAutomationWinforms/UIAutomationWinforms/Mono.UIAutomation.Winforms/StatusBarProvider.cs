@@ -274,7 +274,11 @@ namespace Mono.UIAutomation.Winforms
 				get {
 					if (!HasImage)
 						return Rect.Empty;
-					return BoundingRectangle;
+					Rect boundingRect = BoundingRectangle;
+					return new Rect (boundingRect.TopLeft.X,
+					                 boundingRect.TopLeft.Y,
+					                 statusBarPanel.Icon.Width,
+					                 statusBarPanel.Icon.Height);
 				}
 			}
 
