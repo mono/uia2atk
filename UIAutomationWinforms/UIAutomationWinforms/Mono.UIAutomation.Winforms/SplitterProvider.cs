@@ -24,60 +24,46 @@
 // 
 
 using System;
+using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Behaviors;
+using Mono.UIAutomation.Winforms.Behaviors.Splitter;
+using Mono.UIAutomation.Winforms.Navigation;
 
-namespace Mono.UIAutomation.Winforms.Events.Panel
+namespace Mono.UIAutomation.Winforms
 {
-	internal class TransformPatternCanMoveEvent : BaseAutomationPropertyEvent
+	internal class SplitterProvider : FragmentControlProvider
 	{
 		#region Constructor
 
-		public TransformPatternCanMoveEvent (SimpleControlProvider provider) 
-			: base (provider, TransformPatternIdentifiers.CanMoveProperty)
+		public SplitterProvider (Splitter splitter) : base (splitter)
 		{
 		}
 		
 		#endregion
 		
-		#region IConnectable Overrides
+		#region SimpleControlProvider: Specializations
 		
-		public override void Connect ()
+		public override void Initialize ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.Panel),
-				                        (SWF.Panel) Provider.Control,
-				                        "UIACanMoveChanged",
-				                        this,
-				                        "OnCanMoveChanged");
-			} catch (NotSupportedException) { }
+			base.Initialize ();
+			
+			SetBehavior (TransformPatternIdentifiers.Pattern,
+			             new TransformProviderBehavior (this));
+			SetBehavior (DockPatternIdentifiers.Pattern,
+			             new DockProviderBehavior (this));
 		}
 		
-		public override void Disconnect ()
+		protected override object GetProviderPropertyValue (int propertyId)
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.Panel),
-				                           (SWF.Panel) Provider.Control,
-				                           "UIACanMoveChanged",
-				                           this,
-				                           "OnCanMoveChanged");
-			} catch (NotSupportedException) { }
+			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+				return ControlType.Pane.Id;
+			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+				return "pane";
+			else
+				return base.GetProviderPropertyValue (propertyId);
 		}
-		
-		#endregion 
-		
-		#region Private Methods
-		
-		#pragma warning disable 169
-		
-		private void OnCanMoveChanged (object sender, EventArgs e)
-		{
-			RaiseAutomationPropertyChangedEvent ();
-		}
-		
-		#pragma warning restore 169
 		
 		#endregion
 	}

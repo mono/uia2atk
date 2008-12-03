@@ -90,6 +90,10 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBar/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBar/RangeValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/SplitContainer/DockProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/SplitContainer/TransformProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/Splitter/DockProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/Splitter/TransformProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBar/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusStrip/GridProviderBehavior.cs \
@@ -196,6 +200,11 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternMinimumEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternSmallChangeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/SplitContainer/DockPatternDockPositionEvent.cs \
+	Mono.UIAutomation.Winforms.Events/SplitContainer/TransformPatternCanMoveEvent.cs \
+	Mono.UIAutomation.Winforms.Events/SplitContainer/TransformPatternCanResizeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Splitter/DockPatternDockPositionEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Splitter/TransformPatternCanResizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelGridItemPatternColumnEvent.cs \
@@ -273,6 +282,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ScrollBarProvider.cs \
 	Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs \
 	Mono.UIAutomation.Winforms/SimpleControlProvider.cs \
+	Mono.UIAutomation.Winforms/SplitContainerProvider.cs \
+	Mono.UIAutomation.Winforms/SplitterProvider.cs \
 	Mono.UIAutomation.Winforms/StatusBarProvider.cs \
 	Mono.UIAutomation.Winforms/StatusStripProvider.cs \
 	Mono.UIAutomation.Winforms/TabControlProvider.cs \
@@ -294,8 +305,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ToolTipProvider.cs \
 	Mono.UIAutomation.Winforms/UpDownBaseProvider.cs \
 	Mono.UIAutomation.Winforms/WebBrowserProvider.cs \
-	Mono.UIAutomation.Winforms/WordTokenCollection.cs \
 	Mono.UIAutomation.Winforms/WordToken.cs \
+	Mono.UIAutomation.Winforms/WordTokenCollection.cs \
 	Mono.UIAutomation.Winforms/WordTokenizer.cs 
 
 DATA_FILES = 

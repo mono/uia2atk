@@ -109,6 +109,8 @@ namespace Mono.UIAutomation.Winforms
 			SWF.Panel p;
 			SWF.MaskedTextBox mtb;
 			SWF.MonthCalendar mc;
+			SWF.SplitContainer sc;
+			SWF.Splitter s;
 			
 			SWF.StatusStrip ss;
 			SWF.MenuStrip ms;
@@ -220,6 +222,10 @@ namespace Mono.UIAutomation.Winforms
 				provider = new MaskedTextBoxProvider (mtb);
 			else if ((mc = component as SWF.MonthCalendar) != null)
 				provider = new MonthCalendarProvider (mc);
+			else if ((sc = component as SWF.SplitContainer) != null)
+				provider = new SplitContainerProvider (sc);
+			else if ((s = component as SWF.Splitter) != null)
+				provider = new SplitterProvider (s);
 			else {
 				//TODO: We have to solve the problem when there's a Custom control
 				//	Ideally the first thing we do is send a wndproc message to

@@ -24,7 +24,6 @@
     <File name="ButtonProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="TextBoxProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="GroupBoxProviderTest.cs" subtype="Code" buildaction="Compile" />
-    <File name="TextNormalizerTest.cs" subtype="Code" buildaction="Compile" />
     <File name="TextRangeProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="WordTokenizerTest.cs" subtype="Code" buildaction="Compile" />
     <File name="StatusBarProviderTest.cs" subtype="Code" buildaction="Compile" />
@@ -55,6 +54,10 @@
     <File name="ToolStripProgressBarProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="ToolTipProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="WebBrowserProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="MaskedTextBoxProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="TextBoxBaseProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="SplitContainerProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="SplitterProviderTest.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

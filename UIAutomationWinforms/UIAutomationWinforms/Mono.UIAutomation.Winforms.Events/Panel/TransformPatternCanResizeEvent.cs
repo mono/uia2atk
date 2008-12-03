@@ -26,7 +26,7 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Events.Panel
@@ -46,24 +46,38 @@ namespace Mono.UIAutomation.Winforms.Events.Panel
 		
 		public override void Connect ()
 		{
-			Provider.Control.DockChanged +=
-				new EventHandler (OnCanResizeChanged);
+			try {
+				Helper.AddPrivateEvent (typeof (SWF.Panel),
+				                        (SWF.Panel) Provider.Control,
+				                        "UIACanResizeChanged",
+				                        this,
+				                        "OnCanResizeChanged");
+			} catch (NotSupportedException) { }
 		}
 		
 		public override void Disconnect ()
 		{
-			Provider.Control.DockChanged -=
-				new EventHandler (OnCanResizeChanged);
+			try {
+				Helper.RemovePrivateEvent (typeof (SWF.Panel),
+				                           (SWF.Panel) Provider.Control,
+				                           "UIACanResizeChanged",
+				                           this,
+				                           "OnCanResizeChanged");
+			} catch (NotSupportedException) { }
 		}
 		
 		#endregion 
 		
 		#region Private Methods
 		
+		#pragma warning disable 169
+		
 		private void OnCanResizeChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
+		
+		#pragma warning restore 169
 		
 		#endregion
 	}

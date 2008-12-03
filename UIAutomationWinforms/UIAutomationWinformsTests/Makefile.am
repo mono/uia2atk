@@ -77,6 +77,8 @@ FILES =  \
 	RadioButtonProviderTest.cs \
 	RichTextBoxProviderTest.cs \
 	ScrollBarProviderTest.cs \
+	SplitContainerProviderTest.cs \
+	SplitterProviderTest.cs \
 	StatusBarProviderTest.cs \
 	StatusStripProviderTest.cs \
 	TabControlProviderTest.cs \

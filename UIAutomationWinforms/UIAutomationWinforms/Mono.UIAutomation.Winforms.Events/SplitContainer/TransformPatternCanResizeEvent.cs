@@ -29,14 +29,14 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.Panel
+namespace Mono.UIAutomation.Winforms.Events.SplitContainer
 {
-	internal class TransformPatternCanMoveEvent : BaseAutomationPropertyEvent
+	internal class TransformPatternCanResizeEvent : BaseAutomationPropertyEvent
 	{
 		#region Constructor
 
-		public TransformPatternCanMoveEvent (SimpleControlProvider provider) 
-			: base (provider, TransformPatternIdentifiers.CanMoveProperty)
+		public TransformPatternCanResizeEvent (SimpleControlProvider provider) 
+			: base (provider, TransformPatternIdentifiers.CanResizeProperty)
 		{
 		}
 		
@@ -47,36 +47,36 @@ namespace Mono.UIAutomation.Winforms.Events.Panel
 		public override void Connect ()
 		{
 			try {
-				Helper.AddPrivateEvent (typeof (SWF.Panel),
-				                        (SWF.Panel) Provider.Control,
-				                        "UIACanMoveChanged",
+				Helper.AddPrivateEvent (typeof (SWF.SplitContainer),
+				                        (SWF.SplitContainer) Provider.Control,
+				                        "UIACanResizeChanged",
 				                        this,
-				                        "OnCanMoveChanged");
+				                        "OnCanResizeChanged");
 			} catch (NotSupportedException) { }
 		}
 		
 		public override void Disconnect ()
 		{
 			try {
-				Helper.RemovePrivateEvent (typeof (SWF.Panel),
-				                           (SWF.Panel) Provider.Control,
-				                           "UIACanMoveChanged",
+				Helper.RemovePrivateEvent (typeof (SWF.SplitContainer),
+				                           (SWF.SplitContainer) Provider.Control,
+				                           "UIACanResizeChanged",
 				                           this,
-				                           "OnCanMoveChanged");
+				                           "OnCanResizeChanged");
 			} catch (NotSupportedException) { }
 		}
 		
 		#endregion 
 		
 		#region Private Methods
-		
+
 		#pragma warning disable 169
 		
-		private void OnCanMoveChanged (object sender, EventArgs e)
+		private void OnCanResizeChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-		
+
 		#pragma warning restore 169
 		
 		#endregion

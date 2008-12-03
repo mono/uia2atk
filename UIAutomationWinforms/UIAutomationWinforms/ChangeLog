@@ -1,3 +1,25 @@
+2008-12-03  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for add files.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Added SWF.Splitter and
+	  SWF.SplitContainer.
+	* Mono.UIAutomation.Winforms/SplitContainerProvider.cs,
+	  Mono.UIAutomation.Winforms/SplitterProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/SplitContainer/DockProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/SplitContainer/TransformProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/Splitter/DockProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/Splitter/TransformProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/SplitContainer/TransformPatternCanResizeEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/SplitContainer/TransformPatternCanMoveEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/SplitContainer/DockPatternDockPositionEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/Splitter/TransformPatternCanResizeEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/Splitter/DockPatternDockPositionEvent.cs:
+	  Files added.
+	* Mono.UIAutomation.Winforms.Events/Panel/TransformPatternCanResizeEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/Panel/TransformPatternCanMoveEvent.cs:
+	  Updated events.
+
+
 2008-12-02  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: Add a DataGrid

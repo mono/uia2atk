@@ -29,7 +29,7 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.Panel
+namespace Mono.UIAutomation.Winforms.Events.SplitContainer
 {
 	internal class TransformPatternCanMoveEvent : BaseAutomationPropertyEvent
 	{
@@ -47,8 +47,8 @@ namespace Mono.UIAutomation.Winforms.Events.Panel
 		public override void Connect ()
 		{
 			try {
-				Helper.AddPrivateEvent (typeof (SWF.Panel),
-				                        (SWF.Panel) Provider.Control,
+				Helper.AddPrivateEvent (typeof (SWF.SplitContainer),
+				                        (SWF.SplitContainer) Provider.Control,
 				                        "UIACanMoveChanged",
 				                        this,
 				                        "OnCanMoveChanged");
@@ -58,8 +58,8 @@ namespace Mono.UIAutomation.Winforms.Events.Panel
 		public override void Disconnect ()
 		{
 			try {
-				Helper.RemovePrivateEvent (typeof (SWF.Panel),
-				                           (SWF.Panel) Provider.Control,
+				Helper.RemovePrivateEvent (typeof (SWF.SplitContainer),
+				                           (SWF.SplitContainer) Provider.Control,
 				                           "UIACanMoveChanged",
 				                           this,
 				                           "OnCanMoveChanged");

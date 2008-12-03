@@ -1,3 +1,8 @@
+2008-12-03  Neville Gao  <nevillegao@gmail.com>
+
+	* UIAutomationWinformsTests.mdp, Makefile.am: Updated for added files.
+	* SplitterProviderTest.cs, SplitContainerProviderTest.cs: Files added.
+
 2008-12-02  Brad Taylor  <brad@getcoded.net>
 
 	* MonthCalendarProviderTest.cs: Test navigation and contents of
