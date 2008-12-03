@@ -10,7 +10,7 @@
 			</dependencies>
 			<patches>
 			</patches>
-		<\libgdiplus>
+		</libgdiplus>
 
 		<mono-core>
 			<spec_file>/release/packaging/rpm_defs/mono-core</spec_file>
@@ -21,7 +21,7 @@
 			</dependencies>
 			<patches>
 			</patches>
-		<\mono-core>
+		</mono-core>
 		
 		<gtk-sharp212>
 			<spec_file>/release/packaging/rpm_defs/gtk-sharp2</spec_file>
@@ -41,13 +41,13 @@
 				<patch>/release/packaging/rpm_defs/gtk-warn-fix.patch</patch>
 			</patches>
 		</gtk-sharp212>	
+	</modules>
+</config>
 
-<\config>
-
-<!-- To Be Added >
+<!-- To Be Added 
 	mono-uia
 	uiaatkbridge
 	uiautomationwinforms
 	atspi-dbus
-< --!>
+ -->
 

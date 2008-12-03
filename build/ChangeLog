@@ -1,3 +1,8 @@
+2008-12-03  Brian G. Merrell  <bgmerrell@novell.com>
+	
+	* hudson/scripts/xml_example.py: example script for parsing XML files
+	* hudson/scripts/uia.xml: fix some XML syntax
+
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 	
 	* specs/uiaatkbridge.spec: Require gtk2-devel for build.
