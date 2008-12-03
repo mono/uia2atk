@@ -23,44 +23,44 @@ class NumericUpDownFrame(accessibles.Frame):
 
 
     # set numericupdown's value
-    def valueNumericUpDown(self, accessible, newValue):
-        procedurelogger.action('set %s value to "%s"' % (accessible, newValue))
-        sleep(config.SHORT_DELAY)
-        accessible.value = newValue
+    def valueNumericUpDown(self, accessible, value):
+        procedurelogger.action('set %s value to %s' % (accessible, value))
+        accessible.value = value
 
 
     # enter Text Value for EditableText
-    def enterTextValue(self, accessible, values):
-        procedurelogger.action('in %s enter %s "' % (accessible, values))
+    def enterTextValue(self, accessible, text):
+        procedurelogger.action('set %s text to "%s"' % (accessible, text))
         if accessible == self.editable_numericupdown:
-            accessible.text = values
+            accessible.text = text
         elif accessible == self.uneditable_numericupdown:
             try:
-                accessible.text = values
+                accessible.text = text
             except NotImplementedError:
                 pass
 
     # assert numericupdown's Text value
-    def assertText(self, accessible, value):
-        procedurelogger.expectedResult('the %s\'s Text value is "%s"' % \
-                                                        (accessible, value))
-        assert accessible.text == value, 'Text value not match %s' % value
+    def assertText(self, accessible, text):
+        procedurelogger.expectedResult('%s text is "%s"' % \
+                                                        (accessible, text))
+        assert accessible.text == text, '%s text is not match with "%s"' % \
+                                                        (accessible, text)
 
 
     # assert numericupdown's value
-    def assertValue(self, accessible, newValue):
+    def assertValue(self, accessible, value):
         self.maximumValue = accessible._accessible.queryValue().maximumValue
         self.minimumValue = accessible._accessible.queryValue().minimumValue
-        if  self.minimumValue <= newValue <= self.maximumValue:
-            procedurelogger.expectedResult('the %s\'s current value is "%d"' % \
-                                          (accessible, newValue))
-            assert accessible.value == newValue, \
-                                    "numericupdown's current value is %s:" % \
-                                    accessible.value
+        if  self.minimumValue <= value <= self.maximumValue:
+            procedurelogger.expectedResult('%s value is %d' % \
+                                            (accessible, value))
+            assert accessible.value == value, \
+                                    "%s value is not match with %d" % \
+                                            (accessible, value)
         else:
-            procedurelogger.expectedResult('value "%s" out of run' % newValue)
-            assert not accessible.value == newValue, \
-                       "numericupdown's current value is %s:" % accessible.value
+            procedurelogger.expectedResult('value %s is out of range' % value)
+            assert not accessible.value == value, \
+                                    "value %d is out of range" % value
 
     
     #close application window
