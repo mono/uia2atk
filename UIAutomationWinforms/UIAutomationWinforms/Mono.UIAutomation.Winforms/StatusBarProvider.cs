@@ -267,6 +267,26 @@ namespace Mono.UIAutomation.Winforms
 					!screen.Contains (bounds.Right, bounds.Top);
 			}
 			#endregion
+
+			#region IEmbedded Image Members
+
+			public Rect Bounds {
+				get {
+					if (!HasImage)
+						return Rect.Empty;
+					return BoundingRectangle;
+				}
+			}
+
+			public bool HasImage {
+				get { return statusBarPanel.Icon != null; }
+			}
+	
+			public string Description {
+				get { return string.Empty; }
+			}
+
+			#endregion
 			
 			#region Private Fields
 		

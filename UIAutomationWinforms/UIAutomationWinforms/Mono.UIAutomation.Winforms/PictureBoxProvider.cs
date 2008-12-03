@@ -52,8 +52,11 @@ namespace Mono.UIAutomation.Winforms
 		public override Component Container  {
 			get { return Control.Parent; }
 		}
-		
-		Rect IEmbeddedImage.BoundingRectangle {
+
+		#endregion
+
+		#region IEmbeddedImage Members
+		public Rect Bounds {
 			get {
 				if (control.Image == null)
 					return Rect.Empty;
@@ -68,6 +71,14 @@ namespace Mono.UIAutomation.Winforms
 				ret.Height = rectF.Height;
 				return ret;
 			}
+		}
+
+		public bool HasImage {
+			get { return !Bounds.Equals (System.Windows.Rect.Empty); }
+		}
+
+		public string Description {
+			get { return string.Empty; }
 		}
 		#endregion
 		

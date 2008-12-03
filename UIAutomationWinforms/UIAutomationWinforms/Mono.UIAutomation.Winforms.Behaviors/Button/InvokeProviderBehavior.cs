@@ -40,23 +40,38 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Button
 	internal class InvokeProviderBehavior 
 		: ProviderBehavior, IInvokeProvider, IEmbeddedImage
 	{
+
+		#region Private Members
+
+		private SWF.Button button;
+
+		#endregion
 		
 		#region Constructor
 		
 		public InvokeProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
+			button = provider.Control as SWF.Button;
 		}
 		
 		#endregion
 		
 		#region IEmbeddedImage Interface
 		
-		public System.Windows.Rect BoundingRectangle {
+		public System.Windows.Rect Bounds {
 			get {
-				return Helper.GetBoundingRectangleFromButtonBase (Provider, 
-				                                        (SWF.ButtonBase) Provider.Control);
+				return Helper.GetButtonBaseImageBounds (Provider,
+				                                        button);
 			}
+		}
+
+		public bool HasImage {
+			get { return !Bounds.Equals (System.Windows.Rect.Empty); }
+		}
+
+		public string Description {
+			get { return string.Empty; }
 		}
 		
 		#endregion
@@ -109,7 +124,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Button
 				Provider.Control.BeginInvoke (new SWF.MethodInvoker (PerformClick));
 				return;
 			}
-			((SWF.Button) Provider.Control).PerformClick ();
+			button.PerformClick ();
 		}
 		
 		#endregion

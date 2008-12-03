@@ -719,7 +719,13 @@ namespace UiaAtkBridge
 
 		private void HandleNewLabelControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			TextLabel atkLabel = new TextLabel (provider);
+			TextLabel atkLabel;
+
+			if (parentObject != null &&
+			    ((int) parentObject.Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)) == ControlType.StatusBar.Id)
+				atkLabel = new TextImageLabel (provider);
+			else
+				atkLabel = new TextLabel (provider);
 
 			IncludeNewAdapter (atkLabel, parentObject);
 		}

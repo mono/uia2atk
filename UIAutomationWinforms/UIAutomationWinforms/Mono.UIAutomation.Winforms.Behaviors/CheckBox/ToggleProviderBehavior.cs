@@ -39,23 +39,37 @@ namespace Mono.UIAutomation.Winforms.Behaviors.CheckBox
 	internal class ToggleProviderBehavior  
 		: ProviderBehavior, IToggleProvider, IEmbeddedImage
 	{
+		#region Private Members
+
+		private SWF.CheckBox checkbox;
+
+		#endregion
 		
 		#region Constructor
 		
 		public ToggleProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
+			checkbox = provider.Control as SWF.CheckBox;
 		}
 		
 		#endregion
 		
 		#region IEmbeddedImage Interface
 		
-		public System.Windows.Rect BoundingRectangle {
+		public System.Windows.Rect Bounds {
 			get {
-				return Helper.GetBoundingRectangleFromButtonBase (Provider,
-				                                                  (SWF.ButtonBase) Provider.Control);
+				return Helper.GetButtonBaseImageBounds (Provider,
+				                                        checkbox);
 			}
+		}
+
+		public bool HasImage {
+			get { return !Bounds.Equals (System.Windows.Rect.Empty); }
+		}
+
+		public string Description {
+			get { return string.Empty; }
 		}
 		
 		#endregion
@@ -92,8 +106,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.CheckBox
 	
 		public void Toggle ()
 		{
-			SWF.CheckBox checkbox = (SWF.CheckBox) Provider.Control;
-
 			if (checkbox.Enabled == false)
 				throw new ElementNotEnabledException ();
 
@@ -118,8 +130,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.CheckBox
 
 		public ToggleState ToggleState {
 			get {
-				SWF.CheckBox checkbox = (SWF.CheckBox) Provider.Control;
-				
 				switch (checkbox.CheckState) {
 				case SWF.CheckState.Checked:
 					return ToggleState.On;

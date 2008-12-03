@@ -1,3 +1,12 @@
+2008-12-02  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Image.cs:
+	* Button.cs: Handle updates to IEmbeddedImage.
+
+	* TextLabel.cs:
+	* AutomationBridge.cs: If a label's parent is a StatusBar, use the
+	TextImageLabel adapter that implements Atk.Image.  Fixes bug #448074.
+
 2008-12-02  Mike Gorse  <mgorse@novell.com>
 
 	* TextLabel.cs: Set StatusBarPanel to Atk.Role.Panel to match spec.

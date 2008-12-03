@@ -1,3 +1,16 @@
+2008-12-02  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs:
+	* Mono.UIAutomation.Winforms/PictureBoxProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/CheckBox/ToggleProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionItemProviderBehavior.cs:
+	Update IEmbeddedImage implementation.
+
+	* Mono.UIAutomation.Winforms/Helper.cs: Rename
+	GetBoundingRectangleFromButtonBase to GetButtonBaseImageBounds to be
+	more descriptive.
+
 2008-12-03  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for add files.

@@ -1,3 +1,8 @@
+2008-12-02  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Bridge/IEmbeddedImage.cs: Rename BoundingRectangle
+	to Bounds, and add HasImage and Description properties.
+
 2008-12-01  Mike Gorse <mgorse@novell.com>
 
 	* Makefile.am, UIAutomationBridge.mdp,

@@ -88,8 +88,8 @@ namespace Mono.UIAutomation.Winforms
 			return Helper.IsOffScreen (bounds, referenceControl, false);
 		}
 		
-		internal static Rect GetBoundingRectangleFromButtonBase (FragmentControlProvider provider,
-		                                                         SWF.ButtonBase buttonBase)
+		internal static Rect GetButtonBaseImageBounds (FragmentControlProvider provider,
+		                                               SWF.ButtonBase buttonBase)
 		{
 			//Implementation highly based in ThemeWin32Classic.ButtonBase_DrawImage method
 			

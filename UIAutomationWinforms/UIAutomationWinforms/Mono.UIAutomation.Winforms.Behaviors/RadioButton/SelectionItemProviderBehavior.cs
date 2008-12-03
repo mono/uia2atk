@@ -58,11 +58,19 @@ namespace Mono.UIAutomation.Winforms.Behaviors.RadioButton
 		
 		#region IEmbeddedImage Interface
 		
-		public System.Windows.Rect BoundingRectangle {
+		public System.Windows.Rect Bounds {
 			get {
-				return Helper.GetBoundingRectangleFromButtonBase (Provider,
-				                                                  (SWF.ButtonBase) Provider.Control);
+				return Helper.GetButtonBaseImageBounds (Provider,
+				                                        radioButton);
 			}
+		}
+
+		public bool HasImage {
+			get { return !Bounds.Equals (System.Windows.Rect.Empty); }
+		}
+
+		public string Description {
+			get { return string.Empty; }
 		}
 		
 		#endregion

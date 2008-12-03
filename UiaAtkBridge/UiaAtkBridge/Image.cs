@@ -67,9 +67,9 @@ namespace UiaAtkBridge
 					if (embeddedImage == null) {
 						Console.WriteLine ("WARNING: your provider implementation doesn't have unofficial IEmbeddedImage support");
 						hasImage = false;
-					}
-					else
-						hasImage = !embeddedImage.BoundingRectangle.IsEmpty;
+					} else
+						hasImage = embeddedImage.HasImage &&
+							!embeddedImage.Bounds.IsEmpty;
 				}
 				
 				return hasImage.Value;
@@ -86,8 +86,8 @@ namespace UiaAtkBridge
 			width = -1;
 			height = -1;
 			if (HasImage) {
-				width = (int)embeddedImage.BoundingRectangle.Width;
-				height = (int)embeddedImage.BoundingRectangle.Height;
+				width = (int)embeddedImage.Bounds.Width;
+				height = (int)embeddedImage.Bounds.Height;
 			}
 		}
 		
@@ -96,8 +96,8 @@ namespace UiaAtkBridge
 			x = int.MinValue;
 			y = int.MinValue;
 			if (HasImage) {
-				x = (int)embeddedImage.BoundingRectangle.X;
-				y = (int)embeddedImage.BoundingRectangle.Y;
+				x = (int)embeddedImage.Bounds.X;
+				y = (int)embeddedImage.Bounds.Y;
 			}
 		}
 		

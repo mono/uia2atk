@@ -31,6 +31,10 @@ namespace Mono.UIAutomation.Bridge
 {
 	public interface IEmbeddedImage
 	{
-		Rect BoundingRectangle { get; }
+		Rect Bounds { get; }
+
+		bool HasImage { get; }
+
+		string Description { get; }
 	}
 }
