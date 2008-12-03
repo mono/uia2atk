@@ -1,3 +1,11 @@
+2008-12-03  Calen Chen <cachen@novell.com>
+
+	* testers/states.py: modify StatusBarPanel states tuple
+	* testers/statusbarpanel/statusbarpanelframe.py: init statusbarpanel by
+	finding panel
+	* testers/statusbarpanel_basic_ops.py: add image implementation test 
+	for panel1 and panel2. image test still have an issue bug455927
+
 2008-12-02 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/tests.py: Add tooltip_basic_ops test to the regression test

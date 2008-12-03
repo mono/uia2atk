@@ -22,6 +22,9 @@ class StatusBarPanelFrame(accessibles.Frame):
     # the available widgets on the window
     BUTTON_ONE = "button1"
     BUTTON_TWO = "button2"
+    PANEL1 = "statusbarpanel1"
+    PANEL2 = "statusbarpanel2"
+    PANEL3 = "Icon"
 
     def __init__(self, accessible):
         super(StatusBarPanelFrame, self).__init__(accessible)
@@ -30,11 +33,11 @@ class StatusBarPanelFrame(accessibles.Frame):
         self.statusbar = self.findStatusBar("texts in statusbar")
         self.panel = self.findAllTexts(None)
         #statusbarpanel1.Text with time
-        self.panel1 = self.panel[0]
+        self.panel1 = self.findPanel(self.PANEL1)
         #statusbarpanel2.Text with date
-        self.panel2 = self.panel[1]
+        self.panel2 = self.findPanel(self.PANEL2)
         #statusbarpanel3.Icon
-        self.panel3 = self.panel[2]
+        self.panel3 = self.findPanel(self.PANEL3)
 
     #give 'click' action
     def click(self,button):
@@ -44,7 +47,10 @@ class StatusBarPanelFrame(accessibles.Frame):
     def enterTextValue(self, accessible, entertext):
         procedurelogger.action('try input %s in %s which is uneditable "' % (entertext, accessible))
 
-        accessible.text = entertext
+        try:
+            accessible.text = entertext
+        except NotImplementedError:
+            pass
 
     #assert statusbarpanel's text value after click button1
     def assertText(self, accessible, textValue):
@@ -56,7 +62,7 @@ class StatusBarPanelFrame(accessibles.Frame):
     # assert the size of an image in the statusbarpanel3
     def assertImageSize(self, accessible, width=32, height=32):
         procedurelogger.action("assert %s's image size" % accessible)
-        size = accessible.imageSize
+        size = accessible._accessible.queryImage().getImageSize()
 
         procedurelogger.expectedResult('"%s" image size is %s x %s' %
                                                   (accessible, width, height))

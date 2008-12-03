@@ -74,7 +74,9 @@ sbpFrame.enterTextValue(sbpFrame.panel3, "enter text")
 sleep(config.SHORT_DELAY)
 sbpFrame.assertText(sbpFrame.panel3, "Icon")
 
-#check icon image size in statusbarpanel3 to make sure Image is implemented
+#check image size in statusbarpanel3 to make sure Image is implemented
+sbpFrame.assertImageSize(sbpFrame.panel1, width=-1, height=-1)
+sbpFrame.assertImageSize(sbpFrame.panel1, width=-1, height=-1)
 sbpFrame.assertImageSize(sbpFrame.panel3)
 
 #close application frame window
