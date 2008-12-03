@@ -82,6 +82,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/GridProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Panel/DockProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Panel/TransformProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs \

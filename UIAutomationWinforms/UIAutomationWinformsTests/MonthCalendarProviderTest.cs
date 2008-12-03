@@ -130,6 +130,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				Assert.AreEqual (anyGivenSunday.AddDays (numChildren).ToString ("ddd"),
 				                 headerItem.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
 				                 "Day name in header is incorrect");
+
+				Assert.AreEqual (header, ((IRawElementProviderFragment) headerItem)
+					.Navigate (NavigateDirection.Parent));
 				
 				numChildren++;
 				headerItem = ((IRawElementProviderFragment) headerItem)
@@ -167,6 +170,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				for (int c = 0; c < daysInWeek; c++) {
 					IRawElementProviderSimple child
 						= gridProvider.GetItem (r, c);
+
+					TestProperty (child,
+						      AutomationElementIdentifiers.ControlTypeProperty,
+						      ControlType.ListItem.Id);
 					
 					Assert.AreEqual (date.Day.ToString (),
 							 child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
@@ -174,6 +181,56 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 					date = date.AddDays (1);
 				}
+			}
+		}
+		
+		[Test]
+		public void ListItemIGridItemProviderTest ()
+		{
+			IRawElementProviderFragmentRoot rootProvider
+				= (IRawElementProviderFragmentRoot) calendarProvider;
+			
+			// The datagrid is the MonthCalendar's first child
+			IRawElementProviderFragmentRoot dataGridProvider
+				= (IRawElementProviderFragmentRoot)
+				  rootProvider.Navigate (NavigateDirection.FirstChild);
+
+			IGridProvider gridProvider = (IGridProvider)
+				dataGridProvider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
+			
+			// Skip over the header, and get right to the ListItems
+			IRawElementProviderFragment child
+				= (IRawElementProviderFragment)
+				  dataGridProvider.Navigate (NavigateDirection.FirstChild);
+			
+			child = (IRawElementProviderFragment) dataGridProvider.Navigate (
+					NavigateDirection.NextSibling);
+
+			while (child != null) {
+				TestProperty (child,
+					      AutomationElementIdentifiers.ControlTypeProperty,
+					      ControlType.ListItem.Id);
+
+				IGridItemProvider itemProvider = child.GetPatternProvider (
+					GridItemPatternIdentifiers.Pattern.Id) as IGridItemProvider;
+				Assert.IsNotNull (itemProvider,
+				                  "Does not implement IGridItemProvider");
+
+				int row = itemProvider.Row;
+				int col = itemProvider.Column;
+				Assert.AreEqual (gridProvider.GetItem (row, col),
+				                 child, "Child found via navigation is reporting incorrect row and/or column values");
+
+				Assert.AreEqual (1, itemProvider.RowSpan,
+				                 "Child reporting larger RowSpan than expected");
+				Assert.AreEqual (1, itemProvider.ColumnSpan,
+				                 "Child reporting larger ColumnSpan than expected");
+
+				Assert.AreEqual (dataGridProvider, itemProvider.ContainingGrid,
+				                 "Child's ContainingGrid is not its DataGrid parent.");
+
+				child = ((IRawElementProviderFragment) child)
+					.Navigate (NavigateDirection.NextSibling);
 			}
 		}
 

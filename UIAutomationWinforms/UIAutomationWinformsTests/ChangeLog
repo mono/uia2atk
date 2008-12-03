@@ -1,3 +1,9 @@
+2008-12-03  Brad Taylor  <brad@getcoded.net>
+
+	* MonthCalendarProviderTest.cs: Test the new IGridItemProvider
+	implementation for ListItem children of MonthCalendar's DataGrid.  Say
+	that three times fast.
+
 2008-12-03  Mario Carrion  <mcarrion@novell.com>
 
 	* TestHelper.cs: Missing Grid and Text patterns added.

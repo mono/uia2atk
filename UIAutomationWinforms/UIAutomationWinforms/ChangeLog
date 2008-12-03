@@ -1,3 +1,10 @@
+2008-12-03  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemGridItemProviderBehavior.cs: 
+	Implement IGridItemProvider for the ListItem children of the DataGrid.
+
 2008-12-03  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs:

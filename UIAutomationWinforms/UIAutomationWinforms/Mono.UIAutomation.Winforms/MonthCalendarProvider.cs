@@ -99,9 +99,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			this.calendarProvider = calendarProvider;
 			this.calendar = (MonthCalendar) calendarProvider.Control;
-
-			// TODO TODO TODO
-			this.calendarProvider.ToString ();
+			this.calendar.DateChanged += OnDateChanged;
 		}
 
 		public override void Initialize ()
@@ -120,21 +118,14 @@ namespace Mono.UIAutomation.Winforms
 			headerProvider.Initialize ();
 			AddChildProvider (true, headerProvider);
 
-			MonthCalendarListItemProvider item;
-			SelectionRange range = calendar.GetDisplayRange (false);
-			for (DateTime d = range.Start;
-			     d <= range.End; d = d.AddDays (1)) {
-				item = new MonthCalendarListItemProvider (
-					this, Control, d);
-				item.Initialize ();
-				AddChildProvider (true, item);
-				gridChildren.Add (d, item);
-			}
+			AddChildren ();
 		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
+			
+			RemoveChildren ();
 		}
 
 		public int RowCount {
@@ -180,6 +171,44 @@ namespace Mono.UIAutomation.Winforms
 			return base.GetProviderPropertyValue (propertyId);
 		}
 
+		private void AddChildren ()
+		{
+			MonthCalendarListItemProvider item;
+			SelectionRange range = calendar.GetDisplayRange (false);
+
+			for (DateTime d = range.Start;
+			     d <= range.End; d = d.AddDays (1)) {
+				int days = (range.End - d).Days;
+				int r = (int)System.Math.Floor ((double)days
+					/ (double)MonthCalendarProvider.DaysInWeek);
+				int c = days - (r * MonthCalendarProvider.DaysInWeek);
+
+				item = new MonthCalendarListItemProvider (
+					this, calendarProvider, Control, d, r, c);
+				item.Initialize ();
+
+				AddChildProvider (true, item);
+				gridChildren.Add (d, item);
+			}
+		}
+
+		private void RemoveChildren ()
+		{
+			foreach (MonthCalendarListItemProvider item
+			         in gridChildren.Values) {
+				RemoveChildProvider (true, item);
+				item.Terminate ();
+			}
+
+			gridChildren.Clear ();
+		}
+
+		private void OnDateChanged (object o, DateRangeEventArgs args)
+		{
+			RemoveChildren ();
+			AddChildren ();
+		}
+
 		private MonthCalendar calendar;
 		private MonthCalendarProvider calendarProvider;
 		private MonthCalendarHeaderProvider headerProvider;
@@ -190,10 +219,40 @@ namespace Mono.UIAutomation.Winforms
 	internal class MonthCalendarListItemProvider : FragmentControlProvider
 	{
 		public MonthCalendarListItemProvider (FragmentRootControlProvider rootProvider,
-		                                      Control control, DateTime date)
+		                                      MonthCalendarProvider calendarProvider,
+		                                      Control control, DateTime date,
+		                                      int row, int col)
 			: base (control)
 		{
+			this.rootProvider = rootProvider;
+			this.calendarProvider = calendarProvider;
 			this.date = date;
+			this.row = row;
+			this.col = col;
+		}
+
+		public MonthCalendarProvider MonthCalendarProvider {
+			get { return calendarProvider; }
+		}
+
+		public int Column {
+			get { return col; }
+		}
+
+		public int Row {
+			get { return row; }
+		}
+
+		public override IRawElementProviderFragmentRoot FragmentRoot {
+			get { return rootProvider; }
+		}
+
+		public override void Initialize ()
+		{
+			base.Initialize ();
+
+			SetBehavior (GridItemPatternIdentifiers.Pattern,
+			             new ListItemGridItemProviderBehavior (this));
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -213,7 +272,10 @@ namespace Mono.UIAutomation.Winforms
 			return date.Day.ToString ();
 		}
 
+		private int row, col;
 		private DateTime date;
+		private MonthCalendarProvider calendarProvider;
+		private FragmentRootControlProvider rootProvider;
 	}
 
 	internal class MonthCalendarHeaderProvider : FragmentRootControlProvider
