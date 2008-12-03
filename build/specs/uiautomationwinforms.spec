@@ -16,7 +16,6 @@ Version:	0.9
 Release:	0
 License:        MIT/X11
 Group:          System/Libraries
-BuildArch:	noarch
 URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
@@ -47,7 +46,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc COPYING README NEWS 
-%_prefix/lib/uiautomationwinforms/UIAutomationWinforms.dll*
+%_libdir/uiautomationwinforms/UIAutomationWinforms.dll*
 %_prefix/lib/mono/gac/UIAutomationWinforms
 
 %changelog
