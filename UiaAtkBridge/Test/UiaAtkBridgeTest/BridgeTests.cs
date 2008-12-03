@@ -536,7 +536,8 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Enabled,
 				Atk.StateType.Sensitive,
 				Atk.StateType.Showing,
-				Atk.StateType.Visible);
+				Atk.StateType.Visible,
+			        Atk.StateType.MultiLine);
 		}
 	}
 }

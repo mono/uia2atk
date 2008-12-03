@@ -1,3 +1,7 @@
+2008-12-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* AtkTester.cs: StatusBarPanel role is Label, not Panel.
+
 2008-12-02  Mike Gorse <mgorse@novell.com>
 
 * BasicWidgetType.cs, AtkTester.cs: Add StatusBarPanel.

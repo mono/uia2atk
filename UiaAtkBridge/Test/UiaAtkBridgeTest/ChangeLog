@@ -1,3 +1,7 @@
+2008-12-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* BridgeTests.cs: Adding MultiLine state to StatusBarPanel test.
+
 2008-12-02  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTests.cs: Add StatusBarPanel test.
