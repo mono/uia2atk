@@ -1,3 +1,7 @@
+2008-12-03  Mario Carrion  <mcarrion@novell.com>
+
+	* TestHelper.cs: Missing Grid and Text patterns added.
+
 2008-12-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* TestHelper.cs: New function for testing patterns more easily.

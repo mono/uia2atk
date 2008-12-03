@@ -105,6 +105,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 				allPatterns.Add (DockPatternIdentifiers.Pattern);
 				allPatterns.Add (ExpandCollapsePatternIdentifiers.Pattern);
+				allPatterns.Add (GridPatternIdentifiers.Pattern);
 				allPatterns.Add (GridItemPatternIdentifiers.Pattern);
 				allPatterns.Add (InvokePatternIdentifiers.Pattern);
 				allPatterns.Add (MultipleViewPatternIdentifiers.Pattern);
@@ -115,6 +116,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				allPatterns.Add (SelectionItemPatternIdentifiers.Pattern);
 				allPatterns.Add (TablePatternIdentifiers.Pattern);
 				allPatterns.Add (TableItemPatternIdentifiers.Pattern);
+				allPatterns.Add (TextPatternIdentifiers.Pattern);
 				allPatterns.Add (TogglePatternIdentifiers.Pattern);
 				allPatterns.Add (TransformPatternIdentifiers.Pattern);
 				allPatterns.Add (ValuePatternIdentifiers.Pattern);
