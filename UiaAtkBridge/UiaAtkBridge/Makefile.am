@@ -78,6 +78,7 @@ FILES =  \
 	TableImplementorHelper.cs \
 	TextBoxEntryView.cs \
 	TextContainer.cs \
+	TextImageLabel.cs \
 	TextImplementorHelper.cs \
 	TextLabel.cs \
 	ToolTip.cs \

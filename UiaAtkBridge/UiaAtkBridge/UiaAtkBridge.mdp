@@ -55,6 +55,9 @@
     <File name="ComboBoxTable.cs" subtype="Code" buildaction="Compile" />
     <File name="ComboBoxItem.cs" subtype="Code" buildaction="Compile" />
     <File name="ComboBox.cs" subtype="Code" buildaction="Compile" />
+    <File name="ExpandCollapseButton.cs" subtype="Code" buildaction="Compile" />
+    <File name="SplitButton.cs" subtype="Code" buildaction="Compile" />
+    <File name="TextImageLabel.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

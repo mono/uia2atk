@@ -1,5 +1,14 @@
 2008-12-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Makefile.am:
+	* TextLabel.cs:
+	* TextImageLabel.cs: Split TextImageLabel class out into its own file.
+
+	* UiaAtkBridge.mdp: Add TextImageLabel, SplitButton, and
+	ExpandCollapseButton to project.
+
+2008-12-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Image.cs:
 	* Button.cs:
 	* TextLabel.cs: Remove IEmbeddedImage.HasImage property...just check
