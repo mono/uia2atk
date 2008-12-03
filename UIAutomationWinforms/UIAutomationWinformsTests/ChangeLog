@@ -1,3 +1,7 @@
+2008-12-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* LabelProviderTest.cs: Add ProviderPatternTest.
+
 2008-12-03  Brad Taylor  <brad@getcoded.net>
 
 	* MonthCalendarProviderTest.cs: Test the IGridProvider implementation

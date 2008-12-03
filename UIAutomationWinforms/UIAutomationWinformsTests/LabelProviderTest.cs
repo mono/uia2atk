@@ -64,6 +64,34 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "text");
 		}
+
+		[Test]
+		public void ProviderPatternTest ()
+		{
+			Label label = new Label ();
+			IRawElementProviderSimple provider =
+				ProviderFactory.GetProvider (label);
+
+			object rangeValueProvider =
+				provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNull (rangeValueProvider,
+			               "RangeValuePattern should not be supported.");
+
+			object tableItemProvider =
+				provider.GetPatternProvider (TableItemPatternIdentifiers.Pattern.Id);
+			Assert.IsNull (tableItemProvider,
+			               "TableItemPattern should not be supported.");
+
+			object textProvider =
+				provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id);
+			Assert.IsNull (textProvider,
+			               "TextPattern should not be supported.");
+
+			object valueProvider =
+				provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNull (valueProvider,
+			               "ValuePattern should not be supported.");
+		}
 		
 		[Test]
 		public void TextChangedEventTest ()
