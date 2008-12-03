@@ -19,13 +19,15 @@ URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 AutoReqProv:    on
-Requires:	mono-core >= 2.2 mono-uia mono-winfxcore gtk-sharp2 >= 2.12.6
-BuildRequires:	mono-devel gcc gtk-sharp2 >= 2.12.6 mono-uia mono-winfxcore atk-devel gtk2-devel
-Provides:       %{name}-%{version}
-Summary:        UIA to ATK Bridge
+Requires:	mono-core >= 2.2 gtk-sharp2 >= 2.12.7 mono-uia mono-winfxcore 
+BuildRequires:	mono-devel >= 2.2 gtk-sharp2 >= 2.12.7 mono-uia mono-winfxcore atk-devel gtk2-devel
+Summary:        Bridge between UIA providers and ATK
 
 %description
-Libraries to bridge UIA to ATK 
+The bridge contains adapter Atk.Objects that wrap UIA providers.  Adapter
+behavior is determined by provider ControlType and supported pattern interfaces.
+The bridge implements interfaces from UIAutomationBridge which allow the UI
+Automation core to send it automation events and provider information.
 
 %prep
 %setup -q
@@ -47,26 +49,26 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc COPYING README NEWS
-%_libdir/uiaatkbridge
+%dir %_libdir/uiaatkbridge
 %_libdir/uiaatkbridge/UiaAtkBridge.dll*
+%_libdir/uiaatkbridge/libbridge-glue.so.*
 %_prefix/lib/mono/gac/UiaAtkBridge
 
+# devel package
 %package -n uiaatkbridge-devel
-Group:  Development/Libraries/GNOME
+Group:      Development/Libraries/GNOME
 Summary:    UIA to ATK Bridge header files
-Requires:   %{name}-%{version}
+Requires:   %{name} = %{version}
 
 %description -n uiaatkbridge-devel
-UiaAtkBridge devel package
+Libraries to bridge UIA to ATK. UiaAtkBridge devel package
 
-Libraries to bridge UIA to ATK
 %files -n uiaatkbridge-devel
 %defattr(-,root,root)
-%_libdir/uiaatkbridge
-%_libdir/uiaatkbridge/libbridge-glue.so*
+%_libdir/uiaatkbridge/libbridge-glue.so
 
-%post devel -p /sbin/ldconfig
+%post -p /sbin/ldconfig
 
-%postun devel -p /sbin/ldconfig
+%postun -p /sbin/ldconfig
 
 %changelog
