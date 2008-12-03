@@ -37,9 +37,7 @@ namespace UiaAtkBridge
 		public TextLabel (IRawElementProviderSimple provider) : base (provider)
 		{
 			int controlTypeId = (int) Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			if (IsStatusBarPanel ())
-				Role = Atk.Role.Panel;
-			else if (controlTypeId == ControlType.Text.Id)
+			if (controlTypeId == ControlType.Text.Id)
 				Role = Atk.Role.Label;
 			else if (controlTypeId == ControlType.HeaderItem.Id)
 				Role = Atk.Role.TableColumnHeader;
@@ -62,10 +60,9 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
-			if (!IsStatusBarPanel ())
-				states.AddState (Atk.StateType.MultiLine);
-			else
-				states.RemoveState (Atk.StateType.MultiLine);
+			
+			states.AddState (Atk.StateType.MultiLine);
+			
 			return states;
 		}
 
