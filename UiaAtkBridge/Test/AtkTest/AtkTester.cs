@@ -184,7 +184,8 @@ namespace UiaAtkBridgeTest
 			int validNumberOfActions = ValidNumberOfActionsForAButton;
 			if ((type == BasicWidgetType.TextBoxEntry) ||
 			    (type == BasicWidgetType.ComboBoxDropDownList) ||
-			    (type == BasicWidgetType.ComboBoxDropDownEntry) || 
+			    (type == BasicWidgetType.ComboBoxDropDownEntry) ||
+			    (type == BasicWidgetType.ComboBoxItem) || 
 			    (type == BasicWidgetType.ListItem) || 
 			    (type == BasicWidgetType.ParentMenu) ||
 			    (type == BasicWidgetType.Spinner))
@@ -200,9 +201,11 @@ namespace UiaAtkBridgeTest
 			} else if ((type == BasicWidgetType.TextBoxEntry) ||
 			    (type == BasicWidgetType.Spinner)) {
 				Assert.AreEqual ("activate", implementor.GetName (0), "GetName activate");
-			} else { //Button and Checkbox and RadioButton, and ParentMenu
+			} else {
 				Assert.AreEqual ("click", implementor.GetName (0), "GetName click");
-				if ((ValidNumberOfActionsForAButton > 1) && (type != BasicWidgetType.ParentMenu)) {
+				if ((ValidNumberOfActionsForAButton > 1) &&
+				    (type != BasicWidgetType.ParentMenu) &&
+				    (type != BasicWidgetType.ComboBoxItem)) {
 					Assert.AreEqual ("press", implementor.GetName (1), "GetName press");
 					Assert.AreEqual ("release", implementor.GetName (2), "GetName release");
 				}
@@ -223,6 +226,11 @@ namespace UiaAtkBridgeTest
 			EventMonitor.Start ();
 
 			Assert.AreEqual (1, GetTopLevelRootItem ().NAccessibleChildren, "Windows in my app should be 1, and I got:" + childrenRoles (GetTopLevelRootItem ()));
+
+			if (type == BasicWidgetType.ComboBoxItem) {
+				Assert.IsTrue (accessible.Name != accessible.Parent.Parent.Name, "combobox item is not the one currently selected" +
+				               "(" + accessible.Name + "!=" + accessible.Parent.Parent.Name + ")");
+			}
 			
 			// only valid actions should work
 			for (int i = 0; i < validNumberOfActions; i++) {
@@ -242,6 +250,9 @@ namespace UiaAtkBridgeTest
 
 				CheckComboBoxMenuChild (newWindow.RefAccessibleChild (0), names);
 			}
+
+			if (type == BasicWidgetType.ComboBoxItem)
+				Assert.AreEqual (accessible.Name, accessible.Parent.Parent.Name, "action on combobox item should yield selection");
 			
 			if (type == BasicWidgetType.CheckBox || type == BasicWidgetType.CheckedListItem) {
 
@@ -322,7 +333,9 @@ namespace UiaAtkBridgeTest
 			Assert.IsNull (implementor.GetKeybinding (3), "GetKeyBinding OOR#2");
 
 			//sub-items cannot be disabled, mainly because they are not widgets
-			if ((type != BasicWidgetType.ListItem) && (type != BasicWidgetType.CheckedListItem)) {
+			if ((type != BasicWidgetType.ListItem) &&
+			    (type != BasicWidgetType.CheckedListItem) &&
+			    (type != BasicWidgetType.ComboBoxItem)) { //disable a combobox item? let's not try weird things
 				DisableWidget (accessible);
 				for (int i = 0; i < validNumberOfActions; i++) 
 					Assert.IsFalse (implementor.DoAction (i), "DoAction(" + i + ") after disabling");
@@ -1376,10 +1389,10 @@ Console.WriteLine ("AtkTester: text deleted");
 			Atk.StateSet stateSet = accessible.RefStateSet ();
 			foreach (Atk.StateType state in Enum.GetValues (typeof (Atk.StateType))) {
 				if (expectedStates.Contains (state) && 
-				    (!(stateSet.ContainsState(state))))
+				    (!(stateSet.ContainsState (state))))
 					missingStates.Add (state);
 				else if ((!expectedStates.Contains (state)) && 
-					     (stateSet.ContainsState(state)))
+					     (stateSet.ContainsState (state)))
 					superfluousStates.Add (state);
 			}
 
@@ -1392,7 +1405,7 @@ Console.WriteLine ("AtkTester: text deleted");
 					missingStatesMsg += state.ToString () + ",";
 			}
 			if (superfluousStates.Count != 0) {
-				missingStatesMsg = "Superfluous states: ";
+				superfluousStatesMsg = "Superfluous states: ";
 				foreach (Atk.StateType state in superfluousStates)
 					superfluousStatesMsg += state.ToString () + ",";
 			}

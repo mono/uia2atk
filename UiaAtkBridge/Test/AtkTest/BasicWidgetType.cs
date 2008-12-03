@@ -39,6 +39,7 @@ namespace UiaAtkBridgeTest
 		CheckBox,
 		ComboBoxDropDownList,
 		ComboBoxDropDownEntry,
+		ComboBoxItem, //this is not a widget, but part of a widget!
 		RadioButton,
 		StatusBar,
 		TextBoxEntry,       // textbox single-line (gtk: entry)
