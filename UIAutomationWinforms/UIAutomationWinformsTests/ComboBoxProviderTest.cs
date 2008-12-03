@@ -140,6 +140,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			  firstItem.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id), ControlType.ListItem.Id,
 			  "a combobox item is listitem");
 
+			TestHelper.TestPatterns ("ListItem of ComboBox",
+			  firstItem, SelectionItemPatternIdentifiers.Pattern);
+
 			secondItem = firstItem.Navigate (NavigateDirection.NextSibling);
 			Assert.IsNull (secondItem, "There isn't a second child");
 
@@ -389,6 +392,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
 			                  "DropDown: ValuePattern Pattern IS supported");
 		}
+
 
 		#endregion
 

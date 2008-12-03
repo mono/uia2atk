@@ -24,6 +24,9 @@
 // 
 
 using System;
+
+using System.Collections.Generic;
+
 using System.Windows;
 using System.Reflection;
 using System.Windows.Forms;
@@ -92,6 +95,66 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (expectedValue,
 			                 provider.GetPropertyValue (property.Id),
 			                 property.ProgrammaticName);
+		}
+
+		private static List <AutomationPattern> allPatterns = null;
+		
+		private static List <AutomationPattern> GetAllPossiblePatterns () {
+			if (allPatterns == null) {
+				allPatterns = new List<AutomationPattern> ();
+
+				allPatterns.Add (DockPatternIdentifiers.Pattern);
+				allPatterns.Add (ExpandCollapsePatternIdentifiers.Pattern);
+				allPatterns.Add (GridItemPatternIdentifiers.Pattern);
+				allPatterns.Add (InvokePatternIdentifiers.Pattern);
+				allPatterns.Add (MultipleViewPatternIdentifiers.Pattern);
+				allPatterns.Add (RangeValuePatternIdentifiers.Pattern);
+				allPatterns.Add (ScrollPatternIdentifiers.Pattern);
+				allPatterns.Add (ScrollItemPatternIdentifiers.Pattern);
+				allPatterns.Add (SelectionPatternIdentifiers.Pattern);
+				allPatterns.Add (SelectionItemPatternIdentifiers.Pattern);
+				allPatterns.Add (TablePatternIdentifiers.Pattern);
+				allPatterns.Add (TableItemPatternIdentifiers.Pattern);
+				allPatterns.Add (TogglePatternIdentifiers.Pattern);
+				allPatterns.Add (TransformPatternIdentifiers.Pattern);
+				allPatterns.Add (ValuePatternIdentifiers.Pattern);
+				allPatterns.Add (WindowPatternIdentifiers.Pattern);
+			}
+
+			return allPatterns;
+		}
+		
+		internal static void TestPatterns (string msg, IRawElementProviderSimple provider, params AutomationPattern [] expected)
+		{
+			List <AutomationPattern> expectedPatterns = new List <AutomationPattern> (expected);
+			List <AutomationPattern> missingPatterns = new List <AutomationPattern> ();
+			List <AutomationPattern> superfluousPatterns = new List <AutomationPattern> ();
+			
+			foreach (AutomationPattern pattern in GetAllPossiblePatterns ()) {
+				object behaviour = provider.GetPatternProvider (pattern.Id);
+				if (expectedPatterns.Contains (pattern) &&
+				    behaviour == null)
+					missingPatterns.Add (pattern);
+				else if ((!expectedPatterns.Contains (pattern)) && 
+					     behaviour != null)
+					superfluousPatterns.Add (pattern);
+			}
+
+			string missingPatternsMsg = string.Empty;
+			string superfluousPatternsMsg = string.Empty;
+
+			if (missingPatterns.Count != 0) {
+				missingPatternsMsg = "Missing patterns: ";
+				foreach (AutomationPattern pattern in missingPatterns)
+					missingPatternsMsg += pattern.ProgrammaticName + ",";
+			}
+			if (superfluousPatterns.Count != 0) {
+				superfluousPatternsMsg = "Superfluous patterns: ";
+				foreach (AutomationPattern pattern in superfluousPatterns)
+					superfluousPatternsMsg += pattern.ProgrammaticName + ",";
+			}
+			Assert.IsTrue ((missingPatterns.Count == 0) && (superfluousPatterns.Count == 0),
+			  msg + "; " + missingPatternsMsg + " .. " + superfluousPatternsMsg);
 		}
 	}
 }

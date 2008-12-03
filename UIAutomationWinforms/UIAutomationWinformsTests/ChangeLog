@@ -1,5 +1,11 @@
 2008-12-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* TestHelper.cs: New function for testing patterns more easily.
+
+	* ComboBoxProviderTest.cs: Test patterns of ListItem's ComboBox.
+
+2008-12-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ComboBoxProviderTest.cs: Test for ListItem controltype.
 
 2008-12-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
