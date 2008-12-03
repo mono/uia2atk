@@ -272,7 +272,7 @@ namespace Mono.UIAutomation.Winforms
 
 			public Rect Bounds {
 				get {
-					if (!HasImage)
+					if (statusBarPanel.Icon == null)
 						return Rect.Empty;
 					Rect boundingRect = BoundingRectangle;
 					return new Rect (boundingRect.TopLeft.X,
@@ -280,10 +280,6 @@ namespace Mono.UIAutomation.Winforms
 					                 statusBarPanel.Icon.Width,
 					                 statusBarPanel.Icon.Height);
 				}
-			}
-
-			public bool HasImage {
-				get { return statusBarPanel.Icon != null; }
 			}
 	
 			public string Description {

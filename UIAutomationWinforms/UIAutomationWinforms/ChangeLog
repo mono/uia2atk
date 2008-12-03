@@ -1,5 +1,15 @@
 2008-12-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs:
+	* Mono.UIAutomation.Winforms/PictureBoxProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/CheckBox/ToggleProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionItemProviderBehavior.cs:
+	Remove IEmbeddedImage.HasImage property...just check Bounds.IsEmpty
+	instead.
+
+2008-12-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: First cut at fixing
 	bounding rectangle for bug #455927.  Fixes size but not position.
 

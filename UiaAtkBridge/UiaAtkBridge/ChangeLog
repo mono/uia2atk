@@ -1,5 +1,12 @@
 2008-12-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Image.cs:
+	* Button.cs:
+	* TextLabel.cs: Remove IEmbeddedImage.HasImage property...just check
+	Bounds.IsEmpty instead.
+
+2008-12-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* TextLabel.cs: Revert changes in r120540...changing spec so that
 	StatusBarPanel has Label role, not Panel role.
 

@@ -73,10 +73,6 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		public bool HasImage {
-			get { return !Bounds.Equals (System.Windows.Rect.Empty); }
-		}
-
 		public string Description {
 			get { return string.Empty; }
 		}

@@ -368,8 +368,7 @@ namespace UiaAtkBridge
 						Console.WriteLine ("WARNING: your provider implementation doesn't have unofficial IEmbeddedImage support");
 						hasImage = false;
 					} else
-						hasImage = embeddedImage.HasImage &&
-							!embeddedImage.Bounds.IsEmpty;
+						hasImage = !embeddedImage.Bounds.IsEmpty;
 				}
 				
 				return hasImage.Value;

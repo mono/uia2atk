@@ -33,8 +33,6 @@ namespace Mono.UIAutomation.Bridge
 	{
 		Rect Bounds { get; }
 
-		bool HasImage { get; }
-
 		string Description { get; }
 	}
 }

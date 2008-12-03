@@ -65,10 +65,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.RadioButton
 			}
 		}
 
-		public bool HasImage {
-			get { return !Bounds.Equals (System.Windows.Rect.Empty); }
-		}
-
 		public string Description {
 			get { return string.Empty; }
 		}

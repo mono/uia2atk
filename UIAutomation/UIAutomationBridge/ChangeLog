@@ -1,3 +1,8 @@
+2008-12-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Bridge/IEmbeddedImage.cs: Remove
+	IEmbeddedImage.HasImage property...just check Bounds.IsEmpty instead.
+
 2008-12-02  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Bridge/IEmbeddedImage.cs: Rename BoundingRectangle
