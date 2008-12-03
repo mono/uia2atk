@@ -250,6 +250,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
 	Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ComboBoxProvider.cs \
+	Mono.UIAutomation.Winforms/DataGridProvider.cs \
 	Mono.UIAutomation.Winforms/DomainUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/ErrorProvider.cs \
 	Mono.UIAutomation.Winforms/ErrorProviderListener.cs \
