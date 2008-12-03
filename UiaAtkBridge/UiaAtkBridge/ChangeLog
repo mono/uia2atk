@@ -1,3 +1,9 @@
+2008-12-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MenuItem.cs:
+	* ComboBox.cs: Fix bug #449599 (SelectionItemProvider was not taken in
+	account).
+
 2008-12-03  Mike Gorse  <mgorse@novell.com>
 
 	* Spinner.cs: Adapt for new EditableRange interface.

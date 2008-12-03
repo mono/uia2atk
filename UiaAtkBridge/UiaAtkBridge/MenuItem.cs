@@ -37,6 +37,7 @@ namespace UiaAtkBridge
 		bool? comboBoxStructure = null;
 		TextImplementorHelper textExpert = null;
 		IInvokeProvider invokeProvider = null;
+		ISelectionItemProvider selectionItemProvider = null;
 		
 		public MenuItem (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -56,9 +57,12 @@ namespace UiaAtkBridge
 			comboBoxStructure = (controlType == ControlType.List.Id);
 
 			if ((!comboBoxStructure.Value) && (controlType != ControlType.ListItem.Id)) {
-				invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
+				invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 				if (invokeProvider == null)
 					throw new ArgumentException ("Provider for ParentMenu should implement IInvokeProvider");
+			} else {
+				selectionItemProvider = (ISelectionItemProvider)provider.GetPatternProvider (
+				  SelectionItemPatternIdentifiers.Pattern.Id);
 			}
 			
 			IRawElementProviderFragment child = ((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
@@ -73,10 +77,13 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			states.AddState (Atk.StateType.Selectable);
-			if (selected)
+			if (selected) {
 				states.AddState (Atk.StateType.Selected);
-			else
+				states.AddState (Atk.StateType.Showing);
+			} else {
 				states.RemoveState (Atk.StateType.Selected);
+				states.RemoveState (Atk.StateType.Showing);
+			}
 			return states;
 		}
 
@@ -84,14 +91,14 @@ namespace UiaAtkBridge
 			get { return Atk.Layer.Popup; }
 		}
 
-		protected void CancelSelected ()
+		protected void CancelSelected (string selectedName)
 		{ 
 			selected = false;
 			NotifyStateChange (Atk.StateType.Selected, false);
 			if (Parent is MenuItem)
-				((MenuItem)Parent).CancelSelected ();
+				((MenuItem)Parent).CancelSelected (selectedName);
 			else if (Parent is ComboBox)
-				((ComboBox)Parent).RaiseSelectionChanged ();
+				((ComboBox)Parent).RaiseSelectionChanged (selectedName);
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
@@ -100,15 +107,15 @@ namespace UiaAtkBridge
 				selected = !selected;
 				NotifyStateChange (Atk.StateType.Selected, selected);
 				if (Parent is MenuItem)
-					((MenuItem)Parent).CancelSelected ();
+					((MenuItem)Parent).CancelSelected (Name);
 			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
 				if (Parent is MenuItem)
-					((MenuItem)Parent).CancelSelected ();
+					((MenuItem)Parent).CancelSelected (Name);
 			} else if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
 				selected = true;
 				NotifyStateChange (Atk.StateType.Selected, selected);
 				if (Parent is MenuItem)
-					((MenuItem)Parent).CancelSelected ();
+					((MenuItem)Parent).CancelSelected (Name);
 			} else {
 				Console.WriteLine ("WARNING: RaiseAutomationEvent({0},...) not handled yet", eventId.ProgrammaticName);
 				base.RaiseAutomationEvent (eventId, e);
@@ -178,12 +185,19 @@ namespace UiaAtkBridge
 		public bool DoAction (int i)
 		{
 			if (i == 0) {
-				if (invokeProvider != null)
-				try {
-					invokeProvider.Invoke ();
-					return true;
+				if (invokeProvider != null) {
+					try {
+						invokeProvider.Invoke ();
+						return true;
+					} catch (ElementNotEnabledException) { }
 				}
-				catch (ElementNotEnabledException) { }
+				else if (selectionItemProvider != null) {
+					try {
+						selectionItemProvider.Select ();
+						
+						return true;
+					} catch (ElementNotEnabledException) { }
+				}
 			}
 			return false;
 		}
