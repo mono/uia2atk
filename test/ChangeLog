@@ -1,5 +1,10 @@
 2008-12-02 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* harness/tests.py: Add tooltip_basic_ops test to the regression test
+	suite.
+
+2008-12-02 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* testers/tooltip/tooltipframe.py: Add a method to test for tooltips
 	that should _not_ be present.  Find a label (so we can move the
 	mouse cursor to it when we don't want any tooltips to be present).
