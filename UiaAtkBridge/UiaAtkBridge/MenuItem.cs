@@ -69,6 +69,8 @@ namespace UiaAtkBridge
 
 			//FIXME: take in account Role changes at runtime
 			Role = (child != null || comboBoxStructure.Value) ? Atk.Role.Menu : Atk.Role.MenuItem;
+
+			showing = !((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id));
 		}
 
 		private bool selected = false;
@@ -135,7 +137,7 @@ namespace UiaAtkBridge
 				selected = (bool)e.NewValue;
 				NotifyStateChange (Atk.StateType.Selected, selected);
 			} else if (e.Property.Id == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
-				showing = (bool)e.NewValue;
+				showing = !((bool)e.NewValue);
 				NotifyStateChange (Atk.StateType.Showing, showing);
 			} else {
 				base.RaiseAutomationPropertyChangedEvent (e);

@@ -1,3 +1,7 @@
+2008-12-04  Mario Carrion  <mcarrion@novell.com>
+
+	* MenuItem.cs: Showing when is not OffScreen.
+
 2008-12-04  Brad Taylor  <brad@getcoded.net>
 
 	* MenuItem.cs: Attempt a bridge side fix for #456343.
