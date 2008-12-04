@@ -1,5 +1,14 @@
 2008-12-04  Neville Gao  <nevillegao@gmail.com>
 
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added files.
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Added SWF.ToolBar.
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonInvokeProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/ToolBar/ToolBarButtonInvokePatternInvokedEvent.cs:
+	  Files Added.
+
+2008-12-04  Neville Gao  <nevillegao@gmail.com>
+
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Deleted SWF.ToolBar to
 	  make build pass.
 
