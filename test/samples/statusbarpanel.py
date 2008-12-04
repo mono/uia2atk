@@ -68,19 +68,21 @@ class StatusBarStatusBarPanelApp(Form):
 
         self.statusbarpanel1 = StatusBarPanel()
         self.statusbarpanel1.BorderStyle = StatusBarPanelBorderStyle.Sunken
+        self.statusbarpanel1.Icon = Icon("%s/samples/icons/TrayIcon.ico" % uiaqa_path)
         self.statusbarpanel1.AutoSize = StatusBarPanelAutoSize.Spring
         self.statusbarpanel1.Text = "statusbarpanel1"
 
         self.statusbarpanel2 = StatusBarPanel()
         self.statusbarpanel2.BorderStyle = StatusBarPanelBorderStyle.Raised
-        self.statusbarpanel2.AutoSize = StatusBarPanelAutoSize.Contents
         self.statusbarpanel2.Text = "statusbarpanel2"
+        self.statusbarpanel2.Icon = Icon("%s/samples/icons/warn.ico" % uiaqa_path)
+        self.statusbarpanel2.AutoSize = StatusBarPanelAutoSize.Contents
 
         self.statusbarpanel3 = StatusBarPanel()
         self.statusbarpanel3.BorderStyle = StatusBarPanelBorderStyle.Raised
-        self.statusbarpanel3.AutoSize = StatusBarPanelAutoSize.Contents
         self.statusbarpanel3.Text = "Icon"
         self.statusbarpanel3.Icon = Icon("%s/samples/icons/novell.ico" % uiaqa_path)
+        self.statusbarpanel3.AutoSize = StatusBarPanelAutoSize.Contents
 
         # add controls
         self.statusbar.Panels.Add(self.statusbarpanel1)

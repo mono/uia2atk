@@ -1,3 +1,13 @@
+2008-12-04  Calen Chen <cachen@novell.com>
+
+	* testers/states.py: revert statusbarpanel tuple to inherit label
+	* samples/statusbarpanel.py: add icon for panel1 and panel2 with 
+	different size
+	* testers/statusbarpanel/statusbarpanelframe.py: revert initiation of 
+	statusbarpanel by finding label
+	* testers/statusbarpanel_basic_ops.py: update image size checking test 
+	for panel1 and panel2
+
 2008-12-03 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/tests.py: Add ErrorProvider test to the regression test suite

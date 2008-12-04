@@ -33,11 +33,11 @@ class StatusBarPanelFrame(accessibles.Frame):
         self.statusbar = self.findStatusBar("texts in statusbar")
         self.panel = self.findAllTexts(None)
         #statusbarpanel1.Text with time
-        self.panel1 = self.findPanel(self.PANEL1)
+        self.panel1 = self.findLabel(self.PANEL1)
         #statusbarpanel2.Text with date
-        self.panel2 = self.findPanel(self.PANEL2)
+        self.panel2 = self.findLabel(self.PANEL2)
         #statusbarpanel3.Icon
-        self.panel3 = self.findPanel(self.PANEL3)
+        self.panel3 = self.findLabel(self.PANEL3)
 
     #give 'click' action
     def click(self,button):
