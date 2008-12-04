@@ -1,5 +1,14 @@
 2008-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Added tests for bug#449599. Fix a typo in the States()
+	function.
+	* AtkTests.cs:
+	* BasicWidgetType.cs: Added tests for bug#449599.
+
+	 (Backport from trunk r120648)
+
+2008-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs: Disable tests that don't apply in the branch.
 
 2008-11-25  Brad Taylor  <brad@getcoded.net>

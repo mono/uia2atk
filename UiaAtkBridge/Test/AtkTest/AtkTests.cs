@@ -624,12 +624,34 @@ namespace UiaAtkBridgeTest
 			InterfaceComponent (type, atkComponent);
 
 			PropertyRole (type, accessible);
+
+			Atk.Object firstComboBoxItem = accessible.RefAccessibleChild (0).RefAccessibleChild (0);
+			Atk.Object secondComboBoxItem = accessible.RefAccessibleChild (0).RefAccessibleChild (1);
+
+			States (firstComboBoxItem,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Selectable, //yes! even not having Atk.Selection
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Visible);
+
+			States (secondComboBoxItem,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Selectable, //yes! even not having Atk.Selection
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Visible);
 			
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible, names);
 
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			InterfaceSelection (atkSelection, names, accessible, type);
+			
+			//check the Action impl of a comboboxitem (menuitem role)
+			atkAction = CastToAtkInterface <Atk.Action> (secondComboBoxItem);
+			InterfaceAction (BasicWidgetType.ComboBoxItem, atkAction, secondComboBoxItem);
+
+			//FIXME: uncomment this when we can test interfaces negatively:
+			//Assert.IsNull (CastToAtkInterface <Atk.Selection> (firstComboBoxItem));
 		}
 		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
@@ -659,6 +681,21 @@ namespace UiaAtkBridgeTest
 			InterfaceComponent (type, atkComponent);
 			
 			PropertyRole (type, accessible);
+
+			Atk.Object firstComboBoxItem = accessible.RefAccessibleChild (0).RefAccessibleChild (0);
+			Atk.Object secondComboBoxItem = accessible.RefAccessibleChild (0).RefAccessibleChild (1);
+
+			States (firstComboBoxItem,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Selectable, //yes! even not having Atk.Selection
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Visible);
+
+			States (secondComboBoxItem,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Selectable, //yes! even not having Atk.Selection
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Visible);
 			
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible, names);
@@ -668,6 +705,10 @@ namespace UiaAtkBridgeTest
 			
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			InterfaceSelection (atkSelection, names, accessible, type);
+
+			//check the Action impl of a comboboxitem (menuitem role)
+			atkAction = CastToAtkInterface <Atk.Action> (secondComboBoxItem);
+			InterfaceAction (BasicWidgetType.ComboBoxItem, atkAction, secondComboBoxItem);
 		}
 		
 		[Test]

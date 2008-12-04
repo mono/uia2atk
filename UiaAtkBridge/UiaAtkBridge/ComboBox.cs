@@ -182,9 +182,10 @@ namespace UiaAtkBridge
 			bool success = selectionHelper.AddSelection (i);
 
 			if (success) {
+				string propagateName = null;
 				if (!selProvider.CanSelectMultiple)
-					Name = RefSelection (0).Name;
-				RaiseSelectionChanged ();
+					propagateName = RefSelection (0).Name;
+				RaiseSelectionChanged (propagateName);
 			}
 
 			return success;
@@ -196,8 +197,7 @@ namespace UiaAtkBridge
 
 			//will likely never happen because UIA throws IOE...
 			if (success) {
-				Name = String.Empty;
-				RaiseSelectionChanged ();
+				RaiseSelectionChanged (String.Empty);
 			}
 			
 			return success;
@@ -222,9 +222,10 @@ namespace UiaAtkBridge
 			
 			//will likely never happen because UIA throws IOE...
 			if (success) {
+				string propagateName = null;
 				if (!selProvider.CanSelectMultiple)
-					Name = String.Empty;
-				RaiseSelectionChanged ();
+					propagateName = String.Empty;
+				RaiseSelectionChanged (propagateName);
 			}
 			
 			return success;
@@ -234,14 +235,16 @@ namespace UiaAtkBridge
 		{
 			bool success = selectionHelper.SelectAllSelection ();
 			if (success)
-				RaiseSelectionChanged ();
+				RaiseSelectionChanged (String.Empty);
 			return success;
 		}
 
 #endregion
 
-		internal void RaiseSelectionChanged ()
+		internal void RaiseSelectionChanged (string name)
 		{
+			if (name != null)
+				Name = name;
 			GLib.Signal.Emit (this, "selection-changed");
 		}
 		

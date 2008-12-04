@@ -1,3 +1,11 @@
+2008-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MenuItem.cs:
+	* ComboBox.cs: Fix bug #449599 (SelectionItemProvider was not taken in
+	account).
+
+	(Backport from trunk r120647)
+
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 	
 	* Makefile.am: Use $(MONO_UIA_LIBS) instead of hardcoding paths.
