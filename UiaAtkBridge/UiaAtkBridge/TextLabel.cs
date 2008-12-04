@@ -46,16 +46,6 @@ namespace UiaAtkBridge
 			textExpert = new TextImplementorHelper (text, this);
 			Name = text;
 		}
-		
-		private bool IsStatusBarPanel ()
-		{
-			IRawElementProviderFragment fragment = Provider as IRawElementProviderFragment;
-			if (fragment == null)
-				return false;
-			IRawElementProviderFragment parentProvider = fragment.Navigate (NavigateDirection.Parent);
-			int controlTypeId = (int) parentProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			return (controlTypeId == ControlType.StatusBar.Id);
-		}
 
 		protected override Atk.StateSet OnRefStateSet ()
 		{

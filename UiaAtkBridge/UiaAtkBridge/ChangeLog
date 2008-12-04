@@ -1,3 +1,7 @@
+2008-12-04  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* TextLabel.cs: Removing unused IsStatusBarPanel method.
+
 2008-12-04  Mario Carrion  <mcarrion@novell.com>
 
 	* MenuItem.cs: Reverted setting showing in ctor.
