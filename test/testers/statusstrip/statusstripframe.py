@@ -33,10 +33,6 @@ class StatusStripFrame(accessibles.Frame):
         self.MainLabel = self.findLabel(self.LABEL_ONE)
         self.StripLabel = self.findLabel(self.LABEL_TWO)
         self.ProgressBar = self.findProgressBar(None)
-        self.DropDownButton_item1 = self.findMenuItem("Red")
-        self.DropDownButton_item2 = self.findMenuItem("Blue")
-        self.SplitButton_item1 = self.findMenuItem("Blue Color")
-        self.SplitButton_item2 = self.findMenuItem("Red Color")
 
     #give 'click' action
     def click(self,button):

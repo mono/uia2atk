@@ -1,3 +1,10 @@
+2008-12-05  Calen Chen <cachen@novell.com>
+
+	* testers/statusstrip/statusstripframe.py,
+	* testers/statusstrip_basic_ops.py: delete ToolStripDropDownButton and 
+	ToolStripSplitButton test from here, just test label and progressbar 
+	to make sure statusstrip have children
+
 2008-12-04  Ray Wang <rawang@novell.com>
 
 	* test/testers/listbox_basic_ops.py: adjustments for AtkAccessible changes

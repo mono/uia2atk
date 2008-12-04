@@ -10,8 +10,10 @@
 
 # The docstring below  is used in the generated log file
 """
-Test accessibility of statusstrip widget which include toolstriplabel, 
+Test accessibility of statusstrip widget which can include toolstriplabel,
 toolstripdropdownbutton, toolstripsplitbutton and toolstripprogressbar.
+we just test give general test for label and progressbar which under statusstrip,
+the complete test of each of them will be running for each single control test
 """
 
 # imports
@@ -49,10 +51,11 @@ ssFrame = app.statusStripFrame
 #check statusbar's states
 statesCheck(ssFrame.statusstrip, "StatusBar")
 
-#############################################################################
-#test status and value of ToolStripProgressBar and ToolStripStatusLabel in 
-#StatusStrip
-#############################################################################
+#########################################################################################
+#test states and value of ToolStripProgressBar and 
+#ToolStripStatusLabel to make sure StatusStrip with "status bar" role
+#have children which also with correct states and event changed
+#########################################################################################
 statesCheck(ssFrame.ProgressBar, "ProgressBar")
 statesCheck(ssFrame.StripLabel, "Label")
 
@@ -67,41 +70,6 @@ ssFrame.click(ssFrame.button)
 sleep(config.SHORT_DELAY)
 ssFrame.assertLabel(ssFrame.StripLabel, "It is 40% of 100%")
 ssFrame.assertProgressBarValue(ssFrame.ProgressBar, 40)
-
-###############################################################
-#test ToolStripDropDownButton's states and actions in StatusStrip
-###############################################################
-actionsCheck(ssFrame.DropDownButton_item1, "MenuItem")
-actionsCheck(ssFrame.DropDownButton_item2, "MenuItem")
-
-statesCheck(ssFrame.DropDownButton_item1, "MenuItem")
-statesCheck(ssFrame.DropDownButton_item2, "MenuItem")
-
-ssFrame.click(ssFrame.DropDownButton_item1)
-sleep(config.SHORT_DELAY)
-ssFrame.assertLabel(ssFrame.MainLabel, "You selected Red")
-
-ssFrame.click(ssFrame.DropDownButton_item2)
-sleep(config.SHORT_DELAY)
-ssFrame.assertLabel(ssFrame.MainLabel, "You selected Blue")
-
-###############################################################
-#test ToolStripSplitButton's states and actions in StatusStrip
-###############################################################
-actionsCheck(ssFrame.SplitButton_item1, "MenuItem")
-actionsCheck(ssFrame.SplitButton_item2, "MenuItem")
-
-statesCheck(ssFrame.SplitButton_item1, "MenuItem")
-statesCheck(ssFrame.SplitButton_item2, "MenuItem")
-
-ssFrame.click(ssFrame.SplitButton_item1)
-sleep(config.SHORT_DELAY)
-ssFrame.assertLabel(ssFrame.StripLabel, "You selected Blue Color")
-
-ssFrame.click(ssFrame.SplitButton_item2)
-sleep(config.SHORT_DELAY)
-ssFrame.assertLabel(ssFrame.StripLabel, "You selected Red Color")
-
 
 #close application frame window
 ssFrame.quit()
