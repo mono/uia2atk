@@ -111,6 +111,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.MonthCalendar mc;
 			SWF.SplitContainer sc;
 			SWF.Splitter s;
+			SWF.ToolBar tb;
 			
 			SWF.StatusStrip ss;
 			SWF.MenuStrip ms;
@@ -121,6 +122,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.ToolStripTextBox tstb;
 			SWF.ToolStripProgressBar tspb;
 			SWF.ToolStripComboBox tscb;
+			SWF.ToolStripSeparator tss;
 			
 			if (component == null)
 				return null;
@@ -182,6 +184,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ToolStripProgressBarProvider (tspb);
 			else if ((tscb = component as SWF.ToolStripComboBox) != null)
 				provider = new ToolStripComboBoxProvider (tscb);
+			else if ((tss = component as SWF.ToolStripSeparator) != null)
+				provider = new ToolStripSeparatorProvider (tss);
 			else if ((scb = component as SWF.ScrollBar) != null) {
 				//TODO:
 				//   We need to add here a ScrollableControlProvider and then verify
@@ -226,6 +230,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new SplitContainerProvider (sc);
 			else if ((s = component as SWF.Splitter) != null)
 				provider = new SplitterProvider (s);
+			else if ((tb = component as SWF.ToolBar) != null)
+				provider = new ToolBarProvider (tb);
 			else {
 				//TODO: We have to solve the problem when there's a Custom control
 				//	Ideally the first thing we do is send a wndproc message to

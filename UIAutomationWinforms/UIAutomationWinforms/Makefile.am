@@ -302,6 +302,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs \
 	Mono.UIAutomation.Winforms/ToolStripProgressBar.cs \
 	Mono.UIAutomation.Winforms/ToolStripProvider.cs \
+	Mono.UIAutomation.Winforms/ToolStripSeparatorProvider.cs \
 	Mono.UIAutomation.Winforms/ToolStripSplitButtonProvider.cs \
 	Mono.UIAutomation.Winforms/ToolStripTextBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs \
