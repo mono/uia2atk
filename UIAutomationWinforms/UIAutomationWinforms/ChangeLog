@@ -1,3 +1,8 @@
+2008-12-04  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs:
+	  Invoke as needed for EditableRange functions.
+
 2008-12-04  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Initial attempt at

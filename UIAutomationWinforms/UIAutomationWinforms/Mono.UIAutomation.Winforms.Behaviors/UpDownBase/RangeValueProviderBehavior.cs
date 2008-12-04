@@ -143,6 +143,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 		#region IEditableRange Members
 		public void BeginEdit (String text)
 		{
+			if (numericUpDown.InvokeRequired == true) {
+				numericUpDown.BeginInvoke (new NumericUpDownBeginEditDelegate (BeginEdit),
+				                           new object [] { text });
+				return;
+			}
 			if (IsReadOnly)
 				throw new ElementNotEnabledException ();
 			numericUpDown.txtView.Text = text;
@@ -150,6 +155,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 
 		public void CommitEdit ()
 		{
+			if (numericUpDown.InvokeRequired) {
+				numericUpDown.BeginInvoke (new NumericUpDownCommitEditDelegate (CommitEdit));
+				return;
+			}
 			decimal value = decimal.Parse (numericUpDown.Text);
 			if (value < numericUpDown.Minimum)
 				value = numericUpDown.Minimum;
@@ -180,4 +189,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 	}
 	
 	delegate void NumericUpDownSetValueDelegate (decimal value);
+	delegate void NumericUpDownBeginEditDelegate (string value);
+	delegate void NumericUpDownCommitEditDelegate ();
 }
