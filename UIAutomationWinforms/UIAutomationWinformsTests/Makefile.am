@@ -92,6 +92,7 @@ FILES =  \
 	ToolStripLabelProviderTest.cs \
 	ToolStripProgressBarProviderTest.cs \
 	ToolStripProviderTest.cs \
+	ToolStripSeparatorProviderTest.cs \
 	ToolStripTextBoxProviderTest.cs \
 	ToolTipProviderTest.cs \
 	WebBrowserProviderTest.cs \

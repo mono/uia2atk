@@ -1,3 +1,8 @@
+2008-12-04  Neville Gao  <nevillegao@gmail.com>
+
+	* UIAutomationWinformsTests.mdp, Makefile.am: Updated for added file.
+	* ToolStripSeparatorProviderTest.cs: File added.
+
 2008-12-03  Brad Taylor  <brad@getcoded.net>
 
 	* MonthCalendarProviderTest.cs: Lots of refactoring, also test
