@@ -120,7 +120,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsTrue (withEdit, "We should have a Edit Control Type.");
 			Assert.IsTrue (withList, "We should have a List Control Type.");
 			Assert.IsTrue (withButton, "We should have a Button Control Type.");
-					
+
+			Assert.IsTrue ((bool)listChild.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
+			               "the list of a combobox should be offscreen if it's not expanded");
+			
 			//No items in internal collection
 			firstItem = listChild.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNull (firstItem, "FirstChild must be null");

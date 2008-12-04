@@ -1,3 +1,9 @@
+2008-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ComboBoxProviderTest.cs: Added test for bug#449546 (related:
+	bug#456343). IsOffScreen property should be true when combobox not
+	expanded.
+
 2008-12-04  Brad Taylor  <brad@getcoded.net>
 
 	* MonthCalendarProviderTest.cs: Test MonthCalendarListItem and its
