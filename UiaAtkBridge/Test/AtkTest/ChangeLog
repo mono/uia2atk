@@ -1,3 +1,7 @@
+2008-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: Disable tests that don't apply in the branch.
+
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 	
 	* Makefile.am: Clean up references.

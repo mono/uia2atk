@@ -474,6 +474,7 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		[Ignore ("Not ready in pre-1.0")]
 		public void MaskedTextBoxEntry ()
 		{
 			BasicWidgetType type = BasicWidgetType.TextBoxEntry;
@@ -670,6 +671,7 @@ namespace UiaAtkBridgeTest
 		}
 		
 		[Test]
+		[Ignore ("Not ready in pre-1.0")]
 		public void TabControl () { RunInGuiThread (RealTabControl); }
 		public void RealTabControl ()
 		{
@@ -734,7 +736,8 @@ namespace UiaAtkBridgeTest
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithoutImage);
 		}
 
-		//[Test]
+		[Test]
+		[Ignore ("Not ready in pre-1.0")]
 		public void ListView ()
 		{
 			BasicWidgetType type = BasicWidgetType.ListView;

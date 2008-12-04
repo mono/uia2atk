@@ -202,6 +202,7 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		[Ignore ("Not ready in pre-1.0")]
 		public void ComboBoxSimple ()
 		{
 			ComboBoxSimple (null);
@@ -229,6 +230,7 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		[Ignore ("Not ready in pre-1.0")]
 		public void ToolStripComboBoxSimple ()
 		{
 			ComboBoxSimple (toolStripComboBoxSim);
@@ -247,12 +249,14 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		[Ignore ("Not ready in pre-1.0")]
 		public void ToolStripLabel ()
 		{
 			Label (BasicWidgetType.ToolStripLabel);
 		}
 
 		[Test]
+		[Ignore ("Not ready in pre-1.0")]
 		public void ListView2 ()
 		{
 			lv1.View = SWF.View.List;
@@ -308,6 +312,7 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		[Ignore ("Not ready in pre-1.0")]
 		public void DomainUpDown ()
 		{
 			BasicWidgetType type = BasicWidgetType.DomainUpDown;
@@ -337,6 +342,7 @@ namespace UiaAtkBridgeTest
 		}
 		
 		[Test]
+		[Ignore ("Not ready in pre-1.0")]
 		public void StatusStrip ()
 		{
 			BasicWidgetType type = BasicWidgetType.StatusStrip;
@@ -421,6 +427,7 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		[Ignore ("Not ready in pre-1.0")]
 		public void ToolStripDropDownButton ()
 		{
 			BasicWidgetType type = BasicWidgetType.ToolStripDropDownButton;
