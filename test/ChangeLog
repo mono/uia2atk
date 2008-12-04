@@ -1,3 +1,14 @@
+2008-12-03 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/errorprovider.py: Create more text boxes that all have
+	ErrorProviders associated with them so we can (1) use more more
+	ErrorBlinkStyles and IconAlignments and (2) have tests that deal with
+	multiple ErrorProviders.
+	* testers/errorprovider: directory for new ErrorProvider test
+	* testers/errorprovider/__init__.py: new init file
+	* testers/errorprovider/errorproviderframe.py: new frame file
+	* testers/errorprovider_basic_ops.py: new ErrorProvider test
+
 2008-12-03  Ray Wang <rawang@novell.com>
 
 	* build/specs/uiaatkbridge.spec,
