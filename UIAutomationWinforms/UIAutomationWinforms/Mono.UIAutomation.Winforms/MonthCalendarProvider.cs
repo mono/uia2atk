@@ -233,7 +233,7 @@ namespace Mono.UIAutomation.Winforms
 			= new Dictionary<DateTime, MonthCalendarListItemProvider> ();
 	}
 
-	internal class MonthCalendarListItemProvider : FragmentControlProvider
+	internal class MonthCalendarListItemProvider : FragmentRootControlProvider
 	{
 		public MonthCalendarListItemProvider (MonthCalendarDataGridProvider dataGridProvider,
 		                                      MonthCalendarProvider calendarProvider,
@@ -264,6 +264,10 @@ namespace Mono.UIAutomation.Winforms
 			get { return row; }
 		}
 
+		public string Text {
+			get { return date.Day.ToString (); }
+		}
+
 		public override IRawElementProviderFragmentRoot FragmentRoot {
 			get { return dataGridProvider; }
 		}
@@ -276,6 +280,26 @@ namespace Mono.UIAutomation.Winforms
 			             new ListItemGridItemProviderBehavior (this));
 			SetBehavior (TableItemPatternIdentifiers.Pattern,
 			             new ListItemTableItemProviderBehavior (this));
+			SetBehavior (ValuePatternIdentifiers.Pattern,
+			             new ListItemValueProviderBehavior (this, this));
+		}
+
+		public override void InitializeChildControlStructure ()
+		{
+			base.InitializeChildControlStructure ();
+
+			textChild = new MonthCalendarListItemTextProvider (
+				this, Control);
+			textChild.Initialize ();
+			AddChildProvider (true, textChild);
+		}
+		
+		public override void FinalizeChildControlStructure ()
+		{
+			base.FinalizeChildControlStructure ();
+
+			RemoveChildProvider (true, textChild);
+			textChild.Terminate ();
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -285,20 +309,53 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return "list item";
 			else if (propertyId == AEIds.NameProperty.Id)
-				return GetDateString ();
+				return Text;
 
 			return base.GetProviderPropertyValue (propertyId);
-		}
-
-		private string GetDateString ()
-		{
-			return date.Day.ToString ();
 		}
 
 		private int row, col;
 		private DateTime date;
 		private MonthCalendarProvider calendarProvider;
 		private MonthCalendarDataGridProvider dataGridProvider;
+		private MonthCalendarListItemTextProvider textChild;
+	}
+
+	internal class MonthCalendarListItemTextProvider
+		: FragmentControlProvider
+	{
+		public MonthCalendarListItemTextProvider (MonthCalendarListItemProvider listItemProvider,
+		                                          Control control)
+			: base (control)
+		{
+			this.listItemProvider = listItemProvider;
+		}
+
+		public override void Initialize ()
+		{
+			base.Initialize ();
+
+			SetBehavior (ValuePatternIdentifiers.Pattern,
+			             new ListItemValueProviderBehavior (this, listItemProvider));
+		}
+
+		public override IRawElementProviderFragmentRoot FragmentRoot {
+			get { return listItemProvider; }
+		}
+
+		protected override object GetProviderPropertyValue (int propertyId)
+		{
+			if (propertyId == AEIds.ControlTypeProperty.Id)
+				return ControlType.Text.Id;
+			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
+				return "text";
+			else if (propertyId == AEIds.NameProperty.Id)
+				return listItemProvider.Text;
+
+			return base.GetProviderPropertyValue (propertyId);
+		}
+
+		private MonthCalendarListItemProvider listItemProvider;
 	}
 
 	internal class MonthCalendarHeaderProvider : FragmentRootControlProvider

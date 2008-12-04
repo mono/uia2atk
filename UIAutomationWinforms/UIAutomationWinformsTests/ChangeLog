@@ -1,5 +1,10 @@
 2008-12-04  Brad Taylor  <brad@getcoded.net>
 
+	* MonthCalendarProviderTest.cs: Test MonthCalendarListItem and its
+	Text child's IValueProvider implementation.
+
+2008-12-04  Brad Taylor  <brad@getcoded.net>
+
 	* MonthCalendarProviderTest.cs: Test MonthCalendarListItem's
 	ITableItemProvider support.
 

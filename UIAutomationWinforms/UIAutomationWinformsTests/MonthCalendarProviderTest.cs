@@ -319,6 +319,47 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					.Navigate (NavigateDirection.NextSibling);
 			}
 		}
+	
+		[Test]
+		public void ListItemTextProviderTest ()
+		{
+			IRawElementProviderFragmentRoot dataGridProvider;
+			IRawElementProviderFragment listItem;
+
+			GetDataGridAndFirstListItem (out dataGridProvider, out listItem);
+
+			DateTime date = calendar.GetDisplayRange (false).Start;
+			while (listItem != null) {
+				// First test listItem itself
+				IValueProvider valueProvider = listItem.GetPatternProvider (
+					ValuePatternIdentifiers.Pattern.Id) as IValueProvider;
+				TestListItemValueProvider (valueProvider, date.Day.ToString ());
+
+				IRawElementProviderFragment textChild
+					= ((IRawElementProviderFragmentRoot) listItem)
+						.Navigate (NavigateDirection.FirstChild);
+				Assert.IsNotNull (textChild, "ListItem has no children");
+				TestProperty (textChild,
+					      AutomationElementIdentifiers.ControlTypeProperty,
+					      ControlType.Text.Id);
+				
+				// Then test the text child of listItem
+				valueProvider = textChild.GetPatternProvider (
+					ValuePatternIdentifiers.Pattern.Id) as IValueProvider;
+				TestListItemValueProvider (valueProvider, date.Day.ToString ());
+
+				date = date.AddDays (1);
+				listItem = listItem.Navigate (
+					NavigateDirection.NextSibling);
+			}
+		}
+
+		public void TestListItemValueProvider (IValueProvider valueProvider, string expected_val)
+		{
+			Assert.IsNotNull (valueProvider, "Does not support IValueProvider");
+			Assert.AreEqual (expected_val, valueProvider.Value, "Value is not correct");
+			Assert.IsTrue (valueProvider.IsReadOnly, "Value is not read only");
+		}
 
 		public void GetDataGridAndFirstListItem (out IRawElementProviderFragmentRoot dataGrid,
 		                                         out IRawElementProviderFragment firstChild)
@@ -337,6 +378,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// Header is next, but skip that
 			firstChild = (IRawElementProviderFragment) child.Navigate (
 					NavigateDirection.NextSibling);
+		}
+
+		[Test]
+		public void IValueProviderTest ()
+		{
+			object valueProvider
+				= calendarProvider.GetPatternProvider (
+					ValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNull (valueProvider,
+			               "Incorrectly implements IValueProvider");
 		}
 
 		protected override Control GetControlInstance ()

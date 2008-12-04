@@ -2,6 +2,14 @@
 
 	* Makefile.am: 
 	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemValueProviderBehavior.cs: 
+	Implement IValueProvider support for MonthCalendarListItem and its Text
+	child.
+
+2008-12-04  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: 
 	* Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/TableProviderBehavior.cs: 
 	* Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemGridItemProviderBehavior.cs: 
 	* Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemTableItemProviderBehavior.cs: 

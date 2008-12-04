@@ -84,6 +84,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemTableItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Panel/DockProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Panel/TransformProviderBehavior.cs \
