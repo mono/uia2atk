@@ -44,26 +44,26 @@ if app is None:
 
 # just an alias to make things shorter
 llFrame = app.linkLabelFrame
-
+'''
 #check sensitive Label's default states
 statesCheck(llFrame.link1, "Label", add_states=["focusable", "focused"])
 statesCheck(llFrame.link2, "Label", add_states=["focusable"])
 statesCheck(llFrame.link3, "Label", add_states=["focusable"])
-
+'''
 #implement Hypertext, check the link number
-llFrame.showLink(llFrame.link1, 'www.opensuse.org', 2)
-llFrame.showLink(llFrame.link2, 'calculator')
-llFrame.showLink(llFrame.link3, 'gedit')
+#llFrame.showLink(llFrame.link1, 'www.opensuse.org', 2)
+#llFrame.showLink(llFrame.link2, 'calculator')
+#llFrame.showLink(llFrame.link3, 'gedit')
 
 #do 'jump' action for link1 to invoke firefox, then close firefox
 llFrame.openLink(llFrame.link1)
 sleep(config.MEDIUM_DELAY)
-llFrame.assertLinkable("Firefox")
-newapp = launchNewApp("Firefox")
-newframe = newapp.findFrame(re.compile("openSUSE.org"))
-newframe.mouseClick()
-newframe.altF4()
-
+#llFrame.assertLinkable("Firefox")
+#newapp = launchNewApp("Firefox")
+#newframe = newapp.findFrame(re.compile("openSUSE.org"))
+#newframe.mouseClick()
+#altF4()
+'''
 #do 'jump' action for link2 to invoke gclctool, then close gclctool
 llFrame.openLink(llFrame.link2)
 sleep(config.MEDIUM_DELAY)
@@ -96,6 +96,7 @@ newapp.findFrame("Calculator").altF4()
 llFrame.link3.mouseClick()
 sleep(config.MEDIUM_DELAY)
 llFrame.assertLinkable("gmail")
+'''
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

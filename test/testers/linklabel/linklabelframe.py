@@ -32,6 +32,7 @@ class LinkLabelFrame(accessibles.Frame):
 
     #assert if Hypertext is implemented by using getNLinks()
     def showLink(self, accessible, url, linknum=1):
+        print accessible._accessible.childCount
         procedurelogger.action("search for %s to calculate link number" % accessible)
         iaction = accessible._accessible.queryHypertext()
 
@@ -40,16 +41,30 @@ class LinkLabelFrame(accessibles.Frame):
 
     #give 'jump' action for linklabel, and implement Hypertext and Hyperlink
     def openLink(self, accessible, hyperlink=None, index=0):
+
+        a = accessible._accessible
+        iaction = a.queryHypertext()
+        #iaction.getNLinks()
+
+        num_children = a.childCount
+        print "openLink: %i" % num_children
+        sys.exit(3)
+        #for i in range(num_children):
+        #    link = a.getChildAtIndex(i)
+        #    link.jump
+        link = a.getChildAtIndex(0)
+        link.jump
+            
         
-        iaction = accessible._accessible.queryHypertext()
-        hyperlink = iaction.getLink(index)
+        #iaction = accessible._accessible.queryHypertext()
+        #hyperlink = iaction.getLink(index)
 
-        linkurl = hyperlink.getURI(0)
+        #linkurl = hyperlink.getURI(0)
 
-        linklabel = hyperlink.getObject(0).queryAction()
+        #linklabel = hyperlink.getObject(0).queryAction()
 
-        procedurelogger.action('do "jump" action for %s' % linkurl)
-        linklabel.doAction(0)
+        #procedurelogger.action('do "jump" action for %s' % linkurl)
+        #linklabel.doAction(0)
 
     #assert if can invoke the link
     def assertLinkable(self, url):

@@ -28,19 +28,7 @@ def list_selections(param):
 
 def selection_cb(selection):
     print selection
-#    tv = selection.get_tree_view()
-#    print tv
-#    model = tv.get_model()
-#    print model
     selection.selected_foreach(list_selections)
-#    sel = selection.get_selected()
-#    if sel:
-#        model, iter = sel
-#        print model
-#        print iter
-#        number = model.get_value(iter,COLUMN_NUMBER)
-#        string = model.get_value(iter,COLUMN_STRING)
-#        print "Selected #%d '%s'" % (number,string)
 
 def main():
     win = gtk.Window()
@@ -52,13 +40,13 @@ def main():
     vbox.show()
 
     label = gtk.Label("This is a label")
-    vbox.pack_start(label, expand = gtk.FALSE)
+    vbox.pack_start(label, expand = False)
     label.show()
 
     sw = gtk.ScrolledWindow(None, None)
     sw.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
     sw.set_shadow_type(gtk.SHADOW_ETCHED_IN)
-    vbox.pack_start(sw, expand = gtk.TRUE)
+    vbox.pack_start(sw, expand = True)
 
     ls = gtk.ListStore(gobject.TYPE_UINT, gobject.TYPE_STRING)
     for item in data:
@@ -66,7 +54,7 @@ def main():
         ls.set(iter, COLUMN_NUMBER, item[0],
                  COLUMN_STRING, item[1])
     tv = gtk.TreeView(ls)
-    tv.set_rules_hint(gtk.TRUE)
+    tv.set_rules_hint(True)
     tv.set_search_column(COLUMN_STRING)
     selection = tv.get_selection()
     selection.set_mode(gtk.SELECTION_MULTIPLE)

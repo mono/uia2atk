@@ -1,5 +1,9 @@
 2008-12-03 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* harness/tests.py: Add ErrorProvider test to the regression test suite
+
+2008-12-03 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* samples/errorprovider.py: Create more text boxes that all have
 	ErrorProviders associated with them so we can (1) use more more
 	ErrorBlinkStyles and IconAlignments and (2) have tests that deal with
