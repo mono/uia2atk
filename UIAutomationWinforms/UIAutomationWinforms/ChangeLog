@@ -1,5 +1,10 @@
 2008-12-04  Neville Gao  <nevillegao@gmail.com>
 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Deleted SWF.ToolBar to
+	  make build pass.
+
+2008-12-04  Neville Gao  <nevillegao@gmail.com>
+
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for add file.
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Added
 	  SWF.ToolStripSeparator and SWF.ToolBar.
