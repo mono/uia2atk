@@ -112,8 +112,8 @@ namespace UiaAtkBridgeTest
 			tbx2.Multiline = true;
 
 			toolStripComboBoxSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
-			toolStripComboBoxDDL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
-			toolStripComboBoxDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			toolStripComboBoxDD.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDown;
+			toolStripComboBoxDDL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			
 			toolStrip.Items.Add (toolStripComboBoxSim);
 			toolStrip.Items.Add (toolStripComboBoxDDL);
