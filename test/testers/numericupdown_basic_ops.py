@@ -81,16 +81,14 @@ sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, 10)
 nudFrame.assertText(nudFrame.editable_numericupdown, "10")
 
-# crash when input numbers in "Text(editable)"
 # uneditable NumericUpDown
-#nudFrame.uneditable_numericupdown.mouseClick()
-#nudFrame.enterTextValue(nudFrame.uneditable_numericupdown, "10")
-#nudFrame.keyCombo("Return", grabFocus=False)
-#sleep(config.SHORT_DELAY)
-#nudFrame.assertValue(nudFrame.uneditable_numericupdown, 10)
-#nudFrame.assertText(nudFrame.uneditable_numericupdown, "10")
+nudFrame.uneditable_numericupdown.mouseClick()
+nudFrame.enterTextValue(nudFrame.uneditable_numericupdown, "10")
+nudFrame.keyCombo("Return", grabFocus=False)
+sleep(config.SHORT_DELAY)
+nudFrame.assertValue(nudFrame.uneditable_numericupdown, 10)
+nudFrame.assertText(nudFrame.uneditable_numericupdown, "10")
 
-#pdb.set_trace()
 ############################
 # input 0 from AtkValue
 ############################
@@ -101,7 +99,7 @@ sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, 0)
 # the text wont change until enter a "Return" 
 # the behavior is similar to gtk sample
-nudFrame.assertText(nudFrame.editable_numericupdown, "10")
+nudFrame.assertText(nudFrame.editable_numericupdown, "0")
 
 ############################
 # input 100 from AtkValue
@@ -111,7 +109,7 @@ nudFrame.editable_numericupdown.mouseClick()
 nudFrame.valueNumericUpDown(nudFrame.editable_numericupdown, 100)
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, 100)
-nudFrame.assertText(nudFrame.editable_numericupdown, "10")
+nudFrame.assertText(nudFrame.editable_numericupdown, "100")
 
 ############################
 # set value to max
@@ -156,18 +154,18 @@ nudFrame.assertText(nudFrame.editable_numericupdown, str(nudFrame.minimumValue -
 ############################
 # test press Up/Down action to check Text and Value by keyCombo to 
 # editable_numericupdown which increment value is 20
-#nudFrame.keyCombo("Up", grabFocus=False)
-#sleep(config.SHORT_DELAY)
-#nudFrame.assertValue(nudFrame.editable_numericupdown, nudFrame.minimumValue + 20)
-#nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.minimumValue + 20)))
+nudFrame.keyCombo("Up", grabFocus=False)
+sleep(config.SHORT_DELAY)
+nudFrame.assertValue(nudFrame.editable_numericupdown, nudFrame.minimumValue + 20)
+nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.minimumValue + 20)))
 
 ############################
 # press "Down" on editab_numericupdown
 ############################
-#nudFrame.keyCombo("Down", grabFocus=False)
-#sleep(config.SHORT_DELAY)
-#nudFrame.assertValue(nudFrame.editable_numericupdown, nudFrame.minimumValue)
-#nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.minimumValue)))
+nudFrame.keyCombo("Down", grabFocus=False)
+sleep(config.SHORT_DELAY)
+nudFrame.assertValue(nudFrame.editable_numericupdown, nudFrame.minimumValue)
+nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.minimumValue)))
 
 # test would be failed due to #455964
 ############################

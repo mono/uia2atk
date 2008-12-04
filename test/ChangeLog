@@ -1,3 +1,10 @@
+2008-12-04  Ray Wang <rawang@novell.com>
+
+	* test/testers/listbox_basic_ops.py: adjustments for AtkAccessible changes
+	of ListBox
+	* test/testers/numericupdown_basic_ops.py: changes to verify bug450371 
+	and bug455964
+
 2008-12-04  Calen Chen <cachen@novell.com>
 
 	* states.py: add Text states tuple
