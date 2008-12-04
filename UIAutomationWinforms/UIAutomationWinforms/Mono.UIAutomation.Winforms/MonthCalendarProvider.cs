@@ -65,6 +65,8 @@ namespace Mono.UIAutomation.Winforms
 			// Grid as well as the DataGrid child...
 			SetBehavior (GridPatternIdentifiers.Pattern,
 			             new GridProviderBehavior (childDataGrid));
+			SetBehavior (TablePatternIdentifiers.Pattern,
+			             new TableProviderBehavior (childDataGrid));
 		}
 		
 		public override void FinalizeChildControlStructure ()
@@ -128,6 +130,9 @@ namespace Mono.UIAutomation.Winforms
 		public override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
+
+			RemoveChildProvider (true, headerProvider);
+			headerProvider.Terminate ();
 			
 			RemoveChildren ();
 		}
@@ -230,17 +235,21 @@ namespace Mono.UIAutomation.Winforms
 
 	internal class MonthCalendarListItemProvider : FragmentControlProvider
 	{
-		public MonthCalendarListItemProvider (FragmentRootControlProvider rootProvider,
+		public MonthCalendarListItemProvider (MonthCalendarDataGridProvider dataGridProvider,
 		                                      MonthCalendarProvider calendarProvider,
 		                                      Control control, DateTime date,
 		                                      int row, int col)
 			: base (control)
 		{
-			this.rootProvider = rootProvider;
+			this.dataGridProvider = dataGridProvider;
 			this.calendarProvider = calendarProvider;
 			this.date = date;
 			this.row = row;
 			this.col = col;
+		}
+
+		public MonthCalendarDataGridProvider DataGridProvider {
+			get { return dataGridProvider; }
 		}
 
 		public MonthCalendarProvider MonthCalendarProvider {
@@ -256,7 +265,7 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		public override IRawElementProviderFragmentRoot FragmentRoot {
-			get { return rootProvider; }
+			get { return dataGridProvider; }
 		}
 
 		public override void Initialize ()
@@ -265,6 +274,8 @@ namespace Mono.UIAutomation.Winforms
 
 			SetBehavior (GridItemPatternIdentifiers.Pattern,
 			             new ListItemGridItemProviderBehavior (this));
+			SetBehavior (TableItemPatternIdentifiers.Pattern,
+			             new ListItemTableItemProviderBehavior (this));
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -287,7 +298,7 @@ namespace Mono.UIAutomation.Winforms
 		private int row, col;
 		private DateTime date;
 		private MonthCalendarProvider calendarProvider;
-		private FragmentRootControlProvider rootProvider;
+		private MonthCalendarDataGridProvider dataGridProvider;
 	}
 
 	internal class MonthCalendarHeaderProvider : FragmentRootControlProvider
@@ -308,10 +319,10 @@ namespace Mono.UIAutomation.Winforms
 			MonthCalendarHeaderItemProvider itemProvider;
 
 			DateTime[] days = GetDaysInWeek ();
-			foreach (DateTime day in days) {
+			for (int i = 0; i < days.Length; i++) {
 				itemProvider = new MonthCalendarHeaderItemProvider (
 					this, Control,
-					day.ToString (HEADER_ITEM_DAY_FORMAT));
+					days[i].ToString (HEADER_ITEM_DAY_FORMAT), i);
 
 				itemProvider.Initialize ();
 				AddChildProvider (true, itemProvider);
@@ -389,15 +400,20 @@ namespace Mono.UIAutomation.Winforms
 	internal class MonthCalendarHeaderItemProvider : FragmentControlProvider
 	{
 		public MonthCalendarHeaderItemProvider (FragmentRootControlProvider rootProvider,
-		                                        Control control, string label)
+		                                        Control control, string label, int index)
 			: base (control)
 		{
 			this.rootProvider = rootProvider;
 			this.label = label;
+			this.index = index;
 		}
 
 		public override IRawElementProviderFragmentRoot FragmentRoot {
 			get { return rootProvider; }
+		}
+	
+		public int Index {
+			get { return index; }
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -412,6 +428,7 @@ namespace Mono.UIAutomation.Winforms
 			return base.GetProviderPropertyValue (propertyId);
 		}
 
+		private int index;
 		private string label;
 		private FragmentRootControlProvider rootProvider;
 	}

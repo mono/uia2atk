@@ -248,14 +248,76 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			IRawElementProviderSimple[] headerItems
 				= tableProvider.GetColumnHeaders ();
+
+			Assert.IsNotNull (headerItems, "Returning null header items");
+			Assert.AreEqual (daysInWeek, headerItems.Length,
+			                 "Returning incorrect number of header items");
+
 			for (int i = 0; i < headerItems.Length; i++) {
-				TestHeaderItem (headerItems[i],
-				                header, i);
+				TestHeaderItem (headerItems[i], header, i);
 			}
 
 			IRawElementProviderSimple[] rowHeaders
 				= tableProvider.GetRowHeaders ();
 			Assert.AreEqual (0, rowHeaders.Length);
+		}
+	
+		[Test]
+		public void ListItemITableItemProviderTest ()
+		{
+			IRawElementProviderFragmentRoot dataGridProvider;
+			IRawElementProviderFragment child;
+
+			GetDataGridAndFirstListItem (out dataGridProvider, out child);
+
+			ITableProvider tableProvider
+				= (ITableProvider) dataGridProvider.GetPatternProvider (
+					TablePatternIdentifiers.Pattern.Id);
+
+			IRawElementProviderSimple[] headerItems
+				= tableProvider.GetColumnHeaders ();
+
+			while (child != null) {
+				TestProperty (child,
+					      AutomationElementIdentifiers.ControlTypeProperty,
+					      ControlType.ListItem.Id);
+
+				ITableItemProvider itemProvider = child.GetPatternProvider (
+					TableItemPatternIdentifiers.Pattern.Id) as ITableItemProvider;
+				Assert.IsNotNull (itemProvider,
+				                  "Does not implement ITableItemProvider");
+
+				// GetColumnHeaderItems
+				IRawElementProviderSimple [] itemHeaderItems
+					= itemProvider.GetColumnHeaderItems ();
+
+				Assert.IsNotNull (itemHeaderItems,
+				                  "No header items returned");
+				Assert.AreEqual (1, itemHeaderItems.Length,
+				                 "Too many or too few header items returned");
+
+				MonthCalendarHeaderItemProvider headerItem
+					= itemHeaderItems[0] as MonthCalendarHeaderItemProvider;
+
+				Assert.IsNotNull (headerItem,
+				                  "Header item is not a MonthCalendarHeaderItemProvider");
+				Assert.AreEqual (itemProvider.Column, headerItem.Index,
+				                 "Header item returned does not have the same index as item's column");
+				Assert.AreEqual (headerItems[itemProvider.Column], headerItem,
+				                 "Header item and header item at that index are not equal");
+
+				// GetRowHeaderItems
+				IRawElementProviderSimple[] itemRowHeaderItems
+					= itemProvider.GetRowHeaderItems ();
+
+				Assert.IsNotNull (itemRowHeaderItems,
+				                  "Item provider is returning null for row headers");
+				Assert.AreEqual (0, itemRowHeaderItems.Length,
+				                 "Item provider is returning more than 0 row headers");
+
+				child = ((IRawElementProviderFragment) child)
+					.Navigate (NavigateDirection.NextSibling);
+			}
 		}
 
 		public void GetDataGridAndFirstListItem (out IRawElementProviderFragmentRoot dataGrid,

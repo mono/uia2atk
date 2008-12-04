@@ -1,3 +1,8 @@
+2008-12-04  Brad Taylor  <brad@getcoded.net>
+
+	* MonthCalendarProviderTest.cs: Test MonthCalendarListItem's
+	ITableItemProvider support.
+
 2008-12-04  Neville Gao  <nevillegao@gmail.com>
 
 	* UIAutomationWinformsTests.mdp, Makefile.am: Updated for added file.

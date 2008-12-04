@@ -31,90 +31,68 @@ using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.MonthCalendar
 {
-	internal class ListItemGridItemProviderBehavior
-		: ProviderBehavior, IGridItemProvider
+	internal class ListItemTableItemProviderBehavior
+		: ListItemGridItemProviderBehavior, ITableItemProvider
 	{
 #region Constructors
 		
-		public ListItemGridItemProviderBehavior (MonthCalendarListItemProvider itemProvider)
+		public ListItemTableItemProviderBehavior (MonthCalendarListItemProvider itemProvider)
 			: base (itemProvider)
 		{
-			this.itemProvider = itemProvider;
 		}
 		
 #endregion
 		
-#region ProviderBehavior Implementation
+#region ProviderBehavior Specialization
 		
 		public override AutomationPattern ProviderPattern {
-			get { return GridItemPatternIdentifiers.Pattern; }
+			get { return TableItemPatternIdentifiers.Pattern; }
 		}
 		
 		public override void Connect ()
 		{
-			// NOTE: RowSpan Property NEVER changes.
-			// NOTE: ColumnSpan Property NEVER changes.
-			// NOTE: ContainingGrid Property NEVER changes.			
-			// NOTE: Row Property NEVER changes.			
-			// NOTE: Column Property NEVER changes.			
+			// NOTE: RowHeaderItems Property NEVER changes.
+			// NOTE: ColumnHeaderItems Property NEVER changes.
 		}
 		
 		public override void Disconnect ()
 		{
-			Provider.SetEvent (ProviderEventType.GridItemPatternRowProperty,
+			Provider.SetEvent (ProviderEventType.TableItemPatternColumnHeaderItemsProperty,
 			                   null);
-			Provider.SetEvent (ProviderEventType.GridItemPatternColumnProperty,
-			                   null);
-			Provider.SetEvent (ProviderEventType.GridItemPatternRowSpanProperty,
-			                   null);
-			Provider.SetEvent (ProviderEventType.GridItemPatternColumnProperty,
-			                   null);
-			Provider.SetEvent (ProviderEventType.GridItemPatternContainingGridProperty,
+			Provider.SetEvent (ProviderEventType.TableItemPatternRowHeaderItemsProperty,
 			                   null);
 		}
 
 		public override object GetPropertyValue (int propertyId)
 		{
-			if (propertyId == GridItemPatternIdentifiers.RowProperty.Id)
-				return Row;
-			else if (propertyId == GridItemPatternIdentifiers.ColumnProperty.Id)
-				return Column;
-			else if (propertyId == GridItemPatternIdentifiers.RowSpanProperty.Id)
-				return RowSpan;
-			else if (propertyId == GridItemPatternIdentifiers.ColumnSpanProperty.Id)
-				return ColumnSpan;
-			else if (propertyId == GridItemPatternIdentifiers.ContainingGridProperty.Id)
-				return ContainingGrid;
+			if (propertyId == TableItemPatternIdentifiers.RowHeaderItemsProperty.Id)
+				return GetRowHeaderItems ();
+			else if (propertyId == TableItemPatternIdentifiers.ColumnHeaderItemsProperty.Id)
+				return GetColumnHeaderItems ();
 			else
 				return base.GetPropertyValue (propertyId);
 		}
 		
 #endregion
 		
-#region IGridItemProvider Implementation
-		
-		public int Row {
-			get { return itemProvider.Row; }
+#region ITableItemProvider Specialization
+
+		public IRawElementProviderSimple[] GetColumnHeaderItems ()
+		{
+			MonthCalendarHeaderProvider headerProvider
+				= itemProvider.DataGridProvider.HeaderProvider;
+			IRawElementProviderSimple[] headerItems
+				= headerProvider.GetHeaderItems ();
+			return new IRawElementProviderSimple[] {
+				headerItems[Column]
+			};
+		}
+
+		public IRawElementProviderSimple[] GetRowHeaderItems ()
+		{
+			return new IRawElementProviderSimple[0];
 		}
 		
-		public int Column {
-			get { return itemProvider.Column; }
-		}
-		
-		public int RowSpan {
-			get { return 1; }
-		}
-		
-		public int ColumnSpan {
-			get { return 1; }
-		}
-		
-		public IRawElementProviderSimple ContainingGrid {
-			get { return Provider.FragmentRoot; }
-		}
-		
-#endregion
-		
-		protected MonthCalendarListItemProvider itemProvider;
+#endregion		
 	}
 }

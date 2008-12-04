@@ -40,7 +40,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.MonthCalendar
 		public TableProviderBehavior (MonthCalendarDataGridProvider provider)
 			: base (provider)
 		{
-			headerProvider = provider.HeaderProvider;
 		}
 
 #endregion
@@ -84,10 +83,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.MonthCalendar
 		
 		public IRawElementProviderSimple[] GetColumnHeaders ()
 		{
-			if (headerProvider == null)
-				return new IRawElementProviderSimple [0];
-			else
-				return headerProvider.GetHeaderItems ();
+			return provider.HeaderProvider.GetHeaderItems ();
 		}
 		
 		public IRawElementProviderSimple[] GetRowHeaders ()
@@ -98,12 +94,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.MonthCalendar
 		public RowOrColumnMajor RowOrColumnMajor {
 			get { return RowOrColumnMajor.RowMajor; }
 		}
-
-#endregion
-
-#region Private Fields
-
-		private MonthCalendarHeaderProvider headerProvider;
 
 #endregion
 	}
