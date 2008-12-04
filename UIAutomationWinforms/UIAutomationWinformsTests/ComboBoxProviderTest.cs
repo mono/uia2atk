@@ -362,17 +362,51 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			if (combobox.DropDownStyle == ComboBoxStyle.DropDownList)
 				throw new Exception ("combobox default style should not be dropdownlist");
 
+			IExpandCollapseProvider expandCollapseProvider = null;
+			IRawElementProviderFragment listChild = null;
+			
 			bridge.ResetEventLists ();
 			combobox.DropDownStyle = ComboBoxStyle.DropDownList;
 			Assert.IsTrue (bridge.StructureChangedEvents.Count > 0,
 			               "Should generate some event after changing to ComboBoxStyle.DropDownList");
 			Assert.IsNotNull (rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id),
 			                  "DropDownList: Selection Pattern IS supported");
-			Assert.IsNotNull (rootProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id),
+			expandCollapseProvider = (IExpandCollapseProvider)
+			  rootProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (expandCollapseProvider,
 			                  "DropDownList: ExpandCollapse Pattern IS supported");
 			Assert.IsNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
 			               "DropDownList: ValuePattern Pattern IS NOT supported");
-
+			
+			listChild = rootProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsTrue ((bool)listChild.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
+			               "the list of a combobox should be offscreen if it's not expanded");
+			expandCollapseProvider.Expand ();
+			Assert.IsFalse ((bool)listChild.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
+			               "the list of a combobox should not be offscreen if it's expanded");
+			expandCollapseProvider.Collapse ();
+			
+			bridge.ResetEventLists ();
+			combobox.DropDownStyle = ComboBoxStyle.DropDown;
+			Assert.IsTrue (bridge.StructureChangedEvents.Count > 0,
+			               "Should generate some event after changing to ComboBoxStyle.DropDown");
+			Assert.IsNotNull (rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id),
+			                  "DropDown: Selection Pattern IS supported");
+			expandCollapseProvider = (IExpandCollapseProvider)
+			  rootProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (expandCollapseProvider,
+			                  "DropDown: ExpandCollapse Pattern IS supported");
+			Assert.IsNotNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
+			                  "DropDown: ValuePattern Pattern IS supported");
+			
+			listChild = rootProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsTrue ((bool)listChild.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
+			               "the list of a combobox should be offscreen if it's not expanded");
+			expandCollapseProvider.Expand ();
+			Assert.IsFalse ((bool)listChild.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
+			               "the list of a combobox should not be offscreen if it's expanded");
+			expandCollapseProvider.Collapse ();
+			
 			bridge.ResetEventLists ();
 			combobox.DropDownStyle = ComboBoxStyle.Simple;
 			Assert.IsTrue (bridge.StructureChangedEvents.Count > 0,
@@ -383,17 +417,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			               "Simple: ExpandCollapse Pattern IS NOT supported");
 			Assert.IsNotNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
 			                  "Simple: ValuePattern Pattern IS supported");
-
-			bridge.ResetEventLists ();
-			combobox.DropDownStyle = ComboBoxStyle.DropDown;
-			Assert.IsTrue (bridge.StructureChangedEvents.Count > 0,
-			               "Should generate some event after changing to ComboBoxStyle.DropDown");
-			Assert.IsNotNull (rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id),
-			                  "DropDown: Selection Pattern IS supported");
-			Assert.IsNotNull (rootProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id),
-			                  "DropDown: ExpandCollapse Pattern IS supported");
-			Assert.IsNotNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
-			                  "DropDown: ValuePattern Pattern IS supported");
 		}
 
 

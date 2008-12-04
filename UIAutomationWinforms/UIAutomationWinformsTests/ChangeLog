@@ -1,5 +1,11 @@
 2008-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ComboBoxProviderTest.cs: More tests for bug#449546 on the provider
+	side (offscreen property before and after expand/collapse in both
+	combobox styles).
+
+2008-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ComboBoxProviderTest.cs: Added test for bug#449546 (related:
 	bug#456343). IsOffScreen property should be true when combobox not
 	expanded.
