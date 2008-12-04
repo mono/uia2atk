@@ -39,18 +39,25 @@ if app is None:
 # just an alias to make things shorter
 lbFrame = app.listBoxFrame
 
-#check ListBox item's actions list
+############################
+# check ListItem's AtkAction
+############################
 actionsCheck(lbFrame.listitem[0], "ListItem")
 
-#check ListBox's states list
-statesCheck(lbFrame.listbox, "List")
+############################
+# check List's AtkAccessible
+############################
+statesCheck(lbFrame.listbox, "List", add_states=["focused"])
 
+############################
+# check ListItem's AtkAccessible
+############################
 #check ListItem0,1's default states
-statesCheck(lbFrame.listitem[0], "ListItem", add_states=["focused", "selected"])
+statesCheck(lbFrame.listitem[0], "ListItem", add_states=["selected"])
 statesCheck(lbFrame.listitem[1], "ListItem")
 
 #mouse click ListItem to change label value
-lbFrame.mouseClick(log=False)
+#lbFrame.mouseClick(log=False)
 lbFrame.listitem[10].mouseClick()
 sleep(config.SHORT_DELAY)
 lbFrame.assertLabel('10')
@@ -62,33 +69,42 @@ lbFrame.assertLabel('19')
 #click action to select listitem0 to rise selected state
 lbFrame.click(lbFrame.listitem[0])
 sleep(config.SHORT_DELAY)
-statesCheck(lbFrame.listitem[0], "ListItem", add_states=["focused", "selected"])
+statesCheck(lbFrame.listitem[0], "ListItem", add_states=["selected"])
 #listitem19 still focused but not selected
 statesCheck(lbFrame.listitem[19], "ListItem")
 
+############################
+# check List's AtkSelection
+############################
 #check first listitem selection implementation
 lbFrame.assertSelectionChild(lbFrame.listbox, 0)
 sleep(config.SHORT_DELAY)
-statesCheck(lbFrame.listitem[0], "ListItem", add_states=["focused", "selected"])
+statesCheck(lbFrame.listitem[0], "ListItem", add_states=["selected"])
 
 #clear first listitem selection
 lbFrame.assertClearSelection(lbFrame.listbox)
 sleep(config.SHORT_DELAY)
-statesCheck(lbFrame.listitem[0], "ListItem", add_states=["focused"])
+statesCheck(lbFrame.listitem[0], "ListItem")
 
 #check last listitem selection implemention
 lbFrame.assertSelectionChild(lbFrame.listbox, 19)
 sleep(config.SHORT_DELAY)
-statesCheck(lbFrame.listitem[19], "ListItem", add_states=["focused", "selected"])
+statesCheck(lbFrame.listitem[19], "ListItem", add_states=["selected"])
 
 #clear last listitem selection
 lbFrame.assertClearSelection(lbFrame.listbox)
 sleep(config.SHORT_DELAY)
-statesCheck(lbFrame.listitem[19], "ListItem", add_states=["focused"])
+statesCheck(lbFrame.listitem[19], "ListItem")
 
+############################
+# check ListItem's AtkText
+############################
 #check listitem's Text Value
 lbFrame.assertText()
 
+############################
+# End
+############################
 #close application frame window
 lbFrame.quit()
 
