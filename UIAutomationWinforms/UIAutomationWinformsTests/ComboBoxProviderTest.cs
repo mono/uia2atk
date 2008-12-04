@@ -385,6 +385,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsFalse ((bool)listChild.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
 			               "the list of a combobox should not be offscreen if it's expanded");
 			expandCollapseProvider.Collapse ();
+			Assert.IsTrue ((bool)listChild.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
+			               "the list of a combobox should be offscreen after collapsing");
 			
 			bridge.ResetEventLists ();
 			combobox.DropDownStyle = ComboBoxStyle.DropDown;
@@ -406,6 +408,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsFalse ((bool)listChild.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
 			               "the list of a combobox should not be offscreen if it's expanded");
 			expandCollapseProvider.Collapse ();
+			Assert.IsTrue ((bool)listChild.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
+			               "the list of a combobox should be offscreen after collapsing");
 			
 			bridge.ResetEventLists ();
 			combobox.DropDownStyle = ComboBoxStyle.Simple;

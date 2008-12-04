@@ -1,5 +1,9 @@
 2008-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ComboBoxProviderTest.cs: And yet some more (bug#449546).
+
+2008-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ComboBoxProviderTest.cs: More tests for bug#449546 on the provider
 	side (offscreen property before and after expand/collapse in both
 	combobox styles).
