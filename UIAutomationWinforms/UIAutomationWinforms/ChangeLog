@@ -1,3 +1,9 @@
+2008-12-04  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Initial attempt at
+	fixing image position value, based on SWF theming code.  Doesn't seem
+	to work well for Right and Center alignment.
+
 2008-12-04  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added files.
