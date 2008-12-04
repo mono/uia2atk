@@ -54,7 +54,7 @@ class ComboBoxDropDownFrame(accessibles.Frame):
             procedurelogger.expectedResult('item "%s"\'s Text is %s' % (self.menuitem[textValue],textValue))
             assert self.menuitem[textValue].text == str(textValue)
 
-    #assert Text value after do click action
+    #assert Text value of TextBox after do click action
     def assertText(self, accessible, values):
         procedurelogger.expectedResult('the text of %s is %s' % (accessible,values))
         assert accessible.text == str(values)
@@ -71,14 +71,13 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         accessible.clearSelection()
 
     #input value into text box
-    def inputText(self, values):
-        procedurelogger.action('input %s into text box' % values)
-        self.textbox.typeText(values)
+    def inputText(self, textbox, values):
+        textbox.typeText(values)
 
     #enter Text Value for EditableText
-    def enterTextValue(self, values):
-        procedurelogger.action('in %s enter %s "' % (accessible, values))
-        self.textbox.__setattr__('text', values)
+    def enterTextValue(self, textbox, values):
+        procedurelogger.action('in %s enter %s' % (textbox, values))
+        textbox.text = values
     
     #close application main window after running test
     def quit(self):

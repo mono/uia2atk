@@ -1,5 +1,12 @@
 2008-12-04  Calen Chen <cachen@novell.com>
 
+	* states.py: add Text states tuple
+	* combobox_dropdown/comboboxdropdownframe.py,
+	* combobox_dropdown_ops.py: update states test and move test of inputing
+	value for textbox before selection implemented test 
+
+2008-12-04  Calen Chen <cachen@novell.com>
+
 	* testers/states.py: revert statusbarpanel tuple to inherit label
 	* samples/statusbarpanel.py: add icon for panel1 and panel2 with 
 	different size
