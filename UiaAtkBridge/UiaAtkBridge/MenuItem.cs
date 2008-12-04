@@ -72,18 +72,25 @@ namespace UiaAtkBridge
 		}
 
 		private bool selected = false;
+		private bool showing = false;
 		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			states.AddState (Atk.StateType.Selectable);
-			if (selected) {
-				states.AddState (Atk.StateType.Selected);
+
+			if (showing || selected) {
 				states.AddState (Atk.StateType.Showing);
 			} else {
-				states.RemoveState (Atk.StateType.Selected);
 				states.RemoveState (Atk.StateType.Showing);
 			}
+
+			if (selected) {
+				states.AddState (Atk.StateType.Selected);
+			} else {
+				states.RemoveState (Atk.StateType.Selected);
+			}
+
 			return states;
 		}
 
@@ -127,9 +134,12 @@ namespace UiaAtkBridge
 			if (e.Property.Id == SelectionItemPatternIdentifiers.IsSelectedProperty.Id) {
 				selected = (bool)e.NewValue;
 				NotifyStateChange (Atk.StateType.Selected, selected);
-			}
-			else
+			} else if (e.Property.Id == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				showing = (bool)e.NewValue;
+				NotifyStateChange (Atk.StateType.Showing, showing);
+			} else {
 				base.RaiseAutomationPropertyChangedEvent (e);
+			}
 		}
 		
 		public int SelectionCount {
