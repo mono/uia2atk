@@ -27,8 +27,6 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         self.label1 = self.findLabel(self.LABEL1)
         self.combobox = self.findComboBox(None)
         self.textbox = self.findText(None)
-        self.menu = self.findMenu(None)
-        self.menuitem = dict([(x, self.findMenuItem(str(x))) for x in range(10)])
 
     #give 'click' action
     def click(self,accessible):
@@ -37,6 +35,11 @@ class ComboBoxDropDownFrame(accessibles.Frame):
     #give 'press' action
     def press(self,accessible):
         accessible.press()
+        sleep(config.SHORT_DELAY)
+
+        procedurelogger.expectedResult('menu item list is showing')
+        self.menu = self.findMenu(None)
+        self.menuitem = dict([(x, self.findMenuItem(str(x))) for x in range(10)])
 
     #check the label after click listitem
     def assertLabel(self, itemname):

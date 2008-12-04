@@ -1,5 +1,12 @@
 2008-12-05  Calen Chen <cachen@novell.com>
 
+	* testers/combobox_dropdown/comboboxdropdownframe.py: initialize menu
+	and menu item after doing press action for combobox
+	* testers/combobox_dropdown_ops.py: doing press to show menu item 
+	list after check combobox action tuple 
+
+2008-12-05  Calen Chen <cachen@novell.com>
+
 	* testers/statusstrip/statusstripframe.py,
 	* testers/statusstrip_basic_ops.py: delete ToolStripDropDownButton and 
 	ToolStripSplitButton test from here, just test label and progressbar 

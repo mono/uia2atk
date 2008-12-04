@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-######
+####################################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        11/14/2008
 # Description: Test accessibility of combobox_dropdown widget 
 #              Use the comboboxdropdownframe.py wrapper script
 #              Test the samples/combobox_dropdown.py script
-######
+####################################################################################
 
 # The docstring below  is used in the generated log file
 """
@@ -46,6 +46,9 @@ cbddFrame = app.comboBoxDropDownFrame
 #check ComboBox's actions
 actionsCheck(cbddFrame.combobox, "ComboBox")
 
+#do press action to show menu item list
+cbddFrame.press(cbddFrame.combobox)
+
 #check ComboBox item's actions list
 actionsCheck(cbddFrame.menu, "Menu")
 actionsCheck(cbddFrame.menuitem[0], "MenuItem")
@@ -64,8 +67,6 @@ statesCheck(cbddFrame.menuitem[1], "MenuItem", \
 cbddFrame.assertItemText()
 
 #test press action than using keyCombo select menuitem to change label's text
-cbddFrame.press(cbddFrame.combobox)
-sleep(config.SHORT_DELAY)
 cbddFrame.keyCombo("Down", grabFocus = False)
 sleep(config.SHORT_DELAY)
 cbddFrame.assertLabel('2')
@@ -73,8 +74,6 @@ statesCheck(cbddFrame.menuitem[2], "MenuItem", \
                                 add_states=["focused", "selected"])
 statesCheck(cbddFrame.menuitem[1], "MenuItem")
 
-cbddFrame.press(cbddFrame.combobox)
-sleep(config.SHORT_DELAY)
 cbddFrame.keyCombo("Down", grabFocus = False)
 sleep(config.SHORT_DELAY)
 cbddFrame.assertLabel('3')
