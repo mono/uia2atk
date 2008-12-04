@@ -69,8 +69,6 @@ namespace UiaAtkBridge
 
 			//FIXME: take in account Role changes at runtime
 			Role = (child != null || comboBoxStructure.Value) ? Atk.Role.Menu : Atk.Role.MenuItem;
-
-			showing = !((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id));
 		}
 
 		private bool selected = false;
