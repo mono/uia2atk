@@ -279,40 +279,39 @@ namespace Mono.UIAutomation.Winforms
 
 					// The following code comes mostly from
 					// ThemeWin32Classic.DrawStatusBarPanel
-					Graphics real_dc = statusBarPanel.Parent.CreateGraphics ();
 					Image backbuffer = new Bitmap (statusBarPanel.Parent.ClientSize.Width,
-					                               statusBarPanel.Parent.ClientSize.Height,
-					                               real_dc);
-					Graphics dc = Graphics.FromImage (backbuffer);
+					                               statusBarPanel.Parent.ClientSize.Height);
 					
-					int x;
-					int len;
-					int icon_x = 0;
-					int y = (int) boundingRect.Y +
-						(((int) boundingRect.Height / 2 - (int) statusBarPanel.Parent.Font.Size / 2) - 1);
-
-					string text = statusBarPanel.Text;
-					
-					switch (statusBarPanel.Alignment) {
-					case HorizontalAlignment.Right:
-						len = (int) dc.MeasureString (text, statusBarPanel.Parent.Font).Width;
-						x = (int) boundingRect.Right - len - 4;
-						icon_x = x - statusBarPanel.Icon.Width - 2;
-						break;
-					case HorizontalAlignment.Center:
-						len = (int) dc.MeasureString (text, statusBarPanel.Parent.Font).Width;
-						x = (int) boundingRect.Left + ((statusBarPanel.Width - len) / 2);
-						icon_x = x - statusBarPanel.Icon.Width - 2;
-						break;
-					default:
-						icon_x = (int) boundingRect.Left + 2;
-						break;
+					using (Graphics dc = Graphics.FromImage (backbuffer)) {
+						int x;
+						int len;
+						int icon_x = 0;
+						int y = (int) boundingRect.Y +
+							(((int) boundingRect.Height / 2 - (int) statusBarPanel.Parent.Font.Size / 2) - 1);
+	
+						string text = statusBarPanel.Text;
+						
+						switch (statusBarPanel.Alignment) {
+						case HorizontalAlignment.Right:
+							len = (int) dc.MeasureString (text, statusBarPanel.Parent.Font).Width;
+							x = (int) boundingRect.Right - len - 4;
+							icon_x = x - statusBarPanel.Icon.Width - 2;
+							break;
+						case HorizontalAlignment.Center:
+							len = (int) dc.MeasureString (text, statusBarPanel.Parent.Font).Width;
+							x = (int) boundingRect.Left + ((statusBarPanel.Width - len) / 2);
+							icon_x = x - statusBarPanel.Icon.Width - 2;
+							break;
+						default:
+							icon_x = (int) boundingRect.Left + 2;
+							break;
+						}
+	
+						return new Rect (icon_x,
+						                 y,
+						                 statusBarPanel.Icon.Width,
+						                 statusBarPanel.Icon.Height);
 					}
-
-					return new Rect (icon_x,
-					                 y,
-					                 statusBarPanel.Icon.Width,
-					                 statusBarPanel.Icon.Height);
 				}
 			}
 	

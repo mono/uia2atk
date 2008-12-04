@@ -1,3 +1,9 @@
+2008-12-04  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Don't bother getting
+	graphics using CreateGraphics call, which was causing provider to
+	hang occasionally.
+
 2008-12-04  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs:
