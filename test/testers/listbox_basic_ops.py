@@ -66,6 +66,9 @@ lbFrame.listitem[19].mouseClick()
 sleep(config.SHORT_DELAY)
 lbFrame.assertLabel('19')
 
+############################
+# check ListItem's AtkAction
+############################
 #click action to select listitem0 to rise selected state
 lbFrame.click(lbFrame.listitem[0])
 sleep(config.SHORT_DELAY)

@@ -116,38 +116,38 @@ nudFrame.assertText(nudFrame.editable_numericupdown, "100")
 ############################
 # set numericupdown's value to maximumValue
 nudFrame.editable_numericupdown.mouseClick()
-nudFrame.enterTextValue(nudFrame.editable_numericupdown, str(nudFrame.maximumValue))
+nudFrame.enterTextValue(nudFrame.editable_numericupdown, str(int(nudFrame.maximumValue)))
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, nudFrame.maximumValue)
-nudFrame.assertText(nudFrame.editable_numericupdown, str(nudFrame.maximumValue))
+nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.maximumValue)))
 
 ############################
 # set value to max + 1
 ############################
 # set numericupdown's value to maximumValue + 1
 nudFrame.editable_numericupdown.mouseClick()
-nudFrame.enterTextValue(nudFrame.editable_numericupdown, str(nudFrame.maximumValue + 1))
+nudFrame.enterTextValue(nudFrame.editable_numericupdown, str(int(nudFrame.maximumValue + 1)))
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, nudFrame.maximumValue)
-nudFrame.assertText(nudFrame.editable_numericupdown, str(nudFrame.maximumValue + 1))
+nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.maximumValue + 1)))
 
 ############################
 # set value to min
 ############################
 # set numericupdown's value to minimumValue
-nudFrame.enterTextValue(nudFrame.editable_numericupdown, str(nudFrame.minimumValue))
+nudFrame.enterTextValue(nudFrame.editable_numericupdown, str(int(nudFrame.minimumValue)))
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, nudFrame.minimumValue)
-nudFrame.assertText(nudFrame.editable_numericupdown, str(nudFrame.minimumValue))
+nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.minimumValue)))
 
 ############################
 # set value to min - 1
 ############################
 #set numericupdown's value to minimumValue-1
-nudFrame.enterTextValue(nudFrame.editable_numericupdown, str(nudFrame.minimumValue - 1))
+nudFrame.enterTextValue(nudFrame.editable_numericupdown, str(int(nudFrame.minimumValue - 1)))
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, nudFrame.minimumValue)
-nudFrame.assertText(nudFrame.editable_numericupdown, str(nudFrame.minimumValue - 1))
+nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.minimumValue - 1)))
 
 ############################
 # press "Up" on editab_numericupdown
@@ -167,7 +167,6 @@ sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, nudFrame.minimumValue)
 nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.minimumValue)))
 
-# test would be failed due to #455964
 ############################
 # press "Up" on uneditab_numericupdown
 ############################

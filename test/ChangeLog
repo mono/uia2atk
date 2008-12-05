@@ -1,3 +1,9 @@
+2008-12-05  Ray Wang <rawang@novell.com>
+
+	* test/testers/listbox_basic_ops.py: some comments
+	* testers/numericupdown_basic_ops.py,
+	testers/numericupdown/numericupdownframe.py: fixes for bug450371
+
 2008-12-05  Calen Chen <cachen@novell.com>
 
 	* testers/combobox_dropdown/comboboxdropdownframe.py: initialize menu

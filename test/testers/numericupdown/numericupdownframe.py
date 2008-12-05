@@ -42,9 +42,9 @@ class NumericUpDownFrame(accessibles.Frame):
     # assert numericupdown's Text value
     def assertText(self, accessible, text):
         procedurelogger.expectedResult('%s text is "%s"' % \
-                                                        (accessible, text))
+                                                (accessible, accessible.text))
         assert accessible.text == text, '%s text is not match with "%s"' % \
-                                                        (accessible, text)
+                                                (accessible, accessible.text)
 
 
     # assert numericupdown's value
@@ -53,14 +53,14 @@ class NumericUpDownFrame(accessibles.Frame):
         self.minimumValue = accessible._accessible.queryValue().minimumValue
         if  self.minimumValue <= value <= self.maximumValue:
             procedurelogger.expectedResult('%s value is %d' % \
-                                            (accessible, value))
+                                            (accessible, accessible.value))
             assert accessible.value == value, \
                                     "%s value is not match with %d" % \
-                                            (accessible, value)
+                                            (accessible, accessible.value)
         else:
             procedurelogger.expectedResult('value %s is out of range' % value)
             assert not accessible.value == value, \
-                                    "value %d is out of range" % value
+                                "value %d is out of range" % accessible.value
 
     
     #close application window
