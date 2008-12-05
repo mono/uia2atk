@@ -39,6 +39,22 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Internal Static Methods
 
+		internal static object GetDefaultAutomationPropertyValue (int propertyId)
+		{
+			// The idea of this method is to avoid crashing when the bridge
+			// expects non-null values.
+			
+			// TODO: Some properties define default values, what about those whose dont'?
+			if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
+				return true;
+			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+				return false;
+			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+				return Rect.Empty;
+			else
+				return null;
+		}
+
 		internal static Rect GetControlScreenBounds (Rectangle bounds, SWF.Control control)
 		{
 			if (control.Parent == null || control.TopLevelControl == null)

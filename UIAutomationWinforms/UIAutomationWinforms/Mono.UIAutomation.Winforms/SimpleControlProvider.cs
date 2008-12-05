@@ -363,7 +363,7 @@ namespace Mono.UIAutomation.Winforms
 					return val;
 			}
 
-			return GetProviderPropertyValue (propertyId);
+			return GetProviderPropertyValue (propertyId) ?? Helper.GetDefaultAutomationPropertyValue (propertyId);
 		}
 
 		public virtual IRawElementProviderSimple HostRawElementProvider {
