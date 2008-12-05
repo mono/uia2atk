@@ -75,7 +75,7 @@ _atksharp_add_listener (GSignalEmissionHook listener,
 	guint signal_id;
 	gint rc = 0;
 
-	if (!strncmp ("window", object_type, 5))
+	if (!strncmp ("window", object_type, 7))
 		type = ATK_TYPE_OBJECT;
 	else
 		type = g_type_from_name (object_type);
@@ -129,7 +129,7 @@ guint _add_global_event_listener (
 
 	if (split_string)
 	{
-		if (!strncmp ("window", split_string[0], 5))
+		if (!strncmp ("window", split_string[0], 7))
 			rc = _atksharp_add_listener (listener, "window", split_string[1], event_type);
 		else
 			rc = _atksharp_add_listener (listener, split_string[1], split_string[2], event_type);
