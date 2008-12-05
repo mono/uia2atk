@@ -143,13 +143,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 		#region IEditableRange Members
 		public void BeginEdit (String text)
 		{
+			if (IsReadOnly)
+				throw new ElementNotEnabledException ();
 			if (numericUpDown.InvokeRequired == true) {
 				numericUpDown.BeginInvoke (new NumericUpDownBeginEditDelegate (BeginEdit),
 				                           new object [] { text });
 				return;
 			}
-			if (IsReadOnly)
-				throw new ElementNotEnabledException ();
 			numericUpDown.txtView.Text = text;
 		}
 
