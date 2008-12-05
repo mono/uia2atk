@@ -75,8 +75,10 @@ AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = "xyes")
 
 dnl package checks, common for all configs
 PKG_CHECK_MODULES([MONO_UIA], [mono-uia])
+PKG_CHECK_MODULES([MONO], [mono >= 2.2])
+MONO_LIB_PATH=`pkg-config --variable=libdir mono`
+AC_CHECK_FILE($MONO_LIB_PATH/mono/2.0/System.Data.dll, [], [AC_MSG_ERROR([mono-data >= 2.2 is missing])])
 
-PKG_CHECK_MODULES([MONO], [mono >= 2.1])
 
 dnl package checks, per config
 PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0])

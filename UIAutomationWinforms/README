@@ -31,6 +31,7 @@ provides the following assemblies:
 
 			* pkg-config
 			* mono >= 2.2
+			* mono-data >= 2.2
 			* gtk-sharp2
 			* glib-sharp2
 			* mono-uia >= 0.9 (provided by UIAutomation package)

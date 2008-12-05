@@ -1,3 +1,12 @@
+2008-12-05  Full Name  <Email Address>
+
+	* configure.ac: Added a check for mono-data in configure.ac
+Changed
+	version for mono in configure.ac to 2.2
+
+
+	* README: Added mono-data to README
+
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 	
 	* Makefile.include: Correct path for 64-bit systems.
