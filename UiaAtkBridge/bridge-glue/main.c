@@ -76,7 +76,7 @@ _atksharp_add_listener (GSignalEmissionHook listener,
 	gint rc = 0;
 
 	if (!strcmp ("window", object_type, 5))
-		type = g_type_from_name ("AtkObject");
+		type = ATK_TYPE_OBJECT;
 	else
 		type = g_type_from_name (object_type);
 	
