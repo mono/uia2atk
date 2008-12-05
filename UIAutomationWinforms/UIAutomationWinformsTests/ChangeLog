@@ -1,3 +1,8 @@
+2008-12-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ToolStripDropDownItemProviderTest.cs: Test for ToolStrip* and
+	OffScreenProperty.
+
 2008-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ComboBoxProviderTest.cs: And yet some more (bug#449546).

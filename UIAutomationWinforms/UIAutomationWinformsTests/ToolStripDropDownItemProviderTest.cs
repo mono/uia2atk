@@ -94,7 +94,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		[Test]
-		public new void IsEnabledPropertyTest ()
+		public new void IsEnabledPropertyTest () //and other properties...
 		{
 			// Set up initial menu item structure, with some sub-items
 			T control = GetNewToolStripDropDownItem ();
@@ -115,8 +115,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			GetProviderFromControl (strip);
 			
 			//T control = GetNewToolStripDropDownItem ();
-			if (control == null)
-				return;
+			Assert.IsNotNull (control, "control should not be null");
 			
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
 			
@@ -160,6 +159,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (true,
 			                 tuple.e.NewValue,
 			                 string.Format ("2nd. New value should be true: '{0}'", tuple.e.NewValue));
+
+			initialVal
+				= provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
+			Assert.IsNotNull (initialVal, "val missing (offscreen)");
+			Assert.AreEqual (false, (bool)initialVal, "ToolStripMenuItem should not be offscreen");
 		}
 		
 		[Test]
