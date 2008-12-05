@@ -59,6 +59,9 @@
     <Compile Include="CheckBoxTest.cs" />
     <Compile Include="CheckedListBoxListItem.cs" />
     <Compile Include="ComboBoxTest.cs" />
+    <Compile Include="SplitterPanelTest.cs" />
+    <Compile Include="SplitContainerTest.cs" />
+    <Compile Include="SplitterTest.cs" />
     <Compile Include="GroupBoxTest.cs" />
     <Compile Include="LinkLabelTest.cs" />
     <Compile Include="NumericUpDownTest.cs" />
@@ -79,6 +82,7 @@
     <Compile Include="StatusBarPanelTest.cs" />
     <Compile Include="StatusBarTest.cs" />
     <Compile Include="StatusStripTest.cs" />
+    <Compile Include="ToolBarTest.cs" />
     <Compile Include="UISpyMissingAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

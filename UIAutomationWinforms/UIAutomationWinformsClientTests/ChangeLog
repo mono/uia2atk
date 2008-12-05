@@ -1,3 +1,9 @@
+2008-12-05  Neville Gao  <nevillegao@gmail.com>
+
+	* UIAutomationWinformsClientTests.csproj: Updated for added files.
+	* SplitterTest.cs, ToolBarTest.cs,
+	  SplitterPanelTest.cs, SplitContainerTest.cs: Files added.
+
 2008-12-01  Mario Carrion <mcarrion@novell.com> 
 
 	* ListBoxTest.cs: Tests implemented: MsdnNamePropertyTest and 
