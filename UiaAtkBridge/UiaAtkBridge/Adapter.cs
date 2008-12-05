@@ -46,6 +46,10 @@ namespace UiaAtkBridge
 	
 		static long lastFocusLossTime = System.DateTime.Now.Ticks;
 
+		protected void NotifyStateChange (Atk.StateType state) {
+			NotifyStateChange (state, RefStateSet ().ContainsState (state));
+		}
+		
 		public IRawElementProviderSimple Provider { get; private set; }
 
 		protected bool manages_removal = true;

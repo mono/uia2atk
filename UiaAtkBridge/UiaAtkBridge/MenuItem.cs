@@ -355,8 +355,8 @@ namespace UiaAtkBridge
 		#endregion
 
 		internal void RaiseExpandedCollapsed () {
-			NotifyStateChange (Atk.StateType.Showing, RefStateSet ().ContainsState (Atk.StateType.Showing));
-			NotifyStateChange (Atk.StateType.Visible, RefStateSet ().ContainsState (Atk.StateType.Visible));
+			NotifyStateChange (Atk.StateType.Showing);
+			NotifyStateChange (Atk.StateType.Visible);
 		}
 		
 	}

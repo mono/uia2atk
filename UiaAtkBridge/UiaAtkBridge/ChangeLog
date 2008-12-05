@@ -1,5 +1,10 @@
 2008-12-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Adapter.cs:
+	* MenuItem.cs: NotifyStateChange simplification.
+
+2008-12-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* MenuItem.cs:
 	* ComboBoxDropDown.cs: Fixed bug#449546, using new values of properties
 	that come by mario's commits r120797 & r120795. Also fix a regression
