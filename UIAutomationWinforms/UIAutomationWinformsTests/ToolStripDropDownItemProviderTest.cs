@@ -163,7 +163,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			initialVal
 				= provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
 			Assert.IsNotNull (initialVal, "val missing (offscreen)");
-			Assert.AreEqual (false, (bool)initialVal, "ToolStripMenuItem should not be offscreen");
+			Assert.IsFalse ((bool)initialVal, "ToolStripMenuItem should not be offscreen");
 		}
 		
 		[Test]

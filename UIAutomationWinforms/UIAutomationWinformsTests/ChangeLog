@@ -1,5 +1,9 @@
 2008-12-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ToolStripDropDownItemProviderTest.cs: Verbosity...
+
+2008-12-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ToolStripDropDownItemProviderTest.cs: Test for ToolStrip* and
 	OffScreenProperty.
 
