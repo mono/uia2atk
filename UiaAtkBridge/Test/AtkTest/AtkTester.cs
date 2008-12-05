@@ -527,7 +527,7 @@ namespace UiaAtkBridgeTest
 
 				Atk.StateSet stateSet = currentSel.RefStateSet ();
 				Assert.IsFalse (stateSet.ContainsState (Atk.StateType.Focused), "No Focused in selected item.");
-				Assert.IsFalse (stateSet.ContainsState (Atk.StateType.Selected), "No Focused in selected item.");
+				Assert.IsFalse (stateSet.ContainsState (Atk.StateType.Selected), "No Selected in selected item.");
 
 				//In List
 				implementor.AddSelection (0);
