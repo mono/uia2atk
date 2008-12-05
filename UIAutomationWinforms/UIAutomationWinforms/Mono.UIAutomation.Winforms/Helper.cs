@@ -51,6 +51,10 @@ namespace Mono.UIAutomation.Winforms
 				return false;
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
 				return Rect.Empty;
+			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				return false;
+			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				return string.Empty;
 			else
 				return null;
 		}

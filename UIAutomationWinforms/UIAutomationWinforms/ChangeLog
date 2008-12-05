@@ -1,5 +1,10 @@
 2008-12-05  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/Helper.cs: Default values added:
+	IsKeyboardFocusableProperty and NameProperty.
+
+2008-12-05  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Using
 	GetDefaultAutomationPropertyValue when GetProviderPropertyValue
 	returns null.
