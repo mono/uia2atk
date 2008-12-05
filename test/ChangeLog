@@ -1,3 +1,24 @@
+2008-12-05 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/form.py: Apply patch mentioned in Comment #2 of Bug 444325.
+	This just adds another button that opens a dialog.  When we regress
+	this bug we should add a test to the form_basic_ops test to at least
+	make sure the dialog that gets opened with this commit has a 'dialog'
+	frame.
+	* samples/toolstripmenuitem.py: Add a lot of missing GUI elements to
+	this sample to get a better test.
+	* testers/toolstripmenuitem: Add toolstripmenuitem directory
+	* testers/toolstripmenuitem_basic_ops.py: Add unfinished
+	toolstripmenuitem test.  I got partially through this test and saw
+	that Bug 428533 (ToolStripMenuItem: Implement actions) and Bug 428536
+	(ToolStripMenuItem: Implement AtkSelection) are still open.  We should
+	come back to this test once we get the tests finished for controls that
+	actually made it in 0.9 completely. 
+	* testers/toolstripmenuitem/toolstripmenuitemframe.py: Application
+	wrapper for toolstripmenuitem test.
+	* testers/toolstripmenuitem/__init__.py: init script for
+	toolstripmenuitem test.
+
 2008-12-05  Calen Chen <cachen@novell.com>
 
 	* testers/combobox_dropdown/comboboxdropdownframe.py: you would not 

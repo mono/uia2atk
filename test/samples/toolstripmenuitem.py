@@ -36,16 +36,16 @@ class RunApp(Form):
         self.rtb.BorderStyle = BorderStyle.FixedSingle
         self.Controls.Add(self.rtb)
 
-##ToolStrip:
+        ##ToolStrip:
         self.ts = ToolStrip()
         self.Controls.Add(self.ts)
 
-##MenuStrip
+        ##MenuStrip
         self.ms = MenuStrip()
         self.ms.Dock = DockStyle.Top
         self.Controls.Add(self.ms)
 
-##add ToolStripMenuItem to MenuStrip
+        ##add ToolStripMenuItem to MenuStrip
         self.mi = ToolStripMenuItem("File")
         self.mi2 = ToolStripMenuItem("Edit")
 
@@ -53,33 +53,51 @@ class RunApp(Form):
         self.ms.Items.Add(self.mi2)
 
         ##File menu items
-        self.mi.DropDownItems.Add("New",None,self.New_Document_Clicked)
-        self.mi.DropDownItems.Add("Open",None,self.Open_Document_Clicked)
+        self.mi.DropDownItems.Add("New", None, self.new_clicked)
+        self.mi.DropDownItems.Add("Open", None, self.open_clicked)
 
-##add ToolStripMenuItem to ToolStrip
+        ##Edit menu items
+        self.mi2.DropDownItems.Add("Copy This", None, self.copy_clicked)
+        self.mi2.DropDownItems.Add("Paste That", None, self.paste_clicked)
+
+        ##add ToolStripMenuItem to ToolStrip
         self.mi3 = ToolStripMenuItem("View")
         self.mi4 = ToolStripMenuItem("Help")
 
         self.ts.Items.Add(self.mi3)
         self.ts.Items.Add(self.mi4)
 
-        ##File menu items
-        self.mi3.DropDownItems.Add("Creat",None,self.New_Document_Clicked)
-        self.mi3.DropDownItems.Add("Write",None,self.Open_Document_Clicked)
+        ##View menu items
+        self.mi3.DropDownItems.Add("Create",None,self.create_clicked)
+        self.mi3.DropDownItems.Add("Write",None,self.write_clicked)
 
-    def New_Document_Clicked(self, sender, event):
+        ##Help menu items
+        self.mi4.DropDownItems.Add("Financial", None, self.help_financial_clicked)
+        self.mi4.DropDownItems.Add("Medical", None, self.help_medical_clicked)
+
+    def new_clicked(self, sender, event):
         self.rtb.Clear()
-        self.count_n += 1
-        print "Clicked \"New\" ToolStripButton %s times" % self.count_n
 
-    def Open_Document_Clicked(self, sender, event):
-        self.ofd = OpenFileDialog()
-        if(self.ofd.ShowDialog() == DialogResult.OK):
-            self.sr = System.IO.StreamReader(self.ofd.OpenFile())
-            self.rtb.Text = self.sr.ReadToEnd()
-            self.sr.Close()
-        self.count_o += 1
-        print "Clicked \"Open\" ToolStripButton %s times" % self.count_o
+    def open_clicked(self, sender, event):
+        MessageBox.Show("Open Clicked", "Open Clicked")
+
+    def help_financial_clicked(self, sender, event):
+        self.rtb.AppendText('Have some money\n')
+       
+    def help_medical_clicked(self, sender, event):
+        self.rtb.AppendText('Here is a bandage\n')
+    
+    def copy_clicked(self, sender, event):
+        self.rtb.AppendText('Copy Clicked\n')
+
+    def paste_clicked(self, sender, event):
+        self.rtb.AppendText('Paste Clicked\n')
+    
+    def create_clicked(self, sender, event):
+        MessageBox.Show("Create Clicked", "Create Clicked")
+
+    def write_clicked(self, sender, event):
+        self.rtb.AppendText('Write Clicked\n')
 
 form = RunApp()
 Application.Run(form)
