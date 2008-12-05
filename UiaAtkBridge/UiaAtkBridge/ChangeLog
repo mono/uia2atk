@@ -1,3 +1,7 @@
+2008-12-05  Mario Carrion  <mcarrion@novell.com>
+
+	* Window.cs: Patch for Bug #444325. Backported from r120352.
+
 2008-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MenuItem.cs:
