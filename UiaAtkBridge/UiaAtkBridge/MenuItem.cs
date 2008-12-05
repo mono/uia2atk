@@ -77,12 +77,22 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
+			
+			if (!(Parent is MenuItem))
+				showing = states.ContainsState (Atk.StateType.Showing);
+			
 			states.AddState (Atk.StateType.Selectable);
 
 			if (showing || selected) {
 				states.AddState (Atk.StateType.Showing);
 			} else {
 				states.RemoveState (Atk.StateType.Showing);
+			}
+
+			if ((!comboBoxStructure.Value) &&
+			    (Parent.RefStateSet ().ContainsState (Atk.StateType.Visible)) ||
+			     (Parent.Parent is ComboBoxDropDown) && (Parent.Parent.RefStateSet ().ContainsState (Atk.StateType.Visible))) {
+				states.AddState (Atk.StateType.Visible);
 			}
 
 			if (selected) {
@@ -342,7 +352,12 @@ namespace UiaAtkBridge
 			get { return -1; }
 		}
 		
-		#endregion 
+		#endregion
+
+		internal void RaiseExpandedCollapsed () {
+			NotifyStateChange (Atk.StateType.Showing, RefStateSet ().ContainsState (Atk.StateType.Showing));
+			NotifyStateChange (Atk.StateType.Visible, RefStateSet ().ContainsState (Atk.StateType.Visible));
+		}
 		
 	}
 }

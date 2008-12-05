@@ -39,7 +39,9 @@ namespace UiaAtkBridge
 		
 		private IRawElementProviderFragmentRoot 	provider;
 		private IExpandCollapseProvider				expandColapseProvider;
-		
+		private MenuItem InnerMenu {
+			get { return (MenuItem)RefAccessibleChild (0); }
+		}
 		
 		public ComboBoxDropDown (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -134,6 +136,7 @@ namespace UiaAtkBridge
 			} else if (newState == ExpandCollapseState.Collapsed) {
 				TopLevelRootItem.Instance.RemoveChild (fakeWindow);
 			}
+			InnerMenu.RaiseExpandedCollapsed ();
 		}
 
 

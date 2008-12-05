@@ -1,3 +1,12 @@
+2008-12-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MenuItem.cs:
+	* ComboBoxDropDown.cs: Fixed bug#449546, using new values of properties
+	that come by mario's commits r120797 & r120795. Also fix a regression
+	on the ParentMenu states test. This may also have side effects in
+	bug#456343 (if we're lucky, side effects will mean it will be
+	automagically fixed).
+
 2008-12-04  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* TextLabel.cs: Removing unused IsStatusBarPanel method.

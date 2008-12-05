@@ -230,6 +230,12 @@ namespace UiaAtkBridgeTest
 			if (type == BasicWidgetType.ComboBoxItem) {
 				Assert.IsTrue (accessible.Name != accessible.Parent.Parent.Name, "combobox item is not the one currently selected" +
 				               "(" + accessible.Name + "!=" + accessible.Parent.Parent.Name + ")");
+			} else if (type == BasicWidgetType.ComboBoxDropDownEntry || type == BasicWidgetType.ComboBoxDropDownList) {
+				Atk.Object menu = accessible.RefAccessibleChild (0);
+				Assert.AreEqual (menu.Role, Atk.Role.Menu, "testing the menu states of a combobox");
+				Assert.IsTrue (!menu.RefStateSet ().ContainsState (Atk.StateType.Visible) &&
+				               !menu.RefStateSet ().ContainsState (Atk.StateType.Showing),
+				               "menu child of combobox should not be visible or showing yet");
 			}
 			
 			// only valid actions should work
@@ -249,6 +255,12 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (1, newWindow.NAccessibleChildren, "the window should contain a child");
 
 				CheckComboBoxMenuChild (newWindow.RefAccessibleChild (0), names);
+
+				Atk.Object menu = accessible.RefAccessibleChild (0);
+				Assert.AreEqual (menu.Role, Atk.Role.Menu, "testing the menu states of a combobox");
+				Assert.IsTrue (menu.RefStateSet ().ContainsState (Atk.StateType.Visible) &&
+				               menu.RefStateSet ().ContainsState (Atk.StateType.Showing),
+				               "menu child of combobox should be visible and showing NOW!");
 			}
 
 			if (type == BasicWidgetType.ComboBoxItem)
