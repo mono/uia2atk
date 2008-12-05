@@ -153,21 +153,3 @@ static const char *window_signal_names[] =
 	"restore",
 	NULL
 };
-
-void
-atksharp_util_override_get_toolkit_name (gpointer cb)
-{
-	AtkUtilClass *klass = g_type_class_peek (ATK_TYPE_UTIL);
-	if (!klass)
-		klass = g_type_class_ref (ATK_TYPE_UTIL);
-	((AtkUtilClass *) klass)->get_toolkit_name = cb;
-}
-
-void
-atksharp_util_override_get_toolkit_version (gpointer cb)
-{
-	AtkUtilClass *klass = g_type_class_peek (ATK_TYPE_UTIL);
-	if (!klass)
-		klass = g_type_class_ref (ATK_TYPE_UTIL);
-	((AtkUtilClass *) klass)->get_toolkit_version = cb;
-}

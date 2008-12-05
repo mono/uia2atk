@@ -1,5 +1,9 @@
 2008-12-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* main.c: Removing unused code.
+
+2008-12-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* main.c: Simplify.
 
 2008-12-05  Brad Taylor  <brad@getcoded.net>
