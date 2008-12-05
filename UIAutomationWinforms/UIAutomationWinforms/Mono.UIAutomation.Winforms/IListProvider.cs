@@ -45,7 +45,7 @@ namespace Mono.UIAutomation.Winforms
 
 		IProviderBehavior GetListItemBehaviorRealization (AutomationPattern pattern, ListItemProvider prov);
 
-		IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider prov);
+		IConnectable GetListItemEventRealization (ProviderEventType eventType, ListItemProvider prov);
 
 		object GetItemPropertyValue (ListItemProvider prov, int propertyId);
 

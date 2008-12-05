@@ -114,9 +114,14 @@ namespace Mono.UIAutomation.Winforms
 			return null;
 		}
 
-		public IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider prov)
+
+		public IConnectable GetListItemEventRealization (ProviderEventType eventType, 
+		                                                 ListItemProvider prov)
 		{
-			return new ListItemAutomationHasKeyboardFocusPropertyEvent (prov);
+			if (eventType == ProviderEventType.AutomationElementHasKeyboardFocusProperty)
+			    return new ListItemAutomationHasKeyboardFocusPropertyEvent (prov);
+			else
+				return null;
 		}
 
 		public object GetItemPropertyValue (ListItemProvider prov, int propertyId)

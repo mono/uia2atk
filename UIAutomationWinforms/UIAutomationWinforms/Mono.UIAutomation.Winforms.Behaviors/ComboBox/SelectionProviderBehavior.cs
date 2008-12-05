@@ -32,14 +32,13 @@ using Mono.UIAutomation.Winforms.Events.ComboBox;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 {
-	//NOTE: This class is used by both ComboBox and ComboBox.ListBox providers.
 	internal class SelectionProviderBehavior 
 		: ProviderBehavior, ISelectionProvider
 	{
 		
 		#region Constructors
 
-		public SelectionProviderBehavior (ListProvider provider)
+		public SelectionProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
 		}
@@ -56,11 +55,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 		{
 			//NOTE: CanSelectMultiple Property NEVER changes, so we aren't generating it.
 			Provider.SetEvent (ProviderEventType.SelectionPatternInvalidatedEvent,
-			                   new SelectionPatternInvalidatedEvent ((ListProvider) Provider));
+			                   new SelectionPatternInvalidatedEvent ((ComboBoxProvider) Provider));
 			Provider.SetEvent (ProviderEventType.SelectionPatternIsSelectionRequiredProperty,
-			                   new SelectionPatternIsSelectionRequiredEvent ((ListProvider) Provider));
+			                   new SelectionPatternIsSelectionRequiredEvent ((ComboBoxProvider) Provider));
 			Provider.SetEvent (ProviderEventType.SelectionPatternSelectionProperty,
-			                   new SelectionPatternSelectionEvent ((ListProvider) Provider));
+			                   new SelectionPatternSelectionEvent ((ComboBoxProvider) Provider));
 		}
 		
 		public override void Disconnect ()
@@ -95,13 +94,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 			get { return false; }
 		}
 
-		public bool IsSelectionRequired {
+		public virtual bool IsSelectionRequired {
 			get { return ((SWF.ComboBox) Provider.Control).SelectedIndex != -1; }
 		}
 		
-		public IRawElementProviderSimple[] GetSelection ()
+		public virtual IRawElementProviderSimple[] GetSelection ()
 		{
-			return ((ListProvider) Provider).GetSelectedItems ();
+			return ((ComboBoxProvider) Provider).ListProvider.GetSelectedItems ();
 		}
 
 		#endregion

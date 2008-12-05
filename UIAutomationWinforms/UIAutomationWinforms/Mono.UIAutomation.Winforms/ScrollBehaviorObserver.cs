@@ -149,6 +149,13 @@ namespace Mono.UIAutomation.Winforms
 				vscrollbarProvider = null;
 			}
 		}
+
+		public void Terminate ()
+		{
+			HorizontalScrollBar = null;
+			VerticalScrollBar = null;
+			FinalizeScrollBarProviders ();
+		}
 		
 		#endregion
 		

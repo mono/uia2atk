@@ -38,7 +38,7 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 
 		#region Constructor
 
-		public SelectionPatternIsSelectionRequiredEvent (ListProvider provider) 
+		public SelectionPatternIsSelectionRequiredEvent (ComboBoxProvider provider) 
 			: base (provider,
 			        SelectionPatternIdentifiers.IsSelectionRequiredProperty)
 		{

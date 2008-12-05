@@ -38,7 +38,7 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 
 		#region Constructor
 
-		public SelectionPatternInvalidatedEvent (ListProvider provider) 
+		public SelectionPatternInvalidatedEvent (ComboBoxProvider provider) 
 			: base (provider,
 			        SelectionPatternIdentifiers.InvalidatedEvent)
 		{

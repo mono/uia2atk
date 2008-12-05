@@ -190,6 +190,20 @@ namespace Mono.UIAutomation.Winforms
 		{
 			return ++id;
 		}
+
+		internal static TResult GetPrivateField<TResult> (Type referenceType, 
+		                                                  object reference,
+		                                                  string fieldName)
+		{
+			FieldInfo fieldInfo = referenceType.GetField (fieldName,
+			                                              BindingFlags.NonPublic
+			                                              | BindingFlags.Instance
+			                                              | BindingFlags.GetField);
+			if (fieldInfo == null)
+				throw new NotSupportedException ("Field not found: " + fieldName);
+
+			return (TResult) fieldInfo.GetValue (reference);
+		}
 		
 		internal static TResult GetPrivateProperty<T, TResult> (Type referenceType, 
 		                                                        T reference,

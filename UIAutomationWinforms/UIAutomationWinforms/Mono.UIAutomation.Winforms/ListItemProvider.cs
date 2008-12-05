@@ -64,7 +64,8 @@ namespace Mono.UIAutomation.Winforms
 				return ListProvider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id
 			         || propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id
-			         || propertyId == AutomationElementIdentifiers.NameProperty.Id)
+			         || propertyId == AutomationElementIdentifiers.NameProperty.Id
+			         || propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
 				return ListProvider.GetItemPropertyValue (this, propertyId);
 			else
 				return base.GetProviderPropertyValue (propertyId);
@@ -76,10 +77,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public override void Initialize ()
 		{
-			base.Initialize ();
-
 			//Behaviors
-
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
 			             listProvider.GetListItemBehaviorRealization (SelectionItemPatternIdentifiers.Pattern,
 			                                                          this));
@@ -102,14 +100,22 @@ namespace Mono.UIAutomation.Winforms
 			             listProvider.GetListItemBehaviorRealization (InvokePatternIdentifiers.Pattern,
 			                                                          this));
 
-			// Events
-			
+			// Default Events
+			SetEvent (ProviderEventType.AutomationElementControlTypeProperty,
+			          new AutomationControlTypePropertyEvent (this));
+			SetEvent (ProviderEventType.AutomationElementIsPatternAvailableProperty,
+			          new AutomationIsPatternAvailablePropertyEvent (this));
+
+			// Specific Events
 			SetEvent (ProviderEventType.AutomationElementIsKeyboardFocusableProperty,
-			          listProvider.GetListItemHasKeyboardFocusEvent (this));
-			
-			//FIXME: Implement this
+			          listProvider.GetListItemEventRealization (ProviderEventType.AutomationElementIsKeyboardFocusableProperty,
+			                                                    this));
 			SetEvent (ProviderEventType.AutomationFocusChangedEvent,
-			          null);
+			          listProvider.GetListItemEventRealization (ProviderEventType.AutomationFocusChangedEvent,
+			                                                    this));
+			SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty,
+			          listProvider.GetListItemEventRealization (ProviderEventType.AutomationElementIsOffscreenProperty,
+			                                                    this));
 		}
 
 		public void UpdateBehavior (AutomationPattern pattern)

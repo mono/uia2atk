@@ -171,9 +171,10 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return listboxControl.Focused && item.Index == listboxControl.FocusedItem;
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-				System.Drawing.Rectangle itemRec = listboxControl.GetItemRectangle (item.Index);
+				System.Drawing.Rectangle itemRec = System.Drawing.Rectangle.Empty;
 				System.Drawing.Rectangle rectangle = listboxControl.Bounds;
-				
+
+				itemRec = listboxControl.GetItemRectangle (item.Index);
 				itemRec.X += rectangle.X;
 				itemRec.Y += rectangle.Y;
 				
@@ -247,11 +248,15 @@ namespace Mono.UIAutomation.Winforms
 			return listboxControl.Items;
 		}
 
-		public override IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider)
+		public override IConnectable GetListItemEventRealization (ProviderEventType eventType, 
+		                                                          ListItemProvider provider)
 		{
-			return new ListItemAutomationHasKeyboardFocusPropertyEvent (provider);
+			if (eventType == ProviderEventType.AutomationElementHasKeyboardFocusProperty)
+			    return new ListItemAutomationHasKeyboardFocusPropertyEvent (provider);
+			else
+				return base.GetListItemEventRealization (eventType, provider);
 		}
-		
+
 		public override void ScrollItemIntoView (ListItemProvider item)
 		{
 			if (ContainsItem (item) == true)

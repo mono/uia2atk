@@ -33,9 +33,9 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Behaviors;
-using Mono.UIAutomation.Winforms.Navigation;
-
 using Mono.UIAutomation.Winforms.Behaviors.ListItem;
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -163,8 +163,6 @@ namespace Mono.UIAutomation.Winforms
 		public abstract object GetItemPropertyValue (ListItemProvider item,
 		                                             int propertyId);
 
-		public abstract IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider);		
-
 		#endregion
 		
 		#region FragmentRootControlProvider: Specializations
@@ -236,6 +234,12 @@ namespace Mono.UIAutomation.Winforms
 					return null;
 			} else
 				return null;
+		}
+
+		public virtual IConnectable GetListItemEventRealization (ProviderEventType eventType, 
+		                                                         ListItemProvider prov)
+		{
+			return null;
 		}
 		#endregion
 		

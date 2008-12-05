@@ -32,11 +32,13 @@ using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 using Mono.UIAutomation.Winforms.Behaviors.ComboBox;
 using Mono.UIAutomation.Winforms.Navigation;
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.ComboBox;
 
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal class ComboBoxProvider : ListProvider
+	internal class ComboBoxProvider : FragmentRootControlProvider
 	{
 
 		#region Constructor
@@ -52,6 +54,14 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
+
+		#region Public Properties
+
+		public ListProvider ListProvider {
+			get { return listboxProvider; }
+		}
+
+		#endregion
 		
 		#region SimpleControlProvider: Specializations
 
@@ -65,6 +75,14 @@ namespace Mono.UIAutomation.Winforms
 				return "combo box";
 			else
 				return base.GetProviderPropertyValue (propertyId);
+		}
+
+		public override void Initialize ()
+		{
+			base.Initialize ();
+
+			SetBehavior (SelectionPatternIdentifiers.Pattern,
+			             new SelectionProviderBehavior (this));
 		}
 		
 		public override void Terminate ()
@@ -80,7 +98,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override IRawElementProviderFragment GetFocus ()
 		{
-			return GetItemProviderFrom (this, comboboxControl.SelectedItem);
+			return listboxProvider.GetItemProviderFrom (listboxProvider, 
+			                                            comboboxControl.SelectedItem);
 		}		
 		
 		public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
@@ -90,95 +109,8 @@ namespace Mono.UIAutomation.Winforms
 
 		#endregion
 		
-		#region ListItem: Properties Methods
-		
-		public override object GetItemPropertyValue (ListItemProvider item,
-		                                             int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return item.ObjectItem.ToString ();
-
-			if (ContainsItem (item) == false)
-				return null;
-
-			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
-				return comboboxControl.Focused && item.Index == comboboxControl.SelectedIndex;
-			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-				//FIXME: We need to improve this
-				int loop = 1; //We start in 1 to add the Edit height or the control height depending on the style
-				int index = item.Index;
-				System.Drawing.Rectangle rectangle = System.Drawing.Rectangle.Empty;
-				for (; loop < index; loop++)
-					rectangle.Y += comboboxControl.GetItemHeight (loop);
-				
-				rectangle.Height = comboboxControl.GetItemHeight (index);
-				rectangle.Width = comboboxControl.Bounds.Width;
-				rectangle.X = comboboxControl.Bounds.X;		
-				rectangle.Y += comboboxControl.Bounds.Y;
-	
-				if (comboboxControl.FindForm () == comboboxControl.Parent)
-					rectangle = comboboxControl.TopLevelControl.RectangleToScreen (rectangle);
-				else
-					rectangle = comboboxControl.Parent.RectangleToScreen (rectangle);
-	
-				return Helper.RectangleToRect (rectangle);
-			} else
-				return null;
-		}
-		
-		#endregion
-		
 		#region ListProvider: Specializations
 		
-		public override int SelectedItemsCount { 
-			get { return comboboxControl.SelectedIndex == -1 ? 0 : 1; }
-		}
-		
-		public override int ItemsCount {
-			get { return comboboxControl.Items.Count; }
-		}
-
-		public override int IndexOfObjectItem (object objectItem)
-		{
-			return comboboxControl.Items.IndexOf (objectItem);
-		}		
-		
-		public override ListItemProvider[] GetSelectedItems ()
-		{
-			if (comboboxControl == null || comboboxControl.SelectedIndex == -1)
-				return new ListItemProvider [0];
-			else
-				return new ListItemProvider [] { GetItemProviderFrom (this, comboboxControl.SelectedItem) };
-		}
-		
-		public override void SelectItem (ListItemProvider item)
-		{
-			if (ContainsItem (item) == true)
-				comboboxControl.SelectedIndex = item.Index;
-		}
-
-		public override void UnselectItem (ListItemProvider item)
-		{
-		}
-		
-		public override bool IsItemSelected (ListItemProvider item)
-		{
-			return ContainsItem (item) == false 
-				? false : item.Index == comboboxControl.SelectedIndex;
-		}
-		
-		protected override Type GetTypeOfObjectCollection ()
-		{
-			//Doesn't have any list-like children: only Edit, List and Button.
-			return null;
-		}
-		
-		protected override object GetInstanceOfObjectCollection ()
-		{
-			//Doesn't have any list-like children: only Edit, List and Button.
-			return null;
-		}
-
 		public override void InitializeChildControlStructure ()
 		{
 			OnNavigationChildAdded (false, listboxProvider);
@@ -203,46 +135,7 @@ namespace Mono.UIAutomation.Winforms
 				textboxProvider = null;
 			}
 		}
-		
-		protected override ListProvider GetItemsListProvider ()
-		{
-			return listboxProvider;
-		}
-		
-		public override IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider)
-		{
-			//return new AutomationIsKeyboardFocusablePropertyEvent (provider);
-			//FIXME
-			return null;
-		}
-		
-		public override void ScrollItemIntoView (ListItemProvider item)
-		{
-			if (ContainsItem (item) == true)
-				throw new NotImplementedException ();
-		}
 
-		#endregion
-		
-		#region Internal Methods: Get Behaviors
-		
-		internal override IProviderBehavior GetBehaviorRealization (AutomationPattern behavior)
-		{
-			if (behavior == SelectionPatternIdentifiers.Pattern)
-				return new SelectionProviderBehavior (this);
-			else 
-				return null;
-		}
-
-		public override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
-		                                                                  ListItemProvider listItem)
-		{
-			if (behavior == SelectionItemPatternIdentifiers.Pattern)
-				return new ListItemSelectionItemProviderBehavior (listItem);
-			else
-				return base.GetListItemBehaviorRealization (behavior, listItem);
-		}
-		
 		#endregion
 
 		#region Private Methods
@@ -336,7 +229,8 @@ namespace Mono.UIAutomation.Winforms
 		#region Internal Class: ListBox provider
 		
 		//TODO: This class missing ScrollBar Navigation.
-		internal class ComboBoxListBoxProvider : ListProvider
+		internal class ComboBoxListBoxProvider 
+			: ListProvider, IScrollBehaviorSubject
 		{
 			
 			public ComboBoxListBoxProvider (SWF.ComboBox control, 
@@ -345,6 +239,11 @@ namespace Mono.UIAutomation.Winforms
 			{
 				comboboxControl = control;
 				comboboxProvider = provider;
+
+				// To keep track of the internal Control that represents the ListBox
+				comboboxControl.DropDownStyleChanged += OnDropDownStyleChanged;
+				comboboxControl.DropDown += OnDropDownAndDropClosed;
+				comboboxControl.DropDownClosed += OnDropDownAndDropClosed;
 			}
 			
 			public override IRawElementProviderFragmentRoot FragmentRoot {
@@ -363,65 +262,61 @@ namespace Mono.UIAutomation.Winforms
 					return IsBehaviorEnabled (ScrollPatternIdentifiers.Pattern);
 				else if (propertyId == AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)
 					return false;
-				else
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+					//We try to get private listbox_ctrl in SWF.ComboBox if returns null we 
+					//use the SWF.ComboBox bounds
+					SWF.Control listboxControl = RequestListBoxControl ();
+					if (listboxControl == null)
+						return comboboxProvider.GetProviderPropertyValue (propertyId);
+					else
+						return Helper.GetControlScreenBounds (listboxControl.Bounds, listboxControl);
+				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+					if (comboboxControl.DropDownStyle == SWF.ComboBoxStyle.Simple)
+						return false;
+					
+					IExpandCollapseProvider pattern 
+						= comboboxProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id) as IExpandCollapseProvider;
+					return pattern != null && pattern.ExpandCollapseState == ExpandCollapseState.Collapsed;
+				} else
 					return base.GetProviderPropertyValue (propertyId);
 			}
-			
-			public override IRawElementProviderFragment GetFocus ()
-			{
-				return comboboxProvider.GetItemProviderFrom (this, comboboxControl.SelectedItem);
-			}			
-			
-			public override ListItemProvider GetItemProviderFrom (FragmentRootControlProvider rootProvider,
-			                                                      object objectItem)
-			{
-				return comboboxProvider.GetItemProviderFrom (rootProvider, objectItem);
-			}
-					
-			public override ListItemProvider RemoveItemFrom (object objectItem)
-			{
-				return comboboxProvider.RemoveItemFrom (objectItem);
-			}
-			
-			public override IRawElementProviderFragment ElementProviderFromPoint (double x, double y)
-			{
-				return comboboxProvider.ElementProviderFromPoint (x, y);
-			}
-			
-			public override int SelectedItemsCount { 
-				get { return comboboxProvider.SelectedItemsCount; }
+
+			public override int SelectedItemsCount {
+				get { return comboboxControl.SelectedIndex == -1 ? 0 : 1; }
 			}
 			
 			public override int ItemsCount {
-				get { return comboboxProvider.ItemsCount; }
+				get { return comboboxControl.Items.Count; }
 			}
 
 			public override int IndexOfObjectItem (object objectItem)
 			{
-				return comboboxProvider.IndexOfObjectItem (objectItem);
-			}
-			
+				return comboboxControl.Items.IndexOf (objectItem);
+			}	
+
 			public override ListItemProvider[] GetSelectedItems ()
 			{
-				if (comboboxProvider == null)
+				if (comboboxControl == null || comboboxControl.SelectedIndex == -1)
 					return new ListItemProvider [0];
 				else
-					return comboboxProvider.GetSelectedItems ();
+					return new ListItemProvider [] { GetItemProviderFrom (this,
+					                                                      comboboxControl.SelectedItem) };
 			}
 
 			public override void SelectItem (ListItemProvider item)
 			{
-				comboboxProvider.SelectItem (item);
+				if (ContainsItem (item) == true)
+					comboboxControl.SelectedIndex = item.Index;
 			}
 	
 			public override void UnselectItem (ListItemProvider item)
 			{
-				comboboxProvider.UnselectItem (item);
 			}
 			
 			public override bool IsItemSelected (ListItemProvider item)
 			{
-				return comboboxProvider.IsItemSelected (item);
+				return ContainsItem (item) == false 
+					? false : item.Index == comboboxControl.SelectedIndex;
 			}
 			
 			protected override Type GetTypeOfObjectCollection ()
@@ -432,14 +327,7 @@ namespace Mono.UIAutomation.Winforms
 			protected override object GetInstanceOfObjectCollection ()
 			{
 				return comboboxControl.Items;
-			}
-
-			public override IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider)
-			{
-				//return new AutomationIsKeyboardFocusablePropertyEvent (provider);
-				//FIXME
-				return null;
-			}			
+			}	
 	
 			public override void InitializeChildControlStructure ()
 			{
@@ -449,6 +337,8 @@ namespace Mono.UIAutomation.Winforms
 					ListItemProvider item = GetItemProviderFrom (this, objectItem);
 					OnNavigationChildAdded (false, item);
 				}
+
+				InitializeObserver (true);
 			}
 
 			public override void ScrollItemIntoView (ListItemProvider item) 
@@ -460,13 +350,57 @@ namespace Mono.UIAutomation.Winforms
 			public override object GetItemPropertyValue (ListItemProvider item,
 			                                             int propertyId)
 			{
-				return comboboxProvider.GetItemPropertyValue (item, propertyId);
+				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return item.ObjectItem.ToString ();
+	
+				if (ContainsItem (item) == false)
+					return null;
+	
+				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+					return comboboxControl.Focused && item.Index == comboboxControl.SelectedIndex;
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+					//FIXME: We need to improve this
+					int index = item.Index;
+					System.Drawing.Rectangle rectangle = System.Drawing.Rectangle.Empty;
+					System.Drawing.Rectangle bounds = System.Drawing.Rectangle.Empty;
+
+					if (RequestListBoxControl () == null)
+						bounds = comboboxControl.Bounds;
+					else
+						bounds = ListBoxControl.Bounds;
+
+					int itemHeight = comboboxControl.GetItemHeight (0);// TODO: always true?
+					rectangle.Height = comboboxControl.GetItemHeight (index);
+					rectangle.Width = bounds.Width;
+					rectangle.X = bounds.X;
+					rectangle.Y = bounds.Y + (index * itemHeight) - (TopItem * itemHeight);// decreaseY;
+
+					if (ListBoxControl == null)
+						return Helper.GetControlScreenBounds (rectangle, comboboxControl);
+					else
+						return Helper.GetControlScreenBounds (rectangle, ListBoxControl);
+				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+					if (comboboxControl.SelectedIndex == item.Index)
+						return false;
+					
+					int topItem = TopItem;
+					if (topItem == -1 || !ListBoxControl.Visible)
+						return !(comboboxControl.SelectedIndex == item.Index);
+					int lastItem = LastItem;				
+					if ((item.Index >= topItem && item.Index < lastItem) 
+					    || (item.Index == lastItem && comboboxControl.Items.Count == lastItem + 1))
+						return false;
+					else
+						return true;
+				} else
+					return null;
 			}
 			
 			internal override IProviderBehavior GetBehaviorRealization (AutomationPattern behavior)
 			{
 				if (behavior == SelectionPatternIdentifiers.Pattern)
-					return new SelectionProviderBehavior (this);
+					return new ListBoxSelectionProviderBehavior (this, 
+					                                             comboboxProvider);
 				else 
 					return null;
 			}		
@@ -480,9 +414,130 @@ namespace Mono.UIAutomation.Winforms
 					return base.GetListItemBehaviorRealization (behavior, listItem);
 			}
 
+			public override IConnectable GetListItemEventRealization (ProviderEventType eventType, 
+			                                                          ListItemProvider prov)
+			{
+				if (eventType == ProviderEventType.AutomationElementIsOffscreenProperty)
+				    return new ListItemAutomationIsOffscreenPropertyEvent (prov);
+				else
+					return base.GetListItemEventRealization (eventType, prov);
+				//FIXME: Return AutomationIsKeyboardFocusablePropertyEvent
+			}
+
+			//FIXME: This MUST be replaced by an internal property in SWF.ComboBox, "Reflection is not the way"TM
+			private SWF.Control RequestListBoxControl ()
+			{
+				try {
+					listboxControl = Helper.GetPrivateField<SWF.Control> (typeof (SWF.ComboBox),
+					                                                      comboboxControl,
+					                                                      "listbox_ctrl");
+				} catch (NotSupportedException) {}
+				return listboxControl;
+			}
+
+			public SWF.Control ListBoxControl {
+				get { return listboxControl; }
+			}
+
+			//FIXME: This MUST be replaced by an internal property in SWF.ComboBox, "Reflection is not the way"TM
+			public int TopItem {
+				get {
+					SWF.Control listboxControl = RequestListBoxControl ();
+					if (listboxControl == null)
+						return -1;
+					else {
+						try {
+							return Helper.GetPrivateField<int> (listboxControl.GetType (),
+							                                    listboxControl,
+							                                    "top_item");
+						} catch (NotSupportedException) { return -1; }
+					}
+				}
+			}
+
+			//FIXME: This MUST be replaced by an internal property in SWF.ComboBox, "Reflection is not the way"TM
+			public int LastItem {
+				get {
+					SWF.Control listboxControl = RequestListBoxControl ();
+					if (listboxControl == null)
+						return -1;
+					else {
+						try {
+							return Helper.GetPrivateField<int> (listboxControl.GetType (),
+							                                    listboxControl,
+							                                    "last_item");
+						} catch (NotSupportedException) { return -1; }
+					}
+				}
+			}
+
+			public IScrollBehaviorObserver ScrollBehaviorObserver {
+				get { return observer; }
+			}
+			
+			public FragmentControlProvider GetScrollbarProvider (SWF.ScrollBar scrollbar)
+			{
+				return new ComboBoxProviderListBoxScrollBarProvider (scrollbar,
+				                                                     this);
+			}
+
+			private void OnDropDownStyleChanged (object sender, EventArgs args)
+			{
+				InitializeObserver (false);
+			}
+
+			private void InitializeObserver (bool force)
+			{
+				bool update = false;
+				SWF.Control oldListBoxControl = listboxControl;
+				RequestListBoxControl ();
+				if (ListBoxControl != oldListBoxControl || force)
+					update = true;
+
+				if (update) {
+					if (observer != null) {
+						observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
+						observer.Terminate ();
+					}
+
+					if (ListBoxControl != null) {
+						SWF.ScrollBar vscrollbar
+							= Helper.GetPrivateField<SWF.ScrollBar> (ListBoxControl.GetType (),
+							                                         ListBoxControl,
+							                                         "vscrollbar_ctrl");
+						
+						observer = new ScrollBehaviorObserver (this, null, vscrollbar);
+						observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
+						observer.InitializeScrollBarProviders ();
+						UpdateScrollBehavior ();
+					}
+				}
+			}
+
+			private void OnScrollPatternSupportChanged (object sender, EventArgs args)
+			{
+				UpdateScrollBehavior ();
+			}
+
+			private void OnDropDownAndDropClosed (object sender, EventArgs args)
+			{
+				InitializeObserver (false);
+			}
+			
+			private void UpdateScrollBehavior ()
+			{
+				//FIXME: Implement ScrollPattern
+//				if (observer.SupportsScrollPattern == true)
+//					SetBehavior (ScrollPatternIdentifiers.Pattern,
+//					             new ScrollProviderBehavior (this));
+//				else
+//					SetBehavior (ScrollPatternIdentifiers.Pattern, null);
+			}
+
 			private SWF.ComboBox comboboxControl;
 			private ComboBoxProvider comboboxProvider;
-
+			private SWF.Control listboxControl;
+			private ScrollBehaviorObserver observer;
 		}
 		
 		#endregion
@@ -519,6 +574,34 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			private ComboBoxProvider provider;
+		}
+		
+		#endregion
+
+		#region Internal Class: ScrollBar provider
+
+		internal class ComboBoxListBoxScrollBarProvider : ScrollBarProvider
+		{
+			public ComboBoxListBoxScrollBarProvider (SWF.ScrollBar scrollbar,
+			                                         ComboBoxListBoxProvider listboxProvider)
+				: base (scrollbar)
+			{
+				this.listboxProvider = listboxProvider;
+			}
+			
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { return listboxProvider; }
+			}			
+			
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return "Vertical Scroll Bar"; //TODO: i18n?
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
+			
+			private ComboBoxListBoxProvider listboxProvider;
 		}
 		
 		#endregion

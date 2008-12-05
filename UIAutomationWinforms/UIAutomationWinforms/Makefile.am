@@ -48,6 +48,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/CheckedListBox/ListItemToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ButtonInvokeBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ExpandCollapseProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ListBoxSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ValueProviderBehavior.cs \
@@ -130,6 +131,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/CheckedListBox/ListItemTogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ExpandCollapsePatternStateEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ComboBox/ListItemAutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ListItemSelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ListItemSelectionItemPatternIsSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternInvalidatedEvent.cs \

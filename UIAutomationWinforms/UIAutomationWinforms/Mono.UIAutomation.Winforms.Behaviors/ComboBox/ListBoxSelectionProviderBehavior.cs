@@ -23,53 +23,67 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.ComboBox;
 
-namespace Mono.UIAutomation.Winforms.Events.ComboBox
+namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 {
-	
-	internal class SelectionPatternSelectionEvent
-		: BaseAutomationPropertyEvent
+	internal class ListBoxSelectionProviderBehavior 
+		: SelectionProviderBehavior
 	{
 		
 		#region Constructors
 
-		public SelectionPatternSelectionEvent (ComboBoxProvider provider)
-			: base (provider, 
-			        SelectionPatternIdentifiers.SelectionProperty)
+		public ListBoxSelectionProviderBehavior (ComboBoxProvider.ComboBoxListBoxProvider listBoxProvider,
+		                                         ComboBoxProvider provider)
+			: base (listBoxProvider)
 		{
+			this.provider = provider;
 		}
 		
 		#endregion
+
+		#region IProviderBehavior Interface		
 		
-		#region ProviderEvent Methods
+		public override AutomationPattern ProviderPattern { 
+			get { return SelectionPatternIdentifiers.Pattern; }
+		}
 
 		public override void Connect ()
 		{
-			((SWF.ComboBox) Provider.Control).SelectedIndexChanged 
-				+= new EventHandler (OnSelectedIndexChanged);
+			//NOTE: CanSelectMultiple Property NEVER changes, so we aren't generating it.
+			Provider.SetEvent (ProviderEventType.SelectionPatternInvalidatedEvent,
+			                   new SelectionPatternInvalidatedEvent (provider));
+			Provider.SetEvent (ProviderEventType.SelectionPatternIsSelectionRequiredProperty,
+			                   new SelectionPatternIsSelectionRequiredEvent (provider));
+			Provider.SetEvent (ProviderEventType.SelectionPatternSelectionProperty,
+			                   new SelectionPatternSelectionEvent (provider));
+		}
+		
+		
+		#endregion
+		
+		#region ISelectionProvider Members
+
+		public override bool IsSelectionRequired {
+			get { return ((SWF.ComboBox) provider.Control).SelectedIndex != -1; }
+		}
+		
+		public override IRawElementProviderSimple[] GetSelection ()
+		{
+			return ((ListProvider) Provider).GetSelectedItems ();
 		}
 
-		public override void Disconnect ()
-		{
-			((SWF.ComboBox) Provider.Control).SelectedIndexChanged 
-				-= new EventHandler (OnSelectedIndexChanged);
-		}
-		
-		#endregion 
-		
-		#region Protected methods
-		
-		private void OnSelectedIndexChanged (object sender, EventArgs args)
-		{
-			RaiseAutomationPropertyChangedEvent ();
-		}
+		#endregion
 
+		#region Private Fields
+		
+		private ComboBoxProvider provider;
+		
 		#endregion
 	}
 }

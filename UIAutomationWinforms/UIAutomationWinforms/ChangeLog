@@ -1,3 +1,47 @@
+2008-12-04  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Selection Pattern added to internal
+	ListBox in ComboBox. IsOffScreen support for ComboBox.ListItem.
+
+	* Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs: New method:
+	Terminate.
+
+	* Mono.UIAutomation.Winforms/IListProvider.cs:
+	GetListItemHasKeyboardFocusEvent replaced by
+	GetListItemEventRealization.
+
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Getting IsOffScreen
+	from IListProvider.
+
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: ComboBoxProvider
+	subclass FragmentRootControlProvider. ComboBoxListBoxProvider updated
+	to IListProvider: GetItemPropertyValue support added,
+	GetListItemEventRealization added, Scroll pattern preview. New class
+	ComboBoxListBoxScrollBarProvider. 
+
+	* Mono.UIAutomation.Winforms/ListProvider.cs:
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs: IListProvider
+	realization updated.
+
+	* Mono.UIAutomation.Winforms/Helper.cs: New method: GetPrivateField.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/SelectionProviderBehavior.cs:
+	Refactored because of ComboBoxProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/ListBoxSelectionProviderBehavior.cs:
+	Selection Pattern support in ComboBox.ListBox.
+
+	* Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternSelectionEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternInvalidatedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternIsSelectionRequiredEvent.cs:
+	Updated to API changes in ComboBox.
+
+	* Mono.UIAutomation.Winforms.Events/ComboBox/ListItemAutomationIsOffscreenPropertyEvent.cs:
+	IsOffScreen property support in ComboBox.ListBox
+
 2008-12-04  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

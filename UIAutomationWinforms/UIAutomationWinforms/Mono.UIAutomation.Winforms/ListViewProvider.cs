@@ -32,6 +32,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ListView;
+using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.ListView;
 using Mono.UIAutomation.Winforms.Navigation;
 
@@ -296,10 +297,14 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
-		
-		public override IConnectable GetListItemHasKeyboardFocusEvent (ListItemProvider provider)
+
+		public override IConnectable GetListItemEventRealization (ProviderEventType eventType, 
+		                                                          ListItemProvider provider)
 		{
-			return new ListItemAutomationHasKeyboardFocusPropertyEvent (provider);
+			if (eventType == ProviderEventType.AutomationElementHasKeyboardFocusProperty)
+			    return new ListItemAutomationHasKeyboardFocusPropertyEvent (provider);
+			else
+				return base.GetListItemEventRealization (eventType, provider);
 		}
 		
 		#region ListProvider: ListItem: Scroll Methods
