@@ -1,3 +1,7 @@
+2008-12-05  Mario Carrion  <mcarrion@novell.com>
+
+	* AtkTester.cs: Testing Selected and Focused on List widgets.
+
 2008-12-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Added test for bug#449546.

@@ -514,9 +514,9 @@ namespace UiaAtkBridgeTest
 				Assert.IsNull (implementor.RefSelection (0), "RefSel after RemoveSel");
 			}
 
+
 			if (type != BasicWidgetType.ComboBoxDropDownEntry
 			    && type != BasicWidgetType.ComboBoxDropDownList) {
-				Console.WriteLine ("hereclearing");
 				implementor.ClearSelection ();
 
 				//We select first item and then grab focus
@@ -527,18 +527,16 @@ namespace UiaAtkBridgeTest
 
 				Atk.StateSet stateSet = currentSel.RefStateSet ();
 				Assert.IsFalse (stateSet.ContainsState (Atk.StateType.Focused), "No Focused in selected item.");
+				Assert.IsFalse (stateSet.ContainsState (Atk.StateType.Selected), "No Focused in selected item.");
 
 				//In List
-				//Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
-				//atkComponent.GrabFocus ();
-				States (accessible,
-				        Atk.StateType.Enabled,
-				        Atk.StateType.Focusable,
-				        Atk.StateType.Focused,
-				        Atk.StateType.ManagesDescendants,
-				        Atk.StateType.Sensitive,
-				        Atk.StateType.Showing,
-				        Atk.StateType.Visible);
+				implementor.AddSelection (0);
+				currentSel = implementor.RefSelection (0);
+				stateSet = currentSel.RefStateSet ();
+				atkComponentCurrentSel = CastToAtkInterface <Atk.Component> (currentSel);
+				atkComponentCurrentSel.GrabFocus ();
+				Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focused), "Focused in selected item.");
+				Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Selected), "Selected in selected item.");
 			}
 		}
 		
