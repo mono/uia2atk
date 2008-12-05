@@ -1,3 +1,12 @@
+2008-12-05  Calen Chen <cachen@novell.com>
+
+	* testers/combobox_dropdown/comboboxdropdownframe.py: you would not 
+	find menu and menuitem because they are missing showing states
+	(bug456343, bug449546)
+	* testers/combobox_dropdown_ops.py: modify states test for menu and 
+	menu item when do click or keycombo action to +-selected or +-focused. 
+	add some comments
+
 2008-12-05  Ray Wang <rawang@novell.com>
 
 	* test/testers/listbox_basic_ops.py: some comments

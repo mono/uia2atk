@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-####################################################################################
+####
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        11/14/2008
 # Description: Test accessibility of combobox_dropdown widget 
 #              Use the comboboxdropdownframe.py wrapper script
 #              Test the samples/combobox_dropdown.py script
-####################################################################################
+####
 
 # The docstring below  is used in the generated log file
 """
@@ -56,48 +56,74 @@ actionsCheck(cbddFrame.menuitem[0], "MenuItem")
 #check default states of ComboBox, menu and text
 statesCheck(cbddFrame.combobox, "ComboBox")
 statesCheck(cbddFrame.menu, "Menu")
-statesCheck(cbddFrame.textbox, "Text", add_states=["selected"])
+statesCheck(cbddFrame.textbox, "Text", add_states=["focused", "selected"])
+###print "text states list:" , cbddFrame.textbox._accessible.getState().getStates()
 
 #check menuitem0,1's default states
 statesCheck(cbddFrame.menuitem[0], "MenuItem")
+###print "menuitem0 states list:" , cbddFrame.menuitem[0]._accessible.getState().getStates()
+
 statesCheck(cbddFrame.menuitem[1], "MenuItem", \
                                 add_states=["focused", "selected"])
+###print "menuitem1 states list:" , cbddFrame.menuitem[1]._accessible.getState().getStates()
 
 #check menuitem's text is implemented
 cbddFrame.assertItemText()
 
-#test press action than using keyCombo select menuitem to change label's text
+#keyCombo down to select menuitem2
 cbddFrame.keyCombo("Down", grabFocus = False)
 sleep(config.SHORT_DELAY)
+#change label's text to You select 2
 cbddFrame.assertLabel('2')
+#menuitem2 up focused and selected states
 statesCheck(cbddFrame.menuitem[2], "MenuItem", \
                                 add_states=["focused", "selected"])
-statesCheck(cbddFrame.menuitem[1], "MenuItem")
+#menuitem1 get rid of visible and showing states
+statesCheck(cbddFrame.menuitem[1], "MenuItem", invalid_states=["visible", "showing"])
 
+#keyCombo down to select menuitem3
 cbddFrame.keyCombo("Down", grabFocus = False)
 sleep(config.SHORT_DELAY)
+#change label's text to You select 3
 cbddFrame.assertLabel('3')
+#menuitem3 up focused and selected states
 statesCheck(cbddFrame.menuitem[3], "MenuItem", \
                                 add_states=["focused", "selected"])
-statesCheck(cbddFrame.menuitem[2], "MenuItem")
+#menuitem2 get rid of visible and showing states
+statesCheck(cbddFrame.menuitem[2], "MenuItem", invalid_states=["visible", "showing"])
 
-#do click action to select menuitem0, change states with selected and focused,
-#also update text value and label
+#keyCombo up to select menuitem2
+cbddFrame.keyCombo("Up", grabFocus = False)
+sleep(config.SHORT_DELAY)
+#change label's text to You select 2
+cbddFrame.assertLabel('2')
+#menuitem2 up focused and selected states
+statesCheck(cbddFrame.menuitem[2], "MenuItem", \
+                                add_states=["focused", "selected"])
+#menuitem3 get rid of focused and selected states
+statesCheck(cbddFrame.menuitem[3], "MenuItem")
+
+#do click action to select menuitem0 to update text value and label
 cbddFrame.click(cbddFrame.menuitem[0])
 sleep(config.SHORT_DELAY)
+#change label's text to You select 0
 cbddFrame.assertLabel('0')
+#change textbox value to 0
 cbddFrame.assertText(cbddFrame.textbox, 0)
+#menuitem0 up selected state
+statesCheck(cbddFrame.menuitem[0], "MenuItem", add_states=["selected"])
 
-statesCheck(cbddFrame.menuitem[0], "MenuItem", add_states=["focused", "selected"])
-
-#do click action to select menuitem2, change states with selected and focused,
-#also update text value and label
-cbddFrame.click(cbddFrame.menuitem[2])
+#do click action to select menuitem9 to update text value and label
+cbddFrame.click(cbddFrame.menuitem[9])
 sleep(config.SHORT_DELAY)
-cbddFrame.assertLabel('2')
-cbddFrame.assertText(cbddFrame.textbox, 2)
-
-statesCheck(cbddFrame.menuitem[2], "MenuItem", add_states=["focused", "selected"])
+#change label's text to You select 9
+cbddFrame.assertLabel('9')
+#change textbox value to 9
+cbddFrame.assertText(cbddFrame.textbox, 9)
+#menuitem9 up selected state
+statesCheck(cbddFrame.menuitem[9], "MenuItem", add_states=["selected"])
+#menuitem0 get rid of selected, visible, showing states
+statesCheck(cbddFrame.menuitem[0], "MenuItem", invalid_states=["visible", "showing"])
 
 #enter value to textbox
 #inter '6' to text box to check the text value
@@ -107,8 +133,8 @@ sleep(config.SHORT_DELAY)
 cbddFrame.assertLabel("6")
 #the text of textbox is changed to 6
 cbddFrame.assertText(cbddFrame.textbox, "6")
-#item6 would be selected and focused
-statesCheck(cbddFrame.menuitem[6], "MenuItem", add_states=["focused", "selected"])
+#menuitem6 would be selected
+statesCheck(cbddFrame.menuitem[6], "MenuItem")
 
 #test editable Text by enter text value '8' 
 cbddFrame.enterTextValue(cbddFrame.textbox,"8")
@@ -117,8 +143,8 @@ sleep(config.SHORT_DELAY)
 cbddFrame.assertLabel(8)
 #the text of textbox is changed to 8
 cbddFrame.assertText(cbddFrame.textbox, 8)
-#item8 would be selected and focused
-statesCheck(cbddFrame.menuitem[8], "MenuItem", add_states=["focused", "selected"])
+#menuitem8 would be selected
+statesCheck(cbddFrame.menuitem[8], "MenuItem")
 
 #check combo box selection is implemented
 #select menu to rise selected
