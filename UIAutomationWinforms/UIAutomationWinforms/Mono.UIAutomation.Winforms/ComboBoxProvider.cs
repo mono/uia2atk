@@ -477,8 +477,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			public FragmentControlProvider GetScrollbarProvider (SWF.ScrollBar scrollbar)
 			{
-				return new ComboBoxProviderListBoxScrollBarProvider (scrollbar,
-				                                                     this);
+				return new ComboBoxListBoxScrollBarProvider (scrollbar, this);
 			}
 
 			private void OnDropDownStyleChanged (object sender, EventArgs args)

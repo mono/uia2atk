@@ -1,5 +1,9 @@
 2008-12-04  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Fixed typo.
+
+2008-12-04  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: Selection Pattern added to internal
 	ListBox in ComboBox. IsOffScreen support for ComboBox.ListItem.
