@@ -1,3 +1,19 @@
+2008-12-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Add initial support for
+	TreeView control.
+
+	* Mono.UIAutomation.Winforms/TreeViewProvider.cs: Initial provider
+	support for TreeView and its top-level TreeNodes.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TreeView/SelectionItemProviderBehavior.cs:
+	ISelectionItemProvider behavior for TreeNodeProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TreeView/SelectionProviderBehavior.cs:
+	ISelectionProvider behavior for TreeViewProvider.
+
 2008-12-05  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/Helper.cs: Default values added:

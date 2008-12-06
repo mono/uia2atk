@@ -112,6 +112,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.SplitContainer sc;
 			SWF.Splitter s;
 			SWF.ToolBar tb;
+			SWF.TreeView tv;
 			
 			SWF.StatusStrip ss;
 			SWF.MenuStrip ms;
@@ -232,6 +233,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new SplitterProvider (s);
 			else if ((tb = component as SWF.ToolBar) != null)
 				provider = new ToolBarProvider (tb);
+			else if ((tv = component as SWF.TreeView) != null)
+				provider = new TreeViewProvider (tv);
 			else {
 				//TODO: We have to solve the problem when there's a Custom control
 				//	Ideally the first thing we do is send a wndproc message to

@@ -1,3 +1,13 @@
+2008-12-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* UIAutomationWinformsTests.mdp: Add TreeViewProviderTest.
+
+	* TreeViewProviderTest.cs: Initial tests for TreeView support.  Covers
+	SelectionProvider fairly well, minus potential events.  Some coverage
+	of SelectionItemProvider for TreeNodes, too.  Pattern test is known
+	to fail at this time.
+
 2008-12-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ToolStripDropDownItemProviderTest.cs: Verbosity...

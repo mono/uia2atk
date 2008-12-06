@@ -111,6 +111,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripSplitButton/ExpandCollapseProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TreeView/SelectionItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TreeView/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ValueProviderBehavior.cs \
@@ -315,6 +317,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs \
 	Mono.UIAutomation.Winforms/ToolTipListener.cs \
 	Mono.UIAutomation.Winforms/ToolTipProvider.cs \
+	Mono.UIAutomation.Winforms/TreeViewProvider.cs \
 	Mono.UIAutomation.Winforms/UpDownBaseProvider.cs \
 	Mono.UIAutomation.Winforms/WebBrowserProvider.cs \
 	Mono.UIAutomation.Winforms/WordToken.cs \

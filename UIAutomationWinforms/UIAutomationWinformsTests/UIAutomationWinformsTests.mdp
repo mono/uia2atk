@@ -58,6 +58,7 @@
     <File name="TextBoxBaseProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="SplitContainerProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="SplitterProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="TreeViewProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="MonthCalendarProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="ToolStripSeparatorProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="ToolBarProviderTest.cs" subtype="Code" buildaction="Compile" />
