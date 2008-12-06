@@ -25,22 +25,67 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Reflection;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Winforms.Behaviors.DataGrid;
 
 //TODO: Realize IListProvider (and subclass from ListProvider??)
 
 namespace Mono.UIAutomation.Winforms
 {
-	
-	internal class DataGridProvider : FragmentRootControlProvider
+
+	internal class DataGridProvider : FragmentRootControlProvider, IScrollBehaviorSubject
 	{
 		
 		public DataGridProvider (SWF.DataGrid datagrid) : base (datagrid)
 		{
 			this.datagrid = datagrid;
+		}
+
+		#region IScrollBehaviorSubject specialization
+
+		public IScrollBehaviorObserver ScrollBehaviorObserver { 
+			get { return observer; }
+		}
+		
+		public FragmentControlProvider GetScrollbarProvider (SWF.ScrollBar scrollbar)
+		{
+			return new DataGridScrollBarProvider (scrollbar, this);
+		}
+
+		#endregion
+
+		#region SimpleControlProvider 
+
+		public override void Initialize()
+		{
+			base.Initialize ();
+
+			try {
+				SWF.ScrollBar vscrollbar
+					= Helper.GetPrivateProperty<SWF.DataGrid, SWF.ScrollBar> (typeof (SWF.DataGrid),
+					                                                          datagrid,
+					                                                          "VScrollBar");
+				SWF.ScrollBar hscrollbar 
+					= Helper.GetPrivateProperty<SWF.DataGrid, SWF.ScrollBar> (typeof (SWF.DataGrid),
+					                                                          datagrid,
+					                                                          "HScrollBar");
+				
+				//ListScrollBehaviorObserver updates Navigation
+				observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);			
+				observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
+				UpdateScrollBehavior ();
+			} catch (Exception) {}
+		}
+
+		public override void Terminate ()
+		{
+			base.Terminate ();
+
+			observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
 		}
 
 		public override void InitializeChildControlStructure ()
@@ -67,6 +112,28 @@ namespace Mono.UIAutomation.Winforms
 				return base.GetProviderPropertyValue (propertyId);
 		}
 
+		#endregion
+
+		#region ScrollBehaviorObserver Methods
+		
+		private void OnScrollPatternSupportChanged (object sender, EventArgs args)
+		{
+			UpdateScrollBehavior ();
+		}
+		
+		private void UpdateScrollBehavior ()
+		{
+//			if (observer.SupportsScrollPattern == true)
+//				SetBehavior (ScrollPatternIdentifiers.Pattern,
+//				             new ScrollProviderBehavior (this));
+//			else
+//				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
+		}
+		
+		#endregion
+
+		#region Private Methods
+
 		private void UpdateChildren (bool raiseEvent)
 		{
 			if (lastDataSource != null)
@@ -88,11 +155,31 @@ namespace Mono.UIAutomation.Winforms
 			// - Any component that implements the IListSource interface.
 			// - Any component that implements the IBindingList interface.
 			IList ilist = null;
+			DataSet dataSet = null;
+			
+			if (datagrid.DataSource != null) {
+				if ((dataSet = datagrid.DataSource as DataSet) != null)
+					InitializeDataSetDataSource (dataSet, raiseEvent);
+				else if ((ilist = datagrid.DataSource as IList) != null)
+					InitializeListDataSource (ilist, raiseEvent);
 
-			if ((ilist = datagrid.DataSource as IList) != null)
-				InitializeListDataSource (ilist, raiseEvent);
+				Console.WriteLine ("datasource is: {0}", datagrid.DataSource.GetType ());
+			}
 
 			lastDataSource = datagrid.DataSource;
+		}
+
+		private void InitializeDataSetDataSource (DataSet dataset, bool raiseEvent)
+		{
+			if (dataset.Tables.Count == 0)
+				return;
+
+			//We will add a Custom ListItem that when IInvoke.Invoke will expand 
+			//the + to show the Tables associated.
+			DataGridCustomProvider customProvider 
+				= new DataGridCustomProvider (this, string.Empty);
+			customProvider.Initialize ();
+			OnNavigationChildAdded (raiseEvent, customProvider);
 		}
 
 		private void InitializeListDataSource (IList list, bool raiseEvent)
@@ -134,14 +221,28 @@ namespace Mono.UIAutomation.Winforms
 
 		private void OnDataSourceChanged (object sender, EventArgs args)
 		{
+			if (lastDataSource == datagrid.DataSource)
+				return;
+
+			Console.WriteLine ("DataSource changed!");
+
 			UpdateChildren (true);
 		}
+
+		#endregion Private Methods
+
+		#region Private Fields
 
 		private SWF.DataGrid datagrid;
 		private DataGridHeaderProvider header;
 		private object lastDataSource;
+		private ScrollBehaviorObserver observer;
 
-		class DataGridHeaderProvider : FragmentRootControlProvider
+		#endregion
+
+		#region Internal Class: DataGridHeaderProvider
+
+		internal class DataGridHeaderProvider : FragmentRootControlProvider
 		{
 			public DataGridHeaderProvider (DataGridProvider provider,
 			                               ArrayList items,
@@ -193,9 +294,13 @@ namespace Mono.UIAutomation.Winforms
 
 			private PropertyInfo []properties;
 			private DataGridProvider provider;			
-		}
+		} // DataGridHeaderProvider
 
-		class DataGridHeaderItemProvider : FragmentControlProvider
+		#endregion
+
+		#region Internal Class: Header Item
+
+		internal class DataGridHeaderItemProvider : FragmentControlProvider
 		{
 			public DataGridHeaderItemProvider (DataGridHeaderProvider header, 
 			                                   string name) : base (null)
@@ -243,9 +348,13 @@ namespace Mono.UIAutomation.Winforms
 
 			private string name;
 			private DataGridHeaderProvider header;
-		}
+		} // DataGridHeaderItemProvider
 
-		class DataGridListItemProvider : FragmentRootControlProvider
+		#endregion
+
+		#region Internal Class: List Item
+
+		internal class DataGridListItemProvider : FragmentRootControlProvider
 		{
 			public DataGridListItemProvider (DataGridProvider provider,
 			                                 object data,
@@ -290,9 +399,13 @@ namespace Mono.UIAutomation.Winforms
 			private PropertyInfo[] publicProperties;
 			private DataGridProvider provider;
 			private object data;
-		}
+		} //DataGridListItemProvider
 
-		class DataGridListItemCustomProvider : FragmentRootControlProvider
+		#endregion
+
+		#region Internal Class: List Item Custom 
+
+		internal class DataGridListItemCustomProvider : FragmentRootControlProvider
 		{
 			public DataGridListItemCustomProvider (DataGridListItemProvider provider,
 			                                       object data) : base (null)
@@ -321,7 +434,87 @@ namespace Mono.UIAutomation.Winforms
 
 			private DataGridListItemProvider provider;
 			private object data;
-		}
+		} //DataGridListItemCustomProvider
 
+		#endregion
+		
+		#region Internal Class: ScrollBar provider
+
+		class DataGridScrollBarProvider : ScrollBarProvider
+		{
+			public DataGridScrollBarProvider (SWF.ScrollBar scrollbar,
+			                                  DataGridProvider provider)
+				: base (scrollbar)
+			{
+				this.provider = provider;
+				//TODO: i18n?
+				name = scrollbar is SWF.HScrollBar ? "Horizontal Scroll Bar"
+					: "Vertical Scroll Bar";
+			}
+			
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { return provider; }
+			}			
+			
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return name;
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
+			
+			private DataGridProvider provider;
+			private string name;
+		} // DataGridScrollBarProvider
+		
+		#endregion
+
+		#region Internal Class: Custom 
+
+		internal class DataGridCustomProvider : FragmentRootControlProvider
+		{
+			public DataGridCustomProvider (DataGridProvider provider,
+			                               object data) : base (null)
+			{
+				this.provider = provider;
+				this.data = data ?? string.Empty;
+			}
+
+			public DataGridProvider DataGridProvider {
+				get { return provider; }
+			}
+
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { return DataGridProvider; }
+			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+
+				//TODO: Support Value Pattern ?
+				SetBehavior (InvokePatternIdentifiers.Pattern, 
+				             new CustomInvokeProviderBehavior (this));
+			}
+
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.Custom.Id;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return string.Empty;
+				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return data.ToString ();
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
+
+
+			private DataGridProvider provider;
+			private object data;
+		} //DataGridCustomProvider
+
+		#endregion
 	}
 }

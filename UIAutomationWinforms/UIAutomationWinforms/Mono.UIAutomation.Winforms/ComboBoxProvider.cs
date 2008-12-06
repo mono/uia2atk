@@ -485,15 +485,11 @@ namespace Mono.UIAutomation.Winforms
 				InitializeObserver (false);
 			}
 
-			private void InitializeObserver (bool force)
+			private void InitializeObserver (bool forceInitialization)
 			{
-				bool update = false;
 				SWF.Control oldListBoxControl = listboxControl;
 				RequestListBoxControl ();
-				if (ListBoxControl != oldListBoxControl || force)
-					update = true;
-
-				if (update) {
+				if (ListBoxControl != oldListBoxControl || forceInitialization) {
 					if (observer != null) {
 						observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
 						observer.Terminate ();

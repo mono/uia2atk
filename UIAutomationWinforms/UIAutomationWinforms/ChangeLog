@@ -1,3 +1,20 @@
+2008-12-05  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: File added:
+	CustomInvokeProviderBehavior. Dependency added: System.Data.
+
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: update variable
+	removed.
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: (Preview) Updated to
+	support DataSet, Scroll pattern. New class DataGridCustomProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid: Folder added.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/CustomInvokeProviderBehavior.cs:
+	Invoke Pattern in DataGridCustomProvider.
+
 2008-12-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

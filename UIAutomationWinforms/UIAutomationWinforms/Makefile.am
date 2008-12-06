@@ -52,6 +52,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/CustomInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/SelectionProviderBehavior.cs \
@@ -331,6 +332,7 @@ RESOURCES =
 REFERENCES =  \
 	System \
 	System.Core \
+	System.Data \
 	System.Drawing \
 	Mono.WebBrowser \
 	System.Windows.Forms \
