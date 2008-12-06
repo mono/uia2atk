@@ -1,3 +1,7 @@
+2008-12-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* main.c: Use strncmp instead of strcmp to comply with OBS tests.
+
 2008-11-17  Mike Gorse <mgorse@novell.com>
 
 	* main.c: Remove register_window_signals (was causing exceptions).
