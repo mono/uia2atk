@@ -1,5 +1,10 @@
 2008-12-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* main.c: Use 7 instead of 5 to verify that the other string is no
+	longer than 6.
+
+2008-12-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* main.c: Use strncmp instead of strcmp to comply with OBS tests.
 
 2008-11-17  Mike Gorse <mgorse@novell.com>
