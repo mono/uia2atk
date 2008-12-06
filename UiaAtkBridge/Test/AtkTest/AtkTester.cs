@@ -783,9 +783,7 @@ namespace UiaAtkBridgeTest
 			System.Threading.Thread.Sleep (250);
 			Assert.AreEqual (42, GetCurrentValue (atkValue), "CurrentValue #1");
 			TextMatchesValue (type, atkValue, atkText);
-Console.WriteLine ("AtkTester: Going to delete text");
 			atkEditableText.DeleteText (1, 2);
-Console.WriteLine ("AtkTester: text deleted");
 			Assert.AreEqual (42, GetCurrentValue (atkValue), "CurrentValue should not change until DoAction called");
 			Assert.IsTrue (atkAction.DoAction (0), "DoAction #2");
 			System.Threading.Thread.Sleep (250);

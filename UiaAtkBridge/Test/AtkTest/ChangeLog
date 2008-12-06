@@ -1,5 +1,9 @@
 2008-12-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Remove debug spew.
+
+2008-12-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs: Fix typo in msg.
 
 2008-12-05  Mario Carrion  <mcarrion@novell.com>
