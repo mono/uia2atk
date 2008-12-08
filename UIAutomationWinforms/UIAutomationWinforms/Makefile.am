@@ -83,6 +83,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/TableProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemSelectionItemProviderBehavior.cs \
@@ -293,6 +294,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms/MaskedTextBoxProvider.cs \
 	Mono.UIAutomation.Winforms/MenuStripProvider.cs \
 	Mono.UIAutomation.Winforms/MonthCalendarProvider.cs \
+	Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs \
+	Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs \
 	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/PanelProvider.cs \
 	Mono.UIAutomation.Winforms/PaneProvider.cs \

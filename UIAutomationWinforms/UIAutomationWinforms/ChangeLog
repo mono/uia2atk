@@ -1,3 +1,15 @@
+2008-12-08  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: 
+	* Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs: 
+	* Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs: 
+	Refactor MonthCalendar code, split out into mutliple files.
+
+	* Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ButtonInvokeProviderBehavior.cs:  
+	Implement IInvokeProvider for MonthCalendar's buttons.
+
 2008-12-05  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

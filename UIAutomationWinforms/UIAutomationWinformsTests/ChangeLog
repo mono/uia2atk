@@ -1,3 +1,8 @@
+2008-12-08  Brad Taylor  <brad@getcoded.net>
+
+	* MonthCalendarProviderTest.cs: Test IInvokeProvider implementation for
+	the button children of MonthCalendarDataGridProvider.
+
 2008-12-05  Brad Taylor  <brad@getcoded.net>
 
 	* MonthCalendarProviderTest.cs: Test MonthCalendarDataGrid's

@@ -28,6 +28,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Globalization;
 using System.Windows.Automation;
+using System.Collections.Generic;
 using System.Windows.Automation.Provider;
 
 using Mono.UIAutomation.Winforms;
@@ -128,6 +129,49 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}
 
 			Assert.AreEqual (daysInWeek, numChildren, "Not returning the correct number of days in a week");
+
+			int numItems = 0;
+			int numButtons = 0;
+			
+			IRawElementProviderFragmentRoot dataGridProvider;
+			IRawElementProviderFragment childItem;
+
+			GetDataGridAndFirstListItem (out dataGridProvider, out childItem);
+
+			List<IRawElementProviderSimple> buttons
+				= new List<IRawElementProviderSimple> ();
+			do {
+				int controlType = (int) childItem.GetPropertyValue (
+					AutomationElementIdentifiers.ControlTypeProperty.Id);
+				if (controlType == ControlType.ListItem.Id) {
+					numItems++;
+				} else if (controlType == ControlType.Button.Id) {
+					numButtons++;
+					buttons.Add (childItem);
+				}
+
+				childItem = childItem.Navigate (NavigateDirection.NextSibling);
+			} while (childItem != null);
+
+			SelectionRange range = calendar.GetDisplayRange (false);
+			Assert.AreEqual ((range.End - range.Start).Days + 1, numItems,
+			                 "Don't have the correct number of list items");
+
+			Assert.AreEqual (2, numButtons,
+			                 "Don't have the correct number of buttons");
+
+			IRawElementProviderSimple backButton = buttons[0];
+			IInvokeProvider invokeProvider
+				= backButton.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id)
+					 as IInvokeProvider;
+			Assert.IsNotNull (invokeProvider,
+			                  "Button doesn't implement IInvoke");
+			
+			calendar.SelectionStart = new DateTime (2000, 1, 1);
+			invokeProvider.Invoke ();
+
+			Assert.AreEqual (new DateTime (1999, 12, 1), calendar.SelectionStart,
+			                 "Calendar date is incorrect after going backward");
 		}
 
 		private void TestHeaderItem (IRawElementProviderSimple headerItem,
@@ -200,7 +244,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IGridProvider gridProvider = (IGridProvider)
 				dataGridProvider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
 
-			while (child != null) {
+			SelectionRange range = calendar.GetDisplayRange (false);
+
+			int numChildren = (range.End - range.Start).Days;
+			for (int i = 0; i < numChildren && child != null; i++) {
 				TestProperty (child,
 					      AutomationElementIdentifiers.ControlTypeProperty,
 					      ControlType.ListItem.Id);
@@ -275,7 +322,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderSimple[] headerItems
 				= tableProvider.GetColumnHeaders ();
 
-			while (child != null) {
+			SelectionRange range = calendar.GetDisplayRange (false);
+
+			int numChildren = (range.End - range.Start).Days;
+			for (int i = 0; i < numChildren && child != null; i++) {
 				TestProperty (child,
 					      AutomationElementIdentifiers.ControlTypeProperty,
 					      ControlType.ListItem.Id);
@@ -326,8 +376,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			GetDataGridAndFirstListItem (out dataGridProvider, out listItem);
 
-			DateTime date = calendar.GetDisplayRange (false).Start;
-			while (listItem != null) {
+			SelectionRange range = calendar.GetDisplayRange (false);
+			DateTime date = range.Start;
+
+			int numChildren = (range.End - range.Start).Days;
+			for (int i = 0; i < numChildren && listItem != null; i++) {
 				// First test listItem itself
 				IValueProvider valueProvider = listItem.GetPatternProvider (
 					ValuePatternIdentifiers.Pattern.Id) as IValueProvider;
@@ -446,8 +499,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			GetDataGridAndFirstListItem (out dataGridProvider, out listItem);
 
-			DateTime date = calendar.GetDisplayRange (false).Start;
-			while (listItem != null) {
+			SelectionRange range = calendar.GetDisplayRange (false);
+			DateTime date = range.Start;
+
+			while (date <= range.End && listItem != null) {
 				TestProperty (listItem,
 					      AutomationElementIdentifiers.ControlTypeProperty,
 					      ControlType.ListItem.Id);
