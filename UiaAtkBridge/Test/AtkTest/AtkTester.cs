@@ -519,16 +519,6 @@ namespace UiaAtkBridgeTest
 			    && type != BasicWidgetType.ComboBoxDropDownList) {
 				implementor.ClearSelection ();
 
-				//We select first item and then grab focus
-//				implementor.AddSelection (0);
-//				currentSel = implementor.RefSelection (0);
-//				Atk.Component atkComponentCurrentSel = CastToAtkInterface <Atk.Component> (currentSel);
-//				atkComponentCurrentSel.GrabFocus ();
-
-//				Atk.StateSet stateSet = currentSel.RefStateSet ();
-//				Assert.IsFalse (stateSet.ContainsState (Atk.StateType.Focused), "No Focused in selected item.");
-//				Assert.IsFalse (stateSet.ContainsState (Atk.StateType.Selected), "No Selected in selected item.");
-
 				//In List
 				implementor.AddSelection (0);
 				currentSel = implementor.RefSelection (0);

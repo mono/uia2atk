@@ -1,5 +1,9 @@
 2008-12-08  Mario Carrion  <mcarrion@novell.com>
 
+	* AtkTester.cs: Removing commented code.
+
+2008-12-08  Mario Carrion  <mcarrion@novell.com>
+
 	* AtkTester.cs: Failing test because the item is selected and we were
 	testing IsFalse(Selected).
 
