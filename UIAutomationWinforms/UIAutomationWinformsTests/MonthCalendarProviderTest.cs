@@ -140,10 +140,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (headerItem,
 				      AutomationElementIdentifiers.LocalizedControlTypeProperty,
 				      "header item");
-			
-			Assert.AreEqual (anyGivenSunday.AddDays (index).ToString ("ddd"),
-					 headerItem.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
-					 "Day name in header is incorrect");
+			TestProperty (headerItem,
+				      AutomationElementIdentifiers.NameProperty,
+			              anyGivenSunday.AddDays (index).ToString ("ddd"));
 
 			Assert.AreEqual (header, ((IRawElementProviderFragment) headerItem).Navigate (
 				NavigateDirection.Parent));
@@ -181,10 +180,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					TestProperty (child,
 						      AutomationElementIdentifiers.ControlTypeProperty,
 						      ControlType.ListItem.Id);
-					
-					Assert.AreEqual (date.Day.ToString (),
-							 child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
-							 "Day name for grid item is incorrect");
+					TestProperty (child,
+						      AutomationElementIdentifiers.NameProperty,
+					              date.Day.ToString ());
 
 					date = date.AddDays (1);
 				}
@@ -359,6 +357,182 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (valueProvider, "Does not support IValueProvider");
 			Assert.AreEqual (expected_val, valueProvider.Value, "Value is not correct");
 			Assert.IsTrue (valueProvider.IsReadOnly, "Value is not read only");
+		}
+	
+		[Test]
+		public void ISelectionProviderTest ()
+		{
+			IRawElementProviderFragmentRoot dataGridProvider;
+			IRawElementProviderFragment listItem;
+
+			GetDataGridAndFirstListItem (out dataGridProvider, out listItem);
+
+			ISelectionProvider selectionProvider
+				= dataGridProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id)
+					 as ISelectionProvider;
+			Assert.IsNotNull (selectionProvider, "Does not implement ISelectionProvider");
+
+			// Test CanSelectMultiple
+			calendar.MaxSelectionCount = 1;
+			Assert.IsFalse (selectionProvider.CanSelectMultiple,
+			                "CanSelectMultiple returns true when MaxSelectionCount is 1");
+
+			bridge.ResetEventLists ();
+
+			calendar.MaxSelectionCount = 5;
+			Assert.IsTrue (selectionProvider.CanSelectMultiple,
+			                "CanSelectMultiple returns false when MaxSelectionCount is 5");
+
+			Assert.AreEqual (1, bridge.AutomationPropertyChangedEvents.Count,
+			                 "Event count");
+
+			// Test IsSelectionRequired
+			calendar.MaxSelectionCount = 5;
+			Assert.IsTrue (selectionProvider.IsSelectionRequired,
+			               "IsSelectionRequired returns false when MaxSelectionCount is 5");
+
+			// Test GetSelection and Selection event
+			DateTime sel_start = new DateTime (2000, 12, 4);
+			DateTime sel_end = new DateTime (2000, 12, 6);
+
+			calendar.MinDate = new DateTime (2000, 12, 1);
+			calendar.MaxSelectionCount = 5;
+
+			bridge.ResetEventLists ();
+
+			calendar.SelectionStart = sel_start;
+			calendar.SelectionEnd = sel_end;
+
+			Assert.AreEqual (2, bridge.GetAutomationPropertyEventCount (SelectionPatternIdentifiers.SelectionProperty),
+			                 "Event count");
+
+			IRawElementProviderSimple[] selectedItems
+				= selectionProvider.GetSelection ();
+			Assert.IsNotNull (selectedItems, "GetSelection returning null");
+
+			Assert.AreEqual ((sel_end - sel_start).Days + 1,
+			                 selectedItems.Length,
+			                 "GetSelection Not returning the right number of items");
+			int i = 0; 
+			DateTime date = sel_start;
+			while (date <= sel_end) {
+				TestProperty (selectedItems[i],
+					      AutomationElementIdentifiers.ControlTypeProperty,
+					      ControlType.ListItem.Id);
+
+				TestProperty (selectedItems[i],
+				              AutomationElementIdentifiers.NameProperty,
+				              date.Day.ToString ());
+
+				date = date.AddDays (1);
+				i++;
+			}
+		}
+
+		[Test]
+		public void ListItemISelectionItemProvider_Simple ()
+		{
+			DateTime sel_start = new DateTime (2000, 12, 4);
+			DateTime sel_end = new DateTime (2000, 12, 6);
+
+			calendar.MinDate = new DateTime (2000, 12, 1);
+			calendar.MaxSelectionCount = 5;
+
+			calendar.SelectionStart = sel_start;
+			calendar.SelectionEnd = sel_end;
+
+			IRawElementProviderFragmentRoot dataGridProvider;
+			IRawElementProviderFragment listItem;
+
+			GetDataGridAndFirstListItem (out dataGridProvider, out listItem);
+
+			DateTime date = calendar.GetDisplayRange (false).Start;
+			while (listItem != null) {
+				TestProperty (listItem,
+					      AutomationElementIdentifiers.ControlTypeProperty,
+					      ControlType.ListItem.Id);
+
+				ISelectionItemProvider selectionItemProvider
+					= listItem.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id)
+						 as ISelectionItemProvider;
+				Assert.IsNotNull (selectionItemProvider,
+				                  "Does not implement ISelectionItemProvider");
+
+				// Test get_IsSelected
+				Assert.AreEqual (selectionItemProvider.IsSelected,
+				                 (date >= sel_start && date <= sel_end),
+				                 "Item thinks it's selected when it is not or vice versa");
+
+				// Test SelectionContainer
+				Assert.AreEqual (selectionItemProvider.SelectionContainer,
+				                 dataGridProvider,
+				                 "SelectionContainer is not the datagrid");
+				
+				date = date.AddDays (1);
+				listItem = ((IRawElementProviderFragment) listItem)
+					.Navigate (NavigateDirection.NextSibling);
+			}
+		}
+
+		[Test]
+		public void ListItemISelectionItemProvider_Complex ()
+		{
+			calendar.MinDate = new DateTime (2000, 12, 1);
+			calendar.SelectionRange = new SelectionRange (new DateTime (2000, 12, 3),
+			                                              new DateTime (2000, 12, 3));
+			calendar.MaxSelectionCount = 5;
+
+			IRawElementProviderFragmentRoot dataGridProvider;
+			IRawElementProviderFragment listItem, secondItem;
+
+			GetDataGridAndFirstListItem (out dataGridProvider, out listItem);
+
+			// Advance until we hit a date in this month, so that
+			// we don't jump and invalidate all of our items
+			DateTime date = calendar.GetDisplayRange (false).Start;
+			while (listItem != null) {
+				if (date == calendar.MinDate) {
+					break;
+				}				
+
+				date = date.AddDays (1);
+				listItem = listItem.Navigate (
+					NavigateDirection.NextSibling);
+			}
+
+			ISelectionItemProvider firstItemProvider
+				= listItem.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id)
+					 as ISelectionItemProvider;
+
+			Assert.IsFalse (firstItemProvider.IsSelected,
+			                "Item reporting to be selected when it shouldn't be");
+
+			firstItemProvider.Select ();
+			Assert.IsTrue (firstItemProvider.IsSelected,
+			               "Item is reporting not selected when it should be");
+
+			Assert.AreEqual (calendar.SelectionStart, date,
+			                 "Calendar returning different start than we just set");
+			Assert.AreEqual (calendar.SelectionEnd, date,
+			                 "Calendar returning different end than we just set");
+
+			secondItem = listItem.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNotNull (secondItem, "First item has no next sibling");
+
+			ISelectionItemProvider secondItemProvider
+				= secondItem.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id)
+					 as ISelectionItemProvider;
+			Assert.IsNotNull (secondItemProvider, "Second item does not implement ISelectionItemProvider");
+
+			secondItemProvider.AddToSelection ();
+			Assert.IsTrue (secondItemProvider.IsSelected,
+			               "Second item not selected when it should be");
+
+			firstItemProvider.RemoveFromSelection ();
+			Assert.IsFalse (firstItemProvider.IsSelected,
+			                "Item reporting to be selected when it shouldn't be");
+			Assert.IsTrue (secondItemProvider.IsSelected,
+			               "Second item not selected when it should be");
 		}
 
 		public void GetDataGridAndFirstListItem (out IRawElementProviderFragmentRoot dataGrid,

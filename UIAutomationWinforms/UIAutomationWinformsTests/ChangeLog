@@ -1,3 +1,8 @@
+2008-12-05  Brad Taylor  <brad@getcoded.net>
+
+	* MonthCalendarProviderTest.cs: Test MonthCalendarDataGrid's
+	ISelectionProvider and ISelectionItemProvider implementation
+
 2008-12-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

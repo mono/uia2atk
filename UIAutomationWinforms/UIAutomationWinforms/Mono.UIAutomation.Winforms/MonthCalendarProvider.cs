@@ -112,6 +112,8 @@ namespace Mono.UIAutomation.Winforms
 			             new GridProviderBehavior (this));
 			SetBehavior (TablePatternIdentifiers.Pattern,
 			             new TableProviderBehavior (this));
+			SetBehavior (SelectionPatternIdentifiers.Pattern,
+			             new SelectionProviderBehavior (this));
 		}
 
 		public override void InitializeChildControlStructure ()
@@ -178,6 +180,115 @@ namespace Mono.UIAutomation.Winforms
 			return gridChildren[date];
 		}
 
+		public bool CanSelectMultiple {
+			get { return calendar.MaxSelectionCount > 1; }
+		}
+
+		public int SelectedItemCount {
+			get {
+				SelectionRange range = calendar.SelectionRange;
+				return (range.End - range.Start).Days;
+			}
+		}
+
+		public IRawElementProviderSimple[] GetSelection ()
+		{
+			SelectionRange range = calendar.SelectionRange;
+			List<IRawElementProviderSimple> selectedItems
+				= new List<IRawElementProviderSimple> ();
+
+			DateTime date = range.Start;
+			while (date <= range.End) {
+				if (!gridChildren.ContainsKey (date)) {
+					// Console.WriteLine (
+					//	"WARNING: MonthCalendarDataGridProvider: No provider found for selected date {0}",
+					//	date);
+					date = date.AddDays (1);
+					continue;
+				}
+
+				selectedItems.Add (gridChildren[date]);
+				date = date.AddDays (1);
+			}
+
+			return selectedItems.ToArray ();
+		}
+
+		// The behavior of this will be a little wonky as selection
+		// must be continuous.
+		public void AddToSelection (MonthCalendarListItemProvider itemProvider)
+		{
+			if (!CanSelectMultiple) {
+				throw new InvalidOperationException ();
+			}
+			
+			if (IsItemSelected (itemProvider)) {
+				return;
+			}
+
+			SelectionRange range = calendar.SelectionRange;
+
+			int proposedDays = (range.End - itemProvider.Date).Days;
+			if (range.Start > itemProvider.Date) {
+				if (proposedDays > calendar.MaxSelectionCount) {
+					throw new InvalidOperationException ();
+				}
+
+				range.Start = itemProvider.Date;
+			}
+
+			proposedDays = (itemProvider.Date - range.Start).Days;
+			if (range.End < itemProvider.Date) {
+				if (proposedDays > calendar.MaxSelectionCount) {
+					throw new InvalidOperationException ();
+				}
+
+				range.End = itemProvider.Date;
+			}
+			
+			calendar.SelectionRange = range;
+		}
+
+		// We can only allow removing from selection on the endpoints.
+		// Winforms GUI doesn't even allow this.
+		public void RemoveFromSelection (MonthCalendarListItemProvider itemProvider)
+		{
+			if (!CanSelectMultiple) {
+				throw new InvalidOperationException ();
+			}
+
+			SelectionRange range = calendar.SelectionRange;
+			if (range.Start == range.End) {
+				throw new InvalidOperationException ();
+			}
+			
+			if (range.Start == itemProvider.Date) {
+				range.Start = range.Start.AddDays (1);
+				return;
+			}
+			
+			if (range.End == itemProvider.Date) {
+				range.End = range.End.AddDays (-1);
+				return;
+			}
+
+			throw new InvalidOperationException ();
+		}
+
+		public void SelectItem (MonthCalendarListItemProvider itemProvider)
+		{
+			calendar.SelectionRange
+				= new SelectionRange (itemProvider.Date,
+			                              itemProvider.Date);
+		}
+
+		public bool IsItemSelected (MonthCalendarListItemProvider itemProvider)
+		{
+			SelectionRange range = calendar.SelectionRange;
+			return (range.Start <= itemProvider.Date
+			        && range.End >= itemProvider.Date);
+		}
+
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
@@ -222,9 +333,18 @@ namespace Mono.UIAutomation.Winforms
 
 		private void OnDateChanged (object o, DateRangeEventArgs args)
 		{
+			SelectionRange range = calendar.GetDisplayRange (false);
+			if (display_range != null
+			    && range.Start == display_range.Start
+			    && range.End == display_range.End)
+				return;
+
 			RemoveChildren ();
 			AddChildren ();
+			display_range = range;
 		}
+
+		private SelectionRange display_range;
 
 		private MonthCalendar calendar;
 		private MonthCalendarProvider calendarProvider;
@@ -268,6 +388,10 @@ namespace Mono.UIAutomation.Winforms
 			get { return date.Day.ToString (); }
 		}
 
+		public DateTime Date {
+			get { return date; }
+		}
+
 		public override IRawElementProviderFragmentRoot FragmentRoot {
 			get { return dataGridProvider; }
 		}
@@ -282,6 +406,8 @@ namespace Mono.UIAutomation.Winforms
 			             new ListItemTableItemProviderBehavior (this));
 			SetBehavior (ValuePatternIdentifiers.Pattern,
 			             new ListItemValueProviderBehavior (this, this));
+			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
+			             new ListItemSelectionItemProviderBehavior (this));
 		}
 
 		public override void InitializeChildControlStructure ()

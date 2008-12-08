@@ -1,3 +1,24 @@
+2008-12-05  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemSelectionItemProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternIsSelectedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternElementAddedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternElementRemovedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternElementSelectedEvent.cs: 
+	Implement ISelectionItemProvider for ListItems of MonthCalendar's
+	DataGrid.
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms.Events/MonthCalendar: 
+	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/SelectionProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternSelectionEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternInvalidatedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternCanSelectMultipleEvent.cs: 
+	Implement ISelectionProvider for MonthCalendar's DataGrid.
+
 2008-12-05  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

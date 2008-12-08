@@ -85,8 +85,10 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemGridItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Panel/DockProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Panel/TransformProviderBehavior.cs \
@@ -196,6 +198,13 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/TablePatternColumnHeadersEvent.cs \
+	Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternElementAddedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternElementRemovedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternElementSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternIsSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternCanSelectMultipleEvent.cs \
+	Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternInvalidatedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Panel/DockPatternDockPositionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Panel/TransformPatternCanMoveEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Panel/TransformPatternCanResizeEvent.cs \
