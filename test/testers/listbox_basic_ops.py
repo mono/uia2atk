@@ -3,9 +3,9 @@
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        08/18/2008
-# Description: Test accessibility of listbox widget 
-#              Use the listboxframe.py wrapper script
-#              Test the samples/listbox.py script
+# Description: main test script of listbox
+#              ../samples/listbox.py is the test sample script
+#              listbox/* is the wrapper of listbox test sample script
 ##############################################################################
 
 # The docstring below  is used in the generated log file

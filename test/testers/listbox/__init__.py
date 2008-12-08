@@ -3,20 +3,20 @@
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        08/18/2008
 # Description: Application wrapper for listbox.py
-#              Used by the listbox-*.py tests
+#              be called by ../menustrip_basic_ops.py
 ##############################################################################$
 
-'''Application wrapper for listbox.py'''
+"""Application wrapper for listbox.py"""
 
 from strongwind import *
 from os.path import exists
 from sys import path
 
 def launchListBox(exe=None):
-    '''
+    """
     Launch listbox with accessibility enabled and return a listbox object.
     Log an error and return None if something goes wrong
-    '''
+    """
 
     if exe is None:
         # make sure we can find the sample application
@@ -43,7 +43,7 @@ def launchListBox(exe=None):
 class ListBox(accessibles.Application):
 
     def __init__(self, accessible, subproc=None): 
-        '''Get a reference to the listbox window'''
+        """Get a reference to the listbox window"""
         super(ListBox, self).__init__(accessible, subproc)
         
         self.findFrame(re.compile('^ListBox'), logName='List Box')

@@ -31,10 +31,10 @@ class DomainUpDownSample(Form):
         self.Text = "DomainUpDown control"
 
         # set up label
-        self.label = Label()
-        self.label.Size = Size(250, 30)
-        self.label.Text = "Up/Down DomainUpDown control to see the items"
-        self.label.Location = Point(10, 0)
+        #self.label = Label()
+        #self.label.Size = Size(250, 30)
+        #self.label.Text = "Up/Down DomainUpDown control to see the items"
+        #self.label.Location = Point(10, 0)
 
         # set up domainupdown
         self.domain_up_down = DomainUpDown()
@@ -46,18 +46,32 @@ class DomainUpDownSample(Form):
         self.domain_up_down.Items.Add("Madrid")
         self.domain_up_down.Items.Add("Provo")
         self.domain_up_down.Items.Add("San Diego")
-        self.domain_up_down.SelectedItemChanged += self.selected_item_changed
+    #    self.domain_up_down.SelectedItemChanged += self.selected_item_changed
+
+        # ReadOnly DomainUpDown
+        self.readonly_domain_up_down = DomainUpDown()
+        self.readonly_domain_up_down.Location = Point(10, 100)
+        self.readonly_domain_up_down.Sorted = True
+        self.readonly_domain_up_down.Items.Add("Austin")
+        self.readonly_domain_up_down.Items.Add("Beijing")
+        self.readonly_domain_up_down.Items.Add("Cambridge")
+        self.readonly_domain_up_down.Items.Add("Madrid")
+        self.readonly_domain_up_down.Items.Add("Provo")
+        self.readonly_domain_up_down.Items.Add("San Diego")
+    #    self.readonly_domain_up_down.SelectedItemChanged += self.selected_item_changed
+        self.readonly_domain_up_down.ReadOnly = True
 
         # add control
-        self.Controls.Add(self.label)
+        #self.Controls.Add(self.label)
+        self.Controls.Add(self.readonly_domain_up_down)
         self.Controls.Add(self.domain_up_down)
 
-    def selected_item_changed(self, sender, event):
-        self.label.Text = "SelectedIndex: " + \
-            str(self.domain_up_down.SelectedIndex) + \
-            "\n" + \
-            "SelectedItem: "  + \
-            str(self.domain_up_down.SelectedItem)
+    #def selected_item_changed(self, sender, event):
+    #    self.label.Text = "SelectedIndex: " + \
+    #        str(sender.SelectedIndex) + \
+    #        "\n" + \
+    #        "SelectedItem: "  + \
+    #        str(sender.SelectedItem)
 
 # run application
 form = DomainUpDownSample()

@@ -3,9 +3,9 @@
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        09/08/2008
-# Description: Test accessibility of numericupdown widget 
-#              Use the numericupdownframe.py wrapper script
-#              Test the samples/numericupdown.py script
+# Description: main test script of numericupdown
+#              ../samples/numericupdown.py is the test sample script
+#              numericupdown/* is the wrapper of numericupdown test sample
 ##############################################################################
 
 # The docstring below  is used in the generated log file
@@ -18,7 +18,6 @@ from helpers import *
 from states import *
 from actions import *
 from sys import argv
-import pdb
 
 app_path = None 
 try:

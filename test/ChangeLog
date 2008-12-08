@@ -1,3 +1,20 @@
+2008-12-08  Ray Wang <rawang@novell.com>
+
+	* samples/domainupdown.py: add a readonly DomainUpDown control
+	* samples/panel.py: remove a label
+	* testers/listbox/__init__.py
+	* testers/listbox/listboxframe.py
+	* testers/listbox_basic_ops.py
+	* testers/menustrip/__init__.py
+	* testers/menustrip/menustripframe.py
+	* testers/menustrip_basic_ops.py
+	* testers/panel/__init__.py
+	* testers/panel/panelframe.py
+	* testers/panel_basic_ops.py
+	* testers/numericupdown/__init__.py
+	* testers/numericupdown/numericupdownframe.py
+	* testers/numericupdown_basic_ops.py: code clean up
+
 2008-12-05 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/helprovider.py: Create HelpProvider sample (ported from

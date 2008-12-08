@@ -24,11 +24,33 @@ from System.Windows.Forms import *
 
 class PanelCheckBoxRadioButtonApp(Form):
 
-    def __init__(self):
-        self.Text = "Panel control"
+    def newPanel(self, x, y):
+        panel = Panel()
+        panel.Width = 400
+        panel.Height = 150
+        panel.Location = Point(x, y)
+        panel.BorderStyle = BorderStyle.Fixed3D
+        return panel
 
+    def __init__(self):
+
+        # setup frame
+        self.Text = "Panel control"
         self.Width = 400
-        self.Height = 400
+        self.Height = 300
+
+        # panel - 1
+        self.checkPanel = self.newPanel(0, 0)
+        self.checkPanel.Text = "panel1"
+        self.checkPanel.Name = "panel1"
+
+        # panel - 2
+        self.radioPanel = self.newPanel(0, 150)
+        self.radioPanel.Text = "panel2"
+        self.radioPanel.Name = "panel2"
+
+        print self.checkPanel.Name
+        print self.radioPanel.Name
 
         self.setupCheckButtons()
         self.setupRadioButtons()
@@ -36,26 +58,7 @@ class PanelCheckBoxRadioButtonApp(Form):
         self.Controls.Add(self.checkPanel)
         self.Controls.Add(self.radioPanel)
 
-        self.mainLabel1 = Label()
-        self.mainLabel1.Text = "Examples for: Panel"
-        self.mainLabel1.Location = Point(10,10)
-        self.mainLabel1.AutoSize = True
-        self.Controls.Add(self.mainLabel1)
-
-    def newPanel(self, x, y):
-        panel = Panel()
-        panel.Text = "panel"
-        panel.Name = "panel"
-        panel.Width = 400
-        panel.Height = 150
-        panel.Location = Point(x, y)
-        panel.BorderStyle = BorderStyle.Fixed3D
-        return panel
-
     def setupCheckButtons(self):
-        self.checkPanel = self.newPanel(0, 50)
-        self.checkPanel.Text = "panel1"
-        self.checkPanel.Name = "panel1"
 
         self.checkLabel = Label()
         self.checkLabel.Text = "multi-choose:"
@@ -91,9 +94,6 @@ class PanelCheckBoxRadioButtonApp(Form):
         self.checkPanel.Controls.Add(self.check4)
 
     def setupRadioButtons(self):
-        self.radioPanel = self.newPanel(0, 200)
-        self.radioPanel.Text = "panel2"
-        self.radioPanel.Name = "panel2"
 
         self.radioLabel1 = Label()
         self.radioLabel1.Text = "Tell Me Your Gender:"

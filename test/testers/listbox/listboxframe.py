@@ -2,11 +2,11 @@
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        08/19/2008
-# Description: listbox.py wrapper script
-#              Used by the listbox-*.py tests
+# Description: Application wrapper for listbox.py
+#              be called by ../menustrip_basic_ops.py
 ##############################################################################
 
-'''Application wrapper for listbox.py'''
+"""Application wrapper for listbox.py"""
 
 from strongwind import *
 
@@ -24,12 +24,12 @@ class ListBoxFrame(accessibles.Frame):
 
 
     def click(self, listitem):
-        '''give 'click' action'''
+        """give 'click' action"""
         listitem.click()
 
 
     def assertLabel(self, itemname):
-        '''Raise exception if the accessible does not match the given result'''
+        """Raise exception if the accessible does not match the given result"""
         procedurelogger.expectedResult('item "%s" is selected' % itemname)
 
         def resultMatches():
@@ -39,7 +39,7 @@ class ListBoxFrame(accessibles.Frame):
 
 
     def assertText(self, textValue=None):
-        '''assert Text implementation for ListItem role'''
+        """assert Text implementation for ListItem role"""
         procedurelogger.action('check ListItem\'s Text Value')
 
         for textValue in range(20):
@@ -49,7 +49,7 @@ class ListBoxFrame(accessibles.Frame):
 
 
     def assertSelectionChild(self, accessible, childIndex):
-        '''assert Selection implementation'''
+        """assert Selection implementation"""
         procedurelogger.action('select childIndex %s in "%s"' % \
                                         (childIndex, accessible))
 
@@ -57,7 +57,7 @@ class ListBoxFrame(accessibles.Frame):
 
 
     def assertClearSelection(self, accessible):
-        '''clear selections'''
+        """clear selections"""
         procedurelogger.action('clear selection in "%s"' % accessible)
 
         accessible.clearSelection()

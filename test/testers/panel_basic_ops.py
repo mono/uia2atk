@@ -1,27 +1,24 @@
 #!/usr/bin/env python
-
+# vim: set tabstop=4 shiftwidth=4 expandtab
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        10/21/2008
-# Description: Test accessibility of panel widget 
-#              Use the panelframe.py wrapper script
-#              Test the samples/panel.py script
+# Description: main test script of panel
+#              ../samples/panel.py is the test sample script
+#              panel/* is the wrapper of panel test sample script
 ##############################################################################
 
-# The docstring below  is used in the generated log file
+# The docstring below is used in the generated log file
 """
-Test accessibility of panel widget
+Test accessibility of Panel widget
 """
 
 # imports
-import sys
-import os
-
-from strongwind import *
 from panel import *
 from helpers import *
+from states import *
+from actions import *
 from sys import argv
-from os import path
 
 app_path = None 
 try:
@@ -43,6 +40,9 @@ if app is None:
 # just an alias to make things shorter
 pFrame = app.panelFrame
 
+###########################
+# check children's AtkAction
+###########################
 #check if checkbox and radiobutton in panel still have correct actions
 actionsCheck(pFrame.check1, "CheckBox")
 actionsCheck(pFrame.check2, "CheckBox")
@@ -53,10 +53,16 @@ actionsCheck(pFrame.radio1, "RadioButton")
 actionsCheck(pFrame.radio2, "RadioButton")
 actionsCheck(pFrame.radio3, "RadioButton")
 
+###########################
+# check panel's AtkAccessible
+###########################
 #check panel states
-statesCheck(pFrame.panel1, "Panel")
-statesCheck(pFrame.panel2, "Panel")
+statesCheck(pFrame.panel1, "Panel", add_states=["resizable"])
+statesCheck(pFrame.panel2, "Panel", add_states=["resizable"])
 
+###########################
+# check children's AtkAccessible
+###########################
 #check if checkbox and radiobutton in panel still have correct states
 statesCheck(pFrame.check1, "CheckBox", add_states=["focused"])
 statesCheck(pFrame.check2, "CheckBox")
@@ -89,6 +95,5 @@ statesCheck(pFrame.radio2, "RadioButton", add_states=["checked"])
 
 #close application frame window
 pFrame.quit()
-
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR

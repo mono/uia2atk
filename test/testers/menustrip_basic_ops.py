@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+# vim: set tabstop=4 shiftwidth=4 expandtab
 ##############################################################################
 # Written by:  Ray Wang <rawang@novell.com>
 # Date:        11/19/2008

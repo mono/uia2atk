@@ -6,7 +6,7 @@
 #              be called by ../menustrip_basic_ops.py
 ##############################################################################
 
-'''Application wrapper for menustrip.py'''
+"""Application wrapper for menustrip.py"""
 
 from strongwind import *
 

@@ -2,11 +2,11 @@
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        09/08/2008
-# Description: numericupdown.py wrapper script
-#              Used by the numericupdown-*.py tests
+# Description: Application wrapper for numericupdown.py
+#              be called by ../numericupdown_basic_ops.py
 ##############################################################################$
 
-'''Application wrapper for numericupdown.py'''
+"""Application wrapper for numericupdown.py"""
 
 from strongwind import *
 
@@ -62,7 +62,7 @@ class NumericUpDownFrame(accessibles.Frame):
             assert not accessible.value == value, \
                                 "value %d is out of range" % accessible.value
 
-    
+
     #close application window
     def quit(self):
         self.altF4()
