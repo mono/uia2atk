@@ -145,6 +145,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/CustomInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/DomainUpDownAutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemAutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementAddedEvent.cs \
@@ -293,9 +294,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ListViewProvider.cs \
 	Mono.UIAutomation.Winforms/MaskedTextBoxProvider.cs \
 	Mono.UIAutomation.Winforms/MenuStripProvider.cs \
-	Mono.UIAutomation.Winforms/MonthCalendarProvider.cs \
-	Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs \
 	Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs \
+	Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs \
+	Mono.UIAutomation.Winforms/MonthCalendarProvider.cs \
 	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/PanelProvider.cs \
 	Mono.UIAutomation.Winforms/PaneProvider.cs \

@@ -23,13 +23,12 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-//using SD = System.Drawing;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-//using Mono.UIAutomation.Winforms.Events.DataGrid;
+using Mono.UIAutomation.Winforms.Events.DataGrid;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 {
@@ -48,7 +47,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 
 		public override void Connect ()
 		{
-			// FIXME: We may need to patch SWF
+			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
+			                   new CustomInvokePatternInvokedEvent (customProvider));
 		}
 		
 		public override void Disconnect ()
@@ -70,7 +70,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 			if (!customProvider.DataGridProvider.Control.Enabled)
 				throw new ElementNotEnabledException ();
 
-			// FIXME: Expand or/and Collapse!
+			if (customProvider.DataGridProvider.DataGrid.IsExpanded (customProvider.Row))
+				customProvider.DataGridProvider.DataGrid.Collapse (customProvider.Row);
+			else
+				customProvider.DataGridProvider.DataGrid.Expand (customProvider.Row);
 		}
 		
 		#endregion	

@@ -1,3 +1,20 @@
+2008-12-08  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGrid.Custom item: Invoke Event
+	added
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/CustomInvokeProviderBehavior.cs:
+	Invoke event in DataGrid.Custom.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid: DataGrid events folder.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/CustomInvokePatternInvokedEvent.cs:
+	Invoke Event in Custom.
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Updated to use
+	CurrencyManager to keep track of DataSource changes.
+
 2008-12-08  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

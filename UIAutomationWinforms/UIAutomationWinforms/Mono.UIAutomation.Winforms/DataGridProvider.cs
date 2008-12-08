@@ -45,6 +45,10 @@ namespace Mono.UIAutomation.Winforms
 			this.datagrid = datagrid;
 		}
 
+		public SWF.DataGrid DataGrid {
+			get { return datagrid; }
+		}
+
 		#region IScrollBehaviorSubject specialization
 
 		public IScrollBehaviorObserver ScrollBehaviorObserver { 
@@ -92,12 +96,42 @@ namespace Mono.UIAutomation.Winforms
 		{
 			UpdateChildren (false);
 			datagrid.DataSourceChanged += OnDataSourceChanged;
+
+			try {
+				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
+				                        datagrid,
+				                        "UIAExpanded",
+				                        this,
+				                        "OnUIAExpanded");
+			} catch (NotSupportedException) { }
+			try {
+				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
+				                        datagrid,
+				                        "UIACollapsed",
+				                        this,
+				                        "OnUIACollapsed");
+			} catch (NotSupportedException) { }
 		}
 
 		public override void FinalizeChildControlStructure ()
 		{
 			OnNavigationChildrenCleared (false);
 			datagrid.DataSourceChanged -= OnDataSourceChanged;
+
+			try {
+				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
+				                           datagrid,
+				                           "UIAExpanded",
+				                           this,
+				                           "OnUIAExpanded");
+			} catch (NotSupportedException) { }
+			try {
+				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
+				                           datagrid,
+				                           "UIACollapsed",
+				                           this,
+				                           "OnUIACollapsed");
+			} catch (NotSupportedException) { }
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -134,6 +168,25 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Private Methods
 
+#pragma warning disable 169
+
+		private void OnUIAExpanded (object sender, EventArgs args)
+		{
+			Console.WriteLine ("DataGridProvider.Expanded - Rows: {0}", lastCurrencyManager.Count);
+
+			DataSet dataset = null;
+			if ((dataset = datagrid.DataSource as DataSet) != null) {
+				Console.WriteLine ("Tables: {0}", dataset.Tables.Count);
+			}
+		}
+
+		private void OnUIACollapsed (object sender, EventArgs args)
+		{
+			Console.WriteLine ("DataGridProvider.Collapsed - Rows: {0}", lastCurrencyManager.Count);
+		}
+
+#pragma warning restore 169
+
 		private void UpdateChildren (bool raiseEvent)
 		{
 			if (lastDataSource != null)
@@ -144,89 +197,69 @@ namespace Mono.UIAutomation.Winforms
 				header = null;
 			}
 
-			// According to http://msdn.microsoft.com/en-us/library/fxfa9793.aspx
-			// Valid data sources for the DataGrid include:
-			// - DataTable class
-			// - DataView class
-			// - DataSet class
-			// - DataViewManager class
-			// Also:
-			// - Any component that implements the IList interface (shows public properties)
-			// - Any component that implements the IListSource interface.
-			// - Any component that implements the IBindingList interface.
-			IList ilist = null;
-			DataSet dataSet = null;
-			
-			if (datagrid.DataSource != null) {
-				if ((dataSet = datagrid.DataSource as DataSet) != null)
-					InitializeDataSetDataSource (dataSet, raiseEvent);
-				else if ((ilist = datagrid.DataSource as IList) != null)
-					InitializeListDataSource (ilist, raiseEvent);
+			if (lastCurrencyManager == null) { 
+				// First time, otherwise we can't do anything.
+				lastCurrencyManager = RequestCurrencyManager ();
+				if (lastCurrencyManager == null)
+					return;
+			}
 
-				Console.WriteLine ("datasource is: {0}", datagrid.DataSource.GetType ());
+			Console.WriteLine ("Rows: {0}", lastCurrencyManager.Count);
+
+			SWF.DataGridTableStyle tableStyle
+				= Helper.GetPrivateProperty<SWF.DataGrid, SWF.DataGridTableStyle> (typeof (SWF.DataGrid),
+				                                                                   datagrid,
+				                                                                   "CurrentTableStyle");
+			// Is showing "+" to expand, this usually happens when DataSource is
+			// DataSet and has more than one DataTable.
+			if (tableStyle.GridColumnStyles.Count == 0) {
+				Console.WriteLine ("Should ADD custom item that supports Invoke");
+				DataGridCustomProvider customProvider 
+					= new DataGridCustomProvider (this, 0, string.Empty);
+				customProvider.Initialize ();
+				OnNavigationChildAdded (raiseEvent, customProvider);
+			} else {
+				header = new DataGridHeaderProvider (this, tableStyle.GridColumnStyles);
+				header.Initialize ();
+				OnNavigationChildAdded (raiseEvent, header);
+				
+				Console.WriteLine ("GridColumnStyles: {0}", tableStyle.GridColumnStyles.Count);
+					
+				foreach (SWF.DataGridColumnStyle style in tableStyle.GridColumnStyles) {
+					Console.WriteLine ("column: HEADER: {0} WIDTH: {1}", style.HeaderText, style.Width);
+				}
 			}
 
 			lastDataSource = datagrid.DataSource;
 		}
-
-		private void InitializeDataSetDataSource (DataSet dataset, bool raiseEvent)
-		{
-			if (dataset.Tables.Count == 0)
-				return;
-
-			//We will add a Custom ListItem that when IInvoke.Invoke will expand 
-			//the + to show the Tables associated.
-			DataGridCustomProvider customProvider 
-				= new DataGridCustomProvider (this, string.Empty);
-			customProvider.Initialize ();
-			OnNavigationChildAdded (raiseEvent, customProvider);
-		}
-
-		private void InitializeListDataSource (IList list, bool raiseEvent)
-		{
-			// NOTE: ILists use public properties for data binding.
-			//
-			// We are using the first element as the main Bindable-Type, because 
-			// you can use an ArrayList and it would contain different types.
-			// http://msdn.microsoft.com/en-us/library/system.windows.forms.datagrid.datasource.aspx
-			if (list.Count == 0)
-				return;
-
-			ArrayList items = new ArrayList ();
-			Type listType = list [0].GetType ();
-			PropertyInfo[] publicProperties 
-				= listType.GetProperties (BindingFlags.Public | BindingFlags.Instance);
-
-			for (int index = 0; index < list.Count; index++) {
-				if (list [index].GetType () == listType
-				    || list [index].GetType ().IsSubclassOf (listType))
-					items.Add (list [index]);
-			}
-
-			// Header
-			header = new DataGridHeaderProvider (this, items, publicProperties);
-			header.Initialize ();
-			OnNavigationChildAdded (raiseEvent, header);
-
-			// Items
-			for (int index = 0; index < items.Count; index++) {
-				DataGridListItemProvider itemProvider
-					= new DataGridListItemProvider (this, 
-					                                items [index], 
-					                                publicProperties);
-				itemProvider.Initialize ();
-				OnNavigationChildAdded (raiseEvent, itemProvider);
-			}
-		}
-
+		
 		private void OnDataSourceChanged (object sender, EventArgs args)
 		{
-			if (lastDataSource == datagrid.DataSource)
-				return;
+			bool refreshChildren = false;
+			SWF.CurrencyManager manager = null;
 
-			Console.WriteLine ("DataSource changed!");
+			// Happens when Navigating DataGrid
+			if (lastDataSource == datagrid.DataSource) {
+				manager = RequestCurrencyManager ();
+				// Only when rendering something different we refresh children
+				if (manager != null && manager != lastCurrencyManager)
+					refreshChildren = true;
+			} else {
+				manager = RequestCurrencyManager ();
+				refreshChildren = true;
+			}
 
-			UpdateChildren (true);
+			Console.WriteLine ("> UIA: DataSource changed. Refreshing {0}", refreshChildren);
+			if (refreshChildren) {
+				lastCurrencyManager = manager;
+				UpdateChildren (true);
+			}
+		}
+
+		private SWF.CurrencyManager RequestCurrencyManager ()
+		{
+			return (SWF.CurrencyManager) datagrid.BindingContext [datagrid.DataSource,
+			                                                      datagrid.DataMember];
 		}
 
 		#endregion Private Methods
@@ -235,6 +268,7 @@ namespace Mono.UIAutomation.Winforms
 
 		private SWF.DataGrid datagrid;
 		private DataGridHeaderProvider header;
+		private SWF.CurrencyManager lastCurrencyManager; 
 		private object lastDataSource;
 		private ScrollBehaviorObserver observer;
 
@@ -245,11 +279,10 @@ namespace Mono.UIAutomation.Winforms
 		internal class DataGridHeaderProvider : FragmentRootControlProvider
 		{
 			public DataGridHeaderProvider (DataGridProvider provider,
-			                               ArrayList items,
-			                               PropertyInfo []properties) : base (null)
+			                               SWF.GridColumnStylesCollection styles) : base (null)
 			{
 				this.provider = provider;
-				this.properties = properties;
+				this.styles = styles;
 			}
 
 			public override IRawElementProviderFragmentRoot FragmentRoot {
@@ -285,14 +318,14 @@ namespace Mono.UIAutomation.Winforms
 
 			public override void InitializeChildControlStructure ()
 			{
-				foreach (PropertyInfo property in properties) {
+				foreach (SWF.DataGridColumnStyle style in styles) {
 					DataGridHeaderItemProvider headerItem
-						= new DataGridHeaderItemProvider (this, property.Name);
+						= new DataGridHeaderItemProvider (this, style);
 					OnNavigationChildAdded (false, headerItem);
 				}
 			}
 
-			private PropertyInfo []properties;
+			private SWF.GridColumnStylesCollection styles;
 			private DataGridProvider provider;			
 		} // DataGridHeaderProvider
 
@@ -303,10 +336,10 @@ namespace Mono.UIAutomation.Winforms
 		internal class DataGridHeaderItemProvider : FragmentControlProvider
 		{
 			public DataGridHeaderItemProvider (DataGridHeaderProvider header, 
-			                                   string name) : base (null)
+			                                   SWF.DataGridColumnStyle style) : base (null)
 			{
 				this.header = header;
-				this.name = name;
+				this.style = style;
 			}
 
 			public override IRawElementProviderFragmentRoot FragmentRoot {
@@ -318,7 +351,7 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.HeaderItem.Id;
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return name;
+					return style.HeaderText;
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
@@ -346,7 +379,7 @@ namespace Mono.UIAutomation.Winforms
 					return base.GetProviderPropertyValue (propertyId);
 			}
 
-			private string name;
+			private SWF.DataGridColumnStyle style;
 			private DataGridHeaderProvider header;
 		} // DataGridHeaderItemProvider
 
@@ -475,10 +508,16 @@ namespace Mono.UIAutomation.Winforms
 		internal class DataGridCustomProvider : FragmentRootControlProvider
 		{
 			public DataGridCustomProvider (DataGridProvider provider,
-			                               object data) : base (null)
+			                               int row,
+			                               string name) : base (null)
 			{
 				this.provider = provider;
-				this.data = data ?? string.Empty;
+				this.row = row;
+				this.name = name;
+			}
+
+			public int Row {
+				get { return row; }
 			}
 
 			public DataGridProvider DataGridProvider {
@@ -505,14 +544,14 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return string.Empty;
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return data.ToString ();
+					return name;
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
 
-
+			private string name;
 			private DataGridProvider provider;
-			private object data;
+			private int row;
 		} //DataGridCustomProvider
 
 		#endregion
