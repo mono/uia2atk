@@ -1,9 +1,7 @@
-2008-12-05  Full Name  <Email Address>
+2008-12-08  Stephen Shaw  <sshaw@decriptor.com>
 
 	* configure.ac: Added a check for mono-data in configure.ac
-Changed
-	version for mono in configure.ac to 2.2
-
+			Changed	version for mono in configure.ac to 2.2
 
 	* README: Added mono-data to README
 

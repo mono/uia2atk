@@ -76,8 +76,11 @@ AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = "xyes")
 dnl package checks, common for all configs
 PKG_CHECK_MODULES([MONO_UIA], [mono-uia])
 PKG_CHECK_MODULES([MONO], [mono >= 2.2])
-MONO_LIB_PATH=`pkg-config --variable=libdir mono`
-AC_CHECK_FILE($MONO_LIB_PATH/mono/2.0/System.Data.dll, [], [AC_MSG_ERROR([mono-data >= 2.2 is missing])])
+
+gacutil -l  System.Data | grep "Version=2"
+if test "$?" -ne "0"; then
+	AC_MSG_ERROR([mono-data >= 2.2 is missing])
+fi
 
 
 dnl package checks, per config
