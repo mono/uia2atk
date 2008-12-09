@@ -179,7 +179,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			foreach (SWF.TreeNode node in treeView.Nodes) {
 				if (nodesToRemove.Contains (node)) {
-					nodeProviders [node].UpdateBehaviors ();
+					nodeProviders [node].UpdateBehaviors (observer.SupportsScrollPattern);
 					nodesToRemove.Remove (node);
 					continue;
 				}
@@ -207,7 +207,7 @@ namespace Mono.UIAutomation.Winforms
 			TreeNodeProvider nodeProvider;
 			
 			if (!nodeProviders.TryGetValue (node, out nodeProvider)) {
-				nodeProvider = new TreeNodeProvider (node);
+				nodeProvider = new TreeNodeProvider (node, observer.SupportsScrollPattern);
 				nodeProvider.Initialize ();
 				nodeProviders [node]  = nodeProvider;
 			}
@@ -218,6 +218,7 @@ namespace Mono.UIAutomation.Winforms
 		private void OnScrollPatternSupportChanged (object o, EventArgs args)
 		{
 			UpdateScrollBehavior ();
+			RefreshChildControlStructure ();
 		}
 
 		private void UpdateBehaviors ()
@@ -246,15 +247,17 @@ namespace Mono.UIAutomation.Winforms
 		#region Private Members
 
 		private SWF.TreeNode node;
+		private bool parentTreeKnownToSupportScroll;
 
 		#endregion
 
 		#region Constructors
 		
-		public TreeNodeProvider (SWF.TreeNode node) :
+		public TreeNodeProvider (SWF.TreeNode node, bool treeSupportsScroll) :
 			base (null)
 		{
 			this.node = node;
+			parentTreeKnownToSupportScroll = treeSupportsScroll;
 		}
 
 		#endregion
@@ -286,15 +289,30 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.Initialize();
 
-			UpdateBehaviors ();
+			UpdateBehaviors (parentTreeKnownToSupportScroll);
+
+			node.TreeView.EnabledChanged += HandleEnabledChanged;
+		}
+
+		public override void Terminate ()
+		{
+			node.TreeView.EnabledChanged -= HandleEnabledChanged;
+		}
+
+
+		void HandleEnabledChanged(object sender, EventArgs e)
+		{
+			UpdateBehaviors (parentTreeKnownToSupportScroll);
 		}
 
 		#endregion
 
 		#region Internal Methods
 
-		internal void UpdateBehaviors ()
+		internal void UpdateBehaviors (bool treeSupportsScroll)
 		{
+			parentTreeKnownToSupportScroll = treeSupportsScroll;
+			
 			if (node.TreeView.CheckBoxes &&
 			    GetBehavior (TogglePatternIdentifiers.Pattern) == null)
 				SetBehavior (TogglePatternIdentifiers.Pattern,
@@ -302,9 +320,15 @@ namespace Mono.UIAutomation.Winforms
 			else if (!node.TreeView.CheckBoxes)
 				SetBehavior (TogglePatternIdentifiers.Pattern,
 				             null);
-				
-//			if (node.TreeView.Scrollable)
-//				; // TODO: ScrollItem
+
+			if (treeSupportsScroll && node.TreeView.Enabled &&
+			    GetBehavior (ScrollItemPatternIdentifiers.Pattern) == null)
+				SetBehavior (ScrollItemPatternIdentifiers.Pattern,
+				             new ScrollItemProviderBehavior (this));
+			else if (!treeSupportsScroll || !node.TreeView.Enabled)
+				SetBehavior (ScrollItemPatternIdentifiers.Pattern,
+				             null);
+			
 //			if (node.TreeView.LabelEdit)
 //				; // TODO: Value
 

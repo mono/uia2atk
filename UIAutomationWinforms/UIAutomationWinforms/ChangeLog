@@ -1,5 +1,13 @@
 2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms/TreeViewProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/TreeView/ScrollItemProviderBehavior.cs:
+	Add support for ScrollItemPattern to TreeNodeProvider.
+
+2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Mono.UIAutomation.Winforms.Behaviors/TreeView/ToggleProviderBehavior.cs:
 	Toggle should raise ElementNotEnabledException when TreeView is
 	disabled.

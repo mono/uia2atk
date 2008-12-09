@@ -1,5 +1,10 @@
 2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* TreeViewProviderTest.cs: Add support for ScrollItemPattern to
+	TreeNodeProvider.
+
+2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* TreeViewProviderTest.cs: Toggle should raise
 	ElementNotEnabledException when TreeView is disabled.
 

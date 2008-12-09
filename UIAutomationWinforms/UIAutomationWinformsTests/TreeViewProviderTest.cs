@@ -616,28 +616,68 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void ScrollIntoViewTest ()
 		{
-//			TreeView treeView = new TreeView ();
-//			TreeNode node1 = new TreeNode ("node1");
-//			TreeNode node2 = new TreeNode ("node2");
-//			TreeNode node3 = new TreeNode ("node3");
-//
-//			treeView.Nodes.AddRange (new TreeNode [] {
-//				node1,
-//				node2,
-//				node3});
-//			
-//			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
-//				GetProviderFromControl (treeView);
-//
-//			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
-//				provider.Navigate (NavigateDirection.FirstChild);
-//			IRawElementProviderFragmentRoot node2Provider = (IRawElementProviderFragmentRoot)
-//				node1Provider.Navigate (NavigateDirection.NextSibling);
-//
-//			IScrollItemProvider node1ScrollItem = (IScrollItemProvider)
-//				node1Provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
-//			IScrollItemProvider node2ScrollItem = (IScrollItemProvider)
-//				node2Provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+			TreeView treeView = new TreeView ();
+			
+			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+				GetProviderFromControl (treeView);
+
+			TreeNode tempNode = treeView.Nodes.Add ("test");
+			while (tempNode.IsVisible) {
+				tempNode = treeView.Nodes.Add ("test");
+			}
+			
+			TreeNode node1 = new TreeNode ("node1");
+			TreeNode node2 = new TreeNode ("node2");
+			TreeNode node3 = new TreeNode ("node3");
+
+			treeView.Nodes.AddRange (new TreeNode [] {
+				node1,
+				node2,
+				node3});
+
+			IRawElementProviderFragmentRoot node3Provider = (IRawElementProviderFragmentRoot)
+				provider.Navigate (NavigateDirection.LastChild);
+			IRawElementProviderFragmentRoot node2Provider = (IRawElementProviderFragmentRoot)
+				node3Provider.Navigate (NavigateDirection.PreviousSibling);
+			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
+				node2Provider.Navigate (NavigateDirection.PreviousSibling);
+
+			VerifyTreeNodePatterns (provider, node1Provider, node1);
+			VerifyTreeNodePatterns (provider, node2Provider, node2);
+			VerifyTreeNodePatterns (provider, node3Provider, node3);
+
+			IScrollItemProvider node1ScrollItem = (IScrollItemProvider)
+				node1Provider.GetPatternProvider (ScrollItemPatternIdentifiers.Pattern.Id);
+			IScrollItemProvider node3ScrollItem = (IScrollItemProvider)
+				node3Provider.GetPatternProvider (ScrollItemPatternIdentifiers.Pattern.Id);
+			
+			Assert.IsFalse (node1.IsVisible);
+			Assert.IsFalse (node2.IsVisible);
+			Assert.IsFalse (node3.IsVisible);
+
+			node1ScrollItem.ScrollIntoView ();
+
+			Assert.IsTrue (node1.IsVisible);
+			Assert.IsFalse (node2.IsVisible);
+			Assert.IsFalse (node3.IsVisible);
+
+			node3ScrollItem.ScrollIntoView ();
+
+			Assert.IsTrue (node1.IsVisible);
+			Assert.IsTrue (node2.IsVisible);
+			Assert.IsTrue (node3.IsVisible);
+
+			treeView.Enabled = false;
+
+			VerifyTreeNodePatterns (provider, node1Provider, node1);
+			VerifyTreeNodePatterns (provider, node2Provider, node2);
+			VerifyTreeNodePatterns (provider, node3Provider, node3);
+
+			treeView.Enabled = true;
+
+			VerifyTreeNodePatterns (provider, node1Provider, node1);
+			VerifyTreeNodePatterns (provider, node2Provider, node2);
+			VerifyTreeNodePatterns (provider, node3Provider, node3);
 		}
 		
 		#endregion
@@ -846,7 +886,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			bool expectInovke = false;
 			bool expectSelectionItem = true;
-			bool expectScrollItem =
+			bool expectScrollItem = treeNode.TreeView.Enabled &&
 				(parentProvider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider != null);
 			bool expectToggle = treeNode.TreeView.CheckBoxes;
 

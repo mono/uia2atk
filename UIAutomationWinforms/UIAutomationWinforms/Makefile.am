@@ -116,6 +116,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripSplitButton/ExpandCollapseProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TreeView/ScrollItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/SelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/SelectionProviderBehavior.cs \
