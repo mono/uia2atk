@@ -54,6 +54,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/CustomInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/ListItemEditValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/SelectionProviderBehavior.cs \
@@ -150,6 +151,12 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/CustomInvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontallyScrollableEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontalScrollPercentEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontalViewSizeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternVerticallyScrollableEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternVerticalScrollPercent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternVerticalViewSizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/DomainUpDownAutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemAutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementAddedEvent.cs \

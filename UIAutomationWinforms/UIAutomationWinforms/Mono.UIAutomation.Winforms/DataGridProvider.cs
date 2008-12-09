@@ -30,6 +30,8 @@ using System.Reflection;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.DataGrid;
 
 //TODO: Realize IListProvider (and subclass from ListProvider??)
@@ -37,7 +39,8 @@ using Mono.UIAutomation.Winforms.Behaviors.DataGrid;
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal class DataGridProvider : FragmentRootControlProvider, IScrollBehaviorSubject
+	internal class DataGridProvider 
+		: FragmentRootControlProvider, IListProvider, IScrollBehaviorSubject
 	{
 		#region Public Constructors
 		
@@ -172,11 +175,79 @@ namespace Mono.UIAutomation.Winforms
 		
 		private void UpdateScrollBehavior ()
 		{
-//			if (observer.SupportsScrollPattern == true)
-//				SetBehavior (ScrollPatternIdentifiers.Pattern,
-//				             new ScrollProviderBehavior (this));
-//			else
-//				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
+			if (observer.SupportsScrollPattern == true)
+				SetBehavior (ScrollPatternIdentifiers.Pattern,
+				             new ScrollProviderBehavior (this));
+			else
+				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
+		}
+		
+		#endregion
+
+		#region IListProvider realization
+
+		public int IndexOfObjectItem (object objectItem)
+		{
+			return -1; // FIXME: Implement
+		}
+
+		public int SelectedItemsCount {
+			get { return 0; } // FIXME: Implement
+		}
+
+		public void ScrollItemIntoView (ListItemProvider item)
+		{
+			// FIXME: Implement:
+		}
+
+		public bool IsItemSelected (ListItemProvider item)
+		{
+			return false; // FIXME: Implement
+		}
+
+		public void SelectItem (ListItemProvider item)
+		{
+			// FIXME: Implement
+		}
+
+		public void UnselectItem (ListItemProvider item)
+		{
+			// FIXME: Implement
+		}
+
+		public object GetItemPropertyValue (ListItemProvider item,
+		                                             int propertyId)
+		{
+			// FIXME: Implement at least:
+			// - AutomationElementIdentifiers.NameProperty.Id
+			// - AutomationElementIdentifiers.HasKeyboardFocusProperty.Id
+			// - AutomationElementIdentifiers.BoundingRectangleProperty.Id
+			// - AutomationElementIdentifiers.IsOffscreenProperty.Id
+			// - AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id
+			return null;
+		}
+
+		public ToggleState GetItemToggleState (ListItemProvider item)
+		{
+			// FIXME: Implement
+			return ToggleState.Indeterminate;
+		}
+		
+		public void ToggleItem (ListItemProvider item)
+		{
+			// FIXME: Implement
+		}
+
+		public IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+		                                                         ListItemProvider listItem)
+		{
+			return null;
+		}
+
+		public IConnectable GetListItemEventRealization (ProviderEventType eventType, 
+		                                                 ListItemProvider provider)
+		{
+			return null;
 		}
 		
 		#endregion
@@ -239,6 +310,7 @@ namespace Mono.UIAutomation.Winforms
 				for (int row = 0; row < lastCurrencyManager.Count; row++) {
 					DataGridListItemProvider item = new DataGridListItemProvider (this,
 					                                                              row,
+					                                                              datagrid,
 					                                                              tableStyle);
 					item.Initialize ();
 					OnNavigationChildAdded (raiseEvent, item);
@@ -402,11 +474,13 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Internal Class: List Item
 
-		internal class DataGridListItemProvider : FragmentRootControlProvider
+		internal class DataGridListItemProvider : ListItemProvider
 		{
-			public DataGridListItemProvider (DataGridProvider provider,
+			public DataGridListItemProvider (DataGridProvider provider, 
 			                                 int row,
-			                                 SWF.DataGridTableStyle style) : base (null)
+			                                 SWF.DataGrid dataGrid,
+			                                 SWF.DataGridTableStyle style)
+				: base (provider, provider, dataGrid, row)
 			{
 				this.provider = provider;
 				this.row = row;
@@ -434,8 +508,6 @@ namespace Mono.UIAutomation.Winforms
 
 			public override void InitializeChildControlStructure ()
 			{
-				base.InitializeChildControlStructure ();
-
 				for (int column = 0; column < provider.HeaderProvider.ChildrenCount; column++) {
 					object data = provider.DataGrid [row, column];					
 					DataGridListItemEditProvider custom 
@@ -450,19 +522,15 @@ namespace Mono.UIAutomation.Winforms
 
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
-				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-					return ControlType.ListItem.Id;
-				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "list item";
-				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return name;
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
 
+			private string name;			
 			private DataGridProvider provider;
 			private int row;
-			private string name;
 			private SWF.DataGridTableStyle style;
 		} //DataGridListItemProvider
 
@@ -502,12 +570,12 @@ namespace Mono.UIAutomation.Winforms
 					return ControlType.Edit.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return "edit";
-				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
-					Console.WriteLine ("name: {0}",  provider.GetName (this));
+				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return provider.GetName (this);
-				} else
+				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
+
 
 			private DataGridListItemProvider provider;
 			private object data;

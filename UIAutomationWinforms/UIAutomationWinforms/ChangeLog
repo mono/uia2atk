@@ -1,5 +1,39 @@
 2008-12-09  Mario Carrion  <mcarrion@novell.com>
 
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGrid: Scroll Pattern support,
+	events added.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/ScrollProviderBehavior.cs:
+	DataGrid: Scroll Pattern support.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontallyScrollableEvent.cs:
+	DataGrid: Scroll Pattern support: HorizontallyScrollable property
+	event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontalScrollPercentEvent.cs:
+	DataGrid: Scroll Pattern support: HorizontallyScrollPercent property
+	event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontalViewSizeEvent.cs:
+	DataGrid: Scroll Pattern support: HorizontalViewSize property event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternVerticallyScrollableEvent.cs:
+	DataGrid: Scroll Pattern support: VerticallyScrollable property
+	event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternVerticalScrollPercent.cs:
+	DataGrid: Scroll Pattern support: VerticalScrollPercent property
+	event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternVerticalViewSizeEvent.cs:
+	DataGrid: Scroll Pattern support: VerticalViewSize property event.
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: DataGrid: Interface
+	realization: IListProvider to support scroll pattern.
+
+2008-12-09  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalViewSizeEvent.cs:
 	* Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalViewSizeEvent.cs:
 	Reflection removed.
