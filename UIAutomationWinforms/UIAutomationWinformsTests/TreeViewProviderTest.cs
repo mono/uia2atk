@@ -611,9 +611,34 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		#endregion
 
-		#region IScrollProvider Tests
+		#region IScrollProvider/IScrollItemProvider Tests
 
-		
+		[Test]
+		public void ScrollIntoViewTest ()
+		{
+//			TreeView treeView = new TreeView ();
+//			TreeNode node1 = new TreeNode ("node1");
+//			TreeNode node2 = new TreeNode ("node2");
+//			TreeNode node3 = new TreeNode ("node3");
+//
+//			treeView.Nodes.AddRange (new TreeNode [] {
+//				node1,
+//				node2,
+//				node3});
+//			
+//			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+//				GetProviderFromControl (treeView);
+//
+//			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
+//				provider.Navigate (NavigateDirection.FirstChild);
+//			IRawElementProviderFragmentRoot node2Provider = (IRawElementProviderFragmentRoot)
+//				node1Provider.Navigate (NavigateDirection.NextSibling);
+//
+//			IScrollItemProvider node1ScrollItem = (IScrollItemProvider)
+//				node1Provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+//			IScrollItemProvider node2ScrollItem = (IScrollItemProvider)
+//				node2Provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+		}
 		
 		#endregion
 
@@ -764,6 +789,20 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			node2Toggle.Toggle ();
 
+			Assert.AreEqual (false, node1.Checked);
+			Assert.AreEqual (true, node2.Checked);
+			Assert.AreEqual (true, node3.Checked);
+
+			treeView.Enabled = false;
+
+			try {
+				node2Toggle.Toggle ();
+				Assert.Fail ("Expected ElementNotEnabledException");
+			} catch (ElementNotEnabledException) {
+				// Expected!
+			}
+
+			// Nothing should have changed...
 			Assert.AreEqual (false, node1.Checked);
 			Assert.AreEqual (true, node2.Checked);
 			Assert.AreEqual (true, node3.Checked);

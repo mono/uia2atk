@@ -1,5 +1,11 @@
 2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Mono.UIAutomation.Winforms.Behaviors/TreeView/ToggleProviderBehavior.cs:
+	Toggle should raise ElementNotEnabledException when TreeView is
+	disabled.
+
+2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Mono.UIAutomation.Winforms.Behaviors/TreeView/SelectionItemProviderBehavior.cs:
 	SelectionItemProvider methods should throw ElementNotEnabledException
 	when TreeView is disabled.

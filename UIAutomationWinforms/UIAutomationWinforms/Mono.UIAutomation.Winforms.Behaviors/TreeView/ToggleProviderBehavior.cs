@@ -56,6 +56,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 		
 		public void Toggle ()
 		{
+			SWF.TreeView treeView = nodeProvider.TreeNode.TreeView;
+			if (!treeView.Enabled)
+				throw new ElementNotEnabledException ();
+			if (treeView.InvokeRequired)
+				treeView.BeginInvoke (new SWF.MethodInvoker (Toggle));
+			
 			nodeProvider.TreeNode.Checked = !nodeProvider.TreeNode.Checked;
 		}
 		

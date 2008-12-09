@@ -1,5 +1,10 @@
 2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* TreeViewProviderTest.cs: Toggle should raise
+	ElementNotEnabledException when TreeView is disabled.
+
+2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* TreeViewProviderTest.cs: SelectionItemProvider methods should throw
 	ElementNotEnabledException when TreeView is disabled.
 
