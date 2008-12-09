@@ -314,7 +314,10 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 				return Helper.GetClickablePoint (this);
 			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id) {
-				return ToolTip == null ? null : ToolTip.GetToolTip (Control);
+				if (ToolTip == null)
+					return Control.AccessibleDescription ?? string.Empty;
+				else
+					return ToolTip.GetToolTip (Control);
 			} else if (propertyId == AutomationElementIdentifiers.AccessKeyProperty.Id) {
 				if (!Control.Text.Contains ("&"))
 					return null;

@@ -1,5 +1,10 @@
 2008-12-09  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: HelpTextProperty:
+	returning Control.AccessibleDescription when tooltip is not set.
+
+2008-12-09  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
 	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Reflection used to
