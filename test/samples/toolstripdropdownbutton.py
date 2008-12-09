@@ -22,8 +22,8 @@ import System.Drawing.Text
 class ToolStripDropDownButtonApp(Form):
 
     def __init__(self):
-        self.Text = "Simple ToolStrip Example"
-        self.Width = 300
+        self.Text = "ToolStripDropDownButton control"
+        self.Width = 420
         self.Height = 300
         self.FormBorderStyle = FormBorderStyle.Fixed3D
     
@@ -31,23 +31,35 @@ class ToolStripDropDownButtonApp(Form):
         self.label = Label()
         self.label.AutoSize = True
         self.label.Location = Point(10, 60)
-        self.label.Text = "Please Select one Color from the ComboxBox"
+        self.label.Text = "Please Select one Color from ComboxBox"
         self.Controls.Add(self.label)
 
         #ToolStrip:
         self.ts = ToolStrip()
         self.Controls.Add(self.ts)
 
-        #ToolStripDropDownButton
-        self.db = ToolStripDropDownButton()
-        self.db.Text = "ToolStripDropDownButton"
-        self.db.DropDownDirection = ToolStripDropDownDirection.Left
-        self.db.ShowDropDownArrow = True
+        #ToolStripDropDownButton1
+        self.db1 = ToolStripDropDownButton()
+        self.db1.Text = "ToolStripDropDownButton1"
+        self.db1.DropDownDirection = ToolStripDropDownDirection.Left
+        self.db1.ShowDropDownArrow = True
         
-        self.db.DropDownItems.Add("Red")
-        self.db.DropDownItems.Add("Blue")
-        self.db.DropDownItemClicked += self.cc
-        self.ts.Items.Add(self.db)
+        self.db1.DropDownItems.Add("Red")
+        self.db1.DropDownItems.Add("Blue")
+        self.db1.DropDownItems.Add("Green")
+        self.db1.DropDownItemClicked += self.cc
+        self.ts.Items.Add(self.db1)
+
+        #ToolStripDropDownButton2
+        self.db2 = ToolStripDropDownButton()
+        self.db2.Text = "ToolStripDropDownButton2"
+        self.db2.DropDownDirection = ToolStripDropDownDirection.Left
+        self.db2.ShowDropDownArrow = True
+        
+        self.db2.DropDownItems.Add("Item1")
+        self.db2.DropDownItems.Add("Item2")
+        self.db2.DropDownItems.Add("Item3")
+        self.ts.Items.Add(self.db2)
 
     def cc(self, sender, event):
         if event.ClickedItem.Text is "Red":
@@ -56,6 +68,9 @@ class ToolStripDropDownButtonApp(Form):
         elif event.ClickedItem.Text is "Blue":
             self.label.Text = "You selected %s" % event.ClickedItem
             self.label.BackColor = Color.Blue
+        elif event.ClickedItem.Text is "Green":
+            self.label.Text = "You selected %s" % event.ClickedItem
+            self.label.BackColor = Color.Green
      
 
 form = ToolStripDropDownButtonApp()

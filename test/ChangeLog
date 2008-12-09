@@ -1,3 +1,18 @@
+2008-12-09  Calen Chen <cachen@novell.com>
+
+	* samples/toolstripdropdownbutton.py: add another dropdownbutton with 
+	three items for mouseMove test to check states. modify frame's name and
+	size
+	* testers/toolstripdropdownbutton/__init__.py,
+	* testers/toolstripdropdownbutton/toolstripdropdownbuttonframe.py,
+	* testers/toolstripdropdownbutton_basic_ops.py,
+	* testers/toolstripdropdownbutton: add new test: test states and 
+	actions for menu and menuitem with click, space, key action. 
+	test Text, Selection, Action implementation. one problem is in 
+	gtk.menubar(samples/gtkmenubar.py), do click action for menu role 
+	might rise "focused" and "selected", but in swf.toolstripdropdownbutton
+	click action just rise "selected".
+
 2008-12-09  Ray Wang <rawang@novell.com>
 
 	* samples/domainupdown.py: remove useless label
