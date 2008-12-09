@@ -227,11 +227,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TreeNode node1 = new TreeNode ("node1");
 			TreeNode node2 = new TreeNode ("node2");
 			TreeNode node3 = new TreeNode ("node3");
+			
+			TreeNode node1sub1 = new TreeNode ("node1 - sub1");
+			node1.Nodes.Add (node1sub1);
 
 			treeView.Nodes.AddRange (new TreeNode [] {
 				node1,
 				node2,
 				node3});
+			node1.Expand ();
 
 			selection =
 				selectionProvider.GetSelection ();
@@ -242,10 +246,13 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				node1Provider.Navigate (NavigateDirection.NextSibling);
 			IRawElementProviderFragmentRoot node3Provider = (IRawElementProviderFragmentRoot)
 				node2Provider.Navigate (NavigateDirection.NextSibling);
+			IRawElementProviderFragmentRoot node1sub1Provider = (IRawElementProviderFragmentRoot)
+				node1Provider.Navigate (NavigateDirection.FirstChild);
 
 			VerifyTreeNodePatterns (provider, node1Provider, node1);
 			VerifyTreeNodePatterns (provider, node2Provider, node2);
 			VerifyTreeNodePatterns (provider, node3Provider, node3);
+			VerifyTreeNodePatterns (provider, node1sub1Provider, node1sub1);
 
 			// Make sure we have the right provider for the right node
 			TestProperty (node1Provider,
@@ -257,6 +264,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (node3Provider,
 			              AEIds.NameProperty,
 			              node3.Text);
+			TestProperty (node1sub1Provider,
+			              AEIds.NameProperty,
+			              node1sub1.Text);
 			
 			Assert.IsNotNull (selection);
 			Assert.AreEqual (0,
@@ -267,7 +277,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              SelectionPatternIdentifiers.SelectionProperty,
 			              new IRawElementProviderSimple [] {});
 
-			VerifySelection (new IRawElementProviderSimple [] {node1Provider, node2Provider, node3Provider},
+			VerifySelection (new IRawElementProviderSimple [] {node1Provider, node2Provider, node3Provider, node1sub1Provider},
 			                 new IRawElementProviderSimple [] {});
 
 			bridge.ResetEventLists ();
@@ -288,7 +298,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              SelectionPatternIdentifiers.SelectionProperty,
 			              new IRawElementProviderSimple [] {node1Provider});
 
-			VerifySelection (new IRawElementProviderSimple [] {node2Provider, node3Provider},
+			VerifySelection (new IRawElementProviderSimple [] {node2Provider, node3Provider, node1sub1Provider},
 			                 new IRawElementProviderSimple [] {node1Provider});
 
 			// TODO: Figure out what will be supported when it comes to events
@@ -358,7 +368,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              SelectionPatternIdentifiers.SelectionProperty,
 			              new IRawElementProviderSimple [] {node2Provider});
 
-			VerifySelection (new IRawElementProviderSimple [] {node1Provider, node3Provider},
+			VerifySelection (new IRawElementProviderSimple [] {node1Provider, node3Provider, node1sub1Provider},
 			                 new IRawElementProviderSimple [] {node2Provider});
 
 //			Assert.AreEqual (1, // TODO: When finished, will probably be more than 1! Search instead!
@@ -408,6 +418,26 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (SelectionItemPatternIdentifiers.ElementSelectedEvent,
 			                 eventTuple.e.EventId,
 			                 "event id");
+
+			// Test subnode
+			treeView.SelectedNode = node1sub1;
+
+			selection =
+				selectionProvider.GetSelection ();
+			Assert.IsNotNull (selection);
+			Assert.AreEqual (1,
+			                 selection.Length,
+			                "Selection list not empty when tree view not empty");
+			Assert.AreEqual (node1sub1Provider,
+			                 selection [0],
+			                 "Expected TODO to be selected");
+
+			TestProperty (provider,
+			              SelectionPatternIdentifiers.SelectionProperty,
+			              new IRawElementProviderSimple [] {node1sub1Provider});
+
+			VerifySelection (new IRawElementProviderSimple [] {node1Provider, node3Provider, node2Provider},
+			                 new IRawElementProviderSimple [] {node1sub1Provider});
 		}
 
 		[Test]
@@ -635,49 +665,68 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				node2,
 				node3});
 
+			TreeNode subNode1 = treeView.Nodes [0].Nodes.Add ("test - sub1");
+
 			IRawElementProviderFragmentRoot node3Provider = (IRawElementProviderFragmentRoot)
 				provider.Navigate (NavigateDirection.LastChild);
 			IRawElementProviderFragmentRoot node2Provider = (IRawElementProviderFragmentRoot)
 				node3Provider.Navigate (NavigateDirection.PreviousSibling);
 			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
 				node2Provider.Navigate (NavigateDirection.PreviousSibling);
+			IRawElementProviderFragmentRoot subNode1Provider = (IRawElementProviderFragmentRoot)
+				provider.Navigate (NavigateDirection.FirstChild).Navigate (NavigateDirection.FirstChild);
 
 			VerifyTreeNodePatterns (provider, node1Provider, node1);
 			VerifyTreeNodePatterns (provider, node2Provider, node2);
 			VerifyTreeNodePatterns (provider, node3Provider, node3);
+			VerifyTreeNodePatterns (provider, subNode1Provider, subNode1);
 
 			IScrollItemProvider node1ScrollItem = (IScrollItemProvider)
 				node1Provider.GetPatternProvider (ScrollItemPatternIdentifiers.Pattern.Id);
 			IScrollItemProvider node3ScrollItem = (IScrollItemProvider)
 				node3Provider.GetPatternProvider (ScrollItemPatternIdentifiers.Pattern.Id);
+			IScrollItemProvider subNode1ScrollItem = (IScrollItemProvider)
+				subNode1Provider.GetPatternProvider (ScrollItemPatternIdentifiers.Pattern.Id);
 			
 			Assert.IsFalse (node1.IsVisible);
 			Assert.IsFalse (node2.IsVisible);
 			Assert.IsFalse (node3.IsVisible);
+			Assert.IsFalse (subNode1.IsVisible);
 
 			node1ScrollItem.ScrollIntoView ();
 
 			Assert.IsTrue (node1.IsVisible);
 			Assert.IsFalse (node2.IsVisible);
 			Assert.IsFalse (node3.IsVisible);
+			Assert.IsFalse (subNode1.IsVisible);
 
 			node3ScrollItem.ScrollIntoView ();
 
 			Assert.IsTrue (node1.IsVisible);
 			Assert.IsTrue (node2.IsVisible);
 			Assert.IsTrue (node3.IsVisible);
+			Assert.IsFalse (subNode1.IsVisible);
+
+			subNode1ScrollItem.ScrollIntoView ();
+
+			Assert.IsFalse (node1.IsVisible);
+			Assert.IsFalse (node2.IsVisible);
+			Assert.IsFalse (node3.IsVisible);
+			Assert.IsTrue (subNode1.IsVisible);
 
 			treeView.Enabled = false;
 
 			VerifyTreeNodePatterns (provider, node1Provider, node1);
 			VerifyTreeNodePatterns (provider, node2Provider, node2);
 			VerifyTreeNodePatterns (provider, node3Provider, node3);
+			VerifyTreeNodePatterns (provider, subNode1Provider, subNode1);
 
 			treeView.Enabled = true;
 
 			VerifyTreeNodePatterns (provider, node1Provider, node1);
 			VerifyTreeNodePatterns (provider, node2Provider, node2);
 			VerifyTreeNodePatterns (provider, node3Provider, node3);
+			VerifyTreeNodePatterns (provider, subNode1Provider, subNode1);
 		}
 		
 		#endregion
@@ -781,6 +830,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TreeNode node1 = new TreeNode ("node1");
 			TreeNode node2 = new TreeNode ("node2");
 			TreeNode node3 = new TreeNode ("node3");
+			TreeNode subNode1 = node1.Nodes.Add ("node1 - sub1");
 
 			treeView.Nodes.AddRange (new TreeNode [] {
 				node1,
@@ -796,18 +846,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				node1Provider.Navigate (NavigateDirection.NextSibling);
 			IRawElementProviderFragmentRoot node3Provider = (IRawElementProviderFragmentRoot)
 				node2Provider.Navigate (NavigateDirection.NextSibling);
+			IRawElementProviderFragmentRoot subNode1Provider = (IRawElementProviderFragmentRoot)
+				node1Provider.Navigate (NavigateDirection.FirstChild);
 
 			node1.Checked = true;
 
 			VerifyTreeNodePatterns (provider, node1Provider, node1);
 			VerifyTreeNodePatterns (provider, node2Provider, node2);
 			VerifyTreeNodePatterns (provider, node3Provider, node3);
+			VerifyTreeNodePatterns (provider, subNode1Provider, subNode1);
 
 			treeView.CheckBoxes = true;
 
 			VerifyTreeNodePatterns (provider, node1Provider, node1);
 			VerifyTreeNodePatterns (provider, node2Provider, node2);
 			VerifyTreeNodePatterns (provider, node3Provider, node3);
+			VerifyTreeNodePatterns (provider, subNode1Provider, subNode1);
 
 			IToggleProvider node1Toggle = (IToggleProvider)
 				node1Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
@@ -815,10 +869,13 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				node2Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
 			IToggleProvider node3Toggle = (IToggleProvider)
 				node3Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+			IToggleProvider subNode1Toggle = (IToggleProvider)
+				subNode1Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
 
 			Assert.AreEqual (true, node1.Checked);
 			Assert.AreEqual (false, node2.Checked);
 			Assert.AreEqual (false, node3.Checked);
+			Assert.AreEqual (false, subNode1.Checked);
 
 			node1Toggle.Toggle ();
 			node3Toggle.Toggle ();
@@ -826,12 +883,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (false, node1.Checked);
 			Assert.AreEqual (false, node2.Checked);
 			Assert.AreEqual (true, node3.Checked);
+			Assert.AreEqual (false, subNode1.Checked);
 
 			node2Toggle.Toggle ();
+			subNode1Toggle.Toggle ();
 
 			Assert.AreEqual (false, node1.Checked);
 			Assert.AreEqual (true, node2.Checked);
 			Assert.AreEqual (true, node3.Checked);
+			Assert.AreEqual (true, subNode1.Checked);
 
 			treeView.Enabled = false;
 
@@ -846,6 +906,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (false, node1.Checked);
 			Assert.AreEqual (true, node2.Checked);
 			Assert.AreEqual (true, node3.Checked);
+			Assert.AreEqual (true, subNode1.Checked);
 		}
 		
 		#endregion

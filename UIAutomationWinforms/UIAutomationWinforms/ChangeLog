@@ -1,3 +1,10 @@
+2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/TreeViewProvider.cs: Extract child node
+	handling logic into abstract TreeNodeRootProviderClass, which is
+	extended by both TreeViewProvider and TreeNodeProvider.  TreeNodes
+	that are children of other TreeNodes should now be fully supported.
+
 2008-12-09  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

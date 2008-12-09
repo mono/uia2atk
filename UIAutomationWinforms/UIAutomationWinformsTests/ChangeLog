@@ -1,5 +1,10 @@
 2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* TreeViewProviderTest.cs: Test navigation and pattern behavior support
+	for TreeNodes that are children of other TreeNodes.
+
+2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* TreeViewProviderTest.cs: Add support for ScrollItemPattern to
 	TreeNodeProvider.
 

@@ -37,12 +37,11 @@ using Mono.UIAutomation.Winforms.Behaviors.TreeView;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class TreeViewProvider : FragmentRootControlProvider, IScrollBehaviorSubject
+	internal class TreeViewProvider : TreeNodeRootProvider, IScrollBehaviorSubject
 	{
 		#region Private Members
 		
 		private SWF.TreeView treeView;
-		private Dictionary<SWF.TreeNode, TreeNodeProvider> nodeProviders;
 		private ScrollBehaviorObserver observer;
 
 		#endregion
@@ -53,7 +52,6 @@ namespace Mono.UIAutomation.Winforms
 			base (treeView)
 		{
 			this.treeView = treeView;
-			nodeProviders = new Dictionary<SWF.TreeNode, TreeNodeProvider> ();
 		}
 
 		#endregion
@@ -88,18 +86,16 @@ namespace Mono.UIAutomation.Winforms
 
 		void HandleAfterSelect(object sender, SWF.TreeViewEventArgs e)
 		{
-			TreeNodeProvider nodeProvider;
-			if (!nodeProviders.TryGetValue (e.Node, out nodeProvider))
-				return;
-			nodeProvider.OnAfterSelect ();
+			TreeNodeProvider nodeProvider = GetTreeNodeProvider (e.Node);
+			if (nodeProvider != null)
+				nodeProvider.OnAfterSelect ();
 		}
 
 		void HandleAfterCheck(object sender, SWF.TreeViewEventArgs e)
 		{
-			TreeNodeProvider nodeProvider;
-			if (!nodeProviders.TryGetValue (e.Node, out nodeProvider))
-				return;
-			nodeProvider.OnAfterCheck ();
+			TreeNodeProvider nodeProvider = GetTreeNodeProvider (e.Node);
+			if (nodeProvider != null)
+				nodeProvider.OnAfterCheck ();
 		}
 
 		void HandleInvalidated(object sender, SWF.InvalidateEventArgs e)
@@ -116,40 +112,26 @@ namespace Mono.UIAutomation.Winforms
 				return "tree";
 			return base.GetProviderPropertyValue (propertyId);
 		}
-		
-		public override void InitializeChildControlStructure ()
-		{
-			// TODO: Any events?
-		
-			foreach (SWF.TreeNode node in treeView.Nodes) {
-				TreeNodeProvider nodeProvider = GetOrCreateNodeProvider (node);
-				if (nodeProvider != null)
-					OnNavigationChildAdded (false, nodeProvider);
+
+		#endregion
+
+		#region TreeNodeRootProvider Overrides
+
+		protected override bool SupportsScroll {
+			get {
+				return observer.SupportsScrollPattern;
 			}
 		}
-		
-		public override void FinalizeChildControlStructure ()
-		{
-			// TODO: Any events?
-			
-			foreach (TreeNodeProvider nodeProvider in nodeProviders.Values)
-				OnNavigationChildRemoved (false, nodeProvider);
-			OnNavigationChildrenCleared (false);
+
+		protected override SWF.TreeNodeCollection Nodes {
+			get {
+				return treeView.Nodes;
+			}
 		}
 
 		#endregion
 
-		#region IScrollBehaviorSubject implementation 
-		
-//		public void AddChildProvider (bool raiseEvent, FragmentControlProvider provider)
-//		{
-//			throw new System.NotImplementedException();
-//		}
-//		
-//		public void RemoveChildProvider (bool raiseEvent, FragmentControlProvider provider)
-//		{
-//			throw new System.NotImplementedException();
-//		}
+		#region IScrollBehaviorSubject implementation
 		
 		public FragmentControlProvider GetScrollbarProvider (SWF.ScrollBar scrollbar)
 		{
@@ -162,58 +144,9 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		#endregion 
-
-		#region Internal Methods
-
-		internal TreeNodeProvider GetTreeNodeProvider (SWF.TreeNode node)
-		{
-			TreeNodeProvider nodeProvider = null;
-			nodeProviders.TryGetValue (node, out nodeProvider);
-			return nodeProvider;
-		}
-
-		internal void RefreshChildControlStructure ()
-		{
-			List<SWF.TreeNode> nodesToRemove = new List<SWF.TreeNode> (nodeProviders.Keys);
-			
-			foreach (SWF.TreeNode node in treeView.Nodes) {
-				if (nodesToRemove.Contains (node)) {
-					nodeProviders [node].UpdateBehaviors (observer.SupportsScrollPattern);
-					nodesToRemove.Remove (node);
-					continue;
-				}
-				
-				TreeNodeProvider nodeProvider = GetOrCreateNodeProvider (node);
-				if (nodeProvider != null)
-					OnNavigationChildAdded (true, nodeProvider);
-			}
-
-			// Anything left in nodesToRemove should be removed
-			foreach (SWF.TreeNode node in nodesToRemove) {
-				TreeNodeProvider nodeProvider = nodeProviders [node];
-				nodeProviders.Remove (node);
-				nodeProvider.Terminate ();
-				OnNavigationChildRemoved (true, nodeProvider);
-			}
-		}
-
 		#endregion
 
 		#region Private Methods
-
-		private TreeNodeProvider GetOrCreateNodeProvider (SWF.TreeNode node)
-		{
-			TreeNodeProvider nodeProvider;
-			
-			if (!nodeProviders.TryGetValue (node, out nodeProvider)) {
-				nodeProvider = new TreeNodeProvider (node, observer.SupportsScrollPattern);
-				nodeProvider.Initialize ();
-				nodeProviders [node]  = nodeProvider;
-			}
-
-			return nodeProvider;
-		}
 
 		private void OnScrollPatternSupportChanged (object o, EventArgs args)
 		{
@@ -242,7 +175,7 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 	}
 
-	internal class TreeNodeProvider : FragmentRootControlProvider
+	internal class TreeNodeProvider : TreeNodeRootProvider
 	{
 		#region Private Members
 
@@ -307,6 +240,22 @@ namespace Mono.UIAutomation.Winforms
 
 		#endregion
 
+		#region TreeNodeRootProvider Overrides
+
+		protected override bool SupportsScroll {
+			get {
+				return parentTreeKnownToSupportScroll;
+			}
+		}
+
+		protected override SWF.TreeNodeCollection Nodes {
+			get {
+				return node.Nodes;
+			}
+		}
+
+		#endregion
+
 		#region Internal Methods
 
 		internal void UpdateBehaviors (bool treeSupportsScroll)
@@ -335,6 +284,8 @@ namespace Mono.UIAutomation.Winforms
 			if (GetBehavior (SelectionItemPatternIdentifiers.Pattern) == null)
 				SetBehavior (SelectionItemPatternIdentifiers.Pattern,
 			        	     new SelectionItemProviderBehavior (this));
+
+			RefreshChildControlStructure ();
 		}
 
 		internal void OnAfterCheck ()
@@ -357,6 +308,122 @@ namespace Mono.UIAutomation.Winforms
 
 		public event EventHandler AfterSelect;
 		
+		#endregion
+	}
+
+	internal abstract class TreeNodeRootProvider : FragmentRootControlProvider
+	{
+		#region Private Members
+		
+		private Dictionary<SWF.TreeNode, TreeNodeProvider> nodeProviders;
+
+		#endregion
+
+		#region Constructors
+
+		public TreeNodeRootProvider (System.ComponentModel.Component component) :
+			base (component)
+		{
+			nodeProviders =
+				new Dictionary<SWF.TreeNode, TreeNodeProvider> ();
+		}
+
+		#endregion
+
+		#region FragmentRootControlProvider Overrides
+		
+		public override void InitializeChildControlStructure ()
+		{
+			// TODO: Any events?
+		
+			foreach (SWF.TreeNode node in Nodes) {
+				TreeNodeProvider nodeProvider = GetOrCreateNodeProvider (node);
+				if (nodeProvider != null)
+					OnNavigationChildAdded (false, nodeProvider);
+			}
+		}
+		
+		public override void FinalizeChildControlStructure ()
+		{
+			// TODO: Any events?
+			
+			foreach (TreeNodeProvider nodeProvider in nodeProviders.Values)
+				OnNavigationChildRemoved (false, nodeProvider);
+			OnNavigationChildrenCleared (false);
+		}
+
+		#endregion
+
+		#region Internal Methods
+
+		/// <summary>
+		/// Search recursively for the TreeNodeProvider for the given
+		/// TreeNode.
+		/// </summary>
+		internal TreeNodeProvider GetTreeNodeProvider (SWF.TreeNode node)
+		{
+			TreeNodeProvider nodeProvider = null;
+			if (!nodeProviders.TryGetValue (node, out nodeProvider)) {
+				foreach (TreeNodeProvider childNodeProvider in nodeProviders.Values) {
+					nodeProvider = childNodeProvider.GetTreeNodeProvider (node);
+					if (nodeProvider != null)
+						return nodeProvider;
+				}
+			}
+			
+			return nodeProvider;
+		}
+
+		internal void RefreshChildControlStructure ()
+		{
+			List<SWF.TreeNode> nodesToRemove = new List<SWF.TreeNode> (nodeProviders.Keys);
+			
+			foreach (SWF.TreeNode node in Nodes) {
+				if (nodesToRemove.Contains (node)) {
+					nodeProviders [node].UpdateBehaviors (SupportsScroll);
+					nodesToRemove.Remove (node);
+					continue;
+				}
+				
+				TreeNodeProvider nodeProvider = GetOrCreateNodeProvider (node);
+				if (nodeProvider != null)
+					OnNavigationChildAdded (true, nodeProvider);
+			}
+
+			// Anything left in nodesToRemove should be removed
+			foreach (SWF.TreeNode node in nodesToRemove) {
+				TreeNodeProvider nodeProvider = nodeProviders [node];
+				nodeProviders.Remove (node);
+				nodeProvider.Terminate ();
+				OnNavigationChildRemoved (true, nodeProvider);
+			}
+		}
+
+		#endregion
+
+		#region Private Methods
+
+		private TreeNodeProvider GetOrCreateNodeProvider (SWF.TreeNode node)
+		{
+			TreeNodeProvider nodeProvider;
+			
+			if (!nodeProviders.TryGetValue (node, out nodeProvider)) {
+				nodeProvider = new TreeNodeProvider (node, SupportsScroll); //observer.SupportsScrollPattern);
+				nodeProvider.Initialize ();
+				nodeProviders [node]  = nodeProvider;
+			}
+
+			return nodeProvider;
+		}
+
+		#endregion
+
+		#region Protected Abstract Properties
+
+		protected abstract SWF.TreeNodeCollection Nodes { get; }
+
+		protected abstract bool SupportsScroll { get; }
+
 		#endregion
 	}
 }
