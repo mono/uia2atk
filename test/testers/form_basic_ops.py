@@ -45,16 +45,21 @@ if app is None:
 # just an alias to make things shorter
 fFrame = app.formFrame
 
+###########################
+# check forms's AtkAccessible
+###########################
 #check main form's states with 'active' state
 statesCheck(fFrame, "Form", add_states=["active"])
 
+###########################
+# check ExtraForm(SWF.MessageBox)'s AtkAccessible
+###########################
 #click button1 to appear extra message widget
 fFrame.click(fFrame.button1)
 sleep(config.SHORT_DELAY)
-message = fFrame.app.findFrame("Message Form")
-
-#check extra message widget's states with 'active' state, without 'resizable'
-statesCheck(message, "Form", invalid_states=["resizable"], add_states=["active"])
+#message = fFrame.app.findFrame("Message Form")
+extra_form_1 = fFrame.app.findDialog("Message Form")
+statesCheck(extra_form_1, "Form", add_states=["active"], invalid_states=["resizable"])
 
 #check main form's states without 'active'
 statesCheck(fFrame, "Form")
@@ -64,19 +69,22 @@ fFrame.mouseClick()
 #check main form's states again without 'active'
 statesCheck(fFrame, "Form")
 # make sure that the message widget's states stay the same
-statesCheck(message, "Form", invalid_states=["resizable"], add_states=["active"])
+statesCheck(extra_form_1, "Form", add_states=["active"], invalid_states=["resizable"])
 
 #close message form widget, main form rise 'active' state again
-message.altF4()
+extra_form_1.altF4()
 statesCheck(fFrame, "Form", add_states=["active"])
 
+###########################
+# check ExtraForm(Frame)'s AtkAccessible
+###########################
 #click button2 to appear extra empty form widget
 fFrame.click(fFrame.button2)
 sleep(config.SHORT_DELAY)
-extraform = fFrame.app.findFrame("Extra Form")
+extra_form_2 = fFrame.app.findFrame("Extra Form")
 
 #check extra form widget's states with 'active' state
-statesCheck(extraform, "Form", add_states=["active"])
+statesCheck(extra_form_2, "Form", add_states=["active"])
 #check main form's states without 'active'
 statesCheck(fFrame, "Form")
 
@@ -84,12 +92,35 @@ statesCheck(fFrame, "Form")
 fFrame.mouseClick()
 statesCheck(fFrame, "Form", add_states=["active"])
 #check extra form's states without 'active'
-statesCheck(extraform, "Form")
+statesCheck(extra_form_2, "Form")
 
 #close extra form widget, main form rise 'active' state again
-extraform.mouseClick()
+extra_form_2.mouseClick()
+extra_form_2.altF4()
+statesCheck(fFrame, "Form", add_states=["active"])
+
+###########################
+# check ExtraForm(Dialog)'s AtkAccessible
+###########################
+#click button2 to appear extra empty form widget
+fFrame.click(fFrame.button3)
 sleep(config.SHORT_DELAY)
-extraform.altF4()
+extra_form_3 = fFrame.app.findDialog("Extra Form")
+
+#check extra form widget's states with 'active' state
+statesCheck(extra_form_3, "Form", add_states=["active"])
+#check main form's states without 'active'
+statesCheck(fFrame, "Form")
+
+# click frame, but MessageBox window should remain active
+fFrame.mouseClick()
+# check main form's states again which is without 'active'
+statesCheck(fFrame, "Form")
+# make sure that the message widget's states stay the same
+statesCheck(extra_form_3, "Form", add_states=["active"])
+
+# close message form widget, main form rise 'active' state again
+extra_form_3.altF4()
 statesCheck(fFrame, "Form", add_states=["active"])
 
 #close main form window

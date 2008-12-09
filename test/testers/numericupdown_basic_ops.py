@@ -149,7 +149,7 @@ nudFrame.assertValue(nudFrame.editable_numericupdown, nudFrame.minimumValue)
 nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.minimumValue - 1)))
 
 ############################
-# press "Up" on editab_numericupdown
+# press Up/Down on editab_numericupdown
 ############################
 # test press Up/Down action to check Text and Value by keyCombo to 
 # editable_numericupdown which increment value is 20
@@ -158,16 +158,14 @@ sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, nudFrame.minimumValue + 20)
 nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.minimumValue + 20)))
 
-############################
 # press "Down" on editab_numericupdown
-############################
 nudFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.editable_numericupdown, nudFrame.minimumValue)
 nudFrame.assertText(nudFrame.editable_numericupdown, str(int(nudFrame.minimumValue)))
 
 ############################
-# press "Up" on uneditab_numericupdown
+# press Up/Down on uneditab_numericupdown
 ############################
 # test press Up/Down action to check Text and Value of 
 # uneditable_numericupdown which increment value is 1
@@ -177,14 +175,15 @@ sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.uneditable_numericupdown, 11)
 nudFrame.assertText(nudFrame.uneditable_numericupdown, "11")
 
-############################
 # press "Down" on uneditab_numericupdown
-############################
 nudFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
 nudFrame.assertValue(nudFrame.uneditable_numericupdown, 10)
 nudFrame.assertText(nudFrame.uneditable_numericupdown, "10")
 
+############################
+# End
+############################
 # close application frame window
 nudFrame.quit()
 

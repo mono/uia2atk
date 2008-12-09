@@ -46,7 +46,7 @@ class DomainUpDownSample(Form):
         self.domain_up_down.Items.Add("Madrid")
         self.domain_up_down.Items.Add("Provo")
         self.domain_up_down.Items.Add("San Diego")
-    #    self.domain_up_down.SelectedItemChanged += self.selected_item_changed
+        #self.domain_up_down.SelectedItemChanged += self.selected_item_changed
 
         # ReadOnly DomainUpDown
         self.readonly_domain_up_down = DomainUpDown()
@@ -58,13 +58,13 @@ class DomainUpDownSample(Form):
         self.readonly_domain_up_down.Items.Add("Madrid")
         self.readonly_domain_up_down.Items.Add("Provo")
         self.readonly_domain_up_down.Items.Add("San Diego")
-    #    self.readonly_domain_up_down.SelectedItemChanged += self.selected_item_changed
         self.readonly_domain_up_down.ReadOnly = True
+        #self.readonly_domain_up_down.SelectedItemChanged += self.selected_item_changed
 
         # add control
         #self.Controls.Add(self.label)
-        self.Controls.Add(self.readonly_domain_up_down)
         self.Controls.Add(self.domain_up_down)
+        self.Controls.Add(self.readonly_domain_up_down)
 
     #def selected_item_changed(self, sender, event):
     #    self.label.Text = "SelectedIndex: " + \

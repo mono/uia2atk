@@ -57,8 +57,8 @@ actionsCheck(pFrame.radio3, "RadioButton")
 # check panel's AtkAccessible
 ###########################
 #check panel states
-statesCheck(pFrame.panel1, "Panel", add_states=["resizable"])
-statesCheck(pFrame.panel2, "Panel", add_states=["resizable"])
+statesCheck(pFrame.panel1, "Panel")
+statesCheck(pFrame.panel2, "Panel")
 
 ###########################
 # check children's AtkAccessible

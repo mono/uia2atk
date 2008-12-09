@@ -1,3 +1,14 @@
+2008-12-09  Ray Wang <rawang@novell.com>
+
+	* samples/domainupdown.py: remove useless label
+	* samples/panel.py
+	* testers/panel_basic_ops.py
+	* testers/numericupdown_basic_ops.py: clean up
+	* testers/states.py: add "resizable" states of Panel, and add a 
+	DomainUpDown class
+	* testers/form_basic_ops.py, testers/form/formframe.py: update form
+	strongwind test, add a new button for popping a form as a dialog. 
+
 2008-12-08 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/helpprovider.py: Renamed from helprovider.py because of a

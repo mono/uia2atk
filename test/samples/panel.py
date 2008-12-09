@@ -49,9 +49,6 @@ class PanelCheckBoxRadioButtonApp(Form):
         self.radioPanel.Text = "panel2"
         self.radioPanel.Name = "panel2"
 
-        print self.checkPanel.Name
-        print self.radioPanel.Name
-
         self.setupCheckButtons()
         self.setupRadioButtons()
 
