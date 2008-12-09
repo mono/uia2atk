@@ -34,6 +34,8 @@ namespace Mono.UIAutomation.Winforms
 		SWF.ScrollBar HorizontalScrollBar { get; }
 		SWF.ScrollBar VerticalScrollBar { get; }
 		bool SupportsScrollPattern{ get; }
+		void Initialize ();
+		void Terminate ();
 	}
 	
 }

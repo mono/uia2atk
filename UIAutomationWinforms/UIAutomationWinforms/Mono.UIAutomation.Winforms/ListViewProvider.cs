@@ -209,8 +209,9 @@ namespace Mono.UIAutomation.Winforms
 		public override void InitializeChildControlStructure ()
 		{
 			base.InitializeChildControlStructure ();
-			
-			observer.InitializeScrollBarProviders ();
+
+			listView.Items.UIACollectionChanged += OnCollectionChanged;
+			observer.Initialize ();
 
 			// Use to regenerate children when view changes
 			listView.UIAViewChanged += OnUIAViewChanged;
@@ -220,7 +221,10 @@ namespace Mono.UIAutomation.Winforms
 		public override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
-			
+
+			listView.Items.UIACollectionChanged -= OnCollectionChanged;
+			observer.Terminate ();
+
 			listView.UIAViewChanged -= OnUIAViewChanged;
 		}
 		
@@ -326,17 +330,7 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region ListProvider: Protected Methods
-		
-		protected override Type GetTypeOfObjectCollection ()
-		{
-			return typeof (SWF.ListView.ListViewItemCollection);
-		}
-		
-		protected override object GetInstanceOfObjectCollection ()	
-		{
-			return listView.Items;
-		}
-			
+
 		protected override void OnCollectionChanged (object sender, 
 		                                             CollectionChangeEventArgs args)
 		{		

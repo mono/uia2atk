@@ -95,7 +95,7 @@ namespace Mono.UIAutomation.Winforms
 				if (!create)
 					return null;
 				item = GetNewItemProvider (rootProvider,
-				                           GetItemsListProvider (),
+				                           this,
 				                           Control,
 				                           objectItem);
 				items [objectItem] = item;
@@ -192,31 +192,8 @@ namespace Mono.UIAutomation.Winforms
 			             GetBehaviorRealization (TablePatternIdentifiers.Pattern));
 		}
 		
-		public override void InitializeChildControlStructure ()
-		{
-			try {
-				Helper.AddPrivateEvent (GetTypeOfObjectCollection (), 
-				                        GetInstanceOfObjectCollection (), 
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnCollectionChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: CollectionChanged not defined", GetType ());
-			}
-		}
-		
 		public override void FinalizeChildControlStructure ()
 		{
-			try {
-				Helper.RemovePrivateEvent (GetTypeOfObjectCollection (), 
-				                           GetInstanceOfObjectCollection (), 
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnCollectionChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: CollectionChanged not defined", GetType ());
-			}
-
 			foreach (ListItemProvider item in Items)
 				OnNavigationChildRemoved (false, item);
 
@@ -254,21 +231,6 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 
 		#region Protected Methods
-		
-		//NOTE: 
-		//      The following methods WILL BE DELETED in Mono 2.0 (because of
-		//      InternalsVisibleTo attribute)
-
-		protected abstract Type GetTypeOfObjectCollection ();
-		
-		protected abstract object GetInstanceOfObjectCollection ();		
-
-		protected virtual ListProvider GetItemsListProvider ()
-		{
-			return this;
-		}
-				
-#pragma warning disable 169
 
 		protected virtual void OnCollectionChanged (object sender, CollectionChangeEventArgs args)
 		{
@@ -283,8 +245,6 @@ namespace Mono.UIAutomation.Winforms
 				OnNavigationChildrenCleared (true);
 			}
 		}
-		
-#pragma warning restore 169
 		
 		#endregion
 

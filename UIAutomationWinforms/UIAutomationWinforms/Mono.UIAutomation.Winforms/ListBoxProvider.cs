@@ -89,17 +89,10 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.Initialize ();
 
-			ScrollBar vscrollbar 
-				= Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox), 
-				                                                 listboxControl,
-				                                                 "UIAVScrollBar");
-			ScrollBar hscrollbar 
-				= Helper.GetPrivateProperty<ListBox, ScrollBar> (typeof (ListBox),
-				                                                 listboxControl,
-				                                                 "UIAHScrollBar");
-			
 			//ListScrollBehaviorObserver updates Navigation
-			observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);			
+			observer = new ScrollBehaviorObserver (this, 
+			                                       listboxControl.UIAHScrollBar, 
+			                                       listboxControl.UIAVScrollBar);
 			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
 			UpdateScrollBehavior ();
 		}
@@ -138,23 +131,25 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void InitializeChildControlStructure ()
 		{
-			base.InitializeChildControlStructure ();
+			listboxControl.Items.UIACollectionChanged += OnCollectionChanged;
 			
 			foreach (object objectItem in listboxControl.Items) {
 				ListItemProvider item = GetItemProviderFrom (this, objectItem);
 				OnNavigationChildAdded (false, item);
 			}
 			
-			observer.InitializeScrollBarProviders ();
+			observer.Initialize ();
 		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
-			
-			observer.FinalizeScrollBarProviders ();
-		}
 
+			listboxControl.Items.UIACollectionChanged -= OnCollectionChanged;
+			
+			observer.Terminate ();
+		}
+		
 		#endregion
 		
 		#region ListItem: Properties Methods
@@ -236,16 +231,6 @@ namespace Mono.UIAutomation.Winforms
 		public override bool IsItemSelected (ListItemProvider item)
 		{
 			return listboxControl.SelectedIndices.Contains (item.Index);
-		}
-		
-		protected override Type GetTypeOfObjectCollection ()
-		{
-			return typeof (ListBox.ObjectCollection);
-		}
-		
-		protected override object GetInstanceOfObjectCollection ()
-		{
-			return listboxControl.Items;
 		}
 
 		public override IConnectable GetListItemEventRealization (ProviderEventType eventType, 

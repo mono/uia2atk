@@ -1,3 +1,25 @@
+2008-12-09  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Reflection used to
+	handle UIACollectionChanged events removed. Updated to Observer
+	changes.
+
+	* Mono.UIAutomation.Winforms/IScrollBehaviorObserver.cs: New methods:
+	Terminate, Initialize.
+
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Methods removed:
+	InitializeChildControlStructure, GetTypeOfObjectCollection,
+	GetInstanceOfObjectCollectio, GetItemsListProvider.
+
+	* Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs:
+	FinalizeScrollBarProviders replaced by Terminate.
+	InitializeScrollBarProviders replaced by Initialize.
+
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: Updated to Observer
+	changes.
+
 2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

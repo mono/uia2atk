@@ -104,14 +104,14 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeChildControlStructure ();
 			
-			observer.InitializeScrollBarProviders ();
+			observer.Initialize ();
 		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
 			
-			observer.FinalizeScrollBarProviders ();
+			observer.Terminate ();
 		}
 
 		#endregion

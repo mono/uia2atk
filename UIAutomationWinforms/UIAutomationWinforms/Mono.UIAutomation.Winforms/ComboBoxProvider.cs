@@ -228,7 +228,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Internal Class: ListBox provider
 		
-		//TODO: This class missing ScrollBar Navigation.
 		internal class ComboBoxListBoxProvider 
 			: ListProvider, IScrollBehaviorSubject
 		{
@@ -318,20 +317,10 @@ namespace Mono.UIAutomation.Winforms
 				return ContainsItem (item) == false 
 					? false : item.Index == comboboxControl.SelectedIndex;
 			}
-			
-			protected override Type GetTypeOfObjectCollection ()
-			{
-				return typeof (SWF.ComboBox.ObjectCollection);
-			}
-			
-			protected override object GetInstanceOfObjectCollection ()
-			{
-				return comboboxControl.Items;
-			}	
-	
+
 			public override void InitializeChildControlStructure ()
 			{
-				base.InitializeChildControlStructure ();
+				comboboxControl.Items.UIACollectionChanged += OnCollectionChanged;
 
 				foreach (object objectItem in comboboxControl.Items) {
 					ListItemProvider item = GetItemProviderFrom (this, objectItem);
@@ -339,6 +328,17 @@ namespace Mono.UIAutomation.Winforms
 				}
 
 				InitializeObserver (true);
+			}
+
+			public override void FinalizeChildControlStructure ()
+			{
+				base.FinalizeChildControlStructure ();
+
+				comboboxControl.Items.UIACollectionChanged -= OnCollectionChanged;
+				if (observer != null) {
+					observer.Terminate ();
+					observer = null;
+				}
 			}
 
 			public override void ScrollItemIntoView (ListItemProvider item) 
@@ -495,6 +495,7 @@ namespace Mono.UIAutomation.Winforms
 						observer.Terminate ();
 					}
 
+					// FIXME: Replace with an internal UIA-like property in SWF
 					if (ListBoxControl != null) {
 						SWF.ScrollBar vscrollbar
 							= Helper.GetPrivateField<SWF.ScrollBar> (ListBoxControl.GetType (),
@@ -503,7 +504,7 @@ namespace Mono.UIAutomation.Winforms
 						
 						observer = new ScrollBehaviorObserver (this, null, vscrollbar);
 						observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
-						observer.InitializeScrollBarProviders ();
+						observer.Initialize ();
 						UpdateScrollBehavior ();
 					}
 				}
