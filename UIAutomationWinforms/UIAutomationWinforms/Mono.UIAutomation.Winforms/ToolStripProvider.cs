@@ -53,8 +53,6 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.ToolBar.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return "tool bar";
-			else if (propertyId == AEIds.NameProperty.Id)
-				return null;
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
 			else

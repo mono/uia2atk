@@ -51,8 +51,6 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.Pane.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return "pane";
-			else if (propertyId == AEIds.NameProperty.Id)
-				return webBrowser.Text;
 			else if (propertyId == AEIds.HasNativeAccessibilityObjectProperty.Id)
 				return true;
 			else if (propertyId == AEIds.NativeAccessibilityObjectProperty.Id) {

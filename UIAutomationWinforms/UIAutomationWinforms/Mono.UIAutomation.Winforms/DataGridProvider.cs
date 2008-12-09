@@ -381,7 +381,7 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Header.Id;
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return null;//name
+					return "Header";
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)

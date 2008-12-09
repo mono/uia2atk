@@ -1,3 +1,30 @@
+2008-12-09  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs: Removing NameProperty.
+	Button is not LabeledBy.
+
+	* Mono.UIAutomation.Winforms/LabelProvider.cs:
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/TreeViewProvider.cs:
+	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs:
+	* Mono.UIAutomation.Winforms/LinkLabelProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs:
+	* Mono.UIAutomation.Winforms/WebBrowserProvider.cs:
+	* Mono.UIAutomation.Winforms/RadioButtonProvider.cs:
+	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: Removing
+	NameProperty.
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Returing Name in
+	DataGridHeader.
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Enabled
+	Control.Accessible as NameProperty.
+
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: Removing NameProperty.
+	Returning LabeledBy.
+
 2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/TreeViewProvider.cs: Extract child node

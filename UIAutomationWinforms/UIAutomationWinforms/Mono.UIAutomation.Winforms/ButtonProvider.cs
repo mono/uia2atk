@@ -27,7 +27,6 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
-//using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Behaviors.Button;
 
 namespace Mono.UIAutomation.Winforms
@@ -58,8 +57,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Button.Id;
-			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return Control.Text;
+			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+				return null;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

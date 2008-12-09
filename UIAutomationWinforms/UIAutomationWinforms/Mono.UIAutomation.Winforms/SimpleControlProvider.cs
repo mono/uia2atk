@@ -273,11 +273,14 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 				return Control.Enabled;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
+				if (!string.IsNullOrEmpty (Control.AccessibleName)) 
+					return Control.AccessibleName;
+				
 				IRawElementProviderSimple label =
 					GetPropertyValue (AutomationElementIdentifiers.LabeledByProperty.Id)
 						as IRawElementProviderSimple;
 				if (label == null)
-					return string.Empty;
+					return Control.Text;
 				else
 					return label.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			}

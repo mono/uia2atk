@@ -61,8 +61,6 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.MenuItem.Id; // TODO: Verify this default
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return "menu item";
-			else if (propertyId == AEIds.NameProperty.Id)
-				return item.Text;
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
 			else if (propertyId == AEIds.IsOffscreenProperty.Id) {

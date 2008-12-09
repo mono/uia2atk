@@ -105,9 +105,12 @@ namespace Mono.UIAutomation.Winforms
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "list";
-			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return listboxControl.Text;
-			else
+			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
+				if (string.IsNullOrEmpty (listboxControl.AccessibleName))
+					return listboxControl.Text;
+				else
+					return listboxControl.AccessibleName;
+			} else
 				return base.GetProviderPropertyValue (propertyId);
 		}
 		

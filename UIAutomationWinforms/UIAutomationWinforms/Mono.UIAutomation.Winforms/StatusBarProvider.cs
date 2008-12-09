@@ -222,8 +222,6 @@ namespace Mono.UIAutomation.Winforms
 					return ControlType.Text.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return "text";
-				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return statusBarPanel.Text;
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
 					return BoundingRectangle;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)

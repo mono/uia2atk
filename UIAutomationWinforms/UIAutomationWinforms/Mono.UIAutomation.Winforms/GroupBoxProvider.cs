@@ -50,12 +50,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Group.Id;
-			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
-				if (!string.IsNullOrEmpty (Control.Text))
-					return Control.Text;
-				else
-					return base.GetProviderPropertyValue (propertyId);
-			}
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) {
 				if (!string.IsNullOrEmpty (Control.Text))
 					return null;

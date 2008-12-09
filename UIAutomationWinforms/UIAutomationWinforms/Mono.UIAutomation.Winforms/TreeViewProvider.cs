@@ -213,8 +213,6 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.TreeItem.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return "tree item";
-			else if (propertyId == AEIds.NameProperty.Id)
-				return node.Text;
 			return base.GetProviderPropertyValue (propertyId);
 		}
 

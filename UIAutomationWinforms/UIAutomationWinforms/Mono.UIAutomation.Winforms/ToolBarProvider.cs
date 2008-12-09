@@ -52,10 +52,10 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.ToolBar.Id;
+			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+				return null;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "tool bar";
-			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return toolBar.Text;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
@@ -175,7 +175,6 @@ namespace Mono.UIAutomation.Winforms
 
 			public ToolBarButtonProvider (ToolBarButton toolBarButton) : base (toolBarButton)
 			{
-				this.toolBarButton = toolBarButton;
 			}
 		
 			#endregion
@@ -200,17 +199,11 @@ namespace Mono.UIAutomation.Winforms
 					return ControlType.MenuItem.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return "menu item";
-				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return toolBarButton.Text;
+				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+					return null;
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
-		
-			#endregion
-			
-			#region Private Fields
-		
-			private ToolBarButton toolBarButton;
 		
 			#endregion
 		}

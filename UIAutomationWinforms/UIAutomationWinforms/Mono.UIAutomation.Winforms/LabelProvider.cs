@@ -35,17 +35,10 @@ namespace Mono.UIAutomation.Winforms
 {
 	internal class LabelProvider : FragmentControlProvider
 	{
-#region Private Fields
-		
-		private Label label;
-		
-#endregion
-		
 #region Constructors
 		
 		public LabelProvider (Label label) : base (label)
 		{
-			this.label = label;
 		}
 		
 #endregion
@@ -74,8 +67,6 @@ namespace Mono.UIAutomation.Winforms
 				return "text";
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 				return null;
-			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-				return label.Text;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
