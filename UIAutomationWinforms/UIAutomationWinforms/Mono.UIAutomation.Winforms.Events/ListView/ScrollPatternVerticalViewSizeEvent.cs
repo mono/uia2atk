@@ -51,29 +51,13 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		public override void Connect ()
 		{	
 			Provider.Control.Resize += new EventHandler (OnControlResize);
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ListView.ListViewItemCollection), 
-				                        ((SWF.ListView) Provider.Control).Items,
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnScrollVerticalViewChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListView) Provider.Control).Items.UIACollectionChanged += OnScrollVerticalViewChanged;
 		}
 
 		public override void Disconnect ()
 		{
 			Provider.Control.Resize -= new EventHandler (OnControlResize);
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ListView.ListViewItemCollection), 
-				                           ((SWF.ListView) Provider.Control).Items,
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnScrollVerticalViewChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListView) Provider.Control).Items.UIACollectionChanged -= OnScrollVerticalViewChanged;
 		}
 		
 		#endregion 
@@ -85,14 +69,11 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 			RaiseAutomationPropertyChangedEvent ();
 		}
 		
-// This method is used via reflection, so ignore the never used warning
-#pragma warning disable 169
 		private void OnScrollVerticalViewChanged (object sender, 
 		                                          CollectionChangeEventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-#pragma warning restore 169
 
 		#endregion
 	}
