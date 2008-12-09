@@ -99,7 +99,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		#endregion
 
-		#region ISelectionProvider Tests
+		#region ISelectionProvider/ISelectionItemProvider Tests
 
 		[Test]
 		public void CanSelectMultipleTest ()
@@ -199,6 +199,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 //			                 "event old value");
 		}
 
+		/// <summary>
+		/// Test Selection.GetSelection and GetSelection.IsSelected,
+		/// and associated change events.
+		/// </summary>
 		[Test]
 		public void GetSelectionTest ()
 		{
@@ -406,6 +410,166 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "event id");
 		}
 
+		[Test]
+		public void SelectTest ()
+		{
+			TreeView treeView = new TreeView ();
+			TreeNode node1 = new TreeNode ("node1");
+			TreeNode node2 = new TreeNode ("node2");
+			TreeNode node3 = new TreeNode ("node3");
+
+			treeView.Nodes.AddRange (new TreeNode [] {
+				node1,
+				node2,
+				node3});
+			
+			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+				GetProviderFromControl (treeView);
+
+			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
+				provider.Navigate (NavigateDirection.FirstChild);
+			IRawElementProviderFragmentRoot node2Provider = (IRawElementProviderFragmentRoot)
+				node1Provider.Navigate (NavigateDirection.NextSibling);
+			IRawElementProviderFragmentRoot node3Provider = (IRawElementProviderFragmentRoot)
+				node2Provider.Navigate (NavigateDirection.NextSibling);
+
+			ISelectionItemProvider node1Selection = (ISelectionItemProvider)
+				node1Provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+			ISelectionItemProvider node2Selection = (ISelectionItemProvider)
+				node2Provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+			ISelectionItemProvider node3Selection = (ISelectionItemProvider)
+				node3Provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+
+			node1Selection.Select ();
+			Assert.AreEqual (node1,
+			                 treeView.SelectedNode);
+			
+			node2Selection.Select ();
+			Assert.AreEqual (node2,
+			                 treeView.SelectedNode);
+			
+			node3Selection.Select ();
+			Assert.AreEqual (node3,
+			                 treeView.SelectedNode);
+		}
+
+		[Test]
+		public void AddToSelectionTest ()
+		{
+			TreeView treeView = new TreeView ();
+			TreeNode node1 = new TreeNode ("node1");
+			TreeNode node2 = new TreeNode ("node2");
+			TreeNode node3 = new TreeNode ("node3");
+
+			treeView.Nodes.AddRange (new TreeNode [] {
+				node1,
+				node2,
+				node3});
+			
+			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+				GetProviderFromControl (treeView);
+
+			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
+				provider.Navigate (NavigateDirection.FirstChild);
+			IRawElementProviderFragmentRoot node2Provider = (IRawElementProviderFragmentRoot)
+				node1Provider.Navigate (NavigateDirection.NextSibling);
+
+			ISelectionItemProvider node1Selection = (ISelectionItemProvider)
+				node1Provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+			ISelectionItemProvider node2Selection = (ISelectionItemProvider)
+				node2Provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+
+			node1Selection.AddToSelection ();
+			Assert.AreEqual (node1,
+			                 treeView.SelectedNode,
+			                 "AddToSelection when no node has yet been selected should work");
+
+			try {
+				node2Selection.AddToSelection ();
+				Assert.Fail ("Expected InvalidOperationException when AddToSelection is called and there is already a selected node");
+			} catch (InvalidOperationException) {
+				// Expected!
+			} catch {
+				Assert.Fail ("Expected InvalidOperationException when AddToSelection is called and there is already a selected node");
+			}
+
+			treeView.SelectedNode = null;
+			
+			node2Selection.AddToSelection ();
+			Assert.AreEqual (node2,
+			                 treeView.SelectedNode,
+			                 "AddToSelection with no SelectedNode should work");
+		}
+
+		[Test]
+		public void RemoveFromSelectionTest ()
+		{
+			TreeView treeView = new TreeView ();
+			TreeNode node1 = new TreeNode ("node1");
+			TreeNode node2 = new TreeNode ("node2");
+			TreeNode node3 = new TreeNode ("node3");
+
+			treeView.Nodes.AddRange (new TreeNode [] {
+				node1,
+				node2,
+				node3});
+			
+			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+				GetProviderFromControl (treeView);
+
+			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
+				provider.Navigate (NavigateDirection.FirstChild);
+			IRawElementProviderFragmentRoot node2Provider = (IRawElementProviderFragmentRoot)
+				node1Provider.Navigate (NavigateDirection.NextSibling);
+
+			ISelectionItemProvider node1Selection = (ISelectionItemProvider)
+				node1Provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+			ISelectionItemProvider node2Selection = (ISelectionItemProvider)
+				node2Provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+
+			// Should have no effect
+			node1Selection.RemoveFromSelection ();
+
+			node1Selection.Select ();
+			try {
+				node1Selection.RemoveFromSelection ();
+				Assert.Fail ("Expected InvalidOperationException when RemoveFromSelection is called on a selected node");
+			} catch (InvalidOperationException) {
+				// Expected!
+			} catch {
+				Assert.Fail ("Expected InvalidOperationException when RemoveFromSelection is called on a selected node");
+			}
+
+			Assert.IsTrue (node1Selection.IsSelected,
+			               "RemoveToSelection should not have changed selection");
+
+			// Should have no effect
+			node2Selection.RemoveFromSelection ();
+		}
+
+		[Test]
+		public void SelectionContainerTest ()
+		{
+			TreeView treeView = new TreeView ();
+			TreeNode node1 = new TreeNode ("node1");
+
+			treeView.Nodes.Add (node1);
+			
+			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+				GetProviderFromControl (treeView);
+
+			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
+				provider.Navigate (NavigateDirection.FirstChild);
+
+			ISelectionItemProvider node1Selection = (ISelectionItemProvider)
+				node1Provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+
+			Assert.AreEqual (provider,
+			                 node1Selection.SelectionContainer);
+			Assert.AreEqual (provider,
+			                 node1Provider.GetPropertyValue (SelectionItemPatternIdentifiers.SelectionContainerProperty.Id));
+		}
+
 		#endregion
 
 		#region IScrollProvider Tests
@@ -582,6 +746,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				                  "SelectionItem Pattern support expected");
 				Assert.IsFalse (item.IsSelected,
 				                "Item should not be selected");
+				Assert.IsFalse ((bool) expectedNotSelected [i].GetPropertyValue (SelectionItemPatternIdentifiers.IsSelectedProperty.Id),
+				                "Item should not be selected");
 			}
 
 			for (int i = 0; i < expectedSelection.Length; i++) {
@@ -590,7 +756,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				Assert.IsNotNull (item,
 				                  "SelectionItem Pattern support expected");
 				Assert.IsTrue (item.IsSelected,
-				                "Item should not selected");
+				                "Item should be selected");
+				Assert.IsTrue ((bool) expectedSelection [i].GetPropertyValue (SelectionItemPatternIdentifiers.IsSelectedProperty.Id),
+				                "Item should be selected");
 			}
 		}
 

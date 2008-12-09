@@ -1,3 +1,7 @@
+2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* TreeViewProviderTest.cs: Finish SelectionItemProvider tests.
+
 2008-12-08  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* TreeViewProviderTest.cs: Update BasicPropertiesTest to properly
