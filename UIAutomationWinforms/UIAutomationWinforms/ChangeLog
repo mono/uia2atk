@@ -1,3 +1,10 @@
+2008-12-09  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	  Handle an item's group changing.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Add GetItemProviderFrom
+	  variant that does not create a new provider.
+
 2008-12-08  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

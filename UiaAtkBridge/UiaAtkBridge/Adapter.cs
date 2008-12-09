@@ -52,7 +52,7 @@ namespace UiaAtkBridge
 		
 		public IRawElementProviderSimple Provider { get; private set; }
 
-		protected bool manages_removal = true;
+		protected bool manages_removal = false;
 
 		// Returns true if this object will manage it's own removal
 		// from the automation tree

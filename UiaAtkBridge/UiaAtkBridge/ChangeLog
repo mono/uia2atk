@@ -1,3 +1,11 @@
+2008-12-09  Mike Gorse  <mgorse@novell.com>
+
+	* DataGrid.cs: Handle ControlType property change.
+
+	* ListGroup.cs: Set name in constructor.
+
+	* Adapter.cs: Set ManagesRemoval to false by default.
+
 2008-12-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Adapter.cs:
@@ -16,6 +24,7 @@
 
 	* TextLabel.cs: Removing unused IsStatusBarPanel method.
 
+>>>>>>> .r120801
 2008-12-04  Mario Carrion  <mcarrion@novell.com>
 
 	* MenuItem.cs: Reverted setting showing in ctor.
