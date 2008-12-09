@@ -81,8 +81,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 				treeView.BeginInvoke (new SWF.MethodInvoker (ScrollIntoView));
 
 			nodeProvider.TreeNode.EnsureVisible ();
-
-			System.Console.WriteLine("just ensured visible");
 		}
 
 		#endregion

@@ -1,3 +1,8 @@
+2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/TreeView/ScrollItemProviderBehavior.cs:
+	Removing unneeded writeline.
+
 2008-12-09  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: HelpTextProperty:
