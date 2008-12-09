@@ -30,6 +30,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include <atk/atkutil.h>
+#include <string.h>
 
 void
 override_global_event_listener ();

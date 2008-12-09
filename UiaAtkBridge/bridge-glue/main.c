@@ -139,17 +139,3 @@ guint _add_global_event_listener (
 
 	return rc;
 }
-
-static const char *window_signal_names[] =
-{
-	"activate",
-	"create",
-	"deactivate",
-	"destroy",
-	"maximize",
-	"minimize",
-	"move",
-	"resize",
-	"restore",
-	NULL
-};
