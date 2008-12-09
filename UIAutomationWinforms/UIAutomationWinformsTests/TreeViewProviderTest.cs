@@ -451,6 +451,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			node3Selection.Select ();
 			Assert.AreEqual (node3,
 			                 treeView.SelectedNode);
+
+			treeView.Enabled = false;
+
+			try {
+				node1Selection.Select ();
+				Assert.Fail ("Expected ElementNotEnabledException");
+			} catch (ElementNotEnabledException) {
+				// Expected !
+			}
 		}
 
 		[Test]
@@ -489,8 +498,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				Assert.Fail ("Expected InvalidOperationException when AddToSelection is called and there is already a selected node");
 			} catch (InvalidOperationException) {
 				// Expected!
-			} catch {
-				Assert.Fail ("Expected InvalidOperationException when AddToSelection is called and there is already a selected node");
 			}
 
 			treeView.SelectedNode = null;
@@ -499,6 +506,24 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (node2,
 			                 treeView.SelectedNode,
 			                 "AddToSelection with no SelectedNode should work");
+
+			treeView.Enabled = false;
+
+			try {
+				node1Selection.AddToSelection ();
+				Assert.Fail ("Expected ElementNotEnabledException");
+			} catch (ElementNotEnabledException) {
+				// Expected !
+			}
+
+			treeView.SelectedNode = null;
+
+			try {
+				node1Selection.AddToSelection ();
+				Assert.Fail ("Expected ElementNotEnabledException");
+			} catch (ElementNotEnabledException) {
+				// Expected !
+			}
 		}
 
 		[Test]
@@ -536,8 +561,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				Assert.Fail ("Expected InvalidOperationException when RemoveFromSelection is called on a selected node");
 			} catch (InvalidOperationException) {
 				// Expected!
-			} catch {
-				Assert.Fail ("Expected InvalidOperationException when RemoveFromSelection is called on a selected node");
 			}
 
 			Assert.IsTrue (node1Selection.IsSelected,
@@ -545,6 +568,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			// Should have no effect
 			node2Selection.RemoveFromSelection ();
+
+			treeView.Enabled = false;
+
+			try {
+				node1Selection.RemoveFromSelection ();
+				Assert.Fail ("Expected ElementNotEnabledException");
+			} catch (ElementNotEnabledException) {
+				// Expected!
+			}
+
+			try {
+				node2Selection.RemoveFromSelection ();
+				Assert.Fail ("Expected ElementNotEnabledException");
+			} catch (ElementNotEnabledException) {
+				// Expected!
+			}
 		}
 
 		[Test]

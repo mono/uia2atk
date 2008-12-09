@@ -56,6 +56,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 		
 		public void AddToSelection ()
 		{
+			if (!nodeProvider.TreeNode.TreeView.Enabled)
+				throw new ElementNotEnabledException ();
 			IRawElementProviderSimple treeProvider =
 				ProviderFactory.FindProvider (nodeProvider.TreeNode.TreeView);
 			if (treeProvider == null)
@@ -74,6 +76,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 		
 		public void RemoveFromSelection ()
 		{
+			if (!nodeProvider.TreeNode.TreeView.Enabled)
+				throw new ElementNotEnabledException ();
 			if (!IsSelected)
 				return;
 			throw new InvalidOperationException ("Cannot de-select node; selection required.");
@@ -82,6 +86,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 		public void Select ()
 		{
 			SWF.TreeView treeView = nodeProvider.TreeNode.TreeView;
+			if (!treeView.Enabled)
+				throw new ElementNotEnabledException ();
 			if (treeView.InvokeRequired) {
 				treeView.BeginInvoke (new SWF.MethodInvoker (Select));
 				return;

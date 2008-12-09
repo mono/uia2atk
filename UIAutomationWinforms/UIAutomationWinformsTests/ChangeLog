@@ -1,5 +1,10 @@
 2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* TreeViewProviderTest.cs: SelectionItemProvider methods should throw
+	ElementNotEnabledException when TreeView is disabled.
+
+2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* TreeViewProviderTest.cs: Finish SelectionItemProvider tests.
 
 2008-12-08  Sandy Armstrong  <sanfordarmstrong@gmail.com>
