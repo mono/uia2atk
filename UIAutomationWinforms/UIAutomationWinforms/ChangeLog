@@ -1,3 +1,17 @@
+2008-12-09  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: ListItem.Edit Value Provider added.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/ListItemEditValueProviderBehavior.cs:
+	Implements Value Provider in ListItem.Edit.
+
+	* Mono.UIAutomation.Winforms/Helper.cs: Default value for IsEnabled
+	added.
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: ListItem support
+	added: class added: DataGridListItemEditProvider.
+
 2008-12-09  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs:

@@ -55,6 +55,8 @@ namespace Mono.UIAutomation.Winforms
 				return false;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 				return string.Empty;
+			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
+				return true;
 			else
 				return null;
 		}

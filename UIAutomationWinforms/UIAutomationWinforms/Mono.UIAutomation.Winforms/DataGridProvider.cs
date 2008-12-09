@@ -39,15 +39,30 @@ namespace Mono.UIAutomation.Winforms
 
 	internal class DataGridProvider : FragmentRootControlProvider, IScrollBehaviorSubject
 	{
+		#region Public Constructors
 		
 		public DataGridProvider (SWF.DataGrid datagrid) : base (datagrid)
 		{
 			this.datagrid = datagrid;
 		}
 
+		#endregion
+
+		#region Public Properties
+
+		public SWF.CurrencyManager CurrencyManager {
+			get { return lastCurrencyManager; }
+		}		
+
 		public SWF.DataGrid DataGrid {
 			get { return datagrid; }
 		}
+
+		public DataGridHeaderProvider HeaderProvider {
+			get { return header; }
+		}
+
+		#endregion
 
 		#region IScrollBehaviorSubject specialization
 
@@ -62,9 +77,9 @@ namespace Mono.UIAutomation.Winforms
 
 		#endregion
 
-		#region SimpleControlProvider 
+		#region SimpleControlProvider specialization
 
-		public override void Initialize()
+		public override void Initialize ()
 		{
 			base.Initialize ();
 
@@ -204,8 +219,6 @@ namespace Mono.UIAutomation.Winforms
 					return;
 			}
 
-			Console.WriteLine ("Rows: {0}", lastCurrencyManager.Count);
-
 			SWF.DataGridTableStyle tableStyle
 				= Helper.GetPrivateProperty<SWF.DataGrid, SWF.DataGridTableStyle> (typeof (SWF.DataGrid),
 				                                                                   datagrid,
@@ -222,11 +235,13 @@ namespace Mono.UIAutomation.Winforms
 				header = new DataGridHeaderProvider (this, tableStyle.GridColumnStyles);
 				header.Initialize ();
 				OnNavigationChildAdded (raiseEvent, header);
-				
-				Console.WriteLine ("GridColumnStyles: {0}", tableStyle.GridColumnStyles.Count);
-					
-				foreach (SWF.DataGridColumnStyle style in tableStyle.GridColumnStyles) {
-					Console.WriteLine ("column: HEADER: {0} WIDTH: {1}", style.HeaderText, style.Width);
+
+				for (int row = 0; row < lastCurrencyManager.Count; row++) {
+					DataGridListItemProvider item = new DataGridListItemProvider (this,
+					                                                              row,
+					                                                              tableStyle);
+					item.Initialize ();
+					OnNavigationChildAdded (raiseEvent, item);
 				}
 			}
 
@@ -390,12 +405,13 @@ namespace Mono.UIAutomation.Winforms
 		internal class DataGridListItemProvider : FragmentRootControlProvider
 		{
 			public DataGridListItemProvider (DataGridProvider provider,
-			                                 object data,
-			                                 PropertyInfo[] publicProperties) : base (null)
+			                                 int row,
+			                                 SWF.DataGridTableStyle style) : base (null)
 			{
 				this.provider = provider;
-				this.data = data;
-				this.publicProperties = publicProperties;
+				this.row = row;
+				this.style = style;
+				name = string.Empty;
 
 				//TODO: Support Value and Invoke patterns
 			}
@@ -404,15 +420,31 @@ namespace Mono.UIAutomation.Winforms
 				get { return provider; }
 			}
 
+			public string GetName (DataGridListItemEditProvider custom) 
+			{
+				int indexOf = GetChildProviderIndexOf (custom);
+				if (indexOf == -1)
+					return string.Empty;
+				
+				if (custom.Data == null || string.IsNullOrEmpty (custom.Data.ToString ()))
+					return style.GridColumnStyles [indexOf].NullText;
+				else
+					return custom.Data.ToString ();
+			}
+
 			public override void InitializeChildControlStructure ()
 			{
 				base.InitializeChildControlStructure ();
 
-				foreach (PropertyInfo property in publicProperties) {
-					DataGridListItemCustomProvider custom 
-						= new DataGridListItemCustomProvider (this, property.GetValue (data, null));
+				for (int column = 0; column < provider.HeaderProvider.ChildrenCount; column++) {
+					object data = provider.DataGrid [row, column];					
+					DataGridListItemEditProvider custom 
+						= new DataGridListItemEditProvider (this, data);
 					custom.Initialize ();
 					OnNavigationChildAdded (false, custom);
+
+					if (column == 0)
+						name = GetName (custom);
 				}
 			}
 
@@ -423,45 +455,57 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return "list item";
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					//TODO: How to return "(Collection)" when value is IList??
-					return publicProperties [0].GetValue (data, null).ToString ();
+					return name;
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
 
-			private PropertyInfo[] publicProperties;
 			private DataGridProvider provider;
-			private object data;
+			private int row;
+			private string name;
+			private SWF.DataGridTableStyle style;
 		} //DataGridListItemProvider
 
 		#endregion
 
-		#region Internal Class: List Item Custom 
+		#region Internal Class: List Item Edit
 
-		internal class DataGridListItemCustomProvider : FragmentRootControlProvider
+		internal class DataGridListItemEditProvider : FragmentRootControlProvider
 		{
-			public DataGridListItemCustomProvider (DataGridListItemProvider provider,
-			                                       object data) : base (null)
+			public DataGridListItemEditProvider (DataGridListItemProvider provider,
+			                                     object data) : base (null)
 			{
 				this.provider = provider;
 				this.data = data;
+			}
 
-				//TODO: Support Value and Invoke patterns
+			public object Data {
+				get { return data; }
 			}
 
 			public override IRawElementProviderFragmentRoot FragmentRoot {
 				get { return provider; }
 			}
 
+			public override void Initialize ()
+			{
+				base.Initialize ();
+
+				//TODO: Support Invoke pattern
+				SetBehavior (ValuePatternIdentifiers.Pattern,
+				             new ListItemEditValueProviderBehavior (this));
+			}
+
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-					return ControlType.Custom.Id;
+					return ControlType.Edit.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return string.Empty;
-				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return data.ToString ();
-				else
+					return "edit";
+				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
+					Console.WriteLine ("name: {0}",  provider.GetName (this));
+					return provider.GetName (this);
+				} else
 					return base.GetProviderPropertyValue (propertyId);
 			}
 
