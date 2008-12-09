@@ -37,12 +37,13 @@ using Mono.UIAutomation.Winforms.Behaviors.TreeView;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class TreeViewProvider : FragmentRootControlProvider
+	internal class TreeViewProvider : FragmentRootControlProvider, IScrollBehaviorSubject
 	{
 		#region Private Members
 		
 		private SWF.TreeView treeView;
 		private Dictionary<SWF.TreeNode, TreeNodeProvider> nodeProviders;
+		private ScrollBehaviorObserver observer;
 
 		#endregion
 
@@ -63,10 +64,49 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.Initialize ();
 
-			SetBehavior (SelectionPatternIdentifiers.Pattern,
-			             new SelectionProviderBehavior (this));
+			SWF.ScrollBar vscrollbar 
+				= Helper.GetPrivateProperty<SWF.TreeView, SWF.ScrollBar> (
+				typeof (SWF.TreeView), treeView, "UIAVScrollBar");
+			SWF.ScrollBar hscrollbar 
+				= Helper.GetPrivateProperty<SWF.TreeView, SWF.ScrollBar> (
+				typeof (SWF.TreeView), treeView, "UIAHScrollBar");
+
+			observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);
+			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
+			
+			UpdateScrollBehavior ();
+			UpdateBehaviors ();
+
+			// TODO: Use a custom event, or someting else?
+			treeView.Invalidated += HandleInvalidated;
+
+			// TODO: Move these to event handler classes, and
+			//       connect/disconnect based on CheckBoxes value
+			treeView.AfterCheck += HandleAfterCheck;
+			treeView.AfterSelect += HandleAfterSelect;
 		}
 
+		void HandleAfterSelect(object sender, SWF.TreeViewEventArgs e)
+		{
+			TreeNodeProvider nodeProvider;
+			if (!nodeProviders.TryGetValue (e.Node, out nodeProvider))
+				return;
+			nodeProvider.OnAfterSelect ();
+		}
+
+		void HandleAfterCheck(object sender, SWF.TreeViewEventArgs e)
+		{
+			TreeNodeProvider nodeProvider;
+			if (!nodeProviders.TryGetValue (e.Node, out nodeProvider))
+				return;
+			nodeProvider.OnAfterCheck ();
+		}
+
+		void HandleInvalidated(object sender, SWF.InvalidateEventArgs e)
+		{
+			UpdateBehaviors ();
+			RefreshChildControlStructure ();
+		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
@@ -99,6 +139,31 @@ namespace Mono.UIAutomation.Winforms
 
 		#endregion
 
+		#region IScrollBehaviorSubject implementation 
+		
+//		public void AddChildProvider (bool raiseEvent, FragmentControlProvider provider)
+//		{
+//			throw new System.NotImplementedException();
+//		}
+//		
+//		public void RemoveChildProvider (bool raiseEvent, FragmentControlProvider provider)
+//		{
+//			throw new System.NotImplementedException();
+//		}
+		
+		public FragmentControlProvider GetScrollbarProvider (SWF.ScrollBar scrollbar)
+		{
+			return new ScrollBarProvider (scrollbar);
+		}
+		
+		public IScrollBehaviorObserver ScrollBehaviorObserver {
+			get {
+				return observer;
+			}
+		}
+		
+		#endregion 
+
 		#region Internal Methods
 
 		internal TreeNodeProvider GetTreeNodeProvider (SWF.TreeNode node)
@@ -114,6 +179,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			foreach (SWF.TreeNode node in treeView.Nodes) {
 				if (nodesToRemove.Contains (node)) {
+					nodeProviders [node].UpdateBehaviors ();
 					nodesToRemove.Remove (node);
 					continue;
 				}
@@ -147,6 +213,29 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			return nodeProvider;
+		}
+
+		private void OnScrollPatternSupportChanged (object o, EventArgs args)
+		{
+			UpdateScrollBehavior ();
+		}
+
+		private void UpdateBehaviors ()
+		{
+			if (GetBehavior (SelectionPatternIdentifiers.Pattern) == null)
+				SetBehavior (SelectionPatternIdentifiers.Pattern,
+				             new SelectionProviderBehavior (this));
+		}
+
+		private void UpdateScrollBehavior ()
+		{
+			if (observer.SupportsScrollPattern &&
+			    GetBehavior (ScrollPatternIdentifiers.Pattern) == null)
+				SetBehavior (ScrollPatternIdentifiers.Pattern,
+				             new ScrollProviderBehavior (this));
+			else if (!observer.SupportsScrollPattern)
+				SetBehavior (ScrollPatternIdentifiers.Pattern,
+				             null);
 		}
 
 		#endregion
@@ -197,12 +286,53 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.Initialize();
 
-			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
-			             new SelectionItemProviderBehavior (this));
+			UpdateBehaviors ();
 		}
 
 		#endregion
 
+		#region Internal Methods
+
+		internal void UpdateBehaviors ()
+		{
+			if (node.TreeView.CheckBoxes &&
+			    GetBehavior (TogglePatternIdentifiers.Pattern) == null)
+				SetBehavior (TogglePatternIdentifiers.Pattern,
+				             new ToggleProviderBehavior (this));
+			else if (!node.TreeView.CheckBoxes)
+				SetBehavior (TogglePatternIdentifiers.Pattern,
+				             null);
+				
+//			if (node.TreeView.Scrollable)
+//				; // TODO: ScrollItem
+//			if (node.TreeView.LabelEdit)
+//				; // TODO: Value
+
+			if (GetBehavior (SelectionItemPatternIdentifiers.Pattern) == null)
+				SetBehavior (SelectionItemPatternIdentifiers.Pattern,
+			        	     new SelectionItemProviderBehavior (this));
+		}
+
+		internal void OnAfterCheck ()
+		{
+			if (AfterCheck != null)
+				AfterCheck (this, EventArgs.Empty);
+		}
+
+		internal void OnAfterSelect ()
+		{
+			if (AfterSelect != null)
+				AfterSelect (this, EventArgs.Empty);
+		}
+
+		#endregion
+
+		#region Events
+
+		public event EventHandler AfterCheck;
+
+		public event EventHandler AfterSelect;
 		
+		#endregion
 	}
 }

@@ -1,3 +1,10 @@
+2008-12-08  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* TreeViewProviderTest.cs: Update BasicPropertiesTest to properly
+	predict support for ScrollPattern.  Test pattern support in tree node
+	providers.  Test some SelectionItemPattern events.  Add TogglePattern
+	tests for nodes.
+
 2008-12-08  Brad Taylor  <brad@getcoded.net>
 
 	* MonthCalendarProviderTest.cs: Test IInvokeProvider implementation for

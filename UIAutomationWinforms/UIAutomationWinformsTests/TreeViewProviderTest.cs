@@ -42,6 +42,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	{
 		#region Tests
 
+		#region Basic Tests
+
         	[Test]
         	public void BasicPropertiesTest ()
         	{
@@ -71,15 +73,31 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "Not returning SelectionPatternIdentifiers.");
 			Assert.IsTrue (selectionProvider is ISelectionProvider,
 			               "Not returning SelectionPatternIdentifiers.");
-
-			// TODO: This should depend on treeView.Scrollable
+			
 			object scrollProvider =
 				provider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id);
+			Assert.IsNull (scrollProvider,
+			               "No ScrollPattern support for empty tree");
+
+			TreeNode node = treeView.Nodes.Add ("test");
+			while (node.IsVisible) {
+				scrollProvider =
+					provider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id);
+				Assert.IsNull (scrollProvider,
+				               "No ScrollPattern support for barely-filled tree; count:" + treeView.Nodes.Count.ToString ());
+				node = treeView.Nodes.Add ("test");
+			}
+
+			scrollProvider =
+				provider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id);
+			
 			Assert.IsNotNull (scrollProvider,
 			                  "Not returning ScrollPatternIdentifiers.");
 			Assert.IsTrue (scrollProvider is IScrollProvider,
 			               "Not returning ScrollPatternIdentifiers.");
 		}
+
+		#endregion
 
 		#region ISelectionProvider Tests
 
@@ -202,8 +220,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              SelectionPatternIdentifiers.SelectionProperty,
 			              new IRawElementProviderSimple [] {});
 
-			bridge.ResetEventLists ();
-
 			TreeNode node1 = new TreeNode ("node1");
 			TreeNode node2 = new TreeNode ("node2");
 			TreeNode node3 = new TreeNode ("node3");
@@ -222,6 +238,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				node1Provider.Navigate (NavigateDirection.NextSibling);
 			IRawElementProviderFragmentRoot node3Provider = (IRawElementProviderFragmentRoot)
 				node2Provider.Navigate (NavigateDirection.NextSibling);
+
+			VerifyTreeNodePatterns (provider, node1Provider, node1);
+			VerifyTreeNodePatterns (provider, node2Provider, node2);
+			VerifyTreeNodePatterns (provider, node3Provider, node3);
 
 			// Make sure we have the right provider for the right node
 			TestProperty (node1Provider,
@@ -245,6 +265,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			VerifySelection (new IRawElementProviderSimple [] {node1Provider, node2Provider, node3Provider},
 			                 new IRawElementProviderSimple [] {});
+
+			bridge.ResetEventLists ();
 
 			treeView.SelectedNode = node1;
 
@@ -284,6 +306,36 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 //			                 eventTuple.e.OldValue,
 //			                 "event old value");
 
+			Assert.AreEqual (1, // TODO: When finished, will probably be more than 1! Search instead!
+			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 "property change event expected");
+			AutomationPropertyChangedEventTuple propertyEventTuple =
+				bridge.AutomationPropertyChangedEvents [0];
+			Assert.AreEqual (node1Provider,
+			                 propertyEventTuple.element,
+			                 "event sender");
+			Assert.AreEqual (SelectionItemPatternIdentifiers.IsSelectedProperty,
+			                 propertyEventTuple.e.Property,
+			                 "event property");
+			Assert.AreEqual (true,
+			                 propertyEventTuple.e.NewValue,
+			                 "event new value");
+			Assert.AreEqual (false,
+			                 propertyEventTuple.e.OldValue,
+			                 "event old value");
+
+			Assert.AreEqual (1, // TODO: When finished, will probably be more than 1! Search instead!
+			                 bridge.AutomationEvents.Count,
+			                 "selection change event expected");
+			AutomationEventTuple eventTuple =
+				bridge.AutomationEvents [0];
+			Assert.AreEqual (node1Provider,
+			                 eventTuple.provider,
+			                 "event sender");
+			Assert.AreEqual (SelectionItemPatternIdentifiers.ElementSelectedEvent,
+			                 eventTuple.e.EventId,
+			                 "event id");
+
 			bridge.ResetEventLists ();
 
 			treeView.SelectedNode = node2;
@@ -322,8 +374,198 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 //			Assert.AreEqual (new IRawElementProviderSimple [] {/*TODO*/},
 //			                 eventTuple.e.OldValue,
 //			                 "event old value");
+
+			Assert.AreEqual (1, // TODO: When finished, will probably be more than 1! Search instead!
+			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 "property change event expected");
+			propertyEventTuple =
+				bridge.AutomationPropertyChangedEvents [0];
+			Assert.AreEqual (node2Provider,
+			                 propertyEventTuple.element,
+			                 "event sender");
+			Assert.AreEqual (SelectionItemPatternIdentifiers.IsSelectedProperty,
+			                 propertyEventTuple.e.Property,
+			                 "event property");
+			Assert.AreEqual (true,
+			                 propertyEventTuple.e.NewValue,
+			                 "event new value");
+			Assert.AreEqual (false,
+			                 propertyEventTuple.e.OldValue,
+			                 "event old value");
+
+			Assert.AreEqual (1, // TODO: When finished, will probably be more than 1! Search instead!
+			                 bridge.AutomationEvents.Count,
+			                 "selection change event expected");
+			eventTuple =
+				bridge.AutomationEvents [0];
+			Assert.AreEqual (node2Provider,
+			                 eventTuple.provider,
+			                 "event sender");
+			Assert.AreEqual (SelectionItemPatternIdentifiers.ElementSelectedEvent,
+			                 eventTuple.e.EventId,
+			                 "event id");
 		}
 
+		#endregion
+
+		#region IScrollProvider Tests
+
+		
+		
+		#endregion
+
+		#region IToggleProvider Tests
+
+		[Test]
+		public void ToggleStateTest ()
+		{
+			TreeView treeView = new TreeView ();
+			TreeNode node1 = new TreeNode ("node1");
+			TreeNode node2 = new TreeNode ("node2");
+			TreeNode node3 = new TreeNode ("node3");
+
+			treeView.Nodes.AddRange (new TreeNode [] {
+				node1,
+				node2,
+				node3});
+			
+			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+				GetProviderFromControl (treeView);
+
+			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
+				provider.Navigate (NavigateDirection.FirstChild);
+			IRawElementProviderFragmentRoot node2Provider = (IRawElementProviderFragmentRoot)
+				node1Provider.Navigate (NavigateDirection.NextSibling);
+			IRawElementProviderFragmentRoot node3Provider = (IRawElementProviderFragmentRoot)
+				node2Provider.Navigate (NavigateDirection.NextSibling);
+
+			bridge.ResetEventLists ();
+			
+			node1.Checked = true;
+
+			Assert.AreEqual (0,
+			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 "no property change event expected with CheckBoxes disabled");
+
+			VerifyTreeNodePatterns (provider, node1Provider, node1);
+			VerifyTreeNodePatterns (provider, node2Provider, node2);
+			VerifyTreeNodePatterns (provider, node3Provider, node3);
+
+			treeView.CheckBoxes = true;
+
+			VerifyTreeNodePatterns (provider, node1Provider, node1);
+			VerifyTreeNodePatterns (provider, node2Provider, node2);
+			VerifyTreeNodePatterns (provider, node3Provider, node3);
+
+			IToggleProvider node1Toggle = (IToggleProvider)
+				node1Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+			IToggleProvider node2Toggle = (IToggleProvider)
+				node2Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+			IToggleProvider node3Toggle = (IToggleProvider)
+				node3Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+
+			Assert.AreEqual (ToggleState.On, node1Toggle.ToggleState);
+			Assert.AreEqual (ToggleState.Off, node2Toggle.ToggleState);
+			Assert.AreEqual (ToggleState.Off, node3Toggle.ToggleState);
+
+			bridge.ResetEventLists ();
+
+			node1.Checked = false;
+			node3.Checked = true;
+
+			Assert.AreEqual (2,
+			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 "property change events expected");
+			AutomationPropertyChangedEventTuple propertyEventTuple =
+				bridge.GetAutomationPropertyEventFrom (node1Provider,
+				                                       TogglePatternIdentifiers.ToggleStateProperty.Id);
+			Assert.IsNotNull (propertyEventTuple,
+			                  string.Format ("Expected property change event with provider {0} and property {1}",
+			                                 node1Provider, TogglePatternIdentifiers.ToggleStateProperty.ProgrammaticName));
+			Assert.AreEqual (ToggleState.Off,
+			                 propertyEventTuple.e.NewValue,
+			                 "event new value");
+			Assert.AreEqual (ToggleState.On,
+			                 propertyEventTuple.e.OldValue,
+			                 "event old value");
+			propertyEventTuple =
+				bridge.GetAutomationPropertyEventFrom (node3Provider,
+				                                       TogglePatternIdentifiers.ToggleStateProperty.Id);
+			Assert.IsNotNull (propertyEventTuple,
+			                  string.Format ("Expected property change event with provider {0} and property {1}",
+			                                 node1Provider, TogglePatternIdentifiers.ToggleStateProperty.ProgrammaticName));
+			Assert.AreEqual (ToggleState.On,
+			                 propertyEventTuple.e.NewValue,
+			                 "event new value");
+			Assert.AreEqual (ToggleState.Off,
+			                 propertyEventTuple.e.OldValue,
+			                 "event old value");
+
+			Assert.AreEqual (ToggleState.Off, node1Toggle.ToggleState);
+			Assert.AreEqual (ToggleState.Off, node2Toggle.ToggleState);
+			Assert.AreEqual (ToggleState.On, node3Toggle.ToggleState);
+		}
+
+		[Test]
+		public void ToggleTest ()
+		{
+			TreeView treeView = new TreeView ();
+			TreeNode node1 = new TreeNode ("node1");
+			TreeNode node2 = new TreeNode ("node2");
+			TreeNode node3 = new TreeNode ("node3");
+
+			treeView.Nodes.AddRange (new TreeNode [] {
+				node1,
+				node2,
+				node3});
+			
+			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+				GetProviderFromControl (treeView);
+
+			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
+				provider.Navigate (NavigateDirection.FirstChild);
+			IRawElementProviderFragmentRoot node2Provider = (IRawElementProviderFragmentRoot)
+				node1Provider.Navigate (NavigateDirection.NextSibling);
+			IRawElementProviderFragmentRoot node3Provider = (IRawElementProviderFragmentRoot)
+				node2Provider.Navigate (NavigateDirection.NextSibling);
+
+			node1.Checked = true;
+
+			VerifyTreeNodePatterns (provider, node1Provider, node1);
+			VerifyTreeNodePatterns (provider, node2Provider, node2);
+			VerifyTreeNodePatterns (provider, node3Provider, node3);
+
+			treeView.CheckBoxes = true;
+
+			VerifyTreeNodePatterns (provider, node1Provider, node1);
+			VerifyTreeNodePatterns (provider, node2Provider, node2);
+			VerifyTreeNodePatterns (provider, node3Provider, node3);
+
+			IToggleProvider node1Toggle = (IToggleProvider)
+				node1Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+			IToggleProvider node2Toggle = (IToggleProvider)
+				node2Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+			IToggleProvider node3Toggle = (IToggleProvider)
+				node3Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+
+			Assert.AreEqual (true, node1.Checked);
+			Assert.AreEqual (false, node2.Checked);
+			Assert.AreEqual (false, node3.Checked);
+
+			node1Toggle.Toggle ();
+			node3Toggle.Toggle ();
+
+			Assert.AreEqual (false, node1.Checked);
+			Assert.AreEqual (false, node2.Checked);
+			Assert.AreEqual (true, node3.Checked);
+
+			node2Toggle.Toggle ();
+
+			Assert.AreEqual (false, node1.Checked);
+			Assert.AreEqual (true, node2.Checked);
+			Assert.AreEqual (true, node3.Checked);
+		}
+		
 		#endregion
 		
 		#endregion
@@ -350,6 +592,61 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				Assert.IsTrue (item.IsSelected,
 				                "Item should not selected");
 			}
+		}
+
+		private void VerifyTreeNodePatterns (IRawElementProviderSimple parentProvider,
+		                                     IRawElementProviderSimple provider,
+		                                     TreeNode treeNode)
+		{
+			bool expectInovke = false;
+			bool expectSelectionItem = true;
+			bool expectScrollItem =
+				(parentProvider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider != null);
+			bool expectToggle = treeNode.TreeView.CheckBoxes;
+
+			object invokeProvider =
+				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			if (expectInovke) {
+				Assert.IsNotNull (invokeProvider,
+				                  "Should support Invoke pattern.");
+				Assert.IsTrue (invokeProvider is IInvokeProvider,
+				               "Should support Invoke pattern.");
+			} else
+				Assert.IsNull (invokeProvider,
+				               "Should not support Invoke Pattern.");
+
+			object selectionItemProvider =
+				provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+			if (expectSelectionItem) {
+				Assert.IsNotNull (selectionItemProvider,
+				                  "Should support SelectionItem pattern.");
+				Assert.IsTrue (selectionItemProvider is ISelectionItemProvider,
+				               "Should support SelectionItem pattern.");
+			} else
+				Assert.IsNull (selectionItemProvider,
+				               "Should not support SelectionItem Pattern.");
+
+			object scrollItemProvider =
+				provider.GetPatternProvider (ScrollItemPatternIdentifiers.Pattern.Id);
+			if (expectScrollItem) {
+				Assert.IsNotNull (scrollItemProvider,
+				                  "Should support ScrollItem pattern.");
+				Assert.IsTrue (scrollItemProvider is IScrollItemProvider,
+				               "Should support ScrollItem pattern.");
+			} else
+				Assert.IsNull (scrollItemProvider,
+				               "Should not support ScrollItem Pattern.");
+
+			object toggleProvider =
+				provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+			if (expectToggle) {
+				Assert.IsNotNull (toggleProvider,
+				                  "Should support Toggle pattern.");
+				Assert.IsTrue (toggleProvider is IToggleProvider,
+				               "Should support Toggle pattern.");
+			} else
+				Assert.IsNull (toggleProvider,
+				               "Should not support Toggle Pattern.");
 		}
 		
 		#endregion

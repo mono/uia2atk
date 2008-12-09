@@ -1,3 +1,27 @@
+2008-12-08  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Add new behavior and event classes.
+
+	* Mono.UIAutomation.Winforms/TreeViewProvider.cs: Add ScrollPattern
+	support.  Use Invalidated event as an indicator to update behaviors
+	and refresh children (for now...may add internal events instead). 
+	Handle AfterCheck/AfterSelect events in TreeViewProvider, and pass
+	them along to TreeNodeProvider, which raises corresponding events for
+	its behavior/event classes.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TreeView/ToggleProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/TogglePatternToggleStateEvent.cs:
+	Support for TogglePattern on TreeView nodes.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TreeView/SelectionItemProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/SelectionItemPatternIsSelectedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/SelectionItemPatternElementSelectedEvent.cs:
+	Raise various selection change events.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TreeView/ScrollProviderBehavior.cs:
+	Basic ScrollPattern support for TreeView.
+
 2008-12-08  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:
