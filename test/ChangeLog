@@ -1,3 +1,12 @@
+2008-12-08 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/helpprovider.py: Renamed from helprovider.py because of a
+	typo.
+	* testers/helpprovider_basic_ops.py: Skeleton HelpProvider test
+	* testers/helpprovider/helpproviderframe.py: Skeleton HelpProvider
+	application wrapper.
+	* testers/helpprovider/__init__.py: initial HelpProvider init file.
+
 2008-12-08  Ray Wang <rawang@novell.com>
 
 	* samples/domainupdown.py: add a readonly DomainUpDown control
