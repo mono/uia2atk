@@ -31,6 +31,7 @@ class HelpProviderSample(Form):
     def __init__(self):
         """HelpProviderSample class init function."""
         self.addressTextBox = TextBox()
+        self.addressTextBox.AccessibleName = "Street Text Box"
         self.helpLabel = Label()
         self.label2 = Label()
         self.cityTextBox = TextBox()
@@ -42,12 +43,9 @@ class HelpProviderSample(Form):
         self.helpLabel.BorderStyle = BorderStyle.Fixed3D
         self.helpLabel.Location = Point(8, 80)
         self.helpLabel.Size = Size(272, 72)
-        self.helpLabel.Text = " ".join(["Click the Help button in the title",
-                                        "bar, then click a control to see a",
-                                        "Help tooltip for the control.  Click",
-                                        "on a control and press F1 to invoke",
-                                        "the Help system with a sample Help",
-                                        "file."])
+        self.helpLabel.Text = " ".join(["Click on a focusable control and",
+                                        "then press F1 to see a tooltip for",
+                                        "that control."])
 
         # Address Label
         self.label2.Location = Point(16, 8)
@@ -85,7 +83,7 @@ class HelpProviderSample(Form):
         self.addressTextBox.Location = Point(16, 24)
         self.addressTextBox.Size = Size(264, 20)
         self.addressTextBox.TabIndex = 0
-        self.addressTextBox.Text = self.helpProvider1.ToString()
+        self.addressTextBox.Text = "1800 S Novell Place"
 
         # City TextBox
         self.cityTextBox.Location = Point(16, 48)

@@ -57,6 +57,8 @@ class ButtonSample:
          
         # Creates a new button with the label "Button 1".
         self.button1 = gtk.Button("Button 1")
+        self.tooltips = gtk.Tooltips()
+        self.tooltips.set_tip(self.button1, "this is a button")
  
         # Now when the button is clicked, we call the open_dialog method
         # with a pointer to "button 1" as its argument

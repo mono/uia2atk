@@ -1,3 +1,20 @@
+2008-12-09 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/gtkentry.py: Add a tooltip to the Gtk.Entry widget
+	* samples/gtkbutton.py: Add a tooltip to the "Button 1" Gtk.Button
+	* samples/gtktextview.py: Set accessible name and desription explicitly
+	for the Gtk.TextView
+	* samples/helpprovider.py: Change explination text at the bottom to be
+	more accurate.  Change the default text of the first TextBox.
+	Explicitly set the accessible name of the addressTextBox (this doesn't
+	have an effect currently, see bug #457845).
+	* samples/textbox.py: Explicitly set the accessible name and
+	description of textbox1.  (this doesn't have an effect currently,see
+	bug #457845).
+	* testers/helpprovider_basic_ops.py,
+	* testers/helpprovider/helpproviderframe.py: Finished HelpProvider
+	test.  However, it currently fails due to bug #457830.
+
 2008-12-09  Calen Chen <cachen@novell.com>
 
 	* samples/toolstripdropdownbutton.py: add another dropdownbutton with 

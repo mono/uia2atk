@@ -36,10 +36,40 @@ except IOError, msg:
 if app is None:
   exit(4)
 
-
 # just an alias to make things shorter
 hpFrame = app.helpProviderFrame
 
-sleep(config.MEDIUM_DELAY)
+# check at the first text box has focus and that it has the expected tooltip
+# provided by HelpProvider
+"""
+hpFrame.keyCombo("F1")
+sleep(config.SHORT_DELAY)
+hpFrame.assert_tooltip_appeared("Enter the street address in this text box.")
+
+# click on the state text box and check the tooltip
+hpFrame.city_text_box.mouseClick()
+hpFrame.keyCombo("F1")
+sleep(config.SHORT_DELAY)
+hpFrame.assert_tooltip_appeared("Enter the city here.")
+
+# type some text and check the tooltip again just to make sure
+hpFrame.typeText("Provo")
+hpFrame.keyCombo("F1")
+sleep(config.SHORT_DELAY)
+hpFrame.assert_tooltip_appeared("Enter the city here.")
+
+# tab over to the next two and check their tooltips
+hpFrame.keyCombo("Tab")
+hpFrame.keyCombo("F1")
+sleep(config.SHORT_DELAY)
+hpFrame.assert_tooltip_appeared("Enter the state in this text box.")
+
+hpFrame.keyCombo("Tab")
+hpFrame.keyCombo("F1")
+sleep(config.SHORT_DELAY)
+hpFrame.assert_tooltip_appeared("Enter the zip code here.")
+"""
+
+hpFrame.assert_descriptions()
 
 hpFrame.quit()

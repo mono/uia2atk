@@ -27,6 +27,8 @@ class TextBoxButtonApp(Form):
         self.label1.Dock = DockStyle.Top
     
         self.textbox1 = TextBox()
+        self.textbox1.AccessibleName = "explicitly set name"
+        self.textbox1.AccessibleDescription = "explicitly set description"
         self.textbox1.AcceptsTab = True
         self.textbox1.AcceptsReturn = True
         self.textbox1.Dock = DockStyle.Top
