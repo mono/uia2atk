@@ -47,11 +47,17 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void ListBox ()
 		{
+			ListBox (false);
+		}
+
+		private void ListBox (bool listView)
+		{
 			BasicWidgetType type = BasicWidgetType.ListBox;
+			BasicWidgetType accessibleType = (listView? BasicWidgetType.ListView: type);
 			Atk.Object accessible;
 			
 			string[] names = new string [] { simpleTestText, "Second Item", "Last Item" };
-			accessible = GetAccessible (type, names);
+			accessible = GetAccessible (accessibleType, names);
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 
 			InterfaceComponent (type, atkComponent);
@@ -62,7 +68,7 @@ namespace UiaAtkBridgeTest
 			
 			Atk.Object listItemChild = accessible.RefAccessibleChild (0);
 			Assert.IsNotNull (listItemChild, "ListBox child#0 should not be null");
-			Assert.AreEqual (listItemChild.Role, Atk.Role.ListItem, "ListBox child#0 should be a list item");
+			Assert.AreEqual (Atk.Role.ListItem, listItemChild.Role, "ListBox child#0 should be a list item");
 			
 			States (listItemChild, 
 			  Atk.StateType.Enabled,
@@ -92,11 +98,17 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void CheckedListBox ()
 		{
+			CheckedListBox (false);
+		}
+
+		private void CheckedListBox (bool listView)
+		{
 			BasicWidgetType type = BasicWidgetType.CheckedListBox;
+			BasicWidgetType accessibleType = (listView? BasicWidgetType.ListView: type);
 			Atk.Object accessible;
 			
 			string[] names = new string[] { simpleTestText, "Second Item", "Last Item" };
-			accessible = GetAccessible (type, names);
+			accessible = GetAccessible (accessibleType, names);
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 
 			InterfaceComponent (type, atkComponent);
@@ -255,59 +267,91 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
-		[Ignore ("Crashes unitary tests.")]
 		public void ListView2 ()
 		{
-			lv1.View = SWF.View.List;
-			lv1.View = SWF.View.Details;
-			TestListBox ();
-			lv1.View = SWF.View.LargeIcon;
-			TestListBox ();
+			BasicWidgetType type = BasicWidgetType.ListView;
+			lv1.Items.Clear ();
+			lv1.Groups.Clear ();
 			lv1.View = SWF.View.SmallIcon;
-			TestListBox ();
-		}
-
-		public void TestListBox ()
-		{
-			lv1.Items.Clear();
+			lv1.Groups.Add (new SWF.ListViewGroup ("group1"));
+			lv1.Groups.Add (new SWF.ListViewGroup ("group2"));
+			lv1.Items.Add ("item1");
+			lv1.Items.Add ("item2");
+			lv1.Items.Add ("item3");
+			lv1.Items.Add ("item4");
+			lv1.Items[0].Group = lv1.Groups[0];
+			lv1.Items[1].Group = lv1.Groups[0];
+			lv1.Items[2].Group = lv1.Groups[1];
+			lv1.Items[3].Group = lv1.Groups[1];
+			lv1.MultiSelect = false;
 			lv1.CheckBoxes = false;
-			lv1.Items.Add ("Item1");
-			lv1.Items.Add ("Item2");
 			Atk.Object accessible = GetAdapterForWidget (lv1);
 			Assert.IsNotNull (accessible, "Adapter should not be null");
-			Assert.AreEqual (2, accessible.NAccessibleChildren, "NAccessibleChildren #1");
-			Atk.Object child1 = accessible.RefAccessibleChild (0);
-			Assert.AreEqual (Atk.Role.ListItem, child1.Role, "Child role #1");
-			child1 = null;
-			lv1.Items.Clear();
-			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren #1");
+			// 2 groups + default group and ScrollBar
+			// Exposing empty default group probably not ideal
+			Assert.AreEqual (4, accessible.NAccessibleChildren, "NAccessibleChildren #1");
+			Atk.Object group1 = FindObjectByName (accessible, "group1");
+			Assert.IsNotNull (group1, "FindObjectByName (group1)");
+			Assert.AreEqual (Atk.Role.LayeredPane, group1.Role, "Group1 role");
+			Atk.Object item1 = FindObjectByName (group1, "item1");
+			Assert.IsNotNull (item1, "FindObjectByName (item1)");
+			Assert.AreEqual (Atk.Role.ListItem, item1.Role, "Item1 role");
+			Atk.Selection atkSelection = CastToAtkInterface<Atk.Selection> (item1.Parent);
+			string [] names = { "item1", "item2" };
+			InterfaceSelection (atkSelection, names, item1.Parent, type);
+			accessible = group1 = item1 = null;
 			lv1.CheckBoxes = true;
-			lv1.Items.Add ("Item1");
+			accessible = GetAdapterForWidget (lv1);
+			group1 = FindObjectByName (accessible, "group1");
+			item1 = FindObjectByName (group1, "item1");
 			lv1.Items[0].Checked = true;
-			lv1.Items.Add ("Item2");
-			child1 = accessible.RefAccessibleChild (0);
-			Assert.AreEqual (Atk.Role.CheckBox, child1.Role, "Child role #2");
 			// TODO: Is SingleLine appropriate?
-			States (child1,
+			States (item1,
 				Atk.StateType.Checked,
 				Atk.StateType.Enabled,
 				Atk.StateType.Focusable,
+				Atk.StateType.Focused,
 				Atk.StateType.Selectable,
+				Atk.StateType.Selected,
 				Atk.StateType.Sensitive,
 				Atk.StateType.Showing,
 				Atk.StateType.SingleLine,
 				Atk.StateType.Transient,
 				Atk.StateType.Visible);
-			Atk.Object child2 = accessible.RefAccessibleChild (1);
-			States (child2,
+			lv1.Items[0].Checked = false;
+			States (item1,
 				Atk.StateType.Enabled,
 				Atk.StateType.Focusable,
+				Atk.StateType.Focused,
 				Atk.StateType.Selectable,
+				Atk.StateType.Selected,
 				Atk.StateType.Sensitive,
 				Atk.StateType.Showing,
 				Atk.StateType.SingleLine,
 				Atk.StateType.Transient,
 				Atk.StateType.Visible);
+
+			lv1.Items[2].Group = lv1.Groups[0];
+			lv1.Items[3].Group = lv1.Groups[0];
+			Atk.Table atkTable = CastToAtkInterface<Atk.Table> (group1);
+			Assert.AreEqual (2, atkTable.NRows, "Table NRows");
+			Assert.AreEqual (2, atkTable.NColumns, "Table NColumns");
+			Assert.AreEqual ("item1", atkTable.RefAt (0, 0).Name, "Cell (0, 0)");
+			Assert.AreEqual ("item2", atkTable.RefAt (0, 1).Name, "Cell (0, 1)");
+			Assert.AreEqual ("item3", atkTable.RefAt (1, 0).Name, "Cell (1, 0)");
+			Assert.AreEqual ("item4", atkTable.RefAt (1, 1).Name, "Cell (1, 1)");
+			Assert.AreEqual (0, atkTable.GetIndexAt (0, 0), "GetIndexAt (0, 0)");
+			Assert.AreEqual (1, atkTable.GetIndexAt (0, 1), "GetIndexAt (0, 1)");
+			Assert.AreEqual (2, atkTable.GetIndexAt (1, 0), "GetIndexAt (1, 0)");
+			Assert.AreEqual (3, atkTable.GetIndexAt (1, 1), "GetIndexAt (1, 1)");
+
+			accessible = group1 = item1 = null;
+			atkSelection = null;
+			atkTable = null;
+			lv1.View = SWF.View.List;
+			CheckedListBox (true);
+			lv1.CheckBoxes = false;
+			ListBox (true);
 		}
 
 		[Test]

@@ -1,3 +1,18 @@
+2008-12-10  Mike Gorse  <mgorse@novell.com>
+
+	* SelectionProviderUserHelper.cs: Fix infinite loop in SelectAllSelection.
+
+	* ListItem.cs: Add Atk.StateType.Focused.
+
+	* ListItem.cs: Throw exception if no SelectionItemProvider.
+
+	* ActionImplementorHelper.cs: Add Remove().
+
+	* ListItem.cs: Handle IsTogglePatternAvailable change.
+
+	* ListItem.cs: Disable children (currently only a redundant CheckBox;
+	  simplifies testing)
+
 2008-12-09  Mike Gorse  <mgorse@novell.com>
 
 	* DataGrid.cs: Handle ControlType property change.

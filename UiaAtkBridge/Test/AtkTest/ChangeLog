@@ -1,3 +1,11 @@
+2008-12-09  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Add FindObjectByName variant to recurse.
+
+	* AtkTester.cs: In InterfaceSelection, grab focus before checking state.
+
+	* AtkTester.cs: ListView fixes.
+
 2008-12-08  Mario Carrion  <mcarrion@novell.com>
 
 	* AtkTester.cs: Removing commented code.

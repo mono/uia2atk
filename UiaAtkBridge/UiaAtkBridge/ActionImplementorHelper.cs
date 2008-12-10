@@ -63,6 +63,17 @@ namespace UiaAtkBridge
 			actions.Add (new ActionDescription (name, localizedName, description, doAction));
 		}
 
+		public bool Remove (String name)
+		{
+			foreach (ActionDescription ad in actions) {
+				if (ad.name == name) {
+					actions.Remove (ad);
+					return true;
+				}
+			}
+			return false;
+		}
+
 		public int NActions {
 			get { return actions.Count; }
 		}

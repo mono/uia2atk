@@ -357,6 +357,15 @@ namespace UiaAtkBridgeTest
 					                                    ProviderFactory.GetProvider (clistBox, true, true));
 				break;
 
+			case BasicWidgetType.ListView:
+				lv1.Items.Clear ();
+			lv1.Scrollable = false;
+				foreach (string item in names)
+					lv1.Items.Add (item);
+			
+				accessible = GetAdapterForWidget (lv1);
+				break;
+
 			case BasicWidgetType.ComboBoxSimple:
 			case BasicWidgetType.ComboBoxDropDownList:
 			case BasicWidgetType.ComboBoxDropDownEntry:

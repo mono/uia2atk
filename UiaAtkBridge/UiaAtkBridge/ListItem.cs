@@ -30,7 +30,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class ListItem : ComponentParentAdapter, Atk.TextImplementor, Atk.ActionImplementor
+	public class ListItem : ComponentAdapter, Atk.TextImplementor, Atk.ActionImplementor
 	{
 		private IInvokeProvider				invokeProvider;
 		private ISelectionItemProvider		selectionItemProvider;
@@ -43,6 +43,8 @@ namespace UiaAtkBridge
 		{
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
 			selectionItemProvider = (ISelectionItemProvider)provider.GetPatternProvider(SelectionItemPatternIdentifiers.Pattern.Id);
+			if (selectionItemProvider == null)
+				throw new ArgumentException ("ListItem should always implement ISelectionItemProvider");
 			toggleProvider = (IToggleProvider) provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			textExpert = new TextImplementorHelper (text, this);
@@ -76,12 +78,6 @@ namespace UiaAtkBridge
 				else
 					states.RemoveState (Atk.StateType.Checked);
 			}
-
-			bool canFocus = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
-			if (canFocus)
-				states.AddState (Atk.StateType.Focusable);
-			else
-				states.RemoveState (Atk.StateType.Focusable);
 
 			return states;
 		}
@@ -337,13 +333,16 @@ namespace UiaAtkBridge
 			}
 			else if (e.Property == TogglePatternIdentifiers.ToggleStateProperty)
 				NotifyStateChange (Atk.StateType.Checked, IsChecked ((ToggleState)e.NewValue));
-			else
+			else if (e.Property == AutomationElementIdentifiers.IsTogglePatternAvailableProperty) {
+				if ((bool)e.NewValue == true) {
+					toggleProvider = (IToggleProvider) Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+					actionExpert.Add ("toggle", "toggle", null, DoToggle);
+				} else {
+					toggleProvider = null;
+					actionExpert.Remove ("toggle");
+				}
+			} else
 				base.RaiseAutomationPropertyChangedEvent (e);
-		}
-
-		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
-		{
-			//TODO: Something to add?
 		}
 
 		private bool IsChecked (ToggleState state)

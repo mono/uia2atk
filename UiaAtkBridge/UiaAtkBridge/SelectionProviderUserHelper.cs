@@ -163,7 +163,7 @@ namespace UiaAtkBridge
 					selectionItemProvider.AddToSelection();
 				} else
 					return false;
-				child.Navigate (NavigateDirection.NextSibling);
+				child = child.Navigate (NavigateDirection.NextSibling);
 			}	
 			return true;
 		}

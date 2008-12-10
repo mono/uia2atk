@@ -371,6 +371,8 @@ namespace UiaAtkBridgeTest
 			else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox)
 				// Not sure if this is right; setting so I can test other things -MPG
 				accessibleName = String.Empty;
+			else if (type == BasicWidgetType.ListView)
+				accessibleName = accessible.Name;
 			
 			Assert.AreEqual (accessibleName, accessible.Name, "AtkObj Name");
 			if (type == BasicWidgetType.TabControl)
@@ -392,12 +394,14 @@ namespace UiaAtkBridgeTest
 					accName = String.Empty;
 				else if (type == BasicWidgetType.TabControl)
 					accName = null;
+			else if (type == BasicWidgetType.ListView)
+				accName = accessible.Name;
 				Assert.AreEqual (accName, accessible.Name, "AtkObj Name #" + i);
 				
 				Atk.Object refSelObj = implementor.RefSelection (0);
 				if (type != BasicWidgetType.ParentMenu) {
 					Assert.IsNotNull (refSelObj, "refSel should not be null");
-					if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl)
+					if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl && type != BasicWidgetType.ListView)
 						Assert.AreEqual (accessible.Name, refSelObj.Name, "AtkObj NameRefSel#" + i);
 					Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
 					Assert.IsTrue (implementor.IsChildSelected (i), "childSelected(" + i + ")");
@@ -454,6 +458,7 @@ namespace UiaAtkBridgeTest
 			    type == BasicWidgetType.ComboBoxDropDownEntry || 
 			    type == BasicWidgetType.ListBox || 
 			    type == BasicWidgetType.CheckedListBox ||
+			    type == BasicWidgetType.ListView ||
 			    type == BasicWidgetType.TabControl) {
 				//strangely, OOR selections return true (valid) -> TODO: report bug on Gail
 				Assert.IsTrue (implementor.AddSelection (-1), "AddSelection OOR#1");
@@ -482,7 +487,8 @@ namespace UiaAtkBridgeTest
 			}
 
 			//this is a normal combobox (not multiline) (TODO: research multiline comboboxes?)
-			Assert.IsFalse (implementor.SelectAllSelection ());
+			if (type != BasicWidgetType.ListView)
+				Assert.IsFalse (implementor.SelectAllSelection (), "SelectAllSelection should return false");
 			
 			if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl)
 				Assert.AreEqual (currentSel, implementor.RefSelection (0), "RefSel after SAS");
@@ -492,7 +498,7 @@ namespace UiaAtkBridgeTest
 			if (type != BasicWidgetType.ParentMenu) {
 				Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null after AS0");
 
-				if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl) {
+				if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl && type != BasicWidgetType.ListView) {
 					Assert.IsTrue (implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
 					Assert.IsTrue (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
 				}
@@ -522,9 +528,9 @@ namespace UiaAtkBridgeTest
 				//In List
 				implementor.AddSelection (0);
 				currentSel = implementor.RefSelection (0);
-				Atk.StateSet stateSet = currentSel.RefStateSet ();
 				Atk.Component atkComponentCurrentSel = CastToAtkInterface <Atk.Component> (currentSel);
 				atkComponentCurrentSel.GrabFocus ();
+				Atk.StateSet stateSet = currentSel.RefStateSet ();
 				Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focused), "Focused in selected item.");
 				Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Selected), "Selected in selected item.");
 			}
@@ -1439,11 +1445,21 @@ namespace UiaAtkBridgeTest
 
 		protected Atk.Object FindObjectByName (Atk.Object parent, string name)
 		{
+			return FindObjectByName (parent, name, false);
+		}
+
+		protected Atk.Object FindObjectByName (Atk.Object parent, string name, bool recurse)
+		{
 			int count = parent.NAccessibleChildren;
 			for (int i = 0; i < count; i++) {
 				Atk.Object child = parent.RefAccessibleChild (i);
 				if (child.Name == name)
 					return child;
+				if (recurse) {
+					Atk.Object obj = FindObjectByName (child, name, true);
+					if (obj != null)
+						return obj;
+				}
 			}
 			return null;
 		}

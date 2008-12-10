@@ -419,6 +419,7 @@ namespace Mono.UIAutomation.Winforms
 					ListViewGroupProvider oldGroupProvider = (ListViewGroupProvider)item.Navigate (NavigateDirection.Parent);
 					if (oldGroupProvider != groupProvider) {
 						oldGroupProvider.RemoveItemFrom (item);
+						RemoveItemFrom (objectItem);
 					}
 				}
 
