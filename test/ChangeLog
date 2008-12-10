@@ -1,5 +1,12 @@
 2008-12-10  Calen Chen <cachen@novell.com>
 
+	* samples/toolstriptextbox.py: add new example:textbox1 with SingleLine
+	textbox2 with MultiLine, textbox3 with ReadOnly, three of them have 
+	different states. TextChanged event would change label to show what you
+	are typing
+
+2008-12-10  Calen Chen <cachen@novell.com>
+
 	* samples/gtkmenubar.py: add label to show which menu item is been 
 	clicked
 
