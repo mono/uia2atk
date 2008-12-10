@@ -55,6 +55,8 @@ namespace Mono.UIAutomation.Winforms
 				return "tool bar";
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
+			else if (propertyId == AEIds.NameProperty.Id)
+				return strip.Text;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

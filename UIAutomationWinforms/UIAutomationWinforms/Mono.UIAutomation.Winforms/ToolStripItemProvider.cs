@@ -63,6 +63,8 @@ namespace Mono.UIAutomation.Winforms
 				return "menu item";
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
+			else if (propertyId == AEIds.NameProperty.Id)
+				return item.Text;
 			else if (propertyId == AEIds.IsOffscreenProperty.Id) {
 				System.Drawing.Rectangle bounds =
 					GetItemScreenBounds ();				
