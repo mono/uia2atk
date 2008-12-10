@@ -16,6 +16,7 @@
 	* testers/domainupdown,
 	* testers/domainupdown/domainupdownframe.py: update DomainUpDown
 	strongwind test
+	* samples/toolstriplabel.py: add ToolStripLabel sample
 
 2008-12-09 Brian G. Merrell <bgmerrell@gmail.com>
 
