@@ -1,5 +1,10 @@
 2008-12-10  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: ToolBarButton is
+	Component so *makes sense* to support the NameProperty.
+
+2008-12-10  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: ToolStripItem is
 	Component so *makes sense* to support the NameProperty.
 
