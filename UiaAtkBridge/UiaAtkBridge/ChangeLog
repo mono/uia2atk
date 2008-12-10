@@ -1,4 +1,13 @@
 2008-12-10  Mike Gorse  <mgorse@novell.com>
+
+	* SelectionProviderUserHelper.cs: Ignore items without SelectionItemProvider.
+
+	* TextLabel.cs: Set role for Hyperlinks.
+
+	* Adapter.cs: Map HelpTextProperty to Description.
+
+2008-12-10  Mike Gorse  <mgorse@novell.com>
+
 	* List.cs: Handle ReadOnly in ListWithEditableText.
 
 2008-12-10  Mike Gorse  <mgorse@novell.com>

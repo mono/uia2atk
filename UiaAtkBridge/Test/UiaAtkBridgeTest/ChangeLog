@@ -3,6 +3,8 @@
 	* BridgeTests.cs: Test state/EditableText for DomainUpDown when
 	  ReadOnly.
 
+	* BridgeTests.cs: Add test for bug 457939.
+
 2008-12-10  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTests.cs, BridgeTester.cs: Fix one of the ListView tests.

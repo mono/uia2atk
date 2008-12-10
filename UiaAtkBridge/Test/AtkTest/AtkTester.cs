@@ -368,7 +368,7 @@ namespace UiaAtkBridgeTest
 			string accessibleName = null;
 			if (type == BasicWidgetType.ParentMenu)
 				accessibleName = names [0];
-			else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox)
+			else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox || type == BasicWidgetType.DomainUpDown)
 				// Not sure if this is right; setting so I can test other things -MPG
 				accessibleName = String.Empty;
 			else if (type == BasicWidgetType.ListView)
@@ -390,7 +390,7 @@ namespace UiaAtkBridgeTest
 				string accName = names [i];
 				if (type == BasicWidgetType.ParentMenu)
 					accName = names[0];
-				else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox)
+				else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox || type == BasicWidgetType.DomainUpDown)
 					accName = String.Empty;
 				else if (type == BasicWidgetType.TabControl)
 					accName = null;
@@ -401,7 +401,7 @@ namespace UiaAtkBridgeTest
 				Atk.Object refSelObj = implementor.RefSelection (0);
 				if (type != BasicWidgetType.ParentMenu) {
 					Assert.IsNotNull (refSelObj, "refSel should not be null");
-					if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl && type != BasicWidgetType.ListView)
+					if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl && type != BasicWidgetType.ListView & type != BasicWidgetType.DomainUpDown)
 						Assert.AreEqual (accessible.Name, refSelObj.Name, "AtkObj NameRefSel#" + i);
 					Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
 					Assert.IsTrue (implementor.IsChildSelected (i), "childSelected(" + i + ")");
@@ -434,7 +434,7 @@ namespace UiaAtkBridgeTest
 					}
 					
 				}
-				if (i == 1 && (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox))
+				if (i == 1 && (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox || type == BasicWidgetType.DomainUpDown))
 					Assert.IsFalse (accessible.RefAccessibleChild(0).RefStateSet().ContainsState (Atk.StateType.Selected), "Unselected child should not have State.Selected");
 				int refSelPos = i;
 				if (refSelPos == 0)
@@ -444,6 +444,8 @@ namespace UiaAtkBridgeTest
 				bool removeSelectionSuccess = true;
 				if (type == BasicWidgetType.ComboBoxDropDownEntry || type == BasicWidgetType.ComboBoxDropDownList)
 					removeSelectionSuccess = AllowsEmptyingSelectionOnComboBoxes;
+				else if (type == BasicWidgetType.DomainUpDown)
+					removeSelectionSuccess = false;
 				if (i != names.Length - 1)
 					Assert.AreEqual (implementor.RemoveSelection (i),
 					  removeSelectionSuccess,
@@ -458,6 +460,7 @@ namespace UiaAtkBridgeTest
 			    type == BasicWidgetType.ComboBoxDropDownEntry || 
 			    type == BasicWidgetType.ListBox || 
 			    type == BasicWidgetType.CheckedListBox ||
+			    type == BasicWidgetType.DomainUpDown ||
 			    type == BasicWidgetType.ListView ||
 			    type == BasicWidgetType.TabControl) {
 				//strangely, OOR selections return true (valid) -> TODO: report bug on Gail
@@ -480,6 +483,8 @@ namespace UiaAtkBridgeTest
 				bool clearSelection = true;
 				if (type == BasicWidgetType.ComboBoxDropDownEntry || type == BasicWidgetType.ComboBoxDropDownList)
 					clearSelection = AllowsEmptyingSelectionOnComboBoxes;
+				else if (type == BasicWidgetType.DomainUpDown)
+					clearSelection = false;
 				Assert.AreEqual (clearSelection, implementor.ClearSelection (), "ClearSelection #2");
 				currentSel = implementor.RefSelection (0);
 				if (clearSelection)
@@ -490,7 +495,7 @@ namespace UiaAtkBridgeTest
 			if (type != BasicWidgetType.ListView)
 				Assert.IsFalse (implementor.SelectAllSelection (), "SelectAllSelection should return false");
 			
-			if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl)
+			if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl && type != BasicWidgetType.DomainUpDown)
 				Assert.AreEqual (currentSel, implementor.RefSelection (0), "RefSel after SAS");
 			
 			Assert.IsTrue (names.Length > 0, "Please use a names variable that is not empty");
@@ -498,7 +503,7 @@ namespace UiaAtkBridgeTest
 			if (type != BasicWidgetType.ParentMenu) {
 				Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null after AS0");
 
-				if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl && type != BasicWidgetType.ListView) {
+				if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl && type != BasicWidgetType.ListView && type != BasicWidgetType.DomainUpDown) {
 					Assert.IsTrue (implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
 					Assert.IsTrue (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
 				}
@@ -513,6 +518,7 @@ namespace UiaAtkBridgeTest
 			if (type != BasicWidgetType.ListBox &&
 			    type != BasicWidgetType.CheckedListBox &&
 			    type != BasicWidgetType.TabControl &&
+			    type != BasicWidgetType.DomainUpDown &&
 			    type != BasicWidgetType.ComboBoxDropDownEntry &&
 			    type != BasicWidgetType.ComboBoxDropDownList)
 			{

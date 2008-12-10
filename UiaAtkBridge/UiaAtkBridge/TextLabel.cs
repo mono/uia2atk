@@ -37,7 +37,8 @@ namespace UiaAtkBridge
 		public TextLabel (IRawElementProviderSimple provider) : base (provider)
 		{
 			int controlTypeId = (int) Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			if (controlTypeId == ControlType.Text.Id)
+			if (controlTypeId == ControlType.Text.Id ||
+			         controlTypeId == ControlType.Hyperlink.Id)
 				Role = Atk.Role.Label;
 			else if (controlTypeId == ControlType.HeaderItem.Id)
 				Role = Atk.Role.TableColumnHeader;

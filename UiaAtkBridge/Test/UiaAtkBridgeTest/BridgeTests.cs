@@ -359,14 +359,14 @@ namespace UiaAtkBridgeTest
 		{
 			BasicWidgetType type = BasicWidgetType.DomainUpDown;
 
-			dud1.Items.Clear ();
-			dud1.Items.Add ("first item");
-			dud1.Items.Add ("second item");
-			dud1.Items.Add ("third item");
-			Atk.Object accessible = GetAdapterForWidget (dud1);
+		string [] names = { "first item", "second item", "third item" };
+			Atk.Object accessible = GetAccessible (type, names);
 			PropertyRole (type, accessible);
 
 			Assert.AreEqual (3, accessible.NAccessibleChildren, "NAccessibleChildren");
+
+			Atk.Selection atkSelection = CastToAtkInterface<Atk.Selection> (accessible);
+			InterfaceSelection (atkSelection, names, accessible, type);
 
 			dud1.SelectedIndex = 1;
 			InterfaceText (accessible, "second item");
@@ -608,6 +608,17 @@ namespace UiaAtkBridgeTest
 
 			sb1.Panels.Remove (panel1);
 			Assert.AreEqual (0, sb.NAccessibleChildren, "StatusBar should not have children after panel is removed");
+		}
+
+		[Test]
+		public void Bug457939 ()
+		{
+			SWF.ToolStripLabel lab = new SWF.ToolStripLabel ();
+			lab.IsLink = true;
+			toolStrip.Items.Add (lab);
+			Atk.Object accessible = GetAdapterForWidget (lab);
+			Assert.AreEqual (Atk.Role.Label, accessible.Role, "A ToolStripLabel with IsLink==True should not have an unknown role");
+			toolStrip.Items.Remove (lab);
 		}
 	}
 }

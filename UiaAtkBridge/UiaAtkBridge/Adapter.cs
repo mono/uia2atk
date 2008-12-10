@@ -38,6 +38,8 @@ namespace UiaAtkBridge
 		public Adapter (IRawElementProviderSimple provider)
 		{
 			Provider = provider;
+			if (Provider != null)
+				Description = (string) Provider.GetPropertyValue (AutomationElementIdentifiers.HelpTextProperty.Id);
 		}
 		
 #endregion
@@ -101,6 +103,8 @@ namespace UiaAtkBridge
 				NotifyStateChange (Atk.StateType.Sensitive, enabled);
 			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
 				Name = (string)e.NewValue;
+			} else if (e.Property == AutomationElementIdentifiers.HelpTextProperty) {
+				Description = (string)e.NewValue;
 			}
 		}
 

@@ -362,8 +362,15 @@ namespace UiaAtkBridgeTest
 			lv1.Scrollable = false;
 				foreach (string item in names)
 					lv1.Items.Add (item);
-			
 				accessible = GetAdapterForWidget (lv1);
+				break;
+
+			case BasicWidgetType.DomainUpDown:
+				dud1.Items.Clear ();
+				foreach (string item in names)
+					dud1.Items.Add (item);
+			
+				accessible = GetAdapterForWidget (dud1);
 				break;
 
 			case BasicWidgetType.ComboBoxSimple:
