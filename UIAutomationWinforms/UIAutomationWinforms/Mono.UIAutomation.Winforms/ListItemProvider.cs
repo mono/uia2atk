@@ -125,6 +125,11 @@ namespace Mono.UIAutomation.Winforms
 			                                                          this));
 		}
 		
+		public override void SetFocus ()
+		{
+			base.SetFocus ();
+			listProvider.FocusItem (ObjectItem);
+		}
 		#endregion
 
 		#region Public Properties

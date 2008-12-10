@@ -191,6 +191,11 @@ namespace Mono.UIAutomation.Winforms
 			return -1; // FIXME: Implement
 		}
 
+		public void FocusItem (object objectItem)
+		{
+			// FIXME: Implement
+		}
+
 		public int SelectedItemsCount {
 			get { return 0; } // FIXME: Implement
 		}

@@ -66,6 +66,11 @@ namespace Mono.UIAutomation.Winforms
 			          new DomainUpDownAutomationHasKeyboardFocusPropertyEvent (this));
 			control.Items.CollectionChanged += OnCollectionChanged;
 		}
+
+		public void FocusItem (object objectItem)
+		{
+			control.SelectedItem = objectItem;
+		}
 #endregion
 
 		#region SimpleControlProvider: Specializations

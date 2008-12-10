@@ -1,3 +1,14 @@
+2008-12-10  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/IListProvider.cs,
+	  Mono.UIAutomation.Winforms/ListItemProvider.cs,
+	  Mono.UIAutomation.Winforms/DataGridProvider.cs,
+	  Mono.UIAutomation.Winforms/DomainUpDownProvider.cs,
+	  Mono.UIAutomation.Winforms/ListViewProvider.cs,
+	  Mono.UIAutomation.Winforms/ListBoxProvider.cs,
+	  Mono.UIAutomation.Winforms/ListProvider.cs:
+	  Allow a list item to grab focus.
+
 2008-12-10  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs:

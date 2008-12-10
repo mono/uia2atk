@@ -132,6 +132,11 @@ namespace Mono.UIAutomation.Winforms
 			return GetItemProviderFrom (this, listboxControl.Items [listboxControl.FocusedItem]);
 		}
 		
+		public override void FocusItem (object objectItem)
+		{
+			listboxControl.FocusedItem = listboxControl.Items.IndexOf (objectItem);
+		}
+
 		public override void InitializeChildControlStructure ()
 		{
 			listboxControl.Items.UIACollectionChanged += OnCollectionChanged;

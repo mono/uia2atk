@@ -79,6 +79,11 @@ namespace Mono.UIAutomation.Winforms
 
 		public abstract int IndexOfObjectItem (object objectItem);
 
+		public virtual void FocusItem (object objectItem)
+		{
+			Console.WriteLine (this + ": warning: SetFocusedItem unimplemented");
+		}
+
 		public virtual ListItemProvider GetItemProviderFrom (FragmentRootControlProvider rootProvider,
 		                                                     object objectItem)
 		{
@@ -116,6 +121,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			return item;
 		} 
+
 		protected bool ContainsObject (object objectItem)
 		{
 			return objectItem == null ? false : items.ContainsKey (objectItem);

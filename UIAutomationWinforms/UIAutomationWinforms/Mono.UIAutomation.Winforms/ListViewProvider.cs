@@ -237,6 +237,11 @@ namespace Mono.UIAutomation.Winforms
 			return listView.Items.IndexOf (objectItem as SWF.ListViewItem);
 		}
 		
+		public override void FocusItem (object objectItem)
+		{
+			((SWF.ListViewItem)objectItem).Focused = true;
+		}
+
 		#endregion
 			
 		#region ListItem: Selection Methods and Properties

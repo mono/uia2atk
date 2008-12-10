@@ -43,6 +43,8 @@ namespace Mono.UIAutomation.Winforms
 
 		int IndexOfObjectItem (object obj);
 
+		void FocusItem (object objectItem);
+
 		IProviderBehavior GetListItemBehaviorRealization (AutomationPattern pattern, ListItemProvider prov);
 
 		IConnectable GetListItemEventRealization (ProviderEventType eventType, ListItemProvider prov);
