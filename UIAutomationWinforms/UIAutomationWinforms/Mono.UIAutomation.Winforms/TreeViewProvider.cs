@@ -33,7 +33,9 @@ using System.Windows.Automation.Provider;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
+using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Behaviors.TreeView;
+using ETVTN = Mono.UIAutomation.Winforms.Events.TreeView.TreeNode;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -213,6 +215,20 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.TreeItem.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return "tree item";
+			else if (propertyId == AEIds.NameProperty.Id)
+				return node.Text;
+			else if (propertyId == AEIds.LabeledByProperty.Id)
+				return null;
+			else if (propertyId == AEIds.IsOffscreenProperty.Id) {
+				return !node.IsVisible;
+			} else if (propertyId == AEIds.IsEnabledProperty.Id)
+				return node.TreeView.Enabled;
+			else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
+				return node.IsSelected && node.TreeView.Focused;
+			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
+				return node.TreeView.CanFocus && AreAllParentsExpanded ();
+			else if (propertyId == AEIds.BoundingRectangleProperty.Id)
+				return Helper.RectangleToRect (node.Bounds);
 			return base.GetProviderPropertyValue (propertyId);
 		}
 
@@ -223,17 +239,45 @@ namespace Mono.UIAutomation.Winforms
 			UpdateBehaviors (parentTreeKnownToSupportScroll);
 
 			node.TreeView.EnabledChanged += HandleEnabledChanged;
+			
+			SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty,
+			          new ETVTN.AutomationIsOffscreenPropertyEvent (this));
+			SetEvent (ProviderEventType.AutomationElementIsEnabledProperty, 
+			          new ETVTN.AutomationIsEnabledPropertyEvent (this));
+			SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+			          new ETVTN.AutomationHasKeyboardFocusPropertyEvent (this));
+			SetEvent (ProviderEventType.AutomationElementBoundingRectangleProperty,
+			          new ETVTN.AutomationBoundingRectanglePropertyEvent (this));
+			SetEvent (ProviderEventType.AutomationFocusChangedEvent,
+			          new ETVTN.AutomationFocusChangedEvent (this));
+			SetEvent (ProviderEventType.AutomationElementIsKeyboardFocusableProperty,
+			          new ETVTN.AutomationIsKeyboardFocusablePropertyEvent (this));
+			SetEvent (ProviderEventType.AutomationElementNameProperty,
+			          new ETVTN.AutomationNamePropertyEvent (this));
 		}
 
 		public override void Terminate ()
 		{
+			base.Terminate ();
+			
 			node.TreeView.EnabledChanged -= HandleEnabledChanged;
 		}
 
 
-		void HandleEnabledChanged(object sender, EventArgs e)
+		private void HandleEnabledChanged(object sender, EventArgs e)
 		{
 			UpdateBehaviors (parentTreeKnownToSupportScroll);
+		}
+
+		private bool AreAllParentsExpanded ()
+		{
+			SWF.TreeNode currentParent = node.Parent;
+			while (currentParent != null) {
+				if (!currentParent.IsExpanded)
+					return false;
+				currentParent = currentParent.Parent;
+			}
+			return true;
 		}
 
 		#endregion

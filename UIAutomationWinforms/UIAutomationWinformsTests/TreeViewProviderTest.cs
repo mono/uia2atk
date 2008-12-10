@@ -99,6 +99,37 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		#endregion
 
+		#region TreeNode Basic Tests
+
+		[Test]
+		public void TreeNodeBasicPropertiesTest ()
+		{
+            		TreeView treeView = new TreeView ();
+			TreeNode node1 = treeView.Nodes.Add ("node1");
+			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+				GetProviderFromControl (treeView);
+			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
+				provider.Navigate (NavigateDirection.FirstChild);
+
+			TestProperty (node1Provider,
+			              AEIds.ControlTypeProperty,
+			              ControlType.TreeItem.Id);
+
+			TestProperty (node1Provider,
+			              AEIds.LocalizedControlTypeProperty,
+			              "tree item");
+
+			TestProperty (node1Provider,
+			              AEIds.NameProperty,
+			              node1.Text);
+
+			TestProperty (node1Provider,
+			              AEIds.LabeledByProperty,
+			              null);
+		}
+
+		#endregion
+
 		#region ISelectionProvider/ISelectionItemProvider Tests
 
 		[Test]

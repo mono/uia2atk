@@ -265,6 +265,13 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/TreeView/SelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/SelectionItemPatternIsSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/TogglePatternToggleStateEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationBoundingRectanglePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationFocusChangedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationHasKeyboardFocusPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationIsEnabledPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationIsKeyboardFocusablePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationIsOffscreenPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMaximumEvent.cs \

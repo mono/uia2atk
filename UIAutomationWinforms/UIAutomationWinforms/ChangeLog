@@ -1,3 +1,19 @@
+2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationNamePropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationFocusChangedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationIsEnabledPropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationIsOffscreenPropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationHasKeyboardFocusPropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationBoundingRectanglePropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationIsKeyboardFocusablePropertyEvent.cs:
+	Add basic property change event handlers.
+
+	* Mono.UIAutomation.Winforms/TreeViewProvider.cs: Add support for basic
+	TreeNodeProvider properties and change events.
+
 2008-12-09  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ButtonProvider.cs: Removing NameProperty.
