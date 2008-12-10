@@ -26,6 +26,7 @@
     <File name="MytkWidget.cs" subtype="Code" buildaction="Compile" />
     <File name="HelloUtil.cs" subtype="Code" buildaction="Compile" />
     <File name="HelloButton.cs" subtype="Code" buildaction="Compile" />
+    <File name="atkSharpHelloWorld.exe.config" subtype="Code" buildaction="Nothing" copyToOutputDirectory="PreserveNewest" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
