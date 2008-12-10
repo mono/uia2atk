@@ -373,6 +373,29 @@ namespace UiaAtkBridgeTest
 
 			InterfaceEditableText (type, accessible);
 
+			dud1.ReadOnly = false;
+			States (accessible,
+				Atk.StateType.Editable,
+				Atk.StateType.Enabled,
+				Atk.StateType.Focusable,
+				Atk.StateType.ManagesDescendants,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.SingleLine,
+				Atk.StateType.Visible);
+
+			dud1.ReadOnly = true;
+			States (accessible,
+				Atk.StateType.Enabled,
+				Atk.StateType.Focusable,
+				Atk.StateType.ManagesDescendants,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.SingleLine,
+				Atk.StateType.Visible);
+
+			EditReadOnly (accessible);
+
 			dud1.Items.Clear ();
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren after clear [need SWF fix]");
 		}

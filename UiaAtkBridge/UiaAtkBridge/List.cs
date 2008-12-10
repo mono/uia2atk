@@ -294,7 +294,13 @@ AtkObject,
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
-			states.AddState (Atk.StateType.Editable);
+
+			bool readOnly = (bool) Provider.GetPropertyValue (ValuePatternIdentifiers.IsReadOnlyProperty.Id);
+			if (!readOnly)
+				states.AddState (Atk.StateType.Editable);
+			else
+				states.RemoveState (Atk.StateType.Editable);
+
 			states.AddState (Atk.StateType.SingleLine);
 			return states;
 		}
@@ -302,27 +308,27 @@ AtkObject,
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property != ValuePatternIdentifiers.ValueProperty) {
-				base.RaiseAutomationPropertyChangedEvent (e);
-				return;
-			}
-
-			string new_text = TextContents;
+				string new_text = TextContents;
 			
-			if (text_helper.HandleSimpleChange (new_text, ref caretOffset))
-				return;
+				if (text_helper.HandleSimpleChange (new_text, ref caretOffset))
+					return;
 
-			Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
 
-			// First delete all text, then insert the new text
-			adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, text_helper.Length);
+				// First delete all text, then insert the new text
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, text_helper.Length);
 
-			text_helper = new TextImplementorHelper (new_text, this);
-			adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
-						 new_text == null ? 0 : new_text.Length);
-			// TODO: The below line isn't quite right
-			GLib.Signal.Emit (this, "text_caret_moved", new_text.Length);
+				text_helper = new TextImplementorHelper (new_text, this);
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+							 new_text == null ? 0 : new_text.Length);
+				// TODO: The below line isn't quite right
+				GLib.Signal.Emit (this, "text_caret_moved", new_text.Length);
 
-			EmitVisibleDataChanged ();
+				EmitVisibleDataChanged ();
+			} else if (e.Property == ValuePatternIdentifiers.IsReadOnlyProperty) {
+				NotifyStateChange (Atk.StateType.Editable, !(bool)e.NewValue);
+			} else
+				base.RaiseAutomationPropertyChangedEvent (e);
 		}
 
 #region TextImplementor Implementation 

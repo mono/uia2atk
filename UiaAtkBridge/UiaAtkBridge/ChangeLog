@@ -1,4 +1,7 @@
 2008-12-10  Mike Gorse  <mgorse@novell.com>
+	* List.cs: Handle ReadOnly in ListWithEditableText.
+
+2008-12-10  Mike Gorse  <mgorse@novell.com>
 
 	* SelectionProviderUserHelper.cs: Fix infinite loop in SelectAllSelection.
 

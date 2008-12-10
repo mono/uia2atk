@@ -1,5 +1,10 @@
 2008-12-10  Mike Gorse  <mgorse@novell.com>
 
+	* BridgeTests.cs: Test state/EditableText for DomainUpDown when
+	  ReadOnly.
+
+2008-12-10  Mike Gorse  <mgorse@novell.com>
+
 	* BridgeTests.cs, BridgeTester.cs: Fix one of the ListView tests.
 
 2008-12-03  Mike Gorse  <mgorse@novell.com>

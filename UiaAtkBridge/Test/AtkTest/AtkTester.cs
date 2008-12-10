@@ -811,7 +811,7 @@ namespace UiaAtkBridgeTest
 			EditReadOnly (accessible);
 		}
 
-		void EditReadOnly (Atk.Object accessible)
+		protected void EditReadOnly (Atk.Object accessible)
 		{
 			Atk.EditableText atkEditableText = CastToAtkInterface<Atk.EditableText> (accessible);
 			Atk.Text atkText = CastToAtkInterface<Atk.Text> (accessible);
