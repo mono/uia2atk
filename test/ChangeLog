@@ -4,6 +4,7 @@
 	textbox2 with MultiLine, textbox3 with ReadOnly, three of them have 
 	different states. TextChanged event would change label to show what you
 	are typing
+	* samples/gtkentry.py: add set_max_length setting
 
 2008-12-10  Calen Chen <cachen@novell.com>
 

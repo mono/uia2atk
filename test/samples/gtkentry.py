@@ -21,8 +21,7 @@ class Entry:
         vbox.set_spacing(6)
 
         self.bar = gtk.Entry()
-        self.tooltips = gtk.Tooltips()
-        self.tooltips.set_tip(self.bar, "this is an entry")
+        self.bar.set_max_length(5)
         vbox.pack_start(self.bar, False, False, 0)
 
         button = gtk.Button("Pulse")
