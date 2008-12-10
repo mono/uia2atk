@@ -10,6 +10,9 @@ class MenuBar:
     def delete_event(self, widget, event, data=None):
         gtk.main_quit()
         return False
+    
+    def open_activate(self, widget):
+        self.label.set_text("You selected Open")
 
     def set_menu(self):
 
@@ -21,6 +24,7 @@ class MenuBar:
         file_menu.append(open_item)
         file_menu.append(save_item)
         file_menu.append(quit_item)
+        open_item.connect("activate", self.open_activate)
         # "File" entry on menubar
         file_item = gtk.MenuItem("_File")
         file_item.set_submenu(file_menu)
@@ -39,17 +43,31 @@ class MenuBar:
         self.menubar.append(help_item)
         self.menubar.show_all()
 
+    def set_label(self):
+        self.label = gtk.Label("You Select:")
+
     def __init__(self):
 
         self.set_menu()
+        self.set_label()
 
         # create window
         self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.window.connect("delete_event", self.delete_event)
         self.window.set_title("Menu Bar")
         self.window.set_border_width(0)
-        self.window.resize(200, 10)
-        self.window.add(self.menubar)
+        self.window.resize(200, 100)
+        self.box1 = gtk.VBox(False, 0)
+        self.hbox = gtk.HBox(False, 0)
+        self.window.add(self.box1)
+        self.hbox.pack_start(self.menubar, True, True, 0)
+        self.menubar.show()
+        self.box1.pack_start(self.hbox, True, True, 0)
+        self.hbox.show()
+        self.box1.pack_start(self.label, True, True, 0)
+        self.label.show()
+        #self.window.add(self.menubar)
+        self.box1.show()
         self.window.show()
 
 
