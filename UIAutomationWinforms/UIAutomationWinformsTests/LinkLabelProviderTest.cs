@@ -109,7 +109,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		public override void LabeledByAndNamePropertyTest ()
 		{
-			TestLabeledByAndName (false, false, true, true);
+			TestLabeledByAndName (false, false, true, true, false);
 			// TODO: Test name change
 		}		
 		

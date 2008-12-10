@@ -83,7 +83,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// Case 2: Select different tab
 			bridge.ResetEventLists ();
 			tc.SelectTab (1);
-			Assert.AreEqual (1, bridge.AutomationEvents.Count,
+			Assert.AreEqual (1,
+			                 bridge.GetAutomationPropertyEventCount (SelectionPatternIdentifiers.SelectionProperty),
 			                 "EventCount after selecting new tab");
 			
 			IRawElementProviderSimple[] pageProviders

@@ -71,7 +71,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderFragmentRoot provider =
 				(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (groupBox);
 			
-			Assert.IsNull (provider.GetRuntimeId ());
+			Assert.IsNotNull (provider.GetRuntimeId ());
 		}
 #endregion
 	}

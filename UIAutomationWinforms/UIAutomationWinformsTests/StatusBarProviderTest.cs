@@ -38,17 +38,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
     	{
 		#region Test
 
-        	[Test]
-        	public void BasicPropertiesTest ()
-        	{
-            		StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderSimple provider =
+		[Test]
+		public void BasicPropertiesTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+			IRawElementProviderSimple provider =
 				ProviderFactory.GetProvider (statusBar);
-
+			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
 			              ControlType.StatusBar.Id);
-
+			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "status bar");
@@ -182,8 +182,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			do {
 				childParent = childProvider.Navigate (NavigateDirection.Parent);
-				Assert.AreSame (rootProvider, childParent,
-				                "Each child must have same parent");
+				Assert.AreEqual (rootProvider, childParent,
+				                 "Each child must have same parent");
 				name = (string) childProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 				Assert.AreEqual (string.Format ("Panel: {0}", index++), 
 				                 name, "Different names");
@@ -201,21 +201,21 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		#region StatusBarPanel Test
 
-        	[Test]
-        	public void StatusBarPanelBasicPropertiesTest ()
-        	{
-            		StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
+		[Test]
+		public void StatusBarPanelBasicPropertiesTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+			IRawElementProviderFragmentRoot rootProvider =
 				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
 			
 			statusBar.Panels.Add ("Panel");
 			IRawElementProviderFragment childProvider =
 				rootProvider.Navigate (NavigateDirection.FirstChild);
-
+			
 			TestProperty (childProvider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
 			              ControlType.Text.Id);
-
+			
 			TestProperty (childProvider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "text");
@@ -422,14 +422,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		#region BaseProviderTest Overrides
 
-        	protected override Control GetControlInstance ()
-        	{
-            		return new StatusBar ();
-        	}
+		protected override Control GetControlInstance ()
+		{
+			return new StatusBar ();
+		}
 		
 		public override void LabeledByAndNamePropertyTest ()
 		{
-			TestLabeledByAndName (false, false);
+			TestLabeledByAndName (false, false, true, true, false);
 		}
 
 		#endregion

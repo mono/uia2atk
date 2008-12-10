@@ -1,3 +1,28 @@
+2008-12-10  Mario Carrion  <mcarrion@novell.com>
+
+	* BaseProviderTest.cs:
+	* LabelProviderTest.cs:
+	* ButtonProviderTest.cs:
+	* TabPageProviderTest.cs:
+	* ToolBarProviderTest.cs:
+	* CheckBoxProviderTest.cs:
+	* LinkLabelProviderTest.cs:
+	* ScrollBarProviderTest.cs:
+	* StatusStripProviderTest.cs:
+	* RadioButtonProviderTest.cs: Updated to handle AccessibleName.
+
+	* GroupBoxProviderTest.cs: Fixed GetRuntimeId test.
+
+	* TabControlProviderTest.cs: Testing SelectionProperty event.
+
+	* StatusBarProviderTest.cs: Updated to handle AccessibleName. Code
+	beautyfing.
+
+	* MonthCalendarProviderTest.cs: Testing CanSelectMultipleProperty event
+	only.
+
+	* TextBoxBaseProviderTest.cs: Testing ValueProperty.
+
 2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* MockBridge.cs: Add GetAutomationEventFrom.

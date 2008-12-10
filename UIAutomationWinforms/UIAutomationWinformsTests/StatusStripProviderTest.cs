@@ -204,8 +204,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			do {
 				childParent = childProvider.Navigate (NavigateDirection.Parent);
-				Assert.AreSame (rootProvider, childParent,
-				                "Each child must have same parent");
+				Assert.AreEqual (rootProvider, childParent,
+				                 "Each child must have same parent");
 				name = (string) childProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 				Assert.AreEqual (string.Format ("Item: {0}", index++), 
 				                 name, "Different names");
@@ -215,6 +215,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			statusStrip.Items.Clear ();
 
+			// FIXME: We need to patch SWF.
 			childProvider = rootProvider.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNull (childProvider, "We shouldn't have a child");
 		}
@@ -223,14 +224,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		#region BaseProviderTest Overrides
 
-        	protected override Control GetControlInstance ()
-        	{
-            		return new StatusStrip ();
-        	}
+		protected override Control GetControlInstance ()
+		{
+			return new StatusStrip ();
+		}
 		
 		public override void LabeledByAndNamePropertyTest ()
 		{
-			TestLabeledByAndName (false, false);
+			TestLabeledByAndName (false, false, true, true, false);
 		}
 
 		#endregion

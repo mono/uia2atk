@@ -255,7 +255,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			textBoxBase.Text = "lfesalhafew";
 
 			Assert.AreEqual (1,
-			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 bridge.GetAutomationPropertyEventCount (ValuePatternIdentifiers.ValueProperty),
 			                 "Event count");
 		}
 
@@ -275,8 +275,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			textBoxBase.Text = "lifewauhfewa";
 
+			// NOTDOTNET: Read TextBoxProvider.UpdateBehaviors
 			Assert.AreEqual (1,
-			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 bridge.GetAutomationPropertyEventCount (ValuePatternIdentifiers.ValueProperty),
 			                 "Event count");
 		}
 
@@ -296,8 +297,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			textBoxBase.Text = "lifewauhfewa\nsokksooks";
 
+			// NOTDOTNET: Read TextBoxProvider.UpdateBehaviors
 			Assert.AreEqual (1,
-			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 bridge.GetAutomationPropertyEventCount (ValuePatternIdentifiers.ValueProperty),
 			                 "Event count");
 		}
 		

@@ -33,26 +33,26 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
-    	[TestFixture]
-    	public class ToolBarProviderTest : BaseProviderTest
-    	{
+	[TestFixture]
+	public class ToolBarProviderTest : BaseProviderTest
+	{
 		#region Test
 
-        	[Test]
-        	public void BasicPropertiesTest ()
-        	{
-            		ToolBar toolBar = new ToolBar ();
-            		IRawElementProviderSimple provider =
+		[Test]
+		public void BasicPropertiesTest ()
+		{
+			ToolBar toolBar = new ToolBar ();
+			IRawElementProviderSimple provider =
 				ProviderFactory.GetProvider (toolBar);
-
+			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
 			              ControlType.ToolBar.Id);
-
+			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "tool bar");
-
+			
 			string value = "ToolBar Name Property";
 			toolBar.Text = value;
 			TestProperty (provider,
@@ -105,20 +105,20 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		#region ToolBarButton Test
 
 		[Test]
-        	public void ToolBarButtonBasicPropertiesTest ()
-        	{
-            		ToolBar toolBar = new ToolBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
+		public void ToolBarButtonBasicPropertiesTest ()
+		{
+			ToolBar toolBar = new ToolBar ();
+			IRawElementProviderFragmentRoot rootProvider =
 				(IRawElementProviderFragmentRoot) GetProviderFromControl (toolBar);
 			
 			toolBar.Buttons.Add ("Button");
 			IRawElementProviderFragment childProvider =
 				rootProvider.Navigate (NavigateDirection.FirstChild);
-
+			
 			TestProperty (childProvider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
 			              ControlType.MenuItem.Id);
-
+			
 			TestProperty (childProvider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "menu item");
@@ -152,11 +152,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		#endregion
 
 		#region BaseProviderTest Overrides
-
-        	protected override Control GetControlInstance ()
-        	{
-            		return new ToolBar ();
-        	}
+		
+		protected override Control GetControlInstance ()
+		{
+			return new ToolBar ();
+		}
 
 		public override void LabeledByAndNamePropertyTest ()
 		{

@@ -436,7 +436,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsTrue (selectionProvider.CanSelectMultiple,
 			                "CanSelectMultiple returns false when MaxSelectionCount is 5");
 
-			Assert.AreEqual (1, bridge.AutomationPropertyChangedEvents.Count,
+			Assert.AreEqual (1,
+			                 bridge.GetAutomationPropertyEventCount (SelectionPatternIdentifiers.CanSelectMultipleProperty),
 			                 "Event count");
 
 			// Test IsSelectionRequired

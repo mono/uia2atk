@@ -295,7 +295,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		protected void TestLabeledByAndName (bool expectNonNullLabel, bool expectNameFromLabel)
 		{
-			TestLabeledByAndName (expectNonNullLabel, expectNameFromLabel, true, false);
+			TestLabeledByAndName (expectNonNullLabel, expectNameFromLabel, true, false, false);
 		}
 		
 		/// <summary>
@@ -321,7 +321,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		/// Name property should come from Control.Text (a common case).
 		/// Ignored if expectNameFromLabel is true.
 		/// </param>
-		protected void TestLabeledByAndName (bool expectNonNullLabel, bool expectNameFromLabel, bool expectNonNullName, bool expectNameFromText)
+		protected void TestLabeledByAndName (bool expectNonNullLabel,
+		                                     bool expectNameFromLabel, 
+		                                     bool expectNonNullName, 
+		                                     bool expectNameFromText, 
+		                                     bool expectNameFromAccessible)
 		{
 			Control control = GetControlInstance ();
 			if (control == null)
@@ -362,10 +366,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					               controlProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) as string,
 					               "Control provider name should not derive from label name.");
 				
-				if (!expectNameFromLabel && expectNonNullName && expectNameFromText)
+				if (!expectNameFromLabel && expectNonNullName && expectNameFromText && !expectNameFromAccessible)
 					Assert.AreEqual (control.Text,
 					                 controlProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
 					                 "Control provider name should derive from control text.");
+				else if (!expectNameFromLabel && expectNonNullName && !expectNameFromText && expectNameFromAccessible)
+					Assert.AreEqual (control.AccessibleName,
+					                 controlProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
+					                 "Control provider name should derive from control AccessibleName.");
 				else if (!expectNameFromLabel && !expectNonNullName)
 					Assert.IsNull (controlProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id),
 					               "Control provider name should be null.");

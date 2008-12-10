@@ -47,7 +47,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.NameProperty,
-			              null);
+			              scrollbar.Text);
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ClickablePointProperty,
@@ -78,7 +78,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public override void LabeledByAndNamePropertyTest ()
 		{
 			//Name is not supported.
-			TestLabeledByAndName (false, false);
+			TestLabeledByAndName (false, false, true, true, false);
 		}
 		
 		#endregion
