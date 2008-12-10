@@ -1,3 +1,11 @@
+2008-12-10  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs:
+	* Mono.UIAutomation.Winforms/MenuStripProvider.cs:
+	* Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs: Returning
+	LabeledByProperty=null.
+
 2008-12-09  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Properly dispose

@@ -565,6 +565,8 @@ namespace Mono.UIAutomation.Winforms
 					return ControlType.Button.Id;
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return "Drop Down Button";
+				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+					return null;
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}

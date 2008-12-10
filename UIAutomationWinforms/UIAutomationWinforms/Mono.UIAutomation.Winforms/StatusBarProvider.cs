@@ -232,6 +232,8 @@ namespace Mono.UIAutomation.Winforms
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					return false;
+				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+					return null;
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}

@@ -62,6 +62,8 @@ namespace Mono.UIAutomation.Winforms
 				return true;
 			else if (propertyId == AEIds.AccessKeyProperty.Id)
 				return "ALT";
+			else if (propertyId == AEIds.LabeledByProperty.Id)
+				return null;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

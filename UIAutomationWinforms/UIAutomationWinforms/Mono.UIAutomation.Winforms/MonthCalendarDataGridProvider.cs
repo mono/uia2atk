@@ -391,6 +391,8 @@ namespace Mono.UIAutomation.Winforms
 				return false;
 			else if (propertyId == AEIds.IsContentElementProperty.Id)
 				return false;
+			else if (propertyId == AEIds.LabeledByProperty.Id)
+				return null;
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
@@ -452,6 +454,8 @@ namespace Mono.UIAutomation.Winforms
 				return "header item";
 			else if (propertyId == AEIds.NameProperty.Id)
 				return label;
+			else if (propertyId == AEIds.LabeledByProperty.Id)
+				return null;
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
@@ -508,7 +512,8 @@ namespace Mono.UIAutomation.Winforms
 				} else if (direction == ButtonDirection.Forward) {
 					return "Forward by one month";
 				}
-			}
+			} else if (propertyId == AEIds.LabeledByProperty.Id)
+				return null;
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
