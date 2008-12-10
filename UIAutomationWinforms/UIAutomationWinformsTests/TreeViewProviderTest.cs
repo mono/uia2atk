@@ -332,36 +332,20 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			VerifySelection (new IRawElementProviderSimple [] {node2Provider, node3Provider, node1sub1Provider},
 			                 new IRawElementProviderSimple [] {node1Provider});
 
-			// TODO: Figure out what will be supported when it comes to events
-//			Assert.AreEqual (1, // TODO: When finished, will probably be more than 1! Search instead!
-//			                 bridge.AutomationPropertyChangedEvents.Count,
-//			                 "property change event expected");
-//			AutomationPropertyChangedEventTuple eventTuple =
-//				bridge.AutomationPropertyChangedEvents [0];
-//			Assert.AreEqual (provider,
-//			                 eventTuple.element,
-//			                 "event sender");
-//			Assert.AreEqual (SelectionPatternIdentifiers.SelectionProperty,
-//			                 eventTuple.e.Property,
-//			                 "event property");
-//			Assert.AreEqual (new IRawElementProviderSimple [] {/*TODO*/},
-//			                 eventTuple.e.NewValue,
-//			                 "event new value");
-//			Assert.AreEqual (new IRawElementProviderSimple [] {},
-//			                 eventTuple.e.OldValue,
-//			                 "event old value");
-
-			Assert.AreEqual (1, // TODO: When finished, will probably be more than 1! Search instead!
+			Assert.AreEqual (2,
 			                 bridge.AutomationPropertyChangedEvents.Count,
 			                 "property change event expected");
 			AutomationPropertyChangedEventTuple propertyEventTuple =
-				bridge.AutomationPropertyChangedEvents [0];
-			Assert.AreEqual (node1Provider,
-			                 propertyEventTuple.element,
-			                 "event sender");
-			Assert.AreEqual (SelectionItemPatternIdentifiers.IsSelectedProperty,
-			                 propertyEventTuple.e.Property,
-			                 "event property");
+				bridge.GetAutomationPropertyEventFrom (provider, SelectionPatternIdentifiers.SelectionProperty.Id);
+			Assert.AreEqual (new IRawElementProviderSimple [] {node1Provider},
+			                 propertyEventTuple.e.NewValue,
+			                 "event new value");
+			Assert.AreEqual (new IRawElementProviderSimple [] {},
+			                 propertyEventTuple.e.OldValue,
+			                 "event old value");
+			
+			propertyEventTuple =
+				bridge.GetAutomationPropertyEventFrom (node1Provider, SelectionItemPatternIdentifiers.IsSelectedProperty.Id);
 			Assert.AreEqual (true,
 			                 propertyEventTuple.e.NewValue,
 			                 "event new value");
@@ -369,14 +353,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 propertyEventTuple.e.OldValue,
 			                 "event old value");
 
-			Assert.AreEqual (1, // TODO: When finished, will probably be more than 1! Search instead!
-			                 bridge.AutomationEvents.Count,
+			Assert.AreEqual (1,
+			                 bridge.GetAutomationEventCount (SelectionItemPatternIdentifiers.ElementSelectedEvent),
 			                 "selection change event expected");
 			AutomationEventTuple eventTuple =
-				bridge.AutomationEvents [0];
-			Assert.AreEqual (node1Provider,
-			                 eventTuple.provider,
-			                 "event sender");
+				bridge.GetAutomationEventFrom (node1Provider, SelectionItemPatternIdentifiers.ElementSelectedEvent.Id);
 			Assert.AreEqual (SelectionItemPatternIdentifiers.ElementSelectedEvent,
 			                 eventTuple.e.EventId,
 			                 "event id");
@@ -402,35 +383,20 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			VerifySelection (new IRawElementProviderSimple [] {node1Provider, node3Provider, node1sub1Provider},
 			                 new IRawElementProviderSimple [] {node2Provider});
 
-//			Assert.AreEqual (1, // TODO: When finished, will probably be more than 1! Search instead!
-//			                 bridge.AutomationPropertyChangedEvents.Count,
-//			                 "property change event expected");
-//			eventTuple =
-//				bridge.AutomationPropertyChangedEvents [0];
-//			Assert.AreEqual (provider,
-//			                 eventTuple.element,
-//			                 "event sender");
-//			Assert.AreEqual (SelectionPatternIdentifiers.SelectionProperty,
-//			                 eventTuple.e.Property,
-//			                 "event property");
-//			Assert.AreEqual (new IRawElementProviderSimple [] {/*TODO*/},
-//			                 eventTuple.e.NewValue,
-//			                 "event new value");
-//			Assert.AreEqual (new IRawElementProviderSimple [] {/*TODO*/},
-//			                 eventTuple.e.OldValue,
-//			                 "event old value");
-
-			Assert.AreEqual (1, // TODO: When finished, will probably be more than 1! Search instead!
+			Assert.AreEqual (2,
 			                 bridge.AutomationPropertyChangedEvents.Count,
 			                 "property change event expected");
 			propertyEventTuple =
-				bridge.AutomationPropertyChangedEvents [0];
-			Assert.AreEqual (node2Provider,
-			                 propertyEventTuple.element,
-			                 "event sender");
-			Assert.AreEqual (SelectionItemPatternIdentifiers.IsSelectedProperty,
-			                 propertyEventTuple.e.Property,
-			                 "event property");
+				bridge.GetAutomationPropertyEventFrom (provider, SelectionPatternIdentifiers.SelectionProperty.Id);
+			Assert.AreEqual (new IRawElementProviderSimple [] {node2Provider},
+			                 propertyEventTuple.e.NewValue,
+			                 "event new value");
+			Assert.AreEqual (new IRawElementProviderSimple [] {node1Provider},
+			                 propertyEventTuple.e.OldValue,
+			                 "event old value");
+			
+			propertyEventTuple =
+				bridge.GetAutomationPropertyEventFrom (node2Provider, SelectionItemPatternIdentifiers.IsSelectedProperty.Id);
 			Assert.AreEqual (true,
 			                 propertyEventTuple.e.NewValue,
 			                 "event new value");
@@ -438,14 +404,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 propertyEventTuple.e.OldValue,
 			                 "event old value");
 
-			Assert.AreEqual (1, // TODO: When finished, will probably be more than 1! Search instead!
-			                 bridge.AutomationEvents.Count,
+			Assert.AreEqual (1,
+			                 bridge.GetAutomationEventCount (SelectionItemPatternIdentifiers.ElementSelectedEvent),
 			                 "selection change event expected");
 			eventTuple =
-				bridge.AutomationEvents [0];
-			Assert.AreEqual (node2Provider,
-			                 eventTuple.provider,
-			                 "event sender");
+				bridge.GetAutomationEventFrom (node2Provider, SelectionItemPatternIdentifiers.ElementSelectedEvent.Id);
 			Assert.AreEqual (SelectionItemPatternIdentifiers.ElementSelectedEvent,
 			                 eventTuple.e.EventId,
 			                 "event id");

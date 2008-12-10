@@ -186,6 +186,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return null;
 		}
 
+		public AutomationEventTuple GetAutomationEventFrom (object provider, int id)
+		{
+			foreach (AutomationEventTuple tuple in AutomationEvents)
+				if (tuple.provider == provider && tuple.eventId.Id == id)
+					return tuple;
+			return null;
+		}
+
 		public StructureChangedEventTuple GetStructureChangedEventFrom (StructureChangeType changeType)
 		{
 			foreach (StructureChangedEventTuple tuple in StructureChangedEvents) {

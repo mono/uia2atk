@@ -264,6 +264,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ToolStripSplitButton/ExpandCollapsePatternStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/SelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/SelectionItemPatternIsSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TreeView/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/TogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationBoundingRectanglePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationFocusChangedEvent.cs \

@@ -1,5 +1,11 @@
 2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* MockBridge.cs: Add GetAutomationEventFrom.
+
+	* TreeViewProviderTest.cs: Test for SelectionProperty events.
+
+2008-12-09  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* TreeViewProviderTest.cs: Add test of basic TreeNodeProvider
 	properties.
 

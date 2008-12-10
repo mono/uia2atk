@@ -29,6 +29,9 @@ using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.TreeView;
+
 namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 {
 	internal class SelectionProviderBehavior : ProviderBehavior, ISelectionProvider
@@ -67,12 +70,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 
 		public override void Disconnect ()
 		{
-			//TODO
+			treeViewProvider.SetEvent (ProviderEventType.SelectionPatternSelectionProperty,
+			                   null);
 		}
 
 		public override void Connect ()
 		{
-			//TODO
+			treeViewProvider.SetEvent (ProviderEventType.SelectionPatternSelectionProperty,
+			                   new SelectionPatternSelectionEvent (treeViewProvider));
 		}
 
 		public override AutomationPattern ProviderPattern {
@@ -87,7 +92,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 		
 		public IRawElementProviderSimple [] GetSelection ()
 		{
-			treeViewProvider.RefreshChildControlStructure ();
+			//treeViewProvider.RefreshChildControlStructure ();
 			
 			SWF.TreeNode selectedNode = treeView.SelectedNode;
 			TreeNodeProvider selectedNodeProvider = null;

@@ -326,8 +326,6 @@ namespace Mono.UIAutomation.Winforms
 			if (GetBehavior (SelectionItemPatternIdentifiers.Pattern) == null)
 				SetBehavior (SelectionItemPatternIdentifiers.Pattern,
 			        	     new SelectionItemProviderBehavior (this));
-
-			RefreshChildControlStructure ();
 		}
 
 		internal void OnAfterCheck ()
@@ -423,6 +421,7 @@ namespace Mono.UIAutomation.Winforms
 			foreach (SWF.TreeNode node in Nodes) {
 				if (nodesToRemove.Contains (node)) {
 					nodeProviders [node].UpdateBehaviors (SupportsScroll);
+					nodeProviders [node].RefreshChildControlStructure ();
 					nodesToRemove.Remove (node);
 					continue;
 				}
@@ -450,7 +449,7 @@ namespace Mono.UIAutomation.Winforms
 			TreeNodeProvider nodeProvider;
 			
 			if (!nodeProviders.TryGetValue (node, out nodeProvider)) {
-				nodeProvider = new TreeNodeProvider (node, SupportsScroll); //observer.SupportsScrollPattern);
+				nodeProvider = new TreeNodeProvider (node, SupportsScroll);
 				nodeProvider.Initialize ();
 				nodeProviders [node]  = nodeProvider;
 			}
