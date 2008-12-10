@@ -1,3 +1,9 @@
+2008-12-05  Stephen G. Shaw  <stshaw@novell.com>
+	
+	* specs/uiautomationwindorms.spec: Added mono-data to buildrequires and requires for rev 
+	* hudson/scripts/xmlhelper.py: An xml helper class mainly for parsing uia.xml
+	* hudson/scripts/uia.xml: fix some XML syntax
+
 2008-12-03  Brian G. Merrell  <bgmerrell@novell.com>
 	
 	* hudson/scripts/xml_example.py: example script for parsing XML files

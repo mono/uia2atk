@@ -11,7 +11,7 @@
 # 
 
 Name:           uiaatkbridge
-Version:	0.9
+Version:	121166
 Release:	0
 License:        MIT/X11
 Group:          System/Libraries
@@ -53,21 +53,9 @@ rm -rf %{buildroot}
 %doc COPYING README NEWS
 %dir %_libdir/uiaatkbridge
 %_libdir/uiaatkbridge/UiaAtkBridge.dll*
-%_libdir/uiaatkbridge/libbridge-glue.so.*
+%_libdir/uiaatkbridge/libbridge-glue.so*
 %_prefix/lib/mono/gac/UiaAtkBridge
 
-# devel package
-%package -n uiaatkbridge-devel
-Group:      Development/Libraries/GNOME
-Summary:    UIA to ATK Bridge header files
-Requires:   %{name} = %{version}
-
-%description -n uiaatkbridge-devel
-Libraries to bridge UIA to ATK. UiaAtkBridge devel package
-
-%files -n uiaatkbridge-devel
-%defattr(-,root,root)
-%_libdir/uiaatkbridge/libbridge-glue.so
 
 %post -p /sbin/ldconfig
 

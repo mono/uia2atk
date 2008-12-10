@@ -75,20 +75,10 @@ class Settings(object):
             output("  -p <project>        | --project=<project name>     The name of the project to be built")
             
 
-class XMLParser(object):
+class build(object):
 
-    config = subprocess.call("svn","co","%s/uia2atk/build/hudson/scripts/tarball/uia.xml" % svn_trunk)
-    def __init__(self, config):
-        Settings.config = config
-
-    def (self, log):
-        tree = ET.ElementTree()
-        tree.parse(log)
-        time = tree.find("time")
-        return float(time.text)
-
-
-class 
+   def __init__(self):
+        pass 
 
 
 if __name__ == "__main__":

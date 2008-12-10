@@ -20,9 +20,9 @@ URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
 AutoReqProv:	on
-Requires:	mono-core >= 2.2 gtk-sharp2 >= 2.12.7 
+Requires:	mono-core >= 2.2 mono-data gtk-sharp2 >= 2.12.7 
 Requires:	mono-uia mono-winfxcore uiaatkbridge 
-BuildRequires:	mono-devel >= 2.2 gtk-sharp2 >= 2.12.7 glib-sharp2 
+BuildRequires:	mono-devel >= 2.2 mono-data gtk-sharp2 >= 2.12.7 glib-sharp2 
 BuildRequires:	mono-nunit mono-uia mono-winfxcore uiaatkbridge
 
 Summary:        Implementation of UIA providers for Mono's Winforms controls
@@ -46,6 +46,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc COPYING README NEWS 
+%dir %_libdir/uiautomationwinforms
 %_libdir/uiautomationwinforms/UIAutomationWinforms.dll*
 %_prefix/lib/mono/gac/UIAutomationWinforms
 
