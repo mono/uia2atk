@@ -221,7 +221,7 @@ class PictureBox(object):
     states = (SHOWING,)
 
 class Panel(object):
-    states = (ENABLED, RESIZABLE, SENSITIVE, SHOWING, VISIBLE)
+    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
 class CheckBox(object):
     states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
@@ -258,9 +258,6 @@ class ToolStripProgressBar(ProgressBar):
 class NumericUpDown(object):
     states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
 
-class DomainUpDown(object):
-    states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE, MANAGES_DESCENDANTS)
-
 class Icon(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
@@ -284,4 +281,7 @@ class ToolTip(object):
 
 class MenuStrip(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
+
+class ToolStripTextBox(object):
+    states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
 

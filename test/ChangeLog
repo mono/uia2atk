@@ -1,3 +1,15 @@
+2008-12-11  Calen Chen <cachen@novell.com>
+
+	* testers/states.py: add ToolStripTextBox states tuple
+	* testers/toolstripdropdownbutton/toolstripdropdownbuttonframe.py: 
+	correct one quote punctuation
+	* testers/toolstriptextbox/__init__.py,
+	* testers/toolstriptextbox/toolstriptextboxframe.py,
+	* testers/toolstriptextbox_basic_ops.py,
+	* testers/toolstriptextbox: add new test: test states for three textbox
+	those with different properties. test TextChanged event to change label
+	and change text. test AccessibleName and AccessibleDescription
+
 2008-12-10 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/gtklist_selection_multiple.py: added a Gtk.List sample

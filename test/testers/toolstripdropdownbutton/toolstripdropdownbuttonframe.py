@@ -53,7 +53,7 @@ class ToolStripDropDownButtonFrame(accessibles.Frame):
     def assertText(self, accessible, textValue):
         procedurelogger.action("check %s's Text" % accessible)
 
-        procedurelogger.expectedResult("%s"'s Text is %s' % (accessible,textValue))
+        procedurelogger.expectedResult("%s's Text is %s" % (accessible,textValue))
         assert accessible.text == textValue
 
     #assert Selection implementation for Menu
