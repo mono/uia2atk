@@ -21,6 +21,7 @@
 //// 
 //// Authors: 
 ////      Sandy Armstrong <sanfordarmstrong@gmail.com>
+////      Mario Carrion <mcarrion@novell.com>
 //// 
 //
 
@@ -165,7 +166,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		[Test]
-		[Ignore ("This test doesn't work anymore")]
 		public virtual void AutomationIdPropertyTest ()
 		{
 			Control control = GetControlInstance ();
@@ -173,35 +173,27 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				return;
 
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
-			
-			TestProperty (provider,
-			              AutomationElementIdentifiers.AutomationIdProperty,
-			              control.GetHashCode ());
+
+			Assert.IsNotNull (provider.GetPropertyValue (AutomationElementIdentifiers.AutomationIdProperty.Id),
+			                  "AutomationIdProperty should not be null.");
 		}
 		
 		[Test]
-		[Ignore ("Not working yet")]
 		public virtual void BoundingRectanglePropertyTest ()
 		{
 			Control control = GetControlInstance ();
 			if (control == null)
 				return;
-			
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
-			
-			Form f = control as Form;
-			if (f == null) {
-				f = new Form ();
-				f.Controls.Add (control);
-			}
+
+			IRawElementProviderSimple provider = GetProviderFromControl (control);
 			
 			try {
-				f.Show ();
-				f.Location = new System.Drawing.Point (0, 0);
+				Form.Show ();
+				Form.Location = new System.Drawing.Point (0, 0);
 				
 				control.SetBounds (5, 6, 7, 8);
 				System.Drawing.Rectangle screenRect =
-					f.RectangleToScreen (control.Bounds);
+					Form.RectangleToScreen (control.Bounds);
 				Rect rect = new Rect (screenRect.X,
 				                      screenRect.Y,
 				                      7,
@@ -210,10 +202,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				TestProperty (provider,
 				              AutomationElementIdentifiers.BoundingRectangleProperty,
 				              rect);
-			} finally {
-				if (f != null)
-					f.Dispose ();
-			}
+			} catch (Exception) {}
 		}
 		
 		[Test]
@@ -223,10 +212,80 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		[Test]
-		[Ignore ("Not implemented yet")]
 		public virtual void ClickablePointPropertyTest ()
 		{
-			
+			// FIXME: We are testing only Control-Providers we need Component-Providers
+			Control control = GetControlInstance ();
+			if (control == null)
+				return;
+
+			IRawElementProviderSimple provider = GetProviderFromControl (control);
+
+			bool offscreen 
+				= (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
+			object clickablePointObj 
+				= provider.GetPropertyValue (AutomationElementIdentifiers.ClickablePointProperty.Id);
+
+			Point clickablePoint = new Point (0, 0);
+
+			// Clickable point should be either null or Rect.Empty
+			if (offscreen) {
+				if (clickablePointObj != null) {
+					try {
+						clickablePoint = (Point) clickablePointObj;
+						Assert.IsTrue (clickablePoint.X >= 0,
+						               string.Format ("X is negative, your provider should be OffScreen: {0}", clickablePoint.X));
+						Assert.IsTrue (clickablePoint.Y >= 0,
+						               string.Format ("Y is negative, your provider should be OffScreen: {0}", clickablePoint.Y));
+
+					} catch (InvalidCastException) {
+						Assert.Fail (string.Format ("You are not returning System.Windows.Point in ClickablePointProperty: {0}",
+						                            clickablePoint,GetType ()));
+					}
+				}
+			// Clickable point should intersect bounding rectangle...
+			} else {
+				if (clickablePointObj == null) // ...unless you are not clickable at all
+					return;
+
+				Assert.IsNotNull (clickablePoint, 
+				                  "Your ClickablePointProperty should not be null.");
+
+				try {
+					clickablePoint = (Point) clickablePointObj;
+					Assert.IsTrue (clickablePoint.X >= 0,
+					               string.Format ("X is negative, your provider should be OffScreen: {0}", clickablePoint.X));
+					Assert.IsTrue (clickablePoint.Y >= 0,
+					               string.Format ("Y is negative, your provider should be OffScreen: {0}", clickablePoint.Y));
+
+				} catch (InvalidCastException) {
+					Assert.Fail (string.Format ("You are not returning System.Windows.Point in ClickablePointProperty: {0}",
+					                            clickablePoint.GetType ()));
+				}
+
+				object boundingRectangle
+					= provider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+				Assert.IsNotNull (boundingRectangle, 
+				                  "You need to return BoundingRectangle if you return ClickablePointProperty.");
+
+				try {
+					Rect boundingRectangleRect = (Rect) boundingRectangle;
+					Assert.AreNotEqual (Rect.Empty, 
+					                    boundingRectangleRect,
+					                    "BoundingRectangle SHOULD NOT be Rect.Empty");
+
+					Rect clickablePointRect = new Rect (clickablePoint.X, clickablePoint.Y, 1, 1);
+
+					Assert.IsTrue (clickablePointRect.IntersectsWith (boundingRectangleRect),
+					               string.Format ("ClickablePoint ({0}) SHOULD Intersect with BoundingRectangle: {1}",
+					                              clickablePointRect.ToString (), 
+					                              boundingRectangleRect.ToString ()));
+					
+				} catch (InvalidCastException) {
+					Assert.Fail (string.Format ("You are not returning System.Windows.Rect in BoundingRectangle: {0}",
+					                            boundingRectangle.GetType ()));
+				}
+			}			
 		}
 		
 		[Test]

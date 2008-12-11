@@ -1,5 +1,12 @@
 2008-12-11  Mario Carrion  <mcarrion@novell.com>
 
+	* ScrollBarProviderTest.cs: Test not needed.
+
+	* BaseProviderTest.cs: Testing: BoundingRectangleProperty,
+	ClickablePointProperty.
+
+2008-12-11  Mario Carrion  <mcarrion@novell.com>
+
 	* StatusStripProviderTest.cs: Using Items.RemoveAt instead of
 	Items.Clear.
 

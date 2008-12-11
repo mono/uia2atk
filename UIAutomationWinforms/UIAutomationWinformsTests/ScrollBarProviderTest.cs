@@ -50,10 +50,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              scrollbar.Text);
 			
 			TestProperty (provider,
-			              AutomationElementIdentifiers.ClickablePointProperty,
-			              Single.NaN);
-			
-			TestProperty (provider,
 			              AutomationElementIdentifiers.LabeledByProperty,
 			              null);
 			
