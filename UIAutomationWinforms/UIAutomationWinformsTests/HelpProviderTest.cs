@@ -79,8 +79,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			//We have the HelpProvider!
 			IRawElementProviderFragment helpProvider = eventTuple.provider as IRawElementProviderFragment;
-
-			Console.WriteLine ("element: {0}", helpProvider.GetType ());
 			
 			Assert.IsNotNull (helpProvider, "helpProvider is null");
 			
@@ -144,6 +142,38 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		protected override bool IsContentElement {
 			get { return false; }
+		}
+
+		protected override IRawElementProviderSimple GetProvider ()
+		{
+			SWF.HelpProvider swfHelpProvider = new SWF.HelpProvider ();
+			
+			SWF.Button swfButton = new SWF.Button ();
+			swfButton.Location = new SD.Point (3, 3);
+			swfButton.Size = new SD.Size (272, 72);
+			swfButton.Text = "With help";
+			
+			SWF.Button swfButtonNoHelp = new SWF.Button ();
+			swfButtonNoHelp.Location = new SD.Point (3, 30);
+			swfButtonNoHelp.Size = new SD.Size (272, 72);
+			swfButtonNoHelp.Text = "No help";
+			
+			//We have to use an event to fake the user click
+			swfButton.Click += new System.EventHandler (OnControlClicked);
+
+			swfHelpProvider.SetShowHelp (swfButton, true);
+			swfHelpProvider.SetHelpString (swfButton, "I'm showing a button tooltip.");
+			
+			Form.Controls.Add (swfButton);
+			Form.Controls.Add (swfButtonNoHelp);
+			
+			//Testing ToolTipOpenedEvent
+			bridge.ResetEventLists ();
+			swfButton.PerformClick (); //Clicking the button will fake the event!
+
+			StructureChangedEventTuple eventTuple 
+				= bridge.GetStructureChangedEventAt (0, StructureChangeType.ChildAdded);
+			return eventTuple.provider as IRawElementProviderSimple;
 		}
 		
 		#endregion

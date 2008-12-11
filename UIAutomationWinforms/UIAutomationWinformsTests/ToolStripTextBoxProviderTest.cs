@@ -78,6 +78,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return null;
 		}
 
+		protected override IRawElementProviderSimple GetProvider ()
+		{
+			return ProviderFactory.GetProvider (new ToolStripTextBox ());
+		}
 
 	}
 }

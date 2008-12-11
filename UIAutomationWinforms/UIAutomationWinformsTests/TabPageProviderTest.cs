@@ -172,16 +172,21 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					InvokePatternIdentifiers.Pattern.Id);
 			Assert.IsNull (invokeProvider, "Implements IInvokeProvider when Support: No");
 		}
-//		
-//		[Test]
-//		public override void LabeledByAndNamePropertyTest ()
-//		{
-//			TestLabeledByAndName (true, false);
-//		}
+		
+		[Test]
+		public override void LabeledByAndNamePropertyTest ()
+		{
+			TestLabeledByAndName (true, false);
+		}
 
 		protected override Control GetControlInstance ()
 		{
 			return null;
+		}
+
+		protected override IRawElementProviderSimple GetProvider ()
+		{
+			return ProviderFactory.GetProvider (tabPage1);
 		}
 
 		private TabControl tabControl;

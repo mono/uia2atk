@@ -311,6 +311,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return null; // TODO: Lots of work...
 		}
 
+		protected override IRawElementProviderSimple GetProvider ()
+		{
+			return ProviderFactory.GetProvider (GetNewToolStripDropDownItem ());
+		}
+
 		protected abstract T GetNewToolStripDropDownItem ();
 
 	}

@@ -214,12 +214,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public virtual void ClickablePointPropertyTest ()
 		{
-			// FIXME: We are testing only Control-Providers we need Component-Providers
-			Control control = GetControlInstance ();
-			if (control == null)
-				return;
-
-			IRawElementProviderSimple provider = GetProviderFromControl (control);
+			IRawElementProviderSimple provider = GetProvider ();
 
 			bool offscreen 
 				= (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id);
@@ -439,6 +434,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				
 				f.Close ();
 			}
+		}
+
+		protected virtual IRawElementProviderSimple GetProvider ()
+		{
+			Control control = GetControlInstance ();
+			if (control == null) {
+				Assert.Fail ("You need to override GetProvider because you are testing a Component-based provider.");
+				return null;
+			} else
+				return GetProviderFromControl (control);
 		}
 		
 		#endregion

@@ -1,5 +1,18 @@
 2008-12-11  Mario Carrion  <mcarrion@novell.com>
 
+	* BaseProviderTest.cs:
+	* HelpProviderTest.cs:
+	* ErrorProviderTest.cs:
+	* TabPageProviderTest.cs:
+	* ToolStripLabelProviderTest.cs:
+	* ToolStripTextBoxProviderTest.cs:
+	* ToolStripSeparatorProviderTest.cs:
+	* ToolStripDropDownItemProviderTest.cs: Testing:
+	BoundingRectangleProperty and ClickablePointProperty in
+	Component-based providers.
+
+2008-12-11  Mario Carrion  <mcarrion@novell.com>
+
 	* ScrollBarProviderTest.cs: Test not needed.
 
 	* BaseProviderTest.cs: Testing: BoundingRectangleProperty,

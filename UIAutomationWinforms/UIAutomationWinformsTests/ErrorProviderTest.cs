@@ -24,8 +24,7 @@
 // 
 using System;
 using System.ComponentModel;
-using System.Windows.Forms;
-using SWFErrorProvider = System.Windows.Forms.ErrorProvider;
+using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms;
@@ -44,14 +43,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void BasicPropertiesTest ()
 		{
 			//Lets use 2 dummy Labels
-			Label label1 = new Label ();
+			SWF.Label label1 = new SWF.Label ();
 			label1.Text = "hola";
 			label1.Size = new System.Drawing.Size (30, 30);
 			label1.Location = new System.Drawing.Point (1, 1);
 			
 			Form.Controls.Add (label1);
 			
-			Label label2 = new Label ();
+			SWF.Label label2 = new SWF.Label ();
 			label2.Text = "mundo";
 			label2.Size = new System.Drawing.Size (30, 30);
 			label2.Location = new System.Drawing.Point (1, 32);
@@ -79,7 +78,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			//Lets show the error message. We should have *only* 3 children
 			
-			SWFErrorProvider errorProvider = new SWFErrorProvider();
+			SWF.ErrorProvider errorProvider = new SWF.ErrorProvider();
 			errorProvider.SetError (label1, "Error: hola");
 			errorProvider.SetError (label2, "Error: mundo");
 			
@@ -133,9 +132,44 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		#region BaseProviderTest Overrides
 		
-		protected override Control GetControlInstance ()
+		protected override SWF.Control GetControlInstance ()
 		{
 			return null;
+		}
+
+		protected override IRawElementProviderSimple GetProvider ()
+		{
+			SWF.Label label1 = new SWF.Label ();
+			label1.Text = "hola";
+			label1.Size = new System.Drawing.Size (30, 30);
+			label1.Location = new System.Drawing.Point (1, 1);
+			
+			Form.Controls.Add (label1);
+			
+			SWF.Label label2 = new SWF.Label ();
+			label2.Text = "mundo";
+			label2.Size = new System.Drawing.Size (30, 30);
+			label2.Location = new System.Drawing.Point (1, 32);
+			
+			Form.Controls.Add (label2);
+			
+			SWF.ErrorProvider errorProvider = new SWF.ErrorProvider();
+			errorProvider.SetError (label1, "Error: hola");
+			errorProvider.SetError (label2, "Error: mundo");
+			
+			IRawElementProviderSimple provider = null;
+			IRawElementProviderFragment child =
+				(IRawElementProviderFragment) FormProvider.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    != ControlType.Text.Id)
+					provider = child;
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			
+			Assert.IsNotNull (provider, "We should have a provider different than Text");
+
+			return provider;
 		}
 		
 		#endregion

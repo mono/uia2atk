@@ -32,22 +32,22 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
-    	[TestFixture]
-    	public class ToolStripSeparatorProviderTest : BaseProviderTest
-    	{
+	[TestFixture]
+	public class ToolStripSeparatorProviderTest : BaseProviderTest
+	{
 		#region Test
-
-        	[Test]
-        	public void BasicPropertiesTest ()
-        	{
-            		ToolStripSeparator toolStripSeparator = new ToolStripSeparator ();
-            		IRawElementProviderSimple provider =
+		
+		[Test]
+		public void BasicPropertiesTest ()
+		{
+			ToolStripSeparator toolStripSeparator = new ToolStripSeparator ();
+			IRawElementProviderSimple provider =
 				ProviderFactory.GetProvider (toolStripSeparator);
-
+			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
 			              ControlType.Separator.Id);
-
+			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "separator");
@@ -60,16 +60,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              AutomationElementIdentifiers.LabeledByProperty,
 			              null);
 		}
-
+		
 		#endregion
 		
 		#region BaseProviderTest Overrides
-
-        	protected override Control GetControlInstance ()
-        	{
+		
+		protected override Control GetControlInstance ()
+		{
 			return null;
-        	}
+		}
 
+		protected override IRawElementProviderSimple GetProvider ()
+		{
+			return ProviderFactory.GetProvider (new ToolStripSeparator ());
+		}
+
+	
 		#endregion
 	}
 }
