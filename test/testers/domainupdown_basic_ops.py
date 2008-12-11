@@ -43,14 +43,14 @@ dudFrame = app.domainUpDownFrame
 # check domainupdown's states
 ##############################
 statesCheck(dudFrame.editable_domainupdown, "DomainUpDown", add_states=["focused"])
-# FIXME: comment this due to bug457496
+# VERIFYME: comment this due to bug457496
 #statesCheck(dudFrame.uneditable_domainupdown, "DomainUpDown", invalid_states=["editable"])
 statesCheck(dudFrame.uneditable_domainupdown, "DomainUpDown")
 
 # move the focused to uneditable_domainupdown then check the states again
 dudFrame.uneditable_domainupdown.mouseClick()
 statesCheck(dudFrame.editable_domainupdown, "DomainUpDown")
-# FIXME: comment this due to bug457496
+# VERIFYME: comment this due to bug457496
 #statesCheck(dudFrame.uneditable_domainupdown, "DomainUpDown", invalid_states=["editable"], add_states=["focused"])
 statesCheck(dudFrame.uneditable_domainupdown, "DomainUpDown", add_states=["focused"])
 
@@ -63,20 +63,20 @@ dudFrame.editable_domainupdown.typeText("provo")
 sleep(config.SHORT_DELAY)
 dudFrame.assertText(dudFrame.editable_domainupdown, "Provo")
 # check the state of selected item
-# FIXME: the item which is selected by typing characters is lack of 'selected', 'showing' and 'visible' states
+# VERIFYME: the item which is selected by typing characters is lack of 'selected', 'showing' and 'visible' states
 #statesCheck(dudFrame.editable_domainupdown.listitem[4], "ListItem", add_states=["selected"])
 statesCheck(dudFrame.editable_domainupdown.listitem[4], "ListItem", invalid_states=["showing", "visible"])
 # check other items' states
 statesCheck(dudFrame.editable_domainupdown.listitem[3], "ListItem", invalid_states=["showing", "visible"])
 
-# FIXME: we should not be able to input, but now you can due to bug457496
+# VERIFYME: we should not be able to input, but now you can due to bug457496
 # uneditable DomainUpDown
 dudFrame.uneditable_domainupdown.mouseClick()
 dudFrame.uneditable_domainupdown.typeText("cambridge")
 sleep(config.SHORT_DELAY)
 dudFrame.assertText(dudFrame.uneditable_domainupdown, "Cambridge")
 # check the state of selected item
-# FIXME: the item which is selected by typing characters is lack of 'selected', 'showing' and 'visible' states
+# VERIFYME: the item which is selected by typing characters is lack of 'selected', 'showing' and 'visible' states
 #statesCheck(dudFrame.uneditable_domainupdown.listitem[2], "ListItem", add_states=["selected"])
 statesCheck(dudFrame.uneditable_domainupdown.listitem[2], "ListItem", invalid_states=["showing", "visible"])
 # check other items' states
@@ -94,7 +94,7 @@ dudFrame.inputText(dudFrame.editable_domainupdown, "Provo")
 sleep(config.SHORT_DELAY)
 dudFrame.assertText(dudFrame.editable_domainupdown, "Provo")
 # check the state of selected item
-# FIXME: the item which is selected by typing characters is lack of 'selected', 'showing' and 'visible' states
+# VERIFYME: the item which is selected by typing characters is lack of 'selected', 'showing' and 'visible' states
 #statesCheck(dudFrame.editable_domainupdown.listitem[4], "ListItem", add_states=["selected"])
 statesCheck(dudFrame.editable_domainupdown.listitem[4], "ListItem", invalid_states=["showing", "visible"])
 # check other items' states
@@ -159,8 +159,8 @@ statesCheck(dudFrame.uneditable_domainupdown.listitem[0], "ListItem", invalid_st
 # editable DomainUpDown
 dudFrame.editable_domainupdown.mouseClick()
 actionsCheck(dudFrame.editable_domainupdown.listitem[5], "ListItem")
-# FIXME: failed due to bug457172
-#dudFrame.assertText(dudFrame.editable_domainupdown, "Madrid")
+# VERIFYME: failed due to bug457172
+#dudFrame.assertText(dudFrame.editable_domainupdown, "San Diego")
 # check the state of selected item
 #statesCheck(dudFrame.uneditable_domainupdown.listitem[5], "ListItem", add_states=["selected"])
 # check other items' states
@@ -169,8 +169,8 @@ actionsCheck(dudFrame.editable_domainupdown.listitem[5], "ListItem")
 # uneditable DomainUpDown
 dudFrame.uneditable_domainupdown.mouseClick()
 actionsCheck(dudFrame.uneditable_domainupdown.listitem[5], "ListItem")
-# FIXME: failed due to bug457172
-#dudFrame.assertText(dudFrame.uneditable_domainupdown, "Madridd")
+# VERIFYME: failed due to bug457172
+#dudFrame.assertText(dudFrame.uneditable_domainupdown, "San Diego")
 # check the state of selected item
 #statesCheck(dudFrame.uneditable_domainupdown.listitem[5], "ListItem", add_states=["selected"])
 # check other items' states

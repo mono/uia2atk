@@ -22,6 +22,7 @@ clr.AddReference('System.Drawing')
 from System.Windows.Forms import *
 from System.Drawing import *
 import System
+import sys
 
 
 class ToolStripLabelSample(Form):
@@ -44,9 +45,12 @@ class ToolStripLabelSample(Form):
         self.toolstrip_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         self.toolstrip_label.Click += self.toolstrip_click
 
+        # ToolStripLabel with image
+        sample_dir = sys.path[0]
+        image_path = "%s/%s" % (sample_dir, "apple-red.png")
         self.toolstrip_label_image = ToolStripLabel()
         self.toolstrip_label_image.Text = "ToolStripLabel with image"
-        self.toolstrip_label_image.Image = Bitmap.FromFile("apple-red.png")
+        self.toolstrip_label_image.Image = Bitmap.FromFile(image_path)
         self.toolstrip_label_image.ImageAlign = System.Drawing.ContentAlignment.MiddleRight
 
         # add Controls
@@ -66,5 +70,3 @@ class ToolStripLabelSample(Form):
 
 form = ToolStripLabelSample()
 Application.Run(form)
-
-
