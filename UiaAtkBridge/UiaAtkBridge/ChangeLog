@@ -1,3 +1,22 @@
+2008-12-11  Brad Taylor  <brad@getcoded.net>
+
+	* Adapter.cs: Add concept of an Adapter that manages it's own
+	lifecycle, e.g.: isn't removed by HandleBulkRemove.  This is mainly
+	used for "fake" widgets.
+
+	* ParentAdapter.cs: Allow RemoveChild, GetIndexOfChild, and
+	RequestChildren to be overridden.  Also add and call
+	RemoveUnmanagedChildren when a parent is being removed so that it can
+	clean up it's self-managed children, if any.
+	
+	* Makefile.am:
+	* SplitButton.cs:
+	* ExpandCollapseButton.cs: Add classes for emulating Gtk+'s
+	MenuToolBarItem when adapting ToolStripSplitButton.
+
+	* AutomationBridge.cs: Handle the case when we're disposing and
+	interrupted by an event, causing an element to be added, better.
+
 2008-12-05  Mario Carrion  <mcarrion@novell.com>
 
 	* Window.cs: Patch for Bug #444325. Backported from r120352.

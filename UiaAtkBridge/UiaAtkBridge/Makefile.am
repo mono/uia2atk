@@ -55,6 +55,7 @@ FILES =  \
 	Container.cs \
 	DataGrid.cs \
 	DataGridGroup.cs \
+	ExpandCollapseButton.cs \
 	Hyperlink.cs \
 	Image.cs \
 	List.cs \
@@ -70,6 +71,7 @@ FILES =  \
 	ScrollBar.cs \
 	SelectionProviderUserHelper.cs \
 	Spinner.cs \
+	SplitButton.cs \
 	TableImplementorHelper.cs \
 	TextBoxEntryView.cs \
 	TextContainer.cs \

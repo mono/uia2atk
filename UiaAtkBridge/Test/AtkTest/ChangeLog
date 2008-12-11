@@ -1,3 +1,8 @@
+2008-12-11  Brad Taylor  <brad@getcoded.net>
+	
+	* AtkTester.cs:
+	* BasicWidgetType.cs: Add support for ToolStripSplitButton.
+
 2008-12-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Added tests for bug#449599. Fix a typo in the States()

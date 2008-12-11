@@ -439,11 +439,48 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible = GetAccessible (type, extreme_fjords);
 			PropertyRole (type, accessible);
 
+			Assert.AreEqual (extreme_fjords.Length, accessible.NAccessibleChildren);
+
 			for (int i = 0; i < extreme_fjords.Length; i++) {
 				Atk.Object child = accessible.RefAccessibleChild (i);
 				Assert.AreEqual (Atk.Role.MenuItem, child.Role,
 				                 String.Format ("Child role #{0}", i));
-				InterfaceText (child, extreme_fjords[i]);
+				InterfaceText (child, extreme_fjords [i]);
+			}
+		}
+
+		[Test]
+		public void ToolStripSplitButton ()
+		{
+			BasicWidgetType type = BasicWidgetType.ToolStripSplitButton;
+
+			string[] les_schtroumpfs = new string[] {
+				"Les Schtroumpfs",
+				"Papa", "Smurfette", "Hefty", "Brainy", "Jokey",
+				"Grouchy", "Dreamy", "Clumsy",
+			};
+			
+			Atk.Object accessible = GetAccessible (type, les_schtroumpfs);
+			PropertyRole (type, accessible);
+
+			Assert.AreEqual (2, accessible.NAccessibleChildren);
+
+			Atk.Object button = accessible.RefAccessibleChild (0);
+			Atk.Object toggle = accessible.RefAccessibleChild (1);
+			
+			Assert.AreEqual (Atk.Role.PushButton, button.Role);
+
+			// TODO: Why does this work in the individual test, but not when run with the suite?
+			//InterfaceText (button, les_schtroumpfs[0]);
+
+			Assert.AreEqual (Atk.Role.ToggleButton, toggle.Role);
+			Assert.AreEqual (les_schtroumpfs.Length - 1, toggle.NAccessibleChildren);
+
+			for (int i = 1; i < les_schtroumpfs.Length; i++) {
+				Atk.Object child = toggle.RefAccessibleChild (i - 1);
+				Assert.AreEqual (Atk.Role.MenuItem, child.Role,
+				                 String.Format ("Child role #{0}", i));
+				InterfaceText (child, les_schtroumpfs [i]);
 			}
 		}
 

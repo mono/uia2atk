@@ -450,58 +450,75 @@ namespace UiaAtkBridge
 				return;
 
 			int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+
+			// All controls that have TopLevelRootItem as the
+			// parent go here
 			if (controlTypeId == ControlType.Window.Id)
 				HandleNewWindowControlType (simpleProvider);
-			else if (controlTypeId == ControlType.Button.Id)
-				// TODO: Consider generalizing...
-				HandleNewButtonControlType (simpleProvider);
-			else if (controlTypeId == ControlType.Text.Id)
-				HandleNewLabelControlType (simpleProvider);
-			else if (controlTypeId == ControlType.CheckBox.Id)
-				HandleNewCheckBoxControlType (simpleProvider);
-			else if (controlTypeId == ControlType.List.Id)
-				HandleNewListControlType (simpleProvider);
-			else if (controlTypeId == ControlType.ListItem.Id)
-				HandleNewListItemControlType (simpleProvider);
-			else if (controlTypeId == ControlType.ComboBox.Id)
-				HandleNewComboBoxControlType (simpleProvider);
-			else if (controlTypeId == ControlType.StatusBar.Id)
-				HandleNewStatusBarControlType (simpleProvider);
-			else if (controlTypeId == ControlType.ProgressBar.Id)
-				HandleNewProgressBarControlType (simpleProvider);
-			else if (controlTypeId == ControlType.ScrollBar.Id)
-				HandleNewScrollBarControlType (simpleProvider);
-			else if (controlTypeId == ControlType.Group.Id)
-				HandleNewGroupControlType (simpleProvider);
-			else if (controlTypeId == ControlType.RadioButton.Id){
-				HandleNewRadioButtonControlType (simpleProvider);}
-			else if (controlTypeId == ControlType.Spinner.Id)
-				HandleNewSpinnerControlType (simpleProvider);
  			else if (controlTypeId == ControlType.ToolTip.Id)
  				HandleNewToolTipControlType (simpleProvider);
+
+			ParentAdapter parentAdapter = GetParentAdapter (simpleProvider);
+			if (parentAdapter == null) {
+				// We're likely disposing and were interrupted
+				// by an event that is causing an element to be
+				// added.  In the case where the parent hasn't
+				// been created yet, we'll walk its hierarchy
+				// when it is added later.
+				return;
+			}
+
+			// All controls that need parents go here
+			if (controlTypeId == ControlType.Button.Id)
+				// TODO: Consider generalizing...
+				HandleNewButtonControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.Text.Id)
+				HandleNewLabelControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.CheckBox.Id)
+				HandleNewCheckBoxControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.List.Id)
+				HandleNewListControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.ListItem.Id)
+				HandleNewListItemControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.ComboBox.Id)
+				HandleNewComboBoxControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.StatusBar.Id)
+				HandleNewStatusBarControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.ProgressBar.Id)
+				HandleNewProgressBarControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.ScrollBar.Id)
+				HandleNewScrollBarControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.Group.Id)
+				HandleNewGroupControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.RadioButton.Id)
+				HandleNewRadioButtonControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.Spinner.Id)
+				HandleNewSpinnerControlType (simpleProvider, parentAdapter);
  			else if (controlTypeId == ControlType.Hyperlink.Id)
- 				HandleNewHyperlinkControlType (simpleProvider);
+ 				HandleNewHyperlinkControlType (simpleProvider, parentAdapter);
 			else if ((controlTypeId == ControlType.Document.Id) || (controlTypeId == ControlType.Edit.Id))
-				HandleNewDocumentOrEditControlType (simpleProvider);
+				HandleNewDocumentOrEditControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.Image.Id)
-				HandleNewImageControlType (simpleProvider);
+				HandleNewImageControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.ToolBar.Id)
-				HandleNewContainer (simpleProvider);
+				HandleNewContainer (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.Header.Id)
 				AddChildrenToParent (simpleProvider);
 			else if (controlTypeId == ControlType.HeaderItem.Id)
-				HandleNewHeaderItemControlType (simpleProvider);
+				HandleNewHeaderItemControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.MenuBar.Id) //for MenuStrip widget
 				// || (controlTypeId == ControlType.Menu.Id)) //for 1.x Menu widget it seems <- TODO
-				HandleNewMenuBarControlType (simpleProvider);
+				HandleNewMenuBarControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.MenuItem.Id) //for ToolStripMenuItem widget
-				HandleNewMenuItemControlType (simpleProvider);
+				HandleNewMenuItemControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.DataGrid.Id) //for ToolStripMenuItem widget
-				HandleNewDataGridControlType (simpleProvider);
+				HandleNewDataGridControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.DataItem.Id)
 				AddChildrenToParent (simpleProvider);
 			else if (controlTypeId == ControlType.Pane.Id)
-				HandleNewContainer (simpleProvider);			
+				HandleNewContainer (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.SplitButton.Id)
+				HandleNewSplitButton (simpleProvider, parentAdapter);
 			// TODO: Other providers
 			else if (controlTypeId != ControlType.Thumb.Id)
 				Console.WriteLine ("AutomationBridge: Unhandled control: " +
@@ -639,8 +656,9 @@ namespace UiaAtkBridge
 			int index = obj.NAccessibleChildren;
 			while (--index >= 0) {
 				Adapter childAdapter = obj.RefAccessibleChild (index) as Adapter;
-				if (!keep.Contains(childAdapter))
+				if (!keep.Contains(childAdapter) && !childAdapter.ManagesRemoval) {
 					HandleElementRemoval (childAdapter.Provider);
+				}
 			}
 		}
 
@@ -659,32 +677,13 @@ namespace UiaAtkBridge
 			windowProviders++;
 		}
 		
-		private void HandleNewButtonControlType (IRawElementProviderSimple provider)
+		private void HandleNewToolTipControlType (IRawElementProviderSimple provider)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			if (parentObject is UiaAtkBridge.ComboBox)
-				return; //ComboBox will handle its children additions on its own
-			
-			if (parentObject is UiaAtkBridge.List)
-				return; //Not replicating DomainUpDown buttons
-			
-			if ((parentObject == null) || (parentObject.Role == Atk.Role.ScrollBar))
-				return;
+			ToolTip atkToolTip = new ToolTip (provider);
 
-			Button atkButton = new Button (provider);
-			
-			IncludeNewAdapter (atkButton, parentObject);
+			IncludeNewAdapter (atkToolTip, TopLevelRootItem.Instance);
 		}
-		
-		private void HandleNewLabelControlType (IRawElementProviderSimple provider)
-		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			
-			TextLabel atkLabel = new TextLabel (provider);
 
-			IncludeNewAdapter (atkLabel, parentObject);
-		}
-		
 		private bool HandleNewControlWithNativeObject (IRawElementProviderSimple provider)
 		{
 			ParentAdapter parentObject = GetParentAdapter (provider);
@@ -703,22 +702,38 @@ namespace UiaAtkBridge
 			return true;
 		}
 
-		private void HandleNewCheckBoxControlType (IRawElementProviderSimple provider)
+		private void HandleNewButtonControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
+			if (parentObject is UiaAtkBridge.ComboBox)
+				return; //ComboBox will handle its children additions on its own
 			
+			if (parentObject is UiaAtkBridge.List)
+				return; //Not replicating DomainUpDown buttons
+			
+			if ((parentObject == null) || (parentObject.Role == Atk.Role.ScrollBar))
+				return;
+
+			Button atkButton = new Button (provider);
+			
+			IncludeNewAdapter (atkButton, parentObject);
+		}
+
+		private void HandleNewLabelControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		{
+			TextLabel atkLabel = new TextLabel (provider);
+
+			IncludeNewAdapter (atkLabel, parentObject);
+		}
+
+		private void HandleNewCheckBoxControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		{
 			CheckBoxButton atkCheck = new CheckBoxButton (provider);
 
 			IncludeNewAdapter (atkCheck, parentObject);
 		}
 		
-		private void HandleNewListControlType (IRawElementProviderSimple provider)
+		private void HandleNewListControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			if (parentObject == null)
-				//see the TODO in HandleNewComboBoxControlType
-				return;
-			
 			Adapter atkList;
 			if (parentObject is UiaAtkBridge.ComboBox)
 				atkList = new MenuItem (provider);
@@ -730,13 +745,8 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkList, parentObject);
 		}
 
-		private void HandleNewListItemControlType (IRawElementProviderSimple provider)
+		private void HandleNewListItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			if (parentObject == null)
-				//see the TODO in HandleNewComboBoxControlType
-				return;
-
 			Adapter atkItem;
 			if (parentObject is MenuItem)
 				atkItem = new MenuItem (provider);
@@ -746,9 +756,8 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkItem, parentObject);
 		}
 
-		private void HandleNewComboBoxControlType (IRawElementProviderSimple provider)
+		private void HandleNewComboBoxControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
 			if (ComboBox.IsSimple (provider))
 				//TODO:
 				return;
@@ -758,10 +767,8 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkCombo, parentObject);
 		}
 		
-		private void HandleNewStatusBarControlType (IRawElementProviderSimple provider)
+		private void HandleNewStatusBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			
 			TextContainer atkStatus;
 			//FIXME: probably we shouldn't split this in 2 classes
 			//FIXME: not sure if this interface check is correct
@@ -773,28 +780,22 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkStatus, parentObject);
 		}
 
-		private void HandleNewProgressBarControlType (IRawElementProviderSimple provider)
+		private void HandleNewProgressBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			
 			ProgressBar atkProgress = new ProgressBar (provider);
 			
 			IncludeNewAdapter (atkProgress, parentObject);
 		}
 		
-		private void HandleNewScrollBarControlType (IRawElementProviderSimple provider)
+		private void HandleNewScrollBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			
 			ScrollBar atkScroll = new ScrollBar (provider);
 
 			IncludeNewAdapter (atkScroll, parentObject);
 		}
 		
-		private void HandleNewGroupControlType (IRawElementProviderSimple provider)
+		private void HandleNewGroupControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			
 			Adapter newAdapter = null;
 			if (parentObject is DataGrid)
 				newAdapter = new DataGridGroup (provider);
@@ -806,19 +807,15 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (newAdapter, parentObject);
 		}
 		
-		private void HandleNewRadioButtonControlType (IRawElementProviderSimple provider)
+		private void HandleNewRadioButtonControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			
 			RadioButton atkRadio = new RadioButton (provider);
 
 			IncludeNewAdapter (atkRadio, parentObject);
 		}
 		
-		private void HandleNewSpinnerControlType (IRawElementProviderSimple provider)
+		private void HandleNewSpinnerControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			
 			Adapter atkSpinner;
 			if (provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id) != null)
 				if (provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id) != null)
@@ -833,26 +830,15 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkSpinner, parentObject);
 		}
 		
-		private void HandleNewDocumentOrEditControlType (IRawElementProviderSimple provider)
+		private void HandleNewDocumentOrEditControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			
 			Adapter atkEditOrDoc = new TextBoxEntryView (provider);
 			
 			IncludeNewAdapter (atkEditOrDoc, parentObject);
 		}
-		
-		private void HandleNewToolTipControlType (IRawElementProviderSimple provider)
-		{
-			ToolTip atkToolTip = new ToolTip (provider);
 
-			IncludeNewAdapter (atkToolTip, TopLevelRootItem.Instance);
-		}
-
-		private void HandleNewHyperlinkControlType (IRawElementProviderSimple provider)
+		private void HandleNewHyperlinkControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			
 			Adapter atkHyperlink;
 			IInvokeProvider invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 			if (invokeProvider is IHypertext)
@@ -865,42 +851,39 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (atkHyperlink, parentObject);
 		}
 
-		private void HandleNewImageControlType (IRawElementProviderSimple provider)
+		private void HandleNewImageControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			
 			Adapter atkImage = new Image (provider);
 
 			IncludeNewAdapter (atkImage, parentObject);
 		}
 
-		private void HandleNewContainer (IRawElementProviderSimple provider)
+		private void HandleNewContainer (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			
 			Adapter atkContainer = new Container (provider);
 			providerAdapterMapping [provider] = atkContainer;
 			
 			IncludeNewAdapter (atkContainer, parentObject);
 		}
 
-		private void HandleNewMenuBarControlType (IRawElementProviderSimple provider)
+		private void HandleNewMenuBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			
 			MenuBar newMenuBar = new MenuBar (provider);
 
 			IncludeNewAdapter (newMenuBar, parentObject);
 		}
 
-		private void HandleNewMenuItemControlType (IRawElementProviderSimple provider)
+		private void HandleNewMenuItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			if (parentObject == null)
-				return; //doesn't matter, MenuItem will discover its own children during its ctor call
-
 			Adapter newAdapter = new MenuItem (provider);
 			IncludeNewAdapter (newAdapter, parentObject);
+		}
+
+		private void HandleNewSplitButton (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		{
+			SplitButton splitButton = new SplitButton (provider);
+			
+			IncludeNewAdapter (splitButton, parentObject);
 		}
 
 		internal static void IncludeNewAdapter (Adapter newAdapter, ParentAdapter parentAdapter)
@@ -912,17 +895,19 @@ namespace UiaAtkBridge
 //			if (providerAdapterMapping.ContainsKey (newAdapter.Provider))
 //				return;
 
-			if (parentAdapter == null)
+			if (parentAdapter == null) {
+				// Either the parent hasn't been created yet
+				// (and we'll get called later), or we're
+				// currently being destroyed
 				return;
+			}
 
 			providerAdapterMapping [newAdapter.Provider] = newAdapter;
 			parentAdapter.AddOneChild (newAdapter);
 		}
 		
-		private void HandleNewDataGridControlType (IRawElementProviderSimple provider)
+		private void HandleNewDataGridControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-
 			Adapter newAdapter = new DataGrid (provider);
 
 			IncludeNewAdapter (newAdapter, parentObject);
@@ -943,10 +928,8 @@ namespace UiaAtkBridge
 			}
 		}
 
-		private void HandleNewHeaderItemControlType (IRawElementProviderSimple provider)
+		private void HandleNewHeaderItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			ParentAdapter parentObject = GetParentAdapter (provider);
-			
 			TextLabel atkLabel = new TextLabel (provider);
 
 			IncludeNewAdapter (atkLabel, parentObject);

@@ -45,6 +45,15 @@ namespace UiaAtkBridge
 #region Adapter Methods
 	
 		public IRawElementProviderSimple Provider { get; private set; }
+
+		protected bool manages_removal = true;
+
+		// Returns true if this object will manage it's own removal
+		// from the automation tree
+		public virtual bool ManagesRemoval {
+			get { return manages_removal; }
+			set { manages_removal = value; }
+		}
 		
 		public virtual void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
