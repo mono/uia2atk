@@ -94,6 +94,27 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripItem
 				item.Owner.BeginInvoke (new SWF.MethodInvoker (PerformClick));
 				return;
 			}
+
+			// PerformClick does _not_ show/hide the DropDown, so
+			// we must do this manually.  On Vista, clicking the
+			// button appears to both Show the drop down and
+			// Perform a click, so we emulate that behavior.
+			if (item is SWF.ToolStripDropDownButton) {
+				SWF.ToolStripDropDownButton dropDown = (SWF.ToolStripDropDownButton) item;
+				if (!dropDown.Pressed) {
+					dropDown.ShowDropDown ();
+				} else {
+					dropDown.HideDropDown ();
+				}
+			} else if (item is SWF.ToolStripMenuItem) {
+				SWF.ToolStripMenuItem menuItem = (SWF.ToolStripMenuItem) item;
+				if (!menuItem.Pressed) {
+					menuItem.ShowDropDown ();
+				} else {
+					menuItem.HideDropDown ();
+				}
+			}
+
 			item.PerformClick ();
 		}
 		

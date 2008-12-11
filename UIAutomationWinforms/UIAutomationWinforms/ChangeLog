@@ -1,3 +1,8 @@
+2008-12-11  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs: 
+	Make the Invoke action pop down the menu as well as click on it.
+
 2008-12-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:
