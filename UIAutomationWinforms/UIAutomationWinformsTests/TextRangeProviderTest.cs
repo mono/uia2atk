@@ -1031,7 +1031,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (0, range.GetAttributeValue (TextPattern.BackgroundColorAttribute.Id));
 			Assert.AreEqual (BulletStyle.None, range.GetAttributeValue (TextPattern.BulletStyleAttribute.Id));
 			Assert.AreEqual (CapStyle.None, range.GetAttributeValue (TextPattern.CapStyleAttribute.Id));
-			Assert.AreEqual ("Arial", range.GetAttributeValue (TextPattern.FontNameAttribute.Id));
+			Assert.AreEqual (textbox.Font.FontFamily.Name, range.GetAttributeValue (TextPattern.FontNameAttribute.Id));
 		}
 
 		[Test]
@@ -1044,7 +1044,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			range1 = text_provider.DocumentRange.Clone ();
 
 			range2 = range1.FindAttribute (TextPattern.FontNameAttribute.Id,
-			                               "Arial", false);
+			                               textbox.Font.FontFamily.Name, false);
 			Assert.AreEqual ("abc\n123\n456", range2.GetText (-1));
 		}
 
@@ -1072,7 +1072,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			range1 = provider.DocumentRange.Clone ();
 
 			range2 = range1.FindAttribute (TextPattern.FontNameAttribute.Id,
-			                               "Arial", false);
+			                               textbox.Font.FontFamily.Name, false);
 			Assert.AreEqual ("abc\n123\n456", range2.GetText (-1));
 			
 			range2 = range1.FindAttribute (TextPattern.ForegroundColorAttribute.Id,

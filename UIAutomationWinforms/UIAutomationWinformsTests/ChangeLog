@@ -1,5 +1,9 @@
 2008-12-11  Mario Carrion  <mcarrion@novell.com>
 
+	* TextRangeProviderTest.cs: "Arial" -> textbox.Font.FontFamily.Name
+
+2008-12-11  Mario Carrion  <mcarrion@novell.com>
+
 	* BaseProviderTest.cs:
 	* HelpProviderTest.cs:
 	* ErrorProviderTest.cs:
