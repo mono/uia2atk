@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -181,8 +182,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			do {
 				childParent = childProvider.Navigate (NavigateDirection.Parent);
-				Assert.AreSame (rootProvider, childParent,
-				                "Each child must have same parent");
+				Assert.AreEqual (rootProvider, childParent,
+				                 "Each child must have same parent");
 				name = (string) childProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 				Assert.AreEqual (string.Format ("Panel: {0}", index++), 
 				                 name, "Different names");
@@ -200,24 +201,25 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		#region StatusBarPanel Test
 
-        	[Test]
-        	public void StatusBarPanelBasicPropertiesTest ()
-        	{
-            		StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
+		[Test]
+		public void StatusBarPanelBasicPropertiesTest ()
+		{
+			StatusBar statusBar = new StatusBar ();
+			IRawElementProviderFragmentRoot rootProvider =
 				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
 			
 			statusBar.Panels.Add ("Panel");
 			IRawElementProviderFragment childProvider =
 				rootProvider.Navigate (NavigateDirection.FirstChild);
 
+			
 			TestProperty (childProvider,
 			              AutomationElementIdentifiers.ControlTypeProperty,
-			              ControlType.Edit.Id);
-
+			              ControlType.Text.Id);
+			
 			TestProperty (childProvider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
-			              "edit");
+			              "text");
 			
 			string value = "StatusBarPanel Name Property";
 			statusBar.Panels [0].Text = value;
@@ -239,10 +241,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			object valueProvider =
 				childProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider,
-			                  "Not returning ValuePatternIdentifiers.");
-			Assert.IsTrue (valueProvider is IValueProvider,
-			               "Not returning ValuePatternIdentifiers.");
+			Assert.IsNull (valueProvider,
+			                  "Should not return ValuePatternIdentifiers.");
 			
 			object gridItemProvider =
 				childProvider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
@@ -252,70 +252,66 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			               "Not returning GridItemPatternIdentifiers.");
 		}
 
-		#endregion
-		
-		#region StatusBarPanel IValuePattern Test
-		
 		[Test]
-		public void StatusBarPanelIValueProviderIsReadOnlyTest ()
+		public void StatusBarPanelNamePropertyChangedEventTest ()
 		{
 			StatusBar statusBar = new StatusBar ();
             		IRawElementProviderFragmentRoot rootProvider =
 				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
+
+			string panelName = "original panel name";
+			StatusBarPanel panel = new StatusBarPanel ();
+			panel.Text = panelName;
 			
-			statusBar.Panels.Add ("Panel");
+			statusBar.Panels.Add (panel);
 			IRawElementProviderFragment childProvider =
 				rootProvider.Navigate (NavigateDirection.FirstChild);
-			
-			IValueProvider valueProvider = (IValueProvider)
-				childProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider,
-			                  "Not returning ValuePatternIdentifiers.");
-			
-			Assert.IsTrue (valueProvider.IsReadOnly, "IsReadOnly value");
-		}
-		
-		[Test]
-		public void StatusBarPanelIValueProviderValueTest ()
-		{
-			StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
-				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
-			
-			string value = "Panel";
-			statusBar.Panels.Add (value);
-			IRawElementProviderFragment childProvider =
-				rootProvider.Navigate (NavigateDirection.FirstChild);
-			
-			IValueProvider valueProvider = (IValueProvider)
-				childProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider,
-			                  "Not returning ValuePatternIdentifiers.");
-			
-			Assert.AreEqual (value, valueProvider.Value, "Value value");
-		}
-		
-		[Test]
-		public void StatusBarPanelIValueProviderSetValueTest ()
-		{
-			StatusBar statusBar = new StatusBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
-				(IRawElementProviderFragmentRoot) GetProviderFromControl (statusBar);
-			
-			statusBar.Panels.Add ("Panel");
-			IRawElementProviderFragment childProvider =
-				rootProvider.Navigate (NavigateDirection.FirstChild);
-			
-			IValueProvider valueProvider = (IValueProvider)
-				childProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (valueProvider,
-			                  "Not returning ValuePatternIdentifiers.");
-			
-			try {
-				string value = "Another Panel";
-				valueProvider.SetValue (value);
-				Assert.Fail ("ElementNotEnabledException not thrown.");
-			} catch (ElementNotEnabledException) { }
+
+			TestProperty (childProvider,
+			              AutomationElementIdentifiers.NameProperty,
+			              panelName);
+
+			bridge.ResetEventLists ();
+
+			string newPanelName = "new panel name";
+			panel.Text = newPanelName;
+
+			TestProperty (childProvider,
+			              AutomationElementIdentifiers.NameProperty,
+			              newPanelName);
+
+			Assert.AreEqual (1,
+			                 bridge.AutomationPropertyChangedEvents.Count,
+			                 "Name property change event expected");
+			AutomationPropertyChangedEventTuple eventTuple =
+				bridge.AutomationPropertyChangedEvents [0];
+			Assert.AreEqual (childProvider,
+			                 eventTuple.element,
+			                 "event sender");
+			Assert.AreEqual (AutomationElementIdentifiers.NameProperty,
+			                 eventTuple.e.Property,
+			                 "event property");
+			Assert.AreEqual (newPanelName,
+			                 eventTuple.e.NewValue,
+			                 "event new value");
+			Assert.AreEqual (panelName,
+			                 eventTuple.e.OldValue,
+			                 "event old value");
+
+			Assert.AreEqual (1,
+			                 bridge.AutomationEvents.Count,
+			                 "TextPattern text change event expected");
+			AutomationEventTuple eventTuple2 =
+				bridge.AutomationEvents [0];
+			Assert.AreEqual (childProvider,
+			                 eventTuple2.provider,
+			                 "event sender");
+			Assert.AreEqual (TextPatternIdentifiers.TextChangedEvent,
+			                 eventTuple2.eventId,
+			                 "event id");
+			Assert.AreEqual (TextPatternIdentifiers.TextChangedEvent,
+			                 eventTuple2.e.EventId,
+			                 "event id");
 		}
 
 		#endregion

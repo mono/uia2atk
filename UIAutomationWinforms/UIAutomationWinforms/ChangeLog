@@ -1,3 +1,16 @@
+2008-12-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs:
+	* Mono.UIAutomation.Winforms.Events/StatusBar/TextPatternTextChangedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/StatusBar/AutomationNamePropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelValuePatternValueEvent.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelValueProviderBehavior.cs:
+	Change ControlType from Edit to Text.  Remove ValuePattern support. 
+	Support NameProperty change event and TextPatternTextChangedEvent. 
+	Fixes bug #449317 and bug #448465 (backported from trunk).
+
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: Use $(MONO_UIA_LIBS) instead of hardcoding paths.
