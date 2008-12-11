@@ -396,6 +396,10 @@ namespace UiaAtkBridgeTest
 
 			EditReadOnly (accessible);
 
+			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+			atkComponent.GrabFocus ();
+			Assert.IsTrue (accessible.RefStateSet().ContainsState (Atk.StateType.Focused), "Atk.StateType.Focused");
+
 			dud1.Items.Clear ();
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren after clear [need SWF fix]");
 		}

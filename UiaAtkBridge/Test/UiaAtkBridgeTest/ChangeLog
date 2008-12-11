@@ -1,5 +1,9 @@
 2008-12-10  Mike Gorse  <mgorse@novell.com>
 
+	* BridgeTests.cs: Test that DomainupDown reports Focused.
+
+2008-12-10  Mike Gorse  <mgorse@novell.com>
+
 	* BridgeTests.cs: Test state/EditableText for DomainUpDown when
 	  ReadOnly.
 

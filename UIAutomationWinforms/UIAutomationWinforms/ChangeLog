@@ -1,3 +1,9 @@
+2008-12-11  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternIsReadOnlyEvent.cs:
+	  Use TextBox ReadOnlyChanged event.
+
 2008-12-10  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementRemovedEvent.cs:
