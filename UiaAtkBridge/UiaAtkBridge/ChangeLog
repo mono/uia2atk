@@ -1,5 +1,9 @@
 2008-12-10  Mike Gorse  <mgorse@novell.com>
 
+	* Adapter.cs: Only set description if non-null.
+
+2008-12-10  Mike Gorse  <mgorse@novell.com>
+
 	* SelectionProviderUserHelper.cs: Ignore items without SelectionItemProvider.
 
 	* TextLabel.cs: Set role for Hyperlinks.

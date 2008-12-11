@@ -38,8 +38,11 @@ namespace UiaAtkBridge
 		public Adapter (IRawElementProviderSimple provider)
 		{
 			Provider = provider;
-			if (Provider != null)
-				Description = (string) Provider.GetPropertyValue (AutomationElementIdentifiers.HelpTextProperty.Id);
+			if (Provider != null) {
+				string desc = (string) Provider.GetPropertyValue (AutomationElementIdentifiers.HelpTextProperty.Id);
+				if (desc != null)
+					Description = desc;
+			}
 		}
 		
 #endregion

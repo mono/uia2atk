@@ -1,3 +1,9 @@
+2008-12-10  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementRemovedEvent.cs:
+	  Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementAddedEvent.cs:
+	  Only raise when the change corresponds with the event.
+
 2008-12-10  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: ToolBarButton is
@@ -785,7 +791,7 @@
 	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs, Makefile.am,
 	  Mono.UIAutomation.Winforms.Events/DomainUpDown/DomainUpDownAutomationHasKeyboardFocusPropertyEvent.cs,
 	  Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemAutomationHasKeyboardFocusPropertyEvent.cs:
-	  Set focus on the spinner when the use ris editing text.
+	  Set focus on the spinner when the user is editing text.
 
 2008-11-19  Mario Carrion  <mcarrion@novell.com>
 
