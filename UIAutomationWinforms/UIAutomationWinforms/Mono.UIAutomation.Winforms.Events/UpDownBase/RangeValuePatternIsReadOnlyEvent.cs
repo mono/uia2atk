@@ -26,7 +26,7 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Events.UpDownBase
@@ -46,13 +46,13 @@ namespace Mono.UIAutomation.Winforms.Events.UpDownBase
 
 		public override void Connect ()
 		{
-			Provider.Control.EnabledChanged +=
+			UpDownBase.txtView.ReadOnlyChanged +=
 				new EventHandler (OnIsReadOnlyChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			Provider.Control.EnabledChanged -=
+			UpDownBase.txtView.ReadOnlyChanged -=
 				new EventHandler (OnIsReadOnlyChanged);
 		}
 		
@@ -65,6 +65,9 @@ namespace Mono.UIAutomation.Winforms.Events.UpDownBase
 			RaiseAutomationPropertyChangedEvent ();
 		}
 		
+		SWF.UpDownBase UpDownBase {
+			get { return (SWF.UpDownBase)Provider.Control; }
+		}
 		#endregion
 	}
 }

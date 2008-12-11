@@ -414,7 +414,17 @@ namespace Mono.UIAutomation.Winforms
 					OnNavigationChildAdded (raiseEvent, groupProvider);
 				}
 
-				ListItemProvider item = GetItemProviderFrom (groupProvider, objectItem);
+				ListItemProvider item = GetItemProviderFrom (this, objectItem, false);
+				if (item != null) {
+					// Probably an item switching groups
+					ListViewGroupProvider oldGroupProvider = (ListViewGroupProvider)item.Navigate (NavigateDirection.Parent);
+					if (oldGroupProvider != groupProvider) {
+						oldGroupProvider.RemoveItemFrom (item);
+						RemoveItemFrom (objectItem);
+					}
+				}
+
+				item = GetItemProviderFrom (groupProvider, objectItem);
 				groupProvider.AddChildProvider (raiseEvent, item);
 			// Not using groups
 			} else {
@@ -676,6 +686,12 @@ namespace Mono.UIAutomation.Winforms
 					return headerRect;
 				}
 			}						
+
+			internal void RemoveItemFrom (ListItemProvider child)
+			{
+				OnNavigationChildRemoved (true, child);
+				child.Terminate ();
+			}
 
 			private SWF.ListView listView;
 			private SWF.ListViewGroup group;

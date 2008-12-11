@@ -61,7 +61,7 @@ namespace Mono.UIAutomation.Winforms.Events.DomainUpDown
 #region Private Methods
 		private void OnElementAddedToSelectionEvent (object sender, EventArgs args)
 		{
-			if (IsSelected != selected) {
+			if (!selected && IsSelected) {
 				RaiseAutomationEvent ();
 			}
 			

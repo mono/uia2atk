@@ -61,21 +61,16 @@ namespace UiaAtkBridge
 		public bool AddSelection (int i)
 		{
 			ISelectionItemProvider childItem;
-			try {
-				childItem = ChildItemAtIndex (i);
-			} catch (System.IndexOutOfRangeException) {
-				// This is arguably not right, but it is what gail does
+			childItem = ChildItemAtIndex (i);
+			if (childItem == null)
+				// TODO: Report gail bug, and return false instead
 				return true;
-			}
 			
-			if (childItem != null) {
-				if (selectionProvider.CanSelectMultiple)
-					childItem.AddToSelection();
-				else
-					childItem.Select();
-				return true;
-			}
-			return false;
+			if (selectionProvider.CanSelectMultiple)
+				childItem.AddToSelection();
+			else
+				childItem.Select();
+			return true;
 		}
 
 		public bool ClearSelection ()
@@ -105,16 +100,11 @@ namespace UiaAtkBridge
 		public bool IsChildSelected (int i)
 		{
 			ISelectionItemProvider childItem;
-			try {
-				childItem = ChildItemAtIndex (i);
-			} catch (System.IndexOutOfRangeException) {
+			childItem = ChildItemAtIndex (i);
+			if (childItem == null)
 				return false;
-			}
 
-			if (childItem != null) {
-				return childItem.IsSelected;
-			}
-			return false;
+			return childItem.IsSelected;
 		}
 		
 		public Atk.Object RefSelection (int i)
@@ -129,11 +119,7 @@ namespace UiaAtkBridge
 		public bool RemoveSelection (int i)
 		{
 			ISelectionItemProvider childItem;
-			try {
-				childItem = ChildItemAtIndex (i);
-			} catch (System.IndexOutOfRangeException) {
-				return false;
-			}
+			childItem = ChildItemAtIndex (i);
 
 			if(childItem != null) {
 				try {
@@ -163,7 +149,7 @@ namespace UiaAtkBridge
 					selectionItemProvider.AddToSelection();
 				} else
 					return false;
-				child.Navigate (NavigateDirection.NextSibling);
+				child = child.Navigate (NavigateDirection.NextSibling);
 			}	
 			return true;
 		}
@@ -177,20 +163,17 @@ namespace UiaAtkBridge
 				childrenHolder.Navigate(NavigateDirection.FirstChild);
 			int childCount = 0;
 			
-			while( (child != null) && (childCount != i) ) {
+			while (child != null) {
+				ISelectionItemProvider selectionItemProvider = 
+					(ISelectionItemProvider)child.GetPatternProvider
+						(SelectionItemPatternIdentifiers.Pattern.Id);
+				if (selectionItemProvider != null && childCount == i)
+					return selectionItemProvider;
+				else if (selectionItemProvider != null)
+					childCount++;
 				child = child.Navigate(NavigateDirection.NextSibling);
-				childCount++;
 			}
 			
-			if (child == null) {
-				throw new System.IndexOutOfRangeException();
-			}
-			ISelectionItemProvider selectionItemProvider = 
-				(ISelectionItemProvider)child.GetPatternProvider
-					(SelectionItemPatternIdentifiers.Pattern.Id);
-				
-			if (selectionItemProvider != null)
-				return selectionItemProvider;
 			return null;
 		}
 		

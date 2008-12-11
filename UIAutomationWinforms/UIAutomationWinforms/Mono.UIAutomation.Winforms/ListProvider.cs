@@ -82,9 +82,18 @@ namespace Mono.UIAutomation.Winforms
 		public virtual ListItemProvider GetItemProviderFrom (FragmentRootControlProvider rootProvider,
 		                                                     object objectItem)
 		{
+			return GetItemProviderFrom (rootProvider, objectItem, true);
+		}
+
+		public virtual ListItemProvider GetItemProviderFrom (FragmentRootControlProvider rootProvider,
+		                                                     object objectItem,
+		                                                     bool create)
+		{
 			ListItemProvider item = null;
 			
 			if (items.TryGetValue (objectItem, out item) == false) {
+				if (!create)
+					return null;
 				item = GetNewItemProvider (rootProvider,
 				                           GetItemsListProvider (),
 				                           Control,

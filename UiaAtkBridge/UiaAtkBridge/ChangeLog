@@ -1,3 +1,22 @@
+2008-12-11  Mike Gorse  <mgorse@novell.com>
+
+	* TextLabel.cs: Set role for Hyperlinks.  Backport from R121257.
+
+	* SelectionProviderUserHelper.cs: Ignore items without
+	  SelectionItemProvider.  Backport from R121257.
+
+	* SelectionProviderUserHelper.cs: Fix infinite loop in
+	  SelectAllSelection.  Backport from R121204.
+
+	* List.cs, DataGrid.cs: Support ControlType property change.
+	  Backport from R119842 and R121102.
+
+	* ActionImplementorHelper.cs: Add Remove().
+	* ListItem.cs: Handle IsTogglePatternAvailable change.
+	  Backport from R121257.
+
+	* ListGroup.cs: Set name in constructor.  Backport from R121102.
+
 2008-12-11  Brad Taylor  <brad@getcoded.net>
 
 	* Adapter.cs: Add concept of an Adapter that manages it's own

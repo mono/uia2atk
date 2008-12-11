@@ -60,7 +60,7 @@ namespace Mono.UIAutomation.Winforms.Events.DomainUpDown
 #region Private Methods
 		private void OnElementRemovedEvent (object sender, EventArgs args)
 		{
-			if (IsSelected != selected) {
+			if (selected && !IsSelected) {
 				RaiseAutomationEvent ();
 			}
 			

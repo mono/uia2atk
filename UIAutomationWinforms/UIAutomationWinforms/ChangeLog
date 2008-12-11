@@ -1,3 +1,20 @@
+2008-12-11  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/UpDownBase/ValuePatternIsReadOnlyEvent.cs:
+	  Use TextBox ReadOnlyChanged event.  Backport from R121323.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs:
+	  Handle an item's group changing.
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Add GetItemProviderFrom
+	  variant that does not create a new provider.
+	  Backport from R121102/121204.
+
+	* Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementRemovedEvent.cs:
+	  Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementAddedEvent.cs:
+	  Only raise when the change corresponds with the event.
+	  Backport from R121323.
+
 2008-12-11  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs: 

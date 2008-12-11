@@ -327,6 +327,14 @@ namespace UiaAtkBridge
 			}
 			else if (e.Property == TogglePatternIdentifiers.ToggleStateProperty)
 				NotifyStateChange (Atk.StateType.Checked, IsChecked ((ToggleState)e.NewValue));
+			else if (e.Property == AutomationElementIdentifiers.IsTogglePatternAvailableProperty) {
+				if ((bool)e.NewValue == true) {
+					toggleProvider = (IToggleProvider) Provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
+					actionExpert.Add ("toggle", "toggle", null, DoToggle);
+				} else {
+					toggleProvider = null;
+					actionExpert.Remove ("toggle");
+				}
 			else
 				base.RaiseAutomationPropertyChangedEvent (e);
 		}
