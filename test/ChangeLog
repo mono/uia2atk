@@ -1,3 +1,10 @@
+2008-12-10 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/gtklist_selection_multiple.py: added a Gtk.List sample
+	that uses multiple selection mode (i.e., it allows multiple list items
+	to be selected at once.
+	* samples/gtklist_selection_single.py: renamed from gtklist.py
+
 2008-12-10  Calen Chen <cachen@novell.com>
 
 	* samples/toolstriptextbox.py: add new example:textbox1 with SingleLine
