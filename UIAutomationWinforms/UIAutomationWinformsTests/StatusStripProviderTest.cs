@@ -213,7 +213,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			} while (childProvider != null);
 			Assert.AreEqual (elements, index, "Elements Added = Elements Navigated");
 
-			statusStrip.Items.Clear ();
+			// TODO: Uncomment this line and remove the for loop
+			//statusStrip.Items.Clear ();
+			for (; statusStrip.Items.Count > 0; )
+				statusStrip.Items.RemoveAt (0);
 
 			// FIXME: We need to patch SWF.
 			childProvider = rootProvider.Navigate (NavigateDirection.FirstChild);
