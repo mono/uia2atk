@@ -335,6 +335,7 @@ namespace UiaAtkBridge
 					toggleProvider = null;
 					actionExpert.Remove ("toggle");
 				}
+			}
 			else
 				base.RaiseAutomationPropertyChangedEvent (e);
 		}
