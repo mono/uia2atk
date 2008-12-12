@@ -103,11 +103,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 			if (IsSelected == false)
 				return;
 			
-			if (itemProvider.ListProvider.Control.InvokeRequired == true) {
-				itemProvider.ListProvider.Control.BeginInvoke (new MethodInvoker (RemoveFromSelection));
-				return;
-			}
-			
 			bool multipleSelection = 
 				(bool) itemProvider.ListProvider.GetPropertyValue (SelectionPatternIdentifiers.CanSelectMultipleProperty.Id);
 			bool selectionRequired =
@@ -120,7 +115,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 			         && itemProvider.ListProvider.SelectedItemsCount == 1)
 				throw new InvalidOperationException ();	
 			else
-				itemProvider.ListProvider.UnselectItem (itemProvider);
+				PerformUnselect ();
+		}
+
+		private void PerformUnselect ()
+		{
+			if (itemProvider.ListProvider.Control.InvokeRequired == true) {
+				itemProvider.ListProvider.Control.BeginInvoke (new MethodInvoker (PerformUnselect));
+				return;
+			}
+			itemProvider.ListProvider.UnselectItem (itemProvider);
 		}
 
 		public void Select ()
