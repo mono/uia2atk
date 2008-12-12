@@ -1,3 +1,7 @@
+2008-12-12  Mario Carrion  <mcarrion@novell.com>
+
+	* RadioButtonProviderTest.cs: Testing ElementSelectedEvent.
+
 2008-12-11  Mario Carrion  <mcarrion@novell.com>
 
 	* TextRangeProviderTest.cs: "Arial" -> textbox.Font.FontFamily.Name

@@ -252,7 +252,44 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void ElementSelectedEventTest ()
 		{
-			Assert.Fail ("Not implemented");
+			RadioButton r1 = new RadioButton ();
+			r1.Checked = false;
+			
+			RadioButton r2 = new RadioButton ();
+			r2.Checked = false;
+
+			GroupBox gbox = new GroupBox ();
+			gbox.Controls.Add (r1);
+			gbox.Controls.Add (r2);
+			
+			Form.Controls.Add (gbox);
+			
+			IRawElementProviderSimple provider1 = ProviderFactory.GetProvider (r1);
+			
+			ISelectionItemProvider selectionItem1 = (ISelectionItemProvider)
+				provider1.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+			
+			IRawElementProviderSimple provider2 = ProviderFactory.GetProvider (r2);
+			ISelectionItemProvider selectionItem2 = (ISelectionItemProvider)
+				provider2.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+
+			bridge.ResetEventLists ();
+
+			Assert.AreEqual (0,
+			                 bridge.GetAutomationEventCount (SelectionItemPatternIdentifiers.ElementSelectedEvent),
+			                 "Provider not selected");
+			selectionItem1.Select ();
+			Assert.AreEqual (1,
+			                 bridge.GetAutomationEventCount (SelectionItemPatternIdentifiers.ElementSelectedEvent),
+			                 "Provider not selected");
+
+			AutomationEventTuple tuple
+				= bridge.GetAutomationEventFrom (provider1,
+				                                 SelectionItemPatternIdentifiers.ElementSelectedEvent.Id);
+			Assert.IsNotNull (tuple, "Selected Item should be the provider calling Select");
+
+			Assert.IsTrue (selectionItem1.IsSelected, "Radio Button 1 is selected");
+			Assert.IsFalse (selectionItem2.IsSelected, "Radio Button 2 is not selected");
 		}
 
 		[Test]
