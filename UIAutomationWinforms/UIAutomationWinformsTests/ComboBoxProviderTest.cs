@@ -423,6 +423,39 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "Simple: ValuePattern Pattern IS supported");
 		}
 
+		[Test]
+		public void Bug456336Test ()
+		{
+			// Verify with ComboBoxStyle.DropDown that the TextBox
+			// is focused, not the combo
+			ComboBox combobox = GetComboBox ();
+			combobox.Items.Add ("dummy 0");
+			combobox.DropDownStyle = ComboBoxStyle.DropDown;
+			Form.Controls.Add (combobox);
+			Form.Show ();
+
+			combobox.Focus ();
+
+			IRawElementProviderFragmentRoot rootProvider
+				= (IRawElementProviderFragmentRoot) GetProviderFromControl (combobox);
+
+			TestProperty (rootProvider,
+			              AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.ComboBox.Id);
+			
+			Assert.IsFalse (
+				(bool) rootProvider.GetPropertyValue (
+					AutomationElementIdentifiers.HasKeyboardFocusProperty.Id),
+				"ComboBox has keyboard focus when it shouldn't");
+
+			IRawElementProviderSimple textBoxProvider
+				=  rootProvider.Navigate (NavigateDirection.FirstChild);
+			
+			Assert.IsTrue (
+				(bool) textBoxProvider.GetPropertyValue (
+					AutomationElementIdentifiers.HasKeyboardFocusProperty.Id),
+				"TextBox does not have keyboard focus when it should");
+		}
 
 		#endregion
 

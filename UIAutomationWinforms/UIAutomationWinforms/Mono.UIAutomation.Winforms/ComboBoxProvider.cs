@@ -23,11 +23,13 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using System.Collections.Generic;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using SWF = System.Windows.Forms;
 using System.Windows;
+using System.Windows.Automation;
+using System.Collections.Generic;
+using SWF = System.Windows.Forms;
+using System.Windows.Automation.Provider;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
+
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 using Mono.UIAutomation.Winforms.Behaviors.ComboBox;
@@ -67,12 +69,15 @@ namespace Mono.UIAutomation.Winforms
 
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.ComboBox.Id;
-			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
 				return true;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
 				return "combo box";
+			else if (propertyId == AEIds.HasKeyboardFocusProperty.Id
+				 && comboboxControl.DropDownStyle == SWF.ComboBoxStyle.DropDown)
+				return false;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
@@ -152,6 +157,9 @@ namespace Mono.UIAutomation.Winforms
 				             null);
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new ValueProviderBehavior (this));
+
+				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+					  new AutomationHasKeyboardFocusPropertyEvent (this));
 				
 				TerminateButtonProvider (generateEvent);
 				InitializeEditProvider (generateEvent);
@@ -160,6 +168,9 @@ namespace Mono.UIAutomation.Winforms
 				             new ExpandCollapseProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new ValueProviderBehavior (this));
+
+				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+					  null);
 				
 				InitializeButtonProvider (generateEvent);
 				InitializeEditProvider (generateEvent);
@@ -168,6 +179,9 @@ namespace Mono.UIAutomation.Winforms
 				             new ExpandCollapseProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern, 
 				             null);
+
+				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+					  new AutomationHasKeyboardFocusPropertyEvent (this));
 				
 				InitializeButtonProvider (generateEvent);
 				TerminateEditProvider (generateEvent);
@@ -181,12 +195,13 @@ namespace Mono.UIAutomation.Winforms
 					= Helper.GetPrivateProperty<SWF.ComboBox, SWF.TextBox> (typeof (SWF.ComboBox), 
 					                                                        comboboxControl, 
 					                                                        "UIATextBox");
-				textboxProvider = (TextBoxProvider) ProviderFactory.GetProvider (textbox);
+				textboxProvider = new ComboBoxTextBoxProvider (textbox, this);
 				textboxProvider.Initialize ();
+
 				OnNavigationChildAdded (generateEvent, textboxProvider);
 			}
 		}
-		
+
 		private void TerminateEditProvider (bool generateEvent)
 		{
 			if (textboxProvider != null) {
@@ -254,6 +269,8 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.List.Id;
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return true;
+				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return "list";
@@ -604,5 +621,41 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 		
+		#region Internal Class: TextBox provider
+	
+		internal class ComboBoxTextBoxProvider : TextBoxProvider
+		{
+			public ComboBoxTextBoxProvider (SWF.TextBox textbox,
+			                                ComboBoxProvider comboProvider)
+				: base (textbox)
+			{
+				this.comboProvider = comboProvider;
+			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+
+				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+				          new TextBoxAutomationHasKeyboardFocusPropertyEvent (this, comboProvider));
+			}
+
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id) {
+					// This control cannot be selected, but
+					// it can still be keyboard focused, so
+					// we override it manually.
+					return Control.CanFocus;
+				}
+
+				return base.GetProviderPropertyValue (propertyId);
+			}
+
+			private ComboBoxProvider comboProvider;
+		}
+
+		#endregion
+
 	}
 }
