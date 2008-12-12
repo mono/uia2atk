@@ -1,3 +1,9 @@
+2008-12-12  Brad Taylor  <brad@getcoded.net>
+
+	* TextBoxProviderTest.cs: 
+	* RichTextBoxProviderTest.cs: Test that the MaxLength property works
+	for #457925.
+
 2008-12-12  Mario Carrion  <mcarrion@novell.com>
 
 	* DomainUpDownProviderTest.cs: Testing

@@ -44,6 +44,30 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return new TextBox ();
 		}
 
+		[Test]
+		public void MaxLengthTest ()
+		{
+			TextBox textBox;
+			IRawElementProviderSimple provider;
+			GetProviderAndControl (out provider, out textBox);
+
+			IValueProvider valueProvider
+				= (IValueProvider) provider.GetPatternProvider (
+					ValuePatternIdentifiers.Pattern.Id);
+
+			textBox.MaxLength = 0;
+			valueProvider.SetValue (TEST_MESSAGE);
+			Assert.AreEqual (TEST_MESSAGE, valueProvider.Value);
+
+			textBox.MaxLength = 1;
+			valueProvider.SetValue (TEST_MESSAGE);
+			Assert.AreEqual ("O", valueProvider.Value);
+
+			textBox.MaxLength = 5;
+			valueProvider.SetValue (TEST_MESSAGE);
+			Assert.AreEqual ("One m", valueProvider.Value);
+		}
+
 #region IScrollProvider Tests
 		
 		// No good way to share this:

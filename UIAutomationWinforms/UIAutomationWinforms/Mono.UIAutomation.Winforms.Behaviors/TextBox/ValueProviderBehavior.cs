@@ -100,6 +100,23 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		
 		#endregion
 
+		#region Private Properties
+		
+		private int MaxLength {
+			get {
+				int maxLength = 0;
+				if (Provider.Control is System.Windows.Forms.TextBox) {
+					maxLength = ((System.Windows.Forms.TextBox) Provider.Control).MaxLength;
+				} else if (Provider.Control is RichTextBox) {
+					maxLength = ((RichTextBox) Provider.Control).MaxLength;
+				}
+				// NOTE: MaxLength when set on MaskedTextBox always returns 32767.
+				return maxLength;
+			}
+		}
+		
+		#endregion
+
 		#region Private Members
 		
 		private void PerformSetValue (string value)
@@ -108,6 +125,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 				Provider.Control.BeginInvoke (new SetValueDelegate (PerformSetValue),
 				                              new object [] {value});
 				return;
+			}
+
+			if (MaxLength > 0
+			    && value.Length > MaxLength) {
+				value = value.Substring (0, MaxLength);
 			}
 			
 			Provider.Control.Text = value;

@@ -1,3 +1,9 @@
+2008-12-12  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/ValueProviderBehavior.cs: 
+	SWF ignores MaxLength when you set Control.Text programmatically, so we
+	need to truncate the text ourselves.  [Fixes #457925]
+
 2008-12-12  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/UpDownBaseProvider.cs: FIXME added.
