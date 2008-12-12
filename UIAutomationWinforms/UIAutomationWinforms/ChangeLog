@@ -1,5 +1,9 @@
 2008-12-12  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/UpDownBaseProvider.cs: FIXME added.
+
+2008-12-12  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Printing complete class
 	name.
 

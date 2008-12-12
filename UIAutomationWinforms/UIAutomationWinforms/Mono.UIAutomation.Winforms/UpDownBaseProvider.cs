@@ -149,7 +149,8 @@ namespace Mono.UIAutomation.Winforms
 				SetBehavior (InvokePatternIdentifiers.Pattern,
 				             new ButtonInvokeProviderBehavior (this));
 			}
-			
+
+			// FIXME: Implement Bounds and ClickablePoint
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
