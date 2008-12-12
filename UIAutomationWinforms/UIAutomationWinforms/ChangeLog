@@ -1,3 +1,17 @@
+2008-12-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ButtonInvokeProviderBehavior.cs:
+	Get the UpDownBase from the new property, and make Invoke thread-safe
+	with BeginInvoke.
+
+	* Mono.UIAutomation.Winforms.Events/UpDownBase/ButtonInvokePatternInvokedEvent.cs:
+	Get the UpDownBase from the new property, not from Provider.Control.
+
+	* Mono.UIAutomation.Winforms/UpDownBaseProvider.cs: Have
+	UpDownBaseButtonProvider pass null as its Control instead of the
+	UpDownBase.  Expose the UpDownBase as a property.  Fixes some
+	navigation problems (see bug #449638).
+
 2008-12-12  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: NameProperty:

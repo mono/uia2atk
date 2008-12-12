@@ -126,8 +126,9 @@ namespace Mono.UIAutomation.Winforms
 
 			public UpDownBaseButtonProvider (UpDownBase upDownBase,
 			                                 UpDownBaseButtonOrientation orientation)
-				: base (upDownBase)
+				: base (null)
 			{
+				this.upDownBase = upDownBase;
 				this.orientation = orientation;
 			}
 		
@@ -137,7 +138,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			public override IRawElementProviderFragmentRoot FragmentRoot {
 				get { 
-					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (Control);
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (upDownBase);
 				}
 			}
 			
@@ -168,6 +169,10 @@ namespace Mono.UIAutomation.Winforms
 			public UpDownBaseButtonOrientation Orientation {
 				get { return orientation; }
 			}
+
+			public UpDownBase UpDownBase {
+				get { return upDownBase; }
+			}
 		
 			#endregion
 			
@@ -188,6 +193,7 @@ namespace Mono.UIAutomation.Winforms
 			#region Private Fields
 			
 			private UpDownBaseButtonOrientation orientation;
+			private UpDownBase upDownBase;
 			
 			#endregion
 		}

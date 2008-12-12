@@ -50,7 +50,7 @@ namespace Mono.UIAutomation.Winforms.Events.UpDownBase
 			if (provider.Orientation == UpDownBaseProvider.UpDownBaseButtonOrientation.Forward) {
 				try {
 					Helper.AddPrivateEvent (typeof (SWF.UpDownBase),
-					                        (SWF.UpDownBase) Provider.Control,
+					                        provider.UpDownBase,
 					                        "UIAUpButtonClick",
 					                        this,
 					                        "OnButtonClick");
@@ -58,7 +58,7 @@ namespace Mono.UIAutomation.Winforms.Events.UpDownBase
 			} else if (provider.Orientation == UpDownBaseProvider.UpDownBaseButtonOrientation.Backward) {
 				try {
 					Helper.AddPrivateEvent (typeof (SWF.UpDownBase),
-					                        (SWF.UpDownBase) Provider.Control,
+					                        provider.UpDownBase,
 					                        "UIADownButtonClick",
 					                        this,
 					                        "OnButtonClick");
@@ -71,7 +71,7 @@ namespace Mono.UIAutomation.Winforms.Events.UpDownBase
 			if (provider.Orientation == UpDownBaseProvider.UpDownBaseButtonOrientation.Forward) {
 				try {
 					Helper.RemovePrivateEvent (typeof (SWF.UpDownBase),
-					                           (SWF.UpDownBase) Provider.Control,
+					                           provider.UpDownBase,
 					                           "UIAUpButtonClick",
 					                           this,
 					                           "OnButtonClick");
@@ -79,7 +79,7 @@ namespace Mono.UIAutomation.Winforms.Events.UpDownBase
 			} else if (provider.Orientation == UpDownBaseProvider.UpDownBaseButtonOrientation.Backward) {
 				try {
 					Helper.RemovePrivateEvent (typeof (SWF.UpDownBase),
-					                           (SWF.UpDownBase) Provider.Control,
+					                           provider.UpDownBase,
 					                           "UIADownButtonClick",
 					                           this,
 					                           "OnButtonClick");

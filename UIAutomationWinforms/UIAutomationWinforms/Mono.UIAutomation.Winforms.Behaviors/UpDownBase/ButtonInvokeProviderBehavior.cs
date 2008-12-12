@@ -69,10 +69,20 @@ namespace Mono.UIAutomation.Winforms.Behaviors.UpDownBase
 		
 		public void Invoke ()
 		{
+			if (provider.UpDownBase.InvokeRequired) {
+				provider.UpDownBase.BeginInvoke (new SWF.MethodInvoker (PerformInvoke));
+				return;
+			}
+
+			PerformInvoke ();
+		}
+
+		private void PerformInvoke ()
+		{
 			if (provider.Orientation == UpDownBaseProvider.UpDownBaseButtonOrientation.Forward)
-				((SWF.UpDownBase) provider.Control).UpButton ();
+				provider.UpDownBase.UpButton ();
 			else if (provider.Orientation == UpDownBaseProvider.UpDownBaseButtonOrientation.Backward)
-				((SWF.UpDownBase) provider.Control).DownButton ();
+				provider.UpDownBase.DownButton ();
 		}
 		
 		#endregion
