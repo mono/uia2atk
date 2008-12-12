@@ -1,3 +1,9 @@
+2008-12-11  Calen Chen <cachen@novell.com>
+
+	* samples/icons/apple.ico: add 48x48 pixel ico 
+	* samples/statusbarpanel.py: change warn.icon to apple.ico with 48x48 
+	pixel size for image implementation test
+
 2008-12-11  Ray Wang <rawang@novell.com>
 
 	* testers/domainupdown_basic_ops.py: change FIXME to VERIFYME from 

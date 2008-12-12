@@ -42,7 +42,7 @@ class StatusBarStatusBarPanelApp(Form):
 
         # setup form
         self.Text = "StatusBar_StatusBarPanel controls"
-        self.Height = 100
+        self.Height = 150
         self.Width = 400
 
         # setup button1
@@ -65,6 +65,8 @@ class StatusBarStatusBarPanelApp(Form):
         self.statusbar = StatusBar()
         self.statusbar.Text = "texts in statusbar"
         self.statusbar.ShowPanels = True
+        self.statusbar.AutoSize = True
+        self.statusbar.SizingGrip = True
 
         self.statusbarpanel1 = StatusBarPanel()
         self.statusbarpanel1.BorderStyle = StatusBarPanelBorderStyle.Sunken
@@ -75,7 +77,7 @@ class StatusBarStatusBarPanelApp(Form):
         self.statusbarpanel2 = StatusBarPanel()
         self.statusbarpanel2.BorderStyle = StatusBarPanelBorderStyle.Raised
         self.statusbarpanel2.Text = "statusbarpanel2"
-        self.statusbarpanel2.Icon = Icon("%s/samples/icons/warn.ico" % uiaqa_path)
+        self.statusbarpanel2.Icon = Icon("%s/samples/icons/apple.ico" % uiaqa_path)
         self.statusbarpanel2.AutoSize = StatusBarPanelAutoSize.Contents
 
         self.statusbarpanel3 = StatusBarPanel()
