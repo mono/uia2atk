@@ -1,3 +1,8 @@
+2008-12-12  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Printing complete class
+	name.
+
 2008-12-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ButtonInvokeProviderBehavior.cs:

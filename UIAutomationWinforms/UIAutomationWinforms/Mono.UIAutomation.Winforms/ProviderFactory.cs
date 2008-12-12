@@ -244,7 +244,7 @@ namespace Mono.UIAutomation.Winforms
 				
 				//FIXME: let's not throw while we are developing, a big WARNING will suffice
 				//throw new NotImplementedException ("Provider not implemented for control " + component.GetType().Name);
-				Console.WriteLine ("WARNING: Provider not implemented for control " + component.GetType().Name);
+				Console.WriteLine ("WARNING: Provider not implemented for control " + component.GetType());
 				return null;
 			}
 			
