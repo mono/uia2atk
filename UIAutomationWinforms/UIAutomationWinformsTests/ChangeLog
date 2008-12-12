@@ -1,3 +1,7 @@
+2008-12-12  Brad Taylor  <brad@getcoded.net>
+
+	* ComboBoxProviderTest.cs: Add test for #456336.
+
 2008-12-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* StatusBarProviderTest.cs: Test for NameProperty change and

@@ -123,6 +123,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternIsSelectionRequiredEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternSelectionEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ComboBox/TextBoxAutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/DomainUpDownAutomationHasKeyboardFocusPropertyEvent.cs \
