@@ -89,12 +89,17 @@ namespace UiaAtkBridge
 
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs args)
 		{
-			if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent)
-				NotifyStateChange (Atk.StateType.Checked, selProvider.IsSelected);
-			else
 				base.RaiseAutomationEvent (eventId, args);
 		}
 		
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			if (e.Property.Id == SelectionItemPatternIdentifiers.IsSelectedProperty.Id) {
+				bool selected = (bool)e.NewValue;
+				NotifyStateChange (Atk.StateType.Checked, selected);
+			} else
+				base.RaiseAutomationPropertyChangedEvent (e);
+		}
 	}
 	
 }

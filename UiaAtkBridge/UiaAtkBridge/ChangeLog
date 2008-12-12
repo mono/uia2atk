@@ -1,5 +1,10 @@
 2008-12-11  Mike Gorse  <mgorse@novell.com>
 
+	* RadioButton.cs: Listen for IsSelectedProperty rather than
+	  ElementSelected event.
+
+2008-12-11  Mike Gorse  <mgorse@novell.com>
+
 	* List.cs: Set Atk.StateType.Focused when focused.
 
 2008-12-10  Mike Gorse  <mgorse@novell.com>
