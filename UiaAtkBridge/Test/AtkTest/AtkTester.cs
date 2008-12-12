@@ -733,7 +733,7 @@ namespace UiaAtkBridgeTest
 				role = Atk.Role.Filler;
 				break;
 			case BasicWidgetType.ToolStripDropDownButton:
-				role = Atk.Role.MenuItem;
+				role = Atk.Role.Menu;
 				break;
 			case BasicWidgetType.ToolStrip:
 				role = Atk.Role.ToolBar;

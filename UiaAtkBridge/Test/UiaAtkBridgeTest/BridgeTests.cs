@@ -526,6 +526,27 @@ namespace UiaAtkBridgeTest
 				                 String.Format ("Child role #{0}", i));
 				InterfaceText (child, extreme_fjords [i]);
 			}
+
+			Atk.Object secondItem = accessible.RefAccessibleChild (1);
+
+			Atk.Action atkAction
+				= CastToAtkInterface <Atk.Action> (secondItem);
+			atkAction.DoAction (0);
+			
+			States (secondItem,
+				Atk.StateType.Enabled,
+				Atk.StateType.Selectable,
+				Atk.StateType.Selected,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
+			
+			Atk.Object firstItem = accessible.RefAccessibleChild (0);
+			States (firstItem,
+				Atk.StateType.Enabled,
+				Atk.StateType.Selectable,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Visible);
 		}
 
 		[Test]

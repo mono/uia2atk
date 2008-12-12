@@ -1,3 +1,8 @@
+2008-12-12  Brad Taylor  <brad@getcoded.net>
+
+	* MenuItem.cs: When an item is selected, recurse up and deselect it's
+	siblings, and so on. [Fixes #460926]
+
 2008-12-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* ComboBoxDropDown.cs: Always call base.RaiseStructureChangedEvent in

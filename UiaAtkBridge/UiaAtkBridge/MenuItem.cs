@@ -108,14 +108,27 @@ namespace UiaAtkBridge
 			get { return Atk.Layer.Popup; }
 		}
 
-		protected void CancelSelected (string selectedName)
-		{ 
+		protected void Deselect ()
+		{
 			selected = false;
 			NotifyStateChange (Atk.StateType.Selected, false);
+		}
+
+		protected void RecursiveDeselect (MenuItem keepSelected)
+		{ 
+			lock (syncRoot) {
+				foreach (Atk.Object child in children) {
+					MenuItem item = child as MenuItem;
+					if (item == null || item == keepSelected) 
+						continue;
+					item.Deselect ();
+				}
+			}
+
 			if (Parent is MenuItem)
-				((MenuItem)Parent).CancelSelected (selectedName);
+				((MenuItem)Parent).RecursiveDeselect (keepSelected);
 			else if (Parent is ComboBox)
-				((ComboBox)Parent).RaiseSelectionChanged (selectedName);
+				((ComboBox)Parent).RaiseSelectionChanged (keepSelected.Name);
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
@@ -124,15 +137,15 @@ namespace UiaAtkBridge
 				selected = !selected;
 				NotifyStateChange (Atk.StateType.Selected, selected);
 				if (Parent is MenuItem)
-					((MenuItem)Parent).CancelSelected (Name);
+					((MenuItem)Parent).RecursiveDeselect (this);
 			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
 				if (Parent is MenuItem)
-					((MenuItem)Parent).CancelSelected (Name);
+					((MenuItem)Parent).RecursiveDeselect (this);
 			} else if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
 				selected = true;
 				NotifyStateChange (Atk.StateType.Selected, selected);
 				if (Parent is MenuItem)
-					((MenuItem)Parent).CancelSelected (Name);
+					((MenuItem)Parent).RecursiveDeselect (this);
 			} else {
 				Console.WriteLine ("WARNING: RaiseAutomationEvent({0},...) not handled yet", eventId.ProgrammaticName);
 				base.RaiseAutomationEvent (eventId, e);
