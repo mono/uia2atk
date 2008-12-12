@@ -47,7 +47,7 @@ gbFrame = app.groupBoxFrame
 actionsCheck(gbFrame.button1, "Button")
 actionsCheck(gbFrame.button2, "Button")
 
-#check if button in panel still have correct states
+#check if button in button still have correct states
 statesCheck(gbFrame.button1, "Button", add_states=["focused"])
 statesCheck(gbFrame.button2, "Button")
 
@@ -69,6 +69,11 @@ statesCheck(gbFrame.button1, "Button")
 statesCheck(gbFrame.button2, "Button", add_states=["focused"])
 
 statesCheck(gbFrame.panel2, "Panel")
+
+#check Panel's states
+statesCheck(gbFrame.panel1, "Panel")
+statesCheck(gbFrame.panel2, "Panel")
+
 #press Tab key again to move focused state from button2 to button1
 gbFrame.keyCombo("Tab", grabFocus=False)
 
@@ -78,10 +83,18 @@ statesCheck(gbFrame.button1, "Button", add_states=["focused"])
 
 statesCheck(gbFrame.panel2, "Panel")
 
+#check Panel's states
+statesCheck(gbFrame.panel1, "Panel")
+statesCheck(gbFrame.panel2, "Panel")
+
 #click button1 in groupbox1 to update label
 gbFrame.click(gbFrame.button1)
 sleep(config.SHORT_DELAY)
 gbFrame.assertLabel('1')
+
+#check Panel's states
+statesCheck(gbFrame.panel1, "Panel")
+statesCheck(gbFrame.panel2, "Panel")
 
 #click button2 two times in groupbox2 by click and mouseClick
 #to update label
@@ -91,6 +104,10 @@ sleep(config.SHORT_DELAY)
 gbFrame.assertLabel('2')
 #button2 rise 'focused' state
 statesCheck(gbFrame.button2, "Button", add_states=["focused"])
+
+#check Panel's states
+statesCheck(gbFrame.panel1, "Panel")
+statesCheck(gbFrame.panel2, "Panel")
 
 #close application frame window
 gbFrame.quit()

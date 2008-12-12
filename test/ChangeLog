@@ -1,9 +1,27 @@
+2008-12-12 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* harness/tests.py: add groupbox test to the regression test suite
+	* samples/groupbox.py: just shorted a string
+	* samples/listbox_single_column.py: add a sample listbox with only
+	a single column (based off Ray's listbox sample)
+	* samples/gtktreeview_listcolumn.py: Create a Gtk sample that best
+	resembles a SWF ListBox.  This sample only allows one item to be
+	selected on the list.
+	* samples/gtkframe.py:
+	* samples/gtktreeview_listcolumn_multiple_select.py: Create a Gtk
+	sample that best resembles a SWF ListBox.  This sample allows multiple
+	items to be selected in the list at one time.
+	* testers/groupbox/groupboxframe.py: Compensate for the shortened
+	strings in the sample.
+	* testers/groupbox_basic_ops.py: Add a few more test cases by checking
+	the states of the group boxes after certain actions to make sure the
+	states stay the same.
+
 2008-12-12  Brad Taylor  <brad@getcoded.net>
 
 	* samples/toolstripdropdown_toolstripbutton.py: ToolStripButton is a
 	1.0 control, so I'm changing this to ToolStripMenuItem (which is more
 	technically accurate anyway).
-
 	* testers/combobox_dropdown/comboboxdropdownframe.py: Fix typo.
 
 2008-12-11  Calen Chen <cachen@novell.com>

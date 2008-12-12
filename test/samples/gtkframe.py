@@ -16,14 +16,31 @@ class Frame:
         self.window.set_title("Frame")
         self.window.connect("delete_event", self.delete_event)
         self.window.set_border_width(12)
-        self.window.resize(200, 200)
 
-        frame = gtk.Frame("Frame")
-        frame.add(gtk.Label("This is a label"))
-        self.window.add(frame)
+        label = gtk.Label("First Frame")
+        button = gtk.Button("First Button")
+        vbox = gtk.VBox()
+        vbox.pack_start(label, padding=1)
+        vbox.pack_start(button, padding=1)
 
-        frame.show_all()
-        self.window.show()
+        frame1 = gtk.Frame("Frame 1")
+        frame1.add(vbox)
+
+        label = gtk.Label("Second Frame")
+        button = gtk.Button("Second Button")
+        vbox = gtk.VBox()
+        vbox.pack_start(label, padding=1)
+        vbox.pack_start(button, padding=1)
+
+        frame2 = gtk.Frame("Frame 2")
+        frame2.add(vbox)
+
+        vbox = gtk.VBox()
+        vbox.pack_start(frame1, padding=5)
+        vbox.pack_start(frame2, padding=5)
+
+        self.window.add(vbox)
+        self.window.show_all()
 
 def main():
     gtk.main()

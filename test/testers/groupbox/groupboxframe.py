@@ -22,8 +22,8 @@ class GroupBoxFrame(accessibles.Frame):
     # the available widgets on the window
     BUTTON_ONE = "button1"
     BUTTON_TWO = "button2"
-    LABEL_ONE = "this is the first Groupbox"
-    LABEL_TWO = "this is the second Groupbox"
+    LABEL_ONE = "the first Groupbox"
+    LABEL_TWO = "the second Groupbox"
     PANEL_ONE = "GroupBox1"
     PANEL_TWO = "GroupBox2"
 

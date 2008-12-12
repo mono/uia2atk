@@ -60,12 +60,12 @@ class GroupBoxApp(Form):
 
         # setup labels
         self.label1 = Label()
-        self.label1.Text = "this is the first Groupbox"
+        self.label1.Text = "the first Groupbox"
         self.label1.AutoSize = True
         self.label1.Location = Point(20,30)
 
         self.label2 = Label()
-        self.label2.Text = "this is the second Groupbox"
+        self.label2.Text = "the second Groupbox"
         self.label2.AutoSize = True
         self.label2.Location = Point(20,30)
 

@@ -15,5 +15,6 @@ tests_list = [
     "vscrollbar_basic_ops.py",
     "tooltip_basic_ops.py",
     "errorprovider_basic_ops.py",
-    "statusbar_basic_ops.py"
+    "statusbar_basic_ops.py",
+    "groupbox_basic_ops.py"
 ]
