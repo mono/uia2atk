@@ -1,3 +1,11 @@
+2008-12-12  Brad Taylor  <brad@getcoded.net>
+
+	* samples/toolstripdropdown_toolstripbutton.py: ToolStripButton is a
+	1.0 control, so I'm changing this to ToolStripMenuItem (which is more
+	technically accurate anyway).
+
+	* testers/combobox_dropdown/comboboxdropdownframe.py: Fix typo.
+
 2008-12-11  Calen Chen <cachen@novell.com>
 
 	* testers/toolstriptextbox/toolstriptextboxframe.py: add assertContent 

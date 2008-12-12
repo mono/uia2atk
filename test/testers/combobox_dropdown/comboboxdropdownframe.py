@@ -40,7 +40,7 @@ class ComboBoxDropDownFrame(accessibles.Frame):
 
         procedurelogger.expectedResult('menu item list is showing')
         self.menu = self.findMenu(None)
-        self.menuitem = dict([(x, self.findMenuItem(str(x)) for x in range(10)])
+        self.menuitem = dict([(x, self.findMenuItem(str(x))) for x in range(10)])
 
     #check the label after click listitem
     def assertLabel(self, itemname):

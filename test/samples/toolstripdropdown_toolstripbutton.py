@@ -100,11 +100,11 @@ class RunApp(Form):
         self.db.DropDownDirection = ToolStripDropDownDirection.Left
         self.db.ShowDropDownArrow = True
         
-        self.br = ToolStripButton()
+        self.br = ToolStripMenuItem()
         self.br.ForeColor = Color.Red
         self.br.Text = "Red"
         self.br.Name = "Red"
-        self.bu = ToolStripButton()
+        self.bu = ToolStripMenuItem()
         self.bu.ForeColor = Color.Blue
         self.bu.Text = "Blue"
         self.bu.Name = "Blue"
