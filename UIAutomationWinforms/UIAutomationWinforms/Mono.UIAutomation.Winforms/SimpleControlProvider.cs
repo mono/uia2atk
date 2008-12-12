@@ -279,12 +279,17 @@ namespace Mono.UIAutomation.Winforms
 				IRawElementProviderSimple label =
 					GetPropertyValue (AutomationElementIdentifiers.LabeledByProperty.Id)
 						as IRawElementProviderSimple;
-				if (label == null)
-					return Control.Text;
-				else
+				if (label == null) {
+					int controlType = (int) GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+					// http://msdn.microsoft.com/en-us/library/ms748367.aspx
+					// "The Name property should never contain the textual contents of the edit control."
+					if (controlType == ControlType.Edit.Id)
+						return string.Empty;
+					else
+						return Control.Text;
+				} else
 					return label.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			}
-			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) {
+			} else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) {
 				IRawElementProviderFragment sibling = this as IRawElementProviderFragment;
 				if (sibling == null)
 					return null;
