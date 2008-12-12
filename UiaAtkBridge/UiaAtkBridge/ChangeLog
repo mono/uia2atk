@@ -1,5 +1,12 @@
 2008-12-11  Mike Gorse  <mgorse@novell.com>
 
+	* List.cs: Fix compiler error.
+
+	* Adapter.cs: Set ManagesRemoval to false by default.
+	  Backported from R121102.
+
+2008-12-11  Mike Gorse  <mgorse@novell.com>
+
 	* TextLabel.cs: Set role for Hyperlinks.  Backport from R121257.
 
 	* SelectionProviderUserHelper.cs: Ignore items without
