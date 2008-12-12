@@ -180,6 +180,7 @@ namespace UiaAtkBridgeTest
 			Atk.Object obj1 = link1.GetObject (0);
 			Assert.IsNotNull (obj1, "LinkLabel GetObject #1");
 			Assert.IsFalse (obj1.RefStateSet().ContainsState (Atk.StateType.Enabled), "RefStateSet().Contains(Enabled)");
+			Assert.AreEqual ("www.opensuse.org", obj1.Name, "Link 1 obj name");
 			Assert.IsNull (link1.GetObject (1), "GetObject OOR #1");
 			Assert.IsNull (link1.GetObject (-1), "GetObject OOR #2");
 			Atk.Hyperlink link2 = hypertext.GetLink (1);
@@ -189,6 +190,7 @@ namespace UiaAtkBridgeTest
 			Atk.Object obj2 = link2.GetObject (0);
 			Assert.IsNotNull (obj2, "LinkLabel GetObject #2");
 			Assert.IsTrue (obj2.RefStateSet ().ContainsState (Atk.StateType.Enabled), "RefStateSet().Contains(Enabled)");
+			Assert.AreEqual ("gmail.novell.com", obj2.Name, "Link 2 obj name");
 			
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (obj2);
 			Assert.AreEqual (1, atkAction.NActions, "LinkLabel link NActions");

@@ -1,3 +1,7 @@
+2008-12-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* BridgeTests.cs: Test the name of the link accessibles.
+
 2008-12-12  Brad Taylor  <brad@getcoded.net>
 
 	* BridgeTests.cs: Test the fix for #460926.

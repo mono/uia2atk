@@ -334,6 +334,7 @@ namespace UiaAtkBridge
 			this.hyperlink = parent;
 			this.index = index;
 			parent.AddOneChild (this);
+			Name = hyperlink.hypertext.Uri (index);
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()
