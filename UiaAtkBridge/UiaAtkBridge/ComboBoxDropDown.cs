@@ -143,6 +143,7 @@ namespace UiaAtkBridge
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
 			// TODO
+			base.RaiseStructureChangedEvent (provider, e);
 		}
 	}
 }

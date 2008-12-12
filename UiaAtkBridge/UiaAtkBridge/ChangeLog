@@ -1,3 +1,8 @@
+2008-12-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* ComboBoxDropDown.cs: Always call base.RaiseStructureChangedEvent in
+	the derived class.
+
 2008-12-11  Mike Gorse  <mgorse@novell.com>
 
 	* RadioButton.cs: Listen for IsSelectedProperty rather than
