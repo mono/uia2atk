@@ -67,6 +67,8 @@ namespace UiaAtkBridge
 			if (e.Property == RangeValuePatternIdentifiers.ValueProperty) {
 				Notify ("accessible-value");
 				NewText (e.NewValue.ToString ());
+			} else if (e.Property == RangeValuePatternIdentifiers.IsReadOnlyProperty) {
+				NotifyStateChange (Atk.StateType.Editable, !(bool)e.NewValue);
 			} else
 				base.RaiseAutomationPropertyChangedEvent (e);
 		}
@@ -75,7 +77,12 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			states.AddState (Atk.StateType.SingleLine);
-			states.AddState (Atk.StateType.Editable);
+
+			if (!ReadOnly)
+				states.AddState (Atk.StateType.Editable);
+			else
+				states.RemoveState (Atk.StateType.Editable);
+
 			return states;
 		}
 		#endregion
@@ -267,6 +274,14 @@ Console.WriteLine ("start_pos " + start_pos + " end_pos " + end_pos);
 			textExpert = new TextImplementorHelper (newText, this);
 			adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                 newText == null ? 0 : newText.Length);
+		}
+
+		protected virtual bool ReadOnly {
+			get {
+				if (rangeValueProvider != null)
+					return (bool) Provider.GetPropertyValue (RangeValuePatternIdentifiers.IsReadOnlyProperty.Id);
+				return false;
+			}
 		}
 		#endregion
 

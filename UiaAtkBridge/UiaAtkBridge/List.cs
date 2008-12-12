@@ -281,14 +281,22 @@ AtkObject,
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
-			states.AddState (Atk.StateType.Editable);
+
+			bool readOnly = (bool) Provider.GetPropertyValue (ValuePatternIdentifiers.IsReadOnlyProperty.Id);
+			if (!readOnly)
+				states.AddState (Atk.StateType.Editable);
+			else
+				states.RemoveState (Atk.StateType.Editable);
+
 			states.AddState (Atk.StateType.SingleLine);
 			return states;
 		}
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property != ValuePatternIdentifiers.ValueProperty) {
+			if (e.Property == ValuePatternIdentifiers.IsReadOnlyProperty) {
+				NotifyStateChange (Atk.StateType.Editable, !(bool)e.NewValue);
+			} else if (e.Property != ValuePatternIdentifiers.ValueProperty) {
 				base.RaiseAutomationPropertyChangedEvent (e);
 				return;
 			}
