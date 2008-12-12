@@ -1,5 +1,10 @@
 2008-12-11  Mike Gorse  <mgorse@novell.com>
 
+	* RadioButton.cs: Listen for IsSelectedProperty rather than
+	  ElementSelected event.  Backported from R121379.
+
+2008-12-11  Mike Gorse  <mgorse@novell.com>
+
 	* List.cs: Fix compiler error.
 
 	* Adapter.cs: Set ManagesRemoval to false by default.
