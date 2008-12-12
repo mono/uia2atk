@@ -85,7 +85,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return "scroll bar";
 			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
-				return Single.NaN;
+				return null;
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 				return null;
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)

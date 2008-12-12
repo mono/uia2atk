@@ -1,3 +1,18 @@
+2008-12-12  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: RadioButton ElementSelected event
+	added.
+
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Returning null
+	because ControlType.ScrollBar is not clickable.
+
+	* Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionItemProviderBehavior.cs:
+	Setting ElementSelectedEvent.
+
+	* Mono.UIAutomation.Winforms.Events/RadioButton/SelectionItemPatternElementSelectedEvent.cs:
+	Raises ElementSelected when RadioButton is checked.
+
 2008-12-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/TabPage/SelectionItemProviderBehavior.cs:

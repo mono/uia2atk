@@ -79,6 +79,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.RadioButton
 			                   new SelectionItemPatternIsSelectedEvent (Provider));
 			Provider.SetEvent (ProviderEventType.SelectionItemPatternSelectionContainerProperty,
 			                   new SelectionItemPatternSelectionContainerEvent (Provider));
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent,
+			                   new SelectionItemPatternElementSelectedEvent (Provider));
 		}
 		
 		public override void Disconnect ()
