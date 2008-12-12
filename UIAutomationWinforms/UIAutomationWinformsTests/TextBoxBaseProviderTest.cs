@@ -76,7 +76,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (obj);
 		
 			textBoxBase.AccessibleName = "Accessible name";
-			Console.WriteLine ("textBoxBase.AccessibleName: {0}", textBoxBase.AccessibleName);
 			TestProperty (provider,
 			              AutomationElementIdentifiers.NameProperty,
 			              textBoxBase.AccessibleName);

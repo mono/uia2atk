@@ -195,7 +195,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		[Test]
 		public void NavigationTest ()
-		{
+		{		
 			DomainUpDown domainUpDown = (DomainUpDown) GetControlInstance ();
 			IRawElementProviderFragmentRoot rootProvider;
 			IRawElementProviderFragment forwardButtonProvider;
@@ -237,6 +237,33 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (forwardButtonProvider,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 			              false);
+
+			//Testing multiple elements
+			Label label = new Label ();
+			label.Text = "Sample label"; 
+			Form.Controls.Add (label);
+
+			IRawElementProviderFragment labelProvider
+				= rootProvider.Navigate (NavigateDirection.NextSibling);
+
+			Assert.IsNotNull (labelProvider, "Label not null");
+
+			Assert.AreEqual (rootProvider,
+			                 labelProvider.Navigate (NavigateDirection.PreviousSibling),
+			                 "labelProvider.PreviousSibling != updownProvider");
+			Assert.AreEqual (null,
+			                 labelProvider.Navigate (NavigateDirection.NextSibling),
+			                 "labelProvider.NextSibling == null");
+			Assert.AreEqual (rootProvider.Navigate (NavigateDirection.Parent),
+			                 labelProvider.Navigate (NavigateDirection.Parent),
+			                 "labelProvider.Parent == rootProvider.Parent");
+			
+			Assert.AreEqual (labelProvider,
+			                 rootProvider.Navigate (NavigateDirection.NextSibling),
+			                 "rootProvider.NextSibling == labelProvider");
+			Assert.AreEqual (null,
+			                 rootProvider.Navigate (NavigateDirection.PreviousSibling),
+			                 "rootProvider.PreviousSibling == null");
 		}
 
 		[Test]
