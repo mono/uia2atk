@@ -61,6 +61,29 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsPasswordProperty,
 			              false);
+
+			textBoxBase.Text = string.Empty;
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              string.Empty);
+			textBoxBase.Text = "hello world";
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              string.Empty);
+
+			// We need to call the property otherwise the test fails
+			AccessibleObject obj = textBoxBase.AccessibilityObject;
+			Assert.IsNotNull (obj);
+		
+			textBoxBase.AccessibleName = "Accessible name";
+			Console.WriteLine ("textBoxBase.AccessibleName: {0}", textBoxBase.AccessibleName);
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              textBoxBase.AccessibleName);
+			textBoxBase.AccessibleName = "Accessible name (changed)";
+			TestProperty (provider,
+			              AutomationElementIdentifiers.NameProperty,
+			              textBoxBase.AccessibleName);
 		}
 		
 		public void DocumentPropertiesTest ()

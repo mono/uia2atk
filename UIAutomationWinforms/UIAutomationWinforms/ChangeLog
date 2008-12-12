@@ -1,5 +1,10 @@
 2008-12-12  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: NameProperty:
+	Returning string.Empty when ControlType is Edit or Document.
+
+2008-12-12  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Returning valid
 	NameProperty when ControlType is Edit
 

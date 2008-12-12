@@ -283,7 +283,7 @@ namespace Mono.UIAutomation.Winforms
 					int controlType = (int) GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 					// http://msdn.microsoft.com/en-us/library/ms748367.aspx
 					// "The Name property should never contain the textual contents of the edit control."
-					if (controlType == ControlType.Edit.Id)
+					if (controlType == ControlType.Edit.Id || controlType == ControlType.Document.Id)
 						return string.Empty;
 					else
 						return Control.Text;
