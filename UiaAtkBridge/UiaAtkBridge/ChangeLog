@@ -1,5 +1,9 @@
 2008-12-12  Mike Gorse  <mgorse@novell.com>
 
+	* AutomationBridge.cs: Check for null child of DataItem.
+
+2008-12-12  Mike Gorse  <mgorse@novell.com>
+
 	* ListItem.cs, Spinner.cs: Only set Editable state if not ReadOnly.
 	  Backport from R120422 and R121226.
 
