@@ -1,3 +1,10 @@
+2008-12-11  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/TabPage/SelectionItemProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/SelectionItemProviderBehavior.cs:
+	Restructure action methods so that exceptions are never thrown inside
+	a BeginInvoke delegate.
+
 2008-12-11  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs,

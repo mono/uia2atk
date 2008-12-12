@@ -102,11 +102,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TabPage
 				return;
 			}
 			
-			if (pageProvider.TabControlProvider.Control.InvokeRequired) {
-				pageProvider.TabControlProvider.Control.BeginInvoke (new MethodInvoker (RemoveFromSelection));
-				return;
-			}
-			
 			// This control doesn't support having no selection.
 			throw new InvalidOperationException ();	
 		}
