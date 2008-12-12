@@ -118,6 +118,13 @@ tstbFrame.assertNameDescription(tstbFrame.multiline, \
 tstbFrame.assertNameDescription(tstbFrame.readonly, \
                           "ToolStripTextBox3", "ReadOnly")
 
+#test Streamable Contents for three textbox
+tstbFrame.assertContent(tstbFrame.singleline)
+
+tstbFrame.assertContent(tstbFrame.multiline)
+
+tstbFrame.assertContent(tstbFrame.readonly)
+
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

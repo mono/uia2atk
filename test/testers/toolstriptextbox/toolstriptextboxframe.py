@@ -64,6 +64,16 @@ class ToolStripTextBoxFrame(accessibles.Frame):
                                "name is: %s, description is: %s" \
                                 % (accessible.name, accessible.description)
 
+    #assert Streamable Content implementation
+    def assertContent(self, accessible):
+        procedurelogger.action("Verify Streamable Content for %s" % accessible)
+        #text in gtk.textview shows the expected contents
+        expect = ['application/x-gtk-text-buffer-rich-text', 'text/plain']
+        result = accessible._accessible.queryStreamableContent().getContentTypes()
+
+        procedurelogger.expectedResult("%s Contents is %s" % (accessible, expect))
+        assert result == expect, "Contents %s not match the expected" % result
+
     #close application window
     def quit(self):
         self.altF4()
