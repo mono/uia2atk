@@ -68,6 +68,7 @@ FILES =  \
 	ListViewProviderTest.cs \
 	MaskedTextBoxProviderTest.cs \
 	MenuStripProviderTest.cs \
+	MiscHierarchyTest.cs \
 	MockBridge.cs \
 	MonthCalendarProviderTest.cs \
 	NumericUpDownProviderTest.cs \

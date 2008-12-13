@@ -1,3 +1,9 @@
+2008-12-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am:
+	* MiscHierarchyTest.cs:
+	* UIAutomationWinformsTests.mdp: Hierarchy testing.
+
 2008-12-12  Brad Taylor  <brad@getcoded.net>
 
 	* TextBoxProviderTest.cs: 
