@@ -91,6 +91,8 @@ namespace UiaAtkBridgeTest
 			//same effect as Application.Run() (the important bit is this causes a call to ApplicationStarts() ):
 			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
 
+			form.Show ();
+
 			string uiaQaPath = Misc.LookForParentDir ("*.gif");
 			string imgPath = System.IO.Path.Combine (uiaQaPath, "opensuse60x38.gif");
 
@@ -176,7 +178,7 @@ namespace UiaAtkBridgeTest
 			radios.Add (rad4);
 			form.Text = "UiaAtkBridge test";
 			SWF.Application.EnableVisualStyles ();
-			form.Show ();
+			
 		}
 		
 		private SWF.RadioButton GiveMeARadio (string name) {
