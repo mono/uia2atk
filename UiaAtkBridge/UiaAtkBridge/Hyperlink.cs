@@ -24,8 +24,11 @@
 // 
 
 using System;
+using System.Collections.Generic;
+
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+
 using Mono.UIAutomation.Bridge;
 
 namespace UiaAtkBridge
@@ -39,14 +42,14 @@ namespace UiaAtkBridge
 		
 		private TextImplementorHelper textExpert = null;
 		
-		System.Collections.Generic.List<HyperlinkObject> links;
+		private List<HyperlinkObject> links;
 
 		public Hyperlink (IRawElementProviderSimple provider) : base (provider)
 		{
 			this.provider = provider;
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 			hypertext = (IHypertext)invokeProvider;
-			links = new System.Collections.Generic.List<HyperlinkObject> ();
+			links = new List<HyperlinkObject> ();
 			Role = Atk.Role.Label;
 			
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
@@ -235,14 +238,25 @@ namespace UiaAtkBridge
 
 		public int NLinks {
 			get {
-				while (links.Count > hypertext.NumberOfLinks)
+				AdjustLinkObjects ();
+				return links.Count;
+			}
+		}
+
+		protected override int OnGetNChildren ()
+		{
+			AdjustLinkObjects ();
+			return base.OnGetNChildren ();
+		}
+
+		// TODO: We really should have an event instead of doing this;
+		// would reduce the likelihood of a race condition
+		private void AdjustLinkObjects ()
+		{
+			while (links.Count > hypertext.NumberOfLinks)
 				links.RemoveAt (links.Count - 1);
 			while (links.Count < hypertext.NumberOfLinks)
 				links.Add (new HyperlinkObject (this, links.Count));
-
-			return links.Count;
-		}
-
 		}
 
 		public int GetLinkIndex (int char_index)
@@ -266,7 +280,7 @@ namespace UiaAtkBridge
 		}
 	}
 
-	public class HyperlinkObject: Atk.Hyperlink
+	public class HyperlinkObject : Atk.Hyperlink
 	{
 		Hyperlink resource;
 		private int index;
@@ -308,17 +322,19 @@ namespace UiaAtkBridge
 
 	class HyperlinkActor: Adapter, Atk.ActionImplementor
 	{
-			private Hyperlink hyperlink;
+		private Hyperlink hyperlink;
 		private int index;
-		private string						actionDescription = null;
+		private string					actionDescription = null;
 		static string					actionName = "jump";
 
 		public HyperlinkActor (Hyperlink parent, int index) : base (parent.Provider)
 		{
+			Role = Atk.Role.PushButton;
 			this.Parent = parent;
 			this.hyperlink = parent;
 			this.index = index;
 			parent.AddOneChild (this);
+			Name = hyperlink.hypertext.Uri (index);
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()
