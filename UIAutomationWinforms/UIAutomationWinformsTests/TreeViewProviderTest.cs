@@ -1062,9 +1062,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
 				provider.Navigate (NavigateDirection.FirstChild);
-//			IRawElementProviderFragmentRoot node2Provider = (IRawElementProviderFragmentRoot)
-//				node1Provider.Navigate (NavigateDirection.NextSibling);
-//			
+			IRawElementProviderFragmentRoot node2Provider = (IRawElementProviderFragmentRoot)
+				node1Provider.Navigate (NavigateDirection.NextSibling);
+			
 //			IRawElementProviderFragmentRoot node1sub1Provider = (IRawElementProviderFragmentRoot)
 //				node1Provider.Navigate (NavigateDirection.FirstChild);
 //			IRawElementProviderFragmentRoot node1sub2Provider = (IRawElementProviderFragmentRoot)
@@ -1075,9 +1075,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			IExpandCollapseProvider node1ExpandCollapse = (IExpandCollapseProvider)
 				node1Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
-//			IExpandCollapseProvider node2ExpandCollapse = (IExpandCollapseProvider)
-//				node2Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
-//
+			IExpandCollapseProvider node2ExpandCollapse = (IExpandCollapseProvider)
+				node2Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+
 //			IExpandCollapseProvider node1sub1ExpandCollapse = (IExpandCollapseProvider)
 //				node1sub1Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
 //			IExpandCollapseProvider node1sub2ExpandCollapse = (IExpandCollapseProvider)
@@ -1101,6 +1101,44 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsFalse (node1sub1.IsExpanded);
 			Assert.IsFalse (node1sub2.IsExpanded);
 			Assert.IsFalse (node1sub1sub1.IsExpanded);
+
+			node1ExpandCollapse.Expand ();
+
+			Assert.IsTrue (node1.IsExpanded);
+			Assert.IsFalse (node2.IsExpanded);
+			Assert.IsFalse (node1sub1.IsExpanded);
+			Assert.IsFalse (node1sub2.IsExpanded);
+			Assert.IsFalse (node1sub1sub1.IsExpanded);
+
+			node1ExpandCollapse.Collapse ();
+
+			Assert.IsFalse (node1.IsExpanded);
+			Assert.IsFalse (node2.IsExpanded);
+			Assert.IsFalse (node1sub1.IsExpanded);
+			Assert.IsFalse (node1sub2.IsExpanded);
+			Assert.IsFalse (node1sub1sub1.IsExpanded);
+
+			node1ExpandCollapse.Collapse ();
+
+			Assert.IsFalse (node1.IsExpanded);
+			Assert.IsFalse (node2.IsExpanded);
+			Assert.IsFalse (node1sub1.IsExpanded);
+			Assert.IsFalse (node1sub2.IsExpanded);
+			Assert.IsFalse (node1sub1sub1.IsExpanded);
+
+			try {
+				node2ExpandCollapse.Expand ();
+				Assert.Fail ("Expected InvalidOperationException when Expanding a LeafNode");
+			} catch (InvalidOperationException) {
+				// Expected
+			}
+
+			try {
+				node2ExpandCollapse.Collapse ();
+				Assert.Fail ("Expected InvalidOperationException when Collapsing a LeafNode");
+			} catch (InvalidOperationException) {
+				// Expected
+			}
 		}
 		
 		#endregion

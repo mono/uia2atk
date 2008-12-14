@@ -1,5 +1,10 @@
 2008-12-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* TreeViewProviderTest.cs: Test Collapse and expected Expand/Collapse
+	exceptions.
+
+2008-12-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* TreeViewProviderTest.cs: Add initial (incomplete) ExpandCollapse
 	pattern tests.
 
