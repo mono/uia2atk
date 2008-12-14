@@ -331,6 +331,9 @@
     <File name="Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationNamePropertyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/TreeView/SelectionPatternSelectionEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/RadioButton/SelectionItemPatternElementSelectedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ComboBox/TextBoxAutomationHasKeyboardFocusPropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/TreeView/ExpandCollapeProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/TreeView/ExpandCollapsePatternExpandCollapseStateEvent.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

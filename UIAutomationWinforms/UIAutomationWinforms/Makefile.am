@@ -117,6 +117,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripSplitButton/ExpandCollapseProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TreeView/ExpandCollapeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/ScrollItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/SelectionItemProviderBehavior.cs \
@@ -264,6 +265,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripSplitButton/ExpandCollapsePatternStateEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TreeView/ExpandCollapsePatternExpandCollapseStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/SelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/SelectionItemPatternIsSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/SelectionPatternSelectionEvent.cs \

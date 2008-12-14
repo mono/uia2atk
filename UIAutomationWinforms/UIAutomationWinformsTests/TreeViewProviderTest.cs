@@ -904,6 +904,206 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
+
+		#region IExpandCollapseProvider Tests
+
+		[Test]
+		public void ExpandCollapseStateTest ()
+		{
+			TreeView treeView = new TreeView ();
+
+			TreeNode node1 = new TreeNode ("node1");
+			TreeNode node2 = new TreeNode ("node2");
+			
+			TreeNode node1sub1 = new TreeNode ("node1 - sub1");
+			TreeNode node1sub2 = new TreeNode ("node1 - sub2");
+			node1.Nodes.Add (node1sub1);
+			node1.Nodes.Add (node1sub2);
+
+			TreeNode node1sub1sub1 = new TreeNode ("node1 - sub1 - sub1");
+			node1sub1.Nodes.Add (node1sub1sub1);
+
+			treeView.Nodes.AddRange (new TreeNode [] {
+				node1,
+				node2});
+
+			treeView.CollapseAll ();
+			
+			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+				GetProviderFromControl (treeView);
+
+			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
+				provider.Navigate (NavigateDirection.FirstChild);
+			IRawElementProviderFragmentRoot node2Provider = (IRawElementProviderFragmentRoot)
+				node1Provider.Navigate (NavigateDirection.NextSibling);
+			
+			IRawElementProviderFragmentRoot node1sub1Provider = (IRawElementProviderFragmentRoot)
+				node1Provider.Navigate (NavigateDirection.FirstChild);
+			IRawElementProviderFragmentRoot node1sub2Provider = (IRawElementProviderFragmentRoot)
+				node1sub1Provider.Navigate (NavigateDirection.NextSibling);
+			
+			IRawElementProviderFragmentRoot node1sub1sub1Provider = (IRawElementProviderFragmentRoot)
+				node1sub1Provider.Navigate (NavigateDirection.FirstChild);
+
+			VerifyTreeNodePatterns (provider, node1Provider, node1);
+			VerifyTreeNodePatterns (provider, node2Provider, node2);
+			VerifyTreeNodePatterns (provider, node1sub1Provider, node1sub1);
+			VerifyTreeNodePatterns (provider, node1sub2Provider, node1sub2);
+			VerifyTreeNodePatterns (provider, node1sub1sub1Provider, node1sub1sub1);
+
+			IExpandCollapseProvider node1ExpandCollapse = (IExpandCollapseProvider)
+				node1Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+			IExpandCollapseProvider node2ExpandCollapse = (IExpandCollapseProvider)
+				node2Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+
+			IExpandCollapseProvider node1sub1ExpandCollapse = (IExpandCollapseProvider)
+				node1sub1Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+			IExpandCollapseProvider node1sub2ExpandCollapse = (IExpandCollapseProvider)
+				node1sub2Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+
+			IExpandCollapseProvider node1sub1sub1ExpandCollapse = (IExpandCollapseProvider)
+				node1sub1sub1Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+
+			Assert.AreEqual (ExpandCollapseState.Collapsed,
+			                 node1ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.LeafNode,
+			                 node2ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.Collapsed,
+			                 node1sub1ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.LeafNode,
+			                 node1sub2ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.LeafNode,
+			                 node1sub1sub1ExpandCollapse.ExpandCollapseState);
+
+			TestProperty (node1Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.Collapsed);
+			TestProperty (node2Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.LeafNode);
+			TestProperty (node1sub1Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.Collapsed);
+			TestProperty (node1sub2Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.LeafNode);
+			TestProperty (node1sub1sub1Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.LeafNode);
+
+			bridge.ResetEventLists ();
+			
+			node1.Expand ();
+			
+			AutomationPropertyChangedEventTuple propertyEventTuple =
+				bridge.GetAutomationPropertyEventFrom (node1Provider,
+				                                       ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id);
+			Assert.IsNotNull (propertyEventTuple,
+			                  "Expected property change event on node 1");
+			Assert.AreEqual (ExpandCollapseState.Collapsed,
+			                 propertyEventTuple.e.OldValue,
+			                 "Old value");
+			Assert.AreEqual (ExpandCollapseState.Expanded,
+			                 propertyEventTuple.e.NewValue,
+			                 "New value");
+
+			Assert.AreEqual (ExpandCollapseState.Expanded,
+			                 node1ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.LeafNode,
+			                 node2ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.Collapsed,
+			                 node1sub1ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.LeafNode,
+			                 node1sub2ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.LeafNode,
+			                 node1sub1sub1ExpandCollapse.ExpandCollapseState);
+
+			TestProperty (node1Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.Expanded);
+			TestProperty (node2Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.LeafNode);
+			TestProperty (node1sub1Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.Collapsed);
+			TestProperty (node1sub2Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.LeafNode);
+			TestProperty (node1sub1sub1Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.LeafNode);
+		}
+
+		[Test]
+		public void ExpandCollapseTest ()
+		{
+			TreeView treeView = new TreeView ();
+
+			TreeNode node1 = new TreeNode ("node1");
+			TreeNode node2 = new TreeNode ("node2");
+			
+			TreeNode node1sub1 = new TreeNode ("node1 - sub1");
+			TreeNode node1sub2 = new TreeNode ("node1 - sub2");
+			node1.Nodes.Add (node1sub1);
+			node1.Nodes.Add (node1sub2);
+
+			TreeNode node1sub1sub1 = new TreeNode ("node1 - sub1 - sub1");
+			node1sub1.Nodes.Add (node1sub1sub1);
+
+			treeView.Nodes.AddRange (new TreeNode [] {
+				node1,
+				node2});
+
+			treeView.CollapseAll ();
+			
+			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+				GetProviderFromControl (treeView);
+
+			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
+				provider.Navigate (NavigateDirection.FirstChild);
+//			IRawElementProviderFragmentRoot node2Provider = (IRawElementProviderFragmentRoot)
+//				node1Provider.Navigate (NavigateDirection.NextSibling);
+//			
+//			IRawElementProviderFragmentRoot node1sub1Provider = (IRawElementProviderFragmentRoot)
+//				node1Provider.Navigate (NavigateDirection.FirstChild);
+//			IRawElementProviderFragmentRoot node1sub2Provider = (IRawElementProviderFragmentRoot)
+//				node1sub1Provider.Navigate (NavigateDirection.NextSibling);
+			
+//			IRawElementProviderFragmentRoot node1sub1sub1Provider = (IRawElementProviderFragmentRoot)
+//				node1sub1Provider.Navigate (NavigateDirection.FirstChild);
+
+			IExpandCollapseProvider node1ExpandCollapse = (IExpandCollapseProvider)
+				node1Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+//			IExpandCollapseProvider node2ExpandCollapse = (IExpandCollapseProvider)
+//				node2Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+//
+//			IExpandCollapseProvider node1sub1ExpandCollapse = (IExpandCollapseProvider)
+//				node1sub1Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+//			IExpandCollapseProvider node1sub2ExpandCollapse = (IExpandCollapseProvider)
+//				node1sub2Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+
+//			IExpandCollapseProvider node1sub1sub1ExpandCollapse = (IExpandCollapseProvider)
+//				node1sub1sub1Provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+
+			Assert.IsFalse (node1.IsExpanded);
+			Assert.IsFalse (node2.IsExpanded);
+			Assert.IsFalse (node1sub1.IsExpanded);
+			Assert.IsFalse (node1sub2.IsExpanded);
+			Assert.IsFalse (node1sub1sub1.IsExpanded);
+
+			node1ExpandCollapse.Expand ();
+
+			// TODO: test winforms events?
+
+			Assert.IsTrue (node1.IsExpanded);
+			Assert.IsFalse (node2.IsExpanded);
+			Assert.IsFalse (node1sub1.IsExpanded);
+			Assert.IsFalse (node1sub2.IsExpanded);
+			Assert.IsFalse (node1sub1sub1.IsExpanded);
+		}
+		
+		#endregion
 		
 		#endregion
 
@@ -944,6 +1144,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			bool expectScrollItem = treeNode.TreeView.Enabled &&
 				(parentProvider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider != null);
 			bool expectToggle = treeNode.TreeView.CheckBoxes;
+			bool expectExpandCollapse = true;
 
 			object invokeProvider =
 				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
@@ -988,6 +1189,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			} else
 				Assert.IsNull (toggleProvider,
 				               "Should not support Toggle Pattern.");
+
+			object expandCollapseProvider =
+				provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
+			if (expectExpandCollapse) {
+				Assert.IsNotNull (expandCollapseProvider,
+				                  "Should support ExpandCollapse pattern.");
+				Assert.IsTrue (expandCollapseProvider is IExpandCollapseProvider,
+				               "Should support ExpandCollapse pattern.");
+			} else
+				Assert.IsNull (expandCollapseProvider,
+				               "Should not support ExpandCollapse Pattern.");
 		}
 		
 		#endregion

@@ -84,6 +84,22 @@ namespace Mono.UIAutomation.Winforms
 			//       connect/disconnect based on CheckBoxes value
 			treeView.AfterCheck += HandleAfterCheck;
 			treeView.AfterSelect += HandleAfterSelect;
+			treeView.AfterExpand += HandleAfterExpand;
+			treeView.AfterCollapse += HandleAfterCollapse;
+		}
+
+		void HandleAfterCollapse (object sender, SWF.TreeViewEventArgs e)
+		{
+			TreeNodeProvider nodeProvider = GetTreeNodeProvider (e.Node);
+			if (nodeProvider != null)
+				nodeProvider.OnAfterCollapse ();
+		}
+
+		void HandleAfterExpand (object sender, SWF.TreeViewEventArgs e)
+		{
+			TreeNodeProvider nodeProvider = GetTreeNodeProvider (e.Node);
+			if (nodeProvider != null)
+				nodeProvider.OnAfterExpand ();
 		}
 
 		void HandleAfterSelect(object sender, SWF.TreeViewEventArgs e)
@@ -319,6 +335,10 @@ namespace Mono.UIAutomation.Winforms
 			else if (!treeSupportsScroll || !node.TreeView.Enabled)
 				SetBehavior (ScrollItemPatternIdentifiers.Pattern,
 				             null);
+
+			if (GetBehavior (ExpandCollapsePatternIdentifiers.Pattern) == null)
+				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
+				             new ExpandCollapeProviderBehavior (this));
 			
 //			if (node.TreeView.LabelEdit)
 //				; // TODO: Value
@@ -340,6 +360,18 @@ namespace Mono.UIAutomation.Winforms
 				AfterSelect (this, EventArgs.Empty);
 		}
 
+		internal void OnAfterExpand ()
+		{
+			if (AfterExpand != null)
+				AfterExpand (this, EventArgs.Empty);
+		}
+
+		internal void OnAfterCollapse ()
+		{
+			if (AfterCollapse != null)
+				AfterCollapse (this, EventArgs.Empty);
+		}
+
 		#endregion
 
 		#region Events
@@ -347,6 +379,10 @@ namespace Mono.UIAutomation.Winforms
 		public event EventHandler AfterCheck;
 
 		public event EventHandler AfterSelect;
+
+		public event EventHandler AfterExpand;
+
+		public event EventHandler AfterCollapse;
 		
 		#endregion
 	}

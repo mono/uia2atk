@@ -1,3 +1,8 @@
+2008-12-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* TreeViewProviderTest.cs: Add initial (incomplete) ExpandCollapse
+	pattern tests.
+
 2008-12-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Makefile.am:
