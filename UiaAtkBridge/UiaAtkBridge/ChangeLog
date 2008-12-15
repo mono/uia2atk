@@ -1,3 +1,10 @@
+2008-12-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MenuItem.cs: Fix a FIXME, which also makes a ToolStripDropDownButton
+	test pass again.
+
+	* UiaAtkBridge.mdp: Flush.
+
 2008-12-15  Mario Carrion  <mcarrion@novell.com>
 
 	* TableImplementorHelper.cs: Using ITableProvider when available.
@@ -106,7 +113,6 @@
 
 	* TextLabel.cs: Removing unused IsStatusBarPanel method.
 
->>>>>>> .r120801
 2008-12-04  Mario Carrion  <mcarrion@novell.com>
 
 	* MenuItem.cs: Reverted setting showing in ctor.

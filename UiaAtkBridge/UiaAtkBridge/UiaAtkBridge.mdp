@@ -1,4 +1,4 @@
-<Project name="UiaAtkBridge" fileversion="2.0" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+<Project name="UiaAtkBridge" fileversion="2.0" language="C#" clr-version="Net_2_0" targetFramework="2.0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="bin/Debug" signAssembly="True" assemblyKeyFile="../mono-uia.snk" assembly="UiaAtkBridge" />
@@ -58,6 +58,7 @@
     <File name="ExpandCollapseButton.cs" subtype="Code" buildaction="Compile" />
     <File name="SplitButton.cs" subtype="Code" buildaction="Compile" />
     <File name="TextImageLabel.cs" subtype="Code" buildaction="Compile" />
+    <File name="Makefile.am" subtype="Code" buildaction="Nothing" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

@@ -65,10 +65,7 @@ namespace UiaAtkBridge
 				  SelectionItemPatternIdentifiers.Pattern.Id);
 			}
 			
-			IRawElementProviderFragment child = ((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
-
-			//FIXME: take in account Role changes at runtime
-			Role = (child != null || comboBoxStructure.Value) ? Atk.Role.Menu : Atk.Role.MenuItem;
+			OnChildrenChanged ();
 		}
 
 		private bool selected = false;
@@ -103,6 +100,17 @@ namespace UiaAtkBridge
 			}
 
 			return states;
+		}
+
+		private void OnChildrenChanged () 
+		{
+			IRawElementProviderFragment child = ((IRawElementProviderFragment)Provider).Navigate (NavigateDirection.FirstChild);
+			Role = (child != null || comboBoxStructure.Value) ? Atk.Role.Menu : Atk.Role.MenuItem;
+		}
+		
+		protected override void OnChildrenChanged (uint change_index, IntPtr changed_child) 
+		{
+			OnChildrenChanged ();
 		}
 
 		public override Atk.Layer Layer {
