@@ -1,3 +1,8 @@
+2008-12-15  Stephen Shaw  <sshaw@decriptor.com>
+	
+	* specs/uiaatkbridge.spec: Removed devel package, changed up buildrequires
+	* specs/uiautomationwinforms.spec: changed up buildrequires
+
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 	
 	* specs/uiaatkbridge.spec: Require gtk2-devel for build.
