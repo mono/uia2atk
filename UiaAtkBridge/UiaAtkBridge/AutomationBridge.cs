@@ -355,14 +355,19 @@ namespace UiaAtkBridge
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty &&
 			  !providerAdapterMapping.ContainsKey (simpleProvider) &&
 			  providerAdapterMapping.Count > 0) {
-				HandlePossiblePreExistingProvider (simpleProvider);
 				int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+				// Currently we don't instantiate adapters for
+				// DataItems; their children become children
+				// of the DataItem's parent
 				if (controlTypeId == ControlType.DataItem.Id && simpleProvider is IRawElementProviderFragment) {
 					IRawElementProviderFragment child = ((IRawElementProviderFragment)simpleProvider).Navigate (NavigateDirection.FirstChild);
+					if (!(providerAdapterMapping.ContainsKey (child)))
+						HandlePossiblePreExistingProvider (child);
 					if (providerAdapterMapping.ContainsKey (child))
 						((Adapter)providerAdapterMapping [child]).RaiseAutomationPropertyChangedEvent (e);
 					return;
-				}
+				} else
+					HandlePossiblePreExistingProvider (simpleProvider);
 			}
 
 			if ((!providerAdapterMapping.ContainsKey (simpleProvider)) || windowProviders == 0)
@@ -952,16 +957,26 @@ namespace UiaAtkBridge
 		// existed prior to the provider being created.
 		private void HandlePossiblePreExistingProvider (IRawElementProviderSimple provider)
 		{
+Console.WriteLine ("check: " + provider);
 			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
 			if (fragment == null)
 				return;
 			IRawElementProviderFragment parent = fragment.Navigate (NavigateDirection.Parent);
+Console.WriteLine ("parent: " + parent);
 			if (parent == null || parent == provider)
 				return;
+			int controlTypeId = (int) parent.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			if (controlTypeId == ControlType.DataItem.Id)
+				parent = parent.Navigate (NavigateDirection.Parent);
+Console.WriteLine ("parent: " + parent);
+
 			Atk.Object obj = null;
 			if (!providerAdapterMapping.TryGetValue (parent, out obj))
 				HandlePossiblePreExistingProvider (parent);
+			if (!providerAdapterMapping.TryGetValue (parent, out obj))
+				return;
 			ParentAdapter parentAdapter = obj as ParentAdapter;
+Console.WriteLine ("Done recursing: " + provider + ", parentAdapter " + obj);
 			if (parentAdapter != null) {
 				if (parentAdapter.RefStateSet().ContainsState (Atk.StateType.ManagesDescendants))
 					HandleElementAddition (provider);

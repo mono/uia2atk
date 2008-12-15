@@ -1,3 +1,8 @@
+2008-12-15  Mike Gorse  <mgorse@novell.com>
+
+	* AutomationBridge.cs: Fix initialization of DataItem child when
+	  receiving focus event.
+
 2008-12-15  Brad Taylor  <brad@getcoded.net>
 
 	* MenuItem.cs: When a MenuItem or ToolStripItem is selected, it is also
