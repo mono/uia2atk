@@ -1,3 +1,9 @@
+2008-12-15  Mario Carrion  <mcarrion@novell.com>
+
+	* TableImplementorHelper.cs: Using ITableProvider when available.
+	
+[Fixes Bug #459035]
+
 2008-12-15  Mike Gorse  <mgorse@novell.com>
 
 	* AutomationBridge.cs: Fix initialization of DataItem child when

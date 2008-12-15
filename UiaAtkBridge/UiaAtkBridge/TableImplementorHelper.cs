@@ -48,6 +48,8 @@ namespace UiaAtkBridge
 
 		internal IGridProvider GridProvider {
 			get {
+				if (tableProvider != null)
+					return tableProvider;
 				IGridProvider grid = (IGridProvider) resource.Provider.GetPatternProvider (GridPatternIdentifiers.Pattern.Id);
 				if (grid != null)
 					return grid;
