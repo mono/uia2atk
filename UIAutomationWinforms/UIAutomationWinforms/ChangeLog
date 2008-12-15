@@ -1,3 +1,9 @@
+2008-12-15  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationHasKeyboardFocusPropertyEvent.cs: 
+	Use a new event inside of ToolStripItem to find out whether a
+	ToolStripItem is selected.
+
 2008-12-15  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Have SetFocus

@@ -97,6 +97,7 @@ namespace UiaAtkBridge
 
 			if (selected) {
 				states.AddState (Atk.StateType.Selected);
+				states.AddState (Atk.StateType.Focused);
 			} else {
 				states.RemoveState (Atk.StateType.Selected);
 			}
@@ -136,6 +137,7 @@ namespace UiaAtkBridge
 			if (eventId == InvokePatternIdentifiers.InvokedEvent) {
 				selected = !selected;
 				NotifyStateChange (Atk.StateType.Selected, selected);
+				NotifyStateChange (Atk.StateType.Focused, selected);
 				if (Parent is MenuItem)
 					((MenuItem)Parent).RecursiveDeselect (this);
 			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {

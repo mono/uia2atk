@@ -50,21 +50,21 @@ namespace Mono.UIAutomation.Winforms.Events.ToolStripItem
 		
 		public override void Connect ()
 		{
-			((SWF.ToolStripItem)Provider.Component).MouseEnter += new EventHandler (OnFocus);
-			((SWF.ToolStripItem)Provider.Component).MouseLeave += new EventHandler (OnFocus);
+			((SWF.ToolStripItem)Provider.Component).UIASelectionChanged
+				+= new EventHandler (OnUIASelectionChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.ToolStripItem)Provider.Component).MouseEnter -= new EventHandler (OnFocus);
-			((SWF.ToolStripItem)Provider.Component).MouseLeave -= new EventHandler (OnFocus);
+			((SWF.ToolStripItem)Provider.Component).UIASelectionChanged
+				-= new EventHandler (OnUIASelectionChanged);
 		}
 		
 		#endregion
 		
 		#region Private Methods
 		
-		private void OnFocus (object sender, EventArgs e)
+		private void OnUIASelectionChanged (object o, EventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
