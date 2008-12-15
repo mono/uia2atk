@@ -1,3 +1,7 @@
+2008-12-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTest.mdp: Fix a warning with bleeding-edge MD.
+
 2008-12-01  Mike Gorse  <mgorse@novell.com>
 
 	* GailTester.cs: Add SetReadOnly.
