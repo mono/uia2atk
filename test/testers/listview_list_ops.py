@@ -1,11 +1,12 @@
 #!/usr/bin/env python
-
+# vim: set tabstop=4 shiftwidth=4 expandtab
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
-# Date:        11/03/2008
-# Description: Test accessibility of listview widget 
-#              Use the listviewframe.py wrapper script
-#              Test the samples/ListView_list.py script
+#              Ray Wang <rawang@novell.com>
+# Date:        12/13/2008
+# Description: main test script of listview_list
+#              ../samples/listview_list.py is the test sample script
+#              listview_list/* are the wrappers of listview_list test sample
 ##############################################################################
 
 # The docstring below  is used in the generated log file
@@ -14,14 +15,11 @@ Test accessibility of listview_list widget
 """
 
 # imports
-import sys
-import os
-
-from strongwind import *
 from listview_list import *
 from helpers import *
+from actions import *
+from states import *
 from sys import argv
-from os import path
 
 app_path = None 
 try:
@@ -43,42 +41,58 @@ if app is None:
 # just an alias to make things shorter
 lvFrame = app.listViewFrame
 
-#check ListView item's actions list
-actionsCheck(lvFrame.listitem[0], "List")
+##############################
+# check listitem's AtkAction
+##############################
+#actionsCheck(lvFrame.listitem[0], "ListItem")
 
-#check ListView's states list
-statesCheck(lvFrame.list, "List")
+##############################
+# check list's AtkAccessible
+##############################
+# TODO: in accerciser, we could not see 'focused' state under 'list'
+statesCheck(lvFrame.list, "List", add_states=["focused"])
 
-#check ListItem0,1's default states
+##############################
+# check listitem's AtkAccessible
+##############################
+# TODO: in accerciser, we could not see 'focused' state under 'list'
 statesCheck(lvFrame.listitem[0], "ListItem", add_states=["focused"])
-statesCheck(lvFrame.listitem[1], "ListItem")
+statesCheck(lvFrame.listitem[4], "ListItem")
 
+##############################
+# check listitem's AtkAccessible while multi-items selected
+##############################
 #click listitem to rise selected states, listitem1 also with 
 #selected states after click listitem3 because MultiSelect is True
-lvFrame.click(lvFrame.listitem[1])
+lvFrame.click(lvFrame.listitem[0])
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[1], "ListItem", add_states=["selected"])
-
-lvFrame.click(lvFrame.listitem[3])
-sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[3], "ListItem", add_states=["selected"])
-
-statesCheck(lvFrame.listitem[1], "ListItem", add_states=["selected"])
-
-#close MultiSelect, then select listitems to check states, 
-#listitem1 disappear selected state
-lvFrame.checkbox.click()
-sleep(config.SHORT_DELAY)
-lvFrame.click(lvFrame.listitem[2])
-sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[2], "ListItem", add_states=["selected"])
+statesCheck(lvFrame.listitem[0], "ListItem", add_states=["selected"])
+statesCheck(lvFrame.listitem[4], "ListItem")
 
 lvFrame.click(lvFrame.listitem[4])
 sleep(config.SHORT_DELAY)
 statesCheck(lvFrame.listitem[4], "ListItem", add_states=["selected"])
+statesCheck(lvFrame.listitem[0], "ListItem", add_states=["selected"])
+
+##############################
+# check listitem's AtkAccessible while single-item selected
+##############################
+#close MultiSelect, then select listitems to check states, 
+lvFrame.checkbox.click()
+sleep(config.SHORT_DELAY)
+lvFrame.click(lvFrame.listitem[1])
+sleep(config.SHORT_DELAY)
+statesCheck(lvFrame.listitem[1], "ListItem", add_states=["selected"])
+
+lvFrame.click(lvFrame.listitem[2])
+sleep(config.SHORT_DELAY)
+statesCheck(lvFrame.listitem[2], "ListItem", add_states=["selected"])
 
 statesCheck(lvFrame.listitem[1], "ListItem")
 
+##############################
+# check listitem's AtkAccessible by mouseClick
+##############################
 #mouse click ListItem to rise focused and selected states
 lvFrame.mouseClick(log=False)
 lvFrame.listitem[0].mouseClick()
@@ -91,9 +105,15 @@ statesCheck(lvFrame.listitem[4], "ListItem", add_states=["focused", "selected"])
 #listitem0 with default states after click listitem5
 statesCheck(lvFrame.listitem[0], "ListItem")
 
+##############################
+# check listitem's AtkAccessible by keyboard
+##############################
 lvFrame.keyCombo("Up", grabFocus=False)
 statesCheck(lvFrame.listitem[3], "ListItem", add_states=["focused", "selected"])
 
+##############################
+# check listitem's AtkSelection
+##############################
 #check list selection implementation
 lvFrame.assertSelectionChild(lvFrame.list, 2)
 sleep(config.SHORT_DELAY)
@@ -108,13 +128,22 @@ statesCheck(lvFrame.listitem[3], "ListItem", add_states=["focused"])
 #check listbox state after clear selection
 statesCheck(lvFrame.list, "List")
 
+##############################
+# check listitem's AtkText
+##############################
 #check listitem's text implementation
 lvFrame.assertText(lvFrame.listitem[0], "Item 0")
 lvFrame.assertText(lvFrame.listitem[4], "Item 4")
 
+##############################
+# check listitem's AtkTable
+##############################
 #check list's table implementation
-lvFrame.assertTable(lvFrame.list)
+lvFrame.assertTable(lvFrame.list, 4, 2)
 
+##############################
+# End
+##############################
 #close application frame window
 lvFrame.quit()
 

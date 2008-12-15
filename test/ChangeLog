@@ -1,3 +1,15 @@
+2008-12-15  Ray Wang <rawang@novell.com>
+
+	* samples/listview_list.py
+	* testers/listview_list/__init__.py
+	* testers/listview_list/listviewframe.py
+	* testers/listview_list_ops.py: add more steps to test
+	* testers/toolstripcombobox
+	* testers/toolstripcombobox/__init__.py
+	* testers/toolstripcombobox/toolstripcomboboxframe.py
+	* testers/toolstripcombobox_basic_ops.py: add toolstripcombobox 
+	strongwind test
+
 2008-12-12 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* harness/tests.py: add groupbox test to the regression test suite

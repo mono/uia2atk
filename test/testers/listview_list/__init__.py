@@ -1,21 +1,22 @@
-
+# vim: set tabstop=4 shiftwidth=4 expandtab
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        11/03/2008
 # Description: Application wrapper for listview_list.py
-#              Used by the listview_list-*.py tests
+#              be called by ../listview_list_basic_ops.py
 ##############################################################################$
 
-'Application wrapper for listview_list'
+"""Application wrapper for listview_list"""
 
 from strongwind import *
-
 from os.path import exists
 from sys import path
 
 def launchListView(exe=None):
-    'Launch listview list mode with accessibility enabled and return a listview object. \
-     Log an error and return None if something goes wrong'
+    """
+    Launch listview list mode with accessibility enabled and return a listview object.
+    Log an error and return None if something goes wrong
+    """
 
     if exe is None:
         # make sure we can find the sample application
@@ -38,12 +39,12 @@ def launchListView(exe=None):
 
     return listview
 
-# class to represent the application
 class ListView(accessibles.Application):
-    #checkShowing=False
+    """class to represent the application"""
+
     def __init__(self, accessible, subproc=None): 
-        'Get a reference to the listview window'
+        """Get a reference to the listview window"""
+
         super(ListView, self).__init__(accessible, subproc)
         
-        self.findFrame(re.compile('^ListView control'), logName='List View')
-
+        self.findFrame(re.compile('^ListView'), logName='List View')

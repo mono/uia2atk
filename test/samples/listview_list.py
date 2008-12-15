@@ -20,18 +20,18 @@ from System.Windows.Forms import *
 class ListViewSample(Form):
     """ListView control class"""
 
+    toggle = True
+
     def __init__(self):
         """ListViewSample class init function."""
 
         # setup title
-        self.Text = "ListView control"
-        self.Width = 300
-        self.Height = 300
-        self.toggle = True
+        self.Text = "ListView Control - List Mode"
 
         # setup label
         self.label = Label()
-        self.label.Text = "View.List mode with LabelEdit property that means can edit the items text."
+        self.label.Text = "View.List mode with LabelEdit property"
+        self.label.AutoSize = True
         self.label.Dock = DockStyle.Top
 
         # setup listview
@@ -50,8 +50,9 @@ class ListViewSample(Form):
         self.listview.Sorting = SortOrder.Ascending
         # place widget besides left.
         self.listview.Dock = DockStyle.Top
-        self.listview.Width = 300
-        self.listview.ColumnClick += self.on_click
+        self.listview.Width = self.Width
+        self.listview.ColumnClick += self.column_click
+        self.listview.SelectedIndexChanged += self.item_click
 
         # add conlumns
         self.listview.Columns.Add("Column A", 200, HorizontalAlignment.Left)
@@ -62,16 +63,16 @@ class ListViewSample(Form):
 
         self.checkbox = CheckBox()
         self.checkbox.Text = "MultiSelect"
-        self.checkbox.Click += self.checkbox_click
         self.checkbox.Checked = True
         self.checkbox.Dock = DockStyle.Top
+        self.checkbox.Click += self.checkbox_click
 
         # add controls
         self.Controls.Add(self.listview)
         self.Controls.Add(self.checkbox)
         self.Controls.Add(self.label)
 
-    def on_click(self, sender, event):
+    def column_click(self, sender, event):
         if self.toggle == True:
             self.listview.Sorting = SortOrder.Descending
             self.toggle = False
@@ -79,7 +80,10 @@ class ListViewSample(Form):
             self.listview.Sorting = SortOrder.Ascending
             self.toggle = True
  
-    #change MultiSelect property
+    def item_click(self, sender, event):
+        pass
+
+    # change MultiSelect property
     def checkbox_click(self, sender, event):
         if self.checkbox.Checked:
             self.listview.MultiSelect = True
