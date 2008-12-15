@@ -172,7 +172,6 @@ AtkObject,
 
 			bool focused = (bool) Provider.GetPropertyValue (
 			  AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
-if(focused) Console.WriteLine ("List focused");
 			if (focused)
 				states.AddState (Atk.StateType.Focused);
 			else
@@ -316,7 +315,7 @@ if(focused) Console.WriteLine ("List focused");
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property != ValuePatternIdentifiers.ValueProperty) {
+			if (e.Property == ValuePatternIdentifiers.ValueProperty) {
 				string new_text = TextContents;
 			
 				if (text_helper.HandleSimpleChange (new_text, ref caretOffset))

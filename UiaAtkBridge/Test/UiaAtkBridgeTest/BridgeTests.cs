@@ -92,6 +92,9 @@ namespace UiaAtkBridgeTest
 
 			InterfaceText (BasicWidgetType.ListItem, true, listItemChild);
 
+			listItemChild = accessible.RefAccessibleChild (1);
+			Focus (listItemChild);
+
 			Parent (type, accessible);
 		}
 
@@ -380,6 +383,7 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Editable,
 				Atk.StateType.Enabled,
 				Atk.StateType.Focusable,
+				Atk.StateType.Focused,
 				Atk.StateType.ManagesDescendants,
 				Atk.StateType.Sensitive,
 				Atk.StateType.Showing,
@@ -390,6 +394,7 @@ namespace UiaAtkBridgeTest
 			States (accessible,
 				Atk.StateType.Enabled,
 				Atk.StateType.Focusable,
+				Atk.StateType.Focused,
 				Atk.StateType.ManagesDescendants,
 				Atk.StateType.Sensitive,
 				Atk.StateType.Showing,
@@ -398,9 +403,8 @@ namespace UiaAtkBridgeTest
 
 			EditReadOnly (accessible);
 
-			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (accessible);
-			atkComponent.GrabFocus ();
-			Assert.IsTrue (accessible.RefStateSet().ContainsState (Atk.StateType.Focused), "Atk.StateType.Focused");
+			Atk.Object listItemChild = accessible.RefAccessibleChild (1);
+			Focus (listItemChild);
 
 			dud1.Items.Clear ();
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren after clear [need SWF fix]");

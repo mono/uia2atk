@@ -1,3 +1,9 @@
+2008-12-15  Mike Gorse  <mgorse@novell.com>
+
+	* List.cs: Remove CWL.
+
+	* List.cs: Fix ListWithEditableText PropertyChanged handling.
+
 2008-12-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Hyperlink.cs: Set the name of the link accesible to the URI. Fixes bug

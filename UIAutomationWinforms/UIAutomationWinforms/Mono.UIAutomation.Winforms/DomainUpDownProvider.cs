@@ -62,8 +62,6 @@ namespace Mono.UIAutomation.Winforms
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
 			             new SelectionProviderBehavior (this));
 			
-			SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
-			          new DomainUpDownAutomationHasKeyboardFocusPropertyEvent (this));
 			control.Items.CollectionChanged += OnCollectionChanged;
 		}
 
@@ -76,13 +74,7 @@ namespace Mono.UIAutomation.Winforms
 		#region SimpleControlProvider: Specializations
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
-			if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-				// TODO: Should this go in UpDownBase?
-				return true;
-			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
-				 return control.Focused && (control.SelectedIndex == -1 || control.Text != (string)control.SelectedItem);
-			else
-				return base.GetProviderPropertyValue (propertyId);
+			return base.GetProviderPropertyValue (propertyId);
 		}
 #endregion
 

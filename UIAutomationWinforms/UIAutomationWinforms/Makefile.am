@@ -159,7 +159,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternVerticallyScrollableEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternVerticalScrollPercent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternVerticalViewSizeEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DomainUpDown/DomainUpDownAutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemAutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementAddedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementRemovedEvent.cs \

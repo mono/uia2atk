@@ -390,7 +390,7 @@ namespace UiaAtkBridgeTest
 				string accName = names [i];
 				if (type == BasicWidgetType.ParentMenu)
 					accName = names[0];
-				else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox || type == BasicWidgetType.DomainUpDown)
+				else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox)
 					accName = String.Empty;
 				else if (type == BasicWidgetType.TabControl)
 					accName = null;
@@ -1468,6 +1468,23 @@ namespace UiaAtkBridgeTest
 				}
 			}
 			return null;
+		}
+
+		protected void Focus (Atk.Object accessible)
+		{
+			bool listItem = (accessible.Role == Atk.Role.ListItem);
+
+			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+			EventMonitor.Start ();
+			atkComponent.GrabFocus ();
+			EventCollection events = EventMonitor.Pause ();
+			int expectedCount = (listItem? 1: 2);;
+			string evType = (listItem? "object:active-descendant-changed": "object:state-changed:focused");
+			Atk.Object focusedAccessible = (listItem? accessible.Parent: accessible);
+			EventCollection evs = events.FindByRole (focusedAccessible.Role).FindByType (evType);
+			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
+			Assert.AreEqual (expectedCount, evs.Count, "bad number of events expected!" + eventsInXml);
+			Assert.IsTrue (focusedAccessible.RefStateSet().ContainsState (Atk.StateType.Focused), "List focused");
 		}
 
 		protected double GetMinimumValue (Atk.Value value)

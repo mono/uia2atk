@@ -1,3 +1,9 @@
+2008-12-15  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Fix DomainUpDown name test in interfaceSelection.
+
+	* AtkTester.cs: Add Focus().
+
 2008-12-10  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs: Make SetReadOnly protected.

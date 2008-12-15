@@ -130,7 +130,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void SetFocus ()
 		{
-			base.SetFocus ();
+			((IRawElementProviderFragment)listProvider).SetFocus ();
 			listProvider.FocusItem (ObjectItem);
 		}
 		#endregion

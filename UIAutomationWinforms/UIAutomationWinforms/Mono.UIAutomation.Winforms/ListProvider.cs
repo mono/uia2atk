@@ -81,7 +81,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public virtual void FocusItem (object objectItem)
 		{
-			Console.WriteLine (this + ": warning: SetFocusedItem unimplemented");
+			Console.WriteLine (this + ": warning: FocusItem unimplemented");
 		}
 
 		public virtual ListItemProvider GetItemProviderFrom (FragmentRootControlProvider rootProvider,

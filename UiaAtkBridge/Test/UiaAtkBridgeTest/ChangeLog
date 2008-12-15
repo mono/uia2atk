@@ -1,3 +1,9 @@
+2008-12-15  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTests.cs: Test focusing a ListBox
+
+	* BridgeTests.cs: Use Focus() to test DomainUpDown focus.
+
 2008-12-12  Mario Carrion  <mcarrion@novell.com>
 
 	* BridgeTester.cs: Merry christmas.

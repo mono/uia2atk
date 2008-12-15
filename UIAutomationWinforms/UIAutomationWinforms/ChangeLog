@@ -1,3 +1,18 @@
+2008-12-15  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Have SetFocus
+	  focus the list.
+
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs, Makefile.am,
+	  Mono.UIAutomation.Winforms.mdp: Removed
+	  DomainUpDown HasKeyboardFocus event.
+
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs:
+	  Revert HasKeyboardFocus logic since it was inconsistent with other
+	  lists.
+
+	* Mono.UIAutomation.Winforms/ListProvider.cs: Fix CWL.
+
 2008-12-15  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Setting
