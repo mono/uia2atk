@@ -110,6 +110,9 @@ namespace Mono.UIAutomation.Winforms
 			SetEvent (ProviderEventType.AutomationElementIsKeyboardFocusableProperty,
 			          listProvider.GetListItemEventRealization (ProviderEventType.AutomationElementIsKeyboardFocusableProperty,
 			                                                    this));
+			SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+			          listProvider.GetListItemEventRealization (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+			                                                    this));
 			SetEvent (ProviderEventType.AutomationFocusChangedEvent,
 			          listProvider.GetListItemEventRealization (ProviderEventType.AutomationFocusChangedEvent,
 			                                                    this));
