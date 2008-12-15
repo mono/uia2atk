@@ -15,8 +15,9 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
-	
-	[TestFixture]
+
+	// FIXME: Enable when complete.
+	//[TestFixture]
 	public class MiscHierarchyTest : BaseProviderTest
 	{
 		[Test]

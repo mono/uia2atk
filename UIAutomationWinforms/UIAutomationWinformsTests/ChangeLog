@@ -1,3 +1,7 @@
+2008-12-15  Mario Carrion  <mcarrion@novell.com>
+
+	* MiscHierarchyTest.cs: Disabling test, must be enabled when complete.
+
 2008-12-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* TreeViewProviderTest.cs: Test Collapse and expected Expand/Collapse
