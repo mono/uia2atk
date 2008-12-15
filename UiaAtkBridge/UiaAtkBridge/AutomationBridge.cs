@@ -359,7 +359,8 @@ namespace UiaAtkBridge
 				int controlTypeId = (int) simpleProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 				if (controlTypeId == ControlType.DataItem.Id && simpleProvider is IRawElementProviderFragment) {
 					IRawElementProviderFragment child = ((IRawElementProviderFragment)simpleProvider).Navigate (NavigateDirection.FirstChild);
-					((Adapter)providerAdapterMapping [child]).RaiseAutomationPropertyChangedEvent (e);
+					if (providerAdapterMapping.ContainsKey (child))
+						((Adapter)providerAdapterMapping [child]).RaiseAutomationPropertyChangedEvent (e);
 					return;
 				}
 			}

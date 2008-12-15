@@ -1,3 +1,8 @@
+2008-12-15  Mario Carrion  <mcarrion@novell.com>
+
+	* AutomationBridge.cs: Fixes crash when child item raises
+	HasKeyboardFocusProperty is its first child is not yet initialized.
+
 2008-12-15  Mike Gorse  <mgorse@novell.com>
 
 	* List.cs: Remove CWL.
