@@ -861,7 +861,7 @@ namespace UiaAtkBridgeTest
 				atkText = CastToAtkInterface <Atk.Text> (accessible);
 			});
 
-			if (Misc.HasReadOnlyText (type))
+			if (Misc.HasReadOnlyText (type) && (type != BasicWidgetType.MaskedTextBoxEntry))
 				Assert.AreEqual (name, accessible.Name, "accessible.Name");
 			else
 				Assert.IsNull (accessible.Name, "accessible.Name");
@@ -869,18 +869,31 @@ namespace UiaAtkBridgeTest
 			int caret = 0;
 			if (type == BasicWidgetType.TextBoxView)
 				caret = name.Length;
+
+			char passwordChar = '●';
+			string passwordString = new String ('●', name.Length);
 			
 			Assert.AreEqual (caret, atkText.CaretOffset, "CaretOffset SL");
 			Assert.AreEqual (name.Length, atkText.CharacterCount, "CharacterCount SL");
-			Assert.AreEqual (name [0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset SL");
-			Assert.AreEqual (name, atkText.GetText (0, name.Length), "GetText SL");
+			if (type != BasicWidgetType.MaskedTextBoxEntry) {
+				Assert.AreEqual (String.Empty + name [0], String.Empty + atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset SL");
+				Assert.AreEqual (name, atkText.GetText (0, name.Length), "GetText SL");
+			} else {
+				Assert.AreEqual (passwordChar, atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset SL MTB");
+				Assert.AreEqual (passwordString, atkText.GetText (0, name.Length), "GetText SL");
+			}
+
 
 			int highCaretOffset = 15;
 			//any value (beware, this may change when this is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=556453 )
-			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (-1), "SetCaretOffset#1 SL");
-			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (0), "SetCaretOffset#2 SL");
-			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (1), "SetCaretOffset#3 SL");
-			Assert.AreEqual (!Misc.HasReadOnlyText (type), atkText.SetCaretOffset (highCaretOffset), "SetCaretOffset#4 SL");
+			Assert.AreEqual (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.MaskedTextBoxEntry, 
+			                 atkText.SetCaretOffset (-1), "SetCaretOffset#1 SL");
+			Assert.AreEqual (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.MaskedTextBoxEntry,
+			                 atkText.SetCaretOffset (0), "SetCaretOffset#2 SL");
+			Assert.AreEqual (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.MaskedTextBoxEntry,
+			                 atkText.SetCaretOffset (1), "SetCaretOffset#3 SL");
+			Assert.AreEqual (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.MaskedTextBoxEntry,
+			                 atkText.SetCaretOffset (highCaretOffset), "SetCaretOffset#4 SL");
 			
 			// don't do this until bug#393565 is fixed:
 			//Assert.AreEqual (typeof(Atk.TextAttribute), atkText.DefaultAttributes[0].GetType());
@@ -889,13 +902,14 @@ namespace UiaAtkBridgeTest
 			if ((type == BasicWidgetType.Label) || 
 			    (type == BasicWidgetType.ToolStripLabel) ||
 			    (type == BasicWidgetType.TextBoxEntry) ||
-				(type == BasicWidgetType.TextBoxView))
+				(type == BasicWidgetType.TextBoxView) ||
+			    (type == BasicWidgetType.MaskedTextBoxEntry))
 				nSelections = 0;
 			
 			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#1 SL");
 
 			int caretOffset = 0;
-			if (!Misc.HasReadOnlyText (type))
+			if (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.MaskedTextBoxEntry)
 				caretOffset = highCaretOffset;
 			
 			// you cannot select a label AFAIK so, all zeroes returned!
@@ -933,23 +947,32 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#5 SL");
 
 
+
+			
 			//IMPORTANT NOTE about GetText*Offset methods [GetTextAtOffset(),GetTextAfterOffset(),GetTextBeforeOffset()]:
 			//in Gail, they all return null if GetText() has not been called yet, however we may
 			//prefer not to follow this wierd behaviour in the bridge
 			
 			//GetTextAtOffset
 			expected = " test";
+
+			int startCaretOffset = name.IndexOf (expected);
+			int endCaretOffset = name.IndexOf (expected) + expected.Length;
+			if (type == BasicWidgetType.MaskedTextBoxEntry) {
+				expected = passwordString;
+				startCaretOffset = 0;
+				endCaretOffset = name.Length;
+			}
+			
 			Assert.AreEqual (expected, 
 				atkText.GetTextAtOffset (12, Atk.TextBoundary.WordEnd, out startOffset, out endOffset),
 				"GetTextAtOffset,WordEnd SL");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,WordEnd,so SL");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,WordEnd,eo SL");
+			Assert.AreEqual (startCaretOffset, startOffset, "GetTextAtOffset,WordEnd,so SL");
+			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAtOffset,WordEnd,eo SL");
 
-			int startCaretOffset = highCaretOffset;
-			int endCaretOffset = highCaretOffset;
-			if (Misc.HasReadOnlyText (type)) {
-				startCaretOffset = name.IndexOf (expected);
-				endCaretOffset = name.IndexOf (expected) + expected.Length;
+			if (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.MaskedTextBoxEntry) {
+				startCaretOffset = highCaretOffset;
+				endCaretOffset = highCaretOffset;
 			}
 			
 			//test selections after obtaining text with a different API than GetText
@@ -974,58 +997,88 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (startCaretOffset, startCaretOffset, "GetSelection#29 SL");
 			Assert.AreEqual (endCaretOffset, endOffset, "GetSelection#30 SL");
 			
-			
+
 			expected = "test ";
+
+			startCaretOffset = name.IndexOf (expected);
+			endCaretOffset = name.IndexOf (expected) + expected.Length;
+
+			if (type == BasicWidgetType.MaskedTextBoxEntry) {
+				expected = passwordString.Substring (0, 12);
+				startCaretOffset = 12;
+				endCaretOffset = passwordString.Length;
+			}
+			
 			Assert.AreEqual (expected, 
 				atkText.GetTextAtOffset (12, Atk.TextBoundary.WordStart, out startOffset, out endOffset),
 				"GetTextAtOffset,WordStart SL");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,WordStart,so SL");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,WordStart,eo SL");
-			
+			Assert.AreEqual (startCaretOffset, startOffset, "GetTextAtOffset,WordStart,so SL");
+			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAtOffset,WordStart,eo SL");
+
 			expected = simpleTestText;
+			startCaretOffset = name.IndexOf (expected);
+			endCaretOffset = name.IndexOf (expected) + expected.Length;
+			if (type == BasicWidgetType.MaskedTextBoxEntry) {
+				expected = passwordString;
+				startCaretOffset = 0;
+			}
+
 			Assert.AreEqual (expected,
 				atkText.GetTextAtOffset (12, Atk.TextBoundary.LineEnd, out startOffset, out endOffset),
 				"GetTextAtOffset,LineEnd SL");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,LineEnd,so SL");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,LineEnd,eo SL");
+			Assert.AreEqual (startCaretOffset, startOffset, "GetTextAtOffset,LineEnd,so SL");
+			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAtOffset,LineEnd,eo SL");
 
-			expected = simpleTestText;
 			Assert.AreEqual (expected,
 				atkText.GetTextAtOffset (12, Atk.TextBoundary.LineStart, out startOffset, out endOffset),
 				"GetTextAtOffset,LineStart SL");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,LineStart,so SL");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,LineStart,eo SL");
+			Assert.AreEqual (startCaretOffset, startOffset, "GetTextAtOffset,LineStart,so SL");
+			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAtOffset,LineStart,eo SL");
 			
-			expected = simpleTestText;
 			Assert.AreEqual (expected,
 				atkText.GetTextAtOffset (18, Atk.TextBoundary.SentenceEnd, out startOffset, out endOffset),
 				"GetTextAtOffset,SentenceEnd SL");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,SentenceEnd,so SL");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,SentenceEnd,eo SL");
-			
-			expected = simpleTestText;
+			Assert.AreEqual (startCaretOffset, startOffset, "GetTextAtOffset,SentenceEnd,so SL");
+			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAtOffset,SentenceEnd,eo SL");
+
 			Assert.AreEqual (expected,
 				atkText.GetTextAtOffset (18, Atk.TextBoundary.SentenceStart, out startOffset, out endOffset),
 				"GetTextAtOffset,SentenceStart SL");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAtOffset,SentenceStart,so SL");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAtOffset,SentenceStart,eo SL");
+			Assert.AreEqual (startCaretOffset, startOffset, "GetTextAtOffset,SentenceStart,so SL");
+			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAtOffset,SentenceStart,eo SL");
+
+			expected = "t";
+			if (type == BasicWidgetType.MaskedTextBoxEntry)
+				expected = String.Empty + passwordChar;
 			
-			Assert.AreEqual ("t",
+			Assert.AreEqual (expected,
 				atkText.GetTextAtOffset (18, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char1 SL");
 			Assert.AreEqual (18, startOffset, "GetTextAtOffset,Char1,so SL");
 			Assert.AreEqual (19, endOffset, "GetTextAtOffset,Char1,eo SL");
-			Assert.AreEqual (".",
+
+			if (type != BasicWidgetType.MaskedTextBoxEntry)
+				expected = ".";
+			
+			Assert.AreEqual (expected,
 				atkText.GetTextAtOffset (23, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char2 SL");
 			Assert.AreEqual (23, startOffset, "GetTextAtOffset,Char2,so SL");
 			Assert.AreEqual (24, endOffset, "GetTextAtOffset,Char2,eo SL");
-			Assert.AreEqual ("e",
-				atkText.GetTextAtOffset (name.Length - 2, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char3 SL");
-			Assert.AreEqual (name.Length - 2, startOffset, "GetTextAtOffset,Char3,so SL");
-			Assert.AreEqual (name.Length - 1, endOffset, "GetTextAtOffset,Char3,eo SL");
-			Assert.AreEqual (".",
+
+			Assert.AreEqual (expected,
 				atkText.GetTextAtOffset (name.Length - 1, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char4 SL");
 			Assert.AreEqual (name.Length - 1, startOffset, "GetTextAtOffset,Char4,so SL");
 			Assert.AreEqual (name.Length, endOffset, "GetTextAtOffset,Char4,eo SL");
+			
+			
+			if (type != BasicWidgetType.MaskedTextBoxEntry)
+				expected = "e";
+			
+			Assert.AreEqual (expected,
+				atkText.GetTextAtOffset (name.Length - 2, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char3 SL");
+			Assert.AreEqual (name.Length - 2, startOffset, "GetTextAtOffset,Char3,so SL");
+			Assert.AreEqual (name.Length - 1, endOffset, "GetTextAtOffset,Char3,eo SL");
+			
+
 			Assert.AreEqual (String.Empty,
 				atkText.GetTextAtOffset (name.Length, Atk.TextBoundary.Char, out startOffset, out endOffset), "GetTextAtOffset,Char5 SL");
 			Assert.AreEqual (name.Length, startOffset, "GetTextAtOffset,Char5,so SL");
@@ -1038,18 +1091,33 @@ namespace UiaAtkBridgeTest
 
 			//GetTextAfterOffset
 			expected = " sentence";
+
+			startCaretOffset = name.IndexOf (expected);
+			endCaretOffset = name.IndexOf (expected) + expected.Length;
+			
+			if (type == BasicWidgetType.MaskedTextBoxEntry) {
+				startCaretOffset = name.Length;
+				endCaretOffset = startCaretOffset;
+				expected = String.Empty;
+			}
+			
 			Assert.AreEqual (expected, 
 				atkText.GetTextAfterOffset (12, Atk.TextBoundary.WordEnd, out startOffset, out endOffset),
 				"GetTextAfterOffset,WordEnd SL");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,WordEnd,so SL");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,WordEnd,eo SL");
+			Assert.AreEqual (startCaretOffset, startOffset, "GetTextAfterOffset,WordEnd,so SL");
+			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAfterOffset,WordEnd,eo SL");
 			
-			expected = "sentence.";
+			if (type != BasicWidgetType.MaskedTextBoxEntry) {
+				expected = "sentence.";
+				startCaretOffset = name.IndexOf (expected);
+				endCaretOffset = name.IndexOf (expected) + expected.Length;
+			}
+			
 			Assert.AreEqual (expected, 
 				atkText.GetTextAfterOffset (12, Atk.TextBoundary.WordStart, out startOffset, out endOffset),
 				"GetTextAfterOffset,WordStart SL");
-			Assert.AreEqual (name.IndexOf (expected), startOffset, "GetTextAfterOffset,WordStart,so SL");
-			Assert.AreEqual (name.IndexOf (expected) + expected.Length, endOffset, "GetTextAfterOffset,WordStart,eo SL");
+			Assert.AreEqual (startCaretOffset, startOffset, "GetTextAfterOffset,WordStart,so SL");
+			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAfterOffset,WordStart,eo SL");
 
 			if (onlySingleLine)
 				return accessible;
@@ -1069,7 +1137,7 @@ namespace UiaAtkBridgeTest
 				Assert.IsNull (accessible.Name, "accessible.Name");
 			
 			Assert.AreEqual (name.Length, atkText.CharacterCount, "CharacterCount");
-			Assert.AreEqual (name [0], atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset");
+			Assert.AreEqual (String.Empty + name [0], String.Empty + atkText.GetCharacterAtOffset (0), "GetCharacterAtOffset");
 			Assert.AreEqual (name, atkText.GetText (0, name.Length), "GetText");
 
 			//IMPORTANT NOTE about GetText*Offset methods [GetTextAtOffset(),GetTextAfterOffset(),GetTextBeforeOffset()]:

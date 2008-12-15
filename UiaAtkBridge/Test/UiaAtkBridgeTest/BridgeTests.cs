@@ -642,6 +642,13 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		[Ignore ("Not ready yet. For 1.0.")]
+		public override void MaskedTextBoxEntry ()
+		{
+			base.MaskedTextBoxEntry ();
+		}
+
+		[Test]
 		public void Bug457939 ()
 		{
 			SWF.ToolStripLabel lab = new SWF.ToolStripLabel ();

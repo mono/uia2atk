@@ -1,3 +1,8 @@
+2008-12-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs: Fix MaskedTextBoxEntry gail tests.
+
 2008-12-15  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs: Fix DomainUpDown name test in interfaceSelection.

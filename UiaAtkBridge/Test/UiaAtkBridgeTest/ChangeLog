@@ -1,3 +1,7 @@
+2008-12-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs: Fix MaskedTextBoxEntry gail tests.
+
 2008-12-15  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTests.cs: Test focusing a ListBox
