@@ -1,3 +1,23 @@
+2008-12-16 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/linklabel.py: Specify more specific links like
+	http://www.opensuse.org/en/ instead of just http://www.opensuse.org (so
+	we know which link will actually open in the browser), because
+	http://www.opensuse.org will forward to a different URL depending on
+	your region.  Also use https://gmail.novell.com/gw/webacc instead of
+	http://gmail.novell.com (for a similar reason).
+	* testers/linklabel/linklabelframe.py: Rewriting this application
+	wrapper.  The methods didn't truly test the action.  We need to make
+	sure that each link action opens the appropriate application and if
+	the link is a URL, we need to make sure the browser opens and it
+	goes to the appropriate URL.  The old application wrapper was
+	manually opening programs instead of using the jump action and
+	verifying that the appropriate application was opened.  There were 
+	various invalid tests.  Please compare this version to the previous
+	version.  This application wrapper is still incomplete.
+	* testers/linklabel_basic_ops.py: Redoing this test; it's still
+	incomplete.
+
 2008-12-15  Ray Wang <rawang@novell.com>
 
 	* samples/listview_list.py

@@ -38,65 +38,38 @@ except IOError, msg:
 
 sleep(config.SHORT_DELAY)
 
+OPENSUSE = "http://www.opensuse.org/en/"
+GMAIL = "http://www.gmail.com"
+NOVELLMAIL = "https://gmail.novell.com/gw/webacc"
+GCALCTOOL = "/usr/bin/gcalctool"
+
 # make sure we got the app back
 if app is None:
   exit(4)
 
 # just an alias to make things shorter
 llFrame = app.linkLabelFrame
-'''
 #check sensitive Label's default states
 statesCheck(llFrame.link1, "Label", add_states=["focusable", "focused"])
 statesCheck(llFrame.link2, "Label", add_states=["focusable"])
 statesCheck(llFrame.link3, "Label", add_states=["focusable"])
-'''
-#implement Hypertext, check the link number
-#llFrame.showLink(llFrame.link1, 'www.opensuse.org', 2)
-#llFrame.showLink(llFrame.link2, 'calculator')
-#llFrame.showLink(llFrame.link3, 'gedit')
 
-#do 'jump' action for link1 to invoke firefox, then close firefox
-llFrame.openLink(llFrame.link1)
-sleep(config.MEDIUM_DELAY)
-#llFrame.assertLinkable("Firefox")
-#newapp = launchNewApp("Firefox")
-#newframe = newapp.findFrame(re.compile("openSUSE.org"))
-#newframe.mouseClick()
-#altF4()
-'''
-#do 'jump' action for link2 to invoke gclctool, then close gclctool
-llFrame.openLink(llFrame.link2)
-sleep(config.MEDIUM_DELAY)
-llFrame.assertLinkable("gcalctool")
-newapp = launchNewApp("gcalctool")
-newapp.findFrame("Calculator").altF4()
+#check the number of links in each LinkLabel
+llFrame.assertNLinks(llFrame.link1, 2)
+llFrame.assertNLinks(llFrame.link2, 1)
+llFrame.assertNLinks(llFrame.link3, 1)
 
-#doing 'jump' action for link3 doesn't invoke gedit
-llFrame.openLink(llFrame.link3)
-sleep(config.MEDIUM_DELAY)
-llFrame.assertLinkable("gmail")
+#make sure the accessibles have the expected URIs
+llFrame.assertURI(llFrame.link1, 0, OPENSUSE)
+llFrame.assertURI(llFrame.link1, 1, NOVELLMAIL)
+llFrame.assertURI(llFrame.link2, 0, GCALCTOOL)
+llFrame.assertURI(llFrame.link3, 0, GMAIL)
 
-#invoke firefox from linklabel1, then close it
-llFrame.keyCombo("Return", grabFocus=False)
-sleep(config.MEDIUM_DELAY)
-llFrame.assertLinkable("Firefox")
-newapp = launchNewApp("Firefox")
-newframe = newapp.findFrame(re.compile("openSUSE.org"))
-newframe.mouseClick()
-newframe.altF4()
-
-#invoke gcalctool from linklabel2, then close it
-llFrame.link2.mouseClick()
-sleep(config.MEDIUM_DELAY)
-llFrame.assertLinkable("gcalctool")
-newapp = launchNewApp("gcalctool")
-newapp.findFrame("Calculator").altF4()
-
-#un-invoke gedit from linklabel3
-llFrame.link3.mouseClick()
-sleep(config.MEDIUM_DELAY)
-llFrame.assertLinkable("gmail")
-'''
+#make sure we actually open the links
+llFrame.openLink(llFrame.link1, "Firefox", 0, OPENSUSE, True)
+llFrame.openLink(llFrame.link1, "Firefox", 1, NOVELLMAIL, True)
+llFrame.openLink(llFrame.link2, "gcalctool", 0, GCALCTOOL, False)
+llFrame.openLink(llFrame.link3, "Firefox", 0, GMAIL, True)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 

@@ -42,9 +42,9 @@ class RunApp(Form):
         self.linklabel1.Location = Point(10,20)
         self.linklabel1.AutoSize = True
         self.linklabel1.Name = "www"
-        self.linklabel1.Text = "openSUSE:www.opensuse.org\n\n webmail:gmail.novell.com"
-        self.linklabel1.Links.Add(9, 16, "http://www.opensuse.org")
-        self.linklabel1.Links.Add(34, 19, "http://gmail.novell.com")
+        self.linklabel1.Text = "openSUSE: English Website\n\n  Novell Webmail"
+        self.linklabel1.Links.Add(10, 16, "http://www.opensuse.org/en/")
+        self.linklabel1.Links.Add(26, 15, "https://gmail.novell.com/gw/webacc")
         self.linklabel1.Links[1].Enabled = False
         self.linklabel1.LinkClicked += self.linklabel_clicked
 
