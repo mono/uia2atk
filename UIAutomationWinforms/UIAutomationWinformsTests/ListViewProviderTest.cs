@@ -1834,6 +1834,68 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		#endregion
 
+
+		[Test]
+		public void Bug459306Test ()
+		{
+			ListView listView = (ListView) GetControlInstance ();
+			listView.Location = new System.Drawing.Point (3, 3);
+			listView.Size = new System.Drawing.Size (100, 50);
+			listView.ShowGroups = false;
+			listView.View  = View.Details;
+
+			IRawElementProviderFragmentRoot provider
+				= (IRawElementProviderFragmentRoot) GetProviderFromControl (listView);
+
+			listView.Columns.Add (new ColumnHeader ("Element"));
+			listView.Columns.Add (new ColumnHeader ("SubItem 0"));
+			listView.Columns.Add (new ColumnHeader ("SubItem 1"));
+			
+			listView.Items.Add ("Element 0");
+			listView.Items [0].SubItems.Add ("SubItem 0.0");
+			listView.Items [0].SubItems.Add ("SubItem 0.1");
+
+			//Search for the first DataItem
+			IRawElementProviderFragment dataItem = null;
+			IRawElementProviderFragment child 
+				= provider.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.DataItem.Id) {
+					dataItem = child;
+					break;
+				}
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.IsNotNull (dataItem, "ListItem SHOULD NOT be null");
+
+			//Search for Edit subitems
+			child = dataItem.Navigate (NavigateDirection.FirstChild);
+			IRawElementProviderFragment []edits = new IRawElementProviderFragment [3];
+			int count = 0;
+			while (child != null) {
+				//We should only have 3 children, because we have 2 subitems and the main element
+				edits [count++] = child;
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+
+			IValueProvider valueProvider0 
+				= (IValueProvider) edits [0].GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (valueProvider0, "Edit0 not supporting value Provider");
+
+			IValueProvider valueProvider1 
+				= (IValueProvider) edits [1].GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (valueProvider1, "Edit1 not supporting value Provider");
+
+			listView.LabelEdit = false;
+			Assert.IsTrue (valueProvider0.IsReadOnly, "Edit0.IsReadOnly should be true");
+			Assert.IsTrue (valueProvider1.IsReadOnly, "Edit1.IsReadOnly should be true");
+
+			listView.LabelEdit = true;
+			Assert.IsFalse (valueProvider0.IsReadOnly, "Edit0.IsReadOnly should be true");
+			Assert.IsFalse (valueProvider1.IsReadOnly, "Edit1.IsReadOnly should be true");
+		}
+
 		#region BaseProviderTest Overrides
 
 		protected override Control GetControlInstance ()

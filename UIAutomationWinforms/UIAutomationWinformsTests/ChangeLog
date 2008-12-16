@@ -1,3 +1,7 @@
+2008-12-16  Mario Carrion  <mcarrion@novell.com>
+
+	* ListViewProviderTest.cs: Test added for Bug #459306.
+
 2008-12-15  Mario Carrion  <mcarrion@novell.com>
 
 	* MiscHierarchyTest.cs: Disabling test, must be enabled when complete.
