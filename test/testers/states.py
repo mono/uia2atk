@@ -285,3 +285,15 @@ class MenuStrip(object):
 class ToolStripTextBox(object):
     states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
 
+class TreeTable(object):
+    states = (ENABLED, FOCUSABLE, MANAGES_DESCENDANTS, SENSITIVE, SHOWING, VISIBLE)
+
+class TableColumnHeader(object):
+    states = (ENABLED, FOCUSABLE, SELECTABLE, SENSITIVE, SHOWING, VISIBLE)
+
+class ListViewCheckBox(object):
+    states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
+
+class ListViewText(object):
+    states = (ENABLED, FOCUSABLE, SELECTABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
+

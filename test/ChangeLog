@@ -1,3 +1,17 @@
+2008-12-16  Calen Chen <cachen@novell.com>
+
+	* testers/states.py: add states tuple for treetable, columnheader, 
+	checkbox, text
+	* testers/actions.py: add actions tuple for columnheader
+	* testers/listview_detail/__init__.py,
+	* testers/listview_detail/listviewframe.py,
+	* testers/listview_detail_ops.py,
+	* testers/listview_detail: add new test for listview_detail style to 
+	test states for treetable, columnheader, checkbox, text. test actions 
+	for columnheader and checkbox. test Text implementation for all role,
+	in this example "text" role is uneditable. test Selection and Table 
+	implementation for treetable. test item's order by click columnheader
+
 2008-12-16 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/linklabel.py: Specify more specific links like

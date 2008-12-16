@@ -70,4 +70,9 @@ class MenuItem(object):
 
     actions = (CLICK, )
 
+class TableColumnHeader(object):
+    CLICK = "click"
+
+    actions = (CLICK, )
+
 
