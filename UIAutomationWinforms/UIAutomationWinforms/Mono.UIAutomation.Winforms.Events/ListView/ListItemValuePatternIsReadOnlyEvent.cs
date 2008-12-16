@@ -47,41 +47,22 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Connect ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ListView),
-				                        Provider.Control, 
-				                        "UIALabelEditChanged",
-				                        this, 
-				                        "OnUIALabelEditChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIALabelEditChanged not defined", GetType ());
-			}
+			((SWF.ListView) Provider.Control).UIALabelEditChanged += OnUIALabelEditChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ListView),
-				                           Provider.Control, 
-				                           "UIALabelEditChanged",
-				                           this,
-				                           "OnUIALabelEditChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIALabelEditChanged not defined", GetType ());
-			}
+			((SWF.ListView) Provider.Control).UIALabelEditChanged -= OnUIALabelEditChanged;
 		}
 		
 		#endregion 
 		
 		#region Protected methods
 		
-// This method is used via reflection, so ignore the never used warning
-#pragma warning disable 169
 		private void OnUIALabelEditChanged (object sender, EventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-#pragma warning restore 169
 
 		#endregion
 	}

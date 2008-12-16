@@ -1,5 +1,10 @@
 2008-12-16  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternIsReadOnlyEvent.cs:
+	Reflection removed.
+
+2008-12-16  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: ListView.ListItem.Edit: IsReadOnly
 	event added.
