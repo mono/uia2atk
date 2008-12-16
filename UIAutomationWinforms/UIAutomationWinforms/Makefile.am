@@ -192,6 +192,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemCheckBoxTogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditGridItemColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditGridItemRowEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternRowEvent.cs \

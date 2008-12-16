@@ -54,7 +54,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		public override void Connect ()
 		{
-			//NOTE: IsReadOnly Property NEVER changes, so we aren't generating it.
+			// NOTDOTNET: IsReadOnly Property NEVER changes in .NET, instead the 
+			// behavior is removed, but in our implementation we need either 
+			// IValueProvider or ITextProvider to support changes.
+			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
+			                   new ListItemEditValuePatternIsReadOnlyEvent ((ListViewProvider.ListViewListItemEditProvider) Provider));
 			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
 			                   new ListItemEditValuePatternValueEvent ((ListViewProvider.ListViewListItemEditProvider) Provider));
 		}
@@ -87,7 +91,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		}
 		
 		public bool IsReadOnly {
-			get { return false; }
+			get { return !listView.LabelEdit; }
 		}
 		
 		public string Value {

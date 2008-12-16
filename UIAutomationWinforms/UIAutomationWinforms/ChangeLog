@@ -1,3 +1,20 @@
+2008-12-16  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: ListView.ListItem.Edit: IsReadOnly
+	event added.
+[Fixes Bug #459306]
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditValueProviderBehavior.cs:
+	Returning IsReadOnly depending on ListView.LabelEdit. Support added
+	for ValuePattern.IsReadOnly event.
+[Fixes Bug #459306]
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemEditValuePatternIsReadOnlyEvent.cs:
+	Raises ValuePatter.IsReadOnlyProperty in internal Edit in ListItem in
+	ListView.
+[Fixes Bug #459306]
+
 2008-12-15  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationHasKeyboardFocusPropertyEvent.cs: 
