@@ -1,3 +1,14 @@
+2008-12-16  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Keeping track of added
+	items. Handling internal event: UIADataGridRowsRecreated to add items
+	when rows are added. ListItemSelectionItem provider preview.
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/ListItemSelectionItemProviderBehavior.cs:
+	DataGrid.ListItemSelectionItem provider preview
+
 2008-12-16  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/TabControlProvider.cs: Return an existing

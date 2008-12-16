@@ -54,6 +54,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/CustomInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/ListItemEditValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemValueProviderBehavior.cs \
