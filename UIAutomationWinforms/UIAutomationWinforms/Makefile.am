@@ -123,6 +123,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/SelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/ToggleProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TreeView/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/UpDownBase/ValueProviderBehavior.cs \
@@ -277,6 +278,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationIsKeyboardFocusablePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationNamePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TreeView/ValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/UpDownBase/RangeValuePatternMaximumEvent.cs \

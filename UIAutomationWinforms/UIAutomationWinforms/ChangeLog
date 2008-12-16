@@ -1,5 +1,14 @@
 2008-12-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms/TreeViewProvider.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/ValuePatternValueEvent.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/TreeView/ValueProviderBehavior.cs:
+	Add Value Pattern support to TreeNodeProvider.
+
+2008-12-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Mono.UIAutomation.Winforms.Behaviors/TreeView/ExpandCollapeProviderBehavior.cs:
 	Throw ElementNoteEnabledException when TreeView is disabled.
 

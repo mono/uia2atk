@@ -1,5 +1,10 @@
 2008-12-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* TreeViewProviderTest.cs: Add tests for Value Pattern support.
+	ValueTest is known to fail right now, as a patch is needed for MWF.
+
+2008-12-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* TreeViewProviderTest.cs: Test calling Expand/Collapse on a disabled
 	TreeView, and subnode behavior.
 

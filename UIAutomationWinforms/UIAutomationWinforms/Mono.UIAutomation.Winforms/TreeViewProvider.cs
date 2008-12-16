@@ -340,8 +340,13 @@ namespace Mono.UIAutomation.Winforms
 				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
 				             new ExpandCollapeProviderBehavior (this));
 			
-//			if (node.TreeView.LabelEdit)
-//				; // TODO: Value
+			if (node.TreeView.LabelEdit &&
+			    GetBehavior (ValuePatternIdentifiers.Pattern) == null)
+				SetBehavior (ValuePatternIdentifiers.Pattern,
+				             new ValueProviderBehavior (this));
+			else if (!node.TreeView.LabelEdit)
+				SetBehavior (ValuePatternIdentifiers.Pattern,
+				             null);
 
 			if (GetBehavior (SelectionItemPatternIdentifiers.Pattern) == null)
 				SetBehavior (SelectionItemPatternIdentifiers.Pattern,

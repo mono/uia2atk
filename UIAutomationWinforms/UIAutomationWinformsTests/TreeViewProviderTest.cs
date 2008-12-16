@@ -1245,6 +1245,123 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
+
+		#region IValueProvider Tests
+
+		[Test]
+		public void ValueTest ()
+		{
+			TreeView treeView = new TreeView ();
+			treeView.LabelEdit = true;
+			TreeNode node1 = treeView.Nodes.Add ("node1");
+
+			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+				GetProviderFromControl (treeView);
+
+			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
+				provider.Navigate (NavigateDirection.FirstChild);
+
+			VerifyTreeNodePatterns (provider, node1Provider, node1);
+
+			IValueProvider node1Value = (IValueProvider)
+				node1Provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+
+			Assert.AreEqual (node1.Text,
+			                 node1Value.Value,
+			                 "Value");
+
+			TestProperty (node1Provider,
+			              ValuePatternIdentifiers.ValueProperty,
+			              node1.Text);
+
+			bridge.ResetEventLists ();
+
+			node1.Text = "modified node1";
+			
+			AutomationPropertyChangedEventTuple propertyEventTuple =
+				bridge.GetAutomationPropertyEventFrom (node1Provider,
+				                                       ValuePatternIdentifiers.ValueProperty.Id);
+			Assert.IsNotNull (propertyEventTuple,
+			                  "Expected property change event on node 1");
+			Assert.AreEqual ("node1",
+			                 propertyEventTuple.e.OldValue,
+			                 "Old value");
+			Assert.AreEqual ("modified node1",
+			                 propertyEventTuple.e.NewValue,
+			                 "New value");
+
+			Assert.AreEqual (node1.Text,
+			                 node1Value.Value,
+			                 "Value");
+
+			TestProperty (node1Provider,
+			              ValuePatternIdentifiers.ValueProperty,
+			              node1.Text);
+		}
+
+		[Test]
+		public void SetValueTest ()
+		{
+			TreeView treeView = new TreeView ();
+			treeView.LabelEdit = true;
+			TreeNode node1 = treeView.Nodes.Add ("node1");
+
+			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+				GetProviderFromControl (treeView);
+
+			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
+				provider.Navigate (NavigateDirection.FirstChild);
+
+			VerifyTreeNodePatterns (provider, node1Provider, node1);
+
+			IValueProvider node1Value = (IValueProvider)
+				node1Provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+
+			string newNodeText = "modified node1";
+			node1Value.SetValue (newNodeText);
+
+			Assert.AreEqual (newNodeText,
+			                 node1.Text,
+			                 "Text should be modified");
+
+			treeView.Enabled = false;
+
+			try {
+				node1Value.SetValue ("another new value");
+				Assert.Fail ("Expected ElementNotEnabledExcpetion when TreeView disabled");
+			} catch (ElementNotEnabledException) {
+				// Expected
+			}
+		}
+
+		[Test]
+		public void IsReadOnlyTest ()
+		{
+			TreeView treeView = new TreeView ();
+			treeView.LabelEdit = true;
+			TreeNode node1 = treeView.Nodes.Add ("node1");
+
+			IRawElementProviderFragmentRoot provider = (IRawElementProviderFragmentRoot)
+				GetProviderFromControl (treeView);
+
+			IRawElementProviderFragmentRoot node1Provider = (IRawElementProviderFragmentRoot)
+				provider.Navigate (NavigateDirection.FirstChild);
+
+			VerifyTreeNodePatterns (provider, node1Provider, node1);
+
+			IValueProvider node1Value = (IValueProvider)
+				node1Provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+
+			Assert.IsFalse (node1Value.IsReadOnly,
+			                "Never read-only");
+
+			treeView.Enabled = false;
+
+			Assert.IsFalse (node1Value.IsReadOnly,
+			                "Never read-only");
+		}
+		
+		#endregion
 		
 		#endregion
 
@@ -1280,12 +1397,24 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		                                     IRawElementProviderSimple provider,
 		                                     TreeNode treeNode)
 		{
+			bool expectValue = treeNode.TreeView.LabelEdit;
 			bool expectInovke = false;
 			bool expectSelectionItem = true;
 			bool expectScrollItem = treeNode.TreeView.Enabled &&
 				(parentProvider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider != null);
 			bool expectToggle = treeNode.TreeView.CheckBoxes;
 			bool expectExpandCollapse = true;
+
+			object valueProvider =
+				provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+			if (expectValue) {
+				Assert.IsNotNull (valueProvider,
+				                  "Should support Value pattern.");
+				Assert.IsTrue (valueProvider is IValueProvider,
+				               "Should support Value pattern.");
+			} else
+				Assert.IsNull (valueProvider,
+				               "Should not support Value Pattern.");
 
 			object invokeProvider =
 				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
