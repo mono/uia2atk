@@ -1,3 +1,8 @@
+2008-12-16  Brad Taylor  <brad@getcoded.net>
+
+	* TabControlProviderTest.cs: Add test for Provider returning the same
+	value from GetSelected as from the navigation tree.
+
 2008-12-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* TreeViewProviderTest.cs: Add tests for Value Pattern support.

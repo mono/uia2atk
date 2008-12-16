@@ -1,3 +1,8 @@
+2008-12-16  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/TabControlProvider.cs: Return an existing
+	provider instead of a new one.
+
 2008-12-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

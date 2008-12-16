@@ -23,7 +23,6 @@
 //      Brad Taylor <brad@getcoded.net>
 // 
 
-
 using System;
 using System.Windows.Forms;
 using System.Windows.Automation;
@@ -92,6 +91,18 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (pageProviders, "Null selection returned");
 			Assert.AreEqual (1, pageProviders.Length,
 			                 "Less/More than one selected page returned");
+
+			IRawElementProviderSimple child
+				= ((IRawElementProviderFragmentRoot) provider)
+					.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (child, "First child is null");
+
+			child = ((IRawElementProviderFragment) child)
+					.Navigate (NavigateDirection.NextSibling);
+			Assert.IsNotNull (child, "Second child is null");
+			
+			Assert.AreEqual (child, pageProviders[0],
+			                 "Selected child and second child aren't equal");
 
 			IRawElementProviderSimple pageProvider = pageProviders[0];
 			

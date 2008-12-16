@@ -75,7 +75,8 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 			}
 
-			return new TabPageProvider (control.SelectedTab);
+			return (TabPageProvider) ProviderFactory.GetProvider (
+				control.SelectedTab);
 		}
 
 		internal void SelectItem (TabPageProvider tabPage)
