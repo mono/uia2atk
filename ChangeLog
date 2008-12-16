@@ -1,3 +1,7 @@
+2008-12-16  Mario Carrion <mcarrion@novell.com>
+
+	* patches/datagrid.patch: UIA support in SWF.DataGrid.
+
 2008-11-24  Brad Taylor  <brad@getcoded.net>
 
 	* patches/atk-bridge-lib64.patch: Error: inappropriate use of hack.

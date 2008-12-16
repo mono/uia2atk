@@ -1,0 +1,57 @@
+Index: System.Windows.Forms/DataGrid.cs
+===================================================================
+--- System.Windows.Forms/DataGrid.cs	(revision 121561)
++++ System.Windows.Forms/DataGrid.cs	(working copy)
+@@ -2368,6 +2368,11 @@
+ 
+ 			if (recalc)
+ 				CalcAreasAndInvalidate ();
++
++#if NET_2_0
++			// UIA Framework: to update values
++			OnUIADataGridRowsRecreated ();
++#endif
+ 		}
+ 
+ 		internal void UpdateRowsFrom (DataGridRelationshipRow row)
+@@ -3238,5 +3243,40 @@
+ 		#endregion Instance Properties
+ 
+ 		#endregion // Code originally in DataGridDrawingLogic.cs
++
++#if NET_2_0
++		
++		#region UIA Framework: Methods, Properties and Events
++		
++		static object UIADataGridRowsRecreatedEvent = new object ();
++
++		internal ScrollBar UIAHScrollBar {
++			get { return horiz_scrollbar; }
++		}
++
++		internal ScrollBar UIAVScrollBar {
++			get { return vert_scrollbar; }
++		}
++
++		internal DataGridTableStyle UIACurrentTableStyle {
++			get { return current_style; }
++		}
++
++		internal event EventHandler UIADataGridRowsRecreated {
++			add { Events.AddHandler (UIADataGridRowsRecreatedEvent, value); }
++			remove { Events.RemoveHandler (UIADataGridRowsRecreatedEvent, value); }
++		}
++
++		private void OnUIADataGridRowsRecreated ()
++		{
++			EventHandler eh = (EventHandler) Events [UIADataGridRowsRecreatedEvent];
++			if (eh != null)
++				eh (this, EventArgs.Empty);
++		}
++
++		#endregion // UIA Framework: Methods, Properties and Events
++
++#endif
++
+ 	}
+ }
