@@ -1,3 +1,8 @@
+2008-12-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/TreeView/ExpandCollapeProviderBehavior.cs:
+	Throw ElementNoteEnabledException when TreeView is disabled.
+
 2008-12-16  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternIsReadOnlyEvent.cs:

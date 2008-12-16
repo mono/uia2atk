@@ -89,6 +89,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 				throw new InvalidOperationException ("LeafNode");
 
 			SWF.TreeView treeView = nodeProvider.TreeNode.TreeView;
+
+			if (!treeView.Enabled)
+				throw new ElementNotEnabledException ();
 			
 			if (treeView != null && treeView.InvokeRequired) {
 				treeView.BeginInvoke (new SWF.MethodInvoker (PerformCollapse));
@@ -104,6 +107,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 				throw new InvalidOperationException ("LeafNode");
 
 			SWF.TreeView treeView = nodeProvider.TreeNode.TreeView;
+
+			if (!treeView.Enabled)
+				throw new ElementNotEnabledException ();
 			
 			if (treeView != null && treeView.InvokeRequired) {
 				treeView.BeginInvoke (new SWF.MethodInvoker (PerformExpand));

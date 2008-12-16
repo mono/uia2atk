@@ -1033,6 +1033,92 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (node1sub1sub1Provider,
 			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
 			              ExpandCollapseState.LeafNode);
+
+			bridge.ResetEventLists ();
+			
+			node1sub1.Expand ();
+			
+			propertyEventTuple =
+				bridge.GetAutomationPropertyEventFrom (node1sub1Provider,
+				                                       ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id);
+			Assert.IsNotNull (propertyEventTuple,
+			                  "Expected property change event on node 1 sub 1");
+			Assert.AreEqual (ExpandCollapseState.Collapsed,
+			                 propertyEventTuple.e.OldValue,
+			                 "Old value");
+			Assert.AreEqual (ExpandCollapseState.Expanded,
+			                 propertyEventTuple.e.NewValue,
+			                 "New value");
+
+			Assert.AreEqual (ExpandCollapseState.Expanded,
+			                 node1ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.LeafNode,
+			                 node2ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.Expanded,
+			                 node1sub1ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.LeafNode,
+			                 node1sub2ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.LeafNode,
+			                 node1sub1sub1ExpandCollapse.ExpandCollapseState);
+
+			TestProperty (node1Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.Expanded);
+			TestProperty (node2Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.LeafNode);
+			TestProperty (node1sub1Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.Expanded);
+			TestProperty (node1sub2Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.LeafNode);
+			TestProperty (node1sub1sub1Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.LeafNode);
+
+			bridge.ResetEventLists ();
+			
+			node1.Collapse ();
+			
+			propertyEventTuple =
+				bridge.GetAutomationPropertyEventFrom (node1Provider,
+				                                       ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id);
+			Assert.IsNotNull (propertyEventTuple,
+			                  "Expected property change event on node 1");
+			Assert.AreEqual (ExpandCollapseState.Expanded,
+			                 propertyEventTuple.e.OldValue,
+			                 "Old value");
+			Assert.AreEqual (ExpandCollapseState.Collapsed,
+			                 propertyEventTuple.e.NewValue,
+			                 "New value");
+
+			Assert.AreEqual (ExpandCollapseState.Collapsed,
+			                 node1ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.LeafNode,
+			                 node2ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.Expanded,
+			                 node1sub1ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.LeafNode,
+			                 node1sub2ExpandCollapse.ExpandCollapseState);
+			Assert.AreEqual (ExpandCollapseState.LeafNode,
+			                 node1sub1sub1ExpandCollapse.ExpandCollapseState);
+
+			TestProperty (node1Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.Collapsed);
+			TestProperty (node2Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.LeafNode);
+			TestProperty (node1sub1Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.Expanded);
+			TestProperty (node1sub2Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.LeafNode);
+			TestProperty (node1sub1sub1Provider,
+			              ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty,
+			              ExpandCollapseState.LeafNode);
 		}
 
 		[Test]
@@ -1137,6 +1223,23 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				node2ExpandCollapse.Collapse ();
 				Assert.Fail ("Expected InvalidOperationException when Collapsing a LeafNode");
 			} catch (InvalidOperationException) {
+				// Expected
+			}
+
+			treeView.Enabled = false;
+			
+
+			try {
+				node1ExpandCollapse.Expand ();
+				Assert.Fail ("Expected ElementNotEnabledException when Expanding a node in a disabled TreeView");
+			} catch (ElementNotEnabledException) {
+				// Expected
+			}
+
+			try {
+				node1ExpandCollapse.Collapse ();
+				Assert.Fail ("Expected ElementNotEnabledException when Collapsing a node in a disabled TreeView");
+			} catch (ElementNotEnabledException) {
 				// Expected
 			}
 		}

@@ -1,3 +1,8 @@
+2008-12-16  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* TreeViewProviderTest.cs: Test calling Expand/Collapse on a disabled
+	TreeView, and subnode behavior.
+
 2008-12-16  Mario Carrion  <mcarrion@novell.com>
 
 	* ListViewProviderTest.cs: Test added for Bug #459306.
