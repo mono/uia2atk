@@ -28,33 +28,31 @@ class ListViewFrame(accessibles.Frame):
         super(ListViewFrame, self).__init__(accessible)
         self.label = self.findLabel(self.LABEL)
         self.treetable = self.findTreeTable(None)
-        self.column_a = self.findTableColumnHeader(self.COLUMN_A, checkShowing=False )
-        self.column_b = self.findTableColumnHeader(self.COLUMN_B, checkShowing=False )
+        self.column_a = self.findTableColumnHeader(self.COLUMN_A)
+        self.column_b = self.findTableColumnHeader(self.COLUMN_B)
         self.checkbox = dict([(x, self.findCheckBox("Item" + str(x))) for x in range(6)])
         self.texts = self.findAllTexts(None)
-
 
     #give 'click' action
     def click(self,accessible):
         accessible.click()
 
     #assert Text implementation for ListView Items
-    def assertText(self, accessible=None, item=None):
+    def assertText(self, accessible):
         procedurelogger.action("check ListView Items Text Value")
 
         items = ["Item0", "0", "Item1", "1", "Item2", "2", "Item3", "3", "Item4", "4", "Item5", "5"]
-        accessible = self.texts
-        for index in range(6):
-            for item in items:
-                procedurelogger.expectedResult('the text of "%s" is %s' \
-                                    % (accessible[index],item))
-                assert accessible[index].text == item
+        if accessible == self.texts:
+            for index in range(12):
+                procedurelogger.expectedResult('the text[%s] is %s' \
+                                    % (index,items[index]))
+                assert accessible[index].text == items[index]
 
-        accessible = self.checkbox
-        for index in range(6):
-            procedurelogger.expectedResult('the text of "%s" is %s' \
+        elif accessible == self.checkbox:
+            for index in range(6):
+                procedurelogger.expectedResult('the text of "%s" is %s' \
                                     % (accessible[index],"Item" + str(index)))
-            assert accessible[index].text == "Item" + str(index)
+                assert accessible[index].text == "Item" + str(index)
 
     #assert Selection implementation
     def assertSelectionChild(self, accessible, childIndex):

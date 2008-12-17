@@ -120,7 +120,9 @@ statesCheck(lvFrame.texts[3], "ListViewText")
 statesCheck(lvFrame.texts[4], "ListViewText")
 
 #check text implementation
-lvFrame.assertText()
+lvFrame.assertText(lvFrame.texts)
+
+lvFrame.assertText(lvFrame.checkbox)
 
 #check table's table implementation
 lvFrame.assertTable(lvFrame.treetable, row=6, col=2)
