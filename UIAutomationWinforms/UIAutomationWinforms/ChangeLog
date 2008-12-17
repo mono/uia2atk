@@ -1,3 +1,24 @@
+2008-12-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/TreeViewProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/TreeView/SelectionProviderBehavior.cs:
+	Improved TreeView event support (requires MWF r121712). Node
+	collection change event negates need for RefreshChildControlStructure
+	method. Added TextChanged event to TreeNodeProvider.
+
+	* Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationFocusChangedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationIsEnabledPropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationIsOffscreenPropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationHasKeyboardFocusPropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationBoundingRectanglePropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationIsKeyboardFocusablePropertyEvent.cs:
+	Keep a local copy of the node's TreeView, so that it will still be
+	available at Disconnect.
+
+	* Mono.UIAutomation.Winforms.Events/TreeView/ValuePatternValueEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/TreeView/TreeNode/AutomationNamePropertyEvent.cs:
+	Use new TextChanged event.
+
 2008-12-16  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Keeping track of added

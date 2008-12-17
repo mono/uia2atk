@@ -36,17 +36,17 @@ namespace Mono.UIAutomation.Winforms.Events.TreeView.TreeNode
 	{
 		#region Private Members
 
-		private TreeNodeProvider nodeProvider;
+		private SWF.TreeView treeView;
 
 		#endregion
 		
 #region Constructors
 
-		public AutomationIsEnabledPropertyEvent (TreeNodeProvider provider) 
-			: base (provider,
+		public AutomationIsEnabledPropertyEvent (TreeNodeProvider nodeProvider) 
+			: base (nodeProvider,
 			        AutomationElementIdentifiers.IsEnabledProperty)
 		{
-			nodeProvider = provider;
+			treeView = nodeProvider.TreeNode.TreeView;
 		}
 		
 #endregion
@@ -55,12 +55,14 @@ namespace Mono.UIAutomation.Winforms.Events.TreeView.TreeNode
 		
 		public override void Connect ()
 		{
-			nodeProvider.TreeNode.TreeView.EnabledChanged += new EventHandler (OnEnableChanged);
+			if (treeView != null)
+				treeView.EnabledChanged += new EventHandler (OnEnableChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			nodeProvider.TreeNode.TreeView.EnabledChanged -= new EventHandler (OnEnableChanged);
+			if (treeView != null)
+				treeView.EnabledChanged -= new EventHandler (OnEnableChanged);
 		}
 
 #endregion

@@ -35,17 +35,17 @@ namespace Mono.UIAutomation.Winforms.Events.TreeView.TreeNode
 	{
 		#region Private Members
 
-		private TreeNodeProvider nodeProvider;
+		private SWF.TreeView treeView;
 
 		#endregion
 		
 		#region Constructors
 		
-		public AutomationIsOffscreenPropertyEvent (TreeNodeProvider provider)
-			: base (provider,
+		public AutomationIsOffscreenPropertyEvent (TreeNodeProvider nodeProvider)
+			: base (nodeProvider,
 			        AutomationElementIdentifiers.IsOffscreenProperty)
 		{
-			nodeProvider = provider;
+			treeView = nodeProvider.TreeNode.TreeView;
 		}
 		
 		#endregion
@@ -54,12 +54,14 @@ namespace Mono.UIAutomation.Winforms.Events.TreeView.TreeNode
 		
 		public override void Connect ()
 		{
-			nodeProvider.TreeNode.TreeView.Invalidated += OnIsOffScreen;
+			if (treeView != null)
+				treeView.Invalidated += OnIsOffScreen;
 		}
 
 		public override void Disconnect ()
 		{
-			nodeProvider.TreeNode.TreeView.Invalidated -= OnIsOffScreen;
+			if (treeView != null)
+				treeView.Invalidated -= OnIsOffScreen;
 		}
 		
 		#endregion

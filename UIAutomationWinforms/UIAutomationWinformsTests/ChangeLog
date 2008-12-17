@@ -1,3 +1,8 @@
+2008-12-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* TreeViewProviderTest.cs: Add a few lines to make sure node collection
+	change events are exercised.
+
 2008-12-16  Brad Taylor  <brad@getcoded.net>
 
 	* TabControlProviderTest.cs: Add test for Provider returning the same

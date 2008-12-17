@@ -24,6 +24,7 @@
 // 
 
 using System;
+using System.ComponentModel;
 using System.Collections.Generic;
 
 using SWF = System.Windows.Forms;
@@ -74,18 +75,52 @@ namespace Mono.UIAutomation.Winforms
 			observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);
 			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
 			
-			UpdateScrollBehavior ();
 			UpdateBehaviors ();
 
-			// TODO: Use a custom event, or someting else?
-			treeView.Invalidated += HandleInvalidated;
-
-			// TODO: Move these to event handler classes, and
-			//       connect/disconnect based on CheckBoxes value
+			treeView.UIALabelEditChanged += HandleInvalidated;
+			treeView.UIACheckBoxesChanged += HandleInvalidated;
 			treeView.AfterCheck += HandleAfterCheck;
 			treeView.AfterSelect += HandleAfterSelect;
 			treeView.AfterExpand += HandleAfterExpand;
 			treeView.AfterCollapse += HandleAfterCollapse;
+			treeView.UIANodeTextChanged += HandleUIANodeTextChanged;
+			treeView.UIACollectionChanged += HandleUIACollectionChanged;
+		}
+
+		public override void Terminate ()
+		{
+			base.Terminate ();
+
+			treeView.UIALabelEditChanged -= HandleInvalidated;
+			treeView.UIACheckBoxesChanged -= HandleInvalidated;
+			treeView.AfterCheck -= HandleAfterCheck;
+			treeView.AfterSelect -= HandleAfterSelect;
+			treeView.AfterExpand -= HandleAfterExpand;
+			treeView.AfterCollapse -= HandleAfterCollapse;
+			treeView.UIANodeTextChanged -= HandleUIANodeTextChanged;
+			treeView.UIACollectionChanged -= HandleUIACollectionChanged;
+		}
+
+
+		void HandleUIACollectionChanged (object sender, CollectionChangeEventArgs e)
+		{
+			TreeNodeRootProvider rootProvider = null;
+			SWF.TreeNode senderNode = sender as SWF.TreeNode;
+
+			if (senderNode != null)
+				rootProvider = GetTreeNodeProvider (senderNode);
+			else if (sender == treeView)
+				rootProvider = this;
+			                                             
+			if (rootProvider != null)
+				rootProvider.OnUIACollectionChanged (e);
+		}
+
+		void HandleUIANodeTextChanged (object sender, SWF.TreeViewEventArgs e)
+		{
+			TreeNodeProvider nodeProvider = GetTreeNodeProvider (e.Node);
+			if (nodeProvider != null)
+				nodeProvider.OnTextChanged ();
 		}
 
 		void HandleAfterCollapse (object sender, SWF.TreeViewEventArgs e)
@@ -102,24 +137,23 @@ namespace Mono.UIAutomation.Winforms
 				nodeProvider.OnAfterExpand ();
 		}
 
-		void HandleAfterSelect(object sender, SWF.TreeViewEventArgs e)
+		void HandleAfterSelect (object sender, SWF.TreeViewEventArgs e)
 		{
 			TreeNodeProvider nodeProvider = GetTreeNodeProvider (e.Node);
 			if (nodeProvider != null)
 				nodeProvider.OnAfterSelect ();
 		}
 
-		void HandleAfterCheck(object sender, SWF.TreeViewEventArgs e)
+		void HandleAfterCheck (object sender, SWF.TreeViewEventArgs e)
 		{
 			TreeNodeProvider nodeProvider = GetTreeNodeProvider (e.Node);
 			if (nodeProvider != null)
 				nodeProvider.OnAfterCheck ();
 		}
 
-		void HandleInvalidated(object sender, SWF.InvalidateEventArgs e)
+		void HandleInvalidated (object sender, EventArgs e)
 		{
 			UpdateBehaviors ();
-			RefreshChildControlStructure ();
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -168,18 +202,15 @@ namespace Mono.UIAutomation.Winforms
 
 		private void OnScrollPatternSupportChanged (object o, EventArgs args)
 		{
-			UpdateScrollBehavior ();
-			RefreshChildControlStructure ();
+			UpdateBehaviors ();
 		}
 
 		private void UpdateBehaviors ()
 		{
-			if (GetBehavior (SelectionPatternIdentifiers.Pattern) == null)
-				SetBehavior (SelectionPatternIdentifiers.Pattern,
-				             new SelectionProviderBehavior (this));
+			UpdateBehaviors (SupportsScroll);
 		}
 
-		private void UpdateScrollBehavior ()
+		internal override void UpdateBehaviors (bool supportsScroll)
 		{
 			if (observer.SupportsScrollPattern &&
 			    GetBehavior (ScrollPatternIdentifiers.Pattern) == null)
@@ -188,6 +219,12 @@ namespace Mono.UIAutomation.Winforms
 			else if (!observer.SupportsScrollPattern)
 				SetBehavior (ScrollPatternIdentifiers.Pattern,
 				             null);
+
+			if (GetBehavior (SelectionPatternIdentifiers.Pattern) == null)
+				SetBehavior (SelectionPatternIdentifiers.Pattern,
+				             new SelectionProviderBehavior (this));
+			
+			base.UpdateBehaviors (SupportsScroll);
 		}
 
 		#endregion
@@ -198,6 +235,7 @@ namespace Mono.UIAutomation.Winforms
 		#region Private Members
 
 		private SWF.TreeNode node;
+		private SWF.TreeView treeView;
 		private bool parentTreeKnownToSupportScroll;
 
 		#endregion
@@ -208,6 +246,7 @@ namespace Mono.UIAutomation.Winforms
 			base (null)
 		{
 			this.node = node;
+			treeView = node.TreeView;
 			parentTreeKnownToSupportScroll = treeSupportsScroll;
 		}
 
@@ -276,7 +315,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.Terminate ();
 			
-			node.TreeView.EnabledChanged -= HandleEnabledChanged;
+			treeView.EnabledChanged -= HandleEnabledChanged;
 		}
 
 
@@ -316,7 +355,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Internal Methods
 
-		internal void UpdateBehaviors (bool treeSupportsScroll)
+		internal override void UpdateBehaviors (bool treeSupportsScroll)
 		{
 			parentTreeKnownToSupportScroll = treeSupportsScroll;
 			
@@ -351,6 +390,8 @@ namespace Mono.UIAutomation.Winforms
 			if (GetBehavior (SelectionItemPatternIdentifiers.Pattern) == null)
 				SetBehavior (SelectionItemPatternIdentifiers.Pattern,
 			        	     new SelectionItemProviderBehavior (this));
+
+			base.UpdateBehaviors (treeSupportsScroll);
 		}
 
 		internal void OnAfterCheck ()
@@ -377,6 +418,12 @@ namespace Mono.UIAutomation.Winforms
 				AfterCollapse (this, EventArgs.Empty);
 		}
 
+		internal void OnTextChanged ()
+		{
+			if (TextChanged != null)
+				TextChanged (this, EventArgs.Empty);
+		}
+
 		#endregion
 
 		#region Events
@@ -388,6 +435,8 @@ namespace Mono.UIAutomation.Winforms
 		public event EventHandler AfterExpand;
 
 		public event EventHandler AfterCollapse;
+
+		public event EventHandler TextChanged;
 		
 		#endregion
 	}
@@ -415,8 +464,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void InitializeChildControlStructure ()
 		{
-			// TODO: Any events?
-		
 			foreach (SWF.TreeNode node in Nodes) {
 				TreeNodeProvider nodeProvider = GetOrCreateNodeProvider (node);
 				if (nodeProvider != null)
@@ -426,8 +473,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void FinalizeChildControlStructure ()
 		{
-			// TODO: Any events?
-			
 			foreach (TreeNodeProvider nodeProvider in nodeProviders.Values)
 				OnNavigationChildRemoved (false, nodeProvider);
 			OnNavigationChildrenCleared (false);
@@ -455,30 +500,10 @@ namespace Mono.UIAutomation.Winforms
 			return nodeProvider;
 		}
 
-		internal void RefreshChildControlStructure ()
+		internal virtual void UpdateBehaviors (bool supportsScroll)
 		{
-			List<SWF.TreeNode> nodesToRemove = new List<SWF.TreeNode> (nodeProviders.Keys);
-			
-			foreach (SWF.TreeNode node in Nodes) {
-				if (nodesToRemove.Contains (node)) {
-					nodeProviders [node].UpdateBehaviors (SupportsScroll);
-					nodeProviders [node].RefreshChildControlStructure ();
-					nodesToRemove.Remove (node);
-					continue;
-				}
-				
-				TreeNodeProvider nodeProvider = GetOrCreateNodeProvider (node);
-				if (nodeProvider != null)
-					OnNavigationChildAdded (true, nodeProvider);
-			}
-
-			// Anything left in nodesToRemove should be removed
-			foreach (SWF.TreeNode node in nodesToRemove) {
-				TreeNodeProvider nodeProvider = nodeProviders [node];
-				nodeProviders.Remove (node);
-				nodeProvider.Terminate ();
-				OnNavigationChildRemoved (true, nodeProvider);
-			}
+			foreach (TreeNodeProvider nodeProvider in nodeProviders.Values)
+				nodeProvider.UpdateBehaviors (supportsScroll);
 		}
 
 		#endregion
@@ -496,6 +521,27 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			return nodeProvider;
+		}
+
+		internal void OnUIACollectionChanged (CollectionChangeEventArgs e)
+		{
+			SWF.TreeNode changedNode = e.Element as SWF.TreeNode;
+			if (changedNode == null)
+				return;
+
+			TreeNodeProvider nodeProvider;
+			
+			if (e.Action == CollectionChangeAction.Add) {
+				nodeProvider = GetOrCreateNodeProvider (changedNode);
+				if (nodeProvider != null)
+					OnNavigationChildAdded (true, nodeProvider);
+			} else if (e.Action == CollectionChangeAction.Remove) {
+				if (nodeProviders.TryGetValue (changedNode, out nodeProvider)) {
+					nodeProviders.Remove (changedNode);
+					nodeProvider.Terminate ();
+					OnNavigationChildRemoved (true, nodeProvider);
+				}
+			}
 		}
 
 		#endregion

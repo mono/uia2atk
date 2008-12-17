@@ -432,6 +432,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			VerifySelection (new IRawElementProviderSimple [] {node1Provider, node3Provider, node2Provider},
 			                 new IRawElementProviderSimple [] {node1sub1Provider});
+
+			// Quickie test of node collection change events
+			// TODO: Break out into a more thorough test
+			bridge.ResetEventLists ();
+			node1sub1.Nodes.Add ("node1 - sub1 - sub1");
+			Assert.AreNotEqual (0, bridge.StructureChangedEvents.Count);
+
+			bridge.ResetEventLists ();
+			node1sub1.Nodes.Clear ();
+			Assert.AreNotEqual (0, bridge.StructureChangedEvents.Count);
 		}
 
 		[Test]

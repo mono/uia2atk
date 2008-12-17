@@ -92,8 +92,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 		
 		public IRawElementProviderSimple [] GetSelection ()
 		{
-			//treeViewProvider.RefreshChildControlStructure ();
-			
 			SWF.TreeNode selectedNode = treeView.SelectedNode;
 			TreeNodeProvider selectedNodeProvider = null;
 			
@@ -114,7 +112,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TreeView
 		
 		public bool IsSelectionRequired {
 			get {
-				treeViewProvider.RefreshChildControlStructure ();
 				return treeView.SelectedNode != null;
 			}
 		}

@@ -36,17 +36,17 @@ namespace Mono.UIAutomation.Winforms.Events.TreeView.TreeNode
 	{
 		#region Private Members
 
-		private TreeNodeProvider nodeProvider;
+		private SWF.TreeView treeView;
 
 		#endregion
 		
 		#region Constructors
 
-		public AutomationIsKeyboardFocusablePropertyEvent (TreeNodeProvider provider) 
-			: base (provider, 
+		public AutomationIsKeyboardFocusablePropertyEvent (TreeNodeProvider nodeProvider) 
+			: base (nodeProvider, 
 			        AutomationElementIdentifiers.IsKeyboardFocusableProperty)
 		{
-			nodeProvider = provider;
+			treeView = nodeProvider.TreeNode.TreeView;
 		}
 		
 		#endregion
@@ -55,18 +55,22 @@ namespace Mono.UIAutomation.Winforms.Events.TreeView.TreeNode
 		
 		public override void Connect ()
 		{
-			nodeProvider.TreeNode.TreeView.AfterExpand += HandleExpandCollapse;
-			nodeProvider.TreeNode.TreeView.AfterCollapse += HandleExpandCollapse;
-			nodeProvider.TreeNode.TreeView.EnabledChanged += OnKeyBoardFocusableProperty;
-			nodeProvider.TreeNode.TreeView.VisibleChanged += OnKeyBoardFocusableProperty;
+			if (treeView != null) {
+				treeView.AfterExpand += HandleExpandCollapse;
+				treeView.AfterCollapse += HandleExpandCollapse;
+				treeView.EnabledChanged += OnKeyBoardFocusableProperty;
+				treeView.VisibleChanged += OnKeyBoardFocusableProperty;
+			}
 		}
 
 		public override void Disconnect ()
 		{
-			nodeProvider.TreeNode.TreeView.AfterExpand -= HandleExpandCollapse;
-			nodeProvider.TreeNode.TreeView.AfterCollapse -= HandleExpandCollapse;
-			nodeProvider.TreeNode.TreeView.EnabledChanged -= OnKeyBoardFocusableProperty;
-			nodeProvider.TreeNode.TreeView.VisibleChanged -= OnKeyBoardFocusableProperty;
+			if (treeView != null) {
+				treeView.AfterExpand -= HandleExpandCollapse;
+				treeView.AfterCollapse -= HandleExpandCollapse;
+				treeView.EnabledChanged -= OnKeyBoardFocusableProperty;
+				treeView.VisibleChanged -= OnKeyBoardFocusableProperty;
+			}
 		}
 		
 		#endregion

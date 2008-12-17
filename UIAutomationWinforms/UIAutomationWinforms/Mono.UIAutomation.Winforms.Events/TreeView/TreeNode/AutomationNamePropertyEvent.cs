@@ -55,29 +55,22 @@ namespace Mono.UIAutomation.Winforms.Events.TreeView.TreeNode
 
 		public override void Connect ()
 		{
-			// TODO: Add TextChanged event to TreeNode
-			nodeProvider.TreeNode.TreeView.AfterLabelEdit += HandleAfterLabelEdit;
+			nodeProvider.TextChanged += HandleTextChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			// TODO: Add TextChanged event to TreeNode
-			nodeProvider.TreeNode.TreeView.AfterLabelEdit -= HandleAfterLabelEdit;
+			nodeProvider.TextChanged -= HandleTextChanged;
 		}
 		
 		#endregion
 		
 		#region Private Methods
 
-		private void HandleAfterLabelEdit(object sender, SWF.NodeLabelEditEventArgs e)
+		private void HandleTextChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-
-//		private void OnTextChanged (object sender, EventArgs e)
-//		{
-//			RaiseAutomationPropertyChangedEvent ();
-//		}
 
 		#endregion
 

@@ -37,17 +37,17 @@ namespace Mono.UIAutomation.Winforms.Events.TreeView.TreeNode
 	{
 		#region Private Members
 
-		private TreeNodeProvider nodeProvider;
+		private SWF.TreeView treeView;
 
 		#endregion
 		
 		#region Constructors
 
-		public AutomationHasKeyboardFocusPropertyEvent (TreeNodeProvider provider) 
-			: base (provider, 
+		public AutomationHasKeyboardFocusPropertyEvent (TreeNodeProvider nodeProvider) 
+			: base (nodeProvider, 
 			        AutomationElementIdentifiers.HasKeyboardFocusProperty)
 		{
-			nodeProvider = provider;
+			treeView = nodeProvider.TreeNode.TreeView;
 		}
 		
 		#endregion
@@ -56,16 +56,20 @@ namespace Mono.UIAutomation.Winforms.Events.TreeView.TreeNode
 		
 		public override void Connect ()
 		{
-			nodeProvider.TreeNode.TreeView.AfterSelect += HandleAfterSelect;
-			nodeProvider.TreeNode.TreeView.LostFocus += OnFocus;
-			nodeProvider.TreeNode.TreeView.GotFocus += OnFocus;
+			if (treeView != null) {
+				treeView.AfterSelect += HandleAfterSelect;
+				treeView.LostFocus += OnFocus;
+				treeView.GotFocus += OnFocus;
+			}
 		}
 
 		public override void Disconnect ()
 		{
-			nodeProvider.TreeNode.TreeView.AfterSelect -= HandleAfterSelect;
-			nodeProvider.TreeNode.TreeView.LostFocus -= OnFocus;
-			nodeProvider.TreeNode.TreeView.GotFocus -= OnFocus;
+			if (treeView != null) {
+				treeView.AfterSelect -= HandleAfterSelect;
+				treeView.LostFocus -= OnFocus;
+				treeView.GotFocus -= OnFocus;
+			}
 		}
 		
 		#endregion
