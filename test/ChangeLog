@@ -1,3 +1,11 @@
+2008-12-16 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/linklabel_basic_ops.py: Issue jump action for each link and
+	mouseClick one link.  Check states after keyboard navigation.  Test
+	is "finished".
+	* testers/linklabel/linklabelframe.py: Finish application wrapper (for
+	now).
+
 2008-12-16  Calen Chen <cachen@novell.com>
 
 	* testers/states.py: add states tuple for treetable, columnheader, 
