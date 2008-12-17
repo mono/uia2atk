@@ -1,3 +1,10 @@
+2008-12-18  Calen Chen <cachen@novell.com>
+
+	* checkedlistbox/checkedlistboxframe.py,
+	* scrollbar/scrollbarframe.py: add "checkShowing=False" when find 
+	listitems due to some of them doesn't have showing state otherwise move 
+	the scrollbar to show them
+
 2008-12-17  Calen Chen <cachen@novell.com>
 
 	* testers/listview_detail/listviewframe.py: modify assertText, the old 

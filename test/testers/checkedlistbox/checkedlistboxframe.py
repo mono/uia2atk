@@ -32,7 +32,7 @@ class CheckedListBoxFrame(accessibles.Frame):
         self.listbox1 = self.list[0]
         #listbox2 with CheckOnClick = False
         self.listbox2 = self.list[1]
-        self.listitem = dict([(x, self.findCheckBox(str(x))) for x in range(50)])            
+        self.listitem = dict([(x, self.findCheckBox(str(x), checkShowing=False)) for x in range(50)])
 
     #give 'click' action
     def click(self,item):
