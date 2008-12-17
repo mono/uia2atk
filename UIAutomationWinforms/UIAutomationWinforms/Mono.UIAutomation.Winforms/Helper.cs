@@ -96,14 +96,12 @@ namespace Mono.UIAutomation.Winforms
 		{
 			Rect screen;
 
-Console.WriteLine ("Bounds: " + bounds.X + " " + bounds.Y + ", " + bounds.Width + " " + bounds.Height);
 			if (scrollable)
 				screen = Helper.GetControlScreenBounds (referenceControl.Bounds, referenceControl);
 			else
 				screen = Helper.RectangleToRect (SWF.Screen.GetWorkingArea (referenceControl));
 				
 
-Console.WriteLine ("screen: " + screen.X + " " + screen.Y + ", " + screen.Width + " " + screen.Height);
 			return !screen.Contains (bounds);
 		}
 

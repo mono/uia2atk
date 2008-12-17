@@ -1,5 +1,9 @@
 2008-12-17  Mike Gorse  <mgorse@novell.com>
 
+	* Mono.UIAutomation.Winforms/Helper.cs: Remove debug spew.
+
+2008-12-17  Mike Gorse  <mgorse@novell.com>
+
 	* Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs,
 	  Mono.UIAutomation.Winforms.Events/ProviderEventType.cs,
 	  Mono.UIAutomation.Winforms.Events/ListView/GridPatternColumnReorderedEvent.cs,
