@@ -1,3 +1,8 @@
+2008-12-17  Mike Gorse <mgorse@novell.com>
+
+	* System.Windows.Automation/GridPatternIdentifiers.cs: Add internal
+	  column-reordered automation event.
+
 2008-11-18  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UIAutomationTypes.mdp:

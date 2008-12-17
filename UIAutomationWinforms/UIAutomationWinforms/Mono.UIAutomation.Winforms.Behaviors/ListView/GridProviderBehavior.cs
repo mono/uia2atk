@@ -59,6 +59,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			                   new GridPatternColumnEvent ((ListViewProvider) Provider));
 			Provider.SetEvent (ProviderEventType.GridPatternRowCountProperty,
 			                   new GridPatternRowEvent ((ListViewProvider) Provider));
+			Provider.SetEvent (ProviderEventType.GridPatternColumnReorderedEvent,
+			                   new GridPatternColumnReorderedEvent ((ListViewProvider) Provider));
 		}
 		
 		public override void Disconnect ()
@@ -66,6 +68,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			Provider.SetEvent (ProviderEventType.GridPatternColumnCountProperty,
 			                   null);
 			Provider.SetEvent (ProviderEventType.GridPatternRowCountProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.GridPatternColumnReorderedEvent,
 			                   null);
 		}
 

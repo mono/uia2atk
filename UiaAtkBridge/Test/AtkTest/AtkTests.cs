@@ -739,13 +739,12 @@ namespace UiaAtkBridgeTest
 		}
 		
 		[Test]
-		[Ignore ("Not ready yet. For 1.0.")]
 		public void TabControl () { RunInGuiThread (RealTabControl); }
 		public void RealTabControl ()
 		{
 			BasicWidgetType type = BasicWidgetType.TabControl;
 			Atk.Object accessible = null;
-			string [] names = new string [] { "Page1", "Page2" };
+			string [] names = new string [] { "page1", "page2" };
 
 			RunInGuiThread (delegate () {
 				accessible = GetAccessible (type, names, true);
@@ -822,7 +821,6 @@ namespace UiaAtkBridgeTest
 			accessible = GetAccessible (type, name, true);
 			
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
-			InterfaceComponent (type, atkComponent);
 			InterfaceComponent (type, atkComponent);
 			
 			States (accessible,

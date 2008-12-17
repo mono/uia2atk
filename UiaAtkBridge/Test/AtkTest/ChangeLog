@@ -1,3 +1,13 @@
+2008-12-17  Mike Gorse <mgorse@novell.com>
+
+	* AtkTests.cs: Enable TabControl test.
+	* AtkTester.cs: Fix TabControl selection test and remove extra
+	  InterfaceComponent..
+
+	* AtkTester.cs: Generalize transient logic in Focus().
+
+	* AtkTester.cs: Test that Transient matches parent's ManagesDescendants.
+
 2008-12-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs:

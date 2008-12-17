@@ -1,3 +1,10 @@
+2008-12-17  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/ProviderEventType.cs,
+	  Mono.UIAutomation.Winforms.Events/ListView/GridPatternColumnReorderedEvent.cs,
+	  Makefile.am: Add column-reordered event for ListView.
+
 2008-12-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/TreeViewProvider.cs:

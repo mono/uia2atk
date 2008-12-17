@@ -26,6 +26,7 @@
     <File name="ProgressBar.cs" subtype="Code" buildaction="Compile" />
     <File name="ScrollBar.cs" subtype="Code" buildaction="Compile" />
     <File name="Spinner.cs" subtype="Code" buildaction="Compile" />
+    <File name="Tab.cs" subtype="Code" buildaction="Compile" />
     <File name="TableImplementorHelper.cs" subtype="Code" buildaction="Compile" />
     <File name="TextContainer.cs" subtype="Code" buildaction="Compile" />
     <File name="TextLabel.cs" subtype="Code" buildaction="Compile" />

@@ -447,7 +447,7 @@ namespace UiaAtkBridgeTest
 				bool removeSelectionSuccess = true;
 				if (type == BasicWidgetType.ComboBoxDropDownEntry || type == BasicWidgetType.ComboBoxDropDownList)
 					removeSelectionSuccess = AllowsEmptyingSelectionOnComboBoxes;
-				else if (type == BasicWidgetType.DomainUpDown)
+				else if (type == BasicWidgetType.DomainUpDown || type == BasicWidgetType.TabControl)
 					removeSelectionSuccess = false;
 				if (i != names.Length - 1)
 					Assert.AreEqual (implementor.RemoveSelection (i),
@@ -540,7 +540,8 @@ namespace UiaAtkBridgeTest
 				Atk.Component atkComponentCurrentSel = CastToAtkInterface <Atk.Component> (currentSel);
 				atkComponentCurrentSel.GrabFocus ();
 				Atk.StateSet stateSet = currentSel.RefStateSet ();
-				Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focused), "Focused in selected item.");
+				if (type != BasicWidgetType.TabControl)
+					Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focused), "Focused in selected item.");
 				Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Selected), "Selected in selected item.");
 			}
 		}
@@ -1463,6 +1464,11 @@ namespace UiaAtkBridgeTest
 			Assert.IsNotNull (parent, "parent not null");
 			if (type == BasicWidgetType.Window)
 				Assert.AreEqual (parent.Role, Atk.Role.Application, "Parent of a frame should be an application");
+
+			Assert.AreEqual (parent.RefStateSet().ContainsState (Atk.StateType.ManagesDescendants),
+		accessible.RefStateSet().ContainsState (Atk.StateType.Transient),
+		"Transient state should match parent's ManagesDescendants state");
+
 			int count = parent.NAccessibleChildren;
 			for (int i = 0; i < count; i++)
 				if (parent.RefAccessibleChild (i) == accessible)
@@ -1552,15 +1558,15 @@ namespace UiaAtkBridgeTest
 
 		protected void Focus (Atk.Object accessible)
 		{
-			bool listItem = (accessible.Role == Atk.Role.ListItem);
+			bool transient = (accessible.RefStateSet().ContainsState (Atk.StateType.Transient));
 
 			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (accessible);
 			EventMonitor.Start ();
 			atkComponent.GrabFocus ();
 			EventCollection events = EventMonitor.Pause ();
-			int expectedCount = (listItem? 1: 2);;
-			string evType = (listItem? "object:active-descendant-changed": "object:state-changed:focused");
-			Atk.Object focusedAccessible = (listItem? accessible.Parent: accessible);
+			int expectedCount = (transient? 1: 2);;
+			string evType = (transient? "object:active-descendant-changed": "object:state-changed:focused");
+			Atk.Object focusedAccessible = (transient? accessible.Parent: accessible);
 			EventCollection evs = events.FindByRole (focusedAccessible.Role).FindByType (evType);
 			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
 			Assert.AreEqual (expectedCount, evs.Count, "bad number of events expected!" + eventsInXml);

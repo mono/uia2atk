@@ -20,49 +20,54 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//	Mike Gorse <mgorse@novell.com>
 // 
-
 using System;
+using System.ComponentModel;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
 
-namespace System.Windows.Automation
+namespace Mono.UIAutomation.Winforms.Events.ListView
 {
-	public static class GridPatternIdentifiers
+	internal class GridPatternColumnReorderedEvent : BaseAutomationEvent
 	{
-#region Constructor
+		#region Constructors
 
-		private const int PatternId = 10006;
-		private const int RowCountPropertyId = 30062;
-		private const int ColumnCountPropertyId = 30063;
-		private const int ColumnReorderedEventId = 60003;
-		
-		static GridPatternIdentifiers ()
+		public GridPatternColumnReorderedEvent (ListViewProvider provider)
+			: base (provider, 
+			        GridPatternIdentifiers.ColumnReorderedEvent)
 		{
-			Pattern =
-				new AutomationPattern (PatternId,
-						"GridPatternIdentifiers.Pattern");
-
-			RowCountProperty =
-				new AutomationProperty (RowCountPropertyId,
-						"GridPatternIdentifiers.RowCountProperty");
-
-			ColumnCountProperty =
-				new AutomationProperty (ColumnCountPropertyId,
-						"GridPatternIdentifiers.ColumnCountProperty");
-			ColumnReorderedEvent =
-				new AutomationEvent (ColumnReorderedEventId,
-				                     "GridPatternIdentifiers.ColumnReorderedEvent");
 		}
 		
-#endregion
+		#endregion
 		
-#region Public Fields
+		#region ProviderEvent Methods
+
+		public override void Connect ()
+		{
+			((SWF.ListView) Provider.Control).ColumnReordered
+				+= OnColumnReorderedEvent;
+		}
+
+		public override void Disconnect ()
+		{
+			((SWF.ListView) Provider.Control).ColumnReordered
+				-= OnColumnReorderedEvent;
+		}
 		
-		public static readonly AutomationPattern Pattern;
-		public static readonly AutomationProperty RowCountProperty;
-		public static readonly AutomationProperty ColumnCountProperty;
-		internal static readonly AutomationEvent ColumnReorderedEvent;
+		#endregion 
 		
-#endregion
+		#region Private methods
+
+		private void OnColumnReorderedEvent (object sender, 
+		                                    SWF.ColumnReorderedEventArgs args)
+		{
+			RaiseAutomationEvent ();
+		}
+
+		#endregion
 	}
 }

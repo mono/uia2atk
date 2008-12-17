@@ -1,3 +1,10 @@
+2008-12-17  Mike Gorse  <mgorse@novell.com>
+
+	* dataGrid.cs: Listen for column-reordered.
+
+	* Tab.cs, TextContainer.cs, Makefile.am, UiaAtkBridge.mdp,
+	  AutomationBridge.cs: Support Tab and TabItem.
+
 2008-12-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MenuItem.cs: Fix a FIXME, which also makes a ToolStripDropDownButton

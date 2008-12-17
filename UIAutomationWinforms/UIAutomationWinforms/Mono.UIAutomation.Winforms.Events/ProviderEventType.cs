@@ -77,6 +77,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		//Grid Pattern
 		GridPatternRowCountProperty,
 		GridPatternColumnCountProperty,
+		GridPatternColumnReorderedEvent,
 		//GridItem Pattern
 		GridItemPatternRowProperty,
 		GridItemPatternColumnProperty,

@@ -1,3 +1,7 @@
+2008-12-17  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTester.cs: Support TabControl.
+
 2008-12-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTests.cs:

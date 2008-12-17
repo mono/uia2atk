@@ -42,6 +42,10 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
+			if (eventId == GridPatternIdentifiers.ColumnReorderedEvent)
+				GLib.Signal.Emit (this, "column_reordered");
+			else
+				base.RaiseAutomationEvent (eventId, e);
 			// TODO
 		}
 

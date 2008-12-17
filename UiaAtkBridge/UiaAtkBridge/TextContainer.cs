@@ -39,6 +39,8 @@ namespace UiaAtkBridge
 			int controlTypeId = (int) Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			if (controlTypeId == ControlType.StatusBar.Id)
 				Role = Atk.Role.Statusbar;
+			else if (controlTypeId == ControlType.TabItem.Id)
+				Role = Atk.Role.PageTab;
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			textExpert = new TextImplementorHelper (text, this);
 			Name = text;

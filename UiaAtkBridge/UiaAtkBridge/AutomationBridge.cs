@@ -524,6 +524,10 @@ namespace UiaAtkBridge
 				HandleNewContainer (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.SplitButton.Id)
 				HandleNewSplitButton (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.Tab.Id)
+				HandleNewTab (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.TabItem.Id)
+				HandleNewTabItem (simpleProvider, parentAdapter);
 			// TODO: Other providers
 			else if (controlTypeId != ControlType.Thumb.Id)
 				Console.WriteLine ("AutomationBridge: Unhandled control: " +
@@ -901,6 +905,26 @@ namespace UiaAtkBridge
 			SplitButton splitButton = new SplitButton (provider);
 			
 			IncludeNewAdapter (splitButton, parentObject);
+		}
+
+		private void HandleNewTab (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		{
+			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
+			if (fragment == null) {
+				Console.WriteLine ("UiaAtkBridge: warning: Tab must be a fragment; ignoring");
+				return;
+			}
+				
+			Tab tab = new Tab (fragment);
+			
+			IncludeNewAdapter (tab, parentObject);
+		}
+
+		private void HandleNewTabItem (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		{
+			TextContainer tabItem = new TextContainer (provider);
+			
+			IncludeNewAdapter (tabItem, parentObject);
 		}
 
 		internal static void IncludeNewAdapter (Adapter newAdapter, ParentAdapter parentAdapter)

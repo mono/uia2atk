@@ -85,6 +85,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.ListView lv1 = new SWF.ListView ();
 		protected SWF.ToolStripDropDownButton tsddb = new SWF.ToolStripDropDownButton ();
 		protected SWF.ToolStripSplitButton tssb = new SWF.ToolStripSplitButton ();
+		protected SWF.TabControl tabControl = new SWF.TabControl ();
 
 		protected int lastClickedLink = -1;
 		
@@ -182,6 +183,7 @@ namespace UiaAtkBridgeTest
 			radios.Add (rad2);
 			radios.Add (rad3);
 			radios.Add (rad4);
+			form.Controls.Add (tabControl);
 			form.Text = "UiaAtkBridge test";
 			SWF.Application.EnableVisualStyles ();
 			
@@ -384,6 +386,14 @@ namespace UiaAtkBridgeTest
 					dud1.Items.Add (item);
 			
 				accessible = GetAdapterForWidget (dud1);
+				break;
+
+			case BasicWidgetType.TabControl:
+				tabControl.TabPages.Clear ();
+				foreach (string item in names)
+					tabControl.TabPages.Add (item);
+			
+				accessible = GetAdapterForWidget (tabControl);
 				break;
 
 			case BasicWidgetType.ComboBoxSimple:

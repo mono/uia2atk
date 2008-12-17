@@ -75,6 +75,7 @@ FILES =  \
 	SelectionProviderUserHelper.cs \
 	Spinner.cs \
 	SplitButton.cs \
+	Tab.cs \
 	TableImplementorHelper.cs \
 	TextBoxEntryView.cs \
 	TextContainer.cs \

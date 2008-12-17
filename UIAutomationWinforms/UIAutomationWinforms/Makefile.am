@@ -187,6 +187,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/GridPatternColumnEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/GridPatternColumnReorderedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/GridPatternRowEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternRowEvent.cs \
