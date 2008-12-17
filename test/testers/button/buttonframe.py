@@ -44,7 +44,7 @@ class ButtonFrame(accessibles.Frame):
 
     #rise message frame window after click button1
     def assertMessage(self):
-        self.message = self.app.findFrame('message')
+        self.message = self.app.findDialog('message')
 
         self.message.findPushButton('OK').click()
 

@@ -1,3 +1,8 @@
+2008-12-17 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/button/buttonframe.py: use findDialog instead of findFrame
+	since MessageBox controls now have the dialog role (see Bug #444325)
+
 2008-12-18  Calen Chen <cachen@novell.com>
 
 	* checkedlistbox/checkedlistboxframe.py,
