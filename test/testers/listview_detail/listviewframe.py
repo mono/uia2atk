@@ -92,6 +92,8 @@ class ListViewFrame(accessibles.Frame):
         except NotImplementedError:
             pass
 
+        sleep(config.SHORT_DELAY)
+
         procedurelogger.expectedResult("%s text still is %s" % (accessible, oldtext))
         assert accessible.text == oldtext
 

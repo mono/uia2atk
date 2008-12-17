@@ -1,3 +1,8 @@
+2008-12-17  Calen Chen <cachen@novell.com>
+
+	* testers/listview_detail/listviewframe.py: add a sleep time in 
+	enterTextValue
+
 2008-12-16 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/linklabel_basic_ops.py: Issue jump action for each link and
