@@ -649,6 +649,17 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		public void ToolStripTextBoxSingleLine () {
+			TextBoxEntry (toolStripTextBox1);
+		}
+
+
+		[Test]
+		public void ToolStripTextBoxMultiLine () {
+			TextBoxView (toolStripTextBox2);
+		}
+		
+		[Test]
 		public void Bug457939 ()
 		{
 			SWF.ToolStripLabel lab = new SWF.ToolStripLabel ();

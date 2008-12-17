@@ -128,8 +128,14 @@ namespace UiaAtkBridgeTest
 		
 		public override Atk.Object GetAccessible (BasicWidgetType type, string text, bool real)
 		{
-			return GetAccessible (type, text, real, false);
+			return GetAccessible (type, text, null, real, false);
 		}
+
+		public override Atk.Object GetAccessible (BasicWidgetType type, string text, object widget)
+		{
+			return GetAccessible (type, text, null, true, false);
+		}
+
 
 		public override I CastToAtkInterface <I> (Atk.Object accessible)
 		{
@@ -312,7 +318,7 @@ namespace UiaAtkBridgeTest
 		public override Atk.Object GetAccessibleThatEmbedsAnImage (
 		  BasicWidgetType type, string text, bool real)
 		{
-			return GetAccessible (type, text, real, true);
+			return GetAccessible (type, text, null, real, true);
 		}
 		
 		private void AddToTreeStore (Gtk.TreeStore store, Gtk.TreeIter [] iters, int i, XmlNode node)
@@ -332,7 +338,7 @@ namespace UiaAtkBridgeTest
 				store.SetValue (iters [i], j++, child.InnerText);
 		}
 
-		private Atk.Object GetAccessible (BasicWidgetType type, string text, bool real, bool embeddedImage)
+		private Atk.Object GetAccessible (BasicWidgetType type, string text, object preWidget, bool real, bool embeddedImage)
 		{
 			Atk.Object accessible = null;
 			Gtk.Widget widget = null;

@@ -78,6 +78,8 @@ namespace UiaAtkBridgeTest
 		protected SWF.ToolStripComboBox toolStripComboBoxSim = new SWF.ToolStripComboBox ();
 		protected SWF.ToolStripComboBox toolStripComboBoxDDL = new SWF.ToolStripComboBox ();
 		protected SWF.ToolStripComboBox toolStripComboBoxDD = new SWF.ToolStripComboBox ();
+		protected SWF.ToolStripTextBox toolStripTextBox1 = new SWF.ToolStripTextBox ();
+		protected SWF.ToolStripTextBox toolStripTextBox2 = new SWF.ToolStripTextBox ();
 		protected SWF.ToolStripLabel tsl1 = new SWF.ToolStripLabel ();
 		protected SWF.ToolStripProgressBar tspb1 = new SWF.ToolStripProgressBar ();
 		protected SWF.ListView lv1 = new SWF.ListView ();
@@ -113,7 +115,9 @@ namespace UiaAtkBridgeTest
 			cbSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
 
 			tbx1.Multiline = false;
+			toolStripTextBox1.Multiline = false;
 			tbx2.Multiline = true;
+			toolStripTextBox2.Multiline = true;
 
 			toolStripComboBoxSim.DropDownStyle = System.Windows.Forms.ComboBoxStyle.Simple;
 			toolStripComboBoxDDL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -126,6 +130,8 @@ namespace UiaAtkBridgeTest
 			toolStrip.Items.Add (tspb1);
 			toolStrip.Items.Add (tsddb);
 			toolStrip.Items.Add (tssb);
+			toolStrip.Items.Add (toolStripTextBox1);
+			toolStrip.Items.Add (toolStripTextBox2);
 			form.Controls.Add (toolStrip);
 
 			linklab1.Links [0].Visited = true;
@@ -277,7 +283,7 @@ namespace UiaAtkBridgeTest
 		
 		public override Atk.Object GetAccessibleThatEmbedsAnImage (BasicWidgetType type, string name, bool real)
 		{
-			return GetAccessible (type, name, real, true);
+			return GetAccessible (type, name, null, real, true);
 		}
 
 		protected Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget)
@@ -313,6 +319,11 @@ namespace UiaAtkBridgeTest
 		public override Atk.Object GetAccessible (BasicWidgetType type, string [] names, object widget)
 		{
 			return GetAccessible (type, names, widget, true);
+		}
+
+		public override Atk.Object GetAccessible (BasicWidgetType type, string name, object widget)
+		{
+			return GetAccessible (type, name, widget, true, false);
 		}
 
 		public override Atk.Object GetAccessible (BasicWidgetType type, string [] names, bool real)
@@ -467,15 +478,15 @@ namespace UiaAtkBridgeTest
 
 		public override Atk.Object GetAccessible (BasicWidgetType type, string name)
 		{
-			return GetAccessible (type, name);
+			return GetAccessible (type, name, null);
 		}
 		
 		public override Atk.Object GetAccessible (BasicWidgetType type, string name, bool real)
 		{
-			return GetAccessible (type, name, real, false);
+			return GetAccessible (type, name, null, real, false);
 		}
 		
-		private Atk.Object GetAccessible (BasicWidgetType type, string name, bool real, bool embeddedImage)
+		private Atk.Object GetAccessible (BasicWidgetType type, string name, object widget, bool real, bool embeddedImage)
 		{
 			Atk.Object accessible = null;
 			string[] names = null;
@@ -604,20 +615,38 @@ namespace UiaAtkBridgeTest
 				break;
 
 			case BasicWidgetType.TextBoxEntry:
-				SWF.TextBox tbxEntry = tbx1;
 				if (!real)
 					throw new NotSupportedException ("Not unreal support for TextBox");
+				
+				SWF.TextBox tbxEntry = tbx1;
+				SWF.ToolStripTextBox tstbxEntry = null;
 
-				tbx1.Text = name;
-				accessible = GetAdapterForWidget (tbxEntry);
+				if ((widget != null) && (widget is SWF.ToolStripTextBox)) {
+					tstbxEntry = (SWF.ToolStripTextBox)widget;
+					tstbxEntry.Text = name;
+					accessible = GetAdapterForWidget (tstbxEntry);
+				} else {
+					tbx1.Text = name;
+					accessible = GetAdapterForWidget (tbxEntry);
+				}
 				break;
 
 			case BasicWidgetType.TextBoxView:
-				SWF.TextBox tbxView = tbx2;
 				if (!real)
 					throw new NotSupportedException ("Not unreal support for TextBox");
-
-				tbx2.Text = name;
+				
+				SWF.TextBox tbxView = tbx2;
+				SWF.ToolStripTextBox tstbxView = null;
+				
+				if ((widget != null) && (widget is SWF.ToolStripTextBox)) {
+					tstbxView = (SWF.ToolStripTextBox)widget;
+					tstbxView.Text = name;
+					accessible = GetAdapterForWidget (tstbxView);
+				} else {
+					tbx1.Text = name;
+					accessible = GetAdapterForWidget (tbxView);
+				}
+				
 				accessible = GetAdapterForWidget (tbxView);
 				break;
 				

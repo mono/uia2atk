@@ -1,3 +1,7 @@
+2008-12-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTester.cs: ToolstripTextbox testing.
+
 2008-12-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* GailTest.mdp: Fix a warning with bleeding-edge MD.

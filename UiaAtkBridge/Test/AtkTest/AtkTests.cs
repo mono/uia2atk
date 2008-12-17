@@ -68,7 +68,7 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible;
 
 			string name = "test";
-			accessible = GetAccessible (type, name, true);
+			accessible = GetAccessible (type, name);
 
 			States (accessible,
 			  Atk.StateType.Enabled,
@@ -78,19 +78,19 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Visible);
 
 			InterfaceText (type);
-			
+
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
-			
+
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
-			
+
 			PropertyRole (type, accessible);
-			
+
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "Button numChildren");
-			
+
 			Parent (type, accessible);
-			
+
 			//test with an image
 			Atk.Image atkWithOutImage, atkWithImage;
 			accessible = GetAccessible (type, name, true);
@@ -437,11 +437,19 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void TextBoxEntry ()
 		{
+			TextBoxEntry (null);
+		}
+
+		public void TextBoxEntry (object widget)
+		{
 			BasicWidgetType type = BasicWidgetType.TextBoxEntry;
-			Atk.Object accessible = InterfaceText (type, true);
-			
-			string name = "Edit test#1";
-			accessible = GetAccessible (type, name, true);
+
+			Atk.Object accessible = null;
+			if (widget == null) {
+				accessible = InterfaceText (type, true);
+			} else {
+				accessible = InterfaceText (type, true, widget);
+			}
 
 			States (accessible,
 			  Atk.StateType.Editable, 
@@ -469,11 +477,19 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void TextBoxView ()
 		{
+			TextBoxView (null);
+		}
+		
+		public void TextBoxView (object widget)
+		{
 			BasicWidgetType type = BasicWidgetType.TextBoxView;
-			Atk.Object accessible = InterfaceText (type, false);
 			
-			string name = "Edit test#1";
-			accessible = GetAccessible (type, name, true);
+			Atk.Object accessible = null;
+			if (widget == null) {
+				accessible = InterfaceText (type, false);
+			} else {
+				accessible = InterfaceText (type, false, widget);
+			}
 
 			States (accessible,
 			  Atk.StateType.Editable, 

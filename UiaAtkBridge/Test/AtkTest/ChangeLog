@@ -1,3 +1,8 @@
+2008-12-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs: ToolstripTextbox testing.
+
 2008-12-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs:

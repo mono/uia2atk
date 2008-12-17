@@ -38,6 +38,9 @@ namespace UiaAtkBridgeTest
 
 		public abstract Atk.Object GetAccessible (
 		  BasicWidgetType type, string [] name, object widget);
+
+		public abstract Atk.Object GetAccessible (
+		  BasicWidgetType type, string name, object widget);
 		
 		public abstract Atk.Object GetAccessible (
 		  BasicWidgetType type, string name, bool real);
@@ -749,7 +752,7 @@ namespace UiaAtkBridgeTest
 
 		protected Atk.Object InterfaceText (BasicWidgetType type)
 		{
-			return InterfaceTextAux (type, false, null);
+			return InterfaceTextAux (type, false, null, null);
 		}
 
 		protected void InterfaceEditableText (BasicWidgetType type, Atk.Object accessible)
@@ -834,20 +837,25 @@ namespace UiaAtkBridgeTest
 
 		protected Atk.Object InterfaceText (BasicWidgetType type, bool onlySingleLine)
 		{
-			return InterfaceTextAux (type, onlySingleLine, null);
+			return InterfaceTextAux (type, onlySingleLine, null, null);
 		}
 
 		protected void InterfaceText (BasicWidgetType type, Atk.Object accessible)
 		{
-			InterfaceTextAux (type, false, accessible);
+			InterfaceTextAux (type, false, accessible, null);
+		}
+
+		protected Atk.Object InterfaceText (BasicWidgetType type, bool onlySingleLine, object widget)
+		{
+			return InterfaceTextAux (type, onlySingleLine, null, widget);
 		}
 		
 		protected void InterfaceText (BasicWidgetType type, bool onlySingleLine, Atk.Object accessible)
 		{
-			InterfaceTextAux (type, onlySingleLine, accessible);
+			InterfaceTextAux (type, onlySingleLine, accessible, null);
 		}
 		
-		private Atk.Object InterfaceTextAux (BasicWidgetType type, bool onlySingleLine, Atk.Object accessible)
+		private Atk.Object InterfaceTextAux (BasicWidgetType type, bool onlySingleLine, Atk.Object accessible, object widget)
 		{
 			int startOffset, endOffset;
 			string expected;
@@ -856,8 +864,12 @@ namespace UiaAtkBridgeTest
 			Atk.Text atkText = null;
 
 			RunInGuiThread (delegate () {
-				if (accessible == null)
-					accessible = GetAccessible (type, name, true);
+				if (accessible == null) {
+					if (widget == null)
+						accessible = GetAccessible (type, name);
+					else
+						accessible = GetAccessible (type, name, widget);
+				}
 				atkText = CastToAtkInterface <Atk.Text> (accessible);
 			});
 
