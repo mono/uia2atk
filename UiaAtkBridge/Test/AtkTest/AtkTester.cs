@@ -866,10 +866,7 @@ namespace UiaAtkBridgeTest
 
 			RunInGuiThread (delegate () {
 				if (accessible == null) {
-					if (widget == null)
-						accessible = GetAccessible (type, name);
-					else
-						accessible = GetAccessible (type, name, widget);
+					accessible = GetAccessible (type, name, widget);
 				}
 				atkText = CastToAtkInterface <Atk.Text> (accessible);
 			});
@@ -1138,7 +1135,7 @@ namespace UiaAtkBridgeTest
 			name = "This is a test sentence.\r\nSecond line. Other phrase.\nThird line?";
 
 			RunInGuiThread (delegate () {
-				accessible = GetAccessible (type, name, true);
+				accessible = GetAccessible (type, name, widget);
 				atkText = CastToAtkInterface <Atk.Text> (accessible);
 			});
 
@@ -1410,7 +1407,7 @@ namespace UiaAtkBridgeTest
 			
 			name = "Tell me; here a sentence\r\nwith EOL but without dot, and other phrase... Heh!";
 
-			accessible = GetAccessible (type, name, true);
+			accessible = GetAccessible (type, name, widget);
 			atkText = CastToAtkInterface <Atk.Text> (accessible);
 			Assert.AreEqual (name, atkText.GetText(0, name.Length), "GetText#2");
 			

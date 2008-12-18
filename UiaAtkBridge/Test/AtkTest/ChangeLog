@@ -1,3 +1,9 @@
+2008-12-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs: Make toolstriptextbox multiline tests pass. Note: this
+	commit doesn't create the TextBoxView() test regression, as it
+	happens even without it.
+
 2008-12-17  Mike Gorse <mgorse@novell.com>
 
 	* AtkTests.cs: Enable TabControl test.
