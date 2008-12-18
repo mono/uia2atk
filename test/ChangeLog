@@ -10,6 +10,14 @@
 	listitems due to some of them doesn't have showing state otherwise move 
 	the scrollbar to show them
 
+2008-12-17  Ray Wang <rawang@@novell.com>
+
+	* testers/states.py: add DomainUpDown class to indicate its states
+	*  samples/listview_list.py: update label when item selected
+	* samples/datetimepicker_dropdown.py: rename from datetimepicker.py
+	* samples/datetimepicker_showupdown.py: add ShowUpDown style of
+	DomainUpdown
+
 2008-12-17  Calen Chen <cachen@novell.com>
 
 	* testers/listview_detail/listviewframe.py: modify assertText, the old 

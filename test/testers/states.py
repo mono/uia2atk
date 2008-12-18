@@ -258,6 +258,9 @@ class ToolStripProgressBar(ProgressBar):
 class NumericUpDown(object):
     states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
 
+class DomainUpDown(object):
+    states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
+
 class Icon(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 

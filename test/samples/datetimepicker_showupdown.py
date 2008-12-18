@@ -42,6 +42,8 @@ class DateTimePickerSample(Form):
         self.date_time_picker = DateTimePicker()
         self.date_time_picker.CustomFormat = "MMMM dd, yyyy - dddd"
         self.date_time_picker.Format = DateTimePickerFormat.Custom
+        self.date_time_picker.ShowUpDown = True
+        self.date_time_picker.ShowCheckBox = True
         self.date_time_picker.Width = self.Width - 10
         self.date_time_picker.ValueChanged += self.dt_value_changed
 

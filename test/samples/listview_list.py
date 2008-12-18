@@ -52,7 +52,7 @@ class ListViewSample(Form):
         self.listview.Dock = DockStyle.Top
         self.listview.Width = self.Width
         self.listview.ColumnClick += self.column_click
-        self.listview.SelectedIndexChanged += self.item_click
+        self.listview.Click += self.item_click
 
         # add conlumns
         self.listview.Columns.Add("Column A", 200, HorizontalAlignment.Left)
@@ -81,7 +81,12 @@ class ListViewSample(Form):
             self.toggle = True
  
     def item_click(self, sender, event):
-        pass
+        items = ''
+        for i in range(5):
+            if self.listview.Items[i].Selected == True:
+                print self.listview.Items[i].Text
+                items = items + str(self.listview.Items[i].Text) + ' '
+        self.label.Text = "Items are: %s" % items
 
     # change MultiSelect property
     def checkbox_click(self, sender, event):
