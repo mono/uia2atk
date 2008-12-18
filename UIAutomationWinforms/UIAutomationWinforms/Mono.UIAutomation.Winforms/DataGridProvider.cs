@@ -25,8 +25,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.Reflection;
+using System.ComponentModel;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -45,7 +44,7 @@ namespace Mono.UIAutomation.Winforms
 		public DataGridProvider (SWF.DataGrid datagrid) : base (datagrid)
 		{
 			this.datagrid = datagrid;
-			items = new List<DataGridListItemProvider> ();
+			items = new Dictionary<object, DataGridListItemProvider> ();
 		}
 
 		#endregion
@@ -99,7 +98,7 @@ namespace Mono.UIAutomation.Winforms
 				observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);			
 				observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
 				UpdateScrollBehavior ();
-			} catch (Exception e) { Console.WriteLine (e); }
+			} catch (NotSupportedException) { }
 		}
 
 		public override void Terminate ()
@@ -118,9 +117,9 @@ namespace Mono.UIAutomation.Winforms
 				// Event used add child. Usually happens when DataSource/DataMember are valid
 				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
 				                        datagrid,
-				                        "UIADataGridRowsRecreated",
+				                        "UIACollectionChanged",
 				                        this,
-				                        "OnUIADataGridRowsRecreated");
+				                        "OnUIACollectionChanged");
 			} catch (NotSupportedException) {}
 		}
 
@@ -133,18 +132,19 @@ namespace Mono.UIAutomation.Winforms
 				// Event used add child. Usually happens when DataSource/DataMember are valid
 				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
 				                           datagrid,
-				                           "UIADataGridRowsRecreated",
+				                           "UIACollectionChanged",
 				                           this,
-				                           "OnUIADataGridRowsRecreated");
+				                           "OnUIACollectionChanged");
 			} catch (NotSupportedException) {}
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
+			// NOTDOTNET: Using DataGrid instead of Table
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.DataGrid.Id; //FIXME: Is Table not DataGrid
+				return ControlType.DataGrid.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "datagrid"; //FIXME: Is "table" not "datagrid"
+				return "datagrid";
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return true;
 			else
@@ -251,17 +251,39 @@ namespace Mono.UIAutomation.Winforms
 
 #pragma warning disable 169
 
-		private void OnUIADataGridRowsRecreated (object sender, EventArgs args)
+		private void OnUIACollectionChanged (object sender, CollectionChangeEventArgs args)
 		{
-			if (lastCurrencyManager != null) {
-				// TODO: What about when lastCurrencyManager.Count <= ChildrenCount
-				if (lastCurrencyManager.Count > items.Count) {
-					// FIXME: Remove CurrentTableStyle property after committing SWF patch
-					SWF.DataGridTableStyle tableStyle = CurrentTableStyle;
-					CreateListItem (true, 
-					                lastCurrencyManager.Count - 1, 
-					                tableStyle);
+			if (lastCurrencyManager == null || args.Action == CollectionChangeAction.Refresh)
+				return;
+
+			// FIXME: Remove CurrentTableStyle property after committing SWF patch
+			SWF.DataGridTableStyle tableStyle = CurrentTableStyle;
+			CreateHeader (true, tableStyle);
+			
+			if (args.Action == CollectionChangeAction.Add) {
+				// Usually rows are added at end.
+				for (int index = lastCurrencyManager.Count - 1; index >= 0; index--) {
+					object datagridcell = datagrid [index, 0];
+					if (!items.ContainsKey (datagridcell))
+						CreateListItem (true, 
+						                index, 
+						                tableStyle);
 				}
+			} else if (args.Action == CollectionChangeAction.Remove) {
+				// TODO: Is there a better way to do this?
+
+				Dictionary<object, DataGridListItemProvider> newItems 
+					= new Dictionary<object, DataGridListItemProvider> ();
+				for (int index = 0; index < lastCurrencyManager.Count; index++) {
+					object datagridcell = datagrid [index, 0];
+					newItems [datagridcell] = items [datagridcell];
+					items.Remove (datagridcell);
+				}
+
+				foreach (DataGridListItemProvider item in items.Values)
+					OnNavigationChildRemoved (true, item);
+
+				items = newItems;
 			}
 		}
 
@@ -298,9 +320,7 @@ namespace Mono.UIAutomation.Winforms
 				customProvider.Initialize ();
 				OnNavigationChildAdded (raiseEvent, customProvider);
 			} else {
-				header = new DataGridHeaderProvider (this, tableStyle.GridColumnStyles);
-				header.Initialize ();
-				OnNavigationChildAdded (raiseEvent, header);
+				CreateHeader (raiseEvent, tableStyle);
 
 				for (int row = 0; row < lastCurrencyManager.Count; row++)
 					CreateListItem (raiseEvent, row, tableStyle);
@@ -346,15 +366,27 @@ namespace Mono.UIAutomation.Winforms
 			                                                      datagrid.DataMember];
 		}
 
+		private void CreateHeader (bool raiseEvent, SWF.DataGridTableStyle tableStyle)
+		{
+			if (header != null)
+				return;
+	
+			header = new DataGridHeaderProvider (this, tableStyle.GridColumnStyles);
+			header.Initialize ();
+			OnNavigationChildAdded (raiseEvent, header);
+		}
+
 		private void CreateListItem (bool raiseEvent, int row, SWF.DataGridTableStyle tableStyle)
 		{
+			object data = datagrid [row, 0];
 			DataGridListItemProvider item = new DataGridListItemProvider (this,
 			                                                              row,
 			                                                              datagrid,
-			                                                              tableStyle);
+			                                                              tableStyle, 
+			                                                              data);
 			item.Initialize ();
 			OnNavigationChildAdded (raiseEvent, item);
-			items.Add (item);
+			items.Add (data, item);
 		}
 
 		#endregion Private Methods
@@ -363,7 +395,7 @@ namespace Mono.UIAutomation.Winforms
 
 		private SWF.DataGrid datagrid;
 		private DataGridHeaderProvider header;
-		private List<DataGridListItemProvider> items;
+		private Dictionary<object, DataGridListItemProvider> items;
 		private SWF.CurrencyManager lastCurrencyManager; 
 		private object lastDataSource;
 		private ScrollBehaviorObserver observer;
@@ -485,11 +517,12 @@ namespace Mono.UIAutomation.Winforms
 
 		internal class DataGridListItemProvider : ListItemProvider
 		{
-			public DataGridListItemProvider (DataGridProvider provider, 
+			public DataGridListItemProvider (DataGridProvider provider,
 			                                 int row,
 			                                 SWF.DataGrid dataGrid,
-			                                 SWF.DataGridTableStyle style)
-				: base (provider, provider, dataGrid, row)
+			                                 SWF.DataGridTableStyle style,
+			                                 object data)
+				: base (provider, provider, dataGrid, data)
 			{
 				this.provider = provider;
 				this.row = row;
@@ -518,7 +551,8 @@ namespace Mono.UIAutomation.Winforms
 			public override void InitializeChildControlStructure ()
 			{
 				for (int column = 0; column < provider.HeaderProvider.ChildrenCount; column++) {
-					object data = provider.DataGrid [row, column];					
+					object data = provider.DataGrid [row, column];
+					
 					DataGridListItemEditProvider custom 
 						= new DataGridListItemEditProvider (this, data);
 					custom.Initialize ();
@@ -534,11 +568,12 @@ namespace Mono.UIAutomation.Winforms
 				//FIXME: What about ItemTypeProperty & ItemStatusProperty ?
 				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return name;
-				// TODO: Should we use DataItem?
-//				else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-//					return ControlType.DataItem.Id;
-//				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-//					return "data item";
+				// NOTDOTNET: Using DataItem instead, the spec says that we should use text, 
+				// however the implementation uses ListItem.
+				else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.DataItem.Id;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return "data item";
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
