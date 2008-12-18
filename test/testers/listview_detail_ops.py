@@ -130,13 +130,21 @@ lvFrame.assertTable(lvFrame.treetable, row=6, col=2)
 #check item's order after click column header
 lvFrame.click(lvFrame.column_a)
 sleep(config.SHORT_DELAY)
-lvFrame.assertOrder(texindex=0, expect="Item5")
-lvFrame.assertOrder(texindex=1, expect="5")
+lvFrame.assertOrder(itemone="Item5")
 
 lvFrame.click(lvFrame.column_b)
 sleep(config.SHORT_DELAY)
-lvFrame.assertOrder(texindex=0, expect="Item0")
-lvFrame.assertOrder(texindex=1, expect="0")
+lvFrame.assertOrder(itemone="Item0")
+
+#check item's order after mouse click column header, also the test can check 
+#column header's position
+lvFrame.column_a.mouseClick()
+sleep(config.SHORT_DELAY)
+lvFrame.assertOrder(itemone="Item5")
+
+lvFrame.column_b.mouseClick()
+sleep(config.SHORT_DELAY)
+lvFrame.assertOrder(itemone="Item0")
 
 #check text is uneditable
 lvFrame.enterTextValue(lvFrame.texts[0], "aaaa", oldtext="Item0")
