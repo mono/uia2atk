@@ -39,6 +39,7 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 			        ValuePatternIdentifiers.ValueProperty)
 		{
 			viewItem = (SWF.ListViewItem) provider.ObjectItem;
+			listView = viewItem.ListView;
 		}
 		
 		#endregion
@@ -47,13 +48,13 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Connect ()
 		{
-			viewItem.ListView.AfterLabelEdit += OnAfterLabelEdit;
+			listView.AfterLabelEdit += OnAfterLabelEdit;
 			viewItem.UIATextChanged += OnUIATextChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			viewItem.ListView.AfterLabelEdit -= OnAfterLabelEdit;
+			listView.AfterLabelEdit -= OnAfterLabelEdit;
 			viewItem.UIATextChanged -= OnUIATextChanged;
 		}
 		
@@ -87,6 +88,7 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		private string newText;
 		private SWF.ListViewItem viewItem;
+		private SWF.ListView listView;
 
 		#endregion
 	}

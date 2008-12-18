@@ -1,3 +1,9 @@
+2008-12-18  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternValueEvent.cs:
+	Store ListView reference for event disconnect, as
+	ListViewItem.ListView may be null at Disconnect time.
+
 2008-12-18  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Methods implemented:
