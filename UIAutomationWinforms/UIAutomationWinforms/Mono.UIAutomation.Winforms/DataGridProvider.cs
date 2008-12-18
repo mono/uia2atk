@@ -26,7 +26,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using SD = System.Drawing;
 using SWF = System.Windows.Forms;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Events;
@@ -220,24 +222,36 @@ namespace Mono.UIAutomation.Winforms
 
 		public void SelectItem (ListItemProvider item)
 		{
-			// FIXME: Implement
+			if (items.ContainsValue (item))
+				datagrid.Select (item.Index);
 		}
 
 		public void UnselectItem (ListItemProvider item)
 		{
-			// FIXME: Implement
+			if (items.ContainsValue (item))
+				datagrid.UnSelect (item.Index);
 		}
 
 		public object GetItemPropertyValue (ListItemProvider item,
-		                                             int propertyId)
+		                                    int propertyId)
 		{
 			// FIXME: Implement at least:
-			// - AutomationElementIdentifiers.NameProperty.Id
 			// - AutomationElementIdentifiers.HasKeyboardFocusProperty.Id
-			// - AutomationElementIdentifiers.BoundingRectangleProperty.Id
-			// - AutomationElementIdentifiers.IsOffscreenProperty.Id
 			// - AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id
-			return null;
+			if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+				int index = item.Index;
+				// We need to union last column and first column
+				SD.Rectangle rect0 = datagrid.GetCellBounds (index, 0);
+				SD.Rectangle rectN = datagrid.GetCellBounds (index, header.ChildrenCount);
+				return Helper.GetControlScreenBounds (SD.Rectangle.Union (rect0, rectN), datagrid);
+			} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				Rect bounds 
+					= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+				return Helper.IsOffScreen (bounds, datagrid, true);
+			} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+				return Helper.GetClickablePoint (this);
+			else
+				return null;
 		}
 
 		public ToggleState GetItemToggleState (ListItemProvider item)
@@ -553,6 +567,10 @@ namespace Mono.UIAutomation.Winforms
 				//TODO: Support Value and Invoke patterns
 			}
 
+			public DataGridProvider DataGridProvider {
+				get { return provider; }
+			}
+
 			public override IRawElementProviderFragmentRoot FragmentRoot {
 				get { return provider; }
 			}
@@ -643,10 +661,19 @@ namespace Mono.UIAutomation.Winforms
 					return "edit";
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return provider.GetName (this);
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+					return Helper.GetControlScreenBounds (provider.DataGridProvider.DataGrid.GetCellBounds (provider.Index,
+					                                                                                        provider.GetChildProviderIndexOf (this)),
+					                                      provider.DataGridProvider.DataGrid);
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+					Rect bounds 
+						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					return Helper.IsOffScreen (bounds, provider.DataGridProvider.DataGrid, true);
+				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+					return Helper.GetClickablePoint (this);
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
-
 
 			private DataGridListItemProvider provider;
 			private string data;

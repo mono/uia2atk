@@ -1,5 +1,12 @@
 2008-12-18  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Methods implemented:
+	Select, Unselect. ListItem properties supported: BoundingRectangle,
+	IsOffScree and ClickablePoint. ListItem.Edit properties supported:
+	BoundingRectangle, ClickablePoint.
+
+2008-12-18  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: DataGrid.ListItem.SelectionItem
 	Pattern events added.
