@@ -1,3 +1,11 @@
+2008-12-18 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/combobox_dropdownlist_ops.py,
+	* testers/combobox_dropdownlist/comboboxdropdownlistframe.py: continue
+	work on this ComboBox test.  This test checks the initial actions and
+	states, then checks the states after opening the drop-down list.  Not
+	finished.
+
 2008-12-17 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/button/buttonframe.py: use findDialog instead of findFrame

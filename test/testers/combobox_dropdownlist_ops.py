@@ -43,58 +43,75 @@ if app is None:
 # just an alias to make things shorter
 cbddlFrame = app.comboBoxDropDownListFrame
 
-#check ComboBox's action 
+# check ComboBox's action 
 actionsCheck(cbddlFrame.combobox, "ComboBox")
 
 #check ComboBox item's actions list
-actionsCheck(cbddlFrame.menuitem[0], "MenuItem")
+for k in cbddlFrame.menu_items:
+    actionsCheck(cbddlFrame.menu_items[k], "MenuItem")
 
 #check ComboBox's states list
 statesCheck(cbddlFrame.combobox, "ComboBox", add_states=["focused"])
+statesCheck(cbddlFrame.menu, "Menu", invalid_states=["showing", "visible"])
+
+#check menu item default states
+for k in cbddlFrame.menu_items:
+    statesCheck(cbddlFrame.menu_items[k],
+                "MenuItem",
+                invalid_states=["showing"])
+
+# click on the combo box, this will change the states of the menu and
+# the menu items
+cbddlFrame.combobox.mouseClick()
+
+# check the states of menu and menu item
+# menu should now be 'showing' and 'visible' (default states)
 statesCheck(cbddlFrame.menu, "Menu")
 
-#check menuitem0,1's default states
-statesCheck(cbddlFrame.menuitem[0], "MenuItem")
-statesCheck(cbddlFrame.menuitem[1], "MenuItem")
+# the first menu items should now be showing (default)
+statesCheck(cbddlFrame.menu_items[0], "MenuItem")
+statesCheck(cbddlFrame.menu_items[1], "MenuItem")
 
-#check menuitem's text implemented
+sys.exit(33)
+
+#check menu item's text implemented
 cbddlFrame.assertItemText()
 
-#mouse click menuitem to change label's text
+#mouse click menu item to change label's text
 cbddlFrame.press(cbddlFrame.combobox)
-cbddlFrame.menuitem[1].mouseClick()
+cbddlFrame.menu_item[1].mouseClick()
 sleep(config.SHORT_DELAY)
 cbddlFrame.assertLabel('1')
 
 cbddlFrame.press(cbddlFrame.combobox)
-cbddlFrame.menuitem[9].mouseClick()
+cbddlFrame.menu_item[9].mouseClick()
 sleep(config.SHORT_DELAY)
 cbddlFrame.assertLabel('9')
 
-#do click action to select menuitem0 but not change the states(the same as Gtk),
+#do click action to select menu_item 0 but not change the states(the same as Gtk),
 #also update text value
-cbddlFrame.click(cbddlFrame.menuitem[0])
+cbddlFrame.click(cbddlFrame.menu_item[0])
 sleep(config.SHORT_DELAY)
 cbddlFrame.assertText(cbddlFrame.textbox, 0)
 
-statesCheck(cbddlFrame.menuitem[0], "MenuItem")
+statesCheck(cbddlFrame.menu_item[0], "MenuItem")
 
 #check list selection implementation
 #select item2 to rise focused and selected states
 cbddlFrame.assertSelectionChild(cbddlFrame.menu, 2)
 sleep(config.SHORT_DELAY)
-statesCheck(cbddlFrame.menuitem[2], "MenuItem", add_states=["focused", "selected"])
+statesCheck(cbddlFrame.menu_item[2], "MenuItem", add_states=["focused", "selected"])
 #select item5 to rise focused and selected states
 cbddlFrame.assertSelectionChild(cbddlFrame.menu, 5)
 sleep(config.SHORT_DELAY)
-statesCheck(cbddlFrame.menuitem[5], "MenuItem", add_states=["focused", "selected"])
+statesCheck(cbddlFrame.menu_item[5], "MenuItem", add_states=["focused", "selected"])
 #item2 get rid of focused and selected states
-statesCheck(cbddlFrame.menuitem[2], "MenuItem")
+statesCheck(cbddlFrame.menu_item[2], "MenuItem")
 
 #clear selection
 cbddlFrame.assertClearSelection(cbddlFrame.ComboBox)
 sleep(config.SHORT_DELAY)
-statesCheck(cbddlFrame.menuitem[5], "MenuItem")
+statesCheck(cbddlFrame.menu_item[5], "MenuItem")
 
 #check press action of combobox to rise a window. I am not sure if our SWF combobox
 #would be implemented like GTK, if not, I will delete this test

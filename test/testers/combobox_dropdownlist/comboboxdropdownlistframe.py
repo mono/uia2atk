@@ -26,8 +26,11 @@ class ComboBoxDropDownListFrame(accessibles.Frame):
         super(ComboBoxDropDownListFrame, self).__init__(accessible)
         self.label1 = self.findLabel(self.LABEL1)
         self.combobox = self.findComboBox(None)
-        #self.menu = self.findMenu(None)
-        #self.menuitem = dict([(x, self.findMenuItem(str(x))) for x in range(10)])
+        self.menu = self.findMenu("", checkShowing=False)
+
+        self.menu_items = {}
+        for i in range(10):
+            self.menu_items[i] = self.findMenuItem(str(i), checkShowing=False)
 
     #give 'click' action
     def click(self,accessible):
@@ -50,8 +53,8 @@ class ComboBoxDropDownListFrame(accessibles.Frame):
         procedurelogger.action('check MenuItem\'s Text Value')
 
         for textValue in range(10):
-            procedurelogger.expectedResult('item "%s"\'s Text is %s' % (self.menuitem[textValue],textValue))
-            assert self.menuitem[textValue].text == str(textValue)
+            procedurelogger.expectedResult('item "%s"\'s Text is %s' % (self.menu_item[textValue],textValue))
+            assert self.menu_item[textValue].text == str(textValue)
 
     #assert Text value after do click action
     def assertText(self, accessible, value):
