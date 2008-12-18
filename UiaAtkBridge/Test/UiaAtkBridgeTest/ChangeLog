@@ -1,3 +1,8 @@
+2008-12-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Fixed the order of the calls, which were causing init
+	problems.
+
 2008-12-17  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTester.cs: Support TabControl.

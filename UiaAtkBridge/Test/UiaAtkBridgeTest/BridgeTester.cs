@@ -633,11 +633,11 @@ namespace UiaAtkBridgeTest
 
 				if ((widget != null) && (widget is SWF.ToolStripTextBox)) {
 					tstbxEntry = (SWF.ToolStripTextBox)widget;
-					tstbxEntry.Text = name;
 					accessible = GetAdapterForWidget (tstbxEntry);
+					tstbxEntry.Text = name;
 				} else {
-					tbx1.Text = name;
 					accessible = GetAdapterForWidget (tbxEntry);
+					tbx1.Text = name;
 				}
 				break;
 
@@ -647,17 +647,14 @@ namespace UiaAtkBridgeTest
 				
 				SWF.TextBox tbxView = tbx2;
 				SWF.ToolStripTextBox tstbxView = null;
-				
 				if ((widget != null) && (widget is SWF.ToolStripTextBox)) {
-					tstbxView = (SWF.ToolStripTextBox)widget;
-					tstbxView.Text = name;
+					tstbxView = (SWF.ToolStripTextBox)widget;					
 					accessible = GetAdapterForWidget (tstbxView);
+					tstbxView.Text = name;
 				} else {
-					tbx1.Text = name;
 					accessible = GetAdapterForWidget (tbxView);
+					tbx1.Text = name;
 				}
-				
-				accessible = GetAdapterForWidget (tbxView);
 				break;
 				
 			case BasicWidgetType.PictureBox:
