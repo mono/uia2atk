@@ -44,7 +44,7 @@ namespace Mono.UIAutomation.Winforms
 		public DataGridProvider (SWF.DataGrid datagrid) : base (datagrid)
 		{
 			this.datagrid = datagrid;
-			items = new Dictionary<object, DataGridListItemProvider> ();
+			items = new Dictionary<object, ListItemProvider> ();
 		}
 
 		#endregion
@@ -175,7 +175,15 @@ namespace Mono.UIAutomation.Winforms
 
 		public int IndexOfObjectItem (object objectItem)
 		{
-			return -1; // FIXME: Implement
+			if (lastCurrencyManager == null)
+				return -1;
+
+			for (int index = 0; index < lastCurrencyManager.Count; index++) {
+				if (datagrid [index, 0] == objectItem)
+					return index;
+			}
+
+			return -1;
 		}
 
 		public void FocusItem (object objectItem)
@@ -184,7 +192,17 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		public int SelectedItemsCount {
-			get { return 0; } // FIXME: Implement
+			get { 
+				int selectedRows = 0;
+				try {
+					selectedRows 
+						= Helper.GetPrivateProperty<SWF.DataGrid, int> (typeof (SWF.DataGrid),
+						                                                datagrid,
+						                                                "UIASelectedRows");
+				} catch (NotSupportedException) {}
+	
+				return selectedRows;
+			}
 		}
 
 		public void ScrollItemIntoView (ListItemProvider item)
@@ -194,7 +212,10 @@ namespace Mono.UIAutomation.Winforms
 
 		public bool IsItemSelected (ListItemProvider item)
 		{
-			return false; // FIXME: Implement
+			if (!items.ContainsValue (item))
+				return false;
+			
+			return datagrid.IsSelected (item.Index);
 		}
 
 		public void SelectItem (ListItemProvider item)
@@ -272,15 +293,15 @@ namespace Mono.UIAutomation.Winforms
 			} else if (args.Action == CollectionChangeAction.Remove) {
 				// TODO: Is there a better way to do this?
 
-				Dictionary<object, DataGridListItemProvider> newItems 
-					= new Dictionary<object, DataGridListItemProvider> ();
+				Dictionary<object, ListItemProvider> newItems 
+					= new Dictionary<object, ListItemProvider> ();
 				for (int index = 0; index < lastCurrencyManager.Count; index++) {
 					object datagridcell = datagrid [index, 0];
 					newItems [datagridcell] = items [datagridcell];
 					items.Remove (datagridcell);
 				}
 
-				foreach (DataGridListItemProvider item in items.Values)
+				foreach (ListItemProvider item in items.Values)
 					OnNavigationChildRemoved (true, item);
 
 				items = newItems;
@@ -395,7 +416,7 @@ namespace Mono.UIAutomation.Winforms
 
 		private SWF.DataGrid datagrid;
 		private DataGridHeaderProvider header;
-		private Dictionary<object, DataGridListItemProvider> items;
+		private Dictionary<object, ListItemProvider> items;
 		private SWF.CurrencyManager lastCurrencyManager; 
 		private object lastDataSource;
 		private ScrollBehaviorObserver observer;

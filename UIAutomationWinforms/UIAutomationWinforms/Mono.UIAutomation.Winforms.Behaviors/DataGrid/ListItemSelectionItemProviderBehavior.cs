@@ -23,6 +23,8 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using Mono.UIAutomation.Winforms.Behaviors.ListItem;
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.DataGrid;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 {
@@ -44,11 +46,17 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 		
 		public override void Connect ()
 		{
-			// NOTE: SelectionItem.SelectionContainer never changes.
-			// FIXME: Implement: ProviderEventType.SelectionItemPatternElementSelectedEvent
-			// FIXME: Implement: ProviderEventType.SelectionItemPatternElementAddedEvent
-			// FIXME: Implement: ProviderEventType.SelectionItemPatternElementRemovedEvent
-			// FIXME: Implement: ProviderEventType.SelectionItemPatternIsSelectedProperty
+			// FIXME: 
+			// SelectionItem.SelectionContainer may change, actually you can
+			// define two or more datagrid with the same datasource.
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent,
+			                   new ListItemSelectionItemPatternElementSelectedEvent ((ListItemProvider) Provider));
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementAddedEvent, 
+			                   new ListItemSelectionItemPatternElementAddedEvent ((ListItemProvider) Provider));
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementRemovedEvent, 
+			                   new SelectionItemPatternElementRemovedEvent ((ListItemProvider) Provider));
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternIsSelectedProperty, 
+			                   new ListItemSelectionItemPatternIsSelectedEvent ((ListItemProvider) Provider));
 		}	
 		
 		#endregion

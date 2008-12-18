@@ -1,5 +1,34 @@
 2008-12-18  Mario Carrion  <mcarrion@novell.com>
 
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGrid.ListItem.SelectionItem
+	Pattern events added.
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Implementation:
+	IndexOfObjectItem, SelectedItemsCount and IsItemSelected. Internal
+	dictionary uses ListItemProvider instead of DataGridListItemProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/ListItemSelectionItemProviderBehavior.cs:
+	Events enabled.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternElementAddedEvent.cs:
+	DataGrid.ListItem.SelectionItem: Raises ElementAdded Automation
+	Property event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternElementRemovedEvent.cs:
+	DataGrid.ListItem.SelectionItem: Raises ElementRemoved Automation
+	Property event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternElementSelectedEvent.cs:
+	DataGrid.ListItem.SelectionItem: Raises ElementSelected Automation
+	Property event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternIsSelectedEvent.cs:
+	DataGrid.ListItem.SelectionItem: Raises IsSelected Automation
+	Property event.
+
+2008-12-18  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Internal list replaced
 	by dictionary to keep track of removed and added elements.
 	UIADataGridRowsRecreated replaced by UIACollectionChanged. ListItem
