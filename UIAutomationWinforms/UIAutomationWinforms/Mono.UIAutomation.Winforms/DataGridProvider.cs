@@ -67,6 +67,24 @@ namespace Mono.UIAutomation.Winforms
 
 		#endregion
 
+		#region Public Methods
+
+		public IRawElementProviderSimple[] GetSelectedItems ()
+		{
+			if (SelectedItemsCount == 0)
+				return new IRawElementProviderSimple [0];
+			else {
+				List<IRawElementProviderSimple> selection = new List<IRawElementProviderSimple> ();
+				foreach (KeyValuePair<object, ListItemProvider> pair in items) {
+					if (IsItemSelected (pair.Value))
+						selection.Add (pair.Value);
+				}
+				return selection.ToArray ();
+			}
+		}
+
+		#endregion
+
 		#region IScrollBehaviorSubject specialization
 
 		public IScrollBehaviorObserver ScrollBehaviorObserver { 
@@ -101,6 +119,15 @@ namespace Mono.UIAutomation.Winforms
 				observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
 				UpdateScrollBehavior ();
 			} catch (NotSupportedException) { }
+
+			SetBehavior (SelectionPatternIdentifiers.Pattern,
+			             new SelectionProviderBehavior (this));
+
+			// FIXME: Implement
+//			SetBehavior (GridPatternIdentifiers.Pattern,
+//			             new GridProviderBehavior (this));
+//			SetBehavior (TablePatternIdentifiers.Pattern,
+//			             new TableProviderBehavior (this));
 		}
 
 		public override void Terminate ()
@@ -116,7 +143,6 @@ namespace Mono.UIAutomation.Winforms
 			UpdateChildren (false);
 
 			try {
-				// Event used add child. Usually happens when DataSource/DataMember are valid
 				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
 				                        datagrid,
 				                        "UIACollectionChanged",
@@ -131,7 +157,6 @@ namespace Mono.UIAutomation.Winforms
 			datagrid.DataSourceChanged -= OnDataSourceChanged;
 
 			try {
-				// Event used add child. Usually happens when DataSource/DataMember are valid
 				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
 				                           datagrid,
 				                           "UIACollectionChanged",

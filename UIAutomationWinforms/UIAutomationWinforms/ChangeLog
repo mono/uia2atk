@@ -1,3 +1,22 @@
+2008-12-18  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGrid.Selection Pattern added.
+	DataGrid.Selection.Invalidated and DataGrid.Selection Automation
+	events added.
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: New method:
+	GetSelectedItems. Selection Pattern support.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/SelectionProviderBehavior.cs:
+	DataGrid.Selection pattern implementation.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternSelectionEvent.cs:
+	DataGrid.Selection: Raises Selection Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternInvalidatedEvent.cs:
+	DataGrid.Selection: Raises Selection Invalidated Automation Event.
+
 2008-12-18  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternValueEvent.cs:
