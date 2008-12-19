@@ -1,3 +1,7 @@
+2008-12-19  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs: Identation.
+
 2008-12-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Make toolstriptextbox multiline tests pass. Note: this

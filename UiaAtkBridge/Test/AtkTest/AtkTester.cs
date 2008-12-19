@@ -397,8 +397,8 @@ namespace UiaAtkBridgeTest
 					accName = String.Empty;
 				else if (type == BasicWidgetType.TabControl)
 					accName = null;
-			else if (type == BasicWidgetType.ListView)
-				accName = accessible.Name;
+				else if (type == BasicWidgetType.ListView)
+					accName = accessible.Name;
 				Assert.AreEqual (accName, accessible.Name, "AtkObj Name #" + i);
 				
 				Atk.Object refSelObj = implementor.RefSelection (0);
