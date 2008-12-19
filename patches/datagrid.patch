@@ -1,20 +1,77 @@
 Index: System.Windows.Forms/DataGrid.cs
 ===================================================================
---- System.Windows.Forms/DataGrid.cs	(revision 121561)
+--- System.Windows.Forms/DataGrid.cs	(revision 121778)
 +++ System.Windows.Forms/DataGrid.cs	(working copy)
-@@ -2368,6 +2368,11 @@
+@@ -2080,10 +2080,22 @@
+ 			if (selected_rows.Count == 0)
+ 				selection_start = row;
+ 
++#if NET_2_0
++			// UIA Framework: To raise event only when selecting
++			bool wasSelected = rows [row].IsSelected;
++#endif
++
+ 			selected_rows[row] = true;
+ 			rows[row].IsSelected = true;
+ 
+ 			InvalidateRow (row);
++
++#if NET_2_0
++			// UIA Framework:
++			if (!wasSelected)
++				OnUIASelectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Add, row));
++#endif
++
+ 		}
+ 
+ 		public void SetDataBinding (object dataSource, string dataMember)
+@@ -2167,9 +2179,20 @@
+ 
+ 		public void UnSelect (int row)
+ 		{
++#if NET_2_0
++			// UIA Framework: To raise event only when unselecting 
++			bool wasSelected = rows  [row].IsSelected;
++
++#endif
+ 			rows[row].IsSelected = false;
+ 			selected_rows.Remove (row);
+ 			InvalidateRow (row);
++
++#if NET_2_0
++			// UIA Framework: Raises selection event
++			if (!wasSelected)
++				OnUIASelectionChangedEvent (new CollectionChangeEventArgs (CollectionChangeAction.Remove, row));
++#endif
+ 		}
+ 		#endregion	// Public Instance Methods
+ 
+@@ -2364,10 +2387,24 @@
+ 					new_rows[i].VerticalOffset = new_rows[i-1].VerticalOffset + new_rows[i-1].Height;
+ 			}
+ 
++#if NET_2_0
++			// UIA Framework event: Updates collection list depending on binding
++			CollectionChangeAction action = CollectionChangeAction.Refresh;
++			if (rows != null) {
++				if (new_rows.Length - rows.Length > 0)
++					action = CollectionChangeAction.Add;
++				else
++					action = CollectionChangeAction.Remove;
++			}
++#endif
+ 			rows = new_rows;
  
  			if (recalc)
  				CalcAreasAndInvalidate ();
-+
 +#if NET_2_0
-+			// UIA Framework: to update values
-+			OnUIADataGridRowsRecreated ();
-+#endif
++			// UIA Framework event: Row added/removed 
++			OnUIACollectionChangedEvent (new CollectionChangeEventArgs (action, -1));
++#endif 
  		}
  
  		internal void UpdateRowsFrom (DataGridRelationshipRow row)
-@@ -3238,5 +3243,40 @@
+@@ -3238,5 +3275,59 @@
  		#endregion Instance Properties
  
  		#endregion // Code originally in DataGridDrawingLogic.cs
@@ -23,7 +80,8 @@ Index: System.Windows.Forms/DataGrid.cs
 +		
 +		#region UIA Framework: Methods, Properties and Events
 +		
-+		static object UIADataGridRowsRecreatedEvent = new object ();
++		static object UIACollectionChangedEvent = new object ();
++		static object UIASelectionChangedEvent = new object ();
 +
 +		internal ScrollBar UIAHScrollBar {
 +			get { return horiz_scrollbar; }
@@ -37,16 +95,34 @@ Index: System.Windows.Forms/DataGrid.cs
 +			get { return current_style; }
 +		}
 +
-+		internal event EventHandler UIADataGridRowsRecreated {
-+			add { Events.AddHandler (UIADataGridRowsRecreatedEvent, value); }
-+			remove { Events.RemoveHandler (UIADataGridRowsRecreatedEvent, value); }
++		internal int UIASelectedRows {
++			get { return selected_rows.Count; }
 +		}
 +
-+		private void OnUIADataGridRowsRecreated ()
++		internal event CollectionChangeEventHandler UIACollectionChanged {
++			add { Events.AddHandler (UIACollectionChangedEvent, value); }
++			remove { Events.RemoveHandler (UIACollectionChangedEvent, value); }
++		}
++
++		internal event CollectionChangeEventHandler UIASelectionChanged {
++			add { Events.AddHandler (UIASelectionChangedEvent, value); }
++			remove { Events.RemoveHandler (UIASelectionChangedEvent, value); }
++		}
++
++		internal void OnUIACollectionChangedEvent (CollectionChangeEventArgs args)
 +		{
-+			EventHandler eh = (EventHandler) Events [UIADataGridRowsRecreatedEvent];
++			CollectionChangeEventHandler eh
++				= (CollectionChangeEventHandler) Events [UIACollectionChangedEvent];
 +			if (eh != null)
-+				eh (this, EventArgs.Empty);
++				eh (this, args);
++		}
++
++		internal void OnUIASelectionChangedEvent (CollectionChangeEventArgs args)
++		{
++			CollectionChangeEventHandler eh
++				= (CollectionChangeEventHandler) Events [UIASelectionChangedEvent];
++			if (eh != null)
++				eh (this, args);
 +		}
 +
 +		#endregion // UIA Framework: Methods, Properties and Events
