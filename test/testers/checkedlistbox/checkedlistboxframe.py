@@ -34,27 +34,19 @@ class CheckedListBoxFrame(accessibles.Frame):
         self.listbox2 = self.list[1]
         self.listitem = dict([(x, self.findCheckBox(str(x), checkShowing=False)) for x in range(50)])
 
-    #give 'click' action
+    #give 'click' action to select item
     def click(self,item):
         item.click()
 
-    #give 'toggle' action
+    #give 'toggle' action to check item
     def toggle(self, item):
         procedurelogger.action('Toggle the "%s"' % (item))
         item.toggle()
 
     #assert label change after doing click and toggle or mouseClick action
-    def assertLabel(self, itemnum, itemname=None, newlabel=None):
-        'Raise exception if the accessible does not match the given result'   
-        if 0 <= itemnum <= 19 and self.listitem[itemnum].checked:
-            procedurelogger.expectedResult('Item "%s" is %s' % (itemname, 'checked'))
-            assert self.label1.text == "Item %s Checked" % itemname
-        elif itemnum > 19 and self.listitem[itemnum].checked:
-            procedurelogger.expectedResult('%s' % newlabel)
-            assert self.label2.text == newlabel
-        elif itemnum > 19 and not self.listitem[itemnum].checked:
-            procedurelogger.expectedResult('%s' % newlabel)
-            assert self.label2.text == newlabel
+    def assertLabel(self, accessible, newlabel):
+        procedurelogger.expectedResult('label is changed to %s' % newlabel)
+        assert accessible.text == newlabel
 
     #assert Selection implementation
     def assertSelectionChild(self, accessible, childIndex):
