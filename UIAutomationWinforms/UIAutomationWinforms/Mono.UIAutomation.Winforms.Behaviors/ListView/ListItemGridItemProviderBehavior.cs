@@ -170,11 +170,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		}
 		
 		private int MaxColumns {
-			get { return ((SWF.ListView) viewProvider.Control).UIAColumns; }
+			get { return view.UIAColumns; }
 		}
 
 		private int MaxRows {
-			get { return ((SWF.ListView) viewProvider.Control).UIARows; }
+			get { return view.UIARows; }
 		}
 		
 		#endregion
