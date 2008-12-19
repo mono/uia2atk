@@ -1,3 +1,10 @@
+2008-12-19  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* TextBoxEntryView.cs: Cosmetic.
+
+	* Monitor.cs: Moved gtk initialization stuff to here (from r105935). We
+	can now safely remove it from MWF.
+
 2008-12-17  Mike Gorse  <mgorse@novell.com>
 
 	* dataGrid.cs: Listen for column-reordered.

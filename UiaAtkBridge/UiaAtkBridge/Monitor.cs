@@ -61,9 +61,17 @@ namespace UiaAtkBridge
 			RegisterSignal (typeof (Atk.Object), "restore");
 		}
 
+		string gtk_modules_envvar_content = null;
+		string gtk_modules_envvar_name = "GTK_MODULES";
+		
 		internal Monitor ()
 		{
 			GLib.GType.Init();
+
+			// we need to set this because MWF happens to depend on gtk+ (this may change on the future)
+			// https://bugzilla.novell.com/show_bug.cgi?id=375987
+			gtk_modules_envvar_content = Environment.GetEnvironmentVariable (gtk_modules_envvar_name);
+			Environment.SetEnvironmentVariable (gtk_modules_envvar_name, String.Empty);
 			
 			Atk.Util.GetRootHandler = ReturnTopLevel;
 			
@@ -93,6 +101,9 @@ namespace UiaAtkBridge
 			sync.WaitOne ();
 			sync.Close ();
 			sync = null;
+
+			//FIXME: do we really want to restore this? it may cause the reload of modules...
+			Environment.SetEnvironmentVariable (gtk_modules_envvar_name, gtk_modules_envvar_content);
 		}
 		
 		private void GLibMainLoopThread ()

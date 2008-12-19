@@ -303,8 +303,7 @@ namespace UiaAtkBridge
 				                         newText == null ? 0 : newText.Length);
 
 				caretOffset = textExpert.Length;
-			}
-			else if (e.Property.Id == ValuePatternIdentifiers.IsReadOnlyProperty.Id) {
+			} else if (e.Property.Id == ValuePatternIdentifiers.IsReadOnlyProperty.Id) {
 				bool? isReadOnlyVal = e.NewValue as bool?;
 				if (isReadOnlyVal == null && valueProvider != null)
 					isReadOnlyVal = valueProvider.IsReadOnly;
