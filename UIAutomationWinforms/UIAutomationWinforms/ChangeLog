@@ -1,5 +1,26 @@
 2008-12-19  Mario Carrion  <mcarrion@novell.com>
 
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGrid: Patterns supported: Grid and
+	Table, Grid pattern events added.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/GridProviderBehavior.cs:
+	DataGrid: Grid Pattern implementation
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/TableProviderBehavior.cs:
+	DataGrid: Table Pattern implementation
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Grid and Table pattern
+	supported.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/GridPatternRowEvent.cs:
+	Raises DataGrid.Grid.Row Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/GridPatternColumnEvent.cs:
+	Raises DataGrid.Grid.Column Automation Event.
+
+2008-12-19  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs:
 	Using private variable instead of casting.
 

@@ -53,6 +53,15 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Public Properties
 
+		public SWF.DataGridTableStyle CurrentTableStyle {
+			get {
+				// FIXME: Remove reflection after patch applied
+				return Helper.GetPrivateProperty<SWF.DataGrid, SWF.DataGridTableStyle> (typeof (SWF.DataGrid),
+				                                                                        datagrid,
+				                                                                        "UIACurrentTableStyle");
+			}
+		}
+
 		public SWF.CurrencyManager CurrencyManager {
 			get { return lastCurrencyManager; }
 		}		
@@ -81,6 +90,23 @@ namespace Mono.UIAutomation.Winforms
 				}
 				return selection.ToArray ();
 			}
+		}
+
+		public IRawElementProviderSimple GetChildProviderAt (int row, int column)
+		{
+			int rowCount = CurrencyManager == null ? 0 : CurrencyManager.Count;
+			int columnCount = CurrentTableStyle == null ? 0 : CurrentTableStyle.GridColumnStyles.Count;
+
+			//According to http://msdn.microsoft.com/en-us/library/ms743401.aspx
+			if (row < 0 || column < 0 || row >= rowCount || column >= columnCount)
+			    throw new ArgumentOutOfRangeException ();
+
+			object objectcell = datagrid [row, 0];
+			ListItemProvider itemProvider;
+			if (items.TryGetValue (objectcell, out itemProvider))
+				return itemProvider.GetChildProviderAt (column);
+			else
+				return null;
 		}
 
 		#endregion
@@ -122,12 +148,9 @@ namespace Mono.UIAutomation.Winforms
 
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
 			             new SelectionProviderBehavior (this));
-
-			// FIXME: Implement
-//			SetBehavior (GridPatternIdentifiers.Pattern,
-//			             new GridProviderBehavior (this));
-//			SetBehavior (TablePatternIdentifiers.Pattern,
-//			             new TableProviderBehavior (this));
+			SetBehavior (GridPatternIdentifiers.Pattern,
+			             new GridProviderBehavior (this));
+			// Table Pattern is *only* supported when Header exists
 		}
 
 		public override void Terminate ()
@@ -148,6 +171,12 @@ namespace Mono.UIAutomation.Winforms
 				                        "UIACollectionChanged",
 				                        this,
 				                        "OnUIACollectionChanged");
+
+				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
+				                        datagrid,
+				                        "UIAColumnHeadersVisibleChanged",
+				                        this,
+				                        "OnUIAColumnHeadersVisibleChanged");
 			} catch (NotSupportedException) {}
 		}
 
@@ -162,6 +191,12 @@ namespace Mono.UIAutomation.Winforms
 				                           "UIACollectionChanged",
 				                           this,
 				                           "OnUIACollectionChanged");
+
+				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
+				                           datagrid,
+				                           "UIAColumnHeadersVisibleChanged",
+				                           this,
+				                           "OnUIAColumnHeadersVisibleChanged");
 			} catch (NotSupportedException) {}
 		}
 
@@ -347,6 +382,19 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
+		private void OnUIAColumnHeadersVisibleChanged (object sender, EventArgs args)
+		{
+			if (datagrid.ColumnHeadersVisible)
+				CreateHeader (true, CurrentTableStyle);
+			else {
+				OnNavigationChildRemoved (true, header);
+				header.Terminate ();
+				header = null;
+
+				SetBehavior (TablePatternIdentifiers.Pattern, null);
+			}
+		}
+
 #pragma warning restore 169
 
 		private void UpdateChildren (bool raiseEvent)
@@ -412,14 +460,6 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-		private SWF.DataGridTableStyle CurrentTableStyle {
-			get {
-				return Helper.GetPrivateProperty<SWF.DataGrid, SWF.DataGridTableStyle> (typeof (SWF.DataGrid),
-				                                                                        datagrid,
-				                                                                        "UIACurrentTableStyle");
-			}
-		}
-
 		private SWF.CurrencyManager RequestCurrencyManager () 
 		{
 			return (SWF.CurrencyManager) datagrid.BindingContext [datagrid.DataSource,
@@ -428,12 +468,15 @@ namespace Mono.UIAutomation.Winforms
 
 		private void CreateHeader (bool raiseEvent, SWF.DataGridTableStyle tableStyle)
 		{
-			if (header != null)
+			if (!datagrid.ColumnHeadersVisible || header != null)
 				return;
 	
 			header = new DataGridHeaderProvider (this, tableStyle.GridColumnStyles);
 			header.Initialize ();
 			OnNavigationChildAdded (raiseEvent, header);
+
+			SetBehavior (TablePatternIdentifiers.Pattern,
+			             new TableProviderBehavior (this));
 		}
 
 		private void CreateListItem (bool raiseEvent, int row, SWF.DataGridTableStyle tableStyle)
@@ -502,6 +545,19 @@ namespace Mono.UIAutomation.Winforms
 					//return Helper.GetControlScreenBounds (listView.UIAHeaderControl, listView);
 				else
 					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			public IRawElementProviderSimple[] GetHeaderItems ()
+			{
+				if (ChildrenCount == 0)
+					return new IRawElementProviderSimple [0];
+				else {
+					IRawElementProviderSimple []children = new IRawElementProviderSimple [ChildrenCount];
+					for (int index = 0; index < ChildrenCount; index++)
+						children [index] = GetChildProviderAt (index);
+
+					return children;
+				}
 			}
 
 			public override void InitializeChildControlStructure ()
@@ -614,7 +670,7 @@ namespace Mono.UIAutomation.Winforms
 
 			public override void InitializeChildControlStructure ()
 			{
-				for (int column = 0; column < provider.HeaderProvider.ChildrenCount; column++) {
+				for (int column = 0; column < provider.CurrentTableStyle.GridColumnStyles.Count; column++) {
 					object data = provider.DataGrid [row, column];
 					
 					DataGridListItemEditProvider custom 
