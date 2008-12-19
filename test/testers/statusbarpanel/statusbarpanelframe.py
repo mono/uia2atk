@@ -31,12 +31,8 @@ class StatusBarPanelFrame(accessibles.Frame):
         self.button1 = self.findPushButton(self.BUTTON_ONE)
         self.button2 = self.findPushButton(self.BUTTON_TWO)
         self.statusbar = self.findStatusBar("texts in statusbar")
-        self.panel = self.findAllTexts(None)
-        #statusbarpanel1.Text with time
         self.panel1 = self.findLabel(self.PANEL1)
-        #statusbarpanel2.Text with date
         self.panel2 = self.findLabel(self.PANEL2)
-        #statusbarpanel3.Icon
         self.panel3 = self.findLabel(self.PANEL3)
 
     #give 'click' action
@@ -59,8 +55,8 @@ class StatusBarPanelFrame(accessibles.Frame):
             return accessible.text == textValue
         assert retryUntilTrue(resultMatches)
 
-    # assert the size of an image in the statusbarpanel3
-    def assertImageSize(self, accessible, width=32, height=32):
+    # assert image size of statusbarpanel to test AtkImage is implemented
+    def assertImageSize(self, accessible, width, height):
         procedurelogger.action("assert %s's image size" % accessible)
         size = accessible._accessible.queryImage().getImageSize()
 

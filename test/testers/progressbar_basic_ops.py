@@ -46,8 +46,8 @@ pbFrame = app.progressBarFrame
 #check progressbar's states list
 statesCheck(pbFrame.progressbar, "ProgressBar")
 
-#click button each time, current value would increase 20, when it runout to 100
-#it would return to 0 and start progress again
+#click button to check if label is changed, in each time current value is up 20,
+#value would return to 0 and start progress again after up to 100
 pbFrame.click(pbFrame.button)
 sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("20%")
@@ -78,8 +78,7 @@ sleep(config.SHORT_DELAY)
 pbFrame.assertLabel("20%")
 pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)
 
-#if yo enter number under Value in accerciser you would still get the lastest 
-#value, you can't change the progress by give value
+#value doesn't changed by giving number in acceciser
 pbFrame.value(10)
 sleep(config.SHORT_DELAY)
 pbFrame.assertCurrnetValue(pbFrame.progressbar, 20)

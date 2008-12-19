@@ -1,5 +1,12 @@
 2008-12-19  Calen Chen <cachen@novell.com>
 
+	* testers/statusbarpanel/statusbarpanelframe.py: delete some unused 
+	variables, modify some comments
+	* testers/statusbarpanel_basic_ops.py,
+	* testers/progressbar_basic_ops.py: modify some comments
+
+2008-12-19  Calen Chen <cachen@novell.com>
+
 	* testers/checkedlistbox/checkedlistboxframe.py: rewrited assertLabel
 	* testers/checkedlistbox_basic_ops.py: update label check. modify some 
 	comments
