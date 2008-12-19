@@ -1,3 +1,7 @@
+2008-12-19  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* providertest.sh.in: Add --debug
+
 2008-12-17  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* TreeViewProviderTest.cs: Add a few lines to make sure node collection
