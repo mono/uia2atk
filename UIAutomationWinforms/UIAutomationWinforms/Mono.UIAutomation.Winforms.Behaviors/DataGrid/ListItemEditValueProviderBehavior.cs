@@ -34,7 +34,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 		: ProviderBehavior, IValueProvider
 	{
 		
-		public ListItemEditValueProviderBehavior (DataGridProvider.DataGridListItemEditProvider provider)
+		public ListItemEditValueProviderBehavior (DataGridProvider.DataGridDataItemEditProvider provider)
 			: base (provider)
 		{
 		}

@@ -1,5 +1,14 @@
 2008-12-19  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Fixed exception when
+	no columns defined. DataGridListItemEditProvider ->
+	DataGridDataItemEditProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/ListItemEditValueProviderBehavior.cs:
+	DataGridListItemEditProvider -> DataGridDataItemEditProvider.
+
+2008-12-19  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: DataGrid: Patterns supported: Grid and
 	Table, Grid pattern events added.

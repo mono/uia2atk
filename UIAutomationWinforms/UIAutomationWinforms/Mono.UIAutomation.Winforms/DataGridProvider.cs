@@ -356,6 +356,9 @@ namespace Mono.UIAutomation.Winforms
 			CreateHeader (true, tableStyle);
 			
 			if (args.Action == CollectionChangeAction.Add) {
+				if (tableStyle.GridColumnStyles.Count == 0)
+					return;
+
 				// Usually rows are added at end.
 				for (int index = lastCurrencyManager.Count - 1; index >= 0; index--) {
 					object datagridcell = datagrid [index, 0];
@@ -482,7 +485,7 @@ namespace Mono.UIAutomation.Winforms
 		private void CreateListItem (bool raiseEvent, int row, SWF.DataGridTableStyle tableStyle)
 		{
 			object data = datagrid [row, 0];
-			DataGridListItemProvider item = new DataGridListItemProvider (this,
+			DataGridDataItemProvider item = new DataGridDataItemProvider (this,
 			                                                              row,
 			                                                              datagrid,
 			                                                              tableStyle, 
@@ -629,11 +632,11 @@ namespace Mono.UIAutomation.Winforms
 
 		#endregion
 
-		#region Internal Class: List Item
+		#region Internal Class: Data Item
 
-		internal class DataGridListItemProvider : ListItemProvider
+		internal class DataGridDataItemProvider : ListItemProvider
 		{
-			public DataGridListItemProvider (DataGridProvider provider,
+			public DataGridDataItemProvider (DataGridProvider provider,
 			                                 int row,
 			                                 SWF.DataGrid dataGrid,
 			                                 SWF.DataGridTableStyle style,
@@ -656,7 +659,7 @@ namespace Mono.UIAutomation.Winforms
 				get { return provider; }
 			}
 
-			public string GetName (DataGridListItemEditProvider custom) 
+			public string GetName (DataGridDataItemEditProvider custom) 
 			{
 				int indexOf = GetChildProviderIndexOf (custom);
 				if (indexOf == -1)
@@ -673,8 +676,8 @@ namespace Mono.UIAutomation.Winforms
 				for (int column = 0; column < provider.CurrentTableStyle.GridColumnStyles.Count; column++) {
 					object data = provider.DataGrid [row, column];
 					
-					DataGridListItemEditProvider custom 
-						= new DataGridListItemEditProvider (this, data);
+					DataGridDataItemEditProvider custom 
+						= new DataGridDataItemEditProvider (this, data);
 					custom.Initialize ();
 					OnNavigationChildAdded (false, custom);
 
@@ -706,11 +709,11 @@ namespace Mono.UIAutomation.Winforms
 
 		#endregion
 
-		#region Internal Class: List Item Edit
+		#region Internal Class: Data Item Edit
 
-		internal class DataGridListItemEditProvider : FragmentRootControlProvider
+		internal class DataGridDataItemEditProvider : FragmentRootControlProvider
 		{
-			public DataGridListItemEditProvider (DataGridListItemProvider provider,
+			public DataGridDataItemEditProvider (DataGridDataItemProvider provider,
 			                                     object data) : base (null)
 			{
 				this.provider = provider;
@@ -756,7 +759,7 @@ namespace Mono.UIAutomation.Winforms
 					return base.GetProviderPropertyValue (propertyId);
 			}
 
-			private DataGridListItemProvider provider;
+			private DataGridDataItemProvider provider;
 			private string data;
 		} //DataGridListItemCustomProvider
 
