@@ -1,5 +1,10 @@
 2008-12-22  Neville Gao  <nevillegao@gmail.com>
 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Added
+	  SWF.PrintPreviewControl.
+
+2008-12-22  Neville Gao  <nevillegao@gmail.com>
+
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for modified files.
 	* Mono.UIAutomation.Winforms/PrintPreviewControlProvider.cs,
 	  Mono.UIAutomation.Winforms.Behaviors/PrintPreviewControl/ScrollProviderBehavior.cs,
