@@ -1,3 +1,28 @@
+2008-12-22  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for modified files.
+	* Mono.UIAutomation.Winforms/PrintPreviewControlProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/PrintPreviewControl/ScrollProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontalViewSizeEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternVerticalViewSizeEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontallyScrollableEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternVerticallyScrollableEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternVerticalScrollPercent.cs,
+	  Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontalScrollPercentEvent.cs:
+	  Files added.
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: Removed a pair of
+	  braces.
+	* Mono.UIAutomation.Winforms/SplitContainerProvider.cs:
+	  SplitterPanelProvider supports ITransformProvider.
+	* Mono.UIAutomation.Winforms.Behaviors/Splitter/TransformProviderBehavior.cs:
+	  Resize -> Move.
+	* Mono.UIAutomation.Winforms.Behaviors/SplitContainer/TransformProviderBehavior.cs:
+	  Renamed to SplitterPanelTransformProviderBehavior.cs.
+	* Mono.UIAutomation.Winforms.Events/SplitContainer/TransformPatternCanResizeEvent.cs:
+	  Renamed to TransformPatternCanResizeEvent.cs.
+	* Mono.UIAutomation.Winforms.Events/Splitter/TransformPatternCanResizeEvent.cs:
+	  File deleted.
+
 2008-12-19  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Fixed exception when

@@ -81,8 +81,6 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.Initialize ();
 			
-			SetBehavior (TransformPatternIdentifiers.Pattern,
-			             new TransformProviderBehavior (this));
 			SetBehavior (DockPatternIdentifiers.Pattern,
 			             new DockProviderBehavior (this));
 		}
@@ -106,7 +104,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 		
-		#region Internal Class: Panel Provider
+		#region Internal Class: SplitterPanel Provider
 		
 		internal class SplitterPanelProvider : FragmentControlProvider
 		{
@@ -117,6 +115,18 @@ namespace Mono.UIAutomation.Winforms
 			{
 			}
 		
+			#endregion
+			
+			#region SimpleControlProvider: Specializations
+
+			public override void Initialize()
+			{
+				base.Initialize ();
+				
+				SetBehavior (TransformPatternIdentifiers.Pattern,
+				             new SplitterPanelTransformProviderBehavior (this));
+			}
+			
 			#endregion
 		
 			#region Public Methods

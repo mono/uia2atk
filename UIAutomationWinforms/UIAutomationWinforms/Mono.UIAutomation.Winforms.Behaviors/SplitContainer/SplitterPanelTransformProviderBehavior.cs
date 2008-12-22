@@ -34,13 +34,14 @@ using Mono.UIAutomation.Winforms.Events.SplitContainer;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.SplitContainer
 {
-	internal class TransformProviderBehavior : ProviderBehavior, ITransformProvider
+	internal class SplitterPanelTransformProviderBehavior : ProviderBehavior, ITransformProvider
 	{
 		#region Constructor
 
-		public TransformProviderBehavior (SplitContainerProvider provider) : base (provider)
+		public SplitterPanelTransformProviderBehavior (SplitContainerProvider.SplitterPanelProvider provider)
+			: base (provider)
 		{
-			this.splitContainer = (SWF.SplitContainer) Provider.Control;
+			this.splitContainer = (SWF.SplitContainer) Provider.Container;
 		}
 		
 		#endregion
@@ -53,11 +54,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.SplitContainer
 		
 		public override void Connect ()
 		{
+			// NOTE: CanMove Property NEVER changes
 			// NOTE: CanRotate Property NEVER changes
-			Provider.SetEvent (ProviderEventType.TransformPatternCanMoveProperty,
-			                   new TransformPatternCanMoveEvent (Provider));
 			Provider.SetEvent (ProviderEventType.TransformPatternCanResizeProperty,
-			                   new TransformPatternCanResizeEvent (Provider));
+			                   new SplitterPanelTransformPatternCanResizeEvent (Provider));
 		}
 		
 		public override void Disconnect ()
@@ -87,11 +87,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors.SplitContainer
 		#region ITransformProvider Members
 		
 		public bool CanMove {
-			get { return splitContainer.Dock == SWF.DockStyle.None ? true : false; }
+			get { return false; }
 		}
 		
 		public bool CanResize {
-			get { return splitContainer.Dock == SWF.DockStyle.Fill ? false : true; }
+			get {
+				if (splitContainer.Panel1Collapsed || splitContainer.Panel2Collapsed)
+					return false;
+				else
+					return true;
+			}
 		}
 		
 		public bool CanRotate {
@@ -100,16 +105,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.SplitContainer
 		
 		public void Move (double x, double y)
 		{
-			if (!CanMove)
-				throw new InvalidOperationException ();
-			
-			if (splitContainer.InvokeRequired == true) {
-				splitContainer.BeginInvoke (new PerformTransformDelegate (Move),
-				                   new object [] { x, y });
-				return;
-			}
-			
-			splitContainer.Location = new Point ((int) x, (int) y);
+			throw new InvalidOperationException ();
 		}
 		
 		public void Resize (double width, double height)
@@ -118,12 +114,15 @@ namespace Mono.UIAutomation.Winforms.Behaviors.SplitContainer
 				throw new InvalidOperationException ();
 			
 			if (splitContainer.InvokeRequired == true) {
-				splitContainer.BeginInvoke (new PerformTransformDelegate (Resize),
-				                   new object [] { width, height });
+				splitContainer.BeginInvoke (new PerformResizeDelegate (Resize),
+				                            new object [] { width, height });
 				return;
 			}
 			
-			splitContainer.Size = new Size ((int) width, (int) height);
+			if (splitContainer.Orientation == SWF.Orientation.Horizontal)
+				splitContainer.Panel1.Width = (int) width;
+			else
+				splitContainer.Panel1.Width = (int) height;
 		}
 		
 		public void Rotate (double degrees)
@@ -140,5 +139,5 @@ namespace Mono.UIAutomation.Winforms.Behaviors.SplitContainer
 		#endregion
 	}
 	
-	delegate void PerformTransformDelegate (double i, double j);
+	delegate void PerformResizeDelegate (double width, double height);
 }

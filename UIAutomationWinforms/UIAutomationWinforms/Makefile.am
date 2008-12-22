@@ -99,6 +99,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Panel/DockProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Panel/TransformProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PrintPreviewControl/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehaviorEventArgs.cs \
@@ -107,7 +108,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBar/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBar/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/SplitContainer/DockProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/SplitContainer/TransformProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/SplitContainer/SplitterPanelTransformProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Splitter/DockProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Splitter/TransformProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBar/GridProviderBehavior.cs \
@@ -237,6 +238,12 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/Panel/DockPatternDockPositionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Panel/TransformPatternCanMoveEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Panel/TransformPatternCanResizeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontallyScrollableEvent.cs \
+	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontalScrollPercentEvent.cs \
+	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontalViewSizeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternVerticallyScrollableEvent.cs \
+	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternVerticalScrollPercent.cs \
+	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternVerticalViewSizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProgressBar/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ProviderEventType.cs \
@@ -251,10 +258,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternSmallChangeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/SplitContainer/DockPatternDockPositionEvent.cs \
+	Mono.UIAutomation.Winforms.Events/SplitContainer/SplitterPanelTransformPatternCanResizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/SplitContainer/TransformPatternCanMoveEvent.cs \
-	Mono.UIAutomation.Winforms.Events/SplitContainer/TransformPatternCanResizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Splitter/DockPatternDockPositionEvent.cs \
-	Mono.UIAutomation.Winforms.Events/Splitter/TransformPatternCanResizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelGridItemPatternColumnEvent.cs \
@@ -342,6 +348,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/PanelProvider.cs \
 	Mono.UIAutomation.Winforms/PaneProvider.cs \
 	Mono.UIAutomation.Winforms/PictureBoxProvider.cs \
+	Mono.UIAutomation.Winforms/PrintPreviewControlProvider.cs \
 	Mono.UIAutomation.Winforms/ProgressBarProvider.cs \
 	Mono.UIAutomation.Winforms/ProviderFactory.cs \
 	Mono.UIAutomation.Winforms/RadioButtonProvider.cs \

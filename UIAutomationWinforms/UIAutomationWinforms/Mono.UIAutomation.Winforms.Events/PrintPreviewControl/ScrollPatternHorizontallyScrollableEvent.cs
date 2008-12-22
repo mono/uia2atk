@@ -25,60 +25,50 @@
 
 using System;
 using System.Windows.Automation;
-using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.SplitContainer
+namespace Mono.UIAutomation.Winforms.Events.PrintPreviewControl
 {
-	internal class TransformPatternCanResizeEvent : BaseAutomationPropertyEvent
+	internal class ScrollPatternHorizontallyScrollableEvent : BaseAutomationPropertyEvent
 	{
-		#region Constructor
+		#region Constructors
 
-		public TransformPatternCanResizeEvent (SimpleControlProvider provider) 
-			: base (provider, TransformPatternIdentifiers.CanResizeProperty)
+		public ScrollPatternHorizontallyScrollableEvent (PrintPreviewControlProvider provider)
+			: base (provider, ScrollPatternIdentifiers.HorizontallyScrollableProperty)
 		{
 		}
 		
 		#endregion
 		
 		#region IConnectable Overrides
-		
+
 		public override void Connect ()
-		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.SplitContainer),
-				                        (SWF.SplitContainer) Provider.Control,
-				                        "UIACanResizeChanged",
-				                        this,
-				                        "OnCanResizeChanged");
-			} catch (NotSupportedException) { }
+		{	
+			SWF.ScrollBar hscrollbar 
+				= ((PrintPreviewControlProvider) Provider).ScrollBehaviorObserver.HorizontalScrollBar;
+			
+			hscrollbar.VisibleChanged += OnScrollableChanged;
+			hscrollbar.EnabledChanged += OnScrollableChanged;
 		}
-		
+
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.SplitContainer),
-				                           (SWF.SplitContainer) Provider.Control,
-				                           "UIACanResizeChanged",
-				                           this,
-				                           "OnCanResizeChanged");
-			} catch (NotSupportedException) { }
+			SWF.ScrollBar hscrollbar 
+				= ((PrintPreviewControlProvider) Provider).ScrollBehaviorObserver.HorizontalScrollBar;
+			
+			hscrollbar.VisibleChanged -= OnScrollableChanged;
+			hscrollbar.EnabledChanged -= OnScrollableChanged;
 		}
 		
 		#endregion 
 		
 		#region Private Methods
-
-		#pragma warning disable 169
 		
-		private void OnCanResizeChanged (object sender, EventArgs e)
+		private void OnScrollableChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
 
-		#pragma warning restore 169
-		
 		#endregion
 	}
 }

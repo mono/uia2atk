@@ -149,9 +149,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public void ClearPanelsCollection ()
 		{
-			while (panels.Count > 0) {
+			while (panels.Count > 0)
 				RemovePanelAt (panels.Count - 1);
-			}
 		}
 		
 		#endregion

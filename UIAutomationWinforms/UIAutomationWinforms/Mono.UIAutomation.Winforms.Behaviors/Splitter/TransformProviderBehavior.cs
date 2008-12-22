@@ -54,9 +54,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Splitter
 		public override void Connect ()
 		{
 			// NOTE: CanMove Property NEVER changes
+			// NOTE: CanResize Property NEVER changes
 			// NOTE: CanRotate Property NEVER changes
-			Provider.SetEvent (ProviderEventType.TransformPatternCanResizeProperty,
-			                   new TransformPatternCanResizeEvent (Provider));
 		}
 		
 		public override void Disconnect ()
@@ -86,11 +85,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Splitter
 		#region ITransformProvider Members
 		
 		public bool CanMove {
-			get { return false; }
+			get { return true; }
 		}
 		
 		public bool CanResize {
-			get { return true; }
+			get { return false; }
 		}
 		
 		public bool CanRotate {
@@ -99,18 +98,21 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Splitter
 		
 		public void Move (double x, double y)
 		{
-			throw new InvalidOperationException ();
+			if (splitter.InvokeRequired == true) {
+				splitter.BeginInvoke (new PerformMoveDelegate (Move),
+				                      new object [] { x, y });
+				return;
+			}
+			
+			if (splitter.Dock == SWF.DockStyle.Left || splitter.Dock == SWF.DockStyle.Right)
+				splitter.SplitPosition = (int) x;
+			else
+				splitter.SplitPosition = (int) y;
 		}
 		
 		public void Resize (double width, double height)
 		{
-			if (splitter.InvokeRequired == true) {
-				splitter.BeginInvoke (new PerformResizeDelegate (Resize),
-				                      new object [] { width, height });
-				return;
-			}
-			
-			splitter.Size = new Size ((int) width, (int) height);
+			throw new InvalidOperationException ();
 		}
 		
 		public void Rotate (double degrees)
@@ -127,5 +129,5 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Splitter
 		#endregion
 	}
 	
-	delegate void PerformResizeDelegate (double width, double height);
+	delegate void PerformMoveDelegate (double x, double y);
 }

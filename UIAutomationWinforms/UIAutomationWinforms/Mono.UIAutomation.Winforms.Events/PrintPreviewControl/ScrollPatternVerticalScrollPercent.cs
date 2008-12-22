@@ -25,60 +25,44 @@
 
 using System;
 using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Events;
+using System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms.Events.Splitter
+namespace Mono.UIAutomation.Winforms.Events.PrintPreviewControl
 {
-	internal class TransformPatternCanResizeEvent : BaseAutomationPropertyEvent
+	internal class ScrollPatternVerticalScrollPercent : BaseAutomationPropertyEvent
 	{
-		#region Constructor
+		#region Constructors
 
-		public TransformPatternCanResizeEvent (SimpleControlProvider provider) 
-			: base (provider, TransformPatternIdentifiers.CanResizeProperty)
+		public ScrollPatternVerticalScrollPercent (PrintPreviewControlProvider provider)
+			: base (provider, ScrollPatternIdentifiers.VerticalScrollPercentProperty)
 		{
 		}
 		
 		#endregion
 		
 		#region IConnectable Overrides
-		
+
 		public override void Connect ()
-		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.Splitter),
-				                        (SWF.Splitter) Provider.Control,
-				                        "UIACanResizeChanged",
-				                        this,
-				                        "OnCanResizeChanged");
-			} catch (NotSupportedException) { }
+		{	
+			((PrintPreviewControlProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar.ValueChanged 
+				+= OnScrollPercentChanged;
 		}
-		
+
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.Splitter),
-				                           (SWF.Splitter) Provider.Control,
-				                           "UIACanResizeChanged",
-				                           this,
-				                           "OnCanResizeChanged");
-			} catch (NotSupportedException) { }
+			((PrintPreviewControlProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar.ValueChanged 
+				-= OnScrollPercentChanged;
 		}
 		
 		#endregion 
 		
 		#region Private Methods
 		
-		#pragma warning disable 169
-		
-		private void OnCanResizeChanged (object sender, EventArgs e)
+		private void OnScrollPercentChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-		
-		#pragma warning restore 169
-		
+
 		#endregion
 	}
 }
