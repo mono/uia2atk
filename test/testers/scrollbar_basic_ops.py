@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 
-##############################################################################
+#######################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        08/06/2008
 # Description: Test accessibility of scrollbar widget 
 #              Use the scrollbarframe.py wrapper script
 #              Test the samples/checkedlistbox.py script
-##############################################################################
+#######################################################################
 
 # The docstring below  is used in the generated log file
 """
@@ -93,9 +93,9 @@ sbFrame.valueScrollBar(sbFrame.vscrollbar, -10)
 sleep(config.SHORT_DELAY)
 sbFrame.assertScrollbar(sbFrame.vscrollbar, -10) 
 
-sbFrame.list1item[5].mouseClick()
+sbFrame.list1item[4].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(sbFrame.list1item[5], "ListItem", add_states=["selected"])
+statesCheck(sbFrame.list1item[4], "ListItem", add_states=["selected"])
 
 #use keyboard to scroll bar to assert the value
 sbFrame.keyCombo("Down", grabFocus=False)
@@ -154,7 +154,7 @@ statesCheck(sbFrame.list2item[4], "ListItem", add_states=["selected"])
 #use keyboard to scroll bar to assert the value
 sbFrame.keyCombo("Left", grabFocus=False)
 sleep(config.SHORT_DELAY)
-sbFrame.assertScrollbar(sbFrame.hscrollbar, 1) 
+sbFrame.assertScrollbar(sbFrame.hscrollbar, 0) 
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
