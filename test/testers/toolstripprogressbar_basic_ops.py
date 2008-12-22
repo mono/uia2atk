@@ -46,8 +46,7 @@ tspbFrame = app.toolStripProgressBarFrame
 #check progressbar's states list
 statesCheck(tspbFrame.progressbar, "ToolStripProgressBar")
 
-#click button1 each time, current value would increase 20, when it runout to 100
-#label would shows "Done"
+#click button to check if label is changed, in each time current value is up 20, label would shows "Done" after value rise to 100
 tspbFrame.click(tspbFrame.button)
 sleep(config.SHORT_DELAY)
 tspbFrame.assertLabel("It is 20% of 100%")
@@ -72,14 +71,14 @@ tspbFrame.click(tspbFrame.button)
 sleep(config.SHORT_DELAY)
 tspbFrame.assertLabel("It is 100% of 100%")
 tspbFrame.assertCurrnetValue(tspbFrame.progressbar, 100)
-#label shows "Done" when you click button again after the value rise 100%
+#label shows "Done" when click button again after the value rise to 100%, value
+#is still 100% 
 tspbFrame.click(tspbFrame.button)
 sleep(config.SHORT_DELAY)
 tspbFrame.assertLabel("Done")
 tspbFrame.assertCurrnetValue(tspbFrame.progressbar, 100)
 
-#if yo enter number under Value in accerciser you would still get the lastest 
-#value, you can't change the progress by give value
+#value doesn't changed by giving number in acceciser
 tspbFrame.value(10)
 sleep(config.SHORT_DELAY)
 tspbFrame.assertCurrnetValue(tspbFrame.progressbar, 100)

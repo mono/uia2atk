@@ -1,5 +1,10 @@
 2008-12-22  Calen Chen <cachen@novell.com>
 
+	* testers/statusstrip_basic_ops.py,
+	* testers/toolstripprogressbar_basic_ops.py: modify comments
+
+2008-12-22  Calen Chen <cachen@novell.com>
+
 	* testers/scrollbar/scrollbarframe.py: accessible.__getattr__('value') 
 	is the same as accessible.value
 	* testers/scrollbar_basic_ops.py: change list2item[5].mouseClick to 
