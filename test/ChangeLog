@@ -1,3 +1,11 @@
+2008-12-22  Calen Chen <cachen@novell.com>
+
+	* testers/helpers.py: add invalid_states available
+	* testers/combobox_dropdown/comboboxdropdownframe.py: update 
+	assertLabel's expected log
+	* testers/combobox_dropdown_ops.py: update some comments, delete print 
+	lines
+
 2008-12-19  Calen Chen <cachen@novell.com>
 
 	* testers/statusbarpanel/statusbarpanelframe.py: delete some unused 

@@ -40,19 +40,19 @@ class ComboBoxDropDownFrame(accessibles.Frame):
 
         procedurelogger.expectedResult('menu item list is showing')
         self.menu = self.findMenu(None)
-        self.menuitem = dict([(x, self.findMenuItem(str(x))) for x in range(10)])
+        self.menuitem = dict([(x, self.findMenuItem(str(x), checkShowing=False)) for x in range(10)])
 
     #check the label after click listitem
-    def assertLabel(self, itemname):
-        procedurelogger.expectedResult('item "%s" is %s' % (itemname, 'select'))
+    def assertLabel(self, newlabel):
+        procedurelogger.expectedResult('Label change to "%s"' % newlabel)
 
         def resultMatches():
-            return self.findLabel("You select %s" % itemname)
+            return self.findLabel(newlabel)
 	assert retryUntilTrue(resultMatches)
 
     #assert Text implementation for MenuItem
     def assertItemText(self, textValue=None):
-        procedurelogger.action('check MenuItem\'s Text Value')
+        procedurelogger.action('check MenuItem\'s Text')
 
         for textValue in range(10):
             procedurelogger.expectedResult('item "%s"\'s Text is %s' % (self.menuitem[textValue],textValue))

@@ -19,7 +19,8 @@ import actions
 from strongwind import *
 
  #check actions
-def actionsCheck(accessible, control):
+def actionsCheck(accessible, control, invalid_actions=[],
+                                            add_actions=[], pause=True):
     """Check the actions of an accessible using the default actions
     of the accessible (specified by control class in actions.py) as
     the default expected actions.
@@ -32,7 +33,11 @@ def actionsCheck(accessible, control):
     procedurelogger.action('Check %s\'s actions' % accessible)
 
     #get list of expected actions 
-    expected_actions = actions.__getattribute__(control).actions
+    actions_list = actions.__getattribute__(control).actions
+
+    expected_actions = \
+              [s for s in actions_list if s not in invalid_actions]
+    expected_actions = set(expected_actions).union(set(add_actions))
 
     #get list of actual actions of the accessible
     qa = accessible._accessible.queryAction()
