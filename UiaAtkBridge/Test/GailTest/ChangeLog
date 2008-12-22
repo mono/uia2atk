@@ -1,3 +1,8 @@
+2008-12-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTester.cs: Negative interface testing (this depends on gtk-sharp
+	r121990) for bug 449573.
+
 2008-12-17  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* GailTester.cs: ToolstripTextbox testing.

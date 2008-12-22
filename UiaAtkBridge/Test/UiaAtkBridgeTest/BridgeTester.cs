@@ -255,32 +255,36 @@ namespace UiaAtkBridgeTest
 
 		public override I CastToAtkInterface <I> (Atk.Object accessible)
 		{
-			if (typeof (I) == typeof (Atk.Component)) {
-				return new Atk.ComponentAdapter ((Atk.ComponentImplementor)accessible) as I;
+			try {
+				if (typeof (I) == typeof (Atk.Component)) {
+					return new Atk.ComponentAdapter ((Atk.ComponentImplementor)accessible) as I;
+				}
+				else if (typeof (I) == typeof (Atk.Text)) {
+					return new Atk.TextAdapter ((Atk.TextImplementor)accessible) as I;
+				}
+				else if (typeof (I) == typeof (Atk.Action)) {
+					return new Atk.ActionAdapter ((Atk.ActionImplementor)accessible) as I;
+				}
+				else if (typeof (I) == typeof (Atk.Table)) {
+					return new Atk.TableAdapter ((Atk.TableImplementor)accessible) as I;
+				}
+				else if (typeof (I) == typeof (Atk.Value)) {
+					return new Atk.ValueAdapter ((Atk.ValueImplementor)accessible) as I;
+				}
+				else if (typeof (I) == typeof (Atk.Image)) {
+					return new Atk.ImageAdapter ((Atk.ImageImplementor)accessible) as I;
+				}
+				else if (typeof (I) == typeof (Atk.Selection)) {
+					return new Atk.SelectionAdapter ((Atk.SelectionImplementor)accessible) as I;
+				}
+				else if (typeof (I) == typeof (Atk.EditableText)) {
+					return new Atk.EditableTextAdapter ((Atk.EditableTextImplementor)accessible) as I;
+				}
+				throw new NotImplementedException ("Couldn't cast to interface " +
+				typeof (I).Name);
+			} catch (InvalidCastException) {
+				return null;
 			}
-			else if (typeof (I) == typeof (Atk.Text)) {
-				return new Atk.TextAdapter ((Atk.TextImplementor)accessible) as I;
-			}
-			else if (typeof (I) == typeof (Atk.Action)) {
-				return new Atk.ActionAdapter ((Atk.ActionImplementor)accessible) as I;
-			}
-			else if (typeof (I) == typeof (Atk.Table)) {
-				return new Atk.TableAdapter ((Atk.TableImplementor)accessible) as I;
-			}
-			else if (typeof (I) == typeof (Atk.Value)) {
-				return new Atk.ValueAdapter ((Atk.ValueImplementor)accessible) as I;
-			}
-			else if (typeof (I) == typeof (Atk.Image)) {
-				return new Atk.ImageAdapter ((Atk.ImageImplementor)accessible) as I;
-			}
-			else if (typeof (I) == typeof (Atk.Selection)) {
-				return new Atk.SelectionAdapter ((Atk.SelectionImplementor)accessible) as I;
-			}
-			else if (typeof (I) == typeof (Atk.EditableText)) {
-				return new Atk.EditableTextAdapter ((Atk.EditableTextImplementor)accessible) as I;
-			}
-			throw new NotImplementedException ("Couldn't cast to interface " +
-			typeof (I).Name);
 		}
 		
 		public override Atk.Object GetAccessibleThatEmbedsAnImage (BasicWidgetType type, string name, bool real)

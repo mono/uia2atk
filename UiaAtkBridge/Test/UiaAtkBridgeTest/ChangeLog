@@ -1,5 +1,10 @@
 2008-12-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Negative interface testing (this depends on gtk-sharp
+	r121990) for bug 449573.
+
+2008-12-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTests.cs: Enable test.
 
 2008-12-18  Andrés G. Aragoneses  <aaragoneses@novell.com>

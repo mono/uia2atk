@@ -138,33 +138,37 @@ namespace UiaAtkBridgeTest
 
 
 		public override I CastToAtkInterface <I> (Atk.Object accessible)
-		{
-			if (typeof (I) == typeof (Atk.Action)) {
-				return Atk.ActionAdapter.GetObject (accessible.Handle, false) as I;
+		{	
+			try {
+				if (typeof (I) == typeof (Atk.Action)) {
+					return Atk.ActionAdapter.GetObject (accessible.Handle, false) as I;
+				}
+				else if (typeof (I) == typeof (Atk.Text)) {
+					return Atk.TextAdapter.GetObject (accessible.Handle, false) as I;
+				}
+				else if (typeof (I) == typeof (Atk.Component)) {
+					return Atk.ComponentAdapter.GetObject (accessible.Handle, false) as I;
+				}
+				else if (typeof (I) == typeof (Atk.EditableText)) {
+					return Atk.EditableTextAdapter.GetObject (accessible.Handle, false) as I;
+				}
+				else if (typeof (I) == typeof (Atk.Image)) {
+					return Atk.ImageAdapter.GetObject (accessible.Handle, false) as I;
+				}
+				else if (typeof (I) == typeof (Atk.Table)) {
+					return Atk.TableAdapter.GetObject (accessible.Handle, false) as I;
+				}
+				else if (typeof (I) == typeof (Atk.Selection)) {
+					return Atk.SelectionAdapter.GetObject (accessible.Handle, false) as I;
+				}
+				else if (typeof (I) == typeof (Atk.Value)) {
+					return Atk.ValueAdapter.GetObject (accessible.Handle, false) as I;
+				}
+				throw new NotImplementedException ("Couldn't cast to interface " +
+				  typeof (I).Name);
+			} catch (ArgumentException) {
+				return null;
 			}
-			else if (typeof (I) == typeof (Atk.Text)) {
-				return Atk.TextAdapter.GetObject (accessible.Handle, false) as I;
-			}
-			else if (typeof (I) == typeof (Atk.Component)) {
-				return Atk.ComponentAdapter.GetObject (accessible.Handle, false) as I;
-			}
-			else if (typeof (I) == typeof (Atk.EditableText)) {
-				return Atk.EditableTextAdapter.GetObject (accessible.Handle, false) as I;
-			}
-			else if (typeof (I) == typeof (Atk.Image)) {
-				return Atk.ImageAdapter.GetObject (accessible.Handle, false) as I;
-			}
-			else if (typeof (I) == typeof (Atk.Table)) {
-				return Atk.TableAdapter.GetObject (accessible.Handle, false) as I;
-			}
-			else if (typeof (I) == typeof (Atk.Selection)) {
-				return Atk.SelectionAdapter.GetObject (accessible.Handle, false) as I;
-			}
-			else if (typeof (I) == typeof (Atk.Value)) {
-				return Atk.ValueAdapter.GetObject (accessible.Handle, false) as I;
-			}
-			throw new NotImplementedException ("Couldn't cast to interface " +
-			  typeof (I).Name);
 		}
 
 		public override Atk.Object GetAccessible (BasicWidgetType type, string [] name)
