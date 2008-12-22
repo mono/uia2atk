@@ -79,7 +79,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			PrintPreviewControl printPreviewControl = (PrintPreviewControl) GetControlInstance ();
 			IRawElementProviderFragmentRoot rootProvider;
 			IRawElementProviderFragment childProvider;
-			IRawElementProviderFragment childParent;
 
 			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (printPreviewControl);
 			IScrollProvider scrollProvider = (IScrollProvider)

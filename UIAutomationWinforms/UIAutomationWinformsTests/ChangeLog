@@ -1,3 +1,7 @@
+2008-12-22  Mario Carrion  <mcarrion@novell.com>
+
+	* PrintPreviewControlProviderTest.cs: Not used variable removed.
+
 2008-12-22  Neville Gao  <nevillegao@gmail.com>
 
 	* UIAutomationWinformsTests.mdp, Makefile.am: Updated for added file.
