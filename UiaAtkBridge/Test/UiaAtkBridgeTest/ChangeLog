@@ -1,3 +1,7 @@
+2008-12-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs: Enable test.
+
 2008-12-18  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: Fixed the order of the calls, which were causing init
