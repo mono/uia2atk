@@ -523,6 +523,10 @@ namespace Mono.UIAutomation.Winforms
 				get { return provider; }
 			}
 
+			public SWF.GridColumnStylesCollection GridColumnStyles {
+				get { return styles; }
+			}
+
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
@@ -537,15 +541,26 @@ namespace Mono.UIAutomation.Winforms
 					return OrientationType.Horizontal;
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 					return false;
-				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
-					return false; //TODO: Implement
-				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+					Rect bounds 
+						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					return Helper.IsOffScreen (bounds, provider.DataGrid, true);
+				} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-					return System.Windows.Rect.Empty; //TODO: Implement
-					//return Helper.GetControlScreenBounds (listView.UIAHeaderControl, listView);
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+					// FIXME: Remove reflection after committing SWF patch.
+					SD.Rectangle rectangle
+						= Helper.GetPrivateProperty<SWF.DataGrid, SD.Rectangle> (typeof (SWF.DataGrid),
+						                                                         provider.DataGrid,
+						                                                         "UIAColumnHeadersArea");
+					rectangle.X += provider.DataGrid.Bounds.X;
+					rectangle.Y += provider.DataGrid.Bounds.Y;
+
+					return Helper.GetControlScreenBounds (rectangle, provider.DataGrid);
+				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+					return Helper.GetClickablePoint (this);
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
@@ -614,14 +629,24 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-					//FIXME: Implement
-					return System.Windows.Rect.Empty;
+					// FIXME: Remove reflection after committing SWF patch.
+					int indexOf = header.GridColumnStyles.IndexOf (style);
+					SD.Rectangle rectangle
+						= Helper.GetPrivateProperty<SWF.DataGrid, SD.Rectangle> (typeof (SWF.DataGrid),
+						                                                         style.DataGridTableStyle.DataGrid,
+						                                                         "UIAColumnHeadersArea");
+					rectangle.Width = header.GridColumnStyles [indexOf].Width;
+					
+					for (int index = 0; index < indexOf; index++)
+						rectangle.X += header.GridColumnStyles [index].Width;
+
+					return Helper.GetControlScreenBounds (rectangle, style.DataGridTableStyle.DataGrid);
 				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
-					//FIXME: Implement
-					return false;
+					Rect bounds 
+						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					return Helper.IsOffScreen (bounds, style.DataGridTableStyle.DataGrid, true);
 				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
-					//FIXME: Implement
-					return System.Windows.Rect.Empty;
+					return Helper.GetClickablePoint (this);
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}

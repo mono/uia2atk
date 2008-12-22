@@ -1,3 +1,8 @@
+2008-12-22  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: BoundingRectangle,
+	IsOffScreen and ClickablePoint support: Header and HeaderItem.
+
 2008-12-22  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Added
