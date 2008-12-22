@@ -1,3 +1,8 @@
+2008-12-22  Neville Gao  <nevillegao@gmail.com>
+
+	* UIAutomationWinformsTests.mdp, Makefile.am: Updated for added file.
+	* PrintPreviewControlProviderTest.cs: File added.
+
 2008-12-19  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* providertest.sh.in: Add --debug
