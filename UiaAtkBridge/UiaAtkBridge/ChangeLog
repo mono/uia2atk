@@ -1,5 +1,9 @@
 2008-12-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ComboBoxOptions.cs: Remove debug spew.
+
+2008-12-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Makefile.am:
 	* UiaAtkBridge.mdp:
 	* ComboBoxTable.cs:

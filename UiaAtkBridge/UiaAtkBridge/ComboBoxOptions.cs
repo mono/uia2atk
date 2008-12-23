@@ -200,7 +200,6 @@ namespace UiaAtkBridge
 
 		internal void RecursiveDeselect (MenuItem keepSelected)
 		{
-			Console.WriteLine ("RecursiveDeselect called: {0}", keepSelected.Name);
 			lock (syncRoot) {
 				foreach (Atk.Object child in children) {
 					MenuItem item = child as MenuItem;
