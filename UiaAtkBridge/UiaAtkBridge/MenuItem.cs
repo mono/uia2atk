@@ -35,7 +35,6 @@ namespace UiaAtkBridge
 	                        Atk.ActionImplementor
 	{
 		IInvokeProvider invokeProvider = null;
-		ISelectionItemProvider selectionItemProvider = null;
 		
 		public MenuItem (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -50,41 +49,30 @@ namespace UiaAtkBridge
 				Name = name;
 
 			int controlType = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			if (controlType != ControlType.ListItem.Id) {
-				invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
-				if (invokeProvider == null)
-					throw new ArgumentException (
-					  String.Format ("Provider for Menu/MenuItem (control type {0}) should implement IInvokeProvider", controlType));
-			} else {
-				selectionItemProvider = (ISelectionItemProvider)provider.GetPatternProvider (
-				  SelectionItemPatternIdentifiers.Pattern.Id);
-			}
+			invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			if (invokeProvider == null)
+				throw new ArgumentException (
+				  String.Format ("Provider for Menu/MenuItem (control type {0}) should implement IInvokeProvider", controlType));
 			
 			OnChildrenChanged ();
 		}
 
 		private bool selected = false;
-		private bool showing = false;
 		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			
-			if (!(Parent is MenuItem))
-				showing = states.ContainsState (Atk.StateType.Showing);
-			
 			states.AddState (Atk.StateType.Selectable);
 
-			if (showing || selected) {
+			if (selected)
 				states.AddState (Atk.StateType.Showing);
-			} else {
+			else
 				states.RemoveState (Atk.StateType.Showing);
-			}
 
-			if (!(Parent is ComboBoxOptions) &&
-			    (Parent.RefStateSet ().ContainsState (Atk.StateType.Visible)) ||
-			     (Parent.Parent is ComboBoxDropDown) && (Parent.Parent.RefStateSet ().ContainsState (Atk.StateType.Visible))) {
+			if (Parent.RefStateSet ().ContainsState (Atk.StateType.Visible)) {
 				states.AddState (Atk.StateType.Visible);
+				states.AddState (Atk.StateType.Showing);
 			}
 
 			if (selected) {
@@ -153,8 +141,7 @@ namespace UiaAtkBridge
 				selected = (bool)e.NewValue;
 				NotifyStateChange (Atk.StateType.Selected, selected);
 			} else if (e.Property.Id == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
-				showing = !((bool)e.NewValue);
-				NotifyStateChange (Atk.StateType.Showing, showing);
+				NotifyStateChange (Atk.StateType.Showing);
 			} else {
 				base.RaiseAutomationPropertyChangedEvent (e);
 			}
@@ -170,13 +157,6 @@ namespace UiaAtkBridge
 				if (invokeProvider != null) {
 					try {
 						invokeProvider.Invoke ();
-						return true;
-					} catch (ElementNotEnabledException) { }
-				}
-				else if (selectionItemProvider != null) {
-					try {
-						selectionItemProvider.Select ();
-						
 						return true;
 					} catch (ElementNotEnabledException) { }
 				}

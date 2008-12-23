@@ -1,5 +1,16 @@
 2008-12-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* MenuItem.cs:
+	* Makefile.am:
+	* ComboBoxItem.cs:
+	* UiaAtkBridge.mdp:
+	* ComboBoxOptions.cs:
+	* AutomationBridge.cs: Refactoring: decouple menuitems from combobox
+	items (which had the same role). Based on patch provided by Mario
+	Carrion <mcarrion@novell.com>. Fixes bug #457514.
+
+2008-12-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ComboBoxOptions.cs: Remove debug spew.
 
 2008-12-23  Andrés G. Aragoneses  <aaragoneses@novell.com>

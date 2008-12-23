@@ -763,8 +763,10 @@ namespace UiaAtkBridge
 		private void HandleNewListItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter atkItem;
-			if ((parentObject is ComboBoxOptions) || (parentObject is MenuItem))
+			if (parentObject is MenuItem)
 				atkItem = new MenuItem (provider);
+			else if (parentObject is ComboBoxOptions)
+				atkItem = new ComboBoxItem (provider);
 			else
 				atkItem = new ListItem (provider);
 			

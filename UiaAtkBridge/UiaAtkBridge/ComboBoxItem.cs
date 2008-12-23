@@ -24,35 +24,41 @@
 // 
 
 using System;
+
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
 	
-	public class ComboBoxOptions : ComponentParentAdapter, Atk.SelectionImplementor, Atk.TextImplementor
+	public class ComboBoxItem : ComponentAdapter, Atk.ActionImplementor, Atk.TextImplementor
 	{
 		TextImplementorHelper textExpert = null;
+		ISelectionItemProvider selectionItemProvider = null;
 		
-		public ComboBoxOptions (IRawElementProviderSimple provider) : base (provider)
+		public ComboBoxItem (IRawElementProviderSimple provider) : base (provider)
 		{
 			if (provider == null)
 				throw new ArgumentNullException ("provider");
-
-			if ((provider as IRawElementProviderFragment) == null)
-				throw new ArgumentException ("Provider for ParentMenu should be IRawElementProviderFragment");
 
 			string name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			if (!String.IsNullOrEmpty (name))
 				Name = name;
 
-			textExpert = new TextImplementorHelper (Name, this);
+			int controlType = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			selectionItemProvider = (ISelectionItemProvider)provider.GetPatternProvider (
+			  SelectionItemPatternIdentifiers.Pattern.Id);
+			if (selectionItemProvider == null)
+				throw new ArgumentException (
+				  String.Format ("Provider for ComboBoxItem (control type {0}) should implement ISelectionItemProvider", controlType));
 
+			textExpert = new TextImplementorHelper (Name, this);
+			
 			//FIXME: take in account ComboBox style changes at runtime
 			if (ParentIsSimple ())
-				Role = Atk.Role.TreeTable;
+				Role = Atk.Role.TableCell;
 			else
-				Role = Atk.Role.Menu;
+				Role = Atk.Role.MenuItem;
 		}
 
 		public bool ParentIsSimple ()
@@ -60,49 +66,136 @@ namespace UiaAtkBridge
 			//FIXME: change this not to use Provider API when we fix the FIXME in Adapter ctor. (just use Parent.IsSimple())
 			IRawElementProviderSimple parentProvider =
 			  ((IRawElementProviderFragment) Provider).Navigate (NavigateDirection.Parent);
+			parentProvider = ((IRawElementProviderFragment) parentProvider).Navigate (NavigateDirection.Parent);
 			return ComboBox.IsSimple (parentProvider);
 		}
 
-		public int SelectionCount {
-			get { return 0; }
+		private bool selected = false;
+		private bool showing = false;
+		
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			states.RemoveState (Atk.StateType.Focusable);
+			
+			showing = states.ContainsState (Atk.StateType.Showing);
+			
+			states.AddState (Atk.StateType.Selectable);
+
+			if (showing || selected) {
+				states.AddState (Atk.StateType.Showing);
+			} else {
+				states.RemoveState (Atk.StateType.Showing);
+			}
+
+			if ((Parent.Parent is ComboBoxDropDown) &&
+			    (Parent.Parent.RefStateSet ().ContainsState (Atk.StateType.Visible)))
+				states.AddState (Atk.StateType.Visible);
+			
+			if (selected) {
+				states.AddState (Atk.StateType.Selected);
+				states.AddState (Atk.StateType.Focused);
+			} else {
+				states.RemoveState (Atk.StateType.Selected);
+			}
+
+			return states;
+		}
+
+		public override Atk.Layer Layer {
+			get { return Atk.Layer.Popup; }
+		}
+
+		internal void Deselect ()
+		{
+			selected = false;
+			NotifyStateChange (Atk.StateType.Selected, false);
 		}
 		
-		public bool AddSelection (int i)
+		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
-			return false;
+			if (eventId == InvokePatternIdentifiers.InvokedEvent) {
+				selected = !selected;
+				NotifyStateChange (Atk.StateType.Selected, selected);
+				NotifyStateChange (Atk.StateType.Focused, selected);
+			} else if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
+				selected = true;
+				NotifyStateChange (Atk.StateType.Selected, selected);
+				((ComboBoxOptions)Parent).RecursiveDeselect (this);
+			} else {
+				Console.WriteLine ("WARNING: RaiseAutomationEvent({0},...) not handled yet", eventId.ProgrammaticName);
+				base.RaiseAutomationEvent (eventId, e);
+			}
 		}
 
-		public bool ClearSelection ()
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
-			return false;
+			if (e.Property.Id == SelectionItemPatternIdentifiers.IsSelectedProperty.Id) {
+				selected = (bool)e.NewValue;
+				NotifyStateChange (Atk.StateType.Selected, selected);
+			} else if (e.Property.Id == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				showing = !((bool)e.NewValue);
+				NotifyStateChange (Atk.StateType.Showing, showing);
+			} else {
+				base.RaiseAutomationPropertyChangedEvent (e);
+			}
 		}
 
-		public Atk.Object RefSelection (int i)
+		#region Action implementation 
+
+		private string actionDescription = null;
+		
+		public bool DoAction (int i)
 		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (RefSelection)");
+			if (i == 0) {
+				try {
+					selectionItemProvider.Select ();
+					
+					return true;
+				} catch (ElementNotEnabledException) { }
+			}
+			return false;
+		}
+		
+		public string GetName (int i)
+		{
+			if (i == 0)
+				return "click";
+			return null;
+		}
+		
+		public string GetKeybinding (int i)
+		{
+			return null;
+		}
+		
+		public string GetLocalizedName (int i)
+		{
+			return null;
+		}
+		
+		public bool SetDescription (int i, string desc)
+		{
+			if (i == 0) {
+				actionDescription = desc;
+				return true;
+			}
+			return false;
+		}
+		
+		public string GetDescription (int i)
+		{
+			if (i == 0)
+				return actionDescription;
 			return null;
 		}
 
-		public bool IsChildSelected (int i)
-		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (IsChildSelected)");
-			//TODO: Atk.Selection
-			return false;
+		
+		public int NActions {
+			get { return 1; }
 		}
-
-		public bool RemoveSelection (int i)
-		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (RemoveSelection)");
-			return false;
-		}
-
-		public bool SelectAllSelection ()
-		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (SelectAllSelection)");
-			return false;
-		}
+		
+		#endregion 
 
 
 		#region TextImplementor implementation 
@@ -156,6 +249,11 @@ namespace UiaAtkBridge
 		{
 			return false;
 		}
+
+		public bool RemoveSelection (int i)
+		{
+			return false;
+		}
 		
 		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
 		{
@@ -196,40 +294,6 @@ namespace UiaAtkBridge
 		}
 		
 		#endregion
-
-		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
-		{
-			//TODO
-		}
-
-		internal void RecursiveDeselect (Adapter keepSelected)
-		{
-			lock (syncRoot) {
-				foreach (Atk.Object child in children) {
-
-					if (child == null || ((Adapter)child) == keepSelected) 
-						continue;
-					
-					MenuItem itemM = child as MenuItem;
-					ComboBoxItem itemC = child as ComboBoxItem;
-					if (itemM != null)
-						itemM.Deselect ();
-					else if (itemC != null)
-						itemC.Deselect ();
-					else
-						throw new Exception ("A child of a Menu should be a MenuItem or ComboBoxItem");
-				}
-			}
-
-			if (Parent is ComboBoxOptions)
-				((ComboBoxOptions)Parent).RecursiveDeselect (keepSelected);
-			else if (Parent is ComboBox)
-				((ComboBox)Parent).RaiseSelectionChanged (keepSelected.Name);
-		}
-
-		internal void RaiseExpandedCollapsed () {
-			NotifyStateChange (Atk.StateType.Showing);
-			NotifyStateChange (Atk.StateType.Visible);
-		}
+		
 	}
 }
