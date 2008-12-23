@@ -1,3 +1,7 @@
+2008-12-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Adapter.cs: Add FIXME from my latest findings.
+
 2008-12-19  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* TextBoxEntryView.cs: Cosmetic.
