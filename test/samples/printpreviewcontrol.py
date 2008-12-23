@@ -43,7 +43,7 @@ class PrintPreviewControlSample(Form):
 
         # setup print_preview_control
         self.print_preview_control = PrintPreviewControl()
-        self.print_preview_control.Location = Point(80, 80)
+        self.print_preview_control.Location = Point(30, 80)
         self.print_preview_control.Dock = DockStyle.Fill
 
         # Set the UseAntiAlias property to true so fonts are smoothed
@@ -53,6 +53,9 @@ class PrintPreviewControlSample(Form):
         # Set the Document property to the PrintDocument 
         # for which the PrintPage event has been handled.
         self.print_preview_control.Document = doc_to_print
+
+        #set Zoom to show scrollbar
+        self.print_preview_control.Zoom = 0.5
 
         # Associate the event-handling method with the
         # document's PrintPage event.
@@ -67,7 +70,7 @@ class PrintPreviewControlSample(Form):
         # The following code will render a simple
         # message on the document in the control.
         text = "In doc_to_print_PrintPage method."
-        print_font = Font("Arial", 28, FontStyle.Bold)
+        print_font = Font("Arial", 10, FontStyle.Bold)
         event.Graphics.DrawString(text, print_font, Brushes.Black, 10, 10)
 
     def on_click(self, sender, event):
