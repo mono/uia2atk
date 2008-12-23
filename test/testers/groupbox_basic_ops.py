@@ -47,7 +47,7 @@ gbFrame = app.groupBoxFrame
 actionsCheck(gbFrame.button1, "Button")
 actionsCheck(gbFrame.button2, "Button")
 
-#check if button in button still have correct states
+#check if button in panel still have correct states
 statesCheck(gbFrame.button1, "Button", add_states=["focused"])
 statesCheck(gbFrame.button2, "Button")
 
@@ -68,8 +68,6 @@ statesCheck(gbFrame.button1, "Button")
 
 statesCheck(gbFrame.button2, "Button", add_states=["focused"])
 
-statesCheck(gbFrame.panel2, "Panel")
-
 #check Panel's states
 statesCheck(gbFrame.panel1, "Panel")
 statesCheck(gbFrame.panel2, "Panel")
@@ -80,8 +78,6 @@ gbFrame.keyCombo("Tab", grabFocus=False)
 statesCheck(gbFrame.button2, "Button")
 
 statesCheck(gbFrame.button1, "Button", add_states=["focused"])
-
-statesCheck(gbFrame.panel2, "Panel")
 
 #check Panel's states
 statesCheck(gbFrame.panel1, "Panel")

@@ -1,3 +1,9 @@
+2008-12-23  Calen Chen <cachen@novell.com>
+
+	* testers/groupbox_basic_ops.py: modify "button in button" to "button 
+	in panel" in line 50, delete states check for panel2 in front of check 
+	Panel's states after doing keyTab
+
 2008-12-22  Calen Chen <cachen@novell.com>
 
 	* testers/statusstrip_basic_ops.py,
