@@ -1,3 +1,11 @@
+2008-12-19  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/Helper.cs: Using IntersectsWith instead of
+	Contains.
+
+	* Mono.UIAutomation.Winforms.Events/AutomationIsOffscreenPropertyEvent.cs:
+	Raising Automation Event also when Parent.LocationChanged.
+
 2008-12-22  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/DataGridProvider.cs: BoundingRectangle,

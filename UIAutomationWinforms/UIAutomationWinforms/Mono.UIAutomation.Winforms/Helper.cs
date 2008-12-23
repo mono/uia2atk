@@ -100,9 +100,8 @@ namespace Mono.UIAutomation.Winforms
 				screen = Helper.GetControlScreenBounds (referenceControl.Bounds, referenceControl);
 			else
 				screen = Helper.RectangleToRect (SWF.Screen.GetWorkingArea (referenceControl));
-				
 
-			return !screen.Contains (bounds);
+			return !bounds.IntersectsWith (screen);
 		}
 
 		internal static bool IsOffScreen (Rect bounds, SWF.Control referenceControl)

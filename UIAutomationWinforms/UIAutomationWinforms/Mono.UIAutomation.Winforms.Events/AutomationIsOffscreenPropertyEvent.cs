@@ -50,12 +50,16 @@ namespace Mono.UIAutomation.Winforms.Events
 		{
 			Provider.Control.Resize += new EventHandler (OnIsOffScreen);
 			Provider.Control.LocationChanged += new EventHandler (OnIsOffScreen);
+			if (Provider.Control.Parent != null)
+				Provider.Control.Parent.LocationChanged += new EventHandler (OnIsOffScreen);
 		}
 
 		public override void Disconnect ()
 		{
 			Provider.Control.Resize -= new EventHandler (OnIsOffScreen);
 			Provider.Control.LocationChanged -= new EventHandler (OnIsOffScreen);
+			if (Provider.Control.Parent != null)
+				Provider.Control.Parent.LocationChanged -= new EventHandler (OnIsOffScreen);
 		}
 		
 		#endregion
