@@ -676,9 +676,6 @@ namespace UiaAtkBridgeTest
 			//check the Action impl of a comboboxitem (menuitem role)
 			atkAction = CastToAtkInterface <Atk.Action> (secondComboBoxItem);
 			InterfaceAction (BasicWidgetType.ComboBoxItem, atkAction, secondComboBoxItem);
-
-			//FIXME: uncomment this when we can test interfaces negatively:
-			//Assert.IsNull (CastToAtkInterface <Atk.Selection> (firstComboBoxItem));
 		}
 		
 		//it's safer to put this test the last, apparently Atk makes it unresponsive after dealing with
