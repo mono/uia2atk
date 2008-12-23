@@ -31,11 +31,9 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	
-	public class MenuItem : ComponentParentAdapter, Atk.SelectionImplementor, 
-	                        Atk.ActionImplementor, Atk.TextImplementor
+	public class MenuItem : ComboBoxOptions,
+	                        Atk.ActionImplementor
 	{
-		bool? comboBoxStructure = null;
-		TextImplementorHelper textExpert = null;
 		IInvokeProvider invokeProvider = null;
 		ISelectionItemProvider selectionItemProvider = null;
 		
@@ -51,15 +49,12 @@ namespace UiaAtkBridge
 			if (!String.IsNullOrEmpty (name))
 				Name = name;
 
-			textExpert = new TextImplementorHelper (Name, this);
-
 			int controlType = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			comboBoxStructure = (controlType == ControlType.List.Id);
-
-			if ((!comboBoxStructure.Value) && (controlType != ControlType.ListItem.Id)) {
+			if (controlType != ControlType.ListItem.Id) {
 				invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 				if (invokeProvider == null)
-					throw new ArgumentException ("Provider for ParentMenu should implement IInvokeProvider");
+					throw new ArgumentException (
+					  String.Format ("Provider for Menu/MenuItem (control type {0}) should implement IInvokeProvider", controlType));
 			} else {
 				selectionItemProvider = (ISelectionItemProvider)provider.GetPatternProvider (
 				  SelectionItemPatternIdentifiers.Pattern.Id);
@@ -86,7 +81,7 @@ namespace UiaAtkBridge
 				states.RemoveState (Atk.StateType.Showing);
 			}
 
-			if ((!comboBoxStructure.Value) &&
+			if (!(Parent is ComboBoxOptions) &&
 			    (Parent.RefStateSet ().ContainsState (Atk.StateType.Visible)) ||
 			     (Parent.Parent is ComboBoxDropDown) && (Parent.Parent.RefStateSet ().ContainsState (Atk.StateType.Visible))) {
 				states.AddState (Atk.StateType.Visible);
@@ -105,7 +100,13 @@ namespace UiaAtkBridge
 		private void OnChildrenChanged () 
 		{
 			IRawElementProviderFragment child = ((IRawElementProviderFragment)Provider).Navigate (NavigateDirection.FirstChild);
-			Role = (child != null || comboBoxStructure.Value) ? Atk.Role.Menu : Atk.Role.MenuItem;
+			
+			if ((Parent is ComboBoxOptions) && ((ComboBox)Parent.Parent).IsSimple ())
+				Role = Atk.Role.TableCell;
+			else if (child != null)
+				Role = Atk.Role.Menu;
+			else
+				Role = Atk.Role.MenuItem;
 		}
 		
 		protected override void OnChildrenChanged (uint change_index, IntPtr changed_child) 
@@ -117,27 +118,10 @@ namespace UiaAtkBridge
 			get { return Atk.Layer.Popup; }
 		}
 
-		protected void Deselect ()
+		internal void Deselect ()
 		{
 			selected = false;
 			NotifyStateChange (Atk.StateType.Selected, false);
-		}
-
-		protected void RecursiveDeselect (MenuItem keepSelected)
-		{ 
-			lock (syncRoot) {
-				foreach (Atk.Object child in children) {
-					MenuItem item = child as MenuItem;
-					if (item == null || item == keepSelected) 
-						continue;
-					item.Deselect ();
-				}
-			}
-
-			if (Parent is MenuItem)
-				((MenuItem)Parent).RecursiveDeselect (keepSelected);
-			else if (Parent is ComboBox)
-				((ComboBox)Parent).RaiseSelectionChanged (keepSelected.Name);
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
@@ -154,8 +138,9 @@ namespace UiaAtkBridge
 			} else if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
 				selected = true;
 				NotifyStateChange (Atk.StateType.Selected, selected);
-				if (Parent is MenuItem)
-					((MenuItem)Parent).RecursiveDeselect (this);
+				if ((Parent is MenuItem) || (Parent is ComboBoxOptions))
+					//FIXME: when decoupling ToolStripMenuItem from ComboBoxOptions, change this assumption as well:
+					((ComboBoxOptions)Parent).RecursiveDeselect (this);
 			} else {
 				Console.WriteLine ("WARNING: RaiseAutomationEvent({0},...) not handled yet", eventId.ProgrammaticName);
 				base.RaiseAutomationEvent (eventId, e);
@@ -173,52 +158,6 @@ namespace UiaAtkBridge
 			} else {
 				base.RaiseAutomationPropertyChangedEvent (e);
 			}
-		}
-		
-		public int SelectionCount {
-			get { return 0; }
-		}
-		
-		public bool AddSelection (int i)
-		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
-			return false;
-		}
-
-		public bool ClearSelection ()
-		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
-			return false;
-		}
-
-		public Atk.Object RefSelection (int i)
-		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (RefSelection)");
-			return null;
-		}
-
-		public bool IsChildSelected (int i)
-		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (IsChildSelected)");
-			//TODO: Atk.Selection
-			return false;
-		}
-
-		public bool RemoveSelection (int i)
-		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (RemoveSelection)");
-			return false;
-		}
-
-		public bool SelectAllSelection ()
-		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (SelectAllSelection)");
-			return false;
-		}
-		
-		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
-		{
-			//TODO
 		}
 
 		#region Action implementation 
@@ -285,102 +224,6 @@ namespace UiaAtkBridge
 		
 		#endregion 
 
-		#region TextImplementor implementation 
-		
-		public string GetText (int startOffset, int endOffset)
-		{
-			return textExpert.GetText (startOffset, endOffset);
-		}
-		
-		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
-		{
-			return textExpert.GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
-		}
-		
-		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
-		{
-			return textExpert.GetTextAtOffset (offset, boundaryType, out startOffset, out endOffset);
-		}
-		
-		public char GetCharacterAtOffset (int offset)
-		{
-			return textExpert.GetCharacterAtOffset (offset);
-		}
-		
-		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
-		{
-			return textExpert.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
-		}
-		
-		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
-		{
-			return textExpert.GetRunAttributes (offset, out startOffset, out endOffset);
-		}
-		
-		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
-		{
-			return textExpert.GetSelection (selectionNum, out startOffset, out endOffset);
-		}
-		
-		public bool AddSelection (int startOffset, int endOffset)
-		{
-			return false;
-		}
-		
-		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
-		{
-			return false;
-		}
-		
-		public bool SetCaretOffset (int offset)
-		{
-			return false;
-		}
-		
-		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
-		{
-			textExpert.GetRangeExtents (startOffset, endOffset, coordType, out rect);
-		}
-		
-		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		public int CaretOffset {
-			get { return 0; }
-		}
-		
-		public GLib.SList DefaultAttributes {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-		
-		public int CharacterCount {
-			get { return textExpert.Length; }
-		}
-		
-		public int NSelections {
-			get { return -1; }
-		}
-		
-		#endregion
-
-		internal void RaiseExpandedCollapsed () {
-			NotifyStateChange (Atk.StateType.Showing);
-			NotifyStateChange (Atk.StateType.Visible);
-		}
 		
 	}
 }

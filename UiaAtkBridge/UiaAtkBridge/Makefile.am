@@ -50,7 +50,6 @@ FILES =  \
 	CheckBoxButton.cs \
 	ComboBox.cs \
 	ComboBoxDropDown.cs \
-	ComboBoxItem.cs \
 	ComboBoxTable.cs \
 	ComponentAdapter.cs \
 	ComponentImplementorHelper.cs \

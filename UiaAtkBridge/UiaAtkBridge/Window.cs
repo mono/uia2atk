@@ -38,6 +38,8 @@ namespace UiaAtkBridge
 			rootProvider = (IRawElementProviderFragmentRoot) provider;
 			if (rootProvider != null) {
 				Name = (string) rootProvider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+
+				//FIXME: change this not to use Navigation when we fix the FIXME in Adapter ctor.
 				IRawElementProviderFragment rootOfRootProvider 
 					= (IRawElementProviderFragment) rootProvider.Navigate (NavigateDirection.Parent);
 				//NavigateDirection.Parent in IRawElementProviderFragmentRoot-based provider 

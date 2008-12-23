@@ -96,6 +96,11 @@ namespace UiaAtkBridge
 		{
 			return provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id) == null;
 		}
+
+		internal bool IsSimple ()
+		{
+			return IsSimple (Provider);
+		}
 		
 		protected override Atk.StateSet OnRefStateSet ()
 		{

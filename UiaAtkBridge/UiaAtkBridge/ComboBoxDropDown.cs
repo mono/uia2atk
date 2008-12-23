@@ -39,8 +39,8 @@ namespace UiaAtkBridge
 		
 		private IRawElementProviderFragmentRoot 	provider;
 		private IExpandCollapseProvider				expandColapseProvider;
-		private MenuItem InnerMenu {
-			get { return (MenuItem)RefAccessibleChild (0); }
+		private ComboBoxOptions InnerMenu {
+			get { return (ComboBoxOptions)RefAccessibleChild (0); }
 		}
 		
 		public ComboBoxDropDown (IRawElementProviderSimple provider) : base (provider)

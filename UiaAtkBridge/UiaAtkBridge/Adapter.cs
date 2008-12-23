@@ -36,7 +36,8 @@ namespace UiaAtkBridge
 #region Constructors
 
 		//FIXME: consider to add a new param here: Adapter parent; in order to have the parent always accessible, and
-		//       prevent workarounds such as using provider navigation (like in the UiaAtkBridge.Window case)
+		//       prevent workarounds such as using provider navigation (like in the UiaAtkBridge.Window or 
+		//       UiaAtkBridge.ComboBox cases)
 		public Adapter (IRawElementProviderSimple provider)
 		{
 			Provider = provider;
