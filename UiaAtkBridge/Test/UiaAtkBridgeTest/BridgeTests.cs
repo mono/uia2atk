@@ -242,7 +242,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (2, accessible.NAccessibleChildren, "numChildren; children roles:" + childrenRoles (accessible));
 
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);
-			CheckComboBoxMenuChild (menuChild, names);
+			CheckComboBoxMenuChild (menuChild, names, true, false);
 			//FIXME: maybe we need to test here like we would test a treeview
 		}
 

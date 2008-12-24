@@ -1,3 +1,7 @@
+2008-12-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs: Fix some ComboBoxSimple tests.
+
 2008-12-22  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: Negative interface testing (this depends on gtk-sharp

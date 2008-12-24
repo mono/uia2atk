@@ -257,7 +257,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (Atk.Role.Window, newWindow.Role, "new window role should be Atk.Role.Window");
 				Assert.AreEqual (1, newWindow.NAccessibleChildren, "the window should contain a child");
 
-				CheckComboBoxMenuChild (newWindow.RefAccessibleChild (0), names, false);
+				CheckComboBoxMenuChild (newWindow.RefAccessibleChild (0), names, false, false);
 
 				Atk.Object menu = accessible.RefAccessibleChild (0);
 				Assert.AreEqual (menu.Role, Atk.Role.Menu, "testing the menu states of a combobox");
@@ -658,16 +658,19 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (-1, ib, "height of the image must be int.MinValue; obtained " + ib);
 		}
 
-		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items)
+		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items, bool simpleLayout)
 		{
-			CheckComboBoxMenuChild (menuChild, items, true);
+			CheckComboBoxMenuChild (menuChild, items, simpleLayout, true);
 		}
 		
-		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items, bool checkStates)
+		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items, bool simpleLayout, bool checkStates)
 		{
 			Assert.IsNotNull (menuChild, "ComboBox child#0 should not be null");
 			Assert.IsNull (menuChild.Name, "the ComboBox menu should not have a name");
-			Assert.AreEqual (menuChild.Role, Atk.Role.Menu, "ComboBox child#0 should be a menu");
+			if (simpleLayout)
+				Assert.AreEqual (menuChild.Role, Atk.Role.TreeTable, "ComboBox child#0 should be a table");
+			else
+				Assert.AreEqual (menuChild.Role, Atk.Role.Menu, "ComboBox child#0 should be a menu");
 
 			Atk.Action action = CastToAtkInterface <Atk.Action> (menuChild);
 			Assert.IsNull (action, "the Menu child of a combobox should not implement Atk.Action");
@@ -676,7 +679,11 @@ namespace UiaAtkBridgeTest
 			for (int i = 0; i < items.Length; i++) {
 				Atk.Object menuItemChild = menuChild.RefAccessibleChild (i);
 				Assert.IsNotNull (menuItemChild, "ComboBox child#0 child#0 should not be null");
-				Assert.AreEqual (menuItemChild.Role, Atk.Role.MenuItem, "ComboBox child#0 child#0 should be a menuItem");
+				if (simpleLayout)
+					Assert.AreEqual (menuItemChild.Role, Atk.Role.TableCell, "ComboBox child#0 child#0 should be a tableCell");
+				else
+					Assert.AreEqual (menuItemChild.Role, Atk.Role.MenuItem, "ComboBox child#0 child#0 should be a menuItem");
+
 				Assert.AreEqual (menuItemChild.Name, items [i], "ComboBox menuitem names should be the same as the items");
 				Assert.AreEqual (0, menuItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
 				Assert.IsNull (CastToAtkInterface <Atk.Selection> (menuItemChild), "a comboboxitem should not implement Atk.Selection");

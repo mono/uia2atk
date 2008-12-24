@@ -641,7 +641,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (2, accessible.NAccessibleChildren, "numChildren; children roles:" + childrenRoles (accessible));
 			
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);
-			CheckComboBoxMenuChild (menuChild, names);
+			CheckComboBoxMenuChild (menuChild, names, false);
 
 			Atk.Object entryChild = accessible.RefAccessibleChild (1);
 			Assert.IsNotNull (entryChild, "ComboBox child#1 should not be null");
@@ -695,7 +695,7 @@ namespace UiaAtkBridgeTest
 			PropertyRole (type, accessible);
 
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);
-			CheckComboBoxMenuChild (menuChild, names);
+			CheckComboBoxMenuChild (menuChild, names, false);
 			
 			Atk.Object secondComboBoxItem = accessible.RefAccessibleChild (0).RefAccessibleChild (1);
 			
