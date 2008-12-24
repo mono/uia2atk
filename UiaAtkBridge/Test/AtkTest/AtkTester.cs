@@ -389,10 +389,15 @@ namespace UiaAtkBridgeTest
 				accessibleName = accessible.Name;
 			
 			Assert.AreEqual (accessibleName, accessible.Name, "AtkObj Name");
+
+			bool clearSelection = true;
 			if (type == BasicWidgetType.TabControl)
-				Assert.IsFalse (implementor.ClearSelection (), "ClearSelection");
-			else {
-				Assert.IsTrue (implementor.ClearSelection (), "ClearSelection");
+				clearSelection = false;
+			if (Misc.IsComboBox (type) || type == BasicWidgetType.ComboBoxMenu)
+				clearSelection = AllowsEmptyingSelectionOnComboBoxes;
+			
+			Assert.AreEqual (clearSelection, implementor.ClearSelection (), "ClearSelection #1, expected: " + clearSelection);
+			if (type != BasicWidgetType.TabControl) {
 				for (int i = 0; i < names.Length; i++)
 					Assert.IsFalse (implementor.IsChildSelected (i), "isChildSelected(" + i + ")");
 				Assert.AreEqual (0, implementor.SelectionCount, "SelectionCount == 0");
@@ -518,7 +523,7 @@ namespace UiaAtkBridgeTest
 			Atk.Object currentSel = null;
 			
 			if (type != BasicWidgetType.TabControl) {
-				bool clearSelection = true;
+				clearSelection = true;
 				if (type == BasicWidgetType.ComboBoxDropDownEntry || type == BasicWidgetType.ComboBoxDropDownList)
 					clearSelection = AllowsEmptyingSelectionOnComboBoxes;
 				else if (type == BasicWidgetType.DomainUpDown)
