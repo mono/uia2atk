@@ -1,5 +1,9 @@
 2008-12-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Added tests for bug#456341.
+
+2008-12-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs:
 	* AtkTester.cs: Added unit tests that cover BNC#457514.
 

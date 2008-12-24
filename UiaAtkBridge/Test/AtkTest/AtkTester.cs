@@ -359,6 +359,17 @@ namespace UiaAtkBridgeTest
 
 			
 		}
+
+		private void CheckChildrenSelection (Atk.Object accessible, int theSelected)
+		{
+			for (int i = 0; i < accessible.NAccessibleChildren; i++) {
+				Assert.IsTrue (
+				  accessible.RefAccessibleChild (i).RefStateSet ().ContainsState (Atk.StateType.Selected)
+				  || (i != theSelected),
+				  String.Format ("after AddSelection({0}), child({1}) should be have correct Selected state", 
+				    theSelected, i));
+			}
+		}
 		
 		protected void InterfaceSelection (Atk.Selection implementor, string [] names, Atk.Object accessible, BasicWidgetType type)
 		{
@@ -389,6 +400,7 @@ namespace UiaAtkBridgeTest
 			
 			for (int i = 0; i < names.Length; i++) {
 				Assert.IsTrue (implementor.AddSelection (i), "AddSelection(" + i + ")");
+				CheckChildrenSelection (accessible, i);
 				
 				string accName = names [i];
 				if (type == BasicWidgetType.ParentMenu)
