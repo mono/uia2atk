@@ -40,23 +40,23 @@ public partial class MainWindow: Gtk.Window
 		
 		string uiaQaPath = UiaAtkBridgeTest.Misc.LookForParentDir ("*.gif");
 		Gtk.Image img1 = new Gtk.Image ();
-		img1.FromFile = System.IO.Path.Combine (uiaQaPath, "opensuse60x38.gif");
+		img1.File = System.IO.Path.Combine (uiaQaPath, "opensuse60x38.gif");
 		img1.Show ();
 		this.btnWithImg.Image = img1;
 		
 		Gtk.Image img2 = new Gtk.Image ();
-		img2.FromFile = System.IO.Path.Combine (uiaQaPath, "soccerball.gif");
+		img2.File = System.IO.Path.Combine (uiaQaPath, "soccerball.gif");
 		img2.Show ();
 		this.checkbutton1.Image = img2;
 
 		Gtk.Image img3 = new Gtk.Image ();
-		img3.FromFile = System.IO.Path.Combine (uiaQaPath, "apple-red.png");
+		img3.File = System.IO.Path.Combine (uiaQaPath, "apple-red.png");
 		img3.Show ();
 		this.radTest2.Image = img3;
 
-		this.imgTest1.FromFile = System.IO.Path.Combine (uiaQaPath, "goalie.gif");
+		this.imgTest1.File = System.IO.Path.Combine (uiaQaPath, "goalie.gif");
 
-		this.imgTest2.FromFile = System.IO.Path.Combine (uiaQaPath, "apple-red.png");
+		this.imgTest2.File = System.IO.Path.Combine (uiaQaPath, "apple-red.png");
 
 		this.maskedEntry.Visibility = false;
 
@@ -76,6 +76,11 @@ public partial class MainWindow: Gtk.Window
 		this.btnTest1.UseUnderline = true;
 
 		this.WindowPosition = WindowPosition.CenterAlways;
+
+		Gtk.ToolItem item = new Gtk.ToolItem ();
+		item.Add (new Gtk.Entry ("TEST TEXT"));
+		this.toolbar1.Insert (item, 3);
+		this.toolbar1.ShowAll ();
 	}
 	
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
