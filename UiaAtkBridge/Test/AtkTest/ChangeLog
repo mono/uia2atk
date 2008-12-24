@@ -1,5 +1,12 @@
 2008-12-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs: Add FIXME.
+
+	* AtkTester.cs:
+	* BasicWidgetType.cs: Cosmetic.
+
+2008-12-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs:
 	* AtkTester.cs:
 	* BasicWidgetType.cs: Add more tests for bug#456341, since the ones I

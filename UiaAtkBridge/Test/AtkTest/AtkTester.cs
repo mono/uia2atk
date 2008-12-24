@@ -560,15 +560,14 @@ namespace UiaAtkBridgeTest
 			    type != BasicWidgetType.DomainUpDown &&
 			    type != BasicWidgetType.ComboBoxDropDownEntry &&
 			    type != BasicWidgetType.ComboBoxDropDownList &&
-				type != BasicWidgetType.ComboBoxMenu) //see FIXME above
+			    type != BasicWidgetType.ComboBoxMenu) //see FIXME above
 			{
 				Assert.IsTrue (implementor.RemoveSelection (0), "RemoveSelection");
 				Assert.IsNull (implementor.RefSelection (0), "RefSel after RemoveSel");
 			}
 
 
-			if (type != BasicWidgetType.ComboBoxDropDownEntry
-			    && type != BasicWidgetType.ComboBoxDropDownList) {
+			if (!Misc.IsComboBox (type)) {
 				implementor.ClearSelection ();
 
 				//In List

@@ -103,8 +103,8 @@ namespace UiaAtkBridgeTest
 
 		internal static bool IsComboBox (BasicWidgetType type) {
 			return type == BasicWidgetType.ComboBoxDropDownList ||
-				   type == BasicWidgetType.ComboBoxDropDownEntry ||
-				   type == BasicWidgetType.ComboBoxSimple;
+			       type == BasicWidgetType.ComboBoxDropDownEntry ||
+			       type == BasicWidgetType.ComboBoxSimple;
 		}
 
 		public static string LookForParentDir (string pattern) {

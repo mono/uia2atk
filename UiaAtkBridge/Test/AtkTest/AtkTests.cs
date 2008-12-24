@@ -851,7 +851,7 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Resizable,
 			  Atk.StateType.Showing,
-			  Atk.StateType.Visible);
+			  Atk.StateType.Visible); //FIXME: figure out why the ACTIVE state sometimes appears and sometimes not
 		}
 
 		[Test]
