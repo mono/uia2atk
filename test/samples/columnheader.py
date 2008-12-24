@@ -1,8 +1,8 @@
 #!/usr/bin/env ipy
 
 ##############################################################################
-# Written by:  Ray Wang <rawang@novell.com>
-# Date:        06/24/2008
+# Written by:  Calen Chen <cachen@novell.com>
+# Date:        12/24/2008
 # Description: the sample for winforms control:
 #              ColumnHeader
 ##############################################################################
