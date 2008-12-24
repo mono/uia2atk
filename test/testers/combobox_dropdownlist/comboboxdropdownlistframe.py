@@ -10,6 +10,7 @@ import sys
 import os
 import actions
 import states
+import pyatspi
 
 from strongwind import *
 from combobox_dropdownlist import *
@@ -23,38 +24,33 @@ class ComboBoxDropDownListFrame(accessibles.Frame):
     LABEL1 = "You select "
 
     def __init__(self, accessible):
+        pass
         super(ComboBoxDropDownListFrame, self).__init__(accessible)
         self.label1 = self.findLabel(self.LABEL1)
         self.combobox = self.findComboBox(None)
         self.menu = self.findMenu("", checkShowing=False)
+        self.vscrollbar = None
 
         self.menu_items = {}
+        # XXX: This causes bug 462447
         for i in range(10):
             self.menu_items[i] = self.findMenuItem(str(i), checkShowing=False)
-
-    #give 'click' action
-    def click(self,accessible):
-        accessible.click()
-
-    #give 'press' action
-    def press(self,accessible):
-        accessible.press()
+        self.menu_items[0] = self.findMenuItem("0", checkShowing=False) 
 
     #check the label after click listitem
-    def assertLabel(self, itemname):
-        procedurelogger.expectedResult('item "%s" is %s' % (itemname, 'select'))
-
-        def resultMatches():
-            return self.findLabel("You select %s" % itemname)
-	assert retryUntilTrue(resultMatches)
+    def assertLabel(self, selected_item):
+        expected_text = "You select %s" % selected_item
+        procedurelogger.expectedResult('label1 reads: %s' % expected_text)
+        assert self.label1.text == expected_text
 
     #assert Text implementation for MenuItem
     def assertItemText(self, textValue=None):
         procedurelogger.action('check MenuItem\'s Text Value')
 
-        for textValue in range(10):
-            procedurelogger.expectedResult('item "%s"\'s Text is %s' % (self.menu_item[textValue],textValue))
-            assert self.menu_item[textValue].text == str(textValue)
+        for i in range(10):
+            procedurelogger.expectedResult('Menu item %s\'s text is "%s"' % \
+                                                        (self.menu_items[i],i))
+            assert self.menu_items[i].text == str(i)
 
     #assert Text value after do click action
     def assertText(self, accessible, value):
@@ -63,8 +59,8 @@ class ComboBoxDropDownListFrame(accessibles.Frame):
 
     #assert Selection implementation for Menu
     def assertSelectionChild(self, accessible, childIndex):
-        procedurelogger.action('selecte childIndex %s in "%s"' % (childIndex, accessible))
-
+        procedurelogger.action('select childIndex %s in "%s"' % \
+                                                      (childIndex, accessible))
         accessible.selectChild(childIndex)
 
     def assertClearSelection(self, accessible):
@@ -72,6 +68,40 @@ class ComboBoxDropDownListFrame(accessibles.Frame):
 
         accessible.clearSelection()
 
+    def scrollToBottom(self):
+        self.vscrollbar = self.app.findScrollBar("")
+        # this should be a vertical scroll bar
+        assert self.vscrollbar.vertical, "The scroll bar should be vertical"
+        procedurelogger.action('Scroll to the bottom of the window')
+
+        maxVal = self.vscrollbar._accessible.queryValue().maximumValue
+
+        procedurelogger.expectedResult(" ".join(["Scroll bar scrolls to the",
+                                                 "bottom of the window and",
+                                                 "the scroll bar value is %s" \
+                                                                    % maxVal]))
+        self.vscrollbar.value = maxVal
+        assert self.vscrollbar.value == maxVal
+
+    def scrollToTop(self):
+        self.vscrollbar = self.app.findScrollBar("")
+        # this should be a vertical scroll bar
+        assert self.vscrollbar.vertical, "The scroll bar should be vertical"
+        procedurelogger.action('Scroll to the top of the window')
+
+        minVal = self.vscrollbar._accessible.queryValue().minimumValue
+
+        procedurelogger.expectedResult(" ".join(["Scroll bar scrolls to the",
+                                                 "top of the window and",
+                                                 "the scroll bar value is %s" \
+                                                                    % minVal]))
+        self.vscrollbar.value = minVal
+        assert self.vscrollbar.value == minVal
+
+    def findVerticalScrollBar(self):
+        self.vscrollbar = self.app.findFrame("ComboBox control")
+        # this should be a vertical scroll bar
+        assert self.vscrollbar.vertical, "The scroll bar should be vertical"
     
     #close application main window after running test
     def quit(self):

@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
 ##############################################################################
-# Written by:  Cachen Chen <cachen@novell.com>
+# Written by:  Cachen Chen <cachen@novell.com> 
+#              Brian G. Merrell <bgmerrell@novell.com>
 # Date:        11/10/2008
 # Description: Test accessibility of combobox_dropdownlist widget 
 #              Use the comboboxdropdownlistframe.py wrapper script
@@ -16,6 +17,7 @@ Test accessibility of combobox_dropdownlist widget
 # imports
 import sys
 import os
+import time
 
 from strongwind import *
 from combobox_dropdownlist import *
@@ -71,55 +73,88 @@ statesCheck(cbddlFrame.menu, "Menu")
 # the first menu items should now be showing (default)
 statesCheck(cbddlFrame.menu_items[0], "MenuItem")
 statesCheck(cbddlFrame.menu_items[1], "MenuItem")
-
-sys.exit(33)
+# TODO: is there a way to determine exactly how many menu items should be
+# showing?
 
 #check menu item's text implemented
 cbddlFrame.assertItemText()
 
-#mouse click menu item to change label's text
-cbddlFrame.press(cbddlFrame.combobox)
-cbddlFrame.menu_item[1].mouseClick()
+#mouse click menu item to change label's text (the combo box is already
+#expanded)
+cbddlFrame.menu_items[1].mouseClick()
 sleep(config.SHORT_DELAY)
 cbddlFrame.assertLabel('1')
 
-cbddlFrame.press(cbddlFrame.combobox)
-cbddlFrame.menu_item[9].mouseClick()
+# expand the combobox again, click a different item, and check the label
+cbddlFrame.combobox.mouseClick()
 sleep(config.SHORT_DELAY)
-cbddlFrame.assertLabel('9')
+cbddlFrame.menu_items[3].mouseClick()
+sleep(config.SHORT_DELAY)
+cbddlFrame.assertLabel('3')
 
-#do click action to select menu_item 0 but not change the states(the same as Gtk),
-#also update text value
+# now use press and click atspi actions isntead of mouseClick
+cbddlFrame.combobox.press()
+sleep(config.SHORT_DELAY)
+cbddlFrame.menu_items[4].click()
+sleep(config.SHORT_DELAY)
+cbddlFrame.assertLabel('4')
+
+# do click action to select menu_item 0 but not change the states
+# (the same as Gtk), also update text value
 cbddlFrame.click(cbddlFrame.menu_item[0])
 sleep(config.SHORT_DELAY)
 cbddlFrame.assertText(cbddlFrame.textbox, 0)
 
 statesCheck(cbddlFrame.menu_item[0], "MenuItem")
 
-#check list selection implementation
-#select item2 to rise focused and selected states
+# scroll to the bottom
+# XXX: fails due to bug 462447
+cbddlFrame.scrollToTop()
+
+# assert that menu item 1 is showing
+assert cbddlFrame.menu_items[1].showing
+
+# scroll to the bottom
+cbddlFrame.scrollToBottom()
+
+# assert that menu item 9 is showing
+assert cbddlFrame.menu_items[9].showing
+
+# click 9
+cbddlFrame.menu_items[9].click()
+sleep(config.SHORT_DELAY)
+cbddlFrame.assertLabel('9')
+
+# check list selection implementation
+# select item2 to rise focused and selected states
 cbddlFrame.assertSelectionChild(cbddlFrame.menu, 2)
 sleep(config.SHORT_DELAY)
-statesCheck(cbddlFrame.menu_item[2], "MenuItem", add_states=["focused", "selected"])
-#select item5 to rise focused and selected states
+statesCheck(cbddlFrame.menu_item[2],
+            "MenuItem",
+            add_states=["focused", "selected"])
+
+# select item5 to rise focused and selected states
 cbddlFrame.assertSelectionChild(cbddlFrame.menu, 5)
 sleep(config.SHORT_DELAY)
-statesCheck(cbddlFrame.menu_item[5], "MenuItem", add_states=["focused", "selected"])
-#item2 get rid of focused and selected states
+statesCheck(cbddlFrame.menu_item[5],
+            "MenuItem",
+            add_states=["focused", "selected"])
+
+# item2 get rid of focused and selected states
 statesCheck(cbddlFrame.menu_item[2], "MenuItem")
 
-#clear selection
+# clear selection
 cbddlFrame.assertClearSelection(cbddlFrame.ComboBox)
 sleep(config.SHORT_DELAY)
 statesCheck(cbddlFrame.menu_item[5], "MenuItem")
 
-#check press action of combobox to rise a window. I am not sure if our SWF combobox
-#would be implemented like GTK, if not, I will delete this test
+# check press action of combobox to rise a window. I am not sure if our SWF
+# combobox would be implemented like GTK, if not, I will delete this test
 cbddlFrame.press(cbddlFrame.combobox)
 sleep(config.SHORT_DELAY)
 cbddlFrame.app.findWindow(None)
 
-#close application frame window
+# close application frame window
 cbddlFrame.quit()
-
+'''
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
