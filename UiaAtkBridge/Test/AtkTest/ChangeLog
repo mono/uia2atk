@@ -1,5 +1,9 @@
 2008-12-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Prevent some dumb failing tests in the bridge.
+
+2008-12-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs: Add FIXME.
 
 	* AtkTester.cs:
