@@ -1,3 +1,10 @@
+2008-12-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs:
+	* BasicWidgetType.cs: Add more tests for bug#456341, since the ones I
+	added yesterday seem to be already passing.
+
 2008-12-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Added tests for bug#456341.

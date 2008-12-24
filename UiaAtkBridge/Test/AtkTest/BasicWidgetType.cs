@@ -40,6 +40,7 @@ namespace UiaAtkBridgeTest
 		ComboBoxDropDownList,
 		ComboBoxDropDownEntry,
 		ComboBoxItem, //this is not a widget, but part of a widget!
+		ComboBoxMenu, //this is not a widget, but part of a widget!
 		RadioButton,
 		StatusBar,
 		TextBoxEntry,       // textbox single-line (gtk: entry)
@@ -98,6 +99,12 @@ namespace UiaAtkBridgeTest
 			    (type == BasicWidgetType.TextBoxView))
 				return false;
 			return true;
+		}
+
+		internal static bool IsComboBox (BasicWidgetType type) {
+			return type == BasicWidgetType.ComboBoxDropDownList ||
+				   type == BasicWidgetType.ComboBoxDropDownEntry ||
+				   type == BasicWidgetType.ComboBoxSimple;
 		}
 
 		public static string LookForParentDir (string pattern) {

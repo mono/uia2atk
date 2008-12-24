@@ -257,7 +257,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (Atk.Role.Window, newWindow.Role, "new window role should be Atk.Role.Window");
 				Assert.AreEqual (1, newWindow.NAccessibleChildren, "the window should contain a child");
 
-				CheckComboBoxMenuChild (newWindow.RefAccessibleChild (0), names);
+				CheckComboBoxMenuChild (newWindow.RefAccessibleChild (0), names, false);
 
 				Atk.Object menu = accessible.RefAccessibleChild (0);
 				Assert.AreEqual (menu.Role, Atk.Role.Menu, "testing the menu states of a combobox");
@@ -394,7 +394,7 @@ namespace UiaAtkBridgeTest
 			else {
 				Assert.IsTrue (implementor.ClearSelection (), "ClearSelection");
 				for (int i = 0; i < names.Length; i++)
-						Assert.IsFalse (implementor.IsChildSelected (i), "isChildSelected(" + i + ")");
+					Assert.IsFalse (implementor.IsChildSelected (i), "isChildSelected(" + i + ")");
 				Assert.AreEqual (0, implementor.SelectionCount, "SelectionCount == 0");
 			}
 			
@@ -404,10 +404,10 @@ namespace UiaAtkBridgeTest
 				
 				string accName = names [i];
 				if (type == BasicWidgetType.ParentMenu)
-					accName = names[0];
+					accName = names [0];
 				else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox)
 					accName = String.Empty;
-				else if (type == BasicWidgetType.TabControl)
+				else if (type == BasicWidgetType.TabControl || type == BasicWidgetType.ComboBoxMenu)
 					accName = null;
 				else if (type == BasicWidgetType.ListView)
 					accName = accessible.Name;
@@ -416,7 +416,13 @@ namespace UiaAtkBridgeTest
 				Atk.Object refSelObj = implementor.RefSelection (0);
 				if (type != BasicWidgetType.ParentMenu) {
 					Assert.IsNotNull (refSelObj, "refSel should not be null");
-					if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl && type != BasicWidgetType.ListView & type != BasicWidgetType.DomainUpDown)
+					if (type == BasicWidgetType.ComboBoxMenu)
+						Assert.AreEqual (names [i], refSelObj.Name, "AtkObj NameRefSel#" + i + "kK" + names[i]);
+					else if (type != BasicWidgetType.ListBox && 
+					         type != BasicWidgetType.CheckedListBox && 
+					         type != BasicWidgetType.TabControl && 
+					         type != BasicWidgetType.ListView && 
+					         type != BasicWidgetType.DomainUpDown)
 						Assert.AreEqual (accessible.Name, refSelObj.Name, "AtkObj NameRefSel#" + i);
 					Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
 					Assert.IsTrue (implementor.IsChildSelected (i), "childSelected(" + i + ")");
@@ -451,20 +457,26 @@ namespace UiaAtkBridgeTest
 				}
 				if (i == 1 && (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox || type == BasicWidgetType.DomainUpDown))
 					Assert.IsFalse (accessible.RefAccessibleChild(0).RefStateSet().ContainsState (Atk.StateType.Selected), "Unselected child should not have State.Selected");
+				
 				int refSelPos = i;
 				if (refSelPos == 0)
 					refSelPos = -1;
 				Assert.IsNull (implementor.RefSelection (refSelPos), "RefSelection OOR#-" + i);
 
-				bool removeSelectionSuccess = true;
-				if (type == BasicWidgetType.ComboBoxDropDownEntry || type == BasicWidgetType.ComboBoxDropDownList)
-					removeSelectionSuccess = AllowsEmptyingSelectionOnComboBoxes;
-				else if (type == BasicWidgetType.DomainUpDown || type == BasicWidgetType.TabControl)
-					removeSelectionSuccess = false;
-				if (i != names.Length - 1)
-					Assert.AreEqual (implementor.RemoveSelection (i),
-					  removeSelectionSuccess,
-					  "restoring initial situation of a combobox to empty selection");
+				if (type != BasicWidgetType.ComboBoxMenu) { //FIXME: report this on gail, removeSelection returns true/false arbitrarily for this case
+					bool removeSelectionSuccess = true;
+					if (type == BasicWidgetType.ComboBoxDropDownEntry || 
+					    type == BasicWidgetType.ComboBoxDropDownList)
+						removeSelectionSuccess = AllowsEmptyingSelectionOnComboBoxes;
+					else if (type == BasicWidgetType.DomainUpDown || 
+					         type == BasicWidgetType.TabControl)
+						removeSelectionSuccess = false;
+					if (i != names.Length - 1)
+						Assert.AreEqual (implementor.RemoveSelection (i),
+						  removeSelectionSuccess,
+						  String.Format ("restoring initial situation of a combobox to empty selection ({0}), expected: {1}",
+						                 i, removeSelectionSuccess));
+				}
 			}
 
 			Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null");
@@ -483,8 +495,14 @@ namespace UiaAtkBridgeTest
 			} else {
 				Assert.IsFalse (implementor.AddSelection (-1), "AddSelection OOR#1");
 			}
-			//strangely, OOR upper selection returns true for menu and combobox
-			Assert.IsTrue (implementor.AddSelection (names.Length), "AddSelection OOR#2");
+
+			bool success = false;
+			//strangely, OOR upper selection returns true for some widgets -> report to Gail
+			if (type == BasicWidgetType.ParentMenu ||
+			    type == BasicWidgetType.TabControl ||
+			    Misc.IsComboBox (type))
+				success = true;
+			Assert.AreEqual (success, implementor.AddSelection (names.Length), "AddSelection OOR#2");
 			
 			Assert.AreEqual (lastName, accessible.Name, "OOR selections shouldn't affect name");
 
@@ -518,10 +536,16 @@ namespace UiaAtkBridgeTest
 			if (type != BasicWidgetType.ParentMenu) {
 				Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null after AS0");
 
-				if (type != BasicWidgetType.ListBox && type != BasicWidgetType.CheckedListBox && type != BasicWidgetType.TabControl && type != BasicWidgetType.ListView && type != BasicWidgetType.DomainUpDown) {
-					Assert.IsTrue (implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
-					Assert.IsTrue (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
-				}
+				success = true;
+				if (type == BasicWidgetType.ListBox ||
+				    type == BasicWidgetType.CheckedListBox ||
+				    type == BasicWidgetType.TabControl ||
+				    type == BasicWidgetType.ListView ||
+				    type == BasicWidgetType.DomainUpDown ||
+				    type == BasicWidgetType.ComboBoxMenu)
+					success = false;
+				Assert.AreEqual (success, implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
+				Assert.AreEqual (success, implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
 			}
 			else {
 				Assert.IsNull (implementor.RefSelection (0), "RefSel==null after AS0");
@@ -535,7 +559,8 @@ namespace UiaAtkBridgeTest
 			    type != BasicWidgetType.TabControl &&
 			    type != BasicWidgetType.DomainUpDown &&
 			    type != BasicWidgetType.ComboBoxDropDownEntry &&
-			    type != BasicWidgetType.ComboBoxDropDownList)
+			    type != BasicWidgetType.ComboBoxDropDownList &&
+				type != BasicWidgetType.ComboBoxMenu) //see FIXME above
 			{
 				Assert.IsTrue (implementor.RemoveSelection (0), "RemoveSelection");
 				Assert.IsNull (implementor.RefSelection (0), "RefSel after RemoveSel");
@@ -552,7 +577,8 @@ namespace UiaAtkBridgeTest
 				Atk.Component atkComponentCurrentSel = CastToAtkInterface <Atk.Component> (currentSel);
 				atkComponentCurrentSel.GrabFocus ();
 				Atk.StateSet stateSet = currentSel.RefStateSet ();
-				if (type != BasicWidgetType.TabControl)
+				if (type != BasicWidgetType.TabControl && 
+				    type != BasicWidgetType.ComboBoxMenu)
 					Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focused), "Focused in selected item.");
 				Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Selected), "Selected in selected item.");
 			}
@@ -627,8 +653,13 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (-1, ia, "width of the image must be int.MinValue; obtained " + ia);
 			Assert.AreEqual (-1, ib, "height of the image must be int.MinValue; obtained " + ib);
 		}
-		
+
 		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items)
+		{
+			CheckComboBoxMenuChild (menuChild, items, true);
+		}
+		
+		protected void CheckComboBoxMenuChild (Atk.Object menuChild, string [] items, bool checkStates)
 		{
 			Assert.IsNotNull (menuChild, "ComboBox child#0 should not be null");
 			Assert.IsNull (menuChild.Name, "the ComboBox menu should not have a name");
@@ -645,7 +676,18 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (menuItemChild.Name, items [i], "ComboBox menuitem names should be the same as the items");
 				Assert.AreEqual (0, menuItemChild.NAccessibleChildren, "ComboBox menuItem numChildren");
 				Assert.IsNull (CastToAtkInterface <Atk.Selection> (menuItemChild), "a comboboxitem should not implement Atk.Selection");
+
+				if (checkStates)//&& (!simpleLayout) <- enable this as soon as we have this bool param
+					States (menuItemChild,
+				            Atk.StateType.Enabled,
+				            Atk.StateType.Selectable,
+				            Atk.StateType.Sensitive,
+				            Atk.StateType.Visible);
 			}
+
+			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (menuChild);
+			Assert.IsNotNull (atkSelection, "the Menu child of a combobox should implement Atk.Selection");
+			InterfaceSelection (atkSelection, items, menuChild, BasicWidgetType.ComboBoxMenu);
 		}
 		
 		protected void StatesComboBox (Atk.Object accessible)

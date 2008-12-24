@@ -639,6 +639,7 @@ namespace UiaAtkBridgeTest
 			StatesComboBox (accessible);
 
 			Assert.AreEqual (2, accessible.NAccessibleChildren, "numChildren; children roles:" + childrenRoles (accessible));
+			
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);
 			CheckComboBoxMenuChild (menuChild, names);
 
@@ -652,20 +653,7 @@ namespace UiaAtkBridgeTest
 
 			PropertyRole (type, accessible);
 
-			Atk.Object firstComboBoxItem = accessible.RefAccessibleChild (0).RefAccessibleChild (0);
 			Atk.Object secondComboBoxItem = accessible.RefAccessibleChild (0).RefAccessibleChild (1);
-
-			States (firstComboBoxItem,
-			  Atk.StateType.Enabled,
-			  Atk.StateType.Selectable, //yes! even not having Atk.Selection
-			  Atk.StateType.Sensitive,
-			  Atk.StateType.Visible);
-
-			States (secondComboBoxItem,
-			  Atk.StateType.Enabled,
-			  Atk.StateType.Selectable, //yes! even not having Atk.Selection
-			  Atk.StateType.Sensitive,
-			  Atk.StateType.Visible);
 			
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible, names);
@@ -706,26 +694,13 @@ namespace UiaAtkBridgeTest
 			
 			PropertyRole (type, accessible);
 
-			Atk.Object firstComboBoxItem = accessible.RefAccessibleChild (0).RefAccessibleChild (0);
+			Atk.Object menuChild = accessible.RefAccessibleChild (0);
+			CheckComboBoxMenuChild (menuChild, names);
+			
 			Atk.Object secondComboBoxItem = accessible.RefAccessibleChild (0).RefAccessibleChild (1);
-
-			States (firstComboBoxItem,
-			  Atk.StateType.Enabled,
-			  Atk.StateType.Selectable, //yes! even not having Atk.Selection
-			  Atk.StateType.Sensitive,
-			  Atk.StateType.Visible);
-
-			States (secondComboBoxItem,
-			  Atk.StateType.Enabled,
-			  Atk.StateType.Selectable, //yes! even not having Atk.Selection
-			  Atk.StateType.Sensitive,
-			  Atk.StateType.Visible);
 			
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible, names);
-			
-			Atk.Object menuChild = accessible.RefAccessibleChild (0);
-			CheckComboBoxMenuChild (menuChild, names);
 			
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			InterfaceSelection (atkSelection, names, accessible, type);
