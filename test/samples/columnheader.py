@@ -2,92 +2,88 @@
 
 ##############################################################################
 # Written by:  Ray Wang <rawang@novell.com>
-# Date:        07/01/2008
+# Date:        06/24/2008
 # Description: the sample for winforms control:
-#              ListView
 #              ColumnHeader
 ##############################################################################
 
 # The docstring below is used in the generated log file
 """
-Test accessibility of "ColumnHeader" control
+This sample will show "ColumnHeader" control.It can be used for 
+Autotest tools(e.g. Strongwind) to test the behaviors of controls.
 """
 
-# imports
 import clr
-clr.AddReference('System.Windows.Forms')
-from System.Windows.Forms import (
-    Application, DockStyle, Form, ListView, ListViewItem, View, ColumnHeader, 
-    SortOrder, HorizontalAlignment, Label
-)
-from System.IO import DirectoryInfo, FileInfo
 
-class ListViewSample(Form):
-    """ListView control class"""
+clr.AddReference('System.Windows.Forms')
+clr.AddReference('System.Drawing')
+
+from System.Drawing import *
+from System.Windows.Forms import *
+import System
+
+class ColumnHeaderSample(Form):
+    """ColumnHeader control class"""
 
     def __init__(self):
-        """ListViewSample class init function."""
-
-        self.toggle = True
+        """ColumnHeaderSample class init function."""
 
         # setup title
-        self.Text = "ListView control"
-
-        # setup size
-        self.Width = 700
-        self.Height = 250
+        self.Text = "ColumnHeader control"
+        self.Width = 450
+        self.Height = 330
+        self.toggle = True
 
         # setup label
         self.label = Label()
-        self.label.Text = "Click Column header to switch items Ascending and Descending sorting."
-        self.label.Dock = DockStyle.Top 
+        self.label.Text = "Click column header to sort the order for items"
+        self.label.Dock = DockStyle.Top
 
         # setup listview
         self.listview = ListView()
-        self.listview.Height = 250
-        self.listview.Dock = DockStyle.Top
+        # set the view to show details.
         self.listview.View = View.Details
+        # display grid lines.
         self.listview.GridLines = True
-        self.listview.ColumnClick += self.listview_click
-
-        # setup columnheader
-        self.columnheader1 = ColumnHeader()
-        self.columnheader1.Text = "File name"
-        self.columnheader1.TextAlign = HorizontalAlignment.Left
-        self.columnheader1.Width = 200
-
-        self.columnheader2 = ColumnHeader()
-        self.columnheader2.Text = "Location"
-        self.columnheader2.Width = 300
+        # sort the items in the list in ascending order.
+        self.listview.Sorting = SortOrder.Ascending
+        # place widget besides left.
+        self.listview.Dock = DockStyle.Top
+        self.listview.Width = 350
+        self.listview.Height = 260
+        self.listview.ColumnClick += self.on_click
 
         # add conlumns
-        self.listview.Columns.Add(self.columnheader1)
-        self.listview.Columns.Add(self.columnheader2)
+        self.listview.Columns.Add("Column A", 200, HorizontalAlignment.Left)
+        self.listview.Columns.Add("Num", 200, HorizontalAlignment.Left)
 
-        # get files from the location
-        dir_info = DirectoryInfo(".")
-        files = dir_info.GetFiles("*.jpg")
+        # add items
+        listItem = ["Item0", "Item1", "Item2", "Item3", "Item4", "Item5"]
+        num = ["0", "1", "2", "3", "4", "5"]
 
-        # add items in listview
-        if files != None:
-            for file in files:
-                item = ListViewItem(file.Name)
-                item.SubItems.Add(file.FullName)
-                self.listview.Items.Add(item)
+        self.listview.BeginUpdate()
+
+        for count in range(6):
+            self.listItem = ListViewItem(listItem[count])
+            self.listItem.SubItems.Add(num[count])
+            self.listview.Items.Add(self.listItem)
+ 
+        self.listview.EndUpdate()
 
         # add controls
         self.Controls.Add(self.listview)
         self.Controls.Add(self.label)
 
-    def listview_click(self, sender, event):
+
+    def on_click(self, sender, event):
         if self.toggle == True:
             self.listview.Sorting = SortOrder.Descending
             self.toggle = False
         else:
             self.listview.Sorting = SortOrder.Ascending
             self.toggle = True
- 
+
 # run application
-form = ListViewSample()
+form = ColumnHeaderSample()
 Application.EnableVisualStyles()
 Application.Run(form)

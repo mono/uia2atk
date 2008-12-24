@@ -1,3 +1,11 @@
+2008-12-24  Calen Chen <cachen@novell.com>
+
+	* samples/columnheader.py: rewrited items for easily to calculate 
+	which one is in the first row the old example is reading *.jpg files 
+	and their locations as list items that is not stable if we add some 
+	other .jpg files and if we launch the example out from samples path 
+	the frame can't shows list items
+
 2008-12-23  Calen Chen <cachen@novell.com>
 
 	* samples/printpreviewcontrol.py: add Zoom property to show scrollbar
