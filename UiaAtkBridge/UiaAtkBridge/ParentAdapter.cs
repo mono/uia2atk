@@ -102,6 +102,7 @@ namespace UiaAtkBridge
 		internal virtual void RemoveChild (Atk.Object childToRemove)
 		{
 			if (childToRemove == null) {
+				//FIXME: better throw an ArgumentNullException
 				return;
 			}
 
@@ -165,7 +166,7 @@ namespace UiaAtkBridge
 
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs args)
 		{
-			base.RaiseAutomationEvent(eventId, args);
+			base.RaiseAutomationEvent (eventId, args);
 		}
 		
 	}

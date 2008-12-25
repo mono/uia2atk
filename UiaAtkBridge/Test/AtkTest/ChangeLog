@@ -1,5 +1,11 @@
 2008-12-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Last bits of love to make it not so strict for the
+	bridge (null == string.empty and clearselection==true if no
+	selection).
+
+2008-12-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs: Due to ClearSelection not being available in MWF, we call
 	GetAccessible again to mimic its effect. Also, shift Action testing
 	order with Selection in order to prevent the former to interfere with

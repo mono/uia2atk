@@ -43,10 +43,7 @@ namespace UiaAtkBridge
 				throw new ArgumentException ("Provider for ParentMenu should be IRawElementProviderFragment");
 
 			string name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			if (!String.IsNullOrEmpty (name))
-				Name = name;
-
-			textExpert = new TextImplementorHelper (Name, this);
+			textExpert = new TextImplementorHelper (name, this);
 
 			//FIXME: take in account ComboBox style changes at runtime
 			if (ParentIsSimple ())
@@ -63,48 +60,48 @@ namespace UiaAtkBridge
 			return ComboBox.IsSimple (parentProvider);
 		}
 
+		#region SelectionImplementor implementation //FIXME consider merging with SelectionProviderUserHelper
+		
 		public int SelectionCount {
-			get { return 0; }
+			get { return (selectedChild < 0 ? 0 : 1); }
 		}
 		
 		public bool AddSelection (int i)
 		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
-			return false;
+			if ((i < 0) || (i >= NAccessibleChildren))
+				return false;
+			return ((ComboBoxItem)RefAccessibleChild (i)).DoAction (0);
 		}
 
 		public bool ClearSelection ()
 		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem");
-			return false;
+			return (SelectionCount == 0);
 		}
 
 		public Atk.Object RefSelection (int i)
 		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (RefSelection)");
-			return null;
+			if (selectedChild < 0 || i != 0)
+				return null;
+			return RefAccessibleChild (selectedChild);
 		}
 
 		public bool IsChildSelected (int i)
 		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (IsChildSelected)");
-			//TODO: Atk.Selection
-			return false;
+			return selectedChild == i;
 		}
 
 		public bool RemoveSelection (int i)
 		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (RemoveSelection)");
 			return false;
 		}
 
 		public bool SelectAllSelection ()
 		{
-			Console.WriteLine ("WARNING: Selection not implemented for MenuItem (SelectAllSelection)");
 			return false;
 		}
 
-
+		#endregion
+		
 		#region TextImplementor implementation 
 		
 		public string GetText (int startOffset, int endOffset)
@@ -202,13 +199,18 @@ namespace UiaAtkBridge
 			//TODO
 		}
 
+		int selectedChild = -1;
+		
 		internal void RecursiveDeselect (Adapter keepSelected)
 		{
 			lock (syncRoot) {
-				foreach (Atk.Object child in children) {
+				for (int i = 0; i < NAccessibleChildren; i++) {
+					Atk.Object child = RefAccessibleChild (i);
 
-					if (child == null || ((Adapter)child) == keepSelected) 
+					if (child == null || ((Adapter)child) == keepSelected)  {
+						selectedChild = i;
 						continue;
+					}
 					
 					MenuItem itemM = child as MenuItem;
 					ComboBoxItem itemC = child as ComboBoxItem;
@@ -230,6 +232,21 @@ namespace UiaAtkBridge
 		internal void RaiseExpandedCollapsed () {
 			NotifyStateChange (Atk.StateType.Showing);
 			NotifyStateChange (Atk.StateType.Visible);
+		}
+
+		internal override void RemoveChild (Atk.Object childToRemove)
+		{
+			int childIndex = children.IndexOf (childToRemove);
+			if (IsChildSelected (childIndex))
+				((ComboBox)Parent).RaiseSelectionChanged (null);
+			base.RemoveChild (childToRemove);
+		}
+
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			if (e.Property == AutomationElementIdentifiers.NameProperty)
+				return;
+			base.RaiseAutomationPropertyChangedEvent (e);
 		}
 	}
 }

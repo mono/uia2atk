@@ -182,8 +182,13 @@ namespace UiaAtkBridge
 
 		internal void RaiseSelectionChanged (string name)
 		{
-			if (name != null)
-				Name = name;
+			if (name == Name)
+				return;
+			
+			if (name == null)
+				name = String.Empty;
+			
+			Name = name;
 			GLib.Signal.Emit (this, "selection-changed");
 		}
 		

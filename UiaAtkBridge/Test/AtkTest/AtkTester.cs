@@ -385,14 +385,16 @@ namespace UiaAtkBridgeTest
 				accessibleName = String.Empty;
 			else if (type == BasicWidgetType.ListView)
 				accessibleName = accessible.Name;
-			
-			Assert.AreEqual (accessibleName, accessible.Name, "AtkObj Name");
+
+			//we're not so strict about null!="" because we cannot assign Atk.Object.Name = null (we get a critical)
+			Assert.AreEqual ((accessibleName == null ? String.Empty : accessibleName), 
+			                 (accessible.Name == null ? String.Empty : accessible.Name), "AtkObj Name");
 
 			bool clearSelection = true;
 			if (type == BasicWidgetType.TabControl)
 				clearSelection = false;
 			if (Misc.IsComboBox (type) || type == BasicWidgetType.ComboBoxMenu)
-				clearSelection = AllowsEmptyingSelectionOnComboBoxes;
+				clearSelection = AllowsEmptyingSelectionOnComboBoxes || (implementor.SelectionCount == 0);
 			
 			Assert.AreEqual (clearSelection, implementor.ClearSelection (), "ClearSelection #1, expected: " + clearSelection);
 			if (type != BasicWidgetType.TabControl && clearSelection) {

@@ -80,7 +80,7 @@ namespace UiaAtkBridge
 			
 			if (selectedElements.Length == 0)
 				return true;
-			for (int i=0; i < selectedElements.Length; i++) {
+			for (int i = 0; i < selectedElements.Length; i++) {
 				ISelectionItemProvider selectionItemProvider = 
 					(ISelectionItemProvider)selectedElements[i].GetPatternProvider
 						(SelectionItemPatternIdentifiers.Pattern.Id);
@@ -113,7 +113,7 @@ namespace UiaAtkBridge
 				GetSelection ();
 			if (selectedElements.Length == 0 || (i < 0 || i >= selectedElements.Length))
 				return null;
-			return AutomationBridge.GetAdapterForProviderLazy (selectedElements[i]);
+			return AutomationBridge.GetAdapterForProviderLazy (selectedElements [i]);
 		}
 		
 		public bool RemoveSelection (int i)
@@ -135,7 +135,7 @@ namespace UiaAtkBridge
 
 		public bool SelectAllSelection ()
 		{
-			if(!selectionProvider.CanSelectMultiple)
+			if (!selectionProvider.CanSelectMultiple)
 				return false;
 
 			IRawElementProviderFragment child = 
@@ -145,7 +145,7 @@ namespace UiaAtkBridge
 					(ISelectionItemProvider)child.GetPatternProvider
 						(SelectionItemPatternIdentifiers.Pattern.Id);
 				
-				if(selectionItemProvider != null) {
+				if (selectionItemProvider != null) {
 					selectionItemProvider.AddToSelection();
 				} else
 					return false;
