@@ -631,10 +631,7 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible;
 			
 			string [] names = new string[] { "First item", "Second Item", "Last Item" };
-			if (widget != null)
-				accessible = GetAccessible (type, names, widget);
-			else
-				accessible = GetAccessible (type, names);
+			accessible = GetAccessible (type, names, widget);
 			
 			StatesComboBox (accessible);
 
@@ -653,13 +650,18 @@ namespace UiaAtkBridgeTest
 
 			PropertyRole (type, accessible);
 
+			//we get the accessible again because the MWF toolkit doesn't support clearing the selection
+			names = new string [] { "1st item", "Second Item", "Third Item", "Last Item" };
+			accessible = GetAccessible (type, names, widget);
+			Assert.AreEqual (names.Length, accessible.RefAccessibleChild (0).NAccessibleChildren, "number of children changed");
+
 			Atk.Object secondComboBoxItem = accessible.RefAccessibleChild (0).RefAccessibleChild (1);
-			
-			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
-			InterfaceAction (type, atkAction, accessible, names);
 
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			InterfaceSelection (atkSelection, names, accessible, type);
+			
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
+			InterfaceAction (type, atkAction, accessible, names);
 			
 			//check the Action impl of a comboboxitem (menuitem role)
 			atkAction = CastToAtkInterface <Atk.Action> (secondComboBoxItem);
@@ -680,10 +682,7 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible;
 			
 			string[] names = new string [] { "First item", "Second Item", "Last Item" };
-			if (widget != null)
-				accessible = GetAccessible (type, names, widget);
-			else
-				accessible = GetAccessible (type, names);
+			accessible = GetAccessible (type, names, widget);
 			
 			StatesComboBox (accessible);
 
@@ -696,14 +695,19 @@ namespace UiaAtkBridgeTest
 
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);
 			CheckComboBoxMenuChild (menuChild, names, false);
+
+			//we get the accessible again because the MWF toolkit doesn't support clearing the selection
+			names = new string [] { "1st item", "Second Item", "Third Item", "Last Item" };
+			accessible = GetAccessible (type, names, widget);
+			Assert.AreEqual (names.Length, accessible.RefAccessibleChild (0).NAccessibleChildren, "number of children changed");
 			
 			Atk.Object secondComboBoxItem = accessible.RefAccessibleChild (0).RefAccessibleChild (1);
 			
-			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
-			InterfaceAction (type, atkAction, accessible, names);
-			
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			InterfaceSelection (atkSelection, names, accessible, type);
+
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
+			InterfaceAction (type, atkAction, accessible, names);
 
 			//check the Action impl of a comboboxitem (menuitem role)
 			atkAction = CastToAtkInterface <Atk.Action> (secondComboBoxItem);
@@ -847,11 +851,12 @@ namespace UiaAtkBridgeTest
 			Parent (type, accessible);
 
 			States (accessible,
+			  Atk.StateType.Active, //FIXME: figure out why the ACTIVE state sometimes doesn't appear
 			  Atk.StateType.Enabled,
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Resizable,
 			  Atk.StateType.Showing,
-			  Atk.StateType.Visible); //FIXME: figure out why the ACTIVE state sometimes appears and sometimes not
+			  Atk.StateType.Visible); 
 		}
 
 		[Test]

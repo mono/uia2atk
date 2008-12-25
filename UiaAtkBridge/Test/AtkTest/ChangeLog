@@ -1,5 +1,15 @@
 2008-12-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs: Due to ClearSelection not being available in MWF, we call
+	GetAccessible again to mimic its effect. Also, shift Action testing
+	order with Selection in order to prevent the former to interfere with
+	latter. Add an Active state for the Window, as it was failing in
+	GailTest and UiaAtkBridgeTest.
+
+	* AtkTester.cs: Cosmetic.
+
+2008-12-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs: Yet still more love for ClearSelection.
 
 2008-12-24  Andrés G. Aragoneses  <aaragoneses@novell.com>

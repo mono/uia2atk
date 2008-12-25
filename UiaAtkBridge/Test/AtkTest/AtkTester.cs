@@ -331,7 +331,7 @@ namespace UiaAtkBridgeTest
 			
 			string descrip = "Some big ugly description";
 			for (int i = 0; i < validNumberOfActions; i++) {
-				Assert.IsTrue (implementor.SetDescription(i, descrip), "SetDescription");
+				Assert.IsTrue (implementor.SetDescription (i, descrip), "SetDescription");
 				Assert.AreEqual (descrip, implementor.GetDescription (i), "GetDescription");
 				descrip += ".";
 			}
@@ -356,8 +356,6 @@ namespace UiaAtkBridgeTest
 					Assert.IsFalse (implementor.DoAction (i), "DoAction(" + i + ") after disabling");
 				EnableWidget (accessible);
 			}
-
-			
 		}
 
 		private void CheckChildrenSelection (Atk.Object accessible, int theSelected)
