@@ -59,6 +59,7 @@
     <Compile Include="CheckBoxTest.cs" />
     <Compile Include="CheckedListBoxListItem.cs" />
     <Compile Include="ComboBoxTest.cs" />
+    <Compile Include="DataGridTest.cs" />
     <Compile Include="SplitterPanelTest.cs" />
     <Compile Include="SplitContainerTest.cs" />
     <Compile Include="SplitterTest.cs" />

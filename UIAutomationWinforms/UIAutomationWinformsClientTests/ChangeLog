@@ -1,3 +1,24 @@
+2008-12-24  Mario Carrion <mcarrion@novell.com> 
+
+	* DataGridApplication, 
+	  DataGridApplication/BindableReadonlyElement.cs,
+	  DataGridApplication/BindableReadWriteElement.cs,
+	  DataGridApplication/DataGridApplication.csproj,
+	  DataGridApplication/DatagridForm.cs,
+	  DataGridApplication/DatagridForm.Designer.cs,
+	  DataGridApplication/DatagridForm.resx,
+	  DataGridApplication/Program.cs,
+	  DataGridApplication/Properties,
+	  DataGridApplication/Properties/AssemblyInfo.cs,
+	  DataGridApplication/Properties/Resources.Designer.cs,
+	  DataGridApplication/Properties/Resources.resx,
+	  DataGridApplication/Properties/Settings.Designer.cs,
+	  DataGridApplication/Properties/Settings.settings,
+	  DataGridTest.cs: DataGrid test added. New solution called
+	  by DataGridTest to get automation elements.
+	* UIAutomationWinformsClientTests.csproj,
+	  UIAutomationWinformsClientTests.sln: New solution added.
+
 2008-12-05  Neville Gao  <nevillegao@gmail.com>
 
 	* UIAutomationWinformsClientTests.csproj: Updated for added files.

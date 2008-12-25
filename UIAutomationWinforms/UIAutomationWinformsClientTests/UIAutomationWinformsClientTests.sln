@@ -2,6 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIAutomationWinformsClientTests", "UIAutomationWinformsClientTests.csproj", "{3AD80F0F-0B73-4695-AA99-DFDF1DEFC1C6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ABBC586E-3714-4BCA-857A-D1C695A1CB56} = {ABBC586E-3714-4BCA-857A-D1C695A1CB56}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridApplication", "DataGridApplication\DataGridApplication.csproj", "{ABBC586E-3714-4BCA-857A-D1C695A1CB56}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +18,10 @@ Global
 		{3AD80F0F-0B73-4695-AA99-DFDF1DEFC1C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3AD80F0F-0B73-4695-AA99-DFDF1DEFC1C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3AD80F0F-0B73-4695-AA99-DFDF1DEFC1C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABBC586E-3714-4BCA-857A-D1C695A1CB56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABBC586E-3714-4BCA-857A-D1C695A1CB56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABBC586E-3714-4BCA-857A-D1C695A1CB56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABBC586E-3714-4BCA-857A-D1C695A1CB56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
