@@ -1,3 +1,8 @@
+2008-12-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs: Finished tests for BNC#428536.
+
 2008-12-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs:

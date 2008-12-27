@@ -609,16 +609,19 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
 
+			List <string> names = new List <string> ();
+			names.Add (menuName);
+			foreach (MenuLayout submenu in firstSubmenus)
+				names.Add (submenu.Label);
+			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
+			InterfaceSelection (atkSelection, names.ToArray (), accessible, type);
+			
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 
 			menu = new List <MenuLayout> (new MenuLayout [] { new MenuLayout (simpleTestText, firstSubmenus), new MenuLayout ("Help") });
 			accessible = GetAccessible (type, menu);
 			InterfaceText (type, true, accessible);
-			
-			//FIXME:
-			//Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
-			//InterfaceSelection (atkSelection, names, accessible, type);
 		}
 
 		[Test]

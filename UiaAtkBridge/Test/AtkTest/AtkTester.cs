@@ -372,17 +372,17 @@ namespace UiaAtkBridgeTest
 			}
 		}
 		
-		protected void InterfaceSelection (Atk.Selection implementor, string [] names, Atk.Object accessible, BasicWidgetType type)
+		protected void InterfaceSelection (Atk.Selection implementor, string [] items, Atk.Object accessible, BasicWidgetType type)
 		{
-			if (names == null)
+			if (items == null)
 				throw new ArgumentNullException ("names");
 			
-			if (names.Length < 2)
+			if (items.Length < 2)
 				throw new ArgumentException ("For testing purposes, use 2 or more items", "names");
 			
 			string accessibleName = null;
 			if (type == BasicWidgetType.ParentMenu)
-				accessibleName = names [0];
+				accessibleName = items [0];
 			else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox || type == BasicWidgetType.DomainUpDown)
 				// Not sure if this is right; setting so I can test other things -MPG
 				accessibleName = String.Empty;
@@ -393,6 +393,14 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual ((accessibleName == null ? String.Empty : accessibleName), 
 			                 (accessible.Name == null ? String.Empty : accessible.Name), "AtkObj Name");
 
+			string [] names = items;
+			if (type == BasicWidgetType.ParentMenu) {
+				names = new string [items.Length - 1];
+				Array.Copy (items, 1, names, 0, names.Length);
+				Assert.AreEqual (names [0], items [1], "array copy not done correctly");
+				Assert.AreEqual (names [names.Length - 1], items [items.Length - 1], "array copy not done correctly");
+			}
+			
 			bool clearSelection = true;
 			if (type == BasicWidgetType.TabControl)
 				clearSelection = false;
@@ -412,7 +420,7 @@ namespace UiaAtkBridgeTest
 				
 				string accName = names [i];
 				if (type == BasicWidgetType.ParentMenu)
-					accName = names [0];
+					accName = items [0];
 				else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox)
 					accName = String.Empty;
 				else if (type == BasicWidgetType.TabControl || type == BasicWidgetType.ComboBoxMenu)
@@ -450,18 +458,10 @@ namespace UiaAtkBridgeTest
 							    Atk.StateType.Selected), "Unselected child(" + j + ") shouldn't have State.Selected");
 					}
 				} else {
-					//first child in a menu -> tearoff menuitem (can't be selected)
-					if (i == 0) {
-						Assert.IsNull (refSelObj, "refSel should be null, a menu cannot select a subitem[" + i + "]");
-						Assert.AreEqual (0, implementor.SelectionCount, "SelectionCount == 0");
-						Assert.IsFalse (implementor.IsChildSelected (i), "childSelected(" + i + ")");
-					} else {
-						Assert.IsNotNull (refSelObj, "refSel should not be null");
-						Assert.AreEqual (names [i], refSelObj.Name, "AtkObj NameRefSel#" + i);
-						Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
-						Assert.IsTrue (implementor.IsChildSelected (i), "childSelected(" + i + ")");
-					}
-					
+					Assert.IsNotNull (refSelObj, "refSel should not be null");
+					Assert.AreEqual (names [i], refSelObj.Name, "AtkObj NameRefSel0,#" + i);
+					Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
+					Assert.IsTrue (implementor.IsChildSelected (i), "childSelected(" + i + ")");
 				}
 				if (i == 1 && (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox || type == BasicWidgetType.DomainUpDown))
 					Assert.IsFalse (accessible.RefAccessibleChild(0).RefStateSet().ContainsState (Atk.StateType.Selected), "Unselected child should not have State.Selected");
@@ -506,8 +506,7 @@ namespace UiaAtkBridgeTest
 
 			bool success = false;
 			//strangely, OOR upper selection returns true for some widgets -> report to Gail
-			if (type == BasicWidgetType.ParentMenu ||
-			    type == BasicWidgetType.TabControl ||
+			if (type == BasicWidgetType.TabControl ||
 			    Misc.IsComboBox (type))
 				success = true;
 
@@ -546,26 +545,20 @@ namespace UiaAtkBridgeTest
 			
 			Assert.IsTrue (names.Length > 0, "Please use a names variable that is not empty");
 			Assert.IsTrue (implementor.AddSelection (0), "AddSelection->0");
-			if (type != BasicWidgetType.ParentMenu) {
-				Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null after AS0");
 
-				success = true;
-				if (type == BasicWidgetType.ListBox ||
-				    type == BasicWidgetType.CheckedListBox ||
-				    type == BasicWidgetType.TabControl ||
-				    type == BasicWidgetType.ListView ||
-				    type == BasicWidgetType.DomainUpDown ||
-				    type == BasicWidgetType.ComboBoxMenu)
-					success = false;
-				Assert.AreEqual (success, implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
-				Assert.AreEqual (success, implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
-			}
-			else {
-				Assert.IsNull (implementor.RefSelection (0), "RefSel==null after AS0");
+			Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null after AS0");
 
-				Assert.IsFalse (implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
-				Assert.IsFalse (implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
-			}
+			success = true;
+			if (type == BasicWidgetType.ListBox ||
+			    type == BasicWidgetType.CheckedListBox ||
+			    type == BasicWidgetType.TabControl ||
+			    type == BasicWidgetType.ListView ||
+			    type == BasicWidgetType.DomainUpDown ||
+			    type == BasicWidgetType.ComboBoxMenu ||
+			    type == BasicWidgetType.ParentMenu)
+				success = false;
+			Assert.AreEqual (success, implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
+			Assert.AreEqual (success, implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
 
 			if (type != BasicWidgetType.ListBox &&
 			    type != BasicWidgetType.CheckedListBox &&
@@ -590,7 +583,8 @@ namespace UiaAtkBridgeTest
 				atkComponentCurrentSel.GrabFocus ();
 				Atk.StateSet stateSet = currentSel.RefStateSet ();
 				if (type != BasicWidgetType.TabControl && 
-				    type != BasicWidgetType.ComboBoxMenu)
+				    type != BasicWidgetType.ComboBoxMenu &&
+				    type != BasicWidgetType.ParentMenu)
 					Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focused), "Focused in selected item.");
 				Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Selected), "Selected in selected item.");
 			}
