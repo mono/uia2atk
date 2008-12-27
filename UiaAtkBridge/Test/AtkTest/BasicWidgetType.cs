@@ -46,8 +46,11 @@ namespace UiaAtkBridgeTest
 		TextBoxEntry,       // textbox single-line (gtk: entry)
 		TextBoxView,        // textbox multi-line (gtk: textview)
 		MaskedTextBoxEntry, // maskedtextbox (gtk: entry with visibility:false)
+		
 		MainMenuBar,
 		ParentMenu,
+		ChildMenu,
+		
 		VScrollBar,
 		HScrollBar,
 		ProgressBar,
@@ -78,12 +81,6 @@ namespace UiaAtkBridgeTest
 
 	public class MenuLayout
 	{
-		public enum TypeOfMenu {
-			MainMenuBar,
-			ParentMenu,
-			ChildMenu
-		}
-		
 		private string labelMenu;
 		private List<MenuLayout> subMenus;
 

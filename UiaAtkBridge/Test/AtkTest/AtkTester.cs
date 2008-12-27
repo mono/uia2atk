@@ -51,7 +51,7 @@ namespace UiaAtkBridgeTest
 		  BasicWidgetType type, string [] name, bool real);
 
 		public abstract Atk.Object GetAccessible (
-		  BasicWidgetType type, List <MenuLayout> menu, MenuLayout.TypeOfMenu subType);
+		  BasicWidgetType type, List <MenuLayout> menu);
 		
 		public abstract Atk.Object GetAccessibleThatEmbedsAnImage (
 		  BasicWidgetType type, string name, bool real);

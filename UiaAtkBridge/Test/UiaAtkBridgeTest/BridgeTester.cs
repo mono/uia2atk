@@ -294,6 +294,9 @@ namespace UiaAtkBridgeTest
 
 		protected Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget)
 		{
+			if (widget == null)
+				throw new ArgumentNullException ("widget");
+			
 //			return GetAdapterForWidget (widget, true);
 //		}
 //		private Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget, bool recursive)
@@ -437,30 +440,6 @@ namespace UiaAtkBridgeTest
 				accessible = GetAdapterForWidget (comp);
 				break;
 
-			case BasicWidgetType.ParentMenu:
-
-				if (!real)
-					throw new NotSupportedException ("You, clown, we're gonna deprecate un-real support");
-				
-				SWF.ToolStripMenuItem parentMenu = new SWF.ToolStripMenuItem ();
-				parentMenu.Text = names [0];
-				
-				SWF.ToolStripMenuItem[] subMenus = new SWF.ToolStripMenuItem [names.Length - 1];
-				for (int i = 1; i < names.Length; i++) {
-					SWF.ToolStripMenuItem subMenu = new SWF.ToolStripMenuItem ();
-					subMenu.Text = names [i];
-					subMenus [i - 1] = subMenu;
-				}
-				
-				parentMenu.DropDownItems.AddRange (subMenus);
-				menuStrip1.Items.AddRange (new SWF.ToolStripItem [] { parentMenu });
-
-				if (type == BasicWidgetType.ParentMenu)
-					accessible = GetAdapterForWidget (parentMenu);
-				else
-					accessible = GetAdapterForWidget (menuStrip1);
-				
-				break;
 			case BasicWidgetType.ToolStripSplitButton:
 				tssb.Text = names [0];
 				for (int i = 1; i < names.Length; i++) {
@@ -729,25 +708,45 @@ namespace UiaAtkBridgeTest
 		}
 
 		public override Atk.Object GetAccessible (
-		  BasicWidgetType type, List <MenuLayout> menu, MenuLayout.TypeOfMenu subType)
+		  BasicWidgetType type, List <MenuLayout> menu)
 		{
+			System.ComponentModel.Component widget;
+			
 			//cleanup
 			menuStrip1.Items.Clear ();
-			AddRecursively (menuStrip1.Items, menu);
-			if (subType == MenuLayout.TypeOfMenu.MainMenuBar)
-				return GetAdapterForWidget (menuStrip1);
-			return null;
+			
+			widget = AddRecursively (menuStrip1.Items, menu, type);
+			
+			if (type == BasicWidgetType.MainMenuBar)
+				widget = menuStrip1;
+			
+			return GetAdapterForWidget (widget);
 		}
 
-		void AddRecursively (SWF.ToolStripItemCollection subcol, List <MenuLayout> menus) {
+		private System.ComponentModel.Component AddRecursively (SWF.ToolStripItemCollection subcol, List <MenuLayout> menus, BasicWidgetType type)
+		{
+			System.ComponentModel.Component ret = null, ret_aux;
+			if (menus.Count <= 0)
+				return ret;
+			
 			List <SWF.ToolStripMenuItem> list = new List <SWF.ToolStripMenuItem> ();
 			foreach (MenuLayout menu in menus) {
 				SWF.ToolStripMenuItem tsmi = new SWF.ToolStripMenuItem ();
 				tsmi.Text = menu.Label;
-				AddRecursively (tsmi.DropDownItems, menu.SubMenus);
+				ret_aux = AddRecursively (tsmi.DropDownItems, menu.SubMenus, type);
+				if (ret == null) {
+					if ((tsmi.DropDownItems.Count > 0) && (type == BasicWidgetType.ParentMenu))
+						ret = tsmi;
+					else if ((tsmi.DropDownItems.Count == 0) && (type == BasicWidgetType.ChildMenu))
+						ret = tsmi;
+					else
+						ret = ret_aux;
+				}
+				
 				list.Add (tsmi);
 			}
 			subcol.AddRange (list.ToArray ());
+			return ret;
 		}
 		
 		private void GetListViewGroup (XmlNode node)

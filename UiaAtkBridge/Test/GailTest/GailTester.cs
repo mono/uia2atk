@@ -137,36 +137,49 @@ namespace UiaAtkBridgeTest
 		}
 
 		public override Atk.Object GetAccessible (
-		  BasicWidgetType type, List <MenuLayout> menu, MenuLayout.TypeOfMenu subType)
+		  BasicWidgetType type, List <MenuLayout> menu)
 		{
 			Gtk.MenuBar menubar = GailTestApp.MainClass.GiveMeARealMenuBar ();
-				
+
+			Gtk.Widget ret = null;
 			RunInGuiThread (delegate {
 
 				//cleanup
 				while (menubar.Children.Length > 0)
-					menubar.Remove (menubar.Children[0]);
-				
-				AddRecursively (menubar, menu);
+					menubar.Remove (menubar.Children [0]);
 
+				ret = AddRecursively (menubar, menu, type);
 			});
 
-			if (subType == MenuLayout.TypeOfMenu.MainMenuBar)
-				return menubar.Accessible;
-			return null;
+			mappings [ret.Accessible] = ret;
+			return ret.Accessible;
 		}
 
-		protected bool AddRecursively (Gtk.MenuShell shell, List <MenuLayout> menus)
+		private Gtk.Widget AddRecursively (Gtk.MenuShell shell, List <MenuLayout> menus, BasicWidgetType type) {
+			Gtk.Widget toTest = null;
+			AddRecursivelyAux (shell, menus, type, ref toTest, 0);
+			if (type == BasicWidgetType.MainMenuBar)
+				return shell;
+			return toTest;
+		}
+		
+		private bool AddRecursivelyAux (Gtk.MenuShell shell, List <MenuLayout> menus, BasicWidgetType type, ref Gtk.Widget widget, int level)
 		{
 			if (menus.Count <= 0)
 				return false;
-			
+
 			foreach (MenuLayout menu in menus) {
 				Gtk.MenuItem menuitem = new Gtk.MenuItem (menu.Label);
 	
 				Gtk.Menu menushell = new Gtk.Menu ();
-				if (AddRecursively (menushell, menu.SubMenus)) {
+				if (AddRecursivelyAux (menushell, menu.SubMenus, type, ref widget, level + 1)) {
 					menuitem.Submenu = menushell;
+					if ((widget == null) && (level == 0))
+						widget = menuitem;
+				} else {
+					if (type == BasicWidgetType.ChildMenu) {
+						widget = menuitem;
+					}
 				}
 				
 				shell.Append (menuitem);
@@ -310,41 +323,7 @@ namespace UiaAtkBridgeTest
 				col.PackStart (cell, true);
 				col.AddAttribute (cell, "text", 0);
 				break;
-				
-			case BasicWidgetType.ParentMenu:
-				if (!real)
-					throw new NotSupportedException ("No unreal widget access for ParentMenu now");
-				
-				Gtk.MenuBar menubar = GailTestApp.MainClass.GiveMeARealMenuBar ();
-				
-				RunInGuiThread (delegate {
-					string parentMenuName = name [0];
-					
-					while (menubar.Children.Length > 0)
-						menubar.Remove (menubar.Children[0]);
-			
-					Gtk.Menu parentmenuholder = new Gtk.Menu ();
-			
-					for (int j = 1; j < name.Length; j++) {
-						Gtk.MenuItem submenuitem = new Gtk.MenuItem (name [j]);
-						parentmenuholder.Append (submenuitem);
-						submenuitem.Show ();
-					}
-					
-					Gtk.MenuItem parentMenu = new Gtk.MenuItem (parentMenuName);
-					parentMenu.Submenu = parentmenuholder;
-
-					menubar.Append (parentMenu);
-					menubar.ShowAll ();
-
-					if (type == BasicWidgetType.MainMenuBar)
-						widget = menubar;
-					else
-						widget = parentMenu;
-				});
-				gwidget = widget as Gtk.Widget;
-				
-				break;
+	
 			default:
 				throw new NotSupportedException ("This AtkTester overload doesn't handle this type of widget: " +
 					type.ToString ());

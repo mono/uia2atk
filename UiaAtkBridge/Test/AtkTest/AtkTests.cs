@@ -532,7 +532,7 @@ namespace UiaAtkBridgeTest
 			menu.Add (new MenuLayout ("XFile", new MenuLayout ("New...", new MenuLayout ("Project"), new MenuLayout ("Text")), new MenuLayout ("Quit!")));
 			menu.Add (new MenuLayout ("GimmeHelp", new MenuLayout ("About?")));
 			
-			accessible = GetAccessible (type, menu, MenuLayout.TypeOfMenu.MainMenuBar);
+			accessible = GetAccessible (type, menu);
 
 			Assert.IsNull (accessible.Name, "name of the menubar should be null, now it's:" + accessible.Name);
 			
@@ -569,9 +569,14 @@ namespace UiaAtkBridgeTest
 			BasicWidgetType type = BasicWidgetType.ParentMenu;
 			Atk.Object accessible = null;
 			
-			string menuName = "File!";
-			string[] names = new string[] { menuName, "New", "Quit" };
-			accessible = GetAccessible (type, names, true);
+			string menuName = "File";
+			MenuLayout [] firstSubmenus = new MenuLayout [] { new MenuLayout ("New...", new MenuLayout ("Project"), new MenuLayout ("Text")), new MenuLayout ("Quit!") };
+
+			List <MenuLayout> menu = new List <MenuLayout> ();
+			menu.Add (new MenuLayout ("File", firstSubmenus));
+			menu.Add (new MenuLayout ("Help", new MenuLayout ("About?")));
+
+			accessible = GetAccessible (type, menu);
 			
 			Assert.AreEqual (menuName, accessible.Name, "name of the menu is the same as its label");
 
@@ -581,10 +586,10 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Enabled,
 			  Atk.StateType.Selectable, 
 			  Atk.StateType.Sensitive,
-			  Atk.StateType.Showing, 
-			  Atk.StateType.Visible);
+			  Atk.StateType.Visible,
+			  Atk.StateType.Showing);
 			
-			Assert.AreEqual (names.Length - 1, accessible.NAccessibleChildren, "number of children; children roles:" + childrenRoles (accessible));
+			Assert.AreEqual (firstSubmenus.Length, accessible.NAccessibleChildren, "number of children; children roles:" + childrenRoles (accessible));
 			
 			for (int i = 0; i < accessible.NAccessibleChildren; i++) {
 				Atk.Object menuChild = accessible.RefAccessibleChild (i);
@@ -598,7 +603,7 @@ namespace UiaAtkBridgeTest
 				Assert.IsTrue (menuChild.NAccessibleChildren > 0 || (menuChild.Role != Atk.Role.Menu),
 				   "only grandchildren allowed if parent is menu");
 
-				Assert.AreEqual (menuChild.Name, names [i + 1], "name of the menu is the same as its label");
+				Assert.AreEqual (menuChild.Name, firstSubmenus [i].Label, "name of the menu is the same as its label");
 			}
 			
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
@@ -607,8 +612,8 @@ namespace UiaAtkBridgeTest
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 
-			names [0] = simpleTestText;
-			accessible = GetAccessible (type, names, true);
+			menu = new List <MenuLayout> (new MenuLayout [] { new MenuLayout (simpleTestText, firstSubmenus), new MenuLayout ("Help") });
+			accessible = GetAccessible (type, menu);
 			InterfaceText (type, true, accessible);
 			
 			//FIXME:

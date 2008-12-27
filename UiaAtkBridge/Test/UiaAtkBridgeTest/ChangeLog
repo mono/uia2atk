@@ -1,5 +1,10 @@
 2008-12-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Refactoring to improve ParentMenu tests and more new
+	coming Menu tests.
+
+2008-12-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Improve MainMenuBar tests (MenuItem tests will
 	benefit from this as well).
 
