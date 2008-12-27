@@ -417,6 +417,18 @@ namespace UiaAtkBridgeTest
 			for (int i = 0; i < names.Length; i++) {
 				Assert.IsTrue (implementor.AddSelection (i), "AddSelection(" + i + ")");
 				CheckChildrenSelection (accessible, i);
+				if (!Misc.IsComboBox (type))
+					Assert.IsNotNull (accessible.RefAccessibleChild (i), "accessible.RefAccessibleChild (" + i + ") != null");
+				Assert.IsNotNull (implementor.RefSelection (0), "implementor.RefSelection (0) != null");
+				Assert.IsNull (implementor.RefSelection (-1), "implementor.RefSelection (-1) == null");
+				Assert.IsNull (implementor.RefSelection (1), "implementor.RefSelection (1) == null");
+
+				if (!Misc.IsComboBox (type))
+					Assert.IsTrue (accessible.RefAccessibleChild (i) == implementor.RefSelection (0),
+					               "accessible.RefAccessibleChild (" + i + ") == implementor.RefSelection (0)");
+				else
+					Assert.IsTrue (accessible.RefAccessibleChild (0).RefAccessibleChild (i) == implementor.RefSelection (0),
+					               "accessible.RefAccessibleChild (" + i + ") == implementor.RefSelection (0)");
 				
 				string accName = names [i];
 				if (type == BasicWidgetType.ParentMenu)
@@ -482,7 +494,7 @@ namespace UiaAtkBridgeTest
 					if (i != names.Length - 1)
 						Assert.AreEqual (implementor.RemoveSelection (i),
 						  removeSelectionSuccess,
-						  String.Format ("restoring initial situation of a combobox to empty selection ({0}), expected: {1}",
+						  String.Format ("restoring initial situation to empty selection ({0}), expected: {1}",
 						                 i, removeSelectionSuccess));
 				}
 			}
