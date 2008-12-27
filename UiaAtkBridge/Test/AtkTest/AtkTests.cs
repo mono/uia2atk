@@ -528,9 +528,11 @@ namespace UiaAtkBridgeTest
 			BasicWidgetType type = BasicWidgetType.MainMenuBar;
 			Atk.Object accessible = null;
 			
-			string menuName = "File!";
-			string[] names = new string[] { menuName, "New", "Quit" };
-			accessible = GetAccessible (type, names, true);
+			List <MenuLayout> menu = new List <MenuLayout> ();
+			menu.Add (new MenuLayout ("XFile", new MenuLayout ("New...", new MenuLayout ("Project"), new MenuLayout ("Text")), new MenuLayout ("Quit!")));
+			menu.Add (new MenuLayout ("GimmeHelp", new MenuLayout ("About?")));
+			
+			accessible = GetAccessible (type, menu, MenuLayout.TypeOfMenu.MainMenuBar);
 
 			Assert.IsNull (accessible.Name, "name of the menubar should be null, now it's:" + accessible.Name);
 			
@@ -542,7 +544,7 @@ namespace UiaAtkBridgeTest
 
 			PropertyRole (type, accessible);
 
-			Assert.AreEqual (1, accessible.NAccessibleChildren, "number of children; children roles:" + childrenRoles (accessible));
+			Assert.AreEqual (menu.Count, accessible.NAccessibleChildren, "number of children; children roles:" + childrenRoles (accessible));
 
 			for (int i = 0; i < accessible.NAccessibleChildren; i++) {
 				Atk.Object parentMenuChild = accessible.RefAccessibleChild (i);
@@ -550,7 +552,7 @@ namespace UiaAtkBridgeTest
 
 				Assert.IsTrue ( //FIXME: check if it's possible to have a MenuItem alone (like a push button)
 				  (parentMenuChild.Role == Atk.Role.Menu), "menubar children should have Menu role");
-				Assert.AreEqual (names [0], parentMenuChild.Name, "name of the parentmenu is the same as its label");
+				Assert.AreEqual (menu [i].Label, parentMenuChild.Name, "name of the parentmenu is the same as its label");
 			}
 
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
@@ -559,11 +561,6 @@ namespace UiaAtkBridgeTest
 			//FIXME:
 			//Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			//InterfaceSelection (atkSelection, names, accessible, type);
-			
-//TODO:
-//			List <MenuLayout> menu = new List <MenuLayout> ();
-//			menu.Add (new MenuLayout ("XFile", new MenuLayout ("Quit")));
-//			menu.Add (new MenuLayout ("GimmeHelp", new MenuLayout ("About")));
 		}
 		
 		[Test]

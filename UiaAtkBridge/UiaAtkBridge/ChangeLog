@@ -1,3 +1,9 @@
+2008-12-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MenuItem.cs: Removed bug caused from a leftover of recent refactorings
+	(should have been included in r122063). This has been discovered with
+	the changes in the tests included in this commit.
+
 2008-12-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ComboBox.cs:

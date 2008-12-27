@@ -76,21 +76,26 @@ namespace UiaAtkBridgeTest
 		StatusBarPanel
 	}
 
-//	public class MenuLayout
-//	{
-//		private string labelMenu;
-//		private List<MenuLayout> subMenus;
-//
-//		public MenuLayout (string name, params MenuLayout[] submenus)
-//		{
-//			labelMenu = name;
-//
-//			subMenus = new List <MenuLayout> (submenus);
-//		}
-//		
-//		public string LabelMenu { get { return labelMenu; } }
-//		public List<MenuLayout> SubMenus { get { return subMenus; } }
-//	}
+	public class MenuLayout
+	{
+		public enum TypeOfMenu {
+			MainMenuBar,
+			ParentMenu,
+			ChildMenu
+		}
+		
+		private string labelMenu;
+		private List<MenuLayout> subMenus;
+
+		public MenuLayout (string name, params MenuLayout[] submenus)
+		{
+			labelMenu = name;
+			subMenus = new List <MenuLayout> (submenus);
+		}
+		
+		public string Label { get { return labelMenu; } }
+		public List<MenuLayout> SubMenus { get { return subMenus; } }
+	}
 	
 	public static class Misc
 	{

@@ -136,7 +136,46 @@ namespace UiaAtkBridgeTest
 			return GetAccessible (type, text, null, true, false);
 		}
 
+		public override Atk.Object GetAccessible (
+		  BasicWidgetType type, List <MenuLayout> menu, MenuLayout.TypeOfMenu subType)
+		{
+			Gtk.MenuBar menubar = GailTestApp.MainClass.GiveMeARealMenuBar ();
+				
+			RunInGuiThread (delegate {
 
+				//cleanup
+				while (menubar.Children.Length > 0)
+					menubar.Remove (menubar.Children[0]);
+				
+				AddRecursively (menubar, menu);
+
+			});
+
+			if (subType == MenuLayout.TypeOfMenu.MainMenuBar)
+				return menubar.Accessible;
+			return null;
+		}
+
+		protected bool AddRecursively (Gtk.MenuShell shell, List <MenuLayout> menus)
+		{
+			if (menus.Count <= 0)
+				return false;
+			
+			foreach (MenuLayout menu in menus) {
+				Gtk.MenuItem menuitem = new Gtk.MenuItem (menu.Label);
+	
+				Gtk.Menu menushell = new Gtk.Menu ();
+				if (AddRecursively (menushell, menu.SubMenus)) {
+					menuitem.Submenu = menushell;
+				}
+				
+				shell.Append (menuitem);
+				menuitem.Show ();
+			}
+			shell.ShowAll ();
+			return true;
+		}
+		
 		public override I CastToAtkInterface <I> (Atk.Object accessible)
 		{	
 			try {
@@ -272,7 +311,6 @@ namespace UiaAtkBridgeTest
 				col.AddAttribute (cell, "text", 0);
 				break;
 				
-			case BasicWidgetType.MainMenuBar:
 			case BasicWidgetType.ParentMenu:
 				if (!real)
 					throw new NotSupportedException ("No unreal widget access for ParentMenu now");

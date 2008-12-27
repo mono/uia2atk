@@ -437,7 +437,6 @@ namespace UiaAtkBridgeTest
 				accessible = GetAdapterForWidget (comp);
 				break;
 
-			case BasicWidgetType.MainMenuBar:
 			case BasicWidgetType.ParentMenu:
 
 				if (!real)
@@ -729,6 +728,28 @@ namespace UiaAtkBridgeTest
 			return accessible;
 		}
 
+		public override Atk.Object GetAccessible (
+		  BasicWidgetType type, List <MenuLayout> menu, MenuLayout.TypeOfMenu subType)
+		{
+			//cleanup
+			menuStrip1.Items.Clear ();
+			AddRecursively (menuStrip1.Items, menu);
+			if (subType == MenuLayout.TypeOfMenu.MainMenuBar)
+				return GetAdapterForWidget (menuStrip1);
+			return null;
+		}
+
+		void AddRecursively (SWF.ToolStripItemCollection subcol, List <MenuLayout> menus) {
+			List <SWF.ToolStripMenuItem> list = new List <SWF.ToolStripMenuItem> ();
+			foreach (MenuLayout menu in menus) {
+				SWF.ToolStripMenuItem tsmi = new SWF.ToolStripMenuItem ();
+				tsmi.Text = menu.Label;
+				AddRecursively (tsmi.DropDownItems, menu.SubMenus);
+				list.Add (tsmi);
+			}
+			subcol.AddRange (list.ToArray ());
+		}
+		
 		private void GetListViewGroup (XmlNode node)
 		{
 			XmlElement tr = node as XmlElement;

@@ -1,5 +1,10 @@
 2008-12-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Improve MainMenuBar tests (MenuItem tests will
+	benefit from this as well).
+
+2008-12-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Delete obsolete code.
 
 2008-12-24  Andrés G. Aragoneses  <aaragoneses@novell.com>

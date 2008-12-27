@@ -1,3 +1,10 @@
+2008-12-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs:
+	* BasicWidgetType.cs: Improve MainMenuBar tests (MenuItem tests will
+	benefit from this as well).
+
 2008-12-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Last bits of love to make it not so strict for the

@@ -89,9 +89,7 @@ namespace UiaAtkBridge
 		{
 			IRawElementProviderFragment child = ((IRawElementProviderFragment)Provider).Navigate (NavigateDirection.FirstChild);
 			
-			if ((Parent is ComboBoxOptions) && ((ComboBox)Parent.Parent).IsSimple ())
-				Role = Atk.Role.TableCell;
-			else if (child != null)
+			if (child != null)
 				Role = Atk.Role.Menu;
 			else
 				Role = Atk.Role.MenuItem;
