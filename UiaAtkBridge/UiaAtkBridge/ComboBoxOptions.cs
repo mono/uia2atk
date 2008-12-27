@@ -66,14 +66,14 @@ namespace UiaAtkBridge
 			get { return (selectedChild < 0 ? 0 : 1); }
 		}
 		
-		public bool AddSelection (int i)
+		public virtual bool AddSelection (int i)
 		{
 			if ((i < 0) || (i >= NAccessibleChildren))
 				return false;
 			return ((ComboBoxItem)RefAccessibleChild (i)).DoAction (0);
 		}
 
-		public bool ClearSelection ()
+		public virtual bool ClearSelection ()
 		{
 			return (SelectionCount == 0);
 		}
@@ -90,7 +90,7 @@ namespace UiaAtkBridge
 			return selectedChild == i;
 		}
 
-		public bool RemoveSelection (int i)
+		public virtual bool RemoveSelection (int i)
 		{
 			return false;
 		}
@@ -199,7 +199,7 @@ namespace UiaAtkBridge
 			//TODO
 		}
 
-		int selectedChild = -1;
+		protected int selectedChild = -1;
 		
 		internal void RecursiveDeselect (Adapter keepSelected)
 		{
@@ -229,7 +229,8 @@ namespace UiaAtkBridge
 				((ComboBox)Parent).RaiseSelectionChanged (keepSelected.Name);
 		}
 
-		internal void RaiseExpandedCollapsed () {
+		internal void RaiseExpandedCollapsed ()
+		{
 			NotifyStateChange (Atk.StateType.Showing);
 			NotifyStateChange (Atk.StateType.Visible);
 		}

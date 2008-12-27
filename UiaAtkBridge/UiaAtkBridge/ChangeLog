@@ -1,3 +1,9 @@
+2008-12-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MenuItem.cs:
+	* ComboBoxOptions.cs: Make tests for 428536 pass (toolstripmenuitem,
+	atk.selection).
+
 2008-12-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MenuItem.cs: Removed bug caused from a leftover of recent refactorings

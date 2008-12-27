@@ -202,6 +202,27 @@ namespace UiaAtkBridge
 		
 		#endregion 
 
+		public override bool AddSelection (int i)
+		{
+			if ((i < 0) || (i >= NAccessibleChildren))
+				return false;
+			return ((MenuItem)RefAccessibleChild (i)).DoAction (0);
+		}
+
+		public override bool RemoveSelection (int i)
+		{
+			if (i == 0) {
+				selectedChild = -1;
+				return true;
+			}
+			return false;
+		}
+
+		public override bool ClearSelection ()
+		{
+			selectedChild = -1;
+			return true;
+		}
 		
 	}
 }
