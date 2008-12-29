@@ -1,3 +1,22 @@
+2008-12-29  Brad Taylor  <brad@getcoded.net>
+
+	* ChangeLog: 
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker: 
+	* Mono.UIAutomation.Winforms.Behaviors/DateTimePicker: 
+	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/InvokeProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/InvokePatternInvokedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/ButtonInvokeProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternValueEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/ButtonInvokePatternInvokedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartRangeValueProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternMinimumEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternMaximumEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternIsReadOnlyEvent.cs: 
+	Add new implementation of DateTimePicker.
+
 2008-12-19  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/Helper.cs: Using IntersectsWith instead of

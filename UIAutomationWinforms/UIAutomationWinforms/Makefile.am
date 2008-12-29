@@ -57,6 +57,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/ListItemEditValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/ScrollProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/ButtonInvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/InvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartRangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemSelectionItemProviderBehavior.cs \
@@ -171,6 +174,12 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternVerticallyScrollableEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternVerticalScrollPercent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternVerticalViewSizeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DateTimePicker/ButtonInvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DateTimePicker/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternIsReadOnlyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternMaximumEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternMinimumEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemAutomationHasKeyboardFocusPropertyEvent.cs \
@@ -318,6 +327,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ComboBoxProvider.cs \
 	Mono.UIAutomation.Winforms/DataGridProvider.cs \
+	Mono.UIAutomation.Winforms/DateTimePickerProvider.cs \
 	Mono.UIAutomation.Winforms/DomainUpDownProvider.cs \
 	Mono.UIAutomation.Winforms/ErrorProvider.cs \
 	Mono.UIAutomation.Winforms/ErrorProviderListener.cs \

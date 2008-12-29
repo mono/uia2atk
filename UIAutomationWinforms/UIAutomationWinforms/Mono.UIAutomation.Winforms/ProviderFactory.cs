@@ -113,6 +113,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.Splitter s;
 			SWF.ToolBar tb;
 			SWF.TreeView tv;
+			SWF.DateTimePicker dtp;
 			SWF.PrintPreviewControl ppc;
 			
 			SWF.StatusStrip ss;
@@ -236,6 +237,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ToolBarProvider (tb);
 			else if ((tv = component as SWF.TreeView) != null)
 				provider = new TreeViewProvider (tv);
+			else if ((dtp = component as SWF.DateTimePicker) != null)
+				provider = new DateTimePickerProvider (dtp);
 			else if ((ppc = component as SWF.PrintPreviewControl) != null)
 				provider = new PrintPreviewControlProvider (ppc);
 			else {
