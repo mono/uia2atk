@@ -1,5 +1,10 @@
 2008-12-30  Brad Taylor  <brad@getcoded.net>
 
+	* WindowProviderTest.cs: Remove HostRawElementProviderTest as it's
+	really a test of the AutomationInteropProvider, not the Window.
+
+2008-12-30  Brad Taylor  <brad@getcoded.net>
+
 	* WindowProviderTest.cs: Finish last two tests.
 
 2008-12-30  Brad Taylor  <brad@getcoded.net>
