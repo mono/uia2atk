@@ -1,5 +1,10 @@
 2008-12-30  Brad Taylor  <brad@getcoded.net>
 
+	* WindowProviderTest.cs: Test to ensure that IDockProvider is not
+	implemented.
+
+2008-12-30  Brad Taylor  <brad@getcoded.net>
+
 	* Makefile.am: 
 	* ToolStripButtonProviderTest.cs: Add test for new ToolStripButton
 	support.

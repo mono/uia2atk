@@ -556,6 +556,26 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		*/
 
 #endregion
+
+#region IDockProvider Tests
+		
+		[Test]
+		public void DockProviderTest ()
+		{
+			using (Form f = new Form ()) {
+				IRawElementProviderSimple provider =
+					ProviderFactory.GetProvider (f);
+
+				IDockProvider dockProvider
+					= provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id)
+					as IDockProvider;
+				
+				// Conditional -> No
+				Assert.IsNull (dockProvider, "Implements IDockProvider");
+			}
+		}
+
+#endregion
 		
 #region BaseProviderTest Overrides
 		
