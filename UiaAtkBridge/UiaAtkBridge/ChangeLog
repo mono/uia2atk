@@ -1,3 +1,13 @@
+2008-12-30  Brad Taylor  <brad@getcoded.net>
+
+	* Adapter.cs: Don't do anything if we get a HasKeyboardFocusProperty
+	change event and the control isn't keyboard focusable.
+
+	* MenuItem.cs: Only set the Focused state if the control is focusable.
+	This ensures that direct descendants of ToolStrip no longer report that
+	they are Focused or Focusable when they can't be navigated via the
+	keyboard.  [Fixes #457990]
+
 2008-12-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MenuItem.cs:

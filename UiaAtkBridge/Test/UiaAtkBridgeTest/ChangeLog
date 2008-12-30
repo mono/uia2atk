@@ -1,3 +1,7 @@
+2008-12-30  Brad Taylor  <brad@getcoded.net>
+
+	* BridgeTests.cs: Add test for bug #457990.
+
 2008-12-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: Refactoring to improve ParentMenu tests and more new

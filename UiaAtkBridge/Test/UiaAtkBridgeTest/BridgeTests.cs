@@ -555,6 +555,34 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		public void ToolStripDropDownButton_Bug457990 ()
+		{
+			using (SWF.Form f = new SWF.Form ()) {
+				SWF.ToolStrip s = new SWF.ToolStrip ();
+				SWF.ToolStripDropDownButton b
+					= new SWF.ToolStripDropDownButton ();
+					
+				s.Items.Add (b);
+				f.Controls.Add (s);
+				f.Show ();
+
+				Atk.Object accessible = GetAdapterForWidget (b);
+				Atk.Action atkAction
+					= CastToAtkInterface <Atk.Action> (accessible);
+				atkAction.DoAction (0);
+
+				// Ensure we don't see Focusable or Focused
+				States (accessible,
+					Atk.StateType.Enabled,
+					Atk.StateType.Selectable,
+					Atk.StateType.Selected,
+					Atk.StateType.Sensitive,
+					Atk.StateType.Showing,
+					Atk.StateType.Visible);
+			}
+		}
+
+		[Test]
 		public void ToolStripSplitButton ()
 		{
 			BasicWidgetType type = BasicWidgetType.ToolStripSplitButton;

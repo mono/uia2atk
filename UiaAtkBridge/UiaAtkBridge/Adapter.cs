@@ -87,6 +87,12 @@ namespace UiaAtkBridge
 		{
 			long curTime = System.DateTime.Now.Ticks;
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {
+				bool canFocus = (bool) Provider.GetPropertyValue (
+				     AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
+				if (!canFocus) {
+					return;
+				}
+
 				bool focused = (bool)e.NewValue;
 				// Hack -- we don't get an event when a window
 				// is deactivated, and we get the activate
