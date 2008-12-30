@@ -76,7 +76,8 @@ namespace UiaAtkBridgeTest
 		ToolStripDropDownButton,
 		ToolStripSplitButton,
 		ToolStrip,
-		StatusBarPanel
+		StatusBarPanel,
+		TreeView,
 	}
 
 	public class MenuLayout

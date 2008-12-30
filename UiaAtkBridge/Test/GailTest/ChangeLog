@@ -1,3 +1,10 @@
+2008-12-30  Mike Gorse  <mgorse@novell.com>
+
+	* GailTester.cs: Support TreeView.
+
+	* GailTester.cs: Remove unused/untested code to generate a TreeView
+	  from a list of strings.
+
 2008-12-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* GailTester.cs: Refactoring to improve ParentMenu tests and more new

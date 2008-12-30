@@ -64,6 +64,9 @@ namespace UiaAtkBridgeTest
 
 		public abstract void SetReadOnly (Atk.Object accessible, bool readOnly);
 
+		public abstract void ExpandTreeView (BasicWidgetType type);
+		public abstract void CollapseTreeView (BasicWidgetType type);
+
 		public abstract Atk.Object GetTopLevelRootItem ();
 
 		public abstract bool IsBGO561414Addressed ();
@@ -105,6 +108,7 @@ namespace UiaAtkBridgeTest
 		protected abstract bool ContainerPanelIsResizable { get; }
 		protected abstract int ValidNumberOfActionsForAButton { get; }
 		protected abstract int ValidNChildrenForAListView { get; }
+		protected abstract bool TreeViewHasHeader { get; }
 		protected abstract int ValidNChildrenForASimpleStatusBar { get; }
 		protected abstract int ValidNChildrenForAScrollBar { get; }
 		protected abstract bool AllowsEmptyingSelectionOnComboBoxes { get; }
@@ -800,6 +804,9 @@ namespace UiaAtkBridgeTest
 				role = Atk.Role.Panel;
 				break;
 			case BasicWidgetType.ListView:
+				role = Atk.Role.TreeTable;
+				break;
+			case BasicWidgetType.TreeView:
 				role = Atk.Role.TreeTable;
 				break;
 			case BasicWidgetType.PictureBox:

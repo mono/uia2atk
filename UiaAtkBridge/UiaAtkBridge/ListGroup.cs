@@ -148,7 +148,7 @@ namespace UiaAtkBridge
 
 		public Atk.Object Summary
 		{
-			get { return tableExpert.Caption; } set { tableExpert.Caption = value; }
+			get { return tableExpert.Summary; } set { tableExpert.Summary = value; }
 		}
 
 

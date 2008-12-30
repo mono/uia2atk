@@ -84,6 +84,8 @@ FILES =  \
 	TextLabel.cs \
 	ToolTip.cs \
 	TopLevelRootItem.cs \
+	Tree.cs \
+	TreeItem.cs \
 	Window.cs 
 
 DATA_FILES = 

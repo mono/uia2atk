@@ -1,3 +1,7 @@
+2008-12-30  Mike Gorse <mgorse@novell.com>
+
+	* BasicWidgetType.cs, AtkTester.cs, AtkTests.cs: Support TreeView.
+
 2008-12-27  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: More selection tests.

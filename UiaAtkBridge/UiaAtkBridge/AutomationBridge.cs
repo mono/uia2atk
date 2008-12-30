@@ -394,8 +394,10 @@ namespace UiaAtkBridge
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
 				HandleBulkRemoved (simpleProvider);
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenInvalidated) {
-				HandleBulkRemoved (simpleProvider);
-				HandleBulkAdded (simpleProvider);
+				// These always seem to be coupled with
+				// add/removed/reordered events, so ignore.
+				//HandleBulkRemoved (simpleProvider);
+				//HandleBulkAdded (simpleProvider);
 			}
 			else
 				Console.WriteLine ("StructureChangedEvent not handled:" + e.StructureChangeType.ToString ());
@@ -429,7 +431,7 @@ namespace UiaAtkBridge
 				return null;
 			
 			int controlTypeId = (int) parentProvider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-			if (controlTypeId == ControlType.Header.Id || controlTypeId == ControlType.DataItem.Id)
+			if (controlTypeId == ControlType.Header.Id || controlTypeId == ControlType.DataItem.Id || controlTypeId == ControlType.TreeItem.Id)
 				return GetParentAdapter (parentProvider);
 
 			if (!providerAdapterMapping.ContainsKey (parentProvider))
@@ -528,6 +530,10 @@ namespace UiaAtkBridge
 				HandleNewTab (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.TabItem.Id)
 				HandleNewTabItem (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.Tree.Id)
+				HandleNewTree (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.TreeItem.Id)
+				HandleNewTreeItem (simpleProvider, parentAdapter);
 			// TODO: Other providers
 			else if (controlTypeId != ControlType.Thumb.Id)
 				Console.WriteLine ("AutomationBridge: Unhandled control: " +
@@ -923,6 +929,32 @@ namespace UiaAtkBridge
 			IncludeNewAdapter (tabItem, parentObject);
 		}
 
+		private void HandleNewTree (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		{
+			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
+			if (fragment == null) {
+				Console.WriteLine ("UiaAtkBridge: warning: Tree must be a fragment; ignoring");
+				return;
+			}
+				
+			Tree tree = new Tree (fragment);
+			IncludeNewAdapter (tree, parentObject);
+		}
+
+		private void HandleNewTreeItem (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		{
+			TreeItem treeItem = new TreeItem (provider);
+			
+			IncludeNewAdapter (treeItem, parentObject);
+
+			// TODO: Perhaps avoid doing this
+			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
+			if (fragment == null)
+				return;
+			for (IRawElementProviderFragment child = fragment.Navigate (NavigateDirection.FirstChild); child != null; child = child.Navigate (NavigateDirection.NextSibling))
+				HandleElementAddition (child);
+		}
+
 		internal static void IncludeNewAdapter (Adapter newAdapter, ParentAdapter parentAdapter)
 		{
 			if (newAdapter.Provider == null)
@@ -977,18 +1009,15 @@ namespace UiaAtkBridge
 		// existed prior to the provider being created.
 		private void HandlePossiblePreExistingProvider (IRawElementProviderSimple provider)
 		{
-Console.WriteLine ("check: " + provider);
 			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
 			if (fragment == null)
 				return;
 			IRawElementProviderFragment parent = fragment.Navigate (NavigateDirection.Parent);
-Console.WriteLine ("parent: " + parent);
 			if (parent == null || parent == provider)
 				return;
 			int controlTypeId = (int) parent.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			if (controlTypeId == ControlType.DataItem.Id)
 				parent = parent.Navigate (NavigateDirection.Parent);
-Console.WriteLine ("parent: " + parent);
 
 			Atk.Object obj = null;
 			if (!providerAdapterMapping.TryGetValue (parent, out obj))
@@ -996,7 +1025,6 @@ Console.WriteLine ("parent: " + parent);
 			if (!providerAdapterMapping.TryGetValue (parent, out obj))
 				return;
 			ParentAdapter parentAdapter = obj as ParentAdapter;
-Console.WriteLine ("Done recursing: " + provider + ", parentAdapter " + obj);
 			if (parentAdapter != null) {
 				if (parentAdapter.RefStateSet().ContainsState (Atk.StateType.ManagesDescendants))
 					HandleElementAddition (provider);

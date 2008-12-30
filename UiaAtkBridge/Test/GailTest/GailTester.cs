@@ -105,6 +105,26 @@ namespace UiaAtkBridgeTest
 			});
 		}
 
+		public override void ExpandTreeView (BasicWidgetType type)
+		{
+			if (type != BasicWidgetType.TreeView && type != BasicWidgetType.ListView)
+				throw new NotSupportedException ("ExpandTreeView doesn't support this kind of widget");
+			RunInGuiThread (delegate {
+			Gtk.TreeView widget = GailTestApp.MainClass.GiveMeARealTreeView ();
+				widget.ExpandAll ();
+			});
+		}
+
+		public override void CollapseTreeView (BasicWidgetType type)
+		{
+			if (type != BasicWidgetType.TreeView && type != BasicWidgetType.ListView)
+				throw new NotSupportedException ("CollapseTreeView doesn't support this kind of widget");
+			RunInGuiThread (delegate {
+				Gtk.TreeView widget = GailTestApp.MainClass.GiveMeARealTreeView ();
+				widget.CollapseAll ();
+			});
+		}
+
 		public override void EnableWidget (Atk.Object accessible)
 		{
 			RunInGuiThread (delegate () {
@@ -288,42 +308,6 @@ namespace UiaAtkBridgeTest
 				}
 				break;
 				
-			case BasicWidgetType.ListView:
-				Gtk.TreeStore store = new Gtk.TreeStore (typeof (string));
-				Gtk.TreeIter[] iters = new Gtk.TreeIter [8];
-				iters[0] = store.AppendNode ();
-				int i = 0;
-				foreach (string text in name) {
-					int j = 0;
-					while (text [j] == '+')
-						j++;
-					// Don't create a new iter for the first level
-					if (j > i)
-						i++;
-					while (j > i) {
-						iters[i] = store.AppendNode (iters [i - 1]);
-					}
-					i = j;
-					if (i > 0)
-						iters[i] = store.AppendNode (iters [i - 1]);
-					else
-						iters[i] = store.AppendNode ();
-					store.SetValue (iters[i], 0, text);
-				}
-				widget = new Gtk.TreeView (store);
-				// real not implemented yet
-				if (real) {
-					widget = GailTestApp.MainClass.GiveMeARealTreeView ();
-					((Gtk.TreeView)widget).Model = store;
-				}
-				Gtk.TreeViewColumn col = new Gtk.TreeViewColumn ();
-				col.Title = "Column 0";
-				((Gtk.TreeView)widget).AppendColumn (col);
-				Gtk.CellRendererText cell = new Gtk.CellRendererText ();
-				col.PackStart (cell, true);
-				col.AddAttribute (cell, "text", 0);
-				break;
-	
 			default:
 				throw new NotSupportedException ("This AtkTester overload doesn't handle this type of widget: " +
 					type.ToString ());
@@ -456,6 +440,7 @@ namespace UiaAtkBridgeTest
 					widget = GailTestApp.MainClass.GiveMeARealImage (embeddedImage);
 				break;
 			case BasicWidgetType.ListView:
+			case BasicWidgetType.TreeView:
 				Gtk.TreeStore store = null;
 				List<string> columnNames = new List<String> ();
 				XmlDocument xml = new XmlDocument ();
@@ -463,6 +448,8 @@ namespace UiaAtkBridgeTest
 				foreach (XmlElement th in xml.GetElementsByTagName ("th"))
 					foreach (XmlElement td in th.GetElementsByTagName ("td"))
 						columnNames.Add (td.InnerText);
+					if (columnNames.Count == 0)
+						columnNames.Add (string.Empty);
 				if (columnNames.Count == 1)
 					store = new Gtk.TreeStore (typeof (string));
 				else if (columnNames.Count == 2)
@@ -514,6 +501,7 @@ namespace UiaAtkBridgeTest
 		protected override bool ContainerPanelIsResizable { get { return false; } }
 		protected override int ValidNumberOfActionsForAButton { get { return 3; } }
 		protected override int ValidNChildrenForAListView { get { return 24; } }
+		protected override bool TreeViewHasHeader { get { return true; } }
 		protected override int ValidNChildrenForASimpleStatusBar { get { return 1; } }
 		protected override int ValidNChildrenForAScrollBar { get { return 0; } }
 

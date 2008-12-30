@@ -86,6 +86,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.ToolStripDropDownButton tsddb = new SWF.ToolStripDropDownButton ();
 		protected SWF.ToolStripSplitButton tssb = new SWF.ToolStripSplitButton ();
 		protected SWF.TabControl tabControl = new SWF.TabControl ();
+		protected SWF.TreeView treeView = new SWF.TreeView ();
 
 		protected int lastClickedLink = -1;
 		
@@ -174,6 +175,7 @@ namespace UiaAtkBridgeTest
 			lv1.View = SWF.View.Details;
 			lv1.ShowGroups = true;
 			form.Controls.Add (lv1);
+			form.Controls.Add (treeView);
 			form.Controls.Add (radWithImage);
 			rad1.Text = "rad1";
 			rad2.Text = "rad2";
@@ -251,6 +253,20 @@ namespace UiaAtkBridgeTest
 				((SWF.UpDownBase)comp).ReadOnly = readOnly;
 			else
 				throw new NotSupportedException ();
+		}
+
+		public override void ExpandTreeView (BasicWidgetType type)
+		{
+			if (type != BasicWidgetType.TreeView)
+				throw new NotSupportedException ("ExpandTreeView doesn't support this kind of widget");
+			treeView.ExpandAll ();
+		}
+
+		public override void CollapseTreeView (BasicWidgetType type)
+		{
+			if (type != BasicWidgetType.TreeView)
+				throw new NotSupportedException ("CollapseTreeView doesn't support this kind of widget");
+			treeView.CollapseAll ();
 		}
 
 		public override I CastToAtkInterface <I> (Atk.Object accessible)
@@ -482,6 +498,8 @@ namespace UiaAtkBridgeTest
 		{
 			Atk.Object accessible = null;
 			string[] names = null;
+			XmlDocument xml;
+			XmlElement root;
 
 			switch (type) {
 			case BasicWidgetType.Label:
@@ -655,14 +673,14 @@ namespace UiaAtkBridgeTest
 				break;
 
 			case BasicWidgetType.ListView:
-				XmlDocument xml = new XmlDocument ();
+				xml = new XmlDocument ();
 				xml.LoadXml (name);
 				lv1.Groups.Clear ();
 				lv1.Items.Clear ();
 				foreach (XmlElement th in xml.GetElementsByTagName ("th"))
 					foreach (XmlElement td in th.GetElementsByTagName ("td"))
 						lv1.Columns.Add (new SWF.ColumnHeader (td.InnerText));
-				XmlElement root = xml.DocumentElement;
+				root = xml.DocumentElement;
 				for (XmlNode node = root.FirstChild; node != null; node = node.NextSibling)
 					if (node.Name == "tr") {
 						bool group = false;
@@ -675,6 +693,20 @@ namespace UiaAtkBridgeTest
 							lv1.Items.Add (GetListViewItem (node));
 					}
 				accessible = GetAdapterForWidget (lv1);
+				break;
+				
+			case BasicWidgetType.TreeView:
+				xml = new XmlDocument ();
+				xml.LoadXml (name);
+				treeView.BeginUpdate ();
+				treeView.Nodes.Clear ();
+				root = xml.DocumentElement;
+				for (XmlNode node = root.FirstChild; node != null; node = node.NextSibling)
+					if (node.Name == "tr") {
+						treeView.Nodes.Add (GetTreeNode (node));
+					}
+				treeView.EndUpdate ();
+				accessible = GetAdapterForWidget (treeView);
 				break;
 				
 			case BasicWidgetType.ToolStripProgressBar:
@@ -776,6 +808,25 @@ namespace UiaAtkBridgeTest
 			return item;
 		}
 
+		private SWF.TreeNode GetTreeNode (XmlNode node)
+		{
+			bool childAdded = false;
+			SWF.TreeNode treeNode = new SWF.TreeNode ();
+			for (XmlNode child = node.FirstChild; child != null; child = child.NextSibling) {
+				if (child.Name == "tr") {
+					treeNode.Nodes.Add (GetTreeNode (child));
+				} else if (child.Name == "td") {
+					if (!childAdded) {
+						treeNode.Text = child.InnerText;
+						childAdded = true;
+					} else {
+						Console.WriteLine ("Warning: Couldn't add " + child.InnerText + ": already got td for this row");
+					}
+				}
+			}
+			return treeNode;
+		}
+
 		private static Atk.Object GetAdapterForProvider (IRawElementProviderSimple provider)
 		{
 			if (provider == null)
@@ -798,6 +849,7 @@ namespace UiaAtkBridgeTest
 		protected override bool ContainerPanelIsResizable { get { return true; } }
 		protected override int ValidNumberOfActionsForAButton { get { return 1; } }
 		protected override int ValidNChildrenForAListView { get { return 22; } }
+		protected override bool TreeViewHasHeader { get { return false; } }
 		protected override int ValidNChildrenForASimpleStatusBar { get { return 0; } }
 		protected override int ValidNChildrenForAScrollBar { get { return 0; } }
 

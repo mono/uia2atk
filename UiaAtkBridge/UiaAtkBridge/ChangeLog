@@ -1,3 +1,16 @@
+2008-12-30  Mike Gorse  <mgorse@novell.com>
+
+	* Makefile.am, UiaAtkBridge.mdp, AutomationBridge.cs, Tree.cs,
+	  TreeItem.cs: Support TreeView.
+
+	* DataGrid.cs: List.cs, ListGroup.cs, TextContainer.cs:
+	  Fix table summary.
+
+	* AutomationBridge.cs: Ignore ChildrenInvalidated events, since they
+	  seem to always be coupled with other events that we process.
+
+	* AutomationBridge.cs: Remove debug spew.
+
 2008-12-30  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* MenuItem.cs: Don't require Invoke pattern support.
