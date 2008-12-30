@@ -179,6 +179,8 @@ namespace UiaAtkBridge
 		internal System.Windows.Rect BoundingRectangle
 		{
 			get {
+				if (Provider == null)
+					return System.Windows.Rect.Empty;
 				return (System.Windows.Rect) 
 					Provider.GetPropertyValue (
 					  AutomationElementIdentifiers.BoundingRectangleProperty.Id);
