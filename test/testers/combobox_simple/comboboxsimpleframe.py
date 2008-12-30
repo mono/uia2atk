@@ -1,91 +1,60 @@
-
+# vim: set tabstop=4 shiftwidth=4 expandtab
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
 # Date:        11/10/2008
-# Description: combobox_simple.py wrapper script
-#              Used by the combobox_simple-*.py tests
+# Description: Application wrapper for combobox_simple
+#              be called by ../combobox_simple
 ##############################################################################
 
-import sys
-import os
-import actions
-import states
+"""Application wrapper for combobox_simple.py"""
 
 from strongwind import *
-from combobox_simple import *
 
-
-# class to represent the main window.
 class ComboBoxSimpleFrame(accessibles.Frame):
+    """the profile of the combobox_simple sample"""
 
     # constants
     # the available widgets on the window
-    LABEL1 = "You select "
+    LABEL = "You select "
 
     def __init__(self, accessible):
         super(ComboBoxSimpleFrame, self).__init__(accessible)
-        self.label1 = self.findLabel(self.LABEL1)
+        self.label = self.findLabel(self.LABEL)
         self.combobox = self.findComboBox(None)
         self.textbox = self.findText(None)
-        self.menu = self.findMenu(None)
-        self.menuitem = dict([(x, self.findMenuItem(str(x))) for x in range(10)])
+        self.tree = self.findTreeTable(None)
+        self.treecell = dict([(x, self.findTreeCell(str(x))) for x in range(10)])
 
-    #give 'click' action
     def click(self,accessible):
         accessible.click()
 
-    #give 'press' action
-    def press(self,accessible):
-        accessible.press()
-
-    #check the label after click listitem
     def assertLabel(self, itemname):
-        procedurelogger.expectedResult('item "%s" is %s' % (itemname, 'select'))
-
+        procedurelogger.expectedResult('item "%s" is selected' % itemname)
         def resultMatches():
             return self.findLabel("You select %s" % itemname)
-	assert retryUntilTrue(resultMatches)
+        assert retryUntilTrue(resultMatches)
 
-    #assert Text implementation for MenuItem
-    def assertItemText(self, textValue=None):
-        procedurelogger.action('check MenuItem\'s Text Value')
+    def assertText(self, accessible, text):
+        procedurelogger.expectedResult('%s\'s text is %s' % \
+                                            (accessible, accessible.text))
+        assert accessible.text == text, "%s is not equal to %s" % \
+                                            (accessible.text, text)
 
-        for textValue in range(10):
-            procedurelogger.expectedResult('item "%s"\'s Text is %s' % (self.menuitem[textValue],textValue))
-            assert self.menuitem[textValue].text == str(textValue)
-
-    #assert Text value after do click action
-    def assertText(self, accessible, value):
-        procedurelogger.expectedResult('the text value of %s is %s' % (accessible,values))
-        assert accessible.text == str(values)
-
-    #assert Selection implementation for Menu
-    def assertSelectionChild(self, accessible, childIndex):
-        procedurelogger.action('selecte childIndex %s in "%s"' % (childIndex, accessible))
-
-        accessible.selectChild(childIndex)
+    def assertSelectionChild(self, accessible, index):
+        procedurelogger.action('select item%s in "%s"' % (index, accessible))
+        accessible.selectChild(index)
 
     def assertClearSelection(self, accessible):
         procedurelogger.action('clear selection in "%s"' % (accessible))
-
         accessible.clearSelection()
 
-    #input value into text box
-    def inputText(self, values):
-        procedurelogger.action('input %s into text box' % values)
-        self.textbox.typeText(values)
+    def inputText(self, accessible, text):
+        procedurelogger.action('input %s in text box' % text)
+        self.textbox.typeText(text)
 
-        procedurelogger.expectedResult('the text value of "text box" is %s' % values)
-        assert self.textbox.text == str(values)
-
-    #enter Text Value for EditableText
-    def enterTextValue(self, values):
-        procedurelogger.action('in %s enter %s "' % (accessible, values))
-        self.textbox.__setattr__('text', values)
-
-        procedurelogger.expectedResult('the text value of "text box" is %s' % values)
-        assert self.textbox.text == str(values)
+    def enterText(self, text):
+        procedurelogger.action('enter %s to text box' % text)
+        self.textbox.text == text
     
-    #close application main window after running test
     def quit(self):
         self.altF4()

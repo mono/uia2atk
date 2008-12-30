@@ -40,8 +40,6 @@ class DateTimePickerSample(Form):
 
         # set up domainupdown
         self.date_time_picker = DateTimePicker()
-        self.date_time_picker.CustomFormat = "MMMM dd, yyyy - dddd"
-        self.date_time_picker.Format = DateTimePickerFormat.Custom
         self.date_time_picker.ShowUpDown = True
         self.date_time_picker.ShowCheckBox = True
         self.date_time_picker.Width = self.Width - 10

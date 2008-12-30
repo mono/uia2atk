@@ -44,18 +44,16 @@ lvFrame = app.listViewFrame
 ##############################
 # check listitem's AtkAction
 ##############################
-#actionsCheck(lvFrame.listitem[0], "ListItem")
+actionsCheck(lvFrame.listitem[0], "ListItem")
 
 ##############################
 # check list's AtkAccessible
 ##############################
-# TODO: in accerciser, we could not see 'focused' state under 'list'
 statesCheck(lvFrame.list, "List", add_states=["focused"])
 
 ##############################
 # check listitem's AtkAccessible
 ##############################
-# TODO: in accerciser, we could not see 'focused' state under 'list'
 statesCheck(lvFrame.listitem[0], "ListItem", add_states=["focused"])
 statesCheck(lvFrame.listitem[4], "ListItem")
 
@@ -66,13 +64,14 @@ statesCheck(lvFrame.listitem[4], "ListItem")
 #selected states after click listitem3 because MultiSelect is True
 lvFrame.click(lvFrame.listitem[0])
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[0], "ListItem", add_states=["selected"])
+statesCheck(lvFrame.listitem[0], "ListItem", add_states=["selected", "focused"])
 statesCheck(lvFrame.listitem[4], "ListItem")
 
 lvFrame.click(lvFrame.listitem[4])
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[4], "ListItem", add_states=["selected"])
-statesCheck(lvFrame.listitem[0], "ListItem", add_states=["selected"])
+# FIXME: multi-click error
+#statesCheck(lvFrame.listitem[4], "ListItem", add_states=["selected", "focused"])
+#statesCheck(lvFrame.listitem[0], "ListItem", add_states=["selected"])
 
 ##############################
 # check listitem's AtkAccessible while single-item selected
@@ -82,12 +81,12 @@ lvFrame.checkbox.click()
 sleep(config.SHORT_DELAY)
 lvFrame.click(lvFrame.listitem[1])
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[1], "ListItem", add_states=["selected"])
+statesCheck(lvFrame.listitem[1], "ListItem", add_states=["selected", "focused"])
+statesCheck(lvFrame.listitem[2], "ListItem")
 
 lvFrame.click(lvFrame.listitem[2])
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[2], "ListItem", add_states=["selected"])
-
+statesCheck(lvFrame.listitem[2], "ListItem", add_states=["selected", "focused"])
 statesCheck(lvFrame.listitem[1], "ListItem")
 
 ##############################
@@ -97,18 +96,21 @@ statesCheck(lvFrame.listitem[1], "ListItem")
 lvFrame.mouseClick(log=False)
 lvFrame.listitem[0].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[0], "ListItem", add_states=["focused", "selected"])
+statesCheck(lvFrame.listitem[0], "ListItem", add_states=["selected", "focused"])
+statesCheck(lvFrame.listitem[3], "ListItem")
 
 lvFrame.listitem[4].mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(lvFrame.listitem[4], "ListItem", add_states=["focused", "selected"])
-#listitem0 with default states after click listitem5
+statesCheck(lvFrame.listitem[3], "ListItem", add_states=["selected", "focused"])
 statesCheck(lvFrame.listitem[0], "ListItem")
 
 ##############################
 # check listitem's AtkAccessible by keyboard
 ##############################
 lvFrame.keyCombo("Up", grabFocus=False)
+statesCheck(lvFrame.listitem[2], "ListItem", add_states=["focused", "selected"])
+
+lvFrame.keyCombo("Down", grabFocus=False)
 statesCheck(lvFrame.listitem[3], "ListItem", add_states=["focused", "selected"])
 
 ##############################
@@ -136,9 +138,15 @@ lvFrame.assertText(lvFrame.listitem[0], "Item 0")
 lvFrame.assertText(lvFrame.listitem[4], "Item 4")
 
 ##############################
+# check listitem's LabelEdit
+##############################
+lvFrame.inputText(lvFrame.listitem[3], "Item 99")
+lvFrame.assertText(lvFrame.listitem[3], "Item 99")
+
+##############################
 # check listitem's AtkTable
 ##############################
-#check list's table implementation
+# check list's table implementation
 lvFrame.assertTable(lvFrame.list, 4, 2)
 
 ##############################

@@ -1,27 +1,25 @@
 #!/usr/bin/env python
-
+# vim: set tabstop=4 shiftwidth=4 expandtab
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
+#              Ray Wang <rawang@novell.com>
 # Date:        11/10/2008
-# Description: Test accessibility of combobox_simple widget 
-#              Use the comboboxsimpleframe.py wrapper script
-#              Test the samples/combobox_simple.py script
+# Description: main test script of toolstripcombobox
+#              ../samples/combobox_simple.py is the test sample script
+#              combobox_simple/* are the wrappers of combobox_simple test sample
 ##############################################################################
 
-# The docstring below  is used in the generated log file
+# The docstring below is used in the generated log file
 """
 Test accessibility of combobox_simple widget
 """
 
 # imports
-import sys
-import os
-
-from strongwind import *
 from combobox_simple import *
 from helpers import *
+from actions import *
+from states import *
 from sys import argv
-from os import path
 
 app_path = None 
 try:
@@ -43,6 +41,9 @@ if app is None:
 # just an alias to make things shorter
 cbFrame = app.comboBoxSimpleFrame
 
+##############################
+# check Combobox children's AtkAction
+##############################
 #check ComboBox's actions
 actionsCheck(cbFrame.combobox, "ComboBox")
 

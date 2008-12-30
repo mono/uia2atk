@@ -56,6 +56,11 @@ class ListViewFrame(accessibles.Frame):
                                         "Not match Rows %s and Columns %s" % \
                                         (itable.nRows, itable.nColumns)
     
+    def inputText(self, accessible, text):
+        """input text to change item's Text"""
+        procedurelogger.action('input %s in "%s"' % (text, accessible))
+        accessible.text = text
+        
     # close application main window after running test
     def quit(self):
         self.altF4()
