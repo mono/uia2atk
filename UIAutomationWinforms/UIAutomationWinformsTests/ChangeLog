@@ -1,3 +1,9 @@
+2008-12-29  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* DateTimePickerProviderTest.cs: Add test for new DateTimePicker
+	support.
+
 2008-12-22  Mario Carrion  <mcarrion@novell.com>
 
 	* PrintPreviewControlProviderTest.cs: Not used variable removed.

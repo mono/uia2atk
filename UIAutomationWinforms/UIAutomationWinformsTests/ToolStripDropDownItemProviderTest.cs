@@ -349,6 +349,58 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			return new ToolStripDropDownButton ();
 		}
+
+		[Test]
+		public void Bug457990Test ()
+		{
+                        ToolStrip strip = new ToolStrip ();
+
+                        ToolStripDropDownButton cheeses = new ToolStripDropDownButton ();
+                        cheeses.Text = "Cheeses";
+                        cheeses.DropDownDirection = ToolStripDropDownDirection.Left;
+                        cheeses.ShowDropDownArrow = true;
+
+                        cheeses.DropDownItems.Add ("Brie");
+                        cheeses.DropDownItems.Add ("Camembert");
+                        cheeses.DropDownItems.Add ("Gruyere");
+                        cheeses.DropDownItems.Add ("Stilton");
+
+                        strip.Items.Add (cheeses);
+
+                        ToolStripDropDownButton ponies = new ToolStripDropDownButton ();
+                        ponies.Text = "Ponies";
+                        ponies.DropDownDirection = ToolStripDropDownDirection.Left;
+                        ponies.ShowDropDownArrow = true;
+
+                        ponies.DropDownItems.Add ("American Walking Pony");
+                        ponies.DropDownItems.Add ("Ariegeois pony");
+                        ponies.DropDownItems.Add ("Assateague Pony");
+                        ponies.DropDownItems.Add ("Asturian pony");
+                        ponies.DropDownItems.Add ("Australian Pony");
+                        ponies.DropDownItems.Add ("Avelignese Pony");
+
+                        strip.Items.Add (ponies);
+
+			Form.Controls.Add (strip);
+
+			IRawElementProviderFragment cheesesProvider
+				= (IRawElementProviderFragment)
+				  ProviderFactory.GetProvider (cheeses);
+
+			IRawElementProviderFragment poniesProvider
+				= (IRawElementProviderFragment)
+				  ProviderFactory.GetProvider (ponies);
+			
+			cheesesProvider.SetFocus ();
+
+			Console.WriteLine ("Cheeses selected? {0}", cheeses.Selected);
+			Console.WriteLine ("Ponies selected? {0}", ponies.Selected);
+
+			poniesProvider.SetFocus ();
+
+			Console.WriteLine ("Cheeses selected? {0}", cheeses.Selected);
+			Console.WriteLine ("Ponies selected? {0}", ponies.Selected);
+		}
 	}
 
 	[TestFixture]
