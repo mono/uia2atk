@@ -61,6 +61,7 @@ FILES =  \
 	DateTimePickerProviderTest.cs \
 	DomainUpDownProviderTest.cs \
 	ErrorProviderTest.cs \
+	FormProviderTest.cs \
 	GroupBoxProviderTest.cs \
 	HelpProviderTest.cs \
 	LabelProviderTest.cs \
@@ -102,7 +103,6 @@ FILES =  \
 	ToolTipProviderTest.cs \
 	TreeViewProviderTest.cs \
 	WebBrowserProviderTest.cs \
-	WindowProviderTest.cs \
 	WordTokenizerTest.cs 
 
 DATA_FILES = 

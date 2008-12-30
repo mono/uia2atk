@@ -1,5 +1,11 @@
 2008-12-30  Brad Taylor  <brad@getcoded.net>
 
+	* Makefile.am: 
+	* WindowProviderTest.cs: Rename WindowProviderTest to FormProviderTest
+	to reflect the SWF control name, not the ControlType.
+
+2008-12-30  Brad Taylor  <brad@getcoded.net>
+
 	* WindowProviderTest.cs: Remove HostRawElementProviderTest as it's
 	really a test of the AutomationInteropProvider, not the Window.
 

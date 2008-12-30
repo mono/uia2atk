@@ -39,7 +39,7 @@ using NUnit.Framework;
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
 	[TestFixture]
-	public class WindowProviderTest : BaseProviderTest
+	public class FormProviderTest : BaseProviderTest
 	{
 		
 #region IWindowProvider Tests
