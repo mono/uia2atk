@@ -1,3 +1,12 @@
+2008-12-30  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripButtonProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripButton/InvokeProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/ToolStripButton/InvokePatternInvokedEvent.cs:
+	Add new implementation for ToolStripButton.
+
 2008-12-29  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

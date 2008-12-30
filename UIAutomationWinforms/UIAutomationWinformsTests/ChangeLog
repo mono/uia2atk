@@ -1,3 +1,9 @@
+2008-12-30  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* ToolStripButtonProviderTest.cs: Add test for new ToolStripButton
+	support.
+
 2008-12-29  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

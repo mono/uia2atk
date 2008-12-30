@@ -91,6 +91,7 @@ FILES =  \
 	TextBoxProviderTest.cs \
 	TextRangeProviderTest.cs \
 	ToolBarProviderTest.cs \
+	ToolStripButtonProviderTest.cs \
 	ToolStripComboBoxProviderTest.cs \
 	ToolStripDropDownItemProviderTest.cs \
 	ToolStripLabelProviderTest.cs \

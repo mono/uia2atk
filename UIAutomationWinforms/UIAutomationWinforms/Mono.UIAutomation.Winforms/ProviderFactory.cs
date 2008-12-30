@@ -126,6 +126,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.ToolStripProgressBar tspb;
 			SWF.ToolStripComboBox tscb;
 			SWF.ToolStripSeparator tss;
+			SWF.ToolStripButton tsb;
 			
 			if (component == null)
 				return null;
@@ -189,6 +190,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ToolStripComboBoxProvider (tscb);
 			else if ((tss = component as SWF.ToolStripSeparator) != null)
 				provider = new ToolStripSeparatorProvider (tss);
+			else if ((tsb = component as SWF.ToolStripButton) != null)
+				provider = new ToolStripButtonProvider (tsb);
 			else if ((scb = component as SWF.ScrollBar) != null) {
 				//TODO:
 				//   We need to add here a ScrollableControlProvider and then verify
