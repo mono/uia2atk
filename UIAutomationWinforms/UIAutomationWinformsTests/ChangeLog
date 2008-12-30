@@ -1,5 +1,9 @@
 2008-12-30  Brad Taylor  <brad@getcoded.net>
 
+	* WindowProviderTest.cs: Flesh out some unimplemented tests.
+
+2008-12-30  Brad Taylor  <brad@getcoded.net>
+
 	* WindowProviderTest.cs: Test to ensure that IDockProvider is not
 	implemented.
 

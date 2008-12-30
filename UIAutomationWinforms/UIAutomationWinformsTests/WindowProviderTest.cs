@@ -146,11 +146,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					formClosingChecked = true;
 				};
 				
-				Console.WriteLine ("provider close 0: "+bridge.StructureChangedEvents.Count);
 				bridge.ResetEventLists ();
-				Console.WriteLine ("provider close 1: "+bridge.StructureChangedEvents.Count);
 				pattern.Close ();
-				Console.WriteLine ("provider close 2: "+bridge.StructureChangedEvents.Count);
 				
 				Assert.IsTrue (formClosed, "Form closed event didn't fire.");
 				Assert.IsTrue (formClosingChecked, "Interaction state while closing never confirmed.");
@@ -420,12 +417,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 #region IRawElementProviderFragmentRoot Tests
 		
+		/*
 		[Test]
 		[Ignore ("Not implemented")]
 		public void HostRawElementProviderTest ()
 		{
 			;
 		}
+		*/
 		
 		[Test]
 		public void ProviderOptionsTest ()
@@ -470,17 +469,36 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
 			}
 		}
+		*/
 		
 		[Test]
-		[Ignore ("Not implemented")]
 		public void BoundingRectangleTest ()
 		{
 			using (Form f = new Form ()) {
+				// XXX: Weird behaviors happen when the window
+				// is resized less than 110x110.  Investigate
+				// this.
+
+				f.Location = new System.Drawing.Point (0, 0);
+				f.Size = new System.Drawing.Size (200, 200);
+				
 				IRawElementProviderFragmentRoot provider =
 					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
+
+				Assert.AreEqual (0, provider.BoundingRectangle.X);
+				Assert.AreEqual (0, provider.BoundingRectangle.Y);
+				Assert.AreEqual (200, provider.BoundingRectangle.Width);
+				Assert.AreEqual (200, provider.BoundingRectangle.Height);
+
+				f.Location = new System.Drawing.Point (15, 20);
+				f.Size = new System.Drawing.Size (200, 300);
+
+				Assert.AreEqual (15, provider.BoundingRectangle.X);
+				Assert.AreEqual (20, provider.BoundingRectangle.Y);
+				Assert.AreEqual (200, provider.BoundingRectangle.Width);
+				Assert.AreEqual (300, provider.BoundingRectangle.Height);
 			}
 		}
-		*/
 		
 		[Test]
 		public void FragmentRootTest ()
@@ -503,57 +521,161 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}
 		}
 		
-		/*
 		[Test]
-		[Ignore ("Not implemented")]
 		public void GetRuntimeIdTest ()
 		{
 			using (Form f = new Form ()) {
 				IRawElementProviderFragmentRoot provider =
 					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
+
+				int[] runtimeId = provider.GetRuntimeId ();
+				Assert.IsNotNull (runtimeId, "Runtime ID is null");
+				Assert.AreEqual (2, runtimeId.Length, "Runtime ID list is not the right size");
+
+				Assert.AreEqual (AutomationInteropProvider.AppendRuntimeId,
+				                 runtimeId[0], "First item in runtime ID is not the AppendRuntimeId");
+
+				int automation_id = (int) provider.GetPropertyValue (
+					AutomationElementIdentifiers.AutomationIdProperty.Id);
+				Assert.AreEqual (automation_id, runtimeId[1],
+				                 "Second item in runtime ID is not the same as the control's AutomationId property");
 			}
 		}
 		
 		[Test]
-		[Ignore ("Not implemented")]
 		public void NavigateTest ()
 		{
 			using (Form f = new Form ()) {
 				IRawElementProviderFragmentRoot provider =
 					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
+
+				Button b = new Button ();
+				b.Location = new System.Drawing.Point (50, 50);
+
+				Label l = new Label ();
+				l.Location = new System.Drawing.Point (0, 50);
+
+				f.Controls.Add (b);
+				f.Controls.Add (l);
+				f.Show ();
+				
+				IRawElementProviderSimple buttonProvider = ProviderFactory.GetProvider (b);
+				Assert.AreEqual (buttonProvider, provider.Navigate (NavigateDirection.FirstChild),
+				                 "FirstChild navigation is incorrect");
+				
+				IRawElementProviderSimple labelProvider = ProviderFactory.GetProvider (l);
+				Assert.AreEqual (labelProvider, provider.Navigate (NavigateDirection.LastChild),
+				                 "LastChild navigation is incorrect");
+
+				using (Form f2 = new Form ()) {
+					f2.Show ();
+
+					// SPEC: Fragment roots do not enable
+					// navigation to a parent or siblings;
+					// navigation among fragment roots is
+					// handled by the default window
+					// providers.
+					Assert.IsNull (provider.Navigate (NavigateDirection.Parent),
+						       "Form is not returning null for parent");
+
+					Assert.IsNull (provider.Navigate (NavigateDirection.NextSibling),
+						       "Form is not returning null for next sibling");
+
+					Assert.IsNull (provider.Navigate (NavigateDirection.PreviousSibling),
+						       "Form is not returning null for previous sibling");
+				}
 			}
 		}
 		
 		[Test]
-		[Ignore ("Not implemented")]
 		public void SetFocusTest ()
 		{
-			using (Form f = new Form ()) {
-				IRawElementProviderFragmentRoot provider =
-					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
+			using (Form f1 = new Form ()) {
+				using (Form f2 = new Form ()) {
+					IRawElementProviderFragmentRoot p1 =
+						(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f1);
+					IRawElementProviderFragmentRoot p2 =
+						(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f2);
+
+					f1.Show ();
+					f2.Show ();
+
+					p1.SetFocus ();
+					Assert.IsTrue (f1.Focused, "Form #1 is not focused after SetFocus ()");
+					Assert.IsFalse(f2.Focused, "Form #2 is focused after Form #2 SetFocus ()");
+
+					p2.SetFocus ();
+					Assert.IsFalse (f1.Focused, "Form #1 is focused after Form #2 SetFocus ()");
+					Assert.IsTrue (f2.Focused, "Form #2 is not focused after SetFocus ()");
+				}
 			}
 		}
 		
 		[Test]
-		[Ignore ("Not implemented")]
 		public void ElementProviderFromPointTest ()
 		{
 			using (Form f = new Form ()) {
 				IRawElementProviderFragmentRoot provider =
 					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
+
+				Button b = new Button ();
+				b.Location = new System.Drawing.Point (50, 50);
+
+				Label l = new Label ();
+				l.Location = new System.Drawing.Point (0, 50);
+
+				f.Controls.Add (b);
+				f.Controls.Add (l);
+				f.Show ();
+
+				Assert.AreEqual (provider, provider.ElementProviderFromPoint (5, 5),
+				                 "ElementProviderFromPoint not returning form control for (5, 5)");
+				
+				IRawElementProviderSimple buttonProvider = ProviderFactory.GetProvider (b);
+				Assert.AreEqual (buttonProvider, provider.ElementProviderFromPoint (55, 55),
+				                 "ElementProviderFromPoint not returning button control for (55, 55)");
+
+				IRawElementProviderSimple labelProvider = ProviderFactory.GetProvider (l);
+				Assert.AreEqual (labelProvider, provider.ElementProviderFromPoint (7, 60),
+				                 "ElementProviderFromPoint not returning label control for (7, 60)");
 			}
 		}
 		
 		[Test]
-		[Ignore ("Not implemented")]
 		public void GetFocusTest ()
 		{
 			using (Form f = new Form ()) {
+				f.Show ();
+
 				IRawElementProviderFragmentRoot provider =
 					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
+
+				Assert.IsNull (provider.GetFocus (),
+				               "Nothing is selected and GetFocus is returning something");
+
+				Button b1 = new Button ();
+				b1.Location = new System.Drawing.Point (0, 0);
+				f.Controls.Add (b1);
+
+				Button b2 = new Button ();
+				b2.Location = new System.Drawing.Point (50, 50);
+				f.Controls.Add (b2);
+
+				IRawElementProviderSimple button1Provider =
+					ProviderFactory.GetProvider (b1);
+
+				b1.Focus ();
+				Assert.AreEqual (button1Provider, provider.GetFocus (),
+				                 "GetFocus is not returning the first button");
+
+				IRawElementProviderSimple button2Provider =
+					ProviderFactory.GetProvider (b2);
+
+				b2.Focus ();
+				Assert.AreEqual (button2Provider, provider.GetFocus (),
+				                 "GetFocus is not returning the second button");
 			}
 		}
-		*/
 
 #endregion
 
