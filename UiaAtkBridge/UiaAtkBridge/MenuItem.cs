@@ -50,9 +50,6 @@ namespace UiaAtkBridge
 
 			int controlType = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
-			if (invokeProvider == null)
-				throw new ArgumentException (
-				  String.Format ("Provider for Menu/MenuItem (control type {0}) should implement IInvokeProvider", controlType));
 			
 			OnChildrenChanged ();
 		}
@@ -169,7 +166,7 @@ namespace UiaAtkBridge
 		
 		public string GetName (int i)
 		{
-			if (i == 0)
+			if (i == 0 && invokeProvider != null)
 				return "click";
 			return null;
 		}

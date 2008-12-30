@@ -1,5 +1,9 @@
 2008-12-30  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* MenuItem.cs: Don't require Invoke pattern support.
+
+2008-12-30  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Adapter.cs: Prevent exception when BoundingRectangle is queried for an
 	Adapter without a Provider (like the generated windows for
 	ComboBoxes, etc).
