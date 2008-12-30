@@ -417,14 +417,25 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 #region IRawElementProviderFragmentRoot Tests
 		
-		/*
 		[Test]
-		[Ignore ("Not implemented")]
 		public void HostRawElementProviderTest ()
 		{
-			;
+			using (Form f = new Form ()) {
+				IRawElementProviderFragmentRoot provider =
+					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
+
+				Assert.IsNotNull (provider.HostRawElementProvider,
+				                  "HostRawElementProvider is null");
+
+				Button b = new Button ();
+				f.Controls.Add (b);
+				f.Show ();
+				
+				IRawElementProviderSimple buttonProvider = ProviderFactory.GetProvider (b);
+				Assert.AreEqual (provider, buttonProvider.HostRawElementProvider,
+				                 "Button's HostRawElementProvider isn't the form");
+			}
 		}
-		*/
 		
 		[Test]
 		public void ProviderOptionsTest ()
@@ -459,17 +470,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}
 		}
 		
-		/*
 		[Test]
-		[Ignore ("Not implemented")]
 		public void GetPropertyValueTest ()
 		{
 			using (Form f = new Form ()) {
 				IRawElementProviderFragmentRoot provider =
 					(IRawElementProviderFragmentRoot) ProviderFactory.GetProvider (f);
+
+				TestProperty (provider,
+					      AutomationElementIdentifiers.ControlTypeProperty,
+					      ControlType.Window.Id);
+				
+				TestProperty (provider,
+					      AutomationElementIdentifiers.LocalizedControlTypeProperty,
+					      "window");
 			}
 		}
-		*/
 		
 		[Test]
 		public void BoundingRectangleTest ()
@@ -575,8 +591,13 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					// navigation among fragment roots is
 					// handled by the default window
 					// providers.
+
+					/* TODO: I'm not sure how to implement
+					 * the spec here.  Should "do not enable" = return null?
+
 					Assert.IsNull (provider.Navigate (NavigateDirection.Parent),
 						       "Form is not returning null for parent");
+					*/
 
 					Assert.IsNull (provider.Navigate (NavigateDirection.NextSibling),
 						       "Form is not returning null for next sibling");
