@@ -32,12 +32,12 @@ using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Events.DataGrid
 {
-	internal class ListItemSelectionItemPatternElementSelectedEvent
+	internal class DataItemSelectionItemPatternElementSelectedEvent
 		: BaseAutomationEvent
 	{
 		#region Constructors
 
-		public ListItemSelectionItemPatternElementSelectedEvent (ListItemProvider provider)
+		public DataItemSelectionItemPatternElementSelectedEvent (ListItemProvider provider)
 			: base (provider, 
 			        SelectionItemPatternIdentifiers.ElementSelectedEvent)
 		{

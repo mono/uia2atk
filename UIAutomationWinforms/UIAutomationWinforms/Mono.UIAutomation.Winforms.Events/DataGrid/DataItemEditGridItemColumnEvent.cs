@@ -22,43 +22,57 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-using Mono.UIAutomation.Winforms.Behaviors.ListItem;
+using System;
+using System.ComponentModel;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.DataGrid;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
+namespace Mono.UIAutomation.Winforms.Events.DataGrid
 {
-
-	internal class ListItemSelectionItemProviderBehavior 
-		: SelectionItemProviderBehavior
+	internal class DataItemEditGridItemColumnEvent : BaseAutomationPropertyEvent
 	{
-		
 		#region Constructors
-		
-		public ListItemSelectionItemProviderBehavior (ListItemProvider provider)
-			: base (provider)
+
+		public DataItemEditGridItemColumnEvent (DataGridProvider.DataGridDataItemEditProvider provider)
+			: base (provider, 
+			        GridItemPatternIdentifiers.ColumnProperty)
 		{
+			this.provider = provider;
 		}
 		
 		#endregion
 		
-		#region IProviderBehavior Interface
-		
+		#region ProviderEvent Methods
+
 		public override void Connect ()
 		{
-			// FIXME: 
-			// SelectionItem.SelectionContainer may change, actually you can
-			// define two or more datagrid with the same datasource.
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent,
-			                   new ListItemSelectionItemPatternElementSelectedEvent ((ListItemProvider) Provider));
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementAddedEvent, 
-			                   new ListItemSelectionItemPatternElementAddedEvent ((ListItemProvider) Provider));
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementRemovedEvent, 
-			                   new SelectionItemPatternElementRemovedEvent ((ListItemProvider) Provider));
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternIsSelectedProperty, 
-			                   new ListItemSelectionItemPatternIsSelectedEvent ((ListItemProvider) Provider));
-		}	
+			provider.ItemProvider.DataGridProvider.CurrentTableStyle.GridColumnStyles.CollectionChanged += OnColumnPropertyEvent;
+		}
+
+		public override void Disconnect ()
+		{
+			provider.ItemProvider.DataGridProvider.CurrentTableStyle.GridColumnStyles.CollectionChanged -= OnColumnPropertyEvent;
+		}
 		
+		#endregion 
+		
+		#region Private methods
+
+		private void OnColumnPropertyEvent (object sender, 
+		                                    CollectionChangeEventArgs args)
+		{
+			RaiseAutomationPropertyChangedEvent ();
+		}
+
+		#endregion
+
+		#region Private Fields
+
+		private DataGridProvider.DataGridDataItemEditProvider provider;
+
 		#endregion
 	}
 }

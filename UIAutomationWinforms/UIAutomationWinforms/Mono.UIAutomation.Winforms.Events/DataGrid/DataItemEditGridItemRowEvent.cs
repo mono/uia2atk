@@ -32,16 +32,15 @@ using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Events.DataGrid
 {
-	internal class ListItemSelectionItemPatternElementAddedEvent
-		: BaseAutomationEvent
+	internal class DataItemEditGridItemRowEvent : BaseAutomationPropertyEvent
 	{
 		#region Constructors
 
-		public ListItemSelectionItemPatternElementAddedEvent (ListItemProvider provider)
+		public DataItemEditGridItemRowEvent (DataGridProvider.DataGridDataItemEditProvider provider)
 			: base (provider, 
-			        SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent)
+			        GridItemPatternIdentifiers.RowProperty)
 		{
-			selected = ((SWF.DataGrid) provider.Control).IsSelected (provider.Index);
+			this.provider = provider;
 		}
 		
 		#endregion
@@ -50,28 +49,24 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 
 		public override void Connect ()
 		{
-			// FIXME: Considerer NavigationBack event
-			
-			try {
-				// Event used add child. Usually happens when DataSource/DataMember are valid
+		 	try {
 				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
-				                        Provider.Control,
-				                        "UIASelectionChanged",
+				                        provider.ItemProvider.DataGridProvider.DataGrid,
+				                        "UIACollectionChanged",
 				                        this,
-				                        "OnElementAddedEvent");
-			} catch (NotSupportedException) {}
+				                        "OnUIACollectionChanged");
+			} catch (NotSupportedException) { }
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				// Event used add child. Usually happens when DataSource/DataMember are valid
+		 	try {
 				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
-				                           Provider.Control,
-				                           "UIASelectionChanged",
+				                           provider.ItemProvider.DataGridProvider.DataGrid,
+				                           "UIACollectionChanged",
 				                           this,
-				                           "OnElementAddedEvent");
-			} catch (NotSupportedException) {}
+				                           "OnUIACollectionChanged");
+			} catch (NotSupportedException) { }
 		}
 		
 		#endregion 
@@ -79,40 +74,21 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		#region Private methods
 
 #pragma warning disable 169
-		
-		private void OnElementAddedEvent (object sender, CollectionChangeEventArgs args)
+
+		private void OnUIACollectionChanged (object sender, 
+		                                     CollectionChangeEventArgs args)
 		{
-			if (args.Action != CollectionChangeAction.Add)
-				return;
-
-			ListItemProvider provider = (ListItemProvider) Provider;
-			SWF.DataGrid datagrid = (SWF.DataGrid) sender;
-
-			// FIXME: Remove reflection after committing patch
-			int selectedRows = 0;
-			try {
-				selectedRows 
-					= Helper.GetPrivateProperty<SWF.DataGrid, int> (typeof (SWF.DataGrid),
-					                                                datagrid,
-					                                                "UIASelectedRows");
-			} catch (NotSupportedException) {}
-			
-			if (!selected
-			    && selectedRows > 1
-			    && datagrid.IsSelected (provider.Index))
-				RaiseAutomationEvent ();
-			
-			selected = datagrid.IsSelected (provider.Index);
+			RaiseAutomationPropertyChangedEvent ();
 		}
 
 #pragma warning restore 169
 
 		#endregion
-		
+
 		#region Private Fields
-		
-		private bool selected;
-		
+
+		private DataGridProvider.DataGridDataItemEditProvider provider;
+
 		#endregion
 	}
 }

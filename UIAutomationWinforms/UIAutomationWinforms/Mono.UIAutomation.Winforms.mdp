@@ -1,4 +1,4 @@
-<Project name="Mono.UIAutomation.Winforms" fileversion="2.0" DefaultNamespace="Mono.UIAutomation.Winforms" language="C#" clr-version="Net_2_0" UseParentDirectoryAsNamespace="True" targetFramework="2.0" ctype="DotNetProject">
+<Project name="Mono.UIAutomation.Winforms" fileversion="2.0" language="C#" UseParentDirectoryAsNamespace="True" DefaultNamespace="Mono.UIAutomation.Winforms" clr-version="Net_2_0" targetFramework="2.0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="bin/Debug" signAssembly="True" assemblyKeyFile="../../mono-uia.snk" assembly="UIAutomationWinforms" />
@@ -309,7 +309,7 @@
     <File name="Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternSelectionEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/DataGrid/ListItemEditValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/TreeView/ScrollItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/DataGrid/ScrollProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontallyScrollableEvent.cs" subtype="Code" buildaction="Compile" />
@@ -331,14 +331,14 @@
     <File name="Mono.UIAutomation.Winforms.Behaviors/TreeView/ExpandCollapeProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/TreeView/ExpandCollapsePatternExpandCollapseStateEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemEditValuePatternIsReadOnlyEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/DataGrid/ListItemSelectionItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemSelectionItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/TreeView/ValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/TreeView/ValuePatternValueEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListView/GridPatternColumnReorderedEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternElementAddedEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternElementRemovedEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternElementSelectedEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternIsSelectedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementAddedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementRemovedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementSelectedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternIsSelectedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/DataGrid/SelectionProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternSelectionEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternInvalidatedEvent.cs" subtype="Code" buildaction="Compile" />
@@ -356,6 +356,25 @@
     <File name="Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternVerticallyScrollableEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternVerticalScrollPercent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternVerticalViewSizeEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemGridItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/ButtonInvokeProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/InvokeProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartRangeValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DateTimePicker/ButtonInvokePatternInvokedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DateTimePicker/InvokePatternInvokedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternIsReadOnlyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternMaximumEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternMinimumEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternValueEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/DateTimePickerProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemScrollItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemGridItemPatternRowEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditGridItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditTableItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditValuePatternValueEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemColumnEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemRowEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

@@ -22,32 +22,40 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.DataGrid;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 {
-
-	internal class ListItemEditValueProviderBehavior 
+	internal class DataItemValueProviderBehavior
 		: ProviderBehavior, IValueProvider
 	{
+		#region Constructors
 		
-		public ListItemEditValueProviderBehavior (DataGridProvider.DataGridDataItemEditProvider provider)
-			: base (provider)
+		public DataItemValueProviderBehavior (ListItemProvider itemProvider)
+			: base (itemProvider)
 		{
+//			viewItem = (SWF.ListViewItem) itemProvider.ObjectItem;
 		}
-
+		
+		#endregion
+		
 		#region ProviderBehavior Specialization
-
+		
 		public override AutomationPattern ProviderPattern {
 			get { return ValuePatternIdentifiers.Pattern; }
 		}
 		
 		public override void Connect ()
 		{
-			// FIXME: Implement
+//			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
+//			                   new ListItemValuePatternIsReadOnlyEvent ((ListItemProvider) Provider));
+//			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
+//			                   new ListItemValuePatternValueEvent ((ListItemProvider) Provider));
 		}
 		
 		public override void Disconnect ()
@@ -58,24 +66,59 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 			                   null);
 		}
 
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == ValuePatternIdentifiers.IsReadOnlyProperty.Id)
+				return IsReadOnly;
+			else if (propertyId == ValuePatternIdentifiers.ValueProperty.Id)
+				return Value;
+			else
+				return base.GetPropertyValue (propertyId);
+		}
+
 		#endregion
 
 		#region IValueProvider implementation 
 		
 		public void SetValue (string value)
 		{
-			// FIXME: Implement
+//			if (IsReadOnly == true)
+//				throw new ElementNotEnabledException ();
+//
+//			PerformSetValue (value);
 		}
 		
 		public bool IsReadOnly {
-			get { return false; } // FIXME: Implement
+			get { return false; }
 		}
 		
 		public string Value {
-			get { return (string) Provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id); }
+			get { return string.Empty; }
 		}
 		
 		#endregion
+
+//		#region Private Methods
+//
+//		private void PerformSetValue (string value)
+//		{
+//			if (viewItem.ListView.InvokeRequired == true) {
+//				viewItem.ListView.BeginInvoke (new ListItemSetValueDelegate (PerformSetValue),
+//				                               new object [] { value } );
+//				return;
+//			}
+//			
+//			viewItem.Text = value;
+//		}
+//
+//		#endregion
+//		
+//		#region Private Fields
+//		
+//		private SWF.ListViewItem viewItem;
+//		
+//		#endregion
 	}
 
+	delegate void ListItemSetValueDelegate (string value);
 }

@@ -27,16 +27,16 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ListView;
+using Mono.UIAutomation.Winforms.Events.DataGrid;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ListView
+namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 {
-	internal class ListItemEditTableItemProviderBehavior
-		: ListItemEditGridItemProviderBehavior, ITableItemProvider
+	internal class DataItemEditTableItemProviderBehavior
+		: DataItemEditGridItemProviderBehavior, ITableItemProvider
 	{
 		#region Constructors
 		
-		public ListItemEditTableItemProviderBehavior (ListViewProvider.ListViewListItemEditProvider editProvider)
+		public DataItemEditTableItemProviderBehavior (DataGridProvider.DataGridDataItemEditProvider editProvider)
 			: base (editProvider)
 		{
 		}
@@ -80,12 +80,17 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 
 		public IRawElementProviderSimple[] GetColumnHeaderItems ()
 		{
-			ListViewProvider listViewProvider 
-				= (ListViewProvider) ProviderFactory.FindProvider (EditProvider.ItemProvider.ListView);
-
-			return new IRawElementProviderSimple [] {
-				listViewProvider.HeaderProvider.GetHeaderItemFrom (EditProvider.ColumnHeader)
-			};
+//			return EditProvider.ItemProvider.GetItemProvider (provider.Column);
+//			
+////			EditProvider.ItemProvider.DataGridProvider.GetColumnHeaderItem ();
+//			
+////			ListViewProvider listViewProvider 
+////				= (ListViewProvider) ProviderFactory.FindProvider (EditProvider.ItemProvider.ListView);
+////
+////			return new IRawElementProviderSimple [] {
+////				listViewProvider.HeaderProvider.GetHeaderItemFrom (EditProvider.ColumnHeader)
+////			};
+			return new IRawElementProviderSimple [0];
 		}
 
 		public IRawElementProviderSimple[] GetRowHeaderItems ()
@@ -93,6 +98,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			return new IRawElementProviderSimple [0];
 		}
 		
-		#endregion		
+		#endregion
 	}
 }

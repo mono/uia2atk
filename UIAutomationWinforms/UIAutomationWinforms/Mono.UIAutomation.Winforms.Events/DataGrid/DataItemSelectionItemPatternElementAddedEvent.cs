@@ -32,15 +32,14 @@ using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Events.DataGrid
 {
-	internal class SelectionItemPatternElementRemovedEvent
+	internal class DataItemSelectionItemPatternElementAddedEvent
 		: BaseAutomationEvent
 	{
-
 		#region Constructors
 
-		public SelectionItemPatternElementRemovedEvent (ListItemProvider provider)
+		public DataItemSelectionItemPatternElementAddedEvent (ListItemProvider provider)
 			: base (provider, 
-			        SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent)
+			        SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent)
 		{
 			selected = ((SWF.DataGrid) provider.Control).IsSelected (provider.Index);
 		}
@@ -59,7 +58,7 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 				                        Provider.Control,
 				                        "UIASelectionChanged",
 				                        this,
-				                        "OnElementRemovedEvent");
+				                        "OnElementAddedEvent");
 			} catch (NotSupportedException) {}
 		}
 
@@ -71,7 +70,7 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 				                           Provider.Control,
 				                           "UIASelectionChanged",
 				                           this,
-				                           "OnElementRemovedEvent");
+				                           "OnElementAddedEvent");
 			} catch (NotSupportedException) {}
 		}
 		
@@ -81,19 +80,29 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 
 #pragma warning disable 169
 		
-		private void OnElementRemovedEvent (object sender, CollectionChangeEventArgs args)
+		private void OnElementAddedEvent (object sender, CollectionChangeEventArgs args)
 		{
-			if (args.Action != CollectionChangeAction.Remove)
+			if (args.Action != CollectionChangeAction.Add)
 				return;
 
 			ListItemProvider provider = (ListItemProvider) Provider;
+			SWF.DataGrid datagrid = (SWF.DataGrid) sender;
 
-			if (selected
-			    && provider.ListProvider.SelectedItemsCount > 1
-			    && !provider.ListProvider.IsItemSelected (provider))
+			// FIXME: Remove reflection after committing patch
+			int selectedRows = 0;
+			try {
+				selectedRows 
+					= Helper.GetPrivateProperty<SWF.DataGrid, int> (typeof (SWF.DataGrid),
+					                                                datagrid,
+					                                                "UIASelectedRows");
+			} catch (NotSupportedException) {}
+			
+			if (!selected
+			    && selectedRows > 1
+			    && datagrid.IsSelected (provider.Index))
 				RaiseAutomationEvent ();
 			
-			selected = provider.ListProvider.IsItemSelected (provider);
+			selected = datagrid.IsSelected (provider.Index);
 		}
 
 #pragma warning restore 169

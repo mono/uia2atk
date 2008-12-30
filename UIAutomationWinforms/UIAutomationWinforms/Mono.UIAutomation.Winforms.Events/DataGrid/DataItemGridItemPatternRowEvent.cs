@@ -32,17 +32,15 @@ using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Events.DataGrid
 {
-	internal class ListItemSelectionItemPatternIsSelectedEvent
+	internal class DataItemGridItemPatternRowEvent
 		: BaseAutomationPropertyEvent
 	{
-		
 		#region Constructors
 
-		public ListItemSelectionItemPatternIsSelectedEvent (ListItemProvider provider)
+		public DataItemGridItemPatternRowEvent (ListItemProvider provider)
 			: base (provider, 
-			        SelectionItemPatternIdentifiers.IsSelectedProperty)
+			        GridItemPatternIdentifiers.RowProperty)
 		{
-			selected = ((SWF.DataGrid) provider.Control).IsSelected (provider.Index);
 		}
 		
 		#endregion
@@ -51,56 +49,43 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 
 		public override void Connect ()
 		{
-			// FIXME: Considerer NavigationBack event
-
 			try {
-				// Event used add child. Usually happens when DataSource/DataMember are valid
 				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
-				                        Provider.Control,
-				                        "UIASelectionChanged",
-				                        this,
-				                        "OnIsSelectedChanged");
-			} catch (NotSupportedException) {}
+				                        (SWF.DataGrid) Provider.Control, 
+				                        "UIACollectionChanged",
+				                        this, 
+				                        "OnRowPropertyEvent");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
+			}
 		}
 
 		public override void Disconnect ()
 		{
 			try {
-				// Event used add child. Usually happens when DataSource/DataMember are valid
 				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
-				                           Provider.Control,
-				                           "UIASelectionChanged",
-				                           this,
-				                           "OnIsSelectedChanged");
-			} catch (NotSupportedException) {}
+				                           (SWF.DataGrid) Provider.Control, 
+				                           "UIACollectionChanged",
+				                           this, 
+				                           "OnRowPropertyEvent");
+			} catch (NotSupportedException) {
+				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
+			}
 		}
 		
 		#endregion 
 		
-		#region Private methods
-
-#pragma warning disable 169
+		#region Protected methods
 		
-		private void OnIsSelectedChanged (object sender, CollectionChangeEventArgs args)
+// This method is used via reflection, so ignore the never used warning
+#pragma warning disable 169
+		private void OnRowPropertyEvent (object sender, 
+		                                 CollectionChangeEventArgs args)
 		{
-			ListItemProvider provider = (ListItemProvider) Provider;
-			bool selectedChanged = provider.ListProvider.IsItemSelected (provider);
-
-			if (selectedChanged != selected) {
-			    RaiseAutomationPropertyChangedEvent ();
-				selected = selectedChanged;
-			}
+			RaiseAutomationPropertyChangedEvent ();
 		}
-
 #pragma warning restore 169
 
 		#endregion
-
-		#region Private Fields
-		
-		private bool selected;
-		
-		#endregion
 	}
 }
-

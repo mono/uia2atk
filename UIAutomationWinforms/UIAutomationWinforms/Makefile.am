@@ -53,15 +53,20 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ComboBox/ValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/CustomInvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditGridItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditTableItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditValueProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemGridItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemScrollItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemSelectionItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/GridProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/DataGrid/ListItemEditValueProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/DataGrid/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/ScrollProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/SelectionProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartRangeValueProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/DataGrid/SelectionProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/DataGrid/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/SelectionProviderBehavior.cs \
@@ -162,26 +167,30 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/CustomInvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemColumnEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemRowEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditValuePatternValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemGridItemPatternRowEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementAddedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementRemovedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternIsSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/GridPatternColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/GridPatternRowEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternElementAddedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternElementRemovedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternElementSelectedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternIsSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontallyScrollableEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontalViewSizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternVerticallyScrollableEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternVerticalScrollPercent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternVerticalViewSizeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternInvalidatedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternMaximumEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternMinimumEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternValueEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternInvalidatedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemAutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementAddedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/ListItemSelectionItemPatternElementRemovedEvent.cs \

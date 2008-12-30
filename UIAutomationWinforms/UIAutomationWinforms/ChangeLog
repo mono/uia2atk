@@ -1,3 +1,72 @@
+2008-12-29  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Behaviors and events added:
+	DataItemEdit.GridItem, DataItemEditTableItem, DataItemEdit,
+	DataItemGrid, DataItemScroll, DataItemValue.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/ListItemEditValueProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/ListItemSelectionItemProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternIsSelectedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternElementAddedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternElementRemovedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/ListItemSelectionItemPatternElementSelectedEvent.cs:
+	ListItem -> DataItem.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternIsSelectedEvent.cs:
+	DataItem.SelectionItem.IsSelected Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementSelectedEvent.cs:
+	DataItem.SelectionItem.ElementSelected Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementRemovedEvent.cs:
+	DataItem.SelectionItem.ElementRemoved Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementAddedEvent.cs:
+	DataItem.SelectionItem.ElementAdded Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemGridItemPatternRowEvent.cs:
+	DataItem.GridItem.Row Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditValuePatternValueEvent.cs:
+	DataItem.Edit.Value.Value Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemRowEvent.cs:
+	DataItem.Edit.GridItem.Row Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemColumnEvent.cs:
+	DataItem.Edit.GridItem.Column Automation Event.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditTableItemProviderBehavior.cs:
+	Should return an empty array, not null.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditGridItemProviderBehavior.cs:
+	DataItem.Edit.GridItem Behavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditTableItemProviderBehavior.cs:
+	DataItem.Edit.TableItem Behavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditValueProviderBehavior.cs:
+	DataItem.Edit.Value Behavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemGridItemProviderBehavior.cs:
+	DataItem.GridItem Behavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemScrollItemProviderBehavior.cs:
+	DataItem.ScrollItem Behavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemSelectionItemProviderBehavior.cs:
+	DataItem.SelectionItem Behavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemValueProviderBehavior.cs:
+	DataItem.Value Behavior.
+
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: ObjectItem protected
+	setter.
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: GridItem, ScrollItem,
+	Value implementation. Support for Column.CollectionChanged.
+
 2008-12-29  Brad Taylor  <brad@getcoded.net>
 
 	* ChangeLog: 
