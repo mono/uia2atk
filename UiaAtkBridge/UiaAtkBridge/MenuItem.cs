@@ -108,13 +108,15 @@ namespace UiaAtkBridge
 
 		internal bool IsToolBarItem {
 			get {
-				Atk.Object testObj = Parent;
-				if (testObj != null)
-					testObj = testObj.Parent;
-				if (testObj != null)
-					testObj = testObj.Parent;
-				Adapter parentAdapter = testObj as Adapter;
-				return (parentAdapter != null && (int)parentAdapter.Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.ToolBar.Id);
+				Adapter adapter = Parent as Adapter;
+				for (;;) {
+					Atk.Object parent = adapter.Parent;
+					if (adapter.Provider != null && (int)adapter.Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.ToolBar.Id)
+						return true;
+					if (parent == null || parent == adapter)
+					return false;
+					adapter = parent as Adapter;
+				}
 			}
 		}
 

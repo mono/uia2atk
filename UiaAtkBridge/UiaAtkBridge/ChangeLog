@@ -1,5 +1,10 @@
 2008-12-30  Mike Gorse  <mgorse@novell.com>
 
+	* menuItem.cs: Don't require that the ToolBar be a great grandparent
+	  of the MenuItem.  Also, check for a null provider.
+
+2008-12-30  Mike Gorse  <mgorse@novell.com>
+
 	* MenuItem.cs: Set Layer to Widget for a ToolBar item.
 
 2008-12-30  Mike Gorse  <mgorse@novell.com>
