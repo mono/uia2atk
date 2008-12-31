@@ -28,6 +28,7 @@ using SD = System.Drawing;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Bridge;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -39,8 +40,17 @@ namespace Mono.UIAutomation.Winforms
 		
 		public MessageBoxFormProvider (SWF.MessageBox.MessageBoxForm form) : base (form)
 		{
+			this.form = form;
 		}
 
+		#endregion
+
+		#region Public Methods
+
+		public SWF.MessageBox.MessageBoxForm Form {
+				get { return form; }
+		}
+		
 		#endregion
 
 		#region Public Methods
@@ -49,22 +59,31 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeChildControlStructure ();
 
-			// FIXME: Add icon
 			if (labelProvider == null) {
 				labelProvider = new MessageBoxFormLabelProvider (this);
 				labelProvider.Initialize ();
 				OnNavigationChildAdded (false, labelProvider);
 			}
+			if (imageProvider == null) {
+				imageProvider = new MessageBoxImageProvider (this);
+				imageProvider.Initialize ();
+				OnNavigationChildAdded (false, imageProvider);
+			}
 		}
 
 		public override void FinalizeChildControlStructure ()
 		{
-			base. FinalizeChildControlStructure ();
+			base.FinalizeChildControlStructure ();
 
 			if (labelProvider != null) {
 				labelProvider.Terminate ();
 				OnNavigationChildRemoved (false, labelProvider);
 				labelProvider = null;
+			}
+			if (imageProvider != null) {
+				imageProvider.Terminate ();
+				OnNavigationChildRemoved (false, imageProvider);
+				imageProvider = null;
 			}
 		}
 
@@ -72,6 +91,8 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Private Fields
 
+		private SWF.MessageBox.MessageBoxForm form;
+		private MessageBoxImageProvider imageProvider;
 		private MessageBoxFormLabelProvider labelProvider;
 
 		#endregion
@@ -98,15 +119,9 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
-				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
-					string msg = string.Empty;
-					try {
-						msg = Helper.GetPrivateProperty<SWF.MessageBox.MessageBoxForm, string> (typeof (SWF.MessageBox.MessageBoxForm),
-							                                                                    (SWF.MessageBox.MessageBoxForm) provider.Control,
-							                                                                    "UIAMessage");
-					} catch (NotSupportedException) { }
-					return msg;
-				} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) 
+					return provider.Form.UIAMessage;
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 					Rect bounds 
@@ -114,17 +129,64 @@ namespace Mono.UIAutomation.Winforms
 					return Helper.IsOffScreen (bounds, provider.Control, true);
 				} else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					return false;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-					SD.Rectangle rect1 = SD.Rectangle.Empty;
-					try {
-						SD.RectangleF rect = Helper.GetPrivateProperty<SWF.MessageBox.MessageBoxForm, SD.RectangleF> (typeof (SWF.MessageBox.MessageBoxForm),
-						                                                                                              (SWF.MessageBox.MessageBoxForm) provider.Control,
-					        	                                                                                      "UIAMessageRectangle");
-						rect1 = new SD.Rectangle ((int) rect.X, (int) rect.Y,
-						                          (int) rect.Width, (int) rect.Height);
-					} catch (NotSupportedException) { }
-					return Helper.RectangleToRect (provider.Control.TopLevelControl.RectangleToScreen (rect1));
-				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+					return Helper.RectangleToRect (provider.Control.TopLevelControl.RectangleToScreen (provider.Form.UIAMessageRectangle));
+				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+					return Helper.GetClickablePoint (this);
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			private MessageBoxFormProvider provider;
+		}
+
+		#endregion
+
+		#region Internal Class: Image Provider
+
+		internal class MessageBoxImageProvider : FragmentControlProvider, IEmbeddedImage
+		{
+			public MessageBoxImageProvider (MessageBoxFormProvider provider) 
+				: base (null)
+			{
+				this.provider = provider;
+			}
+
+			#region IEmbeddedImage Members
+			public Rect Bounds {
+				get { return (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id); }
+			}
+	
+			public string Description {
+				get { return string.Empty; }
+			}
+			#endregion
+
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get {  return provider; }
+			}
+
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.Image.Id;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return "image";
+				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
+					return true;
+				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return string.Empty;
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+					Rect bounds 
+						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					return Helper.IsOffScreen (bounds, provider.Control, true);
+				} else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+					return Helper.RectangleToRect (provider.Control.TopLevelControl.RectangleToScreen (provider.Form.UIAIconRectangle));
+				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 					return Helper.GetClickablePoint (this);
 				else
 					return base.GetProviderPropertyValue (propertyId);
@@ -136,4 +198,3 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 	}
 }
-

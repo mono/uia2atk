@@ -1,3 +1,14 @@
+2008-12-31  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: MessageBoxProvider added.
+
+	* Mono.UIAutomation.Winforms/MessageBoxFormProvider.cs: ImageProvider
+	support. Reflection removed.  Needs mcs/SWF >= 122303.
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: MessageBoxProvider
+	enabled.
+
 2008-12-31  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

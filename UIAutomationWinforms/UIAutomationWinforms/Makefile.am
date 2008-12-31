@@ -363,6 +363,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ListViewProvider.cs \
 	Mono.UIAutomation.Winforms/MaskedTextBoxProvider.cs \
 	Mono.UIAutomation.Winforms/MenuStripProvider.cs \
+	Mono.UIAutomation.Winforms/MessageBoxFormProvider.cs \
 	Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs \
 	Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs \
 	Mono.UIAutomation.Winforms/MonthCalendarProvider.cs \

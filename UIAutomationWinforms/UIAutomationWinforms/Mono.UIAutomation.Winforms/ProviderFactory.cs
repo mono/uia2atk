@@ -128,9 +128,9 @@ namespace Mono.UIAutomation.Winforms
 			SWF.ToolStripComboBox tscb;
 			SWF.ToolStripSeparator tss;
 			SWF.ToolStripButton tsb;
+			SWF.MessageBox.MessageBoxForm msgForm;
 			SWF.PopupButtonPanel pbp;
 			SWF.PopupButtonPanel.PopupButton pbtn;
-//			SWF.MessageBox.MessageBoxForm msgForm;
 			
 			if (component == null)
 				return null;
@@ -140,9 +140,10 @@ namespace Mono.UIAutomation.Winforms
 				return provider;
 			}
 
-			/*if ((msgForm = component as SWF.MessageBox.MessageBoxForm) != null)
+			// NOTE: MessageBoxForm must always be before Form in this list.
+			if ((msgForm = component as SWF.MessageBox.MessageBoxForm) != null)
 				provider = new MessageBoxFormProvider (msgForm);
-			else */if ((f = component as SWF.Form) != null) {
+			else if ((f = component as SWF.Form) != null) {
 				provider = new FormProvider (f);
 				formProviders.Add ((IRawElementProviderFragmentRoot) provider);
 			} else if ((wb = component as SWF.WebBrowser) != null)
