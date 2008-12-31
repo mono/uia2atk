@@ -1,3 +1,11 @@
+2008-12-31  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Not building MessageBoxForm 
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Ignoring MessageBoxForm
+	provider.
+
 2008-12-31  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Events/SplitContainer/SplitterPanelTransformPatternCanResizeEvent.cs:
