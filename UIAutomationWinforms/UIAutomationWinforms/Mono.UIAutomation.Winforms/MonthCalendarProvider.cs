@@ -24,6 +24,7 @@
 //
 
 using System;
+using Mono.Unix;
 using System.Threading;
 using System.Globalization;
 using System.Windows.Forms;
@@ -79,7 +80,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Calendar.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return "calendar";
+				return Catalog.GetString ("calendar");
 
 			return base.GetProviderPropertyValue (propertyId);
 		}

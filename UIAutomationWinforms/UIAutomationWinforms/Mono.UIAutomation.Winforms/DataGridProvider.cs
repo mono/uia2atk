@@ -23,6 +23,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using Mono.Unix;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -201,7 +202,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.DataGrid.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "datagrid";
+				return Catalog.GetString ("data grid");
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return true;
 			else
@@ -536,7 +537,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "header";
+					return Catalog.GetString ("header");
 				else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
 					return OrientationType.Horizontal;
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
@@ -653,7 +654,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "header item";
+					return Catalog.GetString ("header item");
 				else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
 					return OrientationType.Horizontal;
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
@@ -792,7 +793,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.DataItem.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "data item";
+					return Catalog.GetString ("data item");
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
@@ -889,7 +890,7 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Edit.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "edit";
+					return Catalog.GetString ("edit");
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return provider.GetName (this);
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) 

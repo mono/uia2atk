@@ -20,37 +20,18 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Sandy Armstrong <sanfordarmstrong@gmail.com>
+//      Brad Taylor <brad@getcoded.net>
 // 
 
-using System;
-using Mono.Unix;
-using System.Collections.Generic;
-using SWF = System.Windows.Forms;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-
-using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
+using System.IO;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal class PopupButtonPanelProvider : FragmentRootControlProvider
+	internal static class Globals
 	{
-		public PopupButtonPanelProvider (SWF.PopupButtonPanel buttonPanel) :
-			base (buttonPanel)
-		{
-		}
-
-		protected override object GetProviderPropertyValue (int propertyId)
-		{
-			if (propertyId == AEIds.ControlTypeProperty.Id)
-				return ControlType.ToolBar.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("tool bar");
-			else if (propertyId == AEIds.LabeledByProperty.Id)
-				return null;
-			else
-				return base.GetProviderPropertyValue (propertyId);
-		}
+		public const string CatalogName = "@GETTEXT_PACKAGE@";
+		public const string InstallationPrefix = "@prefix@";
+		public static readonly string LocalePath
+			= Path.Combine (Path.Combine (InstallationPrefix, "share"), "locale");
 	}
 }

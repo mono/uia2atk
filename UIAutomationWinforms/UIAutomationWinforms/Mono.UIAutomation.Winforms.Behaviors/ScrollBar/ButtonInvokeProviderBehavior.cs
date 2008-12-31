@@ -24,6 +24,7 @@
 // 
 
 using System;
+using Mono.Unix;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -68,7 +69,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ScrollBar
 			if (propertyId == AutomationElementIdentifiers.AcceleratorKeyProperty.Id)
 				return null; // TODO
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "button";
+				return Catalog.GetString ("button");
 			else
 				return null;
 		}

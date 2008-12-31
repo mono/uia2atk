@@ -33,6 +33,8 @@ using System.Windows.Automation.Provider;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
+using Mono.Unix;
+
 using Mono.UIAutomation.Winforms.Behaviors.ToolStripSplitButton;
 
 namespace Mono.UIAutomation.Winforms
@@ -52,7 +54,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.SplitButton.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return "split button";
+				return Catalog.GetString ("split button");
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
 			else

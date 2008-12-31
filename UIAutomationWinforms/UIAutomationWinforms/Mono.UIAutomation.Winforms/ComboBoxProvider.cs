@@ -30,6 +30,7 @@ using SWF = System.Windows.Forms;
 using System.Windows.Automation.Provider;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
+using Mono.Unix;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 using Mono.UIAutomation.Winforms.Behaviors.ComboBox;
@@ -74,7 +75,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
 				return true;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return "combo box";
+				return Catalog.GetString ("combo box");
 			else if (propertyId == AEIds.HasKeyboardFocusProperty.Id
 				 && comboboxControl.DropDownStyle == SWF.ComboBoxStyle.DropDown)
 				return false;
@@ -273,7 +274,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "list";
+					return Catalog.GetString ("list");
 				else if (propertyId == AutomationElementIdentifiers.IsScrollPatternAvailableProperty.Id)
 					return IsBehaviorEnabled (ScrollPatternIdentifiers.Pattern);
 				else if (propertyId == AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)

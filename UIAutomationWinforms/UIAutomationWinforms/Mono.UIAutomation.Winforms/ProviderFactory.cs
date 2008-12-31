@@ -24,6 +24,7 @@
 // 
 
 using System;
+using Mono.Unix;
 using System.Collections.Generic;
 using System.ComponentModel;
 using SWF = System.Windows.Forms;
@@ -50,6 +51,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		static ProviderFactory ()
 		{
+			Catalog.Init (Globals.CatalogName, Globals.LocalePath);
+
 			componentProviders =
 				new Dictionary<Component,IRawElementProviderFragment> ();
 			

@@ -27,6 +27,7 @@ using System;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.Unix;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.PrintPreviewControl;
 using Mono.UIAutomation.Winforms.Events;
@@ -81,7 +82,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Pane.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "pane";
+				return Catalog.GetString ("pane");
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

@@ -30,6 +30,7 @@ using SWF = System.Windows.Forms;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.Unix;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ListView;
 using Mono.UIAutomation.Winforms.Events;
@@ -94,9 +95,9 @@ namespace Mono.UIAutomation.Winforms
 					return ControlType.List.Id;
 			} else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id) {
 				if (listView.View == SWF.View.Details)
-					return "data grid";
+					return Catalog.GetString ("data grid");
 				else
-					return "list";
+					return Catalog.GetString ("list");
 			} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return true;
 			else

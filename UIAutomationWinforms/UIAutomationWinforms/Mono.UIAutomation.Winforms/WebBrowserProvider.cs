@@ -27,6 +27,7 @@
 using System;
 using System.Reflection;
 
+using Mono.Unix;
 using Mono.WebBrowser;
 using Mono.WebBrowser.DOM;
 
@@ -50,7 +51,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Pane.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return "pane";
+				return Catalog.GetString ("pane");
 			else if (propertyId == AEIds.HasNativeAccessibilityObjectProperty.Id)
 				return true;
 			else if (propertyId == AEIds.NativeAccessibilityObjectProperty.Id) {

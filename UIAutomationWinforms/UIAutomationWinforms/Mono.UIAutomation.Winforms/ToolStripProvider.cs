@@ -33,6 +33,8 @@ using System.Windows.Automation.Provider;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
+using Mono.Unix;
+
 namespace Mono.UIAutomation.Winforms
 {
 	internal class ToolStripProvider : FragmentRootControlProvider
@@ -52,7 +54,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.ToolBar.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return "tool bar";
+				return Catalog.GetString ("tool bar");
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
 			else if (propertyId == AEIds.NameProperty.Id)

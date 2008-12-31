@@ -28,6 +28,7 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using Mono.Unix;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.TextBox;
 
@@ -87,7 +88,8 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return textboxbase.Multiline == true ? ControlType.Document.Id : ControlType.Edit.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return textboxbase.Multiline == true ? "document" : "edit";
+				return textboxbase.Multiline == true ? Catalog.GetString ("document")
+				                                     : Catalog.GetString ("edit");
 			else 
 				return base.GetProviderPropertyValue (propertyId);
 		}

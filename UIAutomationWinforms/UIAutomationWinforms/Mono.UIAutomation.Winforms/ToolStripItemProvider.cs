@@ -30,6 +30,8 @@ using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
+using Mono.Unix;
+
 using Mono.UIAutomation.Winforms.Events;
 using ETSI = Mono.UIAutomation.Winforms.Events.ToolStripItem;
 
@@ -60,7 +62,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.MenuItem.Id; // TODO: Verify this default
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return "menu item";
+				return Catalog.GetString ("menu item");
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
 			else if (propertyId == AEIds.NameProperty.Id)

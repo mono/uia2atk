@@ -24,6 +24,7 @@
 // 
 
 using System;
+using Mono.Unix;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -60,7 +61,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Pane.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "pane";
+				return Catalog.GetString ("pane");
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

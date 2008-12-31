@@ -24,6 +24,7 @@
 // 
 
 using System;
+using Mono.Unix;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -48,7 +49,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Separator.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "separator";
+				return Catalog.GetString ("separator");
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return false;
 			else

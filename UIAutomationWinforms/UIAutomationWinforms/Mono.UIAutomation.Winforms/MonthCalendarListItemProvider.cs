@@ -24,6 +24,7 @@
 //
 
 using System;
+using Mono.Unix;
 using System.Threading;
 using System.Globalization;
 using System.Windows.Forms;
@@ -116,7 +117,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.ListItem.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return "list item";
+				return Catalog.GetString ("list item");
 			else if (propertyId == AEIds.NameProperty.Id)
 				return Text;
 
@@ -157,7 +158,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Text.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return "text";
+				return Catalog.GetString ("text");
 			else if (propertyId == AEIds.NameProperty.Id)
 				return listItemProvider.Text;
 

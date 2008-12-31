@@ -24,6 +24,7 @@
 // 
 
 using System;
+using Mono.Unix;
 using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -54,7 +55,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Pane.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "pane";
+				return Catalog.GetString ("pane");
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return false;
 			else

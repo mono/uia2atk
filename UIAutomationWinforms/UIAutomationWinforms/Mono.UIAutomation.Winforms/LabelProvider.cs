@@ -24,6 +24,7 @@
 // 
 
 using System;
+using Mono.Unix;
 using System.Windows.Forms;
 
 using System.Windows.Automation;
@@ -64,7 +65,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return false;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "text";
+				return Catalog.GetString ("text");
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 				return null;
 			else

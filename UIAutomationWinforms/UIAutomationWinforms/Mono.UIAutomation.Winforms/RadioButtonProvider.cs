@@ -28,6 +28,7 @@ using System.Windows.Forms;
 
 using System.Windows.Automation;
 
+using Mono.Unix;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.RadioButton;
 
@@ -61,7 +62,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 				return null;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "radio button";
+				return Catalog.GetString ("radio button");
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

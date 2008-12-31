@@ -1,3 +1,56 @@
+2008-12-31  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Globals.cs.in: 
+	* Mono.UIAutomation.Winforms/FormProvider.cs: 
+	* Mono.UIAutomation.Winforms/PaneProvider.cs: 
+	* Mono.UIAutomation.Winforms/LabelProvider.cs: 
+	* Mono.UIAutomation.Winforms/PanelProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: 
+	* Mono.UIAutomation.Winforms/TabPageProvider.cs: 
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: 
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: 
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: 
+	* Mono.UIAutomation.Winforms/TreeViewProvider.cs: 
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: 
+	* Mono.UIAutomation.Winforms/SplitterProvider.cs: 
+	* Mono.UIAutomation.Winforms/MenuStripProvider.cs: 
+	* Mono.UIAutomation.Winforms/LinkLabelProvider.cs: 
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: 
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs: 
+	* Mono.UIAutomation.Winforms/PictureBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/UpDownBaseProvider.cs: 
+	* Mono.UIAutomation.Winforms/WebBrowserProvider.cs: 
+	* Mono.UIAutomation.Winforms/TabControlProvider.cs: 
+	* Mono.UIAutomation.Winforms/StatusStripProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs: 
+	* Mono.UIAutomation.Winforms/ProgressBarProvider.cs: 
+	* Mono.UIAutomation.Winforms/RadioButtonProvider.cs: 
+	* Mono.UIAutomation.Winforms/PopupButtonProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: 
+	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: 
+	* Mono.UIAutomation.Winforms/MessageBoxFormProvider.cs: 
+	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: 
+	* Mono.UIAutomation.Winforms/SplitContainerProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripButtonProvider.cs: 
+	* Mono.UIAutomation.Winforms/PopupButtonPanelProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripSeparatorProvider.cs: 
+	* Mono.UIAutomation.Winforms/PrintPreviewControlProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripSplitButtonProvider.cs: 
+	* Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs: 
+	* Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/ButtonInvokeBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollBar/ButtonInvokeProviderBehavior.cs: 
+	Add internationalization support to LocalizedControlType properties.
+
 2008-12-31  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

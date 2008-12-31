@@ -34,6 +34,8 @@ using System.Windows.Automation.Provider;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
+using Mono.Unix;
+
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Behaviors.TreeView;
 using ETVTN = Mono.UIAutomation.Winforms.Events.TreeView.TreeNode;
@@ -161,7 +163,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.Tree.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return "tree";
+				return Catalog.GetString ("tree");
 			return base.GetProviderPropertyValue (propertyId);
 		}
 
@@ -269,7 +271,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.TreeItem.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return "tree item";
+				return Catalog.GetString ("tree item");
 			else if (propertyId == AEIds.NameProperty.Id)
 				return node.Text;
 			else if (propertyId == AEIds.LabeledByProperty.Id)

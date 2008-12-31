@@ -24,6 +24,7 @@
 // 
 
 using System;
+using Mono.Unix;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -55,7 +56,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 				return null;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "tool bar";
+				return Catalog.GetString ("tool bar");
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
@@ -199,7 +200,7 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.MenuItem.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "menu item";
+					return Catalog.GetString ("menu item");
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)

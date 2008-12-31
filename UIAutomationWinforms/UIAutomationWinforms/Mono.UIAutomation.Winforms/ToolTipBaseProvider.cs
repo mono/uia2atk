@@ -23,6 +23,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using Mono.Unix;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Automation;
@@ -58,7 +59,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 				return null;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "tool tip";
+				return Catalog.GetString ("tool tip");
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return false;
 			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)

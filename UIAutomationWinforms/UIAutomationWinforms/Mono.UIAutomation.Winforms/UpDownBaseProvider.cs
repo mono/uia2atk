@@ -27,6 +27,7 @@ using System;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.Unix;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.UpDownBase;
 using Mono.UIAutomation.Winforms.Navigation;
@@ -94,7 +95,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Spinner.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "spinner";
+				return Catalog.GetString ("spinner");
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
@@ -156,7 +157,7 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Button.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "button";
+					return Catalog.GetString ("button");
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return GetNameProperty ();
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)

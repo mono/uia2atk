@@ -33,6 +33,8 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 using Mono.UIAutomation.Winforms.Behaviors.DateTimePicker;
 
+using Mono.Unix;
+
 namespace Mono.UIAutomation.Winforms
 {
 	internal class DateTimePickerProvider : FragmentRootControlProvider
@@ -82,7 +84,8 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return control.ShowCheckBox ? ControlType.CheckBox.Id : ControlType.Pane.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return control.ShowCheckBox ? "check box" : "pane";
+				return control.ShowCheckBox ? Catalog.GetString ("check box")
+				                            : Catalog.GetString ("pane");
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
@@ -186,7 +189,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AEIds.ControlTypeProperty.Id)
 					return ControlType.Button.Id;
 				else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-					return "button";
+					return Catalog.GetString ("button");
 				return base.GetProviderPropertyValue (propertyId);
 			}
 
@@ -253,7 +256,8 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AEIds.ControlTypeProperty.Id)
 					return IsStringValue ? ControlType.Text.Id : ControlType.Spinner.Id;
 				else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-					return IsStringValue ? "text" : "spinner";
+					return IsStringValue ? Catalog.GetString ("text")
+				                             : Catalog.GetString ("spinner");
 				return base.GetProviderPropertyValue (propertyId);
 			}
 

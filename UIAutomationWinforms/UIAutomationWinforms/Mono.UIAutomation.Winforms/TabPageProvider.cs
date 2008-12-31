@@ -24,6 +24,7 @@
 //
 
 using System;
+using Mono.Unix;
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Windows.Automation;
@@ -47,7 +48,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.TabItem.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return "tab item";
+				return Catalog.GetString ("tab item");
 
 			return base.GetProviderPropertyValue (propertyId);
 		}

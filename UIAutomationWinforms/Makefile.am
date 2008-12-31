@@ -2,7 +2,7 @@
 EXTRA_DIST =  expansions.m4 mono-uia.snk
 
 if ENABLE_TESTS
-SUBDIRS =  UIAutomationWinforms UIAutomationWinformsTests
+SUBDIRS =  UIAutomationWinforms UIAutomationWinformsTests po
 else
-SUBDIRS =  UIAutomationWinforms
+SUBDIRS =  UIAutomationWinforms po
 endif

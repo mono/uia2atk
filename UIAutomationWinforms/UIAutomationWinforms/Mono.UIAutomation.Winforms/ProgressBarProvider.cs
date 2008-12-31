@@ -26,6 +26,7 @@ using System;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.Unix;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ProgressBar;
 
@@ -56,7 +57,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.ProgressBar.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "progress bar";
+				return Catalog.GetString ("progress bar");
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

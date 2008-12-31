@@ -25,6 +25,7 @@
 // 
 
 using System;
+using Mono.Unix;
 using SD = System.Drawing;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
@@ -89,7 +90,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Button
 		public override object GetPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "button";
+				return Catalog.GetString ("button");
 			else
 				return null;
 		}

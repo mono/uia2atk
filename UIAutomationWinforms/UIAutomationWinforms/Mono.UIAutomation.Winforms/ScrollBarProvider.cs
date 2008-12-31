@@ -28,6 +28,7 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using Mono.Unix;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ScrollBar;
 using Mono.UIAutomation.Winforms.Events;
@@ -83,7 +84,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.ScrollBar.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "scroll bar";
+				return Catalog.GetString ("scroll bar");
 			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 				return null;
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
@@ -277,7 +278,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Thumb.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "thumb";
+					return Catalog.GetString ("thumb");
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 					return false;
 				else

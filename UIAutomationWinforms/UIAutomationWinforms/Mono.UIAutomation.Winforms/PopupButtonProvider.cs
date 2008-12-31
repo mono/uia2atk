@@ -24,6 +24,7 @@
 // 
 
 using System;
+using Mono.Unix;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -54,7 +55,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.MenuItem.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return "menu item";
+				return Catalog.GetString ("menu item");
 			else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
 			else

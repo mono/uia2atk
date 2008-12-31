@@ -1,3 +1,9 @@
+2008-12-31  Brad Taylor  <brad@getcoded.net>
+
+	* autogen.sh: Add intltoolize step to autogen.
+	* Makefile.am: Add po directory to SUBDIRS for i18n support.
+	* configure.ac: Add intltool magic.
+
 2008-12-08  Stephen Shaw  <sshaw@decriptor.com>
 
 	* configure.ac: Added a check for mono-data in configure.ac

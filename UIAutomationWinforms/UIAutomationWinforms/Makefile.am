@@ -43,6 +43,7 @@ RESGEN=resgen2
 all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
+	Globals.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/CheckBox/ToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/CheckedListBox/ListItemToggleProviderBehavior.cs \
@@ -418,6 +419,7 @@ RESOURCES =
 
 REFERENCES =  \
 	System \
+	Mono.Posix \
 	System.Core \
 	System.Data \
 	System.Drawing \

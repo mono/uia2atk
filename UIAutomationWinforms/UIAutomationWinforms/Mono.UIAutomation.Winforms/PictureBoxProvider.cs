@@ -28,6 +28,7 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Forms;
+using Mono.Unix;
 using Mono.UIAutomation.Bridge;
 
 namespace Mono.UIAutomation.Winforms
@@ -86,7 +87,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.Image.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "image";
+				return Catalog.GetString ("image");
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}		

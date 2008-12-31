@@ -23,6 +23,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 //
 using System;
+using Mono.Unix;
 using System.Windows;
 using SD = System.Drawing;
 using SWF = System.Windows.Forms;
@@ -171,7 +172,7 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Image.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "image";
+					return Catalog.GetString ("image");
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)

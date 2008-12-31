@@ -33,6 +33,8 @@ using System.Windows.Automation.Provider;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
+using Mono.Unix;
+
 namespace Mono.UIAutomation.Winforms
 {
 	internal class MenuStripProvider : ToolStripProvider
@@ -49,7 +51,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return ControlType.MenuBar.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return "menu bar";
+				return Catalog.GetString ("menu bar");
 			else if (propertyId == AEIds.OrientationProperty.Id) {
 				switch (menu.Orientation) {
 				case Orientation.Vertical:

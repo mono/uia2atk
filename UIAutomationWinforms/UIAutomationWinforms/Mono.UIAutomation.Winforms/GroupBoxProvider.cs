@@ -25,6 +25,7 @@
 //
 
 using System;
+using Mono.Unix;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
@@ -56,7 +57,7 @@ namespace Mono.UIAutomation.Winforms
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			} else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "group";
+				return Catalog.GetString ("group");
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

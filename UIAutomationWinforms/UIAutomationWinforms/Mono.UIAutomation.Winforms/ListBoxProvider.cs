@@ -30,6 +30,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using System.Windows;
+using Mono.Unix;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ListBox;
 using Mono.UIAutomation.Winforms.Events;
@@ -104,7 +105,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "list";
+				return Catalog.GetString ("list");
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
 				if (string.IsNullOrEmpty (listboxControl.AccessibleName))
 					return listboxControl.Text;

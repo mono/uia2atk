@@ -31,6 +31,8 @@ using System.Windows.Automation.Provider;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
+using Mono.Unix;
+
 using Mono.UIAutomation.Winforms.Events;
 using ETSI = Mono.UIAutomation.Winforms.Events.ToolStripItem;
 using Mono.UIAutomation.Winforms.Behaviors.ToolStripItem;
@@ -84,7 +86,8 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AEIds.ControlTypeProperty.Id)
 				return label.IsLink ? ControlType.Hyperlink.Id : ControlType.Text.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return label.IsLink ? "hyperlink" : "text";
+				return label.IsLink ? Catalog.GetString ("hyperlink")
+				                    : Catalog.GetString ("text");
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

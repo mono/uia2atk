@@ -24,6 +24,7 @@
 // 
 
 using System;
+using Mono.Unix;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -63,7 +64,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.CheckBox.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "check box";
+				return Catalog.GetString ("check box");
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id) 	 
 				return null; 	 
 			else

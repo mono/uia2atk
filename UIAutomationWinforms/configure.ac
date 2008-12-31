@@ -3,6 +3,13 @@ dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.54])
 AC_INIT([UIAutomationWinforms], [0.9])
 AM_INIT_AUTOMAKE([foreign 1.9 tar-ustar])
+AC_PROG_INTLTOOL([0.21])
+
+ALL_LINGUAS="es"
+
+GETTEXT_PACKAGE=UIAutomationWinforms
+AC_SUBST(GETTEXT_PACKAGE)
+AM_GLIB_GNU_GETTEXT
 
 dnl pkg-config
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
@@ -88,10 +95,12 @@ PKG_CHECK_MODULES([GLIB_SHARP_20], [glib-sharp-2.0])
 PKG_CHECK_MODULES([GTK_SHARP_20], [gtk-sharp-2.0])
 
 AC_CONFIG_FILES([
-UIAutomationWinforms/Makefile
-Makefile
-UIAutomationWinformsTests/Makefile
 UIAutomationWinformsTests/providertest.sh
+UIAutomationWinformsTests/Makefile
+UIAutomationWinforms/Globals.cs
+UIAutomationWinforms/Makefile
+po/Makefile.in
+Makefile
 ])
 
 AC_OUTPUT

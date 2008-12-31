@@ -10,6 +10,7 @@ CONFIGURE=configure.ac
 : ${LIBTOOLIZE=libtoolize}
 : ${ACLOCAL=aclocal}
 : ${LIBTOOL=libtool}
+: ${INTLTOOLIZE=intltoolize}
 
 srcdir=`dirname $0`
 test -z "$srcdir" && srcdir=.
@@ -68,6 +69,11 @@ esac
 (grep "^AM_PROG_LIBTOOL" $CONFIGURE >/dev/null) && {
     echo "Running $LIBTOOLIZE ..."
     $LIBTOOLIZE --force --copy
+}
+
+(grep "^AC_PROG_INTLTOOL" $CONFIGURE >/dev/null) && {
+    echo "Running $INTLTOOLIZE ..."
+    $INTLTOOLIZE --force --copy
 }
 
 echo "Running $ACLOCAL $aclocalinclude ..."

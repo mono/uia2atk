@@ -32,6 +32,8 @@ using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
+using Mono.Unix;
+
 using Mono.UIAutomation.Bridge;
 
 using Mono.UIAutomation.Winforms.Behaviors;
@@ -69,7 +71,7 @@ namespace Mono.UIAutomation.Winforms
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return ControlType.StatusBar.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return "status bar";
+				return Catalog.GetString ("status bar");
 			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 				return null;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
@@ -220,7 +222,7 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Text.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "text";
+					return Catalog.GetString ("text");
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
 					return BoundingRectangle;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
