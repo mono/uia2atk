@@ -1,5 +1,9 @@
 2008-12-30  Mike Gorse  <mgorse@novell.com>
 
+	* MenuItem.cs: Set Layer to Widget for a ToolBar item.
+
+2008-12-30  Mike Gorse  <mgorse@novell.com>
+
 	* Makefile.am, UiaAtkBridge.mdp, AutomationBridge.cs, Tree.cs,
 	  TreeItem.cs: Support TreeView.
 

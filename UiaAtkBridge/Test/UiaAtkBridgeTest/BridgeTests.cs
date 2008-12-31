@@ -614,6 +614,8 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (Atk.Role.MenuItem, child.Role,
 				                 String.Format ("Child role #{0}", i));
 				InterfaceText (child, les_schtroumpfs [i]);
+				Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (child);
+				Assert.AreEqual (Atk.Layer.Widget, atkComponent.Layer, "MenuItem layer");
 			}
 		}
 

@@ -1,5 +1,9 @@
 2008-12-30  Mike Gorse  <mgorse@novell.com>
 
+	* BridgeTests.cs: Test ToolStripMenuItem layer.
+
+2008-12-30  Mike Gorse  <mgorse@novell.com>
+
 	* BridgeTester.cs: Support TreeView.
 
 2008-12-30  Brad Taylor  <brad@getcoded.net>

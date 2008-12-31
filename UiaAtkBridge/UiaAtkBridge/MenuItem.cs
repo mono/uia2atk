@@ -103,7 +103,19 @@ namespace UiaAtkBridge
 		}
 
 		public override Atk.Layer Layer {
-			get { return Atk.Layer.Popup; }
+			get { return IsToolBarItem? Atk.Layer.Widget: Atk.Layer.Popup; }
+		}
+
+		internal bool IsToolBarItem {
+			get {
+				Atk.Object testObj = Parent;
+				if (testObj != null)
+					testObj = testObj.Parent;
+				if (testObj != null)
+					testObj = testObj.Parent;
+				Adapter parentAdapter = testObj as Adapter;
+				return (parentAdapter != null && (int)parentAdapter.Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.ToolBar.Id);
+			}
 		}
 
 		internal void Deselect ()
