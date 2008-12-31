@@ -1,0 +1,39 @@
+Index: System.Windows.Forms/MessageBox.cs
+===================================================================
+--- System.Windows.Forms/MessageBox.cs	(revision 122218)
++++ System.Windows.Forms/MessageBox.cs	(working copy)
+@@ -42,7 +42,11 @@
+ 	public class MessageBox
+ 	{
+ 		#region Private MessageBoxForm class
++#if NET_2_0 // UIA Framework
++		internal class MessageBoxForm : Form
++#elif
+ 		private class MessageBoxForm : Form
++#endif
+ 		{
+ 			#region MessageBoxFrom Local Variables
+ 			const int space_border = 10;
+@@ -525,6 +529,22 @@
+ 				this.Close ();
+ 			}
+ 			#endregion
++
++#if NET_2_0
++		
++			#region UIA Framework: Methods, Properties and Events
++
++			internal string UIAMessage {
++				get { return msgbox_text; }
++			}
++
++			internal RectangleF UIAMessageRectangle {
++				get { return text_rect; }
++			}
++
++			#endregion
++
++#endif
+ 		}
+ 		#endregion	// Private MessageBoxForm class
+ 
