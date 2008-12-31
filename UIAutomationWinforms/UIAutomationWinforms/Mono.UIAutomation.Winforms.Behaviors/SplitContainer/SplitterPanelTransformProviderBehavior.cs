@@ -62,11 +62,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.SplitContainer
 		
 		public override void Disconnect ()
 		{
-			Provider.SetEvent (ProviderEventType.TransformPatternCanMoveProperty,
-			                   null);
 			Provider.SetEvent (ProviderEventType.TransformPatternCanResizeProperty,
-			                   null);
-			Provider.SetEvent (ProviderEventType.TransformPatternCanRotateProperty,
 			                   null);
 		}
 		

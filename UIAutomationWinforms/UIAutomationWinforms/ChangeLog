@@ -1,3 +1,11 @@
+2008-12-31  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Events/SplitContainer/SplitterPanelTransformPatternCanResizeEvent.cs:
+	The SplitContainer is in Provider.Container, not Provider.Control.
+
+	* Mono.UIAutomation.Winforms.Behaviors/SplitContainer/SplitterPanelTransformProviderBehavior.cs:
+	Remove unnecessery SetEvent calls.
+
 2008-12-31  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

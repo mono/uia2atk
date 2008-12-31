@@ -48,7 +48,7 @@ namespace Mono.UIAutomation.Winforms.Events.SplitContainer
 		{
 			try {
 				Helper.AddPrivateEvent (typeof (SWF.SplitContainer),
-				                        (SWF.SplitContainer) Provider.Control,
+				                        (SWF.SplitContainer) Provider.Container,
 				                        "UIACanResizeChanged",
 				                        this,
 				                        "OnCanResizeChanged");
@@ -59,7 +59,7 @@ namespace Mono.UIAutomation.Winforms.Events.SplitContainer
 		{
 			try {
 				Helper.RemovePrivateEvent (typeof (SWF.SplitContainer),
-				                           (SWF.SplitContainer) Provider.Control,
+				                           (SWF.SplitContainer) Provider.Container,
 				                           "UIACanResizeChanged",
 				                           this,
 				                           "OnCanResizeChanged");
