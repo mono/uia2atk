@@ -113,6 +113,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.Splitter s;
 			SWF.ToolBar tb;
 			SWF.TreeView tv;
+			SWF.DataGrid dgrid;
 			SWF.DateTimePicker dtp;
 			SWF.PrintPreviewControl ppc;
 			
@@ -127,6 +128,7 @@ namespace Mono.UIAutomation.Winforms
 			SWF.ToolStripComboBox tscb;
 			SWF.ToolStripSeparator tss;
 			SWF.ToolStripButton tsb;
+			SWF.MessageBox.MessageBoxForm msgForm;
 			
 			if (component == null)
 				return null;
@@ -136,7 +138,9 @@ namespace Mono.UIAutomation.Winforms
 				return provider;
 			}
 
-			if ((f = component as SWF.Form) != null) {
+			if ((msgForm = component as SWF.MessageBox.MessageBoxForm) != null)
+				provider = new MessageBoxFormProvider (msgForm);
+			else if ((f = component as SWF.Form) != null) {
 				provider = new FormProvider (f);
 				formProviders.Add ((IRawElementProviderFragmentRoot) provider);
 			} else if ((wb = component as SWF.WebBrowser) != null)
@@ -240,6 +244,8 @@ namespace Mono.UIAutomation.Winforms
 				provider = new ToolBarProvider (tb);
 			else if ((tv = component as SWF.TreeView) != null)
 				provider = new TreeViewProvider (tv);
+			else if ((dgrid = component as SWF.DataGrid) != null)
+				provider = new DataGridProvider (dgrid);
 			else if ((dtp = component as SWF.DateTimePicker) != null)
 				provider = new DateTimePickerProvider (dtp);
 			else if ((ppc = component as SWF.PrintPreviewControl) != null)

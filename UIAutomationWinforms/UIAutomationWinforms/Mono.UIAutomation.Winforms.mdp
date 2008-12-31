@@ -375,6 +375,10 @@
     <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemColumnEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemRowEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/ToolStripButton/InvokeProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ToolStripButton/InvokePatternInvokedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/ToolStripButtonProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/MessageBoxFormProvider.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
