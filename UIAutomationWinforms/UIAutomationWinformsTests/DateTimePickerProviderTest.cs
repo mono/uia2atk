@@ -294,22 +294,39 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		[Test]
-		public void InvokeTest ()
+		public void ToggleTest ()
 		{
+			picker.ShowCheckBox = false;
+			IToggleProvider toggleProvider
+				= pickerProvider.GetPatternProvider (
+					TogglePatternIdentifiers.Pattern.Id) as IToggleProvider;
+			Assert.IsNull (toggleProvider,
+			               "With ShowCheckBox = false, DateTimePicker does not implement IToggleProvider");
+
 			picker.ShowCheckBox = true;
 
-			IInvokeProvider invokeProvider
-				= pickerProvider.GetPatternProvider (
-					InvokePatternIdentifiers.Pattern.Id) as IInvokeProvider;
-			Assert.IsNotNull (invokeProvider,
-			                  "With ShowCheckBox = true, DateTimePicker does not implement IInvokeProvider");
+			toggleProvider = pickerProvider.GetPatternProvider (
+				TogglePatternIdentifiers.Pattern.Id) as IToggleProvider;
+			Assert.IsNotNull (toggleProvider,
+			                  "With ShowCheckBox = true, DateTimePicker does not implement IToggleProvider");
 
-			picker.ShowCheckBox = false;
-			invokeProvider
-				= pickerProvider.GetPatternProvider (
-					InvokePatternIdentifiers.Pattern.Id) as IInvokeProvider;
-			Assert.IsNull (invokeProvider,
-			               "With ShowCheckBox = false, DateTimePicker does not implement IInvokeProvider");
+			picker.Checked = false;
+			Assert.AreEqual (ToggleState.Off, toggleProvider.ToggleState,
+			                 "With Checked = false, toggleProvider is not returning ToggleState.Off");
+
+			picker.Checked = true;
+			Assert.AreEqual (ToggleState.On, toggleProvider.ToggleState,
+			                 "With Checked = true, toggleProvider is not returning ToggleState.On");
+
+			toggleProvider.Toggle ();
+			Assert.IsFalse (picker.Checked, "After toggling off, Checked is still true");
+			Assert.AreEqual (ToggleState.Off, toggleProvider.ToggleState,
+			                 "After toggling off, toggleProvider is not returning ToggleState.Off");
+
+			toggleProvider.Toggle ();
+			Assert.IsTrue (picker.Checked, "After toggling on, Checked is still false");
+			Assert.AreEqual (ToggleState.On, toggleProvider.ToggleState,
+			                 "After toggling on, toggleProvider is not returning ToggleState.On");
 		}
 
 		protected override Control GetControlInstance ()

@@ -24,73 +24,42 @@
 // 
 
 using System;
-using SD = System.Drawing;
 using System.Windows.Automation;
 using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
 using System.Windows.Automation.Provider;
 
-using Mono.UIAutomation.Bridge;
-using Mono.UIAutomation.Winforms;
-using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.DateTimePicker;
-
-namespace Mono.UIAutomation.Winforms.Behaviors.DateTimePicker
+namespace Mono.UIAutomation.Winforms.Events.DateTimePicker
 {
-	internal class InvokeProviderBehavior 
-		: ProviderBehavior, IInvokeProvider
+	internal class TogglePatternToggleStateEvent
+		: BaseAutomationPropertyEvent
 	{
 #region Constructor
-		public InvokeProviderBehavior (DateTimePickerProvider provider)
-			: base (provider)
+		public TogglePatternToggleStateEvent (DateTimePickerProvider provider) 
+			: base (provider, TogglePatternIdentifiers.ToggleStateProperty)
 		{
-			this.dateTimePicker = ((SWF.DateTimePicker) provider.Control);
 		}
 #endregion
 		
-#region IProviderBehavior Interface
+#region IConnectable Overrides
 		public override void Connect ()
 		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			                   new InvokePatternInvokedEvent ((DateTimePickerProvider) Provider));
+			((SWF.DateTimePicker) Provider.Control)
+				.UIAChecked += new EventHandler (OnChecked);
 		}
-		
+
 		public override void Disconnect ()
 		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			                   null);
-		}
-		
-		public override AutomationPattern ProviderPattern { 
-			get { return InvokePatternIdentifiers.Pattern; }
+			((SWF.DateTimePicker) Provider.Control)
+				.UIAChecked -= new EventHandler (OnChecked);
 		}
 #endregion
-		
-#region IInvokeProvider Members
-		public virtual void Invoke ()
-		{
-			if (!Provider.Control.Enabled)
-				throw new ElementNotEnabledException ();
 
-			PerformClick ();
-		}
-#endregion	
-		
 #region Private Methods
-		private void PerformClick ()
+		private void OnChecked (object o, EventArgs args)
 		{
-			if (Provider.Control.InvokeRequired) {
-				Provider.Control.BeginInvoke (
-					new SWF.MethodInvoker (PerformClick));
-				return;
-			}
-
-			dateTimePicker.Checked = !dateTimePicker.Checked;
+			RaiseAutomationPropertyChangedEvent ();
 		}
-#endregion
-
-#region Private Fields
-		private SWF.DateTimePicker dateTimePicker;
 #endregion
 	}
-
 }

@@ -109,10 +109,10 @@ namespace Mono.UIAutomation.Winforms
 		private void UpdateBehaviors ()
 		{
 			if (control.ShowCheckBox) {
-				SetBehavior (InvokePatternIdentifiers.Pattern,
-				             new InvokeProviderBehavior (this));
+				SetBehavior (TogglePatternIdentifiers.Pattern,
+				             new ToggleProviderBehavior (this));
 			} else {
-				SetBehavior (InvokePatternIdentifiers.Pattern,
+				SetBehavior (TogglePatternIdentifiers.Pattern,
 				             null);
 			}
 		}

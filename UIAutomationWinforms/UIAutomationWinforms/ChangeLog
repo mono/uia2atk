@@ -1,3 +1,13 @@
+2008-12-31  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/InvokeProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/ToggleProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/InvokePatternInvokedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/TogglePatternToggleStateEvent.cs:
+	Implement ToggleProvider instead of InvokeProvider. [Fixes #463065]
+
 2008-12-30  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

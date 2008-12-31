@@ -65,7 +65,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/ButtonInvokeProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/InvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/ToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartRangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemValueProviderBehavior.cs \
@@ -187,7 +187,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/ButtonInvokePatternInvokedEvent.cs \
-	Mono.UIAutomation.Winforms.Events/DateTimePicker/InvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DateTimePicker/TogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternMaximumEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternMinimumEvent.cs \
