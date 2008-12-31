@@ -95,7 +95,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 		#region IGridItemProvider Specialization
 		
 		public int Row {
-			get { return itemProvider.Row; }
+			get { return itemProvider.Index; }
 		}
 		
 		public int Column {

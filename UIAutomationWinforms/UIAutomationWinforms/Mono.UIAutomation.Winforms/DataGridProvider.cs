@@ -46,7 +46,7 @@ namespace Mono.UIAutomation.Winforms
 		public DataGridProvider (SWF.DataGrid datagrid) : base (datagrid)
 		{
 			this.datagrid = datagrid;
-			items = new Dictionary<object, ListItemProvider> ();
+			items = new List<ListItemProvider> ();
 		}
 
 		#endregion
@@ -84,9 +84,9 @@ namespace Mono.UIAutomation.Winforms
 				return new IRawElementProviderSimple [0];
 			else {
 				List<IRawElementProviderSimple> selection = new List<IRawElementProviderSimple> ();
-				foreach (KeyValuePair<object, ListItemProvider> pair in items) {
-					if (IsItemSelected (pair.Value))
-						selection.Add (pair.Value);
+				foreach (ListItemProvider item in items) {
+					if (IsItemSelected (item))
+						selection.Add (item);
 				}
 				return selection.ToArray ();
 			}
@@ -101,12 +101,7 @@ namespace Mono.UIAutomation.Winforms
 			if (row < 0 || column < 0 || row >= rowCount || column >= columnCount)
 			    throw new ArgumentOutOfRangeException ();
 
-			object objectcell = datagrid [row, 0];
-			ListItemProvider itemProvider;
-			if (items.TryGetValue (objectcell, out itemProvider))
-				return itemProvider.GetChildProviderAt (column);
-			else
-				return null;
+			return items [row].GetChildProviderAt (column);
 		}
 
 		#endregion
@@ -240,12 +235,7 @@ namespace Mono.UIAutomation.Winforms
 			if (lastCurrencyManager == null)
 				return -1;
 
-			for (int index = 0; index < lastCurrencyManager.Count; index++) {
-				if (datagrid [index, 0] == objectItem)
-					return index;
-			}
-
-			return -1;
+			return (int) objectItem;
 		}
 
 		public void FocusItem (object objectItem)
@@ -274,7 +264,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public bool IsItemSelected (ListItemProvider item)
 		{
-			if (!items.ContainsValue (item))
+			if (!items.Contains (item))
 				return false;
 			
 			return datagrid.IsSelected (item.Index);
@@ -282,13 +272,13 @@ namespace Mono.UIAutomation.Winforms
 
 		public void SelectItem (ListItemProvider item)
 		{
-			if (items.ContainsValue (item))
+			if (items.Contains (item))
 				datagrid.Select (item.Index);
 		}
 
 		public void UnselectItem (ListItemProvider item)
 		{
-			if (items.ContainsValue (item))
+			if (items.Contains (item))
 				datagrid.UnSelect (item.Index);
 		}
 
@@ -316,13 +306,27 @@ namespace Mono.UIAutomation.Winforms
 
 		public ToggleState GetItemToggleState (ListItemProvider item)
 		{
-			// FIXME: Implement
-			return ToggleState.Indeterminate;
+			if (items.Contains (item)) {
+				try {
+					if ((bool) datagrid [item.Index, 0])
+						return ToggleState.On;
+					else
+						return ToggleState.Off;
+				} catch (InvalidCastException) {
+					return ToggleState.Indeterminate;
+				}
+			} else
+				return ToggleState.Indeterminate;
 		}
 		
 		public void ToggleItem (ListItemProvider item)
 		{
-			// FIXME: Implement
+			if (items.Contains (item)) {
+				try {
+					bool value = (bool) datagrid [item.Index, 0];
+					datagrid [item.Index, 0] = !value;
+				} catch (InvalidCastException) {}
+			}
 		}
 
 		public IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
@@ -366,29 +370,18 @@ namespace Mono.UIAutomation.Winforms
 				if (tableStyle.GridColumnStyles.Count == 0)
 					return;
 
-				// Usually rows are added at end.
-				for (int index = lastCurrencyManager.Count - 1; index >= 0; index--) {
-					object datagridcell = datagrid [index, 0];
-					if (!items.ContainsKey (datagridcell))
-						CreateListItem (true, 
-						                index, 
-						                tableStyle);
-				}
+				for (int index = items.Count; index < lastCurrencyManager.Count; index++)
+					CreateListItem (true, index, tableStyle);
 			} else if (args.Action == CollectionChangeAction.Remove) {
 				// TODO: Is there a better way to do this?
-
-				Dictionary<object, ListItemProvider> newItems 
-					= new Dictionary<object, ListItemProvider> ();
-				for (int index = 0; index < lastCurrencyManager.Count; index++) {
-					object datagridcell = datagrid [index, 0];
-					newItems [datagridcell] = items [datagridcell];
-					items.Remove (datagridcell);
-				}
-
-				foreach (ListItemProvider item in items.Values)
+				int toRemove = items.Count - lastCurrencyManager.Count;
+				while (toRemove > 0) {
+					ListItemProvider item = items [items.Count - 1];
 					OnNavigationChildRemoved (true, item);
-
-				items = newItems;
+					item.Terminate ();
+					items.Remove (item);
+					toRemove--;
+				}
 			}
 		}
 
@@ -491,20 +484,13 @@ namespace Mono.UIAutomation.Winforms
 
 		private void CreateListItem (bool raiseEvent, int row, SWF.DataGridTableStyle tableStyle)
 		{
-			object data = datagrid [row, 0];
-			if (items.ContainsKey (data)) {
-				// FIXME: This happends when using a style and adding controls to style.Control.Controls				
-				return;
-			}
-		
 			DataGridDataItemProvider item = new DataGridDataItemProvider (this,
 			                                                              row,
 			                                                              datagrid,
-			                                                              tableStyle, 
-			                                                              data);
+			                                                              tableStyle);
 			item.Initialize ();
 			OnNavigationChildAdded (raiseEvent, item);
-			items.Add (data, item);
+			items.Add (item);
 		}
 
 		#endregion Private Methods
@@ -513,7 +499,7 @@ namespace Mono.UIAutomation.Winforms
 
 		private SWF.DataGrid datagrid;
 		private DataGridHeaderProvider header;
-		private Dictionary<object, ListItemProvider> items;
+		private List<ListItemProvider> items;
 		private SWF.CurrencyManager lastCurrencyManager; 
 		private object lastDataSource;
 		private ScrollBehaviorObserver observer;
@@ -714,12 +700,10 @@ namespace Mono.UIAutomation.Winforms
 			public DataGridDataItemProvider (DataGridProvider provider,
 			                                 int row,
 			                                 SWF.DataGrid dataGrid,
-			                                 SWF.DataGridTableStyle style,
-			                                 object data)
-				: base (provider, provider, dataGrid, data)
+			                                 SWF.DataGridTableStyle style)
+				: base (provider, provider, dataGrid, row)
 			{
 				this.provider = provider;
-				this.row = row;
 				this.style = style;
 				name = string.Empty;
 
@@ -734,10 +718,6 @@ namespace Mono.UIAutomation.Winforms
 				get { return provider; }
 			}
 
-			public int Row {
-				get { return DataGridProvider.IndexOfObjectItem (ObjectItem); }
-			}
-
 			public int GetColumnIndexOf (DataGridDataItemEditProvider custom)
 			{
 				return provider.CurrentTableStyle.GridColumnStyles.IndexOf (custom.Column);
@@ -748,34 +728,36 @@ namespace Mono.UIAutomation.Winforms
 				int indexOf = GetChildProviderIndexOf (custom);
 				if (indexOf == -1)
 					return string.Empty;
-				
-				if (custom.Data == null || string.IsNullOrEmpty (custom.Data.ToString ()))
+
+				object data = provider.DataGrid [Index, indexOf];
+				if (data == null || string.IsNullOrEmpty (data.ToString ()))
 					return style.GridColumnStyles [indexOf].NullText;
 				else
-					return custom.Data.ToString ();
+					return data.ToString ();
+			}
+
+			public object Value {
+				get { return provider.DataGrid [Index, 0]; }
+				set { provider.DataGrid [Index, 0] = value; }
 			}
 
 			public void SetEditValue (DataGridDataItemEditProvider edit, object value)
 			{
 				int column = provider.CurrentTableStyle.GridColumnStyles.IndexOf (edit.Column);
-				int row = Row;
+				int row = Index;
 				if (column == -1 || row == -1)
 					return;
 
 				provider.DataGrid [row, column] = value;
-				// We have to update our internal list
-				if (column == 0)
-						ObjectItem = value;
 			}
 
 			public override void InitializeChildControlStructure ()
 			{
 				for (int column = 0; column < provider.CurrentTableStyle.GridColumnStyles.Count; column++) {
 					SWF.DataGridColumnStyle columnStyle = provider.CurrentTableStyle.GridColumnStyles [column];
-					object data = provider.DataGrid [row, column];
 					
 					DataGridDataItemEditProvider edit 
-						= new DataGridDataItemEditProvider (this, data, columnStyle);
+						= new DataGridDataItemEditProvider (this, columnStyle);
 					edit.Initialize ();
 					OnNavigationChildAdded (false, edit);
 
@@ -787,6 +769,9 @@ namespace Mono.UIAutomation.Winforms
 
 				// To keep track of columns
 				DataGridProvider.CurrentTableStyle.GridColumnStyles.CollectionChanged += OnColumnsCollectionChanged;
+
+				// To set/unset TableItem
+				DataGridProvider.ProviderBehaviorSet += OnProviderBehaviorSet;
 			}
 
 			public override void FinalizeChildControlStructure ()
@@ -794,6 +779,7 @@ namespace Mono.UIAutomation.Winforms
 				base.FinalizeChildControlStructure ();
 				
 				DataGridProvider.CurrentTableStyle.GridColumnStyles.CollectionChanged -= OnColumnsCollectionChanged;
+				DataGridProvider.ProviderBehaviorSet -= OnProviderBehaviorSet;
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)
@@ -822,11 +808,8 @@ namespace Mono.UIAutomation.Winforms
 
 					columns.Remove (column);
 				} else if (args.Action == CollectionChangeAction.Add) {
-					int columnIndex = provider.CurrentTableStyle.GridColumnStyles.IndexOf (column);
-					object data = provider.DataGrid [Row, columnIndex];
-
 					DataGridDataItemEditProvider edit 
-						= new DataGridDataItemEditProvider (this, data, column);
+						= new DataGridDataItemEditProvider (this, column);
 					edit.Initialize ();
 					OnNavigationChildAdded (true, edit);
 
@@ -838,10 +821,19 @@ namespace Mono.UIAutomation.Winforms
 				} 
 			}
 
+			private void OnProviderBehaviorSet (object sender, ProviderBehaviorEventArgs args)
+			{
+				if (args.Pattern == TablePatternIdentifiers.Pattern) {
+					bool enabled 
+						= (bool) ((IRawElementProviderSimple) sender).GetPropertyValue (AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id);
+					foreach (DataGridDataItemEditProvider edit in columns.Values)
+						edit.SetTableItemBehavior (enabled);
+				}
+			}
+
 			private Dictionary<SWF.DataGridColumnStyle, DataGridDataItemEditProvider> columns;
 			private string name;			
 			private DataGridProvider provider;
-			private int row;
 			private SWF.DataGridTableStyle style;
 		} //DataGridListItemProvider
 
@@ -852,16 +844,10 @@ namespace Mono.UIAutomation.Winforms
 		internal class DataGridDataItemEditProvider : FragmentRootControlProvider
 		{
 			public DataGridDataItemEditProvider (DataGridDataItemProvider provider,
-			                                     object data,
 			                                     SWF.DataGridColumnStyle column) : base (null)
 			{
 				this.provider = provider;
-				this.data = data == null ? string.Empty : data.ToString ();
 				this.column = column;
-			}
-
-			public string Data {
-				get { return data; }
 			}
 
 			public SWF.DataGridColumnStyle Column {
@@ -885,8 +871,17 @@ namespace Mono.UIAutomation.Winforms
 				             new DataItemEditValueProviderBehavior (this));
 				SetBehavior (GridItemPatternIdentifiers.Pattern,
 				             new DataItemEditGridItemProviderBehavior (this));
-				SetBehavior (TableItemPatternIdentifiers.Pattern,
-				             new DataItemEditTableItemProviderBehavior (this));
+				if (ItemProvider.DataGridProvider.DataGrid.ColumnHeadersVisible)
+					SetTableItemBehavior (true);
+			}
+
+			public void SetTableItemBehavior (bool setBehavior)
+			{
+				if (setBehavior)
+					SetBehavior (TableItemPatternIdentifiers.Pattern,
+					             new DataItemEditTableItemProviderBehavior (this));
+				else
+					SetBehavior (TableItemPatternIdentifiers.Pattern, null);
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)
@@ -898,7 +893,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return provider.GetName (this);
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) 
-					return Helper.GetControlScreenBounds (provider.DataGridProvider.DataGrid.GetCellBounds (provider.Row,
+					return Helper.GetControlScreenBounds (provider.DataGridProvider.DataGrid.GetCellBounds (provider.Index,
 					                                                                                        provider.GetColumnIndexOf (this)),
 					                                      provider.DataGridProvider.DataGrid);
 				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
@@ -913,7 +908,6 @@ namespace Mono.UIAutomation.Winforms
 
 			private DataGridDataItemProvider provider;
 			private SWF.DataGridColumnStyle column;
-			private string data;
 		} //DataGridListItemCustomProvider
 
 		#endregion

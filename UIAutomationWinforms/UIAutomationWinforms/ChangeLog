@@ -1,3 +1,22 @@
+2008-12-30  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Removed protected
+	ObjectItem setter.
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Refactored. Using rows
+	instead of data, that way we can handle Controls in Styles, and null
+	values. Toggle methods implemented.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemGridItemProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditGridItemProviderBehavior.cs:
+	Row -> Index
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemValueProviderBehavior.cs:
+	SetValue implementation.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditValuePatternValueEvent.cs:
+	Using Column and Row to confirm event.
+
 2008-12-30  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

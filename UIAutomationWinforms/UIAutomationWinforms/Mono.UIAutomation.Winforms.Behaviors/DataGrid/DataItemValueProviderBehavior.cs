@@ -21,7 +21,8 @@
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
-// 
+//
+using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
@@ -39,7 +40,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 		public DataItemValueProviderBehavior (ListItemProvider itemProvider)
 			: base (itemProvider)
 		{
-//			viewItem = (SWF.ListViewItem) itemProvider.ObjectItem;
+			provider = (DataGridProvider.DataGridDataItemProvider) itemProvider;
 		}
 		
 		#endregion
@@ -82,10 +83,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 		
 		public void SetValue (string value)
 		{
-//			if (IsReadOnly == true)
-//				throw new ElementNotEnabledException ();
-//
-//			PerformSetValue (value);
+			// According to our tests you can edit the value, however
+			// this doesn't mean that you can change the value, so, in other
+			// words an editable style doesn't necessarily mean that you can 
+			// set the value. In Vista Wwhen the cell is not editable and you call
+			// SetValue it will throw an exception so, we are swallowing all the exceptions.
+			PerformSetValue (value);
 		}
 		
 		public bool IsReadOnly {
@@ -93,32 +96,35 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 		}
 		
 		public string Value {
-			get { return string.Empty; }
+			get { return provider.Value as string; }
 		}
 		
 		#endregion
 
-//		#region Private Methods
-//
-//		private void PerformSetValue (string value)
-//		{
-//			if (viewItem.ListView.InvokeRequired == true) {
-//				viewItem.ListView.BeginInvoke (new ListItemSetValueDelegate (PerformSetValue),
-//				                               new object [] { value } );
-//				return;
-//			}
-//			
-//			viewItem.Text = value;
-//		}
-//
-//		#endregion
-//		
-//		#region Private Fields
-//		
-//		private SWF.ListViewItem viewItem;
-//		
-//		#endregion
+		#region Private Methods
+
+		private void PerformSetValue (string value)
+		{
+			if (provider.Control.InvokeRequired) {
+				provider.Control.BeginInvoke (new DataItemSetValueDelegate (PerformSetValue),
+				                              new object [] { value } );
+				return;
+			}
+		 	try {
+				provider.Value = value;
+			} catch (Exception e) {
+				// DataSource may throw any exception.
+				Console.WriteLine ("WARNING: Exception swallowed ({0}): {1}", GetType (), e);
+			}
+		}
+
+		#endregion
+
+		#region Private Methods
+
+		private DataGridProvider.DataGridDataItemProvider provider;
+		
+		#endregion
 	}
 
-	delegate void ListItemSetValueDelegate (string value);
 }

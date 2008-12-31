@@ -139,10 +139,6 @@ namespace Mono.UIAutomation.Winforms
 
 		public object ObjectItem {
 			get { return objectItem; }
-			protected set { 
-				if (value != null)
-				    	objectItem = value;
-			}
 		}
 
 		public int Index {

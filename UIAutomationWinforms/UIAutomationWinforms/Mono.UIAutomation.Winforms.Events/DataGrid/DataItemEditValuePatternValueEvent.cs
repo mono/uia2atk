@@ -80,8 +80,11 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 
 		private void OnUIAGridCellChanged (object sender, CollectionChangeEventArgs args)
 		{
+			// XXX: Seems that the value is changed, however we need to wait for 
+			// OnPaint to get the change.
 			SWF.DataGridCell cell = (SWF.DataGridCell) args.Element;
-			if (cell.ColumnNumber == editProvider.ItemProvider.GetChildProviderIndexOf (editProvider))
+			if (cell.ColumnNumber == editProvider.ItemProvider.GetColumnIndexOf (editProvider)
+			    && cell.RowNumber == editProvider.ItemProvider.Index)
 				RaiseAutomationPropertyChangedEvent ();
 		}
 
