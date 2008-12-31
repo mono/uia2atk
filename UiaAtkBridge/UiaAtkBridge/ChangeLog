@@ -1,3 +1,7 @@
+2008-12-31  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* MenuItem.cs: Whitespace fix.
+
 2008-12-30  Mike Gorse  <mgorse@novell.com>
 
 	* menuItem.cs: Don't require that the ToolBar be a great grandparent

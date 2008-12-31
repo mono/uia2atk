@@ -1,3 +1,16 @@
+2008-12-31  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Add new files.
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs:
+	* Mono.UIAutomation.Winforms/PopupButtonProvider.cs:
+	* Mono.UIAutomation.Winforms/PopupButtonPanelProvider.cs: Support for
+	internal controls of FileDialog: PopupButton and PopupButtonPanel.
+
+	* Mono.UIAutomation.Winforms.Behaviors/PopupButtonPanel/InvokeProviderBehavior.cs:
+	Invoke pattern support for PopupButtonProvider.
+
 2008-12-31  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

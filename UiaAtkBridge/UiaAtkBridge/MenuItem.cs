@@ -114,7 +114,7 @@ namespace UiaAtkBridge
 					if (adapter.Provider != null && (int)adapter.Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.ToolBar.Id)
 						return true;
 					if (parent == null || parent == adapter)
-					return false;
+						return false;
 					adapter = parent as Adapter;
 				}
 			}

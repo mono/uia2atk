@@ -128,6 +128,8 @@ namespace Mono.UIAutomation.Winforms
 			SWF.ToolStripComboBox tscb;
 			SWF.ToolStripSeparator tss;
 			SWF.ToolStripButton tsb;
+			SWF.PopupButtonPanel pbp;
+			SWF.PopupButtonPanel.PopupButton pbtn;
 //			SWF.MessageBox.MessageBoxForm msgForm;
 			
 			if (component == null)
@@ -250,6 +252,10 @@ namespace Mono.UIAutomation.Winforms
 				provider = new DateTimePickerProvider (dtp);
 			else if ((ppc = component as SWF.PrintPreviewControl) != null)
 				provider = new PrintPreviewControlProvider (ppc);
+			else if ((pbp = component as SWF.PopupButtonPanel) != null)
+				provider = new PopupButtonPanelProvider (pbp);
+			else if ((pbtn = component as SWF.PopupButtonPanel.PopupButton) != null)
+				provider = new PopupButtonProvider (pbtn);
 			else {
 				//TODO: We have to solve the problem when there's a Custom control
 				//	Ideally the first thing we do is send a wndproc message to

@@ -76,6 +76,7 @@ FILES =  \
 	NumericUpDownProviderTest.cs \
 	PanelProviderTest.cs \
 	PictureBoxProviderTest.cs \
+	PopupButtonPanelTest.cs \
 	PrintPreviewControlProviderTest.cs \
 	ProgressBarProviderTest.cs \
 	RadioButtonProviderTest.cs \

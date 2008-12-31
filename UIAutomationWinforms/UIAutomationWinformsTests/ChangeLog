@@ -1,3 +1,10 @@
+2008-12-31  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* PopupButtonPanelTest.cs:
+	* UIAutomationWinformsTests.mdp: Add tests for internal controls of
+	FileDialog.
+
 2008-12-31  Brad Taylor  <brad@getcoded.net>
 
 	* DateTimePickerProviderTest.cs: Test new IToggleProvider

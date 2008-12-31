@@ -107,6 +107,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Panel/DockProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Panel/TransformProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/PopupButtonPanel/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PrintPreviewControl/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProgressBar/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehavior.cs \
@@ -369,6 +370,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms/PanelProvider.cs \
 	Mono.UIAutomation.Winforms/PaneProvider.cs \
 	Mono.UIAutomation.Winforms/PictureBoxProvider.cs \
+	Mono.UIAutomation.Winforms/PopupButtonPanelProvider.cs \
+	Mono.UIAutomation.Winforms/PopupButtonProvider.cs \
 	Mono.UIAutomation.Winforms/PrintPreviewControlProvider.cs \
 	Mono.UIAutomation.Winforms/ProgressBarProvider.cs \
 	Mono.UIAutomation.Winforms/ProviderFactory.cs \

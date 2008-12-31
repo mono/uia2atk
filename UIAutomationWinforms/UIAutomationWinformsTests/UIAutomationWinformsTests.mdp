@@ -1,4 +1,4 @@
-<Project name="UIAutomationWinformsTests" fileversion="2.0" DefaultNamespace="MonoTests.Mono.UIAutomation.Winforms" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+<Project name="UIAutomationWinformsTests" fileversion="2.0" language="C#" DefaultNamespace="MonoTests.Mono.UIAutomation.Winforms" clr-version="Net_2_0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="bin/Debug" assemblyKeyFile="." assembly="UIAutomationWinformsTests" />
@@ -64,6 +64,9 @@
     <File name="ToolBarProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="MiscHierarchyTest.cs" subtype="Code" buildaction="Compile" />
     <File name="PrintPreviewControlProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="DateTimePickerProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="ToolStripButtonProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="PopupButtonPanelTest.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
