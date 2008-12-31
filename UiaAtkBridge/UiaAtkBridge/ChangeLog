@@ -1,3 +1,9 @@
+2008-12-31  Brad Taylor  <brad@getcoded.net>
+
+	* ComboBoxItem.cs: Populate the vlaue of selected initially for items
+	that are selected when the provider is loaded.  Caching this value
+	concerns me, so add a comment.
+
 2008-12-31  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* MenuItem.cs: Whitespace fix.

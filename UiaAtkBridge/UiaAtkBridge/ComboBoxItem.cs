@@ -59,6 +59,12 @@ namespace UiaAtkBridge
 				Role = Atk.Role.TableCell;
 			else
 				Role = Atk.Role.MenuItem;
+
+			// Set the value of selected initially.  I'm concerned
+			// about caching this value, as it may differ from the
+			// IsSelectedProperty. - Brad
+			selected = (bool) Provider.GetPropertyValue (
+				SelectionItemPatternIdentifiers.IsSelectedProperty.Id);
 		}
 
 		public bool ParentIsSimple ()
@@ -81,7 +87,6 @@ namespace UiaAtkBridge
 			showing = states.ContainsState (Atk.StateType.Showing);
 			
 			states.AddState (Atk.StateType.Selectable);
-
 			if (showing || selected) {
 				states.AddState (Atk.StateType.Showing);
 			} else {
