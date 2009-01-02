@@ -71,6 +71,8 @@ namespace Mono.UIAutomation.Winforms
 			
 			SetEvent (ProviderEventType.AutomationFocusChangedEvent,
 			          new FormAutomationFocusChangedEvent (this));
+			SetEvent (ProviderEventType.WindowDeactivatedEvent,
+			          new WindowDeactivatedEvent (this));
 		}
 
 		

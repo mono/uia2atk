@@ -1,3 +1,8 @@
+2009-01-02  Mike Gorse <mgorse@novell.com>
+
+	* System.Windows.Automation/AutomationElementIdentifiers.cs: Added
+	  internal WindowDeactivated event [bug 445199]
+
 2008-12-17  Mike Gorse <mgorse@novell.com>
 
 	* System.Windows.Automation/GridPatternIdentifiers.cs: Add internal

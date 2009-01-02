@@ -203,6 +203,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Form/FormAutomationFocusChangedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Form/WindowDeactivatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Label/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/LinkLabel/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/ListItemAutomationHasKeyboardFocusPropertyEvent.cs \

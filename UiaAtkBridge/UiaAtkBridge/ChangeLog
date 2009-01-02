@@ -1,3 +1,9 @@
+2009-01-02  Mike Gorse  <mgorse@novell.com>
+
+	* Window.cs: Handle internal deactive event [bug 445199]
+	* Adapter.cs: Update comment.
+	* Window.cs, TopLevelRootItem.cs: Cosmetic.
+
 2008-12-31  Brad Taylor  <brad@getcoded.net>
 
 	* ComboBoxItem.cs: Populate the vlaue of selected initially for items

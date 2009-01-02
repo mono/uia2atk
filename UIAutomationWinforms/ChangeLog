@@ -1,3 +1,11 @@
+2009-01-02  Brad Taylor  <brad@getcoded.net>
+
+	* UIAutomationWinforms/Mono.UIAutomation.Winforms/FormProvider.cs,
+	  UIAutomationWinforms/Makefile.am,
+	  UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/Form/WindowDeactivatedEvent.cs,
+	  UIAutomationWinforms/Mono.UIAutomation.Winforms.Events/ProviderEventType.cs:
+	  Add internal WindowDeactivated event [bug 445199]
+
 2008-12-31  Brad Taylor  <brad@getcoded.net>
 
 	* autogen.sh: Add intltoolize step to autogen.

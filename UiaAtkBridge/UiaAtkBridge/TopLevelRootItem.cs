@@ -73,7 +73,7 @@ namespace UiaAtkBridge
 				return;
 			
 			if (currentActiveWindow != null)
-				currentActiveWindow.LooseActiveState ();
+				currentActiveWindow.LoseActiveState ();
 			currentActiveWindow = newWin;
 			currentActiveWindow.GainActiveState ();
 		}

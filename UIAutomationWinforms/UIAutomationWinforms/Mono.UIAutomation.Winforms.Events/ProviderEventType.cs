@@ -42,6 +42,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		AutomationElementIsPatternAvailableProperty, //Used for each Is*PatternAvailable
 		//Automation Events
 		AutomationFocusChangedEvent,
+		WindowDeactivatedEvent,
 		//Text Pattern
 		TextPatternTextChangedEvent,
 		TextPatternTextSelectionChangedEvent,

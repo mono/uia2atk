@@ -94,8 +94,7 @@ namespace UiaAtkBridge
 				}
 
 				bool focused = (bool)e.NewValue;
-				// Hack -- we don't get an event when a window
-				// is deactivated, and we get the activate
+				// Hack -- we get the window activate event
 				// event after a focus event, which isn't the
 				// order we want.
 				if (focused && (curTime - lastFocusLossTime > 1000000))

@@ -33,6 +33,7 @@ namespace System.Windows.Automation
 
 		// IDs for internal use, should not conflict with MS
 		private const int KeyEventId = 60000;
+		private const int WindowDeactivatedEventId = 60004;
 		private const int HasNativeAccessibilityObjectPropertyId = 60001;
 		private const int NativeAccessibilityObjectPropertyId = 60002;
 		
@@ -246,6 +247,9 @@ namespace System.Windows.Automation
 					"AutomationElementIdentifiers.RuntimeIdProperty");
 			
 			// Automation Events			
+			WindowDeactivatedEvent =
+				new AutomationEvent (WindowDeactivatedEventId,
+				                     "AutomationElementIdentifiers.WindowDeactivatedEvent");
 			KeyEvent =
 				new AutomationEvent (KeyEventId,
 				                     "AutomationElementIdentifiers.KeyEvent");
@@ -282,6 +286,8 @@ namespace System.Windows.Automation
 
 #region Internal Fields
 		
+		internal static readonly AutomationEvent WindowDeactivatedEvent;
+
 		internal static readonly AutomationEvent KeyEvent;
 
 		internal static readonly AutomationProperty HasNativeAccessibilityObjectProperty;

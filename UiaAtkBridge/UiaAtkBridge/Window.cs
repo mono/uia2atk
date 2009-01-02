@@ -76,7 +76,12 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			base.RaiseAutomationEvent (eventId, e);
+			if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent)
+				GainActiveState ();
+			if (eventId == AutomationElementIdentifiers.WindowDeactivatedEvent)
+				LoseActiveState ();
+			else
+				base.RaiseAutomationEvent (eventId, e);
 		}
 		
 		public override Atk.Layer Layer {
@@ -106,7 +111,7 @@ namespace UiaAtkBridge
 			NotifyStateChange (Atk.StateType.Active, active);
 		}
 		
-		internal void LooseActiveState ()
+		internal void LoseActiveState ()
 		{
 			NewActiveState (false);
 		}
