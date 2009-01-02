@@ -573,9 +573,8 @@ namespace Mono.UIAutomation.Winforms
 				: base (scrollbar)
 			{
 				this.listView = listView;
-				//TODO: i18n?
-				name = scrollbar is SWF.HScrollBar ? "Horizontal Scroll Bar"
-					: "Vertical Scroll Bar";
+				name = scrollbar is SWF.HScrollBar ? Catalog.GetString ("Horizontal Scroll Bar")
+					: Catalog.GetString ("Vertical Scroll Bar");
 			}
 			
 			public override IRawElementProviderFragmentRoot FragmentRoot {

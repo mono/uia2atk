@@ -314,9 +314,8 @@ namespace Mono.UIAutomation.Winforms
 				: base (scrollbar)
 			{
 				this.listbox = listbox;
-				//TODO: i18n?
-				name = scrollbar is HScrollBar ? "Horizontal Scroll Bar"
-					: "Vertical Scroll Bar";
+				name = scrollbar is HScrollBar ? Catalog.GetString ("Horizontal Scroll Bar")
+					: Catalog.GetString ("Vertical Scroll Bar");
 			}
 			
 			public override IRawElementProviderFragmentRoot FragmentRoot {

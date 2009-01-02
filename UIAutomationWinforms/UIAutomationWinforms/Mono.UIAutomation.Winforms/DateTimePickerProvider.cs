@@ -181,7 +181,7 @@ namespace Mono.UIAutomation.Winforms
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AEIds.NameProperty.Id)
-					return "Drop Down"; // Localize me!
+					return Catalog.GetString ("Drop Down");
 				else if (propertyId == AEIds.IsContentElementProperty.Id)
 					return false;
 				else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)

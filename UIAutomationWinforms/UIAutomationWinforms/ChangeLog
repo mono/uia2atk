@@ -1,3 +1,13 @@
+2009-01-02  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: 
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: 
+	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: Translate the
+	last few strings.
+
 2008-12-31  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

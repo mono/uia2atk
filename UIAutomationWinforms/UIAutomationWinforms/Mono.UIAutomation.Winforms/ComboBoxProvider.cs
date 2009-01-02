@@ -578,11 +578,10 @@ namespace Mono.UIAutomation.Winforms
 	
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
-				//TODO: i18n?
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Button.Id;
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return "Drop Down Button";
+					return Catalog.GetString ("Drop Down Button");
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
 				else
@@ -612,7 +611,7 @@ namespace Mono.UIAutomation.Winforms
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return "Vertical Scroll Bar"; //TODO: i18n?
+					return Catalog.GetString ("Vertical Scroll Bar");
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
