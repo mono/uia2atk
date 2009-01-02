@@ -54,8 +54,6 @@ namespace Mono.UIAutomation.Winforms
 				+= new EventHandler (OnUIAShowCheckBoxChanged);
 			control.UIAShowUpDownChanged
 				+= new EventHandler (OnUIAShowUpDownChanged);
-
-			UpdateBehaviors ();
 		}
 #endregion
 
@@ -82,10 +80,9 @@ namespace Mono.UIAutomation.Winforms
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
-				return control.ShowCheckBox ? ControlType.CheckBox.Id : ControlType.Pane.Id;
+				return ControlType.Pane.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return control.ShowCheckBox ? Catalog.GetString ("check box")
-				                            : Catalog.GetString ("pane");
+				return Catalog.GetString ("pane");
 
 			return base.GetProviderPropertyValue (propertyId);
 		}
@@ -94,6 +91,19 @@ namespace Mono.UIAutomation.Winforms
 #region Private Methods
 		private void UpdateChildren ()
 		{
+			if (control.ShowCheckBox) {
+				if (checkBox == null) {
+					checkBox = new DateTimePickerCheckBoxProvider (this);
+					OnNavigationChildAdded (false, checkBox, 0);
+				}
+			} else {
+				if (checkBox != null) {
+					OnNavigationChildRemoved (false, checkBox);
+					checkBox.Terminate ();
+					checkBox = null;
+				}
+			}
+
 			if (control.ShowUpDown) {
 				if (dropDownButton != null) {
 					OnNavigationChildRemoved (false, dropDownButton);
@@ -106,17 +116,6 @@ namespace Mono.UIAutomation.Winforms
 						= new DateTimePickerButtonProvider (this);
 					OnNavigationChildAdded (false, dropDownButton);
 				}
-			}
-		}
-
-		private void UpdateBehaviors ()
-		{
-			if (control.ShowCheckBox) {
-				SetBehavior (TogglePatternIdentifiers.Pattern,
-				             new ToggleProviderBehavior (this));
-			} else {
-				SetBehavior (TogglePatternIdentifiers.Pattern,
-				             null);
 			}
 		}
 
@@ -141,12 +140,11 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			children.Clear ();
-
 		}
 
 		private void OnUIAShowCheckBoxChanged (object o, EventArgs args)
 		{
-			UpdateBehaviors ();
+			UpdateChildren ();
 		}
 		
 		private void OnUIAShowUpDownChanged (object o, EventArgs args)
@@ -158,10 +156,48 @@ namespace Mono.UIAutomation.Winforms
 #region Private Fields
 		private DateTimePicker control;
 		private DateTimePickerButtonProvider dropDownButton;
+		private DateTimePickerCheckBoxProvider checkBox;
 		private List<FragmentControlProvider> children = new List<FragmentControlProvider> ();
 #endregion
 
 #region Internal Classes
+		internal class DateTimePickerCheckBoxProvider
+			: FragmentControlProvider
+		{
+			public DateTimePickerCheckBoxProvider (DateTimePickerProvider rootProvider)
+				: base (rootProvider.Control)
+			{
+				this.rootProvider = rootProvider;
+				this.picker = (DateTimePicker) rootProvider.Control;
+
+				SetBehavior (TogglePatternIdentifiers.Pattern,
+				             new ToggleProviderBehavior (this));
+			}
+
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { return rootProvider; }
+			}
+
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AEIds.NameProperty.Id)
+					return picker.Checked ? Catalog.GetString ("Disable")
+					                      : Catalog.GetString ("Enable");
+				else if (propertyId == AEIds.IsContentElementProperty.Id)
+					return false;
+				else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
+					return false;
+				else if (propertyId == AEIds.ControlTypeProperty.Id)
+					return ControlType.CheckBox.Id;
+				else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
+					return Catalog.GetString ("check box");
+				return base.GetProviderPropertyValue (propertyId);
+			}
+
+			private DateTimePicker picker;
+			private DateTimePickerProvider rootProvider;
+		}
+
 		internal class DateTimePickerButtonProvider : FragmentControlProvider
 		{
 			public DateTimePickerButtonProvider (DateTimePickerProvider rootProvider)

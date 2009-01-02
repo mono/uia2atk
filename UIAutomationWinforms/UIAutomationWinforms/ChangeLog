@@ -1,5 +1,17 @@
 2009-01-02  Brad Taylor  <brad@getcoded.net>
 
+	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: 
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs: 
+	* Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs: 
+	* Mono.UIAutomation.Winforms.Navigation/NavigationEventArgs.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/ToggleProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/TogglePatternToggleStateEvent.cs: 
+	Instead of DateTimePicker being a CheckBox when ShowCheckBox = true,
+	make it a pane with a checkbox as the first child.  This will be easier to
+	handle on the Bridge.
+
+2009-01-02  Brad Taylor  <brad@getcoded.net>
+
 	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: 
 	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: 
 	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: 

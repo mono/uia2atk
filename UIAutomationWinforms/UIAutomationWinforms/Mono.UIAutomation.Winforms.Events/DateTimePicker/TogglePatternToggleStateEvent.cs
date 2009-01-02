@@ -35,7 +35,7 @@ namespace Mono.UIAutomation.Winforms.Events.DateTimePicker
 		: BaseAutomationPropertyEvent
 	{
 #region Constructor
-		public TogglePatternToggleStateEvent (DateTimePickerProvider provider) 
+		public TogglePatternToggleStateEvent (SimpleControlProvider provider) 
 			: base (provider, TogglePatternIdentifiers.ToggleStateProperty)
 		{
 		}

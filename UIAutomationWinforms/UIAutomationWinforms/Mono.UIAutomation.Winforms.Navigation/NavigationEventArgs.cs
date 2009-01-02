@@ -38,11 +38,21 @@ namespace Mono.UIAutomation.Winforms.Navigation
 
 		public NavigationEventArgs (bool raiseEvent,
 		                            StructureChangeType changeType,
-		                            FragmentControlProvider childProvider) : base ()
+		                            FragmentControlProvider childProvider)
+			: this (raiseEvent, changeType, childProvider, -1)
+		{
+		}
+
+		public NavigationEventArgs (bool raiseEvent,
+		                            StructureChangeType changeType,
+		                            FragmentControlProvider childProvider,
+		                            int index)
+			: base ()
 		{
 			this.raiseEvent = raiseEvent;
 			this.changeType = changeType;
 			this.childProvider = childProvider;
+			this.index = index;
 		}
 	
 		#endregion
@@ -57,6 +67,10 @@ namespace Mono.UIAutomation.Winforms.Navigation
 			get { return changeType; }
 		}
 		
+		public int Index {
+			get { return index; }
+		}
+		
 		public bool RaiseEvent {
 			get { return raiseEvent; }
 		}
@@ -68,6 +82,7 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		private StructureChangeType changeType;
 		private FragmentControlProvider childProvider;
 		private bool raiseEvent;
+		private int index = -1;
 		
 		#endregion
 	}

@@ -186,8 +186,15 @@ namespace Mono.UIAutomation.Winforms
 				NavigationUpdated (this, args);
 		}
 
-		protected virtual void OnNavigationChildAdded (bool raiseEvent, 
+		protected virtual void OnNavigationChildAdded (bool raiseEvent,
 		                                               FragmentControlProvider childProvider)
+		{
+			OnNavigationChildAdded (raiseEvent, childProvider, -1);
+		}
+		
+		protected virtual void OnNavigationChildAdded (bool raiseEvent, 
+		                                               FragmentControlProvider childProvider,
+		                                               int index)
 		{
 			if (children.Contains (childProvider) == true)
 				return;
@@ -195,13 +202,17 @@ namespace Mono.UIAutomation.Winforms
 			childProvider.Navigation = NavigationFactory.CreateNavigation (childProvider, this);
 			childProvider.Navigation.Initialize ();
 
-			children.Add (childProvider);
+			if (index < 0) {
+				children.Add (childProvider);
+			} else {
+				children.Insert (index, childProvider);
+			}
 
 			childProvider.InitializeChildControlStructure ();
 
 			OnNavigationUpdated (new NavigationEventArgs (raiseEvent, 
 			                                              StructureChangeType.ChildAdded, 
-			                                              childProvider));
+			                                              childProvider, index));
 		}
 		
 		protected virtual void OnNavigationChildRemoved (bool raiseEvent, 

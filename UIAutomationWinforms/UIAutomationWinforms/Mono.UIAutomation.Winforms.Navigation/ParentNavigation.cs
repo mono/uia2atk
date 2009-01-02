@@ -22,6 +22,7 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
+using System.Linq;
 using System.Collections.Generic;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -133,6 +134,13 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		{
 			chain.AddFirst (navigation);
 		}
+
+		public void AddElementAt (int index, INavigation navigation)
+		{
+			// Lame!  Two O(N) iterations, but I see no other choice.
+			chain.AddBefore (chain.Find (chain.ElementAt (index)),
+			                 navigation);
+		}
 		
 		public void Remove (INavigation navigation)
 		{
@@ -147,7 +155,11 @@ namespace Mono.UIAutomation.Winforms.Navigation
 		                                          NavigationEventArgs args)
 		{
 			if (args.ChangeType == StructureChangeType.ChildAdded) {
-				AddLast (args.ChildProvider.Navigation);
+				if (args.Index == -1) {
+					AddLast (args.ChildProvider.Navigation);
+				} else {
+					AddElementAt (args.Index, args.ChildProvider.Navigation);
+				}
 		
 				if (args.RaiseEvent == true) {
 					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildAdded, 

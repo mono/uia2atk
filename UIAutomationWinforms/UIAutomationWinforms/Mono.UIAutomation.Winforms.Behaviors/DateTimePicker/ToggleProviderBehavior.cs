@@ -40,7 +40,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DateTimePicker
 		: ProviderBehavior, IToggleProvider
 	{
 #region Constructor
-		public ToggleProviderBehavior (DateTimePickerProvider provider)
+		public ToggleProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
 			this.dateTimePicker = ((SWF.DateTimePicker) provider.Control);
@@ -51,7 +51,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DateTimePicker
 		public override void Connect ()
 		{
 			Provider.SetEvent (ProviderEventType.TogglePatternToggleStateProperty, 
-			                   new TogglePatternToggleStateEvent ((DateTimePickerProvider) Provider));
+			                   new TogglePatternToggleStateEvent (Provider));
 		}
 		
 		public override void Disconnect ()
