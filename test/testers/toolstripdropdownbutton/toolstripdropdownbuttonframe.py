@@ -19,7 +19,7 @@ class ToolStripDropDownButtonFrame(accessibles.Frame):
 
     # constants
     # the available widgets on the window
-    LABEL = "Please Select one Color from ComboxBox"
+    LABEL = "Please Select one Color from ToolStripDropDownButton"
     DROPDOWN1 = "ToolStripDropDownButton1"
     DROPDOWN2 = "ToolStripDropDownButton2"
 

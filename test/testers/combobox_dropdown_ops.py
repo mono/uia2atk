@@ -49,7 +49,7 @@ actionsCheck(cbddFrame.combobox, "ComboBox")
 cbddFrame.press(cbddFrame.combobox)
 
 #Menu without action, MenuItem with click action
-actionsCheck(cbddFrame.menu, "Menu", invalid_actions=["click"])
+cbddFrame.menuAction(cbddFrame.menu)
 actionsCheck(cbddFrame.menuitem[0], "MenuItem")
 
 #check default states of ComboBox, menu and text
@@ -106,7 +106,7 @@ cbddFrame.assertLabel("You select 0")
 #change textbox value to 0
 cbddFrame.assertText(cbddFrame.textbox, 0)
 #menuitem0 up selected state
-statesCheck(cbddFrame.menuitem[0], "MenuItem", add_states=["selected"])
+statesCheck(cbddFrame.menuitem[0], "MenuItem", add_states=["focused","selected"])
 
 #do click action to select menuitem9 to update text value and label
 cbddFrame.click(cbddFrame.menuitem[9])
@@ -116,7 +116,7 @@ cbddFrame.assertLabel("You select 9")
 #change textbox value to 9
 cbddFrame.assertText(cbddFrame.textbox, 9)
 #menuitem9 up selected state
-statesCheck(cbddFrame.menuitem[9], "MenuItem", add_states=["selected"])
+statesCheck(cbddFrame.menuitem[9], "MenuItem", add_states=["focused", "selected"])
 #menuitem0 get rid of selected, showing states
 statesCheck(cbddFrame.menuitem[0], "MenuItem", invalid_states=["showing"])
 

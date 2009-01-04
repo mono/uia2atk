@@ -47,40 +47,40 @@ tsddbFrame = app.toolStripDropDownButtonFrame
 actionsCheck(tsddbFrame.menu1, "Menu")
 actionsCheck(tsddbFrame.menu2, "Menu")
 
-#check states list for menu without click, menu1 with default focused
+#check states list for menu without click
 statesCheck(tsddbFrame.menu1, "Menu")
 statesCheck(tsddbFrame.menu2, "Menu")
-#move mouse to menu1 to rise focused
+#move mouse to menu1 doesn't change states
 tsddbFrame.menu1.mouseMove()
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu1, "Menu", add_states=["focused"])
+statesCheck(tsddbFrame.menu1, "Menu")
 statesCheck(tsddbFrame.menu2, "Menu")
-#move mouse to menu2 to rise focused
+#move mouse to menu2 doesn't change states
 tsddbFrame.menu2.mouseMove()
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu2, "Menu", add_states=["focused"])
+statesCheck(tsddbFrame.menu2, "Menu")
 statesCheck(tsddbFrame.menu1, "Menu")
 
-#click menu1 to rise selected and focused
+#click menu1 to rise selected
 tsddbFrame.click(tsddbFrame.menu1)
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu1, "Menu", add_states=["focused", "selected"])
+statesCheck(tsddbFrame.menu1, "Menu", add_states=["selected"])
 statesCheck(tsddbFrame.menu2, "Menu")
-#press "space" or "return" to get rid of selected
-tsddbFrame.keyCombo("space", grabFocus=False)
+#click menu1 again to get rid of selected
+tsddbFrame.click(tsddbFrame.menu1)
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu1, "Menu", add_states=["focused"])
+statesCheck(tsddbFrame.menu1, "Menu")
 statesCheck(tsddbFrame.menu2, "Menu")
 
-#click menu2 may move focus and selection to menu2
+#click menu2 may move selection to menu2
 tsddbFrame.click(tsddbFrame.menu2)
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu2, "Menu", add_states=["focused", "selected"])
+statesCheck(tsddbFrame.menu2, "Menu", add_states=["selected"])
 statesCheck(tsddbFrame.menu1, "Menu")
-#press "space" or "return" to get rid of selected
-tsddbFrame.keyCombo("space", grabFocus=False)
+#click menu2 again to get rid of selected
+tsddbFrame.click(tsddbFrame.menu2)
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu2, "Menu", add_states=["focused"])
+statesCheck(tsddbFrame.menu2, "Menu")
 statesCheck(tsddbFrame.menu1, "Menu")
 
 #check states list for menuitems
@@ -88,9 +88,9 @@ tsddbFrame.click(tsddbFrame.menu1)
 sleep(config.SHORT_DELAY)
 statesCheck(tsddbFrame.red, "MenuItem")
 #check menuitem's actions
-actionCheck(tsddbFrame.red, "MenuItem")
-actionCheck(tsddbFrame.blue, "MenuItem")
-actionCheck(tsddbFrame.green, "MenuItem")
+actionsCheck(tsddbFrame.red, "MenuItem")
+actionsCheck(tsddbFrame.blue, "MenuItem")
+actionsCheck(tsddbFrame.green, "MenuItem")
 #move mouse to blue item may rise focused and selected
 tsddbFrame.blue.mouseMove()
 sleep(config.SHORT_DELAY)

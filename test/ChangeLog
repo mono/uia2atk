@@ -1,3 +1,15 @@
+2009-01-04  Calen Chen <cachen@novell.com>
+
+	* samples/toolstripdropdownbutton.py: modify label description
+	* testers/toolstripdropdownbutton/toolstripdropdownbuttonframe.py: 
+	reset LABEL constant
+	* testers/toolstripdropdownbutton_basic_ops.py: update Menu states 
+	test because in bug457990 FACUSED and FACUSABLE have been droped. 
+	replace keySpace to click again
+	* testers/combobox_dropdown/comboboxdropdownframe.py: add menuAction 
+	to test AtkAction is unimplemented for Menu role. add click action log.
+	* testers/combobox_dropdown_ops.py: update Menu actions check
+
 2008-12-30  Ray Wang <rawang@@novell.com>
 
 	* samples/datetimepicker_showupdown.py: code clean

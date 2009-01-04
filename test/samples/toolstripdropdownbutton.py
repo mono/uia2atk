@@ -31,7 +31,7 @@ class ToolStripDropDownButtonApp(Form):
         self.label = Label()
         self.label.AutoSize = True
         self.label.Location = Point(10, 60)
-        self.label.Text = "Please Select one Color from ComboxBox"
+        self.label.Text = "Please Select one Color from ToolStripDropDownButton"
         self.Controls.Add(self.label)
 
         #ToolStrip:

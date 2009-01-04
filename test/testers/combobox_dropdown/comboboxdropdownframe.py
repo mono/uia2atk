@@ -28,8 +28,18 @@ class ComboBoxDropDownFrame(accessibles.Frame):
         self.combobox = self.findComboBox(None)
         self.textbox = self.findText(None)
 
+    #check menu action is not implemented
+    def menuAction(self, accessible):
+
+        procedurelogger.action('check %s Action' % accessible)
+        try:
+            accessible._accessible.queryAction()
+        except NotImplementedError:
+            procedurelogger.expectedResult("Action is unimplemented")
+
     #give 'click' action
     def click(self,accessible):
+        procedurelogger.action('click %s' % accessible)
         accessible.click()
 
     #give 'press' action
