@@ -53,33 +53,17 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		{
 			// FIXME: Considerer NavigationBack event
 
-			try {
-				// Event used add child. Usually happens when DataSource/DataMember are valid
-				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
-				                        Provider.Control,
-				                        "UIASelectionChanged",
-				                        this,
-				                        "OnIsSelectedChanged");
-			} catch (NotSupportedException) {}
+			((SWF.DataGrid) Provider.Control).UIASelectionChanged += OnIsSelectedChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				// Event used add child. Usually happens when DataSource/DataMember are valid
-				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
-				                           Provider.Control,
-				                           "UIASelectionChanged",
-				                           this,
-				                           "OnIsSelectedChanged");
-			} catch (NotSupportedException) {}
+			((SWF.DataGrid) Provider.Control).UIASelectionChanged -= OnIsSelectedChanged;
 		}
 		
 		#endregion 
 		
 		#region Private methods
-
-#pragma warning disable 169
 		
 		private void OnIsSelectedChanged (object sender, CollectionChangeEventArgs args)
 		{
@@ -91,8 +75,6 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 				selected = selectedChanged;
 			}
 		}
-
-#pragma warning restore 169
 
 		#endregion
 

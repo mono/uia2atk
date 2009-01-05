@@ -49,34 +49,18 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		public override void Connect ()
 		{
 			((SWF.DataGrid) Provider.Control).DataSourceChanged += OnDatasourceChanged;
-
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
-				                        Provider.Control,
-				                        "UIACollectionChanged",
-				                        this,
-				                        "OnUIACollectionChanged");
-			} catch (NotSupportedException) {}
+			((SWF.DataGrid) Provider.Control).UIACollectionChanged += OnUIACollectionChanged;
 		}
 
 		public override void Disconnect ()
 		{
 			((SWF.DataGrid) Provider.Control).DataSourceChanged -= OnDatasourceChanged;
-
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
-				                           Provider.Control,
-				                           "UIACollectionChanged",
-				                           this,
-				                           "OnUIACollectionChanged");
-			} catch (NotSupportedException) {}
+			((SWF.DataGrid) Provider.Control).UIACollectionChanged -= OnUIACollectionChanged;
 		}
 		
 		#endregion 
 		
 		#region Private methods
-
-#pragma warning disable 169
 		
 		private void OnDatasourceChanged (object sender, EventArgs args)
 		{
@@ -88,8 +72,6 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-
-#pragma warning restore 169
 
 		#endregion
 	}

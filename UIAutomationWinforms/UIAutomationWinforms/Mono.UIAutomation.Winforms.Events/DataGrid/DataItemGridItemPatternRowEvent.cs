@@ -49,42 +49,23 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 
 		public override void Connect ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
-				                        (SWF.DataGrid) Provider.Control, 
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnRowPropertyEvent");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.DataGrid) Provider.Control).UIACollectionChanged += OnRowPropertyEvent;
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
-				                           (SWF.DataGrid) Provider.Control, 
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnRowPropertyEvent");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.DataGrid) Provider.Control).UIACollectionChanged -= OnRowPropertyEvent;
 		}
 		
 		#endregion 
 		
 		#region Protected methods
 		
-// This method is used via reflection, so ignore the never used warning
-#pragma warning disable 169
 		private void OnRowPropertyEvent (object sender, 
 		                                 CollectionChangeEventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-#pragma warning restore 169
 
 		#endregion
 	}

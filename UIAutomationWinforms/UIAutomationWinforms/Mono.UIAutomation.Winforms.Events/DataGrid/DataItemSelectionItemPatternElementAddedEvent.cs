@@ -51,35 +51,19 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		public override void Connect ()
 		{
 			// FIXME: Considerer NavigationBack event
-			
-			try {
-				// Event used add child. Usually happens when DataSource/DataMember are valid
-				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
-				                        Provider.Control,
-				                        "UIASelectionChanged",
-				                        this,
-				                        "OnElementAddedEvent");
-			} catch (NotSupportedException) {}
+
+			((SWF.DataGrid) Provider.Control).UIASelectionChanged += OnElementAddedEvent;
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				// Event used add child. Usually happens when DataSource/DataMember are valid
-				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
-				                           Provider.Control,
-				                           "UIASelectionChanged",
-				                           this,
-				                           "OnElementAddedEvent");
-			} catch (NotSupportedException) {}
+			((SWF.DataGrid) Provider.Control).UIASelectionChanged -= OnElementAddedEvent;
 		}
 		
 		#endregion 
 		
 		#region Private methods
 
-#pragma warning disable 169
-		
 		private void OnElementAddedEvent (object sender, CollectionChangeEventArgs args)
 		{
 			if (args.Action != CollectionChangeAction.Add)
@@ -87,25 +71,14 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 
 			ListItemProvider provider = (ListItemProvider) Provider;
 			SWF.DataGrid datagrid = (SWF.DataGrid) sender;
-
-			// FIXME: Remove reflection after committing patch
-			int selectedRows = 0;
-			try {
-				selectedRows 
-					= Helper.GetPrivateProperty<SWF.DataGrid, int> (typeof (SWF.DataGrid),
-					                                                datagrid,
-					                                                "UIASelectedRows");
-			} catch (NotSupportedException) {}
 			
 			if (!selected
-			    && selectedRows > 1
+			    && datagrid.UIASelectedRows > 1
 			    && datagrid.IsSelected (provider.Index))
 				RaiseAutomationEvent ();
 			
 			selected = datagrid.IsSelected (provider.Index);
 		}
-
-#pragma warning restore 169
 
 		#endregion
 		

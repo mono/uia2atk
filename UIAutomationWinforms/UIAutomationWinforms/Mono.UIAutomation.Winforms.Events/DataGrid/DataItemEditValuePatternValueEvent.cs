@@ -48,46 +48,19 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 
 		public override void Connect ()
 		{
-			try {
-				// Event used add child. Usually happens when DataSource/DataMember are valid
-				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
-				                        editProvider.ItemProvider.DataGridProvider.Control,
-				                        "UIAGridCellChanged",
-				                        this,
-				                        "OnUIAGridCellChanged");
-
-				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
-				                        editProvider.ItemProvider.DataGridProvider.Control,
-				                        "UIACollectionChanged",
-				                        this,
-				                        "OnUIACollectionChanged");
-			} catch (NotSupportedException) {}
+			editProvider.ItemProvider.DataGridProvider.DataGrid.UIAGridCellChanged += OnUIAGridCellChanged;
+			editProvider.ItemProvider.DataGridProvider.DataGrid.UIACollectionChanged += OnUIACollectionChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				// Event used add child. Usually happens when DataSource/DataMember are valid
-				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
-				                           editProvider.ItemProvider.DataGridProvider.Control,
-				                           "UIAGridCellChanged",
-				                           this,
-				                           "OnUIAGridCellChanged");
-
-				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
-				                           editProvider.ItemProvider.DataGridProvider.Control,
-				                           "UIACollectionChanged",
-				                           this,
-				                           "OnUIACollectionChanged");
-			} catch (NotSupportedException) {}
-
+			editProvider.ItemProvider.DataGridProvider.DataGrid.UIAGridCellChanged -= OnUIAGridCellChanged;
+			editProvider.ItemProvider.DataGridProvider.DataGrid.UIACollectionChanged -= OnUIACollectionChanged;
 		}
 		
 		#endregion 
 		
 		#region Protected methods
-
-#pragma warning disable 169
 
 		private void OnUIAGridCellChanged (object sender, CollectionChangeEventArgs args)
 		{
@@ -101,8 +74,6 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-
-#pragma warning restore 169
 
 		#endregion
 

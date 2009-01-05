@@ -50,39 +50,22 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 
 		public override void Connect ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
-				                        Provider.Control,
-				                        "UIASelectionChanged",
-				                        this,
-				                        "OnSelectionProperty");
-			} catch (NotSupportedException) {}
+			((SWF.DataGrid) Provider.Control).UIASelectionChanged += OnSelectionProperty;
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
-				                           Provider.Control,
-				                           "UIASelectionChanged",
-				                           this,
-				                           "OnSelectionProperty");
-			} catch (NotSupportedException) {}
-
+			((SWF.DataGrid) Provider.Control).UIASelectionChanged -= OnSelectionProperty;
 		}
 		
 		#endregion 
 		
 		#region Protected methods
 
-#pragma warning disable 169
-		
 		private void OnSelectionProperty (object sender, CollectionChangeEventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-
-#pragma warning restore 169
 
 		#endregion
 	}

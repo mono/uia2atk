@@ -1,5 +1,24 @@
 2009-01-05  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/GridPatternRowEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/GridPatternColumnEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemRowEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternSelectionEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemValuePatternValueEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemGridItemPatternRowEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternInvalidatedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditValuePatternValueEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemAutomationIsOffscreenPropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternIsSelectedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementAddedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditAutomationIsOffscreenPropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementRemovedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementSelectedEvent.cs:
+	Reflection removed. Needs mcs/SWF >= 122483.
+
+2009-01-05  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Fix build.
 
 2009-01-05  Mike Gorse  <mgorse@novell.com>

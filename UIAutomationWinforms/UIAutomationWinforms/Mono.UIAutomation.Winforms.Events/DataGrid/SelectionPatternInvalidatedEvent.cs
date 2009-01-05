@@ -51,35 +51,19 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		{
 			((SWF.DataGrid) Provider.Control).Navigate += OnInvalidatedEvent;
 			((SWF.DataGrid) Provider.Control).DataSourceChanged += OnInvalidatedEvent;
-
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
-				                        Provider.Control,
-				                        "UIACollectionChanged",
-				                        this,
-				                        "OnUIACollectionChanged");
-			} catch (NotSupportedException) {}
+			((SWF.DataGrid) Provider.Control).UIACollectionChanged += OnUIACollectionChanged;
 		}
 		
 		public override void Disconnect ()
 		{
 			((SWF.DataGrid) Provider.Control).Navigate -= OnInvalidatedEvent;
 			((SWF.DataGrid) Provider.Control).DataSourceChanged -= OnInvalidatedEvent;
-
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
-				                           Provider.Control,
-				                           "UIACollectionChanged",
-				                           this,
-				                           "OnUIACollectionChanged");
-			} catch (NotSupportedException) {}
+			((SWF.DataGrid) Provider.Control).UIACollectionChanged -= OnUIACollectionChanged;
 		}
 		
 		#endregion 
 		
 		#region Protected methods
-
-#pragma warning disable 169
 		
 		private void OnInvalidatedEvent (object sender, EventArgs args)
 		{
@@ -90,8 +74,6 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		{
 			RaiseAutomationEvent ();
 		}
-
-#pragma warning restore 169
 
 		#endregion
 	}

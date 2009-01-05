@@ -42,12 +42,8 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		{
 			DataGridProvider.DataGridDataItemProvider itemProvider = (DataGridProvider.DataGridDataItemProvider) listItemProvider;
 
-			vscrollbar = Helper.GetPrivateProperty<SWF.DataGrid, SWF.ScrollBar> (typeof (SWF.DataGrid),
-			                                                                     itemProvider.DataGridProvider.DataGrid,
-			                                                                     "UIAVScrollBar");
-			hscrollbar = Helper.GetPrivateProperty<SWF.DataGrid, SWF.ScrollBar> (typeof (SWF.DataGrid),
-			                                                                     itemProvider.DataGridProvider.DataGrid,
-			                                                                     "UIAHScrollBar");
+			vscrollbar = itemProvider.DataGridProvider.DataGrid.UIAVScrollBar;
+			hscrollbar = itemProvider.DataGridProvider.DataGrid.UIAHScrollBar;
 		}
 		
 		#endregion

@@ -56,12 +56,7 @@ namespace Mono.UIAutomation.Winforms
 		#region Public Properties
 
 		public SWF.DataGridTableStyle CurrentTableStyle {
-			get {
-				// FIXME: Remove reflection after patch applied
-				return Helper.GetPrivateProperty<SWF.DataGrid, SWF.DataGridTableStyle> (typeof (SWF.DataGrid),
-				                                                                        datagrid,
-				                                                                        "UIACurrentTableStyle");
-			}
+			get { return datagrid.UIACurrentTableStyle; }
 		}
 
 		public SWF.CurrencyManager CurrencyManager {
@@ -127,21 +122,12 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.Initialize ();
 
-			try {
-				SWF.ScrollBar vscrollbar
-					= Helper.GetPrivateProperty<SWF.DataGrid, SWF.ScrollBar> (typeof (SWF.DataGrid),
-					                                                          datagrid,
-					                                                          "UIAVScrollBar");
-				SWF.ScrollBar hscrollbar 
-					= Helper.GetPrivateProperty<SWF.DataGrid, SWF.ScrollBar> (typeof (SWF.DataGrid),
-					                                                          datagrid,
-					                                                          "UIAHScrollBar");
-
-				//ListScrollBehaviorObserver updates Navigation
-				observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);			
-				observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
-				UpdateScrollBehavior ();
-			} catch (NotSupportedException) { }
+			//ListScrollBehaviorObserver updates Navigation
+			observer = new ScrollBehaviorObserver (this, 
+			                                       datagrid.UIAHScrollBar, 
+			                                       datagrid.UIAVScrollBar);
+			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
+			UpdateScrollBehavior ();
 
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
 			             new SelectionProviderBehavior (this));
@@ -161,20 +147,9 @@ namespace Mono.UIAutomation.Winforms
 		{
 			datagrid.DataSourceChanged += OnDataSourceChanged;
 			UpdateChildren (false);
-
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
-				                        datagrid,
-				                        "UIACollectionChanged",
-				                        this,
-				                        "OnUIACollectionChanged");
-
-				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
-				                        datagrid,
-				                        "UIAColumnHeadersVisibleChanged",
-				                        this,
-				                        "OnUIAColumnHeadersVisibleChanged");
-			} catch (NotSupportedException) {}
+			
+			datagrid.UIACollectionChanged += OnUIACollectionChanged;
+			datagrid.UIAColumnHeadersVisibleChanged += OnUIAColumnHeadersVisibleChanged;
 		}
 
 		public override void FinalizeChildControlStructure ()
@@ -182,19 +157,8 @@ namespace Mono.UIAutomation.Winforms
 			OnNavigationChildrenCleared (false);
 			datagrid.DataSourceChanged -= OnDataSourceChanged;
 
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
-				                           datagrid,
-				                           "UIACollectionChanged",
-				                           this,
-				                           "OnUIACollectionChanged");
-
-				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
-				                           datagrid,
-				                           "UIAColumnHeadersVisibleChanged",
-				                           this,
-				                           "OnUIAColumnHeadersVisibleChanged");
-			} catch (NotSupportedException) {}
+			datagrid.UIACollectionChanged -= OnUIACollectionChanged;
+			datagrid.UIAColumnHeadersVisibleChanged -= OnUIAColumnHeadersVisibleChanged;
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -248,17 +212,7 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		public int SelectedItemsCount {
-			get { 
-				int selectedRows = 0;
-				try {
-					selectedRows 
-						= Helper.GetPrivateProperty<SWF.DataGrid, int> (typeof (SWF.DataGrid),
-						                                                datagrid,
-						                                                "UIASelectedRows");
-				} catch (NotSupportedException) {}
-	
-				return selectedRows;
-			}
+			get { return datagrid.UIASelectedRows; }
 		}
 
 		public void ScrollItemIntoView (ListItemProvider item)
@@ -564,11 +518,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-					// FIXME: Remove reflection after committing SWF patch.
-					SD.Rectangle rectangle
-						= Helper.GetPrivateProperty<SWF.DataGrid, SD.Rectangle> (typeof (SWF.DataGrid),
-						                                                         provider.DataGrid,
-						                                                         "UIAColumnHeadersArea");
+					SD.Rectangle rectangle = provider.DataGrid.UIAColumnHeadersArea;
 					rectangle.X += provider.DataGrid.Bounds.X;
 					rectangle.Y += provider.DataGrid.Bounds.Y;
 
@@ -679,12 +629,8 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-					// FIXME: Remove reflection after committing SWF patch.
 					int indexOf = header.GridColumnStyles.IndexOf (style);
-					SD.Rectangle rectangle
-						= Helper.GetPrivateProperty<SWF.DataGrid, SD.Rectangle> (typeof (SWF.DataGrid),
-						                                                         style.DataGridTableStyle.DataGrid,
-						                                                         "UIAColumnHeadersArea");
+					SD.Rectangle rectangle = style.DataGridTableStyle.DataGrid.UIAColumnHeadersArea;
 					rectangle.Width = header.GridColumnStyles [indexOf].Width;
 					
 					for (int index = 0; index < indexOf; index++)
@@ -827,33 +773,16 @@ namespace Mono.UIAutomation.Winforms
 
 			public bool IsOffScreen (SWF.DataGrid datagrid, Rect bounds)
 			{
-				SD.Rectangle columnHeaders 
-					= Helper.GetPrivateProperty<SWF.DataGrid, SD.Rectangle> (typeof (SWF.DataGrid),
-					                                                         datagrid,
-					                                                         "UIAColumnHeadersArea");
-				SD.Rectangle captionArea
-					= Helper.GetPrivateProperty<SWF.DataGrid, SD.Rectangle> (typeof (SWF.DataGrid),
-					                                                         datagrid,
-					                                                         "UIACaptionArea");
-				SD.Rectangle cellsArea
-					= Helper.GetPrivateProperty<SWF.DataGrid, SD.Rectangle> (typeof (SWF.DataGrid),
-					                                                         datagrid,
-					                                                         "UIACellsArea");
-				int rowHeight
-					= Helper.GetPrivateProperty<SWF.DataGrid, int> (typeof (SWF.DataGrid),
-					                                                         datagrid,
-					                                                         "UIARowHeight");
-
 				SD.Rectangle rectangle = datagrid.Bounds;
-				rectangle.Height -= cellsArea.Y - rectangle.Y - rowHeight;
-				rectangle.Y = cellsArea.Y;
+				rectangle.Height -= datagrid.UIACellsArea.Y - rectangle.Y - datagrid.UIARowHeight;
+				rectangle.Y = datagrid.UIACellsArea.Y;
 				if (datagrid.ColumnHeadersVisible) {
 					rectangle.X += DataGridProvider.DataGrid.RowHeaderWidth;
-					rectangle.Y += columnHeaders.Height;
-					rectangle.Height -= captionArea.Height;
+					rectangle.Y += datagrid.UIAColumnHeadersArea.Height;
+					rectangle.Height -= datagrid.UIACaptionArea.Height;
 				}
 				if (datagrid.CaptionVisible)
-					rectangle.X += captionArea.Height;
+					rectangle.X += datagrid.UIACaptionArea.Height;
 
 				Rect screen = Helper.RectangleToRect (datagrid.Parent.RectangleToScreen (rectangle));
 				return !bounds.IntersectsWith (screen);

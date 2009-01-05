@@ -40,12 +40,8 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		public DataItemEditAutomationIsOffscreenPropertyEvent (DataGridProvider.DataGridDataItemEditProvider provider)
 			: base (provider)
 		{
-			vscrollbar = Helper.GetPrivateProperty<SWF.DataGrid, SWF.ScrollBar> (typeof (SWF.DataGrid),
-			                                                                     provider.ItemProvider.DataGridProvider.DataGrid,
-			                                                                     "UIAVScrollBar");
-			hscrollbar = Helper.GetPrivateProperty<SWF.DataGrid, SWF.ScrollBar> (typeof (SWF.DataGrid),
-			                                                                     provider.ItemProvider.DataGridProvider.DataGrid,
-			                                                                     "UIAHScrollBar");
+			vscrollbar = provider.ItemProvider.DataGridProvider.DataGrid.UIAVScrollBar;
+			hscrollbar = provider.ItemProvider.DataGridProvider.DataGrid.UIAHScrollBar;
 		}
 		
 		#endregion

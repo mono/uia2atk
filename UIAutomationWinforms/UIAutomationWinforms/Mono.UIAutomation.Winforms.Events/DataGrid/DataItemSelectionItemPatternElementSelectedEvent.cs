@@ -50,34 +50,18 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		public override void Connect ()
 		{
 			// FIXME: Considerer NavigationBack event
-			
-			try {
-				// Event used add child. Usually happens when DataSource/DataMember are valid
-				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
-				                        Provider.Control,
-				                        "UIASelectionChanged",
-				                        this,
-				                        "OnElementSelectedEvent");
-			} catch (NotSupportedException) {}
+
+			((SWF.DataGrid) Provider.Control).UIASelectionChanged += OnElementSelectedEvent;
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				// Event used add child. Usually happens when DataSource/DataMember are valid
-				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
-				                           Provider.Control,
-				                           "UIASelectionChanged",
-				                           this,
-				                           "OnElementSelectedEvent");
-			} catch (NotSupportedException) {}
+			((SWF.DataGrid) Provider.Control).UIASelectionChanged -= OnElementSelectedEvent;
 		}
 		
 		#endregion 
 		
 		#region Private methods
-
-#pragma warning disable 169
 
 		private void OnElementSelectedEvent (object sender, CollectionChangeEventArgs args)
 		{
@@ -87,8 +71,6 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 			    && provider.ListProvider.IsItemSelected (provider))
 				RaiseAutomationEvent ();
 		}
-
-#pragma warning restore 169
 
 		#endregion
 	}
