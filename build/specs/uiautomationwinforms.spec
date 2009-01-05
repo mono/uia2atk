@@ -12,7 +12,7 @@
 
 
 Name:           uiautomationwinforms
-Version:	0.9
+Version:	122486
 Release:	0
 License:        MIT/X11
 Group:          System/Libraries
@@ -25,7 +25,7 @@ Requires:	mono-uia mono-winfxcore uiaatkbridge
 BuildRequires:	mono-devel >= 2.2 mono-data gtk-sharp2 >= 2.12.7 glib-sharp2 
 BuildRequires:	mono-nunit mono-uia mono-winfxcore uiaatkbridge intltool >= 0.21
 
-Summary:        Implementation of UIA providers for Mono's Winforms controls
+Summary:        Implementation of UIA providers
 
 %description
 Implementation of UIA providers for Mono's Winforms controls
@@ -39,11 +39,12 @@ make
 
 %install
 make DESTDIR=%{buildroot} install
+%find_lang UIAutomationWinforms
 
 %clean
 rm -rf %{buildroot}
 
-%files
+%files -f UIAutomationWinforms.lang
 %defattr(-,root,root)
 %doc COPYING README NEWS 
 %dir %_libdir/uiautomationwinforms

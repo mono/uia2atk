@@ -1,3 +1,11 @@
+2009-01-05  Stephen G. Shaw  <stshaw@novell.com>
+	
+	* specs/uiautomationwindorms.spec: Handle lang files now
+
+2009-01-05  Stephen G. Shaw  <stshaw@novell.com>
+	
+	* specs/uiautomationwindorms.spec: Added intltools to buildrequires
+
 2008-12-05  Stephen G. Shaw  <stshaw@novell.com>
 	
 	* specs/uiautomationwindorms.spec: Added mono-data to buildrequires and requires for rev 
