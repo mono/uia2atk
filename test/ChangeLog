@@ -1,3 +1,10 @@
+2009-01-05  Calen Chen <cachen@novell.com>
+
+	* samples/columnheader.py: add image into ColumnHeader to test AtkImage
+	* testers/columnheader/__init__.py,
+	* testers/columnheader/columnheaderframe.py,
+	* testers/columnheader: add new test sctrip(not finished)
+
 2009-01-04  Calen Chen <cachen@novell.com>
 
 	* samples/toolstripdropdownbutton.py: modify label description

@@ -14,6 +14,9 @@ Autotest tools(e.g. Strongwind) to test the behaviors of controls.
 """
 
 import clr
+import os
+from sys import path
+from os.path import exists
 
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
@@ -21,6 +24,10 @@ clr.AddReference('System.Drawing')
 from System.Drawing import *
 from System.Windows.Forms import *
 import System
+
+harness_dir = path[0]
+i = harness_dir.rfind("/")
+uiaqa_path = harness_dir[:i]
 
 class ColumnHeaderSample(Form):
     """ColumnHeader control class"""
@@ -53,9 +60,34 @@ class ColumnHeaderSample(Form):
         self.listview.Height = 260
         self.listview.ColumnClick += self.on_click
 
-        # add conlumns
-        self.listview.Columns.Add("Column A", 200, HorizontalAlignment.Left)
-        self.listview.Columns.Add("Num", 200, HorizontalAlignment.Left)
+        # image list
+        self.imagelist = ImageList()
+        self.imagelist.ColorDepth = ColorDepth.Depth32Bit
+        self.imagelist.ImageSize = Size(16, 16)
+
+        # small images
+        names = [
+                "abiword_48.png",
+                "bmp.png",
+                "desktop.png",
+            ]
+
+        for i in names:
+            self.imagelist.Images.Add (Image.FromFile("%s/samples/listview-items-icons/32x32/" % uiaqa_path + i))
+
+        self.listview.SmallImageList = self.imagelist
+
+        self.column1 = ColumnHeader()
+        self.column1.Text = "Column A"
+        self.column1.Width = 100
+        self.column1.ImageIndex = 0
+        self.listview.Columns.Add(self.column1)
+
+        self.column2 = ColumnHeader()
+        self.column2.Text = "Num"
+        self.column2.Width = 80
+        self.column2.ImageIndex = 1
+        self.listview.Columns.Add(self.column2)
 
         # add items
         listItem = ["Item0", "Item1", "Item2", "Item3", "Item4", "Item5"]
