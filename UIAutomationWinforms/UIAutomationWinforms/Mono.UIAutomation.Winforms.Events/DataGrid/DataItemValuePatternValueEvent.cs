@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008-2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
@@ -29,13 +29,13 @@ using SWF = System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms.Events.DataGrid
 {
-	internal class DataItemEditValuePatternValueEvent
+	internal class DataItemValuePatternValueEvent
 		: BaseAutomationPropertyEvent
 	{
 		
 		#region Constructors
 
-		public DataItemEditValuePatternValueEvent (DataGridProvider.DataGridDataItemEditProvider provider)
+		public DataItemValuePatternValueEvent (DataGridProvider.DataGridDataItemProvider provider)
 			: base (provider, 
 			        ValuePatternIdentifiers.ValueProperty)
 		{
@@ -51,13 +51,13 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 			try {
 				// Event used add child. Usually happens when DataSource/DataMember are valid
 				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
-				                        editProvider.ItemProvider.DataGridProvider.Control,
+				                        editProvider.DataGridProvider.Control,
 				                        "UIAGridCellChanged",
 				                        this,
 				                        "OnUIAGridCellChanged");
 
 				Helper.AddPrivateEvent (typeof (SWF.DataGrid),
-				                        editProvider.ItemProvider.DataGridProvider.Control,
+				                        editProvider.DataGridProvider.Control,
 				                        "UIACollectionChanged",
 				                        this,
 				                        "OnUIACollectionChanged");
@@ -69,13 +69,13 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 			try {
 				// Event used add child. Usually happens when DataSource/DataMember are valid
 				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
-				                           editProvider.ItemProvider.DataGridProvider.Control,
+				                           editProvider.DataGridProvider.Control,
 				                           "UIAGridCellChanged",
 				                           this,
 				                           "OnUIAGridCellChanged");
 
 				Helper.RemovePrivateEvent (typeof (SWF.DataGrid),
-				                           editProvider.ItemProvider.DataGridProvider.Control,
+				                           editProvider.DataGridProvider.Control,
 				                           "UIACollectionChanged",
 				                           this,
 				                           "OnUIACollectionChanged");
@@ -92,8 +92,7 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		private void OnUIAGridCellChanged (object sender, CollectionChangeEventArgs args)
 		{
 			SWF.DataGridCell cell = (SWF.DataGridCell) args.Element;
-			if (cell.ColumnNumber == editProvider.ItemProvider.GetColumnIndexOf (editProvider)
-			    && cell.RowNumber == editProvider.ItemProvider.Index)
+			if (cell.ColumnNumber ==  0 && cell.RowNumber == editProvider.Index)
 				RaiseAutomationPropertyChangedEvent ();
 		}
 
@@ -108,9 +107,8 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 
 		#region Private Fields
 
-		private DataGridProvider.DataGridDataItemEditProvider editProvider;
+		private DataGridProvider.DataGridDataItemProvider editProvider;
 
 		#endregion
 	}
 }
-

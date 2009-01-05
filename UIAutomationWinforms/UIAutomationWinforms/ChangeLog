@@ -1,3 +1,36 @@
+2009-01-05  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataItem Automation Events added:
+	Focus and HasKeyboard. Data Item Value Pattern event added.
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: DataItem Automation
+	Event support.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemValuePatternValueEvent.cs:
+	Raises DataItem Value Pattern Value Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditValuePatternValueEvent.cs:
+	Listening for collection internal event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditAutomationHasKeyboardFocusPropertyEvent.cs:
+	Raises DataItemEdit HasKeyboardFocus Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemAutomationHasKeyboardFocusPropertyEvent.cs:
+	Raises DataItem HasKeyboardFocus Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditAutomationFocusChangedEvent.cs:
+	Raises DataItemEdit Focus Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemAutomationFocusChangedEvent.cs:
+	Raises DataItem Focus Event.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemValueProviderBehavior.cs:
+	ValuePattern event enabled.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditValueProviderBehavior.cs:
+	GetPropertyValue implementation.
+
 2009-01-02  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: 

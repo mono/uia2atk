@@ -375,7 +375,6 @@
     <File name="Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/PopupButtonPanelProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/PopupButtonProvider.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/PopupButtonPanel" subtype="Directory" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/PopupButtonPanel/InvokeProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/ToolStripButton/InvokeProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ToolStripButton/InvokePatternInvokedEvent.cs" subtype="Code" buildaction="Compile" />
@@ -383,6 +382,13 @@
     <File name="Mono.UIAutomation.Winforms/MessageBoxFormProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/ToggleProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/DateTimePicker/TogglePatternToggleStateEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Globals.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/Form/WindowDeactivatedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemValuePatternValueEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemAutomationHasKeyboardFocusPropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditAutomationHasKeyboardFocusPropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemAutomationFocusChangedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditAutomationFocusChangedEvent.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

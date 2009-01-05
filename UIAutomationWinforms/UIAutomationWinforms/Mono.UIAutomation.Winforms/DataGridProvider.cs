@@ -33,6 +33,7 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.DataGrid;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.DataGrid;
 
@@ -349,7 +350,14 @@ namespace Mono.UIAutomation.Winforms
 		public IConnectable GetListItemEventRealization (ProviderEventType eventType, 
 		                                                 ListItemProvider provider)
 		{
-			return null;
+			if (eventType == ProviderEventType.AutomationElementHasKeyboardFocusProperty)
+				return new DataItemAutomationHasKeyboardFocusPropertyEvent (provider);
+			else if (eventType == ProviderEventType.AutomationFocusChangedEvent)
+				return new DataItemAutomationFocusChangedEvent (provider);
+			else if (eventType == ProviderEventType.AutomationElementIsOffscreenProperty)
+				return null;
+			else
+				return null;
 		}
 		
 		#endregion
@@ -489,8 +497,8 @@ namespace Mono.UIAutomation.Winforms
 			                                                              row,
 			                                                              datagrid,
 			                                                              tableStyle);
-			item.Initialize ();
 			OnNavigationChildAdded (raiseEvent, item);
+			item.Initialize ();
 			items.Add (item);
 		}
 
@@ -584,8 +592,8 @@ namespace Mono.UIAutomation.Winforms
 				foreach (SWF.DataGridColumnStyle style in styles) {
 					DataGridHeaderItemProvider headerItem
 						= new DataGridHeaderItemProvider (this, style);
-					headerItem.Initialize ();
 					OnNavigationChildAdded (false, headerItem);
+					headerItem.Initialize ();
 					dictionary [style] = headerItem;
 				}
 
@@ -606,8 +614,8 @@ namespace Mono.UIAutomation.Winforms
 				if (args.Action == CollectionChangeAction.Add) {
 					DataGridHeaderItemProvider headerItem
 						= new DataGridHeaderItemProvider (this, column);
-					headerItem.Initialize ();
 					OnNavigationChildAdded (true, headerItem);
+					headerItem.Initialize ();
 					dictionary [column] = headerItem;
 				} else if (args.Action == CollectionChangeAction.Remove) {
 					DataGridHeaderItemProvider headerItem = null;
@@ -759,8 +767,8 @@ namespace Mono.UIAutomation.Winforms
 					
 					DataGridDataItemEditProvider edit 
 						= new DataGridDataItemEditProvider (this, columnStyle);
-					edit.Initialize ();
 					OnNavigationChildAdded (false, edit);
+					edit.Initialize ();
 
 					if (column == 0)
 						name = GetName (edit);
@@ -794,6 +802,10 @@ namespace Mono.UIAutomation.Winforms
 					return ControlType.DataItem.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return Catalog.GetString ("data item");
+//			SWF.DataGridCell currentCell = itemProvider.DataGridProvider.DataGrid.CurrentCell;
+//			if (currentCell.ColumnNumber == 0 && currentCell.RowNumber == itemProvider.Index)
+//				RaiseAutomationPropertyChangedEvent ();
+
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
@@ -811,8 +823,8 @@ namespace Mono.UIAutomation.Winforms
 				} else if (args.Action == CollectionChangeAction.Add) {
 					DataGridDataItemEditProvider edit 
 						= new DataGridDataItemEditProvider (this, column);
-					edit.Initialize ();
 					OnNavigationChildAdded (true, edit);
+					edit.Initialize ();
 
 					columns [column] = edit;
 				} else if (args.Action == CollectionChangeAction.Refresh) {
@@ -874,6 +886,12 @@ namespace Mono.UIAutomation.Winforms
 				             new DataItemEditGridItemProviderBehavior (this));
 				if (ItemProvider.DataGridProvider.DataGrid.ColumnHeadersVisible)
 					SetTableItemBehavior (true);
+
+				//Events
+				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+				          new DataItemEditAutomationHasKeyboardFocusPropertyEvent (this));
+				SetEvent (ProviderEventType.AutomationFocusChangedEvent,
+				          new DataItemEditAutomationFocusChangedEvent (this));
 			}
 
 			public void SetTableItemBehavior (bool setBehavior)

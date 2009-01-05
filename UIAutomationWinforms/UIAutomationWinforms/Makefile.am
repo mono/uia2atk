@@ -170,6 +170,10 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ComboBox/ValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/CustomInvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemAutomationFocusChangedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemAutomationHasKeyboardFocusPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditAutomationFocusChangedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditAutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemRowEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditValuePatternValueEvent.cs \
@@ -178,6 +182,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementRemovedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemSelectionItemPatternIsSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/GridPatternColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/GridPatternRowEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/ScrollPatternHorizontallyScrollableEvent.cs \

@@ -62,6 +62,16 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 			                   null);
 		}
 
+		public override object GetPropertyValue (int propertyId)
+		{
+			if (propertyId == ValuePatternIdentifiers.IsReadOnlyProperty.Id)
+				return IsReadOnly;
+			else if (propertyId == ValuePatternIdentifiers.ValueProperty.Id)
+				return Value;
+			else
+				return base.GetPropertyValue (propertyId);
+		}
+
 		#endregion
 
 		#region IValueProvider implementation 

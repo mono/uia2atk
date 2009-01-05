@@ -53,10 +53,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 		
 		public override void Connect ()
 		{
-//			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
-//			                   new ListItemValuePatternIsReadOnlyEvent ((ListItemProvider) Provider));
-//			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
-//			                   new ListItemValuePatternValueEvent ((ListItemProvider) Provider));
+			// NOTE: IsReadOnly Property NEVER changes.
+			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
+			                   new DataItemValuePatternValueEvent (provider));
 		}
 		
 		public override void Disconnect ()
