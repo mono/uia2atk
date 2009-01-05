@@ -1,3 +1,7 @@
+2009-01-05  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Fix build.
+
 2009-01-05  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs,

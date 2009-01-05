@@ -798,8 +798,8 @@ namespace Mono.UIAutomation.Winforms
 
 			public override void SetFocus ()
 			{
-				datagrid.Focus ();
-				datagrid.CurrentCell = new SWF.DataGridCell (Index, 0);
+				DataGridProvider.DataGrid.Focus ();
+				DataGridProvider.DataGrid.CurrentCell = new SWF.DataGridCell (Index, 0);
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)
@@ -947,8 +947,9 @@ namespace Mono.UIAutomation.Winforms
 
 			public override void SetFocus ()
 			{
-				datagrid.Focus ();
-				datagrid.CurrentCell = new SWF.DataGridCell (provider.Index, provider.GetColumnIndexOf (this));
+				ItemProvider.DataGridProvider.DataGrid.Focus ();
+				ItemProvider.DataGridProvider.DataGrid.CurrentCell = new SWF.DataGridCell (ItemProvider.Index, 
+				                                                                           ItemProvider.GetColumnIndexOf (this));
 			}
 			
 			public void SetTableItemBehavior (bool setBehavior)
