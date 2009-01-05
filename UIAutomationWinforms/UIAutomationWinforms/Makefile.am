@@ -172,8 +172,10 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGrid/CustomInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemAutomationFocusChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemAutomationHasKeyboardFocusPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemAutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditAutomationFocusChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditAutomationHasKeyboardFocusPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditAutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditGridItemRowEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditValuePatternValueEvent.cs \

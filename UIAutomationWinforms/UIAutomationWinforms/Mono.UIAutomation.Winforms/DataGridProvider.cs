@@ -355,7 +355,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (eventType == ProviderEventType.AutomationFocusChangedEvent)
 				return new DataItemAutomationFocusChangedEvent (provider);
 			else if (eventType == ProviderEventType.AutomationElementIsOffscreenProperty)
-				return null;
+				return new DataItemAutomationIsOffscreenPropertyEvent (provider);
 			else
 				return null;
 		}
@@ -802,12 +802,50 @@ namespace Mono.UIAutomation.Winforms
 					return ControlType.DataItem.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return Catalog.GetString ("data item");
-//			SWF.DataGridCell currentCell = itemProvider.DataGridProvider.DataGrid.CurrentCell;
-//			if (currentCell.ColumnNumber == 0 && currentCell.RowNumber == itemProvider.Index)
-//				RaiseAutomationPropertyChangedEvent ();
-
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) 
+					return Helper.GetControlScreenBounds (DataGridProvider.DataGrid.GetCellBounds (Index, 0),
+					                                      DataGridProvider.DataGrid);
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+					return IsOffScreen (DataGridProvider.DataGrid,
+					                    (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id));
+				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+					return Helper.GetClickablePoint (this);
 				else
 					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			public bool IsOffScreen (SWF.DataGrid datagrid, Rect bounds)
+			{
+				SD.Rectangle columnHeaders 
+					= Helper.GetPrivateProperty<SWF.DataGrid, SD.Rectangle> (typeof (SWF.DataGrid),
+					                                                         datagrid,
+					                                                         "UIAColumnHeadersArea");
+				SD.Rectangle captionArea
+					= Helper.GetPrivateProperty<SWF.DataGrid, SD.Rectangle> (typeof (SWF.DataGrid),
+					                                                         datagrid,
+					                                                         "UIACaptionArea");
+				SD.Rectangle cellsArea
+					= Helper.GetPrivateProperty<SWF.DataGrid, SD.Rectangle> (typeof (SWF.DataGrid),
+					                                                         datagrid,
+					                                                         "UIACellsArea");
+				int rowHeight
+					= Helper.GetPrivateProperty<SWF.DataGrid, int> (typeof (SWF.DataGrid),
+					                                                         datagrid,
+					                                                         "UIARowHeight");
+
+				SD.Rectangle rectangle = datagrid.Bounds;
+				rectangle.Height -= cellsArea.Y - rectangle.Y - rowHeight;
+				rectangle.Y = cellsArea.Y;
+				if (datagrid.ColumnHeadersVisible) {
+					rectangle.X += DataGridProvider.DataGrid.RowHeaderWidth;
+					rectangle.Y += columnHeaders.Height;
+					rectangle.Height -= captionArea.Height;
+				}
+				if (datagrid.CaptionVisible)
+					rectangle.X += captionArea.Height;
+
+				Rect screen = Helper.RectangleToRect (datagrid.Parent.RectangleToScreen (rectangle));
+				return !bounds.IntersectsWith (screen);
 			}
 
 			private void OnColumnsCollectionChanged (object sender, CollectionChangeEventArgs args)
@@ -892,6 +930,8 @@ namespace Mono.UIAutomation.Winforms
 				          new DataItemEditAutomationHasKeyboardFocusPropertyEvent (this));
 				SetEvent (ProviderEventType.AutomationFocusChangedEvent,
 				          new DataItemEditAutomationFocusChangedEvent (this));
+				SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty,
+				          new DataItemEditAutomationIsOffscreenPropertyEvent (this));
 			}
 
 			public void SetTableItemBehavior (bool setBehavior)
@@ -918,7 +958,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 					Rect bounds 
 						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-					return Helper.IsOffScreen (bounds, provider.DataGridProvider.DataGrid, true);
+					return provider.IsOffScreen (provider.DataGridProvider.DataGrid, bounds);
 				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 					return Helper.GetClickablePoint (this);
 				else
