@@ -1,3 +1,8 @@
+2009-01-05  Mario Carrion <mcarrion@novell.com>
+
+	* patches/messagebox.patch,
+	patches/datagrid.patch: Already commited.
+
 2008-12-30  Mario Carrion <mcarrion@novell.com>
 
 	* patches/datagrid.patch: Patch updated.
