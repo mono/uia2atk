@@ -35,9 +35,22 @@ namespace Mono.UIAutomation.Winforms
 {
 	internal class ToolStripProgressBarProvider : ProgressBarProvider
 	{
+		private ToolStripProgressBar item = null;
+
 		public ToolStripProgressBarProvider (ToolStripProgressBar control)
 			: base (control.ProgressBar)
 		{
+			item = control;
+		}
+
+		protected override object GetProviderPropertyValue (int propertyId)
+		{
+			if (propertyId == AEIds.IsOffscreenProperty.Id) {
+				return Helper.ToolStripItemIsOffScreen (item);
+			} else if (propertyId == AEIds.BoundingRectangleProperty.Id)
+				return Helper.GetToolStripItemScreenBounds (item);
+			else
+				return base.GetProviderPropertyValue (propertyId);
 		}
 	}
 }

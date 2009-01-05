@@ -414,6 +414,8 @@ namespace UiaAtkBridge
 			rect.Y = (int)bounds.Y;
 			rect.Height = (int)bounds.Height;
 			rect.Width = (int)(bounds.Width * (endOffset - startOffset)) / Length;
+			if (coordType == Atk.CoordType.Window)
+				resource.ConvertCoords (ref rect.X, ref rect.Y, false);
 		}
 
 		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)

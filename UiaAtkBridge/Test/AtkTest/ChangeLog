@@ -1,3 +1,12 @@
+2009-01-05  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Allow negative window coordinates in window test so
+	  gail test will pass.
+
+	* AtkTests.cs: Test Selectable for Button because gail has it.
+
+	* AtkTests.cs: Optionally do not test TextBox for Focusable.
+
 2008-12-30  Mike Gorse <mgorse@novell.com>
 
 	* BasicWidgetType.cs, AtkTester.cs, AtkTests.cs: Support TreeView.

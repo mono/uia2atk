@@ -73,6 +73,19 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
+		internal static Rect GetToolStripItemScreenBounds (SWF.ToolStripItem item)
+		{
+			return RectangleToRect (GetToolStripItemScreenBoundsAsRectangle (item));
+		}
+
+		internal static System.Drawing.Rectangle GetToolStripItemScreenBoundsAsRectangle (SWF.ToolStripItem item)
+		{
+			if (item.Owner == null)
+				return item.Bounds;
+			else
+				return item.Owner.RectangleToScreen (item.Bounds);
+		}
+
 		internal static object GetClickablePoint (SimpleControlProvider provider)
 		{
 			bool offScreen
@@ -102,6 +115,19 @@ namespace Mono.UIAutomation.Winforms
 				screen = Helper.RectangleToRect (SWF.Screen.GetWorkingArea (referenceControl));
 
 			return !bounds.IntersectsWith (screen);
+		}
+
+		internal static bool ToolStripItemIsOffScreen (SWF.ToolStripItem item)
+{
+				System.Drawing.Rectangle bounds =
+					GetToolStripItemScreenBoundsAsRectangle (item);
+				System.Drawing.Rectangle screen =
+					SWF.Screen.GetWorkingArea (bounds);
+				// True iff the *entire* control is off-screen
+				return !screen.Contains (bounds.Left, bounds.Bottom) &&
+					!screen.Contains (bounds.Left, bounds.Top) &&
+					!screen.Contains (bounds.Right, bounds.Bottom) &&
+					!screen.Contains (bounds.Right, bounds.Top);
 		}
 
 		internal static bool IsOffScreen (Rect bounds, SWF.Control referenceControl)

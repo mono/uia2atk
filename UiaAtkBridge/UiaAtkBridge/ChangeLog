@@ -1,3 +1,14 @@
+2009-01-05  Mike Gorse  <mgorse@novell.com>
+
+	* Adapter.cs, Button.cs, ComponentImplementorHelper.cs, Image.cs,
+	  TextImageLabel.cs, TextImplementorHelper.cs:
+	  Handle Atk.CoordType.Window.
+
+	* MenuItem.cs: Check for a null parent in RefStateSet.
+	  Check for Focusable.
+	  Have RemoveSelection and ClearSelection recursively deselect other
+	  selected items.
+
 2009-01-02  Mike Gorse  <mgorse@novell.com>
 
 	* Window.cs: Handle internal deactive event [bug 445199]
@@ -13,6 +24,11 @@
 2008-12-31  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* MenuItem.cs: Whitespace fix.
+
+2008-12-31  Mike Gorse  <mgorse@novell.com>
+
+	* Button.cs: Add Selectable for a button if it is focusable [seems
+	  odd, but tracking gail for now]
 
 2008-12-30  Mike Gorse  <mgorse@novell.com>
 

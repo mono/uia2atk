@@ -653,7 +653,7 @@ namespace UiaAtkBridgeTest
 					tstbxView.Text = name;
 				} else {
 					accessible = GetAdapterForWidget (tbxView);
-					tbx1.Text = name;
+					tbx2.Text = name;
 				}
 				break;
 				

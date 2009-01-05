@@ -73,6 +73,7 @@ namespace UiaAtkBridgeTest
 			States (accessible,
 			  Atk.StateType.Enabled,
 			  Atk.StateType.Focusable,
+			  Atk.StateType.Selectable,
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);
@@ -437,10 +438,10 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void TextBoxEntry ()
 		{
-			TextBoxEntry (null);
+			TextBoxEntry (null, true);
 		}
 
-		public void TextBoxEntry (object widget)
+		public void TextBoxEntry (object widget, bool expectFocusable)
 		{
 			BasicWidgetType type = BasicWidgetType.TextBoxEntry;
 
@@ -454,7 +455,7 @@ namespace UiaAtkBridgeTest
 			States (accessible,
 			  Atk.StateType.Editable, 
 			  Atk.StateType.Enabled, 
-			  Atk.StateType.Focusable,
+			  (expectFocusable? Atk.StateType.Focusable: Atk.StateType.Enabled),
 			  Atk.StateType.SingleLine,
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,
@@ -477,10 +478,10 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void TextBoxView ()
 		{
-			TextBoxView (null);
+			TextBoxView (null, true);
 		}
 		
-		public void TextBoxView (object widget)
+		public void TextBoxView (object widget, bool expectFocusable)
 		{
 			BasicWidgetType type = BasicWidgetType.TextBoxView;
 			
@@ -494,7 +495,7 @@ namespace UiaAtkBridgeTest
 			States (accessible,
 			  Atk.StateType.Editable, 
 			  Atk.StateType.Enabled, 
-			  Atk.StateType.Focusable,
+			  (expectFocusable? Atk.StateType.Focusable: Atk.StateType.Enabled),
 			  Atk.StateType.MultiLine,
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,

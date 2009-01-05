@@ -67,16 +67,19 @@ namespace UiaAtkBridge
 			else
 				states.RemoveState (Atk.StateType.Showing);
 
-			if (Parent.RefStateSet ().ContainsState (Atk.StateType.Visible)) {
+			if (Parent != null && Parent.RefStateSet ().ContainsState (Atk.StateType.Visible)) {
 				states.AddState (Atk.StateType.Visible);
 				states.AddState (Atk.StateType.Showing);
 			}
 
+			bool canFocus = (bool) Provider.GetPropertyValue (
+			     AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
+			if (canFocus)
+				states.AddState (Atk.StateType.Focusable);
+
 			if (selected) {
 				states.AddState (Atk.StateType.Selected);
 
-				bool canFocus = (bool) Provider.GetPropertyValue (
-				     AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
 				if (canFocus) {
 					states.AddState (Atk.StateType.Focused);
 				}
@@ -229,6 +232,7 @@ namespace UiaAtkBridge
 		{
 			if (i == 0) {
 				selectedChild = -1;
+				RecursiveDeselect (null);
 				return true;
 			}
 			return false;
@@ -237,6 +241,7 @@ namespace UiaAtkBridge
 		public override bool ClearSelection ()
 		{
 			selectedChild = -1;
+			RecursiveDeselect (null);
 			return true;
 		}
 		

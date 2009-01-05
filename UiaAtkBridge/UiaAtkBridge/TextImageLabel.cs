@@ -83,6 +83,8 @@ namespace UiaAtkBridge
 			if (HasImage) {
 				x = (int)embeddedImage.Bounds.X;
 				y = (int)embeddedImage.Bounds.Y;
+				if (coordType == Atk.CoordType.Window)
+					ConvertCoords (ref x, ref y, false);
 			}
 		}
 		

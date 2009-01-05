@@ -59,7 +59,8 @@ namespace UiaAtkBridge
 
 		public bool Contains (int x, int y, Atk.CoordType coordType)
 		{
-			// TODO: handle the coordType?  Screen or Window
+			if (coordType == Atk.CoordType.Window)
+				resource.ConvertCoords (ref x, ref y, true);
 			return resource.BoundingRectangle.Contains (new System.Windows.Point (x, y));
 		}
 
@@ -71,18 +72,17 @@ namespace UiaAtkBridge
 
 		public void GetExtents (out int x, out int y, out int width, out int height, Atk.CoordType coordType)
 		{
-			//TODO: handle coordType
-			x = (int)resource.BoundingRectangle.X;
-			y = (int)resource.BoundingRectangle.Y;
+			GetPosition (out x, out y, coordType);
 			width = (int)resource.BoundingRectangle.Width;
 			height = (int)resource.BoundingRectangle.Height;
 		}
 
 		public void GetPosition (out int x, out int y, Atk.CoordType coordType)
 		{
-			// TODO: handle the coordType?  Screen or Window
 			x = (int)resource.BoundingRectangle.X;
 			y = (int)resource.BoundingRectangle.Y;
+			if (coordType == Atk.CoordType.Window)
+				resource.ConvertCoords (ref x, ref y, false);
 		}
 
 		public virtual void GetSize (out int width, out int height)

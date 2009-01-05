@@ -83,6 +83,13 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			
+			// This seems odd, but tracking gail for now.
+			bool canFocus = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
+			if (canFocus)
+				states.AddState (Atk.StateType.Selectable);
+			else
+				states.RemoveState (Atk.StateType.Selectable);
+
 			return states;
 		}
 
@@ -397,6 +404,8 @@ namespace UiaAtkBridge
 			if (HasImage) {
 				x = (int)embeddedImage.Bounds.X;
 				y = (int)embeddedImage.Bounds.Y;
+				if (coordType == Atk.CoordType.Window)
+					ConvertCoords (ref x, ref y, false);
 			}
 		}
 		

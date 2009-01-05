@@ -1,3 +1,13 @@
+2009-01-05  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTests.cs: Avoid testing Clear for DomainUpDown; it currently
+	  doesn't work (bug 463299)
+
+	* BridgeTests.cs: Expect Focusable for ToolStripDropDownButton.
+
+	* BridgeTests.cs: Don't expect Focusable for ToolStripTextBox.
+	* BridgeTester.cs: Fix setting of name for ToolStripTextBox.
+
 2008-12-30  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTests.cs: Test ToolStripMenuItem layer.

@@ -185,5 +185,23 @@ namespace UiaAtkBridge
 					  AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 			}
 		}
+
+		internal void ConvertCoords (ref int x, ref int y, bool toScreen)
+		{
+			Adapter adapter = this;
+			int mult = (toScreen? 1: -1);
+			for (;;) {
+				Adapter parent = adapter.Parent as Adapter;
+				if (parent == null || parent is TopLevelRootItem) {
+					if (adapter is Window) {
+						System.Windows.Rect rect = adapter.BoundingRectangle;
+						x += (int)rect.X * mult;
+						y += (int)rect.Y * mult;
+					}
+					return;
+				}
+				adapter = parent;
+			}
+		}
 	}
 }

@@ -38,9 +38,22 @@ namespace Mono.UIAutomation.Winforms
 {
 	internal class ToolStripComboBoxProvider : ComboBoxProvider
 	{
+		private ToolStripComboBox item = null;
+
 		public ToolStripComboBoxProvider (ToolStripComboBox control) :
 			base (control.ComboBox)
 		{
+			item = control;
+		}
+
+		protected override object GetProviderPropertyValue (int propertyId)
+		{
+			if (propertyId == AEIds.IsOffscreenProperty.Id) {
+				return Helper.ToolStripItemIsOffScreen (item);
+			} else if (propertyId == AEIds.BoundingRectangleProperty.Id && item != null)
+				return Helper.GetToolStripItemScreenBounds (item);
+			else
+				return base.GetProviderPropertyValue (propertyId);
 		}
 	}
 }

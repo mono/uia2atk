@@ -68,15 +68,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.NameProperty.Id)
 				return item.Text;
 			else if (propertyId == AEIds.IsOffscreenProperty.Id) {
-				System.Drawing.Rectangle bounds =
-					GetItemScreenBounds ();				
-				System.Drawing.Rectangle screen =
-					Screen.GetWorkingArea (bounds);
-				// True iff the *entire* control is off-screen
-				return !screen.Contains (bounds.Left, bounds.Bottom) &&
-					!screen.Contains (bounds.Left, bounds.Top) &&
-					!screen.Contains (bounds.Right, bounds.Bottom) &&
-					!screen.Contains (bounds.Right, bounds.Top);
+				return Helper.ToolStripItemIsOffScreen (item);
 			} else if (propertyId == AEIds.IsEnabledProperty.Id)
 				return item.Enabled;
 			else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
@@ -86,7 +78,7 @@ namespace Mono.UIAutomation.Winforms
 					item.CanSelect &&
 					Navigate (NavigateDirection.FirstChild) == null;
 			else if (propertyId == AEIds.BoundingRectangleProperty.Id)
-				return Helper.RectangleToRect (GetItemScreenBounds ());
+				return Helper.GetToolStripItemScreenBounds (item);
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
@@ -110,14 +102,5 @@ namespace Mono.UIAutomation.Winforms
 			SetEvent (ProviderEventType.AutomationElementNameProperty,
 			          new ETSI.AutomationNamePropertyEvent (this));
 		}
-
-		protected virtual System.Drawing.Rectangle GetItemScreenBounds ()
-		{
-			if (item.Owner == null)
-				return item.Bounds;
-			else
-				return item.Owner.RectangleToScreen (item.Bounds);
-		}
-
 	}
 }
