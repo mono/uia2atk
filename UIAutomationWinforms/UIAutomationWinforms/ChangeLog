@@ -1,5 +1,11 @@
 2009-01-05  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Automation Properties
+	implementation: IsKeyboard and HasKeyboard. FocusItem()
+	implementation. SetFocus() overridden.
+
+2009-01-05  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp:
 	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemAutomationIsOffscreenPropertyEvent.cs:

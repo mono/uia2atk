@@ -242,7 +242,9 @@ namespace Mono.UIAutomation.Winforms
 
 		public void FocusItem (object objectItem)
 		{
-			// FIXME: Implement
+			int row = (int) objectItem;
+			datagrid.Focus ();
+			datagrid.CurrentCell = new SWF.DataGridCell (row, 0);
 		}
 
 		public int SelectedItemsCount {
@@ -287,9 +289,6 @@ namespace Mono.UIAutomation.Winforms
 		public object GetItemPropertyValue (ListItemProvider item,
 		                                    int propertyId)
 		{
-			// FIXME: Implement at least:
-			// - AutomationElementIdentifiers.HasKeyboardFocusProperty.Id
-			// - AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id
 			if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
 				int index = item.Index;
 				// We need to union last column and first column
@@ -302,7 +301,13 @@ namespace Mono.UIAutomation.Winforms
 				return Helper.IsOffScreen (bounds, datagrid, true);
 			} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 				return Helper.GetClickablePoint (this);
-			else
+			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				return true;
+			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id) {
+				SWF.DataGridCell currentCell = datagrid.CurrentCell;
+				return currentCell.ColumnNumber == 0 && currentCell.RowNumber == item.Index
+					&& datagrid.Focused;
+			} else
 				return null;
 		}
 
@@ -791,6 +796,12 @@ namespace Mono.UIAutomation.Winforms
 				DataGridProvider.ProviderBehaviorSet -= OnProviderBehaviorSet;
 			}
 
+			public override void SetFocus ()
+			{
+				datagrid.Focus ();
+				datagrid.CurrentCell = new SWF.DataGridCell (Index, 0);
+			}
+
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				//FIXME: What about ItemTypeProperty & ItemStatusProperty ?
@@ -934,6 +945,12 @@ namespace Mono.UIAutomation.Winforms
 				          new DataItemEditAutomationIsOffscreenPropertyEvent (this));
 			}
 
+			public override void SetFocus ()
+			{
+				datagrid.Focus ();
+				datagrid.CurrentCell = new SWF.DataGridCell (provider.Index, provider.GetColumnIndexOf (this));
+			}
+			
 			public void SetTableItemBehavior (bool setBehavior)
 			{
 				if (setBehavior)
