@@ -30,6 +30,7 @@ using System.Windows.Automation;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
+using System.Runtime.Serialization.Formatters.Binary;
 using NUnit.Framework;
 
 // NOTE: This test is not subclassing BaseTest because we are implementing
@@ -53,8 +54,31 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
         public void TestTeardDown()
         {
             foreach (Process oldProcess in processes) {
-                if (!oldProcess.HasExited)
+                while (!oldProcess.HasExited)
                     oldProcess.CloseMainWindow ();
+
+                //System.Threading.Thread.Sleep (5000);
+
+                // Print values to make sure if something changed
+                Console.WriteLine ("ProcessId: {0}", oldProcess.Id);
+
+                BinaryFormatter bf = new BinaryFormatter ();
+                FileStream retrieveStream = new FileStream (string.Format("{0}.0.bin", oldProcess.Id), FileMode.Open);
+                ArrayList oldArraylist = (ArrayList) bf.Deserialize(retrieveStream);              
+                retrieveStream.Close ();
+                retrieveStream.Dispose ();
+                File.Delete(string.Format ("{0}.0.bin", oldProcess.Id));
+                //
+                retrieveStream = new FileStream (string.Format ("{0}.1.bin", oldProcess.Id), FileMode.Open);
+                ArrayList newArrayList = (ArrayList) bf.Deserialize (retrieveStream);
+                retrieveStream.Close ();
+                retrieveStream.Dispose ();
+                File.Delete (string.Format ("{0}.1.bin", oldProcess.Id));
+
+                // If we fail here is because we *did* change something
+                for (int index = 0; index < oldArraylist.Count; index++)
+                    Assert.IsTrue (object.Equals(oldArraylist[index], newArrayList[index]),
+                        string.Format("elements at index {0} are not equal", index));
             }
         }
 
@@ -137,12 +161,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms.Client
             } catch (System.Runtime.InteropServices.COMException) { }
         }
 
-        private Process RunProcess(int option)
+        private Process RunProcess (int option)
         {
             Process process = new Process ();
             processes.Add (process);
 
-            process.StartInfo.FileName = Path.Combine(Directory.GetCurrentDirectory(), "datagrid.exe");
+            process.StartInfo.FileName = Path.Combine (Directory.GetCurrentDirectory(), "datagrid.exe");
             process.StartInfo.Arguments = option.ToString ();
             process.Start ();
             // We have to wait for the application before inspecting.

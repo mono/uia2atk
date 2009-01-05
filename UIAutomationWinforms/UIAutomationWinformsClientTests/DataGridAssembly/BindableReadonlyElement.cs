@@ -22,10 +22,18 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-namespace DataGridApplication
+using System;
+using System.Xml.Serialization;
+
+namespace DataGridAssembly
 {
-    public class BindableReadonlyElement
+    [Serializable]
+    public class BindableReadonlyElement  : IEquatable<BindableReadonlyElement>
     {
+        public BindableReadonlyElement () : this(0, string.Empty)
+        {
+        }
+
         public BindableReadonlyElement (int integer, string name)
         {
             this.integer = integer;
@@ -38,6 +46,34 @@ namespace DataGridApplication
 
         public string Name {
             get { return name;  }
+        }
+
+        public override string ToString ()
+        {
+            return string.Format ("{0}. Integer: '{1}'. Name '{2}'",
+                GetType ().Name, Integer, Name);
+        }
+
+        #region IEquatable<BindableReadonlyElement> Members
+
+        public bool Equals (BindableReadonlyElement other)
+        {
+            return other.Name == name && other.Integer == integer;
+        }
+
+        #endregion
+
+        public override bool Equals (object obj)
+        {
+            BindableReadonlyElement element = obj as BindableReadonlyElement;
+            if (element == null)
+                return false;
+            return Equals (element);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode ();
         }
 
         private int integer;

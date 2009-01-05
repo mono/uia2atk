@@ -27,8 +27,13 @@ using System.Collections.Generic;
 using System.Collections;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
+using System.Runtime.Serialization.Formatters.Binary;
+using DataGridAssembly;
 
 namespace DataGridApplication
 {
@@ -38,47 +43,74 @@ namespace DataGridApplication
         {
         }
 
+        protected override void OnClosed (EventArgs e)
+        {
+            base.OnClosed (e);
+
+            // Writing information to test changes.
+            WriteData (1);
+        }
+
         public DatagridForm (string []args)
         {
             InitializeComponent ();
 
             if (args == null || args.Length == 0 || args [0] == "0")
-                BindableReadonlyElement();
+                BindableReadonlyElement ();
             else {
-                if (args[0] == "1")
+                if (args [0] == "1")
                     BindableReadWriteElement();
-                else if (args[0] == "2")
+                else if (args [0] == "2")
                     DataSetDataBinding ();
                 else
                     BindableReadonlyElement ();
             }
+
+            WriteData (0);
         }
 
         private void BindableReadonlyElement ()
         {
             ArrayList arraylist = new ArrayList ();
 
-            for (int index = 0; index < 10; index++)
+            for (int index = 0; index < Elements; index++)
                 arraylist.Add (new BindableReadonlyElement (index, 
                     string.Format ("Name{0}", index)));
 
             dataGrid.DataSource = arraylist;
+            option = 0;
         }
 
         private void BindableReadWriteElement ()
         {
             ArrayList arraylist = new ArrayList ();
 
-            for (int index = 0; index < 10; index++)
+            for (int index = 0; index < Elements; index++)
                 arraylist.Add (new BindableReadWriteElement (index,
                     string.Format ("Name{0}", index)));
 
             dataGrid.DataSource = arraylist;
+            option = 1;
         }
 
         private void DataSetDataBinding ()
         {
-            // FIXME: Port the datagrid.py example here
+            // FIXME: Port datagrid.py
+            option = 2;
         }
+
+        private void WriteData (int step)
+        {
+            FileStream stream = new FileStream (string.Format ("{0}.{1}.bin", 
+                Process.GetCurrentProcess ().Id, step), FileMode.Create);
+            BinaryFormatter bf = new BinaryFormatter ();
+            bf.Serialize (stream, dataGrid.DataSource);
+            stream.Flush ();
+            stream.Close ();
+            stream.Dispose ();
+        }
+
+        private const int Elements = 10;
+        private int option;
     }
 }

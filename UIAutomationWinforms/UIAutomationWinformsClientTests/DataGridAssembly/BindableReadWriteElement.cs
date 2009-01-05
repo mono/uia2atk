@@ -22,16 +22,51 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-namespace DataGridApplication
+using System;
+
+namespace DataGridAssembly
 {
+    [Serializable]
     public class BindableReadWriteElement
     {
+        public BindableReadWriteElement () : this (0, string.Empty)
+        {
+        }
+
         public BindableReadWriteElement (int integer, string name)
         {
             Integer = integer;
             Name = name;
         }
 
+        public override string ToString ()
+        {
+            return string.Format ("{0}. Integer: {1}. Name {2}",
+                GetType ().Name, Integer, Name);
+        }
+
+        #region IEquatable<BindableReadonlyElement> Members
+
+        public bool Equals (BindableReadWriteElement other)
+        {
+            return other.Name == Name && other.Integer == Integer;
+        }
+
+        #endregion
+
+        public override bool Equals (object obj)
+        {
+            BindableReadWriteElement element = obj as BindableReadWriteElement;
+            if (element == null)
+                return false;
+            return Equals (element);
+        }
+
+        public override int GetHashCode ()
+        {
+            return base.GetHashCode ();
+        }
+        
         public int Integer { get; set; }
         public string Name { get; set; }
     }

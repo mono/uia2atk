@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIAutomationWinformsClientT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridApplication", "DataGridApplication\DataGridApplication.csproj", "{ABBC586E-3714-4BCA-857A-D1C695A1CB56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataGridAssembly", "DataGridAssembly\DataGridAssembly.csproj", "{A23045E5-B60E-4DB8-9B5F-1F58888D76CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -22,6 +24,10 @@ Global
 		{ABBC586E-3714-4BCA-857A-D1C695A1CB56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABBC586E-3714-4BCA-857A-D1C695A1CB56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABBC586E-3714-4BCA-857A-D1C695A1CB56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A23045E5-B60E-4DB8-9B5F-1F58888D76CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A23045E5-B60E-4DB8-9B5F-1F58888D76CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A23045E5-B60E-4DB8-9B5F-1F58888D76CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A23045E5-B60E-4DB8-9B5F-1F58888D76CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

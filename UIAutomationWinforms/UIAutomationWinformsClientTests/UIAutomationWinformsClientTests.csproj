@@ -86,6 +86,12 @@
     <Compile Include="ToolBarTest.cs" />
     <Compile Include="UISpyMissingAttribute.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="DataGridAssembly\DataGridAssembly.csproj">
+      <Project>{A23045E5-B60E-4DB8-9B5F-1F58888D76CC}</Project>
+      <Name>DataGridAssembly</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
