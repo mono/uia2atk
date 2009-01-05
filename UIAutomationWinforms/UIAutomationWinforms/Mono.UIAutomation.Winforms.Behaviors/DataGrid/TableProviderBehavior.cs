@@ -57,9 +57,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 		{
 			// NOTE: RowHeadersProperty Property NEVER changes.
 			// NOTE: RowOrColumnMajor Property NEVER changes.
-			// We may need to patch SWF.GridColumnStylesCollection
-//			Provider.SetEvent (ProviderEventType.TablePatternColumnHeadersProperty,
-//			                   new TablePatternColumnHeadersEvent ((ListViewProvider) Provider));
+			Provider.SetEvent (ProviderEventType.TablePatternColumnHeadersProperty,
+			                   new TablePatternColumnHeadersEvent (headerProvider));
 		}
 		
 		public override void Disconnect ()

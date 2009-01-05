@@ -1,5 +1,15 @@
 2009-01-05  Mario Carrion  <mcarrion@novell.com>
 
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/TablePatternColumnHeadersEvent.cs:
+	Table Pattern Column Headers event added.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/TableProviderBehavior.cs:
+	Table Pattern Column Headers event enabled.
+
+2009-01-05  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/DataGridProvider.cs:
 	* Mono.UIAutomation.Winforms.Events/DataGrid/GridPatternRowEvent.cs:
 	* Mono.UIAutomation.Winforms.Events/DataGrid/GridPatternColumnEvent.cs:
