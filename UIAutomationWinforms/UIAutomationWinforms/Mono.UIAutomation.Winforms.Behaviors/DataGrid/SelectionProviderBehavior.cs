@@ -91,7 +91,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 		#region ISelectionProvider Members
 
 		public bool CanSelectMultiple {
-			get { return false; }
+			get { return true; }
 		}
 
 		public bool IsSelectionRequired {

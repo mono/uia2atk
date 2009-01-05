@@ -39,6 +39,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 		public DataItemEditTableItemProviderBehavior (DataGridProvider.DataGridDataItemEditProvider editProvider)
 			: base (editProvider)
 		{
+			this.editProvider = editProvider;
 		}
 		
 		#endregion
@@ -80,17 +81,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 
 		public IRawElementProviderSimple[] GetColumnHeaderItems ()
 		{
-//			return EditProvider.ItemProvider.GetItemProvider (provider.Column);
-//			
-////			EditProvider.ItemProvider.DataGridProvider.GetColumnHeaderItem ();
-//			
-////			ListViewProvider listViewProvider 
-////				= (ListViewProvider) ProviderFactory.FindProvider (EditProvider.ItemProvider.ListView);
-////
-////			return new IRawElementProviderSimple [] {
-////				listViewProvider.HeaderProvider.GetHeaderItemFrom (EditProvider.ColumnHeader)
-////			};
-			return new IRawElementProviderSimple [0];
+			return new IRawElementProviderSimple [] {
+				editProvider.ItemProvider.DataGridProvider.HeaderProvider.GetHeaderItem (editProvider.Column)
+			};
 		}
 
 		public IRawElementProviderSimple[] GetRowHeaderItems ()
@@ -98,6 +91,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 			return new IRawElementProviderSimple [0];
 		}
 		
+		#endregion
+
+		#region Private Fields
+
+		private DataGridProvider.DataGridDataItemEditProvider editProvider;
+
 		#endregion
 	}
 }

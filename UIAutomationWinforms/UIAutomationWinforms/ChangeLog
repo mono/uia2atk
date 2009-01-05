@@ -1,5 +1,16 @@
 2009-01-05  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: New method:
+	GetHeaderItem.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/SelectionProviderBehavior.cs:
+	DataGrid supports multiple selection. 
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditTableItemProviderBehavior.cs:
+	GetColumnHeaderItems() implementation.
+
+2009-01-05  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp:
 	* Mono.UIAutomation.Winforms.Events/DataGrid/TablePatternColumnHeadersEvent.cs:

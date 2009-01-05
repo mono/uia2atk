@@ -542,6 +542,13 @@ namespace Mono.UIAutomation.Winforms
 				}
 			}
 
+			public DataGridHeaderItemProvider GetHeaderItem (SWF.DataGridColumnStyle column)
+			{
+				DataGridHeaderItemProvider provider;
+				dictionary.TryGetValue (column, out provider);
+				return provider;
+			}
+
 			public override void InitializeChildControlStructure ()
 			{
 				foreach (SWF.DataGridColumnStyle style in styles) {
