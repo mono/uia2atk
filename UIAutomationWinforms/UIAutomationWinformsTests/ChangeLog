@@ -1,3 +1,7 @@
+2009-01-05  Mario Carrion  <mcarrion@novell.com>
+
+	* UIAutomationWinformsTests.mdp: WindowProviderTest -> FormProviderTest
+
 2009-01-02  Brad Taylor  <brad@getcoded.net>
 
 	* DateTimePickerProviderTest.cs: Test new DateTimePicker changes.  Most
