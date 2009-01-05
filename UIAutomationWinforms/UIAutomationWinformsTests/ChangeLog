@@ -1,3 +1,8 @@
+2009-01-02  Brad Taylor  <brad@getcoded.net>
+
+	* DateTimePickerProviderTest.cs: Test new DateTimePicker changes.  Most
+	notably, the first child is now a CheckBox when ShowCheckBox = true.
+
 2008-12-31  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am:

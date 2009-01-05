@@ -297,15 +297,27 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void ToggleTest ()
 		{
 			picker.ShowCheckBox = false;
+
+			IRawElementProviderSimple child
+				= ((IRawElementProviderFragmentRoot) pickerProvider)
+					.Navigate (NavigateDirection.FirstChild);
+
 			IToggleProvider toggleProvider
-				= pickerProvider.GetPatternProvider (
+				= child.GetPatternProvider (
 					TogglePatternIdentifiers.Pattern.Id) as IToggleProvider;
 			Assert.IsNull (toggleProvider,
 			               "With ShowCheckBox = false, DateTimePicker does not implement IToggleProvider");
 
 			picker.ShowCheckBox = true;
 
-			toggleProvider = pickerProvider.GetPatternProvider (
+			// FirstChild changes when ShowCheckBox = true
+			child = ((IRawElementProviderFragmentRoot) pickerProvider)
+					.Navigate (NavigateDirection.FirstChild);
+			TestProperty (child,
+			              AutomationElementIdentifiers.ControlTypeProperty,
+			              ControlType.CheckBox.Id);
+
+			toggleProvider = child.GetPatternProvider (
 				TogglePatternIdentifiers.Pattern.Id) as IToggleProvider;
 			Assert.IsNotNull (toggleProvider,
 			                  "With ShowCheckBox = true, DateTimePicker does not implement IToggleProvider");
