@@ -119,7 +119,6 @@ namespace UiaAtkBridge
 		public bool AddSelection (int i)
 		{
 			bool success = selectionHelper.AddSelection (i);
-
 			if (success) {
 				string propagateName = null;
 				if (!selProvider.CanSelectMultiple)
@@ -127,7 +126,8 @@ namespace UiaAtkBridge
 				RaiseSelectionChanged (propagateName);
 			}
 
-			return success;
+			// TODO: Report gail bug, and return 'success' instead
+			return true;
 		}
 		
 		public bool ClearSelection ()

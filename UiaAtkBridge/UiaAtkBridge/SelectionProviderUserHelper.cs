@@ -63,8 +63,7 @@ namespace UiaAtkBridge
 			ISelectionItemProvider childItem;
 			childItem = ChildItemAtIndex (i);
 			if (childItem == null)
-				// TODO: Report gail bug, and return false instead
-				return true;
+				return false;
 			
 			if (selectionProvider.CanSelectMultiple)
 				childItem.AddToSelection();

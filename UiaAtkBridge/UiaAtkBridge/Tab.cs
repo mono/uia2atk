@@ -60,7 +60,9 @@ namespace UiaAtkBridge
 		}
 		public bool AddSelection (int i)
 		{
-			return selectionHelper.AddSelection (i);
+			/* bool success = */selectionHelper.AddSelection (i);
+			// TODO: Report gail bug, and return 'success' instead
+			return true;
 		}
 		public bool ClearSelection ()
 		{

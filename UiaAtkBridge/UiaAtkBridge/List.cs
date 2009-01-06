@@ -205,7 +205,9 @@ AtkObject,
 		}
 		public bool AddSelection (int i)
 		{
-			return selectionHelper.AddSelection (i);
+		 	selectionHelper.AddSelection (i);
+		 	//FIXME: currently unit-tests force this to always true, we may be interested in changing them when we report the gail bug about this (see ComboBox.cs)
+			return true;
 		}
 		public bool ClearSelection ()
 		{
