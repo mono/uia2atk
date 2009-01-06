@@ -288,7 +288,7 @@ AtkObject,
 			return GetObjectAtRow (child, row, ref index);
 		}
 
-			private Atk.Object GetObjectAtRow (IRawElementProviderFragment provider, int target, ref int index)
+		private Atk.Object GetObjectAtRow (IRawElementProviderFragment provider, int target, ref int index)
 		{
 			if (provider == null)
 				return null;

@@ -31,9 +31,10 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	
-	public class MenuItem : ComboBoxOptions,
-	                        Atk.ActionImplementor
+	public class MenuItem : ComponentParentAdapter, 
+	                        Atk.SelectionImplementor, Atk.TextImplementor, Atk.ActionImplementor
 	{
+		TextImplementorHelper textExpert = null;
 		IInvokeProvider invokeProvider = null;
 		
 		public MenuItem (IRawElementProviderSimple provider) : base (provider)
@@ -45,6 +46,7 @@ namespace UiaAtkBridge
 				throw new ArgumentException ("Provider for ParentMenu should be IRawElementProviderFragment");
 
 			string name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			textExpert = new TextImplementorHelper (name, this);
 			if (!String.IsNullOrEmpty (name))
 				Name = name;
 
@@ -55,6 +57,7 @@ namespace UiaAtkBridge
 		}
 
 		private bool selected = false;
+		private int selectedChild = -1;
 		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
@@ -127,6 +130,27 @@ namespace UiaAtkBridge
 		{
 			selected = false;
 			NotifyStateChange (Atk.StateType.Selected, false);
+		}
+
+		internal void RecursiveDeselect (Adapter keepSelected)
+		{
+			lock (syncRoot) {
+				for (int i = 0; i < NAccessibleChildren; i++) {
+					Atk.Object child = RefAccessibleChild (i);
+
+					if (child == null || ((Adapter)child) == keepSelected)  {
+						selectedChild = i;
+						continue;
+					}
+					
+					MenuItem item = child as MenuItem;
+					if (item != null)
+						item.Deselect ();
+				}
+			}
+
+			if (Parent is MenuItem)
+				((MenuItem)Parent).RecursiveDeselect (keepSelected);
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
@@ -221,14 +245,27 @@ namespace UiaAtkBridge
 		
 		#endregion 
 
-		public override bool AddSelection (int i)
+		#region SelectionImplementor implementation
+		//cannot use SelectionProviderHelper because it doesn't implement ISelectionProvider
+
+		public bool AddSelection (int i)
 		{
 			if ((i < 0) || (i >= NAccessibleChildren))
 				return false;
 			return ((MenuItem)RefAccessibleChild (i)).DoAction (0);
 		}
 
-		public override bool RemoveSelection (int i)
+		public bool SelectAllSelection ()
+		{
+			return false;
+		}
+
+		public bool IsChildSelected (int i)
+		{
+			return selectedChild == i;
+		}
+
+		public bool RemoveSelection (int i)
 		{
 			if (i == 0) {
 				selectedChild = -1;
@@ -238,12 +275,122 @@ namespace UiaAtkBridge
 			return false;
 		}
 
-		public override bool ClearSelection ()
+		public bool ClearSelection ()
 		{
 			selectedChild = -1;
 			RecursiveDeselect (null);
 			return true;
 		}
+
+		public int SelectionCount {
+			get { return (selectedChild < 0 ? 0 : 1); }
+		}
+
+		public Atk.Object RefSelection (int i)
+		{
+			if (selectedChild < 0 || i != 0)
+				return null;
+			return RefAccessibleChild (selectedChild);
+		}
+
+		#endregion
+
+		#region TextImplementor implementation 
 		
+		public string GetText (int startOffset, int endOffset)
+		{
+			return textExpert.GetText (startOffset, endOffset);
+		}
+		
+		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
+		{
+			return textExpert.GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
+		}
+		
+		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
+		{
+			return textExpert.GetTextAtOffset (offset, boundaryType, out startOffset, out endOffset);
+		}
+		
+		public char GetCharacterAtOffset (int offset)
+		{
+			return textExpert.GetCharacterAtOffset (offset);
+		}
+		
+		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
+		{
+			return textExpert.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
+		}
+		
+		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
+		{
+			return textExpert.GetRunAttributes (offset, out startOffset, out endOffset);
+		}
+		
+		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
+		{
+			throw new NotImplementedException ();
+		}
+		
+		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
+		{
+			throw new NotImplementedException ();
+		}
+		
+		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
+		{
+			return textExpert.GetSelection (selectionNum, out startOffset, out endOffset);
+		}
+		
+		public bool AddSelection (int startOffset, int endOffset)
+		{
+			return false;
+		}
+		
+		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
+		{
+			return false;
+		}
+		
+		public bool SetCaretOffset (int offset)
+		{
+			return false;
+		}
+		
+		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
+		{
+			textExpert.GetRangeExtents (startOffset, endOffset, coordType, out rect);
+		}
+		
+		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
+		{
+			throw new NotImplementedException ();
+		}
+		
+		public int CaretOffset {
+			get { return 0; }
+		}
+		
+		public GLib.SList DefaultAttributes {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+		
+		public int CharacterCount {
+			get { return textExpert.Length; }
+		}
+		
+		public int NSelections {
+			get { return -1; }
+		}
+		
+		#endregion
+
+		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
+		{
+			//TODO
+		}
+
 	}
 }

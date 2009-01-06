@@ -1,5 +1,32 @@
 2009-01-06  Full Name  <Email Address>
 
+	* MenuItem.cs: Decouple from inheriting  ComboBoxOptions, it was
+	confusing and furthermore ComboBoxOptions now uses
+	SelectionProviderHelper, which doesn't apply here since MenuItems
+	don't implement it.
+
+	* SelectionProviderUserHelper.cs: Call the new SemiLazy method. Some
+	cosmetic changes below that.
+
+	* ComboBoxItem.cs: Remove the cached selected property (brad is right),
+	as this is not a good way of dealing with the problem if the provider
+	impl doesn't return right values in corner cases. This change doesn't
+	break any unit test although it may break some QA test if the
+	provider has some bug about this, so we hope they can catch them
+	early.
+
+	* ComboBoxOptions.cs: Fix a FIXME (SelectionProviderHelper usage).
+	Decouple from MenuItem presence.
+
+	* AutomationBridge.cs: Add new GetAdapterForProviderSemiLazy() method
+	and add a level for GetAdapterForProvider().
+
+	* ComboBoxDropDown.cs: Avoid magic numbers.
+
+	* Tree.cs: Cosmetic.
+
+2009-01-06  Full Name  <Email Address>
+
 	* Tab.cs:
 	* List.cs:
 	* Tree.cs:

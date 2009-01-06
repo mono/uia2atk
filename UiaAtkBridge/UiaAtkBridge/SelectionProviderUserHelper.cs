@@ -112,7 +112,7 @@ namespace UiaAtkBridge
 				GetSelection ();
 			if (selectedElements.Length == 0 || (i < 0 || i >= selectedElements.Length))
 				return null;
-			return AutomationBridge.GetAdapterForProviderLazy (selectedElements [i]);
+			return AutomationBridge.GetAdapterForProviderSemiLazy (selectedElements [i]);
 		}
 		
 		public bool RemoveSelection (int i)
@@ -137,12 +137,11 @@ namespace UiaAtkBridge
 			if (!selectionProvider.CanSelectMultiple)
 				return false;
 
-			IRawElementProviderFragment child = 
-				childrenHolder.Navigate(NavigateDirection.FirstChild);
+			var child = childrenHolder.Navigate (NavigateDirection.FirstChild);
 			while (child != null) {
 				ISelectionItemProvider selectionItemProvider = 
-					(ISelectionItemProvider)child.GetPatternProvider
-						(SelectionItemPatternIdentifiers.Pattern.Id);
+					(ISelectionItemProvider)child.GetPatternProvider (
+					  SelectionItemPatternIdentifiers.Pattern.Id);
 				
 				if (selectionItemProvider != null) {
 					selectionItemProvider.AddToSelection();
@@ -158,8 +157,7 @@ namespace UiaAtkBridge
 		
 		private ISelectionItemProvider ChildItemAtIndex (int i)
 		{
-			IRawElementProviderFragment child = 
-				childrenHolder.Navigate(NavigateDirection.FirstChild);
+			var child = childrenHolder.Navigate (NavigateDirection.FirstChild);
 			int childCount = 0;
 			
 			while (child != null) {
@@ -170,7 +168,7 @@ namespace UiaAtkBridge
 					return selectionItemProvider;
 				else if (selectionItemProvider != null)
 					childCount++;
-				child = child.Navigate(NavigateDirection.NextSibling);
+				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 			
 			return null;
@@ -178,14 +176,14 @@ namespace UiaAtkBridge
 		
 		IRawElementProviderSimple [] GetSelection ()
 		{
-			IRawElementProviderSimple [] elements = selectionProvider.GetSelection ();
+			var elements = selectionProvider.GetSelection ();
 			int controlTypeId = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			if (elements.Length == 0 || controlTypeId != ControlType.Group.Id)
 				return elements;
 			IRawElementProviderSimple [] ret = new IRawElementProviderSimple [elements.Length];
 			int count = 0;
 			for (int i = 0; i < elements.Length; i++) {
-				IRawElementProviderFragment parent = ((IRawElementProviderFragment)elements [i]).Navigate (NavigateDirection.Parent);
+				var parent = ((IRawElementProviderFragment)elements [i]).Navigate (NavigateDirection.Parent);
 				if (parent == childrenHolder)
 					ret [count++] = elements [i];
 			}

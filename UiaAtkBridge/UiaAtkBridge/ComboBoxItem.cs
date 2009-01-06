@@ -59,12 +59,13 @@ namespace UiaAtkBridge
 				Role = Atk.Role.TableCell;
 			else
 				Role = Atk.Role.MenuItem;
+		}
 
-			// Set the value of selected initially.  I'm concerned
-			// about caching this value, as it may differ from the
-			// IsSelectedProperty. - Brad
-			selected = (bool) Provider.GetPropertyValue (
-				SelectionItemPatternIdentifiers.IsSelectedProperty.Id);
+		private bool Selected {
+			get {
+				return (bool)Provider.GetPropertyValue (
+				  SelectionItemPatternIdentifiers.IsSelectedProperty.Id);
+			}
 		}
 
 		public bool ParentIsSimple ()
@@ -76,7 +77,6 @@ namespace UiaAtkBridge
 			return ComboBox.IsSimple (parentProvider);
 		}
 
-		private bool selected = false;
 		private bool showing = false;
 		
 		protected override Atk.StateSet OnRefStateSet ()
@@ -87,7 +87,7 @@ namespace UiaAtkBridge
 			showing = states.ContainsState (Atk.StateType.Showing);
 			
 			states.AddState (Atk.StateType.Selectable);
-			if (showing || selected) {
+			if (showing || Selected) {
 				states.AddState (Atk.StateType.Showing);
 			} else {
 				states.RemoveState (Atk.StateType.Showing);
@@ -97,7 +97,7 @@ namespace UiaAtkBridge
 			    (Parent.Parent.RefStateSet ().ContainsState (Atk.StateType.Visible)))
 				states.AddState (Atk.StateType.Visible);
 			
-			if (selected) {
+			if (Selected) {
 				states.AddState (Atk.StateType.Selected);
 				states.AddState (Atk.StateType.Focused);
 			} else {
@@ -113,19 +113,17 @@ namespace UiaAtkBridge
 
 		internal void Deselect ()
 		{
-			selected = false;
 			NotifyStateChange (Atk.StateType.Selected, false);
+			//FIXME: shouldn't we call selectionItemProvider.RemoveFromSelection (); ?
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			if (eventId == InvokePatternIdentifiers.InvokedEvent) {
-				selected = !selected;
-				NotifyStateChange (Atk.StateType.Selected, selected);
-				NotifyStateChange (Atk.StateType.Focused, selected);
+				NotifyStateChange (Atk.StateType.Selected, Selected);
+				NotifyStateChange (Atk.StateType.Focused, Selected);
 			} else if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
-				selected = true;
-				NotifyStateChange (Atk.StateType.Selected, selected);
+				NotifyStateChange (Atk.StateType.Selected, Selected);
 				((ComboBoxOptions)Parent).RecursiveDeselect (this);
 			} else {
 				Console.WriteLine ("WARNING: RaiseAutomationEvent({0},...) not handled yet", eventId.ProgrammaticName);
@@ -136,8 +134,7 @@ namespace UiaAtkBridge
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property.Id == SelectionItemPatternIdentifiers.IsSelectedProperty.Id) {
-				selected = (bool)e.NewValue;
-				NotifyStateChange (Atk.StateType.Selected, selected);
+				NotifyStateChange (Atk.StateType.Selected, Selected);
 			} else if (e.Property.Id == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
 				showing = !((bool)e.NewValue);
 				NotifyStateChange (Atk.StateType.Showing, showing);

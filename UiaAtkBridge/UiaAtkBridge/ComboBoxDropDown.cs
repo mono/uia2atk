@@ -33,14 +33,14 @@ namespace UiaAtkBridge
 {
 	public class ComboBoxDropDown : ComboBox, Atk.ActionImplementor
 	{
-		
+		private const int MENU_ELEMENT_POS_INSIDE_COMBOBOX = 0;
 		private string actionDescription = null;
 		private string actionName = "press";
 		
 		private IRawElementProviderFragmentRoot 	provider;
 		private IExpandCollapseProvider				expandColapseProvider;
 		private ComboBoxOptions InnerMenu {
-			get { return (ComboBoxOptions)RefAccessibleChild (0); }
+			get { return (ComboBoxOptions)RefAccessibleChild (MENU_ELEMENT_POS_INSIDE_COMBOBOX); }
 		}
 		
 		public ComboBoxDropDown (IRawElementProviderSimple provider) : base (provider)

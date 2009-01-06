@@ -33,6 +33,8 @@ namespace UiaAtkBridge
 	public class ComboBoxOptions : ComponentParentAdapter, Atk.SelectionImplementor, Atk.TextImplementor
 	{
 		TextImplementorHelper textExpert = null;
+		ISelectionProvider selectionProvider = null;
+		SelectionProviderUserHelper	selectionHelper;
 		
 		public ComboBoxOptions (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -42,6 +44,12 @@ namespace UiaAtkBridge
 			if ((provider as IRawElementProviderFragment) == null)
 				throw new ArgumentException ("Provider for ParentMenu should be IRawElementProviderFragment");
 
+			selectionProvider = (ISelectionProvider)provider.GetPatternProvider(SelectionPatternIdentifiers.Pattern.Id);
+			if (selectionProvider == null)
+				throw new ArgumentException ("The List inside the ComboBox should always implement ISelectionProvider");
+
+			selectionHelper = new SelectionProviderUserHelper (provider as IRawElementProviderFragment, selectionProvider);
+			
 			string name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			textExpert = new TextImplementorHelper (name, this);
 
@@ -60,44 +68,44 @@ namespace UiaAtkBridge
 			return ComboBox.IsSimple (parentProvider);
 		}
 
-		#region SelectionImplementor implementation //FIXME consider merging with SelectionProviderUserHelper
+		#region SelectionImplementor implementation //FIXME: consider making ComboBoxOptions inherit from List
 		
 		public int SelectionCount {
-			get { return (selectedChild < 0 ? 0 : 1); }
+			get { return selectionHelper.SelectionCount; }
 		}
 		
 		public virtual bool AddSelection (int i)
 		{
-			if ((i < 0) || (i >= NAccessibleChildren))
-				return false;
-			return ((ComboBoxItem)RefAccessibleChild (i)).DoAction (0);
+			return selectionHelper.AddSelection (i);
+			//return ((ComboBoxItem)RefAccessibleChild (i)).DoAction (0);
 		}
 
 		public virtual bool ClearSelection ()
 		{
-			return (SelectionCount == 0);
+			return selectionHelper.ClearSelection ();
+			//in the past, we did this because ComboBox doesn't support this: return (SelectionCount == 0);
 		}
 
 		public Atk.Object RefSelection (int i)
 		{
-			if (selectedChild < 0 || i != 0)
-				return null;
-			return RefAccessibleChild (selectedChild);
+			return selectionHelper.RefSelection (i);
 		}
 
 		public bool IsChildSelected (int i)
 		{
-			return selectedChild == i;
+			return selectionHelper.IsChildSelected (i);
 		}
 
-		public virtual bool RemoveSelection (int i)
+		public bool RemoveSelection (int i)
 		{
-			return false;
+			return selectionHelper.RemoveSelection (i);
+			//in the past, we did this because ComboBox doesn't support this: return false;
 		}
 
 		public bool SelectAllSelection ()
 		{
-			return false;
+			return selectionHelper.SelectAllSelection ();
+			//in the past, we did this because ComboBox doesn't support this: return false;
 		}
 
 		#endregion
@@ -199,7 +207,7 @@ namespace UiaAtkBridge
 			//TODO
 		}
 
-		protected int selectedChild = -1;
+		int selectedChild = -1;
 		
 		internal void RecursiveDeselect (Adapter keepSelected)
 		{
@@ -212,14 +220,9 @@ namespace UiaAtkBridge
 						continue;
 					}
 					
-					MenuItem itemM = child as MenuItem;
-					ComboBoxItem itemC = child as ComboBoxItem;
-					if (itemM != null)
-						itemM.Deselect ();
-					else if (itemC != null)
-						itemC.Deselect ();
-					else
-						throw new Exception ("A child of a Menu should be a MenuItem or ComboBoxItem");
+					ComboBoxItem item = child as ComboBoxItem;
+					if (item != null)
+						item.Deselect ();
 				}
 			}
 
@@ -237,10 +240,14 @@ namespace UiaAtkBridge
 
 		internal override void RemoveChild (Atk.Object childToRemove)
 		{
+			Console.WriteLine ("______________RemoveChild in ComboBoxOptions");
 			int childIndex = children.IndexOf (childToRemove);
+			bool cancelSelection = false;
 			if (IsChildSelected (childIndex))
-				((ComboBox)Parent).RaiseSelectionChanged (null);
+				cancelSelection = true; else Console.WriteLine ("______________RemoveChild in ComboBoxOptions NO");
 			base.RemoveChild (childToRemove);
+			if (children.Count <= 0 || cancelSelection)
+				((ComboBox)Parent).RaiseSelectionChanged (null);
 		}
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)

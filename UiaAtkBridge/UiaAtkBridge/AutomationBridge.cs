@@ -68,19 +68,47 @@ namespace UiaAtkBridge
 
 		static object adapterLookup = new object ();
 		static bool alreadyInLookup = false;
+		const uint INFINITE = uint.MaxValue;
 		
 		public static Adapter GetAdapterForProviderLazy (IRawElementProviderSimple provider)
 		{
-			return GetAdapterForProvider (provider, false);
+			return GetAdapterForProvider (provider, 0);
+		}
+
+		public static Adapter GetAdapterForProviderSemiLazy (IRawElementProviderSimple provider)
+		{
+			IRawElementProviderFragment navigator = (IRawElementProviderFragment)provider;
+			Queue <IRawElementProviderFragment> parents = new Queue<IRawElementProviderFragment> ();
+			Adapter adapter = GetAdapterForProviderLazy (navigator);
+
+			while ((adapter == null) && (navigator != null)) {
+				navigator = navigator.Navigate (NavigateDirection.Parent);
+				parents.Enqueue (navigator);
+				adapter = GetAdapterForProviderLazy (navigator);
+			}
+
+			if (parents.Count == 0)
+				return adapter;
+			ParentAdapter parentAdapter = adapter as ParentAdapter;
+			if (parentAdapter == null)
+				return null;
+
+			parents.Dequeue ();
+			parentAdapter.RequestChildren ();
+			while (parents.Count > 0) {
+				parentAdapter = (ParentAdapter)GetAdapterForProviderLazy (parents.Dequeue ());
+				parentAdapter.RequestChildren ();
+			}
+			return GetAdapterForProviderLazy (provider);
 		}
 		
 		[Obsolete("Use GetAdapterForProviderLazy as it's more efficient")]
 		public static Adapter GetAdapterForProvider (IRawElementProviderSimple provider)
 		{
-			return GetAdapterForProvider (provider, true);
+			return GetAdapterForProvider (provider, INFINITE);
 		}
 		
-		private static Adapter GetAdapterForProvider (IRawElementProviderSimple provider, bool avoidLazyLoading)
+		private static Adapter GetAdapterForProvider (IRawElementProviderSimple provider, uint lazyLoadingLevel)
 		{
 			lock (adapterLookup) {
 				if (alreadyInLookup)
@@ -88,7 +116,7 @@ namespace UiaAtkBridge
 				alreadyInLookup = true;
 
 				try {
-					if (avoidLazyLoading) {
+					if (lazyLoadingLevel > 0) {
 						Console.Error.WriteLine ("WARNING: obsolete non-lazy-loading GetAdapterForProvider method called.");
 						
 						List <Atk.Object> alreadyRequestedChildren = new List <Atk.Object> ();
@@ -101,7 +129,7 @@ namespace UiaAtkBridge
 						foreach (IRawElementProviderSimple providerReady in initialProvs) {
 							Adapter adapter = providerAdapterMapping [providerReady] as Adapter;
 							if (adapter != null)
-								RequestChildren (adapter, alreadyRequestedChildren);
+								RequestChildren (adapter, alreadyRequestedChildren, lazyLoadingLevel);
 						}
 						alreadyRequestedChildren = null;
 					}
@@ -116,9 +144,9 @@ namespace UiaAtkBridge
 			}
 		}
 		
-		private static void RequestChildren (Atk.Object adapter, List<Atk.Object> alreadyRequestedChildren)
+		private static void RequestChildren (Atk.Object adapter, List<Atk.Object> alreadyRequestedChildren, uint level)
 		{
-			if (alreadyRequestedChildren.Contains (adapter))
+			if (alreadyRequestedChildren.Contains (adapter) || level == 0)
 				return;
 
 			int nChildren = adapter.NAccessibleChildren;
@@ -129,7 +157,7 @@ namespace UiaAtkBridge
 					
 					if (i == 0)
 						alreadyRequestedChildren.Add (adapter);
-					RequestChildren (adapterN, alreadyRequestedChildren);
+					RequestChildren (adapterN, alreadyRequestedChildren, level - 1);
 				}
 			}
 			else
@@ -380,6 +408,7 @@ namespace UiaAtkBridge
 		
 		public void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
+			//Console.WriteLine ("RaiseStructureChangedEvent:" + e.StructureChangeType.ToString ());
 			IRawElementProviderSimple simpleProvider = (IRawElementProviderSimple) provider;
 			if (e.StructureChangeType == StructureChangeType.ChildrenBulkAdded) {
 				HandleBulkAdded (simpleProvider);
@@ -394,6 +423,7 @@ namespace UiaAtkBridge
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
 				HandleBulkRemoved (simpleProvider);
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenInvalidated) {
+				//Console.WriteLine ("StructureChangedEvent not handled:" + e.StructureChangeType.ToString ());
 				// These always seem to be coupled with
 				// add/removed/reordered events, so ignore.
 				//HandleBulkRemoved (simpleProvider);
