@@ -13,7 +13,7 @@ from strongwind import *
 from os.path import exists
 from sys import path
 
-def launchListView(exe=None):
+def launchColumnHeader(exe=None):
     'Launch columnheader detail mode with accessibility enabled and return a\
      columnheader object.Log an error and return None if something goes wrong'
 

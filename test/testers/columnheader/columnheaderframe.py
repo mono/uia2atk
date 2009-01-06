@@ -25,7 +25,7 @@ class ColumnHeaderFrame(accessibles.Frame):
     COLUMN_B = "Num"
 
     def __init__(self, accessible):
-        super(ListViewFrame, self).__init__(accessible)
+        super(ColumnHeaderFrame, self).__init__(accessible)
         self.label = self.findLabel(self.LABEL)
         self.treetable = self.findTreeTable(None)
         self.column_a = self.findTableColumnHeader(self.COLUMN_A, checkShowing=False)
@@ -37,8 +37,6 @@ class ColumnHeaderFrame(accessibles.Frame):
         self.item5_position = self.texts[10]._getAccessibleCenter()
         self.num5_position = self.texts[11]._getAccessibleCenter()
 
-        print "item0:%s, item5:%s, num0:%s, num5:%s" % (self.item0_position,self.item5_position, self.num0_position,self.num5_position)
-
     #give 'click' action
     def click(self,accessible):
         accessible.click()
@@ -48,7 +46,7 @@ class ColumnHeaderFrame(accessibles.Frame):
         procedurelogger.action("check ColumnHeader Text Value")
 
         procedurelogger.expectedResult('text of %s is %s' \
-                                    % (accessible,textvelue)
+                                    % (accessible,textvelue))
         assert accessible.text == textvelue
 
     #assert item's order after click TableColumnHeader
@@ -67,6 +65,25 @@ class ColumnHeaderFrame(accessibles.Frame):
 
             assert item0_new_position == self.item0_position and \
                    num0_new_position == self.num0_position
+
+    #assert TableColumnHeaders image
+    def assertImageSize(self, accessible, width=16, height=16):
+        procedurelogger.action("assert %s's image size" % accessible)
+        size = accessible.imageSize
+
+        procedurelogger.expectedResult('"%s" image size is %s x %s' %
+                                                  (accessible, width, height))
+
+        assert width == size[0], "%s (%s), %s (%s)" %\
+                                            ("expected width",
+                                              width,
+                                             "does not match actual width",
+                                              size[0])
+        assert height == size[1], "%s (%s), %s (%s)" %\
+                                            ("expected height",
+                                              height,
+                                             "does not match actual height",
+                                              size[1]) 
     
     #close application main window after running test
     def quit(self):
