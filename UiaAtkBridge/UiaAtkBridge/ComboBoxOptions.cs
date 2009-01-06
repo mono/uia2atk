@@ -240,11 +240,10 @@ namespace UiaAtkBridge
 
 		internal override void RemoveChild (Atk.Object childToRemove)
 		{
-			Console.WriteLine ("______________RemoveChild in ComboBoxOptions");
 			int childIndex = children.IndexOf (childToRemove);
 			bool cancelSelection = false;
 			if (IsChildSelected (childIndex))
-				cancelSelection = true; else Console.WriteLine ("______________RemoveChild in ComboBoxOptions NO");
+				cancelSelection = true;
 			base.RemoveChild (childToRemove);
 			if (children.Count <= 0 || cancelSelection)
 				((ComboBox)Parent).RaiseSelectionChanged (null);

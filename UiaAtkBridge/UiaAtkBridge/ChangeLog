@@ -1,5 +1,9 @@
 2009-01-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ComboBoxOptions.cs: Remove debug spew.
+
+2009-01-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	
 
 
