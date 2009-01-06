@@ -60,13 +60,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderSimple provider = 
 				ProviderFactory.GetProvider (splitContainer);
 			
-			object transformProvider =
-				provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (transformProvider,
-			                  "Not returning TransformPatternIdentifiers.");
-			Assert.IsTrue (transformProvider is ITransformProvider,
-			               "Not returning TransformPatternIdentifiers.");
-			
 			object dockProvider =
 				provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (dockProvider,
@@ -77,189 +70,136 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		#endregion
 		
-		#region ITransformProvider Test
+		#region SplitterPanel ITransformProvider Test
 		
 		[Test]
-		public void ITransformProviderCanMoveTest ()
+		public void SplitterPanelITransformProviderCanMoveTest ()
 		{
 			SplitContainer splitContainer = new SplitContainer ();
-			IRawElementProviderSimple provider = 
-				ProviderFactory.GetProvider (splitContainer);
+			IRawElementProviderFragmentRoot rootProvider = 
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (splitContainer);
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
 			
 			ITransformProvider transformProvider = (ITransformProvider)
-				provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
+				childProvider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (transformProvider,
 			                  "Not returning TransformPatternIdentifiers.");
 			
 			// Default DockStyle is None
-			Assert.IsTrue (transformProvider.CanMove,
-			               "SplitContainer can be moved by default.");
-			splitContainer.Dock = DockStyle.Bottom;
 			Assert.IsFalse (transformProvider.CanMove,
-			                "SplitContainer can't be moved when Bottom.");
-			splitContainer.Dock = DockStyle.Top;
-			Assert.IsFalse (transformProvider.CanMove,
-			                "SplitContainer can't be moved when Top.");
-			splitContainer.Dock = DockStyle.Left;
-			Assert.IsFalse (transformProvider.CanMove,
-			                "SplitContainer can't be moved when Left.");
-			splitContainer.Dock = DockStyle.Right;
-			Assert.IsFalse (transformProvider.CanMove,
-			                "SplitContainer can't be moved when Right.");
-			splitContainer.Dock = DockStyle.Fill;
-			Assert.IsFalse (transformProvider.CanMove,
-			                "SplitContainer can't be moved when Fill.");
+			                "SplitterPanel can't be moved by default.");
 		}
 		
 		[Test]
-		public void ITransformProviderCanResizeTest ()
+		public void SplitterPanelITransformProviderCanResizeTest ()
 		{
 			SplitContainer splitContainer = new SplitContainer ();
-			IRawElementProviderSimple provider = 
-				ProviderFactory.GetProvider (splitContainer);
+			IRawElementProviderFragmentRoot rootProvider = 
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (splitContainer);
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
 			
 			ITransformProvider transformProvider = (ITransformProvider)
-				provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
+				childProvider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (transformProvider,
 			                  "Not returning TransformPatternIdentifiers.");
-			
-			// Default DockStyle is None
+
 			Assert.IsTrue (transformProvider.CanResize,
-			               "SplitContainer can be resized by default.");
-			splitContainer.Dock = DockStyle.Bottom;
-			Assert.IsTrue (transformProvider.CanResize,
-			               "SplitContainer can be resized when Bottom.");
-			splitContainer.Dock = DockStyle.Top;
-			Assert.IsTrue (transformProvider.CanResize,
-			               "SplitContainer can be resized when Top.");
-			splitContainer.Dock = DockStyle.Left;
-			Assert.IsTrue (transformProvider.CanResize,
-			               "SplitContainer can be resized when Left.");
-			splitContainer.Dock = DockStyle.Right;
-			Assert.IsTrue (transformProvider.CanResize,
-			               "SplitContainer can be resized when Right.");
-			splitContainer.Dock = DockStyle.Fill;
+			               "SplitterPanel can be resized by default.");
+
+			splitContainer.Panel1Collapsed = true;
+			splitContainer.Panel2Collapsed = false;
 			Assert.IsFalse (transformProvider.CanResize,
-			                "SplitContainer can't be resized when Fill.");
+			               "SplitterPanel1 can't be resized.");
+
+			splitContainer.Panel1Collapsed = false;
+			splitContainer.Panel2Collapsed = true;
+			Assert.IsFalse (transformProvider.CanResize,
+			               "SplitterPanel2 can't be resized.");
 		}
 		
 		[Test]
-		public void ITransformProviderCanRotateTest ()
+		public void SplitterPanelITransformProviderCanRotateTest ()
 		{
 			SplitContainer splitContainer = new SplitContainer ();
-			IRawElementProviderSimple provider = 
-				ProviderFactory.GetProvider (splitContainer);
+			IRawElementProviderFragmentRoot rootProvider = 
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (splitContainer);
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
 			
 			ITransformProvider transformProvider = (ITransformProvider)
-				provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
+				childProvider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (transformProvider,
 			                  "Not returning TransformPatternIdentifiers.");
 			
 			Assert.IsFalse (transformProvider.CanRotate,
-			                "SplitContainer can't be rotated.");
+			                "SplitterPanel can't be rotated.");
 		}
 		
 		[Test]
-		public void ITransformProviderMoveTest ()
+		public void SplitterPanelITransformProviderMoveTest ()
 		{
 			SplitContainer splitContainer = new SplitContainer ();
-			IRawElementProviderSimple provider = 
-				ProviderFactory.GetProvider (splitContainer);
+			IRawElementProviderFragmentRoot rootProvider = 
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (splitContainer);
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
 			
 			ITransformProvider transformProvider = (ITransformProvider)
-				provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
+				childProvider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (transformProvider,
 			                  "Not returning TransformPatternIdentifiers.");
 			
-			double x = 10, y = 10;
-			transformProvider.Move (x, y);
-			Assert.AreEqual (x, splitContainer.Location.X, "X axis");
-			Assert.AreEqual (y, splitContainer.Location.Y, "Y axis");
-			
 			try {
-				splitContainer.Dock = DockStyle.Bottom;
-				transformProvider.Move (x, y);
-				Assert.Fail ("InvalidOperationException not thrown");
-			} catch (InvalidOperationException) { }
-			
-			try {
-				splitContainer.Dock = DockStyle.Top;
-				transformProvider.Move (x, y);
-				Assert.Fail ("InvalidOperationException not thrown");
-			} catch (InvalidOperationException) { }
-			
-			try {
-				splitContainer.Dock = DockStyle.Left;
-				transformProvider.Move (x, y);
-				Assert.Fail ("InvalidOperationException not thrown");
-			} catch (InvalidOperationException) { }
-			
-			try {
-				splitContainer.Dock = DockStyle.Right;
-				transformProvider.Move (x, y);
-				Assert.Fail ("InvalidOperationException not thrown");
-			} catch (InvalidOperationException) { }
-			
-			try {
-				splitContainer.Dock = DockStyle.Fill;
+				double x = 10, y = 10;
 				transformProvider.Move (x, y);
 				Assert.Fail ("InvalidOperationException not thrown");
 			} catch (InvalidOperationException) { }
 		}
 		
 		[Test]
-		public void ITransformProviderResizeTest ()
+		public void SplitterPanelITransformProviderResizeTest ()
 		{
 			SplitContainer splitContainer = new SplitContainer ();
-			IRawElementProviderSimple provider = 
-				ProviderFactory.GetProvider (splitContainer);
+			IRawElementProviderFragmentRoot rootProvider = 
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (splitContainer);
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
 			
 			ITransformProvider transformProvider = (ITransformProvider)
-				provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
+				childProvider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (transformProvider,
 			                  "Not returning TransformPatternIdentifiers.");
-			
-			double width = 50, heitht = 50;
-			transformProvider.Resize (width, heitht);
-			Assert.AreEqual (width, splitContainer.Size.Width, "Width");
-			Assert.AreEqual (heitht, splitContainer.Size.Height, "Height");
-			
-			splitContainer.Dock = DockStyle.Bottom;
-			transformProvider.Resize (width, heitht);
-			Assert.AreEqual (width, splitContainer.Size.Width, "Width");
-			Assert.AreEqual (heitht, splitContainer.Size.Height, "Height");
-			
-			splitContainer.Dock = DockStyle.Top;
-			transformProvider.Resize (width, heitht);
-			Assert.AreEqual (width, splitContainer.Size.Width, "Width");
-			Assert.AreEqual (heitht, splitContainer.Size.Height, "Height");
-			
-			splitContainer.Dock = DockStyle.Left;
-			transformProvider.Resize (width, heitht);
-			Assert.AreEqual (width, splitContainer.Size.Width, "Width");
-			Assert.AreEqual (heitht, splitContainer.Size.Height, "Height");
-			
-			splitContainer.Dock = DockStyle.Right;
-			transformProvider.Resize (width, heitht);
-			Assert.AreEqual (width, splitContainer.Size.Width, "Width");
-			Assert.AreEqual (heitht, splitContainer.Size.Height, "Height");
+
+			try {
+				double width1 = 50, heitht1 = 50;
+				splitContainer.Panel1Collapsed = true;
+				splitContainer.Panel2Collapsed = false;
+				transformProvider.Resize (width1, heitht1);
+				Assert.Fail ("InvalidOperationException not thrown");
+			} catch (InvalidOperationException) { }
 			
 			try {
-				splitContainer.Dock = DockStyle.Fill;
-				transformProvider.Resize (width, heitht);
+				double width2 = 50, heitht2 = 50;
+				splitContainer.Panel1Collapsed = false;
+				splitContainer.Panel2Collapsed = true;
+				transformProvider.Resize (width2, heitht2);
 				Assert.Fail ("InvalidOperationException not thrown");
 			} catch (InvalidOperationException) { }
 		}
 		
 		[Test]
-		public void ITransformProviderRotateTest ()
+		public void SplitterPanelITransformProviderRotateTest ()
 		{
 			SplitContainer splitContainer = new SplitContainer ();
-			IRawElementProviderSimple provider = 
-				ProviderFactory.GetProvider (splitContainer);
+			IRawElementProviderFragmentRoot rootProvider = 
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (splitContainer);
+			IRawElementProviderFragment childProvider =
+				rootProvider.Navigate (NavigateDirection.FirstChild);
 			
 			ITransformProvider transformProvider = (ITransformProvider)
-				provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
+				childProvider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
 			Assert.IsNotNull (transformProvider,
 			                  "Not returning TransformPatternIdentifiers.");
 			
