@@ -371,12 +371,13 @@ namespace UiaAtkBridgeTest
 			}
 		}
 
-		private void CheckChildrenSelection (Atk.Object accessible, int theSelected)
+		private void CheckNonMultipleChildrenSelection (Atk.Selection sel, Atk.Object accessible, int theSelected)
 		{
 			for (int i = 0; i < accessible.NAccessibleChildren; i++) {
-				Assert.IsTrue (
-				  accessible.RefAccessibleChild (i).RefStateSet ().ContainsState (Atk.StateType.Selected)
-				  || (i != theSelected),
+				bool shouldBeSelected = (theSelected == i);
+				Assert.AreEqual (shouldBeSelected, sel.IsChildSelected (i));
+				Assert.AreEqual (shouldBeSelected, 
+				  accessible.RefAccessibleChild (i).RefStateSet ().ContainsState (Atk.StateType.Selected),
 				  String.Format ("after AddSelection({0}), child({1}) should be have correct Selected state", 
 				    theSelected, i));
 			}
@@ -426,7 +427,7 @@ namespace UiaAtkBridgeTest
 			
 			for (int i = 0; i < names.Length; i++) {
 				Assert.IsTrue (implementor.AddSelection (i), "AddSelection(" + i + ")");
-				CheckChildrenSelection (accessible, i);
+				CheckNonMultipleChildrenSelection (implementor, accessible, i);
 				if (!Misc.IsComboBox (type))
 					Assert.IsNotNull (accessible.RefAccessibleChild (i), "accessible.RefAccessibleChild (" + i + ") != null");
 				Assert.IsNotNull (implementor.RefSelection (0), "implementor.RefSelection (0) != null");

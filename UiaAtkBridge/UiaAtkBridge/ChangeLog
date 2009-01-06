@@ -1,4 +1,10 @@
-2009-01-06  Full Name  <Email Address>
+2009-01-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	
+
+
+
+2009-01-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MenuItem.cs: Decouple from inheriting  ComboBoxOptions, it was
 	confusing and furthermore ComboBoxOptions now uses
@@ -25,7 +31,7 @@
 
 	* Tree.cs: Cosmetic.
 
-2009-01-06  Full Name  <Email Address>
+2009-01-06  Andrés G. Aragoneses  <aaragoneses@novell.com
 
 	* Tab.cs:
 	* List.cs:

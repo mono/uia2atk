@@ -51,6 +51,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			object toggleProvider = provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
 			Assert.IsNull (toggleProvider);
 
+			// Should never support Selection
+			object selectionProvider = provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
+			Assert.IsNull (selectionProvider);
+
 			// Should never support SelectionItem
 			object selectionItemProvider = provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
 			Assert.IsNull (selectionItemProvider);
