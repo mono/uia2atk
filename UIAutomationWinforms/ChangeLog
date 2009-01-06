@@ -1,5 +1,9 @@
 2009-01-06  Brad Taylor  <brad@getcoded.net>
 
+	* configure.ac: Add pt_BR to ALL_LINGUAS.
+
+2009-01-06  Brad Taylor  <brad@getcoded.net>
+
 	* configure.ac: Update Intltool line with new voodoo courtesy of
 	Banshee.
 

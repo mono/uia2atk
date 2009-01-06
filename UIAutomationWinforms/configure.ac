@@ -5,7 +5,7 @@ AC_INIT([UIAutomationWinforms], [0.9])
 AM_INIT_AUTOMAKE([foreign 1.9 tar-ustar])
 IT_PROG_INTLTOOL([0.35.0])
 
-ALL_LINGUAS="es"
+ALL_LINGUAS="es pt_BR"
 
 GETTEXT_PACKAGE=UIAutomationWinforms
 AC_SUBST(GETTEXT_PACKAGE)
