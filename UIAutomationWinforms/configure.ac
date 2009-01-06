@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_PREREQ([2.54])
 AC_INIT([UIAutomationWinforms], [0.9])
 AM_INIT_AUTOMAKE([foreign 1.9 tar-ustar])
-AC_PROG_INTLTOOL([0.21])
+IT_PROG_INTLTOOL([0.35.0])
 
 ALL_LINGUAS="es"
 

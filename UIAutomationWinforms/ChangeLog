@@ -1,4 +1,9 @@
-2009-01-02  Brad Taylor  <brad@getcoded.net>
+2009-01-06  Brad Taylor  <brad@getcoded.net>
+
+	* configure.ac: Update Intltool line with new voodoo courtesy of
+	Banshee.
+
+2009-01-05  Mike Gorse <mgorse@novell.com>
 
 	* UIAutomationWinforms/Mono.UIAutomation.Winforms/FormProvider.cs,
 	  UIAutomationWinforms/Makefile.am,
