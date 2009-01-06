@@ -1,0 +1,189 @@
+# Translation of UIAutomationWinforms to Português
+# Copyright (C) 2008 Novell, Inc. (http://www.novell.com)
+# This file is distributed under the same license as the uia2atk package.
+# Brad Taylor <brad@getcoded.net>, 2008.
+# Brian G. Merrell <bgmerrell@novell.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: UIAutomationWinforms.HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-12-31 16:20-0500\n"
+"PO-Revision-Date: 2009-01-06 13:09-0500\n"
+"Last-Translator: Brian G. Merrell <bgmerrell@novell.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: MonoDevelop Gettext addin\n"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarProvider.cs:83
+msgid "calendar"
+msgstr "calendário"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs:93
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/ComboBox/ButtonInvokeBehavior.cs:71
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/ScrollBar/ButtonInvokeProviderBehavior.cs:72
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DateTimePickerProvider.cs:192
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs:509
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripButtonProvider.cs:58
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/UpDownBaseProvider.cs:160
+msgid "button"
+msgstr "botão"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/CheckBoxProvider.cs:67
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DateTimePickerProvider.cs:87
+msgid "check box"
+msgstr "caixa de seleção"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ComboBoxProvider.cs:78
+msgid "combo box"
+msgstr "caixa de combinação"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ComboBoxProvider.cs:277
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListBoxProvider.cs:108
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs:100
+msgid "list"
+msgstr "lista"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridProvider.cs:205
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs:98
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs:76
+msgid "data grid"
+msgstr "grade de dados"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridProvider.cs:540
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs:388
+msgid "header"
+msgstr "cabeçalho"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridProvider.cs:657
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs:455
+msgid "header item"
+msgstr "elemento de cabeçalho"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridProvider.cs:796
+msgid "data item"
+msgstr "item de dados"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridProvider.cs:893
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/TextBoxProvider.cs:92
+msgid "edit"
+msgstr "editar"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DateTimePickerProvider.cs:88
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/PaneProvider.cs:58
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/PanelProvider.cs:64
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/PrintPreviewControlProvider.cs:85
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/SplitContainerProvider.cs:94
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/SplitterProvider.cs:64
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/WebBrowserProvider.cs:54
+msgid "pane"
+msgstr "painel"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DateTimePickerProvider.cs:259
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/LabelProvider.cs:68
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs:161
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/StatusBarProvider.cs:225
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs:90
+msgid "text"
+msgstr "texto"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DateTimePickerProvider.cs:260
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/UpDownBaseProvider.cs:98
+msgid "spinner"
+msgstr "giratório"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/FormProvider.cs:137
+msgid "window"
+msgstr "janela"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/GroupBoxProvider.cs:60
+msgid "group"
+msgstr "grupo"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/LinkLabelProvider.cs:64
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs:89
+msgid "hyperlink"
+msgstr "hiperlink"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListItemProvider.cs:63
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs:120
+msgid "list item"
+msgstr "item de lista"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MenuStripProvider.cs:54
+msgid "menu bar"
+msgstr "barra de menu"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MessageBoxFormProvider.cs:175
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/PictureBoxProvider.cs:90
+msgid "image"
+msgstr "imagem"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/PopupButtonPanelProvider.cs:49
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolBarProvider.cs:59
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripProvider.cs:57
+msgid "tool bar"
+msgstr "barra de ferramentos"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/PopupButtonProvider.cs:58
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolBarProvider.cs:203
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripItemProvider.cs:65
+msgid "menu item"
+msgstr "item de menu"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ProgressBarProvider.cs:60
+msgid "progress bar"
+msgstr "barra de progresso"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/RadioButtonProvider.cs:65
+msgid "radio button"
+msgstr "botão de rádio"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ScrollBarProvider.cs:87
+msgid "scroll bar"
+msgstr "barra de rolagem"
+
+# http://msdn.microsoft.com/pt-br/library/system.windows.controls.primitives.thumb.aspx
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ScrollBarProvider.cs:281
+msgid "thumb"
+msgstr ""
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/StatusBarProvider.cs:74
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/StatusStripProvider.cs:63
+msgid "status bar"
+msgstr "barra de estado"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/TabControlProvider.cs:59
+msgid "tab"
+msgstr "guia"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/TabPageProvider.cs:51
+msgid "tab item"
+msgstr "item de guia"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/TextBoxProvider.cs:91
+msgid "document"
+msgstr "documento"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripSeparatorProvider.cs:52
+msgid "separator"
+msgstr "separador"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripSplitButtonProvider.cs:57
+msgid "split button"
+msgstr "botão de divisão"
+
+#FIXME: no siempre es una sugerencia
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs:62
+msgid "tool tip"
+msgstr "dica de ferramenta"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/TreeViewProvider.cs:166
+msgid "tree"
+msgstr "árvore"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/TreeViewProvider.cs:274
+msgid "tree item"
+msgstr "item de árvore"
