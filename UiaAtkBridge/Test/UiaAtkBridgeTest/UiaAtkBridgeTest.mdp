@@ -1,4 +1,4 @@
-<Project name="UiaAtkBridgeTest" fileversion="2.0" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+<Project name="UiaAtkBridgeTest" fileversion="2.0" language="C#" clr-version="Net_2_0" targetFramework="2.0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <CustomCommands>
@@ -21,6 +21,7 @@
     <File name="BridgeTester.cs" subtype="Code" buildaction="Compile" />
     <File name="bridgetest.sh.in" subtype="Code" buildaction="Nothing" />
     <File name="BridgeTests.cs" subtype="Code" buildaction="Compile" />
+    <File name="FigureOutDeadlock.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

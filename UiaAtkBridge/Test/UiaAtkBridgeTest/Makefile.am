@@ -40,7 +40,8 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 FILES =  \
 	AssemblyInfo.cs \
 	BridgeTester.cs \
-	BridgeTests.cs
+	BridgeTests.cs \
+	FigureOutDeadlock.cs
 
 DATA_FILES = 
 

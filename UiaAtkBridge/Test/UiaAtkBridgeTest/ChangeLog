@@ -1,5 +1,14 @@
 2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTests.cs:
+	* BridgeTester.cs:
+	* FigureOutDeadlock.cs: Ongoing research about deadlocks.
+
+	* Makefile.am:
+	* UiaAtkBridgeTest.mdp: Add new file.
+
+2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Convert ctor to TestFixtureSetup to make it easier to
 	override it. Make some fields static to better use them in a
 	subclass.

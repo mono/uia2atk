@@ -32,6 +32,8 @@ using NUnit.Framework;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
+using System.Threading;
+
 //only used for the regression test:
 using SWF = System.Windows.Forms;
 using System.Drawing;
@@ -669,11 +671,11 @@ namespace UiaAtkBridgeTest
 			InterfaceText (panel, panelText);
 
 			States (panel,
-				Atk.StateType.Enabled,
-				Atk.StateType.Sensitive,
-				Atk.StateType.Showing,
-				Atk.StateType.Visible,
-			        Atk.StateType.MultiLine);
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible,
+			  Atk.StateType.MultiLine);
 
 			sb1.Panels.Remove (panel1);
 			Assert.AreEqual (0, sb.NAccessibleChildren, "StatusBar should not have children after panel is removed");
@@ -696,6 +698,18 @@ namespace UiaAtkBridgeTest
 		public void ToolStripTextBoxMultiLine () {
 			TextBoxView (toolStripTextBox2, false);
 		}
+
+		[Test]
+		[Ignore ("It causes a deadlock for now")]
+		public void OpenFileDialog ()
+		{
+			OpenFileDialogStatic ();
+		}
+
+		internal static void OpenFileDialogStatic ()
+		{
+			new DialogTest (new SWF.OpenFileDialog ()).Test ();
+		}
 		
 		[Test]
 		public void Bug457939 ()
@@ -707,5 +721,38 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (Atk.Role.Label, accessible.Role, "A ToolStripLabel with IsLink==True should not have an unknown role");
 			toolStrip.Items.Remove (lab);
 		}
+
+		internal class DialogTest {
+			SWF.CommonDialog dialog;
+	
+			internal DialogTest (SWF.CommonDialog dialog)
+			{
+				this.dialog = dialog;
+			}
+
+			internal void Test ()
+			{
+				var th = new Thread (new ThreadStart (Show));
+				th.SetApartmentState(ApartmentState.STA);
+				try {
+					th.Start ();
+					Thread.Sleep (4000);
+//uncomment this when we resolve the deadlock problem:
+//					Atk.Object dialogAdapter = BridgeTester.GetAdapterForWidget (dialog);
+//					Assert.AreEqual (dialogAdapter.Role, Atk.Role.Dialog, "dialog should have dialog role");
+//					Assert.IsTrue (dialogAdapter.NAccessibleChildren > 0, "dialog should have children");
+				}
+				finally {
+					th.Abort ();
+				}
+			}
+
+			private void Show ()
+			{
+				dialog.ShowDialog ();
+			}
+		}
 	}
+
+
 }

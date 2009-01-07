@@ -90,12 +90,17 @@ namespace UiaAtkBridgeTest
 
 		protected int lastClickedLink = -1;
 
-		[TestFixtureSetUp]
-		public void BridgeTesterInit () 
+		public static void InitializeA11y ()
 		{
 			//same effect as Application.Run() (the important bit is this causes a call to ApplicationStarts() ):
 			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
-
+		}
+		
+		[TestFixtureSetUp]
+		public virtual void BridgeTesterInit () 
+		{
+			InitializeA11y ();
+			
 			form.Show ();
 
 			string uiaQaPath = Misc.LookForParentDir ("*.gif");
@@ -859,6 +864,11 @@ namespace UiaAtkBridgeTest
 		public void TearDown ()
 		{
 			form.Close ();
+			BridgeTearDown ();
+		}
+
+		public static void BridgeTearDown ()
+		{
 			Atk.Util.GetRootHandler = null;
 		}
 	}
