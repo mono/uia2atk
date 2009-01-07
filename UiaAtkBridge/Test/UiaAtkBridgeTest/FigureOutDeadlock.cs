@@ -1,4 +1,4 @@
-// FIXME: If you comment the other classes in this project and make this one public, you'll get a deadlock on this, why?
+// FIXME: If you comment BridgeTests' [TestFixture] attrib in this project and uncomment the one here, you'll get a deadlock on this, why?
 
 // NOTE: the following is the output I get when killing the process with the -SIGQUIT option:
 
@@ -65,14 +65,14 @@ namespace UiaAtkBridgeTest
 	//[TestFixture]
 	public class FigureOutDeadlock
 	{
-
+		//see clarification about this line at the end of this file:
+		Form f = new Form ();
+		
 		[TestFixtureSetUp]
 		public void FigureOutDeadlockInit () 
 		{
-			//see clarification about this line at the end of this file:
-			new Form ();
-			
 			BridgeTester.InitializeA11y ();
+			f.Show();
 		}
 
 		[Test]
@@ -84,13 +84,14 @@ namespace UiaAtkBridgeTest
 		[TestFixtureTearDown]
 		public void TearDown ()
 		{
+			f.Close ();
 			BridgeTests.BridgeTearDown ();
 		}
 	}
 }
 
 
-//if you comment the "new Form();" line, you'll get a different deadlock:
+//if you comment the "new Form();" line, you'll get this deadlock:
 //Full thread dump:
 //
 //"" tid=0x0xb62feb90 this=0x0x141640:
