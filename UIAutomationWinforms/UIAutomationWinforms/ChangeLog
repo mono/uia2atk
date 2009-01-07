@@ -1,5 +1,10 @@
 2009-01-07  Neville Gao  <nevillegao@gmail.com>
 
+	* Mono.UIAutomation.Winforms.Behaviors/BaseColorControl/SmallColorControlInvokeProviderBehavior.cs:
+	  Fixed Invoke action.
+
+2009-01-07  Neville Gao  <nevillegao@gmail.com>
+
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added files.
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Added internal controls of
 	  SWF.ColorDialog.

@@ -85,9 +85,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.BaseColorControl
 				Provider.Control.BeginInvoke (new MethodInvoker (PerformClick));
 				return;
 			}
-
-			// TODO:
-//			((ColorDialog.BaseColorControl.SmallColorControl) Provider.Cotrol).InternalColor
+			
+			((ColorDialog.BaseColorControl.SmallColorControl) Provider.Control).IsSelected = true;
 		}
 		
 		#endregion
