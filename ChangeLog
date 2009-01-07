@@ -1,3 +1,10 @@
+2009-01-07  Stephen Shaw  <sshaw@decriptor.com>
+
+	* UiaAtkBridge/configure.ac
+	* UIAutomation/configure.ac
+	* UIAutomationWinforms/configure.ac
+		Bumped version to 0.9.1
+
 2008-11-24  Brad Taylor  <brad@getcoded.net>
 
 	* patches/atk-bridge-lib64.patch: Error: inappropriate use of hack.
