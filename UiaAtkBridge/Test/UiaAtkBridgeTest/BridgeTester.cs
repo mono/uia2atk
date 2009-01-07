@@ -317,7 +317,9 @@ namespace UiaAtkBridgeTest
 //		}
 //		private Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget, bool recursive)
 //		{
-			Atk.Object acc = GetAdapterForProvider (ProviderFactory.GetProvider (widget, true, true));
+			var provider = ProviderFactory.GetProvider (widget, true, true);
+			Assert.IsNotNull (provider, "ProviderFactory returned null for this widget");
+			Atk.Object acc = GetAdapterForProvider (provider);
 			mappings [acc] = widget;
 			
 //NOTE: this code fragment below may be useful for discovering child items which don't have a test for themselves alone
