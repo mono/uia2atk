@@ -58,6 +58,7 @@ FILES =  \
 	CheckBoxProviderTest.cs \
 	CheckedListBoxProviderTest.cs \
 	ComboBoxProviderTest.cs \
+	DataGridProviderTest.cs \
 	DateTimePickerProviderTest.cs \
 	DomainUpDownProviderTest.cs \
 	ErrorProviderTest.cs \

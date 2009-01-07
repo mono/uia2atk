@@ -1,3 +1,9 @@
+2009-01-07  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* DataGridProviderTest.cs:
+	* UIAutomationWinformsTests.mdp: DataGridProvider test added.
+
 2009-01-07  Neville Gao  <nevillegao@gmail.com>
 
 	* SplitterProviderTest.cs: Test modified pattern.
