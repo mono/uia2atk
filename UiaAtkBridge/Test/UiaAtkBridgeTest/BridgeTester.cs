@@ -89,8 +89,9 @@ namespace UiaAtkBridgeTest
 		protected SWF.TreeView treeView = new SWF.TreeView ();
 
 		protected int lastClickedLink = -1;
-		
-		public BridgeTester () 
+
+		[TestFixtureSetUp]
+		public void BridgeTesterInit () 
 		{
 			//same effect as Application.Run() (the important bit is this causes a call to ApplicationStarts() ):
 			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
@@ -188,7 +189,6 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (tabControl);
 			form.Text = "UiaAtkBridge test";
 			SWF.Application.EnableVisualStyles ();
-			
 		}
 		
 		private SWF.RadioButton GiveMeARadio (string name) {
@@ -219,7 +219,7 @@ namespace UiaAtkBridgeTest
 			get { return false; }
 		}
 		
-		private Dictionary <Atk.Object, System.ComponentModel.Component> mappings = new Dictionary<Atk.Object, System.ComponentModel.Component> ();
+		private static Dictionary <Atk.Object, System.ComponentModel.Component> mappings = new Dictionary<Atk.Object, System.ComponentModel.Component> ();
 		
 		public override void DisableWidget (Atk.Object accessible)
 		{
@@ -308,7 +308,7 @@ namespace UiaAtkBridgeTest
 			return GetAccessible (type, name, null, real, true);
 		}
 
-		protected Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget)
+		protected static Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget)
 		{
 			if (widget == null)
 				throw new ArgumentNullException ("widget");

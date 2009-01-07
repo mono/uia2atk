@@ -1,5 +1,11 @@
 2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Convert ctor to TestFixtureSetup to make it easier to
+	override it. Make some fields static to better use them in a
+	subclass.
+
+2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Avoid ANE.
 
 2009-01-05  Mike Gorse  <mgorse@novell.com>
