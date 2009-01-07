@@ -8,6 +8,7 @@ SUBDIRS =  UIAutomationWinforms po
 endif
 
 EXTRA_DIST = \
+    mono-uia.snk \
     intltool-extract.in \
     intltool-merge.in \
     intltool-update.in 

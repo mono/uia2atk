@@ -1,3 +1,8 @@
+2009-01-06  Stephen Shaw  <sshaw@decriptor.com>
+
+	* Makefile.am: Update EXTRA_DIST, added mono-uia.snk to list
+	This should fix the rpm build.
+
 2009-01-06  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: Update EXTRA_DIST, CLEANFILES and MAINTAINERCLEANFILES.
