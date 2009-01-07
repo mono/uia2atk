@@ -44,6 +44,7 @@ all: $(ASSEMBLY) $(PROGRAMFILES)
 
 FILES =  \
 	Globals.cs \
+	Mono.UIAutomation.Winforms.Behaviors/BaseColorControl/SmallColorControlInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/CheckBox/ToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/CheckedListBox/ListItemToggleProviderBehavior.cs \
@@ -155,6 +156,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/BaseAutomationEvent.cs \
 	Mono.UIAutomation.Winforms.Events/BaseAutomationPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/BaseColorControl/SmallColorControlInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Button/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/CheckBox/TogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/CheckedListBox/ListItemTogglePatternToggleStateEvent.cs \
@@ -344,6 +346,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs \
 	Mono.UIAutomation.Winforms/AssemblyInfo.cs \
+	Mono.UIAutomation.Winforms/BaseColorControlProvider.cs \
 	Mono.UIAutomation.Winforms/ButtonProvider.cs \
 	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
 	Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs \

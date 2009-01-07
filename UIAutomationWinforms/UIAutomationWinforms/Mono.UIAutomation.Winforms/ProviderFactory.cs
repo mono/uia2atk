@@ -119,6 +119,8 @@ namespace Mono.UIAutomation.Winforms
 			SWF.DataGrid dgrid;
 			SWF.DateTimePicker dtp;
 			SWF.PrintPreviewControl ppc;
+			SWF.ColorDialog.BaseColorControl bcc;
+			SWF.ColorDialog.BaseColorControl.SmallColorControl scc;
 			
 			SWF.StatusStrip ss;
 			SWF.MenuStrip ms;
@@ -260,6 +262,10 @@ namespace Mono.UIAutomation.Winforms
 				provider = new PopupButtonPanelProvider (pbp);
 			else if ((pbtn = component as SWF.PopupButtonPanel.PopupButton) != null)
 				provider = new PopupButtonProvider (pbtn);
+			else if ((bcc = component as SWF.ColorDialog.BaseColorControl) != null)
+				provider = new BaseColorControlProvider (bcc);
+			else if ((scc = component as SWF.ColorDialog.BaseColorControl.SmallColorControl) != null)
+				provider = new BaseColorControlProvider.SmallColorControlProvider (scc);
 			else {
 				//TODO: We have to solve the problem when there's a Custom control
 				//	Ideally the first thing we do is send a wndproc message to
