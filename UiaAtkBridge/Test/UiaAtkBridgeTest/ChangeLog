@@ -1,5 +1,10 @@
 2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs:
+	* FigureOutDeadlock.cs: Ok, fixed one deadlock.
+
+2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* FigureOutDeadlock.cs: Even closing the Form you get the deadlock.
 
 2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>

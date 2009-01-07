@@ -1,5 +1,10 @@
 2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Monitor.cs:
+	* AutomationBridge.cs: Ok, fixed one deadlock.
+
+2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Monitor.cs: Prevent Gail & AtkBridge initialization for gtk > 2.14
 	(this depends on gail trunk). Fixes #457787.
 

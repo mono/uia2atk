@@ -52,14 +52,17 @@ namespace UiaAtkBridge
 		
 		public AutomationBridge ()
 		{
-			bool newMonitor = false;
-
 			pointerProviderMapping =
 				new AmbiDictionary<IntPtr,IRawElementProviderSimple> ();
 			providerAdapterMapping =
 				new AmbiDictionary<IRawElementProviderSimple, Atk.Object>();
 
 			windowProviders = 0;
+		}
+
+		public static void Quit ()
+		{
+			Monitor.Instance.Dispose ();
 		}
 		
 #endregion
@@ -419,7 +422,7 @@ namespace UiaAtkBridge
 				// TODO: Handle proper documented args
 				//       (see FragmentRootControlProvider)
 				if (HandleTotalElementRemoval (simpleProvider))
-					appMonitor.Quit ();
+					Monitor.Instance.Dispose ();
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
 				HandleBulkRemoved (simpleProvider);
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenInvalidated) {
@@ -438,7 +441,7 @@ namespace UiaAtkBridge
 		public void Initialize ()
 		{
 			if (appMonitor == null)
-				appMonitor = new Monitor();
+				appMonitor = Monitor.Instance;
 		}
 
 		public void Terminate ()

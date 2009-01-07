@@ -869,7 +869,7 @@ namespace UiaAtkBridgeTest
 
 		public static void BridgeTearDown ()
 		{
-			Atk.Util.GetRootHandler = null;
+			UiaAtkBridge.AutomationBridge.Quit ();
 		}
 	}
 }

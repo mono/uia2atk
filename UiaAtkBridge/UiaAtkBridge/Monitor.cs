@@ -61,7 +61,7 @@ namespace UiaAtkBridge
 			RegisterSignal (typeof (Atk.Object), "restore");
 		}
 		
-		internal Monitor ()
+		private Monitor ()
 		{
 			GLib.GType.Init();
 
@@ -77,6 +77,20 @@ namespace UiaAtkBridge
 			else
 				override_global_event_listener ();
 			Atk.Util.AddKeyEventListenerHandler = AddKeyEventListener;
+		}
+
+		private static volatile Monitor instance = null;
+
+		private static object syncRoot = new object ();
+		
+		public static Monitor Instance {
+			get {
+				if (instance == null)
+					lock (syncRoot)
+						if (instance == null)
+							instance = new Monitor ();
+				return instance;
+			}
 		}
 
 		string gtk_modules_envvar_content = null;
@@ -100,11 +114,8 @@ namespace UiaAtkBridge
 			Environment.SetEnvironmentVariable (GAIL_ENVVAR_NAME, "1");
 		}
 		
-		private bool isApplicationStarted = false;
-		
 		public void ApplicationStarts ()
 		{
-			isApplicationStarted = true;
 			Thread glibThread = new Thread (new ThreadStart (GLibMainLoopThread));
 			glibThread.IsBackground = true;
 			glibThread.Start ();
@@ -128,7 +139,7 @@ namespace UiaAtkBridge
 			mainLoop.Run ();
 		}
 		
-		public void Quit()
+		internal void Dispose ()
 		{
 			AutoResetEvent sync = GLibHacks.Invoke (delegate (object sender, EventArgs args) {
 				ShutdownAtkBridge ();
@@ -271,7 +282,7 @@ namespace UiaAtkBridge
 			gnome_accessibility_module_init ();
 		}
 
-		private void ShutdownAtkBridge ()
+		private static void ShutdownAtkBridge ()
 		{
 			gnome_accessibility_module_shutdown ();
 		}
