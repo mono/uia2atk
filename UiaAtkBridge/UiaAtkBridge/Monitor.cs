@@ -65,6 +65,8 @@ namespace UiaAtkBridge
 		{
 			GLib.GType.Init();
 			
+			PreventGailInitialization ();
+			
 			Atk.Util.GetRootHandler = ReturnTopLevel;
 			
 			Atk.Util.GetToolkitNameHandler = GetAssemblyName;
@@ -77,6 +79,18 @@ namespace UiaAtkBridge
 			Atk.Util.AddKeyEventListenerHandler = AddKeyEventListener;
 		}
 
+		const string ATK_BRIDGE_ENVVAR_NAME = "NO_AT_BRIDGE";
+		const string GAIL_ENVVAR_NAME = "NO_GAIL";
+		
+		// we need to set this because MWF happens to depend on gtk+ (this may change on the future)
+		void PreventGailInitialization ()
+		{
+			// Solution for gtk+ >= 2.14
+			// see https://bugzilla.novell.com/show_bug.cgi?id=457787
+			Environment.SetEnvironmentVariable (ATK_BRIDGE_ENVVAR_NAME, "1");
+			Environment.SetEnvironmentVariable (GAIL_ENVVAR_NAME, "1");
+		}
+		
 		private bool isApplicationStarted = false;
 		
 		public void ApplicationStarts ()
@@ -88,6 +102,7 @@ namespace UiaAtkBridge
 			AutoResetEvent sync = GLibHacks.Invoke (delegate (object sender, EventArgs args) {
 				RegisterWindowSignals ();
 
+				Environment.SetEnvironmentVariable (ATK_BRIDGE_ENVVAR_NAME, "0");
 				LaunchAtkBridge ();
 			});
 			sync.WaitOne ();

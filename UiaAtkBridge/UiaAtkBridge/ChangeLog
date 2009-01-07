@@ -1,3 +1,9 @@
+2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Monitor.cs: Prevent Gail & AtkBridge initialization for gtk > 2.14
+	(this depends on gail trunk). Fixes #457787. (Backported from 122670,
+	but not an exact merge.)
+
 2008-12-12  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Hyperlink.cs: Add PushButton Role and URI Name to link accessibles. 
