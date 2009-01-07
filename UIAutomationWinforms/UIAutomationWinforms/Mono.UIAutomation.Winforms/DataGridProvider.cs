@@ -133,7 +133,11 @@ namespace Mono.UIAutomation.Winforms
 			             new SelectionProviderBehavior (this));
 			SetBehavior (GridPatternIdentifiers.Pattern,
 			             new GridProviderBehavior (this));
+			
 			// Table Pattern is *only* supported when Header exists
+			if (datagrid.CurrentTableStyle.GridColumnStyles.Count > 0
+			    && datagrid.ColumnHeadersVisible)
+				CreateHeader (false, datagrid.CurrentTableStyle);
 		}
 
 		public override void Terminate ()
@@ -323,8 +327,6 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Private Methods
 
-#pragma warning disable 169
-
 		private void OnUIACollectionChanged (object sender, CollectionChangeEventArgs args)
 		{
 			if (lastCurrencyManager == null || args.Action == CollectionChangeAction.Refresh)
@@ -366,8 +368,6 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 
-#pragma warning restore 169
-
 		private void UpdateChildren (bool raiseEvent)
 		{
 			if (lastDataSource != null) {
@@ -376,8 +376,11 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			if (header != null) {
+				OnNavigationChildRemoved (true, header);
 				header.Terminate ();
 				header = null;
+
+				SetBehavior (TablePatternIdentifiers.Pattern, null);
 			}
 
 			if (lastCurrencyManager == null) { 
@@ -387,22 +390,19 @@ namespace Mono.UIAutomation.Winforms
 					return;
 			}
 
-			// FIXME: Remove CurrentTableStyle property after committing SWF patch
-			SWF.DataGridTableStyle tableStyle = CurrentTableStyle;
-			
 			// Is showing "+" to expand, this usually happens when DataSource is
 			// DataSet and has more than one DataTable.
-			if (tableStyle.GridColumnStyles.Count == 0) {
+			if (datagrid.CurrentTableStyle.GridColumnStyles.Count == 0) {
 				Console.WriteLine ("Should ADD custom item that supports Invoke");
 				DataGridCustomProvider customProvider 
 					= new DataGridCustomProvider (this, 0, string.Empty);
 				customProvider.Initialize ();
 				OnNavigationChildAdded (raiseEvent, customProvider);
 			} else {
-				CreateHeader (raiseEvent, tableStyle);
+				CreateHeader (raiseEvent, datagrid.CurrentTableStyle);
 
 				for (int row = 0; row < lastCurrencyManager.Count; row++)
-					CreateListItem (raiseEvent, row, tableStyle);
+					CreateListItem (raiseEvent, row, datagrid.CurrentTableStyle);
 			}
 
 			lastDataSource = datagrid.DataSource;

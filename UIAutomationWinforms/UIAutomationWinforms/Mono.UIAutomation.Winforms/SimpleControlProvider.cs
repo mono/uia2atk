@@ -251,10 +251,10 @@ namespace Mono.UIAutomation.Winforms
 				return IsBehaviorEnabled (WindowPatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.IsDockPatternAvailableProperty.Id)
 				return IsBehaviorEnabled (DockPatternIdentifiers.Pattern);
-			else if (propertyId == AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id)
-				return IsBehaviorEnabled (GridPatternIdentifiers.Pattern);
-			else if (propertyId == AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)
-				return IsBehaviorEnabled (TablePatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsGridItemPatternAvailableProperty.Id)
+				return IsBehaviorEnabled (GridItemPatternIdentifiers.Pattern);
+			else if (propertyId == AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id)
+				return IsBehaviorEnabled (TableItemPatternIdentifiers.Pattern);
 			else if (propertyId == AutomationElementIdentifiers.AutomationIdProperty.Id) {
 				if (runtimeId == -1)
 					runtimeId = Helper.GetUniqueRuntimeId ();
