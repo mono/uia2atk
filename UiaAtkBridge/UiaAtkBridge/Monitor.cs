@@ -60,19 +60,13 @@ namespace UiaAtkBridge
 			RegisterSignal (typeof (Atk.Object), "resize");
 			RegisterSignal (typeof (Atk.Object), "restore");
 		}
-
-		string gtk_modules_envvar_content = null;
-		string gtk_modules_envvar_name = "GTK_MODULES";
 		
 		internal Monitor ()
 		{
 			GLib.GType.Init();
 
-			// we need to set this because MWF happens to depend on gtk+ (this may change on the future)
-			// https://bugzilla.novell.com/show_bug.cgi?id=375987
-			gtk_modules_envvar_content = Environment.GetEnvironmentVariable (gtk_modules_envvar_name);
-			Environment.SetEnvironmentVariable (gtk_modules_envvar_name, String.Empty);
-			
+			PreventGailInitialization ();
+
 			Atk.Util.GetRootHandler = ReturnTopLevel;
 			
 			Atk.Util.GetToolkitNameHandler = GetAssemblyName;
@@ -85,6 +79,27 @@ namespace UiaAtkBridge
 			Atk.Util.AddKeyEventListenerHandler = AddKeyEventListener;
 		}
 
+		string gtk_modules_envvar_content = null;
+		const string GTK_MODULES_ENVVAR_NAME = "GTK_MODULES";
+		const string ATK_BRIDGE_ENVVAR_NAME = "NO_AT_BRIDGE";
+		const string GAIL_ENVVAR_NAME = "NO_GAIL";
+		
+		// we need to set this because MWF happens to depend on gtk+ (this may change on the future)
+		void PreventGailInitialization ()
+		{
+			// Solution for gtk+ < 2.14:
+			// (A better solution would probably be to get these
+			//  values out-of-process.  See details/discussion here:
+			//  https://bugzilla.novell.com/show_bug.cgi?id=375987 )
+			gtk_modules_envvar_content = Environment.GetEnvironmentVariable (GTK_MODULES_ENVVAR_NAME);
+			Environment.SetEnvironmentVariable (GTK_MODULES_ENVVAR_NAME, String.Empty);
+
+			// Solution for gtk+ >= 2.14
+			// see https://bugzilla.novell.com/show_bug.cgi?id=457787
+			Environment.SetEnvironmentVariable (ATK_BRIDGE_ENVVAR_NAME, "1");
+			Environment.SetEnvironmentVariable (GAIL_ENVVAR_NAME, "1");
+		}
+		
 		private bool isApplicationStarted = false;
 		
 		public void ApplicationStarts ()
@@ -96,6 +111,7 @@ namespace UiaAtkBridge
 			AutoResetEvent sync = GLibHacks.Invoke (delegate (object sender, EventArgs args) {
 				RegisterWindowSignals ();
 
+				Environment.SetEnvironmentVariable (ATK_BRIDGE_ENVVAR_NAME, "0");
 				LaunchAtkBridge ();
 			});
 			sync.WaitOne ();
@@ -103,7 +119,7 @@ namespace UiaAtkBridge
 			sync = null;
 
 			//FIXME: do we really want to restore this? it may cause the reload of modules...
-			Environment.SetEnvironmentVariable (gtk_modules_envvar_name, gtk_modules_envvar_content);
+			Environment.SetEnvironmentVariable (GTK_MODULES_ENVVAR_NAME, gtk_modules_envvar_content);
 		}
 		
 		private void GLibMainLoopThread ()

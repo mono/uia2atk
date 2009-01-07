@@ -1,3 +1,8 @@
+2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Monitor.cs: Prevent Gail & AtkBridge initialization for gtk > 2.14
+	(this depends on gail trunk). Fixes #457787.
+
 2009-01-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ChangeLog: Fix changelog.
