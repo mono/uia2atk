@@ -1,3 +1,7 @@
+2009-01-07  Neville Gao  <nevillegao@gmail.com>
+
+	* SplitterProviderTest.cs: Test modified pattern.
+
 2009-01-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ToolStripDropDownItemProviderTest.cs: Some tests I forgot in previous

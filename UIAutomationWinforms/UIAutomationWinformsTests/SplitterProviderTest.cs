@@ -91,8 +91,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (transformProvider,
 			                  "Not returning TransformPatternIdentifiers.");
 			
-			Assert.IsFalse (transformProvider.CanMove,
-			               "Splitter can't be moved.");
+			Assert.IsTrue (transformProvider.CanMove,
+			               "Splitter can be moved.");
 		}
 		
 		[Test]
@@ -107,8 +107,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (transformProvider,
 			                  "Not returning TransformPatternIdentifiers.");
 			
-			Assert.IsTrue (transformProvider.CanResize,
-			               "Splitter can be resized.");
+			Assert.IsFalse(transformProvider.CanResize,
+			               "Splitter can't be resized.");
 		}
 		
 		[Test]
@@ -139,11 +139,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (transformProvider,
 			                  "Not returning TransformPatternIdentifiers.");
 			
-			try {
-				double x = 10, y = 10;
-				transformProvider.Move (x, y);
-				Assert.Fail ("InvalidOperationException not thrown");
-			} catch (InvalidOperationException) { }
+			double x = 50, y = 50;
+			splitter.Dock = DockStyle.Left;
+			transformProvider.Move (x, y);
+			Assert.AreEqual (x, splitter.SplitPosition, "X");
+			
+			splitter.Dock = DockStyle.Right;
+			transformProvider.Move (x, y);
+			Assert.AreEqual (x, splitter.SplitPosition, "X");
+			
+			splitter.Dock = DockStyle.Bottom;
+			transformProvider.Move (x, y);
+			Assert.AreEqual (y, splitter.SplitPosition, "Y");
+			
+			splitter.Dock = DockStyle.Top;
+			transformProvider.Move (x, y);
+			Assert.AreEqual (y, splitter.SplitPosition, "Y");
 		}
 		
 		[Test]
@@ -158,25 +169,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (transformProvider,
 			                  "Not returning TransformPatternIdentifiers.");
 			
-			double width = 50, heitht = 50;
-			transformProvider.Resize (width, heitht);
-			Assert.AreEqual (width, splitter.Size.Width, "Width");
-			Assert.AreEqual (heitht, splitter.Size.Height, "Height");
-			
-			splitter.Dock = DockStyle.Right;
-			transformProvider.Resize (width, heitht);
-			Assert.AreEqual (width, splitter.Size.Width, "Width");
-			Assert.AreEqual (heitht, splitter.Size.Height, "Height");
-			
-			splitter.Dock = DockStyle.Bottom;
-			transformProvider.Resize (width, heitht);
-			Assert.AreEqual (width, splitter.Size.Width, "Width");
-			Assert.AreEqual (heitht, splitter.Size.Height, "Height");
-			
-			splitter.Dock = DockStyle.Top;
-			transformProvider.Resize (width, heitht);
-			Assert.AreEqual (width, splitter.Size.Width, "Width");
-			Assert.AreEqual (heitht, splitter.Size.Height, "Height");
+			try {
+				double width = 10, height = 10;
+				transformProvider.Resize (width, height);
+				Assert.Fail ("InvalidOperationException not thrown");
+			} catch (InvalidOperationException) { }
 		}
 		
 		[Test]
