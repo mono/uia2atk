@@ -1,3 +1,9 @@
+2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTestApp.mdp:
+	* gtk-gui/generated.cs:
+	* gtk-gui/MainWindow.cs: Flush.
+
 2008-12-24  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* MainWindow.cs: Kill some warnings and add the equivalent of a
