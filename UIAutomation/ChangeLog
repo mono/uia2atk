@@ -1,3 +1,11 @@
+2009-01-07  Brad Taylor  <brad@getcoded.net>
+
+	* UIAutomation/NEWS: Update for 0.9.1 release.
+
+2009-01-07  Stephen Shaw <sshaw@decriptor.com> 
+
+	* configure.ac: Bump to version 0.9.1 in preparation for release.
+
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 	
 	* data/mono-uia.pc.in.in: Add UIAutomationClient to the Libs directive.

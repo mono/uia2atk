@@ -3,5 +3,40 @@ Mono Accessibility News
 
 Copyright (C) 2008 Novell, Inc. (http://www.novell.com)
 
+Version 0.9.1: The "Calculon" release
+  * ToolStripSplitButton: Add support.
+  * ToolStripDropDownButton: Fixed invoke behavior.
+  * RadioButton: Listen for ISelectedProperty change event rather than
+    ElementSelected event.
+  * ListItem, Spinner: Only set Editable state if not ReadOnly.
+
+Bugs fixed:
+  * Selection implemented for ComboBox items
+    https://bugzilla.novell.com/show_bug.cgi?id=449599
+
+  * MessageBox should have a Dialog role not a Frame role
+    https://bugzilla.novell.com/show_bug.cgi?id=444325
+
+  * Handle basic AutomationEvents for StatusBarPanel
+    https://bugzilla.novell.com/show_bug.cgi?id=449317
+
+  * Change role of StatusBarPanel from Edit to Text.
+    https://bugzilla.novell.com/show_bug.cgi?id=448465
+
+  * Fix crash after clicking the text box inside of ComboBox
+    https://bugzilla.novell.com/show_bug.cgi?id=456319
+
+  * Fix Focused state of ComboBox
+    https://bugzilla.novell.com/show_bug.cgi?id=456336
+
+  * Properly set Name of LinkLabel controls
+    https://bugzilla.novell.com/show_bug.cgi?id=447240
+
+  * Properly set Role of LinkLabel controls
+    https://bugzilla.novell.com/show_bug.cgi?id=447231
+
+  * Fix accessibility bridge loading issue on openSUSE 11.1
+    https://bugzilla.novell.com/show_bug.cgi?id=457787
+
 Version 0.9: The "Zoidberg" release
-* Initial Release
+  * Initial Release

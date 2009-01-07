@@ -1,3 +1,11 @@
+2009-01-07  Brad Taylor  <brad@getcoded.net>
+
+	* UIAutomationWinforms/NEWS: Update for 0.9.1 release.
+
+2009-01-07  Stephen Shaw <sshaw@decriptor.com> 
+
+	* configure.ac: Bump to version 0.9.1 in preparation for release.
+
 2008-11-12  Brad Taylor  <brad@getcoded.net>
 	
 	* NEWS: Move NEWS file into each individual module.
