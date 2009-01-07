@@ -1,5 +1,10 @@
 2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* gtk-gui/generated.cs:
+	* gtk-gui/MainWindow.cs: Re-flush.
+
+2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* GailTestApp.mdp:
 	* gtk-gui/generated.cs:
 	* gtk-gui/MainWindow.cs: Flush.
