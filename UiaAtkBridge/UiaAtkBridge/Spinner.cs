@@ -62,11 +62,6 @@ namespace UiaAtkBridge
 		#endregion
 
 		#region Overridden Members
-		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
-		{
-			// TODO
-			base.RaiseAutomationEvent (eventId, e);
-		}
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
