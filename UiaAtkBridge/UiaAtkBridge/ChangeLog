@@ -1,3 +1,8 @@
+2009-01-08  Brad Taylor  <brad@getcoded.net>
+
+	* Monitor.cs: Cleanup the environment to ensure that we don't leak our
+	disabling env vars into the environment of subprocesses.
+
 2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Monitor.cs:
