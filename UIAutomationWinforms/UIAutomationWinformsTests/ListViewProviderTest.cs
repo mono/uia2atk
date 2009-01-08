@@ -67,6 +67,38 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			//TODO: AutomationElementIdentifiers.LabeledByProperty
 			//TODO: AutomationElementIdentifiers.HelpTextProperty
 		}
+
+		[Test]
+		public void HeaderCreationTest ()
+		{
+			// Tests https://bugzilla.novell.com/show_bug.cgi?id=462302
+			
+			ListView view = new ListView ();
+			view.View = View.Details;
+			view.ShowGroups = true;
+			
+			IRawElementProviderFragmentRoot viewProvider
+				= (IRawElementProviderFragmentRoot) GetProviderFromControl (view);
+			IRawElementProviderFragment child = viewProvider.Navigate (NavigateDirection.FirstChild);
+			IRawElementProviderFragment header = null;
+
+			while (child != null) {
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.Header.Id) {
+					header = child;
+					break;
+				}
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+
+			Assert.IsNotNull (header, "We didn't find a Header");
+
+			// Testing columns
+			Assert.IsNull (header.Navigate (NavigateDirection.FirstChild), "We don't have columns yet");
+
+			view.Columns.Add (new ColumnHeader (string.Format ("column {0}", view.Columns.Count)));
+			Assert.IsNotNull (header.Navigate (NavigateDirection.FirstChild), "We must have 1 column.");
+		}
 		
 		#endregion
 
@@ -1779,7 +1811,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			ListView view = GetListView (3, 10, 4, maxSubitems);
 			view.View = View.Details;
 			view.ShowGroups = true;
-
 			
 			IRawElementProviderFragmentRoot viewProvider
 				= (IRawElementProviderFragmentRoot) GetProviderFromControl (view);

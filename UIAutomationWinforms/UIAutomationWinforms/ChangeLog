@@ -1,5 +1,10 @@
 2009-01-08  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Creating header even
+	ListView.Items is empty. [Fixes Bug #462302]
+
+2009-01-08  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: ListView children IsOffScreen
 	automation events added.

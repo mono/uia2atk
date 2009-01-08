@@ -401,14 +401,6 @@ namespace Mono.UIAutomation.Winforms
 			if (showGroups == true && listView.View != SWF.View.List
 			    && SWF.Application.VisualStylesEnabled == true) {
 
-				if (listView.View == SWF.View.Details) {
-					if (header == null) {
-						header = new ListViewHeaderProvider (listView);
-						header.Initialize ();
-						OnNavigationChildAdded (raiseEvent, header);
-					}
-				}
-
 				SWF.ListViewItem listViewItem = (SWF.ListViewItem) objectItem;
 				SWF.ListViewGroup listViewGroup = GetGroupFrom (listViewItem);
 				ListViewGroupProvider groupProvider = null;
@@ -506,6 +498,14 @@ namespace Mono.UIAutomation.Winforms
 					OnNavigationChildRemoved (true, itemProvider);
 				
 				ClearItemsList ();
+			}
+
+			if (listView.View == SWF.View.Details) {
+				if (header == null) {
+					header = new ListViewHeaderProvider (listView);
+					header.Initialize ();
+					OnNavigationChildAdded (updateView || forceUpdate, header);
+				}
 			}
 			
 			foreach (object objectItem in listView.Items)
