@@ -1,5 +1,11 @@
 2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs:
+	* AtkTester.cs: AtkSelection+AtkAction testing for ContextMenu and
+	MainMenuBar.
+
+2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs: ContextMenu's children testing.
 
 2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>

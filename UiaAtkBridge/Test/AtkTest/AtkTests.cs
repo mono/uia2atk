@@ -559,9 +559,14 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
 
-			//FIXME:
-			//Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
-			//InterfaceSelection (atkSelection, names, accessible, type);
+			List <string> names = new List <string> ();
+			foreach (MenuLayout submenu in menu)
+				names.Add (submenu.Label);
+			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
+			InterfaceSelection (atkSelection, names.ToArray (), accessible, type);
+
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
+			Assert.IsNull (atkAction, "Should not implement action");
 		}
 		
 		[Test]
@@ -613,6 +618,15 @@ namespace UiaAtkBridgeTest
 			
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
+
+			List <string> names = new List <string> ();
+			foreach (MenuLayout submenu in menu)
+				names.Add (submenu.Label);
+			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
+			InterfaceSelection (atkSelection, names.ToArray (), accessible, type);
+
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
+			Assert.IsNull (atkAction, "Should not implement action");
 		}
 		
 		[Test]

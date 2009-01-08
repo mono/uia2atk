@@ -447,7 +447,10 @@ namespace UiaAtkBridgeTest
 					accName = items [0];
 				else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox)
 					accName = String.Empty;
-				else if (type == BasicWidgetType.TabControl || type == BasicWidgetType.ComboBoxMenu)
+				else if (type == BasicWidgetType.TabControl ||
+				         type == BasicWidgetType.ComboBoxMenu ||
+				         type == BasicWidgetType.MainMenuBar ||
+				         type == BasicWidgetType.ContextMenu)
 					accName = null;
 				else if (type == BasicWidgetType.ListView)
 					accName = accessible.Name;
@@ -456,8 +459,10 @@ namespace UiaAtkBridgeTest
 				Atk.Object refSelObj = implementor.RefSelection (0);
 				if (type != BasicWidgetType.ParentMenu) {
 					Assert.IsNotNull (refSelObj, "refSel should not be null");
-					if (type == BasicWidgetType.ComboBoxMenu)
-						Assert.AreEqual (names [i], refSelObj.Name, "AtkObj NameRefSel#" + i + "kK" + names[i]);
+					if (type == BasicWidgetType.ComboBoxMenu ||
+					    type == BasicWidgetType.MainMenuBar ||
+					    type == BasicWidgetType.ContextMenu)
+						Assert.AreEqual (names [i], refSelObj.Name, "AtkObj NameRefSel#" + i + ", should be:" + names[i]);
 					else if (type != BasicWidgetType.ListBox && 
 					         type != BasicWidgetType.CheckedListBox && 
 					         type != BasicWidgetType.TabControl && 
@@ -579,7 +584,9 @@ namespace UiaAtkBridgeTest
 			    type == BasicWidgetType.ListView ||
 			    type == BasicWidgetType.DomainUpDown ||
 			    type == BasicWidgetType.ComboBoxMenu ||
-			    type == BasicWidgetType.ParentMenu)
+			    type == BasicWidgetType.ParentMenu ||
+			    type == BasicWidgetType.MainMenuBar ||
+			    type == BasicWidgetType.ContextMenu)
 				success = false;
 			Assert.AreEqual (success, implementor.RemoveSelection (names.Length), "RemoveSelection OOR#>n");
 			Assert.AreEqual (success, implementor.RemoveSelection (-1), "RemoveSelection OOR#<0");
@@ -608,7 +615,8 @@ namespace UiaAtkBridgeTest
 				Atk.StateSet stateSet = currentSel.RefStateSet ();
 				if (type != BasicWidgetType.TabControl && 
 				    type != BasicWidgetType.ComboBoxMenu &&
-				    type != BasicWidgetType.ParentMenu)
+				    type != BasicWidgetType.ParentMenu &&
+				    type != BasicWidgetType.ContextMenu)
 					Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focused), "Focused in selected item.");
 				Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Selected), "Selected in selected item.");
 			}
