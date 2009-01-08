@@ -1,3 +1,8 @@
+2009-01-08  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/Helper.cs: IsOffScreen: Using
+	!bounds.IntersectWith(screen) instead of !screen.Contains(bounds).
+
 2009-01-08  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs,

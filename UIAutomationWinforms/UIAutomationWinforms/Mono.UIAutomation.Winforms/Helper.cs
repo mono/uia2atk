@@ -125,16 +125,12 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		internal static bool ToolStripItemIsOffScreen (SWF.ToolStripItem item)
-{
-				System.Drawing.Rectangle bounds =
-					GetToolStripItemScreenBoundsAsRectangle (item);
-				System.Drawing.Rectangle screen =
-					SWF.Screen.GetWorkingArea (bounds);
-				// True iff the *entire* control is off-screen
-				return !screen.Contains (bounds.Left, bounds.Bottom) &&
-					!screen.Contains (bounds.Left, bounds.Top) &&
-					!screen.Contains (bounds.Right, bounds.Bottom) &&
-					!screen.Contains (bounds.Right, bounds.Top);
+		{
+			System.Drawing.Rectangle bounds =
+				GetToolStripItemScreenBoundsAsRectangle (item);
+			System.Drawing.Rectangle screen =
+				SWF.Screen.GetWorkingArea (bounds);
+			return !bounds.IntersectsWith (screen);
 		}
 
 		internal static bool IsOffScreen (Rect bounds, SWF.Control referenceControl)
