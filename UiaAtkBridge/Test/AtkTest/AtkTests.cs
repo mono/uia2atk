@@ -593,6 +593,11 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Visible,
 			  Atk.StateType.Showing);
+
+			Assert.AreEqual (menu.Count, accessible.NAccessibleChildren, "number of children; children roles:" + childrenRoles (accessible));
+
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
 		}
 		
 		[Test]

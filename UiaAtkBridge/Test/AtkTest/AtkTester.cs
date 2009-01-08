@@ -78,7 +78,8 @@ namespace UiaAtkBridgeTest
 			if (type == BasicWidgetType.Window) {
 				Assert.AreEqual (Atk.Layer.Window, implementor.Layer, "Component.Layer(Window)");
 				Assert.AreEqual (-1, implementor.MdiZorder, "Component.MdiZorder(Window)");
-			} else if (type == BasicWidgetType.ParentMenu) {
+			} else if ((type == BasicWidgetType.ParentMenu) ||
+			           (type == BasicWidgetType.ContextMenu)) {
 				Assert.AreEqual (Atk.Layer.Popup, implementor.Layer, "Component.Layer(Menu)");
 			} else {
 				Assert.AreEqual (Atk.Layer.Widget, implementor.Layer, "Component.Layer(notWindow)");
