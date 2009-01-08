@@ -130,7 +130,6 @@ namespace UiaAtkBridge
 			sync.Close ();
 			sync = null;
 
-			//FIXME: do we really want to restore this? it may cause the reload of modules...
 			Environment.SetEnvironmentVariable (GTK_MODULES_ENVVAR_NAME, gtk_modules_envvar_content);
 		}
 		

@@ -1,3 +1,8 @@
+2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Monitor.cs: Delete obsolete FIXME, see
+	http://bugzilla.gnome.org/show_bug.cgi?id=565110 .
+
 2009-01-08  Brad Taylor  <brad@getcoded.net>
 
 	* Monitor.cs: Cleanup the environment to ensure that we don't leak our
