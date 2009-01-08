@@ -274,31 +274,62 @@ namespace UiaAtkBridgeTest
 			treeView.CollapseAll ();
 		}
 
+		public override object CastToAtkInterface (Type t, Atk.Object accessible)
+		{
+			if (t == typeof (Atk.Action)) {
+				if (!(accessible is Atk.ActionImplementor))
+					return null;
+				return Atk.ActionAdapter.GetObject (accessible.Handle, false);
+			} else if (t == typeof (Atk.Component)) {
+				if (!(accessible is Atk.ComponentImplementor))
+					return null;
+				return Atk.ComponentAdapter.GetObject (accessible.Handle, false);
+			} else if (t == typeof (Atk.EditableText)) {
+				if (!(accessible is Atk.EditableTextImplementor))
+					return null;
+				return Atk.EditableTextAdapter.GetObject (accessible.Handle, false);
+			} else if (t == typeof (Atk.Image)) {
+				if (!(accessible is Atk.ImageImplementor))
+					return null;
+				return Atk.ImageAdapter.GetObject (accessible.Handle, false);
+			} else if (t == typeof (Atk.Table)) {
+				if (!(accessible is Atk.TableImplementor))
+					return null;
+				return Atk.TableAdapter.GetObject (accessible.Handle, false);
+			} else if (t == typeof (Atk.Text)) {
+				if (!(accessible is Atk.TextImplementor))
+					return null;
+				return Atk.TextAdapter.GetObject (accessible.Handle, false);
+			} else if (t == typeof (Atk.Selection)) {
+				if (!(accessible is Atk.SelectionImplementor))
+					return null;
+				return Atk.SelectionAdapter.GetObject (accessible.Handle, false);
+			} else if (t == typeof (Atk.Value)) {
+				if (!(accessible is Atk.ValueImplementor))
+					return null;
+				return Atk.ValueAdapter.GetObject (accessible.Handle, false);
+			}
+			throw new NotImplementedException ("Couldn't cast to interface " + t.Name);
+		}
+		
 		public override I CastToAtkInterface <I> (Atk.Object accessible)
 		{
 			try {
 				if (typeof (I) == typeof (Atk.Component)) {
 					return new Atk.ComponentAdapter ((Atk.ComponentImplementor)accessible) as I;
-				}
-				else if (typeof (I) == typeof (Atk.Text)) {
+				} else if (typeof (I) == typeof (Atk.Text)) {
 					return new Atk.TextAdapter ((Atk.TextImplementor)accessible) as I;
-				}
-				else if (typeof (I) == typeof (Atk.Action)) {
+				} else if (typeof (I) == typeof (Atk.Action)) {
 					return new Atk.ActionAdapter ((Atk.ActionImplementor)accessible) as I;
-				}
-				else if (typeof (I) == typeof (Atk.Table)) {
+				} else if (typeof (I) == typeof (Atk.Table)) {
 					return new Atk.TableAdapter ((Atk.TableImplementor)accessible) as I;
-				}
-				else if (typeof (I) == typeof (Atk.Value)) {
+				} else if (typeof (I) == typeof (Atk.Value)) {
 					return new Atk.ValueAdapter ((Atk.ValueImplementor)accessible) as I;
-				}
-				else if (typeof (I) == typeof (Atk.Image)) {
+				} else if (typeof (I) == typeof (Atk.Image)) {
 					return new Atk.ImageAdapter ((Atk.ImageImplementor)accessible) as I;
-				}
-				else if (typeof (I) == typeof (Atk.Selection)) {
+				} else if (typeof (I) == typeof (Atk.Selection)) {
 					return new Atk.SelectionAdapter ((Atk.SelectionImplementor)accessible) as I;
-				}
-				else if (typeof (I) == typeof (Atk.EditableText)) {
+				} else if (typeof (I) == typeof (Atk.EditableText)) {
 					return new Atk.EditableTextAdapter ((Atk.EditableTextImplementor)accessible) as I;
 				}
 				throw new NotImplementedException ("Couldn't cast to interface " +

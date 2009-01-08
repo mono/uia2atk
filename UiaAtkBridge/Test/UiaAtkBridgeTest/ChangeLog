@@ -1,5 +1,10 @@
 2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Track API (new CastToInterface overload). Identation
+	fixes.
+
+2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTests.cs: First tests for ContextMenu.
 
 2009-01-07  Andrés G. Aragoneses  <aaragoneses@novell.com>

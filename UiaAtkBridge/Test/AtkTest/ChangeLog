@@ -1,5 +1,15 @@
 2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTester.cs: Make some tests independent from other tests (windows
+	below topLevelRootItem). Add new Interfaces() function, similar to
+	States(), very handy. Add a label to a test. Identation fixes.
+
+	* AtkTests.cs: Make some tests independent from other tests (windows
+	below topLevelRootItem). Use the new Interfaces () function instead
+	of testing against CastToAtkInterface being null.
+
+2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs:
 	* AtkTester.cs: AtkSelection+AtkAction testing for ContextMenu and
 	MainMenuBar.

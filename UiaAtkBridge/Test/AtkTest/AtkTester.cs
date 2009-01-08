@@ -58,6 +58,8 @@ namespace UiaAtkBridgeTest
 
 		public abstract I CastToAtkInterface <I> (Atk.Object accessible) where I : class;
 
+		public abstract object CastToAtkInterface (Type t, Atk.Object accessible);
+
 		public abstract void DisableWidget (Atk.Object accessible);
 
 		public abstract void EnableWidget (Atk.Object accessible);
@@ -192,7 +194,8 @@ namespace UiaAtkBridgeTest
 			});
 		}
 
-		protected void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible) {
+		protected void InterfaceAction (BasicWidgetType type, Atk.Action implementor, Atk.Object accessible)
+		{
 			InterfaceAction (type, implementor, accessible, null);
 		}
 		
@@ -242,7 +245,7 @@ namespace UiaAtkBridgeTest
 
 			EventMonitor.Start ();
 
-			Assert.AreEqual (1, GetTopLevelRootItem ().NAccessibleChildren, "Windows in my app should be 1, and I got:" + childrenRoles (GetTopLevelRootItem ()));
+			int expectedNumOfWindows = GetTopLevelRootItem ().NAccessibleChildren;
 
 			if (type == BasicWidgetType.ComboBoxItem) {
 				Assert.IsTrue (accessible.Name != accessible.Parent.Parent.Name, "combobox item is not the one currently selected" +
@@ -265,8 +268,9 @@ namespace UiaAtkBridgeTest
 
 			if (names != null) {
 				//because the dropdown represents a new window!
-				Assert.AreEqual (2, GetTopLevelRootItem ().NAccessibleChildren,
-				  "Windows in my app should be 2 now that I opened the pandora's box; but I got:" + childrenRoles (GetTopLevelRootItem ()));
+				Assert.AreEqual (++expectedNumOfWindows, GetTopLevelRootItem ().NAccessibleChildren,
+				  "Windows in my app should be" + expectedNumOfWindows + 
+				  " now that I opened the pandora's box; but I got:" + childrenRoles (GetTopLevelRootItem ()));
 				Atk.Object newWindow = GetTopLevelRootItem ().RefAccessibleChild (1);
 				Assert.AreEqual (Atk.Role.Window, newWindow.Role, "new window role should be Atk.Role.Window");
 				Assert.AreEqual (1, newWindow.NAccessibleChildren, "the window should contain a child");
@@ -312,8 +316,10 @@ namespace UiaAtkBridgeTest
 				}
 			}
 
-			Assert.AreEqual (1, GetTopLevelRootItem ().NAccessibleChildren, 
-			  "Windows in my app should be 1 again, and I got:" + childrenRoles (GetTopLevelRootItem ()));
+			if (names != null)
+				Assert.AreEqual (--expectedNumOfWindows, GetTopLevelRootItem ().NAccessibleChildren, 
+				  "Windows in my app should be " + expectedNumOfWindows +
+				  " again, but I got:" + childrenRoles (GetTopLevelRootItem ()));
 			
 			state = accessible.RefStateSet ();
 			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled #2");
@@ -376,10 +382,10 @@ namespace UiaAtkBridgeTest
 		{
 			for (int i = 0; i < accessible.NAccessibleChildren; i++) {
 				bool shouldBeSelected = (theSelected == i);
-				Assert.AreEqual (shouldBeSelected, sel.IsChildSelected (i));
+				Assert.AreEqual (shouldBeSelected, sel.IsChildSelected (i), "IsSelected(" + i + ")!=" + shouldBeSelected.ToString());
 				Assert.AreEqual (shouldBeSelected, 
 				  accessible.RefAccessibleChild (i).RefStateSet ().ContainsState (Atk.StateType.Selected),
-				  String.Format ("after AddSelection({0}), child({1}) should be have correct Selected state", 
+				  String.Format ("after AddSelection({0}), child({1}) should have correct Selected state", 
 				    theSelected, i));
 			}
 		}
@@ -616,6 +622,7 @@ namespace UiaAtkBridgeTest
 				if (type != BasicWidgetType.TabControl && 
 				    type != BasicWidgetType.ComboBoxMenu &&
 				    type != BasicWidgetType.ParentMenu &&
+				    type != BasicWidgetType.MainMenuBar &&
 				    type != BasicWidgetType.ContextMenu)
 					Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focused), "Focused in selected item.");
 				Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Selected), "Selected in selected item.");
@@ -1563,8 +1570,8 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (parent.Role, Atk.Role.Application, "Parent of a frame should be an application");
 
 			Assert.AreEqual (parent.RefStateSet().ContainsState (Atk.StateType.ManagesDescendants),
-		accessible.RefStateSet().ContainsState (Atk.StateType.Transient),
-		"Transient state should match parent's ManagesDescendants state");
+			  accessible.RefStateSet().ContainsState (Atk.StateType.Transient),
+			  "Transient state should match parent's ManagesDescendants state");
 
 			int count = parent.NAccessibleChildren;
 			for (int i = 0; i < count; i++)
@@ -1573,6 +1580,48 @@ namespace UiaAtkBridgeTest
 			Assert.Fail ("Object should be child of parent");
 		}
 
+		private static Type [] atkTypes = 
+		  new Type [] { 
+			typeof (Atk.Action) ,
+			typeof (Atk.Component) ,
+			typeof (Atk.EditableText) ,
+			typeof (Atk.Image) ,
+			typeof (Atk.Table) ,
+			typeof (Atk.Text) ,
+			typeof (Atk.Selection) ,
+			typeof (Atk.Value) };
+		
+		protected void Interfaces (Atk.Object accessible, params Type [] expected)
+		{
+			var expectedTypes = new List <Type> (expected);
+			var missingTypes = new List <Type> ();
+			var superfluousTypes = new List <Type> ();
+			
+			foreach (Type t in atkTypes) {
+				object o = CastToAtkInterface (t, accessible);
+				if (expectedTypes.Contains (t) && o == null)
+					missingTypes.Add (t);
+				else if ((!expectedTypes.Contains (t)) && o != null)
+					superfluousTypes.Add (t);
+			}
+
+			string missingTypesMsg = string.Empty;
+			string superfluousTypesMsg = string.Empty;
+
+			if (missingTypes.Count != 0) {
+				missingTypesMsg = "Missing interfaces: ";
+				foreach (Type type in missingTypes)
+					missingTypesMsg += type.Name + ",";
+			}
+			if (superfluousTypes.Count != 0) {
+				superfluousTypesMsg = "Superfluous interfaces: ";
+				foreach (Type type in superfluousTypes)
+					superfluousTypesMsg += type.Name + ",";
+			}
+			Assert.IsTrue ((missingTypes.Count == 0) && (superfluousTypes.Count == 0),
+				missingTypesMsg + " .. " + superfluousTypesMsg);
+		}
+		
 		protected void States (Atk.Object accessible, params Atk.StateType [] expected)
 		{
 			List <Atk.StateType> expectedStates = new List <Atk.StateType> (expected);

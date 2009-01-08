@@ -1,5 +1,9 @@
 2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* GailTester.cs: Track API (new CastToInterface overload).
+
+2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* GailTester.cs: First tests for ContextMenu.
 
 2008-12-30  Mike Gorse  <mgorse@novell.com>

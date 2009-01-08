@@ -25,79 +25,15 @@
 
 using System;
 
-using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class MenuBar : ComponentParentAdapter, Atk.SelectionImplementor
+	public class ContextMenu : MenuBar
 	{
-		public MenuBar (IRawElementProviderSimple provider) : base (provider)
+		public ContextMenu (IRawElementProviderSimple provider) : base (provider)
 		{
-			Role = Atk.Role.MenuBar;
+			Role = Atk.Role.Menu;
 		}
-
-		protected override Atk.StateSet OnRefStateSet ()
-		{
-			Atk.StateSet states = base.OnRefStateSet ();
-			//FIXME: figure out why MenuItem elements in Gail don't like this state
-			states.RemoveState (Atk.StateType.Focusable);
-			return states;
-		}
-		
-		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
-		{
-			//TODO
-			return;
-		}
-
-		#region SelectionImplementor implementation 
-		
-		public bool AddSelection (int i)
-		{
-			//TODO
-			return true;
-		}
-		
-		public bool ClearSelection ()
-		{
-			//TODO
-			return true;
-		}
-		
-		public Atk.Object RefSelection (int i)
-		{
-			//TODO
-			return null;
-		}
-		
-		public bool IsChildSelected (int i)
-		{
-			//TODO
-			return false;
-		}
-		
-		public bool RemoveSelection (int i)
-		{
-			//TODO
-			return true;
-		}
-		
-		public bool SelectAllSelection ()
-		{
-			//TODO
-			return false;
-		}
-		
-		
-		public int SelectionCount {
-			get {
-				//TODO
-				return 0;
-			}
-		}
-		
-		#endregion 
-		
 	}
 }

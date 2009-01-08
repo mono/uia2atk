@@ -1,3 +1,11 @@
+2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MenuBar.cs:
+	* ContextMenu.cs: New Context menu draft.
+
+	* Makefile.am:
+	* UiaAtkBridge.mdp: Add new file.
+
 2009-01-09  Mike Gorse  <mgorse@novell.com>
 
 	* AutomationBridge.cs: Process ChildrenInvalidated again; needed for

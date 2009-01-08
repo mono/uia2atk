@@ -222,32 +222,52 @@ namespace UiaAtkBridgeTest
 			shell.ShowAll ();
 			return true;
 		}
+
+		public override object CastToAtkInterface (Type t, Atk.Object accessible)
+		{
+			try {
+				if (t == typeof (Atk.Action)) {
+					return Atk.ActionAdapter.GetObject (accessible.Handle, false);
+				} else if (t == typeof (Atk.Text)) {
+					return Atk.TextAdapter.GetObject (accessible.Handle, false);
+				} else if (t == typeof (Atk.Component)) {
+					return Atk.ComponentAdapter.GetObject (accessible.Handle, false);
+				} else if (t == typeof (Atk.EditableText)) {
+					return Atk.EditableTextAdapter.GetObject (accessible.Handle, false);
+				} else if (t == typeof (Atk.Image)) {
+					return Atk.ImageAdapter.GetObject (accessible.Handle, false);
+				} else if (t == typeof (Atk.Table)) {
+					return Atk.TableAdapter.GetObject (accessible.Handle, false);
+				} else if (t == typeof (Atk.Selection)) {
+					return Atk.SelectionAdapter.GetObject (accessible.Handle, false);
+				} else if (t == typeof (Atk.Value)) {
+					return Atk.ValueAdapter.GetObject (accessible.Handle, false);
+				} else {
+					throw new NotImplementedException ("Couldn't cast to interface " + t.Name);
+				}
+			} catch (ArgumentException) {
+				return null;
+			}
+		}
 		
 		public override I CastToAtkInterface <I> (Atk.Object accessible)
 		{	
 			try {
 				if (typeof (I) == typeof (Atk.Action)) {
 					return Atk.ActionAdapter.GetObject (accessible.Handle, false) as I;
-				}
-				else if (typeof (I) == typeof (Atk.Text)) {
+				} else if (typeof (I) == typeof (Atk.Text)) {
 					return Atk.TextAdapter.GetObject (accessible.Handle, false) as I;
-				}
-				else if (typeof (I) == typeof (Atk.Component)) {
+				} else if (typeof (I) == typeof (Atk.Component)) {
 					return Atk.ComponentAdapter.GetObject (accessible.Handle, false) as I;
-				}
-				else if (typeof (I) == typeof (Atk.EditableText)) {
+				} else if (typeof (I) == typeof (Atk.EditableText)) {
 					return Atk.EditableTextAdapter.GetObject (accessible.Handle, false) as I;
-				}
-				else if (typeof (I) == typeof (Atk.Image)) {
+				} else if (typeof (I) == typeof (Atk.Image)) {
 					return Atk.ImageAdapter.GetObject (accessible.Handle, false) as I;
-				}
-				else if (typeof (I) == typeof (Atk.Table)) {
+				} else if (typeof (I) == typeof (Atk.Table)) {
 					return Atk.TableAdapter.GetObject (accessible.Handle, false) as I;
-				}
-				else if (typeof (I) == typeof (Atk.Selection)) {
+				} else if (typeof (I) == typeof (Atk.Selection)) {
 					return Atk.SelectionAdapter.GetObject (accessible.Handle, false) as I;
-				}
-				else if (typeof (I) == typeof (Atk.Value)) {
+				} else if (typeof (I) == typeof (Atk.Value)) {
 					return Atk.ValueAdapter.GetObject (accessible.Handle, false) as I;
 				}
 				throw new NotImplementedException ("Couldn't cast to interface " +

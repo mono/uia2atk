@@ -534,7 +534,10 @@ namespace UiaAtkBridgeTest
 			menu.Add (new MenuLayout ("GimmeHelp", new MenuLayout ("About?")));
 			
 			accessible = GetAccessible (type, menu);
-
+			Interfaces (accessible,
+			            typeof (Atk.Component),
+			            typeof (Atk.Selection));
+			
 			Assert.IsNull (accessible.Name, "name of the menubar should be null, now it's:" + accessible.Name);
 			
 			States (accessible,
@@ -564,9 +567,6 @@ namespace UiaAtkBridgeTest
 				names.Add (submenu.Label);
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			InterfaceSelection (atkSelection, names.ToArray (), accessible, type);
-
-			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
-			Assert.IsNull (atkAction, "Should not implement action");
 		}
 		
 		[Test]
@@ -580,9 +580,14 @@ namespace UiaAtkBridgeTest
 			menu.Add (new MenuLayout ("Edit", firstSubmenus));
 			menu.Add (new MenuLayout ("Close"));
 
-			Assert.AreEqual (1, GetTopLevelRootItem ().NAccessibleChildren, "Windows in my app should be 1, and I got:" + childrenRoles (GetTopLevelRootItem ()));
+			int expectedNumOfWindows = GetTopLevelRootItem ().NAccessibleChildren + 1;
 			accessible = GetAccessible (type, menu);
-			Assert.AreEqual (2, GetTopLevelRootItem ().NAccessibleChildren, "Windows in my app should be 1, and I got:" + childrenRoles (GetTopLevelRootItem ()));
+			Interfaces (accessible,
+			            typeof (Atk.Component),
+			            typeof (Atk.Selection));
+			Assert.AreEqual (expectedNumOfWindows, GetTopLevelRootItem ().NAccessibleChildren,
+			                 "Windows in my app should be " + expectedNumOfWindows + 
+			                 "but I got:" + childrenRoles (GetTopLevelRootItem ()));
 
 			Assert.IsNull (accessible.Name, "name of the menubar should be null, now it's:" + accessible.Name);
 
@@ -624,9 +629,6 @@ namespace UiaAtkBridgeTest
 				names.Add (submenu.Label);
 			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
 			InterfaceSelection (atkSelection, names.ToArray (), accessible, type);
-
-			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
-			Assert.IsNull (atkAction, "Should not implement action");
 		}
 		
 		[Test]
@@ -652,8 +654,9 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Enabled,
 			  Atk.StateType.Selectable, 
 			  Atk.StateType.Sensitive,
-			  Atk.StateType.Visible,
-			  Atk.StateType.Showing);
+			  Atk.StateType.Visible
+			  ,Atk.StateType.Showing //<- this is not working in gail??
+			  );
 			
 			Assert.AreEqual (firstSubmenus.Length, accessible.NAccessibleChildren, "number of children; children roles:" + childrenRoles (accessible));
 			

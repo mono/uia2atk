@@ -56,6 +56,7 @@ FILES =  \
 	ComponentImplementorHelper.cs \
 	ComponentParentAdapter.cs \
 	Container.cs \
+	ContextMenu.cs \
 	DataGrid.cs \
 	DataGridGroup.cs \
 	ExpandCollapseButton.cs \
