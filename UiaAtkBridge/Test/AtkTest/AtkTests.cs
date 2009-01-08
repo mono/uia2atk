@@ -817,8 +817,14 @@ namespace UiaAtkBridgeTest
 
 			Atk.Table atkTable = CastToAtkInterface<Atk.Table> (accessible);
 			Assert.AreEqual (ValidNChildrenForAListView, accessible.NAccessibleChildren, "ListView numChildren");
-			Atk.Object header = accessible.RefAccessibleChild (0);
-			Assert.AreEqual (Atk.Role.TableColumnHeader, header.Role, "Child 0 role");
+			Atk.Object header = FindObjectByRole (accessible, Atk.Role.TableColumnHeader);
+			Assert.IsNotNull (header, "Header not null");
+			States (header,
+				Atk.StateType.Enabled,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
+
 			Atk.Object child1 = FindObjectByName (accessible, "Programming Windows with C#");
 			int child1Index = child1.IndexInParent;
 			Assert.IsTrue (child1Index >= 0, "Child 1 index > 0");

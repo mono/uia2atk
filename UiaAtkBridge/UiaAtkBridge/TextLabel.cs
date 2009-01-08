@@ -42,6 +42,7 @@ namespace UiaAtkBridge
 				Role = Atk.Role.Label;
 			else if (controlTypeId == ControlType.HeaderItem.Id)
 				Role = Atk.Role.TableColumnHeader;
+if (controlTypeId == ControlType.HeaderItem.Id) Console.WriteLine ("dbg: heading for a header");
 			
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			textExpert = new TextImplementorHelper (text, this);
@@ -52,7 +53,9 @@ namespace UiaAtkBridge
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
 			
-			states.AddState (Atk.StateType.MultiLine);
+			int controlTypeId = (int) Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			if (controlTypeId != ControlType.HeaderItem.Id)
+				states.AddState (Atk.StateType.MultiLine);
 			
 			return states;
 		}

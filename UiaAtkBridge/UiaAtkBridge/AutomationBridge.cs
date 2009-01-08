@@ -426,11 +426,13 @@ namespace UiaAtkBridge
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenBulkRemoved) {
 				HandleBulkRemoved (simpleProvider);
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenInvalidated) {
-				//Console.WriteLine ("StructureChangedEvent not handled:" + e.StructureChangeType.ToString ());
-				// These always seem to be coupled with
-				// add/removed/reordered events, so ignore.
-				//HandleBulkRemoved (simpleProvider);
-				//HandleBulkAdded (simpleProvider);
+				// These often seem to be coupled with
+				// add/removed/reordered events,, but we
+				// have trouble if we ignore them for ListView.
+				// TODO: check ControlType and ignore when not
+				// needed to improve performance?
+				HandleBulkRemoved (simpleProvider);
+				HandleBulkAdded (simpleProvider);
 			}
 			else
 				Console.WriteLine ("StructureChangedEvent not handled:" + e.StructureChangeType.ToString ());
@@ -680,9 +682,9 @@ namespace UiaAtkBridge
 		private void HandleBulkRemoved (IRawElementProviderSimple provider)
 		{
 			IRawElementProviderFragment fragment;
+			int controlTypeId = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			if (!providerAdapterMapping.ContainsKey (provider)) {
-				int controlTypeId = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-				if (controlTypeId == ControlType.Header.Id || controlTypeId == ControlType.DataItem.Id) {
+				if (controlTypeId == ControlType.Header.Id || controlTypeId == ControlType.DataItem.Id || controlTypeId == ControlType.TreeItem.Id || controlTypeId == ControlType.TreeItem.Id) {
 					fragment = provider as IRawElementProviderFragment;
 					if (fragment != null) {
 						IRawElementProviderFragment parent = fragment.Navigate (NavigateDirection.Parent);
@@ -693,13 +695,12 @@ namespace UiaAtkBridge
 			}
 			if ((fragment = provider as IRawElementProviderFragment) == null)
 				return;
-			List<Atk.Object> keep = new List<Atk.Object> ();
 			IRawElementProviderFragment child = fragment.Navigate(NavigateDirection.FirstChild);
-			while (child != null) {
-				if (providerAdapterMapping.ContainsKey (child))
-					keep.Add (providerAdapterMapping [child]);
-				child = child.Navigate (NavigateDirection.NextSibling);
-			}
+			List<Atk.Object> keep;
+			if (controlTypeId == ControlType.Tree.Id)
+				keep = BuildKeepListRecurse (child);
+			else
+				keep = BuildKeepListNoRecurse (child);
 			Atk.Object obj = providerAdapterMapping [provider];
 			int index = obj.NAccessibleChildren;
 			while (--index >= 0) {
@@ -708,6 +709,40 @@ namespace UiaAtkBridge
 					HandleElementRemoval (childAdapter.Provider);
 				}
 			}
+		}
+
+		private List<Atk.Object> BuildKeepListNoRecurse (IRawElementProviderFragment fragment)
+		{
+			List<Atk.Object> keep = new List<Atk.Object> ();
+			while (fragment != null) {
+				if (providerAdapterMapping.ContainsKey (fragment))
+					keep.Add (providerAdapterMapping [fragment]);
+				fragment = fragment.Navigate (NavigateDirection.NextSibling);
+			}
+			return keep;
+		}
+
+		private List<Atk.Object> BuildKeepListRecurse (IRawElementProviderFragment fragment)
+		{
+			List<Atk.Object> keep = new List<Atk.Object> ();
+			IRawElementProviderFragment child;
+			int depth = 0;
+			while (fragment != null) {
+				if (providerAdapterMapping.ContainsKey (fragment))
+					keep.Add (providerAdapterMapping [fragment]);
+				child = fragment.Navigate (NavigateDirection.FirstChild);
+				if (child != null) {
+					fragment = child;
+					depth++;
+				} else {
+					IRawElementProviderFragment next = fragment.Navigate (NavigateDirection.NextSibling);
+					if (next == null && depth > 0) {
+						depth--;
+						fragment = fragment.Navigate (NavigateDirection.Parent).Navigate (NavigateDirection.NextSibling);
+					} else fragment = next;
+				}
+			}
+			return keep;
 		}
 
 		private void HandleNewWindowControlType (IRawElementProviderSimple provider)

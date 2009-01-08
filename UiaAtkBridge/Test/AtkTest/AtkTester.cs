@@ -1643,6 +1643,27 @@ namespace UiaAtkBridgeTest
 			return null;
 		}
 
+		protected Atk.Object FindObjectByRole (Atk.Object parent, Atk.Role role)
+		{
+			return FindObjectByRole (parent, role, false);
+		}
+
+		protected Atk.Object FindObjectByRole (Atk.Object parent, Atk.Role role, bool recurse)
+		{
+			int count = parent.NAccessibleChildren;
+			for (int i = 0; i < count; i++) {
+				Atk.Object child = parent.RefAccessibleChild (i);
+				if (child.Role == role)
+					return child;
+				if (recurse) {
+					Atk.Object obj = FindObjectByRole (child, role, true);
+					if (obj != null)
+						return obj;
+				}
+			}
+			return null;
+		}
+
 		protected void Focus (Atk.Object accessible)
 		{
 			bool transient = (accessible.RefStateSet().ContainsState (Atk.StateType.Transient));

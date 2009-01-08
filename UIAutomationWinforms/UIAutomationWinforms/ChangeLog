@@ -1,3 +1,9 @@
+2009-01-08  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs,
+	  Mono.UIAutomation.Winforms/Helper.cs:: Fix BoundingRectangle for
+	  ListViewHeader.
+
 2009-01-07  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs:

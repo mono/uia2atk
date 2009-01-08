@@ -764,7 +764,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-					return Helper.GetControlScreenBounds (listView.UIAHeaderControl, listView);
+					return Helper.GetControlScreenBounds (listView.UIAHeaderControl, listView, true);
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}

@@ -63,6 +63,13 @@ namespace Mono.UIAutomation.Winforms
 
 		internal static Rect GetControlScreenBounds (Rectangle bounds, SWF.Control control)
 		{
+			return GetControlScreenBounds (bounds, control, false);
+		}
+
+		internal static Rect GetControlScreenBounds (Rectangle bounds, SWF.Control control, bool controlIsParent)
+		{
+			if (controlIsParent)
+				return Helper.RectangleToRect (control.RectangleToScreen (bounds));
 			if (control.Parent == null || control.TopLevelControl == null)
 				return Helper.RectangleToRect (bounds);
 			else {
