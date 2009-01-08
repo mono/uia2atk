@@ -50,6 +50,7 @@ namespace UiaAtkBridgeTest
 		MainMenuBar,
 		ParentMenu,
 		ChildMenu,
+		ContextMenu,
 		
 		VScrollBar,
 		HScrollBar,

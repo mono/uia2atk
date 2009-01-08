@@ -779,11 +779,12 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.MainMenuBar:
 				role = Atk.Role.MenuBar;
 				break;
-			case BasicWidgetType.StatusStrip:
-				role = Atk.Role.Statusbar;
-				break;
+			case BasicWidgetType.ContextMenu:
 			case BasicWidgetType.ParentMenu:
 				role = Atk.Role.Menu;
+				break;
+			case BasicWidgetType.StatusStrip:
+				role = Atk.Role.Statusbar;
 				break;
 			case BasicWidgetType.HScrollBar:
 			case BasicWidgetType.VScrollBar:

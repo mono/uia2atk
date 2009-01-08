@@ -1,3 +1,9 @@
+2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs:
+	* BasicWidgetType.cs: First tests for ContextMenu.
+
 2009-01-07  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs, AtkTests.cs: Add FindObjectByRole and use to find

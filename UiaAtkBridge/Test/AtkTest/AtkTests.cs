@@ -565,6 +565,37 @@ namespace UiaAtkBridgeTest
 		}
 		
 		[Test]
+		public virtual void ContextMenu () 
+		{
+			BasicWidgetType type = BasicWidgetType.ContextMenu;
+			Atk.Object accessible = null;
+			
+			MenuLayout [] firstSubmenus = new MenuLayout [] { new MenuLayout ("Schema", new MenuLayout ("XSD"), new MenuLayout ("DTD")), new MenuLayout ("Source") };
+			List <MenuLayout> menu = new List <MenuLayout> ();
+			menu.Add (new MenuLayout ("Edit", firstSubmenus));
+			menu.Add (new MenuLayout ("Close"));
+
+			Assert.AreEqual (1, GetTopLevelRootItem ().NAccessibleChildren, "Windows in my app should be 1, and I got:" + childrenRoles (GetTopLevelRootItem ()));
+			accessible = GetAccessible (type, menu);
+			Assert.AreEqual (2, GetTopLevelRootItem ().NAccessibleChildren, "Windows in my app should be 1, and I got:" + childrenRoles (GetTopLevelRootItem ()));
+
+			Assert.IsNull (accessible.Name, "name of the menubar should be null, now it's:" + accessible.Name);
+
+			PropertyRole (type, accessible);
+
+			Assert.AreEqual (accessible.Parent.Role, Atk.Role.Window);
+
+			Assert.AreEqual (accessible.Parent.Parent, GetTopLevelRootItem ());
+			
+			States (accessible,
+			  Atk.StateType.Focused,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Visible,
+			  Atk.StateType.Showing);
+		}
+		
+		[Test]
 		public void ParentMenu () 
 		{
 			BasicWidgetType type = BasicWidgetType.ParentMenu;

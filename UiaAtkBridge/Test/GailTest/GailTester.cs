@@ -159,18 +159,31 @@ namespace UiaAtkBridgeTest
 		public override Atk.Object GetAccessible (
 		  BasicWidgetType type, List <MenuLayout> menu)
 		{
-			Gtk.MenuBar menubar = GailTestApp.MainClass.GiveMeARealMenuBar ();
+			Gtk.MenuShell menushell;
+			if (type == BasicWidgetType.MainMenuBar)
+				menushell = GailTestApp.MainClass.GiveMeARealMenuBar ();
+			else
+				menushell = new Gtk.Menu ();
 
 			Gtk.Widget ret = null;
 			RunInGuiThread (delegate {
 
 				//cleanup
-				while (menubar.Children.Length > 0)
-					menubar.Remove (menubar.Children [0]);
+				if (menushell is Gtk.MenuBar)
+					while (menushell.Children.Length > 0)
+						menushell.Remove (menushell.Children [0]);
 
-				ret = AddRecursively (menubar, menu, type);
+				ret = AddRecursively (menushell, menu, type);
+
+				if (type == BasicWidgetType.ContextMenu) {
+					((Gtk.Menu)ret).Popup (null, null, 
+						delegate (Gtk.Menu themenu, out int x, out int y, out bool push_in) {
+							GailTestApp.MainClass.GiveMeARealWindow ().GetPosition (out x, out y);
+							push_in = false;
+						}, 0, Gtk.Global.CurrentEventTime);
+				}
 			});
-
+			
 			mappings [ret.Accessible] = ret;
 			return ret.Accessible;
 		}
@@ -178,7 +191,8 @@ namespace UiaAtkBridgeTest
 		private Gtk.Widget AddRecursively (Gtk.MenuShell shell, List <MenuLayout> menus, BasicWidgetType type) {
 			Gtk.Widget toTest = null;
 			AddRecursivelyAux (shell, menus, type, ref toTest, 0);
-			if (type == BasicWidgetType.MainMenuBar)
+			if ((type == BasicWidgetType.MainMenuBar) ||
+			    (type == BasicWidgetType.ContextMenu))
 				return shell;
 			return toTest;
 		}

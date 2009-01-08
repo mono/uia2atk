@@ -689,6 +689,13 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		[Ignore ("Not ready yet.")]
+		public override void ContextMenu ()
+		{
+			base.ContextMenu ();
+		}
+
+		[Test]
 		public void ToolStripTextBoxSingleLine () {
 			TextBoxEntry (toolStripTextBox1, false);
 		}
