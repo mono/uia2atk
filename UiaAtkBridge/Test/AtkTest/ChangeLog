@@ -1,5 +1,9 @@
 2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs: ContextMenu's children testing.
+
+2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs:
 	* AtkTester.cs: Atk.Component and children for ContextMenu.
 
