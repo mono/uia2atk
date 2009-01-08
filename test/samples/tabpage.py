@@ -36,19 +36,23 @@ class TabControlTabPageSample(Form):
 
         # add items
         self.label1 = Label()
-        self.label1.Text = "I'm in tab page #1"
+        self.label1.Text = "I'm in tab page 0"
+        self.label1.AutoSize = True
         self.label1.Location = Point(5, 20)
 
         self.label2 = Label()
-        self.label2.Text = "I'm in tab page #2"
+        self.label2.Text = "I'm in tab page 1"
+        self.label2.AutoSize = True
         self.label2.Location = Point(5, 20)
 
         self.label3 = Label()
-        self.label3.Text = "I'm in tab page #3"
+        self.label3.Text = "I'm in tab page 2"
+        self.label3.AutoSize = True
         self.label3.Location = Point(5, 20)
 
         self.label4 = Label()
-        self.label4.Text = "I'm in tab page #4"
+        self.label4.Text = "I'm in tab page 3"
+        self.label4.AutoSize = True
         self.label4.Location = Point(5, 20)
 
         self.diclabels = {0: self.label1, 
@@ -60,24 +64,29 @@ class TabControlTabPageSample(Form):
         self.button = Button()
         self.button.Text = "Button"
         self.button.Location = Point(5, 60)
+        self.count = 0
+        self.button.Click += self.button_click
         
         self.textbox = TextBox()
         self.textbox.Text = "TextBox"
         self.textbox.Location = Point(5, 60)
+        self.textbox.TextChanged += self.textbox_click
         
         self.checkbox = CheckBox()
         self.checkbox.Text = "CheckBox"
         self.checkbox.Location = Point(5, 60)
+        self.checkbox.Click += self.checkbox_click
         
         self.radiobutton = RadioButton()
         self.radiobutton.Text = "RadioButton"
         self.radiobutton.Location = Point(5, 60)
+        self.radiobutton.CheckedChanged += self.radiobutton_click
         
         self.dicitems = {0: self.button,
                          1: self.textbox,                        
                          2: self.checkbox,                        
-                         3: self.radiobutton                        
-                         }
+                         3: self.radiobutton
+                            }
 
         # setup tabcontrol
         self.tabcontrol = TabControl()
@@ -110,6 +119,24 @@ class TabControlTabPageSample(Form):
 
     def on_click(self, sender, event):
         self.statusbar_panel.Text = "The current tab is: " + sender.Text
+
+    def button_click(self, sender, event):
+        self.count += 1
+        self.label1.Text = "You click me %s times" % self.count
+
+    def textbox_click(self, sender, event):
+        self.label2.Text = "You input:%s" % sender.Text
+ 
+    def checkbox_click(self, sender, evnet):
+        if sender.Checked:
+            self.label3.Text = "checked"
+        else:
+            self.label3.Text = "unchecked"
+
+    def radiobutton_click(self, sender, event):
+        if sender.Checked:
+            self.label4.Text = "checked radiobutton"
+        
 
 # run application
 form = TabControlTabPageSample()

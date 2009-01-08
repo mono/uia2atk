@@ -277,7 +277,7 @@ class ComboBox(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
 class Text(object):
-    states = (EDITABLE, ENABLED, FOCUSABLE, FOCUSED, SELECTABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
+    states = (EDITABLE, ENABLED, FOCUSABLE, SELECTABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
 
 class ToolTip(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
@@ -299,4 +299,10 @@ class ListViewCheckBox(object):
 
 class ListViewText(object):
     states = (ENABLED, FOCUSABLE, SELECTABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
+
+class TabControl(object):
+    states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
+
+class TabPage(object):
+    states = (ENABLED, MULTI_LINE, SELECTABLE, SENSITIVE, SHOWING, VISIBLE)
 

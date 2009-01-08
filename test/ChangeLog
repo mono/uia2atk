@@ -1,3 +1,13 @@
+2009-01-07  Calen Chen <cachen@novell.com>
+
+	* samples/tabpage.py: add event method for button, checkbox, textbox 
+	and radiobutton to change label
+	* testers/states.py: add TabPage states tuple
+	* testers/tabpage/tabpageframe.py,
+	* testers/tabpage/__init__.py,
+	* testers/tabpage_basic_ops.py,
+	* testers/tabpage: add new test (bug464071, bug464356)
+
 2009-01-06  Calen Chen <cachen@novell.com>
 
 	* testers/columnheader/__init__.py: correct the name of method
