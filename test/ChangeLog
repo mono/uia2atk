@@ -1,3 +1,14 @@
+2009-01-08  Ray Wang <rawang@@novell.com>
+
+	* samples/toolstriplabel_toolstripseparator.py: remove deprecated file
+	* samples/toolstripsplitbutton_toolstriptextbox.py: remove deprecated file
+	* testers/domainupdown_basic_ops.py: update since bnc457496 is fixed
+	* samples/toolstripsplitbutton.py: create test sample
+	* testers/toolstripsplitbutton_basic_ops.py,
+	* testers/toolstripsplitbutton/__init__.py,
+	* testers/toolstripsplitbutton/toolstripsplitbuttonframe.py: update 
+	toolstripsplitbutton strongwind test
+
 2009-01-07  Calen Chen <cachen@novell.com>
 
 	* samples/tabpage.py: add event method for button, checkbox, textbox 

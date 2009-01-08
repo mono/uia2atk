@@ -44,15 +44,15 @@ dudFrame = app.domainUpDownFrame
 ##############################
 statesCheck(dudFrame.editable_domainupdown, "DomainUpDown", add_states=["focused"])
 # VERIFYME: comment this due to bug457496
-#statesCheck(dudFrame.uneditable_domainupdown, "DomainUpDown", invalid_states=["editable"])
-statesCheck(dudFrame.uneditable_domainupdown, "DomainUpDown")
+statesCheck(dudFrame.uneditable_domainupdown, "DomainUpDown", invalid_states=["editable"])
+#statesCheck(dudFrame.uneditable_domainupdown, "DomainUpDown")
 
 # move the focused to uneditable_domainupdown then check the states again
 dudFrame.uneditable_domainupdown.mouseClick()
 statesCheck(dudFrame.editable_domainupdown, "DomainUpDown")
 # VERIFYME: comment this due to bug457496
-#statesCheck(dudFrame.uneditable_domainupdown, "DomainUpDown", invalid_states=["editable"], add_states=["focused"])
-statesCheck(dudFrame.uneditable_domainupdown, "DomainUpDown", add_states=["focused"])
+statesCheck(dudFrame.uneditable_domainupdown, "DomainUpDown", invalid_states=["editable"], add_states=["focused"])
+#statesCheck(dudFrame.uneditable_domainupdown, "DomainUpDown", add_states=["focused"])
 
 ##############################
 # input text from UI
