@@ -120,6 +120,9 @@ namespace Mono.UIAutomation.Winforms
 			SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty,
 			          listProvider.GetListItemEventRealization (ProviderEventType.AutomationElementIsOffscreenProperty,
 			                                                    this));
+			SetEvent (ProviderEventType.AutomationElementBoundingRectangleProperty,
+			          listProvider.GetListItemEventRealization (ProviderEventType.AutomationElementBoundingRectangleProperty,
+			                                                    this));
 		}
 
 		public void UpdateBehavior (AutomationPattern pattern)

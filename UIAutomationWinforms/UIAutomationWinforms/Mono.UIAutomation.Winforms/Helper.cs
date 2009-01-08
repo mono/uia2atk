@@ -124,6 +124,27 @@ namespace Mono.UIAutomation.Winforms
 			return !bounds.IntersectsWith (screen);
 		}
 
+		internal static bool IsListItemOffScreen (Rect itemBounds,
+		                                          SWF.Control containerControl,
+		                                          bool visibleHeader,
+		                                          Rectangle headerBounds,
+		                                          IScrollBehaviorObserver observer)
+		{
+			Rectangle listViewRectangle = containerControl.Bounds;
+			if (visibleHeader) {
+				listViewRectangle.Y += headerBounds.Height;
+				listViewRectangle.Height -= headerBounds.Height;
+			}
+			if (observer.HorizontalScrollBar.Visible)
+				listViewRectangle.Height -= observer.HorizontalScrollBar.Height;
+			if (observer.VerticalScrollBar.Visible)
+				listViewRectangle.Width -= observer.VerticalScrollBar.Width;
+
+			Rect screen 
+				= Helper.RectangleToRect (containerControl.Parent.RectangleToScreen (listViewRectangle));
+			return !itemBounds.IntersectsWith (screen);
+		}
+
 		internal static bool ToolStripItemIsOffScreen (SWF.ToolStripItem item)
 		{
 			System.Drawing.Rectangle bounds =

@@ -170,7 +170,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
 				int index = item.Index;
 				if (index == -1)
-					return Rect.Empty;
+					return SD.Rectangle.Empty;
 				
 				SD.Rectangle itemRec = listView.GetItemRect (index);
 				SD.Rectangle rectangle = listView.Bounds;
@@ -178,17 +178,16 @@ namespace Mono.UIAutomation.Winforms
 				itemRec.X += rectangle.X;
 				itemRec.Y += rectangle.Y;
 				
-				if (listView.FindForm () == listView.Parent)
-					itemRec = listView.TopLevelControl.RectangleToScreen (itemRec);
-				else
-					itemRec = listView.Parent.RectangleToScreen (itemRec);
-	
+				itemRec = listView.Parent.RectangleToScreen (itemRec);
+				 
 				return Helper.RectangleToRect (itemRec);
-			} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
-				Rect rect
-					= (Rect) item.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-				return Helper.IsOffScreen (rect, listView, true);
-			} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+			} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
+				return Helper.IsListItemOffScreen ((Rect) item.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id),
+				                                   listView, 
+				                                   HeaderProvider != null,
+				                                   listView.UIAHeaderControl,
+				                                   observer);
+			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return true;
 			else
 				return null;
@@ -313,6 +312,10 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (eventType == ProviderEventType.AutomationElementHasKeyboardFocusProperty)
 			    return new ListItemAutomationHasKeyboardFocusPropertyEvent (provider);
+			else if (eventType == ProviderEventType.AutomationElementIsOffscreenProperty)
+			    return new ListItemAutomationIsOffscreenPropertyEvent (provider);
+			// FIXME: ProviderEventType.AutomationElementBoundingRectangleProperty: 
+			// When setting/unsetting image
 			else
 				return base.GetListItemEventRealization (eventType, provider);
 		}
@@ -752,14 +755,14 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "header";
+					return Catalog.GetString ("header");
 				else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
 					return OrientationType.Horizontal;
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 					return false;
-				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
-					return null;
-				} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
@@ -863,7 +866,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
 					return null;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "header item";
+					return Catalog.GetString ("header item");
 				else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
 					return OrientationType.Horizontal;
 				else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
@@ -913,6 +916,7 @@ namespace Mono.UIAutomation.Winforms
 				: base (rootProvider, listViewProvider, listView, listViewItem)
 			{
 				this.listView = listView;
+				this.listViewProvider = listViewProvider;
 				lastView = listView.View;
 				this.item = listViewItem;
 
@@ -921,6 +925,10 @@ namespace Mono.UIAutomation.Winforms
 
 			public SWF.ListView ListView {
 				get { return listView; }
+			}
+
+			public ListViewProvider ListViewProvider {
+				get { return listViewProvider; }
 			}
 
 			public SWF.ListViewItem ListViewItem {
@@ -945,7 +953,7 @@ namespace Mono.UIAutomation.Winforms
 					if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 						return ControlType.DataItem.Id;
 					else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-						return "data item";
+						return Catalog.GetString ("data item");
 					//FIXME: What about ItemTypeProperty & ItemStatusProperty ?
 					else
 						return base.GetProviderPropertyValue (propertyId);
@@ -1071,6 +1079,7 @@ namespace Mono.UIAutomation.Winforms
 			private Dictionary<SWF.ColumnHeader, ListViewListItemEditProvider> providers;
 			private SWF.View lastView;
 			private SWF.ListView listView;
+			private ListViewProvider listViewProvider;
 			private ListViewListItemCheckBoxProvider checkboxProvider;
 		} //ListViewListItemProvider
 
@@ -1113,6 +1122,10 @@ namespace Mono.UIAutomation.Winforms
 				             new ListItemEditTableItemProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new ListItemEditValueProviderBehavior (this));
+
+				// Automation Events
+				SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty,
+				          new ListItemEditAutomationIsOffscreenPropertyEvent (this));
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)
@@ -1120,7 +1133,7 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.Edit.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "edit";
+					return Catalog.GetString ("edit");
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
 					IValueProvider valueProvider = (IValueProvider) GetBehavior (ValuePatternIdentifiers.Pattern);
 					return valueProvider.Value;
@@ -1148,11 +1161,13 @@ namespace Mono.UIAutomation.Winforms
 					itemBounds.Width = itemProvider.ListView.Columns [indexOf].Width;
 					
 					return itemBounds;
-				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
-					Rect bounds 
-						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-					return Helper.IsOffScreen (bounds, ItemProvider.ListView); 
-				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
+				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
+					return Helper.IsListItemOffScreen ((Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id),
+					                                   ItemProvider.ListView, 
+					                                   true,
+					                                   ItemProvider.ListView.UIAHeaderControl,
+					                                   ItemProvider.ListViewProvider.ScrollBehaviorObserver);
+				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 					return Helper.GetClickablePoint (this);
 				else
 					return base.GetProviderPropertyValue (propertyId);
@@ -1188,6 +1203,10 @@ namespace Mono.UIAutomation.Winforms
 
 				SetBehavior (TogglePatternIdentifiers.Pattern,
 				             new ListItemCheckBoxToggleProviderBehavior (this));
+
+				//Automation Events
+				SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty,
+				          new ListItemCheckBoxAutomationIsOffscreenPropertyEvent (this));
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)
@@ -1195,7 +1214,7 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.CheckBox.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return "checkbox";
+					return Catalog.GetString ("checkbox");
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return itemProvider.GetPropertyValue (propertyId);
 				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
@@ -1217,9 +1236,14 @@ namespace Mono.UIAutomation.Winforms
 					checkBoxRect.Height = checkBoxSize.Height;
 					return checkBoxRect;
 				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
-					Rect bounds 
-						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-					return Helper.IsOffScreen (bounds, ItemProvider.ListView, true); 
+					return Helper.IsListItemOffScreen ((Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id),
+					                                   ItemProvider.ListView, 
+					                                   true,
+					                                   ItemProvider.ListView.UIAHeaderControl,
+					                                   ItemProvider.ListViewProvider.ScrollBehaviorObserver);
+//					Rect bounds 
+//						= (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+//					return Helper.IsOffScreen (bounds, ItemProvider.ListView, true); 
 				} else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 					return Helper.GetClickablePoint (this);
 				else

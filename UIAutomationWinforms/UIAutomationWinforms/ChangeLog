@@ -1,5 +1,29 @@
 2009-01-08  Mario Carrion  <mcarrion@novell.com>
 
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: ListView children IsOffScreen
+	automation events added.
+
+	* Mono.UIAutomation.Winforms/Helper.cs: New method to return if ListItem
+	is offscreen.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Children Automation
+	Events added.
+
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Requesting Automation
+	Bounding Rectangle event.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemEditAutomationIsOffscreenPropertyEvent.cs:
+	ListView.ListItem.Edit: Raises IsOffScreen Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemCheckBoxAutomationIsOffscreenPropertyEvent.cs:
+	ListView.ListItem.CheckBox: Raises IsOffScreen Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemAutomationIsOffscreenPropertyEvent.cs:
+	ListView.ListItem Raises IsOffScreen Automation Event.
+
+2009-01-08  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/Helper.cs: IsOffScreen: Using
 	!bounds.IntersectWith(screen) instead of !screen.Contains(bounds).
 
