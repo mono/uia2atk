@@ -904,6 +904,8 @@ namespace UiaAtkBridgeTest
 		public void TearDown ()
 		{
 			form.Close ();
+			
+			//FIXME: we should not call this, form.Close() should already dispose the bridge!
 			BridgeTearDown ();
 		}
 
