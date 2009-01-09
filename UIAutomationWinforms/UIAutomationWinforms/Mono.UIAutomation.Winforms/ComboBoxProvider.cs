@@ -369,7 +369,9 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return item.ObjectItem.ToString ();
 
-				int topItem = ListBoxControl.UIATopItem;
+				int topItem = -1;
+				if (ListBoxControl != null)
+					topItem = ListBoxControl.UIATopItem;
 
 				if (ContainsItem (item) == false)
 					return null;

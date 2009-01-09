@@ -1,3 +1,8 @@
+2009-01-09  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: Using -1 when
+	ListBoxControl is null. Fixes TS tests.
+
 2009-01-09  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/ErrorProvider.cs: 
