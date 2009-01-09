@@ -100,9 +100,7 @@ namespace Mono.UIAutomation.Winforms
 		/// </summary>
 		static void OnPreRun (object sender, EventArgs args)
 		{
-			Console.WriteLine ("PreRun fired");
-			
-			// TODO: Change this temporary hack to pass on the PreRun event
+			// FIXME: Change this temporary hack to pass on the PreRun event
 			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
 		}
 		
@@ -113,16 +111,11 @@ namespace Mono.UIAutomation.Winforms
 			Form f = (Form) sender;
 			if (formProviders.ContainsKey (f))
 				return;
-			
-			Console.WriteLine ("Form added!");
 
 			FormProvider provider = (FormProvider)
 				ProviderFactory.GetProvider (f, true);
-			
-			// Terminate Form provider
-			f.Disposed += delegate (object formSender, EventArgs formArgs) {
-				ProviderFactory.ReleaseProvider ((Form) formSender);
-			};
+
+			// NOTE: Form Provider Releasing is done by FormProvider
 			
 			// Pass false in last argument so that InitializeChildControlStructure
 			// isn't called when the provider is created.  We'll do
@@ -131,7 +124,7 @@ namespace Mono.UIAutomation.Winforms
 
 			formProviders [f] = provider;
 			
-			if (f.Owner == null) { //For example is not MessageBox or f.ShowDialog
+			if (f.Owner == null) { //For example is not MessageBox, f.ShowDialog or XXXXXDialog
 				//Initialize navigation to let children use it
 				provider.Navigation = NavigationFactory.CreateNavigation (provider);
 				provider.Navigation.Initialize ();
@@ -141,8 +134,8 @@ namespace Mono.UIAutomation.Winforms
 				                                   provider);
 				provider.InitializeChildControlStructure ();
 			} else {
-				FormProvider ownerProvider = 
-					ProviderFactory.GetProvider (f.Owner, false, false) as FormProvider;
+				FormProvider ownerProvider 
+					= (FormProvider) ProviderFactory.FindProvider (f.Owner);
 				ownerProvider.AddChildProvider (true, provider);
 			}
 			

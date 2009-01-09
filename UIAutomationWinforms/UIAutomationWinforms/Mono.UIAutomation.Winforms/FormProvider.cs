@@ -41,6 +41,8 @@ namespace Mono.UIAutomation.Winforms
 #region Private Data
 		
 		private Form form;
+		private Form owner;
+		private bool alreadyClosed;
 		
 #endregion
 		
@@ -49,8 +51,12 @@ namespace Mono.UIAutomation.Winforms
 		public FormProvider (Form form) : base (form)
 		{
 			this.form = form;
-			
-			form.Closed += OnClosed;
+			// We keep a copy because we can't reference form after Disposed
+			owner = form.Owner;
+			alreadyClosed = false;
+
+			form.Closed += OnRaiseWindowClosed;
+			form.Disposed += OnRaiseWindowClosed;
 			form.Shown += OnShown;
 		}
 		
@@ -77,31 +83,15 @@ namespace Mono.UIAutomation.Winforms
 
 		
 		//FIXME: Revamp
+
 		
 #region Private Event Handlers
-		
-		private void OnClosed (object sender, EventArgs args)
-		{
-			FinalizeChildControlStructure ();
 
-			if (!AutomationInteropProvider.ClientsAreListening)
-				return;
-			
-			AutomationEventArgs eventArgs =
-				new AutomationEventArgs (WindowPatternIdentifiers.WindowClosedEvent);
-			AutomationInteropProvider.RaiseAutomationEvent (WindowPatternIdentifiers.WindowClosedEvent,
-			                                                this,
-			                                                eventArgs);
-			// TODO: Fill in rest of eventargs			
-			
-			if (form.Owner == null)
-				Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
-				                                   this);
-			else {
-				FormProvider ownerProvider = 
-					ProviderFactory.GetProvider (form.Owner, false, false) as FormProvider;
-				ownerProvider.RemoveChildProvider (true, this);
-			}
+		private void OnRaiseWindowClosed (object sender, EventArgs args)
+		{
+			RaiseWindowClosedEvent ();
+
+			ProviderFactory.ReleaseProvider (form);
 		}
 		
 		private void OnShown (object sender, EventArgs args)
@@ -191,5 +181,31 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 #endregion
+
+		#region Private Methods
+
+		private void RaiseWindowClosedEvent ()
+		{
+			if (AutomationInteropProvider.ClientsAreListening && !alreadyClosed) {
+				AutomationEventArgs eventArgs 
+					= new AutomationEventArgs (WindowPatternIdentifiers.WindowClosedEvent);
+				AutomationInteropProvider.RaiseAutomationEvent (WindowPatternIdentifiers.WindowClosedEvent,
+				                                                this,
+				                                                eventArgs);
+				// TODO: Fill in rest of eventargs			
+				
+				if (owner == null)
+					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
+					                                   this);
+				else {
+					FormProvider ownerProvider 
+						= (FormProvider) ProviderFactory.FindProvider (owner);
+					ownerProvider.RemoveChildProvider (true, this);
+				}
+				alreadyClosed = true;
+			}
+		}
+
+		#endregion
 	}
 }
