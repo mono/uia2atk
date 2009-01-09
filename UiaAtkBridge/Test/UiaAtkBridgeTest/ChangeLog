@@ -1,3 +1,11 @@
+2009-01-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs: This now passes (CombBoxSimple) although gives this
+	warning:
+	
+Mono.UIAutomation.Winforms.ComboBoxProvider+ComboBoxListBoxProvider:
+	warning: FocusItem unimplemented
+
 2009-01-09  Brad Taylor  <brad@getcoded.net>
 
 	* BridgeTests.cs: 

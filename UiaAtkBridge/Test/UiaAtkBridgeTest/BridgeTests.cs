@@ -221,7 +221,6 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
-		[Ignore ("Not ready yet. For 1.0.")]
 		public void ComboBoxSimple ()
 		{
 			ComboBoxSimple (null);
