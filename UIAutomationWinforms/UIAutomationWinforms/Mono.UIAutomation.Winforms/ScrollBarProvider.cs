@@ -287,11 +287,9 @@ namespace Mono.UIAutomation.Winforms
 
 			protected override System.Drawing.Rectangle GetControlScreenBounds ()
 			{
-				System.Drawing.Rectangle thumbArea 
-					= Helper.GetPrivateProperty<ScrollBar, Rectangle> (typeof (ScrollBar), 
-					                                                   (ScrollBar) Control,
-					                                                   "UIAThumbArea");
-				
+				System.Drawing.Rectangle thumbArea
+					= ((ScrollBar) Control).UIAThumbArea;
+
 				if (Control.Parent == null || Control.TopLevelControl == null)
 					return thumbArea;
 				else {

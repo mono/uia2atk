@@ -1,3 +1,16 @@
+2009-01-09  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/ErrorProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolTipProvider.cs: 
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/TreeViewProvider.cs: 
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: 
+	* Mono.UIAutomation.Winforms/PrintPreviewControlProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/Generic/ScrollProviderBehavior.cs: 
+	Remove uses of reflection when trying to access internal SWF members.
+	[Fixes #422772]
+
 2009-01-09  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Fix crash when

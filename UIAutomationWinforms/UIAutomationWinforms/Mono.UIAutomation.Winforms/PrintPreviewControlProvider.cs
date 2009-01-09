@@ -54,20 +54,10 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.Initialize ();
 			
-			try {
-				SWF.ScrollBar vscrollbar
-					= Helper.GetPrivateProperty<SWF.PrintPreviewControl, SWF.ScrollBar> (typeof (SWF.PrintPreviewControl),
-					                                                                     printPreviewControl,
-					                                                                     "UIAVScrollBar");
-				SWF.ScrollBar hscrollbar
-					= Helper.GetPrivateProperty<SWF.PrintPreviewControl, SWF.ScrollBar> (typeof (SWF.PrintPreviewControl),
-					                                                                     printPreviewControl,
-					                                                                     "UIAHScrollBar");
-				
-				observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);
-				observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
-				UpdateScrollBehavior ();
-			} catch (Exception) { }
+			observer = new ScrollBehaviorObserver (this, printPreviewControl.UIAVScrollBar,
+							       printPreviewControl.UIAHScrollBar);
+			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
+			UpdateScrollBehavior ();
 		}
 		
 		public override void Terminate ()

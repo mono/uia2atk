@@ -114,11 +114,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Generic
 				if (HorizontallyScrollable == false)
 					return 100;
 				else {
-					SD.Rectangle thumbArea 
-						= Helper.GetPrivateProperty<SWF.ScrollBar, SD.Rectangle> (typeof (SWF.ScrollBar),
-						                                                          hscrollbar,
-						                                                          "UIAThumbPosition");
-
+					SD.Rectangle thumbArea = hscrollbar.UIAThumbPosition;
 					return ((thumbArea.Width + (thumbArea.Height * 2)) * 100)
 						/ Provider.Control.Width;
 				}
@@ -144,11 +140,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Generic
 				if (VerticallyScrollable == false)
 					return 100;
 				else {
-					SD.Rectangle thumbArea 
-						= Helper.GetPrivateProperty<SWF.ScrollBar, SD.Rectangle> (typeof (SWF.ScrollBar),
-						                                                          vscrollbar,
-						                                                          "UIAThumbPosition");
-
+					SD.Rectangle thumbArea = hscrollbar.UIAThumbPosition;
 					return ((thumbArea.Height+ (thumbArea.Width * 2)) * 100)
 						/ Provider.Control.Height;
 				}

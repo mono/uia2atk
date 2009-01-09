@@ -192,11 +192,7 @@ namespace Mono.UIAutomation.Winforms
 		private void InitializeEditProvider (bool generateEvent)
 		{
 			if (textboxProvider == null) {
-				SWF.TextBox textbox 
-					= Helper.GetPrivateProperty<SWF.ComboBox, SWF.TextBox> (typeof (SWF.ComboBox), 
-					                                                        comboboxControl, 
-					                                                        "UIATextBox");
-				textboxProvider = new ComboBoxTextBoxProvider (textbox, this);
+				textboxProvider = new ComboBoxTextBoxProvider (comboboxControl.UIATextBox, this);
 				textboxProvider.Initialize ();
 
 				OnNavigationChildAdded (generateEvent, textboxProvider);
@@ -259,6 +255,8 @@ namespace Mono.UIAutomation.Winforms
 				comboboxControl.DropDownStyleChanged += OnDropDownStyleChanged;
 				comboboxControl.DropDown += OnDropDownAndDropClosed;
 				comboboxControl.DropDownClosed += OnDropDownAndDropClosed;
+
+				listboxControl = ListBoxControl;
 			}
 			
 			public override IRawElementProviderFragmentRoot FragmentRoot {
@@ -280,9 +278,9 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-					//We try to get private listbox_ctrl in SWF.ComboBox if returns null we 
+					//We try to get internal UIAComboListBox in SWF.ComboBox if returns null we 
 					//use the SWF.ComboBox bounds
-					SWF.Control listboxControl = RequestListBoxControl ();
+					SWF.Control listboxControl = ListBoxControl;
 					if (listboxControl == null)
 						return comboboxProvider.GetProviderPropertyValue (propertyId);
 					else
@@ -370,10 +368,11 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return item.ObjectItem.ToString ();
-	
+
+				int topItem = ListBoxControl.UIATopItem;
+
 				if (ContainsItem (item) == false)
 					return null;
-	
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					return comboboxControl.Focused && item.Index == comboboxControl.SelectedIndex;
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
@@ -382,7 +381,7 @@ namespace Mono.UIAutomation.Winforms
 					System.Drawing.Rectangle rectangle = System.Drawing.Rectangle.Empty;
 					System.Drawing.Rectangle bounds = System.Drawing.Rectangle.Empty;
 
-					if (RequestListBoxControl () == null)
+					if (ListBoxControl == null)
 						bounds = comboboxControl.Bounds;
 					else
 						bounds = ListBoxControl.Bounds;
@@ -391,7 +390,7 @@ namespace Mono.UIAutomation.Winforms
 					rectangle.Height = comboboxControl.GetItemHeight (index);
 					rectangle.Width = bounds.Width;
 					rectangle.X = bounds.X;
-					rectangle.Y = bounds.Y + (index * itemHeight) - (TopItem * itemHeight);// decreaseY;
+					rectangle.Y = bounds.Y + (index * itemHeight) - (topItem * itemHeight);// decreaseY;
 
 					if (ListBoxControl == null)
 						return Helper.GetControlScreenBounds (rectangle, comboboxControl);
@@ -401,10 +400,10 @@ namespace Mono.UIAutomation.Winforms
 					if (comboboxControl.SelectedIndex == item.Index)
 						return false;
 					
-					int topItem = TopItem;
 					if (topItem == -1 || !ListBoxControl.Visible)
 						return !(comboboxControl.SelectedIndex == item.Index);
-					int lastItem = LastItem;				
+
+					int lastItem = ListBoxControl.UIALastItem;				
 					if ((item.Index >= topItem && item.Index < lastItem) 
 					    || (item.Index == lastItem && comboboxControl.Items.Count == lastItem + 1))
 						return false;
@@ -442,51 +441,8 @@ namespace Mono.UIAutomation.Winforms
 				//FIXME: Return AutomationIsKeyboardFocusablePropertyEvent
 			}
 
-			//FIXME: This MUST be replaced by an internal property in SWF.ComboBox, "Reflection is not the way"TM
-			private SWF.Control RequestListBoxControl ()
-			{
-				try {
-					listboxControl = Helper.GetPrivateField<SWF.Control> (typeof (SWF.ComboBox),
-					                                                      comboboxControl,
-					                                                      "listbox_ctrl");
-				} catch (NotSupportedException) {}
-				return listboxControl;
-			}
-
-			public SWF.Control ListBoxControl {
-				get { return listboxControl; }
-			}
-
-			//FIXME: This MUST be replaced by an internal property in SWF.ComboBox, "Reflection is not the way"TM
-			public int TopItem {
-				get {
-					SWF.Control listboxControl = RequestListBoxControl ();
-					if (listboxControl == null)
-						return -1;
-					else {
-						try {
-							return Helper.GetPrivateField<int> (listboxControl.GetType (),
-							                                    listboxControl,
-							                                    "top_item");
-						} catch (NotSupportedException) { return -1; }
-					}
-				}
-			}
-
-			//FIXME: This MUST be replaced by an internal property in SWF.ComboBox, "Reflection is not the way"TM
-			public int LastItem {
-				get {
-					SWF.Control listboxControl = RequestListBoxControl ();
-					if (listboxControl == null)
-						return -1;
-					else {
-						try {
-							return Helper.GetPrivateField<int> (listboxControl.GetType (),
-							                                    listboxControl,
-							                                    "last_item");
-						} catch (NotSupportedException) { return -1; }
-					}
-				}
+			public SWF.ComboBox.ComboListBox ListBoxControl {
+				get { return comboboxControl.UIAComboListBox; }
 			}
 
 			public IScrollBehaviorObserver ScrollBehaviorObserver {
@@ -506,7 +462,6 @@ namespace Mono.UIAutomation.Winforms
 			private void InitializeObserver (bool forceInitialization)
 			{
 				SWF.Control oldListBoxControl = listboxControl;
-				RequestListBoxControl ();
 				if (ListBoxControl != oldListBoxControl || forceInitialization) {
 					if (observer != null) {
 						observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
@@ -515,16 +470,14 @@ namespace Mono.UIAutomation.Winforms
 
 					// FIXME: Replace with an internal UIA-like property in SWF
 					if (ListBoxControl != null) {
-						SWF.ScrollBar vscrollbar
-							= Helper.GetPrivateField<SWF.ScrollBar> (ListBoxControl.GetType (),
-							                                         ListBoxControl,
-							                                         "vscrollbar_ctrl");
-						
-						observer = new ScrollBehaviorObserver (this, null, vscrollbar);
+						observer = new ScrollBehaviorObserver (this, null,
+						                                       ListBoxControl.UIAVScrollBar);
 						observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
 						observer.Initialize ();
 						UpdateScrollBehavior ();
 					}
+
+					listboxControl = ListBoxControl;
 				}
 			}
 

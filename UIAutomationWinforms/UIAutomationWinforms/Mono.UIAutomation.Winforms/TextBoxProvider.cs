@@ -68,14 +68,8 @@ namespace Mono.UIAutomation.Winforms
 			SetBehavior (TextPatternIdentifiers.Pattern,
 			             new TextProviderBehavior (this));
 
-			ScrollBar vscrollbar 
-				= Helper.GetPrivateProperty<TextBoxBase, ScrollBar> (
-				typeof (TextBoxBase), textboxbase, "UIAVScrollBar");
-			ScrollBar hscrollbar 
-				= Helper.GetPrivateProperty<TextBoxBase, ScrollBar> (
-				typeof (TextBoxBase), textboxbase, "UIAHScrollBar");
-
-			observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);
+			observer = new ScrollBehaviorObserver (this, textboxbase.UIAHScrollBar,
+			                                       textboxbase.UIAVScrollBar);
 			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
 			UpdateScrollBehavior ();
 			

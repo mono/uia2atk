@@ -67,14 +67,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.Initialize ();
 
-			SWF.ScrollBar vscrollbar 
-				= Helper.GetPrivateProperty<SWF.TreeView, SWF.ScrollBar> (
-				typeof (SWF.TreeView), treeView, "UIAVScrollBar");
-			SWF.ScrollBar hscrollbar 
-				= Helper.GetPrivateProperty<SWF.TreeView, SWF.ScrollBar> (
-				typeof (SWF.TreeView), treeView, "UIAHScrollBar");
-
-			observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);
+			observer = new ScrollBehaviorObserver (this, treeView.UIAHScrollBar,
+			                                       treeView.UIAHScrollBar);
 			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
 			
 			UpdateBehaviors ();
