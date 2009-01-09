@@ -44,7 +44,11 @@ namespace UiaAtkBridgeTest
 		{
 			Atk.Object accessible = InterfaceText (type,
 				(type == BasicWidgetType.ToolStripLabel));
+			Label (accessible, type);
+		}
 
+		protected void Label (Atk.Object accessible, BasicWidgetType type)
+		{
 			PropertyRole (type, accessible);
 			
 			//a label always contains this state, not because it's multi_line, but because it can be multi_line

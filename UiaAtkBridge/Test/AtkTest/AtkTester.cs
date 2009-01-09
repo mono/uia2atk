@@ -839,6 +839,7 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.ContainerPanel:
 			case BasicWidgetType.ErrorProvider:
+			case BasicWidgetType.DateTimePicker:
 				role = Atk.Role.Panel;
 				break;
 			case BasicWidgetType.ToolStripSplitButton:
@@ -854,7 +855,9 @@ namespace UiaAtkBridgeTest
 				role = Atk.Role.Label;
 				break;
 			default:
-				throw new NotImplementedException ();
+				throw new NotImplementedException (String.Format (
+					"Couldn't find the role for {0}.  Did you forget to add it to AtkTester::PropertyRole ()?",
+					type));
 			}
 			Assert.AreEqual (role, accessible.Role, "Atk.Role");
 		}

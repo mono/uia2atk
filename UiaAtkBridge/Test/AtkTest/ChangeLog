@@ -1,3 +1,11 @@
+2009-01-09  Brad Taylor  <brad@getcoded.net>
+
+	* AtkTests.cs: Genericise the body of the Label test so that it can be
+	used elsewhere.
+
+	* AtkTester.cs: 
+	* BasicWidgetType.cs: Add test support boilerplate for DateTimePicker.
+
 2009-01-09  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs: Adjust TextBox tests since SWF initially places the

@@ -87,6 +87,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.ToolStripSplitButton tssb = new SWF.ToolStripSplitButton ();
 		protected SWF.TabControl tabControl = new SWF.TabControl ();
 		protected SWF.TreeView treeView = new SWF.TreeView ();
+		protected SWF.DateTimePicker dateTimePicker = new SWF.DateTimePicker ();
 
 		protected int lastClickedLink = -1;
 
@@ -177,6 +178,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (pboxWithImage);
 			form.Controls.Add (tbx1);
 			form.Controls.Add (tbx2);
+			form.Controls.Add (dateTimePicker);
 				// TODO: Move following lines to the end of ListView test to test view switching
 			lv1.View = SWF.View.Details;
 			lv1.ShowGroups = true;
@@ -516,6 +518,9 @@ namespace UiaAtkBridgeTest
 					tsddb.DropDownItems.Add (item);
 				}
 				accessible = GetAdapterForWidget (tsddb);
+				break;
+			case BasicWidgetType.DateTimePicker:
+				accessible = GetAdapterForWidget (dateTimePicker);
 				break;
 			default:
 				throw new NotImplementedException ("This AtkTester overload doesn't handle this type of widget: " +

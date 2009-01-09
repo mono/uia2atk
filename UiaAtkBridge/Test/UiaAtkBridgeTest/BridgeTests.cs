@@ -729,6 +729,53 @@ namespace UiaAtkBridgeTest
 			toolStrip.Items.Remove (lab);
 		}
 
+		[Test]
+		public void DateTimePicker ()
+		{
+			BasicWidgetType type = BasicWidgetType.DateTimePicker;
+
+			Atk.Object accessible = GetAccessible (type, new string[0]);
+
+			dateTimePicker.ShowUpDown = false;
+			dateTimePicker.ShowCheckBox = false;
+
+			// DayName, Month Day, Year
+			dateTimePicker.Format = SWF.DateTimePickerFormat.Long;
+			Atk.Role[] expectedRoles = new Atk.Role[] {
+				Atk.Role.List, Atk.Role.Label, Atk.Role.Label, Atk.Role.List,
+				Atk.Role.Label, Atk.Role.SpinButton, Atk.Role.Label, Atk.Role.Label,
+				Atk.Role.SpinButton, Atk.Role.PushButton
+			};
+
+			PropertyRole (type, accessible);
+			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+			
+			Assert.AreEqual (expectedRoles.Length, accessible.NAccessibleChildren,
+			                 "Correct number of children not found");
+			
+			Atk.Object child = null;
+			Atk.Role expectedRole = Atk.Role.Label;
+			for (int i = 0; i < accessible.NAccessibleChildren; i++) {
+				child = accessible.RefAccessibleChild (i);
+				expectedRole = expectedRoles[i];
+
+				Assert.AreEqual (expectedRole, child.Role,
+				                 String.Format ("Child {0}'s role is not what was expected", i));
+				switch (expectedRole) {
+				case Atk.Role.Label:
+					Label (child, BasicWidgetType.Label);
+					break;
+				case Atk.Role.List:
+					// TODO: add when general test for List is more self-contained
+					break;
+				case Atk.Role.SpinButton:
+					// TODO: add when general test for Spinner has values less hard-coded
+					break;
+				}
+			}
+		}
+
 		internal class DialogTest {
 			SWF.CommonDialog dialog;
 	

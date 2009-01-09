@@ -79,6 +79,7 @@ namespace UiaAtkBridgeTest
 		ToolStrip,
 		StatusBarPanel,
 		TreeView,
+		DateTimePicker,
 	}
 
 	public class MenuLayout
