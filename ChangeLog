@@ -1,3 +1,10 @@
+2009-01-09  Stephen Shaw  <sshaw@decriptor.com>
+
+	* UiaAtkBridge/configure.ac
+	* UIAutomation/configure.ac
+	* UIAutomationWinforms/configure.ac
+		Bumped version to 0.9.2
+
 2009-01-07  Stephen Shaw  <sshaw@decriptor.com>
 
 	* UiaAtkBridge/configure.ac

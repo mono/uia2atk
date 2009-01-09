@@ -1,3 +1,8 @@
+2009-01-09  Stephen Shaw  <sshaw@decriptor.com>
+
+	* UIAutomationWinforms/configure.ac: Update version 0.9.2 
+
+
 2009-01-07  Brad Taylor  <brad@getcoded.net>
 
 	* UIAutomationWinforms/NEWS: Update for 0.9.1 release.
