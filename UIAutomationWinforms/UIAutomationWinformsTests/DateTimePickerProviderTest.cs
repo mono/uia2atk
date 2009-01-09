@@ -45,13 +45,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			base.SetUp ();
 			
 			oldCulture = Thread.CurrentThread.CurrentCulture;
-			oldCulture.ToString ();
 
 			// Ensure that we're in the US locale so that we can
 			// make certian assumptions
 			Thread.CurrentThread.CurrentCulture = new CultureInfo ("en-US");
-			currentCalendar = Thread.CurrentThread.CurrentCulture.Calendar;
-			currentCalendar.ToString ();
 
 			picker = (DateTimePicker) GetControlInstance ();
 			Form.Controls.Add (picker);
@@ -441,7 +438,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		private DateTimePicker picker;
 		private IRawElementProviderSimple pickerProvider;
 
-		private Calendar currentCalendar;
 		private CultureInfo oldCulture;
 
 		private int long_pattern_num_parts = 9;

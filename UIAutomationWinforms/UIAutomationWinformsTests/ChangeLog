@@ -1,5 +1,9 @@
 2009-01-09  Brad Taylor  <brad@getcoded.net>
 
+	* DateTimePickerProviderTest.cs: Remove unnecessary fields.
+
+2009-01-09  Brad Taylor  <brad@getcoded.net>
+
 	* DateTimePickerProviderTest.cs: Test new List part type and it's list
 	item children.
 
