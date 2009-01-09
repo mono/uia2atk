@@ -1,5 +1,11 @@
 2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ContextMenu.cs: New year ;)
+
+	* MenuItem.cs: Fix one ParentMenu test.
+
+2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* MenuBar.cs:
 	* ContextMenu.cs: New Context menu draft.
 

@@ -55,9 +55,6 @@ namespace UiaAtkBridge
 			
 			OnChildrenChanged ();
 		}
-
-		private bool selected = false;
-		private int selectedChild = -1;
 		
 		protected override Atk.StateSet OnRefStateSet ()
 		{
@@ -247,7 +244,11 @@ namespace UiaAtkBridge
 
 		#region SelectionImplementor implementation
 		//cannot use SelectionProviderHelper because it doesn't implement ISelectionProvider
+		//(consider inheriting from MenuBar in the future)
 
+		private bool selected = false;
+		private int selectedChild = -1;
+		
 		public bool AddSelection (int i)
 		{
 			if ((i < 0) || (i >= NAccessibleChildren))
@@ -265,7 +266,12 @@ namespace UiaAtkBridge
 			return selectedChild == i;
 		}
 
-		public bool RemoveSelection (int i)
+		bool Atk.TextImplementor.RemoveSelection (int i)
+		{
+			return false;
+		}
+
+		bool Atk.SelectionImplementor.RemoveSelection (int i)
 		{
 			if (i == 0) {
 				selectedChild = -1;
