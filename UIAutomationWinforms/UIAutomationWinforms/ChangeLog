@@ -1,3 +1,21 @@
+2009-01-09  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs: 
+	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/AutomationNamePropertyEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/PartRangeValuePatternValueEvent.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartSelectionProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartRangeValueProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/PartSelectionPatternSelectionEvent.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartListItemValueProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/PartSelectionPatternInvalidatedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartListItemSelectionItemProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/PartListItemSelectionItemPatternIsSelectedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/DateTimePicker/PartListItemSelectionItemPatternElementSelectedEvent.cs: 
+	Support Month and DayName with a List control.
+
 2009-01-09  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs,

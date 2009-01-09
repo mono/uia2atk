@@ -24,58 +24,61 @@
 // 
 
 using System;
-using SWF = System.Windows.Forms;
+using System.ComponentModel;
 using System.Windows.Automation;
-using Mono.UIAutomation.Winforms.Events;
 using System.Windows.Automation.Provider;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Events.DateTimePicker
 {
-	internal class PartRangeValuePatternValueEvent
-		: BaseAutomationPropertyEvent
+	internal class PartListItemSelectionItemPatternElementSelectedEvent
+		: BaseAutomationEvent
 	{
-#region Constructor
-		public PartRangeValuePatternValueEvent (
-			DateTimePickerProvider.DateTimePickerPartProvider partProvider,
-			DateTimePickerProvider dateTimePicker) 
-			: base (partProvider, RangeValuePatternIdentifiers.ValueProperty)
+#region Public Methods
+		public PartListItemSelectionItemPatternElementSelectedEvent (
+			ListItemProvider provider,
+			DateTimePickerProvider.DateTimePickerListPartProvider listProvider)
+			: base (provider, 
+			        SelectionItemPatternIdentifiers.ElementSelectedEvent)
 		{
-			this.dateTimePicker = dateTimePicker;
-			this.partProvider = partProvider;
-
-			oldValue = partProvider.Text;
+			this.listProvider = listProvider;
+			this.listItemProvider = provider;
+			
+			isSelected = listProvider.IsItemSelected (listItemProvider);
 		}
 #endregion
 		
-#region IConnectable Overrides
+#region ProviderEvent Methods
 		public override void Connect ()
 		{
-			((SWF.DateTimePicker) dateTimePicker.Control)
+			((SWF.DateTimePicker) listProvider.Control)
 				.ValueChanged += new EventHandler (OnValueChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.DateTimePicker) dateTimePicker.Control)
+			((SWF.DateTimePicker) listProvider.Control)
 				.ValueChanged -= new EventHandler (OnValueChanged);
 		}
 #endregion 
-		
+
 #region Private Methods
-		private void OnValueChanged (object sender, EventArgs e)
+		private void OnValueChanged (object sender, EventArgs args)
 		{
-			string newValue = partProvider.Text;
-			if (oldValue != newValue) {
-				RaiseAutomationPropertyChangedEvent ();
-				oldValue = newValue;
+			bool sel = listProvider.IsItemSelected (listItemProvider);
+			if (sel != isSelected) {
+				RaiseAutomationEvent ();
+				isSelected = sel;
 			}
 		}
 #endregion
 
 #region Private Fields
-		private string oldValue;
-		private DateTimePickerProvider dateTimePicker;
-		private DateTimePickerProvider.DateTimePickerPartProvider partProvider;
+		private bool isSelected = false;
+		private ListItemProvider listItemProvider;
+		private DateTimePickerProvider.DateTimePickerListPartProvider listProvider;
 #endregion
 	}
 }

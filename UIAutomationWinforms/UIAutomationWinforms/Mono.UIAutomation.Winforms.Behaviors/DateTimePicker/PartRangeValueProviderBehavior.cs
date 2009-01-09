@@ -62,13 +62,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DateTimePicker
 				= partProvider.PickerProvider;
 
 			Provider.SetEvent (ProviderEventType.RangeValuePatternIsReadOnlyProperty,
-			                   new PartRangeValuePatternIsReadOnlyEvent (Provider, pickerProvider));
+			                   new PartRangeValuePatternIsReadOnlyEvent (partProvider, pickerProvider));
 			Provider.SetEvent (ProviderEventType.RangeValuePatternValueProperty,
-			                   new PartRangeValuePatternValueEvent (Provider, pickerProvider));
+			                   new PartRangeValuePatternValueEvent (partProvider, pickerProvider));
 			Provider.SetEvent (ProviderEventType.RangeValuePatternMinimumProperty,
-			                   new PartRangeValuePatternMinimumEvent (Provider, pickerProvider));
+			                   new PartRangeValuePatternMinimumEvent (partProvider, pickerProvider));
 			Provider.SetEvent (ProviderEventType.RangeValuePatternMaximumProperty,
-			                   new PartRangeValuePatternMaximumEvent (Provider, pickerProvider));
+			                   new PartRangeValuePatternMaximumEvent (partProvider, pickerProvider));
 		}
 		
 		public override void Disconnect ()

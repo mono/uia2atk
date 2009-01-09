@@ -23,59 +23,42 @@
 //	Brad Taylor <brad@getcoded.net>
 // 
 
-using System;
 using SWF = System.Windows.Forms;
-using System.Windows.Automation;
+using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Winforms.Behaviors.ListItem;
+using Mono.UIAutomation.Winforms.Events.DateTimePicker;
+using DTPListPartProvider = Mono.UIAutomation.Winforms.DateTimePickerProvider.DateTimePickerListPartProvider;
+using DTPListPartItemProvider = Mono.UIAutomation.Winforms.DateTimePickerProvider.DateTimePickerListPartItemProvider;
 
-namespace Mono.UIAutomation.Winforms.Events.DateTimePicker
+namespace Mono.UIAutomation.Winforms.Behaviors.DateTimePicker
 {
-	internal class PartRangeValuePatternValueEvent
-		: BaseAutomationPropertyEvent
+	internal class PartListItemSelectionItemProviderBehavior 
+		: SelectionItemProviderBehavior
 	{
-#region Constructor
-		public PartRangeValuePatternValueEvent (
-			DateTimePickerProvider.DateTimePickerPartProvider partProvider,
-			DateTimePickerProvider dateTimePicker) 
-			: base (partProvider, RangeValuePatternIdentifiers.ValueProperty)
+#region Public Methods
+		public PartListItemSelectionItemProviderBehavior (ListItemProvider provider)
+			: base (provider)
 		{
-			this.dateTimePicker = dateTimePicker;
-			this.partProvider = partProvider;
-
-			oldValue = partProvider.Text;
+			this.provider = provider;
 		}
 #endregion
 		
-#region IConnectable Overrides
+#region IProviderBehavior Interface
 		public override void Connect ()
 		{
-			((SWF.DateTimePicker) dateTimePicker.Control)
-				.ValueChanged += new EventHandler (OnValueChanged);
-		}
-
-		public override void Disconnect ()
-		{
-			((SWF.DateTimePicker) dateTimePicker.Control)
-				.ValueChanged -= new EventHandler (OnValueChanged);
-		}
-#endregion 
-		
-#region Private Methods
-		private void OnValueChanged (object sender, EventArgs e)
-		{
-			string newValue = partProvider.Text;
-			if (oldValue != newValue) {
-				RaiseAutomationPropertyChangedEvent ();
-				oldValue = newValue;
-			}
-		}
+			//NOTE: SelectionItem.SelectionContainer never changes.
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent,
+			                   new PartListItemSelectionItemPatternElementSelectedEvent (
+						provider, (DTPListPartProvider) provider.ListProvider));
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternIsSelectedProperty, 
+			                   new PartListItemSelectionItemPatternIsSelectedEvent (
+						provider, (DTPListPartProvider) provider.ListProvider));
+		}	
 #endregion
 
 #region Private Fields
-		private string oldValue;
-		private DateTimePickerProvider dateTimePicker;
-		private DateTimePickerProvider.DateTimePickerPartProvider partProvider;
+		private ListItemProvider provider;
 #endregion
 	}
 }

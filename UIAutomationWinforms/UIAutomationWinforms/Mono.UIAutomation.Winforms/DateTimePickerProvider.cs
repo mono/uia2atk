@@ -24,6 +24,8 @@
 //
 
 using System;
+using System.Threading;
+using System.Globalization;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Windows.Automation;
@@ -31,6 +33,8 @@ using System.Collections.Generic;
 using System.Windows.Automation.Provider;
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.DateTimePicker;
 
 using Mono.Unix;
@@ -49,6 +53,10 @@ namespace Mono.UIAutomation.Winforms
 		public override void Initialize ()
 		{
 			base.Initialize ();
+
+			SetEvent (ProviderEventType.AutomationElementNameProperty,
+				  new Events.DateTimePicker.AutomationNamePropertyEvent (
+					this, this));
 
 			control.UIAShowCheckBoxChanged
 				+= new EventHandler (OnUIAShowCheckBoxChanged);
@@ -94,11 +102,11 @@ namespace Mono.UIAutomation.Winforms
 			if (control.ShowCheckBox) {
 				if (checkBox == null) {
 					checkBox = new DateTimePickerCheckBoxProvider (this);
-					OnNavigationChildAdded (false, checkBox, 0);
+					OnNavigationChildAdded (true, checkBox, 0);
 				}
 			} else {
 				if (checkBox != null) {
-					OnNavigationChildRemoved (false, checkBox);
+					OnNavigationChildRemoved (true, checkBox);
 					checkBox.Terminate ();
 					checkBox = null;
 				}
@@ -106,7 +114,7 @@ namespace Mono.UIAutomation.Winforms
 
 			if (control.ShowUpDown) {
 				if (dropDownButton != null) {
-					OnNavigationChildRemoved (false, dropDownButton);
+					OnNavigationChildRemoved (true, dropDownButton);
 					dropDownButton.Terminate ();
 					dropDownButton = null;
 				}
@@ -114,7 +122,7 @@ namespace Mono.UIAutomation.Winforms
 				if (dropDownButton == null) {
 					dropDownButton
 						= new DateTimePickerButtonProvider (this);
-					OnNavigationChildAdded (false, dropDownButton);
+					OnNavigationChildAdded (true, dropDownButton);
 				}
 			}
 		}
@@ -122,10 +130,34 @@ namespace Mono.UIAutomation.Winforms
 		private void AddSegmentItems ()
 		{
 			for (int i = 0; i < control.part_data.Length; i++) {
-				DateTimePickerPartProvider prov
-					= new DateTimePickerPartProvider (
-						this, control.part_data[i], i
-				);
+				DateTimePicker.PartData part_data = control.part_data [i];
+				FragmentControlProvider prov = null;
+
+				switch (part_data.date_time_part) {
+				case DateTimePicker.DateTimePart.Month:
+				case DateTimePicker.DateTimePart.DayName:
+				case DateTimePicker.DateTimePart.AMPMSpecifier:
+					prov = new DateTimePickerListPartProvider (
+						this, part_data, i
+					);
+					break;
+				case DateTimePicker.DateTimePart.Day:
+				case DateTimePicker.DateTimePart.Hour:
+				case DateTimePicker.DateTimePart.Year:
+				case DateTimePicker.DateTimePart.Seconds:
+				case DateTimePicker.DateTimePart.Minutes:
+				case DateTimePicker.DateTimePart.AMPMHour:
+					prov = new DateTimePickerSpinnerPartProvider (
+						this, part_data, i
+					);
+					break;
+				default: // DateTimePicker.DateTimePart.Literal
+					prov = new DateTimePickerPartProvider (
+						this, part_data, i
+					);
+					break;
+				}
+
 				prov.Initialize ();
 				AddChildProvider (true, prov);
 				children.Add (prov);
@@ -168,7 +200,6 @@ namespace Mono.UIAutomation.Winforms
 				: base (rootProvider.Control)
 			{
 				this.rootProvider = rootProvider;
-				this.picker = (DateTimePicker) rootProvider.Control;
 
 				SetBehavior (TogglePatternIdentifiers.Pattern,
 				             new ToggleProviderBehavior (this));
@@ -181,8 +212,7 @@ namespace Mono.UIAutomation.Winforms
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AEIds.NameProperty.Id)
-					return picker.Checked ? Catalog.GetString ("Disable")
-					                      : Catalog.GetString ("Enable");
+					return String.Empty;
 				else if (propertyId == AEIds.IsContentElementProperty.Id)
 					return false;
 				else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
@@ -194,7 +224,6 @@ namespace Mono.UIAutomation.Winforms
 				return base.GetProviderPropertyValue (propertyId);
 			}
 
-			private DateTimePicker picker;
 			private DateTimePickerProvider rootProvider;
 		}
 
@@ -232,7 +261,7 @@ namespace Mono.UIAutomation.Winforms
 			private DateTimePickerProvider rootProvider;
 		}
 
-		internal class DateTimePickerPartProvider : FragmentControlProvider
+		internal class DateTimePickerPartProvider : FragmentRootControlProvider
 		{
 			public DateTimePickerPartProvider (DateTimePickerProvider rootProvider,
 			                                   DateTimePicker.PartData part_data,
@@ -264,19 +293,9 @@ namespace Mono.UIAutomation.Winforms
 			{
 				base.Initialize ();
 
-				if (!IsStringValue) {
-					SetBehavior (RangeValuePatternIdentifiers.Pattern,
-						     new PartRangeValueProviderBehavior (this));
-				}
-			}
-
-			public override void SetFocus ()
-			{
-				if (IsStringValue) {
-					return;
-				}
-
-				((DateTimePicker) rootProvider.Control).SelectPart (part_index);
+				SetEvent (ProviderEventType.AutomationElementNameProperty,
+					  new Events.DateTimePicker.AutomationNamePropertyEvent (
+						this, rootProvider));
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)
@@ -286,29 +305,322 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AEIds.IsContentElementProperty.Id)
 					return true;
 				else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
-					return !IsStringValue;
+					return false;
 				else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
-					return (part_data.Selected && !IsStringValue);
+					return false;
 				else if (propertyId == AEIds.ControlTypeProperty.Id)
-					return IsStringValue ? ControlType.Text.Id : ControlType.Spinner.Id;
+					return ControlType.Text.Id;
 				else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-					return IsStringValue ? Catalog.GetString ("text")
-				                             : Catalog.GetString ("spinner");
+					return Catalog.GetString ("text");
 				return base.GetProviderPropertyValue (propertyId);
 			}
 
-			private bool IsStringValue {
-				get { 
-					return (part_data.date_time_part == DateTimePicker.DateTimePart.Literal
-					        || part_data.date_time_part == DateTimePicker.DateTimePart.DayName
-				                || part_data.date_time_part == DateTimePicker.DateTimePart.Month);
+			protected int part_index;
+			protected DateTimePicker.PartData part_data;
+			protected DateTimePickerProvider rootProvider;
+		} 
+
+		internal class DateTimePickerSpinnerPartProvider
+			: DateTimePickerPartProvider
+		{
+			public DateTimePickerSpinnerPartProvider (DateTimePickerProvider rootProvider,
+			                                          DateTimePicker.PartData part_data,
+			                                          int part_index)
+				: base (rootProvider, part_data, part_index)
+			{
+			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+
+				SetBehavior (RangeValuePatternIdentifiers.Pattern,
+					     new PartRangeValueProviderBehavior (this));
+			}
+
+			public override void SetFocus ()
+			{
+				((DateTimePicker) rootProvider.Control).SelectPart (part_index);
+			}
+
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
+					return true;
+				else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
+					return part_data.Selected;
+				else if (propertyId == AEIds.ControlTypeProperty.Id)
+					return ControlType.Spinner.Id;
+				else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
+					return Catalog.GetString ("spinner");
+				return base.GetProviderPropertyValue (propertyId);
+			}
+		}
+
+		internal class DateTimePickerListPartProvider
+			: DateTimePickerPartProvider, IListProvider
+		{
+			public DateTimePickerListPartProvider (DateTimePickerProvider rootProvider,
+			                                       DateTimePicker.PartData part_data,
+			                                       int part_index)
+				: base (rootProvider, part_data, part_index)
+			{
+				this.dateTimePicker = (DateTimePicker) rootProvider.Control;
+			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+
+				SetBehavior (SelectionPatternIdentifiers.Pattern,
+					     new PartSelectionProviderBehavior (this));
+			}
+
+			public override void SetFocus ()
+			{
+				((DateTimePicker) rootProvider.Control).SelectPart (part_index);
+			}
+
+			public override void InitializeChildControlStructure ()
+			{
+				base.InitializeChildControlStructure ();
+
+				Calendar cal = Thread.CurrentThread.CurrentCulture.Calendar;
+				DateTime cur = dateTimePicker.Value;
+
+				switch (part_data.date_time_part) {
+				case DateTimePicker.DateTimePart.Month:
+					int numMonths = cal.GetMonthsInYear (cur.Year);
+					for (int i = 1; i <= numMonths; i++) {
+						AddChildDate (new DateTime (cur.Year, i, 1));
+					}
+					break;
+				case DateTimePicker.DateTimePart.DayName:
+					DateTime week = cal.AddWeeks (monday, 1);
+					for (DateTime d = monday; d < week; d = d.AddDays (1)) {
+						AddChildDate (d);
+					}
+					break;
+				case DateTimePicker.DateTimePart.AMPMSpecifier:
+					// In this case, ObjectItem is just a marker
+					AddChildDate (amDate);
+					AddChildDate (pmDate);
+					break;
 				}
 			}
 
-			private int part_index;
-			private DateTimePicker.PartData part_data;
-			private DateTimePickerProvider rootProvider;
-		} 
+			public int IndexOfObjectItem (object o)
+			{
+				return children.IndexOf (childrenData [(DateTime)o]);
+			}
+
+			public void FocusItem (object o)
+			{
+				if (!childrenData.ContainsKey ((DateTime)o)) {
+					return;
+				}
+				
+				SelectItem (childrenData [(DateTime)o]);
+			}
+
+			public IProviderBehavior GetListItemBehaviorRealization (AutomationPattern pattern,
+			                                                         ListItemProvider prov)
+			{
+				DateTimePickerListPartItemProvider itemProvider
+					= (DateTimePickerListPartItemProvider)prov;
+				if (pattern == SelectionItemPatternIdentifiers.Pattern) {
+					return new PartListItemSelectionItemProviderBehavior (
+						itemProvider);
+				} else if (pattern == ValuePatternIdentifiers.Pattern) {
+					return new PartListItemValueProviderBehavior (itemProvider);
+				}
+				return null;
+			}
+
+			public IConnectable GetListItemEventRealization (ProviderEventType eventType,
+			                                                 ListItemProvider prov)
+			{
+				return null;
+			}
+
+			public object GetItemPropertyValue (ListItemProvider prov, int propertyId)
+			{
+				DateTimePickerListPartItemProvider itemProv
+					= (DateTimePickerListPartItemProvider)prov;
+				if (propertyId == AEIds.NameProperty.Id)
+					return itemProv.Text;
+				else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
+					return IsItemSelected (prov);
+				else if (propertyId == AEIds.BoundingRectangleProperty.Id)
+					return GetProviderPropertyValue (AEIds.BoundingRectangleProperty.Id);
+				return null;
+			}
+
+			public ToggleState GetItemToggleState (ListItemProvider prov)
+			{
+				throw new NotSupportedException ();
+			}
+
+			public void ToggleItem (ListItemProvider item)
+			{
+				throw new NotSupportedException ();
+			}
+
+			public bool IsItemSelected (ListItemProvider prov)
+			{
+				Calendar cal = Thread.CurrentThread.CurrentCulture.Calendar;
+				DateTime cur = dateTimePicker.Value;
+				DateTime date = (DateTime) prov.ObjectItem;
+
+				switch (part_data.date_time_part) {
+				case DateTimePicker.DateTimePart.Month:
+					return (date.Month == cur.Month);
+				case DateTimePicker.DateTimePart.DayName:
+					return (cal.GetDayOfWeek (date)
+						== cal.GetDayOfWeek (cur));
+				case DateTimePicker.DateTimePart.AMPMSpecifier:
+					return (date == amDate && !IsTimePM (cur))
+					        || (date == pmDate && IsTimePM (cur));
+				}
+				return false;
+			}
+			
+			public int SelectedItemsCount {
+				get { return 1; }
+			}
+			
+			public void SelectItem (ListItemProvider prov)
+			{
+				DateTime cur = dateTimePicker.Value;
+				Calendar cal = Thread.CurrentThread.CurrentCulture.Calendar;
+				DateTime date = (DateTime) prov.ObjectItem;
+
+				switch (part_data.date_time_part) {
+				case DateTimePicker.DateTimePart.Month:
+					cur = cur.AddMonths (date.Month - cur.Month);
+					break;
+				case DateTimePicker.DateTimePart.DayName:
+					cur = cur.AddDays (cal.GetDayOfWeek (date)
+					                   - cal.GetDayOfWeek (dateTimePicker.Value));
+					break;
+				case DateTimePicker.DateTimePart.AMPMSpecifier:
+					if (date == amDate && IsTimePM (cur)) {
+						cur = cur.AddHours (-12);
+					} else if (date == pmDate && !IsTimePM (cur)) {
+						cur = cur.AddHours (12);
+					}
+					break;
+				}
+				dateTimePicker.Value = cur;
+			}
+
+			public void UnselectItem (ListItemProvider prov)
+			{
+				throw new NotSupportedException ();
+			}
+			
+			public void ScrollItemIntoView (ListItemProvider item)
+			{
+				throw new NotSupportedException ();
+			}
+
+			public ListItemProvider GetSelectedItem ()
+			{
+				DateTime cur = dateTimePicker.Value;
+				Calendar cal = Thread.CurrentThread.CurrentCulture.Calendar;
+				DateTime searchDate = DateTime.MinValue;
+
+				switch (part_data.date_time_part) {
+				case DateTimePicker.DateTimePart.Month:
+					searchDate = new DateTime (cur.Year, cur.Month, 1);
+					break;
+				case DateTimePicker.DateTimePart.DayName:
+					searchDate = monday.AddDays (cal.GetDayOfWeek (cur)
+					                             - cal.GetDayOfWeek (monday));
+					break;
+				case DateTimePicker.DateTimePart.AMPMSpecifier:
+					searchDate = IsTimePM (cur) ? pmDate : amDate;
+					break;
+				}
+
+				if (searchDate != DateTime.MinValue
+				    && childrenData.ContainsKey (searchDate))
+					return childrenData [searchDate];
+				return null;
+			}
+
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
+					return true;
+				else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
+					return part_data.Selected;
+				else if (propertyId == AEIds.NameProperty.Id)
+					return Text;
+				else if (propertyId == AEIds.ControlTypeProperty.Id)
+					return ControlType.List.Id;
+				else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
+					return Catalog.GetString ("list");
+				return base.GetProviderPropertyValue (propertyId);
+			}
+			
+			private void AddChildDate (DateTime date)
+			{
+				DateTimePickerListPartItemProvider item
+					= new DateTimePickerListPartItemProvider (
+						rootProvider, this, date);
+				item.Initialize ();
+
+				children.Add (item);
+				childrenData [date] = item;
+				OnNavigationChildAdded (true, item);
+			}
+
+			private bool IsTimePM (DateTime date)
+			{
+				return (date.Hour > 12)
+				        || (date.Hour == 12 && date.Minute > 0);
+			}
+
+			private DateTimePicker dateTimePicker;
+			private List<DateTimePickerListPartItemProvider> children
+				= new List<DateTimePickerListPartItemProvider> ();
+			private Dictionary<DateTime, DateTimePickerListPartItemProvider> childrenData
+				= new Dictionary<DateTime, DateTimePickerListPartItemProvider> ();
+
+			private readonly DateTime monday = new DateTime (2008, 12, 1); 
+			private readonly DateTime amDate = new DateTime (2008, 12, 1, 1, 0, 0); 
+			private readonly DateTime pmDate = new DateTime (2008, 12, 1, 13, 0, 0); 
+		}
+
+		internal class DateTimePickerListPartItemProvider
+			: ListItemProvider
+		{
+			public DateTimePickerListPartItemProvider (FragmentRootControlProvider rootProvider,
+							           DateTimePickerListPartProvider provider,
+			                                           object objectItem)
+				: base (rootProvider, provider, null, objectItem)
+			{
+				this.partProvider = provider;
+			}
+			
+			public string Text {
+				get { return partProvider.PartData.GetText ((DateTime) ObjectItem); }
+			}
+
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AEIds.IsEnabledProperty.Id) {
+					return true;
+				} else if (propertyId == AEIds.IsOffscreenProperty.Id) {
+					// Item is onscreen only when selected
+					return !ListProvider.IsItemSelected (this);
+				}
+				return base.GetProviderPropertyValue (propertyId);
+			}
+
+			private DateTimePickerListPartProvider partProvider;
+		}
 #endregion
 	}
 }

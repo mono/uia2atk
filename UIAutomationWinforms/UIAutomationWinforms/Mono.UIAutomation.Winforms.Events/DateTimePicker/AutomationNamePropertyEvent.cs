@@ -26,27 +26,21 @@
 using System;
 using SWF = System.Windows.Forms;
 using System.Windows.Automation;
-using Mono.UIAutomation.Winforms.Events;
 using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms.Events.DateTimePicker
 {
-	internal class PartRangeValuePatternValueEvent
-		: BaseAutomationPropertyEvent
+	internal class AutomationNamePropertyEvent : BaseAutomationPropertyEvent
 	{
-#region Constructor
-		public PartRangeValuePatternValueEvent (
-			DateTimePickerProvider.DateTimePickerPartProvider partProvider,
-			DateTimePickerProvider dateTimePicker) 
-			: base (partProvider, RangeValuePatternIdentifiers.ValueProperty)
+#region Constructors
+		public AutomationNamePropertyEvent (FragmentControlProvider provider,
+		                                    DateTimePickerProvider dateTimePicker) 
+			: base (provider, AutomationElementIdentifiers.NameProperty)
 		{
 			this.dateTimePicker = dateTimePicker;
-			this.partProvider = partProvider;
-
-			oldValue = partProvider.Text;
 		}
 #endregion
-		
+
 #region IConnectable Overrides
 		public override void Connect ()
 		{
@@ -59,23 +53,17 @@ namespace Mono.UIAutomation.Winforms.Events.DateTimePicker
 			((SWF.DateTimePicker) dateTimePicker.Control)
 				.ValueChanged -= new EventHandler (OnValueChanged);
 		}
-#endregion 
+#endregion
 		
 #region Private Methods
 		private void OnValueChanged (object sender, EventArgs e)
 		{
-			string newValue = partProvider.Text;
-			if (oldValue != newValue) {
-				RaiseAutomationPropertyChangedEvent ();
-				oldValue = newValue;
-			}
+			RaiseAutomationPropertyChangedEvent ();
 		}
 #endregion
 
 #region Private Fields
-		private string oldValue;
 		private DateTimePickerProvider dateTimePicker;
-		private DateTimePickerProvider.DateTimePickerPartProvider partProvider;
 #endregion
 	}
 }

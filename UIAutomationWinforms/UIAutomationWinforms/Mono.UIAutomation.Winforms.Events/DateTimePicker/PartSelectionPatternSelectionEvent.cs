@@ -24,45 +24,44 @@
 // 
 
 using System;
-using SWF = System.Windows.Forms;
+using System.ComponentModel;
 using System.Windows.Automation;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms.Events.DateTimePicker
 {
-	internal class PartRangeValuePatternValueEvent
-		: BaseAutomationPropertyEvent
+	internal class PartSelectionPatternSelectionEvent : BaseAutomationPropertyEvent
 	{
-#region Constructor
-		public PartRangeValuePatternValueEvent (
+#region Public Methods
+		public PartSelectionPatternSelectionEvent (
 			DateTimePickerProvider.DateTimePickerPartProvider partProvider,
-			DateTimePickerProvider dateTimePicker) 
-			: base (partProvider, RangeValuePatternIdentifiers.ValueProperty)
+			DateTimePickerProvider pickerProvider)
+			: base (partProvider, SelectionPatternIdentifiers.SelectionProperty)
 		{
-			this.dateTimePicker = dateTimePicker;
 			this.partProvider = partProvider;
 
 			oldValue = partProvider.Text;
 		}
 #endregion
 		
-#region IConnectable Overrides
+#region ProviderEvent Methods
 		public override void Connect ()
 		{
-			((SWF.DateTimePicker) dateTimePicker.Control)
+			((SWF.DateTimePicker) partProvider.Control)
 				.ValueChanged += new EventHandler (OnValueChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.DateTimePicker) dateTimePicker.Control)
+			((SWF.DateTimePicker) partProvider.Control)
 				.ValueChanged -= new EventHandler (OnValueChanged);
 		}
 #endregion 
 		
 #region Private Methods
-		private void OnValueChanged (object sender, EventArgs e)
+		private void OnValueChanged (object sender, EventArgs args)
 		{
 			string newValue = partProvider.Text;
 			if (oldValue != newValue) {
@@ -74,7 +73,6 @@ namespace Mono.UIAutomation.Winforms.Events.DateTimePicker
 
 #region Private Fields
 		private string oldValue;
-		private DateTimePickerProvider dateTimePicker;
 		private DateTimePickerProvider.DateTimePickerPartProvider partProvider;
 #endregion
 	}

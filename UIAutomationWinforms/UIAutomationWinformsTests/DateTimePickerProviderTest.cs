@@ -96,7 +96,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				"Tuesday",	// DayName
 				",",		// Literal
 				" ",		// Literal
-				"January",	// Literal
+				"January",	// Month
 				" ",		// Literal
 				"20",		// Day
 				",",		// Literal
@@ -113,19 +113,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				              AutomationElementIdentifiers.NameProperty,
 				              name_values[i]);
 
-				if (long_pattern_part_is_spinner[i]) {
+				PartType type = long_pattern_part_type[i];
+				if (type == PartType.Spinner) {
 					TestProperty (child,
 						      AutomationElementIdentifiers.ControlTypeProperty,
 						      ControlType.Spinner.Id);
 					TestProperty (child,
 						      AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 						      true);
-
-					((IRawElementProviderFragment) child).SetFocus ();
-					TestProperty (child,
-						      AutomationElementIdentifiers.HasKeyboardFocusProperty,
-						      true);
-				} else {
+				} else if (type == PartType.Text) {
 					TestProperty (child,
 						      AutomationElementIdentifiers.ControlTypeProperty,
 						      ControlType.Text.Id);
@@ -137,6 +133,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					TestProperty (child,
 						      AutomationElementIdentifiers.HasKeyboardFocusProperty,
 						      false);
+				} else if (type == PartType.List) {
+					TestProperty (child,
+						      AutomationElementIdentifiers.ControlTypeProperty,
+						      ControlType.List.Id);
+
+					TestProperty (child,
+						      AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+						      true);
 				}
 				
 				i++;
@@ -183,7 +187,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					.Navigate (NavigateDirection.FirstChild);
 			int i = 0;
 			do {
-				if (long_pattern_part_is_spinner[i]) {
+				if (long_pattern_part_type[i] == PartType.Spinner) {
 					TestProperty (child,
 						      AutomationElementIdentifiers.ControlTypeProperty,
 						      ControlType.Spinner.Id);
@@ -208,8 +212,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 					Assert.AreEqual (set_value_value[i], rangeValueProvider.Value,
 					                 "After setting, Value returned by RangeValue is incorrect");
-
-					Assert.AreEqual (1, bridge.AutomationPropertyChangedEvents.Count, "Event count");
+					
+					Assert.AreEqual (1, bridge.GetAutomationPropertyEventCount (
+						RangeValuePatternIdentifiers.ValueProperty), "Event count");
 
 					rangeValueProvider.SetValue (awesome_values[i]);
 
@@ -292,7 +297,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNull (child,
 			               "Button child still exists after setting ShowUpDown = true");
 		}
-		
+
 		[Test]
 		public void ToggleTest ()
 		{
@@ -341,6 +346,93 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "After toggling on, toggleProvider is not returning ToggleState.On");
 		}
 
+		[Test]
+		public void ListTest ()
+		{
+			// This format should have 8 parts
+			picker.Format = DateTimePickerFormat.Long;
+			picker.ShowUpDown = false;
+			picker.Value = awesome;
+	
+			IRawElementProviderSimple child
+				= ((IRawElementProviderFragmentRoot) pickerProvider)
+					.Navigate (NavigateDirection.FirstChild);
+			int i = 0;
+			do {
+				if (long_pattern_part_type[i] == PartType.List) {
+					TestProperty (child,
+						      AutomationElementIdentifiers.ControlTypeProperty,
+						      ControlType.List.Id);
+
+					ISelectionProvider prov
+						= (ISelectionProvider)child.GetPatternProvider (
+							SelectionPatternIdentifiers.Pattern.Id);
+					Assert.IsNotNull (prov);
+
+					IRawElementProviderSimple[] items;
+
+					string name = (string) child.GetPropertyValue (
+						AutomationElementIdentifiers.NameProperty.Id);
+					if (name == "Tuesday") {
+						items = prov.GetSelection ();
+						Assert.IsNotNull (items, "Should never return null");
+						Assert.AreEqual (1, items.Length, "Too many or too few items returned");
+						
+						name = (string) items[0].GetPropertyValue (
+							AutomationElementIdentifiers.NameProperty.Id);
+						Assert.AreEqual ("Tuesday", name,
+						                 "GetSelection () isn't returning Tuesday");
+
+						bridge.ResetEventLists ();
+
+						picker.Value = awesome.AddDays (3);
+						
+						Assert.AreEqual (1, bridge.GetAutomationPropertyEventCount (
+							SelectionPatternIdentifiers.SelectionProperty), "Event count");
+
+						items = prov.GetSelection ();
+						Assert.IsNotNull (items, "Should never return null");
+						Assert.AreEqual (1, items.Length, "Too many or too few items returned");
+
+						name = (string) items[0].GetPropertyValue (
+							AutomationElementIdentifiers.NameProperty.Id);
+						Assert.AreEqual ("Friday", name,
+						                 "GetSelection () isn't returning Friday");
+					} else if (name == "January") {
+						items = prov.GetSelection ();
+						Assert.IsNotNull (items, "Should never return null");
+						Assert.AreEqual (1, items.Length, "Too many or too few items returned");
+						
+						name = (string) items[0].GetPropertyValue (
+							AutomationElementIdentifiers.NameProperty.Id);
+						Assert.AreEqual ("January", name,
+						                 "GetSelection () isn't returning January");
+
+						bridge.ResetEventLists ();
+
+						picker.Value = awesome.AddMonths (3);
+						
+						// Month will change, so will the day
+						Assert.AreEqual (2, bridge.GetAutomationPropertyEventCount (
+							SelectionPatternIdentifiers.SelectionProperty), "Event count");
+
+						items = prov.GetSelection ();
+						Assert.IsNotNull (items, "Should never return null");
+						Assert.AreEqual (1, items.Length, "Too many or too few items returned");
+
+						name = (string) items[0].GetPropertyValue (
+							AutomationElementIdentifiers.NameProperty.Id);
+						Assert.AreEqual ("April", name,
+						                 "GetSelection () isn't returning April");
+					}
+				}
+				
+				i++;
+				child = ((IRawElementProviderFragment) child)
+					.Navigate (NavigateDirection.NextSibling);
+			} while (child != null && i < long_pattern_num_parts);
+		}
+		
 		protected override Control GetControlInstance ()
 		{
 			return new DateTimePicker ();
@@ -353,9 +445,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		private CultureInfo oldCulture;
 
 		private int long_pattern_num_parts = 9;
-		private bool[] long_pattern_part_is_spinner = new bool[] {
-			false, false, false, false, false, true, false, false, true
+		private PartType[] long_pattern_part_type = new PartType[] {
+			PartType.List, PartType.Text, PartType.Text, PartType.List,
+			PartType.Text, PartType.Spinner, PartType.Text, PartType.Text,
+			PartType.Spinner
 		};
+
+		private enum PartType {
+			Text,
+			Spinner,
+			List
+		}
 
 		private DateTime awesome = new DateTime (2009, 1, 20);
 	}
