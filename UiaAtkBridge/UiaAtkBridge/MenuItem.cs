@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008, 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //      Andres G. Aragoneses <aaragoneses@novell.com>
@@ -164,9 +164,8 @@ namespace UiaAtkBridge
 			} else if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
 				selected = true;
 				NotifyStateChange (Atk.StateType.Selected, selected);
-				if ((Parent is MenuItem) || (Parent is ComboBoxOptions))
-					//FIXME: when decoupling ToolStripMenuItem from ComboBoxOptions, change this assumption as well:
-					((ComboBoxOptions)Parent).RecursiveDeselect (this);
+				if (Parent is MenuItem)
+					((MenuItem)Parent).RecursiveDeselect (this);
 			} else {
 				Console.WriteLine ("WARNING: RaiseAutomationEvent({0},...) not handled yet", eventId.ProgrammaticName);
 				base.RaiseAutomationEvent (eventId, e);
@@ -265,12 +264,7 @@ namespace UiaAtkBridge
 		{
 			return selectedChild == i;
 		}
-
-		bool Atk.TextImplementor.RemoveSelection (int i)
-		{
-			return false;
-		}
-
+		
 		bool Atk.SelectionImplementor.RemoveSelection (int i)
 		{
 			if (i == 0) {
@@ -349,6 +343,11 @@ namespace UiaAtkBridge
 		}
 		
 		public bool AddSelection (int startOffset, int endOffset)
+		{
+			return false;
+		}
+
+		bool Atk.TextImplementor.RemoveSelection (int i)
 		{
 			return false;
 		}

@@ -1,5 +1,9 @@
 2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* MenuItem.cs: Fix a FIXME.
+
+2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ContextMenu.cs: New year ;)
 
 	* MenuItem.cs: Fix one ParentMenu test.
