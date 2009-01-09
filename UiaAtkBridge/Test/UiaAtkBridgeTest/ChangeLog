@@ -1,3 +1,9 @@
+2009-01-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs:
+	* BridgeTester.cs: Kind of reverting workarounds in r122953 thanks to
+	the real fix in r122955!
+
 2009-01-09  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTester.cs: Update comment.

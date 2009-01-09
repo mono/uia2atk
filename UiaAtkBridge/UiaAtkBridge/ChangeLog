@@ -1,3 +1,8 @@
+2009-01-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Monitor.cs: Kind of reverting workarounds in r122953 thanks to the
+	real fix in r122955!
+
 2009-01-09  Mike Gorse  <mgorse@novell.com>
 
 	* Monitor.cs: Avoid trying to dispose if the main loop is no longer

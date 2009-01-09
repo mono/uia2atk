@@ -514,7 +514,9 @@ namespace UiaAtkBridgeTest
 				} catch (System.Collections.Generic.KeyNotFoundException) {
 					Assert.Fail ("Shouldn't crash");
 				}
-				f.Close ();
+
+				//this is not needed thanks to the fix in r122955
+				//f.Close ();
 			}
 		}
 
