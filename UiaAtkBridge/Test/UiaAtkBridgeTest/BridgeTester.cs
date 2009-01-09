@@ -906,9 +906,9 @@ namespace UiaAtkBridgeTest
 			form.Close ();
 			
 			// We shouldn't need to do this, since the disposal of all forms
-			// all forms should terminate the bridge, however, be sure to
-			// uncomment it if you're getting deadlocks and you don't want to
-			// deal with them for now!! (but if you get them, bug us, since
+			// should terminate the bridge, however, be sure to uncomment
+			// it if you're getting deadlocks and you don't want to deal
+			// with them for now!! (but if you get them, bug us, since
 			// it's a bug... probably related to the one fixed in r122955)
 			//BridgeTearDown ();
 		}

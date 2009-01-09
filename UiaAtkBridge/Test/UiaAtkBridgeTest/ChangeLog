@@ -1,5 +1,9 @@
 2009-01-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Wording.
+
+2009-01-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTests.cs:
 	* BridgeTester.cs: Kind of reverting workarounds in r122953 thanks to
 	the real fix in r122955!
