@@ -24,6 +24,7 @@
 // 
 
 using System;
+using Mono.UIAutomation.Bridge;
 
 namespace UiaAtkBridge
 {
@@ -117,6 +118,8 @@ namespace UiaAtkBridge
 				default:
 					throw GetNotSupportedBoundary (boundaryType);
 				}
+			} catch (System.IndexOutOfRangeException) {
+				return String.Empty;
 			} finally {
 				selectionStartOffset = startOffset;
 				selectionEndOffset = endOffset;
@@ -181,6 +184,8 @@ namespace UiaAtkBridge
 				default:
 					throw GetNotSupportedBoundary (boundaryType);
 				}
+			} catch (System.IndexOutOfRangeException) {
+				return String.Empty;
 			} finally {
 				selectionStartOffset = startOffset;
 				selectionEndOffset = endOffset;
@@ -232,6 +237,8 @@ namespace UiaAtkBridge
 				default:
 					throw GetNotSupportedBoundary (boundaryType);
 				}
+			} catch (System.IndexOutOfRangeException) {
+				return String.Empty;
 			} finally {
 				selectionStartOffset = startOffset;
 				selectionEndOffset = endOffset;
@@ -242,6 +249,8 @@ namespace UiaAtkBridge
 		{
 			if ((endOffset == -1) || (endOffset > text.Length))
 				endOffset = text.Length;
+			if (endOffset < startOffset)
+				return String.Empty;
 			return text.Substring (startOffset, endOffset - startOffset);
 		}
 
@@ -456,6 +465,11 @@ namespace UiaAtkBridge
 
 		public bool HandleSimpleChange (string newText, ref int caretOffset)
 		{
+			return HandleSimpleChange (newText, ref caretOffset, true);
+		}
+
+		public bool HandleSimpleChange (string newText, ref int caretOffset, bool updateCaret)
+		{
 			if (text == newText)
 				return true;
 			int oldLength = Length;
@@ -466,9 +480,10 @@ namespace UiaAtkBridge
 					text = newText;
 					Atk.TextAdapter adapter = new Atk.TextAdapter ((Atk.TextImplementor)resource);
 					adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, offset, newLength - oldLength);
-					// TODO: Next line isn't right; remove it when we have a better way of finding the caret
-					caretOffset = offset + (newLength - oldLength);
-					GLib.Signal.Emit (resource, "text_caret_moved", caretOffset);
+					if (updateCaret) {
+						caretOffset = offset + (newLength - oldLength);
+						GLib.Signal.Emit (resource, "text_caret_moved", caretOffset);
+					}
 					return true;
 				}
 			}
@@ -477,8 +492,10 @@ namespace UiaAtkBridge
 					Atk.TextAdapter adapter = new Atk.TextAdapter ((Atk.TextImplementor)resource);
 					adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, offset, oldLength - newLength);
 					text = newText;
-					caretOffset = offset;
-					GLib.Signal.Emit (resource, "text_caret_moved", caretOffset);
+					if (updateCaret) {
+						caretOffset = offset;
+						GLib.Signal.Emit (resource, "text_caret_moved", caretOffset);
+					}
 					return true;
 				}
 			}

@@ -1,3 +1,8 @@
+2009-01-09  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Adjust TextBox tests since SWF initially places the
+	  caret at the beginning of the TextBox rather than the end.
+
 2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Make some tests independent from other tests (windows

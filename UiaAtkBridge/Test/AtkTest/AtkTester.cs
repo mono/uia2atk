@@ -121,6 +121,7 @@ namespace UiaAtkBridgeTest
 		protected abstract int ValidNChildrenForASimpleStatusBar { get; }
 		protected abstract int ValidNChildrenForAScrollBar { get; }
 		protected abstract bool AllowsEmptyingSelectionOnComboBoxes { get; }
+		protected abstract bool TextBoxCaretInitiallyAtEnd { get; }
 		
 		protected void InterfaceActionFor3RadioButtons (Atk.Action actionable1, Atk.Object accessible1,
 		                                                Atk.Action actionable2, Atk.Object accessible2,
@@ -984,7 +985,7 @@ namespace UiaAtkBridgeTest
 				Assert.IsNull (accessible.Name, "accessible.Name");
 			
 			int caret = 0;
-			if (type == BasicWidgetType.TextBoxView)
+			if (type == BasicWidgetType.TextBoxView && TextBoxCaretInitiallyAtEnd)
 				caret = name.Length;
 
 			char passwordChar = '●';
@@ -1273,8 +1274,9 @@ namespace UiaAtkBridgeTest
 			int indexEndOffset = name.IndexOf (expected) + expected.Length;
 
 			if (!Misc.HasReadOnlyText (type)) {
-				indexStartOffset = name.Length;
-				indexEndOffset = name.Length;
+				int pos = (TextBoxCaretInitiallyAtEnd? name.Length: 0);
+				indexStartOffset = pos;
+				indexEndOffset = pos;
 			}
 			
 			//test selections after obtaining text with a different API than GetText

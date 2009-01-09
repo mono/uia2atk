@@ -31,6 +31,7 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		private const int PatternId = 10014;
+		private const int CaretMovedEventId = 60004;
 		private const int TextChangedEventId = 20015;
 		private const int TextSelectionChangedEventId = 20014;
 
@@ -73,6 +74,9 @@ namespace System.Windows.Automation
 			Pattern =
 				new AutomationPattern (PatternId,
 				                       "TextPatternIdentifiers.Pattern");
+			CaretMovedEvent = 
+				new AutomationEvent (CaretMovedEventId,
+				                     "TextPatternIdentifiers.CaretMovedEvent");
 			TextChangedEvent = 
 				new AutomationEvent (TextChangedEventId,
 				                     "TextPatternIdentifiers.TextChangedEvent");
@@ -238,6 +242,8 @@ namespace System.Windows.Automation
 		public static readonly AutomationTextAttribute StrikethroughStyleAttribute;
 
 		public static readonly AutomationTextAttribute TabsAttribute;
+
+		internal static readonly AutomationEvent CaretMovedEvent;
 
 		public static readonly AutomationEvent TextChangedEvent;
 

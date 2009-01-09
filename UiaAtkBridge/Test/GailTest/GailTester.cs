@@ -141,6 +141,10 @@ namespace UiaAtkBridgeTest
 			get { return true; }
 		}
 		
+		protected override bool TextBoxCaretInitiallyAtEnd { 
+			get { return true; }
+		}
+		
 		public override Atk.Object GetAccessible (BasicWidgetType type, string text)
 		{
 			return GetAccessible (type, text, true);

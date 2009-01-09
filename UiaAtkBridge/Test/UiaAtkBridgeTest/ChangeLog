@@ -1,3 +1,7 @@
+2009-01-09  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTester.cs: Add TextBoxCaretInitiallyAtEnd.
+
 2009-01-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: Track API (new CastToInterface overload). Identation

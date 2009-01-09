@@ -24,6 +24,7 @@
 // 
 
 using System;
+using Mono.UIAutomation.Bridge;
 
 //using System.Windows;
 using System.Windows.Automation;
@@ -36,6 +37,7 @@ namespace UiaAtkBridge
 	  Atk.ActionImplementor, Atk.EditableTextImplementor, Atk.StreamableContentImplementor
 	{
 		private TextImplementorHelper textExpert = null;
+		private IText iText = null;
 		private bool multiLine = false;
 		private bool editable = true;
 		private ITextProvider textProvider;
@@ -61,7 +63,10 @@ namespace UiaAtkBridge
 			if (valueProvider != null && valueProvider.IsReadOnly)
 				editable = false;
 
-			caretOffset = textExpert.Length;
+			iText = textProvider as IText;
+			if (iText == null)
+				iText = valueProvider as IText;
+			caretOffset = (iText != null? iText.CaretOffset: textExpert.Length);
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()
@@ -146,8 +151,13 @@ namespace UiaAtkBridge
 		
 		public bool SetCaretOffset (int offset)
 		{
-			//TODO: internal interface
-			caretOffset = offset;
+			if (iText != null) {
+				if (iText.SetCaretOffset (offset))
+					caretOffset = offset;
+				// gail always returns true; tracking it
+				// because of tests
+			} else
+				caretOffset = offset;
 			return true;
 		}
 		
@@ -163,7 +173,7 @@ namespace UiaAtkBridge
 		
 		public int CaretOffset {
 			get {
-				return multiLine ? textExpert.Length : 0;
+				return caretOffset;
 			}
 		}
 		
@@ -290,7 +300,7 @@ namespace UiaAtkBridge
 				string newText = (string)e.NewValue;
 				
 				// Don't fire spurious events if the text hasn't changed
-				if (textExpert.HandleSimpleChange (newText, ref caretOffset))
+				if (textExpert.HandleSimpleChange (newText, ref caretOffset, iText == null))
 					return;
 
 				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
@@ -302,7 +312,8 @@ namespace UiaAtkBridge
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         newText == null ? 0 : newText.Length);
 
-				caretOffset = textExpert.Length;
+				if (iText == null)
+					caretOffset = textExpert.Length;
 			} else if (e.Property.Id == ValuePatternIdentifiers.IsReadOnlyProperty.Id) {
 				bool? isReadOnlyVal = e.NewValue as bool?;
 				if (isReadOnlyVal == null && valueProvider != null)
@@ -316,7 +327,15 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			// TODO
+			if (eventId == TextPatternIdentifiers.CaretMovedEvent) {
+				int newCaretOffset = iText.CaretOffset;
+				if (newCaretOffset != caretOffset) {
+					caretOffset = newCaretOffset;
+					GLib.Signal.Emit (this, "text_caret_moved", caretOffset);
+				}
+			}
+			else
+				base.RaiseAutomationEvent (eventId, e);
 		}
 
 		#region StreamableContentImplementor implementation 

@@ -1,3 +1,11 @@
+2009-01-09  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs,
+	  Makefile.am
+	  Mono.UIAutomation.Winforms.Events/TextBox/TextPatternCaretMovedEvent.cs
+	  Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: Add internal
+	  CaretMoved event.
+
 2009-01-08  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Creating header even

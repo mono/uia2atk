@@ -1,3 +1,7 @@
+2009-01-09  Mike Gorse <mgorse@novell.com>
+
+	* Makefile.am, Mono.UIAutomation.Bridge/IText.cs: Add IText.cs.
+
 2008-12-03  Mike Gorse <mgorse@novell.com>
 
 	* Mono.UIAutomation.Bridge/EditableRange.cs: Rework.

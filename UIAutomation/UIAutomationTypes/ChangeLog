@@ -1,3 +1,8 @@
+2009-01-09  Mike Gorse <mgorse@novell.com>
+
+	* System.Windows.Automation/TextPatternIdentifiers.cs: Add internal
+	  CaretMoved event.
+
 2009-01-02  Mike Gorse <mgorse@novell.com>
 
 	* System.Windows.Automation/AutomationElementIdentifiers.cs: Added

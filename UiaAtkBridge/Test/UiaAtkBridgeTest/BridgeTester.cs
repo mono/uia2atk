@@ -224,6 +224,10 @@ namespace UiaAtkBridgeTest
 			get { return false; }
 		}
 		
+		protected override bool TextBoxCaretInitiallyAtEnd { 
+			get { return false; }
+		}
+
 		private static Dictionary <Atk.Object, System.ComponentModel.Component> mappings = new Dictionary<Atk.Object, System.ComponentModel.Component> ();
 		
 		public override void DisableWidget (Atk.Object accessible)

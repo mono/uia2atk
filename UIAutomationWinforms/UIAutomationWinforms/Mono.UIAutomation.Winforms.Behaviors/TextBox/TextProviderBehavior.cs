@@ -31,12 +31,15 @@ using System.Windows.Automation;
 using System.Windows.Automation.Text;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Bridge;
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.TextBox;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 {
 	// NOTE: This class also supports RichTextBox as they share pretty much
 	// everything
-	internal class TextProviderBehavior : ProviderBehavior, ITextProvider
+	internal class TextProviderBehavior : ProviderBehavior, ITextProvider, IText
 	{
 		#region Constructor
 		
@@ -55,10 +58,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		
 		public override void Connect ()
 		{
+			Provider.SetEvent (ProviderEventType.TextPatternCaretMovedEvent,
+			                   new TextPatternCaretMovedEvent ((TextBoxProvider) Provider));
 		}
 		
 		public override void Disconnect ()
 		{
+			Provider.SetEvent (ProviderEventType.TextPatternCaretMovedEvent,
+			                   null);
 		}
 
 		public override object GetPropertyValue (int propertyId)
@@ -218,6 +225,53 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 
 			return textbox_fi.GetValue (textbox);
 			// ------------------------------------------------- >-%
+		}
+
+		internal SWF.Document Document { 
+			get {
+				if (Provider.Control is SWF.TextBox)
+					return ((SWF.TextBox)Provider.Control).Document;
+				else if (Provider.Control is SWF.UpDownBase)
+					return ((SWF.UpDownBase)Provider.Control).txtView.Document;
+				else
+					return null;
+			}
+		}
+
+		public int CaretOffset {
+			get {
+				// TODO: This won't scale; we really should
+				// find a better way of doing it
+				SWF.Document document = Document;
+				int pos = 0;
+				SWF.Line line = null;
+				for (int i = 1;i <= document.Lines;i++) {
+					line = document.GetLine (i);
+					if (line == document.caret.line)
+						break;
+					pos += line.Text.ToString().Length;
+				}
+				return pos + document.CaretPosition;
+			}
+		}
+
+		bool IText.SetCaretOffset (int offset)
+		{
+			if (offset < 0)
+				return false;
+			SWF.Document document = Document;
+			int curPos = 0;
+			SWF.Line line = null;
+			for (int i = 1;i <= document.Lines;i++) {
+				line = document.GetLine (i);
+				int length = line.Text.ToString().Length;
+				if (curPos + length >= offset) {
+					document.PositionCaret (line, offset - curPos);
+					return true;
+				}
+				curPos += length;
+			}
+			return false;
 		}
 	}
 }

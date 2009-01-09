@@ -44,6 +44,7 @@ namespace Mono.UIAutomation.Winforms.Events
 		AutomationFocusChangedEvent,
 		WindowDeactivatedEvent,
 		//Text Pattern
+		TextPatternCaretMovedEvent,
 		TextPatternTextChangedEvent,
 		TextPatternTextSelectionChangedEvent,
 		//TODO>
