@@ -1,3 +1,7 @@
+2008-01-09 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* README: Update with Orca testing information
+
 2009-01-08  Ray Wang <rawang@@novell.com>
 
 	* samples/toolstriplabel_toolstripseparator.py: remove deprecated file

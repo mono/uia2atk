@@ -10,16 +10,19 @@ Directories:
   testers: This directory contains test scripts that are executed against the
           sample applications 
 
-  harness:  This directory contains scripts that do one or both of the 
-            following:
+  harness: This directory contains scripts that do one or both of the 
+           following:
 
-              1.  Copy test scripts to remote machines
-              2.  Copy sample applications to remote machines
-              3.  Excute the tests onremote machine
-              4.  Copy the remote logs to a centralized location
+             1.  Copy test scripts to remote machines
+             2.  Copy sample applications to remote machines
+             3.  Excute the tests onremote machine
+             4.  Copy the remote logs to a centralized location
 
-  resources:  This directory contains custom stylesheets and images for
-              beautifying log files.
+  resources: This directory contains custom stylesheets and images for
+             beautifying log files.
+
+  keystrokes: This directory contains the Orca test scripts for the sample
+              applications.
 
 Remember:
   
@@ -30,7 +33,7 @@ Remember:
 EXECUTING TESTS
 ---------------
 
-EXECUTE THE TEST SCRIPT
+EXECUTE A STRONGWIND TEST SCRIPT
 
   You may simply run the test script without any arguments (i.e.,
   testers/checkbutton-basic-ops.py).  This should always work if you have
@@ -44,6 +47,10 @@ EXECUTE THE TEST SCRIPT
   When the test is executed, you should see the sample application appear on
   your desktop, Strongwind will execute some tests, and the application should
   close. 
+
+  For more infromation see:
+
+  http://www.mono-project.com/Accessibility:_Testing_Howto#Strongwind
 
 BEAUTIFY THE LOG
 
@@ -61,3 +68,59 @@ BEAUTIFY THE LOG
   In practice, the stylesheets should be edited to point to the appropriate
   resources instead of copying the resources to the directory of every log.
   This is simply to save storage space.
+
+EXECUTING AN ORCA TEST SCRIPT
+
+In the uia2atk/test directory we have created a directory named keystrokes.
+This is where the Orca test scripts for our WinForms sample applications will
+reside.
+
+It is fairly simple to use Orca's test harness to execute our test scripts.
+Logs are stored in a directory whose name is of the form YY-MM-DD_HH:MM:SS
+(e.g., 2006-11-29_20:21:41)
+
+The code below will execute all our test scripts inside the the
+uia2atk/test/keystrokes/gtk directory. To execute all our WinForms test
+scripts, that path uia2atk/test/keystrokes/winforms would be used instead.
+
+Results (as explained in the Orca Regression Testing
+(http://live.gnome.org/Orca/RegressionTesting) document) will be stored in the
+current/working directory unless otherwise specific with the -r option.
+
+cd /home/a11y/code/orca/test/harness; ./runall.sh \
+-k /home/a11y/code/uia2atk/test/keystrokes/gtk > runall.out 2>&1
+
+Important: Each directory name inside of the uia2atk/test/keystrokes/gtk and
+uia2atk/test/keystrokes/winforms directory is used to execute the application
+to be tested. Because of this, each directory in the
+uia2atk/test/keystrokes/gtk and uia2atk/test/keystrokes/winforms directories
+should have the same name as the sample application that will be tested. Thus,
+the keystroke test scripts for that sample application are then stored in the
+directory that has the same name as the sample application that will be tested
+by that test script. This is required because Orca runs each application to be
+tested by issuing the name of each directory in uia2atk/test/keystrokes/gtk or
+uia2atk/test/keystrokes/winforms as a command. That is, the directory
+uia2atk/test/keystrokes/gtk/gtktutorial.py means that Orca will executed the
+command gtktutorial.py when the runall.sh is used and the
+uia2atk/test/keystrokes/gtk is passed as the keystrokes directory argument
+(-k). This is why we needed to add uia2atk/test/samples to PATH (as discussed
+in the Requirements section).
+
+Additionally, the following code can be used to execute a single Orca tests. Logs are stored in the current/working directory.
+
+cd /home/a11y/code/orca/test/harness; ./runone.sh \
+/home/a11y/code/uia2atk/test/keystrokes/gtk/gtktutorial/gtktutorial_example_1.py \
+/home/a11y/code/uia2atk/test/samples/gtk/gtktutorial.py 0 > runone.out 2>&1
+
+For the sake of completeness, it should be noted that Orca's runone.sh script
+does not require that each directory in the
+uia2atk/test/keystrokes/gtk uia2atk/test/keystrokes/winforms directory have the
+same name as the sample application that will be tested. This is because the
+application to be tested is specified explicitely. However, we should always
+give each directory in uia2atk/test/keystrokes/gtk and
+uia2atk/test/keystrokes/winforms the name of the sample application to be
+tested, so runall.sh always runs successfully.
+
+For more infromation see:
+
+http://www.mono-project.com/Accessibility:_Testing_Howto#Orca
