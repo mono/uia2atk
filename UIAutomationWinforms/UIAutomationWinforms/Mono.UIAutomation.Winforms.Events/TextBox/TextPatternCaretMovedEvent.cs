@@ -48,13 +48,13 @@ namespace Mono.UIAutomation.Winforms.Events.TextBox
 
 		public override void Connect ()
 		{
-			((SWF.TextBox) Provider.Control).Document.CaretMoved
+			((SWF.TextBoxBase) Provider.Control).Document.CaretMoved
 				+= OnCaretMovedEvent;
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.TextBox) Provider.Control).Document.CaretMoved
+			((SWF.TextBoxBase) Provider.Control).Document.CaretMoved
 				-= OnCaretMovedEvent;
 		}
 		
