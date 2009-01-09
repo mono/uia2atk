@@ -1,3 +1,21 @@
+2009-01-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* EventMonitor.cs: Protect against: Exception occurred in
+	TestFixtureDown:System.InvalidOperationException: The process already
+	finished.
+  at System.Diagnostics.Process.Close (Int32 signo)
+	[0x0004f] in /.../mcs/class/System/System.Diagnostics/Process.cs:802
+	
+  at System.Diagnostics.Process.Kill () [0x00000] in
+	/.../mcs/class/System/System.Diagnostics/Process.cs:909 
+  at
+	(wrapper remoting-invoke-with-check) System.Diagnostics.Process:Kill
+	()
+  at UiaAtkBridgeTest.EventMonitor.StopWithResult (Boolean
+	ignoreNotStarted) [0x0002e] in
+	/home/knocte/.../AtkTest/EventMonitor.cs:106 
+
+
 2009-01-09  Brad Taylor  <brad@getcoded.net>
 
 	* AtkTests.cs: Genericise the body of the Label test so that it can be

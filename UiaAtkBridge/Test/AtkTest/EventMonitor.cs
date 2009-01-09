@@ -103,7 +103,9 @@ namespace UiaAtkBridgeTest
 						return null;
 					throw new Exception ("EventMonitor has not been started yet"); 
 				}
-				p.Kill ();
+				try {
+					p.Kill ();
+				} catch (InvalidOperationException) { }
 				p.Dispose ();
 				p = null;
 				string result = xmlResult;
