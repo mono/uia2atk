@@ -433,6 +433,9 @@ namespace Mono.UIAutomation.Winforms
 
 		private SWF.CurrencyManager RequestCurrencyManager () 
 		{
+			if (datagrid.DataSource == null)
+			    return null;
+			
 			return (SWF.CurrencyManager) datagrid.BindingContext [datagrid.DataSource,
 			                                                      datagrid.DataMember];
 		}
