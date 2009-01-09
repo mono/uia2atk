@@ -1,3 +1,9 @@
+2009-01-09  Stephen Shaw  <sshaw@decriptor.com>
+	
+	* specs/uiaatkbridge.spec: bumped version to 0.9.1
+	* specs/uiautomationwinforms.spec: bumped version to 0.9.1
+	* specs/uiautomation.spec: bumped version to 0.9.1
+
 2008-12-15  Stephen Shaw  <sshaw@decriptor.com>
 	
 	* specs/uiaatkbridge.spec: Removed devel package, changed up buildrequires
