@@ -905,7 +905,10 @@ namespace UiaAtkBridgeTest
 		{
 			form.Close ();
 			
-			//FIXME: we should not call this, form.Close() should already dispose the bridge!
+			// We shouldn't need to do this, since form.Close()
+			// will have already terminated the bridge as long as
+			// there aren't any other open windows, but leaving
+			// it in for safety purposes
 			BridgeTearDown ();
 		}
 

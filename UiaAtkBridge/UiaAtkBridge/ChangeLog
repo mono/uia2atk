@@ -1,5 +1,10 @@
 2009-01-09  Mike Gorse  <mgorse@novell.com>
 
+	* Monitor.cs: Avoid trying to dispose if the main loop is no longer
+	  running.
+
+2009-01-09  Mike Gorse  <mgorse@novell.com>
+
 	* TextBoxEntryView.cs, TextImplementorHelper.cs: Process internal
 	  CaretMoved event ans use IText CaretOffset property, and don't fake
 	  caret moves when internal api is present.

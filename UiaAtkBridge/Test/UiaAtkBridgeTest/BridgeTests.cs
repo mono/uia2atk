@@ -589,6 +589,8 @@ namespace UiaAtkBridgeTest
 					Atk.StateType.Sensitive,
 					Atk.StateType.Showing,
 					Atk.StateType.Visible);
+
+				f.Close ();
 			}
 		}
 

@@ -1,3 +1,8 @@
+2009-01-09  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTester.cs: Update comment.
+	* BridgeTests.cs: Close window in Bug457990 test.
+
 2009-01-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: Add comment according to mgorse's findings.

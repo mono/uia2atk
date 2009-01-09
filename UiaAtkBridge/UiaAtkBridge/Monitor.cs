@@ -141,6 +141,9 @@ namespace UiaAtkBridge
 		
 		internal void Dispose ()
 		{
+			if (!mainLoop.IsRunning)
+				return;	// probably already disposed
+
 			AutoResetEvent sync = GLibHacks.Invoke (delegate (object sender, EventArgs args) {
 				ShutdownAtkBridge ();
 				Atk.Util.GetRootHandler = null;
