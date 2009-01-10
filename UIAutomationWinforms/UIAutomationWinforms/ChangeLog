@@ -1,5 +1,10 @@
 2009-01-09  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/MessageBoxFormProvider.cs: Adding Image
+	child when Image Bounds (Width and Height) are >= than 0.
+
+2009-01-09  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/FormProvider.cs: Comments added.
 
 2009-01-09  Mario Carrion  <mcarrion@novell.com>

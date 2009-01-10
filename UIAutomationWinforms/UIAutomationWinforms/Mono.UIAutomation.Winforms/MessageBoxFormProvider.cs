@@ -65,7 +65,10 @@ namespace Mono.UIAutomation.Winforms
 				labelProvider.Initialize ();
 				OnNavigationChildAdded (false, labelProvider);
 			}
-			if (imageProvider == null) {
+			if (imageProvider == null
+			    && form.UIAIconRectangle.Width >= 0
+			    && form.UIAIconRectangle.Height >= 0) {
+				
 				imageProvider = new MessageBoxImageProvider (this);
 				imageProvider.Initialize ();
 				OnNavigationChildAdded (false, imageProvider);
