@@ -63,13 +63,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		
 		#endregion
 
+		#region Patterns Tests
+
 		[Test]
 		public void PatternsTest ()
 		{
 			SWF.DataGrid datagrid = GetControlInstance () as SWF.DataGrid;
-
 			IRawElementProviderFragment datagridProvider 
 				= (IRawElementProviderFragment) GetProviderFromControl (datagrid);
+			datagrid.Visible = true;
 
 			Assert.IsTrue ((bool) datagridProvider.GetPropertyValue (AutomationElementIdentifiers.IsSelectionPatternAvailableProperty.Id),
 			               "Selection Pattern should be available");
@@ -82,18 +84,174 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "Table Pattern should be available");
 			Assert.IsTrue ((bool) datagridProvider.GetPropertyValue (AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id),
 			               "Table Pattern should be available");
+			IRawElementProviderFragment child = datagridProvider.Navigate (NavigateDirection.FirstChild);
+			IRawElementProviderFragment headerChild = null;
+			IRawElementProviderFragment dataItemChild = null;
+			while (child != null) {
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.Header.Id)
+					headerChild = child;
+				else if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.DataItem.Id)
+					dataItemChild = child;
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.IsNotNull (headerChild, "We should have a Header");
+			Assert.IsNotNull (dataItemChild, "We should have a DataItem");
+			// Testing patterns in DataItem
+			Assert.IsNotNull (dataItemChild.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id),
+			                  "SelectionItem not implement in DataItem");
+			Assert.IsTrue ((bool) dataItemChild.GetPropertyValue (AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty.Id),
+			               "SelectionItem not implement in DataItem");
+			Assert.IsNotNull (dataItemChild.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id),
+			                  "GridItem not implement in DataItem");
+			Assert.IsTrue ((bool) dataItemChild.GetPropertyValue (AutomationElementIdentifiers.IsGridItemPatternAvailableProperty.Id),
+			               "GridItem not implement in DataItem");
+			Assert.IsNotNull (dataItemChild.GetPatternProvider (ScrollItemPatternIdentifiers.Pattern.Id),
+			                  "ScrollItem not implement in DataItem");
+			Assert.IsTrue ((bool) dataItemChild.GetPropertyValue (AutomationElementIdentifiers.IsScrollItemPatternAvailableProperty.Id),
+			               "ScrollItem not implement in DataItem");
+			Assert.IsNotNull (dataItemChild.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
+			                  "Value not implement in DataItem");
+			Assert.IsTrue ((bool) dataItemChild.GetPropertyValue (AutomationElementIdentifiers.IsValuePatternAvailableProperty.Id),
+			               "Value not implement in DataItem");
+			// FIXME: Test TableItem
+
+			// Testing children in DataItem
+			IRawElementProviderFragment childDataItem = dataItemChild.Navigate (NavigateDirection.FirstChild);
+			while (childDataItem != null) {
+				Assert.IsNotNull (childDataItem.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
+				                  "Value not implement in ChildDataItem");
+				Assert.IsTrue ((bool) childDataItem.GetPropertyValue (AutomationElementIdentifiers.IsValuePatternAvailableProperty.Id),
+				               "Value not implement in ChildDataItem");
+				Assert.IsNotNull (childDataItem.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id),
+				                  "GridItem not implement in ChildDataItem");
+				Assert.IsTrue ((bool) childDataItem.GetPropertyValue (AutomationElementIdentifiers.IsGridItemPatternAvailableProperty.Id),
+				               "GridItem not implement in ChildDataItem");
+				Assert.IsNotNull (childDataItem.GetPatternProvider (TableItemPatternIdentifiers.Pattern.Id),
+				                  "TableItem not be implement in ChildDataItem");
+				Assert.IsTrue ((bool) childDataItem.GetPropertyValue (AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id),
+				               "TableItem not be implement in ChildDataItem");
+
+				childDataItem = childDataItem.Navigate (NavigateDirection.NextSibling);
+			}
+
 			datagrid.ColumnHeadersVisible = false;
 			pattern = datagridProvider.GetPatternProvider (TablePatternIdentifiers.Pattern.Id);
 			Assert.IsNull (pattern, 
 			               "Table Pattern should not be available");
 			Assert.IsFalse ((bool) datagridProvider.GetPropertyValue (AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id),
 			                "Table Pattern should not be available");
+			child = datagridProvider.Navigate (NavigateDirection.FirstChild);
+			headerChild = null;
+			dataItemChild = null;
+			while (child != null) {
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.Header.Id)
+					headerChild = child;
+				else if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.DataItem.Id)
+					dataItemChild = child;
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.IsNull (headerChild, "We should NOT have a header");
+
+			Assert.IsNotNull (dataItemChild.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id),
+			                  "SelectionItem not implement in DataItem");
+			Assert.IsTrue ((bool) dataItemChild.GetPropertyValue (AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty.Id),
+			               "SelectionItem not implement in DataItem");
+			Assert.IsNotNull (dataItemChild.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id),
+			                  "GridItem not implement in DataItem");
+			Assert.IsTrue ((bool) dataItemChild.GetPropertyValue (AutomationElementIdentifiers.IsGridItemPatternAvailableProperty.Id),
+			               "GridItem not implement in DataItem");
+			Assert.IsNotNull (dataItemChild.GetPatternProvider (ScrollItemPatternIdentifiers.Pattern.Id),
+			                  "ScrollItem not implement in DataItem");
+			Assert.IsTrue ((bool) dataItemChild.GetPropertyValue (AutomationElementIdentifiers.IsScrollItemPatternAvailableProperty.Id),
+			               "ScrollItem not implement in DataItem");
+			Assert.IsNotNull (dataItemChild.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
+			                  "Value not implement in DataItem");
+			Assert.IsTrue ((bool) dataItemChild.GetPropertyValue (AutomationElementIdentifiers.IsValuePatternAvailableProperty.Id),
+			               "Value not implement in DataItem");
+			Assert.IsNull (dataItemChild.GetPatternProvider (TableItemPatternIdentifiers.Pattern.Id),
+			                  "TableItem should not be implement in DataItem");
+			Assert.IsFalse ((bool) dataItemChild.GetPropertyValue (AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id),
+			               "TableItem should not be implement in DataItem");
+
+			// Testing children in DataItem
+			childDataItem = dataItemChild.Navigate (NavigateDirection.FirstChild);
+			while (childDataItem != null) {
+				Assert.IsNotNull (childDataItem.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
+				                  "Value not implement in ChildDataItem");
+				Assert.IsTrue ((bool) childDataItem.GetPropertyValue (AutomationElementIdentifiers.IsValuePatternAvailableProperty.Id),
+				               "Value not implement in ChildDataItem");
+				Assert.IsNotNull (childDataItem.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id),
+				                  "GridItem not implement in ChildDataItem");
+				Assert.IsTrue ((bool) childDataItem.GetPropertyValue (AutomationElementIdentifiers.IsGridItemPatternAvailableProperty.Id),
+				               "GridItem not implement in ChildDataItem");
+				Assert.IsNull (childDataItem.GetPatternProvider (TableItemPatternIdentifiers.Pattern.Id),
+				                  "TableItem should not be implement in ChildDataItem");
+				Assert.IsFalse ((bool) childDataItem.GetPropertyValue (AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id),
+				               "TableItem should not be implement in ChildDataItem");
+
+				childDataItem = childDataItem.Navigate (NavigateDirection.NextSibling);
+			}
 		}
 
-		// FIXME: Navigation
-		// FIXME: Column changes
+		#endregion
+
+		#region Navigation Tests
+
+		[Test]
+		public void NavigationTest ()
+		{
+			SWF.DataGrid datagrid = GetControlInstance () as SWF.DataGrid;
+
+			IRawElementProviderFragment datagridProvider 
+				= (IRawElementProviderFragment) GetProviderFromControl (datagrid);
+			// We should have 1 header and "this.Elements" items
+
+			Assert.IsNotNull (datagridProvider, "DatagridProvider should not be null");
+			
+			IRawElementProviderFragment child = datagridProvider.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (child, "First child should not be null");
+			IRawElementProviderFragment header = null;
+			int elements = 0;
+			while (child != null) {
+				Assert.AreEqual (datagridProvider, 
+				                 child.Navigate (NavigateDirection.Parent),
+				                 "Child parent != DataGridProvider");
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.DataItem.Id)
+				    elements++;
+				else if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				         == ControlType.Header.Id)
+					header = child;
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.AreEqual (Elements, 
+			                 elements,
+			                 string.Format ("DataItems found: {0} different to {1}", elements, Elements));
+			Assert.IsNotNull (header, "Header should not be null");
+
+			// Header should have 2 children, because we are using 2 public properties
+			elements = 0;
+			child = header.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				Assert.AreEqual (header, 
+				                 child.Navigate (NavigateDirection.Parent),
+				                 "Child parent != HeaderProvider");
+				elements++;
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.AreEqual (2, elements, 
+			                 string.Format ("Children found: {0} different to 2", elements));
+		}
+
+		#endregion
 
 		#region BaseProviderTest Overrides
+
+		private const int Elements = 10;
 
 		protected override SWF.Control GetControlInstance ()
 		{
@@ -102,7 +260,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
             ArrayList arraylist = new ArrayList ();
 
-            for (int index = 0; index < 10; index++)
+            for (int index = 0; index < Elements; index++)
                 arraylist.Add (new BindableReadWriteElement (index,
                     string.Format ("Name{0}", index)));
 

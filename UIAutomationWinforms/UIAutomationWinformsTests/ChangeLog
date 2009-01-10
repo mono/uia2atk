@@ -1,3 +1,10 @@
+2009-01-09  Mario Carrion  <mcarrion@novell.com>
+
+	* DataGridProviderTest.cs: Tests added: patterns in children and
+	navigation.
+
+	* BaseProviderTest.cs: Test added: DefaultNavigationTest.
+
 2009-01-09  Brad Taylor  <brad@getcoded.net>
 
 	* DateTimePickerProviderTest.cs: Remove unnecessary fields.

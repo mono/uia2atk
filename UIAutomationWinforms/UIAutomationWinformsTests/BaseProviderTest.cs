@@ -311,6 +311,27 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					Assert.AreEqual (parent, fragment.FragmentRoot, "FragmentRoot != Parent");
 			}
 		}
+
+		#region Navigation Tests
+
+		[Test]
+		public void DefaultNavigationTest ()
+		{
+			Control control = GetControlInstance ();			
+			IRawElementProviderFragment provider
+				= (IRawElementProviderFragment) GetProviderFromControl (control);
+			if (provider != null) {
+				IRawElementProviderFragment child = provider.Navigate (NavigateDirection.FirstChild);
+				while (child != null) {
+					Assert.AreEqual (provider, 
+					                 child.Navigate (NavigateDirection.Parent),
+					                 "Child.Parent != provider");
+					child = child.Navigate (NavigateDirection.NextSibling);
+				}
+			}
+		}
+
+		#endregion
 		
 		#endregion
 		
