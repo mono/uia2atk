@@ -1,5 +1,9 @@
 2009-01-09  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/FormProvider.cs: Comments added.
+
+2009-01-09  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/FormProvider.cs: Using Disposed and Closed
 	to: raise WindowClosed and release provider reference.
 

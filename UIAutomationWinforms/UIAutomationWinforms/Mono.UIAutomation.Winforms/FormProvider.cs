@@ -55,6 +55,10 @@ namespace Mono.UIAutomation.Winforms
 			owner = form.Owner;
 			alreadyClosed = false;
 
+			// Dialog Windows block user input so in order to continue you have to 
+			// close them, Regular Windows don't block but you can "close them"
+			// by calling Dispose, so we are listening both events but raising
+			// event only once.
 			form.Closed += OnRaiseWindowClosed;
 			form.Disposed += OnRaiseWindowClosed;
 			form.Shown += OnShown;
@@ -90,7 +94,6 @@ namespace Mono.UIAutomation.Winforms
 		private void OnRaiseWindowClosed (object sender, EventArgs args)
 		{
 			RaiseWindowClosedEvent ();
-
 			ProviderFactory.ReleaseProvider (form);
 		}
 		
@@ -193,7 +196,6 @@ namespace Mono.UIAutomation.Winforms
 				                                                this,
 				                                                eventArgs);
 				// TODO: Fill in rest of eventargs			
-				
 				if (owner == null)
 					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
 					                                   this);
