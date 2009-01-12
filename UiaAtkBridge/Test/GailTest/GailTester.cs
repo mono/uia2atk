@@ -506,11 +506,15 @@ namespace UiaAtkBridgeTest
 					widget = GailTestApp.MainClass.GiveMeARealTreeView ();
 					((Gtk.TreeView)widget).Model = store;
 				}
-				int i = 0;
+				Gtk.TreeView treeView = (Gtk.TreeView)widget;
+				int i;
+				for (i = treeView.Columns.Length - 1; i >= 0; i--)
+					treeView.RemoveColumn (treeView.Columns [i]);
+				i = 0;
 				foreach (string columnName in columnNames) {
 					Gtk.TreeViewColumn col = new Gtk.TreeViewColumn ();
 					col.Title = columnName;
-					((Gtk.TreeView)widget).AppendColumn (col);
+					treeView.AppendColumn (col);
 					Gtk.CellRendererText cell = new Gtk.CellRendererText ();
 					col.PackStart (cell, true);
 					col.AddAttribute (cell, "text", i++);

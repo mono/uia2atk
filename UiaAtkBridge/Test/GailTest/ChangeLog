@@ -1,3 +1,7 @@
+2009-01-12  Mike Gorse  <mgorse@novell.com>
+
+	* GailTester.cs: Attempt to remove pre-existing columns in TreeView tests
+
 2009-01-09  Mike Gorse  <mgorse@novell.com>
 
 	* GailTester.cs: Add TextBoxCaretInitiallyAtEnd.
