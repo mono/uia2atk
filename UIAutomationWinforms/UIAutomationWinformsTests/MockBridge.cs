@@ -203,5 +203,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			return null;
 		}
+
+		public StructureChangedEventTuple GetStructureChangedEventFrom (object element, StructureChangeType changeType)
+		{
+			foreach (StructureChangedEventTuple tuple in StructureChangedEvents) {
+				if (tuple.e.StructureChangeType == changeType && tuple.provider == element)
+					return tuple;
+			}
+
+			return null;
+		}
 	}
 }
