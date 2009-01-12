@@ -1596,6 +1596,8 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (text [i], atkText.GetCharacterAtOffset (i), "GetCharacterAtOffset" + i);
 		}
 
+		
+
 		protected string simpleTestText = "This is a test sentence.";
 
 		protected void Parent (BasicWidgetType type, Atk.Object accessible)
@@ -1705,6 +1707,15 @@ namespace UiaAtkBridgeTest
 				//Assert.AreEqual (accessible.RefRelationSet ().GetRelation (0).RelationType, Atk.RelationType.MemberOf);
 			}
 			
+		}
+
+		protected void InterfaceTable (Atk.Table implementor, string [] items)
+		{
+			Assert.AreEqual (implementor.NColumns, 1);
+			Assert.AreEqual (implementor.NRows, items.Length);
+
+			Assert.AreEqual (implementor.Caption, null);
+			Assert.AreEqual (implementor.Summary, null);
 		}
 		
 		protected void Relation (Atk.RelationType type, Atk.Object source, params Atk.Object [] expectedTarget)

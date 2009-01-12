@@ -1,5 +1,11 @@
 2009-01-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs:
+	* AtkTester.cs: Test component and Table (barely, only for what we
+	need). Atk.selection already tested in ComboBoxMenuChild.
+
+2009-01-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTester.cs: Fixes one bit of a test I forgot in last commit. Style
 	fixes below.
 

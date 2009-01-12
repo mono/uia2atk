@@ -957,7 +957,16 @@ namespace UiaAtkBridgeTest
 				accessible = accessible.RefAccessibleChild (0);
 			CheckComboBoxMenuChild (subcomboChild, names, true, false);
 
-			//test component, selection, table
+			Interfaces (accessible,
+			            typeof (Atk.Component),
+			            typeof (Atk.Selection),
+			            typeof (Atk.Table));
+
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+
+			Atk.Table atkTable = CastToAtkInterface <Atk.Table> (accessible);
+			InterfaceTable (atkTable, names);
 		}
 		
 		[Test]
