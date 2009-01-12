@@ -1,5 +1,10 @@
 2009-01-12  Calen Chen <cachen@novell.com>
 
+	* testers/tabcontrol/tabcontrolframe.py: sorry forgot to delete extra 
+	constants
+
+2009-01-12  Calen Chen <cachen@novell.com>
+
 	* testers/tabcontrol_basic_ops.py,
 	* testers/tabcontrol/__init__.py,
 	* testers/tabcontrol/tabcontrolframe.py,
