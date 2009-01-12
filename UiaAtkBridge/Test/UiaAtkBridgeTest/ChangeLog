@@ -1,3 +1,8 @@
+2009-01-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: New tests for ComboBoxSimple in gail (it's a treeview
+	here).
+
 2009-01-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: Wording.

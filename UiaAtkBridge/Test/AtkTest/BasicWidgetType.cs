@@ -41,6 +41,7 @@ namespace UiaAtkBridgeTest
 		ComboBoxDropDownEntry,
 		ComboBoxItem, //this is not a widget, but part of a widget!
 		ComboBoxMenu, //this is not a widget, but part of a widget!
+		ComboBoxSimpleMenu, //this is not a widget, but part of a widget!
 		RadioButton,
 		StatusBar,
 		TextBoxEntry,       // textbox single-line (gtk: entry)

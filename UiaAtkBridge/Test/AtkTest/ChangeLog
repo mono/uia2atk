@@ -1,3 +1,11 @@
+2009-01-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* BasicWidgetType.cs: New tests for ComboBoxSimple in gail (it's a
+	treeview here).
+
+	* AtkTester.cs: Fixes for ComboBoxSimple AtkSelection.
+
 2009-01-09  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* EventMonitor.cs: Protect against: Exception occurred in

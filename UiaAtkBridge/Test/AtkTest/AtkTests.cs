@@ -921,6 +921,46 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		public void ComboBoxSimpleAsTreeView ()
+		{
+			ComboBoxSimple (null);
+		}
+		
+		private void ComboBoxSimple (object comboBox)
+		{
+			BasicWidgetType type = BasicWidgetType.ComboBoxSimple;
+
+			string [] names = new string [] { "First Item", "Second Item", "Last item" };
+			Atk.Object accessible = GetAccessible (type, names, comboBox);
+			
+			PropertyRole (type, accessible);
+
+			States (accessible,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible,
+
+			  //particular of this type of combobox:
+			  Atk.StateType.Focusable,
+			  Atk.StateType.ManagesDescendants);
+
+			if (HasComboBoxSimpleLayout) {
+				Assert.AreEqual (1, // <- because no textbox!
+				  accessible.NAccessibleChildren, 
+				  "numChildren; children roles:" + childrenRoles (accessible));
+				//test accessible interfaces now as ComboBoxDropDownList
+			}
+
+			Atk.Object subcomboChild = accessible;
+			if (HasComboBoxSimpleLayout)
+				accessible = accessible.RefAccessibleChild (0);
+			CheckComboBoxMenuChild (subcomboChild, names, true, false);
+
+			//test component, selection, table
+		}
+		
+		[Test]
 		public void TreeView ()
 		{
 			BasicWidgetType type = BasicWidgetType.TreeView;

@@ -225,6 +225,10 @@ namespace UiaAtkBridgeTest
 		protected override bool AllowsEmptyingSelectionOnComboBoxes { 
 			get { return false; }
 		}
+
+		public override bool HasComboBoxSimpleLayout {
+			get { return false; }
+		}
 		
 		protected override bool TextBoxCaretInitiallyAtEnd { 
 			get { return false; }

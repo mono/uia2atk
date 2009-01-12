@@ -1,3 +1,8 @@
+2009-01-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTester.cs: New tests for ComboBoxSimple in gail (it's a treeview
+	here).
+
 2009-01-12  Mike Gorse  <mgorse@novell.com>
 
 	* GailTester.cs: Attempt to remove pre-existing columns in TreeView tests

@@ -140,6 +140,10 @@ namespace UiaAtkBridgeTest
 		protected override bool AllowsEmptyingSelectionOnComboBoxes { 
 			get { return true; }
 		}
+
+		public override bool HasComboBoxSimpleLayout {
+			get { return false; }
+		}
 		
 		protected override bool TextBoxCaretInitiallyAtEnd { 
 			get { return true; }
@@ -310,7 +314,12 @@ namespace UiaAtkBridgeTest
 			
 			switch (type) {
 			case BasicWidgetType.ComboBoxSimple:
-				throw new NotSupportedException ("This widget isn't supported in Gtk+: " + type.ToString ());
+
+				string treeViewStructure = "<table>";
+				foreach (string item in name)
+					treeViewStructure += "<tr><td>" + item + "</td></tr>";
+				treeViewStructure += "</table>";
+				return GetAccessible (BasicWidgetType.TreeView, treeViewStructure, true);
 
 			case BasicWidgetType.ComboBoxDropDownList:
 			case BasicWidgetType.ComboBoxDropDownEntry:
@@ -504,21 +513,28 @@ namespace UiaAtkBridgeTest
 				widget = new Gtk.TreeView (store);
 				if (real) {
 					widget = GailTestApp.MainClass.GiveMeARealTreeView ();
-					((Gtk.TreeView)widget).Model = store;
+					RunInGuiThread (delegate {
+						((Gtk.TreeView)widget).Model = store;
+					});
 				}
-				Gtk.TreeView treeView = (Gtk.TreeView)widget;
-				int i;
-				for (i = treeView.Columns.Length - 1; i >= 0; i--)
-					treeView.RemoveColumn (treeView.Columns [i]);
-				i = 0;
-				foreach (string columnName in columnNames) {
-					Gtk.TreeViewColumn col = new Gtk.TreeViewColumn ();
-					col.Title = columnName;
-					treeView.AppendColumn (col);
-					Gtk.CellRendererText cell = new Gtk.CellRendererText ();
-					col.PackStart (cell, true);
-					col.AddAttribute (cell, "text", i++);
-				}
+
+				RunInGuiThread (delegate {
+					Gtk.TreeView treeView = (Gtk.TreeView)widget;
+					int i;
+					for (i = treeView.Columns.Length - 1; i >= 0; i--)
+						treeView.RemoveColumn (treeView.Columns [i]);
+					i = 0;
+					foreach (string columnName in columnNames) {
+						Gtk.TreeViewColumn col = new Gtk.TreeViewColumn ();
+						col.Title = columnName;
+						treeView.AppendColumn (col);
+						Gtk.CellRendererText cell = new Gtk.CellRendererText ();
+						col.PackStart (cell, true);
+						col.AddAttribute (cell, "text", i++);
+					}
+					((Gtk.TreeView)widget).HeadersClickable = text.Contains ("<th>");
+					((Gtk.TreeView)widget).HeadersVisible = ((Gtk.TreeView)widget).HeadersClickable;
+				});
 				break;
 			case BasicWidgetType.ContainerPanel:
 				widget = new Gtk.Frame ();
