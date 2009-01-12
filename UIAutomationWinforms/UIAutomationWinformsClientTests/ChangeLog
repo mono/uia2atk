@@ -1,5 +1,15 @@
 2009-01-12  Mario Carrion <mcarrion@novell.com>
 
+	* DataGridAssembly/DataGridAssembly.csproj,
+	DataGridApplication/DataGridApplication.csproj: Output path changed to 
+	"../bin"
+	* HelpProviderTest.cs: Added. Tests SWF.HelpProvider.
+	* UIAutomationWinformsClientTests.csproj: NUnit version update to 2.5. 
+	Output path changed to "../bin". File HelpProviderTest.cs added.
+	* UIAutomationWinformsClientTests.nunit: NUnit project added.
+
+2009-01-12  Mario Carrion <mcarrion@novell.com>
+
 	* DataGridAssembly/DataGridAssembly.csproj: File added.
 
 2009-01-05  Mario Carrion <mcarrion@novell.com>
