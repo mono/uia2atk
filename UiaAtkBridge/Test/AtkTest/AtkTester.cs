@@ -647,7 +647,8 @@ namespace UiaAtkBridgeTest
 				    type != BasicWidgetType.ComboBoxMenu &&
 				    type != BasicWidgetType.ParentMenu &&
 				    type != BasicWidgetType.MainMenuBar &&
-				    type != BasicWidgetType.ContextMenu)
+				    type != BasicWidgetType.ContextMenu &&
+				    type != BasicWidgetType.ComboBoxSimpleMenu)
 					Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Focused), "Focused in selected item.");
 				Assert.IsTrue (stateSet.ContainsState (Atk.StateType.Selected), "Selected in selected item.");
 			}
@@ -1762,19 +1763,19 @@ namespace UiaAtkBridgeTest
 
 		protected void Focus (Atk.Object accessible)
 		{
-			bool transient = (accessible.RefStateSet().ContainsState (Atk.StateType.Transient));
+			bool transient = (accessible.RefStateSet ().ContainsState (Atk.StateType.Transient));
 
 			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (accessible);
 			EventMonitor.Start ();
 			atkComponent.GrabFocus ();
 			EventCollection events = EventMonitor.Pause ();
-			int expectedCount = (transient? 1: 2);;
+			int expectedCount = (transient? 1 : 2);;
 			string evType = (transient? "object:active-descendant-changed": "object:state-changed:focused");
 			Atk.Object focusedAccessible = (transient? accessible.Parent: accessible);
 			EventCollection evs = events.FindByRole (focusedAccessible.Role).FindByType (evType);
 			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
 			Assert.AreEqual (expectedCount, evs.Count, "bad number of events expected!" + eventsInXml);
-			Assert.IsTrue (focusedAccessible.RefStateSet().ContainsState (Atk.StateType.Focused), "List focused");
+			Assert.IsTrue (focusedAccessible.RefStateSet ().ContainsState (Atk.StateType.Focused), "List focused");
 		}
 
 		protected double GetMinimumValue (Atk.Value value)
