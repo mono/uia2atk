@@ -1,3 +1,21 @@
+2009-01-12  Mario Carrion <mcarrion@novell.com>
+
+	* DataGridAssembly/DataGridAssembly.csproj: File added.
+
+2009-01-05  Mario Carrion <mcarrion@novell.com>
+
+	* DataGridApplication/BindableReadonlyElement.cs,
+	DataGridApplication/BindableReadWriteElement.cs:
+	Moved to DataGridAssembly.
+	* UIAutomationWinformsClientTests.csproj,
+	UIAutomationWinformsClientTests.sln,
+	DataGridApplication/DataGridApplication.csproj: Updated,
+	new solution added.
+	* DataGridApplication/DatagridForm.cs: Saving values when opening
+	and after closing.
+	* DataGridAssembly: Added.
+	* DataGridTest.cs: Testing changed values.
+
 2008-12-24  Mario Carrion <mcarrion@novell.com> 
 
 	* DataGridApplication, 
