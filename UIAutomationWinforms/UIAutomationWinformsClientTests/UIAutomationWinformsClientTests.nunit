@@ -1,0 +1,6 @@
+﻿<NUnitProject>
+  <Settings activeconfig="Default" processModel="Single" domainUsage="Single" />
+  <Config name="Default" binpathtype="Auto">
+    <assembly path="bin\UIAutomationWinformsClientTests.dll" />
+  </Config>
+</NUnitProject>
