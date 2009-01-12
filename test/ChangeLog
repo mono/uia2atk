@@ -1,3 +1,11 @@
+2009-01-12  Calen Chen <cachen@novell.com>
+
+	* testers/tabcontrol_basic_ops.py,
+	* testers/tabcontrol/__init__.py,
+	* testers/tabcontrol/tabcontrolframe.py,
+	* testers/tabcontrol: add new test scripts to check label is changed 
+	and tab page is selected and focused by select items
+
 2008-01-09 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* README: Update with Orca testing information
