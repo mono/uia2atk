@@ -1,3 +1,8 @@
+2008-01-12 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* tools/update_uia2atk_pkgs.sh: updated to match new directory 
+	structure on build1.
+
 2009-01-12  Calen Chen <cachen@novell.com>
 
 	* testers/tabcontrol/tabcontrolframe.py: sorry forgot to delete extra 

@@ -96,15 +96,15 @@ fi
 # check if the OS is 32 or 64 bit and set the URL accordingly
 if [ -d "/usr/lib64" ]; then
     if [ -f "/etc/fedora-release" ];then
-        URL="http://build1.sled.lab.novell.com/uia/fedora/64/$dir/"
+        URL="http://build1.sled.lab.novell.com/uia/trunk/fedora10/64/$dir/"
     else
-        URL="http://build1.sled.lab.novell.com/uia/opensuse/64/$dir/"
+        URL="http://build1.sled.lab.novell.com/uia/trunk/opensuse110/64/$dir/"
     fi
 else
     if [ -f "/etc/fedora-release" ];then
-        URL="http://build1.sled.lab.novell.com/uia/fedora/32/$dir/"
+        URL="http://build1.sled.lab.novell.com/uia/trunk/fedora10/32/$dir/"
     else
-        URL="http://build1.sled.lab.novell.com/uia/opensuse/32/$dir/"
+        URL="http://build1.sled.lab.novell.com/uia/trunk/opensuse110/32/$dir/"
     fi
 fi
 
