@@ -63,7 +63,7 @@ namespace UiaAtkBridge
 		
 		private Monitor ()
 		{
-			GLib.GType.Init();
+			GLib.GType.Init ();
 
 			PreventGailInitialization ();
 
@@ -142,13 +142,13 @@ namespace UiaAtkBridge
 		internal void Dispose ()
 		{
 			//FIXME: find a better way to see if we have been already disposed
-			if (!mainLoop.IsRunning)
+			if (!mainLoop.IsRunning) {
 #if DEBUG
 				//we prefer to crash, in order to fix ASAP the buggy clown that did this
 				throw new ObjectDisposedException ("You shouldn't call dispose more than once");
-#else
-				return;	// probably already disposed
 #endif
+				return;	// probably already disposed
+			}
 			AutoResetEvent sync = GLibHacks.Invoke (delegate (object sender, EventArgs args) {
 				ShutdownAtkBridge ();
 				Atk.Util.GetRootHandler = null;

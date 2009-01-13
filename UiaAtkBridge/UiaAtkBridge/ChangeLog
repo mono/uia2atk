@@ -1,3 +1,7 @@
+2009-01-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Monitor.cs: Cosmetic.
+
 2009-01-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Monitor.cs: Register window signals in the pre-init of the bridge.
