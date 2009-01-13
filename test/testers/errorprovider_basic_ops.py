@@ -18,6 +18,7 @@ from helpers import *
 from states import *
 from actions import *
 from sys import argv
+import sys
 
 app_path = None 
 try:
@@ -41,32 +42,32 @@ if app is None:
 epFrame = app.errorProviderFrame
 
 # tab to the second text box, which should raise an error provider icon
-epFrame.keyCombo("Tab")
+epFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 
 # assert that the error appeared
 epFrame.assertSingleErrorAppeared(0, "Name required")
 
 # keep tabbing through the other text boxes
-epFrame.keyCombo("Tab")
+epFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 
 # assert that the error appeared
 epFrame.assertSingleErrorAppeared(1, "Age required")
 
-epFrame.keyCombo("Tab")
+epFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 
 # assert that the error appeared
 epFrame.assertSingleErrorAppeared(2, "Weight required")
 
-epFrame.keyCombo("Tab")
+epFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 
 # assert that the error appeared
 epFrame.assertSingleErrorAppeared(3, "Height required")
 
-epFrame.keyCombo("Tab")
+epFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 
 # assert that the error appeared
@@ -82,7 +83,7 @@ epFrame.checkErrorProviderStates(5)
 # goes away
 
 epFrame.typeText("Julio")
-epFrame.keyCombo("Tab")
+epFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 
 # now the 0th panel should be the 1st panel from before (i.e., age)
@@ -91,22 +92,22 @@ epFrame.assertSingleErrorAppeared(0, "Age required")
 
 # and so on...
 epFrame.typeText("21")
-epFrame.keyCombo("Tab")
+epFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 epFrame.assertSingleErrorAppeared(0, "Weight required")
 
 epFrame.typeText("200")
-epFrame.keyCombo("Tab")
+epFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 epFrame.assertSingleErrorAppeared(0, "Height required")
 
 epFrame.typeText("6 foot 2 inches")
-epFrame.keyCombo("Tab")
+epFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 epFrame.assertSingleErrorAppeared(0, "Depth required")
 
 epFrame.typeText("4")
-epFrame.keyCombo("Tab")
+epFrame.keyCombo("Tab", grabFocus=False)
 sleep(config.SHORT_DELAY)
 
 # there shouldn't be any panels left

@@ -1,4 +1,11 @@
-2008-01-13 Brian G. Merrell <bgmerrell@gmail.com>
+2009-01-13 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/errorprovider/errorproviderframe.py: Provide a little more
+	information in an error message.
+	* testers/errorprovider_basic_ops.py: Add grabFocus=False to the
+	keyCombo calls.  This was causing this test to fail.
+
+2009-01-13 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/maskedtextbox: Add directory for MaskedTextBox application
 	wrapper.

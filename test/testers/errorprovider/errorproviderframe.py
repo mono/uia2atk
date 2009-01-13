@@ -55,7 +55,8 @@ class ErrorProviderFrame(accessibles.Frame):
    
         # find the tooltip and make sure only one is present
         tooltips = self.app.findAllToolTips(None)
-        assert len(tooltips) == 1, "Only one tooltip should be active at once"
+        assert len(tooltips) == 1,\
+                   "One tooltip should be active instead of %d" % len(tooltips)
         # make sure the tooltip has the expected message
         tooltip = tooltips[0]
         assert tooltip.name == tooltip_message,\
