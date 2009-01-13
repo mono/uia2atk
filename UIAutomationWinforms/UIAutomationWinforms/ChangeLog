@@ -1,3 +1,11 @@
+2009-01-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Add new file.
+
+	* Mono.UIAutomation.Winforms/Global.cs: New helper type to simplify
+	initialization.
+
 2009-01-13  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs:

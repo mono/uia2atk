@@ -68,9 +68,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartListItemSelectionItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartListItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartRangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartSelectionProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartListItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/ToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DomainUpDown/ListItemValueProviderBehavior.cs \
@@ -372,6 +372,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/FormProvider.cs \
 	Mono.UIAutomation.Winforms/FragmentControlProvider.cs \
 	Mono.UIAutomation.Winforms/FragmentRootControlProvider.cs \
+	Mono.UIAutomation.Winforms/Global.cs \
 	Mono.UIAutomation.Winforms/GroupBoxProvider.cs \
 	Mono.UIAutomation.Winforms/Helper.cs \
 	Mono.UIAutomation.Winforms/HelpProvider.cs \

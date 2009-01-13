@@ -398,6 +398,16 @@
     <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemAutomationIsOffscreenPropertyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemEditAutomationIsOffscreenPropertyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemCheckBoxAutomationIsOffscreenPropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartListItemSelectionItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartSelectionProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartListItemValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DateTimePicker/AutomationNamePropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DateTimePicker/PartListItemSelectionItemPatternElementSelectedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DateTimePicker/PartListItemSelectionItemPatternIsSelectedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DateTimePicker/PartSelectionPatternInvalidatedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/DateTimePicker/PartSelectionPatternSelectionEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/TextBox/TextPatternCaretMovedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/Global.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
