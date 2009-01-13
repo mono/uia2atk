@@ -1294,8 +1294,43 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsWindowPatternAvailableProperty.Id),
 			               "Window ControlType must support IWindowProvider");
 
-
 			// DEPENDS: IDockProvider
+		}
+
+		protected void TestGridPatternChildren (IRawElementProviderFragment fragment)
+		{
+			if ((bool) fragment.GetPropertyValue (AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id)) {
+				IRawElementProviderFragment child = fragment.Navigate (NavigateDirection.FirstChild);
+				while (child != null) {
+					Assert.IsTrue ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsGridItemPatternAvailableProperty.Id),
+					               string.Format ("{0} must support IGridItemProvider", fragment.GetType ()));
+					child = child.Navigate (NavigateDirection.NextSibling);
+				}
+			}
+		}
+
+		protected void TestSelectionPatternChildren (IRawElementProviderFragment fragment)
+		{
+			if ((bool) fragment.GetPropertyValue (AutomationElementIdentifiers.IsSelectionPatternAvailableProperty.Id)) {
+				IRawElementProviderFragment child = fragment.Navigate (NavigateDirection.FirstChild);
+				while (child != null) {
+					Assert.IsTrue ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty.Id),
+					               string.Format ("{0} must support ISelectionItemProvider", fragment.GetType ()));
+					child = child.Navigate (NavigateDirection.NextSibling);
+				}
+			}
+		}
+
+		protected void TestTablePatternChildren (IRawElementProviderFragment fragment)
+		{
+			if ((bool) fragment.GetPropertyValue (AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)) {
+				IRawElementProviderFragment child = fragment.Navigate (NavigateDirection.FirstChild);
+				while (child != null) {
+					Assert.IsTrue ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id),
+					               string.Format ("{0} must support ITableItemProvider", fragment.GetType ()));
+					child = child.Navigate (NavigateDirection.NextSibling);
+				}
+			}
 		}
 
 		#endregion
