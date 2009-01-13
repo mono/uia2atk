@@ -1,3 +1,10 @@
+2009-01-13  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs:
+	  Check for TextBoxBase rather than TextBox when fetching document
+	  [bug 465544], support DomainUpDown when fetching TextBoxBase
+	  Remove reflection.
+
 2009-01-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/FormListener.cs: Remove last bits of

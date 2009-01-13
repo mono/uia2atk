@@ -113,26 +113,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		
 		public ITextRangeProvider[] GetVisibleRanges ()
 		{
-			Assembly asm = SwfAssembly;
-			object doc = GetDocumentFromTextBoxBase (TextBoxBase);
-
-			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
-			if (document_type == null) {
-				throw new Exception ("Internal Document class not found in System.Windows.Forms");
-			}
-
-			MethodInfo mi = document_type.GetMethod ("GetVisibleLineIndexes", BindingFlags.NonPublic | BindingFlags.Instance);
-			if (mi == null) {
-				throw new Exception ("GetVisibleLineIndexes method not found in Document class");
-			}
-
 			int start_line = -1, end_line = -1;
-			object[] args = new object[] {
-				TextBoxBase.Bounds, start_line, end_line
-			};
-			mi.Invoke (doc, args);
-			start_line = (int)args[1];
-			end_line = (int)args[2];
+			Document.GetVisibleLineIndexes (TextBoxBase.Bounds, out start_line, out end_line);
 
 			ITextRangeProvider range = DocumentRange.Clone ();
 			range.MoveEndpointByUnit (TextPatternRangeEndpoint.Start, TextUnit.Line, start_line);
@@ -158,26 +140,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		
 		public ITextRangeProvider RangeFromPoint (Point screenLocation)
 		{
-			Assembly asm = SwfAssembly;
-			object doc = GetDocumentFromTextBoxBase (TextBoxBase);
-
-			Type document_type = asm.GetType ("System.Windows.Forms.Document", false);
-			if (document_type == null) {
-				throw new Exception ("Internal Document class not found in System.Windows.Forms");
-			}
-
-			MethodInfo mi = document_type.GetMethod ("FindCursor", BindingFlags.NonPublic | BindingFlags.Instance);
-			if (mi == null) {
-				throw new Exception ("FindCursor method not found in Document class");
-			}
-
 			int index = -1;
-			object[] args = new object[] {
-				(int)screenLocation.X, (int)screenLocation.Y, index
-			};
 
-			mi.Invoke (doc, args);
-			index = (int)args[2];
+			Document.FindCursor ((int)screenLocation.X, (int)screenLocation.Y, out index);
 
 			// Return the degenerate range
 			return (ITextRangeProvider) new TextRangeProvider (
@@ -186,18 +151,15 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		
 		#endregion
 
-		private Assembly SwfAssembly {
-			get {
-				if (!attempted_swf_load) {
-					swf_asm = Assembly.GetAssembly (typeof (SWF.TextBoxBase));
-					attempted_swf_load = true;
-				}
-				return swf_asm;
-			}
-		}
-
 		private SWF.TextBoxBase TextBoxBase {
-			get { return (SWF.TextBoxBase)Provider.Control; }
+			get {
+				if (Provider.Control is SWF.TextBoxBase)
+					return (SWF.TextBoxBase)Provider.Control;
+				else if (Provider.Control is SWF.UpDownBase)
+					return ((SWF.UpDownBase)Provider.Control).txtView;
+				else
+					throw new Exception ("TextBoxBase: Unknown type: " + Provider.Control);
+			}
 		}
 
 		// NOTE: If you use this, you need to check if it returns null,
@@ -206,9 +168,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 			get { return Provider.Control as SWF.TextBox; }
 		}
 		
-		private Assembly swf_asm = null;
-		private bool attempted_swf_load = false;
-
 		private ITextRangeProvider textRangeProvider;
 
 		internal object GetDocumentFromTextBoxBase (SWF.TextBoxBase textbox)
@@ -228,14 +187,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		}
 
 		internal SWF.Document Document { 
-			get {
-				if (Provider.Control is SWF.TextBox)
-					return ((SWF.TextBox)Provider.Control).Document;
-				else if (Provider.Control is SWF.UpDownBase)
-					return ((SWF.UpDownBase)Provider.Control).txtView.Document;
-				else
-					return null;
-			}
+			get { return TextBoxBase.Document; }
 		}
 
 		public int CaretOffset {
