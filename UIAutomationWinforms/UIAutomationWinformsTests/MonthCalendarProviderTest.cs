@@ -369,7 +369,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 	
 		[Test]
-		public void ListItemTextProviderTest ()
+		public void ListItemEditProviderTest ()
 		{
 			IRawElementProviderFragmentRoot dataGridProvider;
 			IRawElementProviderFragment listItem;
@@ -392,7 +392,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				Assert.IsNotNull (textChild, "ListItem has no children");
 				TestProperty (textChild,
 					      AutomationElementIdentifiers.ControlTypeProperty,
-					      ControlType.Text.Id);
+					      ControlType.Edit.Id);
 				
 				// Then test the text child of listItem
 				valueProvider = textChild.GetPatternProvider (

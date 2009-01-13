@@ -1,3 +1,15 @@
+2009-01-13  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Grid Pattern is
+	supported always when View.Detail.
+
+	* Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs:
+	MonthCalendarListItemTextProvider ->
+	MonthCalendarListItemEditProvider.
+
+	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: Selection Pattern
+	support.
+
 2009-01-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/ToolTipListener.cs:

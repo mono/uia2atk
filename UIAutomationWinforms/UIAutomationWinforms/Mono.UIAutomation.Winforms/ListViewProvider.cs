@@ -119,7 +119,7 @@ namespace Mono.UIAutomation.Winforms
 				return new SelectionProviderBehavior (this);
 			else if (behavior == GridPatternIdentifiers.Pattern) {
 				if (listView.ShowGroups == false || SWF.Application.VisualStylesEnabled == false
-				    || listView.View == SWF.View.List)
+				    || listView.View == SWF.View.List || listView.View == SWF.View.Details)
 				    return new GridProviderBehavior (this);
 				else
 					return null;
@@ -520,19 +520,10 @@ namespace Mono.UIAutomation.Winforms
 			// - Scroll Behavior: Set/Unset by ScrollBehaviorObserver.
 
 			// Behaviors supported only by specific View:
-			if (listView.View == SWF.View.Details || listView.View == SWF.View.List)
-				SetBehavior (GridPatternIdentifiers.Pattern,
-				             GetBehaviorRealization (GridPatternIdentifiers.Pattern));
-			else
-				SetBehavior (GridPatternIdentifiers.Pattern,
-				             null);
-
-			if (listView.View == SWF.View.Details)
-				SetBehavior (TablePatternIdentifiers.Pattern,
-				             GetBehaviorRealization (TablePatternIdentifiers.Pattern));
-			else
-				SetBehavior (TablePatternIdentifiers.Pattern,
-				             null);
+			SetBehavior (GridPatternIdentifiers.Pattern,
+			             GetBehaviorRealization (GridPatternIdentifiers.Pattern));
+			SetBehavior (TablePatternIdentifiers.Pattern,
+			             GetBehaviorRealization (TablePatternIdentifiers.Pattern));
 			
 			UpdateChildrenStructure (false);
 

@@ -98,18 +98,18 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeChildControlStructure ();
 
-			textChild = new MonthCalendarListItemTextProvider (
+			editChild = new MonthCalendarListItemEditProvider (
 				this, Control);
-			textChild.Initialize ();
-			AddChildProvider (true, textChild);
+			editChild.Initialize ();
+			AddChildProvider (true, editChild);
 		}
 		
 		public override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
 
-			RemoveChildProvider (true, textChild);
-			textChild.Terminate ();
+			RemoveChildProvider (true, editChild);
+			editChild.Terminate ();
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -128,13 +128,13 @@ namespace Mono.UIAutomation.Winforms
 		private DateTime date;
 		private MonthCalendarProvider calendarProvider;
 		private MonthCalendarDataGridProvider dataGridProvider;
-		private MonthCalendarListItemTextProvider textChild;
+		private MonthCalendarListItemEditProvider editChild;
 	}
 
-	internal class MonthCalendarListItemTextProvider
+	internal class MonthCalendarListItemEditProvider
 		: FragmentControlProvider
 	{
-		public MonthCalendarListItemTextProvider (MonthCalendarListItemProvider listItemProvider,
+		public MonthCalendarListItemEditProvider (MonthCalendarListItemProvider listItemProvider,
 		                                          Control control)
 			: base (control)
 		{
@@ -156,9 +156,9 @@ namespace Mono.UIAutomation.Winforms
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
-				return ControlType.Text.Id;
+				return ControlType.Edit.Id;
 			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("text");
+				return Catalog.GetString ("edit");
 			else if (propertyId == AEIds.NameProperty.Id)
 				return listItemProvider.Text;
 

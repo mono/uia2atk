@@ -68,6 +68,8 @@ namespace Mono.UIAutomation.Winforms
 			             new GridProviderBehavior (childDataGrid));
 			SetBehavior (TablePatternIdentifiers.Pattern,
 			             new TableProviderBehavior (childDataGrid));
+			SetBehavior (SelectionPatternIdentifiers.Pattern,
+			             new SelectionProviderBehavior (childDataGrid));
 		}
 		
 		public override void FinalizeChildControlStructure ()

@@ -1087,18 +1087,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual ("data grid",
 				element.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id), "View.Details: data grid");
 
-			Assert.IsNotNull (element.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id),
-			                  "View.Details: MUST support Selection Pattern");
-			Assert.IsNotNull (element.GetPatternProvider (MultipleViewPatternIdentifiers.Pattern.Id),
-			                  "View.Details: MIGHT support MultipleView Pattern");
+			TestDataGridPatterns (element);
 			view.ShowGroups = false;
-			Assert.IsNotNull (element.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
-			                  "View.Details: MUST support GridPattern Pattern. view.ShowGroups=false");
+			TestDataGridPatterns (element);
 			view.ShowGroups = true;
-			Assert.IsNull (element.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
-			               "View.Details: SHOULD NOT support GridPattern Pattern view.ShowGroups=true");
-			Assert.IsNotNull (element.GetPatternProvider (TablePatternIdentifiers.Pattern.Id),
-			                  "View.Details: MUST support TablePattern Pattern");
+			TestDataGridPatterns (element);
 
 			//Lets test the group
 			child = element.Navigate (NavigateDirection.FirstChild);
