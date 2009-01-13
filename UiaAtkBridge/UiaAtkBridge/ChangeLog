@@ -1,3 +1,8 @@
+2009-01-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Monitor.cs: (Backport of r123157.) Register window signals in the
+	pre-init of the bridge. Fixes #465544.
+
 2009-01-08  Brad Taylor  <brad@getcoded.net>
 
 	* Monitor.cs: Cleanup the environment to ensure that we don't leak our
