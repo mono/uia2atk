@@ -29,6 +29,7 @@ class ToolStripSplitButtonFrame(accessibles.Frame):
         self.menuitem_14 = self.findMenuItem(self.MENUITEM_14)
 
     def click(self, button):
+        procedurelogger.action("click %s" % button)
         button.click()
 
     def assertImage(self, accessible, width=None, height=None):
@@ -54,7 +55,7 @@ class ToolStripSplitButtonFrame(accessibles.Frame):
         procedurelogger.action('Assert the text of %s' % accessible)
         procedurelogger.expectedResult('%s text is "%s"' % \
                                                 (accessible, accessible.text))
-        assert accessible.text == text, '%s text is not match with "%s"' % \
+        assert accessible.text == text, '%s is not match with "%s"' % \
                                                 (accessible, accessible.text)
 
     def assertSelectionChild(self, accessible, childIndex):

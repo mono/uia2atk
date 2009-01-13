@@ -1,3 +1,9 @@
+2009-01-13  Ray Wang <rawang@novell.com>
+
+	* ChangeLog: correct my email address
+	* testers/toolstripsplitbutton_basic_ops.py: marked some test due to bugs
+	* testers/toolstripsplitbutton/toolstripsplitbuttonframe.py: fixed typo
+
 2008-01-12 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* tools/update_uia2atk_pkgs.sh: updated to match new directory 
@@ -20,7 +26,7 @@
 
 	* README: Update with Orca testing information
 
-2009-01-08  Ray Wang <rawang@@novell.com>
+2009-01-08  Ray Wang <rawang@novell.com>
 
 	* samples/toolstriplabel_toolstripseparator.py: remove deprecated file
 	* samples/toolstripsplitbutton_toolstriptextbox.py: remove deprecated file
@@ -67,7 +73,7 @@
 	to test AtkAction is unimplemented for Menu role. add click action log.
 	* testers/combobox_dropdown_ops.py: update Menu actions check
 
-2008-12-30  Ray Wang <rawang@@novell.com>
+2008-12-30  Ray Wang <rawang@novell.com>
 
 	* samples/datetimepicker_showupdown.py: code clean
 	* testers/listview_list_ops.py,
@@ -164,7 +170,7 @@
 	listitems due to some of them doesn't have showing state otherwise move 
 	the scrollbar to show them
 
-2008-12-17  Ray Wang <rawang@@novell.com>
+2008-12-17  Ray Wang <rawang@novell.com>
 
 	* testers/states.py: add DomainUpDown class to indicate its states
 	* samples/listview_list.py: update label when item selected

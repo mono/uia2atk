@@ -1,0 +1,219 @@
+# Translation of UIAutomationWinforms to Espa帽ol
+# Copyright (C) 2008 Novell, Inc. (http://www.novell.com)
+# This file is distributed under the same license as the uia2atk package.
+# Brad Taylor <brad@getcoded.net>, 2008.
+# Brad Taylor <brad@getcoded.net>, 2009.
+#
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: UIAutomationWinforms.HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-01-12 16:18+0800\n"
+"PO-Revision-Date: 2009-01-12 16:18+0800\n"
+"Last-Translator: Ray Wang <rawang@novell.com>\n"
+"Language-Team: Chinese/Simplified <i18n-translation@lists.linux.net.cn>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarProvider.cs:83
+msgid "calendar"
+msgstr "日历"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs:93
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/ComboBox/ButtonInvokeBehavior.cs:71
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms.Behaviors/ScrollBar/ButtonInvokeProviderBehavior.cs:72
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DateTimePickerProvider.cs:257
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs:509
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripButtonProvider.cs:58
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/UpDownBaseProvider.cs:160
+msgid "button"
+msgstr "按钮"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/CheckBoxProvider.cs:67
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DateTimePickerProvider.cs:223
+msgid "check box"
+msgstr "复选按钮"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ComboBoxProvider.cs:78
+msgid "combo box"
+msgstr "组合框"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ComboBoxProvider.cs:275
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DateTimePickerProvider.cs:563
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListBoxProvider.cs:107
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs:100
+msgid "list"
+msgstr "列表"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ComboBoxProvider.cs:539
+msgid "Drop Down Button"
+msgstr "下拉按钮"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ComboBoxProvider.cs:569
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridProvider.cs:941
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListBoxProvider.cs:317
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs:580
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/TextBoxProvider.cs:184
+msgid "Vertical Scroll Bar"
+msgstr "垂直滚动条"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridProvider.cs:174
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs:98
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs:76
+msgid "data grid"
+msgstr "数据视图"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridProvider.cs:510
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs:758
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs:388
+msgid "header"
+msgstr "列表头"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridProvider.cs:630
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs:869
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs:455
+msgid "header item"
+msgstr "列表头项"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridProvider.cs:771
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs:956
+msgid "data item"
+msgstr "数据项"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridProvider.cs:908
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs:1136
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/TextBoxProvider.cs:86
+msgid "edit"
+msgstr "编辑"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DataGridProvider.cs:940
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListBoxProvider.cs:316
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs:579
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/TextBoxProvider.cs:183
+msgid "Horizontal Scroll Bar"
+msgstr "水平滚动条"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DateTimePickerProvider.cs:93
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/PaneProvider.cs:58
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/PanelProvider.cs:64
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/PrintPreviewControlProvider.cs:75
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/SplitContainerProvider.cs:94
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/SplitterProvider.cs:64
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/WebBrowserProvider.cs:54
+msgid "pane"
+msgstr "面板"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DateTimePickerProvider.cs:249
+msgid "Drop Down"
+msgstr "下拉"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DateTimePickerProvider.cs:314
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/LabelProvider.cs:68
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs:161
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/StatusBarProvider.cs:225
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs:90
+msgid "text"
+msgstr "文本"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/DateTimePickerProvider.cs:355
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/UpDownBaseProvider.cs:98
+msgid "spinner"
+msgstr "微调按钮"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/FormProvider.cs:132
+msgid "window"
+msgstr "窗口"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/GroupBoxProvider.cs:60
+msgid "group"
+msgstr "组"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/LinkLabelProvider.cs:64
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs:89
+msgid "hyperlink"
+msgstr "超链接"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListItemProvider.cs:63
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs:120
+msgid "list item"
+msgstr "列表项"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ListViewProvider.cs:1217
+msgid "checkbox"
+msgstr "复选按钮"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MenuStripProvider.cs:54
+msgid "menu bar"
+msgstr "菜单栏"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/MessageBoxFormProvider.cs:178
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/PictureBoxProvider.cs:90
+msgid "image"
+msgstr "图像"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/PopupButtonPanelProvider.cs:49
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolBarProvider.cs:59
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripProvider.cs:57
+msgid "tool bar"
+msgstr "工具栏"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/PopupButtonProvider.cs:58
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolBarProvider.cs:203
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripItemProvider.cs:65
+msgid "menu item"
+msgstr "菜单项"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ProgressBarProvider.cs:60
+msgid "progress bar"
+msgstr "进度条"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/RadioButtonProvider.cs:65
+msgid "radio button"
+msgstr "单选按钮"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ScrollBarProvider.cs:87
+msgid "scroll bar"
+msgstr "滚动条"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ScrollBarProvider.cs:281
+msgid "thumb"
+msgstr "滚动按钮"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/StatusBarProvider.cs:74
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/StatusStripProvider.cs:63
+msgid "status bar"
+msgstr "状态栏"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/TabControlProvider.cs:59
+msgid "tab"
+msgstr "标签"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/TabPageProvider.cs:51
+msgid "tab item"
+msgstr "标签项"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/TextBoxProvider.cs:85
+msgid "document"
+msgstr "文档"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripSeparatorProvider.cs:52
+msgid "separator"
+msgstr "分隔符"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolStripSplitButtonProvider.cs:57
+msgid "split button"
+msgstr "多功能按钮"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs:62
+msgid "tool tip"
+msgstr "提示框"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/TreeViewProvider.cs:160
+msgid "tree"
+msgstr "树"
+
+#: ../UIAutomationWinforms/Mono.UIAutomation.Winforms/TreeViewProvider.cs:268
+msgid "tree item"
+msgstr "树项"
