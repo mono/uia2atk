@@ -1,5 +1,9 @@
 2009-01-13  Mario Carrion  <mcarrion@novell.com>
 
+	* ComboBoxProviderTest.cs: Testing must-implement Patterns.
+
+2009-01-13  Mario Carrion  <mcarrion@novell.com>
+
 	* BaseProviderTest.cs: Pattern Tests method added.
 
 	* ListViewProviderTest.cs: Using TestDataGridPatterns.

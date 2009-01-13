@@ -1,3 +1,11 @@
+2009-01-13  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: ComboBox ControlType
+	must implement ExpandCollapse Pattern.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/ExpandCollapseProviderBehavior.cs:
+	Collapsing and Expanding when ComboBoxStyle.Simple.
+
 2009-01-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/FormProvider.cs: Null check to fix crash
