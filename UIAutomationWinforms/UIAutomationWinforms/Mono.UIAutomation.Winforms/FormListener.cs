@@ -68,26 +68,13 @@ namespace Mono.UIAutomation.Winforms
 				}
 			};
 			
-			Type appType = typeof (Application);
-			// NOTE: FormAdded is fired too frequently (such as
-			//       when the form comes into focus).  A different
-			//       event is probably more appropriate.
-			EventInfo formAddedEvent =
-				appType.GetEvent("FormAdded",
-				                 BindingFlags.Static | BindingFlags.NonPublic);
-			MethodInfo formAddedEventAddMethod =
-				formAddedEvent.GetAddMethod(true);
-			formAddedEventAddMethod.Invoke(null,
-			                               new object[]{new EventHandler(OnFormAdded)});
+			// FIXME: FormAdded is fired too frequently (such as
+			//        when the form comes into focus).  A different
+			//        event is probably more appropriate.
+			Application.FormAdded += new EventHandler (OnFormAdded);
 			
 			// OnRun
-			EventInfo preRunEvent =
-				appType.GetEvent("PreRun",
-				                 BindingFlags.Static | BindingFlags.NonPublic);
-			MethodInfo preRunEventAddMethod =
-				preRunEvent.GetAddMethod(true);
-			preRunEventAddMethod.Invoke(null,
-			                               new object[]{new EventHandler(OnPreRun)});
+			Application.PreRun += new EventHandler (OnPreRun);
 		}
 		
 #endregion

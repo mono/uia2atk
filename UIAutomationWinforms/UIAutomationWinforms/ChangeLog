@@ -1,3 +1,8 @@
+2009-01-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/FormListener.cs: Remove last bits of
+	reflection thanks to InternalsVisibleTo.
+
 2009-01-09  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/MessageBoxFormProvider.cs: Adding Image
