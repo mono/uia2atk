@@ -108,7 +108,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 				SWF.ListView view = (SWF.ListView) viewProvider.Control;
 
 				if (view.View == SWF.View.List) //From Top to Bottom
-					return MaxRows == 0 ? -1 : IndexOf % MaxRows;					
+					return MaxRows == 0 ? -1 : IndexOf % MaxRows;
+				else if (view.View == SWF.View.Details)
+					return itemProvider.Index;
 				else //From Left to Right
 					return MaxColumns == 0 ? -1 : IndexOf / MaxColumns;
 			}
@@ -119,7 +121,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 				SWF.ListView view = (SWF.ListView) viewProvider.Control;
 
 				if (view.View == SWF.View.List) //From Top to Bottom
-					return MaxRows == 0 ? -1 : IndexOf / MaxRows; 
+					return MaxRows == 0 ? -1 : IndexOf / MaxRows;
+				else if (view.View == SWF.View.Details) // Always 0
+					return 0;
 				else //From Left to Right
 					return IndexOf - (Row * MaxColumns); 
 			}

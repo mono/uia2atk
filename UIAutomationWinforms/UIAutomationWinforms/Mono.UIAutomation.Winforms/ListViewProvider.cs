@@ -135,10 +135,14 @@ namespace Mono.UIAutomation.Winforms
 		public override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
 		                                                                  ListItemProvider listItem)
 		{
+			// FIXME: TableItem is missing!
+			
 			if (behavior == SelectionItemPatternIdentifiers.Pattern)
 				return new ListItemSelectionItemProviderBehavior (listItem);
 			else if (behavior == GridItemPatternIdentifiers.Pattern) {
-				if (listView.View != SWF.View.Details)
+				// LAMESPEC: GridItem implemented *only* when: listView.View != SWF.View.Details
+				if (listView.View != SWF.View.Details
+				    || IsBehaviorEnabled (GridPatternIdentifiers.Pattern))
 					return new ListItemGridItemProviderBehavior (listItem);
 				else
 					return null;
@@ -262,8 +266,10 @@ namespace Mono.UIAutomation.Winforms
 			else {
 				ListItemProvider []providers = new ListItemProvider [listView.SelectedItems.Count];
 
-				for (int index = 0; index < listView.SelectedItems.Count; index++)
-					providers [index] = GetItemProviderFrom (this, listView.SelectedItems [index]);
+				for (int index = 0; index < listView.SelectedItems.Count; index++) {
+					providers [index] = GetItemProviderFrom (this, listView.SelectedItems [index], false);
+					Console.WriteLine ("ListviewProvider: {0}-{1}", index, providers [index].Index);
+				}
 			
 				return providers;
 			}
@@ -965,6 +971,9 @@ namespace Mono.UIAutomation.Winforms
 
 				//Used to add children when View.Details
 				listView.UIAViewChanged += OnUIAViewChanged;
+
+				//Use to update our GridItem and TableItem providers
+				listViewProvider.ProviderBehaviorSet += OnProviderBehaviorSet;
 			}
 
 			public override void InitializeChildControlStructure ()
@@ -991,6 +1000,8 @@ namespace Mono.UIAutomation.Winforms
 				listView.Columns.UIACollectionChanged -= OnUIAColumnsCollectionChanged;
 				
 				listView.UIAViewChanged -= OnUIAViewChanged;
+
+				listViewProvider.ProviderBehaviorSet -= OnProviderBehaviorSet;
 			}
 
 			private void AddEditChildren (bool raiseEvent)
@@ -1064,6 +1075,21 @@ namespace Mono.UIAutomation.Winforms
 
 					OnNavigationChildrenCleared (true);
 				}
+			}
+
+			private void OnProviderBehaviorSet (object sender, ProviderBehaviorEventArgs args)
+			{
+				AutomationPattern pattern = null;
+				if (args.Pattern == TablePatternIdentifiers.Pattern)
+					pattern = TableItemPatternIdentifiers.Pattern;
+				else if (args.Pattern == GridPatternIdentifiers.Pattern)
+					pattern = GridItemPatternIdentifiers.Pattern;
+				else
+					return;
+
+				SetBehavior (pattern,
+				             ListProvider.GetListItemBehaviorRealization (pattern, 
+				                                                          this));
 			}
 
 			private SWF.ListViewItem item;

@@ -1,5 +1,9 @@
 2009-01-13  Mario Carrion  <mcarrion@novell.com>
 
+	* ListViewProviderTest.cs: LAMESPEC added.
+
+2009-01-13  Mario Carrion  <mcarrion@novell.com>
+
 	* BaseProviderTest.cs: New methods to test children depending on the
 	Providers implemented.
 

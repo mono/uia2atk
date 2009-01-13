@@ -1182,8 +1182,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			               "listItem in View.Details: SHOULD NOT support ExpandCollapse Pattern");
 			Assert.IsNull (dataItem.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
 			               "listItem in View.Details: SHOULD NOT support Grid Pattern");
-			Assert.IsNull (dataItem.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id),
-			               "listItem in View.Details: SHOULD NOT support GridItem Pattern");
+			// LAMESPEC: Should be IsNull instead of IsNotNull, Vista doesn't implement GridItem
+			if ((bool) dataItemParent.GetPropertyValue (AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id))
+				Assert.IsNotNull (dataItem.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id),
+				                  "listItem in View.Details: SHOULD support GridItem Pattern");
 			Assert.IsNull (dataItem.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id),
 			               "listItem in View.Details: SHOULD NOT support Invoke Pattern");
 			Assert.IsNull (dataItem.GetPatternProvider (MultipleViewPatternIdentifiers.Pattern.Id),

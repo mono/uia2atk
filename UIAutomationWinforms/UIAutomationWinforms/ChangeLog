@@ -1,5 +1,14 @@
 2009-01-13  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: ListItem supports
+	GridItem and TableItem patterns when ListViewProvider suppors Grid
+	and Table patterns.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs:
+	Returning valid values when View is Details.
+
+2009-01-13  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: ComboBox ControlType
 	must implement ExpandCollapse Pattern.
 
