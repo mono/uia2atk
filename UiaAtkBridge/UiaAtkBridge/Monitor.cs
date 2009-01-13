@@ -146,8 +146,9 @@ namespace UiaAtkBridge
 #if DEBUG
 				//we prefer to crash, in order to fix ASAP the buggy clown that did this
 				throw new ObjectDisposedException ("You shouldn't call dispose more than once");
+#else
+				return;// probably already disposed
 #endif
-				return;	// probably already disposed
 			}
 			AutoResetEvent sync = GLibHacks.Invoke (delegate (object sender, EventArgs args) {
 				ShutdownAtkBridge ();
