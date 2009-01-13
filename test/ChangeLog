@@ -1,7 +1,19 @@
+2008-01-13 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/maskedtextbox: Add directory for MaskedTextBox application
+	wrapper.
+	* testers/maskedtextbox/maskedtextboxframe.py: Initial check-in of
+	unfinished application wrapper.
+	* testers/maskedtextbox/__init__.py:  Initial check-in of unfinished
+	application wrapper.
+	* testers/maskedtextbox_basic_ops.py: Initial check-in of unfinished
+	test.
+
 2009-01-13  Ray Wang <rawang@novell.com>
 
 	* ChangeLog: correct my email address
-	* testers/toolstripsplitbutton_basic_ops.py: marked some test due to bugs
+	* testers/toolstripsplitbutton_basic_ops.py: marked some test due to
+	bugs
 	* testers/toolstripsplitbutton/toolstripsplitbuttonframe.py: fixed typo
 
 2008-01-12 Brian G. Merrell <bgmerrell@gmail.com>
