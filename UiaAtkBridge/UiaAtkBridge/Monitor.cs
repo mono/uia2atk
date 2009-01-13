@@ -67,6 +67,8 @@ namespace UiaAtkBridge
 
 			PreventGailInitialization ();
 
+			RegisterWindowSignals ();
+
 			Atk.Util.GetRootHandler = ReturnTopLevel;
 			
 			Atk.Util.GetToolkitNameHandler = GetAssemblyName;
@@ -120,8 +122,6 @@ namespace UiaAtkBridge
 			glibThread.IsBackground = true;
 			glibThread.Start ();
 			AutoResetEvent sync = GLibHacks.Invoke (delegate (object sender, EventArgs args) {
-				RegisterWindowSignals ();
-
 				Environment.SetEnvironmentVariable (ATK_BRIDGE_ENVVAR_NAME, null);
 				LaunchAtkBridge ();
 				Environment.SetEnvironmentVariable (GAIL_ENVVAR_NAME, null);
