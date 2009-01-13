@@ -1,5 +1,15 @@
 2009-01-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Mono.UIAutomation.Winforms/ToolTipListener.cs:
+	* Mono.UIAutomation.Winforms/HelpProviderListener.cs:
+	* Mono.UIAutomation.Winforms/ErrorProviderListener.cs: Follow-up changes
+	in r123214.
+
+	* Mono.UIAutomation.Winforms/FormListener.cs: Follow-up changes in
+	r123214. Set initialized field to true at the end of Initialize ().
+
+2009-01-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: Add new file.
 

@@ -62,7 +62,6 @@ namespace Mono.UIAutomation.Winforms
 			return null;
 		}
 		
-		//Method called by SWF.ToolTip static constructor
 		public static void Initialize ()
 		{
 			if (!AutomationInteropProvider.ClientsAreListening || initialized == true)

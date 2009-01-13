@@ -49,7 +49,6 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Public Static Methods
 		
-		//Method called by SWF.HelpProvider static constructor
 		public static void Initialize ()
 		{
 			if (!AutomationInteropProvider.ClientsAreListening || initialized == true)

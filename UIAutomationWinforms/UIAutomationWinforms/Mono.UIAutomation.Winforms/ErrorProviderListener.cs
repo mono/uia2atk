@@ -65,7 +65,6 @@ namespace Mono.UIAutomation.Winforms
 			return null;
 		}
 		
-		//Method called by SWF.HelpProvider static constructor
 		public static void Initialize ()
 		{
 			//FIXME: Should we use IsAccessibilityEnabled instead?

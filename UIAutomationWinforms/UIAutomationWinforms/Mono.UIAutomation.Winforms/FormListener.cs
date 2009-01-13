@@ -50,9 +50,6 @@ namespace Mono.UIAutomation.Winforms
 		/// Set up the FormListener class to listen to winforms
 		/// events that will allow the correct UIA providers to be
 		/// created and the correct UIA events to be fired.
-		/// 
-		/// This method is called via reflection from the
-		/// System.Windows.Forms.Application class.
 		/// </summary>
 		public static void Initialize ()
 		{
@@ -73,8 +70,9 @@ namespace Mono.UIAutomation.Winforms
 			//        event is probably more appropriate.
 			Application.FormAdded += new EventHandler (OnFormAdded);
 			
-			// OnRun
 			Application.PreRun += new EventHandler (OnPreRun);
+
+			initialized = true;
 		}
 		
 #endregion
