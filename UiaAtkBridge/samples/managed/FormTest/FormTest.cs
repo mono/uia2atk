@@ -34,7 +34,10 @@ namespace FormTest
 	{
 		static void Main (string[] args)
 		{
-			Application.Run (BuildGui ());
+			if (args.Length > 0 && args [0] == "dialog")
+				new OpenFileDialog ().ShowDialog ();
+			else
+				Application.Run (BuildGui ());
 		}
 		
 		static void OnButtonClick (object sender, EventArgs args)
@@ -43,6 +46,7 @@ namespace FormTest
 			f2.Text = "Secondary Form";
 			
 			f2.Show ();
+			new OpenFileDialog ().ShowDialog ();
 		}
 		
 		static Form BuildGui ()
