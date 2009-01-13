@@ -77,7 +77,6 @@ namespace UiaAtkBridgeTest
 			States (accessible,
 			  Atk.StateType.Enabled,
 			  Atk.StateType.Focusable,
-			  Atk.StateType.Selectable,
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);

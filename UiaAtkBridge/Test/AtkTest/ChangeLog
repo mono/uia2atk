@@ -1,3 +1,7 @@
+2009-01-13  Mike Gorse <mgorse@novell.com>
+
+	* AtkTests.cs: Revert testing Button for Selectable.
+
 2009-01-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs:

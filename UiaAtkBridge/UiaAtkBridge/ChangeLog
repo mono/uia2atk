@@ -1,3 +1,7 @@
+2009-01-09  Mike Gorse  <mgorse@novell.com>
+
+	* Button.cs: Revert setting Selectable.
+
 2009-01-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Monitor.cs: Doh, fix warning.
