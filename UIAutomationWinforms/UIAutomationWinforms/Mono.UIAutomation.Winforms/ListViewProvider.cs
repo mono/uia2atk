@@ -135,8 +135,6 @@ namespace Mono.UIAutomation.Winforms
 		public override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
 		                                                                  ListItemProvider listItem)
 		{
-			// FIXME: TableItem is missing!
-			
 			if (behavior == SelectionItemPatternIdentifiers.Pattern)
 				return new ListItemSelectionItemProviderBehavior (listItem);
 			else if (behavior == GridItemPatternIdentifiers.Pattern) {
@@ -154,6 +152,11 @@ namespace Mono.UIAutomation.Winforms
 			} else if (behavior == TogglePatternIdentifiers.Pattern) {
 				if (listView.CheckBoxes == true)
 					return new ListItemToggleProviderBehavior (listItem);
+				else
+					return null;
+			} else if (behavior == TableItemPatternIdentifiers.Pattern) {
+				if (listView.View == SWF.View.Details)
+					return new ListItemTableItemProviderBehavior (listItem);
 				else
 					return null;
 			} else
@@ -972,6 +975,12 @@ namespace Mono.UIAutomation.Winforms
 
 				//Use to update our GridItem and TableItem providers
 				listViewProvider.ProviderBehaviorSet += OnProviderBehaviorSet;
+
+
+				if (listView.View == SWF.View.Details)
+					SetBehavior (TableItemPatternIdentifiers.Pattern,
+					             ListProvider.GetListItemBehaviorRealization (TableItemPatternIdentifiers.Pattern,
+					                                                          this));
 			}
 
 			public override void InitializeChildControlStructure ()

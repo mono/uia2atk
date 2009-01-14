@@ -96,6 +96,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemSelectionItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/MultipleViewProviderBehavior.cs \
@@ -250,6 +251,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditAutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditGridItemColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditGridItemRowEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditTableItemColumnHeaderItemsEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemEditValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternColumnEvent.cs \
@@ -258,6 +260,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementRemovedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemSelectionItemPatternIsSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/ListItemTableItemColumnHeaderItemsEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemTogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternValueEvent.cs \

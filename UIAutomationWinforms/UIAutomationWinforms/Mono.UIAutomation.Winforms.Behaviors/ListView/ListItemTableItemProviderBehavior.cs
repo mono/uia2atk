@@ -17,11 +17,12 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008-2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
+
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
@@ -31,13 +32,13 @@ using Mono.UIAutomation.Winforms.Events.ListView;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 {
-	internal class ListItemEditTableItemProviderBehavior
-		: ListItemEditGridItemProviderBehavior, ITableItemProvider
+	internal class ListItemTableItemProviderBehavior
+		: ListItemGridItemProviderBehavior, ITableItemProvider
 	{
 		#region Constructors
 		
-		public ListItemEditTableItemProviderBehavior (ListViewProvider.ListViewListItemEditProvider editProvider)
-			: base (editProvider)
+		public ListItemTableItemProviderBehavior (ListItemProvider itemProvider)
+			: base (itemProvider)
 		{
 		}
 		
@@ -52,9 +53,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		public override void Connect ()
 		{
 			// NOTE: RowHeaderItemsProperty Property NEVER changes.
-			
+
 			Provider.SetEvent (ProviderEventType.TableItemPatternColumnHeaderItemsProperty,
-			                   new ListItemEditTableItemColumnHeaderItemsEvent ((ListViewProvider.ListViewListItemEditProvider) Provider));
+			                   new ListItemTableItemColumnHeaderItemsEvent ((ListItemProvider) Provider));
+
 		}
 		
 		public override void Disconnect ()
@@ -81,12 +83,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 
 		public IRawElementProviderSimple[] GetColumnHeaderItems ()
 		{
-			ListViewProvider listViewProvider 
-				= (ListViewProvider) ProviderFactory.FindProvider (EditProvider.ItemProvider.ListView);
-
-			return new IRawElementProviderSimple [] {
-				listViewProvider.HeaderProvider.GetHeaderItemFrom (EditProvider.ColumnHeader)
-			};
+			if (ListViewProvider == null || ListViewProvider.HeaderProvider == null)
+				return new IRawElementProviderSimple [0];
+			else
+				return ListViewProvider.HeaderProvider.GetHeaderItems ();
 		}
 
 		public IRawElementProviderSimple[] GetRowHeaderItems ()
@@ -94,6 +94,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			return new IRawElementProviderSimple [0];
 		}
 		
-		#endregion		
+		#endregion
 	}
 }

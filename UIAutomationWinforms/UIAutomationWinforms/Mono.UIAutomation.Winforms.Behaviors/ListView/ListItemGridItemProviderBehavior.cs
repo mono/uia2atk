@@ -182,6 +182,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		}
 		
 		#endregion
+
+		#region Protected Properties
+
+		protected ListViewProvider ListViewProvider {
+			get { return viewProvider; }
+		}
+
+		#endregion
 		
 		#region Private Fields
 

@@ -1,3 +1,26 @@
+2009-01-14  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: ListView: Added ListItemTableItem,
+	ListItemTableItemColumnHeaderItems and
+	ListItemEditTableItemColumnHeaderItems
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: TableItem
+	implementation.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemTableItemProviderBehavior.cs:
+	Implements ListItem.TableItem.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditTableItemProviderBehavior.cs:
+	ColumnHeaderItemsProperty event.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemGridItemProviderBehavior.cs:
+	Protected property: ListViewProvider.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemTableItemColumnHeaderItemsEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemEditTableItemColumnHeaderItemsEvent.cs:
+	Raises TableItem.ColumnHeaderItemsProperty.
+
 2009-01-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/Global.cs:

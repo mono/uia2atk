@@ -69,6 +69,28 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 		[Test]
+		public void ViewChangesPatternsTest ()
+		{
+			ListView listview = GetListView (3, 10, 5, 4);
+			IRawElementProviderFragment provider 
+				= (IRawElementProviderFragment) GetProviderFromControl (listview);
+
+			foreach (View view in Enum.GetValues (typeof (View))) {
+				listview.View = view;
+				TestPatterns (provider);
+				TestChildPatterns (provider);
+				
+				listview.ShowGroups = true;
+				TestPatterns (provider);
+				TestChildPatterns (provider);
+
+				listview.ShowGroups = false;
+				TestPatterns (provider);
+				TestChildPatterns (provider);
+			}
+		}
+
+		[Test]
 		public void HeaderCreationTest ()
 		{
 			// Tests https://bugzilla.novell.com/show_bug.cgi?id=462302
@@ -98,6 +120,48 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			view.Columns.Add (new ColumnHeader (string.Format ("column {0}", view.Columns.Count)));
 			Assert.IsNotNull (header.Navigate (NavigateDirection.FirstChild), "We must have 1 column.");
+
+			view.Items.Add ("Item 0");
+			// So now we have an item and one column
+
+			IRawElementProviderFragment item0Provider = viewProvider.Navigate (NavigateDirection.FirstChild);
+			while (item0Provider != null) {
+				if ((int) item0Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.DataItem.Id)
+					break;
+				item0Provider = item0Provider.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.IsNotNull (item0Provider, "Item0 Provider must not be null.");
+
+			view.Items [0].SubItems.Add ("subitem 0");
+
+			bridge.ResetEventLists ();
+			view.Columns.Add ("Column 0");
+
+			IRawElementProviderFragment item0EditProvider = null;
+
+			// We are doing this because when adding a column two children are 
+			// added: HeaderItem and ListItemEdit
+			foreach (StructureChangedEventTuple tuple in bridge.StructureChangedEvents) {
+				if (tuple.e.StructureChangeType == StructureChangeType.ChildAdded
+				    && ((IRawElementProviderFragment) tuple.provider).Navigate (NavigateDirection.Parent) == item0Provider) {
+					item0EditProvider = (IRawElementProviderFragment) tuple.provider;
+					break; 
+				}
+			}
+			Assert.IsNotNull (item0EditProvider, "Sub Item Added");
+
+			AutomationPropertyChangedEventTuple columnHeaderItemsTuple 
+				= bridge.GetAutomationPropertyEventFrom (item0Provider, TableItemPatternIdentifiers.ColumnHeaderItemsProperty.Id);
+			Assert.IsNotNull (columnHeaderItemsTuple, "ColumnHeaderItemsProperty event missing");
+
+			// Adding another column to test item0EditProvider
+			bridge.ResetEventLists ();
+			view.Columns.Add ("Column 1");
+
+			columnHeaderItemsTuple 
+				= bridge.GetAutomationPropertyEventFrom (item0EditProvider, TableItemPatternIdentifiers.ColumnHeaderItemsProperty.Id);
+			Assert.IsNotNull (columnHeaderItemsTuple, "ColumnHeaderItemsProperty event missing (Edit)");
 		}
 		
 		#endregion
@@ -1198,8 +1262,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			               "listItem in View.Details: SHOULD NOT support Scroll Pattern");
 			Assert.IsNull (dataItem.GetPatternProvider (TablePatternIdentifiers.Pattern.Id),
 			               "listItem in View.Details: SHOULD NOT support Table Pattern");
-			Assert.IsNull (dataItem.GetPatternProvider (TableItemPatternIdentifiers.Pattern.Id),
-			               "listItem in View.Details: SHOULD NOT support TableItem Pattern");
+			// LAMESPEC:  Should be IsNull instead of IsNotNull, Vista doesn't implement TableItem
+			if ((int) dataItemParent.Navigate (NavigateDirection.Parent).GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+			    == ControlType.DataGrid.Id)
+				Assert.IsNotNull (dataItem.GetPatternProvider (TableItemPatternIdentifiers.Pattern.Id),
+				                  "listItem in View.Details: SHOULD support TableItem Pattern when parent is DataGrid");
 
 			view.CheckBoxes = true;
 			Assert.IsNotNull (dataItem.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id),
@@ -1640,9 +1707,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			//Children MUST BE ListItem
 			while (child != null) {
-
-				int ctype = (int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-				Console.WriteLine ("tupeo: {0}", ControlType.LookupById (ctype).ProgrammaticName);
 				Assert.AreEqual (ControlType.ListItem.Id,
 				                 child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
 				                 "Item should be ListItem");

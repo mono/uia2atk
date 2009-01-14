@@ -1,3 +1,12 @@
+2009-01-14  Mario Carrion  <mcarrion@novell.com>
+
+	* ListViewProviderTest.cs: New tests: ViewChangesPatternsTest.
+	HeaderCreationTest
+
+	* BaseProviderTest.cs: TestDataGridPatterns: Testing ITableItemProvider.
+	New tests: TestGridPatternChild, TestSelectionPatternChild,
+	TestTablePatternChild and TestPatterns
+
 2009-01-13  Mario Carrion  <mcarrion@novell.com>
 
 	* ComboBoxProviderTest.cs: Reverting r123256. Keeping this as LAMESPEC.

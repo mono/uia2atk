@@ -972,7 +972,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			// DEPENDS: IValueProvider
 		}
-		
+
 		protected void TestDataGridPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms752044.aspx
@@ -992,12 +992,28 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty.Id),
 			               "DataItem ControlType must support ISelectionItemProvider");
 
+			// ITableItemProvider: (DEPENDS)
+			// If the data item is contained within a Data Grid control type then it will support this pattern.
+			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
+			if (fragment != null) {
+				IRawElementProviderFragment parent = fragment.Navigate (NavigateDirection.Parent);
+				if (parent != null) {
+					if (ControlType.DataGrid.Id
+					    == (int) parent.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id))
+						Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id),
+						               "DataItem ControlType must support ITableItemProvider when parent is DataGrid");
+				}
+			}
+
 			// DEPENDS: IExpandCollapseProvider
 			// DEPENDS: IGridItemProvider
 			// DEPENDS: IScrollItemProvider
-			// DEPENDS: ITableItemProvider
 			// DEPENDS: IToggleProvider
 			// DEPENDS: IValueProvider
+
+			TestSelectionPatternChild (provider);
+			TestGridPatternChild (provider);
+			TestTablePatternChild (provider);
 		}
 
 		protected void TestDocumentPatterns (IRawElementProviderSimple provider) 
@@ -1085,6 +1101,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IValueProvider
 			// DEPENDS: IGridItemProvider
 			// DEPENDS: IInvokeProvider
+
+			TestSelectionPatternChild (provider);
+			TestGridPatternChild (provider);
+			TestTablePatternChild (provider);
 		}
 
 		protected void TestMenuPatterns (IRawElementProviderSimple provider) 
@@ -1297,39 +1317,142 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IDockProvider
 		}
 
-		protected void TestGridPatternChildren (IRawElementProviderFragment fragment)
+		protected void TestGridPatternChild (IRawElementProviderSimple provider)
 		{
-			if ((bool) fragment.GetPropertyValue (AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id)) {
-				IRawElementProviderFragment child = fragment.Navigate (NavigateDirection.FirstChild);
-				while (child != null) {
-					Assert.IsTrue ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsGridItemPatternAvailableProperty.Id),
-					               string.Format ("{0} must support IGridItemProvider", fragment.GetType ()));
-					child = child.Navigate (NavigateDirection.NextSibling);
-				}
+			IRawElementProviderFragment child = provider as IRawElementProviderFragment;
+			if (child == null)
+				return;
+
+			IRawElementProviderFragment parent = child.Navigate (NavigateDirection.Parent);
+			if (parent == null)
+				return;
+			
+			if ((bool) parent.GetPropertyValue (AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id)) {
+				Assert.IsTrue ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsGridItemPatternAvailableProperty.Id),
+				               string.Format ("{0} must support IGridItemProvider", child.GetType ()));
+				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 		}
 
-		protected void TestSelectionPatternChildren (IRawElementProviderFragment fragment)
+		protected void TestSelectionPatternChild (IRawElementProviderSimple provider)
 		{
-			if ((bool) fragment.GetPropertyValue (AutomationElementIdentifiers.IsSelectionPatternAvailableProperty.Id)) {
-				IRawElementProviderFragment child = fragment.Navigate (NavigateDirection.FirstChild);
-				while (child != null) {
-					Assert.IsTrue ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty.Id),
-					               string.Format ("{0} must support ISelectionItemProvider", fragment.GetType ()));
-					child = child.Navigate (NavigateDirection.NextSibling);
-				}
+			IRawElementProviderFragment child = provider as IRawElementProviderFragment;
+			if (child == null)
+				return;
+
+			IRawElementProviderFragment parent = child.Navigate (NavigateDirection.Parent);
+			if (parent == null)
+				return;
+			
+			if ((bool) parent.GetPropertyValue (AutomationElementIdentifiers.IsSelectionPatternAvailableProperty.Id)) {
+				Assert.IsTrue ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty.Id),
+				               string.Format ("{0} must support ISelectionItemProvider", child.GetType ()));
+				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 		}
 
-		protected void TestTablePatternChildren (IRawElementProviderFragment fragment)
+		protected void TestTablePatternChild (IRawElementProviderSimple provider)
 		{
-			if ((bool) fragment.GetPropertyValue (AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)) {
-				IRawElementProviderFragment child = fragment.Navigate (NavigateDirection.FirstChild);
-				while (child != null) {
-					Assert.IsTrue ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id),
-					               string.Format ("{0} must support ITableItemProvider", fragment.GetType ()));
-					child = child.Navigate (NavigateDirection.NextSibling);
-				}
+			IRawElementProviderFragment child = provider as IRawElementProviderFragment;
+			if (child == null)
+				return;
+
+			IRawElementProviderFragment parent = child.Navigate (NavigateDirection.Parent);
+			if (parent == null)
+				return;
+			
+			if ((bool) parent.GetPropertyValue (AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)) {
+				Assert.IsTrue ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id),
+				               string.Format ("{0} must support ITableItemProvider", child.GetType ()));
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+		}
+
+		protected void TestPatterns (IRawElementProviderSimple provider)
+		{
+			int ctype = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			if (ctype == ControlType.Button.Id)
+				TestButtonPatterns (provider);
+			else if (ctype == ControlType.Calendar.Id)
+				TestCalendarPatterns (provider);
+			else if (ctype == ControlType.CheckBox.Id)
+				TestCheckBoxPatterns (provider);
+			else if (ctype == ControlType.ComboBox.Id)
+				TestComboBoxPatterns (provider);
+			else if (ctype == ControlType.DataGrid.Id)
+				TestDataGridPatterns (provider);
+			else if (ctype == ControlType.DataItem.Id)
+				TestDataItemPatterns (provider);
+			else if (ctype == ControlType.DataItem.Id)
+				TestDocumentPatterns (provider);
+			else if (ctype == ControlType.Edit.Id)
+				TestEditPatterns (provider);
+			else if (ctype == ControlType.Group.Id)
+				TestGroupPatterns (provider);
+			else if (ctype == ControlType.Header.Id)
+				TestHeaderPatterns (provider);
+			else if (ctype == ControlType.HeaderItem.Id)
+				TestHeaderItemPatterns (provider);
+			else if (ctype == ControlType.Hyperlink.Id)
+				TestHyperlinkPatterns (provider);
+			else if (ctype == ControlType.Hyperlink.Id)
+				TestHyperlinkPatterns (provider);
+			else if (ctype == ControlType.List.Id)
+				TestListPatterns (provider);
+			else if (ctype == ControlType.ListItem.Id)
+				TestListItemPatterns (provider);
+			else if (ctype == ControlType.Menu.Id)
+				TestMenuPatterns (provider);
+			else if (ctype == ControlType.MenuBar.Id)
+				TestMenuBarPatterns (provider);
+			else if (ctype == ControlType.MenuItem.Id)
+				TestMenuItemPatterns (provider);
+			else if (ctype == ControlType.Pane.Id)
+				TestPanePatterns (provider);
+			else if (ctype == ControlType.ProgressBar.Id)
+				TestProgressBarPatterns (provider);
+			else if (ctype == ControlType.RadioButton.Id)
+				TestRadioButtonPatterns (provider);
+			else if (ctype == ControlType.ScrollBar.Id)
+				TestSeparatorPatterns (provider);
+			else if (ctype == ControlType.Slider.Id)
+				TestSliderPatterns (provider);
+			else if (ctype == ControlType.Spinner.Id)
+				TestSpinnerPatterns (provider);
+			else if (ctype == ControlType.SplitButton.Id)
+				TestSplitButtonPatterns (provider);
+			else if (ctype == ControlType.StatusBar.Id)
+				TestStatusBarPatterns (provider);
+			else if (ctype == ControlType.Tab.Id)
+				TestTabPatterns (provider);
+			else if (ctype == ControlType.TabItem.Id)
+				TestTabItemPatterns (provider);
+			else if (ctype == ControlType.Table.Id)
+				TestTablePatterns (provider);
+			else if (ctype == ControlType.Text.Id)
+				TestTextPatterns (provider);
+			else if (ctype == ControlType.Thumb.Id)
+				TestThumbPatterns (provider);
+			else if (ctype == ControlType.TitleBar.Id)
+				TestTitleBarPatterns (provider);
+			else if (ctype == ControlType.ToolBar.Id)
+				TestToolBarPatterns (provider);
+			else if (ctype == ControlType.ToolTip.Id)
+				TestToolTipPatterns (provider);
+			else if (ctype == ControlType.Tree.Id)
+				TestTreePatterns (provider);
+			else if (ctype == ControlType.TreeItem.Id)
+				TestTreeItemPatterns (provider);
+			else if (ctype == ControlType.Window.Id)
+				TestWindowPatterns (provider);
+		}
+
+		protected void TestChildPatterns (IRawElementProviderFragment root)
+		{
+			IRawElementProviderFragment provider = root.Navigate (NavigateDirection.FirstChild);
+			while (provider != null) {
+				TestPatterns (provider);
+				provider = provider.Navigate (NavigateDirection.NextSibling);
 			}
 		}
 
