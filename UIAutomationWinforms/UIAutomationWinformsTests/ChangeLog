@@ -1,5 +1,9 @@
 2009-01-14  Mario Carrion  <mcarrion@novell.com>
 
+	* DataGridProviderTest.cs: Testing Child Patterns.
+
+2009-01-14  Mario Carrion  <mcarrion@novell.com>
+
 	* ListViewProviderTest.cs: New tests: ViewChangesPatternsTest.
 	HeaderCreationTest
 

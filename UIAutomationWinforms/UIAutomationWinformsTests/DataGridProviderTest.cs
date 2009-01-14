@@ -59,6 +59,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (datagridProvider,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 			              true);
+
+			TestChildPatterns (datagridProvider);
 		}
 		
 		#endregion
@@ -138,10 +140,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			datagrid.ColumnHeadersVisible = false;
 			pattern = datagridProvider.GetPatternProvider (TablePatternIdentifiers.Pattern.Id);
-			Assert.IsNull (pattern, 
-			               "Table Pattern should not be available");
-			Assert.IsFalse ((bool) datagridProvider.GetPropertyValue (AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id),
-			                "Table Pattern should not be available");
+			Assert.IsNotNull (pattern, 
+			                  "Table Pattern should be available. ColumnHeadersVisible doesn't affect Pattern");
+			Assert.IsTrue ((bool) datagridProvider.GetPropertyValue (AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id),
+			               "Table Pattern should be available. ColumnHeadersVisible doesn't affect Pattern");
 			child = datagridProvider.Navigate (NavigateDirection.FirstChild);
 			headerChild = null;
 			dataItemChild = null;
@@ -152,9 +154,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				else if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
 				    == ControlType.DataItem.Id)
 					dataItemChild = child;
+				TestPatterns (child);
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
-			Assert.IsNull (headerChild, "We should NOT have a header");
+			Assert.IsNotNull (headerChild, "We should have a header. ColumnHeadersVisible doesn't affect Pattern nor Child");
 
 			Assert.IsNotNull (dataItemChild.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id),
 			                  "SelectionItem not implement in DataItem");
@@ -172,10 +175,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "Value not implement in DataItem");
 			Assert.IsTrue ((bool) dataItemChild.GetPropertyValue (AutomationElementIdentifiers.IsValuePatternAvailableProperty.Id),
 			               "Value not implement in DataItem");
-			Assert.IsNull (dataItemChild.GetPatternProvider (TableItemPatternIdentifiers.Pattern.Id),
-			                  "TableItem should not be implement in DataItem");
-			Assert.IsFalse ((bool) dataItemChild.GetPropertyValue (AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id),
-			               "TableItem should not be implement in DataItem");
+			// LAMESPEC: Vista doesn't implement this, we do, because when container implements Grid children must implement GridItem
+			Assert.IsNotNull (dataItemChild.GetPatternProvider (TableItemPatternIdentifiers.Pattern.Id),
+			                  "TableItem should be implement in DataItem");
+			Assert.IsTrue ((bool) dataItemChild.GetPropertyValue (AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id),
+			               "TableItem should be implement in DataItem");
 
 			// Testing children in DataItem
 			childDataItem = dataItemChild.Navigate (NavigateDirection.FirstChild);
@@ -188,10 +192,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				                  "GridItem not implement in ChildDataItem");
 				Assert.IsTrue ((bool) childDataItem.GetPropertyValue (AutomationElementIdentifiers.IsGridItemPatternAvailableProperty.Id),
 				               "GridItem not implement in ChildDataItem");
-				Assert.IsNull (childDataItem.GetPatternProvider (TableItemPatternIdentifiers.Pattern.Id),
+				Assert.IsNotNull (childDataItem.GetPatternProvider (TableItemPatternIdentifiers.Pattern.Id),
 				                  "TableItem should not be implement in ChildDataItem");
-				Assert.IsFalse ((bool) childDataItem.GetPropertyValue (AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id),
-				               "TableItem should not be implement in ChildDataItem");
+				// LAMESPEC: Vista doesn't implement this, we do, because when container implements Table children must implement TableItem
+				Assert.IsTrue ((bool) childDataItem.GetPropertyValue (AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id),
+				               "TableItem should implement in ChildDataItem");
+
+				// LAMESPEC: We are skipping Edit because in Vista they are implementing IValue, and we are doing the same,
+				// however the spec says that we should not do that.
+				if ((int) childDataItem.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    != ControlType.Edit.Id)
+					TestPatterns (childDataItem);
 
 				childDataItem = childDataItem.Navigate (NavigateDirection.NextSibling);
 			}
