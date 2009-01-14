@@ -46,14 +46,14 @@ namespace Mono.UIAutomation.Winforms.Events.ToolBar
 
 		public override void Connect ()
 		{
-//			((SWF.ToolBar) Provider.Control).ButtonClick +=
-//				new SWF.ToolBarButtonClickEventHandler (OnButtonClick);
+			((SWF.ToolBarButton) Provider.Component).Parent.ButtonClick +=
+				new SWF.ToolBarButtonClickEventHandler (OnButtonClick);
 		}
 		
 		public override void Disconnect ()
 		{
-//			((SWF.ToolBar) Provider.Control).ButtonClick -=
-//				new SWF.ToolBarButtonClickEventHandler (OnButtonClick);
+			((SWF.ToolBarButton) Provider.Component).Parent.ButtonClick -=
+				new SWF.ToolBarButtonClickEventHandler (OnButtonClick);
 		}
 		
 		#endregion

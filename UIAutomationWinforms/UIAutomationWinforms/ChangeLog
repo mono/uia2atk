@@ -1,3 +1,9 @@
+2009-01-14  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonInvokeProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/ToolBar/ToolBarButtonInvokePatternInvokedEvent.cs:
+	  Implemented Invoke() event.
+
 2009-01-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Fix an exception

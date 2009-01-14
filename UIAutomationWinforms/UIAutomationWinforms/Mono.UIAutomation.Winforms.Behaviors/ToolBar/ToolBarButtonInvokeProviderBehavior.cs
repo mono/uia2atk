@@ -40,6 +40,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolBar
 		public ToolBarButtonInvokeProviderBehavior (ToolBarProvider.ToolBarButtonProvider provider)
 			: base (provider)
 		{
+			this.toolBarButton = (SWF.ToolBarButton) Provider.Component;
+			this.toolBar = this.toolBarButton.Parent;
 		}
 		
 		#endregion
@@ -68,9 +70,37 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolBar
 		
 		public void Invoke ()
 		{
-			// TODO:
+			if (toolBar.Enabled == false)
+				throw new ElementNotEnabledException ();
+
+			PerformClick ();
 		}
 		
+		#endregion
+
+		#region Private Methods
+
+		private void PerformClick ()
+		{
+			if (toolBar.InvokeRequired == true) {
+				toolBar.BeginInvoke (new SWF.MethodInvoker (PerformClick));
+				return;
+			}
+
+			if (toolBarButton.Style == SWF.ToolBarButtonStyle.ToggleButton) {
+				if (!toolBarButton.Pushed)
+					toolBarButton.Pushed = true;
+				else
+					toolBarButton.Pushed = false;
+			}
+		}
+		#endregion
+
+		#region Private Fields
+
+		private SWF.ToolBarButton toolBarButton;
+		private SWF.ToolBar toolBar;
+
 		#endregion
 	}
 }
