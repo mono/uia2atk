@@ -112,7 +112,10 @@ namespace UiaAtkBridge
 				GetSelection ();
 			if (selectedElements.Length == 0 || (i < 0 || i >= selectedElements.Length))
 				return null;
-			return AutomationBridge.GetAdapterForProviderSemiLazy (selectedElements [i]);
+			IRawElementProviderSimple provider = selectedElements [i];
+			if (provider is IRawElementProviderFragment && (int)provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.DataItem.Id)
+				provider = ((IRawElementProviderFragment)provider).Navigate (NavigateDirection.FirstChild);
+			return AutomationBridge.GetAdapterForProviderSemiLazy (provider);
 		}
 		
 		public bool RemoveSelection (int i)
@@ -157,21 +160,20 @@ namespace UiaAtkBridge
 		
 		private ISelectionItemProvider ChildItemAtIndex (int i)
 		{
-			var child = childrenHolder.Navigate (NavigateDirection.FirstChild);
-			int childCount = 0;
-			
-			while (child != null) {
-				ISelectionItemProvider selectionItemProvider = 
-					(ISelectionItemProvider)child.GetPatternProvider
-						(SelectionItemPatternIdentifiers.Pattern.Id);
-				if (selectionItemProvider != null && childCount == i)
-					return selectionItemProvider;
-				else if (selectionItemProvider != null)
-					childCount++;
-				child = child.Navigate (NavigateDirection.NextSibling);
-			}
-			
-			return null;
+			Adapter adapter = AutomationBridge.GetAdapterForProvider(childrenHolder).RefAccessibleChild (i) as Adapter;
+			if (adapter == null || adapter.Provider == null)
+				return null;
+			ISelectionItemProvider ret = (ISelectionItemProvider)adapter.Provider.GetPatternProvider
+				(SelectionItemPatternIdentifiers.Pattern.Id);
+			if (ret != null)
+				return ret;
+			IRawElementProviderFragment fragment = adapter.Provider as IRawElementProviderFragment;
+			if (fragment != null)
+				fragment = fragment.Navigate (NavigateDirection.Parent);
+			if (fragment != null && (int)fragment.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.DataItem.Id)
+				ret = (ISelectionItemProvider)fragment.GetPatternProvider
+					(SelectionItemPatternIdentifiers.Pattern.Id);
+			return ret;
 		}
 		
 		IRawElementProviderSimple [] GetSelection ()

@@ -42,7 +42,6 @@ namespace UiaAtkBridge
 				Role = Atk.Role.Label;
 			else if (controlTypeId == ControlType.HeaderItem.Id)
 				Role = Atk.Role.TableColumnHeader;
-if (controlTypeId == ControlType.HeaderItem.Id) Console.WriteLine ("dbg: heading for a header");
 			
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			textExpert = new TextImplementorHelper (text, this);

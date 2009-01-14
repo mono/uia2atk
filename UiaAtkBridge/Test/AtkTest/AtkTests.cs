@@ -859,6 +859,14 @@ namespace UiaAtkBridgeTest
 			BasicWidgetType type = BasicWidgetType.ListView;
 			Atk.Object accessible;
 
+			accessible = GetAccessible (type, simpleTable, true);
+			ExpandTreeView (type);
+			// A group cannot be selected, so exclude names of
+			// groups from selection test
+			string[] names = NamesFromTableXml (simpleTable, 1);
+			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
+			InterfaceSelection (atkSelection, names, accessible, type);
+			
 			string name = "<table><th><td>Title</td><td>Author</td><td>year</td></th>"+
 				"<tr><td>Non-C#</td>"+
 				"<tr><td>Programming Windows</td><td>Petzold, Charles</td><td>1998</td></tr>"+
@@ -876,6 +884,7 @@ namespace UiaAtkBridgeTest
 			States (accessible,
 			  Atk.StateType.Enabled,
 			  Atk.StateType.Focusable,
+			  Atk.StateType.Focused, // from InterfaceSelection
 			  Atk.StateType.ManagesDescendants,
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,
@@ -915,6 +924,16 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, atkTable.GetColumnAtIndex (groupIndex), "GetColumnAtIndex");
 			Assert.AreEqual (group, atkTable.RefAt (1, 0), "ListView RefAt");
 		}
+
+		protected string simpleTable = "<table>"+
+			"<tr><td>Group1</td>"+
+			"<tr><td>Item1</td></tr>"+
+			"<tr><td>Item2</td></tr>"+
+			"<tr><td>Item3</td></tr>"+
+			"</tr><tr><td>Group2</td>"+
+			"<tr><td>Item4</td></tr>"+
+			"<tr><td>Item5</td></tr>"+
+			"</tr></table>";
 
 		[Test]
 		public void ComboBoxSimpleAsTreeView ()
@@ -971,17 +990,7 @@ namespace UiaAtkBridgeTest
 			BasicWidgetType type = BasicWidgetType.TreeView;
 			Atk.Object accessible;
 
-			string name = "<table>"+
-				"<tr><td>Group1</td>"+
-				"<tr><td>Item1</td></tr>"+
-				"<tr><td>Item2</td></tr>"+
-				"<tr><td>Item3</td></tr>"+
-				"</tr><tr><td>Group2</td>"+
-				"<tr><td>Item4</td></tr>"+
-				"<tr><td>Item5</td></tr>"+
-				"</tr></table>";
-
-			accessible = GetAccessible (type, name, true);
+			accessible = GetAccessible (type, simpleTable, true);
 			
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);

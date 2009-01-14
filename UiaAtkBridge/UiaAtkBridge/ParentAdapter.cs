@@ -75,7 +75,7 @@ namespace UiaAtkBridge
 				RequestChildren ();
 				
 			lock (syncRoot) {
-				if (i >= children.Count)
+				if (i < 0 || i >= children.Count)
 					return null;
 				
 				return children [i];

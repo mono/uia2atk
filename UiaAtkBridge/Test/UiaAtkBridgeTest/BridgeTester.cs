@@ -272,6 +272,8 @@ namespace UiaAtkBridgeTest
 
 		public override void ExpandTreeView (BasicWidgetType type)
 		{
+			if (type == BasicWidgetType.ListView)
+				return;
 			if (type != BasicWidgetType.TreeView)
 				throw new NotSupportedException ("ExpandTreeView doesn't support this kind of widget");
 			treeView.ExpandAll ();
@@ -279,6 +281,8 @@ namespace UiaAtkBridgeTest
 
 		public override void CollapseTreeView (BasicWidgetType type)
 		{
+			if (type == BasicWidgetType.ListView)
+				return;
 			if (type != BasicWidgetType.TreeView)
 				throw new NotSupportedException ("CollapseTreeView doesn't support this kind of widget");
 			treeView.CollapseAll ();
@@ -731,6 +735,9 @@ namespace UiaAtkBridgeTest
 				foreach (XmlElement th in xml.GetElementsByTagName ("th"))
 					foreach (XmlElement td in th.GetElementsByTagName ("td"))
 						lv1.Columns.Add (new SWF.ColumnHeader (td.InnerText));
+			if (lv1.Columns.Count == 0)
+						// TODO: Allow more than one column
+						lv1.Columns.Add (new SWF.ColumnHeader ());
 				root = xml.DocumentElement;
 				for (XmlNode node = root.FirstChild; node != null; node = node.NextSibling)
 					if (node.Name == "tr") {
@@ -743,6 +750,7 @@ namespace UiaAtkBridgeTest
 						else
 							lv1.Items.Add (GetListViewItem (node));
 					}
+				lv1.MultiSelect = false;
 				accessible = GetAdapterForWidget (lv1);
 				break;
 				

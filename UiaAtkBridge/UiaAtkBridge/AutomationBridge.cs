@@ -697,7 +697,7 @@ namespace UiaAtkBridge
 				return;
 			IRawElementProviderFragment child = fragment.Navigate(NavigateDirection.FirstChild);
 			List<Atk.Object> keep;
-			if (controlTypeId == ControlType.Tree.Id)
+			if (controlTypeId == ControlType.Tree.Id || controlTypeId == ControlType.DataGrid.Id)
 				keep = BuildKeepListRecurse (child);
 			else
 				keep = BuildKeepListNoRecurse (child);
@@ -1045,7 +1045,10 @@ namespace UiaAtkBridge
 		
 		private void HandleNewDataGridControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			Adapter newAdapter = new DataGrid (provider);
+			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
+			if (fragment == null)
+				return;
+			Adapter newAdapter = new DataGrid (fragment);
 
 			IncludeNewAdapter (newAdapter, parentObject);
 		}

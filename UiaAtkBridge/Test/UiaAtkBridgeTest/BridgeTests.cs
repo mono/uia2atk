@@ -274,7 +274,6 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void ListView2 ()
 		{
-			BasicWidgetType type = BasicWidgetType.ListView;
 			lv1.Items.Clear ();
 			lv1.Groups.Clear ();
 			lv1.View = SWF.View.SmallIcon;
@@ -303,7 +302,7 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (Atk.Role.ListItem, item1.Role, "Item1 role");
 			Atk.Selection atkSelection = CastToAtkInterface<Atk.Selection> (item1.Parent);
 			string [] names = { "item1", "item2" };
-			InterfaceSelection (atkSelection, names, item1.Parent, type);
+			InterfaceSelection (atkSelection, names, item1.Parent, BasicWidgetType.ListBox);
 			accessible = group1 = item1 = null;
 			lv1.CheckBoxes = true;
 			accessible = GetAdapterForWidget (lv1);

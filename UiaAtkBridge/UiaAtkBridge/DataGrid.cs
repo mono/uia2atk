@@ -30,14 +30,21 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class DataGrid : ComponentParentAdapter , Atk.TableImplementor
+	public class DataGrid : ComponentParentAdapter , Atk.TableImplementor, Atk.SelectionImplementor
 	{
 		private TableImplementorHelper tableExpert = null;
+		private ISelectionProvider					selectionProvider;
+		private SelectionProviderUserHelper	selectionHelper;
 		
-		public DataGrid (IRawElementProviderSimple provider): base (provider)
+		public DataGrid (IRawElementProviderFragment provider): base (provider)
 		{
 			tableExpert = new TableImplementorHelper (this);
 			Role = Atk.Role.TreeTable;
+
+			selectionProvider = (ISelectionProvider)provider.GetPatternProvider(SelectionPatternIdentifiers.Pattern.Id);
+			if (selectionProvider == null)
+				throw new ArgumentException ("DataGrid should always implement ISelectionProvider");
+			selectionHelper = new SelectionProviderUserHelper (provider, selectionProvider);
 		}
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
@@ -70,6 +77,35 @@ namespace UiaAtkBridge
 				                                                      args);
 			} else
 				base.RaiseAutomationPropertyChangedEvent (e);
+		}
+
+		public int SelectionCount
+		{
+			get { return selectionHelper.SelectionCount; }
+		}
+		public bool AddSelection (int i)
+		{
+			return selectionHelper.AddSelection (i);
+		}
+		public bool ClearSelection ()
+		{
+			return selectionHelper.ClearSelection ();
+		}
+		public bool IsChildSelected (int i)
+		{
+			return selectionHelper.IsChildSelected (i);
+		}
+		public Atk.Object RefSelection (int i)
+		{
+			return selectionHelper.RefSelection (i);
+		}
+		public bool RemoveSelection (int i)
+		{
+			return selectionHelper.RemoveSelection (i);
+		}
+		public bool SelectAllSelection ()
+		{
+			return selectionHelper.SelectAllSelection ();
 		}
 
 		public Atk.Object RefAt (int row, int column)

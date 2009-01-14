@@ -1,3 +1,12 @@
+2009-01-14  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTests.cs: Act like a ListBox when testing InterfaceSelection
+	  for the List view of a ListView.
+
+	* BridgeTester.cs: Ignore Expand/Collapse TreeView calls for a ListView.
+
+	* BridgeTester.cs: Add a ListView column if no headers are present.
+
 2009-01-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: New tests for ComboBoxSimple in gail (it's a treeview

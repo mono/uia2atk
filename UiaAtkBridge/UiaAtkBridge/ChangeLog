@@ -1,3 +1,19 @@
+2009-01-14  Mike Gorse  <mgorse@novell.com>
+
+	* ParentAdapter.cs: Have RefAccessibleChild protect against negative values.
+
+	* TextBoxEntryView.cs: Set role to TableCell when child of a
+	  DataGridItem.
+
+	* DataGrid.cs: Add Atk.Selection.
+
+	* TextLabel.cs: Remove debug spew.
+
+	* AutomationBridge.cs: Fix ChildrenInvalidated for DataGrid.
+
+	* SelectionProviderUserHelper.cs: Ensure that indices of children
+	  correspond to the atk hierarchy.
+
 2009-01-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* List.cs:
