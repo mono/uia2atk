@@ -100,6 +100,9 @@ namespace UiaAtkBridgeTest
 	
 	public static class Misc
 	{
+		public class AtkTestObject : Atk.Object {
+		}
+		
 		internal static bool HasReadOnlyText (BasicWidgetType type) {
 			if ((type == BasicWidgetType.TextBoxEntry) ||
 			    (type == BasicWidgetType.TextBoxView))

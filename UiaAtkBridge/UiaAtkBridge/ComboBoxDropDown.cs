@@ -51,7 +51,16 @@ namespace UiaAtkBridge
 			
 			expandColapseProvider = (IExpandCollapseProvider)provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id);
 		}
-		
+
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			Atk.StateSet states = base.OnRefStateSet ();
+			states.RemoveState (Atk.StateType.ManagesDescendants); //our base provides this
+			
+			//FIXME: figure out why Gail comboboxes don't like this state
+			states.RemoveState (Atk.StateType.Focusable);
+			return states;
+		}
 		
 		public int NActions {
 			get { return 1; }

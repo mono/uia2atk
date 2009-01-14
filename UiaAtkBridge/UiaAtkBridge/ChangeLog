@@ -1,3 +1,14 @@
+2009-01-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* MenuBar.cs:
+	* Makefile.am:
+	* ComboBox.cs:
+	* UiaAtkBridge.mdp:
+	* ComboBoxOptions.cs:
+	* ComboBoxDropDown.cs:
+	* AutomationBridge.cs:
+	* ComboBoxOptionsTable.cs: Ongoing work for ComboBoxSimple.
+
 2009-01-14  Mike Gorse  <mgorse@novell.com>
 
 	* ParentAdapter.cs: Have RefAccessibleChild protect against negative values.

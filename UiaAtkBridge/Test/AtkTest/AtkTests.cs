@@ -548,7 +548,8 @@ namespace UiaAtkBridgeTest
 
 			PropertyRole (type, accessible);
 
-			Assert.AreEqual (menu.Count, accessible.NAccessibleChildren, "number of children; children roles:" + childrenRoles (accessible));
+			Assert.AreEqual (menu.Count, accessible.NAccessibleChildren, 
+			                 "number of children; children roles:" + DescribeChildren (accessible));
 
 			for (int i = 0; i < accessible.NAccessibleChildren; i++) {
 				Atk.Object parentMenuChild = accessible.RefAccessibleChild (i);
@@ -587,7 +588,7 @@ namespace UiaAtkBridgeTest
 			            typeof (Atk.Selection));
 			Assert.AreEqual (expectedNumOfWindows, GetTopLevelRootItem ().NAccessibleChildren,
 			                 "Windows in my app should be " + expectedNumOfWindows + 
-			                 "but I got:" + childrenRoles (GetTopLevelRootItem ()));
+			                 "but I got:" + DescribeChildren (GetTopLevelRootItem ()));
 
 			Assert.IsNull (accessible.Name, "name of the menubar should be null, now it's:" + accessible.Name);
 
@@ -604,7 +605,8 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Visible,
 			  Atk.StateType.Showing);
 
-			Assert.AreEqual (menu.Count, accessible.NAccessibleChildren, "number of children; children roles:" + childrenRoles (accessible));
+			Assert.AreEqual (menu.Count, accessible.NAccessibleChildren, 
+			                 "number of children; children roles:" + DescribeChildren (accessible));
 
 			for (int i = 0; i < accessible.NAccessibleChildren; i++) {
 				Atk.Object menuChild = accessible.RefAccessibleChild (i);
@@ -658,7 +660,8 @@ namespace UiaAtkBridgeTest
 			  ,Atk.StateType.Showing //<- this is not working in gail??
 			  );
 			
-			Assert.AreEqual (firstSubmenus.Length, accessible.NAccessibleChildren, "number of children; children roles:" + childrenRoles (accessible));
+			Assert.AreEqual (firstSubmenus.Length, accessible.NAccessibleChildren, 
+			                 "number of children; children roles:" + DescribeChildren (accessible));
 			
 			for (int i = 0; i < accessible.NAccessibleChildren; i++) {
 				Atk.Object menuChild = accessible.RefAccessibleChild (i);
@@ -698,6 +701,15 @@ namespace UiaAtkBridgeTest
 		{
 			ComboBoxDropDownEntry (null);
 		}
+
+		protected void TestInnerTextBoxInComboBox (Atk.Object accessible)
+		{
+			Atk.Object entryChild = accessible.RefAccessibleChild (1);
+			Assert.IsNotNull (entryChild, "ComboBox child#1 should not be null");
+			Assert.AreEqual (entryChild.Role, Atk.Role.Text, "Role of 2nd child");
+			Assert.IsNull (entryChild.Name, "textbox .Name should be null");
+			//TODO: send this object to TextBoxEntry () test
+		}
 		
 		protected void ComboBoxDropDownEntry (object widget)
 		{
@@ -709,15 +721,13 @@ namespace UiaAtkBridgeTest
 			
 			StatesComboBox (accessible);
 
-			Assert.AreEqual (2, accessible.NAccessibleChildren, "numChildren; children roles:" + childrenRoles (accessible));
+			Assert.AreEqual (2, accessible.NAccessibleChildren, 
+			                 "numChildren; children roles:" + DescribeChildren (accessible));
 			
 			Atk.Object menuChild = accessible.RefAccessibleChild (0);
 			CheckComboBoxMenuChild (menuChild, names, false);
 
-			Atk.Object entryChild = accessible.RefAccessibleChild (1);
-			Assert.IsNotNull (entryChild, "ComboBox child#1 should not be null");
-			Assert.AreEqual (entryChild.Role, Atk.Role.Text, "Role of 2nd child");
-			Assert.IsNull (entryChild.Name, "textbox .Name should be null");
+			TestInnerTextBoxInComboBox (accessible);
 
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
@@ -760,7 +770,8 @@ namespace UiaAtkBridgeTest
 			
 			StatesComboBox (accessible);
 
-			Assert.AreEqual (1, accessible.NAccessibleChildren, "numChildren; children roles:" + childrenRoles (accessible));
+			Assert.AreEqual (1, accessible.NAccessibleChildren, 
+			                 "numChildren; children roles:" + DescribeChildren (accessible));
 			
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
@@ -941,7 +952,7 @@ namespace UiaAtkBridgeTest
 			ComboBoxSimple (null);
 		}
 		
-		private void ComboBoxSimple (object comboBox)
+		protected void ComboBoxSimple (object comboBox)
 		{
 			BasicWidgetType type = BasicWidgetType.ComboBoxSimple;
 
@@ -960,28 +971,40 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Focusable,
 			  Atk.StateType.ManagesDescendants);
 
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+			
 			if (HasComboBoxSimpleLayout) {
-				Assert.AreEqual (1, // <- because no textbox!
+				Assert.AreEqual (2, // <- textbox + treetable
 				  accessible.NAccessibleChildren, 
-				  "numChildren; children roles:" + childrenRoles (accessible));
-				//test accessible interfaces now as ComboBoxDropDownList
+				  "numChildren; children roles:" + DescribeChildren (accessible));
+				
+				TestInnerTextBoxInComboBox (accessible);
 			}
 
 			Atk.Object subcomboChild = accessible;
 			if (HasComboBoxSimpleLayout)
-				accessible = accessible.RefAccessibleChild (0);
+				subcomboChild = accessible.RefAccessibleChild (0);
+
+			Atk.Table atkTable = CastToAtkInterface <Atk.Table> (subcomboChild);
+			InterfaceTable (atkTable, names);
+
 			CheckComboBoxMenuChild (subcomboChild, names, true, false);
 
-			Interfaces (accessible,
+			Interfaces (subcomboChild,
 			            typeof (Atk.Component),
 			            typeof (Atk.Selection),
 			            typeof (Atk.Table));
-
-			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
-			InterfaceComponent (type, atkComponent);
-
-			Atk.Table atkTable = CastToAtkInterface <Atk.Table> (accessible);
-			InterfaceTable (atkTable, names);
+			
+			if (HasComboBoxSimpleLayout) {
+				Interfaces (accessible,
+				            typeof (Atk.Component),
+				            typeof (Atk.Selection));
+				//we want this to behave like comboboxdropdownentry, the treetable
+				// selection behaviour is already tested in CheckComboBoxMenuChild()
+				Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
+				InterfaceSelection (atkSelection, names, accessible, BasicWidgetType.ComboBoxDropDownEntry);
+			}
 		}
 		
 		[Test]

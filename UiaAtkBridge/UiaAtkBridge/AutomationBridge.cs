@@ -753,7 +753,7 @@ namespace UiaAtkBridge
 
 			IntPtr providerHandle = (IntPtr) provider.GetPropertyValue (AutomationElementIdentifiers.NativeWindowHandleProperty.Id);
 			pointerProviderMapping [providerHandle] = provider;
-			
+
 			GLib.Signal.Emit (newWindow, "create");
 			GLib.Signal.Emit (newWindow, "activate");
 			
@@ -824,8 +824,10 @@ namespace UiaAtkBridge
 		private void HandleNewListControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter atkList;
-			if (parentObject is UiaAtkBridge.ComboBox)
+			if (parentObject is UiaAtkBridge.ComboBoxDropDown)
 				atkList = new ComboBoxOptions (provider);
+			else if (parentObject is UiaAtkBridge.ComboBox)
+				atkList = new ComboBoxOptionsTable (provider);
 			else if (provider is IGridProvider)
 				atkList = new ListWithGrid ((IRawElementProviderFragmentRoot)provider);
 			else

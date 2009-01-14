@@ -30,11 +30,10 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	
-	public class ComboBoxOptions : ComponentParentAdapter, Atk.SelectionImplementor, Atk.TextImplementor
+	public class ComboBoxOptions : ComponentParentAdapter, Atk.SelectionImplementor
 	{
-		TextImplementorHelper textExpert = null;
 		ISelectionProvider selectionProvider = null;
-		SelectionProviderUserHelper	selectionHelper;
+		SelectionProviderUserHelper selectionHelper = null;
 		
 		public ComboBoxOptions (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -49,23 +48,8 @@ namespace UiaAtkBridge
 				throw new ArgumentException ("The List inside the ComboBox should always implement ISelectionProvider");
 
 			selectionHelper = new SelectionProviderUserHelper (provider as IRawElementProviderFragment, selectionProvider);
-			
-			string name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			textExpert = new TextImplementorHelper (name, this);
 
-			//FIXME: take in account ComboBox style changes at runtime
-			if (ParentIsSimple ())
-				Role = Atk.Role.TreeTable;
-			else
-				Role = Atk.Role.Menu;
-		}
-
-		public bool ParentIsSimple ()
-		{
-			//FIXME: change this not to use Provider API when we fix the FIXME in Adapter ctor. (just use Parent.IsSimple())
-			IRawElementProviderSimple parentProvider =
-			  ((IRawElementProviderFragment) Provider).Navigate (NavigateDirection.Parent);
-			return ComboBox.IsSimple (parentProvider);
+			Role = Atk.Role.Menu;
 		}
 
 		#region SelectionImplementor implementation //FIXME: consider making ComboBoxOptions inherit from List
@@ -110,98 +94,6 @@ namespace UiaAtkBridge
 
 		#endregion
 		
-		#region TextImplementor implementation 
-		
-		public string GetText (int startOffset, int endOffset)
-		{
-			return textExpert.GetText (startOffset, endOffset);
-		}
-		
-		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
-		{
-			return textExpert.GetTextAfterOffset (offset, boundaryType, out startOffset, out endOffset);
-		}
-		
-		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
-		{
-			return textExpert.GetTextAtOffset (offset, boundaryType, out startOffset, out endOffset);
-		}
-		
-		public char GetCharacterAtOffset (int offset)
-		{
-			return textExpert.GetCharacterAtOffset (offset);
-		}
-		
-		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
-		{
-			return textExpert.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
-		}
-		
-		public Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset)
-		{
-			return textExpert.GetRunAttributes (offset, out startOffset, out endOffset);
-		}
-		
-		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		public int GetOffsetAtPoint (int x, int y, Atk.CoordType coords)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
-		{
-			return textExpert.GetSelection (selectionNum, out startOffset, out endOffset);
-		}
-		
-		public bool AddSelection (int startOffset, int endOffset)
-		{
-			return false;
-		}
-		
-		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
-		{
-			return false;
-		}
-		
-		public bool SetCaretOffset (int offset)
-		{
-			return false;
-		}
-		
-		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
-		{
-			textExpert.GetRangeExtents (startOffset, endOffset, coordType, out rect);
-		}
-		
-		public Atk.TextRange GetBoundedRanges (Atk.TextRectangle rect, Atk.CoordType coordType, Atk.TextClipType xClipType, Atk.TextClipType yClipType)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		public int CaretOffset {
-			get { return 0; }
-		}
-		
-		public Atk.Attribute [] DefaultAttributes {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-		
-		public int CharacterCount {
-			get { return textExpert.Length; }
-		}
-		
-		public int NSelections {
-			get { return -1; }
-		}
-		
-		#endregion
-
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
 			//TODO

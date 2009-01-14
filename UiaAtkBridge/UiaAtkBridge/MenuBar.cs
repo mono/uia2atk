@@ -52,11 +52,16 @@ namespace UiaAtkBridge
 		}
 
 		#region SelectionImplementor implementation 
+		//NOTE: MenuBar in UIA does not implement the selection pattern
+
+		private bool selected = false;
+		private int selectedChild = -1;
 		
 		public bool AddSelection (int i)
 		{
-			//TODO
-			return true;
+			if ((i < 0) || (i >= NAccessibleChildren))
+				return false;
+			return ((MenuItem)RefAccessibleChild (i)).DoAction (0);
 		}
 		
 		public bool ClearSelection ()

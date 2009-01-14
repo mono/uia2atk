@@ -227,7 +227,7 @@ namespace UiaAtkBridgeTest
 		}
 
 		public override bool HasComboBoxSimpleLayout {
-			get { return false; }
+			get { return true; }
 		}
 		
 		protected override bool TextBoxCaretInitiallyAtEnd { 

@@ -274,7 +274,7 @@ namespace UiaAtkBridgeTest
 				//because the dropdown represents a new window!
 				Assert.AreEqual (++expectedNumOfWindows, GetTopLevelRootItem ().NAccessibleChildren,
 				  "Windows in my app should be" + expectedNumOfWindows + 
-				  " now that I opened the pandora's box; but I got:" + childrenRoles (GetTopLevelRootItem ()));
+				  " now that I opened the pandora's box; but I got:" + DescribeChildren (GetTopLevelRootItem ()));
 				Atk.Object newWindow = GetTopLevelRootItem ().RefAccessibleChild (1);
 				Assert.AreEqual (Atk.Role.Window, newWindow.Role, "new window role should be Atk.Role.Window");
 				Assert.AreEqual (1, newWindow.NAccessibleChildren, "the window should contain a child");
@@ -323,7 +323,7 @@ namespace UiaAtkBridgeTest
 			if (names != null)
 				Assert.AreEqual (--expectedNumOfWindows, GetTopLevelRootItem ().NAccessibleChildren, 
 				  "Windows in my app should be " + expectedNumOfWindows +
-				  " again, but I got:" + childrenRoles (GetTopLevelRootItem ()));
+				  " again, but I got:" + DescribeChildren (GetTopLevelRootItem ()));
 			
 			state = accessible.RefStateSet ();
 			Assert.IsTrue (state.ContainsState (Atk.StateType.Enabled), "RefStateSet.Enabled #2");
@@ -380,11 +380,6 @@ namespace UiaAtkBridgeTest
 					Assert.IsFalse (implementor.DoAction (i), "DoAction(" + i + ") after disabling");
 				EnableWidget (accessible);
 			}
-		}
-
-		private void CheckNonMultipleChildrenSelection (Atk.Selection sel, Atk.Object accessible, int theSelected)
-		{
-			CheckNonMultipleChildrenSelection (sel, accessible, theSelected, false);
 		}
 		
 		private void CheckNonMultipleChildrenSelection (Atk.Selection sel, Atk.Object accessible, int theSelected, bool childrenCorrection)
@@ -461,7 +456,7 @@ namespace UiaAtkBridgeTest
 					indexUsed [val] = true;
 				} else val = i;
 				Assert.IsTrue (implementor.AddSelection (val), "AddSelection(" + i + ")");
-				CheckNonMultipleChildrenSelection (implementor, accessible, val);
+				CheckNonMultipleChildrenSelection (implementor, accessible, val, false);
 				if (!Misc.IsComboBox (type))
 					Assert.IsNotNull (accessible.RefAccessibleChild (val), "accessible.RefAccessibleChild (" + i + ") != null");
 				Assert.IsNotNull (implementor.RefSelection (0), "implementor.RefSelection (0) != null");
@@ -592,11 +587,14 @@ namespace UiaAtkBridgeTest
 			
 			if (type != BasicWidgetType.TabControl) {
 				clearSelection = true;
-				if (Misc.IsComboBox (type) || type == BasicWidgetType.ComboBoxMenu)
+				if (Misc.IsComboBox (type) ||
+				    type == BasicWidgetType.ComboBoxMenu ||
+				    type == BasicWidgetType.ComboBoxSimpleMenu)
 					clearSelection = AllowsEmptyingSelectionOnComboBoxes;
 				else if (type == BasicWidgetType.DomainUpDown)
 					clearSelection = false;
-				Assert.AreEqual (clearSelection, implementor.ClearSelection (), "ClearSelection #2");
+				Assert.AreEqual (clearSelection, implementor.ClearSelection (),
+				                 "ClearSelection #2, we got " + !clearSelection);
 				currentSel = implementor.RefSelection (0);
 				if (clearSelection)
 					Assert.IsNull (currentSel, "RefSel after CS");
@@ -764,7 +762,10 @@ namespace UiaAtkBridgeTest
 			int childrenCorrection = (simpleLayout && !HasComboBoxSimpleLayout)? 1 : 0;
 			
 			Assert.AreEqual (items.Length + childrenCorrection, 
-			                 menuChild.NAccessibleChildren, "ComboBox menu numChildren");
+			                 menuChild.NAccessibleChildren, 
+			                 "ComboBox menu numChildren; children roles:" + 
+			                 DescribeChildren (menuChild));
+			
 			for (int i = 0; i < items.Length; i++) {
 				int nth = i + childrenCorrection;
 				Atk.Object menuItemChild = menuChild.RefAccessibleChild (nth);
@@ -801,11 +802,13 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Visible);
 		}
 
-		protected string childrenRoles (Atk.Object accessible)
+		protected string DescribeChildren (Atk.Object accessible)
 		{
 			string res = String.Empty;
 			for (int i = 0; i < accessible.NAccessibleChildren; i++)
-				res += accessible.RefAccessibleChild (i).Role.ToString () + ",";
+				res += accessible.RefAccessibleChild (i).Role.ToString () + 
+				  "(" + (accessible.Name == null ? "" : accessible.Name) + "-" +
+				  accessible.NAccessibleChildren + "),";
 			if (res == String.Empty)
 				return "<no children>";
 			return res;
@@ -911,7 +914,7 @@ namespace UiaAtkBridgeTest
 					"Couldn't find the role for {0}.  Did you forget to add it to AtkTester::PropertyRole ()?",
 					type));
 			}
-			Assert.AreEqual (role, accessible.Role, "Atk.Role");
+			Assert.AreEqual (role, accessible.Role, "Atk.Role, we got " + accessible.Role);
 		}
 
 		protected Atk.Object InterfaceText (BasicWidgetType type)
@@ -1733,8 +1736,121 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (implementor.NColumns, 1);
 			Assert.AreEqual (implementor.NRows, items.Length);
 
-			Assert.AreEqual (implementor.Caption, null);
-			Assert.AreEqual (implementor.Summary, null);
+			Assert.AreEqual (implementor.Caption, null, "caption");
+			Assert.AreEqual (implementor.Summary, null, "summary");
+
+			Atk.Object test = new Misc.AtkTestObject ();
+			implementor.Caption = test;
+			Assert.AreEqual (implementor.Caption, test, "caption after set");
+
+			Assert.AreEqual (implementor.Summary, null, "summary#2");
+
+			implementor.Summary = test;
+			Assert.AreEqual (implementor.Summary, test, "summary after set");
+
+			int an_int;
+			Assert.AreEqual (0, implementor.GetSelectedRows (out an_int), "GetSelectedRows");
+			Assert.AreEqual (0, an_int, "GetSelectedRows out");
+
+			Assert.AreEqual (0, implementor.GetSelectedColumns (out an_int), "GetSelectedColumns");
+			Assert.AreEqual (0, an_int, "GetSelectedColumns out");
+
+			//FIXME: create loops from all the code below (until the end of InterfaceAction):
+			an_int = 1;
+			Assert.AreEqual (an_int, implementor.GetIndexAt (0, 0), "GetIndexAt00");
+			an_int = -1;
+			Assert.AreEqual (an_int, implementor.GetIndexAt (0, 1), "GetIndexAt01");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (0, 2), "GetIndexAt02");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (0, 3), "GetIndexAt03 OOR>");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (0, -1), "GetIndexAt03 OOR>");
+			an_int = 2;
+			Assert.AreEqual (an_int, implementor.GetIndexAt (1, 0), "GetIndexAt10");
+			an_int = -1;
+			Assert.AreEqual (an_int, implementor.GetIndexAt (1, 1), "GetIndexAt11");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (1, 2), "GetIndexAt12");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (1, 3), "GetIndexAt13 OOR>");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (1, -1), "GetIndexAt13 OOR>");
+			an_int = 3;
+			Assert.AreEqual (an_int, implementor.GetIndexAt (2, 0), "GetIndexAt20");
+			an_int = -1;
+			Assert.AreEqual (an_int, implementor.GetIndexAt (2, 1), "GetIndexAt21");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (2, 2), "GetIndexAt22");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (2, 3), "GetIndexAt23 OOR>");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (2, -1), "GetIndexAt23 OOR>");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (3, 0), "GetIndexAt30");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (3, 1), "GetIndexAt31");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (3, 2), "GetIndexAt32");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (3, 3), "GetIndexAt33 OOR>");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (3, -1), "GetIndexAt33 OOR>");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (-1, 0), "GetIndexAt-10");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (-1, 1), "GetIndexAt-11");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (-1, 2), "GetIndexAt-12");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (-1, 3), "GetIndexAt-13 OOR>");
+			Assert.AreEqual (an_int, implementor.GetIndexAt (-1, -1), "GetIndexAt-13 OOR>");
+			
+			
+			an_int = 0;
+			Assert.AreEqual (an_int, implementor.GetColumnAtIndex (0), "GetColumnAtIndex");
+			Assert.AreEqual (an_int, implementor.GetColumnAtIndex (1), "GetColumnAtIndex2");
+			Assert.AreEqual (an_int, implementor.GetColumnAtIndex (2), "GetColumnAtIndex3");
+			Assert.AreEqual (an_int, implementor.GetColumnAtIndex (3), "GetColumnAtIndexOOR>");
+			Assert.AreEqual (an_int, implementor.GetColumnAtIndex (-1), "GetColumnAtIndexOOR<");
+			
+			an_int = -1;
+			Assert.AreEqual (an_int, implementor.GetRowAtIndex (0), "GetRowAtIndex");
+			an_int = 0;
+			Assert.AreEqual (an_int, implementor.GetRowAtIndex (1), "GetRowAtIndex2");
+			an_int = 1;
+			Assert.AreEqual (an_int, implementor.GetRowAtIndex (2), "GetRowAtIndex3");
+			an_int = 2;
+			Assert.AreEqual (an_int, implementor.GetRowAtIndex (3), "GetRowAtIndexOOR>");
+			an_int = -1;
+			Assert.AreEqual (an_int, implementor.GetRowAtIndex (-1), "GetRowAtIndexOOR<");
+			an_int = -1;
+			Assert.AreEqual (an_int, implementor.GetRowAtIndex (4), "GetRowAtIndexOOR>>");
+			
+			an_int = 0;
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (0, 0), "GetColumnExtentAt00");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (0, 1), "GetColumnExtentAt01");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (0, 2), "GetColumnExtentAt02");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (0, 3), "GetColumnExtentAt03 OOR>");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (0, -1), "GetColumnExtentAt0-1 OOR<");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (1, 0), "GetColumnExtentAt10");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (1, 1), "GetColumnExtentAt11");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (1, 2), "GetColumnExtentAt12");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (1, 3), "GetColumnExtentAt13 OOR>");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (1, -1), "GetColumnExtentAt1-1 OOR<");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (-1, 0), "GetColumnExtentAt-10");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (-1, 1), "GetColumnExtentAt-11");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (-1, 2), "GetColumnExtentAt-12");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (-1, 3), "GetColumnExtentAt-13 OOR>");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (-1, -1), "GetColumnExtentAt-1-1 OOR<");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (2, 0), "GetColumnExtentAt20");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (2, 1), "GetColumnExtentAt21");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (2, 2), "GetColumnExtentAt22");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (2, 3), "GetColumnExtentAt23 OOR>");
+			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (2, -1), "GetColumnExtentAt2-1 OOR<");
+			
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (0, 0), "GetRowExtentAt00");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (0, 1), "GetRowExtentAt01");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (0, 2), "GetRowExtentAt02");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (0, 3), "GetRowExtentAt03 OOR>");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (0, -1), "GetRowExtentAt0-1 OOR<");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (1, 0), "GetRowExtentAt10");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (1, 1), "GetRowExtentAt11");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (1, 2), "GetRowExtentAt12");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (1, 3), "GetRowExtentAt13 OOR>");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (1, -1), "GetRowExtentAt1-1 OOR<");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (2, 0), "GetRowExtentAt20");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (2, 1), "GetRowExtentAt21");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (2, 2), "GetRowExtentAt22");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (2, 3), "GetRowExtentAt23 OOR>");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (2, -1), "GetRowExtentAt1-1 OOR<");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (-1, 0), "GetRowExtentAt-10");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (-1, 1), "GetRowExtentAt-11");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (-1, 2), "GetRowExtentAt-12");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (-1, 3), "GetRowExtentAt-13 OOR>");
+			Assert.AreEqual (an_int, implementor.GetRowExtentAt (-1, -1), "GetRowExtentAt-1-1 OOR<");
 		}
 		
 		protected void Relation (Atk.RelationType type, Atk.Object source, params Atk.Object [] expectedTarget)
@@ -1823,9 +1939,9 @@ namespace UiaAtkBridgeTest
 			EventMonitor.Start ();
 			atkComponent.GrabFocus ();
 			EventCollection events = EventMonitor.Pause ();
-			int expectedCount = (transient? 1 : 2);;
+			int expectedCount = (transient ? 1 : 2);
 			string evType = (transient? "object:active-descendant-changed": "object:state-changed:focused");
-			Atk.Object focusedAccessible = (transient? accessible.Parent: accessible);
+			Atk.Object focusedAccessible = (transient ? accessible.Parent: accessible);
 			EventCollection evs = events.FindByRole (focusedAccessible.Role).FindByType (evType);
 			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
 			Assert.AreEqual (expectedCount, evs.Count, "bad number of events expected!" + eventsInXml);

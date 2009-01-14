@@ -52,6 +52,7 @@ FILES =  \
 	ComboBoxDropDown.cs \
 	ComboBoxItem.cs \
 	ComboBoxOptions.cs \
+	ComboBoxOptionsTable.cs \
 	ComponentAdapter.cs \
 	ComponentImplementorHelper.cs \
 	ComponentParentAdapter.cs \

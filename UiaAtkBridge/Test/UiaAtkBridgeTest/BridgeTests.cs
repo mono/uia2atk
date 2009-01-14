@@ -221,33 +221,6 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
-		public void ComboBoxSimple ()
-		{
-			ComboBoxSimple (null);
-		}
-		
-		private void ComboBoxSimple (System.ComponentModel.Component comboBox)
-		{
-			BasicWidgetType type = BasicWidgetType.ComboBoxSimple;
-
-			if (comboBox == null)
-				comboBox = cbSim;
-
-			string [] names = new string [] { "First Item", "Second Item", "Last item" };
-			Atk.Object accessible = GetAccessible (type, names, comboBox);
-			
-			PropertyRole (type, accessible);
-
-			StatesComboBox (accessible);
-
-			Assert.AreEqual (2, accessible.NAccessibleChildren, "numChildren; children roles:" + childrenRoles (accessible));
-
-			Atk.Object menuChild = accessible.RefAccessibleChild (0);
-			CheckComboBoxMenuChild (menuChild, names, true, false);
-			//FIXME: maybe we need to test here like we would test a treeview
-		}
-
-		[Test]
 		public void ToolStripComboBoxSimple ()
 		{
 			ComboBoxSimple (toolStripComboBoxSim);

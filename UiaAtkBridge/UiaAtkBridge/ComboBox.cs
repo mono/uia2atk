@@ -105,8 +105,8 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
-			//FIXME: figure out why Gail comboboxes don't like this state
-			states.RemoveState (Atk.StateType.Focusable);
+			states.AddState (Atk.StateType.ManagesDescendants);
+			states.AddState (Atk.StateType.Focusable);
 			return states;
 		}
 
