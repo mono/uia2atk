@@ -1,3 +1,8 @@
+2009-01-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* TextBoxEntryView.cs: Unimplement Atk.Action interface for textbox
+	(fixes #466111).
+
 2009-01-09  Mike Gorse  <mgorse@novell.com>
 
 	* Button.cs: Revert setting Selectable.

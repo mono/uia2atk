@@ -193,46 +193,6 @@ namespace UiaAtkBridge
 		
 		#endregion 
 		
-		#region ActionImplementor implementation 
-		
-		bool Atk.ActionImplementor.DoAction (int i)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		string Atk.ActionImplementor.GetDescription (int i)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		string Atk.ActionImplementor.GetName (int i)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		string Atk.ActionImplementor.GetKeybinding (int i)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		bool Atk.ActionImplementor.SetDescription (int i, string desc)
-		{
-			throw new NotImplementedException ();
-		}
-		
-		string Atk.ActionImplementor.GetLocalizedName (int i)
-		{
-			throw new NotImplementedException ();
-		}
-
-		int Atk.ActionImplementor.NActions {
-			get {
-				// TODO:
-				return 0;
-			}
-		}
-		
-		#endregion 
 		
 		#region EditableTextImplementor implementation 
 		

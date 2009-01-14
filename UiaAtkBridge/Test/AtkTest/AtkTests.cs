@@ -464,9 +464,6 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);
 			
-//			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
-//			InterfaceAction (type, atkAction, accessible);
-//			
 //			name = "Edit test#2";
 //			accessible = GetAccessible (type, name, true);
 //			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (accessible);
