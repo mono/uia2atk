@@ -411,6 +411,7 @@
     <File name="Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemTableItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemTableItemColumnHeaderItemsEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListView/ListItemEditTableItemColumnHeaderItemsEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemTableItemProviderBehavior.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

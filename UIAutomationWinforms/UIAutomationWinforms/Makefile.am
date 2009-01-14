@@ -61,6 +61,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemScrollItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemSelectionItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/ScrollProviderBehavior.cs \

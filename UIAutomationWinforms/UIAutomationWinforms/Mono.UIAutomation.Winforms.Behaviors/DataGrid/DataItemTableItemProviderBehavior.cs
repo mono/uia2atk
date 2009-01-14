@@ -17,11 +17,12 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008-2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
+
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
@@ -31,19 +32,18 @@ using Mono.UIAutomation.Winforms.Events.DataGrid;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 {
-	internal class DataItemEditTableItemProviderBehavior
-		: DataItemEditGridItemProviderBehavior, ITableItemProvider
+	internal class DataItemTableItemProviderBehavior 
+		: DataItemGridItemProviderBehavior, ITableItemProvider
 	{
 		#region Constructors
 		
-		public DataItemEditTableItemProviderBehavior (DataGridProvider.DataGridDataItemEditProvider editProvider)
-			: base (editProvider)
+		public DataItemTableItemProviderBehavior (ListItemProvider provider)
+			: base (provider)
 		{
-			this.editProvider = editProvider;
 		}
-		
+
 		#endregion
-		
+
 		#region ProviderBehavior Specialization
 		
 		public override AutomationPattern ProviderPattern {
@@ -81,7 +81,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 
 		public IRawElementProviderSimple[] GetColumnHeaderItems ()
 		{
-			return editProvider.ItemProvider.DataGridProvider.HeaderProvider.GetHeaderItems ();
+			return ItemProvider.DataGridProvider.HeaderProvider.GetHeaderItems ();
 		}
 
 		public IRawElementProviderSimple[] GetRowHeaderItems ()
@@ -89,12 +89,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 			return new IRawElementProviderSimple [0];
 		}
 		
-		#endregion
-
-		#region Private Fields
-
-		private DataGridProvider.DataGridDataItemEditProvider editProvider;
-
 		#endregion
 	}
 }

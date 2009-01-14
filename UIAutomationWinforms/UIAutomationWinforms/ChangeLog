@@ -1,5 +1,21 @@
 2009-01-14  Mario Carrion  <mcarrion@novell.com>
 
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemTableItemProviderBehavior.cs:
+	DataItem.TableItem Behavior added.
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: TableItem is always
+	set. DataItem.TableItem Behavior support.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditTableItemProviderBehavior.cs:
+	Returning valid data: HeaderItems instead of current HeaderItem.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemGridItemProviderBehavior.cs:
+	New protected property: ItemProvider.
+
+2009-01-14  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Setting TableItem
 	behavior.
 

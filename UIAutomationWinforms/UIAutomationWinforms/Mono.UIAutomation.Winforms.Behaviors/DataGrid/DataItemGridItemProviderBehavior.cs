@@ -115,6 +115,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 		}
 		
 		#endregion
+
+		#region Protected Properties
+
+		protected DataGridProvider.DataGridDataItemProvider ItemProvider {
+			get { return itemProvider; }
+		}
+
+		#endregion
 		
 		#region Private Fields
 

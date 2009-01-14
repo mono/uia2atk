@@ -153,7 +153,6 @@ namespace Mono.UIAutomation.Winforms
 			UpdateChildren (false);
 			
 			datagrid.UIACollectionChanged += OnUIACollectionChanged;
-			datagrid.UIAColumnHeadersVisibleChanged += OnUIAColumnHeadersVisibleChanged;
 		}
 
 		public override void FinalizeChildControlStructure ()
@@ -162,7 +161,6 @@ namespace Mono.UIAutomation.Winforms
 			datagrid.DataSourceChanged -= OnDataSourceChanged;
 
 			datagrid.UIACollectionChanged -= OnUIACollectionChanged;
-			datagrid.UIAColumnHeadersVisibleChanged -= OnUIAColumnHeadersVisibleChanged;
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -305,7 +303,8 @@ namespace Mono.UIAutomation.Winforms
 				return new DataItemScrollItemProviderBehavior (listItem);
 			else if (behavior == ValuePatternIdentifiers.Pattern)
 				return new DataItemValueProviderBehavior (listItem);
-			// FIXME: Implement TableItem
+			else if (behavior == TableItemPatternIdentifiers.Pattern)
+				return new DataItemTableItemProviderBehavior (listItem);
 			else
 				return null;
 		}
@@ -352,19 +351,6 @@ namespace Mono.UIAutomation.Winforms
 					items.Remove (item);
 					toRemove--;
 				}
-			}
-		}
-
-		private void OnUIAColumnHeadersVisibleChanged (object sender, EventArgs args)
-		{
-			if (datagrid.ColumnHeadersVisible)
-				CreateHeader (true, CurrentTableStyle);
-			else {
-				OnNavigationChildRemoved (true, header);
-				header.Terminate ();
-				header = null;
-
-				SetBehavior (TablePatternIdentifiers.Pattern, null);
 			}
 		}
 
@@ -739,9 +725,6 @@ namespace Mono.UIAutomation.Winforms
 
 				// To keep track of columns
 				DataGridProvider.CurrentTableStyle.GridColumnStyles.CollectionChanged += OnColumnsCollectionChanged;
-
-				// To set/unset TableItem
-				DataGridProvider.ProviderBehaviorSet += OnProviderBehaviorSet;
 			}
 
 			public override void FinalizeChildControlStructure ()
@@ -749,7 +732,6 @@ namespace Mono.UIAutomation.Winforms
 				base.FinalizeChildControlStructure ();
 				
 				DataGridProvider.CurrentTableStyle.GridColumnStyles.CollectionChanged -= OnColumnsCollectionChanged;
-				DataGridProvider.ProviderBehaviorSet -= OnProviderBehaviorSet;
 			}
 
 			public override void SetFocus ()
@@ -822,16 +804,6 @@ namespace Mono.UIAutomation.Winforms
 				} 
 			}
 
-			private void OnProviderBehaviorSet (object sender, ProviderBehaviorEventArgs args)
-			{
-				if (args.Pattern == TablePatternIdentifiers.Pattern) {
-					bool enabled 
-						= (bool) ((IRawElementProviderSimple) sender).GetPropertyValue (AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id);
-					foreach (DataGridDataItemEditProvider edit in columns.Values)
-						edit.SetTableItemBehavior (enabled);
-				}
-			}
-
 			private Dictionary<SWF.DataGridColumnStyle, DataGridDataItemEditProvider> columns;
 			private string name;			
 			private DataGridProvider provider;
@@ -872,8 +844,8 @@ namespace Mono.UIAutomation.Winforms
 				             new DataItemEditValueProviderBehavior (this));
 				SetBehavior (GridItemPatternIdentifiers.Pattern,
 				             new DataItemEditGridItemProviderBehavior (this));
-				if (ItemProvider.DataGridProvider.DataGrid.ColumnHeadersVisible)
-					SetTableItemBehavior (true);
+				SetBehavior (TableItemPatternIdentifiers.Pattern,
+				             new DataItemEditTableItemProviderBehavior (this));
 
 				//Events
 				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
@@ -889,15 +861,6 @@ namespace Mono.UIAutomation.Winforms
 				ItemProvider.DataGridProvider.DataGrid.Focus ();
 				ItemProvider.DataGridProvider.DataGrid.CurrentCell = new SWF.DataGridCell (ItemProvider.Index, 
 				                                                                           ItemProvider.GetColumnIndexOf (this));
-			}
-			
-			public void SetTableItemBehavior (bool setBehavior)
-			{
-				if (setBehavior)
-					SetBehavior (TableItemPatternIdentifiers.Pattern,
-					             new DataItemEditTableItemProviderBehavior (this));
-				else
-					SetBehavior (TableItemPatternIdentifiers.Pattern, null);
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)
