@@ -975,12 +975,6 @@ namespace Mono.UIAutomation.Winforms
 
 				//Use to update our GridItem and TableItem providers
 				listViewProvider.ProviderBehaviorSet += OnProviderBehaviorSet;
-
-
-				if (listView.View == SWF.View.Details)
-					SetBehavior (TableItemPatternIdentifiers.Pattern,
-					             ListProvider.GetListItemBehaviorRealization (TableItemPatternIdentifiers.Pattern,
-					                                                          this));
 			}
 
 			public override void InitializeChildControlStructure ()

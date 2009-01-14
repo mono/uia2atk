@@ -100,7 +100,11 @@ namespace Mono.UIAutomation.Winforms
 			SetBehavior (InvokePatternIdentifiers.Pattern,
 			             listProvider.GetListItemBehaviorRealization (InvokePatternIdentifiers.Pattern,
 			                                                          this));
-
+			//When ListItem is ControlType.DataItem
+			SetBehavior (TableItemPatternIdentifiers.Pattern,
+			             listProvider.GetListItemBehaviorRealization (TableItemPatternIdentifiers.Pattern,
+			                                                          this));
+			
 			// Default Events
 			SetEvent (ProviderEventType.AutomationElementControlTypeProperty,
 			          new AutomationControlTypePropertyEvent (this));

@@ -1,5 +1,13 @@
 2009-01-14  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Setting TableItem
+	behavior.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Setting TableItem
+	behavior is done by ListItem
+
+2009-01-14  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: ListView: Added ListItemTableItem,
 	ListItemTableItemColumnHeaderItems and
