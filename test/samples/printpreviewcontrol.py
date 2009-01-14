@@ -38,11 +38,12 @@ class PrintPreviewControlSample(Form):
 
         # setup button
         self.button = Button()
-        self.button.Text = 'PrintPreviewControl'
+        self.button.Text = 'Button'
         self.button.Click += self.on_click
 
         # setup print_preview_control
         self.print_preview_control = PrintPreviewControl()
+        self.print_preview_control.Text = "PrintPreviewPage"
         self.print_preview_control.Location = Point(30, 80)
         self.print_preview_control.Dock = DockStyle.Fill
 

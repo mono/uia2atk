@@ -1,3 +1,15 @@
+2009-01-14  Calen Chen <cachen@novell.com>
+
+	* samples/printpreviewcontrol.py: add Text for PrintPreviewControl, 
+	rename button's Text
+	* testers/printpreviewcontrol_basic_ops.py,
+	* testers/printpreviewcontrol/printpreviewcontrolframe.py,
+	* testers/printpreviewcontrol/__init__.py,
+	* testers/printpreviewcontrol: add new test: in this example panel 
+	should have "focusable" and "+-focused" states that is different 
+	from #Panel control due to IsKeyboardFocusable is True. test AtkValue 
+	of scrollbars which are contained in PrintPreviewControl 
+
 2009-01-13 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/maskedtextbox/maskedtextboxframe.py: Add assertText method,
