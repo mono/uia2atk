@@ -1,3 +1,8 @@
+2009-01-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Optimize previous
+	workaround for IOOR exception mentioned in bug 465795.
+
 2009-01-14  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonInvokeProviderBehavior.cs,
