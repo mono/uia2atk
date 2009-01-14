@@ -36,9 +36,30 @@ class MaskedTextBoxFrame(accessibles.Frame):
                   (default 0)
         text -- the text that should be inserted into the MaskedTextBox
         """
+        procedurelogger.action('Enter "%s" into %s.' % (text, accessible))
         acc = accessible._accessible
         eti = acc.queryEditableText()
         eti.insertText(offset, text, len(text))
+
+    def assertText(self, accessible, expected_text):
+        'Ensure that the accessible contains the text we expect'
+
+        procedurelogger.expectedResult('%s contains the text: %s' %\
+                                                   (accessible, expected_text))
+        assert accessible.text == expected_text,\
+            "\n".join(["%s does not contain the expected text." % accessible,
+                       "  Expected: %s" % expected_text,
+                       "  Actual: %s" % accessible.text])
+
+        # just for fun, let's make sure the text matches the editable text
+        # (this could change if we ever mix editable text with non-editable
+        # text for the MaskedTextBox control
+        eti = accessible._accessible.queryEditableText()
+        etext = eti.getText(0, eti.characterCount)
+        assert eti.getText(0, eti.characterCount) == accessible.text,\
+                            "\n".join(["Text does not match EditableText.",
+                                       "  Text: %s" % accessible.text,
+                                       "  EditableText: %s" % etext])
 
     #close application window
     def quit(self):

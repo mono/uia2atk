@@ -43,6 +43,18 @@ if app is None:
 # just an alias to make things shorter
 mtbFrame = app.maskedTextBoxFrame
 
+
+# insert some text into the first MaskedTextControl and check the results
+# use two different methods of insertion
 mtbFrame.insertText(mtbFrame.date_text, "11312009")
+sleep(config.SHORT_DELAY)
+mtbFrame.assertText(mtbFrame.date_text, "11/31/2009")
+mtbFrame.date_text.deleteText()
+sleep(config.SHORT_DELAY)
+mtbFrame.assertText(mtbFrame.date_text, "__/__/____")
+mtbFrame.typeText("01141982")
+sleep(config.MEDIUM_DELAY)
+mtbFrame.assertText(mtbFrame.date_text, "01/14/1982")
+
 
 mtbFrame.quit()

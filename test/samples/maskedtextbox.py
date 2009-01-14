@@ -48,11 +48,11 @@ class MaskedTextBoxApp(Form):
         self.maskedTextBox2.Location = Point(10,120)
         self.maskedTextBox2.Width = 180
         self.maskedTextBox2.Height = 30
-        self.maskedTextBox2.Mask = "(086)-000-00000000"
+        self.maskedTextBox2.Mask = "(860)-000-0000"
         self.Controls.Add(self.maskedTextBox2)        
         self.tooltip2 = ToolTip()
         self.tooltip2.ShowAlways = True
-        self.tooltip2.SetToolTip(self.maskedTextBox2, "inter your phone number")
+        self.tooltip2.SetToolTip(self.maskedTextBox2, "Enter your phone number")
 
 ##Mask value = price
         self.maskedTextBox3 = MaskedTextBox()

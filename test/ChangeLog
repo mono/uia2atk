@@ -1,5 +1,13 @@
 2009-01-13 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* testers/maskedtextbox/maskedtextboxframe.py: Add assertText method,
+	which ensures that the accessible contains the text we expect.  Add
+	logging to insertText.
+	* testers/maskedtextbox_basic_ops.py: Add more tests.
+	* samples/maskedtextbox.py: Fix typo and simplify phone text box.
+
+2009-01-13 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* testers/errorprovider/errorproviderframe.py: Provide a little more
 	information in an error message.
 	* testers/errorprovider_basic_ops.py: Add grabFocus=False to the
