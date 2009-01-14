@@ -1,5 +1,9 @@
 2009-01-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* TextBoxEntryView.cs: Fix build.
+
+2009-01-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* TextBoxEntryView.cs: Unimplement Atk.Action interface for textbox
 	(fixes #466111).
 

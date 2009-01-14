@@ -34,7 +34,7 @@ namespace UiaAtkBridge
 {
 	
 	public class TextBoxEntryView : ComponentAdapter, Atk.TextImplementor, 
-	  Atk.ActionImplementor, Atk.EditableTextImplementor, Atk.StreamableContentImplementor
+	  Atk.EditableTextImplementor, Atk.StreamableContentImplementor
 	{
 		private TextImplementorHelper textExpert = null;
 		private IText iText = null;
