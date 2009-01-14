@@ -23,6 +23,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 //
 using System;
+using System.Drawing;
 using System.ComponentModel;
 using System.Windows.Automation;
 using SWF = System.Windows.Forms;
@@ -50,12 +51,14 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		{
 			editProvider.ItemProvider.DataGridProvider.DataGrid.UIAGridCellChanged += OnUIAGridCellChanged;
 			editProvider.ItemProvider.DataGridProvider.DataGrid.UIACollectionChanged += OnUIACollectionChanged;
+			editProvider.ItemProvider.DataGridProvider.DataGrid.Click += OnRowHeaderClick;
 		}
 
 		public override void Disconnect ()
 		{
 			editProvider.ItemProvider.DataGridProvider.DataGrid.UIAGridCellChanged -= OnUIAGridCellChanged;
 			editProvider.ItemProvider.DataGridProvider.DataGrid.UIACollectionChanged -= OnUIACollectionChanged;
+			editProvider.ItemProvider.DataGridProvider.DataGrid.Click -= OnRowHeaderClick;
 		}
 		
 		#endregion 
@@ -73,6 +76,15 @@ namespace Mono.UIAutomation.Winforms.Events.DataGrid
 		private void OnUIACollectionChanged (object sender, CollectionChangeEventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
+		}
+
+		private void OnRowHeaderClick (object sender, EventArgs args)
+		{
+			Point point = editProvider.ItemProvider.DataGridProvider.DataGrid.PointToClient (SWF.Cursor.Position);
+			SWF.DataGrid.HitTestInfo hitTest = editProvider.ItemProvider.DataGridProvider.DataGrid.HitTest (point);
+			if (editProvider.ItemProvider.GetColumnIndexOf (editProvider) == hitTest.Column 
+			    && hitTest.Type == SWF.DataGrid.HitTestType.ColumnHeader)
+				RaiseAutomationPropertyChangedEvent ();
 		}
 
 		#endregion

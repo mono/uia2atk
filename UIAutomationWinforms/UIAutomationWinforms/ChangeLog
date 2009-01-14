@@ -1,5 +1,11 @@
 2009-01-14  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemValuePatternValueEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemEditValuePatternValueEvent.cs:
+	Raising ValuePattern.Value when clicking ColumnHeader.
+
+2009-01-14  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp:
 	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemTableItemProviderBehavior.cs:
