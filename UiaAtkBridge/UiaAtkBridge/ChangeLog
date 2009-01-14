@@ -1,5 +1,22 @@
 2009-01-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* List.cs:
+	* Button.cs:
+	* Spinner.cs:
+	* TreeItem.cs:
+	* MenuItem.cs:
+	* ListItem.cs:
+	* TextLabel.cs:
+	* Hyperlink.cs:
+	* ProgressBar.cs:
+	* ComboBoxItem.cs:
+	* TextContainer.cs:
+	* ComboBoxOptions.cs:
+	* TextBoxEntryView.cs:
+	* TextImplementorHelper.cs: Fix build (track API changes in r123249).
+
+2009-01-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* TextBoxEntryView.cs: Fix build.
 
 2009-01-14  Andrés G. Aragoneses  <aaragoneses@novell.com>

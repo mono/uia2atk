@@ -322,9 +322,13 @@ namespace UiaAtkBridge
 			return textExpert.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
 		}
 		
-		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
+		public Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
 			return textExpert.GetRunAttributes (offset, out startOffset, out endOffset);
+		}
+
+		public Atk.Attribute [] DefaultAttributes {
+			get { return textExpert.DefaultAttributes; }
 		}
 		
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
@@ -374,12 +378,6 @@ namespace UiaAtkBridge
 		
 		public int CaretOffset {
 			get { return 0; }
-		}
-		
-		public GLib.SList DefaultAttributes {
-			get {
-				throw new NotImplementedException ();
-			}
 		}
 		
 		public int CharacterCount {

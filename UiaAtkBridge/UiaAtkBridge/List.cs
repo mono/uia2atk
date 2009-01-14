@@ -180,10 +180,6 @@ AtkObject,
 			return states;
 		}
 		
-		public GLib.SList DefaultAttributes {
-			get { throw new NotImplementedException (); }
-		}
-
 		internal void HandleItemFocus (Adapter item, bool itemFocused)
 		{
 			bool listFocused = (bool) Provider.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
@@ -367,9 +363,13 @@ AtkObject,
 			return text_helper.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
 		}
 		
-		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
+		public Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
 			return text_helper.GetRunAttributes (offset, out startOffset, out endOffset);
+		}
+
+		public Atk.Attribute [] DefaultAttributes {
+			get { return text_helper.DefaultAttributes; }
 		}
 		
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)

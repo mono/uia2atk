@@ -427,7 +427,7 @@ namespace UiaAtkBridge
 				resource.ConvertCoords (ref rect.X, ref rect.Y, false);
 		}
 
-		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
+		public Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
 			// don't ask me why, this is what gail does 
 			// (instead of throwing or returning null):
@@ -441,8 +441,14 @@ namespace UiaAtkBridge
 			startOffset = offset;
 			
 			//TODO:
-			GLib.SList attribs = new GLib.SList (typeof (Atk.TextAttribute));
-			return attribs;
+			return new Atk.Attribute [0];
+		}
+
+		public Atk.Attribute [] DefaultAttributes {
+			get {
+				//TODO:
+				return new Atk.Attribute [0];
+			}
 		}
 
 		bool IsAddition (string super, string sub, out int offset)

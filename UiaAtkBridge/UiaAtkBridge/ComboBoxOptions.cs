@@ -137,7 +137,7 @@ namespace UiaAtkBridge
 			return textExpert.GetTextBeforeOffset (offset, boundaryType, out startOffset, out endOffset);
 		}
 		
-		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
+		public Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
 			return textExpert.GetRunAttributes (offset, out startOffset, out endOffset);
 		}
@@ -186,7 +186,7 @@ namespace UiaAtkBridge
 			get { return 0; }
 		}
 		
-		public GLib.SList DefaultAttributes {
+		public Atk.Attribute [] DefaultAttributes {
 			get {
 				throw new NotImplementedException ();
 			}

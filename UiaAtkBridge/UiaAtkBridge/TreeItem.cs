@@ -149,24 +149,14 @@ namespace UiaAtkBridge
 			return ret;
 		}
 		
-		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
+		public Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
-			// don't ask me why, this is what gail does 
-			// (instead of throwing or returning null):
-			if (offset > Name.Length)
-				offset = Name.Length;
-			else if (offset < 0)
-				offset = 0;
-			
-			//just test values for now:
-			endOffset = Name.Length;
-			startOffset = offset;
-			
-			//TODO:
-			GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
-			return attribs;
+			return textExpert.GetRunAttributes (offset, out startOffset, out endOffset);
 		}
 
+		public Atk.Attribute [] DefaultAttributes {
+			get { return textExpert.DefaultAttributes; }
+		}
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
 		{
 			textExpert.GetCharacterExtents (offset, out x, out y, out width, out height, coords);
@@ -236,14 +226,6 @@ namespace UiaAtkBridge
 		public int CaretOffset {
 			get {
 				return 0;
-			}
-		}
-
-		public GLib.SList DefaultAttributes {
-			get {
-				//TODO:
-				GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
-				return attribs;
 			}
 		}
 

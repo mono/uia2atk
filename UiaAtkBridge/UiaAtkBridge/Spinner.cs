@@ -103,14 +103,6 @@ namespace UiaAtkBridge
 			}
 		}
 
-		public GLib.SList DefaultAttributes {
-			get {
-				//TODO:
-				GLib.SList attribs = new GLib.SList(typeof(Atk.TextAttribute));
-				return attribs;
-			}
-		}
-
 		public int CharacterCount {
 			get {
 				return textExpert.Text.Length;
@@ -149,9 +141,13 @@ namespace UiaAtkBridge
 			return ret;
 		}
 		
-		public GLib.SList GetRunAttributes (int offset, out int startOffset, out int endOffset)
+		public Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
 			return textExpert.GetRunAttributes (offset, out startOffset, out endOffset);
+		}
+
+		public Atk.Attribute [] DefaultAttributes {
+			get { return textExpert.DefaultAttributes; }
 		}
 
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
