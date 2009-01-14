@@ -1,5 +1,12 @@
 2009-01-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Mono.UIAutomation.Winforms/Global.cs:
+	* Mono.UIAutomation.Winforms/FormListener.cs: Move the PreRun hook to a
+	more logical place (it's not related to forms indeed), and where it
+	gets fired earlier (see r123375).
+
+2009-01-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Optimize previous
 	workaround for IOOR exception mentioned in bug 465795.
 

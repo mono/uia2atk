@@ -69,8 +69,6 @@ namespace Mono.UIAutomation.Winforms
 			//        when the form comes into focus).  A different
 			//        event is probably more appropriate.
 			Application.FormAdded += new EventHandler (OnFormAdded);
-			
-			Application.PreRun += new EventHandler (OnPreRun);
 
 			initialized = true;
 		}
@@ -79,15 +77,7 @@ namespace Mono.UIAutomation.Winforms
 		
 #region Static Event Handlers
 		
-		/// <summary>
-		/// Start GLib mainloop in its own thread just before
-		/// winforms mainloop starts
-		/// </summary>
-		static void OnPreRun (object sender, EventArgs args)
-		{
-			// FIXME: Change this temporary hack to pass on the PreRun event
-			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
-		}
+
 		
 		static KeyFilter keyFilter = new KeyFilter ();
 

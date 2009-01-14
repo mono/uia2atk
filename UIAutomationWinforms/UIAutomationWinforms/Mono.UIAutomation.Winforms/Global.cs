@@ -42,10 +42,22 @@ namespace Mono.UIAutomation.Winforms
 		/// </summary>
 		public static void Initialize ()
 		{
+			Application.PreRun += new EventHandler (OnPreRun);
 			FormListener.Initialize ();
 			ToolTipListener.Initialize ();
 			HelpProviderListener.Initialize ();
 			ErrorProviderListener.Initialize ();
+		}
+
+		/// <summary>
+		/// Start GLib mainloop in its own thread just before
+		/// winforms mainloop starts, but after gtk_init ()
+		/// has been called by MWF
+		/// </summary>
+		static void OnPreRun (object sender, EventArgs args)
+		{
+			// FIXME: Change this temporary hack to pass on the PreRun event
+			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
 		}
 	}
 }
