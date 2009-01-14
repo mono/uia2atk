@@ -1,5 +1,11 @@
 2009-01-13  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/ExpandCollapseProviderBehavior.cs:
+	Reverting r123256. Keeping this as LAMESPEC.
+
+2009-01-13  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: ListItem supports
 	GridItem and TableItem patterns when ListViewProvider suppors Grid
 	and Table patterns.

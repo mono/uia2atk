@@ -78,7 +78,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 		#region IExpandCollapseProvider Interface
 		
 		public ExpandCollapseState ExpandCollapseState {
-			get {			
+			get {
 				return ((SWF.ComboBox) Provider.Control).DroppedDown ? ExpandCollapseState.Expanded 
 					: ExpandCollapseState.Collapsed;
 			}
@@ -86,9 +86,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 
 		public void Collapse ()
 		{
-			if (((SWF.ComboBox) Provider.Control).DropDownStyle == SWF.ComboBoxStyle.Simple)
-				return;
-			
 			if (Provider.Control.Enabled == false)
 				throw new ElementNotEnabledException ();
 			
@@ -97,9 +94,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ComboBox
 
 		public void Expand ()
 		{
-			if (((SWF.ComboBox) Provider.Control).DropDownStyle == SWF.ComboBoxStyle.Simple)
-				return;
-
 			if (Provider.Control.Enabled == false)
 				throw new ElementNotEnabledException ();
 			

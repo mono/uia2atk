@@ -89,8 +89,6 @@ namespace Mono.UIAutomation.Winforms
 
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
 			             new SelectionProviderBehavior (this));
-			SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
-			             new ExpandCollapseProviderBehavior (this));
 		}
 		
 		public override void Terminate ()
@@ -156,29 +154,35 @@ namespace Mono.UIAutomation.Winforms
 		private void UpdateBehaviors (bool generateEvent) 
 		{
 			if (comboboxControl.DropDownStyle == SWF.ComboBoxStyle.Simple) {
+				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern, 
+				             null);
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new ValueProviderBehavior (this));
 
 				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
-				          new AutomationHasKeyboardFocusPropertyEvent (this));
+					  new AutomationHasKeyboardFocusPropertyEvent (this));
 				
 				TerminateButtonProvider (generateEvent);
 				InitializeEditProvider (generateEvent);
 			} else if (comboboxControl.DropDownStyle == SWF.ComboBoxStyle.DropDown) {
+				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
+				             new ExpandCollapseProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern,
 				             new ValueProviderBehavior (this));
 
 				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
-				          null);
+					  null);
 				
 				InitializeButtonProvider (generateEvent);
 				InitializeEditProvider (generateEvent);
 			} else if (comboboxControl.DropDownStyle == SWF.ComboBoxStyle.DropDownList) {
+				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
+				             new ExpandCollapseProviderBehavior (this));
 				SetBehavior (ValuePatternIdentifiers.Pattern, 
 				             null);
 
 				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
-				          new AutomationHasKeyboardFocusPropertyEvent (this));
+					  new AutomationHasKeyboardFocusPropertyEvent (this));
 				
 				InitializeButtonProvider (generateEvent);
 				TerminateEditProvider (generateEvent);

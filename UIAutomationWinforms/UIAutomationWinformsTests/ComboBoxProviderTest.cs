@@ -59,9 +59,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
-			              true);
-
-			TestComboBoxPatterns (provider);
+			              true);			              
 		}
 
 		#endregion
@@ -236,8 +234,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "Added item.FragmentRoot != list");
 			item0 = list.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNotNull (item0, "We should have children in List");
-			TestListItemPatterns (item0);
-			
+
 			//Add item 1. (Items.Add)
 
 			bridge.ResetEventLists ();
@@ -257,7 +254,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (item0.Navigate (NavigateDirection.NextSibling), 
 			                 item1, 
 			                 "Navigation invalid: item1 <- item0");
-			TestListItemPatterns (item1);
 
 			//Remove item 0 (Items.RemoveAt)
 
@@ -308,7 +304,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (item2.Navigate (NavigateDirection.NextSibling), 
 			                 item3, 
 			                 "Navigation invalid: item2 <- item3");
-			TestListItemPatterns (item2);
 
 			// We have: "Item1", "Item2" "Item3". Lets replace "Item2" with "Item4"
 			bridge.ResetEventLists ();
@@ -392,7 +387,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			expandCollapseProvider.Collapse ();
 			Assert.IsTrue ((bool)listChild.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
 			               "the list of a combobox should be offscreen after collapsing");
-			TestComboBoxPatterns (rootProvider);
 			
 			bridge.ResetEventLists ();
 			combobox.DropDownStyle = ComboBoxStyle.DropDown;
@@ -416,7 +410,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			expandCollapseProvider.Collapse ();
 			Assert.IsTrue ((bool)listChild.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
 			               "the list of a combobox should be offscreen after collapsing");
-			TestComboBoxPatterns (rootProvider);
 			
 			bridge.ResetEventLists ();
 			combobox.DropDownStyle = ComboBoxStyle.Simple;
@@ -424,11 +417,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			               "Should generate some event after changing to ComboBoxStyle.Simple");
 			Assert.IsNotNull (rootProvider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id),
 			                  "Simple: Selection Pattern IS supported");
-			Assert.IsNotNull (rootProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id),
-			                  "Simple: ExpandCollapse Pattern IS supported");
+			// LAMESPEC: ExpandCollapsePatternIdentifiers must always be implemented
+			Assert.IsNull (rootProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id),
+			               "Simple: ExpandCollapse Pattern IS NOT supported");
 			Assert.IsNotNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
 			                  "Simple: ValuePattern Pattern IS supported");
-			TestComboBoxPatterns (rootProvider);
 		}
 
 		[Test]
