@@ -174,16 +174,24 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
 				int index = item.Index;
 				if (index == -1)
-					return SD.Rectangle.Empty;
+					return Helper.RectangleToRect (SD.Rectangle.Empty);
+
+				SD.Rectangle itemRec;
+				try {
+					itemRec = listView.GetItemRect (index);
+				//this may happen because the inner "items_location" array has not been resized yet
+				//FIXME: find a way to do this without paying the exception performance penalty
+				} catch (IndexOutOfRangeException) {
+					return Helper.RectangleToRect (SD.Rectangle.Empty);
+				}
 				
-				SD.Rectangle itemRec = listView.GetItemRect (index);
 				SD.Rectangle rectangle = listView.Bounds;
 				
 				itemRec.X += rectangle.X;
 				itemRec.Y += rectangle.Y;
 				
 				itemRec = listView.Parent.RectangleToScreen (itemRec);
-				 
+				
 				return Helper.RectangleToRect (itemRec);
 			} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
 				return Helper.IsListItemOffScreen ((Rect) item.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id),

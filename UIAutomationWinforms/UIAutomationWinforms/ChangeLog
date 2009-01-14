@@ -1,3 +1,11 @@
+2009-01-13  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Fix an exception
+	mentioned in 465795. We should hook on another event but the Redraw
+	method call is pretty much out of our control.
+
+	* Mono.UIAutomation.Winforms/Helper.cs: Extend RectangleToRect.
+
 2009-01-13  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: CWL removed.
