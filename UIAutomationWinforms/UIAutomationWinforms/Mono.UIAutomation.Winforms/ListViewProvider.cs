@@ -266,10 +266,8 @@ namespace Mono.UIAutomation.Winforms
 			else {
 				ListItemProvider []providers = new ListItemProvider [listView.SelectedItems.Count];
 
-				for (int index = 0; index < listView.SelectedItems.Count; index++) {
+				for (int index = 0; index < listView.SelectedItems.Count; index++)
 					providers [index] = GetItemProviderFrom (this, listView.SelectedItems [index], false);
-					Console.WriteLine ("ListviewProvider: {0}-{1}", index, providers [index].Index);
-				}
 			
 				return providers;
 			}
