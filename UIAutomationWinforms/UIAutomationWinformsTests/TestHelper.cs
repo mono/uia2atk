@@ -47,7 +47,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// Set the bridge assembly name to a value that will
 			// fail when the static constructor attempts to load it.
 			Environment.SetEnvironmentVariable ("MONO_UIA_BRIDGE",
-			                                    "garbage");
+			                                    "Ignore this intentional error");
 
 			/*
 			// HACK: Clear the string referencing the UiaAtkBridge

@@ -1,3 +1,8 @@
+2009-01-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* TestHelper.cs: Change MONO_UIA_BRIDGE value to make for an error
+	message that is more clear about being intentional.
+
 2009-01-14  Mario Carrion  <mcarrion@novell.com>
 
 	* DataGridProviderTest.cs: Testing Child Patterns.
