@@ -100,6 +100,14 @@ public partial class MainWindow {
     
     private Gtk.HBox hbox2;
     
+    private Gtk.HPaned hpaned1;
+    
+    private Gtk.VScale vscale1;
+    
+    private Gtk.ScrolledWindow GtkScrolledWindow2;
+    
+    private Gtk.NodeView nodeview1;
+    
     private Gtk.ScrolledWindow GtkScrolledWindow1;
     
     private Gtk.TextView txtViewTest;
@@ -478,6 +486,38 @@ public partial class MainWindow {
         this.hbox2.Name = "hbox2";
         this.hbox2.Spacing = 6;
         // Container child hbox2.Gtk.Box+BoxChild
+        this.hpaned1 = new Gtk.HPaned();
+        this.hpaned1.CanFocus = true;
+        this.hpaned1.Name = "hpaned1";
+        this.hpaned1.Position = 19;
+        // Container child hpaned1.Gtk.Paned+PanedChild
+        this.vscale1 = new Gtk.VScale(null);
+        this.vscale1.CanFocus = true;
+        this.vscale1.Name = "vscale1";
+        this.vscale1.Adjustment.Upper = 100;
+        this.vscale1.Adjustment.PageIncrement = 10;
+        this.vscale1.Adjustment.StepIncrement = 1;
+        this.vscale1.DrawValue = true;
+        this.vscale1.Digits = 0;
+        this.vscale1.ValuePos = ((Gtk.PositionType)(2));
+        this.hpaned1.Add(this.vscale1);
+        Gtk.Paned.PanedChild w29 = ((Gtk.Paned.PanedChild)(this.hpaned1[this.vscale1]));
+        w29.Resize = false;
+        // Container child hpaned1.Gtk.Paned+PanedChild
+        this.GtkScrolledWindow2 = new Gtk.ScrolledWindow();
+        this.GtkScrolledWindow2.Name = "GtkScrolledWindow2";
+        this.GtkScrolledWindow2.ShadowType = ((Gtk.ShadowType)(1));
+        // Container child GtkScrolledWindow2.Gtk.Container+ContainerChild
+        this.nodeview1 = new Gtk.NodeView();
+        this.nodeview1.CanFocus = true;
+        this.nodeview1.Name = "nodeview1";
+        this.nodeview1.HeadersClickable = true;
+        this.GtkScrolledWindow2.Add(this.nodeview1);
+        this.hpaned1.Add(this.GtkScrolledWindow2);
+        this.hbox2.Add(this.hpaned1);
+        Gtk.Box.BoxChild w32 = ((Gtk.Box.BoxChild)(this.hbox2[this.hpaned1]));
+        w32.Position = 0;
+        // Container child hbox2.Gtk.Box+BoxChild
         this.GtkScrolledWindow1 = new Gtk.ScrolledWindow();
         this.GtkScrolledWindow1.Name = "GtkScrolledWindow1";
         this.GtkScrolledWindow1.ShadowType = ((Gtk.ShadowType)(1));
@@ -487,8 +527,8 @@ public partial class MainWindow {
         this.txtViewTest.Name = "txtViewTest";
         this.GtkScrolledWindow1.Add(this.txtViewTest);
         this.hbox2.Add(this.GtkScrolledWindow1);
-        Gtk.Box.BoxChild w30 = ((Gtk.Box.BoxChild)(this.hbox2[this.GtkScrolledWindow1]));
-        w30.Position = 1;
+        Gtk.Box.BoxChild w34 = ((Gtk.Box.BoxChild)(this.hbox2[this.GtkScrolledWindow1]));
+        w34.Position = 1;
         // Container child hbox2.Gtk.Box+BoxChild
         this.frame1 = new Gtk.Frame();
         this.frame1.Name = "frame1";
@@ -504,22 +544,22 @@ public partial class MainWindow {
         this.GtkLabel13.UseMarkup = true;
         this.frame1.LabelWidget = this.GtkLabel13;
         this.hbox2.Add(this.frame1);
-        Gtk.Box.BoxChild w32 = ((Gtk.Box.BoxChild)(this.hbox2[this.frame1]));
-        w32.Position = 2;
-        w32.Expand = false;
-        w32.Fill = false;
+        Gtk.Box.BoxChild w36 = ((Gtk.Box.BoxChild)(this.hbox2[this.frame1]));
+        w36.Position = 2;
+        w36.Expand = false;
+        w36.Fill = false;
         this.vbox1.Add(this.hbox2);
-        Gtk.Box.BoxChild w33 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
-        w33.Position = 5;
+        Gtk.Box.BoxChild w37 = ((Gtk.Box.BoxChild)(this.vbox1[this.hbox2]));
+        w37.Position = 5;
         // Container child vbox1.Gtk.Box+BoxChild
         this.statusbar1 = new Gtk.Statusbar();
         this.statusbar1.Name = "statusbar1";
         this.statusbar1.Spacing = 6;
         this.vbox1.Add(this.statusbar1);
-        Gtk.Box.BoxChild w34 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
-        w34.Position = 7;
-        w34.Expand = false;
-        w34.Fill = false;
+        Gtk.Box.BoxChild w38 = ((Gtk.Box.BoxChild)(this.vbox1[this.statusbar1]));
+        w38.Position = 7;
+        w38.Expand = false;
+        w38.Fill = false;
         this.Add(this.vbox1);
         if ((this.Child != null)) {
             this.Child.ShowAll();
