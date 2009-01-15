@@ -1,3 +1,14 @@
+2009-01-15  Brad Taylor  <brad@getcoded.net>
+
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs: 
+	Implement ReturnRawElementProvider as a hashtable of weak references
+	(because marshaling the object is not only not possible, but makes no
+	sense).  Add RetrieveAndDeleteProvider to allow the contents of the
+	weak reference to be retrieved.
+
+	* AssemblyInfo.cs.in: Allow UIAutomationWinforms to access internal
+	methods.
+
 2008-11-24  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:

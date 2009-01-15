@@ -27,6 +27,7 @@ using System;
 using System.Windows.Automation;
 
 using System.Reflection;
+using System.Collections.Generic;
 
 using Mono.UIAutomation.Bridge;
 
@@ -39,6 +40,8 @@ namespace System.Windows.Automation.Provider
 		public const int RootObjectId = -25;
 		
 		private static IAutomationBridge bridge = null;
+		private static Dictionary<IntPtr, WeakReference> providerMapping
+			= new Dictionary<IntPtr, WeakReference> ();
 		
 		static AutomationInteropProvider ()
 		{
@@ -83,7 +86,27 @@ namespace System.Windows.Automation.Provider
 
 		public static IntPtr ReturnRawElementProvider (IntPtr hwnd, IntPtr wParam, IntPtr lParam, IRawElementProviderSimple el) 
 		{
-			throw new NotImplementedException();
+			// Hopefully using the hwnd as a hashcode is unique
+			// enough.  I am concerned about being called multiple
+			// times for the same hwnd before the value is
+			// retrieved though.
+			providerMapping[hwnd] = new WeakReference (el);
+			return hwnd;
+		}
+
+		internal static IRawElementProviderSimple RetrieveAndDeleteProvider (IntPtr result)
+		{
+			if (!providerMapping.ContainsKey (result)) {
+				return null;
+			}
+
+			WeakReference weakRef = providerMapping[result];
+			if (!weakRef.IsAlive) {
+				return null;
+			}
+			
+			providerMapping.Remove (result);
+			return weakRef.Target as IRawElementProviderSimple;
 		}
 	}
 	
