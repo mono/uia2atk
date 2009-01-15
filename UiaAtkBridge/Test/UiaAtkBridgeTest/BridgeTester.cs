@@ -69,6 +69,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.DomainUpDown dud1 = new SWF.DomainUpDown ();
 		protected SWF.Form form = new SWF.Form ();
 		protected SWF.MenuStrip menuStrip1 = new SWF.MenuStrip ();
+		protected SWF.ContextMenuStrip contextMenu = new SWF.ContextMenuStrip ();
 		protected SWF.Panel panel1 = new SWF.Panel ();
 		protected SWF.PictureBox pboxWithoutImage = new SWF.PictureBox ();
 		protected SWF.PictureBox pboxWithImage = new SWF.PictureBox ();
@@ -802,14 +803,25 @@ namespace UiaAtkBridgeTest
 		  BasicWidgetType type, List <MenuLayout> menu)
 		{
 			System.ComponentModel.Component widget;
+
+			SWF.ToolStripItemCollection menuItems = null;
 			
+			if (type == BasicWidgetType.ContextMenu)
+				menuItems = contextMenu.Items;
+			else
+				menuItems = menuStrip1.Items;
+
 			//cleanup
-			menuStrip1.Items.Clear ();
+			menuItems.Clear ();
 			
-			widget = AddRecursively (menuStrip1.Items, menu, type);
+			widget = AddRecursively (menuItems, menu, type);
 			
 			if (type == BasicWidgetType.MainMenuBar)
 				widget = menuStrip1;
+			else if (type == BasicWidgetType.ContextMenu) {
+				contextMenu.Show (form, 0, 0);
+				widget = contextMenu;
+			}
 			
 			return GetAdapterForWidget (widget);
 		}
