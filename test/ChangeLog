@@ -1,3 +1,14 @@
+2009-01-15 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/maskedtextbox/maskedtextboxframe.py: Remove insertText method
+	because it has been added to Strongwind (in revision 28).  Add
+	assertCharacterCount method to ensure that the accessible character
+	count is what we expect.
+	* testers/states.py: Add TextBox and MaskedTextBox.  Doesn't exactly
+	match current Bridge Spec because of bug 466166.
+	* testers/maskedtextbox_basic_ops.py: Finish test.  Add test cases
+	and/or bug references for all open bugs.
+
 2009-01-14  Calen Chen <cachen@novell.com>
 
 	* samples/printpreviewcontrol.py: add Text for PrintPreviewControl, 

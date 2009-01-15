@@ -282,6 +282,12 @@ class Text(object):
 class ToolTip(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
+class TextBox(object):
+    states = (EDITABLE, ENABLED, FOCUSABLE, SINGLE_LINE, SENSITIVE, SHOWING, VISIBLE)
+
+class MaskedTextBox(TextBox):
+    pass
+
 class MenuStrip(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 

@@ -26,21 +26,6 @@ class MaskedTextBoxFrame(accessibles.Frame):
         self.money_text = masked_text_boxes[2]
         self.blank_text = masked_text_boxes[3]
 
-    def insertText(self, accessible, text, offset=0):
-        """Insert text into MaskedTextBox using EditableText::insertText
-
-        Keyword arguments:
-        acc -- the MaskedTextBox where the text should be inserted
-        offset -- integer offset from the beginning of the MaskedTextBox
-                  describing where the text should be inserted.
-                  (default 0)
-        text -- the text that should be inserted into the MaskedTextBox
-        """
-        procedurelogger.action('Enter "%s" into %s.' % (text, accessible))
-        acc = accessible._accessible
-        eti = acc.queryEditableText()
-        eti.insertText(offset, text, len(text))
-
     def assertText(self, accessible, expected_text):
         'Ensure that the accessible contains the text we expect'
 
@@ -60,6 +45,15 @@ class MaskedTextBoxFrame(accessibles.Frame):
                             "\n".join(["Text does not match EditableText.",
                                        "  Text: %s" % accessible.text,
                                        "  EditableText: %s" % etext])
+
+    def assertCharacterCount(self, accessible, expected_char_count):
+        'Ensure that the accessible character count is what we expect'
+
+        eti = accessibles._accessible.queryEditableText()
+        char_count = eti.characterCount
+        assert expected_char_count == char_count,\
+                "Character count was %d instead of %d" %\
+                                              (char_count, expected_char_count)
 
     #close application window
     def quit(self):
