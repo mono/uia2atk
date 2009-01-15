@@ -495,10 +495,13 @@ namespace UiaAtkBridge
 
 			// All controls that have TopLevelRootItem as the
 			// parent go here
-			if (controlTypeId == ControlType.Window.Id)
+			if (controlTypeId == ControlType.Window.Id) {
 				HandleNewWindowControlType (simpleProvider);
- 			else if (controlTypeId == ControlType.ToolTip.Id)
+				return;
+			} else if (controlTypeId == ControlType.ToolTip.Id) {
  				HandleNewToolTipControlType (simpleProvider);
+				return;
+			}
 
 			ParentAdapter parentAdapter = GetParentAdapter (simpleProvider);
 			if (parentAdapter == null) {

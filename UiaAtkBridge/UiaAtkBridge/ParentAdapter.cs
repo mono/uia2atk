@@ -106,7 +106,7 @@ namespace UiaAtkBridge
 				return;
 			}
 
-			Console.WriteLine ("RemoveChild: {0}", childToRemove.GetType ());
+			//Console.WriteLine ("RemoveChild: {0}", childToRemove.GetType ());
 			
 			if (childToRemove is ParentAdapter) {
 				((ParentAdapter)childToRemove).RemoveUnmanagedChildren ();
