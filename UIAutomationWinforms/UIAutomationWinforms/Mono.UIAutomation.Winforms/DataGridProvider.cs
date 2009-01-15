@@ -40,6 +40,7 @@ using Mono.UIAutomation.Winforms.Behaviors.DataGrid;
 namespace Mono.UIAutomation.Winforms
 {
 
+	[MapsComponent (typeof (SWF.DataGrid))]
 	internal class DataGridProvider 
 		: FragmentRootControlProvider, IListProvider, IScrollBehaviorSubject
 	{

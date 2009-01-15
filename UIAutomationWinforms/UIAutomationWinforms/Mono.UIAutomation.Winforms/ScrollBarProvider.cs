@@ -28,6 +28,7 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using System.ComponentModel;
 using Mono.Unix;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ScrollBar;
@@ -36,7 +37,7 @@ using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
-
+	[MapsComponent (typeof (ScrollBar), ProvidesMapper=true)]
 	internal class ScrollBarProvider : FragmentRootControlProvider
 	{
 		
@@ -46,6 +47,43 @@ namespace Mono.UIAutomation.Winforms
 		{
 			orientation = scrollbar is HScrollBar 
 				? OrientationType.Horizontal : OrientationType.Vertical;
+		}
+		
+		#endregion
+
+		#region Static Methods
+
+		public static void RegisterComponentMappings ()
+		{	
+			ProviderFactory.RegisterComponentProviderMapper (
+				typeof (ScrollBar), PerformComponentMapping);
+		}
+
+		public static IRawElementProviderFragment PerformComponentMapping (Component component)
+		{
+			ScrollBar scb = component as ScrollBar;
+			if (scb == null) {
+				return null;
+			}
+
+			//TODO:
+			//   We need to add here a ScrollableControlProvider and then verify
+			//   if the internal scrollbar instances are matching this one,
+			//   if so, then we return a scrollbar, otherwise we return a pane.
+#pragma warning disable 219
+			ScrollableControl scrollable;
+			//ScrollableControlProvider scrollableProvider;
+			if ((scrollable = scb.Parent as ScrollableControl) != null
+			    || scb.Parent == null) {
+#pragma warning restore 219
+			//	scrollableProvider = (ScrollableControlProvider) GetProvider (scrollable);
+			//	if (scrollableProvider.ScrollBarExists (scb) == true)
+					return new ScrollBarProvider (scb);
+			//	else 
+			//		provider = new PaneProvider (scb);
+			}
+
+			return new PaneProvider (scb);
 		}
 
 		#endregion

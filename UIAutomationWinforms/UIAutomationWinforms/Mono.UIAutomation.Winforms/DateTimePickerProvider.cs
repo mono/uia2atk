@@ -41,6 +41,7 @@ using Mono.Unix;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (DateTimePicker))]
 	internal class DateTimePickerProvider : FragmentRootControlProvider
 	{
 #region Public Methods

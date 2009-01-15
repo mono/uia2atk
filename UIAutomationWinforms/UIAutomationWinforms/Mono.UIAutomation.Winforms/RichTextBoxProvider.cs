@@ -33,6 +33,7 @@ using Mono.UIAutomation.Winforms.Behaviors.TextBox;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (RichTextBox))]
 	internal class RichTextBoxProvider : TextBoxProvider
 	{
 		public RichTextBoxProvider (TextBoxBase textBoxBase) : base (textBoxBase)

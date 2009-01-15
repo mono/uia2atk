@@ -33,6 +33,7 @@ using SWF = System.Windows.Forms;
 namespace Mono.UIAutomation.Winforms
 {
 
+	[MapsComponent (typeof (SWF.ToolTip))]
 	internal class ToolTipProvider : ToolTipBaseProvider
 	{
 

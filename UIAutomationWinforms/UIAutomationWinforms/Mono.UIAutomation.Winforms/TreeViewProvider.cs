@@ -42,6 +42,7 @@ using ETVTN = Mono.UIAutomation.Winforms.Events.TreeView.TreeNode;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (SWF.TreeView))]
 	internal class TreeViewProvider : TreeNodeRootProvider, IScrollBehaviorSubject
 	{
 		#region Private Members

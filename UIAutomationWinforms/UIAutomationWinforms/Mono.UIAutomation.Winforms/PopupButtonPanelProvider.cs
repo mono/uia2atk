@@ -34,6 +34,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (SWF.PopupButtonPanel))]
 	internal class PopupButtonPanelProvider : FragmentRootControlProvider
 	{
 		public PopupButtonPanelProvider (SWF.PopupButtonPanel buttonPanel) :

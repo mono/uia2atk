@@ -25,6 +25,7 @@
 
 using System;
 using Mono.Unix;
+using System.Reflection;
 using System.Collections.Generic;
 using System.ComponentModel;
 using SWF = System.Windows.Forms;
@@ -33,6 +34,7 @@ using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
+	internal delegate IRawElementProviderFragment ComponentProviderMapperHandler (Component component);
 
 	public static class ProviderFactory
 	{	
@@ -48,7 +50,17 @@ namespace Mono.UIAutomation.Winforms
 			componentProviders;
 		
 		private static List<IRawElementProviderFragmentRoot> formProviders;
-		
+
+		private static Dictionary<Type, Type> providerComponentMap
+			= new Dictionary<Type, Type> ();
+
+		private static Dictionary<Type, ComponentProviderMapperHandler> componentProviderMappers
+			= new Dictionary<Type, ComponentProviderMapperHandler> ();
+
+		#endregion
+	
+		#region Static Methods
+
 		static ProviderFactory ()
 		{
 			Catalog.Init (Globals.CatalogName, Globals.LocalePath);
@@ -57,6 +69,51 @@ namespace Mono.UIAutomation.Winforms
 				new Dictionary<Component,IRawElementProviderFragment> ();
 			
 			formProviders = new List<IRawElementProviderFragmentRoot> ();
+
+			InitializeProviderHash ();
+		}
+
+		private static void InitializeProviderHash ()
+		{
+			foreach (Type t in typeof (ProviderFactory).Assembly.GetTypes ()) {
+				object[] attrs = t.GetCustomAttributes (
+					typeof (MapsComponentAttribute), false);
+
+				foreach (Attribute attr in attrs) {
+					MapsComponentAttribute mca
+						= attr as MapsComponentAttribute;
+					if (mca == null) {
+						continue;
+					}
+
+					if (mca.ProvidesMapper) {
+						MethodInfo mi = t.GetMethod ("RegisterComponentMappings",
+						                             BindingFlags.Static
+						                             | BindingFlags.Public,
+						                             null, new Type[0], null);
+						if (mi == null) {
+							Console.WriteLine (
+								"WARNING: {0} is a ProvidesMapper but does not implement RegisterComponentMappings.", t
+							);
+							continue;
+						}
+
+						// Allow the class to register it's mappings
+						mi.Invoke (null, null);
+						continue;
+					}
+
+					if (providerComponentMap.ContainsKey (mca.From)) {
+						Console.WriteLine (
+							"WARNING: Component map already contains a provider for {0}.  Ignoring.",
+							mca.From
+						);
+						continue;
+					}
+
+					providerComponentMap.Add (mca.From, t);
+				}
+			}
 		}
 		
 		#endregion
@@ -83,210 +140,103 @@ namespace Mono.UIAutomation.Winforms
 		                                                       bool initialize,
 		                                                       bool forceInitializeChildren)
 		{
-			SWF.Label l;
-			SWF.Button b;
-			SWF.RadioButton r;
-			SWF.CheckBox c;
-			SWF.TextBox t;
-			SWF.RichTextBox rt;
-			SWF.LinkLabel ll;
-			SWF.NumericUpDown nud;
-			SWF.DomainUpDown dud;
-			FragmentControlProvider provider = null;
-			SWF.Form f;
-			SWF.GroupBox gb;
-			SWF.StatusBar sb;
-			SWF.ComboBox cb;
-			SWF.CheckedListBox clb;
-			SWF.ListBox lb;
-			SWF.ScrollBar scb;
-			SWF.PictureBox pb;
-			SWF.ToolTip tt;
-			SWF.ProgressBar pgb;
-			SWF.HelpProvider hlp;
-			SWF.ErrorProvider errp;
-			SWF.TabControl tc;
-			SWF.TabPage tp;
-			SWF.ListView lv;
-			SWF.WebBrowser wb;
-			SWF.Panel p;
-			SWF.MaskedTextBox mtb;
-			SWF.MonthCalendar mc;
-			SWF.SplitContainer sc;
-			SWF.Splitter s;
-			SWF.ToolBar tb;
-			SWF.TreeView tv;
-			SWF.DataGrid dgrid;
-			SWF.DateTimePicker dtp;
-			SWF.PrintPreviewControl ppc;
-			SWF.ColorDialog.BaseColorControl bcc;
-			SWF.ColorDialog.BaseColorControl.SmallColorControl scc;
-			
-			SWF.StatusStrip ss;
-			SWF.MenuStrip ms;
-			SWF.ToolStrip ts;
-			SWF.ToolStripSplitButton tssb;
-			SWF.ToolStripDropDownItem tsddi;
-			SWF.ToolStripLabel tsl;
-			SWF.ToolStripTextBox tstb;
-			SWF.ToolStripProgressBar tspb;
-			SWF.ToolStripComboBox tscb;
-			SWF.ToolStripSeparator tss;
-			SWF.ToolStripButton tsb;
-			SWF.MessageBox.MessageBoxForm msgForm;
-			SWF.PopupButtonPanel pbp;
-			SWF.PopupButtonPanel.PopupButton pbtn;
-			
 			if (component == null)
 				return null;
 
-			provider = (FragmentControlProvider) FindProvider (component);
-			if (provider != null) {
+			// First check if we've seen this component before
+			IRawElementProviderFragment provider = FindProvider (component);
+			if (provider != null)
 				return provider;
+
+			// Send a WndProc message to see if the control
+			// implements it's own provider.
+			if (component is SWF.Control
+			    // Sending WndProc to a form is broken for some reason
+			    && !(component is SWF.Form)) {
+
+				SWF.Control control = component as SWF.Control;
+				IRawElementProviderSimple simpleProvider;
+				IntPtr result;
+
+				result = SWF.NativeWindow.WndProc (control.Handle, SWF.Msg.WM_GETOBJECT,
+				                                   IntPtr.Zero, IntPtr.Zero);
+				if (result != IntPtr.Zero) {
+					simpleProvider = AutomationInteropProvider
+						.RetrieveAndDeleteProvider (result);
+
+					// TODO: If simpleProvider isn't a
+					// Fragment, wrap it with a fragment
+					// wrapper to preserve navigation
+					provider = simpleProvider as IRawElementProviderFragment;
+				}
 			}
 
-			// NOTE: MessageBoxForm must always be before Form in this list.
-			if ((msgForm = component as SWF.MessageBox.MessageBoxForm) != null)
-				provider = new MessageBoxFormProvider (msgForm);
-			else if ((f = component as SWF.Form) != null) {
-				provider = new FormProvider (f);
-				formProviders.Add ((IRawElementProviderFragmentRoot) provider);
-			} else if ((wb = component as SWF.WebBrowser) != null)
-				provider = new WebBrowserProvider (wb);
-			else if ((gb = component as SWF.GroupBox) != null)
-				provider = new GroupBoxProvider (gb);
-			else if ((b = component as SWF.Button) != null)
-				provider = new ButtonProvider (b);
-			else if ((r = component as SWF.RadioButton) != null)
-				provider = new RadioButtonProvider (r);
-			else if ((c = component as SWF.CheckBox) != null)
-				provider = new CheckBoxProvider (c);
-			else if ((t = component as SWF.TextBox) != null)
-				provider = new TextBoxProvider (t);
-			else if ((ll = component as SWF.LinkLabel) != null)
-				provider = new LinkLabelProvider (ll);
-			else if ((l = component as SWF.Label) != null)
-				provider = new LabelProvider (l);
-			// NOTE: DomainUpDown must always be before UpDownBase in this list.
-			else if ((dud = component as SWF.DomainUpDown) != null)
-				provider = new DomainUpDownProvider (dud);
-			else if ((nud = component as SWF.NumericUpDown) != null)
-				provider = new NumericUpDownProvider (nud);
-			else if ((sb = component as SWF.StatusBar) != null)
-				provider = new StatusBarProvider (sb);
-			else if ((cb = component as SWF.ComboBox) != null)
-				provider = new ComboBoxProvider (cb);
-			else if ((clb = component as SWF.CheckedListBox) != null)
-				provider = new CheckedListBoxProvider (clb);
-			else if ((lb = component as SWF.ListBox) != null)
-				provider = new ListBoxProvider (lb);
-			else if ((pgb = component as SWF.ProgressBar) != null)
-				provider = new ProgressBarProvider (pgb);
-			else if ((ss = component as SWF.StatusStrip) != null)
-				provider = new StatusStripProvider (ss);
-			else if ((ms = component as SWF.MenuStrip) != null)
-				provider = new MenuStripProvider (ms);
-			else if ((ts = component as SWF.ToolStrip) != null)
-				provider = new ToolStripProvider (ts);
-			else if ((tssb = component as SWF.ToolStripSplitButton) != null)
-				provider = new ToolStripSplitButtonProvider (tssb);
-			else if ((tsddi = component as SWF.ToolStripDropDownItem) != null)
-				provider = new ToolStripDropDownItemProvider (tsddi);
-			else if ((tsl = component as SWF.ToolStripLabel) != null)
-				provider = new ToolStripLabelProvider (tsl);
-			else if ((tstb = component as SWF.ToolStripTextBox) != null)
-				provider = new ToolStripTextBoxProvider (tstb);
-			else if ((tspb = component as SWF.ToolStripProgressBar) != null)
-				provider = new ToolStripProgressBarProvider (tspb);
-			else if ((tscb = component as SWF.ToolStripComboBox) != null)
-				provider = new ToolStripComboBoxProvider (tscb);
-			else if ((tss = component as SWF.ToolStripSeparator) != null)
-				provider = new ToolStripSeparatorProvider (tss);
-			else if ((tsb = component as SWF.ToolStripButton) != null)
-				provider = new ToolStripButtonProvider (tsb);
-			else if ((scb = component as SWF.ScrollBar) != null) {
-				//TODO:
-				//   We need to add here a ScrollableControlProvider and then verify
-				//   if the internal scrollbar instances are matching this one,
-				//   if so, then we return a scrollbar, otherwise we return a pane.
-#pragma warning disable 219
-				SWF.ScrollableControl scrollable;
-				//ScrollableControlProvider scrollableProvider;
-				if ((scrollable = scb.Parent as SWF.ScrollableControl) != null
-				    || scb.Parent == null) {
-#pragma warning restore 219
-				//	scrollableProvider = (ScrollableControlProvider) GetProvider (scrollable);
-				//	if (scrollableProvider.ScrollBarExists (scb) == true)
-						provider = new ScrollBarProvider (scb);
-				//	else 
-				//		provider = new PaneProvider (scb);
-				} else
-					provider = new PaneProvider (scb);
-			} else if ((pb = component as SWF.PictureBox) != null)
-				provider = new PictureBoxProvider (pb);
-			else if ((errp = component as SWF.ErrorProvider) != null)
-				provider = new ErrorProvider (errp);
-			else if ((tt = component as SWF.ToolTip) != null)
-				provider = new ToolTipProvider (tt);
-			else if ((hlp = component as SWF.HelpProvider) != null)
-				provider = new HelpProvider (hlp);
-			else if ((tc = component as SWF.TabControl) != null)
-				provider = new TabControlProvider (tc);
-			else if ((tp = component as SWF.TabPage) != null)
-				provider = new TabPageProvider (tp);
-			else if ((rt = component as SWF.RichTextBox) != null)
-				provider = new RichTextBoxProvider (rt);
-			else if ((p = component as SWF.Panel) != null)
-				provider = new PanelProvider (p);
-			else if ((lv = component as SWF.ListView) != null)
-				provider = new ListViewProvider (lv);
-			else if ((mtb = component as SWF.MaskedTextBox) != null)
-				provider = new MaskedTextBoxProvider (mtb);
-			else if ((mc = component as SWF.MonthCalendar) != null)
-				provider = new MonthCalendarProvider (mc);
-			else if ((sc = component as SWF.SplitContainer) != null)
-				provider = new SplitContainerProvider (sc);
-			else if ((s = component as SWF.Splitter) != null)
-				provider = new SplitterProvider (s);
-			else if ((tb = component as SWF.ToolBar) != null)
-				provider = new ToolBarProvider (tb);
-			else if ((tv = component as SWF.TreeView) != null)
-				provider = new TreeViewProvider (tv);
-			else if ((dgrid = component as SWF.DataGrid) != null)
-				provider = new DataGridProvider (dgrid);
-			else if ((dtp = component as SWF.DateTimePicker) != null)
-				provider = new DateTimePickerProvider (dtp);
-			else if ((ppc = component as SWF.PrintPreviewControl) != null)
-				provider = new PrintPreviewControlProvider (ppc);
-			else if ((pbp = component as SWF.PopupButtonPanel) != null)
-				provider = new PopupButtonPanelProvider (pbp);
-			else if ((pbtn = component as SWF.PopupButtonPanel.PopupButton) != null)
-				provider = new PopupButtonProvider (pbtn);
-			else if ((bcc = component as SWF.ColorDialog.BaseColorControl) != null)
-				provider = new BaseColorControlProvider (bcc);
-			else if ((scc = component as SWF.ColorDialog.BaseColorControl.SmallColorControl) != null)
-				provider = new BaseColorControlProvider.SmallColorControlProvider (scc);
-			else {
-				//TODO: We have to solve the problem when there's a Custom control
-				//	Ideally the first thing we do is send a wndproc message to
-				//	the control to see if it implements its own provider.
-				//	After all, the control may derive from a base control in SWF.
-				//	So that check comes before this big if/else block.
-				
+			ComponentProviderMapperHandler handler = null;
+			Type providerType = null;
+
+			if (provider == null) {
+				Type typeIter = component.GetType ();
+
+				// Chain up the type hierarchy until we find
+				// either a type or handler for mapping, or we
+				// hit Control or Component.
+				do {
+					// First see if there's a mapping handler
+			    		if (componentProviderMappers.TryGetValue (typeIter,
+					                                          out handler))
+						break;
+
+					// Next, see if we have a type mapping
+					if (providerComponentMap.TryGetValue (typeIter,
+					                                      out providerType))
+						break;
+
+					typeIter = typeIter.BaseType;
+				} while (typeIter != null
+				         && typeIter != typeof (System.ComponentModel.Component)
+				         && typeIter != typeof (SWF.Control));
+			}
+			
+			if (handler != null) {
+				provider = handler (component);
+			}
+
+			// Create the provider if we found a mapping type
+			if (provider == null && providerType != null) {
+				try {
+					provider = (FragmentControlProvider)
+						Activator.CreateInstance (providerType,
+									  new object [] { component });
+				} catch (MissingMethodException) {
+					Console.WriteLine (
+						"ERROR: Provider {0} does not have a valid single parameter constructor to handle {1}.",
+						providerType, component.GetType ()
+					);
+					return null;
+				}
+			}
+
+			if (provider != null) {
+				// TODO: Abstract this out?
+				if (component is SWF.Form) {
+					formProviders.Add ((IRawElementProviderFragmentRoot) provider);
+				}
+
+				// TODO: Make tracking in dictionary optional
+				componentProviders [component] = provider;
+				if (provider is FragmentControlProvider) {
+					FragmentControlProvider frag = (FragmentControlProvider) provider;
+					if (initialize)
+						frag.Initialize ();
+					
+					if (forceInitializeChildren)
+						frag.InitializeChildControlStructure ();
+				}
+			} else {
 				//FIXME: let's not throw while we are developing, a big WARNING will suffice
 				//throw new NotImplementedException ("Provider not implemented for control " + component.GetType().Name);
 				Console.WriteLine ("WARNING: Provider not implemented for control " + component.GetType());
 				return null;
-			}
-			
-			if (provider != null) {
-				// TODO: Make tracking in dictionary optional
-				componentProviders [component] = provider;
-				if (initialize)
-					provider.Initialize ();
-				
-				if (forceInitializeChildren == true)
-					provider.InitializeChildControlStructure ();
 			}
 			
 			return provider;
@@ -314,6 +264,12 @@ namespace Mono.UIAutomation.Winforms
 				return provider;
 
 			return null;
+		}
+
+		internal static void RegisterComponentProviderMapper (System.Type componentType,
+		                                                      ComponentProviderMapperHandler handler)
+		{
+			componentProviderMappers.Add (componentType, handler);
 		}
 		
 		#endregion

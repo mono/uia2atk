@@ -35,6 +35,7 @@ namespace Mono.UIAutomation.Winforms
 	//NOTE:
 	//     SWF.HelpProvider's ToolTip looks like a tooltip, however in UIA is
 	//     ControlTypePane not a ControlTypeToolTip.
+	[MapsComponent (typeof (SWF.HelpProvider))]
 	internal class HelpProvider : ToolTipBaseProvider
 	{
 		

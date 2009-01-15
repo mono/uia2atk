@@ -41,6 +41,7 @@ using Mono.UIAutomation.Winforms.Events.ComboBox;
 namespace Mono.UIAutomation.Winforms
 {
 
+	[MapsComponent (typeof (SWF.ComboBox))]
 	internal class ComboBoxProvider : FragmentRootControlProvider
 	{
 

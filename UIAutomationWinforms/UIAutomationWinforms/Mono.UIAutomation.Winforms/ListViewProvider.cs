@@ -40,6 +40,7 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 	
+	[MapsComponent (typeof (SWF.ListView))]
 	internal class ListViewProvider : ListProvider, IScrollBehaviorSubject
 	{
 		#region Constructors

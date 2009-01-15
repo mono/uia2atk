@@ -35,6 +35,7 @@ using Mono.UIAutomation.Winforms.Behaviors.ToolBar;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (ToolBar))]
 	internal class ToolBarProvider : FragmentRootControlProvider
 	{
 		#region Constructor

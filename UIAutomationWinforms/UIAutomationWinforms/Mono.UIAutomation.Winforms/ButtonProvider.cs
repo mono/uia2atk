@@ -32,6 +32,7 @@ using Mono.UIAutomation.Winforms.Behaviors.Button;
 namespace Mono.UIAutomation.Winforms
 {
 	
+	[MapsComponent (typeof (Button))]
 	internal class ButtonProvider : FragmentControlProvider
 	{
 		

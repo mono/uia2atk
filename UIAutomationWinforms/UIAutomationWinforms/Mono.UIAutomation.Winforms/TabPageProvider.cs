@@ -34,6 +34,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (TabPage))]
 	internal class TabPageProvider
 		: FragmentControlProvider
 	{

@@ -34,6 +34,7 @@ using Mono.UIAutomation.Winforms.Behaviors.CheckBox;
 namespace Mono.UIAutomation.Winforms
 {
 	
+	[MapsComponent (typeof (CheckBox))]
 	internal class CheckBoxProvider : FragmentControlProvider
 	{
 	

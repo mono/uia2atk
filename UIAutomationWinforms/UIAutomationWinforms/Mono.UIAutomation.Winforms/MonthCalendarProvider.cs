@@ -37,6 +37,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (MonthCalendar))]
 	internal class MonthCalendarProvider : FragmentRootControlProvider
 	{
 		public MonthCalendarProvider (MonthCalendar control)

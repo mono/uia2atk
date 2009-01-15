@@ -1,3 +1,68 @@
+2009-01-15  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/MapsComponentAttribute.cs: Add an
+	attribute to be used by ProviderFactory's static ctor to discover
+	what providers map to SWF controls.
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Use the MapsComponent
+	attribute to discover providers, populating a hashtable which is used
+	by GetProvider for O(1) lookup.
+
+	* Mono.UIAutomation.Winforms/FormProvider.cs: 
+	* Mono.UIAutomation.Winforms/HelpProvider.cs: 
+	* Mono.UIAutomation.Winforms/LabelProvider.cs: 
+	* Mono.UIAutomation.Winforms/ErrorProvider.cs: 
+	* Mono.UIAutomation.Winforms/PanelProvider.cs: 
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: 
+	* Mono.UIAutomation.Winforms/TabPageProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolTipProvider.cs: 
+	* Mono.UIAutomation.Winforms/TextBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/GroupBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: 
+	* Mono.UIAutomation.Winforms/TreeViewProvider.cs: 
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: 
+	* Mono.UIAutomation.Winforms/SplitterProvider.cs: 
+	* Mono.UIAutomation.Winforms/MenuStripProvider.cs: 
+	* Mono.UIAutomation.Winforms/LinkLabelProvider.cs: 
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: 
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs: 
+	* Mono.UIAutomation.Winforms/PictureBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/WebBrowserProvider.cs: 
+	* Mono.UIAutomation.Winforms/TabControlProvider.cs: 
+	* Mono.UIAutomation.Winforms/StatusStripProvider.cs: 
+	* Mono.UIAutomation.Winforms/ProgressBarProvider.cs: 
+	* Mono.UIAutomation.Winforms/RadioButtonProvider.cs: 
+	* Mono.UIAutomation.Winforms/PopupButtonProvider.cs: 
+	* Mono.UIAutomation.Winforms/RichTextBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripProgressBar.cs: 
+	* Mono.UIAutomation.Winforms/MonthCalendarProvider.cs: 
+	* Mono.UIAutomation.Winforms/MaskedTextBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/NumericUpDownProvider.cs: 
+	* Mono.UIAutomation.Winforms/MessageBoxFormProvider.cs: 
+	* Mono.UIAutomation.Winforms/DateTimePickerProvider.cs: 
+	* Mono.UIAutomation.Winforms/SplitContainerProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripLabelProvider.cs: 
+	* Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripButtonProvider.cs: 
+	* Mono.UIAutomation.Winforms/PopupButtonPanelProvider.cs: 
+	* Mono.UIAutomation.Winforms/BaseColorControlProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripTextBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripComboBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripSeparatorProvider.cs: 
+	* Mono.UIAutomation.Winforms/PrintPreviewControlProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripSplitButtonProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripDropDownItemProvider.cs: Add
+	MapsComponentAttribute to each provider so that it can be discovered by
+	ProviderFactory.  This will be necessary for all providers written in the
+	future.
+
 2009-01-14  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Events/DataGrid/DataItemValuePatternValueEvent.cs:

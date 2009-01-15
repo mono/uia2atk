@@ -20,53 +20,41 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Neville Gao <nevillegao@gmail.com>
-// 
+//	Brad Taylor <brad@getcoded.net>
+//
 
 using System;
-using Mono.Unix;
-using System.Windows.Forms;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Winforms.Behaviors;
-using Mono.UIAutomation.Winforms.Behaviors.Splitter;
-using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
-	[MapsComponent (typeof (Splitter))]
-	internal class SplitterProvider : FragmentControlProvider
+	[AttributeUsage (AttributeTargets.Class,
+	                 AllowMultiple=true, Inherited=false)]
+	internal class MapsComponentAttribute : Attribute
 	{
-		#region Constructor
+		public Type From {
+			get;
+			set;
+		}
 
-		public SplitterProvider (Splitter splitter) : base (splitter)
+		public bool ProvidesMapper {
+			get;
+			set;
+		}
+
+		public MapsComponentAttribute ()
+			: this (null, false)
 		{
 		}
-		
-		#endregion
-		
-		#region SimpleControlProvider: Specializations
-		
-		public override void Initialize ()
+
+		public MapsComponentAttribute (Type mapsFrom)
+			: this (mapsFrom, false)
 		{
-			base.Initialize ();
-			
-			SetBehavior (TransformPatternIdentifiers.Pattern,
-			             new TransformProviderBehavior (this));
-			SetBehavior (DockPatternIdentifiers.Pattern,
-			             new DockProviderBehavior (this));
 		}
-		
-		protected override object GetProviderPropertyValue (int propertyId)
+
+		public MapsComponentAttribute (Type mapsFrom, bool providesMapper)
 		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Pane.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("pane");
-			else
-				return base.GetProviderPropertyValue (propertyId);
+			From = mapsFrom;
+			ProvidesMapper = providesMapper;
 		}
-		
-		#endregion
 	}
 }

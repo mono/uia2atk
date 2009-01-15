@@ -34,6 +34,7 @@ using Mono.UIAutomation.Winforms.Events.Label;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (Label))]
 	internal class LabelProvider : FragmentControlProvider
 	{
 #region Constructors

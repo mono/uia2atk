@@ -44,6 +44,7 @@ using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (StatusBar))]
 	internal class StatusBarProvider : FragmentRootControlProvider
 	{
 		#region Constructor

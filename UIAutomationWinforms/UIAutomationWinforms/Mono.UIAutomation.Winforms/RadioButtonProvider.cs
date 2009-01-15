@@ -34,6 +34,7 @@ using Mono.UIAutomation.Winforms.Behaviors.RadioButton;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (RadioButton))]
 	internal class RadioButtonProvider : FragmentControlProvider
 	{
 #region Constructors

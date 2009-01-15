@@ -31,6 +31,7 @@ using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (ToolStripSeparator))]
 	internal class ToolStripSeparatorProvider : ToolStripItemProvider
 	{
 		#region Constructor

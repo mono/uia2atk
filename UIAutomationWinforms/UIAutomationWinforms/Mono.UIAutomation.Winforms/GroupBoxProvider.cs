@@ -33,6 +33,7 @@ using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (GroupBox))]
 	internal class GroupBoxProvider : FragmentRootControlProvider
 	{
 		

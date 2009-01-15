@@ -35,6 +35,7 @@ using Mono.UIAutomation.Winforms.Events.PrintPreviewControl;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (SWF.PrintPreviewControl))]
 	internal class PrintPreviewControlProvider
 		: FragmentRootControlProvider, IScrollBehaviorSubject
 	{

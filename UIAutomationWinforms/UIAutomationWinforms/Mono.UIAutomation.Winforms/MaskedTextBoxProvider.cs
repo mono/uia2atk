@@ -31,6 +31,7 @@ using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (MaskedTextBox))]
 	internal class MaskedTextBoxProvider : TextBoxProvider
 	{
 		public MaskedTextBoxProvider (TextBoxBase textBoxBase) : base (textBoxBase)

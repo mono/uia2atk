@@ -34,6 +34,7 @@ using Mono.UIAutomation.Winforms.Behaviors.TabControl;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (TabControl))]
 	internal class TabControlProvider
 		: FragmentRootControlProvider
 	{

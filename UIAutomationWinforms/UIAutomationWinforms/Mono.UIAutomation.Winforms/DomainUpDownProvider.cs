@@ -41,6 +41,7 @@ using Mono.UIAutomation.Winforms.Behaviors.UpDownBase;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (DomainUpDown))]
 	internal class DomainUpDownProvider
 		: UpDownBaseProvider, IListProvider
 	{

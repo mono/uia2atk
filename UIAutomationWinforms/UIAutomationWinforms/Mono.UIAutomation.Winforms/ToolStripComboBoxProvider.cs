@@ -36,6 +36,7 @@ using Mono.UIAutomation.Winforms.Behaviors.ToolStripItem;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (ToolStripComboBox))]
 	internal class ToolStripComboBoxProvider : ComboBoxProvider
 	{
 		private ToolStripComboBox item = null;

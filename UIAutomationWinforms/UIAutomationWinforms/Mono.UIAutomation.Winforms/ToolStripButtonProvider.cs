@@ -33,6 +33,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (ToolStripButton))]
 	internal class ToolStripButtonProvider : FragmentControlProvider
 	{
 #region Constructors

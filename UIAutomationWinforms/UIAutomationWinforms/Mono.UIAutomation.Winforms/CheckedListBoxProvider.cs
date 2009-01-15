@@ -33,6 +33,7 @@ using Mono.UIAutomation.Winforms.Behaviors.CheckedListBox;
 namespace Mono.UIAutomation.Winforms
 {
 
+	[MapsComponent (typeof (SWF.CheckedListBox))]
 	internal class CheckedListBoxProvider : ListBoxProvider
 	{
 		

@@ -34,6 +34,7 @@ using Mono.UIAutomation.Bridge;
 namespace Mono.UIAutomation.Winforms
 {
 
+	[MapsComponent (typeof (SWF.MessageBox.MessageBoxForm))]
 	internal class MessageBoxFormProvider : FormProvider
 	{
 

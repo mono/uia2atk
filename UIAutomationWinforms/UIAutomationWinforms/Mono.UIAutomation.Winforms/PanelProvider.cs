@@ -34,6 +34,7 @@ using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (Panel))]
 	internal class PanelProvider : FragmentRootControlProvider
 	{
 		#region Constructor

@@ -39,6 +39,7 @@ using Mono.UIAutomation.Winforms.Behaviors.ToolStripItem;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (ToolStripLabel))]
 	internal class ToolStripLabelProvider : ToolStripItemProvider
 	{
 		private ToolStripLabel label;

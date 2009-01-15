@@ -31,6 +31,7 @@ using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (SWF.ToolStripTextBox))]
 	internal class ToolStripTextBoxProvider : TextBoxProvider
 	{
 		

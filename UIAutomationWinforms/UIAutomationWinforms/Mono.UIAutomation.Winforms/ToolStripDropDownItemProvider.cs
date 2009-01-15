@@ -36,6 +36,7 @@ using Mono.UIAutomation.Winforms.Behaviors.ToolStripItem;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (ToolStripDropDownItem))]
 	internal class ToolStripDropDownItemProvider : ToolStripItemProvider
 	{
 		private ToolStripDropDownItem dropDrownItem;

@@ -32,6 +32,7 @@ using Mono.UIAutomation.Winforms.Behaviors.ProgressBar;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (ProgressBar))]
 	internal class ProgressBarProvider : FragmentControlProvider
 	{
 		#region Constructor

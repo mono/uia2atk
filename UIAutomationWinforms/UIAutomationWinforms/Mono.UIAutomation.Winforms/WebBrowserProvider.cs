@@ -37,6 +37,7 @@ using SWF = System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (SWF.WebBrowser))]
 	internal class WebBrowserProvider : FragmentControlProvider
 	{
 		private SWF.WebBrowser webBrowser;

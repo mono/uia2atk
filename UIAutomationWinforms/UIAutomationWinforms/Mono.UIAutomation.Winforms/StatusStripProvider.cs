@@ -34,6 +34,7 @@ using Mono.UIAutomation.Winforms.Behaviors.StatusStrip;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (StatusStrip))]
 	internal class StatusStripProvider : ToolStripProvider
 	{
 		#region Constructor

@@ -37,6 +37,7 @@ using Mono.Unix;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (ToolStrip))]
 	internal class ToolStripProvider : FragmentRootControlProvider
 	{
 		private ToolStrip strip;

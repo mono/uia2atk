@@ -34,6 +34,7 @@ using Mono.UIAutomation.Winforms.Behaviors.TextBox;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (TextBox))]
 	internal class TextBoxProvider : FragmentRootControlProvider, IScrollBehaviorSubject
 	{
 		#region Constructors

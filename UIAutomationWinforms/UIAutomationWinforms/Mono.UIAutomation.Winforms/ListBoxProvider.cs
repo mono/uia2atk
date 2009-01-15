@@ -39,6 +39,7 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 
+	[MapsComponent (typeof (ListBox))]
 	internal class ListBoxProvider : ListProvider, IScrollBehaviorSubject, IListProvider
 	{		
 	

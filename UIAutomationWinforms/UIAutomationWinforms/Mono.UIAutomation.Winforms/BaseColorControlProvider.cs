@@ -33,6 +33,7 @@ using Mono.UIAutomation.Winforms.Behaviors.BaseColorControl;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (ColorDialog.BaseColorControl))]
 	internal class BaseColorControlProvider : FragmentRootControlProvider
 	{
 		#region Constructor
@@ -60,6 +61,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Internal Class: SmallColorControl Provider
 
+		[MapsComponent (typeof (ColorDialog.BaseColorControl.SmallColorControl))]
 		internal class SmallColorControlProvider : FragmentControlProvider
 		{
 			#region Constructor

@@ -39,14 +39,12 @@ using Mono.UIAutomation.Winforms.Behaviors.ToolStripSplitButton;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (ToolStripSplitButton))]
 	internal class ToolStripSplitButtonProvider : ToolStripDropDownItemProvider
 	{
-		//private ToolStripSplitButton splitButton;
-		
 		public ToolStripSplitButtonProvider (ToolStripSplitButton splitButton) :
 			base (splitButton)
 		{
-			//this.splitButton = splitButton;
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)

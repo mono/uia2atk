@@ -33,6 +33,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (ToolStripProgressBar))]
 	internal class ToolStripProgressBarProvider : ProgressBarProvider
 	{
 		private ToolStripProgressBar item = null;

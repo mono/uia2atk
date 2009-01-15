@@ -52,6 +52,7 @@ namespace Mono.UIAutomation.Winforms
 	//	  MWF.ErrorProvider.SetError(control, "") or 
 	//	  UserControl.Visible = false
 	//
+	[MapsComponent (typeof (SWF.ErrorProvider))]
 	internal class ErrorProvider : PaneProvider
 	{
 		

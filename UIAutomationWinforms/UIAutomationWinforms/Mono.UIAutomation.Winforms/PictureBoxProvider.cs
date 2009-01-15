@@ -34,6 +34,7 @@ using Mono.UIAutomation.Bridge;
 namespace Mono.UIAutomation.Winforms
 {
 
+	[MapsComponent (typeof (PictureBox))]
 	internal class PictureBoxProvider : PaneProvider, IEmbeddedImage
 	{
 		

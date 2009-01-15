@@ -32,6 +32,7 @@ using Mono.UIAutomation.Winforms.Behaviors.UpDownBase;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (NumericUpDown))]
 	internal class NumericUpDownProvider : UpDownBaseProvider
 	{
 		public NumericUpDownProvider (NumericUpDown upDown) : base (upDown)

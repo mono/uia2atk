@@ -37,6 +37,7 @@ using Mono.Unix;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (MenuStrip))]
 	internal class MenuStripProvider : ToolStripProvider
 	{
 		private MenuStrip menu;

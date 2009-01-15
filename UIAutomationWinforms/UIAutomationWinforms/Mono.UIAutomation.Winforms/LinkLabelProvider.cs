@@ -33,6 +33,7 @@ using Mono.UIAutomation.Winforms.Behaviors.LinkLabel;
 namespace Mono.UIAutomation.Winforms
 {
 
+	[MapsComponent (typeof (LinkLabel))]
 	internal class LinkLabelProvider : FragmentControlProvider
 	{
 

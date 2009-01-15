@@ -36,6 +36,7 @@ using Mono.UIAutomation.Winforms.Behaviors.Form;
 
 namespace Mono.UIAutomation.Winforms
 {
+	[MapsComponent (typeof (Form))]
 	internal class FormProvider : FragmentRootControlProvider
 	{
 #region Private Data
