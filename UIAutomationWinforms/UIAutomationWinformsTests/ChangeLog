@@ -1,3 +1,7 @@
+2009-01-15  Mario Carrion  <mcarrion@novell.com>
+
+	* ListViewProviderTest.cs: Children and Navigation tests updated.
+
 2009-01-14  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* TestHelper.cs: Change MONO_UIA_BRIDGE value to make for an error

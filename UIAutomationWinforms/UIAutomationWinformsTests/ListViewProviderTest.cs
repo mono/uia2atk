@@ -1339,6 +1339,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNull (headerElement.GetPatternProvider (WindowPatternIdentifiers.Pattern.Id), 
 			               "headerElement in View.Details: SHOULD NOT support Window Pattern");
 
+			view.Columns.Clear ();
 			IRawElementProviderFragment headerItem = headerElement.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNull (headerItem, "We SHOULD NOT HAVE HeaderItem");
 
@@ -1569,10 +1570,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void NavigateMultipleTest ()
 		{
-			ListView lisview = new ListView ();
-			lisview.View = View.LargeIcon;
-			lisview.ShowGroups = false;
-			lisview.Scrollable = false;
+			Application.EnableVisualStyles ();
+			
+			ListView listview = new ListView ();
+			listview.View = View.LargeIcon;
+			listview.ShowGroups = false;
+			listview.Scrollable = false;
 
 			IRawElementProviderFragmentRoot rootProvider;
 			IRawElementProviderFragment child;
@@ -1583,10 +1586,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			string name = string.Empty;
 
 			for (index = 0; index < elements; index++)
-				lisview.Items.Add (string.Format ("Element: {0}", index));
+				listview.Items.Add (string.Format ("Element: {0}", index));
 			index = 0;
 			
-			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (lisview);
+			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (listview);
 
 			//Loop all elements
 			child = rootProvider.Navigate (NavigateDirection.FirstChild);
@@ -1605,10 +1608,99 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (elements, index, "Elements added = elements navigated");
 
 			//Clear all elements and try again.
-			lisview.Items.Clear ();
+			listview.Items.Clear ();
 
 			child = rootProvider.Navigate (NavigateDirection.FirstChild);
 			Assert.IsNull (child, "We shouldn't have a child");
+			
+			// Lets use View.Details
+			//(int groups, int items, int defaultGroupItems, int maxSubitems)
+			int groupsCount = 3;
+			int subItemsCount = 5;
+			int defaultGroupItemsCount = 2;
+			int itemsCount = 4;
+
+			listview = GetListView (groupsCount, 
+			                        itemsCount, 
+			                        defaultGroupItemsCount, 
+			                        subItemsCount);
+			listview.ShowGroups = true;
+			listview.View = View.Details;
+			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (listview);
+
+			IRawElementProviderFragment header = null;
+			// +1 because of DetaulGroup
+			IRawElementProviderFragment []groups = new IRawElementProviderFragment [groupsCount +1];
+			
+			index = 0;
+			child = rootProvider.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				int ctype = (int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+				if (ctype == ControlType.Header.Id) {
+					if (header != null)
+						Assert.Fail ("We already have an header");
+					else {
+						header = child;
+						IRawElementProviderFragment headerChild = child.Navigate (NavigateDirection.FirstChild);
+						Assert.IsNotNull (headerChild, "We should have HeaderItem");
+						while (headerChild != null) {
+							Assert.AreEqual (header, 
+							                 headerChild.Navigate (NavigateDirection.Parent),
+							                 "DataItemChild.Parent != DataItem");
+							
+							headerChild = headerChild.Navigate (NavigateDirection.NextSibling);
+						}
+					}
+				} else if (ctype == ControlType.Group.Id) {
+					if (index >= groups.Length)
+						Assert.Fail (string.Format ("Index is greater than count: {0}>={1}", index, groups.Length));
+					groups [index] = child;
+					index++;
+				}/*else if (ctype == ControlType.DataItem.Id) {
+					// Validate DataItem navigation
+					index++;
+					IRawElementProviderFragment dataItemChild = child.Navigate (NavigateDirection.FirstChild);
+					Assert.IsNotNull (dataItemChild, "We should have DataItem.Child");
+					while (dataItemChild != null) {
+						Assert.AreEqual (child, 
+						                 dataItemChild.Navigate (NavigateDirection.Parent),
+						                 "DataItemChild.Parent != DataItem");
+						
+						dataItemChild = dataItemChild.Navigate (NavigateDirection.NextSibling);
+					}
+				} */else if (ctype != ControlType.Group.Id
+				           && ctype != ControlType.ScrollBar.Id)
+					Assert.Fail (string.Format ("ControlTypes valid are ScrollBar, DataItem and Header: {0}",
+					                            ControlType.LookupById (ctype).ProgrammaticName));
+
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.AreEqual (index, groups.Length, "GroupsCount different");
+
+			// We tests each Group and children
+			foreach (IRawElementProviderFragment group in groups) {
+				child = group.Navigate (NavigateDirection.FirstChild);
+				while (child != null) {
+					Assert.AreEqual (group,
+					                 child.Navigate (NavigateDirection.Parent),
+					                 "Child.Parent != Group");
+					Assert.AreEqual (ControlType.DataItem.Id,
+					                 (int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
+					                 "ControlType != DataItem");
+
+					// DataItem children
+					IRawElementProviderFragment dataItemChild = child.Navigate (NavigateDirection.FirstChild);
+					Assert.IsNotNull (dataItemChild, "DataItem.Child");
+					while (dataItemChild != null) {
+						Assert.AreEqual (child,
+						                 dataItemChild.Navigate (NavigateDirection.Parent),
+						                 "DataItem.Child.Parent != DataItem");
+						dataItemChild = dataItemChild.Navigate (NavigateDirection.NextSibling);
+					}
+					
+					child = child.Navigate (NavigateDirection.NextSibling);
+				}
+			}
 		}
 
 		#endregion
@@ -1891,12 +1983,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (RowOrColumnMajor.RowMajor,
 			                 tableProvider.RowOrColumnMajor, "TablePattern.RowOrColumnMajor");
 
-			Assert.AreEqual (true,
-			                 tableProvider.GetRowHeaders ().Length == 0, "TablePattern.GetRowHeaders");
+			Assert.IsTrue (tableProvider.GetRowHeaders ().Length == 0, "TablePattern.GetRowHeaders");
 
 			IRawElementProviderSimple []columnHeaders = tableProvider.GetColumnHeaders ();
 
-			Assert.AreEqual (true, columnHeaders.Length == 0, "TablePattern.GetColumnHeaders is not null");
+			Assert.IsTrue (columnHeaders.Length > 0, 
+			               string.Format ("TablePattern.GetColumnHeaders is not null: {0}", columnHeaders.Length));
 			Assert.AreEqual (view.Columns.Count,
 			                 columnHeaders.Length, "TablePattern.GetColumnHeaders count");
 
@@ -1906,7 +1998,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				if ((int) header.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
 					== ControlType.Header.Id)
 					break;
-				header = viewProvider.Navigate (NavigateDirection.NextSibling);
+				header = header.Navigate (NavigateDirection.NextSibling);
 			}
 
 			Assert.IsNotNull (header, "TablePattern we need a header");
@@ -2008,7 +2100,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				view.Groups.Add (new ListViewGroup (string.Format ("Group: {0}", group), HorizontalAlignment.Left));
 				//Items
 				for (int item = 0; item < items; item++) {
-					view.Items.Add (new ListViewItem (string.Format ("Item: {0}.{1}", group, item)));
+					ListViewItem viewItem = new ListViewItem (string.Format ("Item: {0}.{1}", group, item));
+					viewItem.Group = view.Groups [group];
+					view.Items.Add (viewItem);
 					//Subitems
 					if (item < maxSubitems) {
 						for (int subitem = 0; subitem < item + 1; subitem++)
@@ -2019,6 +2113,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			//Default items
 			for (int item = 0; item < defaultGroupItems; item++)
 				view.Items.Add (new ListViewItem (string.Format ("Default #{0}", item)));
+
+			//Columns
+			for (int column = 0; column < maxSubitems; column++) {
+				view.Columns.Add (string.Format ("Column:{0}", column));
+			}
 
 			return view;
 		}
