@@ -1,3 +1,8 @@
+2009-01-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* gtk-gui/gui.stetic:
+	* gtk-gui/MainWindow.cs: Fix warning.
+
 2009-01-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* gtk-gui/gui.stetic:

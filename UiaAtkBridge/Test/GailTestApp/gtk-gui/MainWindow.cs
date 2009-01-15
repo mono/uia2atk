@@ -26,8 +26,6 @@ public partial class MainWindow {
     
     private Gtk.Action NewAction;
     
-    private Gtk.Action Action;
-    
     private Gtk.Action Action1;
     
     private Gtk.Action indexAction;
@@ -143,8 +141,6 @@ public partial class MainWindow {
         this.NewAction = new Gtk.Action("NewAction", Mono.Unix.Catalog.GetString("New"), null, null);
         this.NewAction.ShortLabel = Mono.Unix.Catalog.GetString("New");
         w1.Add(this.NewAction, null);
-        this.Action = new Gtk.Action("Action", null, null, null);
-        w1.Add(this.Action, null);
         this.Action1 = new Gtk.Action("Action1", null, null, null);
         w1.Add(this.Action1, null);
         this.indexAction = new Gtk.Action("indexAction", null, null, "gtk-index");
