@@ -40,8 +40,10 @@ namespace UiaAtkBridge
 				Role = Atk.Role.Panel;
 			else
 				Role = Atk.Role.Filler;
-			
-			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+		}
+
+		public override int MdiZorder {
+			get { return int.MinValue; }
 		}
 
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)

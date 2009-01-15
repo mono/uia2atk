@@ -1,3 +1,7 @@
+2009-01-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTester.cs: ToolBar work.
+
 2009-01-12  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* GailTester.cs: New tests for ComboBoxSimple in gail (it's a treeview

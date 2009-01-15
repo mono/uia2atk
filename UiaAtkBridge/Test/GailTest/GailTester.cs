@@ -148,6 +148,16 @@ namespace UiaAtkBridgeTest
 		protected override bool TextBoxCaretInitiallyAtEnd { 
 			get { return true; }
 		}
+
+		public override Atk.Object GetAccessible (BasicWidgetType type)
+		{
+			if (type != BasicWidgetType.ToolBar)
+				throw new Exception ("Use another GetAccessible overload for this widget type");
+
+			Gtk.Widget ret = GailTestApp.MainClass.GiveMeARealToolBar ();
+			mappings [ret.Accessible] = ret;
+			return ret.Accessible;
+		}
 		
 		public override Atk.Object GetAccessible (BasicWidgetType type, string text)
 		{

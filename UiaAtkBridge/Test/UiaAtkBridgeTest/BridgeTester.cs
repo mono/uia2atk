@@ -86,6 +86,8 @@ namespace UiaAtkBridgeTest
 		protected SWF.ListView lv1 = new SWF.ListView ();
 		protected SWF.ToolStripDropDownButton tsddb = new SWF.ToolStripDropDownButton ();
 		protected SWF.ToolStripSplitButton tssb = new SWF.ToolStripSplitButton ();
+		protected SWF.ToolBar toolBar = new SWF.ToolBar ();
+		protected SWF.ToolBarButton toolBarButton = new SWF.ToolBarButton ("Test");
 		protected SWF.TabControl tabControl = new SWF.TabControl ();
 		protected SWF.TreeView treeView = new SWF.TreeView ();
 		protected SWF.DateTimePicker dateTimePicker = new SWF.DateTimePicker ();
@@ -143,6 +145,9 @@ namespace UiaAtkBridgeTest
 			toolStrip.Items.Add (toolStripTextBox1);
 			toolStrip.Items.Add (toolStripTextBox2);
 			form.Controls.Add (toolStrip);
+
+			form.Controls.Add (toolBar);
+			toolBar.Buttons.Add (toolBarButton);
 
 			linklab1.Links [0].Visited = true;
 			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com";
@@ -214,7 +219,8 @@ namespace UiaAtkBridgeTest
 			d ();
 		}
 
-		public override Atk.Object GetTopLevelRootItem () {
+		public override Atk.Object GetTopLevelRootItem ()
+		{
 			return UiaAtkBridge.TopLevelRootItem.Instance;
 		}
 
@@ -352,6 +358,14 @@ namespace UiaAtkBridgeTest
 			} catch (InvalidCastException) {
 				return null;
 			}
+		}
+
+		public override Atk.Object GetAccessible (BasicWidgetType type)
+		{
+			if (type != BasicWidgetType.ToolBar)
+				throw new Exception ("Use another GetAccessible overload for this widget type");
+
+			return GetAdapterForWidget (toolBar);
 		}
 		
 		public override Atk.Object GetAccessibleThatEmbedsAnImage (BasicWidgetType type, string name, bool real)

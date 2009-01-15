@@ -1,5 +1,9 @@
 2009-01-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Container.cs: ToolBar work.
+
+2009-01-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ParentAdapter.cs: Remove debug spew.
 
 	* AutomationBridge.cs: Remove useless runtime warnings.

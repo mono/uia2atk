@@ -1150,6 +1150,38 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);
 		}
+
+		[Test]
+		public void ToolBar ()
+		{
+			ToolBar (null);
+		}
+
+		public void ToolBar (Atk.Object accessible)
+		{
+			BasicWidgetType type = BasicWidgetType.ToolBar;
+			if (accessible == null)
+				accessible = GetAccessible (type);
+
+			Assert.AreEqual (accessible.Name, null, "acc.name==null");
+			
+			Interfaces (accessible,
+			            typeof (Atk.Component));
+			
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+			
+			PropertyRole (type, accessible);
+
+			States (accessible,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible);
+
+			if (accessible.NAccessibleChildren < 2)
+				Assert.Fail ("Accessible should have children");
+		}
 		
 	}
 }

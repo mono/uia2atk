@@ -172,4 +172,8 @@ public partial class MainWindow: Gtk.Window
 	internal Gtk.Frame GiveMeARealFrame () {
 		return this.frame1;
 	}
+
+	internal Gtk.Toolbar GiveMeARealToolBar () {
+		return this.toolbar1;
+	}
 }

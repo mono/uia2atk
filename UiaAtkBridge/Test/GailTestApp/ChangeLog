@@ -1,5 +1,10 @@
 2009-01-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Main.cs:
+	* MainWindow.cs: ToolBar work.
+
+2009-01-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* gtk-gui/gui.stetic:
 	* gtk-gui/MainWindow.cs: Fix warning.
 

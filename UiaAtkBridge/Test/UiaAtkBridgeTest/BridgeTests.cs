@@ -608,20 +608,7 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void ToolStrip ()
 		{
-			BasicWidgetType type = BasicWidgetType.ToolStrip;
-
-			Atk.Object accessible = GetAdapterForWidget (toolStrip);
-			PropertyRole (type, accessible);
-			Atk.Component atkComponent = CastToAtkInterface<Atk.Component> (accessible);
-			InterfaceComponent (type, atkComponent);
-			if (accessible.NAccessibleChildren < 2)
-				Assert.Fail ("ToolStrip should have children");
-
-			States (accessible,
-				Atk.StateType.Enabled,
-				Atk.StateType.Sensitive,
-				Atk.StateType.Showing,
-				Atk.StateType.Visible);
+			ToolBar (GetAdapterForWidget (toolStrip));
 		}
 
 		[Test]

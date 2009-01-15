@@ -44,6 +44,7 @@ namespace UiaAtkBridgeTest
 		ComboBoxSimpleMenu, //this is not a widget, but part of a widget!
 		RadioButton,
 		StatusBar,
+		ToolBar,
 		TextBoxEntry,       // textbox single-line (gtk: entry)
 		TextBoxView,        // textbox multi-line (gtk: textview)
 		MaskedTextBoxEntry, // maskedtextbox (gtk: entry with visibility:false)
@@ -77,7 +78,6 @@ namespace UiaAtkBridgeTest
 		StatusStrip,
 		ToolStripDropDownButton,
 		ToolStripSplitButton,
-		ToolStrip,
 		StatusBarPanel,
 		TreeView,
 		DateTimePicker,

@@ -223,6 +223,13 @@ namespace GailTestApp {
 			
 			return win.GiveMeARealFrame ();
 		}
+
+		public static Gtk.Toolbar GiveMeARealToolBar ()
+		{
+			CheckState ();
+			
+			return win.GiveMeARealToolBar ();
+		}
 		
 		public static void Kill (MovingThread thread) 
 		{

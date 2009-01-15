@@ -35,6 +35,8 @@ namespace UiaAtkBridgeTest
 	
 	public abstract class AtkTester {
 
+		public abstract Atk.Object GetAccessible (BasicWidgetType type);
+		
 		public abstract Atk.Object GetAccessible (BasicWidgetType type, string name);
 
 		public abstract Atk.Object GetAccessible (
@@ -86,6 +88,10 @@ namespace UiaAtkBridgeTest
 			} else if ((type == BasicWidgetType.ParentMenu) ||
 			           (type == BasicWidgetType.ContextMenu)) {
 				Assert.AreEqual (Atk.Layer.Popup, implementor.Layer, "Component.Layer(Menu)");
+			} else if (type == BasicWidgetType.ToolBar) {
+				Assert.AreEqual (Atk.Layer.Widget, implementor.Layer, "Component.Layer(ToolBar)");
+				Assert.AreEqual (int.MinValue, implementor.MdiZorder, "Component.MdiZorder(ToolBar)");
+				Assert.AreEqual (1, implementor.Alpha, "Component.Alpha(ToolBar)");
 			} else {
 				Assert.AreEqual (Atk.Layer.Widget, implementor.Layer, "Component.Layer(notWindow)");
 				//FIXME: still don't know why this is failing in the GailTester, accerciser is lying me?
@@ -418,7 +424,7 @@ namespace UiaAtkBridgeTest
 			//we're not so strict about null!="" because we cannot assign Atk.Object.Name = null (we get a critical)
 			Assert.AreEqual ((accessibleName == null ? String.Empty : accessibleName), 
 			                 (accessible.Name == null ? String.Empty : accessible.Name),
-			                 "AtkObj Name, was:" + accessible.Name);
+			                 "AtkObj Name, was: " + accessible.Name);
 
 			string [] names = items;
 			if (type == BasicWidgetType.ParentMenu) {
@@ -904,7 +910,8 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ToolStripDropDownButton:
 				role = Atk.Role.Menu;
 				break;
-			case BasicWidgetType.ToolStrip:
+			
+			case BasicWidgetType.ToolBar:
 				role = Atk.Role.ToolBar;
 				break;
 			case BasicWidgetType.StatusBarPanel:
