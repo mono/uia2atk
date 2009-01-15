@@ -1691,12 +1691,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					// DataItem children
 					IRawElementProviderFragment dataItemChild = child.Navigate (NavigateDirection.FirstChild);
 					Assert.IsNotNull (dataItemChild, "DataItem.Child");
+					int dataItemChildren = 0;
 					while (dataItemChild != null) {
+						dataItemChildren++;
 						Assert.AreEqual (child,
 						                 dataItemChild.Navigate (NavigateDirection.Parent),
 						                 "DataItem.Child.Parent != DataItem");
 						dataItemChild = dataItemChild.Navigate (NavigateDirection.NextSibling);
 					}
+					Assert.AreEqual (listview.Columns.Count, dataItemChildren, "DataItem.Children=Columns");
 					
 					child = child.Navigate (NavigateDirection.NextSibling);
 				}
