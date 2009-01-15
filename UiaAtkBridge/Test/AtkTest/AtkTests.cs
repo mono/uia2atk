@@ -1179,8 +1179,8 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);
 
-			if (accessible.NAccessibleChildren < 2)
-				Assert.Fail ("Accessible should have children");
+			if (accessible.NAccessibleChildren < 1)
+				Assert.Fail ("Accessible should have children!");
 		}
 		
 	}

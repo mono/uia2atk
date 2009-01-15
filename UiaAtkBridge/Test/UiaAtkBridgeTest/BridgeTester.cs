@@ -145,9 +145,8 @@ namespace UiaAtkBridgeTest
 			toolStrip.Items.Add (toolStripTextBox1);
 			toolStrip.Items.Add (toolStripTextBox2);
 			form.Controls.Add (toolStrip);
-
-			form.Controls.Add (toolBar);
 			toolBar.Buttons.Add (toolBarButton);
+			form.Controls.Add (toolBar);
 
 			linklab1.Links [0].Visited = true;
 			linklab1.Text = "openSUSE:www.opensuse.org \n\n webmail:gmail.novell.com";
