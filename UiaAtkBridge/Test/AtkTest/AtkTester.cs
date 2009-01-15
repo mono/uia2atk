@@ -417,7 +417,8 @@ namespace UiaAtkBridgeTest
 
 			//we're not so strict about null!="" because we cannot assign Atk.Object.Name = null (we get a critical)
 			Assert.AreEqual ((accessibleName == null ? String.Empty : accessibleName), 
-			                 (accessible.Name == null ? String.Empty : accessible.Name), "AtkObj Name");
+			                 (accessible.Name == null ? String.Empty : accessible.Name),
+			                 "AtkObj Name, was:" + accessible.Name);
 
 			string [] names = items;
 			if (type == BasicWidgetType.ParentMenu) {

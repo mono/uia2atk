@@ -1000,6 +1000,9 @@ namespace UiaAtkBridgeTest
 				Interfaces (accessible,
 				            typeof (Atk.Component),
 				            typeof (Atk.Selection));
+				
+				accessible = GetAccessible (type, names, comboBox);
+				
 				//we want this to behave like comboboxdropdownentry, the treetable
 				// selection behaviour is already tested in CheckComboBoxMenuChild()
 				Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);

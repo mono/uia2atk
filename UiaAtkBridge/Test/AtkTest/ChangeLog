@@ -1,5 +1,12 @@
 2009-01-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AtkTests.cs: Fix comboboxsimple test (it was failing because
+	comboBoxMenuChild changed the selection).
+
+	* AtkTester.cs: Cosmetic.
+
+2009-01-14  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* AtkTests.cs:
 	* AtkTester.cs:
 	* BasicWidgetType.cs: Ongoing work for ComboBoxSimple.
