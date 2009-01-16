@@ -92,6 +92,10 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (Atk.Layer.Widget, implementor.Layer, "Component.Layer(ToolBar)");
 				Assert.AreEqual (int.MinValue, implementor.MdiZorder, "Component.MdiZorder(ToolBar)");
 				Assert.AreEqual (1, implementor.Alpha, "Component.Alpha(ToolBar)");
+			} else if (type == BasicWidgetType.ChildMenuSeparator) {
+				Assert.AreEqual (Atk.Layer.Popup, implementor.Layer, "Component.Layer(ToolBar)");
+				Assert.AreEqual (int.MinValue, implementor.MdiZorder, "Component.MdiZorder(ToolBar)");
+				Assert.AreEqual (1, implementor.Alpha, "Component.Alpha(ToolBar)");
 			} else {
 				Assert.AreEqual (Atk.Layer.Widget, implementor.Layer, "Component.Layer(notWindow)");
 				//FIXME: still don't know why this is failing in the GailTester, accerciser is lying me?
@@ -861,6 +865,9 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ContextMenu:
 			case BasicWidgetType.ParentMenu:
 				role = Atk.Role.Menu;
+				break;
+			case BasicWidgetType.ChildMenuSeparator:
+				role = Atk.Role.Separator;
 				break;
 			case BasicWidgetType.StatusStrip:
 				role = Atk.Role.Statusbar;

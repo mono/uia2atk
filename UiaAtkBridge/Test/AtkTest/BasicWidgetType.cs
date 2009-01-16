@@ -52,6 +52,7 @@ namespace UiaAtkBridgeTest
 		MainMenuBar,
 		ParentMenu,
 		ChildMenu,
+		ChildMenuSeparator,
 		ContextMenu,
 		
 		VScrollBar,
@@ -87,16 +88,23 @@ namespace UiaAtkBridgeTest
 	public class MenuLayout
 	{
 		private string labelMenu;
-		private List<MenuLayout> subMenus;
+		private List<MenuLayout> subMenus = null;
 
 		public MenuLayout (string name, params MenuLayout[] submenus)
 		{
 			labelMenu = name;
-			subMenus = new List <MenuLayout> (submenus);
+			if (submenus != null)
+				subMenus = new List <MenuLayout> (submenus);
 		}
 		
 		public string Label { get { return labelMenu; } }
 		public List<MenuLayout> SubMenus { get { return subMenus; } }
+	}
+
+	public class MenuSeparator : MenuLayout
+	{
+		public MenuSeparator () : base (null, null) {
+		}
 	}
 	
 	public static class Misc

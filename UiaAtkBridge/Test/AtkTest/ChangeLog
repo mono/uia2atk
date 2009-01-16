@@ -1,3 +1,9 @@
+2009-01-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs:
+	* BasicWidgetType.cs: MenuSeparator testing in Gail.
+
 2009-01-15  Mike Gorse <mgorse@novell.com>
 
 	* BasicWidgetType.cs, AtkTests.cs: Add HSplitter.

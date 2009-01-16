@@ -87,6 +87,7 @@
             <node name="menubar1" type="Menubar">
               <node type="Menu" action="XFileAction">
                 <node type="Menuitem" action="NewAction" />
+                <node type="Separator" />
                 <node type="Menuitem" action="QuitAction" />
               </node>
               <node type="Menu" action="SomeEditMenuAction" />

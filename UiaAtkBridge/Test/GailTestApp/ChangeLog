@@ -1,3 +1,8 @@
+2009-01-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* gtk-gui/gui.stetic:
+	* gtk-gui/MainWindow.cs: MenuSeparator testing in Gail.
+
 2009-01-14  Mike Gorse  <mgorse@novell.com>
 
 	* main.cs, MainWindow.cs: Support HPaned.

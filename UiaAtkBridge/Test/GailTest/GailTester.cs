@@ -221,16 +221,22 @@ namespace UiaAtkBridgeTest
 				return false;
 
 			foreach (MenuLayout menu in menus) {
-				Gtk.MenuItem menuitem = new Gtk.MenuItem (menu.Label);
-	
-				Gtk.Menu menushell = new Gtk.Menu ();
-				if (AddRecursivelyAux (menushell, menu.SubMenus, type, ref widget, level + 1)) {
-					menuitem.Submenu = menushell;
-					if ((widget == null) && (level == 0))
-						widget = menuitem;
+				Gtk.MenuItem menuitem = null;
+				if (menu is MenuSeparator) {
+					menuitem = new Gtk.SeparatorMenuItem ();
+					widget = menuitem;
 				} else {
-					if (type == BasicWidgetType.ChildMenu) {
-						widget = menuitem;
+					menuitem = new Gtk.MenuItem (menu.Label);
+		
+					Gtk.Menu menushell = new Gtk.Menu ();
+					if (AddRecursivelyAux (menushell, menu.SubMenus, type, ref widget, level + 1)) {
+						menuitem.Submenu = menushell;
+						if ((widget == null) && (level == 0))
+							widget = menuitem;
+					} else {
+						if (type == BasicWidgetType.ChildMenu) {
+							widget = menuitem;
+						}
 					}
 				}
 				

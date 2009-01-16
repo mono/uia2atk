@@ -639,7 +639,7 @@ namespace UiaAtkBridgeTest
 			MenuLayout [] firstSubmenus = new MenuLayout [] { new MenuLayout ("New...", new MenuLayout ("Project"), new MenuLayout ("Text")), new MenuLayout ("Quit!") };
 
 			List <MenuLayout> menu = new List <MenuLayout> ();
-			menu.Add (new MenuLayout ("File", firstSubmenus));
+			menu.Add (new MenuLayout (menuName, firstSubmenus));
 			menu.Add (new MenuLayout ("Help", new MenuLayout ("About?")));
 
 			accessible = GetAccessible (type, menu);
@@ -1177,6 +1177,69 @@ namespace UiaAtkBridgeTest
 
 			if (accessible.NAccessibleChildren < 1)
 				Assert.Fail ("Accessible should have children!");
+		}
+
+		[Test]
+		public void ChildMenuSeparator () 
+		{
+			BasicWidgetType type = BasicWidgetType.ChildMenuSeparator;
+			Atk.Object accessible = null;
+
+			string menuName = "File";
+			MenuLayout [] firstSubmenus = 
+				new MenuLayout [] { 
+					new MenuLayout ("New...", 
+						new MenuLayout ("Project"), 
+						new MenuLayout ("Text")), 
+					new MenuSeparator (), 
+					new MenuLayout ("Quit!") };
+
+			List <MenuLayout> menu = new List <MenuLayout> ();
+			menu.Add (new MenuLayout (menuName, firstSubmenus));
+			menu.Add (new MenuLayout ("Help", new MenuLayout ("About?")));
+
+			accessible = GetAccessible (type, menu);
+			
+			Assert.AreEqual (null, accessible.Name, "separator.Name==null");
+			Assert.AreEqual (menuName, accessible.Parent.Name, "separator.Name==null");
+
+			PropertyRole (type, accessible);
+
+			//In Gail, action and text are ridiculously implemented, so I don't want to enable this:
+			//TODO: file a bug on gail
+//			Interfaces (accessible,
+//			            typeof (Atk.Component),
+//			            typeof (Atk.Action),
+//			            typeof (Atk.Text));
+			
+			Assert.AreEqual (0, accessible.NAccessibleChildren, 
+			                 "number of children; children roles:" + DescribeChildren (accessible));
+
+			States (accessible,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Selectable, 
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Visible);
+
+			RunInGuiThread (delegate {
+				CastToAtkInterface <Atk.Action> (accessible.Parent).DoAction (0);
+			});
+				
+			States (accessible,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Selectable, 
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Visible,
+			  Atk.StateType.Showing);
+			
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+
+			RunInGuiThread (delegate {
+				CastToAtkInterface <Atk.Action> (accessible.Parent).DoAction (0);
+			});
+			
+
 		}
 		
 		[Test]
