@@ -1,3 +1,19 @@
+2009-01-16  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/TableProviderBehavior.cs:
+	Keeping a reference to ListViewProvider instead of HeaderProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ListItemEditValueProviderBehavior.cs:
+	Fixes ValueChanged Event.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternValueEvent.cs:
+	Listening UIASubItemTextChanged to raise ValuePattern.Value
+	Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemEditValuePatternValueEvent.cs:
+	Listening AfterLabelEdit to raise ValuePattern.Value Automation
+	Event.
+
 2009-01-15  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/SplitContainerProvider.cs,

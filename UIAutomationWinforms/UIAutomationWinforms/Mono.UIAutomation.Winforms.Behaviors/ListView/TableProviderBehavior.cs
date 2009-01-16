@@ -42,7 +42,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		public TableProviderBehavior (ListViewProvider provider)
 			: base (provider)
 		{
-			headerProvider = provider.HeaderProvider;
+			listViewProvider = provider;
 		}
 
 		#endregion
@@ -58,7 +58,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			// NOTE: RowHeadersProperty Property NEVER changes.
 			// NOTE: RowOrColumnMajor Property NEVER changes.
 			Provider.SetEvent (ProviderEventType.TablePatternColumnHeadersProperty,
-			                   new TablePatternColumnHeadersEvent ((ListViewProvider) Provider));
+			                   new TablePatternColumnHeadersEvent (listViewProvider));
 		}
 		
 		public override void Disconnect ()
@@ -87,10 +87,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		public IRawElementProviderSimple[] GetColumnHeaders ()
 		{
-			if (headerProvider == null)
+			if (listViewProvider.HeaderProvider == null)
 				return new IRawElementProviderSimple [0];
 			else
-				return headerProvider.GetHeaderItems ();
+				return listViewProvider.HeaderProvider.GetHeaderItems ();
 		}
 		
 		public IRawElementProviderSimple[] GetRowHeaders ()
@@ -106,7 +106,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 
 		#region Private Fields
 
-		private ListViewProvider.ListViewHeaderProvider headerProvider;
+		private ListViewProvider listViewProvider;
 
 		#endregion
 

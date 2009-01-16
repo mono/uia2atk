@@ -100,8 +100,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 
 				if (indexOf < 0 || indexOf >= listViewItem.SubItems.Count)
 					return string.Empty;
-				else
-					return listViewItem.SubItems [indexOf].Text;
+				else {
+					if (indexOf == 0)
+						return listViewItem.Text;
+					else
+						return listViewItem.SubItems [indexOf - 1].Text;
+				}
 			}
 		}
 		
@@ -122,7 +126,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 				return;
 			}
 
-			listViewItem.SubItems [indexOf].Text = value;
+			if (indexOf == 0)
+				listViewItem.Text = value;
+			else
+				listViewItem.SubItems [indexOf - 1].Text = value;
 		}
 
 		#endregion

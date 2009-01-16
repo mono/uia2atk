@@ -50,12 +50,14 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		{
 			listView.AfterLabelEdit += OnAfterLabelEdit;
 			viewItem.UIATextChanged += OnUIATextChanged;
+			viewItem.UIASubItemTextChanged += OnUIASubItemTextChanged;
 		}
 
 		public override void Disconnect ()
 		{
 			listView.AfterLabelEdit -= OnAfterLabelEdit;
 			viewItem.UIATextChanged -= OnUIATextChanged;
+			viewItem.UIASubItemTextChanged -= OnUIASubItemTextChanged;
 		}
 		
 		#endregion 
@@ -72,6 +74,14 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		{
 			if (viewItem.ListView.Items.IndexOf (viewItem) == args.Item) {
 				newText = args.Label;
+				RaiseAutomationPropertyChangedEvent ();
+			}
+		}
+
+		private void OnUIASubItemTextChanged (object sender, SWF.LabelEditEventArgs args)
+		{
+			if (args.Item == 0) {
+				newText = viewItem.Text;
 				RaiseAutomationPropertyChangedEvent ();
 			}
 		}

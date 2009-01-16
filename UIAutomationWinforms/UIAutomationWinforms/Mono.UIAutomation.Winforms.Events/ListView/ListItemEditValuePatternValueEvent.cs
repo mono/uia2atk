@@ -46,11 +46,13 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		public override void Connect ()
 		{
 			editProvider.ItemProvider.ListViewItem.UIASubItemTextChanged += OnUIATextChanged;
+			editProvider.ItemProvider.ListView.AfterLabelEdit += OnAfterLabelEdit;
 		}
 
 		public override void Disconnect ()
 		{
 			editProvider.ItemProvider.ListViewItem.UIASubItemTextChanged -= OnUIATextChanged;
+			editProvider.ItemProvider.ListView.AfterLabelEdit -= OnAfterLabelEdit;
 		}
 		
 		#endregion 
@@ -59,15 +61,33 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		private void OnUIATextChanged (object sender, SWF.LabelEditEventArgs args)
 		{
-			if (args.Item == editProvider.ItemProvider.ListView.Columns.IndexOf (editProvider.ColumnHeader))
+			if (args.Item == editProvider.ItemProvider.ListView.Columns.IndexOf (editProvider.ColumnHeader)) {
+				newText = (string) editProvider.GetPropertyValue (ValuePatternIdentifiers.ValueProperty.Id);
 				RaiseAutomationPropertyChangedEvent ();
+			}
 		}
+
+		private void OnAfterLabelEdit (object sender, SWF.LabelEditEventArgs args)
+		{
+			if (editProvider.ItemProvider.ListView.Items.IndexOf (editProvider.ItemProvider.ListViewItem) 
+			    == args.Item) {
+				newText = args.Label;
+				RaiseAutomationPropertyChangedEvent ();
+			}
+		}
+
+		//We are doing this because AfterLabelEdit event is generated before commiting the text
+		protected override object GetNewPropertyValue ()
+		{
+			return newText;
+		}	
 
 		#endregion
 
 		#region Private Fields
 
 		private ListViewProvider.ListViewListItemEditProvider editProvider;
+		private string newText;
 
 		#endregion
 	}

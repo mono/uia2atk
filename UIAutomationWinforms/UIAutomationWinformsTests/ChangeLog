@@ -1,3 +1,7 @@
+2009-01-16  Mario Carrion  <mcarrion@novell.com>
+
+	* ListViewProviderTest.cs: Testing ValuePattern.Value Automation Event.
+
 2009-01-15  Mario Carrion  <mcarrion@novell.com>
 
 	* ListViewProviderTest.cs: Test updated to verify children.

@@ -1625,6 +1625,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                        defaultGroupItemsCount, 
 			                        subItemsCount);
 			listview.ShowGroups = true;
+			listview.LabelEdit = true;
 			listview.View = View.Details;
 			rootProvider = (IRawElementProviderFragmentRoot) GetProviderFromControl (listview);
 
@@ -1656,19 +1657,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 						Assert.Fail (string.Format ("Index is greater than count: {0}>={1}", index, groups.Length));
 					groups [index] = child;
 					index++;
-				}/*else if (ctype == ControlType.DataItem.Id) {
-					// Validate DataItem navigation
-					index++;
-					IRawElementProviderFragment dataItemChild = child.Navigate (NavigateDirection.FirstChild);
-					Assert.IsNotNull (dataItemChild, "We should have DataItem.Child");
-					while (dataItemChild != null) {
-						Assert.AreEqual (child, 
-						                 dataItemChild.Navigate (NavigateDirection.Parent),
-						                 "DataItemChild.Parent != DataItem");
-						
-						dataItemChild = dataItemChild.Navigate (NavigateDirection.NextSibling);
-					}
-				} */else if (ctype != ControlType.Group.Id
+				} else if (ctype != ControlType.Group.Id
 				           && ctype != ControlType.ScrollBar.Id)
 					Assert.Fail (string.Format ("ControlTypes valid are ScrollBar, DataItem and Header: {0}",
 					                            ControlType.LookupById (ctype).ProgrammaticName));
@@ -1704,6 +1693,62 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					child = child.Navigate (NavigateDirection.NextSibling);
 				}
 			}
+
+			// Events
+
+			// Search for Grouip with Header = item0Header
+			IRawElementProviderFragment group0 = null;
+			foreach (IRawElementProviderFragment group in groups) {
+				if ((string) group.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id)
+				    == listview.Items [0].Group.Header) {
+					group0 = group;
+					break;
+				}
+			}
+			Assert.IsNotNull (group0, "Group0 NULL");
+
+			child = group0.Navigate (NavigateDirection.FirstChild);
+			IRawElementProviderFragment item0 = null;
+			while (child != null) {
+				if ((string) child.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id)
+				    == listview.Items [0].Text) {
+					item0 = child;
+					break;
+				}
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.IsNotNull (item0, "Item0 NULL");
+
+			IRawElementProviderFragment []subItems = new IRawElementProviderFragment [listview.Columns.Count];
+			child = item0.Navigate (NavigateDirection.FirstChild);
+			index = 0;
+			while (child != null) {
+				subItems [index] = child;
+				child = child.Navigate (NavigateDirection.NextSibling);
+				index++;
+			}
+
+			// Changing SubItem0 or item0.Child0
+			bridge.ResetEventLists ();
+			listview.Items [0].SubItems [0].Text = "hola mundo";
+
+			Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (subItems [0], 
+			                                                         ValuePatternIdentifiers.ValueProperty.Id),
+			                  "LabelEdit=true SubItem0. Value not changed");
+			Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (item0, 
+			                                                         ValuePatternIdentifiers.ValueProperty.Id),
+			                  "LabelEdit=true Item0. Value not changed");
+
+			listview.LabelEdit = false;
+			bridge.ResetEventLists ();
+			listview.Items [0].SubItems [0].Text = "hello world";
+
+			Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (subItems [0], 
+			                                                         ValuePatternIdentifiers.ValueProperty.Id),
+			                  "LabelEdit=false SubItem0. Value not changed");
+			Assert.IsNull (bridge.GetAutomationPropertyEventFrom (item0, 
+			                                                      ValuePatternIdentifiers.ValueProperty.Id),
+			                  "LabelEdit=false Item0. Value not changed");
 		}
 
 		#endregion
@@ -2118,9 +2163,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				view.Items.Add (new ListViewItem (string.Format ("Default #{0}", item)));
 
 			//Columns
-			for (int column = 0; column < maxSubitems; column++) {
+			for (int column = 0; column < maxSubitems; column++)
 				view.Columns.Add (string.Format ("Column:{0}", column));
-			}
 
 			return view;
 		}
