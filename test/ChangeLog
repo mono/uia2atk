@@ -1,3 +1,9 @@
+2009-01-16  Brad Taylor  <brad@getcoded.net>
+
+	* samples/attribute-test.rtf: 
+	* samples/richtextbox_rtf.py: Add a sample that exploits attribute
+	support via a RichTextBox that supports RTF.
+
 2009-01-15 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/maskedtextbox/maskedtextboxframe.py: Remove insertText method

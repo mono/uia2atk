@@ -17,9 +17,7 @@ It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of cont
 
 
 import clr
-import os
 from sys import path
-from os.path import exists
 
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')

@@ -100,6 +100,7 @@ EXTRAS =
 
 REFERENCES =  \
 	System  \
+	System.Drawing  \
 	$(MONO_UIA_LIBS) \
 	$(GTK_SHARP_20_LIBS)
 

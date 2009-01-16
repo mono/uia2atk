@@ -88,11 +88,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		//TODO: We should connect the events to update this.text_range_provider?
 		public ITextRangeProvider DocumentRange {
 			get { 
-				if (textRangeProvider == null) {
-					textRangeProvider = new TextRangeProvider (this, 
-					                                           (SWF.TextBoxBase) Provider.Control);
-				}
-				return textRangeProvider;
+				return new TextRangeProvider (this, (SWF.TextBoxBase) Provider.Control);
 			}
 		}
 		
@@ -168,8 +164,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 			get { return Provider.Control as SWF.TextBox; }
 		}
 		
-		private ITextRangeProvider textRangeProvider;
-
 		internal object GetDocumentFromTextBoxBase (SWF.TextBoxBase textbox)
 		{
 			// Copied from TextRangeProvider.cs

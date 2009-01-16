@@ -1,3 +1,11 @@
+2009-01-16  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: Reference System.Drawing needed for
+	TextImplementorHelper.
+
+	* TextImplementorHelper.cs: Implement GetRunAttributes and
+	get_DefaultAttributes.
+
 2009-01-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Makefile.am:

@@ -158,14 +158,14 @@ namespace Mono.UIAutomation.Winforms
 			LineTag tag;
 			int pos;
 
-			LineTagValueHandler val_handler = attr_to_val_handler[attribute];
+			TagDataValueHandler val_handler = attr_to_val_handler[attribute];
 			Document d = textboxbase.document;
 			TextRangeProvider range = null;
 
 			if (!backward) {
 				for (int i = StartPoint; i < EndPoint; i += tag.Length) {
 					d.CharIndexToLineTag (i, out line, out tag, out pos);
-					if (val_handler (tag).Equals (@value)) {
+					if (val_handler (new TagData (tag, line)).Equals (@value)) {
 						if (range == null) {
 							range = new TextRangeProvider (provider, textboxbase,
 										       i, i + tag.Length);
@@ -179,7 +179,7 @@ namespace Mono.UIAutomation.Winforms
 			} else {
 				for (int i = EndPoint - 1; i >= StartPoint; i -= tag.Length) {
 					d.CharIndexToLineTag (i, out line, out tag, out pos);
-					if (val_handler (tag).Equals (@value)) {
+					if (val_handler (new TagData (tag, line)).Equals (@value)) {
 						if (range == null) {
 							int start = i - tag.Length + 1;
 							range = new TextRangeProvider (provider, textboxbase,
@@ -231,24 +231,24 @@ namespace Mono.UIAutomation.Winforms
 				throw new ArgumentException ();
 			}
 
-			LineTagValueHandler val_handler = attr_to_val_handler[attribute];
+			TagDataValueHandler val_handler = attr_to_val_handler[attribute];
 
 			Line line;
 			LineTag tag;
 			int pos;
 			
-			List<LineTag> tags = new List<LineTag> ();
+			List<TagData> tags = new List<TagData> ();
 			Document d = textboxbase.document;
 
 			int point = normalizer.StartPoint;
 			while (point < normalizer.EndPoint) {
 				d.CharIndexToLineTag (point, out line,
 				                      out tag, out pos);
-				tags.Add (tag);
+				tags.Add (new TagData (tag, line));
 				point += tag.Length + 1;
 			}
 
-			IEnumerable<LineTag> results
+			IEnumerable<TagData> results
 				= tags.Distinct (new LineTagComparer (val_handler));
 
 			int count = results.Count ();
@@ -421,25 +421,37 @@ namespace Mono.UIAutomation.Winforms
 		}
 #endregion
 
-		private delegate object LineTagValueHandler (LineTag a);
-		private class LineTagComparer : IEqualityComparer<LineTag>
+		private delegate object TagDataValueHandler (TagData d);
+		private class LineTagComparer : IEqualityComparer<TagData>
 		{
-			public LineTagComparer (LineTagValueHandler h) { this.val_handler = h; }
-			public bool Equals (LineTag a, LineTag b) { return val_handler (a).Equals (val_handler (b)); }
-			public int GetHashCode (LineTag tag) { return tag.BackColor.GetHashCode (); }
+			public LineTagComparer (TagDataValueHandler h) { this.val_handler = h; }
+			public bool Equals (TagData a, TagData b) { return val_handler (a).Equals (val_handler (b)); }
+			public int GetHashCode (TagData d) { return d.Tag.BackColor.GetHashCode (); }
 
-			private LineTagValueHandler val_handler;
+			private TagDataValueHandler val_handler;
+		}
+
+		private struct TagData
+		{
+			public LineTag Tag;
+			public Line Line;
+
+			public TagData (LineTag tag, Line line)
+			{
+				Tag = tag;
+				Line = line;
+			}
 		}
 
 		// Font weights
 		private const int LOGFONT_NORMAL = 400;
 		private const int LOGFONT_BOLD = 700;
 
-		private static Dictionary<int, LineTagValueHandler> attr_to_val_handler = null;
+		private static Dictionary<int, TagDataValueHandler> attr_to_val_handler = null;
 
 		private void PopulateAttributeDictionary ()
 		{
-			attr_to_val_handler = new Dictionary<int, LineTagValueHandler> ();
+			attr_to_val_handler = new Dictionary<int, TagDataValueHandler> ();
 
 			// This is not as much crack as it seems.  This
 			// dictionary maps from the Attributes in TextPattern
@@ -449,41 +461,41 @@ namespace Mono.UIAutomation.Winforms
 			// is a big dictionary, it's also lazy-loaded the first
 			// time FindAttribute or GetAttributeValue are called.
 			attr_to_val_handler.Add (TextPattern.BackgroundColorAttribute.Id,
-			                         x => x.BackColor.ToArgb ());
+			                         x => x.Tag.BackColor.ToArgb ());
 			attr_to_val_handler.Add (TextPattern.FontNameAttribute.Id,
-			                         x => x.Font.Name);
+			                         x => x.Tag.Font.Name);
 			attr_to_val_handler.Add (TextPattern.FontSizeAttribute.Id,
-			                         x => x.Font.Size);
+			                         x => x.Tag.Font.Size);
 			attr_to_val_handler.Add (TextPattern.FontWeightAttribute.Id,
-			                         x => x.Font.Bold ? LOGFONT_BOLD : LOGFONT_NORMAL);
+			                         x => x.Tag.Font.Bold ? LOGFONT_BOLD : LOGFONT_NORMAL);
 			attr_to_val_handler.Add (TextPattern.ForegroundColorAttribute.Id,
-			                         x => x.Color.ToArgb ());
+			                         x => x.Tag.Color.ToArgb ());
 			attr_to_val_handler.Add (TextPattern.IsItalicAttribute.Id,
-			                         x => x.Font.Italic);
+			                         x => x.Tag.Font.Italic);
 			attr_to_val_handler.Add (TextPattern.StrikethroughStyleAttribute.Id,
-			                         x => x.Font.Strikeout ? TextDecorationLineStyle.Single
-			                                               : TextDecorationLineStyle.None);
-			attr_to_val_handler.Add (TextPattern.TabsAttribute.Id,
-			                         x => new double[0]);
+			                         x => x.Tag.Font.Strikeout ? TextDecorationLineStyle.Single
+			                                                   : TextDecorationLineStyle.None);
 			attr_to_val_handler.Add (TextPattern.UnderlineStyleAttribute.Id,
-			                         x => x.Font.Underline ? TextDecorationLineStyle.Single
-			                                               : TextDecorationLineStyle.None);
+			                         x => x.Tag.Font.Underline ? TextDecorationLineStyle.Single
+			                                                   : TextDecorationLineStyle.None);
+			attr_to_val_handler.Add (TextPattern.HorizontalTextAlignmentAttribute.Id,
+			                         x => MapTextAlignment (x.Line.Alignment));
+			attr_to_val_handler.Add (TextPattern.IndentationFirstLineAttribute.Id,
+			                         x => x.Line.Indent);
+			attr_to_val_handler.Add (TextPattern.IndentationLeadingAttribute.Id,
+			                         x => x.Line.HangingIndent);
+			attr_to_val_handler.Add (TextPattern.IndentationTrailingAttribute.Id,
+			                         x => x.Line.RightIndent);
 
 			// Not currently supported by Document API
+			attr_to_val_handler.Add (TextPattern.TabsAttribute.Id,
+			                         x => new double[0]);
 			attr_to_val_handler.Add (TextPattern.AnimationStyleAttribute.Id,
 			                         x => AnimationStyle.None);
 			attr_to_val_handler.Add (TextPattern.BulletStyleAttribute.Id,
 			                         x => BulletStyle.None);
 			attr_to_val_handler.Add (TextPattern.CapStyleAttribute.Id,
 			                         x => CapStyle.None);
-			attr_to_val_handler.Add (TextPattern.HorizontalTextAlignmentAttribute.Id,
-			                         x => HorizontalTextAlignment.Left);
-			attr_to_val_handler.Add (TextPattern.IndentationFirstLineAttribute.Id,
-			                         x => 0);
-			attr_to_val_handler.Add (TextPattern.IndentationLeadingAttribute.Id,
-			                         x => 0);
-			attr_to_val_handler.Add (TextPattern.IndentationTrailingAttribute.Id,
-			                         x => 0);
 			attr_to_val_handler.Add (TextPattern.IsHiddenAttribute.Id,
 			                         x => false);
 			attr_to_val_handler.Add (TextPattern.IsReadOnlyAttribute.Id,
@@ -494,6 +506,19 @@ namespace Mono.UIAutomation.Winforms
 			                         x => false);
 			attr_to_val_handler.Add (TextPattern.OutlineStylesAttribute.Id,
 			                         x => OutlineStyles.None);
+		}
+	
+		private HorizontalTextAlignment MapTextAlignment (HorizontalAlignment align)
+		{
+			switch (align) {
+			case HorizontalAlignment.Left:
+				return HorizontalTextAlignment.Left;
+			case HorizontalAlignment.Right:
+				return HorizontalTextAlignment.Right;
+			case HorizontalAlignment.Center:
+				return HorizontalTextAlignment.Centered;
+			}
+			return HorizontalTextAlignment.Left;
 		}
 
 #region Private Properties

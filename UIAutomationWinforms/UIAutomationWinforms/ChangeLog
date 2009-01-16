@@ -1,3 +1,14 @@
+2009-01-16  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: 
+	Don't cache the DocumentRange as it changes very often.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs: 
+	Modify attribute lookup code to support lookups based upon the Line
+	class.  This is necessary to implement
+	HorizontalTextAlignmentAttribute, IndentationFirstLineAttribute,
+	IndentationLeadingAttribute, and IndentationTrailingAttribute.
+
 2009-01-16  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ListView/TableProviderBehavior.cs:
