@@ -1749,6 +1749,33 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNull (bridge.GetAutomationPropertyEventFrom (item0, 
 			                                                      ValuePatternIdentifiers.ValueProperty.Id),
 			                  "LabelEdit=false Item0. Value not changed");
+
+
+			// Column Events
+			IRawElementProviderFragment []headerChildren = new IRawElementProviderFragment [listview.Columns.Count];
+			child = header.Navigate (NavigateDirection.FirstChild);
+			Assert.IsNotNull (child, "HeaderItem missing");
+			index = 0;
+			while (child != null) {
+				headerChildren [index] = child;
+				child = child.Navigate (NavigateDirection.NextSibling);
+				index++;
+			}
+
+			// NameProperty
+			bridge.ResetEventLists ();
+			listview.Columns [1].Text = "new text";
+			Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (headerChildren [1],
+			                                                         AutomationElementIdentifiers.NameProperty.Id),
+			                  "HeaderItem0. Name not changed");
+
+			// BoundingRectangleProperty
+			// Uncomment when https://bugzilla.novell.com/show_bug.cgi?id=467086 is fixed
+//			bridge.ResetEventLists ();
+//			listview.Columns [1].Width = 30;
+//			Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (headerChildren [1],
+//			                                                         AutomationElementIdentifiers.BoundingRectangleProperty.Id),
+//			                  "HeaderItem0. Bounds not changed");
 		}
 
 		#endregion

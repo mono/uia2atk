@@ -17,28 +17,24 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008-2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-using System;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Winforms;
+using System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ListView;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ListView
+namespace Mono.UIAutomation.Winforms.Events.ListView
 {
-
-	internal class HeaderItemInvokeProvider : ProviderBehavior, IInvokeProvider
-	{
 		
-		#region Constructors
+	internal class HeaderItemAutomationIsOffScreenPropertyEvent
+		: AutomationIsOffscreenPropertyEvent
+	{
 
-		public HeaderItemInvokeProvider (ListViewProvider.ListViewHeaderItemProvider provider)
+		#region Constructors
+		
+		public HeaderItemAutomationIsOffScreenPropertyEvent (ListViewProvider.ListViewHeaderItemProvider provider)
 			: base (provider)
 		{
 			itemProvider = provider;
@@ -46,32 +42,27 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 
 		#endregion
 		
-		#region IProviderBehavior Interface
+		#region IConnectable Realization
 
-		public override AutomationPattern ProviderPattern { 
-			get { return InvokePatternIdentifiers.Pattern; }
-		}
-		
 		public override void Connect ()
 		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			                   new HeaderItemInvokePatternInvokedEvent (itemProvider));
+			itemProvider.HeaderProvider.ListView.ColumnWidthChanged += OnColumnWidthChanged;
 		}
-		
+
 		public override void Disconnect ()
-		{	
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent,
-			                   null);
+		{
+			itemProvider.HeaderProvider.ListView.ColumnWidthChanged -= OnColumnWidthChanged;
 		}
 		
 		#endregion
-
-		#region IInvokeProvider implementation 
 		
-		public void Invoke ()
+		#region Private Methods
+
+		private void OnColumnWidthChanged (object sender, ColumnWidthChangedEventArgs args)
 		{
-			Console.WriteLine ("IInvokeProider.Invoke");
-			//FIXME: How to implement?
+			if (args.ColumnIndex
+			    == itemProvider.HeaderProvider.ListView.Columns.IndexOf (itemProvider.ColumnHeader))
+			    RaiseAutomationPropertyChangedEvent ();
 		}
 
 		#endregion
@@ -81,7 +72,5 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		private ListViewProvider.ListViewHeaderItemProvider itemProvider;
 
 		#endregion
-
 	}
-				                      
 }

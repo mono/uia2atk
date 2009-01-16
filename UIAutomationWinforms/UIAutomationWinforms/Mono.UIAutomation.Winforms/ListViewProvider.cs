@@ -846,14 +846,30 @@ namespace Mono.UIAutomation.Winforms
 
 			public override IRawElementProviderFragmentRoot FragmentRoot {
 				get { return headerProvider; }
-			}			
+			}
 
+			public ListViewHeaderProvider HeaderProvider {
+				get { return headerProvider; }
+			}
+
+			public SWF.ColumnHeader ColumnHeader {
+				get { return columnHeader; }
+			}
+			
 			public override void Initialize ()
 			{
 				base.Initialize ();
 
 				SetBehavior (InvokePatternIdentifiers.Pattern,
 				             new HeaderItemInvokeProvider (this));
+
+				// Automation Events
+				SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty,
+				          new HeaderItemAutomationIsOffScreenPropertyEvent (this));
+				SetEvent (ProviderEventType.AutomationElementBoundingRectangleProperty,
+				          new HeaderItemAutomationBoundingRectanglePropertyEvent (this));
+				SetEvent (ProviderEventType.AutomationElementNameProperty,
+				          new HeaderItemAutomationNamePropertyEvent (this));
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)

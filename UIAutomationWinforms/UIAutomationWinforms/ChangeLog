@@ -1,3 +1,26 @@
+2009-01-16  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: HeadeItem events added.
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: HeaderItem: Raising
+	Automation Events
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/HeaderItemInvokeProvider.cs:
+	Listening InvokedEvent.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/HeaderItemAutomationNamePropertyEvent.cs:
+	ColumnHeader: Raises Name Automation Event. (mcs >= 123665)
+
+	* Mono.UIAutomation.Winforms.Events/ListView/HeaderItemAutomationBoundingRectanglePropertyEvent.cs:
+	ColumnHeader: Raises BoundingRectangle Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/HeaderItemAutomationIsOffScreenPropertyEvent.cs:
+	ColumnHeader: Raises IsOffscreen Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/HeaderItemInvokePatternInvokedEvent.cs:
+	HeaderItem: Raising InvokedEvent.
+
 2009-01-16  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: 

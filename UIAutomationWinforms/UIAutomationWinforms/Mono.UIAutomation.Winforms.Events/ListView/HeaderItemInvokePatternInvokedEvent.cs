@@ -17,61 +17,55 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008-2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.ComponentModel;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ListView;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ListView
+namespace Mono.UIAutomation.Winforms.Events.ListView
 {
-
-	internal class HeaderItemInvokeProvider : ProviderBehavior, IInvokeProvider
+	internal class HeaderItemInvokePatternInvokedEvent : BaseAutomationEvent
 	{
-		
 		#region Constructors
 
-		public HeaderItemInvokeProvider (ListViewProvider.ListViewHeaderItemProvider provider)
-			: base (provider)
+		public HeaderItemInvokePatternInvokedEvent (ListViewProvider.ListViewHeaderItemProvider itemProvider)
+			: base (itemProvider,
+			        InvokePatternIdentifiers.InvokedEvent)
 		{
-			itemProvider = provider;
+			this.itemProvider = itemProvider;
 		}
-
+		
 		#endregion
 		
-		#region IProviderBehavior Interface
+		#region ProviderEvent Methods
 
-		public override AutomationPattern ProviderPattern { 
-			get { return InvokePatternIdentifiers.Pattern; }
-		}
-		
 		public override void Connect ()
 		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			                   new HeaderItemInvokePatternInvokedEvent (itemProvider));
+			itemProvider.HeaderProvider.ListView.ColumnClick += OnColumnClick;
 		}
-		
-		public override void Disconnect ()
-		{	
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent,
-			                   null);
-		}
-		
-		#endregion
 
-		#region IInvokeProvider implementation 
-		
-		public void Invoke ()
+		public override void Disconnect ()
 		{
-			Console.WriteLine ("IInvokeProider.Invoke");
-			//FIXME: How to implement?
+			itemProvider.HeaderProvider.ListView.ColumnClick -= OnColumnClick;
+		}
+		
+		#endregion 
+
+		#region Private methods
+
+		private void OnColumnClick (object obj, SWF.ColumnClickEventArgs args)
+		{
+			if (args.Column 
+			    == itemProvider.HeaderProvider.ListView.Columns.IndexOf (itemProvider.ColumnHeader))
+			    RaiseAutomationEvent ();
 		}
 
 		#endregion
@@ -81,7 +75,5 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		private ListViewProvider.ListViewHeaderItemProvider itemProvider;
 
 		#endregion
-
 	}
-				                      
 }

@@ -246,6 +246,10 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListView/GridPatternRowEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternColumnEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/GroupGridPatternRowEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/HeaderItemAutomationBoundingRectanglePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/HeaderItemAutomationIsOffScreenPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/HeaderItemAutomationNamePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ListView/HeaderItemInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemAutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemAutomationIsOffscreenPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemCheckBoxAutomationIsOffscreenPropertyEvent.cs \
