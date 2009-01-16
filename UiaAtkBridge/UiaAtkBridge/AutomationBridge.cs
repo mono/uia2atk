@@ -1103,9 +1103,9 @@ namespace UiaAtkBridge
 
 		private void HandleNewHeaderItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			TextLabel atkLabel = new TextLabel (provider);
+			HeaderItem headerItem = new HeaderItem (provider);
 
-			IncludeNewAdapter (atkLabel, parentObject);
+			IncludeNewAdapter (headerItem, parentObject);
 		}
 		
 		// This whole function is a hack to work around the

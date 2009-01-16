@@ -1,3 +1,19 @@
+2009-01-16  Mario Carrion  <mcarrion@novell.com>
+
+	* TableImplementorHelper.cs: Missing methods implemented.
+
+	* DataGrid.cs: Using TableImplementorHelper to return values.
+
+	* TextLabel.cs: TextLabel supports Role.Label only.
+	Role.TableColumnHeader is handled by HeaderItem.
+
+	* AutomationBridge.cs: Using HeaderItem instead of TextLabel.
+
+	* Makefile.am:
+	* UiaAtkBridge.mdp: New class added: HeaderItem.
+
+	* HeaderItem.cs: Handles ControlType.HeaderItem.
+
 2009-01-16  Brad Taylor  <brad@getcoded.net>
 
 	* TextImplementorHelper.cs: Use correct API.

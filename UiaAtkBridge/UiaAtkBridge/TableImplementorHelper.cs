@@ -149,26 +149,48 @@ namespace UiaAtkBridge
 
 		public string GetColumnDescription (int column)
 		{
-			return null;
+			if (tableProvider == null)
+				return null;
+
+			IRawElementProviderSimple []items = tableProvider.GetColumnHeaders ();
+			if (column < 0 || column >= items.Length)
+				return null;
+
+			return (string) items [column].GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 		}
 
 		public Atk.Object GetColumnHeader (int column)
 		{
-			// TODO: UIA supports multiple headers, but ATK doesn't
-			IRawElementProviderSimple item = tableProvider.GetColumnHeaders()[0];
-			return AutomationBridge.GetAdapterForProviderLazy (item);
+			if (tableProvider == null)
+				return null;
+			
+			IRawElementProviderSimple []items = tableProvider.GetColumnHeaders ();
+			if (column < 0 || column >= items.Length)
+				return null;
+			return AutomationBridge.GetAdapterForProviderLazy (items [column]);
 		}
 
 		public string GetRowDescription (int row)
 		{
-			return null;
+			if (tableProvider == null)
+				return null;
+
+			IRawElementProviderSimple []items = tableProvider.GetRowHeaders ();
+			if (row < 0 || row >= items.Length)
+				return null;
+
+			return (string) items [row].GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 		}
 
 		public Atk.Object GetRowHeader (int row)
 		{
-			// TODO: UIA supports multiple headers, but ATK doesn't
-			IRawElementProviderSimple item = tableProvider.GetRowHeaders()[0];
-			return AutomationBridge.GetAdapterForProviderLazy (item);
+			if (tableProvider == null)
+				return null;
+			
+			IRawElementProviderSimple []items = tableProvider.GetRowHeaders ();
+			if (row < 0 || row >= items.Length)
+				return null;
+			return AutomationBridge.GetAdapterForProviderLazy (items [row]);
 		}
 
 		public Atk.Object Summary
@@ -206,9 +228,28 @@ namespace UiaAtkBridge
 
 		public int GetSelectedRows (out int [] selected)
 		{
-			Console.WriteLine ("UiaAtkBridge: GetSelectedRows unimplemented");
-			selected = null;
-			return 0;
+			ISelectionProvider selection 
+				= (ISelectionProvider) resource.Provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
+			if (selection == null) {
+				selected = new int [0];
+				return 0;
+			}
+
+			IRawElementProviderSimple []items = selection.GetSelection ();
+			List<int> selectedItems = new List <int> ();
+			foreach (IRawElementProviderSimple item in items) {
+				ISelectionItemProvider selectionItem 
+					= (ISelectionItemProvider) item.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+				IGridItemProvider gridItem 
+					= (IGridItemProvider) item.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
+				if (selectionItem != null && gridItem != null) {
+					if (selectionItem.IsSelected)
+						selectedItems.Add (gridItem.Row);
+				}
+			}
+
+			selected = selectedItems.ToArray ();
+			return selectedItems.Count;
 		}
 
 		// The below two functions should go away as soon as the
@@ -222,54 +263,112 @@ namespace UiaAtkBridge
 
 		public int GetSelectedRows (out int selected)
 		{
-			Console.WriteLine ("UiaAtkBridge: GetSelectedRows unimplemented");
+			// TODO: Logic should be the same as GetSelectedRows (out int [] selected)
+			Console.WriteLine ("UiaAtkBridge: GetSelectedRows unimplemented");		
 			selected = 0;
 			return 0;
 		}
 
 		public bool IsColumnSelected (int column)
 		{
+			// TODO: There's no UIA API to get selected columns
 			Console.WriteLine ("UiaAtkBridge: IsColumnSelected unimplemented");
 			return false;
 		}
 
 		public bool IsRowSelected (int row)
 		{
-			Console.WriteLine ("UiaAtkBridge: IsRowSelected unimplemented");
-			return false;
+			IRawElementProviderSimple item;
+			try {
+				item = GridProvider.GetItem (row, 0);
+			} catch (ArgumentOutOfRangeException) {
+				return false;
+			}
+
+			ISelectionItemProvider selectionItem 
+				= (ISelectionItemProvider) item.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+			if (selectionItem == null)
+				return false;
+
+			return selectionItem.IsSelected;
 		}
 
 		public bool IsSelected (int row, int column)
 		{
+			if (row >= NRows || row < 0
+			    || column >= NColumns || column < 0)
+			    return false;
+
+			if (GridProvider == null)
+				return false;
+
 			IRawElementProviderSimple item = GridProvider.GetItem (row, column);
 			if (item == null)
 				return false;
-			ISelectionItemProvider selectionItemProvider = (ISelectionItemProvider) item.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
-			if (selectionItemProvider != null)
-				return selectionItemProvider.IsSelected;
-			return false;
+			ISelectionItemProvider selectionItemProvider 
+				= (ISelectionItemProvider) item.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+			if (selectionItemProvider == null)
+				return false;
+			
+			return selectionItemProvider.IsSelected;
 		}
 
 		public bool AddRowSelection (int row)
 		{
-			Console.WriteLine ("UiaAtkBridge: AddRowSelection unimplemented");
-			return false;
+			if (GridProvider == null)
+				return false;
+			
+			IRawElementProviderSimple item = GridProvider.GetItem (row, 0);
+			if (item == null)
+				return false;
+
+			ISelectionItemProvider selectionItem
+				= (ISelectionItemProvider) item.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+			if (selectionItem == null)
+				return false;
+			
+			try {
+				selectionItem.AddToSelection ();
+			} catch (InvalidOperationException) {
+				return false;
+			}
+			
+			return true;
 		}
 
 		public bool RemoveRowSelection (int row)
 		{
-			Console.WriteLine ("UiaAtkBridge: RemoveRowSelection unimplemented");
-			return false;
+			if (GridProvider == null)
+			    return false;
+			
+			IRawElementProviderSimple item = GridProvider.GetItem (row, 0);
+			if (item == null)
+				return false;
+
+			ISelectionItemProvider selectionItem
+				= (ISelectionItemProvider) item.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id);
+			if (selectionItem == null)
+				return false;
+			
+			try {
+				selectionItem.RemoveFromSelection ();
+			} catch (InvalidOperationException) {
+				return false;
+			}
+			
+			return true;
 		}
 
 		public bool AddColumnSelection (int column)
 		{
+			// TODO: There's no UIA API to selected columns
 			Console.WriteLine ("UiaAtkBridge: AddColumnSelection unimplemented");
 			return false;
 		}
 
 		public bool RemoveColumnSelection (int column)
 		{
+			// TODO: There's no UIA API to unselected columns
 			Console.WriteLine ("UiaAtkBridge: RemoveColumnSelection unimplemented");
 			return false;
 		}

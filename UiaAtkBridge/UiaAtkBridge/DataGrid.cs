@@ -148,22 +148,22 @@ namespace UiaAtkBridge
 
 		public string GetColumnDescription (int column)
 		{
-			return string.Empty;
+			return tableExpert.GetColumnDescription (column);
 		}
 
 		public Atk.Object GetColumnHeader (int column)
 		{
-			return null;
+			return tableExpert.GetColumnHeader (column);
 		}
 
 		public string GetRowDescription (int row)
 		{
-			return String.Empty;
+			return tableExpert.GetRowDescription (row);
 		}
 
 		public Atk.Object GetRowHeader (int row)
 		{
-			return null;
+			return tableExpert.GetRowHeader (row);
 		}
 
 		public Atk.Object Summary
@@ -174,22 +174,22 @@ namespace UiaAtkBridge
 
 		public void SetColumnDescription (int column, string description)
 		{
-			Console.WriteLine ("UiaAtkBridge: SetColumnDescription unimplemented");
+			tableExpert.SetColumnDescription (column, description);
 		}
 
 		public void SetColumnHeader (int column, Atk.Object header)
 		{
-			Console.WriteLine ("UiaAtkBridge: SetColumnHeader unimplemented");
+			tableExpert.SetColumnHeader (column, header);
 		}
 
 		public void SetRowDescription (int row, string description)
 		{
-			Console.WriteLine ("UiaAtkBridge: SetRowDescription unimplemented");
+			tableExpert.SetRowDescription (row, description);
 		}
 
 		public void SetRowHeader (int row, Atk.Object header)
 		{
-			Console.WriteLine ("UiaAtkBridge: SetRowHeader unimplemented");
+			tableExpert.SetRowHeader (row, header);
 		}
 
 		// TODO: Remove next two methods when atk-sharp is fixed

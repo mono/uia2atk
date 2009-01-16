@@ -64,6 +64,7 @@
     <File name="ComboBoxItem.cs" subtype="Code" buildaction="Compile" />
     <File name="ContextMenu.cs" subtype="Code" buildaction="Compile" />
     <File name="ComboBoxOptionsTable.cs" subtype="Code" buildaction="Compile" />
+    <File name="HeaderItem.cs" subtype="Code" buildaction="Compile" />
     <File name="SplitContainer.cs" subtype="Code" buildaction="Compile" />
     <File name="Separator.cs" subtype="Code" buildaction="Compile" />
   </Contents>

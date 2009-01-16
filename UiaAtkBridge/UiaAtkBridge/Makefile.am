@@ -61,6 +61,7 @@ FILES =  \
 	DataGrid.cs \
 	DataGridGroup.cs \
 	ExpandCollapseButton.cs \
+	HeaderItem.cs \
 	Hyperlink.cs \
 	Image.cs \
 	List.cs \
