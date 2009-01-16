@@ -48,6 +48,44 @@ namespace FormTest
 			f2.Show ();
 			new OpenFileDialog ().ShowDialog ();
 		}
+
+		static private void Color_Clicked(object sender, System.EventArgs e)
+		{
+		}
+
+		static public void InitializeMyToolBar(Form form)
+		{
+			// Create and initialize the ToolBar and ToolBarButton controls.
+			ToolBar toolBar1 = new ToolBar();
+			ToolBarButton toolBarButton1 = new ToolBarButton();
+			ToolBarButton toolBarButton2 = new ToolBarButton();
+			ToolBarButton toolBarButton3 = new ToolBarButton();
+	
+			// Set the Text properties of the ToolBarButton controls.
+			toolBarButton1.Text = "Open";
+			toolBarButton2.Text = "Save";
+			toolBarButton3.Text = "Print";
+	
+			// Add the ToolBarButton controls to the ToolBar.
+			toolBar1.Buttons.Add(toolBarButton1);
+			toolBar1.Buttons.Add(toolBarButton2);
+			toolBar1.Buttons.Add(toolBarButton3);
+	
+			//Add the event-handler delegate.
+			toolBar1.ButtonClick += new ToolBarButtonClickEventHandler (
+			  toolBar1_ButtonClick);
+	
+			// Add the ToolBar to the Form.
+			form.Controls.Add(toolBar1);
+ 		}
+
+		static private void toolBar1_ButtonClick (Object sender, 
+		                                          ToolBarButtonClickEventArgs e)
+		{
+			// Evaluate the Button property to determine which button was clicked.
+			new OpenFileDialog ().ShowDialog();
+		}
+
 		
 		static Form BuildGui ()
 		{
@@ -55,6 +93,8 @@ namespace FormTest
 			f1.Text = "Main Form";
 			f1.Height += 90;
 			f1.Width += 70;
+
+			InitializeMyToolBar (f1);
 			
 			Button b = new Button ();
 			b.Text = "Click me to open second form!";
@@ -77,6 +117,11 @@ namespace FormTest
 			lab.Enabled = true;
 			lab.Top = b.Height + 30;
 			f1.Controls.Add (lab);
+
+			ContextMenuStrip contextMenu = new ContextMenuStrip();
+			contextMenu.Items.Add("&Color");
+			contextMenu.Items.Add("&Font");
+			lab.ContextMenuStrip = contextMenu;
 			
 			CheckBox chk = new CheckBox ();
 			chk.Text = "This is a test checkbox";
