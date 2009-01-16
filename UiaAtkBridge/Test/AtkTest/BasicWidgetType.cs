@@ -59,6 +59,7 @@ namespace UiaAtkBridgeTest
 		ProgressBar,
 		Spinner,
 		ContainerPanel,
+		HSplitContainer,
 		
 		//widgets only in MWF:
 		ComboBoxSimple,

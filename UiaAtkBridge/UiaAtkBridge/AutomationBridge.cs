@@ -561,7 +561,7 @@ namespace UiaAtkBridge
 			else if (controlTypeId == ControlType.DataItem.Id)
 				AddChildrenToParent (simpleProvider);
 			else if (controlTypeId == ControlType.Pane.Id)
-				HandleNewContainer (simpleProvider, parentAdapter);
+				HandleNewPane (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.SplitButton.Id)
 				HandleNewSplitButton (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.Tab.Id)
@@ -960,6 +960,27 @@ namespace UiaAtkBridge
 			providerAdapterMapping [provider] = atkContainer;
 			
 			IncludeNewAdapter (atkContainer, parentObject);
+		}
+
+		private void HandleNewPane (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		{
+			Adapter atkItem = null;
+			// Try to figure out whether this is a Splitter, a
+			// SplitContainer, or something else
+			if (provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id) != null) {
+				System.Windows.Rect bounds = (System.Windows.Rect) 
+					provider.GetPropertyValue (
+					  AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+				// hack -- try to distinguish a Splitter from a SplitContainer
+				if ((bounds.Height < 10 && bounds.Width > 50) || (bounds.Width < 10 && bounds.Height > 50))
+					Console.WriteLine ("TODO: Splitter");
+				atkItem = new SplitContainer (provider);
+			}
+			if (atkItem == null)
+				atkItem = new Container (provider);
+			providerAdapterMapping [provider] = atkItem;
+			
+			IncludeNewAdapter (atkItem, parentObject);
 		}
 
 		private void HandleNewMenuBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)

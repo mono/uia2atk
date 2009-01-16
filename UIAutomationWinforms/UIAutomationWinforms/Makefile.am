@@ -124,6 +124,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBar/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBar/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/SplitContainer/DockProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/SplitContainer/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/SplitContainer/SplitterPanelTransformProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Splitter/DockProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Splitter/TransformProviderBehavior.cs \
@@ -305,6 +306,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternSmallChangeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/SplitContainer/DockPatternDockPositionEvent.cs \
+	Mono.UIAutomation.Winforms.Events/SplitContainer/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/SplitContainer/SplitterPanelTransformPatternCanResizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/SplitContainer/TransformPatternCanMoveEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Splitter/DockPatternDockPositionEvent.cs \

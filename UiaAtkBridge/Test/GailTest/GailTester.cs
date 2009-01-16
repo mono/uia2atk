@@ -551,6 +551,12 @@ namespace UiaAtkBridgeTest
 				if (real)
 					widget = GailTestApp.MainClass.GiveMeARealFrame ();
 				break;
+			case BasicWidgetType.HSplitContainer:
+				widget = new Gtk.HPaned ();
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealHPaned ();
+				((Gtk.HPaned)widget).CanFocus = false;
+				break;
 			case BasicWidgetType.ComboBoxDropDownEntry:
 			case BasicWidgetType.ComboBoxDropDownList:
 			case BasicWidgetType.ComboBoxSimple:

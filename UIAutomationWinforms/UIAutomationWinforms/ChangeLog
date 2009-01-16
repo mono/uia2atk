@@ -1,3 +1,11 @@
+2009-01-15  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/SplitContainerProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/SplitContainer/RangeValueProviderBehavior.cs,
+	  Makefile.am,
+	  Mono.UIAutomation.Winforms.Events/SplitContainer/RangeValuePatternValueEvent.cs:
+	  Add OrientationProperty and RangeValueProvider to SplitContainer.
+
 2009-01-15  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

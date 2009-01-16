@@ -428,13 +428,9 @@ namespace UiaAtkBridgeTest
 
 			SetReadOnly (accessible, true);
 			Assert.IsFalse (accessible.RefStateSet().ContainsState (Atk.StateType.Editable), "ReadOnly spinner should not be editable");
-			EventMonitor.Start ();
+			StartEventMonitor ();
 			SetReadOnly (accessible, false);
-			EventCollection events = EventMonitor.Pause ();
-			string evType = "object:state-changed:editable";
-			EventCollection evs = events.FindByRole (Atk.Role.SpinButton).FindByType (evType);
-			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
-			Assert.AreEqual (1, evs.Count, "bad number of events expected!" + eventsInXml);
+			ExpectEvents (1, Atk.Role.SpinButton, "object:state-changed:editable");
 			Assert.IsTrue (accessible.RefStateSet().ContainsState (Atk.StateType.Editable), "Non-ReadOnly spinner should be editable");
 		}
 		
@@ -864,7 +860,7 @@ namespace UiaAtkBridgeTest
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithoutImage);
 		}
 
-		//[Test]
+		[Test]
 		public void ListView ()
 		{
 			BasicWidgetType type = BasicWidgetType.ListView;
@@ -1183,5 +1179,50 @@ namespace UiaAtkBridgeTest
 				Assert.Fail ("Accessible should have children!");
 		}
 		
+		[Test]
+		public void HSplitContainer ()
+		{
+			BasicWidgetType type = BasicWidgetType.HSplitContainer;
+			Atk.Object accessible;
+			
+			string name = "test";
+			accessible = GetAccessible (type, name, true);
+			
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+			
+			PropertyRole (type, accessible);
+			Parent (type, accessible);
+
+			States (accessible,
+			  Atk.StateType.Enabled,
+			  Atk.StateType.Horizontal,
+			  Atk.StateType.Sensitive,
+			  Atk.StateType.Showing,
+			  Atk.StateType.Visible);
+
+			Assert.AreEqual (2, accessible.NAccessibleChildren, "HSplitter NAccessibleChildren");
+
+			Atk.Object child2 = accessible.RefAccessibleChild (1);
+			Atk.Value atkValue = CastToAtkInterface<Atk.Value> (accessible);
+			Atk.Component component2 = CastToAtkInterface<Atk.Component> (child2);
+			int x1, x2, y1, y2, w1, w2, h1, h2;
+			double minVal = GetMinimumValue (atkValue);
+			double maxVal = GetMaximumValue (atkValue);
+			SetCurrentValue (atkValue, minVal);
+			component2.GetExtents (out x1, out y1, out w1, out h1, Atk.CoordType.Window);
+			StartEventMonitor ();
+			SetCurrentValue (atkValue, minVal + (maxVal - minVal) / 2);
+			System.Threading.Thread.Sleep (1000);
+			ExpectEvents (1, Atk.Role.SplitPane, "object:property-change:accessible-value");
+			double midVal = GetCurrentValue (atkValue);
+			Assert.IsTrue (midVal > minVal && midVal < maxVal, "Mid value should be between min and max");
+			component2.GetExtents (out x2, out y2, out w2, out h2, Atk.CoordType.Window);
+
+			Assert.IsTrue (x2 > x1, "Right control moved");
+			Assert.AreEqual (y2, y1, "y should not change");
+			Assert.IsTrue (w2 < w1, "Right control width decreased");
+			Assert.AreEqual (h2, h1, "Height should not change");
+		}
 	}
 }

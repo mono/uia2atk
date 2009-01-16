@@ -917,6 +917,9 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.StatusBarPanel:
 				role = Atk.Role.Label;
 				break;
+			case BasicWidgetType.HSplitContainer:
+				role = Atk.Role.SplitPane;
+				break;
 			default:
 				throw new NotImplementedException (String.Format (
 					"Couldn't find the role for {0}.  Did you forget to add it to AtkTester::PropertyRole ()?",
@@ -1960,27 +1963,49 @@ namespace UiaAtkBridgeTest
 		{
 			GLib.Value gv = new GLib.Value (0);
 			value.GetMinimumValue (ref gv);
-			return (double)gv.Val;
+			return double.Parse (gv.Val.ToString());
 		}
 
 		protected double GetMaximumValue (Atk.Value value)
 		{
 			GLib.Value gv = new GLib.Value (0);
 			value.GetMaximumValue (ref gv);
-			return (double)gv.Val;
+			return double.Parse (gv.Val.ToString());
 		}
 
 		protected double GetCurrentValue (Atk.Value value)
 		{
 			GLib.Value gv = new GLib.Value (0);
 			value.GetCurrentValue (ref gv);
-			return (double)gv.Val;
+			return double.Parse (gv.Val.ToString());
 		}
 
 		protected bool SetCurrentValue (Atk.Value value, double n)
 		{
-			GLib.Value gv = new GLib.Value (n);
+			GLib.Value gv = new GLib.Value (0);
+			value.GetCurrentValue (ref gv);
+			if (gv.Val is int)
+				gv.Val = (int)n;
+			else
+				gv.Val = n;
 			return value.SetCurrentValue (gv);
+		}
+
+		private EventCollection events = null;
+
+		protected void StartEventMonitor ()
+		{
+			events = null;
+			EventMonitor.Start ();
+		}
+
+		protected void ExpectEvents (int count, Atk.Role role, string evType)
+		{
+			if (events == null)
+				events = EventMonitor.Pause ();
+			EventCollection evs = events.FindByRole (role).FindByType (evType);
+			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
+			Assert.AreEqual (1, evs.Count, "bad number of events expected!" + eventsInXml);
 		}
 
 		public abstract void RunInGuiThread (System.Action d);

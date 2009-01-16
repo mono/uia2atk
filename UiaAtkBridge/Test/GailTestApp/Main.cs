@@ -217,6 +217,13 @@ namespace GailTestApp {
 			return win.GiveMeARealSpinButton ();
 		}
 
+		public static Gtk.HPaned GiveMeARealHPaned ()
+		{
+			CheckState ();
+			
+			return win.GiveMeARealHPaned ();
+		}
+
 		public static Gtk.Frame GiveMeARealFrame ()
 		{
 			CheckState ();

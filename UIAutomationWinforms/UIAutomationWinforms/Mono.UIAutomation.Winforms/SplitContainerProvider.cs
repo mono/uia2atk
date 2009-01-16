@@ -85,6 +85,8 @@ namespace Mono.UIAutomation.Winforms
 			
 			SetBehavior (DockPatternIdentifiers.Pattern,
 			             new DockProviderBehavior (this));
+			SetBehavior (RangeValuePatternIdentifiers.Pattern,
+			             new RangeValueProviderBehavior (this));
 		}
 		
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -93,6 +95,8 @@ namespace Mono.UIAutomation.Winforms
 				return ControlType.Pane.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return Catalog.GetString ("pane");
+				else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
+					return ((SplitContainer)Control).Orientation == Orientation.Vertical? OrientationType.Vertical: OrientationType.Horizontal;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}

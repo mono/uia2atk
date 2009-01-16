@@ -1,3 +1,7 @@
+2009-01-14  Mike Gorse  <mgorse@novell.com>
+
+	* main.cs, MainWindow.cs: Support HPaned.
+
 2009-01-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Main.cs:

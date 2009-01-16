@@ -169,6 +169,10 @@ public partial class MainWindow: Gtk.Window
 		return this.spinbuttonTest1;
 	}
 
+	internal Gtk.HPaned GiveMeARealHPaned () {
+		return this.hpaned1;
+	}
+
 	internal Gtk.Frame GiveMeARealFrame () {
 		return this.frame1;
 	}
