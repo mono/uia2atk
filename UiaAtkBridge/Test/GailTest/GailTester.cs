@@ -178,7 +178,7 @@ namespace UiaAtkBridgeTest
 		  BasicWidgetType type, List <MenuLayout> menu)
 		{
 			Gtk.MenuShell menushell;
-			if (type == BasicWidgetType.MainMenuBar)
+			if (type != BasicWidgetType.ContextMenu)
 				menushell = GailTestApp.MainClass.GiveMeARealMenuBar ();
 			else
 				menushell = new Gtk.Menu ();
