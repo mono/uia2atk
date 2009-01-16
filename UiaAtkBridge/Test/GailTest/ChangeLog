@@ -1,3 +1,7 @@
+2009-01-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* GailTester.cs: Fix.
+
 2009-01-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* GailTester.cs: MenuSeparator testing in Gail.

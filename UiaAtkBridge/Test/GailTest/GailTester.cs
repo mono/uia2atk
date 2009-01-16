@@ -224,7 +224,8 @@ namespace UiaAtkBridgeTest
 				Gtk.MenuItem menuitem = null;
 				if (menu is MenuSeparator) {
 					menuitem = new Gtk.SeparatorMenuItem ();
-					widget = menuitem;
+					if (type == BasicWidgetType.ChildMenuSeparator)
+						widget = menuitem;
 				} else {
 					menuitem = new Gtk.MenuItem (menu.Label);
 		
