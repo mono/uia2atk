@@ -1,3 +1,7 @@
+2009-01-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* SelectionProviderUserHelper.cs: Fix warning.
+
 2009-01-15  Mike Gorse  <mgorse@novell.com>
 
 	* Makefile.am, AutomationBridge.cs, SplitContainer.cs:

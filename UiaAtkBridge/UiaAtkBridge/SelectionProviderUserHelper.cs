@@ -160,7 +160,7 @@ namespace UiaAtkBridge
 		
 		private ISelectionItemProvider ChildItemAtIndex (int i)
 		{
-			Adapter adapter = AutomationBridge.GetAdapterForProvider(childrenHolder).RefAccessibleChild (i) as Adapter;
+			Adapter adapter = AutomationBridge.GetAdapterForProviderSemiLazy (childrenHolder).RefAccessibleChild (i) as Adapter;
 			if (adapter == null || adapter.Provider == null)
 				return null;
 			ISelectionItemProvider ret = (ISelectionItemProvider)adapter.Provider.GetPatternProvider
