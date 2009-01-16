@@ -1,5 +1,9 @@
 2009-01-16  Brad Taylor  <brad@getcoded.net>
 
+	* TextImplementorHelper.cs: Use correct API.
+
+2009-01-16  Brad Taylor  <brad@getcoded.net>
+
 	* Makefile.am: Reference System.Drawing needed for
 	TextImplementorHelper.
 

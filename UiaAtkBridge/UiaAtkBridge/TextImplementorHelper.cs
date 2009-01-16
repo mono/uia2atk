@@ -616,8 +616,8 @@ namespace UiaAtkBridge
 					val = ((int) tmp).ToString ();
 				break;
 			}
-
-			attrs.Add (new Atk.Attribute (name, val));
+			
+			attrs.Add (new Atk.Attribute {Name = name, Value = val});
 		}
 
 		private bool IsAttrNotNullOrMultiValued (int providerAttrId,
