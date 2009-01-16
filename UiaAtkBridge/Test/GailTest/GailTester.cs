@@ -137,6 +137,11 @@ namespace UiaAtkBridgeTest
 			return false;
 		}
 
+		public override bool IsBGO567991Addressed ()
+		{
+			return false;
+		}
+
 		protected override bool AllowsEmptyingSelectionOnComboBoxes { 
 			get { return true; }
 		}

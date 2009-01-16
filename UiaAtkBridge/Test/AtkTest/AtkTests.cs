@@ -1205,11 +1205,14 @@ namespace UiaAtkBridgeTest
 			PropertyRole (type, accessible);
 
 			//In Gail, action and text are ridiculously implemented, so I don't want to enable this:
-			//TODO: file a bug on gail
-//			Interfaces (accessible,
-//			            typeof (Atk.Component),
-//			            typeof (Atk.Action),
-//			            typeof (Atk.Text));
+			if (IsBGO567991Addressed ())
+				Interfaces (accessible,
+				            typeof (Atk.Component));
+			else
+				Interfaces (accessible,
+				            typeof (Atk.Component),
+				            typeof (Atk.Action),
+				            typeof (Atk.Text));
 			
 			Assert.AreEqual (0, accessible.NAccessibleChildren, 
 			                 "number of children; children roles:" + DescribeChildren (accessible));

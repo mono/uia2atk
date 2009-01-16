@@ -75,6 +75,7 @@ FILES =  \
 	RadioButton.cs \
 	ScrollBar.cs \
 	SelectionProviderUserHelper.cs \
+	Separator.cs \
 	Spinner.cs \
 	SplitButton.cs \
 	SplitContainer.cs \

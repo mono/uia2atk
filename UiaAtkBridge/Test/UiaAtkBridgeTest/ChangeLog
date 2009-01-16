@@ -1,3 +1,7 @@
+2009-01-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: ToolStrip separator support.
+
 2009-01-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: Fix toolbar children test.

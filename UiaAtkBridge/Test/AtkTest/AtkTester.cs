@@ -76,6 +76,8 @@ namespace UiaAtkBridgeTest
 
 		public abstract bool IsBGO561414Addressed ();
 
+		public abstract bool IsBGO567991Addressed ();
+
 		public abstract bool HasComboBoxSimpleLayout { get; }
 		
 		protected void InterfaceComponent (BasicWidgetType type, Atk.Component implementor)
@@ -83,19 +85,19 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (1, implementor.Alpha, "Component.Alpha");
 
 			if (type == BasicWidgetType.Window) {
-				Assert.AreEqual (Atk.Layer.Window, implementor.Layer, "Component.Layer(Window)");
-				Assert.AreEqual (-1, implementor.MdiZorder, "Component.MdiZorder(Window)");
+				Assert.AreEqual (Atk.Layer.Window, implementor.Layer, "Component.Layer");
+				Assert.AreEqual (-1, implementor.MdiZorder, "Component.MdiZorder");
 			} else if ((type == BasicWidgetType.ParentMenu) ||
 			           (type == BasicWidgetType.ContextMenu)) {
-				Assert.AreEqual (Atk.Layer.Popup, implementor.Layer, "Component.Layer(Menu)");
+				Assert.AreEqual (Atk.Layer.Popup, implementor.Layer, "Component.Layer");
 			} else if (type == BasicWidgetType.ToolBar) {
-				Assert.AreEqual (Atk.Layer.Widget, implementor.Layer, "Component.Layer(ToolBar)");
-				Assert.AreEqual (int.MinValue, implementor.MdiZorder, "Component.MdiZorder(ToolBar)");
-				Assert.AreEqual (1, implementor.Alpha, "Component.Alpha(ToolBar)");
+				Assert.AreEqual (Atk.Layer.Widget, implementor.Layer, "Component.Layer");
+				Assert.AreEqual (int.MinValue, implementor.MdiZorder, "Component.MdiZorder");
+				Assert.AreEqual (1, implementor.Alpha, "Component.Alpha");
 			} else if (type == BasicWidgetType.ChildMenuSeparator) {
-				Assert.AreEqual (Atk.Layer.Popup, implementor.Layer, "Component.Layer(ToolBar)");
-				Assert.AreEqual (int.MinValue, implementor.MdiZorder, "Component.MdiZorder(ToolBar)");
-				Assert.AreEqual (1, implementor.Alpha, "Component.Alpha(ToolBar)");
+				Assert.AreEqual (Atk.Layer.Popup, implementor.Layer, "Component.Layer");
+				Assert.AreEqual (int.MinValue, implementor.MdiZorder, "Component.MdiZorder");
+				Assert.AreEqual (1, implementor.Alpha, "Component.Alpha");
 			} else {
 				Assert.AreEqual (Atk.Layer.Widget, implementor.Layer, "Component.Layer(notWindow)");
 				//FIXME: still don't know why this is failing in the GailTester, accerciser is lying me?
@@ -272,6 +274,10 @@ namespace UiaAtkBridgeTest
 				               "menu child of combobox should not be visible or showing yet");
 			}
 			
+			if (type == BasicWidgetType.ParentMenu)
+				Assert.IsFalse (accessible.RefStateSet ().ContainsState (Atk.StateType.Selected),
+				                "shouldn't contain Selected before DoAction");
+			
 			// only valid actions should work
 			for (int i = 0; i < validNumberOfActions; i++) {
 				RunInGuiThread (delegate {
@@ -279,6 +285,10 @@ namespace UiaAtkBridgeTest
 					Assert.AreEqual (validNumberOfActions, implementor.NActions, "NActions doesn't change");
 				});
 			}
+
+			if (type == BasicWidgetType.ParentMenu)
+				Assert.IsTrue (accessible.RefStateSet ().ContainsState (Atk.StateType.Selected),
+				               "should contain Selected after DoAction");
 
 			if (names != null) {
 				//because the dropdown represents a new window!

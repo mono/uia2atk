@@ -230,6 +230,11 @@ namespace UiaAtkBridgeTest
 			return true;
 		}
 
+		public override bool IsBGO567991Addressed ()
+		{
+			return true;
+		}
+
 		protected override bool AllowsEmptyingSelectionOnComboBoxes { 
 			get { return false; }
 		}
@@ -840,7 +845,7 @@ namespace UiaAtkBridgeTest
 				contextMenu.Show (form, 0, 0);
 				widget = contextMenu;
 			}
-			
+			//Console.WriteLine ("visibility!!!!" + ((System.Windows.Forms.ToolStripItem)widget).Visible);
 			return GetAdapterForWidget (widget);
 		}
 
@@ -850,21 +855,28 @@ namespace UiaAtkBridgeTest
 			if (menus.Count <= 0)
 				return ret;
 			
-			List <SWF.ToolStripMenuItem> list = new List <SWF.ToolStripMenuItem> ();
+			List <SWF.ToolStripItem> list = new List <SWF.ToolStripItem> ();
 			foreach (MenuLayout menu in menus) {
-				SWF.ToolStripMenuItem tsmi = new SWF.ToolStripMenuItem ();
-				tsmi.Text = menu.Label;
-				ret_aux = AddRecursively (tsmi.DropDownItems, menu.SubMenus, type);
-				if (ret == null) {
-					if ((tsmi.DropDownItems.Count > 0) && (type == BasicWidgetType.ParentMenu))
-						ret = tsmi;
-					else if ((tsmi.DropDownItems.Count == 0) && (type == BasicWidgetType.ChildMenu))
-						ret = tsmi;
-					else
-						ret = ret_aux;
+				SWF.ToolStripItem tsi;
+				if (menu is MenuSeparator) {
+					tsi = new SWF.ToolStripSeparator ();
+					ret = tsi;
+				} else {
+					SWF.ToolStripMenuItem tsmi = new SWF.ToolStripMenuItem ();
+					tsi = tsmi;
+					tsmi.Text = menu.Label;
+					ret_aux = AddRecursively (tsmi.DropDownItems, menu.SubMenus, type);
+					if (ret == null) {
+						if ((tsmi.DropDownItems.Count > 0) && (type == BasicWidgetType.ParentMenu))
+							ret = tsmi;
+						else if ((tsmi.DropDownItems.Count == 0) && (type == BasicWidgetType.ChildMenu))
+							ret = tsmi;
+						else
+							ret = ret_aux;
+					}
 				}
 				
-				list.Add (tsmi);
+				list.Add (tsi);
 			}
 			subcol.AddRange (list.ToArray ());
 			return ret;

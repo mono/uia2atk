@@ -572,6 +572,8 @@ namespace UiaAtkBridge
 				HandleNewTree (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.TreeItem.Id)
 				HandleNewTreeItem (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.Separator.Id)
+				HandleNewSeparator (simpleProvider, parentAdapter);
 			// TODO: Other providers
 			else if (controlTypeId != ControlType.Thumb.Id)
 				Console.WriteLine ("AutomationBridge: Unhandled control: " +
@@ -1077,6 +1079,11 @@ namespace UiaAtkBridge
 			Adapter newAdapter = new DataGrid (fragment);
 
 			IncludeNewAdapter (newAdapter, parentObject);
+		}
+
+		private void HandleNewSeparator (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		{
+			IncludeNewAdapter (new Separator (provider), parentObject);
 		}
 
 		private void AddChildrenToParent (IRawElementProviderSimple provider)
