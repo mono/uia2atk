@@ -652,9 +652,8 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Enabled,
 			  Atk.StateType.Selectable, 
 			  Atk.StateType.Sensitive,
-			  Atk.StateType.Visible
-			  ,Atk.StateType.Showing //<- this is not working in gail??
-			  );
+			  Atk.StateType.Visible,
+			  Atk.StateType.Showing);
 			
 			Assert.AreEqual (firstSubmenus.Length, accessible.NAccessibleChildren, 
 			                 "number of children; children roles:" + DescribeChildren (accessible));

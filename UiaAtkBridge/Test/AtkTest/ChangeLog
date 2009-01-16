@@ -1,3 +1,7 @@
+2009-01-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: Remove obsolete comment since r123565.
+
 2009-01-15  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs:
