@@ -54,7 +54,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.StatusBar
 
 		public override void Connect ()
 		{
-			// NOTE: RowColumn Property NEVER changes.
+			// NOTE: RowCount Property NEVER changes.
 			Provider.SetEvent (ProviderEventType.GridPatternColumnCountProperty,
 			                   new GridPatternColumnCountEvent (Provider));
 		}
