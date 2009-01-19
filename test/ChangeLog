@@ -1,3 +1,8 @@
+2009-01-19  Calen Chen <cachen@novell.com>
+
+	* samples/printpreviewdialog.py: add Document properety, give Text 
+	property for printpreviewdialog
+
 2009-01-16  Brad Taylor  <brad@getcoded.net>
 
 	* samples/attribute-test.rtf: 
