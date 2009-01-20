@@ -64,6 +64,7 @@ FILES =  \
 	HeaderItem.cs \
 	Hyperlink.cs \
 	Image.cs \
+	ImageImplementorHelper.cs \
 	List.cs \
 	ListGroup.cs \
 	ListItem.cs \

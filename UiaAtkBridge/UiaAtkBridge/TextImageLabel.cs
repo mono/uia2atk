@@ -33,73 +33,36 @@ namespace UiaAtkBridge
 	{
 		public TextImageLabel (IRawElementProviderSimple provider) : base (provider)
 		{
-			imageProvider = provider;
+			imageImplementor = new ImageImplementorHelper (this, provider);
 		}
 		
-		#region ImageImplementor implementation 
+		#region ImageImplementor implementation
 
-		string imageDescription = null;
+		ImageImplementorHelper imageImplementor;
 
-		bool? hasImage = null;
-		Mono.UIAutomation.Bridge.IEmbeddedImage embeddedImage = null;
-		protected object imageProvider = null;
-		
-		private bool HasImage {
-			get {
-				if (hasImage == null) {
-					//type only available in our Provider implementation
-					embeddedImage = imageProvider as Mono.UIAutomation.Bridge.IEmbeddedImage;
-					
-					if (embeddedImage == null) {
-						Console.WriteLine ("WARNING: your provider implementation doesn't have unofficial IEmbeddedImage support");
-						hasImage = false;
-					} else
-						hasImage = !embeddedImage.Bounds.IsEmpty;
-				}
-				
-				return hasImage.Value;
-			}
-		}
-		
 		public string ImageDescription
 		{
-			get { return imageDescription; }
+			get { return imageImplementor.ImageDescription; }
 		}
 		
 		public void GetImageSize (out int width, out int height)
 		{
-			width = -1;
-			height = -1;
-			if (HasImage) {
-				width = (int)embeddedImage.Bounds.Width;
-				height = (int)embeddedImage.Bounds.Height;
-			}
+			imageImplementor.GetImageSize (out width, out height);
 		}
 		
 		public void GetImagePosition (out int x, out int y, Atk.CoordType coordType)
 		{
-			x = int.MinValue;
-			y = int.MinValue;
-			if (HasImage) {
-				x = (int)embeddedImage.Bounds.X;
-				y = (int)embeddedImage.Bounds.Y;
-				if (coordType == Atk.CoordType.Window)
-					ConvertCoords (ref x, ref y, false);
-			}
+			imageImplementor.GetImagePosition (out x, out y, coordType);
 		}
 		
 		public bool SetImageDescription (string description)
 		{
-			if (HasImage) {
-				imageDescription = description;
-				return true;
-			}
-			return false;
+			return imageImplementor.SetImageDescription (description);
 		}
 		
 		public string ImageLocale 
 		{
-			get { return imageDescription; /*TODO*/ }
+			get { return imageImplementor.ImageLocale; }
 		}
 		
 		#endregion

@@ -1,3 +1,18 @@
+2009-01-20  Mario Carrion  <mcarrion@novell.com>
+
+	* Image.cs:
+	* Button.cs:
+	* HeaderItem.cs:
+	* RadioButton.cs:
+	* TextImageLabel.cs:
+	* CheckBoxButton.cs: Using ImageImplementorHelper to realize
+	Atk.ImageImplementor.
+
+	* ImageImplementorHelper.cs: Atk.ImageImplementor helper.
+
+	* Makefile.am:
+	* UiaAtkBridge.mdp: Class added: ImageImplementorHelper.
+
 2009-01-16  Mario Carrion  <mcarrion@novell.com>
 
 	* TableImplementorHelper.cs: Missing methods implemented.

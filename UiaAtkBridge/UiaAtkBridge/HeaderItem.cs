@@ -29,7 +29,7 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class HeaderItem : TextLabel, Atk.ActionImplementor
+	public class HeaderItem : TextLabel, Atk.ActionImplementor, Atk.ImageImplementor
 	{
 
 		#region Constructor
@@ -38,9 +38,10 @@ namespace UiaAtkBridge
 		{
 			Role = Atk.Role.TableColumnHeader;
 
-			invokeProvider = (IInvokeProvider) provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
-			actionExpert = new ActionImplementorHelper ();
+			invokeProvider = (IInvokeProvider) provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);		
+			imageExpert = new ImageImplementorHelper (this, invokeProvider); //FIXME: Should use "provider" instead
 
+			actionExpert = new ActionImplementorHelper ();
 			if (invokeProvider != null)
 				actionExpert.Add ("click", "click", null, DoClick);
 		}
@@ -85,6 +86,33 @@ namespace UiaAtkBridge
 
 		#endregion
 
+		#region ImageImplementor implementation 
+		
+		public void GetImagePosition (out int x, out int y, Atk.CoordType coordType)
+		{
+			imageExpert.GetImagePosition (out x, out y, coordType);
+		}
+		
+		public void GetImageSize (out int width, out int height)
+		{
+			imageExpert.GetImageSize (out width, out height);
+		}
+		
+		public bool SetImageDescription (string description)
+		{
+			return imageExpert.SetImageDescription (description);
+		}
+		
+		public string ImageDescription {
+			get { return imageExpert.ImageDescription; }
+		}
+		
+		public string ImageLocale {
+			get { return imageExpert.ImageLocale; }
+		}
+		
+		#endregion
+
 		#region Private Methods
 
 		private bool DoClick ()
@@ -103,6 +131,7 @@ namespace UiaAtkBridge
 		#region Private Fields
 
 		private string actionDescription;
+		private ImageImplementorHelper imageExpert;
 		private ActionImplementorHelper actionExpert;
 		private IInvokeProvider invokeProvider;
 
