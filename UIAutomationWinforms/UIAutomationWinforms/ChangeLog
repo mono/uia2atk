@@ -1,3 +1,9 @@
+2009-01-20  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/TextBox/TextPatternTextSelectionChangedEvent.cs,
+	  Makefile.am: Add TextSelectionChangedEvent.
+
 2009-01-16  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/Helper.cs,

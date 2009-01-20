@@ -60,10 +60,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		{
 			Provider.SetEvent (ProviderEventType.TextPatternCaretMovedEvent,
 			                   new TextPatternCaretMovedEvent ((TextBoxProvider) Provider));
+			Provider.SetEvent (ProviderEventType.TextPatternTextSelectionChangedEvent,
+			                   new TextPatternTextSelectionChangedEvent ((TextBoxProvider) Provider));
 		}
 		
 		public override void Disconnect ()
 		{
+			Provider.SetEvent (ProviderEventType.TextPatternTextSelectionChangedEvent,
+			                   null);
 			Provider.SetEvent (ProviderEventType.TextPatternCaretMovedEvent,
 			                   null);
 		}
