@@ -312,3 +312,6 @@ class TabControl(object):
 class TabPage(object):
     states = (ENABLED, MULTI_LINE, SELECTABLE, SENSITIVE, SHOWING, VISIBLE)
 
+class Dialog(object):
+    states = (ENABLED, RESIZABLE, SENSITIVE, SHOWING, VISIBLE)
+

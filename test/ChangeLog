@@ -1,3 +1,16 @@
+2009-01-20  Calen Chen <cachen@novell.com>
+
+	* testers/states.py: add Dialog states tuple
+	* testers/printpreviewdialog/printpreviewdialogframe.py,
+	* testers/printpreviewdialog/__init__.py,
+	* testers/printpreviewdialog_basic_ops.py,
+	* testers/printpreviewdialog: add new test scripts: so far this control 
+	is related to ToolBar and ToolBarButton which are still have some P4 
+	bugs are unfinished, so in this test I just check the states for 
+	toolbar, panel, dialog. and I will leave the test of menu items under 
+	toolbar for ToolBar and ToolBarButton
+	* testers/printpreviewcontrol_basic_ops.py: correct the first line
+
 2009-01-19  Calen Chen <cachen@novell.com>
 
 	* samples/printpreviewdialog.py: add Document properety, give Text 

@@ -1,4 +1,4 @@
-/usr/bin/env python
+#!/usr/bin/env python
 
 ##############################################################################
 # Written by:  Cachen Chen <cachen@novell.com>
