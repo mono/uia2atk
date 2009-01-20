@@ -150,10 +150,7 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
-				// TODO: Handle BoundingRectangleProperty change
-			} else
-				base.RaiseAutomationPropertyChangedEvent (e);
+			base.RaiseAutomationPropertyChangedEvent (e);
 		}
 #endregion
 	}

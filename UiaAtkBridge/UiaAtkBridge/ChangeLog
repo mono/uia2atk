@@ -1,5 +1,12 @@
 2009-01-20  Mike Gorse  <mgorse@novell.com>
 
+	* Adapter.cs, ParentAdapter.cs, ComponentParentAdapter.cs: Emit
+	  bounds-changed when BoundingRectangle changes.
+
+	* Tree.cs: Emit VisibleDataChanged when expanding or collapsing.
+
+2009-01-20  Mike Gorse  <mgorse@novell.com>
+
 	* TextBoxEntryView.cs: Handle selection-changed event.
 
 2009-01-20  Mike Gorse  <mgorse@novell.com>

@@ -386,8 +386,10 @@ AtkObject,
 			for (IRawElementProviderFragment child = childProvider.Navigate (NavigateDirection.FirstChild); child != null; child = child.Navigate (NavigateDirection.NextSibling))
 				if ((int)child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) == ControlType.TreeItem.Id)
 					rowCount++;
-			if (rowCount > 0)
+			if (rowCount > 0) {
 				GLib.Signal.Emit (this, (expanded? "row-inserted": "row-deleted"), row + 1, rowCount);
+				EmitVisibleDataChanged ();
+			}
 		}
 
 		public int GetColumnExtentAt (int row, int column)

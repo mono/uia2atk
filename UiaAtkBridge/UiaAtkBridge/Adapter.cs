@@ -116,6 +116,8 @@ namespace UiaAtkBridge
 				Name = (string)e.NewValue;
 			} else if (e.Property == AutomationElementIdentifiers.HelpTextProperty) {
 				Description = (string)e.NewValue;
+			} else if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
+				EmitBoundsChanged ((System.Windows.Rect)e.NewValue);
 			}
 		}
 
@@ -202,6 +204,16 @@ namespace UiaAtkBridge
 				}
 				adapter = parent;
 			}
+		}
+
+		private void EmitBoundsChanged (System.Windows.Rect rect)
+		{
+			Atk.Rectangle atkRect;
+			atkRect.X = (int)rect.X;
+			atkRect.Y = (int)rect.Y;
+			atkRect.Width = (int)rect.Width;
+			atkRect.Height = (int)rect.Height;
+			GLib.Signal.Emit (this, "bounds_changed", atkRect);
 		}
 	}
 }

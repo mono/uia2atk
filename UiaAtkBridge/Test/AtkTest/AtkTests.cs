@@ -1054,20 +1054,17 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Transient,
 				Atk.StateType.Visible);
 
-			EventMonitor.Start ();
+			StartEventMonitor ();
 			ExpandTreeView (type);
 
-			EventCollection events = EventMonitor.Pause ();
-			string evType = "object:state-changed:expanded";
-			EventCollection evs = events.FindByRole (Atk.Role.TableCell).FindByType (evType);
-			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
 			// I'd expect 2 events, but gail only gives us 1. A bug?
-			//Assert.AreEqual (2, evs.Count, "bad number of events expected!" + eventsInXml);
-			Assert.IsTrue (evs.Count > 0 && evs.Count < 3, "bad number of events expected!" + eventsInXml);
+			ExpectEvents (1, 2, Atk.Role.TableCell, "object:state-changed:expanded");
+			ExpectEvents (1, 2, Atk.Role.TreeTable, "object:visible-data-changed");
+			ExpectEvents (1, 2, Atk.Role.TreeTable, "object:row-inserted");
 			Assert.IsTrue (group2.RefStateSet().ContainsState (Atk.StateType.Expanded));
 
-			// Gail has a header, and MWF has a ScrollBar
-			Assert.AreEqual (8, accessible.NAccessibleChildren, "TreeView numChildren");
+			int nAccessibleChildren = (TreeViewHasHeader? 8: 7);
+			Assert.AreEqual (nAccessibleChildren, accessible.NAccessibleChildren, "TreeView numChildren");
 
 			Assert.AreEqual (7, atkTable.NRows, "TreeView NRows after expand");
 

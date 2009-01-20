@@ -2022,7 +2022,16 @@ namespace UiaAtkBridgeTest
 				events = EventMonitor.Pause ();
 			EventCollection evs = events.FindByRole (role).FindByType (evType);
 			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
-			Assert.AreEqual (1, evs.Count, "bad number of events expected!" + eventsInXml);
+			Assert.AreEqual (1, evs.Count, "bad number of " + evType + " events: " + eventsInXml);
+		}
+
+		protected void ExpectEvents (int min, int max, Atk.Role role, string evType)
+		{
+			if (events == null)
+				events = EventMonitor.Pause ();
+			EventCollection evs = events.FindByRole (role).FindByType (evType);
+			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
+			Assert.IsTrue (evs.Count >= min && evs.Count <= max, "Expected " + min +"-" + max +" " + evType + " events but got " + evs.Count +": " + eventsInXml);
 		}
 
 		public abstract void RunInGuiThread (System.Action d);

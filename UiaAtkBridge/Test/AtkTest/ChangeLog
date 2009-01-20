@@ -1,5 +1,12 @@
 2009-01-20  Mike Gorse <mgorse@novell.com>
 
+	* AtkTester.cs, AtkTests.cs: More event simplification.
+
+	* AtkTests.cs: Expect 7 children for a TreeView in UiaAtkBridge.
+	  Test for visible-data-changed and row-inserted when expanding.
+
+2009-01-20  Mike Gorse <mgorse@novell.com>
+
 	* AtkTests.cs: Refactor HSplitter to accommodate SWF.Splitter.
 
 2009-01-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
