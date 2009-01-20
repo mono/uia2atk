@@ -437,9 +437,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			//Children MUST BE ListItem
 			while (child != null) {
-
-				int ctype = (int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
-				Console.WriteLine ("tupeo: {0}", ControlType.LookupById (ctype).ProgrammaticName);
 				Assert.AreEqual (ControlType.ListItem.Id,
 				                 child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id),
 				                 "Item should be ListItem");
