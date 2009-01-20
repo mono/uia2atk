@@ -1,5 +1,12 @@
 2009-01-20 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* testers/label/labelframe.py, 
+	* testers/label_basic_ops.py: Add test that checks the accessibility
+	of a label in a MessageBox control.  Such labels are now accessible
+	due to Bug 447783 being fixed.
+
+2009-01-20 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* harness/tests.py: Add PictureBox test that was accidentally left out
 	* samples/radiobutton_groupbox.py: New sample that places groups of
 	radio buttons in GroupBox controls.  This allows each group of radio

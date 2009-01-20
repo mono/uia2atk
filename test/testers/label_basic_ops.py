@@ -53,17 +53,27 @@ statesCheck(lFrame.insensitive_label, "Label",
                         invalid_states=["enabled","sensitive"])
 
 #click button2 to change label text
-lFrame.click(lFrame.button)
+lFrame.button2.click()
 sleep(config.SHORT_DELAY)
 lFrame.assertLabel('You have clicked me 1 times')
 
 #click button2 again to change label's text value
-lFrame.click(lFrame.button)
+lFrame.button2.click()
 sleep(config.SHORT_DELAY)
 lFrame.assertText('You have clicked me 2 times')
 
 #check sensitive lable's states again after update text
 statesCheck(lFrame.sensitive_label, "Label")
+
+# make sure the label of a MessageBox is accessible
+lFrame.button1.click()
+sleep(config.SHORT_DELAY)
+lFrame.assertMessageBox()
+lFrame.assertMessageBoxText("successful clicked me")
+
+# close the MessageBox
+lFrame.message_box.altF4()
+sleep(config.SHORT_DELAY)
 
 print "INFO:  Log written to: %s" % config.OUTPUT_DIR
 
