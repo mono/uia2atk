@@ -1,3 +1,44 @@
+2009-01-20  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: FormProvider: Window Pattern and
+	Transforms Pattern Automations Events added.
+
+	* Mono.UIAutomation.Winforms/FormProvider.cs: New property:
+	AlreadyClosed. Revamped to use WindowProviderBehavior to raise
+	Automation Events. New method: Close.
+
+	* Mono.UIAutomation.Winforms.Behaviors/Form/WindowProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/Form/TransformProviderBehavior.cs:
+	Raising Automation Events.
+
+	* Mono.UIAutomation.Winforms.Events/Form/WindowPatternCanMinimizePropertyEvent.cs:
+	Raises FormProvider.Window.CanMinimize Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/Form/WindowPatternCanMaximizePropertyEvent.cs:
+	Raises FormProvider.Window.CanMaximize Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/Form/TransformPatternCanResizePropertyEvent.cs:
+	Raises FormProvider.Transform.CanResize Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/Form/WindowDeactivatedEvent.cs:
+	Validating possible exception when Disposed.
+
+	* Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowClosedEvent.cs:
+	Raises FormProvider.Window.WindowClosed Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowVisualStatePropertyEvent.cs:
+	Raises FormProvider.Window.WindowState Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/Form/TransformPatternCanMovePropertyEvent.cs:
+	Raises FormProvider.Transform.CanMove Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowOpenedEvent.cs:
+	Raises FormProvider.Window.WindowOpened Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/ProviderEventType.cs: Window
+	properties and events added.
+
 2009-01-20  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs,

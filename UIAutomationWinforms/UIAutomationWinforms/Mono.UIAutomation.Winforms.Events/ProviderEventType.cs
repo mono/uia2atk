@@ -105,6 +105,15 @@ namespace Mono.UIAutomation.Winforms.Events
 		TransformPatternCanResizeProperty,
 		TransformPatternCanRotateProperty,
 		//Dock Pattern
-		DockPatternDockPositionProperty
+		DockPatternDockPositionProperty,
+		//Window Pattern
+		WindowPatternCanMaximizeProperty,
+		WindowPatternCanMinimizeProperty,
+		WindowPatternIsModalProperty,
+		WindowPatternIsTopmostProperty,
+		WindowPatternWindowClosedEvent,
+		WindowPatternWindowInteractionStateProperty,
+		WindowPatternWindowOpenedEvent,
+		WindowPatternWindowVisualStateProperty
 	}
 }

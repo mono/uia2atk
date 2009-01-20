@@ -1,5 +1,9 @@
 2009-01-20  Mario Carrion  <mcarrion@novell.com>
 
+	* FormProviderTest.cs: Testing Window and Transform Automation Events.
+
+2009-01-20  Mario Carrion  <mcarrion@novell.com>
+
 	* ListBoxProviderTest.cs: CWL removed.
 
 2009-01-20  Mike Gorse <mgorse@novell.com>

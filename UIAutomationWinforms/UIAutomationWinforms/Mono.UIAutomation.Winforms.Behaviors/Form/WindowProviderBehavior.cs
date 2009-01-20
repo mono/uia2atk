@@ -17,7 +17,8 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
@@ -28,6 +29,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.Form;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.Form
 {
@@ -55,14 +57,50 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Form
 		
 		public override void Connect () 
 		{
-			//FIXME: Automation Events not generated
+			// NOTE: IsModal Property NEVER changes, because you need to call
+			//       ShowDialog() to make it modal, and to change it to non-modal
+			//       you need to close it and use Show()
+
+			Provider.SetEvent (ProviderEventType.WindowPatternCanMaximizeProperty,
+			                   new WindowPatternCanMaximizePropertyEvent (Provider));
+			Provider.SetEvent (ProviderEventType.WindowPatternCanMinimizeProperty,
+			                   new WindowPatternCanMinimizePropertyEvent (Provider));
+			// FIXME: Implement
+			Provider.SetEvent (ProviderEventType.WindowPatternIsTopmostProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.WindowPatternWindowClosedEvent,
+			                   new WindowPatternWindowClosedEvent (Provider));
+			// FIXME: Implement
+			Provider.SetEvent (ProviderEventType.WindowPatternWindowInteractionStateProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.WindowPatternWindowOpenedEvent,
+			                   new WindowPatternWindowOpenedEvent (Provider));
+			Provider.SetEvent (ProviderEventType.WindowPatternWindowVisualStateProperty,
+			                   new WindowPatternWindowVisualStatePropertyEvent (Provider));
+
 			form.Closed += OnClosed;
 			form.Closing += OnClosing;
 		}
 		
 		public override void Disconnect ()
 		{
-			//FIXME: Automation Events not generated
+			Provider.SetEvent (ProviderEventType.WindowPatternCanMaximizeProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.WindowPatternCanMinimizeProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.WindowPatternIsModalProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.WindowPatternIsTopmostProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.WindowPatternWindowClosedEvent,
+			                   null);
+			Provider.SetEvent (ProviderEventType.WindowPatternWindowInteractionStateProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.WindowPatternWindowOpenedEvent,
+			                   null);
+			Provider.SetEvent (ProviderEventType.WindowPatternWindowVisualStateProperty,
+			                   null);
+
 			form.Closing -= OnClosing;
 			form.Closed -= OnClosed;
 		}

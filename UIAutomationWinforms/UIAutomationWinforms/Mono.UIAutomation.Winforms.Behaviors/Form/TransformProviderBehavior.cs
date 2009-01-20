@@ -17,7 +17,8 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
@@ -29,6 +30,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.Form;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.Form
 {
@@ -52,14 +54,23 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Form
 			get { return TransformPatternIdentifiers.Pattern; }
 		}		
 		
-		public override void Connect () 
+		public override void Connect ()
 		{
-			//FIXME: Automation Events not generated
+			// NOTE: CanRotate Property NEVER changes.
+			Provider.SetEvent (ProviderEventType.TransformPatternCanMoveProperty,
+			                   new TransformPatternCanMovePropertyEvent (Provider));
+			Provider.SetEvent (ProviderEventType.TransformPatternCanResizeProperty,
+			                   new TransformPatternCanResizePropertyEvent (Provider));
 		}
 		
 		public override void Disconnect ()
 		{
-			//FIXME: Automation Events not generated
+			Provider.SetEvent (ProviderEventType.TransformPatternCanRotateProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.TransformPatternCanMoveProperty,
+			                   null);
+			Provider.SetEvent (ProviderEventType.TransformPatternCanResizeProperty,
+			                   null);
 		}
 		
 		public override object GetPropertyValue (int propertyId)

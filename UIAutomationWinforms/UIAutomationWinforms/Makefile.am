@@ -225,7 +225,14 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DomainUpDown/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Form/FormAutomationFocusChangedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Form/TransformPatternCanMovePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Form/TransformPatternCanResizePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Form/WindowDeactivatedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Form/WindowPatternCanMaximizePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Form/WindowPatternCanMinimizePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowClosedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowOpenedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowVisualStatePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Label/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/LinkLabel/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/ListItemAutomationHasKeyboardFocusPropertyEvent.cs \

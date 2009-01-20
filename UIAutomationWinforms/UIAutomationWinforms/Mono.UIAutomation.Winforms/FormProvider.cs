@@ -17,10 +17,12 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//      Mario Carrion <mcarrion@novell.com>
 // 
 
 using System;
@@ -39,33 +41,31 @@ namespace Mono.UIAutomation.Winforms
 	[MapsComponent (typeof (Form))]
 	internal class FormProvider : FragmentRootControlProvider
 	{
-#region Private Data
+		#region Private Data
 		
 		private Form form;
 		private Form owner;
 		private bool alreadyClosed;
 		
-#endregion
+		#endregion
 		
-#region Constructors
+		#region Constructors
 
 		public FormProvider (Form form) : base (form)
 		{
 			this.form = form;
-			// We keep a copy because we can't reference form after Disposed
+			
+			// We keep a copy because we can't reference "form" after 
+			// Disposed (used in Close()) called by WindowPatternWindowClosedEvent.
 			owner = form.Owner;
 			alreadyClosed = false;
-
-			// Dialog Windows block user input so in order to continue you have to 
-			// close them, Regular Windows don't block but you can "close them"
-			// by calling Dispose, so we are listening both events but raising
-			// event only once.
-			form.Closed += OnRaiseWindowClosed;
-			form.Disposed += OnRaiseWindowClosed;
-			form.Shown += OnShown;
 		}
 		
-#endregion
+		#endregion
+
+		public bool AlreadyClosed {
+			get { return alreadyClosed; }
+		}
 
 		public override void Initialize ()
 		{
@@ -79,41 +79,15 @@ namespace Mono.UIAutomation.Winforms
 			             new TransformProviderBehavior (this));
 
 			// Events
-			
 			SetEvent (ProviderEventType.AutomationFocusChangedEvent,
 			          new FormAutomationFocusChangedEvent (this));
+
+			// Internal Event
 			SetEvent (ProviderEventType.WindowDeactivatedEvent,
 			          new WindowDeactivatedEvent (this));
 		}
 
-		
-		//FIXME: Revamp
-
-		
-#region Private Event Handlers
-
-		private void OnRaiseWindowClosed (object sender, EventArgs args)
-		{
-			RaiseWindowClosedEvent ();
-			ProviderFactory.ReleaseProvider (form);
-		}
-		
-		private void OnShown (object sender, EventArgs args)
-		{
-			if (!AutomationInteropProvider.ClientsAreListening)
-				return;
-			
-			AutomationEventArgs eventArgs =
-				new AutomationEventArgs (WindowPatternIdentifiers.WindowOpenedEvent);
-			AutomationInteropProvider.RaiseAutomationEvent (WindowPatternIdentifiers.WindowOpenedEvent,
-			                                                this,
-			                                                eventArgs);
-		}
-		
-#endregion
-		
-
-#region IRawElementProviderFragmentRoot Members
+		#region IRawElementProviderFragmentRoot Members
 
 		public override IRawElementProviderSimple HostRawElementProvider {
 			get {
@@ -184,29 +158,24 @@ namespace Mono.UIAutomation.Winforms
 			return null;
 		}
 		
-#endregion
+		#endregion
 
-		#region Private Methods
+		#region Public Methods
 
-		private void RaiseWindowClosedEvent ()
+		public void Close ()
 		{
-			if (AutomationInteropProvider.ClientsAreListening && !alreadyClosed) {
-				AutomationEventArgs eventArgs 
-					= new AutomationEventArgs (WindowPatternIdentifiers.WindowClosedEvent);
-				AutomationInteropProvider.RaiseAutomationEvent (WindowPatternIdentifiers.WindowClosedEvent,
-				                                                this,
-				                                                eventArgs);
-				// TODO: Fill in rest of eventargs			
+			if (AutomationInteropProvider.ClientsAreListening && !AlreadyClosed) {
+				alreadyClosed = true;
+
 				if (owner == null)
 					Helper.RaiseStructureChangedEvent (StructureChangeType.ChildRemoved,
 					                                   this);
 				else {
 					FormProvider ownerProvider 
 						= (FormProvider) ProviderFactory.FindProvider (owner);
-					if (ownerProvider != null)
+					if (ownerProvider != null) // FIXME: When ownerProvider == null
 						ownerProvider.RemoveChildProvider (true, this);
 				}
-				alreadyClosed = true;
 			}
 		}
 

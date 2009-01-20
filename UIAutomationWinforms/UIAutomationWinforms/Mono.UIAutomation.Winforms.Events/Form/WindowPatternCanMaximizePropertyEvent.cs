@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
@@ -31,15 +31,15 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms.Events.Form
 {
 
-	internal class WindowDeactivatedEvent
-		: BaseAutomationEvent
+	internal class WindowPatternCanMaximizePropertyEvent
+		: BaseAutomationPropertyEvent
 	{
 		
 		#region Constructors
 		
-		public WindowDeactivatedEvent (FormProvider provider) 
+		public WindowPatternCanMaximizePropertyEvent (SimpleControlProvider provider) 
 			: base (provider,
-			        AutomationElementIdentifiers.WindowDeactivatedEvent)
+			        WindowPatternIdentifiers.CanMaximizeProperty)
 		{
 		}
 		
@@ -49,7 +49,7 @@ namespace Mono.UIAutomation.Winforms.Events.Form
 
 		public override void Connect ()
 		{
-			((SWF.Form) Provider.Control).Deactivate += new EventHandler (OnWindowFocusChanged);
+			((SWF.Form) Provider.Control).StyleChanged += OnCanMaximizeProperty;
 		}
 
 		public override void Disconnect ()
@@ -58,17 +58,17 @@ namespace Mono.UIAutomation.Winforms.Events.Form
 			// provider when Closed/Disposed call ProviderFactory.ReleaseProvider.
 			if (ProviderFactory.FindProvider (Provider.Control) == null)
 				return;
-			
-			((SWF.Form) Provider.Control).Deactivate -= new EventHandler (OnWindowFocusChanged);
+
+			((SWF.Form) Provider.Control).StyleChanged -= OnCanMaximizeProperty;
 		}
 		
 		#endregion
 		
 		#region Private Methods
 
-		private void OnWindowFocusChanged (object sender, EventArgs e)
+		private void OnCanMaximizeProperty (object sender, EventArgs args)
 		{
-			RaiseAutomationEvent ();
+			RaiseAutomationPropertyChangedEvent ();
 		}
 		
 		#endregion

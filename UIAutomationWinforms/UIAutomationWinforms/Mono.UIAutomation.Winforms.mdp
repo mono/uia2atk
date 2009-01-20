@@ -132,7 +132,6 @@
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementAddedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementRemovedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternIsSelectedEvent.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Winforms.Behaviors/Form/WindowProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Behaviors/Form/TransformProviderBehavior.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/Form/FormAutomationFocusChangedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListBox/ListItemAutomationHasKeyboardFocusPropertyEvent.cs" subtype="Code" buildaction="Compile" />
@@ -419,6 +418,16 @@
     <File name="Mono.UIAutomation.Winforms.Events/ListView/HeaderItemAutomationIsOffScreenPropertyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListView/HeaderItemAutomationBoundingRectanglePropertyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/ListView/HeaderItemAutomationNamePropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/Splitter/RangeValueProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/Splitter/RangeValuePatternValueEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowOpenedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowVisualStatePropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Behaviors/Form/WindowProviderBehavior.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowClosedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/Form/WindowPatternCanMaximizePropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/Form/WindowPatternCanMinimizePropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/Form/TransformPatternCanResizePropertyEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/Form/TransformPatternCanMovePropertyEvent.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
