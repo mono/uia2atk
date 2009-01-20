@@ -87,6 +87,14 @@ namespace Mono.UIAutomation.Winforms
 			          new WindowDeactivatedEvent (this));
 		}
 
+		public override void Terminate ()
+		{
+			// We are trying to Terminate our events, however the instance
+			// is already disposed so can't remove the delegates
+			if (!AlreadyClosed)
+				base.Terminate ();
+		}
+
 		#region IRawElementProviderFragmentRoot Members
 
 		public override IRawElementProviderSimple HostRawElementProvider {

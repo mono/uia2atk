@@ -1,5 +1,18 @@
 2009-01-20  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms/FormProvider.cs:
+	* Mono.UIAutomation.Winforms.Events/Form/WindowDeactivatedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowClosedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowOpenedEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/Form/TransformPatternCanMovePropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/Form/WindowPatternCanMaximizePropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/Form/WindowPatternCanMinimizePropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/Form/TransformPatternCanResizePropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowVisualStatePropertyEvent.cs:
+	No Termination when Disposed.
+
+2009-01-20  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: FormProvider: Window Pattern and
 	Transforms Pattern Automations Events added.

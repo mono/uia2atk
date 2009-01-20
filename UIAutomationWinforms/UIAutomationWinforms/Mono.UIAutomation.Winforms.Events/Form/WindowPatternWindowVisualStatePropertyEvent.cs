@@ -58,11 +58,6 @@ namespace Mono.UIAutomation.Winforms.Events.Form
 
 		public override void Disconnect ()
 		{
-			// We don't want to throw an exception if we are Terminating 
-			// provider when Closed/Disposed call ProviderFactory.ReleaseProvider.
-			if (ProviderFactory.FindProvider (Provider.Control) == null)
-				return;
-
 			SWF.Form form = (SWF.Form) Provider.Control;
 			
 			form.Resize -= OnVisualStatePropertyChanged;
