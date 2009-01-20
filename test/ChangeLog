@@ -1,5 +1,10 @@
 2009-01-20  Calen Chen <cachen@novell.com>
 
+	* samples/tabpage.py: modify example to add more tab page to show 
+	spinner button for scrolling test
+
+2009-01-20  Calen Chen <cachen@novell.com>
+
 	* testers/states.py: add Dialog states tuple
 	* testers/printpreviewdialog/printpreviewdialogframe.py,
 	* testers/printpreviewdialog/__init__.py,

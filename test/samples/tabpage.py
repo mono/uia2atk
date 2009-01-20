@@ -55,10 +55,28 @@ class TabControlTabPageSample(Form):
         self.label4.AutoSize = True
         self.label4.Location = Point(5, 20)
 
+        self.label5 = Label()
+        self.label5.Text = "I'm in tab page 4"
+        self.label5.AutoSize = True
+        self.label5.Location = Point(5, 20)
+
+        self.label6 = Label()
+        self.label6.Text = "I'm in tab page 5"
+        self.label6.AutoSize = True
+        self.label6.Location = Point(5, 20)
+
+        self.label7 = Label()
+        self.label7.Text = "I'm in tab page 6"
+        self.label7.AutoSize = True
+        self.label7.Location = Point(5, 20)
+
         self.diclabels = {0: self.label1, 
                          1: self.label2,
                          2: self.label3,
                          3: self.label4,
+                         4: self.label5,
+                         5: self.label6,
+                         6: self.label7,
                          }
 
         self.button = Button()
@@ -81,11 +99,26 @@ class TabControlTabPageSample(Form):
         self.radiobutton.Text = "RadioButton"
         self.radiobutton.Location = Point(5, 60)
         self.radiobutton.CheckedChanged += self.radiobutton_click
+
+        self.radiobutton1 = RadioButton()
+        self.radiobutton1.Text = "RadioButton"
+        self.radiobutton1.Location = Point(5, 60)
+
+        self.radiobutton2 = RadioButton()
+        self.radiobutton2.Text = "RadioButton"
+        self.radiobutton2.Location = Point(5, 60)
+
+        self.radiobutton3 = RadioButton()
+        self.radiobutton3.Text = "RadioButton"
+        self.radiobutton3.Location = Point(5, 60)
         
         self.dicitems = {0: self.button,
                          1: self.textbox,                        
                          2: self.checkbox,                        
-                         3: self.radiobutton
+                         3: self.radiobutton,
+                         4: self.radiobutton1,
+                         5: self.radiobutton2,
+                         6: self.radiobutton3
                             }
 
         # setup tabcontrol
@@ -94,7 +127,7 @@ class TabControlTabPageSample(Form):
         self.tabcontrol.Height = 240
 
         # setup tabpage
-        for i in range(4):
+        for i in range(7):
             self.tabpage = TabPage()
             self.tabpage.Text = "Tab %s" % i
             self.tabpage.Enter += self.on_click
