@@ -32,6 +32,7 @@ namespace UiaAtkBridge
 	public class Window : ComponentParentAdapter
 	{
 		private IRawElementProviderFragmentRoot rootProvider;
+		private Splitter splitter = null;
 		
 		public Window (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -104,6 +105,49 @@ namespace UiaAtkBridge
 			
 			return states;
 		}
+
+		internal override void AddOneChild (Atk.Object child)
+		{
+			if (splitter != null) {
+				splitter.AddOneChild (child);
+				return;
+			}
+
+			base.AddOneChild (child);
+			if (child is Splitter) {
+				splitter = (Splitter)child;
+				// Remove any other existing children and
+				// add them to the splitter
+				int count = NAccessibleChildren;
+				for (int i = 0; i < count;) {
+					Atk.Object obj = RefAccessibleChild (i);
+					if (obj == child) {
+						i++;
+						continue;
+					}
+					RemoveChild (obj);
+					obj.Parent = child;
+					splitter.AddOneChild (obj);
+					count--;
+				}
+			}
+		}
+
+		internal override void RemoveChild (Atk.Object childToRemove)
+		{
+			if (splitter != null && childToRemove == splitter) {
+				int count = splitter.NAccessibleChildren;
+				while (count > 0) {
+					Atk.Object obj = childToRemove.RefAccessibleChild (0);
+					splitter.RemoveChild (obj);
+					obj.Parent = this;
+					AddOneChild (obj);
+					count--;
+				}
+				splitter = null;
+				}
+			base.RemoveChild (childToRemove);
+			}
 
 		private void NewActiveState (bool active)
 		{

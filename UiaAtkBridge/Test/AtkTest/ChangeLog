@@ -1,3 +1,7 @@
+2009-01-20  Mike Gorse <mgorse@novell.com>
+
+	* AtkTests.cs: Refactor HSplitter to accommodate SWF.Splitter.
+
 2009-01-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs:

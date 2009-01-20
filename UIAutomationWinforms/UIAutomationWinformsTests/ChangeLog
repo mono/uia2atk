@@ -1,3 +1,9 @@
+2009-01-20  Mike Gorse <mgorse@novell.com>
+
+	* PanelProviderTest.cs, TestHelper.cs, SplitterProviderTest.cs,
+	  SplitContainerProviderTest.cs: Decouple DockPosition from
+	  SWF.DockStyle.
+
 2009-01-16  Mario Carrion  <mcarrion@novell.com>
 
 	* ListViewProviderTest.cs: HeaderItem. Testing new events

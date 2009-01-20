@@ -17,58 +17,53 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Neville Gao <nevillegao@gmail.com>
+//	Mike Gorse <mgorse@novell.com>
 // 
-
 using System;
-using Mono.Unix;
-using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Winforms.Behaviors;
-using Mono.UIAutomation.Winforms.Behaviors.Splitter;
-using Mono.UIAutomation.Winforms.Navigation;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events.Splitter
 {
-	[MapsComponent (typeof (Splitter))]
-	internal class SplitterProvider : FragmentControlProvider
+
+	internal class RangeValuePatternValueEvent 
+		: BaseAutomationPropertyEvent
 	{
 		#region Constructor
-
-		public SplitterProvider (Splitter splitter) : base (splitter)
+		
+		public RangeValuePatternValueEvent (SimpleControlProvider provider) 
+			: base (provider, RangeValuePatternIdentifiers.ValueProperty)
 		{
 		}
 		
 		#endregion
 		
-		#region SimpleControlProvider: Specializations
-		
-		public override void Initialize ()
+		#region IConnectable Overrides
+
+		public override void Connect ()
 		{
-			base.Initialize ();
-			
-			SetBehavior (TransformPatternIdentifiers.Pattern,
-			             new TransformProviderBehavior (this));
-			SetBehavior (DockPatternIdentifiers.Pattern,
-			             new DockProviderBehavior (this));
-			SetBehavior (RangeValuePatternIdentifiers.Pattern,
-			             new RangeValueProviderBehavior (this));
+			((SWF.Splitter) Provider.Control).SplitterMoved += new SWF.SplitterEventHandler (OnSplitterMoved);
+		}
+
+		public override void Disconnect ()
+		{
+			((SWF.Splitter) Provider.Control).SplitterMoved -= new SWF.SplitterEventHandler (OnSplitterMoved);
 		}
 		
-		protected override object GetProviderPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Pane.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("pane");
-			else
-				return base.GetProviderPropertyValue (propertyId);
-		}
+		#endregion 
 		
+		#region Protected methods
+		
+		private void OnSplitterMoved (object sender, EventArgs e)
+		{
+			RaiseAutomationPropertyChangedEvent ();
+		}
+
 		#endregion
 	}
 }

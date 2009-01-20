@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors:
 //      Mike Gorse <mgorse@novell.com>
@@ -39,7 +39,20 @@ namespace UiaAtkBridge
 		{
 			Role = Atk.Role.SplitPane;
 			rangeValueProvider = (IRangeValueProvider)provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
-			orientation = (OrientationType)provider.GetPropertyValue (AutomationElementIdentifiers.OrientationProperty.Id);
+			object o = provider.GetPropertyValue (AutomationElementIdentifiers.OrientationProperty.Id);
+			if (o is OrientationType)
+				orientation = (OrientationType)o;
+			else {
+				IDockProvider dockProvider = (IDockProvider)provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id);
+				if (dockProvider != null) {
+					orientation = (dockProvider.DockPosition == DockPosition.Top || dockProvider.DockPosition == DockPosition.Bottom)?
+						OrientationType.Horizontal:
+						OrientationType.Vertical;
+				} else {
+					Console.WriteLine ("WARNING: Couldn't get orientation for a splitter");
+					orientation = OrientationType.Horizontal;
+				}
+			}
 		}
 
 		public void GetMinimumValue (ref GLib.Value value)

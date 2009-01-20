@@ -205,15 +205,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Splitter splitter = new Splitter ();
 			IRawElementProviderSimple provider = 
 				ProviderFactory.GetProvider (splitter);
-			
-			IDockProvider dockProvider = (IDockProvider)
-				provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (dockProvider,
-			                  "Not returning DockPatternIdentifiers.");
-			
-			Assert.AreEqual ((int) splitter.Dock,
-			                 (int) dockProvider.DockPosition,
-			                 "Splitter is Left DockStyle by default.");
+
+			TestHelper.IDockProviderDockPositionTest (provider, splitter);
 		}
 		
 		[Test]
@@ -223,25 +216,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderSimple provider = 
 				ProviderFactory.GetProvider (splitter);
 			
-			IDockProvider dockProvider = (IDockProvider)
-				provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (dockProvider,
-			                  "Not returning DockPatternIdentifiers.");
-			
-			dockProvider.SetDockPosition (DockPosition.Right);
-			Assert.AreEqual ((int) splitter.Dock,
-			                 (int) dockProvider.DockPosition,
-			                 "Splitter should be Right DockStyle.");
-			
-			try {
-				dockProvider.SetDockPosition ((DockPosition) DockStyle.None);
-				Assert.Fail ("InvalidOperationException not thrown");
-			} catch (InvalidOperationException) { }
-			
-			try {
-				dockProvider.SetDockPosition ((DockPosition) DockStyle.Fill);
-				Assert.Fail ("InvalidOperationException not thrown");
-			} catch (InvalidOperationException) { }
+			TestHelper.IDockProviderSetDockPositionTest (provider, splitter);
 		}
 		
 		#endregion

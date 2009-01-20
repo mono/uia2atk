@@ -76,20 +76,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Panel
 		#region IDockProvider Members
 		
 		public DockPosition DockPosition {
-			get {
-				if (panel.Dock == SWF.DockStyle.Top)
-					return (DockPosition) SWF.DockStyle.Top;
-				else if (panel.Dock == SWF.DockStyle.Bottom)
-					return (DockPosition) SWF.DockStyle.Bottom;
-				else if (panel.Dock == SWF.DockStyle.Left)
-					return (DockPosition) SWF.DockStyle.Left;
-				else if (panel.Dock == SWF.DockStyle.Right)
-					return (DockPosition) SWF.DockStyle.Right;
-				else if (panel.Dock == SWF.DockStyle.Fill)
-					return (DockPosition) SWF.DockStyle.Fill;
-				else
-					return (DockPosition) SWF.DockStyle.None;
-			}
+			get { return Helper.GetDockPosition (panel.Dock); }
 		}
 		
 		public void SetDockPosition (DockPosition dockPosition)
@@ -102,7 +89,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Panel
 				return;
 			}
 			
-			panel.Dock = (SWF.DockStyle) DockPosition;
+			panel.Dock = Helper.GetDockStyle (dockPosition);
 		}
 		
 		#endregion

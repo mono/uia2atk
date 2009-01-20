@@ -39,7 +39,7 @@ namespace UiaAtkBridge
 			componentExpert = new ComponentImplementorHelper (this);
 		}
 		
-		private ComponentImplementorHelper componentExpert;
+		internal ComponentImplementorHelper componentExpert;
 
 		internal SCG.List <RadioButton> RadioButtons { get; private set; }
 		

@@ -81,6 +81,7 @@ FILES =  \
 	Spinner.cs \
 	SplitButton.cs \
 	SplitContainer.cs \
+	Splitter.cs \
 	Tab.cs \
 	TableImplementorHelper.cs \
 	TextBoxEntryView.cs \

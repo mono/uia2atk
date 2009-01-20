@@ -76,20 +76,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.SplitContainer
 		#region IDockProvider Members
 		
 		public DockPosition DockPosition {
-			get {
-				if (splitContainer.Dock == SWF.DockStyle.Top)
-					return (DockPosition) SWF.DockStyle.Top;
-				else if (splitContainer.Dock == SWF.DockStyle.Bottom)
-					return (DockPosition) SWF.DockStyle.Bottom;
-				else if (splitContainer.Dock == SWF.DockStyle.Left)
-					return (DockPosition) SWF.DockStyle.Left;
-				else if (splitContainer.Dock == SWF.DockStyle.Right)
-					return (DockPosition) SWF.DockStyle.Right;
-				else if (splitContainer.Dock == SWF.DockStyle.Fill)
-					return (DockPosition) SWF.DockStyle.Fill;
-				else
-					return (DockPosition) SWF.DockStyle.None;
-			}
+			get { return Helper.GetDockPosition (splitContainer.Dock); }
 		}
 		
 		public void SetDockPosition (DockPosition dockPosition)
@@ -102,7 +89,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.SplitContainer
 				return;
 			}
 			
-			splitContainer.Dock = (SWF.DockStyle) DockPosition;
+			splitContainer.Dock = Helper.GetDockStyle (dockPosition);
 		}
 		
 		#endregion

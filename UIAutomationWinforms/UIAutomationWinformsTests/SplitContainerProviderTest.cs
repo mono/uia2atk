@@ -221,14 +221,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderSimple provider = 
 				ProviderFactory.GetProvider (splitContainer);
 			
-			IDockProvider dockProvider = (IDockProvider)
-				provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (dockProvider,
-			                  "Not returning DockPatternIdentifiers.");
-			
-			Assert.AreEqual ((int) splitContainer.Dock,
-			                 (int) dockProvider.DockPosition,
-			                 "SplitContainer is None DockStyle by default.");
+			TestHelper.IDockProviderDockPositionTest (provider, splitContainer);
 		}
 		
 		[Test]
@@ -238,15 +231,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderSimple provider = 
 				ProviderFactory.GetProvider (splitContainer);
 			
-			IDockProvider dockProvider = (IDockProvider)
-				provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (dockProvider,
-			                  "Not returning DockPatternIdentifiers.");
-			
-			dockProvider.SetDockPosition (DockPosition.Fill);
-			Assert.AreEqual ((int) splitContainer.Dock,
-			                 (int) dockProvider.DockPosition,
-			                 "SplitContainer should be Fill DockStyle.");
+			TestHelper.IDockProviderSetDockPositionTest (provider, splitContainer);
 		}
 		
 		#endregion

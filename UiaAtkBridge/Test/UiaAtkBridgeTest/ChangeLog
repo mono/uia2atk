@@ -1,3 +1,7 @@
+2009-01-20  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTests.cs: Add Splitter test.
+
 2009-01-16  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: ToolStrip separator support.

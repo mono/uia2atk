@@ -1252,7 +1252,12 @@ namespace UiaAtkBridgeTest
 			
 			string name = "test";
 			accessible = GetAccessible (type, name, true);
-			
+			HSplitter (accessible);
+		}
+
+		public void HSplitter (Atk.Object accessible)
+		{
+			BasicWidgetType type = BasicWidgetType.HSplitContainer;
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
 			
@@ -1268,21 +1273,26 @@ namespace UiaAtkBridgeTest
 
 			Assert.AreEqual (2, accessible.NAccessibleChildren, "HSplitter NAccessibleChildren");
 
+			Atk.Object child1 = accessible.RefAccessibleChild (0);
 			Atk.Object child2 = accessible.RefAccessibleChild (1);
 			Atk.Value atkValue = CastToAtkInterface<Atk.Value> (accessible);
+			Atk.Component component1 = CastToAtkInterface<Atk.Component> (child1);
 			Atk.Component component2 = CastToAtkInterface<Atk.Component> (child2);
 			int x1, x2, y1, y2, w1, w2, h1, h2;
+			component1.GetExtents (out x1, out y1, out w1, out h1, Atk.CoordType.Window);
+			component2.GetExtents (out x2, out y2, out w2, out h2, Atk.CoordType.Window);
+			Atk.Component rightComponent = (x2 > x1? component2: component1);
 			double minVal = GetMinimumValue (atkValue);
 			double maxVal = GetMaximumValue (atkValue);
 			SetCurrentValue (atkValue, minVal);
-			component2.GetExtents (out x1, out y1, out w1, out h1, Atk.CoordType.Window);
+			rightComponent.GetExtents (out x1, out y1, out w1, out h1, Atk.CoordType.Window);
 			StartEventMonitor ();
 			SetCurrentValue (atkValue, minVal + (maxVal - minVal) / 2);
 			System.Threading.Thread.Sleep (1000);
 			ExpectEvents (1, Atk.Role.SplitPane, "object:property-change:accessible-value");
 			double midVal = GetCurrentValue (atkValue);
 			Assert.IsTrue (midVal > minVal && midVal < maxVal, "Mid value should be between min and max");
-			component2.GetExtents (out x2, out y2, out w2, out h2, Atk.CoordType.Window);
+			rightComponent.GetExtents (out x2, out y2, out w2, out h2, Atk.CoordType.Window);
 
 			Assert.IsTrue (x2 > x1, "Right control moved");
 			Assert.AreEqual (y2, y1, "y should not change");

@@ -1,3 +1,17 @@
+2009-01-16  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/Helper.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/SplitContainer/DockProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/Splitter/DockProviderBehavior.cs
+	  Mono.UIAutomation.Winforms.Behaviors/Panel/DockProviderBehavior.cs,:
+	  Decouple DockPosition from SWF.DockStyle.
+
+	* Makefile.am,
+	  Mono.UIAutomation.Winforms.Events/Splitter/RangeValuePatternValueEvent.cs,
+	  Mono.UIAutomation.Winforms/SplitterProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/Splitter/RangeValueProviderBehavior.cs,
+	  Add a RangeValueProvider for Splitter and SplitContainer.
+
 2009-01-19  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/StatusBar/GridProviderBehavior.cs:

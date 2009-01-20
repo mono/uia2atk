@@ -974,15 +974,21 @@ namespace UiaAtkBridge
 					provider.GetPropertyValue (
 					  AutomationElementIdentifiers.BoundingRectangleProperty.Id);
 				// hack -- try to distinguish a Splitter from a SplitContainer
-				if ((bounds.Height < 10 && bounds.Width > 50) || (bounds.Width < 10 && bounds.Height > 50))
-					Console.WriteLine ("TODO: Splitter");
-				atkItem = new SplitContainer (provider);
+				if (parentObject is Window &&
+					((bounds.Height < 10 && bounds.Width > 50) ||
+					 (bounds.Width < 10 && bounds.Height > 50)))
+					atkItem = new Splitter (provider);
+				else
+					atkItem = new SplitContainer (provider);
 			}
 			if (atkItem == null)
 				atkItem = new Container (provider);
 			providerAdapterMapping [provider] = atkItem;
 			
 			IncludeNewAdapter (atkItem, parentObject);
+
+			if (atkItem is Splitter)
+				((Splitter)atkItem).PostInitialize ();
 		}
 
 		private void HandleNewMenuBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)

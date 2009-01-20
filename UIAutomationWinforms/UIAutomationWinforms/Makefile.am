@@ -127,6 +127,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/SplitContainer/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/SplitContainer/SplitterPanelTransformProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Splitter/DockProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/Splitter/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/Splitter/TransformProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBar/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelGridItemProviderBehavior.cs \
@@ -314,6 +315,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/SplitContainer/SplitterPanelTransformPatternCanResizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/SplitContainer/TransformPatternCanMoveEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Splitter/DockPatternDockPositionEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Splitter/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/GridPatternColumnCountEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusBar/StatusBarPanelGridItemPatternColumnEvent.cs \

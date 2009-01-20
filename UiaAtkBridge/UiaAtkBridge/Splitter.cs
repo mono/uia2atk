@@ -19,51 +19,42 @@
 // 
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
-// Authors: 
-//	Mike Gorse <mgorse@novell.com>
+// Authors:
+//      Mike Gorse <mgorse@novell.com>
 // 
+
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-using SWF = System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.SplitContainer
+namespace UiaAtkBridge
 {
 
-	internal class RangeValuePatternValueEvent 
-		: BaseAutomationPropertyEvent
+	public class Splitter : SplitContainer
 	{
-		#region Constructor
 		
-		public RangeValuePatternValueEvent (SimpleControlProvider provider) 
-			: base (provider, RangeValuePatternIdentifiers.ValueProperty)
+		public Splitter (IRawElementProviderSimple provider) : base (provider)
 		{
-		}
-		
-		#endregion
-		
-		#region IConnectable Overrides
-
-		public override void Connect ()
-		{
-			((SWF.SplitContainer) Provider.Control).SplitterMoved += new SWF.SplitterEventHandler (OnSplitterMoved);
 		}
 
-		public override void Disconnect ()
+		internal void PostInitialize ()
 		{
-			((SWF.SplitContainer) Provider.Control).SplitterMoved -= new SWF.SplitterEventHandler (OnSplitterMoved);
-		}
-		
-		#endregion 
-		
-		#region Protected methods
-		
-		private void OnSplitterMoved (object sender, EventArgs e)
-		{
-			RaiseAutomationPropertyChangedEvent ();
+			componentExpert = new ComponentImplementorHelper (Parent as Adapter);
 		}
 
-		#endregion
+		protected override Atk.StateSet OnRefStateSet ()
+		{
+			if (Parent == null)
+				return null;
+			// We pretend to be a sub-window, not a splitter
+			Atk.StateSet states = Parent.RefStateSet ();
+			states.RemoveState (Atk.StateType.Active);
+			states.RemoveState (Atk.StateType.Resizable);
+			if (base.OnRefStateSet().ContainsState (Atk.StateType.Horizontal))
+				states.AddState (Atk.StateType.Horizontal);
+			else
+				states.AddState (Atk.StateType.Vertical);
+			return states;
+		}
 	}
 }

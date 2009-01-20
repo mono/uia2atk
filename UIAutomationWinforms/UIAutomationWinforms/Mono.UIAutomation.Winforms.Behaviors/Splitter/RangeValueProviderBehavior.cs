@@ -28,9 +28,9 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.SplitContainer;
+using Mono.UIAutomation.Winforms.Events.Splitter;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.SplitContainer
+namespace Mono.UIAutomation.Winforms.Behaviors.Splitter
 {
 
 	internal class RangeValueProviderBehavior 
@@ -39,10 +39,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.SplitContainer
 
 		#region Constructors
 		
-		public RangeValueProviderBehavior (SplitContainerProvider provider)
+		public RangeValueProviderBehavior (SplitterProvider provider)
 			: base (provider) 
 		{
-			splitcontainer = (SWF.SplitContainer) provider.Control;
+			splitter = (SWF.Splitter) provider.Control;
 		}
 		
 		#endregion
@@ -96,7 +96,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.SplitContainer
 		}
 		
 		public bool IsReadOnly {
-			get { return splitcontainer.Enabled == false || splitcontainer.Visible == false; }
+			get { return splitter.Enabled == false || splitter.Visible == false; }
 		}
 		
 		public double LargeChange {
@@ -104,11 +104,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.SplitContainer
 		}
 		
 		public double Maximum {
-			get { return splitcontainer.Width - (splitcontainer.SplitterWidth + splitcontainer.Panel2MinSize); }
+			get { return splitter.MaxSize; }
 		}
 		
 		public double Minimum {
-			get { return splitcontainer.Panel1MinSize; }
+			get { return splitter.MinSize; }
 		}
 		
 		public double SmallChange {
@@ -116,7 +116,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.SplitContainer
 		}
 		
 		public double Value {
-			get { return splitcontainer.SplitterDistance; }
+			get { return splitter.SplitPosition; }
 		}
 		
 		#endregion 
@@ -125,19 +125,19 @@ namespace Mono.UIAutomation.Winforms.Behaviors.SplitContainer
 		
 		private void PerformSetValue (int value)
 		{
-			if (splitcontainer.InvokeRequired == true) {
-				splitcontainer.BeginInvoke (new PerformSetValueDelegate (PerformSetValue),
+			if (splitter.InvokeRequired == true) {
+				splitter.BeginInvoke (new PerformSetValueDelegate (PerformSetValue),
 				                       new object [] { value });
 				return;
 			}
-			splitcontainer.SplitterDistance = value;
+			splitter.SplitPosition = value;
 		}
 		
 		#endregion
 
 		#region Private Fields
 
-		private SWF.SplitContainer splitcontainer;
+		private SWF.Splitter splitter;
 
 		#endregion
 	}

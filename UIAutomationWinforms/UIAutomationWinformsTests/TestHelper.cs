@@ -158,5 +158,65 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsTrue ((missingPatterns.Count == 0) && (superfluousPatterns.Count == 0),
 			  msg + "; " + missingPatternsMsg + " .. " + superfluousPatternsMsg);
 		}
+
+		internal static void IDockProviderDockPositionTest (IRawElementProviderSimple provider, Control control)
+		{
+			IDockProvider dockProvider = (IDockProvider)provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (dockProvider, "Dock provider should not be null");
+
+			DockStyle dockOrig = control.Dock;
+
+			control.Dock = DockStyle.Top;
+			Assert.AreEqual (DockPosition.Top, dockProvider.DockPosition, "DockPosition Top");
+			control.Dock = DockStyle.Bottom;
+			Assert.AreEqual (DockPosition.Bottom, dockProvider.DockPosition, "DockPosition Bottom");
+			control.Dock = DockStyle.Left;
+			Assert.AreEqual (DockPosition.Left, dockProvider.DockPosition, "DockPosition Left");
+			control.Dock = DockStyle.Right;
+			Assert.AreEqual (DockPosition.Right, dockProvider.DockPosition, "DockPosition Right");
+			if (!(control is Splitter)) {
+				control.Dock = DockStyle.Fill;
+				Assert.AreEqual (DockPosition.Fill, dockProvider.DockPosition, "DockPosition Fill");
+				control.Dock = DockStyle.None;
+				Assert.AreEqual (DockPosition.None, dockProvider.DockPosition, "DockPosition None");
+			}
+
+			control.Dock = dockOrig;
+		}
+
+		internal static void IDockProviderSetDockPositionTest (IRawElementProviderSimple provider, Control control)
+		{
+			IDockProvider dockProvider = (IDockProvider)provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id);
+			Assert.IsNotNull (dockProvider, "Dock provider should not be null");
+
+			DockStyle dockOrig = control.Dock;
+
+			dockProvider.SetDockPosition (DockPosition.Top);
+			Assert.AreEqual (DockStyle.Top, control.Dock, "DockStyle Top");
+			dockProvider.SetDockPosition (DockPosition.Bottom);
+			Assert.AreEqual (DockStyle.Bottom, control.Dock, "DockStyle Bottom");
+			dockProvider.SetDockPosition (DockPosition.Left);
+			Assert.AreEqual (DockStyle.Left, control.Dock, "DockStyle Left");
+			dockProvider.SetDockPosition (DockPosition.Right);
+			Assert.AreEqual (DockStyle.Right, control.Dock, "DockStyle Right");
+			if ((control is Splitter)) {
+				try {
+					dockProvider.SetDockPosition (DockPosition.None);
+					Assert.Fail ("InvalidOperationException not thrown");
+				} catch (InvalidOperationException) { }
+			
+				try {
+					dockProvider.SetDockPosition (DockPosition.Fill);
+					Assert.Fail ("InvalidOperationException not thrown");
+				} catch (InvalidOperationException) { }
+			} else {
+				dockProvider.SetDockPosition (DockPosition.Fill);
+				Assert.AreEqual (DockStyle.Fill, control.Dock, "DockStyle Fill");
+				dockProvider.SetDockPosition (DockPosition.None);
+				Assert.AreEqual (DockStyle.None, control.Dock, "DockStyle None");
+			}
+
+			control.Dock = dockOrig;
+		}
 	}
 }

@@ -1,3 +1,9 @@
+2009-01-20  Mike Gorse  <mgorse@novell.com>
+
+	* Window.cs, ComponentParentAdapter.cs, AutomationBridge.cs,
+	  SplitContainer.cs, Makefile.am, UiaAtkBridge.mdp, Splitter.cs:
+	  Support SWF.Splitter.
+
 2009-01-20  Mario Carrion  <mcarrion@novell.com>
 
 	* Image.cs:

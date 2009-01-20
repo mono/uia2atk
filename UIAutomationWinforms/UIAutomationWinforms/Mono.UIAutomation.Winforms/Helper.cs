@@ -346,6 +346,38 @@ namespace Mono.UIAutomation.Winforms
 			                      (int) rectangle.Width, (int) rectangle.Height);
 		}
 		
+		internal static DockPosition GetDockPosition (SWF.DockStyle dockStyle)
+		{
+				if (dockStyle == SWF.DockStyle.Top)
+					return DockPosition.Top;
+				else if (dockStyle == SWF.DockStyle.Bottom)
+					return DockPosition.Bottom;
+				else if (dockStyle == SWF.DockStyle.Left)
+					return DockPosition.Left;
+				else if (dockStyle == SWF.DockStyle.Right)
+					return DockPosition.Right;
+				else if (dockStyle == SWF.DockStyle.Fill)
+					return DockPosition.Fill;
+				else
+					return DockPosition.None;
+		}
+
+		internal static SWF.DockStyle GetDockStyle (DockPosition dockPosition)
+		{
+				if (dockPosition == DockPosition.Top)
+					return SWF.DockStyle.Top;
+				else if (dockPosition == DockPosition.Bottom)
+					return SWF.DockStyle.Bottom;
+				else if (dockPosition == DockPosition.Left)
+					return SWF.DockStyle.Left;
+				else if (dockPosition == DockPosition.Right)
+					return SWF.DockStyle.Right;
+				else if (dockPosition == DockPosition.Fill)
+					return SWF.DockStyle.Fill;
+				else
+					return SWF.DockStyle.None;
+		}
+
 		#endregion
 		
 		#region Private Static Methods

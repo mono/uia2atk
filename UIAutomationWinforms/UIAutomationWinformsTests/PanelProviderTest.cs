@@ -281,14 +281,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderSimple provider = 
 				ProviderFactory.GetProvider (panel);
 			
-			IDockProvider dockProvider = (IDockProvider)
-				provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (dockProvider,
-			                  "Not returning DockPatternIdentifiers.");
-			
-			Assert.AreEqual ((int) panel.Dock,
-			                 (int) dockProvider.DockPosition,
-			                 "Panel is None DockStyle by default.");
+			TestHelper.IDockProviderDockPositionTest (provider, panel);
 		}
 		
 		[Test]
@@ -298,15 +291,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IRawElementProviderSimple provider = 
 				ProviderFactory.GetProvider (panel);
 			
-			IDockProvider dockProvider = (IDockProvider)
-				provider.GetPatternProvider (DockPatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (dockProvider,
-			                  "Not returning DockPatternIdentifiers.");
-			
-			dockProvider.SetDockPosition (DockPosition.Fill);
-			Assert.AreEqual ((int) panel.Dock,
-			                 (int) dockProvider.DockPosition,
-			                 "Panel should be Fill DockStyle.");
+			TestHelper.IDockProviderSetDockPositionTest (provider, panel);
 		}
 		
 		#endregion

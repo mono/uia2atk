@@ -436,6 +436,32 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
+		public void Splitter ()
+		{
+			using (SWF.Form f = new SWF.Form()) {
+				SWF.Label label1 = new SWF.Label ();
+				label1.Dock = SWF.DockStyle.Left;
+				label1.Text = "label1";
+				SWF.Label label2 = new SWF.Label ();
+				label2.Dock = SWF.DockStyle.Fill;
+				label2.Text = "label2";
+				SWF.Splitter splitter = new SWF.Splitter ();
+				splitter.Dock = SWF.DockStyle.Left;
+				f.Controls.Add (label2);
+				f.Controls.Add (splitter);
+				f.Controls.Add (label1);
+				f.Show ();
+				Atk.Object accessible = GetAdapterForWidget (f);
+				Assert.AreEqual (1, accessible.NAccessibleChildren, "Form should have one child");
+				Atk.Object child = accessible.RefAccessibleChild (0);
+				HSplitter (child);
+				f.Controls.Remove (splitter);
+				Assert.AreEqual (2, accessible.NAccessibleChildren, "Form should have two children after removing splitter");
+				f.Close ();
+			}
+		}
+
+		[Test]
 		public void Bug416602 ()
 		{
 			using (SWF.Form f = new SWF.Form ()) {
