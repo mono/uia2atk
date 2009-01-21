@@ -9,6 +9,7 @@
 """Application wrapper for datetimepicker_dropdown.py"""
 
 from strongwind import *
+import time
 
 class DateTimePickerDropDownFrame(accessibles.Frame):
     """the profile of the datetimepicker_dropdown sample"""
@@ -19,6 +20,7 @@ class DateTimePickerDropDownFrame(accessibles.Frame):
 
     def __init__(self, accessible):
         super(DateTimePickerDropDownFrame, self).__init__(accessible)
+        self.localtime = time.localtime()
         self.panel = self.findPanel(None)
         self.lists = self.findAllLists(None)
         self.spinbuttons = self.findAllSpinButtons(None)

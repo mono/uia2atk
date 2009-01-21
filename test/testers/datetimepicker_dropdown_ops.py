@@ -19,7 +19,6 @@ from helpers import *
 from actions import *
 from states import *
 from sys import argv
-import datetime
 
 app_path = None 
 try:
@@ -38,8 +37,11 @@ except IOError, msg:
 if app is None:
   exit(4)
 
+
 # just an alias to make things shorter
 dtpddFrame = app.dateTimePickerDropDownFrame
+
+# XXX: we should do some testing before clicking here (bgmerrell)
 dtpddFrame.click(dtpddFrame.dropdownbutton)
 
 ##############################
@@ -55,29 +57,37 @@ actionsCheck(dtpddFrame.dropdownbutton, "Button")
 ##############################
 # check datetimepicker_dropdown AtkAccessible
 ##############################
-today = datetime.date.today()
-ACTIVE_STATES = 'add_states=["focused", "selected"]'
-INACTIVE_STATES = 'invalid_states=["showing", "visible"]'
-if today.strftime("%B") == 'January' or today.strftime("%B") == 'December':
-    JAN_STATES = ACTIVE_STATES
-    DEC_STATES = ACTIVE_STATES
-else:
-    JAN_STATES = INACTIVE_STATES
-    DEC_STATES = INACTIVE_STATES
+NUM_MONTHS = 12
+NUM_DAYS = 7
+# subtract 1 because so January is 0 and December is 11 so we can iterate 
+# through range(NUM_MONTHS)
+CURRENT_MONTH = dtpddFrame.localtime[1] - 1
+CURRENT_DAY = dtpddFrame.localtime[6]
 
-if today.strftime("%A") == 'Monday' or today.strftime("%A") == 'Sunday':
-    MON_STATES = ACTIVE_STATES
-    SUN_STATES = ACTIVE_STATES
-else:
-    MON_STATES = INACTIVE_STATES
-    SUN_STATES = INACTIVE_STATES
+# check the status of all months
+for i in range(NUM_MONTHS):
+    if i == CURRENT_MONTH:
+        add_states=["focused", "selected"]
+        invalid_states=[]
+    else:
+        add_states=[]
+        invalid_states=["showing", "visible"]
+    statesCheck(dtpddFrame.months[i], "ListItem", invalid_states, add_states)
+    statesCheck(dtpddFrame.months[i], "ListItem", invalid_states, add_states)
+
+# check the status of all days
+for i in range(NUM_DAYS):
+    if i == CURRENT_MONTH:
+        add_states=["focused", "selected"]
+        invalid_states=[]
+    else:
+        add_states=[]
+        invalid_states=["showing", "visible"]
+    statesCheck(dtpddFrame.weekdays[i], "ListItem", invalid_states, add_states)
+    statesCheck(dtpddFrame.weekdays[i], "ListItem", invalid_states, add_states)
 
 # XXX: the focusable problem is under discussion
 statesCheck(dtpddFrame.checkbox, "CheckBox", add_states=["checked"], invalid_states=["focusable"])
-statesCheck(dtpddFrame.months[0], "ListItem", eval(JAN_STATES))
-statesCheck(dtpddFrame.months[11], "ListItem", eval(DEC_STATES))
-statesCheck(dtpddFrame.weekdays[0], "ListItem", eval(MON_STATES))
-statesCheck(dtpddFrame.weekdays[6], "ListItem", eval(SUN_STATES))
 statesCheck(dtpddFrame.dropdownbutton, "Button", invalid_states=["focusable"])
 sleep(config.SHORT_DELAY)
 

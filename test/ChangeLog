@@ -1,3 +1,11 @@
+2009-01-21 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/datetimepicker_dropdown/datetimepickerdropdownframe.py: get
+	time.localtime() just after launching the sample app.
+	* testers/datetimepicker_dropdown_ops.py: loop through each month and
+	each week and check the state of each week list item and each month
+	list item.
+
 2009-01-20 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/label/labelframe.py, 
