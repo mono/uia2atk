@@ -694,6 +694,40 @@ namespace UiaAtkBridgeTest
 			TextBoxView (toolStripTextBox2, false);
 		}
 
+		[Test] //TODO: move to AtkTests.cs
+		public void ToolBarButton ()
+		{
+			BasicWidgetType type = BasicWidgetType.ToolbarButton;
+
+			string name = "test-caption";
+			Atk.Object accessible = GetAccessible (type, name);
+			PropertyRole (type, accessible);
+
+			Assert.IsNull (accessible.Name);
+			Assert.AreEqual (1, accessible.NAccessibleChildren);
+
+			Interfaces (accessible,
+			            typeof (Atk.Component));
+			
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+			
+			States (accessible,
+				Atk.StateType.Enabled,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
+			
+			Atk.Object button = accessible.RefAccessibleChild (0);
+			States (button,
+				Atk.StateType.Enabled,
+				Atk.StateType.Focusable,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+				Atk.StateType.Visible);
+			Button (button, name);
+		}
+
 		[Test]
 		[Ignore ("It causes a deadlock for now")]
 		public void OpenFileDialog ()

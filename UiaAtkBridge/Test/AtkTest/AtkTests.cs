@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008,2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //      Andres G. Aragoneses <aaragoneses@novell.com>
@@ -68,11 +68,17 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void Button ()
 		{
+			Button (null, null);
+		}
+		
+		public void Button (Atk.Object accessible, string name)
+		{
 			BasicWidgetType type = BasicWidgetType.NormalButton;
-			Atk.Object accessible;
 
-			string name = "test";
-			accessible = GetAccessible (type, name);
+			if (name == null)
+				name = "test";
+			if (accessible == null)
+				accessible = GetAccessible (type, name);
 
 			States (accessible,
 			  Atk.StateType.Enabled,

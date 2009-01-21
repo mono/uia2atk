@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008,2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //      Andres G. Aragoneses <aaragoneses@novell.com>
@@ -904,9 +904,6 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.TabPage:
 				role = Atk.Role.PageTab;
 				break;
-			case BasicWidgetType.GroupBox:
-				role = Atk.Role.Panel;
-				break;
 			case BasicWidgetType.ListView:
 				role = Atk.Role.TreeTable;
 				break;
@@ -919,6 +916,8 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ContainerPanel:
 			case BasicWidgetType.ErrorProvider:
 			case BasicWidgetType.DateTimePicker:
+			case BasicWidgetType.ToolbarButton:
+			case BasicWidgetType.GroupBox:
 				role = Atk.Role.Panel;
 				break;
 			case BasicWidgetType.ToolStripSplitButton:

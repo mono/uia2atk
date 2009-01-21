@@ -599,6 +599,14 @@ namespace UiaAtkBridgeTest
 				accessible = GetAdapterForWidget (but);
 				break;
 				
+			case BasicWidgetType.ToolbarButton:
+				if (!real)
+					throw new NotSupportedException ("Not unreal support for ToolbarButton");
+
+				toolBarButton.Text = name;
+				accessible = GetAdapterForWidget (toolBarButton);
+				
+				break;
 			case BasicWidgetType.Window:
 				SWF.Form frm = new SWF.Form ();
 				if (real)

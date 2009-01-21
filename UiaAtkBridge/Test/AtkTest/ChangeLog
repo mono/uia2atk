@@ -1,3 +1,9 @@
+2009-01-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs:
+	* AtkTester.cs:
+	* BasicWidgetType.cs: Basic tests and implementation for toolbarButton.
+
 2009-01-20  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs, AtkTests.cs: More event simplification.

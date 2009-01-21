@@ -33,11 +33,16 @@ namespace UiaAtkBridge
 	{
 		public Container (IRawElementProviderSimple provider): base (provider)
 		{
-			int controlTypeId = (int) Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			int controlTypeId = (int) Provider.GetPropertyValue (
+			  AutomationElementIdentifiers.ControlTypeProperty.Id);
 			if (controlTypeId == ControlType.ToolBar.Id)
 				Role = Atk.Role.ToolBar;
 			else if (controlTypeId == ControlType.Group.Id || controlTypeId == ControlType.Pane.Id)
 				Role = Atk.Role.Panel;
+			else if (controlTypeId == ControlType.MenuItem.Id) {
+				Role = Atk.Role.Panel;
+				AddOneChild (new Button (provider));
+			}
 			else
 				Role = Atk.Role.Filler;
 		}
