@@ -851,9 +851,7 @@ namespace UiaAtkBridge
 		private void HandleNewListItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter atkItem;
-			if (parentObject is MenuItem)
-				atkItem = new MenuItem (provider);
-			else if (parentObject is ComboBoxOptions)
+			if (parentObject is ComboBoxOptions)
 				atkItem = new ComboBoxItem (provider);
 			else
 				atkItem = new ListItem (provider);
@@ -1001,7 +999,6 @@ namespace UiaAtkBridge
 		private void HandleNewMenuBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			MenuBar newMenuBar = new MenuBar (provider);
-
 			IncludeNewAdapter (newMenuBar, parentObject);
 		}
 
