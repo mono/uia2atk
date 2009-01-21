@@ -480,13 +480,17 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void TextBoxView ()
 		{
-			TextBoxView (null, true);
+			TextBoxView (BasicWidgetType.TextBoxView, null, true);
+		}
+
+		[Test]
+		public void RichTextBox ()
+		{
+			TextBoxView (BasicWidgetType.RichTextBox, null, true);
 		}
 		
-		public void TextBoxView (object widget, bool expectFocusable)
+		public void TextBoxView (BasicWidgetType type, object widget, bool expectFocusable)
 		{
-			BasicWidgetType type = BasicWidgetType.TextBoxView;
-			
 			Atk.Object accessible = null;
 			if (widget == null) {
 				accessible = InterfaceText (type, false);

@@ -41,6 +41,7 @@ namespace UiaAtkBridge
 		protected IValueProvider valueProvider;
 		protected IEditableRange editableRange = null;
 		internal ITextImplementor textExpert = null;
+		private string oldText;
 		#endregion
 
 		#region Constructor
@@ -54,6 +55,7 @@ namespace UiaAtkBridge
 
 			valueProvider = (IValueProvider)provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
 			textExpert = TextImplementorFactory.GetImplementor (this, provider);
+			oldText = textExpert.Text;
 		}
 		#endregion
 
@@ -274,16 +276,17 @@ namespace UiaAtkBridge
 		private void NewText (string newText)
 		{
 			int caretOffset = textExpert.Length;
-			if (textExpert.HandleSimpleChange (newText, ref caretOffset))
+			if (textExpert.HandleSimpleChange (oldText, ref caretOffset))
 				return;
 
 			Atk.TextAdapter adapter = new Atk.TextAdapter (this);
 
 			// First delete all text, then insert the new text
-			adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+			adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, oldText.Length);
 
 			adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                 newText == null ? 0 : newText.Length);
+			oldText = newText;
 		}
 
 		protected virtual bool ReadOnly {

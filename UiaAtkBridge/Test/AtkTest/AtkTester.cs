@@ -1064,7 +1064,9 @@ namespace UiaAtkBridgeTest
 				atkText = CastToAtkInterface <Atk.Text> (accessible);
 			});
 
-			if (Misc.HasReadOnlyText (type) && (type != BasicWidgetType.MaskedTextBoxEntry))
+			if (Misc.HasReadOnlyText (type)
+			    && (type != BasicWidgetType.MaskedTextBoxEntry)
+			    && (type != BasicWidgetType.RichTextBox))
 				Assert.AreEqual (name, accessible.Name, "accessible.Name");
 			else
 				Assert.IsNull (accessible.Name, "accessible.Name");
@@ -1089,13 +1091,15 @@ namespace UiaAtkBridgeTest
 
 			int highCaretOffset = 15;
 			//any value (beware, this may change when this is fixed: http://bugzilla.gnome.org/show_bug.cgi?id=556453 )
-			Assert.AreEqual (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.MaskedTextBoxEntry, 
+			bool expectTrue = (type == BasicWidgetType.MaskedTextBoxEntry
+			                   || type == BasicWidgetType.RichTextBox);
+			Assert.AreEqual (!Misc.HasReadOnlyText (type) || expectTrue, 
 			                 atkText.SetCaretOffset (-1), "SetCaretOffset#1 SL");
-			Assert.AreEqual (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.MaskedTextBoxEntry,
+			Assert.AreEqual (!Misc.HasReadOnlyText (type) || expectTrue,
 			                 atkText.SetCaretOffset (0), "SetCaretOffset#2 SL");
-			Assert.AreEqual (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.MaskedTextBoxEntry,
+			Assert.AreEqual (!Misc.HasReadOnlyText (type) || expectTrue,
 			                 atkText.SetCaretOffset (1), "SetCaretOffset#3 SL");
-			Assert.AreEqual (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.MaskedTextBoxEntry,
+			Assert.AreEqual (!Misc.HasReadOnlyText (type) || expectTrue,
 			                 atkText.SetCaretOffset (highCaretOffset), "SetCaretOffset#4 SL");
 			
 			// don't do this until bug#393565 is fixed:
@@ -1105,14 +1109,17 @@ namespace UiaAtkBridgeTest
 			if ((type == BasicWidgetType.Label) || 
 			    (type == BasicWidgetType.ToolStripLabel) ||
 			    (type == BasicWidgetType.TextBoxEntry) ||
-				(type == BasicWidgetType.TextBoxView) ||
+			    (type == BasicWidgetType.TextBoxView) ||
+			    (type == BasicWidgetType.RichTextBox) ||
 			    (type == BasicWidgetType.MaskedTextBoxEntry))
 				nSelections = 0;
 			
 			Assert.AreEqual (nSelections, atkText.NSelections, "NSelections#1 SL");
 
 			int caretOffset = 0;
-			if (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.MaskedTextBoxEntry)
+			if (!Misc.HasReadOnlyText (type)
+			    || type == BasicWidgetType.MaskedTextBoxEntry
+			    || type == BasicWidgetType.RichTextBox)
 				caretOffset = highCaretOffset;
 			
 			// you cannot select a label AFAIK so, all zeroes returned!
@@ -1173,7 +1180,8 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (startCaretOffset, startOffset, "GetTextAtOffset,WordEnd,so SL");
 			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAtOffset,WordEnd,eo SL");
 
-			if (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.MaskedTextBoxEntry) {
+			if (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.MaskedTextBoxEntry
+			    || type == BasicWidgetType.RichTextBox) {
 				startCaretOffset = highCaretOffset;
 				endCaretOffset = highCaretOffset;
 			}
@@ -1334,7 +1342,7 @@ namespace UiaAtkBridgeTest
 
 			System.Threading.Thread.Sleep (1000);
 
-			if (Misc.HasReadOnlyText (type))
+			if (Misc.HasReadOnlyText (type) && type != BasicWidgetType.RichTextBox)
 				Assert.AreEqual (name, accessible.Name, "accessible.Name");
 			else
 				Assert.IsNull (accessible.Name, "accessible.Name");
@@ -1358,7 +1366,7 @@ namespace UiaAtkBridgeTest
 			int indexStartOffset = name.IndexOf (expected);
 			int indexEndOffset = name.IndexOf (expected) + expected.Length;
 
-			if (!Misc.HasReadOnlyText (type)) {
+			if (!Misc.HasReadOnlyText (type) || type == BasicWidgetType.RichTextBox) {
 				int pos = (TextBoxCaretInitiallyAtEnd? name.Length: 0);
 				indexStartOffset = pos;
 				indexEndOffset = pos;

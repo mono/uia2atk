@@ -1,3 +1,9 @@
+2009-01-21  Brad Taylor  <brad@getcoded.net>
+
+	* AtkTests.cs: 
+	* AtkTester.cs: 
+	* BasicWidgetType.cs: Add tests for RichTextBox.
+
 2009-01-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs:

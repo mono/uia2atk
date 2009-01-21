@@ -302,23 +302,22 @@ namespace UiaAtkBridge
 			return new Atk.Attribute[0];
 		}
 
-		public bool HandleSimpleChange (string newText, ref int caretOffset)
+		public bool HandleSimpleChange (string oldText, ref int caretOffset)
 		{
-			return HandleSimpleChange (newText, ref caretOffset, true);
+			return HandleSimpleChange (oldText, ref caretOffset, true);
 		}
 
-		public bool HandleSimpleChange (string newText, ref int caretOffset, bool updateCaret)
+		public bool HandleSimpleChange (string oldText, ref int caretOffset, bool updateCaret)
 		{
 			string text = Text;
 
-			if (text == newText)
+			if (text == oldText)
 				return true;
-			int oldLength = Length;
-			int newLength = newText.Length;
+			int oldLength = oldText.Length;
+			int newLength = Length;
 			int offset;
 			if (newLength > oldLength) {
-				if (IsAddition (newText, text, out offset)) {
-					text = newText;
+				if (IsAddition (text, oldText, out offset)) {
 					Atk.TextAdapter adapter = new Atk.TextAdapter ((Atk.TextImplementor)resource);
 					adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, offset, newLength - oldLength);
 					if (updateCaret) {
@@ -329,10 +328,9 @@ namespace UiaAtkBridge
 				}
 			}
 			else if (oldLength > newLength) {
-				if (IsAddition (text, newText, out offset)) {
+				if (IsAddition (oldText, text, out offset)) {
 					Atk.TextAdapter adapter = new Atk.TextAdapter ((Atk.TextImplementor)resource);
 					adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, offset, oldLength - newLength);
-					text = newText;
 					if (updateCaret) {
 						caretOffset = offset;
 						GLib.Signal.Emit (resource, "text_caret_moved", caretOffset);

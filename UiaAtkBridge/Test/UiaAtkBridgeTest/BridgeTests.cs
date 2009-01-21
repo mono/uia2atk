@@ -691,7 +691,7 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void ToolStripTextBoxMultiLine ()
 		{
-			TextBoxView (toolStripTextBox2, false);
+			TextBoxView (BasicWidgetType.TextBoxView, toolStripTextBox2, false);
 		}
 
 		[Test] //TODO: move to AtkTests.cs

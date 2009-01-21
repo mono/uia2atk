@@ -727,6 +727,7 @@ namespace UiaAtkBridgeTest
 				}
 				break;
 
+			case BasicWidgetType.RichTextBox:
 			case BasicWidgetType.TextBoxView:
 				if (!real)
 					throw new NotSupportedException ("Not unreal support for TextBox");

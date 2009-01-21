@@ -42,6 +42,7 @@ namespace UiaAtkBridge
 		private bool editable = true;
 		private ITextProvider textProvider;
 		private IValueProvider valueProvider;
+		private string oldText;
 		
 		public TextBoxEntryView (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -67,6 +68,7 @@ namespace UiaAtkBridge
 			if (iText == null)
 				iText = valueProvider as IText;
 			caretOffset = (iText != null? iText.CaretOffset: textExpert.Length);
+			oldText = textExpert.Text;
 		}
 
 		public string GetRealText {
@@ -270,22 +272,23 @@ namespace UiaAtkBridge
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property.Id == ValuePatternIdentifiers.ValueProperty.Id) {
-				string newText = (string)e.NewValue;
-				
 				// Don't fire spurious events if the text hasn't changed
-				if (textExpert.HandleSimpleChange (newText, ref caretOffset, iText == null))
+				if (textExpert.HandleSimpleChange (oldText, ref caretOffset, iText == null))
 					return;
 
 				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+				string newText = textExpert.Text;
 
 				// First delete all text, then insert the new text
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, oldText.Length);
 
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         newText == null ? 0 : newText.Length);
 
 				if (iText == null)
 					caretOffset = textExpert.Length;
+
+				oldText = newText;
 			} else if (e.Property.Id == ValuePatternIdentifiers.IsReadOnlyProperty.Id) {
 				bool? isReadOnlyVal = e.NewValue as bool?;
 				if (isReadOnlyVal == null && valueProvider != null)

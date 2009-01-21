@@ -282,6 +282,7 @@ AtkObject,
 		: List, Atk.TextImplementor, Atk.EditableTextImplementor
 	{
 		private ITextImplementor text_helper;
+		private string oldText;
 
 		public ListWithEditableText (IRawElementProviderFragmentRoot provider)
 			: base (provider)
@@ -294,6 +295,7 @@ AtkObject,
 			}
 
 			text_helper = TextImplementorFactory.GetImplementor (this, provider);
+			oldText = text_helper.Text;
 			caretOffset = text_helper.Length;
 		}
 
@@ -314,22 +316,22 @@ AtkObject,
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property == ValuePatternIdentifiers.ValueProperty) {
-				string new_text = TextContents;
-			
-				if (text_helper.HandleSimpleChange (new_text, ref caretOffset))
+				if (text_helper.HandleSimpleChange (oldText, ref caretOffset))
 					return;
 
 				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+				string newText = text_helper.Text;
 
 				// First delete all text, then insert the new text
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, text_helper.Length);
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, oldText.Length);
 
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
-							 new_text == null ? 0 : new_text.Length);
+							 newText == null ? 0 : newText.Length);
 				// TODO: The below line isn't quite right
-				GLib.Signal.Emit (this, "text_caret_moved", new_text.Length);
-
+				GLib.Signal.Emit (this, "text_caret_moved", newText.Length);
 				EmitVisibleDataChanged ();
+
+				oldText = newText;
 			} else if (e.Property == ValuePatternIdentifiers.IsReadOnlyProperty) {
 				NotifyStateChange (Atk.StateType.Editable, !(bool)e.NewValue);
 			} else

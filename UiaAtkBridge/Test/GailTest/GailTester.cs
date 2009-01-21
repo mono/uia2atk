@@ -465,6 +465,7 @@ namespace UiaAtkBridgeTest
 					((Gtk.Entry)widget).Text = text;
 				});
 				break;
+			case BasicWidgetType.RichTextBox:
 			case BasicWidgetType.TextBoxView:
 				if (!real)
 					throw new NotSupportedException ();
