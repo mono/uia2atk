@@ -427,12 +427,7 @@ namespace UiaAtkBridge
 				HandleBulkRemoved (simpleProvider);
 			} else if (e.StructureChangeType == StructureChangeType.ChildrenInvalidated) {
 				// These often seem to be coupled with
-				// add/removed/reordered events,, but we
-				// have trouble if we ignore them for ListView.
-				// TODO: check ControlType and ignore when not
-				// needed to improve performance?
-				HandleBulkRemoved (simpleProvider);
-				HandleBulkAdded (simpleProvider);
+				// add/removed/reordered events.
 			}
 			else
 				Console.WriteLine ("StructureChangedEvent not handled:" + e.StructureChangeType.ToString ());
@@ -593,6 +588,18 @@ namespace UiaAtkBridge
 		{
 			bool lastWindowProvider = false;
 			
+			int controlTypeId = (int)provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			if (controlTypeId == ControlType.DataItem.Id) {
+				// No adapter created for it, but adapters
+				// created for its children
+				IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
+				if (fragment == null)
+					return false;
+				for (IRawElementProviderFragment child = fragment.Navigate (NavigateDirection.FirstChild); child != null; child = child.Navigate (NavigateDirection.NextSibling))
+					HandleTotalElementRemoval (child);
+				return false;
+			}
+
 			Atk.Object obj;
 			if (providerAdapterMapping.TryGetValue (provider, out obj) == false)
 				return false;

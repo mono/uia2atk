@@ -1,3 +1,11 @@
+2009-01-20  Mike Gorse  <mgorse@novell.com>
+
+	* AutomationBridge.cs: Remove a DataItem's children when the
+	  DataItem is removed.
+
+	* AutomationBridge.cs: Ignore ChildrenInvalidated events again--seems
+	  we don't need them after all.
+
 2009-01-20  Mario Carrion  <mcarrion@novell.com>
 
 	* HeaderItem.cs: Setting/Unsetting StateType.Armed when calling
