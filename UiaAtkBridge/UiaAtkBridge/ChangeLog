@@ -1,3 +1,7 @@
+2009-01-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* ListItem.cs: Add basic support for EditableText (bug #459153).
+
 2009-01-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AutomationBridge.cs: Remove obsolete code path.

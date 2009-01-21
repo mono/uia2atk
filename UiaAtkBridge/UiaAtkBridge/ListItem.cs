@@ -30,17 +30,19 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class ListItem : ComponentAdapter, Atk.TextImplementor, Atk.ActionImplementor
+	public class ListItem : ComponentAdapter, Atk.TextImplementor, Atk.ActionImplementor, Atk.EditableTextImplementor
 	{
-		private IInvokeProvider				invokeProvider;
-		private ISelectionItemProvider		selectionItemProvider;
-		private IToggleProvider				toggleProvider;
+		private IInvokeProvider invokeProvider;
+		private ISelectionItemProvider selectionItemProvider;
+		private IToggleProvider toggleProvider;
+		private IValueProvider valueProvider;
 
 		private TextImplementorHelper textExpert = null;
 		private ActionImplementorHelper actionExpert = null;
 
 		public ListItem (IRawElementProviderSimple provider) : base (provider)
 		{
+			valueProvider = (IValueProvider) provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
 			selectionItemProvider = (ISelectionItemProvider)provider.GetPatternProvider(SelectionItemPatternIdentifiers.Pattern.Id);
 			if (selectionItemProvider == null)
@@ -78,6 +80,11 @@ namespace UiaAtkBridge
 				else
 					states.RemoveState (Atk.StateType.Checked);
 			}
+
+			if (valueProvider != null)
+				states.AddState (Atk.StateType.Editable);
+			else
+				states.RemoveState (Atk.StateType.Editable);
 
 			return states;
 		}
@@ -324,6 +331,12 @@ namespace UiaAtkBridge
 					toggleProvider = null;
 					actionExpert.Remove ("toggle");
 				}
+			} else if (e.Property == AutomationElementIdentifiers.IsValuePatternAvailableProperty) {
+				if ((bool) e.NewValue)
+					valueProvider = (IValueProvider)
+						Provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
+				else
+					valueProvider = null;
 			} else
 				base.RaiseAutomationPropertyChangedEvent (e);
 		}
@@ -340,5 +353,70 @@ namespace UiaAtkBridge
 				throw new NotSupportedException ("Unknown toggleState " + state.ToString ());
 			}
 		}
+
+		#region EditableTextImplementor implementation
+		
+		public bool SetRunAttributes (GLib.SList attrib_set, int start_offset, int end_offset)
+		{
+			return false;
+		}
+		
+		public void InsertText (string str, ref int position)
+		{
+			if (position < 0 || position > textExpert.Length)
+				position = textExpert.Length;	// gail
+			TextContents = textExpert.Text.Substring (0, position)
+				+ str
+				+ textExpert.Text.Substring (position);
+			position += str.Length;
+		}
+		
+		public void CopyText (int start_pos, int end_pos)
+		{
+			Console.WriteLine ("UiaAtkBridge (ListItem): CopyText unimplemented");
+		}
+		
+		public void CutText (int start_pos, int end_pos)
+		{
+			Console.WriteLine ("UiaAtkBridge (ListItem): CutText unimplemented");
+		}
+		
+		public void DeleteText (int start_pos, int end_pos)
+		{
+			if (start_pos < 0)
+				start_pos = 0;
+			if (end_pos < 0 || end_pos > textExpert.Length)
+				end_pos = textExpert.Length;
+			if (start_pos > end_pos)
+				start_pos = end_pos;
+
+			TextContents = TextContents.Remove (start_pos, end_pos - start_pos);
+		}
+		
+		public void PasteText (int position)
+		{
+			Console.WriteLine ("UiaAtkBridge (ListItem): PasteText unimplemented");
+		}
+		
+		public string TextContents {
+			get { return valueProvider.Value.ToString (); }
+			set {
+				if (valueProvider == null) {
+					Console.Error.WriteLine ("WARNING: Cannot set text on a ListItem that does not implement IValueProvider.");
+					return;
+				}
+
+				if (!valueProvider.IsReadOnly) {
+					try {
+						valueProvider.SetValue (value);
+					} catch (Exception e) {
+						Console.Error.WriteLine (e);
+					}
+				}
+			}
+		}
+		
+		#endregion 
+		
 	}
 }
