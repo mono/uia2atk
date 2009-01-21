@@ -1,3 +1,8 @@
+2009-01-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Events/TextBox/TextPatternTextSelectionChangedEvent.cs:
+	Cast to TestBoxBase, not TestBox (to support RichTextBox, etc).
+
 2009-01-20  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/FormProvider.cs:

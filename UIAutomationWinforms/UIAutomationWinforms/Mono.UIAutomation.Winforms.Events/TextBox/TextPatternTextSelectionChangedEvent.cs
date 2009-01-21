@@ -44,7 +44,7 @@ namespace Mono.UIAutomation.Winforms.Events.TextBox
 			: base (provider, 
 			        TextPatternIdentifiers.TextSelectionChangedEvent)
 		{
-			SWF.Document document = ((SWF.TextBox)Provider.Control).Document;
+			SWF.Document document = ((SWF.TextBoxBase)Provider.Control).Document;
 			selectionVisible = document.selection_visible;
 			selectionStart = document.selection_start;
 			selectionEnd = document.selection_end;
@@ -56,13 +56,13 @@ namespace Mono.UIAutomation.Winforms.Events.TextBox
 
 		public override void Connect ()
 		{
-			((SWF.TextBox) Provider.Control).Document.UIASelectionChanged
+			((SWF.TextBoxBase) Provider.Control).Document.UIASelectionChanged
 				+= OnSelectionChangedEvent;
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.TextBox) Provider.Control).Document.UIASelectionChanged
+			((SWF.TextBoxBase) Provider.Control).Document.UIASelectionChanged
 				-= OnSelectionChangedEvent;
 		}
 		
@@ -73,7 +73,7 @@ namespace Mono.UIAutomation.Winforms.Events.TextBox
 		private void OnSelectionChangedEvent (object sender, 
 		                                    EventArgs args)
 		{
-			SWF.Document document = ((SWF.TextBox)Provider.Control).Document;
+			SWF.Document document = ((SWF.TextBoxBase)Provider.Control).Document;
 			if (!selectionVisible && !document.selection_visible)
 				return;
 			if (document.selection_visible != selectionVisible || document.selection_start != selectionStart || document.selection_end != selectionEnd) {
