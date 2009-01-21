@@ -1,3 +1,7 @@
+2009-01-21  Mike Gorse  <mgorse@novell.com>
+
+	* TextContainer.cs: Fix stack overflow in GetRunAttributes.
+
 2009-01-21  Brad Taylor  <brad@getcoded.net>
 
 	* ITextImplementor.cs: 
