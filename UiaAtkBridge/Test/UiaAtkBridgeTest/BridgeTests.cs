@@ -683,12 +683,14 @@ namespace UiaAtkBridgeTest
 		}
 
 		[Test]
-		public void ToolStripTextBoxSingleLine () {
+		public void ToolStripTextBoxSingleLine ()
+		{
 			TextBoxEntry (toolStripTextBox1, false);
 		}
 
 		[Test]
-		public void ToolStripTextBoxMultiLine () {
+		public void ToolStripTextBoxMultiLine ()
+		{
 			TextBoxView (toolStripTextBox2, false);
 		}
 
@@ -720,7 +722,7 @@ namespace UiaAtkBridgeTest
 		{
 			BasicWidgetType type = BasicWidgetType.DateTimePicker;
 
-			Atk.Object accessible = GetAccessible (type, new string[0]);
+			Atk.Object accessible = GetAccessible (type, new string [0]);
 
 			dateTimePicker.ShowUpDown = false;
 			dateTimePicker.ShowCheckBox = false;

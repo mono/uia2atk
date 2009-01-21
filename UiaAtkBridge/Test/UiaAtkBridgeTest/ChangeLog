@@ -1,3 +1,7 @@
+2009-01-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTests.cs: Cosmetic.
+
 2009-01-20  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTests.cs: Add Splitter test.
