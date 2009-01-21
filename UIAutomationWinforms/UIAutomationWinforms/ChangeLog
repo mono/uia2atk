@@ -1,3 +1,17 @@
+2009-01-22  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/TrackBarProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/TrackBar/ButtonInvokeProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/TrackBar/RangeValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/TrackBar/RangeValuePatternIsReadOnlyEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/TrackBar/RangeValuePatternMinimumEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/TrackBar/RangeValuePatternValueEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/TrackBar/ButtonInvokePatternInvokedEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/TrackBar/RangeValuePatternMaximumEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/TrackBar/RangeValuePatternSmallChangeEvent.c,,
+	  Mono.UIAutomation.Winforms.Events/TrackBar/RangeValuePatternLargeChangeEvent.cs,
+	  Makefile.am: Add support for SWF.Tracker.
+
 2009-01-21  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

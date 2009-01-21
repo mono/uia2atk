@@ -103,6 +103,7 @@ FILES =  \
 	ToolStripSeparatorProviderTest.cs \
 	ToolStripTextBoxProviderTest.cs \
 	ToolTipProviderTest.cs \
+	TrackBarProviderTest.cs \
 	TreeViewProviderTest.cs \
 	WebBrowserProviderTest.cs \
 	WordTokenizerTest.cs 

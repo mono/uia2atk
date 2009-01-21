@@ -1,3 +1,7 @@
+2009-01-21  Mike Gorse <mgorse@novell.com>
+
+	* Makefile.am, TrackBarProviderTest.cs: Add TrackBarProvider test.
+
 2009-01-21  Mario Carrion  <mcarrion@novell.com>
 
 	* FormProviderTest.cs: Tests updated. (Needs MWF trunk>= 124064 or

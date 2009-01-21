@@ -141,6 +141,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripButton/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ToolStripSplitButton/ExpandCollapseProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TrackBar/ButtonInvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TrackBar/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/ExpandCollapeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/ScrollItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TreeView/ScrollProviderBehavior.cs \
@@ -352,6 +354,13 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripSplitButton/ExpandCollapsePatternStateEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TrackBar/ButtonInvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TrackBar/RangeValuePatternIsReadOnlyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TrackBar/RangeValuePatternLargeChangeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TrackBar/RangeValuePatternMaximumEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TrackBar/RangeValuePatternMinimumEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TrackBar/RangeValuePatternSmallChangeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TrackBar/RangeValuePatternValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/ExpandCollapsePatternExpandCollapseStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/SelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TreeView/SelectionItemPatternIsSelectedEvent.cs \
@@ -454,6 +463,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs \
 	Mono.UIAutomation.Winforms/ToolTipListener.cs \
 	Mono.UIAutomation.Winforms/ToolTipProvider.cs \
+	Mono.UIAutomation.Winforms/TrackBarProvider.cs \
 	Mono.UIAutomation.Winforms/TreeViewProvider.cs \
 	Mono.UIAutomation.Winforms/UpDownBaseProvider.cs \
 	Mono.UIAutomation.Winforms/WebBrowserProvider.cs \
