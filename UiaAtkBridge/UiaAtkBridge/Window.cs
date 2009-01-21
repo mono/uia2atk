@@ -17,13 +17,15 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008-2009 Novell, Inc. (http://www.novell.com)
 // 
 // Authors: 
 //      Andres G. Aragoneses <aaragoneses@novell.com>
+//      Mario Carrion <mcarrion@novell.com>
 // 
 
 using System;
+using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
@@ -31,6 +33,7 @@ namespace UiaAtkBridge
 {
 	public class Window : ComponentParentAdapter
 	{
+		private ITransformProvider transformProvider;
 		private IRawElementProviderFragmentRoot rootProvider;
 		private Splitter splitter = null;
 		
@@ -51,6 +54,8 @@ namespace UiaAtkBridge
 					Role = Atk.Role.Frame;
 			} else
 				Role = Atk.Role.Frame;
+
+			transformProvider = (ITransformProvider) provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
 		}
 
 		internal Window () : base (null)
@@ -84,6 +89,33 @@ namespace UiaAtkBridge
 			else
 				base.RaiseAutomationEvent (eventId, e);
 		}
+
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			if (e.Property == TransformPatternIdentifiers.CanResizeProperty)
+				NotifyStateChange (Atk.StateType.Resizable, (bool) e.NewValue);
+			else if (e.Property == WindowPatternIdentifiers.WindowVisualStateProperty) {
+				WindowVisualState newValue = (WindowVisualState) e.NewValue;
+				
+				if (newValue == WindowVisualState.Maximized)
+					GLib.Signal.Emit (this, "maximize");
+				else if (newValue == WindowVisualState.Minimized)
+					GLib.Signal.Emit (this, "minimize");
+				else // Back to Normal, so is Restored
+					GLib.Signal.Emit (this, "restore");
+			} else if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
+				Rect oldValue = (Rect) e.OldValue;
+				Rect newValue = (Rect) e.NewValue;
+				
+				if (oldValue.X != newValue.X || oldValue.Y != newValue.Y)
+					GLib.Signal.Emit (this, "move");
+				if (oldValue.Width != newValue.Width || oldValue.Height != newValue.Height)
+					GLib.Signal.Emit (this, "resize");
+
+				base.RaiseAutomationPropertyChangedEvent (e);
+			} else
+				base.RaiseAutomationPropertyChangedEvent (e);
+		}
 		
 		public override Atk.Layer Layer {
 			get { return Atk.Layer.Window; }
@@ -102,7 +134,10 @@ namespace UiaAtkBridge
 				states.AddState (Atk.StateType.Active);
 			else
 				states.RemoveState (Atk.StateType.Active);
-			
+
+			if (transformProvider != null && transformProvider.CanResize)
+				states.AddState (Atk.StateType.Resizable);
+
 			return states;
 		}
 

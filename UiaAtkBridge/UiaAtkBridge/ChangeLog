@@ -1,3 +1,8 @@
+2009-01-20  Mario Carrion  <mcarrion@novell.com>
+
+	* Window.cs: Emitting: minimize, maximize, restore, move, resize. State
+	support: Resizable. [Fixes Bug #428509]
+
 2009-01-20  Mike Gorse  <mgorse@novell.com>
 
 	* Adapter.cs, ParentAdapter.cs, ComponentParentAdapter.cs: Emit
