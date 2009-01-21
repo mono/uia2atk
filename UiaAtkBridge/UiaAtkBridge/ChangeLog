@@ -1,3 +1,10 @@
+2009-01-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Container.cs:
+	* AutomationBridge.cs: Fix stack overflow by adding button child to
+	Container in AutomationBridge after initialization, instead of at
+	construction time.
+
 2009-01-21  Mike Gorse  <mgorse@novell.com>
 
 	* TextContainer.cs: Fix stack overflow in GetRunAttributes.

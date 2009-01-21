@@ -1005,11 +1005,15 @@ namespace UiaAtkBridge
 		private void HandleNewMenuItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter newAdapter;
-			if (parentObject is UiaAtkBridge.Container)
-				newAdapter = new Container (provider);
-			else
+			Container newContainer = null;
+			if (parentObject is UiaAtkBridge.Container) {
+				newContainer = new Container (provider);
+				newAdapter = newContainer;
+			} else
 				newAdapter = new MenuItem (provider);
 			IncludeNewAdapter (newAdapter, parentObject);
+			if (newContainer != null)
+				newContainer.AddOneChild (new Button (provider));
 		}
 
 		private void HandleNewSplitButton (IRawElementProviderSimple provider, ParentAdapter parentObject)
