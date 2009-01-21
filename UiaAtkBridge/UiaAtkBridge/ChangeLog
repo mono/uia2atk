@@ -1,3 +1,7 @@
+2009-01-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* ListItem.cs: Add ImageImplementor support (bug #459152).
+
 2009-01-21  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Container.cs:

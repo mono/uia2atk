@@ -30,7 +30,8 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 
-	public class ListItem : ComponentAdapter, Atk.TextImplementor, Atk.ActionImplementor, Atk.EditableTextImplementor
+	public class ListItem : ComponentAdapter, Atk.TextImplementor,
+	Atk.ActionImplementor, Atk.EditableTextImplementor, Atk.ImageImplementor
 	{
 		private IInvokeProvider invokeProvider;
 		private ISelectionItemProvider selectionItemProvider;
@@ -39,6 +40,7 @@ namespace UiaAtkBridge
 
 		private TextImplementorHelper textExpert = null;
 		private ActionImplementorHelper actionExpert = null;
+		private ImageImplementorHelper imageExpert = null;
 
 		public ListItem (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -50,6 +52,7 @@ namespace UiaAtkBridge
 			toggleProvider = (IToggleProvider) provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
 			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			textExpert = new TextImplementorHelper (text, this);
+			imageExpert = new ImageImplementorHelper (this, provider);
 			actionExpert = new ActionImplementorHelper ();
 			// TODO: Localize the name?s
 			actionExpert.Add ("click", "click", null, DoClick);
@@ -416,7 +419,37 @@ namespace UiaAtkBridge
 			}
 		}
 		
-		#endregion 
+		#endregion
+
+		#region ImageImplementor implementation 
 		
+		public void GetImagePosition (out int x, out int y, Atk.CoordType coord_type)
+		{
+			imageExpert.GetImagePosition (out x, out y, coord_type);
+		}
+		
+		public void GetImageSize (out int width, out int height)
+		{
+			imageExpert.GetImageSize (out width, out height);
+		}
+		
+		public bool SetImageDescription (string description)
+		{
+			return imageExpert.SetImageDescription (description);
+		}		
+		
+		public string ImageDescription {
+			get {
+				return imageExpert.ImageDescription;
+			}
+		}
+		
+		public string ImageLocale {
+			get {
+				return imageExpert.ImageLocale;
+			}
+		}
+		
+		#endregion 
 	}
 }

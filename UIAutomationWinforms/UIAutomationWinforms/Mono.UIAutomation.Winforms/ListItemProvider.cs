@@ -31,11 +31,12 @@ using Mono.Unix;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Navigation;
+using Mono.UIAutomation.Bridge;
 
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal class ListItemProvider : FragmentRootControlProvider
+	internal class ListItemProvider : FragmentRootControlProvider, IEmbeddedImage
 	{
 
 		#region Constructors
@@ -141,6 +142,40 @@ namespace Mono.UIAutomation.Winforms
 			((IRawElementProviderFragment)listProvider).SetFocus ();
 			listProvider.FocusItem (ObjectItem);
 		}
+
+		#region IEmbeddedImage implementation 
+		
+		public System.Windows.Rect Bounds {
+			get {
+				ListViewItem item = objectItem as ListViewItem;
+				if (item == null || item.ListView == null ||
+				    (item.ImageIndex == -1 && item.ImageKey == string.Empty))
+					return System.Windows.Rect.Empty;
+
+				ImageList imageList = null;
+				if (item.ListView.View == View.LargeIcon)
+					imageList = item.ListView.LargeImageList;
+				else
+					imageList = item.ListView.SmallImageList;
+
+				if (imageList == null)
+					return System.Windows.Rect.Empty;
+
+				return new System.Windows.Rect (0,
+				                                0,
+				                                imageList.ImageSize.Width,
+				                                imageList.ImageSize.Height);
+			}
+		}
+		
+		public string Description {
+			get {
+				return string.Empty;
+			}
+		}
+		
+		#endregion 
+		
 		#endregion
 
 		#region Public Properties
