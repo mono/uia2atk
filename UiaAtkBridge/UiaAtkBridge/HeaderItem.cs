@@ -126,6 +126,16 @@ namespace UiaAtkBridge
 		
 		#endregion
 
+		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs args)
+		{
+			if (eventId == InvokePatternIdentifiers.InvokedEvent) {
+				DataGrid datagrid = Parent as DataGrid;
+				if (datagrid != null)
+					datagrid.EmitRowReorderingSignal ();
+			} else 
+				base.RaiseAutomationEvent (eventId, args);
+		}
+
 		#region Private Methods
 
 		private bool DoClick ()

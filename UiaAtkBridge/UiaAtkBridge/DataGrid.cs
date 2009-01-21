@@ -248,6 +248,12 @@ namespace UiaAtkBridge
 			return tableExpert.RemoveColumnSelection (column);
 		}
 
+		internal void EmitRowReorderingSignal ()
+		{
+			GLib.Signal.Emit (this, "row-reordered");
+			GLib.Signal.Emit (this, "visible-data-changed");
+		}
+
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();

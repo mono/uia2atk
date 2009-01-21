@@ -1,3 +1,10 @@
+2009-01-21  Mario Carrion  <mcarrion@novell.com>
+
+	* DataGrid.cs: Emitting: row-reordered and visible-data-changed. [Fixes
+	Bug #428487]
+
+	* HeaderItem.cs: [Fixes Bug #428487]
+
 2009-01-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* ListItem.cs: Add ImageImplementor support (bug #459152).
