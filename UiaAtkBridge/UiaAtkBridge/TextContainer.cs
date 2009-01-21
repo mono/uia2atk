@@ -114,7 +114,7 @@ namespace UiaAtkBridge
 		
 		public Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
-			return TextExpert.GetRunAttributes (offset, out startOffset, out endOffset);
+			return textExpert.GetRunAttributes (offset, out startOffset, out endOffset);
 		}
 
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
