@@ -38,7 +38,7 @@ namespace UiaAtkBridge
 		private IToggleProvider toggleProvider;
 		private IValueProvider valueProvider;
 
-		private TextImplementorHelper textExpert = null;
+		private ITextImplementor textExpert = null;
 		private ActionImplementorHelper actionExpert = null;
 		private ImageImplementorHelper imageExpert = null;
 
@@ -50,17 +50,18 @@ namespace UiaAtkBridge
 			if (selectionItemProvider == null)
 				throw new ArgumentException ("ListItem should always implement ISelectionItemProvider");
 			toggleProvider = (IToggleProvider) provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
-			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			textExpert = new TextImplementorHelper (text, this);
+
+			textExpert = TextImplementorFactory.GetImplementor (this, provider);
 			imageExpert = new ImageImplementorHelper (this, provider);
 			actionExpert = new ActionImplementorHelper ();
+
 			// TODO: Localize the name?s
 			actionExpert.Add ("click", "click", null, DoClick);
 			if (toggleProvider != null)
 				actionExpert.Add ("toggle", "toggle", null, DoToggle);
 			if (invokeProvider != null)
 				actionExpert.Add ("invoke", "invoke", null, DoInvoke);
-			Name = text;
+			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Role = (toggleProvider != null? Atk.Role.CheckBox: Atk.Role.ListItem);
 		}
 		
@@ -314,7 +315,6 @@ namespace UiaAtkBridge
 				// First delete all text, then insert the new text
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-				textExpert = new TextImplementorHelper (stringValue, this);
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         stringValue == null ? 0 : stringValue.Length);
 

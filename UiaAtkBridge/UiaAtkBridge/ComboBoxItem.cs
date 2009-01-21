@@ -33,7 +33,7 @@ namespace UiaAtkBridge
 	
 	public class ComboBoxItem : ComponentAdapter, Atk.ActionImplementor, Atk.TextImplementor
 	{
-		TextImplementorHelper textExpert = null;
+		ITextImplementor textExpert = null;
 		ISelectionItemProvider selectionItemProvider = null;
 		
 		public ComboBoxItem (IRawElementProviderSimple provider) : base (provider)
@@ -52,7 +52,7 @@ namespace UiaAtkBridge
 				throw new ArgumentException (
 				  String.Format ("Provider for ComboBoxItem (control type {0}) should implement ISelectionItemProvider", controlType));
 
-			textExpert = new TextImplementorHelper (Name, this);
+			textExpert = TextImplementorFactory.GetImplementor (this, provider);
 			
 			//FIXME: take in account ComboBox style changes at runtime
 			if (ParentIsSimple ())

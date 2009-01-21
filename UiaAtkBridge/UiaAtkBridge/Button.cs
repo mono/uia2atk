@@ -41,8 +41,9 @@ namespace UiaAtkBridge
 		private IToggleProvider				toggleProvider;
 		private string						actionDescription = null;
 		protected string					actionName = null;
+		private string oldName;
 		
-		private TextImplementorHelper textExpert = null;
+		private ITextImplementor textExpert = null;
 		private int selectionStartOffset = 0, selectionEndOffset = 0;
 		
 		// UI Automation Properties supported
@@ -69,10 +70,11 @@ namespace UiaAtkBridge
 				actionName = default_invoke_name;
 				Role = Atk.Role.PushButton;
 			}
-			
-			string buttonText = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			textExpert = new TextImplementorHelper (buttonText, this);
-			Name = buttonText;
+
+			textExpert = TextImplementorFactory.GetImplementor (this, provider);
+			Name = (string) provider.GetPropertyValue (
+				AutomationElementIdentifiers.NameProperty.Id);
+			oldName = Name;
 		}
 		
 		protected virtual void InitializeAdditionalProviders ()
@@ -217,15 +219,16 @@ namespace UiaAtkBridge
 				string newName = (string)e.NewValue;
 				
 				// Don't fire spurious events if the text hasn't changed
-				if (textExpert.Text == newName)
+				if (oldName == newName)
 					return;
+
+				oldName = newName;
 
 				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
 
 				// First delete all text, then insert the new text
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-				textExpert = new TextImplementorHelper (newName, this);
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         newName == null ? 0 : newName.Length);
 

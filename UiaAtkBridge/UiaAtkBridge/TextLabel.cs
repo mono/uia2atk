@@ -32,15 +32,15 @@ namespace UiaAtkBridge
 
 	public class TextLabel : ComponentAdapter , Atk.TextImplementor
 	{
-		private TextImplementorHelper textExpert = null;
+		private ITextImplementor textExpert = null;
 		
 		public TextLabel (IRawElementProviderSimple provider) : base (provider)
 		{
 			Role = Atk.Role.Label;
 			
-			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			textExpert = new TextImplementorHelper (text, this);
-			Name = text;
+			textExpert = TextImplementorFactory.GetImplementor (this, provider);
+			Name = (string) provider.GetPropertyValue (
+				AutomationElementIdentifiers.NameProperty.Id);
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()
@@ -86,7 +86,6 @@ namespace UiaAtkBridge
 				// First delete all text, then insert the new text
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-				textExpert = new TextImplementorHelper (newText, this);
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         newText == null ? 0 : newText.Length);
 

@@ -1,3 +1,8 @@
+2009-01-21  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Fix a typo that
+	appeared due to a Bridge test I was writing.
+
 2009-01-21  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ListItemProvider.cs: Add IEmbeddedImage

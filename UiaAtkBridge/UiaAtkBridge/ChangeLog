@@ -1,3 +1,38 @@
+2009-01-21  Brad Taylor  <brad@getcoded.net>
+
+	* ITextImplementor.cs: 
+	* BaseTextImplementor.cs: 
+	* TextImplementorFactory.cs: 
+	* NamePropertyTextImplementor.cs: 
+	* ValueProviderTextImplementor.cs: Refactor TextImplementorHelper so
+	that it's more extensible.  This results in two major changes:
+
+	First, if a control provides ITextProvider, it will automatically be
+	used for the Atk.Text interface, and if not available, IValueProvider
+	and then NameProperty.  This will allow us to take advantage of the
+	more advanced ITextProvider interface in the future. 
+	
+	Second, subclasses of ITextImplementor use the provider's data directly
+	instead of caching it, so TextImplementors don't need to be recreated
+	when the text changes.  This should result in more accurate results
+	returned from Atk.Text, and less work for the programmer.
+
+	* TextProviderTextImplementor.cs: Implement Atk.Attribute support for
+	providers that support ITextProvider.
+
+	* List.cs: 
+	* Button.cs: 
+	* Spinner.cs: 
+	* TreeItem.cs: 
+	* ListItem.cs: 
+	* MenuItem.cs: 
+	* Hyperlink.cs: 
+	* TextLabel.cs: 
+	* ProgressBar.cs: 
+	* ComboBoxItem.cs: 
+	* TextContainer.cs: 
+	* TextBoxEntryView.cs: Refactor to use the new TextImplementorFactory.
+
 2009-01-21  Mario Carrion  <mcarrion@novell.com>
 
 	* DataGrid.cs: Emitting: row-reordered and visible-data-changed. [Fixes

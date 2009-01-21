@@ -36,7 +36,7 @@ namespace UiaAtkBridge
 	public class TextBoxEntryView : ComponentAdapter, Atk.TextImplementor, 
 	  Atk.EditableTextImplementor, Atk.StreamableContentImplementor
 	{
-		private TextImplementorHelper textExpert = null;
+		private ITextImplementor textExpert = null;
 		private IText iText = null;
 		private bool multiLine = false;
 		private bool editable = true;
@@ -55,10 +55,7 @@ namespace UiaAtkBridge
 			if ((textProvider == null) && (valueProvider == null))
 				throw new ArgumentException ("Provider for TextBox should either implement IValue or IText");
 			
-			string text = (textProvider != null) ? textProvider.DocumentRange.GetText (-1) : 
-				valueProvider.Value.ToString ();
-
-			textExpert = new TextImplementorHelper (text, this);
+			textExpert = TextImplementorFactory.GetImplementor (this, provider);
 			if ((int)provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) ==
 			    ControlType.Document.Id)
 				multiLine = true;
@@ -70,6 +67,10 @@ namespace UiaAtkBridge
 			if (iText == null)
 				iText = valueProvider as IText;
 			caretOffset = (iText != null? iText.CaretOffset: textExpert.Length);
+		}
+
+		public string GetRealText {
+			get { return textProvider.DocumentRange.GetText (-1); }
 		}
 
 		protected bool IsTableCell {
@@ -280,7 +281,6 @@ namespace UiaAtkBridge
 				// First delete all text, then insert the new text
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-				textExpert = new TextImplementorHelper (newText, this);
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         newText == null ? 0 : newText.Length);
 

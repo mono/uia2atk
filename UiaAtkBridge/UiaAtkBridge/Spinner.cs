@@ -40,24 +40,20 @@ namespace UiaAtkBridge
 		protected IRangeValueProvider rangeValueProvider;
 		protected IValueProvider valueProvider;
 		protected IEditableRange editableRange = null;
-		internal TextImplementorHelper textExpert = null;
+		internal ITextImplementor textExpert = null;
 		#endregion
 
 		#region Constructor
 		public Spinner (IRawElementProviderSimple provider) : base (provider)
 		{
-			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			Name = text;
+			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Role = Atk.Role.SpinButton;
 			rangeValueProvider = (IRangeValueProvider)provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
-			if (rangeValueProvider != null) {
+			if (rangeValueProvider != null)
 				editableRange = rangeValueProvider as IEditableRange;
-				text = rangeValueProvider.Value.ToString ();
-			}
-			else
-				text = String.Empty;
+
 			valueProvider = (IValueProvider)provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			textExpert = new TextImplementorHelper (text, this);
+			textExpert = TextImplementorFactory.GetImplementor (this, provider);
 		}
 		#endregion
 
@@ -286,7 +282,6 @@ namespace UiaAtkBridge
 			// First delete all text, then insert the new text
 			adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-			textExpert = new TextImplementorHelper (newText, this);
 			adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                 newText == null ? 0 : newText.Length);
 		}

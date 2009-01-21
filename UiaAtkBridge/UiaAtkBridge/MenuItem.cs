@@ -34,7 +34,7 @@ namespace UiaAtkBridge
 	public class MenuItem : ComponentParentAdapter, 
 	                        Atk.SelectionImplementor, Atk.TextImplementor, Atk.ActionImplementor
 	{
-		TextImplementorHelper textExpert = null;
+		ITextImplementor textExpert = null;
 		IInvokeProvider invokeProvider = null;
 		
 		public MenuItem (IRawElementProviderSimple provider) : base (provider)
@@ -45,8 +45,9 @@ namespace UiaAtkBridge
 			if ((provider as IRawElementProviderFragment) == null)
 				throw new ArgumentException ("Provider for ParentMenu should be IRawElementProviderFragment");
 
+			textExpert = TextImplementorFactory.GetImplementor (this, provider);
+
 			string name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			textExpert = new TextImplementorHelper (name, this);
 			if (!String.IsNullOrEmpty (name))
 				Name = name;
 

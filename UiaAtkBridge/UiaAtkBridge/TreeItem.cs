@@ -35,7 +35,7 @@ namespace UiaAtkBridge
 		private IInvokeProvider				invokeProvider;
 		private ISelectionItemProvider		selectionItemProvider;
 
-		private TextImplementorHelper textExpert = null;
+		private ITextImplementor textExpert = null;
 		private ActionImplementorHelper actionExpert = null;
 
 		public TreeItem (IRawElementProviderSimple provider) : base (provider)
@@ -44,16 +44,17 @@ namespace UiaAtkBridge
 			selectionItemProvider = (ISelectionItemProvider)provider.GetPatternProvider(SelectionItemPatternIdentifiers.Pattern.Id);
 			if (selectionItemProvider == null)
 				throw new ArgumentException ("TreeItem should always implement ISelectionItemProvider");
-			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			textExpert = new TextImplementorHelper (text, this);
+
+			textExpert = TextImplementorFactory.GetImplementor (this, provider);
 			actionExpert = new ActionImplementorHelper ();
+
 			// TODO: Localize the name?s
 			actionExpert.Add ("click", "click", null, DoClick);
 			if (ToggleProvider != null)
 				actionExpert.Add ("toggle", "toggle", null, DoToggle);
 			if (invokeProvider != null)
 				actionExpert.Add ("invoke", "invoke", null, DoInvoke);
-			Name = text;
+			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Role = (ToggleProvider != null? Atk.Role.CheckBox: Atk.Role.TableCell);
 		}
 		
@@ -336,7 +337,6 @@ namespace UiaAtkBridge
 				// First delete all text, then insert the new text
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-				textExpert = new TextImplementorHelper (stringValue, this);
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         stringValue == null ? 0 : stringValue.Length);
 

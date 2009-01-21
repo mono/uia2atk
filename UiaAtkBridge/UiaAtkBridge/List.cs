@@ -281,7 +281,7 @@ AtkObject,
 	public class ListWithEditableText
 		: List, Atk.TextImplementor, Atk.EditableTextImplementor
 	{
-		private TextImplementorHelper text_helper;
+		private ITextImplementor text_helper;
 
 		public ListWithEditableText (IRawElementProviderFragmentRoot provider)
 			: base (provider)
@@ -293,7 +293,7 @@ AtkObject,
 				throw new ArgumentException ("Provider does not implement IValue");
 			}
 
-			text_helper = new TextImplementorHelper (TextContents, this);
+			text_helper = TextImplementorFactory.GetImplementor (this, provider);
 			caretOffset = text_helper.Length;
 		}
 
@@ -324,7 +324,6 @@ AtkObject,
 				// First delete all text, then insert the new text
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, text_helper.Length);
 
-				text_helper = new TextImplementorHelper (new_text, this);
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 							 new_text == null ? 0 : new_text.Length);
 				// TODO: The below line isn't quite right

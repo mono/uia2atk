@@ -336,7 +336,7 @@ namespace UiaAtkBridgeTest
 		{
 			BasicWidgetType type = BasicWidgetType.DomainUpDown;
 
-		string [] names = { "first item", "second item", "third item" };
+			string [] names = { "first item", "second item", "third item" };
 			Atk.Object accessible = GetAccessible (type, names);
 			PropertyRole (type, accessible);
 
@@ -796,6 +796,155 @@ namespace UiaAtkBridgeTest
 					break;
 				}
 			}
+		}
+
+		// This can't be tested in AtkTest because the behavior is
+		// slightly different than Gtk+s.  Unfortunately it's not
+		// performant to map UIA's api to Atk's api in this instance.
+		// See TextPatternTextImplementorHelper for more details.
+		[Test]
+		public void RichTextBoxAttributeTest ()
+		{
+			richTextBox.Rtf = 
+@"{\rtf1\ansi
+{\fonttbl\f0\fswiss Arial;\f1\froman Times New Roman;}
+{\colortbl;\red255\green0\blue0;}
+\pard {\f0 ab {\b cd} {\cf1 ef} {\strike gh}}\par
+\pard {\qr\f1\i ij }\par
+\pard {\qc\f0\ul kl }\par
+\pard {\qj\f0\fs24 mn }\par
+}";
+			Atk.Object accessible = GetAdapterForWidget (richTextBox);
+			Atk.Text text = CastToAtkInterface<Atk.Text> (accessible);
+			Dictionary<string, string> attrs;
+			
+			Dictionary<string, string> defaultAttrs
+				= GetDictionary (text.DefaultAttributes);
+			
+			attrs = new Dictionary<string, string> (defaultAttrs);
+			ExpectAttrAndRemove ("bg-color", "0,0,0", attrs);
+			ExpectAttrAndRemove ("pixels-below-lines", "0", attrs);
+			ExpectAttrAndRemove ("pixels-above-lines", "0", attrs);
+			ExpectAttrAndRemove ("editable", "true", attrs);
+			ExpectAttrAndRemove ("invisible", "false", attrs);
+			ExpectAttrAndRemove ("indent", "0", attrs);
+			Assert.AreEqual (0, attrs.Count);
+
+			int s, e;
+
+			// Normal 
+			attrs = GetDictionary (text.GetRunAttributes (1, out s, out e));
+			RemoveItems (attrs, defaultAttrs);
+			ExpectAttrAndRemove ("style", "normal", attrs);
+			ExpectAttrAndRemove ("justification", "left", attrs);
+			ExpectAttrAndRemove ("fg-color", "0,0,0", attrs);
+			ExpectAttrAndRemove ("family-name", "Arial", attrs);
+			ExpectAttrAndRemove ("strikethrough", "false", attrs);
+			ExpectAttrAndRemove ("weight", "400", attrs);
+			ExpectAttrAndRemove ("underline", "none", attrs);
+			Assert.AreEqual (0, attrs.Count);
+
+			// Bold
+			attrs = GetDictionary (text.GetRunAttributes (3, out s, out e));
+			RemoveItems (attrs, defaultAttrs);
+			ExpectAttrAndRemove ("style", "normal", attrs);
+			ExpectAttrAndRemove ("justification", "left", attrs);
+			ExpectAttrAndRemove ("fg-color", "0,0,0", attrs);
+			ExpectAttrAndRemove ("family-name", "Arial", attrs);
+			ExpectAttrAndRemove ("strikethrough", "false", attrs);
+			ExpectAttrAndRemove ("weight", "700", attrs);
+			ExpectAttrAndRemove ("underline", "none", attrs);
+			Assert.AreEqual (0, attrs.Count);
+
+			// Blue 
+			attrs = GetDictionary (text.GetRunAttributes (6, out s, out e));
+			RemoveItems (attrs, defaultAttrs);
+			ExpectAttrAndRemove ("style", "normal", attrs);
+			ExpectAttrAndRemove ("justification", "left", attrs);
+			ExpectAttrAndRemove ("fg-color", "255,0,0", attrs);
+			ExpectAttrAndRemove ("family-name", "Arial", attrs);
+			ExpectAttrAndRemove ("strikethrough", "false", attrs);
+			ExpectAttrAndRemove ("weight", "400", attrs);
+			ExpectAttrAndRemove ("underline", "none", attrs);
+			Assert.AreEqual (0, attrs.Count);
+			
+			// Strikethrough
+			attrs = GetDictionary (text.GetRunAttributes (9, out s, out e));
+			RemoveItems (attrs, defaultAttrs);
+			ExpectAttrAndRemove ("style", "normal", attrs);
+			ExpectAttrAndRemove ("justification", "left", attrs);
+			ExpectAttrAndRemove ("fg-color", "0,0,0", attrs);
+			ExpectAttrAndRemove ("family-name", "Arial", attrs);
+			ExpectAttrAndRemove ("weight", "400", attrs);
+			ExpectAttrAndRemove ("strikethrough", "true", attrs);
+			ExpectAttrAndRemove ("underline", "none", attrs);
+			Assert.AreEqual (0, attrs.Count);
+			
+			// Right aligned, Italic, Times New Roman
+			attrs = GetDictionary (text.GetRunAttributes (12, out s, out e));
+			RemoveItems (attrs, defaultAttrs);
+			ExpectAttrAndRemove ("style", "italic", attrs);
+			ExpectAttrAndRemove ("justification", "right", attrs);
+			ExpectAttrAndRemove ("fg-color", "0,0,0", attrs);
+			ExpectAttrAndRemove ("family-name", "Times New Roman", attrs);
+			ExpectAttrAndRemove ("strikethrough", "false", attrs);
+			ExpectAttrAndRemove ("weight", "400", attrs);
+			ExpectAttrAndRemove ("underline", "none", attrs);
+			Assert.AreEqual (0, attrs.Count);
+			
+			// Centered, Underlined
+			attrs = GetDictionary (text.GetRunAttributes (16, out s, out e));
+			RemoveItems (attrs, defaultAttrs);
+			ExpectAttrAndRemove ("style", "normal", attrs);
+			ExpectAttrAndRemove ("justification", "center", attrs);
+			ExpectAttrAndRemove ("fg-color", "0,0,0", attrs);
+			ExpectAttrAndRemove ("family-name", "Arial", attrs);
+			ExpectAttrAndRemove ("strikethrough", "false", attrs);
+			ExpectAttrAndRemove ("weight", "400", attrs);
+			ExpectAttrAndRemove ("underline", "single", attrs);
+			Assert.AreEqual (0, attrs.Count);
+			
+			// Justified (Mono's RichTextBox doesn't support this yet)
+			attrs = GetDictionary (text.GetRunAttributes (21, out s, out e));
+			RemoveItems (attrs, defaultAttrs);
+			ExpectAttrAndRemove ("style", "normal", attrs);
+			ExpectAttrAndRemove ("justification", "center", attrs);
+			ExpectAttrAndRemove ("fg-color", "0,0,0", attrs);
+			ExpectAttrAndRemove ("family-name", "Arial", attrs);
+			ExpectAttrAndRemove ("strikethrough", "false", attrs);
+			ExpectAttrAndRemove ("weight", "400", attrs);
+			ExpectAttrAndRemove ("underline", "none", attrs);
+			Assert.AreEqual (0, attrs.Count);
+		}	
+
+		private void RemoveItems (Dictionary<string, string> items, Dictionary<string, string> except)
+		{
+			foreach (KeyValuePair<string, string> e in except)
+			{
+				if (items.ContainsKey (e.Key)
+				    && items[e.Key] == e.Value) {
+					items.Remove (e.Key);
+				}
+			}
+		}
+
+		private Dictionary<string, string> GetDictionary (Atk.Attribute[] attrList)
+		{
+			Dictionary<string, string> attrs = new Dictionary<string, string> ();
+			foreach (Atk.Attribute attr in attrList)
+				attrs.Add (attr.Name, attr.Value);
+			return attrs;
+		}
+
+		private void ExpectAttrAndRemove (string name, string val,
+		                                  Dictionary<string, string> attrs)
+		{
+			Assert.IsTrue (attrs.ContainsKey (name),
+			               String.Format ("Text Attribute not found: {0}", name));
+
+			Assert.AreEqual (val, attrs[name],
+			                 "Expected attribute value differs");
+			attrs.Remove (name);
 		}
 
 		internal class DialogTest {

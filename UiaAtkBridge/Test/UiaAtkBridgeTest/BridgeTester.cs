@@ -92,6 +92,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.TreeView treeView = new SWF.TreeView ();
 		protected SWF.DateTimePicker dateTimePicker = new SWF.DateTimePicker ();
 		protected SWF.SplitContainer splitContainer = new SWF.SplitContainer ();
+		protected SWF.RichTextBox richTextBox = new SWF.RichTextBox ();
 
 		protected int lastClickedLink = -1;
 
@@ -186,6 +187,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (tbx2);
 			form.Controls.Add (dateTimePicker);
 			form.Controls.Add (splitContainer);
+			form.Controls.Add (richTextBox);
 				// TODO: Move following lines to the end of ListView test to test view switching
 			lv1.View = SWF.View.Details;
 			lv1.ShowGroups = true;

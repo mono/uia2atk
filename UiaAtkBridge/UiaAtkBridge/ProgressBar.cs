@@ -34,22 +34,21 @@ namespace UiaAtkBridge
 	{
 		private IRangeValueProvider rangeValueProvider;
 		private IValueProvider valueProvider;
-		private TextImplementorHelper textExpert = null;
+		private ITextImplementor textExpert = null;
 
 		public ProgressBar (IRawElementProviderSimple provider) : base (provider)
 		{
 			rangeValueProvider = (IRangeValueProvider)provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
 			valueProvider = (IValueProvider)provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
-			String text;
+
 			if (valueProvider != null)
-				text = valueProvider.Value;
+				textExpert = new ValueProviderTextImplementor (this, valueProvider);
 			else if (rangeValueProvider != null)
-				text = rangeValueProvider.Value.ToString ("F2");
+				textExpert = new ProgressBarTextImplementor (this, rangeValueProvider);
 			else
-				text = string.Empty;
-			textExpert = new TextImplementorHelper (text, this);
-			text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			Name = text;
+				textExpert = new NamePropertyTextImplementor (this, provider);
+
+			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Role = Atk.Role.ProgressBar;
 		}
 		
@@ -197,11 +196,7 @@ namespace UiaAtkBridge
 		}
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property == ValuePatternIdentifiers.ValueProperty)
-			{
-				textExpert = new TextImplementorHelper ((String)e.NewValue, this);
-			}
-			else if (e.Property == RangeValuePatternIdentifiers.ValueProperty) {
+			if (e.Property == RangeValuePatternIdentifiers.ValueProperty) {
 				Notify ("accessible-value");
 
 				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
@@ -210,12 +205,27 @@ namespace UiaAtkBridge
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
 				string newText = ((double)e.NewValue).ToString ("F2");
-				textExpert = new TextImplementorHelper (newText, this);
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         newText == null ? 0 : newText.Length);
 			}
 			else
 				base.RaiseAutomationPropertyChangedEvent (e);
+		}
+
+		private class ProgressBarTextImplementor : BaseTextImplementor
+		{
+			public override string Text {
+				get { return rangeValueProvider.Value.ToString ("F2"); }
+			}
+
+			public ProgressBarTextImplementor (Adapter resource,
+			                                   IRangeValueProvider rangeValueProvider)
+				: base (resource)
+			{
+				this.rangeValueProvider = rangeValueProvider;
+			}
+
+			private IRangeValueProvider rangeValueProvider;
 		}
 	}
 }

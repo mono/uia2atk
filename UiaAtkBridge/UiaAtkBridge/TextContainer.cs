@@ -32,7 +32,8 @@ namespace UiaAtkBridge
 
 	public class TextContainer : ComponentParentAdapter , Atk.TextImplementor
 	{
-		private TextImplementorHelper textExpert = null;
+		private ITextImplementor textExpert = null;
+		private string oldName;
 		
 		public TextContainer (IRawElementProviderSimple provider): base (provider)
 		{
@@ -41,9 +42,11 @@ namespace UiaAtkBridge
 				Role = Atk.Role.Statusbar;
 			else if (controlTypeId == ControlType.TabItem.Id)
 				Role = Atk.Role.PageTab;
-			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			textExpert = new TextImplementorHelper (text, this);
-			Name = text;
+
+			textExpert = TextImplementorFactory.GetImplementor (this, provider);
+			Name = (string) provider.GetPropertyValue (
+				AutomationElementIdentifiers.NameProperty.Id);
+			oldName = Name;
 		}
 		
 		public int CaretOffset {
@@ -178,15 +181,16 @@ namespace UiaAtkBridge
 				string newName = (string)e.NewValue;
 				
 				// Don't fire spurious events if the text hasn't changed
-				if (textExpert.Text == newName)
+				if (oldName == newName)
 					return;
+				
+				oldName = newName;
 
 				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
 
 				// First delete all text, then insert the new text
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-				textExpert = new TextImplementorHelper (newName, this);
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         newName == null ? 0 : newName.Length);
 

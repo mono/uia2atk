@@ -46,6 +46,7 @@ FILES =  \
 	AmbiDictionary.cs \
 	AssemblyInfo.cs \
 	AutomationBridge.cs \
+	BaseTextImplementor.cs \
 	Button.cs \
 	CheckBoxButton.cs \
 	ComboBox.cs \
@@ -64,6 +65,7 @@ FILES =  \
 	HeaderItem.cs \
 	Hyperlink.cs \
 	Image.cs \
+	ITextImplementor.cs \
 	ImageImplementorHelper.cs \
 	List.cs \
 	ListGroup.cs \
@@ -71,6 +73,7 @@ FILES =  \
 	MenuBar.cs \
 	MenuItem.cs \
 	Monitor.cs \
+	NamePropertyTextImplementor.cs \
 	Pane.cs \
 	ParentAdapter.cs \
 	ProgressBar.cs \
@@ -84,15 +87,17 @@ FILES =  \
 	Splitter.cs \
 	Tab.cs \
 	TableImplementorHelper.cs \
+	TextImplementorFactory.cs \
+	TextProviderTextImplementor.cs \
 	TextBoxEntryView.cs \
 	TextContainer.cs \
 	TextImageLabel.cs \
-	TextImplementorHelper.cs \
 	TextLabel.cs \
 	ToolTip.cs \
 	TopLevelRootItem.cs \
 	Tree.cs \
 	TreeItem.cs \
+	ValueProviderTextImplementor.cs \
 	Window.cs 
 
 DATA_FILES = 

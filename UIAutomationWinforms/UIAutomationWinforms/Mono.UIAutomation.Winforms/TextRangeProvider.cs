@@ -245,12 +245,11 @@ namespace Mono.UIAutomation.Winforms
 				d.CharIndexToLineTag (point, out line,
 				                      out tag, out pos);
 				tags.Add (new TagData (tag, line));
-				point += tag.Length + 1;
+				point += tag.Length;
 			}
 
 			IEnumerable<TagData> results
 				= tags.Distinct (new LineTagComparer (val_handler));
-
 			int count = results.Count ();
 			if (count == 1) {
 				return val_handler (results.First ());

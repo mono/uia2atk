@@ -21,6 +21,7 @@
 // 
 // Authors: 
 //      Andres G. Aragoneses <aaragoneses@novell.com>
+//      Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
@@ -33,28 +34,27 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	
-	internal class TextImplementorHelper
+	internal abstract class BaseTextImplementor : ITextImplementor
 	{
-		
-		internal TextImplementorHelper (string text, Adapter resource)
+#region Public Properties
+		public abstract string Text {
+			get;
+		}
+
+		public int Length {
+			get { return Text.Length; }
+		}
+
+		public virtual Atk.Attribute [] DefaultAttributes {
+			get { return new Atk.Attribute[0]; }
+		}
+#endregion
+
+#region Public Methods
+		public BaseTextImplementor (Adapter resource)
 		{
-			this.text = (text != null? text: String.Empty);
 			this.resource = resource;
 		}
-		
-		internal int Length {
-			get { return text.Length; }
-		}
-
-		internal string Text {
-			get { return text; }
-		}
-
-		private string text;
-		private Adapter resource = null;
-
-		private int selectionStartOffset = 0, selectionEndOffset = 0;
 		
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
@@ -63,8 +63,10 @@ namespace UiaAtkBridge
 			return null;
 		}
 		
-		internal string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
+		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
+			string text = Text;
+
 			startOffset = 0;
 			endOffset = 0;
 			try {
@@ -131,8 +133,10 @@ namespace UiaAtkBridge
 			}
 		}
 		
-		internal string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
+		public string GetTextAtOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
+			string text = Text;
+
 			startOffset = 0;
 			endOffset = 0;
 			try {
@@ -197,8 +201,10 @@ namespace UiaAtkBridge
 			}
 		}
 
-		internal string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
+		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
+			string text = Text;
+
 			startOffset = 0;
 			endOffset = 0;
 			try {
@@ -250,8 +256,9 @@ namespace UiaAtkBridge
 			}
 		}
 
-		internal string GetText (int startOffset, int endOffset)
+		public string GetText (int startOffset, int endOffset)
 		{
+			string text = Text;
 			if ((endOffset == -1) || (endOffset > text.Length))
 				endOffset = text.Length;
 			if (endOffset < startOffset)
@@ -259,156 +266,12 @@ namespace UiaAtkBridge
 			return text.Substring (startOffset, endOffset - startOffset);
 		}
 
-		internal char GetCharacterAtOffset (int offset)
+		public char GetCharacterAtOffset (int offset)
 		{
+			string text = Text;
 			if ((offset >= text.Length) || (offset < 0) || (String.IsNullOrEmpty (text)))
 				return '\0';
 			return text [offset];
-		}
-		
-		private string ReturnTextWrtOffset (int startOffset, int endOffset)
-		{
-			//TODO: optimize?
-			return text.Substring (startOffset, endOffset - startOffset);
-		}
-		
-		// endOffset == startOffset + 1
-		private string ReturnTextWrtOffset (int startOffset)
-		{
-			//TODO: optimize?
-			if ((startOffset < 0) || (startOffset > this.text.Length))
-				return String.Empty;
-			return new String (new char[] { GetCharacterAtOffset (startOffset) });
-		}
-		
-		private void ForwardToNextSeparator (char[] seps, int startOffset, out int stopEarlyOffset, out int stopLateOffset)
-		{
-			ForwardToNextSeparator (seps, startOffset, out stopEarlyOffset, out stopLateOffset, false);
-		}
-		
-		private void ForwardToNextSeparator (char[] seps, int startOffset, 
-		                                      out int stopEarlyOffset, out int stopLateOffset, 
-		                                      bool findNonSeparators)
-		{
-			int retOffset = startOffset;
-			bool anyNonSeparator = false;
-			while (true) {
-				bool isSep = CharEqualsAny (text [retOffset], seps);
-				if (!isSep)
-					anyNonSeparator = true;
-				
-				if (!isSep || (findNonSeparators && !anyNonSeparator))
-					retOffset++;
-				else
-					break;
-			}
-
-			stopEarlyOffset = retOffset;
-			while (retOffset < text.Length && CharEqualsAny (text [retOffset], seps))
-				retOffset++;
-			stopLateOffset = retOffset;
-		}
-		
-		private int ForwardToNextSeparator (char[] seps, int startOffset, bool stopEarly)
-		{
-			int retOffset = startOffset;
-			if (retOffset >= text.Length)
-				return text.Length;
-			
-			while (!CharEqualsAny (text [retOffset], seps))
-			{
-				if (retOffset == text.Length - 1)
-					return text.Length;
-				retOffset++;
-			}
-			if (stopEarly)
-				return retOffset;
-			
-			while ((retOffset < text.Length) && CharEqualsAny (text [retOffset], seps))
-				retOffset++;
-			return retOffset;
-		}
-
-		private void BackwardToNextSeparator (char[] seps, int startOffset, 
-		                                       out int stopEarlyOffset, out int stopLateOffset)
-		{
-			if (startOffset <= 1){
-				stopEarlyOffset = 0;
-				stopLateOffset = 0;
-				return;
-			}
-			
-			int retOffset = startOffset - 1;
-			
-			while (!CharEqualsAny (text [retOffset], seps)) {
-				retOffset--;
-				if (retOffset < 0)
-					break;
-			}
-
-			stopEarlyOffset = retOffset + 1;
-			if (retOffset < 0) {
-				stopLateOffset = 0;
-				return;
-			}
-			
-			while (CharEqualsAny (text [retOffset], seps)) {
-				retOffset--;
-				if (retOffset < 0)
-					break;
-			}
-			
-			stopLateOffset = retOffset + 1;
-			return;
-		}
-		
-		private int BackwardToNextSeparator (char[] seps, int startOffset, bool stopEarly)
-		{
-			if (startOffset <= 1)
-				return 0;
-			
-			int retOffset = startOffset - 1;
-			
-			while (!CharEqualsAny (text [retOffset], seps)) {
-				retOffset--;
-				if (retOffset < 0)
-					break;
-			}
-
-			if (stopEarly)
-				return retOffset + 1;
-			else if (retOffset < 0)
-				return 0;
-			
-			while (CharEqualsAny (text [retOffset], seps)) {
-				retOffset--;
-				if (retOffset < 0)
-					break;
-			}
-			
-			return retOffset + 1;
-		}
-		
-		private bool CharEqualsAny (char boilerPlate, char[] candidates)
-		{
-			foreach(char candidate in candidates)
-				if (boilerPlate == candidate)
-					return true;
-			return false;
-		}
-		
-		//TODO: use regexp?
-		private static char [] wordSeparators = new char[] { ' ', '\n', '\r', '.', '\t' };
-		private static char [] newLineSeparators = new char[] { '\n', '\r' };
-		private static char [] sentenceSeparators = new char[] { '\n', '\r', '.' };
-		private static char [] softSentenceSeparators = new char[] { '.', ':'};
-
-		
-		private NotSupportedException GetNotSupportedBoundary (Atk.TextBoundary bType)
-		{
-			return new NotSupportedException (
-				String.Format ("The value {0} is not supported as a Atk.TextBoundary type.",
-					bType));
 		}
 
 		public void GetCharacterExtents (int offset, out int x, out int y, out int width, out int height, Atk.CoordType coords)
@@ -423,227 +286,20 @@ namespace UiaAtkBridge
 
 		public void GetRangeExtents (int startOffset, int endOffset, Atk.CoordType coordType, out Atk.TextRectangle rect)
 		{
+			int length = Length;
 			System.Windows.Rect bounds = resource.BoundingRectangle;
-			rect.X = (int)(bounds.X + (bounds.Width * startOffset) / Length);
+			rect.X = (int)(bounds.X + (bounds.Width * startOffset) / length);
 			rect.Y = (int)bounds.Y;
 			rect.Height = (int)bounds.Height;
-			rect.Width = (int)(bounds.Width * (endOffset - startOffset)) / Length;
+			rect.Width = (int)(bounds.Width * (endOffset - startOffset)) / length;
 			if (coordType == Atk.CoordType.Window)
 				resource.ConvertCoords (ref rect.X, ref rect.Y, false);
 		}
 
-		public Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset)
+		public virtual Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
-			// Ensure offset is within bounds.
-			// Gail does the same instead of erroring
-			offset = Math.Min (text.Length, offset);
-			offset = Math.Max (0, offset);
-
-			// This implementation is a bit of a hack.
-			// The thing is, no one within a cursory google search
-			// actually uses this API to find the bounds of a given
-			// text attribute.  That's really good, because it's
-			// going to be really really inefficient to do so.
-			// Like on the order of (N * M)^2 (M = # attrs)
-
-			// Instead, we'll return the list of attributes for the
-			// current offset.
-			
-			startOffset = offset;
-			endOffset = offset + 1;
-
-			return GetAttributesInRange (startOffset, endOffset);
-		}
-
-		public Atk.Attribute [] DefaultAttributes {
-			get { return GetAttributesInRange (-1, -1); }
-		}
-
-		private Atk.Attribute [] GetAttributesInRange (int start, int end)
-		{
-			CG.List<Atk.Attribute> attrs = new CG.List<Atk.Attribute> ();
-
-			IRawElementProviderSimple prov = resource.Provider;
-			if (prov == null) {
-				return attrs.ToArray ();
-			}
-
-			ITextProvider textProvider
-				= prov.GetPatternProvider (TextPatternIdentifiers.Pattern.Id)
-					as ITextProvider;
-			if (textProvider == null) {
-				return attrs.ToArray ();
-			}
-
-			ITextRangeProvider textRange = textProvider.DocumentRange;
-			if (start > 0 && end > 0) {
-				textRange.MoveEndpointByUnit (TextPatternRangeEndpoint.Start,
-				                              TextUnit.Character, start);
-				textRange.MoveEndpointByRange (TextPatternRangeEndpoint.End,
-				                               textRange, TextPatternRangeEndpoint.Start);
-				textRange.MoveEndpointByUnit (TextPatternRangeEndpoint.End,
-				                              TextUnit.Character, end - start);
-			}
-			
-			foreach (Atk.TextAttribute attr in SUPPORTED_ATTRS)
-				AddTextAttribute (attrs, attr, textRange);
-
-			return attrs.ToArray ();
-		}
-
-		// TODO: put these somewhere shared with provider
-		// Font weights
-		private const int LOGFONT_NORMAL = 400;
-		private const int LOGFONT_BOLD = 700;
-
-		private static readonly Atk.TextAttribute [] SUPPORTED_ATTRS = new Atk.TextAttribute [] {
-			Atk.TextAttribute.Style,
-			Atk.TextAttribute.Justification,
-			Atk.TextAttribute.FgColor,
-			Atk.TextAttribute.BgColor,
-			Atk.TextAttribute.FamilyName,
-			Atk.TextAttribute.Weight,
-			Atk.TextAttribute.Strikethrough,
-			Atk.TextAttribute.Underline,
-			Atk.TextAttribute.PixelsBelowLines,
-			Atk.TextAttribute.PixelsAboveLines,
-			Atk.TextAttribute.Editable,
-			Atk.TextAttribute.Invisible,
-			Atk.TextAttribute.Indent
-		};
-
-		private void AddTextAttribute (CG.List<Atk.Attribute> attrs,
-		                               Atk.TextAttribute atkAttr,
-		                               ITextRangeProvider textRange)
-		{
-			if (textRange == null) {
-				return;
-			}
-
-			string name = Atk.TextAdapter.AttributeGetName (atkAttr);
-			string val = null;
-			object tmp;
-
-			switch (atkAttr) {
-			case Atk.TextAttribute.Style:
-				if (IsAttrNotNullOrMultiValued (TextPattern.IsItalicAttribute.Id,
-				                                textRange, out tmp))
-					val = ((bool) tmp) ? "italic" : "normal";
-				break;
-			case Atk.TextAttribute.Justification:
-				if (!IsAttrNotNullOrMultiValued (TextPattern.HorizontalTextAlignmentAttribute.Id,
-				                                 textRange, out tmp))
-					break;
-
-				HorizontalTextAlignment align = (HorizontalTextAlignment) tmp;
-				if (align == HorizontalTextAlignment.Left)
-					val = "left";
-				else if (align == HorizontalTextAlignment.Right)
-					val = "right";
-				else if (align == HorizontalTextAlignment.Centered)
-					val = "center";
-				else if (align == HorizontalTextAlignment.Justified)
-					val = "fill";
-				break;
-			case Atk.TextAttribute.FgColor:
-				if (IsAttrNotNullOrMultiValued (TextPattern.ForegroundColorAttribute.Id,
-				                                textRange, out tmp)) {
-					Color fgColor = Color.FromArgb ((int) tmp);
-					val = String.Format ("{0},{1},{2}", fgColor.R, fgColor.G, fgColor.B);
-				}
-				break;
-			case Atk.TextAttribute.BgColor:
-				if (IsAttrNotNullOrMultiValued (TextPattern.BackgroundColorAttribute.Id,
-				                                textRange, out tmp)) {
-					Color fgColor = Color.FromArgb ((int) tmp);
-					val = String.Format ("{0},{1},{2}", fgColor.R, fgColor.G, fgColor.B);
-				}
-				break;
-			case Atk.TextAttribute.FamilyName:
-				if (IsAttrNotNullOrMultiValued (TextPattern.FontNameAttribute.Id,
-				                                textRange, out tmp)) 
-					val = (string) tmp;
-				break;
-			case Atk.TextAttribute.Weight:
-				if (IsAttrNotNullOrMultiValued (TextPattern.FontWeightAttribute.Id,
-				                                textRange, out tmp)) 
-					val = ((int) tmp).ToString ();
-				break;
-			case Atk.TextAttribute.Strikethrough:
-				if (IsAttrNotNullOrMultiValued (TextPattern.StrikethroughStyleAttribute.Id,
-				                                textRange, out tmp)) {
-					TextDecorationLineStyle strikeStyle = (TextDecorationLineStyle) tmp;
-					val = strikeStyle == TextDecorationLineStyle.None ? "false" : "true";
-				}
-				break;
-			case Atk.TextAttribute.Underline:
-				if (!IsAttrNotNullOrMultiValued (TextPattern.UnderlineStyleAttribute.Id,
-				                                 textRange, out tmp))
-					break;
-
-				TextDecorationLineStyle underlineStyle = (TextDecorationLineStyle) tmp;
-				if (underlineStyle == TextDecorationLineStyle.None)
-					val = "none";
-				else if (underlineStyle == TextDecorationLineStyle.Double
-				         || underlineStyle == TextDecorationLineStyle.DoubleWavy)
-					val = "double";
-				else
-					val = "single";
-				break;
-			case Atk.TextAttribute.PixelsBelowLines:
-				if (IsAttrNotNullOrMultiValued (TextPattern.IndentationTrailingAttribute.Id,
-				                                textRange, out tmp))
-					val = ((int) tmp).ToString ();
-				break;
-			case Atk.TextAttribute.PixelsAboveLines:
-				if (IsAttrNotNullOrMultiValued (TextPattern.IndentationLeadingAttribute.Id,
-				                                textRange, out tmp))
-					val = ((int) tmp).ToString ();
-				break;
-			case Atk.TextAttribute.Editable:
-				if (IsAttrNotNullOrMultiValued (TextPattern.IsReadOnlyAttribute.Id,
-				                                textRange, out tmp))
-					val = !((bool) tmp) ? "true" : "false";
-				break;
-			case Atk.TextAttribute.Invisible:
-				if (IsAttrNotNullOrMultiValued (TextPattern.IsHiddenAttribute.Id,
-				                                textRange, out tmp))
-					val = ((bool) tmp) ? "true" : "false";
-				break;
-			case Atk.TextAttribute.Indent:
-				if (IsAttrNotNullOrMultiValued (TextPattern.IndentationFirstLineAttribute.Id,
-				                                textRange, out tmp))
-					val = ((int) tmp).ToString ();
-				break;
-			}
-			
-			attrs.Add (new Atk.Attribute {Name = name, Value = val});
-		}
-
-		private bool IsAttrNotNullOrMultiValued (int providerAttrId,
-		                                         ITextRangeProvider prov,
-		                                         out object val)
-		{
-			val = prov.GetAttributeValue (providerAttrId);
-			return !((val == null) || (val == TextPattern.MixedAttributeValue));
-		}
-
-		bool IsAddition (string super, string sub, out int offset)
-		{
-			int startOff = 0;
-			int subLength = sub.Length;
-			while (startOff < subLength && super [startOff] == sub [startOff])
-				startOff++;
-			if (startOff == subLength) {
-				offset = startOff;
-				return true;
-			}
-			int endOff = subLength - 1;
-			int diff = super.Length - subLength;
-			while (endOff >= startOff && sub [endOff] == super [endOff + diff])
-				endOff--;
-			offset = startOff;
-			return (startOff > endOff);
+			startOffset = endOffset = -1;
+			return new Atk.Attribute[0];
 		}
 
 		public bool HandleSimpleChange (string newText, ref int caretOffset)
@@ -653,6 +309,8 @@ namespace UiaAtkBridge
 
 		public bool HandleSimpleChange (string newText, ref int caretOffset, bool updateCaret)
 		{
+			string text = Text;
+
 			if (text == newText)
 				return true;
 			int oldLength = Length;
@@ -684,5 +342,183 @@ namespace UiaAtkBridge
 			}
 			return false;
 		}
+#endregion
+
+#region Protected Fields
+		protected Adapter resource = null;
+		protected int selectionStartOffset = 0;
+		protected int selectionEndOffset = 0;
+#endregion
+
+#region Private Methods
+		private string ReturnTextWrtOffset (int startOffset, int endOffset)
+		{
+			//TODO: optimize?
+			return Text.Substring (startOffset, endOffset - startOffset);
+		}
+		
+		// endOffset == startOffset + 1
+		private string ReturnTextWrtOffset (int startOffset)
+		{
+			//TODO: optimize?
+			if ((startOffset < 0) || (startOffset > Length))
+				return String.Empty;
+			return new String (new char[] { GetCharacterAtOffset (startOffset) });
+		}
+		
+		private void ForwardToNextSeparator (char[] seps, int startOffset, out int stopEarlyOffset, out int stopLateOffset)
+		{
+			ForwardToNextSeparator (seps, startOffset, out stopEarlyOffset, out stopLateOffset, false);
+		}
+		
+		private void ForwardToNextSeparator (char[] seps, int startOffset, 
+		                                     out int stopEarlyOffset, out int stopLateOffset, 
+		                                     bool findNonSeparators)
+		{
+			string text = Text;
+			int retOffset = startOffset;
+			bool anyNonSeparator = false;
+			while (true) {
+				bool isSep = CharEqualsAny (text [retOffset], seps);
+				if (!isSep)
+					anyNonSeparator = true;
+				
+				if (!isSep || (findNonSeparators && !anyNonSeparator))
+					retOffset++;
+				else
+					break;
+			}
+
+			stopEarlyOffset = retOffset;
+			while (retOffset < text.Length && CharEqualsAny (text [retOffset], seps))
+				retOffset++;
+			stopLateOffset = retOffset;
+		}
+		
+		private int ForwardToNextSeparator (char[] seps, int startOffset, bool stopEarly)
+		{
+			string text = Text;
+			int retOffset = startOffset;
+			if (retOffset >= text.Length)
+				return text.Length;
+			
+			while (!CharEqualsAny (text [retOffset], seps))
+			{
+				if (retOffset == text.Length - 1)
+					return text.Length;
+				retOffset++;
+			}
+			if (stopEarly)
+				return retOffset;
+			
+			while ((retOffset < text.Length) && CharEqualsAny (text [retOffset], seps))
+				retOffset++;
+			return retOffset;
+		}
+
+		private void BackwardToNextSeparator (char[] seps, int startOffset, 
+		                                       out int stopEarlyOffset, out int stopLateOffset)
+		{
+			if (startOffset <= 1){
+				stopEarlyOffset = 0;
+				stopLateOffset = 0;
+				return;
+			}
+			
+			int retOffset = startOffset - 1;
+			string text = Text;
+			
+			while (!CharEqualsAny (text [retOffset], seps)) {
+				retOffset--;
+				if (retOffset < 0)
+					break;
+			}
+
+			stopEarlyOffset = retOffset + 1;
+			if (retOffset < 0) {
+				stopLateOffset = 0;
+				return;
+			}
+			
+			while (CharEqualsAny (text [retOffset], seps)) {
+				retOffset--;
+				if (retOffset < 0)
+					break;
+			}
+			
+			stopLateOffset = retOffset + 1;
+			return;
+		}
+		
+		private int BackwardToNextSeparator (char[] seps, int startOffset, bool stopEarly)
+		{
+			if (startOffset <= 1)
+				return 0;
+			
+			int retOffset = startOffset - 1;
+			string text = Text;
+			
+			while (!CharEqualsAny (text [retOffset], seps)) {
+				retOffset--;
+				if (retOffset < 0)
+					break;
+			}
+
+			if (stopEarly)
+				return retOffset + 1;
+			else if (retOffset < 0)
+				return 0;
+			
+			while (CharEqualsAny (text [retOffset], seps)) {
+				retOffset--;
+				if (retOffset < 0)
+					break;
+			}
+			
+			return retOffset + 1;
+		}
+		
+		private bool CharEqualsAny (char boilerPlate, char[] candidates)
+		{
+			foreach (char candidate in candidates)
+				if (boilerPlate == candidate)
+					return true;
+			return false;
+		}
+		
+		private NotSupportedException GetNotSupportedBoundary (Atk.TextBoundary bType)
+		{
+			return new NotSupportedException (
+				String.Format ("The value {0} is not supported as a Atk.TextBoundary type.",
+					bType));
+		}
+
+		private bool IsAddition (string super, string sub, out int offset)
+		{
+			int startOff = 0;
+			int subLength = sub.Length;
+			while (startOff < subLength && super [startOff] == sub [startOff])
+				startOff++;
+			if (startOff == subLength) {
+				offset = startOff;
+				return true;
+			}
+			int endOff = subLength - 1;
+			int diff = super.Length - subLength;
+			while (endOff >= startOff && sub [endOff] == super [endOff + diff])
+				endOff--;
+			offset = startOff;
+			return (startOff > endOff);
+		}
+#endregion
+
+#region Private Fields		
+
+		//TODO: use regexp?
+		private static char [] wordSeparators = new char[] { ' ', '\n', '\r', '.', '\t' };
+		private static char [] newLineSeparators = new char[] { '\n', '\r' };
+		private static char [] sentenceSeparators = new char[] { '\n', '\r', '.' };
+		private static char [] softSentenceSeparators = new char[] { '.', ':'};
+#endregion
 	}
 }
