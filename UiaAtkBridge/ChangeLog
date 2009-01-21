@@ -1,6 +1,7 @@
 2009-01-21  Ray Wang  <rawang@novell.com>
 	
-	* bridge-glue/Makefile.am: Fix a typo and add lib dependency.
+	* bridge-glue/Makefile.am: Fix a typo and add lib dependency. The
+	patch is provided by Funda Wang <fundawang@gmail.com>
 
 2008-11-25  Brad Taylor  <brad@getcoded.net>
 	
