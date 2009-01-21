@@ -486,14 +486,7 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void RichTextBox ()
 		{
-			BasicWidgetType type = BasicWidgetType.RichTextBox;
-			
-			TextBoxView (type, null, true);
-
-			Atk.Object accessible
-				= GetAccessible (type, String.Empty, true);
-
-			InterfaceEditableText (type, accessible);
+			TextBoxView (BasicWidgetType.RichTextBox, null, true);
 		}
 		
 		public void TextBoxView (BasicWidgetType type, object widget, bool expectFocusable)
@@ -513,6 +506,8 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);
+
+			InterfaceEditableText (type, accessible);
 		}
 
 		[Test]

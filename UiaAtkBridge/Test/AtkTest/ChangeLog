@@ -1,5 +1,10 @@
 2009-01-21  Brad Taylor  <brad@getcoded.net>
 
+	* AtkTests.cs: 
+	* AtkTester.cs: Test the EditableText interface on TextBoxEntryView.
+
+2009-01-21  Brad Taylor  <brad@getcoded.net>
+
 	* AtkTests.cs: Run the InterfaceEditableText test for RichTextBox.
 
 2009-01-21  Brad Taylor  <brad@getcoded.net>

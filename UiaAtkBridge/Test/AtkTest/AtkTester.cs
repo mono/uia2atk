@@ -1027,6 +1027,7 @@ namespace UiaAtkBridgeTest
 			atkEditableText.InsertText ("6", ref pos);
 			atkEditableText.DeleteText (0, 2);
 			Assert.AreEqual ("0", atkText.GetText (0, -1), "AtkEditableText should not change text if ReadOnly");
+			SetReadOnly (accessible, false);
 		}
 
 		protected Atk.Object InterfaceText (BasicWidgetType type, bool onlySingleLine)

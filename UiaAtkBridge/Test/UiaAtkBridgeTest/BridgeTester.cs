@@ -731,7 +731,6 @@ namespace UiaAtkBridgeTest
 				}
 				break;
 
-			case BasicWidgetType.RichTextBox:
 			case BasicWidgetType.TextBoxView:
 				if (!real)
 					throw new NotSupportedException ("Not unreal support for TextBox");
@@ -747,7 +746,12 @@ namespace UiaAtkBridgeTest
 					tbx2.Text = name;
 				}
 				break;
-				
+
+			case BasicWidgetType.RichTextBox:
+				accessible = GetAdapterForWidget (richTextBox);
+				richTextBox.Text = name;
+				break;
+
 			case BasicWidgetType.PictureBox:
 				SWF.PictureBox pbox = new SWF.PictureBox ();
 				if (real)
