@@ -1,5 +1,10 @@
 2009-01-20  Mario Carrion  <mcarrion@novell.com>
 
+	* HeaderItem.cs: Setting/Unsetting StateType.Armed when calling
+	DoAction. [Fixes bug #428476]
+
+2009-01-20  Mario Carrion  <mcarrion@novell.com>
+
 	* Window.cs: Emitting: minimize, maximize, restore, move, resize. State
 	support: Resizable. [Fixes Bug #428509]
 
