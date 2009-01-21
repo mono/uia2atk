@@ -1,5 +1,10 @@
 2009-01-21  Brad Taylor  <brad@getcoded.net>
 
+	* BridgeTester.cs: Flesh out SetReadOnly to allow InterfaceEditbleText
+	to run on TextBox and RichTextBox.
+
+2009-01-21  Brad Taylor  <brad@getcoded.net>
+
 	* BridgeTests.cs: 
 	* BridgeTester.cs: Add more comprehensive test for RichTextBox. 
 

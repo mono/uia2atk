@@ -281,6 +281,10 @@ namespace UiaAtkBridgeTest
 
 			if (comp is SWF.UpDownBase)
 				((SWF.UpDownBase)comp).ReadOnly = readOnly;
+			else if (comp is SWF.TextBox)
+				((SWF.TextBox)comp).ReadOnly = readOnly;
+			else if (comp is SWF.RichTextBox)
+				((SWF.RichTextBox)comp).ReadOnly = readOnly;
 			else
 				throw new NotSupportedException ();
 		}
