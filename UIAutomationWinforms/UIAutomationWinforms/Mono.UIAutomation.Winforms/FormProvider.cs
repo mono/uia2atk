@@ -128,9 +128,7 @@ namespace Mono.UIAutomation.Winforms
 			
 			Control child = form.GetChildAtPoint (new Point ((int)x, (int)y));
 			
-			if (child != null) {
-				Console.WriteLine (child);
-				
+			if (child != null) {				
 				if (componentProviders.ContainsKey (child)) {
 					IRawElementProviderSimple provider =
 						componentProviders [child];
@@ -139,8 +137,7 @@ namespace Mono.UIAutomation.Winforms
 					if (providerFragment != null)
 						return providerFragment;
 				}
-			} else
-				Console.WriteLine ("ElementProviderFromPoint: Child is null");
+			}
 			
 			return this;
 		}

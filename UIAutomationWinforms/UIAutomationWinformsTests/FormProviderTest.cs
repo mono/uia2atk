@@ -99,7 +99,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		[Test]
-		// FIXME: Add event test
 		public void IsTopmostTest ()
 		{
 			using (Form f = new Form ()) {
@@ -108,9 +107,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				
 				Assert.IsFalse (pattern.IsTopmost, "Initialize to false");
 				f.TopMost = true;
+				Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (provider, 
+				                                                         WindowPatternIdentifiers.IsTopmostProperty.Id),
+				                  "IsTopmost.0");
+				
 				Assert.IsTrue (pattern.IsTopmost, "Set to true");
 				f.TopMost = false;
 				Assert.IsFalse (pattern.IsTopmost, "Set to false");
+				Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (provider, 
+				                                                         WindowPatternIdentifiers.IsTopmostProperty.Id),
+				                  "IsTopmost.1");
 			}
 		}
 		
@@ -185,7 +191,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		[Test]
-		// FIXME: Events test: This is hard to test because the event is raised randomly
 		public void SetVisualStateTest ()
 		{
 			using (Form f = new Form ()) {		
@@ -199,9 +204,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 				bridge.ResetEventLists ();
 				pattern.SetVisualState (WindowVisualState.Maximized);
-//				Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (provider, 
-//				                                                         WindowPatternIdentifiers.WindowVisualStateProperty.Id),
-//				                  "SetVisualState.0");
+				Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (provider, 
+				                                                         WindowPatternIdentifiers.WindowVisualStateProperty.Id),
+				                  "SetVisualState.0");
 				
 				//System.Threading.Thread.Sleep (1000);
 				//Application.DoEvents ();
@@ -210,9 +215,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 				bridge.ResetEventLists ();
 				pattern.SetVisualState (WindowVisualState.Minimized);
-//				Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (provider, 
-//				                                                         WindowPatternIdentifiers.WindowVisualStateProperty.Id),
-//				                  "SetVisualState.1");
+				Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (provider, 
+				                                                         WindowPatternIdentifiers.WindowVisualStateProperty.Id),
+				                  "SetVisualState.1");
 				//System.Threading.Thread.Sleep (1000);
 				//Application.DoEvents ();
 				//System.Threading.Thread.Sleep (1000);
@@ -220,9 +225,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 				bridge.ResetEventLists ();
 				pattern.SetVisualState (WindowVisualState.Normal);
-//				Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (provider, 
-//				                                                         WindowPatternIdentifiers.WindowVisualStateProperty.Id),
-//				                  "SetVisualState.2");
+				Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (provider, 
+				                                                         WindowPatternIdentifiers.WindowVisualStateProperty.Id),
+				                  "SetVisualState.2");
 				//System.Threading.Thread.Sleep (1000);
 				//Application.DoEvents ();
 				//System.Threading.Thread.Sleep (1000);

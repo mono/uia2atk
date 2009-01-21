@@ -1,3 +1,8 @@
+2009-01-21  Mario Carrion  <mcarrion@novell.com>
+
+	* FormProviderTest.cs: Tests updated. (Needs MWF trunk>= 124064 or
+	branch2-4 >= 124082).
+
 2009-01-20  Mario Carrion  <mcarrion@novell.com>
 
 	* FormProviderTest.cs: Testing Window and Transform Automation Events.

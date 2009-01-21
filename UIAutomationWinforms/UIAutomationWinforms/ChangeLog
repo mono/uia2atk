@@ -1,3 +1,27 @@
+2009-01-21  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Files added: IsTopmost and
+	WindowInteractionState
+
+	* Mono.UIAutomation.Winforms/FormProvider.cs: CWL Removed
+
+	* Mono.UIAutomation.Winforms.Behaviors/Form/WindowProviderBehavior.cs:
+	Support added: IsTopmost and WindowInteractionState. (Needs MWF
+	trunk>= 124064 or branch2-4 >= 124082).
+
+	* Mono.UIAutomation.Winforms.Events/Form/WindowPatternIsTopmostPropertyEvent.cs:
+	Raises IsTopmost Automation Event. (Needs MWF trunk>= 124064 or
+	branch2-4 >= 124082).
+
+	* Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowInteractionStateProperty.cs:
+	Raises WindowInteractionState Automation Event. (Needs MWF trunk>=
+	124064 or branch2-4 >= 124082).
+
+	* Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowVisualStatePropertyEvent.cs:
+	UIA Internal event added. (Needs MWF trunk>= 124064 or branch2-4 >=
+	124082).
+
 2009-01-21  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/TextRangeProvider.cs: Fix a typo that

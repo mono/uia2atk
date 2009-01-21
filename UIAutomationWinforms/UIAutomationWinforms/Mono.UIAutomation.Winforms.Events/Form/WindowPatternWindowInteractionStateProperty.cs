@@ -31,15 +31,15 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms.Events.Form
 {
 
-	internal class WindowPatternWindowVisualStatePropertyEvent
+	internal class WindowPatternWindowInteractionStateProperty
 		: BaseAutomationPropertyEvent
 	{
 		
 		#region Constructors
 		
-		public WindowPatternWindowVisualStatePropertyEvent (SimpleControlProvider provider) 
+		public WindowPatternWindowInteractionStateProperty (SimpleControlProvider provider) 
 			: base (provider,
-			        WindowPatternIdentifiers.WindowVisualStateProperty)
+			        WindowPatternIdentifiers.WindowInteractionStateProperty)
 		{
 		}
 		
@@ -50,28 +50,22 @@ namespace Mono.UIAutomation.Winforms.Events.Form
 		public override void Connect ()
 		{
 			SWF.Form form = (SWF.Form) Provider.Control;
-			
-			form.Resize += OnVisualStatePropertyChanged;
-			form.Activated += OnVisualStatePropertyChanged;
-			form.Deactivate += OnVisualStatePropertyChanged;
-			form.UIAWindowStateChanged += OnVisualStatePropertyChanged;
+			form.Closing += OnWindowInteractionStateProperty;
+			form.Closed += OnWindowInteractionStateProperty;
 		}
 
 		public override void Disconnect ()
 		{
 			SWF.Form form = (SWF.Form) Provider.Control;
-			
-			form.Resize -= OnVisualStatePropertyChanged;
-			form.Activated -= OnVisualStatePropertyChanged;
-			form.Deactivate -= OnVisualStatePropertyChanged;
-			form.UIAWindowStateChanged -= OnVisualStatePropertyChanged;
+			form.Closing -= OnWindowInteractionStateProperty;
+			form.Closed -= OnWindowInteractionStateProperty;
 		}
 		
 		#endregion
 		
 		#region Private Methods
 
-		private void OnVisualStatePropertyChanged (object sender, EventArgs args)
+		private void OnWindowInteractionStateProperty (object sender, EventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}

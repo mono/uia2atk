@@ -31,15 +31,15 @@ using Mono.UIAutomation.Winforms.Events;
 namespace Mono.UIAutomation.Winforms.Events.Form
 {
 
-	internal class WindowPatternWindowVisualStatePropertyEvent
+	internal class WindowPatternIsTopmostPropertyEvent
 		: BaseAutomationPropertyEvent
 	{
 		
 		#region Constructors
 		
-		public WindowPatternWindowVisualStatePropertyEvent (SimpleControlProvider provider) 
+		public WindowPatternIsTopmostPropertyEvent (SimpleControlProvider provider) 
 			: base (provider,
-			        WindowPatternIdentifiers.WindowVisualStateProperty)
+			        WindowPatternIdentifiers.IsTopmostProperty)
 		{
 		}
 		
@@ -49,29 +49,19 @@ namespace Mono.UIAutomation.Winforms.Events.Form
 
 		public override void Connect ()
 		{
-			SWF.Form form = (SWF.Form) Provider.Control;
-			
-			form.Resize += OnVisualStatePropertyChanged;
-			form.Activated += OnVisualStatePropertyChanged;
-			form.Deactivate += OnVisualStatePropertyChanged;
-			form.UIAWindowStateChanged += OnVisualStatePropertyChanged;
+			((SWF.Form) Provider.Control).UIATopMostChanged += OnTopMostChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			SWF.Form form = (SWF.Form) Provider.Control;
-			
-			form.Resize -= OnVisualStatePropertyChanged;
-			form.Activated -= OnVisualStatePropertyChanged;
-			form.Deactivate -= OnVisualStatePropertyChanged;
-			form.UIAWindowStateChanged -= OnVisualStatePropertyChanged;
+			((SWF.Form) Provider.Control).UIATopMostChanged -= OnTopMostChanged;
 		}
 		
 		#endregion
 		
 		#region Private Methods
 
-		private void OnVisualStatePropertyChanged (object sender, EventArgs args)
+		private void OnTopMostChanged (object sender, EventArgs args)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}

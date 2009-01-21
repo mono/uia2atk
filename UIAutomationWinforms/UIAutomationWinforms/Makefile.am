@@ -230,7 +230,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/Form/WindowDeactivatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Form/WindowPatternCanMaximizePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Form/WindowPatternCanMinimizePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Form/WindowPatternIsTopmostPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowClosedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowInteractionStateProperty.cs \
 	Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowOpenedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowVisualStatePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Label/TextPatternTextChangedEvent.cs \

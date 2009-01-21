@@ -65,14 +65,12 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Form
 			                   new WindowPatternCanMaximizePropertyEvent (Provider));
 			Provider.SetEvent (ProviderEventType.WindowPatternCanMinimizeProperty,
 			                   new WindowPatternCanMinimizePropertyEvent (Provider));
-			// FIXME: Implement
 			Provider.SetEvent (ProviderEventType.WindowPatternIsTopmostProperty,
-			                   null);
+			                   new WindowPatternIsTopmostPropertyEvent (Provider));
 			Provider.SetEvent (ProviderEventType.WindowPatternWindowClosedEvent,
 			                   new WindowPatternWindowClosedEvent (Provider));
-			// FIXME: Implement
 			Provider.SetEvent (ProviderEventType.WindowPatternWindowInteractionStateProperty,
-			                   null);
+			                   new WindowPatternWindowInteractionStateProperty (Provider));
 			Provider.SetEvent (ProviderEventType.WindowPatternWindowOpenedEvent,
 			                   new WindowPatternWindowOpenedEvent (Provider));
 			Provider.SetEvent (ProviderEventType.WindowPatternWindowVisualStateProperty,
