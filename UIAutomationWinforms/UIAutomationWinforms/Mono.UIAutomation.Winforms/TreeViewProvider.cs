@@ -69,7 +69,7 @@ namespace Mono.UIAutomation.Winforms
 			base.Initialize ();
 
 			observer = new ScrollBehaviorObserver (this, treeView.UIAHScrollBar,
-			                                       treeView.UIAHScrollBar);
+			                                       treeView.UIAVScrollBar);
 			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
 			
 			UpdateBehaviors ();

@@ -1,5 +1,10 @@
 2009-01-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Mono.UIAutomation.Winforms/TreeViewProvider.cs: Fix typo during
+	ScrollBehaviorObserver creation.
+
+2009-01-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Mono.UIAutomation.Winforms.Events/TextBox/TextPatternTextSelectionChangedEvent.cs:
 	Cast to TestBoxBase, not TestBox (to support RichTextBox, etc).
 
