@@ -1,5 +1,11 @@
 2009-01-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs:
+	When Invoking a ToolStripItem, change selection first to make sure
+	previously-opened dropdowns close. Fixes bug #459332.
+
+2009-01-20  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Mono.UIAutomation.Winforms/TreeViewProvider.cs: Fix typo during
 	ScrollBehaviorObserver creation.
 

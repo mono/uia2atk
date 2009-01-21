@@ -95,6 +95,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripItem
 				return;
 			}
 
+			// Make sure selection changes, or else another item's
+			// dropdown menu might still appear.
+			if (item.Owner != null)
+				item.Select ();
+			
 			// PerformClick does _not_ show/hide the DropDown, so
 			// we must do this manually.  On Vista, clicking the
 			// button appears to both Show the drop down and
