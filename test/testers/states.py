@@ -298,12 +298,12 @@ class TreeTable(object):
     states = (ENABLED, FOCUSABLE, MANAGES_DESCENDANTS, SENSITIVE, SHOWING, VISIBLE)
 
 class TableColumnHeader(object):
-    states = (ENABLED, FOCUSABLE, SELECTABLE, SENSITIVE, SHOWING, VISIBLE)
+    states = (ENABLED, SELECTABLE, SENSITIVE, SHOWING, VISIBLE)
 
 class ListViewCheckBox(object):
-    states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
+    states = (ENABLED, SELECTABLE, SENSITIVE, SHOWING, VISIBLE)
 
-class ListViewText(object):
+class ListViewTableCell(object):
     states = (ENABLED, FOCUSABLE, SELECTABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
 
 class TabControl(object):

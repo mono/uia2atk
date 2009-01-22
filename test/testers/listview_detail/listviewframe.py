@@ -31,12 +31,12 @@ class ListViewFrame(accessibles.Frame):
         self.column_a = self.findTableColumnHeader(self.COLUMN_A, checkShowing=False)
         self.column_b = self.findTableColumnHeader(self.COLUMN_B, checkShowing=False)
         self.checkbox = dict([(x, self.findCheckBox("Item" + str(x))) for x in range(6)])
-        self.texts = self.findAllTexts(None)
+        self.tablecells = self.findAllTableCells(None)
         #search for initial position for assert order test
-        self.item0_position = self.texts[0]._getAccessibleCenter()
-        self.num0_position = self.texts[1]._getAccessibleCenter()
-        self.item5_position = self.texts[10]._getAccessibleCenter()
-        self.num5_position = self.texts[11]._getAccessibleCenter()
+        self.item0_position = self.tablecells[0]._getAccessibleCenter()
+        self.num0_position = self.tablecells[1]._getAccessibleCenter()
+        self.item5_position = self.tablecells[10]._getAccessibleCenter()
+        self.num5_position = self.tablecells[11]._getAccessibleCenter()
 
         print "item0:%s, item5:%s, num0:%s, num5:%s" % (self.item0_position,self.item5_position, self.num0_position,self.num5_position)
 
@@ -49,7 +49,7 @@ class ListViewFrame(accessibles.Frame):
         procedurelogger.action("check ListView Items Text Value")
 
         items = ["Item0", "0", "Item1", "1", "Item2", "2", "Item3", "3", "Item4", "4", "Item5", "5"]
-        if accessible == self.texts:
+        if accessible == self.tablecells:
             for index in range(12):
                 procedurelogger.expectedResult('the text[%s] is %s' \
                                     % (index,items[index]))
@@ -85,15 +85,15 @@ class ListViewFrame(accessibles.Frame):
     def assertOrder(self, itemone=None):        
         if itemone == "Item5":
             procedurelogger.expectedResult('Item5 and Num5 change position to %s and %s' % (self.item0_position, self.num0_position))
-            item5_new_position = self.texts[10]._getAccessibleCenter()
-            num5_new_position = self.texts[11]._getAccessibleCenter()
+            item5_new_position = self.tablecells[10]._getAccessibleCenter()
+            num5_new_position = self.tablecells[11]._getAccessibleCenter()
 
             assert item5_new_position == self.item0_position and \
                    num5_new_position == self.num0_position
         elif itemone == "Item0":
             procedurelogger.expectedResult('Item0 and Num0 change position to %s and %s' % (self.item0_position, self.num0_position))
-            item0_new_position = self.texts[0]._getAccessibleCenter()
-            num0_new_position = self.texts[1]._getAccessibleCenter()
+            item0_new_position = self.tablecells[0]._getAccessibleCenter()
+            num0_new_position = self.tablecells[1]._getAccessibleCenter()
 
             assert item0_new_position == self.item0_position and \
                    num0_new_position == self.num0_position

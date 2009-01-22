@@ -1,3 +1,15 @@
+2009-01-22  Calen Chen <cachen@novell.com>
+
+	* testers/states.py: add selectable for ListViewCheckBox and delete 
+	focusable
+	* testers/listview_detail/listviewframe.py: rename self.texts to self.
+	tablecells
+	* testers/listview_detail_ops.py: rename texts to tablecells, add BUG 
+	reference, update states test for table cells that Item0 should with 
+	focused default and all Items under first column should have focusable 
+	and focused when click or keyDown to select them
+	
+
 2009-01-21 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/datetimepicker_dropdown/datetimepickerdropdownframe.py: get
