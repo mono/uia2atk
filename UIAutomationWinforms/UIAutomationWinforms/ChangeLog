@@ -1,3 +1,11 @@
+2009-01-22  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Getting GroupProvider
+	from SWF.ListViewGroup. [Fixes Bug #468318]
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GridProviderBehavior.cs:
+	Getting ItemProvider from GroupProvider [Fixes Bug #468318]
+
 2009-01-22  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added files.

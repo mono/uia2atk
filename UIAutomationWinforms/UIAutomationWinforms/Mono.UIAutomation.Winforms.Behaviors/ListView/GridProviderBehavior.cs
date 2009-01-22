@@ -122,8 +122,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 			ListViewProvider provider = (ListViewProvider) Provider;
 
 			if (listView.View == SWF.View.Details) {
+				// FIXME: In Vista when listView.Groups == 0 no Groups are added,
+				// and we should iterate when listView.Groups > 0
+				SWF.ListViewItem item = listView.Items [row];
+				ListViewProvider.ListViewGroupProvider groupProvider 
+					= provider.GetGroupProviderFrom (provider.GetGroupFrom (item));
+				
 				ListViewProvider.ListViewListItemProvider itemProvider 
-					= (ListViewProvider.ListViewListItemProvider) provider.GetChildProviderAt (row);
+					= (ListViewProvider.ListViewListItemProvider) groupProvider.GetItem (item);
 				return itemProvider.GetEditProviderAtColumn (column);
 			} else //Is View.List
 				return provider.GetChildProviderAt ((column * rowCount) + row);

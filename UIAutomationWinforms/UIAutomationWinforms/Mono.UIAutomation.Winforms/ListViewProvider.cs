@@ -399,12 +399,23 @@ namespace Mono.UIAutomation.Winforms
 				return item.Group;
 		}
 
+		public ListViewGroupProvider GetGroupProviderFrom (SWF.ListViewGroup group)
+		{
+			ListViewGroupProvider provider = null;
+			groups.TryGetValue (group ?? GetDefaultGroup (), out provider);
+
+			return provider;
+		}
+
 		#endregion
 		
 		#region Private Methods
 		
 		private void InitializeProviderFrom (object objectItem, bool raiseEvent)
 		{
+			// FIXME: In Vista when listView.Groups == 0 && View.Details 
+			// no Groups are added.
+
 			// Using groups
 			if (showGroups == true && listView.View != SWF.View.List
 			    && SWF.Application.VisualStylesEnabled == true) {
@@ -634,6 +645,15 @@ namespace Mono.UIAutomation.Winforms
 				get { 
 					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (ListView);
 				}
+			}
+
+			public ListViewListItemProvider GetItem (SWF.ListViewItem item) 
+			{
+				foreach (ListViewListItemProvider provider in this) {
+					if (provider.ListViewItem == item)
+						return provider;
+				}
+				return null;
 			}
 		
 			protected override object GetProviderPropertyValue (int propertyId)
