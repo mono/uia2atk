@@ -1,3 +1,11 @@
+2009-01-22  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added files.
+	* Mono.UIAutomation.Winforms/PropertyGridProvider.cs,
+	  Mono.UIAutomation.Winforms/BorderHelperControlProvider.cs,
+	  Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs:
+	  Files added.
+
 2009-01-22  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/TrackBarProvider.cs,
@@ -133,7 +141,7 @@
 	* Makefile.am,
 	  Mono.UIAutomation.Winforms.Events/Splitter/RangeValuePatternValueEvent.cs,
 	  Mono.UIAutomation.Winforms/SplitterProvider.cs,
-	  Mono.UIAutomation.Winforms.Behaviors/Splitter/RangeValueProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/Splitter/RangeValueProviderBehavior.cs:
 	  Add a RangeValueProvider for Splitter and SplitContainer.
 
 2009-01-19  Neville Gao  <nevillegao@gmail.com>
