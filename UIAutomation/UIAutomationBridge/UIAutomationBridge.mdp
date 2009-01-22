@@ -1,4 +1,4 @@
-<Project name="UIAutomationBridge" fileversion="2.0" language="C#" DefaultNamespace="Mono.UIAutomation.Bridge" clr-version="Net_2_0" ctype="DotNetProject">
+<Project name="UIAutomationBridge" fileversion="2.0" language="C#" DefaultNamespace="Mono.UIAutomation.Bridge" clr-version="Net_2_0" targetFramework="2.0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="../lib/net_3_0" assembly="UIAutomationBridge" />
@@ -19,6 +19,7 @@
     <File name="Mono.UIAutomation.Bridge/IHypertext.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Bridge/IEditableRange.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Bridge/IEmbeddedImage.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Bridge/IClipboardSupport.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Project" localcopy="True" refto="UIAutomationTypes" />

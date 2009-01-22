@@ -1,3 +1,7 @@
+2009-01-22  Mario Carrion  <mcarrion@novell.com>
+
+	* UIAutomationBridge.mdp: IClipboardSupport.cs file added.
+
 2009-01-22  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 
