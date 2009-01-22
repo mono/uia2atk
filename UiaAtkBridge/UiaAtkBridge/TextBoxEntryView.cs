@@ -43,6 +43,7 @@ namespace UiaAtkBridge
 		private ITextProvider textProvider;
 		private IValueProvider valueProvider;
 		private string oldText;
+		private IClipboardSupport clipboardSupport;
 		
 		public TextBoxEntryView (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -68,6 +69,9 @@ namespace UiaAtkBridge
 			if (iText == null)
 				iText = valueProvider as IText;
 			caretOffset = (iText != null? iText.CaretOffset: textExpert.Length);
+
+			clipboardSupport = textProvider as IClipboardSupport;
+
 			oldText = textExpert.Text;
 		}
 
@@ -228,12 +232,21 @@ namespace UiaAtkBridge
 		
 		public void CopyText (int start_pos, int end_pos)
 		{
-			Console.WriteLine ("UiaAtkBridge (TextBoxEntryView): CopyText unimplemented");
+			if (clipboardSupport == null) {
+				return;
+			}
+
+			clipboardSupport.Copy (start_pos, end_pos);
 		}
 		
 		public void CutText (int start_pos, int end_pos)
 		{
-			Console.WriteLine ("UiaAtkBridge (TextBoxEntryView): CutText unimplemented");
+			if (clipboardSupport == null) {
+				return;
+			}
+
+			clipboardSupport.Copy (start_pos, end_pos);
+			DeleteText (start_pos, end_pos);
 		}
 		
 		public void DeleteText (int start_pos, int end_pos)
@@ -250,7 +263,11 @@ namespace UiaAtkBridge
 		
 		public void PasteText (int position)
 		{
-			Console.WriteLine ("UiaAtkBridge (TextBoxEntryView): PasteText unimplemented");
+			if (clipboardSupport == null) {
+				return;
+			}
+
+			clipboardSupport.Paste (position);
 		}
 		
 		public string TextContents {

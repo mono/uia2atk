@@ -1,3 +1,9 @@
+2009-01-22  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs: 
+	Add an internal interface to support the clipboard, needed for
+	Atk.EditableText.
+
 2009-01-22  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Getting GroupProvider

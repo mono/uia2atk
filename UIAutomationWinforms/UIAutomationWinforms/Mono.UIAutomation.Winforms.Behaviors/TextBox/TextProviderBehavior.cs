@@ -39,7 +39,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 {
 	// NOTE: This class also supports RichTextBox as they share pretty much
 	// everything
-	internal class TextProviderBehavior : ProviderBehavior, ITextProvider, IText
+	internal class TextProviderBehavior
+		: ProviderBehavior, ITextProvider, IText, IClipboardSupport
 	{
 		#region Constructor
 		
@@ -149,6 +150,26 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 				this, TextBoxBase, index, index);
 		}
 		
+		#region IClipboardSupport Implementation	
+
+		public void Copy (int start, int end)
+		{
+			string text = TextBoxBase.Text;
+			start = (int) System.Math.Max (start, 0);
+			end = (int) System.Math.Min (end, text.Length);
+			SWF.Clipboard.SetText (text.Substring (start, end - start));
+		}
+		
+		public void Paste (int position)
+		{
+			string text = TextBoxBase.Text;
+			position = (int) System.Math.Max (position, 0);
+			position = (int) System.Math.Min (position, text.Length);
+			TextBoxBase.Text = text.Insert (position, SWF.Clipboard.GetText ());
+		}
+
+		#endregion
+
 		#endregion
 
 		private SWF.TextBoxBase TextBoxBase {

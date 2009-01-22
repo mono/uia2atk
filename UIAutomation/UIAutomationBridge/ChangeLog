@@ -1,3 +1,10 @@
+2009-01-22  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Bridge/IClipboardSupport.cs: 
+	Add an internal interface to allow us to perform clipboard operations
+	on UIA providers.
+
 2009-01-09  Mike Gorse <mgorse@novell.com>
 
 	* Makefile.am, Mono.UIAutomation.Bridge/IText.cs: Add IText.cs.
@@ -11,7 +18,6 @@
 	* Mono.UIAutomation.Bridge/IEmbeddedImage.cs: Remove
 	IEmbeddedImage.HasImage property...just check Bounds.IsEmpty instead.
 
->>>>>>> .r120639
 2008-12-02  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Bridge/IEmbeddedImage.cs: Rename BoundingRectangle

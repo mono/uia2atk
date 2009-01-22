@@ -968,6 +968,16 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (7, pos, "Position should increment after insert");
 			InterfaceText (accessible, "xxabezzf");
 
+			// Test cut/copy/paste support
+			atkEditableText.TextContents = "And your head is made of clouds, but your feet are made of ground.";
+			atkEditableText.CopyText (4, 13);
+			atkEditableText.PasteText (0);
+
+			InterfaceText (accessible, "your headAnd your head is made of clouds, but your feet are made of ground.");
+
+			atkEditableText.CutText (0, 8);
+			InterfaceText (accessible, "dAnd your head is made of clouds, but your feet are made of ground.");
+
 			EditReadOnly (accessible);
 		}
 
@@ -1648,8 +1658,8 @@ namespace UiaAtkBridgeTest
 			});
 
 			int length = text.Length;
-			Assert.AreEqual (length, atkText.CharacterCount, "Character count");
 			Assert.AreEqual (text, atkText.GetText (0, -1), "GetText");
+			Assert.AreEqual (length, atkText.CharacterCount, "Character count");
 			for (int i = 0; i < length; i++)
 				Assert.AreEqual (text [i], atkText.GetCharacterAtOffset (i), "GetCharacterAtOffset" + i);
 		}
