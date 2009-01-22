@@ -1,3 +1,20 @@
+2009-01-22  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGridViewProvider files added.
+
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs:
+	SWF.DataGridViewProvider.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView: DataGridView
+	behavior folder.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/SelectionProviderBehavior.cs:
+	DataGridProvider.Selection behavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildValueProviderBehavior.cs:
+	DataGridChild.Value behavior.
+
 2009-01-22  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs: 
