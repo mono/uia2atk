@@ -1,3 +1,8 @@
+2009-01-21  Ray Wang  <rawang@novell.com>
+
+	* bridge-glue/Makefile.am: Fix a typo and add lib dependency. The
+	patch is provided by Funda Wang <fundawang@gmail.com>
+
 2009-01-07  Brad Taylor  <brad@getcoded.net>
 
 	* UiaAtkBridge/ChangeLog: Update for 0.9.1 release.
