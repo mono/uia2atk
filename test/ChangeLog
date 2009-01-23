@@ -1,3 +1,9 @@
+2009-01-23  Calen Chen <cachen@novell.com>
+
+	* testers/printpreviewdialog_basic_ops.py: add test to check how many 
+	push button, toggle button, separator, spin button on toolbar. add bug 
+	referance
+
 2009-01-23  Ray Wang <rawang@novell.com>
 
 	* samples/datetimepicker_dropdown.py: Use standard date format.

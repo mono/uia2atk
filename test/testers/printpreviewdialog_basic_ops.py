@@ -53,6 +53,7 @@ statesCheck(ppdFrame.dialog, "Dialog")
 statesCheck(ppdFrame.toolbar, "ToolBar")
 
 #in this example panel should have "focusable" state that is different from #Panel control due to IsKeyboardFocusable is True
+##missing focusable BUG465945
 statesCheck(ppdFrame.panel, "Panel", add_states=["focusable"])
 
 #mouse click panel to rise focused state
@@ -68,6 +69,16 @@ sleep(config.SHORT_DELAY)
 statesCheck(ppdFrame.toolbar, "ToolBar", add_states=["focused"])
 #panel delete focused state
 statesCheck(ppdFrame.panel, "Panel", add_states=["focusable"])
+
+#check how many items on toolbar
+##with wrong items due to toolbar control is unfinished BUG428598
+ppdFrame.searchItems("push button", 8)
+
+ppdFrame.searchItems("toggle button", 1)
+
+ppdFrame.searchItems("separator", 2)
+
+ppdFrame.searchItems("spin button", 1)
 
 #close application frame window
 ppdFrame.quit()
