@@ -34,14 +34,12 @@ class DateTimePickerSample(Form):
 
         # set up label
         self.label = Label()
-        self.label.Text = "The Date you select is:"
+        self.label.Text = "The date you select is:"
         self.label.Size = Size(260, 30)
         self.label.Location = Point(0, 50)
 
         # set up domainupdown
         self.date_time_picker = DateTimePicker()
-        self.date_time_picker.CustomFormat = "MMMM dd, yyyy - dddd"
-        self.date_time_picker.Format = DateTimePickerFormat.Custom
         self.date_time_picker.ShowCheckBox = True
         self.date_time_picker.Width = self.Width - 10
         self.date_time_picker.ValueChanged += self.dt_value_changed
@@ -51,8 +49,8 @@ class DateTimePickerSample(Form):
         self.Controls.Add(self.date_time_picker)
 
     def dt_value_changed(self, sender, event):
-        self.label.Text = "The Date you select is: %s" % \
-                                            self.date_time_picker.Value
+        self.label.Text = "The date you select is: %s" % \
+                                            self.date_time_picker.Text
 
 # run application
 form = DateTimePickerSample()

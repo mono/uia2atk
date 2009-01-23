@@ -1,3 +1,12 @@
+2009-01-23  Ray Wang <rawang@novell.com>
+
+	* samples/datetimepicker_dropdown.py: Use standard date format.
+	* testers/states.py: Add DateTimePicker_Spin class.
+	* testers/datetimepicker_dropdown_ops.py: Re-order and update the test
+	process. 
+	* testers/datetimepicker_dropdown/datetimepickerdropdownframe.py:
+	Re-order and update the test members.
+
 2009-01-22 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* testers/datetimepicker_dropdown_ops.py: Fix accidental duplicate
