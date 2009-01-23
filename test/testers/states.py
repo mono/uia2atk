@@ -261,6 +261,9 @@ class NumericUpDown(object):
 class DomainUpDown(object):
     states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
 
+class DateTimePicker_Spin(object):
+    states = (EDITABLE, ENABLED, FOCUSABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
+
 class Icon(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 

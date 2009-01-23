@@ -14,7 +14,7 @@ import time
 class DateTimePickerDropDownFrame(accessibles.Frame):
     """the profile of the datetimepicker_dropdown sample"""
 
-    LABEL_HYPHEN = '-'
+    LABEL = 'The date you select is:'
     LABEL_SPACE = ' '
     LABEL_COMMA = ','
 
@@ -24,18 +24,19 @@ class DateTimePickerDropDownFrame(accessibles.Frame):
         self.panel = self.findPanel(None)
         self.lists = self.findAllLists(None)
         self.spinbuttons = self.findAllSpinButtons(None)
+        self.listitems = self.findAllListItems(None, checkShowing=False)
+        self.weekdays = self.listitems[0:7]
+        self.months = self.listitems[7:]
         self.spaces = self.findAllLabels(self.LABEL_SPACE)
-        self.months = [self.findAllListItems(None, checkShowing=False)[i] for i in range(12)]
-        self.weekdays = [self.findAllListItems(None, checkShowing=False)[i] for i in range(12, 19)]
+        self.commas = self.findAllLabels(self.LABEL_COMMA)
 
         self.checkbox = self.findCheckBox(None)
+        self.weekday = self.lists[1]
         self.month = self.lists[0]
         self.day = self.spinbuttons[0]
-        self.comma = self.findLabel(self.LABEL_COMMA)
         self.year = self.spinbuttons[1]
-        self.hyphen = self.findLabel(self.LABEL_HYPHEN)
-        self.weekday = self.lists[1]
         self.dropdownbutton = self.findPushButton(None)
+        self.label = self.findLabel(self.LABEL)
 
     def click(self, button):
         procedurelogger.action("click %s" % button)
