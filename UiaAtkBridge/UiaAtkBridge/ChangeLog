@@ -1,3 +1,14 @@
+2009-01-22  Mike Gorse  <mgorse@novell.com>
+
+	* AutomationBridge.cs, Container.cs, Splitter.cs, Window.cs, Adapter.cs,
+	  ParentAdapter.cs: Fix removal of Splitter.  Some refactoring.
+
+	* TextImplementorFactory.cs, RangeValueProviderTextImplementor.cs,
+	  Slider.cs, AutomationBridge.cs, Makefile.am, UiaAtkBridge.mdp: Add
+	support for Slider and fetching text from a rangeValueProvider.
+
+	* TextBoxEntryView.cs: Remove debug spew.
+
 2009-01-22  Brad Taylor  <brad@getcoded.net>
 
 	* TextBoxEntryView.cs: Use internal IClipboardSupport interface to

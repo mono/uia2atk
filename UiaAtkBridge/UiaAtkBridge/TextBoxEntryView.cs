@@ -326,7 +326,6 @@ namespace UiaAtkBridge
 					GLib.Signal.Emit (this, "text_caret_moved", caretOffset);
 			}
 			} else if (eventId == TextPatternIdentifiers.TextSelectionChangedEvent) {
-Console.WriteLine ("dbg: selection changed");
 				GLib.Signal.Emit (this, "text_selection_changed");
 			} else
 				base.RaiseAutomationEvent (eventId, e);

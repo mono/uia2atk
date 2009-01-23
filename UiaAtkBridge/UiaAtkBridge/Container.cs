@@ -64,5 +64,13 @@ namespace UiaAtkBridge
 		{
 			// TODO
 		}
+
+		internal override void PostInit ()
+		{
+			int controlTypeId = (int)Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
+			if (controlTypeId == ControlType.MenuItem.Id)
+				AddOneChild (new Button (Provider));
+			base.PostInit ();
+		}
 	}
 }

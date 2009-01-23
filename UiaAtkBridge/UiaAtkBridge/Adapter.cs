@@ -131,6 +131,9 @@ namespace UiaAtkBridge
 				Parent = null;
 		}
 		
+		internal virtual void PostInit ()
+		{
+		}
 #endregion
 		
 #region Overrides

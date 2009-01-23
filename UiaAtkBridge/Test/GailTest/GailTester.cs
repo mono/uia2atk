@@ -570,6 +570,11 @@ namespace UiaAtkBridgeTest
 					widget = GailTestApp.MainClass.GiveMeARealHPaned ();
 				((Gtk.HPaned)widget).CanFocus = false;
 				break;
+			case BasicWidgetType.VTrackBar:
+				widget = new Gtk.VScale (adj);
+				if (real)
+					widget = GailTestApp.MainClass.GiveMeARealVScale ();
+				break;
 			case BasicWidgetType.ComboBoxDropDownEntry:
 			case BasicWidgetType.ComboBoxDropDownList:
 			case BasicWidgetType.ComboBoxSimple:

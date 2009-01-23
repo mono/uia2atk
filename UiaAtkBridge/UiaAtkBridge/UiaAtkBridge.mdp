@@ -27,6 +27,7 @@
     <File name="ParentAdapter.cs" subtype="Code" buildaction="Compile" />
     <File name="ProgressBar.cs" subtype="Code" buildaction="Compile" />
     <File name="ScrollBar.cs" subtype="Code" buildaction="Compile" />
+    <File name="Slider.cs" subtype="Code" buildaction="Compile" />
     <File name="Spinner.cs" subtype="Code" buildaction="Compile" />
     <File name="Tab.cs" subtype="Code" buildaction="Compile" />
     <File name="TableImplementorHelper.cs" subtype="Code" buildaction="Compile" />
@@ -41,6 +42,7 @@
     <File name="MenuItem.cs" subtype="Code" buildaction="Compile" />
     <File name="CheckBoxButton.cs" subtype="Code" buildaction="Compile" />
     <File name="RadioButton.cs" subtype="Code" buildaction="Compile" />
+    <File name="RangeValueProviderTextImplementor.cs" subtype="Code" buildaction="Compile" />
     <File name="Container.cs" subtype="Code" buildaction="Compile" />
     <File name="DataGrid.cs" subtype="Code" buildaction="Compile" />
     <File name="DataGridGroup.cs" subtype="Code" buildaction="Compile" />

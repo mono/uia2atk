@@ -1264,6 +1264,36 @@ namespace UiaAtkBridgeTest
 			HSplitter (accessible);
 		}
 
+ 		[Test]
+		public void VTrackBar ()
+		{
+			BasicWidgetType type = BasicWidgetType.VTrackBar;
+			Atk.Object accessible;
+			string name = "test";
+
+			accessible = GetAccessible (type, name, true);
+			Atk.Value atkValue = CastToAtkInterface <Atk.Value> (accessible);
+			Atk.Text atkText = CastToAtkInterface <Atk.Text> (accessible);
+
+			InterfaceValue (type, atkValue, atkText);
+
+			PropertyRole (type, accessible);
+
+			Assert.AreEqual (0, accessible.NAccessibleChildren, "VTrackBar numChildren");
+
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			
+			InterfaceComponent (type, atkComponent);
+
+			States (accessible,
+				Atk.StateType.Enabled,
+			Atk.StateType.Focusable,
+				Atk.StateType.Sensitive,
+				Atk.StateType.Showing,
+			Atk.StateType.Vertical,
+				Atk.StateType.Visible);
+		}
+		
 		public void HSplitter (Atk.Object accessible)
 		{
 			BasicWidgetType type = BasicWidgetType.HSplitContainer;

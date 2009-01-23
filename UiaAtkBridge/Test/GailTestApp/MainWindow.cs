@@ -180,4 +180,8 @@ public partial class MainWindow: Gtk.Window
 	internal Gtk.Toolbar GiveMeARealToolBar () {
 		return this.toolbar1;
 	}
+
+	internal Gtk.VScale GiveMeARealVScale () {
+		return this.vscale1;
+	}
 }

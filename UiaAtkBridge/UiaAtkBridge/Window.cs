@@ -168,20 +168,21 @@ namespace UiaAtkBridge
 			}
 		}
 
-		internal override void RemoveChild (Atk.Object childToRemove)
+		internal override void PreRemoveChild (Atk.Object childToRemove)
 		{
 			if (splitter != null && childToRemove == splitter) {
-				int count = splitter.NAccessibleChildren;
+				splitter = null;
+				ParentAdapter parentAdapter = childToRemove as ParentAdapter;
+				int count = parentAdapter.NAccessibleChildren;
 				while (count > 0) {
-					Atk.Object obj = childToRemove.RefAccessibleChild (0);
-					splitter.RemoveChild (obj);
+					Atk.Object obj = parentAdapter.RefAccessibleChild (0);
+					parentAdapter.RemoveChild (obj);
 					obj.Parent = this;
 					AddOneChild (obj);
 					count--;
 				}
-				splitter = null;
 				}
-			base.RemoveChild (childToRemove);
+			base.PreRemoveChild (childToRemove);
 			}
 
 		private void NewActiveState (bool active)

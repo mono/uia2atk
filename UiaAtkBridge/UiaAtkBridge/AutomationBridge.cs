@@ -569,6 +569,8 @@ namespace UiaAtkBridge
 				HandleNewTreeItem (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.Separator.Id)
 				HandleNewSeparator (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.Slider.Id)
+				HandleNewSliderControlType (simpleProvider, parentAdapter);
 			// TODO: Other providers
 			else if (controlTypeId != ControlType.Thumb.Id)
 				Console.WriteLine ("AutomationBridge: Unhandled control: " +
@@ -606,6 +608,9 @@ namespace UiaAtkBridge
 			Adapter adapter = obj as Adapter;
 			if (adapter == null)
 				return false;
+
+			ParentAdapter parentAdapter = adapter.Parent as ParentAdapter;
+			parentAdapter.PreRemoveChild (adapter);
 
 			foreach (Atk.Object atkObj in GetAdaptersDescendantsFamily (adapter)){
 				if (HandleElementRemoval (atkObj))
@@ -991,9 +996,6 @@ namespace UiaAtkBridge
 			providerAdapterMapping [provider] = atkItem;
 			
 			IncludeNewAdapter (atkItem, parentObject);
-
-			if (atkItem is Splitter)
-				((Splitter)atkItem).PostInitialize ();
 		}
 
 		private void HandleNewMenuBarControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
@@ -1012,8 +1014,6 @@ namespace UiaAtkBridge
 			} else
 				newAdapter = new MenuItem (provider);
 			IncludeNewAdapter (newAdapter, parentObject);
-			if (newContainer != null)
-				newContainer.AddOneChild (new Button (provider));
 		}
 
 		private void HandleNewSplitButton (IRawElementProviderSimple provider, ParentAdapter parentObject)
@@ -1124,6 +1124,13 @@ namespace UiaAtkBridge
 			HeaderItem headerItem = new HeaderItem (provider);
 
 			IncludeNewAdapter (headerItem, parentObject);
+		}
+		
+		private void HandleNewSliderControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
+		{
+			Adapter atkSlider = new Slider (provider);;
+
+			IncludeNewAdapter (atkSlider, parentObject);
 		}
 		
 		// This whole function is a hack to work around the

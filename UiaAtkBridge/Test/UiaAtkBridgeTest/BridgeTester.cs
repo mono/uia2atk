@@ -93,6 +93,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.DateTimePicker dateTimePicker = new SWF.DateTimePicker ();
 		protected SWF.SplitContainer splitContainer = new SWF.SplitContainer ();
 		protected SWF.RichTextBox richTextBox = new SWF.RichTextBox ();
+		protected SWF.TrackBar trackBar = new SWF.TrackBar ();
 
 		protected int lastClickedLink = -1;
 
@@ -188,6 +189,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (dateTimePicker);
 			form.Controls.Add (splitContainer);
 			form.Controls.Add (richTextBox);
+			form.Controls.Add (trackBar);
 				// TODO: Move following lines to the end of ListView test to test view switching
 			lv1.View = SWF.View.Details;
 			lv1.ShowGroups = true;
@@ -795,6 +797,7 @@ namespace UiaAtkBridgeTest
 				break;
 				
 			case BasicWidgetType.TreeView:
+				treeView.Scrollable = false;
 				xml = new XmlDocument ();
 				xml.LoadXml (name);
 				treeView.BeginUpdate ();
@@ -825,6 +828,12 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.HSplitContainer:
 				accessible = GetAdapterForWidget (splitContainer);
+				break;
+			case BasicWidgetType.VTrackBar:
+				trackBar.Orientation = SWF.Orientation.Vertical;
+				trackBar.Minimum = 0;
+				trackBar.Maximum = 100;
+				accessible = GetAdapterForWidget (trackBar);
 				break;
 			case BasicWidgetType.ListBox:
 			case BasicWidgetType.CheckedListBox:

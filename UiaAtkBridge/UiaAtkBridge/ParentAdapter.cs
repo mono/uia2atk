@@ -97,6 +97,9 @@ namespace UiaAtkBridge
 			if (child.Parent == null)
 				child.Parent = this;
 			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Add, (uint)(children.Count - 1), child);
+			Adapter adapter = child as Adapter;
+			if (adapter != null)
+				adapter.PostInit ();
 		}
 		
 		internal virtual void RemoveChild (Atk.Object childToRemove)
@@ -123,6 +126,13 @@ namespace UiaAtkBridge
 			EmitChildrenChanged (Atk.Object.ChildrenChangedDetail.Remove, (uint)childIndex, childToRemove);
 		}
 		
+		// Note: Only called if an object is explicitly removed, not
+		// when removed as a result of recursion.  Useful if the atk
+		// hierarchy needs to be adjusted (ie, for Splitter)
+		internal virtual void PreRemoveChild (Atk.Object childToRemove)
+		{
+		}
+
 		public virtual int GetIndexOfChild (Atk.Object child)
 		{
 			return children.IndexOf (child);

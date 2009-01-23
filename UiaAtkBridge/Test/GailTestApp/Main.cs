@@ -237,6 +237,13 @@ namespace GailTestApp {
 			
 			return win.GiveMeARealToolBar ();
 		}
+
+		public static Gtk.VScale GiveMeARealVScale ()
+		{
+			CheckState ();
+			
+			return win.GiveMeARealVScale ();
+		}
 		
 		public static void Kill (MovingThread thread) 
 		{

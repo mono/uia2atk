@@ -43,10 +43,9 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Constructor
 
-		public TrackBarProvider (TrackBar trackbar) : base (trackbar)
+		public TrackBarProvider (TrackBar trackBar) : base (trackBar)
 		{
-			orientation = trackbar.Orientation == Orientation.Horizontal
-				? OrientationType.Horizontal : OrientationType.Vertical;
+			this.trackBar = trackBar;
 		}
 		
 		#endregion
@@ -86,7 +85,8 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.OrientationProperty.Id)
-				return orientation;
+				return trackBar.Orientation == Orientation.Horizontal
+					? OrientationType.Horizontal : OrientationType.Vertical;
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
@@ -138,7 +138,7 @@ namespace Mono.UIAutomation.Winforms
 		private FragmentControlProvider largeBackButton;
 		private FragmentControlProvider largeForwardButton;
 		private FragmentControlProvider thumb;
-		private OrientationType orientation;
+		private TrackBar trackBar;
 		
 		#endregion
 		

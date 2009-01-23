@@ -51,6 +51,12 @@ namespace UiaAtkBridge
 			if (valueProvider != null)
 				return new ValueProviderTextImplementor (adapter, valueProvider);
 			
+			IRangeValueProvider rangeValueProvider
+				= prov.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id)
+					as IRangeValueProvider;
+			if (rangeValueProvider != null)
+				return new RangeValueProviderTextImplementor (adapter, rangeValueProvider);
+			
 			return new NamePropertyTextImplementor (adapter, prov);
 		}
 #endregion

@@ -78,9 +78,11 @@ FILES =  \
 	ParentAdapter.cs \
 	ProgressBar.cs \
 	RadioButton.cs \
+	RangeValueProviderTextImplementor.cs \
 	ScrollBar.cs \
 	SelectionProviderUserHelper.cs \
 	Separator.cs \
+	Slider.cs \
 	Spinner.cs \
 	SplitButton.cs \
 	SplitContainer.cs \

@@ -697,7 +697,9 @@ namespace UiaAtkBridgeTest
 			if (atkText == null)
 				return;
 			string text;
-			if (type == BasicWidgetType.Spinner)
+			if (type == BasicWidgetType.VTrackBar)
+				text = "\x200e" + GetCurrentValue (atkValue).ToString ();
+			else if (type == BasicWidgetType.Spinner)
 				text = GetCurrentValue (atkValue).ToString ();
 			else
 				text = GetCurrentValue (atkValue).ToString ("F2");
@@ -714,7 +716,7 @@ namespace UiaAtkBridgeTest
 				Assert.IsTrue (GetMaximumValue(atkValue) > 0, "InterfaceValue MaximumValue > 0");
 			else
 				Assert.AreEqual (100, GetMaximumValue(atkValue), "InterfaceValue MaximumValue");
-			if (type == BasicWidgetType.Spinner) {
+			if (type == BasicWidgetType.Spinner || type == BasicWidgetType.VTrackBar) {
 				Assert.IsTrue (SetCurrentValue (atkValue, 25), "SetCurrentValue");
 				Assert.AreEqual (25, GetCurrentValue(atkValue), "InterfaceValue CurrentValue #1");
 			}
@@ -935,6 +937,9 @@ namespace UiaAtkBridgeTest
 				break;
 			case BasicWidgetType.HSplitContainer:
 				role = Atk.Role.SplitPane;
+				break;
+			case BasicWidgetType.VTrackBar:
+				role = Atk.Role.Slider;
 				break;
 			default:
 				throw new NotImplementedException (String.Format (

@@ -17,45 +17,46 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
-// Authors:
-//      Mike Gorse <mgorse@novell.com>
+// Authors: 
+//      Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
+using System.Drawing;
+using Mono.UIAutomation.Bridge;
 using System.Windows.Automation;
+using System.Windows.Automation.Text;
+using CG = System.Collections.Generic;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-
-	public class Splitter : SplitContainer
+	internal class RangeValueProviderTextImplementor : BaseTextImplementor
 	{
-		
-		public Splitter (IRawElementProviderSimple provider) : base (provider)
-		{
+#region Public Properties
+		public override string Text {
+			get {
+				if (resource is Slider)
+					// Tracking gail for now
+					return "\u200e" + rangeValueProvider.Value.ToString ();
+				else
+					return rangeValueProvider.Value.ToString ();
+			}
 		}
+#endregion
 
-		internal override void PostInit ()
+#region Public Methods
+		public RangeValueProviderTextImplementor (Adapter resource, IRangeValueProvider rangeValueProvider)
+			: base (resource)
 		{
-			componentExpert = new ComponentImplementorHelper (Parent as Adapter);
-			base.PostInit ();
+			this.rangeValueProvider = rangeValueProvider;
 		}
+#endregion
 
-		protected override Atk.StateSet OnRefStateSet ()
-		{
-			if (Parent == null)
-				return null;
-			// We pretend to be a sub-window, not a splitter
-			Atk.StateSet states = Parent.RefStateSet ();
-			states.RemoveState (Atk.StateType.Active);
-			states.RemoveState (Atk.StateType.Resizable);
-			if (base.OnRefStateSet().ContainsState (Atk.StateType.Horizontal))
-				states.AddState (Atk.StateType.Horizontal);
-			else
-				states.AddState (Atk.StateType.Vertical);
-			return states;
-		}
+#region Private Fields		
+		protected IRangeValueProvider rangeValueProvider;
+#endregion
 	}
 }
