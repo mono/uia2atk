@@ -37,9 +37,9 @@ namespace UiaAtkBridge
 			  AutomationElementIdentifiers.ControlTypeProperty.Id);
 			if (controlTypeId == ControlType.ToolBar.Id)
 				Role = Atk.Role.ToolBar;
-			else if (controlTypeId == ControlType.Group.Id || controlTypeId == ControlType.Pane.Id)
-				Role = Atk.Role.Panel;
-			else if (controlTypeId == ControlType.MenuItem.Id)
+			else if (controlTypeId == ControlType.Group.Id ||
+			         controlTypeId == ControlType.Pane.Id ||
+			         controlTypeId == ControlType.MenuItem.Id)
 				Role = Atk.Role.Panel;
 			else
 				Role = Atk.Role.Filler;

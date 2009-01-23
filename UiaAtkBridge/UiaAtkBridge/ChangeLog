@@ -1,3 +1,9 @@
+2009-01-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Container.cs:
+	* AutomationBridge.cs: Simplification, now possible to last
+	refactorings.
+
 2009-01-23  Mike Gorse  <mgorse@novell.com>
 
 	* Slider.cs: Call base handler for unhandled propertyChanged events.

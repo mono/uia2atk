@@ -1006,12 +1006,10 @@ namespace UiaAtkBridge
 
 		private void HandleNewMenuItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			Adapter newAdapter;
-			Container newContainer = null;
-			if (parentObject is UiaAtkBridge.Container) {
-				newContainer = new Container (provider);
-				newAdapter = newContainer;
-			} else
+			Adapter newAdapter = null;
+			if (parentObject is UiaAtkBridge.Container)
+				newAdapter = new Container (provider);
+			else
 				newAdapter = new MenuItem (provider);
 			IncludeNewAdapter (newAdapter, parentObject);
 		}
