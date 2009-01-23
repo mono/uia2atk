@@ -74,7 +74,7 @@ cbddFrame.assertLabel("You select 2")
 statesCheck(cbddFrame.menuitem[2], "MenuItem", \
                                 add_states=["focused", "selected"])
 #menuitem1 get rid of visible states
-statesCheck(cbddFrame.menuitem[1], "MenuItem", invalid_states=["showing"])
+statesCheck(cbddFrame.menuitem[1], "MenuItem")
 
 #keyCombo down to select menuitem3
 cbddFrame.keyCombo("Down", grabFocus = False)
@@ -85,7 +85,7 @@ cbddFrame.assertLabel("You select 3")
 statesCheck(cbddFrame.menuitem[3], "MenuItem", \
                                 add_states=["focused", "selected"])
 #menuitem2 get rid of showing states
-statesCheck(cbddFrame.menuitem[2], "MenuItem", invalid_states=["showing"])
+statesCheck(cbddFrame.menuitem[2], "MenuItem")
 
 #keyCombo up to select menuitem2
 cbddFrame.keyCombo("Up", grabFocus = False)
@@ -118,7 +118,7 @@ cbddFrame.assertText(cbddFrame.textbox, 9)
 #menuitem9 up selected state
 statesCheck(cbddFrame.menuitem[9], "MenuItem", add_states=["focused", "selected"])
 #menuitem0 get rid of selected, showing states
-statesCheck(cbddFrame.menuitem[0], "MenuItem", invalid_states=["showing"])
+statesCheck(cbddFrame.menuitem[0], "MenuItem")
 
 #enter value to textbox
 #inter '6' to text box to check the text value
@@ -143,6 +143,7 @@ statesCheck(cbddFrame.menuitem[8], "MenuItem")
 
 #check combo box selection is implemented
 #select menu to rise selected
+##selectChild cause crash BUG456319
 cbddFrame.assertSelectionChild(cbddFrame.combobox, 0)
 sleep(config.SHORT_DELAY)
 statesCheck(cbddFrame.menu, "Menu", add_states=["selected"])
@@ -153,6 +154,7 @@ sleep(config.SHORT_DELAY)
 statesCheck(cbddFrame.menu, "Menu")
 statesCheck(cbddFrame.textbox, "Text", add_states=["selected"])
 #clear selection to get rid of selected
+##clearSelection doesn't get rid of selected BUG468456
 cbddFrame.assertClearSelection(cbddFrame.combobox)
 sleep(config.SHORT_DELAY)
 statesCheck(cbddFrame.menu, "Menu")
