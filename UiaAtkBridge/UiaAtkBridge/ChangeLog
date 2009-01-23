@@ -4,12 +4,12 @@
 
 2009-01-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
-	* AutomationBridge.cs: Fix regression (bug 468171).
+	* AutomationBridge.cs: Fix regression (bug 468171) introduced in r124014.
 
 2009-01-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Container.cs:
-	* AutomationBridge.cs: Simplification, now possible to last
+	* AutomationBridge.cs: Simplification, now possible thanks to last
 	refactorings.
 
 2009-01-23  Mike Gorse  <mgorse@novell.com>
