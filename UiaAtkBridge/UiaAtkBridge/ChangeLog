@@ -1,5 +1,9 @@
 2009-01-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AutomationBridge.cs: Fix regression (bug 468171).
+
+2009-01-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Container.cs:
 	* AutomationBridge.cs: Simplification, now possible to last
 	refactorings.
