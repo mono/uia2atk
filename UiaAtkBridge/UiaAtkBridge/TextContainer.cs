@@ -75,7 +75,12 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			// TODO
+			if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent)
+				NotifyStateChange (Atk.StateType.Selected, true);
+			else if (eventId == SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent)
+				NotifyStateChange (Atk.StateType.Selected, false);
+			else
+				base.RaiseAutomationEvent (eventId, e);
 		}
 
 		public string GetText (int startOffset, int endOffset)

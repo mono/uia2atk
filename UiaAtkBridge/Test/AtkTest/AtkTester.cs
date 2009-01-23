@@ -2045,7 +2045,7 @@ namespace UiaAtkBridgeTest
 				events = EventMonitor.Pause ();
 			EventCollection evs = events.FindByRole (role).FindByType (evType);
 			string eventsInXml = String.Format (" events in XML: {0}", Environment.NewLine + events.OriginalGrossXml);
-			Assert.AreEqual (1, evs.Count, "bad number of " + evType + " events: " + eventsInXml);
+			Assert.AreEqual (count, evs.Count, "bad number of " + evType + " events: " + eventsInXml);
 		}
 
 		protected void ExpectEvents (int min, int max, Atk.Role role, string evType)

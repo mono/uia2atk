@@ -49,6 +49,15 @@ namespace UiaAtkBridge
 				Name = name;
 		}
 
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		{
+			if (e.Property == SelectionPatternIdentifiers.SelectionProperty) {
+				GLib.Signal.Emit (this, "selection_changed");
+				EmitVisibleDataChanged ();
+			} else
+				base.RaiseAutomationPropertyChangedEvent (e);
+		}
+
 		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
 		{
 			// TODO

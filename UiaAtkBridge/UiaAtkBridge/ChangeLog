@@ -1,3 +1,7 @@
+2009-01-23  Mike Gorse  <mgorse@novell.com>
+
+	* Tab.cs, TextContainer.cs: Send events when a tab is selected.
+
 2009-01-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AutomationBridge.cs: Fix regression (bug 468171).

@@ -84,7 +84,7 @@ namespace Mono.UIAutomation.Winforms.Events.TabPage
 		{
 			TabPageProvider provider = (TabPageProvider) Provider;
 			
-			if (selected != provider.IsSelected) {
+			if (selected && !provider.IsSelected) {
 				RaiseAutomationEvent ();
 			}
 			

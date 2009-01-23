@@ -1,5 +1,11 @@
 2009-01-23  Mike Gorse <mgorse@novell.com>
 
+	* AtkTester.cs: Fix ExpectEvents.
+
+	* AtkTests.cs: Test that events are fired when selecting a tab.
+
+2009-01-23  Mike Gorse <mgorse@novell.com>
+
 	* AtkTests.cs: Rework pane test to support FlowLayoutPanel and
 	  TableLayoutPanel.
 

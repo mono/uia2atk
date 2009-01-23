@@ -837,6 +837,12 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (5, atkText.CharacterCount, "CharacterCount");
 			Assert.AreEqual ("page1", atkText.GetText (0, 5), "GetText #1");
 			Assert.AreEqual ("page1", atkText.GetText (0, -1), "GetText #2");
+
+			StartEventMonitor ();
+			atkSelection.AddSelection (1);
+			ExpectEvents (1, Atk.Role.PageTabList, "object:visible-data-changed");
+			ExpectEvents (1, Atk.Role.PageTabList, "object:selection-changed");
+			ExpectEvents (2, Atk.Role.PageTab, "object:state-changed:selected");
 		}
 
 		[Test]
