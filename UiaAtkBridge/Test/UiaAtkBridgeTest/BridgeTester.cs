@@ -94,8 +94,8 @@ namespace UiaAtkBridgeTest
 		protected SWF.SplitContainer splitContainer = new SWF.SplitContainer ();
 		protected SWF.RichTextBox richTextBox = new SWF.RichTextBox ();
 		protected SWF.TrackBar trackBar = new SWF.TrackBar ();
-			protected SWF.FlowLayoutPanel flp = new SWF.FlowLayoutPanel ();
-			protected SWF.TableLayoutPanel tlp = new SWF.TableLayoutPanel ();
+		protected SWF.FlowLayoutPanel flp = new SWF.FlowLayoutPanel ();
+		protected SWF.TableLayoutPanel tlp = new SWF.TableLayoutPanel ();
 
 		protected int lastClickedLink = -1;
 
@@ -192,7 +192,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (splitContainer);
 			form.Controls.Add (richTextBox);
 			form.Controls.Add (trackBar);
-				// TODO: Move following lines to the end of ListView test to test view switching
+			// TODO: Move following lines to the end of ListView test to test view switching
 			lv1.View = SWF.View.Details;
 			lv1.ShowGroups = true;
 			form.Controls.Add (lv1);
@@ -255,7 +255,8 @@ namespace UiaAtkBridgeTest
 			get { return false; }
 		}
 
-		private static Dictionary <Atk.Object, System.ComponentModel.Component> mappings = new Dictionary<Atk.Object, System.ComponentModel.Component> ();
+		private static Dictionary <Atk.Object, System.ComponentModel.Component> mappings = 
+			new Dictionary<Atk.Object, System.ComponentModel.Component> ();
 		
 		public override void DisableWidget (Atk.Object accessible)
 		{
@@ -482,7 +483,7 @@ namespace UiaAtkBridgeTest
 
 			case BasicWidgetType.ListView:
 				lv1.Items.Clear ();
-			lv1.Scrollable = false;
+				lv1.Scrollable = false;
 				foreach (string item in names)
 					lv1.Items.Add (item);
 				accessible = GetAdapterForWidget (lv1);
@@ -545,7 +546,7 @@ namespace UiaAtkBridgeTest
 				tssb.Text = names [0];
 				for (int i = 1; i < names.Length; i++) {
 					SWF.ToolStripMenuItem item
-						= new SWF.ToolStripMenuItem ();
+					  = new SWF.ToolStripMenuItem ();
 					item.Text = names [i];
 					tssb.DropDownItems.Add (item);
 				}
@@ -554,7 +555,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ToolStripDropDownButton:
 				foreach (string name in names) {
 					SWF.ToolStripMenuItem item
-						= new SWF.ToolStripMenuItem ();
+					  = new SWF.ToolStripMenuItem ();
 					item.Text = name;
 					tsddb.DropDownItems.Add (item);
 				}
@@ -781,11 +782,11 @@ namespace UiaAtkBridgeTest
 				foreach (XmlElement th in xml.GetElementsByTagName ("th"))
 					foreach (XmlElement td in th.GetElementsByTagName ("td"))
 						lv1.Columns.Add (new SWF.ColumnHeader (td.InnerText));
-			if (lv1.Columns.Count == 0)
-						// TODO: Allow more than one column
-						lv1.Columns.Add (new SWF.ColumnHeader ());
+				if (lv1.Columns.Count == 0)
+					// TODO: Allow more than one column
+					lv1.Columns.Add (new SWF.ColumnHeader ());
 				root = xml.DocumentElement;
-				for (XmlNode node = root.FirstChild; node != null; node = node.NextSibling)
+				for (XmlNode node = root.FirstChild; node != null; node = node.NextSibling) {
 					if (node.Name == "tr") {
 						bool group = false;
 						for (XmlNode child = node.FirstChild; child != null; child = child.NextSibling)
@@ -796,6 +797,7 @@ namespace UiaAtkBridgeTest
 						else
 							lv1.Items.Add (GetListViewItem (node));
 					}
+				}
 				lv1.MultiSelect = false;
 				accessible = GetAdapterForWidget (lv1);
 				break;
@@ -808,9 +810,8 @@ namespace UiaAtkBridgeTest
 				treeView.Nodes.Clear ();
 				root = xml.DocumentElement;
 				for (XmlNode node = root.FirstChild; node != null; node = node.NextSibling)
-					if (node.Name == "tr") {
+					if (node.Name == "tr")
 						treeView.Nodes.Add (GetTreeNode (node));
-					}
 				treeView.EndUpdate ();
 				accessible = GetAdapterForWidget (treeView);
 				break;
@@ -877,7 +878,6 @@ namespace UiaAtkBridgeTest
 				contextMenu.Show (form, 0, 0);
 				widget = contextMenu;
 			}
-			//Console.WriteLine ("visibility!!!!" + ((System.Windows.Forms.ToolStripItem)widget).Visible);
 			return GetAdapterForWidget (widget);
 		}
 
@@ -921,12 +921,13 @@ namespace UiaAtkBridgeTest
 				return;
 			SWF.ListViewGroup group = new SWF.ListViewGroup (tr.FirstChild.InnerText);
 			lv1.Groups.Add (group);
-			for (XmlNode child = node.FirstChild; child != null; child = child.NextSibling)
+			for (XmlNode child = node.FirstChild; child != null; child = child.NextSibling) {
 				if (child.Name == "tr") {
 					SWF.ListViewItem item = GetListViewItem (child);
 					lv1.Items.Add (item);
 					item.Group = group;
 				}
+			}
 		}
 
 		private SWF.ListViewItem GetListViewItem (XmlNode node)
@@ -968,9 +969,11 @@ namespace UiaAtkBridgeTest
 #pragma warning disable 618
 			object adapter = UiaAtkBridge.AutomationBridge.GetAdapterForProvider (provider);
 #pragma warning restore 618
-			Assert.IsNotNull (adapter, "Object retreived from AutomationBridge.GetAdapterForProvider should not be null");
+			Assert.IsNotNull (adapter, 
+			                  "Object retreived from AutomationBridge.GetAdapterForProvider should not be null");
 			Atk.Object atkObj = adapter as Atk.Object;
-			Assert.IsNotNull (atkObj, "Object retreived from AutomationBridge.GetAdapterForProvider is not Atk.Object");
+			Assert.IsNotNull (atkObj, 
+			                  "Object retreived from AutomationBridge.GetAdapterForProvider is not Atk.Object");
 			return atkObj;
 		}
 

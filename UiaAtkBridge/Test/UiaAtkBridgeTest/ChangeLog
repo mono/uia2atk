@@ -1,3 +1,7 @@
+2009-01-23  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Identation.
+
 2009-01-23  Mike Gorse  <mgorse@novell.com>
 
 	* BridgeTester.cs, BridgeTests.cs: Add FlowLayoutPanel and
