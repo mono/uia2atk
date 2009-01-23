@@ -1,5 +1,10 @@
 2009-01-23  Mike Gorse <mgorse@novell.com>
 
+	* AtkTests.cs: Rework pane test to support FlowLayoutPanel and
+	  TableLayoutPanel.
+
+2009-01-23  Mike Gorse <mgorse@novell.com>
+
 	* AtkTests.cs: Disable ListView test again, since it seems to cause
 	  instability in the gail tester.
 

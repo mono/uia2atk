@@ -391,12 +391,17 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void PaneChildren ()
 		{
+			PaneChildren (panel1);
+		}
+
+		public void PaneChildren (SWF.Control control)
+		{
 			SWF.Button button = new SWF.Button ();
-			Atk.Object accessible = GetAdapterForWidget (panel1);
+			Atk.Object accessible = GetAdapterForWidget (control);
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren #1");
-			panel1.Controls.Add (button);
+			control.Controls.Add (button);
 			Assert.AreEqual (1, accessible.NAccessibleChildren, "NAccessibleChildren #2");
-			panel1.Controls.Remove (button);
+			control.Controls.Remove (button);
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "NAccessibleChildren #3");
 		}
 
@@ -916,6 +921,22 @@ namespace UiaAtkBridgeTest
 			ExpectAttrAndRemove ("underline", "none", attrs);
 			Assert.AreEqual (0, attrs.Count);
 		}	
+
+		[Test]
+		public void FlowLayoutPanel ()
+		{
+			Atk.Object accessible = GetAdapterForWidget (flp);
+			Pane (accessible);
+			PaneChildren (flp);
+		}
+
+		[Test]
+		public void TableLayoutPanel ()
+		{
+			Atk.Object accessible = GetAdapterForWidget (tlp);
+			Pane (accessible);
+			PaneChildren (tlp);
+		}
 
 		private void RemoveItems (Dictionary<string, string> items, Dictionary<string, string> except)
 		{

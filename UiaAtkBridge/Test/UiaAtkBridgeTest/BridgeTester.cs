@@ -94,6 +94,8 @@ namespace UiaAtkBridgeTest
 		protected SWF.SplitContainer splitContainer = new SWF.SplitContainer ();
 		protected SWF.RichTextBox richTextBox = new SWF.RichTextBox ();
 		protected SWF.TrackBar trackBar = new SWF.TrackBar ();
+			protected SWF.FlowLayoutPanel flp = new SWF.FlowLayoutPanel ();
+			protected SWF.TableLayoutPanel tlp = new SWF.TableLayoutPanel ();
 
 		protected int lastClickedLink = -1;
 
@@ -205,6 +207,8 @@ namespace UiaAtkBridgeTest
 			radios.Add (rad3);
 			radios.Add (rad4);
 			form.Controls.Add (tabControl);
+			form.Controls.Add (flp);
+			form.Controls.Add (tlp);
 			form.Text = "UiaAtkBridge test";
 			SWF.Application.EnableVisualStyles ();
 		}

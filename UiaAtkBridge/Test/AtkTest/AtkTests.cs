@@ -1134,11 +1134,16 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void Pane ()
 		{
+			Pane (null);
+		}
+
+		public void Pane (Atk.Object accessible)
+		{
 			BasicWidgetType type = BasicWidgetType.ContainerPanel;
-			Atk.Object accessible;
 			
 			string name = "test";
-			accessible = GetAccessible (type, name, true);
+			if (accessible == null)
+				accessible = GetAccessible (type, name, true);
 			
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 
