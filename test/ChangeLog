@@ -1,3 +1,8 @@
+2009-01-23 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/gtkcombobox2.py: Add another gtk combobox sample that has
+	two ComboBox widgets on the same window.
+
 2009-01-23  Calen Chen <cachen@novell.com>
 
 	* testers/printpreviewdialog_basic_ops.py: add test to check how many 
