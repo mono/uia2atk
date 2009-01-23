@@ -1,3 +1,7 @@
+2009-01-22  Mike Gorse <mgorse@novell.com>
+
+	* TrackBarProviderTest.cs: Add OrientationProperty test.
+
 2009-01-21  Mike Gorse <mgorse@novell.com>
 
 	* Makefile.am, TrackBarProviderTest.cs: Add TrackBarProvider test.

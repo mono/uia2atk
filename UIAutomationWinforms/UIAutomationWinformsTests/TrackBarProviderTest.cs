@@ -51,6 +51,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "slider");
+
+			trackBar.Orientation = Orientation.Vertical;
+			TestProperty (provider,
+			              AutomationElementIdentifiers.OrientationProperty,
+			              OrientationType.Vertical);
+			trackBar.Orientation = Orientation.Horizontal;
+			TestProperty (provider,
+			              AutomationElementIdentifiers.OrientationProperty,
+			              OrientationType.Horizontal);
 		}
 		
 		[Test]
