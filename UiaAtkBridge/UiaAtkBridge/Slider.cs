@@ -98,6 +98,8 @@ namespace UiaAtkBridge
 				Notify ("accessible-value");
 				NewText (e.NewValue.ToString ());
 			}
+			else
+				base.RaiseAutomationPropertyChangedEvent (e);
 		}
 
 		#region TextImplementor Members

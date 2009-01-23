@@ -1,3 +1,7 @@
+2009-01-23  Mike Gorse  <mgorse@novell.com>
+
+	* Slider.cs: Call base handler for unhandled propertyChanged events.
+
 2009-01-22  Mike Gorse  <mgorse@novell.com>
 
 	* AutomationBridge.cs, Container.cs, Splitter.cs, Window.cs, Adapter.cs,
