@@ -73,7 +73,6 @@ for i in range(NUM_MONTHS):
         add_states=[]
         invalid_states=["showing", "visible"]
     statesCheck(dtpddFrame.months[i], "ListItem", invalid_states, add_states)
-    statesCheck(dtpddFrame.months[i], "ListItem", invalid_states, add_states)
 
 # check the status of all days
 for i in range(NUM_DAYS):
@@ -83,7 +82,6 @@ for i in range(NUM_DAYS):
     else:
         add_states=[]
         invalid_states=["showing", "visible"]
-    statesCheck(dtpddFrame.weekdays[i], "ListItem", invalid_states, add_states)
     statesCheck(dtpddFrame.weekdays[i], "ListItem", invalid_states, add_states)
 
 # XXX: the focusable problem is under discussion

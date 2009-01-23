@@ -1,3 +1,8 @@
+2009-01-22 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/datetimepicker_dropdown_ops.py: Fix accidental duplicate
+	statesCheck lines.
+
 2009-01-23  Calen Chen <cachen@novell.com>
 
 	* testers/combobox_dropdown_ops.py: add bug referance
