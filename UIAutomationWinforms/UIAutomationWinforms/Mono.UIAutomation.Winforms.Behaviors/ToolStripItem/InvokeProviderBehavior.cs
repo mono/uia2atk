@@ -97,7 +97,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripItem
 
 			// Make sure selection changes, or else another item's
 			// dropdown menu might still appear.
-			if (item.Owner != null)
+			if (item.Owner != null && item.GetCurrentParent () != null)
 				item.Select ();
 			
 			// PerformClick does _not_ show/hide the DropDown, so
