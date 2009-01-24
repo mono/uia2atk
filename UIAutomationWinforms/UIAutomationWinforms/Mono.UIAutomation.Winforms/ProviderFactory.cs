@@ -141,6 +141,7 @@ namespace Mono.UIAutomation.Winforms
 		                                                       bool forceInitializeChildren)
 		{
 			if (component == null)
+				//FIXME: we should throw new ArgumentNullException ("component");
 				return null;
 
 			// First check if we've seen this component before
