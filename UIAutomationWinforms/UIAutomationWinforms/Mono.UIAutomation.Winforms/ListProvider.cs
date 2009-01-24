@@ -32,6 +32,7 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using Mono.Unix;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 using Mono.UIAutomation.Winforms.Events;
@@ -40,7 +41,7 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 	internal abstract class ListProvider
-		: FragmentRootControlProvider, IListProvider
+		: FragmentRootControlProvider, IListProvider, IScrollBehaviorSubject
 	{
 
 		#region Constructors
@@ -48,6 +49,19 @@ namespace Mono.UIAutomation.Winforms
 		protected ListProvider (Control control) : base (control)
 		{ 
 			items = new Dictionary<object, ListItemProvider> ();
+		}
+		
+		#endregion
+
+		#region IScrollBehaviorSubject specialization
+		
+		public IScrollBehaviorObserver ScrollBehaviorObserver { 
+			get { return observer; }
+		}
+		
+		public FragmentControlProvider GetScrollbarProvider (ScrollBar scrollbar)
+		{
+			return new ListScrollBarProvider (scrollbar, this);
 		}
 		
 		#endregion
@@ -110,7 +124,7 @@ namespace Mono.UIAutomation.Winforms
 			return item;
 		}
 
-		public virtual ListItemProvider RemoveItemFrom (object objectItem)
+		public ListItemProvider RemoveItemFrom (object objectItem)
 		{
 			ListItemProvider item = null;
 
@@ -188,8 +202,6 @@ namespace Mono.UIAutomation.Winforms
 			//According to: http://msdn.microsoft.com/en-us/library/ms742462.aspx
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
 			             GetBehaviorRealization (SelectionPatternIdentifiers.Pattern));
-			SetBehavior (ScrollPatternIdentifiers.Pattern,
-			             GetBehaviorRealization (ScrollPatternIdentifiers.Pattern));
 			SetBehavior (GridPatternIdentifiers.Pattern,
 			             GetBehaviorRealization (GridPatternIdentifiers.Pattern));
 			SetBehavior (MultipleViewPatternIdentifiers.Pattern,
@@ -197,7 +209,12 @@ namespace Mono.UIAutomation.Winforms
 			SetBehavior (TablePatternIdentifiers.Pattern,
 			             GetBehaviorRealization (TablePatternIdentifiers.Pattern));
 		}
-		
+
+		public override void InitializeChildControlStructure ()
+		{
+			InitializeScrollBehaviorObserver ();
+		}
+	
 		public override void FinalizeChildControlStructure ()
 		{
 			foreach (ListItemProvider item in Items)
@@ -211,6 +228,8 @@ namespace Mono.UIAutomation.Winforms
 		#region Internal Methods: Get Behaviors
 
 		internal abstract IProviderBehavior GetBehaviorRealization (AutomationPattern behavior);
+
+		#endregion
 		
 		#region IListProvider implementation
 		public virtual IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
@@ -233,6 +252,43 @@ namespace Mono.UIAutomation.Winforms
 			return null;
 		}
 		#endregion
+
+		#region Scroll Methods and Properties
+
+		protected abstract ScrollBar HorizontalScrollBar { get; }
+
+		protected abstract ScrollBar VerticalScrollBar { get; }
+
+		protected virtual void InitializeScrollBehaviorObserver ()
+		{
+			// Updates Navigation and sets/unsets Scroll Pattern
+			observer = new ScrollBehaviorObserver (this,
+			                                       HorizontalScrollBar, 
+			                                       VerticalScrollBar);
+			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
+			observer.Initialize ();
+			UpdateScrollBehavior ();
+		}
+
+		
+		protected void OnScrollPatternSupportChanged (object sender, EventArgs args)
+		{
+			UpdateScrollBehavior ();
+		}
+
+		private void UpdateScrollBehavior ()
+		{
+			UpdateScrollBehavior (observer);
+		}
+
+		protected void UpdateScrollBehavior (IScrollBehaviorObserver observer)
+		{
+			if (observer.SupportsScrollPattern)
+				SetBehavior (ScrollPatternIdentifiers.Pattern,
+				             GetBehaviorRealization (ScrollPatternIdentifiers.Pattern));
+			else
+				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
+		}
 		
 		#endregion
 
@@ -257,6 +313,37 @@ namespace Mono.UIAutomation.Winforms
 		#region Private Fields
 		
 		private Dictionary<object, ListItemProvider> items;
+		private ScrollBehaviorObserver observer;
+		
+		#endregion
+
+		#region Internal Class: ScrollBar provider
+
+		internal class ListScrollBarProvider : ScrollBarProvider
+		{
+			public ListScrollBarProvider (ScrollBar scrollbar, ListProvider provider)
+				: base (scrollbar)
+			{
+				this.provider = provider;
+				name = scrollbar is HScrollBar ? Catalog.GetString ("Horizontal Scroll Bar")
+					: Catalog.GetString ("Vertical Scroll Bar");
+			}
+			
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { return provider; }
+			}			
+			
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return name;
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
+			
+			private ListProvider provider;
+			private string name;
+		}
 		
 		#endregion
 

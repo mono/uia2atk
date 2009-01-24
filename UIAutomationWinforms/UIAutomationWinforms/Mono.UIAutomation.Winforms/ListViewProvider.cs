@@ -41,7 +41,7 @@ namespace Mono.UIAutomation.Winforms
 {
 	
 	[MapsComponent (typeof (SWF.ListView))]
-	internal class ListViewProvider : ListProvider, IScrollBehaviorSubject
+	internal class ListViewProvider : ListProvider
 	{
 		#region Constructors
 
@@ -56,31 +56,11 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 		
-		#region IScrollBehaviorSubject specialization
-		
-		public IScrollBehaviorObserver ScrollBehaviorObserver { 
-			get { return observer; }
-		}
-		
-		public FragmentControlProvider GetScrollbarProvider (SWF.ScrollBar scrollbar)
-		{
-			return new ListViewScrollBarProvider (scrollbar, listView);
-		}
-		
-		#endregion
-		
 		#region SimpleControlProvider: Specializations
 
 		public override void Initialize ()
 		{
 			base.Initialize ();
-			
-			//ListScrollBehaviorObserver updates Navigation
-			observer = new ScrollBehaviorObserver (this, 
-			                                       listView.UIAHScrollBar, 
-			                                       listView.UIAVScrollBar);
-			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
-			UpdateScrollBehavior ();
 
 			//Event used to verify if groups is enabled so when can generate
 			//a valid UIA tree
@@ -129,7 +109,9 @@ namespace Mono.UIAutomation.Winforms
 					return new TableProviderBehavior (this);
 				else
 					return null;
-			} else
+			} else if (behavior == ScrollPatternIdentifiers.Pattern)
+				return new ScrollProviderBehavior (this);
+			else
 				return null;
 		}
 
@@ -194,7 +176,7 @@ namespace Mono.UIAutomation.Winforms
 				                                   listView, 
 				                                   HeaderProvider != null,
 				                                   listView.UIAHeaderControl,
-				                                   observer);
+				                                   ScrollBehaviorObserver);
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return true;
 			else
@@ -208,8 +190,6 @@ namespace Mono.UIAutomation.Winforms
 		public override void Terminate ()
 		{
 			base.Terminate ();
-			
-			observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
 
 			listView.UIAShowGroupsChanged -= OnUIAShowGroupsChanged;
 		}
@@ -219,7 +199,6 @@ namespace Mono.UIAutomation.Winforms
 			base.InitializeChildControlStructure ();
 
 			listView.Items.UIACollectionChanged += OnCollectionChanged;
-			observer.Initialize ();
 
 			// Use to regenerate children when view changes
 			listView.UIAViewChanged += OnUIAViewChanged;
@@ -231,7 +210,6 @@ namespace Mono.UIAutomation.Winforms
 			base.FinalizeChildControlStructure ();
 
 			listView.Items.UIACollectionChanged -= OnCollectionChanged;
-			observer.Terminate ();
 
 			listView.UIAViewChanged -= OnUIAViewChanged;
 		}
@@ -372,6 +350,18 @@ namespace Mono.UIAutomation.Winforms
 		
 		#endregion
 
+		#region Scroll Methods and Properties
+		
+		protected override SWF.ScrollBar HorizontalScrollBar { 
+			get { return listView.UIAHScrollBar; }
+		}
+
+		protected override SWF.ScrollBar VerticalScrollBar { 
+			get { return listView.UIAVScrollBar; }
+		}
+
+		#endregion
+
 		#region Public Methods
 
 		public ListViewHeaderProvider HeaderProvider {
@@ -481,21 +471,7 @@ namespace Mono.UIAutomation.Winforms
 				OnNavigationChildRemoved (raiseEvent, item);
 			}
 		}
-		
-		private void OnScrollPatternSupportChanged (object sender, EventArgs args)
-		{
-			UpdateScrollBehavior ();
-		}
-		
-		private void UpdateScrollBehavior ()
-		{
-			if (observer.SupportsScrollPattern == true)
-				SetBehavior (ScrollPatternIdentifiers.Pattern,
-				             new ScrollProviderBehavior (this));
-			else
-				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
-		}
-		
+
 		private void UpdateChildrenStructure (bool forceUpdate)
 		{
 			bool updateView = lastView != listView.View;
@@ -570,7 +546,6 @@ namespace Mono.UIAutomation.Winforms
 		private SWF.View lastView;
 		private SWF.ListView listView;
 		private Dictionary<SWF.ListViewGroup, ListViewGroupProvider> groups;
-		private ScrollBehaviorObserver observer;
 		private SWF.ListViewGroup listViewNullGroup;
 		private ListViewHeaderProvider header;
 		private bool showGroups;

@@ -54,7 +54,6 @@ namespace Mono.UIAutomation.Winforms
 
 			listboxProvider = new ComboBoxProvider.ComboBoxListBoxProvider (comboboxControl,
 			                                                                this);
-			listboxProvider.Initialize ();
 		}
 		
 		#endregion
@@ -120,6 +119,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void InitializeChildControlStructure ()
 		{
+			listboxProvider.Initialize ();
 			OnNavigationChildAdded (false, listboxProvider);
 			UpdateBehaviors (false);
 		}
@@ -241,8 +241,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Internal Class: ListBox provider
 		
-		internal class ComboBoxListBoxProvider 
-			: ListProvider, IScrollBehaviorSubject
+		internal class ComboBoxListBoxProvider : ListProvider
 		{
 			
 			public ComboBoxListBoxProvider (SWF.ComboBox control, 
@@ -256,8 +255,6 @@ namespace Mono.UIAutomation.Winforms
 				comboboxControl.DropDownStyleChanged += OnDropDownStyleChanged;
 				comboboxControl.DropDown += OnDropDownAndDropClosed;
 				comboboxControl.DropDownClosed += OnDropDownAndDropClosed;
-
-				listboxControl = ListBoxControl;
 			}
 			
 			public override IRawElementProviderFragmentRoot FragmentRoot {
@@ -337,14 +334,14 @@ namespace Mono.UIAutomation.Winforms
 
 			public override void InitializeChildControlStructure ()
 			{
+				base.InitializeChildControlStructure ();
+
 				comboboxControl.Items.UIACollectionChanged += OnCollectionChanged;
 
 				foreach (object objectItem in comboboxControl.Items) {
 					ListItemProvider item = GetItemProviderFrom (this, objectItem);
 					OnNavigationChildAdded (false, item);
 				}
-
-				InitializeObserver (true);
 			}
 
 			public override void FinalizeChildControlStructure ()
@@ -352,10 +349,6 @@ namespace Mono.UIAutomation.Winforms
 				base.FinalizeChildControlStructure ();
 
 				comboboxControl.Items.UIACollectionChanged -= OnCollectionChanged;
-				if (observer != null) {
-					observer.Terminate ();
-					observer = null;
-				}
 			}
 
 			public override void ScrollItemIntoView (ListItemProvider item) 
@@ -421,6 +414,7 @@ namespace Mono.UIAutomation.Winforms
 				if (behavior == SelectionPatternIdentifiers.Pattern)
 					return new ListBoxSelectionProviderBehavior (this, 
 					                                             comboboxProvider);
+				//FIXME: Implement ScrollPattern
 				else 
 					return null;
 			}		
@@ -447,66 +441,61 @@ namespace Mono.UIAutomation.Winforms
 			public SWF.ComboBox.ComboListBox ListBoxControl {
 				get { return comboboxControl.UIAComboListBox; }
 			}
-
-			public IScrollBehaviorObserver ScrollBehaviorObserver {
-				get { return observer; }
+	
+			protected override SWF.ScrollBar HorizontalScrollBar {
+				// No Horizontal ScrollBar support
+				get { return null; }
 			}
-			
-			public FragmentControlProvider GetScrollbarProvider (SWF.ScrollBar scrollbar)
+	
+			protected override SWF.ScrollBar VerticalScrollBar { 
+				get {
+					if (ListBoxControl == null)
+						return null;
+					return ListBoxControl.UIAVScrollBar; 
+				}
+			}
+
+			protected override void InitializeScrollBehaviorObserver ()
 			{
-				return new ComboBoxListBoxScrollBarProvider (scrollbar, this);
+				// We implement Scroll logic this way because the internal 
+				// control in charge of handling scrolling is disposed when
+				// DropDownStyle is changed and is Expanded/Collapsed
+				if (observer != null 
+				    && (ListBoxControl == null || ListBoxControl != listControl)) {
+					observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
+					observer.Terminate ();
+					SetBehavior (ScrollPatternIdentifiers.Pattern, null);
+				}
+				
+				if (ListBoxControl != null && ListBoxControl != listControl) {					
+					if (ListBoxControl != null) {
+						observer = new ScrollBehaviorObserver (this, null, VerticalScrollBar);
+						observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
+						observer.Initialize (true);
+						UpdateScrollBehavior (observer);
+						ListBoxControl.Disposed += delegate (object obj, EventArgs args) {
+							observer.Terminate ();
+							SetBehavior (ScrollPatternIdentifiers.Pattern, null);
+							listControl = null;
+						};
+					}
+					listControl = ListBoxControl;
+				}
 			}
 
 			private void OnDropDownStyleChanged (object sender, EventArgs args)
 			{
-				InitializeObserver (false);
-			}
-
-			private void InitializeObserver (bool forceInitialization)
-			{
-				SWF.Control oldListBoxControl = listboxControl;
-				if (ListBoxControl != oldListBoxControl || forceInitialization) {
-					if (observer != null) {
-						observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
-						observer.Terminate ();
-					}
-
-					// FIXME: Replace with an internal UIA-like property in SWF
-					if (ListBoxControl != null) {
-						observer = new ScrollBehaviorObserver (this, null,
-						                                       ListBoxControl.UIAVScrollBar);
-						observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
-						observer.Initialize ();
-						UpdateScrollBehavior ();
-					}
-
-					listboxControl = ListBoxControl;
-				}
-			}
-
-			private void OnScrollPatternSupportChanged (object sender, EventArgs args)
-			{
-				UpdateScrollBehavior ();
+				InitializeScrollBehaviorObserver ();
 			}
 
 			private void OnDropDownAndDropClosed (object sender, EventArgs args)
 			{
-				InitializeObserver (false);
-			}
-			
-			private void UpdateScrollBehavior ()
-			{
-				//FIXME: Implement ScrollPattern
-//				if (observer.SupportsScrollPattern == true)
-//					SetBehavior (ScrollPatternIdentifiers.Pattern,
-//					             new ScrollProviderBehavior (this));
-//				else
-//					SetBehavior (ScrollPatternIdentifiers.Pattern, null);
+				InitializeScrollBehaviorObserver ();
 			}
 
+			private SWF.Control listControl;
 			private SWF.ComboBox comboboxControl;
 			private ComboBoxProvider comboboxProvider;
-			private SWF.Control listboxControl;
 			private ScrollBehaviorObserver observer;
 		}
 		
@@ -545,34 +534,6 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			private ComboBoxProvider provider;
-		}
-		
-		#endregion
-
-		#region Internal Class: ScrollBar provider
-
-		internal class ComboBoxListBoxScrollBarProvider : ScrollBarProvider
-		{
-			public ComboBoxListBoxScrollBarProvider (SWF.ScrollBar scrollbar,
-			                                         ComboBoxListBoxProvider listboxProvider)
-				: base (scrollbar)
-			{
-				this.listboxProvider = listboxProvider;
-			}
-			
-			public override IRawElementProviderFragmentRoot FragmentRoot {
-				get { return listboxProvider; }
-			}			
-			
-			protected override object GetProviderPropertyValue (int propertyId)
-			{
-				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return Catalog.GetString ("Vertical Scroll Bar");
-				else
-					return base.GetProviderPropertyValue (propertyId);
-			}
-			
-			private ComboBoxListBoxProvider listboxProvider;
 		}
 		
 		#endregion

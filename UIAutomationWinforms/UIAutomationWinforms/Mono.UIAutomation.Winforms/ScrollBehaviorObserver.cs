@@ -120,19 +120,24 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region Public Methods
-		
-		public void Initialize ()
+
+		public void Initialize (bool raise)
 		{
 			if (HasHorizontalScrollbar == true)
 				RaiseNavigationEvent (StructureChangeType.ChildAdded,
 				                      ref hscrollbarProvider,
 				                      HorizontalScrollBar,
-				                      false);
+				                      raise);
 			if (HasVerticalScrollbar == true)
 				RaiseNavigationEvent (StructureChangeType.ChildAdded,
 				                      ref vscrollbarProvider,
 				                      VerticalScrollBar,
-				                      false);
+				                      raise);
+		}
+		
+		public void Initialize ()
+		{
+			Initialize (false);
 		}
 
 		public void Terminate ()
@@ -141,13 +146,13 @@ namespace Mono.UIAutomation.Winforms
 			VerticalScrollBar = null;
 
 			if (hscrollbarProvider != null) {
-				subject.RemoveChildProvider (false, hscrollbarProvider);
+				subject.RemoveChildProvider (true, hscrollbarProvider);
 				hscrollbarProvider.Terminate ();
 				hscrollbarProvider = null;
 			}
 
 			if (vscrollbarProvider != null) {
-				subject.RemoveChildProvider (false, vscrollbarProvider);
+				subject.RemoveChildProvider (true, vscrollbarProvider);
 				vscrollbarProvider.Terminate ();
 				vscrollbarProvider = null;
 			}

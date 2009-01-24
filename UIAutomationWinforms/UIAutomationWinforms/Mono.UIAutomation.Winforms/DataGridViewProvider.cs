@@ -37,8 +37,9 @@ namespace Mono.UIAutomation.Winforms
 {
 		
 	[MapsComponent (typeof (SWF.DataGridView))]
-	internal class DataGridViewProvider : ListProvider, IScrollBehaviorSubject
+	internal class DataGridViewProvider : ListProvider
 	{
+		#region Constructors
 		
 		public DataGridViewProvider (SWF.DataGridView datagridView) 
 			: base (datagridView)
@@ -46,49 +47,28 @@ namespace Mono.UIAutomation.Winforms
 			this.datagridView = datagridView;
 		}
 
-		#region IScrollBehaviorSubject specialization
-		
-		public IScrollBehaviorObserver ScrollBehaviorObserver { 
-			get { return observer; }
-		}
-		
-		public FragmentControlProvider GetScrollbarProvider (SWF.ScrollBar scrollbar)
-		{
-			return new DataGridViewScrollBarProvider (scrollbar, this);
-		}
-
 		#endregion
 
 		#region Overridden Methods
 
-		public override void Initialize ()
-		{
-			base.Initialize ();
-
-			// NOTE:
-			//       SWF.DataGridView.VerticalScrollBar and 
-			//       SWF.DataGridView.HorizontalScrollBar are protected 
-			//       properties part of the public API.
-			SWF.ScrollBar hscrollbar
-				= Helper.GetPrivateProperty<SWF.DataGridView, SWF.ScrollBar> (typeof (SWF.DataGridView),
-				                                                              this.datagridView,
-				                                                              "HorizontalScrollBar");
-			SWF.ScrollBar vscrollbar
-				= Helper.GetPrivateProperty<SWF.DataGridView, SWF.ScrollBar> (typeof (SWF.DataGridView),
-				                                                              this.datagridView,
-				                                                              "VerticalScrollBar");
-			
-			//ListScrollBehaviorObserver updates Navigation
-			observer = new ScrollBehaviorObserver (this, hscrollbar, vscrollbar);
-			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
-			UpdateScrollBehavior ();
+		// NOTE:
+		//       SWF.DataGridView.VerticalScrollBar and 
+		//       SWF.DataGridView.HorizontalScrollBar are protected 
+		//       properties part of the public API.
+		protected override SWF.ScrollBar HorizontalScrollBar { 
+			get {
+				return Helper.GetPrivateProperty<SWF.DataGridView, SWF.ScrollBar> (typeof (SWF.DataGridView),
+				                                                                   datagridView,
+				                                                                   "HorizontalScrollBar");
+			}
 		}
 
-		public override void Terminate ()
-		{
-			base.Terminate ();
-			
-			observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
+		protected override SWF.ScrollBar VerticalScrollBar { 
+			get {
+				return Helper.GetPrivateProperty<SWF.DataGridView, SWF.ScrollBar> (typeof (SWF.DataGridView),
+				                                                                   datagridView,
+				                                                                   "VerticalScrollBar");
+			}
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -194,12 +174,15 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (behavior == SelectionPatternIdentifiers.Pattern)
 				return new SelectionProviderBehavior (this);
+			// FIXME: Implement ScrollProviderBehavior
 			else
 				return null;
 		}
 
 		public override void InitializeChildControlStructure ()
 		{
+			base.InitializeChildControlStructure ();
+
 			datagridView.Rows.CollectionChanged += OnCollectionChanged;
 			datagridView.Columns.CollectionChanged += OnColumnsCollectionChanged;
 
@@ -215,6 +198,8 @@ namespace Mono.UIAutomation.Winforms
 
 		public override void FinalizeChildControlStructure ()
 		{
+			base.FinalizeChildControlStructure ();
+			
 			datagridView.Rows.CollectionChanged -= OnCollectionChanged;
 			datagridView.Columns.CollectionChanged -= OnColumnsCollectionChanged;
 		}
@@ -240,31 +225,12 @@ namespace Mono.UIAutomation.Winforms
 			// FIXME: Add/remove HeaderItems
 		}
 
-		private void OnScrollPatternSupportChanged (object sender, EventArgs args)
-		{
-			UpdateScrollBehavior ();
-		}
-
-		#endregion
-
-		#region Private Methods
-
-		private void UpdateScrollBehavior ()
-		{
-//			if (observer.SupportsScrollPattern == true)
-//				SetBehavior (ScrollPatternIdentifiers.Pattern,
-//				             new ScrollProviderBehavior (this));
-//			else
-				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
-		}
-
 		#endregion
 
 		#region Private Fields
 
 		private SWF.DataGridView datagridView;
 		private DataGridViewHeaderProvider header;
-		private ScrollBehaviorObserver observer;
 
 		#endregion
 

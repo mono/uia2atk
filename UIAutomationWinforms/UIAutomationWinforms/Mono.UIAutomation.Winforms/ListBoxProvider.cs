@@ -40,7 +40,7 @@ namespace Mono.UIAutomation.Winforms
 {
 
 	[MapsComponent (typeof (ListBox))]
-	internal class ListBoxProvider : ListProvider, IScrollBehaviorSubject, IListProvider
+	internal class ListBoxProvider : ListProvider
 	{		
 	
 		#region Constructor 
@@ -51,52 +51,32 @@ namespace Mono.UIAutomation.Winforms
 		}
 
 		#endregion
-		
-		#region IScrollBehaviorSubject specialization
 
-		public IScrollBehaviorObserver ScrollBehaviorObserver { 
-			get { return observer; }
+		#region Scroll Methods and Properties
+
+		protected override ScrollBar HorizontalScrollBar { 
+			get { return listboxControl.UIAHScrollBar; }
 		}
-		
-		public FragmentControlProvider GetScrollbarProvider (ScrollBar scrollbar)
-		{
-			return new ListBoxScrollBarProvider (scrollbar, listboxControl);
+
+		protected override ScrollBar VerticalScrollBar { 
+			get { return listboxControl.UIAVScrollBar; }
 		}
-		
-		#endregion
+
+		#endregion 
 		
 		#region Public Methods
 		
 		public ScrollBar GetInternalScrollBar (Orientation orientation)
 		{
 			if (orientation == Orientation.Horizontal)
-				return observer.HorizontalScrollBar;
+				return HorizontalScrollBar;
 			else
-				return observer.VerticalScrollBar;
-		}
-		
-		public override void Terminate ()
-		{
-			base.Terminate ();
-
-			observer.ScrollPatternSupportChanged -= OnScrollPatternSupportChanged;
+				return VerticalScrollBar;
 		}
 		
 		#endregion
 		
 		#region SimpleControlProvider: Specializations
-
-		public override void Initialize()
-		{
-			base.Initialize ();
-
-			//ListScrollBehaviorObserver updates Navigation
-			observer = new ScrollBehaviorObserver (this, 
-			                                       listboxControl.UIAHScrollBar, 
-			                                       listboxControl.UIAVScrollBar);
-			observer.ScrollPatternSupportChanged += OnScrollPatternSupportChanged;
-			UpdateScrollBehavior ();
-		}
 
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
@@ -140,14 +120,14 @@ namespace Mono.UIAutomation.Winforms
 
 		public override void InitializeChildControlStructure ()
 		{
+			base.InitializeChildControlStructure ();
+			
 			listboxControl.Items.UIACollectionChanged += OnCollectionChanged;
 			
 			foreach (object objectItem in listboxControl.Items) {
 				ListItemProvider item = GetItemProviderFrom (this, objectItem);
 				OnNavigationChildAdded (false, item);
 			}
-			
-			observer.Initialize ();
 		}
 		
 		public override void FinalizeChildControlStructure ()
@@ -155,8 +135,6 @@ namespace Mono.UIAutomation.Winforms
 			base.FinalizeChildControlStructure ();
 
 			listboxControl.Items.UIACollectionChanged -= OnCollectionChanged;
-			
-			observer.Terminate ();
 		}
 		
 		#endregion
@@ -188,11 +166,13 @@ namespace Mono.UIAutomation.Winforms
 					itemRec = listboxControl.Parent.RectangleToScreen (itemRec);
 	
 				return Helper.RectangleToRect (itemRec);
-			} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
-				Rect rect
-					= (Rect) item.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-				return Helper.IsOffScreen (rect, listboxControl, true);
-			} else
+			} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
+				return Helper.IsListItemOffScreen ((Rect) item.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id),
+				                                   listboxControl,
+				                                   false,
+				                                   System.Drawing.Rectangle.Empty,
+				                                   ScrollBehaviorObserver);
+			else
 				return null;
 		}
 		
@@ -247,6 +227,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (eventType == ProviderEventType.AutomationElementHasKeyboardFocusProperty)
 			    return new ListItemAutomationHasKeyboardFocusPropertyEvent (provider);
+			else if (eventType == ProviderEventType.AutomationElementHasKeyboardFocusProperty)
+			    return new ListItemAutomationIsOffscreenPropertyEvent (provider);
 			else
 				return base.GetListItemEventRealization (eventType, provider);
 		}
@@ -265,6 +247,8 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (behavior == SelectionPatternIdentifiers.Pattern)
 				return new SelectionProviderBehavior (this);
+			else if (behavior == ScrollPatternIdentifiers.Pattern)
+				return new ScrollProviderBehavior (this);
 			else 
 				return null;
 		}		
@@ -279,62 +263,10 @@ namespace Mono.UIAutomation.Winforms
 		}
 		
 		#endregion
-
-		#region ScrollBehaviorObserver Methods
-		
-		private void OnScrollPatternSupportChanged (object sender, EventArgs args)
-		{
-			UpdateScrollBehavior ();
-		}
-		
-		private void UpdateScrollBehavior ()
-		{
-			if (observer.SupportsScrollPattern == true)
-				SetBehavior (ScrollPatternIdentifiers.Pattern,
-				             new ScrollProviderBehavior (this));
-			else
-				SetBehavior (ScrollPatternIdentifiers.Pattern, null);
-		}
-		
-		#endregion
 		
 		#region Private Fields
 		
 		private ListBox listboxControl;
-		private ScrollBehaviorObserver observer;
-		
-		#endregion
-
-		#region Internal Class: ScrollBar provider
-
-		internal class ListBoxScrollBarProvider : ScrollBarProvider
-		{
-			public ListBoxScrollBarProvider (ScrollBar scrollbar,
-			                                 ListBox listbox)
-				: base (scrollbar)
-			{
-				this.listbox = listbox;
-				name = scrollbar is HScrollBar ? Catalog.GetString ("Horizontal Scroll Bar")
-					: Catalog.GetString ("Vertical Scroll Bar");
-			}
-			
-			public override IRawElementProviderFragmentRoot FragmentRoot {
-				get {
-					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (listbox);
-				}
-			}			
-			
-			protected override object GetProviderPropertyValue (int propertyId)
-			{
-				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return name;
-				else
-					return base.GetProviderPropertyValue (propertyId);
-			}
-			
-			private ListBox listbox;
-			private string name;
-		}
 		
 		#endregion
 	}
