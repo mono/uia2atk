@@ -21,7 +21,7 @@
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
-// 
+
 using System;
 using System.ComponentModel;
 using SD = System.Drawing;

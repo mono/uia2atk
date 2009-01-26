@@ -21,7 +21,7 @@
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
-// 
+
 using System;
 using SWF = System.Windows.Forms;
 using System.Windows.Forms;

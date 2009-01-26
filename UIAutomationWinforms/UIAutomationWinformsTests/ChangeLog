@@ -1,5 +1,19 @@
 2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* MockBridge.cs:
+	* HelpProviderTest.cs:
+	* BaseProviderTest.cs:
+	* MiscHierarchyTest.cs:
+	* LabelProviderTest.cs:
+	* ButtonProviderTest.cs:
+	* ToolBarProviderTest.cs:
+	* GroupBoxProviderTest.cs:
+	* ListViewProviderTest.cs:
+	* CheckBoxProviderTest.cs:
+	* PictureBoxProviderTest.cs: Fix some headers and style.
+
+2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BaseProviderTest.cs: Throw ANE.
 
 	* ToolBarProviderTest.cs: Added ProviderFactory testing to ToolBarButton

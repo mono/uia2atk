@@ -147,7 +147,7 @@ namespace Mono.UIAutomation.Winforms
 			//       aren't sent to bridge until the parent's already
 			//       there.  There are about 100 ways to do this
 			//       better.
-			if (Control != null) {				
+			if (Control != null) {
 				Control.ControlAdded += OnControlAdded;
 				Control.ControlRemoved += OnControlRemoved;
 				
