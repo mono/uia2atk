@@ -80,7 +80,7 @@ namespace UiaAtkBridgeTest
 			if (accessible == null)
 				accessible = GetAccessible (type, name);
 
-			Interfaces (accessible.Parent,
+			Interfaces (accessible,
 			            typeof (Atk.Component),
 			            typeof (Atk.Image),
 			            typeof (Atk.Action),
