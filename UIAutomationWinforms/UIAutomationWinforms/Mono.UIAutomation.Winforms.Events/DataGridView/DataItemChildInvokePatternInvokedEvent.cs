@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 
 		#region Constructors
 
-		public DataItemChildInvokePatternInvokedEvent (DataGridViewProvider.DataGridViewDataItemButtonProvider provider) 
+		public DataItemChildInvokePatternInvokedEvent (DataGridViewProvider.DataGridViewDataItemChildProvider provider) 
 			: base (provider, InvokePatternIdentifiers.InvokedEvent)
 		{
 			this.provider = provider;
@@ -71,7 +71,7 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 
 		#region Private Methods
 
-		private DataGridViewProvider.DataGridViewDataItemButtonProvider provider;
+		private DataGridViewProvider.DataGridViewDataItemChildProvider provider;
 
 		#endregion
 	}

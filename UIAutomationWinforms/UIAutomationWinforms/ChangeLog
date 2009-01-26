@@ -1,3 +1,13 @@
+2009-01-26  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: DataGridView. Link
+	columns support.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildInvokePatternInvokedEvent.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildInvokeProviderBehavior.cs:
+	DataGridViewDataItemButtonProvider ->
+	DataGridViewDataItemChildProvider
+
 2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/ErrorProviderListener.cs:

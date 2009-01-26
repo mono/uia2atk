@@ -482,6 +482,8 @@ namespace Mono.UIAutomation.Winforms
 						child = new DataGridViewDataItemButtonProvider (this, column);
 					else if ((column as SWF.DataGridViewCheckBoxColumn) != null)
 						child = new DataGridViewDataItemCheckBoxProvider (this, column);
+					else if ((column as SWF.DataGridViewLinkColumn) != null)
+						child = new DataGridViewDataItemLinkProvider (this, column);
 					else
 						child = new DataGridViewDataItemChildProvider (this, column);
 
@@ -549,15 +551,13 @@ namespace Mono.UIAutomation.Winforms
 
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
-				// TODO: Generalize?
+				// FIXME: Generalize?
 				
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id) {
 					if (typeof (SWF.DataGridViewComboBoxColumn) == column.GetType ())
 						return ControlType.ComboBox.Id;
 					else if (typeof (SWF.DataGridViewImageColumn) == column.GetType ())
 						return ControlType.Image.Id;
-					else if (typeof (SWF.DataGridViewLinkColumn) == column.GetType ())
-						return ControlType.Hyperlink.Id;
 					else // SWF.DataGridViewTextBoxColumn or something else
 						return ControlType.Edit.Id;
 				} else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id) {
@@ -565,8 +565,6 @@ namespace Mono.UIAutomation.Winforms
 						return Catalog.GetString ("combobox");
 					else if (typeof (SWF.DataGridViewImageColumn) == column.GetType ())
 						return Catalog.GetString ("image");
-					else if (typeof (SWF.DataGridViewLinkColumn) == column.GetType ())
-						return Catalog.GetString ("hyperlink");
 					else // SWF.DataGridViewTextBoxColumn or something else
 						return Catalog.GetString ("edit");
 				} else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
@@ -639,8 +637,6 @@ namespace Mono.UIAutomation.Winforms
 					return ControlType.Button.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return Catalog.GetString ("button");
-				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
-					return null;
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
@@ -650,7 +646,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#endregion
 
-		#region Internal Class: Data Item Button Provider
+		#region Internal Class: Data Item CheckBox Provider
 
 		internal class DataGridViewDataItemCheckBoxProvider : DataGridViewDataItemChildProvider
 		{
@@ -658,7 +654,7 @@ namespace Mono.UIAutomation.Winforms
 			                                             SWF.DataGridViewColumn column)
 				: base (itemProvider, column)
 			{
-				checkBox = (SWF.DataGridViewCheckBoxCell) Cell;
+				checkBoxCell = (SWF.DataGridViewCheckBoxCell) Cell;
 			}
 
 			public override void Initialize ()
@@ -670,7 +666,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			public SWF.DataGridViewCheckBoxCell CheckBoxCell {
-				get { return checkBox; }
+				get { return checkBoxCell; }
 			}
 			
 			protected override object GetProviderPropertyValue (int propertyId)
@@ -679,13 +675,42 @@ namespace Mono.UIAutomation.Winforms
 					return ControlType.CheckBox.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return Catalog.GetString ("checkbox");
-				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
-					return null;
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
 
-			private SWF.DataGridViewCheckBoxCell checkBox;
+			private SWF.DataGridViewCheckBoxCell checkBoxCell;
+		}
+
+		#endregion
+
+		#region Internal Class: Data Item Link Provider
+
+		internal class DataGridViewDataItemLinkProvider : DataGridViewDataItemChildProvider
+		{
+			public DataGridViewDataItemLinkProvider (DataGridDataItemProvider itemProvider,
+			                                         SWF.DataGridViewColumn column)
+				: base (itemProvider, column)
+			{
+			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+	
+				SetBehavior (InvokePatternIdentifiers.Pattern, 
+				             new DataItemChildInvokeProviderBehavior (this));
+			}
+			
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.Hyperlink.Id;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return Catalog.GetString ("hyperlink");
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
 		}
 
 		#endregion
