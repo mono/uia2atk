@@ -67,6 +67,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGrid/TableProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildInvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/ButtonInvokeProviderBehavior.cs \
@@ -209,6 +211,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGrid/TablePatternColumnHeadersEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildInvokePatternInvokedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildTogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartListItemSelectionItemPatternElementSelectedEvent.cs \

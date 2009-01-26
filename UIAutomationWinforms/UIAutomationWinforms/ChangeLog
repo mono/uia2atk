@@ -1,3 +1,27 @@
+2009-01-26  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGridView: Behaviors and events
+	added: Invoke and Toggle.
+
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs:
+	DataGridView.Child: Button and CheckBox columns support.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildInvokeProviderBehavior.cs:
+	DataGridView: Invoke behavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildToggleProviderBehavior.cs:
+	DataGridView: Toggle behavior.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView: DataGridView events
+	folder.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildTogglePatternToggleStateEvent.cs:
+	DataGridView: Raises ToggleState event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildInvokePatternInvokedEvent.cs:
+	DataGridView: Raises Invoked event.
+
 2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Fix typo.

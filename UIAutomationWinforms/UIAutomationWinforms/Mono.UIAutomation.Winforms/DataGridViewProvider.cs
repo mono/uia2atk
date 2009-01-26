@@ -41,10 +41,10 @@ namespace Mono.UIAutomation.Winforms
 	{
 		#region Constructors
 		
-		public DataGridViewProvider (SWF.DataGridView datagridView) 
-			: base (datagridView)
+		public DataGridViewProvider (SWF.DataGridView datagridview) 
+			: base (datagridview)
 		{
-			this.datagridView = datagridView;
+			this.datagridview = datagridview;
 		}
 
 		#endregion
@@ -58,7 +58,7 @@ namespace Mono.UIAutomation.Winforms
 		protected override SWF.ScrollBar HorizontalScrollBar { 
 			get {
 				return Helper.GetPrivateProperty<SWF.DataGridView, SWF.ScrollBar> (typeof (SWF.DataGridView),
-				                                                                   datagridView,
+				                                                                   datagridview,
 				                                                                   "HorizontalScrollBar");
 			}
 		}
@@ -66,7 +66,7 @@ namespace Mono.UIAutomation.Winforms
 		protected override SWF.ScrollBar VerticalScrollBar { 
 			get {
 				return Helper.GetPrivateProperty<SWF.DataGridView, SWF.ScrollBar> (typeof (SWF.DataGridView),
-				                                                                   datagridView,
+				                                                                   datagridview,
 				                                                                   "VerticalScrollBar");
 			}
 		}
@@ -96,27 +96,31 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (!ContainsItem (item))
 				return;
-			
-			DataGridDataItemProvider dataItem = (DataGridDataItemProvider) item;
-			dataItem.Row.Selected = true;
+
+			((DataGridDataItemProvider) item).Row.Selected = true;
 		}
 
 		public override void ScrollItemIntoView (ListItemProvider item)
 		{
+			if (!ContainsItem (item))
+				return;
+
+			DataGridDataItemProvider dataItem = (DataGridDataItemProvider) item;
+			datagridview.FirstDisplayedCell = dataItem.Row.Cells [0];
 		}
 
 		public override ListItemProvider[] GetSelectedItems ()
 		{
 			List<ListItemProvider> items = new List<ListItemProvider> ();
 			
-			foreach (SWF.DataGridViewRow row in datagridView.SelectedRows)
+			foreach (SWF.DataGridViewRow row in datagridview.SelectedRows)
 				items.Add (GetItemProviderFrom (this, row, false));
 
 			return items.ToArray ();
 		}
 		
 		public override int SelectedItemsCount {
-			get { return datagridView.SelectedRows.Count; }
+			get { return datagridview.SelectedRows.Count; }
 		}
 
 		public override bool IsItemSelected (ListItemProvider item)
@@ -124,12 +128,11 @@ namespace Mono.UIAutomation.Winforms
 			if (!ContainsItem (item))
 				return false;
 
-			DataGridDataItemProvider dataItem = (DataGridDataItemProvider) item;
-			return dataItem.Row.Selected;
+			return ((DataGridDataItemProvider) item).Row.Selected;
 		}
 		
 		public override int ItemsCount {
-			get { return datagridView.Rows.Count; }
+			get { return datagridview.Rows.Count; }
 		}
 
 		public override int IndexOfObjectItem (object objectItem)
@@ -138,7 +141,7 @@ namespace Mono.UIAutomation.Winforms
 			if (row == null)
 				return -1;
 
-			return datagridView.Rows.IndexOf (row);
+			return datagridview.Rows.IndexOf (row);
 		}
 
 		public override object GetItemPropertyValue (ListItemProvider item, int propertyId)
@@ -150,20 +153,19 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return false;
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-				SD.Rectangle rectangle = datagridView.GetRowDisplayRectangle (provider.Row.Index, false);
-				if (datagridView.RowHeadersVisible)
-					rectangle.X += datagridView.RowHeadersWidth;
+				SD.Rectangle rectangle = datagridview.GetRowDisplayRectangle (provider.Row.Index, false);
+				if (datagridview.RowHeadersVisible)
+					rectangle.X += datagridview.RowHeadersWidth;
 
 				return Helper.GetControlScreenBounds (rectangle, 
-				                                      datagridView, 
+				                                      datagridview,
 				                                      true);
 			} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
-				return false;
-//				return Helper.IsListItemOffScreen ((Rect) item.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id),
-//				                                   datagridView, 
-//				                                   datagridView.ColumnHeadersVisible,
-//				                                   listView.UIAHeaderControl,
-//				                                   observer);
+				return Helper.IsListItemOffScreen (item.BoundingRectangle,
+				                                   datagridview, 
+				                                   datagridview.ColumnHeadersVisible,
+				                                   header.Size,
+				                                   ScrollBehaviorObserver);
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return true; // FIXME: Is this always OK?
 			else
@@ -183,25 +185,22 @@ namespace Mono.UIAutomation.Winforms
 		{
 			base.InitializeChildControlStructure ();
 
-			datagridView.Rows.CollectionChanged += OnCollectionChanged;
-			datagridView.Columns.CollectionChanged += OnColumnsCollectionChanged;
+			header = new DataGridViewHeaderProvider (this);
+			header.Initialize ();
+			OnNavigationChildAdded (false, header);
 
-			foreach (SWF.DataGridViewRow row in datagridView.Rows) {
+			datagridview.Rows.CollectionChanged += OnCollectionChanged;
+			foreach (SWF.DataGridViewRow row in datagridview.Rows) {
 				ListItemProvider itemProvider = GetItemProviderFrom (this, row);
 				OnNavigationChildAdded (false, itemProvider);
 			}
-
-			header = new DataGridViewHeaderProvider (datagridView);
-			header.Initialize ();
-			OnNavigationChildAdded (false, header);
 		}
 
 		public override void FinalizeChildControlStructure ()
 		{
 			base.FinalizeChildControlStructure ();
 			
-			datagridView.Rows.CollectionChanged -= OnCollectionChanged;
-			datagridView.Columns.CollectionChanged -= OnColumnsCollectionChanged;
+			datagridview.Rows.CollectionChanged -= OnCollectionChanged;
 		}
 
 		protected override ListItemProvider GetNewItemProvider (FragmentRootControlProvider rootProvider,
@@ -209,27 +208,28 @@ namespace Mono.UIAutomation.Winforms
 		                                                        SWF.Control control,
 		                                                        object objectItem)
 		{
-			// TODO: Supports Groups??
 			return new DataGridDataItemProvider (this, 
-			                                     datagridView, 
+			                                     datagridview, 
 			                                     (SWF.DataGridViewRow) objectItem);
 		}
 
 		#endregion
 
-		#region Event Handlers
+		#region Public Properties
 
-		private void OnColumnsCollectionChanged (object sender,
-		                                         CollectionChangeEventArgs args)
-		{
-			// FIXME: Add/remove HeaderItems
+		public DataGridViewHeaderProvider Header {
+			get { return header; }
+		}
+
+		public SWF.DataGridView DataGridView {
+			get { return datagridview; }
 		}
 
 		#endregion
 
 		#region Private Fields
 
-		private SWF.DataGridView datagridView;
+		private SWF.DataGridView datagridview;
 		private DataGridViewHeaderProvider header;
 
 		#endregion
@@ -238,21 +238,35 @@ namespace Mono.UIAutomation.Winforms
 		
 		internal class DataGridViewHeaderProvider : FragmentRootControlProvider
 		{
-			public DataGridViewHeaderProvider (SWF.DataGridView datagridview) : base (null)
+			public DataGridViewHeaderProvider (DataGridViewProvider provider) : base (null)
 			{
-				this.datagridview = datagridview;
+				viewProvider = provider;
 				headers = new Dictionary<SWF.DataGridViewColumn, DataGridViewHeaderItemProvider> ();
 			}
 
 			public override IRawElementProviderFragmentRoot FragmentRoot {
-				get { 
-					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (datagridview); 
-				}
+				get {  return viewProvider; }
 			}
 
 			public SWF.DataGridView DataGridView {
-				get { return datagridview; }
-			}			
+				get { return viewProvider.DataGridView; }
+			}
+
+			public SD.Rectangle Size {
+				get {
+					if (!DataGridView.ColumnHeadersVisible)
+						return new SD.Rectangle (0, 0, 0, 0);
+					else {
+						SD.Rectangle bounds = SD.Rectangle.Empty;
+						bounds.Height = DataGridView.ColumnHeadersHeight;
+						bounds.Width = DataGridView.RowHeadersWidth;
+						for (int index = 0; index < DataGridView.Columns.Count; index++)
+							bounds.Width += DataGridView.Columns [index].Width;
+						
+						return bounds;
+					}
+				}
+			}
 
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
@@ -274,60 +288,62 @@ namespace Mono.UIAutomation.Winforms
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 					return true;
-				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-					if (!datagridview.ColumnHeadersVisible)
-						return Helper.GetControlScreenBounds (new SD.Rectangle (0, 0, 0, 0), datagridview, true);
-					else {
-						SD.Rectangle bounds = SD.Rectangle.Empty;
-						bounds.Height = datagridview.ColumnHeadersHeight;
-						bounds.Width = datagridview.RowHeadersWidth;
-						for (int index = 0; index < datagridview.Columns.Count; index++)
-							bounds.Width += datagridview.Columns [index].Width;
-						
-						return Helper.GetControlScreenBounds (bounds, datagridview, true);
-					}
-				} else
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+					return Helper.GetControlScreenBounds (Size, DataGridView, true);
+				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
 
 			public override void InitializeChildControlStructure ()
 			{
-				datagridview.Columns.CollectionChanged += OnColumnsCollectionChanged;
+				DataGridView.Columns.CollectionChanged += OnColumnsCollectionChanged;
 				
-				foreach (SWF.DataGridViewColumn column in datagridview.Columns) {
-					DataGridViewHeaderItemProvider headerItem 
-						= new DataGridViewHeaderItemProvider (this, column);
-					headerItem.Initialize ();
-					OnNavigationChildAdded (false, headerItem);
-					headers [column] = headerItem;
-				}
+				foreach (SWF.DataGridViewColumn column in DataGridView.Columns)
+					UpdateCollection (column, CollectionChangeAction.Add, false);
+			}
+
+			public override void FinalizeChildControlStructure ()
+			{
+				base.FinalizeChildControlStructure ();
+
+				foreach (DataGridViewHeaderItemProvider item in headers.Values)
+					item.Terminate ();
+
+				headers.Clear ();
 			}
 
 			private void OnColumnsCollectionChanged (object sender,
 			                                         CollectionChangeEventArgs args)
 			{
-				SWF.DataGridViewColumn column = (SWF.DataGridViewColumn) args.Element;
-				
-				if (args.Action == CollectionChangeAction.Remove) {
+				UpdateCollection ((SWF.DataGridViewColumn) args.Element,
+				                  args.Action,
+				                  true);
+			}
+
+			private void UpdateCollection (SWF.DataGridViewColumn column, 
+			                               CollectionChangeAction change,
+			                               bool raiseEvent)
+			{
+				if (change == CollectionChangeAction.Remove) {
 					DataGridViewHeaderItemProvider headerItem = headers [column];
-					OnNavigationChildRemoved (true, headerItem);
+					OnNavigationChildRemoved (raiseEvent, headerItem);
 					headers.Remove (column);
-				} else if (args.Action == CollectionChangeAction.Add) {
+				} else if (change == CollectionChangeAction.Add) {
 					DataGridViewHeaderItemProvider headerItem 
 						= new DataGridViewHeaderItemProvider (this, column);
 					headerItem.Initialize ();
-					OnNavigationChildAdded (true, headerItem);
+					OnNavigationChildAdded (raiseEvent, headerItem);
 					headers [column] = headerItem;
 				}
 			}
 
+			private DataGridViewProvider viewProvider;
 			private Dictionary<SWF.DataGridViewColumn, DataGridViewHeaderItemProvider> headers;
-			private SWF.DataGridView datagridview;
 		}
 
 		#endregion
 
-		#region
+		#region Internal Class: Header Item Provider
 
 		internal class DataGridViewHeaderItemProvider : FragmentControlProvider
 		{
@@ -394,7 +410,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#endregion
 
-		#region Internal Class: Data Item
+		#region Internal Class: Data Item Provider
 
 		internal class DataGridDataItemProvider : ListItemProvider
 		{
@@ -405,6 +421,8 @@ namespace Mono.UIAutomation.Winforms
 			{
 				this.datagridview = datagridview;
 				this.row = row;
+
+				columns = new Dictionary<SWF.DataGridViewColumn, DataGridViewDataItemChildProvider> ();
 			}
 
 			public SWF.DataGridView DataGridView {
@@ -427,16 +445,53 @@ namespace Mono.UIAutomation.Winforms
 
 			public override void InitializeChildControlStructure ()
 			{
-				for (int index = 0; index < datagridview.Columns.Count; index++) {
-					DataGridViewDataItemChildProvider child
-						= new DataGridViewDataItemChildProvider (this, 
-						                                         datagridview.Columns [index],
-						                                         Row.Cells [index]);
+				foreach (SWF.DataGridViewColumn column in datagridview.Columns)
+					UpdateCollection (column, CollectionChangeAction.Add, false);
+
+				datagridview.Columns.CollectionChanged += OnColumnsCollectionChanged;
+			}
+
+			public override void FinalizeChildControlStructure ()
+			{
+				base.FinalizeChildControlStructure ();
+
+				datagridview.Columns.CollectionChanged -= OnColumnsCollectionChanged;
+			}
+
+			private void OnColumnsCollectionChanged (object sender, 
+			                                         CollectionChangeEventArgs args)
+			{
+				UpdateCollection ((SWF.DataGridViewColumn) args.Element,
+				                  args.Action, 
+				                  true);
+			}
+
+			private void UpdateCollection (SWF.DataGridViewColumn column, 
+			                               CollectionChangeAction change,
+			                               bool raiseEvent)
+			{
+				if (change == CollectionChangeAction.Remove) {
+					DataGridViewDataItemChildProvider child = columns [column];
+					OnNavigationChildRemoved (raiseEvent, child);
+					child.Terminate ();
+					columns.Remove (child.Column);
+				} else if (change == CollectionChangeAction.Add) {
+					DataGridViewDataItemChildProvider child;
+
+					if ((column as SWF.DataGridViewButtonColumn) != null)
+						child = new DataGridViewDataItemButtonProvider (this, column);
+					else if ((column as SWF.DataGridViewCheckBoxColumn) != null)
+						child = new DataGridViewDataItemCheckBoxProvider (this, column);
+					else
+						child = new DataGridViewDataItemChildProvider (this, column);
+
 					child.Initialize ();
-					OnNavigationChildAdded (false, child);
+					OnNavigationChildAdded (raiseEvent, child);
+					columns [child.Column] = child;
 				}
 			}
 
+			private Dictionary<SWF.DataGridViewColumn, DataGridViewDataItemChildProvider> columns;
 			private SWF.DataGridView datagridview;
 			private SWF.DataGridViewRow row;
 		}
@@ -448,16 +503,25 @@ namespace Mono.UIAutomation.Winforms
 		internal class DataGridViewDataItemChildProvider : FragmentControlProvider
 		{
 			public DataGridViewDataItemChildProvider (DataGridDataItemProvider itemProvider,
-			                                          SWF.DataGridViewColumn column,
-			                                          SWF.DataGridViewCell cell) : base (null)
+			                                          SWF.DataGridViewColumn column) : base (null)
 			{
 				this.itemProvider = itemProvider;
 				this.column = column;
-				this.cell = cell;
+
+				cell = itemProvider.Row.Cells [itemProvider.DataGridView.Columns.IndexOf (column)];
+				gridProvider = (DataGridViewProvider) itemProvider.ListProvider;
+			}
+
+			public SWF.DataGridViewCell Cell {
+				get { return cell; }
 			}
 
 			public SWF.DataGridViewColumn Column {
 				get { return column; }
+			}
+
+			public DataGridDataItemProvider ItemProvider {
+				get { return itemProvider; }
 			}
 
 			public override IRawElementProviderFragmentRoot FragmentRoot {
@@ -488,11 +552,7 @@ namespace Mono.UIAutomation.Winforms
 				// TODO: Generalize?
 				
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id) {
-					if (typeof (SWF.DataGridViewButtonColumn) == column.GetType ())
-						return ControlType.Button.Id;
-					else if (typeof (SWF.DataGridViewCheckBoxColumn) == column.GetType ())
-						return ControlType.CheckBox.Id;
-					else if (typeof (SWF.DataGridViewComboBoxColumn) == column.GetType ())
+					if (typeof (SWF.DataGridViewComboBoxColumn) == column.GetType ())
 						return ControlType.ComboBox.Id;
 					else if (typeof (SWF.DataGridViewImageColumn) == column.GetType ())
 						return ControlType.Image.Id;
@@ -501,11 +561,7 @@ namespace Mono.UIAutomation.Winforms
 					else // SWF.DataGridViewTextBoxColumn or something else
 						return ControlType.Edit.Id;
 				} else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id) {
-					if (typeof (SWF.DataGridViewButtonColumn) == column.GetType ())
-						return Catalog.GetString ("button");
-					else if (typeof (SWF.DataGridViewCheckBoxColumn) == column.GetType ())
-						return Catalog.GetString ("checkbox");
-					else if (typeof (SWF.DataGridViewComboBoxColumn) == column.GetType ())
+					if (typeof (SWF.DataGridViewComboBoxColumn) == column.GetType ())
 						return Catalog.GetString ("combobox");
 					else if (typeof (SWF.DataGridViewImageColumn) == column.GetType ())
 						return Catalog.GetString ("image");
@@ -513,9 +569,9 @@ namespace Mono.UIAutomation.Winforms
 						return Catalog.GetString ("hyperlink");
 					else // SWF.DataGridViewTextBoxColumn or something else
 						return Catalog.GetString ("edit");
-				} else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+				} else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
 					return cell.Value as string;
-				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					return false;
@@ -526,8 +582,7 @@ namespace Mono.UIAutomation.Winforms
 				else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id)
 					return cell.ToolTipText;
 				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-					Rect itemBounds
-						= (Rect) itemProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+					Rect itemBounds = itemProvider.BoundingRectangle;
 
 					for (int index = 0; index < cell.ColumnIndex; index++)
 						itemBounds.X += itemProvider.DataGridView.Columns [index].Width;
@@ -536,12 +591,11 @@ namespace Mono.UIAutomation.Winforms
 
 					return itemBounds;
 				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
-					return false;
-//					return Helper.IsListItemOffScreen ((Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id),
-//					                                   itemProvider.DataGridView, 
-//					                                   true,
-//					                                   ItemProvider.ListView.UIAHeaderControl,
-//					                                   ItemProvider.ListViewProvider.ScrollBehaviorObserver);
+					return Helper.IsListItemOffScreen (BoundingRectangle,
+					                                   itemProvider.DataGridView, 
+					                                   itemProvider.DataGridView.ColumnHeadersVisible,
+					                                   gridProvider.Header.Size,
+					                                   gridProvider.ScrollBehaviorObserver);
 				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 					return Helper.GetClickablePoint (this);
 				else
@@ -551,39 +605,88 @@ namespace Mono.UIAutomation.Winforms
 			private SWF.DataGridViewCell cell;
 			private SWF.DataGridViewColumn column;
 			private DataGridDataItemProvider itemProvider;
+			private DataGridViewProvider gridProvider;
 		}
 
 		#endregion
 
-		#region Internal Class: ScrollBar provider
+		#region Internal Class: Data Item Button Provider
 
-		internal class DataGridViewScrollBarProvider : ScrollBarProvider
+		internal class DataGridViewDataItemButtonProvider : DataGridViewDataItemChildProvider
 		{
-			public DataGridViewScrollBarProvider (SWF.ScrollBar scrollbar,
-			                                      DataGridViewProvider provider)
-				: base (scrollbar)
+			public DataGridViewDataItemButtonProvider (DataGridDataItemProvider itemProvider,
+			                                           SWF.DataGridViewColumn column)
+				: base (itemProvider, column)
 			{
-				this.provider = provider;
-				name = scrollbar is SWF.HScrollBar ? Catalog.GetString ("Horizontal Scroll Bar")
-					: Catalog.GetString ("Vertical Scroll Bar");
+				buttonCell = (SWF.DataGridViewButtonCell) Cell;
 			}
-			
-			public override IRawElementProviderFragmentRoot FragmentRoot {
-				get { return provider; }
-			}			
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+	
+				SetBehavior (InvokePatternIdentifiers.Pattern, 
+				             new DataItemChildInvokeProviderBehavior (this));
+			}
+
+			public SWF.DataGridViewButtonCell ButtonCell {
+				get { return buttonCell; }
+			}
 			
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
-				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
-					return name;
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.Button.Id;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return Catalog.GetString ("button");
+				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+					return null;
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
-			
-			private DataGridViewProvider provider;
-			private string name;
 
-		} // DataGridViewScrollBarProvider
+			private SWF.DataGridViewButtonCell buttonCell;
+		}
+
+		#endregion
+
+		#region Internal Class: Data Item Button Provider
+
+		internal class DataGridViewDataItemCheckBoxProvider : DataGridViewDataItemChildProvider
+		{
+			public DataGridViewDataItemCheckBoxProvider (DataGridDataItemProvider itemProvider,
+			                                             SWF.DataGridViewColumn column)
+				: base (itemProvider, column)
+			{
+				checkBox = (SWF.DataGridViewCheckBoxCell) Cell;
+			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+	
+				SetBehavior (TogglePatternIdentifiers.Pattern,
+				             new DataItemChildToggleProviderBehavior (this));
+			}
+
+			public SWF.DataGridViewCheckBoxCell CheckBoxCell {
+				get { return checkBox; }
+			}
+			
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.CheckBox.Id;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return Catalog.GetString ("checkbox");
+				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+					return null;
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			private SWF.DataGridViewCheckBoxCell checkBox;
+		}
 
 		#endregion
 	}
