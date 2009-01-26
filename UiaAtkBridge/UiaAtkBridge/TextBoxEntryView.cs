@@ -24,6 +24,8 @@
 // 
 
 using System;
+using System.IO;
+using Mono.Unix.Native;
 using Mono.UIAutomation.Bridge;
 
 //using System.Windows;
@@ -333,29 +335,52 @@ namespace UiaAtkBridge
 
 		#region StreamableContentImplementor implementation 
 		
+		public int NMimeTypes {
+			get { return 1; }
+		}
+		
 		public string GetMimeType (int i)
 		{
-			return string.Empty;
+			if (i != 0) {
+				return String.Empty;
+			}
+
+			return "text/plain";
 		}
 		
 		public IntPtr GetStream (string mime_type)
 		{
-			return IntPtr.Zero;
+			if (mime_type != "text/plain") {
+				return IntPtr.Zero;
+			}
+
+			GLib.IOChannel gio = null;
+
+			string filename = Syscall.tmpnam();
+			int fd = Syscall.open (filename, OpenFlags.O_CREAT | OpenFlags.O_RDWR,
+			                       FilePermissions.S_IRUSR | FilePermissions.S_IWUSR);
+			
+			gio = new GLib.IOChannel (fd);
+			gio.Encoding = null;
+			
+			string written;
+			gio.WriteChars (TextContents, out written);
+
+			gio.SeekPosition (0, GLib.SeekType.Set);
+			gio.Flush ();
+
+			Syscall.unlink (filename);
+
+			return gio.Handle;
 		}
 		
 		public string GetUri (string mime_type)
 		{
-			return string.Empty;
-		}
-		
-		public int NMimeTypes {
-			get {
-				// TODO:
-				return 0;
-			}
+			// This *must* return NULL so that clients will fall
+			// back to using GetStream.
+			return null;
 		}
 		
 		#endregion 
-
 	}
 }

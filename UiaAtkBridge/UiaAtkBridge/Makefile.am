@@ -111,6 +111,7 @@ EXTRAS =
 REFERENCES =  \
 	System  \
 	System.Drawing  \
+	Mono.Posix  \
 	$(MONO_UIA_LIBS) \
 	$(GTK_SHARP_20_LIBS)
 

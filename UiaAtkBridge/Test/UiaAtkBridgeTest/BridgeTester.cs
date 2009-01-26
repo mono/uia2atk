@@ -371,6 +371,8 @@ namespace UiaAtkBridgeTest
 					return new Atk.SelectionAdapter ((Atk.SelectionImplementor)accessible) as I;
 				} else if (typeof (I) == typeof (Atk.EditableText)) {
 					return new Atk.EditableTextAdapter ((Atk.EditableTextImplementor)accessible) as I;
+				} else if (typeof (I) == typeof (Atk.StreamableContent)) {
+					return new Atk.StreamableContentAdapter ((Atk.StreamableContentImplementor)accessible) as I;
 				}
 				throw new NotImplementedException ("Couldn't cast to interface " +
 				typeof (I).Name);

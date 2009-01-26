@@ -1,3 +1,12 @@
+2009-01-26  Brad Taylor  <brad@getcoded.net>
+
+	* TextBoxEntryView.cs: Implement Atk.StreamableContent for
+	TextBoxEntryView.  This involes a bit of platform specific code to
+	set up the GIOChannel which will export the text of the control.
+
+	* Makefile.am: Add reference to Mono.Posix needed for platform specific
+	code in TextBoxEntryView.
+
 2009-01-23  Mike Gorse  <mgorse@novell.com>
 
 	* Tab.cs, TextContainer.cs: Send events when a tab is selected.

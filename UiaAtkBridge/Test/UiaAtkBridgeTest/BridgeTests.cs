@@ -968,6 +968,36 @@ namespace UiaAtkBridgeTest
 			attrs.Remove (name);
 		}
 
+		/*
+		 * Our StreamableContent implementation differs from Gail's
+		 * because we don't support fancy mimetypes.
+		 */
+		[Test]
+		public void RichTextBoxStreamableContentTest ()
+		{
+			string test = "How do you do - Welcome to the human race - You're a mess.";
+			richTextBox.Text = test;
+
+			Atk.Object accessible = GetAdapterForWidget (richTextBox);
+			Atk.StreamableContent streamableContent
+				= CastToAtkInterface<Atk.StreamableContent> (accessible);
+
+			Assert.AreEqual (1, streamableContent.NMimeTypes,
+			                 "Exporting more than the expected number of mimetypes");
+			Assert.AreEqual ("text/plain", streamableContent.GetMimeType (0),
+			                 "0th mimetype isn't text/plain");
+
+			GLib.IOChannel gio = GLib.IOChannel.FromHandle (
+				streamableContent.GetStream ("text/plain"));
+			Assert.IsNotNull (gio, "Null stream returned");
+
+			string ret;
+			gio.ReadToEnd (out ret);
+
+			Assert.AreEqual (test, ret,
+			                 "text/plain stream differs from original text");
+		}
+
 		internal class DialogTest {
 			SWF.CommonDialog dialog;
 	
