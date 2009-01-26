@@ -134,7 +134,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void ToolBarButtonProviderPatternTest ()
 		{
 			ToolBar toolBar = new ToolBar ();
-            		IRawElementProviderFragmentRoot rootProvider =
+			IRawElementProviderFragmentRoot rootProvider =
 				(IRawElementProviderFragmentRoot) GetProviderFromControl (toolBar);
 			
 			toolBar.Buttons.Add ("Button");

@@ -1,3 +1,7 @@
+2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ToolBarProviderTest.cs: Spaces to tabs.
+
 2009-01-22  Mike Gorse <mgorse@novell.com>
 
 	* TrackBarProviderTest.cs: Add OrientationProperty test.
