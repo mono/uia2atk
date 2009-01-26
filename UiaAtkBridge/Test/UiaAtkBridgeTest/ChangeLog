@@ -1,5 +1,9 @@
 2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTests.cs: Bring back accidentally reverted contents in r124587.
+
+2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTests.cs: Fix ToolBarButton test.
 
 2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
