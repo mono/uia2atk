@@ -1,3 +1,7 @@
+2009-01-26 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/splitter.py: Add more labels to the top panel.
+
 2009-01-23 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/gtkcombobox2.py: Add another gtk combobox sample that has
