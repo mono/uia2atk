@@ -1007,10 +1007,19 @@ namespace UiaAtkBridge
 		private void HandleNewMenuItemControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
 			Adapter newAdapter = null;
-//FIXME: handle ToolBarButton gracefully, commented for now as it causes bug 468171
-//			if (parentObject is UiaAtkBridge.Container)
-//				newAdapter = new Container (provider);
-//			else
+			ParentAdapter wrapperPanel = null;
+			if (parentObject is Container && parentObject.Role == Atk.Role.ToolBar) {
+				wrapperPanel = new Container (provider);
+				parentObject.AddOneChild (wrapperPanel);
+				parentObject = wrapperPanel;
+
+				//toolbarbutton is keyboard-focusable while toolstripdropdownbutton is not
+				bool isKeyboardFocusable = (bool) 
+					provider.GetPropertyValue (AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id);
+				if (isKeyboardFocusable)
+					newAdapter = new Button (provider);
+			}
+			if (newAdapter == null)
 				newAdapter = new MenuItem (provider);
 			IncludeNewAdapter (newAdapter, parentObject);
 		}

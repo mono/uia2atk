@@ -1,3 +1,7 @@
+2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTester.cs: Fix test.
+
 2009-01-23  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs: Fix ExpectEvents.

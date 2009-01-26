@@ -17,10 +17,11 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008,2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Neville Gao <nevillegao@gmail.com>
+//	Andrés G. Aragoneses <aaragoneses@novell.com>
 // 
 
 using System;
@@ -43,7 +44,6 @@ namespace Mono.UIAutomation.Winforms
 		public ToolBarProvider (ToolBar toolBar) : base (toolBar)
 		{
 			this.toolBar = toolBar;
-			buttons = new List<ToolBarButtonProvider> ();
 		}
 
 		#endregion
@@ -77,8 +77,8 @@ namespace Mono.UIAutomation.Winforms
 			} catch (NotSupportedException) { }
 			
 			for (int i = 0; i < toolBar.Buttons.Count; ++i) {
-				ToolBarButtonProvider button = GetButtonProvider (i);
-				OnNavigationChildAdded (false, button);
+				var button = ProviderFactory.GetProvider (toolBar.Buttons [i]);
+				OnNavigationChildAdded (false, (FragmentControlProvider)button);
 			}
 		}
 		
@@ -92,7 +92,7 @@ namespace Mono.UIAutomation.Winforms
 				                           "OnCollectionChanged");
 			} catch (NotSupportedException) { }
 			
-			foreach (ToolBarButtonProvider button in buttons)
+			foreach (ToolBarButtonProvider button in toolBar.Buttons)
 				OnNavigationChildRemoved (false, button);
 			OnNavigationChildrenCleared (false);
 		}
@@ -101,31 +101,14 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Public Methods
 		
-		public ToolBarButtonProvider GetButtonProvider (int index)
-		{
-			ToolBarButtonProvider button = null;
-			
-			if (index < 0 || index >= toolBar.Buttons.Count)
-				return null;
-			else if (index >= buttons.Count) {
-				for (int loop = buttons.Count - 1; loop < index; ++loop) {
-					button = new ToolBarButtonProvider (toolBar.Buttons [index]);
-					buttons.Add (button);
-					button.Initialize ();
-				}
-			}
-			
-			return buttons [index];
-		}
-		
 		public ToolBarButtonProvider RemoveButtonAt (int index)
 		{
 			ToolBarButtonProvider button = null;
 			
-			if (index < buttons.Count) {
-				button = buttons [index];
-				buttons.RemoveAt (index);
-				button.Terminate ();
+			if (index < toolBar.Buttons.Count) {
+				button = (ToolBarButtonProvider)
+					ProviderFactory.GetProvider (toolBar.Buttons [index]);
+				ProviderFactory.ReleaseProvider (toolBar.Buttons [index]);
 			}
 			
 			return button;
@@ -133,8 +116,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public void ClearButtonsCollection ()
 		{
-			while (buttons.Count > 0) {
-				RemoveButtonAt (buttons.Count - 1);
+			while (toolBar.Buttons.Count > 0) {
+				RemoveButtonAt (toolBar.Buttons.Count - 1);
 			}
 		}
 		
@@ -147,7 +130,8 @@ namespace Mono.UIAutomation.Winforms
 		private void OnCollectionChanged (object sender, CollectionChangeEventArgs e)
 		{
 			if (e.Action == CollectionChangeAction.Add) {
-				ToolBarButtonProvider button = GetButtonProvider ((int) e.Element);
+				ToolBarButtonProvider button = (ToolBarButtonProvider)
+					ProviderFactory.GetProvider (toolBar.Buttons [(int) e.Element]);
 				OnNavigationChildAdded (true, button);
 			} else if (e.Action == CollectionChangeAction.Remove) {
 				ToolBarButtonProvider button = RemoveButtonAt ((int) e.Element);
@@ -165,12 +149,12 @@ namespace Mono.UIAutomation.Winforms
 		#region Private Fields
 		
 		private ToolBar toolBar;
-		private List<ToolBarButtonProvider> buttons;
 		
 		#endregion
 		
 		#region Internal Class: ToolBarButton Provider
-		
+
+		[MapsComponent (typeof (ToolBarButton))]
 		internal class ToolBarButtonProvider : FragmentControlProvider
 		{
 			#region Constructor
@@ -200,6 +184,8 @@ namespace Mono.UIAutomation.Winforms
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.MenuItem.Id;
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return true;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 					return Catalog.GetString ("menu item");
 				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
@@ -214,7 +200,7 @@ namespace Mono.UIAutomation.Winforms
 
 			#region Private Fields 	 
 			
-			private ToolBarButton toolBarButton; 	 
+			private ToolBarButton toolBarButton;
 			
 			#endregion
 		}

@@ -535,6 +535,8 @@ namespace UiaAtkBridgeTest
 			Atk.Object accessible = GetAccessible (type, extreme_fjords);
 			PropertyRole (type, accessible);
 
+			Assert.AreEqual (Atk.Role.Panel, accessible.Parent.Role);
+
 			Assert.AreEqual (extreme_fjords.Length, accessible.NAccessibleChildren);
 
 			for (int i = 0; i < extreme_fjords.Length; i++) {
@@ -707,6 +709,8 @@ namespace UiaAtkBridgeTest
 			string name = "test-caption";
 			Atk.Object accessible = GetAccessible (type, name);
 			PropertyRole (type, accessible);
+
+			Assert.AreEqual (Atk.Role.Panel, accessible.Parent.Role);
 
 			Assert.IsNull (accessible.Name);
 			Assert.AreEqual (1, accessible.NAccessibleChildren);

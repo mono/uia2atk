@@ -1,3 +1,9 @@
+2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Container.cs:
+	* AutomationBridge.cs: Proper fix for bug 468171 without causing
+	regressions.
+
 2009-01-26  Brad Taylor  <brad@getcoded.net>
 
 	* TextBoxEntryView.cs: Implement Atk.StreamableContent for

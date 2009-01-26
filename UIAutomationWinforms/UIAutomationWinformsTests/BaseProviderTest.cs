@@ -808,6 +808,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		                             AutomationProperty property,
 		                             object expectedValue)
 		{
+			if (provider == null)
+				throw new ArgumentNullException ("provider");
 			TestHelper.TestAutomationProperty (provider, property, expectedValue);
 		}
 		

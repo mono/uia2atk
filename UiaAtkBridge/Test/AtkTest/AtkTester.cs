@@ -845,6 +845,7 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ToolStripLabel:
 				role = Atk.Role.Label;
 				break;
+			case BasicWidgetType.ToolbarButton:
 			case BasicWidgetType.NormalButton:
 				role = Atk.Role.PushButton;
 				break;
@@ -918,7 +919,6 @@ namespace UiaAtkBridgeTest
 			case BasicWidgetType.ContainerPanel:
 			case BasicWidgetType.ErrorProvider:
 			case BasicWidgetType.DateTimePicker:
-			case BasicWidgetType.ToolbarButton:
 			case BasicWidgetType.GroupBox:
 				role = Atk.Role.Panel;
 				break;

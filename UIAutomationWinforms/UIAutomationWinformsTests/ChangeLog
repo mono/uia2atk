@@ -1,5 +1,15 @@
 2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BaseProviderTest.cs: Throw ANE.
+
+	* ToolBarProviderTest.cs: Added ProviderFactory testing to ToolBarButton
+	and IsKeyboardFocusableProperty test.
+
+	* ToolStripDropDownItemProviderTest.cs: Add additional tests for
+	IsKeyboardFocusable.
+
+2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ToolBarProviderTest.cs: Spaces to tabs.
 
 2009-01-22  Mike Gorse <mgorse@novell.com>

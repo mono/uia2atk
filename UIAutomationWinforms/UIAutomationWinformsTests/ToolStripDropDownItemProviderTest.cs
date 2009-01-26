@@ -353,6 +353,34 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			return new ToolStripDropDownButton ();
 		}
+
+		[Test]
+		//tested with UIAVerify, the bridge depends on this behaviour
+		public override void IsKeyboardFocusablePropertyTest ()
+		{
+			IRawElementProviderSimple provider = 
+				ProviderFactory.GetProvider (GetNewToolStripDropDownItem ());
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+			              false);
+		}
+
+		[Test] //tested with UIAVerify
+		public void IsKeyboardFocusablePropertyTestForChildren ()
+		{
+			var button = GetNewToolStripDropDownItem ();
+
+			ToolStripMenuItem item = new ToolStripMenuItem ();
+			item.Text = "test test test";
+			button.DropDownItems.Add (item);
+			IRawElementProviderSimple provider = 
+				ProviderFactory.GetProvider (item);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+			              false);
+		}
 	}
 
 	[TestFixture]

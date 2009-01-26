@@ -1,3 +1,10 @@
+2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Fix typo.
+
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: Add ProviderFactory
+	support.
+
 2009-01-23  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:
