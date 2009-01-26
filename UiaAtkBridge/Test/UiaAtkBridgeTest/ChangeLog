@@ -1,5 +1,9 @@
 2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTests.cs: Fix ToolBarButton test.
+
+2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTests.cs: Update to test Parent role in toolbar buttons.
 
 2009-01-26  Brad Taylor  <brad@getcoded.net>

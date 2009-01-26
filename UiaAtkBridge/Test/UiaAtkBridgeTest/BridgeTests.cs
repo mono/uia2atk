@@ -712,29 +712,28 @@ namespace UiaAtkBridgeTest
 
 			Assert.AreEqual (Atk.Role.Panel, accessible.Parent.Role);
 
-			Assert.IsNull (accessible.Name);
-			Assert.AreEqual (1, accessible.NAccessibleChildren);
+			Assert.IsNull (accessible.Parent.Name);
+			Assert.AreEqual (0, accessible.NAccessibleChildren);
 
-			Interfaces (accessible,
+			Interfaces (accessible.Parent,
 			            typeof (Atk.Component));
 			
-			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible.Parent);
 			InterfaceComponent (type, atkComponent);
 			
-			States (accessible,
+			States (accessible.Parent,
 				Atk.StateType.Enabled,
 				Atk.StateType.Sensitive,
 				Atk.StateType.Showing,
 				Atk.StateType.Visible);
 			
-			Atk.Object button = accessible.RefAccessibleChild (0);
-			States (button,
+			States (accessible,
 				Atk.StateType.Enabled,
 				Atk.StateType.Focusable,
 				Atk.StateType.Sensitive,
 				Atk.StateType.Showing,
 				Atk.StateType.Visible);
-			Button (button, name);
+			Button (accessible, name);
 		}
 
 		[Test]
@@ -970,36 +969,6 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (val, attrs[name],
 			                 "Expected attribute value differs");
 			attrs.Remove (name);
-		}
-
-		/*
-		 * Our StreamableContent implementation differs from Gail's
-		 * because we don't support fancy mimetypes.
-		 */
-		[Test]
-		public void RichTextBoxStreamableContentTest ()
-		{
-			string test = "How do you do - Welcome to the human race - You're a mess.";
-			richTextBox.Text = test;
-
-			Atk.Object accessible = GetAdapterForWidget (richTextBox);
-			Atk.StreamableContent streamableContent
-				= CastToAtkInterface<Atk.StreamableContent> (accessible);
-
-			Assert.AreEqual (1, streamableContent.NMimeTypes,
-			                 "Exporting more than the expected number of mimetypes");
-			Assert.AreEqual ("text/plain", streamableContent.GetMimeType (0),
-			                 "0th mimetype isn't text/plain");
-
-			GLib.IOChannel gio = GLib.IOChannel.FromHandle (
-				streamableContent.GetStream ("text/plain"));
-			Assert.IsNotNull (gio, "Null stream returned");
-
-			string ret;
-			gio.ReadToEnd (out ret);
-
-			Assert.AreEqual (test, ret,
-			                 "text/plain stream differs from original text");
 		}
 
 		internal class DialogTest {
