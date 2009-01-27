@@ -64,10 +64,10 @@ FILES =  \
 	ExpandCollapseButton.cs \
 	HeaderItem.cs \
 	Hyperlink.cs \
-	Image.cs \
 	ICanHaveSelection.cs \
-	ITextImplementor.cs \
+	Image.cs \
 	ImageImplementorHelper.cs \
+	ITextImplementor.cs \
 	List.cs \
 	ListGroup.cs \
 	ListItem.cs \
@@ -90,12 +90,12 @@ FILES =  \
 	Splitter.cs \
 	Tab.cs \
 	TableImplementorHelper.cs \
-	TextImplementorFactory.cs \
-	TextProviderTextImplementor.cs \
 	TextBoxEntryView.cs \
 	TextContainer.cs \
 	TextImageLabel.cs \
+	TextImplementorFactory.cs \
 	TextLabel.cs \
+	TextProviderTextImplementor.cs \
 	ToolTip.cs \
 	TopLevelRootItem.cs \
 	Tree.cs \
