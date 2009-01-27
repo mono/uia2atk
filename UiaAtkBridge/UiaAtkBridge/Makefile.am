@@ -65,6 +65,7 @@ FILES =  \
 	HeaderItem.cs \
 	Hyperlink.cs \
 	Image.cs \
+	ICanHaveSelection.cs \
 	ITextImplementor.cs \
 	ImageImplementorHelper.cs \
 	List.cs \

@@ -32,7 +32,8 @@ namespace UiaAtkBridge
 {
 	
 	public class MenuItem : ComponentParentAdapter, 
-	                        Atk.SelectionImplementor, Atk.TextImplementor, Atk.ActionImplementor
+	                        Atk.SelectionImplementor, Atk.TextImplementor,
+	                        Atk.ActionImplementor, ICanHaveSelection
 	{
 		ITextImplementor textExpert = null;
 		IInvokeProvider invokeProvider = null;
@@ -126,30 +127,51 @@ namespace UiaAtkBridge
 
 		internal void Deselect ()
 		{
+			if (!selected)
+				return;
+
 			selected = false;
 			NotifyStateChange (Atk.StateType.Selected, false);
 		}
 
-		internal void RecursiveDeselect (Adapter keepSelected)
+		#region ICanHaveSelection implementation
+
+		void ICanHaveSelection.RecursivelyDeselectAll (Adapter keepSelected)
 		{
+			if (Parent is ICanHaveSelection) {
+				((ICanHaveSelection) Parent).RecursivelyDeselectAll (
+					keepSelected);
+				return;
+			}
+
+			((ICanHaveSelection) this).RecursivelyDeselect (keepSelected);
+		}
+
+		void ICanHaveSelection.RecursivelyDeselect (Adapter keepSelected)
+		{
+			if (this != keepSelected)
+				Deselect ();
+
 			lock (syncRoot) {
 				for (int i = 0; i < NAccessibleChildren; i++) {
 					Atk.Object child = RefAccessibleChild (i);
+					if (child == null)
+						continue;
 
-					if (child == null || ((Adapter)child) == keepSelected)  {
+					if (((Adapter) child) == keepSelected) {
 						selectedChild = i;
 						continue;
 					}
 					
-					MenuItem item = child as MenuItem;
-					if (item != null)
-						item.Deselect ();
+					if (child is ICanHaveSelection) {
+						((ICanHaveSelection) child)
+							.RecursivelyDeselect (keepSelected);
+					}
 				}
 			}
-
-			if (Parent is MenuItem)
-				((MenuItem)Parent).RecursiveDeselect (keepSelected);
 		}
+		
+		#endregion
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
@@ -157,16 +179,13 @@ namespace UiaAtkBridge
 				selected = !selected;
 				NotifyStateChange (Atk.StateType.Selected, selected);
 				NotifyStateChange (Atk.StateType.Focused, selected);
-				if (Parent is MenuItem)
-					((MenuItem)Parent).RecursiveDeselect (this);
+				((ICanHaveSelection) this).RecursivelyDeselectAll (selected ? this : null);
 			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
-				if (Parent is MenuItem)
-					((MenuItem)Parent).RecursiveDeselect (this);
+				((ICanHaveSelection) this).RecursivelyDeselectAll (selected ? this : null);
 			} else if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
 				selected = true;
 				NotifyStateChange (Atk.StateType.Selected, selected);
-				if (Parent is MenuItem)
-					((MenuItem)Parent).RecursiveDeselect (this);
+				((ICanHaveSelection) this).RecursivelyDeselectAll (this);
 			} else {
 				Console.WriteLine ("WARNING: RaiseAutomationEvent({0},...) not handled yet", eventId.ProgrammaticName);
 				base.RaiseAutomationEvent (eventId, e);
@@ -270,7 +289,7 @@ namespace UiaAtkBridge
 		{
 			if (i == 0) {
 				selectedChild = -1;
-				RecursiveDeselect (null);
+				((ICanHaveSelection) this).RecursivelyDeselect (null);
 				return true;
 			}
 			return false;
@@ -279,7 +298,7 @@ namespace UiaAtkBridge
 		public bool ClearSelection ()
 		{
 			selectedChild = -1;
-			RecursiveDeselect (null);
+			((ICanHaveSelection) this).RecursivelyDeselect (null);
 			return true;
 		}
 

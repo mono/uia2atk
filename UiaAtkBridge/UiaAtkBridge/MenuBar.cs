@@ -30,7 +30,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class MenuBar : ComponentParentAdapter, Atk.SelectionImplementor
+	public class MenuBar : ComponentParentAdapter, Atk.SelectionImplementor, ICanHaveSelection
 	{
 		public MenuBar (IRawElementProviderSimple provider) : base (provider)
 		{
@@ -50,6 +50,27 @@ namespace UiaAtkBridge
 			//TODO
 			return;
 		}
+
+		#region ICanHaveSelection implementation
+
+		void ICanHaveSelection.RecursivelyDeselectAll (Adapter keepSelected)
+		{
+			((ICanHaveSelection) this).RecursivelyDeselect (keepSelected);
+		}
+
+		void ICanHaveSelection.RecursivelyDeselect (Adapter keepSelected)
+		{
+			lock (syncRoot) {
+				for (int i = 0; i < NAccessibleChildren; i++) {
+					Atk.Object child = RefAccessibleChild (i);
+					if (child is ICanHaveSelection) {
+						((ICanHaveSelection) child).RecursivelyDeselect (keepSelected);
+					}
+				}
+			}
+		}
+
+		#endregion
 
 		#region SelectionImplementor implementation 
 		//NOTE: MenuBar in UIA does not implement the selection pattern

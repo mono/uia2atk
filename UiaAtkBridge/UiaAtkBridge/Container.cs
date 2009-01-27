@@ -29,7 +29,7 @@ using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
-	public class Container : ComponentParentAdapter
+	public class Container : ComponentParentAdapter, ICanHaveSelection
 	{
 		public Container (IRawElementProviderSimple provider): base (provider)
 		{
@@ -64,5 +64,32 @@ namespace UiaAtkBridge
 		{
 			// TODO
 		}
+
+		#region ICanHaveSelection interface
+
+		void ICanHaveSelection.RecursivelyDeselectAll (Adapter keepSelected)
+		{
+			if (Parent is ICanHaveSelection) {
+				((ICanHaveSelection) Parent).RecursivelyDeselectAll (
+					keepSelected);
+				return;
+			}
+
+			((ICanHaveSelection) this).RecursivelyDeselect (keepSelected);
+		}
+		
+		void ICanHaveSelection.RecursivelyDeselect (Adapter keepSelected)
+		{
+			lock (syncRoot) {
+				for (int i = 0; i < NAccessibleChildren; i++) {
+					Atk.Object child = RefAccessibleChild (i);
+					if (child is ICanHaveSelection) {
+						((ICanHaveSelection) child).RecursivelyDeselect (keepSelected);
+					}
+				}
+			}
+		}
+
+		#endregion
 	}
 }
