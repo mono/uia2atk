@@ -1,3 +1,9 @@
+2009-01-27  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs:
+	Implement IEmbeddedImage for ToolStripSplitButton (and other ToolStrip
+	items also).  [Fixes #45626]
+
 2009-01-26  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: DataGridView. Link
