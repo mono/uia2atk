@@ -1,3 +1,7 @@
+2009-01-27  Mike Gorse  <mgorse@novell.com>
+
+	* Monitor.cs: Check if already running before starting a main loop.
+
 2009-01-27  Brad Taylor  <brad@getcoded.net>
 
 	* ExpandCollapseButton.cs: Implement Atk.Selection, even if

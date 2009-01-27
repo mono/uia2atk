@@ -118,6 +118,11 @@ namespace UiaAtkBridge
 		
 		public void ApplicationStarts ()
 		{
+			if (mainLoop != null && mainLoop.IsRunning) {
+				Console.WriteLine ("AutomationBridge: Warning: Received init event but already running");
+				return;
+			}
+
 			Thread glibThread = new Thread (new ThreadStart (GLibMainLoopThread));
 			glibThread.IsBackground = true;
 			glibThread.Start ();
