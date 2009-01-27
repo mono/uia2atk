@@ -1,3 +1,8 @@
+2009-01-27  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: Rename IEmbeddedImage to IEmbeddedImageProvider and move
+	it to UIAutomationProvider.
+
 2009-01-22  Mario Carrion  <mcarrion@novell.com>
 
 	* UIAutomationBridge.mdp: IClipboardSupport.cs file added.

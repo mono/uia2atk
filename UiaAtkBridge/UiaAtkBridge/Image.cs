@@ -41,7 +41,7 @@ namespace UiaAtkBridge
 			Role = Atk.Role.Icon;
 			
 			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			imageImplementor = new ImageImplementorHelper (this, provider);
+			imageImplementor = new ImageImplementorHelper (this);
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()

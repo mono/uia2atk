@@ -52,7 +52,7 @@ namespace UiaAtkBridge
 			toggleProvider = (IToggleProvider) provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
 
 			textExpert = TextImplementorFactory.GetImplementor (this, provider);
-			imageExpert = new ImageImplementorHelper (this, provider);
+			imageExpert = new ImageImplementorHelper (this);
 			actionExpert = new ActionImplementorHelper ();
 
 			// TODO: Localize the name?s

@@ -37,7 +37,7 @@ using Mono.UIAutomation.Winforms.Events.ToolStripItem;
 namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripItem
 {
 	internal class InvokeProviderBehavior 
-		: ProviderBehavior, IInvokeProvider, IEmbeddedImage
+		: ProviderBehavior, IInvokeProvider
 	{
 		#region Private Members
 
@@ -53,38 +53,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripItem
 			this.itemProvider = provider;
 		}
 		
-		#endregion
-		
-		#region IEmbeddedImage Interface
-		
-		public System.Windows.Rect Bounds {
-			get {
-				SWF.ToolStripItem item
-					= (SWF.ToolStripItem)itemProvider.Component;
-
-				SD.Rectangle r = item.ContentRectangle;
-				if (item is SWF.ToolStripSplitButton) {
-					r.Width -= ((SWF.ToolStripSplitButton)item).DropDownButtonWidth + 1;
-				}
-
-				SD.Rectangle text_rect, image_rect;
-				item.CalculateTextAndImageRectangles (
-					r, out text_rect, out image_rect);
-
-				System.Windows.Rect bounds
-					= (System.Windows.Rect) itemProvider.GetPropertyValue (
-						AutomationElementIdentifiers.BoundingRectangleProperty.Id);
-				image_rect.X += (int) bounds.X;
-				image_rect.Y += (int) bounds.Y;
-
-				return Helper.RectangleToRect (image_rect);
-			}
-		}
-
-		public string Description {
-			get { return String.Empty; }
-		}
-
 		#endregion
 
 		#region IProviderBehavior Interface

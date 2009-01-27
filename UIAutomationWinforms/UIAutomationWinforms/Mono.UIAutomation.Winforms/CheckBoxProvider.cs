@@ -30,6 +30,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.CheckBox;
+using ButtonBehaviors = Mono.UIAutomation.Winforms.Behaviors.Button;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -54,6 +55,8 @@ namespace Mono.UIAutomation.Winforms
 			
 			SetBehavior (TogglePatternIdentifiers.Pattern,
 			             new ToggleProviderBehavior (this));
+			SetBehavior (EmbeddedImagePatternIdentifiers.Pattern, 
+			             new ButtonBehaviors.EmbeddedImageProviderBehavior (this));
 		}
 		
 #endregion

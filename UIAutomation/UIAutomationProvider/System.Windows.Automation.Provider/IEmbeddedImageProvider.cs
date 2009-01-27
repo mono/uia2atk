@@ -20,54 +20,19 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//      Andrés G. Aragoneses <aaragoneses@novell.com>
+//      Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Behaviors.Button;
+using System.Windows;
 
-namespace Mono.UIAutomation.Winforms
+namespace System.Windows.Automation.Provider
 {
-	
-	[MapsComponent (typeof (Button))]
-	internal class ButtonProvider : FragmentControlProvider
+	internal interface IEmbeddedImageProvider
 	{
-		
-#region Constructors
-		
-		public ButtonProvider (Button button) : base (button)
-		{
-		}
-		
-#endregion
+		Rect Bounds { get; }
 
-#region IRawElementProviderSimple Overrides
-
-		public override void Initialize ()
-		{
-			base.Initialize ();
-
-			SetBehavior (InvokePatternIdentifiers.Pattern, 
-			             new InvokeProviderBehavior (this));
-			SetBehavior (EmbeddedImagePatternIdentifiers.Pattern, 
-			             new EmbeddedImageProviderBehavior (this));
-		}
-
-		protected override object GetProviderPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Button.Id;
-			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
-				return null;
-			else
-				return base.GetProviderPropertyValue (propertyId);
-		}
-
-#endregion
-
+		string Description { get; }
 	}
-
 }

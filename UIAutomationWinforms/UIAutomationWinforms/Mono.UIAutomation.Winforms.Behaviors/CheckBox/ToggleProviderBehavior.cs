@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.CheckBox
 {
 	
 	internal class ToggleProviderBehavior  
-		: ProviderBehavior, IToggleProvider, IEmbeddedImage
+		: ProviderBehavior, IToggleProvider
 	{
 		#region Private Members
 
@@ -51,21 +51,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.CheckBox
 			: base (provider)
 		{
 			checkbox = provider.Control as SWF.CheckBox;
-		}
-		
-		#endregion
-		
-		#region IEmbeddedImage Interface
-		
-		public System.Windows.Rect Bounds {
-			get {
-				return Helper.GetButtonBaseImageBounds (Provider,
-				                                        checkbox);
-			}
-		}
-
-		public string Description {
-			get { return string.Empty; }
 		}
 		
 		#endregion

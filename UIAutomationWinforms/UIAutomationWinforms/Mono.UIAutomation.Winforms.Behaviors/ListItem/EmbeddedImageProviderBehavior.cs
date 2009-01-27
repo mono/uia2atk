@@ -24,59 +24,61 @@
 // 
 
 using System;
-using SD = System.Drawing;
-using System.Windows.Automation;
-using SWF = System.Windows.Forms;
-using System.Windows.Automation.Provider;
-
+using System.Windows;
+using System.Windows.Forms;
 using Mono.UIAutomation.Bridge;
+using System.Windows.Automation;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ToolStripButton;
+using System.Windows.Automation.Provider;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripButton
+namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 {
-	internal class InvokeProviderBehavior 
-		: ProviderBehavior, IInvokeProvider
+	internal class EmbeddedImageProviderBehavior
+		: ProviderBehavior, IEmbeddedImageProvider
 	{
-#region Constructor
-		public InvokeProviderBehavior (ToolStripButtonProvider provider)
+#region Constructors
+		public EmbeddedImageProviderBehavior (ListItemProvider provider)
 			: base (provider)
 		{
-			button = (SWF.ToolStripButton) provider.Component;
 		}
 #endregion
 		
 #region IProviderBehavior Interface
-		public override void Connect ()
-		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			                   new InvokePatternInvokedEvent (Provider));
-		}
-		
-		public override void Disconnect ()
-		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			                   null);
-		}
-		
 		public override AutomationPattern ProviderPattern { 
-			get { return InvokePatternIdentifiers.Pattern; }
+			get { return EmbeddedImagePatternIdentifiers.Pattern; }
 		}
 #endregion
-		
-#region IInvokeProvider Members
-		public virtual void Invoke ()
-		{
-			if (button.Enabled == false)
-				throw new ElementNotEnabledException ();
 
-			button.PerformClick ();
+#region IEmbeddedImageProvider Interface
+		public System.Windows.Rect Bounds {
+			get {
+				ListViewItem item = objectItem as ListViewItem;
+				if (item == null || item.ListView == null ||
+				    (item.ImageIndex == -1 && item.ImageKey == string.Empty))
+					return System.Windows.Rect.Empty;
+
+				ImageList imageList = null;
+				if (item.ListView.View == View.LargeIcon)
+					imageList = item.ListView.LargeImageList;
+				else
+					imageList = item.ListView.SmallImageList;
+
+				if (imageList == null)
+					return System.Windows.Rect.Empty;
+
+				return new System.Windows.Rect (0,
+				                                0,
+				                                imageList.ImageSize.Width,
+				                                imageList.ImageSize.Height);
+			}
 		}
-#endregion	
-
-#region Private Fields
-		private SWF.ToolStripButton button;
+		
+		public string Description {
+			get {
+				return string.Empty;
+			}
+		}
 #endregion
 	}
 }

@@ -30,21 +30,19 @@ using System.Windows.Automation;
 using System.Windows.Forms;
 using Mono.Unix;
 using Mono.UIAutomation.Bridge;
+using Mono.UIAutomation.Winforms.Behaviors.PictureBox;
 
 namespace Mono.UIAutomation.Winforms
 {
 
 	[MapsComponent (typeof (PictureBox))]
-	internal class PictureBoxProvider : PaneProvider, IEmbeddedImage
+	internal class PictureBoxProvider : PaneProvider
 	{
 		
 		#region Constructors
 
-		private PictureBox control;
-
 		public PictureBoxProvider (PictureBox pictureBox) : base (pictureBox)
 		{
-			control = pictureBox;
 		}
 		
 		#endregion
@@ -55,31 +53,16 @@ namespace Mono.UIAutomation.Winforms
 			get { return Control.Parent; }
 		}
 
-		#endregion
+		public override void Initialize ()
+		{
+			base.Initialize ();
 
-		#region IEmbeddedImage Members
-		public Rect Bounds {
-			get {
-				if (control.Image == null)
-					return Rect.Empty;
-				GraphicsUnit unit = GraphicsUnit.Pixel;
-				RectangleF rectF = control.Image.GetBounds (ref unit);
-				if (unit != GraphicsUnit.Pixel)
-					return Rect.Empty;
-				Rect ret = BoundingRectangle;
-				ret.X += rectF.X;
-				ret.Y += rectF.Y;
-				ret.Width = rectF.Width;
-				ret.Height = rectF.Height;
-				return ret;
-			}
+			SetBehavior (EmbeddedImagePatternIdentifiers.Pattern,
+			             new EmbeddedImageProviderBehavior (this));
 		}
 
-		public string Description {
-			get { return string.Empty; }
-		}
 		#endregion
-		
+
 		#region SimpleControlProvider specialization
 
 		// TODO: In Vista the PictureBox is defined as Pane Provider

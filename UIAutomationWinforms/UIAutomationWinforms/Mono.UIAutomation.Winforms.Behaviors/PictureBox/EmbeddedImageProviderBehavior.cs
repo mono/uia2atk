@@ -24,59 +24,70 @@
 // 
 
 using System;
-using SD = System.Drawing;
+using System.Windows;
+using System.Drawing;
+using Mono.UIAutomation.Bridge;
 using System.Windows.Automation;
 using SWF = System.Windows.Forms;
-using System.Windows.Automation.Provider;
-
-using Mono.UIAutomation.Bridge;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ToolStripButton;
+using System.Windows.Automation.Provider;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripButton
+namespace Mono.UIAutomation.Winforms.Behaviors.PictureBox
 {
-	internal class InvokeProviderBehavior 
-		: ProviderBehavior, IInvokeProvider
+	internal class EmbeddedImageProviderBehavior
+		: ProviderBehavior, IEmbeddedImageProvider
 	{
-#region Constructor
-		public InvokeProviderBehavior (ToolStripButtonProvider provider)
+#region Constructors
+		public EmbeddedImageProviderBehavior (PictureBoxProvider provider)
 			: base (provider)
 		{
-			button = (SWF.ToolStripButton) provider.Component;
+			control = (SWF.PictureBox)provider.Control;
 		}
 #endregion
 		
 #region IProviderBehavior Interface
+		public override AutomationPattern ProviderPattern { 
+			get { return EmbeddedImagePatternIdentifiers.Pattern; }
+		}
+
 		public override void Connect ()
 		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			                   new InvokePatternInvokedEvent (Provider));
 		}
-		
+
 		public override void Disconnect ()
 		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			                   null);
-		}
-		
-		public override AutomationPattern ProviderPattern { 
-			get { return InvokePatternIdentifiers.Pattern; }
 		}
 #endregion
-		
-#region IInvokeProvider Members
-		public virtual void Invoke ()
-		{
-			if (button.Enabled == false)
-				throw new ElementNotEnabledException ();
 
-			button.PerformClick ();
+#region IEmbeddedImageProvider Interface
+		public Rect Bounds {
+			get {
+				if (control.Image == null)
+					return Rect.Empty;
+				GraphicsUnit unit = GraphicsUnit.Pixel;
+				RectangleF rectF = control.Image.GetBounds (ref unit);
+				if (unit != GraphicsUnit.Pixel)
+					return Rect.Empty;
+
+				System.Windows.Rect ret
+					= (System.Windows.Rect) Provider.GetPropertyValue (
+						AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+				ret.X += rectF.X;
+				ret.Y += rectF.Y;
+				ret.Width = rectF.Width;
+				ret.Height = rectF.Height;
+				return ret;
+			}
 		}
-#endregion	
+
+		public string Description {
+			get { return String.Empty; }
+		}
+#endregion
 
 #region Private Fields
-		private SWF.ToolStripButton button;
+		private SWF.PictureBox control;
 #endregion
 	}
 }

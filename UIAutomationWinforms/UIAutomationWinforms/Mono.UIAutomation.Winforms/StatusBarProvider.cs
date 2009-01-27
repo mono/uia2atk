@@ -189,7 +189,7 @@ namespace Mono.UIAutomation.Winforms
 		
 		#region Internal Class: StatusBarPanel Provider
 		
-		internal class StatusBarPanelProvider : FragmentControlProvider, IEmbeddedImage
+		internal class StatusBarPanelProvider : FragmentControlProvider, IEmbeddedImageProvider
 		{
 			#region Constructor
 
@@ -273,7 +273,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 			#endregion
 
-			#region IEmbedded Image Members
+			#region IEmbeddedImageProvider Members
 
 			public Rect Bounds {
 				get {

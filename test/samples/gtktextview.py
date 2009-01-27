@@ -21,8 +21,6 @@ class TextView:
         vbox.set_spacing(6)
 
         self.bar = gtk.TextView()
-        self.bar.get_accessible().set_name("explicitly set name")
-        self.bar.get_accessible().set_description("explicitly set description")
         vbox.pack_start(self.bar, False, False, 0)
 
         button = gtk.Button("Pulse")

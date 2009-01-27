@@ -31,6 +31,7 @@ using System.Windows.Automation;
 using Mono.Unix;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.RadioButton;
+using ButtonBehaviors = Mono.UIAutomation.Winforms.Behaviors.Button;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -54,6 +55,8 @@ namespace Mono.UIAutomation.Winforms
 
 			SetBehavior (SelectionItemPatternIdentifiers.Pattern, 
 			             new SelectionItemProviderBehavior (this));
+			SetBehavior (EmbeddedImagePatternIdentifiers.Pattern, 
+			             new ButtonBehaviors.EmbeddedImageProviderBehavior (this));
 		}
 
 		protected override object GetProviderPropertyValue (int propertyId)

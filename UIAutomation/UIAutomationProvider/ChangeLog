@@ -1,3 +1,9 @@
+2009-01-27  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* System.Windows.Automation.Provider/IEmbeddedImageProvider.cs:
+	Replace IEmbeddedImage with a real internal provider class.
+
 2009-01-15  Brad Taylor  <brad@getcoded.net>
 
 	* System.Windows.Automation.Provider/AutomationInteropProvider.cs: 

@@ -39,7 +39,7 @@ namespace UiaAtkBridge
 			Role = Atk.Role.TableColumnHeader;
 
 			invokeProvider = (IInvokeProvider) provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);		
-			imageExpert = new ImageImplementorHelper (this, invokeProvider); //FIXME: Should use "provider" instead
+			imageExpert = new ImageImplementorHelper (this); 
 
 			actionExpert = new ActionImplementorHelper ();
 			if (invokeProvider != null)

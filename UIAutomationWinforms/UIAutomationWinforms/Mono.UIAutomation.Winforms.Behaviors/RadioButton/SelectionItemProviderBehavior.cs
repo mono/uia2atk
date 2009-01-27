@@ -38,7 +38,7 @@ using Mono.UIAutomation.Bridge;
 namespace Mono.UIAutomation.Winforms.Behaviors.RadioButton
 {
 	internal class SelectionItemProviderBehavior :
-		ProviderBehavior, ISelectionItemProvider, IEmbeddedImage
+		ProviderBehavior, ISelectionItemProvider
 	{
 #region Private Members
 		
@@ -55,21 +55,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.RadioButton
 		}
 		
 #endregion
-		
-		#region IEmbeddedImage Interface
-		
-		public System.Windows.Rect Bounds {
-			get {
-				return Helper.GetButtonBaseImageBounds (Provider,
-				                                        radioButton);
-			}
-		}
-
-		public string Description {
-			get { return string.Empty; }
-		}
-		
-		#endregion
 		
 #region IProviderBehavior Interface
 

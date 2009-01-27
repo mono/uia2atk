@@ -20,19 +20,28 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Andrés G. Aragoneses <aaragoneses@novell.com>
+//      Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
-using System.Windows;
-using System.Windows.Automation;
 
-namespace Mono.UIAutomation.Bridge
+namespace System.Windows.Automation
 {
-	public interface IEmbeddedImage
+	internal static class EmbeddedImagePatternIdentifiers
 	{
-		Rect Bounds { get; }
-
-		string Description { get; }
+#region Constructor
+		private const int PatternId = 70001;
+		
+		static EmbeddedImagePatternIdentifiers ()
+		{
+			Pattern =
+				new AutomationPattern (PatternId,
+				                       "EmbeddedImagePatternIdentifiers.Pattern");
+		}
+#endregion
+		
+#region Public Fields
+		public static readonly AutomationPattern Pattern;
+#endregion
 	}
 }

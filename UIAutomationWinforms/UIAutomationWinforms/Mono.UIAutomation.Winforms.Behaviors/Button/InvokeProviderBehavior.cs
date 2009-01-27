@@ -39,7 +39,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Button
 {
 	
 	internal class InvokeProviderBehavior 
-		: ProviderBehavior, IInvokeProvider, IEmbeddedImage
+		: ProviderBehavior, IInvokeProvider
 	{
 
 		#region Private Members
@@ -54,21 +54,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Button
 			: base (provider)
 		{
 			button = provider.Control as SWF.Button;
-		}
-		
-		#endregion
-		
-		#region IEmbeddedImage Interface
-		
-		public System.Windows.Rect Bounds {
-			get {
-				return Helper.GetButtonBaseImageBounds (Provider,
-				                                        button);
-			}
-		}
-
-		public string Description {
-			get { return string.Empty; }
 		}
 		
 		#endregion

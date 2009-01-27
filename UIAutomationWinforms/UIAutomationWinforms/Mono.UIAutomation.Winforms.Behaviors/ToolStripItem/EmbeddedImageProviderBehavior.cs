@@ -20,87 +20,73 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Sandy Armstrong <sanfordarmstrong@gmail.com>
+//	Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
+using System.Windows;
 using SD = System.Drawing;
-using SWF = System.Windows.Forms;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Bridge;
+using System.Windows.Automation;
+using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.Button;
+using System.Windows.Automation.Provider;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.PopupButtonPanel
+namespace Mono.UIAutomation.Winforms.Behaviors.ToolStripItem
 {
-	
-	internal class InvokeProviderBehavior 
-		: ProviderBehavior, IInvokeProvider
+	internal class EmbeddedImageProviderBehavior
+		: ProviderBehavior, IEmbeddedImageProvider
 	{
-
-		#region Private Members
-
-		private SWF.PopupButtonPanel.PopupButton button;
-
-		#endregion
-		
-		#region Constructor
-		
-		public InvokeProviderBehavior (PopupButtonProvider provider)
+#region Constructors
+		public EmbeddedImageProviderBehavior (ToolStripItemProvider provider)
 			: base (provider)
 		{
-			button = provider.Control as SWF.PopupButtonPanel.PopupButton;
 		}
+#endregion
 		
-		#endregion
-		
-		#region IProviderBehavior Interface
+#region IProviderBehavior Interface
+		public override AutomationPattern ProviderPattern { 
+			get { return EmbeddedImagePatternIdentifiers.Pattern; }
+		}
 
 		public override void Connect ()
 		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			                   new InvokePatternInvokedEvent (Provider));
 		}
 		
 		public override void Disconnect ()
 		{
-			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			                   null);
 		}
-		
-		public override AutomationPattern ProviderPattern { 
-			get { return InvokePatternIdentifiers.Pattern; }
-		}
-		
-		#endregion
-		
-		#region IInvokeProvider Members
-		
-		public virtual void Invoke ()
-		{
-			if (Provider.Control.Enabled == false)
-				throw new ElementNotEnabledException ();
+#endregion
 
-			PerformClick ();
-		}
-		
-		#endregion	
-		
-		#region Private Methods
-		
-		private void PerformClick ()
-		{
-			if (Provider.Control.InvokeRequired == true) {
-				Provider.Control.BeginInvoke (new SWF.MethodInvoker (PerformClick));
-				return;
+#region IEmbeddedImageProvider Interface
+		public System.Windows.Rect Bounds {
+			get {
+				SWF.ToolStripItem item
+					= (SWF.ToolStripItem)Provider.Component;
+
+				SD.Rectangle r = item.ContentRectangle;
+				if (item is SWF.ToolStripSplitButton) {
+					r.Width -= ((SWF.ToolStripSplitButton)item).DropDownButtonWidth + 1;
+				}
+
+				SD.Rectangle text_rect, image_rect;
+				item.CalculateTextAndImageRectangles (
+					r, out text_rect, out image_rect);
+
+				System.Windows.Rect bounds
+					= (System.Windows.Rect) Provider.GetPropertyValue (
+						AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+				image_rect.X += (int) bounds.X;
+				image_rect.Y += (int) bounds.Y;
+
+				return Helper.RectangleToRect (image_rect);
 			}
-			button.PerformClick ();
 		}
-		
-		#endregion
-		
-	}
 
+		public string Description {
+			get { return String.Empty; }
+		}
+#endregion
+	}
 }

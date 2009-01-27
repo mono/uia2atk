@@ -31,7 +31,6 @@ FILES =  \
 	Mono.UIAutomation.Bridge/IAutomationBridge.cs \
 	Mono.UIAutomation.Bridge/IClipboardSupport.cs \
 	Mono.UIAutomation.Bridge/IEditableRange.cs \
-	Mono.UIAutomation.Bridge/IEmbeddedImage.cs \
 	Mono.UIAutomation.Bridge/IHypertext.cs \
 	Mono.UIAutomation.Bridge/IText.cs
 

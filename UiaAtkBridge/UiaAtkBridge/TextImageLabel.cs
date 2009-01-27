@@ -33,7 +33,7 @@ namespace UiaAtkBridge
 	{
 		public TextImageLabel (IRawElementProviderSimple provider) : base (provider)
 		{
-			imageImplementor = new ImageImplementorHelper (this, provider);
+			imageImplementor = new ImageImplementorHelper (this);
 		}
 		
 		#region ImageImplementor implementation

@@ -20,54 +20,55 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//	Brad Taylor <brad@getcoded.net>
 // 
 
 using System;
+using System.Windows;
+using Mono.UIAutomation.Bridge;
 using System.Windows.Automation;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
 using System.Windows.Automation.Provider;
-using System.Windows.Forms;
-using Mono.UIAutomation.Winforms.Behaviors.Button;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Behaviors.Button
 {
-	
-	[MapsComponent (typeof (Button))]
-	internal class ButtonProvider : FragmentControlProvider
+	internal class EmbeddedImageProviderBehavior
+		: ProviderBehavior, IEmbeddedImageProvider
 	{
-		
 #region Constructors
+		public EmbeddedImageProviderBehavior (FragmentControlProvider provider)
+			: base (provider)
+		{
+		}
+#endregion
 		
-		public ButtonProvider (Button button) : base (button)
+#region IProviderBehavior Interface
+		public override AutomationPattern ProviderPattern { 
+			get { return EmbeddedImagePatternIdentifiers.Pattern; }
+		}
+
+		public override void Connect ()
 		{
 		}
 		
+		public override void Disconnect ()
+		{
+		}
 #endregion
 
-#region IRawElementProviderSimple Overrides
-
-		public override void Initialize ()
-		{
-			base.Initialize ();
-
-			SetBehavior (InvokePatternIdentifiers.Pattern, 
-			             new InvokeProviderBehavior (this));
-			SetBehavior (EmbeddedImagePatternIdentifiers.Pattern, 
-			             new EmbeddedImageProviderBehavior (this));
+#region IEmbeddedImageProvider Interface
+		public System.Windows.Rect Bounds {
+			get {
+				return Helper.GetButtonBaseImageBounds (
+					Provider, ((SWF.ButtonBase)Provider.Control));
+			}
 		}
 
-		protected override object GetProviderPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Button.Id;
-			else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
-				return null;
-			else
-				return base.GetProviderPropertyValue (propertyId);
+		public string Description {
+			get { return String.Empty; }
 		}
-
 #endregion
-
 	}
-
 }

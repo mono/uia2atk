@@ -62,7 +62,7 @@ namespace UiaAtkBridge
 		public Button (IRawElementProviderSimple provider) : base (provider)
 		{
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider(InvokePatternIdentifiers.Pattern.Id);
-			imageImplementor = new ImageImplementorHelper (this, invokeProvider);
+			imageImplementor = new ImageImplementorHelper (this);
 			InitializeAdditionalProviders ();
 			if (invokeProvider != null) {
 				//it seems the default description should be null:

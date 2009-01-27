@@ -43,6 +43,7 @@ FILES =  \
 	System.Windows.Automation/DockPosition.cs \
 	System.Windows.Automation/ElementNotAvailableException.cs \
 	System.Windows.Automation/ElementNotEnabledException.cs \
+	System.Windows.Automation/EmbeddedImagePatternIdentifiers.cs \
 	System.Windows.Automation/ExpandCollapsePatternIdentifiers.cs \
 	System.Windows.Automation/ExpandCollapseState.cs \
 	System.Windows.Automation/GridItemPatternIdentifiers.cs \

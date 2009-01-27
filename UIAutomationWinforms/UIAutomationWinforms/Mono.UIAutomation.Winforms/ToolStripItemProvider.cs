@@ -33,6 +33,7 @@ using System.Windows.Automation.Provider;
 using Mono.Unix;
 
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Behaviors.ToolStripItem;
 using ETSI = Mono.UIAutomation.Winforms.Events.ToolStripItem;
 
 using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
@@ -86,6 +87,9 @@ namespace Mono.UIAutomation.Winforms
 		public override void Initialize()
 		{
 			base.Initialize ();
+
+			SetBehavior (EmbeddedImagePatternIdentifiers.Pattern, 
+			             new EmbeddedImageProviderBehavior (this));
 			
 			SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty,
 			          new ETSI.AutomationIsOffscreenPropertyEvent (this));

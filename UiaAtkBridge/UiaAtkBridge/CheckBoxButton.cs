@@ -37,7 +37,7 @@ namespace UiaAtkBridge
 		public CheckBoxButton (IRawElementProviderSimple provider) : base (provider)
 		{
 			toggleProvider = (IToggleProvider) provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id);
-			imageImplementor = new ImageImplementorHelper (this, toggleProvider);
+			imageImplementor = new ImageImplementorHelper (this);
 			if (toggleProvider == null)
 				throw new ArgumentException ("The provider for CheckBox should implement the Toggle pattern");
 

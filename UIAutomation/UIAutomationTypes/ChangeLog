@@ -1,3 +1,9 @@
+2009-01-27  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* System.Windows.Automation/EmbeddedImagePatternIdentifiers.cs: 
+	Add support class for IEmbeddedImageProvider.
+
 2009-01-09  Mike Gorse <mgorse@novell.com>
 
 	* System.Windows.Automation/TextPatternIdentifiers.cs: Add internal

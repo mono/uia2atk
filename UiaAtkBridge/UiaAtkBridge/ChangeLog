@@ -1,3 +1,15 @@
+2009-01-27  Brad Taylor  <brad@getcoded.net>
+
+	* Image.cs: 
+	* Button.cs: 
+	* ListItem.cs: 
+	* HeaderItem.cs: 
+	* RadioButton.cs: 
+	* CheckBoxButton.cs: 
+	* TextImageLabel.cs: 
+	* ImageImplementorHelper.cs: Use new IEmbeddedImageProvider instead of
+	hacky IEmbeddedImage interface.
+
 2009-01-27  Mike Gorse  <mgorse@novell.com>
 
 	* Monitor.cs: Check if already running before starting a main loop.

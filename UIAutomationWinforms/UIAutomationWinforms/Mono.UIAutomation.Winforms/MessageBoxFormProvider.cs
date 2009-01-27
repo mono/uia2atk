@@ -149,7 +149,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Internal Class: Image Provider
 
-		internal class MessageBoxImageProvider : FragmentControlProvider, IEmbeddedImage
+		internal class MessageBoxImageProvider : FragmentControlProvider, IEmbeddedImageProvider
 		{
 			public MessageBoxImageProvider (MessageBoxFormProvider provider) 
 				: base (null)
@@ -157,7 +157,7 @@ namespace Mono.UIAutomation.Winforms
 				this.provider = provider;
 			}
 
-			#region IEmbeddedImage Members
+			#region IEmbeddedImageProvider Members
 			public Rect Bounds {
 				get { return (Rect) GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id); }
 			}

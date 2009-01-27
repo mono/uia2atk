@@ -1,3 +1,30 @@
+2009-01-27  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms.Behaviors/Button/EmbeddedImageProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/ListItem/EmbeddedImageProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/PictureBox/EmbeddedImageProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/EmbeddedImageProviderBehavior.cs: 
+	Add IEmbeddedImageProvider support.
+
+	* Mono.UIAutomation.Winforms/ButtonProvider.cs: 
+	* Mono.UIAutomation.Winforms/CheckBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs: 
+	* Mono.UIAutomation.Winforms/StatusBarProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/PictureBox: 
+	* Mono.UIAutomation.Winforms/PictureBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms/RadioButtonProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: 
+	* Mono.UIAutomation.Winforms/MessageBoxFormProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/Button/InvokeProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/CheckBox/ToggleProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/ToolStripButton/InvokeProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/PopupButtonPanel/InvokeProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionItemProviderBehavior.cs: 
+	Remove IEmbeddedImage support, add the new, cleaner IEmbeddedImageProvider
+	behavior.
+
 2009-01-27  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

@@ -30,6 +30,7 @@ FILES =  \
         ../build/common/*.cs \
 	System.Windows.Automation.Provider/AutomationInteropProvider.cs \
 	System.Windows.Automation.Provider/IDockProvider.cs \
+	System.Windows.Automation.Provider/IEmbeddedImageProvider.cs \
 	System.Windows.Automation.Provider/IExpandCollapseProvider.cs \
 	System.Windows.Automation.Provider/IGridItemProvider.cs \
 	System.Windows.Automation.Provider/IGridProvider.cs \

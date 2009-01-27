@@ -25,7 +25,8 @@
 // 
 using System;
 using System.Windows;
-using Mono.UIAutomation.Bridge;
+using System.Windows.Automation;
+using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
 {
@@ -33,26 +34,23 @@ namespace UiaAtkBridge
 	public class ImageImplementorHelper
 	{
 		
-		public ImageImplementorHelper (Adapter adapter, object implementerProvider)
+		public ImageImplementorHelper (Adapter adapter)
 		{
 			this.adapter = adapter;
-			this.implementerProvider = implementerProvider;
+
+			embeddedImageProvider = adapter.Provider.GetPatternProvider (
+				EmbeddedImagePatternIdentifiers.Pattern.Id)
+					as IEmbeddedImageProvider;
 		}
 
 		public bool HasImage {
 			get {
-				if (hasImage == null) {
-					//type only available in our Provider implementation
-					embeddedImage = implementerProvider as IEmbeddedImage;
-					
-					if (embeddedImage == null) {
-						Console.WriteLine ("WARNING: your provider implementation doesn't have unofficial IEmbeddedImage support");
-						hasImage = false;
-					} else
-						hasImage = !embeddedImage.Bounds.IsEmpty;
-				}
-				
-				return hasImage.Value;
+				if (embeddedImageProvider == null) {
+					Console.WriteLine ("WARNING: your provider implementation doesn't have unofficial IEmbeddedImage support");
+					return false;
+				} 
+
+				return !embeddedImageProvider.Bounds.IsEmpty;
 			}
 		}
 		
@@ -68,21 +66,21 @@ namespace UiaAtkBridge
 		public void GetImagePosition (out int x, out int y, Atk.CoordType coordType)
 		{
 			if (HasImage) {
-				x = (int) embeddedImage.Bounds.X;
-				y = (int) embeddedImage.Bounds.Y;
+				x = (int) embeddedImageProvider.Bounds.X;
+				y = (int) embeddedImageProvider.Bounds.Y;
 				if (coordType == Atk.CoordType.Window)
 					adapter.ConvertCoords (ref x, ref y, false);
 			} else {
-				x = int.MinValue;
-				y = int.MinValue;
+				x = Int32.MinValue;
+				y = Int32.MinValue;
 			}
 		}
 		
 		public void GetImageSize (out int width, out int height)
 		{
 			if (HasImage) {
-				width = (int) embeddedImage.Bounds.Width;
-				height = (int) embeddedImage.Bounds.Height;
+				width = (int) embeddedImageProvider.Bounds.Width;
+				height = (int) embeddedImageProvider.Bounds.Height;
 			} else
 				width = height = -1;
 		}
@@ -101,7 +99,7 @@ namespace UiaAtkBridge
 		private bool? hasImage;		
 		private string imageDescription;
 		private object implementerProvider;
-		private IEmbeddedImage embeddedImage;
+		private IEmbeddedImageProvider embeddedImageProvider;
 	}
 }
 
