@@ -711,7 +711,7 @@ namespace Mono.UIAutomation.Winforms
 		#region Internal Class: Data Item Image Provider
 
 		internal class DataGridViewDataItemImageProvider
-			: DataGridViewDataItemChildProvider, IEmbeddedImage
+			: DataGridViewDataItemChildProvider, IEmbeddedImageProvider
 		{
 			public DataGridViewDataItemImageProvider (DataGridDataItemProvider itemProvider,
 			                                          SWF.DataGridViewColumn column)
