@@ -628,6 +628,13 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (Atk.Role.ToggleButton, toggle.Role);
 			Assert.AreEqual (les_schtroumpfs.Length - 1, toggle.NAccessibleChildren);
 
+			// Don't use the full InterfaceSelection as the control
+			// can't implement everything fully without
+			// ISelectionProvider support
+			Atk.Selection atkSelection = CastToAtkInterface<Atk.Selection> (toggle);
+			Assert.IsNotNull (atkSelection,
+			                  "ExpandCollapseButton doesn't implement Atk.Selection");
+
 			for (int i = 1; i < les_schtroumpfs.Length; i++) {
 				Atk.Object child = toggle.RefAccessibleChild (i - 1);
 				Assert.AreEqual (Atk.Role.MenuItem, child.Role,

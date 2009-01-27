@@ -1,3 +1,8 @@
+2009-01-27  Brad Taylor  <brad@getcoded.net>
+
+	* BridgeTests.cs: Add test for Atk.Selection support for
+	ExpandCollapseButton inside of ToolStripSplitButton test.
+
 2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTests.cs: Bring back accidentally reverted contents in r124587.

@@ -1,10 +1,17 @@
 2009-01-27  Brad Taylor  <brad@getcoded.net>
 
+	* ExpandCollapseButton.cs: Implement Atk.Selection, even if
+	ISelectionProvider isn't implemented by ToolStripSplitButton.
+	[Fixes #465614]
+
+2009-01-27  Brad Taylor  <brad@getcoded.net>
+
 	* MenuBar.cs: 
 	* MenuItem.cs: 
 	* Container.cs: Chain up then down the hierarchy to ensure that we
 	deselect every possible item.  Additionally, go all the way to the
 	MenuBar and Container level to catch toplevel menu items.
+	[Fixes #463814]
 
 	* Makefile.am: 
 	* ICanHaveSelection.cs: Add interface so that we know what children and

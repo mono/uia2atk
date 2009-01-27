@@ -30,7 +30,8 @@ using System.Windows.Automation.Provider;
 namespace UiaAtkBridge
 {
 	public class ExpandCollapseButton
-		: ComponentParentAdapter, Atk.ActionImplementor
+		: ComponentParentAdapter, Atk.ActionImplementor,
+		  Atk.SelectionImplementor
 	{
 #region Public Methods
 		public ExpandCollapseButton (IRawElementProviderSimple provider) : base (provider)
@@ -112,6 +113,54 @@ namespace UiaAtkBridge
 			return true;
 		}
 #endregion
+
+		//NOTE: ToolStripSplitButton in UIA does not implement the selection pattern
+#region SelectionImplementor implementation 
+		public int SelectionCount {
+			get {
+				return 0;
+			}
+		}
+		
+		public bool AddSelection (int i)
+		{
+			if ((i < 0) || (i >= NAccessibleChildren))
+				return false;
+			
+			Atk.Object child = RefAccessibleChild (i);
+			if (child is Atk.ActionImplementor) {
+				return ((Atk.ActionImplementor) child).DoAction (0);
+			}
+
+			return false;
+		}
+		
+		public bool ClearSelection ()
+		{
+			return true;
+		}
+		
+		public Atk.Object RefSelection (int i)
+		{
+			return null;
+		}
+		
+		public bool IsChildSelected (int i)
+		{
+			return false;
+		}
+		
+		public bool RemoveSelection (int i)
+		{
+			return true;
+		}
+		
+		public bool SelectAllSelection ()
+		{
+			return false;
+		}
+#endregion 
+
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
 		}
@@ -133,6 +182,9 @@ namespace UiaAtkBridge
 		private IExpandCollapseProvider ec_prov;
 		private const string ACTION_NAME = "click";
 		private static string actionDescription = String.Empty;
+
+		private bool selected = false;
+		private int selectedChild = -1;
 #endregion
 	}
 }
