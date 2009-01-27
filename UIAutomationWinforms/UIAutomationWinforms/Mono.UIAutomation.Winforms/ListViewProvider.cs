@@ -142,7 +142,9 @@ namespace Mono.UIAutomation.Winforms
 					return new ListItemTableItemProviderBehavior (listItem);
 				else
 					return null;
-			} else
+			} else if (behavior == EmbeddedImagePatternIdentifiers.Pattern)
+				return new EmbeddedImageProviderBehavior (listItem);
+			else
 				return base.GetListItemBehaviorRealization (behavior, listItem);
 		}
 		

@@ -32,7 +32,7 @@ using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 using System.Windows.Automation.Provider;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
+namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 {
 	internal class EmbeddedImageProviderBehavior
 		: ProviderBehavior, IEmbeddedImageProvider
@@ -48,14 +48,22 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListItem
 		public override AutomationPattern ProviderPattern { 
 			get { return EmbeddedImagePatternIdentifiers.Pattern; }
 		}
+
+		public override void Disconnect ()
+		{
+		}
+
+		public override void Connect ()
+		{
+		}
 #endregion
 
 #region IEmbeddedImageProvider Interface
 		public System.Windows.Rect Bounds {
 			get {
-				ListViewItem item = objectItem as ListViewItem;
-				if (item == null || item.ListView == null ||
-				    (item.ImageIndex == -1 && item.ImageKey == string.Empty))
+				ListViewItem item = ((ListItemProvider) Provider).ObjectItem as ListViewItem;
+				if (item == null || item.ListView == null 
+				    || (item.ImageIndex == -1 && item.ImageKey == string.Empty))
 					return System.Windows.Rect.Empty;
 
 				ImageList imageList = null;

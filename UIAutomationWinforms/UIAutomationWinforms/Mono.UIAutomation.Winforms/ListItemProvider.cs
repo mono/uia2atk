@@ -105,6 +105,10 @@ namespace Mono.UIAutomation.Winforms
 			SetBehavior (TableItemPatternIdentifiers.Pattern,
 			             listProvider.GetListItemBehaviorRealization (TableItemPatternIdentifiers.Pattern,
 			                                                          this));
+			//When supports an image (Internal Pattern)
+			SetBehavior (EmbeddedImagePatternIdentifiers.Pattern,
+			             listProvider.GetListItemBehaviorRealization (EmbeddedImagePatternIdentifiers.Pattern,
+			                                                          this));
 			
 			// Default Events
 			SetEvent (ProviderEventType.AutomationElementControlTypeProperty,
