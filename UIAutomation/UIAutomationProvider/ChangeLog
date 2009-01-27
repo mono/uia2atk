@@ -1,3 +1,7 @@
+2009-01-27  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* AssemblyInfo.cs.in: Add InternalsVisibleTo for UiaAtkBridge.
+
 2009-01-27  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 
