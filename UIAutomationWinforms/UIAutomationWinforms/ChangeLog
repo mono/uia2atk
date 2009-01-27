@@ -1,3 +1,23 @@
+2009-01-27  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGridView.ComboBox.ListBox.Button
+	Invoke Pattern: Behavior and Event added.
+
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: Method
+	implemented: FocusItem, GetFocus and SetFocus. ComboBoxColumn
+	preview.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildToggleProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildInvokeProviderBehavior.cs:
+	!Enabled -> ReadOnly
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxButtonInvokeProviderBehavior.cs:
+	Implements Invoke Pattern.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxButtonInvokePatternInvokedEvent.cs:
+	Raises Invoked Automation Event.
+
 2009-01-27  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

@@ -34,14 +34,12 @@ using Mono.UIAutomation.Winforms.Events.DataGridView;
 namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 {
 
-	// FIXME: Implement IEmbeddedImage ??
-	
-	internal class DataItemChildInvokeProviderBehavior 
+	internal class DataItemComboBoxButtonInvokeProviderBehavior 
 		: ProviderBehavior, IInvokeProvider
 	{
 		#region Constructor
 		
-		public DataItemChildInvokeProviderBehavior (DataGridViewProvider.DataGridViewDataItemChildProvider provider)
+		public DataItemComboBoxButtonInvokeProviderBehavior (DataGridViewProvider.DataGridViewDataItemComboBoxButtonProvider provider)
 			: base (provider)
 		{
 			this.provider = provider;
@@ -54,7 +52,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 		public override void Connect ()
 		{
 			Provider.SetEvent (ProviderEventType.InvokePatternInvokedEvent, 
-			                   new DataItemChildInvokePatternInvokedEvent (provider));
+			                   new DataItemComboBoxButtonInvokePatternInvokedEvent (provider));
 		}
 		
 		public override void Disconnect ()
@@ -73,7 +71,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 		
 		public void Invoke ()
 		{
-			if (provider.Cell.ReadOnly)
+			if (provider.ComboBoxProvider.ComboBoxCell.ReadOnly)
 				throw new ElementNotEnabledException ();
 
 			PerformClick ();
@@ -85,22 +83,22 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 		
 		private void PerformClick ()
 		{
-			if (provider.ItemProvider.DataGridView.InvokeRequired) {
-				provider.ItemProvider.DataGridView.BeginInvoke (new SWF.MethodInvoker (PerformClick));
+			if (provider.ComboBoxProvider.ItemProvider.DataGridView.InvokeRequired) {
+				provider.ComboBoxProvider.ItemProvider.DataGridView.BeginInvoke (new SWF.MethodInvoker (PerformClick));
 				return;
 			}
 
 			SWF.DataGridViewCellEventArgs args
-				= new SWF.DataGridViewCellEventArgs (provider.Cell.ColumnIndex, 
-				                                     provider.Cell.RowIndex);
-			provider.ItemProvider.DataGridView.InternalOnCellContentClick (args);
+				= new SWF.DataGridViewCellEventArgs (provider.ComboBoxProvider.Cell.ColumnIndex, 
+				                                     provider.ComboBoxProvider.Cell.RowIndex);
+			provider.ComboBoxProvider.ItemProvider.DataGridView.InternalOnCellContentClick (args);
 		}
 		
 		#endregion
 
 		#region Private Methods
 
-		private DataGridViewProvider.DataGridViewDataItemChildProvider provider;
+		private DataGridViewProvider.DataGridViewDataItemComboBoxButtonProvider provider;
 
 		#endregion
 		

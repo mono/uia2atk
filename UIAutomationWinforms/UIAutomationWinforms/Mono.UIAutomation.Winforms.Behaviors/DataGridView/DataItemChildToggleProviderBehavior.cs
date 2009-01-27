@@ -81,7 +81,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 	
 		public void Toggle ()
 		{
-			if (!provider.ItemProvider.DataGridView.Enabled)
+			if (provider.Cell.ReadOnly)
 				throw new ElementNotEnabledException ();
 
 			switch (ToggleState) {

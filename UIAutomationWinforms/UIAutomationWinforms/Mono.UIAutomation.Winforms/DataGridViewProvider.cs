@@ -32,6 +32,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Bridge;
+using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.DataGridView;
 
 namespace Mono.UIAutomation.Winforms
@@ -143,6 +144,15 @@ namespace Mono.UIAutomation.Winforms
 				return -1;
 
 			return datagridview.Rows.IndexOf (row);
+		}
+
+		public override void FocusItem (object objectItem)
+		{
+			SWF.DataGridViewRow row = objectItem as SWF.DataGridViewRow;
+			if (row == null || !datagridview.Rows.Contains (row))
+				return;
+
+			datagridview.CurrentCell = row.Cells [0];
 		}
 
 		public override object GetItemPropertyValue (ListItemProvider item, int propertyId)
@@ -434,6 +444,23 @@ namespace Mono.UIAutomation.Winforms
 				get { return row; }
 			}
 
+			public override IRawElementProviderFragment GetFocus ()
+			{
+				if (DataGridView.CurrentCell == null 
+				    || DataGridView.CurrentCell.RowIndex != Row.Index)
+					return null;
+				else {
+					if (DataGridView.CurrentCell.ColumnIndex < 0 
+					    || DataGridView.CurrentCell.ColumnIndex >= DataGridView.Columns.Count)
+						return null;
+
+					DataGridViewDataItemChildProvider provider = null;
+					columns.TryGetValue (DataGridView.Columns [DataGridView.CurrentCell.ColumnIndex], 
+					                     out provider);
+					return provider;
+				}
+			}
+
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
@@ -487,6 +514,8 @@ namespace Mono.UIAutomation.Winforms
 						child = new DataGridViewDataItemLinkProvider (this, column);
 					else if ((column as SWF.DataGridViewImageColumn) != null)
 						child = new DataGridViewDataItemImageProvider (this, column);
+					else if ((column as SWF.DataGridViewComboBoxColumn) != null)
+						child = new DataGridViewDataItemComboBoxProvider (this, column);
 					else
 						child = new DataGridViewDataItemEditProvider (this, column);
 
@@ -505,7 +534,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Internal Class: Data Item Child Provider
 
-		internal class DataGridViewDataItemChildProvider : FragmentControlProvider
+		internal class DataGridViewDataItemChildProvider : FragmentRootControlProvider
 		{
 			public DataGridViewDataItemChildProvider (DataGridDataItemProvider itemProvider,
 			                                          SWF.DataGridViewColumn column) : base (null)
@@ -514,7 +543,7 @@ namespace Mono.UIAutomation.Winforms
 				this.column = column;
 
 				cell = itemProvider.Row.Cells [itemProvider.DataGridView.Columns.IndexOf (column)];
-				gridProvider = (DataGridViewProvider) itemProvider.ListProvider;
+//				gridProvider = (DataGridViewProvider) itemProvider.ListProvider;
 			}
 
 			public SWF.DataGridViewCell Cell {
@@ -535,6 +564,7 @@ namespace Mono.UIAutomation.Winforms
 
 			public override void SetFocus ()
 			{
+				itemProvider.DataGridView.Focus ();
 				itemProvider.DataGridView.CurrentCell = cell;
 			}
 
@@ -554,15 +584,9 @@ namespace Mono.UIAutomation.Winforms
 
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
-				// FIXME: Generalize?
-				
-				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id) {
-					return ControlType.ComboBox.Id;
-				} else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id) {
-					return Catalog.GetString ("combobox");
-				} else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
+				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return cell.Value as string;
-				} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 					return false;
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 					return false;
@@ -582,11 +606,7 @@ namespace Mono.UIAutomation.Winforms
 
 					return itemBounds;
 				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
-					return Helper.IsListItemOffScreen (BoundingRectangle,
-					                                   itemProvider.DataGridView, 
-					                                   itemProvider.DataGridView.ColumnHeadersVisible,
-					                                   gridProvider.Header.Size,
-					                                   gridProvider.ScrollBehaviorObserver);
+					return cell.Displayed;
 				else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 					return Helper.GetClickablePoint (this);
 				else
@@ -596,7 +616,7 @@ namespace Mono.UIAutomation.Winforms
 			private SWF.DataGridViewCell cell;
 			private SWF.DataGridViewColumn column;
 			private DataGridDataItemProvider itemProvider;
-			private DataGridViewProvider gridProvider;
+//			private DataGridViewProvider gridProvider;
 		}
 
 		#endregion
@@ -722,7 +742,11 @@ namespace Mono.UIAutomation.Winforms
 
 			public Rect Bounds {
 				get {
-					return Helper.RectangleToRect (imageCell.GetContentBounds (imageCell.RowIndex));
+					Rect imageRect = Helper.RectangleToRect (imageCell.ContentBounds);
+					imageRect.X += ItemProvider.BoundingRectangle.X;
+					imageRect.Y += ItemProvider.BoundingRectangle.Y;
+					
+					return imageRect;
 				}
 			}
 	
@@ -782,6 +806,239 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			private SWF.DataGridViewTextBoxCell textBoxCell;
+		}
+
+		#endregion
+
+		#region Internal Class: Data Item ComboBox Provider
+
+		internal class DataGridViewDataItemComboBoxProvider : DataGridViewDataItemChildProvider
+		{
+			public DataGridViewDataItemComboBoxProvider (DataGridDataItemProvider itemProvider,
+			                                             SWF.DataGridViewColumn column)
+				: base (itemProvider, column)
+			{
+				comboBoxCell = (SWF.DataGridViewComboBoxCell) Cell;
+			}
+
+			public SWF.DataGridViewComboBoxCell ComboBoxCell {
+				get { return comboBoxCell; }
+			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+
+				// FIXME: Implement
+//				SetBehavior (SelectionPatternIdentifiers.Pattern,
+//				             new SelectionProviderBehavior (this));
+//				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
+//				             new ExpandCollapseProviderBehavior (this));
+			}
+
+			public override void InitializeChildControlStructure ()
+			{
+				if (listboxProvider == null) {
+					listboxProvider = new DataGridViewDataItemComboBoxListBoxProvider (this);
+					listboxProvider.Initialize ();
+					OnNavigationChildAdded (false, listboxProvider);
+				}
+				if (buttonProvider == null) {
+					buttonProvider = new DataGridViewDataItemComboBoxButtonProvider (this);
+					buttonProvider.Initialize ();
+					OnNavigationChildAdded (false, buttonProvider);
+				}
+			}
+
+			public override void FinalizeChildControlStructure ()
+			{
+				if (listboxProvider != null) {
+					listboxProvider.Terminate ();
+					OnNavigationChildRemoved (false, listboxProvider);
+					buttonProvider = null;
+				}
+				if (buttonProvider != null) {
+					buttonProvider.Terminate ();
+					OnNavigationChildRemoved (false, buttonProvider);
+					buttonProvider = null;
+				}
+			}
+
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.ComboBox.Id;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return Catalog.GetString ("combobox");
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			private DataGridViewDataItemComboBoxButtonProvider buttonProvider;
+			private SWF.DataGridViewComboBoxCell comboBoxCell;
+			private DataGridViewDataItemComboBoxListBoxProvider listboxProvider;
+		}
+
+		#endregion
+
+		#region Internal Class: Data Item ComboBox ListBox Provider
+
+		internal class DataGridViewDataItemComboBoxListBoxProvider : ListProvider
+		{
+			public DataGridViewDataItemComboBoxListBoxProvider (DataGridViewDataItemComboBoxProvider comboboxProvider)
+				: base (null)
+			{
+				this.comboboxProvider = comboboxProvider;
+			}
+
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { return comboboxProvider; }
+			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+
+				// FIXME: Implement Selection Pattern
+			}
+
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.List.Id;
+				else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
+					return true;
+				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+					return true;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return Catalog.GetString ("list");
+				else if (propertyId == AutomationElementIdentifiers.IsScrollPatternAvailableProperty.Id)
+					return IsBehaviorEnabled (ScrollPatternIdentifiers.Pattern);
+				else if (propertyId == AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)
+					return false;
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+					// If we are expanded we return the value of the show rectangle
+					// else we return the comboboxProvider
+//					if (expanded)
+//						return value;
+//					else
+						return comboboxProvider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+				} else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+//					if (expanded)
+//						return true;
+					return false;
+//					IExpandCollapseProvider pattern 
+//						= comboboxProvider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id) as IExpandCollapseProvider;
+//					return pattern != null && pattern.ExpandCollapseState == ExpandCollapseState.Collapsed;
+				} else
+					return comboboxProvider.GetPropertyValue (propertyId);
+			}
+
+			public override int SelectedItemsCount {
+				get { return 0; }
+			}
+
+			public override int ItemsCount { 
+				get { return 0; }
+			}
+
+			protected override SWF.ScrollBar HorizontalScrollBar { 
+				get { return null; }
+			}
+	
+			protected override SWF.ScrollBar VerticalScrollBar { 
+				get { return null; }
+			}
+
+			internal override IProviderBehavior GetBehaviorRealization (AutomationPattern behavior)
+			{
+				return null;
+			}
+					
+			public override ListItemProvider[] GetSelectedItems ()
+			{
+				return new ListItemProvider [0];
+			}
+			
+			public override bool IsItemSelected (ListItemProvider item)
+			{
+				return false;
+			}
+			
+			public override void SelectItem (ListItemProvider item)
+			{
+			}
+			
+			public override void UnselectItem (ListItemProvider item)
+			{
+			}
+
+			public override int IndexOfObjectItem (object objectItem)
+			{
+				return -1;
+			}
+
+			public override void ScrollItemIntoView (ListItemProvider item)
+			{
+			}
+		
+			public override object GetItemPropertyValue (ListItemProvider item,
+			                                             int propertyId)
+			{
+				return null;
+			}
+
+			protected override void InitializeScrollBehaviorObserver ()
+			{
+			}
+
+			private DataGridViewDataItemComboBoxProvider comboboxProvider;
+		}
+
+		#endregion
+
+		#region Internal Class: Data Item ComboBox Button Provider
+
+		internal class DataGridViewDataItemComboBoxButtonProvider : FragmentControlProvider
+		{
+			public DataGridViewDataItemComboBoxButtonProvider (DataGridViewDataItemComboBoxProvider comboboxProvider)
+				: base (null)
+			{
+				this.comboboxProvider = comboboxProvider;
+			}
+
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get { return comboboxProvider; }
+			}
+
+			public DataGridViewDataItemComboBoxProvider ComboBoxProvider {
+				get { return comboboxProvider; }
+			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+
+				SetBehavior (InvokePatternIdentifiers.Pattern, 
+				             new DataItemComboBoxButtonInvokeProviderBehavior (this));
+			}
+
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.Button.Id;
+				else if (propertyId == AutomationElementIdentifiers.LabeledByProperty.Id)
+					return null;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return Catalog.GetString ("button");
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
+					// FIXME: Implement ?
+					return comboboxProvider.GetPropertyValue (propertyId);
+				} else
+					return comboboxProvider.GetPropertyValue (propertyId);
+			}
+
+			private DataGridViewDataItemComboBoxProvider comboboxProvider;
 		}
 
 		#endregion
