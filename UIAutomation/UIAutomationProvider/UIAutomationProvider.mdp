@@ -1,4 +1,4 @@
-<Project name="UIAutomationProvider" fileversion="2.0" language="C#" DefaultNamespace="System.Windows.Automation.Provider" clr-version="Net_2_0" ctype="DotNetProject">
+<Project name="UIAutomationProvider" fileversion="2.0" language="C#" DefaultNamespace="System.Windows.Automation.Provider" clr-version="Net_2_0" targetFramework="2.0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="../lib/net_3_0" assembly="UIAutomationProvider" />
@@ -42,6 +42,7 @@
     <File name="System.Windows.Automation.Provider/NavigateDirection.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation.Provider/ProviderOptions.cs" subtype="Code" buildaction="Compile" />
     <File name="UIAutomationProvider.dll.sources" subtype="Code" buildaction="Nothing" />
+    <File name="System.Windows.Automation.Provider/IEmbeddedImageProvider.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Project" localcopy="True" refto="UIAutomationTypes" />

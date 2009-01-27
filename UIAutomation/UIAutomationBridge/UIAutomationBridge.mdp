@@ -18,7 +18,6 @@
     <File name="UIAutomationBridge.dll.sources" subtype="Code" buildaction="Nothing" />
     <File name="Mono.UIAutomation.Bridge/IHypertext.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Bridge/IEditableRange.cs" subtype="Code" buildaction="Compile" />
-    <File name="Mono.UIAutomation.Bridge/IEmbeddedImage.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Bridge/IClipboardSupport.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>

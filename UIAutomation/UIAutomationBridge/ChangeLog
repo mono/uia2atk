@@ -1,3 +1,8 @@
+2009-01-27  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* UIAutomationBridge.mdp: Update project files to match makefiles, since
+	there is no synchronization on these projects.
+
 2009-01-27  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: Rename IEmbeddedImage to IEmbeddedImageProvider and move
