@@ -1,5 +1,11 @@
 2009-01-26 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* testers/splitter_basic_ops.py, 
+	* testers/splitter/__init__.py,
+	* testers/splitter/splitterframe.py: test set up for Splitter control.
+
+2009-01-26 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* samples/splitter.py: Add more labels to the top panel.
 
 2009-01-23 Brian G. Merrell <bgmerrell@gmail.com>
