@@ -27,7 +27,9 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-//using Mono.UIAutomation.Winforms.Events.DataGridView;
+using Mono.UIAutomation.Winforms.Events.DataGridView;
+
+using System.Collections.Generic;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 {
@@ -36,9 +38,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 	{
 		#region Constructors
 		
-		public DataItemChildValueProviderBehavior (DataGridViewProvider.DataGridViewDataItemChildProvider childProvider)
+		public DataItemChildValueProviderBehavior (DataGridViewProvider.DataGridViewDataItemEditProvider childProvider)
 			: base (childProvider)
 		{
+			this.provider = childProvider;
 		}
 		
 		#endregion
@@ -51,7 +54,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 		
 		public override void Connect ()
 		{
-			// FIXME: Implement
+			// FIXME: How to listen this event?
+			//Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
+			//                   new DataItemChildValuePatternValueIsReadOnlyEvent (provider));
+			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
+			                   new DataItemChildValuePatternValueValueEvent (provider));
 		}
 		
 		public override void Disconnect ()
@@ -78,19 +85,48 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 		
 		public void SetValue (string value)
 		{
-			// FIXME: Implement
+			if (IsReadOnly)
+				throw new ElementNotEnabledException ();
+
+			PerformSetValue (value);
 		}
-		
+
 		public bool IsReadOnly {
-			get { return false; } // FIXME
+			get { return provider.TextBoxCell.ReadOnly; }
 		}
 		
 		public string Value {
-			get {
-				return string.Empty;
-			}
+			get { return provider.TextBoxCell.Value as string ?? string.Empty; }
 		}
 		
+		#endregion
+
+		#region Private Members
+		
+		private void PerformSetValue (string value)
+		{
+			if (provider.ItemProvider.DataGridView.InvokeRequired) {
+				provider.ItemProvider.DataGridView.BeginInvoke (new SetValueDelegate (PerformSetValue),
+				                                                new object [] { value });
+				return;
+			}
+
+			// Notice however that this is the weird behavior in .NET, because
+			// editing an IsNewRow Row *WONT ADD* a new row
+
+			SWF.DataGridViewCell oldCell = provider.ItemProvider.DataGridView.CurrentCell;
+			provider.ItemProvider.DataGridView.CurrentCell = provider.TextBoxCell;
+			provider.ItemProvider.DataGridView.BeginEdit (false);
+			provider.TextBoxCell.Value = value;
+			provider.ItemProvider.DataGridView.EndEdit ();
+			provider.ItemProvider.DataGridView.CurrentCell = oldCell;
+		}
+
+
+		private DataGridViewProvider.DataGridViewDataItemEditProvider provider;
+
+		private delegate void SetValueDelegate (string val);
+
 		#endregion
 
 	}

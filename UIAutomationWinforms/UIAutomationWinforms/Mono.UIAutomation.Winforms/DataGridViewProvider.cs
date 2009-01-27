@@ -31,6 +31,7 @@ using System.Windows;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Bridge;
 using Mono.UIAutomation.Winforms.Behaviors.DataGridView;
 
 namespace Mono.UIAutomation.Winforms
@@ -484,8 +485,10 @@ namespace Mono.UIAutomation.Winforms
 						child = new DataGridViewDataItemCheckBoxProvider (this, column);
 					else if ((column as SWF.DataGridViewLinkColumn) != null)
 						child = new DataGridViewDataItemLinkProvider (this, column);
+					else if ((column as SWF.DataGridViewImageColumn) != null)
+						child = new DataGridViewDataItemImageProvider (this, column);
 					else
-						child = new DataGridViewDataItemChildProvider (this, column);
+						child = new DataGridViewDataItemEditProvider (this, column);
 
 					child.Initialize ();
 					OnNavigationChildAdded (raiseEvent, child);
@@ -530,19 +533,19 @@ namespace Mono.UIAutomation.Winforms
 				get { return itemProvider; }
 			}
 
+			public override void SetFocus ()
+			{
+				itemProvider.DataGridView.CurrentCell = cell;
+			}
+
 			public override void Initialize ()
 			{
 				base.Initialize ();
-
-				//LAMESPEC: Vista does not support Text Pattern.
-				//http://msdn.microsoft.com/en-us/library/ms748367.aspx
 
 //				SetBehavior (GridItemPatternIdentifiers.Pattern,
 //				             new DataItemChildGridItemProviderBehavior (this));
 //				SetBehavior (TableItemPatternIdentifiers.Pattern,
 //				             new DataItemChildTableItemProviderBehavior (this));
-				SetBehavior (ValuePatternIdentifiers.Pattern,
-				             new DataItemChildValueProviderBehavior (this));
 
 //				// Automation Events
 //				SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty,
@@ -554,19 +557,9 @@ namespace Mono.UIAutomation.Winforms
 				// FIXME: Generalize?
 				
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id) {
-					if (typeof (SWF.DataGridViewComboBoxColumn) == column.GetType ())
-						return ControlType.ComboBox.Id;
-					else if (typeof (SWF.DataGridViewImageColumn) == column.GetType ())
-						return ControlType.Image.Id;
-					else // SWF.DataGridViewTextBoxColumn or something else
-						return ControlType.Edit.Id;
+					return ControlType.ComboBox.Id;
 				} else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id) {
-					if (typeof (SWF.DataGridViewComboBoxColumn) == column.GetType ())
-						return Catalog.GetString ("combobox");
-					else if (typeof (SWF.DataGridViewImageColumn) == column.GetType ())
-						return Catalog.GetString ("image");
-					else // SWF.DataGridViewTextBoxColumn or something else
-						return Catalog.GetString ("edit");
+					return Catalog.GetString ("combobox");
 				} else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
 					return cell.Value as string;
 				} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
@@ -711,6 +704,84 @@ namespace Mono.UIAutomation.Winforms
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
+		}
+
+		#endregion
+
+		#region Internal Class: Data Item Image Provider
+
+		internal class DataGridViewDataItemImageProvider
+			: DataGridViewDataItemChildProvider, IEmbeddedImage
+		{
+			public DataGridViewDataItemImageProvider (DataGridDataItemProvider itemProvider,
+			                                          SWF.DataGridViewColumn column)
+				: base (itemProvider, column)
+			{
+				imageCell = (SWF.DataGridViewImageCell) Cell;
+			}
+
+			public Rect Bounds {
+				get {
+					return Helper.RectangleToRect (imageCell.GetContentBounds (imageCell.RowIndex));
+				}
+			}
+	
+			public string Description {
+				get { return string.Empty; }
+			}
+
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.Image.Id;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return Catalog.GetString ("image");
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			private SWF.DataGridViewImageCell imageCell;
+		}
+
+		#endregion
+
+		#region Internal Class: Data Item Edit Provider
+
+		internal class DataGridViewDataItemEditProvider : DataGridViewDataItemChildProvider
+		{
+			public DataGridViewDataItemEditProvider (DataGridDataItemProvider itemProvider,
+			                                         SWF.DataGridViewColumn column)
+				: base (itemProvider, column)
+			{
+				textBoxCell = (SWF.DataGridViewTextBoxCell) Cell;
+			}
+
+			public SWF.DataGridViewTextBoxCell TextBoxCell {
+				get { return textBoxCell; }
+			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
+
+				//LAMESPEC: Vista does not support Text Pattern.
+				//http://msdn.microsoft.com/en-us/library/ms748367.aspx
+				
+				SetBehavior (ValuePatternIdentifiers.Pattern,
+				             new DataItemChildValueProviderBehavior (this));
+			}
+
+			protected override object GetProviderPropertyValue (int propertyId)
+			{
+				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
+					return ControlType.Edit.Id;
+				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
+					return Catalog.GetString ("edit");
+				else
+					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			private SWF.DataGridViewTextBoxCell textBoxCell;
 		}
 
 		#endregion

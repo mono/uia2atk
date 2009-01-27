@@ -1,3 +1,18 @@
+2009-01-27  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: Added: DataGridView. TextBox
+	ValueEvent.
+
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: TextBox column
+	support.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildValueProviderBehavior.cs:
+	Support added for setting value.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildValuePatternValueValueEvent.cs:
+	Raises ValueProperty Automation Event.
+
 2009-01-27  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms.Behaviors/ToolStripItem/InvokeProviderBehavior.cs:

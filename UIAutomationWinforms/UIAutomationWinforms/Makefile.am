@@ -213,6 +213,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGrid/TablePatternColumnHeadersEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildTogglePatternToggleStateEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildValuePatternValueValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartListItemSelectionItemPatternElementSelectedEvent.cs \
