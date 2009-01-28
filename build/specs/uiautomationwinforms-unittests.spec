@@ -23,6 +23,7 @@ Requires:	mono-core >= 2.2 mono-data gtk-sharp2 >= 2.12.7
 Requires:	mono-uia mono-winfxcore uiaatkbridge 
 BuildRequires:	mono-devel >= 2.2 mono-data gtk-sharp2 >= 2.12.7 glib-sharp2 
 BuildRequires:	mono-uia mono-winfxcore uiaatkbridge intltool >= 0.21
+Patch0:		mono-nunit.patch
 
 Summary:        UIAutomationWinforms unit tests
 
@@ -31,6 +32,7 @@ Don't install this package. Seriously. Fo' rizzle.
 
 %prep
 %setup -q
+%patch0
 
 %build
 %configure
