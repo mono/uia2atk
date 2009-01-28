@@ -1,3 +1,19 @@
+2009-01-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: Override FragmentRoot
+	and ScreenBounds in order to pass tests.
+
+	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: Cosmetic.
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Move
+	IsOffScreenProperty above the check against Control==null. Also
+	tracking API.
+
+	* Mono.UIAutomation.Winforms/TrackBarProvider.cs:
+	* Mono.UIAutomation.Winforms/ScrollBarProvider.cs: Track API.
+
+	* Mono.UIAutomation.Winforms/Helper.cs: IsOffScreen for components.
+
 2009-01-28  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: Apparently most

@@ -1,3 +1,18 @@
+2009-01-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ToolBarProviderTest.cs: Some contents moved to
+	ToolBarButtonProviderTest. Add test for patterns.
+
+	* Makefile.am:
+	* UIAutomationWinformsTests.mdp: Add new file.
+
+	* ToolBarButtonProviderTest.cs: New file (moved some contents from
+	ToolBarProviderTest).
+
+	* TestHelper.cs: Add new overloads for TestPatterns.
+
+	* BaseProviderTest.cs: Cosmetic.
+
 2009-01-28  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* ToolStripDropDownItemProviderTest.cs: Unignore

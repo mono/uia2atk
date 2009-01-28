@@ -93,6 +93,7 @@ FILES =  \
 	TextBoxBaseProviderTest.cs \
 	TextBoxProviderTest.cs \
 	TextRangeProviderTest.cs \
+	ToolBarButtonProviderTest.cs \
 	ToolBarProviderTest.cs \
 	ToolStripButtonProviderTest.cs \
 	ToolStripComboBoxProviderTest.cs \

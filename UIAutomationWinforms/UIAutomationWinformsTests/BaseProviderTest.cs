@@ -268,7 +268,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					Assert.Fail (string.Format ("You are not returning System.Windows.Rect in BoundingRectangle: {0}",
 					                            boundingRectangle.GetType ()));
 				}
-			}			
+			}
 		}
 		
 		[Test]

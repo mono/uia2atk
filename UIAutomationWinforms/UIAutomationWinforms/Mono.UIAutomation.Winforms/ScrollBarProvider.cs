@@ -323,18 +323,19 @@ namespace Mono.UIAutomation.Winforms
 					return base.GetProviderPropertyValue (propertyId);
 			}
 
-			protected override System.Drawing.Rectangle GetControlScreenBounds ()
-			{
-				System.Drawing.Rectangle thumbArea
-					= ((ScrollBar) Control).UIAThumbArea;
-
-				if (Control.Parent == null || Control.TopLevelControl == null)
-					return thumbArea;
-				else {
-					if (Control.FindForm () == Control.Parent)
-						return Control.TopLevelControl.RectangleToScreen (thumbArea);
-					else
-						return Control.Parent.RectangleToScreen (thumbArea);
+			protected override System.Drawing.Rectangle ScreenBounds {
+				get {
+					System.Drawing.Rectangle thumbArea
+						= ((ScrollBar) Control).UIAThumbArea;
+	
+					if (Control.Parent == null || Control.TopLevelControl == null)
+						return thumbArea;
+					else {
+						if (Control.FindForm () == Control.Parent)
+							return Control.TopLevelControl.RectangleToScreen (thumbArea);
+						else
+							return Control.Parent.RectangleToScreen (thumbArea);
+					}
 				}
 			}
 			

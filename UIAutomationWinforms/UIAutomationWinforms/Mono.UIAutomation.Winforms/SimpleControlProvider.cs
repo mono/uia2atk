@@ -205,15 +205,17 @@ namespace Mono.UIAutomation.Winforms
 			return providerBehaviors.ContainsKey (pattern);
 		}
 
-		protected virtual System.Drawing.Rectangle GetControlScreenBounds ()
+		protected virtual System.Drawing.Rectangle ScreenBounds
 		{
-			if (control.Parent == null || control.TopLevelControl == null)
-				return Control.Bounds;
-			else {
-				if (Control.FindForm () == Control.Parent)
-					return Control.TopLevelControl.RectangleToScreen (Control.Bounds);
-				else
-					return Control.Parent.RectangleToScreen (Control.Bounds);
+			get {
+				if (control.Parent == null || control.TopLevelControl == null)
+					return Control.Bounds;
+				else {
+					if (Control.FindForm () == Control.Parent)
+						return Control.TopLevelControl.RectangleToScreen (Control.Bounds);
+					else
+						return Control.Parent.RectangleToScreen (Control.Bounds);
+				}
 			}
 		}
 
@@ -266,10 +268,15 @@ namespace Mono.UIAutomation.Winforms
 				return true;
 			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
 				return false;
-			 
+			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				if (Control == null)
+					return Helper.IsOffScreen (ScreenBounds);
+				return Helper.IsOffScreen (ScreenBounds, Control);
+			}
+			
 			//Control-like properties
 			if (Control == null)
-				return null;			
+				return null;
 			else if (propertyId == AutomationElementIdentifiers.IsEnabledProperty.Id)
 				return Control.Enabled;
 			else if (propertyId == AutomationElementIdentifiers.NameProperty.Id) {
@@ -313,12 +320,10 @@ namespace Mono.UIAutomation.Winforms
 				
 			} else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return Control.CanFocus && Control.CanSelect;
-			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
-				return Helper.IsOffScreen (GetControlScreenBounds (), Control);
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return Control.Focused;
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-				return Helper.RectangleToRect (GetControlScreenBounds ());
+				return Helper.RectangleToRect (ScreenBounds);
 			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 				return Helper.GetClickablePoint (this);
 			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id) {

@@ -112,6 +112,13 @@ namespace Mono.UIAutomation.Winforms
 			return IsOffScreen (Helper.RectangleToRect (bounds), referenceControl);
 		}
 
+		internal static bool IsOffScreen (Rectangle bounds)
+		{
+			System.Drawing.Rectangle screen =
+				SWF.Screen.GetWorkingArea (bounds);
+			return !bounds.IntersectsWith (screen);
+		}
+
 		internal static bool IsOffScreen (Rect bounds, SWF.Control referenceControl, bool scrollable)
 		{
 			Rect screen;
@@ -147,11 +154,7 @@ namespace Mono.UIAutomation.Winforms
 
 		internal static bool ToolStripItemIsOffScreen (SWF.ToolStripItem item)
 		{
-			System.Drawing.Rectangle bounds =
-				GetToolStripItemScreenBoundsAsRectangle (item);
-			System.Drawing.Rectangle screen =
-				SWF.Screen.GetWorkingArea (bounds);
-			return !bounds.IntersectsWith (screen);
+			return IsOffScreen (GetToolStripItemScreenBoundsAsRectangle (item));
 		}
 
 		internal static bool IsOffScreen (Rect bounds, SWF.Control referenceControl)

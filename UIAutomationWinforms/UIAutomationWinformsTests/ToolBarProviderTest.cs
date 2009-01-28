@@ -61,6 +61,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              value);
 		}
 
+		[Test]
+		public void ProviderPatternTest ()
+		{
+			TestHelper.TestPatterns (GetProvider ()); //no patterns
+		}
+
 		#endregion
 
 		#region Navigation Test
@@ -101,86 +107,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNull (childProvider, "We shouldn't have a child");
 		}
 
-		#endregion
-
-		#region ToolBarButton Test
-
-		[Test]
-		public void ToolBarButtonBasicPropertiesTest ()
-		{
-			ToolBar toolBar = new ToolBar ();
-			IRawElementProviderFragmentRoot rootProvider =
-				(IRawElementProviderFragmentRoot) GetProviderFromControl (toolBar);
-			
-			toolBar.Buttons.Add ("Button");
-			IRawElementProviderFragment childProvider =
-				rootProvider.Navigate (NavigateDirection.FirstChild);
-			
-			TestProperty (childProvider,
-			              AutomationElementIdentifiers.ControlTypeProperty,
-			              ControlType.MenuItem.Id);
-			
-			TestProperty (childProvider,
-			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
-			              "menu item");
-
-			TestProperty (childProvider,
-			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
-			              true);
-			
-			string value = "ToolBarButton Name Property";
-			toolBar.Buttons [0].Text = value;
-			TestProperty (childProvider,
-			              AutomationElementIdentifiers.NameProperty,
-			              value);
-		}
-		
-		[Test]
-		public void ToolBarButtonProviderPatternTest ()
-		{
-			ToolBar toolBar = new ToolBar ();
-			IRawElementProviderFragmentRoot rootProvider =
-				(IRawElementProviderFragmentRoot) GetProviderFromControl (toolBar);
-			
-			toolBar.Buttons.Add ("Button");
-			IRawElementProviderFragment childProvider =
-				rootProvider.Navigate (NavigateDirection.FirstChild);
-			
-			object invokeProvider =
-				childProvider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (invokeProvider,
-			                  "Not returning InvokePatternIdentifiers.");
-			Assert.IsTrue (invokeProvider is IInvokeProvider,
-			               "Not returning InvokePatternIdentifiers.");
-		}
-
-		[Test]
-		public void ToolBarButtonProviderPatternTest2 ()
-		{
-			ToolBar toolBar = new ToolBar ();
-			IRawElementProviderFragmentRoot rootProvider =
-				(IRawElementProviderFragmentRoot) GetProviderFromControl (toolBar);
-			
-			ToolBarButton toolBarButton = new ToolBarButton ("Button");
-			
-			toolBar.Buttons.Add (toolBarButton);
-			IRawElementProviderFragment childProvider =
-				rootProvider.Navigate (NavigateDirection.FirstChild);
-
-			var providerFromFactory = ProviderFactory.GetProvider (toolBarButton, true, true);
-			
-			Assert.AreEqual ((IRawElementProviderSimple)childProvider, 
-			                 providerFromFactory);
-			
-			object invokeProvider =
-				childProvider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
-			Assert.IsNotNull (invokeProvider,
-			                  "Not returning InvokePatternIdentifiers.");
-			Assert.IsTrue (invokeProvider is IInvokeProvider,
-			               "Not returning InvokePatternIdentifiers.");
-		}
-
-		
 		#endregion
 
 		#region BaseProviderTest Overrides

@@ -68,6 +68,7 @@
     <File name="PopupButtonPanelTest.cs" subtype="Code" buildaction="Compile" />
     <File name="FormProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="DataGridProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="ToolBarButtonProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="TrackBarProviderTest.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
@@ -81,7 +82,6 @@
     <ProjectReference type="Gac" localcopy="True" refto="UIAutomationTypes, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
     <ProjectReference type="Gac" localcopy="True" refto="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
   </References>
-  <GtkDesignInfo />
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" IsAutotoolsProject="True" RelativeConfigureInPath="..">
     <BuildFilesVar Sync="True" Name="FILES" />
     <DeployFilesVar />

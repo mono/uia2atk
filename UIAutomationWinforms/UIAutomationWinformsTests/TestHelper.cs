@@ -125,10 +125,29 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			return allPatterns;
 		}
+
+		internal static void TestPatterns (IRawElementProviderSimple provider)
+		{
+			TestPatterns (String.Empty, provider, null);
+		}
+		
+		internal static void TestPatterns (IRawElementProviderSimple provider, params AutomationPattern [] expected)
+		{
+			TestPatterns (String.Empty, provider, expected);
+		}
+
+		internal static void TestPatterns (IRawElementProviderSimple provider, AutomationPattern expected)
+		{
+			TestPatterns (String.Empty, provider, new AutomationPattern [] { expected });
+		}
 		
 		internal static void TestPatterns (string msg, IRawElementProviderSimple provider, params AutomationPattern [] expected)
 		{
-			List <AutomationPattern> expectedPatterns = new List <AutomationPattern> (expected);
+			List <AutomationPattern> expectedPatterns = null;
+			if (expected != null)
+				expectedPatterns = new List <AutomationPattern> (expected);
+			else
+				expectedPatterns = new List <AutomationPattern> ();
 			List <AutomationPattern> missingPatterns = new List <AutomationPattern> ();
 			List <AutomationPattern> superfluousPatterns = new List <AutomationPattern> ();
 			

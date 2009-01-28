@@ -165,6 +165,12 @@ namespace Mono.UIAutomation.Winforms
 			}
 		
 			#endregion
+
+			public override IRawElementProviderFragmentRoot FragmentRoot {
+				get {
+					return (IRawElementProviderFragmentRoot) ProviderFactory.FindProvider (toolBarButton.Parent);
+				}
+			}
 			
 			#region SimpleControlProvider: Specializations
 		
@@ -194,6 +200,17 @@ namespace Mono.UIAutomation.Winforms
 					return toolBarButton.Text;
 				else
 					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			protected override System.Drawing.Rectangle ScreenBounds {
+				get {
+					System.Drawing.Rectangle area = toolBarButton.Rectangle;
+	
+					if (toolBarButton.Parent == null)
+						return area;
+	
+					return toolBarButton.Parent.RectangleToScreen (area);
+				}
 			}
 		
 			#endregion
