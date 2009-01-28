@@ -106,6 +106,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestHelper.TestPatterns (GetProvider (), InvokePatternIdentifiers.Pattern);
 		}
 
+		[Test]
+		public void Visualization ()
+		{
+			var parentProvider = ProviderFactory.GetProvider (toolBar);
+			var provider = ProviderFactory.GetProvider (toolBarButton);
+			
+			Assert.AreEqual (parentProvider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id));
+		}
+		
 		#endregion
 
 		#region Navigation Test
@@ -126,16 +136,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (childProvider, "We must have a child");
 
 			Assert.AreEqual (childProvider, provider);
-		}
-
-		[Test]
-		public void Visualization ()
-		{
-			var parentProvider = ProviderFactory.GetProvider (toolBar);
-			var provider = ProviderFactory.GetProvider (toolBarButton);
-			
-			Assert.AreEqual (parentProvider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
-			                 provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id));
 		}
 
 		#endregion

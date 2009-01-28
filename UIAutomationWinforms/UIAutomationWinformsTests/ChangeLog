@@ -1,5 +1,9 @@
 2009-01-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ToolBarButtonProviderTest.cs: Move to correct region.
+
+2009-01-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ToolBarProviderTest.cs: Some contents moved to
 	ToolBarButtonProviderTest. Add test for patterns.
 
