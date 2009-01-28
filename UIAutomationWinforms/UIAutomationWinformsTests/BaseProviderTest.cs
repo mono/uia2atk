@@ -136,11 +136,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public virtual void IsContentElementPropertyTest ()
 		{
-			Control control = GetControlInstance ();
-			if (control == null)
-				return;
-
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			IRawElementProviderSimple provider = GetProvider ();
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsContentElementProperty,
@@ -154,11 +150,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public virtual void IsControlElementPropertyTest ()
 		{
-			Control control = GetControlInstance ();
-			if (control == null)
-				return;
-
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			IRawElementProviderSimple provider = GetProvider ();
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsControlElementProperty,
@@ -168,11 +160,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public virtual void AutomationIdPropertyTest ()
 		{
-			Control control = GetControlInstance ();
-			if (control == null)
-				return;
-
-			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			IRawElementProviderSimple provider = GetProvider ();
 
 			Assert.IsNotNull (provider.GetPropertyValue (AutomationElementIdentifiers.AutomationIdProperty.Id),
 			                  "AutomationIdProperty should not be null.");
@@ -298,9 +286,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public virtual void FragmentRootAsParentTest ()
 		{
-			Control control = GetControlInstance ();			
 			IRawElementProviderFragment fragment 
-				= (IRawElementProviderFragment) GetProviderFromControl (control);
+				= GetProvider () as IRawElementProviderFragment;
 			if (fragment != null) {
 				IRawElementProviderFragment parent = fragment.Navigate (NavigateDirection.Parent);
 				
@@ -317,9 +304,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		[Test]
 		public void DefaultNavigationTest ()
 		{
-			Control control = GetControlInstance ();			
-			IRawElementProviderFragment provider
-				= (IRawElementProviderFragment) GetProviderFromControl (control);
+			IRawElementProviderFragment provider = GetProvider () as IRawElementProviderFragment;
 			if (provider != null) {
 				IRawElementProviderFragment child = provider.Navigate (NavigateDirection.FirstChild);
 				while (child != null) {
