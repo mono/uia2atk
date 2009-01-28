@@ -1,3 +1,20 @@
+2009-01-27  Mike Gorse  <mgorse@novell.com>
+
+	* List.cs: Implement clipboard support in ListWithEditableText.
+
+	* Spinner.cs, Slider.cs, List.cs, TextBoxEntryView.cs,
+	  BaseTextImplementor.cs: Fix text-changed events when typing.
+
+	* BaseTextImplementor.cs, ITextImplementor.cs,
+	  TextProviderTextImplementor.cs: Support selections when
+	  TextProvider is available.
+	  Note: Uses internal api for GetSelection.
+
+	* BaseTextImplementor.cs: Hack to fix text-changed:delete events.
+
+	* List.cs: Emit caret-moved and selection-changed events for
+	  ListWithEditableText.
+
 2009-01-27  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* UiaAtkBridge.mdp: Remove extra reference to SplitContainer.cs.

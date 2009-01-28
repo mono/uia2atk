@@ -36,7 +36,7 @@ namespace Mono.UIAutomation.Winforms.Events.TextBox
 	{
 		#region Constructors
 
-		public TextPatternCaretMovedEvent (TextBoxProvider provider)
+		public TextPatternCaretMovedEvent (FragmentControlProvider provider)
 			: base (provider, 
 			        TextPatternIdentifiers.CaretMovedEvent)
 		{
@@ -48,16 +48,26 @@ namespace Mono.UIAutomation.Winforms.Events.TextBox
 
 		public override void Connect ()
 		{
-			((SWF.TextBoxBase) Provider.Control).Document.CaretMoved
+			TextBoxBase.Document.CaretMoved
 				+= OnCaretMovedEvent;
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.TextBoxBase) Provider.Control).Document.CaretMoved
+			TextBoxBase.Document.CaretMoved
 				-= OnCaretMovedEvent;
 		}
 		
+		private SWF.TextBoxBase TextBoxBase {
+			get {
+				if (Provider.Control is SWF.TextBoxBase)
+					return (SWF.TextBoxBase)Provider.Control;
+				else if (Provider.Control is SWF.UpDownBase)
+					return ((SWF.UpDownBase)Provider.Control).txtView;
+				else
+					throw new Exception ("TextBoxBase: Unknown type: " + Provider.Control);
+			}
+		}
 		#endregion 
 		
 		#region Private methods

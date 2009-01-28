@@ -28,6 +28,7 @@
 using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Bridge;
 
 namespace UiaAtkBridge
 {
@@ -282,11 +283,15 @@ AtkObject,
 		: List, Atk.TextImplementor, Atk.EditableTextImplementor
 	{
 		private ITextImplementor text_helper;
+		private IText iText = null;
+		private ITextProvider textProvider;
+		private IClipboardSupport clipboardSupport;
 		private string oldText;
 
 		public ListWithEditableText (IRawElementProviderFragmentRoot provider)
 			: base (provider)
 		{
+			textProvider = (ITextProvider) provider.GetPatternProvider (TextPatternIdentifiers.Pattern.Id);
 			IValueProvider value_prov
 				= (IValueProvider) provider.GetPatternProvider (
 					ValuePatternIdentifiers.Pattern.Id);
@@ -294,9 +299,15 @@ AtkObject,
 				throw new ArgumentException ("Provider does not implement IValue");
 			}
 
+			iText = textProvider as IText;
+			if (iText == null)
+				iText = value_prov as IText;
+			clipboardSupport = textProvider as IClipboardSupport;
+
 			text_helper = TextImplementorFactory.GetImplementor (this, provider);
+			caretOffset = (iText != null? iText.CaretOffset: text_helper.Length);
+
 			oldText = text_helper.Text;
-			caretOffset = text_helper.Length;
 		}
 
 		protected override Atk.StateSet OnRefStateSet ()
@@ -316,7 +327,7 @@ AtkObject,
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property == ValuePatternIdentifiers.ValueProperty) {
-				if (text_helper.HandleSimpleChange (oldText, ref caretOffset))
+				if (text_helper.HandleSimpleChange (ref oldText, ref caretOffset))
 					return;
 
 				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
@@ -336,6 +347,20 @@ AtkObject,
 				NotifyStateChange (Atk.StateType.Editable, !(bool)e.NewValue);
 			} else
 				base.RaiseAutomationPropertyChangedEvent (e);
+		}
+
+		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
+		{
+			if (eventId == TextPatternIdentifiers.CaretMovedEvent) {
+				int newCaretOffset = iText.CaretOffset;
+				if (newCaretOffset != caretOffset) {
+					caretOffset = newCaretOffset;
+					GLib.Signal.Emit (this, "text_caret_moved", caretOffset);
+				}
+			} else if (eventId == TextPatternIdentifiers.TextSelectionChangedEvent) {
+				GLib.Signal.Emit (this, "text_selection_changed");
+			} else
+				base.RaiseAutomationEvent (eventId, e);
 		}
 
 #region TextImplementor Implementation 
@@ -425,7 +450,7 @@ AtkObject,
 		}
 		
 		public int CaretOffset {
-			get { return text_helper.Length; }
+			get { return caretOffset; }
 		}
 		
 		public int CharacterCount {
@@ -433,7 +458,7 @@ AtkObject,
 		}
 		
 		public int NSelections {
-			get { return 0; }
+			get { return text_helper.NSelections; }
 		}
 #endregion 
 
@@ -455,12 +480,21 @@ AtkObject,
 		
 		public void CopyText (int start_pos, int end_pos)
 		{
-			Console.WriteLine ("UiaAtkBridge (ListWithEditableText): CopyText unimplemented");
+			if (clipboardSupport == null) {
+				return;
+			}
+
+			clipboardSupport.Copy (start_pos, end_pos);
 		}
 		
 		public void CutText (int start_pos, int end_pos)
 		{
-			Console.WriteLine ("UiaAtkBridge (ListWithEditableText): CutText unimplemented");
+			if (clipboardSupport == null) {
+				return;
+			}
+
+			clipboardSupport.Copy (start_pos, end_pos);
+			DeleteText (start_pos, end_pos);
 		}
 		
 		public void DeleteText (int start_pos, int end_pos)
@@ -477,7 +511,11 @@ AtkObject,
 		
 		public void PasteText (int position)
 		{
-			Console.WriteLine ("UiaAtkBridge (ListWithEditableText): PasteText unimplemented");
+			if (clipboardSupport == null) {
+				return;
+			}
+
+			clipboardSupport.Paste (position);
 		}
 		
 		public string TextContents {

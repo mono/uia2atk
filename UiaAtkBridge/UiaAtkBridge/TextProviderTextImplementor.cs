@@ -51,6 +51,7 @@ namespace UiaAtkBridge
 			: base (resource)
 		{
 			this.textProvider = textProvider;
+			this.iText = textProvider as IText;
 		}
 
 		public override Atk.Attribute [] GetRunAttributes (int offset,
@@ -77,6 +78,55 @@ namespace UiaAtkBridge
 
 			return GetAttributesInRange (startOffset, endOffset);
 		}
+
+		public override int NSelections {
+			get {
+				try {
+					ITextRangeProvider [] selection = textProvider.GetSelection ();
+					return selection.Length;
+				} catch (System.NotSupportedException) {
+					return 0;
+				}
+			}
+		}
+
+		public override string GetSelection (int selectionNum, out int startOffset, out int endOffset)
+		{
+			if (iText != null)
+				return iText.GetSelection (selectionNum, out startOffset, out endOffset);
+			return base.GetSelection (selectionNum, out startOffset, out endOffset);
+		}
+
+		public override bool AddSelection (int startOffset, int endOffset)
+		{
+			ITextRangeProvider textRange = GetTextRange (startOffset, endOffset);
+			try {
+			textRange.AddToSelection ();
+	
+			} catch (System.InvalidOperationException) {
+				return false;
+			}
+			return true;
+		}
+
+		public override bool RemoveSelection (int selectionNum)
+		{
+			int startOffset, endOffset;
+			string selection = GetSelection (selectionNum, out startOffset, out endOffset);
+			if (selection != null && selection != String.Empty) {
+				ITextRangeProvider textRange = GetTextRange (startOffset, endOffset);
+				textRange.RemoveFromSelection ();
+				return true;
+			}
+			return false;
+		}
+
+		public override bool SetSelection (int selectionNum, int startOffset, int endOffset)
+		{
+			RemoveSelection (selectionNum);
+			return AddSelection (startOffset, endOffset);
+		}
+
 #endregion
 
 #region Private Methods
@@ -96,15 +146,7 @@ namespace UiaAtkBridge
 				return attrs.ToArray ();
 			}
 
-			ITextRangeProvider textRange = textProvider.DocumentRange;
-			if (start > 0 && end > 0) {
-				textRange.MoveEndpointByUnit (TextPatternRangeEndpoint.Start,
-				                              TextUnit.Character, start);
-				textRange.MoveEndpointByRange (TextPatternRangeEndpoint.End,
-				                               textRange, TextPatternRangeEndpoint.Start);
-				textRange.MoveEndpointByUnit (TextPatternRangeEndpoint.End,
-				                              TextUnit.Character, end - start);
-			}
+			ITextRangeProvider textRange = GetTextRange (start, end);
 			
 			foreach (Atk.TextAttribute attr in SUPPORTED_ATTRS)
 				AddTextAttribute (attrs, attr, textRange);
@@ -229,10 +271,25 @@ namespace UiaAtkBridge
 			val = prov.GetAttributeValue (providerAttrId);
 			return !((val == null) || (val == TextPattern.MixedAttributeValue));
 		}
+
+		private ITextRangeProvider GetTextRange (int start, int end)
+		{
+			ITextRangeProvider textRange = textProvider.DocumentRange;
+			if (start >= 0 && end > 0) {
+				textRange.MoveEndpointByUnit (TextPatternRangeEndpoint.Start,
+				                              TextUnit.Character, start);
+				textRange.MoveEndpointByRange (TextPatternRangeEndpoint.End,
+				                               textRange, TextPatternRangeEndpoint.Start);
+				textRange.MoveEndpointByUnit (TextPatternRangeEndpoint.End,
+				                              TextUnit.Character, end - start);
+			}
+			return textRange;
+		}
 #endregion
 
 #region Public Fields
 		private ITextProvider textProvider;
+		private IText iText;
 
 		// TODO: put these somewhere shared with provider
 		// Font weights

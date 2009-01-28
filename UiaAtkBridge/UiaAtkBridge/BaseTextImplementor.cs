@@ -56,13 +56,30 @@ namespace UiaAtkBridge
 			this.resource = resource;
 		}
 		
-		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
+		public virtual int NSelections { get { return 0; } }
+
+		public virtual string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
 			startOffset = selectionStartOffset;
 			endOffset = selectionEndOffset;
 			return null;
 		}
 		
+		public virtual bool AddSelection (int startOffset,  int endOffset)
+		{
+			return false;
+		}
+
+		public virtual bool RemoveSelection (int selectionNum)
+		{
+			return false;
+		}
+
+		public virtual bool SetSelection (int selectionNum, int startOffset,  int endOffset)
+		{
+			return false;
+		}
+
 		public string GetTextAfterOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
 			string text = Text;
@@ -203,8 +220,6 @@ namespace UiaAtkBridge
 
 		public string GetTextBeforeOffset (int offset, Atk.TextBoundary boundaryType, out int startOffset, out int endOffset)
 		{
-			string text = Text;
-
 			startOffset = 0;
 			endOffset = 0;
 			try {
@@ -258,7 +273,7 @@ namespace UiaAtkBridge
 
 		public string GetText (int startOffset, int endOffset)
 		{
-			string text = Text;
+			string text = (deleteHack != null? deleteHack: Text);
 			if ((endOffset == -1) || (endOffset > text.Length))
 				endOffset = text.Length;
 			if (endOffset < startOffset)
@@ -302,12 +317,12 @@ namespace UiaAtkBridge
 			return new Atk.Attribute[0];
 		}
 
-		public bool HandleSimpleChange (string oldText, ref int caretOffset)
+		public bool HandleSimpleChange (ref string oldText, ref int caretOffset)
 		{
-			return HandleSimpleChange (oldText, ref caretOffset, true);
+			return HandleSimpleChange (ref oldText, ref caretOffset, true);
 		}
 
-		public bool HandleSimpleChange (string oldText, ref int caretOffset, bool updateCaret)
+		public bool HandleSimpleChange (ref string oldText, ref int caretOffset, bool updateCaret)
 		{
 			string text = Text;
 
@@ -324,17 +339,23 @@ namespace UiaAtkBridge
 						caretOffset = offset + (newLength - oldLength);
 						GLib.Signal.Emit (resource, "text_caret_moved", caretOffset);
 					}
+					oldText = text;
 					return true;
 				}
 			}
 			else if (oldLength > newLength) {
 				if (IsAddition (oldText, text, out offset)) {
 					Atk.TextAdapter adapter = new Atk.TextAdapter ((Atk.TextImplementor)resource);
+					// Atk-bridge expects the text not to
+					// have been deleted yet
+					deleteHack = oldText;
 					adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, offset, oldLength - newLength);
+					deleteHack = null;
 					if (updateCaret) {
 						caretOffset = offset;
 						GLib.Signal.Emit (resource, "text_caret_moved", caretOffset);
 					}
+					oldText = text;
 					return true;
 				}
 			}
@@ -517,6 +538,7 @@ namespace UiaAtkBridge
 		private static char [] newLineSeparators = new char[] { '\n', '\r' };
 		private static char [] sentenceSeparators = new char[] { '\n', '\r', '.' };
 		private static char [] softSentenceSeparators = new char[] { '.', ':'};
+			private string deleteHack = null;
 #endregion
 	}
 }

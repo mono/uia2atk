@@ -154,24 +154,22 @@ namespace UiaAtkBridge
 		
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
-			startOffset = caretOffset;
-			endOffset = caretOffset;
-			return null;
+			return textExpert.GetSelection (selectionNum, out startOffset, out endOffset);
 		}
 		
 		public bool AddSelection (int startOffset, int endOffset)
 		{
-			throw new NotImplementedException ();
+			return textExpert.AddSelection (startOffset, endOffset);
 		}
 		
 		public bool RemoveSelection (int selectionNum)
 		{
-			return false;
+			return textExpert.RemoveSelection (selectionNum);
 		}
 		
 		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
 		{
-			return false;
+			return textExpert.SetSelection (selectionNum, startOffset, endOffset);
 		}
 
 		int caretOffset = -1;
@@ -209,7 +207,7 @@ namespace UiaAtkBridge
 		}
 		
 		public int NSelections {
-			get { return 0; }
+			get { return textExpert.NSelections; }
 		}
 		
 		#endregion 
@@ -292,7 +290,7 @@ namespace UiaAtkBridge
 		{
 			if (e.Property.Id == ValuePatternIdentifiers.ValueProperty.Id) {
 				// Don't fire spurious events if the text hasn't changed
-				if (textExpert.HandleSimpleChange (oldText, ref caretOffset, iText == null))
+				if (textExpert.HandleSimpleChange (ref oldText, ref caretOffset, iText == null))
 					return;
 
 				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
@@ -326,7 +324,7 @@ namespace UiaAtkBridge
 				if (newCaretOffset != caretOffset) {
 					caretOffset = newCaretOffset;
 					GLib.Signal.Emit (this, "text_caret_moved", caretOffset);
-			}
+				}
 			} else if (eventId == TextPatternIdentifiers.TextSelectionChangedEvent) {
 				GLib.Signal.Emit (this, "text_selection_changed");
 			} else

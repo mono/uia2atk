@@ -1,3 +1,15 @@
+2009-01-27  Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/TextBox/TextPatternCaretMovedEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/TextBox/TextPatternTextSelectionChangedEvent.cs:
+	  Support TextProvider for DomainUpDown.
+
+	* Mono.UIAutomation.Winforms.Behaviors/TextBox/TextProviderBehavior.cs,
+	  Some selection-related fixes.
+	  Use document.GetCharAtIndex; remove code that does the same thing.
+
 2009-01-27  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

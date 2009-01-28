@@ -292,6 +292,8 @@ namespace UiaAtkBridgeTest
 				((SWF.TextBox)comp).ReadOnly = readOnly;
 			else if (comp is SWF.RichTextBox)
 				((SWF.RichTextBox)comp).ReadOnly = readOnly;
+			else if (comp is SWF.ToolStripTextBox)
+				((SWF.ToolStripTextBox)comp).ReadOnly = readOnly;
 			else
 				throw new NotSupportedException ();
 		}

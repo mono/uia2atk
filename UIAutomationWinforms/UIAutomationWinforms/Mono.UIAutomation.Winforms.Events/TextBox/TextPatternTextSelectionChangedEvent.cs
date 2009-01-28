@@ -40,11 +40,11 @@ namespace Mono.UIAutomation.Winforms.Events.TextBox
 
 		#region Constructors
 
-		public TextPatternTextSelectionChangedEvent (TextBoxProvider provider)
+		public TextPatternTextSelectionChangedEvent (FragmentControlProvider provider)
 			: base (provider, 
 			        TextPatternIdentifiers.TextSelectionChangedEvent)
 		{
-			SWF.Document document = ((SWF.TextBoxBase)Provider.Control).Document;
+			SWF.Document document = TextBoxBase.Document;
 			selectionVisible = document.selection_visible;
 			selectionStart = document.selection_start;
 			selectionEnd = document.selection_end;
@@ -56,13 +56,13 @@ namespace Mono.UIAutomation.Winforms.Events.TextBox
 
 		public override void Connect ()
 		{
-			((SWF.TextBoxBase) Provider.Control).Document.UIASelectionChanged
+			TextBoxBase.Document.UIASelectionChanged
 				+= OnSelectionChangedEvent;
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.TextBoxBase) Provider.Control).Document.UIASelectionChanged
+			TextBoxBase.Document.UIASelectionChanged
 				-= OnSelectionChangedEvent;
 		}
 		
@@ -73,7 +73,7 @@ namespace Mono.UIAutomation.Winforms.Events.TextBox
 		private void OnSelectionChangedEvent (object sender, 
 		                                    EventArgs args)
 		{
-			SWF.Document document = ((SWF.TextBoxBase)Provider.Control).Document;
+			SWF.Document document = TextBoxBase.Document;
 			if (!selectionVisible && !document.selection_visible)
 				return;
 			if (document.selection_visible != selectionVisible || document.selection_start != selectionStart || document.selection_end != selectionEnd) {
@@ -84,6 +84,16 @@ namespace Mono.UIAutomation.Winforms.Events.TextBox
 			}
 		}
 
+		private SWF.TextBoxBase TextBoxBase {
+			get {
+				if (Provider.Control is SWF.TextBoxBase)
+					return (SWF.TextBoxBase)Provider.Control;
+				else if (Provider.Control is SWF.UpDownBase)
+					return ((SWF.UpDownBase)Provider.Control).txtView;
+				else
+					throw new Exception ("TextBoxBase: Unknown type: " + Provider.Control);
+			}
+		}
 		#endregion
 	}
 }

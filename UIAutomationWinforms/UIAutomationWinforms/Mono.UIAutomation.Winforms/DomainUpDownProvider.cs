@@ -38,6 +38,7 @@ using Mono.UIAutomation.Winforms.Events.DomainUpDown;
 using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 using Mono.UIAutomation.Winforms.Behaviors.DomainUpDown;
 using Mono.UIAutomation.Winforms.Behaviors.UpDownBase;
+using Mono.UIAutomation.Winforms.Behaviors.TextBox;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -63,6 +64,9 @@ namespace Mono.UIAutomation.Winforms
 			SetBehavior (SelectionPatternIdentifiers.Pattern,
 			             new SelectionProviderBehavior (this));
 			
+			SetBehavior (TextPatternIdentifiers.Pattern,
+			             new TextProviderBehavior (this));
+
 			control.Items.CollectionChanged += OnCollectionChanged;
 		}
 

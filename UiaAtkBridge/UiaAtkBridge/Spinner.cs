@@ -276,7 +276,7 @@ namespace UiaAtkBridge
 		private void NewText (string newText)
 		{
 			int caretOffset = textExpert.Length;
-			if (textExpert.HandleSimpleChange (oldText, ref caretOffset))
+			if (textExpert.HandleSimpleChange (ref oldText, ref caretOffset))
 				return;
 
 			Atk.TextAdapter adapter = new Atk.TextAdapter (this);

@@ -44,7 +44,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 	{
 		#region Constructor
 		
-		public TextProviderBehavior (TextBoxProvider provider)
+		public TextProviderBehavior (FragmentControlProvider provider)
 			: base (provider)
 		{
 		}
@@ -60,9 +60,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		public override void Connect ()
 		{
 			Provider.SetEvent (ProviderEventType.TextPatternCaretMovedEvent,
-			                   new TextPatternCaretMovedEvent ((TextBoxProvider) Provider));
+			                   new TextPatternCaretMovedEvent (Provider));
 			Provider.SetEvent (ProviderEventType.TextPatternTextSelectionChangedEvent,
-			                   new TextPatternTextSelectionChangedEvent ((TextBoxProvider) Provider));
+			                   new TextPatternTextSelectionChangedEvent (Provider));
 		}
 		
 		public override void Disconnect ()
@@ -93,7 +93,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 		//TODO: We should connect the events to update this.text_range_provider?
 		public ITextRangeProvider DocumentRange {
 			get { 
-				return new TextRangeProvider (this, (SWF.TextBoxBase) Provider.Control);
+				return new TextRangeProvider (this, TextBoxBase);
 			}
 		}
 		
@@ -108,8 +108,11 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 				
 			//TODO: Return null when system cursor is not present, how to?
 
+			if (!TextBoxBase.Document.SelectionVisible)
+				return new ITextRangeProvider [0];
+
 			return new ITextRangeProvider [] { 
-				new TextRangeProvider (this, TextBoxBase) };
+				new TextRangeProvider (this, TextBoxBase, TextBoxBase.SelectionStart, TextBoxBase.SelectionStart + TextBoxBase.SelectionLength) };
 		}
 		
 		public ITextRangeProvider[] GetVisibleRanges ()
@@ -214,15 +217,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 				// TODO: This won't scale; we really should
 				// find a better way of doing it
 				SWF.Document document = Document;
-				int pos = 0;
-				SWF.Line line = null;
-				for (int i = 1;i <= document.Lines;i++) {
-					line = document.GetLine (i);
-					if (line == document.caret.line)
-						break;
-					pos += line.Text.ToString().Length;
-				}
-				return pos + document.CaretPosition;
+				if (document.caret.line.line_no > document.Lines)
+					return TextBoxBase.Text.Length;
+				return Document.LineTagToCharIndex
+					(document.caret.line, document.CaretPosition);
 			}
 		}
 
@@ -243,6 +241,20 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TextBox
 				curPos += length;
 			}
 			return false;
+		}
+
+		string IText.GetSelection (int selectionNum, out int startOffset, out int endOffset)
+		{
+			startOffset = endOffset = CaretOffset;
+			if (selectionNum != 0)
+				return null;
+			SWF.TextBoxBase textBoxBase = TextBoxBase;
+			if (TextBoxBase.Document.SelectionVisible) {
+				startOffset = textBoxBase.SelectionStart;
+				endOffset = startOffset + textBoxBase.SelectionLength;
+				return textBoxBase.Text.Substring (startOffset, endOffset - startOffset);
+			}
+			return null;
 		}
 	}
 }

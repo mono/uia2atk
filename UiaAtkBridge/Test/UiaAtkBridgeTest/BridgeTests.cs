@@ -1008,6 +1008,23 @@ namespace UiaAtkBridgeTest
 			                 "text/plain stream differs from original text");
 		}
 		
+		// This test tries to simulate inserting and deleting a single
+		// character and test that the appropriate events are
+		// delivered for that case.
+		[Test]
+		public void TextBoxTextChangedEvents ()
+		{
+			tbx1.Text = "abc";
+			StartEventMonitor ();
+			tbx1.Text = "abcd";
+			ExpectEvents (1, Atk.Role.Text, "object:text-changed:insert");
+			ExpectEvents (0, Atk.Role.Text, "object:text-changed:delete");
+			StartEventMonitor ();
+			tbx1.Text = "abc";
+			ExpectEvents (0, Atk.Role.Text, "object:text-changed:insert");
+			ExpectEvents (1, Atk.Role.Text, "object:text-changed:delete");
+		}
+
 		internal class DialogTest {
 			SWF.CommonDialog dialog;
 	

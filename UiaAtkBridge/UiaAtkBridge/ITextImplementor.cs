@@ -34,7 +34,14 @@ namespace UiaAtkBridge
 			get;
 		}
 		
+		int NSelections {
+				get;
+			}
+
 		string GetSelection (int selectionNum, out int startOffset, out int endOffset);
+		bool AddSelection (int startOffset, int endOffset);
+		bool RemoveSelection (int selectionNum);
+		bool SetSelection (int selectionNum, int startOffset, int endOffset);
 
 		string GetTextAfterOffset (int offset, TextBoundary boundaryType,
 		                           out int startOffset, out int endOffset); 
@@ -60,7 +67,7 @@ namespace UiaAtkBridge
 			get;
 		}
 
-		bool HandleSimpleChange (string newText, ref int caretOffset);
-		bool HandleSimpleChange (string newText, ref int caretOffset, bool updateCaret);
+		bool HandleSimpleChange (ref string oldText, ref int caretOffset);
+		bool HandleSimpleChange (ref string oldText, ref int caretOffset, bool updateCaret);
 	}
 }

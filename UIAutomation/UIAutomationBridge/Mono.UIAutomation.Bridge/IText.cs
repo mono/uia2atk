@@ -32,10 +32,6 @@ namespace Mono.UIAutomation.Bridge
 	{
 		int CaretOffset { get; }
 		bool SetCaretOffset (int offset);
-		//int NSelections { get; }
-		//string GetSelection (int selectionNum, out int startOffset, out int endOffset);
-		//bool AddSelection (int startOffset, int endOffset);
-		//bool RemoveSelection (int selectionNum);
-		//bool SetSelection (int selectionNu, int startOffset, int endOffset);
+		string GetSelection (int selectionNum, out int startOffset, out int endOffset);
 	}
 }
