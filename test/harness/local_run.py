@@ -19,6 +19,12 @@ import fileinput
 global tests
 
 UPDATE_SCRIPT = "update_uia2atk_pkgs.sh"
+TRUNK = "trunk"
+BRANCHES = "branches"
+TAGS = "tags"
+OPENSUSE = "opensuse"
+FEDORA = "fedora"
+UBUNTU = "ubuntu"
 HOSTNAME = gethostname().split(".")[0]
 
 # simply takes a string s as input and prints it if running verbosely
@@ -42,6 +48,13 @@ class Settings(object):
   log_path = None
   COUNTDOWN = 5
   should_update = False
+  version = None
+  os_version = None
+  tree = TRUNK
+  distro = None
+  distro_version = None
+  is_force = False
+  is_nodeps = False
 
   def __init__(self):
       self.argument_parser()
@@ -60,7 +73,7 @@ class Settings(object):
     opts = []
     args = []
     try:
-      opts, args = getopt.getopt(sys.argv[1:],"ushql:",["update","smoke","help","quiet","log="])
+      opts, args = getopt.getopt(sys.argv[1:],"funshql:v:t:",["update","smoke","help","quiet","force","nodeps","log=","os-version=","version=","tree="])
     except getopt.GetoptError:
       self.help()
       sys.exit(1)
@@ -78,14 +91,48 @@ class Settings(object):
         Settings.is_smoke = True
       if o in ("-u","--update"):
         Settings.should_update = True
+      if o in ("-f","--force"):
+        Settings.is_force = True
+      if o in ("-n","--nodeps"):
+        Settings.is_nodeps = True
+      if o in ("-v","--version"):
+        Settings.version = a.replace('.','_')
+      if o in ("-t","--tree"):
+        t = a.lower()
+        if t == "branch":
+          t = "branches"
+        elif t == "tag":
+          t = "tags"
+        Settings.tree = t
+
+      if Settings.tree == BRANCHES:
+        assert Settings.version is not None, \
+                            "You must specify a branch version using --version"
+        abort(1)
+      elif Settings.tree == TAGS:
+        assert Settings.version is not None, \
+                            "You must specify a tag version using --version"
+        abort(1)
+      elif Settings.tree == TRUNK:
+        # doesn't require an additional option
+        pass
+      else:
+        output("Invalid tree '%s' specified" % Settings.tree)
+        abort(1)
 
   def help(self):
-    output("Common Options:")
+    output("Usage: local_run.py [options]")
+    output("Options:")
     output("  -h | --help        Print help information (this message).")
     output("  -q | --quiet       Don't print anything.")
     output("  -l | --log=        Where the log(s) should be stored.")
     output("  -s | --smoke       Run only smoke tests")
     output("  -u | --update      Update packages on remote machines")
+    output("  -f | --force       Force the update (using rpm --force)")
+    output("  -n | --nodeps      Do not check deps on the update (using rpm --nodps)")
+    output("  -t | --tree=       The part of the SVN tree desired (i.e., tags, branches, or")
+    output("                     trunk).  The default is trunk.")
+    output("  -v | --version=    The tags or branches version desired")
 
   def set_uiaqa_home(self):
     harness_dir = sys.path[0]
@@ -108,7 +155,6 @@ class Test(object):
 
   def countdown(self, n):
     ''' Counts down for n seconds and allows the user to abort the program cleanly '''
-
     remaining = n
     output("Press CTRL+C to abort.")
     output("Continuing in", False)
@@ -117,9 +163,50 @@ class Test(object):
       remaining-=1
       sys.stdout.flush()
       time.sleep(1)
+
+  def find_distro(self):
+    # returns None if we don't know (or don't care)
+    if os.path.exists("/etc/fedora-release"):
+        Settings.distro = FEDORA
+    elif os.path.exists("/etc/SuSE-release"):
+        Settings.distro = OPENSUSE
+    elif os.path.exists("/usr/bin/ubuntu-bug"):
+        Settings.distro = UBUNTU
+    else:
+        Settings.distro = None
+
+  def find_distro_version(self):
+    assert Settings.distro is not None, "Distro has not been deteced"
+    if Settings.distro == FEDORA:
+      f = open('/etc/fedora-release', 'r')  
+      release = f.readline()
+      try:
+        Settings.distro_version = release.split()[2].replace('.','')
+      except IndexError:
+        pass
+    elif Settings.distro == OPENSUSE:
+      f = open('/etc/SuSE-release', 'r')  
+      release = f.readline()
+      try:
+        Settings.distro_version = release.split()[1].replace('.','')
+      except IndexError:
+        pass
+    elif Settings.distro == UBUNTU:
+      f = open('/etc/lsb-release', 'r')  
+      release = f.readline()
+      release = f.readline()
+      try:
+        Settings.distro_version = release.split('=')[1].replace('.','')
+      except IndexError:
+        pass
+    else:
+      Settings.distro_version = None
  
   def update(self):
     import urllib
+    # need to determine the distro and the distro version
+    self.find_distro()
+    self.find_distro_version()
     url_part1 = "http://build1.sled.lab.novell.com/uia/"
     osystem = ""
     arch = ""
@@ -127,38 +214,45 @@ class Test(object):
         arch = "64"
     else:
         arch = "32"
-    if os.path.exists("/etc/fedora-release"):
-        osystem = "fedora"
-    elif os.path.exists("/etc/SuSE-release"):
-        osystem = "opensuse"
-    url_part2 = "/".join((osystem, arch, "current", "rpm_revs"))
-    url = urljoin(url_part1, url_part2)
-    print "url: %s" % url
-    u = urllib.urlopen(url)
-    revision_list = u.readlines()
-    self.revisions = "".join(revision_list[3:])
-    u.close()
-    # mega hack to get the most recent revision directory
-    date = revision_list[0].split()[-1]
-    # open the directory for the arch (the directory with all of the date
-    # directories
-    u = urllib.urlopen(urljoin(url, ".."))
-    todays_dirs = []
-    for line in u.readlines():
-        if date in line:
-            # lf is left find
-            # rf is right find
-            lf = line.find(date)
-            rf = line.rfind(date) 
-            todays_dirs.append(line[lf:rf].strip('/">'))
-    if len(todays_dirs) > 1:
-      newest_dir = todays_dirs[-2]
+    if Settings.tree == TRUNK:
+      url_part2 = "/".join((Settings.tree,
+                           "%s%s" % (Settings.distro, Settings.distro_version),
+                           arch,
+                           "current",
+                           "rpm_revs"))
     else:
-      newest_dir = todays_dirs[0]
+      url_part2 = "/".join((Settings.tree,
+                           Settings.version,
+                           "%s%s" % (Settings.distro, Settings.distro_version),
+                           arch,
+                           "current",
+                           "rpm_revs"))
+      
+    url = urljoin(url_part1, url_part2)
+    u = urllib.urlopen(url)
+    self.newest_dir = u.readline().strip()
+	
     update_script = \
                   os.path.join(Settings.uiaqa_home, "tools/%s" % UPDATE_SCRIPT)
+
+    if Settings.is_force:
+      force_option = "--force"
+    else:
+      force_option = ""
+
+    if Settings.is_nodeps:
+      nodeps_option = "--nodeps"
+    else:
+      nodeps_option = ""
+
     output("INFO:  Updating packages:")
-    t = s.Popen(["/usr/bin/sudo", update_script, "-f", "--directory=%s" % newest_dir], stdout=s.PIPE, stderr=s.STDOUT)
+    t = s.Popen(["/usr/bin/sudo",
+                 update_script,
+                 "%s" % force_option,
+                 "%s" % nodeps_option,
+                 "--directory=%s" % self.newest_dir],
+                 stdout=s.PIPE,
+                 stderr=s.STDOUT)
     o = []
     while True:
         o_tmp = t.stdout.readline()
@@ -277,7 +371,7 @@ class Test(object):
       if is_new:
         f.writelines([self.log_dir,'\n'])
         if Settings.should_update:
-          f.write("%s%s" % ("  ", self.revisions.replace("\n","\n  ")))
+          f.write("%s%s" % ("  ", self.newest_dir))
         f.write(SEPARATOR)
       else:
         # chronological list of machine names and dates for which the test has
@@ -289,14 +383,12 @@ class Test(object):
           else:
             old_file_tests.append(line)
         f.close()
+        output("INFO:  Writing to file: %s" % file_path)
         f = open(file_path,'w')
         f.writelines(old_file_tests)
         f.writelines([self.log_dir,'\n'])
         if Settings.should_update:
-          f.write("%s%s%s" % \
-                               ("  ",
-                                self.revisions.replace("\n","\n  ").strip(),
-                                "\n"))
+          f.write("%s%s%s" % ("  ", self.newest_dir, "\n"))
         f.write(SEPARATOR)
 
     # the separator denotes the division between the list of the consecutive

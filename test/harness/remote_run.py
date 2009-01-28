@@ -52,7 +52,7 @@ class Settings(object):
     opts = []
     args = []
     try:
-      opts, args = getopt.getopt(sys.argv[1:],"ushql:e:f:",["smoke","help","quiet","log=","email=","update","from="])
+      opts, args = getopt.getopt(sys.argv[1:],"funshql:e:s:",["smoke","help","quiet","force","nodeps","log=","email=","update","sender="])
     except getopt.GetoptError:
       self.help()
       sys.exit(1)
@@ -70,8 +70,12 @@ class Settings(object):
         Settings.should_update = True
       if o in ("-e","--email"):
         Settings.email_addresses = a.split(',')
-      if o in ("-f","--from"):
+      if o in ("-s","--sender"):
         Settings.from_address = a
+      if o in ("-f","--force"):
+        Settings.is_force = True
+      if o in ("-n","--nodeps"):
+        Settings.is_nodeps = True
       if o in ("-l","--log"):
         Settings.local_log_path = a
         if not os.path.exists(Settings.local_log_path):
@@ -112,11 +116,16 @@ class Kickoff(threading.Thread):
   def run(self):
     smoke_option = lambda: Settings.is_smoke == True and "--smoke" or ""
     update_option = lambda: Settings.is_smoke == True and "--update" or ""
+    force_option = lambda: Settings.is_force == True and "--force" or ""
+    nodeps_option = lambda: Settings.is_nodeps == True and "--nodeps" or ""
     if self.pkg_status == 0:
       self.test_status = os.system("ssh -o ConnectTimeout=15 %s@%s DISPLAY=:0 python -u %s/harness/local_run.py %s --log=%s >> %s/%s 2>&1" %\
                           (machines.USERNAME, self.ip,
                            machines.TEST_DIR,
-                           " ".join([smoke_option(), update_option()]).strip(),
+                           " ".join([smoke_option(),
+                                     update_option(),
+                                     force_option(),
+                                     nodeps_option()]).strip(),
                            Settings.remote_log_path,
                            Settings.local_log_path,
                            self.name))
