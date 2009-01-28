@@ -391,7 +391,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 		[Test] //tested with UIAVerify
-		[Ignore ("Test is failing is returning true instead of false")]
 		public void IsKeyboardFocusablePropertyTestForChildren ()
 		{
 			var button = GetNewToolStripDropDownItem ();

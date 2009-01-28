@@ -75,9 +75,7 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AEIds.HasKeyboardFocusProperty.Id)
 				return item.Selected;
 			else if (propertyId == AEIds.IsKeyboardFocusableProperty.Id)
-				return item.OwnerItem != null &&
-					item.CanSelect &&
-					Navigate (NavigateDirection.FirstChild) == null;
+				return false;
 			else if (propertyId == AEIds.BoundingRectangleProperty.Id)
 				return Helper.GetToolStripItemScreenBounds (item);
 			else

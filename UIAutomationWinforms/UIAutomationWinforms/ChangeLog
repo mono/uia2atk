@@ -1,3 +1,9 @@
+2009-01-28  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/ToolStripItemProvider.cs: Apparently most
+	ToolStripItems return false for IsKeyboardFocusable. Those that
+	return true don't derive from this class.
+
 2009-01-28  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ToolStripButtonProvider.cs: Subclassing
