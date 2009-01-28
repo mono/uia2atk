@@ -22,7 +22,7 @@ AutoReqProv:	on
 Requires:	mono-core >= 2.2 mono-data gtk-sharp2 >= 2.12.7 
 Requires:	mono-uia mono-winfxcore uiaatkbridge 
 BuildRequires:	mono-devel >= 2.2 mono-data gtk-sharp2 >= 2.12.7 glib-sharp2 
-BuildRequires:	mono-nunit mono-uia mono-winfxcore uiaatkbridge intltool >= 0.21
+BuildRequires:	nunit >= 2.4.7 mono-uia mono-winfxcore uiaatkbridge intltool >= 0.21
 
 Summary:        UIAutomationWinforms unit tests
 

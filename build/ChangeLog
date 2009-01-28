@@ -1,3 +1,8 @@
+2009-01-28  Brad Taylor  <brad@getcoded.net>
+
+	* specs/uiautomationwinforms-unittests.spec: Change the nunit
+	dependency to be the correct version.
+
 2009-01-28  Stephen G. Shaw  <stshaw@novell.com>
 	
 	* specs/uiautomationwindorms-unittests.spec: fake spec for hudson and unit tests
