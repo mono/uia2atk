@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008,2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
@@ -40,6 +40,28 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 	[TestFixture]
 	public class ToolStripLabelProviderTest : BaseProviderTest
 	{
+		[SetUp]
+		public override void SetUp ()
+		{
+			base.SetUp ();
+
+			strip = new ToolStrip ();
+			item = new ToolStripLabel ();
+			strip.Items.Add (item);
+			Form.Controls.Add (strip);
+			Form.Show ();
+		}
+
+		[TearDown]
+		public override void TearDown ()
+		{
+			base.TearDown ();
+
+			Form.Controls.Remove (strip);
+			strip = null;
+			item = null;
+		}
+
 		[Test]
 		public void ProviderPatternTest ()
 		{
@@ -184,8 +206,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		protected override IRawElementProviderSimple GetProvider ()
 		{
-			return ProviderFactory.GetProvider (new ToolStripLabel ());
+			return ProviderFactory.GetProvider (item);
 		}
 
+		private ToolStrip strip;
+		private ToolStripLabel item;
 	}
 }
