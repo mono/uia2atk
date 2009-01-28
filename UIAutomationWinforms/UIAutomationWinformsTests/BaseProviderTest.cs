@@ -293,7 +293,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				
 				//http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.irawelementproviderfragment.fragmentroot.aspx
 				if (parent == null)
-					Assert.AreEqual (fragment, fragment.FragmentRoot, "FragmentRoot != Parent");
+					Assert.AreEqual (fragment, fragment.FragmentRoot, "FragmentRoot != Fragment");
 				else
 					Assert.AreEqual (parent, fragment.FragmentRoot, "FragmentRoot != Parent");
 			}
