@@ -35,19 +35,18 @@ using NUnit.Framework;
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
 	[TestFixture]
-	public class ToolTipProviderTest
+	public class ToolTipProviderTest : BaseProviderTest
 	{
 		[SetUp]
-		public void SetUp ()
+		public override void SetUp ()
 		{
-			TestHelper.SetUpEnvironment ();
+			base.SetUp ();
 			
-			form = new Form ();
-			form.Show ();
+			Form.Show ();
 
 			label = new Label ();
 			label.Size = new System.Drawing.Size (30, 30);
-			form.Controls.Add (label);
+			Form.Controls.Add (label);
 
 			tooltip = new ToolTip ();
 			
@@ -62,12 +61,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		[TearDown]
-		public void TearDown ()
+		public override void TearDown ()
 		{
-			TestHelper.TearDownEnvironment ();
+			base.TearDown ();
 
 			tooltip.Hide (label);
-			form.Close ();
+			Form.Close ();
 		}
 		
 		[Test]
@@ -150,8 +149,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 #endregion
 
+		protected override bool IsContentElement {
+			get { return false; }
+		}
+
+		protected override Control GetControlInstance ()
+		{
+			return null;
+		}
+
+		protected override IRawElementProviderSimple GetProvider ()
+		{
+			return ProviderFactory.GetProvider (tooltip);
+		}
+
 #region private fields
-		private Form form;
+
 		private Label label;
 		private ToolTip tooltip;
 #endregion

@@ -1,3 +1,9 @@
+2009-01-28  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ToolTipBaseProvider.cs: Subclassing from
+	FragmentRootControlProvider. Returning this in FragmentRoot. No need
+	to use virtual in Hide and Show.
+
 2009-01-27  Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/DomainUpDownProvider.cs,

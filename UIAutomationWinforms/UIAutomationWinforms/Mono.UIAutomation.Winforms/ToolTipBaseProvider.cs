@@ -32,7 +32,7 @@ using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal abstract class ToolTipBaseProvider : FragmentControlProvider 
+	internal abstract class ToolTipBaseProvider : FragmentRootControlProvider 
 	{
 		
 		#region Constructors 
@@ -48,6 +48,10 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override Component Container {
 			get { return null; }
+		}
+
+		public override IRawElementProviderFragmentRoot FragmentRoot {
+			get { return this; }
 		}
 		
 		protected override object GetProviderPropertyValue (int propertyId)
@@ -95,7 +99,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Public Methods
 		
-		public virtual void Show (Control control) 
+		public void Show (Control control) 
 		{
 			if (AutomationInteropProvider.ClientsAreListening == true) {					
 				message = GetTextFromControl (control);
@@ -112,7 +116,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 		}
 		
-		public virtual void Hide (Control control)
+		public void Hide (Control control)
 		{
 			if (AutomationInteropProvider.ClientsAreListening == true) {
 				message = GetTextFromControl (control);

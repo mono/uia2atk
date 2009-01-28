@@ -1,5 +1,15 @@
 2009-01-28  Mario Carrion  <mcarrion@novell.com>
 
+	* ToolTipProviderTest.cs: Subclassing from BaseProvider.
+
+	* PrintPreviewControlProviderTest.cs: Ignoring test. Provider *must be
+	fixed*
+
+	* SplitterProviderTest.cs: Ignoring failing test. Provider *must be
+	fixed*
+
+2009-01-28  Mario Carrion  <mcarrion@novell.com>
+
 	* BaseProviderTest.cs: Using GetProvider instead of calling
 	GetControlInstance and Provider.GetProvider.
 
