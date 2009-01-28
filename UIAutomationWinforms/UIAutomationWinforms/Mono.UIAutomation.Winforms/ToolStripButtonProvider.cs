@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008,2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //      Brad Taylor <brad@getcoded.net>
@@ -34,7 +34,7 @@ using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 namespace Mono.UIAutomation.Winforms
 {
 	[MapsComponent (typeof (ToolStripButton))]
-	internal class ToolStripButtonProvider : FragmentControlProvider
+	internal class ToolStripButtonProvider : ToolStripItemProvider
 	{
 #region Constructors
 		public ToolStripButtonProvider (ToolStripButton button) : base (button)
