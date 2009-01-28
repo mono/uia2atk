@@ -1,3 +1,7 @@
+2009-01-28  Stephen G. Shaw  <stshaw@novell.com>
+	
+	* specs/uiautomationwindorms-unittests.spec: fake spec for hudson and unit tests
+
 2009-01-05  Stephen G. Shaw  <stshaw@novell.com>
 	
 	* specs/uiautomationwindorms.spec: Handle lang files now
