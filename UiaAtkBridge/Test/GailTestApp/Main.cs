@@ -55,7 +55,8 @@ namespace GailTestApp {
 				
 				//little hack (it doesn't matter, it's just for the nunit tests) in
 				//order to wait for Gtk initialization
-				Thread.Sleep (5000);
+				for (int i = 0; i < 20 && win == null; i++)
+				Thread.Sleep (250);
 			}
 			else
 			{

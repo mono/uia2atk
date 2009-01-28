@@ -104,29 +104,31 @@ namespace UiaAtkBridgeTest
 				//Assert.AreEqual (0, implementor.MdiZorder, "Component.MdiZorder(notWindow)");
 			}
 
-			int x, y, w, h, x2, y2, w2, h2;
-			implementor.GetExtents (out x, out y, out w, out h, Atk.CoordType.Screen);
-			Assert.IsTrue (x > 0, "x > 0");
-			Assert.IsTrue (y > 0, "y > 0");
-			Assert.IsTrue (w > 0, "w > 0");
-			Assert.IsTrue (h > 0, "h > 0");
+			RunInGuiThread (delegate () {
+				int x, y, w, h, x2, y2, w2, h2;
+				implementor.GetExtents (out x, out y, out w, out h, Atk.CoordType.Screen);
+				Assert.IsTrue (x > 0, "x > 0");
+				Assert.IsTrue (y > 0, "y > 0");
+				Assert.IsTrue (w > 0, "w > 0");
+				Assert.IsTrue (h > 0, "h > 0");
 
-			implementor.GetExtents (out x2, out y2, out w2, out h2, Atk.CoordType.Window);
-			if (type == BasicWidgetType.Window) {
-				// TODO: Why is gail returning x and y < 0?
-				Assert.IsTrue (x2 <= 0, "x2 <= 0");
-				Assert.IsTrue (y2 <= 0, "y2 <= 0");
-			} else {
-				Assert.IsTrue (x2 >= 0, "x2 > 0");
-				Assert.IsTrue (y2 >= 0, "y2 > 0");
-			}
-			Assert.IsTrue (w2 >= 0, "w2 > 0");
-			Assert.IsTrue (h2 >= 0, "h2 > 0");
+				implementor.GetExtents (out x2, out y2, out w2, out h2, Atk.CoordType.Window);
+				if (type == BasicWidgetType.Window) {
+					// TODO: Why is gail returning x and y < 0?
+					Assert.IsTrue (x2 <= 0, "x2 <= 0");
+					Assert.IsTrue (y2 <= 0, "y2 <= 0");
+				} else {
+					Assert.IsTrue (x2 >= 0, "x2 > 0");
+					Assert.IsTrue (y2 >= 0, "y2 > 0");
+				}
+				Assert.IsTrue (w2 >= 0, "w2 > 0");
+				Assert.IsTrue (h2 >= 0, "h2 > 0");
 
-			Assert.IsTrue (x >= x2, "x >= x2");
-			Assert.IsTrue (y >= y2, "y >= y2");
-			Assert.IsTrue (w >= w2, "w >= w2");
-			Assert.IsTrue (h >= h2, "h >= h2");
+				Assert.IsTrue (x >= x2, "x >= x2");
+				Assert.IsTrue (y >= y2, "y >= y2");
+				Assert.IsTrue (w >= w2, "w >= w2");
+				Assert.IsTrue (h >= h2, "h >= h2");
+			});
 		}
 		
 		protected abstract bool ContainerPanelIsResizable { get; }
@@ -476,7 +478,9 @@ namespace UiaAtkBridgeTest
 					Assert.IsFalse (indexUsed [val], "Child " + names [i] + " has already-used IndexInParent " + val);
 					indexUsed [val] = true;
 				} else val = i;
-				Assert.IsTrue (implementor.AddSelection (val), "AddSelection(" + i + ")");
+				RunInGuiThread (delegate () {
+					Assert.IsTrue (implementor.AddSelection (val), "AddSelection(" + i + ")");
+				});
 				CheckNonMultipleChildrenSelection (implementor, accessible, val, false);
 				if (!Misc.IsComboBox (type))
 					Assert.IsNotNull (accessible.RefAccessibleChild (val), "accessible.RefAccessibleChild (" + i + ") != null");
@@ -633,7 +637,9 @@ namespace UiaAtkBridgeTest
 				firstSelectionIndex =1;
 			else if (type == BasicWidgetType.ListView)
 				firstSelectionIndex = FindObjectByName (accessible, names[0]).IndexInParent;
-			Assert.IsTrue (implementor.AddSelection (firstSelectionIndex), "AddSelection->0");
+			RunInGuiThread (delegate() {
+				Assert.IsTrue (implementor.AddSelection (firstSelectionIndex), "AddSelection->0");
+			});
 
 			Assert.IsNotNull (implementor.RefSelection (0), "RefSel!=null after AS0");
 
@@ -673,7 +679,9 @@ namespace UiaAtkBridgeTest
 				implementor.ClearSelection ();
 
 				//In List
-				implementor.AddSelection (firstSelectionIndex);
+				RunInGuiThread (delegate () {
+					implementor.AddSelection (firstSelectionIndex);
+				});
 				currentSel = implementor.RefSelection (0);
 				Assert.IsNotNull (currentSel, "Current selection should not be null");
 				Atk.Component atkComponentCurrentSel = CastToAtkInterface <Atk.Component> (currentSel);
@@ -741,16 +749,20 @@ namespace UiaAtkBridgeTest
 			if (type != BasicWidgetType.PictureBox)
 				Assert.IsNull (withoutImageImplementor.ImageDescription, "wii.ImageDescription == null always");
 			int ia, ib, ca, cb;
-			implementor.GetImagePosition (out ia, out ib, Atk.CoordType.Screen);
-			component.GetPosition (out ca, out cb, Atk.CoordType.Screen);
-			Assert.IsTrue (ia > 0, "x of the image must be > 0; obtained " + ia);
+			RunInGuiThread (delegate () {
+				implementor.GetImagePosition (out ia, out ib, Atk.CoordType.Screen);
+				component.GetPosition (out ca, out cb, Atk.CoordType.Screen);
+				Assert.IsTrue (ia > 0, "x of the image must be > 0; obtained " + ia);
 			Assert.IsTrue (ib > 0, "y of the image must be > 0; obtained " + ib);
-			Assert.IsTrue (ia >= ca, "x of the image must be >= x from the widget; obtained " + ia + "<" + ca);
-			Assert.IsTrue (ib >= cb, "y of the image must be >= y from the widget; obtained " + ia + "<" + cb);
+				Assert.IsTrue (ia >= ca, "x of the image must be >= x from the widget; obtained " + ia + "<" + ca);
+				Assert.IsTrue (ib >= cb, "y of the image must be >= y from the widget; obtained " + ia + "<" + cb);
+		});
 
-			withoutImageImplementor.GetImagePosition (out ia, out ib, Atk.CoordType.Screen);
-			Assert.AreEqual (int.MinValue, ia, "x of the image must be int.MinValue; obtained " + ia);
-			Assert.AreEqual (int.MinValue, ib, "y of the image must be int.MinValue; obtained " + ib);
+			RunInGuiThread (delegate () {
+				withoutImageImplementor.GetImagePosition (out ia, out ib, Atk.CoordType.Screen);
+				Assert.AreEqual (int.MinValue, ia, "x of the image must be int.MinValue; obtained " + ia);
+				Assert.AreEqual (int.MinValue, ib, "y of the image must be int.MinValue; obtained " + ib);
+			});
 			
 			implementor.GetImageSize (out ia, out ib);
 			component.GetSize (out ca, out cb);

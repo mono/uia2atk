@@ -1,3 +1,7 @@
+2009-01-28  Mike Gorse  <mgorse@novell.com>
+
+	* Main.cs: Reduce Sleep time on initialization.
+
 2009-01-22  Mike Gorse  <mgorse@novell.com>
 
 	* Main.cs, MainWindow.cs: TrackBar support.

@@ -1,3 +1,7 @@
+2009-01-28  Mike Gorse <mgorse@novell.com>
+
+	* AtkTests.cs, AtkTester.cs: Fix deadlocks in gail tester.
+
 2009-01-26  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTests.cs: Fix typo in r124587.

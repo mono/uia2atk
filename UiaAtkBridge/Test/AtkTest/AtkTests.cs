@@ -235,8 +235,7 @@ namespace UiaAtkBridgeTest
 		}
 		
 		[Test]
-		public void StatusBar () { RunInGuiThread (RealStatusBar); }
-		public void RealStatusBar()
+		public void StatusBar()
 		{
 			BasicWidgetType type = BasicWidgetType.StatusBar;
 
@@ -251,9 +250,6 @@ namespace UiaAtkBridgeTest
 			
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
-			int x, y, width, height;
-			atkComponent.GetExtents (out x, out y, out width, out height, Atk.CoordType.Screen);
-			Assert.IsTrue (width > 0 && height > 0, "width and height must be > 0");
 
 			Parent (type, accessible);
 		}
@@ -813,8 +809,7 @@ namespace UiaAtkBridgeTest
 		}
 		
 		[Test]
-		public void TabControl () { RunInGuiThread (RealTabControl); }
-		public void RealTabControl ()
+		public void TabControl ()
 		{
 			BasicWidgetType type = BasicWidgetType.TabControl;
 			Atk.Object accessible = null;
@@ -1334,26 +1329,28 @@ namespace UiaAtkBridgeTest
 			Atk.Value atkValue = CastToAtkInterface<Atk.Value> (accessible);
 			Atk.Component component1 = CastToAtkInterface<Atk.Component> (child1);
 			Atk.Component component2 = CastToAtkInterface<Atk.Component> (child2);
-			int x1, x2, y1, y2, w1, w2, h1, h2;
-			component1.GetExtents (out x1, out y1, out w1, out h1, Atk.CoordType.Window);
-			component2.GetExtents (out x2, out y2, out w2, out h2, Atk.CoordType.Window);
-			Atk.Component rightComponent = (x2 > x1? component2: component1);
-			double minVal = GetMinimumValue (atkValue);
-			double maxVal = GetMaximumValue (atkValue);
-			SetCurrentValue (atkValue, minVal);
-			rightComponent.GetExtents (out x1, out y1, out w1, out h1, Atk.CoordType.Window);
-			StartEventMonitor ();
-			SetCurrentValue (atkValue, minVal + (maxVal - minVal) / 2);
-			System.Threading.Thread.Sleep (1000);
-			ExpectEvents (1, Atk.Role.SplitPane, "object:property-change:accessible-value");
-			double midVal = GetCurrentValue (atkValue);
-			Assert.IsTrue (midVal > minVal && midVal < maxVal, "Mid value should be between min and max");
-			rightComponent.GetExtents (out x2, out y2, out w2, out h2, Atk.CoordType.Window);
+			RunInGuiThread (delegate () {
+				int x1, x2, y1, y2, w1, w2, h1, h2;
+				component1.GetExtents (out x1, out y1, out w1, out h1, Atk.CoordType.Window);
+				component2.GetExtents (out x2, out y2, out w2, out h2, Atk.CoordType.Window);
+				Atk.Component rightComponent = (x2 > x1? component2: component1);
+				double minVal = GetMinimumValue (atkValue);
+				double maxVal = GetMaximumValue (atkValue);
+				SetCurrentValue (atkValue, minVal);
+				rightComponent.GetExtents (out x1, out y1, out w1, out h1, Atk.CoordType.Window);
+				StartEventMonitor ();
+				SetCurrentValue (atkValue, minVal + (maxVal - minVal) / 2);
+				System.Threading.Thread.Sleep (1000);
+				ExpectEvents (1, Atk.Role.SplitPane, "object:property-change:accessible-value");
+				double midVal = GetCurrentValue (atkValue);
+				Assert.IsTrue (midVal > minVal && midVal < maxVal, "Mid value should be between min and max");
+				rightComponent.GetExtents (out x2, out y2, out w2, out h2, Atk.CoordType.Window);
 
-			Assert.IsTrue (x2 > x1, "Right control moved");
-			Assert.AreEqual (y2, y1, "y should not change");
-			Assert.IsTrue (w2 < w1, "Right control width decreased");
-			Assert.AreEqual (h2, h1, "Height should not change");
+				Assert.IsTrue (x2 > x1, "Right control moved");
+				Assert.AreEqual (y2, y1, "y should not change");
+				Assert.IsTrue (w2 < w1, "Right control width decreased");
+				Assert.AreEqual (h2, h1, "Height should not change");
+			});
 		}
 	}
 }
