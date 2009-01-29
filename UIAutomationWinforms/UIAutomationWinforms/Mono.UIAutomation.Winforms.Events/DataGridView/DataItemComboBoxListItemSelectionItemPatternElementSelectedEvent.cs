@@ -23,57 +23,60 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms.Events;
 
 namespace Mono.UIAutomation.Winforms.Events.DataGridView
 {
-
-	internal class DataItemChildValuePatternValueValueEvent 
-		: BaseAutomationPropertyEvent
+	
+	internal class DataItemComboBoxListItemSelectionItemPatternElementSelectedEvent
+		: BaseAutomationEvent
 	{
-		
+
 		#region Constructor
-		
-		public DataItemChildValuePatternValueValueEvent (DataGridViewProvider.DataGridViewDataItemEditProvider provider)
-			: base (provider,
-			        ValuePatternIdentifiers.ValueProperty)
+
+		public DataItemComboBoxListItemSelectionItemPatternElementSelectedEvent (ListItemProvider provider)
+			: base (provider, 
+			        SelectionItemPatternIdentifiers.ElementSelectedEvent)
 		{
-			this.provider = provider;
+			this.itemProvider = provider;
+			this.provider = (DataGridViewProvider.DataGridViewDataItemComboBoxListBoxProvider) provider.ListProvider;
 		}
 		
 		#endregion
-		
+
 		#region IConnectable Overrides
-	
+		
 		public override void Connect ()
 		{
-			provider.ItemProvider.DataGridView.CellValueChanged += OnValueProperty;
+			provider.ComboboxProvider.ComboBoxCell.DataGridView.CellValueChanged += OnCellValueChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			provider.ItemProvider.DataGridView.CellValueChanged -= OnValueProperty;
+			provider.ComboboxProvider.ComboBoxCell.DataGridView.CellValueChanged -= OnCellValueChanged;
 		}
 		
 		#endregion
 		
 		#region Private Methods
-		
-		private void OnValueProperty (object sender, 
-		                              SWF.DataGridViewCellEventArgs args)
-		{
-			if (args.ColumnIndex == provider.Cell.ColumnIndex
-			    && args.RowIndex == provider.Cell.RowIndex)
-				RaiseAutomationPropertyChangedEvent ();
-		}
 
+		private void OnCellValueChanged (object sender, SWF.DataGridViewCellEventArgs args)
+		{
+			if (args.ColumnIndex == provider.ComboboxProvider.ComboBoxCell.ColumnIndex
+			    && args.RowIndex == provider.ComboboxProvider.ComboBoxCell.RowIndex
+			    && provider.IsItemSelected (itemProvider))
+				RaiseAutomationEvent ();
+		}
+		
 		#endregion
 
 		#region Private Fields
 
-		private DataGridViewProvider.DataGridViewDataItemEditProvider provider;
+		private ListItemProvider itemProvider;
+		private DataGridViewProvider.DataGridViewDataItemComboBoxListBoxProvider provider;
 
 		#endregion
 	}

@@ -49,12 +49,12 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 	
 		public override void Connect ()
 		{
-			provider.ItemProvider.DataGridView.CellEndEdit += OnToggleStateProperty;
+			provider.ItemProvider.DataGridView.CellValueChanged += OnToggleStateProperty;
 		}
 
 		public override void Disconnect ()
 		{
-			provider.ItemProvider.DataGridView.CellEndEdit -= OnToggleStateProperty;
+			provider.ItemProvider.DataGridView.CellValueChanged -= OnToggleStateProperty;
 		}
 		
 		#endregion

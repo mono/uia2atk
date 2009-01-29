@@ -32,6 +32,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Bridge;
+using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.DataGridView;
 
@@ -825,15 +826,18 @@ namespace Mono.UIAutomation.Winforms
 				get { return comboBoxCell; }
 			}
 
+			public ListProvider ListProvider {
+				get { return listboxProvider; }
+			}
+
 			public override void Initialize ()
 			{
 				base.Initialize ();
 
-				// FIXME: Implement
-//				SetBehavior (SelectionPatternIdentifiers.Pattern,
-//				             new SelectionProviderBehavior (this));
-//				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
-//				             new ExpandCollapseProviderBehavior (this));
+				SetBehavior (SelectionPatternIdentifiers.Pattern,
+				             new DataItemComboBoxSelectionProviderBehavior (this));
+				SetBehavior (ExpandCollapsePatternIdentifiers.Pattern,
+				             new DataItemComboBoxExpandCollapseProviderBehavior (this));
 			}
 
 			public override void InitializeChildControlStructure ()
@@ -886,7 +890,7 @@ namespace Mono.UIAutomation.Winforms
 		internal class DataGridViewDataItemComboBoxListBoxProvider : ListProvider
 		{
 			public DataGridViewDataItemComboBoxListBoxProvider (DataGridViewDataItemComboBoxProvider comboboxProvider)
-				: base (null)
+				: base (comboboxProvider.ItemProvider.DataGridView)
 			{
 				this.comboboxProvider = comboboxProvider;
 			}
@@ -895,11 +899,29 @@ namespace Mono.UIAutomation.Winforms
 				get { return comboboxProvider; }
 			}
 
+			public DataGridViewDataItemComboBoxProvider ComboboxProvider {
+				get { return comboboxProvider; }
+			}
+
 			public override void Initialize ()
 			{
-				base.Initialize ();
+				SetEvent (ProviderEventType.AutomationElementControlTypeProperty,
+				          new AutomationControlTypePropertyEvent (this));
+				SetEvent (ProviderEventType.AutomationElementIsPatternAvailableProperty,
+				          new AutomationIsPatternAvailablePropertyEvent (this));
 
-				// FIXME: Implement Selection Pattern
+				SetBehavior (SelectionPatternIdentifiers.Pattern,
+				             GetBehaviorRealization (SelectionPatternIdentifiers.Pattern));
+			}
+
+			public override void InitializeChildControlStructure ()
+			{
+				base.InitializeChildControlStructure ();
+
+				foreach (string str in comboboxProvider.ComboBoxCell.Items) {
+					ListItemProvider item = GetItemProviderFrom (this, str);
+					OnNavigationChildAdded (false, item);
+				}
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)
@@ -935,11 +957,11 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			public override int SelectedItemsCount {
-				get { return 0; }
+				get { return comboboxProvider.ComboBoxCell.Value == null ? 0 : 1; }
 			}
 
 			public override int ItemsCount { 
-				get { return 0; }
+				get { return comboboxProvider.ComboBoxCell.Items.Count; }
 			}
 
 			protected override SWF.ScrollBar HorizontalScrollBar { 
@@ -952,29 +974,71 @@ namespace Mono.UIAutomation.Winforms
 
 			internal override IProviderBehavior GetBehaviorRealization (AutomationPattern behavior)
 			{
-				return null;
+				if (behavior == SelectionPatternIdentifiers.Pattern)
+					return new DataItemComboBoxListBoxSelectionProviderBehavior (this);
+//				//FIXME: Implement ScrollPattern
+				else 
+					return null;
 			}
-					
+
+			public override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+			                                                                  ListItemProvider listItem)
+			{
+				if (behavior == SelectionItemPatternIdentifiers.Pattern)
+					return new DataItemComboBoxListItemSelectionItemProviderBehavior (listItem);
+				else
+					return base.GetListItemBehaviorRealization (behavior, listItem);
+			}
+
 			public override ListItemProvider[] GetSelectedItems ()
 			{
-				return new ListItemProvider [0];
+				if (SelectedItemsCount == 0)
+					return new ListItemProvider [0];
+				else
+					return new ListItemProvider [1] {
+						GetItemProviderFrom (this,
+						                     comboboxProvider.ComboBoxCell.Value as string,
+						                     false)  
+
+					};
 			}
 			
 			public override bool IsItemSelected (ListItemProvider item)
 			{
-				return false;
+				if (comboboxProvider.ComboBoxCell.Value == null)
+					return false;
+				
+				return item.ObjectItem as string == comboboxProvider.ComboBoxCell.Value as string;
 			}
 			
 			public override void SelectItem (ListItemProvider item)
 			{
+				if (!ContainsItem (item))
+					return;
+
+				SWF.DataGridViewCell oldCell = comboboxProvider.ComboBoxCell.DataGridView.CurrentCell;
+
+				comboboxProvider.ComboBoxCell.DataGridView.CurrentCell = comboboxProvider.ComboBoxCell;
+				comboboxProvider.ComboBoxCell.Value = item.ObjectItem as string;
+				comboboxProvider.ComboBoxCell.DataGridView.CurrentCell = oldCell;
 			}
 			
 			public override void UnselectItem (ListItemProvider item)
 			{
+				comboboxProvider.ComboBoxCell.Value = null;
 			}
 
 			public override int IndexOfObjectItem (object objectItem)
 			{
+				string str = objectItem as string;
+				if (str == null)
+					return -1;
+
+				for (int index = 0; index < comboboxProvider.ComboBoxCell.Items.Count; index++) {
+					if (comboboxProvider.ComboBoxCell.Items [index] as string == str)
+						return index;
+				}
+
 				return -1;
 			}
 
@@ -985,7 +1049,18 @@ namespace Mono.UIAutomation.Winforms
 			public override object GetItemPropertyValue (ListItemProvider item,
 			                                             int propertyId)
 			{
-				return null;
+				if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
+					return item.ObjectItem as string;
+				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+					return comboboxProvider.GetPropertyValue (propertyId);
+				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
+					return comboboxProvider.ComboBoxCell.DataGridView.Focused
+						&& comboboxProvider.ComboBoxCell.DataGridView.CurrentCell == comboboxProvider.ComboBoxCell;
+				else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id)
+					// What when combobox is visible and scroll is hiden cell?
+					return IsItemSelected (item);
+				else
+					return null;
 			}
 
 			protected override void InitializeScrollBehaviorObserver ()

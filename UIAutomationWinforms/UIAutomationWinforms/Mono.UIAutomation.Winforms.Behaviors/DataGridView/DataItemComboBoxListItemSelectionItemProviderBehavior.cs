@@ -22,59 +22,43 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
-using System;
 using SWF = System.Windows.Forms;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
+using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.DataGridView;
+using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 
-namespace Mono.UIAutomation.Winforms.Events.DataGridView
+namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 {
 
-	internal class DataItemChildValuePatternValueValueEvent 
-		: BaseAutomationPropertyEvent
+	internal class DataItemComboBoxListItemSelectionItemProviderBehavior 
+		: SelectionItemProviderBehavior
 	{
 		
-		#region Constructor
+		#region Constructors
 		
-		public DataItemChildValuePatternValueValueEvent (DataGridViewProvider.DataGridViewDataItemEditProvider provider)
-			: base (provider,
-			        ValuePatternIdentifiers.ValueProperty)
+		public DataItemComboBoxListItemSelectionItemProviderBehavior (ListItemProvider provider)
+			: base (provider)
 		{
-			this.provider = provider;
 		}
 		
 		#endregion
 		
-		#region IConnectable Overrides
-	
+		#region IProviderBehavior Interface
+		
 		public override void Connect ()
 		{
-			provider.ItemProvider.DataGridView.CellValueChanged += OnValueProperty;
-		}
-
-		public override void Disconnect ()
-		{
-			provider.ItemProvider.DataGridView.CellValueChanged -= OnValueProperty;
-		}
+			// NOTE: 
+			//       - ComboBox doesn't support multiple selection so:
+			//         - ElementAddedEvent not generated.
+			//         - ElementRemovedEvent not generated.
+			//       - SelectionContainer never changes.
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent, 
+			                   new DataItemComboBoxListItemSelectionItemPatternElementSelectedEvent ((ListItemProvider) Provider));
+			Provider.SetEvent (ProviderEventType.SelectionItemPatternIsSelectedProperty, 
+			                   new DataItemComboBoxListItemSelectionItemPatternIsSelectedEvent ((ListItemProvider) Provider));
+		}	
 		
-		#endregion
-		
-		#region Private Methods
-		
-		private void OnValueProperty (object sender, 
-		                              SWF.DataGridViewCellEventArgs args)
-		{
-			if (args.ColumnIndex == provider.Cell.ColumnIndex
-			    && args.RowIndex == provider.Cell.RowIndex)
-				RaiseAutomationPropertyChangedEvent ();
-		}
-
-		#endregion
-
-		#region Private Fields
-
-		private DataGridViewProvider.DataGridViewDataItemEditProvider provider;
-
 		#endregion
 	}
 }

@@ -1,3 +1,46 @@
+2009-01-28  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGridView: ComboBox Column:
+	Behaviors added: ComboBox.ExpandCollapse, ComboBox.Selection,
+	ComboBox.ListBox.Selection, ComboBox.ListBox.ListItem.SelectionItem.
+	Events added: ComboBox.ListItem.SelectionItem.
+
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: Behavior support:
+	Selection. ComboBox support for ListItem children. SelectionItem
+	support. ListItem Automation Properties support.
+
+	* Mono.UIAutomation.Winforms/ListItemProvider.cs:
+	InitializeChildControlStructure because when using will set the
+	events again because of Control argument in constructor.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxListItemSelectionItemProviderBehavior.cs:
+	DataGridView.ComboBox.ListItem.SelectionItem Behavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxExpandCollapseProviderBehavior.cs:
+	DataGridView.ComboBox.ExpandCollapse Behavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxSelectionProviderBehavior.cs:
+	DataGridView.ComboBox.Selection Behavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildValueProviderBehavior.cs:
+	Commented: BeginEdit and EndEdit.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxListBoxSelectionProviderBehavior.cs:
+	DataGridView.ComboBox.ListBox.Selection Behavior.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildValuePatternValueValueEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildTogglePatternToggleStateEvent.cs:
+	CellEndEdit -> CellValueChanged
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxListItemSelectionItemPatternElementSelectedEvent.cs:
+	Raises DataGridView.ComboBox.ListItem.SelectionItem.ElementSelected
+	Automation Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxListItemSelectionItemPatternIsSelectedEvent.cs:
+	Raises DataGridView.ComboBox.ListItem.SelectionItem.IsSelected
+	Automation Property Event.
+
 2009-01-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: Override FragmentRoot

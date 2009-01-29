@@ -116,9 +116,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 
 			SWF.DataGridViewCell oldCell = provider.ItemProvider.DataGridView.CurrentCell;
 			provider.ItemProvider.DataGridView.CurrentCell = provider.TextBoxCell;
-			provider.ItemProvider.DataGridView.BeginEdit (false);
+//			provider.ItemProvider.DataGridView.BeginEdit (false);
 			provider.TextBoxCell.Value = value;
-			provider.ItemProvider.DataGridView.EndEdit ();
+//			provider.ItemProvider.DataGridView.EndEdit ();
 			provider.ItemProvider.DataGridView.CurrentCell = oldCell;
 		}
 
