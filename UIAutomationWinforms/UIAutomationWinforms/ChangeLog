@@ -1,3 +1,32 @@
+2009-01-29  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGridView: DataItemChild: Behaviors
+	added EmbeddedImage, GridItem (events: ColumnEvent, RowEvent),
+	TableItem (event: ColumHeadersItem). 
+
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs:
+	DataGridView.DataItem: GridItem and TableItem support added.
+	DataGridView.DataItemImage: EmbeddedImage support added.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildGridItemProviderBehavior.cs:
+	DataItemChild. GridItem support.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildTableItemProviderBehavior.cs:
+	DataItemChild. TableItem support.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildEmbeddedImageProviderBehavior.cs:
+	DataItemChildImage: IEmbeddedImage support.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildTableItemColumnHeaderItemsEvent.cs:
+	DataItemChild. TableItem.ColumnHeaderItems support.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildGridItemPatternColumnEvent.cs:
+	DataItemChild. GridItem. ColumnEvent support.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildGridItemPatternRowEvent.cs:
+	DataItemChild. GridItem. RowEvent support.
+
 2009-01-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: ScreenBounds is

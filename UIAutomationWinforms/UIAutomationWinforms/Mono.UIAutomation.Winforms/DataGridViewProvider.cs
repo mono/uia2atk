@@ -179,7 +179,7 @@ namespace Mono.UIAutomation.Winforms
 				                                   header.Size,
 				                                   ScrollBehaviorObserver);
 			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-				return true; // FIXME: Is this always OK?
+				return !provider.Row.Cells [0].ReadOnly;
 			else
 				return null;
 		}
@@ -304,6 +304,19 @@ namespace Mono.UIAutomation.Winforms
 					return Helper.GetControlScreenBounds (Size, DataGridView, true);
 				else
 					return base.GetProviderPropertyValue (propertyId);
+			}
+
+			public IRawElementProviderSimple[] GetHeaderItems ()
+			{
+				IRawElementProviderSimple []items = new IRawElementProviderSimple [headers.Count];
+
+				int index = 0;
+				foreach (DataGridViewHeaderItemProvider item in headers.Values) {
+					items [index] = item;
+					index++;
+				}
+				
+				return items;
 			}
 
 			public override void InitializeChildControlStructure ()
@@ -431,10 +444,15 @@ namespace Mono.UIAutomation.Winforms
 		                                     SWF.DataGridViewRow row) 
 				: base (datagridProvider, datagridProvider, datagridview, row)
 			{
+				this.datagridProvider = datagridProvider;
 				this.datagridview = datagridview;
 				this.row = row;
 
 				columns = new Dictionary<SWF.DataGridViewColumn, DataGridViewDataItemChildProvider> ();
+			}
+
+			public DataGridViewProvider DataGridProvider {
+				get { return datagridProvider; }
 			}
 
 			public SWF.DataGridView DataGridView {
@@ -527,6 +545,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			private Dictionary<SWF.DataGridViewColumn, DataGridViewDataItemChildProvider> columns;
+			private DataGridViewProvider datagridProvider;
 			private SWF.DataGridView datagridview;
 			private SWF.DataGridViewRow row;
 		}
@@ -535,7 +554,7 @@ namespace Mono.UIAutomation.Winforms
 
 		#region Internal Class: Data Item Child Provider
 
-		internal class DataGridViewDataItemChildProvider : FragmentRootControlProvider
+		internal abstract class DataGridViewDataItemChildProvider : FragmentRootControlProvider
 		{
 			public DataGridViewDataItemChildProvider (DataGridDataItemProvider itemProvider,
 			                                          SWF.DataGridViewColumn column) : base (null)
@@ -544,7 +563,7 @@ namespace Mono.UIAutomation.Winforms
 				this.column = column;
 
 				cell = itemProvider.Row.Cells [itemProvider.DataGridView.Columns.IndexOf (column)];
-//				gridProvider = (DataGridViewProvider) itemProvider.ListProvider;
+				gridProvider = (DataGridViewProvider) itemProvider.ListProvider;
 			}
 
 			public SWF.DataGridViewCell Cell {
@@ -557,6 +576,10 @@ namespace Mono.UIAutomation.Winforms
 
 			public DataGridDataItemProvider ItemProvider {
 				get { return itemProvider; }
+			}
+
+			public DataGridViewProvider DataGridViewProvider {
+				get { return gridProvider; }
 			}
 
 			public override IRawElementProviderFragmentRoot FragmentRoot {
@@ -573,10 +596,10 @@ namespace Mono.UIAutomation.Winforms
 			{
 				base.Initialize ();
 
-//				SetBehavior (GridItemPatternIdentifiers.Pattern,
-//				             new DataItemChildGridItemProviderBehavior (this));
-//				SetBehavior (TableItemPatternIdentifiers.Pattern,
-//				             new DataItemChildTableItemProviderBehavior (this));
+				SetBehavior (GridItemPatternIdentifiers.Pattern,
+				             new DataItemChildGridItemProviderBehavior (this));
+				SetBehavior (TableItemPatternIdentifiers.Pattern,
+				             new DataItemChildTableItemProviderBehavior (this));
 
 //				// Automation Events
 //				SetEvent (ProviderEventType.AutomationElementIsOffscreenProperty,
@@ -616,8 +639,8 @@ namespace Mono.UIAutomation.Winforms
 
 			private SWF.DataGridViewCell cell;
 			private SWF.DataGridViewColumn column;
+			private DataGridViewProvider gridProvider;
 			private DataGridDataItemProvider itemProvider;
-//			private DataGridViewProvider gridProvider;
 		}
 
 		#endregion
@@ -732,7 +755,7 @@ namespace Mono.UIAutomation.Winforms
 		#region Internal Class: Data Item Image Provider
 
 		internal class DataGridViewDataItemImageProvider
-			: DataGridViewDataItemChildProvider, IEmbeddedImageProvider
+			: DataGridViewDataItemChildProvider
 		{
 			public DataGridViewDataItemImageProvider (DataGridDataItemProvider itemProvider,
 			                                          SWF.DataGridViewColumn column)
@@ -741,18 +764,16 @@ namespace Mono.UIAutomation.Winforms
 				imageCell = (SWF.DataGridViewImageCell) Cell;
 			}
 
-			public Rect Bounds {
-				get {
-					Rect imageRect = Helper.RectangleToRect (imageCell.ContentBounds);
-					imageRect.X += ItemProvider.BoundingRectangle.X;
-					imageRect.Y += ItemProvider.BoundingRectangle.Y;
-					
-					return imageRect;
-				}
+			public SWF.DataGridViewImageCell ImageCell {
+				get { return imageCell; }
 			}
+
+			public override void Initialize ()
+			{
+				base.Initialize ();
 	
-			public string Description {
-				get { return string.Empty; }
+				SetBehavior (EmbeddedImagePatternIdentifiers.Pattern, 
+				             new DataItemChildEmbeddedImageProviderBehavior (this));
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)
