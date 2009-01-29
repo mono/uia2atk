@@ -982,7 +982,7 @@ namespace UiaAtkBridgeTest
 			InterfaceText (accessible, "xxabef");
 			pos = 5;
 			atkEditableText.InsertText ("zz", ref pos);
-			Assert.AreEqual (7, pos, "Position should increment after insert");
+			Assert.AreEqual (5, pos, "Position should not change after insert");
 			InterfaceText (accessible, "xxabezzf");
 
 			// Test cut/copy/paste support
@@ -992,7 +992,9 @@ namespace UiaAtkBridgeTest
 
 			InterfaceText (accessible, "your headAnd your head is made of clouds, but your feet are made of ground.");
 
-			atkEditableText.CutText (0, 8);
+			RunInGuiThread (delegate () {
+				atkEditableText.CutText (0, 8);
+			});
 			InterfaceText (accessible, "dAnd your head is made of clouds, but your feet are made of ground.");
 
 			EditReadOnly (accessible);
@@ -1100,7 +1102,7 @@ namespace UiaAtkBridgeTest
 				Assert.IsNull (accessible.Name, "accessible.Name");
 			
 			int caret = 0;
-			if (type == BasicWidgetType.TextBoxView && TextBoxCaretInitiallyAtEnd)
+			if ((type == BasicWidgetType.TextBoxView || type == BasicWidgetType.RichTextBox) && TextBoxCaretInitiallyAtEnd)
 				caret = name.Length;
 
 			char passwordChar = '●';

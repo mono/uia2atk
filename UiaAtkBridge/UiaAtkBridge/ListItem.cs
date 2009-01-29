@@ -371,7 +371,6 @@ namespace UiaAtkBridge
 			TextContents = textExpert.Text.Substring (0, position)
 				+ str
 				+ textExpert.Text.Substring (position);
-			position += str.Length;
 		}
 		
 		public void CopyText (int start_pos, int end_pos)
