@@ -93,10 +93,10 @@ namespace UiaAtkBridgeTest
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);
 
-			InterfaceText (type);
-
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
+
+			InterfaceText (type);
 
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
