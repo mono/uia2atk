@@ -1,3 +1,8 @@
+2009-01-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: ScreenBounds is
+	now not tied to Control. This fixes ToolBarButton+AtkComponent test.
+
 2009-01-28  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

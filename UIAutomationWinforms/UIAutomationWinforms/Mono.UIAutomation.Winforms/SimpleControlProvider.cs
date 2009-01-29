@@ -273,6 +273,8 @@ namespace Mono.UIAutomation.Winforms
 					return Helper.IsOffScreen (ScreenBounds);
 				return Helper.IsOffScreen (ScreenBounds, Control);
 			}
+			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
+				return Helper.RectangleToRect (ScreenBounds);
 			
 			//Control-like properties
 			if (Control == null)
@@ -322,8 +324,6 @@ namespace Mono.UIAutomation.Winforms
 				return Control.CanFocus && Control.CanSelect;
 			else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return Control.Focused;
-			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
-				return Helper.RectangleToRect (ScreenBounds);
 			else if (propertyId == AutomationElementIdentifiers.ClickablePointProperty.Id)
 				return Helper.GetClickablePoint (this);
 			else if (propertyId == AutomationElementIdentifiers.HelpTextProperty.Id) {
