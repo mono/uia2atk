@@ -22,9 +22,9 @@ class MenuBar:
         open_recent_item = gtk.MenuItem("Open _Recent")
         save_item = gtk.MenuItem("_Save")
         quit_item = gtk.MenuItem("_Quit")
-	open_recent_item_menu = gtk.Menu()
-	open_recent_item_menu.append(gtk.MenuItem("foo"))
-	open_recent_item_menu.append(gtk.MenuItem("bar"))
+        open_recent_item_menu = gtk.Menu()
+        open_recent_item_menu.append(gtk.MenuItem("foo"))
+        open_recent_item_menu.append(gtk.MenuItem("bar"))
         open_recent_item.set_submenu(open_recent_item_menu)
 
         file_menu.append(open_item)
