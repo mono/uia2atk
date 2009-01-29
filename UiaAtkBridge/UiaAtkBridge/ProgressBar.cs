@@ -48,6 +48,7 @@ namespace UiaAtkBridge
 			else
 				textExpert = new NamePropertyTextImplementor (this, provider);
 
+			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Role = Atk.Role.ProgressBar;
 		}
 		

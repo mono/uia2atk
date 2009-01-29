@@ -49,6 +49,9 @@ namespace UiaAtkBridge
 			
 			selectionHelper = new SelectionProviderUserHelper (provider, selectionProvider);
 			Role = Atk.Role.LayeredPane;
+			string name = (string) Provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			if (name != null)
+				Name = name;
 		}
 
 		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)

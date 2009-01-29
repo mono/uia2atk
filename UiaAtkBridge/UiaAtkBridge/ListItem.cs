@@ -61,6 +61,7 @@ namespace UiaAtkBridge
 				actionExpert.Add ("toggle", "toggle", null, DoToggle);
 			if (invokeProvider != null)
 				actionExpert.Add ("invoke", "invoke", null, DoInvoke);
+			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Role = (toggleProvider != null? Atk.Role.CheckBox: Atk.Role.ListItem);
 		}
 		
@@ -316,6 +317,10 @@ namespace UiaAtkBridge
 
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         stringValue == null ? 0 : stringValue.Length);
+
+				// Accessible name and label text are one and
+				// the same, so update accessible name
+				Name = stringValue;
 
 				EmitVisibleDataChanged ();
 			}

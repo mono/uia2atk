@@ -19,35 +19,6 @@
 
 	* Makefile.am: Turn on -warnaserror.
 
-2009-01-29  Brad Taylor  <brad@getcoded.net>
-
-	* Adapter.cs: Implement Name property setting and change tracking.
-
-	* ComponentAdapter.cs: Throw an exception if the provider specified is
-	null.
-
-	* Tab.cs: 
-	* Tree.cs: 
-	* List.cs: 
-	* Pane.cs: 
-	* Image.cs: 
-	* Button.cs: 
-	* Window.cs: 
-	* Spinner.cs: 
-	* ToolTip.cs: 
-	* TreeItem.cs: 
-	* ListItem.cs: 
-	* TextLabel.cs: 
-	* ListGroup.cs: 
-	* Hyperlink.cs: 
-	* SplitButton.cs: 
-	* ProgressBar.cs: 
-	* ComboBoxItem.cs: 
-	* TextContainer.cs: 
-	* ExpandCollapseButton.cs: Remove Name property setting and tracking in
-	favor of what is now in Adapter.  When additional modifications are
-	required to Name, subclass UpdateNameProperty and implement them there.
-
 2009-01-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BaseTextImplementor.cs: Coding guidelines.

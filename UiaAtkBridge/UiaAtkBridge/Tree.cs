@@ -150,20 +150,16 @@ AtkObject,
 
 			tableExpert = new TableImplementorHelper (this);
 
+			int controlTypeId = (int) Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			Role = Atk.Role.TreeTable;
+
+			//ControlTypeTree returns Name from one static label, Atk returns ""
+			string componentName = string.Empty;
+			if (controlTypeId != ControlType.List.Id)
+				componentName = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			Name = componentName;
 			
 			selectionHelper = new SelectionProviderUserHelper (provider, selectionProvider);
-		}
-
-		protected override void UpdateNameProperty (string newName)
-		{
-			// ControlType.Tree returns Name from one static label, Atk returns ""
-			int controlTypeId = (int) Provider.GetPropertyValue (
-				AutomationElementIdentifiers.ControlTypeProperty.Id);
-			if (controlTypeId == ControlType.List.Id)
-				Name = String.Empty;
-			else
-				base.UpdateNameProperty (newName);
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()

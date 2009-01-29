@@ -38,6 +38,7 @@ namespace UiaAtkBridge
 			: base (provider)
 		{
 			Role = Atk.Role.Filler;
+			Name = String.Empty;
 
 			button = new Button (provider);
 			button.ManagesRemoval = true;

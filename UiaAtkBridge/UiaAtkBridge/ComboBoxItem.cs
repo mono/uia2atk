@@ -38,6 +38,13 @@ namespace UiaAtkBridge
 		
 		public ComboBoxItem (IRawElementProviderSimple provider) : base (provider)
 		{
+			if (provider == null)
+				throw new ArgumentNullException ("provider");
+
+			string name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			if (!String.IsNullOrEmpty (name))
+				Name = name;
+
 			int controlType = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			selectionItemProvider = (ISelectionItemProvider)provider.GetPatternProvider (
 			  SelectionItemPatternIdentifiers.Pattern.Id);

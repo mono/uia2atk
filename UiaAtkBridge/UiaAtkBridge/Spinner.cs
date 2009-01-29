@@ -47,6 +47,7 @@ namespace UiaAtkBridge
 		#region Constructor
 		public Spinner (IRawElementProviderSimple provider) : base (provider)
 		{
+			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Role = Atk.Role.SpinButton;
 			rangeValueProvider = (IRangeValueProvider)provider.GetPatternProvider (RangeValuePatternIdentifiers.Pattern.Id);
 			if (rangeValueProvider != null)

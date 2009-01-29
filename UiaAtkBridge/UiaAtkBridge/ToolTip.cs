@@ -34,6 +34,9 @@ namespace UiaAtkBridge
 		public ToolTip (IRawElementProviderSimple provider) : base (provider)
 		{
 			Role = Atk.Role.ToolTip;
+			
+			string text = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
+			Name = text;
 		}
 		
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)

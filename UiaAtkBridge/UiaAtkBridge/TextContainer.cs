@@ -33,6 +33,7 @@ namespace UiaAtkBridge
 	public class TextContainer : ComponentParentAdapter , Atk.TextImplementor
 	{
 		private ITextImplementor textExpert = null;
+		private string oldName;
 		
 		public TextContainer (IRawElementProviderSimple provider): base (provider)
 		{
@@ -43,6 +44,9 @@ namespace UiaAtkBridge
 				Role = Atk.Role.PageTab;
 
 			textExpert = TextImplementorFactory.GetImplementor (this, provider);
+			Name = (string) provider.GetPropertyValue (
+				AutomationElementIdentifiers.NameProperty.Id);
+			oldName = Name;
 		}
 		
 		public int CaretOffset {
@@ -176,19 +180,33 @@ namespace UiaAtkBridge
 			Console.WriteLine ("Received StructureChangedEvent in Statusbar--todo");
 		}
 
-		protected override void UpdateNameProperty (string newName)
+		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			base.UpdateNameProperty (newName);
+			if (e.Property == AutomationElementIdentifiers.NameProperty) {
+				string newName = (string)e.NewValue;
+				
+				// Don't fire spurious events if the text hasn't changed
+				if (oldName == newName)
+					return;
+				
+				oldName = newName;
 
-			Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
 
-			// First delete all text, then insert the new text
-			adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+				// First delete all text, then insert the new text
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-			adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
-						 newName == null ? 0 : newName.Length);
+				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+				                         newName == null ? 0 : newName.Length);
 
-			EmitVisibleDataChanged ();
+				// Accessible name and label text are one and
+				// the same, so update accessible name
+				Name = newName;
+
+				EmitVisibleDataChanged ();
+			}
+			else
+				base.RaiseAutomationPropertyChangedEvent (e);
 		}
 	}
 
