@@ -80,6 +80,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/GridProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGridView/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/ButtonInvokeProviderBehavior.cs \
@@ -267,6 +268,12 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowInteractionStateProperty.cs \
 	Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowOpenedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Form/WindowPatternWindowVisualStatePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternHorizontallyScrollableEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternHorizontalScrollPercentEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternHorizontalViewSizeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternVerticallyScrollableEvent.cs \
+	Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternVerticalScrollPercent.cs \
+	Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternVerticalViewSizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/Label/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/LinkLabel/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListBox/ListItemAutomationHasKeyboardFocusPropertyEvent.cs \
@@ -314,11 +321,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemTogglePatternToggleStateEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ListItemValuePatternValueEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontallyScrollableEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalViewSizeEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticallyScrollableEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalScrollPercent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalViewSizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternCanSelectMultipleEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternInvalidatedEvent.cs \

@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
@@ -28,20 +28,22 @@ using System.Windows.Automation;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using ScrollGeneric = Mono.UIAutomation.Winforms.Events.Generic;
 
-namespace Mono.UIAutomation.Winforms.Events.ListView
+namespace Mono.UIAutomation.Winforms.Events.Generic
 {
 	
-	internal class ScrollPatternVerticalViewSizeEvent
-		: ScrollGeneric.ScrollPatternVerticalViewSizeEvent<ListViewProvider>
+	internal class ScrollPatternHorizontalViewSizeEvent<T>
+		: BaseAutomationPropertyEvent
+			where T : FragmentControlProvider, IScrollBehaviorSubject
 	{
 		
 		#region Constructors
 
-		public ScrollPatternVerticalViewSizeEvent (ListViewProvider provider)
-			: base (provider)
+		public ScrollPatternHorizontalViewSizeEvent (T provider)
+			: base (provider, 
+			        ScrollPatternIdentifiers.HorizontalViewSizeProperty)
 		{
+			this.provider = provider;
 		}
 		
 		#endregion
@@ -49,28 +51,39 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		#region ProviderEvent Methods
 
 		public override void Connect ()
-		{
-			base.Connect ();
-
-			((SWF.ListView) Provider.Control).Items.UIACollectionChanged += OnScrollVerticalViewChanged;
+		{	
+			if (Provider.Control != null)
+				Provider.Control.Resize -= OnHorizontalViewSizeProperty;
 		}
 
 		public override void Disconnect ()
 		{
-			base.Disconnect ();
-
-			((SWF.ListView) Provider.Control).Items.UIACollectionChanged -= OnScrollVerticalViewChanged;
+			if (Provider.Control != null)
+				Provider.Control.Resize -= OnHorizontalViewSizeProperty;
 		}
 		
-		#endregion 
+		#endregion
+
+		#region Protected Properties
+
+		protected T ScrollBehaviorSubject {
+			get { return provider; }
+		}
+
+		#endregion		
 		
 		#region Protected methods
 		
-		private void OnScrollVerticalViewChanged (object sender, 
-		                                          CollectionChangeEventArgs e)
+		private void OnHorizontalViewSizeProperty (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
+
+		#endregion
+
+		#region Private Fields
+
+		private T provider;
 
 		#endregion
 	}

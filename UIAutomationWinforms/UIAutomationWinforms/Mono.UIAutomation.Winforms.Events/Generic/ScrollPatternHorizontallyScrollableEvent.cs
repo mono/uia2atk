@@ -26,19 +26,21 @@ using System;
 using System.Windows.Automation;
 using SWF = System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms.Events.ListView
+namespace Mono.UIAutomation.Winforms.Events.Generic
 {
 	
-	internal class ScrollPatternVerticallyScrollableEvent
+	internal class ScrollPatternHorizontallyScrollableEvent<T>
 		: BaseAutomationPropertyEvent
+			where T : FragmentControlProvider, IScrollBehaviorSubject
 	{
 		
 		#region Constructors
 
-		public ScrollPatternVerticallyScrollableEvent (ListViewProvider provider)
-			: base (provider, 
-			        ScrollPatternIdentifiers.VerticallyScrollableProperty)
+		public ScrollPatternHorizontallyScrollableEvent (T provider)
+			: base (provider,
+			        ScrollPatternIdentifiers.HorizontallyScrollableProperty)
 		{
+			this.provider = provider;
 		}
 		
 		#endregion
@@ -47,23 +49,29 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Connect ()
 		{	
-			SWF.ScrollBar vscrollbar 
-				= ((ListViewProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar;
-			
-			vscrollbar.VisibleChanged += OnScrollableChanged;
-			vscrollbar.EnabledChanged += OnScrollableChanged;
+			if (ScrollBehaviorSubject.ScrollBehaviorObserver.HorizontalScrollBar != null) {
+				ScrollBehaviorSubject.ScrollBehaviorObserver.HorizontalScrollBar.ValueChanged += OnScrollableChanged;
+				ScrollBehaviorSubject.ScrollBehaviorObserver.HorizontalScrollBar.EnabledChanged += OnScrollableChanged;
+			}
 		}
 
 		public override void Disconnect ()
 		{
-			SWF.ScrollBar vscrollbar 
-				= ((ListViewProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar;
-			
-			vscrollbar.VisibleChanged -= OnScrollableChanged;
-			vscrollbar.EnabledChanged -= OnScrollableChanged;
+			if (ScrollBehaviorSubject.ScrollBehaviorObserver.HorizontalScrollBar != null) {
+				ScrollBehaviorSubject.ScrollBehaviorObserver.HorizontalScrollBar.ValueChanged -= OnScrollableChanged;
+				ScrollBehaviorSubject.ScrollBehaviorObserver.HorizontalScrollBar.EnabledChanged -= OnScrollableChanged;
+			}
 		}
 		
-		#endregion 
+		#endregion
+
+		#region Protected Properties
+
+		protected T ScrollBehaviorSubject {
+			get { return provider; }
+		}
+
+		#endregion
 		
 		#region Protected methods
 		
@@ -71,6 +79,12 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
+
+		#endregion
+
+		#region Private Fields
+
+		private T provider;
 
 		#endregion
 	}

@@ -192,7 +192,8 @@ namespace Mono.UIAutomation.Winforms
 			    return new GridProviderBehavior (this);
 			else if (behavior == TablePatternIdentifiers.Pattern)
 				return new TableProviderBehavior (this);
-			// FIXME: Implement ScrollProviderBehavior
+			else if (behavior == ScrollPatternIdentifiers.Pattern)
+				return new ScrollProviderBehavior (this);
 			else
 				return null;
 		}

@@ -17,27 +17,28 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Behaviors.Generic;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.ListView;
+using Mono.UIAutomation.Winforms.Events.DataGridView;
 using ScrollGeneric = Mono.UIAutomation.Winforms.Events.Generic;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.ListView
+namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 {
 
-	internal class ScrollProviderBehavior : ScrollProviderBehavior<ListViewProvider>
+	internal class ScrollProviderBehavior : ScrollProviderBehavior<DataGridViewProvider>
 	{
 		
 		#region Constructors
 
-		public ScrollProviderBehavior (ListViewProvider provider)
+		public ScrollProviderBehavior (DataGridViewProvider provider)
 			: base (provider)
 		{
 		}
@@ -49,17 +50,17 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		public override void Connect ()
 		{
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontallyScrollableProperty,
-			                   new ScrollGeneric.ScrollPatternHorizontallyScrollableEvent<ListViewProvider> ((ListViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternHorizontallyScrollableEvent<DataGridViewProvider> ((DataGridViewProvider) Provider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalScrollPercentProperty,
-			                   new ScrollGeneric.ScrollPatternHorizontalScrollPercentEvent<ListViewProvider> ((ListViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternHorizontalScrollPercentEvent<DataGridViewProvider> ((DataGridViewProvider) Provider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalViewSizeProperty,
-			                   new ScrollPatternHorizontalViewSizeEvent ((ListViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternHorizontalViewSizeEvent <DataGridViewProvider>((DataGridViewProvider) Provider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticallyScrollableProperty,
-			                   new ScrollGeneric.ScrollPatternVerticallyScrollableEvent<ListViewProvider> ((ListViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternVerticallyScrollableEvent<DataGridViewProvider> ((DataGridViewProvider) Provider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalScrollPercentProperty,
-			                   new ScrollGeneric.ScrollPatternVerticalScrollPercent<ListViewProvider> ((ListViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternVerticalScrollPercent<DataGridViewProvider> ((DataGridViewProvider) Provider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalViewSizeProperty,
-			                   new ScrollPatternVerticalViewSizeEvent ((ListViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternVerticalViewSizeEvent<DataGridViewProvider> ((DataGridViewProvider) Provider));
 		}
 	
 		#endregion

@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
@@ -26,19 +26,21 @@ using System;
 using System.Windows.Automation;
 using SWF = System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms.Events.ListView
+namespace Mono.UIAutomation.Winforms.Events.Generic
 {
 	
-	internal class ScrollPatternHorizontalScrollPercentEvent
+	internal class ScrollPatternVerticallyScrollableEvent<T>
 		: BaseAutomationPropertyEvent
+			where T : FragmentControlProvider, IScrollBehaviorSubject
 	{
 		
 		#region Constructors
 
-		public ScrollPatternHorizontalScrollPercentEvent (ListViewProvider provider)
+		public ScrollPatternVerticallyScrollableEvent (T provider)
 			: base (provider, 
-			        ScrollPatternIdentifiers.HorizontalScrollPercentProperty)
+			        ScrollPatternIdentifiers.VerticallyScrollableProperty)
 		{
+			this.provider = provider;
 		}
 		
 		#endregion
@@ -47,24 +49,42 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Connect ()
 		{	
-			((ListViewProvider) Provider).ScrollBehaviorObserver.HorizontalScrollBar.ValueChanged 
-				+= OnScrollPercentChanged;
+			if (ScrollBehaviorSubject.ScrollBehaviorObserver.VerticalScrollBar != null) {
+				ScrollBehaviorSubject.ScrollBehaviorObserver.VerticalScrollBar.ValueChanged += OnScrollableChanged;
+				ScrollBehaviorSubject.ScrollBehaviorObserver.VerticalScrollBar.EnabledChanged += OnScrollableChanged;
+			}
 		}
 
 		public override void Disconnect ()
 		{
-			((ListViewProvider) Provider).ScrollBehaviorObserver.HorizontalScrollBar.ValueChanged 
-				-= OnScrollPercentChanged;
+			if (ScrollBehaviorSubject.ScrollBehaviorObserver.VerticalScrollBar != null) {
+				ScrollBehaviorSubject.ScrollBehaviorObserver.VerticalScrollBar.ValueChanged -= OnScrollableChanged;
+				ScrollBehaviorSubject.ScrollBehaviorObserver.VerticalScrollBar.EnabledChanged -= OnScrollableChanged;
+			}
 		}
 		
-		#endregion 
+		#endregion
+
+		#region Protected Properties
+
+		protected T ScrollBehaviorSubject {
+			get { return provider; }
+		}
+
+		#endregion
 		
 		#region Protected methods
 		
-		private void OnScrollPercentChanged (object sender, EventArgs e)
+		private void OnScrollableChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
+
+		#endregion
+
+		#region Private Fields
+
+		private T provider;
 
 		#endregion
 	}

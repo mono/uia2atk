@@ -1,3 +1,50 @@
+2009-01-29  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.mdp: Project target updated to 3.5.
+	Assembly key file path updated. Generic Scroll Pattern Events added.
+
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: DataGridView:
+	ScrollPattern support.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs:
+	Using Generic Scroll behavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/ScrollProviderBehavior.cs:
+	DataGridView. Scroll pattern support.
+
+	* Makefile.am: Generic Scroll Pattern Events added.
+
+	* Mono.UIAutomation.Winforms.Events/Generic: Scroll Pattern generic
+	events.
+
+	* Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternHorizontalViewSizeEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternVerticallyScrollableEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternHorizontalScrollPercentEvent.cs:
+	ScrollBar Pattern. Generic VerticallyScrollable Automation Property
+	Event.
+
+	* Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternVerticalViewSizeEvent.cs:
+	ScrollBar Pattern. Generic VerticalViewSize Automation Property
+	Event.
+
+	* Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternHorizontallyScrollableEvent.cs:
+	ScrollBar Pattern. Generic HorizontallyScrollable Automation Property
+	Event.
+
+	* Mono.UIAutomation.Winforms.Events/Generic/ScrollPatternVerticalScrollPercent.cs:
+	ScrollBar Pattern. Generic VerticalScrollPercent Automation Property
+	Event.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalViewSizeEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalViewSizeEvent.cs:
+	Subclassing from Generic Scroll Event.
+
+	* Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticalScrollPercent.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternVerticallyScrollableEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontallyScrollableEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ListView/ScrollPatternHorizontalScrollPercentEvent.cs:
+	Not needed.
+
 2009-01-29  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

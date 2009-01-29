@@ -17,28 +17,33 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.ComponentModel;
 using System.Windows.Automation;
 using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Winforms.Events;
 
-namespace Mono.UIAutomation.Winforms.Events.ListView
+namespace Mono.UIAutomation.Winforms.Events.Generic
 {
 	
-	internal class ScrollPatternVerticalScrollPercent
+	internal class ScrollPatternVerticalViewSizeEvent<T>
 		: BaseAutomationPropertyEvent
+			where T : FragmentControlProvider, IScrollBehaviorSubject
 	{
 		
 		#region Constructors
 
-		public ScrollPatternVerticalScrollPercent (ListViewProvider provider)
+		public ScrollPatternVerticalViewSizeEvent (T provider)
 			: base (provider, 
-			        ScrollPatternIdentifiers.VerticalScrollPercentProperty)
+			        ScrollPatternIdentifiers.VerticalViewSizeProperty)
 		{
+			this.provider = provider;
 		}
 		
 		#endregion
@@ -46,25 +51,39 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		#region ProviderEvent Methods
 
 		public override void Connect ()
-		{	
-			((ListViewProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar.ValueChanged 
-				+= OnScrollPercentChanged;
+		{
+			if (Provider.Control != null)
+				Provider.Control.Resize += OnVerticalViewSizeProperty;
 		}
 
 		public override void Disconnect ()
 		{
-			((ListViewProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar.ValueChanged 
-				-= OnScrollPercentChanged;
+			if (Provider.Control != null)
+				Provider.Control.Resize -= OnVerticalViewSizeProperty;
 		}
 		
-		#endregion 
+		#endregion
+
+		#region Protected Properties
+
+		protected T ScrollBehaviorSubject {
+			get { return provider; }
+		}
+
+		#endregion
 		
 		#region Protected methods
 		
-		private void OnScrollPercentChanged (object sender, EventArgs e)
+		private void OnVerticalViewSizeProperty (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
+
+		#endregion
+
+		#region Private Fields
+
+		private T provider;
 
 		#endregion
 	}

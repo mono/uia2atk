@@ -28,19 +28,19 @@ using System.Windows.Automation;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
+using ScrollGeneric = Mono.UIAutomation.Winforms.Events.Generic;
 
 namespace Mono.UIAutomation.Winforms.Events.ListView
 {
 	
 	internal class ScrollPatternHorizontalViewSizeEvent
-		: BaseAutomationPropertyEvent
+		: ScrollGeneric.ScrollPatternVerticalViewSizeEvent<ListViewProvider>
 	{
 		
 		#region Constructors
 
 		public ScrollPatternHorizontalViewSizeEvent (ListViewProvider provider)
-			: base (provider, 
-			        ScrollPatternIdentifiers.HorizontalViewSizeProperty)
+			: base (provider)
 		{
 		}
 		
@@ -49,25 +49,22 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 		#region ProviderEvent Methods
 
 		public override void Connect ()
-		{	
-			Provider.Control.Resize += new EventHandler (OnControlResize);
+		{
+			base.Connect ();
+
 			((SWF.ListView) Provider.Control).Items.UIACollectionChanged += OnScrollHorizontalViewChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			Provider.Control.Resize -= new EventHandler (OnControlResize);
+			base.Disconnect ();
+			
 			((SWF.ListView) Provider.Control).Items.UIACollectionChanged -= OnScrollHorizontalViewChanged;
 		}
 		
 		#endregion 
 		
 		#region Protected methods
-		
-		private void OnControlResize (object sender, EventArgs e)
-		{
-			RaiseAutomationPropertyChangedEvent ();
-		}
 		
 		private void OnScrollHorizontalViewChanged (object sender, 
 		                                            CollectionChangeEventArgs e)
