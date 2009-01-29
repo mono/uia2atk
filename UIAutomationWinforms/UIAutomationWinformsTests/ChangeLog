@@ -1,5 +1,12 @@
 2009-01-29  Brad Taylor  <brad@getcoded.net>
 
+	* providertest.sh.in: Add support for running provider tests inside a
+	nested Xephyr session.  For OpenSUSE users, you need to install
+	xorg-x11-server-extra and pass -x to ./providertest.sh.  Also add -c to
+	allow users to easily restrict the tests to only one control.
+	
+2009-01-29  Brad Taylor  <brad@getcoded.net>
+
 	* BaseProviderTest.cs: Remove ignore around
 	IsKeyboardFocusablePropertyTest.  Also add a null check for "fake"
 	widgets which aren't registerred with ProviderFactory.

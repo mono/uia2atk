@@ -2,7 +2,42 @@
 
 DLL=UIAutomationWinformsTests.dll
 
+TEST_DISPLAY=:99
 NUNIT_FLAGS=-nothread
 
+while getopts c:x o
+do case "$o" in
+    c)  component="$OPTARG";;
+    x)  xephyr="yes";;
+    \?)  echo "Usage: $0 -x -c <control>" && exit 1;;
+esac
+done
+
+# Reset $@
+shift `echo $OPTIND-1 | bc`
+NUNIT_ARGS=$*
+
+if [ "x$component" != "x" ]; then
+	echo "Running only the unit tests for $component..."
+	echo
+
+	NUNIT_ARGS="--fixture=MonoTests.Mono.UIAutomation.Winforms.${component}ProviderTest"
+fi
+
+if [ "x$xephyr" == "xyes" ]; then
+	Xephyr -ac -screen 800x600 -br -reset -terminate $TEST_DISPLAY &
+	xephyr_pid=$!
+
+	export DISPLAY=$TEST_DISPLAY
+
+	gnome-session &
+	metacity &
+	metacity_pid=$!
+fi
+
 (cd bin/Debug; \
-	@MONO@ --debug @NUNIT_PATH@/nunit-console.exe ${NUNIT_FLAGS} ${DLL} $*)
+	@MONO@ --debug @NUNIT_PATH@/nunit-console.exe ${NUNIT_FLAGS} ${DLL} ${NUNIT_ARGS})
+
+if [ "x$xephyr" == "xyes" ]; then
+	kill $metacity_pid $xephyr_pid
+fi
