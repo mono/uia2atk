@@ -65,6 +65,8 @@ namespace UiaAtkBridge
 
 		public bool Remove (String name)
 		{
+			//FIXME: does this work? modifying the collection
+			//       inside the foreach that walks it
 			foreach (ActionDescription ad in actions) {
 				if (ad.name == name) {
 					actions.Remove (ad);

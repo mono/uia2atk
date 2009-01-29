@@ -36,7 +36,8 @@ namespace UiaAtkBridge
 		private IRawElementProviderFragment ChildrenHolder {
 			get {
 				if (childrenHolder == null) {
-					IRawElementProviderFragment child = provider.Navigate (NavigateDirection.FirstChild);
+					IRawElementProviderFragment child = 
+						((IRawElementProviderFragment)Provider).Navigate (NavigateDirection.FirstChild);
 					while (child != null) {
 						if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
 						  == ControlType.List.Id) 
@@ -52,15 +53,12 @@ namespace UiaAtkBridge
 		
 		private ISelectionProvider 					selProvider;
 		
-		//this one, when not null, indicates that the combobox is editable (like a gtkcomboboxentry vs normal gtkcombobox)
-		private IRawElementProviderFragmentRoot 	provider;
 		private SelectionProviderUserHelper			selectionHelper;
 		
 		public ComboBox (IRawElementProviderSimple provider) : base (provider)
 		{
-			this.provider = provider as IRawElementProviderFragmentRoot;
-			if (provider == null)
-				throw new ArgumentException ("Provider should be IRawElementProviderFragmentRoot");
+			if (!(provider is IRawElementProviderFragment))
+				throw new ArgumentException ("Provider should be IRawElementProviderFragment");
 			
 			this.Role = Atk.Role.ComboBox;
 
@@ -69,7 +67,9 @@ namespace UiaAtkBridge
 			if (selProvider == null)
 				throw new ArgumentException ("ComboBoxProvider should always implement ISelectionProvider");
 			
-			selectionHelper = new SelectionProviderUserHelper (this.provider, selProvider, ChildrenHolder);
+			selectionHelper = 
+				new SelectionProviderUserHelper ((IRawElementProviderFragment)Provider, 
+				                                 selProvider, ChildrenHolder);
 		}
 
 		internal static bool IsSimple (IRawElementProviderSimple provider)
