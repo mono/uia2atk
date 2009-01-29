@@ -55,6 +55,18 @@ class RunApp(Form):
         ##File menu items
         self.mi.DropDownItems.Add("New", None, self.new_clicked)
         self.mi.DropDownItems.Add("Open", None, self.open_clicked)
+        openrecent = ToolStripMenuItem ()
+        openrecent.Text = "Open Recent"
+        foo = ToolStripMenuItem()
+        foo.Text = "foo"
+        bar = ToolStripMenuItem()
+        bar.Text = "bar"
+        openrecent.DropDownItems.Add (foo)
+        openrecent.DropDownItems.Add (bar)
+        self.mi.DropDownItems.Add(openrecent)
+        #self.mi.DropDownItems.Add("Open Recent", None, self.open_clicked)
+        #self.mi.DropDownItems(2).DropDownItems.Add("Foo", None, self.open_clicked)
+        #elf.mi.DropDownItems(2).DropDownItems.Add("Bar", None, self.open_clicked)
 
         ##Edit menu items
         self.mi2.DropDownItems.Add("Copy This", None, self.copy_clicked)
