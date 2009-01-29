@@ -64,9 +64,6 @@ class RunApp(Form):
         openrecent.DropDownItems.Add (foo)
         openrecent.DropDownItems.Add (bar)
         self.mi.DropDownItems.Add(openrecent)
-        #self.mi.DropDownItems.Add("Open Recent", None, self.open_clicked)
-        #self.mi.DropDownItems(2).DropDownItems.Add("Foo", None, self.open_clicked)
-        #elf.mi.DropDownItems(2).DropDownItems.Add("Bar", None, self.open_clicked)
 
         ##Edit menu items
         self.mi2.DropDownItems.Add("Copy This", None, self.copy_clicked)
