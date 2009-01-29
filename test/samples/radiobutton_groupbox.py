@@ -43,12 +43,16 @@ class GroupBoxApp(Form):
         self.groupbox1.Name = "groupbox1"
         self.groupbox1.Text = "GroupBox1"
         self.groupbox1.Location = Point(10,10)
+        self.groupbox1.TabStop = True
+        self.groupbox1.TabIndex = 0
         self.groupbox1.FlatStyle = FlatStyle.Flat
 
         self.groupbox2 = GroupBox()
         self.groupbox2.Name = "groupbox2"
         self.groupbox2.Text = "GroupBox2"
         self.groupbox2.Location = Point(10,120)
+        self.groupbox2.TabStop = True
+        self.groupbox2.TabIndex = 3
         self.groupbox2.FlatStyle = FlatStyle.Flat
 
         # setup radiobutton
@@ -56,11 +60,15 @@ class GroupBoxApp(Form):
         self.radio1.Text = "Male"
         self.radio1.Location = Point(20, 30)
         self.radio1.Checked = True
+        self.radio1.TabStop = True
+        self.radio1.TabIndex = 1
         #self.radio1.CheckedChanged += self.checkedChanged
 
         self.radio2 = RadioButton()
         self.radio2.Text = "Female"
         self.radio2.Location = Point(20, 60)
+        self.radio2.TabStop = True
+        self.radio2.TabIndex = 2
         #self.radio2.CheckedChanged += self.checkedChanged
 
         self.radio3 = RadioButton()
@@ -68,6 +76,8 @@ class GroupBoxApp(Form):
         self.radio3.Location = Point(20, 30)
         self.radio3.AutoSize = True
         self.radio3.Enabled = True
+        self.radio3.TabStop = True
+        self.radio3.TabIndex = 4
         #self.radio3.CheckedChanged += self.checkedChanged
 
         self.radio4 = RadioButton()
@@ -75,6 +85,8 @@ class GroupBoxApp(Form):
         self.radio4.Location = Point(20, 60)
         self.radio4.AutoSize = True
         self.radio4.Image = Image.FromFile("%s/samples/opensuse60x38.gif" % uiaqa_path)
+        self.radio4.TabStop = True
+        self.radio4.TabIndex = 5
         #self.radio4.CheckedChanged += self.checkedChanged
 
         # add controls

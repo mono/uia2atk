@@ -1,5 +1,10 @@
 2009-01-28 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* samples/radiobutton_groupbox.py: Add TabStop and TabIndex
+	properties.  This will be most useful for Orca testing.
+
+2009-01-28 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* tools/update_uia2atk_pkgs.sh: updated to work with new build set up.
 	* harness/local_run.py: updated to work with new build set up.  added
 	--force and --nodeps options when updating packages.
