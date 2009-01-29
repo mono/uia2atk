@@ -1,3 +1,11 @@
+2009-01-29  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms/ListBoxProvider.cs: 
+	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemAutomationNamePropertyEvent.cs: 
+	Fire the AutomationNamePropertyEvent whenever the list item's text is
+	changed.
+
 2009-01-29  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

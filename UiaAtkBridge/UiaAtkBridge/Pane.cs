@@ -133,8 +133,6 @@ namespace UiaAtkBridge
 			if(provider is IDockProvider)  {
 				dockProvider = (IDockProvider)provider;
 			}
-			
-			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()

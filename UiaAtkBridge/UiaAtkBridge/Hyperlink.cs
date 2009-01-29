@@ -53,7 +53,6 @@ namespace UiaAtkBridge
 			Role = Atk.Role.Label;
 			
 			textExpert = TextImplementorFactory.GetImplementor (this, provider);
-			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()
@@ -93,31 +92,20 @@ namespace UiaAtkBridge
 				return 0;
 			}
 		}
-		
-		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
+
+		protected override void UpdateNameProperty (string newName)
 		{
-			if (eventId == TextPatternIdentifiers.TextChangedEvent) {
-				string newText = provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id) as string;
-				
-				// Don't fire spurious events if the text hasn't changed
-				if (textExpert.Text == newText) {
-					return;
-				}
+			base.UpdateNameProperty (newName);
 
-				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+			Atk.TextAdapter adapter = new Atk.TextAdapter (this);
 
-				// First delete all text, then insert the new text
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+			// First delete all text, then insert the new text
+			adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
-				                         newText == null ? 0 : newText.Length);
+			adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+						 newName == null ? 0 : newName.Length);
 
-				// Accessible name and label text are one and
-				// the same, so update accessible name
-				Name = newText;
-
-				EmitVisibleDataChanged ();
-			}
+			EmitVisibleDataChanged ();
 		}
 
 		public string GetText (int startOffset, int endOffset)
@@ -316,6 +304,10 @@ namespace UiaAtkBridge
 			this.hyperlink = parent;
 			this.index = index;
 			parent.AddOneChild (this);
+		}
+
+		protected override void UpdateNameProperty (string newName)
+		{
 			Name = hyperlink.hypertext.Uri (index);
 		}
 		

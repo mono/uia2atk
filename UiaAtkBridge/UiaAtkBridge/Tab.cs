@@ -44,9 +44,6 @@ namespace UiaAtkBridge
 			
 			selectionHelper = new SelectionProviderUserHelper (provider, selectionProvider);
 			Role = Atk.Role.PageTabList;
-			string name = (string) Provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			if (name != null && name != String.Empty)
-				Name = name;
 		}
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)

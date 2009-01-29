@@ -229,6 +229,8 @@ namespace Mono.UIAutomation.Winforms
 			    return new ListItemAutomationHasKeyboardFocusPropertyEvent (provider);
 			else if (eventType == ProviderEventType.AutomationElementHasKeyboardFocusProperty)
 			    return new ListItemAutomationIsOffscreenPropertyEvent (provider);
+			else if (eventType == ProviderEventType.AutomationElementNameProperty)
+			    return new ListItemAutomationIsOffscreenPropertyEvent (provider);
 			else
 				return base.GetListItemEventRealization (eventType, provider);
 		}

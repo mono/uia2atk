@@ -41,11 +41,21 @@ namespace UiaAtkBridge
 		public Adapter (IRawElementProviderSimple provider)
 		{
 			Provider = provider;
-			if (Provider != null) {
-				string desc = (string) Provider.GetPropertyValue (AutomationElementIdentifiers.HelpTextProperty.Id);
-				if (desc != null)
-					Description = desc;
+			if (Provider == null) {
+				return;
 			}
+
+			string desc = (string) Provider.GetPropertyValue (AutomationElementIdentifiers.HelpTextProperty.Id);
+			if (desc != null)
+				Description = desc;
+
+			// Don't use UpdateNameProperty as providers who
+			// subclass it won't have a chance to call their ctor
+			// yet.  They can always override this value in their
+			// ctor
+			string name = Provider.GetPropertyValue (
+				AutomationElementIdentifiers.NameProperty.Id) as string;
+			Name = name ?? String.Empty;
 		}
 		
 #endregion
@@ -118,6 +128,10 @@ namespace UiaAtkBridge
 				Description = (string)e.NewValue;
 			} else if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
 				EmitBoundsChanged ((System.Windows.Rect)e.NewValue);
+			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
+				if (Name != (string) e.NewValue) {
+					UpdateNameProperty ((string)e.NewValue);
+				}
 			}
 		}
 
@@ -133,6 +147,11 @@ namespace UiaAtkBridge
 		
 		internal virtual void PostInit ()
 		{
+		}
+
+		protected virtual void UpdateNameProperty (string newName)
+		{
+			Name = newName ?? String.Empty;
 		}
 #endregion
 		

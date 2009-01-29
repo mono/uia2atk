@@ -33,6 +33,9 @@ namespace UiaAtkBridge
 	{
 		public ComponentAdapter (IRawElementProviderSimple provider) : base (provider)
 		{
+			if (provider == null)
+				throw new ArgumentNullException ("provider");
+
 			componentExpert = new ComponentImplementorHelper (this);
 		}
 		

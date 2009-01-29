@@ -41,7 +41,6 @@ namespace UiaAtkBridge
 		private IToggleProvider				toggleProvider;
 		private string						actionDescription = null;
 		protected string					actionName = null;
-		private string oldName;
 		
 		private ITextImplementor textExpert = null;
 		private int selectionStartOffset = 0, selectionEndOffset = 0;
@@ -72,9 +71,6 @@ namespace UiaAtkBridge
 			}
 
 			textExpert = TextImplementorFactory.GetImplementor (this, provider);
-			Name = (string) provider.GetPropertyValue (
-				AutomationElementIdentifiers.NameProperty.Id);
-			oldName = Name;
 		}
 		
 		protected virtual void InitializeAdditionalProviders ()
@@ -215,31 +211,23 @@ namespace UiaAtkBridge
 				throw new NotSupportedException ("Toggle events should not land here (should not be reached)");
 			} else if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
 				// TODO: Handle BoundingRectangleProperty change
-			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
-				string newName = (string)e.NewValue;
-				
-				// Don't fire spurious events if the text hasn't changed
-				if (oldName == newName)
-					return;
-
-				oldName = newName;
-
-				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
-
-				// First delete all text, then insert the new text
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
-
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
-				                         newName == null ? 0 : newName.Length);
-
-				// Accessible name and label text are one and
-				// the same, so update accessible name
-				Name = newName;
-
-				EmitVisibleDataChanged ();
 			}
 			else
 				base.RaiseAutomationPropertyChangedEvent (e);
+		}
+		
+		protected override void UpdateNameProperty (string newName)
+		{
+			base.UpdateNameProperty (newName);
+
+			Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+
+			// First delete all text, then insert the new text
+			adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+
+			adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+						 newName == null ? 0 : newName.Length);
+			EmitVisibleDataChanged ();
 		}
 		
 		// TODO: although UIA doesn't cover press and release actions, figure out if maybe it's useful to

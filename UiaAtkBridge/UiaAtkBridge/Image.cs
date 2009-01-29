@@ -40,7 +40,6 @@ namespace UiaAtkBridge
 			// but gail uses Atk.Role.Icon
 			Role = Atk.Role.Icon;
 			
-			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			imageImplementor = new ImageImplementorHelper (this);
 		}
 		
