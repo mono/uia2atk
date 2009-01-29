@@ -31,7 +31,7 @@ namespace UiaAtkBridge
 {
 	public class ExpandCollapseButton
 		: ComponentParentAdapter, Atk.ActionImplementor,
-		  Atk.SelectionImplementor
+		  Atk.SelectionImplementor, ICanHaveSelection
 	{
 #region Public Methods
 		public ExpandCollapseButton (IRawElementProviderSimple provider) : base (provider)
@@ -160,6 +160,25 @@ namespace UiaAtkBridge
 			return false;
 		}
 #endregion 
+
+#region ICanHaveSelection interface
+		void ICanHaveSelection.RecursivelyDeselectAll (Adapter keepSelected)
+		{
+			((ICanHaveSelection) this).RecursivelyDeselect (keepSelected);
+		}
+		
+		void ICanHaveSelection.RecursivelyDeselect (Adapter keepSelected)
+		{
+			lock (syncRoot) {
+				for (int i = 0; i < NAccessibleChildren; i++) {
+					Atk.Object child = RefAccessibleChild (i);
+					if (child is ICanHaveSelection) {
+						((ICanHaveSelection) child).RecursivelyDeselect (keepSelected);
+					}
+				}
+			}
+		}
+#endregion
 
 		public override void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e)
 		{
