@@ -1,3 +1,11 @@
+2009-01-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BaseTextImplementor.cs: Coding guidelines.
+
+	* MenuItem.cs: Sends a "focus" signal to accerciser and changes SELECTED
+	state when it should be changed, also emits selection-changed when
+	children selection changes. This closes #428533.
+
 2009-01-29  Brad Taylor  <brad@getcoded.net>
 
 	* ExpandCollapseButton.cs: Make ExpandCollapseButton implement

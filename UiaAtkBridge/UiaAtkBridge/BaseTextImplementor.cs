@@ -20,7 +20,7 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Andres G. Aragoneses <aaragoneses@novell.com>
+//      Andrés G. Aragoneses <aaragoneses@novell.com>
 //      Brad Taylor <brad@getcoded.net>
 // 
 
@@ -46,7 +46,7 @@ namespace UiaAtkBridge
 		}
 
 		public virtual Atk.Attribute [] DefaultAttributes {
-			get { return new Atk.Attribute[0]; }
+			get { return new Atk.Attribute [0]; }
 		}
 #endregion
 
@@ -314,7 +314,7 @@ namespace UiaAtkBridge
 		public virtual Atk.Attribute [] GetRunAttributes (int offset, out int startOffset, out int endOffset)
 		{
 			startOffset = endOffset = -1;
-			return new Atk.Attribute[0];
+			return new Atk.Attribute [0];
 		}
 
 		public bool HandleSimpleChange (ref string oldText, ref int caretOffset)
@@ -436,7 +436,7 @@ namespace UiaAtkBridge
 		}
 
 		private void BackwardToNextSeparator (char[] seps, int startOffset, 
-		                                       out int stopEarlyOffset, out int stopLateOffset)
+		                                      out int stopEarlyOffset, out int stopLateOffset)
 		{
 			if (startOffset <= 1){
 				stopEarlyOffset = 0;
@@ -497,7 +497,7 @@ namespace UiaAtkBridge
 			return retOffset + 1;
 		}
 		
-		private bool CharEqualsAny (char boilerPlate, char[] candidates)
+		private bool CharEqualsAny (char boilerPlate, char [] candidates)
 		{
 			foreach (char candidate in candidates)
 				if (boilerPlate == candidate)
@@ -531,14 +531,15 @@ namespace UiaAtkBridge
 		}
 #endregion
 
-#region Private Fields		
-
+#region Private Fields
+		
 		//TODO: use regexp?
-		private static char [] wordSeparators = new char[] { ' ', '\n', '\r', '.', '\t' };
-		private static char [] newLineSeparators = new char[] { '\n', '\r' };
-		private static char [] sentenceSeparators = new char[] { '\n', '\r', '.' };
-		private static char [] softSentenceSeparators = new char[] { '.', ':'};
-			private string deleteHack = null;
+		private static char [] wordSeparators = new char [] { ' ', '\n', '\r', '.', '\t' };
+		private static char [] newLineSeparators = new char [] { '\n', '\r' };
+		private static char [] sentenceSeparators = new char [] { '\n', '\r', '.' };
+		private static char [] softSentenceSeparators = new char [] { '.', ':'};
+		
+		private string deleteHack = null;
 #endregion
 	}
 }

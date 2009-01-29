@@ -153,13 +153,18 @@ namespace UiaAtkBridge
 				Deselect ();
 
 			lock (syncRoot) {
+				bool changed_selected_child = false;
+				bool any_child_was_selected = (selectedChild >= 0);
 				for (int i = 0; i < NAccessibleChildren; i++) {
 					Atk.Object child = RefAccessibleChild (i);
 					if (child == null)
 						continue;
 
 					if (((Adapter) child) == keepSelected) {
-						selectedChild = i;
+						if (selectedChild != i) {
+							selectedChild = i;
+							changed_selected_child = true;
+						}
 						continue;
 					}
 					
@@ -168,6 +173,13 @@ namespace UiaAtkBridge
 							.RecursivelyDeselect (keepSelected);
 					}
 				}
+				if (changed_selected_child) {
+					var sel_adapter = new Atk.SelectionAdapter (this);
+					if (any_child_was_selected)
+						//2 times: because we deselect a child and select another one
+						sel_adapter.EmitSelectionChanged ();
+					sel_adapter.EmitSelectionChanged ();
+				}
 			}
 		}
 		
@@ -175,17 +187,20 @@ namespace UiaAtkBridge
 		
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
-			if (eventId == InvokePatternIdentifiers.InvokedEvent) {
+			if (eventId == InvokePatternIdentifiers.InvokedEvent ||
+			    eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
+				if (!selected) {
+					selected = true;
+					NotifyStateChange (Atk.StateType.Selected, selected);
+				}
+				((ICanHaveSelection) this).RecursivelyDeselectAll (this);
+			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
 				selected = !selected;
 				NotifyStateChange (Atk.StateType.Selected, selected);
-				NotifyStateChange (Atk.StateType.Focused, selected);
+				if (selected)
+					//this causes the following in accerciser: focus:(0, 0, None)
+					Atk.Focus.TrackerNotify (this);
 				((ICanHaveSelection) this).RecursivelyDeselectAll (selected ? this : null);
-			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
-				((ICanHaveSelection) this).RecursivelyDeselectAll (selected ? this : null);
-			} else if (eventId == SelectionItemPatternIdentifiers.ElementSelectedEvent) {
-				selected = true;
-				NotifyStateChange (Atk.StateType.Selected, selected);
-				((ICanHaveSelection) this).RecursivelyDeselectAll (this);
 			} else {
 				Console.WriteLine ("WARNING: RaiseAutomationEvent({0},...) not handled yet", eventId.ProgrammaticName);
 				base.RaiseAutomationEvent (eventId, e);
