@@ -49,9 +49,11 @@ class ToolBarSample(Form):
         self.toolbar_btn1 = ToolBarButton()
         self.toolbar_btn2 = ToolBarButton()
         self.toolbar_btn3 = ToolBarButton()
+        self.toolbar_btn4 = ToolBarButton()
         self.toolbar_btn1.Text = "Open"
         self.toolbar_btn2.Text = "Save"
         self.toolbar_btn3.Text = "Print"
+        self.toolbar_btn4.Text = "nop"
         
         # create dialogs
         self.openfiledialog = OpenFileDialog()
@@ -62,6 +64,7 @@ class ToolBarSample(Form):
         self.toolbar.Buttons.Add(self.toolbar_btn1)
         self.toolbar.Buttons.Add(self.toolbar_btn2)
         self.toolbar.Buttons.Add(self.toolbar_btn3)
+        self.toolbar.Buttons.Add(self.toolbar_btn4)
         self.Controls.Add(self.toolbar)
         self.Controls.Add(self.label)
 
