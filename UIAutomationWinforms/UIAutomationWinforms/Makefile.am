@@ -79,7 +79,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxListBoxSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxSelectionProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGridView/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/SelectionProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGridView/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DateTimePicker/PartListItemValueProviderBehavior.cs \
@@ -232,6 +234,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxListItemSelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxListItemSelectionItemPatternIsSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/GridPatternColumnCountEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/GridPatternRowCountEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/TablePatternColumnHeadersEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/PartListItemSelectionItemPatternElementSelectedEvent.cs \

@@ -188,6 +188,10 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (behavior == SelectionPatternIdentifiers.Pattern)
 				return new SelectionProviderBehavior (this);
+			else if (behavior == GridPatternIdentifiers.Pattern)
+			    return new GridProviderBehavior (this);
+			else if (behavior == TablePatternIdentifiers.Pattern)
+				return new TableProviderBehavior (this);
 			// FIXME: Implement ScrollProviderBehavior
 			else
 				return null;
@@ -478,6 +482,14 @@ namespace Mono.UIAutomation.Winforms
 					                     out provider);
 					return provider;
 				}
+			}
+
+			public DataGridViewDataItemChildProvider GetChildItem (SWF.DataGridViewColumn column)
+			{
+				DataGridViewDataItemChildProvider provider = null;
+				columns.TryGetValue (column, out provider);
+				
+				return provider;
 			}
 
 			protected override object GetProviderPropertyValue (int propertyId)

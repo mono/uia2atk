@@ -1,6 +1,30 @@
 2009-01-29  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGridView behavior support: Grid
+	(Column and Row events) and Table (ColumHeaders event).
+
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: DataGridView: Grid
+	and Table support.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/GridProviderBehavior.cs:
+	DataGridView. Grid Behavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/TableProviderBehavior.cs:
+	DataGridView. Table Behavior.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/GridPatternColumnCountEvent.cs:
+	DataGridView: Raises Grid.ColumnCount Automation Property Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/TablePatternColumnHeadersEvent.cs:
+	DataGridView: Raises Table.ColumnHeaders Automation Property Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/GridPatternRowCountEvent.cs:
+	DataGridView: Raises Grid.RowCount Automation Property Event.
+
+2009-01-29  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: DataGridView: DataItemChild: Behaviors
 	added EmbeddedImage, GridItem (events: ColumnEvent, RowEvent),
 	TableItem (event: ColumHeadersItem). 
