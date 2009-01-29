@@ -1,3 +1,7 @@
+2009-01-28  Mario Carrion  <mcarrion@novell.com>
+
+	* ListViewProviderTest.cs: Attempt to fix failure because of font.
+
 2009-01-28  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ToolBarButtonProviderTest.cs: Move to correct region.

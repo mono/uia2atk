@@ -2167,7 +2167,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		private ListView GetListView (int groups, int items, int defaultGroupItems, int maxSubitems)
 		{
 			ListView view = new ListView ();
-			view.Size = new System.Drawing.Size (300, 200);
+			view.Size = new System.Drawing.Size (100, 100);
 			view.Location = new System.Drawing.Point (3, 3);
 
 			//Groups
