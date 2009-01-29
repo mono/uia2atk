@@ -52,7 +52,6 @@ namespace UiaAtkBridge
 			if (!String.IsNullOrEmpty (name))
 				Name = name;
 
-			int controlType = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 			
 			OnChildrenChanged ();

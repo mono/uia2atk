@@ -96,9 +96,7 @@ namespace UiaAtkBridge
 		}
 
 		private Adapter adapter;
-		private bool? hasImage;		
 		private string imageDescription;
-		private object implementerProvider;
 		private IEmbeddedImageProvider embeddedImageProvider;
 	}
 }

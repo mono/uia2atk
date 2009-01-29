@@ -200,9 +200,6 @@ namespace UiaAtkBridge
 		private IExpandCollapseProvider ec_prov;
 		private const string ACTION_NAME = "click";
 		private static string actionDescription = String.Empty;
-
-		private bool selected = false;
-		private int selectedChild = -1;
 #endregion
 	}
 }

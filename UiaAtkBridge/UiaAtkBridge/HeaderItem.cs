@@ -153,7 +153,6 @@ namespace UiaAtkBridge
 
 		#region Private Fields
 
-		private string actionDescription;
 		private ImageImplementorHelper imageExpert;
 		private ActionImplementorHelper actionExpert;
 		private IInvokeProvider invokeProvider;

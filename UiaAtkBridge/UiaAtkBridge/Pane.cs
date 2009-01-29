@@ -33,9 +33,6 @@ namespace UiaAtkBridge
 	{
 		private IRawElementProviderSimple 	provider;
 
-		private IDockProvider				dockProvider;
-		
-
 #region UI Automation Properties supported
 
 		// AutomationElementIdentifiers.AutomationIdProperty.Id
@@ -128,11 +125,6 @@ namespace UiaAtkBridge
 			this.provider = provider;
 
 			Role = Atk.Role.Panel;
-			
-			// The Pane doesn't have to have either of these
-			if(provider is IDockProvider)  {
-				dockProvider = (IDockProvider)provider;
-			}
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()

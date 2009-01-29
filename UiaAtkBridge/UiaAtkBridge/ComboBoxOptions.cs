@@ -99,8 +99,6 @@ namespace UiaAtkBridge
 			//TODO
 		}
 
-		int selectedChild = -1;
-		
 		internal void RecursiveDeselect (Adapter keepSelected)
 		{
 			lock (syncRoot) {
@@ -108,7 +106,6 @@ namespace UiaAtkBridge
 					Atk.Object child = RefAccessibleChild (i);
 
 					if (child == null || ((Adapter)child) == keepSelected)  {
-						selectedChild = i;
 						continue;
 					}
 					

@@ -1,5 +1,26 @@
 2009-01-29  Brad Taylor  <brad@getcoded.net>
 
+	* Tree.cs: 
+	* List.cs: 
+	* Pane.cs: 
+	* Button.cs: 
+	* MenuBar.cs: 
+	* ComboBox.cs: 
+	* MenuItem.cs: 
+	* Hyperlink.cs: 
+	* HeaderItem.cs: 
+	* AssemblyInfo.cs: 
+	* ComboBoxOptions.cs: 
+	* TextBoxEntryView.cs: 
+	* ExpandCollapseButton.cs: 
+	* ImageImplementorHelper.cs: 
+	Remove all gmcs warnings.  Refactor TextBoxEntryView to use mkstemp
+	instead of tmpnam to avoid obsolete warning.
+
+	* Makefile.am: Turn on -warnaserror.
+
+2009-01-29  Brad Taylor  <brad@getcoded.net>
+
 	* Adapter.cs: Implement Name property setting and change tracking.
 
 	* ComponentAdapter.cs: Throw an exception if the provider specified is

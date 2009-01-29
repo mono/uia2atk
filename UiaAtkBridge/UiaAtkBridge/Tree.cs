@@ -150,7 +150,6 @@ AtkObject,
 
 			tableExpert = new TableImplementorHelper (this);
 
-			int controlTypeId = (int) Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			Role = Atk.Role.TreeTable;
 			
 			selectionHelper = new SelectionProviderUserHelper (provider, selectionProvider);

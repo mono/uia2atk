@@ -223,7 +223,7 @@ AtkObject,
 		{
 			return selectionHelper.RefSelection (i);
 		}
-		public bool RemoveSelection (int i)
+		public virtual bool RemoveSelection (int i)
 		{
 			return selectionHelper.RemoveSelection (i);
 		}
@@ -425,7 +425,7 @@ AtkObject,
 			throw new NotImplementedException ();
 		}
 		
-		public bool RemoveSelection (int selectionNum)
+		public override bool RemoveSelection (int selectionNum)
 		{
 			return false;
 		}

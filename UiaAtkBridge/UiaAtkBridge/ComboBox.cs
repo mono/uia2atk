@@ -48,30 +48,11 @@ namespace UiaAtkBridge
 				return childrenHolder;
 			}
 		}
-
-		private IRawElementProviderFragment TextBoxHolder {
-			get {
-				if (textboxHolder == null) {
-					IRawElementProviderFragment child = provider.Navigate (NavigateDirection.FirstChild);
-					while (child != null) {
-						if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id) 
-						  == ControlType.Edit.Id) 
-							break;
-						child = child.Navigate (NavigateDirection.NextSibling);
-					}
-					textboxHolder = child;
-				}
-				return textboxHolder;
-			}
-		}
-
-		private IRawElementProviderFragment textboxHolder = null;
 		private IRawElementProviderFragment childrenHolder = null;
 		
 		private ISelectionProvider 					selProvider;
 		
 		//this one, when not null, indicates that the combobox is editable (like a gtkcomboboxentry vs normal gtkcombobox)
-		private IValueProvider						valProvider;
 		private IRawElementProviderFragmentRoot 	provider;
 		private SelectionProviderUserHelper			selectionHelper;
 		
@@ -84,7 +65,6 @@ namespace UiaAtkBridge
 			this.Role = Atk.Role.ComboBox;
 
 			selProvider = (ISelectionProvider)provider.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id);
-			valProvider = (IValueProvider)provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id);
 			
 			if (selProvider == null)
 				throw new ArgumentException ("ComboBoxProvider should always implement ISelectionProvider");

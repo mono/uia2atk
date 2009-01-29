@@ -25,6 +25,7 @@
 
 using System;
 using System.IO;
+using System.Text;
 using Mono.Unix.Native;
 using Mono.UIAutomation.Bridge;
 
@@ -353,10 +354,13 @@ namespace UiaAtkBridge
 
 			GLib.IOChannel gio = null;
 
-			string filename = Syscall.tmpnam();
-			int fd = Syscall.open (filename, OpenFlags.O_CREAT | OpenFlags.O_RDWR,
-			                       FilePermissions.S_IRUSR | FilePermissions.S_IWUSR);
-			
+			StringBuilder filename = new StringBuilder ("streamXXXXXX");
+			int fd = Syscall.mkstemp (filename);
+			if (fd < 0) {
+				Console.WriteLine ("ERROR: Unable to create temporary file.  Are you out of disk space?");
+				return IntPtr.Zero;
+			}
+
 			gio = new GLib.IOChannel (fd);
 			gio.Encoding = null;
 			
@@ -366,7 +370,7 @@ namespace UiaAtkBridge
 			gio.SeekPosition (0, GLib.SeekType.Set);
 			gio.Flush ();
 
-			Syscall.unlink (filename);
+			Syscall.unlink (filename.ToString ());
 
 			return gio.Handle;
 		}

@@ -34,11 +34,9 @@ namespace UiaAtkBridge
 {
 	public class Button : ComponentAdapter, Atk.ActionImplementor, Atk.TextImplementor, Atk.ImageImplementor
 	{
-		private static string default_invoke_description = "Sends a request to activate a control and initiate its single, unambiguous action.";
 		private static string default_invoke_name = "click";
 
 		private IInvokeProvider				invokeProvider;
-		private IToggleProvider				toggleProvider;
 		private string						actionDescription = null;
 		protected string					actionName = null;
 		
@@ -64,8 +62,7 @@ namespace UiaAtkBridge
 			imageImplementor = new ImageImplementorHelper (this);
 			InitializeAdditionalProviders ();
 			if (invokeProvider != null) {
-				//it seems the default description should be null:
-				//actionDescription = default_invoke_description;
+				//it seems the default description should be null
 				actionName = default_invoke_name;
 				Role = Atk.Role.PushButton;
 			}

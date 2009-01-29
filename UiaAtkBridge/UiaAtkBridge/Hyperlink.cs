@@ -36,7 +36,6 @@ namespace UiaAtkBridge
 
 	public class Hyperlink : ComponentParentAdapter , Atk.TextImplementor, Atk.HypertextImplementor
 	{
-		private IRawElementProviderSimple provider;
 		private IInvokeProvider invokeProvider;
 		internal IHypertext hypertext;
 		
@@ -46,7 +45,6 @@ namespace UiaAtkBridge
 
 		public Hyperlink (IRawElementProviderSimple provider) : base (provider)
 		{
-			this.provider = provider;
 			invokeProvider = (IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 			hypertext = (IHypertext)invokeProvider;
 			links = new List<HyperlinkObject> ();
