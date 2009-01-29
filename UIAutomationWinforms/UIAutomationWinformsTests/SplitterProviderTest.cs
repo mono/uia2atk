@@ -228,6 +228,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			return new Splitter ();
 		}
+
+		public override void IsKeyboardFocusablePropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+			              false);
+		}
 		
 		#endregion
 	}

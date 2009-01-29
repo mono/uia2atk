@@ -73,6 +73,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			Assert.IsNotNull (provider.GetRuntimeId ());
 		}
+
+		public override void IsKeyboardFocusablePropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+			              false);
+		}
 #endregion
 	}
 }

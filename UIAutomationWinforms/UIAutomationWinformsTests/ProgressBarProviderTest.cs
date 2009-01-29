@@ -212,6 +212,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return CreateProgressBar ();
 		}
 
+		public override void IsKeyboardFocusablePropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+			              false);
+		}
+
 		#endregion
 
 		#region Protected Methods

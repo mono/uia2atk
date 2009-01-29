@@ -272,11 +272,18 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 		
 		[Test]
-		[Ignore ("Need to test false case")]
 		public virtual void IsKeyboardFocusablePropertyTest ()
 		{
 			Control control = GetControlInstance ();
 			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			if (provider == null) {
+				// This can be triggered by controls which
+				// don't actually register themselves with
+				// ProviderFactory (typically when they're
+				// "fake" controls, e.g., they don't map to a
+				// widget)
+				return;
+			}
 			
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,

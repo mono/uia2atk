@@ -156,6 +156,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			return PopupButtonPanelHelper.CreatePopupButton ();
 		}
+
+		public override void IsKeyboardFocusablePropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+			              false);
+		}
 	}
 
 	internal class PopupButtonPanelHelper

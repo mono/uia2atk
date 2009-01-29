@@ -112,6 +112,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestLabeledByAndName (false, false, true, true, false);
 			// TODO: Test name change
 		}		
+
+		public override void IsKeyboardFocusablePropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+			              false);
+		}
 		
 		#endregion
 

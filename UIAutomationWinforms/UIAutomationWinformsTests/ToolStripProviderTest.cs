@@ -85,5 +85,15 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			return new ToolStrip ();
 		}
+
+		public override void IsKeyboardFocusablePropertyTest ()
+		{
+			Control control = GetControlInstance ();
+			IRawElementProviderSimple provider = ProviderFactory.GetProvider (control);
+			
+			TestProperty (provider,
+			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
+			              false);
+		}
 	}
 }

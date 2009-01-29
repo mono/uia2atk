@@ -1,3 +1,23 @@
+2009-01-29  Brad Taylor  <brad@getcoded.net>
+
+	* BaseProviderTest.cs: Remove ignore around
+	IsKeyboardFocusablePropertyTest.  Also add a null check for "fake"
+	widgets which aren't registerred with ProviderFactory.
+
+	* LabelProviderTest.cs: 
+	* PanelProviderTest.cs: 
+	* PopupButtonPanelTest.cs: 
+	* GroupBoxProviderTest.cs: 
+	* SplitterProviderTest.cs: 
+	* ScrollBarProviderTest.cs: 
+	* LinkLabelProviderTest.cs: 
+	* ToolStripProviderTest.cs: 
+	* StatusBarProviderTest.cs: 
+	* PictureBoxProviderTest.cs: 
+	* StatusStripProviderTest.cs: 
+	* ProgressBarProviderTest.cs: Test for false returned from
+	IsKeyboardFocusable for providers which don't allow focus.
+
 2009-01-28  Mario Carrion  <mcarrion@novell.com>
 
 	* ListViewProviderTest.cs: Attempt to fix failure because of font.
