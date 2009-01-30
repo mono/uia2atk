@@ -100,6 +100,10 @@ namespace UiaAtkBridge
 		public override bool AddSelection (int startOffset, int endOffset)
 		{
 			ITextRangeProvider textRange = GetTextRange (startOffset, endOffset);
+			if (NSelections == 0) {
+				textRange.Select ();
+				return true;
+			}
 			try {
 			textRange.AddToSelection ();
 	
@@ -111,6 +115,14 @@ namespace UiaAtkBridge
 
 		public override bool RemoveSelection (int selectionNum)
 		{
+			if (textProvider.SupportedTextSelection == SupportedTextSelection.Single || selectionNum == 0) {
+				if (selectionNum < 0 || selectionNum >= NSelections)
+					return false;
+				int offset = (iText != null? iText.CaretOffset: 0);
+				ITextRangeProvider textRange = GetTextRange (offset, offset);
+				textRange.Select ();
+				return true;
+			}
 			int startOffset, endOffset;
 			string selection = GetSelection (selectionNum, out startOffset, out endOffset);
 			if (selection != null && selection != String.Empty) {
@@ -123,7 +135,15 @@ namespace UiaAtkBridge
 
 		public override bool SetSelection (int selectionNum, int startOffset, int endOffset)
 		{
-			RemoveSelection (selectionNum);
+			if (textProvider.SupportedTextSelection == SupportedTextSelection.Single) {
+				if (selectionNum != 0 || NSelections != 1)
+					return false;
+				ITextRangeProvider textRange = GetTextRange (startOffset, endOffset);
+				textRange.Select ();
+				return true;
+			}
+			if (!RemoveSelection (selectionNum))
+				return false;
 			return AddSelection (startOffset, endOffset);
 		}
 

@@ -1,3 +1,12 @@
+2009-01-29  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Fix more deadlocks in the gail tester.
+
+	* AtkTester.cs: Test text AddSelection and text-selection-changed.
+
+	* AtkTester.cs: Extract code to get a role from a type into its own
+	  function.
+
 2009-01-28  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs: Fix InsertText test.

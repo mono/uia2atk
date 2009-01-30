@@ -1,3 +1,7 @@
+2009-01-29  Mike Gorse  <mgorse@novell.com>
+
+	* TextProviderTextImplementor.cs: Selection fixes.
+
 2009-01-29  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ComboBox.cs: Sync with r125021.

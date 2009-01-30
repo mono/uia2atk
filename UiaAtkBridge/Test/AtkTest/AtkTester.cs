@@ -851,114 +851,91 @@ namespace UiaAtkBridgeTest
 		
 		protected void PropertyRole (BasicWidgetType type, Atk.Object accessible)
 		{
-			Atk.Role role = Atk.Role.Unknown;
+			Atk.Role role = GetRole (type);
+			Assert.AreEqual (role, accessible.Role, "Atk.Role, we got " + accessible.Role);
+		}
+
+		protected Atk.Role GetRole (BasicWidgetType type)
+		{
 			switch (type) {
 			case BasicWidgetType.Label:
 			case BasicWidgetType.ToolStripLabel:
-				role = Atk.Role.Label;
-				break;
+				return Atk.Role.Label;
 			case BasicWidgetType.ToolbarButton:
 			case BasicWidgetType.NormalButton:
-				role = Atk.Role.PushButton;
-				break;
+				return Atk.Role.PushButton;
 			case BasicWidgetType.Window:
-				role = Atk.Role.Frame;
-				break;
+				return Atk.Role.Frame;
 			case BasicWidgetType.CheckBox:
-				role = Atk.Role.CheckBox;
-				break;
+				return Atk.Role.CheckBox;
 			case BasicWidgetType.ComboBoxDropDownEntry:
 			case BasicWidgetType.ComboBoxDropDownList:
-				role = Atk.Role.ComboBox;
-				break;
+				return Atk.Role.ComboBox;
 			case BasicWidgetType.ComboBoxSimple:
-				role = HasComboBoxSimpleLayout ? 
+				return HasComboBoxSimpleLayout ? 
 				       Atk.Role.ComboBox : Atk.Role.TreeTable;
-				break;
 			case BasicWidgetType.RadioButton:
-				role = Atk.Role.RadioButton;
-				break;
+				return Atk.Role.RadioButton;
 			case BasicWidgetType.TextBoxEntry:
-				role = Atk.Role.Text;
-				break;
+			case BasicWidgetType.TextBoxView:
+			case BasicWidgetType.RichTextBox:
+				return Atk.Role.Text;
 			case BasicWidgetType.StatusBar:
-				role = Atk.Role.Statusbar;
-				break;
+				return Atk.Role.Statusbar;
 			case BasicWidgetType.MainMenuBar:
-				role = Atk.Role.MenuBar;
-				break;
+				return Atk.Role.MenuBar;
 			case BasicWidgetType.ContextMenu:
 			case BasicWidgetType.ParentMenu:
-				role = Atk.Role.Menu;
-				break;
+				return Atk.Role.Menu;
 			case BasicWidgetType.ChildMenuSeparator:
-				role = Atk.Role.Separator;
-				break;
+				return Atk.Role.Separator;
 			case BasicWidgetType.StatusStrip:
-				role = Atk.Role.Statusbar;
-				break;
+				return Atk.Role.Statusbar;
 			case BasicWidgetType.HScrollBar:
 			case BasicWidgetType.VScrollBar:
-				role = Atk.Role.ScrollBar;
-				break;
+				return Atk.Role.ScrollBar;
 			case BasicWidgetType.ProgressBar:
 			case BasicWidgetType.ToolStripProgressBar:
-				role = Atk.Role.ProgressBar;
-				break;
+				return Atk.Role.ProgressBar;
 			case BasicWidgetType.ListBox:
 			case BasicWidgetType.CheckedListBox:
-				role = Atk.Role.List;
-				break;
+				return Atk.Role.List;
 			case BasicWidgetType.Spinner:
 			case BasicWidgetType.DomainUpDown:
-				role = Atk.Role.SpinButton;
-				break;
+				return Atk.Role.SpinButton;
 			case BasicWidgetType.TabControl:
-				role = Atk.Role.PageTabList;
-				break;
+				return Atk.Role.PageTabList;
 			case BasicWidgetType.TabPage:
-				role = Atk.Role.PageTab;
-				break;
+				return Atk.Role.PageTab;
 			case BasicWidgetType.ListView:
-				role = Atk.Role.TreeTable;
-				break;
+				return Atk.Role.TreeTable;
 			case BasicWidgetType.TreeView:
-				role = Atk.Role.TreeTable;
-				break;
+				return Atk.Role.TreeTable;
 			case BasicWidgetType.PictureBox:
-				role = Atk.Role.Icon;
-				break;
+				return Atk.Role.Icon;
 			case BasicWidgetType.ContainerPanel:
 			case BasicWidgetType.ErrorProvider:
 			case BasicWidgetType.DateTimePicker:
 			case BasicWidgetType.GroupBox:
-				role = Atk.Role.Panel;
-				break;
+				return Atk.Role.Panel;
 			case BasicWidgetType.ToolStripSplitButton:
-				role = Atk.Role.Filler;
-				break;
+				return Atk.Role.Filler;
 			case BasicWidgetType.ToolStripDropDownButton:
-				role = Atk.Role.Menu;
-				break;
+				return Atk.Role.Menu;
 			
 			case BasicWidgetType.ToolBar:
-				role = Atk.Role.ToolBar;
-				break;
+				return Atk.Role.ToolBar;
 			case BasicWidgetType.StatusBarPanel:
-				role = Atk.Role.Label;
-				break;
+				return Atk.Role.Label;
 			case BasicWidgetType.HSplitContainer:
-				role = Atk.Role.SplitPane;
-				break;
+				return Atk.Role.SplitPane;
 			case BasicWidgetType.VTrackBar:
-				role = Atk.Role.Slider;
-				break;
+				return Atk.Role.Slider;
 			default:
 				throw new NotImplementedException (String.Format (
 					"Couldn't find the role for {0}.  Did you forget to add it to AtkTester::PropertyRole ()?",
 					type));
 			}
-			Assert.AreEqual (role, accessible.Role, "Atk.Role, we got " + accessible.Role);
 		}
 
 		protected Atk.Object InterfaceText (BasicWidgetType type)
@@ -987,8 +964,10 @@ namespace UiaAtkBridgeTest
 
 			// Test cut/copy/paste support
 			atkEditableText.TextContents = "And your head is made of clouds, but your feet are made of ground.";
-			atkEditableText.CopyText (4, 13);
-			atkEditableText.PasteText (0);
+			RunInGuiThread (delegate () {
+				atkEditableText.CopyText (4, 13);
+				atkEditableText.PasteText (0);
+			});
 
 			InterfaceText (accessible, "your headAnd your head is made of clouds, but your feet are made of ground.");
 
@@ -1359,6 +1338,29 @@ namespace UiaAtkBridgeTest
 				"GetTextAfterOffset,WordStart SL");
 			Assert.AreEqual (startCaretOffset, startOffset, "GetTextAfterOffset,WordStart,so SL");
 			Assert.AreEqual (endCaretOffset, endOffset, "GetTextAfterOffset,WordStart,eo SL");
+
+			if (type == BasicWidgetType.TextBoxEntry ||
+			    type == BasicWidgetType.TextBoxView ||
+			    type == BasicWidgetType.RichTextBox ||
+			    type == BasicWidgetType.DomainUpDown) {
+				RunInGuiThread (delegate () {
+					Assert.IsTrue (atkText.AddSelection (1, 3), "AddSelection");
+					Assert.AreEqual (1, atkText.NSelections, "NSelections after AddSelect");
+					Assert.AreEqual (name.Substring (1, 2), atkText.GetSelection (0, out startOffset, out endOffset), "getSelection after addSelection");
+					Assert.AreEqual (1, startOffset, "startOffset");
+					Assert.AreEqual (3, endOffset, "endOffset");
+					StartEventMonitor ();
+					Assert.IsTrue (atkText.SetSelection (0, 2, 4), "AddSelection");
+					Atk.Role role = GetRole (type);
+					// Ideally, we would only send one
+					// event, but that would be hard with
+					// the current design, so allowing 2
+					ExpectEvents (1, 2, role, "object:text-selection-changed");
+					Assert.AreEqual (name.Substring (2, 2), atkText.GetSelection (0, out startOffset, out endOffset), "getSelection after addSelection");
+					Assert.AreEqual (2, startOffset, "startOffset");
+					Assert.AreEqual (4, endOffset, "endOffset");
+				});
+			}
 
 			if (onlySingleLine)
 				return accessible;
