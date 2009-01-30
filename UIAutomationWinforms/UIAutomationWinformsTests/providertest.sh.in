@@ -5,13 +5,18 @@ DLL=UIAutomationWinformsTests.dll
 TEST_DISPLAY=:99
 NUNIT_FLAGS=-nothread
 
-while getopts c:x o
+while getopts c:xd: o
 do case "$o" in
     c)  component="$OPTARG";;
     x)  xephyr="yes";;
-    \?)  echo "Usage: $0 -x -c <control>" && exit 1;;
+    d)  optdisplay="$OPTARG" && xephyr="yes";;
+    \?)  echo "Usage: $0 -x -d <display> -c <control>" && exit 1;;
 esac
 done
+
+if [ "x$optdisplay" != "x" ]; then
+	TEST_DISPLAY=:$optdisplay
+fi
 
 # Reset $@
 shift `echo $OPTIND-1 | bc`
@@ -36,7 +41,7 @@ if [ "x$xephyr" == "xyes" ]; then
 fi
 
 (cd bin/Debug; \
-	@MONO@ --debug @NUNIT_PATH@/nunit-console.exe ${NUNIT_FLAGS} ${DLL} ${NUNIT_ARGS})
+	time @MONO@ --debug @NUNIT_PATH@/nunit-console.exe ${NUNIT_FLAGS} ${DLL} ${NUNIT_ARGS})
 
 if [ "x$xephyr" == "xyes" ]; then
 	kill $metacity_pid $xephyr_pid

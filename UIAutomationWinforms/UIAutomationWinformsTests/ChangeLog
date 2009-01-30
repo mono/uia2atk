@@ -1,3 +1,9 @@
+2009-01-30  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* providertest.sh.in: Add -d option for specifying display number (used
+	like "-d 2", for example), which implies "-x". Add "time" to the
+	front of the nunit command, which could be made optional if desired.
+
 2009-01-29  Brad Taylor  <brad@getcoded.net>
 
 	* providertest.sh.in: Add support for running provider tests inside a
