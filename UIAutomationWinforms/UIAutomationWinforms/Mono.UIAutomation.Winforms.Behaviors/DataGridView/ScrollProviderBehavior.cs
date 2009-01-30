@@ -50,17 +50,17 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 		public override void Connect ()
 		{
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontallyScrollableProperty,
-			                   new ScrollGeneric.ScrollPatternHorizontallyScrollableEvent<DataGridViewProvider> ((DataGridViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternHorizontallyScrollableEvent<DataGridViewProvider> (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalScrollPercentProperty,
-			                   new ScrollGeneric.ScrollPatternHorizontalScrollPercentEvent<DataGridViewProvider> ((DataGridViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternHorizontalScrollPercentEvent<DataGridViewProvider> (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalViewSizeProperty,
-			                   new ScrollGeneric.ScrollPatternHorizontalViewSizeEvent <DataGridViewProvider>((DataGridViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternHorizontalViewSizeEvent <DataGridViewProvider>(GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticallyScrollableProperty,
-			                   new ScrollGeneric.ScrollPatternVerticallyScrollableEvent<DataGridViewProvider> ((DataGridViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternVerticallyScrollableEvent<DataGridViewProvider> (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalScrollPercentProperty,
-			                   new ScrollGeneric.ScrollPatternVerticalScrollPercent<DataGridViewProvider> ((DataGridViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternVerticalScrollPercent<DataGridViewProvider> (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalViewSizeProperty,
-			                   new ScrollGeneric.ScrollPatternVerticalViewSizeEvent<DataGridViewProvider> ((DataGridViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternVerticalViewSizeEvent<DataGridViewProvider> (GenericProvider));
 		}
 	
 		#endregion

@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008,2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
@@ -48,17 +48,17 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListBox
 		public override void Connect ()
 		{
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontallyScrollableProperty,
-			                   new ScrollPatternHorizontallyScrollableEvent ((ListBoxProvider) Provider));
+			                   new ScrollPatternHorizontallyScrollableEvent (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalScrollPercentProperty,
-			                   new ScrollPatternHorizontalScrollPercentEvent ((ListBoxProvider) Provider));
+			                   new ScrollPatternHorizontalScrollPercentEvent (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalViewSizeProperty,
-			                   new ScrollPatternHorizontalViewSizeEvent ((ListBoxProvider) Provider));
+			                   new ScrollPatternHorizontalViewSizeEvent (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticallyScrollableProperty,
-			                   new ScrollPatternVerticallyScrollableEvent ((ListBoxProvider) Provider));
+			                   new ScrollPatternVerticallyScrollableEvent (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalScrollPercentProperty,
-			                   new ScrollPatternVerticalScrollPercent ((ListBoxProvider) Provider));
+			                   new ScrollPatternVerticalScrollPercent (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalViewSizeProperty,
-			                   new ScrollPatternVerticalViewSizeEvent ((ListBoxProvider) Provider));
+			                   new ScrollPatternVerticalViewSizeEvent (GenericProvider));
 		}
 	
 		#endregion

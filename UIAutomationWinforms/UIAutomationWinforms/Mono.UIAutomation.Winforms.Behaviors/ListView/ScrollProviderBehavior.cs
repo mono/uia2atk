@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008,2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
@@ -49,17 +49,17 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		public override void Connect ()
 		{
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontallyScrollableProperty,
-			                   new ScrollGeneric.ScrollPatternHorizontallyScrollableEvent<ListViewProvider> ((ListViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternHorizontallyScrollableEvent<ListViewProvider> (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalScrollPercentProperty,
-			                   new ScrollGeneric.ScrollPatternHorizontalScrollPercentEvent<ListViewProvider> ((ListViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternHorizontalScrollPercentEvent<ListViewProvider> (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternHorizontalViewSizeProperty,
-			                   new ScrollPatternHorizontalViewSizeEvent ((ListViewProvider) Provider));
+			                   new ScrollPatternHorizontalViewSizeEvent (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticallyScrollableProperty,
-			                   new ScrollGeneric.ScrollPatternVerticallyScrollableEvent<ListViewProvider> ((ListViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternVerticallyScrollableEvent<ListViewProvider> (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalScrollPercentProperty,
-			                   new ScrollGeneric.ScrollPatternVerticalScrollPercent<ListViewProvider> ((ListViewProvider) Provider));
+			                   new ScrollGeneric.ScrollPatternVerticalScrollPercent<ListViewProvider> (GenericProvider));
 			Provider.SetEvent (ProviderEventType.ScrollPatternVerticalViewSizeProperty,
-			                   new ScrollPatternVerticalViewSizeEvent ((ListViewProvider) Provider));
+			                   new ScrollPatternVerticalViewSizeEvent (GenericProvider));
 		}
 	
 		#endregion

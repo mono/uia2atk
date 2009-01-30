@@ -1,3 +1,13 @@
+2009-01-30  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListBox/ScrollProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/ScrollProviderBehavior.cs:
+	Using GenericProvider property instead of casting.
+
+	* Mono.UIAutomation.Winforms.Behaviors/Generic/ScrollProviderBehavior.cs:
+	New protected Generic property: GenericProvider.
+
 2009-01-29  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms.mdp: Project target updated to 3.5.

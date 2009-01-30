@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008,2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
@@ -44,7 +44,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Generic
 
 		protected ScrollProviderBehavior (T subject) : base (subject)
 		{
-			this.subject = subject;
+			genericProvider = subject;
 			hscrollbar = subject.ScrollBehaviorObserver.HorizontalScrollBar;
 			vscrollbar = subject.ScrollBehaviorObserver.VerticalScrollBar;
 		}
@@ -96,7 +96,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Generic
 		#region IScrollProvider Interface
 			
 		public bool HorizontallyScrollable {
-			get { return subject.ScrollBehaviorObserver.HasHorizontalScrollbar; }
+			get { return genericProvider.ScrollBehaviorObserver.HasHorizontalScrollbar; }
 		}
 		
 		//FIXME: This MUST BE locale-specific
@@ -122,7 +122,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Generic
 		}
 
 		public bool VerticallyScrollable {
-			get { return subject.ScrollBehaviorObserver.HasVerticalScrollbar; }
+			get { return genericProvider.ScrollBehaviorObserver.HasVerticalScrollbar; }
 		}
 
 		//FIXME: This MUST BE locale-specific
@@ -174,6 +174,14 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Generic
 				else 
 					PerformScrollByPercent (vscrollbar, (int) ((verticalPercent * vscrollbar.Maximum) / 100));
 			}
+		}
+
+		#endregion
+
+		#region Protected Properties
+
+		protected T GenericProvider {
+			get { return genericProvider; }
 		}
 
 		#endregion
@@ -245,7 +253,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.Generic
 		private SWF.ScrollBar hscrollbar;
 		private SWF.ScrollBar vscrollbar;
 		private Action<SWF.ScrollBar> invoke;
-		private IScrollBehaviorSubject subject;
+		private T genericProvider;
 		
 		#endregion
 
