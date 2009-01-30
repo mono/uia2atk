@@ -148,8 +148,6 @@ namespace UiaAtkBridge
 			} else if (eventId == AutomationElementIdentifiers.StructureChangedEvent) {
 				// TODO: Handle StructureChangedEvent
 			}
-			
-			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 		}
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)

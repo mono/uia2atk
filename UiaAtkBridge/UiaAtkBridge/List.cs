@@ -155,14 +155,17 @@ AtkObject,
 				Role = Atk.Role.SpinButton;
 			else
 				Role = Atk.Role.List;
-
-			//ControlTypeList returns Name from one static label, Atk returns ""
-			string componentName = string.Empty;
-			if (controlTypeId != ControlType.List.Id)
-				componentName = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
-			Name = componentName;
 			
 			selectionHelper = new SelectionProviderUserHelper (provider, selectionProvider);
+		}
+
+		protected override void UpdateNameProperty (string newName, bool fromCtor)
+		{
+			// ControlType.List returns Name from one static label, Atk returns NULL
+			int controlTypeId = (int) Provider.GetPropertyValue (
+				AutomationElementIdentifiers.ControlTypeProperty.Id);
+			if (controlTypeId != ControlType.List.Id)
+				base.UpdateNameProperty (newName, fromCtor);
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()

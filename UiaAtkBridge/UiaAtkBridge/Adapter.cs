@@ -41,11 +41,18 @@ namespace UiaAtkBridge
 		public Adapter (IRawElementProviderSimple provider)
 		{
 			Provider = provider;
-			if (Provider != null) {
-				string desc = (string) Provider.GetPropertyValue (AutomationElementIdentifiers.HelpTextProperty.Id);
-				if (desc != null)
-					Description = desc;
+			if (Provider == null) {
+				return;
 			}
+
+			string desc = (string) Provider.GetPropertyValue (AutomationElementIdentifiers.HelpTextProperty.Id);
+			if (desc != null)
+				Description = desc;
+
+			UpdateNameProperty (Provider.GetPropertyValue (
+				AutomationElementIdentifiers.NameProperty.Id)
+					as string,
+				true);
 		}
 		
 #endregion
@@ -112,12 +119,19 @@ namespace UiaAtkBridge
 				bool enabled = (bool) e.NewValue;
 				NotifyStateChange (Atk.StateType.Enabled, enabled);
 				NotifyStateChange (Atk.StateType.Sensitive, enabled);
-			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
-				Name = (string)e.NewValue;
 			} else if (e.Property == AutomationElementIdentifiers.HelpTextProperty) {
 				Description = (string)e.NewValue;
 			} else if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
 				EmitBoundsChanged ((System.Windows.Rect)e.NewValue);
+			} else if (e.Property == AutomationElementIdentifiers.NameProperty) {
+				string newName = (string) e.NewValue;
+				
+				// Don't set Name if we don't really want to
+				// and don't fire events if we're not changing
+				if (!(Name == null && newName == String.Empty)
+				    && Name != newName) {
+					UpdateNameProperty ((string)e.NewValue, false);
+				}
 			}
 		}
 
@@ -133,6 +147,20 @@ namespace UiaAtkBridge
 		
 		internal virtual void PostInit ()
 		{
+		}
+
+		protected virtual void UpdateNameProperty (string newName, bool fromCtor)
+		{
+			if (fromCtor) {
+				if (!String.IsNullOrEmpty (newName))
+					Name = newName;
+				return;
+			}
+
+			if (Name == null && String.IsNullOrEmpty (newName))
+				return;
+
+			Name = newName ?? String.Empty;
 		}
 #endregion
 		

@@ -33,7 +33,6 @@ namespace UiaAtkBridge
 	public class TextContainer : ComponentParentAdapter , Atk.TextImplementor
 	{
 		private ITextImplementor textExpert = null;
-		private string oldName;
 		
 		public TextContainer (IRawElementProviderSimple provider): base (provider)
 		{
@@ -44,9 +43,6 @@ namespace UiaAtkBridge
 				Role = Atk.Role.PageTab;
 
 			textExpert = TextImplementorFactory.GetImplementor (this, provider);
-			Name = (string) provider.GetPropertyValue (
-				AutomationElementIdentifiers.NameProperty.Id);
-			oldName = Name;
 		}
 		
 		public int CaretOffset {
@@ -180,33 +176,24 @@ namespace UiaAtkBridge
 			Console.WriteLine ("Received StructureChangedEvent in Statusbar--todo");
 		}
 
-		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
+		protected override void UpdateNameProperty (string newName, bool fromCtor)
 		{
-			if (e.Property == AutomationElementIdentifiers.NameProperty) {
-				string newName = (string)e.NewValue;
-				
-				// Don't fire spurious events if the text hasn't changed
-				if (oldName == newName)
-					return;
-				
-				oldName = newName;
+			base.UpdateNameProperty (newName, fromCtor);
 
-				Atk.TextAdapter adapter = new Atk.TextAdapter (this);
+			// If we're being called from the ctor, textExpert
+			// won't be initialized yet so bail
+			if (fromCtor)
+				return;
 
-				// First delete all text, then insert the new text
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
+			Atk.TextAdapter adapter = new Atk.TextAdapter (this);
 
-				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
-				                         newName == null ? 0 : newName.Length);
+			// First delete all text, then insert the new text
+			adapter.EmitTextChanged (Atk.TextChangedDetail.Delete, 0, textExpert.Length);
 
-				// Accessible name and label text are one and
-				// the same, so update accessible name
-				Name = newName;
+			adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
+						 newName == null ? 0 : newName.Length);
 
-				EmitVisibleDataChanged ();
-			}
-			else
-				base.RaiseAutomationPropertyChangedEvent (e);
+			EmitVisibleDataChanged ();
 		}
 	}
 

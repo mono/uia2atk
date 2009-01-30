@@ -90,6 +90,11 @@ namespace UiaAtkBridge
 			return states;
 		}
 
+		protected override void UpdateNameProperty (string newName, bool fromCtor)
+		{
+			// We'll manage the name manuallly
+		}
+
 #region Atk.SelectionImplementor
 
 		public int SelectionCount

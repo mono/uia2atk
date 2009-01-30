@@ -60,6 +60,16 @@ namespace UiaAtkBridge
 				base.RaiseAutomationEvent (eventId, e);
 		}
 
+		protected override void UpdateNameProperty (string newName, bool fromCtor)
+		{
+			int controlTypeId = (int) Provider.GetPropertyValue (
+				AutomationElementIdentifiers.ControlTypeProperty.Id);
+			if (controlTypeId == ControlType.MenuItem.Id)
+				return;
+
+			base.UpdateNameProperty (newName, fromCtor);
+		}
+
 		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
 		{
 			// TODO

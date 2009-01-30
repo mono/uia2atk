@@ -1,3 +1,7 @@
+2009-01-30  Brad Taylor  <brad@getcoded.net>
+
+	* AtkTester.cs: Fix some incorrect assumptions about Name.
+
 2009-01-30  Mike Gorse <mgorse@novell.com>
 
 	* AtkTests.cs: Restore initial situation after tabControl test.

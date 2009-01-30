@@ -40,7 +40,6 @@ namespace UiaAtkBridge
 				ExpandCollapsePatternIdentifiers.Pattern.Id);
 
 			Role = Atk.Role.ToggleButton;
-			Name = String.Empty;
 		}
 		
 #region Atk.Action Implementation

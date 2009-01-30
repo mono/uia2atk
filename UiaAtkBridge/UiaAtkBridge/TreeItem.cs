@@ -54,7 +54,6 @@ namespace UiaAtkBridge
 				actionExpert.Add ("toggle", "toggle", null, DoToggle);
 			if (invokeProvider != null)
 				actionExpert.Add ("invoke", "invoke", null, DoInvoke);
-			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 			Role = (ToggleProvider != null? Atk.Role.CheckBox: Atk.Role.TableCell);
 		}
 		
@@ -313,6 +312,7 @@ namespace UiaAtkBridge
 				return -1;
 			}
 		}
+
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
 			if (e.Property == AutomationElementIdentifiers.HasKeyboardFocusProperty) {
@@ -339,10 +339,6 @@ namespace UiaAtkBridge
 
 				adapter.EmitTextChanged (Atk.TextChangedDetail.Insert, 0,
 				                         stringValue == null ? 0 : stringValue.Length);
-
-				// Accessible name and label text are one and
-				// the same, so update accessible name
-				Name = stringValue;
 
 				EmitVisibleDataChanged ();
 			} else if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {

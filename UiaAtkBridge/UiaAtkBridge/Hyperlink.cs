@@ -51,7 +51,6 @@ namespace UiaAtkBridge
 			Role = Atk.Role.Label;
 			
 			textExpert = TextImplementorFactory.GetImplementor (this, provider);
-			Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.NameProperty.Id);
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()
@@ -313,8 +312,15 @@ namespace UiaAtkBridge
 			this.Parent = parent;
 			this.hyperlink = parent;
 			this.index = index;
+			UpdateNameProperty (null, false);
 			parent.AddOneChild (this);
-			Name = hyperlink.hypertext.Uri (index);
+		}
+
+		protected override void UpdateNameProperty (string newName, bool fromCtor)
+		{
+			if (hyperlink != null) {
+				Name = hyperlink.hypertext.Uri (index);
+			}
 		}
 		
 		protected override Atk.StateSet OnRefStateSet ()

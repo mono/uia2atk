@@ -433,13 +433,19 @@ namespace UiaAtkBridgeTest
 			         type == BasicWidgetType.CheckedListBox ||
 			         type == BasicWidgetType.DomainUpDown)
 				// Not sure if this is right; setting so I can test other things -MPG
-				accessibleName = String.Empty;
-			else if (type == BasicWidgetType.ListView)
+				accessibleName = null;
+			else if (type == BasicWidgetType.ListView
+			         || type == BasicWidgetType.GroupBox)
 				accessibleName = accessible.Name;
 
-			//we're not so strict about null!="" because we cannot assign Atk.Object.Name = null (we get a critical)
-			Assert.AreEqual ((accessibleName == null ? String.Empty : accessibleName), 
-			                 (accessible.Name == null ? String.Empty : accessible.Name),
+			// Be forgiving when we can't set NULL due to
+			// Gtk-CRITICALs
+			if (accessibleName == null
+			    && accessible.Name == String.Empty) {
+				accessibleName = String.Empty;
+			}
+
+			Assert.AreEqual (accessibleName, accessible.Name,
 			                 "AtkObj Name, was: " + accessible.Name);
 
 			string [] names = items;
@@ -499,14 +505,16 @@ namespace UiaAtkBridgeTest
 				if (type == BasicWidgetType.ParentMenu)
 					accName = items [0];
 				else if (type == BasicWidgetType.ListBox || type == BasicWidgetType.CheckedListBox)
-					accName = String.Empty;
+					accName = null;
 				else if (type == BasicWidgetType.TabControl ||
 				         type == BasicWidgetType.ComboBoxMenu ||
 				         type == BasicWidgetType.MainMenuBar ||
 				         type == BasicWidgetType.ContextMenu ||
 				         type == BasicWidgetType.ComboBoxSimpleMenu)
 					accName = null;
-				else if (type == BasicWidgetType.TreeView || type == BasicWidgetType.ListView)
+				else if (type == BasicWidgetType.TreeView
+				         || type == BasicWidgetType.ListView
+				         || type == BasicWidgetType.GroupBox)
 					accName = accessible.Name;
 				Assert.AreEqual (accName, accessible.Name, "AtkObj Name #" + i);
 				
@@ -524,6 +532,7 @@ namespace UiaAtkBridgeTest
 					         type != BasicWidgetType.TabControl && 
 					         type != BasicWidgetType.TreeView && 
 					         type != BasicWidgetType.ListView && 
+					         type != BasicWidgetType.GroupBox && 
 					         type != BasicWidgetType.DomainUpDown)
 						Assert.AreEqual (accessible.Name, refSelObj.Name, "AtkObj NameRefSel#" + i);
 					Assert.AreEqual (1, implementor.SelectionCount, "SelectionCount == 1");
@@ -584,6 +593,7 @@ namespace UiaAtkBridgeTest
 			    type == BasicWidgetType.ListBox || 
 			    type == BasicWidgetType.CheckedListBox ||
 			    type == BasicWidgetType.DomainUpDown ||
+			    type == BasicWidgetType.GroupBox ||
 			    type == BasicWidgetType.TabControl) {
 				//strangely, OOR selections return true (valid) -> TODO: report bug on Gail
 				Assert.IsTrue (implementor.AddSelection (-1), "AddSelection OOR#1");
@@ -599,6 +609,7 @@ namespace UiaAtkBridgeTest
 
 			if (type != BasicWidgetType.ListBox &&
 			    type != BasicWidgetType.CheckedListBox &&
+			    type != BasicWidgetType.GroupBox &&
 			    type != BasicWidgetType.DomainUpDown) //<- to mimic this bug in the bridge is dumb, let's file it on gail (so we put this to make bridge test pass)
 				Assert.AreEqual (success, implementor.AddSelection (nAccessibleChildren), "AddSelection OOR#2");
 			
@@ -652,6 +663,7 @@ namespace UiaAtkBridgeTest
 			    type == BasicWidgetType.DomainUpDown ||
 			    type == BasicWidgetType.ComboBoxMenu ||
 			    type == BasicWidgetType.ParentMenu ||
+			    type == BasicWidgetType.GroupBox ||
 			    type == BasicWidgetType.MainMenuBar ||
 			    type == BasicWidgetType.ContextMenu ||
 			    type == BasicWidgetType.ComboBoxSimpleMenu)
@@ -664,6 +676,7 @@ namespace UiaAtkBridgeTest
 			    type != BasicWidgetType.TreeView &&
 			    type != BasicWidgetType.ListView &&
 			    type != BasicWidgetType.TabControl &&
+			    type != BasicWidgetType.GroupBox &&
 			    type != BasicWidgetType.DomainUpDown &&
 			    type != BasicWidgetType.ComboBoxDropDownEntry &&
 			    type != BasicWidgetType.ComboBoxDropDownList &&
@@ -690,6 +703,7 @@ namespace UiaAtkBridgeTest
 				if (type != BasicWidgetType.TabControl && 
 				    type != BasicWidgetType.TreeView &&
 				    type != BasicWidgetType.ListView &&
+				    type != BasicWidgetType.GroupBox &&
 				    type != BasicWidgetType.ComboBoxMenu &&
 				    type != BasicWidgetType.ParentMenu &&
 				    type != BasicWidgetType.MainMenuBar &&
