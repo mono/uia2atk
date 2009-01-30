@@ -1,5 +1,10 @@
 2009-01-30  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* providertest.sh.in: Remove "time" because nunit already gives this
+	information.
+
+2009-01-30  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* providertest.sh.in: Add -d option for specifying display number (used
 	like "-d 2", for example), which implies "-x". Add "time" to the
 	front of the nunit command, which could be made optional if desired.
