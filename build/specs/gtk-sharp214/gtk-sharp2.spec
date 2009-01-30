@@ -357,6 +357,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/mono/gac/*glade-sharp
 %{_prefix}/lib/mono/gtk-sharp-2.0/*glade-sharp.dll
 
+%files -n gio-sharp2
+%defattr(-, root, root)
+%{_prefix}/lib/libgiosharpglue-2.so
+%{_prefix}/lib/mono/gac/*gio-sharp
+%{_prefix}/lib/gtk-sharp-2.0/*gio-sharp.dll
+%{_libdir}/pkgconfig/gio-sharp-2.0.pc
+
 %files -n gtk-sharp2-complete
 %defattr(-, root, root)
 ## This is the 'base' package so we put the common dirs of all in this package
@@ -416,12 +423,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_prefix}/lib/mono/gac/*gconf-sharp-peditors
 %{_prefix}/lib/mono/gtk-sharp-2.0/*gconf-sharp-peditors.dll
 
-%files -n gio-sharp2
-%defattr(-, root, root)
-%{_prefix}/lib/libgiosharpglue-2.so
-%{_prefix}/lib/mono/gac/*gio-sharp
-%{_prefix}/lib/gtk-sharp-2.0/*gio-sharp.dll
-%{_libdir}/pkgconfig/gio-sharp-2.0.pc
 %endif
 ############### FILELIST END of packages split as gnome-sharp ################
 ##############################################################################
