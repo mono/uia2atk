@@ -1,3 +1,7 @@
+2009-01-30  Mike Gorse  <mgorse@novell.com>
+
+	* List.cs: Implement text selection for ListWithEditableText.
+
 2009-01-29  Mike Gorse  <mgorse@novell.com>
 
 	* TextProviderTextImplementor.cs: Selection fixes.

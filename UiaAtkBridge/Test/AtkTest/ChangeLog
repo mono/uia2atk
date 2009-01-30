@@ -1,3 +1,7 @@
+2009-01-30  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs: Separate text selection test into its own function.
+
 2009-01-29  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs: Fix more deadlocks in the gail tester.

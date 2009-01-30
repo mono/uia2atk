@@ -410,24 +410,22 @@ AtkObject,
 		
 		public string GetSelection (int selectionNum, out int startOffset, out int endOffset)
 		{
-			startOffset = caretOffset;
-			endOffset = caretOffset;
-			return null;
+			return text_helper.GetSelection (selectionNum, out startOffset, out endOffset);
 		}
 		
 		public bool AddSelection (int startOffset, int endOffset)
 		{
-			throw new NotImplementedException ();
+			return text_helper.AddSelection ( startOffset, endOffset);
 		}
 		
 		public override bool RemoveSelection (int selectionNum)
 		{
-			return false;
+			return text_helper.RemoveSelection (selectionNum);
 		}
 		
 		public bool SetSelection (int selectionNum, int startOffset, int endOffset)
 		{
-			return false;
+			return text_helper.SetSelection (selectionNum, startOffset, endOffset);
 		}
 
 		int caretOffset = -1;

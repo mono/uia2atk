@@ -1343,23 +1343,7 @@ namespace UiaAtkBridgeTest
 			    type == BasicWidgetType.TextBoxView ||
 			    type == BasicWidgetType.RichTextBox ||
 			    type == BasicWidgetType.DomainUpDown) {
-				RunInGuiThread (delegate () {
-					Assert.IsTrue (atkText.AddSelection (1, 3), "AddSelection");
-					Assert.AreEqual (1, atkText.NSelections, "NSelections after AddSelect");
-					Assert.AreEqual (name.Substring (1, 2), atkText.GetSelection (0, out startOffset, out endOffset), "getSelection after addSelection");
-					Assert.AreEqual (1, startOffset, "startOffset");
-					Assert.AreEqual (3, endOffset, "endOffset");
-					StartEventMonitor ();
-					Assert.IsTrue (atkText.SetSelection (0, 2, 4), "AddSelection");
-					Atk.Role role = GetRole (type);
-					// Ideally, we would only send one
-					// event, but that would be hard with
-					// the current design, so allowing 2
-					ExpectEvents (1, 2, role, "object:text-selection-changed");
-					Assert.AreEqual (name.Substring (2, 2), atkText.GetSelection (0, out startOffset, out endOffset), "getSelection after addSelection");
-					Assert.AreEqual (2, startOffset, "startOffset");
-					Assert.AreEqual (4, endOffset, "endOffset");
-				});
+				TextSelection (type, atkText, name);
 			}
 
 			if (onlySingleLine)
@@ -1668,6 +1652,37 @@ namespace UiaAtkBridgeTest
 			
 			
 			return accessible;
+		}
+
+		protected void TextSelection (BasicWidgetType type, Atk.Object accessible, string name)
+		{
+			Atk.Text atkText = CastToAtkInterface<Atk.Text> (accessible);
+			TextSelection (type, atkText, name);
+		}
+
+		protected void TextSelection (BasicWidgetType type, Atk.Text atkText, string name)
+		{
+			if (name.Length < 5)
+				throw new ArgumentException ("Want at least 5 characters to test selection: got " + name);
+
+			RunInGuiThread (delegate () {
+				int startOffset, endOffset;
+				Assert.IsTrue (atkText.AddSelection (1, 3), "AddSelection");
+				Assert.AreEqual (1, atkText.NSelections, "NSelections after AddSelect");
+				Assert.AreEqual (name.Substring (1, 2), atkText.GetSelection (0, out startOffset, out endOffset), "getSelection after addSelection");
+				Assert.AreEqual (1, startOffset, "startOffset");
+				Assert.AreEqual (3, endOffset, "endOffset");
+				StartEventMonitor ();
+				Assert.IsTrue (atkText.SetSelection (0, 2, 4), "AddSelection");
+				Atk.Role role = GetRole (type);
+				// Ideally, we would only send one
+				// event, but that would be hard with
+				// the current design, so allowing 2
+				ExpectEvents (1, 2, role, "object:text-selection-changed");
+				Assert.AreEqual (name.Substring (2, 2), atkText.GetSelection (0, out startOffset, out endOffset), "getSelection after addSelection");
+				Assert.AreEqual (2, startOffset, "startOffset");
+				Assert.AreEqual (4, endOffset, "endOffset");
+			});
 		}
 
 		// Simpler text test with a variable string
