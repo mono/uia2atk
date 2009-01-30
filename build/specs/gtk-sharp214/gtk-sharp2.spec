@@ -418,9 +418,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n gio-sharp2
 %defattr(-, root, root)
-%{_libdir}/libgiosharpglue-2.so
-%{_libdir}/mono/gac/gio-sharp/*
-%{_libdir}/gtk-sharp-2.0/gio-sharp.dll
+%{_prefix}/lib/libgiosharpglue-2.so
+%{_prefix}/lib/mono/gac/*gio-sharp
+%{_prefix}/lib/gtk-sharp-2.0/*gio-sharp.dll
 %{_libdir}/pkgconfig/gio-sharp-2.0.pc
 %endif
 ############### FILELIST END of packages split as gnome-sharp ################
