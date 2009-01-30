@@ -1,6 +1,21 @@
 2009-01-30  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGridView.Selection events:
+	Invalidated and Selection.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/SelectionProviderBehavior.cs:
+	DataGridView.Selection events enabled Invalidated and Selection.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/SelectionPatternInvalidatedEvent.cs:
+	Raises Selection.InvalidatedEvent.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/SelectionPatternSelectionEvent.cs:
+	Raises Selection.SelectionEvent.
+
+2009-01-30  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: DataGridView: DataItem support:
 	SelectionItem, GridItem (Row event) and TableItem (ColumnHeaders).
 

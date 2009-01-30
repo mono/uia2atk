@@ -242,6 +242,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemTableItemColumnHeaderItemsEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/GridPatternColumnCountEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/GridPatternRowCountEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/SelectionPatternInvalidatedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/TablePatternColumnHeadersEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/AutomationNamePropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DateTimePicker/ButtonInvokePatternInvokedEvent.cs \

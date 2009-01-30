@@ -28,7 +28,7 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-//using Mono.UIAutomation.Winforms.Events.DataGridView;
+using Mono.UIAutomation.Winforms.Events.DataGridView;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 {
@@ -56,10 +56,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 		{
 			//NOTE: IsSelectionRequired Property NEVER changes, so we aren't generating it.
 			//NOTE: CanSelect Property NEVER changes, so we aren't generating it.
-//			Provider.SetEvent (ProviderEventType.SelectionPatternInvalidatedEvent,
-//			                   new SelectionPatternInvalidatedEvent ((DataGridProvider) Provider));
-//			Provider.SetEvent (ProviderEventType.SelectionPatternSelectionProperty,
-//			                   new SelectionPatternSelectionEvent ((DataGridProvider) Provider));
+			Provider.SetEvent (ProviderEventType.SelectionPatternInvalidatedEvent,
+			                   new SelectionPatternInvalidatedEvent ((DataGridProvider) Provider));
+			Provider.SetEvent (ProviderEventType.SelectionPatternSelectionProperty,
+			                   new SelectionPatternSelectionEvent ((DataGridProvider) Provider));
 		}
 		
 		public override void Disconnect ()
