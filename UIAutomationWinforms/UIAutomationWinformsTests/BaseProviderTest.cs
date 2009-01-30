@@ -259,7 +259,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 					Rect clickablePointRect = new Rect (clickablePoint.X, clickablePoint.Y, 1, 1);
 
-					Assert.IsTrue (clickablePointRect.IntersectsWith (boundingRectangleRect),
+					Assert.IsTrue (boundingRectangleRect.Contains (clickablePointRect),
 					               string.Format ("ClickablePoint ({0}) SHOULD Intersect with BoundingRectangle: {1}",
 					                              clickablePointRect.ToString (), 
 					                              boundingRectangleRect.ToString ()));
@@ -922,12 +922,18 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				return GetProviderFromControl (control);
 		}
 
+		#endregion
+
+		#region Patterns Tests
+
 		protected void TestButtonPatterns (IRawElementProviderSimple provider)
 		{
 			// http://msdn.microsoft.com/en-us/library/ms742153.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsInvokePatternAvailableProperty.Id)
 			               || (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsTogglePatternAvailableProperty.Id),
 			               "Button ControlType must support IInvokeProvider or IToggleProvider");
+			
+			TestInvokePattern_InvokedEvent (provider);
 		}
 		
 		protected void TestCalendarPatterns (IRawElementProviderSimple provider)
@@ -1447,6 +1453,31 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			while (provider != null) {
 				TestPatterns (provider);
 				provider = provider.Navigate (NavigateDirection.NextSibling);
+			}
+		}
+
+		#endregion
+
+		#region Test Events for each patterns
+
+		protected virtual void TestInvokePattern_InvokedEvent (IRawElementProviderSimple provider)
+		{
+			IInvokeProvider invokeProvider 
+				= provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id) as IInvokeProvider;
+			if (invokeProvider == null)
+				return;
+
+			bridge.ResetEventLists ();
+
+			bool enabled 
+				= (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			invokeProvider.Invoke ();
+			try {
+				Assert.IsNotNull (bridge.GetAutomationEventFrom (provider, InvokePatternIdentifiers.InvokedEvent.Id));
+			} catch (ElementNotEnabledException) {
+				// According to http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.iinvokeprovider.invoke.aspx
+				if (!enabled)
+					Assert.Fail ("Your provider is disabled but didn't throw ElementNotEnabledException.");
 			}
 		}
 

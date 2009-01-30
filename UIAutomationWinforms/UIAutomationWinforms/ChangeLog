@@ -1,5 +1,29 @@
 2009-01-30  Mario Carrion  <mcarrion@novell.com>
 
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGridView: DataItem support:
+	SelectionItem, GridItem (Row event) and TableItem (ColumnHeaders).
+
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: Support added:
+	SelectionItem, GridItem and TableItem.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemSelectionItemProviderBehavior.cs:
+	DataGrid.DataItem.SelectionItem behavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemGridItemProviderBehavior.cs:
+	DataGrid.DataItem.GridItem behavior.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemTableItemProviderBehavior.cs:
+	DataGrid.DataItem.TableItem behavior.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemGridItemPatternRowEvent.cs:
+	Raises GridItem.Row Event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemTableItemColumnHeaderItemsEvent.cs:
+	Raises TableItem.ColumnHeadersItem Event.
+
+2009-01-30  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms.Behaviors/ListBox/ScrollProviderBehavior.cs:
 	* Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs:
 	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/ScrollProviderBehavior.cs:

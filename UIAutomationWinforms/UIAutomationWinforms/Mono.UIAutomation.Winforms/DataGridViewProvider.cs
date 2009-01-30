@@ -38,6 +38,8 @@ using Mono.UIAutomation.Winforms.Behaviors.DataGridView;
 
 namespace Mono.UIAutomation.Winforms
 {
+	// Good reference:
+	// http://www.devolutions.net/articles/DataGridViewFAQ.htm
 		
 	[MapsComponent (typeof (SWF.DataGridView))]
 	internal class DataGridViewProvider : ListProvider
@@ -184,7 +186,7 @@ namespace Mono.UIAutomation.Winforms
 				return null;
 		}
 
-		internal override Behaviors.IProviderBehavior GetBehaviorRealization (AutomationPattern behavior)
+		internal override IProviderBehavior GetBehaviorRealization (AutomationPattern behavior)
 		{
 			if (behavior == SelectionPatternIdentifiers.Pattern)
 				return new SelectionProviderBehavior (this);
@@ -196,6 +198,19 @@ namespace Mono.UIAutomation.Winforms
 				return new ScrollProviderBehavior (this);
 			else
 				return null;
+		}
+
+		public override IProviderBehavior GetListItemBehaviorRealization (AutomationPattern behavior,
+		                                                                  ListItemProvider listItem)
+		{
+			if (behavior == SelectionItemPatternIdentifiers.Pattern)
+				return new DataItemSelectionItemProviderBehavior (listItem);
+			else if (behavior == GridItemPatternIdentifiers.Pattern)
+				return new DataItemGridItemProviderBehavior (listItem);
+			else if (behavior == TableItemPatternIdentifiers.Pattern)
+				return new DataItemTableItemProviderBehavior (listItem);
+			else
+				return base.GetListItemBehaviorRealization (behavior, listItem);
 		}
 
 		public override void InitializeChildControlStructure ()
@@ -444,20 +459,20 @@ namespace Mono.UIAutomation.Winforms
 
 		internal class DataGridDataItemProvider : ListItemProvider
 		{
-			public DataGridDataItemProvider (DataGridViewProvider datagridProvider,
+			public DataGridDataItemProvider (DataGridViewProvider datagridViewProvider,
 			                                 SWF.DataGridView datagridview,
 		                                     SWF.DataGridViewRow row) 
-				: base (datagridProvider, datagridProvider, datagridview, row)
+				: base (datagridViewProvider, datagridViewProvider, datagridview, row)
 			{
-				this.datagridProvider = datagridProvider;
+				this.datagridviewProvider = datagridViewProvider;
 				this.datagridview = datagridview;
 				this.row = row;
 
 				columns = new Dictionary<SWF.DataGridViewColumn, DataGridViewDataItemChildProvider> ();
 			}
 
-			public DataGridViewProvider DataGridProvider {
-				get { return datagridProvider; }
+			public DataGridViewProvider DataGridViewProvider {
+				get { return datagridviewProvider; }
 			}
 
 			public SWF.DataGridView DataGridView {
@@ -558,7 +573,7 @@ namespace Mono.UIAutomation.Winforms
 			}
 
 			private Dictionary<SWF.DataGridViewColumn, DataGridViewDataItemChildProvider> columns;
-			private DataGridViewProvider datagridProvider;
+			private DataGridViewProvider datagridviewProvider;
 			private SWF.DataGridView datagridview;
 			private SWF.DataGridViewRow row;
 		}
@@ -575,7 +590,7 @@ namespace Mono.UIAutomation.Winforms
 				this.itemProvider = itemProvider;
 				this.column = column;
 
-				cell = itemProvider.Row.Cells [itemProvider.DataGridView.Columns.IndexOf (column)];
+				cell = itemProvider.Row.Cells [column.Index];
 				gridProvider = (DataGridViewProvider) itemProvider.ListProvider;
 			}
 

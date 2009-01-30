@@ -1,3 +1,11 @@
+2009-01-30  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* DataGridViewProviderTest.cs:
+	* UIAutomationWinformsTests.mdp: DataGridView test added.
+
+	* BaseProviderTest.cs: Testing InvokePattern Invoked event.
+
 2009-01-30  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* providertest.sh.in: Remove "time" because nunit already gives this

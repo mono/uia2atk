@@ -79,6 +79,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxListBoxSelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxSelectionProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemGridItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemSelectionItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemTableItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/DataGridView/SelectionProviderBehavior.cs \
@@ -235,6 +238,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxListItemSelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxListItemSelectionItemPatternIsSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemGridItemPatternRowEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemTableItemColumnHeaderItemsEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/GridPatternColumnCountEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/GridPatternRowCountEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/TablePatternColumnHeadersEvent.cs \
