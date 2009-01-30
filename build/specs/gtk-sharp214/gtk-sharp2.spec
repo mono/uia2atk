@@ -141,6 +141,16 @@ This package contains Mono bindings for glade.
 
 
 
+%package -n gio-sharp2
+License:        GPL v2 or later; LGPL v2.1 or later
+Summary:        Mono bindings for gio
+Group:          System/GUI/GNOME
+
+%description -n gio-sharp2
+This package contains Mono bindings for gconf and gconf peditors.
+
+
+
 %package -n gtk-sharp2-complete
 License:        GPL v2 or later; LGPL v2.1 or later
 Group:          System/GUI/GNOME
@@ -248,17 +258,6 @@ Group:          System/GUI/GNOME
 
 %description -n gconf-sharp2
 This package contains Mono bindings for gconf and gconf peditors.
-
-
-
-%package -n gio-sharp2
-License:        GPL v2 or later; LGPL v2.1 or later
-Summary:        Mono bindings for gio
-Group:          System/GUI/GNOME
-
-%description -n gio-sharp2
-This package contains Mono bindings for gconf and gconf peditors.
-
 
 
 %endif
