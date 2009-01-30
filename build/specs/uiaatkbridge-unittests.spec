@@ -42,7 +42,7 @@ Don't install this package. Seriously. Fo' rizzle.
 cd ../
 cp ../SOURCES/uiautomationwinforms.tar.bz2 .
 tar -jxvf uiautomationwinforms.tar.bz2
-cd ../uiautomationwinforms*
+cd uiautomationwinforms*
 sh autogen.sh
 make
 cd ../uiaatkbridge*
