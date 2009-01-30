@@ -1,7 +1,7 @@
 #
 # spec file for package UIAutomationWinforms-unittests
 #
-# Copyright (c) 2008 SUSE LINUX Products GmbH, Nuernberg, Germany.
+# Copyright (c) 2008 SUSE Linux Products GmbH, Nuernberg, Germany.
 # This file and all modifications and additions to the pristine
 # package are under the same license as the package itself.
 # 
@@ -17,10 +17,10 @@ License:        MIT/X11
 Group:          System/Libraries
 URL:		http://www.mono-project.com/Accessibility
 Source0:        %{name}-%{version}.tar.bz2
-BuildRoot:	%{_tmppath}/%{name}-%{version}-build
-AutoReqProv:	on
-Requires:	mono-core >= 2.2 mono-data gtk-sharp2 >= 2.12.7 
-Requires:	mono-uia mono-winfxcore uiaatkbridge 
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+AutoReqProv:    on
+Requires:       mono-core >= 2.2 gtk-sharp2 >= 2.12.7 mono-data
+Requires:       mono-uia mono-winfxcore uiaatkbridge 
 BuildRequires:	mono-devel >= 2.2 mono-data gtk-sharp2 >= 2.12.7 glib-sharp2 
 BuildRequires:	mono-uia mono-winfxcore uiaatkbridge intltool >= 0.21
 BuildRequires:  mono-nunit xorg-x11-server-extra metacity bc gtk2-engines gnome-themes
