@@ -27,7 +27,7 @@ BuildRequires:  mono-nunit xorg-x11-server-extra metacity bc gtk2-engines gnome-
 BuildRequires:  3ddiag cabextract xterm ghostscript-x11
 BuildRequires:  openssh-askpass x11-input-synaptics xorg-x11-libX11-ccache xorg-x11
 BuildRequires:  xorg-x11-Xvnc numlockx freeglut x11-tools translation-update ConsoleKit-x11 
-BuildRequires:  icewm-lite xorg-x11-xauth icewm-default icewm-gnome wine fvwm2 fvwm2-gtk
+BuildRequires:  xorg-x11-xauth icewm-default icewm-gnome wine fvwm2 fvwm2-gtk
 BuildRequires:  fvwm-themes gv mmv pmidi xine-ui xosview xpp xosd desktop-data-openSUSE-extra
 
 Summary:        UIAutomationWinforms unit tests
