@@ -1,3 +1,9 @@
+2009-01-29 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/splitter_vertical.py: Add new sample for Splitter that has
+	a vertical splitter (other Splitter sample has a horizontal splitter)
+	* testers/states.py: Add default states for Splitter and SplitContainer
+
 2009-01-28 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/radiobutton_groupbox.py: Add TabStop and TabIndex

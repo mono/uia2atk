@@ -279,6 +279,12 @@ class MenuItem(object):
 class ComboBox(object):
     states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
 
+class Splitter(object):
+    states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
+
+class SplitContainer(object):
+    states = (ENABLED, FOCUSABLE, SENSITIVE, SHOWING, VISIBLE)
+
 class Text(object):
     states = (EDITABLE, ENABLED, FOCUSABLE, SELECTABLE, SENSITIVE, SHOWING, SINGLE_LINE, VISIBLE)
 
