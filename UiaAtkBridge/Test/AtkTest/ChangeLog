@@ -1,5 +1,9 @@
 2009-01-30  Mike Gorse <mgorse@novell.com>
 
+	* AtkTests.cs: Restore initial situation after tabControl test.
+
+2009-01-30  Mike Gorse <mgorse@novell.com>
+
 	* AtkTester.cs: Test selection in InterfaceText for DomainUpDown.
 
 2009-01-30  Mike Gorse <mgorse@novell.com>

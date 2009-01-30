@@ -819,31 +819,36 @@ namespace UiaAtkBridgeTest
 				accessible = GetAccessible (type, names, true);
 			});
 			
-			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
-			InterfaceComponent (type, atkComponent);
+			try {
+				Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+				InterfaceComponent (type, atkComponent);
 			
-			PropertyRole (type, accessible);
+				PropertyRole (type, accessible);
 
-			Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
-			InterfaceSelection (atkSelection, names, accessible, type);
+				Atk.Selection atkSelection = CastToAtkInterface <Atk.Selection> (accessible);
+				InterfaceSelection (atkSelection, names, accessible, type);
 			
-			Assert.AreEqual (names.Length, accessible.NAccessibleChildren, "TabControl numChildren");
-			BasicWidgetType childType = BasicWidgetType.TabPage;
-			Atk.Object child1 = accessible.RefAccessibleChild (0);
-			PropertyRole (childType, child1);
-			Atk.Text atkText = null;
-			RunInGuiThread (delegate () {
-				atkText = CastToAtkInterface<Atk.Text> (child1);
-			});
-			Assert.AreEqual (5, atkText.CharacterCount, "CharacterCount");
-			Assert.AreEqual ("page1", atkText.GetText (0, 5), "GetText #1");
-			Assert.AreEqual ("page1", atkText.GetText (0, -1), "GetText #2");
+				Assert.AreEqual (names.Length, accessible.NAccessibleChildren, "TabControl numChildren");
+				BasicWidgetType childType = BasicWidgetType.TabPage;
+				Atk.Object child1 = accessible.RefAccessibleChild (0);
+				PropertyRole (childType, child1);
+				Atk.Text atkText = null;
+				RunInGuiThread (delegate () {
+					atkText = CastToAtkInterface<Atk.Text> (child1);
+				});
+				Assert.AreEqual (5, atkText.CharacterCount, "CharacterCount");
+				Assert.AreEqual ("page1", atkText.GetText (0, 5), "GetText #1");
+				Assert.AreEqual ("page1", atkText.GetText (0, -1), "GetText #2");
 
-			StartEventMonitor ();
-			atkSelection.AddSelection (1);
-			ExpectEvents (1, Atk.Role.PageTabList, "object:visible-data-changed");
-			ExpectEvents (1, Atk.Role.PageTabList, "object:selection-changed");
-			ExpectEvents (2, Atk.Role.PageTab, "object:state-changed:selected");
+				StartEventMonitor ();
+				atkSelection.AddSelection (1);
+				ExpectEvents (1, Atk.Role.PageTabList, "object:visible-data-changed");
+				ExpectEvents (1, Atk.Role.PageTabList, "object:selection-changed");
+				ExpectEvents (2, Atk.Role.PageTab, "object:state-changed:selected");
+			} finally {
+				Atk.Selection atkSelection = CastToAtkInterface<Atk.Selection> (accessible);
+				atkSelection.AddSelection (0);
+			}
 		}
 
 		[Test]
