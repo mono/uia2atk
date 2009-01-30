@@ -378,8 +378,6 @@ namespace UiaAtkBridgeTest
 			Atk.Object listItemChild = accessible.RefAccessibleChild (1);
 			Focus (listItemChild);
 
-			TextSelection (type, accessible, accessible.Name);
-
 			// The below line would make the test fail, and it
 			// isn't clear to me what we can do about it.
 			// See bug 463299.

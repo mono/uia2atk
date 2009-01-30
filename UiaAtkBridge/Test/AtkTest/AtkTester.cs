@@ -1663,7 +1663,7 @@ namespace UiaAtkBridgeTest
 		protected void TextSelection (BasicWidgetType type, Atk.Text atkText, string name)
 		{
 			if (name.Length < 5)
-				throw new ArgumentException ("Want at least 5 characters to test selection: got " + name);
+				return;	// string not long enough
 
 			RunInGuiThread (delegate () {
 				int startOffset, endOffset;
@@ -1698,6 +1698,9 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (length, atkText.CharacterCount, "Character count");
 			for (int i = 0; i < length; i++)
 				Assert.AreEqual (text [i], atkText.GetCharacterAtOffset (i), "GetCharacterAtOffset" + i);
+
+			if (accessible.Role == Atk.Role.SpinButton)
+				TextSelection (BasicWidgetType.DomainUpDown, atkText, text);
 		}
 
 		
