@@ -40,8 +40,8 @@ Don't install this package. Seriously. Fo' rizzle.
 
 %build
 cd ../
-cp ../SOURCES/uiautomations.tar.bz2 .
-tar -jxvf uiautomations.tar.bz2
+cp ../SOURCES/uiautomationwinforms.tar.bz2 .
+tar -jxvf uiautomationwinforms.tar.bz2
 cd ../uiautomationwinforms*
 sh autogen.sh
 make
