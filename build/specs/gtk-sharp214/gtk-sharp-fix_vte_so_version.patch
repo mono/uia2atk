@@ -1,0 +1,30 @@
+diff -ru ../old/gtk-sharp-2.8.3/configure.in ./configure.in
+--- ../old/gtk-sharp-2.8.3/configure.in	2006-07-06 02:09:48.000000000 +0200
++++ ./configure.in	2007-04-26 05:34:57.691888000 +0200
+@@ -234,8 +234,16 @@
+ enable_gtkhtml=no
+ fi
+ 
++VTE_SOVERSION=4
++VTE_REQUIRED_VERSION=0.14.0
++PKG_CHECK_MODULES(VTE_DEPENDENCIES, vte >= $VTE_REQUIRED_VERSION gtk+-2.0 >= $GTK_REQUIRED_VERSION, enable_vte=yes, enable_vte=no)
++if test "x$enable_vte" = "xyes"; then
++VTE_SOVERSION=9
++else
+ VTE_REQUIRED_VERSION=0.11.10
+ PKG_CHECK_MODULES(VTE_DEPENDENCIES, vte >= $VTE_REQUIRED_VERSION gtk+-2.0 >= $GTK_REQUIRED_VERSION, enable_vte=yes, enable_vte=no)
++fi
++AC_SUBST(VTE_SOVERSION)
+ 
+ AC_PATH_PROG(MDASSEMBLER, mdassembler, no)
+ AC_PATH_PROG(MONODOCER, monodocer, no)
+diff -ru ../old/gtk-sharp-2.8.3/vte/vte-sharp.dll.config.in ./vte/vte-sharp.dll.config.in
+--- ../old/gtk-sharp-2.8.3/vte/vte-sharp.dll.config.in	2004-10-29 22:33:07.000000000 +0200
++++ ./vte/vte-sharp.dll.config.in	2007-04-26 05:35:54.966558000 +0200
+@@ -1,5 +1,5 @@
+ <configuration>
+   <dllmap dll="libgobject-2.0-0.dll" target="libgobject-2.0@LIB_PREFIX@.0@LIB_SUFFIX@"/>
+   <dllmap dll="libatk-1.0-0.dll" target="libatk-1.0@LIB_PREFIX@.0@LIB_SUFFIX@"/>
+-  <dllmap dll="vte" target="libvte@LIB_PREFIX@.4@LIB_SUFFIX@"/>
++  <dllmap dll="vte" target="libvte@LIB_PREFIX@.@VTE_SOVERSION@@LIB_SUFFIX@"/>
+ </configuration>

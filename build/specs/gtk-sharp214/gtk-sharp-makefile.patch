@@ -1,0 +1,11 @@
+--- sample/gconf/Makefile.am
++++ sample/gconf/Makefile.am
+@@ -24,7 +24,7 @@
+ Settings.cs: $(SCHEMA)
+ 	MONO_PATH=$(top_builddir)/gconf/GConf/gconf-sharp.dll:${MONO_PATH} $(RUNTIME) $(GCONFDIR)/tools/gconfsharp-schemagen.exe Sample $(SCHEMA) > Settings.cs
+ 
+-install-hook: 
++install-data-hook: 
+ 	GCONF_CONFIG_SOURCE="" gconftool-2 --makefile-install-rule $(SCHEMA)
+ 
+ CLEANFILES = sample.exe Settings.cs

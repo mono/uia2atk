@@ -23,6 +23,12 @@ Requires:	mono-core >= 2.2 mono-data gtk-sharp2 >= 2.12.7
 Requires:	mono-uia mono-winfxcore uiaatkbridge 
 BuildRequires:	mono-devel >= 2.2 mono-data gtk-sharp2 >= 2.12.7 glib-sharp2 
 BuildRequires:	mono-uia mono-winfxcore uiaatkbridge intltool >= 0.21
+BuildRequires:  mono-nunit xorg-x11-server-extra metacity bc gtk2-engines gnome-themes
+BuildRequires:  3ddiag cabextract xterm ghostscript-x11
+BuildRequires:  openssh-askpass x11-input-synaptics xorg-x11-libX11-ccache xorg-x11
+BuildRequires:  xorg-x11-Xvnc numlockx freeglut x11-tools translation-update ConsoleKit-x11 
+BuildRequires:  icewm-lite xorg-x11-xauth icewm-default icewm-gnome wine fvwm2 fvwm2-gtk
+BuildRequires:  fvwm-themes gv mmv pmidi xine-ui xosview xpp xosd desktop-data-openSUSE-extra
 
 Summary:        UIAutomationWinforms unit tests
 
@@ -35,18 +41,21 @@ Don't install this package. Seriously. Fo' rizzle.
 %build
 %configure
 make
+export DISPLAY=:1
+Xvfb -ac -screen 0 1280x1024x16 -br :1 &
 cd UIAutomationWinformsTests
 chmod +x providertest.sh
-./providertest.sh --labels
-
+metacity &
+./providertest.sh
 
 %install
-rm -rf %{buildroot}
+rm -rf %{buildroot}/*
+touch DUMMY
 
 %clean
 
 %files
 %defattr(-,root,root)
-%doc COPYING README NEWS 
+%doc DUMMY
 
 %changelog

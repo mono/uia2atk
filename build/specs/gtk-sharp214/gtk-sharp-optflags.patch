@@ -1,0 +1,11 @@
+--- gtk-sharp-2.8.3/configure.in.xx	2007-01-17 15:34:07.000000000 +0100
++++ gtk-sharp-2.8.3/configure.in	2007-01-17 15:34:16.000000000 +0100
+@@ -58,7 +58,7 @@
+ # not 64 bit clean in cross-compile
+ AC_CHECK_SIZEOF(void *, 4)
+ 
+-CFLAGS='-g -Wall -Wunused -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes  -Wmissing-prototypes -Wnested-externs  -Wshadow -Wpointer-arith -Wno-cast-qual -Wcast-align -Wwrite-strings'
++CFLAGS="-g -Wall -Wunused -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes  -Wmissing-prototypes -Wnested-externs  -Wshadow -Wpointer-arith -Wno-cast-qual -Wcast-align -Wwrite-strings $CFLAGS"
+ 
+ if test "x$enable_maintainer_mode" = "xyes"; then
+ DEBUG_FLAGS='-debug'

@@ -1,0 +1,16 @@
+--- atk/glue/object.c
++++ atk/glue/object.c
+@@ -31,6 +31,7 @@
+ 	if (!klass)
+ 		klass = g_type_class_ref (gtype);
+ 	((AtkObjectClass *) klass)->get_n_children = cb;
++	return 0;
+ }
+ 
+ AtkObject* atksharp_object_override_ref_child (GType gtype, gpointer cb);
+@@ -42,4 +43,5 @@
+ 	if (!klass)
+ 		klass = g_type_class_ref (gtype);
+ 	((AtkObjectClass *) klass)->ref_child = cb;
++	return NULL;
+ }

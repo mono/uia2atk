@@ -1,0 +1,80 @@
+diff -ur ../../gtk-sharp-2.8.3/configure.in ./configure.in
+--- ../../gtk-sharp-2.8.3/configure.in	2006-07-05 18:09:48.000000000 -0600
++++ ./configure.in	2007-04-05 20:48:33.000000000 -0600
+@@ -114,9 +114,11 @@
+ if test `uname -s` = "Darwin"; then
+ 	LIB_PREFIX=
+ 	LIB_SUFFIX=.dylib
++	GTKHTML_SORT_FLAGS=-r
+ else
+ 	LIB_PREFIX=.so
+ 	LIB_SUFFIX=
++	GTKHTML_SORT_FLAGS=
+ fi
+ SDCHECK="`$GACUTIL /l |grep ^System.Drawing, | head -n1 |cut -f1 -d','`"
+ if test "x$SDCHECK" = "xSystem.Drawing"; then
+@@ -198,38 +200,26 @@
+ PKG_CHECK_MODULES(RSVG_DEPENDENCIES, librsvg-2.0 >= $RSVG_REQUIRED_VERSION, enable_rsvg=yes, enable_rsvg=no)
+ 
+ if test "x$enable_gnome" = "xyes"; then
+-GTKHTML_REQUIRED_VERSION=3.8.0
+-PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.8 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
+-if test "x$enable_gtkhtml" = "xyes"; then
+-GTKHTML_VERSION=3.8
+-GTKHTML_SOVERSION=15
+-else
+-GTKHTML_REQUIRED_VERSION=3.6.0
+-PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.6 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
+-if test "x$enable_gtkhtml" = "xyes"; then
+-GTKHTML_VERSION=3.6
+-GTKHTML_SOVERSION=18
+-else
+-GTKHTML_REQUIRED_VERSION=3.2.0
+-PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.1 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
+-if test "x$enable_gtkhtml" = "xyes"; then
+-GTKHTML_VERSION=3.1
+-GTKHTML_SOVERSION=11
+-else
+-GTKHTML_REQUIRED_VERSION=3.0.10
+-PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.0 >= $GTKHTML_REQUIRED_VERSION, enable_gtkhtml=yes, enable_gtkhtml=no)
++GTKHTML_BASEFILE=
++
++i=0
++while [[ $i -lt 100 ]] ; do
++PKG_CHECK_MODULES(GTKHTML_DEPENDENCIES, libgtkhtml-3.$i, enable_gtkhtml=yes, enable_gtkhtml=no)
+ if test "x$enable_gtkhtml" = "xyes"; then
+-GTKHTML_VERSION=3.0
+-GTKHTML_SOVERSION=4
++echo "Found libgtkhtml-3.$i"
++GTKHTML_VERSION=3.$i
++GTKHTML_LIBDIR=`$PKG_CONFIG --variable libdir libgtkhtml-3.$i`
++GTKHTML_FULLFILE=`ls $GTKHTML_LIBDIR/libgtkhtml-$GTKHTML_VERSION$LIB_PREFIX.*$LIB_SUFFIX | sort $GTKHTML_SORT_FLAGS | head -n1`
++GTKHTML_BASEFILE=`basename $GTKHTML_FULLFILE`
++echo "Found versioned file: $GTKHTML_BASEFILE"
++break
+ else
+-GTKHTML_VERSION=
+-GTKHTML_SOVERSION=
+-fi
+-fi
++echo "$i"
+ fi
+-fi
+-AC_SUBST(GTKHTML_VERSION)
+-AC_SUBST(GTKHTML_SOVERSION)
++i=$(($i+1))
++done
++
++AC_SUBST(GTKHTML_BASEFILE)
+ else
+ enable_gtkhtml=no
+ fi
+diff -ur ../../gtk-sharp-2.8.3/gtkhtml/gtkhtml-sharp.dll.config.in ./gtkhtml/gtkhtml-sharp.dll.config.in
+--- ../../gtk-sharp-2.8.3/gtkhtml/gtkhtml-sharp.dll.config.in	2004-10-29 14:33:07.000000000 -0600
++++ ./gtkhtml/gtkhtml-sharp.dll.config.in	2007-04-05 20:49:30.000000000 -0600
+@@ -1,4 +1,4 @@
+ <configuration>
+   <dllmap dll="libgobject-2.0-0.dll" target="libgobject-2.0@LIB_PREFIX@.0@LIB_SUFFIX@"/>
+-  <dllmap dll="gtkhtml-3.0" target="libgtkhtml-@GTKHTML_VERSION@@LIB_PREFIX@.@GTKHTML_SOVERSION@@LIB_SUFFIX@"/>
++  <dllmap dll="gtkhtml-3.0" target="@GTKHTML_BASEFILE@"/>
+ </configuration>
