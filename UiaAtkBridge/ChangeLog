@@ -1,3 +1,8 @@
+2009-01-30  Stephen Shaw  <sshaw@decriptor.com>
+	
+	* configure.ac: Now that mono is shipping a more recent version of
+	nunit, bump to 2.4.8 (which is advertised as 2.4).
+
 2009-01-21  Ray Wang  <rawang@novell.com>
 	
 	* bridge-glue/Makefile.am: Fix a typo and add lib dependency. The
