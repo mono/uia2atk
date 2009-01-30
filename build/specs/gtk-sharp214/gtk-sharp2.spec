@@ -360,7 +360,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-, root, root)
 %{_prefix}/lib/libgiosharpglue-2.so
 %{_prefix}/lib/mono/gac/*gio-sharp
-%{_prefix}/lib/gtk-sharp-2.0/*gio-sharp.dll
+%{_prefix}/lib/mono/gtk-sharp-2.0/gio-sharp.dll
 %{_libdir}/pkgconfig/gio-sharp-2.0.pc
 
 %files -n gtk-sharp2-complete

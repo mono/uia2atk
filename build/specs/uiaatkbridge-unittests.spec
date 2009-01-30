@@ -21,8 +21,8 @@ Source1:        uiautomationwinforms.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 AutoReqProv:    on
 Requires:       mono-core >= 2.2 gtk-sharp2 >= 2.12.7 mono-uia mono-winfxcore 
-BuildRequires:	mono-devel >= 2.2 gtk-sharp2 >= 2.12.7 
-BuildRequires:	mono-uia mono-winfxcore atk-devel gtk2-devel mono-nunit
+BuildRequires:	mono-devel >= 2.2 mono-data gtk-sharp2 >= 2.12.7 glib-sharp2
+BuildRequires:	mono-uia mono-winfxcore atk-devel gtk2-devel mono-nunit  intltool >= 0.35
 BuildRequires:  mono-nunit xorg-x11-server-extra metacity bc gtk2-engines gnome-themes
 BuildRequires:  3ddiag cabextract xterm ghostscript-x11
 BuildRequires:  openssh-askpass x11-input-synaptics xorg-x11-libX11-ccache xorg-x11
@@ -43,7 +43,7 @@ cd ../
 cp ../SOURCES/uiautomationwinforms.tar.bz2 .
 tar -jxvf uiautomationwinforms.tar.bz2
 cd uiautomationwinforms*
-sh autogen.sh
+./configure
 make
 cd ../uiaatkbridge*
 %configure
