@@ -1,4 +1,10 @@
 <Combine name="Uia2Atk" fileversion="2.0">
+  <Policies>
+    <VersionControlPolicy inheritsSet="Mono" />
+    <ChangeLogPolicy UpdateMode="Nearest" inheritsSet="Mono">
+      <MessageStyle Header="${Date:yyyy-MM-dd}  ${AuthorName}  &lt;${AuthorEmail}&gt;&#xA;&#xA;" LineAlign="0" />
+    </ChangeLogPolicy>
+  </Policies>
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
       <Entry build="True" name="UIAutomationWinforms" configuration="Debug" />

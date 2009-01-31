@@ -1,4 +1,6 @@
-2009-01-05  Mario Carrion <mcarrion@novell.com>
+2009-01-31  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Uia2Atk.mds: Add support for new ChangeLog policies.2009-01-05  Mario Carrion <mcarrion@novell.com>
 
 	* patches/messagebox.patch,
 	patches/datagrid.patch: Already committed.
