@@ -28,7 +28,7 @@ using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-//using Mono.UIAutomation.Winforms.Events.DataGridView;
+using Mono.UIAutomation.Winforms.Events.DataGridView;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 {
@@ -57,10 +57,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 			//NOTE: CanSelectMultiple Property NEVER changes, so we aren't generating it.
 			//NOTE: IsSelectionRequired Property NEVER changes, so we aren't generating it.
 			// FIXME: Implement, How?
-//			Provider.SetEvent (ProviderEventType.SelectionPatternInvalidatedEvent,
-//			                   new SelectionPatternInvalidatedEvent ((ComboBoxProvider) Provider));
-//			Provider.SetEvent (ProviderEventType.SelectionPatternSelectionProperty,
-//			                   new SelectionPatternSelectionEvent ((ComboBoxProvider) Provider));
+			Provider.SetEvent (ProviderEventType.SelectionPatternInvalidatedEvent,
+			                   new DataItemComboBoxListBoxSelectionPatternInvalidatedEvent (provider));
+			Provider.SetEvent (ProviderEventType.SelectionPatternSelectionProperty,
+			                   new DataItemComboBoxListBoxSelectionPatternSelectionEvent (provider));
 		}
 		
 		public override void Disconnect ()

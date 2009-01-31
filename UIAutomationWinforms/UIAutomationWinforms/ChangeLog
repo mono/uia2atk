@@ -1,6 +1,28 @@
 2009-01-30  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGrid.DataItems events added:
+	Selection Pattern: ComboBox.ListBox and ComboBox.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxSelectionProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxListBoxSelectionProviderBehavior.cs:
+	Automation Events enabled.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxSelectionPatternInvalidatedEvent.cs:
+	DataGrid.DataItems Raises: ComboBox Selection.Invalidated.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxSelectionPatternSelectionEvent.cs:
+	DataGrid.DataItems Raises: ComboBox Selection.Selection.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxListBoxSelectionPatternInvalidatedEvent.cs:
+	DataGrid.DataItems Raises: ComboBox.ListBox Selection.Invalidated.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxListBoxSelectionPatternSelectionEvent.cs:
+	DataGrid.DataItems Raises: ComboBox.ListBox Selection.Selection.
+
+2009-01-30  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: DataGridView.Selection events:
 	Invalidated and Selection.
 
