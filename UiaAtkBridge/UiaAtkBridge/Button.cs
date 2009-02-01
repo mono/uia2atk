@@ -77,7 +77,6 @@ namespace UiaAtkBridge
 		protected override Atk.StateSet OnRefStateSet ()
 		{
 			Atk.StateSet states = base.OnRefStateSet ();
-			
 			return states;
 		}
 
@@ -192,7 +191,8 @@ namespace UiaAtkBridge
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)
 		{
 			if (eventId == InvokePatternIdentifiers.InvokedEvent) {
-				// TODO: send signal to ATK
+				OnPressed ();
+				OnReleased ();
 			} else if (eventId == AutomationElementIdentifiers.AutomationFocusChangedEvent) {
 				// TODO: Handle AutomationFocusChangedEvent
 			} else if (eventId == AutomationElementIdentifiers.StructureChangedEvent) {
@@ -228,7 +228,7 @@ namespace UiaAtkBridge
 						 newName == null ? 0 : newName.Length);
 			EmitVisibleDataChanged ();
 		}
-		
+
 		// TODO: although UIA doesn't cover press and release actions, figure out if maybe it's useful to
 		// notify the state change, regardless of its actual non-effect
 		private void OnPressed ()

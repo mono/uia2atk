@@ -1,5 +1,9 @@
 2009-02-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Button.cs: Handle InvokedEvent, needed for #428599.
+
+2009-02-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Button.cs: Let resize events propagate to the Adapter layer where they
 	are really handled already.
 
