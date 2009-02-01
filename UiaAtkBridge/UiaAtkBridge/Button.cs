@@ -173,7 +173,7 @@ namespace UiaAtkBridge
 
 		public Atk.Attribute [] DefaultAttributes {
 			get {
-				throw new NotImplementedException ();
+				return textExpert.DefaultAttributes;
 			}
 		}
 
