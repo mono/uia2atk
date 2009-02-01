@@ -203,12 +203,9 @@ namespace UiaAtkBridge
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty) {
+			if (e.Property == TogglePatternIdentifiers.ToggleStateProperty)
 				//if it's a toggle, it should not be a basic Button class, but CheckBox or other
 				throw new NotSupportedException ("Toggle events should not land here (should not be reached)");
-			} else if (e.Property == AutomationElementIdentifiers.BoundingRectangleProperty) {
-				// TODO: Handle BoundingRectangleProperty change
-			}
 			else
 				base.RaiseAutomationPropertyChangedEvent (e);
 		}
