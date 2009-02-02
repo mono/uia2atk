@@ -46,7 +46,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolBar
 		
 		#endregion
 		
-		#region IProviderBehavior Interface		
+		#region IProviderBehavior Interface
 		
 		public override AutomationPattern ProviderPattern { 
 			get { return InvokePatternIdentifiers.Pattern; }
@@ -87,12 +87,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolBar
 				return;
 			}
 
-			if (toolBarButton.Style == SWF.ToolBarButtonStyle.ToggleButton) {
-				if (!toolBarButton.Pushed)
-					toolBarButton.Pushed = true;
-				else
-					toolBarButton.Pushed = false;
-			}
+			toolBarButton.Parent.UIAPerformClick (toolBarButton);
 		}
 		#endregion
 
