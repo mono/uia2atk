@@ -1,3 +1,11 @@
+2009-02-02 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/splitter_horizontal.py: Replace with deleted splitter.py,
+	which I had modified.  It already has a partial test written against
+	it.
+	* samples/splitter_vertical.py: Replace with overwritten
+	splitter_vertical.py, which I had written and had begun testing.
+
 2009-02-02  Calen Chen <cachen@novell.com>
 
 	* samples/splitcontainer_horizontal.py: set Orientation to Horizontal
