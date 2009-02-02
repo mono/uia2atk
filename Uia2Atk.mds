@@ -2,8 +2,9 @@
   <Policies>
     <VersionControlPolicy inheritsSet="Mono" />
     <ChangeLogPolicy UpdateMode="Nearest" inheritsSet="Mono">
-      <MessageStyle Header="${Date:yyyy-MM-dd}  ${AuthorName}  &lt;${AuthorEmail}&gt;&#xA;&#xA;" LineAlign="0" />
+      <MessageStyle LineAlign="0" />
     </ChangeLogPolicy>
+    <TextStylePolicy FileWidth="80" TabWidth="8" TabsToSpaces="False" NoTabsAfterNonTabs="False" RemoveTrailingWhitespace="True" />
   </Policies>
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="CombineConfiguration">
