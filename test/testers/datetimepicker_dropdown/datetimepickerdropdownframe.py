@@ -51,5 +51,25 @@ class DateTimePickerDropDownFrame(accessibles.Frame):
         assert accessible.text == text, '%s is not match with "%s"' % \
                                                 (accessible, accessible.text)
 
+    def inputText(self, accessible, text):
+        procedurelogger.action('set %s text to "%s"' % (accessible, text))
+        try:
+            accessible.text = text
+        except NotImplementedError:
+            pass
+
+    def inputValue(self, accessible, value):
+        procedurelogger.action('set %s value to "%s"' % (accessible, value))
+        try:
+            accessible.value = value
+        except NotImplementedError:
+            pass
+
+    def assertSelectChild(self, accessible, index):
+        """assert Selection implementation"""
+        procedurelogger.action('select index %s in "%s"' % \
+                                        (index, accessible))
+        accessible.selectChild(index)    
+
     def quit(self):
         self.altF4()

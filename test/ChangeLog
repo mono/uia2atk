@@ -1,3 +1,11 @@
+2009-02-02  Ray Wang <rawang@novell.com>
+
+	* testers/toolstripsplitbutton_basic_ops.py: uncomment some test 
+	statements since regression test
+	* testers/datetimepicker_dropdown_ops.py: add some new test methods
+	* testers/datetimepicker_dropdown/datetimepickerdropdownframe.py:
+	add some new test statements
+
 2009-01-29 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/splitter_vertical.py: Add new sample for Splitter that has
