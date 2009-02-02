@@ -990,6 +990,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "LocalizedControlTypeProperty");
 
 			// DEPENDS: IValueProvider
+
+			TestExpandCollapsePattern_ExpandCollapseStatePropertyEvent (provider);
+//			TestSelectionPattern_XXX (provider);
 		}
 
 		protected virtual void TestDataGridPatterns (IRawElementProviderSimple provider) 
@@ -1112,6 +1115,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (Catalog.GetString ("hyperlink"),
 			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
 			                 "LocalizedControlTypeProperty");
+
+			TestInvokePattern_InvokedEvent (provider);
 		}
 
 		protected virtual void TestImagePatterns (IRawElementProviderSimple provider) 
@@ -1751,6 +1756,40 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// This must be overridden by providers to actually change the value!
 		}
 
+		protected virtual void TestExpandCollapsePattern_ExpandCollapseStatePropertyEvent (IRawElementProviderSimple provider)
+		{
+			IExpandCollapseProvider expandCollapseProvider
+				= provider.GetPatternProvider (ExpandCollapsePatternIdentifiers.Pattern.Id) as IExpandCollapseProvider;
+			if (expandCollapseProvider == null)
+				Assert.Fail ("Provider {0} is not implementing IExpandCollapseProvider", provider.GetType ());
+
+			bool enabled 
+				= (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			ExpandCollapseState currentState = expandCollapseProvider.ExpandCollapseState;
+
+			try {
+				bridge.ResetEventLists ();
+
+				if (currentState == ExpandCollapseState.Collapsed)
+					expandCollapseProvider.Expand ();
+				else if (currentState == ExpandCollapseState.Expanded 
+				         || currentState == ExpandCollapseState.PartiallyExpanded)
+					expandCollapseProvider.Collapse ();
+				
+				Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (provider, ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id),
+				                  "IExpandCollapseProvider.ExpandCollapseStateProperty didn't raise any event.");
+				// Is hard to test NewValue or OldValue because the spec doesn't
+				// say anything about those values when calling Collapse/Expand.
+			} catch (ElementNotEnabledException) {
+				if (!enabled)
+					Assert.Fail ("Your provider is disabled but didn't throw ElementNotEnabledException.");
+			} catch (InvalidOperationException) {
+				// Expand is called when the ExpandCollapseState = LeafNode.
+				if (currentState != ExpandCollapseState.LeafNode)
+					Assert.Fail (string.Format ("InvalidOperationException is only thrown when state is LeafNode, current state: ", currentState));
+			}
+		}
+		
 		private void ValidateToggleState (ToggleState old, ToggleState got)
 		{
 			if (old == ToggleState.On)

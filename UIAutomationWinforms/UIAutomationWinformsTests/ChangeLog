@@ -1,5 +1,12 @@
 2009-02-02  Mario Carrion  <mcarrion@novell.com>
 
+	* DataGridViewProviderTest.cs: Overriding method to pass tests.
+
+	* BaseProviderTest.cs: New test:
+	TestExpandCollapsePattern_ExpandCollapseStatePropertyEvent.
+
+2009-02-02  Mario Carrion  <mcarrion@novell.com>
+
 	* DataGridViewProviderTest.cs: Testing ValuePattern.IsReadOnly
 
 	* BaseProviderTest.cs: LocalizedControlType test added. New test:

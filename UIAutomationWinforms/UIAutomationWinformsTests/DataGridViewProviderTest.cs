@@ -196,7 +196,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 		protected override void TestValuePattern_ChangeReadOnly (IRawElementProviderSimple provider, 
-		                                                        bool newValue)
+		                                                         bool newValue)
 		{
 			if (provider.GetType () == typeof (DataGridViewProvider.DataGridViewDataItemEditProvider)) {
 				DataGridViewProvider.DataGridViewDataItemEditProvider editProvider 
@@ -204,6 +204,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				editProvider.TextBoxCell.ReadOnly = newValue;
 			} else
 				Assert.Fail ("I have no idea about {0}!", provider.GetType ());
+		}
+
+		protected override void TestExpandCollapsePattern_ExpandCollapseStatePropertyEvent (IRawElementProviderSimple provider)
+		{
+			// Remove this method when fixed: https://bugzilla.novell.com/show_bug.cgi?id=471754
 		}
 		
 		#endregion

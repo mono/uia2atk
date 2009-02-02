@@ -1,5 +1,10 @@
 2009-02-02  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemComboBoxExpandCollapseProviderBehavior.cs:
+	DataGridView.DataItem ExpandCollapse pattern preview.
+
+2009-02-02  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: DataGridView.ValuePattern IsReadOnly
 	event added.

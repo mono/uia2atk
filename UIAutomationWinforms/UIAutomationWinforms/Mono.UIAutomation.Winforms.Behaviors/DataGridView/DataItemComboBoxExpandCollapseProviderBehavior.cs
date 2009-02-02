@@ -89,7 +89,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 			if (provider.ComboBoxCell.ReadOnly)
 				throw new ElementNotEnabledException ();
 
-			// FIXME: Implement, How?
+			PerformExpandOrCollapse (false);
 		}
 
 		public void Expand ()
@@ -97,14 +97,44 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 			if (provider.ComboBoxCell.ReadOnly)
 				throw new ElementNotEnabledException ();
 			
-			// FIXME: Implement, How?
+			PerformExpandOrCollapse (true);
 		}
 
 		#endregion
 
 		#region Private Fields
 
+
+		private void PerformExpandOrCollapse (bool expand)
+		{
+			if (provider.ItemProvider.DataGridView.InvokeRequired) {
+				provider.ItemProvider.DataGridView.BeginInvoke (new ExpandOrCollapseDelegate (PerformExpandOrCollapse),
+				                                                new object [] { expand });
+				return;
+			}
+
+			// FIXME: We need to test this again: 
+
+			SWF.DataGridViewCell oldCell = provider.ItemProvider.DataGridView.CurrentCell;
+			provider.ItemProvider.DataGridView.CurrentCell = provider.ComboBoxCell;
+			provider.ItemProvider.DataGridView.BeginEdit (false);
+
+			SWF.ComboBox combobox = provider.ItemProvider.DataGridView.EditingControl as SWF.ComboBox;
+			if (combobox != null) {
+				// We we'll basically are keeping a reference to the EditingControl
+				// to listen for DroppedDown event
+//				lastComboBox = combobox;
+				combobox.DroppedDown = expand;
+			}
+
+			provider.ItemProvider.DataGridView.EndEdit ();
+			provider.ItemProvider.DataGridView.CurrentCell = oldCell;
+		}
+		
 		private DataGridViewProvider.DataGridViewDataItemComboBoxProvider provider;
+//		private SWF.ComboBox lastComboBox;
+
+		private delegate void ExpandOrCollapseDelegate (bool expand);
 
 		#endregion
 		
