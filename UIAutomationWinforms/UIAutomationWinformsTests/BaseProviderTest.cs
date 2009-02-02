@@ -926,7 +926,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 		#region Patterns Tests
 
-		protected void TestButtonPatterns (IRawElementProviderSimple provider)
+		protected virtual void TestButtonPatterns (IRawElementProviderSimple provider)
 		{
 			// http://msdn.microsoft.com/en-us/library/ms742153.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsInvokePatternAvailableProperty.Id)
@@ -936,7 +936,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestInvokePattern_InvokedEvent (provider);
 		}
 		
-		protected void TestCalendarPatterns (IRawElementProviderSimple provider)
+		protected virtual void TestCalendarPatterns (IRawElementProviderSimple provider)
 		{
 			// http://msdn.microsoft.com/en-us/library/ms753925.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id),
@@ -952,14 +952,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IScrollProvider
 		}
 
-		protected void TestCheckBoxPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestCheckBoxPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms751693.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsTogglePatternAvailableProperty.Id),
 			               "CheckBox ControlType must support IToggleProvider");
 		}
 		
-		protected void TestComboBoxPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestComboBoxPatterns (IRawElementProviderSimple provider) 
 		{
 			//http://msdn.microsoft.com/en-us/library/ms752305.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty.Id),
@@ -973,7 +973,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IValueProvider
 		}
 
-		protected void TestDataGridPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestDataGridPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms752044.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id),
@@ -986,7 +986,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IScrollProvider
 		}
 
-		protected void TestDataItemPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestDataItemPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms742561.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty.Id),
@@ -1016,7 +1016,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestTablePatternChild (provider);
 		}
 
-		protected void TestDocumentPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestDocumentPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms752058.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsTextPatternAvailableProperty.Id),
@@ -1028,7 +1028,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IScrollProvider
 		}
 
-		protected void TestEditPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestEditPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms748367.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsTextPatternAvailableProperty.Id),
@@ -1037,33 +1037,33 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IRangeValueProvider
 		}
 
-		protected void TestGroupPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestGroupPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms742689.aspx
 			// DEPENDS: IExpandCollapseProvider
 		}
 
-		protected void TestHeaderPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestHeaderPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms753110.aspx
 			// DEPENDS: ITransformProvider
 		}
 
-		protected void TestHeaderItemPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestHeaderItemPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms742202.aspx
 			// DEPENDS: ITransformProvider
 			// DEPENDS: IInvokeProvider
 		}
 
-		protected void TestHyperlinkPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestHyperlinkPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms742530.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsInvokePatternAvailableProperty.Id),
 			               "Hyperlink ControlType must support IInvokeProvider");
 		}
 
-		protected void TestImagePatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestImagePatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms746603.aspx
 			Assert.IsFalse ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsInvokePatternAvailableProperty.Id),
@@ -1075,7 +1075,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IGridItemProvider
 		}
 
-		protected void TestListPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestListPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms742462.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsSelectionPatternAvailableProperty.Id),
@@ -1089,7 +1089,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IMultipleViewProvider
 		}
 
-		protected void TestListItemPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestListItemPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms744765.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty.Id),
@@ -1107,14 +1107,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestTablePatternChild (provider);
 		}
 
-		protected void TestMenuPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestMenuPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms741841.aspx
 			
 			// NO PATTERNS REQUIRED
 		}
 
-		protected void TestMenuBarPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestMenuBarPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms752322.aspx
 			
@@ -1123,7 +1123,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: ITransformProvider
 		}
 
-		protected void TestMenuItemPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestMenuItemPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms746680.aspx
 			
@@ -1133,7 +1133,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: ISelectionItemProvider
 		}
 
-		protected void TestPanePatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestPanePatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms749129.aspx
 			Assert.IsFalse ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsWindowPatternAvailableProperty.Id),
@@ -1143,7 +1143,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IDockProvider
 		}
 
-		protected void TestProgressBarPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestProgressBarPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms743681.aspx
 
@@ -1151,7 +1151,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IRangeValueProvider
 		}
 
-		protected void TestRadioButtonPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestRadioButtonPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms750484.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty.Id),
@@ -1161,7 +1161,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                "RadioButton ControlType must support IToggleProvider");
 		}
 
-		protected void TestScrollBarPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestScrollBarPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms743712.aspx
 			Assert.IsFalse ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsScrollPatternAvailableProperty.Id),
@@ -1170,14 +1170,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IRangeValueProvider
 		}
 
-		protected void TestSeparatorPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestSeparatorPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms750550.aspx
 
 			// NO PATTERNS REQUIRED
 		}
 
-		protected void TestSliderPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestSliderPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms742106.aspx
 
@@ -1185,7 +1185,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IRangeValueProvider
 		}
 
-		protected void TestSpinnerPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestSpinnerPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms744847.aspx
 
@@ -1194,7 +1194,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IValueProvider
 		}
 
-		protected void TestSplitButtonPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestSplitButtonPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms742545.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty.Id),
@@ -1203,14 +1203,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                "SplitButton ControlType must support IInvokeProvider");
 		}
 
-		protected void TestStatusBarPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestStatusBarPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms745809.aspx
 
 			// DEPENDS: IGridProvider
 		}
 
-		protected void TestTabPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestTabPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms754207.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsSelectionPatternAvailableProperty.Id),
@@ -1219,7 +1219,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IScrollProvider
 		}
 
-		protected void TestTabItemPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestTabItemPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms751611.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty.Id),
@@ -1228,7 +1228,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                "TabItem ControlType must support IInvokeProvider");
 		}
 
-		protected void TestTablePatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestTablePatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms750608.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id),
@@ -1239,7 +1239,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: ITableItemProvider
 		}
 
-		protected void TestTextPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestTextPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms752073.aspx
 			Assert.IsFalse ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsValuePatternAvailableProperty.Id),
@@ -1250,7 +1250,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IRangeValueProvider
 		}
 
-		protected void TestThumbPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestThumbPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms742539.aspx
 
@@ -1259,14 +1259,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 
-		protected void TestTitleBarPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestTitleBarPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms744939.aspx
 
 			// NO REQUIRED PATTERNS
 		}
 
-		protected void TestToolBarPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestToolBarPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms750425.aspx
 
@@ -1275,7 +1275,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: TransformPattern
 		}
 
-		protected void TestToolTipPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestToolTipPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms752335.aspx
 
@@ -1283,7 +1283,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: ITextProvider
 		}
 
-		protected void TestTreePatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestTreePatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms743706.aspx
 
@@ -1291,7 +1291,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IScrollProvider
 		}
 
-		protected void TestTreeItemPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestTreeItemPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms743384.aspx
 
@@ -1305,7 +1305,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 
-		protected void TestWindowPatterns (IRawElementProviderSimple provider) 
+		protected virtual void TestWindowPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms746673.aspx
 
@@ -1317,7 +1317,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IDockProvider
 		}
 
-		protected void TestGridPatternChild (IRawElementProviderSimple provider)
+		protected virtual void TestGridPatternChild (IRawElementProviderSimple provider)
 		{
 			IRawElementProviderFragment child = provider as IRawElementProviderFragment;
 			if (child == null)

@@ -1,5 +1,11 @@
 2009-02-02  Mario Carrion  <mcarrion@novell.com>
 
+	* DataGridViewProviderTest.cs: Testing columns.
+
+	* BaseProviderTest.cs: TestXXXXPatterns methods are virtual.
+
+2009-02-02  Mario Carrion  <mcarrion@novell.com>
+
 	* PanelProviderTest.cs: Test updated.
 
 2009-02-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
