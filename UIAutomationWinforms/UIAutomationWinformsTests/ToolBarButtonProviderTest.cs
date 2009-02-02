@@ -150,6 +150,37 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsFalse (buttonClicked,
 			                "Click should not fire when button is disabled");
 		}
+
+		[Test]
+		public void InvokedEventTest ()
+		{
+			IRawElementProviderSimple provider = GetProvider ();
+			
+			bridge.ResetEventLists ();
+
+			//we cannot do this, there's no PerformClick() API in toolbarButton:
+			//toolBarButton.PerformClick ();
+			//so we use the provider:
+			IInvokeProvider invokeProvider = 
+				(IInvokeProvider)provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			invokeProvider.Invoke ();
+			
+			Assert.AreEqual (1,
+			                 bridge.AutomationEvents.Count,
+			                 "event count");
+			
+			AutomationEventTuple eventInfo =
+				bridge.AutomationEvents [0];
+			Assert.AreEqual (InvokePatternIdentifiers.InvokedEvent,
+			                 eventInfo.eventId,
+			                 "event type");
+			Assert.AreEqual (provider,
+			                 eventInfo.provider,
+			                 "event element");
+			Assert.AreEqual (InvokePatternIdentifiers.InvokedEvent,
+			                 eventInfo.e.EventId,
+			                 "event args event type");
+		}
 		
 		#endregion
 
