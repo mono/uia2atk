@@ -5,11 +5,12 @@ DLL=UIAutomationWinformsTests.dll
 TEST_DISPLAY=:99
 NUNIT_FLAGS=-nothread
 
-while getopts c:xd: o
+while getopts c:xdt: o
 do case "$o" in
     c)  component="$OPTARG";;
     x)  xephyr="yes";;
     d)  optdisplay="$OPTARG" && xephyr="yes";;
+    t)  runtest="$OPTARG" && test "x$component" != "x";;
     \?)  echo "Usage: $0 -x -d <display> -c <control>" && exit 1;;
 esac
 done
@@ -27,6 +28,13 @@ if [ "x$component" != "x" ]; then
 	echo
 
 	NUNIT_ARGS="--fixture=MonoTests.Mono.UIAutomation.Winforms.${component}ProviderTest"
+fi
+
+if [ "x$runtest" != "x" ]; then
+	echo "Running only the unit test $runtest from $component"
+	echo
+
+	NUNIT_ARGS="${NUNIT_ARGS} --run=MonoTests.Mono.UIAutomation.Winforms.${component}ProviderTest.${runtest}"
 fi
 
 if [ "x$xephyr" == "xyes" ]; then

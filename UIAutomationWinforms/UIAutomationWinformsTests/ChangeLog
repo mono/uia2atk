@@ -1,5 +1,10 @@
 2009-02-02  Mario Carrion  <mcarrion@novell.com>
 
+	* providertest.sh.in: New argument "t" to run specific test (You also
+	need to use -c before using this argument).
+
+2009-02-02  Mario Carrion  <mcarrion@novell.com>
+
 	* DataGridViewProviderTest.cs: Testing columns.
 
 	* BaseProviderTest.cs: TestXXXXPatterns methods are virtual.
