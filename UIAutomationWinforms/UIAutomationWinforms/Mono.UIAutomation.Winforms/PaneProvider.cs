@@ -26,12 +26,14 @@
 using System;
 using Mono.Unix;
 using System.ComponentModel;
+using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 
 namespace Mono.UIAutomation.Winforms
 {
 
+	[MapsComponent (typeof (Panel))]
 	internal class PaneProvider : FragmentRootControlProvider
 	{
 

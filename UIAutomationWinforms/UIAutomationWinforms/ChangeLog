@@ -1,3 +1,14 @@
+2009-02-02  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for deleted files.
+	* Mono.UIAutomation.Winforms/PanelProvider.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/Panel/DockProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Behaviors/Panel/TransformProviderBehavior.cs,
+	  Mono.UIAutomation.Winforms.Events/Panel/TransformPatternCanResizeEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/Panel/TransformPatternCanMoveEvent.cs,
+	  Mono.UIAutomation.Winforms.Events/Panel/DockPatternDockPositionEvent.cs:
+	  Files deleted.
+
 2009-01-30  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:

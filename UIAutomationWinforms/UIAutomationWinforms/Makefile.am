@@ -132,8 +132,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/TableProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/Panel/DockProviderBehavior.cs \
-	Mono.UIAutomation.Winforms.Behaviors/Panel/TransformProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PictureBox/EmbeddedImageProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PopupButtonPanel/InvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/PrintPreviewControl/ScrollProviderBehavior.cs \
@@ -345,9 +343,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternCanSelectMultipleEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/SelectionPatternSelectionEvent.cs \
-	Mono.UIAutomation.Winforms.Events/Panel/DockPatternDockPositionEvent.cs \
-	Mono.UIAutomation.Winforms.Events/Panel/TransformPatternCanMoveEvent.cs \
-	Mono.UIAutomation.Winforms.Events/Panel/TransformPatternCanResizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontallyScrollableEvent.cs \
 	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/PrintPreviewControl/ScrollPatternHorizontalViewSizeEvent.cs \
@@ -474,7 +469,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs \
 	Mono.UIAutomation.Winforms/MonthCalendarProvider.cs \
 	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs \
-	Mono.UIAutomation.Winforms/PanelProvider.cs \
 	Mono.UIAutomation.Winforms/PaneProvider.cs \
 	Mono.UIAutomation.Winforms/PictureBoxProvider.cs \
 	Mono.UIAutomation.Winforms/PopupButtonPanelProvider.cs \
