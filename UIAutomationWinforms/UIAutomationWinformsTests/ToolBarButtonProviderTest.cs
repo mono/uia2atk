@@ -48,6 +48,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			toolBar = new ToolBar ();
 			toolBarButton = new ToolBarButton ("Button");
 			toolBar.Buttons.Add (toolBarButton);
+			
 			Form.Controls.Add (toolBar);
 			Form.Show ();
 		}
@@ -114,6 +115,41 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			Assert.AreEqual (parentProvider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
 			                 provider.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id));
+		}
+
+		[Test]
+		[Ignore ("Not working yet.")]
+		public void InvokeTest ()
+		{
+			IRawElementProviderSimple provider = GetProvider ();
+			IInvokeProvider invokeProvider = (IInvokeProvider)
+				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+			
+			bool buttonClicked = false;
+			toolBar.ButtonClick += delegate (object sender, ToolBarButtonClickEventArgs e) {
+				buttonClicked = true;
+			};
+			
+			invokeProvider.Invoke ();
+			Assert.IsTrue (buttonClicked,
+			               "Click should fire when button is enabled");
+			
+			buttonClicked = false;
+			toolBarButton.Enabled = false;
+			try {
+				invokeProvider.Invoke ();
+				Assert.Fail ("Expected ElementNotEnabledException");
+			} catch (ElementNotEnabledException) {
+				// Awesome, this is expected
+			} catch (Exception e) {
+				Assert.Fail ("Expected ElementNotEnabledException, " +
+				             "but got exception with message: " +
+				             e.Message);
+			} finally {
+				toolBarButton.Enabled = true;
+			}
+			Assert.IsFalse (buttonClicked,
+			                "Click should not fire when button is disabled");
 		}
 		
 		#endregion

@@ -82,7 +82,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				buttonClicked = true;
 			};
 			
-			invokeProvider.Invoke ();			
+			invokeProvider.Invoke ();
 			Assert.IsTrue (buttonClicked,
 			               "Click should fire when button is enabled");
 			

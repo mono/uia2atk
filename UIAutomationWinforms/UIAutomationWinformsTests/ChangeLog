@@ -1,3 +1,9 @@
+2009-02-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ButtonProviderTest.cs: Cosmetic.
+
+	* ToolBarButtonProviderTest.cs: Add new failing test.
+
 2009-01-30  Mario Carrion  <mcarrion@novell.com>
 
 	* Makefile.am:
