@@ -57,9 +57,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 			//NOTE: IsSelectionRequired Property NEVER changes, so we aren't generating it.
 			//NOTE: CanSelect Property NEVER changes, so we aren't generating it.
 			Provider.SetEvent (ProviderEventType.SelectionPatternInvalidatedEvent,
-			                   new SelectionPatternInvalidatedEvent ((DataGridProvider) Provider));
+			                   new SelectionPatternInvalidatedEvent ((DataGridViewProvider) Provider));
 			Provider.SetEvent (ProviderEventType.SelectionPatternSelectionProperty,
-			                   new SelectionPatternSelectionEvent ((DataGridProvider) Provider));
+			                   new SelectionPatternSelectionEvent ((DataGridViewProvider) Provider));
 		}
 		
 		public override void Disconnect ()

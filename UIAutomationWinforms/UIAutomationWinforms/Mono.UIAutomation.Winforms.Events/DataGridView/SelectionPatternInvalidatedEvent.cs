@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 
 		#region Constructor
 
-		public SelectionPatternInvalidatedEvent (DataGridProvider provider) 
+		public SelectionPatternInvalidatedEvent (DataGridViewProvider provider) 
 			: base (provider,
 			        SelectionPatternIdentifiers.InvalidatedEvent)
 		{

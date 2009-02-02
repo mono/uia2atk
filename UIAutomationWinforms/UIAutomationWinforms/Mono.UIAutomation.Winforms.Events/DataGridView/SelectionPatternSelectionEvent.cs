@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 
 		#region Constructor
 
-		public SelectionPatternSelectionEvent (DataGridProvider provider) 
+		public SelectionPatternSelectionEvent (DataGridViewProvider provider) 
 			: base (provider,
 			        SelectionPatternIdentifiers.SelectionProperty)
 		{

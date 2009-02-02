@@ -1,5 +1,12 @@
 2009-02-02  Mario Carrion  <mcarrion@novell.com>
 
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/SelectionProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGridView/SelectionPatternSelectionEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/DataGridView/SelectionPatternInvalidatedEvent.cs:
+	DataGridProvider -> DataGridViewProvider
+
+2009-02-02  Mario Carrion  <mcarrion@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp: DataGridView.SelectionItem events
 	added.
