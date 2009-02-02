@@ -22,42 +22,59 @@
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
+using System;
+using System.Windows.Automation;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
-using Mono.UIAutomation.Winforms.Events.DataGridView;
-using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 
-namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
+namespace Mono.UIAutomation.Winforms.Events.DataGridView
 {
 
-	internal class DataItemSelectionItemProviderBehavior 
-		: SelectionItemProviderBehavior
+	internal class DataItemSelectionItemPatternElementRemovedEvent
+		: BaseAutomationEvent
 	{
-		
+
 		#region Constructors
-		
-		public DataItemSelectionItemProviderBehavior (ListItemProvider provider)
-			: base (provider)
+
+		public DataItemSelectionItemPatternElementRemovedEvent (FragmentControlProvider provider)
+			: base (provider, 
+			        SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent)
 		{
+			this.provider = (DataGridViewProvider.DataGridDataItemProvider) provider;
+			selected = this.provider.DataGridView.SelectedCells.Contains (this.provider.Row.Cells [0]);
 		}
 		
 		#endregion
 		
-		#region IProviderBehavior Interface
-		
+		#region Overridden Methods
+
 		public override void Connect ()
 		{
-			//NOTE: SelectionItem.SelectionContainer never changes.
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementSelectedEvent,
-			                   new DataItemSelectionItemPatternElementSelectedEvent (Provider));
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementAddedEvent, 
-			                   new DataItemSelectionItemPatternElementAddedEvent (Provider));
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternElementRemovedEvent, 
-			                   new DataItemSelectionItemPatternElementRemovedEvent (Provider));
-			Provider.SetEvent (ProviderEventType.SelectionItemPatternIsSelectedProperty, 
-			                   new DataItemSelectionItemPatternIsSelectedEvent (Provider));
-		}	
+			provider.DataGridView.SelectionChanged += OnSelectionChanged;
+		}
+
+		public override void Disconnect ()
+		{
+			provider.DataGridView.SelectionChanged -= OnSelectionChanged;
+		}
+		
+		#endregion 
+		
+		#region Private members
+		
+		private void OnSelectionChanged (object sender, EventArgs args)
+		{
+			if (selected
+			    && provider.DataGridView.SelectedCells.Count > 1
+			    && !provider.DataGridView.SelectedCells.Contains (provider.Row.Cells [0]))
+				RaiseAutomationEvent ();
+
+			selected = provider.DataGridView.SelectedCells.Contains (provider.Row.Cells [0]);
+		}
+
+		private bool selected;
+		private DataGridViewProvider.DataGridDataItemProvider provider;
 		
 		#endregion
 	}

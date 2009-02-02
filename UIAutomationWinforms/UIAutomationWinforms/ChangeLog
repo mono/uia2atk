@@ -1,3 +1,24 @@
+2009-02-02  Mario Carrion  <mcarrion@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGridView.SelectionItem events
+	added.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemSelectionItemProviderBehavior.cs:
+	DataGridView.SelectionItem events enabled.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternIsSelectedEvent.cs:
+	Raises SelectionItem.ElementIsSelected event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternElementSelectedEvent.cs:
+	Raises SelectionItem.ElementSelected event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternElementAddedEvent.cs:
+	Raises SelectionItem.ElementAddedToSelection event.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternElementRemovedEvent.cs:
+	Raises SelectionItem.ElementRemovedToSelection event.
+
 2009-02-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	*

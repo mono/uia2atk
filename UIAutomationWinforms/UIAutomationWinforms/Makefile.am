@@ -241,6 +241,10 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxSelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxSelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemGridItemPatternRowEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternElementAddedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternElementRemovedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternElementSelectedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternIsSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemTableItemColumnHeaderItemsEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/GridPatternColumnCountEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/GridPatternRowCountEvent.cs \
