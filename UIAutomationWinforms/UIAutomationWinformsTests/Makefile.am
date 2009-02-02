@@ -119,6 +119,7 @@ EXTRAS =
 REFERENCES =  \
 	System \
 	System.Drawing \
+	Mono.Posix \
 	-pkg:mono-nunit \
 	System.Windows.Forms \
 	../UIAutomationWinforms/bin/Debug/UIAutomationWinforms.dll \

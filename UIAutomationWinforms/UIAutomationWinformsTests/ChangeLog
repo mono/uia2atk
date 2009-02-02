@@ -1,5 +1,14 @@
 2009-02-02  Mario Carrion  <mcarrion@novell.com>
 
+	* DataGridViewProviderTest.cs: Testing ValuePattern.IsReadOnly
+
+	* BaseProviderTest.cs: LocalizedControlType test added. New test:
+	TestValeePattern_IsReadOnlyPropertyEvent.
+
+	* Makefile.am: Mono.Posix reference added.
+
+2009-02-02  Mario Carrion  <mcarrion@novell.com>
+
 	* DataGridViewProviderTest.cs: Testing ValuePattern.Value event.
 
 	* BaseProviderTest.cs: New test: TestValuePattern_ValuePropertyEvent.

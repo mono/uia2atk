@@ -739,7 +739,7 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.CheckBox.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("checkbox");
+					return Catalog.GetString ("check box");
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}
@@ -922,7 +922,7 @@ namespace Mono.UIAutomation.Winforms
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
 					return ControlType.ComboBox.Id;
 				else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-					return Catalog.GetString ("combobox");
+					return Catalog.GetString ("combo box");
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}

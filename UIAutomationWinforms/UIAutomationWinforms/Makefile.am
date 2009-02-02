@@ -232,6 +232,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildTableItemColumnHeaderItemsEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildTogglePatternToggleStateEvent.cs \
+	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildValuePatternValueIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildValuePatternValueValueEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxListBoxSelectionPatternInvalidatedEvent.cs \

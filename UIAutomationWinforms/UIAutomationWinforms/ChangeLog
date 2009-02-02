@@ -1,5 +1,20 @@
 2009-02-02  Mario Carrion  <mcarrion@novell.com>
 
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp: DataGridView.ValuePattern IsReadOnly
+	event added.
+
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: Fixed
+	LocalizedControlType.
+
+	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/DataItemChildValueProviderBehavior.cs:
+	DataGridView.ValuePattern IsReadOnly enabled.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildValuePatternValueIsReadOnlyEvent.cs:
+	Raises DataGridView.ValuePattern.IsReadOnly Property Event.
+
+2009-02-02  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: Returning valid
 	IsEnabled property.
 

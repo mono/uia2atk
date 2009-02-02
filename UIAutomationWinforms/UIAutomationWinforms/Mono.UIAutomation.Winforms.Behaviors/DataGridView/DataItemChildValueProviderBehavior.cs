@@ -54,9 +54,8 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 		
 		public override void Connect ()
 		{
-			// FIXME: How to listen this event?
-			//Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
-			//                   new DataItemChildValuePatternValueIsReadOnlyEvent (provider));
+			Provider.SetEvent (ProviderEventType.ValuePatternIsReadOnlyProperty,
+			                   new DataItemChildValuePatternValueIsReadOnlyEvent (provider));
 			Provider.SetEvent (ProviderEventType.ValuePatternValueProperty,
 			                   new DataItemChildValuePatternValueValueEvent (provider));
 		}
@@ -116,9 +115,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 
 			SWF.DataGridViewCell oldCell = provider.ItemProvider.DataGridView.CurrentCell;
 			provider.ItemProvider.DataGridView.CurrentCell = provider.TextBoxCell;
-//			provider.ItemProvider.DataGridView.BeginEdit (false);
 			provider.TextBoxCell.Value = value;
-//			provider.ItemProvider.DataGridView.EndEdit ();
 			provider.ItemProvider.DataGridView.CurrentCell = oldCell;
 		}
 

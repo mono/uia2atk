@@ -192,6 +192,18 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                "Edit ControlType MUST NOT support ITextProvider");
 
 			TestValuePattern_ValuePropertyEvent (provider);
+			TestValuePattern_IsReadOnlyPropertyEvent (provider);
+		}
+
+		protected override void TestValuePattern_ChangeReadOnly (IRawElementProviderSimple provider, 
+		                                                        bool newValue)
+		{
+			if (provider.GetType () == typeof (DataGridViewProvider.DataGridViewDataItemEditProvider)) {
+				DataGridViewProvider.DataGridViewDataItemEditProvider editProvider 
+					= (DataGridViewProvider.DataGridViewDataItemEditProvider) provider;
+				editProvider.TextBoxCell.ReadOnly = newValue;
+			} else
+				Assert.Fail ("I have no idea about {0}!", provider.GetType ());
 		}
 		
 		#endregion

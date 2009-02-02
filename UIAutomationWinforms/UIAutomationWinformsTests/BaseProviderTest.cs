@@ -31,7 +31,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
-
+using Mono.Unix;
 using NUnit.Framework;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Navigation;
@@ -933,6 +933,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			               || (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsTogglePatternAvailableProperty.Id),
 			               "Button ControlType must support IInvokeProvider or IToggleProvider");
 			
+			Assert.AreEqual (Catalog.GetString ("button"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
+			
 			TestInvokePattern_InvokedEvent (provider);
 		}
 		
@@ -949,6 +953,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsFalse ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsValuePatternAvailableProperty.Id),
 			               "Calendar ControlType must NOT support IValueProvider");
 
+			Assert.AreEqual (Catalog.GetString ("calendar"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
+
 			// DEPENDS: IScrollProvider
 		}
 
@@ -957,6 +965,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// http://msdn.microsoft.com/en-us/library/ms751693.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsTogglePatternAvailableProperty.Id),
 			               "CheckBox ControlType must support IToggleProvider");
+
+			Assert.AreEqual (Catalog.GetString ("check box"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 
 			//A control must cycle through its ToggleState in the following order: On, Off and, if supported, Indeterminate.
 			TestTogglePattern_ToggleStatePropertyEvent (provider);
@@ -973,6 +985,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsFalse ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsScrollPatternAvailableProperty.Id),
 			                "ComboBox ControlType must NOT support IScrollProvider");
 
+			Assert.AreEqual (Catalog.GetString ("combo box"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
+
 			// DEPENDS: IValueProvider
 		}
 
@@ -985,6 +1001,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			               "DataGrid ControlType must support ISelectionProvider");
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id),
 			               "DataGrid ControlType must support ITableProvider");
+
+			Assert.AreEqual (Catalog.GetString ("data grid"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 
 			// DEPENDS: IScrollProvider
 		}
@@ -1008,6 +1028,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				}
 			}
 
+			Assert.AreEqual (Catalog.GetString ("data item"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
+
 			// DEPENDS: IExpandCollapseProvider
 			// DEPENDS: IGridItemProvider
 			// DEPENDS: IScrollItemProvider
@@ -1027,6 +1051,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			Assert.IsFalse ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsValuePatternAvailableProperty.Id),
 			                "Document ControlType must NOT support IValueProvider");
+
+			Assert.AreEqual (Catalog.GetString ("document"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 			
 			// DEPENDS: IScrollProvider
 		}
@@ -1038,18 +1066,30 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			               "Edit ControlType must support ITextProvider");
 			// DEPENDS: IValueProvider
 			// DEPENDS: IRangeValueProvider
+
+			Assert.AreEqual (Catalog.GetString ("edit"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestGroupPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms742689.aspx
 			// DEPENDS: IExpandCollapseProvider
+
+			Assert.AreEqual (Catalog.GetString ("group"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestHeaderPatterns (IRawElementProviderSimple provider) 
 		{
 			// http://msdn.microsoft.com/en-us/library/ms753110.aspx
 			// DEPENDS: ITransformProvider
+
+			Assert.AreEqual (Catalog.GetString ("header"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestHeaderItemPatterns (IRawElementProviderSimple provider) 
@@ -1057,6 +1097,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// http://msdn.microsoft.com/en-us/library/ms742202.aspx
 			// DEPENDS: ITransformProvider
 			// DEPENDS: IInvokeProvider
+
+			Assert.AreEqual (Catalog.GetString ("header item"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestHyperlinkPatterns (IRawElementProviderSimple provider) 
@@ -1064,6 +1108,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// http://msdn.microsoft.com/en-us/library/ms742530.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsInvokePatternAvailableProperty.Id),
 			               "Hyperlink ControlType must support IInvokeProvider");
+
+			Assert.AreEqual (Catalog.GetString ("hyperlink"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestImagePatterns (IRawElementProviderSimple provider) 
@@ -1076,6 +1124,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			// DEPENDS: ITableItemProvider
 			// DEPENDS: IGridItemProvider
+
+			Assert.AreEqual (Catalog.GetString ("image"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestListPatterns (IRawElementProviderSimple provider) 
@@ -1090,6 +1142,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IScrollProvider
 			// DEPENDS: IGridProvider
 			// DEPENDS: IMultipleViewProvider
+
+			Assert.AreEqual (Catalog.GetString ("list"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestListItemPatterns (IRawElementProviderSimple provider) 
@@ -1105,6 +1161,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IGridItemProvider
 			// DEPENDS: IInvokeProvider
 
+			Assert.AreEqual (Catalog.GetString ("list item"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
+			
 			TestSelectionPatternChild (provider);
 			TestGridPatternChild (provider);
 			TestTablePatternChild (provider);
@@ -1124,6 +1184,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IExpandCollapseProvider
 			// DEPENDS: IDockProvider
 			// DEPENDS: ITransformProvider
+
+			Assert.AreEqual (Catalog.GetString ("menu bar"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestMenuItemPatterns (IRawElementProviderSimple provider) 
@@ -1134,6 +1198,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IInvokeProvider
 			// DEPENDS: IToggleProvider
 			// DEPENDS: ISelectionItemProvider
+
+			Assert.AreEqual (Catalog.GetString ("menu item"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestPanePatterns (IRawElementProviderSimple provider) 
@@ -1144,6 +1212,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			// DEPENDS: ITransformProvider
 			// DEPENDS: IDockProvider
+
+			Assert.AreEqual (Catalog.GetString ("pane"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestProgressBarPatterns (IRawElementProviderSimple provider) 
@@ -1152,6 +1224,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			// DEPENDS: IValueProvider
 			// DEPENDS: IRangeValueProvider
+
+			Assert.AreEqual (Catalog.GetString ("progress bar"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestRadioButtonPatterns (IRawElementProviderSimple provider) 
@@ -1162,6 +1238,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			Assert.IsFalse ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsTogglePatternAvailableProperty.Id),
 			                "RadioButton ControlType must support IToggleProvider");
+
+			Assert.AreEqual (Catalog.GetString ("radio button"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestScrollBarPatterns (IRawElementProviderSimple provider) 
@@ -1171,6 +1251,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                "ScrollBar ControlType must support IScrollProvider");
 
 			// DEPENDS: IRangeValueProvider
+
+			Assert.AreEqual (Catalog.GetString ("scroll bar"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestSeparatorPatterns (IRawElementProviderSimple provider) 
@@ -1178,6 +1262,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// http://msdn.microsoft.com/en-us/library/ms750550.aspx
 
 			// NO PATTERNS REQUIRED
+
+			Assert.AreEqual (Catalog.GetString ("separator"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");			
 		}
 
 		protected virtual void TestSliderPatterns (IRawElementProviderSimple provider) 
@@ -1186,6 +1274,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			// DEPENDS: ISelectionProvider
 			// DEPENDS: IRangeValueProvider
+
+			Assert.AreEqual (Catalog.GetString ("slider"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestSpinnerPatterns (IRawElementProviderSimple provider) 
@@ -1195,6 +1287,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: ISelectionProvider
 			// DEPENDS: IRangeValueProvider
 			// DEPENDS: IValueProvider
+
+			Assert.AreEqual (Catalog.GetString ("spinner"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestSplitButtonPatterns (IRawElementProviderSimple provider) 
@@ -1204,6 +1300,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                "SplitButton ControlType must support IExpandCollapseProvider");
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsInvokePatternAvailableProperty.Id),
 			                "SplitButton ControlType must support IInvokeProvider");
+
+			Assert.AreEqual (Catalog.GetString ("split button"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestStatusBarPatterns (IRawElementProviderSimple provider) 
@@ -1211,6 +1311,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// http://msdn.microsoft.com/en-us/library/ms745809.aspx
 
 			// DEPENDS: IGridProvider
+
+			Assert.AreEqual (Catalog.GetString ("status bar"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");			
 		}
 
 		protected virtual void TestTabPatterns (IRawElementProviderSimple provider) 
@@ -1220,6 +1324,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                "Tab ControlType must support ISelectionProvider");
 
 			// DEPENDS: IScrollProvider
+
+			Assert.AreEqual (Catalog.GetString ("tab"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestTabItemPatterns (IRawElementProviderSimple provider) 
@@ -1229,6 +1337,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                "TabItem ControlType must support ISelectionItemProvider");
 			Assert.IsFalse ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsInvokePatternAvailableProperty.Id),
 			                "TabItem ControlType must support IInvokeProvider");
+
+			Assert.AreEqual (Catalog.GetString ("tab item"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestTablePatterns (IRawElementProviderSimple provider) 
@@ -1240,6 +1352,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                "Table ControlType must support ITableProvider");
 
 			// DEPENDS: ITableItemProvider
+
+			Assert.AreEqual (Catalog.GetString ("table"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestTextPatterns (IRawElementProviderSimple provider) 
@@ -1251,6 +1367,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: ITextProvider
 			// DEPENDS: ITableItemProvider
 			// DEPENDS: IRangeValueProvider
+
+			Assert.AreEqual (Catalog.GetString ("text"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestThumbPatterns (IRawElementProviderSimple provider) 
@@ -1259,6 +1379,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			// DEPENDS: IRangeValueProvider
 			// DEPENDS: ITransformProvider
+
+			Assert.AreEqual (Catalog.GetString ("thumb"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 
@@ -1267,6 +1391,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// http://msdn.microsoft.com/en-us/library/ms744939.aspx
 
 			// NO REQUIRED PATTERNS
+
+			Assert.AreEqual (Catalog.GetString ("title bar"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestToolBarPatterns (IRawElementProviderSimple provider) 
@@ -1276,6 +1404,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IExpandCollapsePattern
 			// DEPENDS: IDockPattern
 			// DEPENDS: TransformPattern
+
+			Assert.AreEqual (Catalog.GetString ("tool bar"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestToolTipPatterns (IRawElementProviderSimple provider) 
@@ -1284,6 +1416,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			// DEPENDS: IWindowProvider
 			// DEPENDS: ITextProvider
+
+			Assert.AreEqual (Catalog.GetString ("tool tip"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestTreePatterns (IRawElementProviderSimple provider) 
@@ -1292,6 +1428,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			// DEPENDS: ISelectionProvider
 			// DEPENDS: IScrollProvider
+
+			Assert.AreEqual (Catalog.GetString ("tree"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestTreeItemPatterns (IRawElementProviderSimple provider) 
@@ -1305,8 +1445,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IScrollItemProvider
 			// DEPENDS: ISelectionItemProvider
 			// DEPENDS: IToggleProvider
+			
+			Assert.AreEqual (Catalog.GetString ("tree item"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
-
 
 		protected virtual void TestWindowPatterns (IRawElementProviderSimple provider) 
 		{
@@ -1318,6 +1461,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			               "Window ControlType must support IWindowProvider");
 
 			// DEPENDS: IDockProvider
+
+			Assert.AreEqual (Catalog.GetString ("window"),
+			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
+			                 "LocalizedControlTypeProperty");
 		}
 
 		protected virtual void TestGridPatternChild (IRawElementProviderSimple provider)
@@ -1417,6 +1564,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			else if (ctype == ControlType.RadioButton.Id)
 				TestRadioButtonPatterns (provider);
 			else if (ctype == ControlType.ScrollBar.Id)
+				TestScrollBarPatterns (provider);
+			else if (ctype == ControlType.Separator.Id)
 				TestSeparatorPatterns (provider);
 			else if (ctype == ControlType.Slider.Id)
 				TestSliderPatterns (provider);
@@ -1544,6 +1693,62 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				if (!enabled)
 					Assert.Fail ("Your provider is disabled but didn't throw ElementNotEnabledException.");
 			}
+		}
+
+		protected virtual void TestValuePattern_IsReadOnlyPropertyEvent (IRawElementProviderSimple provider)
+		{
+			IValueProvider valueProvider 
+				= provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id) as IValueProvider;
+			if (valueProvider == null)
+				Assert.Fail ("Provider {0} is not implementing IValueProvider", provider.GetType ());
+
+			bool enabled 
+				= (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			Assert.AreEqual (!enabled,
+			                 valueProvider.IsReadOnly, 
+			                 "!Enabled and IValueProvider.IsReadOnly should be equal");
+			
+			bool newValue = enabled;
+
+			bridge.ResetEventLists ();
+			TestValuePattern_ChangeReadOnly (provider, newValue);
+			AutomationPropertyChangedEventTuple tuple
+				= bridge.GetAutomationPropertyEventFrom (provider, ValuePatternIdentifiers.IsReadOnlyProperty.Id);
+			Assert.IsNotNull (tuple,
+			                  "IValueProvider.IsReadOnly didn't raise any event.");
+			Assert.AreEqual (newValue, tuple.e.NewValue, "Value is invalid in event.");
+			Assert.AreEqual (!newValue, tuple.e.OldValue, "Value is invalid in event.");
+
+			Assert.AreEqual (newValue,
+			                 valueProvider.IsReadOnly, 
+			                 "IsReadOnly value not changed.");
+			Assert.AreEqual (!newValue,
+			                 (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id), 
+			                 "Enabled value not changed.");
+
+			// Changing again
+			newValue = !newValue;
+			
+			bridge.ResetEventLists ();
+			TestValuePattern_ChangeReadOnly (provider, newValue);
+			tuple = bridge.GetAutomationPropertyEventFrom (provider, ValuePatternIdentifiers.IsReadOnlyProperty.Id);
+			Assert.IsNotNull (tuple,
+			                  "IValueProvider.IsReadOnly didn't raise any event.");
+			Assert.AreEqual (newValue, tuple.e.NewValue, "Value is invalid in event.");
+			Assert.AreEqual (!newValue, tuple.e.OldValue, "Value is invalid in event.");
+
+			Assert.AreEqual (newValue,
+			                 valueProvider.IsReadOnly, 
+			                 "IsReadOnly value not changed.");
+			Assert.AreEqual (!newValue,
+			                 (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id), 
+			                 "Enabled value not changed.");
+		}
+
+		protected virtual void TestValuePattern_ChangeReadOnly (IRawElementProviderSimple provider, 
+		                                                        bool newValue)
+		{
+			// This must be overridden by providers to actually change the value!
 		}
 
 		private void ValidateToggleState (ToggleState old, ToggleState got)
