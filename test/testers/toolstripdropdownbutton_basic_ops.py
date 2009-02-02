@@ -50,39 +50,41 @@ actionsCheck(tsddbFrame.menu2, "Menu")
 #check states list for menu without click
 statesCheck(tsddbFrame.menu1, "Menu")
 statesCheck(tsddbFrame.menu2, "Menu")
-#move mouse to menu1 doesn't change states
+#move mouse to menu1 to rise focused and selected
 tsddbFrame.menu1.mouseMove()
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu1, "Menu")
+statesCheck(tsddbFrame.menu1, "Menu", add_states=["focused", "selected"])
 statesCheck(tsddbFrame.menu2, "Menu")
-#move mouse to menu2 doesn't change states
+#move mouse to menu2 to rise focused and selected
 tsddbFrame.menu2.mouseMove()
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu2, "Menu")
+statesCheck(tsddbFrame.menu2, "Menu", add_states=["focused", "selected"])
 statesCheck(tsddbFrame.menu1, "Menu")
 
-#click menu1 to rise selected
+#click menu1 to rise focused and selected
+#click action doesn't rise focused unless mouseClick menu BUG457990
 tsddbFrame.click(tsddbFrame.menu1)
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu1, "Menu", add_states=["selected"])
+statesCheck(tsddbFrame.menu1, "Menu", add_states=["focused", "selected"])
 statesCheck(tsddbFrame.menu2, "Menu")
-#click menu1 again to get rid of selected
+#click menu1 again
 tsddbFrame.click(tsddbFrame.menu1)
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu1, "Menu")
+statesCheck(tsddbFrame.menu1, "Menu", add_states=["focused", "selected"])
 statesCheck(tsddbFrame.menu2, "Menu")
 
-#click menu2 may move selection to menu2
+#click menu2 to move selection and focused to menu2
 tsddbFrame.click(tsddbFrame.menu2)
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu2, "Menu", add_states=["selected"])
+statesCheck(tsddbFrame.menu2, "Menu", add_states=["focused", "selected"])
 statesCheck(tsddbFrame.menu1, "Menu")
-#click menu2 again to get rid of selected
+#click menu2 again
 tsddbFrame.click(tsddbFrame.menu2)
 sleep(config.SHORT_DELAY)
-statesCheck(tsddbFrame.menu2, "Menu")
+statesCheck(tsddbFrame.menu2, "Menu", add_states=["focused", "selected"])
 statesCheck(tsddbFrame.menu1, "Menu")
 
+##############menu items test##################
 #check states list for menuitems
 tsddbFrame.click(tsddbFrame.menu1)
 sleep(config.SHORT_DELAY)
@@ -96,6 +98,7 @@ tsddbFrame.blue.mouseMove()
 sleep(config.SHORT_DELAY)
 statesCheck(tsddbFrame.blue, "MenuItem", add_states=["focused","selected"])
 #press "down" would move focus and selection to green item
+##key move navigation doesn't rise focused and selected BUG471405
 tsddbFrame.keyCombo("Down", grabFocus=False)
 sleep(config.SHORT_DELAY)
 statesCheck(tsddbFrame.green, "MenuItem", add_states=["focused", "selected"])
@@ -121,6 +124,7 @@ statesCheck(tsddbFrame.blue, "MenuItem")
 
 #test Selection implementation for Menu
 #select menuitem red to rise selected and focused
+#missing focused BUG471411
 tsddbFrame.assertSelectionChild(tsddbFrame.menu1, 0)
 sleep(config.SHORT_DELAY)
 statesCheck(tsddbFrame.red, "MenuItem", add_states=["focused", "selected"])
