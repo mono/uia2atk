@@ -1,5 +1,9 @@
 2009-02-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ToolBarButtonProviderTest.cs: Enable the whole test.
+
+2009-02-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ToolBarButtonProviderTest.cs: Enable the part of the test
 	that now works.
 

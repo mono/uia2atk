@@ -70,7 +70,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolBar
 		
 		public void Invoke ()
 		{
-			if (toolBar.Enabled == false)
+			if (toolBar.Enabled == false || toolBarButton.Enabled == false)
 				throw new ElementNotEnabledException ();
 
 			PerformClick ();
