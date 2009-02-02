@@ -1,5 +1,11 @@
 2009-02-02  Mario Carrion  <mcarrion@novell.com>
 
+	* DataGridViewProviderTest.cs: Testing ValuePattern.Value event.
+
+	* BaseProviderTest.cs: New test: TestValuePattern_ValuePropertyEvent.
+
+2009-02-02  Mario Carrion  <mcarrion@novell.com>
+
 	* BaseProviderTest.cs: Testing ToggleStatePropertyEvent.
 
 2009-02-02  Mario Carrion  <mcarrion@novell.com>

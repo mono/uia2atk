@@ -189,7 +189,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsFalse ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty.Id),
 			                "Edit ControlType MUST NOT support IRangeValueProvider");
 			Assert.IsFalse ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsTextPatternAvailableProperty.Id),
-			                "Edit ControlType MUST NOT support ITextProvider");			
+			                "Edit ControlType MUST NOT support ITextProvider");
+
+			TestValuePattern_ValuePropertyEvent (provider);
 		}
 		
 		#endregion

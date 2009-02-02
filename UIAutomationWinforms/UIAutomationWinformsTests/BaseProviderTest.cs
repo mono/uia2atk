@@ -1518,6 +1518,34 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}			
 		}
 
+		protected virtual void TestValuePattern_ValuePropertyEvent (IRawElementProviderSimple provider)
+		{
+			IValueProvider valueProvider 
+				= provider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id) as IValueProvider;
+			if (valueProvider == null)
+				Assert.Fail ("Provider {0} is not implementing IValueProvider", provider.GetType ());
+
+			bool enabled 
+				= (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			Assert.AreEqual (!enabled,
+			                 valueProvider.IsReadOnly, 
+			                 "!Enabled and IValueProvider.IsReadOnly should be equal");
+			try {
+				string newValue = "I'm your new value!";
+				bridge.ResetEventLists ();
+				valueProvider.SetValue (newValue);
+				Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (provider, ValuePatternIdentifiers.ValueProperty.Id),
+				                  "IValueProvider.Value didn't raise any event.");
+				Assert.AreEqual (newValue,
+				                 valueProvider.Value, 
+				                 "Different value even when Value event was raised");
+			} catch (ElementNotEnabledException) {
+				// According to http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.ivalueprovider.setvalue.aspx
+				if (!enabled)
+					Assert.Fail ("Your provider is disabled but didn't throw ElementNotEnabledException.");
+			}
+		}
+
 		private void ValidateToggleState (ToggleState old, ToggleState got)
 		{
 			if (old == ToggleState.On)
