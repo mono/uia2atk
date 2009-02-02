@@ -1,5 +1,9 @@
 2009-02-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ToolBarButtonProviderTest.cs: Augment coverage of the test.
+
+2009-02-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ToolBarButtonProviderTest.cs: Add new tests that works
 	thanks to r125365.
 

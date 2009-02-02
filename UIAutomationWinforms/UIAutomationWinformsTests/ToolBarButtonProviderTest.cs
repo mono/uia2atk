@@ -48,6 +48,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			toolBar = new ToolBar ();
 			toolBarButton = new ToolBarButton ("Button");
 			toolBar.Buttons.Add (toolBarButton);
+
+			//we rather create 2, to expose a bug in the provider
+			toolBar.Buttons.Add (new ToolBarButton ("another one"));
 			
 			Form.Controls.Add (toolBar);
 			Form.Show ();
@@ -150,7 +153,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsFalse (buttonClicked,
 			                "Click should not fire when button is disabled");
 		}
-
+		
 		[Test]
 		public void InvokedEventTest ()
 		{

@@ -2,8 +2,15 @@
 
 	*
 	Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonInvokeProviderBehavior.cs:
-	Make the whole Invoke() test pass (for
-	ElementNotEnabledException).
+
+	*
+	Mono.UIAutomation.Winforms.Events/ToolBar/ToolBarButtonInvokePatternInvokedEvent.cs:
+	Fix for not emitting incorrect events, making new tests pass.
+
+2009-02-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonInvokeProviderBehavior.cs:
+	Make the whole Invoke() test pass (for ElementNotEnabledException).
 
 2009-02-02  Andrés G. Aragoneses  <aaragoneses@novell.com>
 

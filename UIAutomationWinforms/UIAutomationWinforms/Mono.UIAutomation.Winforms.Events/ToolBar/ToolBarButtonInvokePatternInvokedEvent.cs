@@ -64,7 +64,8 @@ namespace Mono.UIAutomation.Winforms.Events.ToolBar
 		
 		private void OnButtonClick (object sender, SWF.ToolBarButtonClickEventArgs e)
 		{
-			RaiseAutomationEvent ();
+			if (((SWF.ToolBarButton) Provider.Component) == e.Button)
+				RaiseAutomationEvent ();
 		}
 
 		#pragma warning restore 169
