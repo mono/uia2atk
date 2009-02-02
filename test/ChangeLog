@@ -1,5 +1,14 @@
 2009-02-02  Calen Chen <cachen@novell.com>
 
+	* samples/splitcontainer_horizontal.py: set Orientation to Horizontal
+	* samples/splitcontainer_vertical.py: set Orientation to Vertical
+	* samples/splitter_horizontal.py: set DockStyle to Top
+	* samples/splitter_vertical.py: set DockStyle to Left
+	* samples/splitcontainer.py: delete old example
+	* samples/splitter.py: delete old example
+
+2009-02-02  Calen Chen <cachen@novell.com>
+
 	* testers/toolstripdropdownbutton_basic_ops.py: update states test 
 	expectation, add bug referance BUG471411 471405 457990, modify comments
 
