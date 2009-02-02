@@ -17,58 +17,29 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
-using Mono.Unix;
 using System.ComponentModel;
-using System.Windows.Forms;
-using System.Windows.Automation;
-using System.Windows.Automation.Provider;
+using SWF = System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
 
-	internal class PaneProvider : FragmentRootControlProvider
+	[MapsComponent (typeof (SWF.Panel))]
+	internal class PanelProvider : PaneProvider
 	{
 
-		#region Constructor
-		
-		public PaneProvider (Component component) : base (component)
+		public PanelProvider (SWF.Panel panel) : base (panel)
 		{
-			this.component = component;
-		}
-		
-		#endregion
-		
-		#region SimpleControlProvider: Specialization
-		
-		public override Component Container  {
-			get { return component.Container as Component; }
-		}
-		
-		protected override object GetProviderPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Pane.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("pane");
-			else if (propertyId == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
-				return false;
-			else
-				return base.GetProviderPropertyValue (propertyId);
 		}
 
-		#endregion
-		
-		#region Private Fields
-		
-		private Component component;
-		
-		#endregion
+		public override Component Container  {
+			get { return Control.Parent; }
+		}
 
 	}
 }

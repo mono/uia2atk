@@ -1,5 +1,13 @@
 2009-02-02  Mario Carrion  <mcarrion@novell.com>
 
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms/PanelProvider.cs: PanelProvider added.
+
+	* Mono.UIAutomation.Winforms/PaneProvider.cs: MapsComponent removed.
+
+2009-02-02  Mario Carrion  <mcarrion@novell.com>
+
 	* Mono.UIAutomation.Winforms.Behaviors/DataGridView/SelectionProviderBehavior.cs:
 	* Mono.UIAutomation.Winforms.Events/DataGridView/SelectionPatternSelectionEvent.cs:
 	* Mono.UIAutomation.Winforms.Events/DataGridView/SelectionPatternInvalidatedEvent.cs:

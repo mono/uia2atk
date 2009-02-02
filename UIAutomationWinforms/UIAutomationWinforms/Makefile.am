@@ -473,6 +473,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/MonthCalendarListItemProvider.cs \
 	Mono.UIAutomation.Winforms/MonthCalendarProvider.cs \
 	Mono.UIAutomation.Winforms/NumericUpDownProvider.cs \
+	Mono.UIAutomation.Winforms/PanelProvider.cs \
 	Mono.UIAutomation.Winforms/PaneProvider.cs \
 	Mono.UIAutomation.Winforms/PictureBoxProvider.cs \
 	Mono.UIAutomation.Winforms/PopupButtonPanelProvider.cs \

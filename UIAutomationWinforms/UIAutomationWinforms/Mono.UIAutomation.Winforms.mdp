@@ -489,6 +489,7 @@
     <File name="Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternElementAddedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternElementRemovedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternIsSelectedEvent.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/PanelProvider.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
