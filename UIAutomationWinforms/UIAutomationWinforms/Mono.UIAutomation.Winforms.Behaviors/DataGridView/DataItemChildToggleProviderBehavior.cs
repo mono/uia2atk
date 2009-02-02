@@ -114,20 +114,35 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 					else
 						return ToggleState.Off;
 				} else {
+					SWF.CheckState state = SWF.CheckState.Indeterminate;
+					bool tryBoolean = false;
 					try {
-						switch ((SWF.CheckState) provider.CheckBoxCell.Value) {
-						case SWF.CheckState.Checked:
-							return ToggleState.On;
-						case SWF.CheckState.Unchecked:
-							return ToggleState.Off;
-						case SWF.CheckState.Indeterminate:
-						default:
+						state = (SWF.CheckState) provider.CheckBoxCell.Value;
+					} catch (InvalidCastException) { tryBoolean = true; }
+
+					if (tryBoolean) {
+						try {
+							bool val = (bool) provider.CheckBoxCell.Value;
+							if (val)
+								state = SWF.CheckState.Checked;
+							else
+								state = SWF.CheckState.Unchecked;
+						} catch (InvalidCastException) {
+							// We just can't get valid value
 							return ToggleState.Indeterminate;
 						}
-					} catch (InvalidCastException) {
-						// Exception thrown when using a custom ValueType
+					}
+
+					switch (state) {
+					case SWF.CheckState.Checked:
+						return ToggleState.On;
+					case SWF.CheckState.Unchecked:
+						return ToggleState.Off;
+					case SWF.CheckState.Indeterminate:
+					default:
 						return ToggleState.Indeterminate;
 					}
+
 				}
 			}
 		}
@@ -148,9 +163,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 
 			SWF.DataGridViewCell oldCell = provider.ItemProvider.DataGridView.CurrentCell;
 			provider.ItemProvider.DataGridView.CurrentCell = provider.CheckBoxCell;
-			provider.ItemProvider.DataGridView.BeginEdit (false);
+//			provider.ItemProvider.DataGridView.BeginEdit (false);
 			provider.CheckBoxCell.Value = state;
-			provider.ItemProvider.DataGridView.EndEdit ();
+//			provider.ItemProvider.DataGridView.EndEdit ();
 			provider.ItemProvider.DataGridView.CurrentCell = oldCell;
 		}
 

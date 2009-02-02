@@ -957,6 +957,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// http://msdn.microsoft.com/en-us/library/ms751693.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsTogglePatternAvailableProperty.Id),
 			               "CheckBox ControlType must support IToggleProvider");
+
+			//A control must cycle through its ToggleState in the following order: On, Off and, if supported, Indeterminate.
+			TestTogglePattern_ToggleStatePropertyEvent (provider);
 		}
 		
 		protected virtual void TestComboBoxPatterns (IRawElementProviderSimple provider) 
@@ -1465,20 +1468,66 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			IInvokeProvider invokeProvider 
 				= provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id) as IInvokeProvider;
 			if (invokeProvider == null)
-				return;
+				Assert.Fail ("Provider {0} is not implementing IInvokeProvider", provider.GetType ());
 
 			bridge.ResetEventLists ();
 
 			bool enabled 
 				= (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
-			invokeProvider.Invoke ();
 			try {
-				Assert.IsNotNull (bridge.GetAutomationEventFrom (provider, InvokePatternIdentifiers.InvokedEvent.Id));
+				invokeProvider.Invoke ();
+				Assert.IsNotNull (bridge.GetAutomationEventFrom (provider, InvokePatternIdentifiers.InvokedEvent.Id),
+				                  "IInvokeProvider.Invoke didn't raise any event.");
 			} catch (ElementNotEnabledException) {
 				// According to http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.iinvokeprovider.invoke.aspx
 				if (!enabled)
 					Assert.Fail ("Your provider is disabled but didn't throw ElementNotEnabledException.");
 			}
+		}
+
+		protected virtual void TestTogglePattern_ToggleStatePropertyEvent (IRawElementProviderSimple provider)
+		{
+			IToggleProvider toggleProvider
+				= provider.GetPatternProvider (TogglePatternIdentifiers.Pattern.Id) as IToggleProvider;
+			if (toggleProvider == null)
+				Assert.Fail ("Provider {0} is not implementing IToggleProvider", provider.GetType ());
+
+
+			// A control must cycle through its toggle states in this order:
+			// On, Off, Indeterminate
+			bool enabled 
+				= (bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsEnabledProperty.Id);
+			ToggleState toggleState = toggleProvider.ToggleState;
+			ToggleState firstState = toggleState;
+
+			try {
+				bridge.ResetEventLists ();				
+				do {
+					bridge.ResetEventLists ();
+					toggleProvider.Toggle ();
+					Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (provider, TogglePatternIdentifiers.ToggleStateProperty.Id),
+					                  string.Format ("toggleProvider.Toggle didn't raise any event. Old {0} Current: {1}", 
+					                                 toggleState,
+					                                 toggleProvider.ToggleState));
+					ValidateToggleState  (toggleState, toggleProvider.ToggleState);
+					toggleState = toggleProvider.ToggleState;
+				} while (firstState != toggleState);
+			} catch (ElementNotEnabledException) {
+				if (!enabled)
+					Assert.Fail ("Your provider is disabled but didn't throw ElementNotEnabledException.");
+			}			
+		}
+
+		private void ValidateToggleState (ToggleState old, ToggleState got)
+		{
+			if (old == ToggleState.On)
+				Assert.AreEqual (ToggleState.Off, got, "On -> Off");
+			else if (old == ToggleState.Off) {
+				if (got != ToggleState.Indeterminate 
+				    && got != ToggleState.On)
+					Assert.Fail ("Off -> Indeterminate or On");
+			} else if (old == ToggleState.Indeterminate)
+				Assert.AreEqual (ToggleState.On, got, "Indeterminate -> On");
 		}
 
 		#endregion
