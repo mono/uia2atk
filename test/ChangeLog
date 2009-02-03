@@ -1,5 +1,10 @@
 2009-02-03  Calen Chen <cachen@novell.com>
 
+	* samples/toolstripseparator.py: add new example with three labels and 
+	three separators
+
+2009-02-03  Calen Chen <cachen@novell.com>
+
 	* testers/toolstripseparator/toolstripseparatorframe.py,
 	* testers/toolstripseparator/__init__.py,
 	* testers/toolstripseparator_basic_ops.py,
