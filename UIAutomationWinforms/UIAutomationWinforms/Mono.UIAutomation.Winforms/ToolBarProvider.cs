@@ -67,14 +67,9 @@ namespace Mono.UIAutomation.Winforms
 		#region FragmentRootControlProvider: Specializations
 		
 		public override void InitializeChildControlStructure ()
-		{	
-			try {
-				Helper.AddPrivateEvent (typeof (ToolBar.ToolBarButtonCollection),
-				                        toolBar.Buttons,
-				                        "UIACollectionChanged",
-				                        this,
-				                        "OnCollectionChanged");
-			} catch (NotSupportedException) { }
+		{
+			toolBar.Buttons.UIACollectionChanged +=
+				new CollectionChangeEventHandler (OnCollectionChanged);
 			
 			for (int i = 0; i < toolBar.Buttons.Count; ++i) {
 				var button = ProviderFactory.GetProvider (toolBar.Buttons [i]);
@@ -84,13 +79,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void FinalizeChildControlStructure ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (ToolBar.ToolBarButtonCollection),
-				                           toolBar.Buttons,
-				                           "UIACollectionChanged",
-				                           this,
-				                           "OnCollectionChanged");
-			} catch (NotSupportedException) { }
+			toolBar.Buttons.UIACollectionChanged -=
+				new CollectionChangeEventHandler (OnCollectionChanged);
 			
 			foreach (ToolBarButtonProvider button in toolBar.Buttons)
 				OnNavigationChildRemoved (false, button);

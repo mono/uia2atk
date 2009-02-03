@@ -45,24 +45,14 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 
 		public override void Connect ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.StatusBarPanel),
-				                        (SWF.StatusBarPanel) Provider.Component,
-				                        "UIATextChanged",
-				                        this,
-				                        "OnValueChanged");
-			} catch (NotSupportedException) { }
+			((SWF.StatusBarPanel) Provider.Component).UIATextChanged
+				+= new EventHandler (OnValueChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.StatusBarPanel),
-				                           (SWF.StatusBarPanel) Provider.Component,
-				                           "UIATextChanged",
-				                           this,
-				                           "OnValueChanged");
-			} catch (NotSupportedException) { }
+			((SWF.StatusBarPanel) Provider.Component).UIATextChanged
+				-= new EventHandler (OnValueChanged);
 		}
 		
 		#endregion 

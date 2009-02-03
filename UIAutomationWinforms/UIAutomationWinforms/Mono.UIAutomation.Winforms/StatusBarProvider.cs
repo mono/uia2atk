@@ -86,15 +86,10 @@ namespace Mono.UIAutomation.Winforms
 		#region FragmentRootControlProvider: Specializations
 		
 		public override void InitializeChildControlStructure ()
-		{	
-			try {
-				Helper.AddPrivateEvent (typeof (StatusBar.StatusBarPanelCollection),
-				                        statusBar.Panels,
-				                        "UIACollectionChanged",
-				                        this,
-				                        "OnCollectionChanged");
-			} catch (NotSupportedException) { }
-		
+		{
+			statusBar.Panels.UIACollectionChanged +=
+				new CollectionChangeEventHandler (OnCollectionChanged);
+			
 			for (int i = 0; i < statusBar.Panels.Count; ++i) {
 				StatusBarPanelProvider panel = GetPanelProvider (i);
 				OnNavigationChildAdded (false, panel);
@@ -103,13 +98,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		public override void FinalizeChildControlStructure ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (StatusBar.StatusBarPanelCollection),
-				                           statusBar.Panels,
-				                           "UIACollectionChanged",
-				                           this,
-				                           "OnCollectionChanged");
-			} catch (NotSupportedException) { }
+			statusBar.Panels.UIACollectionChanged -=
+				new CollectionChangeEventHandler (OnCollectionChanged);
 			
 			foreach (StatusBarPanelProvider panel in panels)
 				OnNavigationChildRemoved (false, panel);

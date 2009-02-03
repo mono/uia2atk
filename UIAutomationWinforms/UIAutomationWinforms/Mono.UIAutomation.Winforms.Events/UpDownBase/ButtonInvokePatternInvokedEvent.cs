@@ -47,44 +47,18 @@ namespace Mono.UIAutomation.Winforms.Events.UpDownBase
 
 		public override void Connect ()
 		{
-			if (provider.Orientation == UpDownBaseProvider.UpDownBaseButtonOrientation.Forward) {
-				try {
-					Helper.AddPrivateEvent (typeof (SWF.UpDownBase),
-					                        provider.UpDownBase,
-					                        "UIAUpButtonClick",
-					                        this,
-					                        "OnButtonClick");
-				} catch (NotSupportedException) { }
-			} else if (provider.Orientation == UpDownBaseProvider.UpDownBaseButtonOrientation.Backward) {
-				try {
-					Helper.AddPrivateEvent (typeof (SWF.UpDownBase),
-					                        provider.UpDownBase,
-					                        "UIADownButtonClick",
-					                        this,
-					                        "OnButtonClick");
-				} catch (NotSupportedException) { }
-			}
+			if (provider.Orientation == UpDownBaseProvider.UpDownBaseButtonOrientation.Forward)
+				provider.UpDownBase.UIAUpButtonClick += new EventHandler (OnButtonClick);
+			else if (provider.Orientation == UpDownBaseProvider.UpDownBaseButtonOrientation.Backward)
+				provider.UpDownBase.UIADownButtonClick += new EventHandler (OnButtonClick);
 		}
 		
 		public override void Disconnect ()
 		{
-			if (provider.Orientation == UpDownBaseProvider.UpDownBaseButtonOrientation.Forward) {
-				try {
-					Helper.RemovePrivateEvent (typeof (SWF.UpDownBase),
-					                           provider.UpDownBase,
-					                           "UIAUpButtonClick",
-					                           this,
-					                           "OnButtonClick");
-				} catch (NotSupportedException) { }
-			} else if (provider.Orientation == UpDownBaseProvider.UpDownBaseButtonOrientation.Backward) {
-				try {
-					Helper.RemovePrivateEvent (typeof (SWF.UpDownBase),
-					                           provider.UpDownBase,
-					                           "UIADownButtonClick",
-					                           this,
-					                           "OnButtonClick");
-				} catch (NotSupportedException) { }
-			}
+			if (provider.Orientation == UpDownBaseProvider.UpDownBaseButtonOrientation.Forward)
+				provider.UpDownBase.UIAUpButtonClick -= new EventHandler (OnButtonClick);
+			else if (provider.Orientation == UpDownBaseProvider.UpDownBaseButtonOrientation.Backward)
+				provider.UpDownBase.UIADownButtonClick -= new EventHandler (OnButtonClick);
 		}
 		
 		#endregion

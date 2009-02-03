@@ -46,24 +46,14 @@ namespace Mono.UIAutomation.Winforms.Events.UpDownBase
 
 		public override void Connect ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.NumericUpDown),
-				                        (SWF.NumericUpDown) Provider.Control,
-				                        "UIAMaximumChanged",
-				                        this,
-				                        "OnMaximumChanged");
-			} catch (NotSupportedException) { }
+			((SWF.NumericUpDown) Provider.Control).UIAMaximumChanged
+				+= new EventHandler (OnMaximumChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.NumericUpDown),
-				                           (SWF.NumericUpDown) Provider.Control,
-				                           "UIAMaximumChanged",
-				                           this,
-				                           "OnMaximumChanged");
-			} catch (NotSupportedException) { }
+			((SWF.NumericUpDown) Provider.Control).UIAMaximumChanged
+				-= new EventHandler (OnMaximumChanged);
 		}
 		
 		#endregion 

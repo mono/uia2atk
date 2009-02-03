@@ -47,24 +47,14 @@ namespace Mono.UIAutomation.Winforms.Events.StatusBar
 
 		public override void Connect ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.StatusBar.StatusBarPanelCollection),
-				                        ((SWF.StatusBar) Provider.Control).Panels,
-				                        "UIACollectionChanged",
-				                        this,
-				                        "OnColumnCountChanged");
-			} catch (NotSupportedException) { }
+			(((SWF.StatusBar) Provider.Control).Panels).UIACollectionChanged
+				+= new CollectionChangeEventHandler (OnColumnCountChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.StatusBar.StatusBarPanelCollection),
-				                           ((SWF.StatusBar) Provider.Control).Panels,
-				                           "UIACollectionChanged",
-				                           this,
-				                           "OnColumnCountChanged");
-			} catch (NotSupportedException) { }
+			(((SWF.StatusBar) Provider.Control).Panels).UIACollectionChanged
+				-= new CollectionChangeEventHandler (OnColumnCountChanged);
 		}
 		
 		#endregion 
