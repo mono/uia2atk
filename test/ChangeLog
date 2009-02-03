@@ -1,3 +1,12 @@
+2009-02-03  Calen Chen <cachen@novell.com>
+
+	* testers/toolstripseparator/toolstripseparatorframe.py,
+	* testers/toolstripseparator/__init__.py,
+	* testers/toolstripseparator_basic_ops.py,
+	* testers/toolstripseparator: add new test to check separator's states 
+	and check how many separators pyatspi can find
+	* testers/states.py: add toolstripseparator states tuple
+
 2009-02-02 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/splitter_horizontal.py: Replace with deleted splitter.py,

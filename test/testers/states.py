@@ -324,3 +324,6 @@ class TabPage(object):
 class Dialog(object):
     states = (ENABLED, RESIZABLE, SENSITIVE, SHOWING, VISIBLE)
 
+class ToolStripSeparator(object):
+    states = (ENABLED, SENSITIVE, SHOWING, VISIBLE)
+
