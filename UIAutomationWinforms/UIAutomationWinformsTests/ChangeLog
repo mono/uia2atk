@@ -1,5 +1,9 @@
 2009-02-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* ButtonProviderTest.cs: Fix typo in previous commit.
+
+2009-02-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ButtonProviderTest.cs: Add failing test.
 
 2009-02-03  Mario Carrion  <mcarrion@novell.com>

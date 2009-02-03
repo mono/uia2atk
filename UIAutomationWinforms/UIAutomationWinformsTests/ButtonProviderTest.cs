@@ -158,14 +158,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			};
 			
 			provider = ProviderFactory.GetProvider (button);
-			IInvokeProvider invokeProvider = (IInvokeProvider)
-				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
 
 			bridge.ResetEventLists ();
-			
+
 			button.PerformClick ();
-			
-			invokeProvider.Invoke ();
 			
 			Assert.IsTrue (verified,
 			               "Click event should have been fired");
