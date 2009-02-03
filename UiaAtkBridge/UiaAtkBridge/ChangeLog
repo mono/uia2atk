@@ -1,3 +1,13 @@
+2009-02-03  Brad Taylor  <brad@getcoded.net>
+
+	* ParentAdapter.cs: Avoid a deadlock with RefAccessibleChild by pulling
+	3 unrelated lines out of a lock.
+
+	* AutomationBridge.cs: Add support for the Calendar control type.
+
+	* TableImplementorHelper.cs: React to negative numbers in
+	GetColumnAtIndex like gail does.
+
 2009-02-01  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Button.cs: Handle InvokedEvent, needed for #428599.

@@ -115,11 +115,12 @@ namespace UiaAtkBridge
 				((ParentAdapter)childToRemove).RemoveUnmanagedChildren ();
 			}
 
+			Adapter adapter = childToRemove as Adapter;
+			if (adapter != null)
+				adapter.RemoveFromParent (this);
+
 			int childIndex;
 			lock (syncRoot) {
-				Adapter adapter = childToRemove as Adapter;
-				if (adapter != null)
-					adapter.RemoveFromParent (this);
 				childIndex = children.IndexOf (childToRemove);
 				children.Remove (childToRemove);
 			}

@@ -1,3 +1,9 @@
+2009-02-03  Brad Taylor  <brad@getcoded.net>
+
+	* BridgeTests.cs: Implement test for MonthCalendar.
+
+	* BridgeTester.cs: Support for MonthCalendar test.
+
 2009-01-30  Brad Taylor  <brad@getcoded.net>
 
 	* BridgeTests.cs: Use GroupBox instead of reusing ListBox for ListView2.

@@ -85,7 +85,8 @@ namespace UiaAtkBridgeTest
 		StatusBarPanel,
 		TreeView,
 		DateTimePicker,
-		ToolbarButton
+		ToolbarButton,
+		MonthCalendar
 	}
 
 	public class MenuLayout

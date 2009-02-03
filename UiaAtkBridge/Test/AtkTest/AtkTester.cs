@@ -1830,126 +1830,95 @@ namespace UiaAtkBridgeTest
 			
 		}
 
-		protected void InterfaceTable (Atk.Table implementor, string [] items)
+		protected int GetExpectedIndexAtRowColumn (int row, int column, int numRows, int numCols)
 		{
-			Assert.AreEqual (implementor.NColumns, 1);
-			Assert.AreEqual (implementor.NRows, items.Length);
+			// Why?  Who knows.
+			if (row == 0 && column == 0)
+				return 1;
 
-			Assert.AreEqual (implementor.Caption, null, "caption");
-			Assert.AreEqual (implementor.Summary, null, "summary");
+			// NOTE: Row 0 contains column headers
+			if (row <= 0 || column < 0)
+				return -1;
+
+			if (row >= numRows || column >= numCols)
+				return -1;
+
+			return (row * numCols) + column + 1;
+		}
+
+		protected void InterfaceTable (Atk.Table implementor, int expectedRows, int expectedCols,
+		                               int expectedSelectedRows, int expectedSelectedColumns)
+		{
+			int numRows = implementor.NRows;
+			int numCols = implementor.NColumns;
+
+			Assert.AreEqual (expectedCols, numCols,
+			                 "Incorrect number of columns");
+			Assert.AreEqual (expectedRows, numRows,
+			                 "Incorrect number of rows");
+
+			Assert.IsNull (implementor.Caption, "Caption is not null");
+			Assert.IsNull (implementor.Summary, "Summary is not null");
 
 			Atk.Object test = new Misc.AtkTestObject ();
 			implementor.Caption = test;
 			Assert.AreEqual (implementor.Caption, test, "caption after set");
 
-			Assert.AreEqual (implementor.Summary, null, "summary#2");
-
 			implementor.Summary = test;
 			Assert.AreEqual (implementor.Summary, test, "summary after set");
 
-			int an_int;
-			Assert.AreEqual (0, implementor.GetSelectedRows (out an_int), "GetSelectedRows");
-			Assert.AreEqual (0, an_int, "GetSelectedRows out");
+			int numSelected;
+			Assert.AreEqual (expectedSelectedRows, implementor.GetSelectedRows (out numSelected),
+			                 "Incorrect number of selected rows");
+			Assert.AreEqual (expectedSelectedRows, numSelected,
+			                 "Incorrect number of selected rows in out parameter");
 
-			Assert.AreEqual (0, implementor.GetSelectedColumns (out an_int), "GetSelectedColumns");
-			Assert.AreEqual (0, an_int, "GetSelectedColumns out");
+			Assert.AreEqual (expectedSelectedColumns, implementor.GetSelectedColumns (out numSelected),
+			                 "Incorrect number of selected columns");
+			Assert.AreEqual (expectedSelectedColumns, numSelected,
+			                 "Incorrect number of selected columns in out parameter");
 
-			//FIXME: create loops from all the code below (until the end of InterfaceAction):
-			an_int = 1;
-			Assert.AreEqual (an_int, implementor.GetIndexAt (0, 0), "GetIndexAt00");
-			an_int = -1;
-			Assert.AreEqual (an_int, implementor.GetIndexAt (0, 1), "GetIndexAt01");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (0, 2), "GetIndexAt02");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (0, 3), "GetIndexAt03 OOR>");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (0, -1), "GetIndexAt03 OOR>");
-			an_int = 2;
-			Assert.AreEqual (an_int, implementor.GetIndexAt (1, 0), "GetIndexAt10");
-			an_int = -1;
-			Assert.AreEqual (an_int, implementor.GetIndexAt (1, 1), "GetIndexAt11");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (1, 2), "GetIndexAt12");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (1, 3), "GetIndexAt13 OOR>");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (1, -1), "GetIndexAt13 OOR>");
-			an_int = 3;
-			Assert.AreEqual (an_int, implementor.GetIndexAt (2, 0), "GetIndexAt20");
-			an_int = -1;
-			Assert.AreEqual (an_int, implementor.GetIndexAt (2, 1), "GetIndexAt21");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (2, 2), "GetIndexAt22");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (2, 3), "GetIndexAt23 OOR>");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (2, -1), "GetIndexAt23 OOR>");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (3, 0), "GetIndexAt30");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (3, 1), "GetIndexAt31");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (3, 2), "GetIndexAt32");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (3, 3), "GetIndexAt33 OOR>");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (3, -1), "GetIndexAt33 OOR>");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (-1, 0), "GetIndexAt-10");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (-1, 1), "GetIndexAt-11");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (-1, 2), "GetIndexAt-12");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (-1, 3), "GetIndexAt-13 OOR>");
-			Assert.AreEqual (an_int, implementor.GetIndexAt (-1, -1), "GetIndexAt-13 OOR>");
-			
-			
-			an_int = 0;
-			Assert.AreEqual (an_int, implementor.GetColumnAtIndex (0), "GetColumnAtIndex");
-			Assert.AreEqual (an_int, implementor.GetColumnAtIndex (1), "GetColumnAtIndex2");
-			Assert.AreEqual (an_int, implementor.GetColumnAtIndex (2), "GetColumnAtIndex3");
-			Assert.AreEqual (an_int, implementor.GetColumnAtIndex (3), "GetColumnAtIndexOOR>");
-			Assert.AreEqual (an_int, implementor.GetColumnAtIndex (-1), "GetColumnAtIndexOOR<");
-			
-			an_int = -1;
-			Assert.AreEqual (an_int, implementor.GetRowAtIndex (0), "GetRowAtIndex");
-			an_int = 0;
-			Assert.AreEqual (an_int, implementor.GetRowAtIndex (1), "GetRowAtIndex2");
-			an_int = 1;
-			Assert.AreEqual (an_int, implementor.GetRowAtIndex (2), "GetRowAtIndex3");
-			an_int = 2;
-			Assert.AreEqual (an_int, implementor.GetRowAtIndex (3), "GetRowAtIndexOOR>");
-			an_int = -1;
-			Assert.AreEqual (an_int, implementor.GetRowAtIndex (-1), "GetRowAtIndexOOR<");
-			an_int = -1;
-			Assert.AreEqual (an_int, implementor.GetRowAtIndex (4), "GetRowAtIndexOOR>>");
-			
-			an_int = 0;
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (0, 0), "GetColumnExtentAt00");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (0, 1), "GetColumnExtentAt01");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (0, 2), "GetColumnExtentAt02");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (0, 3), "GetColumnExtentAt03 OOR>");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (0, -1), "GetColumnExtentAt0-1 OOR<");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (1, 0), "GetColumnExtentAt10");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (1, 1), "GetColumnExtentAt11");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (1, 2), "GetColumnExtentAt12");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (1, 3), "GetColumnExtentAt13 OOR>");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (1, -1), "GetColumnExtentAt1-1 OOR<");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (-1, 0), "GetColumnExtentAt-10");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (-1, 1), "GetColumnExtentAt-11");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (-1, 2), "GetColumnExtentAt-12");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (-1, 3), "GetColumnExtentAt-13 OOR>");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (-1, -1), "GetColumnExtentAt-1-1 OOR<");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (2, 0), "GetColumnExtentAt20");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (2, 1), "GetColumnExtentAt21");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (2, 2), "GetColumnExtentAt22");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (2, 3), "GetColumnExtentAt23 OOR>");
-			Assert.AreEqual (an_int, implementor.GetColumnExtentAt (2, -1), "GetColumnExtentAt2-1 OOR<");
-			
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (0, 0), "GetRowExtentAt00");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (0, 1), "GetRowExtentAt01");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (0, 2), "GetRowExtentAt02");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (0, 3), "GetRowExtentAt03 OOR>");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (0, -1), "GetRowExtentAt0-1 OOR<");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (1, 0), "GetRowExtentAt10");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (1, 1), "GetRowExtentAt11");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (1, 2), "GetRowExtentAt12");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (1, 3), "GetRowExtentAt13 OOR>");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (1, -1), "GetRowExtentAt1-1 OOR<");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (2, 0), "GetRowExtentAt20");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (2, 1), "GetRowExtentAt21");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (2, 2), "GetRowExtentAt22");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (2, 3), "GetRowExtentAt23 OOR>");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (2, -1), "GetRowExtentAt1-1 OOR<");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (-1, 0), "GetRowExtentAt-10");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (-1, 1), "GetRowExtentAt-11");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (-1, 2), "GetRowExtentAt-12");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (-1, 3), "GetRowExtentAt-13 OOR>");
-			Assert.AreEqual (an_int, implementor.GetRowExtentAt (-1, -1), "GetRowExtentAt-1-1 OOR<");
+			for (int r = -1; r <= numRows; r++) {
+				for (int c = -1; c <= numCols; c++) {
+					int expectedIndex = GetExpectedIndexAtRowColumn (
+						r, c, numRows, numCols);
+					
+					Assert.AreEqual (
+						expectedIndex,
+						implementor.GetIndexAt (r, c),
+						String.Format ("Incorrect index at ({0}, {1})",
+						               r, c)
+					);
+
+					int expectedCol = expectedIndex < 0 ? 0 : c;
+					Assert.AreEqual (
+						expectedCol,
+						implementor.GetColumnAtIndex (expectedIndex),
+						String.Format ("Incorrect column at index {0}",
+						               expectedIndex)
+					);
+
+					int expectedRow = expectedIndex <= 0 ? -1 : r;
+					Assert.AreEqual (
+						expectedRow,
+						implementor.GetRowAtIndex (expectedIndex),
+						String.Format ("Incorrect row at index {0}",
+						               expectedIndex)
+					);
+
+					Assert.AreEqual (
+						0, implementor.GetColumnExtentAt (r, c),
+						String.Format ("Incorrect column extent at ({0}, {1})",
+						               r, c)
+					);
+
+					Assert.AreEqual (
+						0, implementor.GetRowExtentAt (r, c),
+						String.Format ("Incorrect row extent at ({0}, {1})",
+						               r, c)
+					);
+				}
+			}
 		}
 		
 		protected void Relation (Atk.RelationType type, Atk.Object source, params Atk.Object [] expectedTarget)

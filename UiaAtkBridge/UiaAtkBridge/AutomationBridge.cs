@@ -571,6 +571,8 @@ namespace UiaAtkBridge
 				HandleNewSeparator (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.Slider.Id)
 				HandleNewSliderControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.Calendar.Id)
+				HandleNewCalendarControlType (simpleProvider, parentAdapter);
 			// TODO: Other providers
 			else if (controlTypeId != ControlType.Thumb.Id)
 				Console.WriteLine ("AutomationBridge: Unhandled control: " +
@@ -701,7 +703,7 @@ namespace UiaAtkBridge
 			IRawElementProviderFragment fragment;
 			int controlTypeId = (int) provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			if (!providerAdapterMapping.ContainsKey (provider)) {
-				if (controlTypeId == ControlType.Header.Id || controlTypeId == ControlType.DataItem.Id || controlTypeId == ControlType.TreeItem.Id || controlTypeId == ControlType.TreeItem.Id) {
+				if (controlTypeId == ControlType.Header.Id || controlTypeId == ControlType.DataItem.Id || controlTypeId == ControlType.TreeItem.Id) {
 					fragment = provider as IRawElementProviderFragment;
 					if (fragment != null) {
 						IRawElementProviderFragment parent = fragment.Navigate (NavigateDirection.Parent);
@@ -1136,9 +1138,15 @@ namespace UiaAtkBridge
 		
 		private void HandleNewSliderControlType (IRawElementProviderSimple provider, ParentAdapter parentObject)
 		{
-			Adapter atkSlider = new Slider (provider);;
+			Adapter atkSlider = new Slider (provider);
 
 			IncludeNewAdapter (atkSlider, parentObject);
+		}
+
+		private void HandleNewCalendarControlType (IRawElementProviderSimple provider,
+		                                           ParentAdapter parentObject)
+		{
+			IncludeNewAdapter (new Container (provider), parentObject);
 		}
 		
 		// This whole function is a hack to work around the

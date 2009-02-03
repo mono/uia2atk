@@ -96,6 +96,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.TrackBar trackBar = new SWF.TrackBar ();
 		protected SWF.FlowLayoutPanel flp = new SWF.FlowLayoutPanel ();
 		protected SWF.TableLayoutPanel tlp = new SWF.TableLayoutPanel ();
+		protected SWF.MonthCalendar monthCalendar = new SWF.MonthCalendar ();
 
 		protected int lastClickedLink = -1;
 
@@ -192,6 +193,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (splitContainer);
 			form.Controls.Add (richTextBox);
 			form.Controls.Add (trackBar);
+			form.Controls.Add (monthCalendar);
 			// TODO: Move following lines to the end of ListView test to test view switching
 			lv1.View = SWF.View.Details;
 			lv1.ShowGroups = true;
@@ -843,6 +845,9 @@ namespace UiaAtkBridgeTest
 				trackBar.Minimum = 0;
 				trackBar.Maximum = 100;
 				accessible = GetAdapterForWidget (trackBar);
+				break;
+			case BasicWidgetType.MonthCalendar:
+				accessible = GetAdapterForWidget (monthCalendar);
 				break;
 			case BasicWidgetType.ListBox:
 			case BasicWidgetType.CheckedListBox:

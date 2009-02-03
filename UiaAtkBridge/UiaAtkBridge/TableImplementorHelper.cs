@@ -79,6 +79,8 @@ namespace UiaAtkBridge
 
 		public int GetColumnAtIndex (int index)
 		{
+			index = index % NColumns;
+
 			Adapter child = resource.RefAccessibleChild (index) as Adapter;
 			if (child != null && child.Provider != null) {
 				IGridItemProvider g = (IGridItemProvider) child.Provider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);

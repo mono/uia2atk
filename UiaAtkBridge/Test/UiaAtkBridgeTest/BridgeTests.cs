@@ -1007,6 +1007,37 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (test, ret,
 			                 "text/plain stream differs from original text");
 		}
+
+		[Test]
+		public void MonthCalendar ()
+		{
+			BasicWidgetType type = BasicWidgetType.MonthCalendar;
+			
+			Atk.Object accessible = GetAccessible (type, String.Empty);
+			Assert.AreEqual (1, accessible.NAccessibleChildren,
+			                 "Too many or too few children under Calendar");
+			
+			Atk.Object tableChild = accessible.RefAccessibleChild (0);
+			Atk.Table table = CastToAtkInterface<Atk.Table> (tableChild);
+			Assert.IsNotNull (table);
+
+			InterfaceTable (table, 6, 7, 0, 0);
+			
+			Atk.Object backButton
+				= accessible.RefAccessibleChild (
+					accessible.NAccessibleChildren - 2);
+			Atk.Object forwardButton
+				= accessible.RefAccessibleChild (
+					accessible.NAccessibleChildren - 1);
+
+			Atk.Action action;
+
+			action = CastToAtkInterface<Atk.Action> (backButton);
+			InterfaceAction (type, action, backButton);
+
+			action = CastToAtkInterface<Atk.Action> (forwardButton);
+			InterfaceAction (type, action, forwardButton);
+		}
 		
 		// This test tries to simulate inserting and deleting a single
 		// character and test that the appropriate events are
