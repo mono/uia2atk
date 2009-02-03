@@ -174,6 +174,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				Assert.Greater (childCount, 0, "Children expected.");
 
 			TestChildPatterns (provider);
+
+			// Lets add a new row, to make sure everything is ok.
+
+			SWF.DataGridViewRow newRow = new SWF.DataGridViewRow ();
+			SWF.DataGridViewCell newCell = cell.Clone () as SWF.DataGridViewCell;
+			newRow.Cells.Add (newCell);
+			
+			datagridview.Rows.Add (newRow);
+
+			TestChildPatterns (provider);
 		}
 		
 		#endregion
@@ -203,14 +213,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					= (DataGridViewProvider.DataGridViewDataItemEditProvider) provider;
 				editProvider.TextBoxCell.ReadOnly = newValue;
 			} else
-				Assert.Fail ("I have no idea about {0}!", provider.GetType ());
+				Assert.Fail ("I don't know {0}!", provider.GetType ());
 		}
 
-		protected override void TestExpandCollapsePattern_ExpandCollapseStatePropertyEvent (IRawElementProviderSimple provider)
-		{
-			// Remove this method when fixed: https://bugzilla.novell.com/show_bug.cgi?id=471754
-		}
-		
 		#endregion
 		
 		#region BaseProviderTest Overrides

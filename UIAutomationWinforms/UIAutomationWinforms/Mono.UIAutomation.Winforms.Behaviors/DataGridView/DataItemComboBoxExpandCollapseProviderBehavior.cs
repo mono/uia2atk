@@ -28,6 +28,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
+using Mono.UIAutomation.Winforms.Events.DataGridView;
 
 namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 {
@@ -54,15 +55,24 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 		
 		public override void Connect ()
 		{
-			// FIXME: Implement, How?
-//			Provider.SetEvent (ProviderEventType.ExpandCollapsePatternExpandCollapseStateProperty, 
-//			                   new ExpandCollapsePatternStateEvent (Provider));
+			if (expandCollapseEvent != null)
+				expandCollapseEvent.Disconnect ();
+			
+			expandCollapseEvent = new DataItemComboBoxExpandCollapsePatternStateEvent (provider);
+
+			Provider.SetEvent (ProviderEventType.ExpandCollapsePatternExpandCollapseStateProperty,
+			                   expandCollapseEvent);
 		}
 		
 		public override void Disconnect ()
 		{
+			if (expandCollapseEvent != null)
+				expandCollapseEvent.Disconnect ();
+
 			Provider.SetEvent (ProviderEventType.ExpandCollapsePatternExpandCollapseStateProperty, 
 			                   null);
+
+			expandCollapseEvent = null;
 		}
 		
 		public override object GetPropertyValue (int propertyId)
@@ -79,8 +89,10 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 		
 		public ExpandCollapseState ExpandCollapseState {
 			get {
-				// FIXME: Implement, How?
-				return ExpandCollapseState.Collapsed;
+				if (lastComboBox == null || !lastComboBox.DroppedDown)
+					return ExpandCollapseState.Collapsed;
+				else 
+					return ExpandCollapseState.Expanded;
 			}
 		}
 
@@ -113,8 +125,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 				return;
 			}
 
-			// FIXME: We need to test this again: 
-
 			SWF.DataGridViewCell oldCell = provider.ItemProvider.DataGridView.CurrentCell;
 			provider.ItemProvider.DataGridView.CurrentCell = provider.ComboBoxCell;
 			provider.ItemProvider.DataGridView.BeginEdit (false);
@@ -122,17 +132,21 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGridView
 			SWF.ComboBox combobox = provider.ItemProvider.DataGridView.EditingControl as SWF.ComboBox;
 			if (combobox != null) {
 				// We we'll basically are keeping a reference to the EditingControl
-				// to listen for DroppedDown event
-//				lastComboBox = combobox;
-				combobox.DroppedDown = expand;
-			}
+				// to listen for DroppedDown event and set it we it changes.
+				if (lastComboBox != combobox)
+					expandCollapseEvent.CurrentComboBox = combobox;
+				
+				lastComboBox = combobox;
+				lastComboBox.DroppedDown = expand;
+			} else
 
 			provider.ItemProvider.DataGridView.EndEdit ();
 			provider.ItemProvider.DataGridView.CurrentCell = oldCell;
 		}
-		
+
+		private DataItemComboBoxExpandCollapsePatternStateEvent expandCollapseEvent;
+		private SWF.ComboBox lastComboBox;
 		private DataGridViewProvider.DataGridViewDataItemComboBoxProvider provider;
-//		private SWF.ComboBox lastComboBox;
 
 		private delegate void ExpandOrCollapseDelegate (bool expand);
 
