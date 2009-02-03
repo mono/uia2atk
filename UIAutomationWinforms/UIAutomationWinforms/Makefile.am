@@ -437,7 +437,6 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs \
 	Mono.UIAutomation.Winforms/AssemblyInfo.cs \
 	Mono.UIAutomation.Winforms/BaseColorControlProvider.cs \
-	Mono.UIAutomation.Winforms/BorderHelperControlProvider.cs \
 	Mono.UIAutomation.Winforms/ButtonProvider.cs \
 	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
 	Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs \
@@ -483,6 +482,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/PrintPreviewControlProvider.cs \
 	Mono.UIAutomation.Winforms/ProgressBarProvider.cs \
 	Mono.UIAutomation.Winforms/PropertyGridProvider.cs \
+	Mono.UIAutomation.Winforms/PropertyGridTextBoxProvider.cs \
 	Mono.UIAutomation.Winforms/PropertyGridViewProvider.cs \
 	Mono.UIAutomation.Winforms/ProviderFactory.cs \
 	Mono.UIAutomation.Winforms/RadioButtonProvider.cs \

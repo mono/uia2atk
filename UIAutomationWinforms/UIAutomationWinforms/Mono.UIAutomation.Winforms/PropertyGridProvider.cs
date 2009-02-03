@@ -17,13 +17,14 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 // 	Neville Gao <nevillegao@gmail.com>
 // 
 
 using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
@@ -33,7 +34,7 @@ using Mono.UIAutomation.Winforms.Behaviors;
 namespace Mono.UIAutomation.Winforms
 {
 	[MapsComponent (typeof (PropertyGrid))]
-	internal class PropertyGridProvider : FragmentRootControlProvider
+	internal class PropertyGridProvider : PaneProvider
 	{
 		#region Constructor
 
@@ -44,17 +45,36 @@ namespace Mono.UIAutomation.Winforms
 		#endregion
 		
 		#region SimpleControlProvider: Specializations
-			 
-		protected override object GetProviderPropertyValue (int propertyId)
-		{
-			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Pane.Id;
-			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("pane");
-			else
-				return base.GetProviderPropertyValue (propertyId);
+
+		public override Component Container {
+			get { return Control.Parent; }
 		}
 		
+		#endregion
+
+		#region Internal Class: BorderHelperControl Provider
+
+		[MapsComponent (typeof (PropertyGrid.BorderHelperControl))]
+		internal class BorderHelperControlProvider : PaneProvider
+		{
+			#region Constructor
+	
+			public BorderHelperControlProvider (PropertyGrid.BorderHelperControl borderHelperControl)
+				: base (borderHelperControl)
+			{
+			}
+	
+			#endregion
+	
+			#region SimpleControlProvider: Specializations
+				 
+			public override Component Container {
+				get { return Control.Parent; }
+			}
+			
+			#endregion
+		}
+
 		#endregion
 	}
 }

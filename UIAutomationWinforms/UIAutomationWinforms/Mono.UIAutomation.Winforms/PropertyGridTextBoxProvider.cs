@@ -24,7 +24,7 @@
 // 
 
 using System;
-using System.Windows.Forms;
+using SWF = System.Windows.Forms;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.Unix;
@@ -32,30 +32,30 @@ using Mono.UIAutomation.Winforms.Behaviors;
 
 namespace Mono.UIAutomation.Winforms
 {
-	[MapsComponent (typeof (PropertyGrid.BorderHelperControl))]
-	internal class BorderHelperControlProvider : FragmentRootControlProvider
+	[MapsComponent (typeof (SWF.PropertyGridInternal.PropertyGridTextBox))]
+	internal class PropertyGridTextBoxProvider : FragmentRootControlProvider
 	{
 		#region Constructor
 
-		public BorderHelperControlProvider (PropertyGrid.BorderHelperControl borderHelperControl)
-			: base (borderHelperControl)
+		public PropertyGridTextBoxProvider (SWF.PropertyGridInternal.PropertyGridTextBox propertyGridTextBox)
+			: base (propertyGridTextBox)
 		{
 		}
 
 		#endregion
 
 		#region SimpleControlProvider: Specializations
-			 
+
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
-				return ControlType.Pane.Id;
+				return ControlType.Edit.Id;
 			else if (propertyId == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("pane");
+				return Catalog.GetString ("edit");
 			else
 				return base.GetProviderPropertyValue (propertyId);
 		}
-			
+		
 		#endregion
 	}
 }

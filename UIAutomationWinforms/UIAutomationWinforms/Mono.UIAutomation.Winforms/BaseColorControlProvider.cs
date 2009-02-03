@@ -83,10 +83,6 @@ namespace Mono.UIAutomation.Winforms
 				             new SmallColorControlInvokeProviderBehavior (this));
 			}
 			
-			#endregion
-			
-			#region SimpleControlProvider: Specializations
-			
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
