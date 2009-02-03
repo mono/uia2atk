@@ -128,6 +128,48 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 eventInfo.e.EventId,
 			                 "event args event type");
 		}
+
+		[Test] //UIA events should fire *before* any other
+		[Ignore ("The provider is not yet prepared for this")]
+		public void InvokeAndInvokedEventCombinedTest ()
+		{
+			Button button = new Button ();
+
+			bool verified = false;
+			IRawElementProviderSimple provider = null;
+			
+			button.Click += delegate (object sender, EventArgs e) {
+				Assert.AreEqual (1,
+				                 bridge.AutomationEvents.Count,
+				                 "event count");
+
+				AutomationEventTuple eventInfo =
+					bridge.AutomationEvents [0];
+				Assert.AreEqual (InvokePatternIdentifiers.InvokedEvent,
+				                 eventInfo.eventId,
+				                 "event type");
+				Assert.AreEqual (provider,
+				                 eventInfo.provider,
+				                 "event element");
+				Assert.AreEqual (InvokePatternIdentifiers.InvokedEvent,
+				                 eventInfo.e.EventId,
+				                 "event args event type");
+				verified = true;
+			};
+			
+			provider = ProviderFactory.GetProvider (button);
+			IInvokeProvider invokeProvider = (IInvokeProvider)
+				provider.GetPatternProvider (InvokePatternIdentifiers.Pattern.Id);
+
+			bridge.ResetEventLists ();
+			
+			button.PerformClick ();
+			
+			invokeProvider.Invoke ();
+			
+			Assert.IsTrue (verified,
+			               "Click event should have been fired");
+		}
 		
 #endregion
 		
