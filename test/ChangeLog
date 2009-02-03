@@ -1,3 +1,12 @@
+2009-02-03  Ray Wang <rawang@novell.com>
+
+	* samples/flowlayoutpanel.py: add more flowlayoutpanel controls
+	* testers/flowlayoutpanel,
+	* testers/flowlayoutpanel/__init__.py,
+	* testers/flowlayoutpanel/flowlayoutpanelframe.py, 
+	* testers/flowlayoutpanel_basic_ops.py: add flowlayoutpanel strongwind
+	test
+
 2009-02-03  Calen Chen <cachen@novell.com>
 
 	* samples/toolstripseparator.py: add new example with three labels and 
