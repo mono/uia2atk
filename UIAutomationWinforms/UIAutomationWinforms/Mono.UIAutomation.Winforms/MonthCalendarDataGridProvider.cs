@@ -46,6 +46,7 @@ namespace Mono.UIAutomation.Winforms
 			this.calendarProvider = calendarProvider;
 			this.calendar = (MonthCalendar) calendarProvider.Control;
 			this.calendar.DateChanged += OnDateChanged;
+			this.displayRange = calendar.GetDisplayRange (false);
 		}
 #endregion
 
@@ -164,9 +165,6 @@ namespace Mono.UIAutomation.Winforms
 			DateTime date = range.Start;
 			while (date <= range.End) {
 				if (!gridChildren.ContainsKey (date)) {
-					// Console.WriteLine (
-					//	"WARNING: MonthCalendarDataGridProvider: No provider found for selected date {0}",
-					//	date);
 					date = date.AddDays (1);
 					continue;
 				}
@@ -241,9 +239,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public void SelectItem (MonthCalendarListItemProvider itemProvider)
 		{
-			calendar.SelectionRange
-				= new SelectionRange (itemProvider.Date,
-			                              itemProvider.Date);
+			calendar.SetDate (itemProvider.Date);
 		}
 
 		public bool IsItemSelected (MonthCalendarListItemProvider itemProvider)
@@ -288,38 +284,43 @@ namespace Mono.UIAutomation.Winforms
 
 		private void RemoveChildren ()
 		{
-			RemoveChildProvider (true, backButton);
+			RemoveChildProvider (false, backButton);
 			backButton.Terminate ();
 
-			RemoveChildProvider (true, forwardButton);
+			RemoveChildProvider (false, forwardButton);
 			forwardButton.Terminate ();
 
+			MonthCalendarListItemProvider[] children
+				= new MonthCalendarListItemProvider[gridChildren.Count];
+			gridChildren.Values.CopyTo (children, 0);
+			
 			foreach (MonthCalendarListItemProvider item
-			         in gridChildren.Values) {
-				RemoveChildProvider (true, item);
+			         in children) {
+				RemoveChildProvider (false, item);
 				item.Terminate ();
 			}
 
+			OnNavigationChildrenCleared (true);
 			gridChildren.Clear ();
 		}
 
 		private void OnDateChanged (object o, DateRangeEventArgs args)
 		{
 			SelectionRange range = calendar.GetDisplayRange (false);
-			if (display_range != null
-			    && range.Start == display_range.Start
-			    && range.End == display_range.End)
+			if (displayRange != null
+			    && range.Start == displayRange.Start
+			    && range.End == displayRange.End)
 				return;
 
 			RemoveChildren ();
 			AddChildren ();
-			display_range = range;
+			displayRange = range;
 		}
 #endregion
 
 #region Private Fields
 		private MonthCalendar calendar;
-		private SelectionRange display_range;
+		private SelectionRange displayRange;
 
 		private MonthCalendarProvider calendarProvider;
 		private MonthCalendarHeaderProvider headerProvider;
@@ -509,9 +510,9 @@ namespace Mono.UIAutomation.Winforms
 				return Catalog.GetString ("button");
 			} else if (propertyId == AEIds.NameProperty.Id) {
 				if (direction == ButtonDirection.Back) {
-					return "Back by one month";
+					return Catalog.GetString ("Back by one month");
 				} else if (direction == ButtonDirection.Forward) {
-					return "Forward by one month";
+					return Catalog.GetString ("Forward by one month");
 				}
 			} else if (propertyId == AEIds.LabeledByProperty.Id)
 				return null;
