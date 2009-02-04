@@ -102,6 +102,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			TestProperty (provider,
 			              AutomationElementIdentifiers.IsKeyboardFocusableProperty,
 			              true);
+
+			object hasKbFocus = provider.GetPropertyValue (AutomationElementIdentifiers.HasKeyboardFocusProperty.Id);
+			Assert.IsNotNull (hasKbFocus);
+			Assert.IsTrue (hasKbFocus is bool);
+			Assert.IsFalse ((bool)hasKbFocus);
 		}
 
 		[Test]

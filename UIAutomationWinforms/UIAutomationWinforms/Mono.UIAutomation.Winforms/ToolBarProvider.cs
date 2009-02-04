@@ -33,6 +33,8 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ToolBar;
+using Mono.UIAutomation.Winforms.Events;
+using ETB = Mono.UIAutomation.Winforms.Events.ToolBarButton;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -67,7 +69,7 @@ namespace Mono.UIAutomation.Winforms
 		#region FragmentRootControlProvider: Specializations
 		
 		public override void InitializeChildControlStructure ()
-		{
+		{	
 			toolBar.Buttons.UIACollectionChanged +=
 				new CollectionChangeEventHandler (OnCollectionChanged);
 			
@@ -170,12 +172,14 @@ namespace Mono.UIAutomation.Winforms
 				
 				SetBehavior (InvokePatternIdentifiers.Pattern,
 				             new ToolBarButtonInvokeProviderBehavior (this));
+				SetEvent (ProviderEventType.AutomationElementHasKeyboardFocusProperty,
+				          new ETB.AutomationHasKeyboardFocusPropertyEvent (this));
 			}
 			
 			#endregion
 			
 			#region Public Methods
-		
+			
 			protected override object GetProviderPropertyValue (int propertyId)
 			{
 				if (propertyId == AutomationElementIdentifiers.ControlTypeProperty.Id)
@@ -188,6 +192,14 @@ namespace Mono.UIAutomation.Winforms
 					return null;
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return toolBarButton.Text;
+				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id) {
+					try {
+						return Helper.GetPrivateProperty<ToolBarButton, bool> (typeof(ToolBarButton),
+						                                                       toolBarButton,
+						                                                       "UIAHasFocus");
+					} catch (NotSupportedException) { }
+					return base.GetProviderPropertyValue (propertyId);
+				}
 				else
 					return base.GetProviderPropertyValue (propertyId);
 			}

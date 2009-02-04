@@ -1,4 +1,4 @@
-<Project name="Mono.UIAutomation.Winforms" fileversion="2.0" language="C#" UseParentDirectoryAsNamespace="True" DefaultNamespace="Mono.UIAutomation.Winforms" clr-version="Net_2_0" targetFramework="3.5" ctype="DotNetProject">
+<Project name="Mono.UIAutomation.Winforms" fileversion="2.0" language="C#" DefaultNamespace="Mono.UIAutomation.Winforms" UseParentDirectoryAsNamespace="True" clr-version="Net_2_0" targetFramework="3.5" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="bin/Debug" signAssembly="True" assemblyKeyFile="../mono-uia.snk" assembly="UIAutomationWinforms" />
@@ -489,6 +489,7 @@
     <File name="Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternElementRemovedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternIsSelectedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/PanelProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms.Events/ToolBar/AutomationHasKeyboardFocusPropertyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/DataGridView/DataItemChildValuePatternValueIsReadOnlyEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms.Events/DataGridView/DataItemComboBoxExpandCollapsePatternStateEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/PropertyGridTextBoxProvider.cs" subtype="Code" buildaction="Compile" />

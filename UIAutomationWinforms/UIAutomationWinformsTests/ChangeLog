@@ -1,3 +1,8 @@
+2009-02-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ToolBarButtonProviderTest.cs: Hook into the new mechanism
+	of obtaining focus on MWF (introduced in r125704).
+
 2009-02-03  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ButtonProviderTest.cs: Fix typo in previous commit.

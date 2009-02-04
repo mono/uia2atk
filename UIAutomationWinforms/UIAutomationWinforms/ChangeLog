@@ -1,3 +1,13 @@
+2009-02-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:
+	*
+	Mono.UIAutomation.Winforms.Events/ToolBar/AutomationHasKeyboardFocusPropertyEvent.cs:
+	Hook into the new mechanism of obtaining focus on MWF
+	(introduced in r125704).
+
 2009-02-04  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs: Fix a

@@ -389,6 +389,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/TextBox/TextPatternTextSelectionChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TextBox/ValuePatternValueValueEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ToolBar/AutomationHasKeyboardFocusPropertyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolBar/ToolBarButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripButton/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ToolStripItem/AutomationBoundingRectanglePropertyEvent.cs \
