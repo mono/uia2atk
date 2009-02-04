@@ -1,3 +1,7 @@
+2009-02-05  Calen Chen <cachen@novell.com>
+
+	* testers/toolbar/toolbarframe.py: update searchItems method
+
 2009-02-04  Calen Chen <cachen@novell.com>
 
 	* samples/toolbar.py: add one toolbarbutton with separator style, use
