@@ -62,16 +62,14 @@ namespace Mono.UIAutomation.Winforms
 		//       properties part of the public API.
 		protected override SWF.ScrollBar HorizontalScrollBar { 
 			get {
-				return Helper.GetPrivateProperty<SWF.DataGridView, SWF.ScrollBar> (typeof (SWF.DataGridView),
-				                                                                   datagridview,
+				return Helper.GetPrivateProperty<SWF.DataGridView, SWF.ScrollBar> (datagridview,
 				                                                                   "HorizontalScrollBar");
 			}
 		}
 
 		protected override SWF.ScrollBar VerticalScrollBar { 
 			get {
-				return Helper.GetPrivateProperty<SWF.DataGridView, SWF.ScrollBar> (typeof (SWF.DataGridView),
-				                                                                   datagridview,
+				return Helper.GetPrivateProperty<SWF.DataGridView, SWF.ScrollBar> (datagridview,
 				                                                                   "VerticalScrollBar");
 			}
 		}

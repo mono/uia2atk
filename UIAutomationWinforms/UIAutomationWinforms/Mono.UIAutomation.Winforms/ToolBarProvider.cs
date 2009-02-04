@@ -194,8 +194,7 @@ namespace Mono.UIAutomation.Winforms
 					return toolBarButton.Text;
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id) {
 					try {
-						return Helper.GetPrivateProperty<ToolBarButton, bool> (typeof(ToolBarButton),
-						                                                       toolBarButton,
+						return Helper.GetPrivateProperty<ToolBarButton, bool> (toolBarButton,
 						                                                       "UIAHasFocus");
 					} catch (NotSupportedException) { }
 					return base.GetProviderPropertyValue (propertyId);

@@ -278,6 +278,12 @@ namespace Mono.UIAutomation.Winforms
 
 			return (TResult) fieldInfo.GetValue (reference);
 		}
+
+		internal static TResult GetPrivateProperty<T, TResult> (T reference,
+		                                                        string propertyName)
+		{
+			return GetPrivateProperty<T, TResult> (typeof (T), reference, propertyName);
+		}
 		
 		internal static TResult GetPrivateProperty<T, TResult> (Type referenceType, 
 		                                                        T reference,

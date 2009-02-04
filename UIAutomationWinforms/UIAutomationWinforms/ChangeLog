@@ -1,5 +1,12 @@
 2009-02-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Mono.UIAutomation.Winforms/Helper.cs:
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs:
+	Simplify Reflection usage.
+
+2009-02-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp:
 	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:
