@@ -1,3 +1,7 @@
+2009-02-04  Calen Chen <cachen@novell.com>
+
+	* samples/toolbar.py: add image to toolbarbuttons for testing AtkImage
+
 2009-02-03  Ray Wang <rawang@novell.com>
 
 	* samples/flowlayoutpanel.py: add more flowlayoutpanel controls

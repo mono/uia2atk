@@ -15,14 +15,21 @@ It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of cont
 """
 
 # imports
+import os
+from sys import path
+from os.path import exists
+
 import clr
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
 
-from System.Windows.Forms import (
-    Application, Label, Form, ToolBar, ToolBarButton, OpenFileDialog, SaveFileDialog, PrintDialog, DialogResult
-)
-from System.Drawing import Point
+from System.Windows.Forms import *
+from System.Drawing import *
+import System
+
+harness_dir = path[0]
+i = harness_dir.rfind("/")
+uiaqa_path = harness_dir[:i]
 
 class ToolBarSample(Form):
     """ToolBar control class"""
@@ -35,15 +42,33 @@ class ToolBarSample(Form):
 
         # setup label
         self.label = Label()
-        self.label.Text = ""
+        self.label.Text = "ToolBar and ToolBarButton example"
         self.label.AutoSize = True
         self.label.Height = 200 
         self.label.Width = self.Width - 10
-        self.label.Location = Point (10, 50)
+        self.label.Location = Point (10, 80)
 
         # Create and initialize the ToolBar and ToolBarButton controls.
         self.toolbar = ToolBar()
         self.toolbar.ButtonClick += self.on_click
+
+        # image list
+        self.imagelist = ImageList()
+        self.imagelist.ColorDepth = ColorDepth.Depth32Bit;
+        self.imagelist.ImageSize = Size(32, 32)
+
+        # small images
+        names = [
+                "abiword_48.png",
+                "bmp.png",
+                "disks.png",
+                "evolution.png"
+            ]
+
+        for i in names:
+            self.imagelist.Images.Add (Image.FromFile("%s/samples/listview-items-icons/32x32/" % uiaqa_path + i))
+
+        self.toolbar.ImageList = self.imagelist
 
         # setup toolbarbuttons
         self.toolbar_btn1 = ToolBarButton()
@@ -54,6 +79,10 @@ class ToolBarSample(Form):
         self.toolbar_btn2.Text = "Save"
         self.toolbar_btn3.Text = "Print"
         self.toolbar_btn4.Text = "nop"
+        self.toolbar_btn1.ImageIndex = 0
+        self.toolbar_btn2.ImageIndex = 1
+        self.toolbar_btn3.ImageIndex = 2
+        self.toolbar_btn4.ImageIndex = 3
         
         # create dialogs
         self.openfiledialog = OpenFileDialog()
