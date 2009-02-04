@@ -52,6 +52,7 @@ tbFrame.assertToolBar()
 statesCheck(tbFrame.toolbar, "ToolBar")
 
 #mouse click toolbar, then check its states never changed
+##has extraneous focused state BUG472279
 tbFrame.toolbar.mouseClick()
 sleep(config.SHORT_DELAY)
 statesCheck(tbFrame.toolbar, "ToolBar")

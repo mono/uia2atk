@@ -1,5 +1,9 @@
 2009-02-04  Calen Chen <cachen@novell.com>
 
+	* testers/toolbar_basic_ops.py: add bug472279 reference
+
+2009-02-04  Calen Chen <cachen@novell.com>
+
 	* testers/toolbar/toolbarframe.py,
 	* testers/toolbar/__init__.py,
 	* testers/toolbar_basic_ops.py,
