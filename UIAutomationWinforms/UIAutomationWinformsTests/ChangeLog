@@ -1,3 +1,12 @@
+2009-02-04  Mario Carrion  <mcarrion@novell.com>
+
+	* ComboBoxProviderTest.cs:
+	* DataGridViewProviderTest.cs: Testing children. LAMESPEC added.
+
+	* BaseProviderTest.cs: Tests added: Selection, GetSelection,
+	SelectionItem_AddToSelection, SelectionItem_RemoveFromSelection and
+	SelectionItem_IsSelectedProperty/
+
 2009-02-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* ToolBarButtonProviderTest.cs: Hook into the new mechanism

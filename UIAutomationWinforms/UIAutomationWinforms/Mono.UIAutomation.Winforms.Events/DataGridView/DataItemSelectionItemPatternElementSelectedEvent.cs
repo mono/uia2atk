@@ -47,23 +47,26 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 
 		public override void Connect ()
 		{
-			provider.DataGridView.SelectionChanged += OnSelectionChanged;
+			provider.DataGridView.CellStateChanged += OnCellStateChagned;
 		}
 
 		public override void Disconnect ()
 		{
-			provider.DataGridView.SelectionChanged -= OnSelectionChanged;
+			provider.DataGridView.CellStateChanged -= OnCellStateChagned;
 		}
 		
 		#endregion 
 		
 		#region Private members
 		
-		private void OnSelectionChanged (object sender, System.EventArgs args)
+		private void OnCellStateChagned (object sender, 
+		                                 SWF.DataGridViewCellStateChangedEventArgs args)
 		{
-			if (provider.DataGridView.SelectedCells.Count == 1
-			    && provider.DataGridView.SelectedCells.Contains (provider.Row.Cells [0]))
-				RaiseAutomationEvent ();
+			if (args.Cell.ColumnIndex == 0
+			    && args.Cell.RowIndex == provider.Row.Index
+			    && provider.DataGridView.SelectedCells.Count == 1
+			    && provider.DataGridViewProvider.IsItemSelected ((ListItemProvider) provider))
+			    RaiseAutomationEvent ();
 		}
 
 		private DataGridViewProvider.DataGridDataItemProvider provider;

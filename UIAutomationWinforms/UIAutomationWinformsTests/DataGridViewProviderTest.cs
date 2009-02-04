@@ -44,10 +44,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			SWF.DataGridViewImageColumn column = new SWF.DataGridViewImageColumn ();
 			column.HeaderText = "Image Column";
-			
-			SWF.DataGridViewImageCell cell = new SWF.DataGridViewImageCell ();
-			
-			ColumnCellTest (column, cell, false);
+
+			ColumnCellTest (column, 
+			                new SWF.DataGridViewImageCell (), 
+			                false,
+			                new SWF.DataGridViewImageCell ());
 		}
 
 		[Test]
@@ -57,9 +58,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			column.HeaderText = "Button Column";
 			
 			SWF.DataGridViewButtonCell cell = new SWF.DataGridViewButtonCell ();
-			cell.Value = "Button cell";
+			cell.Value = "Button cell 1";
+
+			SWF.DataGridViewButtonCell cell1 = new SWF.DataGridViewButtonCell ();
+			cell1.Value = "Button cell 2";
 			
-			ColumnCellTest (column, cell, false);
+			ColumnCellTest (column, cell, false, cell1);
 		}
 
 		[Test]
@@ -69,9 +73,12 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			column.HeaderText = "Link Column";
 			
 			SWF.DataGridViewLinkCell cell = new SWF.DataGridViewLinkCell ();
-			cell.Value = "Link cell";
+			cell.Value = "Link cell 1";
+
+			SWF.DataGridViewLinkCell cell1 = new SWF.DataGridViewLinkCell ();
+			cell1.Value = "Link cell 2";
 			
-			ColumnCellTest (column, cell, false);
+			ColumnCellTest (column, cell, false, cell1);
 		}
 
 		[Test]
@@ -82,8 +89,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			SWF.DataGridViewCheckBoxCell cell = new SWF.DataGridViewCheckBoxCell ();
 			cell.Value = false;
+
+			SWF.DataGridViewCheckBoxCell cell1 = new SWF.DataGridViewCheckBoxCell ();
+			cell1.Value = false;			
 			
-			ColumnCellTest (column, cell, false);
+			ColumnCellTest (column, cell, false, cell1);
 		}
 
 		[Test]
@@ -93,9 +103,40 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			column.HeaderText = "CheckBox Column";
 			column.Items.AddRange ("1", "2", "3", "4", "5");
 			
-			SWF.DataGridViewComboBoxCell cell = new SWF.DataGridViewComboBoxCell ();
-			
-			ColumnCellTest (column, cell, true);
+			IRawElementProviderFragmentRoot provider 
+				= ColumnCellTest (column,
+				                  new SWF.DataGridViewComboBoxCell (),
+				                  true,
+				                  new SWF.DataGridViewComboBoxCell ());
+
+			// Lets test navigation.
+
+			IRawElementProviderFragment child = provider.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.DataItem.Id)
+					break;
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+
+			// Lets search our ComboBox
+			child = child.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.ComboBox.Id)
+					break;
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+
+			// ComboBox should have 2 children. Button and ListBox
+			int children = 0;
+
+			child = child.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				children++;
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.AreEqual (2, children, "ComboBox.Children");
 		}
 
 		[Test]
@@ -109,9 +150,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			ColumnCellTest (column, cell, false);
 		}
 
-		public void ColumnCellTest (SWF.DataGridViewColumn column, 
-		                            SWF.DataGridViewCell cell, 
-		                            bool cellChildrenExpected)
+		private IRawElementProviderFragmentRoot ColumnCellTest (SWF.DataGridViewColumn column, 
+		                                                       SWF.DataGridViewCell cell,
+		                                                       bool cellChildrenExpected)
+		{
+			return ColumnCellTest (column, cell, cellChildrenExpected, null);
+		}
+		
+		private IRawElementProviderFragmentRoot ColumnCellTest (SWF.DataGridViewColumn column, 
+		                                                       SWF.DataGridViewCell cell,
+		                                                       bool cellChildrenExpected,
+		                                                       SWF.DataGridViewCell newCell)
 		{
 			SWF.DataGridView datagridview = GetControlInstance () as SWF.DataGridView;
 			datagridview.Size = new Size (200, 200);
@@ -175,15 +224,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			TestChildPatterns (provider);
 
-			// Lets add a new row, to make sure everything is ok.
+			if (newCell != null) {
+				// Lets add a new row, to make sure everything is ok.
+				SWF.DataGridViewRow newRow = new SWF.DataGridViewRow ();
+				newRow.Cells.Add (newCell);
+				
+				datagridview.Rows.Add (newRow);
+	
+				TestChildPatterns (provider);
+			}
 
-			SWF.DataGridViewRow newRow = new SWF.DataGridViewRow ();
-			SWF.DataGridViewCell newCell = cell.Clone () as SWF.DataGridViewCell;
-			newRow.Cells.Add (newCell);
-			
-			datagridview.Rows.Add (newRow);
-
-			TestChildPatterns (provider);
+			return provider;
 		}
 		
 		#endregion
@@ -213,7 +264,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					= (DataGridViewProvider.DataGridViewDataItemEditProvider) provider;
 				editProvider.TextBoxCell.ReadOnly = newValue;
 			} else
-				Assert.Fail ("I don't know {0}!", provider.GetType ());
+				Assert.Fail ("I don't speak {0}!", provider.GetType ());
+		}
+
+		protected override void TestSelectionPatternChild (IRawElementProviderSimple provider)
+		{
+			if (provider.GetType () == typeof (DataGridViewProvider.DataGridViewDataItemComboBoxListBoxProvider)
+			    || provider.GetType () == typeof (DataGridViewProvider.DataGridViewDataItemComboBoxButtonProvider)) {
+				
+				// LAMESPEC:
+				//     "The children of this control must implement ISelectionItemProvider."
+				//     Internal ListBox and Internal Button in ComboBox implementation
+				//     don't implement ISelectionItemProvider.
+				return;
+			}
+			
+			base.TestSelectionPatternChild (provider);
 		}
 
 		#endregion

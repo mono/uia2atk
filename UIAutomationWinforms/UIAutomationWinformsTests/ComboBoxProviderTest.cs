@@ -334,6 +334,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 item3,
 			                 "Navigation failed: item3 <- item4");
 
+			TestChildPatterns (rootProvider);
+
 			// Lets clear all!
 
 			bridge.ResetEventLists ();
@@ -376,7 +378,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.IsNotNull (expandCollapseProvider,
 			                  "DropDownList: ExpandCollapse Pattern IS supported");
 			Assert.IsNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
-			               "DropDownList: ValuePattern Pattern IS NOT supported");
+			               "DropDownList: ValuePattern Pattern IS NOT supported");		
 			
 			listChild = rootProvider.Navigate (NavigateDirection.FirstChild);
 			Assert.IsTrue ((bool)listChild.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
@@ -387,6 +389,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			expandCollapseProvider.Collapse ();
 			Assert.IsTrue ((bool)listChild.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
 			               "the list of a combobox should be offscreen after collapsing");
+			TestChildPatterns (rootProvider);
 			
 			bridge.ResetEventLists ();
 			combobox.DropDownStyle = ComboBoxStyle.DropDown;
@@ -400,6 +403,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                  "DropDown: ExpandCollapse Pattern IS supported");
 			Assert.IsNotNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
 			                  "DropDown: ValuePattern Pattern IS supported");
+			TestChildPatterns (rootProvider);
 			
 			listChild = rootProvider.Navigate (NavigateDirection.FirstChild);
 			Assert.IsTrue ((bool)listChild.GetPropertyValue (AutomationElementIdentifiers.IsOffscreenProperty.Id),
@@ -422,6 +426,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			               "Simple: ExpandCollapse Pattern IS NOT supported");
 			Assert.IsNotNull (rootProvider.GetPatternProvider (ValuePatternIdentifiers.Pattern.Id),
 			                  "Simple: ValuePattern Pattern IS supported");
+			TestChildPatterns (rootProvider);
 		}
 
 		[Test]
@@ -474,6 +479,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		protected override Control GetControlInstance ()
 		{
 			return GetComboBox ();
+		}
+
+		protected override void TestSelectionPatternChild (IRawElementProviderSimple provider)
+		{
+			if (provider.GetType () == typeof (ComboBoxProvider.ComboBoxListBoxProvider)
+			    || provider.GetType () == typeof (ComboBoxProvider.ComboBoxButtonProvider)
+			    || provider.GetType () == typeof (ComboBoxProvider.ComboBoxTextBoxProvider)) {
+				
+				// LAMESPEC:
+				//     "The children of this control must implement ISelectionItemProvider."
+				//     Internal ListBox, Internal Button and Internal TextBox in
+				//     ComboBox implementation don't implement ISelectionItemProvider.
+				return;
+			}
+			
+			base.TestSelectionPatternChild (provider);
 		}
 		
 		#endregion

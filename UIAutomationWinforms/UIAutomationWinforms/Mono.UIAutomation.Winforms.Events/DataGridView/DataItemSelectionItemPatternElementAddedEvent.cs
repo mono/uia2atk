@@ -39,7 +39,7 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 			        SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent)
 		{
 			this.provider = (DataGridViewProvider.DataGridDataItemProvider) provider;
-			selected = this.provider.DataGridView.SelectedCells.Contains (this.provider.Row.Cells [0]);
+			wasSelected = this.provider.DataGridViewProvider.IsItemSelected ((ListItemProvider) provider);
 		}
 		
 		#endregion
@@ -48,29 +48,35 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 
 		public override void Connect ()
 		{
-			provider.DataGridView.SelectionChanged += OnSelectionChanged;
+			provider.DataGridView.CellStateChanged += OnCellStateChagned;
 		}
 
 		public override void Disconnect ()
 		{
-			provider.DataGridView.SelectionChanged -= OnSelectionChanged;
+			provider.DataGridView.CellStateChanged -= OnCellStateChagned;
 		}
 		
 		#endregion 
 		
 		#region Private Fields
 		
-		private void OnSelectionChanged (object sender, System.EventArgs args)
+		private void OnCellStateChagned (object sender, 
+		                                 SWF.DataGridViewCellStateChangedEventArgs args)
 		{
-			if (!selected
-			    && provider.DataGridView.SelectedCells.Count > 1
-			    && provider.DataGridView.SelectedCells.Contains (provider.Row.Cells [0]))
-				RaiseAutomationEvent ();
+			bool isSelected = this.provider.DataGridViewProvider.IsItemSelected ((ListItemProvider) provider);
 
-			selected = provider.DataGridView.SelectedCells.Contains (provider.Row.Cells [0]);
+			if (args.Cell.RowIndex == provider.Row.Index) {
+				if (wasSelected != isSelected
+				    && isSelected
+				    && provider.DataGridView.SelectedCells.Count > 1) {
+					RaiseAutomationEvent ();
+				}
+
+				wasSelected = isSelected;
+			}
 		}
 		
-		private bool selected;
+		private bool wasSelected;
 		private DataGridViewProvider.DataGridDataItemProvider provider;
 		
 		#endregion

@@ -37,7 +37,7 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 		
 		#region Constructors
 		
-		public ButtonInvokePatternInvokedEvent (ComboBoxProvider provider) 
+		public ButtonInvokePatternInvokedEvent (FragmentControlProvider provider) 
 			: base (provider, InvokePatternIdentifiers.InvokedEvent)
 		{
 		}
@@ -49,11 +49,13 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 		public override void Connect ()
 		{
 			((SWF.ComboBox) Provider.Control).DropDown += new EventHandler (OnDropDown);
+			((SWF.ComboBox) Provider.Control).DropDownClosed += new EventHandler (OnDropDown);
 		}
 
 		public override void Disconnect ()
 		{
 			((SWF.ComboBox) Provider.Control).DropDown -= new EventHandler (OnDropDown);
+			((SWF.ComboBox) Provider.Control).DropDownClosed -= new EventHandler (OnDropDown);
 		}
 
 		#endregion

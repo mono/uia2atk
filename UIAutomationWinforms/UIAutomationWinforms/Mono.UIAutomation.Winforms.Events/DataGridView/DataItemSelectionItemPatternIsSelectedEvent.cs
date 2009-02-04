@@ -40,7 +40,6 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 			        SelectionItemPatternIdentifiers.IsSelectedProperty)
 		{
 			this.provider = (DataGridViewProvider.DataGridDataItemProvider) provider;
-			selected = this.provider.DataGridView.SelectedCells.Contains (this.provider.Row.Cells [0]);
 		}
 		
 		#endregion
@@ -49,29 +48,27 @@ namespace Mono.UIAutomation.Winforms.Events.DataGridView
 
 		public override void Connect ()
 		{
-			provider.DataGridView.SelectionChanged += OnSelectionChanged;
+			provider.DataGridView.CellStateChanged += OnCellStateChagned;
 		}
 
 		public override void Disconnect ()
 		{
-			provider.DataGridView.SelectionChanged -= OnSelectionChanged;
+			provider.DataGridView.CellStateChanged -= OnCellStateChagned;
 		}
 		
 		#endregion 
 		
-		#region Protected methods
-		
-		private void OnSelectionChanged (object sender, System.EventArgs args)
+		#region Private methods
+
+		private void OnCellStateChagned (object sender, 
+		                                 SWF.DataGridViewCellStateChangedEventArgs args)
 		{
-			bool selectedChanged = provider.DataGridView.SelectedCells.Contains (provider.Row.Cells [0]);
-			
-			if (selectedChanged != selected) {
+			if (args.Cell.ColumnIndex == 0
+			    && args.Cell.RowIndex == provider.Row.Index) {
 			    RaiseAutomationPropertyChangedEvent ();
-				selected = selectedChanged;
 			}
 		}
 
-		private bool selected;
 		private DataGridViewProvider.DataGridDataItemProvider provider;
 		
 		#endregion

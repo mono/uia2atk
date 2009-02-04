@@ -1,3 +1,25 @@
+2009-02-04  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/DataGridViewProvider.cs: Using Row.Cells
+	[0] instead of Row.
+
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ComboBox/ButtonInvokeBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/ComboBox/ButtonInvokePatternInvokedEvent.cs:
+	Fixed InvokePattern.InvokeEvent.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternIsSelectedEvent.cs:
+	Fixed IsSelectedEvent.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternElementSelectedEvent.cs:
+	Fixed ElementSelectedEvent.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternElementAddedEvent.cs:
+	Fixed ElementAddedToSelectionEvent.
+
+	* Mono.UIAutomation.Winforms.Events/DataGridView/DataItemSelectionItemPatternElementRemovedEvent.cs:
+	Fixed ElementRemovedFromSelectionEvent.
+
 2009-02-04  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

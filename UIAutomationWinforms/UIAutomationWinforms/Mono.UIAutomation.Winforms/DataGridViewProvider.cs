@@ -90,9 +90,7 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (!ContainsItem (item))
 				return;
-			
-			DataGridDataItemProvider dataItem = (DataGridDataItemProvider) item;
-			dataItem.Row.Selected = false;
+			((DataGridDataItemProvider) item).Row.Cells [0].Selected = false;
 		}
 
 		public override void SelectItem (ListItemProvider item)
@@ -100,7 +98,7 @@ namespace Mono.UIAutomation.Winforms
 			if (!ContainsItem (item))
 				return;
 
-			((DataGridDataItemProvider) item).Row.Selected = true;
+			((DataGridDataItemProvider) item).Row.Cells [0].Selected = true;
 		}
 
 		public override void ScrollItemIntoView (ListItemProvider item)
@@ -115,9 +113,11 @@ namespace Mono.UIAutomation.Winforms
 		public override ListItemProvider[] GetSelectedItems ()
 		{
 			List<ListItemProvider> items = new List<ListItemProvider> ();
-			
-			foreach (SWF.DataGridViewRow row in datagridview.SelectedRows)
-				items.Add (GetItemProviderFrom (this, row, false));
+
+			foreach (SWF.DataGridViewRow row in datagridview.Rows) {
+				if (row.Cells [0].Selected)
+					items.Add (GetItemProviderFrom (this, row, false));
+			}
 
 			return items.ToArray ();
 		}
@@ -131,7 +131,7 @@ namespace Mono.UIAutomation.Winforms
 			if (!ContainsItem (item))
 				return false;
 
-			return ((DataGridDataItemProvider) item).Row.Selected;
+			return ((DataGridDataItemProvider) item).Row.Cells [0].Selected;
 		}
 		
 		public override int ItemsCount {
