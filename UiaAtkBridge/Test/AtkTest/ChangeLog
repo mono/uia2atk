@@ -1,3 +1,12 @@
+2009-02-04  Brad Taylor  <brad@getcoded.net>
+
+	* AtkTests.cs: Update InterfaceTable method call to use additional
+	parameter.
+
+	* AtkTester.cs: Refactor to pass against GailTest, and to correct
+	thinkos introduced by me not understanding the real reason behind
+	various magic numbers.
+
 2009-02-03  Brad Taylor  <brad@getcoded.net>
 
 	* AtkTests.cs: Change InterfaceTable call to use the new parameters.

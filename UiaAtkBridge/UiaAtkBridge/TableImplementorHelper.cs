@@ -63,23 +63,54 @@ namespace UiaAtkBridge
 
 		public Atk.Object RefAt (int row, int column)
 		{
-			IRawElementProviderSimple item = GridProvider.GetItem (row, column);
+			if (!AreRowColInBounds (row, column))
+				return null;
+
+			IRawElementProviderSimple[] headers = null;
+			if (tableProvider != null) {
+				headers = tableProvider.GetColumnHeaders ();
+			}
+
+			// Some controls will have column headers that need to
+			// be mapped to row 0
+			if (row == 0 && headers != null) {
+				if (column > headers.Length)
+					return null;
+
+				return AutomationBridge.GetAdapterForProviderLazy (
+					headers [column]);
+			}
+
+			// GetItem indexes through only items, not headers, so
+			// we need to remap the row number
+			if (headers != null)
+				row -= 1;
+
+			IRawElementProviderSimple item
+				= GridProvider.GetItem (row, column);
 			if (item == null)
 				return null;
+
 			return AutomationBridge.GetAdapterForProviderLazy (item);
 		}
 
 		public int GetIndexAt (int row, int column)
 		{
-			Atk.Object child = RefAt (row, column);
+			Adapter child = RefAt (row, column) as Adapter;
 			if (child == null)
 				return -1;
-			return child.IndexInParent;
+
+			return child.IndexInParent + 1;
 		}
 
 		public int GetColumnAtIndex (int index)
 		{
-			index = index % NColumns;
+			if (index <= 0)
+				return 0;
+
+			// Map from Atk's 1-based system to UIA's 0-based
+			// indicies
+			index -= 1;
 
 			Adapter child = resource.RefAccessibleChild (index) as Adapter;
 			if (child != null && child.Provider != null) {
@@ -93,13 +124,29 @@ namespace UiaAtkBridge
 
 		public int GetRowAtIndex (int index)
 		{
+			if (index <= 0)
+				return -1;
+
+			// Map from Atk's 1-based system to UIA's 0-based
+			// indicies
+			index -= 1;
+
 			int ret = 0;
+			if (tableProvider != null) {
+				IRawElementProviderSimple[] headers
+					= tableProvider.GetColumnHeaders ();
+				if (headers != null && headers.Length > 0) {
+					if (index >= headers.Length)
+						ret = 1;
+				}
+			}
+
 			Adapter child = resource.RefAccessibleChild (index) as Adapter;
 			if (child != null && child.Provider != null) {
 				IGridItemProvider g = (IGridItemProvider) child.Provider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
 				if (g != null)
-					ret = g.Row;
-				return ret + RowAdjustment (child.Provider);;
+					ret += g.Row;
+				return ret + RowAdjustment (child.Provider);
 			}
 			return -1;
 		}
@@ -124,11 +171,30 @@ namespace UiaAtkBridge
 
 		public int GetColumnExtentAt (int row, int column)
 		{
+			if (!AreRowColInBounds (row, column))
+				return -1;
+
+			IGridItemProvider g = null;
+
+			if (tableProvider != null) {
+				IRawElementProviderSimple[] headers
+					= tableProvider.GetColumnHeaders ();
+				if (headers != null && headers.Length > 0) {
+					if (row == 0) {
+						g = headers [column].GetPatternProvider (
+							GridItemPatternIdentifiers.Pattern.Id)
+								as IGridItemProvider;
+						return (g == null) ? 0 : g.ColumnSpan;
+					}
+					row -= 1;
+				}
+			}
+
 			IRawElementProviderSimple item = GridProvider.GetItem (row, column);
 			int controlTypeId = (int) item.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id);
 			if (controlTypeId == ControlType.Group.Id)
 				return NColumns;
-			IGridItemProvider g = (IGridItemProvider) item.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
+			g = (IGridItemProvider) item.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
 			if (g != null)
 				return g.ColumnSpan;
 			return -1;
@@ -136,8 +202,27 @@ namespace UiaAtkBridge
 
 		public int GetRowExtentAt (int row, int column)
 		{
+			if (!AreRowColInBounds (row, column))
+				return -1;
+
+			IGridItemProvider g = null;
+
+			if (tableProvider != null) {
+				IRawElementProviderSimple[] headers
+					= tableProvider.GetColumnHeaders ();
+				if (headers != null && headers.Length > 0) {
+					if (row == 0) {
+						g = headers [column].GetPatternProvider (
+							GridItemPatternIdentifiers.Pattern.Id)
+								as IGridItemProvider;
+						return (g == null) ? 0 : g.RowSpan;
+					}
+					row -= 1;
+				}
+			}
+
 			IRawElementProviderSimple item = GridProvider.GetItem (row, column);
-			IGridItemProvider g = (IGridItemProvider) item.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
+			g = (IGridItemProvider) item.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id);
 			if (g != null)
 				return g.RowSpan;
 			return 1;
@@ -154,7 +239,7 @@ namespace UiaAtkBridge
 			if (tableProvider == null)
 				return null;
 
-			IRawElementProviderSimple []items = tableProvider.GetColumnHeaders ();
+			IRawElementProviderSimple [] items = tableProvider.GetColumnHeaders ();
 			if (column < 0 || column >= items.Length)
 				return null;
 
@@ -166,7 +251,7 @@ namespace UiaAtkBridge
 			if (tableProvider == null)
 				return null;
 			
-			IRawElementProviderSimple []items = tableProvider.GetColumnHeaders ();
+			IRawElementProviderSimple [] items = tableProvider.GetColumnHeaders ();
 			if (column < 0 || column >= items.Length)
 				return null;
 			return AutomationBridge.GetAdapterForProviderLazy (items [column]);
@@ -177,7 +262,7 @@ namespace UiaAtkBridge
 			if (tableProvider == null)
 				return null;
 
-			IRawElementProviderSimple []items = tableProvider.GetRowHeaders ();
+			IRawElementProviderSimple [] items = tableProvider.GetRowHeaders ();
 			if (row < 0 || row >= items.Length)
 				return null;
 
@@ -189,7 +274,7 @@ namespace UiaAtkBridge
 			if (tableProvider == null)
 				return null;
 			
-			IRawElementProviderSimple []items = tableProvider.GetRowHeaders ();
+			IRawElementProviderSimple [] items = tableProvider.GetRowHeaders ();
 			if (row < 0 || row >= items.Length)
 				return null;
 			return AutomationBridge.GetAdapterForProviderLazy (items [row]);
@@ -280,6 +365,20 @@ namespace UiaAtkBridge
 
 		public bool IsRowSelected (int row)
 		{
+			if (row < 0 || row >= NRows)
+				return false;
+
+			if (tableProvider != null) {
+				IRawElementProviderSimple[] headers
+					= tableProvider.GetColumnHeaders ();
+				if (headers != null && headers.Length > 0) {
+					// In UIA, header rows cannot be selected
+					if (row == 0)
+						return false;
+					row -= 1;
+				}
+			}
+
 			IRawElementProviderSimple item;
 			try {
 				item = GridProvider.GetItem (row, 0);
@@ -297,12 +396,22 @@ namespace UiaAtkBridge
 
 		public bool IsSelected (int row, int column)
 		{
-			if (row >= NRows || row < 0
-			    || column >= NColumns || column < 0)
-			    return false;
+			if (!AreRowColInBounds (row, column))
+				return false;
 
 			if (GridProvider == null)
 				return false;
+
+			if (tableProvider != null) {
+				IRawElementProviderSimple[] headers
+					= tableProvider.GetColumnHeaders ();
+				if (headers != null && headers.Length > 0) {
+					// In UIA, header rows cannot be selected
+					if (row == 0)
+						return false;
+					row -= 1;
+				}
+			}
 
 			IRawElementProviderSimple item = GridProvider.GetItem (row, column);
 			if (item == null)
@@ -317,8 +426,22 @@ namespace UiaAtkBridge
 
 		public bool AddRowSelection (int row)
 		{
+			if (row < 0 || row >= NRows)
+				return false;
+
 			if (GridProvider == null)
 				return false;
+
+			if (tableProvider != null) {
+				IRawElementProviderSimple[] headers
+					= tableProvider.GetColumnHeaders ();
+				if (headers != null && headers.Length > 0) {
+					// In UIA, header rows cannot be selected
+					if (row == 0)
+						return false;
+					row -= 1;
+				}
+			}
 			
 			IRawElementProviderSimple item = GridProvider.GetItem (row, 0);
 			if (item == null)
@@ -340,8 +463,22 @@ namespace UiaAtkBridge
 
 		public bool RemoveRowSelection (int row)
 		{
+			if (row < 0 || row >= NRows)
+				return false;
+
 			if (GridProvider == null)
-			    return false;
+				return false;
+
+			if (tableProvider != null) {
+				IRawElementProviderSimple[] headers
+					= tableProvider.GetColumnHeaders ();
+				if (headers != null && headers.Length > 0) {
+					// In UIA, header rows cannot be selected
+					if (row == 0)
+						return false;
+					row -= 1;
+				}
+			}
 			
 			IRawElementProviderSimple item = GridProvider.GetItem (row, 0);
 			if (item == null)
@@ -380,6 +517,12 @@ namespace UiaAtkBridge
 			if (GridProvider is TableGroupAggregator)
 				return ((TableGroupAggregator)GridProvider).RowAdjustment ((IRawElementProviderFragment)provider);
 			return 0;
+		}
+
+		private bool AreRowColInBounds (int row, int col)
+		{
+			return (row >= 0 && row < NRows)
+			       && (col >= 0 && col < NColumns);
 		}
 	}
 

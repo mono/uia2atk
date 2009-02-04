@@ -2,24 +2,54 @@
 
 DLL=UiaAtkBridgeTest.dll
 
+TEST_DISPLAY=:1
 NUNIT_FLAGS=-nothread
 
+while getopts c:x o
+do case "$o" in
+    c)  component="$OPTARG";;
+    x)  xephyr="yes";;
+    \?)  echo "Usage: $0 -x -c <control>" && exit 1;;
+esac
+done
+
+# Reset $@
+shift `echo $OPTIND-1 | bc`
+NUNIT_ARGS=$*
+
+if [ "x$component" != "x" ]; then
+	echo "Running only the unit tests for $component..."
+	echo
+
+	NUNIT_ARGS="--run=UiaAtkBridgeTest.BridgeTests.${component}"
+fi
+
+if [ "x$xephyr" == "xyes" ]; then
+	Xephyr -ac -screen 800x600 -br -reset -terminate $TEST_DISPLAY &
+	xephyr_pid=$!
+
+	export DISPLAY=$TEST_DISPLAY
+
+	gnome-session &
+	metacity &
+	metacity_pid=$!
+fi
+
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:@TOPDIR@/bridge-glue/.libs/
-#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../../../bridge-glue/.libs/
 
 if [ -f /usr/lib/gtk-2.0/modules/libatk-bridge.so ]; then
-	echo We are in a 32bits env
+	echo We are in a 32 bit environment
 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/gtk-2.0/modules/
 elif [ -f /usr/lib64/gtk-2.0/modules/libatk-bridge.so ]; then
-	echo We are in a 64bits env
+	echo We are in a 64 bit environment
 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/gtk-2.0/modules/
 else
 	echo libatk-bridge.so not found && exit
 fi
 
 (cd bin/Debug; \
-	@MONO@ --debug @NUNIT_PATH@/nunit-console.exe -labels ${NUNIT_FLAGS} ${DLL} $*)
+	@MONO@ --debug @NUNIT_PATH@/nunit-console.exe -labels ${NUNIT_FLAGS} ${DLL} ${NUNIT_ARGS})
 
-#	@MONO@ --debug \
-#		@NUNIT_PATH@/nunit-console.exe ${NUNIT_FLAGS} ${DLL} \
-#		-run=UiaAtkBridgeTest.BridgeTester.TextBoxView $*)
+if [ "x$xephyr" == "xyes" ]; then
+	kill $metacity_pid $xephyr_pid
+fi

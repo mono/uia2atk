@@ -1,3 +1,13 @@
+2009-02-04  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/HeaderItemGridItemProviderBehavior.cs: 
+	Implement IGridItemPattern.
+
+	* Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs: 
+	Add GridItemPattern for header items.  Technically, I don't think we
+	have to, but it allows the bridge to tell what column they map to.
+
 2009-02-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/Helper.cs:

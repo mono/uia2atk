@@ -1021,22 +1021,7 @@ namespace UiaAtkBridgeTest
 			Atk.Table table = CastToAtkInterface<Atk.Table> (tableChild);
 			Assert.IsNotNull (table);
 
-			InterfaceTable (table, 6, 7, 0, 0);
-			
-			Atk.Object backButton
-				= accessible.RefAccessibleChild (
-					accessible.NAccessibleChildren - 2);
-			Atk.Object forwardButton
-				= accessible.RefAccessibleChild (
-					accessible.NAccessibleChildren - 1);
-
-			Atk.Action action;
-
-			action = CastToAtkInterface<Atk.Action> (backButton);
-			InterfaceAction (type, action, backButton);
-
-			action = CastToAtkInterface<Atk.Action> (forwardButton);
-			InterfaceAction (type, action, forwardButton);
+			InterfaceTable (table, 6, 7, 0, 0, true);
 		}
 		
 		// This test tries to simulate inserting and deleting a single

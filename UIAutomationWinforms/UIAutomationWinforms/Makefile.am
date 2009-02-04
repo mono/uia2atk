@@ -126,6 +126,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/TableProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/GridProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/HeaderItemGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemSelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ListItemTableItemProviderBehavior.cs \

@@ -1006,7 +1006,7 @@ namespace UiaAtkBridgeTest
 				subcomboChild = accessible.RefAccessibleChild (0);
 
 			Atk.Table atkTable = CastToAtkInterface <Atk.Table> (subcomboChild);
-			InterfaceTable (atkTable, names.Length, 1, 0, 0);
+			InterfaceTable (atkTable, names.Length, 1, 0, 0, false);
 
 			CheckComboBoxMenuChild (subcomboChild, names, true, false);
 

@@ -1,3 +1,9 @@
+2009-02-04  Brad Taylor  <brad@getcoded.net>
+
+	* TableImplementorHelper.cs: Refactor to properly handle headers (hint,
+	we have to manually map row 0 to the header list because UIA
+	separates things out), and rework to better mirror GAIL's behavior.
+
 2009-02-03  Brad Taylor  <brad@getcoded.net>
 
 	* ParentAdapter.cs: Avoid a deadlock with RefAccessibleChild by pulling

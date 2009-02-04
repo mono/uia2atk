@@ -1832,12 +1832,7 @@ namespace UiaAtkBridgeTest
 
 		protected int GetExpectedIndexAtRowColumn (int row, int column, int numRows, int numCols)
 		{
-			// Why?  Who knows.
-			if (row == 0 && column == 0)
-				return 1;
-
-			// NOTE: Row 0 contains column headers
-			if (row <= 0 || column < 0)
+			if (row < 0 || column < 0)
 				return -1;
 
 			if (row >= numRows || column >= numCols)
@@ -1847,7 +1842,8 @@ namespace UiaAtkBridgeTest
 		}
 
 		protected void InterfaceTable (Atk.Table implementor, int expectedRows, int expectedCols,
-		                               int expectedSelectedRows, int expectedSelectedColumns)
+		                               int expectedSelectedRows, int expectedSelectedColumns,
+		                               bool supportsRowColExtents)
 		{
 			int numRows = implementor.NRows;
 			int numCols = implementor.NColumns;
@@ -1890,15 +1886,7 @@ namespace UiaAtkBridgeTest
 						               r, c)
 					);
 
-					int expectedCol = expectedIndex < 0 ? 0 : c;
-					Assert.AreEqual (
-						expectedCol,
-						implementor.GetColumnAtIndex (expectedIndex),
-						String.Format ("Incorrect column at index {0}",
-						               expectedIndex)
-					);
-
-					int expectedRow = expectedIndex <= 0 ? -1 : r;
+					int expectedRow = expectedIndex < 0 ? -1 : r;
 					Assert.AreEqual (
 						expectedRow,
 						implementor.GetRowAtIndex (expectedIndex),
@@ -1906,14 +1894,32 @@ namespace UiaAtkBridgeTest
 						               expectedIndex)
 					);
 
+					int expectedCol = expectedIndex < 0 ? 0 : c;
 					Assert.AreEqual (
-						0, implementor.GetColumnExtentAt (r, c),
+						expectedCol,
+						implementor.GetColumnAtIndex (expectedIndex),
+						String.Format ("Incorrect column at index {0}",
+						               expectedIndex)
+					);
+					
+					// FIXME: Remove this gross simplification
+					int expectedExtents = 1;
+					if (r < 0 || c < 0 || r >= numRows || c >= numCols)
+						expectedExtents = -1;
+
+					if (!supportsRowColExtents)
+						expectedExtents = 0;
+
+					Assert.AreEqual (
+						expectedExtents,
+						implementor.GetColumnExtentAt (r, c),
 						String.Format ("Incorrect column extent at ({0}, {1})",
 						               r, c)
 					);
 
 					Assert.AreEqual (
-						0, implementor.GetRowExtentAt (r, c),
+						expectedExtents,
+						implementor.GetRowExtentAt (r, c),
 						String.Format ("Incorrect row extent at ({0}, {1})",
 						               r, c)
 					);

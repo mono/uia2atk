@@ -1,3 +1,7 @@
+2009-02-04  Brad Taylor  <brad@getcoded.net>
+
+	* BridgeTests.cs: Remove unneccessary button test.
+
 2009-02-03  Brad Taylor  <brad@getcoded.net>
 
 	* BridgeTests.cs: Implement test for MonthCalendar.

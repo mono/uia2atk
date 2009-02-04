@@ -448,6 +448,14 @@ namespace Mono.UIAutomation.Winforms
 			get { return index; }
 		}
 
+		public override void Initialize ()
+		{
+			base.Initialize ();
+
+			SetBehavior (GridItemPatternIdentifiers.Pattern,
+			             new HeaderItemGridItemProviderBehavior (this));
+		}
+
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)
