@@ -1,3 +1,13 @@
+2009-02-04  Ray Wang <rawang@novell.com>
+
+	* samples/tablelayoutpanel.py: add more buttons to reflect the changes
+	in cells
+	* testers/tablelayoutpanel,
+	* testers/tablelayoutpanel/__init__.py,
+	* testers/tablelayoutpanel/tablelayoutpanelframe.py, 
+	* testers/tablelayoutpanel_basic_ops.py: add tablelayoutpanel strongwind
+	test
+
 2009-02-04  Calen Chen <cachen@novell.com>
 
 	* testers/toolbar_basic_ops.py: add bug472279 reference
