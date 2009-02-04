@@ -268,6 +268,8 @@ namespace UiaAtkBridgeTest
 				((SWF.Control)comp).Enabled = false;
 			else if (comp is SWF.ToolStripItem)
 				((SWF.ToolStripItem)comp).Enabled = false;
+			else if (comp is SWF.ToolBarButton)
+				((SWF.ToolBarButton)comp).Enabled = false;
 			else
 				throw new NotSupportedException ();
 		}
@@ -280,6 +282,8 @@ namespace UiaAtkBridgeTest
 				((SWF.Control)comp).Enabled = true;
 			else if (comp is SWF.ToolStripItem)
 				((SWF.ToolStripItem)comp).Enabled = true;
+			else if (comp is SWF.ToolBarButton)
+				((SWF.ToolBarButton)comp).Enabled = true;
 			else
 				throw new NotSupportedException ();
 		}

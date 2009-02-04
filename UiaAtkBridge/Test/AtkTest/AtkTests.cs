@@ -73,12 +73,15 @@ namespace UiaAtkBridgeTest
 		
 		public void Button (Atk.Object accessible, string name)
 		{
+			bool stopEarly = false;
 			BasicWidgetType type = BasicWidgetType.NormalButton;
 
 			if (name == null)
 				name = "test";
 			if (accessible == null)
 				accessible = GetAccessible (type, name);
+			else
+				stopEarly = true;
 
 			Interfaces (accessible,
 			            typeof (Atk.Component),
@@ -96,16 +99,19 @@ namespace UiaAtkBridgeTest
 			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
 			InterfaceComponent (type, atkComponent);
 
-			InterfaceText (type);
-
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
+
+			InterfaceText (type);
 
 			PropertyRole (type, accessible);
 
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "Button numChildren");
 
 			Parent (type, accessible);
+
+			if (stopEarly)
+				return;
 
 			//test with an image
 			Atk.Image atkWithOutImage, atkWithImage;

@@ -1,3 +1,8 @@
+2009-02-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Tests accommodated to new provider support
+	in UIAutomationWinforms. AtkAction now passes.
+
 2009-02-04  Brad Taylor  <brad@getcoded.net>
 
 	* BridgeTests.cs: Remove unneccessary button test.
