@@ -239,7 +239,9 @@ namespace Mono.UIAutomation.Winforms
 
 		public void SelectItem (MonthCalendarListItemProvider itemProvider)
 		{
-			calendar.SetDate (itemProvider.Date);
+			calendar.SelectionRange
+				= new SelectionRange (itemProvider.Date,
+			                              itemProvider.Date);
 		}
 
 		public bool IsItemSelected (MonthCalendarListItemProvider itemProvider)
@@ -284,23 +286,18 @@ namespace Mono.UIAutomation.Winforms
 
 		private void RemoveChildren ()
 		{
-			RemoveChildProvider (false, backButton);
+			RemoveChildProvider (true, backButton);
 			backButton.Terminate ();
 
-			RemoveChildProvider (false, forwardButton);
+			RemoveChildProvider (true, forwardButton);
 			forwardButton.Terminate ();
 
-			MonthCalendarListItemProvider[] children
-				= new MonthCalendarListItemProvider[gridChildren.Count];
-			gridChildren.Values.CopyTo (children, 0);
-			
 			foreach (MonthCalendarListItemProvider item
-			         in children) {
-				RemoveChildProvider (false, item);
+			         in gridChildren.Values) {
+				RemoveChildProvider (true, item);
 				item.Terminate ();
 			}
 
-			OnNavigationChildrenCleared (true);
 			gridChildren.Clear ();
 		}
 
