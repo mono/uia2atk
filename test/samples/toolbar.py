@@ -16,8 +16,10 @@ It can be used for Autotest tools(e.g. Strongwind) to test the behaviors of cont
 
 # imports
 import os
+import System
 from sys import path
 from os.path import exists
+
 
 import clr
 clr.AddReference('System.Windows.Forms')
@@ -25,7 +27,6 @@ clr.AddReference('System.Drawing')
 
 from System.Windows.Forms import *
 from System.Drawing import *
-import System
 
 harness_dir = path[0]
 i = harness_dir.rfind("/")
@@ -75,6 +76,7 @@ class ToolBarSample(Form):
         self.toolbar_btn2 = ToolBarButton()
         self.toolbar_btn3 = ToolBarButton()
         self.toolbar_btn4 = ToolBarButton()
+        self.toolbar_btn5 = ToolBarButton()
         self.toolbar_btn1.Text = "Open"
         self.toolbar_btn2.Text = "Save"
         self.toolbar_btn3.Text = "Print"
@@ -83,6 +85,24 @@ class ToolBarSample(Form):
         self.toolbar_btn2.ImageIndex = 1
         self.toolbar_btn3.ImageIndex = 2
         self.toolbar_btn4.ImageIndex = 3
+        self.toolbar_btn1.Tag = 0
+        self.toolbar_btn5.Style = ToolBarButtonStyle.Separator
+
+        #create label1
+        self.label1 = Label()
+        self.label1.Text = "page:"
+        self.label1.Size = Size(50,18)
+        #self.label1.TextAlign = ContentAlignment.MiddleLeft;
+        self.label1.Dock = DockStyle.Right
+
+        #setup combobox
+        self.combobox = ComboBox()
+        self.combobox.Size = Size(50,18)
+        self.combobox.Dock = DockStyle.Right
+        self.combobox.DropDownStyle = ComboBoxStyle.DropDownList 
+        # add items in ComboBox
+        for i in range(10):
+            self.combobox.Items.Add(str(i))
         
         # create dialogs
         self.openfiledialog = OpenFileDialog()
@@ -94,6 +114,9 @@ class ToolBarSample(Form):
         self.toolbar.Buttons.Add(self.toolbar_btn2)
         self.toolbar.Buttons.Add(self.toolbar_btn3)
         self.toolbar.Buttons.Add(self.toolbar_btn4)
+        self.toolbar.Buttons.Add(self.toolbar_btn5)
+        self.toolbar.Controls.Add(self.label1)
+        self.toolbar.Controls.Add(self.combobox)
         self.Controls.Add(self.toolbar)
         self.Controls.Add(self.label)
 

@@ -1,3 +1,12 @@
+2009-02-04  Calen Chen <cachen@novell.com>
+
+	* samples/toolbar.py: add one toolbarbutton with separator style, use
+	toolbar.Controls.Add to add one label and one combobox
+	* testers/toolbar/toolbarframe.py: add searchItems method to check how 
+	many children under toolbar is accessible, in this test, those widget
+	added by Controls are unaccessible 
+	* testers/toolbar_basic_ops.py: add test to use searchItems method
+
 2009-02-04  Ray Wang <rawang@novell.com>
 
 	* samples/tablelayoutpanel.py: add more buttons to reflect the changes
