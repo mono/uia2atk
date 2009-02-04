@@ -324,6 +324,8 @@ namespace Mono.UIAutomation.Winforms
 	
 			public override void UnselectItem (ListItemProvider item)
 			{
+				if (ContainsItem (item) == true)
+					comboboxControl.SelectedIndex = -1;
 			}
 			
 			public override bool IsItemSelected (ListItemProvider item)

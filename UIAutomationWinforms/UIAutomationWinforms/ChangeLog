@@ -1,3 +1,8 @@
+2009-02-04  Mario Carrion  <mcarrion@novell.com>
+
+	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: UnselectItem
+	implementation.
+
 2009-02-04  Brad Taylor  <brad@getcoded.net>
 
 	* Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs: 

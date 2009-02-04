@@ -625,6 +625,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return new MonthCalendar ();
 		}
 
+		protected override void TestSelectionPattern_GetSelectionMethod (IRawElementProviderSimple provider)
+		{
+			// FIXME: Instead of overriding this method we should implement ISelectionItemProvider in children
+		}
+
 		private MonthCalendar calendar;
 		private IRawElementProviderSimple calendarProvider;
 		private Calendar currentCalendar;

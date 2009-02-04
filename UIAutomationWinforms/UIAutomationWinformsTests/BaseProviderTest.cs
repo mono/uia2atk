@@ -958,6 +958,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "LocalizedControlTypeProperty");
 
 			// DEPENDS: IScrollProvider
+
+			TestSelectionPattern_GetSelectionMethod (provider);
 		}
 
 		protected virtual void TestCheckBoxPatterns (IRawElementProviderSimple provider) 
@@ -1010,6 +1012,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "LocalizedControlTypeProperty");
 
 			// DEPENDS: IScrollProvider
+			TestSelectionPattern_GetSelectionMethod (provider);
 		}
 
 		protected virtual void TestDataItemPatterns (IRawElementProviderSimple provider) 
@@ -1151,6 +1154,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (Catalog.GetString ("list"),
 			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
 			                 "LocalizedControlTypeProperty");
+
+			TestSelectionPattern_GetSelectionMethod (provider);
 		}
 
 		protected virtual void TestListItemPatterns (IRawElementProviderSimple provider) 
@@ -1309,6 +1314,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (Catalog.GetString ("split button"),
 			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
 			                 "LocalizedControlTypeProperty");
+
+			TestExpandCollapsePattern_ExpandCollapseStatePropertyEvent (provider);
+			TestInvokePattern_InvokedEvent (provider);
 		}
 
 		protected virtual void TestStatusBarPatterns (IRawElementProviderSimple provider) 
@@ -1333,6 +1341,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (Catalog.GetString ("tab"),
 			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
 			                 "LocalizedControlTypeProperty");
+
+			TestSelectionPattern_GetSelectionMethod (provider);
 		}
 
 		protected virtual void TestTabItemPatterns (IRawElementProviderSimple provider) 
@@ -1454,6 +1464,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (Catalog.GetString ("tree item"),
 			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
 			                 "LocalizedControlTypeProperty");
+
+			TestExpandCollapsePattern_ExpandCollapseStatePropertyEvent (provider);
 		}
 
 		protected virtual void TestWindowPatterns (IRawElementProviderSimple provider) 
@@ -1842,9 +1854,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			if (selectionProvider == null)
 				Assert.Fail ("ISelectionItemProvider.Parent {0} is not implementing ISelectionProvider", parent.GetType ());
 
+			bool selectionIsRequired = selectionProvider.IsSelectionRequired;
+			
 			// Item is selected, we try to unselect it
-			if (selectionItemProvider.IsSelected)
+			if (selectionItemProvider.IsSelected) {
+				// We are still trying to remove from selection to make sure the
+				// exceptions are thrown, however we won't continue adding/removing
 				TestSelectionItemPattern_RemoveFromSelection (parent, child);
+			}
 
 			int selectedItems = selectionProvider.GetSelection ().Length;
 
@@ -1862,21 +1879,35 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					               string.Format ("{0} ElementAddedToSelectionEvent event.", child.GetType ()));
 				// SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent *ONLY*.
 				} else {
-					Assert.IsNotNull (bridge.GetAutomationEventFrom (provider,
-					                                                 SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent.Id),
-					                  string.Format ("{0} ElementAddedToSelectionEvent event.", provider.GetType ()));
-					Assert.IsNull (bridge.GetAutomationEventFrom (provider,
-					                                              SelectionItemPatternIdentifiers.ElementSelectedEvent.Id),
-					               string.Format ("{0} ElementSelectedEvent event.", provider.GetType ()));
+					if (selectionProvider.CanSelectMultiple) {
+						Assert.IsNotNull (bridge.GetAutomationEventFrom (provider,
+						                                                 SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent.Id),
+						                  string.Format ("{0} ElementAddedToSelectionEvent event.", provider.GetType ()));
+						Assert.IsNull (bridge.GetAutomationEventFrom (provider,
+						                                              SelectionItemPatternIdentifiers.ElementSelectedEvent.Id),
+						               string.Format ("{0} ElementSelectedEvent event.", provider.GetType ()));
+					} else if (!selectionItemProvider.IsSelected) {
+						// We should get some selected event, not sure
+						Assert.Greater (bridge.GetAutomationEventCount (SelectionItemPatternIdentifiers.ElementSelectedEvent), 1);
+						
+						Assert.IsNotNull (bridge.GetAutomationEventFrom (provider,
+						                                                 SelectionItemPatternIdentifiers.ElementSelectedEvent.Id),
+						               string.Format ("{0} ElementSelectedEvent event.", provider.GetType ()));
+					}
 				}
 				Assert.IsNull (bridge.GetAutomationEventFrom (provider,
 				                                              SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent.Id),
 				               string.Format ("{0} ElementRemovedFromSelectionEvent event.", provider.GetType ()));
 
-				// IsSelectedProperty
-				Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (provider,
-				                                                         SelectionItemPatternIdentifiers.IsSelectedProperty.Id),
-				                 string.Format ("{0} IsSelectedProperty event.", provider.GetType ()));
+
+				// Selection should not be required, because when required the 
+				// selection doesn't change.
+				if (!selectionIsRequired) {
+					// IsSelectedProperty
+					Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (provider,
+					                                                         SelectionItemPatternIdentifiers.IsSelectedProperty.Id),
+					                 string.Format ("{0} IsSelectedProperty event.", provider.GetType ()));
+				}
 				
 			} catch (InvalidOperationException) {
 				if (!selectionProvider.CanSelectMultiple && selectionProvider.GetSelection ().Length == 1) {
@@ -1895,6 +1926,17 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				= provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id) as ISelectionItemProvider;
 			if (selectionItemProvider == null)
 				Assert.Fail ("Provider {0} is not implementing ISelectionItemProvider", provider.GetType ());
+
+			IRawElementProviderFragment child = provider as IRawElementProviderFragment;
+			if (child == null)
+				Assert.Fail ("Unable to test a non-navigable ISelectionItemProvider");
+
+			// Parent must implement Selection
+			IRawElementProviderFragment parent = child.Navigate (NavigateDirection.Parent);
+			if (parent == null)
+				Assert.Fail ("We need parent to test ISelectionItemProvider.");
+
+			TestSelectionItemPattern_RemoveFromSelection (parent, child);
 		}
 		
 		protected virtual void TestSelectionItemPattern_SelectMethod (IRawElementProviderSimple provider)
@@ -1903,6 +1945,48 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				= provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id) as ISelectionItemProvider;
 			if (selectionItemProvider == null)
 				Assert.Fail ("Provider {0} is not implementing ISelectionItemProvider", provider.GetType ());
+
+			IRawElementProviderFragment child = provider as IRawElementProviderFragment;
+			if (child == null)
+				Assert.Fail ("Unable to test a non-navigable ISelectionItemProvider");
+
+			// Parent must implement Selection
+			IRawElementProviderFragment parent = child.Navigate (NavigateDirection.Parent);
+			if (parent == null)
+				Assert.Fail ("We need parent to test ISelectionItemProvider.");
+
+			ISelectionProvider selectionProvider
+				= parent.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id) as ISelectionProvider;
+			if (selectionProvider == null)
+				Assert.Fail ("ISelectionItemProvider.Parent {0} is not implementing ISelectionProvider", parent.GetType ());
+
+			// Item is selected, we try to unselect it
+			if (selectionItemProvider.IsSelected)
+				TestSelectionItemPattern_RemoveFromSelection (parent, child);
+
+			if (selectionItemProvider.IsSelected && selectionProvider.IsSelectionRequired)
+				return;
+
+			int selectedItems = selectionProvider.GetSelection ().Length;
+
+			bridge.ResetEventLists ();
+			selectionItemProvider.Select ();
+			
+			// IsSelectedProperty
+			AutomationPropertyChangedEventTuple tuple
+				= bridge.GetAutomationPropertyEventFrom (provider,
+				                                         SelectionItemPatternIdentifiers.IsSelectedProperty.Id);
+			Assert.IsNotNull (tuple,
+			                  string.Format ("{0} IsSelectedProperty event.", provider.GetType ()));
+			Assert.IsFalse ((bool) tuple.e.OldValue, "Old value must be false");
+			Assert.IsTrue ((bool) tuple.e.NewValue, "New value must be false");
+
+
+			if (selectionProvider.CanSelectMultiple)
+				Assert.Greater (selectionProvider.GetSelection ().Length,
+				                selectedItems,
+				                "Selection must be greater that old selectedItems");
+				
 		}
 		
 		protected virtual void TestSelectionItemPattern_IsSelectedPropertyEvent (IRawElementProviderSimple provider)
@@ -1911,6 +1995,47 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				= provider.GetPatternProvider (SelectionItemPatternIdentifiers.Pattern.Id) as ISelectionItemProvider;
 			if (selectionItemProvider == null)
 				Assert.Fail ("Provider {0} is not implementing ISelectionItemProvider", provider.GetType ());
+
+			IRawElementProviderFragment child = provider as IRawElementProviderFragment;
+			if (child == null)
+				Assert.Fail ("Unable to test a non-navigable ISelectionItemProvider");
+
+			// Parent must implement Selection
+			IRawElementProviderFragment parent = child.Navigate (NavigateDirection.Parent);
+			if (parent == null)
+				Assert.Fail ("We need parent to test ISelectionItemProvider.");
+
+			ISelectionProvider selectionProvider
+				= parent.GetPatternProvider (SelectionPatternIdentifiers.Pattern.Id) as ISelectionProvider;
+			if (selectionProvider == null)
+				Assert.Fail ("ISelectionItemProvider.Parent {0} is not implementing ISelectionProvider", parent.GetType ());
+
+			// Item is selected, we try to unselect it
+			if (selectionItemProvider.IsSelected)
+				TestSelectionItemPattern_RemoveFromSelection (parent, child);
+
+			if (selectionItemProvider.IsSelected && selectionProvider.IsSelectionRequired)
+				return;
+
+			int selectedItems = selectionProvider.GetSelection ().Length;
+
+			bridge.ResetEventLists ();
+			selectionItemProvider.Select ();
+			
+			// IsSelectedProperty
+			AutomationPropertyChangedEventTuple tuple
+				= bridge.GetAutomationPropertyEventFrom (provider,
+				                                         SelectionItemPatternIdentifiers.IsSelectedProperty.Id);
+			Assert.IsNotNull (tuple,
+			                  string.Format ("{0} IsSelectedProperty event.", provider.GetType ()));
+			Assert.IsFalse ((bool) tuple.e.OldValue, "Old value must be false");
+			Assert.IsTrue ((bool) tuple.e.NewValue, "New value must be false");
+
+			Assert.IsTrue (selectionItemProvider.IsSelected, "Must be selected");
+
+			Assert.Greater (selectionProvider.GetSelection ().Length,
+			                selectedItems,
+			                "Selection must be greater that old selectedItems");
 		}
 
 		private void TestSelectionItemPattern_RemoveFromSelection (IRawElementProviderFragment selectionParent,
@@ -1929,6 +2054,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			int selectedItems = selectionProvider.GetSelection ().Length;
 			Assert.Greater (selectedItems, 0, "At least one item must be selected");
+
+			bool selectionIsRequired = selectionProvider.IsSelectionRequired;
+			bool exceptionCatch = false;
 			
 			try {
 				bridge.ResetEventLists ();
@@ -1954,13 +2082,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				               string.Format ("{0} ElementAddedToSelectionEvent event.", selectionItemChild.GetType ()));
 				
 				// IsSelectedProperty
-				Assert.Greater (bridge.GetAutomationPropertyEventCount (SelectionItemPatternIdentifiers.IsSelectedProperty), 0);
-				
 				Assert.IsNotNull (bridge.GetAutomationPropertyEventFrom (selectionItemChild,
 				                                                         SelectionItemPatternIdentifiers.IsSelectedProperty.Id),
 				                  string.Format ("{0} IsSelectedProperty event.", selectionItemChild.GetType ()));
 				
-			} catch (InvalidOperationException) {
+			} catch (InvalidOperationException) {				
 				if (!selectionProvider.CanSelectMultiple && selectionProvider.IsSelectionRequired) {
 					// RemoveFromSelection is called on a single-selection 
 					// container where IsSelectionRequiredProperty = true and an element is already selected.
@@ -1969,7 +2095,11 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 					// IsSelectionRequiredProperty = true and only one element is selected.
 				} else
 					Assert.Fail ("You should not be throwing InvalidOperationException when calling RemoveFromSelection.");
+
+				exceptionCatch = true;
 			}
+			
+			Assert.AreEqual (exceptionCatch, selectionIsRequired, "Exception not thrown");
 		}
 		
 		private void ValidateToggleState (ToggleState old, ToggleState got)

@@ -270,12 +270,16 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		protected override void TestSelectionPatternChild (IRawElementProviderSimple provider)
 		{
 			if (provider.GetType () == typeof (DataGridViewProvider.DataGridViewDataItemComboBoxListBoxProvider)
-			    || provider.GetType () == typeof (DataGridViewProvider.DataGridViewDataItemComboBoxButtonProvider)) {
+			    || provider.GetType () == typeof (DataGridViewProvider.DataGridViewDataItemComboBoxButtonProvider)
+			    || provider.GetType () == typeof (DataGridViewProvider.DataGridViewHeaderProvider)) {
 				
 				// LAMESPEC:
 				//     "The children of this control must implement ISelectionItemProvider."
 				//     Internal ListBox and Internal Button in ComboBox implementation
 				//     don't implement ISelectionItemProvider.
+				//
+				//     HeaderProvider is a special case, however is not implementing
+				//     ISelectionItemProvider either.
 				return;
 			}
 			

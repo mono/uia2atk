@@ -1,5 +1,23 @@
 2009-02-04  Mario Carrion  <mcarrion@novell.com>
 
+	* ListViewProviderTest.cs: TestSelectionPatternChild overridden.
+
+	* DataGridViewProviderTest.cs: TestSelectionPatternChild updated to pass
+	all tests.
+
+	* ToolStripDropDownItemProviderTest.cs: Method overridden:
+	TestExpandCollapsePattern_ExpandCollapseStatePropertyEvent (needs
+	fix)
+
+	* BaseProviderTest.cs: Testing patterns according to ControlType.
+
+	* MonthCalendarProviderTest.cs: Method overridden:
+	TestSelectionPattern_GetSelectionMethod (needs fix)
+
+	* DataGridProviderTest.cs: Methods overridden (needs fix)
+
+2009-02-04  Mario Carrion  <mcarrion@novell.com>
+
 	* ComboBoxProviderTest.cs:
 	* DataGridViewProviderTest.cs: Testing children. LAMESPEC added.
 

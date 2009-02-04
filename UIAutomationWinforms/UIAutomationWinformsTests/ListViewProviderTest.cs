@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008,2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //	Mario Carrion <mcarrion@novell.com>
@@ -2158,6 +2158,20 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		protected override Control GetControlInstance ()
 		{
 			return new ListView ();
+		}
+
+		protected override void TestSelectionPatternChild (IRawElementProviderSimple provider)
+		{
+			if (provider.GetType () == typeof (ListProvider.ListScrollBarProvider)
+			    || provider.GetType () == typeof (ListViewProvider.ListViewGroupProvider)
+			    || provider.GetType () == typeof (ListViewProvider.ListViewHeaderProvider)) {
+				// LAMESPEC:
+				//     "The children of this control must implement ISelectionItemProvider."
+				//     ScrollBars and Groups don't implementing ISelectionItemProvider.
+				return;
+			}
+			
+			base.TestSelectionPatternChild (provider);
 		}
 		
 		#endregion
