@@ -26,7 +26,7 @@ class SplitterSample(Form):
         """SplitterSample class init function."""
 
         # setup title
-        self.Text = "Splitter control"
+        self.Text = "Horizontal Splitter"
 
         # setup labels
         self.label0 = Label()

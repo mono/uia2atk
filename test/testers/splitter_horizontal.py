@@ -28,6 +28,7 @@ Test accessibility of splitter widget
 import sys
 import os
 
+import states
 from strongwind import *
 from splitter_horizontal import *
 from helpers import *
@@ -55,5 +56,8 @@ if app is None:
 
 # just an alias to make things shorter
 sFrame = app.splitterFrame
+
+#BUG471215 and BUG470823
+statesCheck(sFrame.split_pane, "Splitter", add_states=[states.HORIZONTAL])
 
 sFrame.quit()

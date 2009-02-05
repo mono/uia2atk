@@ -56,4 +56,7 @@ if app is None:
 # just an alias to make things shorter
 sFrame = app.splitterFrame
 
+#BUG471215 and BUG470842    	
+statesCheck(sFrame.split_pane, "Splitter", add_states=[states.VERTICAL])
+
 sFrame.quit()

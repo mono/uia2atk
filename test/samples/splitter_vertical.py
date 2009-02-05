@@ -28,6 +28,9 @@ class SplitterSample(Form):
     def __init__(self):
         """SplitterSample class init function."""
 
+        # set window title
+        self.Text = "Vertical Splitter"
+
         # Create TreeView, Button, and Splitter controls.
         self.treeView1 = TreeView()
         self.button1 = Button()

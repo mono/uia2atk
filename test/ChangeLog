@@ -1,5 +1,19 @@
 2009-02-05 Brian G. Merrell <bgmerrell@gmail.com>
 
+	* samples/splitter_vertical.py: Add a title to the title bar
+	* samples/splitter_horizontal.py: Change title bar title
+	* testers/splitter_vertical/splitterframe.py,
+	* testers/splitter_horizontal/splitterframe.py: Find all the controls
+	in the windows.
+	* testers/splitter_vertical/__init__.py,
+	* testers/splitter_horizontal/__init__.py: Find apps based on their new
+	title bar titles.
+	* testers/splitter_vertical.py,
+	* testers/splitter_horizontal.py: Check the state status of the split
+	panels.
+
+2009-02-05 Brian G. Merrell <bgmerrell@gmail.com>
+
 	* samples/splitter_vertical.py: Change the sample a little bit to make
 	for easier/better testing.  Added a node to the TreeView and replaced
 	the ListView in right panel with a button.

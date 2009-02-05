@@ -43,5 +43,5 @@ class Splitter(accessibles.Application):
         'Get a reference to the splitter window'
         super(Splitter, self).__init__(accessible, subproc)
         
-        self.findFrame(re.compile('^Splitter control'), logName='Splitter')
+        self.findFrame("Vertical Splitter", logName='Splitter')
 
