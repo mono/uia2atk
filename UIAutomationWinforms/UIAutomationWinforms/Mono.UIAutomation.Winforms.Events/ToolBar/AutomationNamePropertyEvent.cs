@@ -49,24 +49,22 @@ namespace Mono.UIAutomation.Winforms.Events.ToolBarButton
 
 		public override void Connect ()
 		{
-			//TODO: not yet backported:
-			//((SWF.ToolBarButton)Provider.Component).UIATextChanged += new EventHandler (OnTextChanged);
+			((SWF.ToolBarButton)Provider.Component).UIATextChanged += new EventHandler (OnTextChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			//TODO: not yet backported:
-			//((SWF.ToolBarButton)Provider.Component).UIATextChanged -= new EventHandler (OnTextChanged);
+			((SWF.ToolBarButton)Provider.Component).UIATextChanged -= new EventHandler (OnTextChanged);
 		}
 		
 		#endregion
 		
 		#region Private Methods
 
-//		private void OnTextChanged (object sender, EventArgs e)
-//		{
-//			RaiseAutomationPropertyChangedEvent ();
-//		}
+		private void OnTextChanged (object sender, EventArgs e)
+		{
+			RaiseAutomationPropertyChangedEvent ();
+		}
 
 		#endregion
 
