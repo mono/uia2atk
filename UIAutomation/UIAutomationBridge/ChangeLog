@@ -1,3 +1,8 @@
+2009-02-05  Mario Carrion  <mcarrion@novell.com>
+
+	* UIAutomationBridge.mdp: Mono.UIAutomation.Services/Log.cs file
+	included in project.
+
 2009-02-05  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

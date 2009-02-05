@@ -19,12 +19,12 @@
     <File name="Mono.UIAutomation.Bridge/IHypertext.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Bridge/IEditableRange.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Bridge/IClipboardSupport.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Services/Log.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Project" localcopy="True" refto="UIAutomationTypes" />
   </References>
   <Deployment.LinuxDeployData generateScript="False" />
-  <GtkDesignInfo />
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile">
     <BuildFilesVar />
     <DeployFilesVar />
