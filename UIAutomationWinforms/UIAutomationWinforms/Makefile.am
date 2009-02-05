@@ -124,6 +124,10 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ListView/TableProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/MenuItem/ExpandCollapseProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/MenuItem/InvokeProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/MenuItem/SelectionItemProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/MenuItem/ToggleProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/MonthCalendar/HeaderItemGridItemProviderBehavior.cs \
@@ -344,6 +348,10 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ListView/TablePatternColumnHeadersEvent.cs \
+	Mono.UIAutomation.Winforms.Events/MenuItem/AutomationIsEnabledPropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/MenuItem/AutomationNamePropertyEvent.cs \
+	Mono.UIAutomation.Winforms.Events/MenuItem/ExpandCollapsePatternExpandCollapseStateEvent.cs \
+	Mono.UIAutomation.Winforms.Events/MenuItem/InvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternElementAddedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternElementRemovedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/MonthCalendar/ListItemSelectionItemPatternElementSelectedEvent.cs \
@@ -470,8 +478,10 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ListItemProvider.cs \
 	Mono.UIAutomation.Winforms/ListProvider.cs \
 	Mono.UIAutomation.Winforms/ListViewProvider.cs \
+	Mono.UIAutomation.Winforms/MainMenuProvider.cs \
 	Mono.UIAutomation.Winforms/MapsComponentAttribute.cs \
 	Mono.UIAutomation.Winforms/MaskedTextBoxProvider.cs \
+	Mono.UIAutomation.Winforms/MenuItemProvider.cs \
 	Mono.UIAutomation.Winforms/MenuStripProvider.cs \
 	Mono.UIAutomation.Winforms/MessageBoxFormProvider.cs \
 	Mono.UIAutomation.Winforms/MonthCalendarDataGridProvider.cs \

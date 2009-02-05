@@ -1,3 +1,11 @@
+2009-02-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* MenuItemProviderTest.cs:
+	* MainMenuProviderTest.cs:
+	* UIAutomationWinformsTests.mdp: New test classes for
+	MainMenu and MenuItem providers.
+
 2009-02-04  Mario Carrion  <mcarrion@novell.com>
 
 	* ListViewProviderTest.cs: TestSelectionPatternChild overridden.

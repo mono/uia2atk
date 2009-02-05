@@ -33,6 +33,7 @@ using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Navigation;
+using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
 
 namespace Mono.UIAutomation.Winforms
 {
@@ -208,6 +209,8 @@ namespace Mono.UIAutomation.Winforms
 		protected virtual System.Drawing.Rectangle ScreenBounds
 		{
 			get {
+				if (control == null)
+					return System.Drawing.Rectangle.Empty;
 				if (control.Parent == null || control.TopLevelControl == null)
 					return Control.Bounds;
 				else {
@@ -269,9 +272,11 @@ namespace Mono.UIAutomation.Winforms
 			else if (propertyId == AutomationElementIdentifiers.IsPasswordProperty.Id)
 				return false;
 			else if (propertyId == AutomationElementIdentifiers.IsOffscreenProperty.Id) {
+				Rect bounds = (Rect)
+					GetPropertyValue (AEIds.BoundingRectangleProperty.Id);
 				if (Control == null)
-					return Helper.IsOffScreen (ScreenBounds);
-				return Helper.IsOffScreen (ScreenBounds, Control);
+					return Helper.IsOffScreen (Helper.RectToRectangle (bounds));
+				return Helper.IsOffScreen (bounds, Control);
 			}
 			else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
 				return Helper.RectangleToRect (ScreenBounds);

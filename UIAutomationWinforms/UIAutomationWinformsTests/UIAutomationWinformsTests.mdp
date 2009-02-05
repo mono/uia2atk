@@ -67,6 +67,8 @@
     <File name="ToolStripButtonProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="PopupButtonPanelTest.cs" subtype="Code" buildaction="Compile" />
     <File name="FormProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="MainMenuProviderTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="MenuItemProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="DataGridProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="ToolBarButtonProviderTest.cs" subtype="Code" buildaction="Compile" />
     <File name="TrackBarProviderTest.cs" subtype="Code" buildaction="Compile" />

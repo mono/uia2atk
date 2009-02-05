@@ -46,6 +46,7 @@ namespace Mono.UIAutomation.Winforms
 		private Form form;
 		private Form owner;
 		private bool alreadyClosed;
+		private MainMenuProvider mainMenuProvider;
 		
 		#endregion
 		
@@ -87,6 +88,21 @@ namespace Mono.UIAutomation.Winforms
 			          new WindowDeactivatedEvent (this));
 		}
 
+		public override void InitializeChildControlStructure ()
+		{
+			base.InitializeChildControlStructure ();
+
+			form.UIAMenuChanged += OnUIAMenuChanged;
+			SetupMainMenuProvider (false);
+		}
+
+		public override void FinalizeChildControlStructure ()
+		{
+			form.UIAMenuChanged -= OnUIAMenuChanged;
+			
+			base.FinalizeChildControlStructure ();
+		}
+
 		public override void Terminate ()
 		{
 			// We are trying to Terminate our events, however the instance
@@ -94,6 +110,19 @@ namespace Mono.UIAutomation.Winforms
 			if (!AlreadyClosed)
 				base.Terminate ();
 		}
+		
+#region Private Event Handlers
+
+		private void OnUIAMenuChanged (object sender, EventArgs args)
+		{
+			if (mainMenuProvider != null) {
+				mainMenuProvider.Terminate ();
+				OnNavigationChildRemoved (true, mainMenuProvider);
+			}
+			SetupMainMenuProvider (true);
+		}
+		
+#endregion
 
 		#region IRawElementProviderFragmentRoot Members
 
@@ -128,7 +157,9 @@ namespace Mono.UIAutomation.Winforms
 			
 			Control child = form.GetChildAtPoint (new Point ((int)x, (int)y));
 			
-			if (child != null) {				
+			if (child != null) {
+				Console.WriteLine (child);
+				
 				if (componentProviders.ContainsKey (child)) {
 					IRawElementProviderSimple provider =
 						componentProviders [child];
@@ -137,7 +168,8 @@ namespace Mono.UIAutomation.Winforms
 					if (providerFragment != null)
 						return providerFragment;
 				}
-			}
+			} else
+				Console.WriteLine ("ElementProviderFromPoint: Child is null");
 			
 			return this;
 		}
@@ -181,6 +213,16 @@ namespace Mono.UIAutomation.Winforms
 					if (ownerProvider != null) // FIXME: When ownerProvider == null
 						ownerProvider.RemoveChildProvider (true, this);
 				}
+			}
+		}
+
+		private void SetupMainMenuProvider (bool raiseEvents)
+		{
+			if (form.Menu != null) {
+				mainMenuProvider = (MainMenuProvider)
+					ProviderFactory.GetProvider (form.Menu);
+				if (mainMenuProvider != null)
+					OnNavigationChildAdded (raiseEvents, mainMenuProvider);
 			}
 		}
 

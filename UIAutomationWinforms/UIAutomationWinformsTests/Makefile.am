@@ -70,7 +70,9 @@ FILES =  \
 	LinkLabelProviderTest.cs \
 	ListBoxProviderTest.cs \
 	ListViewProviderTest.cs \
+	MainMenuProviderTest.cs \
 	MaskedTextBoxProviderTest.cs \
+	MenuItemProviderTest.cs \
 	MenuStripProviderTest.cs \
 	MiscHierarchyTest.cs \
 	MockBridge.cs \
