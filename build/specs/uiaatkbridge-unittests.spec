@@ -7,8 +7,6 @@
 # 
 # Please submit bugfixes or comments via http://bugs.opensuse.org/ 
 # 
-# norootforbuild 
-# 
 
 Name:           uiaatkbridge
 Version:	0.9.1
@@ -24,7 +22,7 @@ Requires:       mono-core >= 2.2 gtk-sharp2 >= 2.12.7 mono-uia mono-winfxcore
 BuildRequires:	mono-devel >= 2.2 mono-data gtk-sharp2 >= 2.12.7 glib-sharp2
 BuildRequires:	mono-uia mono-winfxcore atk-devel gtk2-devel mono-nunit  intltool >= 0.35
 BuildRequires:  mono-nunit xorg-x11-server-extra metacity bc gtk2-engines gnome-themes
-BuildRequires:  3ddiag cabextract xterm ghostscript-x11
+BuildRequires:  3ddiag cabextract xterm ghostscript-x11 at-spi subversion uiaatkbridge
 BuildRequires:  openssh-askpass x11-input-synaptics xorg-x11-libX11-ccache xorg-x11
 BuildRequires:  xorg-x11-Xvnc numlockx freeglut x11-tools translation-update ConsoleKit-x11 
 BuildRequires:  xorg-x11-xauth icewm-default icewm-gnome wine fvwm2 fvwm2-gtk
@@ -40,21 +38,25 @@ Don't install this package. Seriously. Fo' rizzle.
 
 %build
 cd ../
+svn co svn://151.155.5.148/source/trunk/uia2atk/test ./test
 cp ../SOURCES/uiautomationwinforms.tar.bz2 .
 tar -jxvf uiautomationwinforms.tar.bz2
-cd uiautomationwinforms*
-./configure
+cd uiautomationwinforms-*
+./configure --prefix=/usr
 make
-cd ../uiaatkbridge*
-%configure
+cd ..
+mv uiautomationwinforms-* UIAutomationWinforms
+cd uiaatkbridge*
+./configure --prefix=/usr
 make
 export DISPLAY=:1
 Xvfb -ac -screen 0 1280x1024x16 -br :1 &
 metacity &
-
-
-cd /Test/UiaAtkBridgeTest
-./bridgetests.sh
+gconftool-2 --type bool --set /desktop/gnome/interface/accessibility true
+svn export svn://151.155.5.148/source/trunk/uia2atk/UiaAtkBridge/atspimon.py
+cd Test/UiaAtkBridgeTest
+chmod +x bridgetest.sh
+./bridgetest.sh
 
 %install
 rm -rf %{buildroot}/*
