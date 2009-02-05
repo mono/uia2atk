@@ -27,6 +27,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.ListView;
 
@@ -70,8 +71,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		
 		public void Invoke ()
 		{
-			Console.WriteLine ("IInvokeProider.Invoke");
-			//FIXME: How to implement?
+			Log.Warn ("HeaderItemInvokePatternInvokedEvent: Invoke not implemented");
 		}
 
 		#endregion

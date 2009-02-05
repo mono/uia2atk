@@ -26,6 +26,7 @@ using System;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Winforms;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.DataGrid;
@@ -113,7 +114,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 				provider.Value = value;
 			} catch (Exception e) {
 				// DataSource may throw any exception.
-				Console.WriteLine ("WARNING: Exception swallowed ({0}): {1}", GetType (), e);
+				Log.Warn ("{0}: Caught exception:\n{1}", this.GetType (), e);
 			}
 		}
 

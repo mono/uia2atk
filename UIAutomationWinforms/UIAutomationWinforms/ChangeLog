@@ -1,3 +1,32 @@
+2009-02-05  Brad Taylor  <brad@getcoded.net>
+
+	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Remove unneccessary
+	Console.WriteLines.
+
+	* Mono.UIAutomation.Winforms/ListProvider.cs: 
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Convert
+	Console.WriteLine to Log.Warn and Log.Error.
+
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/HeaderItemInvokeProvider.cs: 
+	* Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternSelectionEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternInvalidatedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternRowEvent.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemValueProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/ComboBox/SelectionPatternInvalidatedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternVerticalViewSizeEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemAutomationNamePropertyEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/ListView/ListItemGridItemPatternColumnEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/ListBox/ScrollPatternHorizontalViewSizeEvent.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/DataGrid/DataItemEditValueProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/ListBox/SelectionPatternCanSelectMultipleEvent.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/ListView/GroupExpandCollapseProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/ListView/SelectionPatternCanSelectMultipleEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternIsSelectedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementAddedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementRemovedEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/ListBox/ListItemSelectionItemPatternElementSelectedEvent.cs: 
+	Remove reflection for all events, removing the C.WLs in the process.
+
 2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms.Events/ToolBar/AutomationNamePropertyEvent.cs:

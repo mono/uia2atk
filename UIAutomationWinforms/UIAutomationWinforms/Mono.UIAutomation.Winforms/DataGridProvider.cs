@@ -380,7 +380,6 @@ namespace Mono.UIAutomation.Winforms
 			// Is showing "+" to expand, this usually happens when DataSource is
 			// DataSet and has more than one DataTable.
 			if (datagrid.CurrentTableStyle.GridColumnStyles.Count == 0) {
-				Console.WriteLine ("Should ADD custom item that supports Invoke");
 				DataGridCustomProvider customProvider 
 					= new DataGridCustomProvider (this, 0, string.Empty);
 				customProvider.Initialize ();
@@ -411,7 +410,6 @@ namespace Mono.UIAutomation.Winforms
 				refreshChildren = true;
 			}
 
-			Console.WriteLine ("> UIA: DataSource changed. Refreshing {0}", refreshChildren);
 			if (refreshChildren) {
 				lastCurrencyManager = manager;
 				UpdateChildren (true);

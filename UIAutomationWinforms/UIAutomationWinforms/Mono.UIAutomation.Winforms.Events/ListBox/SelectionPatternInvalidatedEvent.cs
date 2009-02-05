@@ -50,43 +50,26 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 
 		public override void Connect ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ListBox.SelectedIndexCollection),
-				                        ((SWF.ListBox) Provider.Control).SelectedIndices, 
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnSelectedCollectionChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListBox) Provider.Control).SelectedIndices.UIACollectionChanged
+				+= OnSelectedCollectionChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ListBox.SelectedIndexCollection), 
-				                           ((SWF.ListBox) Provider.Control).SelectedIndices,
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnSelectedCollectionChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListBox) Provider.Control).SelectedIndices.UIACollectionChanged
+				-= OnSelectedCollectionChanged;
 		}
 		
 		#endregion 
 		
-		#region Protected methods
+		#region Private Methods
 		
-// This method is used via reflection, so ignore the never used warning
-#pragma warning disable 169
 		private void OnSelectedCollectionChanged (object sender, 
 		                                          CollectionChangeEventArgs args)
 		{
 			if (args.Action == CollectionChangeAction.Refresh)
 				RaiseAutomationEvent ();
 		}
-#pragma warning restore 169
 
 		#endregion
 	}

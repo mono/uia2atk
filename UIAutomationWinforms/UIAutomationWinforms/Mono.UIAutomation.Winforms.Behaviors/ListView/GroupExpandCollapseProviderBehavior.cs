@@ -27,6 +27,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using SWF = System.Windows.Forms;
 using Mono.UIAutomation.Winforms;
+using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.ListView;
 
@@ -82,13 +83,13 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ListView
 		public void Collapse ()
 		{
 			//FIXME & LAMESPEC: How to generate this using public API???
-			System.Console.WriteLine ("WARNING: Collapse is not avaliable in the public API.");
+			Log.Warn ("GroupExpandCollapseProviderBehavior: Collapse not implemented");
 		}
 
 		public void Expand ()
 		{
 			//FIXME & LAMESPEC: How to generate this using public API???
-			System.Console.WriteLine ("WARNING: Expand is not avaliable in the public API.");
+			Log.Warn ("GroupExpandCollapseProviderBehavior: Expand not implemented");
 		}
 
 		#endregion

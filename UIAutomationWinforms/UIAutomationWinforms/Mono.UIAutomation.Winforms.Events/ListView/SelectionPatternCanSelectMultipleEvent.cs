@@ -50,41 +50,24 @@ namespace Mono.UIAutomation.Winforms.Events.ListView
 
 		public override void Connect ()
 		{		
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ListView), 
-				                        Provider.Control, 
-				                        "UIAMultiSelectChanged",
-				                        this, 
-				                        "OnSelectionModeChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAMultiSelectChanged not defined", GetType ());
-			}
+			((SWF.ListView) Provider.Control).UIAMultiSelectChanged
+				+= OnSelectionModeChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ListView), 
-				                           Provider.Control, 
-				                           "UIAMultiSelectChanged",
-				                           this, 
-				                           "OnSelectionModeChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIAMultiSelectChanged not defined", GetType ());
-			}
+			((SWF.ListView) Provider.Control).UIAMultiSelectChanged
+				-= OnSelectionModeChanged;
 		}
 		
 		#endregion 
 		
-		#region Protected methods
+		#region Private Methods
 		
-// This method is used via reflection, so ignore the never used warning
-#pragma warning disable 169
 		private void OnSelectionModeChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-#pragma warning restore 169
 
 		#endregion
 	}

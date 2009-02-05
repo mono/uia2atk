@@ -29,6 +29,7 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.ComponentModel;
 using SWF = System.Windows.Forms;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Navigation;
 
@@ -92,25 +93,21 @@ namespace Mono.UIAutomation.Winforms
 						                             | BindingFlags.Public,
 						                             null, new Type[0], null);
 						if (mi == null) {
-							Console.WriteLine (
-								"WARNING: {0} is a ProvidesMapper but does not implement RegisterComponentMappings.", t
-							);
+							Log.Warn ("{0} is a ProvidesMapper but does not implement RegisterComponentMappings.", t);
 							continue;
 						}
 
-						// Allow the class to register it's mappings
+						// Allow the class to register its mappings
 						mi.Invoke (null, null);
 						continue;
 					}
 
 					if (providerComponentMap.ContainsKey (mca.From)) {
-						Console.WriteLine (
-							"WARNING: Component map already contains a provider for {0}.  Ignoring.",
-							mca.From
-						);
+						Log.Warn ("Component map already contains a provider for {0}.  Ignoring.", mca.From);
 						continue;
 					}
 
+					Log.Info ("Creating provider map from {0} to {1}", mca.From, t);
 					providerComponentMap.Add (mca.From, t);
 				}
 			}
@@ -209,8 +206,8 @@ namespace Mono.UIAutomation.Winforms
 						Activator.CreateInstance (providerType,
 									  new object [] { component });
 				} catch (MissingMethodException) {
-					Console.WriteLine (
-						"ERROR: Provider {0} does not have a valid single parameter constructor to handle {1}.",
+					Log.Error (
+						"Provider {0} does not have a valid single parameter constructor to handle {1}.",
 						providerType, component.GetType ()
 					);
 					return null;
@@ -236,7 +233,7 @@ namespace Mono.UIAutomation.Winforms
 			} else {
 				//FIXME: let's not throw while we are developing, a big WARNING will suffice
 				//throw new NotImplementedException ("Provider not implemented for control " + component.GetType().Name);
-				Console.WriteLine ("WARNING: Provider not implemented for component " + component.GetType());
+				Log.Warn ("Provider not implemented for component " + component.GetType());
 				return null;
 			}
 			

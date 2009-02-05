@@ -32,7 +32,8 @@ FILES =  \
 	Mono.UIAutomation.Bridge/IClipboardSupport.cs \
 	Mono.UIAutomation.Bridge/IEditableRange.cs \
 	Mono.UIAutomation.Bridge/IHypertext.cs \
-	Mono.UIAutomation.Bridge/IText.cs
+	Mono.UIAutomation.Bridge/IText.cs \
+	Mono.UIAutomation.Services/Log.cs
 
 DATA_FILES = 
 

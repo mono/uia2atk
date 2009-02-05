@@ -51,36 +51,20 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 
 		public override void Connect ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ListBox.SelectedIndexCollection),
-				                        ((SWF.ListBox) Provider.Control).SelectedIndices, 
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnElementRemovedEvent");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListBox) Provider.Control).SelectedIndices.UIACollectionChanged
+				+= OnElementRemovedEvent;
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ListBox.SelectedIndexCollection), 
-				                           ((SWF.ListBox) Provider.Control).SelectedIndices,
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnElementRemovedEvent");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListBox) Provider.Control).SelectedIndices.UIACollectionChanged
+				-= OnElementRemovedEvent;
 		}
 		
 		#endregion 
 		
-		#region Protected methods
+		#region Private Methods
 		
-// This method is used via reflection, so ignore the never used warning
-#pragma warning disable 169
 		private void OnElementRemovedEvent (object sender, 
 		                                    CollectionChangeEventArgs e)
 		{
@@ -92,7 +76,6 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 					RaiseAutomationEvent ();
 			}
 		}
-#pragma warning restore 169
 
 		#endregion
 	}

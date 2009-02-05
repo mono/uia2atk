@@ -33,6 +33,7 @@ using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
 using Mono.Unix;
+using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Winforms.Behaviors;
 using Mono.UIAutomation.Winforms.Behaviors.ListItem;
 using Mono.UIAutomation.Winforms.Events;
@@ -95,7 +96,7 @@ namespace Mono.UIAutomation.Winforms
 
 		public virtual void FocusItem (object objectItem)
 		{
-			Console.WriteLine (this + ": warning: FocusItem unimplemented");
+			Log.Warn ("{0}: FocusItem unimplemented", this.GetType ());
 		}
 
 		public virtual ListItemProvider GetItemProviderFrom (FragmentRootControlProvider rootProvider,

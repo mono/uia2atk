@@ -52,48 +52,31 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 		public override void Connect ()
 		{	
 			Provider.Control.Resize += new EventHandler (OnControlResize);
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ListBox.ObjectCollection), 
-				                        ((SWF.ListBox) Provider.Control).Items,
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnScrollHorizontalViewChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListBox) Provider.Control).Items.UIACollectionChanged
+				+= OnScrollHorizontalViewChanged;
 		}
 
 		public override void Disconnect ()
 		{
 			Provider.Control.Resize -= new EventHandler (OnControlResize);
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ListBox.ObjectCollection), 
-				                           ((SWF.ListBox) Provider.Control).Items,
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnScrollHorizontalViewChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ListBox) Provider.Control).Items.UIACollectionChanged
+				-= OnScrollHorizontalViewChanged;
 		}
 		
 		#endregion 
 		
-		#region Protected methods
+		#region Private Methods
 		
 		private void OnControlResize (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
 		
-// This method is used via reflection, so ignore the never used warning
-#pragma warning disable 169
 		private void OnScrollHorizontalViewChanged (object sender, 
 		                                            CollectionChangeEventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-#pragma warning restore 169
 
 		#endregion
 	}

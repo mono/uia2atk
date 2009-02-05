@@ -50,41 +50,24 @@ namespace Mono.UIAutomation.Winforms.Events.ListBox
 
 		public override void Connect ()
 		{		
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ListBox), 
-				                        Provider.Control, 
-				                        "UIASelectionModeChanged",
-				                        this, 
-				                        "OnSelectionModeChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIASelectionModeChanged not defined", GetType ());
-			}
+			((SWF.ListBox) Provider.Control).UIASelectionModeChanged
+				+= OnSelectionModeChanged; 
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ListBox), 
-				                           Provider.Control, 
-				                           "UIASelectionModeChanged",
-				                           this, 
-				                           "OnSelectionModeChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIASelectionModeChanged not defined", GetType ());
-			}
+			((SWF.ListBox) Provider.Control).UIASelectionModeChanged
+				-= OnSelectionModeChanged; 
 		}
 		
 		#endregion 
 		
-		#region Protected methods
+		#region Private Methods
 		
-// This method is used via reflection, so ignore the never used warning
-#pragma warning disable 169
 		private void OnSelectionModeChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
-#pragma warning restore 169
 
 		#endregion
 	}

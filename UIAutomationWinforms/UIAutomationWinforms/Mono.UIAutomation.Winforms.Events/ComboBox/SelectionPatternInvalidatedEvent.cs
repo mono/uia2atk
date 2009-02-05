@@ -50,43 +50,26 @@ namespace Mono.UIAutomation.Winforms.Events.ComboBox
 
 		public override void Connect ()
 		{
-			try {
-				Helper.AddPrivateEvent (typeof (SWF.ComboBox.ObjectCollection),
-				                        ((SWF.ComboBox) Provider.Control).Items, 
-				                        "UIACollectionChanged",
-				                        this, 
-				                        "OnSelectedCollectionChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ComboBox) Provider.Control).Items.UIACollectionChanged
+				+= OnSelectedCollectionChanged;
 		}
 
 		public override void Disconnect ()
 		{
-			try {
-				Helper.RemovePrivateEvent (typeof (SWF.ComboBox.ObjectCollection),
-				                           ((SWF.ComboBox) Provider.Control).Items,
-				                           "UIACollectionChanged",
-				                           this, 
-				                           "OnSelectedCollectionChanged");
-			} catch (NotSupportedException) {
-				Console.WriteLine ("{0}: UIACollectionChanged not defined", GetType ());
-			}
+			((SWF.ComboBox) Provider.Control).Items.UIACollectionChanged
+				-= OnSelectedCollectionChanged;
 		}
 		
 		#endregion 
 		
 		#region Protected methods
 		
-// This method is used via reflection, so ignore the never used warning
-#pragma warning disable 169
 		private void OnSelectedCollectionChanged (object sender, 
 		                                          CollectionChangeEventArgs args)
 		{
 			if (args.Action == CollectionChangeAction.Refresh)
 				RaiseAutomationEvent ();
 		}
-#pragma warning restore 169
 
 		#endregion
 	}

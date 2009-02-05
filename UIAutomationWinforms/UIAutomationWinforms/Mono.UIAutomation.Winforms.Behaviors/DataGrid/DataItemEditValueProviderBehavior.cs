@@ -24,6 +24,7 @@
 // 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.DataGrid;
@@ -109,7 +110,7 @@ namespace Mono.UIAutomation.Winforms.Behaviors.DataGrid
 				provider.ItemProvider.SetEditValue (provider, value);
 			} catch (Exception e) {
 				// DataSource may throw any exception.
-				Console.WriteLine ("WARNING: Exception swallowed ({0}): {1}", GetType (), e);
+				Log.Warn ("{0}: Caught exception:\n{1}", this.GetType (), e);
 			}
 		}
 
