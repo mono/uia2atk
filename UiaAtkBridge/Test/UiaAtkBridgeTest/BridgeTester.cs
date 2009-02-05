@@ -158,7 +158,6 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (toolStrip);
 			toolBar.Buttons.Add (toolBarButton);
 			toolBar.Buttons.Add (toolBarButtonWithImage);
-			Console.WriteLine ("yoooooooooooooooooooo"+toolBarButtonWithImage.Parent==null);
 			toolBarButtonWithImage.ImageIndex = 0;
 			form.Controls.Add (toolBar);
 

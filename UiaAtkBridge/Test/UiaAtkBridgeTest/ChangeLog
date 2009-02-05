@@ -1,5 +1,9 @@
 2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: Remove debug spew.
+
+2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTests.cs: Enable ToolBarButton+AtkTest, thanks to
 	r125896.
 
