@@ -1,5 +1,10 @@
 2009-02-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* Mono.UIAutomation.Winforms.mdp: Add MainMenu/MenuItem
+	provider files.
+
+2009-02-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.Events/MenuItem:
 	* Mono.UIAutomation.Winforms/FormProvider.cs:
