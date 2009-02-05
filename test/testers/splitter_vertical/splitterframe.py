@@ -11,7 +11,7 @@ import actions
 import states
 
 from strongwind import *
-from splitter import *
+from splitter_vertical import *
 
 
 # class to represent the main window.

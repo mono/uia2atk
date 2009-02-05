@@ -13,12 +13,23 @@
 Test accessibility of splitter widget
 """
 
+# LOTS of splitter bugs, going to need to get some fixed before I can figure
+# out how to test this well.  Here's the list of bugs:
+# BUG471757
+# BUG471749
+# BUG471215
+# BUG471067
+# BUG470842
+# BUG470831
+# BUG470823
+# BUG469569
+
 # imports
 import sys
 import os
 
 from strongwind import *
-from splitter import *
+from splitter_vertical import *
 from helpers import *
 from sys import argv
 from os import path

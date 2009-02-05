@@ -20,7 +20,7 @@ def launchSplitter(exe=None):
         harness_dir = path[0]
         i = harness_dir.rfind("/")
         uiaqa_path = harness_dir[:i]
-        exe = '%s/samples/splitter.py' % uiaqa_path
+        exe = '%s/samples/splitter_vertical.py' % uiaqa_path
         if not exists(exe):
           raise IOError, "Could not find file %s" % exe
   

@@ -18,7 +18,7 @@ import System
 clr.AddReference('System.Windows.Forms')
 clr.AddReference('System.Drawing')
 from System.Windows.Forms import (Application, DockStyle, Form, Splitter,
-                                  Label, BorderStyle, TreeView, ListView,
+                                  Label, BorderStyle, TreeView, Button,
                                   Control)
 from System.Drawing import Color
 
@@ -28,40 +28,33 @@ class SplitterSample(Form):
     def __init__(self):
         """SplitterSample class init function."""
 
-        # Create TreeView, ListView, and Splitter controls.
+        # Create TreeView, Button, and Splitter controls.
         self.treeView1 = TreeView()
-        self.listView1 = ListView()
+        self.button1 = Button()
         self.splitter1 = Splitter()
 
         # Set the TreeView control to dock to the left side of the form.
         self.treeView1.Dock = DockStyle.Left;
         # Set the Splitter to dock to the left side of the TreeView control.
         self.splitter1.Dock = DockStyle.Left;
-        # Set the minimum size the ListView control can be sized to.
+        # Set the minimum size the Button control can be sized to.
         self.splitter1.MinExtra = 100;
         # Set the minimum size the TreeView control can be sized to.
         self.splitter1.MinSize = 75;
-        # Set the ListView control to fill the remaining space on the form.
-        self.listView1.Dock = DockStyle.Fill;
-        # Add a TreeView and a ListView item to identify the controls on the
-        # form.
+        # Set the Button control to fill the remaining space on the form.
+        self.button1.Dock = DockStyle.Fill;
+        # Add nodes to the TreeView
         self.treeView1.Nodes.Add("TreeView Node");
-        self.listView1.Items.Add("ListView Item");
+        self.treeView1.Nodes.Add("Another Node");
+        # Give the button some text
+        self.button1.Text = "Right Side"
 
         # Add the controls in reverse order to the form to ensure proper
         # location.
         array_Control = System.Array[Control]
-        self.Controls.AddRange(array_Control((self.listView1,
+        self.Controls.AddRange(array_Control((self.button1,
                                               self.splitter1,
                                               self.treeView1)))
-
-        # add controls
-        #self.Controls.Add(self.label4)
-        #self.Controls.Add(self.splitter)
-        #self.Controls.Add(self.label0)
-        #self.Controls.Add(self.label1)
-        #self.Controls.Add(self.label2)
-        #self.Controls.Add(self.label3)
 
 # run application
 form = SplitterSample()

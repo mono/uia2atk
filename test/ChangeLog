@@ -1,3 +1,19 @@
+2009-02-05 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* samples/splitter_vertical.py: Change the sample a little bit to make
+	for easier/better testing.  Added a node to the TreeView and replaced
+	the ListView in right panel with a button.
+	* testers/splitter_vertical,
+	* testers/splitter_vertical/__init__.py,
+	* testers/splitter_vertical/splitterframe.py,
+	* testers/splitter_horizontal.py,
+	* testers/splitter_horizontal,
+	* testers/splitter_horizontal/__init__.py,
+	* testers/splitter_horizontal/splitterframe.py,
+	* testers/splitter_vertical.py: Split (no pun intended) the Splitter
+	test up into two different tests.  Now there is one test for a
+	vertical splitter and a second test for a horizontal splitter.
+
 2009-02-05  Calen Chen <cachen@novell.com>
 
 	* testers/printpreviewdialog/printpreviewdialogframe.py: update 
