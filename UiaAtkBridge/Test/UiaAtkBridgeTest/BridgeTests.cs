@@ -748,7 +748,7 @@ namespace UiaAtkBridgeTest
 			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
 			InterfaceAction (type, atkAction, accessible);
 
-			//InterfaceText (type);
+			InterfaceText (type);
 
 			//test with an image
 			Atk.Image atkWithOutImage, atkWithImage;

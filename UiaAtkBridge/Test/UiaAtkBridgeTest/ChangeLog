@@ -1,5 +1,10 @@
 2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTests.cs: Enable ToolBarButton+AtkTest, thanks to
+	r125896.
+
+2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Add toolbarButton with image.
 
 	* BridgeTests.cs: Mimic Button test structure in
