@@ -17,51 +17,28 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008-09 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Andrés G. Aragoneses <aaragoneses@novell.com>
+//      Mike Gorse <mgorse@novell.com>
 // 
 
-using System;
-using System.Windows.Forms;
+using System.Windows.Automation;
 using System.Windows.Automation.Provider;
+using System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-	
-	public class Global
+	internal class KeyFilter: IKeyFilter
 	{
-		static KeyFilter keyFilter = new KeyFilter ();
-
-		/// <summary>
-		/// Set up the all the *Listener classes to winforms
-		/// events that will allow the correct UIA providers to be
-		/// created and the correct UIA events to be fired.
-		/// 
-		/// This method is called via reflection from the
-		/// System.Windows.Forms.Application class.
-		/// </summary>
-		public static void Initialize ()
+		public bool PreFilterKey (KeyFilterData key)
 		{
-			Application.PreRun += new EventHandler (OnPreRun);
-			FormListener.Initialize ();
-			ToolTipListener.Initialize ();
-			HelpProviderListener.Initialize ();
-			ErrorProviderListener.Initialize ();
-		}
-
-		/// <summary>
-		/// Start GLib mainloop in its own thread just before
-		/// winforms mainloop starts, but after gtk_init ()
-		/// has been called by MWF
-		/// </summary>
-		static void OnPreRun (object sender, EventArgs args)
-		{
-			// FIXME: Change this temporary hack to pass on the PreRun event
-			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
-
-			Application.AddKeyFilter (keyFilter);
+			bool alt = (key.ModifierKeys & Keys.Alt) != 0;
+			bool control = (key.ModifierKeys & Keys.Control) != 0;
+			bool shift = (key.ModifierKeys & Keys.Shift) != 0;
+			System.Windows.Automation.KeyEventArgs eventArgs = new System.Windows.Automation.KeyEventArgs (key.Down, key.keycode, key.keysym, key.str, alt, control, shift);
+			AutomationInteropProvider.RaiseAutomationEvent (AutomationElementIdentifiers.KeyEvent, null, eventArgs);
+			return eventArgs.SuppressKeyPress;
 		}
 	}
 }

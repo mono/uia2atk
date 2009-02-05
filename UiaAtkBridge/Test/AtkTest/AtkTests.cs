@@ -1159,7 +1159,6 @@ namespace UiaAtkBridgeTest
 
 			States (accessible,
 			  Atk.StateType.Enabled,
-			(ContainerPanelIsResizable? Atk.StateType.Resizable: Atk.StateType.Enabled),
 			  Atk.StateType.Sensitive,
 			  Atk.StateType.Showing,
 			  Atk.StateType.Visible);

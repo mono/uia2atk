@@ -448,10 +448,12 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Navigation/ParentNavigation.cs \
 	Mono.UIAutomation.Winforms.Navigation/SimpleNavigation.cs \
 	Mono.UIAutomation.Winforms/AssemblyInfo.cs \
+	Mono.UIAutomation.Winforms/BalloonWindowProvider.cs \
 	Mono.UIAutomation.Winforms/BaseColorControlProvider.cs \
 	Mono.UIAutomation.Winforms/ButtonProvider.cs \
 	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
 	Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs \
+	Mono.UIAutomation.Winforms/ContainerControlProvider.cs \
 	Mono.UIAutomation.Winforms/ComboBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ContextMenuProvider.cs \
 	Mono.UIAutomation.Winforms/ContextMenuStripProvider.cs \
@@ -474,6 +476,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/IListProvider.cs \
 	Mono.UIAutomation.Winforms/IScrollBehaviorObserver.cs \
 	Mono.UIAutomation.Winforms/IScrollBehaviorSubject.cs \
+	Mono.UIAutomation.Winforms/KeyFilter.cs \
 	Mono.UIAutomation.Winforms/LabelProvider.cs \
 	Mono.UIAutomation.Winforms/LinkLabelProvider.cs \
 	Mono.UIAutomation.Winforms/ListBoxProvider.cs \

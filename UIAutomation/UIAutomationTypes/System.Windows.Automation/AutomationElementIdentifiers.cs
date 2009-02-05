@@ -36,6 +36,7 @@ namespace System.Windows.Automation
 		private const int WindowDeactivatedEventId = 60004;
 		private const int HasNativeAccessibilityObjectPropertyId = 60001;
 		private const int NativeAccessibilityObjectPropertyId = 60002;
+		private const int IsNotifyIconPropertyId = 60005;
 		
 		// Event IDs
 		private const int AsyncContentLoadedEventId = 20006;
@@ -110,6 +111,9 @@ namespace System.Windows.Automation
 			NativeAccessibilityObjectProperty =
 				new AutomationProperty (NativeAccessibilityObjectPropertyId,
 					"AutomationElementIdentifiers.NativeAccessibilityObjectProperty");
+			IsNotifyIconProperty =
+				new AutomationProperty (IsNotifyIconPropertyId,
+					"AutomationElementIdentifiers.IsNotifyIconProperty");
 			AcceleratorKeyProperty =
 				new AutomationProperty (AcceleratorKeyPropertyId,
 					"AutomationElementIdentifiers.AcceleratorKeyProperty");
@@ -293,6 +297,8 @@ namespace System.Windows.Automation
 		internal static readonly AutomationProperty HasNativeAccessibilityObjectProperty;
 
 		internal static readonly AutomationProperty NativeAccessibilityObjectProperty;
+
+		internal static readonly AutomationProperty IsNotifyIconProperty;
 
 #endregion
 		

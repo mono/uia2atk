@@ -1,3 +1,8 @@
+2009-02-05  Mike Gorse <mgorse@novell.com>
+
+	* System.Windows.Automation/AutomationElementIdentifiers.cs:
+	  Add internal IsNotifyIcon property.
+
 2009-01-27  Brad Taylor  <brad@getcoded.net>
 
 	* Makefile.am: 

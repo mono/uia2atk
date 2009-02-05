@@ -554,6 +554,8 @@ namespace UiaAtkBridge
 				HandleNewMenuItemControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.DataGrid.Id) //for ToolStripMenuItem widget
 				HandleNewDataGridControlType (simpleProvider, parentAdapter);
+			else if (controlTypeId == ControlType.Table.Id)
+				HandleNewDataGridControlType (simpleProvider, parentAdapter);
 			else if (controlTypeId == ControlType.DataItem.Id)
 				AddChildrenToParent (simpleProvider);
 			else if (controlTypeId == ControlType.Pane.Id)

@@ -1,3 +1,17 @@
+2009-02-05 Mike Gorse  <mgorse@novell.com>
+
+	* Mono.UIAutomation.Winforms/BalloonWindowProvider.cs, Makefile.am:
+	  Add BalloonWindowProvider.
+
+	* Mono.UIAutomation.Winforms/Global.cs,
+	  Mono.UIAutomation.Winforms/FormListener.cs,
+	  Mono.UIAutomation.Winforms/KeyFilter.cs, Makefile.am:
+	  Separate KeyFilter from window creation so that we won't add a new
+	  KeyFilter for every window.
+
+	* Mono.UIAutomation.Winforms/ContainerPanelProvider.cs, Makefile.am:
+	  Add ContainerPanel provider.
+
 2009-02-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms/FormProvider.cs: Convert

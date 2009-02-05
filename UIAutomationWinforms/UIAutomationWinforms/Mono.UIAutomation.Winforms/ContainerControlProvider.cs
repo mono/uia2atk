@@ -20,48 +20,21 @@
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Andrés G. Aragoneses <aaragoneses@novell.com>
+//	Mike Gorse <mgorse@novell.com>
 // 
-
 using System;
-using System.Windows.Forms;
-using System.Windows.Automation.Provider;
+using System.ComponentModel;
+using SWF = System.Windows.Forms;
 
 namespace Mono.UIAutomation.Winforms
 {
-	
-	public class Global
+
+	[MapsComponent (typeof (SWF.ContainerControl))]
+	internal class ContainerControlProvider : PaneProvider
 	{
-		static KeyFilter keyFilter = new KeyFilter ();
 
-		/// <summary>
-		/// Set up the all the *Listener classes to winforms
-		/// events that will allow the correct UIA providers to be
-		/// created and the correct UIA events to be fired.
-		/// 
-		/// This method is called via reflection from the
-		/// System.Windows.Forms.Application class.
-		/// </summary>
-		public static void Initialize ()
+		public ContainerControlProvider (SWF.ContainerControl panel) : base (panel)
 		{
-			Application.PreRun += new EventHandler (OnPreRun);
-			FormListener.Initialize ();
-			ToolTipListener.Initialize ();
-			HelpProviderListener.Initialize ();
-			ErrorProviderListener.Initialize ();
-		}
-
-		/// <summary>
-		/// Start GLib mainloop in its own thread just before
-		/// winforms mainloop starts, but after gtk_init ()
-		/// has been called by MWF
-		/// </summary>
-		static void OnPreRun (object sender, EventArgs args)
-		{
-			// FIXME: Change this temporary hack to pass on the PreRun event
-			AutomationInteropProvider.RaiseAutomationEvent (null, null, null);
-
-			Application.AddKeyFilter (keyFilter);
 		}
 	}
 }

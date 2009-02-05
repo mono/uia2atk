@@ -36,9 +36,12 @@ namespace UiaAtkBridge
 		private ITransformProvider transformProvider;
 		private IRawElementProviderFragmentRoot rootProvider;
 		private Splitter splitter = null;
+		private bool balloonWindow = false;
+		private TextLabel fakeLabel = null;
 		
 		public Window (IRawElementProviderSimple provider) : base (provider)
 		{
+			balloonWindow = (bool)(provider.GetPropertyValue (AutomationElementIdentifiers.IsNotifyIconProperty.Id) != null);
 			rootProvider = (IRawElementProviderFragmentRoot) provider;
 			if (rootProvider != null) {
 				//FIXME: change this not to use Navigation when we fix the FIXME in Adapter ctor.
@@ -48,8 +51,11 @@ namespace UiaAtkBridge
 				//return FragmentRoot and FragmentRoot is the same reference.
 				if (rootOfRootProvider != null && rootOfRootProvider != rootProvider)
 					Role = Atk.Role.Dialog;
-				else
-					Role = Atk.Role.Frame;
+				else if (balloonWindow) {
+					Role = Atk.Role.Alert;
+					Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.HelpTextProperty.Id);
+				} else
+				Role = Atk.Role.Frame;
 			} else
 				Role = Atk.Role.Frame;
 
@@ -61,6 +67,14 @@ namespace UiaAtkBridge
 			Role = Atk.Role.Window;
 		}
 		
+		internal override void PostInit ()
+		{
+			if (balloonWindow) {
+				fakeLabel = new TextLabel (Provider);
+				AddOneChild (fakeLabel);
+			}
+		}
+
 		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
 		{
 			/*IRawElementProviderSimple simpleChildProvider =
@@ -90,7 +104,9 @@ namespace UiaAtkBridge
 
 		public override void RaiseAutomationPropertyChangedEvent (AutomationPropertyChangedEventArgs e)
 		{
-			if (e.Property == TransformPatternIdentifiers.CanResizeProperty)
+			if (balloonWindow && e.Property == AutomationElementIdentifiers.NameProperty)
+				fakeLabel.RaiseAutomationPropertyChangedEvent (e);
+			else if (e.Property == TransformPatternIdentifiers.CanResizeProperty)
 				NotifyStateChange (Atk.StateType.Resizable, (bool) e.NewValue);
 			else if (e.Property == WindowPatternIdentifiers.WindowVisualStateProperty) {
 				WindowVisualState newValue = (WindowVisualState) e.NewValue;
@@ -115,6 +131,13 @@ namespace UiaAtkBridge
 				base.RaiseAutomationPropertyChangedEvent (e);
 		}
 		
+		protected override void RemoveUnmanagedChildren ()
+		{
+			if (fakeLabel != null)
+				RemoveChild (fakeLabel);
+			fakeLabel = null;
+		}
+
 		public override Atk.Layer Layer {
 			get { return Atk.Layer.Window; }
 		}

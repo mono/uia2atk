@@ -98,6 +98,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.FlowLayoutPanel flp = new SWF.FlowLayoutPanel ();
 		protected SWF.TableLayoutPanel tlp = new SWF.TableLayoutPanel ();
 		protected SWF.MonthCalendar monthCalendar = new SWF.MonthCalendar ();
+		protected SWF.ContainerControl containerControl = new SWF.ContainerControl ();
 
 		protected int lastClickedLink = -1;
 
@@ -218,6 +219,7 @@ namespace UiaAtkBridgeTest
 			form.Controls.Add (tabControl);
 			form.Controls.Add (flp);
 			form.Controls.Add (tlp);
+			form.Controls.Add (containerControl);
 			form.Text = "UiaAtkBridge test";
 			SWF.Application.EnableVisualStyles ();
 		}
@@ -1003,7 +1005,6 @@ namespace UiaAtkBridgeTest
 			lastClickedLink = linklab1.Links.IndexOf (e.Link);
 		}
 
-		protected override bool ContainerPanelIsResizable { get { return true; } }
 		protected override int ValidNumberOfActionsForAButton { get { return 1; } }
 		protected override int ValidNChildrenForAListView { get { return 22; } }
 		protected override bool TreeViewHasHeader { get { return false; } }

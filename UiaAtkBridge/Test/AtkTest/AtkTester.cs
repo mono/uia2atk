@@ -131,7 +131,6 @@ namespace UiaAtkBridgeTest
 			});
 		}
 		
-		protected abstract bool ContainerPanelIsResizable { get; }
 		protected abstract int ValidNumberOfActionsForAButton { get; }
 		protected abstract int ValidNChildrenForAListView { get; }
 		protected abstract bool TreeViewHasHeader { get; }

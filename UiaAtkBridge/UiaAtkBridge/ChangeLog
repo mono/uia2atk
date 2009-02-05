@@ -1,3 +1,11 @@
+2009-02-05  Mike Gorse  <mgorse@novell.com>
+
+	* ProgressBar.cs: Use TextExpert to find character count; fix NRE.
+
+	* Window.cs: Handle SWF BalloonWindow.
+
+	* AutomationBridge.cs: handle Table control type like DataGrid.
+
 2009-02-05  Brad Taylor  <brad@getcoded.net>
 
 	* Spinner.cs: 

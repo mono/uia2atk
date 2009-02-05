@@ -1,3 +1,7 @@
+2009-02-05  Mike Gorse <mgorse@novell.com>
+
+	* AtkTester.cs, AtkTests.cs: Remove Resizable test for panels.
+
 2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* AtkTester.cs: Indentation.

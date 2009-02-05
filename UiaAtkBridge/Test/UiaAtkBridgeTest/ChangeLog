@@ -1,3 +1,9 @@
+2009-02-05  Mike Gorse  <mgorse@novell.com>
+
+	* BridgeTester.cs: Remove ContainerPanelIsResizable.
+
+	* BridgeTester.cs, BridgeTests.cs: Add ContainerPanel test.
+
 2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: Remove debug spew.

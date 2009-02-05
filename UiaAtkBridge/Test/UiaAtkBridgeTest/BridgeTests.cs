@@ -965,6 +965,14 @@ namespace UiaAtkBridgeTest
 			PaneChildren (tlp);
 		}
 
+		[Test]
+		public void ContainerControl ()
+		{
+			Atk.Object accessible = GetAdapterForWidget (containerControl);
+			Pane (accessible);
+			PaneChildren (containerControl);
+		}
+
 		private void RemoveItems (Dictionary<string, string> items, Dictionary<string, string> except)
 		{
 			foreach (KeyValuePair<string, string> e in except)
