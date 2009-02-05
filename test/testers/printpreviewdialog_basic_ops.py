@@ -10,7 +10,8 @@
 
 # The docstring below  is used in the generated log file
 """
-Test accessibility of printpreviewdialog widget
+Test accessibility of printpreviewdialog widget 
+
 """
 
 # imports
@@ -54,24 +55,14 @@ statesCheck(ppdFrame.toolbar, "ToolBar")
 
 #in this example panel should have "focusable" state that is different from #Panel control due to IsKeyboardFocusable is True
 ##missing focusable BUG465945
-statesCheck(ppdFrame.panel, "Panel", add_states=["focusable"])
+statesCheck(ppdFrame.dialog_panel, "Panel", add_states=["focusable"])
 
-#mouse click panel to rise focused state
-ppdFrame.panel.mouseClick()
+ppdFrame.dialog_panel.mouseClick()
 sleep(config.SHORT_DELAY)
-statesCheck(ppdFrame.panel, "Panel", add_states=["focusable", "focused"])
-#toolbar without focused state
-statesCheck(ppdFrame.toolbar, "ToolBar")
-
-#mouse click toolbar to rise focused state
-ppdFrame.toolbar.mouseClick()
-sleep(config.SHORT_DELAY)
-statesCheck(ppdFrame.toolbar, "ToolBar", add_states=["focused"])
-#panel delete focused state
-statesCheck(ppdFrame.panel, "Panel", add_states=["focusable"])
+statesCheck(ppdFrame.dialog_panel, "Panel", add_states=["focused"])
 
 #check how many items on toolbar
-##with wrong items due to toolbar control is unfinished BUG428598
+##with wrong items due to toolbar control's BUG428598
 ppdFrame.searchItems("push button", 8)
 
 ppdFrame.searchItems("toggle button", 1)
@@ -79,6 +70,9 @@ ppdFrame.searchItems("toggle button", 1)
 ppdFrame.searchItems("separator", 2)
 
 ppdFrame.searchItems("spin button", 1)
+
+#close dialog window
+ppdFrame.dialog.altF4()
 
 #close application frame window
 ppdFrame.quit()

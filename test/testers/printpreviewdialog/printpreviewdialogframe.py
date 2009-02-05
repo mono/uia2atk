@@ -33,11 +33,29 @@ class PrintPreviewDialogFrame(accessibles.Frame):
         sleep(config.SHORT_DELAY)
 
         #click button to invoke dialog page with a toolbar and a panel
-        procedurelogger.expectedResult("PrintPreviewDialog page is showing")
         self.dialog = self.app.findDialog("PrintPreviewDialog")
-        self.panel = self.dialog.findPanel(None)
         self.toolbar = self.dialog.findToolBar(None)
+        panels = self.dialog.findAllPanels(None)
+        self.dialog_panel = panels[-1]
 
+    #search for items on toolbar
+    def searchItems(self, itemname, number):
+        procedurelogger.action("how many %s items on toolbar" % itemname)
+
+        procedurelogger.expectedResult("%s %s on toolbar" % (number, itemname))
+        if itemname == "push button":
+            count = self.toolbar.findAllPushButtons(None)
+            assert len(count) == number, "find out %s push buttons" % len(count)
+        if itemname == "toggle button":
+            count = self.toolbar.findAllToggleButtons(None)
+            assert len(count) == number, "find out %s toggle buttons" % len(count)
+        if itemname == "separator":
+            count = self.toolbar.findAllSeparators(None)
+            assert len(count) == number, "find out %s separators" % len(count)
+        if itemname == "spin button":
+            count = self.toolbar.findAllSpinButtons(None)
+            assert len(count) == number, "find out %s spin button" % len(count)
+   
     #close application main window after running test
     def quit(self):
         self.altF4()

@@ -1,5 +1,11 @@
 2009-02-05  Calen Chen <cachen@novell.com>
 
+	* testers/printpreviewdialog/printpreviewdialogframe.py: update 
+	searchItems method to remain one expectedResult
+	* testers/printpreviewdialog_basic_ops.py: add test to close dialog
+	
+2009-02-05  Calen Chen <cachen@novell.com>
+
 	* testers/toolbar/toolbarframe.py: update searchItems method
 
 2009-02-04  Calen Chen <cachen@novell.com>
