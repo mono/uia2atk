@@ -293,6 +293,20 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			base.TestSelectionPatternChild (provider);
 		}
 
+		protected override void TestTablePatternChild (IRawElementProviderSimple provider)
+		{
+			if (provider.GetType () == typeof (DataGridProvider.DataGridHeaderProvider)) {
+				
+				// LAMESPEC:
+				//     "The children of this element must implement ITableItemProvider."
+				//     HeaderProvider is a special case, however is not implementing
+				//     ITableItemProvider either.
+				return;
+			}
+			
+			base.TestTablePatternChild (provider);
+		}
+
 		protected override void TestSelectionItemPattern_RemoveFromSelectionMethod (IRawElementProviderSimple provider)
 		{
 			// FIXME: We should not override this method, instead to fix SelectionItem provider

@@ -630,6 +630,20 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// FIXME: Instead of overriding this method we should implement ISelectionItemProvider in children
 		}
 
+		protected override void TestTablePatternChild (IRawElementProviderSimple provider)
+		{
+			if (provider.GetType () == typeof (MonthCalendarDataGridProvider)) {
+				
+				// LAMESPEC:
+				//     "The children of this element must implement ITableItemProvider."
+				//     Internal DataGrid in Calendar is not implementing
+				//     ITableItemProvider either.
+				return;
+			}
+			
+			base.TestTablePatternChild (provider);
+		}
+
 		private MonthCalendar calendar;
 		private IRawElementProviderSimple calendarProvider;
 		private Calendar currentCalendar;

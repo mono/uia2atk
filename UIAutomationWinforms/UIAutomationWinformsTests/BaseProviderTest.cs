@@ -960,6 +960,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// DEPENDS: IScrollProvider
 
 			TestSelectionPattern_GetSelectionMethod (provider);
+			TestTable_GetColumnHeaderItemsMethod (provider);
+			TestTable_GetRowHeaderItems (provider);
 		}
 
 		protected virtual void TestCheckBoxPatterns (IRawElementProviderSimple provider) 
@@ -1013,6 +1015,8 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			// DEPENDS: IScrollProvider
 			TestSelectionPattern_GetSelectionMethod (provider);
+			TestTable_GetColumnHeaderItemsMethod (provider);
+			TestTable_GetRowHeaderItems (provider);
 		}
 
 		protected virtual void TestDataItemPatterns (IRawElementProviderSimple provider) 
@@ -1371,6 +1375,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.AreEqual (Catalog.GetString ("table"),
 			                 provider.GetPropertyValue (AutomationElementIdentifiers.LocalizedControlTypeProperty.Id),
 			                 "LocalizedControlTypeProperty");
+
+			TestTable_GetColumnHeaderItemsMethod (provider);
+			TestTable_GetRowHeaderItems (provider);
 		}
 
 		protected virtual void TestTextPatterns (IRawElementProviderSimple provider) 
@@ -1497,6 +1504,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			if ((bool) parent.GetPropertyValue (AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id)) {
 				Assert.IsTrue ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsGridItemPatternAvailableProperty.Id),
 				               string.Format ("{0} must support IGridItemProvider", child.GetType ()));
+
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 		}
@@ -1536,7 +1544,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			if ((bool) parent.GetPropertyValue (AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)) {
 				Assert.IsTrue ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id),
-				               string.Format ("{0} must support ITableItemProvider", child.GetType ()));
+				               string.Format ("{0} must support ITableItemProvider. Parent: {1}", child.GetType (), parent.GetType ()));
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 		}
@@ -2036,6 +2044,57 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			Assert.Greater (selectionProvider.GetSelection ().Length,
 			                selectedItems,
 			                "Selection must be greater that old selectedItems");
+		}
+
+		protected virtual void TestTable_GetColumnHeaderItemsMethod (IRawElementProviderSimple provider)
+		{
+			ITableProvider tableProvider
+				= provider.GetPatternProvider (TablePatternIdentifiers.Pattern.Id) as ITableProvider;
+			if (tableProvider == null)
+				Assert.Fail ("Provider {0} is not implementing ITableProvider", provider.GetType ());
+
+			// Provider must never return null
+			Assert.IsNotNull (tableProvider.GetColumnHeaders (), 
+			                  "GetColumnHeaderItems must return an empty array instead of returning null");
+
+			// Testing children TableItemProvider: "The children of this control must implement ITableItemProvider."
+			// http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.itableprovider.aspx
+
+			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
+			if (fragment == null)
+				return;
+
+			IRawElementProviderFragment child = fragment.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				TestTablePatternChild (child);
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+		}
+
+		
+		protected virtual void TestTable_GetRowHeaderItems (IRawElementProviderSimple provider)
+		{
+			ITableProvider tableProvider
+				= provider.GetPatternProvider (TablePatternIdentifiers.Pattern.Id) as ITableProvider;
+			if (tableProvider == null)
+				Assert.Fail ("Provider {0} is not implementing ITableProvider", provider.GetType ());
+
+			// Provider must never return null
+			Assert.IsNotNull (tableProvider.GetRowHeaders (), 
+			                  "GetRowHeaderItems must return an empty array instead of returning null");
+
+			// Testing children TableItemProvider: "The children of this control must implement ITableItemProvider."
+			// http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.itableprovider.aspx
+
+			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
+			if (fragment == null)
+				return;
+
+			IRawElementProviderFragment child = fragment.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				TestTablePatternChild (child);
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
 		}
 
 		private void TestSelectionItemPattern_RemoveFromSelection (IRawElementProviderFragment selectionParent,

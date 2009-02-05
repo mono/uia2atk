@@ -2173,6 +2173,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			base.TestSelectionPatternChild (provider);
 		}
+
+		protected override void TestTablePatternChild (IRawElementProviderSimple provider)
+		{
+			if (provider.GetType () == typeof (ListProvider.ListScrollBarProvider)
+			    || provider.GetType () == typeof (ListViewProvider.ListViewGroupProvider)
+			    || provider.GetType () == typeof (ListViewProvider.ListViewHeaderProvider)) {
+				
+				// LAMESPEC:
+				//     "The children of this element must implement ITableItemProvider."
+				//     HeaderProvider is a special case, however is not implementing
+				//     ITableItemProvider either.
+				return;
+			}
+			
+			base.TestTablePatternChild (provider);
+		}
 		
 		#endregion
 

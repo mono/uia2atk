@@ -1,3 +1,12 @@
+2009-02-05  Mario Carrion  <mcarrion@novell.com>
+
+	* DataGridProviderTest.cs:
+	* ListViewProviderTest.cs:
+	* DataGridViewProviderTest.cs:
+	* MonthCalendarProviderTest.cs: Fixed fixture to fix Table pattern.
+
+	* BaseProviderTest.cs: TestTable tests added.
+
 2009-02-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* MenuItemProviderTest.cs: Ignore ExpandCollapseTest for now.
