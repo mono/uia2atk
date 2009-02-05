@@ -1,3 +1,10 @@
+2009-02-04  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	*
+	Mono.UIAutomation.Winforms.Events/ToolBar/AutomationNamePropertyEvent.cs:
+	Comment-out unused OnTextChanged event handler to prevent
+	warning-as-error during compilation.
+
 2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:

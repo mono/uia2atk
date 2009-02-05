@@ -63,10 +63,10 @@ namespace Mono.UIAutomation.Winforms.Events.ToolBarButton
 		
 		#region Private Methods
 
-		private void OnTextChanged (object sender, EventArgs e)
-		{
-			RaiseAutomationPropertyChangedEvent ();
-		}
+//		private void OnTextChanged (object sender, EventArgs e)
+//		{
+//			RaiseAutomationPropertyChangedEvent ();
+//		}
 
 		#endregion
 
