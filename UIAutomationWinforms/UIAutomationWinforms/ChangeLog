@@ -1,7 +1,7 @@
 2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms.Events/ToolBar/AutomationNamePropertyEvent.cs:
-	Reapply r125881 (rever r125905).
+	Reapply r125881 (revert r125905).
 
 2009-02-05  Brad Taylor  <brad@getcoded.net>
 
@@ -67,8 +67,7 @@
 	* Mono.UIAutomation.Winforms.Behaviors/MenuItem/SelectionItemProviderBehavior.cs:
 	* Mono.UIAutomation.Winforms.Events/MenuItem/AutomationIsEnabledPropertyEvent.cs:
 	* Mono.UIAutomation.Winforms.Behaviors/MenuItem/ExpandCollapseProviderBehavior.cs:
-	*
-	Mono.UIAutomation.Winforms.Events/MenuItem/ExpandCollapsePatternExpandCollapseStateEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/MenuItem/ExpandCollapsePatternExpandCollapseStateEvent.cs:
 	Add provider-side support for MainMenu and MenuItem.
 
 	* Mono.UIAutomation.Winforms/SimpleControlProvider.cs: Make
@@ -78,16 +77,14 @@
 
 2009-02-04  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
-	*
-	Mono.UIAutomation.Winforms.Events/ToolBar/AutomationNamePropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ToolBar/AutomationNamePropertyEvent.cs:
 	Comment-out unused OnTextChanged event handler to prevent
 	warning-as-error during compilation.
 
 2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:
-	*
-	Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonEmbeddedImageProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonEmbeddedImageProviderBehavior.cs:
 	Remove dead code.
 
 2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
@@ -95,8 +92,7 @@
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp:
 	* Mono.UIAutomation.Winforms.Events/ToolBar/AutomationNamePropertyEvent.cs:
-	*
-	Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonEmbeddedImageProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonEmbeddedImageProviderBehavior.cs:
 	Add new files.
 
 	* Mono.UIAutomation.Winforms/Helper.cs: Add
@@ -160,8 +156,7 @@
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp:
 	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:
-	*
-	Mono.UIAutomation.Winforms.Events/ToolBar/AutomationHasKeyboardFocusPropertyEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/ToolBar/AutomationHasKeyboardFocusPropertyEvent.cs:
 	Hook into the new mechanism of obtaining focus on MWF
 	(introduced in r125704).
 
