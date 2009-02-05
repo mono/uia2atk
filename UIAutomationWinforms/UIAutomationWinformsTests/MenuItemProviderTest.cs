@@ -268,6 +268,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 		[Test]
+		[Ignore ("Need to patch MWF to properly find MenuItem given coordinate input when simulating motion/click")]
 		public void ExpandCollapseTest ()
 		{
 			MainMenu mainMenu = new MainMenu ();

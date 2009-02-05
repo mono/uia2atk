@@ -1,5 +1,9 @@
 2009-02-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
+	* MenuItemProviderTest.cs: Ignore ExpandCollapseTest for now.
+
+2009-02-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
 	* Makefile.am:
 	* MenuItemProviderTest.cs:
 	* MainMenuProviderTest.cs:
