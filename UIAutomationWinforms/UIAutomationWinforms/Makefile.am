@@ -453,6 +453,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
 	Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs \
 	Mono.UIAutomation.Winforms/ComboBoxProvider.cs \
+	Mono.UIAutomation.Winforms/ContextMenuProvider.cs \
+	Mono.UIAutomation.Winforms/ContextMenuStripProvider.cs \
 	Mono.UIAutomation.Winforms/DataGridProvider.cs \
 	Mono.UIAutomation.Winforms/DataGridViewProvider.cs \
 	Mono.UIAutomation.Winforms/DateTimePickerProvider.cs \

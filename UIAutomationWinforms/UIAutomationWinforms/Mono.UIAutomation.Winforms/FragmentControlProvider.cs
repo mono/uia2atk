@@ -44,6 +44,8 @@ namespace Mono.UIAutomation.Winforms
 		
 		private List<FragmentControlProvider> children;
 		private INavigation navigation;
+		private SWF.ContextMenu contextMenu;
+		private SWF.ContextMenuStrip contextMenuStrip;
 		
 		#endregion
 		
@@ -61,6 +63,78 @@ namespace Mono.UIAutomation.Winforms
 			componentProviders =
 				new Dictionary<Component, FragmentControlProvider> ();
 			children = new List<FragmentControlProvider> ();
+
+			if (Control != null) {
+				Control.ContextMenuChanged += HandleContextMenuChanged;
+				Control.ContextMenuStripChanged += HandleContextMenuStripChanged;
+
+				HandleContextMenuChanged (null, EventArgs.Empty);
+				HandleContextMenuStripChanged (null, EventArgs.Empty);
+			}
+		}
+
+		void HandleContextMenuStripChanged (object sender, EventArgs e)
+		{
+			if (contextMenuStrip != null) {
+				contextMenuStrip.Opened -= HandleContextMenuStripOpened;
+				contextMenuStrip.Closed -= HandleContextMenuStripClosed;
+			}
+			contextMenuStrip = Control.ContextMenuStrip;
+
+			if (contextMenuStrip != null) {
+				contextMenuStrip.Opened += HandleContextMenuStripOpened;
+				contextMenuStrip.Closed += HandleContextMenuStripClosed;
+			}
+		}
+
+		void HandleContextMenuStripOpened (object sender, EventArgs e)
+		{
+			FragmentControlProvider contextMenuStripProvider = (FragmentControlProvider)
+				ProviderFactory.GetProvider (contextMenuStrip);
+			OnNavigationChildAdded (true, contextMenuStripProvider);
+		}
+
+		void HandleContextMenuStripClosed (object sender, EventArgs e)
+		{
+			FragmentControlProvider contextMenuStripProvider = (FragmentControlProvider)
+				ProviderFactory.FindProvider (contextMenuStrip);
+			if (contextMenuStripProvider == null)
+				return;
+			contextMenuStripProvider.Terminate ();
+			OnNavigationChildRemoved (true, contextMenuStripProvider);
+			// TODO: Need to handle disposal of some parent without close happening?
+		}
+
+		void HandleContextMenuChanged (object sender, EventArgs e)
+		{
+			if (contextMenu != null) {
+				contextMenu.Popup -= HandleContextMenuPopup;
+				contextMenu.Collapse -= HandleContextMenuCollapse;
+			}
+			contextMenu = Control.ContextMenu;
+
+			if (contextMenu != null) {
+				contextMenu.Popup += HandleContextMenuPopup;
+				contextMenu.Collapse += HandleContextMenuCollapse;
+			}
+		}
+
+		void HandleContextMenuPopup (object sender, EventArgs e)
+		{
+			FragmentControlProvider contextMenuProvider = (FragmentControlProvider)
+				ProviderFactory.GetProvider (contextMenu);
+			OnNavigationChildAdded (true, contextMenuProvider);
+		}
+
+		void HandleContextMenuCollapse (object sender, EventArgs e)
+		{
+			FragmentControlProvider contextMenuProvider = (FragmentControlProvider)
+				ProviderFactory.FindProvider (contextMenu);
+			if (contextMenuProvider == null)
+				return;
+			contextMenuProvider.Terminate ();
+			OnNavigationChildRemoved (true, contextMenuProvider);
+			// TODO: Need to handle disposal of some parent without close happening?
 		}
 		
 		#endregion

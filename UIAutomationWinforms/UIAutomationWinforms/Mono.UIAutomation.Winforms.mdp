@@ -506,6 +506,8 @@
     <File name="Mono.UIAutomation.Winforms.Events/MenuItem/InvokePatternInvokedEvent.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/MainMenuProvider.cs" subtype="Code" buildaction="Compile" />
     <File name="Mono.UIAutomation.Winforms/MenuItemProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/ContextMenuProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="Mono.UIAutomation.Winforms/ContextMenuStripProvider.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />

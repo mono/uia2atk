@@ -1,3 +1,13 @@
+2009-02-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms/ContextMenuProvider.cs:
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs:
+	* Mono.UIAutomation.Winforms/ContextMenuStripProvider.cs: Add
+	support for ContextMenu and ContextMenuStrip. Unit tests are
+	on the way.
+
 2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms.Events/ToolBar/AutomationNamePropertyEvent.cs:
