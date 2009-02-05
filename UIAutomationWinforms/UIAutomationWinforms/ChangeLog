@@ -1,5 +1,10 @@
 2009-02-05  Brad Taylor  <brad@getcoded.net>
 
+	* Mono.UIAutomation.Winforms.Events/ToolBar/AutomationNamePropertyEvent.cs: 
+	Fix mid-air collision.
+
+2009-02-05  Brad Taylor  <brad@getcoded.net>
+
 	* Mono.UIAutomation.Winforms/DataGridProvider.cs: Remove unneccessary
 	Console.WriteLines.
 
