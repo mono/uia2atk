@@ -1,5 +1,12 @@
 2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs:
+	*
+	Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonEmbeddedImageProviderBehavior.cs:
+	Remove dead code.
+
+2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Makefile.am:
 	* Mono.UIAutomation.Winforms.mdp:
 	* Mono.UIAutomation.Winforms.Events/ToolBar/AutomationNamePropertyEvent.cs:

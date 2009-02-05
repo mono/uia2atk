@@ -196,15 +196,6 @@ namespace Mono.UIAutomation.Winforms
 					return null;
 				else if (propertyId == AutomationElementIdentifiers.NameProperty.Id)
 					return toolBarButton.Text;
-//				else if (propertyId == AutomationElementIdentifiers.BoundingRectangleProperty.Id) {
-//					
-//					ToolBarItem item = null;
-//					foreach (ToolBarItem it in toolBarButton.Parent.items)
-//						if (it != null && it.Button == toolBarButton)
-//							item = it;
-//					return Helper.RectangleToRect (item.Rectangle);
-//					
-//				}
 				else if (propertyId == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id) {
 					try {
 						return Helper.GetPrivateProperty<ToolBarButton, bool> (toolBarButton,

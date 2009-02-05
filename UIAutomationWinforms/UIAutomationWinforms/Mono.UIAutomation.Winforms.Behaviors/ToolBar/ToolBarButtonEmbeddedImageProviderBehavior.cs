@@ -61,17 +61,6 @@ namespace Mono.UIAutomation.Winforms.Behaviors.ToolBar
 #region IEmbeddedImageProvider Interface
 		public System.Windows.Rect Bounds {
 			get {
-//				SWF.ToolBarItem item = null;
-//				
-//				SWF.ToolBarButton butt = ((SWF.ToolBarButton)Provider.Component);
-//				if (butt.ImageIndex < 0)
-//					return Rect.Empty;
-//				
-//				foreach (SWF.ToolBarItem it in butt.Parent.items)
-//					if (it != null && it.Button == butt)
-//						item = it;
-//				
-//				return Helper.RectangleToRect (item.ImageRectangle);
 				return Helper.GetToolBarButtonImageBounds (
 					Provider, ((SWF.ToolBarButton)Provider.Component));
 			}
