@@ -32,6 +32,7 @@ using System.Drawing;
 using System.Windows.Automation;
 using System.Windows.Automation.Provider;
 using System.Windows.Forms;
+using Mono.UIAutomation.Services;
 using Mono.UIAutomation.Winforms.Events;
 using Mono.UIAutomation.Winforms.Events.Form;
 using Mono.UIAutomation.Winforms.Behaviors.Form;
@@ -158,7 +159,7 @@ namespace Mono.UIAutomation.Winforms
 			Control child = form.GetChildAtPoint (new Point ((int)x, (int)y));
 			
 			if (child != null) {
-				Console.WriteLine (child);
+				Log.Debug (child.ToString ());
 				
 				if (componentProviders.ContainsKey (child)) {
 					IRawElementProviderSimple provider =
@@ -169,7 +170,7 @@ namespace Mono.UIAutomation.Winforms
 						return providerFragment;
 				}
 			} else
-				Console.WriteLine ("ElementProviderFromPoint: Child is null");
+				Log.Debug ("ElementProviderFromPoint: Child is null");
 			
 			return this;
 		}
