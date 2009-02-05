@@ -1,3 +1,8 @@
+2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms.Events/ToolBar/AutomationNamePropertyEvent.cs:
+	Enable TextChanged hook (track API in r125876).
+
 2009-02-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp: Switch references back to
