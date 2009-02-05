@@ -88,6 +88,7 @@ namespace UiaAtkBridgeTest
 		protected SWF.ToolStripSplitButton tssb = new SWF.ToolStripSplitButton ();
 		protected SWF.ToolBar toolBar = new SWF.ToolBar ();
 		protected SWF.ToolBarButton toolBarButton = new SWF.ToolBarButton ("Test");
+		protected SWF.ToolBarButton toolBarButtonWithImage = new SWF.ToolBarButton ("TestIMG");
 		protected SWF.TabControl tabControl = new SWF.TabControl ();
 		protected SWF.TreeView treeView = new SWF.TreeView ();
 		protected SWF.DateTimePicker dateTimePicker = new SWF.DateTimePicker ();
@@ -116,6 +117,10 @@ namespace UiaAtkBridgeTest
 			string uiaQaPath = Misc.LookForParentDir ("*.gif");
 			string imgPath = System.IO.Path.Combine (uiaQaPath, "opensuse60x38.gif");
 
+			SWF.ImageList imageList = new SWF.ImageList ();
+			imageList.Images.Add (Image.FromFile (imgPath));
+			toolBar.ImageList = imageList;
+			
 			butWithImage.Image = System.Drawing.Image.FromFile (imgPath);
 			butWithImage.AutoSize = true;
 
@@ -152,6 +157,9 @@ namespace UiaAtkBridgeTest
 			toolStrip.Items.Add (toolStripTextBox2);
 			form.Controls.Add (toolStrip);
 			toolBar.Buttons.Add (toolBarButton);
+			toolBar.Buttons.Add (toolBarButtonWithImage);
+			Console.WriteLine ("yoooooooooooooooooooo"+toolBarButtonWithImage.Parent==null);
+			toolBarButtonWithImage.ImageIndex = 0;
 			form.Controls.Add (toolBar);
 
 			linklab1.Links [0].Visited = true;
@@ -626,10 +634,11 @@ namespace UiaAtkBridgeTest
 				if (!real)
 					throw new NotSupportedException ("Not unreal support for ToolbarButton");
 
-				toolBarButton.Text = name;
-				accessible = GetAdapterForWidget (toolBarButton);
-				
+				SWF.ToolBarButton theButton = (embeddedImage) ? toolBarButtonWithImage : toolBarButton;
+				theButton.Text = name;
+				accessible = GetAdapterForWidget (theButton);
 				break;
+				
 			case BasicWidgetType.Window:
 				SWF.Form frm = new SWF.Form ();
 				if (real)

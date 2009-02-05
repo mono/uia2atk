@@ -1,3 +1,19 @@
+2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am:
+	* Mono.UIAutomation.Winforms.mdp:
+	* Mono.UIAutomation.Winforms.Events/ToolBar/AutomationNamePropertyEvent.cs:
+	*
+	Mono.UIAutomation.Winforms.Behaviors/ToolBar/ToolBarButtonEmbeddedImageProviderBehavior.cs:
+	Add new files.
+
+	* Mono.UIAutomation.Winforms/Helper.cs: Add
+	GetToolBarButtonImageBounds, based on TopCenter mode of
+	GetButtonBaseImageBounds().
+
+	* Mono.UIAutomation.Winforms/ToolBarProvider.cs: Hook up to
+	new events and behaviours.
+
 2009-02-04  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ComboBoxProvider.cs: UnselectItem

@@ -68,20 +68,10 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void Button ()
 		{
-			Button (null, null);
-		}
-		
-		public void Button (Atk.Object accessible, string name)
-		{
-			bool stopEarly = false;
 			BasicWidgetType type = BasicWidgetType.NormalButton;
 
-			if (name == null)
-				name = "test";
-			if (accessible == null)
-				accessible = GetAccessible (type, name);
-			else
-				stopEarly = true;
+			string name = "test";
+			Atk.Object accessible = GetAccessible (type, name);
 
 			Interfaces (accessible,
 			            typeof (Atk.Component),
@@ -109,9 +99,6 @@ namespace UiaAtkBridgeTest
 			Assert.AreEqual (0, accessible.NAccessibleChildren, "Button numChildren");
 
 			Parent (type, accessible);
-
-			if (stopEarly)
-				return;
 
 			//test with an image
 			Atk.Image atkWithOutImage, atkWithImage;

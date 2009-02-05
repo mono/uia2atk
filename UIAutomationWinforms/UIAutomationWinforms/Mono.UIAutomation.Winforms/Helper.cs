@@ -168,12 +168,12 @@ namespace Mono.UIAutomation.Winforms
 			//Implementation highly based in ThemeWin32Classic.ButtonBase_DrawImage method
 			
 			Image image;
-			int	imageX;
-			int	imageY;
-			int	imageWidth;
-			int	imageHeight;
+			int imageX;
+			int imageY;
+			int imageWidth;
+			int imageHeight;
 			int width = buttonBase.Width;
-			int height = buttonBase.Height;			
+			int height = buttonBase.Height;
 
 			if (buttonBase.ImageIndex != -1)
 				image = buttonBase.ImageList.Images [buttonBase.ImageIndex];
@@ -259,7 +259,43 @@ namespace Mono.UIAutomation.Winforms
 
 			return buttonRect;
 		}
+		
+		internal static Rect GetToolBarButtonImageBounds (FragmentControlProvider provider,
+		                                                  SWF.ToolBarButton buttonBase)
+		{
+			//Implementation highly based in ThemeWin32Classic.ButtonBase_DrawImage method
+			
+			Image image;
+			int imageX;
+			int imageY;
+			int imageWidth;
+			int imageHeight;
+			
+			Rect buttonRect 
+				= (Rect) provider.GetPropertyValue (AutomationElementIdentifiers.BoundingRectangleProperty.Id);
+			
+			int width = (int)buttonRect.Width;
+			image = buttonBase.Image;
+			
+			if (image == null)
+				return Rect.Empty;
 
+			imageWidth = image.Width;
+			imageHeight = image.Height;
+
+			//case ContentAlignment.TopCenter: {
+			imageX = (width - imageWidth) / 2;
+			imageY = 10;
+
+			imageX += (int) buttonRect.X;
+			imageY += (int) buttonRect.Y;
+
+			Rect imageRect = new Rect (imageX, imageY, imageWidth, imageHeight);
+			buttonRect.Intersect (imageRect);
+
+			return buttonRect;
+		}
+		
 		internal static int GetUniqueRuntimeId ()
 		{
 			return ++id;

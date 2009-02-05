@@ -740,7 +740,24 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Sensitive,
 				Atk.StateType.Showing,
 				Atk.StateType.Visible);
-			Button (accessible, name);
+
+			//from here, like Button test
+			atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+			InterfaceComponent (type, atkComponent);
+
+			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
+			InterfaceAction (type, atkAction, accessible);
+
+			//InterfaceText (type);
+
+			//test with an image
+			Atk.Image atkWithOutImage, atkWithImage;
+			accessible = GetAccessible (type, name, true);
+			atkWithOutImage = CastToAtkInterface <Atk.Image> (accessible);
+			accessible = GetAccessibleThatEmbedsAnImage (type, name, true);
+			atkWithImage = CastToAtkInterface <Atk.Image> (accessible);
+			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
+			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
 		}
 
 		[Test]

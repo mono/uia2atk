@@ -1,3 +1,10 @@
+2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* BridgeTester.cs: Add toolbarButton with image.
+
+	* BridgeTests.cs: Mimic Button test structure in
+	ToolBarButton.
+
 2009-02-04  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* BridgeTester.cs: Tests accommodated to new provider support

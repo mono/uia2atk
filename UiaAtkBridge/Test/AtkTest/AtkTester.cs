@@ -767,10 +767,10 @@ namespace UiaAtkBridgeTest
 				implementor.GetImagePosition (out ia, out ib, Atk.CoordType.Screen);
 				component.GetPosition (out ca, out cb, Atk.CoordType.Screen);
 				Assert.IsTrue (ia > 0, "x of the image must be > 0; obtained " + ia);
-			Assert.IsTrue (ib > 0, "y of the image must be > 0; obtained " + ib);
+				Assert.IsTrue (ib > 0, "y of the image must be > 0; obtained " + ib);
 				Assert.IsTrue (ia >= ca, "x of the image must be >= x from the widget; obtained " + ia + "<" + ca);
 				Assert.IsTrue (ib >= cb, "y of the image must be >= y from the widget; obtained " + ia + "<" + cb);
-		});
+			});
 
 			RunInGuiThread (delegate () {
 				withoutImageImplementor.GetImagePosition (out ia, out ib, Atk.CoordType.Screen);
