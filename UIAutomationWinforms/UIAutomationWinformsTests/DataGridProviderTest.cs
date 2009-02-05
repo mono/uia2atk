@@ -23,6 +23,7 @@
 //	Mario Carrion <mcarrion@novell.com>
 // 
 using System;
+using System.Data;
 using System.Collections;
 using System.Windows;
 using SD = System.Drawing;
@@ -268,14 +269,23 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			SWF.DataGrid datagrid = new SWF.DataGrid ();
 			datagrid.Size = new SD.Size (300, 300);
-			
-            ArrayList arraylist = new ArrayList ();
 
-            for (int index = 0; index < Elements; index++)
-                arraylist.Add (new BindableReadWriteElement (index,
-                    string.Format ("Name{0}", index)));
+			DataTable dataTable = new DataTable ("MyTable");
+			dataTable.Columns.Add (new DataColumn ("MyColumn1"));
+			dataTable.Columns.Add (new DataColumn ("MyColumn2"));
 
-            datagrid.DataSource = arraylist;
+            for (int index = 0; index < Elements; index++) {
+				DataRow row = dataTable.NewRow ();
+				row ["MyColumn1"] = string.Format ("hello {0}", index);
+				row ["MyColumn2"] = string.Format ("world {0}", index);
+				dataTable.Rows.Add (row);
+			}
+
+			DataSet dataset = new DataSet ();
+			dataset.Tables.Add (dataTable);
+
+            datagrid.DataSource = dataset;
+			datagrid.DataMember = "MyTable";
 			return datagrid;
 		}
 
@@ -296,7 +306,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		protected override void TestTablePatternChild (IRawElementProviderSimple provider)
 		{
 			if (provider.GetType () == typeof (DataGridProvider.DataGridHeaderProvider)) {
-				
 				// LAMESPEC:
 				//     "The children of this element must implement ITableItemProvider."
 				//     HeaderProvider is a special case, however is not implementing
@@ -321,7 +330,22 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		{
 			// FIXME: We should not override this method, instead to fix SelectionItem provider
 		}
-		
+
+		protected override void TestGridItemPattern_RowPropertyEvent (IRawElementProviderSimple provider)
+		{
+			// Is not possible to actually test this GridItem Pattern because 
+			// the Data is reflected as a whole not as small parts (as ListView 
+			// for example with its Items) so when you add a row table, you are
+			// not adding the row into the datagrid, you are adding the row into 
+			// the DataSet and then the DataGrid only renders the data, 
+			// nothing else.
+		}
+
+		protected override void  TestGridItemPattern_ColumnPropertyEvent (IRawElementProviderSimple provider)
+		{
+			// Read TestGridItemPattern_RowPropertyEvent
+		}
+
 		#endregion
 	}
 

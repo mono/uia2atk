@@ -1,5 +1,19 @@
 2009-02-05  Mario Carrion  <mcarrion@novell.com>
 
+	* ListViewProviderTest.cs:
+	* DataGridViewProviderTest.cs: TestGridItemPattern_XXXX methods
+	overridden.
+
+	* Makefile.am:
+	* UIAutomationWinformsTests.mdp: System.Data reference added.
+
+	* BaseProviderTest.cs: GridItem tests added.
+
+	* DataGridProviderTest.cs: Using DataTable instead of ArrayList as data
+	set.
+
+2009-02-05  Mario Carrion  <mcarrion@novell.com>
+
 	* DataGridProviderTest.cs:
 	* ListViewProviderTest.cs:
 	* DataGridViewProviderTest.cs:

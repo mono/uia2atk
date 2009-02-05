@@ -1014,6 +1014,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			                 "LocalizedControlTypeProperty");
 
 			// DEPENDS: IScrollProvider
+
 			TestSelectionPattern_GetSelectionMethod (provider);
 			TestTable_GetColumnHeaderItemsMethod (provider);
 			TestTable_GetRowHeaderItems (provider);
@@ -1074,6 +1075,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			// http://msdn.microsoft.com/en-us/library/ms748367.aspx
 			Assert.IsTrue ((bool) provider.GetPropertyValue (AutomationElementIdentifiers.IsTextPatternAvailableProperty.Id),
 			               "Edit ControlType must support ITextProvider");
+			
 			// DEPENDS: IValueProvider
 			// DEPENDS: IRangeValueProvider
 
@@ -1505,6 +1507,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				Assert.IsTrue ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsGridItemPatternAvailableProperty.Id),
 				               string.Format ("{0} must support IGridItemProvider", child.GetType ()));
 
+				TestGridItemPattern_ColumnPropertyEvent (provider);
+				TestGridItemPattern_RowPropertyEvent (provider);
+
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 		}
@@ -1545,6 +1550,10 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			if ((bool) parent.GetPropertyValue (AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)) {
 				Assert.IsTrue ((bool) child.GetPropertyValue (AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id),
 				               string.Format ("{0} must support ITableItemProvider. Parent: {1}", child.GetType (), parent.GetType ()));
+
+				TestTableItemPattern_GetColumnHeaderItems (provider);
+				TestTableItemPattern_GetRowHeaderItems (provider);
+				
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 		}
@@ -1779,7 +1788,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		protected virtual void TestValuePattern_ChangeReadOnly (IRawElementProviderSimple provider, 
 		                                                        bool newValue)
 		{
-			// This must be overridden by providers to actually change the value!
+			// This must be overridden by providers to actually change the value, 
+			// if they are using a different approach to change ReadOnly
+			
+			SimpleControlProvider controlProvider = provider as SimpleControlProvider;
+			if (controlProvider == null)
+				return;
+
+			controlProvider.Control.Enabled = newValue;
 		}
 
 		protected virtual void TestExpandCollapsePattern_ExpandCollapseStatePropertyEvent (IRawElementProviderSimple provider)
@@ -2071,7 +2087,6 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			}
 		}
 
-		
 		protected virtual void TestTable_GetRowHeaderItems (IRawElementProviderSimple provider)
 		{
 			ITableProvider tableProvider
@@ -2095,6 +2110,225 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 				TestTablePatternChild (child);
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
+		}
+
+		protected virtual void TestTableItemPattern_GetColumnHeaderItems (IRawElementProviderSimple provider)
+		{
+			ITableItemProvider tableItemProvider
+				= provider.GetPatternProvider (TableItemPatternIdentifiers.Pattern.Id) as ITableItemProvider;
+			if (tableItemProvider == null)
+				Assert.Fail ("Provider {0} is not implementing ITableItemProvider", provider.GetType ());
+
+			IRawElementProviderFragment child = provider as IRawElementProviderFragment;
+			if (child == null)
+				Assert.Fail ("Unable to test a non-navigable ITableItemProvider");
+
+			Assert.IsNotNull (tableItemProvider.ContainingGrid, 
+			                  "ContainingGrid should not be null");
+
+			// http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.igriditemprovider.containinggrid.aspx
+			Assert.IsNotNull (tableItemProvider.ContainingGrid.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
+			                  "ContainingGrid must implement GridPatternProvider");
+
+			// Provider must never return null
+			Assert.IsNotNull (tableItemProvider.GetColumnHeaderItems (), 
+			                  "GetColumnHeaderItems must return an empty array instead of returning null");
+		}
+
+		protected virtual void TestTableItemPattern_GetRowHeaderItems (IRawElementProviderSimple provider)
+		{
+			ITableItemProvider tableItemProvider
+				= provider.GetPatternProvider (TableItemPatternIdentifiers.Pattern.Id) as ITableItemProvider;
+			if (tableItemProvider == null)
+				Assert.Fail ("Provider {0} is not implementing ITableItemProvider", provider.GetType ());
+
+			IRawElementProviderFragment child = provider as IRawElementProviderFragment;
+			if (child == null)
+				Assert.Fail ("Unable to test a non-navigable ITableItemProvider");
+
+			Assert.IsNotNull (tableItemProvider.ContainingGrid, 
+			                  "ContainingGrid should not be null");
+
+			// http://msdn.microsoft.com/en-us/library/system.windows.automation.provider.igriditemprovider.containinggrid.aspx
+			Assert.IsNotNull (tableItemProvider.ContainingGrid.GetPatternProvider (GridPatternIdentifiers.Pattern.Id),
+			                  "ContainingGrid must implement GridPatternProvider");
+
+			// Provider must never return null
+			Assert.IsNotNull (tableItemProvider.GetRowHeaderItems (), 
+			                  "GetRowHeaderItems must return an empty array instead of returning null");
+		}
+
+		protected virtual void  TestGridItemPattern_ColumnPropertyEvent (IRawElementProviderSimple provider)
+		{
+			IGridItemProvider gridItemProvider
+				= provider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id) as IGridItemProvider;
+			if (gridItemProvider == null)
+				Assert.Fail ("Provider {0} is not implementing IGridItemProvider", provider.GetType ());
+
+			IRawElementProviderFragment child = provider as IRawElementProviderFragment;
+			if (child == null)
+				Assert.Fail ("Unable to test a non-navigable IGridItemProvider");
+
+			Assert.IsNotNull (gridItemProvider.ContainingGrid, 
+			                  "ContainingGrid must not be null");
+			IGridProvider gridProvider 
+				= gridItemProvider.ContainingGrid.GetPatternProvider (GridPatternIdentifiers.Pattern.Id) as IGridProvider;
+			if (gridProvider == null)
+				Assert.Fail ("Provider {0} is ContainingGrid of {1} and should implement IGridProvider",
+				             gridItemProvider.ContainingGrid,
+				             provider.GetType ());
+
+			// FIXME: Implement
+		}
+		
+		protected virtual void TestGridItemPattern_RowPropertyEvent (IRawElementProviderSimple provider)
+		{
+			IGridItemProvider gridItemProvider
+				= provider.GetPatternProvider (GridItemPatternIdentifiers.Pattern.Id) as IGridItemProvider;
+			if (gridItemProvider == null)
+				Assert.Fail ("Provider {0} is not implementing IGridItemProvider", provider.GetType ());
+
+			IRawElementProviderFragment child = provider as IRawElementProviderFragment;
+			if (child == null)
+				Assert.Fail ("Unable to test a non-navigable IGridItemProvider");
+
+			Assert.IsNotNull (gridItemProvider.ContainingGrid, 
+			                  "ContainingGrid must not be null");
+			IGridProvider gridProvider 
+				= gridItemProvider.ContainingGrid.GetPatternProvider (GridPatternIdentifiers.Pattern.Id) as IGridProvider;
+			if (gridProvider == null)
+				Assert.Fail ("Provider {0} is ContainingGrid of {1} and should implement IGridProvider",
+				             gridItemProvider.ContainingGrid,
+				             provider.GetType ());
+
+			int oldValue = gridItemProvider.Row;
+			int currentRow = gridItemProvider.Row;
+
+			// Adding row before to increase our current row value
+			bridge.ResetEventLists ();
+			TestGridItemPattern_AddRowBefore (provider, 1);
+
+			AutomationPropertyChangedEventTuple tuple
+				= bridge.GetAutomationPropertyEventFrom (provider,
+				                                         GridItemPatternIdentifiers.RowProperty.Id);
+			Assert.IsNotNull (tuple,
+			                  string.Format ("{0} RowProperty event.", provider.GetType ()));
+			Assert.AreEqual (currentRow,
+			                 (int) tuple.e.OldValue,
+			                 "Old value should match value before adding row");
+
+			int newValue = 0;
+			
+			if (gridProvider.ColumnCount > 1)
+				// We may be moved to next column
+				newValue = (currentRow + 1) % gridProvider.RowCount;
+			else
+				newValue = currentRow + 1;
+
+			Assert.AreEqual (newValue,
+			                 (int) tuple.e.NewValue,
+			                 "New value should match value after adding row");
+			Assert.AreEqual (newValue,
+			                 gridItemProvider.Row,
+			                 "Current row is different than NewValue");
+			
+			// Adding row after to just match sure our Row is not changing at all
+			currentRow = gridItemProvider.Row;
+			bridge.ResetEventLists ();
+			TestGridItemPattern_AddRowAfter (provider, 1);
+
+			Assert.IsNull (bridge.GetAutomationPropertyEventFrom (provider,
+			                                                      GridItemPatternIdentifiers.RowProperty.Id),
+			               string.Format ("{0} RowProperty event should not be raised.", provider.GetType ()));
+			Assert.AreEqual (currentRow,
+			                 gridItemProvider.Row,
+			                 "Current row is different than value before adding row after");
+
+			// Remove previous added row, so our RowProperty will change again!
+			bridge.ResetEventLists ();
+			TestGridItemPattern_RemoveRowBefore (provider, 1);
+
+			tuple = bridge.GetAutomationPropertyEventFrom (provider,
+			                                               GridItemPatternIdentifiers.RowProperty.Id);
+			Assert.IsNotNull (tuple,
+			                  string.Format ("{0} RowProperty event.", provider.GetType ()));
+
+			Assert.AreEqual (currentRow, 
+			                 (int) tuple.e.OldValue,
+			                 "Old value should match value before removing row");
+			Assert.AreEqual (oldValue,
+			                 (int) tuple.e.NewValue,
+			                 "New value should match value after removing row");
+			Assert.AreEqual (oldValue,
+			                 gridItemProvider.Row,
+			                 "Current row is different than NewValue");
+
+			// Remove row added after, to make sure our Row is not changing at all
+			bridge.ResetEventLists ();
+			TestGridItemPattern_RemoveRowAfter (provider, 1);
+
+			Assert.IsNull (bridge.GetAutomationPropertyEventFrom (provider,
+			                                                      GridItemPatternIdentifiers.RowProperty.Id),
+			               string.Format ("{0} RowProperty event should not be raised.", provider.GetType ()));
+			Assert.AreEqual (oldValue,
+			                 gridItemProvider.Row,
+			                 "Current row is different than value before removing row after");
+		}
+
+		protected void TestGridItemPattern_AddRowBefore (IRawElementProviderSimple provider, 
+		                                                 int count)
+		{
+			while (count > 0) {
+				TestGridItemPattern_AddRowBefore (provider);
+				count--;
+			}
+		}
+
+		protected virtual void TestGridItemPattern_AddRowBefore (IRawElementProviderSimple provider)
+		{
+			// This must be overridden by providers to actually add the row!
+		}
+
+		protected void TestGridItemPattern_AddRowAfter (IRawElementProviderSimple provider,
+		                                                int count)
+		{
+			while (count > 0) {
+				TestGridItemPattern_AddRowAfter (provider);
+				count--;
+			}
+		}
+
+		protected virtual void TestGridItemPattern_AddRowAfter (IRawElementProviderSimple provider)
+		{
+			// This must be overridden by providers to actually add the row!
+		}
+
+		protected void TestGridItemPattern_RemoveRowBefore (IRawElementProviderSimple provider,
+		                                                    int count)
+		{
+			while (count > 0) {
+				TestGridItemPattern_RemoveRowBefore (provider);
+				count--;
+			}
+		}
+
+		protected virtual void TestGridItemPattern_RemoveRowBefore (IRawElementProviderSimple provider)
+		{
+			// This must be overridden by providers to actually add the row!
+		}
+
+		protected void TestGridItemPattern_RemoveRowAfter (IRawElementProviderSimple provider,
+		                                                   int count)
+		{
+			while (count > 0) {
+				TestGridItemPattern_RemoveRowAfter (provider);
+				count--;
+			}
+		}
+
+		protected virtual void TestGridItemPattern_RemoveRowAfter (IRawElementProviderSimple provider)
+		{
+			// This must be overridden by providers to actually add the row!
 		}
 
 		private void TestSelectionItemPattern_RemoveFromSelection (IRawElementProviderFragment selectionParent,

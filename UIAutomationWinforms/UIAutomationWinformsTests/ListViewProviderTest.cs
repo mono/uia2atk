@@ -2189,6 +2189,60 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			
 			base.TestTablePatternChild (provider);
 		}
+
+		protected override void TestGridItemPattern_AddRowBefore (IRawElementProviderSimple provider)
+		{
+			if (provider.GetType () != typeof (ListViewProvider.ListViewListItemProvider))
+			    Assert.Fail (string.Format ("I can't recognize {0}!", provider.GetType ()));
+
+			if (provider.GetType () == typeof (ListViewProvider.ListViewListItemProvider)) {
+				ListViewProvider.ListViewListItemProvider itemProvider
+					= (ListViewProvider.ListViewListItemProvider) provider;
+
+				itemProvider.ListView.Items.Insert (itemProvider.Index,
+				                                    new ListViewItem ());
+			}
+		}
+
+		protected override void TestGridItemPattern_AddRowAfter (IRawElementProviderSimple provider)
+		{
+			if (provider.GetType () != typeof (ListViewProvider.ListViewListItemProvider))
+			    Assert.Fail (string.Format ("I can't recognize {0}!", provider.GetType ()));
+
+			if (provider.GetType () == typeof (ListViewProvider.ListViewListItemProvider)) {
+				ListViewProvider.ListViewListItemProvider itemProvider
+					= (ListViewProvider.ListViewListItemProvider) provider;
+
+				itemProvider.ListView.Items.Insert (itemProvider.Index + 1,
+				                                    new ListViewItem ());
+			}
+		}
+
+		protected override void TestGridItemPattern_RemoveRowBefore (IRawElementProviderSimple provider)
+		{
+			if (provider.GetType () != typeof (ListViewProvider.ListViewListItemProvider))
+			    Assert.Fail (string.Format ("I can't recognize {0}!", provider.GetType ()));
+
+			if (provider.GetType () == typeof (ListViewProvider.ListViewListItemProvider)) {
+				ListViewProvider.ListViewListItemProvider itemProvider
+					= (ListViewProvider.ListViewListItemProvider) provider;
+
+				itemProvider.ListView.Items.RemoveAt (itemProvider.Index - 1);
+			}
+		}
+
+		protected override void TestGridItemPattern_RemoveRowAfter (IRawElementProviderSimple provider)
+		{
+			if (provider.GetType () != typeof (ListViewProvider.ListViewListItemProvider))
+			    Assert.Fail (string.Format ("I can't recognize {0}!", provider.GetType ()));
+
+			if (provider.GetType () == typeof (ListViewProvider.ListViewListItemProvider)) {
+				ListViewProvider.ListViewListItemProvider itemProvider
+					= (ListViewProvider.ListViewListItemProvider) provider;
+
+				itemProvider.ListView.Items.RemoveAt (itemProvider.Index + 1);
+			}
+		}
 		
 		#endregion
 

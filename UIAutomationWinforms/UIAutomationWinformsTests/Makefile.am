@@ -120,6 +120,7 @@ EXTRAS =
 
 REFERENCES =  \
 	System \
+	System.Data \
 	System.Drawing \
 	Mono.Posix \
 	-pkg:mono-nunit \

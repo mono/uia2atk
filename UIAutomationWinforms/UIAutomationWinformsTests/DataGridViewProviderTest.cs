@@ -301,6 +301,60 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 
+		protected override void TestGridItemPattern_AddRowBefore (IRawElementProviderSimple provider)
+		{
+			if (provider.GetType () != typeof (DataGridViewProvider.DataGridDataItemProvider))
+			    Assert.Fail (string.Format ("I can't recognize {0}!", provider.GetType ()));
+
+			if (provider.GetType () == typeof (DataGridViewProvider.DataGridDataItemProvider)) {
+				DataGridViewProvider.DataGridDataItemProvider itemProvider
+					= (DataGridViewProvider.DataGridDataItemProvider) provider;
+
+				itemProvider.DataGridView.Rows.Insert (itemProvider.Row.Index,
+				                                       new SWF.DataGridViewRow ());
+			}
+		}
+
+		protected override void TestGridItemPattern_AddRowAfter (IRawElementProviderSimple provider)
+		{
+			if (provider.GetType () != typeof (DataGridViewProvider.DataGridDataItemProvider))
+			    Assert.Fail (string.Format ("I can't recognize {0}!", provider.GetType ()));
+
+			if (provider.GetType () == typeof (DataGridViewProvider.DataGridDataItemProvider)) {
+				DataGridViewProvider.DataGridDataItemProvider itemProvider
+					= (DataGridViewProvider.DataGridDataItemProvider) provider;
+
+				itemProvider.DataGridView.Rows.Insert (itemProvider.Row.Index + 1,
+				                                       new SWF.DataGridViewRow ());
+			}
+		}
+
+		protected override void TestGridItemPattern_RemoveRowBefore (IRawElementProviderSimple provider)
+		{
+			if (provider.GetType () != typeof (DataGridViewProvider.DataGridDataItemProvider))
+			    Assert.Fail (string.Format ("I can't recognize {0}!", provider.GetType ()));
+
+			if (provider.GetType () == typeof (DataGridViewProvider.DataGridDataItemProvider)) {
+				DataGridViewProvider.DataGridDataItemProvider itemProvider
+					= (DataGridViewProvider.DataGridDataItemProvider) provider;
+
+				itemProvider.DataGridView.Rows.RemoveAt (itemProvider.Row.Index - 1);
+			}
+		}
+
+		protected override void TestGridItemPattern_RemoveRowAfter (IRawElementProviderSimple provider)
+		{
+			if (provider.GetType () != typeof (DataGridViewProvider.DataGridDataItemProvider))
+			    Assert.Fail (string.Format ("I can't recognize {0}!", provider.GetType ()));
+
+			if (provider.GetType () == typeof (DataGridViewProvider.DataGridDataItemProvider)) {
+				DataGridViewProvider.DataGridDataItemProvider itemProvider
+					= (DataGridViewProvider.DataGridDataItemProvider) provider;
+
+				itemProvider.DataGridView.Rows.RemoveAt (itemProvider.Row.Index + 1);
+			}
+		}
+		
 		#endregion
 		
 		#region BaseProviderTest Overrides
