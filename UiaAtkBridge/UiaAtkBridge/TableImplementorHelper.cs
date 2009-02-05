@@ -25,6 +25,7 @@
 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Collections.Generic;
 
 using System.Windows.Automation.Provider;
@@ -288,27 +289,27 @@ namespace UiaAtkBridge
 
 		public void SetColumnDescription (int column, string description)
 		{
-			Console.WriteLine ("UiaAtkBridge: SetColumnDescription unimplemented");
+			Log.Warn ("TableImplementorHelper: SetColumnDescription not implemented.");
 		}
 
 		public void SetColumnHeader (int column, Atk.Object header)
 		{
-			Console.WriteLine ("UiaAtkBridge: SetColumnHeader unimplemented");
+			Log.Warn ("TableImplementorHelper: SetColumnHeader not implemented.");
 		}
 
 		public void SetRowDescription (int row, string description)
 		{
-			Console.WriteLine ("UiaAtkBridge: SetRowDescription unimplemented");
+			Log.Warn ("TableImplementorHelper: SetRowDescription not implemented.");
 		}
 
 		public void SetRowHeader (int row, Atk.Object header)
 		{
-			Console.WriteLine ("UiaAtkBridge: SetRowHeader unimplemented");
+			Log.Warn ("TableImplementorHelper: SetRowHeader not implemented.");
 		}
 
 		public int GetSelectedColumns (out int [] selected)
 		{
-			Console.WriteLine ("UiaAtkBridge: GetSelectedColumns unimplemented");
+			Log.Warn ("TableImplementorHelper: GetSelectedColumns not implemented.");
 			selected = null;
 			return 0;
 		}
@@ -343,7 +344,7 @@ namespace UiaAtkBridge
 		// atk-sharp api is fixed.
 		public int GetSelectedColumns (out int selected)
 		{
-			Console.WriteLine ("UiaAtkBridge: GetSelectedColumns unimplemented");
+			Log.Warn ("TableImplementorHelper: GetSelectedColumns not implemented.");
 			selected = 0;
 			return 0;
 		}
@@ -351,7 +352,7 @@ namespace UiaAtkBridge
 		public int GetSelectedRows (out int selected)
 		{
 			// TODO: Logic should be the same as GetSelectedRows (out int [] selected)
-			Console.WriteLine ("UiaAtkBridge: GetSelectedRows unimplemented");		
+			Log.Warn ("TableImplementorHelper: GetSelectedRows not implemented.");
 			selected = 0;
 			return 0;
 		}
@@ -359,7 +360,7 @@ namespace UiaAtkBridge
 		public bool IsColumnSelected (int column)
 		{
 			// TODO: There's no UIA API to get selected columns
-			Console.WriteLine ("UiaAtkBridge: IsColumnSelected unimplemented");
+			Log.Warn ("TableImplementorHelper: IsColumnSelected not implemented.");
 			return false;
 		}
 
@@ -501,14 +502,14 @@ namespace UiaAtkBridge
 		public bool AddColumnSelection (int column)
 		{
 			// TODO: There's no UIA API to selected columns
-			Console.WriteLine ("UiaAtkBridge: AddColumnSelection unimplemented");
+			Log.Warn ("TableImplementorHelper: AddColumnSelection not implemented.");
 			return false;
 		}
 
 		public bool RemoveColumnSelection (int column)
 		{
 			// TODO: There's no UIA API to unselected columns
-			Console.WriteLine ("UiaAtkBridge: RemoveColumnSelection unimplemented");
+			Log.Warn ("TableImplementorHelper: RemoveColumnSelection not implemented.");
 			return false;
 		}
 

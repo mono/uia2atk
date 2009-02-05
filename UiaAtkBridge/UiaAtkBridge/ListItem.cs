@@ -25,6 +25,7 @@
 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -370,12 +371,12 @@ namespace UiaAtkBridge
 		
 		public void CopyText (int start_pos, int end_pos)
 		{
-			Console.WriteLine ("UiaAtkBridge (ListItem): CopyText unimplemented");
+			Log.Warn ("ListItem: CopyText not implemented");
 		}
 		
 		public void CutText (int start_pos, int end_pos)
 		{
-			Console.WriteLine ("UiaAtkBridge (ListItem): CutText unimplemented");
+			Log.Warn ("ListItem: CutText not implemented");
 		}
 		
 		public void DeleteText (int start_pos, int end_pos)
@@ -392,14 +393,14 @@ namespace UiaAtkBridge
 		
 		public void PasteText (int position)
 		{
-			Console.WriteLine ("UiaAtkBridge (ListItem): PasteText unimplemented");
+			Log.Warn ("ListItem: PasteText not implemented");
 		}
 		
 		public string TextContents {
 			get { return valueProvider.Value.ToString (); }
 			set {
 				if (valueProvider == null) {
-					Console.Error.WriteLine ("WARNING: Cannot set text on a ListItem that does not implement IValueProvider.");
+					Log.Warn ("ListItem: Cannot set text on a ListItem that does not implement IValueProvider");
 					return;
 				}
 
@@ -407,7 +408,7 @@ namespace UiaAtkBridge
 					try {
 						valueProvider.SetValue (value);
 					} catch (Exception e) {
-						Console.Error.WriteLine (e);
+						Log.Error ("ListItem: Caught exception while trying to set value:\n{0}", e);
 					}
 				}
 			}

@@ -29,6 +29,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -119,7 +120,7 @@ namespace UiaAtkBridge
 		public void ApplicationStarts ()
 		{
 			if (mainLoop != null && mainLoop.IsRunning) {
-				Console.WriteLine ("AutomationBridge: Warning: Received init event but already running");
+				Log.Warn ("AutomationBridge: Received init event, but already running;  ignoring.");
 				return;
 			}
 
@@ -191,7 +192,7 @@ namespace UiaAtkBridge
 		{
 			uint rc = 0;
 			
-			Console.WriteLine ("add global event listener, event_type: " + eventType);
+			Log.Info ("AutomationBridge: Add global event listener, eventType = {0}", eventType);
 			
 			//split_string[0]: toolkit
 			//            [1]: class/interface

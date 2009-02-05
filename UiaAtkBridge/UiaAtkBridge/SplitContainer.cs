@@ -25,6 +25,7 @@
 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -49,7 +50,7 @@ namespace UiaAtkBridge
 						OrientationType.Horizontal:
 						OrientationType.Vertical;
 				} else {
-					Console.WriteLine ("WARNING: Couldn't get orientation for a splitter");
+					Log.Warn ("SplitContainer: Couldn't get orientation for splitter.  Does not support DockProvider.");
 					orientation = OrientationType.Horizontal;
 				}
 			}

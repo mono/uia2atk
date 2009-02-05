@@ -25,6 +25,7 @@
 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -73,7 +74,7 @@ namespace UiaAtkBridge
 
 		public bool SetCurrentValue (GLib.Value value)
 		{
-			Console.WriteLine ("Some clown called Atk.Value.SetCurrentValue on a ProgressBar");
+			Log.Warn ("ProgressBar: SetCurrentValue not implemented");
 			return false;
 		}
 

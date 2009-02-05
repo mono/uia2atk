@@ -25,6 +25,7 @@
 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -72,7 +73,7 @@ namespace UiaAtkBridge
 			//if your SWF.ScrollBar.Parent doesn't support IScrollProvider then your
 			//ScrollBar is not ScrollBar is Pane!!
 			if (parentScrollProvider == null) {
-				Console.WriteLine ("Warning: Scrollbar with no UIA value implementation");
+				Log.Warn ("ScrollBar: Provider does not implement IValueProvider.");
 				value = new GLib.Value ((double)0);
 			}
 			else
@@ -120,7 +121,7 @@ namespace UiaAtkBridge
 		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
 		{
 			// TODO
-			Console.WriteLine ("Received StructureChangedEvent in Scrollbar--todo");
+			Log.Warn ("ScrollBar: RaiseStructureChangedEvent not implemented.");
 		}
 
 		public override void RaiseAutomationEvent (AutomationEvent eventId, AutomationEventArgs e)

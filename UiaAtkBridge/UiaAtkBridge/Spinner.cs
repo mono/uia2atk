@@ -26,6 +26,7 @@
 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 using Mono.UIAutomation.Bridge;
 
@@ -215,12 +216,12 @@ namespace UiaAtkBridge
 				if (editableRange != null) {
 					try {
 						editableRange.BeginEdit (value);
-					} catch (ElementNotEnabledException){Console.WriteLine("exception");}
+					} catch (ElementNotEnabledException) {}
 				}
 				else if (valueProvider != null) {
 					try {
 						valueProvider.SetValue (value);
-					} catch (ElementNotEnabledException){Console.WriteLine("exception");}
+					} catch (ElementNotEnabledException) {}
 			}
 				else
 					NewText (value);
@@ -234,17 +235,17 @@ namespace UiaAtkBridge
 
 		public void CopyText (int start_pos, int end_pos)
 		{
-			Console.WriteLine ("UiaAtkBridge (spinner): CopyText unimplemented");
+			Log.Warn ("Spinner: CopyText not implemented");
 		}
 
 		public void CutText (int start_pos, int end_pos)
 		{
-			Console.WriteLine ("UiaAtkBridge (spinner): CutText unimplemented");
+			Log.Warn ("Spinner: CutText not implemented");
 		}
 
 		public void PasteText (int position)
 		{
-			Console.WriteLine ("UiaAtkBridge (spinner): PasteText unimplemented");
+			Log.Warn ("Spinner: PasteText not implemented");
 		}
 
 		public void DeleteText (int start_pos, int end_pos)

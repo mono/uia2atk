@@ -1,3 +1,21 @@
+2009-02-05  Brad Taylor  <brad@getcoded.net>
+
+	* Spinner.cs: 
+	* Monitor.cs: 
+	* ListItem.cs: 
+	* MenuItem.cs: 
+	* ScrollBar.cs: 
+	* ProgressBar.cs: 
+	* ComboBoxItem.cs: 
+	* ParentAdapter.cs: 
+	* TextContainer.cs: 
+	* SplitContainer.cs: 
+	* TextBoxEntryView.cs: 
+	* AutomationBridge.cs: 
+	* TableImplementorHelper.cs: 
+	* ImageImplementorHelper.cs: Convert all valid C.WLs to use Log.Warn
+	and Log.Error.
+
 2009-02-04  Brad Taylor  <brad@getcoded.net>
 
 	* TableImplementorHelper.cs: Refactor to properly handle headers (hint,

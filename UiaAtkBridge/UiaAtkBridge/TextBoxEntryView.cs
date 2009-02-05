@@ -28,6 +28,7 @@ using System.IO;
 using System.Text;
 using Mono.Unix.Native;
 using Mono.UIAutomation.Bridge;
+using Mono.UIAutomation.Services;
 
 //using System.Windows;
 using System.Windows.Automation;
@@ -274,7 +275,7 @@ namespace UiaAtkBridge
 			get { return valueProvider.Value.ToString (); }
 			set {
 				if (valueProvider == null) {
-					Console.Error.WriteLine ("WARNING: Cannot set text on a TextBox that does not implement IValueProvider.");
+					Log.Warn ("TextBoxEntryView: Cannot set text on a TextBox that does not implement IValueProvider.");
 					return;
 				}
 
@@ -357,7 +358,7 @@ namespace UiaAtkBridge
 			StringBuilder filename = new StringBuilder ("streamXXXXXX");
 			int fd = Syscall.mkstemp (filename);
 			if (fd < 0) {
-				Console.WriteLine ("ERROR: Unable to create temporary file.  Are you out of disk space?");
+				Log.Error ("TextBoxEntryView: Unable to create temporary file.  Are you out of disk space?");
 				return IntPtr.Zero;
 			}
 

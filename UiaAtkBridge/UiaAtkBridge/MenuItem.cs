@@ -26,6 +26,7 @@
 using System;
 
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -201,7 +202,7 @@ namespace UiaAtkBridge
 					Atk.Focus.TrackerNotify (this);
 				((ICanHaveSelection) this).RecursivelyDeselectAll (selected ? this : null);
 			} else {
-				Console.WriteLine ("WARNING: RaiseAutomationEvent({0},...) not handled yet", eventId.ProgrammaticName);
+				Log.Warn ("MenuItem: RaiseAutomationEvent({0},...) not implemented", eventId.ProgrammaticName);
 				base.RaiseAutomationEvent (eventId, e);
 			}
 		}

@@ -29,6 +29,7 @@ using System.Collections.Generic;
 using Mono.UIAutomation.Bridge;
 using System.Diagnostics;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 
@@ -120,7 +121,7 @@ namespace UiaAtkBridge
 
 				try {
 					if (lazyLoadingLevel > 0) {
-						Console.Error.WriteLine ("WARNING: obsolete non-lazy-loading GetAdapterForProvider method called.");
+						Log.Warn ("Obsolete non-lazy-loading GetAdapterForProvider method called.");
 						
 						List <Atk.Object> alreadyRequestedChildren = new List <Atk.Object> ();
 						List <IRawElementProviderSimple> initialProvs = new List <IRawElementProviderSimple> ();
@@ -430,7 +431,7 @@ namespace UiaAtkBridge
 				// add/removed/reordered events.
 			}
 			else
-				Console.WriteLine ("StructureChangedEvent not handled:" + e.StructureChangeType.ToString ());
+				Log.Warn ("StructureChangedEvent not handled: {0}", e.StructureChangeType);
 			
 			// TODO: Other structure changes
 		}
@@ -472,7 +473,7 @@ namespace UiaAtkBridge
 				return null;
 			ParentAdapter ret = parent as ParentAdapter;
 			if (ret == null)
-				Console.WriteLine ("AutomationBridge: warning: Could not cast " + parent + " to ParentAdapter");
+				Log.Warn ("AutomationBridge: Could not cast {0} to ParentAdapter", parent);
 			return ret;
 		}
 
@@ -575,8 +576,8 @@ namespace UiaAtkBridge
 				HandleNewCalendarControlType (simpleProvider, parentAdapter);
 			// TODO: Other providers
 			else if (controlTypeId != ControlType.Thumb.Id)
-				Console.WriteLine ("AutomationBridge: Unhandled control: " +
-				                   ControlType.LookupById (controlTypeId).ProgrammaticName);
+				Log.Warn ("AutomationBridge: Unhandled control: {0}",
+				          ControlType.LookupById (controlTypeId).ProgrammaticName);
 		}
 
 		private bool HandleElementRemoval (Atk.Object atkObj)
@@ -796,7 +797,7 @@ namespace UiaAtkBridge
 				provider.GetPropertyValue (AutomationElementIdentifiers.NativeAccessibilityObjectProperty.Id);
 			
 			if (nativeObj == null) {
-				Console.WriteLine ("UiaAtkBridge: Couldn't get an atk object for a WebBrowser");
+				Log.Error ("UiaAtkBridge: Couldn't get an atk object for a WebBrowser");
 				return false;
 			}
 				providerAdapterMapping [provider] = nativeObj;
@@ -1037,7 +1038,7 @@ namespace UiaAtkBridge
 		{
 			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
 			if (fragment == null) {
-				Console.WriteLine ("UiaAtkBridge: warning: Tab must be a fragment; ignoring");
+				Log.Warn ("UiaAtkBridge: Tab must be a fragment; ignoring");
 				return;
 			}
 				
@@ -1057,7 +1058,7 @@ namespace UiaAtkBridge
 		{
 			IRawElementProviderFragment fragment = provider as IRawElementProviderFragment;
 			if (fragment == null) {
-				Console.WriteLine ("UiaAtkBridge: warning: Tree must be a fragment; ignoring");
+				Log.Warn ("UiaAtkBridge: Tree must be a fragment; ignoring");
 				return;
 			}
 				

@@ -25,6 +25,7 @@
 
 using System;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -173,7 +174,7 @@ namespace UiaAtkBridge
 		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
 		{
 			// TODO
-			Console.WriteLine ("Received StructureChangedEvent in Statusbar--todo");
+			Log.Warn ("TextContainer: RaiseStructureChangedEvent not implemented.");
 		}
 
 		protected override void UpdateNameProperty (string newName, bool fromCtor)

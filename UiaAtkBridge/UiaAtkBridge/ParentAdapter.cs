@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge

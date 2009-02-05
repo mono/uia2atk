@@ -26,6 +26,7 @@
 using System;
 using System.Windows;
 using System.Windows.Automation;
+using Mono.UIAutomation.Services;
 using System.Windows.Automation.Provider;
 
 namespace UiaAtkBridge
@@ -46,7 +47,7 @@ namespace UiaAtkBridge
 		public bool HasImage {
 			get {
 				if (embeddedImageProvider == null) {
-					Console.WriteLine ("WARNING: your provider implementation doesn't have unofficial IEmbeddedImage support");
+					Log.Info ("ImageImplementorHelper: Your provider implementation does not have unofficial IEmbeddedImage support");
 					return false;
 				} 
 
