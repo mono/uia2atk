@@ -1,5 +1,13 @@
 2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* TestProviderSimple.cs:
+	* TestButtonControlType.cs: Remove old files.
+
+	* DialogTester.cs: Reorganize, they weren't being run. Add
+	ColorDialog & FontDialog. Disable for now.
+
+2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* DialogTester.cs: SaveFileDialog testing.
 
 2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>

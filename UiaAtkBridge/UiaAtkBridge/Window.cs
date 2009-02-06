@@ -166,6 +166,12 @@ namespace UiaAtkBridge
 			
 			return states;
 		}
+		
+		//this is only for unit-tests
+		public void Close ()
+		{
+			windowProvider.Close ();
+		}
 
 		internal override void AddOneChild (Atk.Object child)
 		{

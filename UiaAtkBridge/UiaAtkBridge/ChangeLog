@@ -1,5 +1,9 @@
 2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Window.cs: Add public bit for now.
+
+2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Window.cs: Remove debug spew.
 
 2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
