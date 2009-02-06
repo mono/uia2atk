@@ -33,6 +33,7 @@ namespace UiaAtkBridge
 {
 	public class Window : ComponentParentAdapter
 	{
+		private IWindowProvider windowProvider;
 		private ITransformProvider transformProvider;
 		private IRawElementProviderFragmentRoot rootProvider;
 		private Splitter splitter = null;
@@ -48,12 +49,7 @@ namespace UiaAtkBridge
 			rootProvider = (IRawElementProviderFragmentRoot) provider;
 			
 			if (rootProvider != null) {
-				//FIXME: change this not to use Navigation when we fix the FIXME in Adapter ctor.
-				IRawElementProviderFragment rootOfRootProvider 
-					= (IRawElementProviderFragment) rootProvider.Navigate (NavigateDirection.Parent);
-				//NavigateDirection.Parent in IRawElementProviderFragmentRoot-based provider 
-				//return FragmentRoot and FragmentRoot is the same reference.
-				if (rootOfRootProvider != null && rootOfRootProvider != rootProvider)
+				if (RefStateSet ().ContainsState (Atk.StateType.Modal))
 					Role = Atk.Role.Dialog;
 				else if (balloonWindow) {
 					Role = Atk.Role.Alert;
@@ -62,6 +58,7 @@ namespace UiaAtkBridge
 			}
 
 			transformProvider = (ITransformProvider) provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
+			windowProvider = (IWindowProvider) provider.GetPatternProvider (WindowPatternIdentifiers.Pattern.Id);
 		}
 
 		internal Window () : base (null)
@@ -161,6 +158,13 @@ namespace UiaAtkBridge
 			if (transformProvider != null && transformProvider.CanResize)
 				states.AddState (Atk.StateType.Resizable);
 
+			if (windowProvider != null) {
+				if (windowProvider.IsModal)
+					states.AddState (Atk.StateType.Modal);
+				else
+					states.RemoveState (Atk.StateType.Modal);
+			}
+			
 			return states;
 		}
 
@@ -188,6 +192,9 @@ namespace UiaAtkBridge
 					splitter.AddOneChild (obj);
 					count--;
 				}
+			//LAMESPEC: yeah, atk docs just mention this subtle difference between a Frame and a Dialog...
+			} else if (child is MenuBar && Role == Atk.Role.Dialog) {
+				Role = Atk.Role.Frame;
 			}
 		}
 

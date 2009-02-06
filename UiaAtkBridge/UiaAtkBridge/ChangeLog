@@ -1,5 +1,11 @@
 2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Window.cs: Remove hack about rootProviders, it didn't work
+	always. Map to Atk.Role.Dialog when some circumstances happen
+	(LAMESPEC: first one not caused by MS?).
+
+2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Window.cs: Identation.
 
 2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
