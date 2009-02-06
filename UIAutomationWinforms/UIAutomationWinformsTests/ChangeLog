@@ -1,5 +1,13 @@
 2009-02-06  Brad Taylor  <brad@getcoded.net>
 
+	* FormProviderTest.cs: 
+	* PanelProviderTest.cs: 
+	* TabPageProviderTest.cs: Add tests for ScrollableControl support.
+	It's easier (and better, imho) to do the test here rather than in a
+	separate ScrollableControlProviderTest.
+
+2009-02-06  Brad Taylor  <brad@getcoded.net>
+
 	* providertest.sh.in: Add -l flag to allow you to output the labels
 	during an NUnit run.  Additionally fix bug with -d.
 

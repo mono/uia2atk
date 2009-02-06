@@ -795,6 +795,36 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 #endregion
+
+#region ScrollableControl Test
+
+		[Test]
+		public void ScrollableControlProviderTest ()
+		{
+			using (Form f = new Form ()) {
+				f.Size = new System.Drawing.Size (200, 200);
+				f.AutoScrollMinSize = new System.Drawing.Size (250, 250);
+				f.AutoScroll = true;
+				f.Show ();
+
+				IRawElementProviderSimple provider =
+					ProviderFactory.GetProvider (f);
+
+				IScrollProvider scrollProvider
+					= provider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id)
+					as IScrollProvider;
+				Assert.IsNotNull (scrollProvider,
+						  "Does not implement IScrollProvider");
+
+				f.Size = new System.Drawing.Size (280, 280);
+				scrollProvider = provider.GetPatternProvider (
+					ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider;
+				Assert.IsNull (scrollProvider,
+					       "Implements IScrollProvider");
+			}
+		}
+
+#endregion
 		
 #region BaseProviderTest Overrides
 		

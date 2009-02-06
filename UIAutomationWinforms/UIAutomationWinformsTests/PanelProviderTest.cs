@@ -52,6 +52,31 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "pane");
 		}
+
+		[Test]
+		public void ScrollableControlProviderTest ()
+		{
+			Panel panel = new Panel ();
+			Form.Controls.Add (panel);
+
+			IRawElementProviderSimple provider
+				= GetProviderFromControl (panel);
+
+			panel.AutoScrollMinSize = new System.Drawing.Size (5000, 5000);
+			panel.AutoScroll = true;
+
+			IScrollProvider scrollProvider
+				= provider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id)
+				as IScrollProvider;
+			Assert.IsNotNull (scrollProvider,
+					  "Does not implement IScrollProvider");
+
+			panel.AutoScrollMinSize = new System.Drawing.Size (50, 50);
+			scrollProvider = provider.GetPatternProvider (
+				ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider;
+			Assert.IsNull (scrollProvider,
+				       "Implements IScrollProvider");
+		}
 		
 		#endregion
 		

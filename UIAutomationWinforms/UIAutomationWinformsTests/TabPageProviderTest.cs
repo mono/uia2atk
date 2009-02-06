@@ -44,7 +44,9 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			tabControl = new TabControl ();
 			tabPage1 = new TabPage ();
+			tabPage1.Size = new System.Drawing.Size (200, 200);
 			tabPage2 = new TabPage ();
+			tabPage2.Size = new System.Drawing.Size (200, 200);
 			tabControl.Controls.Add (tabPage1);
 			tabControl.Controls.Add (tabPage2);
 			Form.Controls.Add (tabControl);
@@ -177,6 +179,28 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public override void LabeledByAndNamePropertyTest ()
 		{
 			TestLabeledByAndName (true, false);
+		}
+
+		[Test]
+		public void ScrollableControlProviderTest ()
+		{
+			IRawElementProviderSimple provider
+				= ProviderFactory.GetProvider (tabPage1);
+
+			tabPage1.AutoScrollMinSize = new System.Drawing.Size (5000, 5000);
+			tabPage1.AutoScroll = true;
+
+			IScrollProvider scrollProvider
+				= provider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id)
+				as IScrollProvider;
+			Assert.IsNotNull (scrollProvider,
+					  "Does not implement IScrollProvider");
+
+			tabPage1.AutoScrollMinSize = new System.Drawing.Size (50, 50);
+			scrollProvider = provider.GetPatternProvider (
+				ScrollPatternIdentifiers.Pattern.Id) as IScrollProvider;
+			Assert.IsNull (scrollProvider,
+				       "Implements IScrollProvider");
 		}
 
 		protected override Control GetControlInstance ()
