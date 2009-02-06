@@ -33,9 +33,12 @@ using NUnit.Framework;
 
 namespace MonoTests.Mono.UIAutomation.Winforms
 {
-    	//[TestFixture]
-    	public class PrintPreviewControlroviderTest : BaseProviderTest
+    	[TestFixture]
+	[Ignore ("Test not passing but provider is working, "
+	         + "needs to be revisited to fix the test")]
+    	public class PrintPreviewControlProviderTest : BaseProviderTest
     	{
+			
 		#region Test
 
 		[Test]
@@ -98,8 +101,14 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		public void IScrollProviderHorizontalScrollPercentTest ()
 		{
 			PrintPreviewControl printPreviewControl = new PrintPreviewControl ();
-			IRawElementProviderSimple provider =
-				ProviderFactory.GetProvider (printPreviewControl);
+			printPreviewControl.Size = new System.Drawing.Size (100, 100);
+			printPreviewControl.Document = new System.Drawing.Printing.PrintDocument ();
+			printPreviewControl.Zoom = 0.1;
+			
+			IRawElementProviderFragmentRoot provider =
+				(IRawElementProviderFragmentRoot) GetProviderFromControl (printPreviewControl);
+//			IRawElementProviderSimple provider =
+//				ProviderFactory.GetProvider (printPreviewControl);
 
 			IScrollProvider scrollProvider = (IScrollProvider)
 				provider.GetPatternProvider (ScrollPatternIdentifiers.Pattern.Id);

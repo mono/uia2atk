@@ -1,3 +1,8 @@
+2009-02-07  Neville Gao  <nevillegao@gmail.com>
+
+	* PrintPreviewControlProviderTest.cs: Ignore for now, needs to be
+	revisited to fix.
+
 2009-02-06  Mario Carrion  <mcarrion@novell.com>
 
 	* ListViewProviderTest.cs: Fixed to handle
