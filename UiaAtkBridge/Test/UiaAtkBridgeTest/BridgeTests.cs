@@ -784,18 +784,6 @@ namespace UiaAtkBridgeTest
 			atkComponent = CastToAtkInterface<Atk.Component> (accessible);
 			InterfaceImage (type, atkWithImage, atkComponent, atkWithOutImage);
 		}
-
-		[Test]
-		[Ignore ("It causes a deadlock for now")]
-		public void OpenFileDialog ()
-		{
-			OpenFileDialogStatic ();
-		}
-
-		internal static void OpenFileDialogStatic ()
-		{
-			new DialogTest (new SWF.OpenFileDialog ()).Test ();
-		}
 		
 		[Test]
 		public void Bug457939 ()
@@ -1090,38 +1078,5 @@ namespace UiaAtkBridgeTest
 			ExpectEvents (0, Atk.Role.Text, "object:text-changed:insert");
 			ExpectEvents (1, Atk.Role.Text, "object:text-changed:delete");
 		}
-
-		internal class DialogTest {
-			SWF.CommonDialog dialog;
-	
-			internal DialogTest (SWF.CommonDialog dialog)
-			{
-				this.dialog = dialog;
-			}
-
-			internal void Test ()
-			{
-				var th = new Thread (new ThreadStart (Show));
-				th.SetApartmentState(ApartmentState.STA);
-				try {
-					th.Start ();
-					Thread.Sleep (4000);
-//uncomment this when we resolve the deadlock problem:
-//					Atk.Object dialogAdapter = BridgeTester.GetAdapterForWidget (dialog);
-//					Assert.AreEqual (dialogAdapter.Role, Atk.Role.Dialog, "dialog should have dialog role");
-//					Assert.IsTrue (dialogAdapter.NAccessibleChildren > 0, "dialog should have children");
-				}
-				finally {
-					th.Abort ();
-				}
-			}
-
-			private void Show ()
-			{
-				dialog.ShowDialog ();
-			}
-		}
 	}
-
-
 }

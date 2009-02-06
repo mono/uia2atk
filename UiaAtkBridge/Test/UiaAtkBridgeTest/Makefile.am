@@ -41,7 +41,7 @@ FILES =  \
 	AssemblyInfo.cs \
 	BridgeTester.cs \
 	BridgeTests.cs \
-	FigureOutDeadlock.cs
+	DialogTester.cs
 
 DATA_FILES = 
 

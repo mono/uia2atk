@@ -48,13 +48,9 @@ namespace UiaAtkBridge
 			balloonWindow = (bool)(provider.GetPropertyValue (AutomationElementIdentifiers.IsNotifyIconProperty.Id) != null);
 			rootProvider = (IRawElementProviderFragmentRoot) provider;
 			
-			if (rootProvider != null) {
-				if (RefStateSet ().ContainsState (Atk.StateType.Modal))
-					Role = Atk.Role.Dialog;
-				else if (balloonWindow) {
-					Role = Atk.Role.Alert;
-					Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.HelpTextProperty.Id);
-				}
+			if (rootProvider != null && balloonWindow) {
+				Role = Atk.Role.Alert;
+				Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.HelpTextProperty.Id);
 			}
 
 			transformProvider = (ITransformProvider) provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
@@ -71,6 +67,9 @@ namespace UiaAtkBridge
 			if (balloonWindow) {
 				fakeLabel = new TextLabel (Provider);
 				AddOneChild (fakeLabel);
+			} else {
+				if (RefStateSet ().ContainsState (Atk.StateType.Modal))
+					Role = Atk.Role.Dialog;
 			}
 		}
 		
@@ -194,6 +193,7 @@ namespace UiaAtkBridge
 				}
 			//LAMESPEC: yeah, atk docs just mention this subtle difference between a Frame and a Dialog...
 			} else if (child is MenuBar && Role == Atk.Role.Dialog) {
+				Console.WriteLine ("==============>I've received a menubar child");
 				Role = Atk.Role.Frame;
 			}
 		}

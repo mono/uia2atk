@@ -1,3 +1,12 @@
+2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Makefile.am:
+	* BridgeTests.cs:
+	* DialogTester.cs:
+	* BridgeTester.cs:
+	* UiaAtkBridgeTest.mdp:
+	* FigureOutDeadlock.cs: Dialog testing ready.
+
 2009-02-06  Mario Carrion  <mcarrion@novell.com>
 
 	* BridgeTests.cs: ListView2 test fixed.

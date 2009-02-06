@@ -411,7 +411,7 @@ namespace UiaAtkBridgeTest
 			return GetAccessible (type, name, null, real, true);
 		}
 
-		protected static Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget)
+		public static Atk.Object GetAdapterForWidget (System.ComponentModel.Component widget)
 		{
 			if (widget == null)
 				throw new ArgumentNullException ("widget");

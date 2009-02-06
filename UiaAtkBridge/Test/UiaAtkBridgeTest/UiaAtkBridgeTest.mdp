@@ -21,7 +21,7 @@
     <File name="BridgeTester.cs" subtype="Code" buildaction="Compile" />
     <File name="bridgetest.sh.in" subtype="Code" buildaction="Nothing" />
     <File name="BridgeTests.cs" subtype="Code" buildaction="Compile" />
-    <File name="FigureOutDeadlock.cs" subtype="Code" buildaction="Compile" />
+    <File name="DialogTester.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
@@ -40,7 +40,6 @@
     <ProjectReference type="Gac" localcopy="True" refto="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
     <ProjectReference type="Project" localcopy="True" refto="AtkTest" />
   </References>
-  <GtkDesignInfo />
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile.am" IsAutotoolsProject="True" RelativeConfigureInPath="../..">
     <BuildFilesVar Sync="True" Name="FILES" />
     <DeployFilesVar />
