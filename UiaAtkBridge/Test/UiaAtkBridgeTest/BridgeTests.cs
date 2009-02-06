@@ -252,10 +252,10 @@ namespace UiaAtkBridgeTest
 			lv1.View = SWF.View.SmallIcon;
 			lv1.Groups.Add (new SWF.ListViewGroup ("group1"));
 			lv1.Groups.Add (new SWF.ListViewGroup ("group2"));
-			lv1.Items.Add ("item1");
-			lv1.Items.Add ("item2");
-			lv1.Items.Add ("item3");
-			lv1.Items.Add ("item4");
+            lv1.Items.Add("item1");
+            lv1.Items.Add("item2");
+            lv1.Items.Add("item3");
+            lv1.Items.Add("item4");
 			lv1.Items[0].Group = lv1.Groups[0];
 			lv1.Items[1].Group = lv1.Groups[0];
 			lv1.Items[2].Group = lv1.Groups[1];
@@ -264,9 +264,8 @@ namespace UiaAtkBridgeTest
 			lv1.CheckBoxes = false;
 			Atk.Object accessible = GetAdapterForWidget (lv1);
 			Assert.IsNotNull (accessible, "Adapter should not be null");
-			// 2 groups + default group and ScrollBar
-			// Exposing empty default group probably not ideal
-			Assert.AreEqual (4, accessible.NAccessibleChildren, "NAccessibleChildren #1");
+			// 2 groups + 1 scrollBar
+			Assert.AreEqual (3, accessible.NAccessibleChildren, "NAccessibleChildren #1");
 			Atk.Object group1 = FindObjectByName (accessible, "group1");
 			Assert.IsNotNull (group1, "FindObjectByName (group1)");
 			Assert.AreEqual (Atk.Role.LayeredPane, group1.Role, "Group1 role");
@@ -308,19 +307,45 @@ namespace UiaAtkBridgeTest
 				Atk.StateType.Transient,
 				Atk.StateType.Visible);
 
-			lv1.Items[2].Group = lv1.Groups[0];
-			lv1.Items[3].Group = lv1.Groups[0];
+
 			Atk.Table atkTable = CastToAtkInterface<Atk.Table> (group1);
 			Assert.AreEqual (2, atkTable.NRows, "Table NRows");
-			Assert.AreEqual (2, atkTable.NColumns, "Table NColumns");
+			Assert.AreEqual (1, atkTable.NColumns, "Table NColumns");
+			// Gail Indicies when using RefAt 0-based
 			Assert.AreEqual ("item1", atkTable.RefAt (0, 0).Name, "Cell (0, 0)");
-			Assert.AreEqual ("item2", atkTable.RefAt (0, 1).Name, "Cell (0, 1)");
-			Assert.AreEqual ("item3", atkTable.RefAt (1, 0).Name, "Cell (1, 0)");
-			Assert.AreEqual ("item4", atkTable.RefAt (1, 1).Name, "Cell (1, 1)");
-			Assert.AreEqual (0, atkTable.GetIndexAt (0, 0), "GetIndexAt (0, 0)");
-			Assert.AreEqual (1, atkTable.GetIndexAt (0, 1), "GetIndexAt (0, 1)");
+			Assert.AreEqual ("item2", atkTable.RefAt (1, 0).Name, "Cell (1, 0)");
+			// Gail Indicies when using GetIndexAt are 1-based
+			Assert.AreEqual (1, atkTable.GetIndexAt (0, 0), "GetIndexAt (0, 0)");
 			Assert.AreEqual (2, atkTable.GetIndexAt (1, 0), "GetIndexAt (1, 0)");
-			Assert.AreEqual (3, atkTable.GetIndexAt (1, 1), "GetIndexAt (1, 1)");
+			Atk.Object group2 = FindObjectByName (accessible, "group2");
+			atkTable = CastToAtkInterface<Atk.Table> (group2);
+			// Gail Indicies when using RefAt 0-based
+			Assert.AreEqual ("item3", atkTable.RefAt (0, 0).Name, "Cell (1, 0)");
+			Assert.AreEqual ("item4", atkTable.RefAt (1, 0).Name, "Cell (1, 1)");
+			// Gail Indicies when using GetIndexAt are 1-based
+			Assert.AreEqual (1, atkTable.GetIndexAt (0, 0), "GetIndexAt (0, 0)");
+			Assert.AreEqual (2, atkTable.GetIndexAt (1, 0), "GetIndexAt (0, 1)");			
+
+			// Changing groups again
+			lv1.Items[2].Group = lv1.Groups[0];
+			lv1.Items[3].Group = lv1.Groups[0];
+			atkTable = CastToAtkInterface<Atk.Table> (group1);
+
+			// 1 groups + 1 scrollBars
+			Assert.AreEqual (2, accessible.NAccessibleChildren, "NAccessibleChildren #2");
+
+			Assert.AreEqual (4, atkTable.NRows, "Table NRows");
+			Assert.AreEqual (1, atkTable.NColumns, "Table NColumns");
+			// Gail Indicies when using RefAt 0-based
+			Assert.AreEqual ("item1", atkTable.RefAt (0, 0).Name, "Cell (0, 0)");
+			Assert.AreEqual ("item2", atkTable.RefAt (1, 0).Name, "Cell (1, 0)");
+			Assert.AreEqual ("item3", atkTable.RefAt (2, 0).Name, "Cell (2, 0)");
+			Assert.AreEqual ("item4", atkTable.RefAt (3, 0).Name, "Cell (3, 0)");
+			// Gail Indicies when using GetIndexAt are 1-based
+			Assert.AreEqual (1, atkTable.GetIndexAt (0, 0), "GetIndexAt (0, 0)");
+			Assert.AreEqual (2, atkTable.GetIndexAt (1, 0), "GetIndexAt (1, 0)");			
+			Assert.AreEqual (3, atkTable.GetIndexAt (2, 0), "GetIndexAt (2, 0)");
+			Assert.AreEqual (4, atkTable.GetIndexAt (3, 0), "GetIndexAt (3, 0)");
 
 			accessible = group1 = item1 = null;
 			atkSelection = null;
