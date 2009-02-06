@@ -1,3 +1,11 @@
+2009-02-07  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/TabControl/ScrollProviderBehavior.cs:
+	* Mono.UIAutomation.Winforms.Events/TabControl/ScrollPatternHorizontalViewSizeEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/TabControl/ScrollPatternHorizontallyScrollableEvent.cs:
+	* Mono.UIAutomation.Winforms.Events/TabControl/ScrollPatternHorizontalScrollPercentEvent.cs:
+	Used reflection.
+
 2009-02-06  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.mdp, Makefile.am: Updated for added files.
@@ -6,7 +14,7 @@
 	* Mono.UIAutomation.Winforms.Events/TabControl/ScrollPatternHorizontalViewSizeEvent.cs:
 	* Mono.UIAutomation.Winforms.Events/TabControl/ScrollPatternHorizontallyScrollableEvent.cs:
 	* Mono.UIAutomation.Winforms.Events/TabControl/ScrollPatternHorizontalScrollPercentEvent.cs:
-	  Implemented IScrollProvider.
+	Implemented IScrollProvider.
 
 2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 

@@ -117,7 +117,9 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TabControl
 				if (!tabControl.ShowSlider)
 					return 100;
 				else
-					return tabControl.UIAHorizontalViewSize;
+					return Helper.GetPrivateProperty<SWF.TabControl, double> (tabControl,
+					                                                             "UIAHorizontalViewSize");
+//					return tabControl.UIAHorizontalViewSize;
 			}
 		}
 

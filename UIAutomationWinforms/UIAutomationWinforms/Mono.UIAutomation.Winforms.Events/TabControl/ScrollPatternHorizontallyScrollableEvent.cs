@@ -46,24 +46,42 @@ namespace Mono.UIAutomation.Winforms.Events.TabControl
 
 		public override void Connect ()
 		{
-			((SWF.TabControl) Provider.Control).UIAHorizontallyScrollableChanged +=
-				new EventHandler (OnHorizontallyScrollableChanged);
+			try {
+				Helper.AddPrivateEvent (typeof (SWF.TabControl),
+				                        (SWF.TabControl) Provider.Control,
+				                        "UIAHorizontallyScrollableChanged",
+				                        this,
+				                        "OnHorizontallyScrollableChanged");
+			} catch (NotSupportedException) { }
+//			((SWF.TabControl) Provider.Control).UIAHorizontallyScrollableChanged +=
+//				new EventHandler (OnHorizontallyScrollableChanged);
 		}
 
 		public override void Disconnect ()
 		{
-			((SWF.TabControl) Provider.Control).UIAHorizontallyScrollableChanged -=
-				new EventHandler (OnHorizontallyScrollableChanged);
+			try {
+				Helper.RemovePrivateEvent (typeof (SWF.TabControl),
+				                           (SWF.TabControl) Provider.Control,
+				                           "UIAHorizontallyScrollableChanged",
+				                           this,
+				                           "OnHorizontallyScrollableChanged");
+			} catch (NotSupportedException) { }
+//			((SWF.TabControl) Provider.Control).UIAHorizontallyScrollableChanged -=
+//				new EventHandler (OnHorizontallyScrollableChanged);
 		}
 		
 		#endregion 
 		
 		#region Private Methods
+
+		#pragma warning disable 169
 		
 		private void OnHorizontallyScrollableChanged (object sender, EventArgs e)
 		{
 			RaiseAutomationPropertyChangedEvent ();
 		}
+
+		#pragma warning restore 169
 		
 		#endregion
 	}
