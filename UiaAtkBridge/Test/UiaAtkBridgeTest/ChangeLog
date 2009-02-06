@@ -1,5 +1,9 @@
 2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* DialogTester.cs: It's working now, but independently.
+
+2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* TestProviderSimple.cs:
 	* TestButtonControlType.cs: Remove old files.
 

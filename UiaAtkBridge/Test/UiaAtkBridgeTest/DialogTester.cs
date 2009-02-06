@@ -32,7 +32,7 @@ namespace UiaAtkBridgeTest
 {
 
 	[TestFixture]
-	[Ignore ("Deadlocks sometimes... They work independently.")]
+	[Ignore ("Run this TestFixture independently from the BridgeTester")]
 	public class DialogTester {
 		
 		[Test]
@@ -59,6 +59,7 @@ namespace UiaAtkBridgeTest
 			TestDialog (new SWF.FontDialog ());
 		}
 
+		
 		static void TestDialog (SWF.CommonDialog dialog)
 		{
 			new DialogTester (dialog).Test ();
@@ -67,7 +68,6 @@ namespace UiaAtkBridgeTest
 		public class DialogTester {
 			SWF.CommonDialog dialog;
 			Thread th;
-			UiaAtkBridge.Window dialogAdapter;
 	
 			internal DialogTester (SWF.CommonDialog dialog)
 			{
@@ -80,20 +80,16 @@ namespace UiaAtkBridgeTest
 				th.SetApartmentState (ApartmentState.STA);
 				try {
 					th.Start ();
-					dialogAdapter = BridgeTester.GetAdapterForWidget (dialog) as UiaAtkBridge.Window;
+					Thread.Sleep (10000);
+					UiaAtkBridge.Window dialogAdapter = BridgeTester.GetAdapterForWidget (dialog) as UiaAtkBridge.Window;
 					Assert.IsNotNull (dialogAdapter, "dialogAdapter has a different type than Window");
 					Assert.AreEqual (dialogAdapter.Role, Atk.Role.Dialog, "dialog should have dialog role");
 					Assert.IsTrue (dialogAdapter.NAccessibleChildren > 0, "dialog should have children");
 				}
 				finally {
-					new Thread (new ThreadStart (Dispose));
+					dialog.Dispose ();
+					th.Abort ();
 				}
-			}
-
-			private void Dispose ()
-			{
-				dialogAdapter.Close ();
-				th.Abort ();
 			}
 	
 			private void Show ()
