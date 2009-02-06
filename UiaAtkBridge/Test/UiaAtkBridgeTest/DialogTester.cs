@@ -43,12 +43,13 @@ namespace UiaAtkBridgeTest
 		[Test]
 		public void OpenFileDialog ()
 		{
-			OpenFileDialogStatic ();
+			new DialogTester (new SWF.OpenFileDialog ()).Test ();
 		}
 
-		internal static void OpenFileDialogStatic ()
+		[Test]
+		public void SaveFileDialog ()
 		{
-			new DialogTester (new SWF.OpenFileDialog ()).Test ();
+			new DialogTester (new SWF.SaveFileDialog ()).Test ();
 		}
 
 		internal void Test ()

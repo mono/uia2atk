@@ -1,5 +1,9 @@
 2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* DialogTester.cs: SaveFileDialog testing.
+
+2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Makefile.am:
 	* BridgeTests.cs:
 	* DialogTester.cs:
