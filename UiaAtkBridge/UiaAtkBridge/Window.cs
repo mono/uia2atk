@@ -192,10 +192,8 @@ namespace UiaAtkBridge
 					count--;
 				}
 			//LAMESPEC: yeah, atk docs just mention this subtle difference between a Frame and a Dialog...
-			} else if (child is MenuBar && Role == Atk.Role.Dialog) {
-				Console.WriteLine ("==============>I've received a menubar child");
+			} else if (child is MenuBar && Role == Atk.Role.Dialog)
 				Role = Atk.Role.Frame;
-			}
 		}
 
 		internal override void PreRemoveChild (Atk.Object childToRemove)
