@@ -432,6 +432,11 @@ namespace Mono.UIAutomation.Winforms
 					if (oldGroupProvider != groupProvider) {
 						oldGroupProvider.RemoveItemFrom (item);
 						RemoveItemFrom (objectItem);
+						if (oldGroupProvider.ChildrenCount == 0) {
+							OnNavigationChildRemoved (raiseEvent, oldGroupProvider);
+							groups.Remove (oldGroupProvider.Group);
+							oldGroupProvider.Terminate ();
+						}
 					}
 				}
 

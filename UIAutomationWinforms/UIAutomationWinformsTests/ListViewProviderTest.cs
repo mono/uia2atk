@@ -69,6 +69,59 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 		}
 
 		[Test]
+		public void DefaultGroupChangedTest ()
+		{
+			//LAMESPEC: We need to call this otherwise the Groups aren't shown!!
+			Application.EnableVisualStyles ();
+			
+			ListView listview = new ListView ();
+			listview.ShowGroups = true;
+			
+			IRawElementProviderFragment provider 
+				= (IRawElementProviderFragment) GetProviderFromControl (listview);
+			Assert.IsNotNull (provider, "Missing ListViewProvider");
+			
+			ListViewGroup group1 = new ListViewGroup ("Group1");
+			ListViewGroup group2 = new ListViewGroup ("Group2");
+			
+			listview.Groups.Add (group1);
+			listview.Groups.Add (group2);
+			
+			listview.Items.Add ("Item0");
+			listview.Items.Add ("Item1");
+			listview.Items.Add ("Item2");
+			listview.Items.Add ("Item3");
+			
+			// We should have only one group, "Default Group" because the Groups
+			// don't contain any Item
+			IRawElementProviderFragment child = provider.Navigate (NavigateDirection.FirstChild);
+			int groupCounts = 0;
+			while (child != null) {
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.Group.Id)
+					groupCounts++;
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.AreEqual (1, groupCounts, "Default group only");
+			
+			listview.Items [0].Group = listview.Groups [0];
+			listview.Items [1].Group = listview.Groups [0];
+			listview.Items [2].Group = listview.Groups [1];
+			listview.Items [3].Group = listview.Groups [1];
+			
+			// Now we should have 2 groups, and "Default Group" should be removed
+			child = provider.Navigate (NavigateDirection.FirstChild);
+			groupCounts = 0;
+			while (child != null) {
+				if ((int) child.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.Group.Id)
+					groupCounts++;
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+			Assert.AreEqual (2, groupCounts, "2 Groups only");
+		}
+
+		[Test]
 		public void ViewChangesPatternsTest ()
 		{
 			ListView listview = GetListView (3, 10, 5, 4);
