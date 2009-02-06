@@ -44,6 +44,26 @@ namespace Mono.UIAutomation.Winforms
 		{
 		}
 
+		public override void Initialize ()
+		{
+			base.Initialize ();
+
+			AutomationEventArgs args = new AutomationEventArgs (AEIds.MenuOpenedEvent);
+			AutomationInteropProvider.RaiseAutomationEvent (AEIds.MenuOpenedEvent,
+			                                                this,
+			                                                args);
+		}
+
+		public override void Terminate ()
+		{
+			AutomationEventArgs args = new AutomationEventArgs (AEIds.MenuClosedEvent);
+			AutomationInteropProvider.RaiseAutomationEvent (AEIds.MenuClosedEvent,
+			                                                this,
+			                                                args);
+			base.Terminate ();
+		}
+
+
 		protected override object GetProviderPropertyValue (int propertyId)
 		{
 			if (propertyId == AEIds.ControlTypeProperty.Id)

@@ -1,3 +1,13 @@
+2009-02-06  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Mono.UIAutomation.Winforms/FragmentControlProvider.cs:
+	Release ContextMenu*Provider on menu close.
+
+	* Mono.UIAutomation.Winforms/ContextMenuProvider.cs:
+	* Mono.UIAutomation.Winforms/ContextMenuStripProvider.cs:
+	Raise MenuOpenedEvent on Initialize, and MenuClosedEvent on
+	Terminate.
+
 2009-02-07  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/TabControl/ScrollProviderBehavior.cs:

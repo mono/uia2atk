@@ -102,6 +102,7 @@ namespace Mono.UIAutomation.Winforms
 				return;
 			contextMenuStripProvider.Terminate ();
 			OnNavigationChildRemoved (true, contextMenuStripProvider);
+			ProviderFactory.ReleaseProvider (contextMenuStrip);
 			// TODO: Need to handle disposal of some parent without close happening?
 		}
 
@@ -134,6 +135,7 @@ namespace Mono.UIAutomation.Winforms
 				return;
 			contextMenuProvider.Terminate ();
 			OnNavigationChildRemoved (true, contextMenuProvider);
+			ProviderFactory.ReleaseProvider (contextMenu);
 			// TODO: Need to handle disposal of some parent without close happening?
 		}
 		
