@@ -1,3 +1,8 @@
+2009-02-07  Neville Gao  <nevillegao@gmail.com>
+
+	* Mono.UIAutomation.Winforms.Behaviors/TabControl/ScrollProviderBehavior.cs:
+	Added try-except clause.
+
 2009-02-06  Mario Carrion  <mcarrion@novell.com>
 
 	* Mono.UIAutomation.Winforms/ListViewProvider.cs: Removing Group when

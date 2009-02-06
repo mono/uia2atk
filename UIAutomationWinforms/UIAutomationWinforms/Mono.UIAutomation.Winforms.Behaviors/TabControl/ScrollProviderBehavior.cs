@@ -116,9 +116,20 @@ namespace Mono.UIAutomation.Winforms.Behaviors.TabControl
 			get {
 				if (!tabControl.ShowSlider)
 					return 100;
-				else
-					return Helper.GetPrivateProperty<SWF.TabControl, double> (tabControl,
-					                                                             "UIAHorizontalViewSize");
+				else {
+					// FIXME: remove this when we can depend on MWF > 2.4
+					try {
+						return Helper.GetPrivateProperty<SWF.TabControl, double> (tabControl,
+						                                                          "UIAHorizontalViewSize");
+					} catch (NotSupportedException) { }
+					try {
+						int leftArea =
+							Helper.GetPrivateProperty<SWF.TabControl, int> (tabControl,
+							                                                "LeftScrollButtonArea.Left");
+						return (double) leftArea * 100 / tabControl.TabPages [tabControl.TabCount - 1].TabBounds.Right;
+					} catch (NotSupportedException) { }
+					return Double.NaN;
+				}
 //					return tabControl.UIAHorizontalViewSize;
 			}
 		}
