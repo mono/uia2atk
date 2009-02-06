@@ -41,7 +41,9 @@ namespace UiaAtkBridge
 		
 		public Window (IRawElementProviderSimple provider) : base (provider)
 		{
-			Role = Atk.Role.Frame;
+			if (provider != null)
+				Role = Atk.Role.Frame;
+			
 			balloonWindow = (bool)(provider.GetPropertyValue (AutomationElementIdentifiers.IsNotifyIconProperty.Id) != null);
 			rootProvider = (IRawElementProviderFragmentRoot) provider;
 			if (rootProvider != null) {
