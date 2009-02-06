@@ -21,50 +21,49 @@
 // 
 // Authors: 
 //	Brad Taylor <brad@getcoded.net>
-//
+// 
 
 using System;
-using Mono.Unix;
-using System.ComponentModel;
-using System.Windows.Forms;
 using System.Windows.Automation;
-using System.Windows.Automation.Provider;
-using Mono.UIAutomation.Winforms.Behaviors.TabPage;
-using AEIds = System.Windows.Automation.AutomationElementIdentifiers;
+using SWF = System.Windows.Forms;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events.ScrollableControl
 {
-	[MapsComponent (typeof (TabPage))]
-	internal class TabPageProvider
-		: PanelProvider
+	internal class ScrollPatternVerticallyScrollableEvent
+		: BaseAutomationPropertyEvent
 	{
-		public TabPageProvider (TabPage control) : base (control)
+#region Public Methods
+		public ScrollPatternVerticallyScrollableEvent (ScrollableControlProvider provider)
+			: base (provider, ScrollPatternIdentifiers.VerticallyScrollableProperty)
 		{
-			SetBehavior (SelectionItemPatternIdentifiers.Pattern,
-				     new SelectionItemProviderBehavior (this));
 		}
+#endregion
 		
-		protected override object GetProviderPropertyValue (int propertyId)
+#region IConnectable Implementation
+		public override void Connect ()
+		{	
+			SWF.ScrollBar vscrollbar 
+				= ((ScrollableControlProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar;
+			
+			vscrollbar.VisibleChanged += OnScrollableChanged;
+			vscrollbar.EnabledChanged += OnScrollableChanged;
+		}
+
+		public override void Disconnect ()
 		{
-			if (propertyId == AEIds.ControlTypeProperty.Id)
-				return ControlType.TabItem.Id;
-			else if (propertyId == AEIds.LocalizedControlTypeProperty.Id)
-				return Catalog.GetString ("tab item");
-
-			return base.GetProviderPropertyValue (propertyId);
+			SWF.ScrollBar vscrollbar 
+				= ((ScrollableControlProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar;
+			
+			vscrollbar.VisibleChanged -= OnScrollableChanged;
+			vscrollbar.EnabledChanged -= OnScrollableChanged;
 		}
-
-		internal TabControlProvider TabControlProvider {
-			get { return (TabControlProvider) Navigate (NavigateDirection.Parent); }
+#endregion 
+		
+#region Private Methods
+		private void OnScrollableChanged (object sender, EventArgs e)
+		{
+			RaiseAutomationPropertyChangedEvent ();
 		}
-
-		internal bool IsSelected {
-			get {
-				if (TabControlProvider == null)
-					return false;
-
-				return TabControlProvider.IsItemSelected (this);
-			}
-		}
+#endregion
 	}
 }

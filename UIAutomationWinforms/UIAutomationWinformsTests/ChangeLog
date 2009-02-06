@@ -1,3 +1,8 @@
+2009-02-06  Brad Taylor  <brad@getcoded.net>
+
+	* providertest.sh.in: Add -l flag to allow you to output the labels
+	during an NUnit run.  Additionally fix bug with -d.
+
 2009-02-07  Neville Gao  <nevillegao@gmail.com>
 
 	* PrintPreviewControlProviderTest.cs: Ignore for now, needs to be

@@ -35,7 +35,7 @@ using Mono.UIAutomation.Winforms.Navigation;
 namespace Mono.UIAutomation.Winforms
 {
 	[MapsComponent (typeof (SplitContainer))]
-	internal class SplitContainerProvider : FragmentRootControlProvider
+	internal class SplitContainerProvider : ContainerControlProvider
 	{
 		#region Constructor
 

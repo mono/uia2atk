@@ -30,7 +30,7 @@ namespace Mono.UIAutomation.Winforms
 {
 
 	[MapsComponent (typeof (SWF.Panel))]
-	internal class PanelProvider : PaneProvider
+	internal class PanelProvider : ScrollableControlProvider
 	{
 
 		public PanelProvider (SWF.Panel panel) : base (panel)

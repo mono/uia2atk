@@ -34,7 +34,7 @@ using Mono.UIAutomation.Winforms.Behaviors;
 namespace Mono.UIAutomation.Winforms
 {
 	[MapsComponent (typeof (PropertyGrid))]
-	internal class PropertyGridProvider : PaneProvider
+	internal class PropertyGridProvider : ContainerControlProvider
 	{
 		#region Constructor
 

@@ -40,7 +40,7 @@ using Mono.UIAutomation.Winforms.Behaviors.Form;
 namespace Mono.UIAutomation.Winforms
 {
 	[MapsComponent (typeof (Form))]
-	internal class FormProvider : FragmentRootControlProvider
+	internal class FormProvider : ContainerControlProvider
 	{
 		#region Private Data
 		

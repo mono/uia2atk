@@ -38,6 +38,11 @@
 
 2009-02-05  Brad Taylor  <brad@getcoded.net>
 
+	* Adapter.cs: Avoid a segfault found while running the Mono Winforms
+	tests with the Bridge.
+
+2009-02-05  Brad Taylor  <brad@getcoded.net>
+
 	* Spinner.cs: 
 	* Monitor.cs: 
 	* ListItem.cs: 

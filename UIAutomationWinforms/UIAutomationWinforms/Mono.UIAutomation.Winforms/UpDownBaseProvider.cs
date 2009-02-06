@@ -34,7 +34,7 @@ using Mono.UIAutomation.Winforms.Navigation;
 
 namespace Mono.UIAutomation.Winforms
 {
-	internal abstract class UpDownBaseProvider : FragmentRootControlProvider
+	internal abstract class UpDownBaseProvider : ContainerControlProvider
 	{
 		#region Constructor
 

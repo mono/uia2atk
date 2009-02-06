@@ -17,25 +17,47 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION 
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
-// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//	Mike Gorse <mgorse@novell.com>
+//	Brad Taylor <brad@getcoded.net>
 // 
+
 using System;
-using System.ComponentModel;
-using SWF = System.Windows.Forms;
+using System.Windows.Forms;
+using System.Windows.Automation;
 
-namespace Mono.UIAutomation.Winforms
+namespace Mono.UIAutomation.Winforms.Events.ScrollableControl
 {
-
-	[MapsComponent (typeof (SWF.ContainerControl))]
-	internal class ContainerControlProvider
-		: ScrollableControlProvider
+	internal class ScrollPatternVerticalScrollPercent
+		: BaseAutomationPropertyEvent
 	{
-
-		public ContainerControlProvider (SWF.ContainerControl panel) : base (panel)
+#region Constructors
+		public ScrollPatternVerticalScrollPercent (ScrollableControlProvider provider)
+			: base (provider, ScrollPatternIdentifiers.VerticalScrollPercentProperty)
 		{
 		}
+#endregion
+		
+#region IConnectable Overrides
+		public override void Connect ()
+		{	
+			((ScrollableControlProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar.ValueChanged 
+				+= OnScrollPercentChanged;
+		}
+
+		public override void Disconnect ()
+		{
+			((ScrollableControlProvider) Provider).ScrollBehaviorObserver.VerticalScrollBar.ValueChanged 
+				-= OnScrollPercentChanged;
+		}
+#endregion 
+		
+#region Private Methods
+		private void OnScrollPercentChanged (object sender, EventArgs e)
+		{
+			RaiseAutomationPropertyChangedEvent ();
+		}
+#endregion
 	}
 }

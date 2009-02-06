@@ -1,3 +1,35 @@
+2009-02-06  Brad Taylor  <brad@getcoded.net>
+
+	* Makefile.am: 
+	* Mono.UIAutomation.Winforms.Events/ScrollableControl: 
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollableControl: 
+	* Mono.UIAutomation.Winforms/ScrollableControlProvider.cs: 
+	* Mono.UIAutomation.Winforms.Behaviors/ScrollableControl/ScrollProviderBehavior.cs: 
+	* Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticalViewSizeEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticalScrollPercent.cs: 
+	* Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternHorizontalViewSizeEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticallyScrollableEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternHorizontallyScrollableEvent.cs: 
+	* Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternHorizontalScrollPercentEvent.cs: 
+	Implement ScrollableControlProvider.
+
+	* Mono.UIAutomation.Winforms/FormProvider.cs: 
+	Make FormProvider extend ContainerControlProvider to reflect SWF
+	hierarchy.
+
+	* Mono.UIAutomation.Winforms/PanelProvider.cs: 
+	* Mono.UIAutomation.Winforms/ToolStripProvider.cs: 
+	* Mono.UIAutomation.Winforms/ContainerControlProvider.cs: 
+	Extend ScrollableControlProvider to reflect SWF hierarchy.
+
+	* Mono.UIAutomation.Winforms/TabPageProvider.cs: 
+	Extend PanelProvider to reflect SWF hierarchy.
+
+	* Mono.UIAutomation.Winforms/UpDownBaseProvider.cs: 
+	* Mono.UIAutomation.Winforms/PropertyGridProvider.cs: 
+	* Mono.UIAutomation.Winforms/SplitContainerProvider.cs: 
+	Extend ContainerControlProvider to reflect SWF hierarchy.
+
 2009-02-07  Neville Gao  <nevillegao@gmail.com>
 
 	* Mono.UIAutomation.Winforms.Behaviors/TabControl/ScrollProviderBehavior.cs:

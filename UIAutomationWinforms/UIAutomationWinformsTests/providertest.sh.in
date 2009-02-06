@@ -5,13 +5,14 @@ DLL=UIAutomationWinformsTests.dll
 TEST_DISPLAY=:99
 NUNIT_FLAGS=-nothread
 
-while getopts c:xdt: o
+while getopts c:xd:t:l o
 do case "$o" in
     c)  component="$OPTARG";;
     x)  xephyr="yes";;
     d)  optdisplay="$OPTARG" && xephyr="yes";;
     t)  runtest="$OPTARG" && test "x$component" != "x";;
-    \?)  echo "Usage: $0 -x -d <display> -c <control>" && exit 1;;
+    l)  labels="yes";;
+    \?)  echo "Usage: $0 -x -l -d <display> -c <control>" && exit 1;;
 esac
 done
 
@@ -46,6 +47,10 @@ if [ "x$xephyr" == "xyes" ]; then
 	gnome-session &
 	metacity &
 	metacity_pid=$!
+fi
+
+if [ "x$labels" == "xyes" ]; then
+	NUNIT_FLAGS="${NUNIT_FLAGS} -labels"
 fi
 
 (cd bin/Debug; \

@@ -46,7 +46,7 @@ namespace UiaAtkBridge
 			}
 
 			string desc = (string) Provider.GetPropertyValue (AutomationElementIdentifiers.HelpTextProperty.Id);
-			if (desc != null)
+			if (!String.IsNullOrEmpty (desc))
 				Description = desc;
 
 			UpdateNameProperty (Provider.GetPropertyValue (

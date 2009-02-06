@@ -145,6 +145,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/ProviderBehaviorEventArgs.cs \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/RadioButton/SelectionProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/ScrollableControl/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBar/ButtonInvokeProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/ScrollBar/RangeValueProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/SplitContainer/DockProviderBehavior.cs \
@@ -372,6 +373,12 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/RadioButton/SelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/RadioButton/SelectionItemPatternIsSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/RadioButton/SelectionItemPatternSelectionContainerEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticalViewSizeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternHorizontalViewSizeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticallyScrollableEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternHorizontallyScrollableEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticalScrollPercent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternHorizontalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternLargeChangeEvent.cs \
@@ -510,6 +517,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ProviderFactory.cs \
 	Mono.UIAutomation.Winforms/RadioButtonProvider.cs \
 	Mono.UIAutomation.Winforms/RichTextBoxProvider.cs \
+	Mono.UIAutomation.Winforms/ScrollableControlProvider.cs \
 	Mono.UIAutomation.Winforms/ScrollBarProvider.cs \
 	Mono.UIAutomation.Winforms/ScrollBehaviorObserver.cs \
 	Mono.UIAutomation.Winforms/SimpleControlProvider.cs \
