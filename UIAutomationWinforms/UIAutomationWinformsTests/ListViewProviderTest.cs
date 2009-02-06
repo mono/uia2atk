@@ -179,7 +179,21 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 
 			IRawElementProviderFragment item0Provider = viewProvider.Navigate (NavigateDirection.FirstChild);
 			while (item0Provider != null) {
+				// When Styles are enabled the "Default Group" is added
+				// so we need to loop in the group
 				if ((int) item0Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+				    == ControlType.Group.Id) {
+					IRawElementProviderFragment childGroup = item0Provider.Navigate (NavigateDirection.FirstChild);
+					while (childGroup != null) {
+						if ((int) childGroup.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
+						    == ControlType.DataItem.Id) {
+							item0Provider = childGroup;
+							break;
+						}
+						childGroup = childGroup.Navigate (NavigateDirection.NextSibling);
+					}
+					break;
+				} else if ((int) item0Provider.GetPropertyValue (AutomationElementIdentifiers.ControlTypeProperty.Id)
 				    == ControlType.DataItem.Id)
 					break;
 				item0Provider = item0Provider.Navigate (NavigateDirection.NextSibling);
