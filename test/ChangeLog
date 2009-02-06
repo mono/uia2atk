@@ -1,3 +1,10 @@
+2009-02-06 Brian G. Merrell <bgmerrell@gmail.com>
+
+	* testers/splitter_vertical.py: Vertical splitter should have the
+	"horizontal" state.  My mistake.
+	* testers/splitter_horizontal.py:  Horizontal splitter should have the
+	"vertical" state.  My mistake.
+
 2009-02-06  Mike Gorse <mgorse@novell.com>
 
 	* samples/notifyicon.py: Revert unintended change from R125959.

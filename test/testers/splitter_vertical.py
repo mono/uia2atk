@@ -19,9 +19,7 @@ Test accessibility of splitter widget
 # BUG471749
 # BUG471215
 # BUG471067
-# BUG470842
 # BUG470831
-# BUG470823
 # BUG469569
 
 # imports
@@ -56,7 +54,7 @@ if app is None:
 # just an alias to make things shorter
 sFrame = app.splitterFrame
 
-#BUG471215 and BUG470842    	
-statesCheck(sFrame.split_pane, "Splitter", add_states=[states.VERTICAL])
+#BUG471215
+statesCheck(sFrame.split_pane, "Splitter", add_states=[states.HORIZONTAL])
 
 sFrame.quit()
