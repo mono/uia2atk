@@ -373,12 +373,12 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/RadioButton/SelectionItemPatternElementSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/RadioButton/SelectionItemPatternIsSelectedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/RadioButton/SelectionItemPatternSelectionContainerEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticalViewSizeEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternHorizontallyScrollableEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternHorizontalScrollPercentEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternHorizontalViewSizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticallyScrollableEvent.cs \
-	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternHorizontallyScrollableEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticalScrollPercent.cs \
-	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternHorizontalScrollPercentEvent.cs \
+	Mono.UIAutomation.Winforms.Events/ScrollableControl/ScrollPatternVerticalViewSizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/ButtonInvokePatternInvokedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternIsReadOnlyEvent.cs \
 	Mono.UIAutomation.Winforms.Events/ScrollBar/RangeValuePatternLargeChangeEvent.cs \
