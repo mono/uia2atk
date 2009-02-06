@@ -64,7 +64,7 @@ class NotifyIconSample(Form):
 
     def on_tick(self, sender, event):
         self.notifyicon.Visible = True
-        self.notifyicon.ShowBalloonTip(999) 
+        self.notifyicon.ShowBalloonTip(30) 
 
 
 # run application

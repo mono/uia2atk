@@ -1,3 +1,7 @@
+2009-02-06  Mike Gorse <mgorse@novell.com>
+
+	* samples/notifyicon.py: Revert unintended change from R125959.
+
 2009-02-06  Calen Chen <cachen@novell.com>
 
 	* samples/toolbarbutton.py: add new example: modify the event for 
