@@ -41,6 +41,7 @@ namespace UiaAtkBridge
 		
 		public Window (IRawElementProviderSimple provider) : base (provider)
 		{
+			Role = Atk.Role.Frame;
 			balloonWindow = (bool)(provider.GetPropertyValue (AutomationElementIdentifiers.IsNotifyIconProperty.Id) != null);
 			rootProvider = (IRawElementProviderFragmentRoot) provider;
 			if (rootProvider != null) {
@@ -54,10 +55,8 @@ namespace UiaAtkBridge
 				else if (balloonWindow) {
 					Role = Atk.Role.Alert;
 					Name = (string) provider.GetPropertyValue (AutomationElementIdentifiers.HelpTextProperty.Id);
-				} else
-				Role = Atk.Role.Frame;
-			} else
-				Role = Atk.Role.Frame;
+				}
+			}
 
 			transformProvider = (ITransformProvider) provider.GetPatternProvider (TransformPatternIdentifiers.Pattern.Id);
 		}

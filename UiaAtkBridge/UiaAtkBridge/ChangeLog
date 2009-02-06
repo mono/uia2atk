@@ -1,3 +1,7 @@
+2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Window.cs: Simplify role assignment.
+
 2009-02-05  Mike Gorse  <mgorse@novell.com>
 
 	* ProgressBar.cs: Use TextExpert to find character count; fix NRE.
