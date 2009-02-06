@@ -231,12 +231,18 @@ namespace Mono.UIAutomation.Winforms
 						frag.InitializeChildControlStructure ();
 				}
 			} else {
+				var dialog = component as SWF.CommonDialog;
+				if (dialog != null)
+					return GetProvider (dialog.form,
+					                    initialize,
+					                    forceInitializeChildren);
+				
 				//FIXME: let's not throw while we are developing, a big WARNING will suffice
 				//throw new NotImplementedException ("Provider not implemented for control " + component.GetType().Name);
 				Log.Warn ("Provider not implemented for component " + component.GetType ());
 				return null;
 			}
-			
+
 			return provider;
 		}
 

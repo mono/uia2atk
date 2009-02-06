@@ -1,3 +1,8 @@
+2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs:
+	ProviderFactory now can find dialogs.
+
 2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Mono.UIAutomation.Winforms/FormProvider.cs: Remove
