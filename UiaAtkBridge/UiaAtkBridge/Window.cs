@@ -46,6 +46,7 @@ namespace UiaAtkBridge
 			
 			balloonWindow = (bool)(provider.GetPropertyValue (AutomationElementIdentifiers.IsNotifyIconProperty.Id) != null);
 			rootProvider = (IRawElementProviderFragmentRoot) provider;
+			
 			if (rootProvider != null) {
 				//FIXME: change this not to use Navigation when we fix the FIXME in Adapter ctor.
 				IRawElementProviderFragment rootOfRootProvider 
@@ -75,7 +76,7 @@ namespace UiaAtkBridge
 				AddOneChild (fakeLabel);
 			}
 		}
-
+		
 		public override void RaiseStructureChangedEvent (object childProvider, StructureChangedEventArgs e)
 		{
 			/*IRawElementProviderSimple simpleChildProvider =
@@ -203,9 +204,9 @@ namespace UiaAtkBridge
 					AddOneChild (obj);
 					count--;
 				}
-				}
-			base.PreRemoveChild (childToRemove);
 			}
+			base.PreRemoveChild (childToRemove);
+		}
 
 		private void NewActiveState (bool active)
 		{

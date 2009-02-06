@@ -1,5 +1,9 @@
 2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* Window.cs: Identation.
+
+2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* Window.cs: Fix regression caused by previous refactoring.
 
 2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
