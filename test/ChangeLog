@@ -1,3 +1,11 @@
+2009-02-06  Calen Chen <cachen@novell.com>
+
+	* samples/toolbarbutton.py: add new example: modify the event for 
+	toolbarbuttons with PushButton style. rewrite toolbarbutton2 with 
+	DropDownButton style and add click event. rewrite toolbarbutton3 with 
+	ToggleButton style and add Pushed event. modify toolbarbutton4 with 
+	unenabled property
+
 2009-02-05 Brian G. Merrell <bgmerrell@gmail.com>
 
 	* samples/splitter_vertical.py: Add a title to the title bar
