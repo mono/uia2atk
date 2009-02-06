@@ -11,7 +11,7 @@
 # 
 
 Name:           uiaatkbridge
-Version:	0.9.2
+Version:	0.9.1
 Release:	0
 License:        MIT/X11
 Group:          System/Libraries

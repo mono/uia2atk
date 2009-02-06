@@ -1,8 +1,12 @@
-2008-12-15  Stephen Shaw  <sshaw@decriptor.com>
+2009-02-06  Stephen Shaw  <sshaw@decriptor.com>
 	
-	* specs/uiaatkbridge.spec: change version to 0.9.2
-	* specs/uiautomation.spec: change version to 0.9.2
-	* specs/uiautomationwinforms.spec: change version to 0.9.2
+	* specs/uiautomationwinforms.spec: Added glib-sharp2 to Requires:
+
+2009-01-09  Stephen Shaw  <sshaw@decriptor.com>
+	
+	* specs/uiaatkbridge.spec: bumped version to 0.9.1
+	* specs/uiautomationwinforms.spec: bumped version to 0.9.1
+	* specs/uiautomation.spec: bumped version to 0.9.1
 
 2008-12-15  Stephen Shaw  <sshaw@decriptor.com>
 	
