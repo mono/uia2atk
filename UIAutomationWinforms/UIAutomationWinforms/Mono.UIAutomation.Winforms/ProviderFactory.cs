@@ -180,7 +180,7 @@ namespace Mono.UIAutomation.Winforms
 				// hit Control or Component.
 				do {
 					// First see if there's a mapping handler
-			    		if (componentProviderMappers.TryGetValue (typeIter,
+					if (componentProviderMappers.TryGetValue (typeIter,
 					                                          out handler))
 						break;
 
@@ -233,7 +233,7 @@ namespace Mono.UIAutomation.Winforms
 			} else {
 				//FIXME: let's not throw while we are developing, a big WARNING will suffice
 				//throw new NotImplementedException ("Provider not implemented for control " + component.GetType().Name);
-				Log.Warn ("Provider not implemented for component " + component.GetType());
+				Log.Warn ("Provider not implemented for component " + component.GetType ());
 				return null;
 			}
 			
@@ -257,7 +257,10 @@ namespace Mono.UIAutomation.Winforms
 			IRawElementProviderFragment provider;
 			
 			if (component == null)
+				//FIXME: we should throw instead of returning null
+				//throw new ArgumentNullException ("component");
 				return null;
+			
 			else if (componentProviders.TryGetValue (component, out provider))
 				return provider;
 

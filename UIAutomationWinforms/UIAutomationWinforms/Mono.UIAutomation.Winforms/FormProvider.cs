@@ -211,8 +211,7 @@ namespace Mono.UIAutomation.Winforms
 				else {
 					FormProvider ownerProvider 
 						= (FormProvider) ProviderFactory.FindProvider (owner);
-					if (ownerProvider != null) // FIXME: When ownerProvider == null
-						ownerProvider.RemoveChildProvider (true, this);
+					ownerProvider.RemoveChildProvider (true, this);
 				}
 			}
 		}

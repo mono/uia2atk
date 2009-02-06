@@ -18,7 +18,6 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
 // 
 // Copyright (c) 2009 Novell, Inc. (http://www.novell.com)
-// Copyright (c) 2009 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
 //      Mike Gorse <mgorse@novell.com>

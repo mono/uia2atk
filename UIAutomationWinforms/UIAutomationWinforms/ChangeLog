@@ -1,3 +1,18 @@
+2009-02-05  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/FormProvider.cs: Remove
+	workaround for bug 465795. Now that I knew how to solve the
+	NRE, it doesn't happen anymore?
+
+	* Mono.UIAutomation.Winforms/BalloonWindowProvider.cs: Remove
+	dupe copyright.
+
+	* Mono.UIAutomation.Winforms/ProviderFactory.cs: Add FIXME.
+	Cosmetic bits.
+
+	* Mono.UIAutomation.Winforms/ToolTipListener.cs: Removed
+	reflection.
+
 2009-02-05 Mike Gorse  <mgorse@novell.com>
 
 	* Mono.UIAutomation.Winforms/BalloonWindowProvider.cs, Makefile.am:

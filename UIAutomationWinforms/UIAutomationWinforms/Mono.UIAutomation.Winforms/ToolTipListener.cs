@@ -66,25 +66,12 @@ namespace Mono.UIAutomation.Winforms
 		{
 			if (!AutomationInteropProvider.ClientsAreListening || initialized == true)
 				return;
-			
-			Helper.AddPrivateEvent (typeof (ToolTip),
-			                        null,
-			                        "UIAUnPopup", 
-			                        typeof (ToolTipListener),
-			                        "OnUIAUnPopup");
-			
-			Helper.AddPrivateEvent (typeof (ToolTip),
-			                        null,
-			                        "UIAToolTipHookUp", 
-			                        typeof (ToolTipListener),
-			                        "OnUIAToolTipHookUp");
-			
-			Helper.AddPrivateEvent (typeof (ToolTip),
-			                        null,
-			                        "UIAToolTipUnhookUp", 
-			                        typeof (ToolTipListener),
-			                        "OnUIAToolTipUnhookUp");
 
+			//FIXME: unregister hooks somewhere!
+			ToolTip.UIAUnPopup += OnUIAUnPopup;
+			ToolTip.UIAToolTipHookUp += OnUIAToolTipHookUp;
+			ToolTip.UIAToolTipUnhookUp += OnUIAToolTipUnhookUp;
+			
 			initialized = true;
 		}
 		
