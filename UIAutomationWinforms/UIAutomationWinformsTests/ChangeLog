@@ -1,3 +1,14 @@
+2009-02-06  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile.am:
+	* ContextMenuProviderTest.cs:
+	* UIAutomationWinformsTests.mdp:
+	* ContextMenuStripProviderTest.cs: Add ContextMenu*Provider
+	tests. ContextMenuProviderTest is currently ignored, as it is
+	in progress.
+
+	* ToolStripProviderTest.cs: Cleanup.
+
 2009-02-06  Mario Carrion  <mcarrion@novell.com>
 
 	* ListViewProviderTest.cs: Test added to make we are removing empty

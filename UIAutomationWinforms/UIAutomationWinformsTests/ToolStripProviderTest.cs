@@ -51,7 +51,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			              AutomationElementIdentifiers.LocalizedControlTypeProperty,
 			              "tool bar");
 
-			// TODO: OrientationProperty, IsKeyboardFocusableProperty, AccessKeyProperty
+			// TODO: OrientationProperty, AccessKeyProperty
 		}
 
 		// TODO: Test add/removal of items, navigation, etc
@@ -86,6 +86,7 @@ namespace MonoTests.Mono.UIAutomation.Winforms
 			return new ToolStrip ();
 		}
 
+		[Test]
 		public override void IsKeyboardFocusablePropertyTest ()
 		{
 			Control control = GetControlInstance ();
