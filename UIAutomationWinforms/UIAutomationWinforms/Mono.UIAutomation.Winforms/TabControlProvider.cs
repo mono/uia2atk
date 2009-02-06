@@ -43,12 +43,19 @@ namespace Mono.UIAutomation.Winforms
 		public TabControlProvider (TabControl control) : base (control)
 		{
 			this.control = control;
-
-			SetBehavior (SelectionPatternIdentifiers.Pattern,
-				     new SelectionProviderBehavior (this));
 		}
 
 #endregion
+
+		public override void Initialize ()
+		{
+			base.Initialize ();
+
+			SetBehavior (SelectionPatternIdentifiers.Pattern,
+				     new SelectionProviderBehavior (this));
+			SetBehavior (ScrollPatternIdentifiers.Pattern,
+			             new ScrollProviderBehavior (this));
+		}
 
 #region Protected Methods
 

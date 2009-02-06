@@ -156,6 +156,7 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBar/GridProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusBar/StatusBarPanelGridItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/StatusStrip/GridProviderBehavior.cs \
+	Mono.UIAutomation.Winforms.Behaviors/TabControl/ScrollProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TabControl/SelectionProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TabPage/SelectionItemProviderBehavior.cs \
 	Mono.UIAutomation.Winforms.Behaviors/TextBox/ScrollProviderBehavior.cs \
@@ -390,6 +391,9 @@ FILES =  \
 	Mono.UIAutomation.Winforms.Events/StatusBar/TextPatternTextChangedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StatusStrip/GridPatternColumnCountEvent.cs \
 	Mono.UIAutomation.Winforms.Events/StructureChangedEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TabControl/ScrollPatternHorizontallyScrollableEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TabControl/ScrollPatternHorizontalScrollPercentEvent.cs \
+	Mono.UIAutomation.Winforms.Events/TabControl/ScrollPatternHorizontalViewSizeEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TabControl/SelectionPatternInvalidatedEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TabControl/SelectionPatternSelectionEvent.cs \
 	Mono.UIAutomation.Winforms.Events/TabPage/SelectionItemPatternElementRemovedEvent.cs \
@@ -453,8 +457,8 @@ FILES =  \
 	Mono.UIAutomation.Winforms/ButtonProvider.cs \
 	Mono.UIAutomation.Winforms/CheckBoxProvider.cs \
 	Mono.UIAutomation.Winforms/CheckedListBoxProvider.cs \
-	Mono.UIAutomation.Winforms/ContainerControlProvider.cs \
 	Mono.UIAutomation.Winforms/ComboBoxProvider.cs \
+	Mono.UIAutomation.Winforms/ContainerControlProvider.cs \
 	Mono.UIAutomation.Winforms/ContextMenuProvider.cs \
 	Mono.UIAutomation.Winforms/ContextMenuStripProvider.cs \
 	Mono.UIAutomation.Winforms/DataGridProvider.cs \
