@@ -252,10 +252,10 @@ namespace UiaAtkBridgeTest
 			lv1.View = SWF.View.SmallIcon;
 			lv1.Groups.Add (new SWF.ListViewGroup ("group1"));
 			lv1.Groups.Add (new SWF.ListViewGroup ("group2"));
-            lv1.Items.Add("item1");
-            lv1.Items.Add("item2");
-            lv1.Items.Add("item3");
-            lv1.Items.Add("item4");
+			lv1.Items.Add("item1");
+			lv1.Items.Add("item2");
+			lv1.Items.Add("item3");
+			lv1.Items.Add("item4");
 			lv1.Items[0].Group = lv1.Groups[0];
 			lv1.Items[1].Group = lv1.Groups[0];
 			lv1.Items[2].Group = lv1.Groups[1];
