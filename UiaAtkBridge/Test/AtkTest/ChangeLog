@@ -1,3 +1,9 @@
+2009-02-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* AtkTests.cs: Improve verbosity.
+
+	* AtkTester.cs: Improve verbosity. Style.
+
 2009-02-05  Mike Gorse <mgorse@novell.com>
 
 	* AtkTester.cs, AtkTests.cs: Remove Resizable test for panels.

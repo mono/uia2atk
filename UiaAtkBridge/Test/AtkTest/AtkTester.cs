@@ -482,7 +482,8 @@ namespace UiaAtkBridgeTest
 					Assert.IsTrue (val >= 0, "IndexInParent should not be negative");
 					Assert.IsFalse (indexUsed [val], "Child " + names [i] + " has already-used IndexInParent " + val);
 					indexUsed [val] = true;
-				} else val = i;
+				} else 
+					val = i;
 				RunInGuiThread (delegate () {
 					Assert.IsTrue (implementor.AddSelection (val), "AddSelection(" + i + ")");
 				});
@@ -855,7 +856,7 @@ namespace UiaAtkBridgeTest
 			string res = String.Empty;
 			for (int i = 0; i < accessible.NAccessibleChildren; i++)
 				res += accessible.RefAccessibleChild (i).Role.ToString () + 
-				  "(" + (accessible.Name == null ? "" : accessible.Name) + "-" +
+				  "('" + (accessible.Name == null ? "" : accessible.Name) + "'-" +
 				  accessible.NAccessibleChildren + "),";
 			if (res == String.Empty)
 				return "<no children>";

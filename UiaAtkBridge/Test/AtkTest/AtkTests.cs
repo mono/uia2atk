@@ -621,7 +621,8 @@ namespace UiaAtkBridgeTest
 				   (menuChild.Role == Atk.Role.Separator)), "valid roles for a child of a parentMenu");
 				
 				Assert.IsTrue (menuChild.NAccessibleChildren > 0 || (menuChild.Role != Atk.Role.Menu),
-				   "only grandchildren allowed if parent is menu");
+				   "only grandchildren allowed if parent is menu; here we got " + menuChild.NAccessibleChildren +
+				   " children, with role " + menuChild.Role + "on the item number" + i);
 
 				Assert.AreEqual (menuChild.Name, menu [i].Label, "name of the menu is the same as its label");
 			}
@@ -675,7 +676,8 @@ namespace UiaAtkBridgeTest
 				   (menuChild.Role == Atk.Role.Separator)), "valid roles for a child of a parentMenu");
 				
 				Assert.IsTrue (menuChild.NAccessibleChildren > 0 || (menuChild.Role != Atk.Role.Menu),
-				   "only grandchildren allowed if parent is menu");
+				   "only grandchildren allowed if parent is menu; here we got " + menuChild.NAccessibleChildren +
+				   " children, with role " + menuChild.Role + " on the item number" + i);
 
 				Assert.AreEqual (menuChild.Name, firstSubmenus [i].Label, "name of the menu is the same as its label");
 			}
