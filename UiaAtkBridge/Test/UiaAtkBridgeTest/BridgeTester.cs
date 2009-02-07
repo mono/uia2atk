@@ -572,6 +572,9 @@ namespace UiaAtkBridgeTest
 				accessible = GetAdapterForWidget (tssb);
 				break;
 			case BasicWidgetType.ToolStripDropDownButton:
+				while (tsddb.DropDownItems.Count > 0)
+					tsddb.DropDownItems.Remove (tsddb.DropDownItems [0]);
+				
 				foreach (string name in names) {
 					SWF.ToolStripMenuItem item
 					  = new SWF.ToolStripMenuItem ();

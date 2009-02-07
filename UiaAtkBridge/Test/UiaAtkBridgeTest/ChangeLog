@@ -1,5 +1,9 @@
 2009-02-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* BridgeTester.cs: ToolStripDropDownButton: Clear before Add.
+
+2009-02-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* BridgeTester.cs: Fix MainMenuBar test when run in the full
 	test suite.
 
