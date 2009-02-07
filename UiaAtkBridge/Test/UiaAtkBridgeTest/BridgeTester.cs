@@ -891,7 +891,9 @@ namespace UiaAtkBridgeTest
 				menuItems = menuStrip1.Items;
 
 			//cleanup
-			menuItems.Clear ();
+			//FIXME: use 'menuItems.Clear ()' when BNC#446783 is fixed
+			while (menuItems.Count > 0)
+				menuItems.Remove (menuItems [0]);
 			
 			widget = AddRecursively (menuItems, menu, type);
 			
