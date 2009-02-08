@@ -167,6 +167,23 @@ namespace UiaAtkBridge
 			else
 				alreadyRequestedChildren.Add (adapter);
 		}
+
+		internal static void RequestChildren (IRawElementProviderSimple provider)
+		{
+			IRawElementProviderFragment fragment;
+			if ((fragment = provider as IRawElementProviderFragment) == null)
+				return;
+			
+			IRawElementProviderFragment child 
+				= fragment.Navigate (NavigateDirection.FirstChild);
+			while (child != null) {
+				AutomationInteropProvider.RaiseStructureChangedEvent (
+				  child,
+				  new StructureChangedEventArgs (StructureChangeType.ChildAdded,
+				                                 child.GetRuntimeId ()));
+				child = child.Navigate (NavigateDirection.NextSibling);
+			}
+		}
 		
 #endregion
 		

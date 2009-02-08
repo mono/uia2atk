@@ -151,19 +151,7 @@ namespace UiaAtkBridge
 
 			requestedChildren = true;
 			
-			IRawElementProviderFragment fragment;
-			if ((fragment = Provider as IRawElementProviderFragment) == null)
-				return;
-			
-			IRawElementProviderFragment child 
-				= fragment.Navigate (NavigateDirection.FirstChild);
-			while (child != null) {
-				AutomationInteropProvider.RaiseStructureChangedEvent (
-				  child,
-				  new StructureChangedEventArgs (StructureChangeType.ChildAdded,
-				                                 child.GetRuntimeId ()));
-				child = child.Navigate (NavigateDirection.NextSibling);
-			}
+			AutomationBridge.RequestChildren (Provider);
 		}
 		
 		internal void UpdateChildren ()

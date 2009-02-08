@@ -1,3 +1,10 @@
+2009-02-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* ParentAdapter.cs:
+	* AutomationBridge.cs: Wrap requesting the children of a
+	provider in a function, and move it to a more appropiate
+	place.
+
 2009-02-06  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
 	* Window.cs: Remove hack.
