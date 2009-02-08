@@ -87,8 +87,9 @@ namespace UiaAtkBridgeTest
 			if (type == BasicWidgetType.Window) {
 				Assert.AreEqual (Atk.Layer.Window, implementor.Layer, "Component.Layer");
 				Assert.AreEqual (-1, implementor.MdiZorder, "Component.MdiZorder");
-			} else if ((type == BasicWidgetType.ParentMenu) ||
-			           (type == BasicWidgetType.ContextMenu)) {
+			} else if (type == BasicWidgetType.ParentMenu ||
+			           type == BasicWidgetType.ContextMenu ||
+			           type == BasicWidgetType.ChildMenu) {
 				Assert.AreEqual (Atk.Layer.Popup, implementor.Layer, "Component.Layer");
 			} else if (type == BasicWidgetType.ToolBar) {
 				Assert.AreEqual (Atk.Layer.Widget, implementor.Layer, "Component.Layer");
@@ -99,7 +100,7 @@ namespace UiaAtkBridgeTest
 				Assert.AreEqual (int.MinValue, implementor.MdiZorder, "Component.MdiZorder");
 				Assert.AreEqual (1, implementor.Alpha, "Component.Alpha");
 			} else {
-				Assert.AreEqual (Atk.Layer.Widget, implementor.Layer, "Component.Layer(notWindow)");
+				Assert.AreEqual (Atk.Layer.Widget, implementor.Layer, "Component.Layer:" + type.ToString ());
 				//FIXME: still don't know why this is failing in the GailTester, accerciser is lying me?
 				//Assert.AreEqual (0, implementor.MdiZorder, "Component.MdiZorder(notWindow)");
 			}
@@ -896,6 +897,8 @@ namespace UiaAtkBridgeTest
 				return Atk.Role.Text;
 			case BasicWidgetType.StatusBar:
 				return Atk.Role.Statusbar;
+			case BasicWidgetType.ChildMenu:
+				return Atk.Role.MenuItem;
 			case BasicWidgetType.MainMenuBar:
 				return Atk.Role.MenuBar;
 			case BasicWidgetType.ContextMenu:

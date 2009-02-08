@@ -638,6 +638,48 @@ namespace UiaAtkBridgeTest
 		}
 		
 		[Test]
+		public void ChildMenu () 
+		{
+			BasicWidgetType type = BasicWidgetType.ChildMenu;
+			Atk.Object accessible = null;
+			
+			string menuName = simpleTestText;
+
+			List <MenuLayout> menu = new List <MenuLayout> ();
+			menu.Add (new MenuLayout ("File", new MenuLayout ("New...", new MenuLayout ("Project"), new MenuLayout ("Text")), new MenuLayout ("Quit!")));
+			menu.Add (new MenuLayout ("Help", new MenuLayout (menuName)));
+
+			accessible = GetAccessible (type, menu);
+			
+			//Assert.AreEqual (menuName, accessible.Name, "name of the menu is the same as its label");
+
+			PropertyRole (type, accessible);
+
+			Assert.AreEqual (0, accessible.NAccessibleChildren, 
+			                 "number of children; children roles:" + DescribeChildren (accessible));
+
+			Interfaces (accessible,
+			            typeof (Atk.Component),
+			            typeof (Atk.Text),
+			            typeof (Atk.Action));
+			
+//			States (accessible,
+//			  Atk.StateType.Enabled,
+//			  Atk.StateType.Selectable, 
+//			  Atk.StateType.Sensitive,
+//			  Atk.StateType.Visible);
+
+//			InterfaceText (type, true, accessible);
+			
+//			Atk.Component atkComponent = CastToAtkInterface <Atk.Component> (accessible);
+//			InterfaceComponent (type, atkComponent);
+//
+//			Atk.Action atkAction = CastToAtkInterface <Atk.Action> (accessible);
+//			InterfaceAction (type, atkAction, accessible);
+		}
+
+		
+		[Test]
 		public void ParentMenu () 
 		{
 			BasicWidgetType type = BasicWidgetType.ParentMenu;
