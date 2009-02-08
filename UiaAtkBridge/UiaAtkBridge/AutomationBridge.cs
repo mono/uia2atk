@@ -1127,9 +1127,10 @@ namespace UiaAtkBridge
 			IRawElementProviderFragment child 
 				= fragment.Navigate (NavigateDirection.FirstChild);
 			while (child != null) {
-				AutomationInteropProvider.RaiseStructureChangedEvent (child, 
-				                                                      new StructureChangedEventArgs (StructureChangeType.ChildAdded,
-				                                                                                     child.GetRuntimeId ()));				
+				if (!providerAdapterMapping.ContainsKey (child))
+					AutomationInteropProvider.RaiseStructureChangedEvent (child, 
+					  new StructureChangedEventArgs (StructureChangeType.ChildAdded,
+					                                 child.GetRuntimeId ()));
 				child = child.Navigate (NavigateDirection.NextSibling);
 			}
 		}

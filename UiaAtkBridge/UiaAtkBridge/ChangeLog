@@ -1,8 +1,14 @@
 2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
+	* AutomationBridge.cs: Be careful not to add already added
+	providers in AddChildrenToParent().
+
+2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
 	* ParentAdapter.cs:
 	* AutomationBridge.cs: Merge RequestChildren(Provider) with
-	AddChildrenToParent(), they were the same method!
+	AddChildrenToParent(), they were the same method! (thus, this
+	commit improves r126216.
 
 2009-02-07  Andrés G. Aragoneses  <aaragoneses@novell.com>
 
