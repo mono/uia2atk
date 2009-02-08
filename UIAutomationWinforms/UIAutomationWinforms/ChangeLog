@@ -1,3 +1,8 @@
+2009-02-08  Andrés G. Aragoneses  <aaragoneses@novell.com>
+
+	* Mono.UIAutomation.Winforms/Helper.cs: Reused a small part of
+	Get*ImageBounds.
+
 2009-02-06  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile.am: Alphebetize.

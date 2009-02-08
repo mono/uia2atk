@@ -194,8 +194,7 @@ namespace Mono.UIAutomation.Winforms
 				}
 				
 				case ContentAlignment.TopCenter: {
-					imageX = (width - imageWidth) / 2;
-					imageY = 5;
+					GetXYFromWidthInTopCenterAlignment (width, imageWidth, out imageX, out imageY);
 					break;
 				}
 				
@@ -283,9 +282,7 @@ namespace Mono.UIAutomation.Winforms
 			imageWidth = image.Width;
 			imageHeight = image.Height;
 
-			//case ContentAlignment.TopCenter: {
-			imageX = (width - imageWidth) / 2;
-			imageY = 10;
+			GetXYFromWidthInTopCenterAlignment (width, imageWidth, out imageX, out imageY);
 
 			imageX += (int) buttonRect.X;
 			imageY += (int) buttonRect.Y;
@@ -294,6 +291,12 @@ namespace Mono.UIAutomation.Winforms
 			buttonRect.Intersect (imageRect);
 
 			return buttonRect;
+		}
+
+		private static void GetXYFromWidthInTopCenterAlignment (int width, int imageWidth, out int x, out int y)
+		{
+			x = (width - imageWidth) / 2;
+			y = 5;
 		}
 		
 		internal static int GetUniqueRuntimeId ()
